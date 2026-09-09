@@ -51,10 +51,10 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* 専門家・学習者向け */}
+          {/* 専門家・学生向け */}
           <div>
             <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm tracking-wider mb-4 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5">
-              専門家・学習者向け
+              専門家・学生向け
             </h3>
             <ul className="space-y-2.5 text-xs">
               <li>

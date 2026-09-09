@@ -50,24 +50,75 @@ export default function HomePage() {
               数千年の臨床観察に裏打ちされた東洋医学の深淵と、現代神経科学の最新知見を架橋。「一般の方への圧倒的わかりやすさ」と「専門家が拠って立つ学術的厳密さ」の両立を目指した、日本最高峰のポータルサイトです。
             </p>
 
-            {/* デュアル導線（一般向け・専門家向け） */}
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/symptoms"
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] hover:bg-[#162E27] dark:hover:bg-[#225345] font-semibold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2.5 group"
-              >
-                <HeartPulse className="w-4 h-4 text-[#E6C387]" />
-                <span>お悩み・症状から探す（一般向け）</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
+            {/* 二大エントランス（一般の方向け / 専門家・学生向け） */}
+            <div className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto text-left">
+              {/* 1. 一般の方向けカード */}
+              <div className="bg-[#FFFFFF]/90 dark:bg-[#17212A]/90 backdrop-blur-sm rounded-2xl border-2 border-[#D5CCBC] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] text-[11px] font-bold tracking-wider">
+                      <HeartPulse className="w-3.5 h-3.5" />
+                      <span>一般の方向け</span>
+                    </span>
+                    <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">セルフケア・体質改善</span>
+                  </div>
+                  <h3 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mb-2 group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] transition-colors">
+                    日常の不調を、自分で整える
+                  </h3>
+                  <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed mb-4">
+                    頭痛、肩こり、不眠、冷えなど。病院に行くほどではない未病の不調を、わかりやすいツボ押しや食養生で改善へ導きます。
+                  </p>
+                </div>
+                <div className="pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap gap-2">
+                  <Link
+                    href="/symptoms"
+                    className="flex-1 py-2.5 px-3 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] hover:bg-[#162E27] dark:hover:bg-[#225345] text-xs font-semibold text-center shadow-sm flex items-center justify-center gap-1.5 transition-colors"
+                  >
+                    <span>症状からツボを探す</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                  <Link
+                    href="/diagnosis"
+                    className="py-2.5 px-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1A2530] text-xs font-semibold text-center transition-colors"
+                  >
+                    体質診断
+                  </Link>
+                </div>
+              </div>
 
-              <Link
-                href="/tsubo"
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#D5CCBC] dark:border-[#2A3B4A] text-[#232826] dark:text-[#E6EFEA] hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] hover:bg-[#FAF8F5] dark:hover:bg-[#1D2A35] font-semibold text-sm shadow-sm transition-all flex items-center justify-center gap-2.5"
-              >
-                <Compass className="w-4 h-4 text-[#1E3D34] dark:text-[#3CD0A0]" />
-                <span>経穴・ツボ辞典（専門家・学習者）</span>
-              </Link>
+              {/* 2. 専門家・学生向けカード */}
+              <div className="bg-[#FFFFFF]/90 dark:bg-[#17212A]/90 backdrop-blur-sm rounded-2xl border-2 border-[#D5CCBC] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#65D4B2] text-[11px] font-bold tracking-wider">
+                      <BookOpen className="w-3.5 h-3.5" />
+                      <span>専門家・学生向け</span>
+                    </span>
+                    <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">体系学習・臨床・研究</span>
+                  </div>
+                  <h3 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mb-2 group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] transition-colors">
+                    伝統の体系理論と臨床の極意を学ぶ
+                  </h3>
+                  <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed mb-4">
+                    鍼灸学生の国試対策から、臨床の切れ味を高める骨度法・配穴論、最新の神経生理学論文まで、本質から体系的に修得します。
+                  </p>
+                </div>
+                <div className="pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap gap-2">
+                  <Link
+                    href="/tsubo"
+                    className="flex-1 py-2.5 px-3 rounded-xl bg-[#1E2D3D] dark:bg-[#375573] text-[#FAF8F5] hover:bg-[#16212D] dark:hover:bg-[#2D455D] text-xs font-semibold text-center shadow-sm flex items-center justify-center gap-1.5 transition-colors"
+                  >
+                    <Compass className="w-3.5 h-3.5" />
+                    <span>経穴・ツボ辞典（361穴）</span>
+                  </Link>
+                  <Link
+                    href="/articles"
+                    className="py-2.5 px-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1A2530] text-xs font-semibold text-center transition-colors"
+                  >
+                    体系講義・論文
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -159,30 +210,30 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* 右カラム：専門家・学習者へ */}
+          {/* 右カラム：専門家・学生向け */}
           <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-8 relative overflow-hidden hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] transition-all shadow-sm group">
             <div className="w-12 h-12 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#65D4B2] flex items-center justify-center mb-6">
               <BookOpen className="w-6 h-6" />
             </div>
             <span className="text-xs font-bold text-[#1E3D34] dark:text-[#65D4B2] tracking-wider uppercase">For Practitioners & Students</span>
             <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-1 mb-3">
-              専門家・学習者へ：体系と臨床知見の深化
+              専門家・学生向け：体系理論と臨床の深化
             </h3>
             <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed mb-6">
-              WHO標準経穴361穴の骨度法取穴から、配穴の臨床的力動、古典（素問・霊枢・難経・傷寒論）の考証、そして最新の神経生理学・fMRI論文抄読までを体系化。
+              鍼灸養成校の学生・国試受験生からプロの臨床家まで。単なる丸暗記ではなく「なぜ効くのか」を力学・神経生理学・古典文献から体系的に紐解きます。
             </p>
             <ul className="space-y-2.5 text-xs text-[#404743] dark:text-[#C5D2DB] mb-6">
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#3CD0A0]" />
-                <span>十四経脈・361穴の体系的データベース（骨度・要穴・主治）</span>
+                <span>国試・定期試験対策に直結する「陰陽・五行・気血津液」の完全体系化</span>
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#3CD0A0]" />
-                <span>臨床経験に裏打ちされた「配穴・取穴のコツ」を公開</span>
+                <span>十四経脈・361穴の体系的データベース（骨度法・要穴・主治・禁忌）</span>
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#3CD0A0]" />
-                <span>世界のエビデンスと古典理論を結ぶ学術論文の徹底抄読</span>
+                <span>臨床経験に裏打ちされた「配穴・取穴のコツ」と最新医学論文抄読</span>
               </li>
             </ul>
             <Link
