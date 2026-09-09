@@ -68,14 +68,14 @@ export default function CurriculumPage() {
             </p>
           </div>
 
-          {/* 国家試験・教科書の要点ボックス */}
+          {/* 講義の重要要点ボックス */}
           <div className="bg-[#FAF8F5] dark:bg-[#121920] p-6 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#3CD0A0] space-y-3">
             <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#3CD0A0] uppercase tracking-wider">
               <Award className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              <span>鍼灸国家試験・教科書で押さえるべき重要要点</span>
+              <span>本講義で押さえるべき重要要点（Core Essentials）</span>
             </div>
             <ul className="space-y-1.5 text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB]">
-              {activeLecture.kokushiPoints.map((point, idx) => (
+              {activeLecture.keyPoints.map((point, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span className="text-[#1E3D34] dark:text-[#3CD0A0] font-bold shrink-0">✓</span>
                   <span><GlossaryRenderer text={point} /></span>
@@ -161,13 +161,13 @@ export default function CurriculumPage() {
       <div className="border-b border-[#E8E1D1] dark:border-[#22303D] pb-8 text-center max-w-3xl mx-auto space-y-4">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#65D4B2] text-xs font-semibold tracking-wider">
           <GraduationCap className="w-4 h-4" />
-          <span>鍼灸学生のための東洋医学アカデミー</span>
+          <span>基礎から臨床実践までを体系化するアカデミー</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
           体系学習カリキュラム
         </h1>
         <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          単なる国家試験の丸暗記にとどまらず、現代科学・力学・情報モデルで「なぜそうなるのか」を腹落ちさせる全4ステージの講義体系。臨床家として一生モノの思考OSを身につけます。
+          現代科学・力学・情報モデルで「なぜそうなるのか」を腹落ちさせる全4ステージの講義体系。臨床家として一生モノの思考OSを身につけます。
         </p>
       </div>
 
@@ -246,7 +246,7 @@ export default function CurriculumPage() {
                           <ArrowRight className="w-3.5 h-3.5" />
                         </span>
                         <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                          国試要点・本文収録
+                          重要要点・本文収録
                         </span>
                       </>
                     ) : (

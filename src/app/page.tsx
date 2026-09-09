@@ -97,7 +97,7 @@ export default function HomePage() {
                     体系理論と臨床の極意を学ぶ
                   </h3>
                   <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed mb-4">
-                    国試対策から経穴・配穴論、最新の神経生理学まで、本質から体系的に修得。
+                    東洋医学の基礎理論から経穴・配穴論、最新の神経生理学まで本質から体系的に修得。
                   </p>
                 </div>
                 <div className="pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex gap-2">
