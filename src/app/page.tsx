@@ -29,9 +29,9 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center max-w-3xl mx-auto space-y-5">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#65D4B2] text-xs font-semibold tracking-wider">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#65D4B2] text-xs font-semibold tracking-wider shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-              <span>伝統の知恵と現代科学の融合</span>
+              <span>基礎理論から臨床実践までを体系化する東洋医学ポータル</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-[1.25]">
@@ -44,7 +44,7 @@ export default function HomePage() {
             </h1>
 
             <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-xl mx-auto">
-              基礎理論から臨床実践・日々のセルフケアまで。東洋医学の智慧を直感的に探求できるポータルです。
+              日々の未病セルフケアから、鍼灸学生・専門家の体系学習まで。東洋医学の智慧を直感的に探求できるポータルです。
             </p>
 
             {/* 二大エントランス（一般向け / 専門家・学生向け） */}
