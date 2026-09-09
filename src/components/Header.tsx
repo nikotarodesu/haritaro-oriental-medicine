@@ -56,18 +56,13 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* ロゴエリア */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-lg bg-[#1E3D34] dark:bg-[#2B6958] flex items-center justify-center text-[#FAF8F5] shadow-sm group-hover:bg-[#162E27] transition-colors">
-              <span className="font-serif text-2xl font-bold tracking-tighter">針</span>
+          <Link href="/" className="flex flex-col justify-center group min-w-0 pr-2">
+            <div className="font-serif text-lg sm:text-2xl font-bold tracking-wide text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] transition-colors truncate">
+              はり太郎の東洋医学
             </div>
-            <div>
-              <div className="font-serif text-xl sm:text-2xl font-bold tracking-wide text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] transition-colors">
-                はり太郎の東洋医学
-              </div>
-              <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] tracking-widest -mt-0.5">
-                日本最高峰の東洋医学ポータル
-              </p>
-            </div>
+            <p className="text-[10px] sm:text-[11px] text-[#59615D] dark:text-[#96A6B2] tracking-wider mt-0.5 truncate max-w-[220px] sm:max-w-none">
+              基礎理論から臨床実践までを体系化する東洋医学ポータル
+            </p>
           </Link>
 
           {/* デスクトップ ナビゲーション（2大集約メニュー） */}

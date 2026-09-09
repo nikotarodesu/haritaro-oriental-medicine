@@ -8,16 +8,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* サイト概要 */}
           <div className="md:col-span-1 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] flex items-center justify-center font-serif font-bold text-lg">
-                針
-              </div>
-              <span className="font-serif text-lg font-bold text-[#232826] dark:text-[#E6EFEA] tracking-wide">
+            <Link href="/" className="inline-block">
+              <span className="font-serif text-xl font-bold text-[#232826] dark:text-[#E6EFEA] tracking-wide hover:text-[#1E3D34] dark:hover:text-[#3CD0A0] transition-colors">
                 はり太郎の東洋医学
               </span>
-            </div>
+            </Link>
             <p className="text-xs leading-relaxed text-[#59615D] dark:text-[#96A6B2]">
-              数千年の臨床観察に裏打ちされた東洋医学の智慧を、最新の現代科学と解剖生理学の視点から体系化。「日本最高峰のわかりやすさと学術的深さ」を追求するポータルサイトです。
+              数千年の臨床観察に裏打ちされた東洋医学の智慧を、最新の現代科学と解剖生理学の視点から体系化。「基礎理論から臨床実践までを体系化する東洋医学ポータル」として、わかりやすさと学術的深さを追求しています。
             </p>
           </div>
 
