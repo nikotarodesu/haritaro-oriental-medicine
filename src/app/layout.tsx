@@ -3,6 +3,7 @@ import { Noto_Serif_JP, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const notoSerifJP = Noto_Serif_JP({
   variable: "--font-noto-serif",
@@ -29,13 +30,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={`${notoSerifJP.variable} ${notoSansJP.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans bg-[#FAF8F5] text-[#232826] selection:bg-[#E2D5C3] selection:text-[#1E3D34]">
-        <Header />
-        <div className="flex-1">
-          {children}
-        </div>
-        <Footer />
+    <html lang="ja" suppressHydrationWarning className={`${notoSerifJP.variable} ${notoSansJP.variable} h-full antialiased`}>
+      <head>
+        {/* 初期テーマ適用スクリプト（画面ちらつき防止） */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const saved = localStorage.getItem('haritaro-theme');
+                  if (saved === 'yin' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className="min-h-full flex flex-col font-sans bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#E6EFEA] selection:bg-[#E2D5C3] dark:selection:bg-[#2A4B3E] selection:text-[#1E3D34] dark:selection:text-[#E6EFEA]">
+        <ThemeProvider>
+          <Header />
+          <div className="flex-1">
+            {children}
+          </div>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

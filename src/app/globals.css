@@ -1,11 +1,13 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
     --bg-washi: #FAF8F5;
     --bg-card: #FFFFFF;
     --bg-muted: #F2EDE4;
-    --border-washi: #E5DFC5;
+    --border-washi: #E5DEC9;
     --border-subtle: #EDE7DC;
     --text-sumi: #232826;
     --text-fukagawa: #59615D;
@@ -19,22 +21,41 @@
     --shu-red: #A83629;
   }
 
+  .dark {
+    --bg-washi: #10161C; /* 深みのある藍鉄漆黒 */
+    --bg-card: #17212A; /* 落ち着いた藍炭色 */
+    --bg-muted: #1E2B36;
+    --border-washi: #2A3B4A;
+    --border-subtle: #22303D;
+    --text-sumi: #E6EFEA; /* 月光のような柔らかな白 */
+    --text-fukagawa: #96A6B2; /* 藍鼠色 */
+    --text-light: #6A7C8B;
+    --tokiwa-green: #2B6958;
+    --tokiwa-light: #162E26;
+    --ai-indigo: #375573;
+    --ai-light: #1A2837;
+    --amber-warm: #D48C3D;
+    --amber-light: #2A2117;
+    --shu-red: #C54436;
+  }
+
   body {
     background-color: var(--bg-washi);
     color: var(--text-sumi);
     font-family: var(--font-noto-sans), -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
     font-feature-settings: "palt" 1;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   h1, h2, h3, .font-serif {
     font-family: var(--font-noto-serif), "Hiragino Mincho ProN", "Yu Mincho", serif;
   }
 
-  /* 和紙風の微細なテクスチャ */
+  /* 和紙風の微細なテクスチャ（陽） */
   .washi-pattern {
-    background-color: #FAF8F5;
-    background-image: radial-gradient(#E8E2D5 0.75px, transparent 0.75px);
+    background-color: var(--bg-washi);
+    background-image: radial-gradient(var(--border-subtle) 0.75px, transparent 0.75px);
     background-size: 24px 24px;
   }
 

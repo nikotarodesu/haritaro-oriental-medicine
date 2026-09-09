@@ -28,7 +28,6 @@ export default function TsuboPage() {
 
   const filteredTsubos = useMemo(() => {
     return TSUBOS.filter((t) => {
-      // 検索キーワード
       const query = searchQuery.toLowerCase().trim();
       const matchQuery =
         !query ||
@@ -40,10 +39,7 @@ export default function TsuboPage() {
         t.locationSimple.includes(query) ||
         t.locationDetail.includes(query);
 
-      // 部位フィルター
       const matchBodyPart = selectedBodyPart === "すべて" || t.bodyPart === selectedBodyPart;
-
-      // 経絡フィルター
       const matchMeridian = selectedMeridian === "すべて" || t.meridianShort === selectedMeridian;
 
       return matchQuery && matchBodyPart && matchMeridian;
@@ -53,30 +49,30 @@ export default function TsuboPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10">
       {/* ページ見出し */}
-      <div className="border-b border-[#E8E1D1] pb-8">
-        <div className="flex items-center gap-2 text-xs font-semibold text-[#1E3D34] tracking-widest uppercase mb-2">
+      <div className="border-b border-[#E8E1D1] dark:border-[#22303D] pb-8">
+        <div className="flex items-center gap-2 text-xs font-semibold text-[#1E3D34] dark:text-[#3CD0A0] tracking-widest uppercase mb-2">
           <Compass className="w-4 h-4" />
           <span>Acupoint Comprehensive Database</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#232826] tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
           十四経脈・経穴（ツボ）辞典
         </h1>
-        <p className="mt-2 text-sm text-[#59615D] max-w-3xl leading-relaxed">
+        <p className="mt-2 text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-3xl leading-relaxed">
           WHO標準361経穴に対応する基幹データベースです。一般向けの分かりやすい取穴法から、専門家向けの骨度法・解剖学的取穴、臨床での配穴・ワンポイント知見、禁忌事項まで網羅しています。
         </p>
       </div>
 
       {/* 検索・絞り込みバー */}
-      <div className="bg-[#FFFFFF] p-6 rounded-2xl border border-[#E5DEC9] shadow-sm space-y-5">
+      <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-6 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-5 transition-colors">
         {/* キーワード入力 */}
         <div className="relative">
-          <Search className="w-5 h-5 text-[#8A948F] absolute left-4 top-1/2 -translate-y-1/2" />
+          <Search className="w-5 h-5 text-[#8A948F] dark:text-[#6A7C8B] absolute left-4 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="ツボ名（合谷、ごうこく、LI4）、症状（頭痛、胃痛、不眠）、部位など..."
-            className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-[#D5CCBC] bg-[#FAF8F5] focus:bg-[#FFFFFF] focus:outline-none focus:border-[#1E3D34] focus:ring-1 focus:ring-[#1E3D34] text-sm text-[#232826] placeholder-[#8A948F] transition-all"
+            className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-[#D5CCBC] dark:border-[#2D3E50] bg-[#FAF8F5] dark:bg-[#121920] focus:bg-[#FFFFFF] dark:focus:bg-[#1A2530] focus:outline-none focus:border-[#1E3D34] dark:focus:border-[#3CD0A0] focus:ring-1 focus:ring-[#1E3D34] dark:focus:ring-[#3CD0A0] text-sm text-[#232826] dark:text-[#E6EFEA] placeholder-[#8A948F] dark:placeholder-[#6A7C8B] transition-all"
           />
         </div>
 
@@ -84,15 +80,15 @@ export default function TsuboPage() {
         <div className="space-y-3 pt-2">
           {/* 部位 */}
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="font-semibold text-[#59615D] mr-2">身体部位:</span>
+            <span className="font-semibold text-[#59615D] dark:text-[#96A6B2] mr-2">身体部位:</span>
             {bodyParts.map((part) => (
               <button
                 key={part}
                 onClick={() => setSelectedBodyPart(part)}
                 className={`px-3 py-1.5 rounded-lg border transition-all ${
                   selectedBodyPart === part
-                    ? "bg-[#1E3D34] text-[#FAF8F5] border-[#1E3D34] font-medium shadow-sm"
-                    : "bg-[#FAF8F5] text-[#404743] border-[#E8E1D1] hover:bg-[#EBF3EF]"
+                    ? "bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] border-[#1E3D34] dark:border-[#2B6958] font-medium shadow-sm"
+                    : "bg-[#FAF8F5] dark:bg-[#121920] text-[#404743] dark:text-[#C5D2DB] border-[#E8E1D1] dark:border-[#263542] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
                 }`}
               >
                 {part}
@@ -102,15 +98,15 @@ export default function TsuboPage() {
 
           {/* 経絡 */}
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="font-semibold text-[#59615D] mr-2">所属経絡:</span>
+            <span className="font-semibold text-[#59615D] dark:text-[#96A6B2] mr-2">所属経絡:</span>
             {meridians.map((mer) => (
               <button
                 key={mer}
                 onClick={() => setSelectedMeridian(mer)}
                 className={`px-3 py-1.5 rounded-lg border transition-all ${
                   selectedMeridian === mer
-                    ? "bg-[#1E2D3D] text-[#FAF8F5] border-[#1E2D3D] font-medium shadow-sm"
-                    : "bg-[#FAF8F5] text-[#404743] border-[#E8E1D1] hover:bg-[#EDF3F8]"
+                    ? "bg-[#1E2D3D] dark:bg-[#375573] text-[#FAF8F5] border-[#1E2D3D] dark:border-[#375573] font-medium shadow-sm"
+                    : "bg-[#FAF8F5] dark:bg-[#121920] text-[#404743] dark:text-[#C5D2DB] border-[#E8E1D1] dark:border-[#263542] hover:bg-[#EDF3F8] dark:hover:bg-[#1B2936]"
                 }`}
               >
                 {mer}
@@ -121,8 +117,8 @@ export default function TsuboPage() {
       </div>
 
       {/* 検索結果サマリー */}
-      <div className="flex items-center justify-between text-xs text-[#59615D] px-1">
-        <span>該当件数: <strong className="text-[#1E3D34] text-sm">{filteredTsubos.length}</strong> 件</span>
+      <div className="flex items-center justify-between text-xs text-[#59615D] dark:text-[#96A6B2] px-1">
+        <span>該当件数: <strong className="text-[#1E3D34] dark:text-[#3CD0A0] text-sm">{filteredTsubos.length}</strong> 件</span>
         {(searchQuery || selectedBodyPart !== "すべて" || selectedMeridian !== "すべて") && (
           <button
             onClick={() => {
@@ -130,7 +126,7 @@ export default function TsuboPage() {
               setSelectedBodyPart("すべて");
               setSelectedMeridian("すべて");
             }}
-            className="text-[#B86924] hover:underline"
+            className="text-[#B86924] dark:text-[#E6C387] hover:underline"
           >
             条件をリセット
           </button>
@@ -142,31 +138,31 @@ export default function TsuboPage() {
         {filteredTsubos.map((tsubo) => (
           <div
             key={tsubo.id}
-            className="bg-[#FFFFFF] rounded-2xl border border-[#E5DEC9] p-6 hover:border-[#1E3D34] hover:shadow-md transition-all flex flex-col justify-between group"
+            className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] hover:shadow-md transition-all flex flex-col justify-between group"
           >
             <div>
               {/* ヘッダー情報 */}
               <div className="flex items-start justify-between gap-2 mb-3">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#EBF3EF] text-[#1E3D34]">
+                  <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#65D4B2]">
                     {tsubo.code}
                   </span>
-                  <span className="text-xs px-2 py-0.5 rounded bg-[#FAF8F5] border border-[#E8E1D1] text-[#59615D]">
+                  <span className="text-xs px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] text-[#59615D] dark:text-[#96A6B2]">
                     {tsubo.bodyPart}
                   </span>
                 </div>
-                <span className="text-xs font-medium text-[#1E2D3D]">{tsubo.meridian}</span>
+                <span className="text-xs font-medium text-[#1E2D3D] dark:text-[#7BAAD8]">{tsubo.meridian}</span>
               </div>
 
               {/* ツボ名 */}
               <div className="mb-4">
                 <div className="flex items-baseline gap-2">
-                  <h2 className="font-serif text-2xl font-bold text-[#232826] group-hover:text-[#1E3D34] transition-colors">
+                  <h2 className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] transition-colors">
                     {tsubo.name}
                   </h2>
-                  <span className="text-xs text-[#59615D]">{tsubo.kana}</span>
+                  <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">{tsubo.kana}</span>
                 </div>
-                <span className="text-[11px] text-[#8A948F] font-mono">{tsubo.romaji}</span>
+                <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B] font-mono">{tsubo.romaji}</span>
               </div>
 
               {/* 要穴カテゴリバッジ */}
@@ -175,7 +171,7 @@ export default function TsuboPage() {
                   {tsubo.category.map((cat, idx) => (
                     <span
                       key={idx}
-                      className="text-[11px] font-medium px-2 py-0.5 rounded bg-[#FCF4EB] text-[#B86924] border border-[#F3E1CB]"
+                      className="text-[11px] font-medium px-2 py-0.5 rounded bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] border border-[#F3E1CB] dark:border-[#423321]"
                     >
                       {cat}
                     </span>
@@ -184,19 +180,19 @@ export default function TsuboPage() {
               )}
 
               {/* 取穴法（一般向け） */}
-              <div className="mb-4 bg-[#FAF8F5] p-3.5 rounded-xl border border-[#EDE7DB] space-y-1">
-                <span className="text-[11px] font-bold text-[#1E3D34] block">📍 取穴法（場所の目安）</span>
-                <p className="text-xs text-[#404743] leading-relaxed">{tsubo.locationSimple}</p>
+              <div className="mb-4 bg-[#FAF8F5] dark:bg-[#121920] p-3.5 rounded-xl border border-[#EDE7DB] dark:border-[#22303D] space-y-1">
+                <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#3CD0A0] block">📍 取穴法（場所の目安）</span>
+                <p className="text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">{tsubo.locationSimple}</p>
               </div>
 
               {/* 主治・効能 */}
               <div className="space-y-1.5 mb-4">
-                <span className="text-[11px] font-semibold text-[#59615D] block">主治・適応症:</span>
+                <span className="text-[11px] font-semibold text-[#59615D] dark:text-[#96A6B2] block">主治・適応症:</span>
                 <div className="flex flex-wrap gap-1.5">
                   {tsubo.indications.map((ind, idx) => (
                     <span
                       key={idx}
-                      className="text-[11px] px-2 py-0.5 rounded bg-[#F2EDE4] text-[#232826]"
+                      className="text-[11px] px-2 py-0.5 rounded bg-[#F2EDE4] dark:bg-[#1E2B36] text-[#232826] dark:text-[#E6EFEA]"
                     >
                       {ind}
                     </span>
@@ -206,13 +202,13 @@ export default function TsuboPage() {
             </div>
 
             {/* 下部：詳細ボタンと臨床ノート */}
-            <div className="pt-4 border-t border-[#F2ECE0] space-y-3">
-              <p className="text-xs text-[#59615D] leading-relaxed line-clamp-2">
-                <strong className="text-[#1E3D34]">臨床知見:</strong> {tsubo.clinicalNote}
+            <div className="pt-4 border-t border-[#F2ECE0] dark:border-[#22303D] space-y-3">
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-2">
+                <strong className="text-[#1E3D34] dark:text-[#3CD0A0]">臨床知見:</strong> {tsubo.clinicalNote}
               </p>
 
               {tsubo.caution && (
-                <div className="flex items-center gap-1.5 text-[11px] text-[#A83629] bg-[#FDEDEC] px-2.5 py-1.5 rounded-lg border border-[#FADBD8]">
+                <div className="flex items-center gap-1.5 text-[11px] text-[#A83629] dark:text-[#FFA094] bg-[#FDEDEC] dark:bg-[#2C1816] px-2.5 py-1.5 rounded-lg border border-[#FADBD8] dark:border-[#52211C]">
                   <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
                   <span>{tsubo.caution}</span>
                 </div>
@@ -220,7 +216,7 @@ export default function TsuboPage() {
 
               <button
                 onClick={() => setSelectedTsubo(tsubo)}
-                className="w-full py-2 rounded-lg bg-[#FAF8F5] hover:bg-[#EBF3EF] border border-[#D5CCBC] hover:border-[#1E3D34] text-xs font-semibold text-[#1E3D34] transition-all flex items-center justify-center gap-1.5"
+                className="w-full py-2 rounded-lg bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#EBF3EF] dark:hover:bg-[#1C2C3A] border border-[#D5CCBC] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] text-xs font-semibold text-[#1E3D34] dark:text-[#3CD0A0] transition-all flex items-center justify-center gap-1.5"
               >
                 <BookOpen className="w-3.5 h-3.5" />
                 <span>骨度法・解剖学的詳細を見る</span>
@@ -232,11 +228,11 @@ export default function TsuboPage() {
 
       {/* 詳細モーダル（専門家向け詳細） */}
       {selectedTsubo && (
-        <div className="fixed inset-0 z-50 bg-[#232826]/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#FAF8F5] rounded-3xl border border-[#E5DEC9] max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl space-y-6 relative">
+        <div className="fixed inset-0 z-50 bg-[#232826]/70 dark:bg-[#000000]/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#FAF8F5] dark:bg-[#16212B] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl space-y-6 relative">
             <button
               onClick={() => setSelectedTsubo(null)}
-              className="absolute top-6 right-6 p-2 rounded-full hover:bg-[#EBE4D5] text-[#59615D] transition-colors"
+              className="absolute top-6 right-6 p-2 rounded-full hover:bg-[#EBE4D5] dark:hover:bg-[#202E3C] text-[#59615D] dark:text-[#A0B0BC] transition-colors"
             >
               ✕
             </button>
@@ -244,15 +240,15 @@ export default function TsuboPage() {
             {/* モーダルヘッダー */}
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="font-mono text-xs font-bold px-2.5 py-1 rounded bg-[#1E3D34] text-[#FAF8F5]">
+                <span className="font-mono text-xs font-bold px-2.5 py-1 rounded bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5]">
                   {selectedTsubo.code}
                 </span>
-                <span className="text-xs text-[#59615D]">{selectedTsubo.meridian}</span>
+                <span className="text-xs text-[#59615D] dark:text-[#A0B0BC]">{selectedTsubo.meridian}</span>
               </div>
               <div className="flex items-baseline gap-3">
-                <h2 className="font-serif text-3xl font-bold text-[#232826]">{selectedTsubo.name}</h2>
-                <span className="text-base text-[#59615D]">{selectedTsubo.kana}</span>
-                <span className="text-xs font-mono text-[#8A948F]">({selectedTsubo.romaji})</span>
+                <h2 className="font-serif text-3xl font-bold text-[#232826] dark:text-[#FAF8F5]">{selectedTsubo.name}</h2>
+                <span className="text-base text-[#59615D] dark:text-[#A0B0BC]">{selectedTsubo.kana}</span>
+                <span className="text-xs font-mono text-[#8A948F] dark:text-[#6A7C8B]">({selectedTsubo.romaji})</span>
               </div>
             </div>
 
@@ -260,42 +256,42 @@ export default function TsuboPage() {
             {selectedTsubo.category && (
               <div className="flex flex-wrap gap-2">
                 {selectedTsubo.category.map((c, i) => (
-                  <span key={i} className="text-xs px-2.5 py-1 rounded bg-[#FCF4EB] text-[#B86924] font-medium border border-[#F3E1CB]">
+                  <span key={i} className="text-xs px-2.5 py-1 rounded bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] font-medium border border-[#F3E1CB] dark:border-[#423321]">
                     {c}
                   </span>
                 ))}
               </div>
             )}
 
-            {/* 取穴法（一般 & 専門詳細） */}
+            {/* 取穴法 */}
             <div className="space-y-4">
-              <div className="bg-[#FFFFFF] p-4 rounded-xl border border-[#E5DEC9]">
-                <h3 className="text-xs font-bold text-[#1E3D34] uppercase tracking-wider mb-1">
+              <div className="bg-[#FFFFFF] dark:bg-[#121920] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#263542]">
+                <h3 className="text-xs font-bold text-[#1E3D34] dark:text-[#3CD0A0] uppercase tracking-wider mb-1">
                   【一般向け】わかりやすい取穴法
                 </h3>
-                <p className="text-sm text-[#232826] leading-relaxed">{selectedTsubo.locationSimple}</p>
+                <p className="text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed">{selectedTsubo.locationSimple}</p>
               </div>
 
-              <div className="bg-[#FFFFFF] p-4 rounded-xl border border-[#E5DEC9]">
-                <h3 className="text-xs font-bold text-[#1E2D3D] uppercase tracking-wider mb-1">
+              <div className="bg-[#FFFFFF] dark:bg-[#121920] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#263542]">
+                <h3 className="text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8] uppercase tracking-wider mb-1">
                   【専門家向け】解剖学・骨度法取穴
                 </h3>
-                <p className="text-sm text-[#232826] leading-relaxed font-mono">{selectedTsubo.locationDetail}</p>
+                <p className="text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed font-mono">{selectedTsubo.locationDetail}</p>
               </div>
             </div>
 
             {/* 臨床知見 */}
-            <div className="bg-[#EBF3EF] p-5 rounded-xl border border-[#C5DED4]">
-              <h3 className="text-xs font-bold text-[#1E3D34] uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-[#B86924]" />
+            <div className="bg-[#EBF3EF] dark:bg-[#162A24] p-5 rounded-xl border border-[#C5DED4] dark:border-[#2A5243]">
+              <h3 className="text-xs font-bold text-[#1E3D34] dark:text-[#3CD0A0] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
                 <span>はり太郎の臨床知見・配穴の真髄</span>
               </h3>
-              <p className="text-sm text-[#232826] leading-relaxed">{selectedTsubo.clinicalNote}</p>
+              <p className="text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed">{selectedTsubo.clinicalNote}</p>
             </div>
 
             {/* 注意事項 */}
             {selectedTsubo.caution && (
-              <div className="bg-[#FDEDEC] p-4 rounded-xl border border-[#FADBD8] text-[#A83629] text-xs leading-relaxed flex items-start gap-2">
+              <div className="bg-[#FDEDEC] dark:bg-[#2C1816] p-4 rounded-xl border border-[#FADBD8] dark:border-[#52211C] text-[#A83629] dark:text-[#FFA094] text-xs leading-relaxed flex items-start gap-2">
                 <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
                 <div>
                   <strong className="font-bold">臨床上の禁忌・注意：</strong>
@@ -307,7 +303,7 @@ export default function TsuboPage() {
             <div className="pt-2 text-center">
               <button
                 onClick={() => setSelectedTsubo(null)}
-                className="px-6 py-2.5 rounded-xl bg-[#1E3D34] text-[#FAF8F5] text-xs font-semibold hover:bg-[#162E27] transition-all"
+                className="px-6 py-2.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-xs font-semibold hover:bg-[#162E27] dark:hover:bg-[#225345] transition-all"
               >
                 閉じる
               </button>
