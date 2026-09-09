@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-washi: #FAF8F5;
+    --bg-card: #FFFFFF;
+    --bg-muted: #F2EDE4;
+    --border-washi: #E5DFC5;
+    --border-subtle: #EDE7DC;
+    --text-sumi: #232826;
+    --text-fukagawa: #59615D;
+    --text-light: #8A948F;
+    --tokiwa-green: #1E3D34;
+    --tokiwa-light: #EBF3EF;
+    --ai-indigo: #1E2D3D;
+    --ai-light: #EDF3F8;
+    --amber-warm: #B86924;
+    --amber-light: #FCF4EB;
+    --shu-red: #A83629;
+  }
+
+  body {
+    background-color: var(--bg-washi);
+    color: var(--text-sumi);
+    font-family: var(--font-noto-sans), -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    font-feature-settings: "palt" 1;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-noto-serif), "Hiragino Mincho ProN", "Yu Mincho", serif;
+  }
+
+  /* 和紙風の微細なテクスチャ */
+  .washi-pattern {
+    background-color: #FAF8F5;
+    background-image: radial-gradient(#E8E2D5 0.75px, transparent 0.75px);
+    background-size: 24px 24px;
+  }
+
+  /* 墨のアクセント */
+  .border-calligraphy {
+    border-left: 3.5px solid var(--tokiwa-green);
+  }
+}

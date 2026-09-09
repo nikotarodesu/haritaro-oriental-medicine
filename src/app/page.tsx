@@ -1,0 +1,394 @@
+import Link from "next/link";
+import { 
+  HeartPulse, 
+  Compass, 
+  Stethoscope, 
+  BookOpen, 
+  Sparkles, 
+  ArrowRight, 
+  CheckCircle2, 
+  Search,
+  Sun,
+  Flame,
+  Droplets,
+  Layers,
+  Award
+} from "lucide-react";
+import { TSUBOS } from "@/data/tsuboData";
+import { SYMPTOMS } from "@/data/symptomData";
+import { ARTICLES } from "@/data/articleData";
+
+export default function HomePage() {
+  // 代表的なピックアップツボ（最初の4つ）
+  const featuredTsubos = TSUBOS.slice(0, 4);
+  // 代表的な症状
+  const featuredSymptoms = SYMPTOMS.slice(0, 3);
+  // ピックアップ記事
+  const featuredArticles = ARTICLES.slice(0, 3);
+
+  return (
+    <div className="space-y-16 sm:space-y-24 pb-20">
+      {/* 1. HERO SECTION */}
+      <section className="relative overflow-hidden washi-pattern border-b border-[#E8E1D1] pt-12 sm:pt-20 pb-16 sm:pb-28">
+        {/* 和風アクセント背景装飾 */}
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-[#EBF3EF]/60 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-[#FCF4EB]/60 blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="text-center max-w-3xl mx-auto space-y-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] border border-[#C5DED4] text-[#1E3D34] text-xs font-semibold tracking-wider">
+              <Sparkles className="w-3.5 h-3.5 text-[#B86924]" />
+              <span>はり太郎の東洋医学 ── 膨大な知見を体系化した総合知の拠点</span>
+            </div>
+
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#232826] tracking-tight leading-[1.25]">
+              伝統の智慧を、<br className="hidden sm:inline" />
+              <span className="text-[#1E3D34] relative">
+                最澄の知性
+                <span className="absolute bottom-1 left-0 w-full h-2 bg-[#E6C387]/30 -z-10" />
+              </span>
+              で読み解く。
+            </h1>
+
+            <p className="text-base sm:text-lg text-[#59615D] leading-relaxed max-w-2xl mx-auto">
+              数千年の臨床観察に裏打ちされた東洋医学の深淵と、現代神経科学の最新知見を架橋。「一般の方への圧倒的わかりやすさ」と「専門家が拠って立つ学術的厳密さ」の両立を目指した、日本最高峰のポータルサイトです。
+            </p>
+
+            {/* デュアル導線（一般向け・専門家向け） */}
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/symptoms"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#1E3D34] text-[#FAF8F5] hover:bg-[#162E27] font-semibold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2.5 group"
+              >
+                <HeartPulse className="w-4 h-4 text-[#E6C387]" />
+                <span>お悩み・症状から探す（一般向け）</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+
+              <Link
+                href="/tsubo"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#FFFFFF] border border-[#D5CCBC] text-[#232826] hover:border-[#1E3D34] hover:bg-[#FAF8F5] font-semibold text-sm shadow-sm transition-all flex items-center justify-center gap-2.5"
+              >
+                <Compass className="w-4 h-4 text-[#1E3D34]" />
+                <span>経穴・ツボ辞典（専門家・学習者）</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* 季節の養生ウィジェット（春の養生） */}
+          <div className="mt-14 max-w-4xl mx-auto bg-[#FFFFFF] border border-[#E5DEC9] rounded-2xl p-6 sm:p-7 shadow-sm">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#EFE9DD] pb-4 mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#FCF4EB] text-[#B86924] flex items-center justify-center">
+                  <Sun className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#B86924]">二十四節気・今月の養生</span>
+                    <span className="px-2 py-0.5 rounded text-[11px] bg-[#EBF3EF] text-[#1E3D34] font-medium">春（発陳）の季節</span>
+                  </div>
+                  <h3 className="font-serif font-bold text-base sm:text-lg text-[#232826]">
+                    春は「肝（かん）」を健やかに ── 気の上昇と自律神経の乱れを整える
+                  </h3>
+                </div>
+              </div>
+              <Link href="/articles" className="text-xs font-semibold text-[#1E3D34] hover:underline flex items-center gap-1 shrink-0">
+                <span>養生コラムを読む</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-[#59615D]">
+              <div className="bg-[#FAF8F5] p-3.5 rounded-xl border border-[#EDE7DB]">
+                <span className="font-bold text-[#232826] block mb-1">🌿 食養生</span>
+                菜の花、春菊、ふきのとうなど「苦味と香り」のある食材で上昇した熱を逃がす。
+              </div>
+              <div className="bg-[#FAF8F5] p-3.5 rounded-xl border border-[#EDE7DB]">
+                <span className="font-bold text-[#232826] block mb-1">🚶 生活習慣</span>
+                朝は髪をゆったりまとめ、無理のない深呼吸と軽い散歩で伸びやかに気を巡らせる。
+              </div>
+              <div className="bg-[#FAF8F5] p-3.5 rounded-xl border border-[#EDE7DB]">
+                <span className="font-bold text-[#232826] block mb-1">🎯 推奨ツボ</span>
+                足の甲にある「<Link href="/tsubo" className="text-[#1E3D34] font-semibold underline">太衝（たいしょう）</Link>」を息を吐きながら優しく指圧。
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. サイトの二大アプローチ（両輪設計の解説） */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] tracking-tight">
+            なぜ「はり太郎の東洋医学」なのか
+          </h2>
+          <p className="mt-2 text-sm text-[#59615D]">
+            一般の方の「今すぐ治したい」と、専門家の「本質を極めたい」に、最高峰の解を提示します。
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* 左カラム：一般の方へ */}
+          <div className="bg-[#FFFFFF] rounded-2xl border border-[#E5DEC9] p-8 relative overflow-hidden hover:border-[#1E3D34] transition-all shadow-sm group">
+            <div className="w-12 h-12 rounded-xl bg-[#FCF4EB] text-[#B86924] flex items-center justify-center mb-6">
+              <HeartPulse className="w-6 h-6" />
+            </div>
+            <span className="text-xs font-bold text-[#B86924] tracking-wider uppercase">For Beginners & Patients</span>
+            <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#232826] mt-1 mb-3">
+              一般の方へ：日常の不調をセルフケア
+            </h3>
+            <p className="text-sm text-[#59615D] leading-relaxed mb-6">
+              頭痛、肩こり、不眠、冷え、胃腸の弱りなど、病院に行くほどではない「未病（みびょう）」のサインを、誰でも迷わず見つけられる図解とツボ押しで改善へ導きます。
+            </p>
+            <ul className="space-y-2.5 text-xs text-[#404743] mb-6">
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#1E3D34]" />
+                <span>専門用語を排した、写真・図解感覚のツボ位置ガイド</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#1E3D34]" />
+                <span>1分で自分のタイプがわかる「気血水 体質チェック」</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#1E3D34]" />
+                <span>スーパーで買える食材を使った「おうち食養生」</span>
+              </li>
+            </ul>
+            <Link
+              href="/symptoms"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#1E3D34] group-hover:underline"
+            >
+              <span>症状別ガイドを見る</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          {/* 右カラム：専門家・学習者へ */}
+          <div className="bg-[#FFFFFF] rounded-2xl border border-[#E5DEC9] p-8 relative overflow-hidden hover:border-[#1E3D34] transition-all shadow-sm group">
+            <div className="w-12 h-12 rounded-xl bg-[#EBF3EF] text-[#1E3D34] flex items-center justify-center mb-6">
+              <BookOpen className="w-6 h-6" />
+            </div>
+            <span className="text-xs font-bold text-[#1E3D34] tracking-wider uppercase">For Practitioners & Students</span>
+            <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#232826] mt-1 mb-3">
+              専門家・学習者へ：体系と臨床知見の深化
+            </h3>
+            <p className="text-sm text-[#59615D] leading-relaxed mb-6">
+              WHO標準経穴361穴の骨度法取穴から、配穴の臨床的力動、古典（素問・霊枢・難経・傷寒論）の考証、そして最新の神経生理学・fMRI論文抄読までを体系化。
+            </p>
+            <ul className="space-y-2.5 text-xs text-[#404743] mb-6">
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#1E3D34]" />
+                <span>十四経脈・361穴の体系的データベース（骨度・要穴・主治）</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#1E3D34]" />
+                <span>臨床経験に裏打ちされた「配穴・取穴のコツ」を公開</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#1E3D34]" />
+                <span>世界のエビデンスと古典理論を結ぶ学術論文の徹底抄読</span>
+              </li>
+            </ul>
+            <Link
+              href="/tsubo"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#1E3D34] group-hover:underline"
+            >
+              <span>経穴データベースへ</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. 気血水セルフ診断 CTAバナー */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gradient-to-br from-[#1E3D34] to-[#152C25] rounded-3xl p-8 sm:p-12 text-[#FAF8F5] relative overflow-hidden shadow-xl">
+          <div className="absolute right-0 bottom-0 opacity-10 pointer-events-none translate-x-12 translate-y-12">
+            <span className="font-serif text-[240px] font-bold">氣</span>
+          </div>
+
+          <div className="max-w-2xl relative z-10 space-y-4">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF]/20 text-[#E6C387] text-xs font-semibold tracking-wider">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>インタラクティブ体質チェック</span>
+            </div>
+
+            <h2 className="text-2xl sm:text-4xl font-serif font-bold tracking-tight">
+              あなたの心身はどのタイプ？<br />
+              「気・血・水」体質セルフ診断
+            </h2>
+
+            <p className="text-sm sm:text-base text-[#D3DFDA] leading-relaxed">
+              東洋医学では、人の体は「気（エネルギー）」「血（血液・栄養）」「水（体液・潤い）」の調和で成り立っていると考えます。簡単な設問に答えるだけで、あなたの現在の傾き（気虚・気滞・瘀血など）と、今すぐ実践できる改善法がわかります。
+            </p>
+
+            <div className="pt-2">
+              <Link
+                href="/diagnosis"
+                className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#E6C387] text-[#1E3D34] hover:bg-[#DFC07D] font-bold text-sm shadow-md transition-all group"
+              >
+                <span>無料で体質診断を始める（約2分）</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. 代表的な経穴（ツボ）ピックアップ */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          <div>
+            <span className="text-xs font-bold text-[#1E3D34] tracking-widest uppercase">Acupoints Library</span>
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] mt-1">
+              知っておきたい基本の要穴
+            </h2>
+          </div>
+          <Link href="/tsubo" className="text-sm font-semibold text-[#1E3D34] hover:underline flex items-center gap-1">
+            <span>ツボ辞典で全361穴を検索する</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {featuredTsubos.map((tsubo) => (
+            <div
+              key={tsubo.id}
+              className="bg-[#FFFFFF] rounded-xl border border-[#E5DEC9] p-5 hover:border-[#1E3D34] hover:shadow-md transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-[#EBF3EF] text-[#1E3D34]">
+                    {tsubo.code}
+                  </span>
+                  <span className="text-xs text-[#737C77]">{tsubo.meridianShort}</span>
+                </div>
+
+                <div className="flex items-baseline gap-2 mb-2">
+                  <h3 className="font-serif text-2xl font-bold text-[#232826]">{tsubo.name}</h3>
+                  <span className="text-xs text-[#59615D]">{tsubo.kana}</span>
+                </div>
+
+                <p className="text-xs text-[#59615D] line-clamp-2 mb-3">
+                  {tsubo.locationSimple}
+                </p>
+
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  {tsubo.indications.slice(0, 3).map((ind, i) => (
+                    <span key={i} className="text-[11px] px-2 py-0.5 rounded bg-[#FAF8F5] border border-[#EBE4D5] text-[#404743]">
+                      {ind}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-[#F2ECE0]">
+                <p className="text-[11px] text-[#737C77] italic line-clamp-2">
+                  💡 {tsubo.clinicalNote}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 5. 知見・論文抄読ピックアップ */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          <div>
+            <span className="text-xs font-bold text-[#1E3D34] tracking-widest uppercase">Articles & Insights</span>
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] mt-1">
+              はり太郎の臨床知見・論文抄読
+            </h2>
+          </div>
+          <Link href="/articles" className="text-sm font-semibold text-[#1E3D34] hover:underline flex items-center gap-1">
+            <span>すべての知見記事を読む</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {featuredArticles.map((article) => (
+            <Link
+              key={article.id}
+              href={`/articles`}
+              className="bg-[#FFFFFF] rounded-2xl border border-[#E5DEC9] p-6 hover:border-[#1E3D34] hover:shadow-md transition-all flex flex-col justify-between group"
+            >
+              <div>
+                <div className="flex items-center justify-between text-xs text-[#737C77] mb-3">
+                  <span className="px-2.5 py-0.5 rounded bg-[#FAF8F5] border border-[#EBE4D5] text-[#1E3D34] font-medium">
+                    {article.category}
+                  </span>
+                  <span>読了約 {article.readTime}</span>
+                </div>
+
+                <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] group-hover:text-[#1E3D34] transition-colors leading-snug mb-3">
+                  {article.title}
+                </h3>
+
+                <p className="text-xs text-[#59615D] leading-relaxed line-clamp-3 mb-4">
+                  {article.summary}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between pt-4 border-t border-[#F2ECE0] text-xs">
+                <span className="text-[#737C77]">{article.publishedAt}</span>
+                <span className="text-[#1E3D34] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                  <span>詳しく読む</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* 6. 東洋医学の3大基本概念（初心者のためのやさしい手引き） */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-[#FFFFFF] rounded-3xl border border-[#E5DEC9] p-8 sm:p-12">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-xs font-bold text-[#1E3D34] tracking-widest uppercase">Fundamentals</span>
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] mt-1">
+              東洋医学を貫く3つの根幹
+            </h2>
+            <p className="mt-2 text-xs sm:text-sm text-[#59615D]">
+              人体をパーツではなく「有機的な小宇宙」として全体で捉える思考法です。
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+            <div className="text-center space-y-3 p-4">
+              <div className="w-14 h-14 rounded-2xl bg-[#FCF4EB] text-[#B86924] flex items-center justify-center mx-auto">
+                <Flame className="w-7 h-7" />
+              </div>
+              <h3 className="font-serif text-lg font-bold text-[#232826]">気・血・水の三要素</h3>
+              <p className="text-xs text-[#59615D] leading-relaxed">
+                生命エネルギーの「気」、全身を養う「血」、潤いと体液を司る「水」。この3つが過不足なく滞りなく巡ることで、真の健康が維持されます。
+              </p>
+            </div>
+
+            <div className="text-center space-y-3 p-4">
+              <div className="w-14 h-14 rounded-2xl bg-[#EBF3EF] text-[#1E3D34] flex items-center justify-center mx-auto">
+                <Layers className="w-7 h-7" />
+              </div>
+              <h3 className="font-serif text-lg font-bold text-[#232826]">陰陽五行説の調和</h3>
+              <p className="text-xs text-[#59615D] leading-relaxed">
+                木・火・土・金・水。万物と人体は相互に助け合い（相生）、制約し合う（相克）関係にあります。一方の偏りを正し中庸を保つことが治療の目的です。
+              </p>
+            </div>
+
+            <div className="text-center space-y-3 p-4">
+              <div className="w-14 h-14 rounded-2xl bg-[#EDF3F8] text-[#1E2D3D] flex items-center justify-center mx-auto">
+                <Award className="w-7 h-7" />
+              </div>
+              <h3 className="font-serif text-lg font-bold text-[#232826]">「未病を治す」予防医学</h3>
+              <p className="text-xs text-[#59615D] leading-relaxed">
+                病気になってから治すのではなく、発症する前の微細なアンバランス（未病）を察知して整える。これこそが東洋医学が人類に贈る最大の知恵です。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
