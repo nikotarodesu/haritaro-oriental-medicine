@@ -11,7 +11,8 @@ import {
   Flame,
   Droplets,
   Layers,
-  Award
+  Award,
+  GraduationCap
 } from "lucide-react";
 import { TSUBOS } from "@/data/tsuboData";
 import { SYMPTOMS } from "@/data/symptomData";
@@ -105,17 +106,18 @@ export default function HomePage() {
                 </div>
                 <div className="pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap gap-2">
                   <Link
-                    href="/tsubo"
+                    href="/curriculum"
                     className="flex-1 py-2.5 px-3 rounded-xl bg-[#1E2D3D] dark:bg-[#375573] text-[#FAF8F5] hover:bg-[#16212D] dark:hover:bg-[#2D455D] text-xs font-semibold text-center shadow-sm flex items-center justify-center gap-1.5 transition-colors"
                   >
-                    <Compass className="w-3.5 h-3.5" />
-                    <span>経穴・ツボ辞典（361穴）</span>
+                    <GraduationCap className="w-3.5 h-3.5" />
+                    <span>体系学習カリキュラム</span>
                   </Link>
                   <Link
-                    href="/articles"
-                    className="py-2.5 px-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1A2530] text-xs font-semibold text-center transition-colors"
+                    href="/tsubo"
+                    className="py-2.5 px-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1A2530] text-xs font-semibold text-center transition-colors flex items-center gap-1"
                   >
-                    体系講義・論文
+                    <Compass className="w-3.5 h-3.5" />
+                    <span>ツボ辞典</span>
                   </Link>
                 </div>
               </div>
