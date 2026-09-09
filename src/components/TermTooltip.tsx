@@ -38,8 +38,8 @@ export default function TermTooltip({ termInfo, children }: TermTooltipProps) {
       {/* ハイライトされた用語テキスト */}
       <span
         onClick={() => setIsOpen(!isOpen)}
-        className="cursor-help font-semibold text-[#1E3D34] dark:text-[#3CD0A0] 
-                   border-b-2 border-dashed border-[#1E3D34]/50 dark:border-[#3CD0A0]/60 
+        className="cursor-help font-semibold text-[#1E3D34] dark:text-[#68B094] 
+                   border-b-2 border-dashed border-[#1E3D34]/50 dark:border-[#4E8C76]/60 
                    hover:bg-[#EBF3EF] dark:hover:bg-[#182823] rounded px-0.5 transition-colors"
       >
         {children}
@@ -51,7 +51,7 @@ export default function TermTooltip({ termInfo, children }: TermTooltipProps) {
           role="tooltip"
           className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 sm:w-80 p-4 
                      bg-[#FAF8F5] dark:bg-[#17212A] text-[#232826] dark:text-[#FAF8F5] 
-                     rounded-2xl border-2 border-[#1E3D34] dark:border-[#3CD0A0] 
+                     rounded-2xl border-2 border-[#1E3D34] dark:border-[#3A6B5B] 
                      shadow-2xl z-50 animate-fadeIn pointer-events-auto text-left block"
         >
           {/* カードヘッダー */}
@@ -71,7 +71,7 @@ export default function TermTooltip({ termInfo, children }: TermTooltipProps) {
 
           {/* 3秒要約 */}
           <span className="block text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-            <strong className="text-[#1E3D34] dark:text-[#3CD0A0] block text-[11px] mb-1 flex items-center gap-1">
+            <strong className="text-[#1E3D34] dark:text-[#68B094] block text-[11px] mb-1 flex items-center gap-1">
               <Sparkles className="w-3 h-3" />
               <span>3秒でわかる要約</span>
             </strong>
@@ -79,7 +79,7 @@ export default function TermTooltip({ termInfo, children }: TermTooltipProps) {
           </span>
 
           {/* 下向きの三角形（吹き出し矢印） */}
-          <span className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-[#1E3D34] dark:border-t-[#3CD0A0] block w-0 h-0" />
+          <span className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-[#1E3D34] dark:border-t-[#3A6B5B] block w-0 h-0" />
         </span>
       )}
     </span>

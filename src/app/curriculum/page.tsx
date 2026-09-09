@@ -35,14 +35,14 @@ export default function CurriculumPage() {
         <div className="flex items-center justify-between">
           <button
             onClick={() => setActiveLecture(null)}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3D34] dark:text-[#3CD0A0] hover:underline bg-[#EBF3EF] dark:bg-[#182823] px-3.5 py-1.5 rounded-lg transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline bg-[#EBF3EF] dark:bg-[#182823] px-3.5 py-1.5 rounded-lg transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>カリキュラム一覧へ戻る</span>
           </button>
 
           <div className="flex items-center gap-2 text-xs text-[#59615D] dark:text-[#96A6B2]">
-            <Clock className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#3CD0A0]" />
+            <Clock className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
             <span>講義時間: 約 {activeLecture.duration}</span>
           </div>
         </div>
@@ -52,7 +52,7 @@ export default function CurriculumPage() {
           {/* ヘッダー */}
           <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-6 space-y-3">
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#65D4B2] text-xs font-bold">
+              <span className="px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold">
                 {activeLecture.stageTitle}
               </span>
               <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
@@ -69,15 +69,15 @@ export default function CurriculumPage() {
           </div>
 
           {/* 講義の重要要点ボックス */}
-          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-6 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#3CD0A0] space-y-3">
-            <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#3CD0A0] uppercase tracking-wider">
+          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-6 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#4E8C76] space-y-3">
+            <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
               <Award className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
               <span>本講義で押さえるべき重要要点（Core Essentials）</span>
             </div>
             <ul className="space-y-1.5 text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB]">
               {activeLecture.keyPoints.map((point, idx) => (
                 <li key={idx} className="flex items-start gap-2">
-                  <span className="text-[#1E3D34] dark:text-[#3CD0A0] font-bold shrink-0">✓</span>
+                  <span className="text-[#1E3D34] dark:text-[#74BA9E] font-bold shrink-0">✓</span>
                   <span><GlossaryRenderer text={point} /></span>
                 </li>
               ))}
@@ -99,7 +99,7 @@ export default function CurriculumPage() {
                 return (
                   <h2
                     key={index}
-                    className="font-serif text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#3CD0A0] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-8"
+                    className="font-serif text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-8"
                   >
                     <GlossaryRenderer text={block.replace("## ", "")} />
                   </h2>
@@ -119,7 +119,7 @@ export default function CurriculumPage() {
                 return (
                   <blockquote
                     key={index}
-                    className="bg-[#EBF3EF] dark:bg-[#162A24] border-l-4 border-[#1E3D34] dark:border-[#3CD0A0] p-4 rounded-r-xl text-xs sm:text-sm italic text-[#232826] dark:text-[#E6EFEA]"
+                    className="bg-[#EBF3EF] dark:bg-[#162A24] border-l-4 border-[#1E3D34] dark:border-[#4E8C76] p-4 rounded-r-xl text-xs sm:text-sm italic text-[#232826] dark:text-[#E6EFEA]"
                   >
                     <GlossaryRenderer text={block.replace("> ", "")} />
                   </blockquote>
@@ -159,7 +159,7 @@ export default function CurriculumPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12">
       {/* ページ見出し */}
       <div className="border-b border-[#E8E1D1] dark:border-[#22303D] pb-8 text-center max-w-3xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#65D4B2] text-xs font-semibold tracking-wider">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-semibold tracking-wider">
           <GraduationCap className="w-4 h-4" />
           <span>基礎から臨床実践までを体系化するアカデミー</span>
         </div>
@@ -180,7 +180,7 @@ export default function CurriculumPage() {
           >
             {/* ステージヘッダー */}
             <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4">
-              <span className="text-xs font-bold text-[#1E3D34] dark:text-[#3CD0A0] uppercase tracking-widest">
+              <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-widest">
                 {stage.subtitle}
               </span>
               <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] mt-1">
@@ -204,7 +204,7 @@ export default function CurriculumPage() {
                   }}
                   className={`p-6 rounded-2xl border transition-all flex flex-col justify-between ${
                     lec.isPublished
-                      ? "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] hover:shadow-md cursor-pointer group"
+                      ? "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md cursor-pointer group"
                       : "bg-[#F9F7F3]/50 dark:bg-[#10161C]/50 border-dashed border-[#DDD6C5] dark:border-[#22303D] opacity-80 cursor-not-allowed"
                   }`}
                 >
@@ -214,7 +214,7 @@ export default function CurriculumPage() {
                       <span
                         className={`px-2.5 py-0.5 rounded-full font-bold text-[11px] ${
                           lec.isPublished
-                            ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#65D4B2]"
+                            ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]"
                             : "bg-[#EAE4D5] dark:bg-[#1E2B36] text-[#737C77] dark:text-[#8899A6]"
                         }`}
                       >
@@ -226,7 +226,7 @@ export default function CurriculumPage() {
                       </span>
                     </div>
 
-                    <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] transition-colors leading-snug mb-2">
+                    <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug mb-2">
                       {lec.title}
                     </h3>
                     <p className="text-xs text-[#737C77] dark:text-[#8899A6] mb-3">
@@ -241,7 +241,7 @@ export default function CurriculumPage() {
                   <div className="pt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
                     {lec.isPublished ? (
                       <>
-                        <span className="text-[#1E3D34] dark:text-[#3CD0A0] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                        <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                           <span>講義を受講する</span>
                           <ArrowRight className="w-3.5 h-3.5" />
                         </span>

@@ -50,7 +50,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           {/* ロゴエリア */}
           <Link href="/" className="flex items-center group min-w-0 pr-2">
-            <span className="font-serif text-xl sm:text-2xl font-bold tracking-wide text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] transition-colors truncate">
+            <span className="font-serif text-xl sm:text-2xl font-bold tracking-wide text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors truncate">
               はり太郎の東洋医学
             </span>
           </Link>
@@ -68,7 +68,7 @@ export default function Header() {
                 onClick={() => setOpenDropdown(openDropdown === "general" ? null : "general")}
                 className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-1.5 ${
                   openDropdown === "general"
-                    ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#65D4B2]"
+                    ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]"
                     : "text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
                 }`}
               >
@@ -89,7 +89,7 @@ export default function Header() {
                       <HeartPulse className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] block">
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
                         症状・お悩み別ガイド
                       </span>
                       <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
@@ -103,11 +103,11 @@ export default function Header() {
                     onClick={() => setOpenDropdown(null)}
                     className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-[#FDEDEC] dark:bg-[#2C1816] text-[#A83629] dark:text-[#E06A5D] flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-8 h-8 rounded-lg bg-[#FDEDEC] dark:bg-[#231816] text-[#A83629] dark:text-[#C47A72] flex items-center justify-center shrink-0 mt-0.5">
                       <Stethoscope className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] block">
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
                         気血水 体質セルフ診断
                       </span>
                       <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
@@ -130,11 +130,11 @@ export default function Header() {
                 onClick={() => setOpenDropdown(openDropdown === "expert" ? null : "expert")}
                 className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-1.5 ${
                   openDropdown === "expert"
-                    ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#65D4B2]"
+                    ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]"
                     : "text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
                 }`}
               >
-                <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#65D4B2]" />
+                <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#83BEA8]" />
                 <span>専門家・学生向け</span>
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === "expert" ? "rotate-180" : ""}`} />
               </button>
@@ -147,12 +147,12 @@ export default function Header() {
                     onClick={() => setOpenDropdown(null)}
                     className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#65D4B2] flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0 mt-0.5">
                       <GraduationCap className="w-4 h-4" />
                     </div>
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] block">
+                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
                           体系学習カリキュラム
                         </span>
                         <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
@@ -170,11 +170,11 @@ export default function Header() {
                     onClick={() => setOpenDropdown(null)}
                     className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] dark:bg-[#1A2530] text-[#1E3D34] dark:text-[#3CD0A0] flex items-center justify-center shrink-0 mt-0.5 border border-[#E8E1D1] dark:border-[#263542]">
+                    <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] dark:bg-[#1A2530] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 mt-0.5 border border-[#E8E1D1] dark:border-[#263542]">
                       <Compass className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] block">
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
                         十四経脈・経穴辞典
                       </span>
                       <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
@@ -192,7 +192,7 @@ export default function Header() {
                       <BookOpen className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] block">
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
                         臨床知見・学術論文抄読
                       </span>
                       <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
@@ -253,20 +253,20 @@ export default function Header() {
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
             >
-              <Stethoscope className="w-4 h-4 text-[#A83629] dark:text-[#E06A5D]" />
+              <Stethoscope className="w-4 h-4 text-[#A83629] dark:text-[#C47A72]" />
               <span>気血水 体質セルフ診断</span>
             </Link>
           </div>
 
           {/* 専門家・学生向けセクション */}
           <div className="space-y-1 pt-2 border-t border-[#E8E1D1] dark:border-[#22303D]">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#1E3D34] dark:text-[#65D4B2] px-3">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#1E3D34] dark:text-[#83BEA8] px-3">
               専門家・学生向け
             </span>
             <Link
               href="/curriculum"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-[#1E3D34] dark:text-[#65D4B2] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
             >
               <GraduationCap className="w-4 h-4" />
               <span>体系学習カリキュラム</span>
@@ -276,7 +276,7 @@ export default function Header() {
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
             >
-              <Compass className="w-4 h-4 text-[#1E3D34] dark:text-[#3CD0A0]" />
+              <Compass className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
               <span>十四経脈・経穴辞典（361穴）</span>
             </Link>
             <Link

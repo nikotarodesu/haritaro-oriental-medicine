@@ -63,7 +63,7 @@ export default function SymptomsPage() {
           return (
             <div
               key={symptom.id}
-              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-9 shadow-sm hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] transition-all space-y-6"
+              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-9 shadow-sm hover:border-[#1E3D34] dark:hover:border-[#4E8C76] transition-all space-y-6"
             >
               {/* タイトルとカテゴリ */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4">
@@ -85,7 +85,7 @@ export default function SymptomsPage() {
                 </div>
 
                 <div className="bg-[#FAF8F5] dark:bg-[#121920] p-4 sm:p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#3CD0A0]">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                     <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
                     <span>東洋医学での見立て（なぜ起こるのか？）</span>
                   </div>
@@ -97,7 +97,7 @@ export default function SymptomsPage() {
 
               {/* おすすめのツボ */}
               <div className="space-y-3">
-                <span className="text-xs font-bold text-[#1E3D34] dark:text-[#3CD0A0] uppercase tracking-wider block">
+                <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block">
                   📍 おすすめの特効穴（ツボ）
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -108,7 +108,7 @@ export default function SymptomsPage() {
                     >
                       <div>
                         <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-1">
-                          <span className="font-mono font-bold text-[#1E3D34] dark:text-[#65D4B2]">{tsubo.code}</span>
+                          <span className="font-mono font-bold text-[#1E3D34] dark:text-[#83BEA8]">{tsubo.code}</span>
                           <span>{tsubo.meridianShort}</span>
                         </div>
                         <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
@@ -121,7 +121,7 @@ export default function SymptomsPage() {
                       <div className="mt-3 pt-2 border-t border-[#EAE3D4] dark:border-[#22303D]">
                         <Link
                           href={`/tsubo`}
-                          className="text-xs font-semibold text-[#1E3D34] dark:text-[#3CD0A0] hover:underline flex items-center gap-1"
+                          className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
                         >
                           <span>詳細を見る</span>
                           <ArrowRight className="w-3 h-3" />
@@ -145,7 +145,7 @@ export default function SymptomsPage() {
                 </div>
 
                 <div className="bg-[#EBF3EF]/70 dark:bg-[#14231E]/80 p-4 rounded-xl border border-[#C5DED4] dark:border-[#234237] space-y-1.5">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#3CD0A0]">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                     <Activity className="w-4 h-4" />
                     <span>おすすめ生活習慣・ストレッチ</span>
                   </div>

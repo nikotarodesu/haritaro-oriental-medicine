@@ -6,7 +6,7 @@ export default function AboutPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12">
       {/* ページ見出し */}
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#65D4B2] text-xs font-semibold tracking-wider">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-semibold tracking-wider">
           <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
           <span>サイトの志と運営方針</span>
         </div>
@@ -21,7 +21,7 @@ export default function AboutPage() {
       {/* メイン理念 */}
       <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-8 sm:p-12 shadow-sm space-y-8 transition-colors">
         <div className="space-y-4">
-          <h2 className="text-2xl font-serif font-bold text-[#1E3D34] dark:text-[#3CD0A0] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
+          <h2 className="text-2xl font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
             サイト創設の志
           </h2>
           <p className="text-sm sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
@@ -42,19 +42,19 @@ export default function AboutPage() {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm">
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
-              <span className="font-bold text-[#1E3D34] dark:text-[#3CD0A0] block text-base">01. 徹底した可読性</span>
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-base">01. 徹底した可読性</span>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                 難解な陰陽五行や臓腑弁証を、日々の食事や生活習慣、わかりやすい図解と言葉に翻訳します。
               </p>
             </div>
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
-              <span className="font-bold text-[#1E3D34] dark:text-[#3CD0A0] block text-base">02. 臨床と科学の二重奏</span>
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-base">02. 臨床と科学の二重奏</span>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                 古典の精神を尊重しながらも、現代の生理学・神経伝達物質・fMRI等のエビデンスを交えて解説します。
               </p>
             </div>
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
-              <span className="font-bold text-[#1E3D34] dark:text-[#3CD0A0] block text-base">03. 誠実な医療倫理</span>
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-base">03. 誠実な医療倫理</span>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                 東洋医学の万能視や過信を戒め、現代医学との適切な協調・受診推奨（トリアージ）を明記します。
               </p>
@@ -65,7 +65,7 @@ export default function AboutPage() {
         {/* 医療上の免責事項 */}
         <div className="bg-[#FAF8F5] dark:bg-[#121920] p-6 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-3 text-xs text-[#59615D] dark:text-[#A0B0BC]">
           <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5] text-sm">
-            <ShieldCheck className="w-5 h-5 text-[#1E3D34] dark:text-[#3CD0A0]" />
+            <ShieldCheck className="w-5 h-5 text-[#1E3D34] dark:text-[#74BA9E]" />
             <span>医療情報に関する免責事項</span>
           </div>
           <p className="leading-relaxed">

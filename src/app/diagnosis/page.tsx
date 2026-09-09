@@ -81,7 +81,7 @@ export default function DiagnosisPage() {
       <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-6 sm:p-9 rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-6 transition-colors">
         <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 text-xs text-[#59615D] dark:text-[#96A6B2]">
           <span>全12問（複数選択可）</span>
-          <span>選択中: <strong className="text-[#1E3D34] dark:text-[#3CD0A0]">{selectedAnswers.length}</strong> 項目</span>
+          <span>選択中: <strong className="text-[#1E3D34] dark:text-[#74BA9E]">{selectedAnswers.length}</strong> 項目</span>
         </div>
 
         <div className="grid grid-cols-1 gap-3.5">
@@ -93,14 +93,14 @@ export default function DiagnosisPage() {
                 onClick={() => handleToggle(q.id)}
                 className={`w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3.5 ${
                   isChecked
-                    ? "bg-[#EBF3EF] dark:bg-[#182823] border-[#1E3D34] dark:border-[#3CD0A0] text-[#1E3D34] dark:text-[#FAF8F5] shadow-sm"
+                    ? "bg-[#EBF3EF] dark:bg-[#182823] border-[#1E3D34] dark:border-[#4E8C76] text-[#1E3D34] dark:text-[#FAF8F5] shadow-sm"
                     : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E8E1D1] dark:border-[#22303D] text-[#404743] dark:text-[#C5D2DB] hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631]"
                 }`}
               >
                 <div
                   className={`w-5 h-5 rounded-md border flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
                     isChecked
-                      ? "bg-[#1E3D34] dark:bg-[#2B6958] border-[#1E3D34] dark:border-[#3CD0A0] text-white"
+                      ? "bg-[#1E3D34] dark:bg-[#2B6958] border-[#1E3D34] dark:border-[#4E8C76] text-white"
                       : "border-[#D5CCBC] dark:border-[#2D3E50] bg-[#FFFFFF] dark:bg-[#1A2530]"
                   }`}
                 >
@@ -136,7 +136,7 @@ export default function DiagnosisPage() {
 
       {/* 診断結果表示 */}
       {result && (
-        <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border-2 border-[#1E3D34] dark:border-[#3CD0A0] p-8 sm:p-10 shadow-xl space-y-8 animate-fadeIn transition-colors">
+        <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border-2 border-[#1E3D34] dark:border-[#3A6B5B] p-8 sm:p-10 shadow-xl space-y-8 animate-fadeIn transition-colors">
           <div className="text-center space-y-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-6">
             <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-widest">
               Diagnosis Result
@@ -144,7 +144,7 @@ export default function DiagnosisPage() {
             <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
               {result.name}
             </h2>
-            <p className="text-sm text-[#1E3D34] dark:text-[#3CD0A0] font-medium tracking-wide">
+            <p className="text-sm text-[#1E3D34] dark:text-[#74BA9E] font-medium tracking-wide">
               （{result.reading}）
             </p>
           </div>
@@ -173,7 +173,7 @@ export default function DiagnosisPage() {
 
           {/* はり太郎の改善アドバイス */}
           <div className="bg-[#EBF3EF] dark:bg-[#14231E] p-6 sm:p-8 rounded-2xl border border-[#C5DED4] dark:border-[#234237] space-y-6">
-            <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#3CD0A0]">
+            <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
               <Sparkles className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
               <span>はり太郎の体質改善処方箋</span>
             </div>
@@ -181,7 +181,7 @@ export default function DiagnosisPage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs">
               {/* 食養生 */}
               <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-4 rounded-xl border border-[#D8E8E0] dark:border-[#263D33] space-y-2">
-                <div className="flex items-center gap-1.5 font-bold text-[#1E3D34] dark:text-[#3CD0A0]">
+                <div className="flex items-center gap-1.5 font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                   <Utensils className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
                   <span>おすすめ食材</span>
                 </div>
@@ -196,8 +196,8 @@ export default function DiagnosisPage() {
 
               {/* 生活習慣 */}
               <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-4 rounded-xl border border-[#D8E8E0] dark:border-[#263D33] space-y-2">
-                <div className="flex items-center gap-1.5 font-bold text-[#1E3D34] dark:text-[#3CD0A0]">
-                  <HeartPulse className="w-4 h-4 text-[#1E3D34] dark:text-[#3CD0A0]" />
+                <div className="flex items-center gap-1.5 font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                  <HeartPulse className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
                   <span>生活・心の養生</span>
                 </div>
                 <p className="text-[#404743] dark:text-[#C5D2DB] leading-relaxed">{result.advice.lifestyle}</p>
@@ -205,7 +205,7 @@ export default function DiagnosisPage() {
 
               {/* おすすめツボ */}
               <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-4 rounded-xl border border-[#D8E8E0] dark:border-[#263D33] space-y-2">
-                <div className="flex items-center gap-1.5 font-bold text-[#1E3D34] dark:text-[#3CD0A0]">
+                <div className="flex items-center gap-1.5 font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                   <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
                   <span>おすすめのツボ</span>
                 </div>
@@ -214,7 +214,7 @@ export default function DiagnosisPage() {
                     <Link
                       key={i}
                       href="/tsubo"
-                      className="px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#3CD0A0] font-medium hover:underline"
+                      className="px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] font-medium hover:underline"
                     >
                       {t}
                     </Link>

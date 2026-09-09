@@ -37,8 +37,8 @@ export default function ReadingProgressBar() {
       {/* 翡翠色〜藍色のグラデーションバー */}
       <div
         className="h-full bg-gradient-to-r from-[#1E3D34] via-[#2B6958] to-[#1E2D3D] 
-                   dark:from-[#3CD0A0] dark:via-[#4ECDC4] dark:to-[#6FA0D6] 
-                   shadow-[0_0_6px_rgba(30,61,52,0.3)] dark:shadow-[0_0_10px_rgba(60,208,160,0.7)]
+                   dark:from-[#4E8C76] dark:via-[#427A67] dark:to-[#4A6882] 
+                   shadow-[0_0_4px_rgba(30,61,52,0.3)] dark:shadow-none
                    transition-[width] duration-150 ease-out"
         style={{ width: `${progress}%` }}
       />

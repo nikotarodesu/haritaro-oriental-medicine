@@ -32,14 +32,14 @@ export default function ArticlesPage() {
         <div className="flex items-center justify-between">
           <button
             onClick={() => setActiveArticle(null)}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3D34] dark:text-[#3CD0A0] hover:underline bg-[#EBF3EF] dark:bg-[#182823] px-3.5 py-1.5 rounded-lg transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline bg-[#EBF3EF] dark:bg-[#182823] px-3.5 py-1.5 rounded-lg transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>記事一覧へ戻る</span>
           </button>
 
           <div className="flex items-center gap-2 text-xs text-[#59615D] dark:text-[#96A6B2]">
-            <Clock className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#3CD0A0]" />
+            <Clock className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
             <span>読了目安: 約 {activeArticle.readTime}</span>
           </div>
         </div>
@@ -86,7 +86,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* 要約ボックス */}
-          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-5 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#3CD0A0] text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-5 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#4E8C76] text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
             <strong className="block font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] mb-1">【本稿の要旨】</strong>
             <GlossaryRenderer text={activeArticle.summary} />
           </div>
@@ -98,7 +98,7 @@ export default function ArticlesPage() {
                 return (
                   <h2
                     key={index}
-                    className="font-serif text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#3CD0A0] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-8"
+                    className="font-serif text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-8"
                   >
                     <GlossaryRenderer text={block.replace("## ", "")} />
                   </h2>
@@ -108,7 +108,7 @@ export default function ArticlesPage() {
                 return (
                   <blockquote
                     key={index}
-                    className="bg-[#EBF3EF] dark:bg-[#162A24] border-l-4 border-[#1E3D34] dark:border-[#3CD0A0] p-4 rounded-r-xl text-xs sm:text-sm italic text-[#232826] dark:text-[#E6EFEA]"
+                    className="bg-[#EBF3EF] dark:bg-[#162A24] border-l-4 border-[#1E3D34] dark:border-[#4E8C76] p-4 rounded-r-xl text-xs sm:text-sm italic text-[#232826] dark:text-[#E6EFEA]"
                   >
                     <GlossaryRenderer text={block.replace("> ", "")} />
                   </blockquote>
@@ -182,11 +182,11 @@ export default function ArticlesPage() {
           <div
             key={article.id}
             onClick={() => setActiveArticle(article)}
-            className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group"
+            className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group"
           >
             <div>
               <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-3">
-                <span className="px-2.5 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] text-[#1E3D34] dark:text-[#65D4B2] font-medium">
+                <span className="px-2.5 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] text-[#1E3D34] dark:text-[#83BEA8] font-medium">
                   {article.category}
                 </span>
                 <span className="flex items-center gap-1">
@@ -195,7 +195,7 @@ export default function ArticlesPage() {
                 </span>
               </div>
 
-              <h2 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] transition-colors leading-snug mb-3">
+              <h2 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug mb-3">
                 {article.title}
               </h2>
 
@@ -214,7 +214,7 @@ export default function ArticlesPage() {
 
             <div className="flex items-center justify-between pt-4 border-t border-[#F2ECE0] dark:border-[#22303D] text-xs">
               <span className="text-[#737C77] dark:text-[#8899A6]">{article.publishedAt}</span>
-              <span className="text-[#1E3D34] dark:text-[#3CD0A0] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+              <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                 <span>記事を読む</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </span>

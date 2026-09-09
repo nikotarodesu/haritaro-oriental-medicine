@@ -9,7 +9,7 @@ export default function Footer() {
           {/* サイト概要 */}
           <div className="md:col-span-1 space-y-4">
             <Link href="/" className="inline-block">
-              <span className="font-serif text-xl font-bold text-[#232826] dark:text-[#E6EFEA] tracking-wide hover:text-[#1E3D34] dark:hover:text-[#3CD0A0] transition-colors">
+              <span className="font-serif text-xl font-bold text-[#232826] dark:text-[#E6EFEA] tracking-wide hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
                 はり太郎の東洋医学
               </span>
             </Link>
@@ -25,22 +25,22 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2.5 text-xs">
               <li>
-                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#3CD0A0] transition-colors flex items-center gap-1">
+                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
                   <span>頭痛・首肩こり改善</span>
                 </Link>
               </li>
               <li>
-                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#3CD0A0] transition-colors flex items-center gap-1">
+                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
                   <span>不眠・ストレス緩和</span>
                 </Link>
               </li>
               <li>
-                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#3CD0A0] transition-colors flex items-center gap-1">
+                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
                   <span>胃腸虚弱・冷え性対策</span>
                 </Link>
               </li>
               <li>
-                <Link href="/diagnosis" className="hover:text-[#1E3D34] dark:hover:text-[#3CD0A0] font-medium text-[#1E3D34] dark:text-[#E6C387] transition-colors flex items-center gap-1">
+                <Link href="/diagnosis" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] font-medium text-[#1E3D34] dark:text-[#E6C387] transition-colors flex items-center gap-1">
                   <Sparkles className="w-3 h-3 text-[#B86924] dark:text-[#E6C387]" />
                   <span>気血水 体質セルフ診断</span>
                 </Link>
@@ -55,22 +55,22 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2.5 text-xs">
               <li>
-                <Link href="/tsubo" className="hover:text-[#1E3D34] dark:hover:text-[#3CD0A0] transition-colors">
+                <Link href="/tsubo" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
                   十四経脈 経穴（ツボ）データベース
                 </Link>
               </li>
               <li>
-                <Link href="/articles" className="hover:text-[#1E3D34] dark:hover:text-[#3CD0A0] transition-colors">
+                <Link href="/articles" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
                   臨床知見・配穴の極意
                 </Link>
               </li>
               <li>
-                <Link href="/articles" className="hover:text-[#1E3D34] dark:hover:text-[#3CD0A0] transition-colors">
+                <Link href="/articles" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
                   最新神経科学・論文抄読
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-[#1E3D34] dark:hover:text-[#3CD0A0] transition-colors">
+                <Link href="/about" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
                   古典文献（黄帝内経・傷寒論）考証
                 </Link>
               </li>
@@ -84,13 +84,13 @@ export default function Footer() {
             </h3>
             <div className="space-y-3 text-xs">
               <div className="flex items-start gap-2 text-[#737C77] dark:text-[#8899A6]">
-                <ShieldCheck className="w-4 h-4 text-[#1E3D34] dark:text-[#3CD0A0] shrink-0 mt-0.5" />
+                <ShieldCheck className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
                 <p className="leading-normal">
                   当サイトの情報は健康増進と伝統医学の学術的理解を目的としており、医師による診断・治療に代わるものではありません。重篤な症状がある場合は速やかに医療機関を受診してください。
                 </p>
               </div>
               <div>
-                <Link href="/about" className="text-[#1E3D34] dark:text-[#3CD0A0] font-medium hover:underline inline-flex items-center gap-1">
+                <Link href="/about" className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline inline-flex items-center gap-1">
                   <span>サイト理念・はり太郎について</span>
                   <ArrowUpRight className="w-3 h-3" />
                 </Link>
@@ -102,8 +102,8 @@ export default function Footer() {
         <div className="border-t border-[#E3DBCB] dark:border-[#22303D] mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#737C77] dark:text-[#8899A6]">
           <p>© {new Date().getFullYear()} はり太郎の東洋医学. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <Link href="/about" className="hover:text-[#1E3D34] dark:hover:text-[#3CD0A0]">プライバシーポリシー</Link>
-            <Link href="/about" className="hover:text-[#1E3D34] dark:hover:text-[#3CD0A0]">お問い合わせ</Link>
+            <Link href="/about" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">プライバシーポリシー</Link>
+            <Link href="/about" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">お問い合わせ</Link>
           </div>
         </div>
       </div>

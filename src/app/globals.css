@@ -34,9 +34,9 @@
     --tokiwa-light: #162E26;
     --ai-indigo: #375573;
     --ai-light: #1A2837;
-    --amber-warm: #D48C3D;
+    --amber-warm: #C98A44;
     --amber-light: #2A2117;
-    --shu-red: #C54436;
+    --shu-red: #B8675E; /* 落ち着いた淡小豆・茜色 */
   }
 
   body {

@@ -31,7 +31,7 @@ export default function HomePage() {
           <div className="text-center max-w-3xl mx-auto space-y-6">
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-[1.25]">
               からだの声が、<br className="hidden sm:inline" />
-              <span className="text-[#1E3D34] dark:text-[#3CD0A0] relative">
+              <span className="text-[#1E3D34] dark:text-[#74BA9E] relative">
                 腑に落ちる。
                 <span className="absolute bottom-1 left-0 w-full h-2 bg-[#E6C387]/30 dark:bg-[#E6C387]/20 -z-10" />
               </span>
@@ -45,7 +45,7 @@ export default function HomePage() {
             {/* 二大エントランス（一般向け / 専門家・学生向け） */}
             <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto text-left">
               {/* 1. 一般の方向け */}
-              <div className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl border border-[#D5CCBC] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+              <div className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl border border-[#D5CCBC] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] text-[11px] font-bold tracking-wider">
@@ -54,7 +54,7 @@ export default function HomePage() {
                     </span>
                     <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">セルフケア・体質改善</span>
                   </div>
-                  <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] mb-1.5 group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] transition-colors">
+                  <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] mb-1.5 group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors">
                     日常の不調を、自分で整える
                   </h3>
                   <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed mb-4">
@@ -79,16 +79,16 @@ export default function HomePage() {
               </div>
 
               {/* 2. 専門家・学生向け */}
-              <div className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl border border-[#D5CCBC] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+              <div className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl border border-[#D5CCBC] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#65D4B2] text-[11px] font-bold tracking-wider">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-[11px] font-bold tracking-wider">
                       <GraduationCap className="w-3.5 h-3.5" />
                       <span>専門家・学生向け</span>
                     </span>
                     <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">体系学習・臨床・研究</span>
                   </div>
-                  <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] mb-1.5 group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] transition-colors">
+                  <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] mb-1.5 group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors">
                     体系理論と臨床の極意を学ぶ
                   </h3>
                   <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed mb-4">
@@ -120,7 +120,7 @@ export default function HomePage() {
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
               <Link
                 href="/symptoms"
-                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] hover:shadow-sm transition-all group"
+                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group"
               >
                 <div className="w-9 h-9 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
                   <HeartPulse className="w-4 h-4" />
@@ -131,9 +131,9 @@ export default function HomePage() {
 
               <Link
                 href="/diagnosis"
-                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] hover:shadow-sm transition-all group"
+                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group"
               >
-                <div className="w-9 h-9 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#A83629] dark:text-[#E06A5D] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+                <div className="w-9 h-9 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#A83629] dark:text-[#C47A72] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
                   <Stethoscope className="w-4 h-4" />
                 </div>
                 <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">気血水 体質診断</div>
@@ -142,9 +142,9 @@ export default function HomePage() {
 
               <Link
                 href="/curriculum"
-                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] hover:shadow-sm transition-all group"
+                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group"
               >
-                <div className="w-9 h-9 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#65D4B2] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+                <div className="w-9 h-9 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
                   <GraduationCap className="w-4 h-4" />
                 </div>
                 <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">学習カリキュラム</div>
@@ -153,9 +153,9 @@ export default function HomePage() {
 
               <Link
                 href="/tsubo"
-                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] hover:shadow-sm transition-all group"
+                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group"
               >
-                <div className="w-9 h-9 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#3CD0A0] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+                <div className="w-9 h-9 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
                   <Compass className="w-4 h-4" />
                 </div>
                 <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">経穴辞典（361穴）</div>
@@ -164,7 +164,7 @@ export default function HomePage() {
 
               <Link
                 href="/articles"
-                className="col-span-2 sm:col-span-1 bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] hover:shadow-sm transition-all group"
+                className="col-span-2 sm:col-span-1 bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group"
               >
                 <div className="w-9 h-9 rounded-lg bg-[#EDF3F8] dark:bg-[#1A2837] text-[#1E2D3D] dark:text-[#6FA0D6] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
                   <BookOpen className="w-4 h-4" />
@@ -189,7 +189,7 @@ export default function HomePage() {
                   </h3>
                 </div>
               </div>
-              <Link href="/articles" className="text-xs font-semibold text-[#1E3D34] dark:text-[#3CD0A0] hover:underline flex items-center gap-1 shrink-0">
+              <Link href="/articles" className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1 shrink-0">
                 <span>コラムを読む</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
@@ -206,7 +206,7 @@ export default function HomePage() {
               </div>
               <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 rounded-xl border border-[#EDE7DB] dark:border-[#22303D]">
                 <span className="font-bold text-[#232826] dark:text-[#E6EFEA] block mb-0.5">🎯 おすすめツボ</span>
-                <span className="text-[#59615D] dark:text-[#A0B0BC]">足の甲の「<Link href="/tsubo" className="text-[#1E3D34] dark:text-[#3CD0A0] font-semibold underline">太衝</Link>」を息を吐きながら指圧</span>
+                <span className="text-[#59615D] dark:text-[#A0B0BC]">足の甲の「<Link href="/tsubo" className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold underline">太衝</Link>」を息を吐きながら指圧</span>
               </div>
             </div>
           </div>
@@ -252,12 +252,12 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
           <div>
-            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#3CD0A0] tracking-widest uppercase">Acupoints</span>
+            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] tracking-widest uppercase">Acupoints</span>
             <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] mt-0.5">
               知っておきたい基本の要穴
             </h2>
           </div>
-          <Link href="/tsubo" className="text-xs sm:text-sm font-semibold text-[#1E3D34] dark:text-[#3CD0A0] hover:underline flex items-center gap-1">
+          <Link href="/tsubo" className="text-xs sm:text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1">
             <span>全361穴の経穴辞典へ</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
@@ -267,11 +267,11 @@ export default function HomePage() {
           {featuredTsubos.map((tsubo) => (
             <div
               key={tsubo.id}
-              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-5 hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] hover:shadow-md transition-all flex flex-col justify-between"
+              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-5 hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#65D4B2]">
+                  <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
                     {tsubo.code}
                   </span>
                   <span className="text-xs text-[#737C77] dark:text-[#8899A6]">{tsubo.meridianShort}</span>
@@ -309,12 +309,12 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
           <div>
-            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#3CD0A0] tracking-widest uppercase">Articles</span>
+            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] tracking-widest uppercase">Articles</span>
             <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] mt-0.5">
               臨床知見・学術論文抄読
             </h2>
           </div>
-          <Link href="/articles" className="text-xs sm:text-sm font-semibold text-[#1E3D34] dark:text-[#3CD0A0] hover:underline flex items-center gap-1">
+          <Link href="/articles" className="text-xs sm:text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1">
             <span>すべての知見記事を読む</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
@@ -325,17 +325,17 @@ export default function HomePage() {
             <Link
               key={article.id}
               href={`/articles`}
-              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 hover:border-[#1E3D34] dark:hover:border-[#3CD0A0] hover:shadow-md transition-all flex flex-col justify-between group"
+              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all flex flex-col justify-between group"
             >
               <div>
                 <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-2.5">
-                  <span className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#EBE4D5] dark:border-[#22303D] text-[#1E3D34] dark:text-[#65D4B2] font-medium text-[11px]">
+                  <span className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#EBE4D5] dark:border-[#22303D] text-[#1E3D34] dark:text-[#83BEA8] font-medium text-[11px]">
                     {article.category}
                   </span>
                   <span>約 {article.readTime}</span>
                 </div>
 
-                <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#3CD0A0] transition-colors leading-snug mb-2">
+                <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug mb-2">
                   {article.title}
                 </h3>
 
@@ -346,7 +346,7 @@ export default function HomePage() {
 
               <div className="flex items-center justify-between pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] text-xs">
                 <span className="text-[#737C77] dark:text-[#8899A6] text-[11px]">{article.publishedAt}</span>
-                <span className="text-[#1E3D34] dark:text-[#3CD0A0] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform text-xs">
+                <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform text-xs">
                   <span>詳しく読む</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </span>
@@ -360,7 +360,7 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-10">
           <div className="text-center max-w-xl mx-auto mb-8">
-            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#3CD0A0] tracking-widest uppercase">Fundamentals</span>
+            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] tracking-widest uppercase">Fundamentals</span>
             <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] mt-0.5">
               東洋医学を貫く3つの根幹
             </h2>
@@ -381,7 +381,7 @@ export default function HomePage() {
             </div>
 
             <div className="text-center space-y-2 p-2">
-              <div className="w-12 h-12 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#65D4B2] flex items-center justify-center mx-auto">
+              <div className="w-12 h-12 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center mx-auto">
                 <Layers className="w-6 h-6" />
               </div>
               <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">陰陽五行のバランス</h3>
