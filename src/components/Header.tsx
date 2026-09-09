@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { 
-  Sparkles, 
   HeartPulse, 
   Stethoscope, 
   Menu, 
@@ -47,12 +46,6 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-[#FAF8F5]/95 dark:bg-[#10161C]/95 backdrop-blur-md border-b border-[#E8E1D1] dark:border-[#22303D] transition-colors duration-300">
-      {/* サイト上部アナウンスバー */}
-      <div className="bg-[#1E3D34] dark:bg-[#162A24] text-[#EBF3EF] text-xs py-1.5 px-4 text-center tracking-wider font-medium flex items-center justify-center gap-2">
-        <Sparkles className="w-3.5 h-3.5 text-[#E6C387]" />
-        <span>伝統の知恵と現代科学の融合 ── はり太郎の東洋医学 ポータル</span>
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* ロゴエリア */}
