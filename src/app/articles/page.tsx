@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ARTICLES } from "@/data/articleData";
 import { Article } from "@/types/oriental";
 import { BookOpen, Calendar, Clock, ArrowLeft, ArrowRight } from "lucide-react";
+import ReadingProgressBar from "@/components/ReadingProgressBar";
 
 export default function ArticlesPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
@@ -24,13 +25,23 @@ export default function ArticlesPage() {
   if (activeArticle) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-8">
-        <button
-          onClick={() => setActiveArticle(null)}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3D34] dark:text-[#3CD0A0] hover:underline bg-[#EBF3EF] dark:bg-[#182823] px-3.5 py-1.5 rounded-lg transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>記事一覧へ戻る</span>
-        </button>
+        {/* 論文・長文記事読書時限定のプログレスバー */}
+        <ReadingProgressBar />
+
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => setActiveArticle(null)}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3D34] dark:text-[#3CD0A0] hover:underline bg-[#EBF3EF] dark:bg-[#182823] px-3.5 py-1.5 rounded-lg transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>記事一覧へ戻る</span>
+          </button>
+
+          <div className="flex items-center gap-2 text-xs text-[#59615D] dark:text-[#96A6B2]">
+            <Clock className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#3CD0A0]" />
+            <span>読了目安: 約 {activeArticle.readTime}</span>
+          </div>
+        </div>
 
         <article className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-12 shadow-sm space-y-8 transition-colors">
           {/* ヘッダー情報 */}
