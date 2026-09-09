@@ -14,7 +14,7 @@ export default function AboutPage() {
           「はり太郎の東洋医学」について
         </h1>
         <p className="text-base sm:text-lg text-[#59615D] dark:text-[#A0B0BC] max-w-2xl mx-auto leading-relaxed">
-          基礎理論から臨床実践までを体系化する東洋医学ポータル ── 伝統の知恵と現代科学の融合。
+          基礎理論から臨床実践までを体系化する東洋医学ポータル。
         </p>
       </div>
 
