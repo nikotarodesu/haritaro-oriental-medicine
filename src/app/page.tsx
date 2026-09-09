@@ -35,12 +35,11 @@ export default function HomePage() {
             </div>
 
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-[1.25]">
-              伝統の智慧を、<br className="hidden sm:inline" />
+              からだの声が、<br className="hidden sm:inline" />
               <span className="text-[#1E3D34] dark:text-[#3CD0A0] relative">
-                最澄の知性
+                腑に落ちる。
                 <span className="absolute bottom-1 left-0 w-full h-2 bg-[#E6C387]/30 dark:bg-[#E6C387]/20 -z-10" />
               </span>
-              で読み解く。
             </h1>
 
             <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-xl mx-auto">
