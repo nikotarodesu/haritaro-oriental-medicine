@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { ARTICLES } from "@/data/articleData";
 import { Article } from "@/types/oriental";
-import { BookOpen, Calendar, Clock, ArrowLeft, ArrowRight } from "lucide-react";
+import { BookOpen, Calendar, Clock, ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
+import GlossaryRenderer from "@/components/GlossaryRenderer";
 
 export default function ArticlesPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
@@ -87,7 +88,7 @@ export default function ArticlesPage() {
           {/* 要約ボックス */}
           <div className="bg-[#FAF8F5] dark:bg-[#121920] p-5 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#3CD0A0] text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
             <strong className="block font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] mb-1">【本稿の要旨】</strong>
-            {activeArticle.summary}
+            <GlossaryRenderer text={activeArticle.summary} />
           </div>
 
           {/* 本文 */}
@@ -99,7 +100,7 @@ export default function ArticlesPage() {
                     key={index}
                     className="font-serif text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#3CD0A0] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-8"
                   >
-                    {block.replace("## ", "")}
+                    <GlossaryRenderer text={block.replace("## ", "")} />
                   </h2>
                 );
               }
@@ -109,7 +110,7 @@ export default function ArticlesPage() {
                     key={index}
                     className="bg-[#EBF3EF] dark:bg-[#162A24] border-l-4 border-[#1E3D34] dark:border-[#3CD0A0] p-4 rounded-r-xl text-xs sm:text-sm italic text-[#232826] dark:text-[#E6EFEA]"
                   >
-                    {block.replace("> ", "")}
+                    <GlossaryRenderer text={block.replace("> ", "")} />
                   </blockquote>
                 );
               }
@@ -118,7 +119,7 @@ export default function ArticlesPage() {
               }
               return (
                 <p key={index} className="leading-relaxed whitespace-pre-line text-[#333835] dark:text-[#C5D2DB]">
-                  {block}
+                  <GlossaryRenderer text={block} />
                 </p>
               );
             })}
