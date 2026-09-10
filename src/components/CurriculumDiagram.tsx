@@ -3,12 +3,59 @@
 import React from "react";
 import { Sparkles } from "lucide-react";
 import WuxingDynamicChart from "./WuxingDynamicChart";
+import YinYangTaijiCycle from "./yinyang/YinYangTaijiCycle";
+import YinYangSixPrinciples from "./yinyang/YinYangSixPrinciples";
+import YinYangBodyLayers from "./yinyang/YinYangBodyLayers";
+import YinYangDisharmonyMap from "./yinyang/YinYangDisharmonyMap";
+import YinYangShishinChart from "./yinyang/YinYangShishinChart";
+import YinYangTreatmentFlow from "./yinyang/YinYangTreatmentFlow";
+import YinYangSeasonsCalendar from "./yinyang/YinYangSeasonsCalendar";
+import YinYangEastWestMatrix from "./yinyang/YinYangEastWestMatrix";
+import YinYangToWuxingBridge from "./yinyang/YinYangToWuxingBridge";
 
 interface CurriculumDiagramProps {
   id: string;
+  onNextLecture?: () => void;
 }
 
-export default function CurriculumDiagram({ id }: CurriculumDiagramProps) {
+export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagramProps) {
+  // 体系カリキュラム①：陰陽論の9大図解
+  if (id === "yinyang-taiji-cycle") {
+    return <YinYangTaijiCycle />;
+  }
+
+  if (id === "yinyang-six-principles") {
+    return <YinYangSixPrinciples />;
+  }
+
+  if (id === "yinyang-body-layers") {
+    return <YinYangBodyLayers />;
+  }
+
+  if (id === "yinyang-disharmony-map") {
+    return <YinYangDisharmonyMap />;
+  }
+
+  if (id === "yinyang-shishin-chart") {
+    return <YinYangShishinChart />;
+  }
+
+  if (id === "yinyang-treatment-flow") {
+    return <YinYangTreatmentFlow />;
+  }
+
+  if (id === "yinyang-seasons-calendar") {
+    return <YinYangSeasonsCalendar />;
+  }
+
+  if (id === "yinyang-east-west-matrix") {
+    return <YinYangEastWestMatrix />;
+  }
+
+  if (id === "yinyang-to-wuxing-bridge") {
+    return <YinYangToWuxingBridge onNextLecture={onNextLecture} />;
+  }
+
   if (id === "yinyang-homeostasis") {
     return (
       <figure className="my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 shadow-sm transition-colors">
@@ -101,7 +148,7 @@ export default function CurriculumDiagram({ id }: CurriculumDiagramProps) {
               strokeWidth="2"
               strokeDasharray="3 3"
             />
-            <circle cx="435" cy="58" r="4" fill="#C47A72" />
+            <circle cx="435" cy="58" r="4" fill="#C45A4A" />
             <text x="435" y="42" textAnchor="middle" className="fill-[#A83629] dark:fill-[#E08A80] text-[10px] font-bold">
               【陽勝・実熱】過剰興奮・自律神経失調
             </text>

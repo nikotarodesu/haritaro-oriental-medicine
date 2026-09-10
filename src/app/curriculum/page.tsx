@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { CURRICULUM_DATA, Lecture } from "@/data/curriculumData";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
@@ -25,8 +25,49 @@ import {
 export default function CurriculumPage() {
   const [activeLecture, setActiveLecture] = useState<Lecture | null>(null);
 
+  // URLクエリ（?lecture=xxx）による講義直接オープン
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const lectureId = params.get("lecture");
+      if (lectureId) {
+        for (const stage of CURRICULUM_DATA) {
+          const found = stage.lectures.find((l) => l.id === lectureId);
+          if (found) {
+            setActiveLecture(found);
+            break;
+          }
+        }
+      }
+    }
+  }, []);
+
+  // 次の講義へ進むハンドラ
+  const handleNextLecture = () => {
+    if (!activeLecture) return;
+    for (const stage of CURRICULUM_DATA) {
+      const nextLec = stage.lectures.find((l) => l.lectureNumber === activeLecture.lectureNumber + 1);
+      if (nextLec) {
+        setActiveLecture(nextLec);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+    }
+    setActiveLecture(null);
+  };
+
   // 講義詳細ビュー（読書モード）
   if (activeLecture) {
+    // 次の講義があるか確認
+    let nextLectureItem: Lecture | null = null;
+    for (const stage of CURRICULUM_DATA) {
+      const found = stage.lectures.find((l) => l.lectureNumber === activeLecture.lectureNumber + 1);
+      if (found) {
+        nextLectureItem = found;
+        break;
+      }
+    }
+
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-8">
         {/* 読書進捗バー */}
@@ -35,7 +76,12 @@ export default function CurriculumPage() {
         {/* ナビゲーションバー */}
         <div className="flex items-center justify-between">
           <button
-            onClick={() => setActiveLecture(null)}
+            onClick={() => {
+              setActiveLecture(null);
+              if (typeof window !== "undefined") {
+                window.history.replaceState(null, "", "/curriculum");
+              }
+            }}
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline bg-[#EBF3EF] dark:bg-[#182823] px-3.5 py-1.5 rounded-lg transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -105,7 +151,7 @@ export default function CurriculumPage() {
                   .replace("[DIAGRAM:", "")
                   .replace("]", "")
                   .trim();
-                return <CurriculumDiagram key={index} id={diagramId} />;
+                return <CurriculumDiagram key={index} id={diagramId} onNextLecture={handleNextLecture} />;
               }
 
               // 画像（![alt](src)）
@@ -247,13 +293,29 @@ export default function CurriculumPage() {
             <div className="text-xs text-[#59615D] dark:text-[#96A6B2]">
               第 {activeLecture.lectureNumber} 講 受講完了
             </div>
-            <button
-              onClick={() => setActiveLecture(null)}
-              className="px-6 py-2.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-xs font-semibold hover:bg-[#162E27] dark:hover:bg-[#225345] transition-all flex items-center gap-1.5"
-            >
-              <span>シラバス一覧へ戻る</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => {
+                  setActiveLecture(null);
+                  if (typeof window !== "undefined") {
+                    window.history.replaceState(null, "", "/curriculum");
+                  }
+                }}
+                className="px-4 py-2.5 rounded-xl border border-[#E8E1D1] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#FAF8F5] dark:hover:bg-[#1A2530] text-xs font-semibold transition-all"
+              >
+                シラバス一覧
+              </button>
+
+              {nextLectureItem && (
+                <button
+                  onClick={handleNextLecture}
+                  className="px-6 py-2.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-xs font-semibold hover:bg-[#162E27] dark:hover:bg-[#225345] transition-all flex items-center gap-1.5 shadow-sm"
+                >
+                  <span>次の講義へ進む（第 {nextLectureItem.lectureNumber} 講）</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
           </div>
         </article>
       </div>
