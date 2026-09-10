@@ -49,6 +49,15 @@ import DiagnosisPulseAbdomenMap from "./diagnosis/DiagnosisPulseAbdomenMap";
 import DiagnosisEightPrinciples3D from "./diagnosis/DiagnosisEightPrinciples3D";
 import DiagnosisDecisionTreeSimulator from "./diagnosis/DiagnosisDecisionTreeSimulator";
 import DiagnosisPrescriptionBridge from "./diagnosis/DiagnosisPrescriptionBridge";
+import TreatmentFeedbackLoop from "./treatment/TreatmentFeedbackLoop";
+import TreatmentVectorMatrix from "./treatment/TreatmentVectorMatrix";
+import TreatmentFourPrinciplesCompass from "./treatment/TreatmentFourPrinciplesCompass";
+import TreatmentStrataModel from "./treatment/TreatmentStrataModel";
+import TreatmentQiBloodManual from "./treatment/TreatmentQiBloodManual";
+import TreatmentBioElectronicsMap from "./treatment/TreatmentBioElectronicsMap";
+import TreatmentPathogenTimeline from "./treatment/TreatmentPathogenTimeline";
+import TreatmentSafetyFlowchart from "./treatment/TreatmentSafetyFlowchart";
+import TreatmentSystemToPracticeBridge from "./treatment/TreatmentSystemToPracticeBridge";
 
 interface CurriculumDiagramProps {
   id: string;
@@ -244,6 +253,43 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
 
   if (id === "diagnosis-prescription-bridge") {
     return <DiagnosisPrescriptionBridge onNextLecture={onNextLecture} />;
+  }
+
+  // 体系カリキュラム⑦：治法論の9大図解
+  if (id === "treatment-feedback-loop") {
+    return <TreatmentFeedbackLoop />;
+  }
+
+  if (id === "treatment-vector-matrix") {
+    return <TreatmentVectorMatrix />;
+  }
+
+  if (id === "treatment-four-principles-compass") {
+    return <TreatmentFourPrinciplesCompass />;
+  }
+
+  if (id === "treatment-strata-model") {
+    return <TreatmentStrataModel />;
+  }
+
+  if (id === "treatment-qi-blood-manual") {
+    return <TreatmentQiBloodManual />;
+  }
+
+  if (id === "treatment-bio-electronics-map") {
+    return <TreatmentBioElectronicsMap />;
+  }
+
+  if (id === "treatment-pathogen-timeline") {
+    return <TreatmentPathogenTimeline />;
+  }
+
+  if (id === "treatment-safety-flowchart") {
+    return <TreatmentSafetyFlowchart />;
+  }
+
+  if (id === "treatment-system-to-practice-bridge") {
+    return <TreatmentSystemToPracticeBridge onNextLecture={onNextLecture} />;
   }
 
   if (id === "yinyang-homeostasis") {
