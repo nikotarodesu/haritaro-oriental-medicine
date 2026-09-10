@@ -33,6 +33,14 @@ import LifeDynamicsSeasonalDepth from "./lifedynamics/LifeDynamicsSeasonalDepth"
 import LifeDynamicsAncientModern from "./lifedynamics/LifeDynamicsAncientModern";
 import LifeDynamicsMindBodyTower from "./lifedynamics/LifeDynamicsMindBodyTower";
 import LifeDynamicsBreakdownBridge from "./lifedynamics/LifeDynamicsBreakdownBridge";
+import PathomechanismIcebergTimeline from "./pathomechanism/PathomechanismIcebergTimeline";
+import PathomechanismFourVectors from "./pathomechanism/PathomechanismFourVectors";
+import PathomechanismThermoXushi from "./pathomechanism/PathomechanismThermoXushi";
+import PathomechanismFluidDegeneration from "./pathomechanism/PathomechanismFluidDegeneration";
+import PathomechanismMicroLuomai from "./pathomechanism/PathomechanismMicroLuomai";
+import PathomechanismPathogenInvasion from "./pathomechanism/PathomechanismPathogenInvasion";
+import PathomechanismEmotionCascade from "./pathomechanism/PathomechanismEmotionCascade";
+import PathomechanismDiagnosticBridge from "./pathomechanism/PathomechanismDiagnosticBridge";
 
 interface CurriculumDiagramProps {
   id: string;
@@ -162,6 +170,39 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
 
   if (id === "lifedynamics-breakdown-bridge") {
     return <LifeDynamicsBreakdownBridge onNextLecture={onNextLecture} />;
+  }
+
+  // 体系カリキュラム⑤：病機論の8大図解
+  if (id === "pathomechanism-iceberg-timeline") {
+    return <PathomechanismIcebergTimeline />;
+  }
+
+  if (id === "pathomechanism-four-vectors") {
+    return <PathomechanismFourVectors />;
+  }
+
+  if (id === "pathomechanism-thermo-xushi") {
+    return <PathomechanismThermoXushi />;
+  }
+
+  if (id === "pathomechanism-fluid-degeneration") {
+    return <PathomechanismFluidDegeneration />;
+  }
+
+  if (id === "pathomechanism-micro-luomai") {
+    return <PathomechanismMicroLuomai />;
+  }
+
+  if (id === "pathomechanism-pathogen-invasion") {
+    return <PathomechanismPathogenInvasion />;
+  }
+
+  if (id === "pathomechanism-emotion-cascade") {
+    return <PathomechanismEmotionCascade />;
+  }
+
+  if (id === "pathomechanism-diagnostic-bridge") {
+    return <PathomechanismDiagnosticBridge onNextLecture={onNextLecture} />;
   }
 
   if (id === "yinyang-homeostasis") {
