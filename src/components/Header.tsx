@@ -62,16 +62,15 @@ export default function Header() {
       className="sticky top-0 z-50 bg-[#FAF8F5]/95 dark:bg-[#10161C]/95 backdrop-blur-md border-b border-[#E8E1D1] dark:border-[#22303D] transition-all duration-500"
       style={{ borderTop: `2.5px solid ${currentSeason.accentHex}` }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* ロゴエリア */}
-          <div className="flex items-center gap-3 min-w-0 pr-2">
-            <Link href="/" className="flex items-center group min-w-0">
-              <span className="font-serif text-xl sm:text-2xl font-bold tracking-wide text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors truncate">
+          <div className="flex items-center min-w-0 shrink-0">
+            <Link href="/" className="flex items-center group">
+              <span className="font-serif text-[17px] sm:text-xl md:text-2xl font-bold tracking-normal sm:tracking-wide text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors whitespace-nowrap">
                 はり太郎の東洋医学
               </span>
             </Link>
-
           </div>
 
           {/* デスクトップ ナビゲーション（2大集約メニュー） */}
@@ -331,11 +330,11 @@ export default function Header() {
           </nav>
 
           {/* モバイルヘッダー右側（マイカルテ ＆ 陰陽スイッチ & メニューボタン） */}
-          <div className="flex items-center gap-1.5 md:hidden">
+          <div className="flex items-center gap-1 sm:gap-1.5 md:hidden shrink-0">
             <button
               type="button"
               onClick={openDrawer}
-              className="relative p-1.5 rounded-full border border-[#F3DEC5] dark:border-[#4D331F] bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center"
+              className="relative p-1.5 rounded-full border border-[#F3DEC5] dark:border-[#4D331F] bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0"
               title="マイカルテ・マイ要穴集"
             >
               <Bookmark className="w-4 h-4 fill-current" />
@@ -348,7 +347,7 @@ export default function Header() {
             <YinYangSwitch />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-[#404743] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] transition-colors"
+              className="p-1.5 sm:p-2 rounded-lg text-[#404743] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] transition-colors shrink-0"
               aria-label="メニューを開く"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

@@ -11,7 +11,7 @@ export default function YinYangSwitch() {
     <button
       onClick={toggleTheme}
       type="button"
-      className="relative flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-300 group select-none
+      className="relative flex items-center gap-1.5 sm:gap-2 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full border transition-all duration-300 group select-none shrink-0
         bg-[#FAF8F5] border-[#D8CFC0] hover:border-[#1E3D34] hover:bg-[#F2EDE4]
         dark:bg-[#1A2530] dark:border-[#2D3E50] dark:hover:border-[#3A7565] dark:hover:bg-[#202E3C]"
       aria-label={`テーマを切り替える（現在: ${isDark ? "陰・ダークモード" : "陽・ライトモード"}）`}
@@ -19,7 +19,7 @@ export default function YinYangSwitch() {
     >
       {/* 太極図 SVG アイコン */}
       <div
-        className={`w-5 h-5 rounded-full transition-transform duration-500 ease-in-out drop-shadow-sm ${
+        className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full transition-transform duration-500 ease-in-out drop-shadow-sm ${
           isDark ? "rotate-180" : "rotate-0"
         }`}
       >
@@ -39,9 +39,9 @@ export default function YinYangSwitch() {
       </div>
 
       {/* 陰陽テキストラベル */}
-      <span className="text-xs font-serif font-bold tracking-widest text-[#232826] dark:text-[#E6EFEA] flex items-center gap-1">
+      <span className="text-xs font-serif font-bold tracking-wider sm:tracking-widest text-[#232826] dark:text-[#E6EFEA] flex items-center gap-1">
         <span>{isDark ? "陰" : "陽"}</span>
-        <span className="text-[10px] font-sans font-normal text-[#59615D] dark:text-[#96A6B2]">
+        <span className="hidden sm:inline text-[10px] font-sans font-normal text-[#59615D] dark:text-[#96A6B2]">
           {isDark ? "Dark" : "Light"}
         </span>
       </span>
