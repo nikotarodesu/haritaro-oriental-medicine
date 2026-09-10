@@ -13,7 +13,6 @@ import {
   GraduationCap,
   Scissors,
   Waves,
-  ShieldAlert,
   Activity
 } from "lucide-react";
 import { TSUBOS } from "@/data/tsuboData";
@@ -76,23 +75,16 @@ export default function HomePage() {
                   </Link>
                   <Link
                     href="/diagnosis"
-                    className="py-2 px-2.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1A2530] text-xs font-semibold text-center transition-colors"
+                    className="py-2 px-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1A2530] text-xs font-semibold text-center transition-colors"
                   >
                     体質診断
                   </Link>
                   <Link
-                    href="/diagnosis?tab=gokin"
-                    className="py-2 px-2 rounded-xl bg-[#FEF2F2] dark:bg-[#201111] border border-[#FECACA] dark:border-[#4C1D1D] text-[#DC2626] hover:bg-[#FEE2E2] text-xs font-semibold text-center transition-colors flex items-center gap-1"
-                  >
-                    <ShieldAlert className="w-3.5 h-3.5" />
-                    <span>五禁</span>
-                  </Link>
-                  <Link
                     href="/diagnosis?tab=gorou"
-                    className="py-2 px-2 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3E1CB] dark:border-[#423321] text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBEBD9] text-xs font-semibold text-center transition-colors flex items-center gap-1"
+                    className="py-2 px-3 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3E1CB] dark:border-[#423321] text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBEBD9] text-xs font-semibold text-center transition-colors flex items-center gap-1"
                   >
                     <Activity className="w-3.5 h-3.5" />
-                    <span>五労</span>
+                    <span>五労チェッカー</span>
                   </Link>
                 </div>
               </div>
@@ -143,9 +135,9 @@ export default function HomePage() {
           {/* 天人相応・二十四節気と五季のリアルタイム養生（合体・洗練版） */}
           <SeasonalBanner />
 
-          {/* クイックアクセス・ダッシュボード（9大機能） */}
+          {/* クイックアクセス・ダッシュボード（8大機能） */}
           <div className="mt-8 max-w-7xl mx-auto">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
               <Link
                 href="/symptoms"
                 className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group"
@@ -166,20 +158,6 @@ export default function HomePage() {
                 </div>
                 <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">気血水 体質診断</div>
                 <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">約2分で判定</div>
-              </Link>
-
-              <Link
-                href="/diagnosis?tab=gokin"
-                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3 text-center hover:border-[#DC2626] dark:hover:border-[#DC2626] hover:shadow-sm transition-all group relative"
-              >
-                <span className="absolute top-1.5 right-1.5 text-[8px] font-bold px-1 py-0.2 rounded bg-[#FCA5A5] text-[#7F1D1D]">
-                  新設
-                </span>
-                <div className="w-8 h-8 rounded-lg bg-[#FEF2F2] dark:bg-[#201111] text-[#DC2626] flex items-center justify-center mx-auto mb-1.5 group-hover:scale-110 transition-transform">
-                  <ShieldAlert className="w-4 h-4" />
-                </div>
-                <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">五禁アラート</div>
-                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">食養生・相剋</div>
               </Link>
 
               <Link

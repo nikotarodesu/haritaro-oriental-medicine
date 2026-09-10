@@ -3,10 +3,6 @@
 import React, { useState, useMemo } from "react";
 import {
   Activity,
-  Laptop,
-  Armchair,
-  Footprints,
-  Bed,
   Sparkles,
   ArrowRight,
   RotateCcw,
@@ -233,51 +229,6 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
   },
 };
 
-// 職業別クイックプリセット
-const JOB_PRESETS: {
-  id: string;
-  title: string;
-  badge: string;
-  activeIds: GorouId[];
-  desc: string;
-}[] = [
-  {
-    id: "desk",
-    title: "💻 IT・事務・プログラマー",
-    badge: "久視 × 久坐",
-    activeIds: ["kyushi", "kyuza"],
-    desc: "モニター注視と座りっぱなしによる、現代最頻出の「血虚＋脾虚」パターン。",
-  },
-  {
-    id: "service",
-    title: "☕ 接客・販売・飲食・看護",
-    badge: "久立 × 久行",
-    activeIds: ["kyuritsu", "kyukou"],
-    desc: "硬い床での立ち仕事と歩き回りによる、足腰の「骨疲弊＋筋緊張」パターン。",
-  },
-  {
-    id: "sales",
-    title: "🏃 外回り営業・配送・現場",
-    badge: "久行 × 久立",
-    activeIds: ["kyukou", "kyuritsu"],
-    desc: "長距離移動と荷物搬送による、下肢の「筋膜酷使＋腰椎負荷」パターン。",
-  },
-  {
-    id: "creator",
-    title: "🎨 クリエイター・研究・夜型",
-    badge: "久視 × 久臥",
-    activeIds: ["kyushi", "kyuga"],
-    desc: "深夜の画面凝視と不規則な寝だめによる、「精神過熱＋呼吸浅化」パターン。",
-  },
-  {
-    id: "rest",
-    title: "🛋️ 週末の寝だめ・運動不足",
-    badge: "久臥 × 久坐",
-    activeIds: ["kyuga", "kyuza"],
-    desc: "ゴロゴロ横たわりと運動停止による、「陽気不足＋水分停滞」パターン。",
-  },
-];
-
 export default function GorouWorkstyleChecker() {
   const [selectedGorou, setSelectedGorou] = useState<GorouId[]>(["kyushi", "kyuza"]);
   const [activeTab, setActiveTab] = useState<"radar" | "action" | "tsubo">("radar");
@@ -291,11 +242,6 @@ export default function GorouWorkstyleChecker() {
     } else {
       setSelectedGorou([...selectedGorou, id]);
     }
-  };
-
-  // プリセット適用
-  const handleApplyPreset = (ids: GorouId[]) => {
-    setSelectedGorou(ids);
   };
 
   // 五臓の疲弊度計算 (0 - 100)
@@ -408,117 +354,63 @@ export default function GorouWorkstyleChecker() {
 
   return (
     <div className="space-y-8">
-      {/* 1. 職業プリセット ＆ チェックリスト */}
-      <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 shadow-sm space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      {/* 1. チェックリスト */}
+      <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 pb-3">
           <div className="flex items-center gap-2">
             <Activity className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
             <h3 className="text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
-              STEP 1: あなたの日常ワークスタイルをチェック
+              STEP 1: 当てはまるワークスタイル・生活習慣を選択
             </h3>
           </div>
           <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
-            当てはまる習慣をすべて選択してください（複数可）
+            複数選択可能（タップで切り替え）
           </span>
-        </div>
-
-        {/* 職業クイックプリセット */}
-        <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2">
-          <span className="text-[11px] font-bold text-[#737C77] dark:text-[#8899A6] block">
-            ⚡ 代表的な職業パターンからワンタップ選択：
-          </span>
-          <div className="flex flex-wrap gap-2">
-            {JOB_PRESETS.map((p) => {
-              const isMatch =
-                p.activeIds.length === selectedGorou.length &&
-                p.activeIds.every((id) => selectedGorou.includes(id));
-              return (
-                <button
-                  key={p.id}
-                  onClick={() => handleApplyPreset(p.activeIds)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border flex items-center gap-1.5 ${
-                    isMatch
-                      ? "bg-[#1E3D34] text-white border-[#1E3D34] shadow-sm"
-                      : "bg-white dark:bg-[#17212A] border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5] hover:border-[#1E3D34]"
-                  }`}
-                >
-                  <span>{p.title}</span>
-                  <span className="text-[10px] opacity-80">({p.badge})</span>
-                </button>
-              );
-            })}
-          </div>
         </div>
 
         {/* 五労の5大チェックボックス */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-1">
           {(Object.keys(GOROU_DEFS) as GorouId[]).map((id) => {
             const def = GOROU_DEFS[id];
             const isChecked = selectedGorou.includes(id);
-
-            const getIcon = () => {
-              switch (id) {
-                case "kyushi":
-                  return Laptop;
-                case "kyuza":
-                  return Armchair;
-                case "kyuritsu":
-                  return Footprints;
-                case "kyukou":
-                  return Activity;
-                case "kyuga":
-                  return Bed;
-              }
-            };
-            const IconComp = getIcon();
 
             return (
               <button
                 key={id}
                 onClick={() => handleToggle(id)}
-                className={`p-3.5 rounded-xl border text-left transition-all flex flex-col justify-between relative ${
+                type="button"
+                className={`p-4 rounded-xl border text-left transition-all flex flex-col justify-between cursor-pointer ${
                   isChecked
-                    ? "bg-[#FAF8F5] dark:bg-[#1E2B37] border-[#1E3D34] dark:border-[#74BA9E] shadow-sm ring-1 ring-[#1E3D34] dark:ring-[#74BA9E]"
-                    : "bg-white dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#C5DED4] dark:hover:border-[#385060]"
+                    ? "bg-[#FAF8F5] dark:bg-[#1E2B37] border-[#1E3D34] dark:border-[#74BA9E] shadow-sm ring-1.5 ring-[#1E3D34] dark:ring-[#74BA9E]"
+                    : "bg-white dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34]/50 dark:hover:border-[#74BA9E]/50"
                 }`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <div
-                      className={`w-7 h-7 rounded-lg flex items-center justify-center ${
-                        isChecked
-                          ? "bg-[#1E3D34] text-white"
-                          : "bg-[#FAF8F5] dark:bg-[#17212A] text-[#737C77]"
-                      }`}
-                    >
-                      <IconComp className="w-4 h-4" />
-                    </div>
-                    <div
-                      className={`w-5 h-5 rounded-md border flex items-center justify-center text-xs ${
-                        isChecked
-                          ? "bg-[#1E3D34] border-[#1E3D34] text-white"
-                          : "border-[#D5CCBC] dark:border-[#2D3E50]"
-                      }`}
-                    >
-                      {isChecked && "✓"}
-                    </div>
-                  </div>
-
-                  <div className="flex items-baseline gap-1.5 mb-1">
-                    <span className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
+                    <span className="text-base font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                       {def.classicName}
                     </span>
-                    <span className="text-[10px] font-bold text-[#DC2626]">
-                      {def.classicHarm}
-                    </span>
+                    <div
+                      className={`w-5 h-5 rounded-md border flex items-center justify-center text-xs font-bold transition-all ${
+                        isChecked
+                          ? "bg-[#1E3D34] dark:bg-[#74BA9E] border-[#1E3D34] dark:border-[#74BA9E] text-white dark:text-[#121920]"
+                          : "border-[#D5CCBC] dark:border-[#2D3E50] text-transparent"
+                      }`}
+                    >
+                      ✓
+                    </div>
                   </div>
 
-                  <p className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] leading-snug">
+                  <div className="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#FEF2F2] dark:bg-[#201111] text-[#DC2626] dark:text-[#F87171] border border-[#FECACA] dark:border-[#4C1D1D] mb-2">
+                    {def.classicHarm}
+                  </div>
+
+                  <p className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] leading-snug">
                     {def.modernTitle}
                   </p>
                 </div>
 
-                <p className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-2 pt-2 border-t border-[#E5DEC9]/50 dark:border-[#2A3B4A]/50 line-clamp-2">
+                <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] mt-3 pt-2.5 border-t border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 leading-relaxed">
                   {def.modernSub}
                 </p>
               </button>
