@@ -1,6 +1,10 @@
 import { Article } from "@/types/oriental";
 
-export const ARTICLES: Article[] = [
+// 公開記事配列（ユーザー様による本格投稿に向けて、現在は非表示・準備中に設定）
+export const ARTICLES: Article[] = [];
+
+// 下書き・記事フォーマット雛形（非公開アーカイブ）
+export const DRAFT_ARTICLES: Article[] = [
   {
     id: "east-west-integrative-gerd-gastric",
     title: "【東西統合の臨床】逆流性食道炎・胃痛における相補アプローチ：西洋医学の除外診断（PPI・内視鏡）× 東洋医学の気機昇降論（中焦・半夏瀉心湯）",

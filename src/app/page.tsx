@@ -335,40 +335,54 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {featuredArticles.map((article) => (
-            <Link
-              key={article.id}
-              href={`/articles`}
-              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all flex flex-col justify-between group"
-            >
-              <div>
-                <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-2.5">
-                  <span className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#EBE4D5] dark:border-[#22303D] text-[#1E3D34] dark:text-[#83BEA8] font-medium text-[11px]">
-                    {article.category}
-                  </span>
-                  <span>約 {article.readTime}</span>
+        {featuredArticles.length === 0 ? (
+          <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-8 sm:p-12 text-center space-y-3">
+            <div className="w-12 h-12 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center mx-auto mb-1">
+              <BookOpen className="w-6 h-6" />
+            </div>
+            <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+              臨床知見・学術論文は現在執筆・準備中です
+            </h3>
+            <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] max-w-md mx-auto leading-relaxed">
+              臨床記録や医学論文の知見を順次執筆・公開してまいります。
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {featuredArticles.map((article) => (
+              <Link
+                key={article.id}
+                href={`/articles`}
+                className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all flex flex-col justify-between group"
+              >
+                <div>
+                  <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-2.5">
+                    <span className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#EBE4D5] dark:border-[#22303D] text-[#1E3D34] dark:text-[#83BEA8] font-medium text-[11px]">
+                      {article.category}
+                    </span>
+                    <span>約 {article.readTime}</span>
+                  </div>
+
+                  <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug mb-2">
+                    {article.title}
+                  </h3>
+
+                  <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-2 mb-3">
+                    {article.summary}
+                  </p>
                 </div>
 
-                <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug mb-2">
-                  {article.title}
-                </h3>
-
-                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-2 mb-3">
-                  {article.summary}
-                </p>
-              </div>
-
-              <div className="flex items-center justify-between pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] text-xs">
-                <span className="text-[#737C77] dark:text-[#8899A6] text-[11px]">執筆・監修：はり太郎</span>
-                <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform text-xs">
-                  <span>詳しく読む</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
+                <div className="flex items-center justify-between pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] text-xs">
+                  <span className="text-[#737C77] dark:text-[#8899A6] text-[11px]">執筆・監修：はり太郎</span>
+                  <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform text-xs">
+                    <span>詳しく読む</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* 5. 臨床実践ツール特設: 臨床弁証シミュレーター */}

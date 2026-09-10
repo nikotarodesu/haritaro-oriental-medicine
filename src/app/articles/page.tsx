@@ -203,51 +203,66 @@ export default function ArticlesPage() {
       </div>
 
       {/* 記事カード一覧 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredArticles.map((article) => (
-          <div
-            key={article.id}
-            onClick={() => setActiveArticle(article)}
-            className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group"
-          >
-            <div>
-              <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-3">
-                <span className="px-2.5 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] text-[#1E3D34] dark:text-[#83BEA8] font-medium">
-                  {article.category}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  <span>{article.readTime}</span>
-                </span>
-              </div>
-
-              <h2 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug mb-3">
-                {article.title}
-              </h2>
-
-              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3 mb-4">
-                {article.summary}
-              </p>
-
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {article.tags.map((tag, idx) => (
-                  <span key={idx} className="text-[10px] px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#59615D] dark:text-[#96A6B2]">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between pt-4 border-t border-[#F2ECE0] dark:border-[#22303D] text-xs">
-              <span className="text-[#737C77] dark:text-[#8899A6]">読了目安: 約 {article.readTime}</span>
-              <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                <span>記事を読む</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </span>
-            </div>
+      {filteredArticles.length === 0 ? (
+        <div className="text-center py-16 sm:py-24 px-6 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-4 max-w-xl mx-auto shadow-xs">
+          <div className="w-14 h-14 rounded-2xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center mx-auto mb-2">
+            <BookOpen className="w-7 h-7" />
           </div>
-        ))}
-      </div>
+          <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+            記事を準備中です
+          </h2>
+          <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+            現在、臨床知見および学術論文の知見を執筆・準備しています。<br className="hidden sm:inline" />
+            記事が投稿され次第、順次こちらに公開されます。
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredArticles.map((article) => (
+            <div
+              key={article.id}
+              onClick={() => setActiveArticle(article)}
+              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group"
+            >
+              <div>
+                <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-3">
+                  <span className="px-2.5 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] text-[#1E3D34] dark:text-[#83BEA8] font-medium">
+                    {article.category}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    <span>{article.readTime}</span>
+                  </span>
+                </div>
+
+                <h2 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug mb-3">
+                  {article.title}
+                </h2>
+
+                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3 mb-4">
+                  {article.summary}
+                </p>
+
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  {article.tags.map((tag, idx) => (
+                    <span key={idx} className="text-[10px] px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#59615D] dark:text-[#96A6B2]">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-4 border-t border-[#F2ECE0] dark:border-[#22303D] text-xs">
+                <span className="text-[#737C77] dark:text-[#8899A6]">読了目安: 約 {article.readTime}</span>
+                <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                  <span>記事を読む</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
