@@ -21,6 +21,8 @@ import {
   ShieldCheck,
   Stethoscope,
 } from "lucide-react";
+import { getGogyoColor, GOGYO_COLORS } from "@/utils/gogyoColor";
+import GogyoBadge from "@/components/GogyoBadge";
 
 // 五労の定義型
 export type GorouId = "kyushi" | "kyuza" | "kyuritsu" | "kyukou" | "kyuga";
@@ -589,46 +591,57 @@ export default function GorouWorkstyleChecker() {
                 className="transition-all duration-500 ease-out"
               />
 
-              {/* 各頂点ノード */}
-              {radarPoints.coords.map((c, idx) => (
-                <circle
-                  key={idx}
-                  cx={c.x}
-                  cy={c.y}
-                  r="4"
-                  fill="#DC2626"
-                  stroke="#FFFFFF"
-                  strokeWidth="1.5"
-                  className="transition-all duration-500 ease-out"
-                />
-              ))}
+              {/* 各頂点ノード（五行カラー） */}
+              {radarPoints.coords.map((c, idx) => {
+                const colors = [
+                  GOGYO_COLORS["火"],
+                  GOGYO_COLORS["土"],
+                  GOGYO_COLORS["金"],
+                  GOGYO_COLORS["水"],
+                  GOGYO_COLORS["木"]
+                ];
+                const col = colors[idx];
+                return (
+                  <circle
+                    key={idx}
+                    cx={c.x}
+                    cy={c.y}
+                    r="4.5"
+                    fill={col.accent}
+                    stroke="#FFFFFF"
+                    strokeWidth="1.5"
+                    className="transition-all duration-500 ease-out"
+                  />
+                );
+              })}
 
-              {/* ラベル */}
+              {/* ラベル（五行カラーユニバーサルデザイン連動） */}
               {[
-                { name: "心（血）", score: organScores.heart },
-                { name: "脾（肉）", score: organScores.spleen },
-                { name: "肺（気）", score: organScores.lung },
-                { name: "腎（骨）", score: organScores.kidney },
-                { name: "肝（筋）", score: organScores.liver },
+                { name: "心", element: "火", harm: "血", colorName: "朱", score: organScores.heart, col: GOGYO_COLORS["火"] },
+                { name: "脾", element: "土", harm: "肉", colorName: "琥珀", score: organScores.spleen, col: GOGYO_COLORS["土"] },
+                { name: "肺", element: "金", harm: "気", colorName: "白銀", score: organScores.lung, col: GOGYO_COLORS["金"] },
+                { name: "腎", element: "水", harm: "骨", colorName: "藍", score: organScores.kidney, col: GOGYO_COLORS["水"] },
+                { name: "肝", element: "木", harm: "筋", colorName: "翠", score: organScores.liver, col: GOGYO_COLORS["木"] },
               ].map((item, idx) => {
                 const c = radarPoints.coords[idx];
                 return (
                   <g key={idx}>
                     <text
                       x={c.labelX}
-                      y={c.labelY}
+                      y={c.labelY - 1}
                       textAnchor="middle"
                       dominantBaseline="central"
                       className="text-[11px] font-bold fill-[#232826] dark:fill-[#FAF8F5]"
                     >
-                      {item.name}
+                      {item.name}（{item.harm}）
                     </text>
                     <text
                       x={c.labelX}
                       y={c.labelY + 13}
                       textAnchor="middle"
                       dominantBaseline="central"
-                      className="text-[10px] font-mono font-bold fill-[#DC2626]"
+                      className="text-[10px] font-mono font-bold"
+                      fill={item.col.accent}
                     >
                       {item.score}%
                     </text>
@@ -655,9 +668,12 @@ export default function GorouWorkstyleChecker() {
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
               <div>
                 <span className="text-xs text-[#737C77] dark:text-[#8899A6]">最も過重負荷を受けている五臓：</span>
-                <h3 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  【{mostFatiguedOrgan.name}】が疲弊（疲弊度 {mostFatiguedOrgan.score}%）
-                </h3>
+                <div className="flex items-center gap-2 mt-1">
+                  <h3 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                    【{mostFatiguedOrgan.name}】が疲弊（疲弊度 {mostFatiguedOrgan.score}%）
+                  </h3>
+                  <GogyoBadge target={mostFatiguedOrgan.name} size="md" showColorName />
+                </div>
               </div>
               <span className="text-xs px-2.5 py-1 rounded bg-[#FEE2E2] text-[#DC2626] font-bold shrink-0 self-start sm:self-auto">
                 {mostFatiguedOrgan.harmTissue} が悲鳴

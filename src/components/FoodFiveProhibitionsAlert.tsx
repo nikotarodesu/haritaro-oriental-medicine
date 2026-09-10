@@ -19,6 +19,7 @@ import {
   ArrowRight,
   RotateCcw,
 } from "lucide-react";
+import { GOGYO_COLORS } from "@/utils/gogyoColor";
 
 // 五臓の型定義
 export type OrganKey = "liver" | "heart" | "spleen" | "lung" | "kidney";
@@ -64,10 +65,10 @@ export const PROHIBITION_DATA: Record<OrganKey, OrganProhibitionData> = {
     organName: "肝（かん）",
     kanji: "肝",
     element: "木",
-    elementColor: "#166534",
-    bgLight: "#DCFCE7",
-    bgDark: "#0D2818",
-    borderColor: "#86EFAC",
+    elementColor: GOGYO_COLORS["木"].accent,
+    bgLight: GOGYO_COLORS["木"].bgLight,
+    bgDark: GOGYO_COLORS["木"].bgDark,
+    borderColor: GOGYO_COLORS["木"].borderLight,
     symptomSummary: "目の疲労・イライラ・筋のつっぱり・情緒不安定",
     typicalComplaints: [
       "パソコンやスマホで目がかすむ・乾く",
@@ -126,10 +127,10 @@ export const PROHIBITION_DATA: Record<OrganKey, OrganProhibitionData> = {
     organName: "心（しん）",
     kanji: "心",
     element: "火",
-    elementColor: "#DC2626",
-    bgLight: "#FEE2E2",
-    bgDark: "#2B1110",
-    borderColor: "#FCA5A5",
+    elementColor: GOGYO_COLORS["火"].accent,
+    bgLight: GOGYO_COLORS["火"].bgLight,
+    bgDark: GOGYO_COLORS["火"].bgDark,
+    borderColor: GOGYO_COLORS["火"].borderLight,
     symptomSummary: "動悸・不眠・焦燥感・不安・顔色のくすみ",
     typicalComplaints: [
       "胸がドキドキしやすい（動悸）、息切れがする",
@@ -188,10 +189,10 @@ export const PROHIBITION_DATA: Record<OrganKey, OrganProhibitionData> = {
     organName: "脾（ひ・消化器）",
     kanji: "脾",
     element: "土",
-    elementColor: "#D97706",
-    bgLight: "#FEF3C7",
-    bgDark: "#261A0C",
-    borderColor: "#FCD34D",
+    elementColor: GOGYO_COLORS["土"].accent,
+    bgLight: GOGYO_COLORS["土"].bgLight,
+    bgDark: GOGYO_COLORS["土"].bgDark,
+    borderColor: GOGYO_COLORS["土"].borderLight,
     symptomSummary: "胃もたれ・食欲不振・お腹の張り・軟便・倦怠感",
     typicalComplaints: [
       "少し食べただけで胃がもたれる、食後に強い眠気が来る",
@@ -250,10 +251,10 @@ export const PROHIBITION_DATA: Record<OrganKey, OrganProhibitionData> = {
     organName: "肺（はい・呼吸器・皮膚）",
     kanji: "肺",
     element: "金",
-    elementColor: "#4B5563",
-    bgLight: "#F3F4F6",
-    bgDark: "#182028",
-    borderColor: "#D1D5DB",
+    elementColor: GOGYO_COLORS["金"].primary,
+    bgLight: GOGYO_COLORS["金"].bgLight,
+    bgDark: GOGYO_COLORS["金"].bgDark,
+    borderColor: GOGYO_COLORS["金"].borderLight,
     symptomSummary: "空咳・喉の乾燥・肌の乾燥・風邪を引きやすい",
     typicalComplaints: [
       "コンコンと乾いた咳が出る、喉がイガイガして声がかすれる",
@@ -312,10 +313,10 @@ export const PROHIBITION_DATA: Record<OrganKey, OrganProhibitionData> = {
     organName: "腎（じん・生命力・骨）",
     kanji: "腎",
     element: "水",
-    elementColor: "#0284C7",
-    bgLight: "#E0F2FE",
-    bgDark: "#0B2133",
-    borderColor: "#BAE6FD",
+    elementColor: GOGYO_COLORS["水"].accent,
+    bgLight: GOGYO_COLORS["水"].bgLight,
+    bgDark: GOGYO_COLORS["水"].bgDark,
+    borderColor: GOGYO_COLORS["水"].borderLight,
     symptomSummary: "足腰の冷え・夜間頻尿・極度の疲労・抜け毛・耳鳴り",
     typicalComplaints: [
       "腰や膝が冷えて重だるい、靴下を履いて寝ても足が冷たい",
@@ -436,13 +437,13 @@ export default function FoodFiveProhibitionsAlert({
 
   const data = PROHIBITION_DATA[selectedOrgan];
 
-  // 五行サークルの座標
+  // 五行サークルの座標（五行カラーユニバーサルデザイン完全連動）
   const elementCoords: Record<OrganKey, { x: number; y: number; kanji: string; name: string; color: string }> = {
-    liver: { x: 140, y: 150, kanji: "木", name: "肝", color: "#166534" },
-    heart: { x: 250, y: 70, kanji: "火", name: "心", color: "#DC2626" },
-    spleen: { x: 360, y: 150, kanji: "土", name: "脾", color: "#D97706" },
-    lung: { x: 320, y: 270, kanji: "金", name: "肺", color: "#4B5563" },
-    kidney: { x: 180, y: 270, kanji: "水", name: "腎", color: "#0284C7" },
+    liver: { x: 140, y: 150, kanji: "木", name: "肝", color: GOGYO_COLORS["木"].accent },
+    heart: { x: 250, y: 70, kanji: "火", name: "心", color: GOGYO_COLORS["火"].accent },
+    spleen: { x: 360, y: 150, kanji: "土", name: "脾", color: GOGYO_COLORS["土"].accent },
+    lung: { x: 320, y: 270, kanji: "金", name: "肺", color: GOGYO_COLORS["金"].primary },
+    kidney: { x: 180, y: 270, kanji: "水", name: "腎", color: GOGYO_COLORS["水"].accent },
   };
 
   // 相剋の矢印（剋する元 ➜ 剋される先）

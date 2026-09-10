@@ -19,6 +19,23 @@
     --amber-warm: #B86924;
     --amber-light: #FCF4EB;
     --shu-red: #A83629;
+
+    /* 五行カラーユニバーサルデザイン（木:翠、火:朱、土:琥珀、金:白銀、水:藍） */
+    --gogyo-wood: #1E3D34;
+    --gogyo-wood-accent: #10B981;
+    --gogyo-wood-bg: #EBF3EF;
+    --gogyo-fire: #C45A4A;
+    --gogyo-fire-accent: #DC2626;
+    --gogyo-fire-bg: #FCF4EB;
+    --gogyo-earth: #B86924;
+    --gogyo-earth-accent: #F59E0B;
+    --gogyo-earth-bg: #FEF3C7;
+    --gogyo-metal: #475569;
+    --gogyo-metal-accent: #94A3B8;
+    --gogyo-metal-bg: #F1F5F9;
+    --gogyo-water: #1E2D3D;
+    --gogyo-water-accent: #0284C7;
+    --gogyo-water-bg: #EDF3F8;
   }
 
   .dark {
