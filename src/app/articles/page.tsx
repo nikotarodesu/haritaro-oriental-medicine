@@ -134,7 +134,7 @@ export default function ArticlesPage() {
               }
               return (
                 <p key={index} className="leading-relaxed whitespace-pre-line text-[#333835] dark:text-[#C5D2DB]">
-                  <GlossaryRenderer text={block} />
+                  <GlossaryRenderer text={block.replace(/^-\s+/gm, "・ ")} />
                 </p>
               );
             })}
