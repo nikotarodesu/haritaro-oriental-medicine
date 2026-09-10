@@ -169,21 +169,13 @@ export default function SymptomsPage() {
                   onClick={() => setExpandedMatrixId(expandedMatrixId === symptom.id ? null : symptom.id)}
                   className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:bg-[#F4EFE6] dark:hover:bg-[#1A2530] transition-colors text-left"
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2.5">
                     <span className="w-7 h-7 rounded-lg bg-[#1E3D34] text-white flex items-center justify-center shrink-0">
                       <Layers className="w-4 h-4 text-[#E6C387]" />
                     </span>
-                    <div>
-                      <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
-                        <span>東西医学の「相補マトリクス」視点をチェック</span>
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-mono">
-                          西洋（陽）× 東洋（陰）
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] mt-0.5">
-                        西洋医学の除外診断（胃カメラ・MRI・薬物）と東洋医学の気機・ツボの役割分担
-                      </p>
-                    </div>
+                    <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">
+                      東西医学の「相補マトリクス」視点をチェック
+                    </span>
                   </div>
                   <div className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1 shrink-0">
                     <span>{expandedMatrixId === symptom.id ? "閉じる" : "スイッチを開く"}</span>
