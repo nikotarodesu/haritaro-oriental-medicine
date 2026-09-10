@@ -345,7 +345,7 @@ export default function CurriculumPage() {
               // 通常の段落
               return (
                 <p key={index} className="leading-relaxed whitespace-pre-line text-[#333835] dark:text-[#C5D2DB]">
-                  <GlossaryRenderer text={trimmed} />
+                  <GlossaryRenderer text={trimmed.replace(/^#{1,6}\s+/gm, "").replace(/^-\s+/gm, "・ ")} />
                 </p>
               );
             })}
