@@ -167,18 +167,18 @@ export default function CurriculumPage() {
           体系学習カリキュラム
         </h1>
         <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          現代科学・力学・情報モデルで「なぜそうなるのか」を腹落ちさせる全4ステージの講義体系。臨床家として一生モノの思考OSを身につけます。
+          現代科学・力学・情報モデルで「なぜそうなるのか」を腹落ちさせる体系講義。臨床家として一生モノの思考OSを身につけます。
         </p>
       </div>
 
-      {/* 4つのステージ別講義リスト */}
+      {/* 分野別講義リスト */}
       <div className="space-y-12">
         {CURRICULUM_DATA.map((stage) => (
           <div
             key={stage.id}
             className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-9 shadow-sm transition-colors space-y-6"
           >
-            {/* ステージヘッダー */}
+            {/* セクションヘッダー */}
             <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4">
               <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-widest">
                 {stage.subtitle}

@@ -25,14 +25,14 @@ export const CURRICULUM_DATA: CurriculumStage[] = [
   {
     id: "stage-1",
     stageNumber: 1,
-    title: "STAGE 1: 基礎理論編",
+    title: "基礎理論編",
     subtitle: "東洋医学概論・人体観の土台",
     description: "陰陽・五行・気血津液。古代の知恵を情報科学・複雑適応系の視点から読み解き、人体の動的平衡を捉える思考OSをインストールします。",
     lectures: [
       {
         id: "lecture-1-yinyang",
         stageId: "stage-1",
-        stageTitle: "STAGE 1: 基礎理論編",
+        stageTitle: "基礎理論編",
         lectureNumber: 1,
         title: "第1講：陰陽論 ― 世界を記述するための二値・情報モデル",
         subtitle: "神秘思想を脱却し、人体の動的状態空間を理解する",
@@ -128,7 +128,7 @@ export const CURRICULUM_DATA: CurriculumStage[] = [
       {
         id: "lecture-2-wuxing",
         stageId: "stage-1",
-        stageTitle: "STAGE 1: 基礎理論編",
+        stageTitle: "基礎理論編",
         lectureNumber: 2,
         title: "第2講：五行論 ― 複雑適応系の五相循環動態",
         subtitle: "木火土金水：臓腑間ネットワークとフィードバック制御",
@@ -145,7 +145,7 @@ export const CURRICULUM_DATA: CurriculumStage[] = [
       {
         id: "lecture-3-qiblood",
         stageId: "stage-1",
-        stageTitle: "STAGE 1: 基礎理論編",
+        stageTitle: "基礎理論編",
         lectureNumber: 3,
         title: "第3講：気血津液論 ― エネルギー代謝と体液循環の病態学",
         subtitle: "気虚・気滞・血虚・瘀血・水滞の鑑別と臨床力動",
@@ -164,14 +164,14 @@ export const CURRICULUM_DATA: CurriculumStage[] = [
   {
     id: "stage-2",
     stageNumber: 2,
-    title: "STAGE 2: 経絡経穴編",
+    title: "経絡経穴編",
     subtitle: "経絡経穴概論・高感受性入力系",
     description: "十四経脈の流注と361穴。経絡を生体情報・力学ネットワーク、経穴を刺激入力インターフェースとして捉え直します。",
     lectures: [
       {
         id: "lecture-4-meridian",
         stageId: "stage-2",
-        stageTitle: "STAGE 2: 経絡経穴編",
+        stageTitle: "経絡経穴編",
         lectureNumber: 4,
         title: "第4講：経絡論 ― 生体情報・力学ネットワークの統合モデル",
         subtitle: "筋膜連続性（アナトミートレイン）と神経血管走行の交差点",
@@ -188,7 +188,7 @@ export const CURRICULUM_DATA: CurriculumStage[] = [
       {
         id: "lecture-5-acupoints",
         stageId: "stage-2",
-        stageTitle: "STAGE 2: 経絡経穴編",
+        stageTitle: "経絡経穴編",
         lectureNumber: 5,
         title: "第5講：経穴論 ― 刺激入力インターフェースとしての再定義",
         subtitle: "骨度法取穴の極意と、要穴（原・合・兪・募・五兪穴）の体系",
@@ -207,14 +207,14 @@ export const CURRICULUM_DATA: CurriculumStage[] = [
   {
     id: "stage-3",
     stageNumber: 3,
-    title: "STAGE 3: 診断学編",
+    title: "診断学編",
     subtitle: "東洋医学臨床論・四診と弁証",
     description: "望聞問切。患者の身体サインを収集し、八綱弁証・臓腑弁証へと落とし込む診断アルゴリズムを体系化します。",
     lectures: [
       {
         id: "lecture-6-diagnosis",
         stageId: "stage-3",
-        stageTitle: "STAGE 3: 診断学編",
+        stageTitle: "診断学編",
         lectureNumber: 6,
         title: "第6講：四診法と弁証論治 ― 望聞問切から導く診断アルゴリズム",
         subtitle: "舌診・脈診・腹診の身体所見を論理的に統合する",
@@ -233,14 +233,14 @@ export const CURRICULUM_DATA: CurriculumStage[] = [
   {
     id: "stage-4",
     stageNumber: 4,
-    title: "STAGE 4: 鍼灸実践編",
+    title: "鍼灸実践編",
     subtitle: "鍼灸実技・臨床応用と現代医科学",
     description: "配穴の切れ味、補瀉手技の生理的意義、そして内因性オピオイドや下行性疼痛抑制系との統合を極めます。",
     lectures: [
       {
         id: "lecture-7-practice",
         stageId: "stage-4",
-        stageTitle: "STAGE 4: 鍼灸実践編",
+        stageTitle: "鍼灸実践編",
         lectureNumber: 7,
         title: "第7講：配穴の極意と物理刺激の生体恒常性カスケード",
         subtitle: "開四関・表裏配穴の切れ味と、神経科学的エビデンス",

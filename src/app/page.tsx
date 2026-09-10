@@ -148,7 +148,7 @@ export default function HomePage() {
                   <GraduationCap className="w-4 h-4" />
                 </div>
                 <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">学習カリキュラム</div>
-                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">全4ステージ講義</div>
+                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">基礎〜臨床実践</div>
               </Link>
 
               <Link
