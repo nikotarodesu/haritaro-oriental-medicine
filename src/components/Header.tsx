@@ -11,7 +11,8 @@ import {
   GraduationCap, 
   BookOpen, 
   ChevronDown,
-  ArrowRight
+  ArrowRight,
+  Layers
 } from "lucide-react";
 import YinYangSwitch from "./YinYangSwitch";
 
@@ -166,6 +167,29 @@ export default function Header() {
                   </Link>
 
                   <Link
+                    href="/simulator"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 mt-0.5">
+                      <Layers className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                          三段階 臨床弁証シミュレーター
+                        </span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
+                          新設
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        八綱➜気血水➜臓腑➜一文の証＆最小ツボ
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
                     href="/tsubo"
                     onClick={() => setOpenDropdown(null)}
                     className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
@@ -270,6 +294,19 @@ export default function Header() {
             >
               <GraduationCap className="w-4 h-4" />
               <span>体系学習カリキュラム</span>
+            </Link>
+            <Link
+              href="/simulator"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-bold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2117]"
+            >
+              <div className="flex items-center gap-3">
+                <Layers className="w-4 h-4" />
+                <span>三段階 臨床弁証シミュレーター</span>
+              </div>
+              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
+                新設
+              </span>
             </Link>
             <Link
               href="/tsubo"

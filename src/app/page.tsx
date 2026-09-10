@@ -104,20 +104,20 @@ export default function HomePage() {
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                   <Link
-                    href="/tsubo"
-                    className="py-2 px-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1A2530] text-xs font-semibold text-center transition-colors flex items-center gap-1"
+                    href="/simulator"
+                    className="py-2 px-3 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3E1CB] dark:border-[#423321] text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBEBD9] dark:hover:bg-[#362B1D] text-xs font-semibold text-center transition-colors flex items-center gap-1"
                   >
-                    <Compass className="w-3.5 h-3.5" />
-                    <span>ツボ辞典</span>
+                    <Layers className="w-3.5 h-3.5" />
+                    <span>弁証シミュレーター</span>
                   </Link>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* クイックアクセス・ダッシュボード */}
-          <div className="mt-8 max-w-4xl mx-auto">
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+          {/* クイックアクセス・ダッシュボード（6大機能） */}
+          <div className="mt-8 max-w-5xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               <Link
                 href="/symptoms"
                 className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group"
@@ -138,6 +138,20 @@ export default function HomePage() {
                 </div>
                 <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">気血水 体質診断</div>
                 <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">約2分でタイプ判定</div>
+              </Link>
+
+              <Link
+                href="/simulator"
+                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group relative"
+              >
+                <span className="absolute top-2 right-2 text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
+                  新設
+                </span>
+                <div className="w-9 h-9 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+                  <Layers className="w-4 h-4" />
+                </div>
+                <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">弁証シミュレーター</div>
+                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">三段階フィルタ</div>
               </Link>
 
               <Link
@@ -164,7 +178,7 @@ export default function HomePage() {
 
               <Link
                 href="/articles"
-                className="col-span-2 sm:col-span-1 bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group"
+                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group"
               >
                 <div className="w-9 h-9 rounded-lg bg-[#EDF3F8] dark:bg-[#1A2837] text-[#1E2D3D] dark:text-[#6FA0D6] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
                   <BookOpen className="w-4 h-4" />
@@ -356,7 +370,75 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. 東洋医学の3つの根幹（要点を簡潔に） */}
+      {/* 5. 臨床実践ツール特設: 三段階フィルタリング弁証シミュレーター */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gradient-to-br from-[#1E2D3D] via-[#16222E] to-[#0E1720] dark:from-[#141E28] dark:via-[#0F161E] dark:to-[#080D12] rounded-3xl p-6 sm:p-10 lg:p-12 text-[#FAF8F5] relative overflow-hidden shadow-xl border border-[#2B4055] dark:border-[#223344]">
+          {/* 背景装飾 */}
+          <div className="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-[#74BA9E]/15 blur-3xl pointer-events-none" />
+          <div className="absolute right-10 bottom-6 opacity-10 pointer-events-none hidden lg:block select-none">
+            <span className="font-serif text-[180px] font-bold">辨證</span>
+          </div>
+
+          <div className="max-w-2xl relative z-10 space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EBF3EF]/15 border border-[#74BA9E]/30 text-[#E6C387] text-xs font-semibold tracking-wider">
+              <Layers className="w-3.5 h-3.5 text-[#E6C387]" />
+              <span>臨床実践論・Web弁証ツール</span>
+              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
+                新設
+              </span>
+            </div>
+
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight leading-snug">
+              八綱 ➜ 気血水 ➜ 臓腑経絡<br />
+              三段階フィルタリング臨床弁証シミュレーター
+            </h2>
+
+            <p className="text-xs sm:text-sm text-[#C5D3DF] leading-relaxed">
+              臨床ノートの「診断論・実践論」に基づく本格診断ツール。<br className="hidden sm:inline" />
+              八綱（表裏・寒熱・虚実） ➜ 気血水（運動動態） ➜ 臓腑経絡（局在病位）を順に選択するだけで、
+              自動的に論理的な<strong className="text-[#E6C387]">「一文の証」</strong>が組み上がり、
+              臨床で最も切れ味の高い<strong className="text-[#E6C387]">「最小構成のツボ（例：太衝＋陽陵泉）」</strong>が即座に導き出されます。
+            </p>
+
+            {/* 3ステップ概念図 */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 py-2 text-xs">
+              <div className="bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-xl p-3 border border-white/15">
+                <span className="text-[10px] text-[#E6C387] font-bold block mb-0.5">STEP 1</span>
+                <span className="font-bold block text-sm">八綱フィルタ</span>
+                <span className="text-[11px] text-[#A0B0BC]">病の深浅と生体反応の勢い</span>
+              </div>
+              <div className="bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-xl p-3 border border-white/15">
+                <span className="text-[10px] text-[#E6C387] font-bold block mb-0.5">STEP 2</span>
+                <span className="font-bold block text-sm">気血水動態</span>
+                <span className="text-[11px] text-[#A0B0BC]">循環・鬱滞・虚損の方向性</span>
+              </div>
+              <div className="bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-xl p-3 border border-white/15">
+                <span className="text-[10px] text-[#E6C387] font-bold block mb-0.5">STEP 3</span>
+                <span className="font-bold block text-sm">臓腑局在</span>
+                <span className="text-[11px] text-[#A0B0BC]">五臓五腑の失調病位へ帰着</span>
+              </div>
+            </div>
+
+            <div className="pt-2 flex flex-wrap items-center gap-3">
+              <Link
+                href="/simulator"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#E6C387] text-[#1E2D3D] hover:bg-[#DFC07D] font-bold text-xs sm:text-sm shadow-md transition-all group"
+              >
+                <span>弁証シミュレーターを試す</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link
+                href="/curriculum"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-[#FAF8F5] text-xs font-semibold transition-all"
+              >
+                <span>体系学習カリキュラム</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. 東洋医学の3つの根幹（要点を簡潔に） */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-10">
           <div className="text-center max-w-xl mx-auto mb-8">
