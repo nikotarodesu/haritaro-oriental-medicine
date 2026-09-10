@@ -2,18 +2,22 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Layers, Scissors, Sparkles, ArrowRight, Activity, Stethoscope } from "lucide-react";
+import { Layers, Scissors, Waves, Sparkles, ArrowRight, Activity, Stethoscope } from "lucide-react";
 import ThreeStageSimulator from "@/components/ThreeStageSimulator";
 import HaiketsuOptimizer from "@/components/HaiketsuOptimizer";
+import KeikiDepthSimulator from "@/components/KeikiDepthSimulator";
 
 export default function SimulatorHub() {
-  const [activeTool, setActiveTool] = useState<"diagnosis" | "haiketsu">("diagnosis");
+  const [activeTool, setActiveTool] = useState<"diagnosis" | "haiketsu" | "keiki">("diagnosis");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
-      if (params.get("tab") === "haiketsu" || params.get("tool") === "haiketsu") {
+      const tab = params.get("tab") || params.get("tool");
+      if (tab === "haiketsu") {
         setActiveTool("haiketsu");
+      } else if (tab === "keiki" || tab === "goyu" || tab === "depth") {
+        setActiveTool("keiki");
       }
     }
   }, []);
@@ -45,7 +49,19 @@ export default function SimulatorHub() {
           >
             <Scissors className="w-4 h-4 text-[#A83629] dark:text-[#C47A72]" />
             <span>② 配穴の「最小構成」シミュレーター</span>
-            <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
+          </button>
+
+          <button
+            onClick={() => setActiveTool("keiki")}
+            className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+              activeTool === "keiki"
+                ? "bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] shadow-sm"
+                : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
+            }`}
+          >
+            <Waves className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+            <span>③ 経気深度シミュレーター</span>
+            <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#74BA9E] text-[#121920]">
               新設
             </span>
           </button>
@@ -180,6 +196,73 @@ export default function SimulatorHub() {
           </div>
 
           <HaiketsuOptimizer />
+        </div>
+      )}
+
+      {/* 3. 経気深度シミュレーター */}
+      {activeTool === "keiki" && (
+        <div className="space-y-10 animate-fadeIn">
+          {/* ツール見出し */}
+          <div className="text-center space-y-4 max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-semibold tracking-wider">
+              <Waves className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
+              <span>難経六十八難 経気水流モデル ＆ 病態深度連動</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-tight">
+              経気深度シミュレーター<br className="hidden sm:inline" />
+              <span className="text-[#1E3D34] dark:text-[#74BA9E] text-2xl sm:text-3xl font-normal block mt-1">
+                ― 井・滎・兪・経・合の動態と病態深浅の完全可視化 ―
+              </span>
+            </h2>
+
+            <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+              指先から肘・膝に向かって経気が「出・流・注・行・入」と深まる『難経』の水流モデルを動的に可視化。<br className="hidden sm:inline" />
+              「急性・熱感 ➜ 滎穴」「慢性・重だるさ ➜ 兪穴」「逆流・内臓疾患 ➜ 合穴」と、
+              病態の深さに応じて光るツボと臨床適応がリアルタイムに切り替わります。
+            </p>
+
+            {/* 3大理念カード */}
+            <div className="pt-2 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
+              <div className="p-3.5 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm">
+                <span className="text-[10px] font-bold text-[#2B8256] block mb-1">
+                  1. 出流注入の水流動態
+                </span>
+                <p className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] mb-0.5">
+                  井・滎・兪・経・合
+                </p>
+                <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-snug">
+                  泉湧き、小川流れ、大河へ注ぎ、本流を巡り、大海へ没する経気の深まりを体感。
+                </p>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm">
+                <span className="text-[10px] font-bold text-[#B86924] dark:text-[#E6C387] block mb-1">
+                  2. 病態深浅のワンタップ逆引き
+                </span>
+                <p className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] mb-0.5">
+                  難経六十八難の主治
+                </p>
+                <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-snug">
+                  心下満・身熱・体重節痛・喘咳寒熱・逆気而泄の5大主治から瞬時にツボへ誘導。
+                </p>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm">
+                <span className="text-[10px] font-bold text-[#1D4ED8] block mb-1">
+                  3. 刺鍼深度 ＆ 生理学連動
+                </span>
+                <p className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] mb-0.5">
+                  浅刺1mm 〜 最深刺20mm
+                </p>
+                <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-snug">
+                  体表受容器の覚醒から主要神経幹・自律神経反射弓まで、作用機序を完全網羅。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <KeikiDepthSimulator />
         </div>
       )}
     </div>

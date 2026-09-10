@@ -11,7 +11,8 @@ import {
   Layers,
   Award,
   GraduationCap,
-  Scissors
+  Scissors,
+  Waves
 } from "lucide-react";
 import { TSUBOS } from "@/data/tsuboData";
 import { ARTICLES } from "@/data/articleData";
@@ -401,7 +402,14 @@ export default function HomePage() {
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-[#FAF8F5] text-xs font-bold transition-all group"
               >
                 <Scissors className="w-4 h-4 text-[#E6C387]" />
-                <span>配穴 最小構成シミュレーター</span>
+                <span>配穴 最小構成</span>
+              </Link>
+              <Link
+                href="/simulator?tab=keiki"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-[#FAF8F5] text-xs font-bold transition-all group"
+              >
+                <Waves className="w-4 h-4 text-[#74BA9E]" />
+                <span>経気深度シミュレーター</span>
               </Link>
               <Link
                 href="/curriculum"

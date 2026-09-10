@@ -13,7 +13,8 @@ import {
   ChevronDown,
   ArrowRight,
   Layers,
-  Scissors
+  Scissors,
+  Waves
 } from "lucide-react";
 import YinYangSwitch from "./YinYangSwitch";
 
@@ -214,6 +215,29 @@ export default function Header() {
                   </Link>
 
                   <Link
+                    href="/simulator?tab=keiki"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 mt-0.5">
+                      <Waves className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                          経気深度シミュレーター
+                        </span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#74BA9E] text-[#121920]">
+                          新設
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        五輸穴の水流モデル＆病態深浅連動
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
                     href="/tsubo"
                     onClick={() => setOpenDropdown(null)}
                     className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
@@ -342,6 +366,19 @@ export default function Header() {
                 <span>配穴「最小構成」シミュレーター</span>
               </div>
               <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#C47A72] text-white">
+                新設
+              </span>
+            </Link>
+            <Link
+              href="/simulator?tab=keiki"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#182823]"
+            >
+              <div className="flex items-center gap-3">
+                <Waves className="w-4 h-4" />
+                <span>経気深度シミュレーター</span>
+              </div>
+              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#74BA9E] text-[#121920]">
                 新設
               </span>
             </Link>
