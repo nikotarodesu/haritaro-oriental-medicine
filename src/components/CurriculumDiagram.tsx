@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Sparkles } from "lucide-react";
+import WuxingDynamicChart from "./WuxingDynamicChart";
 
 interface CurriculumDiagramProps {
   id: string;
@@ -155,6 +156,10 @@ export default function CurriculumDiagram({ id }: CurriculumDiagramProps) {
         </figcaption>
       </figure>
     );
+  }
+
+  if (id === "wuxing-dynamic-chart" || id === "wuxing-chart") {
+    return <WuxingDynamicChart />;
   }
 
   return null;
