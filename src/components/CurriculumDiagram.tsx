@@ -25,6 +25,14 @@ import QiBloodTriangle from "./qiblood/QiBloodTriangle";
 import QiBloodDominoProcess from "./qiblood/QiBloodDominoProcess";
 import QiBloodConstitutionChecker from "./qiblood/QiBloodConstitutionChecker";
 import QiBloodClinicalFlow from "./qiblood/QiBloodClinicalFlow";
+import LifeDynamicsFourLayers from "./lifedynamics/LifeDynamicsFourLayers";
+import LifeDynamicsYingweiSanjiao from "./lifedynamics/LifeDynamicsYingweiSanjiao";
+import LifeDynamicsDynamicXushi from "./lifedynamics/LifeDynamicsDynamicXushi";
+import LifeDynamicsBiaoliPipeline from "./lifedynamics/LifeDynamicsBiaoliPipeline";
+import LifeDynamicsSeasonalDepth from "./lifedynamics/LifeDynamicsSeasonalDepth";
+import LifeDynamicsAncientModern from "./lifedynamics/LifeDynamicsAncientModern";
+import LifeDynamicsMindBodyTower from "./lifedynamics/LifeDynamicsMindBodyTower";
+import LifeDynamicsBreakdownBridge from "./lifedynamics/LifeDynamicsBreakdownBridge";
 
 interface CurriculumDiagramProps {
   id: string;
@@ -121,6 +129,39 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
 
   if (id === "qiblood-clinical-flow") {
     return <QiBloodClinicalFlow onNextLecture={onNextLecture} />;
+  }
+
+  // 体系カリキュラム④：生命機能論の8大図解
+  if (id === "lifedynamics-four-layers") {
+    return <LifeDynamicsFourLayers />;
+  }
+
+  if (id === "lifedynamics-yingwei-sanjiao") {
+    return <LifeDynamicsYingweiSanjiao />;
+  }
+
+  if (id === "lifedynamics-dynamic-xushi") {
+    return <LifeDynamicsDynamicXushi />;
+  }
+
+  if (id === "lifedynamics-biaoli-pipeline") {
+    return <LifeDynamicsBiaoliPipeline />;
+  }
+
+  if (id === "lifedynamics-seasonal-depth") {
+    return <LifeDynamicsSeasonalDepth />;
+  }
+
+  if (id === "lifedynamics-ancient-modern") {
+    return <LifeDynamicsAncientModern />;
+  }
+
+  if (id === "lifedynamics-mind-body-tower") {
+    return <LifeDynamicsMindBodyTower />;
+  }
+
+  if (id === "lifedynamics-breakdown-bridge") {
+    return <LifeDynamicsBreakdownBridge onNextLecture={onNextLecture} />;
   }
 
   if (id === "yinyang-homeostasis") {
