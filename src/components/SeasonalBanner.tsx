@@ -1,24 +1,20 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import Link from "next/link";
 import { 
   Calendar, 
   Utensils, 
   HeartPulse, 
-  Sparkles, 
+  Sparkles,
   ArrowRight, 
-  RotateCcw,
-  SlidersHorizontal,
-  X,
-  Sprout,
-  Sun,
-  Compass,
-  Wind,
-  Snowflake,
-  Volume2
+  Sprout, 
+  Sun, 
+  Compass, 
+  Wind, 
+  Snowflake 
 } from "lucide-react";
-import { useSeasonalTheme, SeasonKey, SEASON_THEMES } from "@/contexts/SeasonalThemeContext";
+import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
 import ClipButton from "@/components/ClipButton";
 import GogyoBadge from "@/components/GogyoBadge";
 
@@ -26,15 +22,8 @@ export default function SeasonalBanner() {
   const { 
     currentSeason, 
     todayTerm, 
-    isDoyoToday, 
-    todayDoyoInfo, 
-    currentDateFormatted, 
-    isLive, 
-    setPreviewSeason, 
-    resetToLiveToday 
+    currentDateFormatted 
   } = useSeasonalTheme();
-
-  const [selectorOpen, setSelectorOpen] = useState(false);
 
   // 季節アイコン選択
   const renderSeasonIcon = (type: string, className = "w-4 h-4") => {
@@ -53,8 +42,6 @@ export default function SeasonalBanner() {
         return <Wind className={className} />;
     }
   };
-
-  const seasonKeys: SeasonKey[] = ["spring", "summer", "doyo", "autumn", "winter"];
 
   // キャッチコピーの分解（見出しと補足文）
   const { leadPhrase, bodyPhrase } = useMemo(() => {
@@ -121,86 +108,17 @@ export default function SeasonalBanner() {
             </span>
           </div>
 
-          {/* 右側：プレビュー復帰 ＆ 体感セレクターボタン ＆ コラムリンク */}
+          {/* 右側：養生論リンク */}
           <div className="flex items-center gap-2 shrink-0 self-start lg:self-center">
-            {!isLive && (
-              <button
-                onClick={resetToLiveToday}
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-[#FCF4EB] dark:bg-[#251A14] text-[#B86924] dark:text-[#E6C387] hover:opacity-85 transition-opacity border border-[#F3DEC5] dark:border-[#4D331F]"
-              >
-                <RotateCcw className="w-3 h-3" />
-                <span>本日（自動）に戻す</span>
-              </button>
-            )}
-
-            <button
-              onClick={() => setSelectorOpen(!selectorOpen)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all"
-            >
-              <SlidersHorizontal className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-              <span>五季を切り替えて体感</span>
-            </button>
-
             <Link 
               href="/articles" 
-              className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline px-2 py-1"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A]"
             >
-              <span>養生論</span>
+              <span>季節の養生論</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
-
-        {/* 五季手動プレビュー切り替えセレクター（開閉式） */}
-        {selectorOpen && (
-          <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] animate-fadeIn space-y-3">
-            <div className="flex items-center justify-between text-xs font-bold text-[#59615D] dark:text-[#96A6B2]">
-              <span className="flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                <span>五季（木・火・土・金・水）の気の巡りを手動で切り替える：</span>
-              </span>
-              <button 
-                onClick={() => setSelectorOpen(false)} 
-                className="p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-              {seasonKeys.map((key) => {
-                const s = SEASON_THEMES[key];
-                const isSelected = currentSeason.key === key;
-                return (
-                  <button
-                    key={key}
-                    onClick={() => setPreviewSeason(key)}
-                    className={`p-2.5 rounded-xl text-left border transition-all ${
-                      isSelected
-                        ? "bg-white dark:bg-[#1A2530] border-2 shadow-sm font-bold"
-                        : "bg-white/70 dark:bg-[#1A2530]/70 border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-white dark:hover:bg-[#1A2530]"
-                    }`}
-                    style={{ borderColor: isSelected ? s.accentHex : undefined }}
-                  >
-                    <div className="flex items-center gap-1.5 text-xs">
-                      {renderSeasonIcon(s.iconType, "w-3.5 h-3.5")}
-                      <span className="font-serif">{s.name}（{s.element}）</span>
-                    </div>
-                    <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5 truncate">
-                      {s.organ}
-                    </div>
-                    <div 
-                      className="text-[9px] font-mono mt-1 px-1.5 py-0.2 rounded w-fit" 
-                      style={{ backgroundColor: `${s.lightBgHex}` }}
-                    >
-                      {s.colorName}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
 
         {/* 2. メインメッセージ（季節の宣言 ＆ 気の運行） */}
         <div className="space-y-2">

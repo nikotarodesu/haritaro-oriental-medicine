@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
+import React, { createContext, useContext, useEffect, useMemo } from "react";
 import { getSeasonalAdvice, SolarTermInfo, DoyoPeriodInfo } from "@/data/solarTermsData";
 
 export type SeasonKey = "spring" | "summer" | "doyo" | "autumn" | "winter";
@@ -136,9 +136,7 @@ function mapFiveSeasonToKey(fiveSeasonStr: string, isDoyo: boolean): SeasonKey {
 }
 
 export function SeasonalThemeProvider({ children }: { children: React.ReactNode }) {
-  const [previewKey, setPreviewKey] = useState<SeasonKey | null>(null);
-
-  // 本日判定データ
+  // 本日判定データ（常に自動切換え・自動連動）
   const todayData = useMemo(() => {
     return getSeasonalAdvice();
   }, []);
@@ -147,19 +145,18 @@ export function SeasonalThemeProvider({ children }: { children: React.ReactNode 
     return mapFiveSeasonToKey(todayData.term.fiveSeason, todayData.isDoyo);
   }, [todayData]);
 
-  const activeSeasonKey = previewKey || liveSeasonKey;
-  const currentSeason = SEASON_THEMES[activeSeasonKey];
+  const currentSeason = SEASON_THEMES[liveSeasonKey];
 
-  // CSS変数をhtml要素に反映
+  // CSS変数をhtml要素に反映（現在日付の季節に100%自動連動）
   useEffect(() => {
     const root = document.documentElement;
-    root.setAttribute("data-season", activeSeasonKey);
+    root.setAttribute("data-season", liveSeasonKey);
     root.style.setProperty("--season-primary", currentSeason.primaryHex);
     root.style.setProperty("--season-accent", currentSeason.accentHex);
     root.style.setProperty("--season-border", currentSeason.borderHex);
     root.style.setProperty("--season-light-bg", currentSeason.lightBgHex);
     root.style.setProperty("--season-dark-bg", currentSeason.darkBgHex);
-  }, [activeSeasonKey, currentSeason]);
+  }, [liveSeasonKey, currentSeason]);
 
   const value: SeasonalThemeContextType = {
     currentSeason,
@@ -167,10 +164,10 @@ export function SeasonalThemeProvider({ children }: { children: React.ReactNode 
     isDoyoToday: todayData.isDoyo,
     todayDoyoInfo: todayData.doyoInfo,
     currentDateFormatted: todayData.currentDateFormatted,
-    isLive: previewKey === null,
-    previewSeasonKey: previewKey,
-    setPreviewSeason: (key) => setPreviewKey(key),
-    resetToLiveToday: () => setPreviewKey(null)
+    isLive: true,
+    previewSeasonKey: null,
+    setPreviewSeason: () => {},
+    resetToLiveToday: () => {}
   };
 
   return (
