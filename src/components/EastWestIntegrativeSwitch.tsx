@@ -357,16 +357,6 @@ export default function EastWestIntegrativeSwitch({
     <div className={`bg-white dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm overflow-hidden transition-all duration-300 ${className}`}>
       {/* 統合ヘッダー帯 */}
       <div className="bg-gradient-to-r from-[#1E2D3D] via-[#1E3D34] to-[#B86924] p-5 sm:p-7 text-white">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="px-2.5 py-0.5 rounded-full bg-white/20 text-white font-mono text-[11px] font-bold tracking-wider backdrop-blur-sm flex items-center gap-1">
-            <Sparkles className="w-3 h-3 text-[#E6C387]" />
-            陰陽論第8節 相補マトリクス
-          </span>
-          <span className="text-xs text-white/80 hidden sm:inline">
-            西洋医学（陽）× 東洋医学（陰）
-          </span>
-        </div>
-
         <div className="text-xl sm:text-2xl font-serif font-bold tracking-tight">
           {currentCase.title}
         </div>
