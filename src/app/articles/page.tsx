@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ARTICLES } from "@/data/articleData";
 import { Article } from "@/types/oriental";
-import { BookOpen, Calendar, Clock, ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
+import { BookOpen, Clock, ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
 import EastWestTermSwitch from "@/components/EastWestTermSwitch";
@@ -51,10 +51,6 @@ export default function ArticlesPage() {
             <div className="flex flex-wrap items-center gap-3 text-xs text-[#59615D] dark:text-[#96A6B2]">
               <span className="px-2.5 py-0.5 rounded bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] font-medium border border-[#F3E1CB] dark:border-[#423321]">
                 {activeArticle.category}
-              </span>
-              <span className="flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5" />
-                <span>{activeArticle.publishedAt}</span>
               </span>
               <span className="flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5" />
@@ -243,7 +239,7 @@ export default function ArticlesPage() {
             </div>
 
             <div className="flex items-center justify-between pt-4 border-t border-[#F2ECE0] dark:border-[#22303D] text-xs">
-              <span className="text-[#737C77] dark:text-[#8899A6]">{article.publishedAt}</span>
+              <span className="text-[#737C77] dark:text-[#8899A6]">読了目安: 約 {article.readTime}</span>
               <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                 <span>記事を読む</span>
                 <ArrowRight className="w-3.5 h-3.5" />

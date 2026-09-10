@@ -360,7 +360,7 @@ export default function HomePage() {
               </div>
 
               <div className="flex items-center justify-between pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] text-xs">
-                <span className="text-[#737C77] dark:text-[#8899A6] text-[11px]">{article.publishedAt}</span>
+                <span className="text-[#737C77] dark:text-[#8899A6] text-[11px]">執筆・監修：はり太郎</span>
                 <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform text-xs">
                   <span>詳しく読む</span>
                   <ArrowRight className="w-3.5 h-3.5" />
