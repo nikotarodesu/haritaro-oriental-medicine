@@ -4,7 +4,6 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const notoSerifJP = Noto_Serif_JP({
   variable: "--font-noto-serif",
@@ -28,7 +27,7 @@ export const metadata: Metadata = {
   },
   description: "数千年の臨床智慧と現代神経科学が結実した東洋医学ポータル。基礎理論から臨床実践までを体系化。症状別ツボ検索、361経穴データベース、気血水体質診断、古典と最新論文の学術的解説。",
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "",
+    google: "EQTaU5bcfwSgFprso13sFiyF35uZ5IHhaGz56GXqXbo",
   },
   openGraph: {
     type: "website",
@@ -65,7 +64,20 @@ export default function RootLayout({
   return (
     <html lang="ja" suppressHydrationWarning className={`${notoSerifJP.variable} ${notoSansJP.variable} h-full antialiased`}>
       <head>
-        <GoogleAnalytics />
+        {/* Google Analytics 4 (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GC398NZKVE" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-GC398NZKVE', {
+                page_path: window.location.pathname,
+              });
+            `,
+          }}
+        />
         {/* 初期テーマ適用スクリプト（画面ちらつき防止） */}
         <script
           dangerouslySetInnerHTML={{
