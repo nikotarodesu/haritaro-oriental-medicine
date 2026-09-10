@@ -4,12 +4,11 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { DIAGNOSIS_QUESTIONS, DIAGNOSIS_RESULTS } from "@/data/diagnosisData";
 import { DiagnosisResultType } from "@/types/oriental";
-import { Stethoscope, CheckCircle2, RotateCcw, Utensils, HeartPulse, Sparkles, ArrowRight, Layers, Activity } from "lucide-react";
-import ThreeStageSimulator from "@/components/ThreeStageSimulator";
+import { Stethoscope, CheckCircle2, RotateCcw, Utensils, HeartPulse, Sparkles, ArrowRight, Activity } from "lucide-react";
 import GorouWorkstyleChecker from "@/components/GorouWorkstyleChecker";
 
 export default function DiagnosisPage() {
-  const [activeTab, setActiveTab] = useState<"self" | "gorou" | "simulator">("self");
+  const [activeTab, setActiveTab] = useState<"self" | "gorou">("self");
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const [result, setResult] = useState<DiagnosisResultType | null>(null);
 
@@ -17,9 +16,7 @@ export default function DiagnosisPage() {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const tab = params.get("tab");
-      if (tab === "simulator") {
-        setActiveTab("simulator");
-      } else if (tab === "gorou" || tab === "workstyle" || tab === "checker") {
+      if (tab === "gorou" || tab === "workstyle" || tab === "checker") {
         setActiveTab("gorou");
       }
     }
@@ -104,21 +101,6 @@ export default function DiagnosisPage() {
             <span>② 五労（職業病）チェッカー</span>
             <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
               新設
-            </span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("simulator")}
-            className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
-              activeTab === "simulator"
-                ? "bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] shadow-sm"
-                : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
-            }`}
-          >
-            <Layers className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-            <span>③ 臨床弁証シミュレーター</span>
-            <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
-              臨床
             </span>
           </button>
         </div>
@@ -327,32 +309,7 @@ export default function DiagnosisPage() {
         </div>
       )}
 
-      {/* 臨床シミュレーターへの誘導カード（セルフ診断タブ時） */}
-      <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-6 sm:p-7 rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm flex flex-col sm:flex-row items-center justify-between gap-5 text-center sm:text-left transition-colors">
-        <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-            <Layers className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>臨床家・専門学生の方へ</span>
-          </div>
-          <h3 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
-            臨床弁証シミュレーター
-          </h3>
-          <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] max-w-xl">
-            八綱・気血水・臓腑経絡の論理的連動から「一文の証」を導出し、臨床最小手数の推奨ペアツボを瞬時に割り出します。
-          </p>
-        </div>
-        <button
-          onClick={() => {
-            setActiveTab("simulator");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className="px-5 py-3 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-xs font-bold hover:bg-[#162E27] dark:hover:bg-[#225345] transition-all shrink-0 flex items-center gap-2 shadow-sm"
-        >
-          <span>シミュレーターに切り替え</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </button>
       </div>
-    </div>
   )}
 
   {/* 2. 現代人のための五労（職業病）チェッカー */}
@@ -374,29 +331,6 @@ export default function DiagnosisPage() {
       </div>
 
       <GorouWorkstyleChecker />
-    </div>
-  )}
-
-  {/* 3. 臨床弁証シミュレーター */}
-  {activeTab === "simulator" && (
-    <div className="space-y-8 animate-fadeIn">
-      {/* 導入ヘッダー */}
-      <div className="text-center space-y-3 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-semibold tracking-wider">
-          <Layers className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-          <span>八綱 ➜ 気血水 ➜ 臓腑経絡 3段階連動</span>
-        </div>
-        <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-          臨床弁証 & 最小構成ツボ導出
-        </h2>
-        <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          病態の深浅・勢い（八綱）から循環動態（気血水）、局在病位（五臓五腑）を絞り込み、
-          自動合成された<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「一文の証」</strong>と
-          臨床実践で最も即効性の高い<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「最小構成ペアツボ」</strong>を提示します。
-        </p>
-      </div>
-
-      <ThreeStageSimulator />
     </div>
   )}
 </div>
