@@ -66,7 +66,7 @@ export default function DiagnosisFunnelModel() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説①：診断の思考アルゴリズム・漏斗（ファンネル）モデル（Diagnostic Funnel Model）</span>
+            <span>画像解説①：診断の思考アルゴリズム・漏斗（ファンネル）モデル</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             膨大な生体情報から一文の「証」へ ── 4段階の絞り込みアルゴリズム

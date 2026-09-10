@@ -68,7 +68,7 @@ export default function PracticeNoiseFilterFunnel() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説②：情報のフィルタリング漏斗（Noise-Reduction Funnel）</span>
+            <span>画像解説②：情報のフィルタリング漏斗</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             雑多な患者の訴えからノイズを削ぎ落とし「病態の骨格」を抽出する
@@ -135,10 +135,10 @@ export default function PracticeNoiseFilterFunnel() {
         <div className="bg-white dark:bg-[#17212A] rounded-xl p-5 border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-3 text-xs">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-2 border-b border-[#F2ECE0] dark:border-[#22303D]">
             <span className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
-              Filter 0{activeFilter.id}：{activeFilter.name}（{activeFilter.en}）
+              フィルター 0{activeFilter.id}：{activeFilter.name}
             </span>
-            <span className="text-[11px] font-mono text-[#1E3D34] dark:text-[#74BA9E]">
-              CRITICAL QUESTION
+            <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+              臨床での核心的な問い
             </span>
           </div>
 
@@ -149,7 +149,7 @@ export default function PracticeNoiseFilterFunnel() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
             <div className="p-3 rounded-lg bg-[#FFEBEE] dark:bg-[#2D1618] border border-[#FFCDD2] dark:border-[#421A20]">
               <strong className="text-[10px] font-bold text-[#D32F2F] dark:text-[#EF5350] block mb-1">
-                【削ぎ落とすノイズ（Noise Removed）】
+                【削ぎ落とすノイズ】
               </strong>
               <p className="text-[#59615D] dark:text-[#E0D5C1] leading-relaxed">
                 {activeFilter.noiseRemoved}
@@ -158,7 +158,7 @@ export default function PracticeNoiseFilterFunnel() {
 
             <div className="p-3 rounded-lg bg-[#E8F5E9] dark:bg-[#132A1C] border border-[#C8E6C9] dark:border-[#1D4A2B]">
               <strong className="text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
-                【抽出される構造（Core Extracted）】
+                【抽出される構造】
               </strong>
               <p className="text-[#59615D] dark:text-[#C8E6C9] leading-relaxed">
                 {activeFilter.coreExtracted}

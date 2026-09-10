@@ -50,7 +50,7 @@ export default function PathomechanismIcebergTimeline() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説①：病の氷山モデルと病機タイムライン（Pathomechanism Iceberg & Timeline）</span>
+            <span>画像解説①：病の氷山モデルと病機タイムライン</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             症状は氷山の一角 ── 海面下に連鎖する「破綻の歴史（病機）」を読み解く

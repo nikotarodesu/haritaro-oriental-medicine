@@ -142,7 +142,7 @@ export default function YinYangSixPrinciples() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説②：陰陽6大原理のインフォグラフィック（The 6 Fundamental Principles）</span>
+            <span>画像解説②：陰陽6大原理のインフォグラフィック</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             人体の動的力学を支配する「6つの基本ルール」
@@ -172,7 +172,7 @@ export default function YinYangSixPrinciples() {
                   {p.icon}
                 </div>
                 <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
-                  {p.en.slice(0, 5)}..
+                  第{principles.indexOf(p) + 1}原理
                 </span>
               </div>
               <div>
@@ -198,7 +198,7 @@ export default function YinYangSixPrinciples() {
             <div>
               <div className="flex items-center gap-2">
                 <h5 className="font-serif font-bold text-base sm:text-lg text-[#1E3D34] dark:text-[#74BA9E]">
-                  {active.name}（{active.reading} / {active.en}）
+                  {active.name}（{active.reading}）
                 </h5>
                 <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A1D15] text-[#B86924] dark:text-[#E6C387] border border-[#F3E1CB] dark:border-[#4D3320]">
                   {active.tag}

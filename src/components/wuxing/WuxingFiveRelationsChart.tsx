@@ -65,7 +65,7 @@ export default function WuxingFiveRelationsChart() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説②：五行の5大相互関係ダイナミック相関チャート（5 Relational Dynamics）</span>
+            <span>画像解説②：五行の5大相互関係ダイナミック相関チャート</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             生剋乗侮・比和 ── 生命ネットワークを自律制御する力学モデル
@@ -227,9 +227,6 @@ export default function WuxingFiveRelationsChart() {
             <div className="flex items-center justify-between">
               <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${current.badgeColor}`}>
                 {current.name.split("｜")[0]}
-              </span>
-              <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] font-mono">
-                {current.en}
               </span>
             </div>
             <h5 className="font-serif font-bold text-base text-[#232826] dark:text-[#FAF8F5]">

@@ -24,7 +24,7 @@ export default function TreatmentStrataModel() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説④：本虚標実の地層モデルと介入ジレンマ解法図（Strata Model）</span>
+            <span>画像解説④：本虚標実の地層モデルと介入ジレンマ解法図</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             表層の渋滞（標実）と深層の枯渇（本虚）を同時に解くタイムライン設計

@@ -41,14 +41,14 @@ const PULSE_DIMENSIONS: PulseDimension[] = [
     en: "Depth Level",
     metric: "触知する圧力レベル（浅層 ⇄ 深部）",
     leftState: {
-      label: "浮脈（Fu）",
+      label: "浮脈",
       condition: "指を軽く皮膚に乗せるだけで拍動を触知",
       clinical: "病位が体表にある。外邪と衛気が体表で激突している",
       pathology: "表証（風寒・風熱の初期、急性感染症）",
       tag: "表（浅層）",
     },
     rightState: {
-      label: "沈脈（Chen）",
+      label: "沈脈",
       condition: "筋骨の深部まで強く押し込んで初めて触知",
       clinical: "病位が臓腑深部にある。気血が内攻しているか深部が冷衰",
       pathology: "裏証（臓腑病変、慢性疾患、陽気内伏）",
@@ -61,14 +61,14 @@ const PULSE_DIMENSIONS: PulseDimension[] = [
     en: "Rate & Rhythm",
     metric: "1分間の心拍リズム（遅 ⇄ 数）",
     leftState: {
-      label: "遅脈（Chi）",
+      label: "遅脈",
       condition: "1呼吸（吸＋呼）に3拍以下（約60回/分未満）",
       clinical: "熱量が不足し、血流の推進エネルギー（心陽）が減衰",
       pathology: "寒証（実寒：冷えの侵入 / 虚寒：陽気不足）",
       tag: "寒（代謝低下）",
     },
     rightState: {
-      label: "数脈（Shu）",
+      label: "数脈",
       condition: "1呼吸に5拍以上（約90回/分以上）",
       clinical: "熱邪が血流を狂奔させている、または冷却水（陰液）枯渇",
       pathology: "熱証（実熱：急性炎症 / 虚熱：陰虚火旺）",
@@ -81,14 +81,14 @@ const PULSE_DIMENSIONS: PulseDimension[] = [
     en: "Volume & Strength",
     metric: "指で圧迫した際の弾発力（消える ⇄ 跳ね返す）",
     leftState: {
-      label: "虚脈（Xu）",
+      label: "虚脈",
       condition: "軽く触れるとあるが、強く押すとフッと消える",
       clinical: "血管内の気血の充填量が不足し、器の張力がない",
       pathology: "虚証（気虚・血虚・正気衰退）➜ 治療は「補法」",
       tag: "虚（正気不足）",
     },
     rightState: {
-      label: "実脈（Shi）",
+      label: "実脈",
       condition: "強く押し込んでも指を力強く跳ね返す、幅が広い",
       clinical: "正気と邪気が激しくぶつかり合って鬱積している",
       pathology: "実証（気滞・瘀血・熱邪・食積）➜ 治療は「瀉法」",
@@ -101,14 +101,14 @@ const PULSE_DIMENSIONS: PulseDimension[] = [
     en: "Vessel Elasticity",
     metric: "血管壁の緊張感（ピンと張る ⇄ 柔らかくしなやか）",
     leftState: {
-      label: "弦・緊脈（Xian / Jin）",
+      label: "弦・緊脈",
       condition: "ギターの太い弦を弾くような硬い緊張感",
       clinical: "自律神経（交感神経）の過緊張、激しい疼痛、冷えの凝固",
       pathology: "肝気鬱結・激痛・寒邪・瘀血",
       tag: "緊（緊張・痙攣）",
     },
     rightState: {
-      label: "緩脈・有神脈（Huan）",
+      label: "緩脈・有神脈",
       condition: "適度な弾性と落ち着いた拍動、柔らかい",
       clinical: "胃気（脾胃の後天の精）が保たれ、生命力に余裕がある",
       pathology: "平脈（健康・予後良好）または湿邪（重だるさ）",
@@ -226,7 +226,7 @@ export default function DiagnosisPulseAbdomenMap() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説⑤：切診の客観物理化（Physical Gauges of Palpation）</span>
+            <span>画像解説⑤：切診の客観物理化</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             脈診4層物理ゲージ ＆ 腹診トポロジーマップ
@@ -277,8 +277,7 @@ export default function DiagnosisPulseAbdomenMap() {
                     : "bg-[#FAF8F5] dark:bg-[#121920] text-[#59615D] dark:text-[#96A6B2] border-[#E8E1D1] dark:border-[#22303D] hover:border-[#1E3D34]/50"
                 }`}
               >
-                <div className="text-[10px] uppercase font-mono opacity-80">{dim.en}</div>
-                <div className="text-xs font-bold mt-0.5">{dim.name}</div>
+                <div className="text-xs font-bold">{dim.name}</div>
               </button>
             ))}
           </div>
@@ -287,8 +286,8 @@ export default function DiagnosisPulseAbdomenMap() {
           <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-5 sm:p-7">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-[#E5DEC9] dark:border-[#2A3B4A]">
               <div>
-                <span className="text-[10px] font-mono font-bold text-[#8C9691] dark:text-[#64748B]">
-                  PHYSICAL PARAMETER GAUGE
+                <span className="text-[10px] font-bold text-[#8C9691] dark:text-[#64748B]">
+                  脈象の物理測定パラメータ
                 </span>
                 <h5 className="font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
                   {currentPulse.name} ── {currentPulse.metric}

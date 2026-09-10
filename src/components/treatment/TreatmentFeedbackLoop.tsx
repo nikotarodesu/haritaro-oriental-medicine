@@ -28,7 +28,7 @@ const LOOP_STEPS: LoopStep[] = [
   {
     id: "input",
     stepNumber: 1,
-    name: "入力（Input）",
+    name: "入力",
     en: "Acupoint Stimulation",
     action: "ツボへの物理刺激入力（刺鍼・施灸・手技）",
     clinicalDetail:
@@ -39,18 +39,18 @@ const LOOP_STEPS: LoopStep[] = [
   {
     id: "output",
     stepNumber: 2,
-    name: "生体応答（Output）",
+    name: "生体応答",
     en: "Biophysical Response",
     action: "局所および全身の生体反応（得気・気至）の発生",
     clinicalDetail:
       "鍼響（ずーんと響く感覚）、組織の把持感（鍼が吸い付く感覚）、局所の発赤（軸索反射・CGRP放出）、副交感神経反射（呼吸の深化・腸鳴）。",
-    indicators: ["得気（De-Qi）：重・麻・脹・痛の質感", "気至（針先の引き込み感・沈着感）", "呼吸パターンの自然な深まり・筋弛緩"],
+    indicators: ["得気：重・麻・脹・痛の質感", "気至（針先の引き込み感・沈着感）", "呼吸パターンの自然な深まり・筋弛緩"],
     engineerPoint: "刺激が受容され、生体システムが「再起動処理」を開始した物理的シグナル。",
   },
   {
     id: "eval",
     stepNumber: 3,
-    name: "即時評価（Evaluation）",
+    name: "即時評価",
     en: "Real-time Sensing",
     action: "脈診・腹診・局所硬結によるリアルタイム答え合わせ",
     clinicalDetail:
@@ -61,7 +61,7 @@ const LOOP_STEPS: LoopStep[] = [
   {
     id: "adjust",
     stepNumber: 4,
-    name: "動的再調整（Adjustment）",
+    name: "動的再調整",
     en: "System Calibration",
     action: "ミリ単位の微修正と次の一手の決定",
     clinicalDetail:
@@ -82,7 +82,7 @@ export default function TreatmentFeedbackLoop() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説①：治療の動的制御ループ（Dynamic Feedback Cycle）</span>
+            <span>画像解説①：治療の動的制御ループ</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             診断の「静的スナップショット」から「リアルタイム動的制御」へ
@@ -122,7 +122,6 @@ export default function TreatmentFeedbackLoop() {
                 )}
               </div>
               <div className="text-xs sm:text-sm font-bold truncate">{s.name}</div>
-              <div className="text-[10px] opacity-75 truncate">{s.en}</div>
             </button>
           );
         })}
@@ -132,8 +131,8 @@ export default function TreatmentFeedbackLoop() {
       <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-5 sm:p-7 space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E5DEC9] dark:border-[#2A3B4A]">
           <div>
-            <span className="text-[10px] font-mono font-bold text-[#8C9691] dark:text-[#64748B]">
-              CURRENT ACTIVE CONTROLLER [{activeStep.en.toUpperCase()}]
+            <span className="text-[10px] font-bold text-[#8C9691] dark:text-[#64748B]">
+              現在の制御フェーズ：【{activeStep.name}】
             </span>
             <h5 className="text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] mt-0.5">
               {activeStep.name}：{activeStep.action}

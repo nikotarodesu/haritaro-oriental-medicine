@@ -88,7 +88,7 @@ export default function PathomechanismFluidDegeneration() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説④：水の変質 4ステップ・グラデーションカード（Fluid Degeneration Cascade）</span>
+            <span>画像解説④：水の変質 4ステップ・グラデーションカード</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             清らかな津液が「濁ったヘドロ」へと固まる ── 流体システムの破綻4段階

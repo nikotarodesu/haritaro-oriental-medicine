@@ -39,7 +39,7 @@ interface VectorItem {
 const VECTOR_ITEMS: VectorItem[] = [
   {
     id: "bu",
-    name: "補法（Bu）― 不足を補う",
+    name: "補法 ― 不足を補う",
     en: "Tonification / Supplementation",
     symbol: "充電・集中・保持",
     themeColor: {
@@ -60,7 +60,7 @@ const VECTOR_ITEMS: VectorItem[] = [
   },
   {
     id: "xie",
-    name: "瀉法（Xie）― 過剰を削ぐ",
+    name: "瀉法 ― 過剰を削ぐ",
     en: "Drainage / Elimination",
     symbol: "排出・減圧・排熱",
     themeColor: {
@@ -81,7 +81,7 @@ const VECTOR_ITEMS: VectorItem[] = [
   },
   {
     id: "tong",
-    name: "通法（Tong）― 停滞を動かす",
+    name: "通法 ― 停滞を動かす",
     en: "Clearing Obstruction",
     symbol: "渋滞解除・血行促進",
     themeColor: {
@@ -102,7 +102,7 @@ const VECTOR_ITEMS: VectorItem[] = [
   },
   {
     id: "tiao",
-    name: "調気（Tiao）― 逆流を正す",
+    name: "調気 ― 逆流を正す",
     en: "Harmonizing & Directing",
     symbol: "軌道修正・下降誘導",
     themeColor: {
@@ -134,7 +134,7 @@ export default function TreatmentVectorMatrix() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説②：機能ベクトルの4大操作マトリクス（Vector Matrix）</span>
+            <span>画像解説②：機能ベクトルの4大操作マトリクス</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             「バランスを整える」を技術へ昇華させる4つの力学方向
@@ -174,9 +174,6 @@ export default function TreatmentVectorMatrix() {
                 <h5 className="font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5]">
                   {item.name}
                 </h5>
-                <span className="text-[10px] font-mono text-[#8C9691] dark:text-[#64748B] block mt-0.5">
-                  {item.en}
-                </span>
               </div>
               <p className="text-[11px] text-[#59615D] dark:text-[#CBD5E1] mt-3 leading-relaxed">
                 {item.metaphor}
@@ -206,7 +203,7 @@ export default function TreatmentVectorMatrix() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
           <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
             <strong className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-              【刺鍼手技（Needle Technique）】
+              【刺鍼手技】
             </strong>
             <p className="text-[#59615D] dark:text-[#CBD5E1] leading-relaxed">
               {current.technique.needle}
@@ -215,7 +212,7 @@ export default function TreatmentVectorMatrix() {
 
           <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
             <strong className="text-[11px] font-bold text-[#B86924] dark:text-[#E6C387] block">
-              【施灸手技（Moxibustion）】
+              【施灸手技】
             </strong>
             <p className="text-[#59615D] dark:text-[#CBD5E1] leading-relaxed">
               {current.technique.moxa}
@@ -224,7 +221,7 @@ export default function TreatmentVectorMatrix() {
 
           <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
             <strong className="text-[11px] font-bold text-[#0288D1] dark:text-[#38BDF8] block">
-              【刺激時間・ドーゼ（Dose & Timing）】
+              【刺激時間・ドーゼ】
             </strong>
             <p className="text-[#59615D] dark:text-[#CBD5E1] leading-relaxed">
               {current.technique.timing}
@@ -236,7 +233,7 @@ export default function TreatmentVectorMatrix() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-2">
           <div className="p-3.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]">
             <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
-              代表的な経穴配当（Primary Acupoints）
+              代表的な経穴配当
             </span>
             <p className="font-bold text-[#232826] dark:text-[#FAF8F5]">
               {current.samplePoints}

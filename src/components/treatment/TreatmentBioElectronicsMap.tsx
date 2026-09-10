@@ -26,45 +26,45 @@ interface OrganCenter {
 const ORGAN_CENTERS: OrganCenter[] = [
   {
     id: "liver",
-    name: "肝（Liver）― 交通管制・ストレスバッファ",
+    name: "肝 ― 交通管制・ストレスバッファ",
     role: "疏泄・血流配分・筋膜張力のリアルタイムコントロール",
-    element: "木（Wood）",
+    element: "木",
     acupoints: "太衝（原穴）、期門（募穴）、肝兪（背部兪穴）",
     wuxingControl: "【母子補瀉】肝虚には母である腎（水）を補う（水生木）。【相克制御】肝気の暴走を抑えるため、脾（土）を厚く補強する。",
     biomedicalAnalogy: "自律神経系交感神経過緊張の抑制、血管内皮NO産生促進、グリコーゲン分解調節。",
   },
   {
     id: "spleen",
-    name: "脾（Spleen）― 製造物流・エネルギー工場",
+    name: "脾 ― 製造物流・エネルギー工場",
     role: "後天の気血生成・体液運化・組織の保持（昇提）",
-    element: "土（Earth）",
+    element: "土",
     acupoints: "足三里（合穴）、中脘（募穴）、脾兪（背部兪穴）",
     wuxingControl: "【母子補瀉】脾虚には母である心（火）の陽気で温める（火生土）。【相克制御】湿邪が溜まれば腎（水）の気化を助けて利水。",
     biomedicalAnalogy: "消化管蠕動運動の正常化、腸内細菌叢の代謝産物（短鎖脂肪酸）生成、ミトコンドリアATP産生基盤。",
   },
   {
     id: "kidney",
-    name: "腎（Kidney）― 根幹バッテリー・生命ボイラー",
+    name: "腎 ― 根幹バッテリー・生命ボイラー",
     role: "先天の精の貯蔵・骨髄脳髄の滋養・水分代謝の最終関門",
-    element: "水（Water）",
+    element: "水",
     acupoints: "太谿（原穴）、関元（募穴）、腎兪・命門（背部兪穴）",
     wuxingControl: "【母子補瀉】腎虚には母である肺（金）の清気を深く引き下げる（金生水）。【相克制御】腎陽で脾（土）を温め下痢・浮腫を防ぐ。",
     biomedicalAnalogy: "視床下部-下垂体-副腎（HPA）軸、コルチゾール・性ホルモン分泌調節、電解質・体液浸透圧維持。",
   },
   {
     id: "heart",
-    name: "心（Heart）― 中枢司令塔・情動プロセッサ",
+    name: "心 ― 中枢司令塔・情動プロセッサ",
     role: "全身血行の推進・精神（神：意識と睡眠）の統括",
-    element: "火（Fire）",
+    element: "火",
     acupoints: "神門（原穴）、巨闕（募穴）、心兪（背部兪穴）",
     wuxingControl: "【母子補瀉】心虚には母である肝（木）の蔵血を養う（木生火）。【交通制御】心火を下げ腎水を上げる「交通心腎」。",
     biomedicalAnalogy: "心拍変動（HRV）の最適化、大脳皮質-大脳辺縁系の興奮抑制、睡眠概日リズムの再同期。",
   },
   {
     id: "lung",
-    name: "肺（Lung）― 吸排気ユニット・防御シールド",
+    name: "肺 ― 吸排気ユニット・防御シールド",
     role: "呼吸による清気取り込み・宣発粛降・体表衛気のバリア展開",
-    element: "金（Metal）",
+    element: "金",
     acupoints: "太淵（原穴）、中府（募穴）、肺兪（背部兪穴）",
     wuxingControl: "【母子補瀉】肺虚には母である脾（土）を補って肺気を生み出す「培土生金（ばいどせいきん）」。",
     biomedicalAnalogy: "皮膚・粘膜免疫（IgA分泌）、呼吸筋・横隔膜の力学的可動性、気管支平滑筋トーヌスの調整。",
@@ -83,7 +83,7 @@ interface MeridianNetwork {
 const MERIDIAN_NETWORKS: MeridianNetwork[] = [
   {
     id: "biaoli",
-    name: "表裏配穴（Coupled Meridians）",
+    name: "表裏配穴",
     type: "陰陽対立ペア（臓腑直結バイパス）",
     clinicalStrategy: "肺病に対しペアの大腸経（合谷）からアプローチ。胃もたれに脾経（公孫）を用いるなど、陰陽の表裏を橋渡しして負荷分散。",
     biomedicalMechanism: "脊髄分節（メタメア）における交感神経節を共有する反射弓。体性-内臓反射による血流の再配分。",
@@ -91,7 +91,7 @@ const MERIDIAN_NETWORKS: MeridianNetwork[] = [
   },
   {
     id: "distant",
-    name: "同名経・遠隔配穴（Long-distance Routing）",
+    name: "同名経・遠隔配穴",
     type: "四肢末梢からの全身自律神経変調",
     clinicalStrategy: "頭痛や内臓疾患に対し、肘から先・膝から下の「五兪穴・原穴」を用いて遠隔操作。局所の痛みを刺激せず全身回路を調律。",
     biomedicalMechanism: "手足末梢に高密度に分布するAβ線維・Aδ線維の求心性入力が、脳幹延髄の孤束核・網様体を経てHRV（心拍変動）を劇的改善。",
@@ -99,10 +99,10 @@ const MERIDIAN_NETWORKS: MeridianNetwork[] = [
   },
   {
     id: "qijing",
-    name: "奇経八脈（Master Circuit Reset）",
+    name: "奇経八脈",
     type: "全体統合マスターバス（広域リセット）",
     clinicalStrategy: "十二経脈の枠に収まらない慢性的歪み、生殖器系、自律神経失調、脊柱変形に対し、任脈・督脈・衝脈の要穴で一括リセット。",
-    biomedicalMechanism: "筋膜スパイラルライン・ディープフロントライン（Fascial Trains）と中枢神経軸索群のテンセグリティ構造を再同期。",
+    biomedicalMechanism: "筋膜スパイラルライン・ディープフロントラインと中枢神経軸索群のテンセグリティ構造を再同期。",
     samplePoints: "列缺 ＋ 照海（任脈・喉胸部呼吸系）、後渓 ＋ 申脈（督脈・脊柱運動系）",
   },
 ];
@@ -124,7 +124,7 @@ export default function TreatmentBioElectronicsMap() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説⑥：バイオ・エレクトロニクス統合図（Organs & Meridians）</span>
+            <span>画像解説⑥：バイオ・エレクトロニクス統合図</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             中枢センター（五臓） ＆ 通信インフラ網（経絡）のハイブリッド制御
@@ -272,7 +272,7 @@ export default function TreatmentBioElectronicsMap() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
               <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2">
                 <strong className="text-[10px] font-mono font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                  臨床戦略（CLINICAL ROUTING）
+                  臨床戦略
                 </strong>
                 <p className="text-[#59615D] dark:text-[#CBD5E1] leading-relaxed">
                   {currentMeridian.clinicalStrategy}

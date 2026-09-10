@@ -99,7 +99,7 @@ export default function WuxingFiveExhaustionsRadar() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説⑤：現代人の五労＆五悪レーダーチャート（Pathological Triggers）</span>
+            <span>画像解説⑤：現代人の五労＆五悪レーダーチャート</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             日々の姿勢と環境が臓器を壊す ──「五労」と「五悪」の病理学

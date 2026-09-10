@@ -16,7 +16,7 @@ import {
 
 interface MaterialOperation {
   id: string;
-  material: "気（Qi）" | "血（Blood）" | "水（Fluid）";
+  material: "気" | "血" | "水";
   state: string;
   actionName: string;
   en: string;
@@ -36,7 +36,7 @@ interface MaterialOperation {
 const MATERIAL_OPERATIONS: MaterialOperation[] = [
   {
     id: "qi-xu",
-    material: "気（Qi）",
+    material: "気",
     state: "気虚（エネルギー不足・動力低下）",
     actionName: "補気（ほき）",
     en: "Tonify Qi",
@@ -55,7 +55,7 @@ const MATERIAL_OPERATIONS: MaterialOperation[] = [
   },
   {
     id: "qi-zhi",
-    material: "気（Qi）",
+    material: "気",
     state: "気滞（気の鬱滞・機能的緊張）",
     actionName: "理気・疏気（りき・そき）",
     en: "Regulate & Disperse Qi",
@@ -74,7 +74,7 @@ const MATERIAL_OPERATIONS: MaterialOperation[] = [
   },
   {
     id: "qi-ni",
-    material: "気（Qi）",
+    material: "気",
     state: "気逆（気の異常上逆・のぼせ）",
     actionName: "降気・引火帰元（こうき）",
     en: "Descend Qi",
@@ -93,7 +93,7 @@ const MATERIAL_OPERATIONS: MaterialOperation[] = [
   },
   {
     id: "xue-xu",
-    material: "血（Blood）",
+    material: "血",
     state: "血虚（栄養物質・液体の枯渇）",
     actionName: "補血・養血（ほけつ・ようけつ）",
     en: "Nourish Blood",
@@ -112,7 +112,7 @@ const MATERIAL_OPERATIONS: MaterialOperation[] = [
   },
   {
     id: "xue-yu",
-    material: "血（Blood）",
+    material: "血",
     state: "瘀血（微小循環不全・血行凝滞）",
     actionName: "活血・化瘀（かっけつ・かお）",
     en: "Invigorate Blood Circulation",
@@ -131,7 +131,7 @@ const MATERIAL_OPERATIONS: MaterialOperation[] = [
   },
   {
     id: "shui-zhi",
-    material: "水（Fluid）",
+    material: "水",
     state: "水滞・痰湿（組織液の停滞・余剰水分）",
     actionName: "利水・化湿（りすい・かしつ）",
     en: "Promote Diuresis & Resolve Dampness",
@@ -152,7 +152,7 @@ const MATERIAL_OPERATIONS: MaterialOperation[] = [
 
 export default function TreatmentQiBloodManual() {
   const [expandedId, setExpandedId] = useState<string>("qi-xu");
-  const [activeFilter, setActiveFilter] = useState<"ALL" | "気（Qi）" | "血（Blood）" | "水（Fluid）">("ALL");
+  const [activeFilter, setActiveFilter] = useState<"ALL" | "気" | "血" | "水">("ALL");
 
   const filtered = activeFilter === "ALL"
     ? MATERIAL_OPERATIONS
@@ -165,7 +165,7 @@ export default function TreatmentQiBloodManual() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説⑤：気血水の手技・入力マニュアル（Material Engineering）</span>
+            <span>画像解説⑤：気血水の手技・入力マニュアル</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             素材（気・血・水）の運動異常に応じた鍼灸物理コントロール
@@ -183,7 +183,7 @@ export default function TreatmentQiBloodManual() {
 
       {/* フィルタータブ */}
       <div className="flex flex-wrap gap-2 mb-6">
-        {(["ALL", "気（Qi）", "血（Blood）", "水（Fluid）"] as const).map((filter) => (
+        {(["ALL", "気", "血", "水"] as const).map((filter) => (
           <button
             key={filter}
             onClick={() => setActiveFilter(filter)}
@@ -227,9 +227,6 @@ export default function TreatmentQiBloodManual() {
                   </span>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-[10px] font-mono text-[#8C9691] dark:text-[#64748B] hidden sm:inline">
-                    {op.en}
-                  </span>
                   {isExpanded ? (
                     <ChevronUp className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
                   ) : (

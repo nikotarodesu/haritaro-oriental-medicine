@@ -32,7 +32,7 @@ interface DecisionBranch {
 const DECISION_BRANCHES: DecisionBranch[] = [
   {
     id: "improved",
-    label: "① 改善（Improved）",
+    label: "① 改善",
     icon: CheckCircle2,
     themeColor: {
       bg: "bg-[#E8F5E9] dark:bg-[#132A1C]",
@@ -50,7 +50,7 @@ const DECISION_BRANCHES: DecisionBranch[] = [
   },
   {
     id: "unchanged",
-    label: "② 不変（Unchanged）",
+    label: "② 不変",
     icon: HelpCircle,
     themeColor: {
       bg: "bg-[#FFF8E1] dark:bg-[#2D2415]",
@@ -68,7 +68,7 @@ const DECISION_BRANCHES: DecisionBranch[] = [
   },
   {
     id: "worsened",
-    label: "③ 悪化（Worsened）",
+    label: "③ 悪化",
     icon: AlertTriangle,
     themeColor: {
       bg: "bg-[#FFEBEE] dark:bg-[#2D1618]",
@@ -156,7 +156,7 @@ export default function TreatmentSafetyFlowchart() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
           <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
             <strong className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-              【現場での即時アクション（Immediate Response）】
+              【現場での即時アクション】
             </strong>
             <p className="text-[#59615D] dark:text-[#CBD5E1] leading-relaxed">
               {activeBranch.immediateAction}
@@ -165,7 +165,7 @@ export default function TreatmentSafetyFlowchart() {
 
           <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
             <strong className="text-[11px] font-bold text-[#B86924] dark:text-[#E6C387] block">
-              【次の一手・戦略方針（Next Tactical Step）】
+              【次の一手・戦略方針】
             </strong>
             <p className="text-[#59615D] dark:text-[#CBD5E1] leading-relaxed">
               {activeBranch.nextStep}

@@ -346,7 +346,7 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
           <div>
             <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-              <span>講義解説図（Conceptual Diagram）</span>
+              <span>講義解説図</span>
             </span>
             <h4 className="font-serif font-bold text-lg text-[#232826] dark:text-[#FAF8F5] mt-1">
               生体ホメオスタシスと陰陽の動的平衡（二値状態モデル）
@@ -385,7 +385,7 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
             {/* 背景エリア：陽（上部） */}
             <rect x="50" y="20" width="620" height="90" fill="url(#yangGrad)" rx="6" />
             <text x="65" y="45" className="fill-[#A83629] dark:fill-[#E08A80] text-[11px] font-bold">
-              ▲ 陽（Yang）領域：活動・覚醒・交感神経亢進・体温上昇・カタボリズム
+              ▲ 陽領域：活動・覚醒・交感神経亢進・体温上昇・カタボリズム
             </text>
 
             {/* 背景エリア：健康な平衡帯（中央） */}
@@ -398,7 +398,7 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
             {/* 背景エリア：陰（下部） */}
             <rect x="50" y="210" width="620" height="90" fill="url(#yinGrad)" rx="6" />
             <text x="65" y="285" className="fill-[#1E2D3D] dark:fill-[#7BAAD8] text-[11px] font-bold">
-              ▼ 陰（Yin）領域：休息・睡眠・副交感神経優位・体温低下・アナボリズム
+              ▼ 陰領域：休息・睡眠・副交感神経優位・体温低下・アナボリズム
             </text>
 
             {/* 正弦波カーブ（動的平衡のゆらぎ：昼と夜のリズム） */}

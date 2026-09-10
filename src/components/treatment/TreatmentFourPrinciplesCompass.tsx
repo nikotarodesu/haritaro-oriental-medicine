@@ -141,7 +141,7 @@ export default function TreatmentFourPrinciplesCompass() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説③：治則の4次元コンパス（Four Principles Compass）</span>
+            <span>画像解説③：治則の4次元コンパス</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             座標（診断） ＋ ベクトル（治則） ＝ 再現性のある治療
@@ -171,8 +171,7 @@ export default function TreatmentFourPrinciplesCompass() {
                   : "bg-[#FAF8F5] dark:bg-[#121920] text-[#59615D] dark:text-[#96A6B2] border-[#E8E1D1] dark:border-[#22303D] hover:border-[#1E3D34]/50"
               }`}
             >
-              <div className="text-[10px] font-mono opacity-75">{axis.en}</div>
-              <div className="text-xs sm:text-sm font-bold mt-0.5">{axis.name}</div>
+              <div className="text-xs sm:text-sm font-bold">{axis.name}</div>
             </button>
           );
         })}
@@ -182,8 +181,8 @@ export default function TreatmentFourPrinciplesCompass() {
       <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-5 sm:p-7 space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#E5DEC9] dark:border-[#2A3B4A]">
           <div>
-            <span className="text-[10px] font-mono font-bold text-[#8C9691] dark:text-[#64748B]">
-              PRINCIPLE AXIS OVERVIEW
+            <span className="text-[10px] font-bold text-[#8C9691] dark:text-[#64748B]">
+              治則の基本軸
             </span>
             <h5 className="font-bold text-base text-[#232826] dark:text-[#FAF8F5]">
               {activeAxis.name} ── {activeAxis.axisDesc}

@@ -99,7 +99,6 @@ export default function TreatmentSystemToPracticeBridge({ onNextLecture }: Props
                   </div>
                   <div className="text-xs font-bold truncate">{gear.title}</div>
                 </div>
-                <div className="text-[10px] opacity-75 truncate mt-2">{gear.en}</div>
               </button>
             );
           })}
@@ -113,7 +112,7 @@ export default function TreatmentSystemToPracticeBridge({ onNextLecture }: Props
                 第 {activeGear.number} 講
               </span>
               <h5 className="font-bold text-base text-[#232826] dark:text-[#FAF8F5]">
-                {activeGear.title}（{activeGear.en}）：{activeGear.role}
+                {activeGear.title}：{activeGear.role}
               </h5>
             </div>
             <span className="text-xs text-[#B86924] dark:text-[#E6C387] font-bold">
@@ -122,8 +121,8 @@ export default function TreatmentSystemToPracticeBridge({ onNextLecture }: Props
           </div>
 
           <div className="p-3.5 rounded-lg bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] text-xs">
-            <strong className="text-[10px] font-mono font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
-              CLINICAL SYSTEM OUTPUT（治療現場への実戦的還元）
+            <strong className="text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
+              治療現場への実戦的還元
             </strong>
             <p className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
               {activeGear.clinicalOutput}

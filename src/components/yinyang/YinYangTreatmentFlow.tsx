@@ -13,7 +13,7 @@ export default function YinYangTreatmentFlow() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説⑥：本治・標治の優先順位決定フローチャート（Treatment Strategy Flowchart）</span>
+            <span>画像解説⑥：本治・標治の優先順位決定フローチャート</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             臨床意思決定：本治（根本）と標治（対症）の優先順位

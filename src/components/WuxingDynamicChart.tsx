@@ -164,11 +164,11 @@ export const WUXING_ELEMENTS: Record<WuxingElementKey, WuxingData> = {
 // 五角形のノード座標（中心 260, 190、半径 130）
 // 木(左上), 火(上), 土(右上), 金(右下), 水(左下)
 const NODE_COORDS: Record<WuxingElementKey, { x: number; y: number; label: string }> = {
-  wood: { x: 136, y: 150, label: "木 (Wood)" },
-  fire: { x: 260, y: 60, label: "火 (Fire)" },
-  earth: { x: 384, y: 150, label: "土 (Earth)" },
-  metal: { x: 337, y: 295, label: "金 (Metal)" },
-  water: { x: 183, y: 295, label: "水 (Water)" }
+  wood: { x: 136, y: 150, label: "木" },
+  fire: { x: 260, y: 60, label: "火" },
+  earth: { x: 384, y: 150, label: "土" },
+  metal: { x: 337, y: 295, label: "金" },
+  water: { x: 183, y: 295, label: "水" }
 };
 
 type ViewMode = "all" | "sheng" | "ke" | "wu";

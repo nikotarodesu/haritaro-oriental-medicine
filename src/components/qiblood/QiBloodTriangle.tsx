@@ -15,7 +15,7 @@ export default function QiBloodTriangle() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説②：気・血・水の相互依存・循環トライアングル（Tripartite Dynamics）</span>
+            <span>画像解説②：気・血・水の相互依存・循環トライアングル</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             三位一体の力学 ── 気・血・水が互いを生み、動かし、支え合う

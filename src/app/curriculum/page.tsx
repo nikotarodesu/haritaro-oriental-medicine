@@ -173,7 +173,7 @@ export default function CurriculumPage() {
           <div className="bg-[#FAF8F5] dark:bg-[#121920] p-6 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#4E8C76] space-y-3">
             <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
               <Award className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              <span>本講義で押さえるべき重要要点（Core Essentials）</span>
+              <span>本講義で押さえるべき重要要点</span>
             </div>
             <ul className="space-y-1.5 text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB]">
               {activeLecture.keyPoints.map((point, idx) => (

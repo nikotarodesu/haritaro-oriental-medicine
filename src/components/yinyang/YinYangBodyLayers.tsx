@@ -15,7 +15,7 @@ export default function YinYangBodyLayers() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説③：人体の陰陽レイヤー解剖図（Multi-Layer Body Scanning）</span>
+            <span>画像解説③：人体の陰陽レイヤー解剖図</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             多層レイヤーで読み解く「人体の陰陽立体マップ」
@@ -156,7 +156,7 @@ export default function YinYangBodyLayers() {
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                 <Layers className="w-4 h-4 text-[#B86924]" />
-                <span>① 解剖学的配置（Anatomical Coordinates）</span>
+                <span>① 解剖学的配置</span>
               </div>
               <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
                 人体の空間座標は、外界の刺激を受ける側と内側を守る側で厳密に陰陽が分化しています。
@@ -243,7 +243,7 @@ export default function YinYangBodyLayers() {
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                 <Zap className="w-4 h-4 text-[#B86924]" />
-                <span>③ 現代生理学・代謝との対応（Modern Science Mapping）</span>
+                <span>③ 現代生理学・代謝との対応</span>
               </div>
               <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
                 古代の「陰陽」は、現代の自律神経生理学や代謝生化学と驚くほど正確に一致します。
@@ -252,7 +252,7 @@ export default function YinYangBodyLayers() {
               <div className="space-y-2 pt-1 text-xs">
                 <div className="p-3 rounded-xl bg-[#FFFFFF] dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A]">
                   <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
-                    自律神経系（Autonomic Nervous System）
+                    自律神経系
                   </span>
                   <div className="grid grid-cols-2 gap-2 text-[11px]">
                     <span className="text-[#C45A4A] dark:text-[#F87171]">
@@ -266,7 +266,7 @@ export default function YinYangBodyLayers() {
 
                 <div className="p-3 rounded-xl bg-[#FFFFFF] dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A]">
                   <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
-                    生体代謝（Cellular Metabolism）
+                    生体代謝
                   </span>
                   <div className="grid grid-cols-2 gap-2 text-[11px]">
                     <span className="text-[#C45A4A] dark:text-[#F87171]">
@@ -280,7 +280,7 @@ export default function YinYangBodyLayers() {
 
                 <div className="p-3 rounded-xl bg-[#FFFFFF] dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A]">
                   <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
-                    脈管系（Vascular Dynamics）
+                    脈管系
                   </span>
                   <div className="grid grid-cols-2 gap-2 text-[11px]">
                     <span className="text-[#C45A4A] dark:text-[#F87171]">

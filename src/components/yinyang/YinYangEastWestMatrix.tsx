@@ -11,7 +11,7 @@ export default function YinYangEastWestMatrix() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説⑧：東西医学の相補マトリクス（Complementary Integration Matrix）</span>
+            <span>画像解説⑧：東西医学の相補マトリクス</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             歯車のように噛み合う「西洋医学（陽）× 東洋医学（陰）」の統合医療
@@ -114,11 +114,11 @@ export default function YinYangEastWestMatrix() {
                 急性期・救急<br />（骨折・心筋梗塞・高熱感染症など）
               </td>
               <td className="p-3.5 text-[#333835] dark:text-[#C5D2DB]">
-                <strong className="text-[#C45A4A] block mb-0.5">【主導（Primary）】</strong>
+                <strong className="text-[#C45A4A] block mb-0.5">【主導】</strong>
                 画像診断・抗生剤投与・外科的切除・心肺蘇生による速やかな生命維持。
               </td>
               <td className="p-3.5 text-[#333835] dark:text-[#C5D2DB]">
-                <strong className="text-[#1E3A5F] dark:text-[#60A5FA] block mb-0.5">【支援（Supportive）】</strong>
+                <strong className="text-[#1E3A5F] dark:text-[#60A5FA] block mb-0.5">【支援】</strong>
                 術後の麻酔・嘔気緩和、体力回復（補気）、局所浮腫の早期軽減。
               </td>
               <td className="p-3.5 text-[#59615D] dark:text-[#96A6B2]">
@@ -132,11 +132,11 @@ export default function YinYangEastWestMatrix() {
                 慢性期・不定愁訴<br />（自律神経失調・慢性疲労・冷え・PMS）
               </td>
               <td className="p-3.5 text-[#333835] dark:text-[#C5D2DB]">
-                <strong className="text-[#C45A4A] block mb-0.5">【支援（Monitoring）】</strong>
+                <strong className="text-[#C45A4A] block mb-0.5">【支援】</strong>
                 重大疾患の潜伏スクリーニング、定期的な血液生化学モニタリング。
               </td>
               <td className="p-3.5 text-[#333835] dark:text-[#C5D2DB]">
-                <strong className="text-[#1E3A5F] dark:text-[#60A5FA] block mb-0.5">【主導（Primary）】</strong>
+                <strong className="text-[#1E3A5F] dark:text-[#60A5FA] block mb-0.5">【主導】</strong>
                 経絡・臓腑調整、気血水の動的平衡回復、体質改善・生活指導。
               </td>
               <td className="p-3.5 text-[#59615D] dark:text-[#96A6B2]">

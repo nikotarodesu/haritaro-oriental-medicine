@@ -150,7 +150,7 @@ export default function TreatmentPathogenTimeline() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説⑦：4大病因別の攻略タイムライン（Pathogen Timelines）</span>
+            <span>画像解説⑦：4大病因別の攻略タイムライン</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             入力（病因）の性質を逆算し、時間軸に沿って病態を解体する
@@ -180,8 +180,7 @@ export default function TreatmentPathogenTimeline() {
                   : "bg-[#FAF8F5] dark:bg-[#121920] text-[#59615D] dark:text-[#96A6B2] border-[#E8E1D1] dark:border-[#22303D] hover:border-[#1E3D34]/50"
               }`}
             >
-              <div className="text-[10px] font-mono opacity-75">{item.en}</div>
-              <div className="text-xs sm:text-sm font-bold mt-1 line-clamp-1">{item.title}</div>
+              <div className="text-xs sm:text-sm font-bold line-clamp-1">{item.title}</div>
             </button>
           );
         })}

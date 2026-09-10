@@ -142,7 +142,7 @@ export default function DiagnosisEightPrinciples3D() {
                     : "bg-[#FAF8F5] dark:bg-[#121920] text-[#59615D] dark:text-[#96A6B2] hover:bg-[#E8E1D1]"
                 }`}
               >
-                <div>表証（Biao）</div>
+                <div>表証</div>
                 <div className="text-[10px] font-normal opacity-80 mt-0.5">急性・皮毛・経絡</div>
               </button>
               <button
@@ -153,7 +153,7 @@ export default function DiagnosisEightPrinciples3D() {
                     : "bg-[#FAF8F5] dark:bg-[#121920] text-[#59615D] dark:text-[#96A6B2] hover:bg-[#E8E1D1]"
                 }`}
               >
-                <div>裏証（Li）</div>
+                <div>裏証</div>
                 <div className="text-[10px] font-normal opacity-80 mt-0.5">慢性・臓腑・骨髄</div>
               </button>
             </div>
@@ -178,7 +178,7 @@ export default function DiagnosisEightPrinciples3D() {
               >
                 <div className="flex items-center gap-1">
                   <Snowflake className="w-3.5 h-3.5" />
-                  <span>寒証（Han）</span>
+                  <span>寒証</span>
                 </div>
                 <div className="text-[10px] font-normal opacity-80 mt-0.5">冷え・遅脈・温法</div>
               </button>
@@ -192,7 +192,7 @@ export default function DiagnosisEightPrinciples3D() {
               >
                 <div className="flex items-center gap-1">
                   <Flame className="w-3.5 h-3.5" />
-                  <span>熱証（Re）</span>
+                  <span>熱証</span>
                 </div>
                 <div className="text-[10px] font-normal opacity-80 mt-0.5">ほてり・数脈・清法</div>
               </button>
@@ -218,7 +218,7 @@ export default function DiagnosisEightPrinciples3D() {
               >
                 <div className="flex items-center gap-1">
                   <Shield className="w-3.5 h-3.5" />
-                  <span>虚証（Xu）</span>
+                  <span>虚証</span>
                 </div>
                 <div className="text-[10px] font-normal opacity-80 mt-0.5">不足・弱脈・補法</div>
               </button>
@@ -232,7 +232,7 @@ export default function DiagnosisEightPrinciples3D() {
               >
                 <div className="flex items-center gap-1">
                   <ShieldAlert className="w-3.5 h-3.5" />
-                  <span>実証（Shi）</span>
+                  <span>実証</span>
                 </div>
                 <div className="text-[10px] font-normal opacity-80 mt-0.5">過密・強脈・瀉法</div>
               </button>

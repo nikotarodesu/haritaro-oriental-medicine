@@ -122,7 +122,7 @@ export default function LifeDynamicsSeasonalDepth() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説⑤：四季の気の重心移動・身体深度マップ（Seasonal Depth & Centroid Migration）</span>
+            <span>画像解説⑤：四季の気の重心移動・身体深度マップ</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             病は「外界とのズレ」から生じる ── 五季の気の深度ヒートマップ

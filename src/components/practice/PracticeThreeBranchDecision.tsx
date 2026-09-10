@@ -142,7 +142,7 @@ export default function PracticeThreeBranchDecision() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
           <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
             <strong className="text-[10px] font-mono font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-              【現場での即時アクション（Immediate Action）】
+              【現場での即時アクション】
             </strong>
             <p className="text-[#59615D] dark:text-[#CBD5E1] leading-relaxed">
               {current.actionProtocol}
@@ -151,7 +151,7 @@ export default function PracticeThreeBranchDecision() {
 
           <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
             <strong className="text-[10px] font-mono font-bold text-[#B86924] dark:text-[#E6C387] block">
-              【次回の処方更新プラン（Next Prescription）】
+              【次回の処方更新プラン】
             </strong>
             <p className="text-[#59615D] dark:text-[#CBD5E1] leading-relaxed">
               {current.nextPrescription}

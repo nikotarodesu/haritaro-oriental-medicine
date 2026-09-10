@@ -33,7 +33,7 @@ export default function QiBloodDominoProcess() {
       bgClass: "bg-[#FFF8E1] text-[#E65100] dark:bg-[#FFA000]/20 dark:text-[#FFE082] border-[#FFE082]/40",
       accentBorder: "border-[#FFA000]",
       icon: Zap,
-      tag: "気（Qi）の停滞",
+      tag: "気の停滞",
       desc: "気の流れが滞り、身体の各所で内圧が上昇。張るような痛みやガス溜まり、情緒不安定が起こる。",
       clinicalSign: "胸脇部や腹部の張り、喉のつかえ感（梅核気）、イライラ、月経前のPMS",
       modernLink: "胃腸の蠕動不全、血管痙攣による末梢循環不全の萌芽",
@@ -47,7 +47,7 @@ export default function QiBloodDominoProcess() {
       bgClass: "bg-[#FFEBEE] text-[#C62828] dark:bg-[#D32F2F]/20 dark:text-[#EF9A9A] border-[#FFCDD2]/40",
       accentBorder: "border-[#D32F2F]",
       icon: Heart,
-      tag: "血（Blood）の鬱滞",
+      tag: "血の鬱滞",
       desc: "「気は血の帥」であるため、気が滞ると血も巡らなくなり停滞する（気滞血瘀）。組織が酸欠・低栄養に陥り刺痛が生じる。",
       clinicalSign: "針で刺すような固定痛、舌裏の静脈怒張・暗紫舌、顔のくすみ・目の下のクマ",
       modernLink: "微小循環障害、血液粘度上昇（ドロドロ血）、血管内皮の慢性炎症",
@@ -61,7 +61,7 @@ export default function QiBloodDominoProcess() {
       bgClass: "bg-[#E1F5FE] text-[#0277BD] dark:bg-[#0288D1]/20 dark:text-[#81D4FA] border-[#B3E5FC]/40",
       accentBorder: "border-[#0288D1]",
       icon: Droplets,
-      tag: "水（Fluid）の沈殿",
+      tag: "水の沈殿",
       desc: "気の推動が途絶え、血液循環も悪化した結果、体液の濾過・循環が滞り、濁った病的産物「痰湿」が身体に沈殿する。",
       clinicalSign: "頭が重い（濡れタオルを巻かれたよう）、下肢の重度なむくみ、めまい、関節重痛",
       modernLink: "リンパ流うっ滞、間質浮腫、慢性疲労症候群、動脈硬化・内臓脂肪蓄積",
@@ -92,7 +92,7 @@ export default function QiBloodDominoProcess() {
       bgClass: "bg-[#FFF8E1] text-[#E65100] dark:bg-[#FFA000]/20 dark:text-[#FFE082] border-[#FFE082]/40",
       accentBorder: "border-[#FFA000]",
       icon: Zap,
-      tag: "気（Qi）の不足",
+      tag: "気の不足",
       desc: "推進力・防衛力（衛気）が激減。体温維持や内臓保持ができず、わずかな動作でも息切れ・異常発汗が生じる。",
       clinicalSign: "全身倦怠、話す声に力がない、風邪を引きやすい、食後の強い眠気・泥状便",
       modernLink: "ATP産生低下、細胞性免疫低下、自律神経の低活動（副交感優位の停滞）",
@@ -106,7 +106,7 @@ export default function QiBloodDominoProcess() {
       bgClass: "bg-[#FFEBEE] text-[#C62828] dark:bg-[#D32F2F]/20 dark:text-[#EF9A9A] border-[#FFCDD2]/40",
       accentBorder: "border-[#D32F2F]",
       icon: Heart,
-      tag: "血（Blood）の不足",
+      tag: "血の不足",
       desc: "「気は血を生む」ため、気虚が長引くと新しい血が作られなくなる（気不生血）。脳や全身組織のガソリンが枯渇する。",
       clinicalSign: "顔色が蒼白・土色、立ちくらみ・めまい、爪の割れ・筋の痙攣（こむら返り）、不眠・不安",
       modernLink: "潜在性鉄欠乏（フェリチン低下）、貧血、セロトニン・神経伝達物質合成不全",
@@ -123,7 +123,7 @@ export default function QiBloodDominoProcess() {
       tag: "陰液（血＋水）の枯渇",
       desc: "血と水（陰液）が底をつき、身体を冷やすラジエーターが消失。抑制を失った陽気が暴走し「虚熱（空焚き微熱）」となって組織を焦がす。",
       clinicalSign: "夕方の微熱・手足のほてり、激しい寝汗（盗汗）、喉や皮膚の強い乾燥、不眠悪化",
-      modernLink: "低悪性度慢性炎症（Inflammaging）、副腎疲労、視床下部-下垂体-副腎系（HPA軸）失調",
+      modernLink: "低悪性度慢性炎症、副腎疲労、視床下部-下垂体-副腎系（HPA軸）失調",
     },
   ];
 
@@ -137,7 +137,7 @@ export default function QiBloodDominoProcess() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説③：気血水の運動異常と「不調のドミノ倒し」連鎖図（Pathology Cascade）</span>
+            <span>画像解説③：気血水の運動異常と「不調のドミノ倒し」連鎖図</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             放置すると隣の要素へ波及する ── 2大病理カスケードの全貌

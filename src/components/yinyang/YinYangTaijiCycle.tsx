@@ -15,7 +15,7 @@ export default function YinYangTaijiCycle() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説①：陰陽太極図とダイナミック循環（Dynamic Taiji Cycle）</span>
+            <span>画像解説①：陰陽太極図とダイナミック循環</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             生命の動的平衡 ── 循環し続ける「健康」の姿
@@ -180,7 +180,7 @@ export default function YinYangTaijiCycle() {
             <div className="p-3.5 rounded-xl bg-[#FCF4EB] dark:bg-[#251815] border border-[#F3E1CB] dark:border-[#522923]">
               <div className="flex items-center gap-1.5 text-xs font-bold text-[#C45A4A] dark:text-[#F87171] mb-1">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#C45A4A]" />
-                <span>陽（Yang）の相</span>
+                <span>陽の相</span>
               </div>
               <p className="text-[11px] text-[#59615D] dark:text-[#D1A39D] leading-tight">
                 活動・温熱・光・昼・覚醒・交感神経・機能亢進
@@ -190,7 +190,7 @@ export default function YinYangTaijiCycle() {
             <div className="p-3.5 rounded-xl bg-[#EBF1F6] dark:bg-[#13202C] border border-[#D5E1EC] dark:border-[#22394E]">
               <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3A5F] dark:text-[#60A5FA] mb-1">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#1E3A5F]" />
-                <span>陰（Yin）の相</span>
+                <span>陰の相</span>
               </div>
               <p className="text-[11px] text-[#59615D] dark:text-[#9FB7CE] leading-tight">
                 静止・寒涼・闇・夜・睡眠・副交感神経・構造維持

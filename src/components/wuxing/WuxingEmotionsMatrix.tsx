@@ -98,7 +98,7 @@ export default function WuxingEmotionsMatrix() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説④：感情の昇降出入・情志相勝マトリクス（Emotions & Mental Dynamics）</span>
+            <span>画像解説④：感情の昇降出入・情志相勝マトリクス</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             感情は気の「運動ベクトル」 ── 相剋で心を調律する情志相勝法

@@ -22,7 +22,7 @@ export default function PracticeMinimalistAcupoints() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説④：配穴設計のミニマリズム（Minimalist Formulation）</span>
+            <span>画像解説④：配穴設計のミニマリズム</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             「相殺効果」を排除し、最小構成で最大の生体出力を引き出す
@@ -120,7 +120,7 @@ export default function PracticeMinimalistAcupoints() {
 
             <div className="p-3.5 bg-[#FFEBEE] dark:bg-[#2D1618] rounded-xl border border-[#FFCDD2] dark:border-[#421A20] text-xs">
               <strong className="text-[#D32F2F] dark:text-[#EF5350] block mb-1">
-                ⚠️ 相殺効果（Cancellation Effect）のメカニズム：
+                ⚠️ 相殺効果のメカニズム：
               </strong>
               <span className="text-[#59615D] dark:text-[#E0D5C1]">
                 最初に入れた「補法」の繊細な気至が、後から肩に打った強刺激の「痛覚反射」によって一瞬でかき消される現象。

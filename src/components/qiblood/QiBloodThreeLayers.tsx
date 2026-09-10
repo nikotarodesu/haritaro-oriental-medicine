@@ -15,10 +15,10 @@ export default function QiBloodThreeLayers() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説①：東洋医学の三層レイヤー構造図（Three-Tier Architecture）</span>
+            <span>画像解説①：東洋医学の三層レイヤー構造図</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            陰陽（OS） ➜ 五行（地図） ➜ 気血水（実体）の多層アーキテクチャ
+            陰陽 ➜ 五行 ➜ 気血水の多層アーキテクチャ
           </h4>
         </div>
         <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">

@@ -115,7 +115,7 @@ export default function DiagnosisPrescriptionBridge({ onNextLecture }: Props) {
 
         {/* トランスフォーム・パイプライン */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 relative">
-          {/* STEP 1: 確定証（DIAGNOSIS） */}
+          {/* STEP 1: 確定証 */}
           <div className="bg-white dark:bg-[#17212A] p-4 sm:p-5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between text-[10px] font-mono font-bold text-[#8C9691] dark:text-[#64748B] mb-2">
@@ -134,7 +134,7 @@ export default function DiagnosisPrescriptionBridge({ onNextLecture }: Props) {
             </div>
           </div>
 
-          {/* STEP 2: 治則（STRATEGY） */}
+          {/* STEP 2: 治則 */}
           <div className="bg-white dark:bg-[#17212A] p-4 sm:p-5 rounded-xl border-2 border-[#1E3D34] dark:border-[#74BA9E] flex flex-col justify-between shadow-xs">
             <div>
               <div className="flex items-center justify-between text-[10px] font-mono font-bold text-[#1E3D34] dark:text-[#74BA9E] mb-2">
@@ -153,7 +153,7 @@ export default function DiagnosisPrescriptionBridge({ onNextLecture }: Props) {
             </div>
           </div>
 
-          {/* STEP 3: 配穴コード（TACTICAL CODE） */}
+          {/* STEP 3: 配穴コード */}
           <div className="bg-white dark:bg-[#17212A] p-4 sm:p-5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between text-[10px] font-mono font-bold text-[#8C9691] dark:text-[#64748B] mb-2">

@@ -68,7 +68,7 @@ export default function DiagnosisMultiscanScanner() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説④：望診・聞診の多層スキャナー図（Multilayer Observation Scanner）</span>
+            <span>画像解説④：望診・聞診の多層スキャナー図</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             感覚のノイズを排し、全体から局所へ ── 4層のスキャンフィルター処理

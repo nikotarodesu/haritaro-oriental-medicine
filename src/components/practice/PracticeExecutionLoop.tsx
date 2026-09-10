@@ -94,7 +94,7 @@ export default function PracticeExecutionLoop() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説①：臨床アルゴリズムの動的ループ全体図（Closed-Loop Protocol）</span>
+            <span>画像解説①：臨床アルゴリズムの動的ループ全体図</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             情報を構造に変換し、操作を自己修正ループへ落とし込む
@@ -137,7 +137,6 @@ export default function PracticeExecutionLoop() {
                 </div>
                 <div className="text-xs sm:text-sm font-bold truncate">{phase.name}</div>
               </div>
-              <span className="text-[10px] opacity-75 truncate mt-2">{phase.en}</span>
             </button>
           );
         })}
@@ -147,11 +146,11 @@ export default function PracticeExecutionLoop() {
       <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-5 sm:p-7 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#E5DEC9] dark:border-[#2A3B4A]">
           <div>
-            <span className="text-[10px] font-mono font-bold text-[#8C9691] dark:text-[#64748B]">
-              PHASE 0{activePhase.stepNum} DETAIL SPECIFICATION
+            <span className="text-[10px] font-bold text-[#8C9691] dark:text-[#64748B]">
+              臨床フェーズ 0{activePhase.stepNum} の詳細仕様
             </span>
             <h5 className="font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5] mt-0.5">
-              {activePhase.name}（{activePhase.en}）：{activePhase.action}
+              {activePhase.name}：{activePhase.action}
             </h5>
           </div>
           <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] dark:bg-[#182823] px-3 py-1 rounded-full self-start sm:self-auto">

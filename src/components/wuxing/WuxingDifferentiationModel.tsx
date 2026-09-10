@@ -80,7 +80,7 @@ export default function WuxingDifferentiationModel() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説①：陰陽から五行への展開概念図（Differentiation Model）</span>
+            <span>画像解説①：陰陽から五行への展開概念図</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             陰陽の二極から「5つの運動フェーズ」への分化

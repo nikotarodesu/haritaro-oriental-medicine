@@ -119,7 +119,7 @@ export default function PracticeThreeStepFilter() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
           <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
             <strong className="text-[10px] font-mono font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-              【臨床データの分析（REASONING）】
+              【臨床データの分析】
             </strong>
             <p className="text-[#59615D] dark:text-[#CBD5E1] leading-relaxed">
               {STEPS_DATA[currentStep - 1].reasoning}
@@ -128,7 +128,7 @@ export default function PracticeThreeStepFilter() {
 
           <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
             <strong className="text-[10px] font-mono font-bold text-[#0288D1] dark:text-[#38BDF8] block">
-              【導き出された判定結果（OUTPUT）】
+              【導き出された判定結果】
             </strong>
             <p className="font-bold text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
               {STEPS_DATA[currentStep - 1].result}

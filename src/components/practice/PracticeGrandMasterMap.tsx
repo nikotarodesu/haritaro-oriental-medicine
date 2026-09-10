@@ -26,7 +26,7 @@ interface LectureSummary {
 const ALL_LECTURES: LectureSummary[] = [
   {
     lectureNum: 1,
-    title: "陰陽論（Yin-Yang Theory）",
+    title: "陰陽論",
     en: "Duality & Dynamic Homeostasis",
     corePrinciple: "変化と生命ダイナミズムを読み解く「最小単位」の思考モデル",
     roleInClinical: "治療の極性・大枠の進むべきベクトル（寒熱・虚実）を決定",
@@ -34,7 +34,7 @@ const ALL_LECTURES: LectureSummary[] = [
   },
   {
     lectureNum: 2,
-    title: "五行論（Five Elements Theory）",
+    title: "五行論",
     en: "Interconnected Systemic Map",
     corePrinciple: "循環と相互作用で生命ネットワークを解き明かす「動態システム」の地図",
     roleInClinical: "母子相生・相克を通じて病変の波及先を先回りしてブロック",
@@ -42,7 +42,7 @@ const ALL_LECTURES: LectureSummary[] = [
   },
   {
     lectureNum: 3,
-    title: "気血水理論（Qi-Blood-Fluid Theory）",
+    title: "気血水理論",
     en: "Three Vital Substances",
     corePrinciple: "生命を動かす3つの実体と、体質・病理を読み解く「三層統合モデル」",
     roleInClinical: "動かすべき材料の不足・停滞・偏在を同定し、素材別に介入",
@@ -50,7 +50,7 @@ const ALL_LECTURES: LectureSummary[] = [
   },
   {
     lectureNum: 4,
-    title: "生命機能論（Life Dynamics Theory）",
+    title: "生命機能論",
     en: "Biological Process Architecture",
     corePrinciple: "生命を「静止した物質」から「絶えざる動態プロセス」へ捉え直すシステム統合モデル",
     roleInClinical: "三焦の水道と営衛の境界防壁インフラを再起動",
@@ -58,7 +58,7 @@ const ALL_LECTURES: LectureSummary[] = [
   },
   {
     lectureNum: 5,
-    title: "病機論（Pathomechanism Theory）",
+    title: "病機論",
     en: "Disease Cascade & Domino Collapse",
     corePrinciple: "生命機能はいかにして歪み、ドミノ倒しのように崩れていくのか？「破綻プロセス」の解読",
     roleInClinical: "表面症状に惑わされず、ドミノ倒しの根っこ（起因）を特定",
@@ -66,7 +66,7 @@ const ALL_LECTURES: LectureSummary[] = [
   },
   {
     lectureNum: 6,
-    title: "診断論（Diagnostic Logic & Protocol）",
+    title: "診断論",
     en: "Four Examinations & 4D Coordinates",
     corePrinciple: "病名を当てるのではなく、生命機能の破綻構造を読み解く「思考アルゴリズム」",
     roleInClinical: "四診生体データを八綱座標へ落とし込み、一文の「確定証」へ収束",
@@ -74,7 +74,7 @@ const ALL_LECTURES: LectureSummary[] = [
   },
   {
     lectureNum: 7,
-    title: "治法論（Therapeutic Architecture）",
+    title: "治法論",
     en: "Intervention Vector & Closed Loop",
     corePrinciple: "治療とは「生命システム」の再設計である ― 介入のベクトル・階層・動的制御モデル",
     roleInClinical: "補瀉・寒熱・標本の力学ベクトルと時間軸に沿った処方設計",
@@ -82,7 +82,7 @@ const ALL_LECTURES: LectureSummary[] = [
   },
   {
     lectureNum: 8,
-    title: "実践論（Clinical Execution Algorithm）",
+    title: "実践論",
     en: "Closed-Loop Needling Execution",
     corePrinciple: "情報を構造に変換し、操作を自己修正ループへ落とし込む「臨床運用の完全プロトコル」",
     roleInClinical: "迎随補瀉・気至の物理制御と三分岐フィードバックによる動的完結",
@@ -157,7 +157,6 @@ export default function PracticeGrandMasterMap({ onNextLecture }: Props) {
                   </div>
                   <div className="text-xs font-bold line-clamp-1">{lec.title.split("（")[0]}</div>
                 </div>
-                <div className="text-[9px] opacity-75 truncate mt-2">{lec.en.split(" ")[0]}</div>
               </button>
             );
           })}
@@ -174,15 +173,12 @@ export default function PracticeGrandMasterMap({ onNextLecture }: Props) {
                 {current.title}
               </h5>
             </div>
-            <span className="text-[11px] font-mono text-[#8C9691] dark:text-[#64748B]">
-              {current.en}
-            </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
             <div className="p-3 bg-[#FAF8F5] dark:bg-[#121920] rounded-lg">
-              <strong className="text-[10px] font-mono text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
-                CORE PRINCIPLE（理論的本質）
+              <strong className="text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
+                理論的本質
               </strong>
               <p className="text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
                 {current.corePrinciple}
@@ -190,8 +186,8 @@ export default function PracticeGrandMasterMap({ onNextLecture }: Props) {
             </div>
 
             <div className="p-3 bg-[#FAF8F5] dark:bg-[#121920] rounded-lg">
-              <strong className="text-[10px] font-mono text-[#B86924] dark:text-[#E6C387] block mb-1">
-                ROLE IN CLINICAL EXECUTION（臨床での役割）
+              <strong className="text-[10px] font-bold text-[#B86924] dark:text-[#E6C387] block mb-1">
+                臨床での役割
               </strong>
               <p className="text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
                 {current.roleInClinical}
@@ -201,7 +197,7 @@ export default function PracticeGrandMasterMap({ onNextLecture }: Props) {
         </div>
       </div>
 
-      {/* 完全走破 達成証（Mastery Certificate Badge） */}
+      {/* 完全走破 達成証 */}
       <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#1E3D34] via-[#162E27] to-[#0D1C17] text-white border-2 border-[#E6C387] shadow-lg relative overflow-hidden">
         <div className="absolute top-0 right-0 transform translate-x-8 -translate-y-8 w-40 h-40 bg-[#E6C387]/10 rounded-full blur-2xl" />
 
@@ -212,11 +208,8 @@ export default function PracticeGrandMasterMap({ onNextLecture }: Props) {
 
           <div className="space-y-2 text-center sm:text-left">
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-              <span className="text-[10px] font-mono font-bold tracking-widest text-[#E6C387] uppercase">
-                OFFICIAL CURRICULUM MASTERY BADGE
-              </span>
-              <span className="bg-[#E6C387] text-[#1E3D34] text-[10px] font-bold px-2 py-0.5 rounded-full">
-                修了認定
+              <span className="bg-[#E6C387] text-[#1E3D34] text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                公式修了認定証
               </span>
             </div>
             <h4 className="font-serif font-bold text-xl sm:text-2xl text-white">

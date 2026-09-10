@@ -351,7 +351,7 @@ export default function PracticeCaseStudySimulator() {
 
             <div className="p-3.5 bg-[#FFF3E0] dark:bg-[#2C1F15] rounded-xl border border-[#FFE0B2] dark:border-[#3D2817]">
               <strong className="text-[#B86924] dark:text-[#E6C387] block mb-1">
-                【臨床の極意（Clinical Pearl）】
+                【臨床の極意】
               </strong>
               <p className="text-[#59615D] dark:text-[#E0D5C1] leading-relaxed">
                 {activeCase.solution.clinicalPearl}
