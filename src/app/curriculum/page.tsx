@@ -126,7 +126,8 @@ export default function CurriculumPage() {
                 return (
                   <h2
                     key={index}
-                    className="font-serif text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-8"
+                    id={`curriculum-heading-${index}`}
+                    className="font-serif text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-8 scroll-mt-36"
                   >
                     <GlossaryRenderer text={trimmed.replace("## ", "")} />
                   </h2>
@@ -138,7 +139,8 @@ export default function CurriculumPage() {
                 return (
                   <h3
                     key={index}
-                    className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-6"
+                    id={`curriculum-heading-${index}`}
+                    className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-6 scroll-mt-36"
                   >
                     <GlossaryRenderer text={trimmed.replace("### ", "")} />
                   </h3>

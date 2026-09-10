@@ -98,7 +98,8 @@ export default function ArticlesPage() {
                 return (
                   <h2
                     key={index}
-                    className="font-serif text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-8"
+                    id={`article-heading-${index}`}
+                    className="font-serif text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-8 scroll-mt-36"
                   >
                     <GlossaryRenderer text={block.replace("## ", "")} />
                   </h2>
