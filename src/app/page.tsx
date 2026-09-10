@@ -10,7 +10,8 @@ import {
   Flame,
   Layers,
   Award,
-  GraduationCap
+  GraduationCap,
+  Scissors
 } from "lucide-react";
 import { TSUBOS } from "@/data/tsuboData";
 import { ARTICLES } from "@/data/articleData";
@@ -421,15 +422,23 @@ export default function HomePage() {
 
             <div className="pt-2 flex flex-wrap items-center gap-3">
               <Link
-                href="/simulator"
+                href="/simulator?tab=diagnosis"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#E6C387] text-[#1E2D3D] hover:bg-[#DFC07D] font-bold text-xs sm:text-sm shadow-md transition-all group"
               >
-                <span>弁証シミュレーターを試す</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <Layers className="w-4 h-4" />
+                <span>三段階 弁証シミュレーター</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link
+                href="/simulator?tab=haiketsu"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-[#FAF8F5] text-xs font-bold transition-all group"
+              >
+                <Scissors className="w-4 h-4 text-[#E6C387]" />
+                <span>配穴 最小構成シミュレーター</span>
               </Link>
               <Link
                 href="/curriculum"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-[#FAF8F5] text-xs font-semibold transition-all"
+                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl text-[#A0B0BC] hover:text-[#FAF8F5] text-xs font-semibold transition-all"
               >
                 <span>体系学習カリキュラム</span>
               </Link>

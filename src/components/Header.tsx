@@ -12,7 +12,8 @@ import {
   BookOpen, 
   ChevronDown,
   ArrowRight,
-  Layers
+  Layers,
+  Scissors
 } from "lucide-react";
 import YinYangSwitch from "./YinYangSwitch";
 
@@ -190,6 +191,29 @@ export default function Header() {
                   </Link>
 
                   <Link
+                    href="/simulator?tab=haiketsu"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#FDEDEC] dark:bg-[#251514] text-[#A83629] dark:text-[#C47A72] flex items-center justify-center shrink-0 mt-0.5">
+                      <Scissors className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                          配穴「最小構成」シミュレーター
+                        </span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#C47A72] text-white">
+                          新設
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        相殺効果防止・役割タグ・削ぎ落とし
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
                     href="/tsubo"
                     onClick={() => setOpenDropdown(null)}
                     className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
@@ -305,6 +329,19 @@ export default function Header() {
                 <span>三段階 臨床弁証シミュレーター</span>
               </div>
               <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
+                新設
+              </span>
+            </Link>
+            <Link
+              href="/simulator?tab=haiketsu"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-bold text-[#A83629] dark:text-[#C47A72] hover:bg-[#FDEDEC] dark:hover:bg-[#251514]"
+            >
+              <div className="flex items-center gap-3">
+                <Scissors className="w-4 h-4" />
+                <span>配穴「最小構成」シミュレーター</span>
+              </div>
+              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#C47A72] text-white">
                 新設
               </span>
             </Link>
