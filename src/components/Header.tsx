@@ -14,18 +14,15 @@ import {
   ArrowRight,
   Layers,
   Activity,
-  Palette,
   Bookmark
 } from "lucide-react";
 import YinYangSwitch from "./YinYangSwitch";
 import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
-import GogyoColorPaletteGuide from "./GogyoColorPaletteGuide";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<"general" | "expert" | null>(null);
-  const [gogyoPaletteOpen, setGogyoPaletteOpen] = useState(false);
 
   const { clipCount, openDrawer } = useClinicalMemo();
   const { currentSeason } = useSeasonalTheme();
@@ -266,35 +263,6 @@ export default function Header() {
                       </span>
                     </div>
                   </Link>
-
-                  {/* 五行カラー早見表 */}
-                  <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D]">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setOpenDropdown(null);
-                        setGogyoPaletteOpen(true);
-                      }}
-                      className="w-full flex items-center justify-between p-2.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors text-left group"
-                    >
-                      <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0">
-                          <Palette className="w-3.5 h-3.5" />
-                        </div>
-                        <div>
-                          <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                            五行カラー早見表
-                          </span>
-                          <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                            木:翠・火:朱・土:琥珀・金:白銀・水:藍
-                          </span>
-                        </div>
-                      </div>
-                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
-                        CUD
-                      </span>
-                    </button>
-                  </div>
                 </div>
               )}
             </div>
@@ -456,24 +424,6 @@ export default function Header() {
                 {clipCount}件
               </span>
             </button>
-
-            {/* モバイル用 五行カラー早見表ボタン */}
-            <button
-              type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                setGogyoPaletteOpen(true);
-              }}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] dark:bg-[#182823] hover:opacity-90 transition-all text-left"
-            >
-              <div className="flex items-center gap-3">
-                <Palette className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>五行カラー早見表（CUD）</span>
-              </div>
-              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
-                木火土金水
-              </span>
-            </button>
           </div>
 
           <div className="pt-2 border-t border-[#E8E1D1] dark:border-[#22303D]">
@@ -484,15 +434,6 @@ export default function Header() {
             >
               はり太郎の理念・サイトについて
             </Link>
-          </div>
-        </div>
-      )}
-
-      {/* 五行カラーユニバーサルデザイン早見表 モーダル */}
-      {gogyoPaletteOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
-          <div className="max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <GogyoColorPaletteGuide isModal onClose={() => setGogyoPaletteOpen(false)} />
           </div>
         </div>
       )}
