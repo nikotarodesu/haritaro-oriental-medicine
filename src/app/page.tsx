@@ -11,7 +11,6 @@ import {
   Layers,
   Award,
   GraduationCap,
-  Waves,
   Activity
 } from "lucide-react";
 import { TSUBOS } from "@/data/tsuboData";
@@ -439,11 +438,11 @@ export default function HomePage() {
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                href="/simulator?tab=keiki"
+                href="/simulator?tab=matrix"
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-[#FAF8F5] text-xs font-bold transition-all group"
               >
-                <Waves className="w-4 h-4 text-[#74BA9E]" />
-                <span>経気深度シミュレーター</span>
+                <Stethoscope className="w-4 h-4 text-[#E6C387]" />
+                <span>相補マトリクス</span>
               </Link>
               <Link
                 href="/curriculum"
