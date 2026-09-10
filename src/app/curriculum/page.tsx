@@ -94,6 +94,60 @@ export default function CurriculumPage() {
           </div>
         </div>
 
+        {/* 全8大カリキュラム 常駐進捗インジケーター */}
+        <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3 sm:p-4 shadow-2xs">
+          <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#F2ECE0] dark:border-[#22303D] text-[11px]">
+            <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+              東洋医学 体系学習カリキュラム 進捗インジケーター
+            </span>
+            <span className="font-mono text-[#8C9691] dark:text-[#64748B]">
+              第 {activeLecture.lectureNumber} / 8 講
+            </span>
+          </div>
+          <div className="grid grid-cols-4 sm:grid-cols-8 gap-1.5 text-center text-[10px]">
+            {[
+              { num: 1, label: "① 陰陽", id: "lecture-1" },
+              { num: 2, label: "② 五行", id: "lecture-2" },
+              { num: 3, label: "③ 気血水", id: "lecture-3" },
+              { num: 4, label: "④ 生命機能", id: "lecture-4" },
+              { num: 5, label: "⑤ 病機", id: "lecture-5" },
+              { num: 6, label: "⑥ 診断", id: "lecture-6-diagnosis" },
+              { num: 7, label: "⑦ 治法", id: "lecture-7-treatment" },
+              { num: 8, label: "⑧ 実践", id: "lecture-8-practice" },
+            ].map((item) => {
+              const isActive = item.num === activeLecture.lectureNumber;
+              const isPast = item.num < activeLecture.lectureNumber;
+              return (
+                <button
+                  key={item.num}
+                  onClick={() => {
+                    for (const stg of CURRICULUM_DATA) {
+                      const found = stg.lectures.find((l) => l.lectureNumber === item.num);
+                      if (found) {
+                        setActiveLecture(found);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                        if (typeof window !== "undefined") {
+                          window.history.replaceState(null, "", `/curriculum?lecture=${found.id}`);
+                        }
+                        break;
+                      }
+                    }
+                  }}
+                  className={`py-1.5 px-1 rounded-lg font-bold transition-all truncate ${
+                    isActive
+                      ? "bg-[#1E3D34] text-white shadow-xs scale-[1.03]"
+                      : isPast
+                      ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#D9EADB]"
+                      : "bg-[#FAF8F5] dark:bg-[#121920] text-[#8C9691] dark:text-[#64748B] hover:text-[#232826]"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* 講義テキスト本体 */}
         <article className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-12 shadow-sm space-y-8 transition-colors">
           {/* ヘッダー */}

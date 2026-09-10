@@ -58,6 +58,15 @@ import TreatmentBioElectronicsMap from "./treatment/TreatmentBioElectronicsMap";
 import TreatmentPathogenTimeline from "./treatment/TreatmentPathogenTimeline";
 import TreatmentSafetyFlowchart from "./treatment/TreatmentSafetyFlowchart";
 import TreatmentSystemToPracticeBridge from "./treatment/TreatmentSystemToPracticeBridge";
+import PracticeExecutionLoop from "./practice/PracticeExecutionLoop";
+import PracticeNoiseFilterFunnel from "./practice/PracticeNoiseFilterFunnel";
+import PracticeThreeStepFilter from "./practice/PracticeThreeStepFilter";
+import PracticeMinimalistAcupoints from "./practice/PracticeMinimalistAcupoints";
+import PracticeNeedleDoseControl from "./practice/PracticeNeedleDoseControl";
+import PracticeReactionMatrix from "./practice/PracticeReactionMatrix";
+import PracticeThreeBranchDecision from "./practice/PracticeThreeBranchDecision";
+import PracticeCaseStudySimulator from "./practice/PracticeCaseStudySimulator";
+import PracticeGrandMasterMap from "./practice/PracticeGrandMasterMap";
 
 interface CurriculumDiagramProps {
   id: string;
@@ -290,6 +299,43 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
 
   if (id === "treatment-system-to-practice-bridge") {
     return <TreatmentSystemToPracticeBridge onNextLecture={onNextLecture} />;
+  }
+
+  // 体系カリキュラム⑧：実践論の9大図解
+  if (id === "practice-execution-loop") {
+    return <PracticeExecutionLoop />;
+  }
+
+  if (id === "practice-noise-filter-funnel") {
+    return <PracticeNoiseFilterFunnel />;
+  }
+
+  if (id === "practice-three-step-filter") {
+    return <PracticeThreeStepFilter />;
+  }
+
+  if (id === "practice-minimalist-acupoints") {
+    return <PracticeMinimalistAcupoints />;
+  }
+
+  if (id === "practice-needle-dose-control") {
+    return <PracticeNeedleDoseControl />;
+  }
+
+  if (id === "practice-reaction-matrix") {
+    return <PracticeReactionMatrix />;
+  }
+
+  if (id === "practice-three-branch-decision") {
+    return <PracticeThreeBranchDecision />;
+  }
+
+  if (id === "practice-case-study-simulator") {
+    return <PracticeCaseStudySimulator />;
+  }
+
+  if (id === "practice-grand-master-map") {
+    return <PracticeGrandMasterMap onNextLecture={onNextLecture} />;
   }
 
   if (id === "yinyang-homeostasis") {
