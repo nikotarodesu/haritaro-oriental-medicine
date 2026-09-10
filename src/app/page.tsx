@@ -19,7 +19,6 @@ import {
 import { TSUBOS } from "@/data/tsuboData";
 import { ARTICLES } from "@/data/articleData";
 import SeasonalBanner from "@/components/SeasonalBanner";
-import SeasonalOracleVoice from "@/components/SeasonalOracleVoice";
 
 export default function HomePage() {
   const featuredTsubos = TSUBOS.slice(0, 4);
@@ -28,15 +27,12 @@ export default function HomePage() {
   return (
     <div className="space-y-14 sm:space-y-20 pb-20">
       {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden washi-pattern border-b border-[#E8E1D1] dark:border-[#22303D] pt-6 sm:pt-10 pb-14 sm:pb-20 transition-colors duration-300">
+      <section className="relative overflow-hidden washi-pattern border-b border-[#E8E1D1] dark:border-[#22303D] pt-8 sm:pt-12 pb-14 sm:pb-20 transition-colors duration-300">
         {/* 和風アクセント背景装飾 */}
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-[#EBF3EF]/60 dark:bg-[#1E3D34]/20 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-[#FCF4EB]/60 dark:bg-[#B86924]/15 blur-3xl pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative space-y-8">
-          {/* 天人相応：季節の気の運行と養生の語りかけ演出 */}
-          <SeasonalOracleVoice />
-
           <div className="text-center max-w-3xl mx-auto space-y-6">
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-[1.25]">
               からだの声が、<br className="hidden sm:inline" />
@@ -143,6 +139,9 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+
+          {/* 天人相応・二十四節気と五季のリアルタイム養生（合体・洗練版） */}
+          <SeasonalBanner />
 
           {/* クイックアクセス・ダッシュボード（9大機能） */}
           <div className="mt-8 max-w-7xl mx-auto">
@@ -259,9 +258,6 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-
-          {/* 二十四節気・五季のリアルタイム養生バナー */}
-          <SeasonalBanner />
         </div>
       </section>
 

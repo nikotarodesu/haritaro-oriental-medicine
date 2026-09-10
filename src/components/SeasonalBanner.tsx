@@ -1,301 +1,312 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { 
-  Sun, 
   Calendar, 
   Utensils, 
   HeartPulse, 
   Sparkles, 
   ArrowRight, 
-  ChevronRight, 
   RotateCcw,
-  BookOpen,
-  Compass
+  SlidersHorizontal,
+  X,
+  Sprout,
+  Sun,
+  Compass,
+  Wind,
+  Snowflake,
+  Volume2
 } from "lucide-react";
-import { 
-  getSeasonalAdvice, 
-  SOLAR_TERMS, 
-  DOYO_PERIODS, 
-  SolarTermInfo, 
-  DoyoPeriodInfo 
-} from "@/data/solarTermsData";
+import { useSeasonalTheme, SeasonKey, SEASON_THEMES } from "@/contexts/SeasonalThemeContext";
+import ClipButton from "@/components/ClipButton";
+import GogyoBadge from "@/components/GogyoBadge";
 
 export default function SeasonalBanner() {
-  const [mounted, setMounted] = useState(false);
-  const [previewTermId, setPreviewTermId] = useState<string | null>(null);
-  const [previewDoyoKey, setPreviewDoyoKey] = useState<string | null>(null);
+  const { 
+    currentSeason, 
+    todayTerm, 
+    isDoyoToday, 
+    todayDoyoInfo, 
+    currentDateFormatted, 
+    isLive, 
+    setPreviewSeason, 
+    resetToLiveToday 
+  } = useSeasonalTheme();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const [selectorOpen, setSelectorOpen] = useState(false);
 
-  // 現在日付の養生データ
-  const todayAdvice = useMemo(() => {
-    return getSeasonalAdvice();
-  }, []);
-
-  // プレビュー中のデータ（選択されている場合はプレビューを優先表示）
-  const currentDisplay = useMemo(() => {
-    if (previewDoyoKey && DOYO_PERIODS[previewDoyoKey]) {
-      const doyo = DOYO_PERIODS[previewDoyoKey];
-      return {
-        isCustomPreview: true,
-        titleBadge: `プレビュー：${doyo.seasonName}`,
-        termName: doyo.seasonName,
-        kana: "土用（季節の変わり目）",
-        periodStr: doyo.monthRange,
-        fiveSeason: doyo.fiveSeason,
-        organ: doyo.organ,
-        catchphrase: doyo.catchphrase,
-        classicQuote: doyo.classicQuote,
-        dietAdvice: doyo.dietAdvice,
-        lifestyleAdvice: doyo.lifestyleAdvice,
-        tsuboName: doyo.tsuboName,
-        tsuboId: doyo.tsuboId,
-        tsuboTip: doyo.tsuboTip,
-        isDoyo: true
-      };
+  // 季節アイコン選択
+  const renderSeasonIcon = (type: string, className = "w-4 h-4") => {
+    switch (type) {
+      case "sprout":
+        return <Sprout className={className} />;
+      case "sun":
+        return <Sun className={className} />;
+      case "compass":
+        return <Compass className={className} />;
+      case "wind":
+        return <Wind className={className} />;
+      case "snowflake":
+        return <Snowflake className={className} />;
+      default:
+        return <Wind className={className} />;
     }
-
-    if (previewTermId) {
-      const term = SOLAR_TERMS.find(t => t.id === previewTermId) || todayAdvice.term;
-      return {
-        isCustomPreview: true,
-        titleBadge: `プレビュー：二十四節気「${term.name}」`,
-        termName: term.name,
-        kana: term.kana,
-        periodStr: term.periodStr,
-        fiveSeason: term.fiveSeason,
-        organ: term.organ,
-        catchphrase: term.catchphrase,
-        classicQuote: term.classicQuote,
-        dietAdvice: term.dietAdvice,
-        lifestyleAdvice: term.lifestyleAdvice,
-        tsuboName: term.tsuboName,
-        tsuboId: term.tsuboId,
-        tsuboTip: term.tsuboTip,
-        isDoyo: false
-      };
-    }
-
-    // 本日の自動判定データ
-    if (todayAdvice.isDoyo && todayAdvice.doyoInfo) {
-      const doyo = todayAdvice.doyoInfo;
-      return {
-        isCustomPreview: false,
-        titleBadge: `本日：${todayAdvice.currentDateFormatted}`,
-        termName: `${todayAdvice.term.name}（${doyo.seasonName}期間中）`,
-        kana: todayAdvice.term.kana,
-        periodStr: doyo.monthRange,
-        fiveSeason: doyo.fiveSeason,
-        organ: doyo.organ,
-        catchphrase: doyo.catchphrase,
-        classicQuote: doyo.classicQuote,
-        dietAdvice: doyo.dietAdvice,
-        lifestyleAdvice: doyo.lifestyleAdvice,
-        tsuboName: doyo.tsuboName,
-        tsuboId: doyo.tsuboId,
-        tsuboTip: doyo.tsuboTip,
-        isDoyo: true
-      };
-    }
-
-    const term = todayAdvice.term;
-    return {
-      isCustomPreview: false,
-      titleBadge: `本日：${todayAdvice.currentDateFormatted}`,
-      termName: term.name,
-      kana: term.kana,
-      periodStr: term.periodStr,
-      fiveSeason: term.fiveSeason,
-      organ: term.organ,
-      catchphrase: term.catchphrase,
-      classicQuote: term.classicQuote,
-      dietAdvice: term.dietAdvice,
-      lifestyleAdvice: term.lifestyleAdvice,
-      tsuboName: term.tsuboName,
-      tsuboId: term.tsuboId,
-      tsuboTip: term.tsuboTip,
-      isDoyo: false
-    };
-  }, [previewTermId, previewDoyoKey, todayAdvice]);
-
-  const handleResetToToday = () => {
-    setPreviewTermId(null);
-    setPreviewDoyoKey(null);
   };
 
-  // キャッチフレーズを「季節フェーズ宣言」と「養生メッセージ」に分解して可読性を向上
+  const seasonKeys: SeasonKey[] = ["spring", "summer", "doyo", "autumn", "winter"];
+
+  // キャッチコピーの分解（見出しと補足文）
   const { leadPhrase, bodyPhrase } = useMemo(() => {
-    const phrase = currentDisplay.catchphrase;
-    const match = phrase.match(/^(.*?[。])\s*(.*)$/);
-    if (match && match[2]) {
-      return { leadPhrase: match[1], bodyPhrase: match[2] };
+    const phrase = todayTerm.catchphrase;
+    const match = phrase.match(/^(今の季節は【.*?】です。)(.*)$/);
+    if (match) {
+      return { leadPhrase: match[1], bodyPhrase: match[2].trim() };
     }
     return { leadPhrase: phrase, bodyPhrase: "" };
-  }, [currentDisplay.catchphrase]);
+  }, [todayTerm.catchphrase]);
 
   return (
-    <div className="mt-8 max-w-4xl mx-auto bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-2xl p-5 sm:p-7 shadow-sm transition-colors relative overflow-hidden">
-      {/* 和紙風テクスチャと装飾アクセント */}
-      <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-[#FCF4EB]/50 dark:bg-[#E6C387]/5 blur-2xl pointer-events-none" />
+    <div 
+      className="relative overflow-hidden rounded-3xl border bg-white/95 dark:bg-[#152028]/95 backdrop-blur-md shadow-sm transition-all duration-500 max-w-5xl mx-auto text-left"
+      style={{ borderColor: currentSeason.borderHex }}
+    >
+      {/* 季節アクセントライン（上部カラーバー） */}
+      <div 
+        className="h-1.5 w-full transition-colors duration-500"
+        style={{ backgroundColor: currentSeason.accentHex }}
+      />
 
-      {/* ヘッダーエリア：日付 ＆ 節気・五季バッジ */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[#EFE9DD] dark:border-[#22303D] pb-4 mb-4 relative z-10">
-        <div className="flex items-start sm:items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 mt-0.5 sm:mt-0 shadow-xs">
-            <Sun className="w-5 h-5" />
-          </div>
-
-          <div>
-            <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
-              {/* 日付またはプレビュー表示 */}
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center gap-1">
-                <Calendar className="w-3 h-3" />
-                <span>{mounted ? currentDisplay.titleBadge : "日付を判定中..."}</span>
-              </span>
-
-              {/* 二十四節気バッジ */}
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] text-[#1E3D34] dark:text-[#74BA9E]">
-                二十四節気：{currentDisplay.termName}
-                <span className="text-[9px] text-[#737C77] dark:text-[#8899A6] ml-1">
-                  ({currentDisplay.kana})
-                </span>
-              </span>
-
-              {/* 五季・臓腑バッジ */}
-              <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${
-                currentDisplay.isDoyo
-                  ? "bg-[#FCF4EB] dark:bg-[#2F2417] text-[#B86924] dark:text-[#E6C387] border border-[#F3E1CB] dark:border-[#4D3A25]"
-                  : "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243]"
-              }`}>
-                五季：{currentDisplay.fiveSeason}（{currentDisplay.organ}系）
-              </span>
-            </div>
-
-            <h3 className="font-sans text-sm sm:text-base leading-relaxed tracking-wide text-[#232826] dark:text-[#FAF8F5]">
-              <span className="font-semibold text-[#1E3D34] dark:text-[#74BA9E] block sm:inline mr-2">
-                {leadPhrase}
-              </span>
-              {bodyPhrase && (
-                <span className="font-normal text-[#4A5450] dark:text-[#B4C2CB] block sm:inline mt-0.5 sm:mt-0">
-                  {bodyPhrase}
-                </span>
-              )}
-            </h3>
-          </div>
-        </div>
-
-        {/* コラムへのリンク */}
-        <Link 
-          href="/articles" 
-          className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1 shrink-0 self-end sm:self-center"
-        >
-          <span>季節の養生論</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </Link>
-      </div>
-
-      {/* 古典引用バナー */}
-      <div className="mb-4 px-3.5 py-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EBE4D5] dark:border-[#22303D] text-[11px] text-[#59615D] dark:text-[#A0B0BC] italic flex items-center gap-2">
-        <span className="text-[10px] font-bold not-italic px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34] shrink-0">
-          古典の教え
-        </span>
-        <span className="line-clamp-1">{currentDisplay.classicQuote}</span>
-      </div>
-
-      {/* 3大養生処方箋カード（食養生・生活習慣・おすすめツボ） */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-        {/* 1. 食養生 */}
-        <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 rounded-xl border border-[#EDE7DB] dark:border-[#22303D] space-y-1.5">
-          <div className="flex items-center gap-1.5 font-bold text-[#232826] dark:text-[#E6EFEA]">
-            <Utensils className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>🌿 旬の食養生</span>
-          </div>
-          <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-            {currentDisplay.dietAdvice}
-          </p>
-        </div>
-
-        {/* 2. 生活習慣・心の養生 */}
-        <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 rounded-xl border border-[#EDE7DB] dark:border-[#22303D] space-y-1.5">
-          <div className="flex items-center gap-1.5 font-bold text-[#232826] dark:text-[#E6EFEA]">
-            <HeartPulse className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <span>🚶 生活・心の養生</span>
-          </div>
-          <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-            {currentDisplay.lifestyleAdvice}
-          </p>
-        </div>
-
-        {/* 3. おすすめツボ */}
-        <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 rounded-xl border border-[#EDE7DB] dark:border-[#22303D] space-y-1.5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 font-bold text-[#232826] dark:text-[#E6EFEA]">
-              <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-              <span>🎯 本日の養生ツボ</span>
-            </div>
-            <Link
-              href="/tsubo"
-              className="text-[10px] text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-bold"
+      <div className="p-5 sm:p-7 lg:p-8 space-y-6">
+        
+        {/* 1. 最上部ヘッダー帯：天人相応・日付・二十四節気・五季・アクション */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[#F0EAE1] dark:border-[#22303D] pb-4">
+          
+          {/* 左側：メタデータバッジ群 */}
+          <div className="flex flex-wrap items-center gap-2">
+            {/* 天人相応バッジ */}
+            <span 
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-white shadow-xs transition-colors duration-500"
+              style={{ backgroundColor: currentSeason.primaryHex }}
             >
-              「{currentDisplay.tsuboName}」
+              {renderSeasonIcon(currentSeason.iconType, "w-3.5 h-3.5")}
+              <span>天人相応</span>
+            </span>
+
+            {/* 日付バッジ */}
+            <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4D331F]">
+              <Calendar className="w-3 h-3 text-[#B86924] dark:text-[#E6C387]" />
+              <span>本日：{currentDateFormatted || "2026年9月10日"}</span>
+            </span>
+
+            {/* 二十四節気バッジ */}
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5]">
+              二十四節気：<strong>{todayTerm.name}</strong>
+              <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] ml-1">
+                ({todayTerm.kana})
+              </span>
+            </span>
+
+            {/* 五季バッジ（五行CUDカラー連動） */}
+            <div className="flex items-center gap-1">
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5]">
+                五季：{currentSeason.fiveSeason}（{currentSeason.organ}系）
+              </span>
+              <GogyoBadge target={currentSeason.element} size="sm" showColorName />
+            </div>
+
+            {/* 気の運行 */}
+            <span className="text-xs text-[#59615D] dark:text-[#96A6B2] hidden sm:inline ml-1">
+              気の運行：<strong className="text-[#232826] dark:text-[#FAF8F5] font-semibold">{currentSeason.qiMotion}</strong>
+            </span>
+          </div>
+
+          {/* 右側：プレビュー復帰 ＆ 体感セレクターボタン ＆ コラムリンク */}
+          <div className="flex items-center gap-2 shrink-0 self-start lg:self-center">
+            {!isLive && (
+              <button
+                onClick={resetToLiveToday}
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-[#FCF4EB] dark:bg-[#251A14] text-[#B86924] dark:text-[#E6C387] hover:opacity-85 transition-opacity border border-[#F3DEC5] dark:border-[#4D331F]"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>本日（自動）に戻す</span>
+              </button>
+            )}
+
+            <button
+              onClick={() => setSelectorOpen(!selectorOpen)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all"
+            >
+              <SlidersHorizontal className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+              <span>五季を切り替えて体感</span>
+            </button>
+
+            <Link 
+              href="/articles" 
+              className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline px-2 py-1"
+            >
+              <span>養生論</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
-          <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-            {currentDisplay.tsuboTip}
+        </div>
+
+        {/* 五季手動プレビュー切り替えセレクター（開閉式） */}
+        {selectorOpen && (
+          <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] animate-fadeIn space-y-3">
+            <div className="flex items-center justify-between text-xs font-bold text-[#59615D] dark:text-[#96A6B2]">
+              <span className="flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                <span>五季（木・火・土・金・水）の気の巡りを手動で切り替える：</span>
+              </span>
+              <button 
+                onClick={() => setSelectorOpen(false)} 
+                className="p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+              {seasonKeys.map((key) => {
+                const s = SEASON_THEMES[key];
+                const isSelected = currentSeason.key === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => setPreviewSeason(key)}
+                    className={`p-2.5 rounded-xl text-left border transition-all ${
+                      isSelected
+                        ? "bg-white dark:bg-[#1A2530] border-2 shadow-sm font-bold"
+                        : "bg-white/70 dark:bg-[#1A2530]/70 border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-white dark:hover:bg-[#1A2530]"
+                    }`}
+                    style={{ borderColor: isSelected ? s.accentHex : undefined }}
+                  >
+                    <div className="flex items-center gap-1.5 text-xs">
+                      {renderSeasonIcon(s.iconType, "w-3.5 h-3.5")}
+                      <span className="font-serif">{s.name}（{s.element}）</span>
+                    </div>
+                    <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5 truncate">
+                      {s.organ}
+                    </div>
+                    <div 
+                      className="text-[9px] font-mono mt-1 px-1.5 py-0.2 rounded w-fit" 
+                      style={{ backgroundColor: `${s.lightBgHex}` }}
+                    >
+                      {s.colorName}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* 2. メインメッセージ（季節の宣言 ＆ 気の運行） */}
+        <div className="space-y-2">
+          <h3 className="font-serif text-lg sm:text-xl lg:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
+            <span className="text-[#1E3D34] dark:text-[#74BA9E] mr-1">
+              {leadPhrase}
+            </span>
+            {bodyPhrase && (
+              <span className="block sm:inline font-normal text-[#404743] dark:text-[#C5D2DB] text-base sm:text-lg">
+                {bodyPhrase}
+              </span>
+            )}
+          </h3>
+
+          <p className="font-serif text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed italic bg-[#FAF8F5]/80 dark:bg-[#121920]/80 p-3 rounded-xl border border-[#EDE7DB] dark:border-[#22303D]">
+            <span className="not-italic font-bold text-[10px] px-1.5 py-0.5 rounded bg-[#E6C387] text-[#1E3D34] mr-2">
+              古典の教え
+            </span>
+            {todayTerm.classicQuote}
           </p>
         </div>
-      </div>
 
-      {/* フッター：二十四節気・土用セレクター（通年プレビュー切替） */}
-      <div className="mt-4 pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[11px]">
-        <div className="flex items-center gap-2 w-full sm:w-auto">
-          <span className="text-[#737C77] dark:text-[#8899A6] shrink-0 font-medium">
-            季節の養生を調べる：
-          </span>
-          <select
-            value={previewDoyoKey ? `doyo_${previewDoyoKey}` : previewTermId || todayAdvice.term.id}
-            onChange={(e) => {
-              const val = e.target.value;
-              if (val.startsWith("doyo_")) {
-                setPreviewDoyoKey(val.replace("doyo_", ""));
-                setPreviewTermId(null);
-              } else {
-                setPreviewTermId(val);
-                setPreviewDoyoKey(null);
-              }
-            }}
-            className="px-2.5 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5] text-xs focus:outline-none focus:border-[#1E3D34] dark:focus:border-[#74BA9E] w-full sm:w-auto"
-          >
-            <optgroup label="春夏秋冬の二十四節気">
-              {SOLAR_TERMS.map(t => (
-                <option key={t.id} value={t.id}>
-                  {t.name}（{t.periodStr}） - {t.fiveSeason}
-                </option>
-              ))}
-            </optgroup>
-            <optgroup label="土用（季節の変わり目・脾胃ケア）">
-              <option value="doyo_spring">春土用（4月17日〜5月4日頃）</option>
-              <option value="doyo_summer">夏土用（7月19日〜8月6日頃）</option>
-              <option value="doyo_autumn">秋土用（10月20日〜11月6日頃）</option>
-              <option value="doyo_winter">冬土用（1月17日〜2月3日頃）</option>
-            </optgroup>
-          </select>
+        {/* 3. 三大養生処方箋（旬の食養生・生活習慣・おすすめツボ） */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+          
+          {/* ① 旬の食養生 */}
+          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-4 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2 flex flex-col justify-between">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">
+                <div className="w-6 h-6 rounded-lg bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0">
+                  <Utensils className="w-3.5 h-3.5" />
+                </div>
+                <span>旬の食養生</span>
+              </div>
+              <p className="text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                {todayTerm.dietAdvice}
+              </p>
+            </div>
+            <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] pt-1">
+              胃腸と内臓を養う旬の食材
+            </span>
+          </div>
+
+          {/* ② 生活習慣・心の養生 */}
+          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-4 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2 flex flex-col justify-between">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">
+                <div className="w-6 h-6 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0">
+                  <HeartPulse className="w-3.5 h-3.5" />
+                </div>
+                <span>生活習慣・心の養生</span>
+              </div>
+              <p className="text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                {todayTerm.lifestyleAdvice}
+              </p>
+            </div>
+            <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] pt-1">
+              自然のリズムに合わせた行動
+            </span>
+          </div>
+
+          {/* ③ 季節の特効ツボ（マイカルテ保存ボタン付き） */}
+          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-4 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2 flex flex-col justify-between">
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                  <div className="w-6 h-6 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0">
+                    <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                  </div>
+                  <span>季節の養生ツボ：<strong>{todayTerm.tsuboName}</strong></span>
+                </div>
+
+                <ClipButton
+                  item={{
+                    id: `seasonal-tsubo-${todayTerm.tsuboId || todayTerm.tsuboName}`,
+                    type: "tsubo",
+                    title: `【${currentSeason.name}の養生ツボ】${todayTerm.tsuboName}`,
+                    subTitle: `二十四節気「${todayTerm.name}」| ${currentSeason.fiveSeason}`,
+                    points: [todayTerm.tsuboName],
+                    elements: [currentSeason.element as any],
+                    indications: ["季節の養生", "自律神経調整", "免疫維持"],
+                    summary: todayTerm.tsuboTip,
+                  }}
+                  variant="badge"
+                  size="sm"
+                />
+              </div>
+              <p className="text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                {todayTerm.tsuboTip}
+              </p>
+            </div>
+
+            <div className="pt-1 flex items-center justify-between text-[10px] text-[#737C77] dark:text-[#8899A6]">
+              <span>ワンクリックでマイカルテに保存</span>
+              <Link 
+                href="/tsubo" 
+                className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline flex items-center gap-0.5"
+              >
+                <span>ツボ辞典を見る</span>
+                <ArrowRight className="w-3 h-3" />
+              </Link>
+            </div>
+          </div>
+
         </div>
 
-        {/* 本日に戻すボタン */}
-        {currentDisplay.isCustomPreview && (
-          <button
-            onClick={handleResetToToday}
-            className="px-2.5 py-1 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-bold text-[10px] hover:bg-[#D5E6DE] transition-colors flex items-center gap-1 shrink-0"
-          >
-            <RotateCcw className="w-3 h-3" />
-            <span>本日の養生に戻す</span>
-          </button>
-        )}
       </div>
     </div>
   );
