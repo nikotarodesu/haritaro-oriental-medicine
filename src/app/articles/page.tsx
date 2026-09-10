@@ -68,9 +68,11 @@ export default function ArticlesPage() {
 
             <div className="flex items-center justify-between text-xs text-[#59615D] dark:text-[#96A6B2] pt-2">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-white flex items-center justify-center font-serif text-xs font-bold">
-                  針
-                </div>
+                <img
+                  src="/icon.png"
+                  alt="はり太郎"
+                  className="w-7 h-7 rounded-full object-cover border border-[#E5DEC9] dark:border-[#2A3B4A] shrink-0"
+                />
                 <div>
                   <span className="font-semibold text-[#232826] dark:text-[#E6EFEA]">{activeArticle.author.name}</span>
                   <span className="text-[#8A948F] dark:text-[#6A7C8B] ml-1.5">（{activeArticle.author.role}）</span>
@@ -140,9 +142,11 @@ export default function ArticlesPage() {
 
           {/* 著者紹介フッター */}
           <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-6 bg-[#FAF8F5] dark:bg-[#121920] p-6 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-white flex items-center justify-center font-serif text-xl font-bold shrink-0">
-              針
-            </div>
+            <img
+              src="/icon.png"
+              alt="はり太郎"
+              className="w-12 h-12 rounded-xl object-cover shadow-xs border border-[#E5DEC9] dark:border-[#2A3B4A] shrink-0"
+            />
             <div className="space-y-1 text-xs">
               <h4 className="font-serif font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">執筆・監修：{activeArticle.author.name}</h4>
               <p className="text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
