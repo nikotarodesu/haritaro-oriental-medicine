@@ -9,11 +9,14 @@ interface GlossaryRendererProps {
 }
 
 export default function GlossaryRenderer({ text }: GlossaryRendererProps) {
+  // 不要なMarkdown太字記号（**）を完全に除去してクリーンな日本語表示にする
+  const cleanText = text ? text.replace(/\*\*/g, "") : "";
+
   // 登録されている全用語のリスト（長い単語から優先してマッチするようにソート）
   const terms = Object.keys(GLOSSARY_TERMS).sort((a, b) => b.length - a.length);
 
   if (!terms.length) {
-    return <>{text}</>;
+    return <>{cleanText}</>;
   }
 
   // 用語をキャプチャする正規表現を作成（例: /(下行性疼痛抑制系|内因性オピオイド|大脳辺縁系|弁証論治|...)/g）
@@ -21,7 +24,7 @@ export default function GlossaryRenderer({ text }: GlossaryRendererProps) {
   const regex = new RegExp(`(${escapedTerms.join("|")})`, "g");
 
   // テキストを分割
-  const parts = text.split(regex);
+  const parts = cleanText.split(regex);
 
   return (
     <>
