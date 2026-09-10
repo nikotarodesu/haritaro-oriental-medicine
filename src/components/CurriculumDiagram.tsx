@@ -12,6 +12,14 @@ import YinYangTreatmentFlow from "./yinyang/YinYangTreatmentFlow";
 import YinYangSeasonsCalendar from "./yinyang/YinYangSeasonsCalendar";
 import YinYangEastWestMatrix from "./yinyang/YinYangEastWestMatrix";
 import YinYangToWuxingBridge from "./yinyang/YinYangToWuxingBridge";
+import WuxingDifferentiationModel from "./wuxing/WuxingDifferentiationModel";
+import WuxingFiveRelationsChart from "./wuxing/WuxingFiveRelationsChart";
+import WuxingBodyNetworkMap from "./wuxing/WuxingBodyNetworkMap";
+import WuxingEmotionsMatrix from "./wuxing/WuxingEmotionsMatrix";
+import WuxingFiveExhaustionsRadar from "./wuxing/WuxingFiveExhaustionsRadar";
+import WuxingShishinDashboard from "./wuxing/WuxingShishinDashboard";
+import WuxingGokinFilter from "./wuxing/WuxingGokinFilter";
+import WuxingClinicalDecisionTree from "./wuxing/WuxingClinicalDecisionTree";
 
 interface CurriculumDiagramProps {
   id: string;
@@ -54,6 +62,39 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
 
   if (id === "yinyang-to-wuxing-bridge") {
     return <YinYangToWuxingBridge onNextLecture={onNextLecture} />;
+  }
+
+  // 体系カリキュラム②：五行論の8大図解
+  if (id === "wuxing-differentiation-model") {
+    return <WuxingDifferentiationModel />;
+  }
+
+  if (id === "wuxing-five-relations-chart") {
+    return <WuxingFiveRelationsChart />;
+  }
+
+  if (id === "wuxing-body-network-map") {
+    return <WuxingBodyNetworkMap />;
+  }
+
+  if (id === "wuxing-emotions-matrix") {
+    return <WuxingEmotionsMatrix />;
+  }
+
+  if (id === "wuxing-five-exhaustions-radar") {
+    return <WuxingFiveExhaustionsRadar />;
+  }
+
+  if (id === "wuxing-shishin-dashboard") {
+    return <WuxingShishinDashboard />;
+  }
+
+  if (id === "wuxing-gokin-filter") {
+    return <WuxingGokinFilter />;
+  }
+
+  if (id === "wuxing-clinical-decision-tree") {
+    return <WuxingClinicalDecisionTree onNextLecture={onNextLecture} />;
   }
 
   if (id === "yinyang-homeostasis") {
