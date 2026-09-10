@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { TSUBOS } from "@/data/tsuboData";
 import { ARTICLES } from "@/data/articleData";
+import SeasonalBanner from "@/components/SeasonalBanner";
 
 export default function HomePage() {
   const featuredTsubos = TSUBOS.slice(0, 4);
@@ -190,41 +191,8 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* 季節の養生ウィジェット（すっきりと整理） */}
-          <div className="mt-8 max-w-4xl mx-auto bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-2xl p-5 sm:p-6 shadow-sm transition-colors">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[#EFE9DD] dark:border-[#22303D] pb-3 mb-3">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0">
-                  <Sun className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="text-[11px] font-bold text-[#B86924] dark:text-[#E6C387]">二十四節気・今月の養生</span>
-                  <h3 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
-                    春（発陳）── 「肝」を健やかに、気の上昇と自律神経を整える
-                  </h3>
-                </div>
-              </div>
-              <Link href="/articles" className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1 shrink-0">
-                <span>コラムを読む</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-              <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 rounded-xl border border-[#EDE7DB] dark:border-[#22303D]">
-                <span className="font-bold text-[#232826] dark:text-[#E6EFEA] block mb-0.5">🌿 食養生</span>
-                <span className="text-[#59615D] dark:text-[#A0B0BC]">菜の花や春菊など「苦味と香り」で熱を逃がす</span>
-              </div>
-              <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 rounded-xl border border-[#EDE7DB] dark:border-[#22303D]">
-                <span className="font-bold text-[#232826] dark:text-[#E6EFEA] block mb-0.5">🚶 生活習慣</span>
-                <span className="text-[#59615D] dark:text-[#A0B0BC]">朝の深呼吸とゆったり散歩で伸びやかに気を巡らせる</span>
-              </div>
-              <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 rounded-xl border border-[#EDE7DB] dark:border-[#22303D]">
-                <span className="font-bold text-[#232826] dark:text-[#E6EFEA] block mb-0.5">🎯 おすすめツボ</span>
-                <span className="text-[#59615D] dark:text-[#A0B0BC]">足の甲の「<Link href="/tsubo" className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold underline">太衝</Link>」を息を吐きながら指圧</span>
-              </div>
-            </div>
-          </div>
+          {/* 二十四節気・五季のリアルタイム養生バナー */}
+          <SeasonalBanner />
         </div>
       </section>
 
