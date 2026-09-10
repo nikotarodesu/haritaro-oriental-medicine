@@ -3,9 +3,9 @@
 import Script from "next/script";
 
 export default function GoogleAnalytics() {
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  const gaId = process.env.NEXT_PUBLIC_GA_ID || "G-GC398NZKVE";
 
-  // GA4の測定IDが環境変数に設定されていない場合は何も出力しない（安全設計）
+  // GA4の測定IDが設定されていない場合は何も出力しない（安全設計）
   if (!gaId) {
     return null;
   }
