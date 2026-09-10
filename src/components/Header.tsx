@@ -386,28 +386,7 @@ export default function Header() {
                     </div>
                   </Link>
 
-                  <Link
-                    href="/simulator?tab=matrix"
-                    onClick={() => setOpenDropdown(null)}
-                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#251A14] text-[#C45A4A] dark:text-[#F87171] flex items-center justify-center shrink-0 mt-0.5">
-                      <Stethoscope className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                          東西医学 相補マトリクス
-                        </span>
-                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#C45A4A] text-white">
-                          新機能
-                        </span>
-                      </div>
-                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                        西洋（陽：除外診断）× 東洋（陰：気機昇降）
-                      </span>
-                    </div>
-                  </Link>
+
 
                   <Link
                     href="/tsubo"
@@ -633,19 +612,7 @@ export default function Header() {
                 新設
               </span>
             </Link>
-            <Link
-              href="/simulator?tab=matrix"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-bold text-[#C45A4A] dark:text-[#F87171] hover:bg-[#FCF4EB] dark:hover:bg-[#251A14]"
-            >
-              <div className="flex items-center gap-3">
-                <Stethoscope className="w-4 h-4" />
-                <span>東西医学 相補マトリクス</span>
-              </div>
-              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#C45A4A] text-white">
-                新機能
-              </span>
-            </Link>
+
             <Link
               href="/tsubo"
               onClick={() => setMobileMenuOpen(false)}

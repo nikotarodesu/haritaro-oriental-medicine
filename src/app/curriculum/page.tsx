@@ -6,6 +6,7 @@ import { CURRICULUM_DATA, Lecture } from "@/data/curriculumData";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
 import CurriculumDiagram from "@/components/CurriculumDiagram";
+import EastWestTermSwitch from "@/components/EastWestTermSwitch";
 import { 
   GraduationCap, 
   BookOpen, 
@@ -206,6 +207,14 @@ export default function CurriculumPage() {
                   .replace("]", "")
                   .trim();
                 return <CurriculumDiagram key={index} id={diagramId} onNextLecture={handleNextLecture} />;
+              }
+
+              // 東西医学 相補スイッチ（:::eastwest term="..." または :::east-west term="..."）
+              if (trimmed.startsWith(":::eastwest") || trimmed.startsWith(":::east-west")) {
+                const termMatch = trimmed.match(/term=["']([^"']+)["']/);
+                const termIdMatch = trimmed.match(/termId=["']([^"']+)["']/);
+                const term = termMatch ? termMatch[1] : (termIdMatch ? termIdMatch[1] : "肝気犯胃");
+                return <EastWestTermSwitch key={index} termId={term} />;
               }
 
               // 画像（![alt](src)）

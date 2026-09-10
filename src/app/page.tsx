@@ -114,16 +114,10 @@ export default function HomePage() {
                   </Link>
                   <Link
                     href="/simulator"
-                    className="py-2 px-2.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1A2530] text-xs font-semibold text-center transition-colors"
+                    className="col-span-2 py-2 px-2.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#1A2530] text-xs font-bold text-center transition-colors flex items-center justify-center gap-1.5"
                   >
-                    弁証
-                  </Link>
-                  <Link
-                    href="/simulator?tab=matrix"
-                    className="py-2 px-2.5 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3E1CB] dark:border-[#423321] text-[#C45A4A] dark:text-[#F87171] hover:bg-[#FBEBD9] dark:hover:bg-[#362B1D] text-xs font-semibold text-center transition-colors flex items-center gap-1"
-                  >
-                    <Stethoscope className="w-3.5 h-3.5" />
-                    <span>相補マトリクス</span>
+                    <Layers className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                    <span>臨床弁証シミュレーター</span>
                   </Link>
                 </div>
               </div>
@@ -187,16 +181,13 @@ export default function HomePage() {
               </Link>
 
               <Link
-                href="/simulator?tab=matrix"
-                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3 text-center hover:border-[#C45A4A] dark:hover:border-[#F87171] hover:shadow-sm transition-all group relative"
+                href="/articles"
+                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3 text-center hover:border-[#1E2D3D] dark:hover:border-[#7BAAD8] hover:shadow-sm transition-all group relative"
               >
-                <span className="absolute top-1.5 right-1.5 text-[8px] font-bold px-1 py-0.2 rounded bg-[#C45A4A] text-white">
-                  新機能
-                </span>
-                <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#251A14] text-[#C45A4A] dark:text-[#F87171] flex items-center justify-center mx-auto mb-1.5 group-hover:scale-110 transition-transform">
+                <div className="w-8 h-8 rounded-lg bg-[#EDF3FA] dark:bg-[#182838] text-[#1E2D3D] dark:text-[#7BAAD8] flex items-center justify-center mx-auto mb-1.5 group-hover:scale-110 transition-transform">
                   <Stethoscope className="w-4 h-4" />
                 </div>
-                <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">相補マトリクス</div>
+                <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">東西統合・症例</div>
                 <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">西洋（陽）×東洋（陰）</div>
               </Link>
 
@@ -438,17 +429,18 @@ export default function HomePage() {
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                href="/simulator?tab=matrix"
+                href="/curriculum"
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-[#FAF8F5] text-xs font-bold transition-all group"
               >
-                <Stethoscope className="w-4 h-4 text-[#E6C387]" />
-                <span>相補マトリクス</span>
+                <GraduationCap className="w-4 h-4 text-[#E6C387]" />
+                <span>体系学習カリキュラム</span>
               </Link>
               <Link
-                href="/curriculum"
+                href="/articles"
                 className="inline-flex items-center gap-2 px-4 py-3 rounded-xl text-[#A0B0BC] hover:text-[#FAF8F5] text-xs font-semibold transition-all"
               >
-                <span>体系学習カリキュラム</span>
+                <BookOpen className="w-4 h-4" />
+                <span>東西統合・症例論文</span>
               </Link>
             </div>
           </div>

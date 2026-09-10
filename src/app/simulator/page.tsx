@@ -3,9 +3,9 @@ import Link from "next/link";
 import SimulatorHub from "@/components/SimulatorHub";
 
 export const metadata: Metadata = {
-  title: "臨床実践シミュレーター群（弁証・相補マトリクス） | はり太郎の東洋医学",
+  title: "臨床弁証シミュレーター（八綱・気血水・臓腑経絡） | はり太郎の東洋医学",
   description:
-    "東洋医学の臨床現場に基づくWebツール群。「臨床弁証シミュレーター」に加え、西洋医学の除外診断と東洋医学の気機調律を対比する「東西医学 相補マトリクス」を完備。",
+    "東洋医学の臨床現場に基づく実践ツール。八綱（深浅・勢い）➜ 気血水（動態）➜ 臓腑経絡（局在病位）の3段階連動で一文の証と最小構成のペアツボを瞬時に導き出します。",
 };
 
 export default function SimulatorPage() {
@@ -18,7 +18,7 @@ export default function SimulatorPage() {
         </Link>
         <span>/</span>
         <span className="text-[#232826] dark:text-[#FAF8F5] font-semibold">
-          臨床実践シミュレーター群
+          臨床弁証シミュレーター
         </span>
       </nav>
 
