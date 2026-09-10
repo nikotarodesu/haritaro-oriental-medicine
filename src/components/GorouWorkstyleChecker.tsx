@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { getGogyoColor, GOGYO_COLORS } from "@/utils/gogyoColor";
 import GogyoBadge from "@/components/GogyoBadge";
+import ClipButton from "@/components/ClipButton";
 
 // 五労の定義型
 export type GorouId = "kyushi" | "kyuza" | "kyuritsu" | "kyukou" | "kyuga";
@@ -665,7 +666,7 @@ export default function GorouWorkstyleChecker() {
               <span>五労診断結果・最疲弊ポイント</span>
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
               <div>
                 <span className="text-xs text-[#737C77] dark:text-[#8899A6]">最も過重負荷を受けている五臓：</span>
                 <div className="flex items-center gap-2 mt-1">
@@ -675,9 +676,26 @@ export default function GorouWorkstyleChecker() {
                   <GogyoBadge target={mostFatiguedOrgan.name} size="md" showColorName />
                 </div>
               </div>
-              <span className="text-xs px-2.5 py-1 rounded bg-[#FEE2E2] text-[#DC2626] font-bold shrink-0 self-start sm:self-auto">
-                {mostFatiguedOrgan.harmTissue} が悲鳴
-              </span>
+              <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
+                <span className="text-xs px-2.5 py-1 rounded bg-[#FEE2E2] text-[#DC2626] font-bold">
+                  {mostFatiguedOrgan.harmTissue} が悲鳴
+                </span>
+                <ClipButton
+                  item={{
+                    id: `diagnosis-gorou-${mostFatiguedOrgan.name}`,
+                    type: "diagnosis",
+                    title: `五労診断：【${mostFatiguedOrgan.name}（${mostFatiguedOrgan.element}行）】疲弊（${mostFatiguedOrgan.score}%）`,
+                    subTitle: `過重負荷：${selectedGorou.map(id => GOROU_DEFS[id].classicName).join("・")}`,
+                    points: selectedGorou.map(id => GOROU_DEFS[id].quickTsubo.name),
+                    elements: [mostFatiguedOrgan.element as any],
+                    indications: selectedGorou.map(id => GOROU_DEFS[id].modernTitle),
+                    summary: `疲弊五臓【${mostFatiguedOrgan.name}】。日常の中庸アクション処方と特効ツボ（${selectedGorou.map(id => GOROU_DEFS[id].quickTsubo.name).join("、")}）による中庸処方箋。`,
+                    mechanism: `偏りを正し、五行（相生相剋）を円滑に循環させる日常処方箋。`
+                  }}
+                  variant="button"
+                  size="sm"
+                />
+              </div>
             </div>
 
             <div className="mt-4 space-y-3">

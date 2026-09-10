@@ -5,6 +5,17 @@ import Link from "next/link";
 import { TSUBOS } from "@/data/tsuboData";
 import { Tsubo } from "@/types/oriental";
 import { Compass, Search, Filter, AlertTriangle, BookOpen, Sparkles, Check } from "lucide-react";
+import ClinicalPairsSection from "@/components/ClinicalPairsSection";
+import ClipButton from "@/components/ClipButton";
+
+const getMeridianElement = (meridian: string): ("木" | "火" | "土" | "金" | "水")[] => {
+  if (meridian.includes("肝") || meridian.includes("胆")) return ["木"];
+  if (meridian.includes("心") || meridian.includes("小腸") || meridian.includes("三焦")) return ["火"];
+  if (meridian.includes("脾") || meridian.includes("胃")) return ["土"];
+  if (meridian.includes("肺") || meridian.includes("大腸")) return ["金"];
+  if (meridian.includes("腎") || meridian.includes("膀胱")) return ["水"];
+  return [];
+};
 
 export default function TsuboPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -61,6 +72,9 @@ export default function TsuboPage() {
           WHO標準361経穴に対応する基幹データベースです。一般向けの分かりやすい取穴法から、専門家向けの骨度法・解剖学的取穴、臨床での配穴・ワンポイント知見、禁忌事項まで網羅しています。
         </p>
       </div>
+
+      {/* 臨床名配穴（重要ツボの黄金ペア・トリオ集） */}
+      <ClinicalPairsSection />
 
       {/* 検索・絞り込みバー */}
       <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-6 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-5 transition-colors">
@@ -150,8 +164,23 @@ export default function TsuboPage() {
                   <span className="text-xs px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] text-[#59615D] dark:text-[#96A6B2]">
                     {tsubo.bodyPart}
                   </span>
+                  <span className="text-xs font-medium text-[#1E2D3D] dark:text-[#7BAAD8]">{tsubo.meridian}</span>
                 </div>
-                <span className="text-xs font-medium text-[#1E2D3D] dark:text-[#7BAAD8]">{tsubo.meridian}</span>
+                <ClipButton
+                  item={{
+                    id: `tsubo-${tsubo.id}`,
+                    type: "tsubo",
+                    title: `${tsubo.name}（${tsubo.code}）`,
+                    subTitle: `${tsubo.meridian} | ${tsubo.bodyPart}`,
+                    points: [tsubo.name],
+                    elements: getMeridianElement(tsubo.meridian),
+                    indications: tsubo.indications,
+                    summary: tsubo.clinicalNote,
+                    caution: tsubo.caution
+                  }}
+                  variant="icon"
+                  size="sm"
+                />
               </div>
 
               {/* ツボ名 */}
@@ -238,18 +267,36 @@ export default function TsuboPage() {
             </button>
 
             {/* モーダルヘッダー */}
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="font-mono text-xs font-bold px-2.5 py-1 rounded bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5]">
-                  {selectedTsubo.code}
-                </span>
-                <span className="text-xs text-[#59615D] dark:text-[#A0B0BC]">{selectedTsubo.meridian}</span>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pr-10">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="font-mono text-xs font-bold px-2.5 py-1 rounded bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5]">
+                    {selectedTsubo.code}
+                  </span>
+                  <span className="text-xs text-[#59615D] dark:text-[#A0B0BC]">{selectedTsubo.meridian}</span>
+                </div>
+                <div className="flex items-baseline gap-3">
+                  <h2 className="font-serif text-3xl font-bold text-[#232826] dark:text-[#FAF8F5]">{selectedTsubo.name}</h2>
+                  <span className="text-base text-[#59615D] dark:text-[#A0B0BC]">{selectedTsubo.kana}</span>
+                  <span className="text-xs font-mono text-[#8A948F] dark:text-[#6A7C8B]">({selectedTsubo.romaji})</span>
+                </div>
               </div>
-              <div className="flex items-baseline gap-3">
-                <h2 className="font-serif text-3xl font-bold text-[#232826] dark:text-[#FAF8F5]">{selectedTsubo.name}</h2>
-                <span className="text-base text-[#59615D] dark:text-[#A0B0BC]">{selectedTsubo.kana}</span>
-                <span className="text-xs font-mono text-[#8A948F] dark:text-[#6A7C8B]">({selectedTsubo.romaji})</span>
-              </div>
+
+              <ClipButton
+                item={{
+                  id: `tsubo-${selectedTsubo.id}`,
+                  type: "tsubo",
+                  title: `${selectedTsubo.name}（${selectedTsubo.code}）`,
+                  subTitle: `${selectedTsubo.meridian} | ${selectedTsubo.bodyPart}`,
+                  points: [selectedTsubo.name],
+                  elements: getMeridianElement(selectedTsubo.meridian),
+                  indications: selectedTsubo.indications,
+                  summary: selectedTsubo.clinicalNote,
+                  caution: selectedTsubo.caution
+                }}
+                variant="button"
+                size="sm"
+              />
             </div>
 
             {/* 要穴 */}

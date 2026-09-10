@@ -23,17 +23,21 @@ import {
   Snowflake,
   RotateCcw,
   Sparkles,
-  Palette
+  Palette,
+  Bookmark
 } from "lucide-react";
 import YinYangSwitch from "./YinYangSwitch";
 import { useSeasonalTheme, SEASON_THEMES, SeasonKey } from "@/contexts/SeasonalThemeContext";
 import GogyoColorPaletteGuide from "./GogyoColorPaletteGuide";
+import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<"general" | "expert" | null>(null);
   const [seasonPopoverOpen, setSeasonPopoverOpen] = useState(false);
   const [gogyoPaletteOpen, setGogyoPaletteOpen] = useState(false);
+
+  const { clipCount, openDrawer } = useClinicalMemo();
 
   const { 
     currentSeason, 
@@ -545,8 +549,24 @@ export default function Header() {
               )}
             </div>
 
+            {/* マイカルテ・マイ要穴集 クリップボタン */}
+            <button
+              type="button"
+              onClick={openDrawer}
+              className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4D331F] hover:bg-[#FBE8D6] dark:hover:bg-[#3B291B] transition-all text-xs font-bold shadow-2xs group"
+              title="マイカルテ・マイ要穴集（保存したツボ・配穴・診断メモ）を開く"
+            >
+              <Bookmark className="w-3.5 h-3.5 fill-current" />
+              <span>マイカルテ</span>
+              {clipCount > 0 && (
+                <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#B86924] text-white">
+                  {clipCount}
+                </span>
+              )}
+            </button>
+
             {/* 陰陽太極図 テーマ切り替えスイッチ */}
-            <div className="ml-2 mr-1">
+            <div className="ml-1 mr-1">
               <YinYangSwitch />
             </div>
 
@@ -559,8 +579,21 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* モバイルヘッダー右側（季節アイコン ＆ 陰陽スイッチ & メニューボタン） */}
+          {/* モバイルヘッダー右側（マイカルテ ＆ 季節アイコン ＆ 陰陽スイッチ & メニューボタン） */}
           <div className="flex items-center gap-1.5 md:hidden">
+            <button
+              type="button"
+              onClick={openDrawer}
+              className="relative p-1.5 rounded-full border border-[#F3DEC5] dark:border-[#4D331F] bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center"
+              title="マイカルテ・マイ要穴集"
+            >
+              <Bookmark className="w-4 h-4 fill-current" />
+              {clipCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full text-[9px] font-bold bg-[#B86924] text-white flex items-center justify-center">
+                  {clipCount}
+                </span>
+              )}
+            </button>
             <button
               onClick={() => setSeasonPopoverOpen(!seasonPopoverOpen)}
               className="p-1.5 rounded-full border shadow-sm flex items-center justify-center"
@@ -740,6 +773,24 @@ export default function Header() {
               <BookOpen className="w-4 h-4 text-[#1E2D3D] dark:text-[#6FA0D6]" />
               <span>臨床知見・学術論文抄読</span>
             </Link>
+
+            {/* モバイル用 マイカルテ・マイ要穴集ボタン */}
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                openDrawer();
+              }}
+              className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-bold text-[#B86924] dark:text-[#E6C387] bg-[#FCF4EB] dark:bg-[#2C1E14] border border-[#F3DEC5] dark:border-[#4D331F] hover:opacity-90 transition-all text-left"
+            >
+              <div className="flex items-center gap-3">
+                <Bookmark className="w-4 h-4 fill-current" />
+                <span>マイカルテ・マイ要穴集</span>
+              </div>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#B86924] text-white">
+                {clipCount}件
+              </span>
+            </button>
 
             {/* モバイル用 五行カラー早見表ボタン */}
             <button

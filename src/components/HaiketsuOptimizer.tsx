@@ -30,6 +30,7 @@ import {
   AcupointRoleMetadata,
   OverdosePreset
 } from "@/data/haiketsuData";
+import ClipButton from "@/components/ClipButton";
 
 export default function HaiketsuOptimizer() {
   // 初期選択: 「頭痛・首肩こりで7穴選んでしまった例」の過密プリセット
@@ -167,8 +168,36 @@ export default function HaiketsuOptimizer() {
                 </h3>
               </div>
 
-              {/* スコアバッジ */}
-              <div className="flex items-center gap-3">
+              {/* スコアバッジ ＆ マイカルテ保存ボタン */}
+              <div className="flex flex-wrap items-center gap-3">
+                {selectedIds.length > 0 && (
+                  <ClipButton
+                    item={{
+                      id: `haiketsu-custom-${[...selectedIds].sort().join("-")}`,
+                      type: "pair",
+                      title: `配穴処方（${selectedIds.map(id => ACUPOINT_ROLES[id]?.name || id).join(" ＋ ")}）`,
+                      subTitle: `純度スコア: ${analysis.purityScore}点（${analysis.statusText}）`,
+                      points: selectedIds.map(id => {
+                        const r = ACUPOINT_ROLES[id];
+                        return r ? `${r.name} (${r.code})` : id;
+                      }),
+                      elements: Array.from(new Set(selectedIds.map(id => {
+                        const r = ACUPOINT_ROLES[id];
+                        if (!r) return "木";
+                        if (r.system.includes("liver") || r.system.includes("gall")) return "木";
+                        if (r.system.includes("heart") || r.system.includes("pericardium")) return "火";
+                        if (r.system.includes("spleen") || r.system.includes("stomach")) return "土";
+                        if (r.system.includes("lung") || r.system.includes("large_intestine")) return "金";
+                        return "水";
+                      }))),
+                      indications: ["配穴シミュレーター自作構成"],
+                      summary: `穴数: ${analysis.totalCount}穴（本治穴: ${analysis.rootCount}穴 / 標治穴: ${analysis.branchCount}穴）。本治比率: ${analysis.rootRatio}%。`,
+                      mechanism: analysis.alerts.length > 0 ? `臨床所見: ${analysis.alerts.map(a => a.title).join("、")}` : "気の昇降・寒熱のバランスがとれた至適配穴構成。"
+                    }}
+                    variant="button"
+                    size="sm"
+                  />
+                )}
                 <div className={`px-4 py-2 rounded-2xl border text-center ${scoreBadgeColor}`}>
                   <span className="text-3xl sm:text-4xl font-serif font-bold">
                     {analysis.purityScore}
