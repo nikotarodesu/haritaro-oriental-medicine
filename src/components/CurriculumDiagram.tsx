@@ -41,6 +41,14 @@ import PathomechanismMicroLuomai from "./pathomechanism/PathomechanismMicroLuoma
 import PathomechanismPathogenInvasion from "./pathomechanism/PathomechanismPathogenInvasion";
 import PathomechanismEmotionCascade from "./pathomechanism/PathomechanismEmotionCascade";
 import PathomechanismDiagnosticBridge from "./pathomechanism/PathomechanismDiagnosticBridge";
+import DiagnosisFunnelModel from "./diagnosis/DiagnosisFunnelModel";
+import DiagnosisSevenSteps from "./diagnosis/DiagnosisSevenSteps";
+import DiagnosisSymptomDecoder from "./diagnosis/DiagnosisSymptomDecoder";
+import DiagnosisMultiscanScanner from "./diagnosis/DiagnosisMultiscanScanner";
+import DiagnosisPulseAbdomenMap from "./diagnosis/DiagnosisPulseAbdomenMap";
+import DiagnosisEightPrinciples3D from "./diagnosis/DiagnosisEightPrinciples3D";
+import DiagnosisDecisionTreeSimulator from "./diagnosis/DiagnosisDecisionTreeSimulator";
+import DiagnosisPrescriptionBridge from "./diagnosis/DiagnosisPrescriptionBridge";
 
 interface CurriculumDiagramProps {
   id: string;
@@ -203,6 +211,39 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
 
   if (id === "pathomechanism-diagnostic-bridge") {
     return <PathomechanismDiagnosticBridge onNextLecture={onNextLecture} />;
+  }
+
+  // 体系カリキュラム⑥：診断論の8大図解
+  if (id === "diagnosis-funnel-model") {
+    return <DiagnosisFunnelModel />;
+  }
+
+  if (id === "diagnosis-seven-steps") {
+    return <DiagnosisSevenSteps />;
+  }
+
+  if (id === "diagnosis-symptom-decoder") {
+    return <DiagnosisSymptomDecoder />;
+  }
+
+  if (id === "diagnosis-multiscan-scanner") {
+    return <DiagnosisMultiscanScanner />;
+  }
+
+  if (id === "diagnosis-pulse-abdomen-map") {
+    return <DiagnosisPulseAbdomenMap />;
+  }
+
+  if (id === "diagnosis-eight-principles-3d") {
+    return <DiagnosisEightPrinciples3D />;
+  }
+
+  if (id === "diagnosis-decision-tree-simulator") {
+    return <DiagnosisDecisionTreeSimulator />;
+  }
+
+  if (id === "diagnosis-prescription-bridge") {
+    return <DiagnosisPrescriptionBridge onNextLecture={onNextLecture} />;
   }
 
   if (id === "yinyang-homeostasis") {
