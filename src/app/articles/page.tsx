@@ -6,6 +6,7 @@ import { Article } from "@/types/oriental";
 import { BookOpen, Calendar, Clock, ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
+import EastWestIntegrativeSwitch from "@/components/EastWestIntegrativeSwitch";
 
 export default function ArticlesPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
@@ -115,6 +116,13 @@ export default function ArticlesPage() {
                   </blockquote>
                 );
               }
+              if (block.trim() === ":::east-west-switch:::") {
+                return (
+                  <div key={index} className="not-prose my-8">
+                    <EastWestIntegrativeSwitch initialCaseId="gerd-gastric" />
+                  </div>
+                );
+              }
               if (block.startsWith("---")) {
                 return <hr key={index} className="border-[#E8E1D1] dark:border-[#22303D] my-8" />;
               }
@@ -159,6 +167,35 @@ export default function ArticlesPage() {
           書き溜めてきた臨床の智慧、配穴の秘訣、そして世界最前線の神経生理学論文を精読・解釈したアーカイブです。テキスト、ブログ記事、論文データが蓄積され、東洋医学の最高峰の知の宝庫を形成します。
         </p>
       </div>
+
+      {/* 注目フィーチャー：東西医学の相補マトリクス切り替えスイッチ */}
+      <section className="space-y-4 bg-white dark:bg-[#152028] p-5 sm:p-7 rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4">
+          <div>
+            <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
+              陰陽論第8節 臨床実証ツール
+            </span>
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] mt-1">
+              東西医学の「相補マトリクス」切り替えスイッチ
+            </h2>
+            <p className="text-xs text-[#59615D] dark:text-[#96A6B2] mt-1">
+              西洋医学（陽：構造・病名・除外診断）と東洋医学（陰：機能・証・気機調律）の相補関係をタブで瞬時に切り替えて学べます。
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              const target = ARTICLES.find((a) => a.id === "east-west-integrative-gerd-gastric");
+              if (target) setActiveArticle(target);
+            }}
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#1E3D34] dark:bg-[#2B6958] hover:opacity-90 px-4 py-2 rounded-xl transition-all shadow-sm shrink-0"
+          >
+            <span>症例論文（逆流性食道炎）を読む</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+        <EastWestIntegrativeSwitch initialCaseId="gerd-gastric" />
+      </section>
 
       {/* カテゴリタブ */}
       <div className="flex flex-wrap items-center gap-2 border-b border-[#E8E1D1] dark:border-[#22303D] pb-4">

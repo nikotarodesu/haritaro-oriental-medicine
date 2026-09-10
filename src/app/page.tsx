@@ -124,19 +124,25 @@ export default function HomePage() {
                   </Link>
                   <Link
                     href="/simulator"
-                    className="py-2 px-3 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3E1CB] dark:border-[#423321] text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBEBD9] dark:hover:bg-[#362B1D] text-xs font-semibold text-center transition-colors flex items-center gap-1"
+                    className="py-2 px-2.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1A2530] text-xs font-semibold text-center transition-colors"
                   >
-                    <Layers className="w-3.5 h-3.5" />
-                    <span>弁証シミュレーター</span>
+                    弁証
+                  </Link>
+                  <Link
+                    href="/simulator?tab=matrix"
+                    className="py-2 px-2.5 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3E1CB] dark:border-[#423321] text-[#C45A4A] dark:text-[#F87171] hover:bg-[#FBEBD9] dark:hover:bg-[#362B1D] text-xs font-semibold text-center transition-colors flex items-center gap-1"
+                  >
+                    <Stethoscope className="w-3.5 h-3.5" />
+                    <span>相補マトリクス</span>
                   </Link>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* クイックアクセス・ダッシュボード（8大機能） */}
+          {/* クイックアクセス・ダッシュボード（9大機能） */}
           <div className="mt-8 max-w-7xl mx-auto">
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2.5">
               <Link
                 href="/symptoms"
                 className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group"
@@ -199,6 +205,20 @@ export default function HomePage() {
                 </div>
                 <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">弁証シミュレーター</div>
                 <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">八綱・臓腑経絡</div>
+              </Link>
+
+              <Link
+                href="/simulator?tab=matrix"
+                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3 text-center hover:border-[#C45A4A] dark:hover:border-[#F87171] hover:shadow-sm transition-all group relative"
+              >
+                <span className="absolute top-1.5 right-1.5 text-[8px] font-bold px-1 py-0.2 rounded bg-[#C45A4A] text-white">
+                  新機能
+                </span>
+                <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#251A14] text-[#C45A4A] dark:text-[#F87171] flex items-center justify-center mx-auto mb-1.5 group-hover:scale-110 transition-transform">
+                  <Stethoscope className="w-4 h-4" />
+                </div>
+                <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">相補マトリクス</div>
+                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">西洋（陽）×東洋（陰）</div>
               </Link>
 
               <Link
