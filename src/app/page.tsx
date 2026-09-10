@@ -12,7 +12,8 @@ import {
   Award,
   GraduationCap,
   Scissors,
-  Waves
+  Waves,
+  ShieldAlert
 } from "lucide-react";
 import { TSUBOS } from "@/data/tsuboData";
 import { ARTICLES } from "@/data/articleData";
@@ -74,9 +75,16 @@ export default function HomePage() {
                   </Link>
                   <Link
                     href="/diagnosis"
-                    className="py-2 px-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1A2530] text-xs font-semibold text-center transition-colors"
+                    className="py-2 px-2.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1A2530] text-xs font-semibold text-center transition-colors"
                   >
                     体質診断
+                  </Link>
+                  <Link
+                    href="/diagnosis?tab=gokin"
+                    className="py-2 px-2.5 rounded-xl bg-[#FEF2F2] dark:bg-[#201111] border border-[#FECACA] dark:border-[#4C1D1D] text-[#DC2626] hover:bg-[#FEE2E2] text-xs font-semibold text-center transition-colors flex items-center gap-1"
+                  >
+                    <ShieldAlert className="w-3.5 h-3.5" />
+                    <span>五禁</span>
                   </Link>
                 </div>
               </div>
@@ -118,43 +126,57 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* クイックアクセス・ダッシュボード（6大機能） */}
-          <div className="mt-8 max-w-5xl mx-auto">
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {/* クイックアクセス・ダッシュボード（7大機能） */}
+          <div className="mt-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5">
               <Link
                 href="/symptoms"
-                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group"
+                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group"
               >
-                <div className="w-9 h-9 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+                <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center mx-auto mb-1.5 group-hover:scale-110 transition-transform">
                   <HeartPulse className="w-4 h-4" />
                 </div>
                 <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">お悩み・症状別</div>
-                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">頭痛・肩こり・不眠</div>
+                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">頭痛・肩こり</div>
               </Link>
 
               <Link
                 href="/diagnosis"
-                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group"
+                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group"
               >
-                <div className="w-9 h-9 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#A83629] dark:text-[#C47A72] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+                <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#A83629] dark:text-[#C47A72] flex items-center justify-center mx-auto mb-1.5 group-hover:scale-110 transition-transform">
                   <Stethoscope className="w-4 h-4" />
                 </div>
                 <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">気血水 体質診断</div>
-                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">約2分でタイプ判定</div>
+                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">約2分で判定</div>
+              </Link>
+
+              <Link
+                href="/diagnosis?tab=gokin"
+                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3 text-center hover:border-[#DC2626] dark:hover:border-[#DC2626] hover:shadow-sm transition-all group relative"
+              >
+                <span className="absolute top-1.5 right-1.5 text-[8px] font-bold px-1 py-0.2 rounded bg-[#FCA5A5] text-[#7F1D1D]">
+                  新設
+                </span>
+                <div className="w-8 h-8 rounded-lg bg-[#FEF2F2] dark:bg-[#201111] text-[#DC2626] flex items-center justify-center mx-auto mb-1.5 group-hover:scale-110 transition-transform">
+                  <ShieldAlert className="w-4 h-4" />
+                </div>
+                <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">五禁アラート</div>
+                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">食養生・相剋</div>
               </Link>
 
               <Link
                 href="/simulator"
-                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3.5 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group relative"
+                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group relative"
               >
-                <span className="absolute top-2 right-2 text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
+                <span className="absolute top-1.5 right-1.5 text-[8px] font-bold px-1 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
                   新設
                 </span>
-                <div className="w-9 h-9 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+                <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center mx-auto mb-1.5 group-hover:scale-110 transition-transform">
                   <Layers className="w-4 h-4" />
                 </div>
-                <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">臨床弁証シミュレーター</div>
-                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">八綱・気血水・臓腑</div>
+                <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">弁証シミュレーター</div>
+                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">八綱・臓腑経絡</div>
               </Link>
 
               <Link

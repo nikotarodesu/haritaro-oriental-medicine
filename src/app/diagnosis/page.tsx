@@ -4,19 +4,44 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { DIAGNOSIS_QUESTIONS, DIAGNOSIS_RESULTS } from "@/data/diagnosisData";
 import { DiagnosisResultType } from "@/types/oriental";
-import { Stethoscope, CheckCircle2, RotateCcw, Utensils, HeartPulse, Sparkles, ArrowRight, Layers } from "lucide-react";
+import { Stethoscope, CheckCircle2, RotateCcw, Utensils, HeartPulse, Sparkles, ArrowRight, Layers, ShieldAlert } from "lucide-react";
 import ThreeStageSimulator from "@/components/ThreeStageSimulator";
+import FoodFiveProhibitionsAlert, { OrganKey } from "@/components/FoodFiveProhibitionsAlert";
+
+function mapResultToOrgan(resultName: string): OrganKey {
+  if (resultName.includes("気滞")) return "liver";
+  if (resultName.includes("気虚")) return "spleen";
+  if (resultName.includes("血虚")) return "liver";
+  if (resultName.includes("瘀血")) return "heart";
+  if (resultName.includes("水滞")) return "spleen";
+  if (resultName.includes("陽虚")) return "kidney";
+  return "liver";
+}
 
 export default function DiagnosisPage() {
-  const [activeTab, setActiveTab] = useState<"self" | "simulator">("self");
+  const [activeTab, setActiveTab] = useState<"self" | "gokin" | "simulator">("self");
+  const [gokinOrgan, setGokinOrgan] = useState<OrganKey>("liver");
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const [result, setResult] = useState<DiagnosisResultType | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
-      if (params.get("tab") === "simulator") {
+      const tab = params.get("tab");
+      if (tab === "simulator") {
         setActiveTab("simulator");
+      } else if (tab === "gokin" || tab === "food" || tab === "prohibition") {
+        setActiveTab("gokin");
+      }
+      const organParam = params.get("organ");
+      if (
+        organParam === "liver" ||
+        organParam === "heart" ||
+        organParam === "spleen" ||
+        organParam === "lung" ||
+        organParam === "kidney"
+      ) {
+        setGokinOrgan(organParam as OrganKey);
       }
     }
   }, []);
@@ -85,8 +110,24 @@ export default function DiagnosisPage() {
             }`}
           >
             <Stethoscope className="w-4 h-4" />
-            <span>一般向け 12問セルフ診断</span>
+            <span>① 気血水 12問セルフ診断</span>
           </button>
+
+          <button
+            onClick={() => setActiveTab("gokin")}
+            className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+              activeTab === "gokin"
+                ? "bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] shadow-sm"
+                : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
+            }`}
+          >
+            <ShieldAlert className="w-4 h-4 text-[#DC2626]" />
+            <span>② 食養生・薬膳 五禁アラート</span>
+            <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#FCA5A5] text-[#7F1D1D]">
+              新設
+            </span>
+          </button>
+
           <button
             onClick={() => setActiveTab("simulator")}
             className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
@@ -96,7 +137,7 @@ export default function DiagnosisPage() {
             }`}
           >
             <Layers className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-            <span>臨床弁証シミュレーター</span>
+            <span>③ 臨床弁証シミュレーター</span>
             <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
               臨床
             </span>
@@ -267,6 +308,34 @@ export default function DiagnosisPage() {
                 </div>
               </div>
             </div>
+
+            {/* 五禁（相剋）アラート連携バナー */}
+            <div className="bg-[#FEF2F2] dark:bg-[#201111] p-4 rounded-xl border border-[#FECACA] dark:border-[#4C1D1D] flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-[#DC2626] text-white flex items-center justify-center shrink-0">
+                  <ShieldAlert className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-[#DC2626] block">
+                    ⚠️ あなたの体質（{result.name}）が避けるべき「相剋ブレーキ味覚」があります
+                  </span>
+                  <span className="text-[11px] text-[#7F1D1D] dark:text-[#FCA5A5] leading-tight block">
+                    良かれと思って食べている食材が、実は弱った臓腑を攻撃しているかも？
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setGokinOrgan(mapResultToOrgan(result.name));
+                  setActiveTab("gokin");
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className="px-4 py-2 rounded-xl bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm"
+              >
+                <span>五禁アラートで確認</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
 
           <div className="text-center pt-2">
@@ -308,7 +377,30 @@ export default function DiagnosisPage() {
     </div>
   )}
 
-  {/* 2. 臨床弁証シミュレーター */}
+  {/* 2. 食養生・薬膳 五禁（相剋）アラート */}
+  {activeTab === "gokin" && (
+    <div className="space-y-8 animate-fadeIn max-w-5xl mx-auto">
+      {/* 導入ヘッダー */}
+      <div className="text-center space-y-3 max-w-3xl mx-auto">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FEF2F2] dark:bg-[#201111] border border-[#FECACA] dark:border-[#4C1D1D] text-[#DC2626] text-xs font-semibold tracking-wider">
+          <ShieldAlert className="w-3.5 h-3.5 text-[#DC2626]" />
+          <span>『素問』五臓生成篇・宣明五気篇準拠 安全装置ツール</span>
+        </div>
+        <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
+          食養生・薬膳「五禁（相剋）アラート」
+        </h2>
+        <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+          「良かれと思って食べている食材が、実は弱った臓腑を攻撃しているかも？」<br className="hidden sm:inline" />
+          自分の体質や弱っている臓腑を選ぶと、五行相剋関係にある避けるべき味覚が<strong className="text-[#DC2626]">「⚠️相剋ブレーキ」</strong>として警告表示され、
+          代わりに補うべきレスキュー食材リストを提示します。
+        </p>
+      </div>
+
+      <FoodFiveProhibitionsAlert initialOrgan={gokinOrgan} />
+    </div>
+  )}
+
+  {/* 3. 臨床弁証シミュレーター */}
   {activeTab === "simulator" && (
     <div className="space-y-8 animate-fadeIn">
       {/* 導入ヘッダー */}
