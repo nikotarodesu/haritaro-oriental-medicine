@@ -127,6 +127,16 @@ export default function SeasonalBanner() {
     setPreviewDoyoKey(null);
   };
 
+  // キャッチフレーズを「季節フェーズ宣言」と「養生メッセージ」に分解して可読性を向上
+  const { leadPhrase, bodyPhrase } = useMemo(() => {
+    const phrase = currentDisplay.catchphrase;
+    const match = phrase.match(/^(.*?[。])\s*(.*)$/);
+    if (match && match[2]) {
+      return { leadPhrase: match[1], bodyPhrase: match[2] };
+    }
+    return { leadPhrase: phrase, bodyPhrase: "" };
+  }, [currentDisplay.catchphrase]);
+
   return (
     <div className="mt-8 max-w-4xl mx-auto bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-2xl p-5 sm:p-7 shadow-sm transition-colors relative overflow-hidden">
       {/* 和紙風テクスチャと装飾アクセント */}
@@ -140,7 +150,7 @@ export default function SeasonalBanner() {
           </div>
 
           <div>
-            <div className="flex flex-wrap items-center gap-1.5 mb-1">
+            <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
               {/* 日付またはプレビュー表示 */}
               <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center gap-1">
                 <Calendar className="w-3 h-3" />
@@ -165,8 +175,15 @@ export default function SeasonalBanner() {
               </span>
             </div>
 
-            <h3 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5] leading-snug">
-              {currentDisplay.catchphrase}
+            <h3 className="font-sans text-sm sm:text-base leading-relaxed tracking-wide text-[#232826] dark:text-[#FAF8F5]">
+              <span className="font-semibold text-[#1E3D34] dark:text-[#74BA9E] block sm:inline mr-2">
+                {leadPhrase}
+              </span>
+              {bodyPhrase && (
+                <span className="font-normal text-[#4A5450] dark:text-[#B4C2CB] block sm:inline mt-0.5 sm:mt-0">
+                  {bodyPhrase}
+                </span>
+              )}
             </h3>
           </div>
         </div>
