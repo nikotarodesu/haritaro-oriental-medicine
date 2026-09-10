@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
 import ClipButton from "@/components/ClipButton";
-import GogyoBadge from "@/components/GogyoBadge";
 
 export default function SeasonalBanner() {
   const { 
@@ -86,21 +85,10 @@ export default function SeasonalBanner() {
               <span>本日：{currentDateFormatted || "2026年9月10日"}</span>
             </span>
 
-            {/* 二十四節気バッジ */}
+            {/* 五季バッジ */}
             <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5]">
-              二十四節気：<strong>{todayTerm.name}</strong>
-              <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] ml-1">
-                ({todayTerm.kana})
-              </span>
+              五季：{currentSeason.fiveSeason}（{currentSeason.organ}系）
             </span>
-
-            {/* 五季バッジ（五行CUDカラー連動） */}
-            <div className="flex items-center gap-1">
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5]">
-                五季：{currentSeason.fiveSeason}（{currentSeason.organ}系）
-              </span>
-              <GogyoBadge target={currentSeason.element} size="sm" showColorName />
-            </div>
 
             {/* 気の運行 */}
             <span className="text-xs text-[#59615D] dark:text-[#96A6B2] hidden sm:inline ml-1">
@@ -132,13 +120,6 @@ export default function SeasonalBanner() {
               </span>
             )}
           </h3>
-
-          <p className="font-serif text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed italic bg-[#FAF8F5]/80 dark:bg-[#121920]/80 p-3 rounded-xl border border-[#EDE7DB] dark:border-[#22303D]">
-            <span className="not-italic font-bold text-[10px] px-1.5 py-0.5 rounded bg-[#E6C387] text-[#1E3D34] mr-2">
-              古典の教え
-            </span>
-            {todayTerm.classicQuote}
-          </p>
         </div>
 
         {/* 3. 三大養生処方箋（旬の食養生・生活習慣・おすすめツボ） */}
