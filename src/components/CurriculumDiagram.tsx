@@ -20,6 +20,11 @@ import WuxingFiveExhaustionsRadar from "./wuxing/WuxingFiveExhaustionsRadar";
 import WuxingShishinDashboard from "./wuxing/WuxingShishinDashboard";
 import WuxingGokinFilter from "./wuxing/WuxingGokinFilter";
 import WuxingClinicalDecisionTree from "./wuxing/WuxingClinicalDecisionTree";
+import QiBloodThreeLayers from "./qiblood/QiBloodThreeLayers";
+import QiBloodTriangle from "./qiblood/QiBloodTriangle";
+import QiBloodDominoProcess from "./qiblood/QiBloodDominoProcess";
+import QiBloodConstitutionChecker from "./qiblood/QiBloodConstitutionChecker";
+import QiBloodClinicalFlow from "./qiblood/QiBloodClinicalFlow";
 
 interface CurriculumDiagramProps {
   id: string;
@@ -95,6 +100,27 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
 
   if (id === "wuxing-clinical-decision-tree") {
     return <WuxingClinicalDecisionTree onNextLecture={onNextLecture} />;
+  }
+
+  // 体系カリキュラム③：気血水理論の5大図解
+  if (id === "qiblood-three-layers") {
+    return <QiBloodThreeLayers />;
+  }
+
+  if (id === "qiblood-triangle") {
+    return <QiBloodTriangle />;
+  }
+
+  if (id === "qiblood-domino-process") {
+    return <QiBloodDominoProcess />;
+  }
+
+  if (id === "qiblood-constitution-checker") {
+    return <QiBloodConstitutionChecker />;
+  }
+
+  if (id === "qiblood-clinical-flow") {
+    return <QiBloodClinicalFlow onNextLecture={onNextLecture} />;
   }
 
   if (id === "yinyang-homeostasis") {
