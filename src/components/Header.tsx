@@ -15,7 +15,8 @@ import {
   Layers,
   Scissors,
   Waves,
-  ShieldAlert
+  ShieldAlert,
+  Activity
 } from "lucide-react";
 import YinYangSwitch from "./YinYangSwitch";
 
@@ -139,6 +140,29 @@ export default function Header() {
                       </div>
                       <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
                         体質別・相剋ブレーキ＆レスキュー食材
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/diagnosis?tab=gorou"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 mt-0.5">
+                      <Activity className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                          五労（職業病）チェッカー
+                        </span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
+                          新設
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        久視・久坐・久立の五臓疲弊＆中庸
                       </span>
                     </div>
                   </Link>
@@ -362,6 +386,19 @@ export default function Header() {
                 <span>食養生・五禁アラート</span>
               </div>
               <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#FCA5A5] text-[#7F1D1D]">
+                新設
+              </span>
+            </Link>
+            <Link
+              href="/diagnosis?tab=gorou"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+            >
+              <div className="flex items-center gap-3">
+                <Activity className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <span>五労（職業病）チェッカー</span>
+              </div>
+              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
                 新設
               </span>
             </Link>

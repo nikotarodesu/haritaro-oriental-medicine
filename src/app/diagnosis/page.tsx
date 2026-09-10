@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { DIAGNOSIS_QUESTIONS, DIAGNOSIS_RESULTS } from "@/data/diagnosisData";
 import { DiagnosisResultType } from "@/types/oriental";
-import { Stethoscope, CheckCircle2, RotateCcw, Utensils, HeartPulse, Sparkles, ArrowRight, Layers, ShieldAlert } from "lucide-react";
+import { Stethoscope, CheckCircle2, RotateCcw, Utensils, HeartPulse, Sparkles, ArrowRight, Layers, ShieldAlert, Activity } from "lucide-react";
 import ThreeStageSimulator from "@/components/ThreeStageSimulator";
 import FoodFiveProhibitionsAlert, { OrganKey } from "@/components/FoodFiveProhibitionsAlert";
+import GorouWorkstyleChecker from "@/components/GorouWorkstyleChecker";
 
 function mapResultToOrgan(resultName: string): OrganKey {
   if (resultName.includes("気滞")) return "liver";
@@ -19,7 +20,7 @@ function mapResultToOrgan(resultName: string): OrganKey {
 }
 
 export default function DiagnosisPage() {
-  const [activeTab, setActiveTab] = useState<"self" | "gokin" | "simulator">("self");
+  const [activeTab, setActiveTab] = useState<"self" | "gokin" | "gorou" | "simulator">("self");
   const [gokinOrgan, setGokinOrgan] = useState<OrganKey>("liver");
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const [result, setResult] = useState<DiagnosisResultType | null>(null);
@@ -32,6 +33,8 @@ export default function DiagnosisPage() {
         setActiveTab("simulator");
       } else if (tab === "gokin" || tab === "food" || tab === "prohibition") {
         setActiveTab("gokin");
+      } else if (tab === "gorou" || tab === "workstyle" || tab === "checker") {
+        setActiveTab("gorou");
       }
       const organParam = params.get("organ");
       if (
@@ -129,6 +132,21 @@ export default function DiagnosisPage() {
           </button>
 
           <button
+            onClick={() => setActiveTab("gorou")}
+            className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+              activeTab === "gorou"
+                ? "bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] shadow-sm"
+                : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
+            }`}
+          >
+            <Activity className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+            <span>③ 五労（職業病）チェッカー</span>
+            <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
+              新設
+            </span>
+          </button>
+
+          <button
             onClick={() => setActiveTab("simulator")}
             className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
               activeTab === "simulator"
@@ -137,7 +155,7 @@ export default function DiagnosisPage() {
             }`}
           >
             <Layers className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-            <span>③ 臨床弁証シミュレーター</span>
+            <span>④ 臨床弁証シミュレーター</span>
             <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
               臨床
             </span>
@@ -400,7 +418,29 @@ export default function DiagnosisPage() {
     </div>
   )}
 
-  {/* 3. 臨床弁証シミュレーター */}
+  {/* 3. 現代人のための五労（職業病）チェッカー */}
+  {activeTab === "gorou" && (
+    <div className="space-y-8 animate-fadeIn max-w-5xl mx-auto">
+      {/* 導入ヘッダー */}
+      <div className="text-center space-y-3 max-w-3xl mx-auto">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3E1CB] dark:border-[#423321] text-[#B86924] dark:text-[#E6C387] text-xs font-semibold tracking-wider">
+          <Activity className="w-3.5 h-3.5 text-[#B86924]" />
+          <span>『素問』宣明五気篇準拠 動作偏向・職業病診断ツール</span>
+        </div>
+        <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
+          現代人のための「五労（職業病）チェッカー」
+        </h2>
+        <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+          「久視（PC凝視）」「久坐（座りっぱなし）」「久立（立ち仕事）」「久行（歩き回り）」「久臥（寝だめ）」の五労理論を現代ワークスタイルに翻訳。<br className="hidden sm:inline" />
+          日頃の偏った動作から疲弊している五臓のレーダーチャートを算出し、<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「五行を回す中庸アクション」</strong>を処方します。
+        </p>
+      </div>
+
+      <GorouWorkstyleChecker />
+    </div>
+  )}
+
+  {/* 4. 臨床弁証シミュレーター */}
   {activeTab === "simulator" && (
     <div className="space-y-8 animate-fadeIn">
       {/* 導入ヘッダー */}

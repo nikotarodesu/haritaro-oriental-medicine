@@ -13,7 +13,8 @@ import {
   GraduationCap,
   Scissors,
   Waves,
-  ShieldAlert
+  ShieldAlert,
+  Activity
 } from "lucide-react";
 import { TSUBOS } from "@/data/tsuboData";
 import { ARTICLES } from "@/data/articleData";
@@ -81,10 +82,17 @@ export default function HomePage() {
                   </Link>
                   <Link
                     href="/diagnosis?tab=gokin"
-                    className="py-2 px-2.5 rounded-xl bg-[#FEF2F2] dark:bg-[#201111] border border-[#FECACA] dark:border-[#4C1D1D] text-[#DC2626] hover:bg-[#FEE2E2] text-xs font-semibold text-center transition-colors flex items-center gap-1"
+                    className="py-2 px-2 rounded-xl bg-[#FEF2F2] dark:bg-[#201111] border border-[#FECACA] dark:border-[#4C1D1D] text-[#DC2626] hover:bg-[#FEE2E2] text-xs font-semibold text-center transition-colors flex items-center gap-1"
                   >
                     <ShieldAlert className="w-3.5 h-3.5" />
                     <span>五禁</span>
+                  </Link>
+                  <Link
+                    href="/diagnosis?tab=gorou"
+                    className="py-2 px-2 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3E1CB] dark:border-[#423321] text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBEBD9] text-xs font-semibold text-center transition-colors flex items-center gap-1"
+                  >
+                    <Activity className="w-3.5 h-3.5" />
+                    <span>五労</span>
                   </Link>
                 </div>
               </div>
@@ -126,9 +134,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* クイックアクセス・ダッシュボード（7大機能） */}
-          <div className="mt-8 max-w-6xl mx-auto">
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5">
+          {/* クイックアクセス・ダッシュボード（8大機能） */}
+          <div className="mt-8 max-w-7xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
               <Link
                 href="/symptoms"
                 className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3 text-center hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group"
@@ -163,6 +171,20 @@ export default function HomePage() {
                 </div>
                 <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">五禁アラート</div>
                 <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">食養生・相剋</div>
+              </Link>
+
+              <Link
+                href="/diagnosis?tab=gorou"
+                className="bg-[#FFFFFF]/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-xl p-3 text-center hover:border-[#B86924] dark:hover:border-[#E6C387] hover:shadow-sm transition-all group relative"
+              >
+                <span className="absolute top-1.5 right-1.5 text-[8px] font-bold px-1 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
+                  新設
+                </span>
+                <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center mx-auto mb-1.5 group-hover:scale-110 transition-transform">
+                  <Activity className="w-4 h-4" />
+                </div>
+                <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">五労チェッカー</div>
+                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">職業病・中庸</div>
               </Link>
 
               <Link
