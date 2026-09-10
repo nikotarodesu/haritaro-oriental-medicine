@@ -16,13 +16,64 @@ import {
   Scissors,
   Waves,
   ShieldAlert,
-  Activity
+  Activity,
+  Sprout,
+  Sun,
+  Wind,
+  Snowflake,
+  RotateCcw,
+  Sparkles
 } from "lucide-react";
 import YinYangSwitch from "./YinYangSwitch";
+import { useSeasonalTheme, SEASON_THEMES, SeasonKey } from "@/contexts/SeasonalThemeContext";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<"general" | "expert" | null>(null);
+  const [seasonPopoverOpen, setSeasonPopoverOpen] = useState(false);
+
+  const { 
+    currentSeason, 
+    todayTerm, 
+    isDoyoToday, 
+    isLive, 
+    setPreviewSeason, 
+    resetToLiveToday 
+  } = useSeasonalTheme();
+
+  const seasonPopoverRef = useRef<HTMLDivElement | null>(null);
+
+  // ポップオーバー外クリックで閉じる
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (seasonPopoverRef.current && !seasonPopoverRef.current.contains(event.target as Node)) {
+        setSeasonPopoverOpen(false);
+      }
+    }
+    if (seasonPopoverOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [seasonPopoverOpen]);
+
+  const renderSeasonIcon = (type: string, className = "w-3.5 h-3.5") => {
+    switch (type) {
+      case "sprout":
+        return <Sprout className={className} />;
+      case "sun":
+        return <Sun className={className} />;
+      case "compass":
+        return <Compass className={className} />;
+      case "wind":
+        return <Wind className={className} />;
+      case "snowflake":
+        return <Snowflake className={className} />;
+      default:
+        return <Sprout className={className} />;
+    }
+  };
 
   const generalTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const expertTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -50,15 +101,116 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-[#FAF8F5]/95 dark:bg-[#10161C]/95 backdrop-blur-md border-b border-[#E8E1D1] dark:border-[#22303D] transition-colors duration-300">
+    <header 
+      className="sticky top-0 z-50 bg-[#FAF8F5]/95 dark:bg-[#10161C]/95 backdrop-blur-md border-b border-[#E8E1D1] dark:border-[#22303D] transition-all duration-500"
+      style={{ borderTop: `2.5px solid ${currentSeason.accentHex}` }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* ロゴエリア */}
-          <Link href="/" className="flex items-center group min-w-0 pr-2">
-            <span className="font-serif text-xl sm:text-2xl font-bold tracking-wide text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors truncate">
-              はり太郎の東洋医学
-            </span>
-          </Link>
+          {/* ロゴエリア ＆ 天人相応・動的季節バッジ */}
+          <div className="flex items-center gap-3 min-w-0 pr-2">
+            <Link href="/" className="flex items-center group min-w-0">
+              <span className="font-serif text-xl sm:text-2xl font-bold tracking-wide text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors truncate">
+                はり太郎の東洋医学
+              </span>
+            </Link>
+
+            {/* 天人相応 季節動的バッジ（クリックで五季セレクターが開く） */}
+            <div className="relative" ref={seasonPopoverRef}>
+              <button
+                type="button"
+                onClick={() => setSeasonPopoverOpen(!seasonPopoverOpen)}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-all border shadow-sm shrink-0"
+                style={{
+                  backgroundColor: currentSeason.lightBgHex,
+                  color: currentSeason.primaryHex,
+                  borderColor: currentSeason.borderHex
+                }}
+                title="天人相応：現在の五季と気の運行（クリックで五季を体験）"
+              >
+                {renderSeasonIcon(currentSeason.iconType, "w-3.5 h-3.5")}
+                <span className="font-serif font-bold">{currentSeason.name}・{todayTerm.name}</span>
+                <span className="text-[10px] opacity-75 hidden xl:inline">
+                  （{currentSeason.qiMotion.split("（")[0]}）
+                </span>
+                {!isLive && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E6C387] animate-pulse" />
+                )}
+              </button>
+
+              {/* 季節セレクター ポップオーバー */}
+              {seasonPopoverOpen && (
+                <div className="absolute top-full left-0 mt-2 w-72 p-3.5 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 shadow-2xl z-50 animate-fadeIn space-y-2.5"
+                  style={{ borderColor: currentSeason.accentHex }}
+                >
+                  <div className="flex items-center justify-between border-b border-[#E8E1D1] dark:border-[#22303D] pb-2">
+                    <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                      <span>天人相応 五季切り替え</span>
+                    </span>
+                    {!isLive && (
+                      <button
+                        onClick={resetToLiveToday}
+                        className="text-[10px] font-bold text-[#B86924] dark:text-[#E6C387] hover:underline flex items-center gap-1"
+                      >
+                        <RotateCcw className="w-2.5 h-2.5" />
+                        <span>本日（自動）に戻す</span>
+                      </button>
+                    )}
+                  </div>
+
+                  <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-snug">
+                    季節をクリックすると、サイトのアクセントカラーと気の運行が連動して切り替わります。
+                  </p>
+
+                  <div className="grid grid-cols-1 gap-1.5">
+                    {(["spring", "summer", "doyo", "autumn", "winter"] as SeasonKey[]).map((key) => {
+                      const s = SEASON_THEMES[key];
+                      const isSelected = currentSeason.key === key;
+                      return (
+                        <button
+                          key={key}
+                          onClick={() => {
+                            setPreviewSeason(key);
+                            setSeasonPopoverOpen(false);
+                          }}
+                          className={`w-full flex items-center justify-between p-2 rounded-xl text-xs transition-all ${
+                            isSelected
+                              ? "bg-white dark:bg-[#1A2530] font-bold shadow-sm border"
+                              : "hover:bg-white/80 dark:hover:bg-[#1A2530]"
+                          }`}
+                          style={{ borderColor: isSelected ? s.accentHex : "transparent" }}
+                        >
+                          <div className="flex items-center gap-2">
+                            <span 
+                              className="w-6 h-6 rounded-lg flex items-center justify-center text-white text-xs"
+                              style={{ backgroundColor: s.primaryHex }}
+                            >
+                              {renderSeasonIcon(s.iconType, "w-3 h-3")}
+                            </span>
+                            <div className="text-left">
+                              <span className="font-serif font-bold text-[#232826] dark:text-[#FAF8F5] block">
+                                {s.name}（{s.element}・{s.organ}）
+                              </span>
+                              <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">
+                                {s.qiMotion}
+                              </span>
+                            </div>
+                          </div>
+                          <span 
+                            className="text-[9px] px-1.5 py-0.5 rounded font-mono"
+                            style={{ backgroundColor: s.lightBgHex, color: s.primaryHex }}
+                          >
+                            {s.colorName}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
 
           {/* デスクトップ ナビゲーション（2大集約メニュー） */}
           <nav className="hidden md:flex items-center gap-3">
@@ -361,8 +513,20 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* モバイルヘッダー右側（陰陽スイッチ & メニューボタン） */}
-          <div className="flex items-center gap-2 md:hidden">
+          {/* モバイルヘッダー右側（季節アイコン ＆ 陰陽スイッチ & メニューボタン） */}
+          <div className="flex items-center gap-1.5 md:hidden">
+            <button
+              onClick={() => setSeasonPopoverOpen(!seasonPopoverOpen)}
+              className="p-1.5 rounded-full border shadow-sm flex items-center justify-center"
+              style={{
+                backgroundColor: currentSeason.lightBgHex,
+                color: currentSeason.primaryHex,
+                borderColor: currentSeason.borderHex
+              }}
+              title="天人相応：季節の気の運行"
+            >
+              {renderSeasonIcon(currentSeason.iconType, "w-4 h-4")}
+            </button>
             <YinYangSwitch />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -378,6 +542,28 @@ export default function Header() {
       {/* モバイルナビゲーション ドロワー */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#131A21] px-4 pt-4 pb-7 space-y-5 shadow-lg">
+          {/* 天人相応 モバイル用季節ステータスカード */}
+          <div 
+            className="p-3.5 rounded-2xl border space-y-2"
+            style={{ 
+              backgroundColor: currentSeason.lightBgHex,
+              borderColor: currentSeason.borderHex
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 text-xs font-bold" style={{ color: currentSeason.primaryHex }}>
+                {renderSeasonIcon(currentSeason.iconType, "w-4 h-4")}
+                <span className="font-serif">天人相応：{currentSeason.fiveSeason}・{todayTerm.name}</span>
+              </div>
+              <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-white/80 dark:bg-black/40 text-[#232826] dark:text-[#FAF8F5]">
+                {currentSeason.qiMotion.split("（")[0]}
+              </span>
+            </div>
+            <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-snug">
+              {currentSeason.voiceAdvice}
+            </p>
+          </div>
+
           {/* 一般向けセクション */}
           <div className="space-y-1">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#B86924] dark:text-[#E6C387] px-3">

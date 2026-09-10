@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { SeasonalThemeProvider } from "@/contexts/SeasonalThemeContext";
 
 const notoSerifJP = Noto_Serif_JP({
   variable: "--font-noto-serif",
@@ -98,11 +99,13 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col font-sans bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#E6EFEA] selection:bg-[#E2D5C3] dark:selection:bg-[#2A4B3E] selection:text-[#1E3D34] dark:selection:text-[#E6EFEA]">
         <ThemeProvider>
-          <Header />
-          <div className="flex-1">
-            {children}
-          </div>
-          <Footer />
+          <SeasonalThemeProvider>
+            <Header />
+            <div className="flex-1">
+              {children}
+            </div>
+            <Footer />
+          </SeasonalThemeProvider>
         </ThemeProvider>
       </body>
     </html>
