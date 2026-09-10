@@ -154,7 +154,7 @@ export default function ThreeStageSimulator() {
             <span>Clinical Diagnosis Simulator</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-            三段階フィルタリング 臨床弁証シミュレーター
+            臨床弁証シミュレーター
           </h2>
           <p className="mt-2 text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-3xl">
             「八綱（深浅・勢い） ➜ 気血水（運動） ➜ 臓腑経絡（局在）」の3ステップを選択することで、診断アルゴリズムが自動で「一文の証」を組み上げ、臨床上最も切れ味を発揮する「最小構成のツボ（特効ペア）」を導き出します。

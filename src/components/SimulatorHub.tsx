@@ -32,7 +32,7 @@ export default function SimulatorHub() {
             }`}
           >
             <Layers className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-            <span>① 三段階 弁証シミュレーター</span>
+            <span>① 臨床弁証シミュレーター</span>
           </button>
 
           <button
@@ -52,7 +52,7 @@ export default function SimulatorHub() {
         </div>
       </div>
 
-      {/* 1. 三段階 弁証シミュレーター */}
+      {/* 1. 臨床弁証シミュレーター */}
       {activeTool === "diagnosis" && (
         <div className="space-y-10 animate-fadeIn">
           {/* ツール見出し */}
@@ -63,7 +63,6 @@ export default function SimulatorHub() {
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-tight">
-              三段階フィルタリング<br className="hidden sm:inline" />
               臨床弁証シミュレーター
             </h2>
 

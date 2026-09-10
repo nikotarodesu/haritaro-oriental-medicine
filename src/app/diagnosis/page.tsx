@@ -96,7 +96,7 @@ export default function DiagnosisPage() {
             }`}
           >
             <Layers className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-            <span>臨床家向け 三段階弁証シミュレーター</span>
+            <span>臨床弁証シミュレーター</span>
             <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
               臨床
             </span>
@@ -288,7 +288,7 @@ export default function DiagnosisPage() {
             <span>臨床家・専門学生の方へ</span>
           </div>
           <h3 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
-            三段階フィルタリング臨床弁証シミュレーター
+            臨床弁証シミュレーター
           </h3>
           <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] max-w-xl">
             八綱・気血水・臓腑経絡の論理的連動から「一文の証」を導出し、臨床最小手数の推奨ペアツボを瞬時に割り出します。
@@ -308,7 +308,7 @@ export default function DiagnosisPage() {
     </div>
   )}
 
-  {/* 2. 臨床家向け 三段階弁証シミュレーター */}
+  {/* 2. 臨床弁証シミュレーター */}
   {activeTab === "simulator" && (
     <div className="space-y-8 animate-fadeIn">
       {/* 導入ヘッダー */}

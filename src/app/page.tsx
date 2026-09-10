@@ -152,8 +152,8 @@ export default function HomePage() {
                 <div className="w-9 h-9 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
                   <Layers className="w-4 h-4" />
                 </div>
-                <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">弁証シミュレーター</div>
-                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">三段階フィルタ</div>
+                <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">臨床弁証シミュレーター</div>
+                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5">八綱・気血水・臓腑</div>
               </Link>
 
               <Link
@@ -339,7 +339,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. 臨床実践ツール特設: 三段階フィルタリング弁証シミュレーター */}
+      {/* 5. 臨床実践ツール特設: 臨床弁証シミュレーター */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-gradient-to-br from-[#1E2D3D] via-[#16222E] to-[#0E1720] dark:from-[#141E28] dark:via-[#0F161E] dark:to-[#080D12] rounded-3xl p-6 sm:p-10 lg:p-12 text-[#FAF8F5] relative overflow-hidden shadow-xl border border-[#2B4055] dark:border-[#223344]">
           {/* 背景装飾 */}
@@ -358,8 +358,7 @@ export default function HomePage() {
             </div>
 
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight leading-snug">
-              八綱 ➜ 気血水 ➜ 臓腑経絡<br />
-              三段階フィルタリング臨床弁証シミュレーター
+              臨床弁証シミュレーター
             </h2>
 
             <p className="text-xs sm:text-sm text-[#C5D3DF] leading-relaxed">
@@ -394,7 +393,7 @@ export default function HomePage() {
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#E6C387] text-[#1E2D3D] hover:bg-[#DFC07D] font-bold text-xs sm:text-sm shadow-md transition-all group"
               >
                 <Layers className="w-4 h-4" />
-                <span>三段階 弁証シミュレーター</span>
+                <span>臨床弁証シミュレーター</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link

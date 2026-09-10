@@ -178,7 +178,7 @@ export default function Header() {
                     <div>
                       <div className="flex items-center gap-1.5">
                         <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                          三段階 臨床弁証シミュレーター
+                          臨床弁証シミュレーター
                         </span>
                         <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
                           新設
@@ -326,7 +326,7 @@ export default function Header() {
             >
               <div className="flex items-center gap-3">
                 <Layers className="w-4 h-4" />
-                <span>三段階 臨床弁証シミュレーター</span>
+                <span>臨床弁証シミュレーター</span>
               </div>
               <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
                 新設

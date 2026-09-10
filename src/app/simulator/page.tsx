@@ -5,7 +5,7 @@ import SimulatorHub from "@/components/SimulatorHub";
 export const metadata: Metadata = {
   title: "臨床実践シミュレーター群（弁証 ＆ 配穴最小構成） | はり太郎の東洋医学",
   description:
-    "東洋医学の臨床現場に基づくWebツール。八綱➜気血水➜臓腑経絡の「三段階弁証シミュレーター」と、ツボを選びすぎによる相殺効果を防ぎ無駄を削ぎ落とす「配穴最小構成シミュレーター」を完備。",
+    "東洋医学の臨床現場に基づくWebツール。八綱➜気血水➜臓腑経絡の「臨床弁証シミュレーター」と、ツボを選びすぎによる相殺効果を防ぎ無駄を削ぎ落とす「配穴最小構成シミュレーター」を完備。",
 };
 
 export default function SimulatorPage() {
