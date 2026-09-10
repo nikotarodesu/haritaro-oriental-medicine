@@ -11,7 +11,6 @@ import {
   Layers,
   Award,
   GraduationCap,
-  Scissors,
   Waves,
   Activity
 } from "lucide-react";
@@ -438,13 +437,6 @@ export default function HomePage() {
                 <Layers className="w-4 h-4" />
                 <span>臨床弁証シミュレーター</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                href="/simulator?tab=haiketsu"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-[#FAF8F5] text-xs font-bold transition-all group"
-              >
-                <Scissors className="w-4 h-4 text-[#E6C387]" />
-                <span>配穴 最小構成</span>
               </Link>
               <Link
                 href="/simulator?tab=keiki"

@@ -3,9 +3,9 @@ import Link from "next/link";
 import SimulatorHub from "@/components/SimulatorHub";
 
 export const metadata: Metadata = {
-  title: "臨床実践シミュレーター群（弁証・配穴最小構成・経気深度） | はり太郎の東洋医学",
+  title: "臨床実践シミュレーター群（弁証・経気深度・相補マトリクス） | はり太郎の東洋医学",
   description:
-    "東洋医学の臨床現場に基づくWebツール群。「臨床弁証シミュレーター」「配穴最小構成シミュレーター」に加え、難経六十八難の水流モデルと病態深浅を直観操作する「経気深度シミュレーター」を完備。",
+    "東洋医学の臨床現場に基づくWebツール群。「臨床弁証シミュレーター」「経気深度シミュレーター」に加え、東西医学の病態モデルを対比する「相補マトリクス」を完備。",
 };
 
 export default function SimulatorPage() {
@@ -22,7 +22,7 @@ export default function SimulatorPage() {
         </span>
       </nav>
 
-      {/* シミュレーター統合ハブ（弁証 ＆ 配穴最小構成） */}
+      {/* シミュレーター統合ハブ */}
       <SimulatorHub />
     </div>
   );

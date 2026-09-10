@@ -2,22 +2,19 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Layers, Scissors, Waves, Sparkles, ArrowRight, Activity, Stethoscope } from "lucide-react";
+import { Layers, Waves, Sparkles, ArrowRight, Activity, Stethoscope } from "lucide-react";
 import ThreeStageSimulator from "@/components/ThreeStageSimulator";
-import HaiketsuOptimizer from "@/components/HaiketsuOptimizer";
 import KeikiDepthSimulator from "@/components/KeikiDepthSimulator";
 import EastWestIntegrativeSwitch from "@/components/EastWestIntegrativeSwitch";
 
 export default function SimulatorHub() {
-  const [activeTool, setActiveTool] = useState<"diagnosis" | "haiketsu" | "keiki" | "matrix">("diagnosis");
+  const [activeTool, setActiveTool] = useState<"diagnosis" | "keiki" | "matrix">("diagnosis");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const tab = params.get("tab") || params.get("tool");
-      if (tab === "haiketsu") {
-        setActiveTool("haiketsu");
-      } else if (tab === "keiki" || tab === "goyu" || tab === "depth") {
+      if (tab === "keiki" || tab === "goyu" || tab === "depth") {
         setActiveTool("keiki");
       } else if (tab === "matrix" || tab === "eastwest" || tab === "integrative") {
         setActiveTool("matrix");
@@ -43,18 +40,6 @@ export default function SimulatorHub() {
           </button>
 
           <button
-            onClick={() => setActiveTool("haiketsu")}
-            className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
-              activeTool === "haiketsu"
-                ? "bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] shadow-sm"
-                : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
-            }`}
-          >
-            <Scissors className="w-4 h-4 text-[#A83629] dark:text-[#C47A72]" />
-            <span>② 配穴の「最小構成」シミュレーター</span>
-          </button>
-
-          <button
             onClick={() => setActiveTool("keiki")}
             className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
               activeTool === "keiki"
@@ -63,7 +48,7 @@ export default function SimulatorHub() {
             }`}
           >
             <Waves className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <span>③ 経気深度シミュレーター</span>
+            <span>② 経気深度シミュレーター</span>
           </button>
 
           <button
@@ -75,7 +60,7 @@ export default function SimulatorHub() {
             }`}
           >
             <Stethoscope className="w-4 h-4 text-[#C45A4A]" />
-            <span>④ 東西医学 相補マトリクス</span>
+            <span>③ 東西医学 相補マトリクス</span>
             <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#C45A4A] text-white">
               新機能
             </span>
@@ -147,74 +132,7 @@ export default function SimulatorHub() {
         </div>
       )}
 
-      {/* 2. 配穴の「最小構成」シミュレーター */}
-      {activeTool === "haiketsu" && (
-        <div className="space-y-10 animate-fadeIn">
-          {/* ツール見出し */}
-          <div className="text-center space-y-4 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FDEDEC] dark:bg-[#251514] border border-[#F8C8C4] dark:border-[#4D2421] text-[#A83629] dark:text-[#C47A72] text-xs font-semibold tracking-wider">
-              <Scissors className="w-3.5 h-3.5" />
-              <span>相殺効果防止 ＆ 刺激の純化ツール</span>
-            </div>
-
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-tight">
-              配穴の「最小構成」シミュレーター<br className="hidden sm:inline" />
-              <span className="text-[#1E3D34] dark:text-[#74BA9E] text-2xl sm:text-3xl font-normal block mt-1">
-                ― 無駄なツボを削ぎ落とし、切れ味を研ぎ澄ます ―
-              </span>
-            </h2>
-
-            <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              「ツボを選びすぎると相殺効果が出る」という臨床の鉄則に基づき、
-              選択したツボの役割（原穴・合穴・本治・標治）をタグ表示。<br className="hidden sm:inline" />
-              昇降の衝突や余計な重複を自動検知し、<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「無駄を削ぎ落とした最小構成（ペア/トリオ）」</strong>へと導きます。
-            </p>
-
-            {/* 3大理念カード */}
-            <div className="pt-2 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
-              <div className="p-3.5 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm">
-                <span className="text-[10px] font-bold text-[#A83629] dark:text-[#C47A72] block mb-1">
-                  1. 相殺効果の排除
-                </span>
-                <p className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] mb-0.5">
-                  昇降・補瀉のベクトル衝突
-                </p>
-                <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-snug">
-                  引き上げる穴と引き下ろす穴の拮抗、温補と瀉火の干渉を防ぎます。
-                </p>
-              </div>
-
-              <div className="p-3.5 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm">
-                <span className="text-[10px] font-bold text-[#B86924] dark:text-[#E6C387] block mb-1">
-                  2. 役割タグの可視化
-                </span>
-                <p className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] mb-0.5">
-                  本治穴 vs 標治穴
-                </p>
-                <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-snug">
-                  原穴・合穴・募穴・八会穴など、各ツボの臨床任務を色分けで把握。
-                </p>
-              </div>
-
-              <div className="p-3.5 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm">
-                <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
-                  3. 黄金の最小構成
-                </span>
-                <p className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] mb-0.5">
-                  本治1〜2 ＋ 標治1〜2
-                </p>
-                <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-snug">
-                  手数を極限まで削ぎ落とし、自己治癒シグナルを一点に集中させます。
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <HaiketsuOptimizer />
-        </div>
-      )}
-
-      {/* 3. 経気深度シミュレーター */}
+      {/* 2. 経気深度シミュレーター */}
       {activeTool === "keiki" && (
         <div className="space-y-10 animate-fadeIn">
           {/* ツール見出し */}
@@ -281,7 +199,7 @@ export default function SimulatorHub() {
         </div>
       )}
 
-      {/* 4. 東西医学 相補マトリクススイッチ */}
+      {/* 3. 東西医学 相補マトリクススイッチ */}
       {activeTool === "matrix" && (
         <div className="space-y-10 animate-fadeIn">
           {/* ツール見出し */}
