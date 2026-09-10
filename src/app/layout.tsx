@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const notoSerifJP = Noto_Serif_JP({
   variable: "--font-noto-serif",
@@ -20,8 +21,40 @@ const notoSansJP = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
-  title: "はり太郎の東洋医学 | 基礎理論から臨床実践までを体系化する東洋医学ポータル",
+  metadataBase: new URL("https://www.haritaro.jp"),
+  title: {
+    default: "はり太郎の東洋医学 | 基礎理論から臨床実践までを体系化する東洋医学ポータル",
+    template: "%s | はり太郎の東洋医学",
+  },
   description: "数千年の臨床智慧と現代神経科学が結実した東洋医学ポータル。基礎理論から臨床実践までを体系化。症状別ツボ検索、361経穴データベース、気血水体質診断、古典と最新論文の学術的解説。",
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "",
+  },
+  openGraph: {
+    type: "website",
+    locale: "ja_JP",
+    url: "https://www.haritaro.jp",
+    siteName: "はり太郎の東洋医学",
+    title: "はり太郎の東洋医学 | 基礎理論から臨床実践までを体系化する東洋医学ポータル",
+    description: "数千年の臨床智慧と現代神経科学が結実した東洋医学ポータル。基礎理論から臨床実践までを体系化。症状別ツボ検索、361経穴データベース、気血水体質診断、古典と最新論文の学術的解説。",
+    images: [
+      {
+        url: "/icon.png",
+        width: 512,
+        height: 512,
+        alt: "はり太郎の東洋医学",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "はり太郎の東洋医学 | 基礎理論から臨床実践までを体系化する東洋医学ポータル",
+    description: "数千年の臨床智慧と現代神経科学が結実した東洋医学ポータル。基礎理論から臨床実践までを体系化。",
+    images: ["/icon.png"],
+  },
+  alternates: {
+    canonical: "https://www.haritaro.jp",
+  },
 };
 
 export default function RootLayout({
@@ -32,6 +65,7 @@ export default function RootLayout({
   return (
     <html lang="ja" suppressHydrationWarning className={`${notoSerifJP.variable} ${notoSansJP.variable} h-full antialiased`}>
       <head>
+        <GoogleAnalytics />
         {/* 初期テーマ適用スクリプト（画面ちらつき防止） */}
         <script
           dangerouslySetInnerHTML={{
