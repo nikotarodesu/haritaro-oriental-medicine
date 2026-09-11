@@ -94,7 +94,7 @@ export default function TsuboPage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Link
             href="/articles?article=science-of-meridians-network"
             className="bg-[#FFFFFF] dark:bg-[#1A2632] p-4 rounded-xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group flex flex-col justify-between"
@@ -104,7 +104,7 @@ export default function TsuboPage() {
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#162A24] text-[#1E3D34] dark:text-[#74BA9E]">
                   第187講 統合講義
                 </span>
-                <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B]">読了約 15分</span>
+                <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B]">約 15分</span>
               </div>
               <h3 className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
                 【経絡の科学】経絡とは何か ― 多層生体情報ネットワーク仮説
@@ -114,7 +114,7 @@ export default function TsuboPage() {
               </p>
             </div>
             <div className="pt-3 mt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>講義全文を読む</span>
+              <span>講義を読む</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
@@ -128,7 +128,7 @@ export default function TsuboPage() {
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387]">
                   第188講 統合講義
                 </span>
-                <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B]">読了約 16分</span>
+                <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B]">約 16分</span>
               </div>
               <h3 className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors leading-snug">
                 【経穴の科学】ツボの物理的実体 ― メカノトランスダクション
@@ -138,7 +138,31 @@ export default function TsuboPage() {
               </p>
             </div>
             <div className="pt-3 mt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#B86924] dark:text-[#E6C387] font-semibold">
-              <span>講義全文を読む</span>
+              <span>講義を読む</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </Link>
+
+          <Link
+            href="/articles?article=science-of-acupuncture-neuroscience"
+            className="bg-[#FFFFFF] dark:bg-[#1A2632] p-4 rounded-xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group flex flex-col justify-between"
+          >
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#162A24] text-[#1E3D34] dark:text-[#74BA9E]">
+                  第192-199講 統合
+                </span>
+                <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B]">約 25分</span>
+              </div>
+              <h3 className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                【鍼灸の科学】生体情報制御学としての鍼灸医学
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-2">
+                ゲート制御・下行性疼痛抑制系（PAG-RVM）・自律神経HRV・迷走神経炎症反射・刺激パラメータとEBMを統合。
+              </p>
+            </div>
+            <div className="pt-3 mt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+              <span>講義を読む</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>

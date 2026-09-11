@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Sparkles, ShieldCheck } from "lucide-react";
+import { Sparkles, ShieldCheck, ArrowRight } from "lucide-react";
 
 export default function AboutPage() {
   return (
@@ -74,6 +74,29 @@ export default function AboutPage() {
           <p className="leading-relaxed">
             激しい痛み、意識障害、急激な体調の悪化、妊娠中の重篤な症状などがある場合は、自己判断によるツボ刺激を行わず、速やかに専門の医療機関を受診してください。
           </p>
+        </div>
+
+        {/* 人体統一理論への導線 */}
+        <div className="bg-[#EBF3EF] dark:bg-[#162822] p-6 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="space-y-1 text-center sm:text-left">
+            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center justify-center sm:justify-start gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
+              当サイトの理論的支柱：人体統一理論
+            </span>
+            <h4 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
+              【東西医学の統合と人体統一理論】二つの人体モデルの架橋
+            </h4>
+            <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-xl">
+              「分析」の現代医学と「統合」の東洋医学。同一の複雑適応系を異なる抽象化レベルで記述した補完モデルとして、17層構造の中で再定義する総括論文を公開しています。
+            </p>
+          </div>
+          <Link
+            href="/articles?article=east-west-integrative-unified-theory"
+            className="px-5 py-2.5 rounded-xl bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#162E27] text-white dark:text-[#121920] text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm"
+          >
+            <span>総括論文を読む</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
 
         {/* 導線 */}

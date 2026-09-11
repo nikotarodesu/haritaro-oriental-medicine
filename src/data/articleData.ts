@@ -7,9 +7,12 @@ import { ACUPOINT_ARTICLE } from "./articles/acupointArticle";
 import { PULSE_ARTICLE } from "./articles/pulseArticle";
 import { ABDOMEN_ARTICLE } from "./articles/abdomenArticle";
 import { TONGUE_ARTICLE } from "./articles/tongueArticle";
+import { ACUPUNCTURE_ARTICLE } from "./articles/acupunctureArticle";
+import { KAMPO_ARTICLE } from "./articles/kampoArticle";
+import { UNIFIED_THEORY_ARTICLE } from "./articles/unifiedTheoryArticle";
 import { GERD_ARTICLE } from "./articles/gerdArticle";
 
-// 公開記事配列（東洋医学自然科学講義録・学術論文・経穴経絡学・四診科学・東西統合臨床アーカイブ）
+// 公開記事配列（東洋医学自然科学講義録・学術論文・経穴経絡学・四診科学・東西統合臨床・人体統一理論アーカイブ）
 export const ARTICLES: Article[] = [
   HISTORY_ARTICLE,
   YINYANG_GOGYO_ARTICLE,
@@ -19,6 +22,9 @@ export const ARTICLES: Article[] = [
   PULSE_ARTICLE,
   ABDOMEN_ARTICLE,
   TONGUE_ARTICLE,
+  ACUPUNCTURE_ARTICLE,
+  KAMPO_ARTICLE,
+  UNIFIED_THEORY_ARTICLE,
   GERD_ARTICLE,
 ];
 

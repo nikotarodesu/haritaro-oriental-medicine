@@ -596,6 +596,81 @@ export default function CurriculumPage() {
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
+
+          {/* 第192-199講 鍼灸の科学 */}
+          <Link
+            href="/articles?article=science-of-acupuncture-neuroscience"
+            className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
+          >
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
+                  第192-199講 統合
+                </span>
+                <span className="text-[11px]">約 25分</span>
+              </div>
+              <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                【鍼灸の科学】生体情報制御学としての鍼灸医学
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
+                メカノトランスダクション、細胞外ATP/アデノシン、ゲート制御とPAG-RVM下行性疼痛抑制、自律神経HRV、炎症反射、刺激パラメータ。
+              </p>
+            </div>
+            <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+              <span>講義全文を読む</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </Link>
+
+          {/* 第193講 漢方医学の科学 */}
+          <Link
+            href="/articles?article=science-of-kampo-network-pharmacology"
+            className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
+          >
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
+                  第193講 統合講義
+                </span>
+                <span className="text-[11px]">約 20分</span>
+              </div>
+              <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                【漢方医学の科学】状態空間への多点介入
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
+                同病異治・異病同治、君臣佐使の制御工学（多入力MIMO）、証のベイズ推論モデル、ネットワーク薬理学、大建中湯・六君子湯のエビデンス。
+              </p>
+            </div>
+            <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+              <span>講義全文を読む</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </Link>
+
+          {/* 第194講 東西医学の統合と人体統一理論 */}
+          <Link
+            href="/articles?article=east-west-integrative-unified-theory"
+            className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
+          >
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
+                  第194講 総括講義
+                </span>
+                <span className="text-[11px]">約 19分</span>
+              </div>
+              <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                【人体統一理論】東西二大モデルの統合
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
+                モデル依存実在論、17層構造における高次機能統合モデル、証・気・経絡のコンセンサス、閉ループ制御工学、データ医学・AIへの進化。
+              </p>
+            </div>
+            <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+              <span>講義全文を読む</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </Link>
         </div>
       </section>
     </div>
