@@ -19,7 +19,7 @@ import SeasonalBanner from "@/components/SeasonalBanner";
 
 export default function HomePage() {
   const featuredTsubos = TSUBOS.slice(0, 4);
-  const featuredArticles = ARTICLES.slice(0, 3);
+  const featuredArticles = ARTICLES.slice(0, 6);
 
   return (
     <div className="space-y-14 sm:space-y-20 pb-20">

@@ -17,9 +17,10 @@ export default function ArticlesPage() {
 
   const categories = [
     "すべて",
-    "論文・文献抄読",
+    "古典深読み",
     "経穴・経絡学",
-    "一般向けセルフケア"
+    "論文・文献抄読",
+    "臨床・実践知見"
   ];
 
   // URLクエリ（?article=id）の同期とブラウザ履歴（戻る・進む）のハンドリング

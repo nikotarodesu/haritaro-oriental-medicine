@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { DIAGNOSIS_QUESTIONS, DIAGNOSIS_RESULTS } from "@/data/diagnosisData";
 import { DiagnosisResultType } from "@/types/oriental";
-import { Stethoscope, CheckCircle2, RotateCcw, Utensils, HeartPulse, Sparkles, ArrowRight, Activity } from "lucide-react";
+import { Stethoscope, CheckCircle2, RotateCcw, Utensils, HeartPulse, Sparkles, ArrowRight, Activity, BookOpen } from "lucide-react";
 import GorouWorkstyleChecker from "@/components/GorouWorkstyleChecker";
 
 export default function DiagnosisPage() {
@@ -309,6 +309,30 @@ export default function DiagnosisPage() {
                 <span>五労チェッカーで確認</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
+            </div>
+
+            {/* 気血津液の学術メカニズム深掘りバナー */}
+            <div className="bg-[#EBF3EF] dark:bg-[#162822] p-4 rounded-xl border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-[#1E3D34] text-white flex items-center justify-center shrink-0">
+                  <BookOpen className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
+                    あなたの体質タイプ「{result.name}」の生体メカニズムを学ぶ
+                  </span>
+                  <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-tight block">
+                    気血津液の動態異常（推動・温煦・微小循環・体液恒常性）を自然科学で読み解く学術講義録です。
+                  </span>
+                </div>
+              </div>
+              <Link
+                href="/articles?article=science-of-qi-blood-fluid"
+                className="px-4 py-2 rounded-xl bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#162E27] text-white dark:text-[#121920] text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm"
+              >
+                <span>学術講義録を読む</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
           </div>
 

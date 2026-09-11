@@ -3,7 +3,7 @@ import { Article } from "@/types/oriental";
 export const GERD_ARTICLE: Article = {
   id: "east-west-integrative-gerd-gastric",
   title: "【東西統合の臨床】逆流性食道炎・胃痛における相補アプローチ：西洋医学の除外診断（PPI・内視鏡）× 東洋医学の気機昇降論（中焦・半夏瀉心湯）",
-  category: "論文・文献抄読",
+  category: "臨床・実践知見",
   publishedAt: "2026-03-10",
   readTime: "9分",
   summary: "西洋医学の構造的診断（内視鏡・ロサンゼルス分類・PPI治療）と、東洋医学の機能的病態把握（中焦の気機昇降失調・肝胃不和）がどのように噛み合い、難治性胃痛・NERDを寛解に導くかを相補マトリクスで徹底詳解。",

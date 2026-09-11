@@ -69,36 +69,37 @@ export default function SimulatorHub() {
       <ThreeStageSimulator />
 
       {/* 関連リンクフッター案内 */}
-      <div className="bg-[#FAF8F5] dark:bg-[#152028] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="space-y-1 text-center sm:text-left">
-          <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider flex items-center justify-center sm:justify-start gap-1.5">
-            <Sparkles className="w-3.5 h-3.5" />
-            東西医学の統合学習
-          </span>
-          <h4 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
-            学術論文や体系カリキュラムで「東西医学の相補視点」を学ぶ
-          </h4>
-          <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-            各記事・カリキュラム本文中には、肝気犯胃などの専門用語に対して東西両医学の病態を切り替えられるスイッチが配置されています。
-          </p>
-        </div>
+      <div className="bg-[#FAF8F5] dark:bg-[#152028] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
+              弁証理論の科学的基盤を学ぶ
+            </span>
+            <h4 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
+              八綱・気血水・臓腑経絡の「数理・システム科学的機序」
+            </h4>
+            <p className="text-xs text-[#59615D] dark:text-[#96A6B2] max-w-2xl">
+              本シミュレーターの基盤となる「表裏・寒熱・虚実（状態空間モデル）」と「気血水（動態システム）」の学術講義録を公開しています。
+            </p>
+          </div>
 
-        <div className="flex items-center gap-2.5 shrink-0">
-          <Link
-            href="/articles"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] dark:bg-[#1A2E26] hover:bg-[#D8EADB] dark:hover:bg-[#234237] px-4 py-2.5 rounded-xl transition-all"
-          >
-            <BookOpen className="w-4 h-4" />
-            <span>学術論文を読む</span>
-          </Link>
-          <Link
-            href="/curriculum"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#1E3D34] dark:bg-[#2B6958] hover:opacity-90 px-4 py-2.5 rounded-xl transition-all shadow-sm"
-          >
-            <GraduationCap className="w-4 h-4" />
-            <span>カリキュラム</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+          <div className="flex items-center gap-2.5 shrink-0">
+            <Link
+              href="/articles?article=science-of-yinyang-gogyo"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] dark:bg-[#1A2E26] hover:bg-[#D8EADB] dark:hover:bg-[#234237] px-3.5 py-2 rounded-xl transition-all"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>陰陽五行の科学</span>
+            </Link>
+            <Link
+              href="/articles?article=science-of-qi-blood-fluid"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#1E3D34] dark:bg-[#2B6958] hover:opacity-90 px-3.5 py-2 rounded-xl transition-all shadow-sm"
+            >
+              <span>気血津液の科学</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
       </div>
     </div>
