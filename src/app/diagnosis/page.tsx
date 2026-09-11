@@ -409,7 +409,7 @@ export default function DiagnosisPage() {
             </span>
             <span className="text-[11px]">約 16分</span>
           </div>
-          <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+          <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
             【脈診の科学】橈骨動脈拍動の血行動態学と生体情報解析
           </h3>
           <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
@@ -434,7 +434,7 @@ export default function DiagnosisPage() {
             </span>
             <span className="text-[11px]">約 14分</span>
           </div>
-          <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+          <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
             【腹診の科学】内臓体制反射・腹壁筋緊張度と自律神経評価
           </h3>
           <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
@@ -459,7 +459,7 @@ export default function DiagnosisPage() {
             </span>
             <span className="text-[11px]">約 13分</span>
           </div>
-          <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+          <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
             【舌診の科学】舌質微小循環と舌苔マイクロバイオーム
           </h3>
           <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">

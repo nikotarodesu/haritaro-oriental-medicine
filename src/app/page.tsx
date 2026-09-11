@@ -363,7 +363,7 @@ export default function HomePage() {
                     <span>約 {article.readTime}</span>
                   </div>
 
-                  <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug mb-2">
+                  <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal mb-2">
                     {article.title}
                   </h3>
 

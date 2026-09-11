@@ -106,7 +106,7 @@ export default function TsuboPage() {
                 </span>
                 <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B]">約 15分</span>
               </div>
-              <h3 className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+              <h3 className="font-sans text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
                 【経絡の科学】経絡とは何か ― 多層生体情報ネットワーク仮説
               </h3>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-2">
@@ -130,7 +130,7 @@ export default function TsuboPage() {
                 </span>
                 <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B]">約 16分</span>
               </div>
-              <h3 className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors leading-snug">
+              <h3 className="font-sans text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors leading-relaxed tracking-normal">
                 【経穴の科学】ツボの物理的実体 ― メカノトランスダクション
               </h3>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-2">
@@ -154,7 +154,7 @@ export default function TsuboPage() {
                 </span>
                 <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B]">約 25分</span>
               </div>
-              <h3 className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+              <h3 className="font-sans text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
                 【鍼灸の科学】生体情報制御学としての鍼灸医学
               </h3>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-2">
