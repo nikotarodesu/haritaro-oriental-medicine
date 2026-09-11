@@ -347,6 +347,108 @@ export default function DiagnosisPage() {
       <GorouWorkstyleChecker />
     </div>
   )}
+
+  {/* 3. 東洋医学診断学（脈診・腹診・舌診）学術講義録セクション */}
+  <section className="border-t border-[#E8E1D1] dark:border-[#22303D] pt-12 space-y-6">
+    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+      <div>
+        <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
+          <Sparkles className="w-4 h-4" />
+          <span>Academic Lectures: Diagnostic Science</span>
+        </div>
+        <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+          東洋医学の診断学（四診）を自然科学で深掘りする
+        </h2>
+        <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1 leading-relaxed max-w-2xl">
+          東洋医学の四診（望・聞・問・切）の中でも、脈診・腹診・舌診は生体シグナルの解読技術です。現代の血行動態学・生体力学・画像解析と融合した学術講義録を公開しています。
+        </p>
+      </div>
+      <Link
+        href="/articles"
+        className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1 shrink-0"
+      >
+        <span>知見・論文一覧へ</span>
+        <ArrowRight className="w-3.5 h-3.5" />
+      </Link>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      {/* 脈診 */}
+      <Link
+        href="/articles?article=science-of-pulse-diagnosis"
+        className="bg-[#FFFFFF] dark:bg-[#17212A] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between"
+      >
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
+              第189講 統合講義
+            </span>
+            <span className="text-[11px]">約 16分</span>
+          </div>
+          <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+            【脈診の科学】橈骨動脈拍動の血行動態学と生体情報解析
+          </h3>
+          <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
+            動脈弾性、末梢血管抵抗、脈波伝播速度（PWV）、血管ツリー共鳴理論から浮・沈・遅・数・滑・濇・弦・緊・微・代などの脈象を血行動態学的にモデル化。
+          </p>
+        </div>
+        <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+          <span>講義を読む</span>
+          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+        </div>
+      </Link>
+
+      {/* 腹診 */}
+      <Link
+        href="/articles?article=science-of-abdominal-diagnosis"
+        className="bg-[#FFFFFF] dark:bg-[#17212A] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between"
+      >
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
+              第190講 統合講義
+            </span>
+            <span className="text-[11px]">約 14分</span>
+          </div>
+          <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+            【腹診の科学】内臓体制反射・腹壁筋緊張度と自律神経評価
+          </h3>
+          <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
+            心下痞鞕、胸脇苦満、小腹急結、腹皮拘急などの腹証を内臓体制反射、腹膜機械受容器、迷走神経求心路、腸脳相関から解明。
+          </p>
+        </div>
+        <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+          <span>講義を読む</span>
+          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+        </div>
+      </Link>
+
+      {/* 舌診 */}
+      <Link
+        href="/articles?article=science-of-tongue-diagnosis"
+        className="bg-[#FFFFFF] dark:bg-[#17212A] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between"
+      >
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
+              第191講 統合講義
+            </span>
+            <span className="text-[11px]">約 13分</span>
+          </div>
+          <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+            【舌診の科学】舌質微小循環と舌苔マイクロバイオーム
+          </h3>
+          <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
+            舌質の色調（淡白・紅・紫）と粘膜血流、舌苔（白・黄・厚・剥）と細菌叢・サイトカイン動態、AI画像解析による客観的診断基準を体系化。
+          </p>
+        </div>
+        <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+          <span>講義を読む</span>
+          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+        </div>
+      </Link>
+    </div>
+  </section>
 </div>
   );
 }

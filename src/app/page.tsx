@@ -352,7 +352,7 @@ export default function HomePage() {
             {featuredArticles.map((article) => (
               <Link
                 key={article.id}
-                href={`/articles`}
+                href={`/articles?article=${article.id}`}
                 className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all flex flex-col justify-between group"
               >
                 <div>

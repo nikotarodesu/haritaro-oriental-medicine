@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { TSUBOS } from "@/data/tsuboData";
 import { Tsubo } from "@/types/oriental";
-import { Compass, Search, Filter, AlertTriangle, BookOpen, Sparkles, Check } from "lucide-react";
+import { Compass, Search, Filter, AlertTriangle, BookOpen, Sparkles, Check, ArrowRight } from "lucide-react";
 import ClinicalPairsSection from "@/components/ClinicalPairsSection";
 import ClipButton from "@/components/ClipButton";
 
@@ -75,6 +75,75 @@ export default function TsuboPage() {
 
       {/* 臨床名配穴 */}
       <ClinicalPairsSection />
+
+      {/* 経絡・経穴の科学的機序を深掘りする講義録バナー */}
+      <div className="bg-[#FAF8F5] dark:bg-[#15202B] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-6 space-y-4 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+            <h2 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
+              学術特集：経絡とツボ（経穴）の科学的機序を学ぶ
+            </h2>
+          </div>
+          <Link
+            href="/articles"
+            className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
+          >
+            <span>知見・論文アーカイブ一覧へ</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Link
+            href="/articles?article=science-of-meridians-network"
+            className="bg-[#FFFFFF] dark:bg-[#1A2632] p-4 rounded-xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group flex flex-col justify-between"
+          >
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#162A24] text-[#1E3D34] dark:text-[#74BA9E]">
+                  第187講 統合講義
+                </span>
+                <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B]">読了約 15分</span>
+              </div>
+              <h3 className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                【経絡の科学】経絡とは何か ― 多層生体情報ネットワーク仮説
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-2">
+                「気の通り道」を神経反射・筋膜経線（アナトミートレイン）・流体力学モデル・脳機能画像（fMRI）から自然科学の言葉で再定義。
+              </p>
+            </div>
+            <div className="pt-3 mt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+              <span>講義全文を読む</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </Link>
+
+          <Link
+            href="/articles?article=science-of-acupoints-mechanotransduction"
+            className="bg-[#FFFFFF] dark:bg-[#1A2632] p-4 rounded-xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group flex flex-col justify-between"
+          >
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387]">
+                  第188講 統合講義
+                </span>
+                <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B]">読了約 16分</span>
+              </div>
+              <h3 className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors leading-snug">
+                【経穴の科学】ツボの物理的実体 ― メカノトランスダクション
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-2">
+                筋膜の力学変形からATP放出・TRPチャネル活性化・微小炎症・局所免疫・神経血管束に至るツボの生物物理学的実体を解明。
+              </p>
+            </div>
+            <div className="pt-3 mt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#B86924] dark:text-[#E6C387] font-semibold">
+              <span>講義全文を読む</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </Link>
+        </div>
+      </div>
 
       {/* 検索・絞り込みバー */}
       <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-6 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-5 transition-colors">
