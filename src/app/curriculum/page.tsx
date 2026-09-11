@@ -5,8 +5,7 @@ import Link from "next/link";
 import { CURRICULUM_DATA, Lecture } from "@/data/curriculumData";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
-import CurriculumDiagram from "@/components/CurriculumDiagram";
-import EastWestTermSwitch from "@/components/EastWestTermSwitch";
+import MarkdownBody from "@/components/MarkdownBody";
 import { 
   GraduationCap, 
   BookOpen, 
@@ -197,162 +196,13 @@ export default function CurriculumPage() {
             <GlossaryRenderer text={activeLecture.summary} seenTerms={seenTerms} />
           </div>
 
-          {/* 本文（GlossaryRendererで専門用語ホバー辞書を自動適用） */}
-          <div className="prose max-w-none text-[#232826] dark:text-[#D5E0DC] leading-relaxed space-y-6 text-sm sm:text-base">
-            {activeLecture.contentMarkdown.split("\n\n").map((block, index) => {
-              const trimmed = block.trim();
-
-              // ダイアグラム・図解ブロック（:::diagram <id> または [DIAGRAM:<id>]）
-              if (trimmed.startsWith(":::diagram ") || trimmed.startsWith("[DIAGRAM:")) {
-                const diagramId = trimmed
-                  .replace(":::diagram ", "")
-                  .replace("[DIAGRAM:", "")
-                  .replace("]", "")
-                  .trim();
-                return <CurriculumDiagram key={index} id={diagramId} onNextLecture={handleNextLecture} />;
-              }
-
-              // 東西医学 相補スイッチ（:::eastwest term="..." または :::east-west term="..."）
-              if (trimmed.startsWith(":::eastwest") || trimmed.startsWith(":::east-west")) {
-                const termMatch = trimmed.match(/term=["']([^"']+)["']/);
-                const termIdMatch = trimmed.match(/termId=["']([^"']+)["']/);
-                const term = termMatch ? termMatch[1] : (termIdMatch ? termIdMatch[1] : "肝気犯胃");
-                return <EastWestTermSwitch key={index} termId={term} />;
-              }
-
-              // 画像（![alt](src)）
-              const imgMatch = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
-              if (imgMatch) {
-                const alt = imgMatch[1];
-                const src = imgMatch[2];
-                return (
-                  <figure key={index} className="my-6 sm:my-8 text-center bg-[#FAF8F5] dark:bg-[#121920] p-2.5 sm:p-6 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D]">
-                    <img src={src} alt={alt} className="max-w-full mx-auto rounded-xl shadow-sm" />
-                    {alt && <figcaption className="mt-2.5 text-xs text-[#59615D] dark:text-[#A0B0BC] font-medium">【図】{alt}</figcaption>}
-                  </figure>
-                );
-              }
-
-              // 見出し h2
-              if (trimmed.startsWith("## ")) {
-                return (
-                  <h2
-                    key={index}
-                    id={`curriculum-heading-${index}`}
-                    className="font-serif text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-8 scroll-mt-36"
-                  >
-                    <GlossaryRenderer text={trimmed.replace("## ", "")} seenTerms={seenTerms} />
-                  </h2>
-                );
-              }
-
-              // 見出し h3
-              if (trimmed.startsWith("### ")) {
-                return (
-                  <h3
-                    key={index}
-                    id={`curriculum-heading-${index}`}
-                    className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-6 scroll-mt-36"
-                  >
-                    <GlossaryRenderer text={trimmed.replace("### ", "")} seenTerms={seenTerms} />
-                  </h3>
-                );
-              }
-
-              // 引用
-              if (trimmed.startsWith("> ")) {
-                return (
-                  <blockquote
-                    key={index}
-                    className="bg-[#EBF3EF] dark:bg-[#162A24] border-l-4 border-[#1E3D34] dark:border-[#4E8C76] p-3 sm:p-4 rounded-r-xl text-xs sm:text-sm italic text-[#232826] dark:text-[#E6EFEA]"
-                  >
-                    <GlossaryRenderer text={trimmed.replace(/^>\s*/gm, "")} seenTerms={seenTerms} />
-                  </blockquote>
-                );
-              }
-
-              // 水平線
-              if (trimmed === "---") {
-                return <hr key={index} className="border-[#E8E1D1] dark:border-[#22303D] my-8" />;
-              }
-
-              // 表（Markdown Table）
-              if (trimmed.includes("|") && trimmed.includes("---")) {
-                const lines = trimmed.split("\n").filter((l) => l.includes("|"));
-                if (lines.length >= 2) {
-                  const headerLine = lines[0];
-                  const dataLines = lines.slice(2);
-                  const headers = headerLine
-                    .split("|")
-                    .map((s) => s.trim())
-                    .filter((_, i, arr) => i !== 0 && i !== arr.length - 1);
-
-                  return (
-                    <div key={index} className="overflow-x-auto my-6 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm">
-                      <table className="w-full text-left text-xs sm:text-sm min-w-[280px]">
-                        <thead className="bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-bold border-b border-[#E5DEC9] dark:border-[#2A3B4A]">
-                          <tr>
-                            {headers.map((h, hIdx) => (
-                              <th key={hIdx} className="px-2.5 sm:px-4 py-2.5 sm:py-3 font-serif whitespace-nowrap">
-                                <GlossaryRenderer text={h} seenTerms={seenTerms} />
-                              </th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-[#E5DEC9]/60 dark:divide-[#2A3B4A]/60 bg-[#FFFFFF] dark:bg-[#17212A]">
-                          {dataLines.map((rowLine, rIdx) => {
-                            const cells = rowLine
-                              .split("|")
-                              .map((s) => s.trim())
-                              .filter((_, i, arr) => i !== 0 && i !== arr.length - 1);
-                            return (
-                              <tr key={rIdx} className="hover:bg-[#FAF8F5] dark:hover:bg-[#1C2834] transition-colors">
-                                {cells.map((cell, cIdx) => (
-                                  <td key={cIdx} className="px-2.5 sm:px-4 py-2 sm:py-3 text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
-                                    <GlossaryRenderer text={cell} seenTerms={seenTerms} />
-                                  </td>
-                                ))}
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                  );
-                }
-              }
-
-              // リスト（箇条書き・番号付き）
-              const lines = trimmed.split("\n");
-              const isAllListItems = lines.length > 0 && lines.every((l) => /^[-*]\s+|\d+\.\s+/.test(l.trim()));
-              if (isAllListItems) {
-                const isOrdered = /^\d+\.\s+/.test(lines[0].trim());
-                const ListTag = isOrdered ? "ol" : "ul";
-                return (
-                  <ListTag
-                    key={index}
-                    className={`space-y-2 my-4 pl-5 ${isOrdered ? "list-decimal" : "list-disc"} text-xs sm:text-sm text-[#333835] dark:text-[#C5D2DB]`}
-                  >
-                    {lines.map((l, lIdx) => {
-                      const itemText = l.trim().replace(/^[-*]\s+|\d+\.\s+/, "");
-                      return (
-                        <li key={lIdx} className="leading-relaxed">
-                          <GlossaryRenderer text={itemText} seenTerms={seenTerms} />
-                        </li>
-                      );
-                    })}
-                  </ListTag>
-                );
-              }
-
-              // 通常の段落
-              return (
-                <p key={index} className="leading-relaxed whitespace-pre-line text-[#333835] dark:text-[#C5D2DB]">
-                  <GlossaryRenderer text={trimmed.replace(/^#{1,6}\s+/gm, "").replace(/^-\s+/gm, "・ ")} seenTerms={seenTerms} />
-                </p>
-              );
-            })}
-          </div>
+          {/* 本文（MarkdownBodyで専門用語辞書・図解・東西切替・リストを統一描画） */}
+          <MarkdownBody
+            contentMarkdown={activeLecture.contentMarkdown}
+            seenTerms={seenTerms}
+            onNextLecture={handleNextLecture}
+            idPrefix="curriculum-heading"
+          />
 
           {/* 講義受講修了フッター */}
           <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">

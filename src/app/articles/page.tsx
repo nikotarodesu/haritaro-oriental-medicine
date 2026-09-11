@@ -7,7 +7,7 @@ import { Article } from "@/types/oriental";
 import { BookOpen, Clock, ArrowLeft, ArrowRight, Sparkles, Search, Share2, Check, Bookmark } from "lucide-react";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
-import EastWestTermSwitch from "@/components/EastWestTermSwitch";
+import MarkdownBody from "@/components/MarkdownBody";
 
 export default function ArticlesPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
@@ -176,87 +176,11 @@ export default function ArticlesPage() {
           </div>
 
           {/* 本文 */}
-          <div className="prose max-w-none text-[#232826] dark:text-[#D5E0DC] leading-relaxed space-y-6 text-sm sm:text-base">
-            {activeArticle.contentMarkdown.split("\n\n").map((block, index) => {
-              const trimmed = block.trim();
-              if (!trimmed) return null;
-
-              if (trimmed.startsWith("## ")) {
-                return (
-                  <h2
-                    key={index}
-                    id={`article-heading-${index}`}
-                    className="font-sans text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-10 scroll-mt-36 leading-relaxed"
-                  >
-                    <GlossaryRenderer text={trimmed.replace(/^##\s+/, "")} seenTerms={seenTerms} />
-                  </h2>
-                );
-              }
-              if (trimmed.startsWith("### ")) {
-                return (
-                  <h3
-                    key={index}
-                    id={`article-heading-h3-${index}`}
-                    className="font-sans text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-8 scroll-mt-36 leading-relaxed"
-                  >
-                    <GlossaryRenderer text={trimmed.replace(/^###\s+/, "")} seenTerms={seenTerms} />
-                  </h3>
-                );
-              }
-              if (trimmed.startsWith("> ")) {
-                return (
-                  <blockquote
-                    key={index}
-                    className="bg-[#EBF3EF] dark:bg-[#162A24] border-l-4 border-[#1E3D34] dark:border-[#4E8C76] p-4 rounded-r-xl text-xs sm:text-sm italic text-[#232826] dark:text-[#E6EFEA]"
-                  >
-                    <GlossaryRenderer text={trimmed.replace(/^>\s*/, "")} seenTerms={seenTerms} />
-                  </blockquote>
-                );
-              }
-              if (trimmed === ":::east-west-switch:::" || trimmed.startsWith(":::eastwest") || trimmed.startsWith(":::east-west")) {
-                const termMatch = trimmed.match(/term=["']([^"']+)["']/);
-                const termIdMatch = trimmed.match(/termId=["']([^"']+)["']/);
-                const term = termMatch ? termMatch[1] : (termIdMatch ? termIdMatch[1] : "肝気犯胃");
-                return (
-                  <div key={index} className="not-prose my-6">
-                    <EastWestTermSwitch termId={term} />
-                  </div>
-                );
-              }
-              if (trimmed.startsWith("---")) {
-                return <hr key={index} className="border-[#E8E1D1] dark:border-[#22303D] my-8" />;
-              }
-
-              // リスト（箇条書き・番号付き）
-              const lines = trimmed.split("\n");
-              const isAllListItems = lines.length > 0 && lines.every((l) => /^[-*]\s+|\d+\.\s+|・\s*/.test(l.trim()));
-              if (isAllListItems) {
-                const isOrdered = /^\d+\.\s+/.test(lines[0].trim());
-                const ListTag = isOrdered ? "ol" : "ul";
-                return (
-                  <ListTag
-                    key={index}
-                    className={`space-y-2 my-4 pl-5 ${isOrdered ? "list-decimal" : "list-disc"} text-xs sm:text-sm text-[#333835] dark:text-[#C5D2DB]`}
-                  >
-                    {lines.map((l, lIdx) => {
-                      const itemText = l.trim().replace(/^[-*]\s+|\d+\.\s+|・\s*/, "");
-                      return (
-                        <li key={lIdx} className="leading-relaxed">
-                          <GlossaryRenderer text={itemText} seenTerms={seenTerms} />
-                        </li>
-                      );
-                    })}
-                  </ListTag>
-                );
-              }
-
-              return (
-                <p key={index} className="leading-relaxed whitespace-pre-line text-[#333835] dark:text-[#C5D2DB]">
-                  <GlossaryRenderer text={trimmed.replace(/^#{1,6}\s+/gm, "")} seenTerms={seenTerms} />
-                </p>
-              );
-            })}
-          </div>
+          <MarkdownBody
+            contentMarkdown={activeArticle.contentMarkdown}
+            seenTerms={seenTerms}
+            idPrefix="article-heading"
+          />
 
           {/* 著者紹介フッター */}
           <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-6 bg-[#FAF8F5] dark:bg-[#121920] p-6 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] flex items-start gap-4">
