@@ -47,7 +47,9 @@ export default function GogyoBadge({
         </span>
       )}
 
-      <span>{target.includes(gogyo.element) ? target : `${target}`}</span>
+      {(!showElement || target !== gogyo.element) && (
+        <span>{target}</span>
+      )}
 
       {showColorName && (
         <span className="text-[10px] opacity-75 font-mono">

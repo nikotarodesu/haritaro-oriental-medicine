@@ -73,7 +73,7 @@ export default function TsuboPage() {
         </p>
       </div>
 
-      {/* 臨床名配穴（重要ツボの黄金ペア・トリオ集） */}
+      {/* 臨床名配穴 */}
       <ClinicalPairsSection />
 
       {/* 検索・絞り込みバー */}

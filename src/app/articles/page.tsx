@@ -25,6 +25,9 @@ export default function ArticlesPage() {
 
   // 記事詳細ビュー
   if (activeArticle) {
+    // 記事内の専門用語の初出管理（各単語の初回のみワンクリック解説を有効化）
+    const seenTerms = new Set<string>();
+
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-8">
         {/* 論文・長文記事読書時限定のプログレスバー */}
@@ -87,7 +90,7 @@ export default function ArticlesPage() {
           {/* 要約ボックス */}
           <div className="bg-[#FAF8F5] dark:bg-[#121920] p-5 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#4E8C76] text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
             <strong className="block font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] mb-1">【本稿の要旨】</strong>
-            <GlossaryRenderer text={activeArticle.summary} />
+            <GlossaryRenderer text={activeArticle.summary} seenTerms={seenTerms} />
           </div>
 
           {/* 本文 */}
@@ -100,7 +103,7 @@ export default function ArticlesPage() {
                     id={`article-heading-${index}`}
                     className="font-serif text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-8 scroll-mt-36"
                   >
-                    <GlossaryRenderer text={block.replace(/^##\s+/, "")} />
+                    <GlossaryRenderer text={block.replace(/^##\s+/, "")} seenTerms={seenTerms} />
                   </h2>
                 );
               }
@@ -111,7 +114,7 @@ export default function ArticlesPage() {
                     id={`article-heading-h3-${index}`}
                     className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-6 scroll-mt-36"
                   >
-                    <GlossaryRenderer text={block.replace(/^###\s+/, "")} />
+                    <GlossaryRenderer text={block.replace(/^###\s+/, "")} seenTerms={seenTerms} />
                   </h3>
                 );
               }
@@ -121,7 +124,7 @@ export default function ArticlesPage() {
                     key={index}
                     className="bg-[#EBF3EF] dark:bg-[#162A24] border-l-4 border-[#1E3D34] dark:border-[#4E8C76] p-4 rounded-r-xl text-xs sm:text-sm italic text-[#232826] dark:text-[#E6EFEA]"
                   >
-                    <GlossaryRenderer text={block.replace("> ", "")} />
+                    <GlossaryRenderer text={block.replace("> ", "")} seenTerms={seenTerms} />
                   </blockquote>
                 );
               }
@@ -141,7 +144,7 @@ export default function ArticlesPage() {
               }
               return (
                 <p key={index} className="leading-relaxed whitespace-pre-line text-[#333835] dark:text-[#C5D2DB]">
-                  <GlossaryRenderer text={block.replace(/^#{1,6}\s+/gm, "").replace(/^-\s+/gm, "・ ")} />
+                  <GlossaryRenderer text={block.replace(/^#{1,6}\s+/gm, "").replace(/^-\s+/gm, "・ ")} seenTerms={seenTerms} />
                 </p>
               );
             })}

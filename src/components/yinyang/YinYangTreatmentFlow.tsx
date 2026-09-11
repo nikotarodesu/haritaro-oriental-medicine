@@ -7,15 +7,15 @@ export default function YinYangTreatmentFlow() {
   const [hasEmergency, setHasEmergency] = useState<boolean | null>(null);
 
   return (
-    <figure className="my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 shadow-sm transition-colors">
+    <figure className="my-6 sm:my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3 sm:p-6 md:p-8 shadow-sm transition-colors">
       {/* ヘッダー */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 mb-4 sm:mb-6">
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
             <span>画像解説⑥：本治・標治の優先順位決定フローチャート</span>
           </span>
-          <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
+          <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             臨床意思決定：本治（根本）と標治（対症）の優先順位
           </h4>
         </div>
@@ -25,21 +25,21 @@ export default function YinYangTreatmentFlow() {
       </div>
 
       {/* フローチャート判定エリア */}
-      <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-6 sm:p-8 mb-6">
-        <div className="max-w-2xl mx-auto space-y-6 text-center">
+      <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-3 sm:p-8 mb-4 sm:mb-6">
+        <div className="max-w-2xl mx-auto space-y-4 sm:space-y-6 text-center">
           {/* 第1ステップ：判定の問い */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#1A2530] border-2 border-[#1E3D34]/30 dark:border-[#74BA9E]/40 shadow-sm space-y-3">
+          <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-white dark:bg-[#1A2530] border-2 border-[#1E3D34]/30 dark:border-[#74BA9E]/40 shadow-sm space-y-3">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
               <HelpCircle className="w-3.5 h-3.5" />
               <span>Step 1：急性緊急サインのスクリーニング</span>
             </div>
-            <h5 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
-              「大小便不通・激烈な激痛・高熱痙攣・重篤な呼吸困難」などの<br />
+            <h5 className="font-serif font-bold text-sm sm:text-lg text-[#232826] dark:text-[#FAF8F5] leading-snug">
+              「大小便不通・激烈な激痛・高熱痙攣・重篤な呼吸困難」などの<br className="hidden sm:inline" />
               急性・危機的症状（標症の暴走）は存在するか？
             </h5>
 
             {/* シミュレーション選択ボタン */}
-            <div className="flex items-center justify-center gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 sm:gap-4 pt-2">
               <button
                 onClick={() => setHasEmergency(true)}
                 className={`px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center gap-2 ${

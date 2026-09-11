@@ -17,6 +17,7 @@ import {
   Bookmark
 } from "lucide-react";
 import YinYangSwitch from "./YinYangSwitch";
+import FontSizeControl from "./FontSizeControl";
 import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 
@@ -283,8 +284,11 @@ export default function Header() {
               )}
             </button>
 
+            {/* 文字サイズ変更コントロール */}
+            <FontSizeControl variant="segmented" />
+
             {/* 陰陽太極図 テーマ切り替えスイッチ */}
-            <div className="ml-1 mr-1">
+            <div className="ml-0.5 mr-0.5">
               <YinYangSwitch />
             </div>
 
@@ -297,7 +301,7 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* モバイルヘッダー右側（マイカルテ ＆ 陰陽スイッチ & メニューボタン） */}
+          {/* モバイルヘッダー右側（マイカルテ ＆ 文字サイズ & 陰陽スイッチ & メニューボタン） */}
           <div className="flex items-center gap-1 sm:gap-1.5 md:hidden shrink-0">
             <button
               type="button"
@@ -312,6 +316,7 @@ export default function Header() {
                 </span>
               )}
             </button>
+            <FontSizeControl variant="compact" />
             <YinYangSwitch />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -327,6 +332,9 @@ export default function Header() {
       {/* モバイルナビゲーション ドロワー */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#131A21] px-4 pt-4 pb-7 space-y-5 shadow-lg">
+          {/* 文字サイズ変更 */}
+          <FontSizeControl variant="drawer" />
+
           {/* 一般向けセクション */}
           <div className="space-y-1">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#B86924] dark:text-[#E6C387] px-3">

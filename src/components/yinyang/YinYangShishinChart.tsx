@@ -9,24 +9,24 @@ export default function YinYangShishinChart() {
   const [activeTab, setActiveTab] = useState<ShishinTab>("all");
 
   return (
-    <figure className="my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 shadow-sm transition-colors">
+    <figure className="my-6 sm:my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3 sm:p-6 md:p-8 shadow-sm transition-colors">
       {/* ヘッダー */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 mb-4 sm:mb-6">
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
             <span>画像解説⑤：四診の陰陽対照チェックチャート</span>
           </span>
-          <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
+          <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             診察ベッドで見極める「病態ベクトルの陰陽スキャン」
           </h4>
         </div>
 
         {/* 四診フィルター */}
-        <div className="flex items-center gap-1 bg-[#FAF8F5] dark:bg-[#121920] p-1 rounded-xl border border-[#E8E1D1] dark:border-[#2A3B4A] self-start sm:self-auto text-xs">
+        <div className="flex items-center gap-1 bg-[#FAF8F5] dark:bg-[#121920] p-1 rounded-xl border border-[#E8E1D1] dark:border-[#2A3B4A] w-full sm:w-auto overflow-x-auto text-xs shrink-0">
           <button
             onClick={() => setActiveTab("all")}
-            className={`px-2.5 py-1 rounded-lg font-semibold transition-all ${
+            className={`px-2 sm:px-2.5 py-1 rounded-lg font-semibold transition-all whitespace-nowrap ${
               activeTab === "all" ? "bg-[#1E3D34] text-white" : "text-[#59615D] dark:text-[#96A6B2]"
             }`}
           >
@@ -34,41 +34,41 @@ export default function YinYangShishinChart() {
           </button>
           <button
             onClick={() => setActiveTab("bo")}
-            className={`px-2.5 py-1 rounded-lg font-semibold transition-all ${
+            className={`px-2 sm:px-2.5 py-1 rounded-lg font-semibold transition-all whitespace-nowrap ${
               activeTab === "bo" ? "bg-[#1E3D34] text-white" : "text-[#59615D] dark:text-[#96A6B2]"
             }`}
           >
-            望診（視）
+            望（視）
           </button>
           <button
             onClick={() => setActiveTab("bun")}
-            className={`px-2.5 py-1 rounded-lg font-semibold transition-all ${
+            className={`px-2 sm:px-2.5 py-1 rounded-lg font-semibold transition-all whitespace-nowrap ${
               activeTab === "bun" ? "bg-[#1E3D34] text-white" : "text-[#59615D] dark:text-[#96A6B2]"
             }`}
           >
-            聞診（聴嗅）
+            聞（聴嗅）
           </button>
           <button
             onClick={() => setActiveTab("mon")}
-            className={`px-2.5 py-1 rounded-lg font-semibold transition-all ${
+            className={`px-2 sm:px-2.5 py-1 rounded-lg font-semibold transition-all whitespace-nowrap ${
               activeTab === "mon" ? "bg-[#1E3D34] text-white" : "text-[#59615D] dark:text-[#96A6B2]"
             }`}
           >
-            問診（問）
+            問（問診）
           </button>
           <button
             onClick={() => setActiveTab("setsu")}
-            className={`px-2.5 py-1 rounded-lg font-semibold transition-all ${
+            className={`px-2 sm:px-2.5 py-1 rounded-lg font-semibold transition-all whitespace-nowrap ${
               activeTab === "setsu" ? "bg-[#1E3D34] text-white" : "text-[#59615D] dark:text-[#96A6B2]"
             }`}
           >
-            切診（触）
+            切（脈腹）
           </button>
         </div>
       </div>
 
       {/* 診察ベッドと左右引き出し線レイアウト */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-5 sm:p-7">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-center bg-[#FAF8F5] dark:bg-[#121920] rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-3 sm:p-7">
         {/* 左側：陽証（熱・動・実）の引き出しカード */}
         <div className="lg:col-span-4 space-y-3 order-2 lg:order-1">
           <div className="p-3.5 rounded-2xl bg-[#FCF4EB] dark:bg-[#2A1713] border-2 border-[#C45A4A]/60 shadow-sm space-y-2">

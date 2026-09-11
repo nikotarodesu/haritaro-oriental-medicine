@@ -396,7 +396,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                         : "自作メモ"}
                     </span>
                     {item.elements && item.elements.map(el => (
-                      <GogyoBadge key={el} target={el} size="sm" showColorName />
+                      <GogyoBadge key={el} target={el} size="sm" />
                     ))}
                   </div>
 

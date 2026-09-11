@@ -9,26 +9,26 @@ interface Props {
 
 export default function YinYangToWuxingBridge({ onNextLecture }: Props) {
   return (
-    <figure className="my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 shadow-sm transition-colors overflow-hidden relative">
+    <figure className="my-6 sm:my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3 sm:p-6 md:p-8 shadow-sm transition-colors overflow-hidden relative">
       {/* 背景装飾 */}
       <div className="absolute right-0 bottom-0 w-80 h-80 bg-gradient-to-tl from-[#EBF3EF] to-transparent dark:from-[#1E3D34]/20 rounded-full blur-3xl pointer-events-none" />
 
       {/* ヘッダー */}
-      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 mb-6">
+      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 mb-4 sm:mb-6">
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
             <span>画像解説⑨：陰陽から五行への展開概念図</span>
           </span>
-          <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
+          <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             二値モデルから五相ネットワークへ ── 五行論への架け橋
           </h4>
         </div>
       </div>
 
       {/* メイングラフィック：陰陽から五行への分化 */}
-      <div className="relative z-10 bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-6 sm:p-8 mb-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div className="relative z-10 bg-[#FAF8F5] dark:bg-[#121920] rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-3 sm:p-6 mb-4 sm:mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-center">
           {/* 左側：SVG概念図（陰陽太極から5つのノードへの展開） */}
           <div className="lg:col-span-6 flex flex-col items-center justify-center">
             <svg viewBox="0 0 320 220" className="w-full max-w-[300px] h-auto mx-auto">

@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { FontSizeProvider } from "@/contexts/FontSizeContext";
 import { SeasonalThemeProvider } from "@/contexts/SeasonalThemeContext";
 import { ClinicalMemoProvider } from "@/contexts/ClinicalMemoContext";
 import MyClinicalRecordDrawer from "@/components/MyClinicalRecordDrawer";
@@ -98,19 +99,38 @@ export default function RootLayout({
             `,
           }}
         />
+        {/* 初期フォントサイズ適用スクリプト（画面ちらつき防止） */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const savedFs = localStorage.getItem('haritaro-font-size');
+                  if (savedFs === 'large' || savedFs === 'xlarge') {
+                    document.documentElement.setAttribute('data-font-size', savedFs);
+                  } else {
+                    document.documentElement.setAttribute('data-font-size', 'normal');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
       </head>
-      <body className="min-h-full flex flex-col font-sans bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#E6EFEA] selection:bg-[#E2D5C3] dark:selection:bg-[#2A4B3E] selection:text-[#1E3D34] dark:selection:text-[#E6EFEA]">
+      <body className="min-h-full flex flex-col font-sans bg-[#F5F1E8] dark:bg-[#10161C] text-[#232826] dark:text-[#E6EFEA] selection:bg-[#E2D5C3] dark:selection:bg-[#2A4B3E] selection:text-[#1E3D34] dark:selection:text-[#E6EFEA]">
         <ThemeProvider>
-          <SeasonalThemeProvider>
-            <ClinicalMemoProvider>
-              <Header />
-              <div className="flex-1">
-                {children}
-              </div>
-              <Footer />
-              <MyClinicalRecordDrawer />
-            </ClinicalMemoProvider>
-          </SeasonalThemeProvider>
+          <FontSizeProvider>
+            <SeasonalThemeProvider>
+              <ClinicalMemoProvider>
+                <Header />
+                <div className="flex-1">
+                  {children}
+                </div>
+                <Footer />
+                <MyClinicalRecordDrawer />
+              </ClinicalMemoProvider>
+            </SeasonalThemeProvider>
+          </FontSizeProvider>
         </ThemeProvider>
       </body>
     </html>

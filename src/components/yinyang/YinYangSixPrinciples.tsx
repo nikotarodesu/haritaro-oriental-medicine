@@ -136,15 +136,15 @@ export default function YinYangSixPrinciples() {
   const active = principles.find((p) => p.id === selectedId) || principles[0];
 
   return (
-    <figure className="my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 shadow-sm transition-colors">
+    <figure className="my-6 sm:my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3 sm:p-6 md:p-8 shadow-sm transition-colors">
       {/* ヘッダー */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 mb-4 sm:mb-6">
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
             <span>画像解説②：陰陽6大原理のインフォグラフィック</span>
           </span>
-          <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
+          <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             人体の動的力学を支配する「6つの基本ルール」
           </h4>
         </div>
@@ -154,32 +154,32 @@ export default function YinYangSixPrinciples() {
       </div>
 
       {/* 6分割カードグリッド */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 mb-4 sm:mb-6">
         {principles.map((p) => {
           const isSelected = p.id === selectedId;
           return (
             <button
               key={p.id}
               onClick={() => setSelectedId(p.id)}
-              className={`p-3.5 rounded-2xl text-left transition-all flex flex-col justify-between border ${
+              className={`p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl text-left transition-all flex flex-col justify-between border ${
                 isSelected
                   ? "bg-[#FAF8F5] dark:bg-[#1C2834] border-[#1E3D34] dark:border-[#74BA9E] shadow-md ring-2 ring-[#1E3D34]/10 dark:ring-[#74BA9E]/20 -translate-y-0.5"
                   : "bg-[#FFFFFF] dark:bg-[#121920] border-[#E8E1D1] dark:border-[#22303D] hover:border-[#B86924]/60 hover:bg-[#FAF8F5]/60"
               }`}
             >
-              <div className="flex items-center justify-between mb-2">
-                <div className="p-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#1A2530] border border-[#E8E1D1] dark:border-[#2A3B4A]">
+              <div className="flex items-center justify-between mb-1.5 sm:mb-2">
+                <div className="p-1 sm:p-1.5 rounded-lg sm:rounded-xl bg-[#FAF8F5] dark:bg-[#1A2530] border border-[#E8E1D1] dark:border-[#2A3B4A]">
                   {p.icon}
                 </div>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
+                <span className="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
                   第{principles.indexOf(p) + 1}原理
                 </span>
               </div>
               <div>
-                <h5 className="font-serif font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
+                <h5 className="font-serif font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5]">
                   {p.name}
                 </h5>
-                <p className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                <p className="text-[9px] sm:text-[10px] text-[#737C77] dark:text-[#8899A6]">
                   {p.reading}
                 </p>
               </div>
@@ -189,7 +189,7 @@ export default function YinYangSixPrinciples() {
       </div>
 
       {/* 選択された原理のクローズアップ解説エリア */}
-      <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-5 sm:p-6 transition-all">
+      <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-3.5 sm:p-6 transition-all">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E8E1D1] dark:border-[#22303D] pb-3 mb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-[#FFFFFF] dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-center justify-center shadow-sm">

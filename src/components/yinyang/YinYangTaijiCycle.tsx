@@ -5,33 +5,33 @@ import { Sparkles, Activity, RefreshCw } from "lucide-react";
 
 export default function YinYangTaijiCycle() {
   return (
-    <figure className="my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 shadow-sm transition-colors overflow-hidden relative">
+    <figure className="my-6 sm:my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3 sm:p-6 md:p-8 shadow-sm transition-colors overflow-hidden relative">
       {/* 背景装飾 */}
       <div className="absolute -right-20 -top-20 w-64 h-64 rounded-full bg-[#FCF4EB] dark:bg-[#C45A4A]/10 blur-3xl pointer-events-none" />
       <div className="absolute -left-20 -bottom-20 w-64 h-64 rounded-full bg-[#EBF3EF] dark:bg-[#1E3A5F]/20 blur-3xl pointer-events-none" />
 
       {/* ヘッダー */}
-      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 mb-6">
+      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 mb-4 sm:mb-6">
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
             <span>画像解説①：陰陽太極図とダイナミック循環</span>
           </span>
-          <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
+          <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             生命の動的平衡 ── 循環し続ける「健康」の姿
           </h4>
         </div>
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-xs text-[#59615D] dark:text-[#96A6B2]">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-xs text-[#59615D] dark:text-[#96A6B2] self-start sm:self-auto">
           <RefreshCw className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] animate-spin" style={{ animationDuration: "12s" }} />
           <span>時計回りの連続循環</span>
         </div>
       </div>
 
       {/* ビジュアル本体 */}
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-6 sm:p-8">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-center bg-[#FAF8F5] dark:bg-[#121920] rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-3 sm:p-6 md:p-8">
         {/* 左側：回転する太極図と循環矢印SVG */}
         <div className="lg:col-span-6 flex flex-col items-center justify-center">
-          <div className="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center">
+          <div className="relative w-56 h-56 sm:w-72 sm:h-72 flex items-center justify-center">
             {/* 外周を回る循環軌道・矢印 */}
             <svg
               viewBox="0 0 300 300"
@@ -101,7 +101,7 @@ export default function YinYangTaijiCycle() {
 
             {/* 中央の回転するグラデーション太極図 */}
             <div
-              className="w-48 h-48 sm:w-56 sm:h-56 rounded-full shadow-xl transition-transform duration-700 hover:scale-105 animate-spin"
+              className="w-40 h-40 sm:w-56 sm:h-56 rounded-full shadow-xl transition-transform duration-700 hover:scale-105 animate-spin"
               style={{ animationDuration: "25s" }}
             >
               <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-md">
@@ -159,12 +159,12 @@ export default function YinYangTaijiCycle() {
         {/* 右側：キャッチコピーとダイナミクス解説 */}
         <div className="lg:col-span-6 space-y-4">
           {/* キャッチコピーバナー */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#1A2530] border-2 border-[#1E3D34]/30 dark:border-[#74BA9E]/40 shadow-sm space-y-2">
+          <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-[#FFFFFF] dark:bg-[#1A2530] border-2 border-[#1E3D34]/30 dark:border-[#74BA9E]/40 shadow-sm space-y-2">
             <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
               <Activity className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
               <span>陰陽論が描く「健康」の真の定義</span>
             </div>
-            <p className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
+            <p className="font-serif text-base sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
               「止まらず、偏らず、<br className="hidden sm:inline" />
               行き来できている状態 ＝ <span className="text-[#1E3D34] dark:text-[#74BA9E] underline decoration-[#E6C387] decoration-2">健康</span>」
             </p>
@@ -176,8 +176,8 @@ export default function YinYangTaijiCycle() {
           </div>
 
           {/* 対比ミニカード */}
-          <div className="grid grid-cols-2 gap-3 pt-1">
-            <div className="p-3.5 rounded-xl bg-[#FCF4EB] dark:bg-[#251815] border border-[#F3E1CB] dark:border-[#522923]">
+          <div className="grid grid-cols-2 gap-2 sm:gap-3 pt-1">
+            <div className="p-2.5 sm:p-3.5 rounded-xl bg-[#FCF4EB] dark:bg-[#251815] border border-[#F3E1CB] dark:border-[#522923]">
               <div className="flex items-center gap-1.5 text-xs font-bold text-[#C45A4A] dark:text-[#F87171] mb-1">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#C45A4A]" />
                 <span>陽の相</span>
@@ -187,7 +187,7 @@ export default function YinYangTaijiCycle() {
               </p>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-[#EBF1F6] dark:bg-[#13202C] border border-[#D5E1EC] dark:border-[#22394E]">
+            <div className="p-2.5 sm:p-3.5 rounded-xl bg-[#EBF1F6] dark:bg-[#13202C] border border-[#D5E1EC] dark:border-[#22394E]">
               <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3A5F] dark:text-[#60A5FA] mb-1">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#1E3A5F]" />
                 <span>陰の相</span>

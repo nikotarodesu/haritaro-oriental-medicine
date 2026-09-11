@@ -9,62 +9,62 @@ export default function YinYangBodyLayers() {
   const [activeTab, setActiveTab] = useState<LayerTab>("anatomy");
 
   return (
-    <figure className="my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 shadow-sm transition-colors">
+    <figure className="my-6 sm:my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3 sm:p-6 md:p-8 shadow-sm transition-colors">
       {/* ヘッダー */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 mb-4 sm:mb-6">
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
             <span>画像解説③：人体の陰陽レイヤー解剖図</span>
           </span>
-          <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
+          <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             多層レイヤーで読み解く「人体の陰陽立体マップ」
           </h4>
         </div>
 
         {/* タブ切り替えボタン */}
-        <div className="flex items-center gap-1 bg-[#FAF8F5] dark:bg-[#121920] p-1 rounded-xl border border-[#E8E1D1] dark:border-[#2A3B4A] self-start sm:self-auto">
+        <div className="grid grid-cols-3 sm:flex items-center gap-1 bg-[#FAF8F5] dark:bg-[#121920] p-1 rounded-xl border border-[#E8E1D1] dark:border-[#2A3B4A] w-full sm:w-auto">
           <button
             onClick={() => setActiveTab("anatomy")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+            className={`px-2 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold transition-all flex items-center justify-center gap-1 ${
               activeTab === "anatomy"
                 ? "bg-[#1E3D34] text-white shadow-sm"
                 : "text-[#59615D] dark:text-[#96A6B2] hover:text-[#232826] dark:hover:text-[#FAF8F5]"
             }`}
           >
-            <User className="w-3.5 h-3.5" />
-            <span>① 解剖配置</span>
+            <User className="w-3.5 h-3.5 shrink-0" />
+            <span>① 解剖</span>
           </button>
           <button
             onClick={() => setActiveTab("zangfu")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+            className={`px-2 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold transition-all flex items-center justify-center gap-1 ${
               activeTab === "zangfu"
                 ? "bg-[#1E3D34] text-white shadow-sm"
                 : "text-[#59615D] dark:text-[#96A6B2] hover:text-[#232826] dark:hover:text-[#FAF8F5]"
             }`}
           >
-            <Heart className="w-3.5 h-3.5" />
-            <span>② 蔵象（臓腑）</span>
+            <Heart className="w-3.5 h-3.5 shrink-0" />
+            <span>② 蔵象</span>
           </button>
           <button
             onClick={() => setActiveTab("physiology")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+            className={`px-2 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold transition-all flex items-center justify-center gap-1 ${
               activeTab === "physiology"
                 ? "bg-[#1E3D34] text-white shadow-sm"
                 : "text-[#59615D] dark:text-[#96A6B2] hover:text-[#232826] dark:hover:text-[#FAF8F5]"
             }`}
           >
-            <Zap className="w-3.5 h-3.5" />
-            <span>③ 現代生理学</span>
+            <Zap className="w-3.5 h-3.5 shrink-0" />
+            <span>③ 生理学</span>
           </button>
         </div>
       </div>
 
       {/* メイン表示エリア */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-6 sm:p-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-center bg-[#FAF8F5] dark:bg-[#121920] rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-3 sm:p-6 md:p-8">
         {/* 左側：人体シルエットSVGと陰陽オーバーレイ */}
         <div className="lg:col-span-5 flex flex-col items-center justify-center">
-          <div className="relative w-56 h-80 sm:w-64 sm:h-96 flex items-center justify-center bg-white dark:bg-[#1A2530] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-inner p-4">
+          <div className="relative w-full max-w-[210px] h-72 sm:w-64 sm:h-96 flex items-center justify-center bg-white dark:bg-[#1A2530] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-inner p-3 sm:p-4">
             <svg viewBox="0 0 200 320" className="w-full h-full">
               <defs>
                 <linearGradient id="bodyYangGrad" x1="0" y1="0" x2="0" y2="1">
@@ -163,34 +163,34 @@ export default function YinYangBodyLayers() {
               </p>
 
               <div className="space-y-2 pt-1 text-xs">
-                <div className="p-3 rounded-xl bg-[#FFFFFF] dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-center justify-between">
+                <div className="p-2.5 sm:p-3 rounded-xl bg-[#FFFFFF] dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
                   <div>
                     <span className="font-bold text-[#C45A4A] dark:text-[#F87171] block">【上部】頭・頸・胸（陽）</span>
                     <span className="text-[#59615D] dark:text-[#96A6B2] text-[11px]">軽快、外界の刺激受容、陽気が上昇して集まる</span>
                   </div>
-                  <div className="text-right">
+                  <div className="sm:text-right border-t sm:border-t-0 pt-1 sm:pt-0 border-[#E5DEC9]/40">
                     <span className="font-bold text-[#1E3A5F] dark:text-[#60A5FA] block">【下部】腹・腰・下肢（陰）</span>
                     <span className="text-[#59615D] dark:text-[#96A6B2] text-[11px]">重厚、安定・蓄積、大地に接して体を支える</span>
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-[#FFFFFF] dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-center justify-between">
+                <div className="p-2.5 sm:p-3 rounded-xl bg-[#FFFFFF] dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
                   <div>
                     <span className="font-bold text-[#C45A4A] dark:text-[#F87171] block">【表層】皮膚・筋膜・筋肉（陽）</span>
                     <span className="text-[#59615D] dark:text-[#96A6B2] text-[11px]">衛気（バリア免疫）が巡り外邪から防衛</span>
                   </div>
-                  <div className="text-right">
+                  <div className="sm:text-right border-t sm:border-t-0 pt-1 sm:pt-0 border-[#E5DEC9]/40">
                     <span className="font-bold text-[#1E3A5F] dark:text-[#60A5FA] block">【深部】骨・骨髄・内臓（陰）</span>
                     <span className="text-[#59615D] dark:text-[#96A6B2] text-[11px]">生命の根源物質（精・津液）を深層に温存</span>
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-[#FFFFFF] dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-center justify-between">
+                <div className="p-2.5 sm:p-3 rounded-xl bg-[#FFFFFF] dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
                   <div>
                     <span className="font-bold text-[#C45A4A] dark:text-[#F87171] block">【背部】背中・腰背筋群（陽）</span>
                     <span className="text-[#59615D] dark:text-[#96A6B2] text-[11px]">太陽の光を受け、起立・外力に耐える「陽面」</span>
                   </div>
-                  <div className="text-right">
+                  <div className="sm:text-right border-t sm:border-t-0 pt-1 sm:pt-0 border-[#E5DEC9]/40">
                     <span className="font-bold text-[#1E3A5F] dark:text-[#60A5FA] block">【腹部】胸腹部・屈曲面（陰）</span>
                     <span className="text-[#59615D] dark:text-[#96A6B2] text-[11px]">柔らかく内臓を包み、消化・抱擁する「陰面」</span>
                   </div>

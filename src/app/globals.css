@@ -4,38 +4,38 @@
 
 @layer base {
   :root {
-    --bg-washi: #FAF8F5;
-    --bg-card: #FFFFFF;
-    --bg-muted: #F2EDE4;
-    --border-washi: #E5DEC9;
-    --border-subtle: #EDE7DC;
+    --bg-washi: #F5F1E8; /* 眩しさを抑えた落ち着いた和紙・生成り色 */
+    --bg-card: #FCFAF6;  /* 純白のギラつきを抑えた柔らかな絹白色 */
+    --bg-muted: #EDE7DA; /* 落ち着いた淡灰茶・練色 */
+    --border-washi: #E2D9C5;
+    --border-subtle: #ECE5D5;
     --text-sumi: #232826;
     --text-fukagawa: #59615D;
     --text-light: #8A948F;
     --tokiwa-green: #1E3D34;
-    --tokiwa-light: #EBF3EF;
+    --tokiwa-light: #E8EFEA;
     --ai-indigo: #1E2D3D;
-    --ai-light: #EDF3F8;
+    --ai-light: #E9EEF3;
     --amber-warm: #B86924;
-    --amber-light: #FCF4EB;
+    --amber-light: #F7EFE4;
     --shu-red: #A83629;
 
     /* 五行カラーユニバーサルデザイン（木:翠、火:朱、土:琥珀、金:白銀、水:藍） */
     --gogyo-wood: #1E3D34;
     --gogyo-wood-accent: #10B981;
-    --gogyo-wood-bg: #EBF3EF;
+    --gogyo-wood-bg: #E8EFEA;
     --gogyo-fire: #C45A4A;
     --gogyo-fire-accent: #DC2626;
-    --gogyo-fire-bg: #FCF4EB;
+    --gogyo-fire-bg: #F9EFE7;
     --gogyo-earth: #B86924;
     --gogyo-earth-accent: #F59E0B;
-    --gogyo-earth-bg: #FEF3C7;
+    --gogyo-earth-bg: #F9EEC6;
     --gogyo-metal: #475569;
     --gogyo-metal-accent: #94A3B8;
-    --gogyo-metal-bg: #F1F5F9;
+    --gogyo-metal-bg: #EDEFEF;
     --gogyo-water: #1E2D3D;
     --gogyo-water-accent: #0284C7;
-    --gogyo-water-bg: #EDF3F8;
+    --gogyo-water-bg: #E7EEF5;
   }
 
   .dark {
@@ -54,6 +54,23 @@
     --amber-warm: #C98A44;
     --amber-light: #2A2117;
     --shu-red: #B8675E; /* 落ち着いた淡小豆・茜色 */
+  }
+
+  html {
+    font-size: 100%;
+    transition: font-size 0.2s ease-in-out;
+  }
+
+  html[data-font-size="normal"] {
+    font-size: 100%;
+  }
+
+  html[data-font-size="large"] {
+    font-size: 112.5%;
+  }
+
+  html[data-font-size="xlarge"] {
+    font-size: 125%;
   }
 
   body {
@@ -79,5 +96,73 @@
   /* 墨のアクセント */
   .border-calligraphy {
     border-left: 3.5px solid var(--tokiwa-green);
+  }
+
+  /* カリキュラム・画像解説・図解のスマホ左右余白最適化 */
+  @media (max-width: 639px) {
+    article figure {
+      padding-left: 0.75rem !important;
+      padding-right: 0.75rem !important;
+      padding-top: 0.875rem !important;
+      padding-bottom: 0.875rem !important;
+      border-radius: 1rem !important;
+    }
+
+    article figure > div[class*="p-6"],
+    article figure > div[class*="p-5"],
+    article figure > div[class*="p-8"] {
+      padding: 0.75rem !important;
+      border-radius: 0.875rem !important;
+    }
+  }
+}
+
+/* ==========================================================================
+   ライトモード（陽）の眩しさ抑制・和紙調トーン一元調整
+   純白（#FFFFFF）の眩しい高輝度グレアを抑え、柔らかな絹白色・生成り和紙色に統一
+   ※ :where(html:not(.dark)) を用いることで詳細度0となり、hover等の状態クラスを阻害せず、
+     かつダークモード時には一切干渉しません。
+   ========================================================================== */
+@layer utilities {
+  :where(html:not(.dark)) .bg-\[\#FFFFFF\],
+  :where(html:not(.dark)) .bg-white {
+    background-color: var(--bg-card);
+  }
+
+  :where(html:not(.dark)) .bg-\[\#FFFFFF\]\/95 {
+    background-color: rgba(252, 250, 246, 0.95);
+  }
+
+  :where(html:not(.dark)) .bg-\[\#FFFFFF\]\/90 {
+    background-color: rgba(252, 250, 246, 0.90);
+  }
+
+  :where(html:not(.dark)) .bg-\[\#FFFFFF\]\/80 {
+    background-color: rgba(252, 250, 246, 0.80);
+  }
+
+  :where(html:not(.dark)) .focus\:bg-\[\#FFFFFF\]:focus {
+    background-color: var(--bg-card);
+  }
+
+  :where(html:not(.dark)) .bg-\[\#FAF8F5\] {
+    background-color: var(--bg-washi);
+  }
+
+  :where(html:not(.dark)) .bg-\[\#FAF8F5\]\/95 {
+    background-color: rgba(245, 241, 232, 0.95);
+  }
+
+  :where(html:not(.dark)) .bg-\[\#FAF8F5\]\/60 {
+    background-color: rgba(245, 241, 232, 0.60);
+  }
+
+  :where(html:not(.dark)) .hover\:bg-\[\#FAF8F5\]:hover {
+    background-color: #EFE9DE;
+  }
+
+  :where(html:not(.dark)) .hover\:bg-\[\#FFFFFF\]:hover,
+  :where(html:not(.dark)) .hover\:bg-white:hover {
+    background-color: var(--bg-card);
   }
 }

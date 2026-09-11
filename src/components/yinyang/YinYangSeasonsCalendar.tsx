@@ -62,15 +62,15 @@ export default function YinYangSeasonsCalendar() {
   const active = seasonsData[selectedSeason];
 
   return (
-    <figure className="my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 shadow-sm transition-colors">
+    <figure className="my-6 sm:my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3 sm:p-6 md:p-8 shadow-sm transition-colors">
       {/* ヘッダー */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 mb-4 sm:mb-6">
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
             <span>画像解説⑦：四季の陰陽消長サークルカレンダー</span>
           </span>
-          <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
+          <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             自然界の陽気の波に呼吸を合わせる「四季の養生サークル」
           </h4>
         </div>
@@ -80,10 +80,10 @@ export default function YinYangSeasonsCalendar() {
       </div>
 
       {/* 四季サークルと陽気の波 */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-6 sm:p-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-center bg-[#FAF8F5] dark:bg-[#121920] rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-3 sm:p-6 md:p-8">
         {/* 左側：円環サークルナビゲーション */}
         <div className="lg:col-span-5 flex flex-col items-center justify-center">
-          <div className="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center">
+          <div className="relative w-56 h-56 sm:w-72 sm:h-72 flex items-center justify-center">
             {/* サークルリング */}
             <svg viewBox="0 0 200 200" className="w-full h-full absolute inset-0">
               <circle cx="100" cy="100" r="75" fill="none" stroke="#E5DEC9" strokeWidth="6" className="dark:stroke-[#2A3B4A]" />

@@ -1,4 +1,4 @@
-export type DepthType = "interior" | "exterior"; // 裏 / 表
+export type DepthType = "exterior" | "interior"; // 表 / 裏
 export type TemperatureType = "cold" | "heat"; // 寒 / 熱
 export type StateType = "deficiency" | "excess"; // 虚 / 実
 
@@ -50,18 +50,18 @@ export interface DiagnosisSyndrome {
 
 // 選択肢のメタデータ
 export const DEPTH_OPTIONS: { value: DepthType; label: string; sub: string; description: string }[] = [
-  { value: "interior", label: "裏（り）", sub: "内臓・深部・慢性", description: "病邪が体内深部（臓腑）にあり、機能低下や内因性の不調が生じている状態。" },
-  { value: "exterior", label: "表（ひょう）", sub: "体表・浅部・急性", description: "病邪が皮膚・筋肉・経絡などの浅い層に侵襲している初期・急性状態。" }
+  { value: "exterior", label: "表（ひょう）", sub: "体表・浅部・急性", description: "病邪が皮膚・筋肉・経絡などの浅い層に侵襲している初期・急性状態。" },
+  { value: "interior", label: "裏（り）", sub: "内臓・深部・慢性", description: "病邪が体内深部（臓腑）にあり、機能低下や内因性の不調が生じている状態。" }
 ];
 
 export const TEMP_OPTIONS: { value: TemperatureType; label: string; sub: string; description: string }[] = [
-  { value: "heat", label: "熱（ねつ）", sub: "機能亢進・炎症・赤み", description: "体温上昇、局所の充血、のぼせ、口の渇き、焦燥感などの亢進状態。" },
-  { value: "cold", label: "寒（かん）", sub: "代謝低下・冷え・停滞", description: "手足の冷え、血流低下、水様性の分泌物、縮こまるような痛みなどの沈静状態。" }
+  { value: "cold", label: "寒（かん）", sub: "代謝低下・冷え・停滞", description: "手足の冷え、血流低下、水様性の分泌物、縮こまるような痛みなどの沈静状態。" },
+  { value: "heat", label: "熱（ねつ）", sub: "機能亢進・炎症・赤み", description: "体温上昇、局所の充血、のぼせ、口の渇き、焦燥感などの亢進状態。" }
 ];
 
 export const STATE_OPTIONS: { value: StateType; label: string; sub: string; description: string }[] = [
-  { value: "excess", label: "実（じつ）", sub: "病邪の鬱滞・過剰・張り", description: "病邪が強く勢いがある、または気血水の滞り・緊張が過剰な状態。" },
-  { value: "deficiency", label: "虚（きょ）", sub: "生命力不足・機能衰弱", description: "正気（生命力・免疫・気血）が衰え、エネルギーや栄養が不足した状態。" }
+  { value: "deficiency", label: "虚（きょ）", sub: "生命力不足・機能衰弱", description: "正気（生命力・免疫・気血）が衰え、エネルギーや栄養が不足した状態。" },
+  { value: "excess", label: "実（じつ）", sub: "病邪の鬱滞・過剰・張り", description: "病邪が強く勢いがある、または気血水の滞り・緊張が過剰な状態。" }
 ];
 
 export const QIXUESHUI_OPTIONS: { value: QixueshuiType; label: string; sub: string; dynamicNature: string }[] = [

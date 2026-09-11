@@ -59,6 +59,9 @@ export default function CurriculumPage() {
 
   // 講義詳細ビュー（読書モード）
   if (activeLecture) {
+    // 講義内の専門用語の初出管理（各単語の初回のみワンクリック解説を有効化）
+    const seenTerms = new Set<string>();
+
     // 次の講義があるか確認
     let nextLectureItem: Lecture | null = null;
     for (const stage of CURRICULUM_DATA) {
@@ -70,7 +73,7 @@ export default function CurriculumPage() {
     }
 
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-8">
+      <div className="max-w-4xl mx-auto px-2 sm:px-6 lg:px-8 py-6 sm:py-16 space-y-6 sm:space-y-8">
         {/* 読書進捗バー */}
         <ReadingProgressBar />
 
@@ -83,7 +86,7 @@ export default function CurriculumPage() {
                 window.history.replaceState(null, "", "/curriculum");
               }
             }}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline bg-[#EBF3EF] dark:bg-[#182823] px-3.5 py-1.5 rounded-lg transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline bg-[#EBF3EF] dark:bg-[#182823] px-3 py-1.5 rounded-lg transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>カリキュラム一覧へ戻る</span>
@@ -96,7 +99,7 @@ export default function CurriculumPage() {
         </div>
 
         {/* 全8大カリキュラム 常駐進捗インジケーター */}
-        <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3 sm:p-4 shadow-2xs">
+        <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-2.5 sm:p-4 shadow-2xs">
           <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#F2ECE0] dark:border-[#22303D] text-[11px]">
             <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">
               東洋医学 体系学習カリキュラム 進捗インジケーター
@@ -150,9 +153,9 @@ export default function CurriculumPage() {
         </div>
 
         {/* 講義テキスト本体 */}
-        <article className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-12 shadow-sm space-y-8 transition-colors">
+        <article className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] px-3.5 py-6 sm:p-12 shadow-sm space-y-6 sm:space-y-8 transition-colors">
           {/* ヘッダー */}
-          <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-6 space-y-3">
+          <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-5 sm:pb-6 space-y-2 sm:space-y-3">
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold">
                 {activeLecture.stageTitle}
@@ -165,13 +168,13 @@ export default function CurriculumPage() {
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] leading-tight">
               {activeLecture.title}
             </h1>
-            <p className="text-sm text-[#59615D] dark:text-[#A0B0BC]">
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC]">
               {activeLecture.subtitle}
             </p>
           </div>
 
           {/* 講義の重要要点ボックス */}
-          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-6 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#4E8C76] space-y-3">
+          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-4 sm:p-6 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#4E8C76] space-y-2.5 sm:space-y-3">
             <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
               <Award className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
               <span>本講義で押さえるべき重要要点</span>
@@ -180,18 +183,18 @@ export default function CurriculumPage() {
               {activeLecture.keyPoints.map((point, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span className="text-[#1E3D34] dark:text-[#74BA9E] font-bold shrink-0">✓</span>
-                  <span><GlossaryRenderer text={point} /></span>
+                  <span><GlossaryRenderer text={point} seenTerms={seenTerms} /></span>
                 </li>
               ))}
             </ul>
           </div>
 
           {/* 講義要約 */}
-          <div className="bg-[#FCF4EB]/70 dark:bg-[#231A12]/80 p-5 rounded-2xl border border-[#F3E1CB] dark:border-[#423321] text-xs sm:text-sm text-[#404743] dark:text-[#D1C6BA] leading-relaxed">
+          <div className="bg-[#FCF4EB]/70 dark:bg-[#231A12]/80 p-3.5 sm:p-5 rounded-2xl border border-[#F3E1CB] dark:border-[#423321] text-xs sm:text-sm text-[#404743] dark:text-[#D1C6BA] leading-relaxed">
             <strong className="block font-serif text-sm font-bold text-[#B86924] dark:text-[#E6C387] mb-1">
               【講義の狙いと本質】
             </strong>
-            <GlossaryRenderer text={activeLecture.summary} />
+            <GlossaryRenderer text={activeLecture.summary} seenTerms={seenTerms} />
           </div>
 
           {/* 本文（GlossaryRendererで専門用語ホバー辞書を自動適用） */}
@@ -223,9 +226,9 @@ export default function CurriculumPage() {
                 const alt = imgMatch[1];
                 const src = imgMatch[2];
                 return (
-                  <figure key={index} className="my-8 text-center bg-[#FAF8F5] dark:bg-[#121920] p-4 sm:p-6 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D]">
+                  <figure key={index} className="my-6 sm:my-8 text-center bg-[#FAF8F5] dark:bg-[#121920] p-2.5 sm:p-6 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D]">
                     <img src={src} alt={alt} className="max-w-full mx-auto rounded-xl shadow-sm" />
-                    {alt && <figcaption className="mt-3 text-xs text-[#59615D] dark:text-[#A0B0BC] font-medium">【図】{alt}</figcaption>}
+                    {alt && <figcaption className="mt-2.5 text-xs text-[#59615D] dark:text-[#A0B0BC] font-medium">【図】{alt}</figcaption>}
                   </figure>
                 );
               }
@@ -238,7 +241,7 @@ export default function CurriculumPage() {
                     id={`curriculum-heading-${index}`}
                     className="font-serif text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-8 scroll-mt-36"
                   >
-                    <GlossaryRenderer text={trimmed.replace("## ", "")} />
+                    <GlossaryRenderer text={trimmed.replace("## ", "")} seenTerms={seenTerms} />
                   </h2>
                 );
               }
@@ -251,7 +254,7 @@ export default function CurriculumPage() {
                     id={`curriculum-heading-${index}`}
                     className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-6 scroll-mt-36"
                   >
-                    <GlossaryRenderer text={trimmed.replace("### ", "")} />
+                    <GlossaryRenderer text={trimmed.replace("### ", "")} seenTerms={seenTerms} />
                   </h3>
                 );
               }
@@ -261,9 +264,9 @@ export default function CurriculumPage() {
                 return (
                   <blockquote
                     key={index}
-                    className="bg-[#EBF3EF] dark:bg-[#162A24] border-l-4 border-[#1E3D34] dark:border-[#4E8C76] p-4 rounded-r-xl text-xs sm:text-sm italic text-[#232826] dark:text-[#E6EFEA]"
+                    className="bg-[#EBF3EF] dark:bg-[#162A24] border-l-4 border-[#1E3D34] dark:border-[#4E8C76] p-3 sm:p-4 rounded-r-xl text-xs sm:text-sm italic text-[#232826] dark:text-[#E6EFEA]"
                   >
-                    <GlossaryRenderer text={trimmed.replace(/^>\s*/gm, "")} />
+                    <GlossaryRenderer text={trimmed.replace(/^>\s*/gm, "")} seenTerms={seenTerms} />
                   </blockquote>
                 );
               }
@@ -285,13 +288,13 @@ export default function CurriculumPage() {
                     .filter((_, i, arr) => i !== 0 && i !== arr.length - 1);
 
                   return (
-                    <div key={index} className="overflow-x-auto my-6 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm">
-                      <table className="w-full text-left text-xs sm:text-sm">
+                    <div key={index} className="overflow-x-auto my-6 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm">
+                      <table className="w-full text-left text-xs sm:text-sm min-w-[280px]">
                         <thead className="bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-bold border-b border-[#E5DEC9] dark:border-[#2A3B4A]">
                           <tr>
                             {headers.map((h, hIdx) => (
-                              <th key={hIdx} className="px-4 py-3 font-serif">
-                                <GlossaryRenderer text={h} />
+                              <th key={hIdx} className="px-2.5 sm:px-4 py-2.5 sm:py-3 font-serif whitespace-nowrap">
+                                <GlossaryRenderer text={h} seenTerms={seenTerms} />
                               </th>
                             ))}
                           </tr>
@@ -305,8 +308,8 @@ export default function CurriculumPage() {
                             return (
                               <tr key={rIdx} className="hover:bg-[#FAF8F5] dark:hover:bg-[#1C2834] transition-colors">
                                 {cells.map((cell, cIdx) => (
-                                  <td key={cIdx} className="px-4 py-3 text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
-                                    <GlossaryRenderer text={cell} />
+                                  <td key={cIdx} className="px-2.5 sm:px-4 py-2 sm:py-3 text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
+                                    <GlossaryRenderer text={cell} seenTerms={seenTerms} />
                                   </td>
                                 ))}
                               </tr>
@@ -334,7 +337,7 @@ export default function CurriculumPage() {
                       const itemText = l.trim().replace(/^[-*]\s+|\d+\.\s+/, "");
                       return (
                         <li key={lIdx} className="leading-relaxed">
-                          <GlossaryRenderer text={itemText} />
+                          <GlossaryRenderer text={itemText} seenTerms={seenTerms} />
                         </li>
                       );
                     })}
@@ -345,7 +348,7 @@ export default function CurriculumPage() {
               // 通常の段落
               return (
                 <p key={index} className="leading-relaxed whitespace-pre-line text-[#333835] dark:text-[#C5D2DB]">
-                  <GlossaryRenderer text={trimmed.replace(/^#{1,6}\s+/gm, "").replace(/^-\s+/gm, "・ ")} />
+                  <GlossaryRenderer text={trimmed.replace(/^#{1,6}\s+/gm, "").replace(/^-\s+/gm, "・ ")} seenTerms={seenTerms} />
                 </p>
               );
             })}
@@ -387,7 +390,7 @@ export default function CurriculumPage() {
 
   // カリキュラム一覧ビュー
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12">
+    <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-10 sm:space-y-12">
       {/* ページ見出し */}
       <div className="border-b border-[#E8E1D1] dark:border-[#22303D] pb-8 text-center max-w-3xl mx-auto space-y-4">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-semibold tracking-wider">

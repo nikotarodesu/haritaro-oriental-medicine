@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { Sparkles, Layers, BookOpen, ChevronRight, Zap } from "lucide-react";
+import { Sparkles, ChevronDown, ChevronUp } from "lucide-react";
 import { CLASSIC_CLINICAL_PAIRS } from "@/types/clinicalMemo";
 import ClipButton from "@/components/ClipButton";
 import GogyoBadge from "@/components/GogyoBadge";
 
 export default function ClinicalPairsSection() {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedElement, setSelectedElement] = useState<string>("すべて");
 
   const elements = ["すべて", "木", "火", "土", "金", "水"];
@@ -17,42 +18,81 @@ export default function ClinicalPairsSection() {
   });
 
   return (
-    <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-6 shadow-xs">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8E1D1] dark:border-[#22303D] pb-5">
-        <div>
+    <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 shadow-xs transition-all">
+      {/* ヘッダー・開閉トグル領域 */}
+      <div
+        onClick={() => setIsOpen(!isOpen)}
+        className="cursor-pointer select-none group flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+      >
+        <div className="flex-1">
           <div className="flex items-center gap-2 text-xs font-bold text-[#B86924] dark:text-[#E6C387] tracking-wider uppercase mb-1">
             <Sparkles className="w-4 h-4" />
             <span>Classic Acupoint Combinations</span>
+            <span className="ml-1 text-[11px] font-normal px-2 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#121920] text-[#59615D] dark:text-[#96A6B2] border border-[#E5DEC9] dark:border-[#2A3B4A]">
+              全{CLASSIC_CLINICAL_PAIRS.length}組
+            </span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-            臨床名配穴（重要ツボの黄金ペア・トリオ集）
+          <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors">
+            臨床名配穴
           </h2>
           <p className="mt-1 text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-2xl leading-relaxed">
             単穴刺激にとどまらず、相乗効果を生み出す伝統的な配穴（太衝＋陽陵泉、開四関など）。ワンクリックでマイカルテに保存し、自分だけの要穴集として活用できます。
           </p>
         </div>
 
-        {/* 五行フィルター */}
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-xs font-semibold text-[#737C77] dark:text-[#8899A6] mr-1">五行絞込:</span>
-          {elements.map(el => (
-            <button
-              key={el}
-              onClick={() => setSelectedElement(el)}
-              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
-                selectedElement === el
-                  ? "bg-[#232826] text-white dark:bg-white dark:text-[#10161C] shadow-xs"
-                  : "bg-[#FAF8F5] dark:bg-[#121920] text-[#59615D] dark:text-[#96A6B2] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#EBF3EF]"
-              }`}
-            >
-              {el}
-            </button>
-          ))}
+        {/* 開閉ボタン */}
+        <div className="flex items-center self-start sm:self-center gap-2">
+          <button
+            type="button"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] transition-colors shadow-2xs"
+            aria-expanded={isOpen}
+          >
+            {isOpen ? (
+              <>
+                <span>閉じる</span>
+                <ChevronUp className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+              </>
+            ) : (
+              <>
+                <span>配穴一覧を表示</span>
+                <ChevronDown className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+              </>
+            )}
+          </button>
         </div>
       </div>
 
-      {/* 配穴グリッド */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      {/* 開閉コンテンツ */}
+      {isOpen && (
+        <div className="pt-5 mt-5 border-t border-[#E8E1D1] dark:border-[#22303D] space-y-6">
+          {/* 五行フィルター */}
+          <div className="flex items-center justify-between gap-3 flex-wrap bg-[#FAF8F5] dark:bg-[#121920] p-3 rounded-xl border border-[#EDE7DB] dark:border-[#22303D]">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-xs font-semibold text-[#737C77] dark:text-[#8899A6] mr-1">五行絞込:</span>
+              {elements.map(el => (
+                <button
+                  key={el}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedElement(el);
+                  }}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                    selectedElement === el
+                      ? "bg-[#232826] text-white dark:bg-white dark:text-[#10161C] shadow-xs"
+                      : "bg-[#FFFFFF] dark:bg-[#17212A] text-[#59615D] dark:text-[#96A6B2] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#EBF3EF]"
+                  }`}
+                >
+                  {el}
+                </button>
+              ))}
+            </div>
+            <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
+              該当: {filteredPairs.length} 件
+            </span>
+          </div>
+
+          {/* 配穴グリッド */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {filteredPairs.map(pair => (
           <div
             key={pair.id}
@@ -64,7 +104,7 @@ export default function ClinicalPairsSection() {
                 <div className="space-y-1">
                   <div className="flex items-center gap-1.5">
                     {pair.elements.map(el => (
-                      <GogyoBadge key={el} target={el} size="sm" showColorName />
+                      <GogyoBadge key={el} target={el} size="sm" />
                     ))}
                   </div>
                   <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors">
@@ -132,6 +172,20 @@ export default function ClinicalPairsSection() {
           </div>
         ))}
       </div>
+
+          {/* 下部折りたたみボタン */}
+          <div className="flex justify-center pt-2">
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] text-[#59615D] dark:text-[#A0B0BC] border border-[#E5DEC9] dark:border-[#2A3B4A] transition-colors"
+            >
+              <span>臨床名配穴を折りたたむ</span>
+              <ChevronUp className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

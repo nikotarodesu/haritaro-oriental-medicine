@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { DIAGNOSIS_QUESTIONS, DIAGNOSIS_RESULTS } from "@/data/diagnosisData";
 import { DiagnosisResultType } from "@/types/oriental";
@@ -11,6 +11,17 @@ export default function DiagnosisPage() {
   const [activeTab, setActiveTab] = useState<"self" | "gorou">("self");
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const [result, setResult] = useState<DiagnosisResultType | null>(null);
+  const resultRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToResult = () => {
+    setTimeout(() => {
+      if (resultRef.current) {
+        const yOffset = -90; // 固定ヘッダー（80px）＋余白分
+        const y = resultRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    }, 100);
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -63,7 +74,7 @@ export default function DiagnosisPage() {
     });
 
     setResult(DIAGNOSIS_RESULTS[highestType]);
-    window.scrollTo({ top: 500, behavior: "smooth" });
+    scrollToResult();
   };
 
   const handleReset = () => {
@@ -183,7 +194,10 @@ export default function DiagnosisPage() {
 
       {/* 診断結果表示 */}
       {result && (
-        <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border-2 border-[#1E3D34] dark:border-[#3A6B5B] p-8 sm:p-10 shadow-xl space-y-8 animate-fadeIn transition-colors">
+        <div 
+          ref={resultRef}
+          className="scroll-mt-24 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border-2 border-[#1E3D34] dark:border-[#3A6B5B] p-8 sm:p-10 shadow-xl space-y-8 animate-fadeIn transition-colors"
+        >
           <div className="text-center space-y-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-6">
             <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-widest">
               Diagnosis Result

@@ -5,15 +5,15 @@ import { Sparkles, Cog, Check, ArrowRightLeft, Shield, HeartPulse } from "lucide
 
 export default function YinYangEastWestMatrix() {
   return (
-    <figure className="my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 shadow-sm transition-colors">
+    <figure className="my-6 sm:my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3 sm:p-6 md:p-8 shadow-sm transition-colors">
       {/* ヘッダー */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 mb-4 sm:mb-6">
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
             <span>画像解説⑧：東西医学の相補マトリクス</span>
           </span>
-          <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
+          <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             歯車のように噛み合う「西洋医学（陽）× 東洋医学（陰）」の統合医療
           </h4>
         </div>
@@ -23,10 +23,10 @@ export default function YinYangEastWestMatrix() {
       </div>
 
       {/* 噛み合うギア（歯車）ビジュアル */}
-      <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-6 sm:p-8 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+      <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-3 sm:p-6 mb-4 sm:mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 items-center">
           {/* 西洋医学ギア（陽） */}
-          <div className="md:col-span-5 p-5 rounded-2xl bg-white dark:bg-[#1A2530] border-2 border-[#C45A4A]/50 shadow-sm space-y-3">
+          <div className="md:col-span-5 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-white dark:bg-[#1A2530] border-2 border-[#C45A4A]/50 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <HeartPulse className="w-5 h-5 text-[#C45A4A]" />

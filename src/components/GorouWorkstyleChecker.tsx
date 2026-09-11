@@ -18,7 +18,6 @@ import {
   Stethoscope,
 } from "lucide-react";
 import { getGogyoColor, GOGYO_COLORS } from "@/utils/gogyoColor";
-import GogyoBadge from "@/components/GogyoBadge";
 import ClipButton from "@/components/ClipButton";
 
 // 五労の定義型
@@ -565,7 +564,6 @@ export default function GorouWorkstyleChecker() {
                   <h3 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                     【{mostFatiguedOrgan.name}】が疲弊（疲弊度 {mostFatiguedOrgan.score}%）
                   </h3>
-                  <GogyoBadge target={mostFatiguedOrgan.name} size="md" showColorName />
                 </div>
               </div>
               <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
