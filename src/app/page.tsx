@@ -683,9 +683,15 @@ export default function HomePage() {
                     <span>約 {article.readTime}</span>
                   </div>
 
-                  <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal mb-2">
+                  <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug tracking-normal mb-1.5">
                     {article.title}
                   </h3>
+
+                  {article.subtitle && (
+                    <p className="text-xs text-[#737C77] dark:text-[#8899A6] font-medium leading-relaxed line-clamp-1 mb-2">
+                      {article.subtitle}
+                    </p>
+                  )}
 
                   <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-2 mb-3">
                     {article.summary}

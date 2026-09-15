@@ -2,7 +2,8 @@ import { Article } from "@/types/oriental";
 
 export const MERIDIAN_ARTICLE: Article = {
   id: "science-of-meridians-network",
-  title: "【経絡の科学】経絡とは何か ― 東洋医学における多層生体情報ネットワーク仮説と現代科学の接点",
+  title: "経絡の科学：全身を結ぶ生体情報ネットワーク",
+  subtitle: "筋膜間質液流動・多層情報伝達仮説と現代自然科学の接点",
   category: "経穴・経絡学",
   publishedAt: "2026-03-11",
   readTime: "15分",

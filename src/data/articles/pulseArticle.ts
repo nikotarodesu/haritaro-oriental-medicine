@@ -2,7 +2,8 @@ import { Article } from "@/types/oriental";
 
 export const PULSE_ARTICLE: Article = {
   id: "science-of-pulse-diagnosis",
-  title: "【脈診の科学】生体情報を時間軸で読み取る診断学 ― 流体力学・心拍変動・血管弾性から解読する脈象",
+  title: "脈診の科学：血流波形と生体リズムの解読",
+  subtitle: "流体力学・心拍変動・血管弾性から読み解く脈象の生理学的実体",
   category: "論文・文献抄読",
   publishedAt: "2026-03-11",
   readTime: "20分",

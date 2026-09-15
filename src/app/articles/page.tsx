@@ -155,6 +155,11 @@ export default function ArticlesPage() {
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-bold text-[#232826] dark:text-[#FAF8F5] leading-relaxed tracking-normal">
               {activeArticle.title}
             </h1>
+            {activeArticle.subtitle && (
+              <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] font-medium leading-relaxed mt-1">
+                {activeArticle.subtitle}
+              </p>
+            )}
 
             <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-[#59615D] dark:text-[#96A6B2] pt-2">
               <div className="flex items-center gap-2">
@@ -399,9 +404,15 @@ export default function ArticlesPage() {
                   </span>
                 </div>
 
-                <h2 className="font-sans text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal mb-3">
+                <h2 className="font-sans text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug tracking-normal mb-1.5">
                   {article.title}
                 </h2>
+
+                {article.subtitle && (
+                  <p className="text-xs text-[#737C77] dark:text-[#8899A6] font-medium leading-relaxed line-clamp-2 mb-3">
+                    {article.subtitle}
+                  </p>
+                )}
 
                 <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3 mb-4">
                   {article.summary}

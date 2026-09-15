@@ -2,7 +2,8 @@ import { Article } from "@/types/oriental";
 
 export const HISTORY_ARTICLE: Article = {
   id: "science-of-oriental-medicine-history",
-  title: "【東洋医学史】ブラックボックス解析としての経験医学 ― 『黄帝内経』から日本漢方・現代科学への適応進化",
+  title: "東洋医学の歴史と進化：古代の臨床知から現代科学へ",
+  subtitle: "ブラックボックス解析としての経験医学 ― 『黄帝内経』から日本漢方への適応進化",
   category: "古典深読み",
   publishedAt: "2026-03-11",
   readTime: "18分",

@@ -2,7 +2,8 @@ import { Article } from "@/types/oriental";
 
 export const ACUPUNCTURE_ARTICLE: Article = {
   id: "science-of-acupuncture-neuroscience",
-  title: "【鍼灸の科学】生体情報制御学としての鍼灸医学 ― 神経回路・メカノトランスダクション・エビデンスと人体統一理論",
+  title: "鍼灸の科学と作用メカニズム",
+  subtitle: "神経回路・メカノトランスダクション・内因性オピオイドから読み解く生体情報制御",
   category: "経穴・経絡学",
   publishedAt: "2026-03-11",
   readTime: "25分",

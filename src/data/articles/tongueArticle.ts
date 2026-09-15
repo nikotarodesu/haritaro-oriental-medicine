@@ -2,7 +2,8 @@ import { Article } from "@/types/oriental";
 
 export const TONGUE_ARTICLE: Article = {
   id: "science-of-tongue-diagnosis",
-  title: "【舌診の科学】舌は生体情報の可視化インターフェース ― 微小循環・口腔マイクロバイオーム・神経運動機能",
+  title: "舌診の科学：舌に現れる生体シグナル",
+  subtitle: "微小循環・口腔マイクロバイオーム・神経運動機能による病態可視化",
   category: "論文・文献抄読",
   publishedAt: "2026-03-11",
   readTime: "17分",

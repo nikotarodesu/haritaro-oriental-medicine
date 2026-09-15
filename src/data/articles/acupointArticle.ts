@@ -2,7 +2,8 @@ import { Article } from "@/types/oriental";
 
 export const ACUPOINT_ARTICLE: Article = {
   id: "science-of-acupoints-mechanotransduction",
-  title: "【経穴の科学】経穴（ツボ）とは何か ― 刺激入力インターフェースとしての再定義と生体情報変換機序",
+  title: "ツボ（経穴）の科学と生体応答",
+  subtitle: "刺激入力インターフェースとしての再定義と生体情報変換機序",
   category: "経穴・経絡学",
   publishedAt: "2026-03-11",
   readTime: "18分",

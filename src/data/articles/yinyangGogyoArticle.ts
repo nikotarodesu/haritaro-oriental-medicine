@@ -2,7 +2,8 @@ import { Article } from "@/types/oriental";
 
 export const YINYANG_GOGYO_ARTICLE: Article = {
   id: "science-of-yinyang-gogyo",
-  title: "【陰陽五行の科学】二値モデルと五つの機能ネットワーク ― 恒常性・動的平衡・システム制御理論",
+  title: "陰陽五行の科学：動的平衡とシステム制御理論",
+  subtitle: "二値モデルと五大機能ネットワークによるホメオスタシス理解",
   category: "古典深読み",
   publishedAt: "2026-03-11",
   readTime: "22分",

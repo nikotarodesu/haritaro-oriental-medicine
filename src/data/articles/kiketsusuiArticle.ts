@@ -2,7 +2,8 @@ import { Article } from "@/types/oriental";
 
 export const KIKETSUSUI_ARTICLE: Article = {
   id: "science-of-qi-blood-fluid",
-  title: "【気血津液の科学】人体のシステムダイナミクス ― 推動・温煦・物質循環・体液ネットワーク",
+  title: "気血津液の科学：生命エネルギーと体液循環",
+  subtitle: "人体のシステムダイナミクス ― 推動・温煦・物質循環・体液ネットワーク",
   category: "論文・文献抄読",
   publishedAt: "2026-03-11",
   readTime: "20分",

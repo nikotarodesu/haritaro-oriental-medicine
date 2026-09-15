@@ -2,7 +2,8 @@ import { Article } from "@/types/oriental";
 
 export const KAMPO_ARTICLE: Article = {
   id: "science-of-kampo-network-pharmacology",
-  title: "【漢方医学の科学】状態空間への多点介入 ― 君臣佐使の制御工学・証のベイズ推論・ネットワーク薬理学",
+  title: "漢方医学の科学：多成分介入とネットワーク薬理学",
+  subtitle: "君臣佐使の制御工学・証のベイズ推論・複雑系へのアプローチ",
   category: "論文・文献抄読",
   publishedAt: "2026-03-11",
   readTime: "20分",

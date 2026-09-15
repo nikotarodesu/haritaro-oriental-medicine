@@ -2,7 +2,8 @@ import { Article } from "@/types/oriental";
 
 export const ABDOMEN_ARTICLE: Article = {
   id: "science-of-abdominal-diagnosis",
-  title: "【腹診の科学】腹部はなぜ全身の鏡となるのか ― 内臓体性反射・筋膜張力・システム医学から解明する腹証",
+  title: "腹診の科学：お腹から全身を読み解く",
+  subtitle: "内臓体性反射・筋膜張力・システム医学から解明する腹証の診断的意義",
   category: "論文・文献抄読",
   publishedAt: "2026-03-11",
   readTime: "16分",

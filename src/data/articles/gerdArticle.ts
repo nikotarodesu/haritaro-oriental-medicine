@@ -2,7 +2,8 @@ import { Article } from "@/types/oriental";
 
 export const GERD_ARTICLE: Article = {
   id: "east-west-integrative-gerd-gastric",
-  title: "【東西統合の臨床】逆流性食道炎・胃痛における相補アプローチ：西洋医学の除外診断（PPI・内視鏡）× 東洋医学の気機昇降論（中焦・半夏瀉心湯）",
+  title: "逆流性食道炎・胃痛の東西相補アプローチ",
+  subtitle: "西洋医学の除外診断（PPI・内視鏡）× 東洋医学の気機昇降論（中焦・半夏瀉心湯）",
   category: "臨床・実践知見",
   publishedAt: "2026-03-10",
   readTime: "9分",

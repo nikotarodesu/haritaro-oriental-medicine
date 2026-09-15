@@ -53,6 +53,7 @@ export interface DiagnosisResultType {
 export interface Article {
   id: string;
   title: string;
+  subtitle?: string;
   category: "一般向けセルフケア" | "臨床・実践知見" | "経穴・経絡学" | "論文・文献抄読" | "古典深読み";
   publishedAt: string;
   readTime: string;

@@ -2,7 +2,8 @@ import { Article } from "@/types/oriental";
 
 export const UNIFIED_THEORY_ARTICLE: Article = {
   id: "east-west-integrative-unified-theory",
-  title: "【東西医学の統合と人体統一理論】二つの人体モデルの架橋 ― 階層システム・科学的コンセンサス・17層構造の最終位置づけ",
+  title: "東西医学の統合と人体統一理論",
+  subtitle: "二つの人体モデルの架橋 ― 階層システム・科学的コンセンサス・相補統合の未来",
   category: "古典深読み",
   publishedAt: "2026-03-11",
   readTime: "19分",
