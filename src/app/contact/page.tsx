@@ -209,10 +209,8 @@ export default function ContactPage() {
                   className="w-full px-3.5 py-2.5 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] text-[#232826] dark:text-[#FAF8F5] text-xs focus:outline-none focus:border-[#1E3D34] dark:focus:border-[#74BA9E] transition-colors"
                 >
                   <option value="サイト掲載内容・記事について">サイト掲載内容・記事について</option>
-                  <option value="臨床弁証シミュレーター・学習カリキュラムについて">臨床弁証シミュレーター・学習カリキュラムについて</option>
-                  <option value="経穴・東洋医学に関するご質問">経穴・東洋医学に関するご質問</option>
                   <option value="ご意見・ご要望・誤字等のご指摘">ご意見・ご要望・誤字等のご指摘</option>
-                  <option value="取材・執筆・講演・ビジネスのご相談">取材・執筆・講演・ビジネスのご相談</option>
+                  <option value="取材・執筆・ビジネスのご相談">取材・執筆・ビジネスのご相談</option>
                   <option value="その他">その他</option>
                 </select>
               </div>
@@ -228,7 +226,7 @@ export default function ContactPage() {
                   required
                   value={formData.subject}
                   onChange={handleChange}
-                  placeholder="例：配穴最適化機能についてのご質問"
+                  placeholder="例：掲載内容についてのご質問"
                   className="w-full px-3.5 py-2.5 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] text-[#232826] dark:text-[#FAF8F5] text-xs focus:outline-none focus:border-[#1E3D34] dark:focus:border-[#74BA9E] transition-colors"
                 />
               </div>
