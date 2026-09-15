@@ -10,7 +10,6 @@ import {
   ArrowRight, 
   Sparkles, 
   CheckCircle2, 
-  ShieldCheck, 
   Flame
 } from "lucide-react";
 import { TSUBOS } from "@/data/tsuboData";
@@ -610,73 +609,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. 東洋医学と現代医学の扱い（信頼性と3層基準の明示） */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#2A3B4A] p-6 sm:p-10 space-y-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-[#F0EAE1] dark:border-[#22303D] pb-4">
-            <div className="space-y-1">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                <span>学術的信頼性とエビデンス管理</span>
-              </div>
-              <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-                東洋医学と現代医学の3層分離基準
-              </h2>
-            </div>
-            <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] max-w-md">
-              伝統概念（気・血・水）と現代医科学（自律神経・炎症・間質）を安易に同一視せず、以下の3層を明確に区別して記載しています。
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#22303D] space-y-2">
-              <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                層1：古典・伝統医学の理論
-              </span>
-              <p className="text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-                「東洋医学ではこのように説明する」<br />
-                黄帝内経・傷寒論などの原典体系および歴代の臨床知見をそのまま忠実に整理。
-              </p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#22303D] space-y-2">
-              <span className="text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8] block">
-                層2：現代医学による説明
-              </span>
-              <p className="text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-                「現代医学ではこの現象をこのように説明できる」<br />
-                体性内臓反射、軸索反射、神経ペプチド放出など査読論文に基づく生理学的機序。
-              </p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#22303D] space-y-2">
-              <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
-                層3：統合的な仮説
-              </span>
-              <p className="text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-                「両者を接続すると、このように考えることもできる」<br />
-                未解明部分を明記し、仮説・類似性・確立知見のステータスを厳格に分けて提示。
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. 東洋医学を知る入口（入門・セルフケア・日常の応用） */}
+      {/* 5. 東洋医学を知る入口（入門・セルフケア・日常の応用） */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="border-t border-[#E8E1D1] dark:border-[#22303D] pt-12 space-y-3">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-            <div>
-              <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] tracking-widest uppercase">
-                Gateway to Practice
-              </span>
-              <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] mt-0.5">
-                東洋医学を知る入口（入門・セルフケア）
-              </h2>
-            </div>
-            <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
-              初学者や一般の方、患者への養生指導にそのまま活用できる直感的ツール群
-            </p>
+          <div>
+            <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] tracking-widest uppercase">
+              Gateway to Practice
+            </span>
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] mt-0.5">
+              東洋医学を知る入口（入門・セルフケア）
+            </h2>
           </div>
         </div>
 
