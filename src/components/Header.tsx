@@ -463,13 +463,21 @@ export default function Header() {
               <YinYangSwitch />
             </div>
 
-            {/* サイト理念 */}
-            <Link
-              href="/about"
-              className="px-3.5 py-2 rounded-full text-xs font-semibold bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] hover:bg-[#162E27] dark:hover:bg-[#225345] shadow-sm transition-all"
-            >
-              理念
-            </Link>
+            {/* サイト理念 & お問い合わせ */}
+            <div className="flex items-center gap-1.5">
+              <Link
+                href="/about"
+                className="px-3 py-1.5 rounded-full text-xs font-semibold bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] hover:bg-[#162E27] dark:hover:bg-[#225345] shadow-sm transition-all"
+              >
+                理念
+              </Link>
+              <Link
+                href="/contact"
+                className="px-3 py-1.5 rounded-full text-xs font-semibold border border-[#D8CFC0] dark:border-[#2D3E50] text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] hover:bg-[#FAF8F5] dark:hover:bg-[#1A2530] transition-all"
+              >
+                お問い合わせ
+              </Link>
+            </div>
           </nav>
 
           {/* モバイルヘッダー右側（マイカルテ ＆ 文字サイズ & 陰陽スイッチ & メニューボタン） */}
@@ -668,6 +676,13 @@ export default function Header() {
               className="block w-full text-center py-2.5 rounded-xl text-xs font-semibold bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5]"
             >
               はり太郎の理念・サイトについて
+            </Link>
+            <Link
+              href="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block w-full text-center py-2.5 rounded-xl text-xs font-semibold border border-[#D8CFC0] dark:border-[#2A3B4A] text-[#404743] dark:text-[#C5D2DB] hover:bg-[#FAF8F5] dark:hover:bg-[#121920]"
+            >
+              お問い合わせ
             </Link>
           </div>
         </div>

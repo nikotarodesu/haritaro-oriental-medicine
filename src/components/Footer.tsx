@@ -94,11 +94,19 @@ export default function Footer() {
                   </p>
                 </div>
               </div>
-              <div>
-                <Link href="/about" className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline inline-flex items-center gap-1">
-                  <span>サイト理念・はり太郎について</span>
-                  <ArrowUpRight className="w-3 h-3" />
-                </Link>
+              <div className="space-y-1.5">
+                <div>
+                  <Link href="/about" className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline inline-flex items-center gap-1">
+                    <span>サイト理念・はり太郎について</span>
+                    <ArrowUpRight className="w-3 h-3" />
+                  </Link>
+                </div>
+                <div>
+                  <Link href="/contact" className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline inline-flex items-center gap-1">
+                    <span>お問い合わせフォーム</span>
+                    <ArrowUpRight className="w-3 h-3" />
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -108,7 +116,7 @@ export default function Footer() {
           <p>© {new Date().getFullYear()} はり太郎の東洋医学. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link href="/about" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">プライバシーポリシー</Link>
-            <Link href="/about" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">お問い合わせ</Link>
+            <Link href="/contact" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">お問い合わせ</Link>
           </div>
         </div>
       </div>
