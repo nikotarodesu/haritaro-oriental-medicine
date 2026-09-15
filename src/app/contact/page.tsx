@@ -40,17 +40,26 @@ export default function ContactPage() {
     setErrorMessage("");
 
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          access_key: "530b5503-9c8a-440f-a96d-affe827029ba",
+          name: formData.name,
+          email: formData.email,
+          subject: `【はり太郎の東洋医学】[${formData.category}] ${formData.subject}`,
+          message: `【お問い合わせ種別】: ${formData.category}\n【お名前】: ${formData.name}\n【返信先メールアドレス】: ${formData.email}\n【件名】: ${formData.subject}\n\n【本文】:\n${formData.message}`,
+          from_name: "はり太郎の東洋医学 お問い合わせフォーム",
+          botcheck: formData.botCheck,
+        }),
       });
 
       const data = await response.json();
 
-      if (response.ok && data.success) {
+      if (data.success) {
         setStatus("success");
         setFormData({
           name: "",
@@ -62,7 +71,7 @@ export default function ContactPage() {
         });
       } else {
         setStatus("error");
-        setErrorMessage(data.error || "送信に失敗しました。時間をおいて再試行してください。");
+        setErrorMessage(data.message || "送信に失敗しました。時間をおいて再試行してください。");
       }
     } catch (err) {
       console.error(err);
