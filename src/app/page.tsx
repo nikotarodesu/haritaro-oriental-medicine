@@ -10,8 +10,6 @@ import {
   ArrowRight, 
   Sparkles, 
   CheckCircle2, 
-  Network, 
-  GitBranch, 
   ShieldCheck, 
   Flame
 } from "lucide-react";
@@ -280,45 +278,12 @@ export default function HomePage() {
       {/* 2. サイトの背骨：東洋医学8大体系 ロードマップ */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold">
-            <GitBranch className="w-3.5 h-3.5" />
-            <span>サイトの根幹・学習の背骨</span>
-          </div>
           <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
             東洋医学8大体系
           </h2>
           <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
             単なる記事の羅列ではなく、臨床推論へ直結する一貫した思考プロセスとして体系化されています。
           </p>
-
-          {/* 学習経路フロー（基礎理論 ➜ 病機 ➜ 診断 ➜ 治法 ➜ 実践 ➜ 症例） */}
-          <div className="pt-4 overflow-x-auto pb-2">
-            <div className="inline-flex items-center gap-2 p-2 rounded-2xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs text-xs font-bold min-w-max">
-              <span className="px-3 py-1.5 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                ① 基礎理論
-              </span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#A0B0BC]" />
-              <span className="px-3 py-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] text-[#A83629] dark:text-[#C47A72]">
-                ② 病機論
-              </span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#A0B0BC]" />
-              <span className="px-3 py-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] text-[#4A3B69] dark:text-[#9A84BC]">
-                ③ 診断論
-              </span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#A0B0BC]" />
-              <span className="px-3 py-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] text-[#285A52] dark:text-[#74BA9E]">
-                ④ 治法論
-              </span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#A0B0BC]" />
-              <span className="px-3 py-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] text-[#1E2D3D] dark:text-[#7BAAD8]">
-                ⑤ 実践論
-              </span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#A0B0BC]" />
-              <span className="px-3 py-1.5 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387]">
-                ⑥ 症例演習
-              </span>
-            </div>
-          </div>
         </div>
 
         {/* 8大体系カード一覧 */}
@@ -411,14 +376,6 @@ export default function HomePage() {
           </div>
 
           <div className="max-w-3xl relative z-10 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EBF3EF]/15 border border-[#74BA9E]/30 text-[#E6C387] text-xs font-semibold tracking-wider">
-              <Layers className="w-3.5 h-3.5 text-[#E6C387]" />
-              <span>臨床推論トレーニング</span>
-              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
-                中核コンテンツ
-              </span>
-            </div>
-
             <div className="space-y-2">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight leading-snug">
                 臨床弁証シミュレーター
@@ -523,64 +480,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. 【調べる】知識グラフと経穴辞典・学術論文 */}
+      {/* 4. 【調べる】経穴辞典・学術論文 */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        {/* 知識グラフ思想の可視化バナー */}
-        <div className="p-6 sm:p-8 rounded-3xl bg-[#FAF8F5] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-4">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-[#E8E1D1] dark:border-[#22303D] pb-3">
-            <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                <Network className="w-4 h-4" />
-              </span>
-              <div>
-                <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  相互接続された「知識グラフ」
-                </h3>
-                <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC]">
-                  経穴・経絡・臓腑・病機・診断・治法・症例が有機的に連動
-                </span>
-              </div>
-            </div>
-            <span className="text-xs text-[#737C77] dark:text-[#8899A6] hidden md:inline">
-              独立したデータではなく、思考のネットワークとして探索可能
-            </span>
-          </div>
-
-          {/* 太衝を例にした知識グラフの流れ */}
-          <div className="space-y-2 text-xs">
-            <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] text-[11px]">
-              例：経穴「太衝（LR3）」を起点とした情報横断
-            </span>
-            <div className="overflow-x-auto pb-1">
-              <div className="inline-flex items-center gap-2 p-2 rounded-xl bg-[#FFFFFF] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#22303D] min-w-max">
-                <span className="px-2.5 py-1 rounded bg-[#EBF3EF] dark:bg-[#182823] font-bold text-[#1E3D34] dark:text-[#83BEA8]">
-                  太衝（経穴）
-                </span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#A0B0BC]" />
-                <span className="px-2.5 py-1 rounded bg-[#FAF8F5] dark:bg-[#17212A] text-[#404743] dark:text-[#C5D2DB]">
-                  足厥陰肝経（経絡）
-                </span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#A0B0BC]" />
-                <span className="px-2.5 py-1 rounded bg-[#FAF8F5] dark:bg-[#17212A] text-[#404743] dark:text-[#C5D2DB]">
-                  肝（臓腑・蔵血と疏泄）
-                </span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#A0B0BC]" />
-                <span className="px-2.5 py-1 rounded bg-[#FAF8F5] dark:bg-[#17212A] text-[#A83629] dark:text-[#C47A72]">
-                  肝気鬱結・気滞（病機）
-                </span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#A0B0BC]" />
-                <span className="px-2.5 py-1 rounded bg-[#FAF8F5] dark:bg-[#17212A] text-[#285A52] dark:text-[#74BA9E]">
-                  疏肝理気（治法）
-                </span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#A0B0BC]" />
-                <span className="px-2.5 py-1 rounded bg-[#FCF4EB] dark:bg-[#2A2117] font-bold text-[#B86924] dark:text-[#E6C387]">
-                  太衝×陽陵泉（相乗配穴）
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* 要穴ピックアップ */}
         <div>
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
