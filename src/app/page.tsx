@@ -178,7 +178,7 @@ export default function HomePage() {
             {/* 1. 学ぶ (LEARN) */}
             <Link
               href="/curriculum"
-              className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl border-2 border-[#1E3D34]/20 dark:border-[#2A4B3E] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group"
+              className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl border-2 border-[#1E3D34]/20 dark:border-[#74BA9E]/25 hover:border-[#1E3D34] dark:hover:border-[#74BA9E] p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -188,7 +188,7 @@ export default function HomePage() {
                       体系的に学ぶ
                     </span>
                   </div>
-                  <span className="text-xs font-mono font-bold tracking-wider px-2.5 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                  <span className="text-xs font-mono font-bold tracking-wider px-2.5 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
                     LEARN
                   </span>
                 </div>
@@ -211,7 +211,7 @@ export default function HomePage() {
             {/* 2. 調べる (SEARCH) */}
             <Link
               href="/tsubo"
-              className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl border-2 border-[#1E2D3D]/20 dark:border-[#2A3E52] hover:border-[#1E2D3D] dark:hover:border-[#7BAAD8] p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group"
+              className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl border-2 border-[#1E2D3D]/20 dark:border-[#7BAAD8]/25 hover:border-[#1E2D3D] dark:hover:border-[#7BAAD8] p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -244,7 +244,7 @@ export default function HomePage() {
             {/* 3. 考える (THINK) */}
             <Link
               href="/simulator"
-              className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl border-2 border-[#B86924]/30 dark:border-[#4D331F] hover:border-[#B86924] dark:hover:border-[#E6C387] p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group"
+              className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl border-2 border-[#B86924]/20 dark:border-[#E6C387]/25 hover:border-[#B86924] dark:hover:border-[#E6C387] p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
