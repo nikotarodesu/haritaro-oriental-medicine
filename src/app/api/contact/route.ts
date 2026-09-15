@@ -18,7 +18,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const accessKey = process.env.WEB3FORMS_ACCESS_KEY || "";
+    const accessKey =
+      process.env.WEB3FORMS_ACCESS_KEY || "530b5503-9c8a-440f-a96d-affe827029ba";
 
     // Web3Forms APIへのリクエスト（サーバーサイドから送信するため、訪問者には宛先メールアドレスが一切見えません）
     if (accessKey) {
