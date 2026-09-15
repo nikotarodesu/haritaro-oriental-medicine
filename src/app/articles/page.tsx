@@ -4,11 +4,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ARTICLES } from "@/data/articleData";
 import { Article } from "@/types/oriental";
-import { BookOpen, Clock, ArrowLeft, ArrowRight, Sparkles, Search, Share2, Check, Bookmark } from "lucide-react";
+import { BookOpen, Clock, ArrowLeft, ArrowRight, Sparkles, Search, Share2, Check, Bookmark, Zap } from "lucide-react";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
 import MarkdownBody from "@/components/MarkdownBody";
 import ArticleReferences from "@/components/ArticleReferences";
+import CitationTextRenderer from "@/components/CitationTextRenderer";
 import { resolveArticleReferences } from "@/utils/referenceResolver";
 
 export default function ArticlesPage() {
@@ -176,6 +177,32 @@ export default function ArticlesPage() {
               </div>
             </div>
           </div>
+
+          {/* 3秒でわかる本稿の3大ポイント */}
+          {activeArticle.keyPoints && activeArticle.keyPoints.length > 0 && (
+            <div className="bg-gradient-to-br from-[#EBF3EF] via-[#F5FAF8] to-[#FAF8F5] dark:from-[#162721] dark:via-[#14211C] dark:to-[#101915] p-5 sm:p-6 rounded-2xl border-2 border-[#1E3D34]/30 dark:border-[#3D6E5C] shadow-xs space-y-3">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#83BEA8]">
+                <Zap className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] fill-current" />
+                <span className="tracking-wide">3秒でわかる本稿の3大ポイント</span>
+              </div>
+              <ul className="space-y-2.5 text-xs sm:text-sm text-[#232826] dark:text-[#E6EFEA]">
+                {activeArticle.keyPoints.map((point, idx) => (
+                  <li key={idx} className="flex items-start gap-2.5">
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] font-mono text-[11px] font-bold shrink-0 mt-0.5 shadow-2xs">
+                      {idx + 1}
+                    </span>
+                    <span className="leading-relaxed font-medium flex-1">
+                      <CitationTextRenderer
+                        text={point}
+                        resolvedReferences={resolvedReferences}
+                        seenTerms={seenTerms}
+                      />
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* 要約ボックス */}
           <div className="bg-[#FAF8F5] dark:bg-[#121920] p-5 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#4E8C76] text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">

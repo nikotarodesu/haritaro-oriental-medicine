@@ -12,6 +12,11 @@ export const ACUPUNCTURE_ARTICLE: Article = {
     name: "はり太郎",
     role: "鍼灸師／鍼灸院院長"
   },
+  keyPoints: [
+    "鍼灸は「薬物を加える治療」ではなく、物理刺激（力学・温熱）を通じて生体制御系へ情報を書き込む**「生体情報制御学」**である。",
+    "皮下筋膜のコラーゲン巻き付き（Needle Grasp）による**メカノトランスダクション**と、中枢での**内因性オピオイド放出・下行性疼痛抑制系**が鎮痛の二大基盤。",
+    "経穴（ツボ）はオカルトではなく、神経・血管・筋膜張力が交差する**「生体情報ネットワークのハブ（Hub）」**として科学的に再定義される。"
+  ],
   references: [
     "langevin-connective-tissue-2002",
     "han-electroacupuncture-frequencies-2003",

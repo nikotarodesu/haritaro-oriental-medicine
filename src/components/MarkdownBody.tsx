@@ -89,23 +89,40 @@ export default function MarkdownBody({
             return (
               <div
                 key={index}
-                className="overflow-x-auto my-6 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs"
+                className="overflow-x-auto my-6 rounded-2xl border-2 border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs bg-[#FFFFFF] dark:bg-[#17212A]"
               >
-                <table className="w-full text-left text-xs sm:text-sm min-w-[280px]">
-                  <thead className="bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-bold border-b border-[#E5DEC9] dark:border-[#2A3B4A]">
+                <table className="w-full text-left text-xs sm:text-sm min-w-[320px] border-collapse">
+                  <thead className="bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-bold border-b-2 border-[#E5DEC9] dark:border-[#2A3B4A]">
                     <tr>
                       {block.headers.map((h, hIdx) => (
-                        <th key={hIdx} className="px-3 sm:px-4 py-2.5 sm:py-3 font-sans whitespace-nowrap">
+                        <th
+                          key={hIdx}
+                          className={`px-3.5 sm:px-5 py-3 sm:py-3.5 font-sans whitespace-nowrap text-xs tracking-wider ${
+                            hIdx === 0 ? "border-r border-[#E5DEC9]/80 dark:border-[#2A3B4A]" : ""
+                          }`}
+                        >
                           {renderText(h)}
                         </th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E5DEC9]/60 dark:divide-[#2A3B4A]/60 bg-[#FFFFFF] dark:bg-[#17212A]">
+                  <tbody className="divide-y divide-[#E5DEC9]/60 dark:divide-[#2A3B4A]/60">
                     {block.rows.map((row, rIdx) => (
-                      <tr key={rIdx} className="hover:bg-[#FAF8F5] dark:hover:bg-[#1C2834] transition-colors">
+                      <tr
+                        key={rIdx}
+                        className={`transition-colors hover:bg-[#FAF8F5] dark:hover:bg-[#1F2B37] ${
+                          rIdx % 2 === 1 ? "bg-[#FAF8F5]/60 dark:bg-[#131B22]/50" : "bg-transparent"
+                        }`}
+                      >
                         {row.map((cell, cIdx) => (
-                          <td key={cIdx} className="px-3 sm:px-4 py-2 sm:py-3 text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
+                          <td
+                            key={cIdx}
+                            className={`px-3.5 sm:px-5 py-3 sm:py-3.5 text-[#333835] dark:text-[#C5D2DB] leading-relaxed ${
+                              cIdx === 0
+                                ? "font-bold text-[#1E3D34] dark:text-[#FAF8F5] bg-[#EBF3EF]/20 dark:bg-[#182823]/20 border-r border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 whitespace-nowrap"
+                                : ""
+                            }`}
+                          >
                             {renderText(cell)}
                           </td>
                         ))}

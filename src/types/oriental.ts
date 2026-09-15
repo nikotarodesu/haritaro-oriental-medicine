@@ -63,5 +63,6 @@ export interface Article {
     role: string;
   };
   contentMarkdown: string;
+  keyPoints?: string[];
   references?: (string | ReferenceItem)[];
 }
