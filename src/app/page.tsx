@@ -188,7 +188,7 @@ export default function HomePage() {
                       体系的に学ぶ
                     </span>
                   </div>
-                  <span className="text-xs font-mono font-bold tracking-wider px-2.5 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
+                  <span className="text-xs font-mono font-bold tracking-wider px-2.5 py-0.5 rounded bg-[#EBF3EF] dark:bg-transparent text-[#1E3D34] dark:text-[#74BA9E]">
                     LEARN
                   </span>
                 </div>
@@ -221,7 +221,7 @@ export default function HomePage() {
                       根拠を調べる
                     </span>
                   </div>
-                  <span className="text-xs font-mono font-bold tracking-wider px-2.5 py-0.5 rounded bg-[#EAEFF5] dark:bg-[#15222E] text-[#1E2D3D] dark:text-[#7BAAD8]">
+                  <span className="text-xs font-mono font-bold tracking-wider px-2.5 py-0.5 rounded bg-[#EAEFF5] dark:bg-transparent text-[#1E2D3D] dark:text-[#7BAAD8]">
                     SEARCH
                   </span>
                 </div>
@@ -254,7 +254,7 @@ export default function HomePage() {
                       推論を考える
                     </span>
                   </div>
-                  <span className="text-xs font-mono font-bold tracking-wider px-2.5 py-0.5 rounded bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387]">
+                  <span className="text-xs font-mono font-bold tracking-wider px-2.5 py-0.5 rounded bg-[#FCF4EB] dark:bg-transparent text-[#B86924] dark:text-[#E6C387]">
                     THINK
                   </span>
                 </div>
