@@ -1,7 +1,7 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
-import { BookOpen, ExternalLink, ChevronDown, ChevronUp, FileText, CheckCircle2 } from "lucide-react";
+import { BookOpen, ExternalLink, ChevronDown, ChevronUp, FileText, CheckCircle2, ShoppingBag } from "lucide-react";
 import { ResolvedReference } from "@/types/references";
 
 interface ArticleReferencesProps {
@@ -101,6 +101,8 @@ export default function ArticleReferences({
                               ? "東洋医学古典原典"
                               : ref.type === "guideline"
                               ? "診療ガイドライン"
+                              : ref.type === "book"
+                              ? "東洋医学推薦図書・成書"
                               : ref.type}
                           </span>
                         )}
@@ -130,7 +132,7 @@ export default function ArticleReferences({
                         )}
                       </div>
 
-                      {/* 著者・ジャーナル・年 */}
+                      {/* 著者・ジャーナル・出版社・年 */}
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[#59615D] dark:text-[#96A6B2] text-[11px]">
                         {authorsText && <span>著者: {authorsText}</span>}
                         <span className="font-semibold text-[#232826] dark:text-[#E6EFEA]">
@@ -147,6 +149,11 @@ export default function ArticleReferences({
                             DOI: {ref.doi}
                           </span>
                         )}
+                        {ref.isbn && (
+                          <span className="font-mono text-[#737C77] dark:text-[#8899A6]">
+                            ISBN: {ref.isbn}
+                          </span>
+                        )}
                       </div>
 
                       {/* 臨床知見・エビデンス要約 */}
@@ -160,9 +167,23 @@ export default function ArticleReferences({
                         </div>
                       )}
 
-                      {/* 外部リンクボタン */}
-                      {ref.url && (
-                        <div className="pt-1">
+                      {/* 外部リンク＆Amazonアソシエイトボタン */}
+                      <div className="pt-1 flex flex-wrap items-center gap-2">
+                        {ref.amazonUrl && (
+                          <a
+                            href={ref.amazonUrl}
+                            target="_blank"
+                            rel="noopener noreferrer nofollow sponsored"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#F3DEC5] dark:border-[#4D331F] hover:border-[#B86924] dark:hover:border-[#E6C387] text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBE8D6] dark:hover:bg-[#382618] text-[11px] font-bold transition-all shadow-2xs group"
+                            title="Amazonで詳細・在庫を確認（アソシエイトリンク）"
+                          >
+                            <ShoppingBag className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                            <span>Amazonで書籍詳細を見る</span>
+                            <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                          </a>
+                        )}
+
+                        {ref.url && (
                           <a
                             href={ref.url}
                             target="_blank"
@@ -179,13 +200,21 @@ export default function ArticleReferences({
                             </span>
                             <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                           </a>
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </div>
                 </article>
               );
             })}
+          </div>
+        )}
+
+        {/* Amazonアソシエイト・ステマ規制遵守表記（アソシエイトリンクが含まれる場合） */}
+        {references.some((r) => r.amazonUrl) && (
+          <div className="px-4 py-2.5 bg-[#FAF8F5]/80 dark:bg-[#121920]/80 border-t border-[#EBE4D5] dark:border-[#22303D] text-[10px] text-[#737C77] dark:text-[#8899A6] flex items-center justify-between">
+            <span>※ 当サイトはAmazonアソシエイト・プログラムの参加者であり、適格販売により収入を得ています。</span>
+            <span className="hidden sm:inline text-[#A0B0BC]">PR / スポンサーリンク</span>
           </div>
         )}
       </div>

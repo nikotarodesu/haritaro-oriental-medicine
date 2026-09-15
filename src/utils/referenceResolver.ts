@@ -1,5 +1,6 @@
-﻿import { ReferenceItem, ResolvedReference } from "@/types/references";
+import { ReferenceItem, ResolvedReference } from "@/types/references";
 import { PAPERS_DATABASE } from "@/data/references/papersData";
+import { buildAmazonAssociateUrl } from "./amazonAssociate";
 
 /**
  * IDに基づいて論文データベース（PAPERS_DATABASE）から論文情報を取得し、
@@ -44,8 +45,24 @@ export function resolveArticleReferences(
       return refMap.get(item.id)!;
     }
     const index = resolvedList.length + 1;
+
+    // AmazonアソシエイトURLの自動生成・正規化
+    let amazonUrl = item.amazonUrl;
+    if (
+      item.type === "book" ||
+      item.asin ||
+      (item.url && (item.url.includes("amazon") || item.url.includes("amzn")))
+    ) {
+      amazonUrl = buildAmazonAssociateUrl({
+        asin: item.asin,
+        url: item.amazonUrl || item.url,
+        title: item.title,
+      });
+    }
+
     const resolved: ResolvedReference = {
       ...item,
+      amazonUrl,
       index,
       anchorId: `ref-${index}`,
     };

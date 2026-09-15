@@ -85,9 +85,14 @@ export default function Footer() {
             <div className="space-y-3 text-xs">
               <div className="flex items-start gap-2 text-[#737C77] dark:text-[#8899A6]">
                 <ShieldCheck className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
-                <p className="leading-normal">
-                  当サイトの情報は健康増進と伝統医学の学術的理解を目的としており、医師による診断・治療に代わるものではありません。重篤な症状がある場合は速やかに医療機関を受診してください。
-                </p>
+                <div className="space-y-1.5 leading-normal">
+                  <p>
+                    当サイトの情報は健康増進と伝統医学の学術的理解を目的としており、医師による診断・治療に代わるものではありません。重篤な症状がある場合は速やかに医療機関を受診してください。
+                  </p>
+                  <p className="text-[10px] text-[#88928D] dark:text-[#6E7D8A]">
+                    ※当サイトはAmazonアソシエイト・プログラムの参加者であり、適格販売により収入を得ています。
+                  </p>
+                </div>
               </div>
               <div>
                 <Link href="/about" className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline inline-flex items-center gap-1">
