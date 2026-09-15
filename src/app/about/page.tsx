@@ -143,54 +143,6 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
-
-            {/* 資格・経験の歩み（見出しは小さく、資格→経験→現役臨床の流れ） */}
-            <div className="space-y-2.5 pt-2 border-t border-[#E8E1D1] dark:border-[#263542]">
-              <span className="text-[11px] font-bold text-[#737C77] dark:text-[#8899A6] uppercase tracking-wider block">
-                資格と現場経験の歩み
-              </span>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                <div className="p-3.5 rounded-xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#263542] space-y-1">
-                  <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#83BEA8] block">専門教育と国家資格</span>
-                  <span className="font-bold block text-[#232826] dark:text-[#FAF8F5]">鍼灸科卒業・鍼灸師免許取得</span>
-                  <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">2017年に鍼灸師免許を取得。専門教育を通じて基礎理論と臨床技術を修得。</p>
-                </div>
-                <div className="p-3.5 rounded-xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#263542] space-y-1">
-                  <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#83BEA8] block">多様な現場経験</span>
-                  <span className="font-bold block text-[#232826] dark:text-[#FAF8F5]">身体ケア・健康に関わる複数領域</span>
-                  <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">鍼灸接骨院、リラクゼーション、デイサービスなど複数の現場で臨床経験を積む。</p>
-                </div>
-                <div className="p-3.5 rounded-xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#263542] space-y-1">
-                  <span className="text-[10px] font-bold text-[#B86924] dark:text-[#E6C387] block">現役の臨床実践</span>
-                  <span className="font-bold block text-[#232826] dark:text-[#FAF8F5]">鍼灸院開設・一人院長</span>
-                  <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">2023年に鍼灸院を開業。現在も日々患者と向き合いながら臨床を継続。</p>
-                </div>
-              </div>
-            </div>
-
-            {/* 公開する個人情報の方針 */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#10161C] border border-[#E5DEC9] dark:border-[#22303D] space-y-2 text-xs">
-              <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
-                <ShieldCheck className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-                <span>公開する個人情報の方針について</span>
-              </div>
-              <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                著者の専門性を確認するために必要な情報（国家資格、専門教育、臨床経験年数、経験した臨床領域、現役の鍼灸院運営、執筆・編集方針）は誠実に公開する一方、専門性の評価に直接必要のない個人情報については掲載しておりません。
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 text-[11px]">
-                <div className="p-2.5 rounded-lg bg-white/60 dark:bg-white/5 border border-[#E8E1D1] dark:border-[#22303D]">
-                  <span className="font-bold text-[#1E3D34] dark:text-[#83BEA8] block mb-1">公開している情報</span>
-                  <p className="text-[#59615D] dark:text-[#A0B0BC]">表示名、鍼灸師であること、専門教育、おおよその臨床経験年数、経験領域、現役の臨床実践、編集方針</p>
-                </div>
-                <div className="p-2.5 rounded-lg bg-white/60 dark:bg-white/5 border border-[#E8E1D1] dark:border-[#22303D]">
-                  <span className="font-bold text-[#737C77] dark:text-[#8899A6] block mb-1">掲載しない情報</span>
-                  <p className="text-[#737C77] dark:text-[#8899A6]">生年月日、出身校の詳細在籍年月、過去の勤務先企業名、入退社年月日、自宅住所、その他不要な個人情報</p>
-                </div>
-              </div>
-              <p className="text-[10px] text-[#737C77] dark:text-[#8899A6] pt-1">
-                ※ 著者の信頼性を示すことと、履歴書をインターネット上に公開することは分けて考えております。資格・経験・現在も臨床している事実・どういう姿勢で情報を書いているかを最重要視しています。
-              </p>
-            </div>
           </div>
         </div>
 
