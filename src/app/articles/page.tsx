@@ -178,12 +178,12 @@ export default function ArticlesPage() {
             </div>
           </div>
 
-          {/* 3秒でわかる本稿の3大ポイント */}
+          {/* 10秒でわかる本稿の3ポイント */}
           {activeArticle.keyPoints && activeArticle.keyPoints.length > 0 && (
             <div className="bg-gradient-to-br from-[#EBF3EF] via-[#F5FAF8] to-[#FAF8F5] dark:from-[#162721] dark:via-[#14211C] dark:to-[#101915] p-5 sm:p-6 rounded-2xl border-2 border-[#1E3D34]/30 dark:border-[#3D6E5C] shadow-xs space-y-3">
               <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#83BEA8]">
                 <Zap className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] fill-current" />
-                <span className="tracking-wide">3秒でわかる本稿の3大ポイント</span>
+                <span className="tracking-wide">10秒でわかる本稿の3ポイント</span>
               </div>
               <ul className="space-y-2.5 text-xs sm:text-sm text-[#232826] dark:text-[#E6EFEA]">
                 {activeArticle.keyPoints.map((point, idx) => (

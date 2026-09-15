@@ -119,7 +119,7 @@ export default function MarkdownBody({
                             key={cIdx}
                             className={`px-3.5 sm:px-5 py-3 sm:py-3.5 text-[#333835] dark:text-[#C5D2DB] leading-relaxed ${
                               cIdx === 0
-                                ? "font-bold text-[#1E3D34] dark:text-[#FAF8F5] bg-[#EBF3EF]/20 dark:bg-[#182823]/20 border-r border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 whitespace-nowrap"
+                                ? "font-medium text-[#232826] dark:text-[#FAF8F5] bg-[#EBF3EF]/15 dark:bg-[#182823]/15 border-r border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 whitespace-nowrap"
                                 : ""
                             }`}
                           >
