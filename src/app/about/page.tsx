@@ -76,6 +76,124 @@ export default function AboutPage() {
           </p>
         </div>
 
+        {/* 執筆・監修者：はり太郎について */}
+        <div className="space-y-6 pt-6 border-t border-[#F2ECE0] dark:border-[#22303D]">
+          <div className="flex items-center gap-2">
+            <span className="p-1.5 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+              <ShieldCheck className="w-4 h-4" />
+            </span>
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+              執筆・監修者について
+            </h2>
+          </div>
+
+          <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-3xl border border-[#E8E1D1] dark:border-[#22303D] p-6 sm:p-8 space-y-6">
+            {/* プロフィールヘッダー */}
+            <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 border-b border-[#E8E1D1] dark:border-[#263542] pb-6">
+              <img
+                src="/icon.png"
+                alt="はり太郎"
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover shadow-sm border border-[#D5CCBC] dark:border-[#2A3B4A] shrink-0"
+              />
+              <div className="space-y-1.5">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+                    はり太郎
+                  </h3>
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-xs font-bold">
+                    鍼灸師／鍼灸院院長
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm font-semibold text-[#B86924] dark:text-[#E6C387]">
+                  身体ケア・臨床領域10年以上（鍼灸師約9年）｜ 2017年免許取得 ｜ 2023年開院・現役臨床
+                </p>
+                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed pt-1">
+                  鍼灸師として臨床に携わりながら、東洋医学の理論・診断・治療体系を整理し、haritaro.jpで公開しています。
+                  鍼灸専門学校を卒業後、鍼灸接骨院、リラクゼーション、デイサービスなど、身体や健康に関わる複数の現場を経験。現在は鍼灸院を開業し、一人院長として日々患者と向き合いながら臨床を行っています。
+                </p>
+              </div>
+            </div>
+
+            {/* 臨床思考と執筆姿勢 */}
+            <div className="space-y-3">
+              <h4 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
+                情報の捉え方：暗記ではなく「臨床の思考体系」として
+              </h4>
+              <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                東洋医学には、陰陽・五行・気血津液・臓腑・経絡・病機・弁証など、多数の概念があります。しかし、それぞれを個別に暗記するだけでは、実際の診断や治療の中でどのようにつながっているのかが見えにくくなります。
+              </p>
+              <div className="p-4 sm:p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2.5">
+                <p className="text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                  haritaro.jpの核：「身体を観察し、病態を推論し、治療方針を組み立てるための思考体系」
+                </p>
+                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                  臨床では、単に「症状のある場所に鍼をする」「症状とツボを対応させる」という考え方ではなく、
+                  <strong className="text-[#232826] dark:text-[#FAF8F5]">【観察 ➜ 仮説 ➜ 治療 ➜ 再評価】</strong>
+                  という過程を重視しています。「どこが痛いか」だけでなく、以下を観察し必要に応じて治療方針を修正します。
+                </p>
+                <ul className="text-xs text-[#404743] dark:text-[#C5D2DB] space-y-1 list-disc list-inside">
+                  <li>どのような条件で症状が変化するのか</li>
+                  <li>身体のどこに機能的な偏りがあるのか</li>
+                  <li>局所症状と全身状態にどのような関係があるのか</li>
+                  <li>治療によって何が変化したのか</li>
+                  <li>最初に立てた仮説は妥当だったのか</li>
+                </ul>
+                <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] pt-1">
+                  haritaro.jpで東洋医学を扱う際にも、この臨床的な考え方を基本としています。
+                </p>
+              </div>
+            </div>
+
+            {/* 資格・経験の歩み（見出しは小さく、資格→経験→現役臨床の流れ） */}
+            <div className="space-y-2.5 pt-2 border-t border-[#E8E1D1] dark:border-[#263542]">
+              <span className="text-[11px] font-bold text-[#737C77] dark:text-[#8899A6] uppercase tracking-wider block">
+                資格と現場経験の歩み
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                <div className="p-3.5 rounded-xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#263542] space-y-1">
+                  <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#83BEA8] block">専門教育と国家資格</span>
+                  <span className="font-bold block text-[#232826] dark:text-[#FAF8F5]">鍼灸科卒業・鍼灸師免許取得</span>
+                  <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">2017年に鍼灸師免許を取得。専門教育を通じて基礎理論と臨床技術を修得。</p>
+                </div>
+                <div className="p-3.5 rounded-xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#263542] space-y-1">
+                  <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#83BEA8] block">多様な現場経験</span>
+                  <span className="font-bold block text-[#232826] dark:text-[#FAF8F5]">身体ケア・健康に関わる複数領域</span>
+                  <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">鍼灸接骨院、リラクゼーション、デイサービスなど複数の現場で臨床経験を積む。</p>
+                </div>
+                <div className="p-3.5 rounded-xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#263542] space-y-1">
+                  <span className="text-[10px] font-bold text-[#B86924] dark:text-[#E6C387] block">現役の臨床実践</span>
+                  <span className="font-bold block text-[#232826] dark:text-[#FAF8F5]">鍼灸院開設・一人院長</span>
+                  <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">2023年に鍼灸院を開業。現在も日々患者と向き合いながら臨床を継続。</p>
+                </div>
+              </div>
+            </div>
+
+            {/* 公開する個人情報の方針 */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#10161C] border border-[#E5DEC9] dark:border-[#22303D] space-y-2 text-xs">
+              <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
+                <ShieldCheck className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+                <span>公開する個人情報の方針について</span>
+              </div>
+              <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                著者の専門性を確認するために必要な情報（国家資格、専門教育、臨床経験年数、経験した臨床領域、現役の鍼灸院運営、執筆・編集方針）は誠実に公開する一方、専門性の評価に直接必要のない個人情報については掲載しておりません。
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 text-[11px]">
+                <div className="p-2.5 rounded-lg bg-white/60 dark:bg-white/5 border border-[#E8E1D1] dark:border-[#22303D]">
+                  <span className="font-bold text-[#1E3D34] dark:text-[#83BEA8] block mb-1">公開している情報</span>
+                  <p className="text-[#59615D] dark:text-[#A0B0BC]">表示名、鍼灸師であること、専門教育、おおよその臨床経験年数、経験領域、現役の臨床実践、編集方針</p>
+                </div>
+                <div className="p-2.5 rounded-lg bg-white/60 dark:bg-white/5 border border-[#E8E1D1] dark:border-[#22303D]">
+                  <span className="font-bold text-[#737C77] dark:text-[#8899A6] block mb-1">掲載しない情報</span>
+                  <p className="text-[#737C77] dark:text-[#8899A6]">生年月日、出身校の詳細在籍年月、過去の勤務先企業名、入退社年月日、自宅住所、その他不要な個人情報</p>
+                </div>
+              </div>
+              <p className="text-[10px] text-[#737C77] dark:text-[#8899A6] pt-1">
+                ※ 著者の信頼性を示すことと、履歴書をインターネット上に公開することは分けて考えております。資格・経験・現在も臨床している事実・どういう姿勢で情報を書いているかを最重要視しています。
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* 人体統一理論への導線 */}
         <div className="bg-[#EBF3EF] dark:bg-[#162822] p-6 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="space-y-1 text-center sm:text-left">
@@ -102,10 +220,10 @@ export default function AboutPage() {
         {/* 導線 */}
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
-            href="/symptoms"
+            href="/curriculum"
             className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-xs font-semibold hover:bg-[#162E27] dark:hover:bg-[#225345] text-center"
           >
-            症状別セルフケアを見る
+            東洋医学8大体系を学ぶ
           </Link>
           <Link
             href="/tsubo"

@@ -10,7 +10,7 @@ export const PULSE_ARTICLE: Article = {
   tags: ["脈診", "脈波解析", "心拍変動", "流体力学", "レオロジー", "自律神経", "PWV"],
   author: {
     name: "はり太郎",
-    role: "東洋医学臨床家・研究者"
+    role: "鍼灸師／鍼灸院院長"
   },
   contentMarkdown: `## 序論：脈診とは何か ― 生体情報を時間軸で読み取る診断学
 

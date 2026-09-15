@@ -10,7 +10,7 @@ export const ACUPUNCTURE_ARTICLE: Article = {
   tags: ["鍼灸学", "生体情報制御学", "メカノトランスダクション", "下行性疼痛抑制系", "内因性オピオイド", "自律神経", "経穴ハブ仮説", "EBM"],
   author: {
     name: "はり太郎",
-    role: "東洋医学臨床家・研究者"
+    role: "鍼灸師／鍼灸院院長"
   },
   contentMarkdown: `## 序論：鍼灸医学とは何か ― 外部刺激による生体制御システム
 

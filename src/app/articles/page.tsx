@@ -183,17 +183,33 @@ export default function ArticlesPage() {
           />
 
           {/* 著者紹介フッター */}
-          <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-6 bg-[#FAF8F5] dark:bg-[#121920] p-6 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] flex items-start gap-4">
+          <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-6 bg-[#FAF8F5] dark:bg-[#121920] p-6 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] flex flex-col sm:flex-row items-start gap-4">
             <img
               src="/icon.png"
               alt="はり太郎"
-              className="w-12 h-12 rounded-xl object-cover shadow-xs border border-[#E5DEC9] dark:border-[#2A3B4A] shrink-0"
+              className="w-14 h-14 rounded-2xl object-cover shadow-xs border border-[#E5DEC9] dark:border-[#2A3B4A] shrink-0"
             />
-            <div className="space-y-1 text-xs">
-              <h4 className="font-sans font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">執筆・監修：{activeArticle.author.name}</h4>
+            <div className="space-y-1.5 text-xs flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <h4 className="font-sans font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
+                  執筆・監修：{activeArticle.author.name}
+                </h4>
+                <span className="px-2 py-0.5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-[10px] font-bold">
+                  鍼灸師／鍼灸院院長
+                </span>
+              </div>
               <p className="text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-                東洋医学臨床家・古典研究者。古典の弁証論治体系と、現代の神経科学・筋膜解剖学・生体情報制御学を融合した統合的臨床と研究を発信。「はり太郎の東洋医学」主宰。
+                鍼灸師として臨床に携わりながら、東洋医学を「身体を観察し、病態を推論し、治療方針を組み立てる思考体系」として整理・発信。身体ケア・臨床領域10年以上、現役で鍼灸院を運営。「はり太郎の東洋医学」主宰。
               </p>
+              <div className="pt-1">
+                <Link
+                  href="/about"
+                  className="inline-flex items-center gap-1 text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline"
+                >
+                  <span>詳しいプロフィール・臨床姿勢・情報公開方針</span>
+                  <span>➜</span>
+                </Link>
+              </div>
             </div>
           </div>
         </article>

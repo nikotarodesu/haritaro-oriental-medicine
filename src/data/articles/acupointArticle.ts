@@ -10,7 +10,7 @@ export const ACUPOINT_ARTICLE: Article = {
   tags: ["経穴", "ツボ", "メカノトランスダクション", "Piezoチャネル", "自律神経", "最適化理論"],
   author: {
     name: "はり太郎",
-    role: "東洋医学臨床家・研究者"
+    role: "鍼灸師／鍼灸院院長"
   },
   contentMarkdown: `## 序論：経穴とは何か ― 刺激入力点としての再定義
 

@@ -10,7 +10,7 @@ export const KIKETSUSUI_ARTICLE: Article = {
   tags: ["気血津液", "システムダイナミクス", "推動温煦", "微小循環", "体液ネットワーク", "リンパ系", "創発", "恒常性"],
   author: {
     name: "はり太郎",
-    role: "東洋医学臨床家・研究者"
+    role: "鍼灸師／鍼灸院院長"
   },
   contentMarkdown: `## 序論：気血津液とは何か ― 東洋医学における人体機能モデル
 

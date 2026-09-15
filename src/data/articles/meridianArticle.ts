@@ -10,7 +10,7 @@ export const MERIDIAN_ARTICLE: Article = {
   tags: ["経絡", "ネットワーク科学", "筋膜経線", "神経生理学", "メカノトランスダクション", "人体統一理論"],
   author: {
     name: "はり太郎",
-    role: "東洋医学臨床家・研究者"
+    role: "鍼灸師／鍼灸院院長"
   },
   contentMarkdown: `## 序論：経絡とは何か ― 東洋医学における情報ネットワーク仮説
 

@@ -10,7 +10,7 @@ export const UNIFIED_THEORY_ARTICLE: Article = {
   tags: ["人体統一理論", "東西統合医療", "モデル依存実在論", "階層モデル", "フィードバック制御", "科学的コンセンサス", "データ医学"],
   author: {
     name: "はり太郎",
-    role: "東洋医学臨床家・研究者"
+    role: "鍼灸師／鍼灸院院長"
   },
   contentMarkdown: `## 序論：東洋医学と現代医学は対立するのか ― 二つの人体モデルの比較
 

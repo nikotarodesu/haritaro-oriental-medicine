@@ -10,7 +10,7 @@ export const GERD_ARTICLE: Article = {
   tags: ["東西統合医療", "逆流性食道炎", "半夏瀉心湯", "除外診断", "中焦気機"],
   author: {
     name: "はり太郎",
-    role: "東洋医学臨床家・研究者"
+    role: "鍼灸師／鍼灸院院長"
   },
   contentMarkdown: `## 序論：なぜ胃酸を止めても治らない患者が存在するのか？
 

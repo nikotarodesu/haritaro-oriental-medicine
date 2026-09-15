@@ -10,7 +10,7 @@ export const HISTORY_ARTICLE: Article = {
   tags: ["東洋医学史", "黄帝内経", "システム同定", "ブラックボックス解析", "日本漢方", "EBM", "経験医学"],
   author: {
     name: "はり太郎",
-    role: "東洋医学臨床家・研究者"
+    role: "鍼灸師／鍼灸院院長"
   },
   contentMarkdown: `## 序論：東洋医学はなぜ生まれたのか ― 人体を「複雑適応システム」として捉えた最初の医学
 

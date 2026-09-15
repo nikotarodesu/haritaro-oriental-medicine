@@ -10,7 +10,7 @@ export const TONGUE_ARTICLE: Article = {
   tags: ["舌診", "口腔マイクロバイオーム", "微小循環", "ヘモグロビン", "歯痕舌", "バイオフィルム", "舌下神経"],
   author: {
     name: "はり太郎",
-    role: "東洋医学臨床家・研究者"
+    role: "鍼灸師／鍼灸院院長"
   },
   contentMarkdown: `## 序論：舌診とは何か ― 生体情報の可視化インターフェース
 

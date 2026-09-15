@@ -23,36 +23,22 @@ import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<"general" | "expert" | null>(null);
+  const [openDropdown, setOpenDropdown] = useState<"learn" | "search" | "think" | "intro" | null>(null);
 
   const { clipCount, openDrawer } = useClinicalMemo();
   const { currentSeason } = useSeasonalTheme();
 
+  const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-
-  const generalTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const expertTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const handleMouseEnter = (type: "general" | "expert") => {
-    if (type === "general") {
-      if (generalTimeoutRef.current) clearTimeout(generalTimeoutRef.current);
-      setOpenDropdown("general");
-    } else {
-      if (expertTimeoutRef.current) clearTimeout(expertTimeoutRef.current);
-      setOpenDropdown("expert");
-    }
+  const handleMouseEnter = (type: "learn" | "search" | "think" | "intro") => {
+    if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
+    setOpenDropdown(type);
   };
 
-  const handleMouseLeave = (type: "general" | "expert") => {
-    if (type === "general") {
-      generalTimeoutRef.current = setTimeout(() => {
-        setOpenDropdown((prev) => (prev === "general" ? null : prev));
-      }, 150);
-    } else {
-      expertTimeoutRef.current = setTimeout(() => {
-        setOpenDropdown((prev) => (prev === "expert" ? null : prev));
-      }, 150);
-    }
+  const handleMouseLeave = () => {
+    dropdownTimeoutRef.current = setTimeout(() => {
+      setOpenDropdown(null);
+    }, 150);
   };
 
   return (
@@ -71,86 +57,103 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* デスクトップ ナビゲーション（2大集約メニュー） */}
-          <nav className="hidden md:flex items-center gap-3">
-            {/* 1. 一般・セルフケア ドロップダウン */}
+          {/* デスクトップ ナビゲーション（学ぶ・調べる・考える 3大体系 ＋ 入門） */}
+          <nav className="hidden lg:flex items-center gap-2 xl:gap-3">
+            {/* 1. 学ぶ ドロップダウン */}
             <div
               className="relative"
-              onMouseEnter={() => handleMouseEnter("general")}
-              onMouseLeave={() => handleMouseLeave("general")}
+              onMouseEnter={() => handleMouseEnter("learn")}
+              onMouseLeave={handleMouseLeave}
             >
               <button
                 type="button"
-                onClick={() => setOpenDropdown(openDropdown === "general" ? null : "general")}
-                className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-1.5 ${
-                  openDropdown === "general"
+                onClick={() => setOpenDropdown(openDropdown === "learn" ? null : "learn")}
+                className={`px-3 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 ${
+                  openDropdown === "learn"
                     ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]"
                     : "text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
                 }`}
               >
-                <HeartPulse className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>一般・セルフケア</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === "general" ? "rotate-180" : ""}`} />
+                <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#83BEA8]" />
+                <span>学ぶ</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === "learn" ? "rotate-180" : ""}`} />
               </button>
 
-              {/* ドロップダウンメニュー */}
-              {openDropdown === "general" && (
-                <div className="absolute top-full left-0 mt-1 w-64 p-2 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34]/20 dark:border-[#2A3B4A] shadow-xl z-50 animate-fadeIn space-y-1">
+              {openDropdown === "learn" && (
+                <div className="absolute top-full left-0 mt-1 w-80 p-2 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34]/20 dark:border-[#2A3B4A] shadow-xl z-50 animate-fadeIn space-y-1">
+                  <div className="px-3 py-1.5 border-b border-[#E8E1D1] dark:border-[#263542]">
+                    <span className="text-[10px] font-bold tracking-wider text-[#1E3D34] dark:text-[#83BEA8] uppercase">
+                      体系学習カリキュラム
+                    </span>
+                  </div>
                   <Link
-                    href="/symptoms"
+                    href="/curriculum"
                     onClick={() => setOpenDropdown(null)}
-                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 mt-0.5">
-                      <HeartPulse className="w-4 h-4" />
+                    <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0 mt-0.5">
+                      <GraduationCap className="w-4 h-4" />
                     </div>
                     <div>
                       <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                        症状・お悩み別ガイド
+                        東洋医学8大体系（全体像）
                       </span>
                       <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                        頭痛・肩こり・不眠のセルフケア
+                        陰陽・五行・気血水から臨床実践論まで
                       </span>
                     </div>
                   </Link>
 
                   <Link
-                    href="/diagnosis"
+                    href="/curriculum#stage-1"
                     onClick={() => setOpenDropdown(null)}
-                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-[#FDEDEC] dark:bg-[#231816] text-[#A83629] dark:text-[#C47A72] flex items-center justify-center shrink-0 mt-0.5">
-                      <Stethoscope className="w-4 h-4" />
+                    <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] dark:bg-[#1A2530] text-[#59615D] dark:text-[#A0B0BC] flex items-center justify-center shrink-0 mt-0.5 border border-[#E8E1D1] dark:border-[#263542]">
+                      <span className="text-xs font-bold font-mono">01</span>
                     </div>
                     <div>
                       <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                        気血水 体質セルフ診断
+                        基礎理論編（第1講〜第5講）
                       </span>
                       <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                        12問でわかる心身のバランス
+                        陰陽論・五行論・気血水・生命機能・病機論
                       </span>
                     </div>
                   </Link>
 
                   <Link
-                    href="/diagnosis?tab=gorou"
+                    href="/curriculum#stage-2"
                     onClick={() => setOpenDropdown(null)}
-                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 mt-0.5">
-                      <Activity className="w-4 h-4" />
+                    <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] dark:bg-[#1A2530] text-[#59615D] dark:text-[#A0B0BC] flex items-center justify-center shrink-0 mt-0.5 border border-[#E8E1D1] dark:border-[#263542]">
+                      <span className="text-xs font-bold font-mono">02</span>
                     </div>
                     <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                          五労（職業病）チェッカー
-                        </span>
-                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
-                          新設
-                        </span>
-                      </div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                        臨床診断・治法編（第6講・第7講）
+                      </span>
                       <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                        久視・久坐・久立の五臓疲弊＆中庸
+                        四診弁証アルゴリズム ＆ 治療戦略設計
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/curriculum#stage-3"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] dark:bg-[#1A2530] text-[#59615D] dark:text-[#A0B0BC] flex items-center justify-center shrink-0 mt-0.5 border border-[#E8E1D1] dark:border-[#263542]">
+                      <span className="text-xs font-bold font-mono">03</span>
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                        臨床実践編（第8講）
+                      </span>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        配穴設計・手技選択・自己修正プロトコル
                       </span>
                     </div>
                   </Link>
@@ -158,91 +161,48 @@ export default function Header() {
               )}
             </div>
 
-            {/* 2. 専門家・学生向け ドロップダウン */}
+            {/* 2. 調べる ドロップダウン */}
             <div
               className="relative"
-              onMouseEnter={() => handleMouseEnter("expert")}
-              onMouseLeave={() => handleMouseLeave("expert")}
+              onMouseEnter={() => handleMouseEnter("search")}
+              onMouseLeave={handleMouseLeave}
             >
               <button
                 type="button"
-                onClick={() => setOpenDropdown(openDropdown === "expert" ? null : "expert")}
-                className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-1.5 ${
-                  openDropdown === "expert"
+                onClick={() => setOpenDropdown(openDropdown === "search" ? null : "search")}
+                className={`px-3 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 ${
+                  openDropdown === "search"
                     ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]"
                     : "text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
                 }`}
               >
-                <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#83BEA8]" />
-                <span>専門家・学生向け</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === "expert" ? "rotate-180" : ""}`} />
+                <Compass className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+                <span>調べる</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === "search" ? "rotate-180" : ""}`} />
               </button>
 
-              {/* ドロップダウンメニュー */}
-              {openDropdown === "expert" && (
-                <div className="absolute top-full left-0 mt-1 w-72 p-2 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34]/20 dark:border-[#2A3B4A] shadow-xl z-50 animate-fadeIn space-y-1">
-                  <Link
-                    href="/curriculum"
-                    onClick={() => setOpenDropdown(null)}
-                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0 mt-0.5">
-                      <GraduationCap className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                          体系学習カリキュラム
-                        </span>
-                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
-                          新設
-                        </span>
-                      </div>
-                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                        陰陽・五行・気血水から臨床まで
-                      </span>
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/simulator"
-                    onClick={() => setOpenDropdown(null)}
-                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 mt-0.5">
-                      <Layers className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                          臨床弁証シミュレーター
-                        </span>
-                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
-                          新設
-                        </span>
-                      </div>
-                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                        八綱➜気血水➜臓腑➜一文の証＆最小ツボ
-                      </span>
-                    </div>
-                  </Link>
-
-
+              {openDropdown === "search" && (
+                <div className="absolute top-full left-0 mt-1 w-80 p-2 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34]/20 dark:border-[#2A3B4A] shadow-xl z-50 animate-fadeIn space-y-1">
+                  <div className="px-3 py-1.5 border-b border-[#E8E1D1] dark:border-[#263542]">
+                    <span className="text-[10px] font-bold tracking-wider text-[#1E3D34] dark:text-[#74BA9E] uppercase">
+                      リファレンス・学術データベース
+                    </span>
+                  </div>
 
                   <Link
                     href="/tsubo"
                     onClick={() => setOpenDropdown(null)}
-                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
                   >
                     <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] dark:bg-[#1A2530] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 mt-0.5 border border-[#E8E1D1] dark:border-[#263542]">
                       <Compass className="w-4 h-4" />
                     </div>
                     <div>
                       <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                        十四経脈・経穴辞典
+                        経穴辞典（全361穴）
                       </span>
                       <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                        全361穴・骨度法取穴・要穴
+                        十四経脈・骨度法・解剖取穴・主治・禁忌
                       </span>
                     </div>
                   </Link>
@@ -250,7 +210,7 @@ export default function Header() {
                   <Link
                     href="/articles"
                     onClick={() => setOpenDropdown(null)}
-                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
                   >
                     <div className="w-8 h-8 rounded-lg bg-[#EDF3F8] dark:bg-[#1A2837] text-[#1E2D3D] dark:text-[#6FA0D6] flex items-center justify-center shrink-0 mt-0.5">
                       <BookOpen className="w-4 h-4" />
@@ -260,7 +220,218 @@ export default function Header() {
                         臨床知見・学術論文抄読
                       </span>
                       <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                        配穴の極意と現代医科学
+                        神経生理学・配穴機序・古典解説
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/curriculum"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 mt-0.5">
+                      <Layers className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                        東西医学比較・用語解説
+                      </span>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        伝統医学と現代医科学の3層対応マトリクス
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* 3. 考える ドロップダウン */}
+            <div
+              className="relative"
+              onMouseEnter={() => handleMouseEnter("think")}
+              onMouseLeave={handleMouseLeave}
+            >
+              <button
+                type="button"
+                onClick={() => setOpenDropdown(openDropdown === "think" ? null : "think")}
+                className={`px-3 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 ${
+                  openDropdown === "think"
+                    ? "bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387]"
+                    : "text-[#404743] dark:text-[#C5D2DB] hover:text-[#B86924] dark:hover:text-[#FAF8F5] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2117]"
+                }`}
+              >
+                <Layers className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <span>考える</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === "think" ? "rotate-180" : ""}`} />
+              </button>
+
+              {openDropdown === "think" && (
+                <div className="absolute top-full left-0 mt-1 w-84 p-2 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 border-[#B86924]/30 dark:border-[#4D331F] shadow-xl z-50 animate-fadeIn space-y-1">
+                  <div className="px-3 py-1.5 border-b border-[#E8E1D1] dark:border-[#263542]">
+                    <span className="text-[10px] font-bold tracking-wider text-[#B86924] dark:text-[#E6C387] uppercase">
+                      臨床推論・アウトプット演習
+                    </span>
+                  </div>
+
+                  <Link
+                    href="/simulator?tab=diagnosis"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 mt-0.5">
+                      <Layers className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] block">
+                          臨床弁証シミュレーター
+                        </span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
+                          中核
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        八綱 ➜ 気血水 ➜ 臓腑 ➜ 証 ➜ 配穴の思考ステップ
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/simulator?tab=haiketsu"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0 mt-0.5">
+                      <Compass className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                        配穴最適化エンジン
+                      </span>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        主穴×配穴の相乗効果と臨床根拠を導出
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/simulator?tab=depth"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#EDF3F8] dark:bg-[#1A2837] text-[#1E2D3D] dark:text-[#6FA0D6] flex items-center justify-center shrink-0 mt-0.5">
+                      <Activity className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                        経気深度・刺激量計算
+                      </span>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        病位深浅・刺鍼深度・刺激総量の最適制御
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/simulator?tab=case"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#A83629] dark:text-[#C47A72] flex items-center justify-center shrink-0 mt-0.5">
+                      <Stethoscope className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                        症例問題・臨床推論演習
+                      </span>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        問診・望診・脈腹診からの鑑別演習
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* 4. 入門・セルフケア ドロップダウン */}
+            <div
+              className="relative"
+              onMouseEnter={() => handleMouseEnter("intro")}
+              onMouseLeave={handleMouseLeave}
+            >
+              <button
+                type="button"
+                onClick={() => setOpenDropdown(openDropdown === "intro" ? null : "intro")}
+                className={`px-2.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-1 ${
+                  openDropdown === "intro"
+                    ? "bg-[#FAF8F5] dark:bg-[#1A2530] text-[#59615D] dark:text-[#A0B0BC]"
+                    : "text-[#737C77] dark:text-[#8899A6] hover:text-[#232826] dark:hover:text-[#FAF8F5] hover:bg-[#FAF8F5] dark:hover:bg-[#1A2530]"
+                }`}
+              >
+                <HeartPulse className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                <span>入門・セルフケア</span>
+                <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${openDropdown === "intro" ? "rotate-180" : ""}`} />
+              </button>
+
+              {openDropdown === "intro" && (
+                <div className="absolute top-full right-0 mt-1 w-72 p-2 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xl z-50 animate-fadeIn space-y-1">
+                  <div className="px-3 py-1.5 border-b border-[#E8E1D1] dark:border-[#263542]">
+                    <span className="text-[10px] font-bold tracking-wider text-[#737C77] dark:text-[#8899A6] uppercase">
+                      東洋医学を知る入口
+                    </span>
+                  </div>
+
+                  <Link
+                    href="/diagnosis"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-7 h-7 rounded-lg bg-[#FDEDEC] dark:bg-[#231816] text-[#A83629] dark:text-[#C47A72] flex items-center justify-center shrink-0 mt-0.5">
+                      <Stethoscope className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] block">
+                        気血水 体質セルフ診断
+                      </span>
+                      <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">
+                        12問でわかる心身のバランス（約2分）
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/symptoms"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-7 h-7 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 mt-0.5">
+                      <HeartPulse className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] block">
+                        症状・お悩み別ガイド
+                      </span>
+                      <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">
+                        頭痛・肩こり・不眠のセルフケアツボ
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/diagnosis?tab=gorou"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-7 h-7 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 mt-0.5">
+                      <Activity className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] block">
+                        五労（職業病）チェッカー
+                      </span>
+                      <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">
+                        デスクワーク・立ち仕事の五臓疲弊チェック
                       </span>
                     </div>
                   </Link>
@@ -295,14 +466,14 @@ export default function Header() {
             {/* サイト理念 */}
             <Link
               href="/about"
-              className="px-4 py-2 rounded-full text-xs font-semibold bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] hover:bg-[#162E27] dark:hover:bg-[#225345] shadow-sm transition-all"
+              className="px-3.5 py-2 rounded-full text-xs font-semibold bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] hover:bg-[#162E27] dark:hover:bg-[#225345] shadow-sm transition-all"
             >
-              サイト理念
+              理念
             </Link>
           </nav>
 
           {/* モバイルヘッダー右側（マイカルテ ＆ 文字サイズ & 陰陽スイッチ & メニューボタン） */}
-          <div className="flex items-center gap-1 sm:gap-1.5 md:hidden shrink-0">
+          <div className="flex items-center gap-1 sm:gap-1.5 lg:hidden shrink-0">
             <button
               type="button"
               onClick={openDrawer}
@@ -331,91 +502,149 @@ export default function Header() {
 
       {/* モバイルナビゲーション ドロワー */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#131A21] px-4 pt-4 pb-7 space-y-5 shadow-lg">
+        <div className="lg:hidden border-t border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#131A21] px-4 pt-4 pb-7 space-y-5 shadow-lg max-h-[85vh] overflow-y-auto">
           {/* 文字サイズ変更 */}
           <FontSizeControl variant="drawer" />
 
-          {/* 一般向けセクション */}
+          {/* 1. 学ぶセクション */}
           <div className="space-y-1">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#B86924] dark:text-[#E6C387] px-3">
-              一般・セルフケア
-            </span>
-            <Link
-              href="/symptoms"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
-            >
-              <HeartPulse className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              <span>お悩み・症状別ガイド</span>
-            </Link>
-            <Link
-              href="/diagnosis"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
-            >
-              <Stethoscope className="w-4 h-4 text-[#A83629] dark:text-[#C47A72]" />
-              <span>気血水 体質セルフ診断</span>
-            </Link>
-            <Link
-              href="/diagnosis?tab=gorou"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
-            >
-              <div className="flex items-center gap-3">
-                <Activity className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>五労（職業病）チェッカー</span>
-              </div>
-              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
-                新設
-              </span>
-            </Link>
-          </div>
-
-          {/* 専門家・学生向けセクション */}
-          <div className="space-y-1 pt-2 border-t border-[#E8E1D1] dark:border-[#22303D]">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#1E3D34] dark:text-[#83BEA8] px-3">
-              専門家・学生向け
+              学ぶ（体系カリキュラム）
             </span>
             <Link
               href="/curriculum"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
             >
               <GraduationCap className="w-4 h-4" />
-              <span>体系学習カリキュラム</span>
+              <span>東洋医学8大体系（全体像）</span>
             </Link>
             <Link
-              href="/simulator"
+              href="/curriculum#stage-1"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-bold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2117]"
+              className="flex items-center gap-3 px-3 py-1.5 rounded-xl text-xs text-[#404743] dark:text-[#C5D2DB] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] pl-6"
+            >
+              <span className="font-mono font-bold text-[10px] text-[#737C77]">01</span>
+              <span>基礎理論編（陰陽・五行・気血水・生命機能・病機）</span>
+            </Link>
+            <Link
+              href="/curriculum#stage-2"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-1.5 rounded-xl text-xs text-[#404743] dark:text-[#C5D2DB] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] pl-6"
+            >
+              <span className="font-mono font-bold text-[10px] text-[#737C77]">02</span>
+              <span>臨床診断・治法編（四診弁証・戦略設計）</span>
+            </Link>
+            <Link
+              href="/curriculum#stage-3"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-1.5 rounded-xl text-xs text-[#404743] dark:text-[#C5D2DB] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] pl-6"
+            >
+              <span className="font-mono font-bold text-[10px] text-[#737C77]">03</span>
+              <span>臨床実践編（配穴設計・自己修正ループ）</span>
+            </Link>
+          </div>
+
+          {/* 2. 調べるセクション */}
+          <div className="space-y-1 pt-2 border-t border-[#E8E1D1] dark:border-[#22303D]">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#1E3D34] dark:text-[#74BA9E] px-3">
+              調べる（リファレンス）
+            </span>
+            <Link
+              href="/tsubo"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+            >
+              <Compass className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+              <span>十四経脈・経穴辞典（全361穴）</span>
+            </Link>
+            <Link
+              href="/articles"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+            >
+              <BookOpen className="w-4 h-4 text-[#1E2D3D] dark:text-[#6FA0D6]" />
+              <span>臨床知見・学術論文抄読</span>
+            </Link>
+          </div>
+
+          {/* 3. 考えるセクション */}
+          <div className="space-y-1 pt-2 border-t border-[#E8E1D1] dark:border-[#22303D]">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#B86924] dark:text-[#E6C387] px-3">
+              考える（臨床推論演習）
+            </span>
+            <Link
+              href="/simulator?tab=diagnosis"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between px-3 py-2 rounded-xl text-sm font-bold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2117]"
             >
               <div className="flex items-center gap-3">
                 <Layers className="w-4 h-4" />
                 <span>臨床弁証シミュレーター</span>
               </div>
               <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
-                新設
+                中核
               </span>
             </Link>
-
             <Link
-              href="/tsubo"
+              href="/simulator?tab=haiketsu"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
             >
               <Compass className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>十四経脈・経穴辞典（361穴）</span>
+              <span>配穴最適化エンジン</span>
             </Link>
             <Link
-              href="/articles"
+              href="/simulator?tab=case"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
             >
-              <BookOpen className="w-4 h-4 text-[#1E2D3D] dark:text-[#6FA0D6]" />
-              <span>臨床知見・学術論文抄読</span>
+              <Stethoscope className="w-4 h-4 text-[#A83629] dark:text-[#C47A72]" />
+              <span>症例問題・推論トレーニング</span>
             </Link>
+            <Link
+              href="/simulator?tab=depth"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+            >
+              <Activity className="w-4 h-4 text-[#1E2D3D] dark:text-[#6FA0D6]" />
+              <span>経気深度・刺鍼刺激量計算</span>
+            </Link>
+          </div>
 
-            {/* モバイル用 マイカルテ・マイ要穴集ボタン */}
+          {/* 4. 入門・セルフケアセクション */}
+          <div className="space-y-1 pt-2 border-t border-[#E8E1D1] dark:border-[#22303D]">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#737C77] dark:text-[#8899A6] px-3">
+              東洋医学を知る入口（入門・セルフケア）
+            </span>
+            <Link
+              href="/diagnosis"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+            >
+              <Stethoscope className="w-4 h-4 text-[#A83629] dark:text-[#C47A72]" />
+              <span>気血水 体質セルフ診断（約2分）</span>
+            </Link>
+            <Link
+              href="/symptoms"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+            >
+              <HeartPulse className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+              <span>症状・お悩み別ガイド</span>
+            </Link>
+            <Link
+              href="/diagnosis?tab=gorou"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+            >
+              <Activity className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+              <span>五労（職業病）チェッカー</span>
+            </Link>
+          </div>
+
+          {/* マイカルテ ＆ 理念 */}
+          <div className="pt-2 border-t border-[#E8E1D1] dark:border-[#22303D] space-y-2">
             <button
               type="button"
               onClick={() => {
@@ -432,9 +661,7 @@ export default function Header() {
                 {clipCount}件
               </span>
             </button>
-          </div>
 
-          <div className="pt-2 border-t border-[#E8E1D1] dark:border-[#22303D]">
             <Link
               href="/about"
               onClick={() => setMobileMenuOpen(false)}

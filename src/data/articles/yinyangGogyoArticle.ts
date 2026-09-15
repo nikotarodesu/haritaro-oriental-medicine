@@ -10,7 +10,7 @@ export const YINYANG_GOGYO_ARTICLE: Article = {
   tags: ["陰陽五行", "二値モデル", "情報圧縮", "動的平衡", "五行ネットワーク", "相生相剋", "相乗相侮", "システム生物学"],
   author: {
     name: "はり太郎",
-    role: "東洋医学臨床家・研究者"
+    role: "鍼灸師／鍼灸院院長"
   },
   contentMarkdown: `## 序論：陰陽五行とは何か ― 世界を記述するための情報モデル
 

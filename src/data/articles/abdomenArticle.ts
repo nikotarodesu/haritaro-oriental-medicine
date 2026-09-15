@@ -10,7 +10,7 @@ export const ABDOMEN_ARTICLE: Article = {
   tags: ["腹診", "腹証", "内臓体性反射", "胸脇苦満", "心下痞", "方証相対", "漢方医学"],
   author: {
     name: "はり太郎",
-    role: "東洋医学臨床家・研究者"
+    role: "鍼灸師／鍼灸院院長"
   },
   contentMarkdown: `## 序論：腹診とは何を計測しているのか ― 腹部という情報統合領域
 
