@@ -6,6 +6,8 @@ import { CURRICULUM_DATA, Lecture } from "@/data/curriculumData";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
 import MarkdownBody from "@/components/MarkdownBody";
+import ArticleReferences from "@/components/ArticleReferences";
+import { resolveArticleReferences } from "@/utils/referenceResolver";
 import { 
   GraduationCap, 
   BookOpen, 
@@ -60,6 +62,12 @@ export default function CurriculumPage() {
   if (activeLecture) {
     // 講義内の専門用語の初出管理（各単語の初回のみワンクリック解説を有効化）
     const seenTerms = new Set<string>();
+
+    // 参考文献・学術引用の解決（講義定義＋本文中インライン引用タグ）
+    const resolvedReferences = resolveArticleReferences(
+      activeLecture.references,
+      activeLecture.contentMarkdown
+    );
 
     // 次の講義があるか確認
     let nextLectureItem: Lecture | null = null;
@@ -196,13 +204,17 @@ export default function CurriculumPage() {
             <GlossaryRenderer text={activeLecture.summary} seenTerms={seenTerms} />
           </div>
 
-          {/* 本文（MarkdownBodyで専門用語辞書・図解・東西切替・リストを統一描画） */}
+          {/* 本文（MarkdownBodyで専門用語辞書・図解・東西切替・リスト・参考文献バッジを統一描画） */}
           <MarkdownBody
             contentMarkdown={activeLecture.contentMarkdown}
             seenTerms={seenTerms}
             onNextLecture={handleNextLecture}
             idPrefix="curriculum-heading"
+            resolvedReferences={resolvedReferences}
           />
+
+          {/* 参考文献・学術エビデンス */}
+          <ArticleReferences references={resolvedReferences} />
 
           {/* 講義受講修了フッター */}
           <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">

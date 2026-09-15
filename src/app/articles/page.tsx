@@ -8,6 +8,8 @@ import { BookOpen, Clock, ArrowLeft, ArrowRight, Sparkles, Search, Share2, Check
 import ReadingProgressBar from "@/components/ReadingProgressBar";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
 import MarkdownBody from "@/components/MarkdownBody";
+import ArticleReferences from "@/components/ArticleReferences";
+import { resolveArticleReferences } from "@/utils/referenceResolver";
 
 export default function ArticlesPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
@@ -85,6 +87,12 @@ export default function ArticlesPage() {
   if (activeArticle) {
     // 記事内の専門用語の初出管理（各単語の初回のみワンクリック解説を有効化）
     const seenTerms = new Set<string>();
+
+    // 参考文献・学術引用の解決（記事定義＋本文中インライン引用タグ）
+    const resolvedReferences = resolveArticleReferences(
+      activeArticle.references,
+      activeArticle.contentMarkdown
+    );
 
     // 現在の記事以外の他講義・関連知見記事（最大3件）
     const otherArticles = ARTICLES.filter((a) => a.id !== activeArticle.id).slice(0, 3);
@@ -180,7 +188,11 @@ export default function ArticlesPage() {
             contentMarkdown={activeArticle.contentMarkdown}
             seenTerms={seenTerms}
             idPrefix="article-heading"
+            resolvedReferences={resolvedReferences}
           />
+
+          {/* 参考文献・学術エビデンス（PubMed・DOI・古典原典） */}
+          <ArticleReferences references={resolvedReferences} />
 
           {/* 著者紹介フッター */}
           <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-6 bg-[#FAF8F5] dark:bg-[#121920] p-6 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] flex flex-col sm:flex-row items-start gap-4">

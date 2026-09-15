@@ -1,3 +1,5 @@
+import { ReferenceItem } from "./references";
+
 export interface Tsubo {
   id: string;
   name: string;
@@ -61,4 +63,5 @@ export interface Article {
     role: string;
   };
   contentMarkdown: string;
+  references?: (string | ReferenceItem)[];
 }

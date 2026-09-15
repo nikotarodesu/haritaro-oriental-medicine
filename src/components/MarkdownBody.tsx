@@ -1,16 +1,18 @@
 "use client";
 
 import React from "react";
-import GlossaryRenderer from "@/components/GlossaryRenderer";
+import CitationTextRenderer from "@/components/CitationTextRenderer";
 import EastWestTermSwitch from "@/components/EastWestTermSwitch";
 import CurriculumDiagram from "@/components/CurriculumDiagram";
 import { parseMarkdownBlocks } from "@/utils/markdownParser";
+import { ResolvedReference } from "@/types/references";
 
 interface MarkdownBodyProps {
   contentMarkdown: string;
   seenTerms?: Set<string>;
   onNextLecture?: () => void;
   idPrefix?: string;
+  resolvedReferences?: ResolvedReference[];
 }
 
 export default function MarkdownBody({
@@ -18,8 +20,17 @@ export default function MarkdownBody({
   seenTerms,
   onNextLecture,
   idPrefix = "section-heading",
+  resolvedReferences,
 }: MarkdownBodyProps) {
   const blocks = parseMarkdownBlocks(contentMarkdown);
+
+  const renderText = (text: string) => (
+    <CitationTextRenderer
+      text={text}
+      resolvedReferences={resolvedReferences}
+      seenTerms={seenTerms}
+    />
+  );
 
   return (
     <div className="prose max-w-none text-[#232826] dark:text-[#D5E0DC] leading-relaxed space-y-6 text-sm sm:text-base">
@@ -32,7 +43,7 @@ export default function MarkdownBody({
                 id={`${idPrefix}-${index}`}
                 className="font-sans text-2xl sm:text-3xl lg:text-4xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-10 mb-4 scroll-mt-36 leading-relaxed"
               >
-                <GlossaryRenderer text={block.content} seenTerms={seenTerms} />
+                {renderText(block.content)}
               </h1>
             );
           case "h2":
@@ -42,7 +53,7 @@ export default function MarkdownBody({
                 id={`${idPrefix}-${index}`}
                 className="font-sans text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-10 scroll-mt-36 leading-relaxed"
               >
-                <GlossaryRenderer text={block.content} seenTerms={seenTerms} />
+                {renderText(block.content)}
               </h2>
             );
           case "h3":
@@ -52,7 +63,7 @@ export default function MarkdownBody({
                 id={`${idPrefix}-${index}`}
                 className="font-sans text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-8 scroll-mt-36 leading-relaxed"
               >
-                <GlossaryRenderer text={block.content} seenTerms={seenTerms} />
+                {renderText(block.content)}
               </h3>
             );
           case "h4":
@@ -62,7 +73,7 @@ export default function MarkdownBody({
                 id={`${idPrefix}-${index}`}
                 className="font-sans text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] mt-6 scroll-mt-36 leading-relaxed"
               >
-                <GlossaryRenderer text={block.content} seenTerms={seenTerms} />
+                {renderText(block.content)}
               </h4>
             );
           case "blockquote":
@@ -71,7 +82,7 @@ export default function MarkdownBody({
                 key={index}
                 className="bg-[#EBF3EF] dark:bg-[#162A24] border-l-4 border-[#1E3D34] dark:border-[#4E8C76] p-4 rounded-r-xl text-xs sm:text-sm italic text-[#232826] dark:text-[#E6EFEA] leading-relaxed my-4"
               >
-                <GlossaryRenderer text={block.content} seenTerms={seenTerms} />
+                {renderText(block.content)}
               </blockquote>
             );
           case "table":
@@ -85,7 +96,7 @@ export default function MarkdownBody({
                     <tr>
                       {block.headers.map((h, hIdx) => (
                         <th key={hIdx} className="px-3 sm:px-4 py-2.5 sm:py-3 font-sans whitespace-nowrap">
-                          <GlossaryRenderer text={h} seenTerms={seenTerms} />
+                          {renderText(h)}
                         </th>
                       ))}
                     </tr>
@@ -95,7 +106,7 @@ export default function MarkdownBody({
                       <tr key={rIdx} className="hover:bg-[#FAF8F5] dark:hover:bg-[#1C2834] transition-colors">
                         {row.map((cell, cIdx) => (
                           <td key={cIdx} className="px-3 sm:px-4 py-2 sm:py-3 text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
-                            <GlossaryRenderer text={cell} seenTerms={seenTerms} />
+                            {renderText(cell)}
                           </td>
                         ))}
                       </tr>
@@ -117,7 +128,7 @@ export default function MarkdownBody({
               >
                 {block.items.map((item, iIdx) => (
                   <li key={iIdx} className="leading-relaxed pl-1 whitespace-pre-line">
-                    <GlossaryRenderer text={item} seenTerms={seenTerms} />
+                    {renderText(item)}
                   </li>
                 ))}
               </ListTag>
@@ -129,7 +140,7 @@ export default function MarkdownBody({
                 key={index}
                 className="leading-relaxed whitespace-pre-line text-[#333835] dark:text-[#C5D2DB] text-sm sm:text-base my-3"
               >
-                <GlossaryRenderer text={block.content} seenTerms={seenTerms} />
+                {renderText(block.content)}
               </p>
             );
           case "diagram":

@@ -1,3 +1,5 @@
+import { ReferenceItem } from "@/types/references";
+
 export interface Lecture {
   id: string;
   stageId: string;
@@ -10,6 +12,7 @@ export interface Lecture {
   keyPoints: string[]; // 本講義で押さえるべき重要要点
   summary: string;
   contentMarkdown: string;
+  references?: (string | ReferenceItem)[];
 }
 
 export interface CurriculumStage {
