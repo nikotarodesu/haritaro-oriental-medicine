@@ -140,7 +140,7 @@ export default function HomePage() {
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-[1.25]">
               東洋医学を、<br className="hidden sm:inline" />
               <span className="text-[#1E3D34] dark:text-[#74BA9E] relative">
-                暗記ではなく構造から学ぶ。
+                構造から学ぶ
                 <span className="absolute bottom-1 left-0 w-full h-2.5 bg-[#E6C387]/35 dark:bg-[#E6C387]/20 -z-10" />
               </span>
             </h1>
