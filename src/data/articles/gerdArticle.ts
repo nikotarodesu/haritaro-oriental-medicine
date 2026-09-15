@@ -19,7 +19,7 @@ export const GERD_ARTICLE: Article = {
       title: "胃食道逆流症（GERD）診療ガイドライン2021（改訂第3版）",
       source: "日本消化器病学会（JSGE）",
       year: 2021,
-      url: "https://www.jsge.or.jp/guideline/disease/gerd.html",
+      url: "https://www.jsge.or.jp/committees/guideline/guideline/gerd.html",
       note: "非びらん性胃食道逆流症（NERD）における酸分泌抑制薬の効果限界、および漢方薬（六君子湯等）の推奨位置づけを明記。",
     },
     {
