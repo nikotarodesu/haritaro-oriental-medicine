@@ -111,16 +111,16 @@ const EIGHT_SYSTEMS = [
   },
   {
     number: 8,
-    id: "lecture-8-practice",
+    id: "lecture-practice-1",
     title: "実践論",
     phase: "実践",
     tagColor: "bg-[#1E2D3D] dark:bg-[#2A3E54] text-[#FAF8F5]",
-    subtitle: "自己修正ループと最小介入の臨床プロトコル",
-    purpose: "最少のツボで最大の生体反応を引き出し、臨床結果から自己修正する",
-    flowTo: "実際の患者ケースで推論を検証する「症例演習・シミュレーター」へ",
-    terms: ["最小構成配穴", "得気制御", "過剰刺激防止", "閉ループ制御"],
-    acupoints: "太衝×陽陵泉",
-    lectureId: "lecture-8-practice"
+    subtitle: "臨床運用の完全プロトコルと自己修正アルゴリズム",
+    purpose: "初診トリアージから弁証、二層目標、日常語での説明合意、反応評価、次回計画修正、治療終了（卒業）までを一連の動的ループとして運用する",
+    flowTo: "全8大体系を修了し、生涯にわたる臨床実践と自己検証のステージへ",
+    terms: ["初動トリアージ", "動的推論ループ", "説明合意記録", "治療終了（卒業）"],
+    acupoints: "太衝・足三里・風池",
+    lectureId: "lecture-practice-1"
   }
 ];
 
