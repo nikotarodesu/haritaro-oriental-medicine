@@ -263,7 +263,7 @@ export default function HomePage() {
                 </div>
 
                 <h3 className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors">
-                  臨床推論 ＆ 弁証演習
+                  臨床弁証シミュレーター
                 </h3>
 
                 <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
