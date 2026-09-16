@@ -137,6 +137,12 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative space-y-10">
           <div className="text-center max-w-3xl mx-auto space-y-6">
+            {/* 対象者バッジ（強調＆洗練化） */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-xs sm:text-sm font-semibold tracking-wide shadow-2xs">
+              <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+              <span>鍼灸師・臨床家・東洋医学を志す学生のための学習プラットフォーム</span>
+            </div>
+
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-[1.25]">
               東洋医学を、<br className="hidden sm:inline" />
               <span className="text-[#1E3D34] dark:text-[#74BA9E] relative">
@@ -146,8 +152,8 @@ export default function HomePage() {
             </h1>
 
             <p className="text-sm sm:text-base text-[#4A534F] dark:text-[#A8B8C4] leading-relaxed max-w-2xl mx-auto">
-              当ページは、東洋医学の臨床家・専門家、および鍼灸・東洋医学を学ぶ学生のための体系学習＆臨床推論プラットフォームです。
-              単なる知識の丸暗記ではなく、人体の構造と思考体系として本質から修得。基礎理論から病機・診断・治法、そして臨床弁証シミュレーターまでを一貫したフローで統合します。
+              丸暗記を脱却し、人体の構造と思考体系から本質を修得。<br className="hidden sm:inline" />
+              基礎理論から病機・診断・治法、臨床弁証推論までを一貫して統合します。
             </p>
 
             {/* 主要CTAボタン */}
