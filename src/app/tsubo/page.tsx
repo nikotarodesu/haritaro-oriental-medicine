@@ -73,10 +73,7 @@ export default function TsuboPage() {
         </p>
       </div>
 
-      {/* 臨床名配穴 */}
-      <ClinicalPairsSection />
-
-      {/* 経絡・経穴の科学的機序を深掘りする講義録バナー */}
+      {/* 経絡・経穴の科学的機序を深掘りする講義録バナー（学術特集） */}
       <div className="bg-[#FAF8F5] dark:bg-[#15202B] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-6 space-y-3 sm:space-y-4 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="flex items-center gap-2">
@@ -159,6 +156,9 @@ export default function TsuboPage() {
           </Link>
         </div>
       </div>
+
+      {/* 臨床名配穴 */}
+      <ClinicalPairsSection />
 
       {/* 検索・絞り込みバー */}
       <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-3.5 sm:p-6 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-4 sm:space-y-5 transition-colors">
