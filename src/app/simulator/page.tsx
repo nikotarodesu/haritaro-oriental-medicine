@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function SimulatorPage() {
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-8">
+    <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-14 space-y-6 sm:space-y-8">
       {/* パンくずリスト */}
       <nav className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6]">
         <Link href="/" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">

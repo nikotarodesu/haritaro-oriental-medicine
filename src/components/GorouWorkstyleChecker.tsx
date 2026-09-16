@@ -352,23 +352,23 @@ export default function GorouWorkstyleChecker() {
   }, [organScores]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* 1. チェックリスト */}
-      <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 shadow-sm space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 pb-3">
+      <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-6 shadow-sm space-y-3 sm:space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 border-b border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 pb-2.5 sm:pb-3">
           <div className="flex items-center gap-2">
             <Activity className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
             <h3 className="text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
               STEP 1: 当てはまるワークスタイル・生活習慣を選択
             </h3>
           </div>
-          <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
+          <span className="text-[11px] sm:text-xs text-[#737C77] dark:text-[#8899A6]">
             複数選択可能（タップで切り替え）
           </span>
         </div>
 
         {/* 五労の5大チェックボックス */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3 pt-1">
           {(Object.keys(GOROU_DEFS) as GorouId[]).map((id) => {
             const def = GOROU_DEFS[id];
             const isChecked = selectedGorou.includes(id);
@@ -378,7 +378,7 @@ export default function GorouWorkstyleChecker() {
                 key={id}
                 onClick={() => handleToggle(id)}
                 type="button"
-                className={`p-4 rounded-xl border text-left transition-all flex flex-col justify-between cursor-pointer ${
+                className={`p-3 sm:p-4 rounded-xl border text-left transition-all flex flex-col justify-between cursor-pointer ${
                   isChecked
                     ? "bg-[#FAF8F5] dark:bg-[#1E2B37] border-[#1E3D34] dark:border-[#74BA9E] shadow-sm ring-1.5 ring-[#1E3D34] dark:ring-[#74BA9E]"
                     : "bg-white dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34]/50 dark:hover:border-[#74BA9E]/50"
@@ -409,7 +409,7 @@ export default function GorouWorkstyleChecker() {
                   </p>
                 </div>
 
-                <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] mt-3 pt-2.5 border-t border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 leading-relaxed">
+                <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] mt-2.5 sm:mt-3 pt-2 sm:pt-2.5 border-t border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 leading-relaxed">
                   {def.modernSub}
                 </p>
               </button>
@@ -419,9 +419,9 @@ export default function GorouWorkstyleChecker() {
       </div>
 
       {/* 2. 動的五臓疲弊度レーダーチャート ＆ 診断サマリー */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
         {/* レーダーチャート (5 cols) */}
-        <div className="lg:col-span-5 bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-6 shadow-sm space-y-4">
+        <div className="lg:col-span-5 bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-6 shadow-sm space-y-3 sm:space-y-4">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-[#B86924]" />
@@ -551,7 +551,7 @@ export default function GorouWorkstyleChecker() {
         {/* 診断サマリー＆中庸の処方箋 (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
           {/* 最疲弊臓腑の警告カード */}
-          <div className="bg-white dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34] dark:border-[#74BA9E] p-5 sm:p-6 shadow-md relative overflow-hidden">
+          <div className="bg-white dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34] dark:border-[#74BA9E] p-3.5 sm:p-6 shadow-md relative overflow-hidden">
             <div className="flex items-center gap-2 mb-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
               <Stethoscope className="w-4 h-4" />
               <span>五労診断結果・最疲弊ポイント</span>
@@ -561,7 +561,7 @@ export default function GorouWorkstyleChecker() {
               <div>
                 <span className="text-xs text-[#737C77] dark:text-[#8899A6]">最も過重負荷を受けている五臓：</span>
                 <div className="flex items-center gap-2 mt-1">
-                  <h3 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  <h3 className="text-xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                     【{mostFatiguedOrgan.name}】が疲弊（疲弊度 {mostFatiguedOrgan.score}%）
                   </h3>
                 </div>
@@ -588,7 +588,7 @@ export default function GorouWorkstyleChecker() {
               </div>
             </div>
 
-            <div className="mt-4 space-y-3">
+            <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3">
               <p className="text-xs sm:text-sm text-[#404743] dark:text-[#D1D5DB] leading-relaxed">
                 現在のワークスタイルでは、<strong>{selectedGorou.map((id) => GOROU_DEFS[id].classicName).join(" と ")}</strong>の負荷が重なり、
                 特に<strong>【{mostFatiguedOrgan.name}（{mostFatiguedOrgan.element}行）】</strong>のエネルギーが消耗しています。
@@ -598,7 +598,7 @@ export default function GorouWorkstyleChecker() {
           </div>
 
           {/* 選択された五労の中庸アクションカード */}
-          <div className="space-y-3">
+          <div className="space-y-2.5 sm:space-y-3">
             <div className="flex items-center gap-2 text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">
               <Zap className="w-4 h-4 text-[#B86924]" />
               <span>選択中パターンに対する「中庸アクション処方箋」</span>
@@ -609,7 +609,7 @@ export default function GorouWorkstyleChecker() {
               return (
                 <div
                   key={id}
-                  className="p-4 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-2.5"
+                  className="p-3 sm:p-4 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-2 sm:space-y-2.5"
                 >
                   <div className="flex items-center justify-between border-b border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 pb-2">
                     <div className="flex items-center gap-2">
@@ -636,7 +636,7 @@ export default function GorouWorkstyleChecker() {
                   </div>
 
                   {/* ツボ */}
-                  <div className="pt-2 border-t border-[#E5DEC9]/40 dark:border-[#2A3B4A]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px]">
+                  <div className="pt-2 border-t border-[#E5DEC9]/40 dark:border-[#2A3B4A]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 text-[11px]">
                     <div className="flex items-center gap-1.5">
                       <span className="font-bold text-[#B86924]">合間の特効ツボ：</span>
                       <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">
@@ -656,7 +656,7 @@ export default function GorouWorkstyleChecker() {
       </div>
 
       {/* 3. 深掘り解説：『黄帝内経』が教える五労所傷のメカニズム */}
-      <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-7 space-y-4">
+      <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-7 space-y-3 sm:space-y-4">
         <div className="flex items-center gap-2">
           <Lightbulb className="w-4 h-4 text-[#B86924]" />
           <h4 className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">

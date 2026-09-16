@@ -18,11 +18,11 @@ export default function ClinicalPairsSection() {
   });
 
   return (
-    <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 shadow-xs transition-all">
+    <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-6 shadow-xs transition-all">
       {/* ヘッダー・開閉トグル領域 */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="cursor-pointer select-none group flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+        className="cursor-pointer select-none group flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4"
       >
         <div className="flex-1">
           <div className="flex items-center gap-2 text-xs font-bold text-[#B86924] dark:text-[#E6C387] tracking-wider uppercase mb-1">
@@ -32,7 +32,7 @@ export default function ClinicalPairsSection() {
               全{CLASSIC_CLINICAL_PAIRS.length}組
             </span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors">
+          <h2 className="text-lg sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors">
             臨床名配穴
           </h2>
           <p className="mt-1 text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-2xl leading-relaxed">
@@ -92,11 +92,11 @@ export default function ClinicalPairsSection() {
           </div>
 
           {/* 配穴グリッド */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-5">
         {filteredPairs.map(pair => (
           <div
             key={pair.id}
-            className="bg-[#FAF8F5] dark:bg-[#121920] rounded-xl border border-[#EDE7DB] dark:border-[#22303D] p-5 hover:border-[#B86924] dark:hover:border-[#E6C387] hover:shadow-sm transition-all flex flex-col justify-between space-y-4 group"
+            className="bg-[#FAF8F5] dark:bg-[#121920] rounded-xl border border-[#EDE7DB] dark:border-[#22303D] p-3.5 sm:p-5 hover:border-[#B86924] dark:hover:border-[#E6C387] hover:shadow-sm transition-all flex flex-col justify-between space-y-3 sm:space-y-4 group"
           >
             <div className="space-y-3">
               {/* カード上部：五行バッジ・タイトル・クリップボタン */}

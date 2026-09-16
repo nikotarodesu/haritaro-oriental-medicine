@@ -354,27 +354,27 @@ export default function EastWestIntegrativeSwitch({
   const currentCase = INTEGRATIVE_CASES.find((c) => c.id === selectedCaseId) || INTEGRATIVE_CASES[1] || INTEGRATIVE_CASES[0];
 
   return (
-    <div className={`bg-white dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm overflow-hidden transition-all duration-300 ${className}`}>
+    <div className={`bg-white dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm overflow-hidden transition-all duration-300 ${className}`}>
       {/* 統合ヘッダー帯 */}
-      <div className="bg-gradient-to-r from-[#1E2D3D] via-[#1E3D34] to-[#B86924] p-5 sm:p-7 text-white">
-        <div className="text-xl sm:text-2xl font-serif font-bold tracking-tight">
+      <div className="bg-gradient-to-r from-[#1E2D3D] via-[#1E3D34] to-[#B86924] p-3.5 sm:p-7 text-white">
+        <div className="text-lg sm:text-2xl font-serif font-bold tracking-tight">
           {currentCase.title}
         </div>
       </div>
 
       {/* モード切り替えスイッチ（トグル） */}
-      <div className="p-4 sm:p-6 bg-[#FAF8F5] dark:bg-[#121920] border-b border-[#E8E1D1] dark:border-[#22303D]">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="p-3 sm:p-6 bg-[#FAF8F5] dark:bg-[#121920] border-b border-[#E8E1D1] dark:border-[#22303D]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
           <div className="text-xs font-bold text-[#59615D] dark:text-[#96A6B2] flex items-center gap-1.5">
             <Workflow className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
             <span>医学視点切り替えスイッチ：</span>
           </div>
 
-          <div className="grid grid-cols-3 gap-1.5 bg-white dark:bg-[#1A2530] p-1.5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-inner max-w-lg w-full sm:w-auto">
+          <div className="grid grid-cols-3 gap-1 sm:gap-1.5 bg-white dark:bg-[#1A2530] p-1 sm:p-1.5 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-inner max-w-lg w-full sm:w-auto">
             {/* 西洋医学（陽） */}
             <button
               onClick={() => setViewMode("western")}
-              className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-bold transition-all ${
+              className={`flex items-center justify-center gap-1 sm:gap-1.5 py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold transition-all ${
                 viewMode === "western"
                   ? "bg-[#C45A4A] text-white shadow-md"
                   : "text-[#C45A4A] dark:text-[#F87171] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2117]"
@@ -387,7 +387,7 @@ export default function EastWestIntegrativeSwitch({
             {/* 東洋医学（陰） */}
             <button
               onClick={() => setViewMode("oriental")}
-              className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-bold transition-all ${
+              className={`flex items-center justify-center gap-1 sm:gap-1.5 py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold transition-all ${
                 viewMode === "oriental"
                   ? "bg-[#1E3D34] text-white shadow-md"
                   : "text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#182823]"
@@ -400,7 +400,7 @@ export default function EastWestIntegrativeSwitch({
             {/* 相補マトリクス（統合） */}
             <button
               onClick={() => setViewMode("matrix")}
-              className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-bold transition-all ${
+              className={`flex items-center justify-center gap-1 sm:gap-1.5 py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold transition-all ${
                 viewMode === "matrix"
                   ? "bg-[#B86924] text-white shadow-md"
                   : "text-[#B86924] dark:text-[#E6C387] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2117]"
@@ -414,12 +414,12 @@ export default function EastWestIntegrativeSwitch({
       </div>
 
       {/* メインコンテンツエリア */}
-      <div className="p-6 sm:p-8">
+      <div className="p-3.5 sm:p-8">
         {/* ================= 1. 西洋医学ビュー（陽） ================= */}
         {viewMode === "western" && (
-          <div className="space-y-6 animate-fadeIn">
+          <div className="space-y-4 sm:space-y-6 animate-fadeIn">
             {/* 病態機序 */}
-            <div className="bg-[#FAF8F5] dark:bg-[#121920] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
+            <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
               <span className="text-xs font-bold text-[#C45A4A] dark:text-[#F87171] flex items-center gap-1.5">
                 <HeartPulse className="w-3.5 h-3.5" />
                 解剖生理・構造的メカニズム
@@ -430,9 +430,9 @@ export default function EastWestIntegrativeSwitch({
             </div>
 
             {/* 診断武器と標準薬物 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-5">
               {/* 診断機器 */}
-              <div className="bg-white dark:bg-[#1A2530] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-3">
+              <div className="bg-white dark:bg-[#1A2530] p-3 sm:p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2.5 sm:space-y-3">
                 <span className="text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8] flex items-center gap-1.5">
                   <Stethoscope className="w-3.5 h-3.5" />
                   客観的診断ツール・検査項目
@@ -448,7 +448,7 @@ export default function EastWestIntegrativeSwitch({
               </div>
 
               {/* 薬物 */}
-              <div className="bg-white dark:bg-[#1A2530] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-3">
+              <div className="bg-white dark:bg-[#1A2530] p-3 sm:p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2.5 sm:space-y-3">
                 <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] flex items-center gap-1.5">
                   <Pill className="w-3.5 h-3.5" />
                   第一選択となる標準薬物群
@@ -465,9 +465,9 @@ export default function EastWestIntegrativeSwitch({
             </div>
 
             {/* レッドフラッグ（除外診断アラート） */}
-            <div className="p-5 rounded-2xl bg-red-50/80 dark:bg-red-950/20 border-2 border-red-300 dark:border-red-900/50 space-y-3">
-              <div className="flex items-center gap-2 text-red-700 dark:text-red-400 font-serif font-bold text-sm">
-                <ShieldAlert className="w-5 h-5 text-red-600" />
+            <div className="p-3 sm:p-5 rounded-2xl bg-red-50/80 dark:bg-red-950/20 border-2 border-red-300 dark:border-red-900/50 space-y-2.5 sm:space-y-3">
+              <div className="flex items-center gap-2 text-red-700 dark:text-red-400 font-serif font-bold text-xs sm:text-sm">
+                <ShieldAlert className="w-4 sm:w-5 h-4 sm:h-5 text-red-600 shrink-0" />
                 <span>【最重要】医療従事者が厳守すべき除外診断（レッドフラッグ）</span>
               </div>
               <p className="text-xs text-red-900/80 dark:text-red-300/80 leading-relaxed">
@@ -484,7 +484,7 @@ export default function EastWestIntegrativeSwitch({
             </div>
 
             {/* 西洋医学の限界・死角 */}
-            <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] text-xs text-[#59615D] dark:text-[#96A6B2] space-y-1">
+            <div className="p-3 sm:p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] text-xs text-[#59615D] dark:text-[#96A6B2] space-y-1">
               <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">
                 西洋医学単独での臨床的限界・死角：
               </span>
@@ -497,9 +497,9 @@ export default function EastWestIntegrativeSwitch({
 
         {/* ================= 2. 東洋医学ビュー（陰） ================= */}
         {viewMode === "oriental" && (
-          <div className="space-y-6 animate-fadeIn">
+          <div className="space-y-4 sm:space-y-6 animate-fadeIn">
             {/* 病態機序 */}
-            <div className="bg-[#FAF8F5] dark:bg-[#121920] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
+            <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
               <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5" />
                 東洋医学的病理・気機昇降メカニズム
@@ -510,15 +510,15 @@ export default function EastWestIntegrativeSwitch({
             </div>
 
             {/* 弁証と証・方剤の鑑別 */}
-            <div className="space-y-3">
+            <div className="space-y-2.5 sm:space-y-3">
               <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block">
                 代表的な「証」の鑑別と漢方方剤
               </span>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
                 {currentCase.oriental.patterns.map((pat, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-2xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-2"
+                    className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-2"
                   >
                     <div className="font-serif font-bold text-sm text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-1.5">
                       {pat.name}
@@ -540,7 +540,7 @@ export default function EastWestIntegrativeSwitch({
             </div>
 
             {/* 特効ツボ（経穴） */}
-            <div className="space-y-3">
+            <div className="space-y-2.5 sm:space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block">
                   臨床で著効を示す4大特効ツボ（配穴の妙）
@@ -550,7 +550,7 @@ export default function EastWestIntegrativeSwitch({
                   タップで事典詳細を表示
                 </span>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
                 {currentCase.oriental.tsubos.map((tsubo, idx) => (
                   <button
                     key={idx}
@@ -578,11 +578,11 @@ export default function EastWestIntegrativeSwitch({
                         });
                       }
                     }}
-                    className="p-4 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-md transition-all duration-200 text-left group cursor-pointer space-y-1.5 flex flex-col justify-between"
+                    className="p-3 sm:p-4 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-md transition-all duration-200 text-left group cursor-pointer space-y-1.5 flex flex-col justify-between"
                   >
                     <div className="w-full space-y-1.5">
                       <div className="flex items-center justify-between">
-                        <span className="font-serif font-bold text-base text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors">
+                        <span className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors">
                           {tsubo.name}
                         </span>
                         <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
@@ -606,7 +606,7 @@ export default function EastWestIntegrativeSwitch({
             </div>
 
             {/* 養生指導 */}
-            <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] text-xs text-[#59615D] dark:text-[#96A6B2] space-y-1">
+            <div className="p-3 sm:p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] text-xs text-[#59615D] dark:text-[#96A6B2] space-y-1">
               <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">
                 生活養生・食養生の急所：
               </span>
@@ -619,17 +619,17 @@ export default function EastWestIntegrativeSwitch({
 
         {/* ================= 3. 相補マトリクスビュー（統合） ================= */}
         {viewMode === "matrix" && (
-          <div className="space-y-6 animate-fadeIn">
+          <div className="space-y-4 sm:space-y-6 animate-fadeIn">
             {/* バナー標語 */}
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-[#FCF4EB] to-[#EBF3EF] dark:from-[#221814] dark:to-[#15231E] border border-[#E8E1D1] dark:border-[#22303D] flex items-start gap-3">
-              <div className="w-9 h-9 rounded-xl bg-[#B86924] text-white flex items-center justify-center shrink-0 mt-0.5">
-                <Layers className="w-5 h-5" />
+            <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#FCF4EB] to-[#EBF3EF] dark:from-[#221814] dark:to-[#15231E] border border-[#E8E1D1] dark:border-[#22303D] flex items-start gap-2.5 sm:gap-3">
+              <div className="w-8 sm:w-9 h-8 sm:h-9 rounded-xl bg-[#B86924] text-white flex items-center justify-center shrink-0 mt-0.5">
+                <Layers className="w-4 sm:w-5 h-4 sm:h-5" />
               </div>
               <div className="space-y-1">
-                <span className="text-[11px] font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider">
+                <span className="text-[10px] sm:text-[11px] font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider">
                   統合医療の真髄：対立ではなく「歯車が噛み合う役割分担」
                 </span>
-                <h4 className="font-serif font-bold text-base text-[#232826] dark:text-[#FAF8F5]">
+                <h4 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
                   {currentCase.matrix.coreConcept}
                 </h4>
                 <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
@@ -639,11 +639,11 @@ export default function EastWestIntegrativeSwitch({
             </div>
 
             {/* 4段階の統合治療ステップ */}
-            <div className="space-y-3">
+            <div className="space-y-2.5 sm:space-y-3">
               <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] uppercase tracking-wider block">
                 東西医学が連動するシームレス治療プロトコル
               </span>
-              <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-1 gap-2.5 sm:gap-3">
                 {currentCase.matrix.steps.map((st, idx) => {
                   const isWestern = st.role.includes("西洋");
                   const isOriental = st.role.includes("東洋");
@@ -656,23 +656,23 @@ export default function EastWestIntegrativeSwitch({
                   return (
                     <div
                       key={idx}
-                      className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4"
+                      className="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4"
                     >
-                      <div className="flex items-center gap-3 shrink-0">
-                        <span className="w-8 h-8 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] flex items-center justify-center font-mono font-bold text-xs text-[#232826] dark:text-[#FAF8F5]">
+                      <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+                        <span className="w-7 sm:w-8 h-7 sm:h-8 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] flex items-center justify-center font-mono font-bold text-xs text-[#232826] dark:text-[#FAF8F5]">
                           {idx + 1}
                         </span>
                         <div>
                           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${badgeColor}`}>
                             {st.role}
                           </span>
-                          <h5 className="font-serif font-bold text-sm text-[#232826] dark:text-[#FAF8F5] mt-1">
+                          <h5 className="font-serif font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5] mt-1">
                             {st.action}
                           </h5>
                         </div>
                       </div>
 
-                      <div className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed md:max-w-md border-t md:border-t-0 md:border-l border-[#F2ECE0] dark:border-[#22303D] pt-3 md:pt-0 md:pl-4">
+                      <div className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed md:max-w-md border-t md:border-t-0 md:border-l border-[#F2ECE0] dark:border-[#22303D] pt-2.5 md:pt-0 md:pl-4">
                         {st.detail}
                       </div>
                     </div>
@@ -682,8 +682,8 @@ export default function EastWestIntegrativeSwitch({
             </div>
 
             {/* 相乗効果総括 */}
-            <div className="p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] flex items-center gap-3">
-              <Check className="w-5 h-5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
+            <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] flex items-center gap-2.5 sm:gap-3">
+              <Check className="w-4 sm:w-5 h-4 sm:h-5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
               <p className="text-xs sm:text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] leading-relaxed">
                 相乗効果：{currentCase.matrix.synergyEffect}
               </p>
@@ -693,7 +693,7 @@ export default function EastWestIntegrativeSwitch({
       </div>
 
       {/* フッターナビゲート */}
-      <div className="bg-[#FAF8F5] dark:bg-[#121920] px-6 py-4 border-t border-[#E8E1D1] dark:border-[#22303D] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-[#59615D] dark:text-[#96A6B2]">
+      <div className="bg-[#FAF8F5] dark:bg-[#121920] px-3.5 py-3 sm:px-6 sm:py-4 border-t border-[#E8E1D1] dark:border-[#22303D] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-[#59615D] dark:text-[#96A6B2]">
         <div className="flex items-center gap-1.5">
           <HelpCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
           <span>『黄帝内経素問』陰陽応象大論 ＆ 現代消化器病学会ガイドライン準拠</span>
@@ -706,11 +706,11 @@ export default function EastWestIntegrativeSwitch({
       {/* ツボ事典ポップアップモーダル（ふわっと表示） */}
       {selectedTsuboDetail && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn"
+          className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-black/60 backdrop-blur-sm animate-fadeIn"
           onClick={() => setSelectedTsuboDetail(null)}
         >
           <div
-            className="bg-white dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] max-w-lg w-full p-6 sm:p-7 shadow-2xl space-y-5 transform transition-all duration-300 animate-in fade-in zoom-in-95 relative max-h-[90vh] overflow-y-auto"
+            className="bg-white dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] max-w-lg w-full p-4 sm:p-7 shadow-2xl space-y-4 sm:space-y-5 transform transition-all duration-300 animate-in fade-in zoom-in-95 relative max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* クローズボタン */}

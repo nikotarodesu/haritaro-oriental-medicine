@@ -181,7 +181,7 @@ export default function CurriculumPage() {
           </div>
 
           {/* 講義の重要要点ボックス */}
-          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-4 sm:p-6 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#4E8C76] space-y-2.5 sm:space-y-3">
+          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-6 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#4E8C76] space-y-2 sm:space-y-3">
             <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
               <Award className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
               <span>本講義で押さえるべき重要要点</span>
@@ -197,7 +197,7 @@ export default function CurriculumPage() {
           </div>
 
           {/* 講義要約 */}
-          <div className="bg-[#FCF4EB]/70 dark:bg-[#231A12]/80 p-3.5 sm:p-5 rounded-2xl border border-[#F3E1CB] dark:border-[#423321] text-xs sm:text-sm text-[#404743] dark:text-[#D1C6BA] leading-relaxed">
+          <div className="bg-[#FCF4EB]/70 dark:bg-[#231A12]/80 p-3 sm:p-5 rounded-2xl border border-[#F3E1CB] dark:border-[#423321] text-xs sm:text-sm text-[#404743] dark:text-[#D1C6BA] leading-relaxed">
             <strong className="block font-serif text-sm font-bold text-[#B86924] dark:text-[#E6C387] mb-1">
               【講義の狙いと本質】
             </strong>
@@ -268,27 +268,27 @@ export default function CurriculumPage() {
       </div>
 
       {/* 分野別講義リスト */}
-      <div className="space-y-12">
+      <div className="space-y-8 sm:space-y-12">
         {CURRICULUM_DATA.map((stage) => (
           <div
             key={stage.id}
-            className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-9 shadow-sm transition-colors space-y-6"
+            className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-9 shadow-sm transition-colors space-y-5 sm:space-y-6"
           >
             {/* セクションヘッダー */}
-            <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4">
+            <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 sm:pb-4">
               <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-widest">
                 {stage.subtitle}
               </span>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] mt-1">
+              <h2 className="text-xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] mt-1">
                 {stage.title}
               </h2>
-              <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-2 leading-relaxed">
+              <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1.5 sm:mt-2 leading-relaxed">
                 {stage.description}
               </p>
             </div>
 
             {/* 講義カード一覧 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-5">
               {stage.lectures.map((lec) => (
                 <div
                   key={lec.id}
@@ -298,7 +298,7 @@ export default function CurriculumPage() {
                       window.scrollTo({ top: 0, behavior: "smooth" });
                     }
                   }}
-                  className={`p-6 rounded-2xl border transition-all flex flex-col justify-between ${
+                  className={`p-3.5 sm:p-6 rounded-xl sm:rounded-2xl border transition-all flex flex-col justify-between ${
                     lec.isPublished
                       ? "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md cursor-pointer group"
                       : "bg-[#F9F7F3]/50 dark:bg-[#10161C]/50 border-dashed border-[#DDD6C5] dark:border-[#22303D] opacity-80 cursor-not-allowed"
@@ -306,9 +306,9 @@ export default function CurriculumPage() {
                 >
                   <div>
                     {/* バッジと講義時間 */}
-                    <div className="flex items-center justify-between text-xs mb-3">
+                    <div className="flex items-center justify-between text-xs mb-2.5 sm:mb-3">
                       <span
-                        className={`px-2.5 py-0.5 rounded-full font-bold text-[11px] ${
+                        className={`px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] ${
                           lec.isPublished
                             ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]"
                             : "bg-[#EAE4D5] dark:bg-[#1E2B36] text-[#737C77] dark:text-[#8899A6]"
@@ -316,32 +316,32 @@ export default function CurriculumPage() {
                       >
                         {lec.isPublished ? "開講中（受講可能）" : "順次開講"}
                       </span>
-                      <span className="flex items-center gap-1 text-[#737C77] dark:text-[#8899A6]">
+                      <span className="flex items-center gap-1 text-[11px] sm:text-xs text-[#737C77] dark:text-[#8899A6]">
                         <Clock className="w-3 h-3" />
                         <span>約 {lec.duration}</span>
                       </span>
                     </div>
 
-                    <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug mb-2">
+                    <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug mb-1.5 sm:mb-2">
                       {lec.title}
                     </h3>
-                    <p className="text-xs text-[#737C77] dark:text-[#8899A6] mb-3">
+                    <p className="text-xs text-[#737C77] dark:text-[#8899A6] mb-2 sm:mb-3">
                       {lec.subtitle}
                     </p>
 
-                    <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3 mb-4">
+                    <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3 mb-3 sm:mb-4">
                       {lec.summary}
                     </p>
                   </div>
 
-                  <div className="pt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
+                  <div className="pt-2.5 sm:pt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
                     {lec.isPublished ? (
                       <>
                         <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                           <span>講義を受講する</span>
                           <ArrowRight className="w-3.5 h-3.5" />
                         </span>
-                        <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                        <span className="text-[10px] sm:text-[11px] text-[#737C77] dark:text-[#8899A6]">
                           重要要点・本文収録
                         </span>
                       </>
@@ -360,7 +360,7 @@ export default function CurriculumPage() {
       </div>
 
       {/* 学術深化・東洋医学自然科学講義録アーカイブ */}
-      <section className="bg-gradient-to-r from-[#EBF3EF]/60 via-[#FAF8F5] to-[#FCF4EB]/60 dark:from-[#172621]/60 dark:via-[#17212A] dark:to-[#221F1A]/60 rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-10 space-y-6 shadow-xs">
+      <section className="bg-gradient-to-r from-[#EBF3EF]/60 via-[#FAF8F5] to-[#FCF4EB]/60 dark:from-[#172621]/60 dark:via-[#17212A] dark:to-[#221F1A]/60 rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-10 space-y-4 sm:space-y-6 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-[#E8E1D1] dark:border-[#22303D] pb-5">
           <div>
             <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">

@@ -84,13 +84,13 @@ export default function DiagnosisPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10">
+    <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-16 space-y-8 sm:space-y-10">
       {/* モード切り替えタブ */}
       <div className="flex justify-center">
-        <div className="inline-flex p-1.5 rounded-2xl bg-[#EFE9DD] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2D3E50] shadow-inner max-w-full overflow-x-auto">
+        <div className="inline-flex p-1 sm:p-1.5 rounded-2xl bg-[#EFE9DD] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2D3E50] shadow-inner max-w-full overflow-x-auto">
           <button
             onClick={() => setActiveTab("self")}
-            className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
               activeTab === "self"
                 ? "bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] shadow-sm"
                 : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
@@ -102,7 +102,7 @@ export default function DiagnosisPage() {
 
           <button
             onClick={() => setActiveTab("gorou")}
-            className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
               activeTab === "gorou"
                 ? "bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] shadow-sm"
                 : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
@@ -119,37 +119,37 @@ export default function DiagnosisPage() {
 
       {/* 1. 一般向け12問セルフ診断 */}
       {activeTab === "self" && (
-        <div className="space-y-12 animate-fadeIn max-w-4xl mx-auto">
+        <div className="space-y-8 sm:space-y-12 animate-fadeIn max-w-4xl mx-auto">
           {/* ページ見出し */}
-          <div className="text-center space-y-4">
+          <div className="text-center space-y-3 sm:space-y-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3E1CB] dark:border-[#423321] text-[#B86924] dark:text-[#E6C387] text-xs font-semibold tracking-wider">
               <Stethoscope className="w-3.5 h-3.5" />
               <span>東洋医学式 気・血・水 バランスチェック</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
+            <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
               気血水 体質セルフ診断
             </h1>
-            <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-xl mx-auto leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-xl mx-auto leading-relaxed">
               あなたの今の心身の傾きはどこにあるでしょうか？
               直近1〜2週間の状態に当てはまるものにチェックを入れ、「診断する」を押してください。
             </p>
           </div>
 
       {/* 設問一覧 */}
-      <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-6 sm:p-9 rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-6 transition-colors">
+      <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-3.5 sm:p-9 rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-4 sm:space-y-6 transition-colors">
         <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 text-xs text-[#59615D] dark:text-[#96A6B2]">
           <span>全12問（複数選択可）</span>
           <span>選択中: <strong className="text-[#1E3D34] dark:text-[#74BA9E]">{selectedAnswers.length}</strong> 項目</span>
         </div>
 
-        <div className="grid grid-cols-1 gap-3.5">
+        <div className="grid grid-cols-1 gap-2.5 sm:gap-3.5">
           {DIAGNOSIS_QUESTIONS.map((q) => {
             const isChecked = selectedAnswers.includes(q.id);
             return (
               <button
                 key={q.id}
                 onClick={() => handleToggle(q.id)}
-                className={`w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3.5 ${
+                className={`w-full text-left p-3 sm:p-4 rounded-xl border transition-all flex items-start gap-2.5 sm:gap-3.5 ${
                   isChecked
                     ? "bg-[#EBF3EF] dark:bg-[#182823] border-[#1E3D34] dark:border-[#4E8C76] text-[#1E3D34] dark:text-[#FAF8F5] shadow-sm"
                     : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E8E1D1] dark:border-[#22303D] text-[#404743] dark:text-[#C5D2DB] hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631]"
@@ -196,30 +196,30 @@ export default function DiagnosisPage() {
       {result && (
         <div 
           ref={resultRef}
-          className="scroll-mt-24 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border-2 border-[#1E3D34] dark:border-[#3A6B5B] p-8 sm:p-10 shadow-xl space-y-8 animate-fadeIn transition-colors"
+          className="scroll-mt-24 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34] dark:border-[#3A6B5B] p-3.5 sm:p-10 shadow-xl space-y-6 sm:space-y-8 animate-fadeIn transition-colors"
         >
-          <div className="text-center space-y-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-6">
+          <div className="text-center space-y-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-5 sm:pb-6">
             <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-widest">
               Diagnosis Result
             </span>
-            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+            <h2 className="text-xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
               {result.name}
             </h2>
-            <p className="text-sm text-[#1E3D34] dark:text-[#74BA9E] font-medium tracking-wide">
+            <p className="text-xs sm:text-sm text-[#1E3D34] dark:text-[#74BA9E] font-medium tracking-wide">
               （{result.reading}）
             </p>
           </div>
 
-          <div className="space-y-4">
-            <p className="text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed bg-[#FAF8F5] dark:bg-[#121920] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D]">
+          <div className="space-y-3.5 sm:space-y-4">
+            <p className="text-xs sm:text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D]">
               {result.summary}
             </p>
 
             <div>
               <span className="text-xs font-bold text-[#59615D] dark:text-[#96A6B2] block mb-2">現れやすい症状・サイン:</span>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
                 {result.symptoms.map((sym, i) => (
-                  <span key={i} className="text-xs px-3 py-1 rounded-full bg-[#F2EDE4] dark:bg-[#1E2B36] text-[#232826] dark:text-[#E6EFEA]">
+                  <span key={i} className="text-xs px-2.5 sm:px-3 py-1 rounded-full bg-[#F2EDE4] dark:bg-[#1E2B36] text-[#232826] dark:text-[#E6EFEA]">
                     • {sym}
                   </span>
                 ))}
@@ -233,15 +233,15 @@ export default function DiagnosisPage() {
           </div>
 
           {/* はり太郎の改善アドバイス */}
-          <div className="bg-[#EBF3EF] dark:bg-[#14231E] p-6 sm:p-8 rounded-2xl border border-[#C5DED4] dark:border-[#234237] space-y-6">
-            <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-              <Sparkles className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
+          <div className="bg-[#EBF3EF] dark:bg-[#14231E] p-3.5 sm:p-8 rounded-2xl border border-[#C5DED4] dark:border-[#234237] space-y-4 sm:space-y-6">
+            <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+              <Sparkles className="w-4 sm:w-5 h-4 sm:h-5 text-[#B86924] dark:text-[#E6C387]" />
               <span>はり太郎の体質改善処方箋</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-6 text-xs">
               {/* 食養生 */}
-              <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-4 rounded-xl border border-[#D8E8E0] dark:border-[#263D33] space-y-2">
+              <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-3 sm:p-4 rounded-xl border border-[#D8E8E0] dark:border-[#263D33] space-y-2">
                 <div className="flex items-center gap-1.5 font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                   <Utensils className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
                   <span>おすすめ食材</span>

@@ -81,8 +81,8 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen py-12 sm:py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto space-y-10">
+    <div className="min-h-screen py-8 sm:py-20 px-3 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto space-y-8 sm:space-y-10">
         {/* パンくず・戻るリンク */}
         <div>
           <Link
@@ -95,12 +95,12 @@ export default function ContactPage() {
         </div>
 
         {/* ヘッダー */}
-        <div className="text-center space-y-3">
+        <div className="text-center space-y-2.5 sm:space-y-3">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold tracking-wider">
             <Mail className="w-3.5 h-3.5" />
             <span>Contact Us</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
             お問い合わせ
           </h1>
           <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-xl mx-auto">
@@ -109,7 +109,7 @@ export default function ContactPage() {
         </div>
 
         {/* フォームカード */}
-        <div className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-10 shadow-sm transition-colors">
+        <div className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm transition-colors">
           {status === "success" ? (
             <div className="py-10 text-center space-y-5">
               <div className="w-16 h-16 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center mx-auto shadow-sm">

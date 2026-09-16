@@ -172,14 +172,14 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
       <div className="relative w-full max-w-2xl bg-[#FAF8F5] dark:bg-[#10161C] h-full shadow-2xl flex flex-col border-l border-[#E5DEC9] dark:border-[#2A3B4A] z-10 animate-slideLeft">
         
         {/* ヘッダーエリア */}
-        <div className="p-4 sm:p-5 border-b border-[#E5DEC9] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A] flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 border border-[#F3DEC5] dark:border-[#4D331F]">
-              <Bookmark className="w-5 h-5 fill-current" />
+        <div className="p-3.5 sm:p-5 border-b border-[#E5DEC9] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A] flex items-center justify-between">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 border border-[#F3DEC5] dark:border-[#4D331F]">
+              <Bookmark className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+                <h2 className="font-serif text-base sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
                   マイカルテ・マイ要穴集
                 </h2>
                 <span className="text-xs px-2 py-0.5 rounded-full font-bold bg-[#B86924] text-white">
@@ -348,14 +348,14 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
         )}
 
         {/* リスト表示エリア */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-5 space-y-3 sm:space-y-4">
           {filteredMemos.length === 0 ? (
-            <div className="text-center py-12 space-y-4 bg-white dark:bg-[#17212A] rounded-2xl border border-dashed border-[#D5CCBC] dark:border-[#2D3E50] p-6">
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center">
-                <Bookmark className="w-7 h-7" />
+            <div className="text-center py-10 sm:py-12 space-y-3 sm:space-y-4 bg-white dark:bg-[#17212A] rounded-2xl border border-dashed border-[#D5CCBC] dark:border-[#2D3E50] p-4 sm:p-6">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto rounded-2xl bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center">
+                <Bookmark className="w-6 h-6 sm:w-7 sm:h-7" />
               </div>
               <div className="space-y-1">
-                <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
+                <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
                   {searchQuery || activeTab !== "all"
                     ? "該当するメモが見つかりませんでした"
                     : "マイカルテ・マイ要穴集に保存されたメモがありません"}
@@ -369,7 +369,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                 <div className="pt-2">
                   <button
                     onClick={loadRecommendedPresets}
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#B86924] text-white text-xs sm:text-sm font-bold shadow-sm hover:bg-[#9B551B] transition-colors"
+                    className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-[#B86924] text-white text-xs sm:text-sm font-bold shadow-sm hover:bg-[#9B551B] transition-colors"
                   >
                     <Sparkles className="w-4 h-4" />
                     <span>おすすめ重要名配穴（太衝＋陽陵泉など8組）を一括登録</span>
@@ -381,7 +381,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
             filteredMemos.map(item => (
               <div
                 key={item.id}
-                className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-5 shadow-2xs hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all space-y-3 group"
+                className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3 sm:p-5 shadow-2xs hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all space-y-2.5 sm:space-y-3 group"
               >
                 {/* カード上部：種別バッジ・五行・アクションボタン */}
                 <div className="flex items-start justify-between gap-2">

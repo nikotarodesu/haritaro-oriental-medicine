@@ -4,7 +4,7 @@ import { ShieldCheck, ArrowUpRight, Sparkles } from "lucide-react";
 export default function Footer() {
   return (
     <footer className="bg-[#F2EDE4] dark:bg-[#131A21] border-t border-[#E3DBCB] dark:border-[#22303D] text-[#59615D] dark:text-[#96A6B2] text-sm mt-auto transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-10 sm:py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* サイト概要 */}
           <div className="md:col-span-1 space-y-4">

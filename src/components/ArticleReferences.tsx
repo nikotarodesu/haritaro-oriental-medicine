@@ -31,25 +31,25 @@ export default function ArticleReferences({
         {/* ヘッダー */}
         <div
           onClick={() => setIsExpanded(!isExpanded)}
-          className="p-4 sm:p-5 flex items-center justify-between cursor-pointer select-none bg-[#FAF8F5] dark:bg-[#19242E] hover:bg-[#F2ECE0] dark:hover:bg-[#1E2B38] transition-colors"
+          className="p-3.5 sm:p-5 flex items-center justify-between cursor-pointer select-none bg-[#FAF8F5] dark:bg-[#19242E] hover:bg-[#F2ECE0] dark:hover:bg-[#1E2B38] transition-colors"
         >
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0">
-              <BookOpen className="w-4 h-4" />
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0">
+              <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h3
                   id="references-heading"
-                  className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]"
+                  className="font-serif text-sm sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]"
                 >
                   {title}
                 </h3>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] font-mono font-bold">
+                <span className="text-[11px] sm:text-xs px-2 py-0.5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] font-mono font-bold">
                   {references.length}
                 </span>
               </div>
-              <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] mt-0.5">
+              <p className="text-[10px] sm:text-[11px] text-[#737C77] dark:text-[#8899A6] mt-0.5">
                 PubMed掲載査読論文・原典古典・各種ガイドライン等の学術的根拠
               </p>
             </div>
@@ -67,7 +67,7 @@ export default function ArticleReferences({
 
         {/* 参考文献カード一覧 */}
         {isExpanded && (
-          <div className="p-4 sm:p-6 space-y-4 divide-y divide-[#EBE4D5] dark:divide-[#22303D]">
+          <div className="p-3 sm:p-6 space-y-3 sm:space-y-4 divide-y divide-[#EBE4D5] dark:divide-[#22303D]">
             {references.map((ref) => {
               const authorsText = Array.isArray(ref.authors)
                 ? ref.authors.length > 3
@@ -79,7 +79,7 @@ export default function ArticleReferences({
                 <article
                   key={ref.id}
                   id={ref.anchorId}
-                  className={`pt-4 first:pt-0 scroll-mt-28 transition-all duration-300 rounded-xl p-3 -m-3 hover:bg-[#FAF8F5] dark:hover:bg-[#1A2530]`}
+                  className={`pt-3 sm:pt-4 first:pt-0 scroll-mt-28 transition-all duration-300 rounded-xl p-2.5 -m-2.5 sm:p-3 sm:-m-3 hover:bg-[#FAF8F5] dark:hover:bg-[#1A2530]`}
                 >
                   <div className="flex items-start gap-3">
                     {/* 番号バッジ */}

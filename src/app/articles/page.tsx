@@ -99,24 +99,24 @@ export default function ArticlesPage() {
     const otherArticles = ARTICLES.filter((a) => a.id !== activeArticle.id).slice(0, 3);
 
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-8">
+      <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-16 space-y-6 sm:space-y-8">
         {/* 論文・長文記事読書時限定のプログレスバー */}
         <ReadingProgressBar />
 
         {/* ナビゲーションバー */}
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-2 sm:gap-4">
           <button
             onClick={() => handleSelectArticle(null)}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline bg-[#EBF3EF] dark:bg-[#182823] px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline bg-[#EBF3EF] dark:bg-[#182823] px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>記事一覧へ戻る</span>
           </button>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={handleCopyLink}
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-[#59615D] dark:text-[#96A6B2] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] bg-[#FAF8F5] dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-[#59615D] dark:text-[#96A6B2] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] bg-[#FAF8F5] dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] px-2.5 sm:px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
               title="記事リンクをコピー"
             >
               {copied ? (
@@ -134,15 +134,15 @@ export default function ArticlesPage() {
 
             <div className="flex items-center gap-1.5 text-xs text-[#59615D] dark:text-[#96A6B2]">
               <Clock className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>読了目安: 約 {activeArticle.readTime}</span>
+              <span className="text-[11px] sm:text-xs">読了約 {activeArticle.readTime}</span>
             </div>
           </div>
         </div>
 
-        <article className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-12 shadow-sm space-y-8 transition-colors">
+        <article className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-12 shadow-sm space-y-6 sm:space-y-8 transition-colors">
           {/* ヘッダー情報 */}
-          <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-6 space-y-4">
-            <div className="flex flex-wrap items-center gap-3 text-xs text-[#59615D] dark:text-[#96A6B2]">
+          <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-5 sm:pb-6 space-y-3 sm:space-y-4">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-[#59615D] dark:text-[#96A6B2]">
               <span className="px-2.5 py-0.5 rounded bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] font-medium border border-[#F3E1CB] dark:border-[#423321]">
                 {activeArticle.category}
               </span>
@@ -152,11 +152,11 @@ export default function ArticlesPage() {
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-bold text-[#232826] dark:text-[#FAF8F5] leading-relaxed tracking-normal">
+            <h1 className="text-xl sm:text-3xl lg:text-4xl font-sans font-bold text-[#232826] dark:text-[#FAF8F5] leading-relaxed tracking-normal">
               {activeArticle.title}
             </h1>
             {activeArticle.subtitle && (
-              <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] font-medium leading-relaxed mt-1">
+              <p className="text-xs sm:text-base text-[#59615D] dark:text-[#A0B0BC] font-medium leading-relaxed mt-1">
                 {activeArticle.subtitle}
               </p>
             )}
@@ -175,7 +175,7 @@ export default function ArticlesPage() {
               </div>
               <div className="flex flex-wrap items-center gap-1.5">
                 {activeArticle.tags.map((t, idx) => (
-                  <span key={idx} className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] text-[11px] text-[#404743] dark:text-[#C5D2DB]">
+                  <span key={idx} className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] text-[10px] sm:text-[11px] text-[#404743] dark:text-[#C5D2DB]">
                     #{t}
                   </span>
                 ))}
@@ -185,14 +185,14 @@ export default function ArticlesPage() {
 
           {/* 10秒でわかる本稿の3ポイント */}
           {activeArticle.keyPoints && activeArticle.keyPoints.length > 0 && (
-            <div className="bg-gradient-to-br from-[#EBF3EF] via-[#F5FAF8] to-[#FAF8F5] dark:from-[#162721] dark:via-[#14211C] dark:to-[#101915] p-5 sm:p-6 rounded-2xl border-2 border-[#1E3D34]/30 dark:border-[#3D6E5C] shadow-xs space-y-3">
+            <div className="bg-gradient-to-br from-[#EBF3EF] via-[#F5FAF8] to-[#FAF8F5] dark:from-[#162721] dark:via-[#14211C] dark:to-[#101915] p-3 sm:p-6 rounded-2xl border-2 border-[#1E3D34]/30 dark:border-[#3D6E5C] shadow-xs space-y-2.5 sm:space-y-3">
               <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#83BEA8]">
                 <Zap className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] fill-current" />
                 <span className="tracking-wide">10秒でわかる本稿の3ポイント</span>
               </div>
-              <ul className="space-y-2.5 text-xs sm:text-sm text-[#232826] dark:text-[#E6EFEA]">
+              <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-sm text-[#232826] dark:text-[#E6EFEA]">
                 {activeArticle.keyPoints.map((point, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5">
+                  <li key={idx} className="flex items-start gap-2 sm:gap-2.5">
                     <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] font-mono text-[11px] font-bold shrink-0 mt-0.5 shadow-2xs">
                       {idx + 1}
                     </span>
@@ -210,7 +210,7 @@ export default function ArticlesPage() {
           )}
 
           {/* 要約ボックス */}
-          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-5 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#4E8C76] text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-5 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#4E8C76] text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
             <strong className="block font-sans text-sm font-bold text-[#232826] dark:text-[#FAF8F5] mb-1">【本稿の要旨】</strong>
             <GlossaryRenderer text={activeArticle.summary} seenTerms={seenTerms} />
           </div>
@@ -227,7 +227,7 @@ export default function ArticlesPage() {
           <ArticleReferences references={resolvedReferences} />
 
           {/* 著者紹介フッター */}
-          <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-6 bg-[#FAF8F5] dark:bg-[#121920] p-6 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] flex flex-col sm:flex-row items-start gap-4">
+          <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-6 bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-6 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] flex flex-col sm:flex-row items-start gap-4">
             <img
               src="/icon.png"
               alt="はり太郎"
@@ -265,14 +265,14 @@ export default function ArticlesPage() {
               <Sparkles className="w-4 h-4" />
               <span>あわせて読みたい学術講義・知見録</span>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
               {otherArticles.map((art) => (
                 <div
                   key={art.id}
                   onClick={() => handleSelectArticle(art)}
-                  className="bg-[#FFFFFF] dark:bg-[#17212A] p-4 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] transition-all cursor-pointer flex flex-col justify-between group shadow-xs"
+                  className="bg-[#FFFFFF] dark:bg-[#17212A] p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] transition-all cursor-pointer flex flex-col justify-between group shadow-xs"
                 >
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
                       {art.category}
                     </span>
@@ -283,7 +283,7 @@ export default function ArticlesPage() {
                       {art.summary}
                     </p>
                   </div>
-                  <div className="mt-3 pt-2.5 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-[11px] text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+                  <div className="mt-2.5 sm:mt-3 pt-2 sm:pt-2.5 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-[11px] text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
                     <span>講義を読む</span>
                     <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                   </div>
@@ -297,7 +297,7 @@ export default function ArticlesPage() {
         <div className="flex items-center justify-between pt-4">
           <button
             onClick={() => handleSelectArticle(null)}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline bg-[#EBF3EF] dark:bg-[#182823] px-4 py-2 rounded-xl transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline bg-[#EBF3EF] dark:bg-[#182823] px-3.5 sm:px-4 py-2 rounded-xl transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>記事一覧へ戻る</span>
@@ -316,30 +316,30 @@ export default function ArticlesPage() {
 
   // 記事一覧ビュー
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10">
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-16 space-y-8 sm:space-y-10">
       {/* ページヘッダー */}
-      <div className="border-b border-[#E8E1D1] dark:border-[#22303D] pb-8">
+      <div className="border-b border-[#E8E1D1] dark:border-[#22303D] pb-6 sm:pb-8">
         <div className="flex items-center gap-2 text-xs font-semibold text-[#1E2D3D] dark:text-[#7BAAD8] tracking-widest uppercase mb-2">
           <BookOpen className="w-4 h-4" />
           <span>Knowledge & Research Archive</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
+        <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
           知見・臨床録・学術論文抄読
         </h1>
-        <p className="mt-2 text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-3xl leading-relaxed">
+        <p className="mt-2 text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-3xl leading-relaxed">
           経絡・経穴の物理的・生物学的機序から、脈診・腹診・舌診の生体シグナル解析、東西統合医学の実践臨床録までを網羅した学術アーカイブです。古典の英知と現代自然科学の接点を体系的に探究します。
         </p>
       </div>
 
       {/* 検索・絞り込みバー */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between items-stretch sm:items-center">
         {/* カテゴリタブ */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                 selectedCategory === cat
                   ? "bg-[#1E2D3D] dark:bg-[#375573] text-[#FAF8F5] shadow-xs"
                   : "bg-[#FFFFFF] dark:bg-[#17212A] text-[#59615D] dark:text-[#A0B0BC] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] dark:hover:bg-[#1E2B36]"
@@ -365,11 +365,11 @@ export default function ArticlesPage() {
 
       {/* 記事カード一覧 */}
       {filteredArticles.length === 0 ? (
-        <div className="text-center py-16 sm:py-24 px-6 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-4 max-w-xl mx-auto shadow-xs">
-          <div className="w-14 h-14 rounded-2xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center mx-auto mb-2">
-            <BookOpen className="w-7 h-7" />
+        <div className="text-center py-12 sm:py-24 px-4 sm:px-6 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-4 max-w-xl mx-auto shadow-xs">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center mx-auto mb-2">
+            <BookOpen className="w-6 h-6 sm:w-7 sm:h-7" />
           </div>
-          <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+          <h2 className="font-serif text-base sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
             該当する記事が見つかりませんでした
           </h2>
           <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
@@ -386,12 +386,12 @@ export default function ArticlesPage() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-6">
           {filteredArticles.map((article) => (
             <div
               key={article.id}
               onClick={() => handleSelectArticle(article)}
-              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group"
+              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-6 hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group"
             >
               <div>
                 <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-3">
