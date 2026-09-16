@@ -27,9 +27,7 @@ const EIGHT_SYSTEMS = [
     tagColor: "bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5]",
     subtitle: "動的平衡と状態遷移の「最小単位OS」",
     purpose: "固定的な二元論を脱却し、変化・循環・消長転化の力学モデルを習得する",
-    flowTo: "多臓器ネットワークへ展開する「五行論」へ",
     terms: ["陰陽互根", "消長転化", "陰虚陽亢", "動的平衡"],
-    acupoints: "関元・百会",
     lectureId: "lecture-yinyang-1"
   },
   {
@@ -40,9 +38,7 @@ const EIGHT_SYSTEMS = [
     tagColor: "bg-[#2D5A46] dark:bg-[#3E7A60] text-[#FAF8F5]",
     subtitle: "多臓器相互作用と波及のネットワーク地図",
     purpose: "木火土金水の生剋乗侮から多臓器連鎖病理を読み解く思考力を身につける",
-    flowTo: "五臓を巡る生体エネルギー実体「気血水」へ",
     terms: ["相生相剋", "木乗土（肝気犯胃）", "情志相勝", "五労五悪"],
-    acupoints: "太衝・足三里",
     lectureId: "lecture-wuxing-1"
   },
   {
@@ -53,9 +49,7 @@ const EIGHT_SYSTEMS = [
     tagColor: "bg-[#B86924] dark:bg-[#9C5417] text-[#FAF8F5]",
     subtitle: "生体を駆動する三層実体と代謝動態モデル",
     purpose: "エネルギーと栄養・水液の代謝循環、虚損・鬱滞の破綻ドミノを解明する",
-    flowTo: "多層バリアと循環構造を統合する「生命機能論」へ",
     terms: ["気虚・気滞", "血虚・瘀血", "水滞・痰飲", "ドミノ破綻"],
-    acupoints: "気海・三陰交",
     lectureId: "lecture-qiblood-1"
   },
   {
@@ -66,9 +60,7 @@ const EIGHT_SYSTEMS = [
     tagColor: "bg-[#1E2D3D] dark:bg-[#344D66] text-[#FAF8F5]",
     subtitle: "表裏・営衛・三焦の人体動態システム論",
     purpose: "固定した解剖部位ではなく、機能層（防御・代謝・生殖）として人体を捉える",
-    flowTo: "正常な生体システムが崩壊するメカニズム「病機論」へ",
     terms: ["衛気営血", "三焦気化", "表裏相応", "昇降出入"],
-    acupoints: "合谷・中脘",
     lectureId: "lecture-lifedynamics-1"
   },
   {
@@ -79,9 +71,7 @@ const EIGHT_SYSTEMS = [
     tagColor: "bg-[#A83629] dark:bg-[#85271D] text-[#FAF8F5]",
     subtitle: "歪みの発生と病理ドミノの破綻モデル",
     purpose: "邪気侵入と正気衰弱が引き起こす病理タイムラインと氷山モデルを解読する",
-    flowTo: "潜在する病機を体表サインから捉える「診断論」へ",
     terms: ["邪正盛衰", "内生五邪", "氷山モデル", "絡脈瘀阻"],
-    acupoints: "風池・行間",
     lectureId: "lecture-pathomechanism-1"
   },
   {
@@ -92,9 +82,7 @@ const EIGHT_SYSTEMS = [
     tagColor: "bg-[#4A3B69] dark:bg-[#5C4B7F] text-[#FAF8F5]",
     subtitle: "四診情報を立体的に束ねる臨床推論アルゴリズム",
     purpose: "安全確認・四診の客観化から八綱・気血水・臓腑経絡を導き、検証可能な診断記録を統合する",
-    flowTo: "確定した証に対して介入ルールを決定する「治法論」へ",
     terms: ["安全確認", "四診合参", "八綱座標", "自己修正"],
-    acupoints: "四診・脈腹診",
     lectureId: "lecture-diagnosis-1"
   },
   {
@@ -105,9 +93,7 @@ const EIGHT_SYSTEMS = [
     tagColor: "bg-[#285A52] dark:bg-[#3B7A70] text-[#FAF8F5]",
     subtitle: "介入ベクトル・刺激量設計・治療計画書の臨床工学",
     purpose: "補瀉寒熱・本標優先・臓腑経絡配穴から刺激量6大検討項目、客観的評価と治療計画書7項目までを体系化する",
-    flowTo: "治法を具現化する臨床運用と自己修正アルゴリズム「実践論」へ",
     terms: ["治則治法", "本治標治", "刺激量設計", "治療計画書7項目"],
-    acupoints: "主穴・配穴論",
     lectureId: "lecture-treatment-1"
   },
   {
@@ -118,9 +104,7 @@ const EIGHT_SYSTEMS = [
     tagColor: "bg-[#1E2D3D] dark:bg-[#2A3E54] text-[#FAF8F5]",
     subtitle: "臨床運用の完全プロトコルと自己修正アルゴリズム",
     purpose: "初診トリアージから弁証、二層目標、日常語での説明合意、反応評価、次回計画修正、治療終了（卒業）までを一連の動的ループとして運用する",
-    flowTo: "全8大体系を修了し、生涯にわたる臨床実践と自己検証のステージへ",
     terms: ["初動トリアージ", "動的推論ループ", "説明合意記録", "治療終了（卒業）"],
-    acupoints: "太衝・足三里・風池",
     lectureId: "lecture-practice-1"
   }
 ];
@@ -332,11 +316,6 @@ export default function HomePage() {
                       {system.purpose}
                     </p>
                   </div>
-
-                  <div className="text-[11px] text-[#59615D] dark:text-[#A0B0BC]">
-                    <span className="font-bold text-[#737C77] dark:text-[#8899A6]">連動先：</span>
-                    {system.flowTo}
-                  </div>
                 </div>
 
                 <div className="pt-1 flex flex-wrap gap-1">
@@ -351,10 +330,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs">
-                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                  関連要穴: <strong className="text-[#232826] dark:text-[#FAF8F5]">{system.acupoints}</strong>
-                </span>
+              <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-end text-xs">
                 <Link
                   href={`/curriculum?lecture=${system.lectureId}`}
                   className="font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform"
@@ -437,55 +413,52 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* シミュレーター内の4大推論ツール */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 pt-1">
-              <Link
-                href="/simulator?tab=diagnosis"
-                className="p-3 sm:p-3.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all text-left group"
-              >
-                <div className="flex items-center justify-between mb-1.5">
-                  <Layers className="w-4 h-4 text-[#E6C387]" />
-                  <ArrowRight className="w-3.5 h-3.5 text-[#A0B0BC] group-hover:translate-x-1 transition-transform" />
+            {/* シミュレーターの3大コア機能プレビュー */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 sm:gap-3 pt-1">
+              <div className="p-3.5 sm:p-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 space-y-1.5">
+                <div className="flex items-center gap-2 text-[#E6C387]">
+                  <Layers className="w-4 h-4" />
+                  <h4 className="font-bold text-xs text-white">① 3軸連動の病態判定</h4>
                 </div>
-                <h4 className="font-bold text-xs text-white">八綱・臓腑 弁証判定</h4>
-                <p className="text-[11px] text-[#A0B0BC] mt-0.5">3段階フィルターで一文の証を自動導出</p>
-              </Link>
+                <p className="text-[11px] text-[#A0B0BC] leading-relaxed">
+                  八綱（深浅・勢い）× 気血水（運動動態）× 臓腑経絡（局在病位）の3層から立体的に病態を特定します。
+                </p>
+              </div>
 
-              <Link
-                href="/simulator?tab=haiketsu"
-                className="p-3 sm:p-3.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all text-left group"
-              >
-                <div className="flex items-center justify-between mb-1.5">
-                  <Compass className="w-4 h-4 text-[#74BA9E]" />
-                  <ArrowRight className="w-3.5 h-3.5 text-[#A0B0BC] group-hover:translate-x-1 transition-transform" />
+              <div className="p-3.5 sm:p-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 space-y-1.5">
+                <div className="flex items-center gap-2 text-[#74BA9E]">
+                  <Compass className="w-4 h-4" />
+                  <h4 className="font-bold text-xs text-white">② 一文の証を自動導出</h4>
                 </div>
-                <h4 className="font-bold text-xs text-white">配穴最適化エンジン</h4>
-                <p className="text-[11px] text-[#A0B0BC] mt-0.5">主穴×配穴の相乗効果と臨床根拠を提示</p>
-              </Link>
+                <p className="text-[11px] text-[#A0B0BC] leading-relaxed">
+                  選択した病態の組み合わせから、確定診断となる「証名」と詳細な病理メカニズム・舌脈所見を即座に算出します。
+                </p>
+              </div>
 
-              <Link
-                href="/simulator?tab=case"
-                className="p-3 sm:p-3.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all text-left group"
-              >
-                <div className="flex items-center justify-between mb-1.5">
-                  <Stethoscope className="w-4 h-4 text-[#E6C387]" />
-                  <ArrowRight className="w-3.5 h-3.5 text-[#A0B0BC] group-hover:translate-x-1 transition-transform" />
+              <div className="p-3.5 sm:p-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 space-y-1.5">
+                <div className="flex items-center gap-2 text-[#E6C387]">
+                  <Sparkles className="w-4 h-4" />
+                  <h4 className="font-bold text-xs text-white">③ 最小構成の特効ペアツボ</h4>
                 </div>
-                <h4 className="font-bold text-xs text-white">症例問題・推論演習</h4>
-                <p className="text-[11px] text-[#A0B0BC] mt-0.5">四診の所見から鑑別ステップを回答</p>
-              </Link>
+                <p className="text-[11px] text-[#A0B0BC] leading-relaxed">
+                  多穴刺鍼を排し、主穴（標治）× 配穴（本治）の相乗効果を発揮する最適なツボ処方と臨床根拠を提示します。
+                </p>
+              </div>
+            </div>
 
+            {/* シミュレーター起動CTA */}
+            <div className="pt-2 sm:pt-3 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
               <Link
-                href="/simulator?tab=depth"
-                className="p-3 sm:p-3.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all text-left group"
+                href="/simulator"
+                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#E6C387] text-[#1E2D3D] hover:bg-[#DFC07D] font-bold text-sm shadow-md transition-all group"
               >
-                <div className="flex items-center justify-between mb-1.5">
-                  <Activity className="w-4 h-4 text-[#74BA9E]" />
-                  <ArrowRight className="w-3.5 h-3.5 text-[#A0B0BC] group-hover:translate-x-1 transition-transform" />
-                </div>
-                <h4 className="font-bold text-xs text-white">経気深度・刺激量制御</h4>
-                <p className="text-[11px] text-[#A0B0BC] mt-0.5">病位深浅・刺鍼深度・過剰刺激の防止</p>
+                <Layers className="w-4 h-4 text-[#1E2D3D]" />
+                <span>臨床弁証シミュレーターを起動する</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
+              <span className="text-xs text-[#A0B0BC]">
+                八綱・気血水・臓腑経絡の動的推論をブラウザ上で即座に体験できます
+              </span>
             </div>
           </div>
         </div>

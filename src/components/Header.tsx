@@ -199,7 +199,7 @@ export default function Header() {
                     </div>
                     <div>
                       <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                        経穴辞典（全361穴）
+                        十四経脈・経穴辞典（全361穴）
                       </span>
                       <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
                         十四経脈・骨度法・解剖取穴・主治・禁忌
@@ -275,7 +275,7 @@ export default function Header() {
                   </div>
 
                   <Link
-                    href="/simulator?tab=diagnosis"
+                    href="/simulator"
                     onClick={() => setOpenDropdown(null)}
                     className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
                   >
@@ -292,61 +292,25 @@ export default function Header() {
                         </span>
                       </div>
                       <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                        八綱 ➜ 気血水 ➜ 臓腑 ➜ 証 ➜ 配穴の思考ステップ
+                        八綱 ➜ 気血水 ➜ 臓腑 ➜ 一文の証 ➜ 特効ペアツボを即座に導出
                       </span>
                     </div>
                   </Link>
 
                   <Link
-                    href="/simulator?tab=haiketsu"
+                    href="/articles?article=science-of-yinyang-gogyo"
                     onClick={() => setOpenDropdown(null)}
                     className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
                   >
                     <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0 mt-0.5">
-                      <Compass className="w-4 h-4" />
+                      <BookOpen className="w-4 h-4" />
                     </div>
                     <div>
                       <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                        配穴最適化エンジン
+                        弁証推論のシステム科学
                       </span>
                       <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                        主穴×配穴の相乗効果と臨床根拠を導出
-                      </span>
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/simulator?tab=depth"
-                    onClick={() => setOpenDropdown(null)}
-                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-[#EDF3F8] dark:bg-[#1A2837] text-[#1E2D3D] dark:text-[#6FA0D6] flex items-center justify-center shrink-0 mt-0.5">
-                      <Activity className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                        経気深度・刺激量計算
-                      </span>
-                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                        病位深浅・刺鍼深度・刺激総量の最適制御
-                      </span>
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/simulator?tab=case"
-                    onClick={() => setOpenDropdown(null)}
-                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#A83629] dark:text-[#C47A72] flex items-center justify-center shrink-0 mt-0.5">
-                      <Stethoscope className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                        症例問題・臨床推論演習
-                      </span>
-                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                        問診・望診・脈腹診からの鑑別演習
+                        八綱・気血水・五行ネットワークの数理モデル
                       </span>
                     </div>
                   </Link>
@@ -582,7 +546,7 @@ export default function Header() {
               考える（臨床推論演習）
             </span>
             <Link
-              href="/simulator?tab=diagnosis"
+              href="/simulator"
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center justify-between px-3 py-2 rounded-xl text-sm font-bold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2117]"
             >
@@ -595,28 +559,12 @@ export default function Header() {
               </span>
             </Link>
             <Link
-              href="/simulator?tab=haiketsu"
+              href="/articles?article=science-of-yinyang-gogyo"
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
             >
-              <Compass className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>配穴最適化エンジン</span>
-            </Link>
-            <Link
-              href="/simulator?tab=case"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
-            >
-              <Stethoscope className="w-4 h-4 text-[#A83629] dark:text-[#C47A72]" />
-              <span>症例問題・推論トレーニング</span>
-            </Link>
-            <Link
-              href="/simulator?tab=depth"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
-            >
-              <Activity className="w-4 h-4 text-[#1E2D3D] dark:text-[#6FA0D6]" />
-              <span>経気深度・刺鍼刺激量計算</span>
+              <BookOpen className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+              <span>弁証推論のシステム科学（理論解説）</span>
             </Link>
           </div>
 
