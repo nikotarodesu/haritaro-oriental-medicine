@@ -42,7 +42,7 @@ const EIGHT_SYSTEMS = [
     flowTo: "五臓を巡る生体エネルギー実体「気血水」へ",
     terms: ["相生相剋", "木乗土（肝気犯胃）", "情志相勝", "五労五悪"],
     acupoints: "太衝・足三里",
-    lectureId: "lecture-2-wuxing"
+    lectureId: "lecture-wuxing-1"
   },
   {
     number: 3,

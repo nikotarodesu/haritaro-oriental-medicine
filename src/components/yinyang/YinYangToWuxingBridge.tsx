@@ -143,7 +143,7 @@ export default function YinYangToWuxingBridge({ onNextLecture }: Props) {
           </button>
         ) : (
           <a
-            href="/curriculum?lecture=lecture-2-wuxing"
+            href="/curriculum?lecture=lecture-wuxing-1"
             className="shrink-0 px-6 py-3 rounded-xl bg-[#E6C387] hover:bg-[#DFC07D] text-[#1E3D34] font-bold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 group"
           >
             <span>次へ進む：② 五行論</span>

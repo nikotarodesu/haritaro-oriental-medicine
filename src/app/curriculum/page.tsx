@@ -18,7 +18,8 @@ import {
   Sparkles, 
   Award,
   Lock,
-  Layers
+  Layers,
+  Compass
 } from "lucide-react";
 
 export default function CurriculumPage() {
@@ -34,10 +35,12 @@ export default function CurriculumPage() {
       const lectureId = params.get("lecture");
       if (lectureId) {
         // 後方互換：旧ID対応
-        const resolvedId =
-          lectureId === "lecture-1" || lectureId === "lecture-1-yinyang"
-            ? "lecture-yinyang-1"
-            : lectureId;
+        let resolvedId = lectureId;
+        if (lectureId === "lecture-1" || lectureId === "lecture-1-yinyang") {
+          resolvedId = "lecture-yinyang-1";
+        } else if (lectureId === "lecture-2" || lectureId === "lecture-2-wuxing") {
+          resolvedId = "lecture-wuxing-1";
+        }
         const found = allLectures.find((l) => l.id === resolvedId);
         if (found) {
           setActiveLecture(found);
@@ -76,9 +79,11 @@ export default function CurriculumPage() {
       activeLecture.contentMarkdown
     );
 
-    // 陰陽論シリーズのレッスン一覧
-    const yinyangLessons = allLectures.filter((l) => l.seriesId === "yinyang");
+    // シリーズ別のレッスン一覧
     const isYinYang = activeLecture.seriesId === "yinyang";
+    const isWuxing = activeLecture.seriesId === "wuxing";
+    const yinyangLessons = allLectures.filter((l) => l.seriesId === "yinyang");
+    const wuxingLessons = allLectures.filter((l) => l.seriesId === "wuxing");
 
     return (
       <div className="max-w-4xl mx-auto px-2 sm:px-6 lg:px-8 py-6 sm:py-16 space-y-6 sm:space-y-8">
@@ -153,6 +158,56 @@ export default function CurriculumPage() {
               })}
             </div>
           </div>
+        ) : isWuxing ? (
+          /* 五行論 全12レッスン 専用進捗インジケーター */
+          <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-2.5 sm:p-4 shadow-2xs space-y-2">
+            <div className="flex items-center justify-between pb-2 border-b border-[#F2ECE0] dark:border-[#22303D] text-[11px]">
+              <div className="flex items-center gap-1.5 font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                <Compass className="w-3.5 h-3.5" />
+                <span>五行論 集中カリキュラム 進捗</span>
+              </div>
+              <span className="font-mono text-[#8C9691] dark:text-[#64748B]">
+                レッスン {activeLecture.lessonNumber || 1} / 12
+              </span>
+            </div>
+            <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-1.5 text-center text-[10px]">
+              {wuxingLessons.map((lec) => {
+                const isActive = lec.id === activeLecture.id;
+                const isPast = (lec.lessonNumber || 0) < (activeLecture.lessonNumber || 0);
+                const shortLabel = [
+                  "① 概要",
+                  "② 性質",
+                  "③ 相生",
+                  "④ 相剋",
+                  "⑤ 乱れ",
+                  "⑥ 五臓",
+                  "⑦ 身体",
+                  "⑧ 精神",
+                  "⑨ 生活",
+                  "⑩ 連動",
+                  "⑪ 判断",
+                  "⑫ 演習"
+                ][(lec.lessonNumber || 1) - 1];
+
+                return (
+                  <button
+                    key={lec.id}
+                    onClick={() => handleSelectLecture(lec)}
+                    className={`py-1.5 px-1 rounded-lg font-bold transition-all truncate cursor-pointer ${
+                      isActive
+                        ? "bg-[#1E3D34] text-white shadow-xs scale-[1.03]"
+                        : isPast
+                        ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#D9EADB]"
+                        : "bg-[#FAF8F5] dark:bg-[#121920] text-[#8C9691] dark:text-[#64748B] hover:text-[#232826]"
+                    }`}
+                    title={lec.title}
+                  >
+                    {shortLabel}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         ) : (
           /* 全8大体系 常駐進捗インジケーター */
           <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-2.5 sm:p-4 shadow-2xs">
@@ -167,7 +222,7 @@ export default function CurriculumPage() {
             <div className="grid grid-cols-4 sm:grid-cols-8 gap-1.5 text-center text-[10px]">
               {[
                 { num: 1, label: "① 陰陽", targetId: "lecture-yinyang-1" },
-                { num: 2, label: "② 五行", targetId: "lecture-2-wuxing" },
+                { num: 2, label: "② 五行", targetId: "lecture-wuxing-1" },
                 { num: 3, label: "③ 気血水", targetId: "lecture-3-qiblood" },
                 { num: 4, label: "④ 生命機能", targetId: "lecture-4-lifedynamics" },
                 { num: 5, label: "⑤ 病機", targetId: "lecture-5-pathomechanism" },
@@ -237,7 +292,7 @@ export default function CurriculumPage() {
                 </div>
                 {activeLecture.seriesTitle && activeLecture.lessonNumber && (
                   <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#1E3D34] text-white">
-                    {activeLecture.seriesTitle} 第{activeLecture.lessonNumber}章 / 全8章
+                    {activeLecture.seriesTitle} 第{activeLecture.lessonNumber}章 / 全{isYinYang ? 8 : 12}章
                   </span>
                 )}
               </div>
@@ -371,12 +426,13 @@ export default function CurriculumPage() {
     );
   }
 
-  // 陰陽論レッスン一覧（シラバス用）
+  // シリーズ別レッスン一覧（シラバス用）
   const yinyangLessons = allLectures.filter((l) => l.seriesId === "yinyang");
+  const wuxingLessons = allLectures.filter((l) => l.seriesId === "wuxing");
 
   // カリキュラム一覧ビュー
   return (
-    <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-10 sm:space-y-12">
+    <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-10 sm:space-y-14">
       {/* ページ見出し */}
       <div className="border-b border-[#E8E1D1] dark:border-[#22303D] pb-8 text-center max-w-3xl mx-auto space-y-4">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-semibold tracking-wider">
@@ -391,13 +447,13 @@ export default function CurriculumPage() {
         </p>
       </div>
 
-      {/* ★ メイン特集：陰陽論 全8レッスン 集中カリキュラム */}
+      {/* ★ メイン特集①：陰陽論 全8レッスン 集中カリキュラム */}
       <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
         <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
             <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
               <Sparkles className="w-4 h-4" />
-              <span>基幹カリキュラム 深掘りシリーズ（全8レッスン）</span>
+              <span>基幹カリキュラム 深掘りシリーズ①（全8レッスン）</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
               陰陽論 ― 生命ダイナミズムを読み解く「最小単位」の思考OS
@@ -465,11 +521,87 @@ export default function CurriculumPage() {
         </div>
       </section>
 
-      {/* 後続カリキュラム（五行論〜実践論） */}
+      {/* ★ メイン特集②：五行論 全12レッスン 集中カリキュラム */}
+      <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
+        <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div>
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
+              <Compass className="w-4 h-4" />
+              <span>基幹カリキュラム 深掘りシリーズ②（全12レッスン）</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+              五行論 ― 循環と多臓器ネットワークを解き明かす「動態システム」の地図
+            </h2>
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1.5 leading-relaxed max-w-3xl">
+              木・火・土・金・水の性質から相生・相剋、五臓・身体対応、感情・精神（五神五志）、自然環境、多臓器連動、そして臨床意思決定アルゴリズムまでを全12レッスンで完全網羅します。
+            </p>
+          </div>
+          <button
+            onClick={() => handleSelectLecture(wuxingLessons[0])}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
+          >
+            <span>第1章から受講を開始する</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
+        {/* 五行論 全12レッスン グリッドカード */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
+          {wuxingLessons.map((lec) => (
+            <div
+              key={lec.id}
+              onClick={() => handleSelectLecture(lec)}
+              className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md cursor-pointer transition-all flex flex-col justify-between group"
+            >
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                    レッスン {lec.lessonNumber} / 12
+                  </span>
+                  <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                    <Clock className="w-3 h-3" />
+                    <span>約 {lec.duration}</span>
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                  {lec.title}
+                </h3>
+
+                {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
+                <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
+                  <div className="text-[#59615D] dark:text-[#A0B0BC]">
+                    <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
+                    {lec.whatYouWillLearn.topics}
+                  </div>
+                  <div className="text-[#232826] dark:text-[#FAF8F5]">
+                    <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
+                    {lec.whatYouWillLearn.canDo}
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
+                <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                  <span>レッスンを受講する</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                  段階的演習つき
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 後続カリキュラム（気血水理論〜実践論） */}
       <div className="space-y-8 sm:space-y-12">
         {CURRICULUM_DATA.map((stage) => {
-          // 陰陽論以外の講義を抽出
-          const stageLectures = stage.lectures.filter((l) => l.seriesId !== "yinyang");
+          // 陰陽論・五行論以外の講義を抽出
+          const stageLectures = stage.lectures.filter(
+            (l) => l.seriesId !== "yinyang" && l.seriesId !== "wuxing"
+          );
           if (stageLectures.length === 0) return null;
 
           return (
