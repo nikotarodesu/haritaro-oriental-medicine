@@ -18,7 +18,6 @@ import {
   Lightbulb,
   ChevronDown,
   ChevronUp,
-  Zap,
   Scale,
   GraduationCap,
   HelpCircle
@@ -40,8 +39,6 @@ import {
   TEMP_REACTION_OPTIONS,
   DRINKING_OPTIONS,
   TONGUE_OPTIONS,
-  DeltaInsight,
-  generateDeltaInsight,
   ACADEMIC_STANDARDS,
   PreviousSelection,
   DEPTH_OPTIONS,
@@ -82,9 +79,6 @@ export default function ThreeStageSimulator() {
     tongue: "unconfirmed"
   });
 
-  // 「⚡ 今回変わったこと」差分インサイト
-  const [deltaInsight, setDeltaInsight] = useState<DeltaInsight | null>(null);
-
   // サンプルプリセット追跡
   const [activePresetId, setActivePresetId] = useState<string | null>("preset-ganki");
 
@@ -96,21 +90,8 @@ export default function ThreeStageSimulator() {
     return synthesizeComprehensiveDiagnosis(depth, temp, state, qixueshui, zangfu, complexState);
   }, [depth, temp, state, qixueshui, zangfu, complexState]);
 
-  // 現在の全選択値の取得
-  const getCurrentSelection = (): PreviousSelection => ({
-    depth,
-    temp,
-    state,
-    qixueshui,
-    zangfu,
-    complexState
-  });
-
-  // パラメータ更新ハンドラ（差分インサイトを自動生成）
+  // パラメータ更新ハンドラ
   const handleUpdate = (updates: Partial<PreviousSelection>, newPresetId: string | null = null) => {
-    const prev = getCurrentSelection();
-    const next: PreviousSelection = { ...prev, ...updates };
-
     if (updates.depth !== undefined) setDepth(updates.depth);
     if (updates.temp !== undefined) setTemp(updates.temp);
     if (updates.state !== undefined) setState(updates.state);
@@ -119,16 +100,10 @@ export default function ThreeStageSimulator() {
     if (updates.complexState !== undefined) setComplexState(updates.complexState);
 
     setActivePresetId(newPresetId);
-
-    const insight = generateDeltaInsight(prev, next);
-    if (insight) {
-      setDeltaInsight(insight);
-    }
   };
 
   // プリセットの適用
   const handleApplyPreset = (preset: PresetCase) => {
-    const prev = getCurrentSelection();
     setDepth(preset.values.depth);
     setTemp(preset.values.temp);
     setState(preset.values.state);
@@ -136,13 +111,6 @@ export default function ThreeStageSimulator() {
     setZangfu(preset.values.zangfu);
     setComplexState("none");
     setActivePresetId(preset.id);
-
-    setDeltaInsight({
-      changedItem: `代表症例読込：『${preset.name}』`,
-      pathologyChange: preset.description,
-      treatmentStrategyChange: "入力された八綱・気血水・臓腑の組み合わせに合致する臨床推論モデルを展開します。",
-      acupointImpact: "王道配穴（主配穴）と代替配穴の多層エビデンス比較を表示します。"
-    });
   };
 
   // 四診キーサインの切り替え
@@ -183,7 +151,6 @@ export default function ThreeStageSimulator() {
       tongue: "unconfirmed"
     });
     setActivePresetId("preset-ganki");
-    setDeltaInsight(null);
   };
 
   return (
@@ -626,54 +593,6 @@ export default function ThreeStageSimulator() {
           ? "border-[#B86924] dark:border-[#E6C387]"
           : "border-[#1E3D34] dark:border-[#3A6B5B]"
       }`}>
-        {/* ⚡ 今回変わったこと（条件変更による臨床判断の転換点） */}
-        {deltaInsight && (
-          <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-[#FFFDF5] dark:bg-[#1F1C16] border-2 border-[#D4A373] dark:border-[#9C6D3B] space-y-3 animate-fadeIn shadow-xs">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#EADCC8] dark:border-[#382F24] pb-2">
-              <div className="flex items-center gap-2">
-                <span className="p-1 rounded-md bg-[#B86924] text-white">
-                  <Zap className="w-3.5 h-3.5" />
-                </span>
-                <h4 className="font-serif font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5]">
-                  ⚡ 今回変わったこと（一つ変えると、何が変わる？）
-                </h4>
-              </div>
-              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#FAF0E6] dark:bg-[#332517] text-[#B86924] dark:text-[#E6C387] border border-[#E8D0BA] dark:border-[#4D351F]">
-                {deltaInsight.changedItem}
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
-              <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E8DFC8] dark:border-[#2D2A24] space-y-1">
-                <span className="text-[10px] font-bold text-[#B86924] dark:text-[#E6C387] block">
-                  ① 判断のどこが変わったか（病理の転換）:
-                </span>
-                <p className="text-[#333835] dark:text-[#C5D2DB] leading-relaxed text-[11px]">
-                  {deltaInsight.pathologyChange}
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E8DFC8] dark:border-[#2D2A24] space-y-1">
-                <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                  ② 治法・介入戦略をどう考え直すか:
-                </span>
-                <p className="text-[#333835] dark:text-[#C5D2DB] leading-relaxed text-[11px]">
-                  {deltaInsight.treatmentStrategyChange}
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E8DFC8] dark:border-[#2D2A24] space-y-1">
-                <span className="text-[10px] font-bold text-[#737C77] dark:text-[#8899A6] block">
-                  ③ 配穴の狙いの違い:
-                </span>
-                <p className="text-[#333835] dark:text-[#C5D2DB] leading-relaxed text-[11px]">
-                  {deltaInsight.acupointImpact}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* 結果ヘッダー & 「一文の証」 */}
         <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-6 space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
