@@ -2,6 +2,36 @@ export type DepthType = "exterior" | "interior"; // 表 / 裏
 export type TemperatureType = "cold" | "heat"; // 寒 / 熱
 export type StateType = "deficiency" | "excess"; // 虚 / 実
 
+// 複雑な状態（併存・未確定）
+export type ComplexStateType = 
+  | "none"                // 通常モード（八綱二択）
+  | "shangre_xiahan"      // 寒熱錯雑：上熱下寒（のぼせ冷え）
+  | "time_fluctuation"    // 寒熱錯雑：時間帯での変動
+  | "benxu_biaoshi"       // 虚実夾雑：本虚標実（体力基盤は虚だが局所コリ・滞りが強い）
+  | "biaoli_tongbing"     // 表裏同病：慢性の内因性臓腑病変＋急性の外感風邪
+  | "undetermined";       // 所見矛盾・情報不足による判断保留
+
+// 四診の判断材料（キーサイン）
+export type PalpationType = "an_ki" | "an_kyo" | "unconfirmed"; // 喜按（虚） / 拒按（実） / 未確認
+export type TempReactionType = "warm_relief" | "cool_relief" | "unconfirmed"; // 得温痛減（寒） / 得涼痛減（熱） / 未確認
+export type DrinkingType = "warm_drink" | "cold_drink" | "unconfirmed"; // 温飲・口渇なし（寒） / 冷飲多飲・口苦（熱） / 未確認
+export type TongueType = "pale_white" | "red_yellow" | "unconfirmed"; // 淡白舌・白湿苔（虚寒） / 舌紅・黄燥苔（実熱） / 未確認
+
+export interface FourExaminationsInput {
+  palpation: PalpationType;
+  tempReaction: TempReactionType;
+  drinking: DrinkingType;
+  tongue: TongueType;
+}
+
+// 差分解説（今回変わったこと）
+export interface DeltaInsight {
+  changedItem: string; // 例: "寒熱：『熱』から『寒』へ変更"
+  pathologyChange: string; // 判断のどこが変わったか（病理の転換）
+  treatmentStrategyChange: string; // そのため治法をどう考え直すか（治療戦略の転換）
+  acupointImpact: string; // 配穴の狙いの違い
+}
+
 export type QixueshuiType = 
   | "qixu" // 気虚
   | "qizhi" // 気滞
@@ -155,13 +185,245 @@ export const ZANGFU_OPTIONS: { value: ZangfuType; label: string; sub: string; or
   { value: "kidney", label: "腎・膀胱（じん・ぼうこう）", sub: "先天の精・骨・水分代謝", organRole: "生命力の根本（精・原気）を蓄え、下行性の水分排泄と骨髄を司る" }
 ];
 
+// 複雑な状態の選択肢メタデータ
+export interface ComplexStateOption {
+  value: ComplexStateType;
+  label: string;
+  category: "寒熱" | "虚実" | "表裏" | "判断保留";
+  summary: string;
+  explanation: string;
+}
+
+export const COMPLEX_STATE_OPTIONS: ComplexStateOption[] = [
+  {
+    value: "shangre_xiahan",
+    label: "上熱下寒（じょうねつげかん）",
+    category: "寒熱",
+    summary: "部位による寒熱の錯雑：顔はのぼせるが足先は氷のように冷える",
+    explanation: "自律神経の失調や腎陽の浮越により、下半身が冷え切っている一方で上半身に熱が偏在する寒熱錯雑の代表例。"
+  },
+  {
+    value: "time_fluctuation",
+    label: "寒熱の時間帯変動",
+    category: "寒熱",
+    summary: "時間帯による寒熱の錯雑：日中はほてり、夜間・朝方に強い冷えを感じる",
+    explanation: "陽気の消長（昼間の陽気亢進と夜間の陽気衰退）に伴い寒熱の主徴が入れ替わる動的錯雑病態。"
+  },
+  {
+    value: "benxu_biaoshi",
+    label: "本虚標実（ほんきょひょうじつ）",
+    category: "虚実",
+    summary: "虚実の夾雑：体力や臓腑の自活力が不足（本虚）し、局所に頑固なコリ・気滞・瘀血が滞留（標実）",
+    explanation: "何が虚で何が実かを峻別することが最重要。強刺激の瀉法を行うと悪化（ドーゼオーバー）するため標本兼治が必須。"
+  },
+  {
+    value: "biaoli_tongbing",
+    label: "表裏同病（ひょうりどうびょう）",
+    category: "表裏",
+    summary: "病位の重複：慢性の胃腸虚弱や内臓疾患（裏証）を抱えた人が、急性の風邪（表証）を併発",
+    explanation: "表邪を追い払う解表と、裏の体力を支える補益のどちらを優先するか（急則治其標／緩則治其本）の判断が問われる病態。"
+  },
+  {
+    value: "undetermined",
+    label: "所見不一致による判断保留",
+    category: "判断保留",
+    summary: "自覚症状と他覚所見（舌・脈・腹）が食い違い、確定診断に必要な情報が不足している状態",
+    explanation: "安易にひとつの証に決めつけず、追加の四診（特に按診・舌象・飲水傾向）を行って矛盾を解消すべき段階。"
+  }
+];
+
+// 四診判断材料の選択肢
+export const PALPATION_OPTIONS = [
+  { value: "unconfirmed", label: "按診：未確認", hint: "押圧への反応が不明" },
+  { value: "an_ki", label: "喜按（押すと楽）", hint: "手で温めたり軽く押すと痛みが緩解 ➔ 【虚証】" },
+  { value: "an_kyo", label: "拒按（押すと嫌）", hint: "手を触れられるのを嫌がり圧痛が強い ➔ 【実証】" }
+] as const;
+
+export const TEMP_REACTION_OPTIONS = [
+  { value: "unconfirmed", label: "温冷反応：未確認", hint: "温冷への反応が不明" },
+  { value: "warm_relief", label: "得温痛減（温めると楽）", hint: "入浴やカイロで痛みが軽快 ➔ 【寒証】" },
+  { value: "cool_relief", label: "得涼痛減（冷やすと楽）", hint: "冷湿布や氷冷で痛みが軽快 ➔ 【熱証】" }
+] as const;
+
+export const DRINKING_OPTIONS = [
+  { value: "unconfirmed", label: "飲水：未確認", hint: "口渇・飲水傾向が不明" },
+  { value: "warm_drink", label: "温飲を好む・口渇なし", hint: "温かいお茶を少量すする程度 ➔ 【寒証・陽虚】" },
+  { value: "cold_drink", label: "冷飲を多飲・口が苦い", hint: "氷水や冷たい飲み物をがぶ飲み ➔ 【熱証・実熱】" }
+] as const;
+
+export const TONGUE_OPTIONS = [
+  { value: "unconfirmed", label: "舌診：未確認", hint: "舌色・舌苔が未確認" },
+  { value: "pale_white", label: "淡白舌・白湿苔", hint: "舌色が白っぽく湿った白苔 ➔ 【虚寒・水湿】" },
+  { value: "red_yellow", label: "舌紅・黄燥苔", hint: "地肌が赤く黄色く乾燥した苔 ➔ 【実熱・熱盛】" }
+] as const;
+
+// 学術基準・WHO標準リファレンス
+export const ACADEMIC_STANDARDS = {
+  title: "学術リファレンス ＆ 用語標準化方針",
+  whoReference: "WHO International Standard Terminologies on Traditional Medicine in the Western Pacific Region (WHO-IST)",
+  textbookReference: "公益社団法人東洋療法学校協会編『東洋医学概論』『経絡経穴概論』準拠",
+  classics: "『黄帝内経 素問・霊枢』『難経』『傷寒論』『金匱要略』",
+  description: "本シミュレーターの病態分類・四診概念・配穴基準は、WHO国際標準用語および日本の鍼灸師養成校標準教科書に準拠しています。安易な二者択一に留まらず、寒熱錯雑・虚実夾雑といった臨床実態に即した推論プロセスを構造化しています。"
+};
+
+export interface PreviousSelection {
+  depth: DepthType;
+  temp: TemperatureType;
+  state: StateType;
+  qixueshui: QixueshuiType;
+  zangfu: ZangfuType;
+  complexState: ComplexStateType;
+}
+
+// 差分解説（⚡ 今回変わったこと）自動生成関数
+export function generateDeltaInsight(
+  prev: PreviousSelection,
+  curr: PreviousSelection
+): DeltaInsight | null {
+  // 1. complexState が変化した場合
+  if (prev.complexState !== curr.complexState) {
+    if (curr.complexState === "shangre_xiahan") {
+      return {
+        changedItem: "八綱拡張：『上熱下寒（寒熱錯雑）』を選択",
+        pathologyChange: "全身を一様な寒または熱として捉えるのではなく、「上半身（顔・頭）に熱が偏在し、下半身（腰・足）が冷え切る」という上下の分離現象として病態を捉え直しました。",
+        treatmentStrategyChange: "上部の熱だけを冷ますと足腰が冷え、温めすぎるとのぼせが激化するため、「引火帰元（上の熱を足元へ引き下ろす）」「交通心腎」を採ります。",
+        acupointImpact: "清熱穴単独ではなく、太衝で上焦の気を降ろし、湧泉・太谿で下焦の引力を高める配穴へシフトします。"
+      };
+    }
+    if (curr.complexState === "time_fluctuation") {
+      return {
+        changedItem: "八綱拡張：『寒熱の時間帯変動』を選択",
+        pathologyChange: "日中は交感神経優位でほてり、夜間・早朝は副交感神経・代謝低下で芯から冷えるという、時間軸（サーカディアンリズム）による寒熱の交替を捉えました。",
+        treatmentStrategyChange: "固定的な清熱や温熱を避け、陽気の巡りをスムーズにして自律神経のリズムを同調させる「和解少陽・経脈調律」を採ります。",
+        acupointImpact: "時間変動に対応するため、少陽経（陽陵泉・風池）や気機の調律穴（内関・太衝）を重視します。"
+      };
+    }
+    if (curr.complexState === "benxu_biaoshi") {
+      return {
+        changedItem: "八綱拡張：『本虚標実（虚実夾雑）』を選択",
+        pathologyChange: "「疲れやすい・自活力が低下している（本虚）」と「局所の筋緊張・気滞・瘀血の痛みが激しい（標実）」が同時に併存する実態を捉えました。",
+        treatmentStrategyChange: "純粋な実証として強い瀉法（激しい刺激）を行うと、体力を奪ってドーゼオーバー（悪化）を招くため、「標本兼治（緩やかに気を補いつつ、滞りを通す）」へと介入ベクトルを変更します。",
+        acupointImpact: "瀉法主体の配穴から、脾胃の補気穴（足三里）と気血を巡らす配穴（太衝など）をバランスよく組み合わせます。"
+      };
+    }
+    if (curr.complexState === "biaoli_tongbing") {
+      return {
+        changedItem: "八綱拡張：『表裏同病（病位の重複）』を選択",
+        pathologyChange: "慢性の内臓虚弱（裏証）を抱えた人が、風邪などの急性外邪（表証）を新たに感冒した多重病態として把握しました。",
+        treatmentStrategyChange: "「急則治其標（まずは表の風邪を発汗させて治す）」か「標本同治（胃腸を支えながら解表する）」という優先順位の臨床判断が必要になります。",
+        acupointImpact: "体表の毛穴を開く解表穴（列缺・風池）に、体力を温存する補益穴（足三里）を並行して配穴します。"
+      };
+    }
+    if (curr.complexState === "undetermined") {
+      return {
+        changedItem: "八綱拡張：『所見不一致による判断保留』を選択",
+        pathologyChange: "患者の主訴（自覚症状）と他覚所見（舌・脈・腹診）が食い違っており、確証が得られない臨床実態を正直にモデル化しました。",
+        treatmentStrategyChange: "性急な刺鍼・投薬を控え、四診合参（問診・望診・聞診・切診）を丁寧に行い、矛盾の背後にある根本病因を再検証します。",
+        acupointImpact: "身体を大きく揺さぶる強い経穴は使わず、自律神経を安全に整える穏やかな調整穴（足三里・百会等）で様子を見ます。"
+      };
+    }
+    if (curr.complexState === "none") {
+      return {
+        changedItem: "八綱モード：『標準（二択モード）』へ復帰",
+        pathologyChange: "複雑な複合病態から、病理の基本骨格である標準的な八綱・気血水・臓腑の基幹モデルに戻しました。",
+        treatmentStrategyChange: "単一証の原則に従い、補瀉・寒熱のベクトルを明確にした標準的な治療プロトコルを再評価します。",
+        acupointImpact: "基本の王道原合配穴・母子瀉法配穴へ回帰します。"
+      };
+    }
+  }
+
+  // 2. 虚実が変化した場合
+  if (prev.state !== curr.state) {
+    if (curr.state === "excess") {
+      return {
+        changedItem: "虚実：『虚（きょ）』 ➔ 『実（じつ）』へ変更",
+        pathologyChange: "正気（生命力・免疫）の不足・枯渇から、病邪の鬱積・気血の停滞・筋膜過緊張（実）へと病態認識が180度反転しました。",
+        treatmentStrategyChange: "愛護的に気を養う「補法（弱刺激・温熱・浅鍼）」を止め、病的な滞りを打破する「瀉法（響き・雀啄・散邪）」へと治療戦略を転換します。",
+        acupointImpact: "補気穴（足三里・関元など）から、強力に気道を切り開く原合配穴（太衝＋陽陵泉など）へシフトします。"
+      };
+    } else {
+      return {
+        changedItem: "虚実：『実（じつ）』 ➔ 『虚（きょ）』へ変更",
+        pathologyChange: "邪気充満・過緊張から、根本的な生命エネルギー・臓腑機能の衰微（虚）へと判断が反転しました。",
+        treatmentStrategyChange: "強刺激による瀉法はドーゼオーバー（疲弊・気失）を起こすため即座に中止し、体力を底上げする「補益・滋養戦略」へと切り替えます。",
+        acupointImpact: "強い瀉法穴から、原穴や募穴を用いた穏やかな補法配穴（太谿・足三里・関元など）へ変更します。"
+      };
+    }
+  }
+
+  // 3. 寒熱が変化した場合
+  if (prev.temp !== curr.temp) {
+    if (curr.temp === "cold") {
+      return {
+        changedItem: "寒熱：『熱（ねつ）』 ➔ 『寒（かん）』へ変更",
+        pathologyChange: "機能亢進・炎症・交感神経過緊張（熱）から、代謝低下・末梢血管攣縮・冷えによる気血の凍結（寒）へと病態が反転しました。",
+        treatmentStrategyChange: "熱を冷ます「清熱瀉火」から、経脈を温めて凍りついた気血を融解する「温通散寒（温灸・温鍼）」へと治療方針を180度転換します。",
+        acupointImpact: "四肢末梢の瀉熱穴（行間・風池など）から、下腹部丹田や督脈を温める温灸穴（関元・大椎・太衝など）へ切り替わります。"
+      };
+    } else {
+      return {
+        changedItem: "寒熱：『寒（かん）』 ➔ 『熱（ねつ）』へ変更",
+        pathologyChange: "代謝沈静・冷えから、熱邪の鬱積・局所充血・情動の興奮（熱）へと病理機序が反転しました。",
+        treatmentStrategyChange: "温熱刺激（灸療法）は熱を助長するため直ちに中止し、滞留した熱を四肢末梢から体外へ発散・冷却する「清熱瀉火」へ方針転換します。",
+        acupointImpact: "温補穴から、熱を消火する子穴（行間）や頭部充血を降ろす配穴（風池等）へシフトします。"
+      };
+    }
+  }
+
+  // 4. 表裏が変化した場合
+  if (prev.depth !== curr.depth) {
+    if (curr.depth === "interior") {
+      return {
+        changedItem: "表裏：『表（ひょう）』 ➔ 『裏（り）』へ変更",
+        pathologyChange: "皮毛・筋膜・外邪侵入の浅部急性病態から、内臓深部（臓腑）・自律神経・慢性内因病態へ病位が移行しました。",
+        treatmentStrategyChange: "毛穴を開いて発汗させる「解表発汗」を終了し、臓腑の機能を調律する「内科的調理（臓腑弁証）」へと腰を据えた方針に切り替えます。",
+        acupointImpact: "頭項・体表の急性穴（列缺・風池）から、臓腑と直結する原穴・募穴・背部兪穴へと配穴基盤が深層へ移動します。"
+      };
+    } else {
+      return {
+        changedItem: "表裏：『裏（り）』 ➔ 『表（ひょう）』へ変更",
+        pathologyChange: "慢性的な内臓病変から、体表への急性外邪侵襲（かぜ初期・悪寒など）へ病位が体表浅層へ移行しました。",
+        treatmentStrategyChange: "内臓治療から、体表のバリア（衛気）を開放して邪気を迅速に体外へ追い払う急性期「解表法」へと切り替えます。",
+        acupointImpact: "内臓調整穴から、肺経・胆経の体表開通穴（列缺・合谷・風池）へシフトします。"
+      };
+    }
+  }
+
+  // 5. 気血水が変化した場合
+  if (prev.qixueshui !== curr.qixueshui) {
+    const prevQ = QIXUESHUI_OPTIONS.find((q) => q.value === prev.qixueshui)?.label || prev.qixueshui;
+    const currQ = QIXUESHUI_OPTIONS.find((q) => q.value === curr.qixueshui)?.label || curr.qixueshui;
+    return {
+      changedItem: `気血水：『${prevQ}』 ➔ 『${currQ}』へ変更`,
+      pathologyChange: `病態の物質基盤が「${prevQ}」から「${currQ}」へ推移しました。不調の主徴が変化します。`,
+      treatmentStrategyChange: `標的物質に対する調整手技を切り替えます（気滞なら理気、気虚なら補気、血虚なら補血、瘀血なら活血化瘀、水滞なら利水）。`,
+      acupointImpact: `気血水の性状に直結する特効穴（気の要穴、血海・三陰交などの血の要穴、水分・陰陵泉などの水穴）へと配穴を再編します。`
+    };
+  }
+
+  // 6. 臓腑が変化した場合
+  if (prev.zangfu !== curr.zangfu) {
+    const prevZ = ZANGFU_OPTIONS.find((z) => z.value === prev.zangfu)?.label || prev.zangfu;
+    const currZ = ZANGFU_OPTIONS.find((z) => z.value === curr.zangfu)?.label || curr.zangfu;
+    return {
+      changedItem: `臓腑経絡：『${prevZ}』 ➔ 『${currZ}』へ変更`,
+      pathologyChange: `機能不全の中心臓腑が「${prevZ}」から「${currZ}」へ移動しました。関連する経絡走行と情動・生理機能が変わります。`,
+      treatmentStrategyChange: `治療標的とする経絡ルートおよび臓腑の生化学的・自律神経的機能を変更します。`,
+      acupointImpact: `主穴として使用する経穴を「${prevZ}の経絡」から「${currZ}の経絡」の要穴へ全面的に切り替えます。`
+    };
+  }
+
+  return null;
+}
+
 // 診断推論エンジン
 export function synthesizeComprehensiveDiagnosis(
   depth: DepthType,
   temp: TemperatureType,
   state: StateType,
   qixueshui: QixueshuiType,
-  zangfu: ZangfuType
+  zangfu: ZangfuType,
+  complexState: ComplexStateType = "none"
 ): ComprehensiveDiagnosis {
   const depthLabel = depth === "interior" ? "裏" : "表";
   const tempLabel = temp === "heat" ? "熱" : "寒";
@@ -171,6 +433,312 @@ export function synthesizeComprehensiveDiagnosis(
   const zData = ZANGFU_OPTIONS.find((z) => z.value === zangfu) || ZANGFU_OPTIONS[0];
   const zangShort = zData.label.split("（")[0];
   const qShort = qData.label.split("（")[0];
+
+  // -------------------------------------------------------------------------
+  // 0. 【複雑な状態（併存・未確定）】：上熱下寒・本虚標実・表裏同病
+  // -------------------------------------------------------------------------
+  if (complexState === "shangre_xiahan") {
+    return {
+      status: "suspected",
+      statusBadge: {
+        label: "複合病態：上熱下寒（寒熱錯雑）",
+        description: "上半身のほてり（熱）と下半身の冷え（寒）が解離して併存する寒熱錯雑パターンです。",
+        variant: "warning"
+      },
+      syndromeName: "上熱下寒証（じょうねつげかんしょう）",
+      syndromeReading: "じょうねつげかんしょう",
+      oneSentenceFormula: `「寒熱錯雑」：下焦（腰・下肢）の陽気衰微による冷えと、上焦（頭面・胸部）への虚火浮越によるのぼせが上下に解離した病態。`,
+      summary: "全身が一様に熱い・冷たいのではなく、顔面や頭部には赤み・のぼせ・目の充血・口渇が現れながら、腰から下や足先は氷のように冷える典型的な寒熱錯雑病態です。自律神経の協調破綻や、腎陽が衰微して陰液を蒸騰できず虚火が上行する（引火帰元の失調）機序が関与します。",
+      pathologyMechanism: "末梢血管収縮による下半身血流障害と、中枢・頭頚部動脈の拡張・交感神経過活動が同時に発生し、体温調節中枢の上下解離を招いています。",
+      differentialCandidates: [
+        "真寒仮熱（極度の陰盛により陽気が体表に追いやられた危険な病態）",
+        "肝気鬱結気鬱化火（自律神経緊張により上部充血が目立つ病態）",
+        "腎陰虚火旺（真の陰液枯渇による虚熱）"
+      ],
+      supportingFindings: [
+        "【熱】顔面ののぼせ、頭痛、イライラ、目の充血、口の乾き",
+        "【寒】下腹部・腰部の冷え、足先の氷のような冷たさ、夜間頻尿",
+        "【錯雑】上半身を冷やすと足元が冷え込み、下半身を温めると顔がのぼせる"
+      ],
+      conflictingFindings: [
+        "全身一様な冷え（純粋な陽虚）、または全身一様な高熱・ほてり（純粋な実熱）とは矛盾します。"
+      ],
+      missingInformation: [
+        "足裏（湧泉付近）の皮膚温と発汗の有無",
+        "冷えとのぼせの自覚的時間帯（夕方〜夜間の悪化傾向）",
+        "脈診における寸口（浮大）と尺中（沈弱）の力強さの落差"
+      ],
+      nextActionQuestions: [
+        {
+          question: "「顔はカッカとほてりやすいのに、足先や腰に触れると冷たくありませんか？」",
+          target: "問診",
+          reason: "上下の温度感覚の乖離（上熱下寒）を患者自身の主観から確定するため。"
+        },
+        {
+          question: "「足裏（湧泉）と頭頂部（百会）の皮膚温・汗の出方を確認する」",
+          target: "腹証・触診",
+          reason: "上焦の熱鬱と下焦の循環不全を他覚的触診で検証するため。"
+        },
+        {
+          question: "「舌の先端（心肺部）が赤く、奥（腎部）が白っぽくないか確認する」",
+          target: "舌象",
+          reason: "舌の局所反射区における熱の偏在（上熱下寒の視覚的証拠）を捉えるため。"
+        }
+      ],
+      treatmentPrinciple: {
+        rule: "清上温下・引火帰元（せいじょうおんか・いんかきげん）",
+        strategy: "上部の熱だけを冷ますと足元の冷えが悪化し、温めすぎるとのぼせが悪化するため、上の熱を足元へ引き下ろして上下の循環を再連結する。"
+      },
+      acupointOptions: [
+        {
+          isPrimary: true,
+          pairName: "引火帰元ペア：太衝 ＋ 湧泉",
+          primaryAcupoint: { id: "taishou", name: "太衝", meridian: "足厥陰肝経", role: "原穴：上焦に浮動した気火を力強く引き下ろす" },
+          secondaryAcupoint: { id: "yuusen", name: "湧泉", meridian: "足少陰腎経", role: "井木穴：足底から全身の陰陽交通と気血の引力を生み出す" },
+          intendedEffect: "頭部に充血した熱感を太衝で下降させ、湧泉への温灸または刺鍼で足元に熱を呼び戻す（引火帰元）",
+          indicationConditions: "更年期や自律神経失調で、激しいのぼせと足先の極度の冷えが同時にある場合",
+          differentialReason: "局所の冷熱を個別に対処するのではなく、全身の気血ベクトルの上下交通を一挙に図る",
+          reassessmentPoint: "足先がじんわり温まり、頭の拍動感・顔面の紅潮が引いていくか",
+          evidenceLevel: {
+            classical: "『医学心悟』湧泉への引火帰元法。腎気の根本を温めることで浮遊した虚火を自ずと納めしめる極意。",
+            modernResearch: "足底刺激が足部末梢循環を拡張させ、脳血流量の過剰な拍動を平準化することがプレチスモグラフィ等で観察されている。",
+            clinicalPerspective: "湧泉には直接灸や温灸器、太衝には呼吸に合わせた瀉法鍼を用いると非常に効果的。"
+          }
+        },
+        {
+          isPrimary: false,
+          pairName: "交通心腎ペア：心兪 ＋ 腎兪（または関元）",
+          primaryAcupoint: { id: "kangen", name: "関元", meridian: "任脈", role: "丹田・小腸募穴：下焦のボイラーを温めて陽気を再建" },
+          secondaryAcupoint: { id: "taikei", name: "太谿", meridian: "足少陰腎経", role: "原穴：真陰・真陽を滋養し浮熱の発生源を安定化" },
+          intendedEffect: "下焦の熱源（丹田）を補強し、腎水が上焦の心火を抑制できるように生命力を根本から調律する",
+          indicationConditions: "慢性疲労、腰痛、不眠、冷えのぼせが長期化している場合",
+          differentialReason: "対症療法的な気の引き下ろしではなく、根本的な水火既済（心腎交通）の回復を狙う",
+          reassessmentPoint: "腰部の温感持続と、夜間の入眠障害・中途覚醒の改善",
+          evidenceLevel: {
+            classical: "『素問』水火不相済の条文。心火が下行して腎を温め、腎水が上行して心を潤す調和を回復させる。",
+            modernResearch: "任脈下腹部および腰部への温熱刺激が副交感神経機能を高め、自律神経失調症スコアを有意に改善する。",
+            clinicalPerspective: "関元への施灸は熱が全身にじんわり巡るまでじっくり行い、決して急激な強熱を与えない。"
+          }
+        }
+      ]
+    };
+  }
+
+  if (complexState === "benxu_biaoshi") {
+    return {
+      status: "suspected",
+      statusBadge: {
+        label: "複合病態：本虚標実（虚実夾雑）",
+        description: "根本の体力が虚損（本虚）しながら、局所に強いコリ・気滞・瘀血（標実）が鬱積した病態です。",
+        variant: "warning"
+      },
+      syndromeName: "本虚標実証（ほんきょひょうじつしょう）",
+      syndromeReading: "ほんきょひょうじつしょう",
+      oneSentenceFormula: `「虚実夾雑」：臓腑の自活エネルギー低下（本虚）を基盤とし、気の推動力不足から局所に頑固な筋緊張・気滞・瘀血（標実）が鬱積した複合病態。`,
+      summary: "「体が疲れ切ってだるい（虚）」のに「肩や背中、側腹部がガチガチに張って痛む（実）」という臨床上きわめて頻度の高い病態です。根本の虚弱（本虚）を無視して強いマッサージや強刺激の鍼（瀉法）を行うと、一時的にほぐれても翌日に激しい倦怠感や体調悪化（ドーゼオーバー）を招きます。",
+      pathologyMechanism: "気の推進力・血行駆動力が低下（虚）しているため、老廃物や筋緊張を自然代謝できず、局所的な筋硬結・微小循環不全（実）が慢性化しています。",
+      differentialCandidates: [
+        "純粋な気滞実証（体力が充実しており強い瀉法に耐えられる病態）",
+        "純粋な脾気虚証（コリや痛みが少なく、単にエネルギー不足が主体の病態）"
+      ],
+      supportingFindings: [
+        "【本虚】朝から疲れている、食後に眠い、風邪を引きやすい、息切れ",
+        "【標実】局所の頑固な筋硬結、圧痛、頭重感、首肩の強いこわばり",
+        "【夾雑】強く揉まれるとその場は良いが、後で酷く揉み返し・だるさが出る"
+      ],
+      conflictingFindings: [
+        "強刺激を与えても全く疲労せず爽快感だけが残る場合は、本虚のない純粋な実証の可能性があります。"
+      ],
+      missingInformation: [
+        "押した時の感覚（押されて気持ちが良い喜按か、触られるのも嫌な拒按か）",
+        "疲労感と痛みの発生順序（疲れてから凝り始めたのか、凝ってから疲れたのか）",
+        "舌の性状（舌自体が白っぽく胖大で歯痕があるか、舌先に点刺があるか）"
+      ],
+      nextActionQuestions: [
+        {
+          question: "「コリや痛む部分をグッと押された時、気持ちが良いですか？ それとも痛すぎて嫌ですか？」",
+          target: "問診",
+          reason: "虚（喜按：押されると楽）と実（拒按：痛がって拒絶）の比率を見極めるため。"
+        },
+        {
+          question: "「舌のフチに歯のギザギザした跡（歯痕）がついていないか確認する」",
+          target: "舌象",
+          reason: "脾気虚弱による水分代謝低下・組織浮腫（本虚の確証）を捉えるため。"
+        },
+        {
+          question: "「脈が浮いて力があるか、沈んで指を押し返さないか確認する」",
+          target: "脈象",
+          reason: "全体的な生体エネルギーの充実度（虚実の深浅）を判定するため。"
+        }
+      ],
+      treatmentPrinciple: {
+        rule: "標本兼治・扶正祛邪（ひょうほんけんち・ふせいきょじゃ）",
+        strategy: "体力を底上げして正気を助け（扶正・補益）、同時に局所の滞りを緩やかに散らす（祛邪・瀉法）。激しい刺激は厳禁。"
+      },
+      acupointOptions: [
+        {
+          isPrimary: true,
+          pairName: "標本兼治ペア：足三里 ＋ 太衝",
+          primaryAcupoint: { id: "ashisanri", name: "足三里", meridian: "足陽明胃経", role: "合土穴：後天の気を補益し全身の疲労と自活力を再生（本虚を治す）" },
+          secondaryAcupoint: { id: "taishou", name: "太衝", meridian: "足厥陰肝経", role: "原穴：肝気のめぐりを促し局所の筋硬結・緊張を解除（標実を治す）" },
+          intendedEffect: "足三里でエネルギーのボイラーを回して体力を支えつつ、太衝で局所に滞った気の詰まりを優しく通導する",
+          indicationConditions: "疲れがひどいのに肩こりやイライラが強く、強押しされると翌日寝込んでしまう場合",
+          differentialReason: "太衝単独（強い瀉法）では疲労を助長するため、足三里（補法）で生体をバックアップしながら疏通する",
+          reassessmentPoint: "翌日にだるさが出ず、呼吸が深くなり肩の重荷が軽くなったか",
+          evidenceLevel: {
+            classical: "『難経』六十七難：募兪補瀉の調和。『鍼灸大成』足三里・太衝は元気虚損にして気鬱ある者を救う。",
+            modernResearch: "足三里への置鍼が細胞性免疫能および消化管運動を賦活し、太衝が中枢の交感神経過緊張を抑制する。",
+            clinicalPerspective: "足三里は補法（無痛刺鍼・温灸）、太衝は軽い雀啄で得気を得る程度に留めるのが成功の鍵。"
+          }
+        },
+        {
+          isPrimary: false,
+          pairName: "温補行気ペア：百会 ＋ 合谷",
+          primaryAcupoint: { id: "hyakue", name: "百会", meridian: "督脈", role: "諸陽の会：下垂した陽気を引き上げ全身の倦怠感を払拭" },
+          secondaryAcupoint: { id: "goukoku", name: "合谷", meridian: "手陽明大腸経", role: "原穴：顔面頭部・首肩の気血循環を促進し痛みを緩和" },
+          intendedEffect: "頭頂部から全身の自律神経バランスを持ち上げながら、首肩周囲の血流停滞を速やかに散らす",
+          indicationConditions: "頭重感、眼精疲労、全身のだるさ、気力低下が前面に出ている場合",
+          differentialReason: "足元からのアプローチに対し、頭頚部・上肢のツボを用いて速やかな爽快感を与える",
+          reassessmentPoint: "視界が明るくなり、頭の重圧感が抜けたかどうか",
+          evidenceLevel: {
+            classical: "『鍼灸甲乙経』百会は振寒気下を主り、陽気を昇挙させる。合谷は経気の推動を司る。",
+            modernResearch: "百会刺鍼が前頭葉皮質血流を促通し、合谷刺激が下降性疼痛抑制系を活性化することが知られている。",
+            clinicalPerspective: "百会へのお灸（棒灸など）を併用すると、虚証患者の気力回復が非常に早まる。"
+          }
+        }
+      ]
+    };
+  }
+
+  if (complexState === "biaoli_tongbing") {
+    return {
+      status: "suspected",
+      statusBadge: {
+        label: "複合病態：表裏同病（外感内傷の併発）",
+        description: "慢性の内臓機能低下（裏証）を抱えた人が、急性の風邪（表証）を併発した多重病態です。",
+        variant: "warning"
+      },
+      syndromeName: "表裏同病証（ひょうりどうびょうしょう）",
+      syndromeReading: "ひょうりどうびょうしょう",
+      oneSentenceFormula: `「表裏同病」：慢性の脾胃虚弱や内臓疾患（裏証）を基盤に持つ患者が、急性の風寒・風熱（表証）を感冒した病位多層病態。`,
+      summary: "普段から胃腸が弱く冷えやすい（裏虚）人が、寒気や頭痛などのかぜ初期症状（表実）を引いた状態です。東洋医学では『急則治其標（表邪の侵入を放置すると奥へ侵入するためまずは表を治す）』を原則としつつ、裏の体力を削らない繊細な処置が要求されます。",
+      pathologyMechanism: "体表の防御バリア（衛気）が脆弱なため外邪が容易に侵入し、同時に深部の臓腑機能も低下しているため邪気を押し出す力が不足しています。",
+      differentialCandidates: [
+        "純粋な風寒表証（体力が充実しており強い発汗療法で一気に治る病態）",
+        "裏熱表寒証（体内に熱がこもり、体表だけが冷えている病態）"
+      ],
+      supportingFindings: [
+        "【表】急な悪寒、くしゃみ、サラサラ鼻水、首の後ろのこわばり",
+        "【裏】普段からの食欲不振、下痢軟便、慢性的な手足の冷え",
+        "【同病】風邪を引くとすぐに胃腸にきて寝込んでしまう"
+      ],
+      conflictingFindings: [
+        "平熱で悪寒や頭痛などの急性体表所見が一切ない場合は、表証を含まない純粋な裏証です。"
+      ],
+      missingInformation: [
+        "発汗の有無（汗が全く出ないか、じっとり汗ばんでいるか）",
+        "胃のつかえ感や吐き気の有無",
+        "脈の性状（浮いているが弱く沈めると消えそうか）"
+      ],
+      nextActionQuestions: [
+        {
+          question: "「風邪を引いて寒気がする時、同時に胃がもたれたり下痢をしたりしませんか？」",
+          target: "問診",
+          reason: "表裏同病の鑑別として消化器（裏）の巻き込み度合いを評価するため。"
+        },
+        {
+          question: "「首の後ろの大椎付近と、お腹（中脘）の冷え具合を比較する」",
+          target: "腹証・触診",
+          reason: "体表の外感反応と深部の内傷反応の深浅を比較するため。"
+        }
+      ],
+      treatmentPrinciple: {
+        rule: "表裏双解・解表温裏（ひょうりそうかい・げひょうおんり）",
+        strategy: "強すぎる発汗法で体液を損なわないよう、胃腸を温めて守りながら、穏やかに体表の毛穴を開いて寒邪を逃がす。"
+      },
+      acupointOptions: [
+        {
+          isPrimary: true,
+          pairName: "表解裏補ペア：列缺 ＋ 足三里",
+          primaryAcupoint: { id: "rekketsu", name: "列缺", meridian: "手太陰肺経", role: "絡穴：肺気を宣発させ体表の寒気と首こりを解放（表を解す）" },
+          secondaryAcupoint: { id: "ashisanri", name: "足三里", meridian: "足陽明胃経", role: "合土穴：中焦を温めて胃腸を守り発汗に必要な気を補充（裏を補う）" },
+          intendedEffect: "体表の風寒を速やかに発散させつつ、胃腸の出力を高めて体力の消耗を防ぐ",
+          indicationConditions: "胃腸が弱い虚弱体質の人がかぜの初期（悪寒・首こり）にかかった場合",
+          differentialReason: "強い発汗穴（合谷・大椎など）単独ではなく、脾胃を保護する足三里を併用する",
+          reassessmentPoint: "首の後ろの強張りが取れ、胃もたれや倦怠感を起こさずに体が温まったか",
+          evidenceLevel: {
+            classical: "『傷寒論』桂枝人参湯の思想。外に悪寒の表証あり、内に下利軟便の裏虚あるときは表裏双解すべし。",
+            modernResearch: "列缺刺激による呼吸器血流改善と、足三里による消化管蠕動促進・免疫グロブリン分泌促進の相乗効果。",
+            clinicalPerspective: "施術後に温かい粥や葛湯を少しずつ摂らせて安静にさせると回復が著しい。"
+          }
+        }
+      ]
+    };
+  }
+
+  if (complexState === "undetermined") {
+    return {
+      status: "conflict",
+      statusBadge: {
+        label: "【判断保留】所見不一致による情報不足",
+        description: "患者の主訴と四診所見が食い違っており、現段階では証の確定を保留すべき状態です。",
+        variant: "danger"
+      },
+      syndromeName: "判断保留（四診所見の再評価が必要）",
+      syndromeReading: "はんだんほりゅう：ししんしょけんのさいひょうかがひつよう",
+      oneSentenceFormula: `「判断保留」：自覚症状と客観所見に齟齬があり、性急な診断・投薬を避け、按診や舌象の精査を行うべき段階。`,
+      summary: "臨床現場では、「患者は暑がりだと言っているのに舌は白く脈は遅い」「痛みが激しいのに押すと楽になる」など、所見の食い違いが頻繁に起こります。安易にどちらか一方の所見だけで証を決めつけず、問診の聞き直しや身体診察（按診・舌診）を深掘りすることが誤治を防ぐ鍵です。",
+      pathologyMechanism: "自覚症状（患者の感じ方）と客観的病理（生体深部の状態）が解離しているか、仮熱・仮寒などの複雑な病変が背景に潜んでいます。",
+      differentialCandidates: [
+        "真熱仮寒証（真の熱盛により手足末梢が一時的に厥冷している病態）",
+        "真寒仮熱証（極度の陽虚により顔面だけが浮動性に紅潮している病態）"
+      ],
+      supportingFindings: [
+        "【保留理由】複数の診察所見の間で、寒熱または虚実のベクトルが対立していること"
+      ],
+      conflictingFindings: [
+        "すべての所見が単一の証に向かって一貫している状況とは異なります。"
+      ],
+      missingInformation: [
+        "患部を押した際の反応（喜按か拒按か）の触診での再確認",
+        "水分摂取の傾向（冷たい水をがぶ飲みするか、温かいものを一口ずつか）",
+        "舌苔の剥がれ具合や舌裏の静脈怒張（舌診の他覚確認）"
+      ],
+      nextActionQuestions: [
+        {
+          question: "「冷たい飲み物が本当に欲しいですか？ それとも喉が渇くのに温かいお茶しか飲めませんか？」",
+          target: "問診",
+          reason: "真の寒熱を分ける最重要問診所見（飲水傾向）を再確認するため。"
+        },
+        {
+          question: "「痛む場所を手のひらで包んで温めたときの変化を確かめる」",
+          target: "腹証・触診",
+          reason: "主訴の裏にある真の病態（得温減痛か否か）を直接確かめるため。"
+        }
+      ],
+      treatmentPrinciple: {
+        rule: "四診合参・慎重調理（ししんごうさん・しんちょうちょうり）",
+        strategy: "強い瀉法や激しい温熱を避け、全身の自律神経を安定させる安全域の経穴を用いて経過を観察する。"
+      },
+      acupointOptions: [
+        {
+          isPrimary: true,
+          pairName: "安全調律ペア：百会 ＋ 足三里",
+          primaryAcupoint: { id: "hyakue", name: "百会", meridian: "督脈", role: "諸陽の会：自律神経の中枢バランスを穏やかに安定化" },
+          secondaryAcupoint: { id: "ashisanri", name: "足三里", meridian: "足陽明胃経", role: "合穴：全身の気血巡りを下支えし身体反応を観察" },
+          intendedEffect: "どの証であっても生体に悪影響を与えず、自律神経と胃腸機能を整えて次の所見変化を待つ",
+          indicationConditions: "所見が錯雑して方針に迷う場合、初診時の安全なスクリーニング施術",
+          differentialReason: "極端な清熱や温熱を行わず、中庸を保ちながら生体の自己回復力を観察する",
+          reassessmentPoint: "施術翌日の問診で、寒熱や痛みの所在がより明確になったかどうか",
+          evidenceLevel: {
+            classical: "『千金要方』百病の初め、未だ証の分かれざる時は百会・三里をもって元気を安んずべし。",
+            modernResearch: "足三里・百会への軽微な刺激が全身の交感・副交感神経比をホメオスタシス域へ誘導することが確認されている。",
+            clinicalPerspective: "迷った時は無理に攻めず、足三里への優しいお灸や百会への浅い置鍼で反応を見るのが名人の臨床。"
+          }
+        }
+      ]
+    };
+  }
 
   // -------------------------------------------------------------------------
   // 1. 【判断保留（CONFLICT）の判定】：病理学的に真っ向から矛盾する組み合わせ

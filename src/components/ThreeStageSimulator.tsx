@@ -15,7 +15,13 @@ import {
   X,
   Compass,
   Utensils,
-  Lightbulb
+  Lightbulb,
+  ChevronDown,
+  ChevronUp,
+  Zap,
+  Scale,
+  GraduationCap,
+  HelpCircle
 } from "lucide-react";
 import { 
   DepthType, 
@@ -23,6 +29,21 @@ import {
   StateType, 
   QixueshuiType, 
   ZangfuType,
+  ComplexStateType,
+  COMPLEX_STATE_OPTIONS,
+  FourExaminationsInput,
+  PalpationType,
+  TempReactionType,
+  DrinkingType,
+  TongueType,
+  PALPATION_OPTIONS,
+  TEMP_REACTION_OPTIONS,
+  DRINKING_OPTIONS,
+  TONGUE_OPTIONS,
+  DeltaInsight,
+  generateDeltaInsight,
+  ACADEMIC_STANDARDS,
+  PreviousSelection,
   DEPTH_OPTIONS,
   TEMP_OPTIONS,
   STATE_OPTIONS,
@@ -49,6 +70,21 @@ export default function ThreeStageSimulator() {
   // ステップ3: 臓腑経絡
   const [zangfu, setZangfu] = useState<ZangfuType>("liver");
 
+  // 複雑な状態（折りたたみアコーディオン内）
+  const [complexState, setComplexState] = useState<ComplexStateType>("none");
+  const [isComplexAccordionOpen, setIsComplexAccordionOpen] = useState<boolean>(false);
+
+  // 四診の判断材料（キーサイン）
+  const [fourExams, setFourExams] = useState<FourExaminationsInput>({
+    palpation: "unconfirmed",
+    tempReaction: "unconfirmed",
+    drinking: "unconfirmed",
+    tongue: "unconfirmed"
+  });
+
+  // 「⚡ 今回変わったこと」差分インサイト
+  const [deltaInsight, setDeltaInsight] = useState<DeltaInsight | null>(null);
+
   // サンプルプリセット追跡
   const [activePresetId, setActivePresetId] = useState<string | null>("preset-ganki");
 
@@ -57,23 +93,79 @@ export default function ThreeStageSimulator() {
 
   // 診断推論の算出
   const diagnosis: ComprehensiveDiagnosis = useMemo(() => {
-    return synthesizeComprehensiveDiagnosis(depth, temp, state, qixueshui, zangfu);
-  }, [depth, temp, state, qixueshui, zangfu]);
+    return synthesizeComprehensiveDiagnosis(depth, temp, state, qixueshui, zangfu, complexState);
+  }, [depth, temp, state, qixueshui, zangfu, complexState]);
+
+  // 現在の全選択値の取得
+  const getCurrentSelection = (): PreviousSelection => ({
+    depth,
+    temp,
+    state,
+    qixueshui,
+    zangfu,
+    complexState
+  });
+
+  // パラメータ更新ハンドラ（差分インサイトを自動生成）
+  const handleUpdate = (updates: Partial<PreviousSelection>, newPresetId: string | null = null) => {
+    const prev = getCurrentSelection();
+    const next: PreviousSelection = { ...prev, ...updates };
+
+    if (updates.depth !== undefined) setDepth(updates.depth);
+    if (updates.temp !== undefined) setTemp(updates.temp);
+    if (updates.state !== undefined) setState(updates.state);
+    if (updates.qixueshui !== undefined) setQixueshui(updates.qixueshui);
+    if (updates.zangfu !== undefined) setZangfu(updates.zangfu);
+    if (updates.complexState !== undefined) setComplexState(updates.complexState);
+
+    setActivePresetId(newPresetId);
+
+    const insight = generateDeltaInsight(prev, next);
+    if (insight) {
+      setDeltaInsight(insight);
+    }
+  };
 
   // プリセットの適用
   const handleApplyPreset = (preset: PresetCase) => {
+    const prev = getCurrentSelection();
     setDepth(preset.values.depth);
     setTemp(preset.values.temp);
     setState(preset.values.state);
     setQixueshui(preset.values.qixueshui);
     setZangfu(preset.values.zangfu);
+    setComplexState("none");
     setActivePresetId(preset.id);
+
+    setDeltaInsight({
+      changedItem: `代表症例読込：『${preset.name}』`,
+      pathologyChange: preset.description,
+      treatmentStrategyChange: "入力された八綱・気血水・臓腑の組み合わせに合致する臨床推論モデルを展開します。",
+      acupointImpact: "王道配穴（主配穴）と代替配穴の多層エビデンス比較を表示します。"
+    });
   };
 
-  // 手動変更時のプリセット解除
-  const updateOption = <T,>(setter: React.Dispatch<React.SetStateAction<T>>, val: T) => {
-    setter(val);
-    setActivePresetId(null);
+  // 四診キーサインの切り替え
+  const handleFourExamChange = (field: keyof FourExaminationsInput, val: any) => {
+    setFourExams((prev) => ({ ...prev, [field]: val }));
+
+    // 四診所見から八綱・複雑状態への自動推奨アシスト
+    if (field === "palpation") {
+      if (val === "an_ki") handleUpdate({ state: "deficiency" });
+      if (val === "an_kyo") handleUpdate({ state: "excess" });
+    }
+    if (field === "tempReaction") {
+      if (val === "warm_relief") handleUpdate({ temp: "cold" });
+      if (val === "cool_relief") handleUpdate({ temp: "heat" });
+    }
+    if (field === "drinking") {
+      if (val === "warm_drink") handleUpdate({ temp: "cold" });
+      if (val === "cold_drink") handleUpdate({ temp: "heat" });
+    }
+    if (field === "tongue") {
+      if (val === "pale_white") handleUpdate({ temp: "cold", state: "deficiency" });
+      if (val === "red_yellow") handleUpdate({ temp: "heat", state: "excess" });
+    }
   };
 
   // リセット
@@ -83,7 +175,15 @@ export default function ThreeStageSimulator() {
     setState("excess");
     setQixueshui("qizhi");
     setZangfu("liver");
+    setComplexState("none");
+    setFourExams({
+      palpation: "unconfirmed",
+      tempReaction: "unconfirmed",
+      drinking: "unconfirmed",
+      tongue: "unconfirmed"
+    });
     setActivePresetId("preset-ganki");
+    setDeltaInsight(null);
   };
 
   return (
@@ -172,7 +272,7 @@ export default function ThreeStageSimulator() {
                   {DEPTH_OPTIONS.map((opt) => (
                     <button
                       key={opt.value}
-                      onClick={() => updateOption(setDepth, opt.value)}
+                      onClick={() => handleUpdate({ depth: opt.value })}
                       className={`p-2 sm:p-2.5 rounded-lg sm:rounded-xl border text-left transition-all ${
                         depth === opt.value
                           ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] dark:border-[#2B6958] shadow-sm font-bold"
@@ -195,7 +295,7 @@ export default function ThreeStageSimulator() {
                   {TEMP_OPTIONS.map((opt) => (
                     <button
                       key={opt.value}
-                      onClick={() => updateOption(setTemp, opt.value)}
+                      onClick={() => handleUpdate({ temp: opt.value })}
                       className={`p-2 sm:p-2.5 rounded-lg sm:rounded-xl border text-left transition-all ${
                         temp === opt.value
                           ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] dark:border-[#2B6958] shadow-sm font-bold"
@@ -218,7 +318,7 @@ export default function ThreeStageSimulator() {
                   {STATE_OPTIONS.map((opt) => (
                     <button
                       key={opt.value}
-                      onClick={() => updateOption(setState, opt.value)}
+                      onClick={() => handleUpdate({ state: opt.value })}
                       className={`p-2 sm:p-2.5 rounded-lg sm:rounded-xl border text-left transition-all ${
                         state === opt.value
                           ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] dark:border-[#2B6958] shadow-sm font-bold"
@@ -256,7 +356,7 @@ export default function ThreeStageSimulator() {
               {QIXUESHUI_OPTIONS.map((opt) => (
                 <button
                   key={opt.value}
-                  onClick={() => updateOption(setQixueshui, opt.value)}
+                  onClick={() => handleUpdate({ qixueshui: opt.value })}
                   className={`p-2.5 sm:p-3 rounded-lg sm:rounded-xl border text-left transition-all ${
                     qixueshui === opt.value
                       ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] dark:border-[#2B6958] shadow-sm font-bold"
@@ -292,7 +392,7 @@ export default function ThreeStageSimulator() {
               {ZANGFU_OPTIONS.map((opt) => (
                 <button
                   key={opt.value}
-                  onClick={() => updateOption(setZangfu, opt.value)}
+                  onClick={() => handleUpdate({ zangfu: opt.value })}
                   className={`p-2.5 sm:p-3 rounded-lg sm:rounded-xl border text-left transition-all ${
                     zangfu === opt.value
                       ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] dark:border-[#2B6958] shadow-sm font-bold"
@@ -306,6 +406,188 @@ export default function ThreeStageSimulator() {
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* オプション：複雑な状態も試す（アコーディオン） */}
+          <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D]">
+            <button
+              type="button"
+              onClick={() => setIsComplexAccordionOpen(!isComplexAccordionOpen)}
+              className="w-full flex items-center justify-between p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] hover:bg-[#F2EDE4] dark:hover:bg-[#1A2530] transition-colors text-left"
+            >
+              <div className="flex items-center gap-2.5">
+                <span className="p-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
+                  <Scale className="w-4 h-4" />
+                </span>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-serif font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5]">
+                      💡 複雑な状態も試す（寒熱錯雑・虚実夾雑・四診の判断材料）
+                    </span>
+                    {complexState !== "none" && (
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#B86924] text-white">
+                        併存モード適用中
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[10px] sm:text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                    二択では割り切れない「上熱下寒」「本虚標実」「四診キーサイン」を試したい方向けの拡張機能
+                  </p>
+                </div>
+              </div>
+              <div className="text-[#737C77] dark:text-[#8899A6]">
+                {isComplexAccordionOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+              </div>
+            </button>
+
+            {/* アコーディオン展開部 */}
+            {isComplexAccordionOpen && (
+              <div className="mt-3 p-3.5 sm:p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] space-y-5 animate-fadeIn">
+                {/* 併存病態の選択 */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                      <span>併存病態（八綱の二択を超えた臨床像）:</span>
+                    </span>
+                    {complexState !== "none" && (
+                      <button
+                        onClick={() => handleUpdate({ complexState: "none" })}
+                        className="text-[11px] text-[#B86924] dark:text-[#E6C387] font-semibold hover:underline"
+                      >
+                        標準（二択モード）に戻す ↺
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                    {COMPLEX_STATE_OPTIONS.map((cOpt) => (
+                      <button
+                        key={cOpt.value}
+                        onClick={() => handleUpdate({ complexState: cOpt.value })}
+                        className={`p-2.5 rounded-xl border text-left transition-all ${
+                          complexState === cOpt.value
+                            ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] shadow-sm font-bold"
+                            : "bg-white dark:bg-[#17212A] text-[#333835] dark:text-[#C5D2DB] border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#F2EDE4] dark:hover:bg-[#1E2B36]"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold">{cOpt.label}</span>
+                          <span className={`text-[10px] px-1.5 py-0.2 rounded ${
+                            complexState === cOpt.value ? "bg-white/20 text-white" : "bg-[#FAF8F5] dark:bg-[#121920] text-[#737C77] dark:text-[#8899A6]"
+                          }`}>
+                            {cOpt.category}
+                          </span>
+                        </div>
+                        <p className={`text-[10px] mt-1 leading-snug line-clamp-2 ${
+                          complexState === cOpt.value ? "text-white/80" : "text-[#737C77] dark:text-[#8899A6]"
+                        }`}>
+                          {cOpt.summary}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 四診の4大キーサイン（按診・温冷・飲水・舌診） */}
+                <div className="space-y-2.5 pt-3 border-t border-[#E8E1D1] dark:border-[#22303D]">
+                  <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+                    <Stethoscope className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                    <span>四診の判断材料（タップすると八綱へ自動連動します）:</span>
+                  </span>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs">
+                    {/* 按診 */}
+                    <div className="bg-white dark:bg-[#17212A] p-2.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
+                      <span className="text-[11px] font-bold text-[#59615D] dark:text-[#96A6B2] block">
+                        ① 圧迫への反応（按診）
+                      </span>
+                      <div className="space-y-1">
+                        {PALPATION_OPTIONS.map((p) => (
+                          <button
+                            key={p.value}
+                            onClick={() => handleFourExamChange("palpation", p.value)}
+                            className={`w-full text-left px-2 py-1 rounded text-[11px] transition-all ${
+                              fourExams.palpation === p.value
+                                ? "bg-[#1E3D34] text-white font-bold"
+                                : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
+                            }`}
+                          >
+                            {p.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* 温冷反応 */}
+                    <div className="bg-white dark:bg-[#17212A] p-2.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
+                      <span className="text-[11px] font-bold text-[#59615D] dark:text-[#96A6B2] block">
+                        ② 温冷への反応（問診）
+                      </span>
+                      <div className="space-y-1">
+                        {TEMP_REACTION_OPTIONS.map((t) => (
+                          <button
+                            key={t.value}
+                            onClick={() => handleFourExamChange("tempReaction", t.value)}
+                            className={`w-full text-left px-2 py-1 rounded text-[11px] transition-all ${
+                              fourExams.tempReaction === t.value
+                                ? "bg-[#1E3D34] text-white font-bold"
+                                : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
+                            }`}
+                          >
+                            {t.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* 飲水 */}
+                    <div className="bg-white dark:bg-[#17212A] p-2.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
+                      <span className="text-[11px] font-bold text-[#59615D] dark:text-[#96A6B2] block">
+                        ③ 飲水傾向（問診）
+                      </span>
+                      <div className="space-y-1">
+                        {DRINKING_OPTIONS.map((d) => (
+                          <button
+                            key={d.value}
+                            onClick={() => handleFourExamChange("drinking", d.value)}
+                            className={`w-full text-left px-2 py-1 rounded text-[11px] transition-all ${
+                              fourExams.drinking === d.value
+                                ? "bg-[#1E3D34] text-white font-bold"
+                                : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
+                            }`}
+                          >
+                            {d.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* 舌診 */}
+                    <div className="bg-white dark:bg-[#17212A] p-2.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
+                      <span className="text-[11px] font-bold text-[#59615D] dark:text-[#96A6B2] block">
+                        ④ 舌色・舌苔（望診）
+                      </span>
+                      <div className="space-y-1">
+                        {TONGUE_OPTIONS.map((tg) => (
+                          <button
+                            key={tg.value}
+                            onClick={() => handleFourExamChange("tongue", tg.value)}
+                            className={`w-full text-left px-2 py-1 rounded text-[11px] transition-all ${
+                              fourExams.tongue === tg.value
+                                ? "bg-[#1E3D34] text-white font-bold"
+                                : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
+                            }`}
+                          >
+                            {tg.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -344,6 +626,54 @@ export default function ThreeStageSimulator() {
           ? "border-[#B86924] dark:border-[#E6C387]"
           : "border-[#1E3D34] dark:border-[#3A6B5B]"
       }`}>
+        {/* ⚡ 今回変わったこと（条件変更による臨床判断の転換点） */}
+        {deltaInsight && (
+          <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-[#FFFDF5] dark:bg-[#1F1C16] border-2 border-[#D4A373] dark:border-[#9C6D3B] space-y-3 animate-fadeIn shadow-xs">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#EADCC8] dark:border-[#382F24] pb-2">
+              <div className="flex items-center gap-2">
+                <span className="p-1 rounded-md bg-[#B86924] text-white">
+                  <Zap className="w-3.5 h-3.5" />
+                </span>
+                <h4 className="font-serif font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5]">
+                  ⚡ 今回変わったこと（一つ変えると、何が変わる？）
+                </h4>
+              </div>
+              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#FAF0E6] dark:bg-[#332517] text-[#B86924] dark:text-[#E6C387] border border-[#E8D0BA] dark:border-[#4D351F]">
+                {deltaInsight.changedItem}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
+              <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E8DFC8] dark:border-[#2D2A24] space-y-1">
+                <span className="text-[10px] font-bold text-[#B86924] dark:text-[#E6C387] block">
+                  ① 判断のどこが変わったか（病理の転換）:
+                </span>
+                <p className="text-[#333835] dark:text-[#C5D2DB] leading-relaxed text-[11px]">
+                  {deltaInsight.pathologyChange}
+                </p>
+              </div>
+
+              <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E8DFC8] dark:border-[#2D2A24] space-y-1">
+                <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
+                  ② 治法・介入戦略をどう考え直すか:
+                </span>
+                <p className="text-[#333835] dark:text-[#C5D2DB] leading-relaxed text-[11px]">
+                  {deltaInsight.treatmentStrategyChange}
+                </p>
+              </div>
+
+              <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E8DFC8] dark:border-[#2D2A24] space-y-1">
+                <span className="text-[10px] font-bold text-[#737C77] dark:text-[#8899A6] block">
+                  ③ 配穴の狙いの違い:
+                </span>
+                <p className="text-[#333835] dark:text-[#C5D2DB] leading-relaxed text-[11px]">
+                  {deltaInsight.acupointImpact}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* 結果ヘッダー & 「一文の証」 */}
         <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-6 space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
@@ -698,6 +1028,29 @@ export default function ThreeStageSimulator() {
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* 学術リファレンス ＆ 用語標準化基準 */}
+        <div className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-[#F8F6F0] dark:bg-[#141B22] border border-[#E5DEC9] dark:border-[#22303D] space-y-2 text-xs">
+          <div className="flex items-center gap-2">
+            <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+            <h5 className="font-serif font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5]">
+              {ACADEMIC_STANDARDS.title}
+            </h5>
+          </div>
+          <p className="text-[#59615D] dark:text-[#96A6B2] text-[11px] leading-relaxed">
+            {ACADEMIC_STANDARDS.description}
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 text-[10px] text-[#737C77] dark:text-[#8899A6]">
+            <div>
+              <strong className="block text-[#404743] dark:text-[#C5D2DB]">国際標準用語基準:</strong>
+              <span>{ACADEMIC_STANDARDS.whoReference}</span>
+            </div>
+            <div>
+              <strong className="block text-[#404743] dark:text-[#C5D2DB]">日本標準教科書・古典:</strong>
+              <span>{ACADEMIC_STANDARDS.textbookReference} / {ACADEMIC_STANDARDS.classics}</span>
+            </div>
           </div>
         </div>
       </div>
