@@ -81,7 +81,7 @@ const EIGHT_SYSTEMS = [
     flowTo: "潜在する病機を体表サインから捉える「診断論」へ",
     terms: ["邪正盛衰", "内生五邪", "氷山モデル", "絡脈瘀阻"],
     acupoints: "風池・行間",
-    lectureId: "lecture-5-pathomechanism"
+    lectureId: "lecture-pathomechanism-1"
   },
   {
     number: 6,
