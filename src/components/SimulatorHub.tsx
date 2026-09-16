@@ -25,44 +25,7 @@ export default function SimulatorHub() {
           最小手数で最大の効果を狙う<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「最小構成のペアツボ」</strong>を瞬時に導き出します。
         </p>
 
-        {/* 3ステップの解説ピル */}
-        <div className="pt-2 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
-          <div className="p-3.5 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm">
-            <span className="text-[10px] font-bold text-[#B86924] dark:text-[#E6C387] block mb-1">
-              STEP 1: 八綱フィルタ
-            </span>
-            <p className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] mb-0.5">
-              表裏・寒熱・虚実
-            </p>
-            <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-snug">
-              病の深浅、温度傾向、生体反応の過不足と勢いを大枠で把握。
-            </p>
-          </div>
 
-          <div className="p-3.5 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm">
-            <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
-              STEP 2: 気血水動態
-            </span>
-            <p className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] mb-0.5">
-              循環・過不足の動態
-            </p>
-            <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-snug">
-              気滞・気虚・血虚・瘀血・水滞など、生体因子の運動異常を特定。
-            </p>
-          </div>
-
-          <div className="p-3.5 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm">
-            <span className="text-[10px] font-bold text-[#1E2D3D] dark:text-[#7BAAD8] block mb-1">
-              STEP 3: 臓腑経絡
-            </span>
-            <p className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] mb-0.5">
-              五臓五腑・病位局在
-            </p>
-            <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-snug">
-              肝・心・脾・肺・腎・三焦など、病変の中心拠点を確定。
-            </p>
-          </div>
-        </div>
       </div>
 
       {/* 臨床弁証シミュレーター本体 */}

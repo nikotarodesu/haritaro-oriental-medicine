@@ -35,73 +35,6 @@ import {
 import { TSUBOS } from "@/data/tsuboData";
 import { Tsubo } from "@/types/oriental";
 
-// 臨床クイックプリセット
-const PRESETS = [
-  {
-    label: "イライラ・胸脇痛",
-    sub: "肝気鬱結",
-    depth: "interior" as DepthType,
-    temp: "heat" as TemperatureType,
-    state: "excess" as StateType,
-    q: "qizhi" as QixueshuiType,
-    z: "liver" as ZangfuType
-  },
-  {
-    label: "食後もたれ・慢性疲労",
-    sub: "脾気虚弱",
-    depth: "interior" as DepthType,
-    temp: "cold" as TemperatureType,
-    state: "deficiency" as StateType,
-    q: "qixu" as QixueshuiType,
-    z: "spleen" as ZangfuType
-  },
-  {
-    label: "のぼせ・寝汗・腰痛",
-    sub: "腎陰虚",
-    depth: "interior" as DepthType,
-    temp: "heat" as TemperatureType,
-    state: "deficiency" as StateType,
-    q: "yinxu" as QixueshuiType,
-    z: "kidney" as ZangfuType
-  },
-  {
-    label: "動悸・胸の刺痛",
-    sub: "心血瘀阻",
-    depth: "interior" as DepthType,
-    temp: "cold" as TemperatureType,
-    state: "excess" as StateType,
-    q: "yuxue" as QixueshuiType,
-    z: "heart" as ZangfuType
-  },
-  {
-    label: "頭重・むくみ・痰咳",
-    sub: "痰湿阻肺",
-    depth: "interior" as DepthType,
-    temp: "cold" as TemperatureType,
-    state: "excess" as StateType,
-    q: "shuitai" as QixueshuiType,
-    z: "lung" as ZangfuType
-  },
-  {
-    label: "芯の冷え・朝の下痢",
-    sub: "脾腎陽虚",
-    depth: "interior" as DepthType,
-    temp: "cold" as TemperatureType,
-    state: "deficiency" as StateType,
-    q: "yangxu" as QixueshuiType,
-    z: "kidney" as ZangfuType
-  },
-  {
-    label: "初期風邪・首すじ悪寒",
-    sub: "風寒表証",
-    depth: "exterior" as DepthType,
-    temp: "cold" as TemperatureType,
-    state: "excess" as StateType,
-    q: "qizhi" as QixueshuiType,
-    z: "lung" as ZangfuType
-  }
-];
-
 export default function ThreeStageSimulator() {
   // ステップ1: 八綱
   const [depth, setDepth] = useState<DepthType>("interior");
@@ -125,15 +58,6 @@ export default function ThreeStageSimulator() {
   // 主穴と配穴のデータ取得
   const primaryTsubo = TSUBOS.find((t) => t.id === diagnosis.minimalAcupoints.primaryId);
   const secondaryTsubo = TSUBOS.find((t) => t.id === diagnosis.minimalAcupoints.secondaryId);
-
-  // プリセット適用
-  const applyPreset = (preset: typeof PRESETS[0]) => {
-    setDepth(preset.depth);
-    setTemp(preset.temp);
-    setState(preset.state);
-    setQixueshui(preset.q);
-    setZangfu(preset.z);
-  };
 
   // リセット
   const handleReset = () => {
@@ -161,32 +85,8 @@ export default function ThreeStageSimulator() {
           </p>
         </div>
 
-        {/* クイック臨床プリセット */}
-        <div className="space-y-2">
-          <span className="text-xs font-bold text-[#59615D] dark:text-[#96A6B2] flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>臨床代表症例クイックセット:</span>
-          </span>
-          <div className="flex flex-wrap gap-2">
-            {PRESETS.map((preset, idx) => (
-              <button
-                key={idx}
-                onClick={() => applyPreset(preset)}
-                className="px-3 py-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] text-xs transition-all text-left group"
-              >
-                <span className="font-semibold text-[#232826] dark:text-[#E6EFEA] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
-                  {preset.label}
-                </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] ml-1.5 font-normal">
-                  （{preset.sub}）
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* 3段階セレクターエリア */}
-        <div className="space-y-8 pt-4 border-t border-[#F2ECE0] dark:border-[#22303D]">
+        <div className="space-y-8">
           {/* STEP 1: 八綱弁証 */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
