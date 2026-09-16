@@ -98,16 +98,16 @@ const EIGHT_SYSTEMS = [
   },
   {
     number: 7,
-    id: "lecture-7-treatment",
+    id: "lecture-treatment-1",
     title: "治法論",
     phase: "治法",
     tagColor: "bg-[#285A52] dark:bg-[#3B7A70] text-[#FAF8F5]",
-    subtitle: "介入ベクトル・標本緩急・刺激設計の工学",
-    purpose: "補瀉・清熱・温裏・理気など、生体を中庸へ導く治療戦略ルールを立案する",
-    flowTo: "治法を具現化するツボの組み合わせと手技「実践論」へ",
-    terms: ["治則治法", "本治標治", "補虚瀉実", "開闔補瀉"],
+    subtitle: "介入ベクトル・刺激量設計・治療計画書の臨床工学",
+    purpose: "補瀉寒熱・本標優先・臓腑経絡配穴から刺激量6大検討項目、客観的評価と治療計画書7項目までを体系化する",
+    flowTo: "治法を具現化する臨床運用と自己修正アルゴリズム「実践論」へ",
+    terms: ["治則治法", "本治標治", "刺激量設計", "治療計画書7項目"],
     acupoints: "主穴・配穴論",
-    lectureId: "lecture-7-treatment"
+    lectureId: "lecture-treatment-1"
   },
   {
     number: 8,
