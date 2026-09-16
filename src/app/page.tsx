@@ -227,7 +227,7 @@ export default function HomePage() {
                   <div className="inline-flex items-center gap-2 text-[#1E2D3D] dark:text-[#7BAAD8]">
                     <Compass className="w-5 h-5 shrink-0" />
                     <span className="text-base sm:text-lg font-bold font-serif">
-                      根拠を調べる
+                      経穴を調べる
                     </span>
                   </div>
                   <span className="text-xs font-mono font-bold tracking-wider px-2.5 py-0.5 rounded bg-[#EAEFF5] dark:bg-transparent text-[#1E2D3D] dark:text-[#7BAAD8]">
@@ -236,16 +236,16 @@ export default function HomePage() {
                 </div>
 
                 <h3 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E2D3D] dark:group-hover:text-[#7BAAD8] transition-colors">
-                  経穴辞典 ＆ 学術リファレンス
+                  十四経脈・経穴辞典
                 </h3>
 
                 <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  全361穴の経穴辞典、十四経脈、骨度法、学術論文抄読、東西統合比較。病機や臓腑と相互接続された知識グラフ。
+                  正経十二経と任脈・督脈の全361穴を網羅。正確な取穴部位、解剖学的指標、骨度法、主治効能から臨床配穴まで即座に検索。
                 </p>
               </div>
 
               <div className="pt-3 sm:pt-4 mt-4 sm:mt-5 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8]">
-                <span>経穴辞典・論文リファレンスへ</span>
+                <span>十四経脈・経穴辞典へ</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>
@@ -508,7 +508,7 @@ export default function HomePage() {
               href="/tsubo"
               className="text-xs sm:text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
             >
-              <span>全361穴の経穴辞典へ</span>
+              <span>十四経脈・経穴辞典（全361穴）へ</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
