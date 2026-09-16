@@ -55,7 +55,7 @@ const EIGHT_SYSTEMS = [
     flowTo: "多層バリアと循環構造を統合する「生命機能論」へ",
     terms: ["気虚・気滞", "血虚・瘀血", "水滞・痰飲", "ドミノ破綻"],
     acupoints: "気海・三陰交",
-    lectureId: "lecture-3-qiblood"
+    lectureId: "lecture-qiblood-1"
   },
   {
     number: 4,
