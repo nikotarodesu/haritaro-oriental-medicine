@@ -322,7 +322,7 @@ export default function DiagnosisPage() {
                     あなたの体質タイプ「{result.name}」の生体メカニズムを学ぶ
                   </span>
                   <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-tight block">
-                    気血津液の動態異常（推動・温煦・微小循環・体液恒常性）を自然科学で読み解く学術講義録です。
+                    気血津液の動態異常（推動・温煦・微小循環・体液恒常性）を自然科学で読み解く学術知見記事です。
                   </span>
                 </div>
               </div>
@@ -330,7 +330,7 @@ export default function DiagnosisPage() {
                 href="/articles?article=science-of-qi-blood-fluid"
                 className="px-4 py-2 rounded-xl bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#162E27] text-white dark:text-[#121920] text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm"
               >
-                <span>学術講義録を読む</span>
+                <span>解説記事を読む</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
@@ -378,13 +378,13 @@ export default function DiagnosisPage() {
       <div>
         <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
           <Sparkles className="w-4 h-4" />
-          <span>Academic Lectures: Diagnostic Science</span>
+          <span>Academic Articles: Diagnostic Science</span>
         </div>
         <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
           東洋医学の診断学（四診）を自然科学で深掘りする
         </h2>
         <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1 leading-relaxed max-w-2xl">
-          東洋医学の四診（望・聞・問・切）の中でも、脈診・腹診・舌診は生体シグナルの解読技術です。現代の血行動態学・生体力学・画像解析と融合した学術講義録を公開しています。
+          東洋医学の四診（望・聞・問・切）の中でも、脈診・腹診・舌診は生体シグナルの解読技術です。現代の血行動態学・生体力学・画像解析と融合した学術解説記事を公開しています。
         </p>
       </div>
       <Link
@@ -403,10 +403,7 @@ export default function DiagnosisPage() {
         className="bg-[#FFFFFF] dark:bg-[#17212A] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between"
       >
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
-              第189講 統合講義
-            </span>
+          <div className="flex items-center justify-end text-xs text-[#737C77] dark:text-[#8899A6]">
             <span className="text-[11px]">約 16分</span>
           </div>
           <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
@@ -417,7 +414,7 @@ export default function DiagnosisPage() {
           </p>
         </div>
         <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-          <span>講義を読む</span>
+          <span>記事を読む</span>
           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
         </div>
       </Link>
@@ -428,10 +425,7 @@ export default function DiagnosisPage() {
         className="bg-[#FFFFFF] dark:bg-[#17212A] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between"
       >
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
-              第190講 統合講義
-            </span>
+          <div className="flex items-center justify-end text-xs text-[#737C77] dark:text-[#8899A6]">
             <span className="text-[11px]">約 14分</span>
           </div>
           <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
@@ -442,7 +436,7 @@ export default function DiagnosisPage() {
           </p>
         </div>
         <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-          <span>講義を読む</span>
+          <span>記事を読む</span>
           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
         </div>
       </Link>
@@ -453,10 +447,7 @@ export default function DiagnosisPage() {
         className="bg-[#FFFFFF] dark:bg-[#17212A] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between"
       >
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
-              第191講 統合講義
-            </span>
+          <div className="flex items-center justify-end text-xs text-[#737C77] dark:text-[#8899A6]">
             <span className="text-[11px]">約 13分</span>
           </div>
           <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
@@ -467,7 +458,7 @@ export default function DiagnosisPage() {
           </p>
         </div>
         <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-          <span>講義を読む</span>
+          <span>記事を読む</span>
           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
         </div>
       </Link>

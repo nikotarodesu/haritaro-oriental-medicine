@@ -100,10 +100,7 @@ export default function TsuboPage() {
             className="bg-[#FFFFFF] dark:bg-[#1A2632] p-4 rounded-xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group flex flex-col justify-between"
           >
             <div className="space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#162A24] text-[#1E3D34] dark:text-[#74BA9E]">
-                  第187講 統合講義
-                </span>
+              <div className="flex items-center justify-end text-xs">
                 <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B]">約 15分</span>
               </div>
               <h3 className="font-sans text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
@@ -114,7 +111,7 @@ export default function TsuboPage() {
               </p>
             </div>
             <div className="pt-3 mt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>講義を読む</span>
+              <span>記事を読む</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
@@ -124,10 +121,7 @@ export default function TsuboPage() {
             className="bg-[#FFFFFF] dark:bg-[#1A2632] p-4 rounded-xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group flex flex-col justify-between"
           >
             <div className="space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387]">
-                  第188講 統合講義
-                </span>
+              <div className="flex items-center justify-end text-xs">
                 <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B]">約 16分</span>
               </div>
               <h3 className="font-sans text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors leading-relaxed tracking-normal">
@@ -138,7 +132,7 @@ export default function TsuboPage() {
               </p>
             </div>
             <div className="pt-3 mt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#B86924] dark:text-[#E6C387] font-semibold">
-              <span>講義を読む</span>
+              <span>記事を読む</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
@@ -148,10 +142,7 @@ export default function TsuboPage() {
             className="bg-[#FFFFFF] dark:bg-[#1A2632] p-4 rounded-xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-sm transition-all group flex flex-col justify-between"
           >
             <div className="space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#162A24] text-[#1E3D34] dark:text-[#74BA9E]">
-                  第192-199講 統合
-                </span>
+              <div className="flex items-center justify-end text-xs">
                 <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B]">約 25分</span>
               </div>
               <h3 className="font-sans text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
@@ -162,7 +153,7 @@ export default function TsuboPage() {
               </p>
             </div>
             <div className="pt-3 mt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>講義を読む</span>
+              <span>記事を読む</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>

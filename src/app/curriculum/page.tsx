@@ -368,10 +368,10 @@ export default function CurriculumPage() {
               <span>Advanced Academic Lectures & Natural Science</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              学術深化：東洋医学の自然科学的機序を深掘りする講義録
+              学術深化：東洋医学の自然科学的機序を深掘りする学術記事
             </h2>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1 leading-relaxed max-w-2xl">
-              東洋医学の歴史的誕生（システム同定）から、陰陽五行（二値モデル・多要素制御）、気血津液（生体ダイナミクス・微小循環）まで、自然科学・複雑系科学の言葉で再定義した学術講義録です。
+              東洋医学の歴史的誕生（システム同定）から、陰陽五行（二値モデル・多要素制御）、気血津液（生体ダイナミクス・微小循環）まで、自然科学・複雑系科学の言葉で再定義した学術知見アーカイブです。
             </p>
           </div>
           <Link
@@ -384,17 +384,14 @@ export default function CurriculumPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {/* 第184講 東洋医学史 */}
+          {/* 東洋医学史 */}
           <Link
             href="/articles?article=science-of-oriental-medicine-history"
             className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
           >
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
-                  第184講 統合講義
-                </span>
-                <span className="text-[11px]">約 18分</span>
+              <div className="flex items-center justify-end text-xs">
+                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">約 18分</span>
               </div>
               <h3 className="font-sans text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
                 【東洋医学史】ブラックボックス解析としての経験医学
@@ -404,22 +401,19 @@ export default function CurriculumPage() {
               </p>
             </div>
             <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>講義全文を読む</span>
+              <span>記事全文を読む</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
 
-          {/* 第185講 陰陽五行 */}
+          {/* 陰陽五行 */}
           <Link
             href="/articles?article=science-of-yinyang-gogyo"
             className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
           >
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
-                  第185講 統合講義
-                </span>
-                <span className="text-[11px]">約 22分</span>
+              <div className="flex items-center justify-end text-xs">
+                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">約 22分</span>
               </div>
               <h3 className="font-sans text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
                 【陰陽五行の科学】二値モデルと五つの機能ネットワーク
@@ -429,22 +423,19 @@ export default function CurriculumPage() {
               </p>
             </div>
             <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>講義全文を読む</span>
+              <span>記事全文を読む</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
 
-          {/* 第186講 気血津液 */}
+          {/* 気血津液 */}
           <Link
             href="/articles?article=science-of-qi-blood-fluid"
             className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
           >
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
-                  第186講 統合講義
-                </span>
-                <span className="text-[11px]">約 20分</span>
+              <div className="flex items-center justify-end text-xs">
+                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">約 20分</span>
               </div>
               <h3 className="font-sans text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
                 【気血津液の科学】人体のシステムダイナミクス
@@ -454,22 +445,19 @@ export default function CurriculumPage() {
               </p>
             </div>
             <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>講義全文を読む</span>
+              <span>記事全文を読む</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
 
-          {/* 第192-199講 鍼灸の科学 */}
+          {/* 鍼灸の科学 */}
           <Link
             href="/articles?article=science-of-acupuncture-neuroscience"
             className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
           >
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
-                  第192-199講 統合
-                </span>
-                <span className="text-[11px]">約 25分</span>
+              <div className="flex items-center justify-end text-xs">
+                <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B]">約 25分</span>
               </div>
               <h3 className="font-sans text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
                 【鍼灸の科学】生体情報制御学としての鍼灸医学
@@ -479,22 +467,19 @@ export default function CurriculumPage() {
               </p>
             </div>
             <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>講義全文を読む</span>
+              <span>記事全文を読む</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
 
-          {/* 第193講 漢方医学の科学 */}
+          {/* 漢方医学の科学 */}
           <Link
             href="/articles?article=science-of-kampo-network-pharmacology"
             className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
           >
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
-                  第193講 統合講義
-                </span>
-                <span className="text-[11px]">約 20分</span>
+              <div className="flex items-center justify-end text-xs">
+                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">約 20分</span>
               </div>
               <h3 className="font-sans text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
                 【漢方医学の科学】状態空間への多点介入
@@ -504,22 +489,19 @@ export default function CurriculumPage() {
               </p>
             </div>
             <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>講義全文を読む</span>
+              <span>記事全文を読む</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
 
-          {/* 第194講 東西医学の統合と人体統一理論 */}
+          {/* 東西医学の統合と人体統一理論 */}
           <Link
             href="/articles?article=east-west-integrative-unified-theory"
             className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
           >
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#83BEA8] border border-[#E8E1D1] dark:border-[#22303D]">
-                  第194講 総括講義
-                </span>
-                <span className="text-[11px]">約 19分</span>
+              <div className="flex items-center justify-end text-xs">
+                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">約 19分</span>
               </div>
               <h3 className="font-sans text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
                 【人体統一理論】東西二大モデルの統合
@@ -529,7 +511,7 @@ export default function CurriculumPage() {
               </p>
             </div>
             <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>講義全文を読む</span>
+              <span>記事全文を読む</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
