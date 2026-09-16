@@ -29,7 +29,7 @@ const EIGHT_SYSTEMS = [
     flowTo: "多臓器ネットワークへ展開する「五行論」へ",
     terms: ["陰陽互根", "消長転化", "陰虚陽亢", "動的平衡"],
     acupoints: "関元・百会",
-    lectureId: "lecture-1-yinyang"
+    lectureId: "lecture-yinyang-1"
   },
   {
     number: 2,
