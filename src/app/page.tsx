@@ -85,16 +85,16 @@ const EIGHT_SYSTEMS = [
   },
   {
     number: 6,
-    id: "lecture-6-diagnosis",
+    id: "lecture-diagnosis-1",
     title: "診断論",
     phase: "診断",
     tagColor: "bg-[#4A3B69] dark:bg-[#5C4B7F] text-[#FAF8F5]",
-    subtitle: "四診情報を立体的に束ねる弁証アルゴリズム",
-    purpose: "望聞問切の断片から、八綱・気血水・臓腑経絡を導き「一文の証」を確定する",
+    subtitle: "四診情報を立体的に束ねる臨床推論アルゴリズム",
+    purpose: "安全確認・四診の客観化から八綱・気血水・臓腑経絡を導き、検証可能な診断記録を統合する",
     flowTo: "確定した証に対して介入ルールを決定する「治法論」へ",
-    terms: ["四診合参", "八綱弁証", "舌苔脈状", "臓腑弁証"],
-    acupoints: "寸口脈・腹診穴",
-    lectureId: "lecture-6-diagnosis"
+    terms: ["安全確認", "四診合参", "八綱座標", "自己修正"],
+    acupoints: "四診・脈腹診",
+    lectureId: "lecture-diagnosis-1"
   },
   {
     number: 7,

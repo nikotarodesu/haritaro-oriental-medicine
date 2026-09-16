@@ -22,7 +22,8 @@ import {
   Compass,
   Droplets,
   Activity,
-  Flame
+  Flame,
+  Search
 } from "lucide-react";
 
 export default function CurriculumPage() {
@@ -49,6 +50,8 @@ export default function CurriculumPage() {
           resolvedId = "lecture-lifedynamics-1";
         } else if (lectureId === "lecture-5" || lectureId === "lecture-5-pathomechanism") {
           resolvedId = "lecture-pathomechanism-1";
+        } else if (lectureId === "lecture-6" || lectureId === "lecture-6-diagnosis") {
+          resolvedId = "lecture-diagnosis-1";
         }
         const found = allLectures.find((l) => l.id === resolvedId);
         if (found) {
@@ -94,11 +97,13 @@ export default function CurriculumPage() {
     const isQiblood = activeLecture.seriesId === "qiblood";
     const isLifedynamics = activeLecture.seriesId === "lifedynamics";
     const isPathomechanism = activeLecture.seriesId === "pathomechanism";
+    const isDiagnosis = activeLecture.seriesId === "diagnosis";
     const yinyangLessons = allLectures.filter((l) => l.seriesId === "yinyang");
     const wuxingLessons = allLectures.filter((l) => l.seriesId === "wuxing");
     const qibloodLessons = allLectures.filter((l) => l.seriesId === "qiblood");
     const lifedynamicsLessons = allLectures.filter((l) => l.seriesId === "lifedynamics");
     const pathomechanismLessons = allLectures.filter((l) => l.seriesId === "pathomechanism");
+    const diagnosisLessons = allLectures.filter((l) => l.seriesId === "diagnosis");
 
     return (
       <div className="max-w-4xl mx-auto px-2 sm:px-6 lg:px-8 py-6 sm:py-16 space-y-6 sm:space-y-8">
@@ -373,6 +378,56 @@ export default function CurriculumPage() {
               })}
             </div>
           </div>
+        ) : isDiagnosis ? (
+          /* 診断論 全12レッスン 専用進捗インジケーター */
+          <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-2.5 sm:p-4 shadow-2xs space-y-2">
+            <div className="flex items-center justify-between pb-2 border-b border-[#F2ECE0] dark:border-[#22303D] text-[11px]">
+              <div className="flex items-center gap-1.5 font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                <Search className="w-3.5 h-3.5" />
+                <span>診断論 集中カリキュラム 進捗</span>
+              </div>
+              <span className="font-mono text-[#8C9691] dark:text-[#64748B]">
+                レッスン {activeLecture.lessonNumber || 1} / 12
+              </span>
+            </div>
+            <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-1.5 text-center text-[10px]">
+              {diagnosisLessons.map((lec) => {
+                const isActive = lec.id === activeLecture.id;
+                const isPast = (lec.lessonNumber || 0) < (activeLecture.lessonNumber || 0);
+                const shortLabel = [
+                  "① 目的全体",
+                  "② 安全確認",
+                  "③ 主訴時間",
+                  "④ 問診設計",
+                  "⑤ 望聞観察",
+                  "⑥ 切診情報",
+                  "⑦ 八綱整理",
+                  "⑧ 気血津液",
+                  "⑨ 臓腑経絡",
+                  "⑩ 矛盾修正",
+                  "⑪ 証統合",
+                  "⑫ 総合演習"
+                ][(lec.lessonNumber || 1) - 1];
+
+                return (
+                  <button
+                    key={lec.id}
+                    onClick={() => handleSelectLecture(lec)}
+                    className={`py-1.5 px-1 rounded-lg font-bold transition-all truncate cursor-pointer ${
+                      isActive
+                        ? "bg-[#1E3D34] text-white shadow-xs scale-[1.03]"
+                        : isPast
+                        ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#D9EADB]"
+                        : "bg-[#FAF8F5] dark:bg-[#121920] text-[#8C9691] dark:text-[#64748B] hover:text-[#232826]"
+                    }`}
+                    title={lec.title}
+                  >
+                    {shortLabel}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         ) : (
           /* 全8大体系 常駐進捗インジケーター */
           <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-2.5 sm:p-4 shadow-2xs">
@@ -391,7 +446,7 @@ export default function CurriculumPage() {
                 { num: 3, label: "③ 気血水", targetId: "lecture-qiblood-1" },
                 { num: 4, label: "④ 生命機能", targetId: "lecture-lifedynamics-1" },
                 { num: 5, label: "⑤ 病機", targetId: "lecture-pathomechanism-1" },
-                { num: 6, label: "⑥ 診断", targetId: "lecture-6-diagnosis" },
+                { num: 6, label: "⑥ 診断", targetId: "lecture-diagnosis-1" },
                 { num: 7, label: "⑦ 治法", targetId: "lecture-7-treatment" },
                 { num: 8, label: "⑧ 実践", targetId: "lecture-8-practice" },
               ].map((item) => {
@@ -597,6 +652,7 @@ export default function CurriculumPage() {
   const qibloodLessons = allLectures.filter((l) => l.seriesId === "qiblood");
   const lifedynamicsLessons = allLectures.filter((l) => l.seriesId === "lifedynamics");
   const pathomechanismLessons = allLectures.filter((l) => l.seriesId === "pathomechanism");
+  const diagnosisLessons = allLectures.filter((l) => l.seriesId === "diagnosis");
 
   // カリキュラム一覧ビュー
   return (
@@ -985,17 +1041,92 @@ export default function CurriculumPage() {
         </div>
       </section>
 
-      {/* 後続カリキュラム（診断論〜実践論） */}
+      {/* ★ メイン特集⑥：診断論 全12レッスン 集中カリキュラム */}
+      <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
+        <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div>
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
+              <Search className="w-4 h-4" />
+              <span>基幹カリキュラム 深掘りシリーズ⑥（全12レッスン）</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+              診断論 ― 生命機能の破綻構造を読み解く「臨床推論アルゴリズム」
+            </h2>
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1.5 leading-relaxed max-w-3xl">
+              安全確認とレッドフラッグ、四診における客観事実と主観解釈の分離（共通記録5項目）、八綱の4次元座標と寒熱錯雑・虚実夾雑、気血津液・臓腑経絡の動態同定、矛盾への自己修正、そして修了時の診断記録7項目までを全12レッスンで完全体系化。
+            </p>
+          </div>
+          <button
+            onClick={() => handleSelectLecture(diagnosisLessons[0])}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
+          >
+            <span>第1章から受講を開始する</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
+        {/* 診断論 全12レッスン グリッドカード */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
+          {diagnosisLessons.map((lec) => (
+            <div
+              key={lec.id}
+              onClick={() => handleSelectLecture(lec)}
+              className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md cursor-pointer transition-all flex flex-col justify-between group"
+            >
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                    レッスン {lec.lessonNumber} / 12
+                  </span>
+                  <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                    <Clock className="w-3 h-3" />
+                    <span>約 {lec.duration}</span>
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                  {lec.title}
+                </h3>
+
+                {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
+                <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
+                  <div className="text-[#59615D] dark:text-[#A0B0BC]">
+                    <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
+                    {lec.whatYouWillLearn.topics}
+                  </div>
+                  <div className="text-[#232826] dark:text-[#FAF8F5]">
+                    <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
+                    {lec.whatYouWillLearn.canDo}
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
+                <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                  <span>レッスンを受講する</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                  段階的演習つき
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 後続カリキュラム（治法論〜実践論） */}
       <div className="space-y-8 sm:space-y-12">
         {CURRICULUM_DATA.map((stage) => {
-          // 陰陽論・五行論・気血水理論・生命機能論・病機論以外の講義を抽出
+          // 陰陽論・五行論・気血水理論・生命機能論・病機論・診断論以外の講義を抽出
           const stageLectures = stage.lectures.filter(
             (l) =>
               l.seriesId !== "yinyang" &&
               l.seriesId !== "wuxing" &&
               l.seriesId !== "qiblood" &&
               l.seriesId !== "lifedynamics" &&
-              l.seriesId !== "pathomechanism"
+              l.seriesId !== "pathomechanism" &&
+              l.seriesId !== "diagnosis"
           );
           if (stageLectures.length === 0) return null;
 
