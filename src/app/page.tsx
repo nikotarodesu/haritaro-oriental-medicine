@@ -157,7 +157,7 @@ export default function HomePage() {
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] hover:bg-[#162E27] dark:hover:bg-[#225345] text-[#FAF8F5] font-bold text-sm shadow-md hover:shadow-lg transition-all group"
               >
                 <GraduationCap className="w-4 h-4 text-[#E6C387]" />
-                <span>東洋医学を学ぶ（8大体系へ）</span>
+                <span>東洋医学を体系的に学ぶ</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
