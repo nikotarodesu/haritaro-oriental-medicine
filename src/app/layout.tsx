@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { FontSizeProvider } from "@/contexts/FontSizeContext";
 import { SeasonalThemeProvider } from "@/contexts/SeasonalThemeContext";
 import { ClinicalMemoProvider } from "@/contexts/ClinicalMemoContext";
+import { CurriculumProgressProvider } from "@/contexts/CurriculumProgressContext";
 import MyClinicalRecordDrawer from "@/components/MyClinicalRecordDrawer";
 
 const notoSerifJP = Noto_Serif_JP({
@@ -122,12 +123,14 @@ export default function RootLayout({
           <FontSizeProvider>
             <SeasonalThemeProvider>
               <ClinicalMemoProvider>
-                <Header />
-                <div className="flex-1">
-                  {children}
-                </div>
-                <Footer />
-                <MyClinicalRecordDrawer />
+                <CurriculumProgressProvider>
+                  <Header />
+                  <div className="flex-1">
+                    {children}
+                  </div>
+                  <Footer />
+                  <MyClinicalRecordDrawer />
+                </CurriculumProgressProvider>
               </ClinicalMemoProvider>
             </SeasonalThemeProvider>
           </FontSizeProvider>

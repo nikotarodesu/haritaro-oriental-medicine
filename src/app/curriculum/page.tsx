@@ -8,6 +8,11 @@ import GlossaryRenderer from "@/components/GlossaryRenderer";
 import MarkdownBody from "@/components/MarkdownBody";
 import ArticleReferences from "@/components/ArticleReferences";
 import { resolveArticleReferences } from "@/utils/referenceResolver";
+import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
+import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
+import { InteractiveQuiz } from "@/components/InteractiveQuiz";
+import { LearningMap } from "@/components/LearningMap";
+import { IncorrectQuestionsModal } from "@/components/IncorrectQuestionsModal";
 import { 
   GraduationCap, 
   BookOpen, 
@@ -24,14 +29,49 @@ import {
   Activity,
   Flame,
   Search,
-  Target
+  Target,
+  PlayCircle,
+  RotateCcw,
+  AlertCircle,
+  Map,
+  Check
 } from "lucide-react";
 
 export default function CurriculumPage() {
   const [activeLecture, setActiveLecture] = useState<Lecture | null>(null);
+  const [showLearningMap, setShowLearningMap] = useState<boolean>(true);
+  const [showIncorrectModal, setShowIncorrectModal] = useState<boolean>(false);
+
+  const {
+    isMounted,
+    completedLectures,
+    toggleLectureCompleted,
+    setLectureCompleted,
+    recordVisitedLecture,
+    totalCompleted,
+    totalPercentage,
+    getChapterProgress,
+    getNextResumeLectureId,
+    getIncorrectQuestions,
+    resetAllProgress,
+  } = useCurriculumProgress();
 
   // 全講義をフラットに並べた配列（順序保証）
   const allLectures = CURRICULUM_DATA.flatMap((s) => s.lectures);
+
+  // 講義閲覧時に訪問記録を自動保存
+  useEffect(() => {
+    if (activeLecture) {
+      recordVisitedLecture(activeLecture.id);
+    }
+  }, [activeLecture, recordVisitedLecture]);
+
+  // 次に受講すべき講義
+  const resumeLectureId = isMounted
+    ? getNextResumeLectureId(allLectures.map((l) => l.id))
+    : allLectures[0]?.id;
+  const resumeLecture = allLectures.find((l) => l.id === resumeLectureId) || allLectures[0];
+  const incorrectQuestions = isMounted ? getIncorrectQuestions() : [];
 
   // URLクエリ（?lecture=xxx）による講義直接オープン（後方互換対応）
   useEffect(() => {
@@ -702,17 +742,46 @@ export default function CurriculumPage() {
             resolvedReferences={resolvedReferences}
           />
 
+          {/* ★ レッスン理解度チェック（クイズ演習） */}
+          {CURRICULUM_QUIZZES[activeLecture.id] && (
+            <InteractiveQuiz quiz={CURRICULUM_QUIZZES[activeLecture.id]} />
+          )}
+
           {/* 参考文献・学術エビデンス */}
           <ArticleReferences references={resolvedReferences} />
 
           {/* 講義受講修了フッター */}
           <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-              {activeLecture.seriesTitle && activeLecture.lessonNumber ? (
-                <span>{activeLecture.seriesTitle} レッスン {activeLecture.lessonNumber} 受講完了</span>
-              ) : (
-                <span>第 {activeLecture.lectureNumber} 講 受講完了</span>
-              )}
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => toggleLectureCompleted(activeLecture.id)}
+                className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-sm ${
+                  isMounted && completedLectures[activeLecture.id]
+                    ? "bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-600/20"
+                    : "bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700"
+                }`}
+              >
+                <CheckCircle2
+                  className={`w-4 h-4 ${
+                    isMounted && completedLectures[activeLecture.id]
+                      ? "text-white"
+                      : "text-slate-400 dark:text-slate-500"
+                  }`}
+                />
+                <span>
+                  {isMounted && completedLectures[activeLecture.id]
+                    ? "受講修了（クリックで解除）"
+                    : "このレッスンを受講完了にする"}
+                </span>
+              </button>
+              <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">
+                {activeLecture.seriesTitle && activeLecture.lessonNumber ? (
+                  <span>{activeLecture.seriesTitle} レッスン {activeLecture.lessonNumber}</span>
+                ) : (
+                  <span>第 {activeLecture.lectureNumber} 講</span>
+                )}
+              </span>
             </div>
             <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
               {/* 前のレッスンへ */}
@@ -782,597 +851,1175 @@ export default function CurriculumPage() {
         </p>
       </div>
 
-      {/* ★ メイン特集①：陰陽論 全8レッスン 集中カリキュラム */}
-      <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
-        <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-          <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
-              <Sparkles className="w-4 h-4" />
-              <span>基幹カリキュラム 深掘りシリーズ①（全8レッスン）</span>
+      {/* ★ 続きから学ぶスマートダッシュボード & 全体進捗 */}
+      <div className="bg-gradient-to-br from-emerald-900/90 via-emerald-800 to-teal-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        {/* 背景装飾 */}
+        <div className="absolute top-0 right-0 -mt-8 -mr-8 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/3 -mb-12 w-80 h-80 bg-teal-400/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-6">
+          {/* 続きから学ぶカード */}
+          <div className="flex-1 space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-700/60 border border-emerald-500/30 text-emerald-200 text-xs font-bold tracking-wider">
+              <PlayCircle className="w-3.5 h-3.5 text-emerald-300" />
+              <span>学習を再開する</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              陰陽論 ― 生命ダイナミズムを読み解く「最小単位」の思考OS
-            </h2>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1.5 leading-relaxed max-w-3xl">
-              神秘思想を脱却し、「何と比べてどの性質か」「どう関係し、どう変化するか」「身体のどこに偏りがあるか」を1レッスンずつ確実に深掘りして修得する集中講義です。
-            </p>
-          </div>
-          <button
-            onClick={() => handleSelectLecture(yinyangLessons[0])}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
-          >
-            <span>第1章から受講を開始する</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        {/* 陰陽論 全8レッスン グリッドカード */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-5">
-          {yinyangLessons.map((lec) => (
-            <div
-              key={lec.id}
-              onClick={() => handleSelectLecture(lec)}
-              className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md cursor-pointer transition-all flex flex-col justify-between group"
-            >
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                    レッスン {lec.lessonNumber} / 8
-                  </span>
-                  <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                    <Clock className="w-3 h-3" />
-                    <span>約 {lec.duration}</span>
-                  </span>
+            {resumeLecture ? (
+              <div className="space-y-1.5">
+                <div className="text-xs text-emerald-200/90 font-medium">
+                  {resumeLecture.stageTitle} ➜ {resumeLecture.seriesTitle || '基幹講義'}
                 </div>
-
-                <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
-                  {lec.title}
+                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white line-clamp-1">
+                  {resumeLecture.title}
                 </h3>
-
-                {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
-                <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
-                  <div className="text-[#59615D] dark:text-[#A0B0BC]">
-                    <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
-                    {lec.whatYouWillLearn.topics}
-                  </div>
-                  <div className="text-[#232826] dark:text-[#FAF8F5]">
-                    <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
-                    {lec.whatYouWillLearn.canDo}
-                  </div>
-                </div>
+                <p className="text-xs sm:text-sm text-emerald-100/80 line-clamp-2 max-w-2xl">
+                  {resumeLecture.summary}
+                </p>
               </div>
+            ) : (
+              <h3 className="text-lg font-bold text-white">
+                全92レッスンの学習へようこそ！
+              </h3>
+            )}
+            {resumeLecture && (
+              <div className="pt-2 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleSelectLecture(resumeLecture)}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white text-emerald-950 font-black text-sm hover:bg-emerald-50 shadow-lg hover:shadow-emerald-900/40 active:scale-95 transition-all cursor-pointer"
+                >
+                  <PlayCircle className="w-5 h-5 text-emerald-700" />
+                  <span>
+                    {isMounted && completedLectures[resumeLecture.id]
+                      ? 'レッスンを復習する'
+                      : '続きから学ぶ'}
+                  </span>
+                </button>
+                <span className="text-xs text-emerald-200 flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>所要時間: 約 {resumeLecture.duration}</span>
+                </span>
+              </div>
+            )}
+          </div>
 
-              <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
-                <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                  <span>レッスンを受講する</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+          {/* 全体進捗バー & クイックアクション */}
+          <div className="lg:w-80 bg-black/25 backdrop-blur-md border border-white/15 rounded-2xl p-5 flex flex-col justify-between gap-4">
+            <div>
+              <div className="flex items-center justify-between text-xs font-bold mb-2 text-emerald-200">
+                <span>全体受講ステータス</span>
+                <span className="font-mono text-base text-white">
+                  {isMounted ? `${totalCompleted} / 92` : '0 / 92'}
                 </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
-                  演習・解説つき
-                </span>
+              </div>
+              <div className="w-full h-3 rounded-full bg-emerald-950/60 overflow-hidden border border-emerald-700/40">
+                <div
+                  className="h-full bg-gradient-to-r from-teal-300 to-emerald-400 rounded-full transition-all duration-700 ease-out shadow-sm"
+                  style={{ width: `${isMounted ? totalPercentage : 0}%` }}
+                />
+              </div>
+              <div className="mt-2 text-right text-xs font-black text-emerald-200">
+                達成率: {isMounted ? totalPercentage : 0}%
               </div>
             </div>
-          ))}
+
+            {/* アクションボタン群 */}
+            <div className="space-y-2 pt-2 border-t border-white/10">
+              <button
+                type="button"
+                onClick={() => setShowIncorrectModal(true)}
+                className={`w-full py-2.5 px-3.5 rounded-xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer ${
+                  incorrectQuestions.length > 0
+                    ? 'bg-rose-500 hover:bg-rose-400 text-white shadow-md shadow-rose-900/30'
+                    : 'bg-white/10 hover:bg-white/20 text-emerald-100 border border-white/15'
+                }`}
+              >
+                <span className="flex items-center gap-1.5">
+                  <AlertCircle className="w-4 h-4" />
+                  <span>間違えた問題の復習</span>
+                </span>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-[11px] font-black ${
+                    incorrectQuestions.length > 0
+                      ? 'bg-white text-rose-700'
+                      : 'bg-emerald-900/60 text-emerald-300'
+                  }`}
+                >
+                  {incorrectQuestions.length}問
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowLearningMap((prev) => !prev)}
+                className="w-full py-2 px-3.5 rounded-xl text-xs font-semibold text-emerald-200 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors flex items-center justify-between cursor-pointer"
+              >
+                <span className="flex items-center gap-1.5">
+                  <Map className="w-4 h-4" />
+                  <span>{showLearningMap ? '学習マップを閉じる' : '学習マップを展開'}</span>
+                </span>
+                <span className="text-[10px] text-emerald-300">
+                  {showLearningMap ? '▲' : '▼'}
+                </span>
+              </button>
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
+
+      {/* ★ 全8大体系 学習マップ */}
+      {showLearningMap && (
+        <LearningMap
+          onSelectChapter={(chapterId) => {
+            // スクロール処理
+            const el = document.getElementById(`chapter-${chapterId}`);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }}
+        />
+      )}
+
+      {/* ★ 間違えた問題の集中復習モーダル */}
+      <IncorrectQuestionsModal
+        isOpen={showIncorrectModal}
+        onClose={() => setShowIncorrectModal(false)}
+        onNavigateToLecture={(lectureId) => {
+          const target = allLectures.find((l) => l.id === lectureId);
+          if (target) handleSelectLecture(target);
+        }}
+      />
+
+      {/* ★ メイン特集①：陰陽論 全8レッスン 集中カリキュラム */}
+      {(() => {
+        const yyProgress = isMounted ? getChapterProgress("yin-yang", 8) : { completedCount: 0, percentage: 0 };
+        return (
+          <section id="chapter-yin-yang" className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
+            <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
+                  <Sparkles className="w-4 h-4" />
+                  <span>基幹カリキュラム 深掘りシリーズ①（全8レッスン）</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  陰陽論 ― 生命ダイナミズムを読み解く「最小単位」の思考OS
+                </h2>
+                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-3xl">
+                  神秘思想を脱却し、「何と比べてどの性質か」「どう関係し、どう変化するか」「身体のどこに偏りがあるか」を1レッスンずつ確実に深掘りして修得する集中講義です。
+                </p>
+
+                {/* 章進捗バー */}
+                <div className="flex items-center gap-3 pt-1">
+                  <div className="w-36 sm:w-48 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                      style={{ width: `${yyProgress.percentage}%` }}
+                    />
+                  </div>
+                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    {yyProgress.completedCount} / 8 講 ({yyProgress.percentage}%)
+                  </span>
+                  {yyProgress.percentage === 100 && (
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 rounded-md border border-emerald-300/60">
+                      <CheckCircle2 className="w-3 h-3" />
+                      修了
+                    </span>
+                  )}
+                </div>
+              </div>
+              <button
+                onClick={() => handleSelectLecture(yinyangLessons[0])}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
+              >
+                <span>第1章から受講を開始する</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* 陰陽論 全8レッスン グリッドカード */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-5">
+              {yinyangLessons.map((lec) => {
+                const isCompleted = isMounted && !!completedLectures[lec.id];
+                return (
+                  <div
+                    key={lec.id}
+                    onClick={() => handleSelectLecture(lec)}
+                    className={`p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border transition-all flex flex-col justify-between group cursor-pointer ${
+                      isCompleted
+                        ? "bg-emerald-50/20 dark:bg-emerald-950/20 border-emerald-400/80 dark:border-emerald-800/80 shadow-xs"
+                        : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md"
+                    }`}
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                          レッスン {lec.lessonNumber} / 8
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                            <Clock className="w-3 h-3" />
+                            <span>約 {lec.duration}</span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleLectureCompleted(lec.id);
+                            }}
+                            title={isCompleted ? "受講完了（クリックで解除）" : "受講済みにする"}
+                            className={`p-1 rounded-lg transition-colors cursor-pointer ${
+                              isCompleted
+                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300"
+                                : "text-slate-300 dark:text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-800"
+                            }`}
+                          >
+                            <CheckCircle2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                        {lec.title}
+                      </h3>
+
+                      {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
+                      <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
+                        <div className="text-[#59615D] dark:text-[#A0B0BC]">
+                          <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
+                          {lec.whatYouWillLearn.topics}
+                        </div>
+                        <div className="text-[#232826] dark:text-[#FAF8F5]">
+                          <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
+                          {lec.whatYouWillLearn.canDo}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
+                      <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                        <span>レッスンを受講する</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                      {isCompleted ? (
+                        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                          <Check className="w-3 h-3" />
+                          完了
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                          演習・解説つき
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ★ メイン特集②：五行論 全12レッスン 集中カリキュラム */}
-      <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
-        <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-          <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
-              <Compass className="w-4 h-4" />
-              <span>基幹カリキュラム 深掘りシリーズ②（全12レッスン）</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              五行論 ― 循環と多臓器ネットワークを解き明かす「動態システム」の地図
-            </h2>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1.5 leading-relaxed max-w-3xl">
-              木・火・土・金・水の性質から相生・相剋、五臓・身体対応、感情・精神（五神五志）、自然環境、多臓器連動、そして臨床意思決定アルゴリズムまでを全12レッスンで完全網羅します。
-            </p>
-          </div>
-          <button
-            onClick={() => handleSelectLecture(wuxingLessons[0])}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
-          >
-            <span>第1章から受講を開始する</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        {/* 五行論 全12レッスン グリッドカード */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
-          {wuxingLessons.map((lec) => (
-            <div
-              key={lec.id}
-              onClick={() => handleSelectLecture(lec)}
-              className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md cursor-pointer transition-all flex flex-col justify-between group"
-            >
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                    レッスン {lec.lessonNumber} / 12
-                  </span>
-                  <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                    <Clock className="w-3 h-3" />
-                    <span>約 {lec.duration}</span>
-                  </span>
+      {(() => {
+        const wxProgress = isMounted ? getChapterProgress("wuxing", 12) : { completedCount: 0, percentage: 0 };
+        return (
+          <section id="chapter-five-elements" className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
+            <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
+                  <Compass className="w-4 h-4" />
+                  <span>基幹カリキュラム 深掘りシリーズ②（全12レッスン）</span>
                 </div>
+                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  五行論 ― 循環と多臓器ネットワークを解き明かす「動態システム」の地図
+                </h2>
+                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-3xl">
+                  木・火・土・金・水の性質から相生・相剋、五臓・身体対応、感情・精神（五神五志）、自然環境、多臓器連動、そして臨床意思決定アルゴリズムまでを全12レッスンで完全網羅します。
+                </p>
 
-                <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
-                  {lec.title}
-                </h3>
-
-                {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
-                <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
-                  <div className="text-[#59615D] dark:text-[#A0B0BC]">
-                    <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
-                    {lec.whatYouWillLearn.topics}
+                {/* 章進捗バー */}
+                <div className="flex items-center gap-3 pt-1">
+                  <div className="w-36 sm:w-48 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                      style={{ width: `${wxProgress.percentage}%` }}
+                    />
                   </div>
-                  <div className="text-[#232826] dark:text-[#FAF8F5]">
-                    <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
-                    {lec.whatYouWillLearn.canDo}
-                  </div>
+                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    {wxProgress.completedCount} / 12 講 ({wxProgress.percentage}%)
+                  </span>
+                  {wxProgress.percentage === 100 && (
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 rounded-md border border-emerald-300/60">
+                      <CheckCircle2 className="w-3 h-3" />
+                      修了
+                    </span>
+                  )}
                 </div>
               </div>
-
-              <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
-                <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                  <span>レッスンを受講する</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
-                  段階的演習つき
-                </span>
-              </div>
+              <button
+                onClick={() => handleSelectLecture(wuxingLessons[0])}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
+              >
+                <span>第1章から受講を開始する</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
-          ))}
-        </div>
-      </section>
+
+            {/* 五行論 全12レッスン グリッドカード */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
+              {wuxingLessons.map((lec) => {
+                const isCompleted = isMounted && !!completedLectures[lec.id];
+                return (
+                  <div
+                    key={lec.id}
+                    onClick={() => handleSelectLecture(lec)}
+                    className={`p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border transition-all flex flex-col justify-between group cursor-pointer ${
+                      isCompleted
+                        ? "bg-emerald-50/20 dark:bg-emerald-950/20 border-emerald-400/80 dark:border-emerald-800/80 shadow-xs"
+                        : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md"
+                    }`}
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                          レッスン {lec.lessonNumber} / 12
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                            <Clock className="w-3 h-3" />
+                            <span>約 {lec.duration}</span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleLectureCompleted(lec.id);
+                            }}
+                            title={isCompleted ? "受講完了（クリックで解除）" : "受講済みにする"}
+                            className={`p-1 rounded-lg transition-colors cursor-pointer ${
+                              isCompleted
+                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300"
+                                : "text-slate-300 dark:text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-800"
+                            }`}
+                          >
+                            <CheckCircle2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                        {lec.title}
+                      </h3>
+
+                      {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
+                      <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
+                        <div className="text-[#59615D] dark:text-[#A0B0BC]">
+                          <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
+                          {lec.whatYouWillLearn.topics}
+                        </div>
+                        <div className="text-[#232826] dark:text-[#FAF8F5]">
+                          <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
+                          {lec.whatYouWillLearn.canDo}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
+                      <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                        <span>レッスンを受講する</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                      {isCompleted ? (
+                        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                          <Check className="w-3 h-3" />
+                          完了
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                          段階的演習つき
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ★ メイン特集③：気血水理論 全12レッスン 集中カリキュラム */}
-      <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
-        <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-          <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
-              <Droplets className="w-4 h-4" />
-              <span>基幹カリキュラム 深掘りシリーズ③（全12レッスン）</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              気血水理論 ― エネルギー・物質・体液循環の動態と病態メカニズム
-            </h2>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1.5 leading-relaxed max-w-3xl">
-              「機能（気）」「物質（血）」「水分代謝（水）」を共通のフレームワークで徹底比較。各要素の正常作用・生成運行から病態分類、気血水相互連動、体質・環境への応用、現代科学との接点、臨床推論演習までを全12レッスンで深掘り修得します。
-            </p>
-          </div>
-          <button
-            onClick={() => handleSelectLecture(qibloodLessons[0])}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
-          >
-            <span>第1章から受講を開始する</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        {/* 気血水理論 全12レッスン グリッドカード */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
-          {qibloodLessons.map((lec) => (
-            <div
-              key={lec.id}
-              onClick={() => handleSelectLecture(lec)}
-              className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md cursor-pointer transition-all flex flex-col justify-between group"
-            >
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                    レッスン {lec.lessonNumber} / 12
-                  </span>
-                  <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                    <Clock className="w-3 h-3" />
-                    <span>約 {lec.duration}</span>
-                  </span>
+      {/* ★ メイン特集③：気血水理論 全12レッスン 集中カリキュラム */}
+      {(() => {
+        const qbwProgress = isMounted ? getChapterProgress("qiblood", 12) : { completedCount: 0, percentage: 0 };
+        return (
+          <section id="chapter-qi-blood-water" className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
+            <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
+                  <Droplets className="w-4 h-4" />
+                  <span>基幹カリキュラム 深掘りシリーズ③（全12レッスン）</span>
                 </div>
+                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  気血水理論 ― エネルギー・物質・体液循環の動態と病態メカニズム
+                </h2>
+                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-3xl">
+                  「機能（気）」「物質（血）」「水分代謝（水）」を共通のフレームワークで徹底比較。各要素の正常作用・生成運行から病態分類、気血水相互連動、体質・環境への応用、現代科学との接点、臨床推論演習までを全12レッスンで深掘り修得します。
+                </p>
 
-                <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
-                  {lec.title}
-                </h3>
-
-                {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
-                <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
-                  <div className="text-[#59615D] dark:text-[#A0B0BC]">
-                    <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
-                    {lec.whatYouWillLearn.topics}
+                {/* 章進捗バー */}
+                <div className="flex items-center gap-3 pt-1">
+                  <div className="w-36 sm:w-48 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                      style={{ width: `${qbwProgress.percentage}%` }}
+                    />
                   </div>
-                  <div className="text-[#232826] dark:text-[#FAF8F5]">
-                    <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
-                    {lec.whatYouWillLearn.canDo}
-                  </div>
+                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    {qbwProgress.completedCount} / 12 講 ({qbwProgress.percentage}%)
+                  </span>
+                  {qbwProgress.percentage === 100 && (
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 rounded-md border border-emerald-300/60">
+                      <CheckCircle2 className="w-3 h-3" />
+                      修了
+                    </span>
+                  )}
                 </div>
               </div>
-
-              <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
-                <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                  <span>レッスンを受講する</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
-                  段階的演習つき
-                </span>
-              </div>
+              <button
+                onClick={() => handleSelectLecture(qibloodLessons[0])}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
+              >
+                <span>第1章から受講を開始する</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
-          ))}
-        </div>
-      </section>
+
+            {/* 気血水理論 全12レッスン グリッドカード */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
+              {qibloodLessons.map((lec) => {
+                const isCompleted = isMounted && !!completedLectures[lec.id];
+                return (
+                  <div
+                    key={lec.id}
+                    onClick={() => handleSelectLecture(lec)}
+                    className={`p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border transition-all flex flex-col justify-between group cursor-pointer ${
+                      isCompleted
+                        ? "bg-emerald-50/20 dark:bg-emerald-950/20 border-emerald-400/80 dark:border-emerald-800/80 shadow-xs"
+                        : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md"
+                    }`}
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                          レッスン {lec.lessonNumber} / 12
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                            <Clock className="w-3 h-3" />
+                            <span>約 {lec.duration}</span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleLectureCompleted(lec.id);
+                            }}
+                            title={isCompleted ? "受講完了（クリックで解除）" : "受講済みにする"}
+                            className={`p-1 rounded-lg transition-colors cursor-pointer ${
+                              isCompleted
+                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300"
+                                : "text-slate-300 dark:text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-800"
+                            }`}
+                          >
+                            <CheckCircle2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                        {lec.title}
+                      </h3>
+
+                      {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
+                      <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
+                        <div className="text-[#59615D] dark:text-[#A0B0BC]">
+                          <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
+                          {lec.whatYouWillLearn.topics}
+                        </div>
+                        <div className="text-[#232826] dark:text-[#FAF8F5]">
+                          <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
+                          {lec.whatYouWillLearn.canDo}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
+                      <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                        <span>レッスンを受講する</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                      {isCompleted ? (
+                        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                          <Check className="w-3 h-3" />
+                          完了
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                          段階的演習つき
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ★ メイン特集④：生命機能論 全12レッスン 集中カリキュラム */}
-      <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
-        <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-          <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
-              <Activity className="w-4 h-4" />
-              <span>基幹カリキュラム 深掘りシリーズ④（全12レッスン）</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              生命機能論 ― 生体を「絶えざる動態プロセス」として捉えるシステム統合モデル
-            </h2>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1.5 leading-relaxed max-w-3xl">
-              精気血津液神の階層ピラミッド、飲食と呼吸の合流、営気と衛気の二重循環、三焦の空間ハイウェイ、六対の表裏連携、昇降出入の気機運動、昼夜・五季のサーカディアンリズム、そして正常な調節と失調の境界線までを全12レッスンで完全体系化。
-            </p>
-          </div>
-          <button
-            onClick={() => handleSelectLecture(lifedynamicsLessons[0])}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
-          >
-            <span>第1章から受講を開始する</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        {/* 生命機能論 全12レッスン グリッドカード */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
-          {lifedynamicsLessons.map((lec) => (
-            <div
-              key={lec.id}
-              onClick={() => handleSelectLecture(lec)}
-              className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md cursor-pointer transition-all flex flex-col justify-between group"
-            >
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                    レッスン {lec.lessonNumber} / 12
-                  </span>
-                  <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                    <Clock className="w-3 h-3" />
-                    <span>約 {lec.duration}</span>
-                  </span>
+      {(() => {
+        const vfProgress = isMounted ? getChapterProgress("vital-function", 12) : { completedCount: 0, percentage: 0 };
+        return (
+          <section id="chapter-vital-function" className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
+            <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
+                  <Activity className="w-4 h-4" />
+                  <span>基幹カリキュラム 深掘りシリーズ④（全12レッスン）</span>
                 </div>
+                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  生命機能論 ― 生体を「絶えざる動態プロセス」として捉えるシステム統合モデル
+                </h2>
+                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-3xl">
+                  精気血津液神の階層ピラミッド、飲食と呼吸の合流、営気と衛気の二重循環、三焦の空間ハイウェイ、六対の表裏連携、昇降出入の気機運動、昼夜・五季のサーカディアンリズム、そして正常な調節と失調の境界線までを全12レッスンで完全体系化。
+                </p>
 
-                <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
-                  {lec.title}
-                </h3>
-
-                {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
-                <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
-                  <div className="text-[#59615D] dark:text-[#A0B0BC]">
-                    <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
-                    {lec.whatYouWillLearn.topics}
+                {/* 章進捗バー */}
+                <div className="flex items-center gap-3 pt-1">
+                  <div className="w-36 sm:w-48 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                      style={{ width: `${vfProgress.percentage}%` }}
+                    />
                   </div>
-                  <div className="text-[#232826] dark:text-[#FAF8F5]">
-                    <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
-                    {lec.whatYouWillLearn.canDo}
-                  </div>
+                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    {vfProgress.completedCount} / 12 講 ({vfProgress.percentage}%)
+                  </span>
+                  {vfProgress.percentage === 100 && (
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 rounded-md border border-emerald-300/60">
+                      <CheckCircle2 className="w-3 h-3" />
+                      修了
+                    </span>
+                  )}
                 </div>
               </div>
-
-              <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
-                <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                  <span>レッスンを受講する</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
-                  段階的演習つき
-                </span>
-              </div>
+              <button
+                onClick={() => handleSelectLecture(lifedynamicsLessons[0])}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
+              >
+                <span>第1章から受講を開始する</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
-          ))}
-        </div>
-      </section>
+
+            {/* 生命機能論 全12レッスン グリッドカード */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
+              {lifedynamicsLessons.map((lec) => {
+                const isCompleted = isMounted && !!completedLectures[lec.id];
+                return (
+                  <div
+                    key={lec.id}
+                    onClick={() => handleSelectLecture(lec)}
+                    className={`p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border transition-all flex flex-col justify-between group cursor-pointer ${
+                      isCompleted
+                        ? "bg-emerald-50/20 dark:bg-emerald-950/20 border-emerald-400/80 dark:border-emerald-800/80 shadow-xs"
+                        : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md"
+                    }`}
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                          レッスン {lec.lessonNumber} / 12
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                            <Clock className="w-3 h-3" />
+                            <span>約 {lec.duration}</span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleLectureCompleted(lec.id);
+                            }}
+                            title={isCompleted ? "受講完了（クリックで解除）" : "受講済みにする"}
+                            className={`p-1 rounded-lg transition-colors cursor-pointer ${
+                              isCompleted
+                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300"
+                                : "text-slate-300 dark:text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-800"
+                            }`}
+                          >
+                            <CheckCircle2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                        {lec.title}
+                      </h3>
+
+                      {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
+                      <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
+                        <div className="text-[#59615D] dark:text-[#A0B0BC]">
+                          <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
+                          {lec.whatYouWillLearn.topics}
+                        </div>
+                        <div className="text-[#232826] dark:text-[#FAF8F5]">
+                          <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
+                          {lec.whatYouWillLearn.canDo}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
+                      <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                        <span>レッスンを受講する</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                      {isCompleted ? (
+                        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                          <Check className="w-3 h-3" />
+                          完了
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                          段階的演習つき
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ★ メイン特集⑤：病機論 全12レッスン 集中カリキュラム */}
-      <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
-        <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-          <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
-              <Flame className="w-4 h-4" />
-              <span>基幹カリキュラム 深掘りシリーズ⑤（全12レッスン）</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              病機論 ― 生命機能はいかにして歪み、ドミノ倒しのように崩れるか
-            </h2>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1.5 leading-relaxed max-w-3xl">
-              病因・病機・症状・証の四層峻別、気の過不足と運動異常、津液と血の重層失調、寒熱虚実の四象限マトリクス、外邪侵入・情志内傷の波及ルート、そして慢性複合病態（発症・増悪・維持要因）の解剖までを全12レッスンで完全体系化。
-            </p>
-          </div>
-          <button
-            onClick={() => handleSelectLecture(pathomechanismLessons[0])}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
-          >
-            <span>第1章から受講を開始する</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        {/* 病機論 全12レッスン グリッドカード */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
-          {pathomechanismLessons.map((lec) => (
-            <div
-              key={lec.id}
-              onClick={() => handleSelectLecture(lec)}
-              className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md cursor-pointer transition-all flex flex-col justify-between group"
-            >
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                    レッスン {lec.lessonNumber} / 12
-                  </span>
-                  <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                    <Clock className="w-3 h-3" />
-                    <span>約 {lec.duration}</span>
-                  </span>
+      {(() => {
+        const pathProgress = isMounted ? getChapterProgress("pathology", 12) : { completedCount: 0, percentage: 0 };
+        return (
+          <section id="chapter-pathology" className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
+            <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
+                  <Flame className="w-4 h-4" />
+                  <span>基幹カリキュラム 深掘りシリーズ⑤（全12レッスン）</span>
                 </div>
+                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  病機論 ― 生命機能はいかにして歪み、ドミノ倒しのように崩れるか
+                </h2>
+                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-3xl">
+                  病因・病機・症状・証の四層峻別、気の過不足と運動異常、津液と血の重層失調、寒熱虚実の四象限マトリクス、外邪侵入・情志内傷の波及ルート、そして慢性複合病態（発症・増悪・維持要因）の解剖までを全12レッスンで完全体系化。
+                </p>
 
-                <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
-                  {lec.title}
-                </h3>
-
-                {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
-                <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
-                  <div className="text-[#59615D] dark:text-[#A0B0BC]">
-                    <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
-                    {lec.whatYouWillLearn.topics}
+                {/* 章進捗バー */}
+                <div className="flex items-center gap-3 pt-1">
+                  <div className="w-36 sm:w-48 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                      style={{ width: `${pathProgress.percentage}%` }}
+                    />
                   </div>
-                  <div className="text-[#232826] dark:text-[#FAF8F5]">
-                    <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
-                    {lec.whatYouWillLearn.canDo}
-                  </div>
+                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    {pathProgress.completedCount} / 12 講 ({pathProgress.percentage}%)
+                  </span>
+                  {pathProgress.percentage === 100 && (
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 rounded-md border border-emerald-300/60">
+                      <CheckCircle2 className="w-3 h-3" />
+                      修了
+                    </span>
+                  )}
                 </div>
               </div>
-
-              <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
-                <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                  <span>レッスンを受講する</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
-                  段階的演習つき
-                </span>
-              </div>
+              <button
+                onClick={() => handleSelectLecture(pathomechanismLessons[0])}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
+              >
+                <span>第1章から受講を開始する</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
-          ))}
-        </div>
-      </section>
+
+            {/* 病機論 全12レッスン グリッドカード */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
+              {pathomechanismLessons.map((lec) => {
+                const isCompleted = isMounted && !!completedLectures[lec.id];
+                return (
+                  <div
+                    key={lec.id}
+                    onClick={() => handleSelectLecture(lec)}
+                    className={`p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border transition-all flex flex-col justify-between group cursor-pointer ${
+                      isCompleted
+                        ? "bg-emerald-50/20 dark:bg-emerald-950/20 border-emerald-400/80 dark:border-emerald-800/80 shadow-xs"
+                        : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md"
+                    }`}
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                          レッスン {lec.lessonNumber} / 12
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                            <Clock className="w-3 h-3" />
+                            <span>約 {lec.duration}</span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleLectureCompleted(lec.id);
+                            }}
+                            title={isCompleted ? "受講完了（クリックで解除）" : "受講済みにする"}
+                            className={`p-1 rounded-lg transition-colors cursor-pointer ${
+                              isCompleted
+                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300"
+                                : "text-slate-300 dark:text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-800"
+                            }`}
+                          >
+                            <CheckCircle2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                        {lec.title}
+                      </h3>
+
+                      {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
+                      <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
+                        <div className="text-[#59615D] dark:text-[#A0B0BC]">
+                          <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
+                          {lec.whatYouWillLearn.topics}
+                        </div>
+                        <div className="text-[#232826] dark:text-[#FAF8F5]">
+                          <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
+                          {lec.whatYouWillLearn.canDo}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
+                      <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                        <span>レッスンを受講する</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                      {isCompleted ? (
+                        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                          <Check className="w-3 h-3" />
+                          完了
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                          段階的演習つき
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ★ メイン特集⑥：診断論 全12レッスン 集中カリキュラム */}
-      <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
-        <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-          <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
-              <Search className="w-4 h-4" />
-              <span>基幹カリキュラム 深掘りシリーズ⑥（全12レッスン）</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              診断論 ― 生命機能の破綻構造を読み解く「臨床推論アルゴリズム」
-            </h2>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1.5 leading-relaxed max-w-3xl">
-              安全確認とレッドフラッグ、四診における客観事実と主観解釈の分離（共通記録5項目）、八綱の4次元座標と寒熱錯雑・虚実夾雑、気血津液・臓腑経絡の動態同定、矛盾への自己修正、そして修了時の診断記録7項目までを全12レッスンで完全体系化。
-            </p>
-          </div>
-          <button
-            onClick={() => handleSelectLecture(diagnosisLessons[0])}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
-          >
-            <span>第1章から受講を開始する</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        {/* 診断論 全12レッスン グリッドカード */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
-          {diagnosisLessons.map((lec) => (
-            <div
-              key={lec.id}
-              onClick={() => handleSelectLecture(lec)}
-              className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md cursor-pointer transition-all flex flex-col justify-between group"
-            >
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                    レッスン {lec.lessonNumber} / 12
-                  </span>
-                  <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                    <Clock className="w-3 h-3" />
-                    <span>約 {lec.duration}</span>
-                  </span>
+      {(() => {
+        const diagProgress = isMounted ? getChapterProgress("diagnosis", 12) : { completedCount: 0, percentage: 0 };
+        return (
+          <section id="chapter-diagnosis" className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
+            <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
+                  <Search className="w-4 h-4" />
+                  <span>基幹カリキュラム 深掘りシリーズ⑥（全12レッスン）</span>
                 </div>
+                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  診断論 ― 生命機能の破綻構造を読み解く「臨床推論アルゴリズム」
+                </h2>
+                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-3xl">
+                  安全確認とレッドフラッグ、四診における客観事実と主観解釈の分離（共通記録5項目）、八綱の4次元座標と寒熱錯雑・虚実夾雑、気血津液・臓腑経絡の動態同定、矛盾への自己修正、そして修了時の診断記録7項目までを全12レッスンで完全体系化。
+                </p>
 
-                <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
-                  {lec.title}
-                </h3>
-
-                {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
-                <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
-                  <div className="text-[#59615D] dark:text-[#A0B0BC]">
-                    <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
-                    {lec.whatYouWillLearn.topics}
+                {/* 章進捗バー */}
+                <div className="flex items-center gap-3 pt-1">
+                  <div className="w-36 sm:w-48 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                      style={{ width: `${diagProgress.percentage}%` }}
+                    />
                   </div>
-                  <div className="text-[#232826] dark:text-[#FAF8F5]">
-                    <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
-                    {lec.whatYouWillLearn.canDo}
-                  </div>
+                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    {diagProgress.completedCount} / 12 講 ({diagProgress.percentage}%)
+                  </span>
+                  {diagProgress.percentage === 100 && (
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 rounded-md border border-emerald-300/60">
+                      <CheckCircle2 className="w-3 h-3" />
+                      修了
+                    </span>
+                  )}
                 </div>
               </div>
-
-              <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
-                <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                  <span>レッスンを受講する</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
-                  段階的演習つき
-                </span>
-              </div>
+              <button
+                onClick={() => handleSelectLecture(diagnosisLessons[0])}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
+              >
+                <span>第1章から受講を開始する</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
-          ))}
-        </div>
-      </section>
+
+            {/* 診断論 全12レッスン グリッドカード */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
+              {diagnosisLessons.map((lec) => {
+                const isCompleted = isMounted && !!completedLectures[lec.id];
+                return (
+                  <div
+                    key={lec.id}
+                    onClick={() => handleSelectLecture(lec)}
+                    className={`p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border transition-all flex flex-col justify-between group cursor-pointer ${
+                      isCompleted
+                        ? "bg-emerald-50/20 dark:bg-emerald-950/20 border-emerald-400/80 dark:border-emerald-800/80 shadow-xs"
+                        : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md"
+                    }`}
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                          レッスン {lec.lessonNumber} / 12
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                            <Clock className="w-3 h-3" />
+                            <span>約 {lec.duration}</span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleLectureCompleted(lec.id);
+                            }}
+                            title={isCompleted ? "受講完了（クリックで解除）" : "受講済みにする"}
+                            className={`p-1 rounded-lg transition-colors cursor-pointer ${
+                              isCompleted
+                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300"
+                                : "text-slate-300 dark:text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-800"
+                            }`}
+                          >
+                            <CheckCircle2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                        {lec.title}
+                      </h3>
+
+                      {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
+                      <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
+                        <div className="text-[#59615D] dark:text-[#A0B0BC]">
+                          <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
+                          {lec.whatYouWillLearn.topics}
+                        </div>
+                        <div className="text-[#232826] dark:text-[#FAF8F5]">
+                          <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
+                          {lec.whatYouWillLearn.canDo}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
+                      <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                        <span>レッスンを受講する</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                      {isCompleted ? (
+                        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                          <Check className="w-3 h-3" />
+                          完了
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                          段階的演習つき
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ★ メイン特集⑦：治法論 全12レッスン 集中カリキュラム */}
-      <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
-        <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-          <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
-              <Sparkles className="w-4 h-4" />
-              <span>基幹カリキュラム 深掘りシリーズ⑦（全12レッスン）</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              治法論 ― 介入の原則・刺激量・治療計画の「臨床工学モデル」
-            </h2>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1.5 leading-relaxed max-w-3xl">
-              治療目的と適応限界、証から治則・治法への階層分離、補瀉寒熱・本治標治の優先順位、気・血・津液・臓腑・経絡への具体的介入、刺激量の6大検討項目、生活調整・他職種連携、客観的評価と治療計画書7項目までを全12レッスンで完全体系化。
-            </p>
-          </div>
-          <button
-            onClick={() => handleSelectLecture(treatmentLessons[0])}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
-          >
-            <span>第1章から受講を開始する</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        {/* 治法論 全12レッスン グリッドカード */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
-          {treatmentLessons.map((lec) => (
-            <div
-              key={lec.id}
-              onClick={() => handleSelectLecture(lec)}
-              className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md cursor-pointer transition-all flex flex-col justify-between group"
-            >
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                    レッスン {lec.lessonNumber} / 12
-                  </span>
-                  <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                    <Clock className="w-3 h-3" />
-                    <span>約 {lec.duration}</span>
-                  </span>
+      {(() => {
+        const treatProgress = isMounted ? getChapterProgress("treatment", 12) : { completedCount: 0, percentage: 0 };
+        return (
+          <section id="chapter-treatment" className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
+            <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
+                  <Sparkles className="w-4 h-4" />
+                  <span>基幹カリキュラム 深掘りシリーズ⑦（全12レッスン）</span>
                 </div>
+                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  治法論 ― 介入の原則・刺激量・治療計画の「臨床工学モデル」
+                </h2>
+                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-3xl">
+                  治療目的と適応限界、証から治則・治法への階層分離、補瀉寒熱・本治標治の優先順位、気・血・津液・臓腑・経絡への具体的介入、刺激量の6大検討項目、生活調整・他職種連携、客観的評価と治療計画書7項目までを全12レッスンで完全体系化。
+                </p>
 
-                <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
-                  {lec.title}
-                </h3>
-
-                {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
-                <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
-                  <div className="text-[#59615D] dark:text-[#A0B0BC]">
-                    <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
-                    {lec.whatYouWillLearn.topics}
+                {/* 章進捗バー */}
+                <div className="flex items-center gap-3 pt-1">
+                  <div className="w-36 sm:w-48 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                      style={{ width: `${treatProgress.percentage}%` }}
+                    />
                   </div>
-                  <div className="text-[#232826] dark:text-[#FAF8F5]">
-                    <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
-                    {lec.whatYouWillLearn.canDo}
-                  </div>
+                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    {treatProgress.completedCount} / 12 講 ({treatProgress.percentage}%)
+                  </span>
+                  {treatProgress.percentage === 100 && (
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 rounded-md border border-emerald-300/60">
+                      <CheckCircle2 className="w-3 h-3" />
+                      修了
+                    </span>
+                  )}
                 </div>
               </div>
-
-              <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
-                <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                  <span>レッスンを受講する</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
-                  演習・計画書つき
-                </span>
-              </div>
+              <button
+                onClick={() => handleSelectLecture(treatmentLessons[0])}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
+              >
+                <span>第1章から受講を開始する</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
-          ))}
-        </div>
-      </section>
+
+            {/* 治法論 全12レッスン グリッドカード */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
+              {treatmentLessons.map((lec) => {
+                const isCompleted = isMounted && !!completedLectures[lec.id];
+                return (
+                  <div
+                    key={lec.id}
+                    onClick={() => handleSelectLecture(lec)}
+                    className={`p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border transition-all flex flex-col justify-between group cursor-pointer ${
+                      isCompleted
+                        ? "bg-emerald-50/20 dark:bg-emerald-950/20 border-emerald-400/80 dark:border-emerald-800/80 shadow-xs"
+                        : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md"
+                    }`}
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                          レッスン {lec.lessonNumber} / 12
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                            <Clock className="w-3 h-3" />
+                            <span>約 {lec.duration}</span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleLectureCompleted(lec.id);
+                            }}
+                            title={isCompleted ? "受講完了（クリックで解除）" : "受講済みにする"}
+                            className={`p-1 rounded-lg transition-colors cursor-pointer ${
+                              isCompleted
+                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300"
+                                : "text-slate-300 dark:text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-800"
+                            }`}
+                          >
+                            <CheckCircle2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                        {lec.title}
+                      </h3>
+
+                      {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
+                      <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
+                        <div className="text-[#59615D] dark:text-[#A0B0BC]">
+                          <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
+                          {lec.whatYouWillLearn.topics}
+                        </div>
+                        <div className="text-[#232826] dark:text-[#FAF8F5]">
+                          <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
+                          {lec.whatYouWillLearn.canDo}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
+                      <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                        <span>レッスンを受講する</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                      {isCompleted ? (
+                        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                          <Check className="w-3 h-3" />
+                          完了
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                          演習・計画書つき
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ★ メイン特集⑧：実践論 全12レッスン 集中カリキュラム */}
-      <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
-        <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-          <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
-              <Sparkles className="w-4 h-4" />
-              <span>基幹カリキュラム 深掘りシリーズ⑧（全12レッスン・最高峰）</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              実践論 ― 臨床運用の完全プロトコルと自己修正アルゴリズム
-            </h2>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1.5 leading-relaxed max-w-3xl">
-              安全確認から症例読解、初動トリアージ、仮説比較・弁証、二層目標設定、介入設計、日常語での説明・合意形成、術中術後の反応評価、次回計画修正、経過管理・治療終了（卒業）までを一連の動的ループとして完全体系化。
-            </p>
-          </div>
-          <button
-            onClick={() => handleSelectLecture(practiceLessons[0])}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
-          >
-            <span>第1章から受講を開始する</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        {/* 実践論 全12レッスン グリッドカード */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
-          {practiceLessons.map((lec) => (
-            <div
-              key={lec.id}
-              onClick={() => handleSelectLecture(lec)}
-              className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md cursor-pointer transition-all flex flex-col justify-between group"
-            >
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                    レッスン {lec.lessonNumber} / 12
-                  </span>
-                  <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                    <Clock className="w-3 h-3" />
-                    <span>約 {lec.duration}</span>
-                  </span>
+      {(() => {
+        const pracProgress = isMounted ? getChapterProgress("practice", 12) : { completedCount: 0, percentage: 0 };
+        return (
+          <section id="chapter-practice" className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
+            <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
+                  <Sparkles className="w-4 h-4" />
+                  <span>基幹カリキュラム 深掘りシリーズ⑧（全12レッスン・最高峰）</span>
                 </div>
+                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  実践論 ― 臨床運用の完全プロトコルと自己修正アルゴリズム
+                </h2>
+                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-3xl">
+                  安全確認から症例読解、初動トリアージ、仮説比較・弁証、二層目標設定、介入設計、日常語での説明・合意形成、術中術後の反応評価、次回計画修正、経過管理・治療終了（卒業）までを一連の動的ループとして完全体系化。
+                </p>
 
-                <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
-                  {lec.title}
-                </h3>
-
-                {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
-                <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
-                  <div className="text-[#59615D] dark:text-[#A0B0BC]">
-                    <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
-                    {lec.whatYouWillLearn.topics}
+                {/* 章進捗バー */}
+                <div className="flex items-center gap-3 pt-1">
+                  <div className="w-36 sm:w-48 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                      style={{ width: `${pracProgress.percentage}%` }}
+                    />
                   </div>
-                  <div className="text-[#232826] dark:text-[#FAF8F5]">
-                    <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
-                    {lec.whatYouWillLearn.canDo}
-                  </div>
+                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    {pracProgress.completedCount} / 12 講 ({pracProgress.percentage}%)
+                  </span>
+                  {pracProgress.percentage === 100 && (
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 rounded-md border border-emerald-300/60">
+                      <CheckCircle2 className="w-3 h-3" />
+                      修了
+                    </span>
+                  )}
                 </div>
               </div>
-
-              <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
-                <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                  <span>レッスンを受講する</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
-                  症例追跡・推論演習
-                </span>
-              </div>
+              <button
+                onClick={() => handleSelectLecture(practiceLessons[0])}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shrink-0 cursor-pointer shadow-xs"
+              >
+                <span>第1章から受講を開始する</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
-          ))}
-        </div>
-      </section>
+
+            {/* 実践論 全12レッスン グリッドカード */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
+              {practiceLessons.map((lec) => {
+                const isCompleted = isMounted && !!completedLectures[lec.id];
+                return (
+                  <div
+                    key={lec.id}
+                    onClick={() => handleSelectLecture(lec)}
+                    className={`p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border transition-all flex flex-col justify-between group cursor-pointer ${
+                      isCompleted
+                        ? "bg-emerald-50/20 dark:bg-emerald-950/20 border-emerald-400/80 dark:border-emerald-800/80 shadow-xs"
+                        : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md"
+                    }`}
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                          レッスン {lec.lessonNumber} / 12
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                            <Clock className="w-3 h-3" />
+                            <span>約 {lec.duration}</span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleLectureCompleted(lec.id);
+                            }}
+                            title={isCompleted ? "受講完了（クリックで解除）" : "受講済みにする"}
+                            className={`p-1 rounded-lg transition-colors cursor-pointer ${
+                              isCompleted
+                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300"
+                                : "text-slate-300 dark:text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-800"
+                            }`}
+                          >
+                            <CheckCircle2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                        {lec.title}
+                      </h3>
+
+                      {/* 学ぶ内容・学習後にできることのコンパクト表示 */}
+                      <div className="space-y-1.5 text-xs bg-white/70 dark:bg-[#1A2632]/60 p-2.5 rounded-lg border border-[#EDE7DC] dark:border-[#23303D]">
+                        <div className="text-[#59615D] dark:text-[#A0B0BC]">
+                          <strong className="text-[#1E3D34] dark:text-[#83BEA8] font-semibold">学ぶ内容:</strong>{" "}
+                          {lec.whatYouWillLearn.topics}
+                        </div>
+                        <div className="text-[#232826] dark:text-[#FAF8F5]">
+                          <strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">できること:</strong>{" "}
+                          {lec.whatYouWillLearn.canDo}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 mt-3 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
+                      <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                        <span>レッスンを受講する</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                      {isCompleted ? (
+                        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                          <Check className="w-3 h-3" />
+                          完了
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                          症例追跡・推論演習
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* 後続カリキュラム（その他の追加講義がある場合のみ表示） */}
       <div className="space-y-8 sm:space-y-12">
@@ -1650,6 +2297,18 @@ export default function CurriculumPage() {
           </Link>
         </div>
       </section>
+
+      {/* 受講履歴・進捗データ管理 */}
+      <div className="pt-4 pb-2 text-center text-xs text-slate-400 dark:text-slate-600 flex flex-wrap items-center justify-center gap-3">
+        <span>受講進捗および演習クイズ回答データはお使いの端末（localStorage）に自動保存されています。</span>
+        <button
+          type="button"
+          onClick={resetAllProgress}
+          className="text-slate-400 hover:text-rose-500 underline transition-colors cursor-pointer"
+        >
+          受講記録をリセット
+        </button>
+      </div>
     </div>
   );
 }

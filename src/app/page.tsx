@@ -15,6 +15,7 @@ import {
 import { TSUBOS } from "@/data/tsuboData";
 import { ARTICLES } from "@/data/articleData";
 import SeasonalBanner from "@/components/SeasonalBanner";
+import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
 
 // 東洋医学8大体系データ
 const EIGHT_SYSTEMS = [
@@ -176,8 +177,13 @@ export default function HomePage() {
             </div>
           </div>
 
+          {/* 学習進捗・続きから再開カード */}
+          <div className="max-w-6xl mx-auto pt-2">
+            <HomeLearningProgressCard />
+          </div>
+
           {/* 3大メイン導線ダッシュボード（学ぶ・調べる・考える） */}
-          <div className="pt-6 sm:pt-8 grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-5 max-w-6xl mx-auto">
+          <div className="pt-2 sm:pt-4 grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-5 max-w-6xl mx-auto">
             {/* 1. 学ぶ (LEARN) */}
             <Link
               href="/curriculum"
