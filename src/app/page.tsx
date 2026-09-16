@@ -68,7 +68,7 @@ const EIGHT_SYSTEMS = [
     flowTo: "正常な生体システムが崩壊するメカニズム「病機論」へ",
     terms: ["衛気営血", "三焦気化", "表裏相応", "昇降出入"],
     acupoints: "合谷・中脘",
-    lectureId: "lecture-4-lifedynamics"
+    lectureId: "lecture-lifedynamics-1"
   },
   {
     number: 5,
