@@ -8,7 +8,6 @@ import {
   getMeridianPoints 
 } from "@/data/tsubo";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
-import LocalPointMapSvg from "@/components/tsubo/LocalPointMapSvg";
 import ClipButton from "@/components/ClipButton";
 import { 
   Compass, 
@@ -417,24 +416,39 @@ export default async function AcupointDetailPage({ params }: Props) {
           </div>
         </section>
 
-        {/* 3. 局所解剖図 ＆ 断面解剖モデル */}
-        <section className="space-y-6">
-          {/* 局所位置図（近隣経穴プロット） */}
-          <LocalPointMapSvg
-            pointCode={point.code}
-            pointName={point.name}
-            nearbyPoints={point.nearbyPoints}
-          />
-
-          {/* 断面解剖インタラクティブモデル */}
-          {point.crossSection && (
+        {/* 3. 断面解剖モデル */}
+        {point.crossSection && (
+          <section className="space-y-6">
             <CrossSectionViewer
               model={point.crossSection}
               pointName={point.name}
               pointCode={point.code}
             />
-          )}
-        </section>
+
+            {/* 近隣経穴リンク（シンプルチップ） */}
+            {point.nearbyPoints && point.nearbyPoints.length > 0 && (
+              <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
+                <span className="text-xs font-semibold text-[#59615D] dark:text-[#A0B0BC] block">
+                  同部位・近隣の経穴：
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {point.nearbyPoints.map((np) => (
+                    <Link
+                      key={np.code}
+                      href={`/tsubo/${np.code.toLowerCase()}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white dark:bg-[#16222C] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-xs font-medium text-[#232826] dark:text-[#E6EFEA] hover:text-[#1E3D34] transition-all"
+                    >
+                      <span className="font-mono font-bold text-[#1E3D34] dark:text-[#74BA9E]">{np.code}</span>
+                      <span>{np.name}</span>
+                      <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">({np.relation})</span>
+                      <ArrowRight className="w-3 h-3 ml-0.5 text-[#737C77]" />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
 
         {/* 4. 臨床知見・主治・EBM研究エビデンス */}
         <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
