@@ -73,6 +73,12 @@ export default function LocalPointMapSvg({
               </text>
             </g>
 
+            {/* 断面解剖切断線 */}
+            <line x1="160" y1="180" x2="330" y2="180" stroke="#B86924" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.8" />
+            <text x="335" y="183" className="text-[9px] font-mono fill-[#B86924] dark:fill-[#E6C387]">
+              切断高位
+            </text>
+
             {/* 合谷 LI4（主標点） */}
             <g>
               <circle cx="250" cy="180" r="14" fill="#B86924" fillOpacity="0.2" className="animate-ping" />
@@ -144,10 +150,10 @@ export default function LocalPointMapSvg({
               手関節掌側横紋
             </text>
 
-            {/* 2寸基準線 */}
-            <line x1="120" y1="140" x2="300" y2="140" stroke="#B86924" strokeWidth="1" strokeDasharray="4 2" />
-            <text x="80" y="144" className="text-[10px] font-bold fill-[#B86924]">
-              上2寸
+            {/* 2寸基準線（断面高位） */}
+            <line x1="120" y1="140" x2="300" y2="140" stroke="#B86924" strokeWidth="1.5" strokeDasharray="4 2" />
+            <text x="65" y="144" className="text-[10px] font-bold fill-[#B86924]">
+              上2寸（切断高位）
             </text>
 
             {/* 橈側手根屈筋腱 */}
@@ -257,10 +263,10 @@ export default function LocalPointMapSvg({
               </text>
             </g>
 
-            {/* 3寸基準線 */}
-            <line x1="120" y1="165" x2="310" y2="165" stroke="#B86924" strokeWidth="1" strokeDasharray="4 2" />
-            <text x="80" y="170" className="text-[10px] font-bold fill-[#B86924]">
-              犢鼻下3寸
+            {/* 3寸基準線（断面高位） */}
+            <line x1="120" y1="165" x2="310" y2="165" stroke="#B86924" strokeWidth="1.5" strokeDasharray="4 2" />
+            <text x="50" y="170" className="text-[10px] font-bold fill-[#B86924]">
+              犢鼻下3寸（切断高位）
             </text>
 
             {/* 1横指幅ライン */}

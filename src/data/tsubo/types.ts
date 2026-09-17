@@ -6,10 +6,26 @@ export interface AnatomicalLayer {
   depthIndex: number;
   id: string;
   name: string;
+  englishName?: string;
   category: "skin" | "subcutaneous" | "fascia" | "muscle" | "nerve" | "vessel" | "bone";
   depthDescription: string;
   description: string;
+  differentiationTip?: string;
   dangerLevel?: "safe" | "caution" | "hazard";
+  clinicalSignificance?: string;
+}
+
+export interface BoundaryLandmark {
+  id: string;
+  name: string;
+  englishName?: string;
+  category: "bone" | "tendon" | "muscle" | "membrane";
+  position: string; // e.g. "橈側（親指側）の骨縁", "外側境界筋"
+  relation: string; // e.g. "取穴時の不動の触診基準線"
+  description: string;
+  palpationTip: string; // 触知・識別のコツ
+  dangerLevel?: "safe" | "caution" | "hazard";
+  differentiationTip?: string;
   clinicalSignificance?: string;
 }
 
@@ -32,23 +48,78 @@ export interface SvgAnatomicalElement {
   fill: string;
   stroke?: string;
   strokeWidth?: number;
+  strokeDasharray?: string;
   labelPos?: { x: number; y: number; anchor?: "start" | "middle" | "end" };
+  leaderLine?: { x1: number; y1: number; x2: number; y2: number };
 }
 
 export interface AdjacentStructure {
   id: string;
   name: string;
+  englishName?: string;
   category: "nerve" | "vessel" | "organ" | "bone";
   relation: string;
   dangerLevel: "safe" | "caution" | "hazard";
   description: string;
+  differentiationTip?: string;
   clinicalSignificance: string;
+}
+
+export interface CuttingPlaneInfo {
+  planeType?: string; // "横断面" / "水平横断面"
+  planeLevel?: string; // "第2中手骨中点レベル水平横断"
+  viewDirection: string; // "遠位（指先側）から近位（手首側）方向を観察"
+  notes?: string;
+  scopeType?: "local_magnified" | "limb_cross_section";
+  scopeDescription?: string; // "第1・第2中手骨間・第1背側骨間隙局所拡大断面"
+  simplifications?: string; // 簡略化・背景化した範囲の明記
+}
+
+export interface ReferenceLedgerItem {
+  id?: string;
+  title: string;
+  authors?: string;
+  author?: string;
+  year: number;
+  publisherOrJournal?: string;
+  journal?: string;
+  volume?: string;
+  doi?: string;
+  url?: string;
+  confirmedItems?: string[];
+  supportedStructures?: string[];
+  unconfirmedOrReserved?: string;
+  confirmationStatus?: "confirmed" | "schematic_model";
+  notes?: string;
+}
+
+export interface SurfaceMapData {
+  bodyPartLabel: string;
+  viewBox: string;
+  elements: SvgAnatomicalElement[];
+  cutLine: {
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+    arrowX: number;
+    arrowY: number;
+    arrowAngle: number;
+    label: string;
+  };
+  pointCoords: { x: number; y: number; label: string };
 }
 
 export interface CrossSectionModel {
   id: string;
   title: string;
   level: string;
+  bodySide?: string; // "右手" / "右前腕" / "右下腿"
+  posture?: string; // "軽度回内位（手背を上に向けて軽く握った肢位）"
+  cuttingPlane?: CuttingPlaneInfo;
+  cuttingPlaneInfo?: CuttingPlaneInfo; // エイリアス
+  summaryTakeaway?: string;
+  summary?: string; // エイリアス
   axes: {
     horizontal: [string, string]; // [左, 右]
     vertical: [string, string];   // [上, 下]
@@ -59,10 +130,15 @@ export interface CrossSectionModel {
     targetStructure: string;
     warning?: string;
   };
-  layers: AnatomicalLayer[]; // 表層から深層への通過層
+  layers: AnatomicalLayer[]; // 表層から深層への通過層のみ（確認済みの順序）
+  boundaries?: BoundaryLandmark[]; // 境界・目印（骨縁、両腱、側方筋）
   adjacentStructures?: AdjacentStructure[]; // 周囲を走る神経・血管・重要組織
+  surfaceMap?: SurfaceMapData; // 体表切断線連動マップ
   svgElements: SvgAnatomicalElement[];
+  explodedSvgElements?: SvgAnatomicalElement[]; // 層分解表示用SVG
   references: string[];
+  referenceLedger?: ReferenceLedgerItem[]; // 詳細資料台帳
+  referencesLedger?: ReferenceLedgerItem[]; // エイリアス
   verifiedDate: string;
 }
 
