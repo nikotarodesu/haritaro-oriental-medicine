@@ -231,7 +231,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
       {
         layerId: "second-metacarpal-bone",
         elementId: "li4-second-metacarpal",
-        label: "第2中手骨（橈側骨縁）",
+        label: "第2中手骨",
         shapeType: "ellipse",
         cx: 370,
         cy: 155,
@@ -327,7 +327,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
       {
         layerId: "point-marker-layer",
         elementId: "li4-point-dot",
-        label: "合谷（LI4）取穴位置",
+        label: "合谷 取穴位置",
         shapeType: "circle",
         cx: 260,
         cy: 68,
@@ -747,11 +747,11 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
         stroke: "#A5A095",
         strokeWidth: 3,
       },
-      // 橈側手根屈筋腱（FCR腱・目印）
+      // 橈側手根屈筋腱（目印）
       {
         layerId: "flexor-carpi-radialis-tendon",
         elementId: "pc6-fcr-tendon",
-        label: "橈側手根屈筋腱（目印）",
+        label: "橈側手根屈筋腱",
         shapeType: "circle",
         cx: 210,
         cy: 90,
@@ -761,11 +761,11 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
         strokeWidth: 2,
         labelPos: { x: 185, y: 92, anchor: "end" },
       },
-      // 長掌筋腱（PL腱・目印）
+      // 長掌筋腱（目印）
       {
         layerId: "palmaris-longus-tendon",
         elementId: "pc6-pl-tendon",
-        label: "長掌筋腱（目印）",
+        label: "長掌筋腱",
         shapeType: "circle",
         cx: 290,
         cy: 88,
@@ -795,7 +795,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
       {
         layerId: "flexor-digitorum-superficialis",
         elementId: "pc6-fds-muscle",
-        label: "浅指屈筋（FDS）",
+        label: "浅指屈筋",
         shapeType: "ellipse",
         cx: 250,
         cy: 125,
@@ -824,7 +824,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
       {
         layerId: "flexor-digitorum-profundus",
         elementId: "pc6-fdp-muscle",
-        label: "深指屈筋（FDP）",
+        label: "深指屈筋",
         shapeType: "ellipse",
         cx: 250,
         cy: 165,
@@ -852,7 +852,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
       {
         layerId: "point-marker-layer",
         elementId: "pc6-point-dot",
-        label: "内関（PC6）取穴位置",
+        label: "内関 取穴位置",
         shapeType: "circle",
         cx: 250,
         cy: 66,
@@ -1209,7 +1209,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
       {
         layerId: "tibia-anterior-border",
         elementId: "st36-tibia-bone",
-        label: "脛骨（Tibia）",
+        label: "脛骨",
         shapeType: "path",
         d: "M 110,110 L 195,120 L 140,195 Z",
         fill: "#E4DFD5",
@@ -1221,7 +1221,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
       {
         layerId: "fibula-and-interosseous",
         elementId: "st36-fibula-bone",
-        label: "腓骨（Fibula）",
+        label: "腓骨",
         shapeType: "ellipse",
         cx: 375,
         cy: 165,
@@ -1247,7 +1247,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
       {
         layerId: "tibialis-anterior",
         elementId: "st36-ta-muscle",
-        label: "前脛骨筋（TA）",
+        label: "前脛骨筋",
         shapeType: "path",
         d: "M 195,105 C 235,80 290,95 305,135 C 290,170 230,175 185,155 C 180,135 185,115 195,105 Z",
         fill: "#E8BDB5",
@@ -1259,7 +1259,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
       {
         layerId: "extensor-digitorum-longus",
         elementId: "st36-edl-muscle",
-        label: "長趾伸筋（EDL・外側境界）",
+        label: "長趾伸筋",
         shapeType: "ellipse",
         cx: 335,
         cy: 140,
@@ -1288,7 +1288,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
       {
         layerId: "point-marker-layer",
         elementId: "st36-point-dot",
-        label: "足三里（ST36）取穴位置",
+        label: "足三里 取穴位置",
         shapeType: "circle",
         cx: 245,
         cy: 66,

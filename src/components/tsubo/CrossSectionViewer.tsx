@@ -171,16 +171,16 @@ export default function CrossSectionViewer({
       <div className="relative w-full bg-[#FAF8F5] dark:bg-[#10171F] rounded-2xl sm:rounded-3xl border border-[#E8E1D1] dark:border-[#22303D] p-3 sm:p-6 overflow-hidden shadow-inner select-none">
         
         {/* 方位インジケーター（上下左右） */}
-        <div className="absolute top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#737C77] dark:text-[#8899A6] bg-white/90 dark:bg-black/70 px-2.5 py-0.5 rounded-full border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs z-10 pointer-events-none">
+        <div className="absolute top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-white/95 dark:bg-[#1C2833]/95 px-2.5 py-0.5 rounded-full border border-[#D6C8AF] dark:border-[#2B3C4E] shadow-xs z-10 pointer-events-none">
           ↑ {model.axes.vertical[0]}
         </div>
-        <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#737C77] dark:text-[#8899A6] bg-white/90 dark:bg-black/70 px-2.5 py-0.5 rounded-full border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs z-10 pointer-events-none">
+        <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-white/95 dark:bg-[#1C2833]/95 px-2.5 py-0.5 rounded-full border border-[#D6C8AF] dark:border-[#2B3C4E] shadow-xs z-10 pointer-events-none">
           ↓ {model.axes.vertical[1]}
         </div>
-        <div className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#737C77] dark:text-[#8899A6] bg-white/90 dark:bg-black/70 px-2 py-1 rounded-lg border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs z-10 pointer-events-none">
+        <div className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-white/95 dark:bg-[#1C2833]/95 px-2 py-1 rounded-lg border border-[#D6C8AF] dark:border-[#2B3C4E] shadow-xs z-10 pointer-events-none">
           ← {model.axes.horizontal[0]}
         </div>
-        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#737C77] dark:text-[#8899A6] bg-white/90 dark:bg-black/70 px-2 py-1 rounded-lg border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs z-10 pointer-events-none">
+        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-white/95 dark:bg-[#1C2833]/95 px-2 py-1 rounded-lg border border-[#D6C8AF] dark:border-[#2B3C4E] shadow-xs z-10 pointer-events-none">
           {model.axes.horizontal[1]} →
         </div>
 
@@ -241,10 +241,13 @@ export default function CrossSectionViewer({
                     x={el.labelPos.x}
                     y={el.labelPos.y}
                     textAnchor={el.labelPos.anchor || "middle"}
-                    className={`text-[10px] font-sans font-bold pointer-events-none select-none drop-shadow-xs transition-colors ${
-                      isSelected 
-                        ? "fill-[#B86924] dark:fill-[#E6C387] font-extrabold" 
-                        : "fill-[#232826] dark:fill-[#FAF8F5]"
+                    fill={isSelected ? "#9C5417" : "#111827"}
+                    stroke="#FFFFFF"
+                    strokeWidth={3.5}
+                    strokeLinejoin="round"
+                    style={{ paintOrder: "stroke fill" }}
+                    className={`text-[11px] sm:text-xs font-sans font-extrabold pointer-events-none select-none transition-colors ${
+                      isSelected ? "fill-[#9C5417] font-black" : "fill-[#111827]"
                     }`}
                   >
                     {el.label}

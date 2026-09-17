@@ -252,12 +252,6 @@ export default async function AcupointDetailPage({ params }: Props) {
                 <span className="text-xs px-2 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#263542] text-[#59615D] dark:text-[#A0B0BC]">
                   {point.bodyPart}
                 </span>
-                {point.hasDetailedAnatomy && (
-                  <span className="text-[10px] sm:text-xs px-2 py-1 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#F3DEC5] dark:border-[#4D331F] text-[#B86924] dark:text-[#E6C387] font-bold flex items-center gap-1">
-                    <Sparkles className="w-3 h-3" />
-                    <span>詳細断面解剖 収録</span>
-                  </span>
-                )}
               </div>
 
               {/* 経穴名・読み */}
