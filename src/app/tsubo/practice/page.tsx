@@ -1017,7 +1017,7 @@ function PracticePageContent() {
               <button
                 type="button"
                 onClick={() => setIsSettingsOpen(false)}
-                className="p-1 text-[#737C77] hover:text-black"
+                className="p-1 text-[#737C77] hover:text-[#232826] dark:text-[#8899A6] dark:hover:text-white transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1039,10 +1039,10 @@ function PracticePageContent() {
                       saveStudyData(data);
                       refreshSummary();
                     }}
-                    className={`py-2 rounded-xl text-xs font-bold border transition-all ${
+                    className={`py-2.5 rounded-xl text-xs font-bold border transition-all ${
                       summary.todayGoal === goal
-                        ? "bg-[#1E3D34] text-white border-[#1E3D34]"
-                        : "bg-[#FAF8F5] border-[#D8CFC0]"
+                        ? "bg-[#1E3D34] text-white border-[#1E3D34] dark:bg-[#2B6958] dark:border-[#2B6958] shadow-xs"
+                        : "bg-[#FAF8F5] dark:bg-[#10171F] text-[#333835] dark:text-[#C5D2DB] border-[#D8CFC0] dark:border-[#2A3B4A] hover:bg-[#EBF3EF] dark:hover:bg-[#182823]"
                     }`}
                   >
                     {goal} 問
@@ -1069,14 +1069,14 @@ function PracticePageContent() {
                     a.click();
                     URL.revokeObjectURL(url);
                   }}
-                  className="p-2.5 rounded-xl border border-[#D8CFC0] hover:bg-[#FAF8F5] font-medium flex items-center justify-center gap-1.5"
+                  className="p-2.5 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#10171F] text-[#232826] dark:text-[#FAF8F5] hover:bg-white dark:hover:bg-[#182823] font-medium flex items-center justify-center gap-1.5 transition-all"
                 >
-                  <Download className="w-4 h-4 text-[#737C77]" />
+                  <Download className="w-4 h-4 text-[#737C77] dark:text-[#8899A6]" />
                   <span>記録を保存</span>
                 </button>
 
-                <label className="p-2.5 rounded-xl border border-[#D8CFC0] hover:bg-[#FAF8F5] font-medium flex items-center justify-center gap-1.5 cursor-pointer">
-                  <Upload className="w-4 h-4 text-[#737C77]" />
+                <label className="p-2.5 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#10171F] text-[#232826] dark:text-[#FAF8F5] hover:bg-white dark:hover:bg-[#182823] font-medium flex items-center justify-center gap-1.5 cursor-pointer transition-all">
+                  <Upload className="w-4 h-4 text-[#737C77] dark:text-[#8899A6]" />
                   <span>記録を復元</span>
                   <input
                     type="file"
@@ -1099,7 +1099,7 @@ function PracticePageContent() {
               </div>
 
               {importStatus && (
-                <div className={`p-2 rounded-xl text-[11px] ${importStatus.success ? "bg-[#EBF3EF] text-[#1E3D34]" : "bg-[#FDEDEC] text-[#DC2626]"}`}>
+                <div className={`p-2.5 rounded-xl text-[11px] ${importStatus.success ? "bg-[#EBF3EF] dark:bg-[#162A24] text-[#1E3D34] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243]" : "bg-[#FDEDEC] dark:bg-[#2A1715] text-[#DC2626] border border-[#FADBD8] dark:border-[#3D2220]"}`}>
                   {importStatus.message}
                 </div>
               )}
