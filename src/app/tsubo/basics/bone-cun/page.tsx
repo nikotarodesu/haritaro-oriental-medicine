@@ -87,8 +87,61 @@ export default function BoneCunPage() {
     },
   ];
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "骨度法・取穴の基礎知識｜体表目印と同身寸の測り方",
+        "description":
+          "東洋医学の取穴に欠かせない「骨度法（骨度折量寸法）」と「同身寸（指寸）」の基準表。前額部・胸腹部・背部・上肢・下肢の基準寸法と触診目印を徹底解説。",
+        "url": "https://www.haritaro.jp/tsubo/basics/bone-cun",
+        "author": {
+          "@type": "Person",
+          "name": "はり太郎",
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "はり太郎の東洋医学",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.haritaro.jp/icon.png",
+          },
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "ホーム",
+            "item": "https://www.haritaro.jp",
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "経穴辞典",
+            "item": "https://www.haritaro.jp/tsubo",
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "骨度法・取穴の基礎",
+            "item": "https://www.haritaro.jp/tsubo/basics/bone-cun",
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen py-8 sm:py-16 px-3 sm:px-6 lg:px-8">
+      {/* 構造化データ埋め込み */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="max-w-4xl mx-auto space-y-8 sm:space-y-10">
         
         {/* パンくず */}

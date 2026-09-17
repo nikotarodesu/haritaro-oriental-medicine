@@ -1,5 +1,20 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import { Sparkles, ShieldCheck, ArrowRight } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "はり太郎の東洋医学について｜サイトの志と運営方針 | はり太郎の東洋医学",
+  description:
+    "基礎理論から臨床実践までを体系化する東洋医学ポータル「はり太郎の東洋医学」の創設理念、編集方針、E-E-A-T基準、運営者情報をご紹介します。",
+  alternates: {
+    canonical: "/about",
+  },
+  openGraph: {
+    title: "はり太郎の東洋医学について｜サイトの志と運営方針 | はり太郎の東洋医学",
+    description: "基礎理論から臨床実践までを体系化する東洋医学ポータル「はり太郎の東洋医学」の創設理念と運営方針。",
+    url: "https://www.haritaro.jp/about",
+  },
+};
 
 export default function AboutPage() {
   return (

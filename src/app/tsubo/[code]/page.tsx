@@ -87,22 +87,55 @@ export default async function AcupointDetailPage({ params }: Props) {
     return [];
   };
 
-  // JSON-LD 構造化データ
+  // JSON-LD 構造化データ（MedicalWebPage ＆ BreadcrumbList）
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "MedicalWebPage",
-    "name": `${point.name}（${point.code}）`,
-    "description": point.locationDetail,
-    "url": `https://www.haritaro.jp/tsubo/${point.codeLower}`,
-    "mainEntity": {
-      "@type": "MedicalCondition",
-      "name": point.name,
-      "alternateName": [point.kana, point.romaji, ...(point.aliases || [])],
-      "possibleTreatment": point.indications.map((ind) => ({
-        "@type": "MedicalTherapy",
-        "name": ind,
-      })),
-    },
+    "@graph": [
+      {
+        "@type": "MedicalWebPage",
+        "name": `${point.name}（${point.code}）`,
+        "description": point.locationDetail,
+        "url": `https://www.haritaro.jp/tsubo/${point.codeLower}`,
+        "mainEntity": {
+          "@type": "MedicalCondition",
+          "name": point.name,
+          "alternateName": [point.kana, point.romaji, ...(point.aliases || [])],
+          "possibleTreatment": point.indications.map((ind) => ({
+            "@type": "MedicalTherapy",
+            "name": ind,
+          })),
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "ホーム",
+            "item": "https://www.haritaro.jp",
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "経穴辞典",
+            "item": "https://www.haritaro.jp/tsubo",
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": point.meridianShort,
+            "item": `https://www.haritaro.jp/tsubo?meridian=${encodeURIComponent(point.meridianShort)}`,
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "name": `${point.name}（${point.code}）`,
+            "item": `https://www.haritaro.jp/tsubo/${point.codeLower}`,
+          },
+        ],
+      },
+    ],
   };
 
   return (

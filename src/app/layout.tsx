@@ -117,6 +117,45 @@ export default function RootLayout({
             `,
           }}
         />
+        {/* 全体構造化データ（WebSite / Organization） */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  "@id": "https://www.haritaro.jp/#website",
+                  "url": "https://www.haritaro.jp",
+                  "name": "はり太郎の東洋医学",
+                  "description": "数千年の臨床智慧と現代神経科学が結実した東洋医学ポータル。基礎理論から臨床実践までを体系化。",
+                  "publisher": {
+                    "@id": "https://www.haritaro.jp/#organization",
+                  },
+                  "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "https://www.haritaro.jp/tsubo?q={search_term_string}",
+                    "query-input": "required name=search_term_string",
+                  },
+                },
+                {
+                  "@type": "Organization",
+                  "@id": "https://www.haritaro.jp/#organization",
+                  "name": "はり太郎の東洋医学",
+                  "url": "https://www.haritaro.jp",
+                  "logo": "https://www.haritaro.jp/icon.png",
+                  "description": "基礎理論から臨床実践までを体系化する東洋医学ポータル。",
+                  "founder": {
+                    "@type": "Person",
+                    "name": "はり太郎",
+                    "jobTitle": "鍼灸師・鍼灸院院長",
+                  },
+                },
+              ],
+            }),
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col font-sans bg-[#F5F1E8] dark:bg-[#10161C] text-[#232826] dark:text-[#E6EFEA] selection:bg-[#E2D5C3] dark:selection:bg-[#2A4B3E] selection:text-[#1E3D34] dark:selection:text-[#E6EFEA]">
         <ThemeProvider>
