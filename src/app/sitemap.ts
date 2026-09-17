@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
+import { ALL_ACUPOINTS } from "@/data/tsubo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.haritaro.jp";
   const lastModified = new Date();
 
-  return [
+  const staticPages: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}`,
       lastModified,
@@ -31,6 +32,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/tsubo`,
+      lastModified,
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/tsubo/compare`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/tsubo/practice`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/tsubo/basics/bone-cun`,
       lastModified,
       changeFrequency: "monthly",
       priority: 0.8,
@@ -66,4 +85,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
     },
   ];
+
+  const acupointPages: MetadataRoute.Sitemap = ALL_ACUPOINTS.map((pt) => {
+    const isFlagship = ["LI4", "PC6", "ST36"].includes(pt.code);
+    return {
+      url: `${baseUrl}/tsubo/${pt.code.toLowerCase()}`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: isFlagship ? 0.85 : pt.hasDetailedAnatomy ? 0.75 : 0.7,
+    };
+  });
+
+  return [...staticPages, ...acupointPages];
 }

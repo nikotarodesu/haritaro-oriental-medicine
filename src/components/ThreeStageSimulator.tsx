@@ -891,7 +891,7 @@ export default function ThreeStageSimulator() {
                           <span>解剖・取穴法を見る</span>
                         </button>
                         <Link
-                          href={`/tsubo?id=${pTsubo.id}`}
+                          href={`/tsubo/${pTsubo.code.toLowerCase()}`}
                           className="text-xs text-[#737C77] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] hover:underline flex items-center gap-0.5"
                         >
                           <span>経穴辞典 ➜</span>
@@ -933,7 +933,7 @@ export default function ThreeStageSimulator() {
                           <span>解剖・取穴法を見る</span>
                         </button>
                         <Link
-                          href={`/tsubo?id=${sTsubo.id}`}
+                          href={`/tsubo/${sTsubo.code.toLowerCase()}`}
                           className="text-xs text-[#737C77] dark:text-[#8899A6] hover:text-[#B86924] dark:hover:text-[#E6C387] hover:underline flex items-center gap-0.5"
                         >
                           <span>経穴辞典 ➜</span>
@@ -1217,7 +1217,7 @@ export default function ThreeStageSimulator() {
                                   <span>解剖・取穴法を見る</span>
                                 </button>
                                 <Link
-                                  href={`/tsubo?id=${pTsubo.id}`}
+                                  href={`/tsubo/${pTsubo.code.toLowerCase()}`}
                                   className="text-xs text-[#737C77] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] hover:underline"
                                 >
                                   経穴辞典 ➜
@@ -1259,7 +1259,7 @@ export default function ThreeStageSimulator() {
                                   <span>解剖・取穴法を見る</span>
                                 </button>
                                 <Link
-                                  href={`/tsubo?id=${sTsubo.id}`}
+                                  href={`/tsubo/${sTsubo.code.toLowerCase()}`}
                                   className="text-xs text-[#737C77] dark:text-[#8899A6] hover:text-[#B86924] dark:hover:text-[#E6C387] hover:underline"
                                 >
                                   経穴辞典 ➜
@@ -1455,7 +1455,7 @@ export default function ThreeStageSimulator() {
 
             <div className="pt-2 flex items-center justify-between">
               <Link
-                href={`/tsubo?id=${modalTsubo.id}`}
+                href={`/tsubo/${modalTsubo.code.toLowerCase()}`}
                 onClick={() => setModalTsubo(null)}
                 className="text-xs sm:text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
               >

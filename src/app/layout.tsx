@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     images: ["/icon.png"],
   },
   alternates: {
-    canonical: "https://www.haritaro.jp",
+    canonical: "./",
   },
 };
 
