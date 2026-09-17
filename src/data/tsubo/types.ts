@@ -35,6 +35,16 @@ export interface SvgAnatomicalElement {
   labelPos?: { x: number; y: number; anchor?: "start" | "middle" | "end" };
 }
 
+export interface AdjacentStructure {
+  id: string;
+  name: string;
+  category: "nerve" | "vessel" | "organ" | "bone";
+  relation: string;
+  dangerLevel: "safe" | "caution" | "hazard";
+  description: string;
+  clinicalSignificance: string;
+}
+
 export interface CrossSectionModel {
   id: string;
   title: string;
@@ -49,7 +59,8 @@ export interface CrossSectionModel {
     targetStructure: string;
     warning?: string;
   };
-  layers: AnatomicalLayer[];
+  layers: AnatomicalLayer[]; // 表層から深層への通過層
+  adjacentStructures?: AdjacentStructure[]; // 周囲を走る神経・血管・重要組織
   svgElements: SvgAnatomicalElement[];
   references: string[];
   verifiedDate: string;
@@ -60,6 +71,72 @@ export interface NearbyPoint {
   name: string;
   relation: string;
   distance: string;
+}
+
+// ==================== 学習・クイズ型定義 ====================
+
+export type StudySkillType = "location_to_name" | "meridian_of_point" | "category_of_point";
+
+export type MasteryLevel = "unlearned" | "learning" | "confirmed" | "mastered";
+
+export interface AcupointStudyRecord {
+  acupointCode: string;
+  skill: StudySkillType;
+  level: MasteryLevel;
+  consecutiveSuccesses: number; // 予定された復習での連続正解数
+  lastReviewedDate?: string; // "YYYY-MM-DD"
+  nextReviewDate?: string; // "YYYY-MM-DD"
+  totalAttempts: number;
+  totalCorrect: number;
+  flaggedForReview?: boolean; // ユーザー自身による要復習指定
+  selfEvaluationCount?: { remembered: number; needsReview: number };
+}
+
+export interface QuizQuestion {
+  id: string;
+  acupointCode: string;
+  skill: StudySkillType;
+  prompt: string; // 問題文（答えの漏洩なし）
+  options: { id: string; text: string; subtext?: string }[];
+  correctOptionId: string;
+  explanation: string;
+  meridianName: string;
+  locationReference: string;
+}
+
+export interface StudySession {
+  sessionId: string;
+  courseId: string;
+  courseTitle: string;
+  mode: "batch" | "one_by_one" | "self_check";
+  questions: QuizQuestion[];
+  currentIndex: number;
+  answers: Record<string, { selectedOptionId: string; isCorrect: boolean; confirmedAt: number }>;
+  selfEvaluations?: Record<string, "remembered" | "needsReview">;
+  isCompleted: boolean;
+  startedAt: number;
+  completedAt?: number;
+}
+
+export interface DayActivity {
+  date: string; // "YYYY-MM-DD"
+  answeredCount: number;
+  correctCount: number;
+}
+
+export interface StudySettings {
+  dailyGoal: number; // 5, 10, 20
+  defaultMode: "batch" | "one_by_one" | "self_check";
+  lastActiveCourseId?: string;
+}
+
+export interface TsuboStudyDataV1 {
+  version: 1;
+  settings: StudySettings;
+  records: Record<string, AcupointStudyRecord>; // key: `${code}_${skill}`
+  history: DayActivity[];
+  streakDays: number;
+  lastStudiedDate?: string;
 }
 
 export interface AcupointMaster {

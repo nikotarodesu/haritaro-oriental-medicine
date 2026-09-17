@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { 
   getAllAcupoints, 
@@ -24,7 +24,12 @@ import {
   CheckCircle2,
   AlertTriangle,
   HelpCircle,
-  GitCompare
+  GitCompare,
+  LayoutGrid,
+  List,
+  ChevronLeft,
+  ChevronRight,
+  X
 } from "lucide-react";
 import BodyMapSvg from "@/components/tsubo/BodyMapSvg";
 import ClipButton from "@/components/ClipButton";
@@ -32,9 +37,18 @@ import ClinicalPairsSection from "@/components/ClinicalPairsSection";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 
 export default function TsuboPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen py-16 text-center text-xs text-[#737C77]">経穴辞典を読み込み中...</div>}>
+      <TsuboPageContent />
+    </Suspense>
+  );
+}
+
+function TsuboPageContent() {
   const allPoints = useMemo(() => getAllAcupoints(), []);
   const publishedCount = useMemo(() => getPublishedAcupoints().length, []);
 
+  // 検索・絞り込みステート
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedBodyPart, setSelectedBodyPart] = useState<string>("すべて");
   const [selectedMeridian, setSelectedMeridian] = useState<string>("すべて");
@@ -42,7 +56,13 @@ export default function TsuboPage() {
   const [onlyPublished, setOnlyPublished] = useState<boolean>(false);
   const [selectedTsubo, setSelectedTsubo] = useState<AcupointMaster | null>(null);
 
-  const { memos } = useClinicalMemo();
+  // 表示・ページネーション・並び順ステート
+  const [viewMode, setViewMode] = useState<"grid" | "table">("grid");
+  const [sortOption, setSortOption] = useState<"meridian" | "kana" | "detailed">("meridian");
+  const [pageSize, setPageSize] = useState<number>(24);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const { memos, isClipped, toggleClip } = useClinicalMemo();
   const savedTsuboMemos = useMemo(() => memos.filter((m) => m.type === "tsubo"), [memos]);
 
   // 部位ごとの経穴数を集計
@@ -54,7 +74,7 @@ export default function TsuboPage() {
     return counts;
   }, [allPoints]);
 
-  // URLクエリ（?id=xxx または ?meridian=xxx または ?highlight=xxx）処理
+  // URLクエリ処理
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
@@ -62,12 +82,8 @@ export default function TsuboPage() {
       const targetMeridian = params.get("meridian");
       const targetBodyPart = params.get("bodyPart");
 
-      if (targetMeridian) {
-        setSelectedMeridian(targetMeridian);
-      }
-      if (targetBodyPart) {
-        setSelectedBodyPart(targetBodyPart);
-      }
+      if (targetMeridian) setSelectedMeridian(targetMeridian);
+      if (targetBodyPart) setSelectedBodyPart(targetBodyPart);
 
       if (targetId) {
         const cleanId = targetId.replace(/^tsubo-/, "").toLowerCase();
@@ -90,6 +106,11 @@ export default function TsuboPage() {
     }
   }, [allPoints]);
 
+  // フィルター変更時にページを1に戻す
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedBodyPart, selectedMeridian, selectedCategory, onlyPublished, sortOption, pageSize]);
+
   // 経絡リスト（全14経脈から動的生成）
   const meridianOptions = useMemo(() => {
     return ["すべて", ...MERIDIANS.map((m) => m.shortName)];
@@ -100,9 +121,17 @@ export default function TsuboPage() {
     return ["すべて", "原穴", "絡穴", "郄穴", "募穴", "背部兪穴", "合穴", "四総穴", "八脈交会穴", "八会穴"];
   }, []);
 
-  // 検索・フィルタリング処理
+  // 全角英数を半角英数へ正規化
+  const normalizeQuery = (text: string) => {
+    return text
+      .replace(/[Ａ-Ｚａ-ｚ０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xfee0))
+      .trim()
+      .toLowerCase();
+  };
+
+  // 検索・フィルタリング・並び替え処理
   const filteredTsubos = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase().replace(/\s+/g, " ");
+    const q = normalizeQuery(searchQuery);
 
     return allPoints
       .filter((t) => {
@@ -115,48 +144,59 @@ export default function TsuboPage() {
         )
           return false;
 
-        if (!query) return true;
+        if (!q) return true;
 
-        // コード完全一致
-        if (t.codeLower === query || t.code.toLowerCase() === query) return true;
+        // コード完全一致または前方一致
+        if (t.codeLower === q || t.code.toLowerCase() === q) return true;
+        if (t.codeLower.startsWith(q)) return true;
 
         // 名称・読み・別名
-        if (t.name.includes(query) || t.kana.includes(query) || t.romaji.toLowerCase().includes(query)) return true;
-        if (t.aliases?.some((a) => a.includes(query))) return true;
+        if (t.name.includes(q) || t.kana.includes(q) || t.romaji.toLowerCase().includes(q)) return true;
+        if (t.aliases?.some((a) => a.includes(q))) return true;
 
         // 主治・部位・臨床ノート
-        if (t.indications.some((ind) => ind.toLowerCase().includes(query))) return true;
-        if (t.locationSimple.includes(query) || t.locationDetail.includes(query)) return true;
-        if (t.clinicalNote.includes(query)) return true;
+        if (t.indications.some((ind) => ind.toLowerCase().includes(q))) return true;
+        if (t.locationSimple.includes(q) || t.locationDetail.includes(q)) return true;
+        if (t.clinicalNote.includes(q)) return true;
 
         return false;
       })
       .sort((a, b) => {
-        if (!query) {
-          // 旗艦3穴を最上位に、次いで公開穴、その後に経絡順
-          const flagshipCodes = ["LI4", "PC6", "ST36"];
-          const aFlag = flagshipCodes.includes(a.code);
-          const bFlag = flagshipCodes.includes(b.code);
-          if (aFlag && !bFlag) return -1;
-          if (!aFlag && bFlag) return 1;
-
+        if (sortOption === "kana") {
+          return a.kana.localeCompare(b.kana, "ja");
+        }
+        if (sortOption === "detailed") {
+          if (a.hasDetailedAnatomy && !b.hasDetailedAnatomy) return -1;
+          if (!a.hasDetailedAnatomy && b.hasDetailedAnatomy) return 1;
           if (a.status === "published" && b.status !== "published") return -1;
           if (a.status !== "published" && b.status === "published") return 1;
-
           return a.meridianOrder - b.meridianOrder;
         }
 
-        // 完全一致優先
-        const aExact = a.name === query || a.codeLower === query;
-        const bExact = b.name === query || b.codeLower === query;
-        if (aExact && !bExact) return -1;
-        if (!aExact && bExact) return 1;
+        // デフォルト：経絡順（検索語がある場合は完全一致優先）
+        if (q) {
+          const aExact = a.name === q || a.codeLower === q;
+          const bExact = b.name === q || b.codeLower === q;
+          if (aExact && !bExact) return -1;
+          if (!aExact && bExact) return 1;
+        }
 
-        return 0;
+        return a.meridianOrder - b.meridianOrder;
       });
-  }, [allPoints, searchQuery, selectedBodyPart, selectedMeridian, selectedCategory, onlyPublished]);
+  }, [allPoints, searchQuery, selectedBodyPart, selectedMeridian, selectedCategory, onlyPublished, sortOption]);
 
-  const resetFilters = () => {
+  // ページネーション計算
+  const totalItems = filteredTsubos.length;
+  const isAllPages = pageSize >= totalItems || pageSize === 0;
+  const totalPages = isAllPages ? 1 : Math.ceil(totalItems / pageSize);
+  const paginatedTsubos = useMemo(() => {
+    if (isAllPages) return filteredTsubos;
+    const start = (currentPage - 1) * pageSize;
+    return filteredTsubos.slice(start, start + pageSize);
+  }, [filteredTsubos, currentPage, pageSize, isAllPages]);
+
+  // フィルター解除ヘルパー
+  const resetAllFilters = () => {
     setSearchQuery("");
     setSelectedBodyPart("すべて");
     setSelectedMeridian("すべて");
@@ -164,341 +204,365 @@ export default function TsuboPage() {
     setOnlyPublished(false);
   };
 
-  const hasActiveFilters =
-    searchQuery !== "" ||
-    selectedBodyPart !== "すべて" ||
-    selectedMeridian !== "すべて" ||
-    selectedCategory !== "すべて" ||
-    onlyPublished;
+  const hasActiveFilters = searchQuery || selectedBodyPart !== "すべて" || selectedMeridian !== "すべて" || selectedCategory !== "すべて" || onlyPublished;
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-14 space-y-8 sm:space-y-12">
+    <div className="space-y-8 sm:space-y-12">
       
-      {/* 1. ページ名と短い説明、実際の収録状況 */}
-      <section className="border-b border-[#E8E1D1] dark:border-[#22303D] pb-6 sm:pb-8 space-y-3">
-        <div className="flex items-center gap-2 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] tracking-widest uppercase">
-          <Compass className="w-4 h-4" />
-          <span>Acupoint Comprehensive Database</span>
+      {/* 1. ページ名、短い説明、収録状況 */}
+      <section className="text-center space-y-3 pt-2 sm:pt-4">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold tracking-wider">
+          <Layers className="w-3.5 h-3.5" />
+          <span>WHO Standard 361 Acupoints Database</span>
         </div>
-        
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-              十四経脈・経穴（ツボ）辞典
-            </h1>
-            <p className="mt-2 text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-3xl leading-relaxed">
-              「暗記だけでなく構造と関係から学ぶ」を軸にした図解学習データベース。身体のどこにあるかを人体図から直感的に探し、浅層から深層の断面構造と取穴手順、臨床配穴までを立体的に理解できます。
-            </p>
-          </div>
+        <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
+          十四経脈・経穴図鑑
+        </h1>
+        <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-2xl mx-auto">
+          東洋医学の経絡流注・骨性目印から、浅深断面解剖、臨床配穴、EBMエビデンスまで網羅した鍼灸学習データベースです。
+        </p>
 
-          {/* 実際の収録状況インジケーター */}
-          <div className="bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-2xl p-3 sm:p-4 text-xs shrink-0 space-y-1">
-            <div className="flex items-center justify-between gap-4">
-              <span className="text-[#737C77] dark:text-[#8899A6]">総収録規格：</span>
-              <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">WHO標準 361穴</span>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <span className="text-[#737C77] dark:text-[#8899A6]">詳細・臨床知見公開：</span>
-              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">{publishedCount} 穴 先行公開</span>
-            </div>
-            <div className="flex items-center justify-between gap-4 text-[10px] text-[#B86924] dark:text-[#E6C387]">
-              <span>旗艦3穴（合谷・内関・足三里）：</span>
-              <span className="font-bold">断面解剖モデル完備</span>
-            </div>
-          </div>
+        {/* 収録状況ステータスバー */}
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-1 text-xs">
+          <span className="px-3 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#15202B] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#333835] dark:text-[#C5D2DB]">
+            WHO標準経穴：<strong className="font-mono text-[#1E3D34] dark:text-[#74BA9E]">{allPoints.length}</strong> 穴
+          </span>
+          <span className="px-3 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#281E15] border border-[#F2DEB0] dark:border-[#42381C] text-[#B86924] dark:text-[#E6C387]">
+            詳細知見・先行公開：<strong className="font-mono">{publishedCount}</strong> 穴
+          </span>
+          {savedTsuboMemos.length > 0 && (
+            <span className="px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#74BA9E] font-medium">
+              マイカルテ保存：<strong className="font-mono">{savedTsuboMemos.length}</strong> 穴
+            </span>
+          )}
         </div>
       </section>
 
-      {/* 2. 名称・読み・コードで探せる検索欄（最優先配置） */}
-      <section className="bg-[#FFFFFF] dark:bg-[#17212A] p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-4 transition-colors">
+      {/* 2. 「辞典で調べる／2穴を比べる／学習・復習」コンパクトナビゲーション */}
+      <section className="max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div className="p-3 rounded-2xl bg-[#1E3D34] dark:bg-[#2B6958] text-white flex items-center justify-between shadow-xs">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center">
+                <Search className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-xs font-bold">1. 辞典で調べる（現在地）</span>
+            </div>
+            <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-mono">361穴</span>
+          </div>
+
+          <Link
+            href="/tsubo/compare"
+            className="p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all flex items-center justify-between group shadow-xs"
+          >
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center">
+                <GitCompare className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
+                2. 2穴を比べる
+              </span>
+            </div>
+            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform" />
+          </Link>
+
+          <Link
+            href="/tsubo/practice"
+            className="p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all flex items-center justify-between group shadow-xs"
+          >
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-[#FCF4EB] dark:bg-[#281E15] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center">
+                <BookOpen className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387]">
+                3. 学習・今日の復習
+              </span>
+            </div>
+            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform" />
+          </Link>
+        </div>
+      </section>
+
+      {/* 3. 大型検索バー（正規化対応） */}
+      <section className="max-w-4xl mx-auto space-y-2">
         <div className="relative">
-          <Search className="w-5 h-5 text-[#8A948F] dark:text-[#6A7C8B] absolute left-4 top-1/2 -translate-y-1/2" />
+          <Search className="w-5 h-5 text-[#737C77] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="ツボ名（合谷、ごうこく、LI4）、症状（頭痛、胃痛、不眠）、部位、別名..."
-            className="w-full pl-12 pr-4 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl border border-[#D5CCBC] dark:border-[#2D3E50] bg-[#FAF8F5] dark:bg-[#121920] focus:bg-[#FFFFFF] dark:focus:bg-[#1A2530] focus:outline-none focus:border-[#1E3D34] dark:focus:border-[#74BA9E] focus:ring-2 focus:ring-[#1E3D34]/20 text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A948F] dark:placeholder-[#6A7C8B] transition-all"
+            placeholder="経穴名、よみ、コード（合谷、ごうこく、LI4）、主治（頭痛、胃痛など）..."
+            className="w-full pl-12 pr-10 py-3.5 rounded-2xl border-2 border-[#D8CFC0] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A] text-sm text-[#232826] dark:text-[#FAF8F5] focus:outline-hidden focus:border-[#1E3D34] dark:focus:border-[#74BA9E] transition-all shadow-xs"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery("")}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-[#8A948F] hover:text-[#232826] dark:hover:text-[#FAF8F5] p-1"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#737C77] hover:text-[#232826] p-1"
             >
-              ✕
-            </button>
-          )}
-        </div>
-
-        {/* 絞り込みタグ・クイックトグル */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-1 text-xs">
-          <div className="flex items-center gap-3">
-            <label className="inline-flex items-center gap-1.5 cursor-pointer select-none text-[#59615D] dark:text-[#A0B0BC]">
-              <input
-                type="checkbox"
-                checked={onlyPublished}
-                onChange={(e) => setOnlyPublished(e.target.checked)}
-                className="rounded border-[#D5CCBC] text-[#1E3D34] focus:ring-[#1E3D34] w-4 h-4"
-              />
-              <span className="font-medium">詳細解説・臨床知見のある経穴（{publishedCount}穴）のみ</span>
-            </label>
-          </div>
-
-          {hasActiveFilters && (
-            <button
-              type="button"
-              onClick={resetFilters}
-              className="text-[#B86924] dark:text-[#E6C387] hover:underline flex items-center gap-1 font-semibold"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>すべての絞り込みをリセット</span>
+              <X className="w-4 h-4" />
             </button>
           )}
         </div>
       </section>
 
-      {/* 3. 身体の部位を選べる人体図 */}
-      <section>
+      {/* 4. 人体図セレクター ＆ 経脈・要穴フィルター */}
+      <section className="space-y-5">
         <BodyMapSvg
           selectedBodyPart={selectedBodyPart}
           onSelectBodyPart={(part) => setSelectedBodyPart(part)}
           pointCountsByPart={pointCountsByPart}
         />
-      </section>
 
-      {/* 4. 「経絡から探す」「要穴から探す」「比較・復習」への入口 */}
-      <section className="bg-[#FFFFFF] dark:bg-[#15202B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 shadow-xs space-y-5 transition-colors">
-        
-        {/* 上段：学習・機能リンク（比較・復習・骨度法） */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pb-4 border-b border-[#F2ECE0] dark:border-[#22303D]">
-          <Link
-            href="/tsubo/compare"
-            className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E5DEC9] dark:border-[#263542] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all flex items-center justify-between group"
-          >
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center">
-                <GitCompare className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
-                  2穴比較ツール
-                </span>
-                <p className="text-[10px] text-[#737C77] dark:text-[#8899A6]">合谷×太衝など左右・近隣穴比較</p>
-              </div>
+        {/* 経絡・要穴フィルターカード */}
+        <div className="bg-[#FFFFFF] dark:bg-[#15202B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 shadow-xs space-y-4 transition-colors">
+          
+          {/* 十四経脈フィルター */}
+          <div className="space-y-1.5">
+            <span className="text-xs font-bold text-[#59615D] dark:text-[#A0B0BC] block">
+              十四経脈から探す：
+            </span>
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+              {meridianOptions.map((mer) => (
+                <button
+                  key={mer}
+                  type="button"
+                  onClick={() => setSelectedMeridian(mer)}
+                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg border text-xs transition-all ${
+                    selectedMeridian === mer
+                      ? "bg-[#1E3D34] text-white border-[#1E3D34] dark:bg-[#2B6958] font-bold shadow-xs"
+                      : "bg-[#FAF8F5] dark:bg-[#10171F] text-[#333835] dark:text-[#C5D2DB] border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E3D34]"
+                  }`}
+                >
+                  {mer}
+                </button>
+              ))}
             </div>
-            <ArrowRight className="w-4 h-4 text-[#737C77] group-hover:translate-x-0.5 transition-transform" />
-          </Link>
-
-          <Link
-            href="/tsubo/practice"
-            className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E5DEC9] dark:border-[#263542] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all flex items-center justify-between group"
-          >
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#281E15] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center">
-                <BookOpen className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387]">
-                  経穴クイズ・復習
-                </span>
-                <p className="text-[10px] text-[#737C77] dark:text-[#8899A6]">名称隠し・要穴分類の暗記確認</p>
-              </div>
-            </div>
-            <ArrowRight className="w-4 h-4 text-[#737C77] group-hover:translate-x-0.5 transition-transform" />
-          </Link>
-
-          <Link
-            href="/tsubo/basics/bone-cun"
-            className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E5DEC9] dark:border-[#263542] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all flex items-center justify-between group"
-          >
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] dark:bg-[#17212A] text-[#1E2D3D] dark:text-[#7BAAD8] flex items-center justify-center">
-                <Compass className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E2D3D]">
-                  骨度法・取穴の基礎
-                </span>
-                <p className="text-[10px] text-[#737C77] dark:text-[#8899A6]">同身寸・骨性目印の読み方</p>
-              </div>
-            </div>
-            <ArrowRight className="w-4 h-4 text-[#737C77] group-hover:translate-x-0.5 transition-transform" />
-          </Link>
-        </div>
-
-        {/* 経絡別フィルターボタン群 */}
-        <div className="space-y-2">
-          <span className="text-xs font-bold text-[#59615D] dark:text-[#A0B0BC] block">
-            十四経脈から探す：
-          </span>
-          <div className="flex flex-wrap gap-1.5 sm:gap-2">
-            {meridianOptions.map((mer) => (
-              <button
-                key={mer}
-                type="button"
-                onClick={() => setSelectedMeridian(mer)}
-                className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg border text-xs transition-all ${
-                  selectedMeridian === mer
-                    ? "bg-[#1E3D34] text-white border-[#1E3D34] dark:bg-[#2B6958] font-bold shadow-xs"
-                    : "bg-[#FAF8F5] dark:bg-[#10171F] text-[#333835] dark:text-[#C5D2DB] border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E3D34]"
-                }`}
-              >
-                {mer}
-              </button>
-            ))}
           </div>
-        </div>
 
-        {/* 要穴別フィルターボタン群 */}
-        <div className="space-y-2 pt-1">
-          <span className="text-xs font-bold text-[#59615D] dark:text-[#A0B0BC] block">
-            要穴分類から探す：
-          </span>
-          <div className="flex flex-wrap gap-1.5 sm:gap-2">
-            {categoryOptions.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg border text-xs transition-all ${
-                  selectedCategory === cat
-                    ? "bg-[#B86924] text-white border-[#B86924] dark:bg-[#9C5417] font-bold shadow-xs"
-                    : "bg-[#FAF8F5] dark:bg-[#10171F] text-[#333835] dark:text-[#C5D2DB] border-[#E8E1D1] dark:border-[#263542] hover:border-[#B86924]"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+          {/* 要穴分類フィルター */}
+          <div className="space-y-1.5 pt-1 border-t border-[#F2ECE0] dark:border-[#22303D]">
+            <span className="text-xs font-bold text-[#59615D] dark:text-[#A0B0BC] block">
+              要穴分類から探す：
+            </span>
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+              {categoryOptions.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg border text-xs transition-all ${
+                    selectedCategory === cat
+                      ? "bg-[#B86924] text-white border-[#B86924] dark:bg-[#9C5417] font-bold shadow-xs"
+                      : "bg-[#FAF8F5] dark:bg-[#10171F] text-[#333835] dark:text-[#C5D2DB] border-[#E8E1D1] dark:border-[#263542] hover:border-[#B86924]"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 5. 検索結果・経穴一覧グリッド */}
-      <section className="space-y-4">
-        {/* 結果サマリーバー */}
-        <div className="flex items-center justify-between text-xs text-[#59615D] dark:text-[#96A6B2] px-1">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span>該当件数: <strong className="text-[#1E3D34] dark:text-[#74BA9E] text-base">{filteredTsubos.length}</strong> 穴</span>
-            {selectedBodyPart !== "すべて" && (
-              <span className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#2A3B4A] text-[11px]">
-                部位: {selectedBodyPart}
-              </span>
-            )}
-            {selectedMeridian !== "すべて" && (
-              <span className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#2A3B4A] text-[11px]">
-                経絡: {selectedMeridian}
-              </span>
-            )}
-            {selectedCategory !== "すべて" && (
-              <span className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#2A3B4A] text-[11px]">
-                要穴: {selectedCategory}
-              </span>
-            )}
-          </div>
+      {/* 5. 選択中条件チップス ＆ 表示制御バー */}
+      <section id="tsubo-list" className="space-y-4 pt-2">
+        {/* 条件チップス */}
+        {hasActiveFilters && (
+          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="font-bold text-[#59615D] dark:text-[#A0B0BC]">現在の条件：</span>
+              
+              {searchQuery && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#263542] font-medium">
+                  <span>検索「{searchQuery}」</span>
+                  <button type="button" onClick={() => setSearchQuery("")} className="text-[#737C77] hover:text-black">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
 
-          {hasActiveFilters && (
+              {selectedBodyPart !== "すべて" && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] border border-[#C5DED4] font-medium">
+                  <span>部位: {selectedBodyPart}</span>
+                  <button type="button" onClick={() => setSelectedBodyPart("すべて")} className="hover:text-black">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+
+              {selectedMeridian !== "すべて" && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] border border-[#C5DED4] font-medium">
+                  <span>経脈: {selectedMeridian}</span>
+                  <button type="button" onClick={() => setSelectedMeridian("すべて")} className="hover:text-black">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+
+              {selectedCategory !== "すべて" && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#281E15] text-[#B86924] dark:text-[#E6C387] border border-[#F2DEB0] font-medium">
+                  <span>要穴: {selectedCategory}</span>
+                  <button type="button" onClick={() => setSelectedCategory("すべて")} className="hover:text-black">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+            </div>
+
             <button
               type="button"
-              onClick={resetFilters}
-              className="text-[#B86924] dark:text-[#E6C387] hover:underline"
+              onClick={resetAllFilters}
+              className="text-[#B86924] dark:text-[#E6C387] hover:underline flex items-center gap-1 font-bold shrink-0"
             >
-              条件をリセット
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>すべての条件を解除</span>
             </button>
-          )}
+          </div>
+        )}
+
+        {/* コントロールツールバー（件数、並び替え、表示切替、ページサイズ） */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs bg-white dark:bg-[#17212A] p-3 sm:p-4 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
+          <div className="flex items-center gap-2">
+            <span className="text-[#59615D] dark:text-[#A0B0BC]">
+              該当 <strong className="text-sm font-mono text-[#1E3D34] dark:text-[#74BA9E]">{totalItems}</strong> 穴
+            </span>
+            {!isAllPages && (
+              <span className="text-[#737C77] dark:text-[#8899A6]">
+                （{currentPage} / {totalPages} ページ）
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-3 flex-wrap">
+            {/* 並び順 */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-[#737C77] dark:text-[#8899A6]">並び順：</span>
+              <select
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value as any)}
+                className="p-1.5 rounded-lg border border-[#D8CFC0] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#10171F] text-xs font-medium"
+              >
+                <option value="meridian">経脈順（標準）</option>
+                <option value="kana">五十音順</option>
+                <option value="detailed">詳細解説あり優先</option>
+              </select>
+            </div>
+
+            {/* 1ページあたりの表示件数 */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-[#737C77] dark:text-[#8899A6]">件数：</span>
+              <select
+                value={pageSize}
+                onChange={(e) => setPageSize(Number(e.target.value))}
+                className="p-1.5 rounded-lg border border-[#D8CFC0] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#10171F] text-xs font-medium"
+              >
+                <option value={24}>24件</option>
+                <option value={48}>48件</option>
+                <option value={96}>96件</option>
+                <option value={0}>全件表示</option>
+              </select>
+            </div>
+
+            {/* 表示形式トグル */}
+            <div className="inline-flex rounded-lg bg-[#FAF8F5] dark:bg-[#10171F] p-0.5 border border-[#E5DEC9] dark:border-[#263542]">
+              <button
+                type="button"
+                onClick={() => setViewMode("grid")}
+                title="カードグリッド表示"
+                className={`p-1.5 rounded-md transition-all ${
+                  viewMode === "grid" ? "bg-white dark:bg-[#17212A] text-[#1E3D34] dark:text-[#74BA9E] shadow-xs" : "text-[#737C77]"
+                }`}
+              >
+                <LayoutGrid className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode("table")}
+                title="コンパクト一覧表示"
+                className={`p-1.5 rounded-md transition-all ${
+                  viewMode === "table" ? "bg-white dark:bg-[#17212A] text-[#1E3D34] dark:text-[#74BA9E] shadow-xs" : "text-[#737C77]"
+                }`}
+              >
+                <List className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* 0件ヒット時のガイド */}
-        {filteredTsubos.length === 0 ? (
-          <div className="py-16 text-center bg-[#FAF8F5] dark:bg-[#15202B] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-8 space-y-4">
-            <HelpCircle className="w-12 h-12 text-[#8A948F] mx-auto" />
+        {/* 6. 経穴一覧（0件時・グリッド・テーブル） */}
+        {totalItems === 0 ? (
+          <div className="text-center py-16 bg-[#FAF8F5] dark:bg-[#15202B] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-8 space-y-3">
+            <AlertTriangle className="w-8 h-8 text-[#B86924] mx-auto opacity-70" />
             <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
               該当する経穴が見つかりませんでした
             </h3>
-            <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] max-w-md mx-auto leading-relaxed">
-              検索ワードの綴り（ひらがな・漢字・コード）をご確認いただくか、絞り込み条件（部位・経絡・要穴）を「すべて」に戻してお試しください。
+            <p className="text-xs text-[#737C77] dark:text-[#8899A6] max-w-md mx-auto">
+              入力したキーワードまたは選択中の絞り込み条件（部位・経脈・要穴）をご確認ください。
             </p>
             <button
               type="button"
-              onClick={resetFilters}
-              className="px-6 py-2.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-white text-xs font-bold hover:bg-[#162E27] transition-all"
+              onClick={resetAllFilters}
+              className="px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all"
             >
-              検索条件をすべてリセットする
+              条件をすべて解除して全穴を表示
             </button>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {filteredTsubos.map((tsubo) => (
+        ) : viewMode === "grid" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+            {paginatedTsubos.map((tsubo) => (
               <div
                 key={tsubo.id}
                 id={`tsubo-card-${tsubo.codeLower}`}
-                className={`bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border transition-all flex flex-col justify-between group scroll-mt-24 p-4 sm:p-6 ${
-                  tsubo.hasDetailedAnatomy
-                    ? "border-[#1E3D34]/40 dark:border-[#74BA9E]/40 shadow-xs hover:border-[#1E3D34] dark:hover:border-[#74BA9E]"
-                    : "border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76]"
-                } hover:shadow-md`}
+                className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 shadow-xs hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all flex flex-col justify-between space-y-4"
               >
-                <div>
-                  {/* ヘッダー情報 */}
-                  <div className="flex items-start justify-between gap-2 mb-3">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                        {tsubo.code}
-                      </span>
-                      <span className="text-xs px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] text-[#59615D] dark:text-[#96A6B2]">
-                        {tsubo.bodyPart}
-                      </span>
-                      {tsubo.hasDetailedAnatomy && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#FCF4EB] text-[#B86924] font-bold border border-[#F3DEC5]">
-                          断面図
+                <div className="space-y-3">
+                  {/* ヘッダー */}
+                  <div className="flex items-start justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E0D8C8] dark:border-[#263542] text-[#1E3D34] dark:text-[#74BA9E]">
+                          {tsubo.code}
                         </span>
-                      )}
+                        <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
+                          {tsubo.meridianShort} / {tsubo.bodyPart}
+                        </span>
+                      </div>
+                      <h3 className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-1">
+                        {tsubo.name} <span className="text-xs font-normal text-[#737C77] ml-1">{tsubo.kana}</span>
+                      </h3>
                     </div>
+
                     <ClipButton
                       item={{
-                        id: `tsubo-${tsubo.id}`,
-                        type: "tsubo",
+                        id: `tsubo-${tsubo.codeLower}`,
                         title: `${tsubo.name}（${tsubo.code}）`,
-                        subTitle: `${tsubo.meridian} | ${tsubo.bodyPart}`,
+                        type: "tsubo",
                         points: [tsubo.name],
                         elements: [],
                         indications: tsubo.indications,
-                        summary: tsubo.clinicalNote,
-                        caution: tsubo.caution,
+                        summary: tsubo.locationSimple,
                       }}
-                      variant="icon"
-                      size="sm"
                     />
                   </div>
 
-                  {/* 経穴名 ＆ 個別リンク */}
-                  <div className="mb-2">
-                    <Link
-                      href={`/tsubo/${tsubo.codeLower}`}
-                      className="group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors inline-block"
-                    >
-                      <div className="flex items-baseline gap-2">
-                        <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                          {tsubo.name}
-                        </h3>
-                        <span className="text-xs text-[#59615D] dark:text-[#A0B0BC]">{tsubo.kana}</span>
-                        <span className="text-[11px] font-mono text-[#8A948F] dark:text-[#6A7C8B]">
-                          ({tsubo.romaji})
-                        </span>
-                      </div>
-                    </Link>
-                    <div className="text-xs font-medium text-[#1E3D34] dark:text-[#74BA9E] mt-0.5">
-                      {tsubo.meridian}
-                    </div>
+                  {/* 取穴場所・部位要約 */}
+                  <div className="text-xs space-y-1">
+                    <p className="text-[#333835] dark:text-[#C5D2DB] leading-relaxed line-clamp-2">
+                      {tsubo.locationSimple}
+                    </p>
+                    <p className="text-[10px] text-[#737C77] dark:text-[#8899A6] font-mono truncate">
+                      WHO: {tsubo.locationDetail}
+                    </p>
                   </div>
 
                   {/* 要穴バッジ */}
                   {tsubo.categories && tsubo.categories.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mb-3">
+                    <div className="flex flex-wrap gap-1">
                       {tsubo.categories.map((c, i) => (
                         <span
                           key={i}
-                          className="text-[10px] px-2 py-0.5 rounded bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] font-medium"
+                          className="px-2 py-0.5 rounded bg-[#FCF4EB] dark:bg-[#281E15] text-[#B86924] font-medium text-[10px]"
                         >
                           {c}
                         </span>
@@ -506,237 +570,227 @@ export default function TsuboPage() {
                     </div>
                   )}
 
-                  {/* 取穴法（一般向け） */}
-                  <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 rounded-xl border border-[#E8E1D1] dark:border-[#263542] mb-3">
-                    <span className="text-[10px] font-bold text-[#737C77] dark:text-[#8899A6] block mb-0.5">
-                      【場所の目安】
+                  {/* コンテンツ整備状況バッジ */}
+                  <div className="flex items-center gap-1.5 pt-1 text-[10px]">
+                    <span className="px-1.5 py-0.2 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
+                      基本情報
                     </span>
-                    <p className="text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed line-clamp-2">
-                      {tsubo.locationSimple}
-                    </p>
-                  </div>
-
-                  {/* 主治・効能 */}
-                  <div className="space-y-1 mb-4">
-                    <div className="flex flex-wrap gap-1">
-                      {tsubo.indications.slice(0, 4).map((ind, idx) => (
-                        <span
-                          key={idx}
-                          className="text-[10px] sm:text-[11px] px-2 py-0.5 rounded bg-[#F2EDE4] dark:bg-[#1E2B36] text-[#232826] dark:text-[#E6EFEA]"
-                        >
-                          {ind}
-                        </span>
-                      ))}
-                      {tsubo.indications.length > 4 && (
-                        <span className="text-[10px] text-[#737C77] self-center">
-                          +{tsubo.indications.length - 4}
-                        </span>
-                      )}
-                    </div>
+                    {tsubo.status === "published" && (
+                      <span className="px-1.5 py-0.2 rounded bg-[#EBF3EF] text-[#1E3D34] font-semibold">
+                        詳細解説
+                      </span>
+                    )}
+                    {tsubo.hasDetailedAnatomy && (
+                      <span className="px-1.5 py-0.2 rounded bg-[#FAF3E3] text-[#B86924] font-semibold">
+                        解剖図あり
+                      </span>
+                    )}
                   </div>
                 </div>
 
-                {/* 下部アクション：個別ページへのリンク（主導線） */}
-                <div className="pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] space-y-2">
+                {/* アクションボトムバー */}
+                <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={`/tsubo/compare?a=${tsubo.codeLower}`}
+                      className="text-[#737C77] dark:text-[#8899A6] hover:text-[#B86924] flex items-center gap-1 text-[11px]"
+                      title="この経穴を2穴比較ツールに追加"
+                    >
+                      <GitCompare className="w-3.5 h-3.5" />
+                      <span>比較</span>
+                    </Link>
+                    <Link
+                      href={`/tsubo/practice?course=meridian_${tsubo.meridianId.toLowerCase()}`}
+                      className="text-[#737C77] dark:text-[#8899A6] hover:text-[#1E3D34] flex items-center gap-1 text-[11px]"
+                      title="この経脈をクイズで学習"
+                    >
+                      <BookOpen className="w-3.5 h-3.5" />
+                      <span>学習</span>
+                    </Link>
+                  </div>
+
                   <Link
                     href={`/tsubo/${tsubo.codeLower}`}
-                    className="w-full py-2.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] hover:bg-[#162E27] dark:hover:bg-[#225345] text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-2xs group-hover:shadow-xs"
+                    className="font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-0.5"
                   >
-                    <span>取穴・解剖・詳細ページを見る</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    <span>詳細解説を見る</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
-
-                  <button
-                    type="button"
-                    onClick={() => setSelectedTsubo(tsubo)}
-                    className="w-full py-1.5 text-center text-[11px] text-[#737C77] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#74BA9E]"
-                  >
-                    ポップアップで簡易プレビュー
-                  </button>
                 </div>
               </div>
             ))}
           </div>
+        ) : (
+          /* テーブル表示モード */
+          <div className="bg-white dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] overflow-hidden shadow-xs">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="bg-[#FAF8F5] dark:bg-[#10171F] border-b border-[#E8E1D1] dark:border-[#22303D] text-[#59615D] dark:text-[#A0B0BC] font-bold">
+                    <th className="p-3 w-16">コード</th>
+                    <th className="p-3 w-28">経穴名</th>
+                    <th className="p-3 w-28">経脈 / 部位</th>
+                    <th className="p-3 min-w-[200px]">取穴場所・骨性目印</th>
+                    <th className="p-3 w-28">要穴</th>
+                    <th className="p-3 w-24">解説</th>
+                    <th className="p-3 w-28 text-right">操作</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#F2ECE0] dark:divide-[#22303D]">
+                  {paginatedTsubos.map((t) => (
+                    <tr key={t.id} className="hover:bg-[#FAF8F5] dark:hover:bg-[#121920] transition-colors">
+                      <td className="p-3 font-mono font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                        {t.code}
+                      </td>
+                      <td className="p-3">
+                        <strong className="font-serif text-sm block">{t.name}</strong>
+                        <span className="text-[10px] text-[#737C77]">{t.kana}</span>
+                      </td>
+                      <td className="p-3">
+                        <span className="block font-medium">{t.meridianShort}</span>
+                        <span className="text-[10px] text-[#737C77]">{t.bodyPart}</span>
+                      </td>
+                      <td className="p-3 text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
+                        <span className="line-clamp-2">{t.locationSimple}</span>
+                      </td>
+                      <td className="p-3">
+                        <span className="text-[#B86924] font-medium text-[11px] block">
+                          {t.categories.join("、") || "—"}
+                        </span>
+                      </td>
+                      <td className="p-3">
+                        {t.hasDetailedAnatomy ? (
+                          <span className="px-1.5 py-0.5 rounded bg-[#EBF3EF] text-[#1E3D34] font-bold text-[10px]">
+                            解剖図あり
+                          </span>
+                        ) : t.status === "published" ? (
+                          <span className="px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 text-[10px]">
+                            詳細知見
+                          </span>
+                        ) : (
+                          <span className="text-[10px] text-[#737C77]">標準情報</span>
+                        )}
+                      </td>
+                      <td className="p-3 text-right">
+                        <Link
+                          href={`/tsubo/${t.codeLower}`}
+                          className="text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-bold inline-flex items-center gap-0.5"
+                        >
+                          <span>開く</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* ページネーションコントロール */}
+        {!isAllPages && totalPages > 1 && (
+          <div className="flex items-center justify-center gap-2 pt-4">
+            <button
+              type="button"
+              disabled={currentPage <= 1}
+              onClick={() => {
+                setCurrentPage((p) => Math.max(1, p - 1));
+                document.getElementById("tsubo-list")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="p-2 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white text-xs font-medium"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            {/* ページ番号ボタン */}
+            <div className="flex items-center gap-1 text-xs">
+              {Array.from({ length: Math.min(7, totalPages) }, (_, i) => {
+                let pageNum = i + 1;
+                if (totalPages > 7) {
+                  if (currentPage > 4) {
+                    pageNum = currentPage - 3 + i;
+                    if (pageNum > totalPages) pageNum = totalPages - (6 - i);
+                  }
+                }
+                return (
+                  <button
+                    key={pageNum}
+                    type="button"
+                    onClick={() => {
+                      setCurrentPage(pageNum);
+                      document.getElementById("tsubo-list")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className={`w-8 h-8 rounded-xl font-bold transition-all ${
+                      currentPage === pageNum
+                        ? "bg-[#1E3D34] text-white dark:bg-[#2B6958]"
+                        : "border border-[#D8CFC0] dark:border-[#2A3B4A] hover:bg-white"
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+            </div>
+
+            <button
+              type="button"
+              disabled={currentPage >= totalPages}
+              onClick={() => {
+                setCurrentPage((p) => Math.min(totalPages, p + 1));
+                document.getElementById("tsubo-list")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="p-2 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white text-xs font-medium"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         )}
       </section>
 
-      {/* 6. 保存した経穴・マイカルテ案内 */}
+      {/* 7. 保存済み経穴（マイカルテ復習セクション） */}
       {savedTsuboMemos.length > 0 && (
-        <section className="bg-[#FAF8F5] dark:bg-[#15202B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 space-y-4">
+        <section className="bg-[#FAF8F5] dark:bg-[#15202B] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-7 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Bookmark className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
-                保存した経穴（マイカルテ連携）
-              </h3>
+              <Bookmark className="w-4 h-4 text-[#B86924]" />
+              <h2 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+                マイカルテに保存した経穴（{savedTsuboMemos.length}件）
+              </h2>
             </div>
-            <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
-              {savedTsuboMemos.length} 件保存中
-            </span>
+            <Link href="/curriculum" className="text-xs text-[#1E3D34] dark:text-[#74BA9E] hover:underline">
+              マイカルテを開く ➜
+            </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {savedTsuboMemos.slice(0, 4).map((m) => {
-              const cleanCode = m.title.match(/（([A-Z0-9]+)）/)?.[1] || "";
-              return (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            {savedTsuboMemos.map((memo) => (
+              <div
+                key={memo.id}
+                className="p-3 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#263542] flex items-center justify-between"
+              >
+                <div>
+                  <strong className="text-xs font-serif text-[#232826] dark:text-[#FAF8F5] block">
+                    {memo.title}
+                  </strong>
+                  <span className="text-[10px] text-[#737C77] line-clamp-1">{memo.summary}</span>
+                </div>
                 <Link
-                  key={m.id}
-                  href={`/tsubo/${cleanCode.toLowerCase()}`}
-                  className="p-3 rounded-xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-xs transition-all space-y-1 block"
+                  href={`/tsubo/${memo.id.replace(/^tsubo-/, "")}`}
+                  className="text-xs text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-bold shrink-0 ml-2"
                 >
-                  <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block truncate">
-                    {m.title}
-                  </span>
-                  <p className="text-[10px] text-[#737C77] dark:text-[#8899A6] line-clamp-1">
-                    {m.summary}
-                  </p>
+                  確認
                 </Link>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </section>
       )}
 
-      {/* 7. 関連する学術特集 ＆ 臨床名配穴 */}
-      <section className="space-y-8 pt-4 border-t border-[#E8E1D1] dark:border-[#22303D]">
-        {/* 臨床名配穴 */}
-        <div>
-          <div className="mb-4">
-            <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-              臨床名配穴（古典相応ペア）
-            </h2>
-            <p className="text-xs text-[#737C77] dark:text-[#8899A6] mt-0.5">
-              単穴にとどまらず、相乗作用を発揮する臨床必須のペア処方
-            </p>
-          </div>
-          <ClinicalPairsSection />
-        </div>
-
-        {/* 経絡・経穴の科学的機序を深掘りする講義録バナー */}
-        <div className="bg-[#FAF8F5] dark:bg-[#15202B] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
-                学術特集：経絡とツボ（経穴）の科学的機序を学ぶ
-              </h3>
-            </div>
-            <Link
-              href="/articles"
-              className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
-            >
-              <span>知見・論文アーカイブ一覧へ</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Link
-              href="/articles?article=science-of-meridians-network"
-              className="bg-[#FFFFFF] dark:bg-[#1A2632] p-4 rounded-xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] transition-all group flex flex-col justify-between"
-            >
-              <div className="space-y-1.5">
-                <span className="text-[10px] text-[#8A948F] dark:text-[#6A7C8B]">論文考証</span>
-                <h4 className="font-sans text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] leading-relaxed">
-                  【経絡の科学】多層生体情報ネットワーク仮説
-                </h4>
-              </div>
-              <div className="pt-2.5 mt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-                <span>記事を読む</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </div>
-            </Link>
-
-            <Link
-              href="/articles?article=science-of-acupoints-mechanotransduction"
-              className="bg-[#FFFFFF] dark:bg-[#1A2632] p-4 rounded-xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] transition-all group flex flex-col justify-between"
-            >
-              <div className="space-y-1.5">
-                <span className="text-[10px] text-[#8A948F] dark:text-[#6A7C8B]">生物物理学</span>
-                <h4 className="font-sans text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] leading-relaxed">
-                  【経穴の科学】ツボの物理的実体 ― メカノトランスダクション
-                </h4>
-              </div>
-              <div className="pt-2.5 mt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#B86924] dark:text-[#E6C387] font-semibold">
-                <span>記事を読む</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </div>
-            </Link>
-
-            <Link
-              href="/articles?article=science-of-acupuncture-neuroscience"
-              className="bg-[#FFFFFF] dark:bg-[#1A2632] p-4 rounded-xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] transition-all group flex flex-col justify-between"
-            >
-              <div className="space-y-1.5">
-                <span className="text-[10px] text-[#8A948F] dark:text-[#6A7C8B]">神経科学</span>
-                <h4 className="font-sans text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] leading-relaxed">
-                  【鍼灸の科学】生体情報制御学としての鍼灸医学
-                </h4>
-              </div>
-              <div className="pt-2.5 mt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-                <span>記事を読む</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </div>
-            </Link>
-          </div>
-        </div>
+      {/* 8. 関連する基礎解説・配穴案内（下部） */}
+      <section className="space-y-4 pt-4 border-t border-[#F2ECE0] dark:border-[#22303D]">
+        <ClinicalPairsSection />
       </section>
-
-      {/* 簡易プレビューモーダル（ポップアップ） */}
-      {selectedTsubo && (
-        <div className="fixed inset-0 z-50 bg-[#232826]/70 dark:bg-[#000000]/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
-          <div className="bg-[#FAF8F5] dark:bg-[#16212B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] max-w-xl w-full max-h-[85vh] overflow-y-auto p-5 sm:p-7 shadow-2xl space-y-4 relative">
-            <button
-              type="button"
-              onClick={() => setSelectedTsubo(null)}
-              className="absolute top-5 right-5 p-2 rounded-full hover:bg-[#EBE4D5] dark:hover:bg-[#202E3C] text-[#59615D] dark:text-[#A0B0BC] transition-colors"
-            >
-              ✕
-            </button>
-
-            <div className="pr-8 space-y-1">
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#1E3D34] dark:bg-[#2B6958] text-white">
-                  {selectedTsubo.code}
-                </span>
-                <span className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
-                  {selectedTsubo.meridian}
-                </span>
-              </div>
-              <h3 className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                {selectedTsubo.name} <span className="text-sm font-normal text-[#59615D]">{selectedTsubo.kana}</span>
-              </h3>
-            </div>
-
-            <div className="p-3 rounded-xl bg-white dark:bg-[#10171F] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1 text-xs">
-              <strong className="text-[#1E3D34] dark:text-[#74BA9E] block">場所の目安：</strong>
-              <p className="text-[#404743] dark:text-[#C5D2DB] leading-relaxed">{selectedTsubo.locationSimple}</p>
-            </div>
-
-            <div className="p-3 rounded-xl bg-white dark:bg-[#10171F] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1 text-xs font-mono">
-              <strong className="text-[#1E2D3D] dark:text-[#7BAAD8] block">WHO標準取穴部位：</strong>
-              <p className="text-[#404743] dark:text-[#C5D2DB] leading-relaxed">{selectedTsubo.locationDetail}</p>
-            </div>
-
-            <div className="pt-2 flex flex-col sm:flex-row gap-2">
-              <Link
-                href={`/tsubo/${selectedTsubo.codeLower}`}
-                className="flex-1 py-2.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-white text-xs font-bold text-center hover:bg-[#162E27] transition-all flex items-center justify-center gap-1.5"
-              >
-                <span>断面解剖・取穴手順の個別ページを開く</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-              <button
-                type="button"
-                onClick={() => setSelectedTsubo(null)}
-                className="px-4 py-2.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] text-xs font-medium hover:bg-[#EBE4D5] dark:hover:bg-[#1E2B38]"
-              >
-                閉じる
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
     </div>
   );

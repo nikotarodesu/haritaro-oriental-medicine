@@ -21,7 +21,8 @@ import {
   ArrowLeft, 
   ArrowRight, 
   FileText,
-  ShieldCheck
+  ShieldCheck,
+  GitCompare
 } from "lucide-react";
 
 interface Props {
@@ -185,8 +186,26 @@ export default async function AcupointDetailPage({ params }: Props) {
               )}
             </div>
 
-            {/* クリップ保存ボタン */}
-            <div className="self-start">
+            {/* アクションボタン群（保存・比較・学習） */}
+            <div className="flex items-center gap-2 self-start flex-wrap">
+              <Link
+                href={`/tsubo/compare?a=${point.codeLower}`}
+                className="px-3 py-2 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] bg-[#FAF8F5] dark:bg-[#10171F] text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5"
+                title="この経穴を2穴比較ツールで開く"
+              >
+                <GitCompare className="w-4 h-4" />
+                <span>2穴比較</span>
+              </Link>
+
+              <Link
+                href={`/tsubo/practice?course=meridian_${point.meridianId.toLowerCase()}`}
+                className="px-3 py-2 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#B86924] bg-[#FAF8F5] dark:bg-[#10171F] text-xs font-semibold text-[#B86924] dark:text-[#E6C387] transition-all inline-flex items-center gap-1.5"
+                title="この経脈をクイズで学習"
+              >
+                <BookOpen className="w-4 h-4" />
+                <span>復習・テスト</span>
+              </Link>
+
               <ClipButton
                 item={{
                   id: `tsubo-${point.id}`,

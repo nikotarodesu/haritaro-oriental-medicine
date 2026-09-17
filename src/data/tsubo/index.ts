@@ -15,6 +15,8 @@ export { MERIDIANS } from "./meridiansData";
 export { ACUPOINT_CATEGORIES } from "./categoriesData";
 export { BODY_REGIONS } from "./regionsData";
 export { CROSS_SECTIONS } from "./crossSectionsData";
+export * from "./studyStorage";
+export * from "./quizData";
 
 /**
  * コードまたはIDから経穴マスター情報を取得
