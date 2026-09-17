@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { TSUBOS } from "@/data/tsuboData";
 import { Tsubo } from "@/types/oriental";
@@ -22,6 +22,32 @@ export default function TsuboPage() {
   const [selectedBodyPart, setSelectedBodyPart] = useState<string>("すべて");
   const [selectedMeridian, setSelectedMeridian] = useState<string>("すべて");
   const [selectedTsubo, setSelectedTsubo] = useState<Tsubo | null>(null);
+
+  // URLクエリ（?id=xxx または ?highlight=xxx）による経穴直接オープン＆スクロール
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const targetId = params.get("id") || params.get("highlight");
+      if (targetId) {
+        const cleanId = targetId.replace(/^tsubo-/, "").toLowerCase();
+        const found = TSUBOS.find(
+          (t) =>
+            t.id.toLowerCase() === cleanId ||
+            t.id.toLowerCase() === targetId.toLowerCase() ||
+            t.code.toLowerCase() === cleanId
+        );
+        if (found) {
+          setSelectedTsubo(found);
+          setTimeout(() => {
+            const el = document.getElementById(`tsubo-card-${found.id}`);
+            if (el) {
+              el.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          }, 350);
+        }
+      }
+    }
+  }, []);
 
   const bodyParts = ["すべて", "頭部・顔面", "首・肩", "背中・腰", "手・腕", "足・脚", "胸・腹"];
   const meridians = [
@@ -236,7 +262,8 @@ export default function TsuboPage() {
         {filteredTsubos.map((tsubo) => (
           <div
             key={tsubo.id}
-            className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-6 hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all flex flex-col justify-between group"
+            id={`tsubo-card-${tsubo.id}`}
+            className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-6 hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all flex flex-col justify-between group scroll-mt-24"
           >
             <div>
               {/* ヘッダー情報 */}

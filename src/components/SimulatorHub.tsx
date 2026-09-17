@@ -15,11 +15,11 @@ export default function SimulatorHub() {
           <span>八綱 ➜ 気血水 ➜ 臓腑経絡 3段階連動</span>
         </div>
 
-        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-tight">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-tight">
           臨床弁証シミュレーター
         </h1>
 
-        <p className="text-xs sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+        <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
           八綱（深浅・勢い） ➜ 気血水（動態） ➜ 臓腑経絡（局在病位）を段階的に選択することで、
           複雑な病態から<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「一文の証」</strong>を抽出し、
           最小手数で最大の効果を狙う<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「最小構成のペアツボ」</strong>を瞬時に導き出します。

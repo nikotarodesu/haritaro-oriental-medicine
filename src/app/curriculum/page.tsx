@@ -160,7 +160,7 @@ export default function CurriculumPage() {
         <ReadingProgressBar />
 
         {/* ナビゲーションバー */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <button
             onClick={() => {
               setActiveLecture(null);
@@ -174,9 +174,19 @@ export default function CurriculumPage() {
             <span>カリキュラム一覧へ戻る</span>
           </button>
 
-          <div className="flex items-center gap-2 text-xs text-[#59615D] dark:text-[#96A6B2]">
-            <Clock className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <span>受講時間: 約 {activeLecture.duration}</span>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/simulator"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#B86924] dark:text-[#E6C387] bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F2D7B3] dark:border-[#4D331F] hover:bg-[#FBE9D5] px-3 py-1.5 rounded-lg transition-colors"
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>シミュレーターで試す</span>
+            </Link>
+
+            <div className="flex items-center gap-2 text-xs text-[#59615D] dark:text-[#96A6B2]">
+              <Clock className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
+              <span>約 {activeLecture.duration}</span>
+            </div>
           </div>
         </div>
 

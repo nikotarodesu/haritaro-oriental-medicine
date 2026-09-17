@@ -222,7 +222,7 @@ export const LearningMap: React.FC<LearningMapProps> = ({ onSelectChapter }) => 
           const stageChapters = CHAPTERS_MAP.filter((c) => c.stage === st.stage);
 
           return (
-            <div key={st.stage} className="relative">
+            <div key={st.stage} id={`stage-${st.stage}`} className="relative scroll-mt-24">
               {/* ステージヘッダー */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
                 <div className="flex items-center gap-3">
