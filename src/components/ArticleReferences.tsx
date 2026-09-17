@@ -210,13 +210,6 @@ export default function ArticleReferences({
           </div>
         )}
 
-        {/* Amazonアソシエイト・ステマ規制遵守表記（アソシエイトリンクが含まれる場合） */}
-        {references.some((r) => r.amazonUrl) && (
-          <div className="px-4 py-2.5 bg-[#FAF8F5]/80 dark:bg-[#121920]/80 border-t border-[#EBE4D5] dark:border-[#22303D] text-[10px] text-[#737C77] dark:text-[#8899A6] flex items-center justify-between">
-            <span>※ 当サイトはAmazonアソシエイト・プログラムの参加者であり、適格販売により収入を得ています。</span>
-            <span className="hidden sm:inline text-[#A0B0BC]">PR / スポンサーリンク</span>
-          </div>
-        )}
       </div>
     </section>
   );

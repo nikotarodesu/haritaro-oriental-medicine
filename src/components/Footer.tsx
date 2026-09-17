@@ -115,7 +115,7 @@ export default function Footer() {
         <div className="border-t border-[#E3DBCB] dark:border-[#22303D] mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#737C77] dark:text-[#8899A6]">
           <p>© {new Date().getFullYear()} はり太郎の東洋医学. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <Link href="/about" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">プライバシーポリシー</Link>
+            <Link href="/privacy" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">プライバシーポリシー</Link>
             <Link href="/contact" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">お問い合わせ</Link>
           </div>
         </div>
