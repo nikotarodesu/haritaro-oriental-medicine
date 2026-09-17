@@ -488,9 +488,10 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
             {featuredTsubos.map((tsubo) => (
-              <div
+              <Link
                 key={tsubo.id}
-                className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-5 hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-md transition-all flex flex-col justify-between"
+                href={`/tsubo/${tsubo.code.toLowerCase()}`}
+                className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-5 hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-md transition-all flex flex-col justify-between group"
               >
                 <div>
                   <div className="flex items-center justify-between mb-1.5 sm:mb-2">
@@ -501,7 +502,9 @@ export default function HomePage() {
                   </div>
 
                   <div className="flex items-baseline gap-2 mb-1.5">
-                    <h3 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">{tsubo.name}</h3>
+                    <h3 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors">
+                      {tsubo.name}
+                    </h3>
                     <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">{tsubo.kana}</span>
                   </div>
 
@@ -521,12 +524,13 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="pt-2 sm:pt-2.5 border-t border-[#F2ECE0] dark:border-[#22303D]">
+                <div className="pt-2 sm:pt-2.5 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between">
                   <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] italic line-clamp-1">
                     💡 {tsubo.clinicalNote}
                   </p>
+                  <ArrowRight className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shrink-0 ml-1" />
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

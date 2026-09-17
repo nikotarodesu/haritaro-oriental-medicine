@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { ALL_ACUPOINTS } from "@/data/tsubo";
+import { ARTICLES } from "@/data/articleData";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.haritaro.jp";
@@ -96,5 +97,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     };
   });
 
-  return [...staticPages, ...acupointPages];
+  const articlePages: MetadataRoute.Sitemap = ARTICLES.map((article) => ({
+    url: `${baseUrl}/articles/${article.id}`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  return [...staticPages, ...articlePages, ...acupointPages];
 }

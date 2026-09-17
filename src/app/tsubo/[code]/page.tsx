@@ -22,8 +22,11 @@ import {
   ArrowRight, 
   FileText,
   ShieldCheck,
-  GitCompare
+  GitCompare,
+  HelpCircle,
+  HeartPulse
 } from "lucide-react";
+import { SYMPTOMS } from "@/data/symptomData";
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -87,7 +90,55 @@ export default async function AcupointDetailPage({ params }: Props) {
     return [];
   };
 
-  // JSON-LD 構造化データ（MedicalWebPage ＆ BreadcrumbList）
+  // FAQ データ作成（Google FAQPage 構造化データ対応）
+  const faqs = [
+    {
+      question: `「${point.name}（${point.code}）」はどこにありますか？ 取穴のコツは？`,
+      answer: `${point.locationSimple}。WHO標準取穴部位の規定では「${point.locationDetail}」とされています。${
+        point.palpationLandmarks && point.palpationLandmarks.length > 0
+          ? `触診の際は骨や筋の目印（${point.palpationLandmarks.join("、")}）を基準に探すと正確に位置を特定できます。`
+          : "周囲の組織と比べて指先にわずかに感じる陥凹部や、圧迫時に特有のズーンと響く箇所を目安に取穴します。"
+      }`,
+    },
+    {
+      question: `「${point.name}」はどのような症状や悩みに用いられますか？`,
+      answer: `主な主治適応症として「${point.indications.join("、")}」などが挙げられます。${point.meridian}に属し、${
+        point.clinicalNote ? point.clinicalNote : "気血の巡りを整え、関連する臓腑や局所のバランスを回復させる重要な経穴です。"
+      }`,
+    },
+    {
+      question: `自分で指圧やお灸（セルフケア）をする際の注意点はありますか？`,
+      answer: point.caution
+        ? `${point.caution}。刺激する際は強すぎる力を避け、心地よい重みやひびきを感じる強さで優しく持続圧迫してください。`
+        : "心地よい重みや響きを感じる強さで、ゆっくり息を吐きながら3〜5秒かけて優しく持続圧迫してください。強い痛みを感じる無理な刺激や、発熱時・飲酒後・皮膚の炎症部位への刺激は避けてください。",
+    },
+  ];
+
+  // 関連する症状別ガイド（逆引き相互リンク）
+  const relatedSymptoms = SYMPTOMS.filter((sym) => {
+    const isIdMatch = sym.recommendedTsuboIds.some((id) => {
+      if (id === "gokoku" && point.codeLower === "li4") return true;
+      if (id === "hyakue" && point.codeLower === "gv20") return true;
+      if (id === "taishou" && point.codeLower === "lr3") return true;
+      if (id === "naikan" && point.codeLower === "pc6") return true;
+      if (id === "yusen" && point.codeLower === "ki1") return true;
+      if (id === "ashisanri" && point.codeLower === "st36") return true;
+      if (id === "chukan" && point.codeLower === "cv12") return true;
+      if (id === "sanyinkou" && point.codeLower === "sp6") return true;
+      if (id === "jinyu" && point.codeLower === "bl23") return true;
+      return false;
+    });
+    if (isIdMatch) return true;
+    const indStr = point.indications.join(" ");
+    if (sym.category === "頭・首・肩" && (indStr.includes("頭痛") || indStr.includes("肩") || indStr.includes("項") || indStr.includes("頚"))) return true;
+    if (sym.category === "消化器・お腹" && (indStr.includes("胃") || indStr.includes("腹") || indStr.includes("嘔") || indStr.includes("便") || indStr.includes("下痢"))) return true;
+    if (sym.category === "メンタル・睡眠" && (indStr.includes("不眠") || indStr.includes("心悸") || indStr.includes("精神") || indStr.includes("癲狂") || indStr.includes("煩"))) return true;
+    if (sym.category === "女性特有" && (indStr.includes("月経") || indStr.includes("帯下") || indStr.includes("不妊") || indStr.includes("胎") || indStr.includes("陰"))) return true;
+    if (sym.category === "全身・疲労" && (indStr.includes("虚") || indStr.includes("労") || indStr.includes("倦怠") || indStr.includes("無力"))) return true;
+    return false;
+  }).slice(0, 2);
+
+  // JSON-LD 構造化データ（MedicalWebPage ＆ BreadcrumbList ＆ FAQPage）
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -134,6 +185,17 @@ export default async function AcupointDetailPage({ params }: Props) {
             "item": `https://www.haritaro.jp/tsubo/${point.codeLower}`,
           },
         ],
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((faq) => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer,
+          },
+        })),
       },
     ],
   };
@@ -477,7 +539,81 @@ export default async function AcupointDetailPage({ params }: Props) {
           )}
         </section>
 
-        {/* 5. 経絡流注ナビゲーション（前穴・次穴） */}
+        {/* 5. よくある質問（FAQ） */}
+        <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-4 sm:space-y-6 transition-colors">
+          <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
+            <HelpCircle className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
+            <h2>{point.name}（{point.code}）に関するよくある質問（FAQ）</h2>
+          </div>
+
+          <div className="space-y-3">
+            {faqs.map((faq, idx) => (
+              <details
+                key={idx}
+                className="group rounded-xl border border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#10171F] p-3.5 sm:p-4 text-xs sm:text-sm [&_summary::-webkit-details-marker]:hidden"
+                open={idx === 0}
+              >
+                <summary className="flex cursor-pointer items-center justify-between font-bold text-[#232826] dark:text-[#FAF8F5] gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">Q{idx + 1}.</span>
+                    <span>{faq.question}</span>
+                  </div>
+                  <span className="text-[#737C77] dark:text-[#8899A6] group-open:rotate-180 transition-transform text-xs">▼</span>
+                </summary>
+                <p className="mt-2.5 pt-2.5 border-t border-[#EAE3D4] dark:border-[#22303D] text-[#59615D] dark:text-[#C5D2DB] leading-relaxed pl-6">
+                  {faq.answer}
+                </p>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        {/* 6. 関連するお悩み・症状別セルフケアガイド */}
+        {relatedSymptoms.length > 0 && (
+          <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-4 sm:space-y-6 transition-colors">
+            <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
+              <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                <HeartPulse className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
+                <h2>関連する症状・セルフケアガイド</h2>
+              </div>
+              <Link
+                href="/symptoms"
+                className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
+              >
+                <span>すべての症状を見る</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              {relatedSymptoms.map((sym) => (
+                <Link
+                  key={sym.id}
+                  href="/symptoms"
+                  className="p-3.5 sm:p-4 rounded-xl border border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#10171F] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group flex flex-col justify-between"
+                >
+                  <div className="space-y-1.5">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                      {sym.category}
+                    </span>
+                    <h3 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors">
+                      {sym.title}
+                    </h3>
+                    <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] line-clamp-2 leading-relaxed">
+                      {sym.summary}
+                    </p>
+                  </div>
+                  <div className="mt-2.5 pt-2 border-t border-[#EAE3D4] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-medium">
+                    <span>東洋医学メカニズムと養生法を見る</span>
+                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* 7. 経絡流注ナビゲーション（前穴・次穴） */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {prevPoint ? (
             <Link

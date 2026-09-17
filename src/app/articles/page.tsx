@@ -388,10 +388,10 @@ export default function ArticlesPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-6">
           {filteredArticles.map((article) => (
-            <div
+            <Link
               key={article.id}
-              onClick={() => handleSelectArticle(article)}
-              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-6 hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group"
+              href={`/articles/${article.id}`}
+              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-6 hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all flex flex-col justify-between group"
             >
               <div>
                 <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-3">
@@ -428,13 +428,13 @@ export default function ArticlesPage() {
               </div>
 
               <div className="flex items-center justify-between pt-4 border-t border-[#F2ECE0] dark:border-[#22303D] text-xs">
-                <span className="text-[#737C77] dark:text-[#8899A6] text-[11px]">執筆・監修：はり太郎</span>
+                <span className="text-[#737C77] dark:text-[#8899A6] text-[10px] sm:text-[11px]">執筆・監修：はり太郎</span>
                 <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                   <span>記事を読む</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}

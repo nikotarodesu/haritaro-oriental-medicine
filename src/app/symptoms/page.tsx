@@ -128,10 +128,10 @@ export default function SymptomsPage() {
                       </div>
                       <div className="mt-2.5 sm:mt-3 pt-2 border-t border-[#EAE3D4] dark:border-[#22303D]">
                         <Link
-                          href={`/tsubo`}
+                          href={`/tsubo/${tsubo.code.toLowerCase()}`}
                           className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
                         >
-                          <span>詳細を見る</span>
+                          <span>{tsubo.name}（{tsubo.code}）の詳細を見る</span>
                           <ArrowRight className="w-3 h-3" />
                         </Link>
                       </div>

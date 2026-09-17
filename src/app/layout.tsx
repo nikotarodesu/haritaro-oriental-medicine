@@ -43,18 +43,18 @@ export const metadata: Metadata = {
     description: "数千年の臨床智慧と現代神経科学が結実した東洋医学ポータル。基礎理論から臨床実践までを体系化。症状別ツボ検索、361経穴データベース、気血水体質診断、古典と最新論文の学術的解説。",
     images: [
       {
-        url: "/icon.png",
-        width: 512,
-        height: 512,
-        alt: "はり太郎の東洋医学",
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "はり太郎の東洋医学 | 基礎理論から臨床実践までを体系化する東洋医学ポータル",
       },
     ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "はり太郎の東洋医学 | 基礎理論から臨床実践までを体系化する東洋医学ポータル",
     description: "数千年の臨床智慧と現代神経科学が結実した東洋医学ポータル。基礎理論から臨床実践までを体系化。",
-    images: ["/icon.png"],
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "./",
