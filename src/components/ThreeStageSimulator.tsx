@@ -790,7 +790,7 @@ export default function ThreeStageSimulator() {
               : "bg-[#FAF8F5] dark:bg-[#121920] border-[#1E3D34] dark:border-[#4E8C76]"
           }`}>
             <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block">
-              【一文の証】（臨床推論の言語化）
+              一文の証
             </span>
             <p className="font-serif text-base sm:text-lg md:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
               「{diagnosis.oneSentenceFormula}」
@@ -807,7 +807,7 @@ export default function ThreeStageSimulator() {
               <div className="flex items-center gap-2">
                 <Compass className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
                 <h4 className="font-serif font-bold text-sm sm:text-base text-[#1E3D34] dark:text-[#74BA9E]">
-                  治則・治法（治療戦略の要点）
+                  治則・治法
                 </h4>
               </div>
               <Link
@@ -821,13 +821,13 @@ export default function ThreeStageSimulator() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
               <div className="bg-white dark:bg-[#17212A] p-3 rounded-lg border border-[#C5DED4] dark:border-[#2A3B4A]">
-                <span className="font-bold text-[#737C77] dark:text-[#8899A6] block text-xs">治則（目指す方向性）:</span>
+                <span className="font-bold text-[#737C77] dark:text-[#8899A6] block text-xs">治則:</span>
                 <span className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-base mt-0.5 block">
                   {diagnosis.treatmentPrinciple.rule}
                 </span>
               </div>
               <div className="bg-white dark:bg-[#17212A] p-3 rounded-lg border border-[#C5DED4] dark:border-[#2A3B4A]">
-                <span className="font-bold text-[#737C77] dark:text-[#8899A6] block text-xs">介入戦略（標本・補瀉・刺激量）:</span>
+                <span className="font-bold text-[#737C77] dark:text-[#8899A6] block text-xs">介入戦略:</span>
                 <span className="text-[#404743] dark:text-[#C5D2DB] text-xs sm:text-sm mt-0.5 block leading-relaxed">
                   {diagnosis.treatmentPrinciple.strategy}
                 </span>
@@ -846,7 +846,7 @@ export default function ThreeStageSimulator() {
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E8E1D1] dark:border-[#22303D] pb-2.5">
                   <div className="flex items-center gap-2">
                     <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#1E3D34] text-white">
-                      代表配穴（主配穴）
+                      代表配穴
                     </span>
                     <h5 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
                       {primaryOpt.pairName}
@@ -980,7 +980,7 @@ export default function ThreeStageSimulator() {
                 </span>
                 <div>
                   <h5 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
-                    ① なぜこの候補と考えたか（支持所見 vs 合わない所見）
+                    ① なぜこの候補と考えたか
                   </h5>
                   <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
                     選択条件と整合する典型所見、および矛盾する注意点
@@ -999,7 +999,7 @@ export default function ThreeStageSimulator() {
                   <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#263542] space-y-2">
                     <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                       <CheckCircle2 className="w-4 h-4" />
-                      <span>この証で見られる典型的な所見（支持根拠）</span>
+                      <span>この証で見られる典型的な所見</span>
                     </div>
                     <ul className="space-y-2 text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB]">
                       {diagnosis.supportingFindings.map((finding, i) => (
@@ -1019,7 +1019,7 @@ export default function ThreeStageSimulator() {
                   }`}>
                     <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#A83629] dark:text-[#E07971]">
                       <AlertCircle className="w-4 h-4" />
-                      <span>合わない所見・矛盾点（注意すべき齟齬）</span>
+                      <span>合わない所見・矛盾点</span>
                     </div>
                     <ul className="space-y-2 text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB]">
                       {diagnosis.conflictingFindings.map((conflict, i) => (
@@ -1068,7 +1068,7 @@ export default function ThreeStageSimulator() {
                 {diagnosis.differentialCandidates.length > 0 && (
                   <div className="space-y-2">
                     <span className="text-xs sm:text-sm font-bold text-[#737C77] dark:text-[#8899A6] block">
-                      【鑑別を要する他の病態候補】：
+                      鑑別を要する他の病態候補：
                     </span>
                     <div className="flex flex-wrap gap-2">
                       {diagnosis.differentialCandidates.map((cand, i) => (
@@ -1083,7 +1083,7 @@ export default function ThreeStageSimulator() {
                 {/* 不足している情報 */}
                 <div className="space-y-2 pt-2 border-t border-[#F2ECE0] dark:border-[#22303D]">
                   <span className="text-xs sm:text-sm font-bold text-[#737C77] dark:text-[#8899A6] block">
-                    【何が足りないか】確定判断に不足している情報：
+                    確定判断に不足している情報：
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {diagnosis.missingInformation.map((info, i) => (
@@ -1097,7 +1097,7 @@ export default function ThreeStageSimulator() {
                 {/* 次に確認する臨床質問 */}
                 <div className="space-y-3 pt-2 border-t border-[#F2ECE0] dark:border-[#22303D]">
                   <span className="text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                    【次に確認したい所見】患者に確認すべき問診・臨床所見：
+                    患者に確認すべき問診・臨床所見：
                   </span>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     {diagnosis.nextActionQuestions.map((item, i) => (
@@ -1134,7 +1134,7 @@ export default function ThreeStageSimulator() {
                 </span>
                 <div>
                   <h5 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
-                    ③ 配穴を詳しく見る（主穴・配穴の理由・代替候補の比較）
+                    ③ 配穴を詳しく見る
                   </h5>
                   <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
                     王道ペアと別案ペアの比較、施術後の再評価ポイント
@@ -1170,7 +1170,7 @@ export default function ThreeStageSimulator() {
                                 ? "bg-[#1E3D34] text-white"
                                 : "bg-[#FAF8F5] dark:bg-[#17212A] text-[#B86924] dark:text-[#E6C387] border border-[#B86924]/30"
                             }`}>
-                              {opt.isPrimary ? "主配穴（王道）" : "代替候補（別案）"}
+                              {opt.isPrimary ? "主配穴" : "代替候補"}
                             </span>
                             <h5 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
                               {opt.pairName}
@@ -1321,7 +1321,7 @@ export default function ThreeStageSimulator() {
                 </span>
                 <div>
                   <h5 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
-                    ④ 出典・研究の説明（学術リファレンス・エビデンスレベル）
+                    ④ 出典・研究の説明
                   </h5>
                   <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
                     古典伝統理論、現代医科学研究、WHO標準中医学用語リファレンス
@@ -1339,17 +1339,17 @@ export default function ThreeStageSimulator() {
                 {diagnosis.acupointOptions[0] && (
                   <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-2 text-xs sm:text-sm">
                     <span className="font-bold text-[#737C77] dark:text-[#8899A6] block uppercase tracking-wider text-xs">
-                      根拠の多層区分（エビデンスレベル）:
+                      根拠の多層区分:
                     </span>
                     <div className="space-y-2 text-[#404743] dark:text-[#C5D2DB]">
                       <p className="leading-relaxed">
-                        <strong className="text-[#1E3D34] dark:text-[#83BEA8]">🏛️ 【古典・伝統理論】</strong>：{diagnosis.acupointOptions[0].evidenceLevel.classical}
+                        <strong className="text-[#1E3D34] dark:text-[#83BEA8]">🏛️ 古典・伝統理論</strong>：{diagnosis.acupointOptions[0].evidenceLevel.classical}
                       </p>
                       <p className="leading-relaxed">
-                        <strong className="text-[#1E2D3D] dark:text-[#7BAAD8]">🔬 【現代研究で確認された範囲】</strong>：{diagnosis.acupointOptions[0].evidenceLevel.modernResearch}
+                        <strong className="text-[#1E2D3D] dark:text-[#7BAAD8]">🔬 現代研究で確認された範囲</strong>：{diagnosis.acupointOptions[0].evidenceLevel.modernResearch}
                       </p>
                       <p className="leading-relaxed">
-                        <strong className="text-[#B86924] dark:text-[#E6C387]">💡 【著者の臨床的見解・注意事項】</strong>：{diagnosis.acupointOptions[0].evidenceLevel.clinicalPerspective}
+                        <strong className="text-[#B86924] dark:text-[#E6C387]">💡 著者の臨床的見解・注意事項</strong>：{diagnosis.acupointOptions[0].evidenceLevel.clinicalPerspective}
                       </p>
                     </div>
                   </div>
