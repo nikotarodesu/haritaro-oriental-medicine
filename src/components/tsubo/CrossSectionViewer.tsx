@@ -49,6 +49,17 @@ export default function CrossSectionViewer({
     }
   };
 
+  // 一瞬で部位・側別・観察面が分かる明快な表示ラベル
+  const getBodyPartSideLabel = () => {
+    if (model.bodySide) {
+      if (model.bodySide.includes("手") && !model.bodySide.includes("前腕")) return `${model.bodySide}（手背視）`;
+      if (model.bodySide.includes("前腕")) return `${model.bodySide}（掌側視）`;
+      if (model.bodySide.includes("下腿")) return `${model.bodySide}・すね（前面視）`;
+      return `${model.bodySide}（横断面）`;
+    }
+    return "標準断面モデル";
+  };
+
   const summaryText = model.summary || model.summaryTakeaway;
 
   return (
@@ -58,12 +69,19 @@ export default function CrossSectionViewer({
     >
       {/* 1. ヘッダー部：タイトル、1文要約、資料台帳ボタン */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E]">
-            <Layers className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <span>局所深浅・断面解剖モデル</span>
+        <div className="space-y-1.5">
+          <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E]">
+            <div className="flex items-center gap-1.5">
+              <Layers className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+              <span>局所深浅・断面解剖モデル</span>
+            </div>
             <span className="font-mono text-[11px] px-2 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#1C2833] border border-[#E8E1D1] dark:border-[#2B3C4E] text-[#737C77] dark:text-[#9FB1C1]">
               {pointCode}
+            </span>
+            {/* 一瞬で部位・側別が分かるハイライトバッジ */}
+            <span className="font-bold text-xs px-2.5 py-0.5 rounded-lg bg-[#1E3D34] text-white dark:bg-[#2B6958] shadow-xs flex items-center gap-1">
+              <span>📍</span>
+              <span>{getBodyPartSideLabel()}</span>
             </span>
           </div>
 
@@ -166,6 +184,12 @@ export default function CrossSectionViewer({
       {/* 2. メイン図エリア：SVG断面図（主役） */}
       <div className="relative w-full bg-[#FAF8F5] dark:bg-[#10171F] rounded-2xl sm:rounded-3xl border border-[#E8E1D1] dark:border-[#22303D] p-3 sm:p-6 overflow-hidden shadow-inner select-none">
         
+        {/* 部位・側別インジケーター（一瞬で部位・観察面が分かるバッジ） */}
+        <div className="absolute top-2.5 left-2.5 sm:left-4 text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-white/95 dark:bg-[#1C2833]/95 px-3 py-1 rounded-full border border-[#D6C8AF] dark:border-[#2B3C4E] shadow-xs z-10 pointer-events-none flex items-center gap-1.5">
+          <span>📍</span>
+          <span>{getBodyPartSideLabel()}</span>
+        </div>
+
         {/* 方位インジケーター（上下左右） */}
         <div className="absolute top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-white/95 dark:bg-[#1C2833]/95 px-2.5 py-0.5 rounded-full border border-[#D6C8AF] dark:border-[#2B3C4E] shadow-xs z-10 pointer-events-none">
           ↑ {model.axes.vertical[0]}

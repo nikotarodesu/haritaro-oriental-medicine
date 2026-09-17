@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const title = `${point.name}（${point.code}）の場所・取穴・解剖｜はり太郎の経穴辞典`;
-  const description = `${point.name}（${point.code} / ${point.meridian}）。${point.locationSimple} WHO標準取穴部位、浅深連動の解剖断面構造、主治適応症、はり太郎の臨床知見を完全網羅。`;
+  const description = `${point.name}（${point.code} / ${point.meridian}）。${point.locationSimple} WHO標準取穴部位、浅深連動の解剖断面構造、主治適応症、臨床応用・運針のポイントを完全網羅。`;
 
   return {
     title,
@@ -262,9 +262,6 @@ export default async function AcupointDetailPage({ params }: Props) {
                 <span className="text-sm sm:text-lg text-[#59615D] dark:text-[#A0B0BC] font-medium">
                   {point.kana}
                 </span>
-                <span className="text-xs sm:text-sm font-mono text-[#8A948F] dark:text-[#6A7C8B]">
-                  ({point.romaji})
-                </span>
               </div>
 
               {point.aliases && point.aliases.length > 0 && (
@@ -468,17 +465,17 @@ export default async function AcupointDetailPage({ params }: Props) {
             </div>
           </div>
 
-          {/* はり太郎の臨床知見 */}
+          {/* 臨床応用・取穴のポイント */}
           <div className="p-4 sm:p-5 rounded-2xl bg-[#EBF3EF] dark:bg-[#162A24] border border-[#C5DED4] dark:border-[#2A5243] space-y-2">
             <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
               <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              <span>はり太郎の臨床知見（経験的観察）</span>
+              <span>臨床応用・運針のポイント（臨床的考察）</span>
             </div>
             <p className="text-xs sm:text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
               {point.clinicalNote}
             </p>
             <p className="text-[10px] text-[#737C77] dark:text-[#8899A6] pt-1">
-              ※本項目の内容は執筆者本人の臨床実践・観察に基づく経験的知見であり、すべての症例における効果を保証するものではありません。
+              ※伝統的な鍼灸臨床の知見および文献的考察に基づく参考情報です。実際の施術にあたっては患者個々の体格・病態や触診所見を最優先としてください。
             </p>
           </div>
 
