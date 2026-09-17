@@ -13,7 +13,6 @@ import {
   CheckCircle2, 
   X,
   Compass,
-  Lightbulb,
   ChevronDown,
   ChevronUp,
   Scale,
@@ -40,8 +39,6 @@ import {
   STATE_OPTIONS,
   QIXUESHUI_OPTIONS,
   ZANGFU_OPTIONS,
-  PRESET_CASES,
-  PresetCase,
   synthesizeComprehensiveDiagnosis,
   ComprehensiveDiagnosis,
   AcupointOption
@@ -224,18 +221,6 @@ export default function ThreeStageSimulator() {
     setActivePresetId(newPresetId);
   };
 
-  // プリセットの適用
-  const handleApplyPreset = (preset: PresetCase) => {
-    setDepth(preset.values.depth);
-    setTemp(preset.values.temp);
-    setState(preset.values.state);
-    setQixueshui(preset.values.qixueshui);
-    setZangfu(preset.values.zangfu);
-    setComplexState("none");
-    setActivePresetId(preset.id);
-    setChangeNotice(`症例サンプル『${preset.name}（${preset.label}）』を読み込みました。`);
-  };
-
   // 四診キーサインの切り替え
   const handleFourExamChange = (field: keyof FourExaminationsInput, val: any) => {
     setFourExams((prev) => ({ ...prev, [field]: val }));
@@ -297,7 +282,7 @@ export default function ThreeStageSimulator() {
         className="scroll-mt-24 bg-[#FFFFFF] dark:bg-[#17212A] p-4 sm:p-8 rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-5 sm:space-y-6 transition-colors"
       >
         {/* 上部ヘッダー（タイトル重複排除・状態バッジ・症例選択） */}
-        <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 sm:pb-5 space-y-3 sm:space-y-4">
+        <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 sm:pb-5 space-y-2">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-[#1E3D34] dark:bg-[#74BA9E]" />
@@ -306,50 +291,15 @@ export default function ThreeStageSimulator() {
               </h2>
             </div>
 
-            {/* 状態表示バッジ */}
-            {activePresetId ? (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold border border-[#C5DED4] dark:border-[#2A5243]">
-                <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                <span>サンプル表示中</span>
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] text-xs font-bold border border-[#F2D7B3] dark:border-[#4D331F]">
-                <span>条件を変更中</span>
-              </span>
-            )}
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold border border-[#C5DED4] dark:border-[#2A5243]">
+              <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+              <span>3段階連動推論</span>
+            </span>
           </div>
 
           <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
             選択条件に応じて、病態の推論根拠・不足している情報・最適な配穴候補がリアルタイムに更新されます。
           </p>
-
-          {/* 代表症例選択（「症例で試す」に短縮） */}
-          <div className="pt-1 space-y-2">
-            <div className="flex items-center gap-1.5 text-xs font-bold text-[#59615D] dark:text-[#A0B0BC]">
-              <Lightbulb className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              <span>症例で試す:</span>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {PRESET_CASES.map((preset) => (
-                <button
-                  key={preset.id}
-                  onClick={() => handleApplyPreset(preset)}
-                  className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all border text-left cursor-pointer ${
-                    activePresetId === preset.id
-                      ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] shadow-xs font-bold"
-                      : "bg-[#FAF8F5] dark:bg-[#121920] text-[#333835] dark:text-[#C5D2DB] border-[#E8E1D1] dark:border-[#263542] hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631]"
-                  }`}
-                >
-                  <span className="block font-bold">{preset.name}</span>
-                  <span className={`text-xs block mt-0.5 ${
-                    activePresetId === preset.id ? "text-white/80" : "text-[#737C77] dark:text-[#8899A6]"
-                  }`}>
-                    {preset.label}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
 
         {/* 3段階セレクターエリア */}
