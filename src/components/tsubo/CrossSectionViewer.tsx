@@ -10,14 +10,10 @@ import {
 } from "@/data/tsubo/types";
 import { 
   Layers, 
-  ShieldAlert, 
-  Compass, 
-  Info, 
-  AlertTriangle,
-  BookOpen,
-  ExternalLink,
-  X,
-  HelpCircle
+  BookOpen, 
+  ExternalLink, 
+  X, 
+  HelpCircle 
 } from "lucide-react";
 
 interface CrossSectionViewerProps {
@@ -354,32 +350,6 @@ export default function CrossSectionViewer({
           )}
         </div>
       )}
-
-      {/* 4. 標準刺入角・深度の目安バー */}
-      <div className="w-full p-3.5 sm:p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] text-xs space-y-2">
-        <div className="flex items-center gap-2 font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-          <Compass className="w-4 h-4" />
-          <span>標準刺入角・深度の目安（教育用）</span>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] sm:text-xs text-[#404743] dark:text-[#C5D2DB]">
-          <div>
-            <span className="text-[#737C77] dark:text-[#8899A6]">刺入方向：</span>
-            <span className="font-medium">{model.needleTrack.angle}</span>
-          </div>
-          <div>
-            <span className="text-[#737C77] dark:text-[#8899A6]">深度の目安：</span>
-            <span className="font-medium">{model.needleTrack.safeDepth}</span>
-          </div>
-        </div>
-
-        {model.needleTrack.warning && (
-          <div className="p-2.5 rounded-xl bg-[#FDEDEC] dark:bg-[#231816] border border-[#FADBD8] dark:border-[#3D2220] text-xs text-[#A83629] dark:text-[#C47A72] flex items-start gap-2">
-            <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
-            <span>{model.needleTrack.warning}</span>
-          </div>
-        )}
-      </div>
     </section>
   );
 }
