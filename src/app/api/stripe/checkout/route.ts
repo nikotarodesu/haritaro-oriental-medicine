@@ -38,28 +38,39 @@ export async function POST(req: NextRequest) {
       apiVersion: "2025-02-24.acacia" as any,
     });
 
-    // Checkout Session 作成
+    // Price ID が環境変数等で設定されている場合は既存のPriceを使用し、なければインラインで作成
+    const hasConfiguredPrice = planConfig.stripePriceId && planConfig.stripePriceId.startsWith("price_");
+
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = hasConfiguredPrice
+      ? [
+          {
+            price: planConfig.stripePriceId,
+            quantity: 1,
+          },
+        ]
+      : [
+          {
+            price_data: {
+              currency: planConfig.currency,
+              product_data: {
+                name: `はり太郎の東洋医学 プレミアム会員（${plan === "yearly" ? "年額プラン" : "月額プラン"}）`,
+                description: planConfig.description,
+              },
+              unit_amount: planConfig.amount,
+              recurring: {
+                interval: planConfig.billingInterval as Stripe.Checkout.SessionCreateParams.LineItem.PriceData.Recurring.Interval,
+              },
+            },
+            quantity: 1,
+          },
+        ];
+
+    // Checkout Session 作成（Managed Payments 対応: payment_method_types は自動管理のため除外）
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
       mode: "subscription",
       billing_address_collection: "auto",
       customer_email: userEmail || undefined,
-      line_items: [
-        {
-          price_data: {
-            currency: planConfig.currency,
-            product_data: {
-              name: `はり太郎の東洋医学 プレミアム会員（${plan === "yearly" ? "年額プラン" : "月額プラン"}）`,
-              description: planConfig.description,
-            },
-            unit_amount: planConfig.amount,
-            recurring: {
-              interval: planConfig.billingInterval as Stripe.Checkout.SessionCreateParams.LineItem.PriceData.Recurring.Interval,
-            },
-          },
-          quantity: 1,
-        },
-      ],
+      line_items: lineItems,
       metadata: {
         userId: userId || "anonymous",
         plan,
