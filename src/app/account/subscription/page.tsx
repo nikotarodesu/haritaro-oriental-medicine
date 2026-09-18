@@ -165,14 +165,20 @@ export default function SubscriptionManagementPage() {
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6]">現在のプラン</span>
-                {isPremium && (
+                {user?.role === "admin" ? (
+                  <span className="px-2 py-0.5 rounded-full bg-[#B86924] text-white text-[10px] font-bold">
+                    ADMIN
+                  </span>
+                ) : isPremium ? (
                   <span className="px-2 py-0.5 rounded-full bg-[#1E3D34] text-white text-[10px] font-bold">
                     PREMIUM
                   </span>
-                )}
+                ) : null}
               </div>
               <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-                {isPremium 
+                {user?.role === "admin"
+                  ? "管理者モード（全記事・全症例・全ツール完全解放）"
+                  : isPremium 
                   ? `プレミアム会員（${plan === "yearly" ? "年払い" : "月払い"}）`
                   : "無料会員（一般プラン）"}
               </h2>

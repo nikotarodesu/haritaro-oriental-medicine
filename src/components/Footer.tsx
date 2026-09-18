@@ -1,7 +1,49 @@
+"use client";
+
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { ShieldCheck, ArrowUpRight, Sparkles } from "lucide-react";
+import { ShieldCheck, ArrowUpRight, Sparkles, Crown, X } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Footer() {
+  const { user, setDemoRole } = useAuth();
+  const clickTimestampsRef = useRef<number[]>([]);
+  const [toast, setToast] = useState<{ message: string; type: "admin_on" | "admin_off" } | null>(null);
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => {
+      setToast(null);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [toast]);
+
+  const handleSecretClick = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const now = Date.now();
+    // 5秒以内のクリックタイムスタンプのみを保持
+    const recentClicks = [...clickTimestampsRef.current, now].filter((t) => now - t <= 5000);
+    clickTimestampsRef.current = recentClicks;
+
+    if (recentClicks.length >= 10) {
+      clickTimestampsRef.current = [];
+      if (user?.role === "admin") {
+        setDemoRole("free");
+        setToast({
+          message: "管理者モードを解除しました（通常・無料会員モードへ移行）",
+          type: "admin_off",
+        });
+      } else {
+        setDemoRole("admin");
+        setToast({
+          message: "管理者モードに切り替えました。プレミアム限定記事・全20症例・シミュレーターを完全解放しました！",
+          type: "admin_on",
+        });
+      }
+    }
+  }, [user?.role, setDemoRole]);
   return (
     <footer className="bg-[#F2EDE4] dark:bg-[#131A21] border-t border-[#E3DBCB] dark:border-[#22303D] text-[#59615D] dark:text-[#96A6B2] text-sm mt-auto transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-10 sm:py-14">
@@ -113,13 +155,63 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-[#E3DBCB] dark:border-[#22303D] mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#737C77] dark:text-[#8899A6]">
-          <p>© {new Date().getFullYear()} はり太郎の東洋医学. All rights reserved.</p>
+          <p className="flex items-center gap-1.5 flex-wrap">
+            <button
+              type="button"
+              onClick={handleSecretClick}
+              className="cursor-pointer select-none inline-flex items-center justify-center p-1 -m-1 font-inherit text-inherit hover:text-[#1E3D34] dark:hover:text-[#74BA9E] active:scale-90 transition-transform focus:outline-hidden"
+              title="©"
+              aria-label="管理者モード切り替え"
+            >
+              ©
+            </button>
+            <span>{new Date().getFullYear()} はり太郎の東洋医学. All rights reserved.</span>
+            {user?.role === "admin" && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#1E3D34] dark:bg-[#2B6958] text-[#E6C387] animate-fadeIn">
+                <Crown className="w-3 h-3 text-[#E6C387]" />
+                <span>管理者モード稼働中</span>
+              </span>
+            )}
+          </p>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">プライバシーポリシー</Link>
             <Link href="/contact" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">お問い合わせ</Link>
           </div>
         </div>
       </div>
+
+      {/* 管理者モード切り替え通知トースト */}
+      {toast && (
+        <aside
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-5 right-5 z-[9999] max-w-sm flex items-start gap-3 p-4 rounded-2xl bg-[#1E3D34] dark:bg-[#1A2530] text-white shadow-2xl border border-[#C5DED4]/40 animate-fadeIn"
+        >
+          <div className="w-8 h-8 rounded-xl bg-[#E6C387] text-[#1E3D34] flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+            {toast.type === "admin_on" ? (
+              <Crown className="w-5 h-5 fill-current" />
+            ) : (
+              <ShieldCheck className="w-5 h-5" />
+            )}
+          </div>
+          <div className="flex-1 min-w-0 text-xs">
+            <p className="font-bold text-sm text-[#FAF8F5]">
+              {toast.type === "admin_on" ? "管理者モード有効化" : "管理者モード解除"}
+            </p>
+            <p className="text-[#D3DFD9] mt-1 leading-relaxed">
+              {toast.message}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setToast(null)}
+            className="p-1 text-white/70 hover:text-white rounded-lg hover:bg-white/10 transition-colors"
+            aria-label="通知を閉じる"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </aside>
+      )}
     </footer>
   );
 }

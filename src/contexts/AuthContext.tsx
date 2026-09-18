@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (stored) {
         const parsed = JSON.parse(stored);
         // 有効期限のチェック
-        if (parsed.subscription && parsed.subscription.currentPeriodEnd) {
+        if (parsed.role !== "admin" && parsed.subscription && parsed.subscription.currentPeriodEnd) {
           const isExpired = Date.now() > parsed.subscription.currentPeriodEnd;
           if (isExpired && parsed.subscription.status === "canceled") {
             parsed.role = "free";
@@ -233,7 +233,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // テスト用・ワンクリック切り替え
   const setDemoRole = useCallback((role: UserRole, plan: SubscriptionPlan = "monthly") => {
     const now = Date.now();
-    if (role === "premium") {
+    if (role === "admin") {
+      setUser({
+        id: "usr_admin",
+        email: "admin@haritaro.jp",
+        name: "管理者（はり太郎）",
+        role: "admin",
+        subscription: {
+          plan: "yearly",
+          status: "active",
+          currentPeriodStart: now,
+          currentPeriodEnd: now + 10 * 365 * 24 * 60 * 60 * 1000,
+          cancelAtPeriodEnd: false,
+        },
+        createdAt: now,
+        updatedAt: now,
+      });
+    } else if (role === "premium") {
       const periodDuration = plan === "yearly" ? 365 * 24 * 60 * 60 * 1000 : 30 * 24 * 60 * 60 * 1000;
       setUser({
         id: "usr_demo_premium",
@@ -264,10 +280,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const isPremium = user?.role === "premium" && (
-    user.subscription?.status === "active" ||
-    user.subscription?.status === "canceled" // 期間満了まではプレミアム権限を維持
-  );
+  const isPremium =
+    user?.role === "admin" ||
+    (user?.role === "premium" && (
+      user.subscription?.status === "active" ||
+      user.subscription?.status === "canceled" // 期間満了まではプレミアム権限を維持
+    ));
 
   return (
     <AuthContext.Provider

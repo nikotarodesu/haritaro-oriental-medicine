@@ -563,10 +563,10 @@ export default function Header() {
               <Link
                 href="/account/subscription"
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white hover:opacity-90 transition-all text-xs font-bold shadow-xs"
-                title="プレミアム会員マイページ"
+                title={user?.role === "admin" ? "管理者マイページ" : "プレミアム会員マイページ"}
               >
                 <Crown className="w-3.5 h-3.5 text-[#E6C387]" />
-                <span>プレミアム</span>
+                <span>{user?.role === "admin" ? "管理者モード" : "プレミアム"}</span>
               </Link>
             )}
 
@@ -871,7 +871,7 @@ export default function Header() {
               >
                 <div className="flex items-center gap-2">
                   <Crown className="w-4 h-4 text-[#FAF8F5]" />
-                  <span>プレミアム会員 マイページ</span>
+                  <span>{user?.role === "admin" ? "管理者マイページ" : "プレミアム会員 マイページ"}</span>
                 </div>
                 <ArrowRight className="w-4 h-4" />
               </Link>
