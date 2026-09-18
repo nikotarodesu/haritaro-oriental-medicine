@@ -15,12 +15,17 @@ import {
   Layers,
   Activity,
   Bookmark,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Crown,
+  User as UserIcon,
+  Sparkles,
+  FileText
 } from "lucide-react";
 import YinYangSwitch from "./YinYangSwitch";
 import FontSizeControl from "./FontSizeControl";
 import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -28,6 +33,7 @@ export default function Header() {
 
   const { clipCount, openDrawer } = useClinicalMemo();
   const { currentSeason } = useSeasonalTheme();
+  const { user, isPremium } = useAuth();
 
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -243,6 +249,69 @@ export default function Header() {
                       </span>
                     </div>
                   </Link>
+                  <Link
+                    href="/kikei"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] dark:bg-[#1A2530] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 mt-0.5 border border-[#E8E1D1] dark:border-[#263542]">
+                      <Compass className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                          奇経八脈（全8脈）・流注図
+                        </span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#1E3D34] text-white">
+                          PREMIUM
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        任督衝帯・陰陽蹻・陰陽維の流注SVG図と交会穴理論
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/tsubo/compare"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 mt-0.5">
+                      <SlidersHorizontal className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                          経穴比較ツール（最大3穴）
+                        </span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#1E3D34] text-white">
+                          PREMIUM
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        2〜3穴の解剖・要穴・主治を横並び比較＆保存
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/library"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#EDF3F8] dark:bg-[#1A2837] text-[#1E2D3D] dark:text-[#6FA0D6] flex items-center justify-center shrink-0 mt-0.5">
+                      <BookOpen className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                        文献と症例の資料集
+                      </span>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        古典条文×現代エビデンス×臨床症例アーカイブ
+                      </span>
+                    </div>
+                  </Link>
                 </div>
               )}
             </div>
@@ -299,19 +368,88 @@ export default function Header() {
                   </Link>
 
                   <Link
-                    href="/articles?article=science-of-yinyang-gogyo"
+                    href="/cases"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 mt-0.5">
+                      <FileText className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] block">
+                          臨床症例演習（全20症例）
+                        </span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
+                          3例無料
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        段階的問診・四診開示から弁証・治法・配穴を導く本格演習
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/simulator/compare"
                     onClick={() => setOpenDropdown(null)}
                     className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
                   >
                     <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0 mt-0.5">
-                      <BookOpen className="w-4 h-4" />
+                      <Layers className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                          条件比較シミュレーター
+                        </span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#1E3D34] text-white">
+                          PREMIUM
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        2つの病態や治療案を横並びで並行比較
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/practice/haiketsu"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 mt-0.5">
+                      <SlidersHorizontal className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] block">
+                          配穴練習機能
+                        </span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#1E3D34] text-white">
+                          PREMIUM
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
+                        選定理由を記録し教材名配穴と比較検証
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/review"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0 mt-0.5">
+                      <Sparkles className="w-4 h-4" />
                     </div>
                     <div>
                       <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                        弁証推論のシステム科学
+                        忘却曲線スマート復習
                       </span>
                       <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                        八綱・気血水・五行ネットワークの数理モデル
+                        今日復習すべき重要項目の自動サジェスト
                       </span>
                     </div>
                   </Link>
@@ -419,6 +557,27 @@ export default function Header() {
                 </span>
               )}
             </button>
+
+            {/* プレミアム・会員マイページ */}
+            {isPremium ? (
+              <Link
+                href="/account/subscription"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white hover:opacity-90 transition-all text-xs font-bold shadow-xs"
+                title="プレミアム会員マイページ"
+              >
+                <Crown className="w-3.5 h-3.5 text-[#E6C387]" />
+                <span>プレミアム</span>
+              </Link>
+            ) : (
+              <Link
+                href="/pricing"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#B86924] to-[#C87A35] text-white hover:opacity-90 transition-all text-xs font-bold shadow-xs"
+                title="プレミアムプラン（月額980円）を見る"
+              >
+                <Crown className="w-3.5 h-3.5 text-[#FAF8F5]" />
+                <span>プレミアム</span>
+              </Link>
+            )}
 
             {/* 表示設定（文字サイズ・陰陽テーマ）集約ドロップダウン */}
             <div
@@ -584,6 +743,36 @@ export default function Header() {
               <BookOpen className="w-4 h-4 text-[#1E2D3D] dark:text-[#6FA0D6]" />
               <span>臨床知見・学術論文抄読</span>
             </Link>
+            <Link
+              href="/kikei"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+            >
+              <Compass className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+              <div className="flex items-center gap-1.5">
+                <span>奇経八脈（全8脈）・流注図</span>
+                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#1E3D34] text-white">PREMIUM</span>
+              </div>
+            </Link>
+            <Link
+              href="/tsubo/compare"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+            >
+              <SlidersHorizontal className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+              <div className="flex items-center gap-1.5">
+                <span>経穴比較ツール（最大3穴）</span>
+                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#1E3D34] text-white">PREMIUM</span>
+              </div>
+            </Link>
+            <Link
+              href="/library"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+            >
+              <BookOpen className="w-4 h-4 text-[#1E2D3D] dark:text-[#6FA0D6]" />
+              <span>文献と症例の資料集</span>
+            </Link>
           </div>
 
           {/* 3. 考えるセクション */}
@@ -592,25 +781,61 @@ export default function Header() {
               考える（臨床推論演習）
             </span>
             <Link
-              href="/simulator"
+              href="/cases"
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center justify-between px-3 py-2 rounded-xl text-sm font-bold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2117]"
             >
               <div className="flex items-center gap-3">
-                <Layers className="w-4 h-4" />
-                <span>臨床弁証シミュレーター</span>
+                <FileText className="w-4 h-4" />
+                <span>臨床症例演習（全20症例）</span>
               </div>
               <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
-                中核
+                3例無料
               </span>
             </Link>
             <Link
-              href="/articles?article=science-of-yinyang-gogyo"
+              href="/simulator"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+              className="flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2117]"
             >
-              <BookOpen className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>弁証推論のシステム科学（理論解説）</span>
+              <div className="flex items-center gap-3">
+                <Layers className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <span>臨床弁証シミュレーター</span>
+              </div>
+            </Link>
+            <Link
+              href="/simulator/compare"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2117]"
+            >
+              <div className="flex items-center gap-3">
+                <Layers className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+                <span>条件比較シミュレーター</span>
+              </div>
+              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#1E3D34] text-white">
+                PREMIUM
+              </span>
+            </Link>
+            <Link
+              href="/practice/haiketsu"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2117]"
+            >
+              <div className="flex items-center gap-3">
+                <SlidersHorizontal className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <span>配穴練習機能</span>
+              </div>
+              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#1E3D34] text-white">
+                PREMIUM
+              </span>
+            </Link>
+            <Link
+              href="/review"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+            >
+              <Sparkles className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+              <span>忘却曲線スマート復習</span>
             </Link>
           </div>
 
@@ -645,8 +870,24 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* マイカルテ ＆ 理念 */}
+          {/* プレミアム・マイカルテ ＆ 理念 */}
           <div className="pt-2 border-t border-[#E8E1D1] dark:border-[#22303D] space-y-2">
+            <Link
+              href={isPremium ? "/account/subscription" : "/pricing"}
+              onClick={() => setMobileMenuOpen(false)}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-bold shadow-xs ${
+                isPremium
+                  ? "bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white"
+                  : "bg-gradient-to-r from-[#B86924] to-[#C87A35] text-white"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Crown className="w-4 h-4 text-[#FAF8F5]" />
+                <span>{isPremium ? "プレミアム会員 マイページ" : "プレミアム会員のご案内（月額980円）"}</span>
+              </div>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+
             <button
               type="button"
               onClick={() => {

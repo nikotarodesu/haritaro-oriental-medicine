@@ -2,34 +2,44 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
 import { ClinicalMemoItem, CLASSIC_CLINICAL_PAIRS } from "@/types/clinicalMemo";
+import { useAuth } from "@/contexts/AuthContext";
+import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 
 const STORAGE_KEY = "haritaro_clinical_memos_v1";
 
 interface ClinicalMemoContextType {
   memos: ClinicalMemoItem[];
   clipCount: number;
+  maxLimit: number;
+  isLimitReached: boolean;
   isDrawerOpen: boolean;
   openDrawer: () => void;
   closeDrawer: () => void;
   toggleDrawer: () => void;
   isClipped: (id: string) => boolean;
   toggleClip: (item: Omit<ClinicalMemoItem, "createdAt" | "updatedAt">) => boolean;
-  addMemo: (item: Omit<ClinicalMemoItem, "createdAt" | "updatedAt">) => void;
+  addMemo: (item: Omit<ClinicalMemoItem, "createdAt" | "updatedAt">) => boolean;
   removeMemo: (id: string) => void;
   updatePersonalNote: (id: string, note: string) => void;
   clearAllMemos: () => void;
   loadRecommendedPresets: () => void;
-  lastToast: { message: string; type: "added" | "removed" } | null;
+  lastToast: { message: string; type: "added" | "removed" | "warning" } | null;
   dismissToast: () => void;
 }
 
 const ClinicalMemoContext = createContext<ClinicalMemoContextType | undefined>(undefined);
 
 export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
+  const { isPremium } = useAuth();
   const [memos, setMemos] = useState<ClinicalMemoItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [lastToast, setLastToast] = useState<{ message: string; type: "added" | "removed" } | null>(null);
+  const [lastToast, setLastToast] = useState<{ message: string; type: "added" | "removed" | "warning" } | null>(null);
+
+  const maxLimit = isPremium
+    ? SUBSCRIPTION_CONFIG.limits.premiumMemoMax
+    : SUBSCRIPTION_CONFIG.limits.freeMemoMax;
+  const isLimitReached = memos.length >= maxLimit;
 
   // ローカルストレージから復元
   useEffect(() => {
@@ -58,12 +68,12 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
     }
   }, [memos, isLoaded]);
 
-  // トーストの自動消去（3秒）
+  // トーストの自動消去（3.5秒）
   useEffect(() => {
     if (!lastToast) return;
     const timer = setTimeout(() => {
       setLastToast(null);
-    }, 3200);
+    }, 3500);
     return () => clearTimeout(timer);
   }, [lastToast]);
 
@@ -79,22 +89,34 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
     return memos.some(m => m.id === id);
   }, [memos]);
 
-  const addMemo = useCallback((item: Omit<ClinicalMemoItem, "createdAt" | "updatedAt">) => {
-    const now = Date.now();
+  const addMemo = useCallback((item: Omit<ClinicalMemoItem, "createdAt" | "updatedAt">): boolean => {
+    let success = false;
     setMemos(prev => {
       if (prev.some(m => m.id === item.id)) return prev;
+      if (prev.length >= maxLimit) {
+        setLastToast({
+          message: isPremium
+            ? `保存上限（${maxLimit}件）に達しました`
+            : `無料会員の保存上限（${maxLimit}件）に達しました。プレミアムプランで最大1,000件まで保存可能です。`,
+          type: "warning",
+        });
+        return prev;
+      }
+      success = true;
+      const now = Date.now();
       const newItem: ClinicalMemoItem = {
         ...item,
         createdAt: now,
         updatedAt: now,
       };
+      setLastToast({
+        message: `「${item.title}」をマイカルテに保存しました`,
+        type: "added",
+      });
       return [newItem, ...prev];
     });
-    setLastToast({
-      message: `「${item.title}」をマイカルテに保存しました`,
-      type: "added",
-    });
-  }, []);
+    return success;
+  }, [maxLimit, isPremium]);
 
   const removeMemo = useCallback((id: string) => {
     setMemos(prev => {
@@ -109,7 +131,7 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const toggleClip = useCallback((item: Omit<ClinicalMemoItem, "createdAt" | "updatedAt">) => {
+  const toggleClip = useCallback((item: Omit<ClinicalMemoItem, "createdAt" | "updatedAt">): boolean => {
     let newlyAdded = false;
     setMemos(prev => {
       const exists = prev.some(m => m.id === item.id);
@@ -121,6 +143,15 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
         });
         return prev.filter(m => m.id !== item.id);
       } else {
+        if (prev.length >= maxLimit) {
+          setLastToast({
+            message: isPremium
+              ? `保存上限（${maxLimit}件）に達しました`
+              : `無料会員の保存上限（${maxLimit}件）に達しました。プレミアムプランで最大1,000件まで保存可能です。`,
+            type: "warning",
+          });
+          return prev;
+        }
         newlyAdded = true;
         const now = Date.now();
         const newItem: ClinicalMemoItem = {
@@ -136,7 +167,7 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
       }
     });
     return newlyAdded;
-  }, []);
+  }, [maxLimit, isPremium]);
 
   const updatePersonalNote = useCallback((id: string, note: string) => {
     setMemos(prev =>
@@ -181,6 +212,8 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
       value={{
         memos,
         clipCount: memos.length,
+        maxLimit,
+        isLimitReached,
         isDrawerOpen,
         openDrawer,
         closeDrawer,
