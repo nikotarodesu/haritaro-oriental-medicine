@@ -91,17 +91,8 @@ export default function CasesIndexPage() {
         <div className="pt-2 flex items-center justify-center gap-3 text-xs">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-bold border border-[#C5DED4] dark:border-[#2A5243]">
             <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>症例 1〜3 は無料会員のまま体験可能</span>
+            <span>症例 1〜3 は無料で体験可能</span>
           </span>
-          {!isPremium && (
-            <Link
-              href="/pricing"
-              className="inline-flex items-center gap-1 text-[#B86924] dark:text-[#E6C387] font-bold hover:underline"
-            >
-              <Crown className="w-3.5 h-3.5" />
-              <span>全20症例を解放する（月額980円）</span>
-            </Link>
-          )}
         </div>
       </div>
 

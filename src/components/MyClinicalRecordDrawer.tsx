@@ -281,14 +281,9 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                   />
                 </div>
                 {!isPremium ? (
-                  <Link
-                    href="/pricing"
-                    onClick={closeDrawer}
-                    className="text-[11px] text-[#B86924] dark:text-[#E6C387] font-bold hover:underline flex items-center gap-0.5"
-                  >
-                    <span>上限1,000件に拡張</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </Link>
+                  <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                    保存枠 20件
+                  </span>
                 ) : (
                   <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
                     大容量1,000件枠

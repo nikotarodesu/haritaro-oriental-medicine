@@ -558,23 +558,14 @@ export default function Header() {
               )}
             </button>
 
-            {/* プレミアム・会員マイページ */}
-            {isPremium ? (
+            {/* プレミアム会員マイページ（加入者のみ表示） */}
+            {isPremium && (
               <Link
                 href="/account/subscription"
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white hover:opacity-90 transition-all text-xs font-bold shadow-xs"
                 title="プレミアム会員マイページ"
               >
                 <Crown className="w-3.5 h-3.5 text-[#E6C387]" />
-                <span>プレミアム</span>
-              </Link>
-            ) : (
-              <Link
-                href="/pricing"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#B86924] to-[#C87A35] text-white hover:opacity-90 transition-all text-xs font-bold shadow-xs"
-                title="プレミアムプラン（月額980円）を見る"
-              >
-                <Crown className="w-3.5 h-3.5 text-[#FAF8F5]" />
                 <span>プレミアム</span>
               </Link>
             )}
@@ -872,21 +863,19 @@ export default function Header() {
 
           {/* プレミアム・マイカルテ ＆ 理念 */}
           <div className="pt-2 border-t border-[#E8E1D1] dark:border-[#22303D] space-y-2">
-            <Link
-              href={isPremium ? "/account/subscription" : "/pricing"}
-              onClick={() => setMobileMenuOpen(false)}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-bold shadow-xs ${
-                isPremium
-                  ? "bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white"
-                  : "bg-gradient-to-r from-[#B86924] to-[#C87A35] text-white"
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <Crown className="w-4 h-4 text-[#FAF8F5]" />
-                <span>{isPremium ? "プレミアム会員 マイページ" : "プレミアム会員のご案内（月額980円）"}</span>
-              </div>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            {isPremium && (
+              <Link
+                href="/account/subscription"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-bold shadow-xs bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white"
+              >
+                <div className="flex items-center gap-2">
+                  <Crown className="w-4 h-4 text-[#FAF8F5]" />
+                  <span>プレミアム会員 マイページ</span>
+                </div>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            )}
 
             <button
               type="button"

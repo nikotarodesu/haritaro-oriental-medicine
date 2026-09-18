@@ -181,13 +181,9 @@ export default function SubscriptionManagementPage() {
 
           <div className="flex items-center gap-2">
             {!isPremium ? (
-              <Link
-                href="/pricing"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#B86924] to-[#C87A35] hover:opacity-90 text-white text-xs font-bold shadow-md transition-all"
-              >
-                <Crown className="w-4 h-4" />
-                <span>プレミアム会員にアップグレード</span>
-              </Link>
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] text-xs font-bold text-[#737C77] dark:text-[#8899A6]">
+                <span>プレミアム受付準備中</span>
+              </span>
             ) : isCanceled ? (
               <button
                 type="button"

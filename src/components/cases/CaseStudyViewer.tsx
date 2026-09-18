@@ -507,13 +507,6 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
         >
           <span>← 症例演習一覧へ</span>
         </Link>
-        <Link
-          href="/pricing"
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#B86924] dark:text-[#E6C387] hover:underline"
-        >
-          <Crown className="w-3.5 h-3.5" />
-          <span>全20症例とプレミアム機能を見る</span>
-        </Link>
       </div>
 
       {/* プレミアム誘導モーダル */}

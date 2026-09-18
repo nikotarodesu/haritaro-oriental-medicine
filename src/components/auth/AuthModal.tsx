@@ -93,33 +93,26 @@ export default function AuthModal({
           </ul>
         </div>
 
-        {/* 料金とお申し込みボタン */}
+        {/* 準備中案内 */}
         <div className="space-y-3 pt-1">
-          <div className="flex items-center justify-between px-2 text-xs">
-            <span className="text-[#59615D] dark:text-[#8899A6]">月額プラン: <strong>¥980</strong>（税込）</span>
-            <span className="text-[#B86924] dark:text-[#E6C387] font-bold bg-[#FCF4EB] dark:bg-[#2A2016] px-2 py-0.5 rounded-md">
-              年額プランは2ヶ月分お得 ¥9,800
+          <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#11171E] border border-[#E5DEC9] dark:border-[#2A3B4A] text-center space-y-1">
+            <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
+              現在リニューアル準備中です
             </span>
+            <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
+              プレミアム会員の一般受付は近日中に再開予定です。正式オープンまで今しばらくお待ちください。
+            </p>
           </div>
 
-          <Link
-            href="/pricing"
+          <button
+            type="button"
             onClick={onClose}
-            className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#1E3D34] to-[#2D5A46] hover:from-[#162D26] hover:to-[#224535] text-white font-bold text-sm shadow-md transition-all group"
+            className="w-full py-3 px-4 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white font-bold text-xs shadow-sm transition-all"
           >
-            <Crown className="w-4 h-4 text-[#F3DEC5]" />
-            <span>プレミアムプランの詳細・登録へ</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-          </Link>
+            閉じる
+          </button>
 
-          <div className="flex items-center justify-between text-[11px] text-[#737C77] dark:text-[#8899A6] pt-1">
-            <Link 
-              href="/cases"
-              onClick={onClose}
-              className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] underline underline-offset-2"
-            >
-              まずは無料体験症例（3例）を試す
-            </Link>
+          <div className="text-center text-[11px] text-[#737C77] dark:text-[#8899A6] pt-1">
             <Link 
               href="/auth/login"
               onClick={onClose}

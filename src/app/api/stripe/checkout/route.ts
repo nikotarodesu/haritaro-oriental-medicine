@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
         plan,
       },
       success_url: `${appUrl}/account/subscription?session_id={CHECKOUT_SESSION_ID}&upgraded=true&plan=${plan}`,
-      cancel_url: `${appUrl}/pricing?canceled=true`,
+      cancel_url: `${appUrl}/?canceled=true`,
     };
 
     const session = await stripe.checkout.sessions.create(sessionParams);
