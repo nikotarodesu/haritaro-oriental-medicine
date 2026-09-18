@@ -17,7 +17,8 @@ import {
   ChevronUp,
   Scale,
   GraduationCap,
-  ArrowUp
+  ArrowUp,
+  SlidersHorizontal
 } from "lucide-react";
 import { 
   DepthType, 
@@ -946,6 +947,26 @@ export default function ThreeStageSimulator() {
                 <div className="p-3 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] text-xs sm:text-sm">
                   <strong className="text-[#1E3D34] dark:text-[#74BA9E] mr-1.5 font-bold">🎯 この配穴で狙うこと:</strong>
                   <span className="text-[#404743] dark:text-[#C5D2DB] leading-relaxed">{primaryOpt.intendedEffect}</span>
+                </div>
+
+                {/* 配穴設計・臨床演習への導線 */}
+                <div className="mt-3 p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-[#F0F7F4] to-[#FAF8F5] dark:from-[#162720] dark:to-[#17212A] border border-[#74BA9E]/40 dark:border-[#2D5A46] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+                  <div>
+                    <div className="text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+                      <SlidersHorizontal className="w-4 h-4 text-[#2D5A46] dark:text-[#74BA9E] shrink-0" />
+                      <span>配穴設計・臨床演習で実践する</span>
+                    </div>
+                    <p className="text-xs text-[#525B56] dark:text-[#9AA8A1] mt-0.5 leading-relaxed">
+                      この推奨配穴をもとに、自分で主穴・配穴を自由に組み立ててマイカルテに記録できます。
+                    </p>
+                  </div>
+                  <Link
+                    href="/practice/haiketsu"
+                    className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#2D5A46] hover:bg-[#1E3D34] text-white text-xs font-bold shadow-sm transition-all whitespace-nowrap self-start sm:self-auto cursor-pointer"
+                  >
+                    <span>配穴練習を始める</span>
+                    <span aria-hidden="true">➜</span>
+                  </Link>
                 </div>
               </div>
             );

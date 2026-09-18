@@ -10,7 +10,8 @@ import {
   ArrowRight, 
   Sparkles, 
   CheckCircle2, 
-  Flame
+  Flame,
+  SlidersHorizontal
 } from "lucide-react";
 import { TSUBOS } from "@/data/tsuboData";
 import { ARTICLES } from "@/data/articleData";
@@ -429,19 +430,24 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* シミュレーター起動CTA */}
-            <div className="pt-2 sm:pt-3 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+            {/* シミュレーター ＆ 配穴演習 起動CTA */}
+            <div className="pt-2 sm:pt-3 flex flex-wrap items-center gap-3 sm:gap-4">
               <Link
                 href="/simulator"
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#E6C387] text-[#1E2D3D] hover:bg-[#DFC07D] font-bold text-sm sm:text-base shadow-md transition-all group"
+                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#E6C387] text-[#1E2D3D] hover:bg-[#DFC07D] font-bold text-sm sm:text-base shadow-md transition-all group cursor-pointer"
               >
                 <Layers className="w-4 h-4 text-[#1E2D3D]" />
                 <span>臨床弁証シミュレーターを起動する</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <span className="text-xs sm:text-sm text-[#A0B0BC]">
-                八綱・気血水・臓腑経絡の動的推論をブラウザ上で即座に体験できます
-              </span>
+              <Link
+                href="/practice/haiketsu"
+                className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-[#FAF8F5] border border-white/25 font-bold text-sm sm:text-base shadow-xs transition-all group cursor-pointer"
+              >
+                <SlidersHorizontal className="w-4 h-4 text-[#E6C387]" />
+                <span>配穴設計・臨床演習を試す</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
           </div>
         </div>

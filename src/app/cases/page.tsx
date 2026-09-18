@@ -11,7 +11,8 @@ import {
   Layers, 
   BookOpen,
   HelpCircle,
-  GraduationCap
+  GraduationCap,
+  SlidersHorizontal
 } from "lucide-react";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { useAuth } from "@/contexts/AuthContext";
@@ -65,28 +66,37 @@ export default function CasesIndexPage() {
         </div>
       </div>
 
-      {/* 臨床弁証シミュレーターへの特別リンクバナー */}
+      {/* 臨床推論シミュレーター＆配穴演習への特別リンクバナー */}
       <div className="bg-gradient-to-br from-[#1E2D3D] via-[#16222E] to-[#0E1720] dark:from-[#141E28] dark:via-[#0F161E] dark:to-[#080D12] text-white p-5 sm:p-7 rounded-3xl border border-[#2B4055] dark:border-[#223344] shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
-        <div className="space-y-1.5 z-10 max-w-2xl">
+        <div className="space-y-1.5 z-10 max-w-xl">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#74BA9E]/20 text-[#74BA9E] text-xs font-bold border border-[#74BA9E]/30">
             <Layers className="w-3.5 h-3.5" />
-            <span>対話型・臨床推論エンジン</span>
+            <span>対話型・臨床推論＆配穴設計</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#FAF8F5]">
-            臨床弁証シミュレーター
+            臨床弁証シミュレーター・配穴演習
           </h2>
           <p className="text-xs sm:text-sm text-[#C5D2DB] leading-relaxed">
-            患者の主訴・四診所見を選択することで、リアルタイムに八綱座標・臓腑失調度を解析し、最適な治療方針と推奨配穴を算出・可視化します。
+            患者の主訴・四診所見から治療方針・推奨配穴をリアルタイム解析するシミュレーターや、自ら主穴・配穴を組み立ててマイカルテに記録・演習できる実践ツールを活用できます。
           </p>
         </div>
 
-        <Link
-          href="/simulator"
-          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#1E3D34] hover:bg-[#2B6958] text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all z-10 shrink-0 border border-[#74BA9E]/30 group cursor-pointer"
-        >
-          <span>シミュレーターを起動する</span>
-          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-        </Link>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 z-10 shrink-0 w-full md:w-auto">
+          <Link
+            href="/simulator"
+            className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#1E3D34] hover:bg-[#2B6958] text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all border border-[#74BA9E]/30 group cursor-pointer"
+          >
+            <span>シミュレーターを起動</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
+          <Link
+            href="/practice/haiketsu"
+            className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-[#FAF8F5] border border-white/20 font-bold text-xs sm:text-sm shadow-sm transition-all group cursor-pointer"
+          >
+            <SlidersHorizontal className="w-4 h-4 text-[#74BA9E]" />
+            <span>配穴設計・臨床演習</span>
+          </Link>
+        </div>
       </div>
 
       {/* 症例一覧グリッド */}
