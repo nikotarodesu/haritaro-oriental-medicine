@@ -140,32 +140,6 @@ export default function HomePage() {
               丸暗記を脱却し、人体の構造と思考体系から本質を修得。<br className="hidden sm:inline" />
               基礎理論から病機・診断・治法、臨床弁証推論までを一貫して統合します。
             </p>
-
-            {/* 主要CTAボタン（初めての人へ3大アクション） */}
-            <div className="pt-2 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
-              <Link
-                href="/curriculum?lecture=lecture-yinyang-1"
-                className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] hover:bg-[#162E27] dark:hover:bg-[#225345] text-[#FAF8F5] font-bold text-sm sm:text-base shadow-md hover:shadow-lg transition-all group"
-              >
-                <GraduationCap className="w-4 h-4 text-[#E6C387]" />
-                <span>最初の1講（陰陽論）から学ぶ</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                href="/cases/case-01-headache-liver-fire"
-                className="inline-flex items-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] hover:border-[#B86924] dark:hover:border-[#E6C387] text-[#232826] dark:text-[#FAF8F5] font-bold text-sm sm:text-base shadow-xs hover:shadow-sm transition-all group"
-              >
-                <Stethoscope className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>症例01を体験する</span>
-              </Link>
-              <Link
-                href="/tsubo"
-                className="inline-flex items-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] hover:border-[#1E2D3D] text-[#232826] dark:text-[#FAF8F5] font-bold text-sm sm:text-base shadow-xs hover:shadow-sm transition-all group"
-              >
-                <Compass className="w-4 h-4 text-[#1E2D3D] dark:text-[#7BAAD8]" />
-                <span>経穴辞典を検索</span>
-              </Link>
-            </div>
           </div>
 
           {/* 学習進捗・続きから再開カード */}
@@ -260,7 +234,7 @@ export default function HomePage() {
                 </div>
 
                 <h3 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors">
-                  臨床症例演習・シミュレーター
+                  臨床症例演習（全20症例）
                 </h3>
 
                 <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">

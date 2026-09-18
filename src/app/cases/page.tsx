@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { 
   FileText, 
@@ -8,50 +8,19 @@ import {
   Sparkles, 
   CheckCircle2, 
   ArrowRight, 
-  Filter, 
   Layers, 
-  Search,
   BookOpen,
   HelpCircle,
   GraduationCap
 } from "lucide-react";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
-import { CaseDifficulty, CaseCategory } from "@/types/clinicalCase";
 import { useAuth } from "@/contexts/AuthContext";
 import AuthModal from "@/components/auth/AuthModal";
 
 export default function CasesIndexPage() {
   const { isPremium } = useAuth();
-  const [selectedDifficulty, setSelectedDifficulty] = useState<"all" | CaseDifficulty>("all");
-  const [selectedCategory, setSelectedCategory] = useState<"all" | CaseCategory>("all");
-  const [searchQuery, setSearchQuery] = useState("");
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [selectedCaseTitle, setSelectedCaseTitle] = useState("");
-
-  const categories: CaseCategory[] = [
-    "自律神経・メンタル",
-    "消化器・脾胃",
-    "婦人科・女性医学",
-    "疼痛・運動器",
-    "呼吸器・感染後",
-    "皮膚・感覚器",
-  ];
-
-  const filteredCases = useMemo(() => {
-    return CLINICAL_CASES.filter((c) => {
-      const matchDiff = selectedDifficulty === "all" || c.difficulty === selectedDifficulty;
-      const matchCat = selectedCategory === "all" || c.category === selectedCategory;
-      const q = searchQuery.toLowerCase().trim();
-      const matchSearch =
-        !q ||
-        c.title.toLowerCase().includes(q) ||
-        c.subTitle.toLowerCase().includes(q) ||
-        c.patient.chiefComplaint.toLowerCase().includes(q) ||
-        c.correctDiagnosis.pattern.toLowerCase().includes(q);
-
-      return matchDiff && matchCat && matchSearch;
-    });
-  }, [selectedDifficulty, selectedCategory, searchQuery]);
 
   const handleCaseClick = (e: React.MouseEvent, c: typeof CLINICAL_CASES[0]) => {
     if (!c.isFreeTrial && !isPremium) {
@@ -96,80 +65,41 @@ export default function CasesIndexPage() {
         </div>
       </div>
 
-      {/* 絞り込み・検索バー */}
-      <div className="bg-[#FAF8F5] dark:bg-[#152028] p-4 sm:p-6 rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-4 shadow-sm">
-        <div className="flex flex-col md:flex-row items-center gap-4">
-          {/* 検索入力 */}
-          <div className="relative w-full md:w-80">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#737C77] dark:text-[#8899A6]" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="症状・証名・キーワードで検索..."
-              className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-[#D8CFC0] dark:border-[#384C5E] bg-white dark:bg-[#10171F] text-xs text-[#232826] dark:text-[#FAF8F5] focus:outline-hidden focus:border-[#1E3D34] dark:focus:border-[#74BA9E]"
-            />
+      {/* 臨床弁証シミュレーターへの特別リンクバナー */}
+      <div className="bg-gradient-to-br from-[#1E2D3D] via-[#16222E] to-[#0E1720] dark:from-[#141E28] dark:via-[#0F161E] dark:to-[#080D12] text-white p-5 sm:p-7 rounded-3xl border border-[#2B4055] dark:border-[#223344] shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div className="space-y-1.5 z-10 max-w-2xl">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#74BA9E]/20 text-[#74BA9E] text-xs font-bold border border-[#74BA9E]/30">
+            <Layers className="w-3.5 h-3.5" />
+            <span>対話型・臨床推論エンジン</span>
           </div>
-
-          {/* 難易度フィルター */}
-          <div className="flex items-center gap-1.5 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
-            <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] shrink-0 mr-1">難易度:</span>
-            {(["all", "初級", "中級", "上級"] as const).map((diff) => (
-              <button
-                key={diff}
-                type="button"
-                onClick={() => setSelectedDifficulty(diff)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 ${
-                  selectedDifficulty === diff
-                    ? "bg-[#1E3D34] text-white"
-                    : "bg-white dark:bg-[#10171F] border border-[#D8CFC0] dark:border-[#384C5E] text-[#59615D] dark:text-[#8899A6] hover:bg-[#F2EDE2]"
-                }`}
-              >
-                {diff === "all" ? "すべて" : diff}
-              </button>
-            ))}
-          </div>
+          <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#FAF8F5]">
+            臨床弁証シミュレーター
+          </h2>
+          <p className="text-xs sm:text-sm text-[#C5D2DB] leading-relaxed">
+            患者の主訴・四診所見を選択することで、リアルタイムに八綱座標・臓腑失調度を解析し、最適な治療方針と推奨配穴を算出・可視化します。
+          </p>
         </div>
 
-        {/* カテゴリータグ */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
-          <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] shrink-0 mr-1">領域:</span>
-          <button
-            type="button"
-            onClick={() => setSelectedCategory("all")}
-            className={`px-3 py-1 rounded-lg text-xs font-semibold shrink-0 transition-all ${
-              selectedCategory === "all"
-                ? "bg-[#B86924] text-white"
-                : "bg-white dark:bg-[#10171F] border border-[#D8CFC0] dark:border-[#384C5E] text-[#59615D] dark:text-[#8899A6] hover:bg-[#F2EDE2]"
-            }`}
-          >
-            全領域
-          </button>
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              type="button"
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1 rounded-lg text-xs font-semibold shrink-0 transition-all ${
-                selectedCategory === cat
-                  ? "bg-[#B86924] text-white"
-                  : "bg-white dark:bg-[#10171F] border border-[#D8CFC0] dark:border-[#384C5E] text-[#59615D] dark:text-[#8899A6] hover:bg-[#F2EDE2]"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+        <Link
+          href="/simulator"
+          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#1E3D34] hover:bg-[#2B6958] text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all z-10 shrink-0 border border-[#74BA9E]/30 group cursor-pointer"
+        >
+          <span>シミュレーターを起動する</span>
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </Link>
       </div>
 
       {/* 症例一覧グリッド */}
       <div className="space-y-4">
         <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] px-1">
-          <span>表示件数: <strong>{filteredCases.length}</strong> / {CLINICAL_CASES.length} 症例</span>
+          <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">
+            全20症例一覧（症例01〜03は無料体験可能）
+          </span>
+          <span>全 {CLINICAL_CASES.length} 症例</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCases.map((c) => (
+          {CLINICAL_CASES.map((c) => (
             <Link
               key={c.id}
               href={`/cases/${c.id}`}
