@@ -57,20 +57,20 @@
   }
 
   html {
-    font-size: 100%;
+    font-size: 106.25%; /* 日本語の可読性を高めるため、標準を約17px基準に底上げ */
     transition: font-size 0.2s ease-in-out;
   }
 
   html[data-font-size="normal"] {
-    font-size: 100%;
+    font-size: 106.25%;
   }
 
   html[data-font-size="large"] {
-    font-size: 112.5%;
+    font-size: 118.75%;
   }
 
   html[data-font-size="xlarge"] {
-    font-size: 125%;
+    font-size: 131.25%;
   }
 
   body {

@@ -90,11 +90,11 @@ export default function ArticleReferences({
                     </div>
 
                     {/* 文献詳細情報 */}
-                    <div className="flex-1 space-y-2 text-xs">
+                    <div className="flex-1 space-y-2 text-xs sm:text-sm">
                       {/* タグと種別 */}
                       <div className="flex flex-wrap items-center gap-2">
                         {ref.type && (
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#10161C] border border-[#E5DEC9] dark:border-[#2D3E50] text-[#59615D] dark:text-[#A0B0BC] font-medium">
+                          <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#10161C] border border-[#E5DEC9] dark:border-[#2D3E50] text-[#59615D] dark:text-[#A0B0BC] font-medium">
                             {ref.type === "paper"
                               ? "査読論文 (Peer-Reviewed)"
                               : ref.type === "classic"
@@ -108,13 +108,13 @@ export default function ArticleReferences({
                         )}
 
                         {ref.studyDesign && (
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3DEC5] dark:border-[#4D331F] text-[#B86924] dark:text-[#E6C387] font-medium">
+                          <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3DEC5] dark:border-[#4D331F] text-[#B86924] dark:text-[#E6C387] font-medium">
                             {ref.studyDesign}
                           </span>
                         )}
 
                         {ref.sampleSize && (
-                          <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                          <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
                             n={ref.sampleSize.toLocaleString()}
                           </span>
                         )}
@@ -133,7 +133,7 @@ export default function ArticleReferences({
                       </div>
 
                       {/* 著者・ジャーナル・出版社・年 */}
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[#59615D] dark:text-[#96A6B2] text-[11px]">
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[#59615D] dark:text-[#96A6B2] text-xs sm:text-sm">
                         {authorsText && <span>著者: {authorsText}</span>}
                         <span className="font-semibold text-[#232826] dark:text-[#E6EFEA]">
                           {ref.source}
@@ -158,9 +158,9 @@ export default function ArticleReferences({
 
                       {/* 臨床知見・エビデンス要約 */}
                       {ref.note && (
-                        <div className="p-2.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EBE4D5] dark:border-[#22303D] text-[11px] text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                        <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EBE4D5] dark:border-[#22303D] text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                           <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] inline-flex items-center gap-1 mr-1">
-                            <CheckCircle2 className="w-3 h-3" />
+                            <CheckCircle2 className="w-3.5 h-3.5" />
                             <span>臨床的意義・エビデンス要約:</span>
                           </span>
                           <span>{ref.note}</span>
@@ -174,11 +174,11 @@ export default function ArticleReferences({
                             href={ref.amazonUrl}
                             target="_blank"
                             rel="noopener noreferrer nofollow sponsored"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#F3DEC5] dark:border-[#4D331F] hover:border-[#B86924] dark:hover:border-[#E6C387] text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBE8D6] dark:hover:bg-[#382618] text-[11px] font-bold transition-all shadow-2xs group"
-                            title="Amazonで詳細・在庫を確認（アソシエイトリンク）"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#F3DEC5] dark:border-[#4D331F] hover:border-[#B86924] dark:hover:border-[#E6C387] text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBE8D6] dark:hover:bg-[#382618] text-xs sm:text-sm font-bold transition-all shadow-2xs group"
+                            title="Amazonで探す・在庫と詳細を確認（リンク切れ防止・アソシエイトリンク）"
                           >
                             <ShoppingBag className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                            <span>Amazonで書籍詳細を見る</span>
+                            <span>Amazonで探す（在庫・詳細）</span>
                             <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                           </a>
                         )}
@@ -188,7 +188,7 @@ export default function ArticleReferences({
                             href={ref.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FAF8F5] dark:bg-[#1C2834] border border-[#D8CFC0] dark:border-[#2E4254] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#15232F] text-[11px] font-bold transition-all shadow-2xs group"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FAF8F5] dark:bg-[#1C2834] border border-[#D8CFC0] dark:border-[#2E4254] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#15232F] text-xs sm:text-sm font-bold transition-all shadow-2xs group"
                           >
                             <FileText className="w-3.5 h-3.5" />
                             <span>

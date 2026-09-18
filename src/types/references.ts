@@ -12,6 +12,7 @@ export interface ReferenceItem {
   asin?: string; // Amazon ASINコード (例: "488574000X")
   isbn?: string; // ISBN
   amazonUrl?: string; // Amazon URL
+  amazonSearchUrl?: string; // リンク切れ防止の安全なAmazon検索URL
   studyDesign?: string;
   sampleSize?: number;
   note?: string; // 臨床要点・概要

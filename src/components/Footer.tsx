@@ -13,17 +13,17 @@ export default function Footer() {
                 はり太郎の東洋医学
               </span>
             </Link>
-            <p className="text-xs leading-relaxed text-[#59615D] dark:text-[#96A6B2]">
+            <p className="text-xs sm:text-sm leading-relaxed text-[#59615D] dark:text-[#96A6B2]">
               数千年の臨床観察に裏打ちされた東洋医学の智慧を、最新の現代科学と解剖生理学の視点から体系化。「基礎理論から臨床実践までを体系化する東洋医学ポータル」として、わかりやすさと学術的深さを追求しています。
             </p>
           </div>
 
           {/* 一般向けガイド */}
           <div>
-            <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm tracking-wider mb-4 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5 flex items-center gap-1.5">
+            <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm sm:text-base tracking-wider mb-4 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5 flex items-center gap-1.5">
               <span>一般向けセルフケア</span>
             </h3>
-            <ul className="space-y-2.5 text-xs">
+            <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
                 <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
                   <span>頭痛・首肩こり改善</span>
@@ -50,10 +50,10 @@ export default function Footer() {
 
           {/* 専門家・学生向け */}
           <div>
-            <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm tracking-wider mb-4 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5">
+            <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm sm:text-base tracking-wider mb-4 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5">
               専門家・学生向け
             </h3>
-            <ul className="space-y-2.5 text-xs">
+            <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
                 <Link href="/tsubo" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
                   十四経脈 経穴（ツボ）データベース
@@ -79,17 +79,17 @@ export default function Footer() {
 
           {/* サイトポリシー・運営情報 */}
           <div>
-            <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm tracking-wider mb-4 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5">
+            <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm sm:text-base tracking-wider mb-4 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5">
               案内・免責
             </h3>
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3 text-xs sm:text-sm">
               <div className="flex items-start gap-2 text-[#737C77] dark:text-[#8899A6]">
                 <ShieldCheck className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
                 <div className="space-y-1.5 leading-normal">
                   <p>
                     当サイトの情報は健康増進と伝統医学の学術的理解を目的としており、医師による診断・治療に代わるものではありません。重篤な症状がある場合は速やかに医療機関を受診してください。
                   </p>
-                  <p className="text-[10px] text-[#88928D] dark:text-[#6E7D8A]">
+                  <p className="text-xs text-[#88928D] dark:text-[#6E7D8A]">
                     ※当サイトはAmazonアソシエイト・プログラムの参加者であり、適格販売により収入を得ています。
                   </p>
                 </div>

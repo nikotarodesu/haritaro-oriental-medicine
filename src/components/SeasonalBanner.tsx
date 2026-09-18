@@ -72,7 +72,7 @@ export default function SeasonalBanner() {
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             {/* 天人相応バッジ */}
             <span 
-              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold text-white shadow-xs transition-colors duration-500"
+              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-bold text-white shadow-xs transition-colors duration-500"
               style={{ backgroundColor: currentSeason.primaryHex }}
             >
               {renderSeasonIcon(currentSeason.iconType, "w-3.5 h-3.5")}
@@ -80,18 +80,18 @@ export default function SeasonalBanner() {
             </span>
 
             {/* 日付バッジ */}
-            <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold px-2 sm:px-2.5 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4D331F]">
-              <Calendar className="w-3 h-3 text-[#B86924] dark:text-[#E6C387]" />
+            <span className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold px-2 sm:px-2.5 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4D331F]">
+              <Calendar className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
               <span>本日：{currentDateFormatted || "2026年9月10日"}</span>
             </span>
 
             {/* 五季バッジ */}
-            <span className="text-[11px] sm:text-xs font-semibold px-2 sm:px-2.5 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5]">
+            <span className="text-xs sm:text-sm font-semibold px-2 sm:px-2.5 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5]">
               五季：{currentSeason.fiveSeason}（{currentSeason.organ}系）
             </span>
 
             {/* 気の運行 */}
-            <span className="text-xs text-[#59615D] dark:text-[#96A6B2] hidden sm:inline ml-1">
+            <span className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] hidden sm:inline ml-1">
               気の運行：<strong className="text-[#232826] dark:text-[#FAF8F5] font-semibold">{currentSeason.qiMotion}</strong>
             </span>
           </div>
@@ -100,7 +100,7 @@ export default function SeasonalBanner() {
           <div className="flex items-center gap-2 shrink-0 self-start lg:self-center">
             <Link 
               href="/articles" 
-              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A]"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A]"
             >
               <span>季節の養生論</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -110,12 +110,12 @@ export default function SeasonalBanner() {
 
         {/* 2. メインメッセージ（季節の宣言 ＆ 気の運行） */}
         <div className="space-y-1.5 sm:space-y-2">
-          <h3 className="font-serif text-base sm:text-xl lg:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
+          <h3 className="font-serif text-lg sm:text-xl lg:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
             <span className="text-[#1E3D34] dark:text-[#74BA9E] mr-1">
               {leadPhrase}
             </span>
             {bodyPhrase && (
-              <span className="block sm:inline font-normal text-[#404743] dark:text-[#C5D2DB] text-sm sm:text-lg">
+              <span className="block sm:inline font-normal text-[#404743] dark:text-[#C5D2DB] text-base sm:text-lg">
                 {bodyPhrase}
               </span>
             )}
@@ -126,46 +126,46 @@ export default function SeasonalBanner() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 pt-1">
           
           {/* ① 旬の食養生 */}
-          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5 sm:space-y-2 flex flex-col justify-between">
+          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5 sm:space-y-2 flex flex-col justify-between">
             <div className="space-y-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">
+              <div className="flex items-center gap-1.5 text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
                 <div className="w-6 h-6 rounded-lg bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0">
                   <Utensils className="w-3.5 h-3.5" />
                 </div>
                 <span>旬の食養生</span>
               </div>
-              <p className="text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+              <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                 {todayTerm.dietAdvice}
               </p>
             </div>
-            <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] pt-1">
+            <span className="text-xs text-[#737C77] dark:text-[#8899A6] pt-1">
               胃腸と内臓を養う旬の食材
             </span>
           </div>
 
           {/* ② 生活習慣・心の養生 */}
-          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5 sm:space-y-2 flex flex-col justify-between">
+          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5 sm:space-y-2 flex flex-col justify-between">
             <div className="space-y-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">
+              <div className="flex items-center gap-1.5 text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
                 <div className="w-6 h-6 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0">
                   <HeartPulse className="w-3.5 h-3.5" />
                 </div>
                 <span>生活習慣・心の養生</span>
               </div>
-              <p className="text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+              <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                 {todayTerm.lifestyleAdvice}
               </p>
             </div>
-            <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] pt-1">
+            <span className="text-xs text-[#737C77] dark:text-[#8899A6] pt-1">
               自然のリズムに合わせた行動
             </span>
           </div>
 
           {/* ③ 季節の特効ツボ（マイカルテ保存ボタン付き） */}
-          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-4 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2 flex flex-col justify-between">
+          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2 flex flex-col justify-between">
             <div className="space-y-1.5">
               <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                <div className="flex items-center gap-1.5 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                   <div className="w-6 h-6 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0">
                     <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
                   </div>
@@ -187,19 +187,19 @@ export default function SeasonalBanner() {
                   size="sm"
                 />
               </div>
-              <p className="text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+              <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                 {todayTerm.tsuboTip}
               </p>
             </div>
 
-            <div className="pt-1 flex items-center justify-between text-[10px] text-[#737C77] dark:text-[#8899A6]">
+            <div className="pt-1 flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
               <span>ワンクリックでマイカルテに保存</span>
               <Link 
                 href="/tsubo" 
                 className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline flex items-center gap-0.5"
               >
                 <span>ツボ辞典を見る</span>
-                <ArrowRight className="w-3 h-3" />
+                <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>
