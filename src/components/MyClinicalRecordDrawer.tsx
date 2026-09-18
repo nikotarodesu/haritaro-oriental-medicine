@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
 import { 
   X, 
   Bookmark, 
@@ -16,9 +17,15 @@ import {
   Edit3, 
   Lock,
   Download,
-  AlertCircle
+  AlertCircle,
+  Printer,
+  Crown,
+  FileDown,
+  Tag,
+  ArrowRight
 } from "lucide-react";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { ClinicalMemoItem, ClinicalMemoType } from "@/types/clinicalMemo";
 import GogyoBadge from "@/components/GogyoBadge";
 
@@ -26,6 +33,8 @@ export default function MyClinicalRecordDrawer() {
   const { 
     memos, 
     clipCount, 
+    maxLimit,
+    isLimitReached,
     isDrawerOpen, 
     closeDrawer, 
     removeMemo, 
@@ -36,7 +45,10 @@ export default function MyClinicalRecordDrawer() {
     dismissToast
   } = useClinicalMemo();
 
+  const { isPremium } = useAuth();
+
   const [activeTab, setActiveTab] = useState<"all" | ClinicalMemoType>("all");
+  const [selectedTag, setSelectedTag] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [allCopied, setAllCopied] = useState(false);
@@ -134,6 +146,56 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
     setTimeout(() => setAllCopied(false), 2500);
   };
 
+  // JSONエクスポート
+  const handleExportJSON = () => {
+    if (memos.length === 0) return;
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(memos, null, 2));
+    const downloadAnchor = document.createElement("a");
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `haritaro-clinical-records-${new Date().toISOString().split("T")[0]}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+  };
+
+  // Markdownエクスポート
+  const handleExportMarkdown = () => {
+    if (memos.length === 0) return;
+    const lines = [
+      "# はり太郎の東洋医学 | マイカルテ・学習ノート",
+      `*出力日: ${new Date().toLocaleDateString("ja-JP")} / 保存件数: ${memos.length}件*\n`,
+      "---",
+    ];
+
+    memos.forEach((item, idx) => {
+      lines.push(`\n## ${idx + 1}. ${item.title}${item.subTitle ? ` - ${item.subTitle}` : ""}`);
+      lines.push(`- **種別**: ${item.type === "pair" ? "重要配穴" : item.type === "tsubo" ? "単穴" : item.type === "diagnosis" ? "診断要点" : "自作メモ"}`);
+      lines.push(`- **配穴・ツボ**: ${item.points.join("、 ")}`);
+      lines.push(`- **五行属性**: ${item.elements.join("・")}`);
+      if (item.indications.length > 0) lines.push(`- **主治・適応**: ${item.indications.join("、 ")}`);
+      lines.push(`\n### 臨床要点\n${item.summary}`);
+      if (item.mechanism) lines.push(`\n### 作用機序\n${item.mechanism}`);
+      if (item.caution) lines.push(`\n> **注意・禁忌**: ${item.caution}`);
+      if (item.personalNotes) lines.push(`\n### 臨床個人メモ\n${item.personalNotes}`);
+      lines.push("\n---");
+    });
+
+    const blob = new Blob([lines.join("\n")], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `haritaro-learning-notes-${new Date().toISOString().split("T")[0]}.md`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  };
+
+  // A4カルテ印刷
+  const handlePrint = () => {
+    window.print();
+  };
+
   // 自作メモの登録
   const handleCreateCustom = (e: React.FormEvent) => {
     e.preventDefault();
@@ -161,18 +223,32 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
   if (!isDrawerOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[120] flex justify-end animate-fadeIn">
+    <div className="fixed inset-0 z-[120] flex justify-end animate-fadeIn print:static print:block print:z-auto print:bg-white">
       {/* オーバーレイ背景 */}
       <div 
-        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity print:hidden"
         onClick={closeDrawer}
       />
 
       {/* スライドイン ドロワー本体 */}
-      <div className="relative w-full max-w-2xl bg-[#FAF8F5] dark:bg-[#10161C] h-full shadow-2xl flex flex-col border-l border-[#E5DEC9] dark:border-[#2A3B4A] z-10 animate-slideLeft">
+      <div className="relative w-full max-w-2xl bg-[#FAF8F5] dark:bg-[#10161C] h-full shadow-2xl flex flex-col border-l border-[#E5DEC9] dark:border-[#2A3B4A] z-10 animate-slideLeft print:max-w-none print:w-full print:h-auto print:shadow-none print:border-none print:bg-white print:text-black">
         
-        {/* ヘッダーエリア */}
-        <div className="p-3.5 sm:p-5 border-b border-[#E5DEC9] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A] flex items-center justify-between">
+        {/* 印刷専用ヘッダー（A4印刷時のみ出現） */}
+        <div className="hidden print:block p-6 border-b-2 border-black/80 mb-4">
+          <div className="flex justify-between items-end">
+            <div>
+              <h1 className="text-2xl font-serif font-bold text-black">はり太郎 東洋医学 臨床カルテ・要穴集</h1>
+              <p className="text-xs text-gray-600 mt-1">鍼灸・東洋医学 臨床ナレッジベース (https://www.haritaro.jp/)</p>
+            </div>
+            <div className="text-right text-xs text-gray-600">
+              <p>出力日: {new Date().toLocaleDateString("ja-JP")}</p>
+              <p>保存件数: {memos.length}件</p>
+            </div>
+          </div>
+        </div>
+
+        {/* 画面用ヘッダーエリア */}
+        <div className="p-3.5 sm:p-5 border-b border-[#E5DEC9] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A] flex items-center justify-between print:hidden">
           <div className="flex items-center gap-2.5 sm:gap-3">
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 border border-[#F3DEC5] dark:border-[#4D331F]">
               <Bookmark className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
@@ -182,14 +258,43 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                 <h2 className="font-serif text-base sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
                   マイカルテ・マイ要穴集
                 </h2>
-                <span className="text-xs px-2 py-0.5 rounded-full font-bold bg-[#B86924] text-white">
-                  {clipCount}件
+                <span className={`text-xs px-2 py-0.5 rounded-full font-bold text-white ${
+                  isLimitReached ? "bg-red-600" : "bg-[#B86924]"
+                }`}>
+                  {clipCount} / {maxLimit}件
                 </span>
+                {isPremium && (
+                  <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-[#1E3D34] text-white flex items-center gap-0.5">
+                    <Crown className="w-3 h-3 text-[#E6C387]" />
+                    <span>PREMIUM</span>
+                  </span>
+                )}
               </div>
-              <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] flex items-center gap-1.5 mt-0.5">
-                <Lock className="w-3 h-3 text-[#10B981]" />
-                ブラウザ内（ローカルストレージ）完全プライベート保存
-              </p>
+              <div className="flex items-center gap-3 mt-1">
+                {/* ミニプログレスバー */}
+                <div className="w-28 h-1.5 rounded-full bg-[#E8E1D1] dark:bg-[#2A3B4A] overflow-hidden">
+                  <div 
+                    className={`h-full transition-all ${
+                      clipCount >= maxLimit ? "bg-red-600" : "bg-[#1E3D34] dark:bg-[#74BA9E]"
+                    }`}
+                    style={{ width: `${Math.min(100, Math.round((clipCount / maxLimit) * 100))}%` }}
+                  />
+                </div>
+                {!isPremium ? (
+                  <Link
+                    href="/pricing"
+                    onClick={closeDrawer}
+                    className="text-[11px] text-[#B86924] dark:text-[#E6C387] font-bold hover:underline flex items-center gap-0.5"
+                  >
+                    <span>上限1,000件に拡張</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                ) : (
+                  <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                    大容量1,000件枠
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
@@ -203,7 +308,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
         </div>
 
         {/* コントロールバー（検索・タブ・一括アクション） */}
-        <div className="p-3 sm:p-4 bg-[#F2EDE4]/60 dark:bg-[#151D25] border-b border-[#E5DEC9] dark:border-[#2A3B4A] space-y-3">
+        <div className="p-3 sm:p-4 bg-[#F2EDE4]/60 dark:bg-[#151D25] border-b border-[#E5DEC9] dark:border-[#2A3B4A] space-y-3 print:hidden">
           {/* 検索入力 */}
           <div className="relative">
             <Search className="w-4 h-4 text-[#8A948F] dark:text-[#6A7C8B] absolute left-3 top-1/2 -translate-y-1/2" />
@@ -251,21 +356,45 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
               <span>自作メモを追加</span>
             </button>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 flex-wrap">
               {memos.length > 0 && (
                 <>
                   <button
+                    onClick={handleExportMarkdown}
+                    title="Markdown形式で保存（Obsidian / Notion / カルテ連携）"
+                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
+                  >
+                    <FileDown className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
+                    <span>Markdown</span>
+                  </button>
+                  <button
+                    onClick={handleExportJSON}
+                    title="JSON形式で保存（バックアップ・他端末移行用）"
+                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
+                  >
+                    <Download className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                    <span>JSON</span>
+                  </button>
+                  <button
+                    onClick={handlePrint}
+                    title="カルテA4印刷（問診票・患者説明用）"
+                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
+                  >
+                    <Printer className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                    <span>印刷</span>
+                  </button>
+                  <button
                     onClick={handleCopyAll}
                     title="保存中の全メモをテキスト形式でクリップボードにコピー"
-                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
+                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
                   >
                     {allCopied ? <Check className="w-3.5 h-3.5 text-[#10B981]" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{allCopied ? "コピー完了" : "全件テキスト出力"}</span>
+                    <span>{allCopied ? "コピー済" : "コピー"}</span>
                   </button>
                   <button
                     onClick={clearAllMemos}
                     title="全件消去"
-                    className="p-1.5 rounded-lg text-[#DC2626] hover:bg-[#FEE2E2] dark:hover:bg-[#3B1717] transition-colors"
+                    className="p-1 rounded-lg text-[#DC2626] hover:bg-[#FEE2E2] dark:hover:bg-[#3B1717] transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -277,7 +406,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
 
         {/* 自作メモ作成フォーム（開閉式） */}
         {isAddingCustom && (
-          <form onSubmit={handleCreateCustom} className="p-4 bg-[#FFFBEB] dark:bg-[#201B12] border-b border-[#FDE68A] dark:border-[#42361B] space-y-3">
+          <form onSubmit={handleCreateCustom} className="p-4 bg-[#FFFBEB] dark:bg-[#201B12] border-b border-[#FDE68A] dark:border-[#42361B] space-y-3 print:hidden">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-[#B86924] dark:text-[#F59E0B]">新しい臨床メモの登録</span>
               <button
@@ -348,7 +477,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
         )}
 
         {/* リスト表示エリア */}
-        <div className="flex-1 overflow-y-auto p-3 sm:p-5 space-y-3 sm:space-y-4">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-5 space-y-3 sm:space-y-4 print:overflow-visible print:h-auto print:p-0 print:space-y-4">
           {filteredMemos.length === 0 ? (
             <div className="text-center py-10 sm:py-12 space-y-3 sm:space-y-4 bg-white dark:bg-[#17212A] rounded-2xl border border-dashed border-[#D5CCBC] dark:border-[#2D3E50] p-4 sm:p-6">
               <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto rounded-2xl bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center">
@@ -381,12 +510,12 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
             filteredMemos.map(item => (
               <div
                 key={item.id}
-                className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3 sm:p-5 shadow-2xs hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all space-y-2.5 sm:space-y-3 group"
+                className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3 sm:p-5 shadow-2xs hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all space-y-2.5 sm:space-y-3 group print:break-inside-avoid print:border print:border-gray-300 print:shadow-none print:bg-white print:text-black"
               >
                 {/* カード上部：種別バッジ・五行・アクションボタン */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#737C77] dark:text-[#8899A6]">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#737C77] dark:text-[#8899A6] print:border-gray-400 print:text-gray-800">
                       {item.type === "pair"
                         ? "重要配穴"
                         : item.type === "tsubo"
@@ -400,7 +529,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                     ))}
                   </div>
 
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 print:hidden">
                     <button
                       onClick={() => handleCopySingle(item)}
                       title="このメモのテキストをコピー"

@@ -1,666 +1,401 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, Suspense } from "react";
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import { useSearchParams, useRouter } from "next/navigation";
-import { getAllAcupoints, getAcupointDetail, AcupointMaster, AcupointDetail } from "@/data/tsubo";
 import { 
-  GitCompare, 
-  ArrowLeftRight, 
-  Compass, 
+  Split, 
+  ArrowLeft, 
+  Search, 
+  X, 
+  Bookmark, 
+  Check, 
   Sparkles, 
-  AlertTriangle, 
-  CheckCircle2, 
-  ExternalLink,
+  Plus, 
+  AlertTriangle,
   BookOpen,
-  Layers,
-  Search,
-  Bookmark
+  Printer
 } from "lucide-react";
-import AcupointPickerModal from "@/components/tsubo/AcupointPickerModal";
+import { TSUBOS } from "@/data/tsuboData";
+import { Tsubo } from "@/types/oriental";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
+import { useAuth } from "@/contexts/AuthContext";
+import AuthModal from "@/components/auth/AuthModal";
 
-// 編集済み比較プリセット（古典出典・目的別）
-const PRESET_CATEGORIES = [
+// おすすめ比較プリセット
+const PRESET_TSUBO_COMPARISONS = [
   {
-    categoryTitle: "伝統的な併用関係を学ぶ（代表配穴）",
-    pairs: [
-      {
-        label: "開四関（合谷 × 太衝）",
-        codeA: "LI4",
-        codeB: "LR3",
-        source: "『鍼灸大成』四関穴",
-        rationale: "手の陽明大腸経の原穴（気）と足の厥陰肝経の原穴（血）を組み合わせ、全身の気血運行・自律機能を調整する伝統的配合。",
-      },
-      {
-        label: "表裏相応（内関 × 外関）",
-        codeA: "PC6",
-        codeB: "TE5",
-        source: "『霊枢』経脈篇・八脈交会穴",
-        rationale: "前腕掌側の心包経（陰）と背側の三焦経（陽）の絡穴同士。前腕の表裏を貫通し胸脇・頭側部の症状に対応。",
-      },
-      {
-        label: "健脾補気（足三里 × 三陰交）",
-        codeA: "ST36",
-        codeB: "SP6",
-        source: "『千金要方』",
-        rationale: "陽明胃経の合穴と太陰脾経・少陰腎経・厥陰肝経が交わる三陰交。後天之本と陰血滋養の代表処方。",
-      },
-    ],
+    name: "四関穴の対比（合谷 vs 太衝）",
+    tsuboCodes: ["LI4", "LR3"],
+    desc: "手陽明大腸経（気・昇）と足厥陰肝経（血・降）の原穴対比。全身の気血巡行を司る2大原穴。"
   },
   {
-    categoryTitle: "位置・取穴法を区別したい（近隣穴・類似穴）",
-    pairs: [
-      {
-        label: "手背の鑑別（合谷 × 三間）",
-        codeA: "LI4",
-        codeB: "LI3",
-        source: "WHO標準取穴部位",
-        rationale: "第2中手骨橈側の骨際において、骨幹中央（合谷）と中手指節関節近位陥凹部（三間）の触診指標の違いを比較。",
-      },
-      {
-        label: "前腕掌側の鑑別（内関 × 大陵）",
-        codeA: "PC6",
-        codeB: "PC7",
-        source: "WHO標準取穴部位",
-        rationale: "手関節掌側横紋上2寸（内関）と手関節掌側横紋上（大陵）の深浅・正中神経走向と腱構造の違いを比較。",
-      },
-      {
-        label: "下腿前脛骨部の鑑別（足三里 × 上巨虚）",
-        codeA: "ST36",
-        codeB: "ST37",
-        source: "WHO標準取穴部位",
-        rationale: "犢鼻の下方3寸（足三里・胃下合穴）と下方6寸（上巨虚・大腸下合穴）の骨度法・筋肉内位置の鑑別。",
-      },
-    ],
+    name: "下肢の2大補益穴（足三里 vs 三陰交）",
+    tsuboCodes: ["ST36", "SP6"],
+    desc: "胃の合穴（後天の本・気虚改善）と足三陰の交会穴（血虚・婦人科疾患）の使い分け。"
   },
   {
-    categoryTitle: "要穴の関係を学ぶ（原絡・募合）",
-    pairs: [
-      {
-        label: "原絡配穴（合谷 × 列欠）",
-        codeA: "LI4",
-        codeB: "LU7",
-        source: "『難経』原絡配穴法",
-        rationale: "大腸経の原穴（合谷）と表裏関係にある肺経の絡穴（列欠）による表裏主客配穴。",
-      },
-      {
-        label: "腑会・胃募合配穴（中脘 × 足三里）",
-        codeA: "CV12",
-        codeB: "ST36",
-        source: "『八会穴』『難経』",
-        rationale: "上腹部の胃募穴（中脘）と下肢の胃合穴（足三里）による中焦消化器系の内外協調。",
-      },
-    ],
+    name: "心胸・自律神経の要穴（内関 vs 神門）",
+    tsuboCodes: ["PC6", "HT7"],
+    desc: "心包経の絡穴（胸肋・胃腸・動悸の降気）と心経の原穴（心神安寧・不眠・健忘の鎮静）。"
   },
+  {
+    name: "腰背部痛の2大要穴（委中 vs 腎兪）",
+    tsuboCodes: ["BL40", "BL23"],
+    desc: "四総穴「腰背は委中に留む」（急性・瘀血・合穴）と腎の背部兪穴（慢性・腎虚腰痛）の比較。"
+  }
 ];
 
-export default function ComparePage() {
-  return (
-    <Suspense fallback={<div className="min-h-screen py-16 text-center text-xs text-[#737C77]">比較ツールを読み込み中...</div>}>
-      <ComparePageContent />
-    </Suspense>
-  );
-}
+export default function TsuboComparePage() {
+  const { addMemo } = useClinicalMemo();
+  const { isPremium } = useAuth();
 
-function ComparePageContent() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const allPoints = useMemo(() => getAllAcupoints(), []);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  // デフォルトで合谷(LI4)と太衝(LR3)
+  const [selectedCodes, setSelectedCodes] = useState<string[]>(["LI4", "LR3"]);
+  const [saved, setSaved] = useState(false);
 
-  // URLクエリまたは初期値から取得
-  const initialA = (searchParams.get("a") || "LI4").toUpperCase();
-  const initialB = (searchParams.get("b") || "LR3").toUpperCase();
+  // 選択されているツボの配列
+  const selectedTsubos: Tsubo[] = useMemo(() => {
+    return selectedCodes
+      .map(code => TSUBOS.find(t => t.code === code))
+      .filter((t): t is Tsubo => Boolean(t));
+  }, [selectedCodes]);
 
-  const [codeA, setCodeA] = useState<string>(initialA);
-  const [codeB, setCodeB] = useState<string>(initialB);
-  const [activePicker, setActivePicker] = useState<"A" | "B" | null>(null);
-  const [duplicateAlert, setDuplicateAlert] = useState<string | null>(null);
+  // 検索ヒットツボ一覧
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const q = searchQuery.toLowerCase().trim();
+    return TSUBOS.filter(t => 
+      t.name.includes(q) || 
+      t.kana.includes(q) || 
+      t.code.toLowerCase().includes(q) ||
+      t.meridian.includes(q)
+    ).slice(0, 10);
+  }, [searchQuery]);
 
-  const { isClipped, toggleClip } = useClinicalMemo();
-
-  // URL同期
-  useEffect(() => {
-    const a = searchParams.get("a");
-    const b = searchParams.get("b");
-    if (a) setCodeA(a.toUpperCase());
-    if (b) setCodeB(b.toUpperCase());
-  }, [searchParams]);
-
-  const detailA = useMemo(() => getAcupointDetail(codeA) || getAcupointDetail("LI4")!, [codeA]);
-  const detailB = useMemo(() => getAcupointDetail(codeB) || getAcupointDetail("LR3")!, [codeB]);
-
-  const updateCodes = (newA: string, newB: string) => {
-    if (newA === newB) {
-      setDuplicateAlert(`「${newA}」が両方に選択されたため、別々の経穴を選んでください。`);
+  // ツボの追加
+  const handleAddTsubo = (code: string) => {
+    if (selectedCodes.includes(code)) return;
+    if (selectedCodes.length >= 3) {
+      if (!isPremium) {
+        setAuthModalOpen(true);
+        return;
+      }
+      // 3穴制限（最大3穴）
+      alert("同時に比較できる経穴は最大3穴までです。不要なツボを削除してから追加してください。");
       return;
     }
-    setDuplicateAlert(null);
-    setCodeA(newA);
-    setCodeB(newB);
-    router.replace(`/tsubo/compare?a=${newA.toLowerCase()}&b=${newB.toLowerCase()}`);
+    setSelectedCodes([...selectedCodes, code]);
+    setSearchQuery("");
+    setSaved(false);
   };
 
-  const handleSwap = () => {
-    updateCodes(codeB, codeA);
+  // ツボの削除
+  const handleRemoveTsubo = (code: string) => {
+    setSelectedCodes(selectedCodes.filter(c => c !== code));
+    setSaved(false);
   };
 
-  // 共通点・相違点の自動サマリー抽出
-  const comparisonSummary = useMemo(() => {
-    const commonCategories = detailA.categories.filter((c) => detailB.categories.includes(c));
-    const commonIndications = detailA.indications.filter((ind) => detailB.indications.includes(ind));
-    const isSameMeridian = detailA.meridianId === detailB.meridianId;
-    const isSameBodyPart = detailA.bodyPart === detailB.bodyPart;
+  // プリセット適用
+  const handleApplyPreset = (codes: string[]) => {
+    setSelectedCodes(codes);
+    setSaved(false);
+  };
 
-    const commonPoints: string[] = [];
-    if (isSameMeridian) commonPoints.push(`同じ経脈（${detailA.meridian}）に所属`);
-    if (isSameBodyPart) commonPoints.push(`同じ身体部位（${detailA.bodyPart}）に存在`);
-    if (commonCategories.length > 0) commonPoints.push(`共通の要穴分類：${commonCategories.join("、")}`);
-    if (commonIndications.length > 0) commonPoints.push(`共通の適応症：${commonIndications.slice(0, 4).join("、")}`);
-
-    const differences: string[] = [];
-    if (!isSameMeridian) differences.push(`所属経脈の違い：${detailA.meridianShort}（${detailA.name}） vs ${detailB.meridianShort}（${detailB.name}）`);
-    if (!isSameBodyPart) differences.push(`部位の違い：${detailA.bodyPart} vs ${detailB.bodyPart}`);
-    differences.push(`局所指標の違い：${detailA.palpationLandmarks[0] || detailA.locationSimple} vs ${detailB.palpationLandmarks[0] || detailB.locationSimple}`);
-
-    return {
-      commonPoints: commonPoints.length > 0 ? commonPoints : ["所属経脈および主たる要穴系統が異なります"],
-      differences,
-    };
-  }, [detailA, detailB]);
+  // カルテに保存
+  const handleSaveToMemo = () => {
+    const names = selectedTsubos.map(t => t.name).join(" vs ");
+    addMemo({
+      id: `tsubo-compare-${Date.now()}`,
+      type: "pair",
+      title: `【経穴比較】${names}`,
+      subTitle: selectedTsubos.map(t => `${t.name}(${t.code})`).join("、 "),
+      points: selectedTsubos.map(t => t.name),
+      elements: ["木", "金"],
+      indications: Array.from(new Set(selectedTsubos.flatMap(t => t.indications))).slice(0, 5),
+      summary: selectedTsubos.map(t => `【${t.name}】${t.clinicalNote}`).join("\n"),
+      mechanism: selectedTsubos.map(t => `【${t.name}】${t.meridian}（要穴: ${t.category?.join("・") || "特記なし"}）`).join(" / "),
+      personalNotes: `経穴比較ツールにて対比 (${new Date().toLocaleDateString("ja-JP")})`
+    });
+    setSaved(true);
+  };
 
   return (
-    <div className="min-h-screen py-8 sm:py-16 px-3 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto space-y-8 sm:space-y-10">
+    <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
+      {/* ヒーローセクション */}
+      <div className="bg-white dark:bg-[#17212A] border-b border-[#E5DEC9] dark:border-[#2A3B4A] py-10 sm:py-14 print:hidden">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243]">
+              <Split className="w-3.5 h-3.5" />
+              <span>経穴横並び比較マトリクス</span>
+            </span>
+            <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#151D25] text-[#737C77] dark:text-[#8899A6] border border-[#E5DEC9] dark:border-[#2A3B4A]">
+              全361穴から最大3穴を厳密対比
+            </span>
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-2">
+              <h1 className="font-serif text-2xl sm:text-4xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+                経穴（ツボ）比較ツール
+              </h1>
+              <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] max-w-2xl leading-relaxed">
+                似た効能を持つツボや、相反する経絡のツボを2〜3穴並べて、取穴法・五行・要穴区分・臨床の作用機序の違いを徹底比較できます。
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => window.print()}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] text-xs font-bold hover:bg-[#FAF8F5] transition-colors"
+              >
+                <Printer className="w-4 h-4 text-blue-600" />
+                <span>比較表を印刷</span>
+              </button>
+              <button
+                onClick={handleSaveToMemo}
+                disabled={saved || selectedTsubos.length === 0}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#B86924] hover:bg-[#9B551B] text-white text-xs font-bold shadow-sm transition-colors cursor-pointer"
+              >
+                <Bookmark className={`w-4 h-4 ${saved ? "fill-current" : ""}`} />
+                <span>{saved ? "マイカルテに保存済" : "比較結果をカルテ保存"}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
         
-        {/* パンくず */}
-        <nav className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6]">
-          <Link href="/" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-            ホーム
-          </Link>
-          <span>/</span>
-          <Link href="/tsubo" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-            経穴辞典
-          </Link>
-          <span>/</span>
-          <span className="text-[#232826] dark:text-[#FAF8F5] font-bold">2穴比較ツール</span>
-        </nav>
-
-        {/* ヘッダー */}
-        <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold tracking-wider">
-            <GitCompare className="w-3.5 h-3.5" />
-            <span>Acupoint Comparison</span>
-          </div>
-          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-            経穴 2穴比較ツール
-          </h1>
-          <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-xl mx-auto">
-            2つの経穴を選ぶと、下の比較表が自動更新されます。位置・骨性目印・要穴分類・解剖構造・適応症の違いを横並びで対比できます。
-          </p>
-        </div>
-
-        {/* 2穴セレクターバー */}
-        <div className="bg-[#FFFFFF] dark:bg-[#15202B] rounded-2xl sm:rounded-3xl border-2 border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 shadow-sm space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 text-xs">
-            <span className="font-bold text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
-              <span>比較対象の2穴を選択</span>
-            </span>
-            <button
-              type="button"
-              onClick={handleSwap}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline cursor-pointer self-start sm:self-auto"
-            >
-              <ArrowLeftRight className="w-3.5 h-3.5" />
-              <span>AとBを入れ替える</span>
-            </button>
-          </div>
-
-          {/* セレクターボタン並列 */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            
-            {/* 経穴 A */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                経穴 A：
-              </label>
+        {/* 比較プリセット */}
+        <div className="space-y-2 print:hidden">
+          <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] block">
+            代表的な経穴比較セット:
+          </span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+            {PRESET_TSUBO_COMPARISONS.map((preset, idx) => (
               <button
-                type="button"
-                onClick={() => setActivePicker("A")}
-                className="w-full p-3.5 rounded-2xl border-2 border-[#1E3D34]/30 hover:border-[#1E3D34] bg-[#FAF8F5] dark:bg-[#10171F] text-left transition-all flex items-center justify-between gap-3 shadow-xs"
+                key={idx}
+                onClick={() => handleApplyPreset(preset.tsuboCodes)}
+                className="text-left p-3 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] transition-all space-y-1"
               >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#1E3D34] text-white shrink-0">
-                    {detailA.code}
-                  </span>
-                  <div className="min-w-0">
-                    <span className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
-                      {detailA.name}
-                    </span>
-                    <span className="text-xs text-[#737C77] ml-2">
-                      {detailA.meridianShort} / {detailA.bodyPart}
-                    </span>
-                  </div>
-                </div>
-                <Search className="w-4 h-4 text-[#737C77] shrink-0" />
-              </button>
-            </div>
-
-            {/* 経穴 B */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
-                経穴 B：
-              </label>
-              <button
-                type="button"
-                onClick={() => setActivePicker("B")}
-                className="w-full p-3.5 rounded-2xl border-2 border-[#B86924]/30 hover:border-[#B86924] bg-[#FAF8F5] dark:bg-[#10171F] text-left transition-all flex items-center justify-between gap-3 shadow-xs"
-              >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#B86924] text-white shrink-0">
-                    {detailB.code}
-                  </span>
-                  <div className="min-w-0">
-                    <span className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
-                      {detailB.name}
-                    </span>
-                    <span className="text-xs text-[#737C77] ml-2">
-                      {detailB.meridianShort} / {detailB.bodyPart}
-                    </span>
-                  </div>
-                </div>
-                <Search className="w-4 h-4 text-[#737C77] shrink-0" />
-              </button>
-            </div>
-          </div>
-
-          {duplicateAlert && (
-            <div className="p-2.5 rounded-xl bg-[#FDEDEC] dark:bg-[#2A1715] border border-[#E53E3E] text-xs text-[#DC2626] flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 shrink-0" />
-              <span>{duplicateAlert}</span>
-            </div>
-          )}
-        </div>
-
-        {/* 共通点と主な違いサマリー */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 rounded-2xl bg-[#EBF3EF] dark:bg-[#162A24] border border-[#C5DED4] dark:border-[#2A5243] space-y-2">
-            <div className="flex items-center gap-1.5 font-bold text-xs text-[#1E3D34] dark:text-[#74BA9E]">
-              <CheckCircle2 className="w-4 h-4" />
-              <span>確認できる共通点</span>
-            </div>
-            <ul className="list-disc list-inside text-xs text-[#333835] dark:text-[#C5D2DB] space-y-1">
-              {comparisonSummary.commonPoints.map((p, idx) => (
-                <li key={idx}>{p}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-[#FCF4EB] dark:bg-[#281E15] border border-[#F2DEB0] dark:border-[#42381C] space-y-2">
-            <div className="flex items-center gap-1.5 font-bold text-xs text-[#B86924] dark:text-[#E6C387]">
-              <Sparkles className="w-4 h-4" />
-              <span>主な相違点・見分け方</span>
-            </div>
-            <ul className="list-disc list-inside text-xs text-[#333835] dark:text-[#C5D2DB] space-y-1">
-              {comparisonSummary.differences.map((d, idx) => (
-                <li key={idx}>{d}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* 項目そろえ構造化比較表 */}
-        <div className="bg-white dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs overflow-hidden">
-          <div className="p-4 sm:p-5 bg-[#FAF8F5] dark:bg-[#10171F] border-b border-[#E8E1D1] dark:border-[#22303D] flex items-center justify-between">
-            <h2 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
-              項目別 比較詳細表
-            </h2>
-            <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-              スマホでは項目ごとにA/Bを対比表示
-            </span>
-          </div>
-
-          <div className="divide-y divide-[#F2ECE0] dark:divide-[#22303D] text-xs">
-            
-            {/* 1. 基本情報 */}
-            <CompareRow
-              title="基本情報"
-              contentA={
-                <div className="space-y-1">
-                  <div className="flex items-baseline gap-2">
-                    <span className="font-mono font-bold text-xs text-[#1E3D34] dark:text-[#74BA9E]">{detailA.code}</span>
-                    <strong className="font-serif text-lg text-[#232826] dark:text-[#FAF8F5]">{detailA.name}</strong>
-                    <span className="text-[#737C77]">{detailA.kana}</span>
-                  </div>
-                  <p className="text-[#59615D] dark:text-[#A0B0BC]">{detailA.meridian}（{detailA.bodyPart}）</p>
-                </div>
-              }
-              contentB={
-                <div className="space-y-1">
-                  <div className="flex items-baseline gap-2">
-                    <span className="font-mono font-bold text-xs text-[#B86924] dark:text-[#E6C387]">{detailB.code}</span>
-                    <strong className="font-serif text-lg text-[#232826] dark:text-[#FAF8F5]">{detailB.name}</strong>
-                    <span className="text-[#737C77]">{detailB.kana}</span>
-                  </div>
-                  <p className="text-[#59615D] dark:text-[#A0B0BC]">{detailB.meridian}（{detailB.bodyPart}）</p>
-                </div>
-              }
-            />
-
-            {/* 2. 取穴位置 */}
-            <CompareRow
-              title="取穴位置"
-              contentA={
-                <div className="space-y-1">
-                  <p className="font-medium text-[#232826] dark:text-[#FAF8F5] leading-relaxed">{detailA.locationSimple}</p>
-                  <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] font-mono">WHO部位：{detailA.locationDetail}</p>
-                </div>
-              }
-              contentB={
-                <div className="space-y-1">
-                  <p className="font-medium text-[#232826] dark:text-[#FAF8F5] leading-relaxed">{detailB.locationSimple}</p>
-                  <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] font-mono">WHO部位：{detailB.locationDetail}</p>
-                </div>
-              }
-            />
-
-            {/* 3. 骨性・腱目印 */}
-            <CompareRow
-              title="触知目印"
-              contentA={
-                <ul className="list-disc list-inside space-y-0.5 text-[#333835] dark:text-[#C5D2DB]">
-                  {detailA.palpationLandmarks.map((lm, i) => (
-                    <li key={i}>{lm}</li>
-                  ))}
-                </ul>
-              }
-              contentB={
-                <ul className="list-disc list-inside space-y-0.5 text-[#333835] dark:text-[#C5D2DB]">
-                  {detailB.palpationLandmarks.map((lm, i) => (
-                    <li key={i}>{lm}</li>
-                  ))}
-                </ul>
-              }
-            />
-
-            {/* 4. 要穴分類 */}
-            <CompareRow
-              title="要穴分類"
-              contentA={
-                <div className="flex flex-wrap gap-1">
-                  {detailA.categories.length > 0 ? (
-                    detailA.categories.map((c, i) => (
-                      <span key={i} className="px-2 py-0.5 rounded-md bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-medium text-[11px]">
-                        {c}
-                      </span>
-                    ))
-                  ) : (
-                    <span className="text-[#737C77]">要穴分類なし（通常経穴）</span>
-                  )}
-                </div>
-              }
-              contentB={
-                <div className="flex flex-wrap gap-1">
-                  {detailB.categories.length > 0 ? (
-                    detailB.categories.map((c, i) => (
-                      <span key={i} className="px-2 py-0.5 rounded-md bg-[#FCF4EB] dark:bg-[#281E15] text-[#B86924] dark:text-[#E6C387] font-medium text-[11px]">
-                        {c}
-                      </span>
-                    ))
-                  ) : (
-                    <span className="text-[#737C77]">要穴分類なし（通常経穴）</span>
-                  )}
-                </div>
-              }
-            />
-
-            {/* 5. 局所解剖構造 */}
-            <CompareRow
-              title="解剖構造"
-              contentA={
-                <div className="space-y-1.5">
-                  <div className="flex items-center gap-1.5">
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${
-                      detailA.hasDetailedAnatomy ? "bg-[#EBF3EF] text-[#1E3D34]" : "bg-gray-100 text-gray-500"
-                    }`}>
-                      {detailA.hasDetailedAnatomy ? "精密断面図あり" : "標準基本解剖"}
-                    </span>
-                    <span className="text-[11px] text-[#737C77]">刺入角：{detailA.crossSection.needleTrack.angle}</span>
-                  </div>
-                  <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC]">
-                    標的構造：{detailA.crossSection.needleTrack.targetStructure}
-                  </p>
-                </div>
-              }
-              contentB={
-                <div className="space-y-1.5">
-                  <div className="flex items-center gap-1.5">
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${
-                      detailB.hasDetailedAnatomy ? "bg-[#FCF4EB] text-[#B86924]" : "bg-gray-100 text-gray-500"
-                    }`}>
-                      {detailB.hasDetailedAnatomy ? "精密断面図あり" : "標準基本解剖"}
-                    </span>
-                    <span className="text-[11px] text-[#737C77]">刺入角：{detailB.crossSection.needleTrack.angle}</span>
-                  </div>
-                  <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC]">
-                    標的構造：{detailB.crossSection.needleTrack.targetStructure}
-                  </p>
-                </div>
-              }
-            />
-
-            {/* 6. 伝統的主治 */}
-            <CompareRow
-              title="主な主治症"
-              contentA={
-                <div className="flex flex-wrap gap-1">
-                  {detailA.indications.map((ind, i) => (
-                    <span key={i} className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E0D8C8] text-[11px]">
-                      {ind}
-                    </span>
-                  ))}
-                </div>
-              }
-              contentB={
-                <div className="flex flex-wrap gap-1">
-                  {detailB.indications.map((ind, i) => (
-                    <span key={i} className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E0D8C8] text-[11px]">
-                      {ind}
-                    </span>
-                  ))}
-                </div>
-              }
-            />
-
-            {/* 7. 研究エビデンス */}
-            <CompareRow
-              title="研究情報"
-              contentA={
-                detailA.researchEvidence ? (
-                  <div className="space-y-1 text-[11px]">
-                    <p className="font-semibold text-[#1E3D34] dark:text-[#74BA9E]">{detailA.researchEvidence.focus}</p>
-                    <p className="text-[#59615D] dark:text-[#A0B0BC]">{detailA.researchEvidence.findings}</p>
-                  </div>
-                ) : (
-                  <span className="text-[#737C77] text-[11px]">系統的EBM研究レビュー準備中</span>
-                )
-              }
-              contentB={
-                detailB.researchEvidence ? (
-                  <div className="space-y-1 text-[11px]">
-                    <p className="font-semibold text-[#B86924] dark:text-[#E6C387]">{detailB.researchEvidence.focus}</p>
-                    <p className="text-[#59615D] dark:text-[#A0B0BC]">{detailB.researchEvidence.findings}</p>
-                  </div>
-                ) : (
-                  <span className="text-[#737C77] text-[11px]">系統的EBM研究レビュー準備中</span>
-                )
-              }
-            />
-
-            {/* 8. アクション */}
-            <CompareRow
-              title="詳細・学習"
-              contentA={
-                <div className="flex items-center gap-2 flex-wrap">
-                  <Link
-                    href={`/tsubo/${detailA.codeLower}`}
-                    className="px-3 py-1.5 rounded-xl bg-[#1E3D34] text-white font-bold hover:bg-[#162E27] transition-all inline-flex items-center gap-1"
-                  >
-                    <span>{detailA.name}の個別解説</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => toggleClip({
-                      id: `tsubo-${detailA.codeLower}`,
-                      title: `${detailA.name}（${detailA.code}）`,
-                      type: "tsubo",
-                      points: [detailA.name],
-                      elements: [],
-                      indications: detailA.indications,
-                      summary: detailA.locationSimple,
-                    })}
-                    className="px-2.5 py-1.5 rounded-xl border border-[#D8CFC0] hover:bg-[#FAF8F5] text-[11px] font-medium flex items-center gap-1"
-                  >
-                    <Bookmark className={`w-3 h-3 ${isClipped(`tsubo-${detailA.codeLower}`) ? "fill-[#B86924] text-[#B86924]" : ""}`} />
-                    <span>{isClipped(`tsubo-${detailA.codeLower}`) ? "保存中" : "保存"}</span>
-                  </button>
-                </div>
-              }
-              contentB={
-                <div className="flex items-center gap-2 flex-wrap">
-                  <Link
-                    href={`/tsubo/${detailB.codeLower}`}
-                    className="px-3 py-1.5 rounded-xl bg-[#B86924] text-white font-bold hover:bg-[#9C5417] transition-all inline-flex items-center gap-1"
-                  >
-                    <span>{detailB.name}の個別解説</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => toggleClip({
-                      id: `tsubo-${detailB.codeLower}`,
-                      title: `${detailB.name}（${detailB.code}）`,
-                      type: "tsubo",
-                      points: [detailB.name],
-                      elements: [],
-                      indications: detailB.indications,
-                      summary: detailB.locationSimple,
-                    })}
-                    className="px-2.5 py-1.5 rounded-xl border border-[#D8CFC0] hover:bg-[#FAF8F5] text-[11px] font-medium flex items-center gap-1"
-                  >
-                    <Bookmark className={`w-3 h-3 ${isClipped(`tsubo-${detailB.codeLower}`) ? "fill-[#B86924] text-[#B86924]" : ""}`} />
-                    <span>{isClipped(`tsubo-${detailB.codeLower}`) ? "保存中" : "保存"}</span>
-                  </button>
-                </div>
-              }
-            />
-
-          </div>
-        </div>
-
-        {/* 編集済み代表比較例（プリセットアコーディオン） */}
-        <div className="bg-[#FAF8F5] dark:bg-[#15202B] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-7 space-y-4">
-          <div>
-            <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
-              編集済み代表比較例（学習用プリセット）
-            </h3>
-            <p className="text-xs text-[#737C77] dark:text-[#8899A6] mt-0.5">
-              臨床で頻用される代表的なペアの出典と鑑別理由です
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            {PRESET_CATEGORIES.map((cat, cIdx) => (
-              <div key={cIdx} className="space-y-2">
-                <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                  {cat.categoryTitle}
+                <span className="font-bold text-xs text-[#232826] dark:text-[#FAF8F5] block">
+                  {preset.name}
                 </span>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                  {cat.pairs.map((p, pIdx) => {
-                    const isActive = codeA === p.codeA && codeB === p.codeB;
-                    return (
-                      <button
-                        key={pIdx}
-                        type="button"
-                        onClick={() => updateCodes(p.codeA, p.codeB)}
-                        className={`p-3 rounded-2xl border text-left transition-all text-xs flex flex-col justify-between ${
-                          isActive
-                            ? "bg-[#1E3D34] text-white border-[#1E3D34] shadow-xs"
-                            : "bg-white dark:bg-[#10171F] border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E3D34]"
-                        }`}
-                      >
-                        <div>
-                          <strong className="block font-bold">{p.label}</strong>
-                          <span className={`text-[10px] block mt-0.5 ${isActive ? "text-[#E6C387]" : "text-[#737C77]"}`}>
-                            {p.source}
-                          </span>
-                        </div>
-                        <p className={`text-[11px] mt-2 line-clamp-2 leading-relaxed ${isActive ? "text-white/90" : "text-[#59615D] dark:text-[#A0B0BC]"}`}>
-                          {p.rationale}
-                        </p>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+                <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] line-clamp-2">
+                  {preset.desc}
+                </p>
+              </button>
             ))}
           </div>
         </div>
 
+        {/* ツボ検索・追加バー */}
+        <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-5 shadow-sm space-y-3 print:hidden">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">
+              比較するツボを追加（現在: {selectedTsubos.length} / 3穴）
+            </span>
+            <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+              ツボ名（太衝、足三里など）やコード（LR3, ST36）で検索
+            </span>
+          </div>
+
+          <div className="relative">
+            <Search className="w-4 h-4 text-[#8A948F] absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder="ツボ名、読みがな、経穴コードで検索..."
+              className="w-full pl-9 pr-4 py-2.5 rounded-xl text-xs sm:text-sm bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A948F] focus:outline-none focus:border-[#B86924]"
+            />
+          </div>
+
+          {/* 検索候補ドロップダウン */}
+          {searchResults.length > 0 && (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-[#E5DEC9]/50 dark:border-[#2A3B4A]/50">
+              {searchResults.map(t => {
+                const isAlreadySelected = selectedCodes.includes(t.code);
+                return (
+                  <button
+                    key={t.id}
+                    onClick={() => handleAddTsubo(t.code)}
+                    disabled={isAlreadySelected}
+                    className={`p-2 rounded-xl text-left border text-xs flex items-center justify-between ${
+                      isAlreadySelected
+                        ? "opacity-50 border-dashed border-[#E5DEC9]"
+                        : "bg-[#FAF8F5] dark:bg-[#151D25] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924]"
+                    }`}
+                  >
+                    <div>
+                      <span className="font-bold text-xs block">{t.name}</span>
+                      <span className="text-[10px] text-[#737C77]">{t.code} / {t.meridianShort}</span>
+                    </div>
+                    {!isAlreadySelected && <Plus className="w-3.5 h-3.5 text-[#B86924]" />}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* 横並び比較マトリクステーブル */}
+        <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] overflow-hidden shadow-sm">
+          {selectedTsubos.length === 0 ? (
+            <div className="p-12 text-center text-xs text-[#737C77]">
+              比較するツボが選択されていません。上部のプリセットまたは検索から追加してください。
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead>
+                  <tr className="bg-[#FAF8F5] dark:bg-[#131B22] border-b border-[#E5DEC9] dark:border-[#2A3B4A]">
+                    <th className="p-4 w-32 sm:w-44 font-bold text-[#737C77] dark:text-[#8899A6]">
+                      比較項目
+                    </th>
+                    {selectedTsubos.map(t => (
+                      <th key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] min-w-[240px]">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <span className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] block">
+                              {t.name}
+                            </span>
+                            <span className="text-xs text-[#B86924] dark:text-[#E6C387] font-bold">
+                              {t.code} ({t.kana})
+                            </span>
+                          </div>
+                          <button
+                            onClick={() => handleRemoveTsubo(t.code)}
+                            className="p-1 rounded text-[#737C77] hover:text-red-600 print:hidden"
+                            title="比較から外す"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#E5DEC9] dark:divide-[#2A3B4A]">
+                  
+                  {/* 所属経絡 */}
+                  <tr>
+                    <td className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
+                      所属経絡
+                    </td>
+                    {selectedTsubos.map(t => (
+                      <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A]">
+                        <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">{t.meridian}</span>
+                        <span className="text-xs text-[#737C77] block mt-0.5">部位: {t.bodyPart}</span>
+                      </td>
+                    ))}
+                  </tr>
+
+                  {/* 要穴区分 */}
+                  <tr>
+                    <td className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
+                      要穴・特異性
+                    </td>
+                    {selectedTsubos.map(t => (
+                      <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A]">
+                        {t.category && t.category.length > 0 ? (
+                          <div className="flex flex-wrap gap-1">
+                            {t.category.map((cat, i) => (
+                              <span key={i} className="text-[11px] px-2 py-0.5 rounded bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] font-bold border border-[#F3DEC5] dark:border-[#4A321E]">
+                                {cat}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-[#737C77]">特記なし</span>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+
+                  {/* 取穴法（骨度法・解剖） */}
+                  <tr>
+                    <td className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
+                      取穴法（場所）
+                    </td>
+                    {selectedTsubos.map(t => (
+                      <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1">
+                        <p className="text-xs text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
+                          {t.locationSimple}
+                        </p>
+                        <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] leading-relaxed pt-1 border-t border-[#E5DEC9]/40">
+                          {t.locationDetail}
+                        </p>
+                      </td>
+                    ))}
+                  </tr>
+
+                  {/* 主治・適応症 */}
+                  <tr>
+                    <td className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
+                      主治病証・適応
+                    </td>
+                    {selectedTsubos.map(t => (
+                      <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A]">
+                        <div className="flex flex-wrap gap-1">
+                          {t.indications.map((ind, i) => (
+                            <span key={i} className="text-xs px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#151D25] text-[#59615D] dark:text-[#96A6B2] border border-[#E5DEC9] dark:border-[#2A3B4A]">
+                              {ind}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+
+                  {/* 臨床知見（ワンポイント） */}
+                  <tr>
+                    <td className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
+                      臨床知見・作用機序
+                    </td>
+                    {selectedTsubos.map(t => (
+                      <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                        {t.clinicalNote}
+                      </td>
+                    ))}
+                  </tr>
+
+                  {/* 注意・禁忌 */}
+                  <tr>
+                    <td className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
+                      禁忌・安全深度
+                    </td>
+                    {selectedTsubos.map(t => (
+                      <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] text-xs">
+                        {t.caution ? (
+                          <span className="text-red-600 dark:text-red-400 font-bold flex items-center gap-1">
+                            <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                            {t.caution}
+                          </span>
+                        ) : (
+                          <span className="text-green-700 dark:text-green-400">標準的刺灸が可能</span>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
       </div>
 
-      {/* 経穴検索モーダル */}
-      <AcupointPickerModal
-        isOpen={activePicker !== null}
-        onClose={() => setActivePicker(null)}
-        onSelect={(pt) => {
-          if (activePicker === "A") {
-            updateCodes(pt.code, codeB);
-          } else if (activePicker === "B") {
-            updateCodes(codeA, pt.code);
-          }
-        }}
-        selectedCode={activePicker === "A" ? codeA : codeB}
-        disabledCode={activePicker === "A" ? codeB : codeA}
-        title={activePicker === "A" ? "経穴 A を選択" : "経穴 B を選択"}
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        title="3穴同時比較マトリクス"
+        description="全361穴からの自由選択および3穴同時横並び比較はプレミアム会員限定機能です。"
       />
-    </div>
-  );
-}
-
-// 比較テーブル行コンポーネント（スマホでは項目単位で交互スタック）
-function CompareRow({
-  title,
-  contentA,
-  contentB,
-}: {
-  title: string;
-  contentA: React.ReactNode;
-  contentB: React.ReactNode;
-}) {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-12 items-stretch">
-      {/* 項目名ヘッダー */}
-      <div className="md:col-span-2 p-3 sm:p-4 bg-[#FAF8F5] dark:bg-[#121920] font-bold text-[#59615D] dark:text-[#A0B0BC] flex items-center border-b md:border-b-0 md:border-r border-[#F2ECE0] dark:border-[#22303D]">
-        <span>{title}</span>
-      </div>
-
-      {/* 経穴 A コンテンツ */}
-      <div className="md:col-span-5 p-3.5 sm:p-5 bg-white dark:bg-[#17212A] border-b md:border-b-0 md:border-r border-[#F2ECE0] dark:border-[#22303D] space-y-1">
-        <span className="md:hidden text-[10px] font-bold text-[#1E3D34] block mb-1 uppercase tracking-wider">
-          【経穴 A】
-        </span>
-        {contentA}
-      </div>
-
-      {/* 経穴 B コンテンツ */}
-      <div className="md:col-span-5 p-3.5 sm:p-5 bg-white dark:bg-[#17212A] space-y-1">
-        <span className="md:hidden text-[10px] font-bold text-[#B86924] block mb-1 uppercase tracking-wider">
-          【経穴 B】
-        </span>
-        {contentB}
-      </div>
     </div>
   );
 }
