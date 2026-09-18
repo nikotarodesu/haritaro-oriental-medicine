@@ -55,6 +55,7 @@ export async function POST(req: NextRequest) {
               product_data: {
                 name: `はり太郎の東洋医学 プレミアム会員（${plan === "yearly" ? "年額プラン" : "月額プラン"}）`,
                 description: planConfig.description,
+                tax_code: "txcd_10000000",
               },
               unit_amount: planConfig.amount,
               recurring: {
@@ -65,19 +66,22 @@ export async function POST(req: NextRequest) {
           },
         ];
 
-    // Checkout Session 作成（Managed Payments 対応: payment_method_types は自動管理のため除外）
-    const session = await stripe.checkout.sessions.create({
+    // Checkout Session 作成（Managed Paymentsを無効化してシンプル決済を強制）
+    const sessionParams: any = {
       mode: "subscription",
       billing_address_collection: "auto",
       customer_email: userEmail || undefined,
       line_items: lineItems,
+      managed_payments: { enabled: false },
       metadata: {
         userId: userId || "anonymous",
         plan,
       },
       success_url: `${appUrl}/account/subscription?session_id={CHECKOUT_SESSION_ID}&upgraded=true&plan=${plan}`,
       cancel_url: `${appUrl}/pricing?canceled=true`,
-    });
+    };
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
 
     return NextResponse.json({
       demo: false,
