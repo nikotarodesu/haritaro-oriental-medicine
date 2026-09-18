@@ -445,8 +445,8 @@ export default function Header() {
               )}
             </button>
 
-            {/* プレミアム会員マイページ（加入者のみ表示） */}
-            {isPremium && (
+            {/* 会員マイページ / ログインボタン */}
+            {isPremium ? (
               <Link
                 href="/account/subscription"
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white hover:opacity-90 transition-all text-xs font-bold shadow-xs"
@@ -454,6 +454,27 @@ export default function Header() {
               >
                 <Crown className="w-3.5 h-3.5 text-[#E6C387]" />
                 <span>{user?.role === "admin" ? "管理者モード" : "プレミアム"}</span>
+              </Link>
+            ) : user ? (
+              <Link
+                href="/account/subscription"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#232826] dark:text-[#FAF8F5] hover:border-[#1E3D34] transition-all text-xs font-bold shadow-2xs"
+                title="マイページ・プラン管理"
+              >
+                {user.avatarUrl ? (
+                  <img src={user.avatarUrl} alt="" className="w-4 h-4 rounded-full" />
+                ) : (
+                  <UserIcon className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
+                )}
+                <span className="max-w-[80px] truncate">{user.name || "マイページ"}</span>
+              </Link>
+            ) : (
+              <Link
+                href="/auth/login"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-full border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] hover:bg-[#FAF8F5] dark:hover:bg-[#1A2530] hover:border-[#1E3D34] transition-all text-xs font-bold"
+              >
+                <UserIcon className="w-3.5 h-3.5 text-[#737C77] dark:text-[#8899A6]" />
+                <span>ログイン</span>
               </Link>
             )}
 
@@ -697,7 +718,7 @@ export default function Header() {
 
           {/* プレミアム・マイカルテ ＆ 理念 */}
           <div className="pt-2 border-t border-[#E8E1D1] dark:border-[#22303D] space-y-2">
-            {isPremium && (
+            {isPremium ? (
               <Link
                 href="/account/subscription"
                 onClick={() => setMobileMenuOpen(false)}
@@ -706,6 +727,30 @@ export default function Header() {
                 <div className="flex items-center gap-2">
                   <Crown className="w-4 h-4 text-[#FAF8F5]" />
                   <span>{user?.role === "admin" ? "管理者マイページ" : "プレミアム会員 マイページ"}</span>
+                </div>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            ) : user ? (
+              <Link
+                href="/account/subscription"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-bold border border-[#D8CFC0] dark:border-[#384C5E] bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5]"
+              >
+                <div className="flex items-center gap-2">
+                  <UserIcon className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+                  <span>マイページ・プラン管理</span>
+                </div>
+                <ArrowRight className="w-4 h-4 text-[#737C77]" />
+              </Link>
+            ) : (
+              <Link
+                href="/auth/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-bold border border-[#D8CFC0] dark:border-[#384C5E] bg-white dark:bg-[#1A2530] text-[#1E3D34] dark:text-[#74BA9E]"
+              >
+                <div className="flex items-center gap-2">
+                  <UserIcon className="w-4 h-4" />
+                  <span>会員ログイン / Google連携</span>
                 </div>
                 <ArrowRight className="w-4 h-4" />
               </Link>

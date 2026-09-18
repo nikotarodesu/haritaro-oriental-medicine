@@ -16,7 +16,8 @@ import {
   ExternalLink,
   ShieldCheck,
   Bookmark,
-  Sliders
+  Sliders,
+  LogOut
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
@@ -245,17 +246,49 @@ export default function SubscriptionManagementPage() {
             )}
           </div>
 
-          <div className="p-4 rounded-2xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
-            <span className="text-[#737C77] dark:text-[#8899A6] flex items-center gap-1">
-              <UserIcon className="w-3.5 h-3.5" />
-              <span>アカウント（メール）</span>
-            </span>
-            <div className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5] truncate">
-              {user?.email || "guest@haritaro.jp"}
+          <div className="p-4 rounded-2xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] flex flex-col justify-between space-y-2">
+            <div className="space-y-1">
+              <span className="text-[#737C77] dark:text-[#8899A6] flex items-center gap-1.5">
+                {user?.avatarUrl ? (
+                  <img src={user.avatarUrl} alt="" className="w-4 h-4 rounded-full" />
+                ) : (
+                  <UserIcon className="w-3.5 h-3.5" />
+                )}
+                <span>アカウント（メール）</span>
+                {user?.authProvider === "google" && (
+                  <span className="px-1.5 py-0.2 rounded bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 text-[10px] font-bold border border-blue-200 dark:border-blue-900/50">
+                    Google連携
+                  </span>
+                )}
+              </span>
+              <div className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5] truncate">
+                {user?.email || "未ログイン（ゲスト）"}
+              </div>
+              <p className="text-[11px] text-[#59615D] dark:text-[#8899A6] truncate">
+                {user ? (user.name ? `${user.name} としてログイン中` : "ログイン中") : "端末ローカルデータのみ利用中"}
+              </p>
             </div>
-            <p className="text-[11px] text-[#59615D] dark:text-[#8899A6]">
-              {user ? "ログイン中" : "ゲスト利用中"}
-            </p>
+
+            <div className="pt-1">
+              {user ? (
+                <button
+                  type="button"
+                  onClick={() => logout()}
+                  className="inline-flex items-center gap-1 text-[11px] text-red-600 dark:text-red-400 hover:underline font-bold"
+                >
+                  <LogOut className="w-3 h-3" />
+                  <span>ログアウト</span>
+                </button>
+              ) : (
+                <Link
+                  href="/auth/login"
+                  className="inline-flex items-center gap-1 text-[11px] text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-bold"
+                >
+                  <span>Googleでログイン / 新規登録</span>
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+              )}
+            </div>
           </div>
         </div>
 

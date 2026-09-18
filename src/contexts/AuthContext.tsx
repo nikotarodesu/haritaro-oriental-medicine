@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
 import { User, UserRole, SubscriptionPlan, UserSubscription, LocalDataMigrationReport } from "@/types/auth";
 import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 
 const AUTH_STORAGE_KEY = "haritaro_auth_user_v1";
 
@@ -11,9 +12,11 @@ interface AuthContextType {
   isLoading: boolean;
   isAuthenticated: boolean;
   isPremium: boolean;
+  isConfigured: boolean;
+  loginWithGoogle: (redirectTo?: string) => Promise<{ success: boolean; error?: string }>;
   login: (email: string, password?: string) => Promise<{ success: boolean; error?: string }>;
   register: (email: string, name?: string, password?: string) => Promise<{ success: boolean; error?: string }>;
-  logout: () => void;
+  logout: () => Promise<void>;
   upgradeToPremium: (plan: SubscriptionPlan) => Promise<void>;
   cancelSubscription: () => Promise<void>;
   resumeSubscription: () => Promise<void>;
@@ -27,31 +30,108 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const isConfigured = isSupabaseConfigured();
 
-  // 初期ロード：localStorageからユーザー復元
+  // 初期ロード：Supabase セッション確認 ＆ localStorage フォールバック
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(AUTH_STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        // 有効期限のチェック
-        if (parsed.role !== "admin" && parsed.subscription && parsed.subscription.currentPeriodEnd) {
-          const isExpired = Date.now() > parsed.subscription.currentPeriodEnd;
-          if (isExpired && parsed.subscription.status === "canceled") {
-            parsed.role = "free";
-            parsed.subscription.status = "none";
+    let mounted = true;
+
+    async function initAuth() {
+      try {
+        // 1. Supabaseが設定されている場合、Supabaseのセッションを確認
+        if (isSupabaseConfigured()) {
+          const supabase = createClient();
+          const { data: { session } } = await supabase.auth.getSession();
+
+          if (session?.user && mounted) {
+            // localStorage に既存のサブスクリプション情報等があればマージ
+            let storedMeta: any = {};
+            try {
+              const stored = localStorage.getItem(AUTH_STORAGE_KEY);
+              if (stored) storedMeta = JSON.parse(stored);
+            } catch {}
+
+            const googleUser: User = {
+              id: session.user.id,
+              email: session.user.email || "",
+              name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split("@")[0] || "東洋医学会員",
+              avatarUrl: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture,
+              authProvider: (session.user.app_metadata?.provider as any) || "google",
+              role: storedMeta?.role || "free",
+              subscription: storedMeta?.subscription,
+              createdAt: new Date(session.user.created_at).getTime(),
+              updatedAt: Date.now(),
+            };
+
+            setUser(googleUser);
+            setIsLoading(false);
+            return;
           }
         }
-        setUser(parsed);
+
+        // 2. Supabaseセッションがない場合、localStorageから復元（デモ/以前のログイン）
+        const stored = localStorage.getItem(AUTH_STORAGE_KEY);
+        if (stored && mounted) {
+          const parsed: User = JSON.parse(stored);
+          // 有効期限のチェック
+          if (parsed.role !== "admin" && parsed.subscription && parsed.subscription.currentPeriodEnd) {
+            const isExpired = Date.now() > parsed.subscription.currentPeriodEnd;
+            if (isExpired && parsed.subscription.status === "canceled") {
+              parsed.role = "free";
+              parsed.subscription.status = "none";
+            }
+          }
+          setUser(parsed);
+        }
+      } catch (e) {
+        console.error("Failed to restore user auth state:", e);
+      } finally {
+        if (mounted) setIsLoading(false);
       }
-    } catch (e) {
-      console.error("Failed to restore user from localStorage:", e);
-    } finally {
-      setIsLoading(false);
     }
+
+    initAuth();
+
+    // Supabase Auth の状態変更監視（Googleログイン後のリダイレクト時など）
+    let authListener: { subscription: { unsubscribe: () => void } } | null = null;
+    if (isSupabaseConfigured()) {
+      try {
+        const supabase = createClient();
+        const { data } = supabase.auth.onAuthStateChange(async (_event, session) => {
+          if (!mounted) return;
+          if (session?.user) {
+            let storedMeta: any = {};
+            try {
+              const stored = localStorage.getItem(AUTH_STORAGE_KEY);
+              if (stored) storedMeta = JSON.parse(stored);
+            } catch {}
+
+            setUser({
+              id: session.user.id,
+              email: session.user.email || "",
+              name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split("@")[0] || "東洋医学会員",
+              avatarUrl: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture,
+              authProvider: (session.user.app_metadata?.provider as any) || "google",
+              role: storedMeta?.role || "free",
+              subscription: storedMeta?.subscription,
+              createdAt: new Date(session.user.created_at).getTime(),
+              updatedAt: Date.now(),
+            });
+          }
+        });
+        authListener = data;
+      } catch (e) {
+        console.error("Failed to attach auth state listener:", e);
+      }
+    }
+
+    return () => {
+      mounted = false;
+      if (authListener) authListener.subscription.unsubscribe();
+    };
   }, []);
 
-  // ユーザー変更時のlocalStorage保存
+  // ユーザー情報変更時のlocalStorage同期
   useEffect(() => {
     if (isLoading) return;
     try {
@@ -65,11 +145,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [user, isLoading]);
 
-  // ログイン
+  // Google OAuth ログイン開始
+  const loginWithGoogle = useCallback(async (redirectTo = "/account/subscription") => {
+    try {
+      if (!isSupabaseConfigured()) {
+        return {
+          success: false,
+          error: "Supabaseの設定が完了していません。環境変数（NEXT_PUBLIC_SUPABASE_URL と NEXT_PUBLIC_SUPABASE_ANON_KEY）を設定してください。",
+        };
+      }
+      const supabase = createClient();
+      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      const callbackUrl = new URL("/auth/callback", origin);
+      if (redirectTo) {
+        callbackUrl.searchParams.set("next", redirectTo);
+      }
+
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: callbackUrl.toString(),
+          queryParams: {
+            access_type: "offline",
+            prompt: "consent",
+          },
+        },
+      });
+
+      if (error) {
+        return { success: false, error: error.message };
+      }
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, error: error.message || "Googleログインの開始に失敗しました" };
+    }
+  }, []);
+
+  // 簡易メールログイン（従来互換）
   const login = useCallback(async (email: string, _password?: string) => {
     setIsLoading(true);
     try {
-      // 簡易ログイン（メールアドレスベース）
       const cleanEmail = email.trim().toLowerCase();
       const existingRaw = localStorage.getItem(AUTH_STORAGE_KEY);
       let existingUser: User | null = null;
@@ -86,6 +201,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: `usr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
         email: cleanEmail,
         name: cleanEmail.split("@")[0] || "東洋医学探求者",
+        authProvider: "email",
         role: "free",
         createdAt: Date.now(),
         updatedAt: Date.now(),
@@ -100,7 +216,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // 会員登録
+  // 簡易会員登録（従来互換）
   const register = useCallback(async (email: string, name?: string, _password?: string) => {
     setIsLoading(true);
     try {
@@ -109,6 +225,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: `usr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
         email: cleanEmail,
         name: name?.trim() || cleanEmail.split("@")[0] || "東洋医学会員",
+        authProvider: "email",
         role: "free",
         createdAt: Date.now(),
         updatedAt: Date.now(),
@@ -123,9 +240,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // ログアウト
-  const logout = useCallback(() => {
+  // ログアウト処理（Supabaseセッション破棄 ＆ ローカル破棄）
+  const logout = useCallback(async () => {
+    try {
+      if (isSupabaseConfigured()) {
+        const supabase = createClient();
+        await supabase.auth.signOut();
+      }
+    } catch (e) {
+      console.error("Logout error:", e);
+    }
     setUser(null);
+    localStorage.removeItem(AUTH_STORAGE_KEY);
   }, []);
 
   // プレミアムへのアップグレード
@@ -143,11 +269,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     setUser(prev => {
       if (!prev) {
-        // 未ログイン状態で直接アップグレードされた場合、ゲストプレミアムを作成
         return {
           id: `usr_guest_${Date.now()}`,
           email: "guest-member@haritaro.jp",
           name: "プレミアム会員",
+          authProvider: "demo",
           role: "premium",
           subscription,
           createdAt: now,
@@ -195,7 +321,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  // ローカルデータ移行機能（既存のlocalStorageのメモや学習進捗をカウント・確認）
+  // ローカルデータ移行機能
   const migrateLocalData = useCallback((): LocalDataMigrationReport => {
     let memoCount = 0;
     let curriculumProgressCount = 0;
@@ -238,6 +364,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: "usr_admin",
         email: "admin@haritaro.jp",
         name: "管理者（はり太郎）",
+        authProvider: "demo",
         role: "admin",
         subscription: {
           plan: "yearly",
@@ -255,6 +382,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: "usr_demo_premium",
         email: "demo-premium@haritaro.jp",
         name: "テスト・プレミアム会員",
+        authProvider: "demo",
         role: "premium",
         subscription: {
           plan,
@@ -271,6 +399,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: "usr_demo_free",
         email: "demo-free@haritaro.jp",
         name: "テスト・無料会員",
+        authProvider: "demo",
         role: "free",
         createdAt: now,
         updatedAt: now,
@@ -284,7 +413,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user?.role === "admin" ||
     (user?.role === "premium" && (
       user.subscription?.status === "active" ||
-      user.subscription?.status === "canceled" // 期間満了まではプレミアム権限を維持
+      user.subscription?.status === "canceled"
     ));
 
   return (
@@ -294,6 +423,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoading,
         isAuthenticated: !!user,
         isPremium: !!isPremium,
+        isConfigured,
+        loginWithGoogle,
         login,
         register,
         logout,

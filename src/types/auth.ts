@@ -27,6 +27,8 @@ export interface User {
   id: string;
   email: string;
   name: string;
+  avatarUrl?: string;
+  authProvider?: "google" | "email" | "demo";
   role: UserRole;
   subscription?: UserSubscription;
   createdAt: number;
