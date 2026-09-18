@@ -123,7 +123,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
     if (memos.length === 0) return;
     const lines = [
       "========================================",
-      " はり太郎の東洋医学 | マイカルテ・マイ要穴集",
+      " はり太郎の東洋医学 | マイカルテ",
       ` 出力日時: ${new Date().toLocaleString("ja-JP")}`,
       ` 保存件数: ${memos.length}件`,
       "========================================\n",
@@ -256,7 +256,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="font-serif text-base sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  マイカルテ・マイ要穴集
+                  マイカルテ
                 </h2>
                 <span className={`text-xs px-2 py-0.5 rounded-full font-bold text-white ${
                   isLimitReached ? "bg-red-600" : "bg-[#B86924]"
@@ -482,7 +482,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                 <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
                   {searchQuery || activeTab !== "all"
                     ? "該当するメモが見つかりませんでした"
-                    : "マイカルテ・マイ要穴集に保存されたメモがありません"}
+                    : "マイカルテに保存されたメモがありません"}
                 </h3>
                 <p className="text-xs text-[#737C77] dark:text-[#8899A6] max-w-sm mx-auto leading-relaxed">
                   各ツボの解説カード、診断結果、名配穴の横にある「マイカルテに保存」ボタンを押すと、ここにあなただけの要穴集が蓄積されます。

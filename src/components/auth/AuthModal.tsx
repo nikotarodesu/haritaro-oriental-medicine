@@ -84,11 +84,7 @@ export default function AuthModal({
             </li>
             <li className="flex items-start gap-2">
               <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
-              <span><strong>条件比較シミュレーター</strong>（病態A vs Bの並行鑑別・配穴比較）</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
-              <span><strong>忘却曲線スマート復習</strong> ＆ 配穴練習機能</span>
+              <span><strong>配穴設計・臨床演習機能</strong>（自作配穴の作成・教材名配穴との比較・保存）</span>
             </li>
           </ul>
         </div>

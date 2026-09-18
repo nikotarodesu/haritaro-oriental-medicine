@@ -151,12 +151,29 @@ export function CurriculumProgressProvider({ children }: { children: React.React
     Math.round((totalCompleted / TOTAL_ALL_LECTURES) * 100)
   );
 
+const CHAPTER_PREFIX_MAP: Record<string, string[]> = {
+  'yin-yang': ['lecture-yinyang-'],
+  'yinyang': ['lecture-yinyang-'],
+  'five-elements': ['lecture-wuxing-'],
+  'wuxing': ['lecture-wuxing-'],
+  'qi-blood-water': ['lecture-qiblood-'],
+  'qiblood': ['lecture-qiblood-'],
+  'vital-function': ['lecture-lifedynamics-'],
+  'lifedynamics': ['lecture-lifedynamics-'],
+  'pathology': ['lecture-pathomechanism-'],
+  'pathomechanism': ['lecture-pathomechanism-'],
+  'diagnosis': ['lecture-diagnosis-'],
+  'treatment': ['lecture-treatment-'],
+  'practice': ['lecture-practice-'],
+};
+
   const getChapterProgress = (
     chapterId: string,
     totalInChapter: number
   ): ChapterProgressInfo => {
+    const prefixes = CHAPTER_PREFIX_MAP[chapterId] || [`lecture-${chapterId}-`];
     const completedCount = Object.keys(completedLectures).filter(
-      (key) => key.startsWith(`lecture-${chapterId}-`) && completedLectures[key]
+      (key) => prefixes.some((p) => key.startsWith(p)) && completedLectures[key]
     ).length;
 
     const percentage = totalInChapter > 0 ? Math.round((completedCount / totalInChapter) * 100) : 0;

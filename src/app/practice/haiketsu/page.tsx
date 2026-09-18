@@ -110,24 +110,13 @@ export default function HaiketsuPracticePage() {
             </span>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-2">
-              <h1 className="font-serif text-2xl sm:text-4xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                配穴設計・臨床演習
-              </h1>
-              <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] max-w-2xl leading-relaxed">
-                基本32穴の中から目的に応じた経穴を選定し、本治穴（体質根本）と標治穴（局所対症）のバランスや昇降・寒熱の方向性を整理します。選定理由を自ら言語化し、教材の代表例と比較して推論力を高める練習です。
-              </p>
-            </div>
-
-            <button
-              onClick={handleSaveToMemo}
-              disabled={saved || selectedPointIds.length === 0}
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#B86924] hover:bg-[#9B551B] text-white text-xs sm:text-sm font-bold shadow-sm transition-colors cursor-pointer shrink-0"
-            >
-              <Bookmark className={`w-4 h-4 ${saved ? "fill-current" : ""}`} />
-              <span>{saved ? "マイノートに保存済" : "この処方をノート保存"}</span>
-            </button>
+          <div className="space-y-2">
+            <h1 className="font-serif text-2xl sm:text-4xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+              配穴設計・臨床演習
+            </h1>
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] max-w-2xl leading-relaxed">
+              基本32穴の中から目的に応じた経穴を選定し、本治穴（体質根本）と標治穴（局所対症）のバランスや昇降・寒熱の方向性を整理します。選定理由を自ら言語化し、教材の代表例と比較して推論力を高める練習です。
+            </p>
           </div>
         </div>
       </div>
@@ -288,11 +277,28 @@ export default function HaiketsuPracticePage() {
 
             {/* 処方名 ＆ 選定理由入力フォーム */}
             <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-6 shadow-sm space-y-4">
-              <div className="flex items-center gap-2">
-                <FileText className="w-4 h-4 text-[#B86924]" />
-                <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  臨床選定理由の言語化（思考の記録）
-                </h3>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#F2ECE0] dark:border-[#22303D]">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-[#B86924]" />
+                    <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
+                      臨床選定理由の言語化
+                    </h3>
+                  </div>
+                  <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2]">
+                    選択した配穴と選定理由をマイカルテに保存し、いつでも参照・復習できます。
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleSaveToMemo}
+                  disabled={saved || selectedPointIds.length === 0}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#B86924] hover:bg-[#9B551B] text-white text-xs font-bold shadow-sm transition-colors cursor-pointer shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Bookmark className={`w-3.5 h-3.5 ${saved ? "fill-current" : ""}`} />
+                  <span>{saved ? "マイカルテに保存済" : "マイカルテに保存"}</span>
+                </button>
               </div>
 
               <div className="space-y-3 text-xs">

@@ -61,13 +61,6 @@ export const SUBSCRIPTION_CONFIG = {
       premium: "最大1,000件（大容量）",
     },
     {
-      id: "simulator_compare",
-      title: "臨床弁証シミュレーター・条件比較モード",
-      description: "病態Aと病態B、治療案Aと治療案Bを横並びで並行比較し、鑑別要点と配穴の相違を即時可視化。",
-      free: "通常モードのみ",
-      premium: "2条件並行比較モード完全解放",
-    },
-    {
       id: "practice_haiketsu",
       title: "配穴練習機能（選定理由・教材比較）",
       description: "361穴から目的のツボを組み合わせ、選定理由を言語化。教材の名配穴と即座に比較検証。",
@@ -94,20 +87,6 @@ export const SUBSCRIPTION_CONFIG = {
       description: "保存したマイノートや学習メモをMarkdown/JSONで手元にバックアップ・出力。整った形式での美しいA4印刷に対応。",
       free: "テキストコピーのみ",
       premium: "JSON/MD書き出し ＆ A4印刷完全対応",
-    },
-    {
-      id: "smart_review",
-      title: "忘却曲線に基づくスマート復習レコメンド",
-      description: "カリキュラム（公開71講）の進捗と演習の回答履歴から、今日復習すべき重要項目（5〜10分セット）を自動算出。",
-      free: "誤答リストのみ",
-      premium: "忘却曲線アルゴリズムによる自動復習レコメンド",
-    },
-    {
-      id: "literature_library",
-      title: "文献と症例の資料集（古典条文×現代科学）",
-      description: "素問・霊枢・傷寒論の重要条文と現代エビデンス、臨床治験を結ぶ深掘り学術資料アーカイブ。",
-      free: "一部公開",
-      premium: "全学術資料の閲覧・検索",
     },
   ],
 };

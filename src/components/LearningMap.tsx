@@ -48,7 +48,7 @@ const CHAPTERS_MAP: ChapterMapItem[] = [
     number: 2,
     title: '第2講 五行論',
     subtitle: '五つの性質と関係性ネットワーク',
-    totalLectures: 12,
+    totalLectures: 2,
     description: '木火土金水の五大属性、相生・相剋・相乗・相侮の動的ネットワークを理解します。',
     icon: Compass,
     badgeColor: 'from-emerald-500 to-teal-600',
@@ -59,7 +59,7 @@ const CHAPTERS_MAP: ChapterMapItem[] = [
     number: 3,
     title: '第3講 気血水論',
     subtitle: '生命を巡る基本三要素',
-    totalLectures: 12,
+    totalLectures: 1,
     description: '身体の生命エネルギー（気）、栄養（血）、潤い（水）の生成と失調を整理します。',
     icon: Activity,
     badgeColor: 'from-cyan-500 to-blue-600',
@@ -177,7 +177,7 @@ export const LearningMap: React.FC<LearningMapProps> = ({ onSelectChapter }) => 
             全8大体系 学習マップ
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base mt-1">
-            基礎理論から臨床推論まで、全92レッスンで東洋医学の全体構造をマスターします。
+            基礎理論から臨床推論まで、全71レッスンで東洋医学の全体構造をマスターします。
           </p>
         </div>
 
@@ -186,7 +186,7 @@ export const LearningMap: React.FC<LearningMapProps> = ({ onSelectChapter }) => 
           <div className="text-right">
             <div className="text-xs font-bold text-slate-500 dark:text-slate-400">全体カリキュラム進捗</div>
             <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
-              {isMounted ? `${totalCompleted} / 92` : '0 / 92'}
+              {isMounted ? `${totalCompleted} / 71` : '0 / 71'}
               <span className="text-xs font-normal text-slate-500 ml-1.5">講義完了</span>
             </div>
           </div>
@@ -280,11 +280,8 @@ export const LearningMap: React.FC<LearningMapProps> = ({ onSelectChapter }) => 
                           )}
                         </div>
 
-                        <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400 tracking-wider">
+                        <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm sm:text-base leading-snug group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                           {ch.title}
-                        </div>
-                        <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm sm:text-base leading-snug mt-0.5 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                          {ch.subtitle}
                         </h4>
                         <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 line-clamp-2 leading-relaxed">
                           {ch.description}

@@ -180,7 +180,7 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const clearAllMemos = useCallback(() => {
-    if (window.confirm("マイカルテ・マイ要穴集のすべての保存メモを消去しますか？")) {
+    if (window.confirm("マイカルテのすべての保存メモを消去しますか？")) {
       setMemos([]);
       setLastToast({
         message: "マイカルテをすべて消去しました",
