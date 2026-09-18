@@ -242,10 +242,10 @@ export default function Header() {
                     </div>
                     <div>
                       <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                        東西医学比較・用語解説
+                        8体系カリキュラム（全体像）
                       </span>
                       <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                        伝統医学と現代医科学の3層対応マトリクス
+                        基礎理論から診断・治法・実践まで全71講
                       </span>
                     </div>
                   </Link>
@@ -542,15 +542,15 @@ export default function Header() {
               )}
             </div>
 
-            {/* マイカルテ・マイ要穴集 クリップボタン */}
+            {/* マイノート・クリップ引き出しトグル */}
             <button
               type="button"
               onClick={openDrawer}
-              className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4D331F] hover:bg-[#FBE8D6] dark:hover:bg-[#3B291B] transition-all text-xs font-bold shadow-2xs group"
-              title="マイカルテ・マイ要穴集（保存したツボ・配穴・診断メモ）を開く"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-[#B86924] dark:text-[#E6C387] bg-[#FCF4EB] dark:bg-[#251A10] border border-[#F3DEC5] dark:border-[#4A321E] hover:bg-[#FBEAD7] transition-all shadow-2xs"
+              title="マイノート（保存したツボ・配穴・学習メモ）を開く"
             >
               <Bookmark className="w-3.5 h-3.5 fill-current" />
-              <span>マイカルテ</span>
+              <span>マイノート</span>
               {clipCount > 0 && (
                 <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#B86924] text-white">
                   {clipCount}

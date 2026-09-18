@@ -42,17 +42,17 @@ interface ReviewLogItem {
   nextReviewAt: string; // ISO string
 }
 
-// 8大体系カテゴリ
+// 8大体系カテゴリ（カリキュラムの体系分類と統一）
 const CATEGORIES = [
   { id: "all", name: "全体系ランダム", icon: "🌐" },
   { id: "yinyang", name: "陰陽論", icon: "☯️" },
-  { id: "gogyo", name: "五行論", icon: "⭐" },
-  { id: "zofu", name: "蔵象論", icon: "🫀" },
-  { id: "kiketsu", name: "気血津液", icon: "💧" },
-  { id: "keiraku", name: "経絡経穴", icon: "⚡" },
-  { id: "byoin", name: "病因病機", icon: "🌪️" },
-  { id: "shindan", name: "四診八綱", icon: "🔍" },
-  { id: "haiketsu", name: "配穴方剤", icon: "🌿" },
+  { id: "wuxing", name: "五行論", icon: "🌿" },
+  { id: "qiblood", name: "気血水理論", icon: "💧" },
+  { id: "lifedynamics", name: "生命機能論", icon: "⚡" },
+  { id: "pathomechanism", name: "病機論", icon: "🌪️" },
+  { id: "diagnosis", name: "診断論", icon: "🔍" },
+  { id: "treatment", name: "治法論", icon: "📐" },
+  { id: "practice", name: "実践論", icon: "🎯" },
 ];
 
 export default function SmartReviewPage() {
@@ -303,7 +303,7 @@ export default function SmartReviewPage() {
               忘却曲線スマート復習
             </h1>
             <p className="text-sm sm:text-base text-[#59615D] dark:text-[#96A6B2] max-w-2xl leading-relaxed">
-              エビングハウスの忘却曲線に基づき、人間の脳が忘れかける最適なタイミング（1日・3日・7日・30日）で自動出題。日々のわずか5分で、東洋医学の臨床知見を一生モノの長期記憶へ定着させます。
+              学習履歴と回答結果に応じた間隔（1日・3日・7日・30日）で再出題。日々のわずかな時間で、東洋医学の講義知識や症例鑑別の理解度を効率よく点検できます。
             </p>
           </div>
 
@@ -357,12 +357,39 @@ export default function SmartReviewPage() {
         {!isQuizActive ? (
           /* モード選択カード群 */
           <div className="space-y-8">
+            {/* 未受講・復習履歴が0件の場合の案内カード */}
+            {Object.keys(reviewLogs).length === 0 && (
+              <div className="p-5 rounded-2xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] space-y-2">
+                <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                  <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                  <span>まだ復習対象の履歴がありません</span>
+                </div>
+                <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                  スマート復習は、講義の確認問題や症例演習を解くと回答履歴に応じて自動で出題リストが作成されます。まずは「カリキュラム（第1講 陰陽論）」の受講や「症例演習」をお試しください。下のボタンから基礎問題のお試し演習も可能です。
+                </p>
+                <div className="pt-2 flex flex-wrap gap-2.5">
+                  <Link
+                    href="/curriculum?lecture=lecture-yinyang-1"
+                    className="px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold shadow-xs hover:bg-[#162E27]"
+                  >
+                    第1講 陰陽論から始める
+                  </Link>
+                  <Link
+                    href="/cases/case-01-headache-liver-fire"
+                    className="px-4 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#C5DED4] dark:border-[#2A5243] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#FAF8F5]"
+                  >
+                    症例01を体験する
+                  </Link>
+                </div>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               
               {/* カード 1: 5分間スピード復習 */}
               <div className="bg-white dark:bg-[#17212A] rounded-2xl border-2 border-[#B86924] p-5 sm:p-6 shadow-sm space-y-4 hover:shadow-md transition-all relative overflow-hidden">
                 <div className="absolute top-0 right-0 bg-[#B86924] text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider">
-                  一番人気・毎日の習慣に
+                  日々の習慣に
                 </div>
                 <div className="w-12 h-12 rounded-xl bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] flex items-center justify-center">
                   <Clock className="w-6 h-6" />
@@ -372,7 +399,7 @@ export default function SmartReviewPage() {
                     5分間スピード復習セット
                   </h3>
                   <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-                    脳科学のインターバルに基づいて、今日復習が必要な最重要5問を厳選抽出。通勤中や診療の合間にサクッと定着。
+                    復習期日に該当する問題や基礎問題を5問抽出。スキマ時間で知識の確認ができます。
                   </p>
                 </div>
                 <div className="flex items-center justify-between pt-2">
@@ -383,7 +410,7 @@ export default function SmartReviewPage() {
                     onClick={() => startQuiz("speed")}
                     className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#B86924] hover:bg-[#9B551B] text-white text-xs sm:text-sm font-bold shadow-sm transition-colors cursor-pointer"
                   >
-                    <span>スピード復習を開始</span>
+                    <span>{Object.keys(reviewLogs).length === 0 ? "例題を解いてみる" : "スピード復習を開始"}</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>

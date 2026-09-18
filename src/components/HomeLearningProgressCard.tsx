@@ -34,7 +34,7 @@ export default function HomeLearningProgressCard() {
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-800/80 text-emerald-200 border border-emerald-600/40">
               <Compass className="w-3.5 h-3.5" />
-              東洋医学全8大体系（全92講）
+              東洋医学8大体系（公開71レッスン）
             </span>
             {isStarted && (
               <span className="text-xs font-bold text-emerald-300">
@@ -42,37 +42,48 @@ export default function HomeLearningProgressCard() {
               </span>
             )}
             {incorrectCount > 0 && (
-              <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-rose-500/90 text-white">
+              <Link
+                href="/review"
+                className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-rose-500/90 text-white hover:bg-rose-600 transition-colors"
+              >
                 <AlertCircle className="w-3 h-3" />
                 復習 {incorrectCount}問
-              </span>
+              </Link>
             )}
           </div>
 
           <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
             {isStarted
-              ? `続きから再開：${resumeLecture ? resumeLecture.title : '第1章 陰陽とは何か'}`
-              : '基礎から臨床までを体系化する92レッスン'}
+              ? `続きから再開：${resumeLecture ? resumeLecture.title : '陰陽論 レッスン1'}`
+              : 'まずはここから：第1講 陰陽論 レッスン1'}
           </h3>
 
           <p className="text-xs sm:text-sm text-emerald-100/80 line-clamp-1 max-w-2xl">
-            {resumeLecture
+            {isStarted && resumeLecture
               ? resumeLecture.summary
-              : '陰陽・五行・気血水から病機・診断・治法・実践まで、動態システムとして本質から修得します。'}
+              : '陰陽の基本的な性質、比較の基準、身近な例から人体の動的な状態を捉える基礎を学びます。'}
           </p>
 
-          {/* 進捗バー */}
-          <div className="flex items-center gap-3 pt-1 max-w-md">
-            <div className="flex-1 h-2 bg-emerald-950/80 rounded-full overflow-hidden border border-emerald-700/40">
-              <div
-                className="h-full bg-emerald-400 rounded-full transition-all duration-700"
-                style={{ width: `${isMounted ? totalPercentage : 0}%` }}
-              />
+          {/* 進捗表示（受講中のみプログレスバーを強調、未受講時は案内表示） */}
+          {isStarted ? (
+            <div className="flex items-center gap-3 pt-1 max-w-md">
+              <div className="flex-1 h-2 bg-emerald-950/80 rounded-full overflow-hidden border border-emerald-700/40">
+                <div
+                  className="h-full bg-emerald-400 rounded-full transition-all duration-700"
+                  style={{ width: `${isMounted ? totalPercentage : 0}%` }}
+                />
+              </div>
+              <span className="text-xs font-mono font-bold text-emerald-200">
+                {isMounted ? `${totalCompleted}/${allLectures.length}講 (${totalPercentage}%)` : '受講中'}
+              </span>
             </div>
-            <span className="text-xs font-mono font-bold text-emerald-200">
-              {isMounted ? `${totalCompleted}/92講 (${totalPercentage}%)` : '0/92講 (0%)'}
-            </span>
-          </div>
+          ) : (
+            <div className="flex items-center gap-2 pt-1 text-xs text-emerald-200/90 font-medium">
+              <span>所要時間: 約10分</span>
+              <span>•</span>
+              <span>全71レッスン公開中</span>
+            </div>
+          )}
         </div>
 
         {/* アクションボタン */}
@@ -82,7 +93,7 @@ export default function HomeLearningProgressCard() {
             className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white text-[#142B24] font-bold text-xs sm:text-sm hover:bg-emerald-50 active:scale-95 shadow-md transition-all group"
           >
             <PlayCircle className="w-4 h-4 text-emerald-700" />
-            <span>{isStarted ? '続きから学ぶ' : '学習をスタートする'}</span>
+            <span>{isStarted ? '続きから学ぶ' : '最初の1講を始める'}</span>
             <ArrowRight className="w-4 h-4 text-emerald-700 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>

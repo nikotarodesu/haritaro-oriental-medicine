@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { 
   Split, 
   ArrowLeft, 
@@ -45,15 +46,63 @@ const PRESET_TSUBO_COMPARISONS = [
   }
 ];
 
-export default function TsuboComparePage() {
+function TsuboCompareContent() {
+  const searchParams = useSearchParams();
   const { addMemo } = useClinicalMemo();
   const { isPremium } = useAuth();
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  // デフォルトで合谷(LI4)と太衝(LR3)
-  const [selectedCodes, setSelectedCodes] = useState<string[]>(["LI4", "LR3"]);
+  // 初期値：URLクエリパラメータ（?a=lu1&b=li4 など）を優先
+  const [selectedCodes, setSelectedCodes] = useState<string[]>(() => {
+    const aParam = searchParams.get("a") || searchParams.get("code");
+    const bParam = searchParams.get("b");
+    const cParam = searchParams.get("c");
+
+    const resolved: string[] = [];
+    [aParam, bParam, cParam].forEach(param => {
+      if (!param) return;
+      const clean = param.trim().toLowerCase();
+      const match = TSUBOS.find(
+        t => t.code.toLowerCase() === clean || t.id.toLowerCase() === clean
+      );
+      if (match && !resolved.includes(match.code)) {
+        resolved.push(match.code);
+      }
+    });
+
+    if (resolved.length > 0) {
+      return resolved;
+    }
+    // デフォルトで合谷(LI4)と太衝(LR3)
+    return ["LI4", "LR3"];
+  });
   const [saved, setSaved] = useState(false);
+
+  // URLパラメータが動的に変化した際にも追従
+  useEffect(() => {
+    const aParam = searchParams.get("a") || searchParams.get("code");
+    const bParam = searchParams.get("b");
+    const cParam = searchParams.get("c");
+
+    if (!aParam && !bParam && !cParam) return;
+
+    const resolved: string[] = [];
+    [aParam, bParam, cParam].forEach(param => {
+      if (!param) return;
+      const clean = param.trim().toLowerCase();
+      const match = TSUBOS.find(
+        t => t.code.toLowerCase() === clean || t.id.toLowerCase() === clean
+      );
+      if (match && !resolved.includes(match.code)) {
+        resolved.push(match.code);
+      }
+    });
+
+    if (resolved.length > 0) {
+      setSelectedCodes(resolved);
+    }
+  }, [searchParams]);
 
   // 選択されているツボの配列
   const selectedTsubos: Tsubo[] = useMemo(() => {
@@ -397,5 +446,13 @@ export default function TsuboComparePage() {
         description="全361穴からの自由選択および3穴同時横並び比較はプレミアム会員限定機能です。"
       />
     </div>
+  );
+}
+
+export default function TsuboComparePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen p-8 text-center text-sm text-[#737C77]">経穴比較データを読み込み中...</div>}>
+      <TsuboCompareContent />
+    </Suspense>
   );
 }

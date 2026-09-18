@@ -91,14 +91,14 @@ export const SUBSCRIPTION_CONFIG = {
     {
       id: "export_print",
       title: "ノート書き出し（JSON/Markdown）＆ A4印刷",
-      description: "保存したマイカルテや自作メモをMarkdown/JSONで手元にバックアップ・出力。カルテ形式での美しいA4印刷に対応。",
+      description: "保存したマイノートや学習メモをMarkdown/JSONで手元にバックアップ・出力。整った形式での美しいA4印刷に対応。",
       free: "テキストコピーのみ",
-      premium: "JSON/MD書き出し ＆ A4カルテ印刷完全対応",
+      premium: "JSON/MD書き出し ＆ A4印刷完全対応",
     },
     {
       id: "smart_review",
       title: "忘却曲線に基づくスマート復習レコメンド",
-      description: "カリキュラム92講の進捗と演習の誤答履歴から、今日復習すべき重要項目（5〜10分セット）を自動算出。",
+      description: "カリキュラム（公開71講）の進捗と演習の回答履歴から、今日復習すべき重要項目（5〜10分セット）を自動算出。",
       free: "誤答リストのみ",
       premium: "忘却曲線アルゴリズムによる自動復習レコメンド",
     },

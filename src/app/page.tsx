@@ -141,22 +141,29 @@ export default function HomePage() {
               基礎理論から病機・診断・治法、臨床弁証推論までを一貫して統合します。
             </p>
 
-            {/* 主要CTAボタン */}
-            <div className="pt-2 flex flex-wrap items-center justify-center gap-2.5 sm:gap-4">
+            {/* 主要CTAボタン（初めての人へ3大アクション） */}
+            <div className="pt-2 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
               <Link
-                href="/curriculum"
+                href="/curriculum?lecture=lecture-yinyang-1"
                 className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] hover:bg-[#162E27] dark:hover:bg-[#225345] text-[#FAF8F5] font-bold text-sm sm:text-base shadow-md hover:shadow-lg transition-all group"
               >
                 <GraduationCap className="w-4 h-4 text-[#E6C387]" />
-                <span>東洋医学を体系的に学ぶ</span>
+                <span>最初の1講（陰陽論）から学ぶ</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                href="/simulator"
-                className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#17212A] border-2 border-[#1E3D34]/30 dark:border-[#2A3B4A] hover:border-[#B86924] dark:hover:border-[#E6C387] text-[#232826] dark:text-[#FAF8F5] font-bold text-sm sm:text-base shadow-xs hover:shadow-sm transition-all group"
+                href="/cases/case-01-headache-liver-fire"
+                className="inline-flex items-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] hover:border-[#B86924] dark:hover:border-[#E6C387] text-[#232826] dark:text-[#FAF8F5] font-bold text-sm sm:text-base shadow-xs hover:shadow-sm transition-all group"
               >
-                <Layers className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>臨床弁証シミュレーターを試す</span>
+                <Stethoscope className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <span>症例01を体験する</span>
+              </Link>
+              <Link
+                href="/tsubo"
+                className="inline-flex items-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] hover:border-[#1E2D3D] text-[#232826] dark:text-[#FAF8F5] font-bold text-sm sm:text-base shadow-xs hover:shadow-sm transition-all group"
+              >
+                <Compass className="w-4 h-4 text-[#1E2D3D] dark:text-[#7BAAD8]" />
+                <span>経穴辞典を検索</span>
               </Link>
             </div>
           </div>
@@ -166,7 +173,7 @@ export default function HomePage() {
             <HomeLearningProgressCard />
           </div>
 
-          {/* 3大メイン導線ダッシュボード（学ぶ・調べる・考える） */}
+          {/* 3大メイン導線ダッシュボード（学ぶ・調べる・症例演習） */}
           <div className="pt-2 sm:pt-4 grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-5 max-w-6xl mx-auto">
             {/* 1. 学ぶ (LEARN) */}
             <Link
@@ -191,12 +198,12 @@ export default function HomePage() {
                 </h3>
 
                 <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  陰陽・五行・気血水から病機・診断・治法・実践まで。暗記を排し、人体の動態システムとして本質から修得。
+                  陰陽・五行・気血水から病機・診断・治法・実践まで全71レッスン。暗記を排し、人体の動的な状態を捉える思考の土台を築きます。
                 </p>
               </div>
 
               <div className="pt-3 sm:pt-4 mt-4 sm:mt-5 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                <span>全8講の体系カリキュラムへ</span>
+                <span>公開71レッスンのカリキュラムへ</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>
@@ -224,7 +231,7 @@ export default function HomePage() {
                 </h3>
 
                 <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  正経十二経と任脈・督脈の全361穴を網羅。正確な取穴部位、解剖学的指標、骨度法、主治効能から臨床配穴まで即座に検索。
+                  正経十二経と任脈・督脈の全361穴（詳細解説32穴対応）。取穴部位、解剖学的指標、骨度法、主治効能から臨床配穴まで検索。
                 </p>
               </div>
 
@@ -234,35 +241,35 @@ export default function HomePage() {
               </div>
             </Link>
 
-            {/* 3. 考える (THINK) */}
+            {/* 3. 症例・演習 (PRACTICE) */}
             <Link
-              href="/simulator"
+              href="/cases"
               className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl border-2 border-[#B86924]/20 dark:border-[#E6C387]/25 hover:border-[#B86924] dark:hover:border-[#E6C387] p-4 sm:p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group"
             >
               <div className="space-y-2.5 sm:space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="inline-flex items-center gap-2 text-[#B86924] dark:text-[#E6C387]">
-                    <Layers className="w-5 h-5 shrink-0" />
+                    <Stethoscope className="w-5 h-5 shrink-0" />
                     <span className="text-base sm:text-lg font-bold font-serif">
-                      推論を考える
+                      症例・演習で試す
                     </span>
                   </div>
                   <span className="text-xs font-mono font-bold tracking-wider px-2.5 py-0.5 rounded bg-[#FCF4EB] dark:bg-transparent text-[#B86924] dark:text-[#E6C387]">
-                    THINK
+                    PRACTICE
                   </span>
                 </div>
 
                 <h3 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors">
-                  臨床弁証シミュレーター
+                  臨床症例演習・シミュレーター
                 </h3>
 
                 <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  八綱 ➜ 気血水 ➜ 臓腑 ➜ 証 ➜ 配穴検討 ➜ 刺激量制御。なぜその診断・処方になったのかの思考過程を反復演習。
+                  四診所見から八綱 ➜ 臓腑 ➜ 証 ➜ 配穴へと考えるステップ演習。知識を現場で使える臨床推論として定着させます。
                 </p>
               </div>
 
               <div className="pt-3 sm:pt-4 mt-4 sm:mt-5 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs sm:text-sm font-bold text-[#B86924] dark:text-[#E6C387]">
-                <span>弁証シミュレーターを起動</span>
+                <span>症例演習（無料体験3例）へ</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>
@@ -430,20 +437,20 @@ export default function HomePage() {
               <div className="p-3.5 sm:p-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 space-y-1.5">
                 <div className="flex items-center gap-2 text-[#74BA9E]">
                   <Compass className="w-4 h-4" />
-                  <h4 className="font-bold text-sm sm:text-base text-white">② 一文の証を自動導出</h4>
+                  <h4 className="font-bold text-sm sm:text-base text-white">② 証名の候補を導出</h4>
                 </div>
                 <p className="text-xs sm:text-sm text-[#A0B0BC] leading-relaxed">
-                  選択した病態の組み合わせから、確定診断となる「証名」と詳細な病理メカニズム・舌脈所見を即座に算出します。
+                  選択した病態の組み合わせから、教材モデルに基づく代表的な「証名候補」と病理メカニズム・参考所見を整理します。
                 </p>
               </div>
 
               <div className="p-3.5 sm:p-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 space-y-1.5">
                 <div className="flex items-center gap-2 text-[#E6C387]">
                   <Sparkles className="w-4 h-4" />
-                  <h4 className="font-bold text-sm sm:text-base text-white">③ 最小構成の特効ペアツボ</h4>
+                  <h4 className="font-bold text-sm sm:text-base text-white">③ 代表的な配穴モデル例</h4>
                 </div>
                 <p className="text-xs sm:text-sm text-[#A0B0BC] leading-relaxed">
-                  多穴刺鍼を排し、主穴（標治）× 配穴（本治）の相乗効果を発揮する最適なツボ処方と臨床根拠を提示します。
+                  主穴（標治）× 配穴（本治）の組み合わせから、選定理由と作用機序のモデル例を提示します。
                 </p>
               </div>
             </div>

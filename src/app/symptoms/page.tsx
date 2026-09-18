@@ -71,7 +71,8 @@ export default function SymptomsPage() {
           return (
             <div
               key={symptom.id}
-              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-9 shadow-sm hover:border-[#1E3D34] dark:hover:border-[#4E8C76] transition-all space-y-5 sm:space-y-6"
+              id={symptom.id}
+              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-9 shadow-sm hover:border-[#1E3D34] dark:hover:border-[#4E8C76] transition-all space-y-5 sm:space-y-6 scroll-mt-24"
             >
               {/* タイトルとカテゴリ */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 sm:pb-4">

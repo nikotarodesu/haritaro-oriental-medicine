@@ -18,9 +18,11 @@ import {
   Activity, 
   User as UserIcon,
   Layers,
-  Lock
+  Lock,
+  RotateCcw
 } from "lucide-react";
 import { ClinicalCase } from "@/types/clinicalCase";
+import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { useAuth } from "@/contexts/AuthContext";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import AuthModal from "@/components/auth/AuthModal";
@@ -157,28 +159,29 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
           </div>
 
           <div className="space-y-2 max-w-lg mx-auto">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] text-xs font-bold border border-[#F3DEC5] dark:border-[#4D331F] mb-1">
+              <span>プレミアム機能 公開準備中</span>
+            </div>
             <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              ここから先はプレミアム会員限定です
+              症例04以降は順次公開予定です
             </h2>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-              望聞問切の完全な四診データ、臨床推論ステップ演習、正解と専門解説、マイカルテへの保存機能はプレミアム会員へのご登録で解放されます。
+              望聞問切の四診データ、臨床推論ステップ演習、専門解説、マイノート保存機能は有料会員機能の本格リリースに合わせて開放されます。現在は無料体験症例（症例01〜03）を全編ご利用いただけます。
             </p>
           </div>
 
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <button
-              type="button"
-              onClick={() => setAuthModalOpen(true)}
-              className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#B86924] to-[#C87A35] text-white font-bold text-sm shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
+            <Link
+              href="/cases/case-01-headache-liver-fire"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white font-bold text-sm shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2"
             >
-              <Crown className="w-4 h-4" />
-              <span>プレミアム会員に登録して演習を再開（月額980円）</span>
-            </button>
+              <span>無料体験：症例01に挑戦する</span>
+            </Link>
             <Link
               href="/cases"
               className="w-full sm:w-auto px-5 py-3 rounded-xl border border-[#D8CFC0] dark:border-[#384C5E] text-xs font-bold text-[#404743] dark:text-[#C5D2DB] hover:bg-[#F2EDE2]"
             >
-              無料体験症例一覧に戻る
+              症例一覧に戻る
             </Link>
           </div>
         </div>
@@ -493,6 +496,58 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                     </p>
                   </div>
                 )}
+
+                {/* 次の学習へのステップ（導線改善） */}
+                <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#FAF8F5] to-[#F3EDE2] dark:from-[#17212A] dark:to-[#121920] border-2 border-[#1E3D34]/20 dark:border-[#2A3B4A] space-y-4">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                    <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
+                      この症例の学びを次につなぐ
+                    </h4>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button
+                      type="button"
+                      onClick={handleSaveToMemo}
+                      disabled={isAlreadySaved}
+                      className="p-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] text-left space-y-1 group transition-all"
+                    >
+                      <div className="flex items-center justify-between text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
+                        <span>要点を保存</span>
+                        <Bookmark className={`w-3.5 h-3.5 ${isAlreadySaved ? "fill-current" : ""}`} />
+                      </div>
+                      <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2]">
+                        {isAlreadySaved ? "マイノートに保存済み" : "この症例の弁証・配穴をノートへ"}
+                      </p>
+                    </button>
+
+                    <Link
+                      href="/review"
+                      className="p-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-left space-y-1 group transition-all block"
+                    >
+                      <div className="flex items-center justify-between text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                        <span>今日の復習へ</span>
+                        <RotateCcw className="w-3.5 h-3.5 group-hover:rotate-45 transition-transform" />
+                      </div>
+                      <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2]">
+                        間違えた箇所や要点を復習
+                      </p>
+                    </Link>
+
+                    <Link
+                      href="/curriculum"
+                      className="p-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-left space-y-1 group transition-all block"
+                    >
+                      <div className="flex items-center justify-between text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                        <span>関連理論を学ぶ</span>
+                        <BookOpen className="w-3.5 h-3.5" />
+                      </div>
+                      <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2]">
+                        8体系カリキュラムで病因病機を深掘り
+                      </p>
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -507,6 +562,20 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
         >
           <span>← 症例演習一覧へ</span>
         </Link>
+        {(() => {
+          const currentIdx = CLINICAL_CASES.findIndex((c) => c.id === clinicalCase.id);
+          const nextC = currentIdx >= 0 && currentIdx < CLINICAL_CASES.length - 1 ? CLINICAL_CASES[currentIdx + 1] : null;
+          if (!nextC) return null;
+          return (
+            <Link
+              href={`/cases/${nextC.id}`}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shadow-xs group"
+            >
+              <span>次の症例へ（症例{nextC.caseNumber}）</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </Link>
+          );
+        })()}
       </div>
 
       {/* プレミアム誘導モーダル */}

@@ -77,19 +77,19 @@ export default function HaiketsuPracticePage() {
     }
   };
 
-  // マイカルテに保存
+  // マイノートに保存
   const handleSaveToMemo = () => {
     const pointNames = selectedPointIds.map(id => ACUPOINT_ROLES[id]?.name || id);
     addMemo({
       id: `haiketsu-${Date.now()}`,
       type: "pair",
       title: prescriptionTitle || "自作配穴処方",
-      subTitle: `配穴純度スコア: ${analysis.purityScore}点（${pointNames.length}穴）`,
+      subTitle: `配穴構成: 本治${analysis.rootCount}穴・標治${analysis.branchCount}穴（計${pointNames.length}穴）`,
       points: pointNames,
       elements: ["木", "金"],
       indications: ["自律神経調整", "気滞血瘀"],
       summary: rationaleText || "選定理由未記入",
-      mechanism: `分析ステータス: ${analysis.statusText}（本治${analysis.rootCount}穴 / 標治${analysis.branchCount}穴）`,
+      mechanism: `構成分析: 本治${analysis.rootCount}穴 / 標治${analysis.branchCount}穴（${analysis.status === "optimal" ? "少数精鋭" : "標準"}）`,
       personalNotes: `配穴演習にて設計 (${new Date().toLocaleDateString("ja-JP")})`
     });
     setSaved(true);
@@ -103,10 +103,10 @@ export default function HaiketsuPracticePage() {
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]">
               <SlidersHorizontal className="w-3.5 h-3.5" />
-              <span>処方設計＆剪定エンジン</span>
+              <span>基本32穴 配穴構成演習</span>
             </span>
             <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-medium border border-[#C5DED4] dark:border-[#2A5243]">
-              リアルタイム純度スコア・エネルギー衝突検知
+              本治・標治バランスと選定理由の整理
             </span>
           </div>
 
@@ -116,7 +116,7 @@ export default function HaiketsuPracticePage() {
                 配穴設計・臨床演習
               </h1>
               <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] max-w-2xl leading-relaxed">
-                「たくさん刺せば効く」という錯覚を脱却し、本治穴と標治穴のバランス、昇降・寒熱のエネルギーベクトルを精密にシミュレーション。選定理由を自ら言語化し、教材名配穴と比較検証できます。
+                基本32穴の中から目的に応じた経穴を選定し、本治穴（体質根本）と標治穴（局所対症）のバランスや昇降・寒熱の方向性を整理します。選定理由を自ら言語化し、教材の代表例と比較して推論力を高める練習です。
               </p>
             </div>
 
@@ -126,7 +126,7 @@ export default function HaiketsuPracticePage() {
               className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#B86924] hover:bg-[#9B551B] text-white text-xs sm:text-sm font-bold shadow-sm transition-colors cursor-pointer shrink-0"
             >
               <Bookmark className={`w-4 h-4 ${saved ? "fill-current" : ""}`} />
-              <span>{saved ? "マイカルテに保存済" : "この処方をカルテ保存"}</span>
+              <span>{saved ? "マイノートに保存済" : "この処方をノート保存"}</span>
             </button>
           </div>
         </div>
@@ -134,10 +134,10 @@ export default function HaiketsuPracticePage() {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
         
-        {/* 過密配穴プリセット学習（初心者が陥りがちな失敗パターン） */}
+        {/* 比較検討用ケース */}
         <div className="space-y-2">
           <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] block">
-            典型的な「ツボ詰め込みすぎ（過密・相殺）」失敗例をロードして剪定演習:
+            比較検討用ケース（多穴構成・複合所見の整理例）:
           </span>
           <div className="flex flex-wrap gap-2">
             {OVERDOSE_PRESETS.map(preset => (
@@ -146,7 +146,7 @@ export default function HaiketsuPracticePage() {
                 onClick={() => handleLoadPreset(preset.id)}
                 className="text-xs px-3 py-1.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] text-[#59615D] dark:text-[#96A6B2] transition-colors"
               >
-                ⚠️ {preset.name}
+                📋 {preset.name}
               </button>
             ))}
           </div>
@@ -158,37 +158,32 @@ export default function HaiketsuPracticePage() {
           {/* 左カラム：現在の処方・リアルタイム分析（7カラム） */}
           <div className="lg:col-span-7 space-y-6">
             
-            {/* スコア・ステータスカード */}
+            {/* スコア・ステータスカード（点数による断定を排し、構成バランスの可視化へ） */}
             <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-6 shadow-sm space-y-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-xs text-[#737C77] dark:text-[#8899A6] block">
-                    配穴の研ぎ澄まし度（処方純度）
+                  <span className="text-xs text-[#737C77] dark:text-[#8899A6] block font-medium">
+                    配穴の構成バランス（教材モデル分析）
                   </span>
-                  <div className="flex items-baseline gap-2 mt-1">
-                    <span className={`font-serif text-3xl sm:text-4xl font-bold ${
-                      analysis.purityScore >= 80 
-                        ? "text-[#1E3D34] dark:text-[#74BA9E]" 
-                        : analysis.purityScore >= 60 
-                        ? "text-[#B86924] dark:text-[#E6C387]" 
-                        : "text-red-600"
-                    }`}>
-                      {analysis.purityScore}
-                    </span>
-                    <span className="text-xs text-[#737C77]">/ 100点</span>
-                    <span className={`text-xs font-bold px-2 py-0.5 rounded-full ml-2 ${
-                      analysis.purityScore >= 80 
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className={`text-sm sm:text-base font-bold px-3 py-1 rounded-full ${
+                      analysis.status === "optimal" 
                         ? "bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300" 
+                        : analysis.status === "acceptable"
+                        ? "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300"
                         : "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300"
                     }`}>
-                      {analysis.statusText}
+                      {analysis.status === "optimal" ? "調和（少数精鋭構成）" : analysis.status === "acceptable" ? "標準的構成" : "多穴・要精査"}
+                    </span>
+                    <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                      ※臨床効果の断定ではなく教材例との対比指標
                     </span>
                   </div>
                 </div>
 
                 <div className="text-right text-xs text-[#737C77] dark:text-[#8899A6]">
                   <p>選択中: <strong className="text-[#232826] dark:text-[#FAF8F5] text-base">{selectedPointIds.length}</strong> 穴</p>
-                  <p className="text-[11px] mt-0.5">（推奨: 2〜4穴）</p>
+                  <p className="text-[11px] mt-0.5">（基本32穴パレット）</p>
                 </div>
               </div>
 

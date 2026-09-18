@@ -25,17 +25,17 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
-                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
+                <Link href="/symptoms#headache-stiff-neck" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
                   <span>頭痛・首肩こり改善</span>
                 </Link>
               </li>
               <li>
-                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
+                <Link href="/symptoms#stress-insomnia" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
                   <span>不眠・ストレス緩和</span>
                 </Link>
               </li>
               <li>
-                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
+                <Link href="/symptoms#stomach-fatigue" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
                   <span>胃腸虚弱・冷え性対策</span>
                 </Link>
               </li>
@@ -71,7 +71,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/about" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-                  古典文献（黄帝内経・傷寒論）考証
+                  サイト理念・古典と科学の融合
                 </Link>
               </li>
             </ul>

@@ -56,17 +56,17 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       {
         stepNumber: 2,
         stepTitle: "臓腑・気血水弁証の特定",
-        question: "側頭部痛・胸脇苦満・イライラ・目の充血・口苦から特定される確定証はどれか？",
+        question: "側頭部痛・胸脇苦満・イライラ・目の充血・口苦から導かれる代表的な病態候補（証）はどれか？",
         options: [
-          { id: "opt-1", label: "肝火上炎証（かんかじょうえんしょう）", isCorrect: true, feedback: "正解です。肝気鬱結が化火し、肝胆経の経脈を通じて頭部に火熱が燃え上がっています。" },
-          { id: "opt-2", label: "脾虚湿痰証（ひきょしつたんしょう）", isCorrect: false, feedback: "湿痰による頭重感ではなく、拍動性の激しい熱性疼痛です。" },
+          { id: "opt-1", label: "脾虚湿痰証（ひきょしつたんしょう）", isCorrect: false, feedback: "湿痰による頭重感ではなく、拍動性の激しい熱性疼痛です。" },
+          { id: "opt-2", label: "肝火上炎証（かんかじょうえんしょう）", isCorrect: true, feedback: "正解です。肝気鬱結が化火し、肝胆経の経脈を通じて頭部に火熱が燃え上がっている状態を示します。" },
           { id: "opt-3", label: "腎陰虚証（じんいんきょしょう）", isCorrect: false, feedback: "陰虚による虚火ではなく、精神刺激で激発する実火・実熱の病態です。" },
         ],
       },
       {
         stepNumber: 3,
         stepTitle: "治療方針（治法）の決定",
-        question: "本症例に対する最も適切な治法（治療原則）はどれか？",
+        question: "本症例の病態モデルに対する最も適切な治法（治療原則）はどれか？",
         options: [
           { id: "opt-1", label: "清肝瀉火・降逆熄風（肝の火熱を冷まし、上逆した気を引き下ろす）", isCorrect: true, feedback: "正解です。激しい実火を瀉法で冷まし、頭部の鬱血を下方へ導きます。" },
           { id: "opt-2", label: "健脾補気・温陽利水（胃腸を補い、体を温めて水分を巡らす）", isCorrect: false, feedback: "温補法を行うと火に油を注ぎ、頭痛や充血が悪化します。" },
@@ -76,11 +76,11 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       {
         stepNumber: 4,
         stepTitle: "処方配穴の決定",
-        question: "清肝瀉火を達成するための最適な主穴ペアはどれか？",
+        question: "清肝瀉火・降逆を達成するための代表的な経穴の組み合わせはどれか？",
         options: [
-          { id: "opt-1", label: "行間 (LR2) ＋ 太衝 (LR3) ＋ 風池 (GB20)", isCorrect: true, feedback: "正解です。行間（肝経滎火穴）で火熱を強力に清解し、太衝で降気、風池で頭部の熱を散らします。" },
-          { id: "opt-2", label: "足三里 (ST36) ＋ 陰陵泉 (SP9)", isCorrect: false, feedback: "脾胃の湿痰に対する配穴であり、肝火の直撃には力不足です。" },
-          { id: "opt-3", label: "関元 (CV4) ＋ 命門 (GV4)", isCorrect: false, feedback: "下焦の陽気を温補する穴であり、本病態には禁忌に近いです。" },
+          { id: "opt-1", label: "足三里 (ST36) ＋ 陰陵泉 (SP9)", isCorrect: false, feedback: "脾胃の湿痰に対する配穴であり、肝火の直撃には力不足です。" },
+          { id: "opt-2", label: "関元 (CV4) ＋ 命門 (GV4)", isCorrect: false, feedback: "下焦の陽気を温補する穴であり、本病態には禁忌に近いです。" },
+          { id: "opt-3", label: "行間 (LR2) ＋ 太衝 (LR3) ＋ 風池 (GB20)", isCorrect: true, feedback: "正解です。行間（肝経滎火穴）で火熱を清解し、太衝で降気、風池で頭頚部の熱を散らす代表的な組み合わせです。" },
         ],
       },
     ],
