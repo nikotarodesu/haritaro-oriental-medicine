@@ -47,7 +47,7 @@ const EIGHT_SYSTEMS = [
     title: "気血水理論",
     phase: "基礎理論",
     tagColor: "bg-[#B86924] dark:bg-[#9C5417] text-[#FAF8F5]",
-    subtitle: "生体を駆動する三層実体と代謝動態モデル",
+    subtitle: "",
     purpose: "エネルギーと栄養・水液の代謝循環、虚損・鬱滞の破綻ドミノを解明する",
     terms: ["気虚・気滞", "血虚・瘀血", "水滞・痰飲", "ドミノ破綻"],
     lectureId: "lecture-qiblood-1"
@@ -58,7 +58,7 @@ const EIGHT_SYSTEMS = [
     title: "生命機能論",
     phase: "基礎理論",
     tagColor: "bg-[#1E2D3D] dark:bg-[#344D66] text-[#FAF8F5]",
-    subtitle: "表裏・営衛・三焦の人体動態システム論",
+    subtitle: "",
     purpose: "固定した解剖部位ではなく、機能層（防御・代謝・生殖）として人体を捉える",
     terms: ["衛気営血", "三焦気化", "表裏相応", "昇降出入"],
     lectureId: "lecture-lifedynamics-1"
@@ -69,7 +69,7 @@ const EIGHT_SYSTEMS = [
     title: "病機論",
     phase: "病機",
     tagColor: "bg-[#A83629] dark:bg-[#85271D] text-[#FAF8F5]",
-    subtitle: "歪みの発生と病理ドミノの破綻モデル",
+    subtitle: "",
     purpose: "邪気侵入と正気衰弱が引き起こす病理タイムラインと氷山モデルを解読する",
     terms: ["邪正盛衰", "内生五邪", "氷山モデル", "絡脈瘀阻"],
     lectureId: "lecture-pathomechanism-1"
@@ -80,7 +80,7 @@ const EIGHT_SYSTEMS = [
     title: "診断論",
     phase: "診断",
     tagColor: "bg-[#4A3B69] dark:bg-[#5C4B7F] text-[#FAF8F5]",
-    subtitle: "四診情報を立体的に束ねる臨床推論アルゴリズム",
+    subtitle: "",
     purpose: "安全確認・四診の客観化から八綱・気血水・臓腑経絡を導き、検証可能な診断記録を統合する",
     terms: ["安全確認", "四診合参", "八綱座標", "自己修正"],
     lectureId: "lecture-diagnosis-1"
@@ -91,7 +91,7 @@ const EIGHT_SYSTEMS = [
     title: "治法論",
     phase: "治法",
     tagColor: "bg-[#285A52] dark:bg-[#3B7A70] text-[#FAF8F5]",
-    subtitle: "介入ベクトル・刺激量設計・治療計画書の臨床工学",
+    subtitle: "",
     purpose: "補瀉寒熱・本標優先・臓腑経絡配穴から刺激量6大検討項目、客観的評価と治療計画書7項目までを体系化する",
     terms: ["治則治法", "本治標治", "刺激量設計", "治療計画書7項目"],
     lectureId: "lecture-treatment-1"
@@ -102,7 +102,7 @@ const EIGHT_SYSTEMS = [
     title: "実践論",
     phase: "実践",
     tagColor: "bg-[#1E2D3D] dark:bg-[#2A3E54] text-[#FAF8F5]",
-    subtitle: "臨床運用の完全プロトコルと自己修正アルゴリズム",
+    subtitle: "",
     purpose: "初診トリアージから弁証、二層目標、日常語での説明合意、反応評価、次回計画修正、治療終了（卒業）までを一連の動的ループとして運用する",
     terms: ["初動トリアージ", "動的推論ループ", "説明合意記録", "治療終了（卒業）"],
     lectureId: "lecture-practice-1"
