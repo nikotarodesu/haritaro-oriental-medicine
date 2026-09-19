@@ -116,6 +116,12 @@ export default function Footer() {
                   サイト理念・古典と科学の融合
                 </Link>
               </li>
+              <li>
+                <Link href="/pricing" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1 font-semibold text-[#B86924] dark:text-[#E6C387]">
+                  <Crown className="w-3.5 h-3.5" />
+                  <span>プレミアム会員プラン</span>
+                </Link>
+              </li>
             </ul>
           </div>
 

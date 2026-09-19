@@ -756,6 +756,20 @@ export default function Header() {
               </Link>
             )}
 
+            {!isPremium && (
+              <Link
+                href="/pricing"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-bold bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#F3DEC5] dark:border-[#4D331F] text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBEAD7] transition-all"
+              >
+                <div className="flex items-center gap-2">
+                  <Crown className="w-4 h-4" />
+                  <span>プレミアム会員プランのご案内</span>
+                </div>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            )}
+
             <button
               type="button"
               onClick={() => {
