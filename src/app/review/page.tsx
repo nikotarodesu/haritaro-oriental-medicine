@@ -56,7 +56,39 @@ const CATEGORIES = [
 ];
 
 export default function SmartReviewPage() {
-  const { user, isPremium } = useAuth();
+  return (
+    <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5] flex items-center justify-center p-4">
+      <div className="max-w-md w-full text-center space-y-6 bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] p-8 sm:p-10 rounded-3xl shadow-sm">
+        <div className="w-16 h-16 rounded-2xl bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center mx-auto">
+          <Brain className="w-8 h-8" />
+        </div>
+        <div className="space-y-2">
+          <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]">
+            アップデート準備中
+          </span>
+          <h1 className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+            スマート復習機能
+          </h1>
+          <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
+            忘却曲線アルゴリズムと弱点特訓モードは、より精度の高い学習体験を提供するため現在機能改善中です。公開まで今しばらくお待ちください。
+          </p>
+        </div>
+        <div className="pt-2">
+          <Link
+            href="/curriculum"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B6958] text-white text-xs font-bold transition-all shadow-sm"
+          >
+            <span>カリキュラム学習へ戻る</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LegacySmartReviewPage() {
+  const { isPremium } = useAuth();
   const { addMemo } = useClinicalMemo();
 
   // モーダル

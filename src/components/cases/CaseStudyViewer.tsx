@@ -522,15 +522,15 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                     </button>
 
                     <Link
-                      href="/review"
+                      href="/cases"
                       className="p-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-left space-y-1 group transition-all block"
                     >
                       <div className="flex items-center justify-between text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                        <span>今日の復習へ</span>
+                        <span>他の症例に挑戦する</span>
                         <RotateCcw className="w-3.5 h-3.5 group-hover:rotate-45 transition-transform" />
                       </div>
                       <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2]">
-                        間違えた箇所や要点を復習
+                        全20の臨床症例一覧へ
                       </p>
                     </Link>
 

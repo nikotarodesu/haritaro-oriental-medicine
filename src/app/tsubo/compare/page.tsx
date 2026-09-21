@@ -14,7 +14,8 @@ import {
   Plus, 
   AlertTriangle,
   BookOpen,
-  Printer
+  Printer,
+  Crown
 } from "lucide-react";
 import { TSUBOS } from "@/data/tsuboData";
 import { Tsubo } from "@/types/oriental";
@@ -100,9 +101,11 @@ function TsuboCompareContent() {
     });
 
     if (resolved.length > 0) {
-      setSelectedCodes(resolved);
+      // 無料会員は最大2穴までに切り詰め
+      const limited = !isPremium && resolved.length > 2 ? resolved.slice(0, 2) : resolved;
+      setSelectedCodes(limited);
     }
-  }, [searchParams]);
+  }, [searchParams, isPremium]);
 
   // 選択されているツボの配列
   const selectedTsubos: Tsubo[] = useMemo(() => {
@@ -126,12 +129,12 @@ function TsuboCompareContent() {
   // ツボの追加
   const handleAddTsubo = (code: string) => {
     if (selectedCodes.includes(code)) return;
+    // 無料会員は2穴まで（3穴目追加時にプレミアムモーダル表示）
+    if (!isPremium && selectedCodes.length >= 2) {
+      setAuthModalOpen(true);
+      return;
+    }
     if (selectedCodes.length >= 3) {
-      if (!isPremium) {
-        setAuthModalOpen(true);
-        return;
-      }
-      // 3穴制限（最大3穴）
       alert("同時に比較できる経穴は最大3穴までです。不要なツボを削除してから追加してください。");
       return;
     }
@@ -152,8 +155,12 @@ function TsuboCompareContent() {
     setSaved(false);
   };
 
-  // カルテに保存
+  // カルテに保存（プレミアム限定）
   const handleSaveToMemo = () => {
+    if (!isPremium) {
+      setAuthModalOpen(true);
+      return;
+    }
     const names = selectedTsubos.map(t => t.name).join(" vs ");
     addMemo({
       id: `tsubo-compare-${Date.now()}`,
@@ -243,10 +250,21 @@ function TsuboCompareContent() {
 
         {/* ツボ検索・追加バー */}
         <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-5 shadow-sm space-y-3 print:hidden">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">
-              比較するツボを追加（現在: {selectedTsubos.length} / 3穴）
-            </span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">
+                比較するツボ（現在: {selectedTsubos.length} / {isPremium ? "最大3穴" : "2穴・無料枠"}）
+              </span>
+              {!isPremium && selectedTsubos.length >= 2 && (
+                <button
+                  onClick={() => setAuthModalOpen(true)}
+                  className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E] hover:opacity-90 transition-opacity"
+                >
+                  <Crown className="w-3 h-3" />
+                  <span>3穴同時比較はプレミアム</span>
+                </button>
+              )}
+            </div>
             <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
               ツボ名（太衝、足三里など）やコード（LR3, ST36）で検索
             </span>
@@ -442,8 +460,8 @@ function TsuboCompareContent() {
       <AuthModal
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
-        title="3穴同時比較マトリクス"
-        description="全361穴からの自由選択および3穴同時横並び比較はプレミアム会員限定機能です。"
+        title="3穴同時精密比較 ＆ カルテ保存"
+        description="全361穴からの3穴同時横並び精密比較、および比較結果のマイカルテ直接保存はプレミアム会員限定機能です。"
       />
     </div>
   );

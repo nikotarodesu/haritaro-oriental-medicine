@@ -51,14 +51,18 @@ export default function HaiketsuPracticePage() {
     return Object.values(ACUPOINT_ROLES);
   }, []);
 
-  // ツボの追加/削除
+  // ツボの追加/削除（プレミアム限定）
   const togglePoint = (id: string) => {
+    if (!isPremium) {
+      setAuthModalOpen(true);
+      return;
+    }
     if (selectedPointIds.includes(id)) {
       setSelectedPointIds(selectedPointIds.filter(p => p !== id));
       setSaved(false);
     } else {
-      if (!isPremium && selectedPointIds.length >= 4) {
-        setAuthModalOpen(true);
+      if (selectedPointIds.length >= 8) {
+        alert("演習で選択できる経穴は最大8穴までです。");
         return;
       }
       setSelectedPointIds([...selectedPointIds, id]);
@@ -66,8 +70,12 @@ export default function HaiketsuPracticePage() {
     }
   };
 
-  // プリセットの読み込み
+  // プリセットの読み込み（プレミアム限定）
   const handleLoadPreset = (presetId: string) => {
+    if (!isPremium) {
+      setAuthModalOpen(true);
+      return;
+    }
     const p = OVERDOSE_PRESETS.find(caseItem => caseItem.id === presetId);
     if (p) {
       setSelectedPointIds(p.initialPointIds);
@@ -77,8 +85,12 @@ export default function HaiketsuPracticePage() {
     }
   };
 
-  // マイノートに保存
+  // マイノートに保存（プレミアム限定）
   const handleSaveToMemo = () => {
+    if (!isPremium) {
+      setAuthModalOpen(true);
+      return;
+    }
     const pointNames = selectedPointIds.map(id => ACUPOINT_ROLES[id]?.name || id);
     addMemo({
       id: `haiketsu-${Date.now()}`,
@@ -123,19 +135,54 @@ export default function HaiketsuPracticePage() {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
         
+        {/* 無料体験案内バナー */}
+        {!isPremium && (
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#FAF8F5] to-[#FCF4EB] dark:from-[#17212A] dark:to-[#221810] border border-[#F3DEC5] dark:border-[#4D331F] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0">
+                <Crown className="w-5 h-5" />
+              </div>
+              <div className="space-y-0.5">
+                <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
+                  無料体験モード（基本配穴の閲覧）
+                </span>
+                <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
+                  現在は代表的な基本配穴「四関穴」の構成と解説を閲覧できます。自作配穴の作成、選定理由の言語化、多穴教材比較、マイカルテ保存はプレミアム限定です。
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setAuthModalOpen(true)}
+              className="px-4 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B6958] text-white text-xs font-bold shrink-0 transition-colors shadow-sm cursor-pointer"
+            >
+              プレミアムで全解放
+            </button>
+          </div>
+        )}
+
         {/* 比較検討用ケース */}
         <div className="space-y-2">
-          <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] block">
-            比較検討用ケース（多穴構成・複合所見の整理例）:
-          </span>
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] block">
+              比較検討用ケース（多穴構成・複合所見の整理例）:
+            </span>
+            {!isPremium && (
+              <span className="text-[10px] text-[#B86924] dark:text-[#E6C387] font-semibold flex items-center gap-1">
+                <Crown className="w-3 h-3" />
+                <span>教材比較はプレミアム限定</span>
+              </span>
+            )}
+          </div>
           <div className="flex flex-wrap gap-2">
             {OVERDOSE_PRESETS.map(preset => (
               <button
                 key={preset.id}
                 onClick={() => handleLoadPreset(preset.id)}
-                className="text-xs px-3 py-1.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] text-[#59615D] dark:text-[#96A6B2] transition-colors"
+                className="text-xs px-3 py-1.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] text-[#59615D] dark:text-[#96A6B2] transition-colors flex items-center gap-1.5"
               >
-                📋 {preset.name}
+                {!isPremium && <Crown className="w-3 h-3 text-[#B86924] dark:text-[#E6C387]" />}
+                <span>📋 {preset.name}</span>
               </button>
             ))}
           </div>
@@ -309,12 +356,17 @@ export default function HaiketsuPracticePage() {
                   <input
                     type="text"
                     value={prescriptionTitle}
+                    readOnly={!isPremium}
+                    onClick={() => { if (!isPremium) setAuthModalOpen(true); }}
                     onChange={e => {
+                      if (!isPremium) { setAuthModalOpen(true); return; }
                       setPrescriptionTitle(e.target.value);
                       setSaved(false);
                     }}
                     placeholder="例: 頑固な自律神経失調・昇降調和処方"
-                    className="w-full px-3 py-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5]"
+                    className={`w-full px-3 py-2 rounded-xl border text-[#232826] dark:text-[#FAF8F5] ${
+                      !isPremium ? "bg-gray-50 dark:bg-[#151D24] border-dashed border-[#E5DEC9] cursor-pointer" : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A]"
+                    }`}
                   />
                 </div>
 
@@ -324,14 +376,25 @@ export default function HaiketsuPracticePage() {
                   </label>
                   <textarea
                     value={rationaleText}
+                    readOnly={!isPremium}
+                    onClick={() => { if (!isPremium) setAuthModalOpen(true); }}
                     onChange={e => {
+                      if (!isPremium) { setAuthModalOpen(true); return; }
                       setRationaleText(e.target.value);
                       setSaved(false);
                     }}
                     placeholder="なぜ主穴を太衝にしたのか、なぜ合谷と組み合わせたのか、患者のどのような病態にアプローチするのかを記述..."
                     rows={4}
-                    className="w-full px-3 py-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5] leading-relaxed"
+                    className={`w-full px-3 py-2 rounded-xl border text-[#232826] dark:text-[#FAF8F5] leading-relaxed ${
+                      !isPremium ? "bg-gray-50 dark:bg-[#151D24] border-dashed border-[#E5DEC9] cursor-pointer" : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A]"
+                    }`}
                   />
+                  {!isPremium && (
+                    <p className="text-[10px] text-[#B86924] dark:text-[#E6C387] mt-1 flex items-center gap-1">
+                      <Crown className="w-3 h-3" />
+                      <span>自作配穴・選定理由の自由記述はプレミアム限定です</span>
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -346,7 +409,7 @@ export default function HaiketsuPracticePage() {
                   臨床重要要穴パレット
                 </span>
                 <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                  クリックで追加・解除
+                  {isPremium ? "クリックで追加・解除" : "ツボ選択はプレミアム"}
                 </span>
               </div>
 
@@ -377,7 +440,7 @@ export default function HaiketsuPracticePage() {
                       </div>
 
                       <div className="flex items-center gap-1">
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A]">
+                        <span className="text-[10px] px-1.5 py-0.2 rounded bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A]">
                           {point.energyLabel}
                         </span>
                         {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-[#B86924]" />}
@@ -397,8 +460,8 @@ export default function HaiketsuPracticePage() {
       <AuthModal
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
-        title="配穴練習・多穴処方シミュレーター"
-        description="4穴以上の自由な配穴設計および高度な剪定提案はプレミアム会員限定機能です。"
+        title="配穴設計・臨床演習 プレミアム機能"
+        description="自作配穴の自由な組み立て・選定理由の言語化・教材比較ケースの全演習・マイカルテ保存はプレミアム会員限定機能です。"
       />
     </div>
   );

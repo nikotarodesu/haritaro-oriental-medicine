@@ -41,15 +41,6 @@ export default function HomeLearningProgressCard() {
                 受講中
               </span>
             )}
-            {incorrectCount > 0 && (
-              <Link
-                href="/review"
-                className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-rose-500/90 text-white hover:bg-rose-600 transition-colors"
-              >
-                <AlertCircle className="w-3 h-3" />
-                復習 {incorrectCount}問
-              </Link>
-            )}
           </div>
 
           <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">

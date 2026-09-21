@@ -11,7 +11,8 @@ import {
   ExternalLink,
   ChevronRight,
   ShieldCheck,
-  Zap
+  Zap,
+  Crown
 } from "lucide-react";
 import { KIKEI_VESSELS, HACHIMYAKU_PAIRS } from "@/data/kikeiData";
 
@@ -141,13 +142,26 @@ export default function KikeiIndexPage() {
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      vessel.category === "陽奇経"
-                        ? "bg-[#FCF4EB] text-[#B86924] dark:bg-[#2A1E14] dark:text-[#E6C387]"
-                        : "bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E]"
-                    }`}>
-                      {vessel.category}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        vessel.category === "陽奇経"
+                          ? "bg-[#FCF4EB] text-[#B86924] dark:bg-[#2A1E14] dark:text-[#E6C387]"
+                          : "bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E]"
+                      }`}>
+                        {vessel.category}
+                      </span>
+                      {vessel.slug === "toku" || vessel.slug === "nin" ? (
+                        <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243] flex items-center gap-0.5">
+                          <Sparkles className="w-2.5 h-2.5" />
+                          <span>無料体験</span>
+                        </span>
+                      ) : (
+                        <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#FCF4EB] text-[#B86924] dark:bg-[#2A1E14] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4D331F] flex items-center gap-0.5">
+                          <Crown className="w-2.5 h-2.5" />
+                          <span>プレミアム</span>
+                        </span>
+                      )}
+                    </div>
                     {vessel.pointsCount ? (
                       <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
                         固有穴 {vessel.pointsCount}穴
@@ -182,7 +196,7 @@ export default function KikeiIndexPage() {
                 </div>
 
                 <div className="pt-4 flex items-center justify-between text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
-                  <span>詳細・流注図を見る</span>
+                  <span>流注SVG図・臨床演習</span>
                   <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                 </div>
               </Link>

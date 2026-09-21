@@ -28,8 +28,11 @@ import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { ClinicalMemoItem, ClinicalMemoType } from "@/types/clinicalMemo";
 import GogyoBadge from "@/components/GogyoBadge";
+import AuthModal from "@/components/auth/AuthModal";
 
 export default function MyClinicalRecordDrawer() {
+  const { isPremium } = useAuth();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const { 
     memos, 
     clipCount, 
@@ -44,8 +47,6 @@ export default function MyClinicalRecordDrawer() {
     lastToast,
     dismissToast
   } = useClinicalMemo();
-
-  const { isPremium } = useAuth();
 
   const [activeTab, setActiveTab] = useState<"all" | ClinicalMemoType>("all");
   const [selectedTag, setSelectedTag] = useState<string>("all");
@@ -148,6 +149,10 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
 
   // JSONエクスポート
   const handleExportJSON = () => {
+    if (!isPremium) {
+      setAuthModalOpen(true);
+      return;
+    }
     if (memos.length === 0) return;
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(memos, null, 2));
     const downloadAnchor = document.createElement("a");
@@ -160,6 +165,10 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
 
   // Markdownエクスポート
   const handleExportMarkdown = () => {
+    if (!isPremium) {
+      setAuthModalOpen(true);
+      return;
+    }
     if (memos.length === 0) return;
     const lines = [
       "# はり太郎の東洋医学 | マイカルテ・学習ノート",
@@ -193,6 +202,10 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
 
   // A4カルテ印刷
   const handlePrint = () => {
+    if (!isPremium) {
+      setAuthModalOpen(true);
+      return;
+    }
     window.print();
   };
 
@@ -356,25 +369,28 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                 <>
                   <button
                     onClick={handleExportMarkdown}
-                    title="Markdown形式で保存（Obsidian / Notion / カルテ連携）"
+                    title={isPremium ? "Markdown形式で保存（Obsidian / Notion / カルテ連携）" : "Markdown出力（プレミアム会員限定）"}
                     className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
                   >
+                    {!isPremium && <Crown className="w-2.5 h-2.5 text-[#B86924] dark:text-[#E6C387]" />}
                     <FileDown className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
                     <span>Markdown</span>
                   </button>
                   <button
                     onClick={handleExportJSON}
-                    title="JSON形式で保存（バックアップ・他端末移行用）"
+                    title={isPremium ? "JSON形式で保存（バックアップ・他端末移行用）" : "JSON出力（プレミアム会員限定）"}
                     className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
                   >
+                    {!isPremium && <Crown className="w-2.5 h-2.5 text-[#B86924] dark:text-[#E6C387]" />}
                     <Download className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
                     <span>JSON</span>
                   </button>
                   <button
                     onClick={handlePrint}
-                    title="カルテA4印刷（問診票・患者説明用）"
+                    title={isPremium ? "カルテA4印刷（問診票・患者説明用）" : "A4印刷（プレミアム会員限定）"}
                     className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
                   >
+                    {!isPremium && <Crown className="w-2.5 h-2.5 text-[#B86924] dark:text-[#E6C387]" />}
                     <Printer className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                     <span>印刷</span>
                   </button>
@@ -649,6 +665,14 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
           </button>
         </div>
       )}
+
+      {/* プレミアムアップグレードモーダル */}
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        title="マイカルテ出力 ＆ A4印刷"
+        description="保存した臨床ノートのMarkdown/JSON出力、および整ったA4形式での直接印刷はプレミアム会員限定機能です。（無料会員はテキストコピーをご利用いただけます）"
+      />
     </div>
   );
 }
