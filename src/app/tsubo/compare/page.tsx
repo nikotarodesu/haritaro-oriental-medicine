@@ -54,6 +54,9 @@ function TsuboCompareContent() {
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [pendingSwapTsubo, setPendingSwapTsubo] = useState<Tsubo | null>(null);
+  const [targetReplaceIndex, setTargetReplaceIndex] = useState<number | null>(null);
+
   // 初期値：URLクエリパラメータ（?a=lu1&b=li4 など）を優先
   const [selectedCodes, setSelectedCodes] = useState<string[]>(() => {
     const aParam = searchParams.get("a") || searchParams.get("code");
@@ -126,19 +129,35 @@ function TsuboCompareContent() {
     ).slice(0, 10);
   }, [searchQuery]);
 
-  // ツボの追加
-  const handleAddTsubo = (code: string) => {
-    if (selectedCodes.includes(code)) return;
-    // 無料会員は2穴まで（3穴目追加時にプレミアムモーダル表示）
+  // ツボの追加・入れ替えハンドラー
+  const handleSelectTsubo = (tsubo: Tsubo) => {
+    if (selectedCodes.includes(tsubo.code)) return;
+
+    // 特定の列の「変更」から指定された場合
+    if (targetReplaceIndex !== null && targetReplaceIndex < selectedCodes.length) {
+      const updated = [...selectedCodes];
+      updated[targetReplaceIndex] = tsubo.code;
+      setSelectedCodes(updated);
+      setTargetReplaceIndex(null);
+      setSearchQuery("");
+      setSaved(false);
+      return;
+    }
+
+    // 無料枠で既に2穴選ばれている場合：入れ替え選択ダイアログを表示
     if (!isPremium && selectedCodes.length >= 2) {
-      setAuthModalOpen(true);
+      setPendingSwapTsubo(tsubo);
       return;
     }
-    if (selectedCodes.length >= 3) {
-      alert("同時に比較できる経穴は最大3穴までです。不要なツボを削除してから追加してください。");
+
+    // プレミアム会員で既に3穴選ばれている場合：入れ替え選択ダイアログを表示
+    if (isPremium && selectedCodes.length >= 3) {
+      setPendingSwapTsubo(tsubo);
       return;
     }
-    setSelectedCodes([...selectedCodes, code]);
+
+    // 空き枠がある場合はそのまま追加
+    setSelectedCodes([...selectedCodes, tsubo.code]);
     setSearchQuery("");
     setSaved(false);
   };
@@ -146,12 +165,14 @@ function TsuboCompareContent() {
   // ツボの削除
   const handleRemoveTsubo = (code: string) => {
     setSelectedCodes(selectedCodes.filter(c => c !== code));
+    setTargetReplaceIndex(null);
     setSaved(false);
   };
 
   // プリセット適用
   const handleApplyPreset = (codes: string[]) => {
     setSelectedCodes(codes);
+    setTargetReplaceIndex(null);
     setSaved(false);
   };
 
@@ -216,7 +237,7 @@ function TsuboCompareContent() {
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#B86924] hover:bg-[#9B551B] text-white text-xs font-bold shadow-sm transition-colors cursor-pointer"
               >
                 <Bookmark className={`w-4 h-4 ${saved ? "fill-current" : ""}`} />
-                <span>{saved ? "マイカルテに保存済" : "比較結果をカルテ保存"}</span>
+                <span>{saved ? "学習ノートに保存済" : "比較結果を学習ノート保存"}</span>
               </button>
             </div>
           </div>
@@ -240,7 +261,7 @@ function TsuboCompareContent() {
                 <span className="font-bold text-xs text-[#232826] dark:text-[#FAF8F5] block">
                   {preset.name}
                 </span>
-                <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] line-clamp-2">
+                <p className="text-xs text-[#737C77] dark:text-[#8899A6] line-clamp-2">
                   {preset.desc}
                 </p>
               </button>
@@ -258,25 +279,42 @@ function TsuboCompareContent() {
               {!isPremium && selectedTsubos.length >= 2 && (
                 <button
                   onClick={() => setAuthModalOpen(true)}
-                  className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E] hover:opacity-90 transition-opacity"
+                  className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E] hover:opacity-90 transition-opacity"
                 >
-                  <Crown className="w-3 h-3" />
+                  <Crown className="w-3.5 h-3.5" />
                   <span>3穴同時比較はプレミアム</span>
                 </button>
               )}
             </div>
-            <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+            <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
               ツボ名（太衝、足三里など）やコード（LR3, ST36）で検索
             </span>
           </div>
 
+          {/* 列変更中インジケーター */}
+          {targetReplaceIndex !== null && selectedTsubos[targetReplaceIndex] && (
+            <div className="flex items-center justify-between p-3 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-xs">
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                第{targetReplaceIndex + 1}列「{selectedTsubos[targetReplaceIndex].name}（{selectedTsubos[targetReplaceIndex].code}）」を変更中：下から入れ替えたい経穴を選択してください
+              </span>
+              <button
+                type="button"
+                onClick={() => setTargetReplaceIndex(null)}
+                className="px-2 py-0.5 rounded text-xs text-[#737C77] hover:text-[#232826] font-bold"
+              >
+                キャンセル
+              </button>
+            </div>
+          )}
+
           <div className="relative">
             <Search className="w-4 h-4 text-[#8A948F] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
+              id="compare-search-input"
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              placeholder="ツボ名、読みがな、経穴コードで検索..."
+              placeholder="ツボ名、読みがな、経穴コードで検索して追加・入れ替え..."
               className="w-full pl-9 pr-4 py-2.5 rounded-xl text-xs sm:text-sm bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A948F] focus:outline-none focus:border-[#B86924]"
             />
           </div>
@@ -289,17 +327,17 @@ function TsuboCompareContent() {
                 return (
                   <button
                     key={t.id}
-                    onClick={() => handleAddTsubo(t.code)}
+                    onClick={() => handleSelectTsubo(t)}
                     disabled={isAlreadySelected}
-                    className={`p-2 rounded-xl text-left border text-xs flex items-center justify-between ${
+                    className={`p-2.5 rounded-xl text-left border text-xs flex items-center justify-between transition-all ${
                       isAlreadySelected
-                        ? "opacity-50 border-dashed border-[#E5DEC9]"
+                        ? "opacity-50 border-dashed border-[#E5DEC9] cursor-not-allowed"
                         : "bg-[#FAF8F5] dark:bg-[#151D25] border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924]"
                     }`}
                   >
                     <div>
                       <span className="font-bold text-xs block">{t.name}</span>
-                      <span className="text-[10px] text-[#737C77]">{t.code} / {t.meridianShort}</span>
+                      <span className="text-xs text-[#737C77]">{t.code} / {t.meridianShort}</span>
                     </div>
                     {!isAlreadySelected && <Plus className="w-3.5 h-3.5 text-[#B86924]" />}
                   </button>
@@ -323,24 +361,63 @@ function TsuboCompareContent() {
                     <th className="p-4 w-32 sm:w-44 font-bold text-[#737C77] dark:text-[#8899A6]">
                       比較項目
                     </th>
-                    {selectedTsubos.map(t => (
-                      <th key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] min-w-[240px]">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <span className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] block">
-                              {t.name}
-                            </span>
-                            <span className="text-xs text-[#B86924] dark:text-[#E6C387] font-bold">
-                              {t.code} ({t.kana})
-                            </span>
+                    {selectedTsubos.map((t, idx) => (
+                      <th key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] min-w-[260px]">
+                        <div className="space-y-3">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <span className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] block">
+                                {t.name}
+                              </span>
+                              <span className="text-xs text-[#B86924] dark:text-[#E6C387] font-bold">
+                                {t.code} ({t.kana})
+                              </span>
+                            </div>
+                            <button
+                              onClick={() => handleRemoveTsubo(t.code)}
+                              className="p-1.5 rounded-lg text-[#737C77] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors print:hidden"
+                              title="比較から外す"
+                              aria-label={`${t.name}を比較から外す`}
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
                           </div>
-                          <button
-                            onClick={() => handleRemoveTsubo(t.code)}
-                            className="p-1 rounded text-[#737C77] hover:text-red-600 print:hidden"
-                            title="比較から外す"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
+
+                          {/* 列操作アクションバー（変更・詳細・外す） */}
+                          <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-[#F2ECE0] dark:border-[#22303D] print:hidden">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setTargetReplaceIndex(idx);
+                                const input = document.getElementById("compare-search-input");
+                                input?.focus();
+                                input?.scrollIntoView({ behavior: "smooth", block: "center" });
+                              }}
+                              className={`px-2.5 py-1 rounded-lg border text-xs font-medium transition-colors ${
+                                targetReplaceIndex === idx
+                                  ? "bg-[#1E3D34] text-white border-[#1E3D34]"
+                                  : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#A0B0BC] hover:border-[#1E3D34]"
+                              }`}
+                            >
+                              {targetReplaceIndex === idx ? "変更中（検索して選択）" : "この経穴を変更"}
+                            </button>
+
+                            <Link
+                              href={`/tsubo/${t.code.toLowerCase()}`}
+                              target="_blank"
+                              className="px-2.5 py-1 rounded-lg border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] text-xs font-medium text-[#59615D] dark:text-[#A0B0BC] hover:text-[#1E3D34] transition-colors"
+                            >
+                              詳細を見る ↗
+                            </Link>
+
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveTsubo(t.code)}
+                              className="px-2 py-1 rounded-lg text-xs text-[#737C77] hover:text-red-600 hover:underline"
+                            >
+                              外す
+                            </button>
+                          </div>
                         </div>
                       </th>
                     ))}
@@ -457,11 +534,101 @@ function TsuboCompareContent() {
 
       </div>
 
+      {/* 経穴入れ替え選択モーダル（2穴選択済み時に新しい経穴を追加しようとした場合） */}
+      {pendingSwapTsubo && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="bg-white dark:bg-[#17212A] rounded-3xl max-w-md w-full p-6 border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xl space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+                比較する経穴の入れ替え
+              </h3>
+              <button
+                type="button"
+                onClick={() => setPendingSwapTsubo(null)}
+                className="p-1.5 rounded-lg text-[#737C77] hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+              新しく「<strong className="text-[#1E3D34] dark:text-[#74BA9E]">{pendingSwapTsubo.name}（{pendingSwapTsubo.code}）</strong>」を追加します。どちらの経穴と入れ替えますか？
+            </p>
+
+            <div className="space-y-2 pt-1">
+              {selectedTsubos.map((current, idx) => (
+                <button
+                  key={current.id}
+                  type="button"
+                  onClick={() => {
+                    const updated = [...selectedCodes];
+                    updated[idx] = pendingSwapTsubo.code;
+                    setSelectedCodes(updated);
+                    setPendingSwapTsubo(null);
+                    setSearchQuery("");
+                    setSaved(false);
+                  }}
+                  className="w-full p-3.5 rounded-2xl border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:bg-[#FAF8F5] dark:hover:bg-[#1f2c38] text-left flex items-center justify-between transition-all group"
+                >
+                  <div>
+                    <span className="text-xs text-[#737C77] dark:text-[#8899A6] block">
+                      {idx === 0 ? "左の経穴" : idx === 1 ? "右の経穴" : `第${idx + 1}の経穴`}と入れ替え
+                    </span>
+                    <strong className="font-serif text-sm text-[#232826] dark:text-[#FAF8F5]">
+                      {current.name}（{current.code}）
+                    </strong>
+                  </div>
+                  <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] group-hover:underline">
+                    入れ替える ➜
+                  </span>
+                </button>
+              ))}
+
+              {!isPremium && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPendingSwapTsubo(null);
+                    setAuthModalOpen(true);
+                  }}
+                  className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-[#FCF4EB] to-[#F7E8D8] dark:from-[#2A1E14] dark:to-[#382618] border border-[#F2DEB0] dark:border-[#4A321E] text-left flex items-center justify-between transition-all hover:opacity-95"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Crown className="w-5 h-5 text-[#B86924] dark:text-[#E6C387] shrink-0" />
+                    <div>
+                      <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
+                        3穴を同時に横並び比較する
+                      </span>
+                      <span className="text-xs text-[#737C77] dark:text-[#A0B0BC]">
+                        プレミアムプランで最大3穴まで同時比較可能
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] shrink-0">
+                    案内 ➜
+                  </span>
+                </button>
+              )}
+            </div>
+
+            <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex justify-end">
+              <button
+                type="button"
+                onClick={() => setPendingSwapTsubo(null)}
+                className="px-4 py-2 rounded-xl text-xs font-bold text-[#737C77] hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                キャンセル
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <AuthModal
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
-        title="3穴同時精密比較 ＆ カルテ保存"
-        description="全361穴からの3穴同時横並び精密比較、および比較結果のマイカルテ直接保存はプレミアム会員限定機能です。"
+        title="3穴同時精密比較 ＆ 学習ノート保存"
+        description="全361穴からの3穴同時横並び精密比較、および比較結果の学習ノート保存はプレミアム会員限定機能です。"
       />
     </div>
   );

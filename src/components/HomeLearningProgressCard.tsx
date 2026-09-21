@@ -84,7 +84,7 @@ export default function HomeLearningProgressCard() {
             className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white text-[#142B24] font-bold text-xs sm:text-sm hover:bg-emerald-50 active:scale-95 shadow-md transition-all group"
           >
             <PlayCircle className="w-4 h-4 text-emerald-700" />
-            <span>{isStarted ? '続きから学ぶ' : 'レッスン1から始める'}</span>
+            <span>{isStarted ? '続きから学ぶ' : '最初のレッスンを始める'}</span>
             <ArrowRight className="w-4 h-4 text-emerald-700 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
