@@ -74,3 +74,8 @@ export function buildAmazonAssociateUrl(options: {
 
   return undefined;
 }
+
+/**
+ * Prime Student（学生向けAmazonプライム）公式登録ページURL（アソシエイトタグ付き）
+ */
+export const PRIME_STUDENT_URL = `https://www.amazon.co.jp/joinstudent?tag=${AMAZON_ASSOCIATE_TAG}`;

@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import SeasonalBanner from "@/components/SeasonalBanner";
 import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
+import PrimeStudentCard from "@/components/PrimeStudentCard";
 import { isSubscriptionSalesEnabled } from "@/config/subscription";
 
 // 東洋医学8大体系（トップページ用・要点を絞った簡潔データ）
@@ -350,6 +351,11 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* 5.5 学生向け学習・専門書購入サポート（Prime Student） */}
+      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <PrimeStudentCard variant="banner" />
       </section>
 
       {/* 6. 運営者（はり太郎院長）と情報公開方針 */}

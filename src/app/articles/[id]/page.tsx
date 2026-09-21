@@ -5,6 +5,7 @@ import { ARTICLES } from "@/data/articleData";
 import { resolveArticleReferences } from "@/utils/referenceResolver";
 import MarkdownBody from "@/components/MarkdownBody";
 import ArticleReferences from "@/components/ArticleReferences";
+import PrimeStudentCard from "@/components/PrimeStudentCard";
 import CitationTextRenderer from "@/components/CitationTextRenderer";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
 import { 
@@ -247,6 +248,9 @@ export default async function ArticleDetailPage({ params }: Props) {
 
           {/* 参考文献・学術エビデンス（PubMed・DOI・古典原典） */}
           <ArticleReferences references={resolvedReferences} />
+
+          {/* 学生向け専門書・教科書サポート（Prime Student） */}
+          <PrimeStudentCard variant="card" className="mt-8" />
 
           {/* 著者紹介フッター */}
           <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-6 bg-[#FAF8F5] dark:bg-[#121920] p-4 sm:p-6 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] flex flex-col sm:flex-row items-start gap-4">

@@ -24,6 +24,7 @@ import { KIKEI_VESSELS } from "@/data/kikeiData";
 import { useAuth } from "@/contexts/AuthContext";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import AuthModal from "@/components/auth/AuthModal";
+import PrimeStudentCard from "@/components/PrimeStudentCard";
 
 // 古典条文データ（素問、霊枢、難経、鍼灸甲乙経）
 const CLASSICAL_TEXTS = [
@@ -447,6 +448,9 @@ export default function LibraryPage() {
           )}
 
         </div>
+
+        {/* 学生向け専門書・教科書サポート（Prime Student） */}
+        <PrimeStudentCard variant="banner" className="mt-12" />
 
       </div>
 
