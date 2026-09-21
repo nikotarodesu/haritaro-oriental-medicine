@@ -17,7 +17,7 @@ import {
   CheckCircle2,
   RefreshCw
 } from "lucide-react";
-import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
+import { SUBSCRIPTION_CONFIG, isSubscriptionSalesEnabled } from "@/config/subscription";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function PricingPage() {
@@ -25,10 +25,12 @@ export default function PricingPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { user, isPremium } = useAuth();
+  const salesEnabled = isSubscriptionSalesEnabled();
 
   const currentPricing = SUBSCRIPTION_CONFIG.pricing[billingCycle];
 
   const handleSubscribe = async () => {
+    if (!salesEnabled) return;
     setIsLoading(true);
     setError(null);
     try {
@@ -59,6 +61,19 @@ export default function PricingPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 sm:space-y-16">
+      {/* 準備中ステータスバナー */}
+      {!salesEnabled && (
+        <div className="max-w-3xl mx-auto p-4 sm:p-5 rounded-2xl bg-[#FCF4EB] dark:bg-[#251B12] border border-[#F3DEC5] dark:border-[#4D331F] text-center space-y-1 shadow-sm">
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>{SUBSCRIPTION_CONFIG.statusMessages.comingSoonTitle}</span>
+          </div>
+          <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+            {SUBSCRIPTION_CONFIG.statusMessages.comingSoonSubtitle}
+          </p>
+        </div>
+      )}
+
       {/* ヘッダーエリア */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#F3DEC5] dark:border-[#4D331F] text-[#B86924] dark:text-[#E6C387] text-xs font-semibold tracking-wider">
@@ -72,7 +87,7 @@ export default function PricingPage() {
         </h1>
 
         <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          基礎理論の習得から臨床現場での即応力へ。厳選された20の臨床症例演習、大容量マイカルテ（1,000件保存）、奇経八脈の全流注図、条件比較シミュレーターなど、臨床家・学習者のための全機能を無制限にご活用いただけます。
+          基礎理論の習得から臨床現場での即応力へ。厳選された20の臨床症例演習、大容量マイカルテ（最大1,000件保存）、奇経八脈の全流注図、条件比較ツールなど、臨床家・学習者のための高度な学習機能をフル活用いただけます。
         </p>
 
         {/* 支払いサイクル切り替えスイッチ */}
@@ -146,7 +161,7 @@ export default function PricingPage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-                  <span>東洋医学8大体系カリキュラム（全92講）の閲覧</span>
+                  <span>東洋医学8大体系カリキュラムの閲覧</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
@@ -191,7 +206,7 @@ export default function PricingPage() {
                 {billingCycle === "yearly" ? "プレミアム年額プラン" : "プレミアム月額プラン"}
               </h3>
               <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-                全症例・全ツール・1,000件保存枠を含むすべての機能が即座に解放されます。
+                全20症例・全ツール・1,000件保存枠を含むすべての機能が即座に解放されます。
               </p>
             </div>
 
@@ -249,7 +264,7 @@ export default function PricingPage() {
                 <Crown className="w-4 h-4 text-[#E6C387]" />
                 <span>すでに加入中（契約管理へ）</span>
               </Link>
-            ) : (
+            ) : salesEnabled ? (
               <button
                 type="button"
                 onClick={handleSubscribe}
@@ -269,6 +284,20 @@ export default function PricingPage() {
                   </>
                 )}
               </button>
+            ) : (
+              <div className="space-y-2">
+                <button
+                  type="button"
+                  disabled
+                  className="w-full py-3.5 px-6 rounded-2xl bg-[#D8CFC0] dark:bg-[#2A3B4A] text-[#737C77] dark:text-[#8899A6] text-xs sm:text-sm font-bold shadow-inner cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span>現在お申し込み準備中（近日再開）</span>
+                </button>
+                <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] text-center">
+                  ※正式公開時にお知らせいたします。現在は無料体験機能をご利用ください。
+                </p>
+              </div>
             )}
             <div className="flex items-center justify-center gap-2 mt-2.5 text-[11px] text-[#737C77] dark:text-[#8899A6]">
               <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />

@@ -1,14 +1,16 @@
 "use client";
 
-import { useState, useMemo, useEffect, Suspense } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { 
   getAllAcupoints, 
   getPublishedAcupoints, 
   AcupointMaster, 
   MERIDIANS, 
   ACUPOINT_CATEGORIES, 
-  BODY_REGIONS 
+  BODY_REGIONS,
+  compareAcupointsByMeridianOrder 
 } from "@/data/tsubo";
 import { 
   Compass, 
@@ -47,23 +49,39 @@ export default function TsuboPage() {
 function TsuboPageContent() {
   const allPoints = useMemo(() => getAllAcupoints(), []);
   const publishedCount = useMemo(() => getPublishedAcupoints().length, []);
+  const searchParams = useSearchParams();
+
+  // URLクエリから初期値を復元
+  const initialQ = searchParams?.get("q") || "";
+  const initialBodyPart = searchParams?.get("bodyPart") || "すべて";
+  const initialMeridian = searchParams?.get("meridian") || "すべて";
+  const initialCategory = searchParams?.get("category") || "すべて";
+  const initialPublished = searchParams?.get("published") === "true";
+  const initialSort = (["meridian", "kana", "detailed"].includes(searchParams?.get("sort") || "")) 
+    ? (searchParams!.get("sort") as "meridian" | "kana" | "detailed") 
+    : "meridian";
+  const initialView = searchParams?.get("view") === "table" ? "table" : "grid";
+  const initialPage = parseInt(searchParams?.get("page") || "1", 10) || 1;
 
   // 検索・絞り込みステート
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedBodyPart, setSelectedBodyPart] = useState<string>("すべて");
-  const [selectedMeridian, setSelectedMeridian] = useState<string>("すべて");
-  const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
-  const [onlyPublished, setOnlyPublished] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState(initialQ);
+  const [selectedBodyPart, setSelectedBodyPart] = useState<string>(initialBodyPart);
+  const [selectedMeridian, setSelectedMeridian] = useState<string>(initialMeridian);
+  const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
+  const [onlyPublished, setOnlyPublished] = useState<boolean>(initialPublished);
   const [selectedTsubo, setSelectedTsubo] = useState<AcupointMaster | null>(null);
 
   // 表示・ページネーション・並び順ステート
-  const [viewMode, setViewMode] = useState<"grid" | "table">("grid");
-  const [sortOption, setSortOption] = useState<"meridian" | "kana" | "detailed">("meridian");
+  const [viewMode, setViewMode] = useState<"grid" | "table">(initialView);
+  const [sortOption, setSortOption] = useState<"meridian" | "kana" | "detailed">(initialSort);
   const [pageSize, setPageSize] = useState<number>(24);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(initialPage);
 
   const { memos, isClipped, toggleClip } = useClinicalMemo();
   const savedTsuboMemos = useMemo(() => memos.filter((m) => m.type === "tsubo"), [memos]);
+
+  // 初回マウントフラグ（初回ロード時のページ番号リセットを防止）
+  const isFirstRender = useRef(true);
 
   // 部位ごとの経穴数を集計
   const pointCountsByPart = useMemo(() => {
@@ -74,42 +92,83 @@ function TsuboPageContent() {
     return counts;
   }, [allPoints]);
 
-  // URLクエリ処理
+  // URLクエリ変更の検知（ブラウザバック・フォワード・リンク遷移時の同期）
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const targetId = params.get("id") || params.get("highlight");
-      const targetMeridian = params.get("meridian");
-      const targetBodyPart = params.get("bodyPart");
+    if (!searchParams) return;
+    const q = searchParams.get("q") || "";
+    const bp = searchParams.get("bodyPart") || "すべて";
+    const mer = searchParams.get("meridian") || "すべて";
+    const cat = searchParams.get("category") || "すべて";
+    const pub = searchParams.get("published") === "true";
+    const sort = (searchParams.get("sort") as "meridian" | "kana" | "detailed") || "meridian";
+    const view = (searchParams.get("view") as "grid" | "table") || "grid";
+    const pg = parseInt(searchParams.get("page") || "1", 10) || 1;
 
-      if (targetMeridian) setSelectedMeridian(targetMeridian);
-      if (targetBodyPart) setSelectedBodyPart(targetBodyPart);
+    setSearchQuery((prev) => (prev !== q ? q : prev));
+    setSelectedBodyPart((prev) => (prev !== bp ? bp : prev));
+    setSelectedMeridian((prev) => (prev !== mer ? mer : prev));
+    setSelectedCategory((prev) => (prev !== cat ? cat : prev));
+    setOnlyPublished((prev) => (prev !== pub ? pub : prev));
+    setSortOption((prev) => (prev !== sort ? sort : prev));
+    setViewMode((prev) => (prev !== view ? view : prev));
+    setCurrentPage((prev) => (prev !== pg ? pg : prev));
 
-      if (targetId) {
-        const cleanId = targetId.replace(/^tsubo-/, "").toLowerCase();
-        const found = allPoints.find(
-          (t) =>
-            t.codeLower === cleanId ||
-            t.id.toLowerCase() === cleanId ||
-            t.legacyId.toLowerCase() === cleanId
-        );
-        if (found) {
-          setSelectedTsubo(found);
-          setTimeout(() => {
-            const el = document.getElementById(`tsubo-card-${found.codeLower}`);
-            if (el) {
-              el.scrollIntoView({ behavior: "smooth", block: "center" });
-            }
-          }, 350);
-        }
+    const targetId = searchParams.get("id") || searchParams.get("highlight");
+    if (targetId) {
+      const cleanId = targetId.replace(/^tsubo-/, "").toLowerCase();
+      const found = allPoints.find(
+        (t) =>
+          t.codeLower === cleanId ||
+          t.id.toLowerCase() === cleanId ||
+          t.legacyId.toLowerCase() === cleanId
+      );
+      if (found) {
+        setSelectedTsubo(found);
+        setTimeout(() => {
+          const el = document.getElementById(`tsubo-card-${found.codeLower}`);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }, 350);
       }
     }
-  }, [allPoints]);
+  }, [searchParams, allPoints]);
 
-  // フィルター変更時にページを1に戻す
+  // フィルター・検索条件変更時にページを1に戻す（初回マウント時はスキップ）
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     setCurrentPage(1);
   }, [searchQuery, selectedBodyPart, selectedMeridian, selectedCategory, onlyPublished, sortOption, pageSize]);
+
+  // ステート変化時にURLクエリを同期（ブラウザバック・URL共有対応）
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams();
+
+    if (searchQuery.trim()) params.set("q", searchQuery.trim());
+    if (selectedBodyPart !== "すべて") params.set("bodyPart", selectedBodyPart);
+    if (selectedMeridian !== "すべて") params.set("meridian", selectedMeridian);
+    if (selectedCategory !== "すべて") params.set("category", selectedCategory);
+    if (onlyPublished) params.set("published", "true");
+    if (sortOption !== "meridian") params.set("sort", sortOption);
+    if (viewMode !== "grid") params.set("view", viewMode);
+    if (currentPage > 1) params.set("page", String(currentPage));
+
+    const currentUrlParams = new URLSearchParams(window.location.search);
+    const targetId = currentUrlParams.get("id") || currentUrlParams.get("highlight");
+    if (targetId) params.set("id", targetId);
+
+    const newQuery = params.toString();
+    const newPath = newQuery ? `${window.location.pathname}?${newQuery}` : window.location.pathname;
+    const currentFull = `${window.location.pathname}${window.location.search}`;
+
+    if (newPath !== currentFull) {
+      window.history.replaceState(null, "", newPath);
+    }
+  }, [searchQuery, selectedBodyPart, selectedMeridian, selectedCategory, onlyPublished, sortOption, viewMode, currentPage]);
 
   // 経絡リスト（全14経脈から動的生成）
   const meridianOptions = useMemo(() => {
@@ -170,7 +229,7 @@ function TsuboPageContent() {
           if (!a.hasDetailedAnatomy && b.hasDetailedAnatomy) return 1;
           if (a.status === "published" && b.status !== "published") return -1;
           if (a.status !== "published" && b.status === "published") return 1;
-          return a.meridianOrder - b.meridianOrder;
+          return compareAcupointsByMeridianOrder(a, b);
         }
 
         // デフォルト：経絡順（検索語がある場合は完全一致優先）
@@ -181,7 +240,7 @@ function TsuboPageContent() {
           if (!aExact && bExact) return 1;
         }
 
-        return a.meridianOrder - b.meridianOrder;
+        return compareAcupointsByMeridianOrder(a, b);
       });
   }, [allPoints, searchQuery, selectedBodyPart, selectedMeridian, selectedCategory, onlyPublished, sortOption]);
 
@@ -572,17 +631,13 @@ function TsuboPageContent() {
 
                   {/* コンテンツ整備状況バッジ */}
                   <div className="flex items-center gap-1.5 pt-1 text-[10px]">
-                    <span className="px-1.5 py-0.2 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
-                      基本情報
-                    </span>
-                    {tsubo.status === "published" && (
-                      <span className="px-1.5 py-0.2 rounded bg-[#EBF3EF] text-[#1E3D34] font-semibold">
-                        詳細解説
+                    {tsubo.hasDetailedAnatomy ? (
+                      <span className="px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#1A332B] text-[#1E3D34] dark:text-[#74BA9E] font-bold">
+                        精密解剖図・詳細知見
                       </span>
-                    )}
-                    {tsubo.hasDetailedAnatomy && (
-                      <span className="px-1.5 py-0.2 rounded bg-[#FAF3E3] text-[#B86924] font-semibold">
-                        解剖図あり
+                    ) : (
+                      <span className="px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
+                        標準取穴情報
                       </span>
                     )}
                   </div>
@@ -613,7 +668,7 @@ function TsuboPageContent() {
                     href={`/tsubo/${tsubo.codeLower}`}
                     className="font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-0.5"
                   >
-                    <span>詳細解説を見る</span>
+                    <span>{tsubo.hasDetailedAnatomy ? "詳細解説・解剖図を見る" : "基本情報を見る"}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
@@ -661,11 +716,7 @@ function TsuboPageContent() {
                       <td className="p-3">
                         {t.hasDetailedAnatomy ? (
                           <span className="px-1.5 py-0.5 rounded bg-[#EBF3EF] text-[#1E3D34] font-bold text-[10px]">
-                            解剖図あり
-                          </span>
-                        ) : t.status === "published" ? (
-                          <span className="px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 text-[10px]">
-                            詳細知見
+                            精密解剖図
                           </span>
                         ) : (
                           <span className="text-[10px] text-[#737C77]">標準情報</span>

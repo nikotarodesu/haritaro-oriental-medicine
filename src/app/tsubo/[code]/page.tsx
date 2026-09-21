@@ -5,7 +5,8 @@ import {
   ACUPOINTS_MASTER, 
   getAcupointByCode, 
   getAcupointDetail, 
-  getMeridianPoints 
+  getMeridianPoints,
+  isDetailedAcupoint
 } from "@/data/tsubo";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import ClipButton from "@/components/ClipButton";
@@ -72,6 +73,8 @@ export default async function AcupointDetailPage({ params }: Props) {
   if (!point) {
     notFound();
   }
+
+  const isDetailed = isDetailedAcupoint(point.codeLower);
 
   // 同経脈の経穴リスト（前後の経穴導線用）
   const meridianPoints = getMeridianPoints(point.meridianId);
@@ -252,6 +255,15 @@ export default async function AcupointDetailPage({ params }: Props) {
                 <span className="text-xs px-2 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#263542] text-[#59615D] dark:text-[#A0B0BC]">
                   {point.bodyPart}
                 </span>
+                {isDetailed ? (
+                  <span className="text-xs px-2.5 py-1 rounded-lg bg-[#EBF3EF] dark:bg-[#1A332B] border border-[#C5DED4] dark:border-[#2D5A4A] text-[#1E3D34] dark:text-[#74BA9E] font-bold">
+                    詳細解剖図収録
+                  </span>
+                ) : (
+                  <span className="text-xs px-2 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#2D3E50] text-[#737C77] dark:text-[#8899A6]">
+                    標準取穴情報
+                  </span>
+                )}
               </div>
 
               {/* 経穴名・読み */}
@@ -408,7 +420,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         </section>
 
         {/* 3. 断面解剖モデル */}
-        {point.crossSection && (
+        {isDetailed && point.crossSection && point.crossSection.svgElements && point.crossSection.svgElements.length > 0 && (
           <section className="space-y-6">
             <CrossSectionViewer
               model={point.crossSection}
@@ -445,7 +457,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
           <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
             <Sparkles className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
-            <h2>臨床知見・適応症・現代科学エビデンス</h2>
+            <h2>{point.researchEvidence ? "臨床知見・適応症・現代科学エビデンス" : "臨床知見・主治適応症"}</h2>
           </div>
 
           {/* 主治症タグ一覧 */}

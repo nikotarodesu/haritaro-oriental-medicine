@@ -131,11 +131,6 @@ export default function ArticlesPage() {
                 </>
               )}
             </button>
-
-            <div className="flex items-center gap-1.5 text-xs text-[#59615D] dark:text-[#96A6B2]">
-              <Clock className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span className="text-[11px] sm:text-xs">読了約 {activeArticle.readTime}</span>
-            </div>
           </div>
         </div>
 

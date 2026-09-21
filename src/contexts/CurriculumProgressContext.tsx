@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { getCurriculumStats } from '@/data/curriculumData';
 
 export interface QuizResultRecord {
   questionId: string;
@@ -37,13 +38,17 @@ export interface CurriculumProgressContextType {
   resetAllProgress: () => void;
   totalCompleted: number;
   totalPercentage: number;
+  totalPublished: number;
+  totalPlanned: number;
   getChapterProgress: (chapterId: string, totalInChapter: number) => ChapterProgressInfo;
   getNextResumeLectureId: (allLectureIds: string[]) => string | null;
   getIncorrectQuestions: () => QuizResultRecord[];
 }
 
 const STORAGE_KEY = 'haritaro-learning-progress-v1';
-const TOTAL_ALL_LECTURES = 71; // 現在公開中の全71レッスンに対応
+const CURRICULUM_STATS = getCurriculumStats();
+const TOTAL_ALL_LECTURES = CURRICULUM_STATS.totalPublishedLessons; // 公開中71レッスン
+const TOTAL_PLANNED_LECTURES = CURRICULUM_STATS.totalPlannedLessons; // 計画全92レッスン
 
 const CurriculumProgressContext = createContext<CurriculumProgressContextType | undefined>(undefined);
 
@@ -232,6 +237,8 @@ const CHAPTER_PREFIX_MAP: Record<string, string[]> = {
         resetAllProgress,
         totalCompleted,
         totalPercentage,
+        totalPublished: TOTAL_ALL_LECTURES,
+        totalPlanned: TOTAL_PLANNED_LECTURES,
         getChapterProgress,
         getNextResumeLectureId,
         getIncorrectQuestions,

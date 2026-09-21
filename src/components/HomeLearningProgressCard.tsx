@@ -34,7 +34,7 @@ export default function HomeLearningProgressCard() {
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-800/80 text-emerald-200 border border-emerald-600/40">
               <Compass className="w-3.5 h-3.5" />
-              東洋医学8大体系（公開71レッスン）
+              東洋医学8大体系（公開71レッスン / 全92予定）
             </span>
             {isStarted && (
               <span className="text-xs font-bold text-emerald-300">
@@ -46,7 +46,7 @@ export default function HomeLearningProgressCard() {
           <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
             {isStarted
               ? `続きから再開：${resumeLecture ? resumeLecture.title : '陰陽論 レッスン1'}`
-              : 'まずはここから：第1講 陰陽論 レッスン1'}
+              : 'まずはここから：第1章 陰陽論 レッスン1'}
           </h3>
 
           <p className="text-xs sm:text-sm text-emerald-100/80 line-clamp-1 max-w-2xl">
@@ -65,14 +65,14 @@ export default function HomeLearningProgressCard() {
                 />
               </div>
               <span className="text-xs font-mono font-bold text-emerald-200">
-                {isMounted ? `${totalCompleted}/${allLectures.length}講 (${totalPercentage}%)` : '受講中'}
+                {isMounted ? `${totalCompleted}/${allLectures.length}レッスン完了 (${totalPercentage}%)` : '受講中'}
               </span>
             </div>
           ) : (
             <div className="flex items-center gap-2 pt-1 text-xs text-emerald-200/90 font-medium">
               <span>所要時間: 約10分</span>
               <span>•</span>
-              <span>全71レッスン公開中</span>
+              <span>公開中71レッスン（全92レッスン予定）</span>
             </div>
           )}
         </div>
@@ -84,7 +84,7 @@ export default function HomeLearningProgressCard() {
             className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white text-[#142B24] font-bold text-xs sm:text-sm hover:bg-emerald-50 active:scale-95 shadow-md transition-all group"
           >
             <PlayCircle className="w-4 h-4 text-emerald-700" />
-            <span>{isStarted ? '続きから学ぶ' : '最初の1講を始める'}</span>
+            <span>{isStarted ? '続きから学ぶ' : 'レッスン1から始める'}</span>
             <ArrowRight className="w-4 h-4 text-emerald-700 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>

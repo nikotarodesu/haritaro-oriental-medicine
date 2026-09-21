@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { GLOSSARY_TERMS } from "@/data/glossaryData";
@@ -23,27 +23,44 @@ export default function GlossaryRenderer({ text, seenTerms }: GlossaryRendererPr
   const escapedTerms = terms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
   const termRegex = terms.length > 0 ? new RegExp(`(${escapedTerms.join("|")})`, "g") : null;
 
-  // 単一のプレーンテキスト断片に対して専門用語ツールチップを適用する内部ヘルパー
+  // 単一のプレーンテキスト断片に対して専門用語ツールチップおよび改行（<br>）を適用する内部ヘルパー
   const renderGlossaryTerms = (str: string, keyPrefix: string) => {
-    if (!termRegex || !str) return <React.Fragment key={keyPrefix}>{str}</React.Fragment>;
+    if (!str) return null;
 
-    const segments = str.split(termRegex);
+    // <br> / <br/> / <br /> タグで分割（HTMLタグの生文字露出を防止し改行要素として描画）
+    const lineParts = str.split(/(<br\s*\/?>)/gi);
+
     return (
       <React.Fragment key={keyPrefix}>
-        {segments.map((segment, segIdx) => {
-          const termInfo = GLOSSARY_TERMS[segment];
-          if (termInfo) {
-            if (tracker.has(segment)) {
-              return <React.Fragment key={`${keyPrefix}-${segIdx}`}>{segment}</React.Fragment>;
-            }
-            tracker.add(segment);
-            return (
-              <TermTooltip key={`${keyPrefix}-${segIdx}`} termInfo={termInfo}>
-                {segment}
-              </TermTooltip>
-            );
+        {lineParts.map((linePart, lineIdx) => {
+          if (/^<br\s*\/?>$/i.test(linePart)) {
+            return <br key={`${keyPrefix}-br-${lineIdx}`} />;
           }
-          return <React.Fragment key={`${keyPrefix}-${segIdx}`}>{segment}</React.Fragment>;
+
+          if (!termRegex || !linePart) {
+            return <React.Fragment key={`${keyPrefix}-txt-${lineIdx}`}>{linePart}</React.Fragment>;
+          }
+
+          const segments = linePart.split(termRegex);
+          return (
+            <React.Fragment key={`${keyPrefix}-seg-${lineIdx}`}>
+              {segments.map((segment, segIdx) => {
+                const termInfo = GLOSSARY_TERMS[segment];
+                if (termInfo) {
+                  if (tracker.has(segment)) {
+                    return <React.Fragment key={`${keyPrefix}-${lineIdx}-${segIdx}`}>{segment}</React.Fragment>;
+                  }
+                  tracker.add(segment);
+                  return (
+                    <TermTooltip key={`${keyPrefix}-${lineIdx}-${segIdx}`} termInfo={termInfo}>
+                      {segment}
+                    </TermTooltip>
+                  );
+                }
+                return <React.Fragment key={`${keyPrefix}-${lineIdx}-${segIdx}`}>{segment}</React.Fragment>;
+              })}
+            </React.Fragment>
+          );
         })}
       </React.Fragment>
     );

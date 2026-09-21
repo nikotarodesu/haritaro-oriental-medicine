@@ -13,7 +13,7 @@ import {
   Layers,
   FileText
 } from "lucide-react";
-import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
+import { SUBSCRIPTION_CONFIG, isSubscriptionSalesEnabled } from "@/config/subscription";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -89,21 +89,32 @@ export default function AuthModal({
           </ul>
         </div>
 
-        {/* 準備中案内 */}
+        {/* 受付状態に応じた案内 */}
         <div className="space-y-3 pt-1">
-          <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#11171E] border border-[#E5DEC9] dark:border-[#2A3B4A] text-center space-y-1">
-            <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
-              現在リニューアル準備中です
-            </span>
-            <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-              プレミアム会員の一般受付は近日中に再開予定です。正式オープンまで今しばらくお待ちください。
-            </p>
-          </div>
+          {isSubscriptionSalesEnabled() ? (
+            <Link
+              href="/pricing"
+              onClick={onClose}
+              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#1E3D34] to-[#2B6958] hover:from-[#162D26] hover:to-[#225547] text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5"
+            >
+              <Crown className="w-4 h-4 text-[#E6C387]" />
+              <span>プレミアムプランの詳細を見る</span>
+            </Link>
+          ) : (
+            <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#11171E] border border-[#E5DEC9] dark:border-[#2A3B4A] text-center space-y-1">
+              <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
+                {SUBSCRIPTION_CONFIG.statusMessages.comingSoonTitle}
+              </span>
+              <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
+                {SUBSCRIPTION_CONFIG.statusMessages.comingSoonSubtitle}
+              </p>
+            </div>
+          )}
 
           <button
             type="button"
             onClick={onClose}
-            className="w-full py-3 px-4 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white font-bold text-xs shadow-sm transition-all"
+            className="w-full py-2.5 px-4 rounded-xl border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] hover:bg-[#F2EDE2] dark:hover:bg-[#1C2833] font-bold text-xs transition-all"
           >
             閉じる
           </button>

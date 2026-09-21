@@ -3685,3 +3685,148 @@ export const CURRICULUM_DATA: CurriculumStage[] = [
     ]
   }
 ];
+
+/**
+ * カリキュラム全8章（シリーズ）の設計仕様
+ * 各章の章番号、シリーズID、タイトル、予定全レッスン数、解説を定義
+ */
+export interface CurriculumChapterMeta {
+  chapterNumber: number;
+  seriesId: string;
+  title: string;
+  shortTitle: string;
+  plannedLessons: number;
+  description: string;
+}
+
+export const CURRICULUM_CHAPTERS_META: CurriculumChapterMeta[] = [
+  {
+    chapterNumber: 1,
+    seriesId: "yinyang",
+    title: "第1章 陰陽論",
+    shortTitle: "陰陽論",
+    plannedLessons: 8,
+    description: "状態遷移と動的平衡の最小単位OS。生命現象のゆらぎと対立・統一を捉える思考の土台。",
+  },
+  {
+    chapterNumber: 2,
+    seriesId: "wuxing",
+    title: "第2章 五行論",
+    shortTitle: "五行論",
+    plannedLessons: 12,
+    description: "多臓器相互作用のネットワーク地図。木火土金水の相生相剋と生体連動モデル。",
+  },
+  {
+    chapterNumber: 3,
+    seriesId: "qiblood",
+    title: "第3章 気血水理論",
+    shortTitle: "気血水理論",
+    plannedLessons: 12,
+    description: "生体を駆動する三層実体と代謝モデル。機能（気）・物質（血）・水分代謝（水）の協調。",
+  },
+  {
+    chapterNumber: 4,
+    seriesId: "lifedynamics",
+    title: "第4章 生命機能論",
+    shortTitle: "生命機能論",
+    plannedLessons: 12,
+    description: "表裏・営衛・三焦の生体ダイナミクス。臓腑のネットワークと外界環境への適応力学。",
+  },
+  {
+    chapterNumber: 5,
+    seriesId: "pathomechanism",
+    title: "第5章 病機論",
+    shortTitle: "病機論",
+    plannedLessons: 12,
+    description: "歪みの発生と病理ドミノ破綻モデル。外感・内傷・情志による病態連鎖を解明。",
+  },
+  {
+    chapterNumber: 6,
+    seriesId: "diagnosis",
+    title: "第6章 臨床診断論",
+    shortTitle: "臨床診断論",
+    plannedLessons: 12,
+    description: "四診情報を客観化する臨床推論アルゴリズム。望聞問切から八綱・臓腑弁証への導出。",
+  },
+  {
+    chapterNumber: 7,
+    seriesId: "treatment",
+    title: "第7章 治療戦略論",
+    shortTitle: "治療戦略論",
+    plannedLessons: 12,
+    description: "介入ベクトル・刺激量・治療計画の臨床工学。八法・配穴・標本緩急の戦略設計。",
+  },
+  {
+    chapterNumber: 8,
+    seriesId: "practice",
+    title: "第8章 臨床実践論",
+    shortTitle: "臨床実践論",
+    plannedLessons: 12,
+    description: "臨床運用の完全プロトコルと自己修正ループ。模擬症例演習と臨床意思決定の完結。",
+  },
+];
+
+export interface PlannedLessonItem {
+  seriesId: string;
+  lessonNumber: number;
+  title: string;
+  subtitle: string;
+}
+
+export const PLANNED_UNPUBLISHED_LESSONS: Record<string, PlannedLessonItem[]> = {
+  wuxing: [
+    { seriesId: "wuxing", lessonNumber: 3, title: "五行論 レッスン3：相生を理解する", subtitle: "木生火・火生土・土生金・金生水・水生木のエネルギー助成サイクル" },
+    { seriesId: "wuxing", lessonNumber: 4, title: "五行論 レッスン4：相剋を理解する", subtitle: "木剋土・土剋水・水剋火・火剋金・金剋木のブレーキと抑制制御" },
+    { seriesId: "wuxing", lessonNumber: 5, title: "五行論 レッスン5：関係が乱れるとどうなるか", subtitle: "相乗・相侮・母子相及による多臓器ネットワークの病的波及" },
+    { seriesId: "wuxing", lessonNumber: 6, title: "五行論 レッスン6：五行から五臓へ", subtitle: "肝・心・脾・肺・腎の五行モデルへのマッピングと機能統合" },
+    { seriesId: "wuxing", lessonNumber: 7, title: "五行論 レッスン7：五臓と身体の対応を読む", subtitle: "五官・五体・五華の局所徴候から内臓動態を逆引きする手法" },
+    { seriesId: "wuxing", lessonNumber: 8, title: "五行論 レッスン8：五臓と精神・感情の対応を読む", subtitle: "魂・神・意・魄・志と怒・喜・思・悲・恐の心身相関" },
+    { seriesId: "wuxing", lessonNumber: 9, title: "五行論 レッスン9：自然・生活と五行をつなぐ", subtitle: "四季（春・夏・長夏・秋・冬）と五味（酸・苦・甘・辛・鹹）の運用" },
+    { seriesId: "wuxing", lessonNumber: 10, title: "五行論 レッスン10：五行の関係を身体の理解に使う", subtitle: "肝脾不和・心腎不交などの複合病態モデルの読み解き" },
+    { seriesId: "wuxing", lessonNumber: 11, title: "五行論 レッスン11：対応表から判断へ進む", subtitle: "静的な五行配当表の丸暗記から動的な臨床推論への脱皮" },
+    { seriesId: "wuxing", lessonNumber: 12, title: "五行論 レッスン12：総合演習・次章への接続", subtitle: "五行論の総括・確認テストおよび第3章気血水理論への橋渡し" },
+  ],
+  qiblood: [
+    { seriesId: "qiblood", lessonNumber: 2, title: "気血水理論 レッスン2：気の働きを理解する", subtitle: "推動・温煦・防御・固摂・気化の5大作用の生理的メカニズム" },
+    { seriesId: "qiblood", lessonNumber: 3, title: "気血水理論 レッスン3：気の生成と運動を理解する", subtitle: "宗気・営気・衛気・元気の階層構造と昇降出入のベクトル" },
+    { seriesId: "qiblood", lessonNumber: 4, title: "気血水理論 レッスン4：気の異常を整理する", subtitle: "気虚・気滞・気逆・気陥の病態鑑別と臨床徴候の把握" },
+    { seriesId: "qiblood", lessonNumber: 5, title: "気血水理論 レッスン5：血の働きと生成を理解する", subtitle: "栄養・滋潤・精神活動を支える物質的土台と生成回路" },
+    { seriesId: "qiblood", lessonNumber: 6, title: "気血水理論 レッスン6：血の異常を整理する", subtitle: "血虚・血瘀・血熱・血寒の病態メカニズムと四診所見" },
+    { seriesId: "qiblood", lessonNumber: 7, title: "気血水理論 レッスン7：水・津液の働きを理解する", subtitle: "体液の生成・散布・排泄と三焦・肺脾腎の連動ネットワーク" },
+    { seriesId: "qiblood", lessonNumber: 8, title: "気血水理論 レッスン8：水・津液の異常を整理する", subtitle: "津液不足・水湿・痰飲の段階的病理と全身への影響" },
+    { seriesId: "qiblood", lessonNumber: 9, title: "気血水理論 レッスン9：気・血・水の相互関係を理解する", subtitle: "気為血之帥、血為気之母、気随液脱などの相互依存モデル" },
+    { seriesId: "qiblood", lessonNumber: 10, title: "気血水理論 レッスン10：状態と体質を区別する", subtitle: "一過性の急性病態（証）と長期的な素因（体質）の分離評価" },
+    { seriesId: "qiblood", lessonNumber: 11, title: "気血水理論 レッスン11：伝統理論と現代医学を区別して読む", subtitle: "自律神経・循環・免疫・代謝機能との東西統合的解釈" },
+    { seriesId: "qiblood", lessonNumber: 12, title: "気血水理論 レッスン12：総合演習・次章への接続", subtitle: "気血水総合弁証演習および第4章生命機能論へのステップアップ" },
+  ],
+};
+
+/**
+ * 全カリキュラムの集計データ（SSOT: Single Source of Truth）
+ */
+export function getCurriculumStats() {
+  const allLectures = CURRICULUM_DATA.flatMap((stage) => stage.lectures);
+  const publishedLectures = allLectures.filter((l) => l.isPublished !== false);
+  const totalPlannedLessons = CURRICULUM_CHAPTERS_META.reduce((acc, c) => acc + c.plannedLessons, 0); // 92
+  const totalPublishedLessons = publishedLectures.length; // 71
+
+  const chapterStats = CURRICULUM_CHAPTERS_META.map((meta) => {
+    const lecturesInChapter = allLectures.filter((l) => l.seriesId === meta.seriesId);
+    const publishedInChapter = lecturesInChapter.filter((l) => l.isPublished !== false);
+    return {
+      ...meta,
+      publishedCount: publishedInChapter.length,
+      isFullyPublished: publishedInChapter.length >= meta.plannedLessons,
+      lectures: lecturesInChapter,
+    };
+  });
+
+  return {
+    totalPlannedLessons, // 92
+    totalPublishedLessons, // 71
+    allLectures,
+    publishedLectures,
+    chapterStats,
+  };
+}
+

@@ -245,7 +245,7 @@ export interface AcupointDetail extends AcupointMaster {
   howToLocate: string[]; // ステップ別取穴法
   palpationLandmarks: string[]; // 触知する骨・腱目印
   pitfalls: string; // 取穴の混同・注意
-  crossSection: CrossSectionModel;
+  crossSection?: CrossSectionModel;
   researchEvidence?: {
     focus: string;
     findings: string;

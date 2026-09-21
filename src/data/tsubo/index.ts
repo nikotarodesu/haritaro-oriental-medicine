@@ -53,7 +53,7 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
     return DETAILED_ACUPOINTS[master.codeLower];
   }
 
-  // 3. 基本情報から詳細互換モデルを生成
+  // 3. 基本情報から詳細互換モデルを生成（詳細解剖図svgElementsがない場合はcrossSectionをundefinedにして未完成表示を完全防止）
   return {
     ...master,
     howToLocate: [
@@ -66,64 +66,22 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
       master.locationDetail.split("、")[0] || "局所骨際",
     ],
     pitfalls: "周囲の動脈拍動および重要神経幹の走向に留意し、直刺・斜刺の角度を適切に保ちます。",
-    crossSection: {
-      id: `cs-${master.codeLower}`,
-      title: `${master.name}（${master.code}）局所構造`,
-      level: `${master.bodyPart}（標準取穴位置）`,
-      axes: {
-        horizontal: ["橈側 / 内側", "尺側 / 外側"],
-        vertical: ["浅層（体表）", "深層（骨格）"],
-      },
-      needleTrack: {
-        angle: "直刺 0.5〜1.0寸",
-        safeDepth: "10〜20mm",
-        targetStructure: "局所筋膜および神経筋接合部",
-      },
-      layers: [
-        {
-          depthIndex: 1,
-          id: "skin",
-          name: "皮膚（表皮・真皮）",
-          category: "skin",
-          depthDescription: "表面〜約1.5mm",
-          description: "知覚受容器が豊富。素早い切皮が痛みを防ぐポイント。",
-          dangerLevel: "safe",
-        },
-        {
-          depthIndex: 2,
-          id: "subcutaneous",
-          name: "皮下組織・浅筋膜",
-          category: "subcutaneous",
-          depthDescription: "深さ約1.5〜3.0mm",
-          description: "皮下静脈や末梢皮枝が走行。",
-          dangerLevel: "safe",
-        },
-        {
-          depthIndex: 3,
-          id: "muscle",
-          name: "筋・筋膜層",
-          category: "muscle",
-          depthDescription: "深さ約3.0〜20.0mm",
-          description: "得気（響き）の受容部。",
-          dangerLevel: "safe",
-        },
-        {
-          depthIndex: 4,
-          id: "bone",
-          name: "骨・関節支持組織",
-          category: "bone",
-          depthDescription: "深層境界",
-          description: "取穴の骨性指標。",
-          dangerLevel: "safe",
-        },
-      ],
-      svgElements: [],
-      references: [master.locationSource],
-      verifiedDate: "2026-09",
-    },
+    crossSection: undefined, // 基本穴では未完成な空解剖図・誤った方向ラベルを出さない
     nearbyPoints: [],
   };
 }
+
+/**
+ * 経穴が詳細解説・精密断面図を保持しているか（32穴）を判定
+ */
+export function isDetailedAcupoint(codeOrId: string): boolean {
+  const clean = codeOrId.trim().toLowerCase().replace(/^tsubo-/, "");
+  if (DETAILED_ACUPOINTS[clean]) return true;
+  const master = getAcupointByCode(clean);
+  if (master && DETAILED_ACUPOINTS[master.codeLower]) return true;
+  return master?.status === "published" || master?.hasDetailedAnatomy === true;
+}
+
 
 /**
  * 全経穴を取得
@@ -137,6 +95,38 @@ export function getAllAcupoints(): AcupointMaster[] {
  */
 export function getPublishedAcupoints(): AcupointMaster[] {
   return ACUPOINTS_MASTER.filter((p) => p.status === "published");
+}
+
+/**
+ * 14経脈の標準巡行順マップ（肺経 -> 大腸経 -> ... -> 任脈）
+ */
+export const MERIDIAN_SEQUENCE_MAP: Record<string, number> = {
+  "lung": 1,
+  "large-intestine": 2,
+  "stomach": 3,
+  "spleen": 4,
+  "heart": 5,
+  "small-intestine": 6,
+  "bladder": 7,
+  "kidney": 8,
+  "pericardium": 9,
+  "triple-energizer": 10,
+  "gallbladder": 11,
+  "liver": 12,
+  "governor-vessel": 13,
+  "conception-vessel": 14,
+};
+
+/**
+ * 14経脈の流注順（経絡巡行順 ＆ 経脈内番号順）で経穴を正しくソートする比較関数
+ */
+export function compareAcupointsByMeridianOrder(a: AcupointMaster, b: AcupointMaster): number {
+  const aMeridian = MERIDIAN_SEQUENCE_MAP[a.meridianId] ?? 99;
+  const bMeridian = MERIDIAN_SEQUENCE_MAP[b.meridianId] ?? 99;
+  if (aMeridian !== bMeridian) {
+    return aMeridian - bMeridian;
+  }
+  return a.meridianOrder - b.meridianOrder;
 }
 
 /**
@@ -193,7 +183,7 @@ export function searchAcupoints(
 
     return false;
   }).sort((a, b) => {
-    if (!q) return a.meridianOrder - b.meridianOrder;
+    if (!q) return compareAcupointsByMeridianOrder(a, b);
     // 完全一致を上位に
     const aExact = a.name === q || a.codeLower === q;
     const bExact = b.name === q || b.codeLower === q;
@@ -204,7 +194,7 @@ export function searchAcupoints(
     if (a.status === "published" && b.status !== "published") return -1;
     if (a.status !== "published" && b.status === "published") return 1;
 
-    return 0;
+    return compareAcupointsByMeridianOrder(a, b);
   });
 }
 

@@ -44,6 +44,13 @@ export const SUBSCRIPTION_CONFIG = {
   // Stripe公開鍵
   stripePublishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "",
 
+  // 受付状態メッセージの定義
+  statusMessages: {
+    comingSoonTitle: "プレミアム会員のお申し込みは現在準備中です",
+    comingSoonSubtitle: "サービスの品質向上および決済システムの準備を行っております。正式公開時にお知らせいたします。",
+    comingSoonBadge: "有料プラン準備中",
+  },
+
   // プレミアム会員の提供機能一覧
   features: [
     {
@@ -64,14 +71,14 @@ export const SUBSCRIPTION_CONFIG = {
       id: "practice_haiketsu",
       title: "配穴練習機能（選定理由・教材比較）",
       description: "361穴から目的のツボを組み合わせ、選定理由を言語化。教材の名配穴と即座に比較検証。",
-      free: "閲覧のみ",
+      free: "基本配穴の閲覧のみ",
       premium: "自作配穴の作成・教材比較・無制限保存",
     },
     {
       id: "kikei_hachimai",
       title: "奇経八脈（全8脈）・流注SVG・八脈交会穴",
       description: "任督衝帯・陰陽蹻・陰陽維の全8脈の流注図、交会穴の配穴理論、臨床演習問題を網羅。",
-      free: "概要のみ",
+      free: "任脈・督脈のみ閲覧可能",
       premium: "全8脈詳細図・臨床解説・演習の完全解放",
     },
     {
@@ -90,3 +97,11 @@ export const SUBSCRIPTION_CONFIG = {
     },
   ],
 };
+
+/**
+ * サブスクリプション受付が有効かどうかを判定
+ */
+export function isSubscriptionSalesEnabled(): boolean {
+  return SUBSCRIPTION_CONFIG.enableSubscriptionSales;
+}
+

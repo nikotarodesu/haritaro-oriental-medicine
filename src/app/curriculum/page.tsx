@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { CURRICULUM_DATA, Lecture } from "@/data/curriculumData";
+import { CURRICULUM_DATA, Lecture, PLANNED_UNPUBLISHED_LESSONS, getCurriculumStats } from "@/data/curriculumData";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
 import MarkdownBody from "@/components/MarkdownBody";
@@ -50,6 +50,8 @@ export default function CurriculumPage() {
     recordVisitedLecture,
     totalCompleted,
     totalPercentage,
+    totalPublished,
+    totalPlanned,
     getChapterProgress,
     getNextResumeLectureId,
     getIncorrectQuestions,
@@ -919,7 +921,7 @@ export default function CurriculumPage() {
               <div className="flex items-center justify-between text-xs font-bold mb-2 text-emerald-200">
                 <span>全体受講ステータス</span>
                 <span className="font-mono text-base text-white">
-                  {isMounted ? `${totalCompleted} / 92` : '0 / 92'}
+                  {isMounted ? `${totalCompleted} / ${totalPublished || 71}` : `0 / ${totalPublished || 71}`}
                 </span>
               </div>
               <div className="w-full h-3 rounded-full bg-emerald-950/60 overflow-hidden border border-emerald-700/40">
@@ -928,8 +930,9 @@ export default function CurriculumPage() {
                   style={{ width: `${isMounted ? totalPercentage : 0}%` }}
                 />
               </div>
-              <div className="mt-2 text-right text-xs font-black text-emerald-200">
-                達成率: {isMounted ? totalPercentage : 0}%
+              <div className="mt-2 flex items-center justify-between text-xs text-emerald-200">
+                <span className="text-[11px] opacity-85">全{totalPlanned || 92}レッスン予定</span>
+                <span className="font-black">公開分達成率: {isMounted ? totalPercentage : 0}%</span>
               </div>
             </div>
 
@@ -1007,7 +1010,7 @@ export default function CurriculumPage() {
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
                   <Sparkles className="w-4 h-4" />
-                  <span>基幹カリキュラム 深掘りシリーズ①（全8レッスン）</span>
+                  <span>第1章 陰陽論（全8レッスン / 全レッスン公開中）</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                   陰陽論 ― 生命ダイナミズムを読み解く「最小単位」の思考OS
@@ -1129,14 +1132,14 @@ export default function CurriculumPage() {
 
       {/* ★ メイン特集②：五行論 全12レッスン 集中カリキュラム */}
       {(() => {
-        const wxProgress = isMounted ? getChapterProgress("wuxing", 12) : { completedCount: 0, percentage: 0 };
+        const wxProgress = isMounted ? getChapterProgress("wuxing", 2) : { completedCount: 0, percentage: 0 };
         return (
           <section id="chapter-five-elements" className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
             <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
                   <Compass className="w-4 h-4" />
-                  <span>基幹カリキュラム 深掘りシリーズ②（全12レッスン）</span>
+                  <span>第2章 五行論（全12レッスン予定 / 公開中 2レッスン）</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                   五行論 ― 循環と多臓器ネットワークを解き明かす「動態システム」の地図
@@ -1154,12 +1157,12 @@ export default function CurriculumPage() {
                     />
                   </div>
                   <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                    {wxProgress.completedCount} / 12 講 ({wxProgress.percentage}%)
+                    {wxProgress.completedCount} / 2 講公開中 (全12レッスン予定)
                   </span>
                   {wxProgress.percentage === 100 && (
                     <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 rounded-md border border-emerald-300/60">
                       <CheckCircle2 className="w-3 h-3" />
-                      修了
+                      公開分修了
                     </span>
                   )}
                 </div>
@@ -1175,6 +1178,7 @@ export default function CurriculumPage() {
 
             {/* 五行論 全12レッスン グリッドカード */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
+              {/* 公開中レッスン */}
               {wuxingLessons.map((lec) => {
                 const isCompleted = isMounted && !!completedLectures[lec.id];
                 return (
@@ -1251,6 +1255,41 @@ export default function CurriculumPage() {
                   </div>
                 );
               })}
+
+              {/* 準備中レッスン（レッスン3〜12） */}
+              {PLANNED_UNPUBLISHED_LESSONS.wuxing?.map((plan) => (
+                <div
+                  key={`plan-wuxing-${plan.lessonNumber}`}
+                  className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-dashed border-[#D8CFC0] dark:border-[#2E3F50] bg-[#FAF8F5]/60 dark:bg-[#10171F]/50 flex flex-col justify-between opacity-80"
+                >
+                  <div className="space-y-2.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                        レッスン {plan.lessonNumber} / 12
+                      </span>
+                      <span className="text-[11px] text-[#A67C52] dark:text-[#C49B71] font-semibold px-2 py-0.5 rounded bg-[#FAF2EB] dark:bg-[#251B12] border border-[#F3DEC5] dark:border-[#4D331F]">
+                        準備中
+                      </span>
+                    </div>
+
+                    <h3 className="font-serif text-base font-bold text-[#59615D] dark:text-[#96A6B2] leading-snug">
+                      {plan.title}
+                    </h3>
+
+                    <p className="text-xs text-[#737C77] dark:text-[#7A8C9B] leading-relaxed">
+                      {plan.subtitle}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 mt-3 border-t border-dashed border-[#E5DEC9] dark:border-[#22303D] flex items-center justify-between text-xs text-[#737C77] dark:text-[#7A8C9B]">
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5 text-[#B86924]" />
+                      <span>順次公開予定（執筆・監修中）</span>
+                    </span>
+                    <span className="text-[11px]">公開準備中</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
         );
@@ -1259,14 +1298,14 @@ export default function CurriculumPage() {
       {/* ★ メイン特集③：気血水理論 全12レッスン 集中カリキュラム */}
       {/* ★ メイン特集③：気血水理論 全12レッスン 集中カリキュラム */}
       {(() => {
-        const qbwProgress = isMounted ? getChapterProgress("qiblood", 12) : { completedCount: 0, percentage: 0 };
+        const qbwProgress = isMounted ? getChapterProgress("qiblood", 1) : { completedCount: 0, percentage: 0 };
         return (
           <section id="chapter-qi-blood-water" className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34]/20 dark:border-[#4E8C76]/30 p-3.5 sm:p-9 shadow-sm transition-colors space-y-6">
             <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
                   <Droplets className="w-4 h-4" />
-                  <span>基幹カリキュラム 深掘りシリーズ③（全12レッスン）</span>
+                  <span>第3章 気血水理論（全12レッスン予定 / 公開中 1レッスン）</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                   気血水理論 ― エネルギー・物質・体液循環の動態と病態メカニズム
@@ -1284,12 +1323,12 @@ export default function CurriculumPage() {
                     />
                   </div>
                   <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                    {qbwProgress.completedCount} / 12 講 ({qbwProgress.percentage}%)
+                    {qbwProgress.completedCount} / 1 講公開中 (全12レッスン予定)
                   </span>
                   {qbwProgress.percentage === 100 && (
                     <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 rounded-md border border-emerald-300/60">
                       <CheckCircle2 className="w-3 h-3" />
-                      修了
+                      公開分修了
                     </span>
                   )}
                 </div>
@@ -1305,6 +1344,7 @@ export default function CurriculumPage() {
 
             {/* 気血水理論 全12レッスン グリッドカード */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
+              {/* 公開中レッスン */}
               {qibloodLessons.map((lec) => {
                 const isCompleted = isMounted && !!completedLectures[lec.id];
                 return (
@@ -1381,6 +1421,41 @@ export default function CurriculumPage() {
                   </div>
                 );
               })}
+
+              {/* 準備中レッスン（レッスン2〜12） */}
+              {PLANNED_UNPUBLISHED_LESSONS.qiblood?.map((plan) => (
+                <div
+                  key={`plan-qiblood-${plan.lessonNumber}`}
+                  className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-dashed border-[#D8CFC0] dark:border-[#2E3F50] bg-[#FAF8F5]/60 dark:bg-[#10171F]/50 flex flex-col justify-between opacity-80"
+                >
+                  <div className="space-y-2.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="px-2 py-0.5 rounded-full font-bold text-[10px] sm:text-[11px] bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                        レッスン {plan.lessonNumber} / 12
+                      </span>
+                      <span className="text-[11px] text-[#A67C52] dark:text-[#C49B71] font-semibold px-2 py-0.5 rounded bg-[#FAF2EB] dark:bg-[#251B12] border border-[#F3DEC5] dark:border-[#4D331F]">
+                        準備中
+                      </span>
+                    </div>
+
+                    <h3 className="font-serif text-base font-bold text-[#59615D] dark:text-[#96A6B2] leading-snug">
+                      {plan.title}
+                    </h3>
+
+                    <p className="text-xs text-[#737C77] dark:text-[#7A8C9B] leading-relaxed">
+                      {plan.subtitle}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 mt-3 border-t border-dashed border-[#E5DEC9] dark:border-[#22303D] flex items-center justify-between text-xs text-[#737C77] dark:text-[#7A8C9B]">
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5 text-[#B86924]" />
+                      <span>順次公開予定（執筆・監修中）</span>
+                    </span>
+                    <span className="text-[11px]">公開準備中</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
         );
@@ -1395,7 +1470,7 @@ export default function CurriculumPage() {
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
                   <Activity className="w-4 h-4" />
-                  <span>基幹カリキュラム 深掘りシリーズ④（全12レッスン）</span>
+                  <span>第4章 生命機能論（全12レッスン / 全レッスン公開中）</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                   生命機能論 ― 生体を「絶えざる動態プロセス」として捉えるシステム統合モデル
@@ -1524,7 +1599,7 @@ export default function CurriculumPage() {
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
                   <Flame className="w-4 h-4" />
-                  <span>基幹カリキュラム 深掘りシリーズ⑤（全12レッスン）</span>
+                  <span>第5章 病機論（全12レッスン / 全レッスン公開中）</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                   病機論 ― 生命機能はいかにして歪み、ドミノ倒しのように崩れるか
@@ -1653,7 +1728,7 @@ export default function CurriculumPage() {
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
                   <Search className="w-4 h-4" />
-                  <span>基幹カリキュラム 深掘りシリーズ⑥（全12レッスン）</span>
+                  <span>第6章 臨床診断論（全12レッスン / 全レッスン公開中）</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                   診断論 ― 生命機能の破綻構造を読み解く「臨床推論アルゴリズム」
@@ -1782,7 +1857,7 @@ export default function CurriculumPage() {
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
                   <Sparkles className="w-4 h-4" />
-                  <span>基幹カリキュラム 深掘りシリーズ⑦（全12レッスン）</span>
+                  <span>第7章 治療戦略論（全12レッスン / 全レッスン公開中）</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                   治法論 ― 介入の原則・刺激量・治療計画の「臨床工学モデル」
@@ -1911,7 +1986,7 @@ export default function CurriculumPage() {
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
                   <Sparkles className="w-4 h-4" />
-                  <span>基幹カリキュラム 深掘りシリーズ⑧（全12レッスン・最高峰）</span>
+                  <span>第8章 臨床実践論（全12レッスン・最高峰 / 全レッスン公開中）</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                   実践論 ― 臨床運用の完全プロトコルと自己修正アルゴリズム

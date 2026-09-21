@@ -26,6 +26,7 @@ import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { useAuth } from "@/contexts/AuthContext";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import AuthModal from "@/components/auth/AuthModal";
+import { SUBSCRIPTION_CONFIG, isSubscriptionSalesEnabled } from "@/config/subscription";
 
 export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: ClinicalCase }) {
   const { isPremium } = useAuth();
@@ -160,23 +161,35 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
 
           <div className="space-y-2 max-w-lg mx-auto">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] text-xs font-bold border border-[#F3DEC5] dark:border-[#4D331F] mb-1">
-              <span>プレミアム機能 公開準備中</span>
+              <span>{isSubscriptionSalesEnabled() ? "プレミアム限定症例" : SUBSCRIPTION_CONFIG.statusMessages.comingSoonBadge}</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              症例04以降は順次公開予定です
+              {isSubscriptionSalesEnabled() ? "この症例はプレミアム会員限定です" : "症例04以降は有料プラン公開に合わせて開放されます"}
             </h2>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-              望聞問切の四診データ、臨床推論ステップ演習、専門解説、マイノート保存機能は有料会員機能の本格リリースに合わせて開放されます。現在は無料体験症例（症例01〜03）を全編ご利用いただけます。
+              {isSubscriptionSalesEnabled() 
+                ? "望聞問切の四診データ、臨床推論ステップ演習、専門解説、マイカルテ保存機能をご利用いただけます。"
+                : "有料プランの受付開始に向けて準備を進めております。現在は無料体験症例（症例01〜03）を全編ご利用いただけます。"}
             </p>
           </div>
 
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link
-              href="/cases/case-01-headache-liver-fire"
-              className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white font-bold text-sm shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2"
-            >
-              <span>無料体験：症例01に挑戦する</span>
-            </Link>
+            {isSubscriptionSalesEnabled() ? (
+              <Link
+                href="/pricing"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white font-bold text-sm shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2"
+              >
+                <span>プレミアムプランで全症例を解放する</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            ) : (
+              <Link
+                href="/cases/case-01-headache-liver-fire"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white font-bold text-sm shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2"
+              >
+                <span>無料体験：症例01に挑戦する</span>
+              </Link>
+            )}
             <Link
               href="/cases"
               className="w-full sm:w-auto px-5 py-3 rounded-xl border border-[#D8CFC0] dark:border-[#384C5E] text-xs font-bold text-[#404743] dark:text-[#C5D2DB] hover:bg-[#F2EDE2]"
