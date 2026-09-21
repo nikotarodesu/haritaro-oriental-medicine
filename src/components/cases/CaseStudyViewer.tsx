@@ -152,50 +152,70 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
         </div>
       </div>
 
-      {/* プレミアムロック時のプレビュー遮断 */}
+      {/* プレミアムロック時の境界線明示 ＆ 案内カード */}
       {isLocked ? (
-        <div className="relative rounded-3xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#B86924] dark:border-[#E6C387] p-8 sm:p-12 text-center space-y-6 shadow-xl overflow-hidden">
-          <div className="w-16 h-16 rounded-3xl bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center mx-auto shadow-inner">
-            <Lock className="w-8 h-8" />
+        <div className="space-y-4">
+          {/* 無料思考ステップ完了と境界線の表示 */}
+          <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-xs">
+            <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+              <span>ステップ1「患者基本情報・主訴・現病歴」の閲覧完了</span>
+            </span>
+            <span className="text-[#59615D] dark:text-[#A0B0BC] hidden sm:inline">
+              ここから先はプレミアム限定エリアです
+            </span>
           </div>
 
-          <div className="space-y-2 max-w-lg mx-auto">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] text-xs font-bold border border-[#F3DEC5] dark:border-[#4D331F] mb-1">
-              <span>{isSubscriptionSalesEnabled() ? "プレミアム限定症例" : SUBSCRIPTION_CONFIG.statusMessages.comingSoonBadge}</span>
+          <div className="relative rounded-3xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#B86924] dark:border-[#E6C387] p-8 sm:p-12 text-center space-y-6 shadow-xl overflow-hidden">
+            <div className="w-16 h-16 rounded-3xl bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center mx-auto shadow-inner">
+              <Lock className="w-8 h-8" />
             </div>
-            <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              {isSubscriptionSalesEnabled() ? "この症例はプレミアム会員限定です" : "症例04以降は有料プラン公開に合わせて開放されます"}
-            </h2>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-              {isSubscriptionSalesEnabled() 
-                ? "望聞問切の四診データ、臨床推論ステップ演習、専門解説、マイカルテ保存機能をご利用いただけます。"
-                : "有料プランの受付開始に向けて準備を進めております。現在は無料体験症例（症例01〜03）を全編ご利用いただけます。"}
-            </p>
-          </div>
 
-          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-            {isSubscriptionSalesEnabled() ? (
+            <div className="space-y-3 max-w-lg mx-auto">
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] text-xs font-bold border border-[#F3DEC5] dark:border-[#4D331F]">
+                <span>{isSubscriptionSalesEnabled() ? "プレミアム限定エリア（ステップ2〜5）" : SUBSCRIPTION_CONFIG.statusMessages.comingSoonBadge}</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                {isSubscriptionSalesEnabled() ? "四診詳細・推論演習・確定配穴の完全解説" : "症例04以降は有料プラン公開に合わせて開放されます"}
+              </h2>
+              <div className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed text-left bg-white dark:bg-[#10171F] p-4 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5">
+                <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">
+                  プレミアムプランで解放される内容：
+                </span>
+                <ul className="space-y-1 text-xs list-disc list-inside">
+                  <li><strong>ステップ 2: 四診情報</strong>（望診・舌診・問診一問一答・脈診・腹証）</li>
+                  <li><strong>ステップ 3: 臨床推論演習</strong>（病理・治法を導く選択問題）</li>
+                  <li><strong>ステップ 4: 確定弁証・処方配穴</strong>（主穴・配穴・参考方剤）</li>
+                  <li><strong>ステップ 5: 専門解説</strong>（病態機序・鑑別診断・配穴理由・古典根拠）</li>
+                  <li><strong>学習ノート保存</strong>（ワンクリックで復習帳へ記録）</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+              {isSubscriptionSalesEnabled() ? (
+                <Link
+                  href="/pricing"
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white font-bold text-sm shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2 min-h-[44px]"
+                >
+                  <span>プレミアムプランで全症例を解放する</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              ) : (
+                <Link
+                  href="/cases/case-01-headache-liver-fire"
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white font-bold text-sm shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2 min-h-[44px]"
+                >
+                  <span>無料公開中：症例01を全編解く ➜</span>
+                </Link>
+              )}
               <Link
-                href="/pricing"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white font-bold text-sm shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2"
+                href="/cases"
+                className="w-full sm:w-auto px-5 py-3 rounded-xl border border-[#D8CFC0] dark:border-[#384C5E] text-xs font-bold text-[#404743] dark:text-[#C5D2DB] hover:bg-[#F2EDE2] min-h-[44px] flex items-center justify-center"
               >
-                <span>プレミアムプランで全症例を解放する</span>
-                <ArrowRight className="w-4 h-4" />
+                症例一覧に戻る
               </Link>
-            ) : (
-              <Link
-                href="/cases/case-01-headache-liver-fire"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white font-bold text-sm shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2"
-              >
-                <span>無料体験：症例01に挑戦する</span>
-              </Link>
-            )}
-            <Link
-              href="/cases"
-              className="w-full sm:w-auto px-5 py-3 rounded-xl border border-[#D8CFC0] dark:border-[#384C5E] text-xs font-bold text-[#404743] dark:text-[#C5D2DB] hover:bg-[#F2EDE2]"
-            >
-              症例一覧に戻る
-            </Link>
+            </div>
           </div>
         </div>
       ) : (
@@ -400,7 +420,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                   </h3>
                 </div>
 
-                {/* マイカルテ登録ボタン */}
+                {/* 学習ノート登録ボタン */}
                 <button
                   type="button"
                   onClick={handleSaveToMemo}
@@ -411,7 +431,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                   }`}
                 >
                   <Bookmark className="w-3.5 h-3.5 fill-current" />
-                  <span>{isAlreadySaved ? "マイカルテ保存済み" : "マイカルテに登録"}</span>
+                  <span>{isAlreadySaved ? "学習ノート保存済み" : "学習ノートに登録"}</span>
                 </button>
               </div>
 
@@ -529,8 +549,8 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                         <span>要点を保存</span>
                         <Bookmark className={`w-3.5 h-3.5 ${isAlreadySaved ? "fill-current" : ""}`} />
                       </div>
-                      <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2]">
-                        {isAlreadySaved ? "マイノートに保存済み" : "この症例の弁証・配穴をノートへ"}
+                      <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
+                        {isAlreadySaved ? "学習ノートに保存済み" : "この症例の弁証・配穴をノートへ"}
                       </p>
                     </button>
 
@@ -542,7 +562,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                         <span>他の症例に挑戦する</span>
                         <RotateCcw className="w-3.5 h-3.5 group-hover:rotate-45 transition-transform" />
                       </div>
-                      <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2]">
+                      <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
                         全20の臨床症例一覧へ
                       </p>
                     </Link>
@@ -555,7 +575,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                         <span>関連理論を学ぶ</span>
                         <BookOpen className="w-3.5 h-3.5" />
                       </div>
-                      <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2]">
+                      <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
                         8体系カリキュラムで病因病機を深掘り
                       </p>
                     </Link>

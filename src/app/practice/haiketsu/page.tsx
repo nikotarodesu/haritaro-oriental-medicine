@@ -130,6 +130,51 @@ export default function HaiketsuPracticePage() {
               基本32穴の中から目的に応じた経穴を選定し、本治穴（体質根本）と標治穴（局所対症）のバランスや昇降・寒熱の方向性を整理します。選定理由を自ら言語化し、教材の代表例と比較して推論力を高める練習です。
             </p>
           </div>
+
+          {/* このツールでできること（3ステップ）＆ こんな人におすすめ */}
+          <div className="bg-white dark:bg-[#152028] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 shadow-xs space-y-4 max-w-4xl text-left">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
+              <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5 uppercase tracking-wider">
+                <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <span>このツールでできること（3ステップ）</span>
+              </span>
+              <span className="text-xs text-[#59615D] dark:text-[#A0B0BC] bg-[#FAF8F5] dark:bg-[#10171F] px-2.5 py-1 rounded-full border border-[#E8E1D1] dark:border-[#22303D] font-medium">
+                🎯 こんな人におすすめ：鍼灸学生の国試・臨床実習対策／臨床家の配穴処方見直し
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
+                <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  <span className="w-5 h-5 rounded-full bg-[#1E3D34] text-white flex items-center justify-center text-xs font-mono">1</span>
+                  <span>主治から穴を選ぶ</span>
+                </div>
+                <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                  基本32穴の中から本治穴（体質根本）と標治穴（局所対症）を直感的に選択。
+                </p>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
+                <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  <span className="w-5 h-5 rounded-full bg-[#B86924] text-white flex items-center justify-center text-xs font-mono">2</span>
+                  <span>教材の模範配穴と比較</span>
+                </div>
+                <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                  少数精鋭の調和バランスや多穴過剰傾向をリアルタイム解析モデルで検証。
+                </p>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
+                <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  <span className="w-5 h-5 rounded-full bg-[#2B6958] text-white flex items-center justify-center text-xs font-mono">3</span>
+                  <span>選定根拠をノートに保存</span>
+                </div>
+                <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                  なぜその経穴を選んだのかの臨床理由を言語化し、学習ノートへワンクリック保存。
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -147,14 +192,14 @@ export default function HaiketsuPracticePage() {
                   無料体験モード（基本配穴の閲覧）
                 </span>
                 <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-                  現在は代表的な基本配穴「四関穴」の構成と解説を閲覧できます。自作配穴の作成、選定理由の言語化、多穴教材比較、マイカルテ保存はプレミアム限定です。
+                  現在は代表的な基本配穴「四関穴」の構成と解説を閲覧できます。自作配穴の作成、選定理由の言語化、多穴教材比較、学習ノート保存はプレミアム限定です。
                 </p>
               </div>
             </div>
             <button
               type="button"
               onClick={() => setAuthModalOpen(true)}
-              className="px-4 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B6958] text-white text-xs font-bold shrink-0 transition-colors shadow-sm cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B6958] text-white text-xs font-bold shrink-0 transition-colors shadow-sm cursor-pointer min-h-[44px]"
             >
               プレミアムで全解放
             </button>
@@ -461,7 +506,7 @@ export default function HaiketsuPracticePage() {
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
         title="配穴設計・臨床演習 プレミアム機能"
-        description="自作配穴の自由な組み立て・選定理由の言語化・教材比較ケースの全演習・マイカルテ保存はプレミアム会員限定機能です。"
+        description="自作配穴の自由な組み立て・選定理由の言語化・教材比較ケースの全演習・学習ノート保存はプレミアム会員限定機能です。"
       />
     </div>
   );

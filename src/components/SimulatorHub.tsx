@@ -25,7 +25,50 @@ export default function SimulatorHub() {
           最小手数で最大の効果を狙う<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「最小構成のペアツボ」</strong>を瞬時に導き出します。
         </p>
 
+        {/* このツールでできること（3ステップ）＆ こんな人におすすめ */}
+        <div className="bg-white dark:bg-[#152028] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 shadow-xs space-y-4 max-w-4xl mx-auto text-left">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
+            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5 uppercase tracking-wider">
+              <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+              <span>このツールでできること（3ステップ）</span>
+            </span>
+            <span className="text-xs text-[#59615D] dark:text-[#A0B0BC] bg-[#FAF8F5] dark:bg-[#10171F] px-2.5 py-1 rounded-full border border-[#E8E1D1] dark:border-[#22303D] font-medium">
+              🎯 こんな人におすすめ：鍼灸学生の国試・臨床実習対策／臨床家の配穴処方見直し
+            </span>
+          </div>
 
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
+              <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
+                <span className="w-5 h-5 rounded-full bg-[#1E3D34] text-white flex items-center justify-center text-xs font-mono">1</span>
+                <span>証の選択</span>
+              </div>
+              <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                八綱（表裏・寒熱・虚実）と気血水、臓腑経絡の病態条件を直感的に選択。
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
+              <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
+                <span className="w-5 h-5 rounded-full bg-[#B86924] text-white flex items-center justify-center text-xs font-mono">2</span>
+                <span>病態推論の可視化</span>
+              </div>
+              <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                選択した組み合わせから「一文の証名」「治法（治療原則）」を即座に導出。
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
+              <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
+                <span className="w-5 h-5 rounded-full bg-[#2B6958] text-white flex items-center justify-center text-xs font-mono">3</span>
+                <span>経穴選定の確認</span>
+              </div>
+              <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                最小構成のペアツボ・推奨要穴と、選定根拠・作用機序を確認・学習ノートへ保存。
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* 臨床弁証シミュレーター本体 */}

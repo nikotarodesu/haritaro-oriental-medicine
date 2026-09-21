@@ -269,15 +269,15 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="font-serif text-base sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  マイカルテ
+                  学習ノート（マイカルテ）
                 </h2>
-                <span className={`text-xs px-2 py-0.5 rounded-full font-bold text-white ${
+                <span className={`text-xs px-2.5 py-0.5 rounded-full font-bold text-white ${
                   isLimitReached ? "bg-red-600" : "bg-[#B86924]"
                 }`}>
                   {clipCount} / {maxLimit}件
                 </span>
                 {isPremium && (
-                  <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-[#1E3D34] text-white flex items-center gap-0.5">
+                  <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#1E3D34] text-white flex items-center gap-0.5">
                     <Crown className="w-3 h-3 text-[#E6C387]" />
                     <span>PREMIUM</span>
                   </span>
@@ -294,11 +294,11 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                   />
                 </div>
                 {!isPremium ? (
-                  <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                  <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
                     保存枠 20件
                   </span>
                 ) : (
-                  <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                  <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
                     大容量1,000件枠
                   </span>
                 )}
@@ -490,30 +490,95 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
         {/* リスト表示エリア */}
         <div className="flex-1 overflow-y-auto p-3 sm:p-5 space-y-3 sm:space-y-4 print:overflow-visible print:h-auto print:p-0 print:space-y-4">
           {filteredMemos.length === 0 ? (
-            <div className="text-center py-10 sm:py-12 space-y-3 sm:space-y-4 bg-white dark:bg-[#17212A] rounded-2xl border border-dashed border-[#D5CCBC] dark:border-[#2D3E50] p-4 sm:p-6">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto rounded-2xl bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center">
-                <Bookmark className="w-6 h-6 sm:w-7 sm:h-7" />
-              </div>
-              <div className="space-y-1">
-                <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
+            <div className="space-y-5 bg-white dark:bg-[#17212A] rounded-2xl border border-dashed border-[#D5CCBC] dark:border-[#2D3E50] p-5 sm:p-7">
+              <div className="text-center space-y-2">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto rounded-2xl bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center">
+                  <Bookmark className="w-6 h-6 sm:w-7 sm:h-7" />
+                </div>
+                <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
                   {searchQuery || activeTab !== "all"
                     ? "該当するメモが見つかりませんでした"
-                    : "マイカルテに保存されたメモがありません"}
+                    : "まだ保存された記録がありません"}
                 </h3>
-                <p className="text-xs text-[#737C77] dark:text-[#8899A6] max-w-sm mx-auto leading-relaxed">
-                  各ツボの解説カード、診断結果、名配穴の横にある「マイカルテに保存」ボタンを押すと、ここにあなただけの要穴集が蓄積されます。
+                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#8899A6] max-w-md mx-auto leading-relaxed">
+                  経穴図鑑や症例演習で「保存」を押すと、ここにあなた専用の復習帳が作られます。
                 </p>
               </div>
 
+              {/* 保存できる4つのもの（アイコン付き案内） */}
               {!searchQuery && activeTab === "all" && (
-                <div className="pt-2">
-                  <button
-                    onClick={loadRecommendedPresets}
-                    className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-[#B86924] text-white text-xs sm:text-sm font-bold shadow-sm hover:bg-[#9B551B] transition-colors"
-                  >
-                    <Sparkles className="w-4 h-4" />
-                    <span>おすすめ重要名配穴（太衝＋陽陵泉など8組）を一括登録</span>
-                  </button>
+                <div className="space-y-3 pt-3 border-t border-[#F2ECE0] dark:border-[#22303D]">
+                  <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-center">
+                    学習ノートに保存できる4つの記録：
+                  </span>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-left">
+                    <Link
+                      href="/tsubo"
+                      onClick={closeDrawer}
+                      className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#1E3D34] transition-all space-y-1 group"
+                    >
+                      <div className="flex items-center justify-between font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                        <span>📌 クリップした経穴</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                      </div>
+                      <p className="text-[#737C77] dark:text-[#8899A6] leading-tight text-xs">
+                        十四経脈・経穴辞典から気になる穴をワンクリック保存
+                      </p>
+                    </Link>
+
+                    <Link
+                      href="/tsubo/compare"
+                      onClick={closeDrawer}
+                      className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#B86924] transition-all space-y-1 group"
+                    >
+                      <div className="flex items-center justify-between font-bold text-[#B86924] dark:text-[#E6C387]">
+                        <span>⚖️ 経穴比較セット</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                      </div>
+                      <p className="text-[#737C77] dark:text-[#8899A6] leading-tight text-xs">
+                        2穴・3穴の解剖・要穴・主治の横並び対比結果を保存
+                      </p>
+                    </Link>
+
+                    <Link
+                      href="/cases"
+                      onClick={closeDrawer}
+                      className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#1E3D34] transition-all space-y-1 group"
+                    >
+                      <div className="flex items-center justify-between font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                        <span>📋 症例の解答・弁証メモ</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                      </div>
+                      <p className="text-[#737C77] dark:text-[#8899A6] leading-tight text-xs">
+                        臨床症例演習で解いた証名・治法・処方配穴を復習用に記録
+                      </p>
+                    </Link>
+
+                    <Link
+                      href="/practice/haiketsu"
+                      onClick={closeDrawer}
+                      className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#B86924] transition-all space-y-1 group"
+                    >
+                      <div className="flex items-center justify-between font-bold text-[#B86924] dark:text-[#E6C387]">
+                        <span>🧪 自作配穴・選定理由</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                      </div>
+                      <p className="text-[#737C77] dark:text-[#8899A6] leading-tight text-xs">
+                        本治・標治のバランスや選定理由を言語化した自作処方
+                      </p>
+                    </Link>
+                  </div>
+
+                  <div className="pt-2 text-center">
+                    <button
+                      onClick={loadRecommendedPresets}
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#B86924] text-white text-xs font-bold shadow-sm hover:bg-[#9B551B] transition-colors"
+                    >
+                      <Sparkles className="w-4 h-4" />
+                      <span>おすすめ重要名配穴（太衝＋陽陵泉など8組）を一括登録</span>
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
@@ -526,7 +591,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                 {/* カード上部：種別バッジ・五行・アクションボタン */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#737C77] dark:text-[#8899A6] print:border-gray-400 print:text-gray-800">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#737C77] dark:text-[#8899A6] print:border-gray-400 print:text-gray-800">
                       {item.type === "pair"
                         ? "重要配穴"
                         : item.type === "tsubo"
@@ -554,7 +619,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                     </button>
                     <button
                       onClick={() => removeMemo(item.id)}
-                      title="マイカルテから解除"
+                      title="学習ノートから解除"
                       className="p-1.5 rounded-lg text-[#737C77] dark:text-[#8899A6] hover:bg-[#FEE2E2] dark:hover:bg-[#3B1717] hover:text-[#DC2626] transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />

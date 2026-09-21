@@ -496,12 +496,12 @@ export default function CurriculumPage() {
           <ArticleReferences references={resolvedReferences} />
 
           {/* 講義受講修了フッター */}
-          <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => toggleLectureCompleted(activeLecture.id)}
-                className={`min-h-[44px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer shadow-sm ${
+                className={`min-h-[44px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer shadow-xs ${
                   isCompleted
                     ? "bg-emerald-600 hover:bg-emerald-500 text-white"
                     : "bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700"
@@ -509,7 +509,7 @@ export default function CurriculumPage() {
               >
                 <CheckCircle2 className={`w-4 h-4 ${isCompleted ? "text-white" : "text-slate-400"}`} />
                 <span>
-                  {isCompleted ? "受講完了（クリックで解除）" : "このレッスンを受講完了にする"}
+                  {isCompleted ? "受講完了（解除する）" : "受講済みにする"}
                 </span>
               </button>
             </div>
@@ -517,6 +517,7 @@ export default function CurriculumPage() {
             <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
               {prevLecture && (
                 <button
+                  type="button"
                   onClick={() => handleSelectLecture(prevLecture)}
                   className="min-h-[44px] px-4 py-2 rounded-xl border border-[#E8E1D1] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#FAF8F5] dark:hover:bg-[#1A2530] text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
                 >
@@ -526,6 +527,7 @@ export default function CurriculumPage() {
               )}
 
               <button
+                type="button"
                 onClick={() => {
                   setActiveLecture(null);
                   if (typeof window !== "undefined") {
@@ -539,10 +541,16 @@ export default function CurriculumPage() {
 
               {nextLecture && (
                 <button
-                  onClick={() => handleSelectLecture(nextLecture)}
-                  className="min-h-[44px] px-5 py-2 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-xs sm:text-sm font-semibold hover:bg-[#162E27] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  type="button"
+                  onClick={() => {
+                    if (!isCompleted) {
+                      toggleLectureCompleted(activeLecture.id);
+                    }
+                    handleSelectLecture(nextLecture);
+                  }}
+                  className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-xs sm:text-sm font-bold hover:bg-[#162E27] transition-all flex items-center gap-2 shadow-md cursor-pointer"
                 >
-                  <span>次のレッスンへ進む</span>
+                  <span>{isCompleted ? "次のレッスンへ進む" : "受講完了にして次へ進む"}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               )}
