@@ -83,7 +83,7 @@ export default function KikeiDetailClient({ vessel }: Props) {
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FCF4EB] dark:bg-[#2A1E14] border border-[#F3DEC5] dark:border-[#4A321E] text-xs font-bold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBE8D3] transition-colors"
           >
             <Bookmark className={`w-3.5 h-3.5 ${saved ? "fill-current" : ""}`} />
-            <span>{saved ? "マイカルテに保存済" : "マイカルテに保存"}</span>
+            <span>{saved ? "学習ノートに保存済" : "学習ノートに保存"}</span>
           </button>
         </div>
       </div>

@@ -193,7 +193,7 @@ export default function SeasonalBanner() {
             </div>
 
             <div className="pt-1 flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
-              <span>ワンクリックでマイカルテに保存</span>
+              <span>ワンクリックで学習ノートに保存</span>
               <Link 
                 href="/tsubo" 
                 className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline flex items-center gap-0.5"

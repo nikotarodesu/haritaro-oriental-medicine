@@ -76,7 +76,7 @@ export default function AuthModal({
             </li>
             <li className="flex items-start gap-2">
               <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
-              <span><strong>マイカルテ保存上限 1,000件</strong> ＋ A4印刷・JSON/MD書き出し</span>
+              <span><strong>学習ノート保存上限 1,000件</strong> ＋ A4印刷・JSON/MD書き出し</span>
             </li>
             <li className="flex items-start gap-2">
               <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />

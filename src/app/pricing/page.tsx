@@ -87,7 +87,7 @@ export default function PricingPage() {
         </h1>
 
         <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          基礎理論の習得から臨床現場での即応力へ。厳選された20の臨床症例演習、大容量マイカルテ（最大1,000件保存）、奇経八脈の全流注図、条件比較ツールなど、臨床家・学習者のための高度な学習機能をフル活用いただけます。
+          基礎理論の習得から臨床現場での即応力へ。厳選された20の臨床症例演習、大容量の学習ノート（最大1,000件保存）、奇経八脈の全流注図、条件比較ツールなど、臨床家・学習者のための高度な学習機能をフル活用いただけます。
         </p>
 
         {/* 支払いサイクル切り替えスイッチ */}
@@ -173,7 +173,7 @@ export default function PricingPage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#737C77] shrink-0" />
-                  <span>マイカルテ保存枠: <strong>最大20件まで</strong></span>
+                  <span>学習ノート保存枠: <strong>最大20件まで</strong></span>
                 </li>
               </ul>
             </div>
@@ -233,7 +233,7 @@ export default function PricingPage() {
                 </li>
                 <li className="flex items-center gap-2 font-semibold">
                   <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-                  <span>マイカルテ保存枠: <strong>最大1,000件（大容量）</strong></span>
+                  <span>学習ノート保存枠: <strong>最大1,000件（大容量）</strong></span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />

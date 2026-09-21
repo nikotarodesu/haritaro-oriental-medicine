@@ -957,7 +957,7 @@ export default function ThreeStageSimulator() {
                       <span>配穴設計・臨床演習で実践する</span>
                     </div>
                     <p className="text-xs text-[#525B56] dark:text-[#9AA8A1] mt-0.5 leading-relaxed">
-                      この推奨配穴をもとに、自分で主穴・配穴を自由に組み立ててマイカルテに記録できます。
+                      この推奨配穴をもとに、自分で主穴・配穴を自由に組み立てて学習ノートに記録できます。
                     </p>
                   </div>
                   <Link

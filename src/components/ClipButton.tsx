@@ -41,8 +41,8 @@ export default function ClipButton({
       <button
         type="button"
         onClick={handleClick}
-        title={clipped ? "マイカルテから解除" : "マイカルテにクリップ保存"}
-        aria-label={clipped ? "マイカルテから解除" : "マイカルテにクリップ保存"}
+        title={clipped ? "学習ノートから解除" : "学習ノートに保存"}
+        aria-label={clipped ? "学習ノートから解除" : "学習ノートに保存"}
         className={`rounded-full flex items-center justify-center transition-all ${sizeClasses} ${
           clipped
             ? "bg-[#B86924] text-white shadow-xs hover:bg-[#9B551B] scale-105"
@@ -100,7 +100,7 @@ export default function ClipButton({
       />
       {showLabel && (
         <span>
-          {clipped ? "マイカルテ保存済" : "マイカルテに保存"}
+          {clipped ? "学習ノート保存済" : "学習ノートに保存"}
         </span>
       )}
     </button>

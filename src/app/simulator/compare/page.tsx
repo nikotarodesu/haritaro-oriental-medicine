@@ -207,7 +207,7 @@ export default function SimulatorComparePage() {
                 className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] text-xs font-bold text-[#232826] dark:text-[#FAF8F5] hover:bg-[#FAF8F5] transition-colors"
               >
                 <Bookmark className={`w-3.5 h-3.5 ${saved ? "fill-current text-[#B86924]" : ""}`} />
-                <span>{saved ? "マイカルテに保存済" : "比較結果をカルテ保存"}</span>
+                <span>{saved ? "学習ノートに保存済" : "比較結果を学習ノートに保存"}</span>
               </button>
             </div>
           </div>

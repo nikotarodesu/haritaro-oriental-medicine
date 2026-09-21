@@ -36,7 +36,7 @@ export default function ClinicalPairsSection() {
             臨床名配穴
           </h2>
           <p className="mt-1 text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-2xl leading-relaxed">
-            単穴刺激にとどまらず、相乗効果を生み出す伝統的な配穴（太衝＋陽陵泉、開四関など）。ワンクリックでマイカルテに保存し、自分だけの要穴集として活用できます。
+            単穴刺激にとどまらず、相乗効果を生み出す伝統的な配穴（太衝＋陽陵泉、開四関など）。ワンクリックで学習ノートに保存し、自分だけの要穴集として活用できます。
           </p>
         </div>
 

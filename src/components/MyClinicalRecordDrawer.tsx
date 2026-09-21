@@ -481,7 +481,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                 type="submit"
                 className="px-4 py-1.5 rounded-lg bg-[#B86924] text-white text-xs font-bold hover:bg-[#9B551B] transition-colors"
               >
-                マイカルテに登録
+                学習ノートに登録
               </button>
             </div>
           </form>
@@ -735,7 +735,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
       <AuthModal
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
-        title="マイカルテ出力 ＆ A4印刷"
+        title="学習ノート出力 ＆ A4印刷"
         description="保存した臨床ノートのMarkdown/JSON出力、および整ったA4形式での直接印刷はプレミアム会員限定機能です。（無料会員はテキストコピーをご利用いただけます）"
       />
     </div>

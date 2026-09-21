@@ -86,7 +86,7 @@ export const SUBSCRIPTION_CONFIG = {
       title: "経穴比較ツール（最大3穴横並び）",
       description: "似た主治や経絡を持つ2〜3穴の取穴部位、解剖学的深度、五行、臨床応用を精密比較。",
       free: "2穴簡易比較",
-      premium: "3穴詳細比較・比較結果のマイカルテ直接保存",
+      premium: "3穴詳細比較・比較結果の学習ノート直接保存",
     },
     {
       id: "export_print",

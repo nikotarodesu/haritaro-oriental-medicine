@@ -327,7 +327,7 @@ export default function SubscriptionManagementPage() {
           <div className="space-y-1">
             <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] flex items-center gap-2">
               <Bookmark className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>マイカルテ・学習ノート保存枠</span>
+              <span>学習ノート（マイカルテ）保存枠</span>
             </h3>
             <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
               臨床知見、重要配穴、症例カルテの保存状況です。
@@ -372,7 +372,7 @@ export default function SubscriptionManagementPage() {
               <span>ローカルデータの同期・引き継ぎ確認</span>
             </h3>
             <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-              端末（ブラウザ）に保存されているマイカルテやカリキュラム受講履歴をアカウントと安全に同期します。
+              端末（ブラウザ）に保存されている学習ノートやカリキュラム受講履歴をアカウントと安全に同期します。
             </p>
           </div>
           <button
@@ -389,7 +389,7 @@ export default function SubscriptionManagementPage() {
           <div className="p-3.5 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] text-xs space-y-1">
             <div className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">✓ 同期・引き継ぎ確認済み</div>
             <div className="text-[#59615D] dark:text-[#96A6B2]">
-              ・保存マイカルテ: {migrationReport.memoCount} 件<br />
+              ・保存した学習ノート: {migrationReport.memoCount} 件<br />
               ・受講済みカリキュラム講義: {migrationReport.curriculumProgressCount} 講<br />
               ・クイズ回答記録: {migrationReport.quizResultCount} 問
             </div>

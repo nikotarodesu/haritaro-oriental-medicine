@@ -707,7 +707,7 @@ export default function Header() {
             >
               <div className="flex items-center gap-3">
                 <Bookmark className="w-4 h-4 fill-current" />
-                <span>マイカルテ</span>
+                <span>学習ノート（マイカルテ）</span>
               </div>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#B86924] text-white">
                 {clipCount}件

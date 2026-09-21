@@ -378,7 +378,7 @@ export default function HaiketsuPracticePage() {
                     </h3>
                   </div>
                   <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2]">
-                    選択した配穴と選定理由をマイカルテに保存し、いつでも参照・復習できます。
+                    選択した配穴と選定理由を学習ノートに保存し、いつでも参照・復習できます。
                   </p>
                 </div>
 
@@ -389,7 +389,7 @@ export default function HaiketsuPracticePage() {
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#B86924] hover:bg-[#9B551B] text-white text-xs font-bold shadow-sm transition-colors cursor-pointer shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Bookmark className={`w-3.5 h-3.5 ${saved ? "fill-current" : ""}`} />
-                  <span>{saved ? "マイカルテに保存済" : "マイカルテに保存"}</span>
+                  <span>{saved ? "学習ノートに保存済" : "学習ノートに保存"}</span>
                 </button>
               </div>
 

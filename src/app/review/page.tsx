@@ -672,7 +672,7 @@ function LegacySmartReviewPage() {
                         className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-white dark:bg-[#131B22] text-xs font-bold text-[#232826] dark:text-[#FAF8F5] hover:bg-[#FAF8F5] transition-colors"
                       >
                         <Bookmark className={`w-4 h-4 ${memoSaved ? "fill-current text-[#B86924]" : ""}`} />
-                        <span>{memoSaved ? "マイカルテに保存済" : "要点をマイカルテに保存"}</span>
+                        <span>{memoSaved ? "学習ノートに保存済" : "要点を学習ノートに保存"}</span>
                       </button>
 
                       <button
