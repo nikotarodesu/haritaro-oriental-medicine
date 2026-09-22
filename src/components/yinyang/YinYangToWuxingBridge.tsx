@@ -49,7 +49,7 @@ export default function YinYangToWuxingBridge({ onNextLecture }: Props) {
                 <path d="M 0 -35 A 35 35 0 0 1 0 35 A 17.5 17.5 0 0 1 0 0 A 17.5 17.5 0 0 0 0 -35 Z" fill="url(#bridgeYang)" />
                 <circle cx="0" cy="-17.5" r="5" fill="url(#bridgeYin)" />
                 <circle cx="0" cy="17.5" r="5" fill="url(#bridgeYang)" />
-                <text x="0" y="52" textAnchor="middle" fill="#59615D" fontSize="10" fontWeight="bold">
+                <text x="0" y="52" textAnchor="middle" fill="currentColor" className="text-[#59615D] dark:text-[#CFD8DC]" fontSize="10" fontWeight="bold">
                   陰陽（二極動態）
                 </text>
               </g>
@@ -66,29 +66,29 @@ export default function YinYangToWuxingBridge({ onNextLecture }: Props) {
                 <polygon points="0,-45 42,-14 26,40 -26,40 -42,-14" fill="none" stroke="#E5DEC9" strokeWidth="1.5" strokeDasharray="2 2" className="dark:stroke-[#2A3B4A]" />
 
                 {/* 木（少陽）：緑 */}
-                <circle cx="-42" cy="-14" r="14" fill="#2E7D32" />
+                <circle cx="-42" cy="-14" r="14" fill="currentColor" className="text-[#2E7D32] dark:text-[#22C55E]" />
                 <text x="-42" y="-10" textAnchor="middle" fill="#FFF" fontSize="10" fontWeight="bold">木</text>
-                <text x="-42" y="-32" textAnchor="middle" fill="#2E7D32" fontSize="8" fontWeight="bold">少陽</text>
+                <text x="-42" y="-32" textAnchor="middle" fill="currentColor" className="text-[#2E7D32] dark:text-[#86EFAC]" fontSize="8" fontWeight="bold">少陽</text>
 
                 {/* 火（太陽）：赤 */}
-                <circle cx="0" cy="-45" r="14" fill="#C45A4A" />
+                <circle cx="0" cy="-45" r="14" fill="currentColor" className="text-[#C45A4A] dark:text-[#EF4444]" />
                 <text x="0" y="-41" textAnchor="middle" fill="#FFF" fontSize="10" fontWeight="bold">火</text>
-                <text x="0" y="-63" textAnchor="middle" fill="#C45A4A" fontSize="8" fontWeight="bold">太陽</text>
+                <text x="0" y="-63" textAnchor="middle" fill="currentColor" className="text-[#C45A4A] dark:text-[#FCA5A5]" fontSize="8" fontWeight="bold">太陽</text>
 
                 {/* 土（中和）：黄 */}
-                <circle cx="42" cy="-14" r="14" fill="#B86924" />
+                <circle cx="42" cy="-14" r="14" fill="currentColor" className="text-[#B86924] dark:text-[#F59E0B]" />
                 <text x="42" y="-10" textAnchor="middle" fill="#FFF" fontSize="10" fontWeight="bold">土</text>
-                <text x="42" y="-32" textAnchor="middle" fill="#B86924" fontSize="8" fontWeight="bold">中和</text>
+                <text x="42" y="-32" textAnchor="middle" fill="currentColor" className="text-[#B86924] dark:text-[#FCD34D]" fontSize="8" fontWeight="bold">中和</text>
 
                 {/* 金（少陰）：白・銀 */}
-                <circle cx="26" cy="40" r="14" fill="#64748B" />
+                <circle cx="26" cy="40" r="14" fill="currentColor" className="text-[#64748B] dark:text-[#94A3B8]" />
                 <text x="26" y="44" textAnchor="middle" fill="#FFF" fontSize="10" fontWeight="bold">金</text>
-                <text x="26" y="62" textAnchor="middle" fill="#64748B" fontSize="8" fontWeight="bold">少陰</text>
+                <text x="26" y="62" textAnchor="middle" fill="currentColor" className="text-[#475569] dark:text-[#CBD5E1]" fontSize="8" fontWeight="bold">少陰</text>
 
-                {/* 水（太陰）：藍 */}
-                <circle cx="-26" cy="40" r="14" fill="#1E3A5F" />
+                {/* 水（太陰）：藍・青 */}
+                <circle cx="-26" cy="40" r="14" fill="currentColor" className="text-[#1E40AF] dark:text-[#3B82F6]" />
                 <text x="-26" y="44" textAnchor="middle" fill="#FFF" fontSize="10" fontWeight="bold">水</text>
-                <text x="-26" y="62" textAnchor="middle" fill="#1E3A5F" fontSize="8" fontWeight="bold">太陰</text>
+                <text x="-26" y="62" textAnchor="middle" fill="currentColor" className="text-[#1E40AF] dark:text-[#93C5FD]" fontSize="8" fontWeight="bold">太陰</text>
               </g>
             </svg>
           </div>

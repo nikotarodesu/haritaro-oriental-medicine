@@ -28,8 +28,8 @@ export default function WuxingFiveExhaustionsRadar() {
       injury: "腎・骨を傷る（骨と腰の弱り）",
       element: "水",
       modern: "立ち仕事や長時間の直立。重力負荷が腰椎と下肢の骨格に集中し、腎気が消耗して慢性腰痛・下肢浮腫・足腰の冷えを招く。",
-      icon: <Activity className="w-5 h-5 text-[#1A237E]" />,
-      color: "#1A237E"
+      icon: <Activity className="w-5 h-5 text-[#1E40AF] dark:text-[#60A5FA]" />,
+      color: "#1E40AF"
     },
     {
       habit: "久行（きゅうこう）｜ 歩きすぎ・過度の歩行",
@@ -87,8 +87,8 @@ export default function WuxingFiveExhaustionsRadar() {
       nature: "陰邪・凝滞・収引（血管と筋を縮める）",
       symptoms: "身体の芯からの激しい悪寒、刺すような固定性の冷え痛み、関節の拘縮、水様下痢",
       therapy: "【温散（おんさん）】お灸や温熱薬で芯から温め、滞った血流を溶かす",
-      icon: <Snowflake className="w-5 h-5 text-[#1A237E]" />,
-      color: "#1A237E"
+      icon: <Snowflake className="w-5 h-5 text-[#1E40AF] dark:text-[#60A5FA]" />,
+      color: "#1E40AF"
     }
   ];
 

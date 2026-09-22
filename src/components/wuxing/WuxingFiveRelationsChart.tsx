@@ -48,7 +48,7 @@ export default function WuxingFiveRelationsChart() {
     hiwa: {
       name: "⑤ 比和（ひわ）｜ 同質共鳴・安定調和",
       en: "Harmonious Resonance (Same Nature)",
-      badgeColor: "bg-[#1A237E] text-white",
+      badgeColor: "bg-[#1E40AF] dark:bg-[#2563EB] text-white",
       formula: "同質同士が溶け合い、1 + 1 = 2 の安定した力を発揮",
       clinicalRule: "「同気相求む：適度なら安定、過剰なら同種過多の偏り」",
       summary: "似た性質の要素同士が手を取り合い、調和を保つ関係。ただし同種の気が過剰になりすぎると（例：熱に熱が重なる）、かえって火盛・燥熱の偏りを招くため中庸が必要です。",
@@ -109,7 +109,7 @@ export default function WuxingFiveRelationsChart() {
           <button
             onClick={() => setActiveRelation("hiwa")}
             className={`px-2.5 py-1.5 rounded-lg font-bold transition-all ${
-              activeRelation === "hiwa" ? "bg-[#1A237E] text-white shadow-xs" : "text-[#59615D] dark:text-[#96A6B2]"
+              activeRelation === "hiwa" ? "bg-[#1E40AF] dark:bg-[#2563EB] text-white shadow-xs" : "text-[#59615D] dark:text-[#96A6B2]"
             }`}
           >
             比和（調和）
@@ -151,7 +151,7 @@ export default function WuxingFiveRelationsChart() {
                 {/* 金 -> 水 */}
                 <path d="M 200 255 Q 160 270 120 255" fill="none" stroke="#78909C" strokeWidth={activeRelation === "sousei" ? "3.5" : "1.5"} markerEnd="url(#arrow-green)" />
                 {/* 水 -> 木 */}
-                <path d="M 85 230 Q 60 205 60 150" fill="none" stroke="#1A237E" strokeWidth={activeRelation === "sousei" ? "3.5" : "1.5"} markerEnd="url(#arrow-green)" />
+                <path d="M 85 230 Q 60 205 60 150" fill="none" stroke="currentColor" className="text-[#1E40AF] dark:text-[#60A5FA]" strokeWidth={activeRelation === "sousei" ? "3.5" : "1.5"} markerEnd="url(#arrow-green)" />
               </g>
 
               {/* ② 相剋の内側星型矢印 */}
@@ -188,9 +188,9 @@ export default function WuxingFiveRelationsChart() {
               {/* ⑤ 比和：同心円 */}
               {activeRelation === "hiwa" && (
                 <g>
-                  <circle cx="160" cy="160" r="45" fill="none" stroke="#1A237E" strokeWidth="2.5" strokeDasharray="4 4" className="dark:stroke-[#9FA8DA]" />
+                  <circle cx="160" cy="160" r="45" fill="none" stroke="currentColor" className="text-[#1E40AF] dark:text-[#93C5FD]" strokeWidth="2.5" strokeDasharray="4 4" />
                   <circle cx="160" cy="160" r="25" fill="#E8EAF6" opacity="0.6" className="dark:fill-[#283593]/40" />
-                  <text x="160" y="164" textAnchor="middle" fill="#1A237E" fontSize="10" fontWeight="bold" className="dark:fill-[#9FA8DA]">同気共鳴</text>
+                  <text x="160" y="164" textAnchor="middle" fill="currentColor" className="text-[#1E40AF] dark:text-[#93C5FD]" fontSize="10" fontWeight="bold">同気共鳴</text>
                 </g>
               )}
 
@@ -208,7 +208,7 @@ export default function WuxingFiveRelationsChart() {
               <text x="225" y="255" textAnchor="middle" fill="#FFF" fontSize="12" fontWeight="bold">金</text>
 
               {/* 水：左下 */}
-              <circle cx="95" cy="250" r="22" fill="#1A237E" />
+              <circle cx="95" cy="250" r="22" fill="currentColor" className="text-[#1E40AF] dark:text-[#3B82F6]" />
               <text x="95" y="255" textAnchor="middle" fill="#FFF" fontSize="12" fontWeight="bold">水</text>
 
               {/* 木：左上 */}

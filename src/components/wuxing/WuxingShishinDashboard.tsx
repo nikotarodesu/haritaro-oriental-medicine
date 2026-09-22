@@ -62,8 +62,8 @@ export default function WuxingShishinDashboard() {
       zang: "腎（水）",
       area: "顎（あご・口周り）",
       colorName: "黒（浅黒い・目の下の隈・土色）",
-      colorCode: "#1A237E",
-      colorBg: "bg-[#1A237E] text-white",
+      colorCode: "#1E40AF",
+      colorBg: "bg-[#1E40AF] dark:bg-[#2563EB] text-white",
       on: "羽音（ラ） ／ 呻（重苦しいうめき声）",
       byo: "欠（頻繁なあくび・脱力感）",
       do: "慄（りつ：寒戦・膝や足腰のガクガク震え）",
@@ -179,7 +179,8 @@ export default function WuxingShishinDashboard() {
                   width="50"
                   height="25"
                   rx="6"
-                  fill="#1A237E"
+                  fill="currentColor"
+                  className="text-[#1E40AF] dark:text-[#2563EB]"
                   opacity={selectedPart === "chin" ? "0.85" : "0.3"}
                 />
                 <text x="100" y="196" textAnchor="middle" fill="#FFF" fontSize="10" fontWeight="bold">腎（顎）</text>

@@ -35,7 +35,7 @@ export default function WuxingClinicalDecisionTree({ onNextLecture }: Props) {
               <span className="px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-bold">
                 Step 1：陰陽論（大局判断）
               </span>
-              <Compass className="w-5 h-5 text-[#B86924]" />
+              <Compass className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
             </div>
 
             <h5 className="font-serif font-bold text-base text-[#232826] dark:text-[#FAF8F5]">
@@ -44,15 +44,15 @@ export default function WuxingClinicalDecisionTree({ onNextLecture }: Props) {
 
             <ul className="space-y-2 text-xs text-[#59615D] dark:text-[#A0B0BC]">
               <li className="flex items-start gap-1.5">
-                <Check className="w-3.5 h-3.5 text-[#1E3D34] shrink-0 mt-0.5" />
+                <Check className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
                 <span><strong>病位の判定：</strong>表（浅い）か 裏（深い）か</span>
               </li>
               <li className="flex items-start gap-1.5">
-                <Check className="w-3.5 h-3.5 text-[#1E3D34] shrink-0 mt-0.5" />
+                <Check className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
                 <span><strong>温度の判定：</strong>熱（炎症・興奮）か 寒（冷却・沈滞）か</span>
               </li>
               <li className="flex items-start gap-1.5">
-                <Check className="w-3.5 h-3.5 text-[#1E3D34] shrink-0 mt-0.5" />
+                <Check className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
                 <span><strong>勢力の判定：</strong>実（邪気過剰）か 虚（正気不足）か</span>
               </li>
             </ul>
@@ -78,7 +78,7 @@ export default function WuxingClinicalDecisionTree({ onNextLecture }: Props) {
               <span className="px-2.5 py-0.5 rounded-full bg-[#EBF5EE] dark:bg-[#15281B] text-[#2E7D32] dark:text-[#81C784] text-xs font-bold">
                 Step 2：五行論（精密照準）
               </span>
-              <Network className="w-5 h-5 text-[#2E7D32]" />
+              <Network className="w-5 h-5 text-[#2E7D32] dark:text-[#81C784]" />
             </div>
 
             <h5 className="font-serif font-bold text-base text-[#232826] dark:text-[#FAF8F5]">
@@ -87,15 +87,15 @@ export default function WuxingClinicalDecisionTree({ onNextLecture }: Props) {
 
             <ul className="space-y-2 text-xs text-[#59615D] dark:text-[#A0B0BC]">
               <li className="flex items-start gap-1.5">
-                <Check className="w-3.5 h-3.5 text-[#2E7D32] shrink-0 mt-0.5" />
+                <Check className="w-3.5 h-3.5 text-[#2E7D32] dark:text-[#81C784] shrink-0 mt-0.5" />
                 <span><strong>病巣の同定：</strong>肝・心・脾・肺・腎のどこが震源地か</span>
               </li>
               <li className="flex items-start gap-1.5">
-                <Check className="w-3.5 h-3.5 text-[#2E7D32] shrink-0 mt-0.5" />
+                <Check className="w-3.5 h-3.5 text-[#2E7D32] dark:text-[#81C784] shrink-0 mt-0.5" />
                 <span><strong>連鎖の解読：</strong>相乗（過剰制約）か 相侮（逆流）か</span>
               </li>
               <li className="flex items-start gap-1.5">
-                <Check className="w-3.5 h-3.5 text-[#2E7D32] shrink-0 mt-0.5" />
+                <Check className="w-3.5 h-3.5 text-[#2E7D32] dark:text-[#81C784] shrink-0 mt-0.5" />
                 <span><strong>治療点の選定：</strong>母を補うか、子を瀉すか（子母補瀉）</span>
               </li>
             </ul>

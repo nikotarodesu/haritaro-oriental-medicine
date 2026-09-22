@@ -440,9 +440,6 @@ export default function CurriculumPage() {
                   本レッスンの学習ゴール ＆ 重要要点
                 </h2>
               </div>
-              <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
-                学習の狙い
-              </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm">
@@ -463,9 +460,6 @@ export default function CurriculumPage() {
             {/* 重要ポイント（最大3点） */}
             {activeLecture.keyPoints && activeLecture.keyPoints.length > 0 && (
               <div className="pt-2 border-t border-[#EBE4D5] dark:border-[#22303D] space-y-1">
-                <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] block">
-                  押さえるべき重要要点
-                </span>
                 <ul className="space-y-1 text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB]">
                   {activeLecture.keyPoints.map((point, idx) => (
                     <li key={idx} className="flex items-start gap-2">
