@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { DIAGNOSIS_QUESTIONS, DIAGNOSIS_RESULTS } from "@/data/diagnosisData";
 import { DiagnosisResultType } from "@/types/oriental";
-import { Stethoscope, CheckCircle2, RotateCcw, Utensils, HeartPulse, Sparkles, ArrowRight, Activity, BookOpen } from "lucide-react";
+import { Stethoscope, CheckCircle2, RotateCcw, Utensils, HeartPulse, Sparkles, ArrowRight, Activity, BookOpen, AlertCircle } from "lucide-react";
 import GorouWorkstyleChecker from "@/components/GorouWorkstyleChecker";
 
 export default function DiagnosisPage() {
@@ -132,6 +132,14 @@ export default function DiagnosisPage() {
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-xl mx-auto leading-relaxed">
               あなたの今の心身の傾きはどこにあるでしょうか？
               直近1〜2週間の状態に当てはまるものにチェックを入れ、「診断する」を押してください。
+            </p>
+          </div>
+
+          {/* 医師法に関する免責事項バナー */}
+          <div className="p-3.5 sm:p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-start gap-2.5 text-xs text-[#59615D] dark:text-[#96A6B2] shadow-2xs">
+            <AlertCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] shrink-0 mt-0.5" />
+            <p className="leading-relaxed">
+              <strong>【ご利用にあたっての注意】</strong>本セルフ診断は東洋医学の気血水理論に基づき日頃の体質傾向やセルフケアの参考としていただくための学習・参考情報です。医師法に定める診断・治療等の医療行為ではありません。急激な体調変化や重篤な症状がある場合は速やかに医師等の専門医療機関を受診してください。
             </p>
           </div>
 
@@ -335,6 +343,10 @@ export default function DiagnosisPage() {
               </Link>
             </div>
           </div>
+
+          <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] text-center pt-2 leading-relaxed max-w-xl mx-auto">
+            ※本診断結果および体質アドバイスは、東洋医学の基礎理論に基づく一般的な健康増進の参考目安です。特定の傷病に対する医療上の診断や治療効果を保証するものではありません。
+          </p>
 
           <div className="text-center pt-2">
             <button

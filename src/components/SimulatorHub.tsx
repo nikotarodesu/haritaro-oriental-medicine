@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Layers, Sparkles, ArrowRight, BookOpen, GraduationCap } from "lucide-react";
+import { Layers, Sparkles, ArrowRight, BookOpen, GraduationCap, AlertCircle } from "lucide-react";
 import ThreeStageSimulator from "@/components/ThreeStageSimulator";
 
 export default function SimulatorHub() {
@@ -112,6 +112,19 @@ export default function SimulatorHub() {
               <span>気血津液の科学</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
+          </div>
+        </div>
+
+        {/* 臨床学習・医師法に関する免責事項 */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-start gap-3 text-xs text-[#59615D] dark:text-[#96A6B2]">
+          <AlertCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <p className="font-bold text-[#232826] dark:text-[#FAF8F5]">
+              【学習・臨床推論シミュレーションに関する免責事項】
+            </p>
+            <p className="leading-relaxed">
+              本シミュレーターは鍼灸師・臨床家および学生の弁証推論（八綱・気血水・臓腑経絡の体系的理解）学習を支援するための教育ツールです。個別の患者に対する確定診断や医療行為（医行為）を提供するものではありません。実際の臨床・施術にあたっては、施術者自身の専門的判断および関係法規（医師法、あはき法等）を遵守してください。
+            </p>
           </div>
         </div>
       </div>

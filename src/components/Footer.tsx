@@ -155,6 +155,14 @@ export default function Footer() {
                     <ArrowUpRight className="w-3 h-3" />
                   </Link>
                 </div>
+                <div className="pt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-[#737C77] dark:text-[#8899A6]">
+                  <Link href="/terms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] underline">
+                    利用規約
+                  </Link>
+                  <Link href="/tokushoho" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] underline">
+                    特定商取引法表記
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -179,9 +187,11 @@ export default function Footer() {
               </span>
             )}
           </p>
-          <div className="flex items-center gap-6">
-            <Link href="/privacy" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">プライバシーポリシー</Link>
-            <Link href="/contact" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">お問い合わせ</Link>
+          <div className="flex items-center flex-wrap gap-4 sm:gap-6">
+            <Link href="/terms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">利用規約</Link>
+            <Link href="/tokushoho" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">特定商取引法に基づく表記</Link>
+            <Link href="/privacy" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">プライバシーポリシー</Link>
+            <Link href="/contact" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">お問い合わせ</Link>
           </div>
         </div>
       </div>

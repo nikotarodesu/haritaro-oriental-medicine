@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { GraduationCap, BookOpen, ExternalLink, CheckCircle2, Sparkles, Clock, Truck } from "lucide-react";
@@ -24,9 +24,14 @@ export default function PrimeStudentCard({
 
         <div className="relative flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A1D12] border border-[#F3DEC5] dark:border-[#4D331F] text-[#B86924] dark:text-[#E6C387] text-xs font-bold tracking-wide">
-              <GraduationCap className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              <span>鍼灸・東洋医学を学ぶ学生限定支援</span>
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-[#B86924] text-white text-[10px] font-bold tracking-wider">
+                PR
+              </span>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A1D12] border border-[#F3DEC5] dark:border-[#4D331F] text-[#B86924] dark:text-[#E6C387] text-xs font-bold tracking-wide">
+                <GraduationCap className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <span>鍼灸・東洋医学を学ぶ学生限定支援</span>
+              </div>
             </div>
 
             <h3 className="font-serif text-lg sm:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-snug">
@@ -76,7 +81,7 @@ export default function PrimeStudentCard({
 
         <div className="mt-4 pt-3 border-t border-[#EAE3D3] dark:border-[#22303D] text-[10px] sm:text-[11px] text-[#737C77] dark:text-[#8899A6] flex flex-wrap items-center justify-between gap-2">
           <span>※対象：大学・大学院・短期大学・専門学校・高等専門学校の学生（学生証・学籍番号等が必要です）</span>
-          <span>※当サイトはAmazonアソシエイト・プログラムの参加者です</span>
+          <span>※当サイトはAmazonアソシエイト・プログラムの参加者です（PR / 広告）</span>
         </div>
       </aside>
     );
@@ -94,7 +99,10 @@ export default function PrimeStudentCard({
             <GraduationCap className="w-4 h-4" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-[#B86924] text-white tracking-wider">
+                PR
+              </span>
               <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] border border-[#C5DED4] dark:border-[#2A5243]">
                 学生限定支援
               </span>
@@ -145,7 +153,7 @@ export default function PrimeStudentCard({
 
         <div className="pt-2 text-[10px] sm:text-[11px] text-[#737C77] dark:text-[#8899A6] flex flex-wrap items-center justify-between gap-1 border-t border-[#EAE3D3]/60 dark:border-[#22303D]">
           <span>※大学・短大・専門学校生対象。無料期間中いつでも解約可能（終了後月額300円）</span>
-          <span>※当サイトはAmazonアソシエイト・プログラムの参加者です</span>
+          <span>※当サイトはAmazonアソシエイト・プログラムの参加者です（PR / 広告）</span>
         </div>
       </div>
     </aside>

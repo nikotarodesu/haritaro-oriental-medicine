@@ -303,6 +303,17 @@ export default function PricingPage() {
               <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
               <span>Stripeによる安全な暗号化決済 / いつでも解約可能</span>
             </div>
+            <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] text-center mt-2 leading-relaxed">
+              お申し込み前に
+              <Link href="/terms" className="underline hover:text-[#1E3D34] dark:hover:text-[#74BA9E] mx-1">
+                利用規約
+              </Link>
+              および
+              <Link href="/tokushoho" className="underline hover:text-[#1E3D34] dark:hover:text-[#74BA9E] mx-1">
+                特定商取引法に基づく表記
+              </Link>
+              をご確認ください。
+            </p>
           </div>
         </div>
       </div>

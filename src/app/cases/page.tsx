@@ -12,7 +12,8 @@ import {
   BookOpen,
   HelpCircle,
   GraduationCap,
-  SlidersHorizontal
+  SlidersHorizontal,
+  AlertCircle
 } from "lucide-react";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { useAuth } from "@/contexts/AuthContext";
@@ -243,6 +244,19 @@ export default function CasesIndexPage() {
               </div>
             </Link>
           ))}
+        </div>
+
+        {/* 症例演習に関する留意事項・免責 */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-start gap-3 text-xs text-[#59615D] dark:text-[#96A6B2]">
+          <AlertCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <p className="font-bold text-[#232826] dark:text-[#FAF8F5]">
+              【症例演習に関する留意事項・免責】
+            </p>
+            <p className="leading-relaxed">
+              掲載されている症例データおよび解説は、東洋医学・鍼灸理論の臨床推論トレーニングを目的として構成された教育用の模擬症例（フィクション）です。特定の患者の個人情報や実際のカルテ記録等とは一切関係ありません。また、実際の患者に対する治療・施術方針の決定にあたっては、担当する医療従事者や医師の診断・指導に従ってください。
+            </p>
+          </div>
         </div>
       </div>
 
