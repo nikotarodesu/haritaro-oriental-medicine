@@ -18,7 +18,7 @@ export default function YinYangTaijiCycle() {
             <span>画像解説①：陰陽太極図とダイナミック循環</span>
           </span>
           <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            生命の動的平衡 ── 循環し続ける「健康」の姿
+            循環し続ける「健康」の姿
           </h4>
         </div>
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-xs text-[#59615D] dark:text-[#96A6B2] self-start sm:self-auto">

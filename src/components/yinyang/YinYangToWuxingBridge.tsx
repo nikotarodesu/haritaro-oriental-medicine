@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Sparkles, ArrowRight, Compass, Network } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 interface Props {
   onNextLecture?: () => void;
@@ -118,39 +118,6 @@ export default function YinYangToWuxingBridge({ onNextLecture }: Props) {
         </div>
       </div>
 
-      {/* 次の講義へのクリック誘導エリア */}
-      <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-[#1E3D34] to-[#152C25] text-white shadow-md">
-        <div className="space-y-1 text-center sm:text-left">
-          <div className="inline-flex items-center gap-1.5 text-xs text-[#E6C387] font-semibold tracking-wider uppercase">
-            <Network className="w-3.5 h-3.5" />
-            <span>Next Lecture ── 第2講</span>
-          </div>
-          <h5 className="font-serif font-bold text-base sm:text-lg">
-            第2講：五行論 ― 複雑適応系の五相循環動態
-          </h5>
-          <p className="text-xs text-[#D3DFDA]">
-            木・火・土・金・水。臓腑間ネットワークとフィードバック制御を完全マスター
-          </p>
-        </div>
-
-        {onNextLecture ? (
-          <button
-            onClick={onNextLecture}
-            className="shrink-0 px-6 py-3 rounded-xl bg-[#E6C387] hover:bg-[#DFC07D] text-[#1E3D34] font-bold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 group"
-          >
-            <span>次へ進む：② 五行論</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
-        ) : (
-          <a
-            href="/curriculum?lecture=lecture-wuxing-1"
-            className="shrink-0 px-6 py-3 rounded-xl bg-[#E6C387] hover:bg-[#DFC07D] text-[#1E3D34] font-bold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 group"
-          >
-            <span>次へ進む：② 五行論</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </a>
-        )}
-      </div>
     </figure>
   );
 }

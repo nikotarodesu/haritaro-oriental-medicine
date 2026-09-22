@@ -1,33 +1,22 @@
 "use client";
 
 import React from "react";
-import { GLOSSARY_TERMS } from "@/data/glossaryData";
-import TermTooltip from "./TermTooltip";
 
 interface GlossaryRendererProps {
   text: string;
   seenTerms?: Set<string>;
 }
 
-export default function GlossaryRenderer({ text, seenTerms }: GlossaryRendererProps) {
+export default function GlossaryRenderer({ text }: GlossaryRendererProps) {
   if (!text) return null;
 
-  // 1. 太字記号 **...** でテキストを分割（奇数インデックスが太字部分）
-  // 例: "前 **太字** 後" -> ["前 ", "太字", " 後"]
-  const boldParts = text.split(/\*\*(.*?)\*\*/g);
+  // HTMLの <strong> / <b> タグ、または Markdownの **...** による太字を統一的に検出
+  // 記号 ** は画面に表示せず、純粋な太字要素（strong）として描画
+  const boldParts = text.split(/(?:<strong>|<\/strong>|<b>|<\/b>|\*\*(.*?)\*\*)/g);
 
-  const tracker = seenTerms ?? new Set<string>();
-
-  // 登録用語のリスト（長い単語優先）
-  const terms = Object.keys(GLOSSARY_TERMS).sort((a, b) => b.length - a.length);
-  const escapedTerms = terms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
-  const termRegex = terms.length > 0 ? new RegExp(`(${escapedTerms.join("|")})`, "g") : null;
-
-  // 単一のプレーンテキスト断片に対して専門用語ツールチップおよび改行（<br>）を適用する内部ヘルパー
-  const renderGlossaryTerms = (str: string, keyPrefix: string) => {
+  // 改行（<br>）の処理とプレーンテキストの描画
+  const renderTextWithBreaks = (str: string, keyPrefix: string) => {
     if (!str) return null;
-
-    // <br> / <br/> / <br /> タグで分割（HTMLタグの生文字露出を防止し改行要素として描画）
     const lineParts = str.split(/(<br\s*\/?>)/gi);
 
     return (
@@ -36,55 +25,34 @@ export default function GlossaryRenderer({ text, seenTerms }: GlossaryRendererPr
           if (/^<br\s*\/?>$/i.test(linePart)) {
             return <br key={`${keyPrefix}-br-${lineIdx}`} />;
           }
-
-          if (!termRegex || !linePart) {
-            return <React.Fragment key={`${keyPrefix}-txt-${lineIdx}`}>{linePart}</React.Fragment>;
-          }
-
-          const segments = linePart.split(termRegex);
-          return (
-            <React.Fragment key={`${keyPrefix}-seg-${lineIdx}`}>
-              {segments.map((segment, segIdx) => {
-                const termInfo = GLOSSARY_TERMS[segment];
-                if (termInfo) {
-                  if (tracker.has(segment)) {
-                    return <React.Fragment key={`${keyPrefix}-${lineIdx}-${segIdx}`}>{segment}</React.Fragment>;
-                  }
-                  tracker.add(segment);
-                  return (
-                    <TermTooltip key={`${keyPrefix}-${lineIdx}-${segIdx}`} termInfo={termInfo}>
-                      {segment}
-                    </TermTooltip>
-                  );
-                }
-                return <React.Fragment key={`${keyPrefix}-${lineIdx}-${segIdx}`}>{segment}</React.Fragment>;
-              })}
-            </React.Fragment>
-          );
+          return <React.Fragment key={`${keyPrefix}-txt-${lineIdx}`}>{linePart}</React.Fragment>;
         })}
       </React.Fragment>
     );
   };
 
+  // 正規表現で **...** またはタグで分割された断片を処理
+  // 奇数番目が太字、偶数番目が通常テキスト
+  // ※ split のキャプチャグループによって太字部分が抽出される
   return (
     <>
-      {boldParts.map((part, index) => {
+      {text.split(/\*\*(.*?)\*\*/g).map((part, index) => {
         const isBold = index % 2 === 1;
 
         if (isBold) {
-          // 太字部分：文字色を強調し、背景にほんのりハイライトを敷いて視認性を大幅向上
           return (
             <strong
               key={`bold-${index}`}
-              className="font-bold text-[#1E3D34] dark:text-[#E6C387] bg-[#EBF3EF]/60 dark:bg-[#1E2E28] px-1 py-0.5 rounded-sm mx-0.5"
+              className="font-bold text-[#1E3D34] dark:text-[#74BA9E]"
             >
-              {renderGlossaryTerms(part, `bold-content-${index}`)}
+              {renderTextWithBreaks(part, `bold-content-${index}`)}
             </strong>
           );
         }
 
-        // 通常テキスト部分
-        return renderGlossaryTerms(part, `plain-${index}`);
+        // 通常テキスト部分（万が一閉じ忘れ等で残った ** 記号も完全除去）
+        const sanitized = part ? part.replace(/\*\*/g, "") : "";
+        return renderTextWithBreaks(sanitized, `plain-${index}`);
       })}
     </>
   );

@@ -108,7 +108,7 @@ export default function YinYangSixPrinciples() {
           <circle cx="34" cy="38" r="3" fill="#1E3A5F" />
         </svg>
       ),
-      metaphor: "フラクタル構造 / マトリョーシカ / 自己相似性",
+      metaphor: "多層構造 / マトリョーシカ / 入れ子構造",
       summary: "陰と陽は絶対的な固定物ではなく、いかなる部分も無限に陰陽へ細分化できる。",
       clinicalExample: "人体の「上半身（陽）」の中にも「背部（陽中の陽）」と「胸腹部（陽中の陰）」がある。昼（陽）の中にも「午前（陽中の陽）」と「午後（陽中の陰）」がある。",
       tag: "相対性・多階層解析"

@@ -492,6 +492,42 @@ export default function CurriculumPage() {
             <InteractiveQuiz quiz={CURRICULUM_QUIZZES[activeLecture.id]} />
           )}
 
+          {/* 次章・次レッスンへの進行バナー（クイズの直後に配置） */}
+          {nextLecture && (
+            <div className="my-8 p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-[#1E3D34] to-[#152C25] text-white shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="space-y-1.5 text-center sm:text-left">
+                <div className="inline-flex items-center gap-1.5 text-xs text-[#E6C387] font-semibold tracking-wider uppercase">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>
+                    {activeLecture.seriesId !== nextLecture.seriesId ? "Next Chapter ── 次の章へステップアップ" : "Next Lesson ── 次のレッスンへ"}
+                  </span>
+                </div>
+                <h4 className="font-serif font-bold text-base sm:text-lg">
+                  {nextLecture.seriesTitle ? `${nextLecture.seriesTitle}：` : ""}{nextLecture.title}
+                </h4>
+                {nextLecture.subtitle && (
+                  <p className="text-xs text-[#D3DFDA] line-clamp-1">
+                    {nextLecture.subtitle}
+                  </p>
+                )}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  if (!isCompleted) {
+                    toggleLectureCompleted(activeLecture.id);
+                  }
+                  handleSelectLecture(nextLecture);
+                }}
+                className="shrink-0 px-6 py-3 rounded-xl bg-[#E6C387] hover:bg-[#DFC07D] text-[#1E3D34] font-bold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 group cursor-pointer"
+              >
+                <span>{activeLecture.seriesId !== nextLecture.seriesId ? "次章へ進む" : "次のレッスンへ進む"}</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          )}
+
           {/* 参考文献・学術エビデンス */}
           <ArticleReferences references={resolvedReferences} />
 

@@ -11,7 +11,7 @@ export default function YinYangShishinChart() {
   return (
     <figure className="my-6 sm:my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3 sm:p-6 md:p-8 shadow-sm transition-colors">
       {/* ヘッダー */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 mb-4 sm:mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 mb-4 sm:mb-6">
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
@@ -21,50 +21,9 @@ export default function YinYangShishinChart() {
             診察ベッドで見極める「病態ベクトルの陰陽スキャン」
           </h4>
         </div>
-
-        {/* 四診フィルター */}
-        <div className="flex items-center gap-1 bg-[#FAF8F5] dark:bg-[#121920] p-1 rounded-xl border border-[#E8E1D1] dark:border-[#2A3B4A] w-full sm:w-auto overflow-x-auto text-xs shrink-0">
-          <button
-            onClick={() => setActiveTab("all")}
-            className={`px-2 sm:px-2.5 py-1 rounded-lg font-semibold transition-all whitespace-nowrap ${
-              activeTab === "all" ? "bg-[#1E3D34] text-white" : "text-[#59615D] dark:text-[#96A6B2]"
-            }`}
-          >
-            全体
-          </button>
-          <button
-            onClick={() => setActiveTab("bo")}
-            className={`px-2 sm:px-2.5 py-1 rounded-lg font-semibold transition-all whitespace-nowrap ${
-              activeTab === "bo" ? "bg-[#1E3D34] text-white" : "text-[#59615D] dark:text-[#96A6B2]"
-            }`}
-          >
-            望（視）
-          </button>
-          <button
-            onClick={() => setActiveTab("bun")}
-            className={`px-2 sm:px-2.5 py-1 rounded-lg font-semibold transition-all whitespace-nowrap ${
-              activeTab === "bun" ? "bg-[#1E3D34] text-white" : "text-[#59615D] dark:text-[#96A6B2]"
-            }`}
-          >
-            聞（聴嗅）
-          </button>
-          <button
-            onClick={() => setActiveTab("mon")}
-            className={`px-2 sm:px-2.5 py-1 rounded-lg font-semibold transition-all whitespace-nowrap ${
-              activeTab === "mon" ? "bg-[#1E3D34] text-white" : "text-[#59615D] dark:text-[#96A6B2]"
-            }`}
-          >
-            問（問診）
-          </button>
-          <button
-            onClick={() => setActiveTab("setsu")}
-            className={`px-2 sm:px-2.5 py-1 rounded-lg font-semibold transition-all whitespace-nowrap ${
-              activeTab === "setsu" ? "bg-[#1E3D34] text-white" : "text-[#59615D] dark:text-[#96A6B2]"
-            }`}
-          >
-            切（脈腹）
-          </button>
-        </div>
+        <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">
+          ベッド下のボタンで診察手法ごとのサインを切り替え
+        </span>
       </div>
 
       {/* 診察ベッドと左右引き出し線レイアウト */}
@@ -159,6 +118,70 @@ export default function YinYangShishinChart() {
 
             <div className="mt-2 text-center text-[10px] text-[#737C77] dark:text-[#8899A6]">
               手首（脈診）・腹壁（腹診）・舌（舌診）
+            </div>
+
+            {/* 四診切り替えボタン（体のSVGの直下に配置） */}
+            <div className="mt-3 pt-3 border-t border-[#E8E1D1] dark:border-[#2A3B4A]">
+              <div className="text-[10px] font-bold text-center text-[#1E3D34] dark:text-[#74BA9E] mb-2 flex items-center justify-center gap-1">
+                <span>診察部位を選択して左右を比較</span>
+              </div>
+              <div className="grid grid-cols-5 gap-1 bg-[#FAF8F5] dark:bg-[#121920] p-1 rounded-xl border border-[#E8E1D1] dark:border-[#2A3B4A] text-[11px]">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("all")}
+                  className={`py-1.5 rounded-lg font-bold transition-all text-center ${
+                    activeTab === "all"
+                      ? "bg-[#1E3D34] text-white shadow-xs"
+                      : "text-[#59615D] dark:text-[#96A6B2] hover:text-[#232826] dark:hover:text-[#FAF8F5]"
+                  }`}
+                >
+                  全体
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("bo")}
+                  className={`py-1.5 rounded-lg font-bold transition-all text-center ${
+                    activeTab === "bo"
+                      ? "bg-[#1E3D34] text-white shadow-xs"
+                      : "text-[#59615D] dark:text-[#96A6B2] hover:text-[#232826] dark:hover:text-[#FAF8F5]"
+                  }`}
+                >
+                  望診
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("bun")}
+                  className={`py-1.5 rounded-lg font-bold transition-all text-center ${
+                    activeTab === "bun"
+                      ? "bg-[#1E3D34] text-white shadow-xs"
+                      : "text-[#59615D] dark:text-[#96A6B2] hover:text-[#232826] dark:hover:text-[#FAF8F5]"
+                  }`}
+                >
+                  聞診
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("mon")}
+                  className={`py-1.5 rounded-lg font-bold transition-all text-center ${
+                    activeTab === "mon"
+                      ? "bg-[#1E3D34] text-white shadow-xs"
+                      : "text-[#59615D] dark:text-[#96A6B2] hover:text-[#232826] dark:hover:text-[#FAF8F5]"
+                  }`}
+                >
+                  問診
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("setsu")}
+                  className={`py-1.5 rounded-lg font-bold transition-all text-center ${
+                    activeTab === "setsu"
+                      ? "bg-[#1E3D34] text-white shadow-xs"
+                      : "text-[#59615D] dark:text-[#96A6B2] hover:text-[#232826] dark:hover:text-[#FAF8F5]"
+                  }`}
+                >
+                  切診
+                </button>
+              </div>
             </div>
           </div>
         </div>

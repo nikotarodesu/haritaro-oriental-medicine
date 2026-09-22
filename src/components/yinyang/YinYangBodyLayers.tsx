@@ -105,35 +105,59 @@ export default function YinYangBodyLayers() {
               {activeTab === "anatomy" && (
                 <>
                   <line x1="10" y1="145" x2="190" y2="145" stroke="#E6C387" strokeWidth="2" strokeDasharray="4 3" />
-                  <text x="100" y="40" textAnchor="middle" fill="#C45A4A" fontSize="11" fontWeight="bold">
-                    ▲ 上部・背側・表層（陽）
-                  </text>
-                  <text x="100" y="270" textAnchor="middle" fill="#7BAAD8" fontSize="11" fontWeight="bold">
-                    ▼ 下部・腹側・深部（陰）
-                  </text>
+                  
+                  {/* 上部・陽バッジ */}
+                  <g>
+                    <rect x="20" y="24" width="160" height="24" rx="12" fill="#FFFFFF" fillOpacity="0.92" stroke="#DC2626" strokeWidth="1.5" className="dark:fill-[#17212A] dark:stroke-[#F87171]" />
+                    <text x="100" y="40" textAnchor="middle" fill="#991B1B" fontSize="11" fontWeight="bold" className="dark:fill-[#FCA5A5]">
+                      ▲ 上部・背側・表層（陽）
+                    </text>
+                  </g>
+
+                  {/* 下部・陰バッジ */}
+                  <g>
+                    <rect x="20" y="254" width="160" height="24" rx="12" fill="#FFFFFF" fillOpacity="0.92" stroke="#2563EB" strokeWidth="1.5" className="dark:fill-[#17212A] dark:stroke-[#60A5FA]" />
+                    <text x="100" y="270" textAnchor="middle" fill="#1E3A8A" fontSize="11" fontWeight="bold" className="dark:fill-[#93C5FD]">
+                      ▼ 下部・腹側・深部（陰）
+                    </text>
+                  </g>
                 </>
               )}
 
               {activeTab === "zangfu" && (
                 <>
                   {/* 胸郭（心・肺：上焦の陰臓） */}
-                  <circle cx="100" cy="115" r="14" fill="#C45A4A" opacity="0.85" />
-                  <text x="100" y="119" textAnchor="middle" fill="#FFF" fontSize="9" fontWeight="bold">心・肺</text>
+                  <circle cx="100" cy="115" r="18" fill="#B91C1C" stroke="#FFFFFF" strokeWidth="2" className="dark:fill-[#DC2626] dark:stroke-[#17212A]" />
+                  <text x="100" y="119" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="bold">心・肺</text>
+
                   {/* 腹部（脾・胃・肝・胆・腎・腸） */}
-                  <circle cx="85" cy="145" r="10" fill="#1E3D34" opacity="0.8" />
-                  <circle cx="115" cy="145" r="10" fill="#B86924" opacity="0.8" />
-                  <rect x="75" y="160" width="50" height="20" rx="6" fill="#1E3A5F" opacity="0.85" />
-                  <text x="100" y="174" textAnchor="middle" fill="#FFF" fontSize="8" fontWeight="bold">五臓(貯蔵)/六腑(流動)</text>
+                  <circle cx="80" cy="146" r="12" fill="#1E3D34" stroke="#FFFFFF" strokeWidth="1.5" className="dark:stroke-[#17212A]" />
+                  <circle cx="120" cy="146" r="12" fill="#B86924" stroke="#FFFFFF" strokeWidth="1.5" className="dark:stroke-[#17212A]" />
+                  
+                  {/* 五臓六腑バッジ */}
+                  <rect x="35" y="162" width="130" height="22" rx="11" fill="#1E3A5F" stroke="#FFFFFF" strokeWidth="1.5" className="dark:fill-[#1E293B] dark:stroke-[#64748B]" />
+                  <text x="100" y="177" textAnchor="middle" fill="#FFFFFF" fontSize="9" fontWeight="bold">五臓(貯蔵) / 六腑(流動)</text>
                 </>
               )}
 
               {activeTab === "physiology" && (
                 <>
                   {/* 自律神経・代謝の動態シンボル */}
-                  <path d="M 50 100 Q 100 130 150 100" fill="none" stroke="#C45A4A" strokeWidth="3" markerEnd="url(#arrow)" />
-                  <text x="100" y="95" textAnchor="middle" fill="#C45A4A" fontSize="10" fontWeight="bold">交感神経 / 異化</text>
-                  <path d="M 150 210 Q 100 180 50 210" fill="none" stroke="#1E3A5F" strokeWidth="3" markerEnd="url(#arrow)" />
-                  <text x="100" y="235" textAnchor="middle" fill="#60A5FA" fontSize="10" fontWeight="bold">副交感神経 / 同化</text>
+                  <path d="M 45 98 Q 100 128 155 98" fill="none" stroke="#DC2626" strokeWidth="3" markerEnd="url(#arrow)" />
+                  <g>
+                    <rect x="35" y="78" width="130" height="22" rx="11" fill="#FFFFFF" fillOpacity="0.95" stroke="#DC2626" strokeWidth="1.5" className="dark:fill-[#17212A] dark:stroke-[#F87171]" />
+                    <text x="100" y="93" textAnchor="middle" fill="#991B1B" fontSize="10" fontWeight="bold" className="dark:fill-[#FCA5A5]">
+                      交感神経 / 異化（陽）
+                    </text>
+                  </g>
+
+                  <path d="M 155 210 Q 100 180 45 210" fill="none" stroke="#2563EB" strokeWidth="3" markerEnd="url(#arrow)" />
+                  <g>
+                    <rect x="30" y="222" width="140" height="22" rx="11" fill="#FFFFFF" fillOpacity="0.95" stroke="#2563EB" strokeWidth="1.5" className="dark:fill-[#17212A] dark:stroke-[#60A5FA]" />
+                    <text x="100" y="237" textAnchor="middle" fill="#1E3A8A" fontSize="10" fontWeight="bold" className="dark:fill-[#93C5FD]">
+                      副交感神経 / 同化（陰）
+                    </text>
+                  </g>
                 </>
               )}
             </svg>

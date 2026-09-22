@@ -65,12 +65,19 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz }) => {
   const isPerfect = correctCount === totalQuestions && totalQuestions > 0;
   const isAllAnswered = answeredCount === totalQuestions;
 
-  // 全問回答かつ合格した場合、自動的にレッスンを完了にする
+  // ユーザーがクイズを解いて全問回答＆合格した「その瞬間」のみ自動完了にする（初期ロード時や手動解除時は再発火させない）
+  const hasAutoCompletedRef = React.useRef(false);
+  const prevAnsweredCountRef = React.useRef(answeredCount);
+
   useEffect(() => {
-    if (isMounted && isAllAnswered && isPassed) {
+    if (!isMounted) return;
+    // 回答数が増加して全問回答に達し、かつ合格した場合の瞬間のみ実行
+    if (prevAnsweredCountRef.current < totalQuestions && isAllAnswered && isPassed && !hasAutoCompletedRef.current) {
+      hasAutoCompletedRef.current = true;
       setLectureCompleted(quiz.lectureId, true);
     }
-  }, [isMounted, isAllAnswered, isPassed, quiz.lectureId, setLectureCompleted]);
+    prevAnsweredCountRef.current = answeredCount;
+  }, [isMounted, answeredCount, totalQuestions, isAllAnswered, isPassed, quiz.lectureId, setLectureCompleted]);
 
   // 選択肢をクリックしたときの処理
   const handleSelectOption = (question: QuizQuestionItem, optionIndex: number) => {
@@ -103,6 +110,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz }) => {
 
   // もう一度挑戦する（全問リセット）
   const handleRetryAll = () => {
+    hasAutoCompletedRef.current = false;
     setSelectedAnswers({});
     quiz.questions.forEach((q) => {
       clearQuizResult(q.id);

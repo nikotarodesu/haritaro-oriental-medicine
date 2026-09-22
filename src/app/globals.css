@@ -73,6 +73,36 @@
     font-size: 131.25%;
   }
 
+  /* スマホ表示時の文字サイズ底上げと、余白・ボックス圧迫の改善 */
+  @media (max-width: 640px) {
+    html {
+      font-size: 112.5%; /* スマホ標準を約18px基準に少し大きく */
+    }
+
+    html[data-font-size="normal"] {
+      font-size: 112.5%;
+    }
+
+    html[data-font-size="large"] {
+      font-size: 125%;
+    }
+
+    html[data-font-size="xlarge"] {
+      font-size: 137.5%;
+    }
+
+    /* 文字サイズ拡大時にボックス内部や左右余白がrem連動で膨らみすぎて圧迫されるのを防ぎ、十分なコンテンツ横幅を確保 */
+    .prose {
+      max-width: 100% !important;
+    }
+
+    /* スマホ時の主要カード・ボックスの内側左右余白の圧迫を緩和 */
+    article, figure {
+      padding-left: clamp(0.75rem, 3.5vw, 1.25rem) !important;
+      padding-right: clamp(0.75rem, 3.5vw, 1.25rem) !important;
+    }
+  }
+
   body {
     background-color: var(--bg-washi);
     color: var(--text-sumi);
