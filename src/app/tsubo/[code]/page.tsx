@@ -6,7 +6,13 @@ import {
   getAcupointByCode, 
   getAcupointDetail, 
   getMeridianPoints,
-  isDetailedAcupoint
+  isDetailedAcupoint,
+  generateFaqLocationAnswer,
+  generateFaqSelfCareAnswer,
+  isContraindicatedNeedle,
+  isContraindicatedMoxa,
+  isPregnancyContraindicated,
+  isChestBackPneumothoraxRisk
 } from "@/data/tsubo";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import ClipButton from "@/components/ClipButton";
@@ -96,11 +102,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   const faqs = [
     {
       question: `「${point.name}（${point.code}）」はどこにありますか？ 取穴のコツは？`,
-      answer: `${point.locationSimple}。WHO標準取穴部位の規定では「${point.locationDetail}」とされています。${
-        point.palpationLandmarks && point.palpationLandmarks.length > 0
-          ? `触診の際は骨や筋の目印（${point.palpationLandmarks.join("、")}）を基準に探すと正確に位置を特定できます。`
-          : "周囲の組織と比べて指先にわずかに感じる陥凹部や、圧迫時に特有のズーンと響く箇所を目安に取穴します。"
-      }`,
+      answer: generateFaqLocationAnswer(point),
     },
     {
       question: `「${point.name}」はどのような症状や悩みに用いられますか？`,
@@ -110,9 +112,7 @@ export default async function AcupointDetailPage({ params }: Props) {
     },
     {
       question: `自分で指圧やお灸（セルフケア）をする際の注意点はありますか？`,
-      answer: point.caution
-        ? `${point.caution}。刺激する際は強すぎる力を避け、心地よい重みやひびきを感じる強さで優しく持続圧迫してください。`
-        : "心地よい重みや響きを感じる強さで、ゆっくり息を吐きながら3〜5秒かけて優しく持続圧迫してください。強い痛みを感じる無理な刺激や、発熱時・飲酒後・皮膚の炎症部位への刺激は避けてください。",
+      answer: generateFaqSelfCareAnswer(point),
     },
   ];
 
@@ -406,11 +406,35 @@ export default async function AcupointDetailPage({ params }: Props) {
             )}
 
             {point.pitfalls && (
-              <div className="p-3.5 rounded-xl bg-[#FDEDEC]/70 dark:bg-[#281816]/70 border border-[#FADBD8] dark:border-[#3E2220] space-y-1.5">
-                <span className="font-bold text-[#A83629] dark:text-[#E07A70] flex items-center gap-1">
-                  <AlertTriangle className="w-3.5 h-3.5" />
-                  <span>位置混同・取穴の注意点：</span>
-                </span>
+              <div className="p-3.5 rounded-xl bg-[#FDEDEC]/70 dark:bg-[#281816]/70 border border-[#FADBD8] dark:border-[#3E2220] space-y-2">
+                <div className="flex flex-wrap items-center justify-between gap-1.5">
+                  <span className="font-bold text-[#A83629] dark:text-[#E07A70] flex items-center gap-1">
+                    <AlertTriangle className="w-3.5 h-3.5" />
+                    <span>位置混同・取穴・施術上の注意点：</span>
+                  </span>
+                  <div className="flex flex-wrap gap-1">
+                    {isContraindicatedNeedle(point.codeLower) && (
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#A83629] text-white">
+                        禁鍼部位
+                      </span>
+                    )}
+                    {isContraindicatedMoxa(point.codeLower) && (
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#B86924] text-white">
+                        禁灸・直接灸不可
+                      </span>
+                    )}
+                    {isChestBackPneumothoraxRisk(point.codeLower, point.bodyPart, point.locationDetail) && (
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#8B263E] text-white">
+                        気胸リスク・深刺厳禁
+                      </span>
+                    )}
+                    {isPregnancyContraindicated(point.codeLower, point.bodyPart) && (
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#854D0E] dark:bg-[#A16207] text-white">
+                        妊娠中注意
+                      </span>
+                    )}
+                  </div>
+                </div>
                 <p className="text-[#6D2820] dark:text-[#D9A098] leading-relaxed text-[11px] sm:text-xs">
                   {point.pitfalls}
                 </p>

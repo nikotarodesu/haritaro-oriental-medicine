@@ -5,9 +5,16 @@ import { MERIDIANS } from "./meridiansData";
 import { ACUPOINT_CATEGORIES } from "./categoriesData";
 import { BODY_REGIONS } from "./regionsData";
 import { CROSS_SECTIONS } from "./crossSectionsData";
+import {
+  generatePitfalls,
+  generateCaution,
+  generateHowToLocate,
+  generatePalpationLandmarks,
+} from "./safetyAndLandmarks";
 import { Tsubo } from "@/types/oriental";
 
 export * from "./types";
+export * from "./safetyAndLandmarks";
 export { ACUPOINTS_MASTER } from "./acupointsMaster";
 export const ALL_ACUPOINTS = ACUPOINTS_MASTER;
 export { DETAILED_ACUPOINTS } from "./detailedPoints";
@@ -41,7 +48,11 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
   
   // 1. 詳細穴に直接マッチ
   if (DETAILED_ACUPOINTS[clean]) {
-    return DETAILED_ACUPOINTS[clean];
+    const point = DETAILED_ACUPOINTS[clean];
+    return {
+      ...point,
+      caution: point.caution || generateCaution(point),
+    };
   }
 
   // 2. マスターから探索
@@ -50,22 +61,20 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
 
   // 既に詳細登録されている場合
   if (DETAILED_ACUPOINTS[master.codeLower]) {
-    return DETAILED_ACUPOINTS[master.codeLower];
+    const point = DETAILED_ACUPOINTS[master.codeLower];
+    return {
+      ...point,
+      caution: point.caution || generateCaution(point),
+    };
   }
 
   // 3. 基本情報から詳細互換モデルを生成（詳細解剖図svgElementsがない場合はcrossSectionをundefinedにして未完成表示を完全防止）
   return {
     ...master,
-    howToLocate: [
-      `患者に適切な姿勢をとらせ、${master.meridian}の流注に沿って触診します。`,
-      master.locationSimple,
-      `WHO標準取穴法：${master.locationDetail}`,
-    ],
-    palpationLandmarks: [
-      `${master.bodyPart}の骨性指標・筋腱部`,
-      master.locationDetail.split("、")[0] || "局所骨際",
-    ],
-    pitfalls: "周囲の動脈拍動および重要神経幹の走向に留意し、直刺・斜刺の角度を適切に保ちます。",
+    howToLocate: generateHowToLocate(master),
+    palpationLandmarks: generatePalpationLandmarks(master),
+    pitfalls: generatePitfalls(master),
+    caution: generateCaution(master),
     crossSection: undefined, // 基本穴では未完成な空解剖図・誤った方向ラベルを出さない
     nearbyPoints: [],
   };
