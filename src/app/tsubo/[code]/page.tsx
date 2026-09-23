@@ -527,7 +527,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         </section>
 
         {/* 3. 断面解剖モデル */}
-        {isDetailed && point.crossSection && point.crossSection.svgElements && point.crossSection.svgElements.length > 0 && (
+        {point.crossSection && point.crossSection.svgElements && point.crossSection.svgElements.length > 0 && (
           <section className="space-y-6">
             <CrossSectionViewer
               model={point.crossSection}

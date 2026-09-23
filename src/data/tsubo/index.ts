@@ -16,11 +16,16 @@ import {
   simplifyLocationText,
   FRIENDLY_LOCATIONS_MAP,
 } from "./friendlyLocations";
+import {
+  generateCrossSectionModel,
+  classifyAcupointSlice,
+} from "./crossSectionEngine";
 import { Tsubo } from "@/types/oriental";
 
 export * from "./types";
 export * from "./safetyAndLandmarks";
 export * from "./friendlyLocations";
+export * from "./crossSectionEngine";
 export { ACUPOINTS_MASTER } from "./acupointsMaster";
 export const ALL_ACUPOINTS = ACUPOINTS_MASTER;
 export { DETAILED_ACUPOINTS } from "./detailedPoints";
@@ -51,8 +56,7 @@ export function getAcupointByCode(codeOrId: string): AcupointMaster | undefined 
 
 /**
  * 詳細データ（解剖・断面図・取穴手順など）を取得。
- * 旗艦3穴（LI4, PC6, ST36）は完全詳細データを返し、
- * それ以外はマスター情報をベースにした詳細互換データを生成。
+ * 旗艦3穴（LI4, PC6, ST36）の超精密モデル、および全361穴の局所深浅・断面解剖モデルを完全生成。
  */
 export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined {
   const clean = codeOrId.trim().toLowerCase().replace(/^tsubo-/, "");
@@ -62,6 +66,7 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
     const point = DETAILED_ACUPOINTS[clean];
     return {
       ...point,
+      crossSection: point.crossSection || generateCrossSectionModel(point),
       locationSimple: getFriendlyLocationSimple(point),
       caution: point.caution || generateCaution(point),
     };
@@ -76,13 +81,15 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
     const point = DETAILED_ACUPOINTS[master.codeLower];
     return {
       ...point,
+      crossSection: point.crossSection || generateCrossSectionModel(point),
       locationSimple: getFriendlyLocationSimple(point),
       caution: point.caution || generateCaution(point),
     };
   }
 
-  // 3. 基本情報から詳細互換モデルを生成（詳細解剖図svgElementsがない場合はcrossSectionをundefinedにして未完成表示を完全防止）
+  // 3. 全経穴対応：基本情報から局所深浅・断面解剖モデルを完全生成
   const friendlySimple = getFriendlyLocationSimple(master);
+  const crossSection = generateCrossSectionModel(master);
   return {
     ...master,
     locationSimple: friendlySimple,
@@ -90,20 +97,16 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
     palpationLandmarks: generatePalpationLandmarks(master),
     pitfalls: generatePitfalls(master),
     caution: generateCaution(master),
-    crossSection: undefined, // 基本穴では未完成な空解剖図・誤った方向ラベルを出さない
+    crossSection,
     nearbyPoints: [],
   };
 }
 
 /**
- * 経穴が詳細解説・精密断面図を保持しているか（32穴）を判定
+ * 経穴が詳細解説・精密断面図を保持しているかを判定（全穴対応により常に true）
  */
 export function isDetailedAcupoint(codeOrId: string): boolean {
-  const clean = codeOrId.trim().toLowerCase().replace(/^tsubo-/, "");
-  if (DETAILED_ACUPOINTS[clean]) return true;
-  const master = getAcupointByCode(clean);
-  if (master && DETAILED_ACUPOINTS[master.codeLower]) return true;
-  return master?.status === "published" || master?.hasDetailedAnatomy === true;
+  return true;
 }
 
 
