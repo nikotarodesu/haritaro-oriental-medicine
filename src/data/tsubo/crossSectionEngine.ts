@@ -108,12 +108,15 @@ export function classifyAcupointSlice(point: AcupointMaster): SliceType {
     if (detail.includes("中手骨") || detail.includes("手背") || detail.includes("手掌") || detail.includes("指") || detail.includes("爪甲") || ["li4", "li3", "li2", "li1", "te3", "te2", "te1", "si3", "si2", "si1", "pc8", "lu10", "lu11", "ht8", "ht9"].includes(code)) {
       return "hand_metacarpal";
     }
-    // 上腕部
-    if (detail.includes("上腕") || detail.includes("腋窩") || ["lu3", "lu4", "ht1", "ht2", "li14", "li13", "te13", "te12"].includes(code)) {
+    // 上腕部・肘部（二頭筋・三頭筋・腋窩・上顆・肘頭上方など）
+    if (
+      ["lu3", "lu4", "lu5", "pc2", "pc3", "ht1", "ht2", "ht3", "li11", "li12", "li13", "li14", "si8", "te10", "te11", "te12", "te13"].includes(code) ||
+      ((detail.includes("上腕") || detail.includes("腋窩") || (detail.includes("肘頭") && !detail.includes("下方"))) && !detail.includes("前腕"))
+    ) {
       return "arm_brachial";
     }
     // 前腕背側
-    if (detail.includes("背側") || detail.includes("伸筋") || ["te5", "te6", "te7", "te8", "te9", "te10", "li10", "li11", "li5", "li6", "li7", "li8", "li9"].includes(code)) {
+    if (detail.includes("背側") || detail.includes("伸筋") || detail.includes("後面") || ["te5", "te6", "te7", "te8", "te9", "li10", "li5", "li6", "li7", "li8", "li9", "si6", "si7"].includes(code)) {
       return "forearm_posterior";
     }
     // 前腕掌側
@@ -469,11 +472,13 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
       { depthIndex: 3, id: "brachialis-muscle", name: "上腕筋 / 上腕骨骨膜", category: "muscle", depthDescription: "深層筋・骨格", description: "上腕二頭筋の深面にある筋肉。", dangerLevel: "safe", clinicalSignificance: "深部到達層" },
     ],
     boundaries: [
-      { id: "biceps-border", name: "上腕二頭筋外側縁", category: "tendon", position: "触診基準線", relation: "肺経（天府・侠白）の走向線", description: "力こぶの外側の溝。", palpationTip: "肘を曲げて力こぶを作り外側の筋縁を触知", dangerLevel: "safe" },
-      { id: "humerus-shaft", name: "上腕骨骨幹部", category: "bone", position: "中心骨格", relation: "深部支持骨", description: "二の腕の芯となる骨格。", palpationTip: "深部の硬い骨感を意識", dangerLevel: "safe" },
+      { id: "biceps-border", name: "上腕二頭筋外側縁／内側縁", category: "tendon", position: "前面触診基準線", relation: "肺経（天府・侠白）・心経（青霊）の走向線", description: "力こぶの境界の溝。", palpationTip: "肘を曲げて力こぶを作り筋縁を触知", dangerLevel: "safe" },
+      { id: "humerus-shaft", name: "上腕骨骨幹部・上顆", category: "bone", position: "中心骨格", relation: "深部支持骨・内外側上顆", description: "二の腕の芯となる骨格および肘上顆部。", palpationTip: "深部の硬い骨感を意識", dangerLevel: "safe" },
+      { id: "olecranon-triceps", name: "肘頭・上腕三頭筋腱", category: "tendon", position: "後面基準指標", relation: "三焦経（天井・清冷淵・消濼）の走向線", description: "肘後面の突起骨と二の腕裏側の腱。", palpationTip: "肘を屈曲させ肘頭と三頭筋停止部を触知", dangerLevel: "safe" },
     ],
     adjacentStructures: [
       { id: "brachial-artery-median-nerve", name: "上腕動静脈・正中神経", category: "vessel", relation: "上腕二頭筋内側溝（青霊・極泉ライン）を走行", dangerLevel: "hazard", description: "上腕の主幹動脈と神経。内側溝への刺入時は必ず拍動を確認。", clinicalSignificance: "血管穿刺による皮下血腫の防止" },
+      { id: "radial-nerve-posterior", name: "橈骨神経（橈骨神経溝）", category: "nerve", relation: "上腕骨後面中央の溝を外側下方へ旋回走行", dangerLevel: "caution", description: "消濼・手五里深層を走行する神経幹。", clinicalSignificance: "深刺による電撃痛・神経刺激の回避" },
     ],
     svgElements: [
       { layerId: "humerus-shaft", elementId: "ab-humerus", label: "上腕骨", shapeType: "ellipse", cx: 250, cy: 175, rx: 40, ry: 30, fill: "#E8E3D8", stroke: "#78716C", strokeWidth: 2.5, labelPos: { x: 250, y: 178, anchor: "middle" } },

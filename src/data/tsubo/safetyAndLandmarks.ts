@@ -310,12 +310,23 @@ export function generateHowToLocate(master: AcupointMaster): string[] {
   } else if (master.bodyPart === "頭部・顔面") {
     step2 = "前後正中線、髪の生え際（前髪際・後髪際）、外眼角、耳介、眉毛などの体表指標を基準線とします。";
   } else if (master.bodyPart === "手・腕") {
-    if (cleanDetail.includes("中手骨") || cleanDetail.includes("指") || cleanDetail.includes("手背") || cleanDetail.includes("手掌")) {
+    if (cleanDetail.includes("中手骨") || cleanDetail.includes("手背") || cleanDetail.includes("手掌") || cleanDetail.includes("指") || cleanDetail.includes("爪甲")) {
       step2 = "中手骨の骨頭・骨底、手根骨、中手骨間隙の陥凹部を指先で丹念に触知して基準点を定めます。";
-    } else if (cleanDetail.includes("上腕") || cleanDetail.includes("腋窩")) {
-      step2 = "上腕二頭筋の内側・外側縁、肩峰、腋窩前横紋・後横紋を基準指標とします。";
+    } else if (cleanDetail.includes("腋窩") || master.codeLower === "ht1") {
+      step2 = "上肢を軽度外転（挙上）させ、大胸筋下縁（腋窩前ヒダ）と広背筋下縁（腋窩後ヒダ）の間の陥凹部中央、腋窩動脈拍動部を触知します。";
+    } else if (
+      ["lu5", "pc3", "ht3", "li11", "li12", "si8", "te10"].includes(master.codeLower) ||
+      (cleanDetail.includes("肘") && !cleanDetail.includes("下方") && !cleanDetail.includes("前腕"))
+    ) {
+      step2 = "肘関節を軽度屈曲させ、肘窩横紋、上腕二頭筋腱（橈側・尺側縁）、上腕骨内側上顆・外側上顆、または肘頭（ひじの突起骨）を触知して位置を定めます。";
+    } else if (cleanDetail.includes("上腕") || cleanDetail.includes("三角筋") || ["lu3", "lu4", "pc2", "ht2", "li13", "li14", "te11", "te12", "te13"].includes(master.codeLower)) {
+      if (cleanDetail.includes("後面") || ["te11", "te12", "te13"].includes(master.codeLower)) {
+        step2 = "肩峰角と肘頭を結ぶ基準線上で、上腕三頭筋筋腹・腱および三角筋後縁を指標として高さを定めます。";
+      } else {
+        step2 = "肘を軽く曲げて上腕二頭筋（力こぶ）を緊張させ、筋腹の内側縁・外側縁、または上腕動脈拍動部（内側溝）を触知して高さを定めます。";
+      }
     } else {
-      step2 = "手関節横紋、肘窩横紋、橈骨・尺骨の骨縁、または前腕の腱（長掌筋腱・橈側手根屈筋腱など）を触知して基準線を設定します。";
+      step2 = "手関節横紋、前腕の橈骨・尺骨の骨縁、または前腕屈筋・伸筋腱間隙を触知して基準線を設定します。";
     }
   } else {
     // 足・脚
@@ -387,17 +398,35 @@ export function generatePalpationLandmarks(master: AcupointMaster): string[] {
       landmarks.push("耳介前縁・乳様突起");
       break;
     case "手・腕":
-      if (detail.includes("中手骨") || detail.includes("指") || detail.includes("手背") || detail.includes("手掌")) {
+      if (detail.includes("中手骨") || detail.includes("手背") || detail.includes("手掌") || detail.includes("指") || detail.includes("爪甲")) {
         landmarks.push("第1〜第5中手骨縁および中手骨底");
         landmarks.push("中手骨間隙（背側骨間筋）");
         landmarks.push("中手指節関節（MP関節）");
-      } else if (detail.includes("上腕")) {
-        landmarks.push("上腕二頭筋筋腹および内側・外側溝");
-        landmarks.push("三角筋粗面・肩峰外端");
+      } else if (detail.includes("腋窩") || master.codeLower === "ht1") {
+        landmarks.push("腋窩中央の陥凹部および腋窩動脈拍動部");
+        landmarks.push("大胸筋下縁（腋窩前ヒダ）");
+        landmarks.push("広背筋・大円筋下縁（腋窩後ヒダ）");
+      } else if (
+        ["lu5", "pc3", "ht3", "li11", "li12", "si8", "te10"].includes(master.codeLower) ||
+        (detail.includes("肘") && !detail.includes("下方") && !detail.includes("前腕"))
+      ) {
+        landmarks.push("肘窩横紋および上腕二頭筋腱（橈側・尺側縁）");
+        landmarks.push("上腕骨内側上顆・外側上顆");
+        landmarks.push("肘頭（ひじ後面の突起骨）および神経溝");
+      } else if (detail.includes("上腕") || detail.includes("三角筋") || ["lu3", "lu4", "pc2", "ht2", "li13", "li14", "te11", "te12", "te13"].includes(master.codeLower)) {
+        if (detail.includes("後面") || ["te11", "te12", "te13"].includes(master.codeLower)) {
+          landmarks.push("上腕三頭筋筋腹および腱停止部");
+          landmarks.push("肩峰角および三角筋後縁");
+          landmarks.push("肘頭（ひじの突起骨）の上方指標");
+        } else {
+          landmarks.push("上腕二頭筋筋腹および内側・外側溝");
+          landmarks.push("上腕動脈拍動部（内側溝）");
+          landmarks.push("三角筋粗面および肩峰外端");
+        }
       } else {
-        landmarks.push("橈骨・尺骨の骨縁");
-        landmarks.push("手関節背側／掌側横紋または肘窩横紋");
-        landmarks.push("長掌筋腱・橈側手根屈筋腱の間隙");
+        landmarks.push("前腕の橈骨・尺骨の骨縁および骨間隙");
+        landmarks.push("手関節掌側横紋／背側横紋");
+        landmarks.push("長掌筋腱・橈側手根屈筋腱の間隙または総指伸筋腱");
       }
       break;
     case "足・脚":
