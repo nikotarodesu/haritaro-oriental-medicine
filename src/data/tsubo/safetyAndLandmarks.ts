@@ -398,5 +398,5 @@ export function generateFaqSelfCareAnswer(point: {
   // 4. 共通の禁止事項
   sections.push("【共通の禁止事項】食後30分以内、飲酒後、発熱時、入浴直前後の強い刺激や、皮膚に傷・湿疹・腫れがある部位への刺激はお控えください。");
 
-  return sections.join(" ");
+  return sections.join("\n\n");
 }

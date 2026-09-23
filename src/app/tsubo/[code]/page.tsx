@@ -30,7 +30,9 @@ import {
   ShieldCheck,
   GitCompare,
   HelpCircle,
-  HeartPulse
+  HeartPulse,
+  Flame,
+  Hand
 } from "lucide-react";
 import { SYMPTOMS } from "@/data/symptomData";
 
@@ -115,6 +117,87 @@ export default async function AcupointDetailPage({ params }: Props) {
       answer: generateFaqSelfCareAnswer(point),
     },
   ];
+
+  // FAQ 回答を読みやすく構造化レンダリングするヘルパー
+  const renderFaqAnswer = (text: string) => {
+    const paragraphs = text.split(/\n\n+/).filter(Boolean);
+
+    // 【〜】を含むブロックがある場合（構造化されたセルフケアガイド等）
+    if (paragraphs.some((p) => p.startsWith("【"))) {
+      return (
+        <div className="space-y-3 pt-1">
+          {paragraphs.map((p, pIdx) => {
+            const match = p.match(/^【([^】]+)】([\s\S]*)$/);
+            if (match) {
+              const title = match[1];
+              const content = match[2].trim();
+
+              const isWarning =
+                title.includes("禁忌") ||
+                title.includes("注意") ||
+                title.includes("留意") ||
+                title.includes("重要") ||
+                title.includes("禁止");
+              const isAcupressure = title.includes("指圧");
+              const isMoxa = title.includes("お灸") || title.includes("灸");
+
+              let cardBg = "bg-white dark:bg-[#16222C] border-[#E8E1D1] dark:border-[#2A3B4A]";
+              let badgeColor = "bg-[#1E3D34] text-white dark:bg-[#2B6958]";
+              let icon = <CheckCircle2 className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />;
+
+              if (isWarning) {
+                cardBg = "bg-[#FDEDEC]/70 dark:bg-[#281816]/70 border-[#FADBD8] dark:border-[#3E2220]";
+                badgeColor = "bg-[#A83629] text-white";
+                icon = <AlertTriangle className="w-3.5 h-3.5 text-[#A83629] dark:text-[#E07A70] shrink-0" />;
+              } else if (isAcupressure) {
+                cardBg = "bg-[#EBF3EF]/70 dark:bg-[#162A24]/70 border-[#C5DED4] dark:border-[#2A5243]";
+                badgeColor = "bg-[#1E3D34] text-white dark:bg-[#2B6958]";
+                icon = <Hand className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />;
+              } else if (isMoxa) {
+                cardBg = "bg-[#FEF6EE]/70 dark:bg-[#2A1D13]/70 border-[#FBD8B5] dark:border-[#4E2E19]";
+                badgeColor = "bg-[#B86924] text-white";
+                icon = <Flame className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387] shrink-0" />;
+              }
+
+              return (
+                <div
+                  key={pIdx}
+                  className={`p-3 sm:p-3.5 rounded-xl border ${cardBg} space-y-1.5 transition-colors`}
+                >
+                  <div className="flex items-center gap-1.5">
+                    {icon}
+                    <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${badgeColor}`}>
+                      {title}
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-[#333835] dark:text-[#C5D2DB] leading-relaxed pl-5">
+                    {content}
+                  </p>
+                </div>
+              );
+            }
+
+            return (
+              <p key={pIdx} className="text-xs sm:text-sm text-[#59615D] dark:text-[#C5D2DB] leading-relaxed">
+                {p}
+              </p>
+            );
+          })}
+        </div>
+      );
+    }
+
+    // 通常テキストの場合
+    return (
+      <div className="space-y-2">
+        {paragraphs.map((p, pIdx) => (
+          <p key={pIdx} className="text-xs sm:text-sm text-[#59615D] dark:text-[#C5D2DB] leading-relaxed">
+            {p}
+          </p>
+        ))}
+      </div>
+    );
+  };
 
   // 関連する症状別ガイド（逆引き相互リンク）
   const relatedSymptoms = SYMPTOMS.filter((sym) => {
@@ -601,9 +684,9 @@ export default async function AcupointDetailPage({ params }: Props) {
                   </div>
                   <span className="text-[#737C77] dark:text-[#8899A6] group-open:rotate-180 transition-transform text-xs">▼</span>
                 </summary>
-                <p className="mt-2.5 pt-2.5 border-t border-[#EAE3D4] dark:border-[#22303D] text-[#59615D] dark:text-[#C5D2DB] leading-relaxed pl-6">
-                  {faq.answer}
-                </p>
+                <div className="mt-2.5 pt-2.5 border-t border-[#EAE3D4] dark:border-[#22303D] pl-2 sm:pl-6">
+                  {renderFaqAnswer(faq.answer)}
+                </div>
               </details>
             ))}
           </div>
