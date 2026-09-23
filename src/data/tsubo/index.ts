@@ -11,10 +11,16 @@ import {
   generateHowToLocate,
   generatePalpationLandmarks,
 } from "./safetyAndLandmarks";
+import {
+  getFriendlyLocationSimple,
+  simplifyLocationText,
+  FRIENDLY_LOCATIONS_MAP,
+} from "./friendlyLocations";
 import { Tsubo } from "@/types/oriental";
 
 export * from "./types";
 export * from "./safetyAndLandmarks";
+export * from "./friendlyLocations";
 export { ACUPOINTS_MASTER } from "./acupointsMaster";
 export const ALL_ACUPOINTS = ACUPOINTS_MASTER;
 export { DETAILED_ACUPOINTS } from "./detailedPoints";
@@ -30,12 +36,17 @@ export * from "./quizData";
  */
 export function getAcupointByCode(codeOrId: string): AcupointMaster | undefined {
   const clean = codeOrId.trim().toLowerCase().replace(/^tsubo-/, "");
-  return ACUPOINTS_MASTER.find(
+  const found = ACUPOINTS_MASTER.find(
     (p) =>
       p.codeLower === clean ||
       p.id.toLowerCase() === clean ||
       p.legacyId.toLowerCase() === clean
   );
+  if (!found) return undefined;
+  return {
+    ...found,
+    locationSimple: getFriendlyLocationSimple(found),
+  };
 }
 
 /**
@@ -51,6 +62,7 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
     const point = DETAILED_ACUPOINTS[clean];
     return {
       ...point,
+      locationSimple: getFriendlyLocationSimple(point),
       caution: point.caution || generateCaution(point),
     };
   }
@@ -64,13 +76,16 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
     const point = DETAILED_ACUPOINTS[master.codeLower];
     return {
       ...point,
+      locationSimple: getFriendlyLocationSimple(point),
       caution: point.caution || generateCaution(point),
     };
   }
 
   // 3. 基本情報から詳細互換モデルを生成（詳細解剖図svgElementsがない場合はcrossSectionをundefinedにして未完成表示を完全防止）
+  const friendlySimple = getFriendlyLocationSimple(master);
   return {
     ...master,
+    locationSimple: friendlySimple,
     howToLocate: generateHowToLocate(master),
     palpationLandmarks: generatePalpationLandmarks(master),
     pitfalls: generatePitfalls(master),
