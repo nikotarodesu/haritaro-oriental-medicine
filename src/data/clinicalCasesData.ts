@@ -319,25 +319,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "病態の根本虚実の鑑別",
-        question: "紅舌少苔・細数脈・手足心熱・寝汗から判断される病理の本質はどれか？",
-        options: [
-          { id: "opt-1", label: "陰虚火旺（いんきょかおう：体の潤い不足による虚熱）", isCorrect: true, feedback: "正解です。体液・ホルモン（陰液）の不足により相対的に熱が暴走しています。" },
-          { id: "opt-2", label: "外感風熱（がいかんふうねつ：風邪による熱）", isCorrect: false, feedback: "外邪侵入ではなく内傷性の慢性消耗性病態です。" },
-          { id: "opt-3", label: "気滞血瘀（きたいけつお：血行不良）", isCorrect: false, feedback: "瘀血所見（紫舌・刺痛）は見られません。" },
-        ],
-      },
-      {
-        stepNumber: 2,
-        stepTitle: "確定証と配穴処方",
-        question: "腎水（潤い）を滋養し、心火（のぼせ）を鎮める最適な配穴セットはどれか？",
-        options: [
-          { id: "opt-1", label: "太谿 (KI3) ＋ 照海 (KI6) ＋ 神門 (HT7) ＋ 三陰交 (SP6)", isCorrect: true, feedback: "正解です。太谿・照海で腎陰を補充し、神門で心神を安定させ、三陰交で下焦を整えます。" },
-          { id: "opt-2", label: "大椎 (GV14) ＋ 曲池 (LI11)", isCorrect: false, feedback: "実熱を散らす瀉熱穴であり、陰虚の患者には発汗させすぎて脱水を招くリスクがあります。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "病態の根本虚実の鑑別",
+                question: "紅舌少苔・細数脈・手足心熱・寝汗から判断される病理の本質はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "陰虚火旺（いんきょかおう：体の潤い不足による虚熱）",
+                            isCorrect: true,
+                            feedback: "正解です。体液やホルモン（陰液）の枯渇により、陽気を制約できなくなって相対的な虚熱が暴走しています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "外感風熱（がいかんふうねつ：風邪による熱）",
+                            isCorrect: false,
+                            feedback: "急性外邪侵入ではなく、内傷性の慢性消耗性病態です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "気滞血瘀（きたいけつお：血行不良）",
+                            isCorrect: false,
+                            feedback: "局所の刺痛や紫舌・瘀斑などの瘀血所見は認められません。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "実火（肝火上炎）との鑑別診断",
+                question: "本症例の上半身ののぼせを、実熱である「肝火上炎」ではなく「肝腎陰虚・陰虚火旺」と診断する最大の四診根拠はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "舌苔が薄く剥落した少苔〜無苔（鏡面舌傾向）であり、脈が細数脈である点",
+                            isCorrect: true,
+                            feedback: "正解です。実熱であれば厚い黄燥苔や洪大・弦数脈を呈しますが、本例は潤い不足を示す少苔・細数脈を呈しており虚熱と判断されます。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "激しい頭痛と目の充血が主訴である点",
+                            isCorrect: false,
+                            feedback: "これは肝火上炎の実熱所見であり、本例の主訴ではありません。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "冷たい水をがぶがぶ大量に飲みたがる点",
+                            isCorrect: false,
+                            feedback: "実熱による大渇の特徴です。本例は口を潤す程度しか欲しません。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "確定証と配穴処方・手技の選定",
+                question: "腎水（潤い）を滋養し、心火（のぼせ）を鎮めて盗汗を止める最適な配穴と刺鍼手技はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "太谿 (KI3) ＋ 照海 (KI6) ＋ 神門 (HT7) ＋ 復溜 (KI7) への補法刺鍼",
+                            isCorrect: true,
+                            feedback: "正解です。太谿・照海で腎陰を補充し、復溜（経金穴・母穴補法）で生水・止汗を促し、神門で心神を鎮静させます。強刺激やお灸の多用は陰液を消耗するため禁忌です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "大椎 (GV14) ＋ 曲池 (LI11) への強刺激瀉血",
+                            isCorrect: false,
+                            feedback: "実熱を瀉す手法であり、陰虚の患者に行うと津液がさらに損耗して脱水を招く危険があります。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "関元 (CV4) ＋ 命門 (GV4) への多壮灸",
+                            isCorrect: false,
+                            feedback: "下焦の陽気を温める手法であり、虚熱をさらに煽ってしまうため適しません。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "裏・虚・熱",
@@ -396,24 +452,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "舌診（舌尖紅）と主訴の分析",
-        question: "舌尖部（心の部）の鮮紅点刺と動悸・中途覚醒から導かれる病因はどれか？",
-        options: [
-          { id: "opt-1", label: "心火偏亢（しんかへんこう：精神的ストレスによる脳の過剰興奮）", isCorrect: true, feedback: "正解です。心神（中枢神経）が過熱して安寧を失っています。" },
-          { id: "opt-2", label: "脾胃湿熱（ひいしつねつ：胃腸の炎症）", isCorrect: false, feedback: "胃腸の湿熱病態ではありません。" },
-        ],
-      },
-      {
-        stepNumber: 2,
-        stepTitle: "治療方針と確定証",
-        question: "上で過熱した心火を鎮め、下で枯渇した腎水を汲み上げる名配穴はどれか？",
-        options: [
-          { id: "opt-1", label: "神門 (HT7) ＋ 太谿 (KI3) ＋ 内関 (PC6)", isCorrect: true, feedback: "正解です。神門で心神を安寧にし、太谿で腎陰を補充、内関で胸部気機を調律する「心腎相交」の基本配穴です。" },
-          { id: "opt-2", label: "合谷 (LI4) ＋ 太衝 (LR3)", isCorrect: false, feedback: "気血開通穴ですが、陰虚による心腎不交の不眠には太谿と神門の滋陰安神がより適合します。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "舌診・脈診と気血病態の分析",
+                question: "舌尖部（心の部）の鮮紅点刺、寸浮尺沈の細数脈、動悸・中途覚醒から導かれる病態はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "心火偏亢（しんかへんこう：精神的ストレスと陰液不足による心神の過熱）",
+                            isCorrect: true,
+                            feedback: "正解です。舌尖は心に対応し、鮮紅点刺は心神（大脳中枢）の過熱・興奮を明瞭に示しています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "脾胃湿熱（ひいしつねつ：中焦の湿熱停滞）",
+                            isCorrect: false,
+                            feedback: "黄色い厚い苔や口臭、心下痞痛などが主体となる病態であり、本例とは異なります。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "痰迷心竅（たんめいしんきょう：痰濁が心を覆う）",
+                            isCorrect: false,
+                            feedback: "意識混濁や錯乱などが現れる病態であり、自律神経過熱・不眠の本例とは異なります。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "鑑別診断と確定証の特定",
+                question: "「心脾両虚による不眠」と本症例の「心腎不交による不眠」を鑑別する決定的な所見はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "心脾両虚は入眠困難と倦怠感・淡白舌が主であり、本症例は「中途覚醒・五心煩熱・舌尖紅・細数脈」が顕著である点",
+                            isCorrect: true,
+                            feedback: "正解です。心脾両虚は血虚による入眠障害が主ですが、本症例は腎水枯渇による虚火が上衝し、夜間に覚醒・動悸をきたす心腎不交証です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "本症例は日中に食欲不振と泥状下痢を頻発している点",
+                            isCorrect: false,
+                            feedback: "これは心脾両虚・脾気虚の所見です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "本症例は起床時に頭重感と悪心を強く訴えている点",
+                            isCorrect: false,
+                            feedback: "これは痰濁阻滞による症状です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "交通心腎のための配穴設計",
+                question: "上で過熱した心火を鎮め、下で枯渇した腎水を汲み上げて「水火既済」を取り戻す最適な配穴はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "神門 (HT7) ＋ 太谿 (KI3) ＋ 内関 (PC6) ＋ 三陰交 (SP6)",
+                            isCorrect: true,
+                            feedback: "正解です。神門で心火を降下させ、太谿で腎水を補い、内関で胸部気機と心包を整え、三陰交で三陰の潤いを調律する黄金配穴です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "合谷 (LI4) ＋ 太衝 (LR3) ＋ 豊隆 (ST40)",
+                            isCorrect: false,
+                            feedback: "四関穴と化痰穴の配合で、気滞や痰熱の開通に適しますが、陰虚の心腎不交には滋陰作用が不足します。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "足三里 (ST36) ＋ 脾兪 (BL20) ＋ 中脘 (CV12)",
+                            isCorrect: false,
+                            feedback: "脾胃の気を温補する配穴であり、心火亢進・陰虚の病態を直接鎮めるには至りません。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "裏・虚熱（上熱下虚）",
@@ -472,24 +585,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "五行生剋病理の分析",
-        question: "ストレス（肝）が消化管（胃）を攻撃し、本来下るべき胃気を逆上させている五行病態はどれか？",
-        options: [
-          { id: "opt-1", label: "木乗土（もくじょうど：肝気犯胃・肝胃不和）", isCorrect: true, feedback: "正解です。肝気の横逆が脾胃の降濁機能を破壊しています。" },
-          { id: "opt-2", label: "土剋水（どこくすい：脾が腎を剋する）", isCorrect: false, feedback: "消化器から水分代謝を害する病理ではありません。" },
-        ],
-      },
-      {
-        stepNumber: 2,
-        stepTitle: "胃気降逆のための特効処方",
-        question: "上逆する胃気と食道の灼熱感を引き下ろす最適な八脈交会配穴はどれか？",
-        options: [
-          { id: "opt-1", label: "内関 (PC6) ＋ 公孫 (SP4) ＋ 中脘 (CV12)", isCorrect: true, feedback: "正解です。陰維脈（内関）と衝脈（公孫）のペアは『心・胸・胃』の気逆・悪心を鎮める第一選択です。" },
-          { id: "opt-2", label: "列缺 (LU7) ＋ 照海 (KI6)", isCorrect: false, feedback: "呼吸器・咽喉・任脈の配穴です。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "五行生剋・相乗病態の分析",
+                question: "ストレス（肝）が消化管（胃）を攻撃し、本来下るべき胃気を逆上させている五行病態はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "木乗土（もくじょうど：肝気犯胃・肝胃不和）",
+                            isCorrect: true,
+                            feedback: "正解です。情志の抑圧により肝気が鬱結して横逆し、脾胃の正常な受納・降濁機能を攻撃しています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "土剋水（どこくすい：脾が腎を剋する）",
+                            isCorrect: false,
+                            feedback: "消化器から水分代謝を害する病理ではありません。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "金克木（きんこくもく：肺が肝を抑制する）",
+                            isCorrect: false,
+                            feedback: "正常な五行相剋関係であり、逆流性食道炎の病態とは一致しません。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "寒熱錯雑病態の四診鑑別",
+                question: "本症例の胃気上逆を「脾胃虚寒による嘔吐・逆流」と明確に鑑別できる四診所見はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "胸焼け（灼熱痛）・酸っぱいゲップ（呑酸）・黄膩苔・弦滑脈",
+                            isCorrect: true,
+                            feedback: "正解です。虚寒であれば冷たい水様液の嘔吐、白滑苔、遅脈、温めると軽減する喜温喜按を呈します。灼熱痛や呑酸、黄膩苔は明らかな実熱・痰熱の徴候です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "手足の冷えと泥状便・腹力軟弱",
+                            isCorrect: false,
+                            feedback: "これは脾胃虚寒・中気下陥の特徴です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "口渇がなく温かい白湯を好んで飲む",
+                            isCorrect: false,
+                            feedback: "寒証の特徴です。本例は口苦があり冷飲食を好みます。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "胃気降逆のための特効処方と体位管理",
+                question: "上逆する胃気と食道の灼熱感を速やかに引き下ろす八脈交会配穴と、施術時の臨床安全管理の組み合わせはどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "内関 (PC6) ＋ 公孫 (SP4) ＋ 中脘 (CV12) を用い、上半身を少し起こした体位で施術する",
+                            isCorrect: true,
+                            feedback: "正解です。陰維脈（内関）と衝脈（公孫）のペアは心・胸・胃の気逆を治す第一選択です。食後直後の完全腹臥位は腹圧を上げて逆流を悪化させるため、座位やセミファーラー位が推奨されます。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "列缺 (LU7) ＋ 照海 (KI6) を用い、食後すぐに腹臥位で強圧する",
+                            isCorrect: false,
+                            feedback: "列缺・照海は咽喉・肺の配穴であり、胃気降逆の主配穴ではありません。また食後腹臥位強圧は逆流を誘発します。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "大敦 (LR1) ＋ 隠白 (SP1) への強刺激お灸",
+                            isCorrect: false,
+                            feedback: "出血や失神等の救急穴であり、逆流性食道炎の実熱降逆には適しません。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "裏・実・熱（痰熱互結）",
@@ -548,24 +718,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "特徴的症状「痛瀉」の病理判断",
-        question: "「腹痛が起きると下痢し、排便すると痛みが治まる」という典型的な病態の東洋医学的証名はどれか？",
-        options: [
-          { id: "opt-1", label: "肝旺脾虚証（かんおうひきょしょう：肝脾不和・痛瀉）", isCorrect: true, feedback: "正解です。情志の緊張（肝）が脾の運化を圧迫して腸管痙攣（腹痛と下痢）を起こしています。" },
-          { id: "opt-2", label: "腸胃湿熱証（ちょういしつねつしょう）", isCorrect: false, feedback: "悪臭便や熱感はなく、心理的ストレス誘発性の病態です。" },
-        ],
-      },
-      {
-        stepNumber: 2,
-        stepTitle: "治療原則と配穴選定",
-        question: "肝を抑え（抑肝）、脾を助ける（扶脾）ための最適な組み合わせはどれか？",
-        options: [
-          { id: "opt-1", label: "太衝 (LR3) ＋ 足三里 (ST36) ＋ 天枢 (ST25) ＋ 三陰交 (SP6)", isCorrect: true, feedback: "正解です。太衝で肝気を緩め、足三里・天枢で大腸の蠕動を正常化し、三陰交で調律します。" },
-          { id: "opt-2", label: "大敦 (LR1) ＋ 隠白 (SP1)", isCorrect: false, feedback: "急性不正出血や失神等の救急井穴配穴です。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "特徴的症状「痛瀉」の病理判断",
+                question: "「緊張や外出前に激しい腹痛が起き、排便（軟便・下痢）すると痛みが一時的に和らぐ」病態の東洋医学的機序はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "肝旺脾虚・肝脾不和証（痛瀉）",
+                            isCorrect: true,
+                            feedback: "正解です。精神緊張により肝木が昂ぶり、脾土を克圧（木乗土）することで大腸の蠕動が急激に失調・痙攣しています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "腸胃湿熱証（ちょういしつねつしょう）",
+                            isCorrect: false,
+                            feedback: "悪臭を放つ灼熱便や裏急後重が持続する急性腸炎病態であり、休日に完全に寛解する本例とは異なります。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "脾腎陽虚証（ひじんようきょしょう）",
+                            isCorrect: false,
+                            feedback: "明け方の冷え込みで起きる五更瀉であり、精神緊張とは無関係です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "類似下痢疾患との鑑別理由",
+                question: "本症例を「脾虚湿盛（単純な胃腸虚弱による下痢）」ではなく「肝脾不和（過敏性腸症候群型）」と確定診断できる最大の理由はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "自宅でリラックスしている休日は全く下痢をせず、情志（試験や電車）のストレスに直結して発作が起き、脈に弦脈が混じる点",
+                            isCorrect: true,
+                            feedback: "正解です。純粋な脾虚であれば休日でも常時軟便・消化不良が続きますが、本例は肝気鬱結が引き金となる機能性病態です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "常に未消化便が出て、食後すぐに腹が冷える点",
+                            isCorrect: false,
+                            feedback: "脾虚の特徴です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "肛門部に灼熱感があり、膿血便が出る点",
+                            isCorrect: false,
+                            feedback: "湿熱痢や潰瘍性大腸炎の特徴です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "治療原則と配穴選定",
+                question: "肝を抑え（抑肝）、脾を助けて（扶脾）腸管の異常痙攣を鎮静化させる最適な経穴処方はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "太衝 (LR3) ＋ 足三里 (ST36) ＋ 天枢 (ST25) ＋ 三陰交 (SP6)",
+                            isCorrect: true,
+                            feedback: "正解です。肝経原穴の太衝で肝気の昂ぶりを緩め、足三里・大腸募穴の天枢で腸管運動を正常化し、三陰交で気血を調律する「痛瀉要方」に匹敵する名配穴です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "関元 (CV4) ＋ 命門 (GV4) ＋ 神闕 (CV8：生姜灸)",
+                            isCorrect: false,
+                            feedback: "陽虚寒証の下痢を温める配穴であり、情志緊張による痛瀉の第一選択ではありません。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "大椎 (GV14) ＋ 曲池 (LI11) ＋ 合谷 (LI4)",
+                            isCorrect: false,
+                            feedback: "外感風熱や表熱実証の解熱穴であり、肝脾不和の腸痙攣には適しません。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "半表半裏・虚実挟雑",
@@ -624,24 +851,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "痺証（ひしょう）の分類",
-        question: "「冷えと湿気で悪化、温めると軽減、重だるい激痛」から判定される痺証はどれか？",
-        options: [
-          { id: "opt-1", label: "寒湿痺（かんしつひ：痛痺・着痺の混合）", isCorrect: true, feedback: "正解です。寒邪の凝滞と湿邪の重着が下焦の経絡を塞いでいます。" },
-          { id: "opt-2", label: "熱痺（ねつひ：関節の赤熱・腫脹）", isCorrect: false, feedback: "温めて軽快する所見から熱痺ではありません。" },
-        ],
-      },
-      {
-        stepNumber: 2,
-        stepTitle: "配穴と治療手技",
-        question: "坐骨神経ラインを開通させ、腎陽を温める最適な組み合わせはどれか？",
-        options: [
-          { id: "opt-1", label: "環跳 (GB30) ＋ 委中 (BL40) ＋ 腎兪 (BL23) ＋ 命門 (GV4：温灸)", isCorrect: true, feedback: "正解です。環跳・委中で膀胱経・胆経の経気を疏通し、腎兪・命門へのお灸で腎陽を温補します。" },
-          { id: "opt-2", label: "風池 (GB20) ＋ 合谷 (LI4)", isCorrect: false, feedback: "上肢・頭部の配穴です。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "痺証（ひしょう）の臨床分類",
+                question: "「冷えと雨の日の湿気で激痛・重だるさが増悪し、入浴や温熱で軽減する」坐骨神経痛から判定される痺証の分類はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "寒湿痺（かんしつひ：痛痺・着痺の混合）",
+                            isCorrect: true,
+                            feedback: "正解です。寒邪の凝滞（強い痛み・冷感）と湿邪の重着（重だるさ・雨天増悪）が下焦の膀胱経・胆経を閉塞しています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "熱痺（ねつひ：局所の発赤・灼熱腫脹）",
+                            isCorrect: false,
+                            feedback: "温めると悪化し冷やすと楽になる病態であり、本例とは逆です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "行痺（こうひ：遊走性の関節痛）",
+                            isCorrect: false,
+                            feedback: "風邪が優位で痛む場所が定まらない病態であり、坐骨神経ラインに固定した激痛の本例とは異なります。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "標本・本虚標実の病態分析",
+                question: "本症例における「本（根本の原因）」と「標（現れている症状）」の東洋医学的関係はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "加齢による「腎陽虚衰・気血不足」（本）に乗じて、外邪である「風寒湿の邪」（標）が経絡に侵入・停滞している",
+                            isCorrect: true,
+                            feedback: "正解です。「腰は腎の府」であり、腎陽の衰微による下焦の陽気不足が基底にあるため、外来の寒湿邪が滞留して頑固な坐骨神経痛を形成しています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "胃熱と湿痰（本）が頭部に上衝（標）している",
+                            isCorrect: false,
+                            feedback: "消化器の熱性病態であり、腰下肢の寒湿痺とは無関係です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "肝火上炎（本）により下肢が虚脱（標）している",
+                            isCorrect: false,
+                            feedback: "上熱下虚の病態であり、寒湿による激痛とは異なります。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "配穴と刺鍼手技・安全管理",
+                question: "坐骨神経ラインを解剖学的に開通させ、腎陽を温める配穴と、神経損傷を防ぐ手技の組み合わせはどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "環跳 (GB30) ＋ 委中 (BL40) ＋ 腎兪 (BL23・灸頭鍼) を用い、環跳で得気（響き）を得たら深追いの煽動手技を避ける",
+                            isCorrect: true,
+                            feedback: "正解です。環跳は坐骨神経近傍に刺入し得気を得たら静置します。故意に強い電撃痛を何度も誘発すると神経線維を痛める危険があります。委中で膀胱経を通じ、腎兪温灸で深部を温めます。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "風池 (GB20) ＋ 天柱 (BL10) ＋ 曲池 (LI11) への深刺パルス通電",
+                            isCorrect: false,
+                            feedback: "上肢・頚部の配穴であり、坐骨神経領域に直接アプローチできません。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "環跳 (GB30) への3寸鍼による激しい雀啄手技と高頻度強通電",
+                            isCorrect: false,
+                            feedback: "坐骨神経幹に機械的微小外傷を与え、神経炎を悪化させるリスクが高いため禁忌です。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "裏・寒・虚実挟雑",
@@ -700,24 +984,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "病因の鑑別（水滞・痰飲）",
-        question: "白膩苔・濡滑脈・心下振水音・雨天悪化から導かれるめまいの病態はどれか？",
-        options: [
-          { id: "opt-1", label: "痰湿中阻・清陽不昇（たんしつちゅうそ・せいようふしょう）", isCorrect: true, feedback: "正解です。脾で生じた湿痰が中焦を塞ぎ、澄んだ気（清陽）が脳に上がれなくなっています。" },
-          { id: "opt-2", label: "肝陽上亢（かんようじょうこう）", isCorrect: false, feedback: "回転性めまいや激しい怒り・実熱を伴う病態ではありません。" },
-        ],
-      },
-      {
-        stepNumber: 2,
-        stepTitle: "化痰利水の処方配穴",
-        question: "全身の痰飲を除去する最強の「化痰要穴」を含む組み合わせはどれか？",
-        options: [
-          { id: "opt-1", label: "豊隆 (ST40) ＋ 中脘 (CV12) ＋ 百会 (GV20) ＋ 陰陵泉 (SP9)", isCorrect: true, feedback: "正解です。豊隆は古来「去痰の神穴」と称され、中脘・陰陵泉で水湿を捌き、百会で清陽を昇らせます。" },
-          { id: "opt-2", label: "太衝 (LR3) ＋ 行間 (LR2)", isCorrect: false, feedback: "肝火を瀉す穴であり、湿痰の除去には力不足です。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "四診所見からの病因病理の特定",
+                question: "白膩苔・濡滑脈・心下振水音・雨天悪化・乗り物酔いから導かれる浮動性めまいの本態はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "痰濁中阻・水気上衝（脾虚により生じた湿痰が中焦を塞ぎ、清陽の上昇を阻害している）",
+                            isCorrect: true,
+                            feedback: "正解です。過剰な甘味・乳製品摂取で脾の運化が落ち、体内に停滞した痰飲（水毒）が内耳・脳循環の清陽を妨げています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "肝陽上亢（かんようじょうこう：怒りやストレスで生じた肝風が吹き上がる）",
+                            isCorrect: false,
+                            feedback: "急激な回転性めまい、顔面紅潮、弦脈を呈する病態であり、本例の白膩苔や浮動感とは一致しません。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "気血両虚（きけつりょうきょ：脳の栄養不足）",
+                            isCorrect: false,
+                            feedback: "立ちくらみと淡白舌・細弱脈が主体であり、厚い白膩苔や振水音はみられません。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "「無痰作眩なし」に基づく確定証の鑑別",
+                question: "古典の格言「無痰則不作眩（痰が無ければ眩暈を作さず）」に該当する本症例の確定証と、類似病態との鑑別点はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "痰濁中阻証（頭重感・悪心・白膩苔があり、天候や気圧低下で悪化する点が特徴）",
+                            isCorrect: true,
+                            feedback: "正解です。メニエール病の内リンパ水腫に酷似する病態で、胃内停水（心下振水音）を伴う典型的な痰濁中阻証です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "腎陰虚証（腰膝酸軟と手足のほてり、耳鳴り、舌紅少苔が特徴）",
+                            isCorrect: false,
+                            feedback: "陰虚火旺によるめまいで、湿痰の所見とは正反対です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "風熱外襲証（発熱・咽頭痛・浮数脈が特徴）",
+                            isCorrect: false,
+                            feedback: "外感性の急性熱病であり、慢性浮動性めまいではありません。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "化痰利水と昇清降濁の処方配穴",
+                question: "全身の痰飲を除去する最強の「化痰要穴」を含み、清陽を頭部に昇らせる最適な組み合わせはどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "豊隆 (ST40) ＋ 中脘 (CV12) ＋ 百会 (GV20) ＋ 陰陵泉 (SP9)",
+                            isCorrect: true,
+                            feedback: "正解です。豊隆（胃経絡穴）は古来「去痰の神穴」とされ、中脘（胃募穴）・陰陵泉（脾合穴）で湿痰を捌き、百会で清陽の気を昇提させる完璧な配穴です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "太衝 (LR3) ＋ 行間 (LR2) ＋ 侠渓 (GB43)",
+                            isCorrect: false,
+                            feedback: "肝胆の火熱を瀉す配穴であり、湿痰の除去や水液代謝の改善には力不足です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "関元 (CV4) ＋ 命門 (GV4) ＋ 腎兪 (BL23)",
+                            isCorrect: false,
+                            feedback: "下焦の温陽補腎配穴であり、中焦の湿痰停滞を直接化痰・排泄する作用は弱いです。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "裏・虚実挟雑（本虚標実）",
@@ -776,24 +1117,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "古典型梅核気の確認",
-        question: "「嚥下障害はないが異物感があり、情志（気分）に左右される」古典的病態名はどれか？",
-        options: [
-          { id: "opt-1", label: "梅核気（ばいかくき：気滞痰阻証）", isCorrect: true, feedback: "正解です。『吐けども出ず、呑めども下らず』と古典に記される気滞と痰が喉に凝結した病態です。" },
-          { id: "opt-2", label: "食道癌による器質的狭窄", isCorrect: false, feedback: "固形物が通る点やカメラ検査陰性から器質的病変ではありません。" },
-        ],
-      },
-      {
-        stepNumber: 2,
-        stepTitle: "喉・胸部を開通させる特効配穴",
-        question: "任脈と陰蹻脈を通じ、胸喉の気機を開通させる八脈交会穴ペアはどれか？",
-        options: [
-          { id: "opt-1", label: "列缺 (LU7) ＋ 照海 (KI6) ＋ 膻中 (CV17)", isCorrect: true, feedback: "正解です。列缺（任脈に通ず）と照海（陰蹻脈に通ず）は咽喉部・胸部の気滞を解除する黄金ペアです。" },
-          { id: "opt-2", label: "後谿 (SI3) ＋ 申脈 (BL62)", isCorrect: false, feedback: "督脈・陽蹻脈（腰背・後頭部）の配穴です。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "気鬱・痰凝の病理機序の特定",
+                question: "「喉に物が詰まっているようで、吐き出そうとしても出ず、飲み込もうとしても下りないが、食事は普通に通過する」古典的病態の成因はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "気滞痰阻（きたいたんそ：ストレスで停滞した気と水分代謝不全の痰が咽喉部で絡み合った梅核気）",
+                            isCorrect: true,
+                            feedback: "正解です。『金匱要略』に「婦人、咽中に炙臠あるが如し」と記された梅核気（ヒステリー球）であり、七情内傷による気機鬱滞が本質です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "食道腫瘍による器質的狭窄",
+                            isCorrect: false,
+                            feedback: "飲食通過時に固形物が引っかかるのが特徴であり、食事時に引っかかりが消失する本例とは異なります。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "肺熱陰虚（はいねついんきょ）",
+                            isCorrect: false,
+                            feedback: "激しい乾咳や喀血、口渇を伴う病態であり、本例の情志連動の異物感とは異なります。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "梅核気（気滞痰阻証）の確定証と四診所見",
+                question: "本症例が単なる局所咽頭炎ではなく「肝気鬱結・気滞痰阻証」であることを証明する四診所見の組み合わせはどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "弦脈、胸脇苦満、舌根部の白膩苔、頻繁なため息や咳払い",
+                            isCorrect: true,
+                            feedback: "正解です。気の鬱滞を示す弦脈・胸脇苦満と、湿痰を示す白膩苔が揃っており、無形の気と有形の痰が咽喉に結聚した証拠です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "洪大脈、舌質紅、黄燥苔、激しい口渇",
+                            isCorrect: false,
+                            feedback: "実熱証の所見です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "沈遅無力脈、淡白舌、手足の強い冷え",
+                            isCorrect: false,
+                            feedback: "虚寒証の所見です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "八脈交会穴ペアと気会穴の選定",
+                question: "任脈と陰蹻脈を通じ、胸喉の気機を開通させて梅核気を速やかに散結させる特効配穴はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "列缺 (LU7) ＋ 照海 (KI6) ＋ 膻中 (CV17) ＋ 太衝 (LR3)",
+                            isCorrect: true,
+                            feedback: "正解です。列缺（任脈に通ず）と照海（陰蹻脈に通ず）は胸・喉・肺の病変を統括する黄金ペアです。気会である膻中で胸中の気滞を四散させ、太衝で肝気を疏泄します。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "後谿 (SI3) ＋ 申脈 (BL62) ＋ 大椎 (GV14)",
+                            isCorrect: false,
+                            feedback: "督脈・陽蹻脈に通じる腰背・後頭部の配穴です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "内関 (PC6) ＋ 公孫 (SP4) ＋ 梁丘 (ST34)",
+                            isCorrect: false,
+                            feedback: "心・胸・胃の胃気上逆や急性胃痛に適した配穴です。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "半表半裏・気実",
@@ -840,15 +1238,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       palpation: { pulse: "弦渋脈", abdomen: "腹力中等度。", acupointReaction: "頚部夾脊穴 (EX-B2)、天宗 (SI11)、曲池 (LI11)、合谷 (LI4) に強圧痛。" },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "神経根症と経筋病理の統合",
-        question: "C6神経根圧迫症状と手陽明経・手太陽経の走行に一致する弁証はどれか？",
-        options: [
-          { id: "opt-1", label: "気滞血瘀・脈絡阻痺証（きたいけつお・みゃくらくそひしょう）", isCorrect: true, feedback: "正解です。局所の筋膜攣縮と微小循環障害が神経根周囲で血瘀を形成しています。" },
-          { id: "opt-2", label: "陰虚火旺証", isCorrect: false, feedback: "熱証ではなく機械的絞扼と血瘀の病態です。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "症状・所見の経絡経筋同定",
+                question: "C6神経根障害による「首肩から母指にかけての放散痛・しびれ」と「後屈時のスパーリングテスト陽性」に一致する東洋医学の経絡・経筋はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "手太陰肺経・手陽明大腸経の経筋および足太陽膀胱経（頚部）",
+                            isCorrect: true,
+                            feedback: "正解です。頚部から前腕橈側・母指へと走るラインは手太陰肺経および手陽明大腸経に一致し、頚部後面の支持筋は膀胱経・督脈に属します。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "手少陰心経・手太陽小腸経（小指側）",
+                            isCorrect: false,
+                            feedback: "C8/Th1神経根障害領域であり、母指側のC6障害とは異なります。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "足厥陰肝経・足太陰脾経",
+                            isCorrect: false,
+                            feedback: "下肢内側の経絡であり、頚肩腕症候群の走行とは無関係です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "病態の虚実・病性弁証",
+                question: "ナイフで刺されるような固定性の激痛、夜間増悪、暗紫舌（瘀斑）、弦渋脈から導かれる確定証名はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "気滞血瘀証（経筋阻痺・脈絡不通）",
+                            isCorrect: true,
+                            feedback: "正解です。長時間の同一姿勢運転による筋肉の虚血・攣縮が局所の血流不全（血瘀）を生じさせ、「不通則痛（通ぜざれば則ち痛む）」の刺痛を形成しています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "陰虚火旺証",
+                            isCorrect: false,
+                            feedback: "潤い不足によるほてりや虚熱が主体であり、局所の固定性刺痛や暗紫舌の瘀血病態とは異なります。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "風寒表証",
+                            isCorrect: false,
+                            feedback: "発熱や悪寒を伴う感冒初期の病態です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "頚部夾脊穴の解剖学的刺鍼手技と医療安全管理",
+                question: "神経根周囲の浮腫を消退させ、かつ重大な医療事故（脊髄・椎骨動脈損傷）を絶対に回避するための正しい刺鍼手技はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "頚部夾脊穴 (EX-B2) にて、棘突起外方0.5寸から内側（脊柱管方向）へ向けず、直刺またはやや外下方へ深度1寸（約2.5cm）以内にとどめる",
+                            isCorrect: true,
+                            feedback: "正解です。頚部深部刺鍼で内側に角度をつけると脊髄腔や椎骨動脈に達する危険があります。解剖指標を守り外下方へ向けて適度な深度で刺入し、天宗・曲池を併用します。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "2寸5分の長鍼を用い、脊柱管の中心に向けて深く刺入して強い電撃痛を反復誘発する",
+                            isCorrect: false,
+                            feedback: "脊髄損傷・くも膜下出血の極めて高いリスクがあり絶対禁忌です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "頚部には一切刺鍼せず、足の湧泉にお灸だけをすえる",
+                            isCorrect: false,
+                            feedback: "遠隔穴も有用ですが、頚椎症性神経根症の局所神経浮腫解除には夾脊穴の安全な手技が極めて有効です。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "表裏挟雑・実証",
@@ -892,15 +1356,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       palpation: { pulse: "虚細無力脈", abdomen: "腹力軟弱、心下動悸。", acupointReaction: "百会 (GV20)、足三里 (ST36)、気海 (CV6) に虚の陥下。" },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "気血の虚損判断",
-        question: "蒼白面色・淡白舌・無力脈から判定される基本証名はどれか？",
-        options: [
-          { id: "opt-1", label: "気血両虚・清陽不昇証", isCorrect: true, feedback: "正解です。エネルギー（気）と血液（血）の両方が枯渇し、頭部に揚水できません。" },
-          { id: "opt-2", label: "肝火上炎証", isCorrect: false, feedback: "実熱ではなく極度の虚損病態です。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "四診所見の精査と病理判定",
+                question: "蒼白面色・淡白舌・細弱無力脈・眼前暗黒感・食後極度の倦怠感から判定される病態機序はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "気血両虚・清陽不昇（生体のエネルギーと血液が枯渇し、頭部に清陽の気を昇挙できない）",
+                            isCorrect: true,
+                            feedback: "正解です。脾胃の運化不全により気血生化の源が絶たれ、脳血流および自律神経の血圧調整能（交感神経トーヌス）が維持できなくなっています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "肝火上炎（激しい怒りによる脳充血）",
+                            isCorrect: false,
+                            feedback: "実熱の病態であり、本例の極度の虚弱・低血圧とは正反対です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "痰湿中阻",
+                            isCorrect: false,
+                            feedback: "白膩苔や胃内停水を伴う実証のめまいであり、気血両虚とは異なります。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "中気下陥と心脾両虚の統合確定証",
+                question: "朝の起床困難・低血圧・胃下垂傾向・軽微な動作での息切れから導かれる確定証名はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "中気下陥証・心脾両虚証（気血両虚）",
+                            isCorrect: true,
+                            feedback: "正解です。中気（脾胃の気）が落ち込んで内臓や血圧を持ち上げられず（中気下陥）、心血と脾気の両方が消耗して脳循環不全を招いています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "腎陰虚・肝陽上亢証",
+                            isCorrect: false,
+                            feedback: "ほてりや高血圧傾向を呈する病態です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "寒邪直中・脾胃実寒証",
+                            isCorrect: false,
+                            feedback: "急激な冷えによる激しい腹痛・下痢の急性実証です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "補気昇陽の配穴設計と起立性低血圧の安全管理",
+                question: "清陽を頭部に昇提させ、全身の気血を底上げする最適な経穴処方と施術後の配慮はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "百会 (GV20) への温灸（昇提中気） ＋ 足三里 (ST36) ＋ 気海 (CV6) への補法を行い、施術後はベッド上で足の屈伸を行わせてからゆっくり起立させる",
+                            isCorrect: true,
+                            feedback: "正解です。百会のお灸は落ち込んだ気を引き上げる特効穴で、足三里・気海で全身の気血を底上げします。また施術直後の急な起立は脳貧血（血管迷走神経反射）を起こしやすいため段階的起立を促します。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "十宣穴（十指尖端）から点刺瀉血し、施術後すぐに勢いよく立ち上がらせる",
+                            isCorrect: false,
+                            feedback: "瀉血は気血をさらに消耗させ、急な起立は失神・転倒を招くため禁忌です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "大椎 (GV14) と曲池 (LI11) に強刺激電気パルスを通電する",
+                            isCorrect: false,
+                            feedback: "実熱を散らす瀉法の手技であり、虚弱患者には過刺激となります。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "裏・虚・寒",
@@ -944,15 +1474,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       palpation: { pulse: "弦数脈", abdomen: "胸脇苦満あり。", acupointReaction: "風池 (GB20)、百会 (GV20)、太衝 (LR3) に過敏圧痛。" },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "「髪は血の余り」の病理把握",
-        question: "急激な脱毛・頭皮灼熱感・舌紅・弦数脈から導かれる証名はどれか？",
-        options: [
-          { id: "opt-1", label: "血熱生風・肝鬱化火証（けつねつせいふうしょう）", isCorrect: true, feedback: "正解です。激しい精神ストレスで血が熱を持ち、毛根の栄養が焼き切られて風を生じています。" },
-          { id: "opt-2", label: "腎陽虚証", isCorrect: false, feedback: "加齢性の薄毛ではなく急性の自己免疫・血熱性脱毛です。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "「髪は血の余り、腎の華」の病理把握",
+                question: "急激な多発性円形脱毛症、頭皮の熱感・緊縛感、舌紅、弦数脈から読み解く病態発症の機序はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "肝鬱化火・血熱生風（激しいストレスで肝気が鬱結して化火し、血熱が毛根の血流を遮断して内風を生じさせた）",
+                            isCorrect: true,
+                            feedback: "正解です。「髪は血の余り」であり、急激な精神的打撃により生じた血熱が頭頂の微小血管に波及し、毛包組織の自己免疫性炎症と急性脱落を引き起こしています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "腎陽虚衰（加齢による毛根の萎縮）",
+                            isCorrect: false,
+                            feedback: "何年もかけて徐々に頭頂部や生え際が後退する病態であり、数週間で多発する円形脱毛とは異なります。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "寒湿停滞",
+                            isCorrect: false,
+                            feedback: "冷えとむくみによる病態であり、頭皮の灼熱感や舌紅・数脈とは合いません。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "脱毛症の鑑別診断",
+                question: "本症例を「気血両虚による慢性薄毛」と鑑別し、「血熱生風証」と判定する最大の四診所見はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "脱毛斑の境界が極めて鮮明で進行が急速であり、舌質紅・薄黄苔・弦数脈という実熱の徴候を伴う点",
+                            isCorrect: true,
+                            feedback: "正解です。気血両虚は頭髪全体が細く疎らになり舌質は淡白・脈細弱ですが、本例は境界明瞭な円形斑が急速に出現し、局所熱感と実熱脈を呈しています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "髪が乾燥して枝毛が多く、爪が割れやすい点",
+                            isCorrect: false,
+                            feedback: "血虚の一般的所見です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "朝起きると枕に抜け毛が数本ついている程度である点",
+                            isCorrect: false,
+                            feedback: "生理的脱毛の範囲です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "治法・配穴と局所刺鍼の臨床的注意点",
+                question: "清熱涼血・祛風通絡を達成する配穴と、脱毛斑局所に対する正しい刺鍼手技はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "風池 (GB20) ＋ 百会 (GV20) ＋ 太衝 (LR3) で熱を瀉し、脱毛斑の「周囲境界部」に浅く散刺（梅花針様）を施す",
+                            isCorrect: true,
+                            feedback: "正解です。風池・太衝で頭部の熱を散らし、脱毛斑の中央ではなく「境界部・健常部との境」に微細な浅刺を行うことで、毛包を傷つけずに微小循環を再開通させます。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "脱毛斑の中央部に2寸の太い鍼を骨膜まで深く刺入して強い刺激を与える",
+                            isCorrect: false,
+                            feedback: "毛包組織を直接破壊して瘢痕化させ、永久脱毛を招く危険があるため絶対禁忌です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "局所を直接もぐさで強く焼灼する",
+                            isCorrect: false,
+                            feedback: "強い熱傷を起こして毛根を全滅させる恐れがあります。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "裏・実・熱",
@@ -996,15 +1592,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       palpation: { pulse: "沈緩脈", abdomen: "腹力中等度以下。", acupointReaction: "犢鼻 (ST35)、内膝眼 (奇穴)、陰陵泉 (SP9)、陽陵泉 (GB34)、曲泉 (LR8) に反応。" },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "痺証分類と経絡の同定",
-        question: "膝関節の重だるい痛み・浮腫・雨天悪化から導かれる東洋医学的痺証はどれか？",
-        options: [
-          { id: "opt-1", label: "着痺（ちゃくひ：湿邪優位の痺証）", isCorrect: true, feedback: "正解です。湿邪の重着・粘滞により関節内および周囲組織に水滞が停滞しています。" },
-          { id: "opt-2", label: "行痺（こうひ：遊走性の痛み）", isCorrect: false, feedback: "風邪の遊走痛ではなく、膝関節に固定された着痺です。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "変形性膝関節症の痺証鑑別",
+                question: "膝関節の重だるい激痛、腫脹・関節水腫、雨天や梅雨時の増悪、白膩苔から導かれる東洋医学的痺証はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "着痺（ちゃくひ：湿邪が優位となり関節に重着・停滞する痺証）",
+                            isCorrect: true,
+                            feedback: "正解です。『素問』に「湿気多き者は着痺と為す」とある通り、湿邪の粘滞性により関節腔内に水滞が停滞し、屈伸困難と重だるい痛みを引き起こしています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "行痺（こうひ：風邪による遊走痛）",
+                            isCorrect: false,
+                            feedback: "関節から関節へと痛む場所が移動する特徴があり、膝に固定する本例とは異なります。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "痛痺（つうひ：寒邪による冷え激痛）",
+                            isCorrect: false,
+                            feedback: "冷えが主因で激痛が走る病態ですが、水腫や重だるさ・白膩苔が前面に出る本例は着痺が主体です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "本虚標実（加齢と湿邪）の統合弁証",
+                question: "本症例における「肝腎不足（本虚）」と「経絡阻滞（標実）」の関係として最も適切な説明はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "加齢による「肝主筋・腎主骨」の衰退により関節軟骨・筋膜が変性（本虚）した基底に、湿邪が侵入して関節水腫と経筋拘急（標実）を生じている",
+                            isCorrect: true,
+                            feedback: "正解です。膝の変形や軟骨減少は肝血・腎精の不足（本）によるものであり、その脆弱な関節に外邪（湿邪）が停滞して急性滑膜炎・運動痛（標）を発症しています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "心火の亢進が膝関節の潤滑油を蒸発させている",
+                            isCorrect: false,
+                            feedback: "心と膝関節の直接の病理連動ではありません。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "肺気虚により皮膚から汗が漏れ出して膝に溜まっている",
+                            isCorrect: false,
+                            feedback: "自汗の病理であり、変形性膝関節症の病態ではありません。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "膝周囲の局所配穴と合穴・下合穴の活用",
+                question: "膝関節周囲の循環を改善し、関節内の余分な水滞を排泄させて筋膜を緩める最適な経穴処方はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "犢鼻 (ST35) ＋ 内膝眼 (奇穴) ＋ 陰陵泉 (SP9：脾合水穴) ＋ 陽陵泉 (GB34：筋会・下合穴)",
+                            isCorrect: true,
+                            feedback: "正解です。内外膝眼で局所の関節包周囲血流を促進し、陰陵泉で関節内の湿痰・水腫を強力に利水排泄させ、陽陵泉で膝を支える大腿四頭筋等の経筋緊張を弛緩させる完璧な構成です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "少沢 (SI1) ＋ 前谷 (SI2) ＋ 後谿 (SI3)",
+                            isCorrect: false,
+                            feedback: "上肢の小腸経井滎兪穴であり、膝関節の変形性関節症には直接適合しません。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "関節包の腫脹中央部に太い鍼を深く穿刺して故意に関節液を吸引する",
+                            isCorrect: false,
+                            feedback: "無菌環境でない刺鍼での関節腔穿刺は化膿性関節炎を誘発する重大リスクがあるため禁忌です。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "表裏挟雑・虚実挟雑",
@@ -1048,15 +1710,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       palpation: { pulse: "弦数脈", abdomen: "中脘・巨闕に圧痛。", acupointReaction: "中脘 (CV12)、梁丘 (ST34)、太衝 (LR3) に顕著な硬結。" },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "胃痛の急痛穴選定",
-        question: "急性の胃痛発作・激痛に対して選定すべき胃経の郄穴はどれか？",
-        options: [
-          { id: "opt-1", label: "梁丘 (ST34：足陽明胃経の郄穴)", isCorrect: true, feedback: "正解です。梁丘は急性の胃痙攣・胃痛発作を瞬時に鎮痛する郄穴です。" },
-          { id: "opt-2", label: "足三里 (ST36：合穴)", isCorrect: false, feedback: "慢性胃炎の調整穴であり、急性激痛には郄穴の梁丘が最優先です。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "胃痛の性状と好発時間からの病態推論",
+                question: "「夜間や空腹時にみぞおちがキリキリ痛み、何か食べると一時的に治まる」「口が苦く、イライラする」病態の東洋医学的機序はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "肝火犯胃・肝胃鬱熱（ストレスによる肝火が胃を攻撃し、胃酸分泌を過剰に昂らせて粘膜を灼傷している）",
+                            isCorrect: true,
+                            feedback: "正解です。夜間や空腹時は胃が空虚になるため、過剰な胃酸（胃熱・肝火）が潰瘍面を直接刺激してキリキリ痛み、飲食で胃酸が中和されると一時的に痛みが和らぎます。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "脾胃虚寒（胃が冷えて動かない）",
+                            isCorrect: false,
+                            feedback: "温めると楽になり、空腹時だけでなく冷飲食で悪化する病態です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "食積（食べ過ぎによる消化不良）",
+                            isCorrect: false,
+                            feedback: "食後にお腹が張って激痛となり、嘔吐すると楽になる病態であり、本例とは正反対です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "鑑別診断と確定証の特定",
+                question: "本症例を「単純な飲食不節による胃熱」ではなく「肝気化火による肝胃鬱熱証」と診断する四診上の根拠はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "脈が弦数脈（肝の緊張と熱）であり、情志のストレスで悪化し、口苦・イライラ・胸脇部緊張を併発している点",
+                            isCorrect: true,
+                            feedback: "正解です。弦脈や口苦、精神ストレスとの強い連動性は、病変の根本が肝胆の疏泄失調から化火したものであることを示しています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "舌苔が真っ白で厚く、脈が遅脈である点",
+                            isCorrect: false,
+                            feedback: "寒証の所見です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "下腹部が冷えて下痢が止まらない点",
+                            isCorrect: false,
+                            feedback: "下焦虚寒の所見です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "郄穴・募穴・原穴を組み合わせた処方設計",
+                question: "急性の激しい胃痛発作を即座に鎮痙・鎮痛し、肝火を鎮める最適な経穴処方はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "梁丘 (ST34：胃経郄穴) ＋ 中脘 (CV12：胃募穴) ＋ 太衝 (LR3：肝経原穴)",
+                            isCorrect: true,
+                            feedback: "正解です。梁丘は胃経の「郄穴（急痛・急性炎症を止める要穴）」であり、中脘で胃気昇降を調え、太衝で肝の熱暴走を断ち切る劇的な鎮痛配穴です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "足三里 (ST36) ＋ 脾兪 (BL20) への温灸",
+                            isCorrect: false,
+                            feedback: "慢性期の消化吸収改善には良いですが、急性期の激しい胃酸過多・胃痙攣痛には郄穴の梁丘が最優先です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "関元 (CV4) ＋ 気海 (CV6) ＋ 命門 (GV4)",
+                            isCorrect: false,
+                            feedback: "下焦の陽気を補う配穴であり、胃脘の灼熱痛には適しません。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "裏・実・熱",
@@ -1100,15 +1828,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       palpation: { pulse: "細数脈または弦細脈", abdomen: "腹力中等度。", acupointReaction: "曲池 (LI11)、血海 (SP10)、三陰交 (SP6)、肺兪 (BL13) に反応。" },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "皮膚病態の弁証",
-        question: "皮膚乾燥・苔癬化・夜間温熱性掻痒から導かれる証名はどれか？",
-        options: [
-          { id: "opt-1", label: "血虚風燥証（けっきょふうそうしょう）", isCorrect: true, feedback: "正解です。血の潤い不足により体表が乾燥し、虚風が生じて痒みを引き起こしています。" },
-          { id: "opt-2", label: "湿熱浸淫証", isCorrect: false, feedback: "ジュクジュクした黄色い浸出液（湿熱）ではなく、乾いた苔癬化（風燥）です。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "皮膚所見（望診）と病理機序の特定",
+                question: "「肘の内側や首が乾燥して粉を吹き、皮膚が肥厚（苔癬化）して、夜間布団に入ると激しく痒い」病態の東洋医学的機序はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "血虚風燥・表虚生風（血の不足により皮膚組織が滋養されず乾燥し、陰虚内熱から虚風が生じて痒みを引き起こしている）",
+                            isCorrect: true,
+                            feedback: "正解です。「治風先治血、血行けば風自ずから滅す」の通り、慢性アトピーで営血が枯渇し、体表バリア（衛気）が破綻して耐え難い掻痒を招いています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "湿熱浸淫（ジュクジュクした黄色い浸出液と水疱が主体の病態）",
+                            isCorrect: false,
+                            feedback: "急性湿疹や化膿病態であり、本例のような乾燥・落屑・苔癬化とは異なります。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "風寒外束（寒気による蕁麻疹）",
+                            isCorrect: false,
+                            feedback: "寒冷刺激で膨疹が出る病態であり、慢性の苔癬化病変とは異なります。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "「肺主皮毛」と「治風先治血」に基づく確定証",
+                question: "本症例のアトピー性皮膚炎に対する東洋医学的確定証名として最も適切なものはどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "血虚風燥証（肺陰不足・表虚生風）",
+                            isCorrect: true,
+                            feedback: "正解です。肺の宣発・粛降機能低下により皮膚（皮毛）へ津液が配分されず、肝血不足による血虚生風が皮膚表面で激しい痒みとなっています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "肝胆湿熱証",
+                            isCorrect: false,
+                            feedback: "黄疸や右季肋部痛、口苦などを伴う内臓実熱病態です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "脾腎陽虚証",
+                            isCorrect: false,
+                            feedback: "全身浮腫や激しい下痢、手足の氷のような冷えが主体の病態です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "清熱祛風・養血潤燥の配穴と臨床禁忌",
+                question: "体表の風熱を清解し、皮膚に潤いを取り戻す要穴処方と、施術時の注意事項の組み合わせはどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "曲池 (LI11：清熱祛風) ＋ 血海 (SP10：活血養血) ＋ 三陰交 (SP6：滋陰潤燥) を選び、赤くびらんした局所への直接深刺は避ける",
+                            isCorrect: true,
+                            feedback: "正解です。曲池は大腸経合水穴で皮膚の風熱を冷まし、血海・三陰交で血を養って風を止めます。急性炎症部への直接刺鍼は二次感染（蜂窩織炎）の恐れがあるため手足の遠隔穴を用います。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "激しく痒い皮膚の苔癬化部分に直接太い鍼を何十本も深刺して強通電する",
+                            isCorrect: false,
+                            feedback: "皮膚組織をさらに傷つけ、感染やケロイド化を招くため禁忌です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "熱いお灸を痒い部位に直接多壮すえ続ける",
+                            isCorrect: false,
+                            feedback: "熱刺激はヒスタミン遊離を促し、直後に猛烈なリバウンド掻痒を引き起こすため不適です。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "表裏挟雑・虚熱",
@@ -1152,15 +1946,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       palpation: { pulse: "弦細数脈または結代脈", abdomen: "動悸が臍上からみぞおちにかけて強く拍動。", acupointReaction: "内関 (PC6)、公孫 (SP4)、巨闕 (CV14)、胆兪 (BL19) に反応。" },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "古典病名「奔豚気」の推論",
-        question: "「下腹部から胸へ気が突き上がり激しい動悸と恐怖に襲われる」古典的病態名はどれか？",
-        options: [
-          { id: "opt-1", label: "奔豚気病・心胆気虚証（ほんとんきびょう）", isCorrect: true, feedback: "正解です。衝脈を伝って下焦の水気・衝気が上衝するパニック発作の典型病態です。" },
-          { id: "opt-2", label: "風熱外襲証", isCorrect: false, feedback: "外感風熱ではありません。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "発作性動悸と気の上衝の古典病理",
+                question: "「急激に下腹部から何かが胸や喉へ突き上げてきて、激しい動悸・呼吸困難・死の恐怖に襲われる」発作の東洋医学的古典病態名はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "奔豚気病（ほんとんきびょう：衝脈を通じて下焦の衝気が心胸に上逆する病態）",
+                            isCorrect: true,
+                            feedback: "正解です。『金匱要略』に「奔豚病は少腹より起こり、上りて咽喉を衝き、発作すれば死せんと欲す」と記されるパニック発作の典型病態です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "結胸証（けっきょうしょう：邪熱と水飲が胸中で結聚した実熱病態）",
+                            isCorrect: false,
+                            feedback: "胸腹部の強い板状硬結と高熱を伴う病態です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "懸飲（けんいん：胸膜炎による側胸部痛）",
+                            isCorrect: false,
+                            feedback: "呼吸や咳で脇腹が引きつれて痛む病態です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "臓腑病変と確定証の特定",
+                question: "本症例が「心胆気虚・衝気上逆証」であることを裏付ける四診所見の組み合わせはどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "驚きやすく些細な物音で怯える（胆気虚）、臍上からみぞおちへの拍動（奔豚気・衝気）、細数脈または結代脈",
+                            isCorrect: true,
+                            feedback: "正解です。「胆は決断を司り、心は神明を司る」。驚愕や過労で心胆の気が弱ると恐怖に過敏になり、衝脈の気が制禦を失って心胸へ爆発的に上逆します。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "舌苔が黄色く厚く乾燥し、脈が洪大で力強く、口臭が激しい",
+                            isCorrect: false,
+                            feedback: "陽明腑実熱証の所見です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "顔面が青白く、下腹部が石のように硬く冷えている",
+                            isCorrect: false,
+                            feedback: "純粋な寒積証です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "八脈交会配穴と発作時の臨床手技",
+                question: "衝気の上逆を足元へ引き下ろし、心神を急速に鎮静化させる最適な経穴処方と発作時の対応はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "内関 (PC6：陰維脈に通ず) ＋ 公孫 (SP4：衝脈に通ず) ＋ 巨闕 (CV14：心募穴) を用い、発作時は深刺を避けて静かな接触鍼と呼気誘導を行う",
+                            isCorrect: true,
+                            feedback: "正解です。内関と公孫は八脈交会穴の黄金ペアで、胸腹の気逆・衝気を鎮める第一選択です。発作中に強い刺激を加えると過換気を悪化させるため、静かに触れる接触鍼と呼吸誘導が鉄則です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "百会 (GV20) に強刺激温灸を何十壮もすえて気を頭部に引き上げる",
+                            isCorrect: false,
+                            feedback: "気をさらに上衝させてパニック発作を悪化させるため禁忌です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "十宣穴への乱刺瀉血",
+                            isCorrect: false,
+                            feedback: "激しい瀉血刺激は患者のパニックと恐怖心をさらに煽るため適しません。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "裏・虚実挟雑（本虚標実）",
@@ -1204,15 +2064,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       palpation: { pulse: "細弦脈", abdomen: "正常。", acupointReaction: "攅竹 (BL2)、風池 (GB20)、太陽 (奇穴)、太衝 (LR3) に顕著な圧痛。" },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "「肝は目に開竅す」の生理理解",
-        question: "「久しく視れば血を傷る」の通り、眼球の酷使により消耗する実体はどれか？",
-        options: [
-          { id: "opt-1", label: "肝血（かんけつ：目と筋膜を潤す血液）", isCorrect: true, feedback: "正解です。肝血が消耗して目を滋養できなくなっています。" },
-          { id: "opt-2", label: "腎陽（じんよう）", isCorrect: false, feedback: "冷えの病態ではありません。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "「久視傷血」の生理病理の把握",
+                question: "長時間のディスプレイ注視による激しい眼精疲労・かすみ目・後頭部痛の東洋医学的機序として正しいものはどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "「久しく視れば血を傷る」の通り、目の酷使により肝血が枯渇し、毛様体筋や経筋に栄養が行き届かなくなっている",
+                            isCorrect: true,
+                            feedback: "正解です。「肝は目に開竅し、爪を華とし、筋を主る」。目を酷使し続けると肝血が奪われ、目のかすみや乾燥とともに後頚部の筋膜拘急（首こり）が連動して発症します。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "脾の陽気が頭部に過剰に昇りすぎて目を焼いている",
+                            isCorrect: false,
+                            feedback: "脾の運化とは直接関係しません。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "肺の宣発不全により目に空気が送り込めなくなっている",
+                            isCorrect: false,
+                            feedback: "肺気と眼精疲労の主病理ではありません。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "鑑別診断と確定証の特定",
+                question: "本症例を「風熱による急性結膜炎」と明確に鑑別し、「肝血不足・経筋拘急証」と判定できる四診の鍵はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "眼脂（目やに）や激しい熱感・充血はなく、夕方や疲労時にかすみ目・ピント調節不全が悪化し、脈が細弦脈である点",
+                            isCorrect: true,
+                            feedback: "正解です。外感風熱であれば急性の充血・目やに・灼熱痛を伴いますが、本例は慢性疲労性の肝血不足であり、夕方に悪化するかすみ目が主体です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "舌苔が真っ黄色で厚く、脈が滑数脈である点",
+                            isCorrect: false,
+                            feedback: "湿熱実証の所見です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "目を開けると激しい回転性のめまいが起きる点",
+                            isCorrect: false,
+                            feedback: "内耳性前庭障害の所見です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "配穴設計と眼窩周囲刺鍼の安全管理",
+                question: "目と頭部への血流を回復させる要穴処方と、内出血（青あざ）を防ぐための安全管理はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "攅竹 (BL2) ＋ 太陽 (奇穴) ＋ 風池 (GB20) ＋ 太衝 (LR3) ＋ 光明 (GB37：胆経絡穴・眼の特効穴) を選び、眼窩内への無理な深刺は避ける",
+                            isCorrect: true,
+                            feedback: "正解です。攅竹・太陽で眼窩外縁から循環を促し、風池で後頭下筋群を緩め、光明（下肢）から目へ経気を通じます。晴明・球後等の眼窩内刺鍼は球後出血リスクが高いため、安全な外縁穴が推奨されます。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "晴明 (BL1) に太い鍼を用いて眼球の裏側まで深く刺入し激しく回旋させる",
+                            isCorrect: false,
+                            feedback: "球後出血や視神経損傷の危険が極めて高いため絶対禁忌です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "足の指先（厲兌など）だけにお灸をして眼窩周囲には一切触れない",
+                            isCorrect: false,
+                            feedback: "局所の筋緊張解放と遠隔穴の併用が最も効果的です。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "表裏挟雑・虚証（局所鬱熱）",
@@ -1256,15 +2182,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       palpation: { pulse: "細数脈", abdomen: "腹力中等度。", acupointReaction: "尺沢 (LU5)、太淵 (LU9)、照海 (KI6)、肺兪 (BL13) に反応。" },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "咳嗽の病態判定",
-        question: "無痰・空咳・舌紅無苔・細数脈から導かれる証名はどれか？",
-        options: [
-          { id: "opt-1", label: "肺陰虚証（はいいんきょしょう：肺の潤い枯渇）", isCorrect: true, feedback: "正解です。肺の津液が消耗し、燥熱が気道を刺激して咳を誘発しています。" },
-          { id: "opt-2", label: "風寒束肺証", isCorrect: false, feedback: "寒気や水様痰を伴う外感寒邪ではありません。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "咳の性状と四診所見からの病態推論",
+                question: "「風邪をひいた後、痰が出ない乾いた咳（空咳）が2ヶ月続く」「声がかれる」「舌質紅・無苔・細数脈」から読み解く病理はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "肺陰虚（はいいんきょ：感冒の余熱や発声過多で肺の津液が消耗し、燥熱が気道粘膜を刺激している）",
+                            isCorrect: true,
+                            feedback: "正解です。肺は「喜潤悪燥（潤いを好み乾燥を嫌う）」の臓です。陰液（水分）が枯渇して気道粘膜が乾き切っているため、わずかな刺激で激しい空咳が誘発されます。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "痰濁阻肺（湿痰が気道に溢れ出ている病態）",
+                            isCorrect: false,
+                            feedback: "ゴボゴボと大量の痰が出る病態であり、無痰の空咳である本例とは正反対です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "風寒束肺（寒気により肺気が塞がれている急性期病態）",
+                            isCorrect: false,
+                            feedback: "悪寒や水様鼻汁、薄白苔を呈する感冒初期であり、2ヶ月続く無苔の乾咳とは異なります。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "「金水相生」に基づく確定証の特定",
+                question: "慢性咳嗽において、肺の陰液不足が下焦の腎に波及している（または腎陰虚から肺が潤されない）病態を指す確定証名はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "肺陰虚証（肺腎陰虚・燥咳）",
+                            isCorrect: true,
+                            feedback: "正解です。五行において肺（金）と腎（水）は母子の関係（金水相生）にあり、長引く空咳や声がれ、夜間の喉の乾燥は肺腎両方の陰液枯渇を示しています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "脾胃気虚証",
+                            isCorrect: false,
+                            feedback: "食欲不振や泥状便が主体の消化器虚弱病態です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "肝火犯肺証",
+                            isCorrect: false,
+                            feedback: "激しい怒りとともに咳き込み、胸脇部痛や喀血を伴う実火病態です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "滋陰潤肺の要穴処方と臨床注意点",
+                question: "肺を潤して咳を鎮め、「金水相生」によって体液を回復させる最適な配穴と手技はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "太淵 (LU9：肺原穴) ＋ 尺沢 (LU5：肺合水穴) ＋ 照海 (KI6：八脈交会穴・陰蹻脈) への細鍼による微弱な補法刺鍼",
+                            isCorrect: true,
+                            feedback: "正解です。太淵で肺気を養い、尺沢（合水穴）で肺熱を冷まして下行させ、照海で腎水を汲み上げて喉を潤します。温灸の多用や強い発汗手技は陰液をさらに蒸発させるため避けます。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "大椎 (GV14) への強刺激刺絡瀉血とお灸の多壮",
+                            isCorrect: false,
+                            feedback: "津液をさらに焼き尽くし、乾燥と空咳を悪化させるため不適です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "豊隆 (ST40) と中脘 (CV12) への強い瀉法",
+                            isCorrect: false,
+                            feedback: "湿痰を排泄する処方であり、潤いが不足している肺陰虚には乾燥を助長します。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "裏・虚・熱",
@@ -1308,15 +2300,81 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       palpation: { pulse: "浮緩脈または弦脈", abdomen: "正常。", acupointReaction: "翳風 (TE17)、風池 (GB20)、陽白 (GB14)、地倉 (ST4) に反応。" },
     },
     reasoningSteps: [
-      {
-        stepNumber: 1,
-        stepTitle: "東洋医学的面癱病理の特定",
-        question: "疲労時に風寒の邪気を受け顔面の経絡が麻痺した病態の伝統病名はどれか？",
-        options: [
-          { id: "opt-1", label: "面癱（めんたん：風邪外襲・脈絡空虚証）", isCorrect: true, feedback: "正解です。気血の虚に乗じて風邪が顔面の経絡に侵入し気血の運行を阻害しています。" },
-          { id: "opt-2", label: "中風中臓腑（脳卒中）", isCorrect: false, feedback: "前額部の皺寄せ不能や中枢神経症状がない点から末梢性麻痺（ベル麻痺）です。" },
-        ],
-      },
+          {
+                stepNumber: 1,
+                stepTitle: "面癱（顔面神経麻痺）の病因病機の特定",
+                question: "「風邪気味で窓を開けて寝た翌朝、口から水がこぼれ、目が閉じなくなった」ベル麻痺の東洋医学的発症機序はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "風寒外襲・気血阻滞（過労による気血の虚に乗じて外来の風寒邪が顔面の経絡に侵入し、経筋が麻痺・拘急した面癱）",
+                            isCorrect: true,
+                            feedback: "正解です。正気が弱まった隙に風寒の邪が手足陽明経・少陽経を襲い、茎乳突孔周囲での顔面神経浮腫と虚血をもたらして弛緩性麻痺を引き起こしています。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "肝陽上亢による中風中臓腑（脳出血）",
+                            isCorrect: false,
+                            feedback: "意識障害や片麻痺を伴う中枢性病態であり、単なる末梢の表情筋麻痺とは異なります。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "脾気虚による肌肉萎縮",
+                            isCorrect: false,
+                            feedback: "全身の筋力が徐々に衰える慢性病態であり、一晩で急性発症する面癱とは異なります。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 2,
+                stepTitle: "中枢性麻痺との鑑別と確定証の特定",
+                question: "本症例を「脳卒中（中枢性顔面麻痺）」と鑑別し、「末梢性顔面神経麻痺（ベル麻痺・面癱）」と確定できる臨床的所見はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "「前額部の皺寄せ不能」および「完全な閉眼不全（兎眼・Bell現象）」がみられる点",
+                            isCorrect: true,
+                            feedback: "正解です。中枢性麻痺では前額部の筋肉（前頭筋）の神経支配が両側性であるため額の皺寄せが保たれますが、末梢性麻痺では前額部も含めた顔面半側全体が完全に麻痺します。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "半身の運動麻痺としびれ、言語障害（失語）を伴う点",
+                            isCorrect: false,
+                            feedback: "中枢性脳卒中の所見です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "口角は下がるが、目は完全に閉じることができる点",
+                            isCorrect: false,
+                            feedback: "中枢性麻痺の典型的な特徴です。"
+                      }
+                ]
+          },
+          {
+                stepNumber: 3,
+                stepTitle: "経絡選定と急性期の刺鍼禁忌・臨床安全管理",
+                question: "麻痺側の神経浮腫を改善するための要穴処方と、発症初期（2週間以内）に絶対に避けるべき手技はどれか？",
+                options: [
+                      {
+                            id: "opt-1",
+                            label: "翳風 (TE17：顔面神経幹部) ＋ 地倉 (ST4) ＋ 陽白 (GB14) ＋ 合谷 (LI4：面目の主穴) を用い、急性期局所への強刺激低周波パルス通電を回避する",
+                            isCorrect: true,
+                            feedback: "正解です。翳風で神経幹の血流を回復し、合谷（四総穴）で顔面の気血を巡らせます。ただし発症初期の急性炎症期に局所へ強い電気パルスを行うと、神経変性を助長し「病的共同運動」や「病的拘縮」などの重篤な後遺症を誘発するため厳禁です。"
+                      },
+                      {
+                            id: "opt-2",
+                            label: "発症直後から顔面の麻痺筋に太い針を刺し、最強強度の低周波パルスで筋肉を大きく痙攣させ続ける",
+                            isCorrect: false,
+                            feedback: "病的共同運動（口を動かすと目が閉じる等）の後遺症を不可逆的に引き起こすリスクが高いため絶対禁忌です。"
+                      },
+                      {
+                            id: "opt-3",
+                            label: "顔面には一切アプローチせず、足三里だけにお灸をすえる",
+                            isCorrect: false,
+                            feedback: "合谷や翳風への適切な微弱刺激による早期の神経虚血改善が予後を大きく左右します。"
+                      }
+                ]
+          }
     ],
     correctDiagnosis: {
       hachiko: "表・実・虚実挟雑",
