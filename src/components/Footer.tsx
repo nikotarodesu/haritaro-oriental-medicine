@@ -67,18 +67,8 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
-                <Link href="/symptoms#headache-stiff-neck" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
-                  <span>頭痛・首肩こり改善</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/symptoms#stress-insomnia" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
-                  <span>不眠・ストレス緩和</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/symptoms#stomach-fatigue" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
-                  <span>胃腸虚弱・冷え性対策</span>
+                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
+                  <span>お悩み・症状別 セルフケアガイド</span>
                 </Link>
               </li>
               <li>
