@@ -106,40 +106,7 @@ export default function WuxingClinicalDecisionTree({ onNextLecture }: Props) {
           </div>
         </div>
       </div>
-
-      {/* 次の講義（第3講：気血津液論）への誘導バナー */}
-      <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-[#1E3D34] to-[#152C25] text-white shadow-md">
-        <div className="space-y-1 text-center sm:text-left">
-          <div className="inline-flex items-center gap-1.5 text-xs text-[#E6C387] font-semibold tracking-wider uppercase">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Next Lecture ── 第3講</span>
-          </div>
-          <h5 className="font-serif font-bold text-base sm:text-lg">
-            第3講：気血津液論 ― エネルギー代謝と体液循環の病態学
-          </h5>
-          <p className="text-xs text-[#D3DFDA]">
-            五行ネットワークを流れる「生命の燃料」気・血・津液の生理と病理を徹底解説
-          </p>
-        </div>
-
-        {onNextLecture ? (
-          <button
-            onClick={onNextLecture}
-            className="shrink-0 px-6 py-3 rounded-xl bg-[#E6C387] hover:bg-[#DFC07D] text-[#1E3D34] font-bold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 group"
-          >
-            <span>次へ進む：③ 気血津液論</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
-        ) : (
-          <a
-            href="/curriculum?lecture=lecture-3-qiblood"
-            className="shrink-0 px-6 py-3 rounded-xl bg-[#E6C387] hover:bg-[#DFC07D] text-[#1E3D34] font-bold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 group"
-          >
-            <span>次へ進む：③ 気血津液論</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </a>
-        )}
-      </div>
     </figure>
   );
 }
+
