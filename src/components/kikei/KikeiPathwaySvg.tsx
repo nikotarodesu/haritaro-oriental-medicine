@@ -335,39 +335,58 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
               return (
                 <g
                   key={idx}
-                  className="cursor-pointer transition-transform hover:scale-125"
+                  className="cursor-pointer group"
                   onClick={() => setActiveNode(node)}
                 >
-                  {/* 外側リング */}
+                  {/* 透明な広域ヒットボックス（フリッカーを完全防止し確実にタップ可能にする） */}
                   <circle
                     cx={node.x}
                     cy={node.y}
-                    r={isSelected ? 8 : node.isMaster ? 7 : 5}
-                    fill={node.isMaster ? primaryColor : "white"}
+                    r="15"
+                    fill="transparent"
+                  />
+
+                  {/* ホバー＆選択時のグローリング */}
+                  <circle
+                    cx={node.x}
+                    cy={node.y}
+                    r={isSelected ? 10 : 8}
+                    fill={primaryColor}
+                    className={`transition-opacity duration-150 ${
+                      isSelected ? "opacity-30" : "opacity-0 group-hover:opacity-20"
+                    }`}
+                  />
+
+                  {/* 外側リング / メインピン */}
+                  <circle
+                    cx={node.x}
+                    cy={node.y}
+                    r={isSelected ? 7.5 : node.isMaster ? 6.5 : 5}
+                    fill={node.isMaster ? primaryColor : isSelected ? primaryColor : "white"}
                     stroke={primaryColor}
-                    strokeWidth={node.isMaster ? 2.5 : 2}
-                    className="transition-all"
+                    strokeWidth={node.isMaster || isSelected ? 2.5 : 1.8}
+                    className="transition-all duration-150"
                   />
 
                   {/* 八脈交会穴やハイライト時の中心ドット */}
-                  {node.isMaster && (
+                  {(node.isMaster || isSelected) && (
                     <circle
                       cx={node.x}
                       cy={node.y}
-                      r="3"
+                      r="2.5"
                       fill="white"
                     />
                   )}
 
                   {/* 経穴名ラベル */}
                   <text
-                    x={node.x > 110 ? node.x + 8 : node.x - 8}
-                    y={node.y + 3}
+                    x={node.x > 110 ? node.x + 9 : node.x - 9}
+                    y={node.y + 3.5}
                     textAnchor={node.x > 110 ? "start" : "end"}
                     fontSize={node.isMaster || isSelected ? "10" : "8.5"}
                     fontWeight={node.isMaster || isSelected ? "bold" : "normal"}
                     fill={isSelected ? primaryColor : "currentColor"}
-                    className="drop-shadow-xs"
+                    className="drop-shadow-xs transition-colors duration-150 select-none pointer-events-none"
                   >
                     {node.name.split(" ")[0]}
                   </text>
