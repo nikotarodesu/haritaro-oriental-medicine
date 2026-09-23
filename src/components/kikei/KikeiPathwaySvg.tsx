@@ -98,7 +98,7 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
           </>
         );
 
-      case "shou": // 衝脈: 胞中 -> 腹部両側を上行 -> 胸部
+      case "sho": // 衝脈: 胞中 -> 腹部両側を上行 -> 胸部
         return (
           <>
             <path
