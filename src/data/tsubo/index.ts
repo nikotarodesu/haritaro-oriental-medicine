@@ -64,9 +64,13 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
   // 1. 詳細穴に直接マッチ
   if (DETAILED_ACUPOINTS[clean]) {
     const point = DETAILED_ACUPOINTS[clean];
+    const cs = point.crossSection || generateCrossSectionModel(point);
     return {
       ...point,
-      crossSection: point.crossSection || generateCrossSectionModel(point),
+      crossSection: {
+        ...cs,
+        sliceType: cs.sliceType || classifyAcupointSlice(point),
+      },
       locationSimple: getFriendlyLocationSimple(point),
       caution: point.caution || generateCaution(point),
     };
@@ -79,9 +83,13 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
   // 既に詳細登録されている場合
   if (DETAILED_ACUPOINTS[master.codeLower]) {
     const point = DETAILED_ACUPOINTS[master.codeLower];
+    const cs = point.crossSection || generateCrossSectionModel(point);
     return {
       ...point,
-      crossSection: point.crossSection || generateCrossSectionModel(point),
+      crossSection: {
+        ...cs,
+        sliceType: cs.sliceType || classifyAcupointSlice(point),
+      },
       locationSimple: getFriendlyLocationSimple(point),
       caution: point.caution || generateCaution(point),
     };

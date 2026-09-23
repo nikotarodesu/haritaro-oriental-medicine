@@ -114,6 +114,7 @@ export interface CrossSectionModel {
   id: string;
   title: string;
   level: string;
+  sliceType?: string; // 断面スライス識別子（例: thigh_anterior, spine_posterior_median 等）
   bodySide?: string; // "右手" / "右前腕" / "右下腿"
   posture?: string; // "軽度回内位（手背を上に向けて軽く握った肢位）"
   cuttingPlane?: CuttingPlaneInfo;

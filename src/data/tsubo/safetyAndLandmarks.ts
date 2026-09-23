@@ -65,13 +65,14 @@ export function isChestBackPneumothoraxRisk(codeLower: string, bodyPart?: BodyPa
     "gb21", "gb22", "gb23", "gb24", "gb25", // 肩井、淵腋、輒筋、日月、京門
     // 肝経
     "lr14", "lr13", // 期門、章門
-    // 任脈胸部
-    "cv16", "cv17", "cv18", "cv19", "cv20", "cv21", "cv22", // 中庭〜天突
-    // 督脈背部
-    "gv9", "gv10", "gv11", "gv12", "gv13", "gv14", // 至陽〜大椎
   ];
 
   if (chestBackCodes.includes(codeLower)) return true;
+
+  // 任脈胸骨上および督脈正中は独立リスク判定するため気胸からは除外
+  if (["cv16", "cv17", "cv18", "cv19", "cv20", "cv21", "gv9", "gv10", "gv11", "gv12", "gv13", "gv14"].includes(codeLower)) {
+    return false;
+  }
 
   // locationDetailに肋間や鎖骨上窩が含まれる場合
   if (locationDetail && (locationDetail.includes("肋間") || locationDetail.includes("鎖骨上窩") || locationDetail.includes("鎖骨下窩"))) {
@@ -79,6 +80,33 @@ export function isChestBackPneumothoraxRisk(codeLower: string, bodyPart?: BodyPa
   }
 
   return false;
+}
+
+/**
+ * 胸骨正中穴（胸骨体・胸骨柄骨膜上平刺・胸骨孔変異注意）
+ */
+export function isSternalRisk(codeLower: string): boolean {
+  return ["cv16", "cv17", "cv18", "cv19", "cv20", "cv21"].includes(codeLower);
+}
+
+/**
+ * 脊椎後正中・棘突起間穴（黄靭帯貫通・硬膜外腔・脊髄損傷注意）
+ */
+export function isSpinalCordRisk(codeLower: string): boolean {
+  return [
+    "gv3",  // 腰陽関
+    "gv4",  // 命門
+    "gv5",  // 懸枢
+    "gv6",  // 脊中
+    "gv7",  // 中枢
+    "gv8",  // 筋縮
+    "gv9",  // 至陽
+    "gv10", // 霊台
+    "gv11", // 神道
+    "gv12", // 身柱
+    "gv13", // 陶道
+    "gv14", // 大椎
+  ].includes(codeLower);
 }
 
 /**
@@ -93,10 +121,14 @@ export function isNeckCarotidRisk(codeLower: string): boolean {
     "li18", // 扶突
     "si16", // 天窓
     "si17", // 天容
-    "cv22", // 天突
-    "gb20", // 風池（内側深刺注意）
-    "bl10", // 天柱
   ].includes(codeLower);
+}
+
+/**
+ * 後頭下部・風池天柱（内側深刺・椎骨動脈注意）
+ */
+export function isSuboccipitalRisk(codeLower: string): boolean {
+  return ["gb20", "bl10", "gb12"].includes(codeLower);
 }
 
 /**
@@ -152,25 +184,42 @@ export function generatePitfalls(master: AcupointMaster): string {
     return "【禁灸・眼球損傷注意】眼球熱傷や火傷痕防止のため施灸は禁忌です。刺鍼時も眼球を傷つけないよう指腹で眼球を優しく上方に押し上げ、眼窩壁に沿って愛護的に直刺〜斜刺します。深刺や強刺激・雀啄術は厳禁です。";
   }
 
-  // 5. 頸部・喉元（頸動脈洞・迷走神経）
+  // 5. 天突（胸骨上窩）
+  if (code === "cv22") {
+    return "【直刺厳禁・気管穿刺注意】胸骨上窩中央にあるため、直刺すると直下の気管前壁を穿刺します。刺針時はまず直刺でわずか0.2寸刺入後、針尖を胸骨柄の背面に沿わせて下方へ愛護的に進めます。深刺は厳禁です。";
+  }
+
+  // 6. 側頸部・喉元（頸動脈洞・迷走神経）
   if (isNeckCarotidRisk(code)) {
-    if (code === "cv22") {
-      return "【直刺厳禁・気管及び大動脈弓注意】胸骨上窩中央にあるため、直刺すると気管前壁を穿刺します。刺針時はまず直刺でわずか2〜3分刺入後、針尖を胸骨柄の背面に沿わせて下方へ愛護的に進めます。深刺は厳禁です。";
-    }
     return "【直刺深刺厳禁・頸動脈洞反射注意】総頸動脈の拍動部や迷走神経に近接します。動脈直上への刺入や過度な圧迫は急激な血圧低下・徐脈（頸動脈洞反射）や皮下血腫を招く危険があるため、指先で動脈を外側に除けて拍動を避け、愛護的に浅刺します。";
   }
 
-  // 6. 気胸リスク（胸郭・肩井・背部兪穴など）
+  // 7. 後頭下部（風池・天柱・完骨）
+  if (isSuboccipitalRisk(code)) {
+    return "【内側深刺厳禁・椎骨動脈注意】針先を内側深部（後正中方向）へ深く刺入すると椎骨動脈や大後頭孔に近接する恐れがあります。取穴時は鼻尖または対側の眼球方向へ向け、愛護的に斜刺します。";
+  }
+
+  // 8. 胸骨正中穴（CV16〜CV21：膻中・中庭・玉堂・紫宮・華蓋・璇璣）
+  if (isSternalRisk(code)) {
+    return "【直刺深刺厳禁・胸骨上平刺】胸骨体・胸骨柄の骨膜上にあるため、直刺は骨膜痛を招きます。また稀に胸骨癒合不全による「胸骨孔」が存在する場合があり、直刺深刺は胸腔内臓器（心膜・大血管）損傷の重大リスクとなり得ます。針尖を胸骨の骨面に沿わせて寝かせ、上方または下方へ向けて平刺（横刺）0.3〜0.5寸にとどめます。";
+  }
+
+  // 9. 脊椎後正中穴（督脈：大椎・陶道・身柱・神道・至陽・命門・腰陽関など）
+  if (isSpinalCordRisk(code)) {
+    return "【直刺深刺厳禁・脊柱管穿刺回避】各椎骨の棘突起間に位置します。棘突起間の棘上靭帯・棘間靭帯の抵抗感を指先で確かめながら、針先をわずかに上方へ向けて斜刺（0.5〜1.0寸）します。黄靭帯を貫通して硬膜外腔や脊柱管・脊髄腔に進入する危険があるため、直刺での過度な深刺は絶対厳禁です。";
+  }
+
+  // 10. 気胸リスク（胸郭・肩井・背部兪穴など）
   if (isChestBackPneumothoraxRisk(code, master.bodyPart, master.locationDetail)) {
     return "【直刺深刺禁忌・気胸リスク】直刺で深く刺入すると胸膜・肺実質を穿刺して外傷性気胸を引き起こす重大な危険があります。必ず肋骨や鎖骨の骨面を指先で確認し、肋骨に沿って外方へ向けた斜刺または横刺（皮下浅刺）にとどめ、直刺・深刺は厳禁です。セルフケアの指圧時も肋間を強く押し込まないようにしてください。";
   }
 
-  // 7. 動脈拍動部
+  // 11. 動脈拍動部
   if (isMajorArteryRisk(code)) {
     return "【動脈拍動部・皮下血腫注意】太い動脈の拍動部に近接するため、取穴時に必ず指先で血管拍動を確認し、動脈壁の直撃を避けて斜刺または愛護的に刺入します。抜針後は十分な圧迫止血を行ってください。関節屈側への直接有痕灸も禁忌です。";
   }
 
-  // 8. 妊婦禁忌穴（合谷・三陰交・肩井・太衝・至陰・下腹部・腰仙部等）
+  // 12. 妊婦禁忌穴（合谷・三陰交・肩井・太衝・至陰・下腹部・腰仙部等）
   if (isPregnancyContraindicated(code, master.bodyPart)) {
     return "【妊娠中強刺激禁忌・位置特定】強い降気・活血作用および骨盤内充血により子宮収縮を促す恐れがあるため、妊娠中の強刺激（深刺・強雀啄・長時間の温灸・強圧迫）は禁忌とされます。隣接する骨縁を正確に捉え、愛護的に刺激量を調節してください。";
   }
@@ -239,7 +288,9 @@ export function generateHowToLocate(master: AcupointMaster): string[] {
   // Step 2: 解剖学的ランドマーク（指標）の確認
   let step2 = "";
   if (master.bodyPart === "胸・腹") {
-    if (cleanDetail.includes("肋間") || cleanDetail.includes("鎖骨")) {
+    if (cleanDetail.includes("胸骨") || ["cv16", "cv17", "cv18", "cv19", "cv20", "cv21"].includes(master.codeLower)) {
+      step2 = "胸骨柄・胸骨角（第2肋軟骨結合部）および第4肋間（両乳頭間）を目印として、前正中線上の胸骨体を同定します。";
+    } else if (cleanDetail.includes("肋間") || cleanDetail.includes("鎖骨")) {
       step2 = "鎖骨や鎖骨下窩、肋骨を触知して第何肋間かを正確に数え、前正中線（胸骨中心線）からの距離（寸）を定めます。";
     } else if (cleanDetail.includes("臍") || cleanDetail.includes("腹")) {
       step2 = "前正中線、臍（へそ）、胸骨体下端（剣状突起）または恥骨結合上縁を基準線として特定します。";
@@ -247,16 +298,38 @@ export function generateHowToLocate(master: AcupointMaster): string[] {
       step2 = "前胸部・腹部の骨性指標（鎖骨・肋骨・胸骨・恥骨結合）と正中線を基準に指標を定めます。";
     }
   } else if (master.bodyPart === "背中・腰") {
-    step2 = "脊椎棘突起（大椎・肩甲棘・肩甲骨下角・腸骨稜など）の高さを触診し、後正中線からの寸法を定めます。";
+    if (["gv3", "gv4", "gv5", "gv6", "gv7", "gv8", "gv9", "gv10", "gv11", "gv12", "gv13", "gv14"].includes(master.codeLower)) {
+      step2 = "患者に軽度前屈位をとらせ、後正中線上で第7頸椎・肩甲棘（Th3）・肩甲骨下角（Th7）・ヤコビー線（L4）の高さを指標に、該当する棘突起間のくぼみを触知します。";
+    } else if (cleanDetail.includes("腰") || cleanDetail.includes("仙") || cleanDetail.includes("腸骨")) {
+      step2 = "左右の腸骨稜の最高点を結ぶヤコビー線（第4腰椎棘突起）、または仙骨角・後上腸骨棘を目印に位置を定めます。";
+    } else {
+      step2 = "脊椎棘突起（大椎・肩甲棘・肩甲骨下角）の高さを触診し、後正中線からの側方寸法（1.5寸または3寸ライン）を定めます。";
+    }
   } else if (master.bodyPart === "首・肩") {
     step2 = "頸椎棘突起、胸鎖乳突筋、肩甲棘、鎖骨などの骨・筋の境界を目印として触診します。";
   } else if (master.bodyPart === "頭部・顔面") {
     step2 = "前後正中線、髪の生え際（前髪際・後髪際）、外眼角、耳介、眉毛などの体表指標を基準線とします。";
   } else if (master.bodyPart === "手・腕") {
-    step2 = "手関節横紋、肘窩横紋、橈骨・尺骨の骨縁、または前腕の腱（長掌筋腱・橈側手根屈筋腱など）を触知して基準線を設定します。";
+    if (cleanDetail.includes("中手骨") || cleanDetail.includes("指") || cleanDetail.includes("手背") || cleanDetail.includes("手掌")) {
+      step2 = "中手骨の骨頭・骨底、手根骨、中手骨間隙の陥凹部を指先で丹念に触知して基準点を定めます。";
+    } else if (cleanDetail.includes("上腕") || cleanDetail.includes("腋窩")) {
+      step2 = "上腕二頭筋の内側・外側縁、肩峰、腋窩前横紋・後横紋を基準指標とします。";
+    } else {
+      step2 = "手関節横紋、肘窩横紋、橈骨・尺骨の骨縁、または前腕の腱（長掌筋腱・橈側手根屈筋腱など）を触知して基準線を設定します。";
+    }
   } else {
     // 足・脚
-    step2 = "脛骨・腓骨の骨縁、内果・外果（くるぶし）、アキレス腱、膝蓋骨などの骨性指標を触知し、高さを測ります。";
+    if (cleanDetail.includes("中足骨") || cleanDetail.includes("足底") || cleanDetail.includes("足背") || cleanDetail.includes("趾")) {
+      step2 = "第1〜第5中足骨底の結合部、足背動脈の拍動部、または足底腱膜の緊張部を触知して基準点を定めます。";
+    } else if (cleanDetail.includes("臀") || cleanDetail.includes("大転子") || cleanDetail.includes("仙骨裂孔")) {
+      step2 = "股関節を軽度屈曲させ、大転子の頂点と仙骨裂孔（または上前腸骨棘・坐骨結節）を結ぶ基準線を触知します。";
+    } else if (cleanDetail.includes("大腿") || cleanDetail.includes("股")) {
+      step2 = "膝蓋骨底（お皿の上縁）、上前腸骨棘、大腿四頭筋（大腿直筋・外側広筋・内側広筋）の筋腹・腱縁を指標とします。";
+    } else if (cleanDetail.includes("膝蓋") || cleanDetail.includes("膝関節") || cleanDetail.includes("膝窩")) {
+      step2 = "膝関節裂隙、膝蓋骨下縁（膝蓋靭帯）、または膝窩横紋（半腱様筋腱・大腿二頭筋腱）を触知して高さを定めます。";
+    } else {
+      step2 = "脛骨前縁・内側面、腓骨骨縁、内果・外果（くるぶし）、アキレス腱などの骨性指標を触知し、高さを測ります。";
+    }
   }
 
   // Step 3: WHO標準位置に基づく決定と反応点の触診
@@ -270,40 +343,81 @@ export function generateHowToLocate(master: AcupointMaster): string[] {
  */
 export function generatePalpationLandmarks(master: AcupointMaster): string[] {
   const landmarks: string[] = [];
+  const detail = master.locationDetail;
 
   switch (master.bodyPart) {
     case "胸・腹":
-      if (master.locationDetail.includes("肋間")) {
+      if (detail.includes("胸骨") || ["cv16", "cv17", "cv18", "cv19", "cv20", "cv21"].includes(master.codeLower)) {
+        landmarks.push("胸骨体および胸骨角");
+        landmarks.push("両側第4肋間（乳頭位）");
+        landmarks.push("前正中線");
+      } else if (detail.includes("肋間") || detail.includes("鎖骨")) {
         landmarks.push("鎖骨および鎖骨下窩");
         landmarks.push("肋骨・肋間隙の骨性指標");
         landmarks.push("前正中線（胸骨中心線）");
       } else {
         landmarks.push("前正中線および臍（おへそ）");
         landmarks.push("胸骨剣状突起または恥骨結合上縁");
+        landmarks.push("腹直筋の内側縁・外側縁");
       }
       break;
     case "背中・腰":
-      landmarks.push("脊椎棘突起（後正中線）");
-      landmarks.push("肩甲骨（肩甲棘・下角）または腸骨稜");
-      landmarks.push("脊柱起立筋の筋膨隆部");
+      if (["gv3", "gv4", "gv5", "gv6", "gv7", "gv8", "gv9", "gv10", "gv11", "gv12", "gv13", "gv14"].includes(master.codeLower)) {
+        landmarks.push("第7頸椎・胸腰椎の各棘突起");
+        landmarks.push("棘突起間隙（棘間靭帯）");
+        landmarks.push("後正中線");
+      } else if (detail.includes("腰") || detail.includes("仙")) {
+        landmarks.push("ヤコビー線（第4腰椎棘突起高位）");
+        landmarks.push("腸骨稜最高点および仙骨角");
+        landmarks.push("腰部脊柱起立筋群");
+      } else {
+        landmarks.push("脊椎棘突起（大椎・肩甲棘・下角）");
+        landmarks.push("肩甲骨内側縁および肋骨面");
+        landmarks.push("脊柱起立筋の筋膨隆部");
+      }
       break;
     case "首・肩":
       landmarks.push("胸鎖乳突筋の前縁・後縁");
       landmarks.push("頸椎棘突起および肩甲骨上角");
+      landmarks.push("鎖骨上窩および肩井筋結節");
       break;
     case "頭部・顔面":
       landmarks.push("前後正中線および髪際（生え際）");
       landmarks.push("眼窩縁・頬骨・下顎骨の骨縁");
+      landmarks.push("耳介前縁・乳様突起");
       break;
     case "手・腕":
-      landmarks.push("橈骨・尺骨の骨縁");
-      landmarks.push("手関節背側／掌側横紋または肘窩横紋");
-      landmarks.push("前腕屈筋・伸筋腱間隙");
+      if (detail.includes("中手骨") || detail.includes("指") || detail.includes("手背") || detail.includes("手掌")) {
+        landmarks.push("第1〜第5中手骨縁および中手骨底");
+        landmarks.push("中手骨間隙（背側骨間筋）");
+        landmarks.push("中手指節関節（MP関節）");
+      } else if (detail.includes("上腕")) {
+        landmarks.push("上腕二頭筋筋腹および内側・外側溝");
+        landmarks.push("三角筋粗面・肩峰外端");
+      } else {
+        landmarks.push("橈骨・尺骨の骨縁");
+        landmarks.push("手関節背側／掌側横紋または肘窩横紋");
+        landmarks.push("長掌筋腱・橈側手根屈筋腱の間隙");
+      }
       break;
     case "足・脚":
-      landmarks.push("脛骨・腓骨の骨縁");
-      landmarks.push("内果・外果（くるぶし）またはアキレス腱");
-      landmarks.push("膝蓋骨および膝窩横紋");
+      if (detail.includes("中足骨") || detail.includes("足底") || detail.includes("足背") || detail.includes("趾")) {
+        landmarks.push("第1〜第5中足骨底・中足骨頭");
+        landmarks.push("足背動脈拍動部または足底腱膜");
+        landmarks.push("中足趾節関節（MTP関節）");
+      } else if (detail.includes("臀") || detail.includes("大転子") || detail.includes("仙骨裂孔")) {
+        landmarks.push("大転子頂点および仙骨裂孔");
+        landmarks.push("臀溝（お尻の横じわ）");
+        landmarks.push("梨状筋・坐骨結節");
+      } else if (detail.includes("大腿")) {
+        landmarks.push("膝蓋骨底（お皿の上縁）");
+        landmarks.push("上前腸骨棘および大腿直筋");
+        landmarks.push("腸脛靭帯後縁または内転筋結節");
+      } else {
+        landmarks.push("脛骨前縁・内側面および腓骨頭");
+        landmarks.push("内果・外果（くるぶし）およびアキレス腱");
+        landmarks.push("膝蓋骨下縁・膝蓋靭帯および膝窩横紋");
+      }
       break;
     default:
       landmarks.push(`${master.bodyPart}の骨性指標`);
