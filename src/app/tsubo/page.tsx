@@ -27,6 +27,7 @@ import {
   AlertTriangle,
   HelpCircle,
   GitCompare,
+  GitCommit,
   LayoutGrid,
   List,
   ChevronLeft,
@@ -331,47 +332,62 @@ function TsuboPageContent() {
         </div>
       </section>
 
-      {/* 2. 「辞典で調べる／2穴を比べる／学習・復習」コンパクトナビゲーション */}
+      {/* 2. 「辞典で調べる／2穴を比べる／学習・復習／奇経八脈」コンパクトナビゲーション */}
       <section className="max-w-4xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-          <div className="p-3 rounded-2xl bg-[#1E3D34] dark:bg-[#2B6958] text-white flex items-center justify-between shadow-xs">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-[#1E3D34] dark:bg-[#2B6958] text-white flex items-center justify-between shadow-xs">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
                 <Search className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-bold">1. 辞典で調べる（現在地）</span>
+              <span className="text-xs font-bold truncate">1. 経穴図鑑</span>
             </div>
-            <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full font-mono">361穴</span>
+            <span className="text-[11px] bg-white/20 px-1.5 py-0.5 rounded-full font-mono shrink-0 hidden sm:inline-block">361穴</span>
           </div>
 
           <Link
             href="/tsubo/compare"
-            className="p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all flex items-center justify-between group shadow-xs"
+            className="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all flex items-center justify-between group shadow-xs"
           >
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0">
                 <GitCompare className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
-                2. 2穴を比べる
+              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] truncate">
+                2. 2穴比較
               </span>
             </div>
-            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform" />
+            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform shrink-0" />
           </Link>
 
           <Link
             href="/tsubo/practice"
-            className="p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all flex items-center justify-between group shadow-xs"
+            className="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all flex items-center justify-between group shadow-xs"
           >
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-[#FCF4EB] dark:bg-[#281E15] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-[#FCF4EB] dark:bg-[#281E15] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0">
                 <BookOpen className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387]">
-                3. 学習・今日の復習
+              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] truncate">
+                3. 今日の復習
               </span>
             </div>
-            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform" />
+            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform shrink-0" />
+          </Link>
+
+          <Link
+            href="/kikei"
+            className="p-2.5 sm:p-3 rounded-2xl bg-gradient-to-r from-[#FCF4EB] to-[#FAF8F5] dark:from-[#261B12] dark:to-[#17212A] border border-[#F2DEB0] dark:border-[#4D361F] hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all flex items-center justify-between group shadow-xs"
+          >
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-[#B86924] dark:bg-[#D48239] text-white flex items-center justify-center shrink-0 shadow-2xs">
+                <GitCommit className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] group-hover:underline truncate">
+                4. 奇経八脈
+              </span>
+            </div>
+            <ArrowRight className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387] group-hover:translate-x-0.5 transition-transform shrink-0" />
           </Link>
         </div>
       </section>
@@ -493,7 +509,36 @@ function TsuboPageContent() {
                   {cat}
                 </button>
               ))}
+              </div>
             </div>
+
+            {/* 奇経八脈へのナビゲーションバナー */}
+            <div className="pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-[#FCF8F2] to-[#FAF5ED] dark:from-[#1E1712] dark:to-[#17212A] p-3.5 rounded-xl border border-[#F0DFCD] dark:border-[#3D2C1B]">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-lg bg-[#B86924] dark:bg-[#D48239] text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <GitCommit className="w-4 h-4" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">
+                      奇経八脈（全8脈）・八脈交会穴（4対）
+                    </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#B86924]/10 text-[#B86924] dark:text-[#E6C387] font-bold border border-[#B86924]/20">
+                      生体エネルギーの貯水池
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-[#737C77] dark:text-[#96A6B2] line-clamp-1 mt-0.5">
+                    正経十二経脈の気血を調整する奇経八脈の流注・主治病証と臨床配穴を完全網羅
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/kikei"
+                className="self-end sm:self-center shrink-0 px-3.5 py-1.5 rounded-xl bg-[#B86924] hover:bg-[#A3591B] dark:bg-[#D48239] dark:hover:bg-[#B86924] text-white font-bold text-xs shadow-xs transition-all inline-flex items-center gap-1.5 group cursor-pointer"
+              >
+                <span>奇経八脈を見る</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
             </div>
           </div>
         </section>
@@ -552,6 +597,32 @@ function TsuboPageContent() {
               <RotateCcw className="w-3.5 h-3.5" />
               <span>すべての条件を解除</span>
             </button>
+          </div>
+        )}
+
+        {/* 八脈交会穴フィルター選択時の専用案内カード */}
+        {selectedCategory === "八脈交会穴" && (
+          <div className="bg-gradient-to-r from-[#FCF8F2] to-[#FAF5ED] dark:from-[#211812] dark:to-[#17212A] p-4 rounded-2xl border border-[#F2DEB0] dark:border-[#4D361F] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in duration-200">
+            <div className="flex items-start gap-2.5">
+              <span className="p-1.5 rounded-lg bg-[#B86924] text-white shrink-0 mt-0.5 shadow-2xs">
+                <GitCommit className="w-4 h-4" />
+              </span>
+              <div className="space-y-0.5">
+                <h3 className="text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  八脈交会穴（4対8穴）と奇経八脈の解説
+                </h3>
+                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                  公孫・内関（衝脈・陰維脈）、後渓・申脈（督脈・陽蹻脈）、足臨泣・外関（帯脈・陽維脈）、列欠・照海（任脈・陰蹻脈）の4対配穴と流注病証は、奇経八脈ページで完全体系化しています。
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/kikei"
+              className="self-end sm:self-center shrink-0 px-4 py-2 rounded-xl bg-[#B86924] hover:bg-[#A3591B] dark:bg-[#D48239] text-white font-bold text-xs shadow-xs transition-all inline-flex items-center gap-1.5 cursor-pointer"
+            >
+              <span>奇経八脈・4対配穴を見る</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         )}
 
