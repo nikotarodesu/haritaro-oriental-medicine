@@ -491,194 +491,196 @@ export default function ThreeStageSimulator() {
             </div>
           </div>
 
-          {/* オプション：複雑な状態も試す（アコーディオン） */}
-          <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D]">
-            <button
-              type="button"
-              onClick={() => setIsComplexAccordionOpen(!isComplexAccordionOpen)}
-              aria-expanded={isComplexAccordionOpen}
-              aria-controls="complex-conditions-panel"
-              className="w-full flex items-center justify-between p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] hover:bg-[#F2EDE4] dark:hover:bg-[#1A2530] transition-colors text-left cursor-pointer"
-            >
-              <div className="flex items-center gap-3">
-                <span className="p-2 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
-                  <Scale className="w-5 h-5" />
-                </span>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
-                      💡 複雑な状態も試す（寒熱錯雑・虚実夾雑・四診の判断材料）
-                    </span>
-                    {complexState !== "none" && (
-                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-[#B86924] text-white">
-                        併存モード適用中
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-xs sm:text-sm text-[#737C77] dark:text-[#8899A6] mt-0.5">
-                    二択では割り切れない「上熱下寒」「本虚標実」「四診キーサイン」を試したい方向けの拡張機能
-                  </p>
-                </div>
-              </div>
-              <div className="text-[#737C77] dark:text-[#8899A6] ml-2 shrink-0">
-                {isComplexAccordionOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-              </div>
-            </button>
-
-            {/* アコーディオン展開部 */}
-            {isComplexAccordionOpen && (
-              <div id="complex-conditions-panel" className="mt-3 p-4 sm:p-6 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] space-y-5 animate-fadeIn">
-                {/* 併存病態の選択 */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
-                      <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                      <span>併存病態（八綱の二択を超えた臨床像）:</span>
-                    </span>
-                    {complexState !== "none" && (
-                      <button
-                        onClick={() => handleUpdate({ complexState: "none" })}
-                        className="text-xs text-[#B86924] dark:text-[#E6C387] font-semibold hover:underline cursor-pointer"
-                      >
-                        標準（二択モード）に戻す ↺
-                      </button>
-                    )}
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                    {COMPLEX_STATE_OPTIONS.map((cOpt) => (
-                      <button
-                        key={cOpt.value}
-                        onClick={() => handleUpdate({ complexState: cOpt.value })}
-                        className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                          complexState === cOpt.value
-                            ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] shadow-sm font-bold"
-                            : "bg-white dark:bg-[#17212A] text-[#333835] dark:text-[#C5D2DB] border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#F2EDE4] dark:hover:bg-[#1E2B36]"
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-bold">{cOpt.label}</span>
-                          <span className={`text-xs px-2 py-0.5 rounded ${
-                            complexState === cOpt.value ? "bg-white/20 text-white" : "bg-[#FAF8F5] dark:bg-[#121920] text-[#737C77] dark:text-[#8899A6]"
-                          }`}>
-                            {cOpt.category}
-                          </span>
-                        </div>
-                        <p className={`text-xs mt-1 leading-relaxed ${
-                          complexState === cOpt.value ? "text-white/85" : "text-[#737C77] dark:text-[#8899A6]"
-                        }`}>
-                          {cOpt.summary}
-                        </p>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 四診の重要キーサイン */}
-                <div className="space-y-3 pt-3 border-t border-[#E8E1D1] dark:border-[#263542]">
+          {/* オプション：複雑な状態も試す（非表示設定） */}
+          {false && (
+            <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D]">
+              <button
+                type="button"
+                onClick={() => setIsComplexAccordionOpen(!isComplexAccordionOpen)}
+                aria-expanded={isComplexAccordionOpen}
+                aria-controls="complex-conditions-panel"
+                className="w-full flex items-center justify-between p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] hover:bg-[#F2EDE4] dark:hover:bg-[#1A2530] transition-colors text-left cursor-pointer"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="p-2 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
+                    <Scale className="w-5 h-5" />
+                  </span>
                   <div>
-                    <span className="text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
-                      <Stethoscope className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                      <span>四診の判断材料（症例サンプルの設定・キーサイン）:</span>
-                    </span>
-                    <p className="text-xs text-[#737C77] dark:text-[#8899A6] mt-0.5">
-                      所見を切り替えると、虚実・寒熱の判定が連動して切り替わります。
+                    <div className="flex items-center gap-2">
+                      <span className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
+                        💡 複雑な状態も試す（寒熱錯雑・虚実夾雑・四診の判断材料）
+                      </span>
+                      {complexState !== "none" && (
+                        <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-[#B86924] text-white">
+                          併存モード適用中
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs sm:text-sm text-[#737C77] dark:text-[#8899A6] mt-0.5">
+                      二択では割り切れない「上熱下寒」「本虚標実」「四診キーサイン」を試したい方向けの拡張機能
                     </p>
                   </div>
+                </div>
+                <div className="text-[#737C77] dark:text-[#8899A6] ml-2 shrink-0">
+                  {isComplexAccordionOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                </div>
+              </button>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-                    {/* 按診 */}
-                    <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
-                      <span className="text-xs font-bold text-[#404743] dark:text-[#C5D2DB] block">
-                        ① 押圧反応（按診）
+              {/* アコーディオン展開部 */}
+              {isComplexAccordionOpen && (
+                <div id="complex-conditions-panel" className="mt-3 p-4 sm:p-6 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] space-y-5 animate-fadeIn">
+                  {/* 併存病態の選択 */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+                        <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                        <span>併存病態（八綱の二択を超えた臨床像）:</span>
                       </span>
-                      <div className="space-y-1">
-                        {PALPATION_OPTIONS.map((p) => (
-                          <button
-                            key={p.value}
-                            onClick={() => handleFourExamChange("palpation", p.value)}
-                            className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-all cursor-pointer ${
-                              fourExams.palpation === p.value
-                                ? "bg-[#1E3D34] text-white font-bold"
-                                : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
-                            }`}
-                          >
-                            {p.label}
-                          </button>
-                        ))}
-                      </div>
+                      {complexState !== "none" && (
+                        <button
+                          onClick={() => handleUpdate({ complexState: "none" })}
+                          className="text-xs text-[#B86924] dark:text-[#E6C387] font-semibold hover:underline cursor-pointer"
+                        >
+                          標準（二択モード）に戻す ↺
+                        </button>
+                      )}
                     </div>
 
-                    {/* 温冷 */}
-                    <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
-                      <span className="text-xs font-bold text-[#404743] dark:text-[#C5D2DB] block">
-                        ② 温冷反応（問診）
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                      {COMPLEX_STATE_OPTIONS.map((cOpt) => (
+                        <button
+                          key={cOpt.value}
+                          onClick={() => handleUpdate({ complexState: cOpt.value })}
+                          className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                            complexState === cOpt.value
+                              ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] shadow-sm font-bold"
+                              : "bg-white dark:bg-[#17212A] text-[#333835] dark:text-[#C5D2DB] border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#F2EDE4] dark:hover:bg-[#1E2B36]"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-bold">{cOpt.label}</span>
+                            <span className={`text-xs px-2 py-0.5 rounded ${
+                              complexState === cOpt.value ? "bg-white/20 text-white" : "bg-[#FAF8F5] dark:bg-[#121920] text-[#737C77] dark:text-[#8899A6]"
+                            }`}>
+                              {cOpt.category}
+                            </span>
+                          </div>
+                          <p className={`text-xs mt-1 leading-relaxed ${
+                            complexState === cOpt.value ? "text-white/85" : "text-[#737C77] dark:text-[#8899A6]"
+                          }`}>
+                            {cOpt.summary}
+                          </p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 四診の重要キーサイン */}
+                  <div className="space-y-3 pt-3 border-t border-[#E8E1D1] dark:border-[#263542]">
+                    <div>
+                      <span className="text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+                        <Stethoscope className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                        <span>四診の判断材料（症例サンプルの設定・キーサイン）:</span>
                       </span>
-                      <div className="space-y-1">
-                        {TEMP_REACTION_OPTIONS.map((t) => (
-                          <button
-                            key={t.value}
-                            onClick={() => handleFourExamChange("tempReaction", t.value)}
-                            className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-all cursor-pointer ${
-                              fourExams.tempReaction === t.value
-                                ? "bg-[#1E3D34] text-white font-bold"
-                                : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
-                            }`}
-                          >
-                            {t.label}
-                          </button>
-                        ))}
-                      </div>
+                      <p className="text-xs text-[#737C77] dark:text-[#8899A6] mt-0.5">
+                        所見を切り替えると、虚実・寒熱の判定が連動して切り替わります。
+                      </p>
                     </div>
 
-                    {/* 飲水 */}
-                    <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
-                      <span className="text-xs font-bold text-[#404743] dark:text-[#C5D2DB] block">
-                        ③ 飲水傾向（問診）
-                      </span>
-                      <div className="space-y-1">
-                        {DRINKING_OPTIONS.map((d) => (
-                          <button
-                            key={d.value}
-                            onClick={() => handleFourExamChange("drinking", d.value)}
-                            className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-all cursor-pointer ${
-                              fourExams.drinking === d.value
-                                ? "bg-[#1E3D34] text-white font-bold"
-                                : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
-                            }`}
-                          >
-                            {d.label}
-                          </button>
-                        ))}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                      {/* 按診 */}
+                      <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
+                        <span className="text-xs font-bold text-[#404743] dark:text-[#C5D2DB] block">
+                          ① 押圧反応（按診）
+                        </span>
+                        <div className="space-y-1">
+                          {PALPATION_OPTIONS.map((p) => (
+                            <button
+                              key={p.value}
+                              onClick={() => handleFourExamChange("palpation", p.value)}
+                              className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-all cursor-pointer ${
+                                fourExams.palpation === p.value
+                                  ? "bg-[#1E3D34] text-white font-bold"
+                                  : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
+                              }`}
+                            >
+                              {p.label}
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                    </div>
 
-                    {/* 舌診 */}
-                    <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
-                      <span className="text-xs font-bold text-[#404743] dark:text-[#C5D2DB] block">
-                        ④ 舌色・舌苔（望診）
-                      </span>
-                      <div className="space-y-1">
-                        {TONGUE_OPTIONS.map((tg) => (
-                          <button
-                            key={tg.value}
-                            onClick={() => handleFourExamChange("tongue", tg.value)}
-                            className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-all cursor-pointer ${
-                              fourExams.tongue === tg.value
-                                ? "bg-[#1E3D34] text-white font-bold"
-                                : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
-                            }`}
-                          >
-                            {tg.label}
-                          </button>
-                        ))}
+                      {/* 温冷 */}
+                      <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
+                        <span className="text-xs font-bold text-[#404743] dark:text-[#C5D2DB] block">
+                          ② 温冷反応（問診）
+                        </span>
+                        <div className="space-y-1">
+                          {TEMP_REACTION_OPTIONS.map((t) => (
+                            <button
+                              key={t.value}
+                              onClick={() => handleFourExamChange("tempReaction", t.value)}
+                              className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-all cursor-pointer ${
+                                fourExams.tempReaction === t.value
+                                  ? "bg-[#1E3D34] text-white font-bold"
+                                  : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
+                              }`}
+                            >
+                              {t.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* 飲水 */}
+                      <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
+                        <span className="text-xs font-bold text-[#404743] dark:text-[#C5D2DB] block">
+                          ③ 飲水傾向（問診）
+                        </span>
+                        <div className="space-y-1">
+                          {DRINKING_OPTIONS.map((d) => (
+                            <button
+                              key={d.value}
+                              onClick={() => handleFourExamChange("drinking", d.value)}
+                              className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-all cursor-pointer ${
+                                fourExams.drinking === d.value
+                                  ? "bg-[#1E3D34] text-white font-bold"
+                                  : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
+                              }`}
+                            >
+                              {d.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* 舌診 */}
+                      <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
+                        <span className="text-xs font-bold text-[#404743] dark:text-[#C5D2DB] block">
+                          ④ 舌色・舌苔（望診）
+                        </span>
+                        <div className="space-y-1">
+                          {TONGUE_OPTIONS.map((tg) => (
+                            <button
+                              key={tg.value}
+                              onClick={() => handleFourExamChange("tongue", tg.value)}
+                              className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-all cursor-pointer ${
+                                fourExams.tongue === tg.value
+                                  ? "bg-[#1E3D34] text-white font-bold"
+                                  : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
+                              }`}
+                            >
+                              {tg.label}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* 選択状態パンくずバー ＆ 結果ジャンプボタン */}
