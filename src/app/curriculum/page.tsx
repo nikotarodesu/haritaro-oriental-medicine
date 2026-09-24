@@ -19,6 +19,7 @@ import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
 import { InteractiveQuiz } from "@/components/InteractiveQuiz";
 import { LearningMap } from "@/components/LearningMap";
 import { IncorrectQuestionsModal } from "@/components/IncorrectQuestionsModal";
+import PrimeStudentCard from "@/components/PrimeStudentCard";
 import { 
   GraduationCap, 
   BookOpen, 
@@ -516,7 +517,7 @@ export default function CurriculumPage() {
                 }}
                 className="shrink-0 px-6 py-3 rounded-xl bg-[#E6C387] hover:bg-[#DFC07D] text-[#1E3D34] font-bold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 group cursor-pointer"
               >
-                <span>{activeLecture.seriesId !== nextLecture.seriesId ? "次章へ進む" : "次のレッスンへ進む"}</span>
+                <span>{activeLecture.seriesId !== nextLecture.seriesId ? "次の章へ進む" : "次のレッスンへ進む"}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
@@ -580,11 +581,24 @@ export default function CurriculumPage() {
                   }}
                   className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-xs sm:text-sm font-bold hover:bg-[#162E27] transition-all flex items-center gap-2 shadow-md cursor-pointer"
                 >
-                  <span>{isCompleted ? "次のレッスンへ進む" : "受講完了にして次へ進む"}</span>
+                  <span>
+                    {isCompleted
+                      ? activeLecture.seriesId !== nextLecture.seriesId
+                        ? "次の章へ進む"
+                        : "次のレッスンへ進む"
+                      : activeLecture.seriesId !== nextLecture.seriesId
+                      ? "受講完了にして次の章へ進む"
+                      : "受講完了にして次へ進む"}
+                  </span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               )}
             </div>
+          </div>
+
+          {/* 学生向け専門書・教科書サポート（Prime Student） */}
+          <div className="pt-2">
+            <PrimeStudentCard variant="card" />
           </div>
         </article>
       </div>
