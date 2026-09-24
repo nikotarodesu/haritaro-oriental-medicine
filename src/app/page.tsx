@@ -101,20 +101,20 @@ export default function HomePage() {
             {/* 対象者バッジ */}
             <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-xs sm:text-sm font-semibold tracking-wide shadow-2xs">
               <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-              <span>鍼灸師・臨床家を志す学生のための学習サイト</span>
+              <span>鍼灸学生・鍼灸師のための学習サイト</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-[1.25]">
-              東洋医学を、<br className="hidden sm:inline" />
+              東洋医学が、<br className="hidden sm:inline" />
               <span className="text-[#1E3D34] dark:text-[#74BA9E] relative">
-                構造から学ぶ
+                つながる
                 <span className="absolute bottom-1 left-0 w-full h-2.5 bg-[#E6C387]/35 dark:bg-[#E6C387]/20 -z-10" />
               </span>
             </h1>
 
             <p className="text-sm sm:text-base text-[#4A534F] dark:text-[#A8B8C4] leading-relaxed max-w-2xl mx-auto">
-              丸暗記を脱却し、人体の構造と思考体系から本質を修得。<br className="hidden sm:inline" />
-              基礎理論から病機・診断・治法、臨床弁証推論までを一貫して統合します。
+              陰陽・五行から、弁証・治療まで。<br className="hidden sm:inline" />
+              ひとつずつ理解して、考える力へ。
             </p>
           </div>
 
