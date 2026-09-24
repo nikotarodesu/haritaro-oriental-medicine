@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { 
   CURRICULUM_DATA, 
@@ -165,6 +165,7 @@ export default function CurriculumPage() {
   const [showIncorrectModal, setShowIncorrectModal] = useState<boolean>(false);
   // 章アコーディオン開閉状態（デフォルトは第1章のみ開く）
   const [expandedChapters, setExpandedChapters] = useState<Record<number, boolean>>({ 1: true });
+  const articleTopRef = useRef<HTMLDivElement | null>(null);
 
   const {
     isMounted,
@@ -191,6 +192,43 @@ export default function CurriculumPage() {
       recordVisitedLecture(activeLecture.id);
     }
   }, [activeLecture, recordVisitedLecture]);
+
+  // 講義切り替え時に確実にページ最上部へスクロール（即時＋レンダリング完了後の二段構え）
+  useEffect(() => {
+    if (activeLecture?.id) {
+      // 1. 直ちに最上部へリセット
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      if (articleTopRef.current) {
+        articleTopRef.current.scrollIntoView({ behavior: "instant", block: "start" });
+      }
+
+      // 2. DOM更新とMarkdown/数式等のレイアウト計算完了後に確実に再固定
+      const rafId = requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        if (articleTopRef.current) {
+          articleTopRef.current.scrollIntoView({ behavior: "instant", block: "start" });
+        }
+      });
+
+      const timerId = setTimeout(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        if (articleTopRef.current) {
+          articleTopRef.current.scrollIntoView({ behavior: "instant", block: "start" });
+        }
+      }, 60);
+
+      return () => {
+        cancelAnimationFrame(rafId);
+        clearTimeout(timerId);
+      };
+    }
+  }, [activeLecture?.id]);
 
   // 次に受講すべき講義
   const resumeLectureId = isMounted
@@ -254,7 +292,9 @@ export default function CurriculumPage() {
   // 講義選択・遷移ハンドラ
   const handleSelectLecture = (lecture: Lecture) => {
     setActiveLecture(lecture);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
     if (typeof window !== "undefined") {
       window.history.replaceState(null, "", `/curriculum?lecture=${lecture.id}`);
     }
@@ -311,7 +351,7 @@ export default function CurriculumPage() {
     const isCompleted = isMounted && !!completedLectures[activeLecture.id];
 
     return (
-      <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-10 space-y-5 sm:space-y-6">
+      <div ref={articleTopRef} className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-10 space-y-5 sm:space-y-6">
         {/* 読書進捗バー */}
         <ReadingProgressBar />
 
@@ -320,6 +360,7 @@ export default function CurriculumPage() {
           <button
             onClick={() => {
               setActiveLecture(null);
+              window.scrollTo({ top: 0, left: 0, behavior: "instant" });
               if (typeof window !== "undefined") {
                 window.history.replaceState(null, "", "/curriculum");
               }
@@ -561,6 +602,7 @@ export default function CurriculumPage() {
                 type="button"
                 onClick={() => {
                   setActiveLecture(null);
+                  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
                   if (typeof window !== "undefined") {
                     window.history.replaceState(null, "", "/curriculum");
                   }
