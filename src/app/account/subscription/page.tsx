@@ -321,16 +321,16 @@ export default function SubscriptionManagementPage() {
         )}
       </div>
 
-      {/* マイカルテ・学習ノートの保存容量メーター */}
+      {/* マイノートの保存容量メーター */}
       <div className="rounded-3xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-4">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] flex items-center gap-2">
               <Bookmark className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>学習ノート（マイカルテ）保存枠</span>
+              <span>マイノート（配穴・臨床録）保存枠</span>
             </h3>
             <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-              臨床知見、重要配穴、症例カルテの保存状況です。
+              臨床知見、重要配穴、患者症例ノートの保存状況です。
             </p>
           </div>
           <div className="text-right">

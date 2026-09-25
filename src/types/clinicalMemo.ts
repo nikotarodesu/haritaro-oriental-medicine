@@ -1,4 +1,4 @@
-// 臨床メモ・マイカルテの型定義および名配穴プリセット
+// マイノート（配穴ストック・患者臨床ノート）の型定義および名配穴プリセット
 
 export type ClinicalMemoType = "pair" | "tsubo" | "diagnosis" | "custom";
 
@@ -109,3 +109,58 @@ export const CLASSIC_CLINICAL_PAIRS: Omit<ClinicalMemoItem, "createdAt" | "updat
     mechanism: "金生水（肺と腎の相生関係）を活性化。肺の乾燥と宣発不全を潤し、喉の炎症と咳中枢の過敏を鎮静化させます。"
   }
 ];
+
+// 臨床ノート（患者症例・臨床記録メモ）の型定義
+export interface PatientNoteItem {
+  id: string;               // 一意のID (例: "pn_1711345678")
+  patientIdentifier: string;// 患者識別（カルテNo.やイニシャル 例: "PT-042", "K.S様" ※個人情報保護のため氏名は非保持）
+  gender?: "男性" | "女性" | "その他" | "未回答";
+  ageGroup?: string;        // 年代（例: "30代", "50代"）
+  visitDate: string;        // 来院日・記録日 (YYYY-MM-DD)
+  chiefComplaint: string;   // 主訴・お悩み（例: "慢性の後頭部痛と不眠、眼精疲労"）
+  constitution?: string;    // 気血水・体質見立て（気虚、気滞、血虚、瘀血、水滞、陽虚など）
+  syndrome?: string;        // 弁証・病態仮説（例: "肝気鬱結・心腎不交"）
+  selectedPoints: string[]; // 採用配穴・ツボ（例: ["太衝", "陽陵泉", "神門"]）
+  treatmentPlan?: string;   // 施術方針・手技メモ（刺鍼法、置針時間、施灸壮数など）
+  patientReaction?: string; // 施術直後の反応・変化（例: "首の回旋可動域改善、頭の重さが半減"）
+  nextAction?: string;      // 次回への申し送り・養生セルフケア指導メモ（例: "就寝前の足湯指導、次回7日後"）
+  createdAt: number;
+  updatedAt: number;
+}
+
+// 初回利用時のサンプル臨床ノート
+export const SAMPLE_PATIENT_NOTES: PatientNoteItem[] = [
+  {
+    id: "pn_sample_01",
+    patientIdentifier: "PT-012 (K.T様)",
+    gender: "女性",
+    ageGroup: "30代",
+    visitDate: "2026-03-24",
+    chiefComplaint: "デスクワークによる激しい後頭部〜側頭部の頭痛。夕方になると目の奥が重く開きにくい。眠りが浅い。",
+    constitution: "気滞・肝鬱化火",
+    syndrome: "肝陽上亢・肝胆経気機不暢",
+    selectedPoints: ["太衝", "陽陵泉", "風池", "百会"],
+    treatmentPlan: "太衝・風池に瀉法（置針15分）。陽陵泉に筋膜刺激。百会に軽微な雀啄。",
+    patientReaction: "施術直後より頭部の熱感と締め付け感が消失。目の開けやすさを自覚。",
+    nextAction: "就寝前のスマホ制限とホットアイマスク指導。次回は1週間後に経過確認。",
+    createdAt: Date.now() - 86400000 * 2,
+    updatedAt: Date.now() - 86400000 * 2,
+  },
+  {
+    id: "pn_sample_02",
+    patientIdentifier: "PT-018 (M.S様)",
+    gender: "男性",
+    ageGroup: "40代",
+    visitDate: "2026-03-25",
+    chiefComplaint: "食後の胃もたれ・心窩部痞塞感。慢性疲労が抜けず、朝起きられない。軟便傾向。",
+    constitution: "気虚・脾胃虚弱",
+    syndrome: "脾失健運・中気下陥",
+    selectedPoints: ["足三里", "中脘", "天枢"],
+    treatmentPlan: "中脘・足三里に補法。関元に温筒灸3壮施灸。",
+    patientReaction: "お腹が鳴り始め、全身がじんわり温まる感覚。呼吸が深くなったと発言。",
+    nextAction: "冷飲食の禁止（常温または白湯推奨）。次回10日後。",
+    createdAt: Date.now() - 86400000,
+    updatedAt: Date.now() - 86400000,
+  }
+];
+

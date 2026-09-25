@@ -22,7 +22,9 @@ import {
   Crown,
   FileDown,
   Tag,
-  ArrowRight
+  ArrowRight,
+  ExternalLink,
+  FileText
 } from "lucide-react";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -38,6 +40,10 @@ export default function MyClinicalRecordDrawer() {
     clipCount, 
     maxLimit,
     isLimitReached,
+    patientNotes,
+    patientNoteCount,
+    maxPatientNoteLimit,
+    removePatientNote,
     isDrawerOpen, 
     closeDrawer, 
     removeMemo, 
@@ -48,6 +54,7 @@ export default function MyClinicalRecordDrawer() {
     dismissToast
   } = useClinicalMemo();
 
+  const [drawerSection, setDrawerSection] = useState<"stock" | "notes">("stock");
   const [activeTab, setActiveTab] = useState<"all" | ClinicalMemoType>("all");
   const [selectedTag, setSelectedTag] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -105,6 +112,19 @@ export default function MyClinicalRecordDrawer() {
     });
   }, [memos, activeTab, searchQuery]);
 
+  // 臨床ノートのフィルタリング
+  const filteredNotes = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return patientNotes;
+    return patientNotes.filter(n =>
+      n.patientIdentifier.toLowerCase().includes(q) ||
+      n.chiefComplaint.toLowerCase().includes(q) ||
+      (n.constitution && n.constitution.toLowerCase().includes(q)) ||
+      (n.syndrome && n.syndrome.toLowerCase().includes(q)) ||
+      n.selectedPoints.some(p => p.toLowerCase().includes(q))
+    );
+  }, [patientNotes, searchQuery]);
+
   // 個別テキストコピー
   const handleCopySingle = (item: ClinicalMemoItem) => {
     const text = `【${item.title}】${item.subTitle ? " - " + item.subTitle : ""}
@@ -124,7 +144,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
     if (memos.length === 0) return;
     const lines = [
       "========================================",
-      " はり太郎の東洋医学 | マイカルテ",
+      " はり太郎の東洋医学 | マイノート",
       ` 出力日時: ${new Date().toLocaleString("ja-JP")}`,
       ` 保存件数: ${memos.length}件`,
       "========================================\n",
@@ -171,7 +191,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
     }
     if (memos.length === 0) return;
     const lines = [
-      "# はり太郎の東洋医学 | マイカルテ・学習ノート",
+      "# はり太郎の東洋医学 | マイノート（配穴・臨床録）",
       `*出力日: ${new Date().toLocaleDateString("ja-JP")} / 保存件数: ${memos.length}件*\n`,
       "---",
     ];
@@ -269,13 +289,8 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="font-serif text-base sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  学習ノート（マイカルテ）
+                  マイノート
                 </h2>
-                <span className={`text-xs px-2.5 py-0.5 rounded-full font-bold text-white ${
-                  isLimitReached ? "bg-red-600" : "bg-[#B86924]"
-                }`}>
-                  {clipCount} / {maxLimit}件
-                </span>
                 {isPremium && (
                   <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#1E3D34] text-white flex items-center gap-0.5">
                     <Crown className="w-3 h-3 text-[#E6C387]" />
@@ -283,35 +298,57 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                   </span>
                 )}
               </div>
-              <div className="flex items-center gap-3 mt-1">
-                {/* ミニプログレスバー */}
-                <div className="w-28 h-1.5 rounded-full bg-[#E8E1D1] dark:bg-[#2A3B4A] overflow-hidden">
-                  <div 
-                    className={`h-full transition-all ${
-                      clipCount >= maxLimit ? "bg-red-600" : "bg-[#1E3D34] dark:bg-[#74BA9E]"
-                    }`}
-                    style={{ width: `${Math.min(100, Math.round((clipCount / maxLimit) * 100))}%` }}
-                  />
-                </div>
-                {!isPremium ? (
-                  <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
-                    保存枠 20件
-                  </span>
-                ) : (
-                  <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
-                    大容量1,000件枠
-                  </span>
-                )}
-              </div>
+              <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] mt-0.5">
+                配穴ストック & 臨床症例ノート
+              </p>
             </div>
           </div>
 
+          <div className="flex items-center gap-2">
+            <Link
+              href="/notes"
+              onClick={closeDrawer}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#1E3D34] text-white hover:bg-[#162D26] transition-colors shadow-2xs"
+              title="マイノート全画面ページを開く"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span>全画面で開く</span>
+            </Link>
+            <button
+              onClick={closeDrawer}
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-[#737C77] dark:text-[#8899A6] hover:bg-[#FAF8F5] dark:hover:bg-[#1E2B36] hover:text-[#232826] dark:hover:text-[#FAF8F5] transition-colors"
+              aria-label="閉じる"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* セクション切り替え（配穴ストック vs 臨床ノート） */}
+        <div className="flex border-b border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] print:hidden">
           <button
-            onClick={closeDrawer}
-            className="w-9 h-9 rounded-xl flex items-center justify-center text-[#737C77] dark:text-[#8899A6] hover:bg-[#FAF8F5] dark:hover:bg-[#1E2B36] hover:text-[#232826] dark:hover:text-[#FAF8F5] transition-colors"
-            aria-label="閉じる"
+            type="button"
+            onClick={() => setDrawerSection("stock")}
+            className={`flex-1 py-2.5 text-xs font-bold flex items-center justify-center gap-1.5 border-b-2 transition-all ${
+              drawerSection === "stock"
+                ? "border-[#B86924] text-[#B86924] dark:text-[#E6C387] bg-white dark:bg-[#17212A]"
+                : "border-transparent text-[#737C77] dark:text-[#8899A6] hover:text-[#232826]"
+            }`}
           >
-            <X className="w-5 h-5" />
+            <Bookmark className="w-3.5 h-3.5" />
+            <span>配穴・ツボ ({clipCount}/{maxLimit})</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setDrawerSection("notes")}
+            className={`flex-1 py-2.5 text-xs font-bold flex items-center justify-center gap-1.5 border-b-2 transition-all ${
+              drawerSection === "notes"
+                ? "border-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E] bg-white dark:bg-[#17212A]"
+                : "border-transparent text-[#737C77] dark:text-[#8899A6] hover:text-[#232826]"
+            }`}
+          >
+            <FileText className="w-3.5 h-3.5" />
+            <span>臨床ノート ({patientNoteCount}/{maxPatientNoteLimit})</span>
           </button>
         </div>
 
@@ -324,95 +361,117 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="保存したツボ名、症状、配穴、メモから検索..."
+              placeholder={
+                drawerSection === "notes"
+                  ? "患者ID、主訴、採用配穴から検索..."
+                  : "保存したツボ名、症状、配穴、メモから検索..."
+              }
               className="w-full pl-9 pr-4 py-2 rounded-xl text-xs bg-white dark:bg-[#1A2530] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A948F] focus:outline-none focus:border-[#B86924]"
             />
           </div>
 
-          {/* 種別タブ */}
-          <div className="flex items-center justify-between gap-2 overflow-x-auto pb-1 text-xs">
-            <div className="flex items-center gap-1">
-              {[
-                { id: "all", label: `すべて (${memos.length})` },
-                { id: "pair", label: `重要配穴 (${memos.filter(m => m.type === "pair").length})` },
-                { id: "tsubo", label: `単穴 (${memos.filter(m => m.type === "tsubo").length})` },
-                { id: "diagnosis", label: `診断要点 (${memos.filter(m => m.type === "diagnosis").length})` },
-                { id: "custom", label: `自作メモ (${memos.filter(m => m.type === "custom").length})` },
-              ].map(tab => (
+          {drawerSection === "stock" ? (
+            <>
+              {/* 種別タブ */}
+              <div className="flex items-center justify-between gap-2 overflow-x-auto pb-1 text-xs">
+                <div className="flex items-center gap-1">
+                  {[
+                    { id: "all", label: `すべて (${memos.length})` },
+                    { id: "pair", label: `重要配穴 (${memos.filter(m => m.type === "pair").length})` },
+                    { id: "tsubo", label: `単穴 (${memos.filter(m => m.type === "tsubo").length})` },
+                    { id: "diagnosis", label: `診断要点 (${memos.filter(m => m.type === "diagnosis").length})` },
+                    { id: "custom", label: `自作メモ (${memos.filter(m => m.type === "custom").length})` },
+                  ].map(tab => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id as any)}
+                      className={`px-2.5 py-1 rounded-lg font-medium shrink-0 transition-colors ${
+                        activeTab === tab.id
+                          ? "bg-[#B86924] text-white"
+                          : "bg-white dark:bg-[#1A2530] text-[#59615D] dark:text-[#96A6B2] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5]"
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* アクションボタン（全件コピー・新規作成・全件消去） */}
+              <div className="flex items-center justify-between gap-2 pt-1 border-t border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 text-xs">
                 <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-2.5 py-1 rounded-lg font-medium shrink-0 transition-colors ${
-                    activeTab === tab.id
-                      ? "bg-[#B86924] text-white"
-                      : "bg-white dark:bg-[#1A2530] text-[#59615D] dark:text-[#96A6B2] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5]"
-                  }`}
+                  onClick={() => setIsAddingCustom(!isAddingCustom)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:opacity-90 transition-opacity"
                 >
-                  {tab.label}
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>自作メモを追加</span>
                 </button>
-              ))}
-            </div>
-          </div>
 
-          {/* アクションボタン（全件コピー・新規作成・全件消去） */}
-          <div className="flex items-center justify-between gap-2 pt-1 border-t border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 text-xs">
-            <button
-              onClick={() => setIsAddingCustom(!isAddingCustom)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:opacity-90 transition-opacity"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              <span>自作メモを追加</span>
-            </button>
-
-            <div className="flex items-center gap-1.5 flex-wrap">
-              {memos.length > 0 && (
-                <>
-                  <button
-                    onClick={handleExportMarkdown}
-                    title={isPremium ? "Markdown形式で保存（Obsidian / Notion / カルテ連携）" : "Markdown出力（プレミアム会員限定）"}
-                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
-                  >
-                    {!isPremium && <Crown className="w-2.5 h-2.5 text-[#B86924] dark:text-[#E6C387]" />}
-                    <FileDown className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-                    <span>Markdown</span>
-                  </button>
-                  <button
-                    onClick={handleExportJSON}
-                    title={isPremium ? "JSON形式で保存（バックアップ・他端末移行用）" : "JSON出力（プレミアム会員限定）"}
-                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
-                  >
-                    {!isPremium && <Crown className="w-2.5 h-2.5 text-[#B86924] dark:text-[#E6C387]" />}
-                    <Download className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                    <span>JSON</span>
-                  </button>
-                  <button
-                    onClick={handlePrint}
-                    title={isPremium ? "カルテA4印刷（問診票・患者説明用）" : "A4印刷（プレミアム会員限定）"}
-                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
-                  >
-                    {!isPremium && <Crown className="w-2.5 h-2.5 text-[#B86924] dark:text-[#E6C387]" />}
-                    <Printer className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                    <span>印刷</span>
-                  </button>
-                  <button
-                    onClick={handleCopyAll}
-                    title="保存中の全メモをテキスト形式でクリップボードにコピー"
-                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
-                  >
-                    {allCopied ? <Check className="w-3.5 h-3.5 text-[#10B981]" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{allCopied ? "コピー済" : "コピー"}</span>
-                  </button>
-                  <button
-                    onClick={clearAllMemos}
-                    title="全件消去"
-                    className="p-1 rounded-lg text-[#DC2626] hover:bg-[#FEE2E2] dark:hover:bg-[#3B1717] transition-colors"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </>
-              )}
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  {memos.length > 0 && (
+                    <>
+                      <button
+                        onClick={handleExportMarkdown}
+                        title={isPremium ? "Markdown形式で保存（Obsidian / Notion / カルテ連携）" : "Markdown出力（プレミアム会員限定）"}
+                        className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
+                      >
+                        {!isPremium && <Crown className="w-2.5 h-2.5 text-[#B86924] dark:text-[#E6C387]" />}
+                        <FileDown className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
+                        <span>Markdown</span>
+                      </button>
+                      <button
+                        onClick={handleExportJSON}
+                        title={isPremium ? "JSON形式で保存（バックアップ・他端末移行用）" : "JSON出力（プレミアム会員限定）"}
+                        className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
+                      >
+                        {!isPremium && <Crown className="w-2.5 h-2.5 text-[#B86924] dark:text-[#E6C387]" />}
+                        <Download className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                        <span>JSON</span>
+                      </button>
+                      <button
+                        onClick={handlePrint}
+                        title={isPremium ? "カルテA4印刷（問診票・患者説明用）" : "A4印刷（プレミアム会員限定）"}
+                        className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
+                      >
+                        {!isPremium && <Crown className="w-2.5 h-2.5 text-[#B86924] dark:text-[#E6C387]" />}
+                        <Printer className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                        <span>印刷</span>
+                      </button>
+                      <button
+                        onClick={handleCopyAll}
+                        title="保存中の全メモをテキスト形式でクリップボードにコピー"
+                        className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] transition-colors"
+                      >
+                        {allCopied ? <Check className="w-3.5 h-3.5 text-[#10B981]" /> : <Copy className="w-3.5 h-3.5" />}
+                        <span>{allCopied ? "コピー済" : "コピー"}</span>
+                      </button>
+                      <button
+                        onClick={clearAllMemos}
+                        title="全件消去"
+                        className="p-1 rounded-lg text-[#DC2626] hover:bg-[#FEE2E2] dark:hover:bg-[#3B1717] transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="flex items-center justify-between gap-2 pt-1 text-xs">
+              <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                患者ID・主訴・採用配穴・手技の臨床録
+              </span>
+              <Link
+                href="/notes"
+                onClick={closeDrawer}
+                className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#1E3D34] text-white font-medium hover:bg-[#162D26] transition-colors"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>新規作成 / 全画面管理</span>
+              </Link>
             </div>
-          </div>
+          )}
         </div>
 
         {/* 自作メモ作成フォーム（開閉式） */}
@@ -489,7 +548,92 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
 
         {/* リスト表示エリア */}
         <div className="flex-1 overflow-y-auto p-3 sm:p-5 space-y-3 sm:space-y-4 print:overflow-visible print:h-auto print:p-0 print:space-y-4">
-          {filteredMemos.length === 0 ? (
+          {drawerSection === "notes" ? (
+            <div className="space-y-3">
+              <div className="p-3 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] flex items-center justify-between text-xs">
+                <div>
+                  <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
+                    患者臨床ノート ({patientNoteCount}/{maxPatientNoteLimit}件)
+                  </span>
+                  <span className="text-[10px] text-[#59615D] dark:text-[#A0B0BC]">
+                    完全端末内保存・安心設計
+                  </span>
+                </div>
+                <Link
+                  href="/notes"
+                  onClick={closeDrawer}
+                  className="px-3 py-1.5 rounded-lg bg-[#1E3D34] text-white font-bold hover:bg-[#162D26] text-xs flex items-center gap-1 shadow-2xs"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>新規作成 / 詳細</span>
+                </Link>
+              </div>
+
+              {filteredNotes.length === 0 ? (
+                <div className="text-center p-8 bg-white dark:bg-[#17212A] rounded-2xl border border-dashed border-[#D8CFC0] dark:border-[#2A3B4A] space-y-2">
+                  <FileText className="w-8 h-8 mx-auto text-[#737C77] opacity-50" />
+                  <p className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">
+                    臨床ノートがありません
+                  </p>
+                  <Link
+                    href="/notes"
+                    onClick={closeDrawer}
+                    className="inline-block mt-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#1E3D34]"
+                  >
+                    全画面ページで作成する
+                  </Link>
+                </div>
+              ) : (
+                filteredNotes.map(note => (
+                  <div
+                    key={note.id}
+                    className="p-4 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xs space-y-2"
+                  >
+                    <div className="flex items-center justify-between border-b border-[#F0EBE0] dark:border-[#243340] pb-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="font-serif font-bold text-sm text-[#1E3D34] dark:text-[#74BA9E]">
+                          {note.patientIdentifier}
+                        </span>
+                        <span className="text-[10px] text-[#737C77]">
+                          {note.visitDate}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removePatientNote(note.id)}
+                        className="text-[#737C77] hover:text-[#DC2626] p-1"
+                        title="削除"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                    <p className="text-xs text-[#232826] dark:text-[#FAF8F5] font-medium line-clamp-2">
+                      {note.chiefComplaint}
+                    </p>
+                    {note.selectedPoints.length > 0 && (
+                      <div className="flex flex-wrap gap-1 pt-0.5">
+                        {note.selectedPoints.map((pt, i) => (
+                          <span key={i} className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#FAF2E6] dark:bg-[#251D14] text-[#B86924] dark:text-[#E6C387]">
+                            {pt}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <div className="pt-2 border-t border-[#F0EBE0] dark:border-[#243340] flex justify-end">
+                      <Link
+                        href="/notes"
+                        onClick={closeDrawer}
+                        className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
+                      >
+                        <span>詳細・A4印刷・編集</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </Link>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          ) : filteredMemos.length === 0 ? (
             <div className="space-y-5 bg-white dark:bg-[#17212A] rounded-2xl border border-dashed border-[#D5CCBC] dark:border-[#2D3E50] p-5 sm:p-7">
               <div className="text-center space-y-2">
                 <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto rounded-2xl bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center">
@@ -509,7 +653,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
               {!searchQuery && activeTab === "all" && (
                 <div className="space-y-3 pt-3 border-t border-[#F2ECE0] dark:border-[#22303D]">
                   <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-center">
-                    学習ノートに保存できる4つの記録：
+                    マイノートに保存できる4つの記録：
                   </span>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-left">
@@ -705,13 +849,27 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
 
         {/* フッターエリア */}
         <div className="p-3.5 sm:p-4 bg-white dark:bg-[#17212A] border-t border-[#E5DEC9] dark:border-[#2A3B4A] flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
-          <span>全 {clipCount} 件 保存中</span>
-          <button
-            onClick={closeDrawer}
-            className="px-4 py-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5] font-medium hover:bg-[#EBF3EF] transition-colors"
-          >
-            閉じる
-          </button>
+          <span>
+            {drawerSection === "stock"
+              ? `配穴ストック: ${clipCount}件 保存中`
+              : `臨床ノート: ${patientNoteCount}件 保存中`}
+          </span>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/notes"
+              onClick={closeDrawer}
+              className="text-[#1E3D34] dark:text-[#74BA9E] font-bold hover:underline flex items-center gap-0.5"
+            >
+              <span>全画面ページへ</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+            <button
+              onClick={closeDrawer}
+              className="px-4 py-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5] font-medium hover:bg-[#EBF3EF] transition-colors"
+            >
+              閉じる
+            </button>
+          </div>
         </div>
 
       </div>

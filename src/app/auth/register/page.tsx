@@ -89,7 +89,7 @@ export default function RegisterPage() {
           無料会員登録
         </h1>
         <p className="text-xs text-[#59615D] dark:text-[#8899A6]">
-          アカウントを作成してマイカルテの保存や学習履歴の同期を始めましょう。
+          アカウントを作成してマイノートの保存や学習履歴の同期を始めましょう。
         </p>
       </div>
 

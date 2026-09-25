@@ -362,15 +362,15 @@ export default function Header() {
               )}
             </div>
 
-            {/* 学習ノート（マイカルテ）引き出しトグル */}
+            {/* マイノート（配穴ストック ＆ 臨床ノート）引き出しトグル */}
             <button
               type="button"
               onClick={openDrawer}
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-[#B86924] dark:text-[#E6C387] bg-[#FCF4EB] dark:bg-[#251A10] border border-[#F3DEC5] dark:border-[#4A321E] hover:bg-[#FBEAD7] transition-all shadow-2xs"
-              title="学習ノート（マイカルテ：保存したツボ・配穴・臨床メモ）を開く"
+              title="マイノート（保存した配穴・ツボ・患者臨床録）を開く"
             >
               <Bookmark className="w-3.5 h-3.5 fill-current" />
-              <span>学習ノート</span>
+              <span>マイノート</span>
               {clipCount > 0 && (
                 <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#B86924] text-white">
                   {clipCount}
@@ -487,7 +487,7 @@ export default function Header() {
               type="button"
               onClick={openDrawer}
               className="relative p-1.5 rounded-full border border-[#F3DEC5] dark:border-[#4D331F] bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0"
-              title="学習ノート（マイカルテ）"
+              title="マイノート"
             >
               <Bookmark className="w-4 h-4 fill-current" />
               {clipCount > 0 && (
@@ -707,7 +707,7 @@ export default function Header() {
             >
               <div className="flex items-center gap-3">
                 <Bookmark className="w-4 h-4 fill-current" />
-                <span>学習ノート（マイカルテ）</span>
+                <span>マイノート（配穴・臨床録）</span>
               </div>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#B86924] text-white">
                 {clipCount}件

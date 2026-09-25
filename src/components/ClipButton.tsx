@@ -41,8 +41,8 @@ export default function ClipButton({
       <button
         type="button"
         onClick={handleClick}
-        title={clipped ? "学習ノートから解除" : "学習ノートに保存"}
-        aria-label={clipped ? "学習ノートから解除" : "学習ノートに保存"}
+        title={clipped ? "マイノートから解除" : "マイノートに保存"}
+        aria-label={clipped ? "マイノートから解除" : "マイノートに保存"}
         className={`rounded-full flex items-center justify-center transition-all ${sizeClasses} ${
           clipped
             ? "bg-[#B86924] text-white shadow-xs hover:bg-[#9B551B] scale-105"
@@ -71,7 +71,7 @@ export default function ClipButton({
         } ${className}`}
       >
         <Bookmark className={`w-3 h-3 ${clipped ? "fill-current" : ""}`} />
-        <span>{clipped ? "保存済" : "保存"}</span>
+        <span>{clipped ? "マイノート保存済" : "マイノート保存"}</span>
       </button>
     );
   }
@@ -100,7 +100,7 @@ export default function ClipButton({
       />
       {showLabel && (
         <span>
-          {clipped ? "学習ノート保存済" : "学習ノートに保存"}
+          {clipped ? "マイノート保存済" : "マイノートに保存"}
         </span>
       )}
     </button>

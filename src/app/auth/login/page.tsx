@@ -104,7 +104,7 @@ export default function LoginPage() {
           会員ログイン
         </h1>
         <p className="text-xs text-[#59615D] dark:text-[#8899A6]">
-          マイカルテ・学習進捗の同期とプレミアム機能をご利用いただけます。
+          マイノート・学習進捗の同期とプレミアム機能をご利用いただけます。
         </p>
       </div>
 

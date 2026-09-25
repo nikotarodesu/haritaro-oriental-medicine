@@ -32,8 +32,10 @@ export const SUBSCRIPTION_CONFIG = {
 
   // 保存上限設定（無料会員 / プレミアム会員）
   limits: {
-    freeMemoMax: 20, // 無料会員の保存上限（初期仕様: 20件）
-    premiumMemoMax: 1000, // プレミアム会員の保存上限（初期仕様: 1,000件）
+    freeMemoMax: 20, // 無料会員のツボ・配穴保存上限（20件）
+    premiumMemoMax: 1000, // プレミアム会員のツボ・配穴保存上限（1,000件）
+    freePatientNoteMax: 3, // 無料会員の臨床ノート（症例）上限（3件）
+    premiumPatientNoteMax: 500, // プレミアム会員の臨床ノート（症例）上限（500件）
     freeTrialCaseCount: 3, // 無料で体験可能な症例演習数（初期仕様: 3例）
   },
 
@@ -62,10 +64,10 @@ export const SUBSCRIPTION_CONFIG = {
     },
     {
       id: "clinical_memos",
-      title: "マイカルテ・学習ノート保存上限",
-      description: "独自の臨床知見や重要配穴、症例振り返りをクラウドに保存。",
-      free: "最大20件まで",
-      premium: "最大1,000件（大容量）",
+      title: "マイノート（配穴ストック ＆ 臨床ノート）",
+      description: "独自の配穴処方ストックや、日々の患者臨床ノート（主訴・弁証・配穴・養生指導シート）を安全に保存管理。",
+      free: "配穴20件 / 臨床ノート3件まで",
+      premium: "配穴1,000件 / 臨床ノート500件（大容量・無制限感覚）",
     },
     {
       id: "practice_haiketsu",
