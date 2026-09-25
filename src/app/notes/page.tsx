@@ -825,56 +825,70 @@ ${note.treatmentPlan ? `■ 施術方針: ${note.treatmentPlan}\n` : ""}${note.p
 
             <form onSubmit={handleSaveNote} className="space-y-4 text-xs">
               {/* 患者属性（カルテID、性別、年代、日付） */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="p-3.5 rounded-xl bg-[#FCF4EB]/70 dark:bg-[#221811] border border-[#F3DEC5] dark:border-[#4A321E] space-y-2.5">
                 <div className="space-y-1">
-                  <label className="font-bold text-[#404743] dark:text-[#C5D2DB]">
-                    患者識別 (ID/イニシャル) *
-                  </label>
+                  <div className="flex items-center justify-between">
+                    <label className="font-bold text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
+                      <User className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                      <span>患者識別（カルテNo. / イニシャル） *</span>
+                    </label>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#1E3D34] text-white">
+                      個人情報保護
+                    </span>
+                  </div>
                   <input
                     type="text"
                     required
                     value={patientIdentifier}
                     onChange={(e) => setPatientIdentifier(e.target.value)}
-                    placeholder="例: PT-042, K.S様"
-                    className="w-full p-2 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#232826] dark:text-[#FAF8F5]"
+                    placeholder="例: PT-042, K.S様（※本名は入力しないでください）"
+                    className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#232826] dark:text-[#FAF8F5] font-semibold"
                   />
+                  <p className="text-[11px] text-[#7A4515] dark:text-[#ECC99B] leading-relaxed flex items-start gap-1 pt-0.5">
+                    <ShieldCheck className="w-3.5 h-3.5 shrink-0 mt-0.5 text-[#1E3D34] dark:text-[#74BA9E]" />
+                    <span>
+                      <strong>【注意】個人情報保護のため、お名前（本名）は入力せず、カルテ番号（例: PT-001）やイニシャル（例: T.K様）をご入力ください。</strong>
+                    </span>
+                  </p>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="font-bold text-[#404743] dark:text-[#C5D2DB]">年代</label>
-                  <select
-                    value={ageGroup}
-                    onChange={(e) => setAgeGroup(e.target.value)}
-                    className="w-full p-2 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#232826] dark:text-[#FAF8F5]"
-                  >
-                    {["10代", "20代", "30代", "40代", "50代", "60代", "70代", "80代以上"].map(a => (
-                      <option key={a} value={a}>{a}</option>
-                    ))}
-                  </select>
-                </div>
+                <div className="grid grid-cols-3 gap-2.5 pt-2 border-t border-[#F3DEC5]/60 dark:border-[#4A321E]/60">
+                  <div className="space-y-1">
+                    <label className="font-bold text-[#404743] dark:text-[#C5D2DB]">年代</label>
+                    <select
+                      value={ageGroup}
+                      onChange={(e) => setAgeGroup(e.target.value)}
+                      className="w-full p-2 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#232826] dark:text-[#FAF8F5]"
+                    >
+                      {["10代", "20代", "30代", "40代", "50代", "60代", "70代", "80代以上"].map(a => (
+                        <option key={a} value={a}>{a}</option>
+                      ))}
+                    </select>
+                  </div>
 
-                <div className="space-y-1">
-                  <label className="font-bold text-[#404743] dark:text-[#C5D2DB]">性別</label>
-                  <select
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value as any)}
-                    className="w-full p-2 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#232826] dark:text-[#FAF8F5]"
-                  >
-                    <option value="女性">女性</option>
-                    <option value="男性">男性</option>
-                    <option value="その他">その他</option>
-                    <option value="未回答">未回答</option>
-                  </select>
-                </div>
+                  <div className="space-y-1">
+                    <label className="font-bold text-[#404743] dark:text-[#C5D2DB]">性別</label>
+                    <select
+                      value={gender}
+                      onChange={(e) => setGender(e.target.value as any)}
+                      className="w-full p-2 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#232826] dark:text-[#FAF8F5]"
+                    >
+                      <option value="女性">女性</option>
+                      <option value="男性">男性</option>
+                      <option value="その他">その他</option>
+                      <option value="未回答">未回答</option>
+                    </select>
+                  </div>
 
-                <div className="space-y-1">
-                  <label className="font-bold text-[#404743] dark:text-[#C5D2DB]">来院日</label>
-                  <input
-                    type="date"
-                    value={visitDate}
-                    onChange={(e) => setVisitDate(e.target.value)}
-                    className="w-full p-2 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#232826] dark:text-[#FAF8F5]"
-                  />
+                  <div className="space-y-1">
+                    <label className="font-bold text-[#404743] dark:text-[#C5D2DB]">来院日</label>
+                    <input
+                      type="date"
+                      value={visitDate}
+                      onChange={(e) => setVisitDate(e.target.value)}
+                      className="w-full p-2 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#232826] dark:text-[#FAF8F5]"
+                    />
+                  </div>
                 </div>
               </div>
 
