@@ -3124,8 +3124,8 @@ export const PLANNED_UNPUBLISHED_LESSONS: Record<string, PlannedLessonItem[]> = 
 export function getCurriculumStats() {
   const allLectures = CURRICULUM_DATA.flatMap((stage) => stage.lectures);
   const publishedLectures = allLectures.filter((l) => l.isPublished !== false);
-  const totalPlannedLessons = CURRICULUM_CHAPTERS_META.reduce((acc, c) => acc + c.plannedLessons, 0); // 92
-  const totalPublishedLessons = publishedLectures.length; // 71
+  const totalPlannedLessons = CURRICULUM_CHAPTERS_META.reduce((acc, c) => acc + c.plannedLessons, 0); // 81
+  const totalPublishedLessons = publishedLectures.length; // 81
 
   const chapterStats = CURRICULUM_CHAPTERS_META.map((meta) => {
     const lecturesInChapter = allLectures.filter((l) => l.seriesId === meta.seriesId);
@@ -3139,8 +3139,8 @@ export function getCurriculumStats() {
   });
 
   return {
-    totalPlannedLessons, // 92
-    totalPublishedLessons, // 71
+    totalPlannedLessons, // 81
+    totalPublishedLessons, // 81
     allLectures,
     publishedLectures,
     chapterStats,

@@ -626,7 +626,7 @@ export default function CurriculumPage() {
           体系学習カリキュラム
         </h1>
         <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          陰陽・五行・気血水から病機・診断・治法・実践まで全71レッスン。暗記を排し、動的な病態を捉える思考の土台を築きます。
+          陰陽・五行・気血水から病機・診断・治法・実践まで全81レッスン。暗記を排し、動的な病態を捉える思考の土台を築きます。
         </p>
       </div>
 
@@ -654,7 +654,7 @@ export default function CurriculumPage() {
               </div>
             ) : (
               <h3 className="text-lg font-bold text-white">
-                公開71レッスンの学習へようこそ！
+                全81レッスンの学習へようこそ！
               </h3>
             )}
 
@@ -691,7 +691,7 @@ export default function CurriculumPage() {
               <div className="flex items-center justify-between text-xs font-bold mb-1.5 text-emerald-200">
                 <span>全体受講ステータス</span>
                 <span className="font-mono text-sm text-white">
-                  {isMounted ? `${totalCompleted} / ${totalPublished || 71}` : `0 / ${totalPublished || 71}`} 講完了
+                  {isMounted ? `${totalCompleted} / ${totalPublished || 81}` : `0 / ${totalPublished || 81}`} 講完了
                 </span>
               </div>
               <div className="w-full h-2.5 rounded-full bg-emerald-950/60 overflow-hidden border border-emerald-700/40">
@@ -701,7 +701,7 @@ export default function CurriculumPage() {
                 />
               </div>
               <div className="mt-1.5 flex items-center justify-between text-[11px] text-emerald-200">
-                <span>全{totalPlanned || 92}レッスン予定</span>
+                <span>全{totalPlanned || 81}レッスン（公開中）</span>
                 <span className="font-bold">公開分進捗: {isMounted ? totalPercentage : 0}%</span>
               </div>
             </div>

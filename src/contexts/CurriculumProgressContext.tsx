@@ -47,8 +47,8 @@ export interface CurriculumProgressContextType {
 
 const STORAGE_KEY = 'haritaro-learning-progress-v1';
 const CURRICULUM_STATS = getCurriculumStats();
-const TOTAL_ALL_LECTURES = CURRICULUM_STATS.totalPublishedLessons; // 公開中71レッスン
-const TOTAL_PLANNED_LECTURES = CURRICULUM_STATS.totalPlannedLessons; // 計画全92レッスン
+const TOTAL_ALL_LECTURES = CURRICULUM_STATS.totalPublishedLessons; // 全81レッスン
+const TOTAL_PLANNED_LECTURES = CURRICULUM_STATS.totalPlannedLessons; // 全81レッスン
 
 const CurriculumProgressContext = createContext<CurriculumProgressContextType | undefined>(undefined);
 

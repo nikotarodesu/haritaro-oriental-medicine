@@ -34,7 +34,7 @@ export default function HomeLearningProgressCard() {
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-800/80 text-emerald-200 border border-emerald-600/40">
               <Compass className="w-3.5 h-3.5" />
-              東洋医学8大体系（公開71レッスン / 全92予定）
+              東洋医学8大体系（全81レッスン）
             </span>
             {isStarted && (
               <span className="text-xs font-bold text-emerald-300">
@@ -48,12 +48,6 @@ export default function HomeLearningProgressCard() {
               ? `続きから再開：${resumeLecture ? resumeLecture.title : '陰陽論 レッスン1'}`
               : 'まずはここから：第1章 陰陽論 レッスン1'}
           </h3>
-
-          <p className="text-xs sm:text-sm text-emerald-100/80 line-clamp-1 max-w-2xl">
-            {isStarted && resumeLecture
-              ? resumeLecture.summary
-              : '陰陽の基本的な性質、比較の基準、身近な例から人体の動的な状態を捉える基礎を学びます。'}
-          </p>
 
           {/* 進捗表示（受講中のみプログレスバーを強調、未受講時は案内表示） */}
           {isStarted ? (
@@ -72,7 +66,7 @@ export default function HomeLearningProgressCard() {
             <div className="flex items-center gap-2 pt-1 text-xs text-emerald-200/90 font-medium">
               <span>所要時間: 約10分</span>
               <span>•</span>
-              <span>公開中71レッスン（全92レッスン予定）</span>
+              <span>全8章・81レッスン公開中</span>
             </div>
           )}
         </div>

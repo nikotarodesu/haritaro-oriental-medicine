@@ -81,12 +81,12 @@ export default function HomePage() {
                 </h3>
 
                 <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  陰陽・五行・気血水から病機・診断・治法・実践まで全71レッスン。暗記を排し、動的な病態を捉える思考の土台を築きます。
+                  陰陽・五行・気血水から病機・診断・治法・実践まで全81レッスン。暗記を排し、動的な病態を捉える思考の土台を築きます。
                 </p>
               </div>
 
               <div className="pt-3 mt-4 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                <span>公開71レッスンのカリキュラムへ</span>
+                <span>公開81レッスンのカリキュラムへ</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>
@@ -197,7 +197,7 @@ export default function HomePage() {
                 <span className="text-xs text-[#737C77] dark:text-[#8899A6]">更新</span>
               </div>
               <p className="font-semibold text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm">
-                公開中71レッスンの学習ゴール・目次構成を整理
+                公開中81レッスンの学習ゴール・目次構成を整理
               </p>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
                 陰陽論から実践論まで、各レッスンの狙いと要点をスムーズに把握できます。

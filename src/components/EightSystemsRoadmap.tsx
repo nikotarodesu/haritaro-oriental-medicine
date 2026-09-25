@@ -126,7 +126,7 @@ export default function EightSystemsRoadmap() {
               </h2>
             </div>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC]">
-              基礎理論から病態・診断・治法・実践まで、臨床思考が一本の線でつながる全71レッスン
+              基礎理論から病態・診断・治法・実践まで、臨床思考が一本の線でつながる全81レッスン
             </p>
           </div>
 
@@ -134,7 +134,7 @@ export default function EightSystemsRoadmap() {
             href="/curriculum"
             className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline shrink-0 group self-start sm:self-auto"
           >
-            <span>カリキュラム（全71講）を開く</span>
+            <span>カリキュラム（全81講）を開く</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
@@ -216,7 +216,7 @@ export default function EightSystemsRoadmap() {
             {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
           </button>
           <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-            全8体系・71レッスン
+            全8体系・81レッスン
           </span>
         </div>
 

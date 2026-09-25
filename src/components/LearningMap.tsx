@@ -177,7 +177,7 @@ export const LearningMap: React.FC<LearningMapProps> = ({ onSelectChapter }) => 
             全8大体系 学習マップ
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base mt-1">
-            基礎理論から臨床推論まで、全71レッスンで東洋医学の全体構造をマスターします。
+            基礎理論から臨床推論まで、全81レッスンで東洋医学の全体構造をマスターします。
           </p>
         </div>
 
@@ -186,7 +186,7 @@ export const LearningMap: React.FC<LearningMapProps> = ({ onSelectChapter }) => 
           <div className="text-right">
             <div className="text-xs font-bold text-slate-500 dark:text-slate-400">全体カリキュラム進捗</div>
             <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
-              {isMounted ? `${totalCompleted} / 71` : '0 / 71'}
+              {isMounted ? `${totalCompleted} / 81` : '0 / 81'}
               <span className="text-xs font-normal text-slate-500 ml-1.5">講義完了</span>
             </div>
           </div>

@@ -64,7 +64,7 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* デスクトップ ナビゲーション（学ぶ・調べる・演習する 3大体系 ＋ 入門・セルフケア ＋ 学習ノート） */}
+          {/* デスクトップ ナビゲーション（学ぶ・調べる・演習する 3大体系 ＋ セルフケア ＋ 学習ノート） */}
           <nav className="hidden lg:flex items-center gap-2 xl:gap-3">
             {/* 1. 学ぶ（直接カリキュラムへ） */}
             <Link
@@ -277,7 +277,7 @@ export default function Header() {
               )}
             </div>
 
-            {/* 4. 入門・セルフケア ドロップダウン */}
+            {/* 4. セルフケア ドロップダウン */}
             <div
               className="relative"
               onMouseEnter={() => handleMouseEnter("intro")}
@@ -293,7 +293,7 @@ export default function Header() {
                 }`}
               >
                 <HeartPulse className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                <span>入門・セルフケア</span>
+                <span>セルフケア</span>
                 <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${openDropdown === "intro" ? "rotate-180" : ""}`} />
               </button>
 
@@ -612,10 +612,10 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* 4. 入門・セルフケアセクション */}
+          {/* 4. セルフケアセクション */}
           <div className="space-y-1 pt-2 border-t border-[#E8E1D1] dark:border-[#22303D]">
             <span className="text-xs font-bold uppercase tracking-wider text-[#737C77] dark:text-[#8899A6] px-3">
-              東洋医学を知る入口（入門・セルフケア）
+              東洋医学を知る入口（セルフケア）
             </span>
             <Link
               href="/diagnosis"
