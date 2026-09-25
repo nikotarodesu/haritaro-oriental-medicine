@@ -361,6 +361,16 @@ export default function SubscriptionManagementPage() {
               : "無料会員: 最大20件まで（プレミアムで1,000件に拡張可能）"}
           </span>
         </div>
+
+        <div className="pt-2 flex items-center justify-end">
+          <Link
+            href="/notes"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline"
+          >
+            <span>マイノート（臨床録・配穴）を開く</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
       </div>
 
       {/* ローカルデータの安全同期と移行確認 */}
