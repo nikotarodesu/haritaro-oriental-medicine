@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { 
   Bookmark, 
@@ -26,7 +26,13 @@ import {
   ArrowRight,
   BookOpen,
   FileText,
-  Share2
+  Share2,
+  QrCode,
+  ExternalLink,
+  ChevronDown,
+  ChevronUp,
+  Lightbulb,
+  Send
 } from "lucide-react";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -75,6 +81,13 @@ export default function MyNotesPage() {
   const [selectedTag, setSelectedTag] = useState<string>("all");
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
+  // 待合室QRコードPOPモーダル
+  const [isPopModalOpen, setIsPopModalOpen] = useState(false);
+  // 3ステップ活用ガイドの開閉
+  const [isGuideOpen, setIsGuideOpen] = useState(true);
+  // 診断URLコピー完了フラグ
+  const [urlCopied, setUrlCopied] = useState(false);
+
   // 臨床ノート新規・編集モーダル
   const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
@@ -103,6 +116,43 @@ export default function MyNotesPage() {
 
   // ファイルインポート用ref
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // 診断結果等からのURLクエリパラメータ引き継ぎ自動検知
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const shouldCreate = params.get("new");
+    if (shouldCreate === "1" || shouldCreate === "true") {
+      const initConstitution = params.get("constitution") || "";
+      const initPoints = params.get("points") || "";
+      const initComplaint = params.get("complaint") || "";
+      const initSyndrome = params.get("syndrome") || "";
+
+      setEditingNoteId(null);
+      setPatientIdentifier(`PT-${String(patientNotes.length + 1).padStart(3, "0")}`);
+      setGender("女性");
+      setAgeGroup("30代");
+      setVisitDate(new Date().toISOString().split("T")[0]);
+      setChiefComplaint(initComplaint);
+      setConstitution(initConstitution);
+      setSyndrome(initSyndrome);
+      setSelectedPointsInput(initPoints.replace(/,/g, "、 "));
+      setTreatmentPlan("");
+      setPatientReaction("");
+      setNextAction("");
+      setIsNoteModalOpen(true);
+      setActiveTab("notes");
+
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [patientNotes.length]);
+
+  const handleCopyDiagnosisUrl = () => {
+    const url = "https://www.haritaro.jp/diagnosis";
+    navigator.clipboard.writeText(url);
+    setUrlCopied(true);
+    setTimeout(() => setUrlCopied(false), 2500);
+  };
 
   // 臨床ノートのフィルタリング
   const filteredNotes = useMemo(() => {
@@ -350,6 +400,139 @@ ${note.treatmentPlan ? `■ 施術方針: ${note.treatmentPlan}\n` : ""}${note.p
               データはサーバーに一切送信されず、お使いの端末（ブラウザ）内のみに安全に保存されます。
             </p>
           </div>
+        </div>
+
+        {/* 院内臨床 3ステップ活用ガイド ＆ 待合室POP導線 */}
+        <div className="rounded-2xl border-2 border-[#1E3D34]/20 dark:border-[#74BA9E]/30 bg-gradient-to-br from-[#F5FAF8] to-[#FAF8F5] dark:from-[#13221C] dark:to-[#17212A] p-4 sm:p-5 shadow-xs space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <span className="p-2 rounded-xl bg-[#1E3D34] text-white shrink-0">
+                <Lightbulb className="w-4 h-4 text-[#E6C387]" />
+              </span>
+              <div>
+                <h3 className="font-serif text-sm sm:text-base font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                  問診・施術を劇的にスムーズにする「院内 3ステップ活用法」
+                </h3>
+                <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC]">
+                  患者さんの待ち時間・問診・施術・アフターケアを1本の線で繋ぐおすすめの臨床オペレーションです
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => setIsPopModalOpen(true)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#1E3D34] hover:bg-[#162D26] text-white shadow-xs transition-all"
+                title="待合室や受付に置くQRコード案内シートをA4印刷"
+              >
+                <QrCode className="w-3.5 h-3.5 text-[#E6C387]" />
+                <span>待合室用QRコードPOPを印刷</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsGuideOpen(!isGuideOpen)}
+                className="p-1.5 rounded-lg text-[#737C77] hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                title={isGuideOpen ? "ガイドを閉じる" : "ガイドを開く"}
+              >
+                {isGuideOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </button>
+            </div>
+          </div>
+
+          {isGuideOpen && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2 text-xs">
+              {/* STEP 1 */}
+              <div className="p-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#D5E6DE] dark:border-[#2C4A3E] space-y-2 flex flex-col justify-between">
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="px-2 py-0.5 rounded-md font-bold text-[10px] bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E]">
+                      STEP 1：待合室・問診前
+                    </span>
+                    <span className="text-[10px] text-[#737C77]">約2分</span>
+                  </div>
+                  <h4 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-xs">
+                    患者さんに「体質診断・五労チェック」を受けてもらう
+                  </h4>
+                  <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                    待合室POPのQRコードを患者さんのスマホで読み取ってもらうか、院のiPadで12問の問診に回答してもらいます。
+                  </p>
+                </div>
+                <div className="pt-2 border-t border-[#F0EBE0] dark:border-[#263542] flex items-center justify-between text-[11px]">
+                  <button
+                    type="button"
+                    onClick={() => setIsPopModalOpen(true)}
+                    className="text-[#1E3D34] dark:text-[#74BA9E] font-bold hover:underline flex items-center gap-1"
+                  >
+                    <Printer className="w-3 h-3" />
+                    <span>POP印刷（A4）</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCopyDiagnosisUrl}
+                    className="text-[#737C77] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] font-semibold flex items-center gap-0.5"
+                  >
+                    {urlCopied ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                    <span>{urlCopied ? "URLコピー済" : "URLコピー"}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* STEP 2 */}
+              <div className="p-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#F3DEC5] dark:border-[#4A321E] space-y-2 flex flex-col justify-between">
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="px-2 py-0.5 rounded-md font-bold text-[10px] bg-[#FAF2E6] text-[#B86924] dark:bg-[#251D14] dark:text-[#E6C387]">
+                      STEP 2：問診・施術記録
+                    </span>
+                    <span className="text-[10px] text-[#737C77]">マイノート</span>
+                  </div>
+                  <h4 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-xs">
+                    診断結果を見ながら配穴を選定・手技メモ
+                  </h4>
+                  <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                    診断された体質（気滞・瘀血など）をもとに、ストックから配穴を1クリック挿入。施術方針や術直後の変化をサッと記録します。
+                  </p>
+                </div>
+                <div className="pt-2 border-t border-[#F0EBE0] dark:border-[#263542] flex items-center justify-between text-[11px]">
+                  <button
+                    type="button"
+                    onClick={openNewNoteModal}
+                    className="text-[#B86924] dark:text-[#E6C387] font-bold hover:underline flex items-center gap-1"
+                  >
+                    <Plus className="w-3 h-3" />
+                    <span>臨床ノート作成</span>
+                  </button>
+                  <span className="text-[10px] text-[#737C77]">配穴引用ボタン完備</span>
+                </div>
+              </div>
+
+              {/* STEP 3 */}
+              <div className="p-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#D5E6DE] dark:border-[#2C4A3E] space-y-2 flex flex-col justify-between">
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="px-2 py-0.5 rounded-md font-bold text-[10px] bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E]">
+                      STEP 3：施術後・アフターケア
+                    </span>
+                    <span className="text-[10px] text-[#737C77]">信頼度＆リピートUP</span>
+                  </div>
+                  <h4 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-xs">
+                    「患者用セルフケア養生シート」を印刷して手渡し
+                  </h4>
+                  <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                    ノート詳細からボタン1つでA4印刷。お家で温めるツボや食養生を患者さんに渡すことで、高い納得感と再来院に繋がります。
+                  </p>
+                </div>
+                <div className="pt-2 border-t border-[#F0EBE0] dark:border-[#263542] flex items-center justify-between text-[11px]">
+                  <span className="text-[10px] text-[#737C77]">A4縦・白黒印刷最適化</span>
+                  <span className="text-[#1E3D34] dark:text-[#74BA9E] font-bold flex items-center gap-0.5">
+                    <Printer className="w-3 h-3" />
+                    <span>即時PDF・印刷可</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* タブ切り替えと各タブのアクションボタン */}
@@ -914,7 +1097,37 @@ ${note.treatmentPlan ? `■ 施術方針: ${note.treatmentPlan}\n` : ""}${note.p
                     <label className="font-bold text-[#404743] dark:text-[#C5D2DB]">
                       体質見立て（気血水）
                     </label>
-                    <span className="text-[10px] text-[#737C77]">下から選択可</span>
+                    <div className="flex items-center gap-1.5 text-[10px]">
+                      <button
+                        type="button"
+                        onClick={() => setIsPopModalOpen(true)}
+                        className="text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-0.5 font-bold"
+                        title="待合室QRコードPOPを印刷"
+                      >
+                        <QrCode className="w-3 h-3" />
+                        <span>待合室POP</span>
+                      </button>
+                      <span className="text-gray-300 dark:text-gray-600">|</span>
+                      <a
+                        href="/diagnosis"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#B86924] dark:text-[#E6C387] hover:underline flex items-center gap-0.5"
+                      >
+                        <span>気血水診断</span>
+                        <ExternalLink className="w-2.5 h-2.5" />
+                      </a>
+                      <span className="text-gray-300 dark:text-gray-600">|</span>
+                      <a
+                        href="/diagnosis?tab=gorou"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#B86924] dark:text-[#E6C387] hover:underline flex items-center gap-0.5"
+                      >
+                        <span>五労チェック</span>
+                        <ExternalLink className="w-2.5 h-2.5" />
+                      </a>
+                    </div>
                   </div>
                   <input
                     type="text"
@@ -1290,6 +1503,119 @@ ${note.treatmentPlan ? `■ 施術方針: ${note.treatmentPlan}\n` : ""}${note.p
               <div className="pt-4 border-t border-gray-200 flex items-center justify-between text-[10px] text-gray-500">
                 <p>※本シートはセルフケアのための健康情報メモです。気になる症状が続く場合は専門医にご相談ください。</p>
                 <p>監修: はり太郎の東洋医学 (haritaro.jp)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* 待合室用 QRコード案内POP A4印刷モーダル */}
+      {/* ======================================================== */}
+      {isPopModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-fadeIn overflow-y-auto">
+          <div className="bg-white text-black w-full max-w-3xl rounded-2xl shadow-2xl p-6 sm:p-8 my-8 space-y-6 max-h-[92vh] overflow-y-auto print:p-0 print:m-0 print:shadow-none print:w-full">
+            {/* 画面用操作バー（印刷時は非表示） */}
+            <div className="flex items-center justify-between border-b pb-4 print:hidden">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-1 rounded bg-[#1E3D34] text-white text-xs font-bold">
+                  待合室・受付POP
+                </span>
+                <span className="text-xs text-gray-500">
+                  受付や待合室、施術ベッド横にそのまま立てて置けるA4縦サイズの案内シートです
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#1E3D34] text-white hover:bg-[#162D26] shadow-sm"
+                >
+                  <Printer className="w-4 h-4" />
+                  印刷する（A4）
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsPopModalOpen(false)}
+                  className="p-2 rounded-xl text-gray-400 hover:text-gray-700"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* A4 POP本体（印刷用レイアウト） */}
+            <div className="p-6 sm:p-10 border sm:border-2 border-emerald-900/40 rounded-2xl space-y-6 font-sans text-center bg-gradient-to-b from-[#FAF8F5] to-white">
+              {/* ロゴとヘッダー */}
+              <div className="space-y-2 border-b-2 border-emerald-900 pb-5">
+                <span className="text-xs font-bold tracking-widest text-emerald-800 uppercase block">
+                  Oriental Medicine Self Check Guide
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900 tracking-wide">
+                  お待ちの間に、スマホで簡単２分
+                </h2>
+                <h1 className="text-xl sm:text-2xl font-serif font-bold text-emerald-900">
+                  東洋医学 体質セルフ診断 ＆ 五労チェッカー
+                </h1>
+                <p className="text-xs text-gray-600 max-w-lg mx-auto leading-relaxed pt-1">
+                  あなたの「気・血・水」のバランスの乱れや、デスクワーク・立ち仕事による五臓の疲弊度を今すぐチェックできます。
+                </p>
+              </div>
+
+              {/* 中央QRコード */}
+              <div className="py-2 space-y-3">
+                <div className="inline-block p-4 bg-white rounded-2xl border-2 border-emerald-800 shadow-md">
+                  <img
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fwww.haritaro.jp%2Fdiagnosis"
+                    alt="体質診断 QRコード"
+                    className="w-48 h-48 sm:w-56 sm:h-56 mx-auto"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm font-bold text-gray-800 flex items-center justify-center gap-1.5">
+                    <QrCode className="w-4 h-4 text-emerald-800" />
+                    <span>スマートフォンのカメラでQRコードを読み取ってください</span>
+                  </p>
+                  <p className="text-xs text-gray-500 font-mono">
+                    https://www.haritaro.jp/diagnosis
+                  </p>
+                </div>
+              </div>
+
+              {/* 診断でわかる2つのこと */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left max-w-xl mx-auto pt-2">
+                <div className="p-3.5 rounded-xl bg-emerald-50/80 border border-emerald-200 space-y-1">
+                  <span className="text-xs font-bold text-emerald-900 block">
+                    ① 気血水 12問セルフ診断
+                  </span>
+                  <p className="text-[11px] text-gray-600 leading-relaxed">
+                    気虚・気滞・血虚・瘀血・水滞・陽虚の6タイプから、今の心身の傾きと特効ツボ・おすすめ食材を判定。
+                  </p>
+                </div>
+                <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200 space-y-1">
+                  <span className="text-xs font-bold text-amber-900 block">
+                    ② 現代職業病（五労）チェッカー
+                  </span>
+                  <p className="text-[11px] text-gray-600 leading-relaxed">
+                    長時間のPC作業（久視）や座りっぱなし（久坐）など、日頃の動作から疲弊している五臓をレーダーチャート化。
+                  </p>
+                </div>
+              </div>
+
+              {/* 施術者への提示アナウンス */}
+              <div className="p-3.5 rounded-xl bg-emerald-900 text-white text-xs font-bold tracking-wide shadow-sm max-w-xl mx-auto space-y-1">
+                <p className="text-sm">
+                  ★ 診断結果が出ましたら、問診時に担当の先生にお見せください
+                </p>
+                <p className="text-[11px] text-emerald-200 font-normal">
+                  診断結果をもとに、あなたの本日の体調に最も適したツボ・施術処方を組み立てます。
+                </p>
+              </div>
+
+              {/* フッタークレジット */}
+              <div className="pt-4 border-t border-gray-200 flex items-center justify-between text-[10px] text-gray-500">
+                <p>※登録不要・完全無料です。通信料はお客様負担となります。</p>
+                <p>提供: はり太郎の東洋医学 (haritaro.jp)</p>
               </div>
             </div>
           </div>

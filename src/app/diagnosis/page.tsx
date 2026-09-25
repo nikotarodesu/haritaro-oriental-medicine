@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { DIAGNOSIS_QUESTIONS, DIAGNOSIS_RESULTS } from "@/data/diagnosisData";
 import { DiagnosisResultType } from "@/types/oriental";
-import { Stethoscope, CheckCircle2, RotateCcw, Utensils, HeartPulse, Sparkles, ArrowRight, Activity, BookOpen, AlertCircle } from "lucide-react";
+import { Stethoscope, CheckCircle2, RotateCcw, Utensils, HeartPulse, Sparkles, ArrowRight, Activity, BookOpen, AlertCircle, Bookmark } from "lucide-react";
 import GorouWorkstyleChecker from "@/components/GorouWorkstyleChecker";
 
 export default function DiagnosisPage() {
@@ -339,6 +339,36 @@ export default function DiagnosisPage() {
                 className="px-4 py-2 rounded-xl bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#162E27] text-white dark:text-[#121920] text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm"
               >
                 <span>解説記事を読む</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            {/* 施術者・臨床向け マイノート連携バナー */}
+            <div className="bg-[#FCF4EB] dark:bg-[#251A10] p-4 rounded-xl border-2 border-[#F3DEC5] dark:border-[#4A321E] flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-[#B86924] text-white flex items-center justify-center shrink-0">
+                  <Bookmark className="w-5 h-5 fill-current" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
+                      【施術者の先生へ】この診断結果からマイノート（臨床録）を作成
+                    </span>
+                    <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#1E3D34] text-white">
+                      臨床連携
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-tight block">
+                    体質「{result.name}」と推奨ツボ（{result.advice.tsubo.join("・")}）を引き継いで、患者さんの施術録をすぐに記録できます。
+                  </span>
+                </div>
+              </div>
+              <Link
+                href={`/notes?new=1&constitution=${encodeURIComponent(result.name)}&points=${encodeURIComponent(result.advice.tsubo.join(","))}&complaint=${encodeURIComponent(result.symptoms.slice(0, 3).join("、"))}`}
+                className="px-4 py-2 rounded-xl bg-[#B86924] hover:bg-[#975319] text-white text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm whitespace-nowrap"
+              >
+                <Bookmark className="w-3.5 h-3.5 fill-current" />
+                <span>臨床ノートを作成</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
