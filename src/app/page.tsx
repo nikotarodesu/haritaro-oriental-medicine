@@ -16,75 +16,8 @@ import {
 import SeasonalBanner from "@/components/SeasonalBanner";
 import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
 import PrimeStudentCard from "@/components/PrimeStudentCard";
+import EightSystemsRoadmap from "@/components/EightSystemsRoadmap";
 import { isSubscriptionSalesEnabled } from "@/config/subscription";
-
-// 東洋医学8大体系（トップページ用・要点を絞った簡潔データ）
-const EIGHT_SYSTEMS = [
-  {
-    number: 1,
-    title: "第1章 陰陽論",
-    phase: "基礎理論",
-    tagColor: "bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5]",
-    purpose: "固定的な二元論を脱却し、変化・循環・消長転化の力学モデルを習得する",
-    lectureId: "lecture-yinyang-1"
-  },
-  {
-    number: 2,
-    title: "第2章 五行論",
-    phase: "基礎理論",
-    tagColor: "bg-[#2D5A46] dark:bg-[#3E7A60] text-[#FAF8F5]",
-    purpose: "木火土金水の生剋乗侮から多臓器連鎖病理を読み解く思考力を身につける",
-    lectureId: "lecture-wuxing-1"
-  },
-  {
-    number: 3,
-    title: "第3章 気血水理論",
-    phase: "基礎理論",
-    tagColor: "bg-[#B86924] dark:bg-[#9C5417] text-[#FAF8F5]",
-    purpose: "エネルギーと栄養・水液の代謝循環、虚損・鬱滞の破綻ドミノを解明する",
-    lectureId: "lecture-qiblood-1"
-  },
-  {
-    number: 4,
-    title: "第4章 生命機能論",
-    phase: "基礎理論",
-    tagColor: "bg-[#1E2D3D] dark:bg-[#344D66] text-[#FAF8F5]",
-    purpose: "固定した解剖部位ではなく、機能層（防御・代謝・生殖）として人体を捉える",
-    lectureId: "lecture-lifedynamics-1"
-  },
-  {
-    number: 5,
-    title: "第5章 病機論",
-    phase: "病機",
-    tagColor: "bg-[#A83629] dark:bg-[#85271D] text-[#FAF8F5]",
-    purpose: "邪気侵入と正気衰弱が引き起こす病理タイムラインと氷山モデルを解読する",
-    lectureId: "lecture-pathomechanism-1"
-  },
-  {
-    number: 6,
-    title: "第6章 診断論",
-    phase: "診断",
-    tagColor: "bg-[#4A3B69] dark:bg-[#5C4B7F] text-[#FAF8F5]",
-    purpose: "安全確認・四診の客観化から八綱・気血水・臓腑経絡を導き、検証可能な診断記録を統合する",
-    lectureId: "lecture-diagnosis-1"
-  },
-  {
-    number: 7,
-    title: "第7章 治法論",
-    phase: "治法",
-    tagColor: "bg-[#285A52] dark:bg-[#3B7A70] text-[#FAF8F5]",
-    purpose: "補瀉寒熱・本標優先・臓腑経絡配穴から刺激量設計、治療計画書までを体系化する",
-    lectureId: "lecture-treatment-1"
-  },
-  {
-    number: 8,
-    title: "第8章 実践論",
-    phase: "実践",
-    tagColor: "bg-[#1E2D3D] dark:bg-[#2A3E54] text-[#FAF8F5]",
-    purpose: "初診トリアージから弁証、日常語での説明合意、反応評価、治療終了までを動的ループとして運用する",
-    lectureId: "lecture-practice-1"
-  }
-];
 
 export default function HomePage() {
   const subscriptionActive = isSubscriptionSalesEnabled();
@@ -227,62 +160,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. 東洋医学8大体系の全体像（章一覧と目的のみ。細かなタグ列挙は省略） */}
-      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 space-y-6">
-        <div className="text-center max-w-3xl mx-auto space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-            東洋医学8大体系の全体像
-          </h2>
-          <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-            基礎理論から病理、診断、治法、臨床実践へ。一貫した思考プロセスとして構築されたカリキュラムです。
-          </p>
-        </div>
+      {/* 4. 東洋医学8大体系のロードマップ（コンパクトなステップUI） */}
+      <EightSystemsRoadmap />
 
-        {/* 8大体系カード一覧（タグ列挙を省き、章名と習得目的に集中） */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          {EIGHT_SYSTEMS.map((system) => (
-            <Link
-              key={system.number}
-              href={`/curriculum?lecture=${system.lectureId}`}
-              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] p-4 shadow-2xs hover:shadow-sm transition-all flex flex-col justify-between group"
-            >
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded ${system.tagColor}`}>
-                    体系 0{system.number}
-                  </span>
-                  <span className="text-xs font-semibold text-[#737C77] dark:text-[#8899A6]">
-                    {system.phase}
-                  </span>
-                </div>
-
-                <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors">
-                  {system.title}
-                </h3>
-
-                <p className="text-xs sm:text-sm text-[#4A534F] dark:text-[#A8B8C4] leading-relaxed">
-                  {system.purpose}
-                </p>
-              </div>
-
-              <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E]">
-                <span>章の講義一覧を見る</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        <div className="text-center pt-1">
-          <Link
-            href="/curriculum"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#FAF8F5] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E] font-bold text-sm transition-all"
-          >
-            <span>8大体系カリキュラム（公開71レッスン）を開く</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </section>
 
       {/* 5. 新着・更新情報 */}
       <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
