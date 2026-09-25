@@ -90,8 +90,8 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
           setPatientNotes(parsedNotes);
         }
       } else {
-        // 初回のみサンプルノートをセット
-        setPatientNotes(SAMPLE_PATIENT_NOTES);
+        // 初回は空配列（見本はプレビュー専用で閲覧可能にし、保存枠の不要な消費を防止）
+        setPatientNotes([]);
       }
     } catch (e) {
       console.error("Failed to load clinical notes from localStorage", e);
