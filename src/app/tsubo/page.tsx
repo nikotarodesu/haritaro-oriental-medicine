@@ -303,96 +303,17 @@ function TsuboPageContent() {
   return (
     <div className="space-y-8 sm:space-y-12">
       
-      {/* 1. ページ名、短い説明、収録状況 */}
-      <section className="text-center space-y-3 pt-2 sm:pt-4">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold tracking-wider">
-          <Layers className="w-3.5 h-3.5" />
-          <span>WHO Standard 361 Acupoints Database</span>
-        </div>
-        <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
+      {/* 1. ページ見出し（コンパクト化：検索欄を最優先） */}
+      <section className="text-center space-y-2 pt-1 sm:pt-2 max-w-3xl mx-auto">
+        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
           十四経脈・経穴図鑑
         </h1>
-        <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-2xl mx-auto">
-          東洋医学の経絡流注・骨性目印から、浅深断面解剖、臨床配穴、EBMエビデンスまで網羅した鍼灸学習データベースです。
+        <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+          WHO標準361穴の取穴部位・断面解剖・主治適応症・臨床配穴を即座に検索できます。
         </p>
-
-        {/* 収録状況ステータスバー */}
-        <div className="flex flex-wrap items-center justify-center gap-3 pt-1 text-xs">
-          <span className="px-3 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#15202B] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#333835] dark:text-[#C5D2DB]">
-            WHO標準経穴：<strong className="font-mono text-[#1E3D34] dark:text-[#74BA9E]">{allPoints.length}</strong> 穴
-          </span>
-          <span className="px-3 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#281E15] border border-[#F2DEB0] dark:border-[#42381C] text-[#B86924] dark:text-[#E6C387]">
-            詳細知見・先行公開：<strong className="font-mono">{publishedCount}</strong> 穴
-          </span>
-          {savedTsuboMemos.length > 0 && (
-            <span className="px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#74BA9E] font-medium">
-              学習ノート保存：<strong className="font-mono">{savedTsuboMemos.length}</strong> 穴
-            </span>
-          )}
-        </div>
       </section>
 
-      {/* 2. 「辞典で調べる／2穴を比べる／学習・復習／奇経八脈」コンパクトナビゲーション */}
-      <section className="max-w-4xl mx-auto">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
-          <div className="p-2.5 sm:p-3 rounded-2xl bg-[#1E3D34] dark:bg-[#2B6958] text-white flex items-center justify-between shadow-xs">
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
-                <Search className="w-3.5 h-3.5" />
-              </div>
-              <span className="text-xs font-bold truncate">1. 経穴図鑑</span>
-            </div>
-            <span className="text-[11px] bg-white/20 px-1.5 py-0.5 rounded-full font-mono shrink-0 hidden sm:inline-block">361穴</span>
-          </div>
-
-          <Link
-            href="/tsubo/compare"
-            className="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all flex items-center justify-between group shadow-xs"
-          >
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0">
-                <GitCompare className="w-3.5 h-3.5" />
-              </div>
-              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] truncate">
-                2. 2穴比較
-              </span>
-            </div>
-            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform shrink-0" />
-          </Link>
-
-          <Link
-            href="/tsubo/practice"
-            className="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all flex items-center justify-between group shadow-xs"
-          >
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="w-7 h-7 rounded-lg bg-[#FCF4EB] dark:bg-[#281E15] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0">
-                <BookOpen className="w-3.5 h-3.5" />
-              </div>
-              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] truncate">
-                3. 今日の復習
-              </span>
-            </div>
-            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform shrink-0" />
-          </Link>
-
-          <Link
-            href="/kikei"
-            className="p-2.5 sm:p-3 rounded-2xl bg-gradient-to-r from-[#FCF4EB] to-[#FAF8F5] dark:from-[#261B12] dark:to-[#17212A] border border-[#F2DEB0] dark:border-[#4D361F] hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all flex items-center justify-between group shadow-xs"
-          >
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="w-7 h-7 rounded-lg bg-[#B86924] dark:bg-[#D48239] text-white flex items-center justify-center shrink-0 shadow-2xs">
-                <GitCommit className="w-3.5 h-3.5" />
-              </div>
-              <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] group-hover:underline truncate">
-                4. 奇経八脈
-              </span>
-            </div>
-            <ArrowRight className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387] group-hover:translate-x-0.5 transition-transform shrink-0" />
-          </Link>
-        </div>
-      </section>
-
-      {/* 3. 大型検索バー（正規化対応） */}
+      {/* 2. 大型検索バー（最優先配置） */}
       <section className="max-w-4xl mx-auto space-y-3">
         <div className="relative">
           <Search className="w-5 h-5 text-[#737C77] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -448,9 +369,59 @@ function TsuboPageContent() {
             onClick={() => setShowBodyMap(!showBodyMap)}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#FAF8F5] dark:hover:bg-[#1f2c38] transition-colors shadow-xs"
           >
-            <Layers className="w-3.5 h-3.5 text-[#737C77]" />
-            <span>{showBodyMap ? "人体図・経絡フィルターを閉じる ▲" : "人体図・経絡フィルターで探す ▼"}</span>
+            <Compass className="w-3.5 h-3.5" />
+            <span>{showBodyMap ? "人体図・詳細条件を閉じる ▲" : "人体図・部位から探す ▼"}</span>
           </button>
+        </div>
+      </section>
+
+      {/* 3. 「2穴比較／今日の復習／奇経八脈」コンパクトナビゲーション */}
+      <section className="max-w-4xl mx-auto">
+        <div className="grid grid-cols-3 gap-2 sm:gap-2.5 text-xs">
+          <Link
+            href="/tsubo/compare"
+            className="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all flex items-center justify-between group shadow-xs"
+          >
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0">
+                <GitCompare className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] truncate">
+                2穴を比べる
+              </span>
+            </div>
+            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform shrink-0" />
+          </Link>
+
+          <Link
+            href="/tsubo/practice"
+            className="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all flex items-center justify-between group shadow-xs"
+          >
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-[#FCF4EB] dark:bg-[#281E15] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0">
+                <BookOpen className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] truncate">
+                今日の復習
+              </span>
+            </div>
+            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform shrink-0" />
+          </Link>
+
+          <Link
+            href="/kikei"
+            className="p-2.5 sm:p-3 rounded-2xl bg-gradient-to-r from-[#FCF4EB] to-[#FAF8F5] dark:from-[#261B12] dark:to-[#17212A] border border-[#F2DEB0] dark:border-[#4D361F] hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all flex items-center justify-between group shadow-xs"
+          >
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-[#B86924] dark:bg-[#D48239] text-white flex items-center justify-center shrink-0 shadow-2xs">
+                <GitCommit className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] group-hover:underline truncate">
+                奇経八脈
+              </span>
+            </div>
+            <ArrowRight className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387] group-hover:translate-x-0.5 transition-transform shrink-0" />
+          </Link>
         </div>
       </section>
 

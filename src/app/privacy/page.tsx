@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ShieldCheck, Lock, Eye, AlertCircle, ArrowLeft, Mail, CreditCard, UserCheck } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "プライバシーポリシー・免責事項 | はり太郎の東洋医学",
+  title: "プライバシーポリシー・免責事項",
   description:
     "「はり太郎の東洋医学」のプライバシーポリシー、免責事項、会員情報・決済情報の保護、アフィリエイトプログラム、著作権方針についてご案内します。",
 };

@@ -19,12 +19,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!clinicalCase) {
     return {
-      title: "症例が見つかりません | はり太郎の東洋医学",
+      title: "症例が見つかりません",
       description: "指定された症例演習データは存在しないか、移動した可能性があります。",
     };
   }
 
-  const title = `症例${clinicalCase.caseNumber}: ${clinicalCase.title}｜臨床症例演習 | はり太郎の東洋医学`;
+  const title = `症例${clinicalCase.caseNumber}: ${clinicalCase.title}｜臨床症例演習`;
   const description = `${clinicalCase.patient.chiefComplaint}。${clinicalCase.subTitle}。四診合参から弁証・治法・処方配穴を導く臨床演習。`;
 
   return {

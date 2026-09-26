@@ -52,12 +52,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!point) {
     return {
-      title: "経穴が見つかりません | はり太郎の東洋医学",
+      title: "経穴が見つかりません",
       description: "指定された経穴コードは存在しないか、準備中です。",
     };
   }
 
-  const title = `${point.name}（${point.code}）の場所・取穴・解剖｜はり太郎の経穴辞典`;
+  const title = `${point.name}（${point.code}）の場所・取穴・解剖`;
   const description = `${point.name}（${point.code} / ${point.meridian}）。${point.locationSimple} WHO標準取穴部位、浅深連動の解剖断面構造、主治適応症、臨床応用・運針のポイントを完全網羅。`;
 
   return {

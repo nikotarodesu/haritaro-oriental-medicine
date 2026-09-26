@@ -192,12 +192,12 @@ export default function CasesIndexPage() {
                   {c.isFreeTrial ? (
                     <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243] flex items-center gap-1">
                       <Sparkles className="w-3.5 h-3.5" />
-                      <span>無料公開中（全3例）</span>
+                      <span>無料公開</span>
                     </span>
                   ) : (
                     <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#FCF4EB] text-[#B86924] dark:bg-[#2A2016] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4D331F] flex items-center gap-1">
                       <Crown className="w-3.5 h-3.5" />
-                      <span>プレミアム限定（17例）</span>
+                      <span>プレミアム</span>
                     </span>
                   )}
                 </div>
@@ -226,18 +226,18 @@ export default function CasesIndexPage() {
                 
                 {c.isFreeTrial ? (
                   <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                    <span>今すぐ解く（無料）</span>
+                    <span>演習を始める</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 ) : isPremium ? (
                   <span className="font-bold text-[#B86924] dark:text-[#E6C387] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                    <span>完全解説を演習する</span>
+                    <span>演習を始める</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 ) : (
                   <span className="font-bold text-[#B86924] dark:text-[#E6C387] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                     <Crown className="w-3.5 h-3.5" />
-                    <span>プレミアムで完全解説を見る</span>
+                    <span>演習する</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 )}

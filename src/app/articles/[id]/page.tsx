@@ -36,12 +36,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!article) {
     return {
-      title: "記事が見つかりません | はり太郎の東洋医学",
+      title: "記事が見つかりません",
       description: "指定された記事は存在しないか、移動した可能性があります。",
     };
   }
 
-  const title = `${article.title}｜東洋医学学術アーカイブ | はり太郎の東洋医学`;
+  const title = `${article.title}｜東洋医学学術アーカイブ`;
   const description = `${article.summary}（読了約${article.readTime} / 執筆・監修：${article.author.name}）`;
 
   return {

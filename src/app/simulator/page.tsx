@@ -3,7 +3,7 @@ import Link from "next/link";
 import SimulatorHub from "@/components/SimulatorHub";
 
 export const metadata: Metadata = {
-  title: "臨床弁証シミュレーター（八綱・気血水・臓腑経絡） | はり太郎の東洋医学",
+  title: "臨床弁証シミュレーター（八綱・気血水・臓腑経絡）",
   description:
     "東洋医学の臨床現場に基づく実践ツール。八綱（深浅・勢い）➜ 気血水（動態）➜ 臓腑経絡（局在病位）の3段階連動で一文の証と最小構成のペアツボを瞬時に導き出します。",
 };

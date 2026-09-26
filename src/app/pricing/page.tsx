@@ -597,61 +597,78 @@ export default function PricingPage() {
       </div>
 
       {/* ======================================================== */}
-      {/* 4. 同じプランで使える学習機能 */}
+      {/* 4. 無料とプレミアムの3つの主な違い */}
       {/* ======================================================== */}
-      <div className="space-y-4 max-w-4xl mx-auto p-6 sm:p-8 rounded-3xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A]">
-        <div className="space-y-1">
+      <div className="space-y-6 max-w-4xl mx-auto pt-2">
+        <div className="text-center space-y-1">
           <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-            <GraduationCap className="w-4 h-4" />
-            <span>同じプランで利用可能</span>
+            <Sparkles className="w-4 h-4" />
+            <span>プランの違い</span>
           </div>
-          <h3 className="text-lg sm:text-xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-            学びを深める機能も、このプランに。
-          </h3>
-          <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-            臨床症例演習（全20例）・3穴比較・配穴練習など、臨床思考を深める学習機能も同じプレミアムプランでご利用いただけます。
+          <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+            無料とプレミアムの3つの主な違い
+          </h2>
+          <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#8899A6]">
+            基礎知識の学習（カリキュラム・経穴辞典・弁証シミュレーター）は無料。日々の臨床蓄積と深い実践演習をプレミアムで提供します。
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs">
-          <div className="p-3.5 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
-            <span className="font-bold text-xs text-[#232826] dark:text-[#FAF8F5] block">
-              臨床症例演習（全20症例）
-            </span>
-            <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-              段階的な問診開示から弁証・配穴を導く本格臨床トレーニング。
-            </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs sm:text-sm">
+          {/* 違い1: 臨床記録 */}
+          <div className="p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2.5 flex flex-col justify-between">
+            <div className="space-y-2">
+              <span className="w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center font-bold text-xs">
+                1
+              </span>
+              <h3 className="font-serif font-bold text-base text-[#232826] dark:text-[#FAF8F5]">
+                マイノートの保存枠
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
+                無料版はノート3件・配穴20件。プレミアムなら<strong className="text-[#1E3D34] dark:text-[#74BA9E]">ノート500件・配穴1,000件</strong>まで拡張され、日々の臨床を継続して蓄積できます。
+              </p>
+            </div>
+            <div className="pt-2 border-t border-[#E8E1D1] dark:border-[#22303D] text-[11px] text-[#737C77] dark:text-[#8899A6]">
+              養生シート印刷・手元バックアップ対応
+            </div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
-            <span className="font-bold text-xs text-[#232826] dark:text-[#FAF8F5] block">
-              経穴の比較（最大3穴）
-            </span>
-            <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-              似た働きを持つツボの部位・深さ・五行・臨床応用を並べて確認。
-            </p>
+          {/* 違い2: 症例演習 */}
+          <div className="p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2.5 flex flex-col justify-between">
+            <div className="space-y-2">
+              <span className="w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center font-bold text-xs">
+                2
+              </span>
+              <h3 className="font-serif font-bold text-base text-[#232826] dark:text-[#FAF8F5]">
+                臨床症例演習 全20例
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
+                無料体験の3症例に加え、<strong className="text-[#1E3D34] dark:text-[#74BA9E]">全20症例</strong>の問診開示・弁証推論・処方配穴プロセスを実践演習できます。
+              </p>
+            </div>
+            <div className="pt-2 border-t border-[#E8E1D1] dark:border-[#22303D] text-[11px] text-[#737C77] dark:text-[#8899A6]">
+              <Link href="/cases" className="text-[#1E3D34] dark:text-[#74BA9E] underline">
+                無料3症例を試す →
+              </Link>
+            </div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
-            <span className="font-bold text-xs text-[#232826] dark:text-[#FAF8F5] block">
-              奇経八脈の全流注図
-            </span>
-            <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-              任脈・督脈に加え、全8脈の流注図・八脈交会穴理論を網羅。
-            </p>
+          {/* 違い3: 発展学習ツール */}
+          <div className="p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2.5 flex flex-col justify-between">
+            <div className="space-y-2">
+              <span className="w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center font-bold text-xs">
+                3
+              </span>
+              <h3 className="font-serif font-bold text-base text-[#232826] dark:text-[#FAF8F5]">
+                発展・比較ツールの解放
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
+                ツボの鑑別を深める<strong className="text-[#1E3D34] dark:text-[#74BA9E]">3穴同時比較</strong>や、<strong className="text-[#1E3D34] dark:text-[#74BA9E]">奇経八脈の全流注図（全8脈）</strong>、要穴特訓など思考深化ツールが使い放題になります。
+              </p>
+            </div>
+            <div className="pt-2 border-t border-[#E8E1D1] dark:border-[#22303D] text-[11px] text-[#737C77] dark:text-[#8899A6]">
+              学生・臨床家双方の学びを支援
+            </div>
           </div>
-        </div>
-
-        <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-[#E8E1D1] dark:border-[#22303D] text-xs">
-          <span className="text-[#737C77] dark:text-[#8899A6]">
-            ※学生の方など「症例から考え方を練習したい方」にも適しています。
-          </span>
-          <Link
-            href="/cases"
-            className="text-[#1E3D34] dark:text-[#74BA9E] font-bold hover:underline shrink-0"
-          >
-            無料体験症例（3例）を試す →
-          </Link>
         </div>
       </div>
 

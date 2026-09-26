@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Scale, ArrowLeft, ShieldCheck, Mail, FileText, CheckCircle2 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "特定商取引法に基づく表記 | はり太郎の東洋医学",
+  title: "特定商取引法に基づく表記",
   description:
     "「はり太郎の東洋医学」における特定商取引法（通信販売）に基づく法定記載事項をご案内します。",
 };

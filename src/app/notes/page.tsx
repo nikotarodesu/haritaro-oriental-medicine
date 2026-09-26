@@ -435,46 +435,6 @@ export default function MyNotesPage() {
         )}
       </div>
 
-      {/* ======================================================== */}
-      {/* 2. 初回利用時（記録0件）の目立つ2つの入口 */}
-      {/* ======================================================== */}
-      {patientNotes.length === 0 && (
-        <div className="p-6 sm:p-8 rounded-2xl border-2 border-[#1E3D34]/30 dark:border-[#74BA9E]/40 bg-gradient-to-br from-[#FAF8F5] to-[#F5EFE6] dark:from-[#17212A] dark:to-[#121920] space-y-4">
-          <div className="space-y-1">
-            <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-              初めてマイノートをご利用の方へ
-            </h2>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC]">
-              完成した見本を確認するか、すぐに1件目の臨床ノートを作成できます。
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
-            <button
-              type="button"
-              onClick={() => setIsSamplePreviewOpen(true)}
-              className="w-full sm:w-auto px-5 py-3 rounded-xl bg-white dark:bg-[#1A2530] border-2 border-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E] text-sm font-bold shadow-xs hover:bg-[#EBF3EF] transition-all flex items-center justify-center gap-2"
-            >
-              <Eye className="w-4 h-4" />
-              <span>完成したノートを見る（見本）</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={openNewNoteModal}
-              className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white text-sm font-bold shadow-md transition-all flex items-center justify-center gap-2"
-            >
-              <Plus className="w-4 h-4" />
-              <span>臨床ノートを作る</span>
-            </button>
-          </div>
-
-          <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-            ※無料枠として3件のノートと20件の配穴を保存可能。見本を見るだけで保存枠が減ることはありません。
-          </p>
-        </div>
-      )}
-
       {/* 無料枠上限到達時の案内 */}
       {isPatientNoteLimitReached && (
         <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-xs sm:text-sm space-y-1">
@@ -561,47 +521,50 @@ export default function MyNotesPage() {
           </div>
         </div>
 
-        {/* 検索バー */}
-        <div className="flex items-center gap-3">
-          <div className="relative flex-1">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#737C77]" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={activeTab === "notes" ? "患者番号・主訴・経穴で検索..." : "配穴名・経穴・適応症で検索..."}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#D8CFC0] dark:border-[#384C5E] text-sm text-[#232826] dark:text-[#FAF8F5] focus:outline-hidden focus:border-[#1E3D34]"
-            />
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                <X className="w-4 h-4" />
-              </button>
+        {/* 検索バー（データが存在する場合のみ表示） */}
+        {((activeTab === "notes" && patientNotes.length > 0) ||
+          (activeTab === "stock" && memos.length > 0)) && (
+          <div className="flex items-center gap-3">
+            <div className="relative flex-1">
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#737C77]" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={activeTab === "notes" ? "患者番号・主訴・経穴で検索..." : "配穴名・経穴・適応症で検索..."}
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#D8CFC0] dark:border-[#384C5E] text-sm text-[#232826] dark:text-[#FAF8F5] focus:outline-hidden focus:border-[#1E3D34]"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+
+            {activeTab === "stock" && (
+              <div className="flex items-center gap-1">
+                {["all", "木", "火", "土", "金", "水"].map((tag) => (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => setSelectedTag(tag)}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                      selectedTag === tag
+                        ? "bg-[#B86924] text-white"
+                        : "bg-white dark:bg-[#1A2530] text-[#737C77] border border-[#D8CFC0] dark:border-[#384C5E]"
+                    }`}
+                  >
+                    {tag === "all" ? "すべて" : tag}
+                  </button>
+                ))}
+              </div>
             )}
           </div>
-
-          {activeTab === "stock" && (
-            <div className="flex items-center gap-1">
-              {["all", "木", "火", "土", "金", "水"].map((tag) => (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => setSelectedTag(tag)}
-                  className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    selectedTag === tag
-                      ? "bg-[#B86924] text-white"
-                      : "bg-white dark:bg-[#1A2530] text-[#737C77] border border-[#D8CFC0] dark:border-[#384C5E]"
-                  }`}
-                >
-                  {tag === "all" ? "すべて" : tag}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        )}
 
         {/* ======================================================== */}
         {/* 4. タブ1: 臨床ノート一覧 */}
@@ -609,33 +572,66 @@ export default function MyNotesPage() {
         {activeTab === "notes" && (
           <div className="space-y-4">
             {filteredNotes.length === 0 ? (
-              <div className="p-8 sm:p-12 text-center rounded-2xl border-2 border-dashed border-[#D8CFC0] dark:border-[#2A3B4A] bg-white/40 dark:bg-[#141C24]/40 space-y-3">
-                <FileText className="w-10 h-10 text-[#737C77] mx-auto opacity-50" />
-                <h3 className="text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  {searchQuery ? "条件に一致する臨床ノートがありません" : "まだ臨床ノートがありません"}
-                </h3>
-                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#8899A6] max-w-md mx-auto">
-                  {searchQuery
-                    ? "検索キーワードを変更してお試しください。"
-                    : "完成見本を参考にしたり、「臨床ノートを新規作成」から最初の1件を記録してみましょう。"}
-                </p>
-                <div className="flex items-center justify-center gap-3 pt-2">
+              patientNotes.length === 0 ? (
+                /* 初回0件時のわかりやすい案内カード（ボタンを1組に集約） */
+                <div className="p-8 sm:p-12 text-center rounded-2xl border-2 border-[#1E3D34]/25 dark:border-[#74BA9E]/30 bg-gradient-to-br from-[#FAF8F5] to-[#F5EFE6] dark:from-[#17212A] dark:to-[#121920] space-y-5">
+                  <div className="w-12 h-12 rounded-2xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center mx-auto shadow-xs">
+                    <FileText className="w-6 h-6" />
+                  </div>
+                  <div className="space-y-1.5 max-w-md mx-auto">
+                    <h3 className="text-lg sm:text-xl font-bold font-serif text-[#232826] dark:text-[#FAF8F5]">
+                      初めてマイノートをご利用の方へ
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                      臨床での弁証・配穴・施術の反応をすばやく記録。患者さんへ手渡す「養生シート」もワンクリックで作成できます。
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsSamplePreviewOpen(true)}
+                      className="w-full sm:w-auto px-5 py-3 rounded-xl bg-white dark:bg-[#1A2530] border-2 border-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E] text-sm font-bold shadow-xs hover:bg-[#EBF3EF] transition-all flex items-center justify-center gap-2"
+                    >
+                      <Eye className="w-4 h-4" />
+                      <span>完成したノートを見る（見本）</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={openNewNoteModal}
+                      disabled={isPatientNoteLimitReached}
+                      className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white text-sm font-bold shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>臨床ノートを新規作成</span>
+                    </button>
+                  </div>
+
+                  <div className="pt-3 border-t border-[#E8E1D1] dark:border-[#243340] text-[11px] text-[#737C77] dark:text-[#8899A6] space-y-1 max-w-md mx-auto">
+                    <p>※ 無料枠として3件のノートと20件の配穴を保存可能。見本を見るだけで保存枠が減ることはありません。</p>
+                    <p className="text-[#1E3D34] dark:text-[#74BA9E] font-medium">※ 記録はお使いの端末・ブラウザ内に保存されます。サーバーへ送信されないため安心です。</p>
+                  </div>
+                </div>
+              ) : (
+                /* 検索で見つからない場合 */
+                <div className="p-8 sm:p-12 text-center rounded-2xl border-2 border-dashed border-[#D8CFC0] dark:border-[#2A3B4A] bg-white/40 dark:bg-[#141C24]/40 space-y-3">
+                  <FileText className="w-10 h-10 text-[#737C77] mx-auto opacity-50" />
+                  <h3 className="text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
+                    条件に一致する臨床ノートがありません
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#8899A6] max-w-md mx-auto">
+                    検索キーワードを変更してお試しください。
+                  </p>
                   <button
                     type="button"
-                    onClick={() => setIsSamplePreviewOpen(true)}
-                    className="px-4 py-2 rounded-xl text-xs font-bold border border-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E] bg-white dark:bg-[#10171F] hover:bg-[#EBF3EF]"
+                    onClick={() => setSearchQuery("")}
+                    className="px-4 py-2 rounded-xl text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] hover:opacity-80"
                   >
-                    完成したノートを見る（見本）
-                  </button>
-                  <button
-                    type="button"
-                    onClick={openNewNoteModal}
-                    className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#1E3D34] hover:bg-[#162D26]"
-                  >
-                    新規作成する
+                    検索条件をクリア
                   </button>
                 </div>
-              </div>
+              )
             ) : (
               <div className="space-y-3">
                 {filteredNotes.map((note) => (

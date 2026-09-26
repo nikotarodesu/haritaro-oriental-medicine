@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     canonical: "/curriculum",
   },
   openGraph: {
-    title: "東洋医学カリキュラム｜基礎理論から臨床実践まで体系的に学ぶ | はり太郎の東洋医学",
+    title: "東洋医学カリキュラム｜基礎理論から臨床実践まで体系的に学ぶ",
     description: "陰陽五行から臨床弁証まで、東洋医学8大体系を体系的レクチャーとクイズで学習。",
     url: "https://www.haritaro.jp/curriculum",
   },

@@ -23,7 +23,6 @@ export default function Footer() {
     e.stopPropagation();
 
     const now = Date.now();
-    // 5秒以内のクリックタイムスタンプのみを保持
     const recentClicks = [...clickTimestampsRef.current, now].filter((t) => now - t <= 5000);
     clickTimestampsRef.current = recentClicks;
 
@@ -38,43 +37,49 @@ export default function Footer() {
       } else {
         setDemoRole("admin");
         setToast({
-          message: "管理者モードに切り替えました。プレミアム限定記事・全20症例・シミュレーターを完全解放しました！",
+          message: "管理者モードに切り替えました。プレミアム限定機能・全症例・シミュレーターを解放しました！",
           type: "admin_on",
         });
       }
     }
   }, [user?.role, setDemoRole]);
+
   return (
     <footer className="bg-[#F2EDE4] dark:bg-[#131A21] border-t border-[#E3DBCB] dark:border-[#22303D] text-[#59615D] dark:text-[#96A6B2] text-sm mt-auto transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-10 sm:py-14">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-10">
           {/* サイト概要 */}
-          <div className="md:col-span-1 space-y-4">
+          <div className="md:col-span-1 space-y-3">
             <Link href="/" className="inline-block">
               <span className="font-serif text-xl font-bold text-[#232826] dark:text-[#E6EFEA] tracking-wide hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
                 はり太郎の東洋医学
               </span>
             </Link>
             <p className="text-xs sm:text-sm leading-relaxed text-[#59615D] dark:text-[#96A6B2]">
-              数千年の臨床観察に裏打ちされた東洋医学の智慧を、最新の現代科学と解剖生理学の視点から体系化。「基礎理論から臨床実践までを体系化する東洋医学ポータル」として、わかりやすさと学術的深さを追求しています。
+              臨床観察に裏打ちされた東洋医学の智慧を体系化。「基礎理論から臨床実践までを体系化する東洋医学ポータル」として、わかりやすさと学術的根拠を追求しています。
             </p>
           </div>
 
-          {/* 一般向けガイド */}
+          {/* 一般向けセルフケア */}
           <div>
-            <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm sm:text-base tracking-wider mb-4 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5 flex items-center gap-1.5">
+            <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm sm:text-base tracking-wider mb-3.5 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5 flex items-center gap-1.5">
               <span>一般向けセルフケア</span>
             </h3>
             <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
-                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
-                  <span>お悩み・症状別 セルフケアガイド</span>
+                <Link href="/diagnosis" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                  <span>気血水 体質チェック</span>
                 </Link>
               </li>
               <li>
-                <Link href="/diagnosis" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] font-medium text-[#1E3D34] dark:text-[#E6C387] transition-colors flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-[#B86924] dark:text-[#E6C387]" />
-                  <span>気血水 体質セルフ診断</span>
+                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
+                  症状別セルフケアガイド
+                </Link>
+              </li>
+              <li>
+                <Link href="/diagnosis?tab=gorou" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
+                  五労チェッカー
                 </Link>
               </li>
             </ul>
@@ -82,75 +87,72 @@ export default function Footer() {
 
           {/* 専門家・学生向け */}
           <div>
-            <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm sm:text-base tracking-wider mb-4 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5">
+            <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm sm:text-base tracking-wider mb-3.5 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5">
               専門家・学生向け
             </h3>
             <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
+                <Link href="/curriculum" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
+                  東洋医学8大体系カリキュラム
+                </Link>
+              </li>
+              <li>
                 <Link href="/tsubo" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-                  十四経脈 経穴（ツボ）データベース
+                  経穴辞典（全361穴）
+                </Link>
+              </li>
+              <li>
+                <Link href="/cases" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
+                  臨床症例演習
+                </Link>
+              </li>
+              <li>
+                <Link href="/notes" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
+                  マイノート（臨床録・配穴集）
                 </Link>
               </li>
               <li>
                 <Link href="/articles" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-                  臨床知見・配穴の極意
-                </Link>
-              </li>
-              <li>
-                <Link href="/articles" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-                  最新神経科学・論文抄読
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-                  サイト理念・古典と科学の融合
+                  コラム・文献アーカイブ
                 </Link>
               </li>
               <li>
                 <Link href="/pricing" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1 font-semibold text-[#B86924] dark:text-[#E6C387]">
                   <Crown className="w-3.5 h-3.5" />
-                  <span>プレミアム会員プラン</span>
+                  <span>プレミアム・料金プラン</span>
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* サイトポリシー・運営情報 */}
+          {/* 案内・免責事項 */}
           <div>
-            <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm sm:text-base tracking-wider mb-4 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5">
+            <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm sm:text-base tracking-wider mb-3.5 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5">
               案内・免責
             </h3>
             <div className="space-y-3 text-xs sm:text-sm">
               <div className="flex items-start gap-2 text-[#737C77] dark:text-[#8899A6]">
                 <ShieldCheck className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
-                <div className="space-y-1.5 leading-normal">
-                  <p>
-                    当サイトの情報は健康増進と伝統医学の学術的理解を目的としており、医師による診断・治療に代わるものではありません。重篤な症状がある場合は速やかに医療機関を受診してください。
+                <div className="space-y-1 leading-normal">
+                  <p className="text-[11px] sm:text-xs">
+                    当サイトの情報は健康増進と伝統医学の学術的理解を目的としており、医師による診断・治療に代わるものではありません。
                   </p>
-                  <p className="text-xs text-[#88928D] dark:text-[#6E7D8A]">
+                  <p className="text-[10px] text-[#88928D] dark:text-[#6E7D8A]">
                     ※当サイトはAmazonアソシエイト・プログラムの参加者であり、適格販売により収入を得ています。
                   </p>
                 </div>
               </div>
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 pt-1">
                 <div>
-                  <Link href="/about" className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline inline-flex items-center gap-1">
+                  <Link href="/about" className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline inline-flex items-center gap-1 text-xs">
                     <span>サイト理念・はり太郎について</span>
                     <ArrowUpRight className="w-3 h-3" />
                   </Link>
                 </div>
                 <div>
-                  <Link href="/contact" className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline inline-flex items-center gap-1">
-                    <span>お問い合わせフォーム</span>
+                  <Link href="/contact" className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline inline-flex items-center gap-1 text-xs">
+                    <span>お問い合わせ</span>
                     <ArrowUpRight className="w-3 h-3" />
-                  </Link>
-                </div>
-                <div className="pt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-[#737C77] dark:text-[#8899A6]">
-                  <Link href="/terms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] underline">
-                    利用規約
-                  </Link>
-                  <Link href="/tokushoho" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] underline">
-                    特定商取引法表記
                   </Link>
                 </div>
               </div>
@@ -158,7 +160,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-[#E3DBCB] dark:border-[#22303D] mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#737C77] dark:text-[#8899A6]">
+        {/* 最下部コピーライトと各種規約・法定リンク（重複を解消） */}
+        <div className="border-t border-[#E3DBCB] dark:border-[#22303D] mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#737C77] dark:text-[#8899A6]">
           <p className="flex items-center gap-1.5 flex-wrap">
             <button
               type="button"

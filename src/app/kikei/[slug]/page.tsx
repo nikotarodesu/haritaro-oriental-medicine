@@ -20,12 +20,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!vessel) {
     return {
-      title: "奇経八脈が見つかりません | はり太郎",
+      title: "奇経八脈が見つかりません",
     };
   }
 
   return {
-    title: `${vessel.name}（${vessel.reading}）の流注・八脈交会穴・主治 | はり太郎の東洋医学`,
+    title: `${vessel.name}（${vessel.reading}）の流注・八脈交会穴・主治`,
     description: `${vessel.name}の流注経路、八脈交会穴（${vessel.masterPoint.name}×${vessel.couplePoint.name}）、主治病証、古典（難経・素問）の条文解説。`,
   };
 }

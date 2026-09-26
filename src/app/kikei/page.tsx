@@ -17,7 +17,7 @@ import {
 import { KIKEI_VESSELS, HACHIMYAKU_PAIRS } from "@/data/kikeiData";
 
 export const metadata: Metadata = {
-  title: "奇経八脈（きけいはちみゃく）詳説・八脈交会穴 | はり太郎の東洋医学",
+  title: "奇経八脈（きけいはちみゃく）詳説・八脈交会穴",
   description: "正経十二経脈の気血の過不足を調整する「奇経八脈（督脈・任脈・衝脈・帯脈・陰陽蹻脈・陰陽維脈）」と、臨床で著効を示す八脈交会穴4対の流注・主治病証・配穴を完全体系化。",
 };
 
@@ -50,74 +50,7 @@ export default function KikeiIndexPage() {
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14 space-y-12">
         
-        {/* セクション 1: 八脈交会穴（4大黄金ペア） */}
-        <div className="space-y-6">
-          <div className="flex flex-wrap items-end justify-between gap-2 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
-            <div>
-              <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider block">
-                Clinical Master Pairs
-              </span>
-              <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                八脈交会穴（八法交会穴）4対の配穴
-              </h2>
-            </div>
-            <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
-              四肢の8要穴で奇経八脈を駆動する臨床配穴法
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-            {HACHIMYAKU_PAIRS.map(pair => (
-              <div 
-                key={pair.id}
-                className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-6 shadow-sm hover:border-[#B86924] transition-all space-y-4 flex flex-col justify-between"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]">
-                      適応領域: {pair.targetArea}
-                    </span>
-                    <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                      {pair.master1.vessel} ✕ {pair.master2.vessel}
-                    </span>
-                  </div>
-
-                  <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
-                    {pair.name}
-                  </h3>
-
-                  {/* 穴位バッジ */}
-                  <div className="grid grid-cols-2 gap-2 pt-1">
-                    <div className="bg-[#FAF8F5] dark:bg-[#121920] p-2.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                      <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">{pair.master1.vessel}に通ず</span>
-                      <span className="font-bold text-sm text-[#1E3D34] dark:text-[#74BA9E]">{pair.master1.point}</span>
-                      <span className="text-[10px] text-[#737C77] ml-1">({pair.master1.meridian})</span>
-                    </div>
-                    <div className="bg-[#FAF8F5] dark:bg-[#121920] p-2.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                      <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">{pair.master2.vessel}に通ず</span>
-                      <span className="font-bold text-sm text-[#B86924] dark:text-[#E6C387]">{pair.master2.point}</span>
-                      <span className="text-[10px] text-[#737C77] ml-1">({pair.master2.meridian})</span>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-                    {pair.clinicalSignificance}
-                  </p>
-                </div>
-
-                <div className="pt-2 border-t border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 flex flex-wrap gap-1">
-                  {pair.indications.map((ind, i) => (
-                    <span key={i} className="text-[11px] px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#151D25] text-[#737C77] dark:text-[#8899A6]">
-                      {ind}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* セクション 2: 全8脈の体系別カード */}
+        {/* セクション 1: 全8脈の体系別カード */}
         <div className="space-y-6">
           <div className="flex flex-wrap items-end justify-between gap-2 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
             <div>
@@ -200,6 +133,73 @@ export default function KikeiIndexPage() {
                   <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                 </div>
               </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* セクション 2: 八脈交会穴（4大黄金ペア） */}
+        <div className="space-y-6">
+          <div className="flex flex-wrap items-end justify-between gap-2 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
+            <div>
+              <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider block">
+                Clinical Master Pairs
+              </span>
+              <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+                八脈交会穴（八法交会穴）4対の配穴
+              </h2>
+            </div>
+            <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
+              四肢の8要穴で奇経八脈を駆動する臨床配穴法
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            {HACHIMYAKU_PAIRS.map(pair => (
+              <div 
+                key={pair.id}
+                className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-6 shadow-sm hover:border-[#B86924] transition-all space-y-4 flex flex-col justify-between"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]">
+                      適応領域: {pair.targetArea}
+                    </span>
+                    <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                      {pair.master1.vessel} ✕ {pair.master2.vessel}
+                    </span>
+                  </div>
+
+                  <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+                    {pair.name}
+                  </h3>
+
+                  {/* 穴位バッジ */}
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <div className="bg-[#FAF8F5] dark:bg-[#121920] p-2.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
+                      <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">{pair.master1.vessel}に通ず</span>
+                      <span className="font-bold text-sm text-[#1E3D34] dark:text-[#74BA9E]">{pair.master1.point}</span>
+                      <span className="text-[10px] text-[#737C77] ml-1">({pair.master1.meridian})</span>
+                    </div>
+                    <div className="bg-[#FAF8F5] dark:bg-[#121920] p-2.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
+                      <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">{pair.master2.vessel}に通ず</span>
+                      <span className="font-bold text-sm text-[#B86924] dark:text-[#E6C387]">{pair.master2.point}</span>
+                      <span className="text-[10px] text-[#737C77] ml-1">({pair.master2.meridian})</span>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
+                    {pair.clinicalSignificance}
+                  </p>
+                </div>
+
+                <div className="pt-2 border-t border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 flex flex-wrap gap-1">
+                  {pair.indications.map((ind, i) => (
+                    <span key={i} className="text-[11px] px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#151D25] text-[#737C77] dark:text-[#8899A6]">
+                      {ind}
+                    </span>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
