@@ -7,7 +7,6 @@ import {
   ArrowRight, 
   Sparkles, 
   Bell,
-  HeartPulse,
   Activity,
   CheckCircle2,
   Printer,
@@ -19,7 +18,6 @@ import {
   Layers,
   ArrowDown
 } from "lucide-react";
-import SeasonalBanner from "@/components/SeasonalBanner";
 import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
 import PrimeStudentCard from "@/components/PrimeStudentCard";
 import EightSystemsRoadmap from "@/components/EightSystemsRoadmap";
@@ -762,81 +760,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 8. 補助情報・セルフケア・PR広告 */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="border-t border-[#E8E1D1] dark:border-[#22303D] pt-6 flex items-center justify-between">
-          <div>
-            <span className="text-[11px] font-bold text-[#737C77] dark:text-[#8899A6] tracking-wider uppercase">
-              Self Care
-            </span>
-            <h2 className="text-base sm:text-lg font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              日常のセルフケア・体質チェック
-            </h2>
-          </div>
-          <Link
-            href="/diagnosis"
-            className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
-          >
-            <span>体質チェックへ</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-
-        {/* 二十四節気バナー */}
-        <SeasonalBanner />
-
-        {/* 3つのセルフケアリンク */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <Link
-            href="/diagnosis"
-            className="p-3.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] transition-all group space-y-1"
-          >
-            <div className="flex items-center gap-2 text-[#1E3D34] dark:text-[#74BA9E]">
-              <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              <h3 className="font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
-                気血水 体質チェック
-              </h3>
-            </div>
-            <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              気虚・気滞・瘀血などの体質傾向と養生のヒントを確認。
-            </p>
-          </Link>
-
-          <Link
-            href="/diagnosis?tab=gorou"
-            className="p-3.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] transition-all group space-y-1"
-          >
-            <div className="flex items-center gap-2 text-[#1E3D34] dark:text-[#74BA9E]">
-              <Activity className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <h3 className="font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
-                五労チェッカー
-              </h3>
-            </div>
-            <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              久視・久坐など、生活習慣による五臓の疲労を点検。
-            </p>
-          </Link>
-
-          <Link
-            href="/symptoms"
-            className="p-3.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] transition-all group space-y-1"
-          >
-            <div className="flex items-center gap-2 text-[#1E3D34] dark:text-[#74BA9E]">
-              <HeartPulse className="w-4 h-4 text-[#A83629] dark:text-[#E6C387]" />
-              <h3 className="font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
-                症状別セルフケア
-              </h3>
-            </div>
-            <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              肩こり・頭痛・冷えなど、不調へのツボ押しガイド。
-            </p>
-          </Link>
-        </div>
-
-        {/* ページ最下部：PR広告（主要導線の邪魔にならない位置） */}
-        <div className="pt-4">
-          <PrimeStudentCard variant="banner" />
-        </div>
+      {/* 8. 学生・学習者向け案内（Prime Student） */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <PrimeStudentCard variant="banner" />
       </section>
     </div>
   );
