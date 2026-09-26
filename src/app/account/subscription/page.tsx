@@ -43,10 +43,15 @@ export default function SubscriptionManagementPage() {
   // URLパラメータのチェック（Stripe Checkout後のリダイレクト等）
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get("upgraded") === "true" || params.get("demo_upgraded") === "true") {
+    const isUpgraded = params.get("upgraded") === "true" || params.get("demo_upgraded") === "true";
+    const plan = (params.get("plan") as any) === "yearly" ? "yearly" : "monthly";
+
+    if (isUpgraded) {
+      upgradeToPremium(plan);
       setActionMessage("プレミアム会員へのご登録が完了いたしました！全機能をお楽しみください。");
+      window.history.replaceState({}, document.title, window.location.pathname);
     }
-  }, []);
+  }, [upgradeToPremium]);
 
   // 解約処理
   const handleCancel = async () => {

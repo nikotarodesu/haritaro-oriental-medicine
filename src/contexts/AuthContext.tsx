@@ -51,14 +51,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               if (stored) storedMeta = JSON.parse(stored);
             } catch {}
 
+            const userMetaRole = session.user.user_metadata?.role;
+            const userMetaSub = session.user.user_metadata?.subscription;
+
             const googleUser: User = {
               id: session.user.id,
               email: session.user.email || "",
               name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split("@")[0] || "東洋医学会員",
               avatarUrl: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture,
               authProvider: (session.user.app_metadata?.provider as any) || "google",
-              role: storedMeta?.role || "free",
-              subscription: storedMeta?.subscription,
+              role: userMetaRole || storedMeta?.role || "free",
+              subscription: userMetaSub || storedMeta?.subscription,
               createdAt: new Date(session.user.created_at).getTime(),
               updatedAt: Date.now(),
             };
@@ -106,14 +109,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               if (stored) storedMeta = JSON.parse(stored);
             } catch {}
 
+            const userMetaRole = session.user.user_metadata?.role;
+            const userMetaSub = session.user.user_metadata?.subscription;
+
             setUser({
               id: session.user.id,
               email: session.user.email || "",
               name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split("@")[0] || "東洋医学会員",
               avatarUrl: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture,
               authProvider: (session.user.app_metadata?.provider as any) || "google",
-              role: storedMeta?.role || "free",
-              subscription: storedMeta?.subscription,
+              role: userMetaRole || storedMeta?.role || "free",
+              subscription: userMetaSub || storedMeta?.subscription,
               createdAt: new Date(session.user.created_at).getTime(),
               updatedAt: Date.now(),
             });
@@ -267,6 +273,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       cancelAtPeriodEnd: false,
     };
 
+    // Supabaseにログイン中であればクラウド側に永続化
+    if (isSupabaseConfigured()) {
+      try {
+        const supabase = createClient();
+        await supabase.auth.updateUser({
+          data: {
+            role: "premium",
+            subscription,
+          },
+        });
+      } catch (err) {
+        console.error("Failed to update Supabase user metadata for premium:", err);
+      }
+    }
+
     setUser(prev => {
       if (!prev) {
         return {
@@ -293,13 +314,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const cancelSubscription = useCallback(async () => {
     setUser(prev => {
       if (!prev || !prev.subscription) return prev;
+      const updatedSub: UserSubscription = {
+        ...prev.subscription,
+        status: "canceled",
+        cancelAtPeriodEnd: true,
+      };
+
+      if (isSupabaseConfigured()) {
+        try {
+          const supabase = createClient();
+          supabase.auth.updateUser({
+            data: { subscription: updatedSub },
+          });
+        } catch (err) {
+          console.error("Failed to update Supabase on cancelSubscription:", err);
+        }
+      }
+
       return {
         ...prev,
-        subscription: {
-          ...prev.subscription,
-          status: "canceled",
-          cancelAtPeriodEnd: true,
-        },
+        subscription: updatedSub,
         updatedAt: Date.now(),
       };
     });
@@ -309,13 +343,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const resumeSubscription = useCallback(async () => {
     setUser(prev => {
       if (!prev || !prev.subscription) return prev;
+      const updatedSub: UserSubscription = {
+        ...prev.subscription,
+        status: "active",
+        cancelAtPeriodEnd: false,
+      };
+
+      if (isSupabaseConfigured()) {
+        try {
+          const supabase = createClient();
+          supabase.auth.updateUser({
+            data: { subscription: updatedSub },
+          });
+        } catch (err) {
+          console.error("Failed to update Supabase on resumeSubscription:", err);
+        }
+      }
+
       return {
         ...prev,
-        subscription: {
-          ...prev.subscription,
-          status: "active",
-          cancelAtPeriodEnd: false,
-        },
+        subscription: updatedSub,
         updatedAt: Date.now(),
       };
     });
