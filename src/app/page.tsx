@@ -715,24 +715,31 @@ export default function HomePage() {
         <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-7 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-7 items-start">
             {/* 運営者情報（2〜3行＋詳しい紹介へのリンク） */}
-            <div className="space-y-2">
-              <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
-                Operator
-              </span>
-              <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
-                運営者：はり太郎（鍼灸師）
-              </h3>
-              <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                人体の構造と思考体系を初学者から臨床家まで直感的に学べる場を目指して制作しています。用語の丸暗記を脱却し、臨床で使える思考力を育てます。
-              </p>
-              <div className="pt-1">
-                <Link
-                  href="/about"
-                  className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline inline-flex items-center gap-1"
-                >
-                  <span>運営者の詳しいプロフィール・制作理念を見る</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+            <div className="flex items-start gap-3.5 sm:gap-4">
+              <img
+                src="/icon.png"
+                alt="運営者 はり太郎"
+                className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover shadow-xs border border-[#D5CCBC] dark:border-[#2A3B4A] shrink-0"
+              />
+              <div className="space-y-2 flex-1 min-w-0">
+                <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
+                  Operator
+                </span>
+                <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  運営者：はり太郎（鍼灸師／鍼灸院院長）
+                </h3>
+                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                  人体の構造と思考体系を初学者から臨床家まで直感的に学べる場を目指して制作しています。用語の丸暗記を脱却し、臨床で使える思考力を育てます。
+                </p>
+                <div className="pt-1">
+                  <Link
+                    href="/about"
+                    className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline inline-flex items-center gap-1"
+                  >
+                    <span>運営者の詳しいプロフィール・制作理念を見る</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
               </div>
             </div>
 
