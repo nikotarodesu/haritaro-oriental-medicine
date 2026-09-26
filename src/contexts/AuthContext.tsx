@@ -54,14 +54,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             const userMetaRole = session.user.user_metadata?.role;
             const userMetaSub = session.user.user_metadata?.subscription;
 
+            let effectiveRole: UserRole = userMetaRole || storedMeta?.role || "free";
+            let effectiveSub: UserSubscription | undefined = userMetaSub || storedMeta?.subscription;
+
+            // 期限切れ・解約後の失効判定（満了日時を過ぎていれば無料会員に自動降格）
+            if (effectiveRole === "premium" && effectiveSub?.currentPeriodEnd) {
+              if (Date.now() > effectiveSub.currentPeriodEnd && effectiveSub.status === "canceled") {
+                effectiveRole = "free";
+                effectiveSub = { ...effectiveSub, status: "none" };
+              }
+            }
+
             const googleUser: User = {
               id: session.user.id,
               email: session.user.email || "",
               name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split("@")[0] || "東洋医学会員",
               avatarUrl: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture,
               authProvider: (session.user.app_metadata?.provider as any) || "google",
-              role: userMetaRole || storedMeta?.role || "free",
-              subscription: userMetaSub || storedMeta?.subscription,
+              role: effectiveRole,
+              subscription: effectiveSub,
               createdAt: new Date(session.user.created_at).getTime(),
               updatedAt: Date.now(),
             };
@@ -112,14 +123,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             const userMetaRole = session.user.user_metadata?.role;
             const userMetaSub = session.user.user_metadata?.subscription;
 
+            let effectiveRole: UserRole = userMetaRole || storedMeta?.role || "free";
+            let effectiveSub: UserSubscription | undefined = userMetaSub || storedMeta?.subscription;
+
+            // 期限切れ・解約後の失効判定（満了日時を過ぎていれば無料会員に自動降格）
+            if (effectiveRole === "premium" && effectiveSub?.currentPeriodEnd) {
+              if (Date.now() > effectiveSub.currentPeriodEnd && effectiveSub.status === "canceled") {
+                effectiveRole = "free";
+                effectiveSub = { ...effectiveSub, status: "none" };
+              }
+            }
+
             setUser({
               id: session.user.id,
               email: session.user.email || "",
               name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split("@")[0] || "東洋医学会員",
               avatarUrl: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture,
               authProvider: (session.user.app_metadata?.provider as any) || "google",
-              role: userMetaRole || storedMeta?.role || "free",
-              subscription: userMetaSub || storedMeta?.subscription,
+              role: effectiveRole,
+              subscription: effectiveSub,
               createdAt: new Date(session.user.created_at).getTime(),
               updatedAt: Date.now(),
             });
@@ -456,12 +478,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const now = Date.now();
+  const isPeriodValid =
+    !user?.subscription?.currentPeriodEnd || now <= user.subscription.currentPeriodEnd;
+
   const isPremium =
     user?.role === "admin" ||
-    (user?.role === "premium" && (
-      user.subscription?.status === "active" ||
-      user.subscription?.status === "canceled"
-    ));
+    (user?.role === "premium" &&
+      isPeriodValid &&
+      (user.subscription?.status === "active" ||
+        (user.subscription?.status === "canceled" && isPeriodValid)));
 
   return (
     <AuthContext.Provider
