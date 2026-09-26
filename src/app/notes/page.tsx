@@ -648,7 +648,7 @@ export default function MyNotesPage() {
 
                   <div className="pt-3 border-t border-[#E8E1D1] dark:border-[#243340] text-[11px] text-[#737C77] dark:text-[#8899A6] space-y-1 max-w-md mx-auto">
                     <p>※ 無料枠として3件のノートと20件の配穴を保存可能。見本を見るだけで保存枠が減ることはありません。</p>
-                    <p className="text-[#1E3D34] dark:text-[#74BA9E] font-medium">※ 記録はお使いの端末・ブラウザ内に保存されます。サーバーへ送信されないため安心です。</p>
+                    <p className="text-[#1E3D34] dark:text-[#74BA9E] font-medium">※ 実名は保持しない完全匿名設計。無料ログインでPC・スマホ間の自動同期が有効になります。</p>
                   </div>
                 </div>
               ) : (

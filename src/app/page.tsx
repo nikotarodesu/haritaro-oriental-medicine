@@ -246,7 +246,7 @@ export default function HomePage() {
               {/* 保存先に関する注記 */}
               <div className="flex items-center gap-1.5 text-[11px] text-[#737C77] dark:text-[#8899A6] pt-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-                <span>※記録はこの端末・ブラウザに保存されます。自動同期には対応していません。</span>
+                <span>※無料ログインでクラウド自動同期（PC・スマホ対応）。実名は非保持の完全匿名設計です。</span>
               </div>
             </div>
 
