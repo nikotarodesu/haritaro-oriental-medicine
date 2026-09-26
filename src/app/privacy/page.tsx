@@ -82,7 +82,16 @@ export default function PrivacyPage() {
 
               <div>
                 <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm">
-                  （3）お問い合わせ情報
+                  （3）臨床ノート・マイノート機能における完全匿名設計とデータ保護
+                </h3>
+                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] mt-0.5 leading-relaxed">
+                  マイノート（臨床記録機能）では、患者様のプライバシー保護を最優先とし、患者様の氏名・電話番号・住所・生年月日などの個人を特定できる情報はデータベースに一切カラム（入力項目・保存領域）を設けておらず、収集・保持いたしません。カルテ番号（例: PT-001）やイニシャル、年代、主訴、配穴、施術メモのみを記録対象とします。また、クラウド同期を利用する際は、データベースの行レベルセキュリティ（RLS）により、ログインしているご本人以外のアクセスを物理的に遮断して安全に管理します。
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm">
+                  （4）お問い合わせ情報
                 </h3>
                 <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
                   お問い合わせフォームより送信されたお名前、メールアドレス、ご相談内容は、お問い合わせへの回答・連絡およびサービス改善にのみ利用します。

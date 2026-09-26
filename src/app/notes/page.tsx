@@ -25,7 +25,9 @@ import {
   ChevronUp, 
   ArrowRight,
   Eye,
-  Info
+  Info,
+  ShieldCheck,
+  Cloud
 } from "lucide-react";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -46,7 +48,7 @@ const CONSTITUTION_TAGS = [
 ];
 
 export default function MyNotesPage() {
-  const { isPremium } = useAuth();
+  const { isPremium, isAuthenticated } = useAuth();
   const {
     memos,
     clipCount,
@@ -64,6 +66,7 @@ export default function MyNotesPage() {
     exportAllDataAsJson,
     importDataFromJson,
     addMemo,
+    syncStatus,
   } = useClinicalMemo();
 
   // タブ状態: "notes" (臨床ノート) | "stock" (配穴集)
@@ -417,22 +420,57 @@ export default function MyNotesPage() {
         </div>
       </div>
 
-      {/* 保存についての短い常時案内 */}
-      <div className="p-3.5 rounded-xl bg-[#FCF4EB] dark:bg-[#221811] border border-[#F3DEC5] dark:border-[#4A321E] flex items-center justify-between gap-3 text-xs text-[#7A4515] dark:text-[#ECC99B]">
+      {/* 保存および同期についての動的ステータス案内 */}
+      <div
+        className={`p-3.5 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs ${
+          syncStatus === "synced"
+            ? "bg-[#EBF7F2] dark:bg-[#132820] border-[#BDE3D4] dark:border-[#285746] text-[#1D5E46] dark:text-[#8EE0C0]"
+            : syncStatus === "syncing"
+            ? "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300"
+            : "bg-[#FCF4EB] dark:bg-[#221811] border-[#F3DEC5] dark:border-[#4A321E] text-[#7A4515] dark:text-[#ECC99B]"
+        }`}
+      >
         <div className="flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 shrink-0 text-[#B86924] dark:text-[#E6C387]" />
+          {syncStatus === "synced" ? (
+            <Cloud className="w-4 h-4 shrink-0 text-[#2E7D5B] dark:text-[#74BA9E]" />
+          ) : (
+            <AlertCircle className="w-4 h-4 shrink-0 text-[#B86924] dark:text-[#E6C387]" />
+          )}
           <span>
-            記録は、この端末・ブラウザに保存されます。別の端末には自動で同期されません。定期的にバックアップしてください。
+            {syncStatus === "synced" ? (
+              <>
+                <strong>クラウド自動同期中：</strong>PC・スマホ間で安全に自動同期されています（患者の実名は保持せず、カルテ番号で安全に保管されています）。
+              </>
+            ) : syncStatus === "syncing" ? (
+              <>クラウドと同期中...</>
+            ) : isAuthenticated ? (
+              <>
+                <strong>オフライン保持モード：</strong>現在ローカルに保存されています。通信接続時に自動でクラウドへ同期されます。
+              </>
+            ) : (
+              <>
+                <strong>端末保存中：</strong>ブラウザ内に保存されています。無料ログインすると、クラウド自動保存・PC/スマホ同期が有効になります。
+              </>
+            )}
           </span>
         </div>
-        {!isPremium && (
-          <Link
-            href="/pricing"
-            className="font-bold underline text-[#B86924] dark:text-[#E6C387] shrink-0 hover:opacity-80"
-          >
-            保存枠の料金を見る →
-          </Link>
-        )}
+        <div className="flex items-center gap-3 shrink-0">
+          {!isAuthenticated ? (
+            <Link
+              href="/login"
+              className="font-bold underline text-[#B86924] dark:text-[#E6C387] shrink-0 hover:opacity-80"
+            >
+              ログインしてクラウド同期する →
+            </Link>
+          ) : !isPremium ? (
+            <Link
+              href="/pricing"
+              className="font-bold underline text-[#1D5E46] dark:text-[#8EE0C0] shrink-0 hover:opacity-80"
+            >
+              保存枠の料金を見る →
+            </Link>
+          ) : null}
+        </div>
       </div>
 
       {/* 無料枠上限到達時の案内 */}
@@ -844,13 +882,22 @@ export default function MyNotesPage() {
 
           <div className="mt-4 space-y-4 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] border-t border-[#E8E1D1] dark:border-[#22303D] pt-4 leading-relaxed">
             <div className="space-y-2">
-              <h4 className="font-bold text-[#232826] dark:text-[#FAF8F5]">【プライバシーと安全な記録管理】</h4>
+              <h4 className="font-bold text-[#232826] dark:text-[#FAF8F5]">【匿名設計とプライバシー保護について】</h4>
               <p>
                 本機能は臨床推論や配穴検討、患者さん向け養生シート作成を支援するための個人ノートです。
                 あはき法等の法定カルテの代わりではありません。
-                個人情報保護のため、患者さんの実名や連絡先ではなく<strong>カルテ番号（例: PT-001）やイニシャルでの識別を推奨</strong>しています。
-                記録はお使いの端末・ブラウザ内にのみ保存され、外部サーバーへ送信されることはありません。
               </p>
+              <ul className="list-disc pl-5 space-y-1 mt-2 text-xs text-[#59615D] dark:text-[#96A6B2]">
+                <li>
+                  <strong>実名非保持（完全匿名設計）:</strong> 患者さんの氏名・電話番号・住所・生年月日などの個人を特定できる情報はデータベースに一切カラムを設けておらず、保存されません。カルテ番号（例: PT-001）やイニシャルのみで安全に管理されます。
+                </li>
+                <li>
+                  <strong>厳格なクラウド保護（行レベルセキュリティ / RLS）:</strong> ログイン時のクラウド同期では、データベースの行レベルセキュリティ（RLS）により、ログインしているご本人以外の第三者や他ユーザーがあなたのノートを閲覧・取得することは物理的に遮断されています。
+                </li>
+                <li>
+                  <strong>未ログイン時のお試し利用:</strong> 未ログイン時はお使いの端末（ブラウザ）内のみに保存されます。無料会員登録またはログインを行えば、作成したノートをそのまま引き継いでPCとスマホで安全に自動同期できます。
+                </li>
+              </ul>
             </div>
 
             <div className="space-y-2 pt-2 border-t border-[#E8E1D1] dark:border-[#22303D]">

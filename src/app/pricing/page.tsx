@@ -805,15 +805,15 @@ export default function PricingPage() {
       </div>
 
       {/* ======================================================== */}
-      {/* 6. 保存方法の重要案内 */}
+      {/* 6. 保存方法とプライバシーの安心設計 */}
       {/* ======================================================== */}
-      <div className="max-w-4xl mx-auto p-5 sm:p-6 rounded-2xl bg-[#FCF4EB] dark:bg-[#251B12] border border-[#F3DEC5] dark:border-[#4D331F] space-y-2">
-        <div className="flex items-center gap-2 text-sm font-bold text-[#B86924] dark:text-[#E6C387]">
-          <AlertCircle className="w-4 h-4 shrink-0" />
-          <span>保存についての重要な案内</span>
+      <div className="max-w-4xl mx-auto p-5 sm:p-6 rounded-2xl bg-[#EBF7F2] dark:bg-[#14261E] border border-[#BDE3D4] dark:border-[#24523F] space-y-2">
+        <div className="flex items-center gap-2 text-sm font-bold text-[#1D5E46] dark:text-[#8EE0C0]">
+          <ShieldCheck className="w-4 h-4 shrink-0 text-[#2E7D5B] dark:text-[#74BA9E]" />
+          <span>クラウド自動同期と患者プライバシーの安心設計</span>
         </div>
-        <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          記録は、この端末・ブラウザに保存されます。別の端末には自動で同期されません。ブラウザのデータ削除に備え、定期的にバックアップしてください。
+        <p className="text-xs sm:text-sm text-[#315143] dark:text-[#A0C4B4] leading-relaxed">
+          無料ログインすると、クラウド自動保存・PCスマホ間同期が有効になります。データベースには患者様の実名・連絡先・住所・生年月日を保持しない<strong>完全匿名設計（カルテ番号管理）</strong>と、本人以外アクセスできない<strong>厳格な行レベルセキュリティ（RLS）</strong>を採用。情報漏洩リスクとデータ消失リスクの双方を徹底して防ぎます。（※未ログイン時は登録不要でお使いの端末内のみに保存されます）
         </p>
       </div>
 
@@ -838,7 +838,7 @@ export default function PricingPage() {
               <ChevronDown className="w-4 h-4 text-[#737C77] transition-transform group-open:rotate-180 shrink-0 ml-2" />
             </summary>
             <p className="mt-3 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed border-t border-[#E8E1D1] dark:border-[#22303D] pt-3">
-              主な違いは保存できる件数です。無料版では臨床ノート3件・配穴20件までですが、プレミアムでは臨床ノート500件・配穴1,000件まで保存枠が広がります。養生シートの印刷やバックアップ機能は無料枠内でもお試しいただけます。
+              主な違いは保存できる件数です。無料版では臨床ノート3件・配穴20件までですが、プレミアムでは臨床ノート500件・配穴1,000件まで保存枠が広がります。養生シートの印刷やクラウド自動同期、バックアップ機能は無料枠内でもお試しいただけます。
             </p>
           </details>
 
@@ -849,7 +849,7 @@ export default function PricingPage() {
               <ChevronDown className="w-4 h-4 text-[#737C77] transition-transform group-open:rotate-180 shrink-0 ml-2" />
             </summary>
             <p className="mt-3 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed border-t border-[#E8E1D1] dark:border-[#22303D] pt-3">
-              記録は操作している端末のブラウザ内に保存される仕様のため、別端末への自動引き継ぎには対応していません。マイノート内のバックアップ機能（ファイル保存）を使い、もう一方の端末で読み込むことで、手動でデータを移行することは可能です。
+              はい、無料ログイン（Googleログイン等）していただくことで、クラウド自動保存・PCスマホ間同期が有効になり、PCで書いたノートを通勤中のスマホですぐに確認・編集できます。行レベルセキュリティ（RLS）によりご本人以外のアクセスは物理的に遮断され、患者さんの実名も保持しない匿名設計のため安全にご利用いただけます。また、未ログイン時でも手動バックアップ（ファイル保存・読込）によるデータ移行が可能です。
             </p>
           </details>
 
@@ -860,7 +860,7 @@ export default function PricingPage() {
               <ChevronDown className="w-4 h-4 text-[#737C77] transition-transform group-open:rotate-180 shrink-0 ml-2" />
             </summary>
             <p className="mt-3 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed border-t border-[#E8E1D1] dark:border-[#22303D] pt-3">
-              ブラウザの閲覧履歴やサイトデータを一括消去した場合、端末内の保存記録が消去されることがあります。不測のデータ消失を防ぐため、マイノート画面の「ファイルに保存」ボタンから、定期的に手元へバックアップを保存することをおすすめします。
+              ログインしてクラウド同期を有効にしている場合、安全なクラウドデータベースに保存されるため、ブラウザの閲覧履歴削除や端末の故障・機種変更でも記録が消えることはありません。未ログイン（端末保存のみ）の状態でブラウザ履歴やキャッシュを一括消去するとデータが消える可能性があるため、無料ログインでのクラウド保護、またはマイノート画面の「ファイルに保存」ボタンからの定期的な手元バックアップをおすすめします。
             </p>
           </details>
 
