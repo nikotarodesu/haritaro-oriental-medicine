@@ -32,6 +32,7 @@ import {
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { ClinicalMemoItem, PatientNoteItem, SAMPLE_PATIENT_NOTES } from "@/types/clinicalMemo";
+import { loadAndClearDraftPatientNote } from "@/utils/draftNote";
 import GogyoBadge from "@/components/GogyoBadge";
 
 const CONSTITUTION_TAGS = [
@@ -84,6 +85,7 @@ export default function MyNotesPage() {
 
   // 臨床ノート新規・編集モーダル
   const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
+  const [draftNotice, setDraftNotice] = useState<string | null>(null);
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
   const [patientIdentifier, setPatientIdentifier] = useState("");
   const [gender, setGender] = useState<"男性" | "女性" | "その他" | "未回答" | "">("");
@@ -118,6 +120,28 @@ export default function MyNotesPage() {
   // 診断結果等からのURLクエリパラメータ引き継ぎ ＆ 見本パラメータ検知
   useEffect(() => {
     if (typeof window === "undefined") return;
+    // ツールからの安全な下書き引き渡しをチェック
+    const draft = loadAndClearDraftPatientNote();
+    if (draft) {
+      setEditingNoteId(null);
+      setPatientIdentifier(`PT-${String(patientNotes.length + 1).padStart(3, "0")}`);
+      setGender("");
+      setAgeGroup("");
+      setVisitDate(new Date().toISOString().split("T")[0]);
+      setChiefComplaint(draft.chiefComplaint || "");
+      setConstitution(draft.constitution || "");
+      setSyndrome(draft.syndrome || "");
+      setSelectedPointsInput(draft.selectedPointsInput || "");
+      setTreatmentPlan(draft.treatmentPlan || "");
+      setPatientReaction(draft.patientReaction || "");
+      setNextAction(draft.nextAction || "");
+      setFormError(null);
+      setIsNoteModalOpen(true);
+      setActiveTab("notes");
+      setDraftNotice(`【${draft.sourceTool}】からの下書きを取り込みました。内容を確認・編集して保存してください。`);
+      return;
+    }
+
     const params = new URLSearchParams(window.location.search);
 
     // 見本表示パラメータ
@@ -1083,6 +1107,22 @@ export default function MyNotesPage() {
               </div>
             )}
 
+            {draftNotice && (
+              <div className="p-3.5 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] flex items-start gap-2.5 text-xs text-[#1E3D34] dark:text-[#74BA9E] animate-fadeIn">
+                <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] shrink-0 mt-0.5" />
+                <div className="flex-1 leading-relaxed">
+                  <strong>下書き取り込み完了：</strong>{draftNotice}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setDraftNotice(null)}
+                  className="p-0.5 text-gray-400 hover:text-gray-600 cursor-pointer"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+
             <form onSubmit={handleSaveNote} className="space-y-6">
               
               {/* グループ1: 基本情報 */}
@@ -1312,6 +1352,12 @@ export default function MyNotesPage() {
                 >
                   {editingNoteId ? "変更を保存する" : "臨床ノートを保存"}
                 </button>
+              </div>
+
+                          {/* 保存先とプライバシーの注記 */}
+              <div className="flex items-center gap-1.5 text-[11px] text-[#737C77] dark:text-[#8899A6] pt-1">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
+                <span>※お使いの端末（ブラウザ）に安全保存。無料ログインで自動同期にも対応。実名は非保持の完全匿名設計です。</span>
               </div>
 
             </form>

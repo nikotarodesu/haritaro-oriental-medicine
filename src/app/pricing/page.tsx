@@ -523,13 +523,23 @@ export default function PricingPage() {
 
             <div className="space-y-3 pt-4">
               {isPremium ? (
-                <Link
-                  href="/account/subscription"
-                  className="w-full py-3.5 px-6 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white text-sm font-bold shadow transition-all flex items-center justify-center gap-2"
-                >
-                  <Crown className="w-4 h-4 text-[#E6C387]" />
-                  <span>すでに加入中（契約管理へ）</span>
-                </Link>
+                <div className="space-y-2">
+                  <Link
+                    href="/notes"
+                    className="w-full py-3.5 px-6 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white text-sm font-bold shadow transition-all flex items-center justify-center gap-2"
+                  >
+                    <Bookmark className="w-4 h-4 text-[#E6C387]" />
+                    <span>マイノートを開く</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <Link
+                    href="/account/subscription"
+                    className="w-full py-2 px-4 rounded-xl text-center text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center justify-center gap-1"
+                  >
+                    <Crown className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                    <span>ご加入中プランの確認・管理へ</span>
+                  </Link>
+                </div>
               ) : salesEnabled ? (
                 <button
                   type="button"

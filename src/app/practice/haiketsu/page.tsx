@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { 
   SlidersHorizontal, 
   ArrowLeft, 
@@ -29,9 +30,11 @@ import {
   OVERDOSE_PRESETS,
   AcupointRoleMetadata 
 } from "@/data/haiketsuData";
+import { saveDraftPatientNote } from "@/utils/draftNote";
 import { HACHIMYAKU_PAIRS } from "@/data/kikeiData";
 
 export default function HaiketsuPracticePage() {
+  const router = useRouter();
   const { isPremium } = useAuth();
   const { addMemo } = useClinicalMemo();
 
@@ -83,6 +86,18 @@ export default function HaiketsuPracticePage() {
       setRationaleText(`【症候】${p.symptomSummary}\n【課題】${p.mistakePattern}`);
       setSaved(false);
     }
+  };
+
+  
+  // 臨床ノート（患者ノート）への下書き引き渡し
+  const handleSaveToNoteDraft = () => {
+    const pointNames = selectedPointIds.map(id => ACUPOINT_ROLES[id]?.name || id);
+    saveDraftPatientNote({
+      sourceTool: "配穴設計",
+      selectedPointsInput: pointNames.join(", "),
+      treatmentPlan: `【配穴設計処方】\n処方名: ${prescriptionTitle || "自作配穴処方"}\n選定理由・方針: ${rationaleText || "未記入"}\n構成分析: 本治${analysis.rootCount}穴・標治${analysis.branchCount}穴（計${pointNames.length}穴）\n※配穴設計演習からの下書きです。確定診断や固定意図ではありません。`,
+    });
+    router.push("/notes");
   };
 
   // マイノートに保存（プレミアム限定）
@@ -382,15 +397,26 @@ export default function HaiketsuPracticePage() {
                   </p>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={handleSaveToMemo}
-                  disabled={saved || selectedPointIds.length === 0}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#B86924] hover:bg-[#9B551B] text-white text-xs font-bold shadow-sm transition-colors cursor-pointer shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Bookmark className={`w-3.5 h-3.5 ${saved ? "fill-current" : ""}`} />
-                  <span>{saved ? "学習ノートに保存済" : "学習ノートに保存"}</span>
-                </button>
+                <div className="flex flex-wrap items-center gap-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={handleSaveToNoteDraft}
+                    disabled={selectedPointIds.length === 0}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs font-bold shadow-sm transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    <FileText className="w-3.5 h-3.5" />
+                    <span>この内容を臨床ノートに残す</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSaveToMemo}
+                    disabled={saved || selectedPointIds.length === 0}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#B86924] hover:bg-[#9B551B] text-white text-xs font-bold shadow-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <Bookmark className={`w-3.5 h-3.5 ${saved ? "fill-current" : ""}`} />
+                    <span>{saved ? "配穴集に保存済" : "配穴集に保存"}</span>
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-3 text-xs">

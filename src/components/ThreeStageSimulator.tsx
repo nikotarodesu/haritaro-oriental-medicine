@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { 
   Sparkles, 
   ArrowRight, 
@@ -18,7 +19,8 @@ import {
   Scale,
   GraduationCap,
   ArrowUp,
-  SlidersHorizontal
+  SlidersHorizontal,
+  FileText
 } from "lucide-react";
 import { 
   DepthType, 
@@ -44,12 +46,14 @@ import {
   ComprehensiveDiagnosis,
   AcupointOption
 } from "@/data/simulatorData";
+import { saveDraftPatientNote } from "@/utils/draftNote";
 import { TSUBOS } from "@/data/tsuboData";
 import { Tsubo } from "@/types/oriental";
 
 const STORAGE_KEY = "haritaro_simulator_state_v1";
 
 export default function ThreeStageSimulator() {
+  const router = useRouter();
   // ステップ1: 八綱
   const [depth, setDepth] = useState<DepthType>("interior");
   const [temp, setTemp] = useState<TemperatureType>("heat");
@@ -90,6 +94,25 @@ export default function ThreeStageSimulator() {
   const [changeNotice, setChangeNotice] = useState<string | null>(null);
 
   // 診断推論の算出
+  
+  // 臨床ノートへの下書き引き渡し
+  const handleSaveToNoteDraft = () => {
+    const primaryOpt = diagnosis.acupointOptions[0];
+    const pointsStr = primaryOpt 
+      ? `${primaryOpt.primaryAcupoint.name}, ${primaryOpt.secondaryAcupoint.name}`
+      : "";
+
+    saveDraftPatientNote({
+      sourceTool: "臨床弁証シミュレーター",
+      syndrome: diagnosis.syndromeName,
+      constitution: `一文の証: ${diagnosis.oneSentenceFormula}`,
+      chiefComplaint: `八綱・気血水・臓腑経絡の推論（${diagnosis.summary}）`,
+      selectedPointsInput: pointsStr,
+      treatmentPlan: `【臨床弁証シミュレーター推論】\n証名候補: ${diagnosis.syndromeName}（${diagnosis.syndromeReading}）\n治則: ${diagnosis.treatmentPrinciple.rule}\n介入戦略: ${diagnosis.treatmentPrinciple.strategy}${primaryOpt ? `\n代表配穴: ${primaryOpt.pairName}（${primaryOpt.intendedEffect}）` : ""}\n※本内容はシミュレーターによる推論候補・下書きです。確定診断としてではなく、臨床家の所見に基づき編集してご活用ください。`,
+    });
+    router.push("/notes");
+  };
+
   const diagnosis: ComprehensiveDiagnosis = useMemo(() => {
     return synthesizeComprehensiveDiagnosis(depth, temp, state, qixueshui, zangfu, complexState);
   }, [depth, temp, state, qixueshui, zangfu, complexState]);
@@ -962,13 +985,24 @@ export default function ThreeStageSimulator() {
                       この推奨配穴をもとに、自分で主穴・配穴を自由に組み立てて学習ノートに記録できます。
                     </p>
                   </div>
-                  <Link
-                    href="/practice/haiketsu"
+                  <div className="flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleSaveToNoteDraft}
+                      className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs font-bold shadow-sm transition-all whitespace-nowrap cursor-pointer"
+                    >
+                      <FileText className="w-3.5 h-3.5" />
+                      <span>この内容を臨床ノートに残す</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                    <Link
+                      href="/practice/haiketsu"
                     className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#2D5A46] hover:bg-[#1E3D34] text-white text-xs font-bold shadow-sm transition-all whitespace-nowrap self-start sm:self-auto cursor-pointer"
                   >
                     <span>配穴練習を始める</span>
                     <span aria-hidden="true">➜</span>
                   </Link>
+                  </div>
                 </div>
               </div>
             );

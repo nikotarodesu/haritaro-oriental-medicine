@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import {
   Activity,
   Sparkles,
@@ -16,9 +17,11 @@ import {
   ChevronRight,
   ShieldCheck,
   Stethoscope,
+  FileText,
 } from "lucide-react";
 import { getGogyoColor, GOGYO_COLORS } from "@/utils/gogyoColor";
 import ClipButton from "@/components/ClipButton";
+import { saveDraftPatientNote } from "@/utils/draftNote";
 
 // 五労の定義型
 export type GorouId = "kyushi" | "kyuza" | "kyuritsu" | "kyukou" | "kyuga";
@@ -229,6 +232,7 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
 };
 
 export default function GorouWorkstyleChecker() {
+  const router = useRouter();
   const [selectedGorou, setSelectedGorou] = useState<GorouId[]>(["kyushi", "kyuza"]);
   const [activeTab, setActiveTab] = useState<"radar" | "action" | "tsubo">("radar");
 
@@ -350,6 +354,17 @@ export default function GorouWorkstyleChecker() {
 
     return { name, element, kanji, harmTissue, score: max };
   }, [organScores]);
+
+  const handleSaveToNoteDraft = () => {
+    saveDraftPatientNote({
+      sourceTool: "五労チェッカー",
+      constitution: `五労所傷・${mostFatiguedOrgan.name}（${mostFatiguedOrgan.element}行）疲弊`,
+      chiefComplaint: `生活・職業動作の偏りによる疲労（${selectedGorou.map((id) => GOROU_DEFS[id].classicName).join("・")}）`,
+      selectedPointsInput: selectedGorou.map((id) => GOROU_DEFS[id].quickTsubo.name).join(", "),
+      treatmentPlan: `【五労チェッカー診断結果】\n最疲弊臓腑: ${mostFatiguedOrgan.name}（${mostFatiguedOrgan.harmTissue}が過重負荷 / 疲弊度${mostFatiguedOrgan.score}%）\n選択パターン: ${selectedGorou.map((id) => `${GOROU_DEFS[id].classicName}（${GOROU_DEFS[id].modernTitle}）`).join("、")}\n中庸アクション処方:\n${selectedGorou.map((id) => `・${GOROU_DEFS[id].classicName}: ${GOROU_DEFS[id].chuyoAction}`).join("\n")}\n※本内容は生活習慣・五労所傷の参考分析です。臨床家の診察・判断に基づき加筆修正してください。`,
+    });
+    router.push("/notes");
+  };
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -594,6 +609,23 @@ export default function GorouWorkstyleChecker() {
                 特に<strong>【{mostFatiguedOrgan.name}（{mostFatiguedOrgan.element}行）】</strong>のエネルギーが消耗しています。
                 東洋医学の原則は<strong>「偏りを正し、五行を円滑に回す（中庸）」</strong>こと。以下の処方箋を日常に取り入れてください。
               </p>
+            </div>
+
+            {/* 臨床ノートへの連携導線 */}
+            <div className="mt-3 pt-3 border-t border-[#E5DEC9] dark:border-[#2A3B4A] flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+              <div className="flex items-center gap-1.5 text-xs text-[#59615D] dark:text-[#A0B0BC]">
+                <FileText className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
+                <span>疲弊五臓と中庸処方を下書きとして臨床ノートに引き継ぎます</span>
+              </div>
+              <button
+                type="button"
+                onClick={handleSaveToNoteDraft}
+                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs font-bold shadow-xs transition-all shrink-0 cursor-pointer"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span>この内容を臨床ノートに残す</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
 

@@ -2,12 +2,15 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { DIAGNOSIS_QUESTIONS, DIAGNOSIS_RESULTS } from "@/data/diagnosisData";
 import { DiagnosisResultType } from "@/types/oriental";
-import { Stethoscope, CheckCircle2, RotateCcw, Utensils, HeartPulse, Sparkles, ArrowRight, Activity, BookOpen, AlertCircle, Bookmark } from "lucide-react";
+import { Stethoscope, CheckCircle2, RotateCcw, Utensils, HeartPulse, Sparkles, ArrowRight, Activity, BookOpen, AlertCircle, Bookmark, FileText } from "lucide-react";
 import GorouWorkstyleChecker from "@/components/GorouWorkstyleChecker";
+import { saveDraftPatientNote } from "@/utils/draftNote";
 
 export default function DiagnosisPage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<"self" | "gorou">("self");
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const [result, setResult] = useState<DiagnosisResultType | null>(null);
@@ -75,6 +78,18 @@ export default function DiagnosisPage() {
 
     setResult(DIAGNOSIS_RESULTS[highestType]);
     scrollToResult();
+  };
+
+  const handleSaveToNoteDraft = () => {
+    if (!result) return;
+    saveDraftPatientNote({
+      sourceTool: "気血水体質チェック",
+      constitution: result.name,
+      chiefComplaint: result.symptoms.slice(0, 3).join("、"),
+      selectedPointsInput: result.advice.tsubo.join(", "),
+      treatmentPlan: `【気血水体質チェック結果】\n体質傾向: ${result.name}（${result.reading}）\n主な傾向: ${result.summary}\n推奨生活養生: ${result.advice.lifestyle}\n推奨食材: ${result.advice.food.join("、")}\n※本内容は気血水体質チェックからの下書き参考情報です。確定診断ではありません。`,
+    });
+    router.push("/notes");
   };
 
   const handleReset = () => {
@@ -344,33 +359,34 @@ export default function DiagnosisPage() {
             </div>
 
             {/* 施術者・臨床向け マイノート連携バナー */}
-            <div className="bg-[#FCF4EB] dark:bg-[#251A10] p-4 rounded-xl border-2 border-[#F3DEC5] dark:border-[#4A321E] flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+            <div className="bg-[#FAF8F5] dark:bg-[#152028] p-4 rounded-xl border-2 border-[#1E3D34]/30 dark:border-[#74BA9E]/30 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-[#B86924] text-white flex items-center justify-center shrink-0">
-                  <Bookmark className="w-5 h-5 fill-current" />
+                <div className="w-9 h-9 rounded-lg bg-[#1E3D34] text-white flex items-center justify-center shrink-0">
+                  <FileText className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
-                      【施術者の先生へ】この診断結果からマイノート（臨床録）を作成
+                    <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
+                      この診断結果から臨床ノートを作成
                     </span>
                     <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#1E3D34] text-white">
-                      臨床連携
+                      下書き連携
                     </span>
                   </div>
-                  <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-tight block">
-                    体質「{result.name}」と推奨ツボ（{result.advice.tsubo.join("・")}）を引き継いで、患者さんの施術録をすぐに記録できます。
+                  <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-tight block mt-0.5">
+                    体質見立て「{result.name}」と推奨経穴（{result.advice.tsubo.join("・")}）を下書きとして引き継ぎます。
                   </span>
                 </div>
               </div>
-              <Link
-                href={`/notes?new=1&constitution=${encodeURIComponent(result.name)}&points=${encodeURIComponent(result.advice.tsubo.join(","))}&complaint=${encodeURIComponent(result.symptoms.slice(0, 3).join("、"))}`}
-                className="px-4 py-2 rounded-xl bg-[#B86924] hover:bg-[#975319] text-white text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm whitespace-nowrap"
+              <button
+                type="button"
+                onClick={handleSaveToNoteDraft}
+                className="px-4 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm whitespace-nowrap cursor-pointer"
               >
-                <Bookmark className="w-3.5 h-3.5 fill-current" />
-                <span>臨床ノートを作成</span>
+                <FileText className="w-3.5 h-3.5" />
+                <span>この内容を臨床ノートに残す</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+              </button>
             </div>
           </div>
 
