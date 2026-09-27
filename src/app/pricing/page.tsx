@@ -343,7 +343,7 @@ export default function PricingPage() {
         </div>
 
         <p className="text-center text-xs text-[#737C77] dark:text-[#8899A6]">
-          ※患者の実名は保持しない完全匿名設計。無料ログインでPC・スマホ間の安全な自動同期に対応しています。
+          ※患者の実名等の直接識別情報は保持しない設計。無料ログインでPC・スマホ間の自動同期に対応しています。
         </p>
       </div>
 
@@ -823,7 +823,7 @@ export default function PricingPage() {
           <span>クラウド自動同期と患者プライバシーの安心設計</span>
         </div>
         <p className="text-xs sm:text-sm text-[#315143] dark:text-[#A0C4B4] leading-relaxed">
-          無料ログインすると、クラウド自動保存・PCスマホ間同期が有効になります。データベースには患者様の実名・連絡先・住所・生年月日を保持しない<strong>完全匿名設計（カルテ番号管理）</strong>と、本人以外アクセスできない<strong>厳格な行レベルセキュリティ（RLS）</strong>を採用。情報漏洩リスクとデータ消失リスクの双方を徹底して防ぎます。（※未ログイン時は登録不要でお使いの端末内のみに保存されます）
+          無料ログインすると、クラウド自動保存・PCスマホ間同期が有効になります。データベースには患者様の実名・連絡先・住所・生年月日を保持しない<strong>直接識別情報非保持設計（カルテ番号管理）</strong>と、認証された本人アカウントのみアクセスを許可する<strong>行レベルセキュリティ（RLS）</strong>を採用しています。（※未ログイン時は登録不要でお使いの端末内のみに保存されます）
         </p>
       </div>
 
@@ -859,7 +859,7 @@ export default function PricingPage() {
               <ChevronDown className="w-4 h-4 text-[#737C77] transition-transform group-open:rotate-180 shrink-0 ml-2" />
             </summary>
             <p className="mt-3 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed border-t border-[#E8E1D1] dark:border-[#22303D] pt-3">
-              はい、無料ログイン（Googleログイン等）していただくことで、クラウド自動保存・PCスマホ間同期が有効になり、PCで書いたノートを通勤中のスマホですぐに確認・編集できます。行レベルセキュリティ（RLS）によりご本人以外のアクセスは物理的に遮断され、患者さんの実名も保持しない匿名設計のため安全にご利用いただけます。また、未ログイン時でも手動バックアップ（ファイル保存・読込）によるデータ移行が可能です。
+              はい、無料ログイン（Googleログイン等）していただくことで、クラウド自動保存・PCスマホ間同期が有効になり、PCで書いたノートを通勤中のスマホですぐに確認・編集できます。行レベルセキュリティ（RLS）によりご本人アカウント以外のアクセスを厳格に制限し、患者さんの実名も保持しない設計のため安全にご利用いただけます。また、未ログイン時でも手動バックアップ（ファイル保存・読込）によるデータ移行が可能です。
             </p>
           </details>
 

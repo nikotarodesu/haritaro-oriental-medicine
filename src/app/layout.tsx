@@ -28,10 +28,10 @@ const notoSansJP = Noto_Sans_JP({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.haritaro.jp"),
   title: {
-    default: "はり太郎の東洋医学 | 基礎理論から臨床実践までを体系化する東洋医学ポータル",
+    default: "はり太郎の東洋医学｜鍼灸師・学生の学習と臨床活用",
     template: "%s | はり太郎の東洋医学",
   },
-  description: "数千年の臨床智慧と現代神経科学が結実した東洋医学ポータル。基礎理論から臨床実践までを体系化。症状別ツボ検索、361経穴データベース、気血水体質診断、古典と最新論文の学術的解説。",
+  description: "陰陽・五行から弁証・配穴まで、東洋医学を体系的に学ぶ。経穴辞典、体質チェック、臨床演習、マイノートで、学習と日々の臨床の振り返りを支えます。",
   verification: {
     google: "EQTaU5bcfwSgFprso13sFiyF35uZ5IHhaGz56GXqXbo",
   },
@@ -40,21 +40,21 @@ export const metadata: Metadata = {
     locale: "ja_JP",
     url: "https://www.haritaro.jp",
     siteName: "はり太郎の東洋医学",
-    title: "はり太郎の東洋医学 | 基礎理論から臨床実践までを体系化する東洋医学ポータル",
-    description: "数千年の臨床智慧と現代神経科学が結実した東洋医学ポータル。基礎理論から臨床実践までを体系化。症状別ツボ検索、361経穴データベース、気血水体質診断、古典と最新論文の学術的解説。",
+    title: "はり太郎の東洋医学｜鍼灸師・学生の学習と臨床活用",
+    description: "陰陽・五行から弁証・配穴まで、東洋医学を体系的に学ぶ。経穴辞典、体質チェック、臨床演習、マイノートで、学習と日々の臨床の振り返りを支えます。",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "はり太郎の東洋医学 | 基礎理論から臨床実践までを体系化する東洋医学ポータル",
+        alt: "はり太郎の東洋医学｜鍼灸師・学生の学習と臨床活用",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "はり太郎の東洋医学 | 基礎理論から臨床実践までを体系化する東洋医学ポータル",
-    description: "数千年の臨床智慧と現代神経科学が結実した東洋医学ポータル。基礎理論から臨床実践までを体系化。",
+    title: "はり太郎の東洋医学｜鍼灸師・学生の学習と臨床活用",
+    description: "陰陽・五行から弁証・配穴まで、東洋医学を体系的に学ぶ。経穴辞典、体質チェック、臨床演習、マイノートで、学習と日々の臨床の振り返りを支えます。",
     images: ["/og-image.png"],
   },
   alternates: {
@@ -130,7 +130,7 @@ export default function RootLayout({
                   "@id": "https://www.haritaro.jp/#website",
                   "url": "https://www.haritaro.jp",
                   "name": "はり太郎の東洋医学",
-                  "description": "数千年の臨床智慧と現代神経科学が結実した東洋医学ポータル。基礎理論から臨床実践までを体系化。",
+                  "description": "陰陽・五行から弁証・配穴まで、東洋医学を体系的に学ぶ。経穴辞典、体質チェック、臨床演習、マイノートで、学習と日々の臨床の振り返りを支えます。",
                   "publisher": {
                     "@id": "https://www.haritaro.jp/#organization",
                   },

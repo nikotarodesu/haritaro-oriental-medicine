@@ -57,8 +57,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const title = `${point.name}（${point.code}）の場所・取穴・解剖`;
-  const description = `${point.name}（${point.code} / ${point.meridian}）。${point.locationSimple} WHO標準取穴部位、浅深連動の解剖断面構造、主治適応症、臨床応用・運針のポイントを完全網羅。`;
+  const title = `${point.name}（${point.code}）の場所・取穴と注意点｜はり太郎`;
+  const description = `${point.name}（${point.code} / ${point.meridian}）。${point.locationSimple} WHO標準取穴部位、解剖断面構造、主治適応症、臨床応用・運針のポイントを整理。`;
 
   return {
     title,
@@ -223,23 +223,31 @@ export default async function AcupointDetailPage({ params }: Props) {
     return false;
   }).slice(0, 2);
 
-  // JSON-LD 構造化データ（MedicalWebPage ＆ BreadcrumbList ＆ FAQPage）
+  const pageUrl = `https://www.haritaro.jp/tsubo/${point.codeLower}`;
+  const pageTitle = `${point.name}（${point.code}）の場所・取穴と注意点`;
+
+  // JSON-LD 構造化データ（WebPage ＆ DefinedTerm ＆ BreadcrumbList）
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "MedicalWebPage",
-        "name": `${point.name}（${point.code}）`,
-        "description": point.locationDetail,
-        "url": `https://www.haritaro.jp/tsubo/${point.codeLower}`,
+        "@type": "WebPage",
+        "@id": `${pageUrl}#webpage`,
+        "url": pageUrl,
+        "name": pageTitle,
+        "description": point.locationDetail || point.locationSimple,
         "mainEntity": {
-          "@type": "MedicalCondition",
+          "@type": "DefinedTerm",
+          "@id": `${pageUrl}#term`,
           "name": point.name,
           "alternateName": [point.kana, point.romaji, ...(point.aliases || [])],
-          "possibleTreatment": point.indications.map((ind) => ({
-            "@type": "MedicalTherapy",
-            "name": ind,
-          })),
+          "termCode": point.code,
+          "url": pageUrl,
+          "inDefinedTermSet": {
+            "@type": "DefinedTermSet",
+            "name": "WHO標準経穴",
+            "url": "https://www.haritaro.jp/tsubo",
+          },
         },
       },
       {
@@ -267,20 +275,9 @@ export default async function AcupointDetailPage({ params }: Props) {
             "@type": "ListItem",
             "position": 4,
             "name": `${point.name}（${point.code}）`,
-            "item": `https://www.haritaro.jp/tsubo/${point.codeLower}`,
+            "item": pageUrl,
           },
         ],
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": faqs.map((faq) => ({
-          "@type": "Question",
-          "name": faq.question,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": faq.answer,
-          },
-        })),
       },
     ],
   };

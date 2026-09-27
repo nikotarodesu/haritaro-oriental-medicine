@@ -556,7 +556,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                     患者臨床ノート ({patientNoteCount}/{maxPatientNoteLimit}件)
                   </span>
                   <span className="text-[10px] text-[#59615D] dark:text-[#A0B0BC]">
-                    完全匿名・安全同期設計
+                    直接識別情報非保持・安全同期
                   </span>
                 </div>
                 <Link

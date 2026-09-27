@@ -1,108 +1,140 @@
 import type { MetadataRoute } from "next";
 import { ALL_ACUPOINTS } from "@/data/tsubo";
 import { ARTICLES } from "@/data/articleData";
+import { CURRICULUM_DATA } from "@/data/curriculumData";
+import { CLINICAL_CASES } from "@/data/clinicalCasesData";
+import { KIKEI_VESSELS } from "@/data/kikeiData";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.haritaro.jp";
-  const lastModified = new Date();
 
+  // 静的公開ページ台帳（実質更新日に基づく lastModified）
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}`,
-      lastModified,
-      changeFrequency: "daily",
-      priority: 1.0,
+      lastModified: new Date("2026-09-26"),
     },
     {
       url: `${baseUrl}/curriculum`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.9,
+      lastModified: new Date("2026-09-20"),
     },
     {
       url: `${baseUrl}/diagnosis`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.9,
+      lastModified: new Date("2026-09-20"),
+    },
+    {
+      url: `${baseUrl}/diagnosis?tab=gorou`,
+      lastModified: new Date("2026-09-20"),
     },
     {
       url: `${baseUrl}/simulator`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.8,
+      lastModified: new Date("2026-09-20"),
+    },
+    {
+      url: `${baseUrl}/practice/haiketsu`,
+      lastModified: new Date("2026-09-20"),
     },
     {
       url: `${baseUrl}/tsubo`,
-      lastModified,
-      changeFrequency: "daily",
-      priority: 0.9,
+      lastModified: new Date("2026-09-25"),
     },
     {
       url: `${baseUrl}/tsubo/compare`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.8,
+      lastModified: new Date("2026-09-20"),
     },
     {
       url: `${baseUrl}/tsubo/practice`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.8,
+      lastModified: new Date("2026-09-20"),
     },
     {
       url: `${baseUrl}/tsubo/basics/bone-cun`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.8,
+      lastModified: new Date("2026-09-20"),
     },
     {
       url: `${baseUrl}/articles`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.8,
+      lastModified: new Date("2026-09-26"),
+    },
+    {
+      url: `${baseUrl}/cases`,
+      lastModified: new Date("2026-09-15"),
+    },
+    {
+      url: `${baseUrl}/notes`,
+      lastModified: new Date("2026-09-26"),
+    },
+    {
+      url: `${baseUrl}/pricing`,
+      lastModified: new Date("2026-09-26"),
+    },
+    {
+      url: `${baseUrl}/kikei`,
+      lastModified: new Date("2026-09-20"),
     },
     {
       url: `${baseUrl}/symptoms`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.7,
+      lastModified: new Date("2026-09-20"),
     },
     {
       url: `${baseUrl}/about`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.6,
+      lastModified: new Date("2026-09-26"),
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.5,
+      lastModified: new Date("2026-09-20"),
     },
     {
       url: `${baseUrl}/privacy`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.5,
+      lastModified: new Date("2026-09-26"),
+    },
+    {
+      url: `${baseUrl}/terms`,
+      lastModified: new Date("2026-09-26"),
+    },
+    {
+      url: `${baseUrl}/tokushoho`,
+      lastModified: new Date("2026-09-26"),
     },
   ];
 
-  const acupointPages: MetadataRoute.Sitemap = ALL_ACUPOINTS.map((pt) => {
-    const isFlagship = ["LI4", "PC6", "ST36"].includes(pt.code);
-    return {
-      url: `${baseUrl}/tsubo/${pt.code.toLowerCase()}`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: isFlagship ? 0.85 : pt.hasDetailedAnatomy ? 0.75 : 0.7,
-    };
-  });
-
-  const articlePages: MetadataRoute.Sitemap = ARTICLES.map((article) => ({
-    url: `${baseUrl}/articles/${article.id}`,
-    lastModified,
-    changeFrequency: "monthly",
-    priority: 0.8,
+  // カリキュラム全81レッスン（個別教材の正規URL）
+  const allLectures = CURRICULUM_DATA.flatMap((stage) => stage.lectures).filter(
+    (l) => l.isPublished !== false
+  );
+  const curriculumLessonPages: MetadataRoute.Sitemap = allLectures.map((lecture) => ({
+    url: `${baseUrl}/curriculum?lecture=${lecture.id}`,
+    lastModified: new Date("2026-09-20"),
   }));
 
-  return [...staticPages, ...articlePages, ...acupointPages];
+  // 全361経穴詳細ページ
+  const acupointPages: MetadataRoute.Sitemap = ALL_ACUPOINTS.map((pt) => ({
+    url: `${baseUrl}/tsubo/${pt.code.toLowerCase()}`,
+    lastModified: new Date(pt.hasDetailedAnatomy ? "2026-09-25" : "2026-09-20"),
+  }));
+
+  // 学術アーカイブ記事ページ（個別記事公開日を反映）
+  const articlePages: MetadataRoute.Sitemap = ARTICLES.map((article) => ({
+    url: `${baseUrl}/articles/${article.id}`,
+    lastModified: article.publishedAt ? new Date(article.publishedAt) : new Date("2026-03-01"),
+  }));
+
+  // 臨床症例演習ページ（全20症例）
+  const casePages: MetadataRoute.Sitemap = CLINICAL_CASES.map((c) => ({
+    url: `${baseUrl}/cases/${c.id}`,
+    lastModified: new Date("2026-09-15"),
+  }));
+
+  // 奇経八脈詳細ページ（全8経脈）
+  const kikeiPages: MetadataRoute.Sitemap = KIKEI_VESSELS.map((v) => ({
+    url: `${baseUrl}/kikei/${v.slug}`,
+    lastModified: new Date("2026-09-20"),
+  }));
+
+  return [
+    ...staticPages,
+    ...curriculumLessonPages,
+    ...articlePages,
+    ...casePages,
+    ...kikeiPages,
+    ...acupointPages,
+  ];
 }

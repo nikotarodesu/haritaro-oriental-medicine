@@ -2,15 +2,16 @@ import type { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "配穴設計・臨床演習｜臨床基本32穴による処方構成トレーニング",
+  title: "配穴設計・練習ツール｜経穴の選定理由を整理",
   description:
-    "基本32穴の中から目的に応じた経穴を選定し、本治穴（根本体質）と標治穴（局所対症）のバランスや昇降・寒熱のベクトルを分析。選定理由を言語化して教材例と比較する演習ツール。",
+    "経穴を選び、治療方針との関係や選定意図を整理する配穴演習。既存の教材例や記録機能を使って考え方を振り返ります。",
   alternates: {
     canonical: "/practice/haiketsu",
   },
   openGraph: {
-    title: "配穴設計・臨床演習｜臨床基本32穴による処方構成トレーニング",
-    description: "本治・標治のバランスや昇降・寒熱のベクトルを分析し、選定理由を整理する配穴演習ツール。",
+    title: "配穴設計・練習ツール｜経穴の選定理由を整理",
+    description:
+      "経穴を選び、治療方針との関係や選定意図を整理する配穴演習。既存の教材例や記録機能を使って考え方を振り返ります。",
     url: "https://www.haritaro.jp/practice/haiketsu",
   },
 };

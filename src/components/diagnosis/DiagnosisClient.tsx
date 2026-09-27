@@ -1,0 +1,474 @@
+"use client";
+
+import { useState, useRef } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { DIAGNOSIS_QUESTIONS, DIAGNOSIS_RESULTS } from "@/data/diagnosisData";
+import { DiagnosisResultType } from "@/types/oriental";
+import {
+  Stethoscope,
+  CheckCircle2,
+  RotateCcw,
+  Utensils,
+  HeartPulse,
+  Sparkles,
+  ArrowRight,
+  Activity,
+  BookOpen,
+  AlertCircle,
+  FileText,
+} from "lucide-react";
+import GorouWorkstyleChecker from "@/components/GorouWorkstyleChecker";
+import { saveDraftPatientNote } from "@/utils/draftNote";
+
+interface Props {
+  initialTab?: "self" | "gorou";
+}
+
+export default function DiagnosisClient({ initialTab = "self" }: Props) {
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<"self" | "gorou">(initialTab);
+  const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
+  const [result, setResult] = useState<DiagnosisResultType | null>(null);
+  const resultRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToResult = () => {
+    setTimeout(() => {
+      if (resultRef.current) {
+        const yOffset = -90;
+        const y = resultRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    }, 100);
+  };
+
+  const handleTabChange = (tab: "self" | "gorou") => {
+    setActiveTab(tab);
+    if (typeof window !== "undefined") {
+      const url = tab === "gorou" ? "/diagnosis?tab=gorou" : "/diagnosis";
+      window.history.pushState(null, "", url);
+    }
+  };
+
+  const handleToggle = (id: number) => {
+    if (selectedAnswers.includes(id)) {
+      setSelectedAnswers(selectedAnswers.filter((item) => item !== id));
+    } else {
+      setSelectedAnswers([...selectedAnswers, id]);
+    }
+  };
+
+  const handleDiagnose = () => {
+    if (selectedAnswers.length === 0) {
+      alert("当てはまる項目を1つ以上選択してください。");
+      return;
+    }
+
+    const counts: Record<string, number> = {
+      qi_deficiency: 0,
+      qi_stagnation: 0,
+      blood_deficiency: 0,
+      blood_stasis: 0,
+      water_retention: 0,
+      yang_deficiency: 0,
+    };
+
+    selectedAnswers.forEach((id) => {
+      const q = DIAGNOSIS_QUESTIONS.find((item) => item.id === id);
+      if (q) {
+        counts[q.type] += 1;
+      }
+    });
+
+    let highestType = "qi_deficiency";
+    let maxCount = -1;
+
+    Object.entries(counts).forEach(([type, count]) => {
+      if (count > maxCount) {
+        maxCount = count;
+        highestType = type;
+      }
+    });
+
+    setResult(DIAGNOSIS_RESULTS[highestType]);
+    scrollToResult();
+  };
+
+  const handleSaveToNoteDraft = () => {
+    if (!result) return;
+    saveDraftPatientNote({
+      sourceTool: "気血水体質チェック",
+      constitution: result.name,
+      chiefComplaint: result.symptoms.slice(0, 3).join("、"),
+      selectedPointsInput: result.advice.tsubo.join(", "),
+      treatmentPlan: `【気血水体質チェック結果】\n体質傾向: ${result.name}（${result.reading}）\n主な傾向: ${result.summary}\n推奨生活養生: ${result.advice.lifestyle}\n推奨食材: ${result.advice.food.join("、")}\n※本内容は気血水体質チェックからの下書き参考情報です。確定診断ではありません。`,
+    });
+    router.push("/notes");
+  };
+
+  const handleReset = () => {
+    setSelectedAnswers([]);
+    setResult(null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  return (
+    <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-16 space-y-8 sm:space-y-10">
+      {/* モード切り替えタブ */}
+      <div className="flex justify-center">
+        <div className="inline-flex p-1 sm:p-1.5 rounded-2xl bg-[#EFE9DD] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2D3E50] shadow-inner max-w-full overflow-x-auto">
+          <Link
+            href="/diagnosis"
+            onClick={(e) => {
+              e.preventDefault();
+              handleTabChange("self");
+            }}
+            className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+              activeTab === "self"
+                ? "bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] shadow-sm"
+                : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
+            }`}
+          >
+            <Stethoscope className="w-4 h-4" />
+            <span>① 気血水 12問セルフ診断</span>
+          </Link>
+
+          <Link
+            href="/diagnosis?tab=gorou"
+            onClick={(e) => {
+              e.preventDefault();
+              handleTabChange("gorou");
+            }}
+            className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+              activeTab === "gorou"
+                ? "bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] shadow-sm"
+                : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
+            }`}
+          >
+            <Activity className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+            <span>② 五労チェッカー（久視・久臥・久坐・久立・久行）</span>
+            <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
+              新設
+            </span>
+          </Link>
+        </div>
+      </div>
+
+      {/* 1. 一般向け12問セルフ診断 */}
+      {activeTab === "self" && (
+        <div className="space-y-8 sm:space-y-12 animate-fadeIn max-w-4xl mx-auto">
+          {/* ページ見出し */}
+          <div className="text-center space-y-3 sm:space-y-4">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3E1CB] dark:border-[#423321] text-[#B86924] dark:text-[#E6C387] text-xs font-semibold tracking-wider">
+              <Stethoscope className="w-3.5 h-3.5" />
+              <span>東洋医学式 気・血・水 バランスチェック</span>
+            </div>
+            <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
+              気血水 体質セルフ診断
+            </h1>
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-xl mx-auto leading-relaxed">
+              あなたの今の心身の傾きはどこにあるでしょうか？
+              直近1〜2週間の状態に当てはまるものにチェックを入れ、「診断する」を押してください。
+            </p>
+          </div>
+
+          {/* 医師法に関する免責事項バナー */}
+          <div className="p-3.5 sm:p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-start gap-2.5 text-xs text-[#59615D] dark:text-[#96A6B2] shadow-2xs">
+            <AlertCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] shrink-0 mt-0.5" />
+            <p className="leading-relaxed">
+              <strong>【ご利用にあたっての注意】</strong>本セルフ診断は東洋医学の気血水理論に基づき日頃の体質傾向やセルフケアの参考としていただくための学習・参考情報です。医師法に定める診断・治療等の医療行為ではありません。急激な体調変化や重篤な症状がある場合は速やかに医師等の専門医療機関を受診してください。
+            </p>
+          </div>
+
+          {/* 設問一覧 */}
+          <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-3.5 sm:p-9 rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-4 sm:space-y-6 transition-colors">
+            <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 text-xs text-[#59615D] dark:text-[#96A6B2]">
+              <span>全12問（複数選択可）</span>
+              <span>選択中: <strong className="text-[#1E3D34] dark:text-[#74BA9E]">{selectedAnswers.length}</strong> 項目</span>
+            </div>
+
+            <div className="grid grid-cols-1 gap-2.5 sm:gap-3.5">
+              {DIAGNOSIS_QUESTIONS.map((q) => {
+                const isChecked = selectedAnswers.includes(q.id);
+                return (
+                  <button
+                    key={q.id}
+                    onClick={() => handleToggle(q.id)}
+                    className={`w-full text-left p-3 sm:p-4 rounded-xl border transition-all flex items-start gap-2.5 sm:gap-3.5 ${
+                      isChecked
+                        ? "bg-[#EBF3EF] dark:bg-[#182823] border-[#1E3D34] dark:border-[#4E8C76] text-[#1E3D34] dark:text-[#FAF8F5] shadow-sm"
+                        : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E8E1D1] dark:border-[#22303D] text-[#404743] dark:text-[#C5D2DB] hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631]"
+                    }`}
+                  >
+                    <div
+                      className={`w-5 h-5 rounded-md border flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
+                        isChecked
+                          ? "bg-[#1E3D34] dark:bg-[#2B6958] border-[#1E3D34] dark:border-[#4E8C76] text-white"
+                          : "border-[#D5CCBC] dark:border-[#2D3E50] bg-[#FFFFFF] dark:bg-[#1A2530]"
+                      }`}
+                    >
+                      {isChecked && <CheckCircle2 className="w-4 h-4" />}
+                    </div>
+                    <span className="text-sm font-medium leading-relaxed">{q.text}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* 診断実行ボタン */}
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button
+                onClick={handleDiagnose}
+                className="w-full sm:w-auto px-10 py-4 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] hover:bg-[#162E27] dark:hover:bg-[#225345] font-bold text-base shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+              >
+                <span>体質傾向を分析する</span>
+                <ArrowRight className="w-5 h-5" />
+              </button>
+              {selectedAnswers.length > 0 && (
+                <button
+                  onClick={handleReset}
+                  className="text-xs text-[#59615D] dark:text-[#8899A6] hover:text-rose-600 dark:hover:text-rose-400 flex items-center gap-1"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>選択をリセット</span>
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* 診断結果表示 */}
+          {result && (
+            <div ref={resultRef} className="space-y-8 animate-fadeIn">
+              <div className="bg-[#FAF8F5] dark:bg-[#152028] p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-md space-y-6">
+                <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-5 text-center space-y-2">
+                  <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] tracking-wider uppercase">
+                    Your Constitution Result
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                    {result.name}
+                    <span className="text-base font-sans font-normal text-[#59615D] dark:text-[#8899A6] ml-2">
+                      （{result.reading}）
+                    </span>
+                  </h2>
+                  <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-lg mx-auto pt-1">
+                    {result.summary}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E8E1D1] dark:border-[#2A3B4A] space-y-2">
+                    <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+                      <HeartPulse className="w-4 h-4" />
+                      起こりやすい身体のサイン
+                    </span>
+                    <ul className="text-xs text-[#59615D] dark:text-[#A0B0BC] space-y-1 pl-4 list-disc">
+                      {result.symptoms.map((s, idx) => (
+                        <li key={idx}>{s}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E8E1D1] dark:border-[#2A3B4A] space-y-2">
+                    <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+                      <Utensils className="w-4 h-4" />
+                      おすすめの食材
+                    </span>
+                    <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                      {result.advice.food.join("、")}
+                    </p>
+                    <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block pt-1">
+                      生活養生: {result.advice.lifestyle}
+                    </span>
+                  </div>
+                </div>
+
+                {/* 臨床・学術解説記事への誘導 */}
+                <div className="p-4 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-[#1E3D34] text-white flex items-center justify-center shrink-0">
+                      <BookOpen className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-[#1E3D34] dark:text-[#83BEA8] block">
+                        「気血津液の科学」でさらに詳しく学ぶ
+                      </span>
+                      <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC]">
+                        微小循環や体液代謝、気のシステムダイナミクスを自然科学の視点から解説。
+                      </span>
+                    </div>
+                  </div>
+                  <Link
+                    href="/articles/science-of-qi-blood-fluid"
+                    className="px-4 py-2 rounded-xl bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#162E27] text-white dark:text-[#121920] text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm"
+                  >
+                    <span>解説記事を読む</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+
+                {/* 施術者・臨床向け マイノート連携バナー */}
+                <div className="bg-[#FAF8F5] dark:bg-[#152028] p-4 rounded-xl border-2 border-[#1E3D34]/30 dark:border-[#74BA9E]/30 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-[#1E3D34] text-white flex items-center justify-center shrink-0">
+                      <FileText className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
+                          この診断結果から臨床ノートを作成
+                        </span>
+                        <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#1E3D34] text-white">
+                          下書き連携
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-tight block mt-0.5">
+                        体質見立て「{result.name}」と推奨経穴（{result.advice.tsubo.join("・")}）を下書きとして引き継ぎます。
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleSaveToNoteDraft}
+                    className="px-4 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm whitespace-nowrap cursor-pointer"
+                  >
+                    <FileText className="w-3.5 h-3.5" />
+                    <span>この内容を臨床ノートに残す</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+
+              <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] text-center pt-2 leading-relaxed max-w-xl mx-auto">
+                ※本診断結果および体質アドバイスは、東洋医学の基礎理論に基づく一般的な健康増進の参考目安です。特定の傷病に対する医療上の診断や治療効果を保証するものではありません。
+              </p>
+
+              <div className="text-center pt-2">
+                <button
+                  onClick={handleReset}
+                  className="px-6 py-2.5 rounded-xl border border-[#D5CCBC] dark:border-[#2D3E50] text-xs font-semibold text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#FAF8F5] dark:hover:bg-[#1A2530]"
+                >
+                  もう一度診断する
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 2. 現代人のための五労（職業病）チェッカー */}
+      {activeTab === "gorou" && (
+        <div className="space-y-8 animate-fadeIn max-w-5xl mx-auto">
+          {/* 導入ヘッダー */}
+          <div className="text-center space-y-3 max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3E1CB] dark:border-[#423321] text-[#B86924] dark:text-[#E6C387] text-xs font-semibold tracking-wider">
+              <Activity className="w-3.5 h-3.5 text-[#B86924]" />
+              <span>『素問』宣明五気篇準拠 動作偏向・職業病診断ツール</span>
+            </div>
+            <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
+              五労チェッカー（久視・久臥・久坐・久立・久行）
+            </h1>
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+              「久視（PC凝視）」「久坐（座りっぱなし）」「久立（立ち仕事）」「久行（歩き回り）」「久臥（寝だめ）」の五労理論を現代ワークスタイルに翻訳。<br className="hidden sm:inline" />
+              日頃の偏った動作から疲弊している五臓のレーダーチャートを算出し、<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「五行を回す中庸アクション」</strong>を処方します。
+            </p>
+          </div>
+
+          <GorouWorkstyleChecker />
+        </div>
+      )}
+
+      {/* 3. 東洋医学診断学（脈診・腹診・舌診）学術講義録セクション */}
+      <section className="border-t border-[#E8E1D1] dark:border-[#22303D] pt-12 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
+              <Sparkles className="w-4 h-4" />
+              <span>Academic Articles: Diagnostic Science</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+              東洋医学の診断学（四診）を自然科学で深掘りする
+            </h2>
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1 leading-relaxed max-w-2xl">
+              東洋医学の四診（望・聞・問・切）の中でも、脈診・腹診・舌診は生体シグナルの解読技術です。現代の血行動態学・生体力学・画像解析と融合した学術解説記事を公開しています。
+            </p>
+          </div>
+          <Link
+            href="/articles"
+            className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1 shrink-0"
+          >
+            <span>知見・論文一覧へ</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {/* 脈診 */}
+          <Link
+            href="/articles/science-of-pulse-diagnosis"
+            className="bg-[#FFFFFF] dark:bg-[#17212A] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between"
+          >
+            <div className="space-y-2">
+              <div className="flex items-center justify-end text-xs text-[#737C77] dark:text-[#8899A6]">
+                <span className="text-[11px]">約 16分</span>
+              </div>
+              <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
+                【脈診の科学】橈骨動脈拍動の血行動態学と生体情報解析
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
+                動脈弾性、末梢血管抵抗、脈波伝播速度（PWV）、血管ツリー共鳴理論から浮・沈・遅・数・滑・濇・弦・緊・微・代などの脈象を血行動態学的にモデル化。
+              </p>
+            </div>
+            <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+              <span>記事を読む</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </Link>
+
+          {/* 腹診 */}
+          <Link
+            href="/articles/science-of-abdominal-diagnosis"
+            className="bg-[#FFFFFF] dark:bg-[#17212A] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between"
+          >
+            <div className="space-y-2">
+              <div className="flex items-center justify-end text-xs text-[#737C77] dark:text-[#8899A6]">
+                <span className="text-[11px]">約 14分</span>
+              </div>
+              <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
+                【腹診の科学】内臓体制反射・腹壁筋緊張度と自律神経評価
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
+                心下痞鞕、胸脇苦満、小腹急結、腹皮拘急などの腹証を内臓体制反射、腹膜機械受容器、迷走神経求心路、腸脳相関から解明。
+              </p>
+            </div>
+            <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+              <span>記事を読む</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </Link>
+
+          {/* 舌診 */}
+          <Link
+            href="/articles/science-of-tongue-diagnosis"
+            className="bg-[#FFFFFF] dark:bg-[#17212A] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between"
+          >
+            <div className="space-y-2">
+              <div className="flex items-center justify-end text-xs text-[#737C77] dark:text-[#8899A6]">
+                <span className="text-[11px]">約 13分</span>
+              </div>
+              <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
+                【舌診の科学】舌質微小循環と舌苔マイクロバイオーム
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
+                舌質の色調（淡白・紅・紫）と粘膜血流、舌苔（白・黄・厚・剥）と細菌叢・サイトカイン動態、AI画像解析による客観的診断基準を体系化。
+              </p>
+            </div>
+            <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+              <span>記事を読む</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
+}

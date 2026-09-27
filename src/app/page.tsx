@@ -339,7 +339,7 @@ export default function HomePage() {
               {/* 保存先に関する注記 */}
               <div className="flex items-center gap-1.5 text-[11px] text-[#737C77] dark:text-[#8899A6] pt-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-                <span>※お使いの端末（ブラウザ）に安全保存。無料ログインでクラウド自動同期にも対応。実名は非保持の完全匿名設計です。</span>
+                <span>※お使いの端末（ブラウザ）に安全保存。無料ログインでクラウド自動同期にも対応。直接の個人識別情報は保持しない設計です。</span>
               </div>
             </div>
 

@@ -92,21 +92,21 @@ export default function SimulatorHub() {
 
           <div className="flex flex-wrap items-center gap-2.5 shrink-0">
             <Link
-              href="/articles?article=science-of-yinyang-gogyo"
+              href="/articles/science-of-yinyang-gogyo"
               className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] dark:bg-[#1A2E26] hover:bg-[#D8EADB] dark:hover:bg-[#234237] px-3.5 py-2 rounded-xl transition-all"
             >
               <BookOpen className="w-3.5 h-3.5" />
               <span>陰陽五行の科学</span>
             </Link>
             <Link
-              href="/articles?article=science-of-kampo-network-pharmacology"
+              href="/articles/science-of-kampo-network-pharmacology"
               className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] dark:bg-[#1A2E26] hover:bg-[#D8EADB] dark:hover:bg-[#234237] px-3.5 py-2 rounded-xl transition-all"
             >
               <BookOpen className="w-3.5 h-3.5" />
               <span>漢方医学の科学</span>
             </Link>
             <Link
-              href="/articles?article=science-of-qi-blood-fluid"
+              href="/articles/science-of-qi-blood-fluid"
               className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#1E3D34] dark:bg-[#2B6958] hover:opacity-90 px-3.5 py-2 rounded-xl transition-all shadow-sm"
             >
               <span>気血津液の科学</span>

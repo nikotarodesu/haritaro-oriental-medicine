@@ -158,6 +158,63 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
+
+            {/* 執筆・運営体制と編集方針 */}
+            <div className="space-y-4 pt-4 border-t border-[#E8E1D1] dark:border-[#263542]">
+              <h4 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+                執筆・運営体制と編集方針
+              </h4>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                <div className="p-4 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2">
+                  <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
+                    一人運営・直接執筆の開示
+                  </span>
+                  <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                    当サイト「はり太郎の東洋医学」は、現役鍼灸師の「はり太郎」が一人で調査・執筆・プログラム開発を行っている個人運営の学習・臨床支援ポータルです。過大な「編集部」や架空の「監修委員会」を装わず、一人の臨床家の責任において実直な情報発信を行っています。
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2">
+                  <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
+                    出典・エビデンス選定基準
+                  </span>
+                  <ul className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed space-y-1 list-disc list-inside">
+                    <li><strong>経穴・経絡・基礎理論：</strong>WHO標準経穴部位、はり師きゅう師養成標準教科書、主要古典（『黄帝内経』『難経』『甲乙経』等）</li>
+                    <li><strong>現代医学・自然科学：</strong>PubMed収載の査読付き論文、公的機関の診療ガイドラインを基本参照</li>
+                  </ul>
+                </div>
+
+                <div className="p-4 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2">
+                  <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
+                    誤りの訂正方針と更新ポリシー
+                  </span>
+                  <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                    医学・東洋医学の情報は常に検証と更新が求められます。内容の誤り、古典解釈の不備、最新医学知見との乖離については読者・専門家からのご指摘を真摯に受け止め、原本照合のうえ速やかに訂正・履歴反映を行います。
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2 flex flex-col justify-between">
+                  <div className="space-y-1">
+                    <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
+                      ご意見・誤りのご指摘窓口
+                    </span>
+                    <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                      掲載内容に関するご質問、学術的なご指摘、誤字脱字の報告などは、お問い合わせフォームよりお寄せください。
+                    </p>
+                  </div>
+                  <div className="pt-2">
+                    <Link
+                      href="/contact"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold hover:underline"
+                    >
+                      <span>お問い合わせフォームへ</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -176,7 +233,7 @@ export default function AboutPage() {
             </p>
           </div>
           <Link
-            href="/articles?article=east-west-integrative-unified-theory"
+            href="/articles/east-west-integrative-unified-theory"
             className="px-5 py-2.5 rounded-xl bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#162E27] text-white dark:text-[#121920] text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm"
           >
             <span>総括論文を読む</span>

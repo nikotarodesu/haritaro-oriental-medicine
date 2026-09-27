@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: {
-      canonical: `/articles/${article.id}`,
+      canonical: `https://www.haritaro.jp/articles/${article.id}`,
     },
     openGraph: {
       title,
@@ -84,14 +84,20 @@ export default async function ArticleDetailPage({ params }: Props) {
         "headline": article.title,
         "description": article.summary,
         "url": `https://www.haritaro.jp/articles/${article.id}`,
+        "mainEntityOfPage": `https://www.haritaro.jp/articles/${article.id}`,
+        "datePublished": article.publishedAt || "2026-03-01",
+        "dateModified": "2026-09-26",
+        "image": "https://www.haritaro.jp/og-image.png",
         "author": {
           "@type": "Person",
           "name": article.author.name,
           "jobTitle": article.author.role,
+          "url": "https://www.haritaro.jp/about",
         },
         "publisher": {
           "@type": "Organization",
           "name": "はり太郎の東洋医学",
+          "url": "https://www.haritaro.jp",
           "logo": {
             "@type": "ImageObject",
             "url": "https://www.haritaro.jp/icon.png",
