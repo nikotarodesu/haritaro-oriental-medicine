@@ -17,8 +17,38 @@ export const metadata: Metadata = {
 };
 
 export default function KokushiPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LearningResource",
+    name: "はり師・きゅう師 国家試験対策特設ハブ",
+    description: "鍼灸師・あん摩マッサージ指圧師国家試験（東洋医学概論・経絡経穴概論・東洋医学臨床論）の完全攻略ハブ。忘却曲線復習、本試験実問アーカイブ、状況設定問題、禁忌・リスク管理を網羅。",
+    url: "https://www.haritaro.jp/kokushi",
+    learningResourceType: "Exam Preparation Resource",
+    educationalLevel: "National Certification Exam",
+    inLanguage: "ja",
+    teaches: [
+      "東洋医学概論",
+      "経絡経穴概論",
+      "東洋医学臨床論",
+      "十四経脈・骨度分寸",
+      "配穴原則と刺鍼禁忌"
+    ],
+    provider: {
+      "@type": "Organization",
+      name: "はり太郎 (Haritaro)",
+      url: "https://www.haritaro.jp",
+      logo: "https://www.haritaro.jp/icon.svg"
+    }
+  };
+
   return (
     <div className="min-h-screen py-6 sm:py-12 px-3 sm:px-6 lg:px-8">
+      {/* 構造化データ（JSON-LD） */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
         {/* パンくずリスト */}
         <nav className="flex items-center gap-1.5 text-xs text-[#737C77] dark:text-[#8899A6]">

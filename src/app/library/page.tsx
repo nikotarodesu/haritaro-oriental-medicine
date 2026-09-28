@@ -18,6 +18,7 @@ import {
   Filter
 } from "lucide-react";
 import { PAPERS_DATABASE, PaperReference } from "@/data/references/papersData";
+import { CLASSICAL_TEXTS, ClassicalText } from "@/data/classicalTextsData";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { ClinicalCase } from "@/types/clinicalCase";
 import { KIKEI_VESSELS } from "@/data/kikeiData";
@@ -25,50 +26,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import AuthModal from "@/components/auth/AuthModal";
 import PrimeStudentCard from "@/components/PrimeStudentCard";
-
-// 古典条文データ（素問、霊枢、難経、鍼灸甲乙経）
-const CLASSICAL_TEXTS = [
-  {
-    id: "classic-nankyo-77",
-    book: "難経",
-    chapter: "第七十七難",
-    theme: "上工治未病の原則",
-    original: "經言上工治未病，中工治已病者，何謂也？然：所謂治未病者，見肝之病，則知肝當傳之於脾，故先實其脾氣，無令得受肝之邪，故曰治未病焉。",
-    translation: "名医（上工）は未病を治し、凡医（中工）は既に病んだものを治すとはどういうことか。肝の病を見れば、その邪が五行相克に従って脾に伝わることを予測し、あらかじめ脾気を充実させて肝邪を受けないように防ぐ。これを未病を治すと言う。",
-    clinicalApplication: "ストレス性の肝気鬱結（自律神経緊張）を診た際、胃痛や軟便が起こる前に足三里・中脘で脾胃をあらかじめ保護する配穴の根拠となる。",
-    tags: ["治未病", "五行相生相克", "肝脾不和"]
-  },
-  {
-    id: "classic-somon-05",
-    book: "素問",
-    chapter: "陰陽応象大論篇 第五",
-    theme: "陰陽と治病求本の根本原則",
-    original: "陰陽者，天地之道也，萬物之綱紀，變化之父母，生殺之本始，神明之府也，治病必求於本。",
-    translation: "陰陽とは、天地の法則であり、万物の根本綱領であり、あらゆる変化の源であり、生滅の始まりであり、人体の生命現象の宿るところである。病を治すには、必ずその根本（陰陽のバランス）を求め究めなければならない。",
-    clinicalApplication: "局所の痛みや症状にとらわれず、患者の生体全体の陰陽寒熱・虚実を見極めてから本治穴を決定する鍼灸臨床の根本原則。",
-    tags: ["陰陽論", "治病求本", "東洋医学哲学"]
-  },
-  {
-    id: "classic-reisu-01",
-    book: "霊枢",
-    chapter: "九針十二原篇 第一",
-    theme: "気至りて有効となる刺鍼の極意",
-    original: "刺之要，氣至而有效，效之信，若風之吹雲，明乎若見蒼天，刺之道畢矣。",
-    translation: "刺鍼の肝要は、気が至って初めて効果が現れることにある。その効果の現れ方は、風が雲を吹き払って青空が忽然と現れるように鮮やかである。これこそが刺鍼の奥義である。",
-    clinicalApplication: "ただ漫然と刺入するのではなく、得気（響き・気至）と患者の呼吸に合わせた手技の重要性を示す。",
-    tags: ["刺鍼手技", "得気", "九針"]
-  },
-  {
-    id: "classic-nankyo-69",
-    book: "難経",
-    chapter: "第六十九難",
-    theme: "虚すればその母を補い、実すればその子を瀉す",
-    original: "經言虛者補之，實者瀉之，不虛不實，以經取之。何謂也？然：虛則補其母，實則瀉其子，當先補之，然後瀉之。",
-    translation: "虚しているものは補い、実しているものは瀉す。虚実がない場合は本経自身を取穴する。虚している時はその母（五行相生で生み出す側）を補い、実している時はその子（生み出される側）を瀉す。",
-    clinicalApplication: "五兪穴を用いた補瀉配穴の黄金法則。例: 肺虚（金）には母である脾（土）の太白を補い、肝実（木）には子である心（火）の行間を瀉す。",
-    tags: ["補母瀉子", "五兪穴", "虚実補瀉"]
-  }
-];
 
 export default function LibraryPage() {
   const { isPremium } = useAuth();

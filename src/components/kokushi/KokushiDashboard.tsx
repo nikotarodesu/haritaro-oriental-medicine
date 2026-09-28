@@ -811,7 +811,7 @@ export default function KokushiDashboard() {
               </div>
             </div>
             <Link
-              href="/mynote"
+              href="/notes"
               className="text-xs font-bold text-rose-700 dark:text-rose-300 hover:underline flex items-center gap-1"
             >
               <span>マイノートで全体管理 ➜</span>
