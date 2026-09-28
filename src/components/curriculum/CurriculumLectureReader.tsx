@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Lecture, CURRICULUM_DATA } from "@/data/curriculumData";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
@@ -18,7 +18,9 @@ import {
   ArrowRight, 
   Sparkles, 
   Layers, 
-  Check 
+  Check,
+  X,
+  BookOpen
 } from "lucide-react";
 
 interface Props {
@@ -27,6 +29,8 @@ interface Props {
 
 export default function CurriculumLectureReader({ lecture }: Props) {
   const articleTopRef = useRef<HTMLDivElement | null>(null);
+  const [focusBanner, setFocusBanner] = useState<string | null>(null);
+
   const {
     isMounted,
     completedLectures,
@@ -43,13 +47,34 @@ export default function CurriculumLectureReader({ lecture }: Props) {
     }
   }, [lecture?.id, recordVisitedLecture]);
 
-  // レッスン変更時のスクロールトップ
+  // レッスン変更時のスクロールトップ & ?focus= による該当セクションジャンプ
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    if (articleTopRef.current) {
-      articleTopRef.current.scrollIntoView({ behavior: "instant", block: "start" });
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const focusParam = params.get("focus");
+
+      if (focusParam) {
+        setFocusBanner(focusParam);
+        const timer = setTimeout(() => {
+          const elements = Array.from(document.querySelectorAll("h1, h2, h3, h4, p, strong"));
+          const target = elements.find((el) => el.textContent?.includes(focusParam));
+          if (target) {
+            target.scrollIntoView({ behavior: "smooth", block: "center" });
+            target.classList.add("ring-4", "ring-amber-400", "bg-amber-100/90", "dark:bg-amber-950/90", "rounded-xl", "p-2", "transition-all");
+            setTimeout(() => {
+              target.classList.remove("ring-4", "ring-amber-400", "bg-amber-100/90", "dark:bg-amber-950/90");
+            }, 4000);
+          }
+        }, 400);
+        return () => clearTimeout(timer);
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        if (articleTopRef.current) {
+          articleTopRef.current.scrollIntoView({ behavior: "instant", block: "start" });
+        }
+      }
     }
   }, [lecture?.id]);
 
@@ -77,6 +102,24 @@ export default function CurriculumLectureReader({ lecture }: Props) {
     <div ref={articleTopRef} className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-10 space-y-5 sm:space-y-6">
       {/* 読書進捗バー */}
       <ReadingProgressBar />
+
+      {/* 復習ジャンプ通知バナー */}
+      {focusBanner && (
+        <div className="p-3 sm:p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 flex items-center justify-between gap-3 text-xs sm:text-sm text-amber-950 dark:text-amber-200 shadow-2xs animate-in fade-in slide-in-from-top-2">
+          <div className="flex items-center gap-2 font-bold">
+            <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+            <span>【復習モード】クイズ該当テーマ「{focusBanner}」の解説箇所を表示中</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setFocusBanner(null)}
+            className="p-1 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900 text-amber-700 dark:text-amber-300 shrink-0 cursor-pointer"
+            aria-label="通知を閉じる"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
 
       {/* 最上部ナビゲーション */}
       <div className="flex flex-wrap items-center justify-between gap-3">

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useCurriculumProgress, QuizResultRecord } from '@/contexts/CurriculumProgressContext';
 import {
   X,
@@ -11,6 +12,8 @@ import {
   Sparkles,
   Award,
   ExternalLink,
+  BookOpen,
+  ArrowRight,
 } from 'lucide-react';
 
 interface IncorrectQuestionsModalProps {
@@ -202,12 +205,32 @@ export const IncorrectQuestionsModal: React.FC<IncorrectQuestionsModalProps> = (
                   </div>
 
                   {/* 解説アコーディオン/表示 */}
-                  <div className="mt-4 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                    <div className="font-bold text-slate-800 dark:text-slate-200 mb-1 flex items-center gap-1.5">
-                      <Award className="w-4 h-4 text-amber-500" />
-                      解説とヒント
+                  <div className="mt-4 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed space-y-3">
+                    <div>
+                      <div className="font-bold text-slate-800 dark:text-slate-200 mb-1 flex items-center gap-1.5">
+                        <Award className="w-4 h-4 text-amber-500" />
+                        解説とヒント
+                      </div>
+                      <p>{item.explanation}</p>
                     </div>
-                    {item.explanation}
+
+                    {/* 講義の該当箇所へジャンプするボタン */}
+                    {(() => {
+                      const topic = (item.questionText || "").match(/【([^】]+)】/)?.[1] || "";
+                      return (
+                        <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+                          <Link
+                            href={`/curriculum?lecture=${item.lectureId}&focus=${encodeURIComponent(topic)}`}
+                            onClick={onClose}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] hover:bg-[#D5EADF] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-bold transition-all shadow-2xs group"
+                          >
+                            <BookOpen className="w-3.5 h-3.5" />
+                            <span>「{topic || item.lectureTitle}」を講義で復習する</span>
+                            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                          </Link>
+                        </div>
+                      );
+                    })()}
                   </div>
                 </div>
               );

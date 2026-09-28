@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { LessonQuizGroup, QuizQuestionItem } from '@/data/curriculumQuizzes';
+import { LessonQuizGroup, QuizQuestionItem, getQuizSectionTitle } from '@/data/curriculumQuizzes';
 import { useCurriculumProgress } from '@/contexts/CurriculumProgressContext';
 import {
   CheckCircle2,
@@ -10,7 +10,9 @@ import {
   RotateCcw,
   Award,
   Sparkles,
-  Trophy
+  Trophy,
+  BookOpen,
+  ArrowUp,
 } from 'lucide-react';
 
 interface InteractiveQuizProps {
@@ -269,14 +271,48 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz }) => {
 
                 {/* 回答後のワンポイント解説 */}
                 {isAnswered && (
-                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 bg-emerald-50/30 dark:bg-emerald-950/20 rounded-xl p-3.5 text-xs sm:text-sm">
-                    <span className="font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1 mb-1">
-                      <Award className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                      解説のポイント:
-                    </span>
-                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                      {q.explanation}
-                    </p>
+                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 bg-emerald-50/30 dark:bg-emerald-950/20 rounded-xl p-3.5 text-xs sm:text-sm space-y-2.5">
+                    <div>
+                      <span className="font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1 mb-1">
+                        <Award className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                        解説のポイント:
+                      </span>
+                      <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                        {q.explanation}
+                      </p>
+                    </div>
+
+                    {/* 講義の該当箇所へスクロールして復習するボタン */}
+                    {(() => {
+                      const topic = getQuizSectionTitle(q);
+                      return (
+                        <div className="pt-2 border-t border-emerald-200/50 dark:border-emerald-800/40 flex justify-end">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (typeof window !== "undefined") {
+                                const elements = Array.from(document.querySelectorAll("h1, h2, h3, h4, p, strong"));
+                                const target = elements.find((el) => topic && el.textContent?.includes(topic));
+                                if (target) {
+                                  target.scrollIntoView({ behavior: "smooth", block: "center" });
+                                  target.classList.add("ring-4", "ring-amber-400", "bg-amber-100/90", "dark:bg-amber-950/90", "rounded-lg", "transition-all");
+                                  setTimeout(() => {
+                                    target.classList.remove("ring-4", "ring-amber-400", "bg-amber-100/90", "dark:bg-amber-950/90");
+                                  }, 3000);
+                                } else {
+                                  window.scrollTo({ top: 0, behavior: "smooth" });
+                                }
+                              }
+                            }}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-50 text-[#1E3D34] dark:text-[#74BA9E] text-xs font-bold transition-all shadow-2xs cursor-pointer group"
+                          >
+                            <BookOpen className="w-3.5 h-3.5" />
+                            <span>「{topic || "このテーマ"}」を講義本文で読み直す</span>
+                            <ArrowUp className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform" />
+                          </button>
+                        </div>
+                      );
+                    })()}
                   </div>
                 )}
               </div>

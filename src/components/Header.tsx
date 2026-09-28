@@ -19,10 +19,12 @@ import {
   User as UserIcon,
   Sparkles,
   FileText,
-  RotateCcw
+  RotateCcw,
+  Search,
 } from "lucide-react";
 import YinYangSwitch from "./YinYangSwitch";
 import FontSizeControl from "./FontSizeControl";
+import GlobalSearchModal from "./search/GlobalSearchModal";
 import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -30,6 +32,7 @@ import { useAuth } from "@/contexts/AuthContext";
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<"clinical" | "learn" | "search" | "settings" | null>(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const { clipCount } = useClinicalMemo();
   const { currentSeason } = useSeasonalTheme();
@@ -37,6 +40,26 @@ export default function Header() {
 
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const menuButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  // Cmd+K / Ctrl+K でグローバル検索を開く
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // 入力要素にフォーカスがある時はスキップ
+      const target = e.target as HTMLElement | null;
+      const isInput = target?.tagName === "INPUT" || target?.tagName === "TEXTAREA" || target?.isContentEditable;
+
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+      } else if (e.key === "/" && !isInput && !isSearchOpen) {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isSearchOpen]);
 
   const handleMouseEnter = (type: "clinical" | "learn" | "search" | "settings") => {
     if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
@@ -370,8 +393,22 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* デスクトップ右側：会員マイページ ＆ 表示設定 */}
+          {/* デスクトップ右側：検索ボタン ＆ 会員マイページ ＆ 表示設定 */}
           <div className="hidden lg:flex items-center gap-2">
+            {/* サイト全体横断検索（Cmd+K） */}
+            <button
+              type="button"
+              onClick={() => setIsSearchOpen(true)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#EFE9DD]/70 dark:bg-[#1A2530] hover:bg-[#E5DEC9] dark:hover:bg-[#202E3C] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#A0B0BC] text-xs font-semibold transition-all shadow-2xs cursor-pointer select-none"
+              title="全体横断検索（Ctrl+K / ⌘K）"
+            >
+              <Search className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
+              <span className="hidden xl:inline">検索...</span>
+              <kbd className="hidden sm:inline-block px-1.5 py-0.2 text-[10px] font-mono font-bold bg-white dark:bg-[#121920] border border-[#D5CCBC] dark:border-[#2D3E50] rounded text-[#737C77] dark:text-[#8899A6]">
+                ⌘K
+              </kbd>
+            </button>
+
             {/* 会員マイページ / ログインボタン */}
             {isPremium ? (
               <Link
@@ -461,8 +498,19 @@ export default function Header() {
             </div>
           </div>
 
-          {/* モバイルヘッダー右側（マイノートへの短い入口、メニューボタン） */}
-          <div className="flex items-center gap-2 lg:hidden shrink-0">
+          {/* モバイルヘッダー右側（検索、マイノートへの短い入口、メニューボタン） */}
+          <div className="flex items-center gap-1.5 lg:hidden shrink-0">
+            {/* モバイル検索ボタン */}
+            <button
+              type="button"
+              onClick={() => setIsSearchOpen(true)}
+              className="p-1.5 sm:p-2 rounded-xl text-[#404743] dark:text-[#C5D2DB] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] transition-colors cursor-pointer shrink-0"
+              aria-label="サイト内検索を開く"
+              title="サイト内検索"
+            >
+              <Search className="w-5 h-5 text-[#1E3D34] dark:text-[#74BA9E]" />
+            </button>
+
             <Link
               href="/notes"
               className="flex items-center gap-1 px-2.5 py-1.5 rounded-full border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-bold shrink-0"
@@ -688,6 +736,12 @@ export default function Header() {
           </div>
         </div>
       )}
+
+      {/* サイト全体横断検索モーダル（Cmd+K / Ctrl+K） */}
+      <GlobalSearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+      />
     </header>
   );
 }

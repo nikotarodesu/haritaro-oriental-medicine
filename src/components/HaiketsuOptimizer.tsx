@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { 
   Scissors, 
@@ -41,6 +41,18 @@ export default function HaiketsuOptimizer() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedBodyPart, setSelectedBodyPart] = useState<string>("すべて");
   const [modalTsubo, setModalTsubo] = useState<Tsubo | null>(null);
+
+  // ESCキーで経穴パネルを閉じる
+  useEffect(() => {
+    if (!modalTsubo) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setModalTsubo(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [modalTsubo]);
 
   // 分析結果
   const analysis = useMemo(() => {
@@ -601,17 +613,45 @@ export default function HaiketsuOptimizer() {
         </div>
       </div>
 
-      {/* 取穴詳細モーダル */}
+      {/* 取穴詳細パネル（PC: Split View サイドパネル / スマホ: ボトムシート） */}
       {modalTsubo && (
-        <div
-          onClick={() => setModalTsubo(null)}
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
-        >
+        <div className="fixed inset-0 z-50 pointer-events-none">
+          {/* モバイル用背景オーバーレイ（PCでは非表示にして背後の最適化ツール操作を可能に） */}
           <div
+            onClick={() => setModalTsubo(null)}
+            className="fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity duration-200 pointer-events-auto lg:hidden"
+            aria-hidden="true"
+          />
+
+          {/* パネル本体:
+              - モバイル: 画面下部からせり上がるボトムシート (inset-x-0 bottom-0 rounded-t-3xl max-h-[85vh])
+              - PC(lg以上): 右側に固定されるSplit Viewサイドパネル (top-16 right-0 bottom-0 w-[440px] max-w-[45vw] lg:max-h-full)
+          */}
+          <aside
             onClick={(e) => e.stopPropagation()}
-            className="bg-[#FAF8F5] dark:bg-[#17212A] w-full max-w-xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-6 max-h-[90vh] overflow-y-auto animate-fadeIn"
+            className="fixed bottom-0 inset-x-0 max-h-[85vh] lg:top-16 lg:bottom-0 lg:left-auto lg:right-0 lg:w-[440px] lg:max-w-[45vw] lg:max-h-full bg-[#FAF8F5] dark:bg-[#17212A] shadow-2xl border-t lg:border-t-0 lg:border-l border-[#E5DEC9] dark:border-[#2A3B4A] rounded-t-3xl lg:rounded-none z-50 flex flex-col pointer-events-auto transition-transform duration-300 ease-out"
+            role="dialog"
+            aria-modal="false"
+            aria-label={`${modalTsubo.name}の詳細情報`}
           >
-            <div className="flex items-start justify-between border-b border-[#E8E1D1] dark:border-[#22303D] pb-4">
+            {/* モバイル向けドラッグ・グラブバー */}
+            <div className="flex justify-center pt-3 pb-1 lg:hidden">
+              <div className="w-10 h-1.5 rounded-full bg-[#D1C7B7] dark:bg-[#344655]" />
+            </div>
+
+            {/* パネル上部ステータスバナー（PC専用：Split View案内） */}
+            <div className="hidden lg:flex items-center justify-between px-6 py-2.5 bg-[#EBF3EF] dark:bg-[#162A24] border-b border-[#C5DED4] dark:border-[#24473A] text-xs text-[#1E3D34] dark:text-[#83BEA8]">
+              <span className="font-semibold flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#1E3D34] dark:bg-[#74BA9E] animate-pulse" />
+                <span>経穴 Split View（左側も操作可能）</span>
+              </span>
+              <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#1C2C26] border border-[#C5DED4] dark:border-[#2A5243] text-[10px] font-mono">
+                ESC で閉じる
+              </kbd>
+            </div>
+
+            {/* パネルヘッダー */}
+            <div className="p-5 sm:p-6 border-b border-[#E8E1D1] dark:border-[#22303D] flex items-start justify-between">
               <div>
                 <div className="flex items-center gap-2">
                   <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
@@ -622,7 +662,7 @@ export default function HaiketsuOptimizer() {
                   </span>
                 </div>
                 <div className="flex items-baseline gap-2 mt-1">
-                  <h3 className="font-serif text-3xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  <h3 className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
                     {modalTsubo.name}
                   </h3>
                   <span className="text-sm text-[#59615D] dark:text-[#96A6B2]">（{modalTsubo.kana}）</span>
@@ -630,51 +670,66 @@ export default function HaiketsuOptimizer() {
               </div>
               <button
                 onClick={() => setModalTsubo(null)}
-                className="p-1.5 rounded-lg hover:bg-[#EAE3D4] dark:hover:bg-[#22303D] text-[#59615D] dark:text-[#96A6B2]"
+                className="p-1.5 rounded-lg hover:bg-[#EAE3D4] dark:hover:bg-[#22303D] text-[#59615D] dark:text-[#96A6B2] transition-colors cursor-pointer"
+                title="閉じる (Esc)"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-3">
-              <div className="bg-white dark:bg-[#121920] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#263542]">
-                <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block mb-1">
-                  取穴法（一般向け）
+            {/* パネルコンテンツ（スクロール可能） */}
+            <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-5">
+              {/* 取穴法（一般 ＆ 骨度法） */}
+              <div className="space-y-3">
+                <div className="bg-white dark:bg-[#121920] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#263542]">
+                  <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block mb-1">
+                    【一般向け】わかりやすい取穴法
+                  </span>
+                  <p className="text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
+                    {modalTsubo.locationSimple}
+                  </p>
+                </div>
+
+                <div className="bg-white dark:bg-[#121920] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#263542]">
+                  <span className="text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8] uppercase tracking-wider block mb-1">
+                    【専門家向け】解剖学・骨度法取穴（WHO標準）
+                  </span>
+                  <p className="text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed font-mono">
+                    {modalTsubo.locationDetail}
+                  </p>
+                </div>
+              </div>
+
+              {/* 臨床知見 */}
+              <div className="bg-[#EBF3EF] dark:bg-[#162A24] p-4 rounded-xl border border-[#C5DED4] dark:border-[#2A5243]">
+                <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block mb-1.5 flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                  <span>臨床知見・配穴の極意</span>
                 </span>
                 <p className="text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
-                  {modalTsubo.locationSimple}
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-[#121920] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#263542]">
-                <span className="text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8] uppercase tracking-wider block mb-1">
-                  解剖学・骨度法取穴（WHO標準）
-                </span>
-                <p className="text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed font-mono">
-                  {modalTsubo.locationDetail}
+                  {modalTsubo.clinicalNote}
                 </p>
               </div>
             </div>
 
-            <div className="bg-[#EBF3EF] dark:bg-[#162A24] p-4 rounded-xl border border-[#C5DED4] dark:border-[#2A5243]">
-              <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block mb-1.5 flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>臨床知見・配穴の極意</span>
-              </span>
-              <p className="text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
-                {modalTsubo.clinicalNote}
-              </p>
-            </div>
+            {/* パネルフッター */}
+            <div className="p-4 sm:p-5 border-t border-[#E8E1D1] dark:border-[#22303D] bg-[#F2EDE4]/60 dark:bg-[#141C24]/60 flex items-center justify-between gap-3">
+              <Link
+                href={`/tsubo/${modalTsubo.code.toLowerCase()}`}
+                onClick={() => setModalTsubo(null)}
+                className="text-xs sm:text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
+              >
+                <span>十四経脈辞典で詳しく見る ➜</span>
+              </Link>
 
-            <div className="pt-2 text-center">
               <button
                 onClick={() => setModalTsubo(null)}
-                className="px-6 py-2.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-xs font-semibold hover:bg-[#162E27] dark:hover:bg-[#225345] transition-all"
+                className="px-5 py-2 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-xs sm:text-sm font-semibold hover:bg-[#162E27] dark:hover:bg-[#225345] transition-all cursor-pointer"
               >
                 閉じる
               </button>
             </div>
-          </div>
+          </aside>
         </div>
       )}
     </div>
