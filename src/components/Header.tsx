@@ -108,7 +108,135 @@ export default function Header() {
 
           {/* デスクトップ ナビゲーション（基本分類：臨床で使う・学ぶ・辞典・料金・マイノート） */}
           <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2">
-            {/* 1. 臨床で使う（ドロップダウン ＆ #clinical-tools） */}
+            {/* 1. 学ぶ・国試（ドロップダウン） */}
+            <div
+              className="relative"
+              onMouseEnter={() => handleMouseEnter("learn")}
+              onMouseLeave={handleMouseLeave}
+            >
+              <div className="flex items-center">
+                <Link
+                  href="/curriculum"
+                  className={`px-3 py-2 rounded-l-xl text-sm font-bold transition-all flex items-center gap-1.5 ${
+                    openDropdown === "learn"
+                      ? "bg-[#EAEFF5] dark:bg-[#152331] text-[#1E2D3D] dark:text-[#7BAAD8]"
+                      : "text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E2D3D] dark:hover:text-[#FAF8F5] hover:bg-[#EAEFF5] dark:hover:bg-[#152331]"
+                  }`}
+                >
+                  <GraduationCap className="w-4 h-4 text-[#1E2D3D] dark:text-[#7BAAD8]" />
+                  <span>学ぶ・国試</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setOpenDropdown(openDropdown === "learn" ? null : "learn")}
+                  aria-expanded={openDropdown === "learn"}
+                  aria-label="学ぶ・国試メニューの切り替え"
+                  className={`p-2 rounded-r-xl text-sm transition-all ${
+                    openDropdown === "learn"
+                      ? "bg-[#EAEFF5] dark:bg-[#152331] text-[#1E2D3D] dark:text-[#7BAAD8]"
+                      : "text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E2D3D] dark:hover:text-[#FAF8F5] hover:bg-[#EAEFF5] dark:hover:bg-[#152331]"
+                  }`}
+                >
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === "learn" ? "rotate-180" : ""}`} />
+                </button>
+              </div>
+
+              {openDropdown === "learn" && (
+                <div className="absolute top-full left-0 mt-1 w-80 p-2 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 border-[#1E2D3D]/20 dark:border-[#2A3B4A] shadow-xl z-50 animate-fadeIn space-y-1">
+                  <div className="px-3 py-1.5 border-b border-[#E8E1D1] dark:border-[#263542] flex items-center justify-between">
+                    <span className="text-xs font-bold tracking-wider text-[#1E2D3D] dark:text-[#7BAAD8] uppercase">
+                      学ぶ・国試対策
+                    </span>
+                    <Link
+                      href="/curriculum"
+                      onClick={() => setOpenDropdown(null)}
+                      className="text-[11px] text-[#1E2D3D] dark:text-[#7BAAD8] hover:underline font-semibold"
+                    >
+                      カリキュラム一覧 ➜
+                    </Link>
+                  </div>
+
+                  <Link
+                    href="/curriculum"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#EAEFF5] dark:bg-[#152331] text-[#1E2D3D] dark:text-[#7BAAD8] flex items-center justify-center shrink-0 mt-0.5">
+                      <GraduationCap className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E2D3D] dark:group-hover:text-[#7BAAD8] block">
+                        東洋医学カリキュラム（全81講義）
+                      </span>
+                      <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
+                        陰陽五行・気血水から臓腑経絡・病機まで体系網羅
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/kokushi"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 mt-0.5">
+                      <Award className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] block">
+                          国家試験対策特設ハブ
+                        </span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#E6C387]/30 text-[#B86924] dark:text-[#E6C387]">
+                          特設
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
+                        忘却曲線デイリー復習・本試験過去問実問・3大特訓
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/library"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 mt-0.5">
+                      <BookOpen className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                        古典条文・医学論文ライブラリ
+                      </span>
+                      <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
+                        『素問』『霊枢』『難経』条文検索と最新医学論文
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/articles"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] dark:bg-[#1A2530] text-[#59615D] dark:text-[#A0B0BC] flex items-center justify-center shrink-0 mt-0.5 border border-[#E8E1D1] dark:border-[#263542]">
+                      <FileText className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                        学術コラム・文献解説
+                      </span>
+                      <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
+                        自律神経・微小循環の現代科学的考察
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* 2. 臨床ツール（ドロップダウン） */}
             <div
               className="relative"
               onMouseEnter={() => handleMouseEnter("clinical")}
@@ -124,7 +252,7 @@ export default function Header() {
                   }`}
                 >
                   <Stethoscope className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-                  <span>臨床で使う</span>
+                  <span>臨床ツール</span>
                 </Link>
                 <button
                   type="button"
@@ -142,52 +270,34 @@ export default function Header() {
               </div>
 
               {openDropdown === "clinical" && (
-                <div className="absolute top-full left-0 mt-1 w-80 p-2 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34]/20 dark:border-[#2A3B4A] shadow-xl z-50 animate-fadeIn space-y-1">
+                <div className="absolute top-full left-0 mt-1 w-84 p-2 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34]/20 dark:border-[#2A3B4A] shadow-xl z-50 animate-fadeIn space-y-1">
                   <div className="px-3 py-1.5 border-b border-[#E8E1D1] dark:border-[#263542] flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-[#1E3D34] dark:text-[#74BA9E] uppercase">
-                      臨床ツール一覧
+                      臨床実践ツール
                     </span>
                     <Link
                       href="/#clinical-tools"
                       onClick={() => setOpenDropdown(null)}
                       className="text-[11px] text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-semibold"
                     >
-                      セクションへ →
+                      ツール一覧へ ➜
                     </Link>
                   </div>
 
                   <Link
-                    href="/diagnosis"
+                    href="/tsubo"
                     onClick={() => setOpenDropdown(null)}
                     className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
                   >
                     <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 mt-0.5">
-                      <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                      <Compass className="w-4 h-4" />
                     </div>
                     <div>
                       <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                        気血水体質チェック
+                        経穴辞典（全361穴）
                       </span>
                       <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
-                        気・血・水の視点から状態を整理
-                      </span>
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/diagnosis?tab=gorou"
-                    onClick={() => setOpenDropdown(null)}
-                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 mt-0.5">
-                      <Activity className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] block">
-                        五労チェッカー
-                      </span>
-                      <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
-                        日常の姿勢偏りと五臓疲労を点検
+                        骨度法・解剖取穴・刺鍼深度・安全禁忌ガイド
                       </span>
                     </div>
                   </Link>
@@ -205,7 +315,7 @@ export default function Header() {
                         臨床弁証シミュレーター
                       </span>
                       <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
-                        八綱・気血水・臓腑から一文の証を推論
+                        八綱・気血水・臓腑の3段階連動で一文の証を推論
                       </span>
                     </div>
                   </Link>
@@ -220,167 +330,88 @@ export default function Header() {
                     </div>
                     <div>
                       <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] block">
-                        配穴設計
+                        配穴設計オプティマイザー
                       </span>
                       <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
-                        本治・標治のバランスと選定理由を整理
+                        原絡・兪募・八脈交会穴の処方解析＆禁忌アラート
                       </span>
                     </div>
                   </Link>
 
-                  <div className="pt-1 border-t border-[#E8E1D1] dark:border-[#263542]">
-                    <Link
-                      href="/notes"
-                      onClick={() => setOpenDropdown(null)}
-                      className="flex items-center justify-between p-2 rounded-xl bg-[#EBF3EF]/60 dark:bg-[#182823]/60 hover:bg-[#EBF3EF] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]"
-                    >
-                      <div className="flex items-center gap-2">
-                        <FileText className="w-3.5 h-3.5" />
-                        <span>臨床ノート（マイノート）を開く</span>
+                  <Link
+                    href="/cases"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 mt-0.5">
+                      <FileText className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                          臨床症例演習（全20症例）
+                        </span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
+                          全例連動
+                        </span>
                       </div>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
+                        四診所見からシミュレーターで配穴を直接検証
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/diagnosis"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 mt-0.5">
+                      <Sparkles className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] block">
+                        四診・気血水体質診断
+                      </span>
+                      <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
+                        12問体質チェック＆現代人の五労チェッカー
+                      </span>
+                    </div>
+                  </Link>
+
+                  <div className="pt-1 border-t border-[#E8E1D1] dark:border-[#263542] flex items-center justify-between px-2 text-[11px]">
+                    <Link
+                      href="/tsubo/compare"
+                      onClick={() => setOpenDropdown(null)}
+                      className="text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] font-medium"
+                    >
+                      経穴比較 ➜
+                    </Link>
+                    <Link
+                      href="/kikei"
+                      onClick={() => setOpenDropdown(null)}
+                      className="text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] font-medium"
+                    >
+                      奇経八脈 ➜
                     </Link>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* 2. 学ぶ（直接カリキュラムへ） */}
+            {/* 3. マイカルテ・ノート（直接入口） */}
             <Link
-              href="/curriculum"
-              className="px-3 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+              href="/notes"
+              className="px-3 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 text-[#285A52] dark:text-[#6EC5B8] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
             >
-              <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#83BEA8]" />
-              <span>学ぶ</span>
-            </Link>
-
-            {/* 国試対策（特設ハブ） */}
-            <Link
-              href="/kokushi"
-              className="px-3 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
-            >
-              <Award className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              <span>国試対策</span>
-              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#E6C387]/30 text-[#B86924] dark:text-[#E6C387]">
-                特設
-              </span>
-            </Link>
-
-            {/* 3. 辞典 ドロップダウン */}
-            <div
-              className="relative"
-              onMouseEnter={() => handleMouseEnter("search")}
-              onMouseLeave={handleMouseLeave}
-            >
-              <div className="flex items-center">
-                <Link
-                  href="/tsubo"
-                  className={`px-3 py-2 rounded-l-xl text-sm font-bold transition-all flex items-center gap-1.5 ${
-                    openDropdown === "search"
-                      ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]"
-                      : "text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
-                  }`}
-                >
-                  <Compass className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-                  <span>辞典</span>
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => setOpenDropdown(openDropdown === "search" ? null : "search")}
-                  aria-expanded={openDropdown === "search"}
-                  aria-label="辞典メニューの切り替え"
-                  className={`p-2 rounded-r-xl text-sm transition-all ${
-                    openDropdown === "search"
-                      ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]"
-                      : "text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
-                  }`}
-                >
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === "search" ? "rotate-180" : ""}`} />
-                </button>
-              </div>
-
-              {openDropdown === "search" && (
-                <div className="absolute top-full left-0 mt-1 w-80 p-2 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34]/20 dark:border-[#2A3B4A] shadow-xl z-50 animate-fadeIn space-y-1">
-                  <div className="px-3 py-1.5 border-b border-[#E8E1D1] dark:border-[#263542]">
-                    <span className="text-xs font-bold tracking-wider text-[#1E3D34] dark:text-[#74BA9E] uppercase">
-                      調べる・参照する
-                    </span>
-                  </div>
-
-                  <Link
-                    href="/tsubo"
-                    onClick={() => setOpenDropdown(null)}
-                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] dark:bg-[#1A2530] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 mt-0.5 border border-[#E8E1D1] dark:border-[#263542]">
-                      <Compass className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                        経穴辞典（全361穴）
-                      </span>
-                      <span className="text-xs text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
-                        十四経脈・骨度法・解剖取穴・主治
-                      </span>
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/tsubo/compare"
-                    onClick={() => setOpenDropdown(null)}
-                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 mt-0.5">
-                      <SlidersHorizontal className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                        経穴比較
-                      </span>
-                      <span className="text-xs text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
-                        2〜3穴の解剖・要穴・主治を横並び比較
-                      </span>
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/kikei"
-                    onClick={() => setOpenDropdown(null)}
-                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] dark:bg-[#1A2530] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 mt-0.5 border border-[#E8E1D1] dark:border-[#263542]">
-                      <Compass className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                        奇経八脈
-                      </span>
-                      <span className="text-xs text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
-                        任脈・督脈と八脈交会穴理論
-                      </span>
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/articles"
-                    onClick={() => setOpenDropdown(null)}
-                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFFFFF] dark:hover:bg-[#121920] transition-colors group"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-[#EDF3F8] dark:bg-[#1A2837] text-[#1E2D3D] dark:text-[#6FA0D6] flex items-center justify-center shrink-0 mt-0.5">
-                      <BookOpen className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                        コラム・文献
-                      </span>
-                      <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block leading-tight">
-                        神経生理学・配穴機序・古典解説
-                      </span>
-                    </div>
-                  </Link>
-                </div>
+              <FileText className="w-4 h-4" />
+              <span>マイカルテ</span>
+              {clipCount > 0 && (
+                <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#B86924] text-white">
+                  {clipCount}
+                </span>
               )}
-            </div>
+            </Link>
 
             {/* 4. 料金（直接料金ページへ） */}
             <Link
@@ -390,24 +421,22 @@ export default function Header() {
               <Crown className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
               <span>料金</span>
             </Link>
-
-            {/* 5. マイノート（再訪者向け直接入口） */}
-            <Link
-              href="/notes"
-              className="px-3 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 text-[#285A52] dark:text-[#6EC5B8] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
-            >
-              <FileText className="w-4 h-4" />
-              <span>マイノート</span>
-              {clipCount > 0 && (
-                <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#B86924] text-white">
-                  {clipCount}
-                </span>
-              )}
-            </Link>
           </nav>
 
-          {/* デスクトップ右側：検索ボタン ＆ 会員マイページ ＆ 表示設定 */}
+          {/* デスクトップ右側：国試ボタン ＆ 検索ボタン ＆ 会員マイページ ＆ 表示設定 */}
           <div className="hidden lg:flex items-center gap-2">
+            {/* 国試対策クイック直行ボタン */}
+            <Link
+              href="/kokushi"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#F3DEC5] dark:border-[#4D331F] text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBEAD4] transition-all text-xs font-bold shadow-2xs"
+            >
+              <Award className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+              <span>国試対策</span>
+              <span className="text-[9px] px-1 rounded bg-[#B86924] text-white font-mono">
+                特設
+              </span>
+            </Link>
+
             {/* サイト全体横断検索（Cmd+K） */}
             <button
               type="button"
@@ -682,12 +711,20 @@ export default function Header() {
               <span>奇経八脈</span>
             </Link>
             <Link
-              href="/articles"
+              href="/library"
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-[#232826] dark:text-[#FAF8F5] hover:bg-[#EAEFF5] dark:hover:bg-[#152331]"
             >
               <BookOpen className="w-4 h-4 text-[#1E2D3D] dark:text-[#7BAAD8]" />
-              <span>コラム・文献</span>
+              <span>古典・論文ライブラリ</span>
+            </Link>
+            <Link
+              href="/articles"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-[#232826] dark:text-[#FAF8F5] hover:bg-[#EAEFF5] dark:hover:bg-[#152331]"
+            >
+              <FileText className="w-4 h-4 text-[#1E2D3D] dark:text-[#7BAAD8]" />
+              <span>コラム・文献解説</span>
             </Link>
           </div>
 

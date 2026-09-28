@@ -96,6 +96,8 @@ export default function ThreeStageSimulator() {
 
   // 症例演習からの連動情報
   const [fromCaseInfo, setFromCaseInfo] = useState<{ number: string; title: string } | null>(null);
+  // 体質診断からの連動情報
+  const [fromDiagnosisInfo, setFromDiagnosisInfo] = useState<{ diagName: string } | null>(null);
 
   // 診断推論の算出
   
@@ -125,7 +127,7 @@ export default function ThreeStageSimulator() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // 1. URL searchParams の優先チェック（症例等からの連携）
+    // 1. URL searchParams の優先チェック（症例・体質診断等からの連携）
     const searchParams = new URLSearchParams(window.location.search);
     const fromCase = searchParams.get("fromCase");
     const caseTitle = searchParams.get("caseTitle");
@@ -151,6 +153,31 @@ export default function ThreeStageSimulator() {
       });
       setActivePresetId(null);
       setChangeNotice(`症例${fromCase}（${caseTitle || ""}）の臨床所見を反映しました。条件を動かして配穴変化を観察できます。`);
+      setIsMounted(true);
+      return;
+    }
+
+    const fromDiagnosis = searchParams.get("fromDiagnosis");
+    const diagName = searchParams.get("diagName");
+
+    if (fromDiagnosis) {
+      const qDepth = searchParams.get("depth") as DepthType | null;
+      const qTemp = searchParams.get("temp") as TemperatureType | null;
+      const qState = searchParams.get("state") as StateType | null;
+      const qQixueshui = searchParams.get("qixueshui") as QixueshuiType | null;
+      const qZangfu = searchParams.get("zangfu") as ZangfuType | null;
+
+      if (qDepth) setDepth(qDepth);
+      if (qTemp) setTemp(qTemp);
+      if (qState) setState(qState);
+      if (qQixueshui) setQixueshui(qQixueshui);
+      if (qZangfu) setZangfu(qZangfu);
+
+      setFromDiagnosisInfo({
+        diagName: diagName || "体質診断",
+      });
+      setActivePresetId(null);
+      setChangeNotice(`気血水体質診断（${diagName || ""}）の所見を反映しました。八綱・臓腑の連動配穴を検証できます。`);
       setIsMounted(true);
       return;
     }
@@ -370,6 +397,36 @@ export default function ThreeStageSimulator() {
           <button
             onClick={() => setFromCaseInfo(null)}
             className="text-xs font-semibold text-[#59615D] dark:text-[#96A6B2] hover:text-[#1E3D34] underline cursor-pointer shrink-0"
+          >
+            連動を解除
+          </button>
+        </div>
+      )}
+
+      {/* 体質診断連携通知バナー */}
+      {fromDiagnosisInfo && (
+        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#FCF4EB] to-[#FAF8F5] dark:from-[#2A2016] dark:to-[#17212A] border-2 border-[#B86924] dark:border-[#E6C387] shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fadeIn">
+          <div className="flex items-center gap-3">
+            <span className="p-2.5 rounded-xl bg-[#B86924] text-white shrink-0">
+              <FlaskConical className="w-5 h-5 text-[#FAF8F5]" />
+            </span>
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#B86924] text-white">
+                  体質診断 連動中
+                </span>
+                <span className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
+                  {fromDiagnosisInfo.diagName}
+                </span>
+              </div>
+              <p className="text-xs text-[#59615D] dark:text-[#96A6B2] mt-0.5 leading-relaxed">
+                気血水体質診断の所見が反映されています。八綱や臓腑を切り替えて、配穴処方の変化を観察できます。
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => setFromDiagnosisInfo(null)}
+            className="text-xs font-semibold text-[#59615D] dark:text-[#96A6B2] hover:text-[#B86924] underline cursor-pointer shrink-0"
           >
             連動を解除
           </button>

@@ -26,6 +26,7 @@ import {
 import { useCurriculumProgress, QuizResultRecord } from "@/contexts/CurriculumProgressContext";
 import { CURRICULUM_QUIZZES, QuizQuestionItem, LessonQuizGroup } from "@/data/curriculumQuizzes";
 import { CURRICULUM_DATA } from "@/data/curriculumData";
+import { KOKUSHI_PAST_EXAMS, KokushiPastExamQuestion } from "@/data/kokushiPastExams";
 
 // 国試ターゲット日（第34回 鍼灸師国家試験 想定：2027年2月28日）
 const TARGET_EXAM_DATE = new Date("2027-02-28T09:00:00+09:00");
@@ -100,6 +101,26 @@ export default function KokushiDashboard() {
   // デイリークイズの回答状態
   const [userAnswers, setUserAnswers] = useState<Record<string, number>>({});
   const [submitted, setSubmitted] = useState<Record<string, boolean>>({});
+
+  // 本試験過去問アーカイブのステート
+  const [pastSubjectFilter, setPastSubjectFilter] = useState<"all" | "東洋医学概論" | "経絡経穴概論">("all");
+  const [pastExamAnswers, setPastExamAnswers] = useState<Record<string, number>>({});
+  const [pastExamSubmitted, setPastExamSubmitted] = useState<Record<string, boolean>>({});
+
+  const handleSelectPastOption = (qId: string, optIdx: number) => {
+    if (pastExamSubmitted[qId]) return;
+    setPastExamAnswers((prev) => ({ ...prev, [qId]: optIdx }));
+  };
+
+  const handleSubmitPastAnswer = (qId: string) => {
+    setPastExamSubmitted((prev) => ({ ...prev, [qId]: true }));
+  };
+
+  // フィルタリングされた過去問リスト
+  const filteredPastExams = useMemo(() => {
+    if (pastSubjectFilter === "all") return KOKUSHI_PAST_EXAMS;
+    return KOKUSHI_PAST_EXAMS.filter((q) => q.subject === pastSubjectFilter);
+  }, [pastSubjectFilter]);
 
   const handleSelectOption = (questionId: string, optIdx: number) => {
     if (submitted[questionId]) return;
@@ -459,10 +480,7 @@ export default function KokushiDashboard() {
           </Link>
 
           {/* モードB: 要穴・骨度法マスター */}
-          <Link
-            href="/tsubo"
-            className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-[#17212A] border-2 border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] dark:hover:border-[#E6C387] hover:shadow-md transition-all group flex flex-col justify-between space-y-4"
-          >
+          <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-[#17212A] border-2 border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] dark:hover:border-[#E6C387] hover:shadow-md transition-all group flex flex-col justify-between space-y-4">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="p-2.5 rounded-2xl bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387]">
@@ -479,11 +497,23 @@ export default function KokushiDashboard() {
                 五行穴（井滎兪経合）、原絡郄、兪募穴、四総穴の暗記と、WHO標準解剖取穴・骨度法寸数の完全マスター。
               </p>
             </div>
-            <div className="pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
-              <span>経穴辞典・骨度法へ進む</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            <div className="pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-col gap-2">
+              <Link
+                href="/tsubo"
+                className="flex items-center justify-between text-xs font-bold text-[#B86924] dark:text-[#E6C387] hover:underline"
+              >
+                <span>経穴辞典・骨度法へ進む</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                href="/tsubo/practice"
+                className="flex items-center justify-between text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] dark:bg-[#182823] px-2.5 py-1.5 rounded-lg hover:opacity-90 transition-opacity"
+              >
+                <span>⚡ 経穴フラッシュ一問一答演習</span>
+                <Zap className="w-3.5 h-3.5" />
+              </Link>
             </div>
-          </Link>
+          </div>
 
           {/* モードC: 禁忌・安全管理 */}
           <Link
@@ -515,7 +545,195 @@ export default function KokushiDashboard() {
       </section>
 
       {/* ============================================================ */}
-      {/* 4. 分野別・弱点克服カリキュラム                                */}
+      {/* 4. 本試験過去問アーカイブ特訓（第30回〜第33回 実問4択）         */}
+      {/* ============================================================ */}
+      <section className="bg-white dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-8 shadow-sm space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4">
+          <div className="flex items-center gap-2">
+            <span className="p-2 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387]">
+              <Target className="w-5 h-5" />
+            </span>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  本試験過去問アーカイブ特訓（実問・4択）
+                </h2>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#1E3D34] text-white">
+                  実戦4択
+                </span>
+              </div>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
+                近年の国家試験本番問題から、東洋医学概論・経絡経穴概論の頻出・最重要問を厳選。
+              </p>
+            </div>
+          </div>
+
+          {/* 科目フィルター */}
+          <div className="inline-flex p-1 rounded-xl bg-[#FAF8F5] dark:bg-[#10161C] border border-[#E8E1D1] dark:border-[#263542] self-start sm:self-auto">
+            {(["all", "東洋医学概論", "経絡経穴概論"] as const).map((sub) => (
+              <button
+                key={sub}
+                type="button"
+                onClick={() => setPastSubjectFilter(sub)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  pastSubjectFilter === sub
+                    ? "bg-[#1E3D34] text-white shadow-xs"
+                    : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34]"
+                }`}
+              >
+                {sub === "all" ? "全科目" : sub}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* 過去問カード一覧 */}
+        <div className="space-y-6">
+          {filteredPastExams.map((item) => {
+            const userChoice = pastExamAnswers[item.id];
+            const isSub = pastExamSubmitted[item.id];
+            const isCorrect = userChoice === item.correctIndex;
+
+            return (
+              <div
+                key={item.id}
+                className="p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-4"
+              >
+                {/* メタ情報バッジ */}
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-md bg-[#1E3D34] text-white">
+                      第{item.examNumber}回
+                    </span>
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] border border-[#E8E1D1] dark:border-[#2D3E50]">
+                      {item.subject}
+                    </span>
+                    <span className="text-xs text-[#59615D] dark:text-[#8899A6]">
+                      {item.questionNumber}
+                    </span>
+                  </div>
+                  <span className="text-[11px] font-semibold text-[#B86924] dark:text-[#E6C387]">
+                    領域: {item.category}
+                  </span>
+                </div>
+
+                {/* 問題本文 */}
+                <p className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
+                  {item.question}
+                </p>
+
+                {/* 4択選択肢ボタン */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {item.options.map((opt, optIdx) => {
+                    const isSelected = userChoice === optIdx;
+                    let optStyle = "bg-white dark:bg-[#17212A] border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E3D34]";
+
+                    if (isSelected) {
+                      optStyle = "bg-[#EBF3EF] dark:bg-[#182823] border-[#1E3D34] dark:border-[#74BA9E] text-[#1E3D34] dark:text-[#FAF8F5] font-bold";
+                    }
+
+                    if (isSub) {
+                      if (optIdx === item.correctIndex) {
+                        optStyle = "bg-emerald-50 dark:bg-[#142820] border-emerald-500 text-emerald-900 dark:text-emerald-200 font-bold";
+                      } else if (isSelected && !isCorrect) {
+                        optStyle = "bg-rose-50 dark:bg-[#281517] border-rose-500 text-rose-900 dark:text-rose-200";
+                      } else {
+                        optStyle = "opacity-50 bg-white dark:bg-[#17212A] border-[#E8E1D1] dark:border-[#263542]";
+                      }
+                    }
+
+                    return (
+                      <button
+                        key={optIdx}
+                        type="button"
+                        onClick={() => handleSelectPastOption(item.id, optIdx)}
+                        disabled={isSub}
+                        className={`p-3 rounded-xl border text-left text-xs sm:text-sm flex items-start gap-2.5 transition-all ${optStyle}`}
+                      >
+                        <span className="font-mono font-bold text-xs shrink-0 mt-0.5">
+                          {optIdx + 1}.
+                        </span>
+                        <span className="flex-1 leading-relaxed">{opt}</span>
+                        {isSub && optIdx === item.correctIndex && (
+                          <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* 確定ボタン */}
+                {!isSub ? (
+                  <div className="flex justify-end pt-1">
+                    <button
+                      type="button"
+                      onClick={() => handleSubmitPastAnswer(item.id)}
+                      disabled={userChoice === undefined}
+                      className="px-5 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer shadow-xs"
+                    >
+                      正誤を判定する
+                    </button>
+                  </div>
+                ) : (
+                  /* 解説・要点・講義リンク */
+                  <div className={`p-4 rounded-xl space-y-3 text-xs sm:text-sm ${
+                    isCorrect
+                      ? "bg-emerald-50 dark:bg-[#142820] border border-emerald-200 dark:border-emerald-800 text-emerald-950 dark:text-emerald-100"
+                      : "bg-rose-50 dark:bg-[#281517] border border-rose-200 dark:border-rose-900 text-rose-950 dark:text-rose-100"
+                  }`}>
+                    <div className="flex items-center gap-2 font-bold">
+                      {isCorrect ? (
+                        <>
+                          <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                          <span>正解（{item.correctIndex + 1}番）です！</span>
+                        </>
+                      ) : (
+                        <>
+                          <AlertCircle className="w-5 h-5 text-rose-600" />
+                          <span>不正解です（正解は {item.correctIndex + 1}番）。</span>
+                        </>
+                      )}
+                    </div>
+                    <p className="leading-relaxed pl-7 whitespace-pre-line">{item.explanation}</p>
+
+                    {item.keyPoints && item.keyPoints.length > 0 && (
+                      <div className="pl-7 pt-1">
+                        <span className="font-bold text-[11px] text-[#B86924] dark:text-[#E6C387] block mb-1">
+                          📌 暗記のキーポイント:
+                        </span>
+                        <ul className="list-disc list-inside space-y-0.5 text-xs text-[#59615D] dark:text-[#A0B0BC]">
+                          {item.keyPoints.map((kp, kpIdx) => (
+                            <li key={kpIdx}>{kp}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {item.relatedLectureId && (
+                      <div className="pt-2 border-t border-emerald-200/50 dark:border-emerald-800/50 flex flex-wrap items-center justify-between gap-2 pl-7">
+                        <span className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
+                          関連講義: 『{item.relatedLectureTitle || "カリキュラム"}』
+                        </span>
+                        <Link
+                          href={`/curriculum?lecture=${item.relatedLectureId}`}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shadow-xs"
+                        >
+                          <BookOpen className="w-3.5 h-3.5" />
+                          <span>この分野の講義テキストへ</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* 5. 分野別・弱点克服カリキュラム                                */}
       {/* ============================================================ */}
       <section className="bg-white dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-8 shadow-sm space-y-6">
         <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-4">

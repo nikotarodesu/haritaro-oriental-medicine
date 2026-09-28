@@ -17,6 +17,7 @@ import {
   BookOpen,
   AlertCircle,
   FileText,
+  Layers,
 } from "lucide-react";
 import GorouWorkstyleChecker from "@/components/GorouWorkstyleChecker";
 import { saveDraftPatientNote } from "@/utils/draftNote";
@@ -104,6 +105,33 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
       treatmentPlan: `【気血水体質チェック結果】\n体質傾向: ${result.name}（${result.reading}）\n主な傾向: ${result.summary}\n推奨生活養生: ${result.advice.lifestyle}\n推奨食材: ${result.advice.food.join("、")}\n※本内容は気血水体質チェックからの下書き参考情報です。確定診断ではありません。`,
     });
     router.push("/notes");
+  };
+
+  const handleGoToSimulator = () => {
+    if (!result) return;
+
+    // 体質タイプに応じたシミュレーターパラメータへのマッピング
+    const mapping: Record<string, { depth: string; temp: string; state: string; qixueshui: string; zangfu: string }> = {
+      "qi_deficiency": { depth: "interior", temp: "neutral", state: "deficiency", qixueshui: "qixu", zangfu: "pi-deficiency" },
+      "yang_deficiency": { depth: "interior", temp: "cold", state: "deficiency", qixueshui: "yangxu", zangfu: "shen-yang-deficiency" },
+      "qi_stagnation": { depth: "interior", temp: "neutral", state: "excess", qixueshui: "qitai", zangfu: "gan-qi-stagnation" },
+      "blood_deficiency": { depth: "interior", temp: "neutral", state: "deficiency", qixueshui: "xuexu", zangfu: "gan-blood-deficiency" },
+      "blood_stasis": { depth: "interior", temp: "neutral", state: "excess", qixueshui: "oketsu", zangfu: "gan-qi-stagnation" },
+      "water_retention": { depth: "interior", temp: "cold", state: "excess", qixueshui: "suitai", zangfu: "pi-deficiency" },
+    };
+
+    const target = mapping[result.type] || { depth: "interior", temp: "neutral", state: "deficiency", qixueshui: "qixu", zangfu: "pi-deficiency" };
+    const params = new URLSearchParams({
+      fromDiagnosis: "true",
+      diagName: result.name,
+      depth: target.depth,
+      temp: target.temp,
+      state: target.state,
+      qixueshui: target.qixueshui,
+      zangfu: target.zangfu,
+    });
+
+    router.push(`/simulator?${params.toString()}`);
   };
 
   const handleReset = () => {
@@ -304,6 +332,37 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
                     <span>解説記事を読む</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
+                </div>
+
+                {/* 臨床シミュレーター連携バナー */}
+                <div className="bg-[#FAF8F5] dark:bg-[#152028] p-4 rounded-xl border-2 border-[#B86924]/30 dark:border-[#E6C387]/30 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-[#B86924] text-white flex items-center justify-center shrink-0">
+                      <Layers className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
+                          シミュレーターで配穴と鑑別を深掘り
+                        </span>
+                        <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#B86924] text-white">
+                          臨床推論
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-tight block mt-0.5">
+                        診断所見「{result.name}」をシミュレーターへ引き継ぎ、八綱・気血水・臓腑の連動配穴を検証できます。
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleGoToSimulator}
+                    className="px-4 py-2.5 rounded-xl bg-[#B86924] hover:bg-[#96531B] text-white text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm whitespace-nowrap cursor-pointer"
+                  >
+                    <Layers className="w-3.5 h-3.5" />
+                    <span>シミュレーターで検証する</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
                 </div>
 
                 {/* 施術者・臨床向け マイノート連携バナー */}
