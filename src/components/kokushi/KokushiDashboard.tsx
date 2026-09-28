@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { 
   GraduationCap, 
   Calendar, 
@@ -32,6 +33,9 @@ import { KOKUSHI_PAST_EXAMS, KokushiPastExamQuestion } from "@/data/kokushiPastE
 const TARGET_EXAM_DATE = new Date("2027-02-28T09:00:00+09:00");
 
 export default function KokushiDashboard() {
+  const searchParams = useSearchParams();
+  const targetExamId = searchParams.get("examId");
+
   const { 
     isMounted, 
     quizResults, 
@@ -106,6 +110,23 @@ export default function KokushiDashboard() {
   const [pastSubjectFilter, setPastSubjectFilter] = useState<"all" | "東洋医学概論" | "経絡経穴概論">("all");
   const [pastExamAnswers, setPastExamAnswers] = useState<Record<string, number>>({});
   const [pastExamSubmitted, setPastExamSubmitted] = useState<Record<string, boolean>>({});
+
+  // 外部・検索モーダルからの直通リンク（?examId=xxx）検知時に自動スクロール
+  useEffect(() => {
+    if (!targetExamId) return;
+    setPastSubjectFilter("all");
+    const timer = setTimeout(() => {
+      const el = document.getElementById(`kokushi-exam-${targetExamId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.classList.add("ring-2", "ring-[#1E3D34]", "dark:ring-[#74BA9E]");
+        setTimeout(() => {
+          el.classList.remove("ring-2", "ring-[#1E3D34]", "dark:ring-[#74BA9E]");
+        }, 3000);
+      }
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [targetExamId]);
 
   const handleSelectPastOption = (qId: string, optIdx: number) => {
     if (pastExamSubmitted[qId]) return;
@@ -597,7 +618,8 @@ export default function KokushiDashboard() {
             return (
               <div
                 key={item.id}
-                className="p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-4"
+                id={`kokushi-exam-${item.id}`}
+                className="p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-4 scroll-mt-24 transition-all"
               >
                 {/* メタ情報バッジ */}
                 <div className="flex flex-wrap items-center justify-between gap-2">

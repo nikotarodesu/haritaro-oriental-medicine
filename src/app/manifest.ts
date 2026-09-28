@@ -21,5 +21,35 @@ export default function manifest(): MetadataRoute.Manifest {
         type: "image/png",
       },
     ],
+    shortcuts: [
+      {
+        name: "国家試験対策特設ハブ",
+        short_name: "国試対策",
+        description: "忘却曲線復習・日替わり特訓・本試験過去問アーカイブ",
+        url: "/kokushi",
+        icons: [{ src: "/icon.png", sizes: "192x192" }],
+      },
+      {
+        name: "臨床弁証シミュレーター",
+        short_name: "シミュレーター",
+        description: "八綱・気血水・臓腑経絡の3段階連動で証と配穴を導出",
+        url: "/simulator",
+        icons: [{ src: "/icon.png", sizes: "192x192" }],
+      },
+      {
+        name: "臨床カルテ・ノート",
+        short_name: "カルテ・ノート",
+        description: "患者カルテ、配穴ストック、A4養生処方せん印刷",
+        url: "/notes",
+        icons: [{ src: "/icon.png", sizes: "192x192" }],
+      },
+      {
+        name: "経穴辞典（361穴）",
+        short_name: "経穴辞典",
+        description: "WHO標準361穴の部位・解剖・取穴法・臨床主治",
+        url: "/tsubo",
+        icons: [{ src: "/icon.png", sizes: "192x192" }],
+      },
+    ],
   };
 }

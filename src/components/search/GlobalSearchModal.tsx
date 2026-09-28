@@ -18,6 +18,7 @@ import {
   HeartPulse,
   Award,
   Scroll,
+  Trash2,
 } from "lucide-react";
 import { getAllAcupoints } from "@/data/tsubo";
 import { CURRICULUM_DATA } from "@/data/curriculumData";
@@ -27,6 +28,7 @@ import { KOKUSHI_PAST_EXAMS } from "@/data/kokushiPastExams";
 import { CLASSICAL_TEXTS } from "@/data/classicalTextsData";
 import { PAPERS_DATABASE } from "@/data/references/papersData";
 import { SYMPTOMS } from "@/data/symptomData";
+import { ALL_ARCHIVE_CASES } from "@/data/cases/archiveCases";
 
 export type SearchItemType =
   | "acupoint"
@@ -152,6 +154,8 @@ const STATIC_TOOLS: SearchResultItem[] = [
   },
 ];
 
+const RECENT_SEARCHES_KEY = "haritaro_recent_searches";
+
 interface GlobalSearchModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -167,7 +171,44 @@ export default function GlobalSearchModal({
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>("all");
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  // 検索履歴の読み込み
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(RECENT_SEARCHES_KEY);
+      if (raw) {
+        setRecentSearches(JSON.parse(raw));
+      }
+    } catch (e) {}
+  }, []);
+
+  const saveRecentSearch = (text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed) return;
+    try {
+      const updated = [trimmed, ...recentSearches.filter((s) => s !== trimmed)].slice(0, 6);
+      setRecentSearches(updated);
+      localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
+    } catch (e) {}
+  };
+
+  const removeRecentSearch = (e: React.MouseEvent, text: string) => {
+    e.stopPropagation();
+    try {
+      const updated = recentSearches.filter((s) => s !== text);
+      setRecentSearches(updated);
+      localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
+    } catch (e) {}
+  };
+
+  const clearAllRecentSearches = () => {
+    try {
+      setRecentSearches([]);
+      localStorage.removeItem(RECENT_SEARCHES_KEY);
+    } catch (e) {}
+  };
 
   // 全データのインデックス化（初回マウント時に一度だけ生成）
   const allItems = useMemo<SearchResultItem[]>(() => {
@@ -232,7 +273,7 @@ export default function GlobalSearchModal({
         title: `第${k.examNumber}回国試 ${k.subject}【${k.questionNumber}】`,
         subtitle: `${k.question.slice(0, 48)}...`,
         badge: `国試実問：${k.category}`,
-        url: `/kokushi`,
+        url: `/kokushi?examId=${k.id}`,
         tags: [
           `第${k.examNumber}回`,
           k.subject,
@@ -330,7 +371,28 @@ export default function GlobalSearchModal({
       });
     });
 
-    // 9. 専門用語（Glossary）
+    // 9. 運動器・自律神経実例アーカイブ（全32症例）
+    ALL_ARCHIVE_CASES.forEach((ac) => {
+      list.push({
+        id: `archive-case-${ac.id}`,
+        type: "case",
+        title: ac.title,
+        subtitle: `${ac.category}｜${ac.location}・${ac.symptoms.slice(0, 40)}...`,
+        badge: "臨床実例",
+        url: `/library`,
+        tags: [
+          ac.title,
+          ac.category,
+          ac.location,
+          ac.symptoms,
+          ac.treatmentAndCourse,
+          ...ac.usedAcupoints,
+          ...ac.tags,
+        ],
+      });
+    });
+
+    // 10. 専門用語（Glossary）
     Object.values(GLOSSARY_TERMS).forEach((term) => {
       list.push({
         id: `glossary-${term.term}`,
@@ -462,6 +524,7 @@ export default function GlobalSearchModal({
         if (filteredResults[selectedIndex]) {
           e.preventDefault();
           const target = filteredResults[selectedIndex];
+          saveRecentSearch(query || target.title);
           onClose();
           router.push(target.url);
         }
@@ -470,7 +533,7 @@ export default function GlobalSearchModal({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, filteredResults, selectedIndex, onClose, router]);
+  }, [isOpen, filteredResults, selectedIndex, onClose, router, query]);
 
   // クイックサジェストのキーワード
   const quickSearches = [
@@ -480,7 +543,8 @@ export default function GlobalSearchModal({
     { label: "気虚", q: "気虚" },
     { label: "治未病 (古典)", q: "治未病" },
     { label: "肩こり・頭痛", q: "頭痛" },
-    { label: "五行相生", q: "五行" },
+    { label: "膝痛・ランナー", q: "膝" },
+    { label: "坐骨神経痛", q: "坐骨" },
     { label: "シミュレーター", q: "シミュレーター" },
   ];
 
@@ -491,7 +555,7 @@ export default function GlobalSearchModal({
     { id: "lecture", label: "講義 (81)" },
     { id: "symptom", label: "症状別ケア" },
     { id: "library", label: "論文・古典" },
-    { id: "case", label: "症例演習" },
+    { id: "case", label: "症例・実例" },
     { id: "tool", label: "ツール" },
   ];
 
@@ -517,7 +581,7 @@ export default function GlobalSearchModal({
               setQuery(e.target.value);
               setSelectedIndex(0);
             }}
-            placeholder="経穴（合谷 / LI4）、国試問、古典、論文、症状（頭痛・肩こり）、講義を検索..."
+            placeholder="経穴（合谷 / LI4）、国試問、古典、論文、症状（頭痛・膝痛）、講義を検索..."
             className="flex-1 bg-transparent text-[#232826] dark:text-[#FAF8F5] placeholder-[#8C9691] dark:placeholder-[#64748B] text-sm sm:text-base outline-hidden"
           />
           {query && (
@@ -557,9 +621,48 @@ export default function GlobalSearchModal({
 
         {/* 検索結果・サジェスト一覧（スクロールエリア） */}
         <div className="flex-1 overflow-y-auto p-2 sm:p-3 space-y-1">
-          {/* 未入力時：クイック検索候補 */}
+          {/* 未入力時：最近の検索 ＆ クイック検索候補 */}
           {!query && (
-            <div className="p-4 sm:p-6 space-y-4">
+            <div className="p-4 sm:p-6 space-y-5">
+              {/* 最近調べたキーワード（履歴） */}
+              {recentSearches.length > 0 && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] uppercase tracking-wider flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
+                      最近調べたキーワード
+                    </span>
+                    <button
+                      type="button"
+                      onClick={clearAllRecentSearches}
+                      className="text-[11px] text-[#8899A6] hover:text-rose-600 transition-colors flex items-center gap-1 cursor-pointer"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                      <span>履歴を消去</span>
+                    </button>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {recentSearches.map((term) => (
+                      <div
+                        key={term}
+                        onClick={() => setQuery(term)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-xs font-semibold text-[#232826] dark:text-[#FAF8F5] transition-all hover:shadow-2xs cursor-pointer group"
+                      >
+                        <span>{term}</span>
+                        <button
+                          type="button"
+                          onClick={(e) => removeRecentSearch(e, term)}
+                          className="text-slate-400 group-hover:text-slate-600 p-0.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 人気のおすすめキーワード */}
               <div>
                 <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] uppercase tracking-wider block mb-2 flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
@@ -636,6 +739,7 @@ export default function GlobalSearchModal({
                     key={item.id}
                     type="button"
                     onClick={() => {
+                      saveRecentSearch(query || item.title);
                       onClose();
                       router.push(item.url);
                     }}

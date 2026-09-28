@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Metadata } from "next";
 import KokushiDashboard from "@/components/kokushi/KokushiDashboard";
 import Link from "next/link";
@@ -61,8 +62,14 @@ export default function KokushiPage() {
           </span>
         </nav>
 
-        {/* 国試ダッシュボード本体 */}
-        <KokushiDashboard />
+        {/* 国試ダッシュボード本体（useSearchParams対応のためSuspenseラップ） */}
+        <Suspense fallback={
+          <div className="p-8 text-center text-xs text-[#737C77]">
+            国家試験対策ハブを読み込み中...
+          </div>
+        }>
+          <KokushiDashboard />
+        </Suspense>
       </div>
     </div>
   );
