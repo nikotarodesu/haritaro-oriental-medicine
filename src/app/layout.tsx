@@ -10,6 +10,8 @@ import { ClinicalMemoProvider } from "@/contexts/ClinicalMemoContext";
 import { CurriculumProgressProvider } from "@/contexts/CurriculumProgressContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import MyClinicalRecordDrawer from "@/components/MyClinicalRecordDrawer";
+import MobileBottomNav from "@/components/navigation/MobileBottomNav";
+import ClinicalDrawerTrigger from "@/components/ClinicalDrawerTrigger";
 
 const notoSerifJP = Noto_Serif_JP({
   variable: "--font-noto-serif",
@@ -166,11 +168,13 @@ export default function RootLayout({
                 <ClinicalMemoProvider>
                   <CurriculumProgressProvider>
                     <Header />
-                    <div className="flex-1">
+                    <div className="flex-1 pb-16 lg:pb-0">
                       {children}
                     </div>
                     <Footer />
                     <MyClinicalRecordDrawer />
+                    <ClinicalDrawerTrigger />
+                    <MobileBottomNav />
                   </CurriculumProgressProvider>
                 </ClinicalMemoProvider>
               </AuthProvider>

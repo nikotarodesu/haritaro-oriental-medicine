@@ -16,6 +16,7 @@ import {
 } from "@/data/tsubo";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import ClipButton from "@/components/ClipButton";
+import TsuboKeyboardNav from "@/components/tsubo/TsuboKeyboardNav";
 import { 
   Compass, 
   MapPin, 
@@ -805,23 +806,32 @@ export default async function AcupointDetailPage({ params }: Props) {
         )}
 
         {/* 7. 経絡流注ナビゲーション（前穴・次穴） */}
+        <TsuboKeyboardNav
+          prevUrl={prevPoint ? `/tsubo/${prevPoint.codeLower}` : null}
+          nextUrl={nextPoint ? `/tsubo/${nextPoint.codeLower}` : null}
+        />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {prevPoint ? (
             <Link
               href={`/tsubo/${prevPoint.codeLower}`}
-              className="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-sm transition-all group flex items-center gap-3"
+              className="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-sm transition-all group flex items-center justify-between"
             >
-              <div className="w-8 h-8 rounded-full bg-[#FAF8F5] dark:bg-[#10171F] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 group-hover:-translate-x-1 transition-transform">
-                <ArrowLeft className="w-4 h-4" />
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-[#FAF8F5] dark:bg-[#10171F] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 group-hover:-translate-x-1 transition-transform">
+                  <ArrowLeft className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">
+                    前穴（{point.meridianShort}）
+                  </span>
+                  <span className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
+                    {prevPoint.name}（{prevPoint.code}）
+                  </span>
+                </div>
               </div>
-              <div>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">
-                  前穴（{point.meridianShort}）
-                </span>
-                <span className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  {prevPoint.name}（{prevPoint.code}）
-                </span>
-              </div>
+              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded">
+                [
+              </kbd>
             </Link>
           ) : (
             <div className="p-4 rounded-2xl bg-[#FAF8F5]/60 dark:bg-[#121920]/60 border border-dashed border-[#E5DEC9] dark:border-[#22303D] text-xs text-[#8A948F] flex items-center">
@@ -834,16 +844,21 @@ export default async function AcupointDetailPage({ params }: Props) {
               href={`/tsubo/${nextPoint.codeLower}`}
               className="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-sm transition-all group flex items-center justify-between"
             >
-              <div className="text-right">
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">
-                  次穴（{point.meridianShort}）
-                </span>
-                <span className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  {nextPoint.name}（{nextPoint.code}）
-                </span>
-              </div>
-              <div className="w-8 h-8 rounded-full bg-[#FAF8F5] dark:bg-[#10171F] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 group-hover:translate-x-1 transition-transform">
-                <ArrowRight className="w-4 h-4" />
+              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded">
+                ]
+              </kbd>
+              <div className="flex items-center gap-3 justify-end text-right">
+                <div>
+                  <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">
+                    次穴（{point.meridianShort}）
+                  </span>
+                  <span className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
+                    {nextPoint.name}（{nextPoint.code}）
+                  </span>
+                </div>
+                <div className="w-8 h-8 rounded-full bg-[#FAF8F5] dark:bg-[#10171F] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 group-hover:translate-x-1 transition-transform">
+                  <ArrowRight className="w-4 h-4" />
+                </div>
               </div>
             </Link>
           ) : (

@@ -22,7 +22,8 @@ import {
   Compass, 
   ChevronRight,
   Flame,
-  Check
+  Check,
+  Printer
 } from "lucide-react";
 import { useCurriculumProgress, QuizResultRecord } from "@/contexts/CurriculumProgressContext";
 import { CURRICULUM_QUIZZES, QuizQuestionItem, LessonQuizGroup } from "@/data/curriculumQuizzes";
@@ -243,10 +244,23 @@ export default function KokushiDashboard() {
 
   return (
     <div className="space-y-8 sm:space-y-12">
+      {/* 印刷専用A4シートタイトルヘッダー */}
+      <div className="hidden print:block mb-6 border-b-2 border-[#1E3D34] pb-3 text-black">
+        <div className="flex justify-between items-end">
+          <div>
+            <h1 className="text-xl font-bold font-serif">はり師・きゅう師 国家試験対策 暗記チェックシート</h1>
+            <p className="text-xs text-slate-600 mt-1">はり太郎の東洋医学（haritaro.jp）｜ 東洋医学概論・経絡経穴概論 最重要実問セレクション</p>
+          </div>
+          <div className="text-right text-xs text-slate-500">
+            <span>印刷日: {todayStr}</span>
+          </div>
+        </div>
+      </div>
+
       {/* ============================================================ */}
       {/* 1. ヒーローセクション ＆ 国試カウントダウン                    */}
       {/* ============================================================ */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1E3D34] via-[#162E27] to-[#0E1F1A] text-[#FAF8F5] p-6 sm:p-10 shadow-xl border border-[#2D5A4D]">
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1E3D34] via-[#162E27] to-[#0E1F1A] text-[#FAF8F5] p-6 sm:p-10 shadow-xl border border-[#2D5A4D] print:hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
         
         <div className="relative z-10 space-y-6">
@@ -303,7 +317,7 @@ export default function KokushiDashboard() {
       {/* ============================================================ */}
       {/* 2. 本日の忘却曲線デイリー復習（毎日3問）                      */}
       {/* ============================================================ */}
-      <section className="bg-white dark:bg-[#17212A] rounded-3xl border-2 border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-8 shadow-sm space-y-6">
+      <section className="bg-white dark:bg-[#17212A] rounded-3xl border-2 border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-8 shadow-sm space-y-6 print:hidden">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4">
           <div className="flex items-center gap-2.5">
             <span className="p-2 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
@@ -459,7 +473,7 @@ export default function KokushiDashboard() {
       {/* ============================================================ */}
       {/* 3. 出題形式別 3大集中特訓モード                                */}
       {/* ============================================================ */}
-      <section className="space-y-5">
+      <section className="space-y-5 print:hidden">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#B86924] dark:text-[#E6C387]" />
@@ -589,22 +603,35 @@ export default function KokushiDashboard() {
             </div>
           </div>
 
-          {/* 科目フィルター */}
-          <div className="inline-flex p-1 rounded-xl bg-[#FAF8F5] dark:bg-[#10161C] border border-[#E8E1D1] dark:border-[#263542] self-start sm:self-auto">
-            {(["all", "東洋医学概論", "経絡経穴概論"] as const).map((sub) => (
-              <button
-                key={sub}
-                type="button"
-                onClick={() => setPastSubjectFilter(sub)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  pastSubjectFilter === sub
-                    ? "bg-[#1E3D34] text-white shadow-xs"
-                    : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34]"
-                }`}
-              >
-                {sub === "all" ? "全科目" : sub}
-              </button>
-            ))}
+          {/* コントロール（印刷ボタン・科目フィルター） */}
+          <div className="flex items-center gap-2 print:hidden self-start sm:self-auto">
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="px-3 py-1.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#EBF3EF] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs"
+              title="A4暗記チェックシートとして印刷"
+            >
+              <Printer className="w-3.5 h-3.5" />
+              <span>A4暗記シート印刷</span>
+            </button>
+
+            {/* 科目フィルター */}
+            <div className="inline-flex p-1 rounded-xl bg-[#FAF8F5] dark:bg-[#10161C] border border-[#E8E1D1] dark:border-[#263542]">
+              {(["all", "東洋医学概論", "経絡経穴概論"] as const).map((sub) => (
+                <button
+                  key={sub}
+                  type="button"
+                  onClick={() => setPastSubjectFilter(sub)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    pastSubjectFilter === sub
+                      ? "bg-[#1E3D34] text-white shadow-xs"
+                      : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34]"
+                  }`}
+                >
+                  {sub === "all" ? "全科目" : sub}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -619,33 +646,33 @@ export default function KokushiDashboard() {
               <div
                 key={item.id}
                 id={`kokushi-exam-${item.id}`}
-                className="p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-4 scroll-mt-24 transition-all"
+                className="p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-4 scroll-mt-24 transition-all print:break-inside-avoid print:bg-white print:border-slate-300 print:p-4 print:space-y-2.5"
               >
                 {/* メタ情報バッジ */}
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-md bg-[#1E3D34] text-white">
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-md bg-[#1E3D34] text-white print:border print:border-slate-400 print:text-black print:bg-transparent">
                       第{item.examNumber}回
                     </span>
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] border border-[#E8E1D1] dark:border-[#2D3E50]">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] border border-[#E8E1D1] dark:border-[#2D3E50] print:border-slate-300 print:text-black">
                       {item.subject}
                     </span>
-                    <span className="text-xs text-[#59615D] dark:text-[#8899A6]">
+                    <span className="text-xs text-[#59615D] dark:text-[#8899A6] print:text-slate-600">
                       {item.questionNumber}
                     </span>
                   </div>
-                  <span className="text-[11px] font-semibold text-[#B86924] dark:text-[#E6C387]">
+                  <span className="text-[11px] font-semibold text-[#B86924] dark:text-[#E6C387] print:text-slate-600">
                     領域: {item.category}
                   </span>
                 </div>
 
                 {/* 問題本文 */}
-                <p className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
+                <p className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5] leading-relaxed print:text-black">
                   {item.question}
                 </p>
 
                 {/* 4択選択肢ボタン */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 print:grid-cols-2 print:gap-1.5">
                   {item.options.map((opt, optIdx) => {
                     const isSelected = userChoice === optIdx;
                     let optStyle = "bg-white dark:bg-[#17212A] border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E3D34]";
@@ -670,23 +697,23 @@ export default function KokushiDashboard() {
                         type="button"
                         onClick={() => handleSelectPastOption(item.id, optIdx)}
                         disabled={isSub}
-                        className={`p-3 rounded-xl border text-left text-xs sm:text-sm flex items-start gap-2.5 transition-all ${optStyle}`}
+                        className={`p-3 rounded-xl border text-left text-xs sm:text-sm flex items-start gap-2.5 transition-all print:border-slate-300 print:p-2 print:bg-white print:text-black ${optStyle}`}
                       >
                         <span className="font-mono font-bold text-xs shrink-0 mt-0.5">
                           {optIdx + 1}.
                         </span>
                         <span className="flex-1 leading-relaxed">{opt}</span>
                         {isSub && optIdx === item.correctIndex && (
-                          <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                          <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5 print:hidden" />
                         )}
                       </button>
                     );
                   })}
                 </div>
 
-                {/* 確定ボタン */}
+                {/* 確定ボタン（画面用） */}
                 {!isSub ? (
-                  <div className="flex justify-end pt-1">
+                  <div className="flex justify-end pt-1 print:hidden">
                     <button
                       type="button"
                       onClick={() => handleSubmitPastAnswer(item.id)}
@@ -697,8 +724,8 @@ export default function KokushiDashboard() {
                     </button>
                   </div>
                 ) : (
-                  /* 解説・要点・講義リンク */
-                  <div className={`p-4 rounded-xl space-y-3 text-xs sm:text-sm ${
+                  /* 画面用：解説・要点・講義リンク */
+                  <div className={`p-4 rounded-xl space-y-3 text-xs sm:text-sm print:hidden ${
                     isCorrect
                       ? "bg-emerald-50 dark:bg-[#142820] border border-emerald-200 dark:border-emerald-800 text-emerald-950 dark:text-emerald-100"
                       : "bg-rose-50 dark:bg-[#281517] border border-rose-200 dark:border-rose-900 text-rose-950 dark:text-rose-100"
@@ -748,6 +775,22 @@ export default function KokushiDashboard() {
                     )}
                   </div>
                 )}
+
+                {/* 印刷専用：正解・解説・暗記キーポイント（A4紙面用） */}
+                <div className="hidden print:block pt-2 border-t border-slate-300 text-xs space-y-1 text-black">
+                  <div className="font-bold text-slate-900">
+                    【正解】 {item.correctIndex + 1}. {item.options[item.correctIndex]}
+                  </div>
+                  <p className="text-[11px] leading-relaxed text-slate-700">
+                    {item.explanation}
+                  </p>
+                  {item.keyPoints && item.keyPoints.length > 0 && (
+                    <div className="text-[10px] text-slate-800 font-semibold bg-slate-100 p-1 rounded">
+                      <span>暗記要点: </span>
+                      <span>{item.keyPoints.join(" / ")}</span>
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })}
@@ -757,7 +800,7 @@ export default function KokushiDashboard() {
       {/* ============================================================ */}
       {/* 5. 分野別・弱点克服カリキュラム                                */}
       {/* ============================================================ */}
-      <section className="bg-white dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-8 shadow-sm space-y-6">
+      <section className="bg-white dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-8 shadow-sm space-y-6 print:hidden">
         <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-4">
           <div className="flex items-center gap-2">
             <span className="p-2 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
@@ -814,10 +857,10 @@ export default function KokushiDashboard() {
       </section>
 
       {/* ============================================================ */}
-      {/* 5. 間違えた問題・マイクリップ帳（ストック復習）                */}
+      {/* 6. 間違えた問題・マイクリップ帳（ストック復習）                */}
       {/* ============================================================ */}
       {incorrectQuestions.length > 0 && (
-        <section className="bg-gradient-to-br from-rose-50/50 via-[#FAF8F5] to-rose-50/30 dark:from-[#241315]/40 dark:via-[#17212A] dark:to-[#201012]/30 rounded-3xl border-2 border-rose-200 dark:border-rose-900/50 p-5 sm:p-8 space-y-5">
+        <section className="bg-gradient-to-br from-rose-50/50 via-[#FAF8F5] to-rose-50/30 dark:from-[#241315]/40 dark:via-[#17212A] dark:to-[#201012]/30 rounded-3xl border-2 border-rose-200 dark:border-rose-900/50 p-5 sm:p-8 space-y-5 print:hidden">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rose-200/60 dark:border-rose-900/60 pb-4">
             <div className="flex items-center gap-2.5">
               <span className="p-2 rounded-xl bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300">

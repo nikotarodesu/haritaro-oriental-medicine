@@ -58,8 +58,16 @@ export default function Header() {
       }
     };
 
+    const handleCustomOpenSearch = () => {
+      setIsSearchOpen(true);
+    };
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("haritaro:open-search", handleCustomOpenSearch);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("haritaro:open-search", handleCustomOpenSearch);
+    };
   }, [isSearchOpen]);
 
   const handleMouseEnter = (type: "clinical" | "learn" | "search" | "settings") => {
