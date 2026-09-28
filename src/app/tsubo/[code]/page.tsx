@@ -237,16 +237,27 @@ export default async function AcupointDetailPage({ params }: Props) {
   const pageUrl = `https://www.haritaro.jp/tsubo/${point.codeLower}`;
   const pageTitle = `${point.name}（${point.code}）の場所・取穴と注意点`;
 
-  // JSON-LD 構造化データ（WebPage ＆ DefinedTerm ＆ BreadcrumbList）
+  // JSON-LD 構造化データ（MedicalWebPage ＆ DefinedTerm ＆ BreadcrumbList ＆ FAQPage）
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "WebPage",
+        "@type": ["WebPage", "MedicalWebPage"],
         "@id": `${pageUrl}#webpage`,
         "url": pageUrl,
         "name": pageTitle,
         "description": point.locationDetail || point.locationSimple,
+        "about": [
+          {
+            "@type": "MedicalEntity",
+            "name": point.name,
+            "code": {
+              "@type": "MedicalCode",
+              "code": point.code,
+              "codingSystem": "WHO Standard Acupuncture Point",
+            },
+          },
+        ],
         "mainEntity": {
           "@type": "DefinedTerm",
           "@id": `${pageUrl}#term`,
@@ -289,6 +300,18 @@ export default async function AcupointDetailPage({ params }: Props) {
             "item": pageUrl,
           },
         ],
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${pageUrl}#faq`,
+        "mainEntity": faqs.map((faq) => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer,
+          },
+        })),
       },
     ],
   };
@@ -447,6 +470,48 @@ export default async function AcupointDetailPage({ params }: Props) {
             </div>
           )}
         </div>
+
+        {/* 1.5 LLM / AIO 引用対応・ワンペーパー3行要約ブロック */}
+        <section
+          aria-label={`${point.name}の3行要約`}
+          className="bg-gradient-to-r from-[#F4F9F6] to-[#FAF8F5] dark:from-[#13221C] dark:to-[#17212A] rounded-2xl border border-[#C5DED4]/60 dark:border-[#2D5A4A]/50 p-4 sm:p-5 shadow-2xs space-y-3 transition-colors"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
+              <span>経穴ワンペーパー要約（AI Overview / 臨床エッセンス）</span>
+            </div>
+            <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] hidden sm:inline">
+              WHO標準・解剖学的指標準拠
+            </span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs leading-relaxed text-[#232826] dark:text-[#FAF8F5]">
+            <div className="bg-[#FFFFFF]/90 dark:bg-[#10171F]/90 p-3 rounded-xl border border-[#E8E1D1]/70 dark:border-[#263542]">
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
+                ① 定義と所属
+              </span>
+              <p className="text-[#59615D] dark:text-[#A0B0BC]">
+                {point.meridian}（{point.code}）。{point.categories && point.categories.length > 0 ? `要穴分類：${point.categories.join("・")}。` : "経脈の正穴として気血の巡りを担う標準経穴。"}
+              </p>
+            </div>
+            <div className="bg-[#FFFFFF]/90 dark:bg-[#10171F]/90 p-3 rounded-xl border border-[#E8E1D1]/70 dark:border-[#263542]">
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
+                ② 取穴と解剖安全
+              </span>
+              <p className="text-[#59615D] dark:text-[#A0B0BC]">
+                {point.locationSimple}。{point.caution ? `安全上の注意：${point.caution}` : "体表面の骨・筋指標に従い安全深度を遵守して刺鍼。"}
+              </p>
+            </div>
+            <div className="bg-[#FFFFFF]/90 dark:bg-[#10171F]/90 p-3 rounded-xl border border-[#E8E1D1]/70 dark:border-[#263542]">
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
+                ③ 主治と臨床作用
+              </span>
+              <p className="text-[#59615D] dark:text-[#A0B0BC]">
+                {point.indications.slice(0, 5).join("、")}等に頻用。{point.clinicalNote ? point.clinicalNote.slice(0, 45) + (point.clinicalNote.length > 45 ? "…" : "") : "経絡の気血を疏通し、対応する臓腑と局所の症状を改善する。"}
+              </p>
+            </div>
+          </div>
+        </section>
 
         {/* 2. 取穴・位置セクション（一般向け vs WHO標準） */}
         <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">

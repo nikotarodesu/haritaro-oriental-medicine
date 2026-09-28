@@ -421,6 +421,13 @@ export default function CurriculumIndexClient() {
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0">
+                  {isMounted && chapterProgress.percentage === 100 && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] border border-[#B86924]/30 font-bold text-xs shadow-2xs">
+                      <Award className="w-3.5 h-3.5" />
+                      <span>章修了</span>
+                    </span>
+                  )}
+
                   <div className="hidden sm:flex flex-col items-end text-xs">
                     <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">
                       {chapterProgress.completedCount} / {publishedCount} 講完了

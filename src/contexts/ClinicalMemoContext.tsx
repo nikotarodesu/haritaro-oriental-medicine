@@ -51,6 +51,7 @@ interface ClinicalMemoContextType {
 
   // バックアップ・データ管理
   exportAllDataAsJson: () => string;
+  exportAllDataAsCsv: () => string;
   importDataFromJson: (jsonStr: string) => { success: boolean; message: string };
 
   // ドロワー制御
@@ -470,6 +471,56 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
     return JSON.stringify(backupData, null, 2);
   }, [memos, patientNotes]);
 
+  const exportAllDataAsCsv = useCallback((): string => {
+    const headers = [
+      "ID",
+      "患者番号",
+      "来院日",
+      "性別",
+      "年代",
+      "主訴",
+      "体質・傾向",
+      "弁証・証名",
+      "採用経穴",
+      "施術方針・本標",
+      "施術直後の変化",
+      "次回課題・養生指示",
+      "更新日時",
+    ];
+
+    const escapeCsv = (val: string | number | undefined | null): string => {
+      if (val === undefined || val === null || val === "") return '""';
+      const clean = String(val).replace(/"/g, '""');
+      return `"${clean}"`;
+    };
+
+    const rows = patientNotes.map((note) => {
+      const dateStr = note.updatedAt 
+        ? new Date(note.updatedAt).toISOString()
+        : note.createdAt 
+          ? new Date(note.createdAt).toISOString()
+          : "";
+      return [
+        escapeCsv(note.id),
+        escapeCsv(note.patientIdentifier),
+        escapeCsv(note.visitDate),
+        escapeCsv(note.gender),
+        escapeCsv(note.ageGroup),
+        escapeCsv(note.chiefComplaint),
+        escapeCsv(note.constitution),
+        escapeCsv(note.syndrome),
+        escapeCsv(note.selectedPoints?.join("、 ") || ""),
+        escapeCsv(note.treatmentPlan),
+        escapeCsv(note.patientReaction),
+        escapeCsv(note.nextAction),
+        escapeCsv(dateStr),
+      ].join(",");
+    });
+
+    // Excel対応のためBOM (\uFEFF) を付与
+    return "\uFEFF" + [headers.map((h) => `"${h}"`).join(","), ...rows].join("\r\n");
+  }, [patientNotes]);
+
   const importDataFromJson = useCallback((jsonStr: string): { success: boolean; message: string } => {
     try {
       const parsed = JSON.parse(jsonStr);
@@ -529,6 +580,7 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
 
         // バックアップ
         exportAllDataAsJson,
+        exportAllDataAsCsv,
         importDataFromJson,
 
         // ドロワー

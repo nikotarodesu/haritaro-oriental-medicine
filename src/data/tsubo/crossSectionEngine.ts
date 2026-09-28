@@ -47,7 +47,19 @@ export type SliceType =
   | "lower_leg_anterior"         // 23. 下腿前外側（足三里・上巨虚・豊隆・陽陵泉）
   | "lower_leg_medial"           // 24. 下腿内側（三陰交・陰陵泉・地機・太渓）
   | "lower_leg_posterior"        // 25. 下腿後側・膝窩（委中・承山・合陽・昆侖）
-  | "foot_dorsal";               // 26. 足背・足底（太衝・行間・太白・湧泉）
+  | "foot_dorsal"                // 26. 足背・足底（太衝・行間・太白・湧泉）
+  | "terminal_digit";            // 27. 指端・爪甲角部（商陽・少商・中衝・少衝・少沢・関衝・隠白・大敦・厲兌・足竅陰・至陰）
+
+/**
+ * 手指・足趾末端・爪甲角の経穴（井穴など）
+ * 中手骨・中足骨断面モデルと解剖構造が乖離するため、専用の爪甲・指端断面モデル（terminal_digit）を適用
+ */
+export const TERMINAL_DIGIT_POINTS = new Set([
+  // 手指（爪甲角・指端・末節）
+  "li1", "li2", "lu11", "pc9", "ht9", "te1", "te2", "si1", "si2",
+  // 足趾（爪甲角・趾端・末節）
+  "lr1", "lr2", "sp1", "sp2", "st45", "st44", "bl67", "bl66", "gb44", "gb43"
+]);
 
 /**
  * 経穴のマスターデータから解剖断面スライスを高精度に分類
@@ -56,6 +68,11 @@ export function classifyAcupointSlice(point: AcupointMaster): SliceType {
   const code = point.codeLower;
   const detail = point.locationDetail;
   const bodyPart = point.bodyPart;
+
+  // 0. 指端・爪甲角部（井穴・末節骨レベル）
+  if (TERMINAL_DIGIT_POINTS.has(code) || detail.includes("爪甲根部") || detail.includes("爪甲角")) {
+    return "terminal_digit";
+  }
 
   // 1. 特殊・個別穴
   if (code === "cv22") return "neck_suprasternal";
@@ -594,6 +611,37 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
       { layerId: "needle-indicator", elementId: "hm-needle-point", label: "刺鍼到達点（骨間筋深面）", shapeType: "circle", cx: 315, cy: 135, r: 4.5, fill: "#2E7D32", stroke: "#FFFFFF", strokeWidth: 1.5 },
     ],
     references: ["WHO Standard Acupuncture Point Locations (2008)", "Casey GP (2022) LI4断面解剖研究"],
+  },
+
+  // 27. 指端・爪甲角部（井穴・末節骨レベル）
+  terminal_digit: {
+    titleTemplate: "爪甲角・指端部 局所解剖モデル（井穴・点刺出血安全指標）",
+    level: "指端・趾端 爪甲根部レベル水平横断",
+    bodySide: "手指・足趾末梢",
+    posture: "指先をリラックスさせ、爪甲を正面・水平に観察する肢位",
+    axes: { horizontal: ["橈側/脛側 (内側)", "尺側/腓側 (外側)"], vertical: ["爪甲・背側面 (表面)", "指腹・掌側面 (深面)"] },
+    summaryTakeaway: "【指端・爪甲角模式図】爪甲角部（爪甲根部より0.1寸）における表皮・真皮・爪甲・末節骨の局所構造。浅刺0.1寸（1〜2mm）または三稜針による点刺出血の安全基準を理解します（深刺は骨膜損傷・激痛を招くため禁忌）。",
+    layers: [
+      { depthIndex: 1, id: "skin", name: "皮膚（表皮角質層）", category: "skin", depthDescription: "極浅層（0.1mm）", description: "指端の緻密な角質層と表皮。", dangerLevel: "safe", clinicalSignificance: "素早い切皮または細刺" },
+      { depthIndex: 2, id: "subcutaneous", name: "真皮乳頭層・毛細血管網", category: "subcutaneous", depthDescription: "浅層（1〜2mm）", description: "豊富な毛細血管網と知覚神経終末の集積層。井穴の目標座。", dangerLevel: "safe", clinicalSignificance: "点刺出血・浅刺得気の主座" },
+      { depthIndex: 3, id: "nail-matrix", name: "爪甲根部・爪母", category: "fascia", depthDescription: "爪甲基部", description: "爪甲（ネイルプレート）を産生する基底組織。", dangerLevel: "caution", clinicalSignificance: "爪母への直接刺鍼は避ける" },
+      { depthIndex: 4, id: "distal-phalanx", name: "末節骨・骨膜", category: "bone", depthDescription: "深層骨性境界", description: "指先の中軸を成す末節骨粗面。", dangerLevel: "hazard", clinicalSignificance: "骨膜直撃は激痛を招くため深刺禁忌" },
+    ],
+    boundaries: [
+      { id: "nail-angle", name: "爪甲角（取穴基準点）", category: "bone", position: "爪甲側縁・基部交点", relation: "井穴の厳密な指標", description: "爪甲の側縁と基部を通る線の交点から約0.1寸（約2mm）離れた部位。", palpationTip: "爪甲角の角から外方・後方へ2mm", dangerLevel: "safe" },
+    ],
+    adjacentStructures: [
+      { id: "digital-proper-nv", name: "固有指動静脈・神経末梢枝", category: "nerve", relation: "指側面に沿って走行", dangerLevel: "safe", description: "指先の知覚と血流を司る終末枝。", clinicalSignificance: "点刺出血による自律神経反射のトリガー" },
+    ],
+    svgElements: [
+      { layerId: "distal-phalanx", elementId: "td-bone", label: "末節骨", shapeType: "ellipse", cx: 250, cy: 160, rx: 70, ry: 35, fill: "#E8E3D8", stroke: "#78716C", strokeWidth: 2, labelPos: { x: 250, y: 165, anchor: "middle" } },
+      { layerId: "nail-matrix", elementId: "td-nail", label: "爪甲（ネイルプレート）", shapeType: "path", d: "M 150,90 Q 250,75 350,90 L 340,102 Q 250,88 160,102 Z", fill: "#FAF0E6", stroke: "#D4AF37", strokeWidth: 2, labelPos: { x: 250, y: 88, anchor: "middle" } },
+      { layerId: "subcutaneous", elementId: "td-capillary", label: "真皮毛細血管網（井穴目標層）", shapeType: "path", d: "M 100,100 Q 250,95 400,100 L 400,135 Q 250,130 100,135 Z", fill: "#FADBD8", stroke: "#E74C3C", strokeWidth: 1.5, strokeDasharray: "3 2" },
+      { layerId: "skin", elementId: "td-skin", label: "指端・爪周囲皮膚", shapeType: "path", d: "M 90,95 Q 250,85 410,95 L 420,200 Q 250,230 80,200 Z", fill: "none", stroke: "#B8A995", strokeWidth: 2 },
+      { layerId: "needle-indicator", elementId: "td-needle-path", label: "爪甲角への浅刺（1〜2mm）", shapeType: "path", d: "M 140,40 L 140,108", fill: "none", stroke: "#2E7D32", strokeWidth: 2.5 },
+      { layerId: "needle-indicator", elementId: "td-needle-point", label: "刺鍼到達点（0.1寸・浅層）", shapeType: "circle", cx: 140, cy: 108, r: 4.5, fill: "#2E7D32", stroke: "#FFFFFF", strokeWidth: 1.5 },
+    ],
+    references: ["WHO Standard Acupuncture Point Locations (2008)", "臨床経穴断面・刺鍼解剖学アトラス"],
   },
 
   // 13. 前胸部・肋間（中府・雲門・気戸・乳根・期門）
@@ -1239,6 +1287,13 @@ function generateNeedleTrackForPoint(point: AcupointMaster, sliceType: SliceType
         targetStructure: "浅指屈筋および腱間隙",
         warning: "正中神経への接触による電撃痛時は直ちに針を少し引き微調整する。",
       };
+    case "terminal_digit":
+      return {
+        angle: "直刺または斜刺 0.1寸（1〜2mm）、または三稜針による点刺出血",
+        safeDepth: "0.1寸（1〜2mm・真皮毛細血管網）",
+        targetStructure: "真皮毛細血管網および指端受容器",
+        warning: "末節骨の骨膜への深刺直撃は激痛と骨膜炎リスクがあるため深刺厳禁。浅刺・速刺にとどめる。",
+      };
     default:
       return {
         angle: "直刺または斜刺 0.5〜1.0寸",
@@ -1250,25 +1305,9 @@ function generateNeedleTrackForPoint(point: AcupointMaster, sliceType: SliceType
 }
 
 /**
- * 手指・足趾末端・爪甲角の経穴（井穴など）
- * 中手骨・中足骨断面モデルと解剖構造が乖離するため、誤った共通断面図の表示を防止
- */
-export const TERMINAL_DIGIT_POINTS = new Set([
-  // 手指（爪甲角・指端・末節）
-  "li1", "li2", "lu11", "pc9", "ht9", "te1", "te2", "si1", "si2",
-  // 足趾（爪甲角・趾端・末節）
-  "lr1", "lr2", "sp1", "sp2", "st45", "st44", "bl67", "bl66", "gb44", "gb43"
-]);
-
-/**
  * 経穴マスター情報から完全な CrossSectionModel を動的に生成
- * ※指先・爪甲角など解剖モデルが合致しない末梢穴には誤った図を出さず undefined を返す
  */
 export function generateCrossSectionModel(point: AcupointMaster): CrossSectionModel | undefined {
-  if (TERMINAL_DIGIT_POINTS.has(point.codeLower)) {
-    return undefined;
-  }
-
   const sliceType = classifyAcupointSlice(point);
   const template = SLICE_TEMPLATES[sliceType];
   if (!template) return undefined;

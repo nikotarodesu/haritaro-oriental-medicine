@@ -106,9 +106,26 @@ export default function KokushiDashboard() {
   // デイリークイズの回答状態
   const [userAnswers, setUserAnswers] = useState<Record<string, number>>({});
   const [submitted, setSubmitted] = useState<Record<string, boolean>>({});
+  const [isWeakPointsOnly, setIsWeakPointsOnly] = useState<boolean>(false);
+
+  // 表示する問題リスト（通常忘却曲線3問 or 苦手問題全件）
+  const displayedDailyQuestions = useMemo(() => {
+    if (isWeakPointsOnly) {
+      const incList = getIncorrectQuestions();
+      const list = incList
+        .map((inc) => {
+          const found = allQuestionsWithMeta.find((item) => item.question.id === inc.questionId);
+          return found ? { ...found, reason: "弱点克服・再挑戦" } : null;
+        })
+        .filter(Boolean) as { group: LessonQuizGroup; question: QuizQuestionItem; reason: string }[];
+      return list.length > 0 ? list : dailyQuestions;
+    }
+    return dailyQuestions;
+  }, [isWeakPointsOnly, getIncorrectQuestions, allQuestionsWithMeta, dailyQuestions]);
 
   // 本試験過去問アーカイブのステート
-  const [pastSubjectFilter, setPastSubjectFilter] = useState<"all" | "東洋医学概論" | "経絡経穴概論">("all");
+  const [pastSubjectFilter, setPastSubjectFilter] = useState<"all" | "東洋医学概論" | "経絡経穴概論" | "東洋医学臨床論">("all");
+  const [pastExamYearFilter, setPastExamYearFilter] = useState<"all" | 33 | 32 | 31 | 30>("all");
   const [pastExamAnswers, setPastExamAnswers] = useState<Record<string, number>>({});
   const [pastExamSubmitted, setPastExamSubmitted] = useState<Record<string, boolean>>({});
 
@@ -116,6 +133,7 @@ export default function KokushiDashboard() {
   useEffect(() => {
     if (!targetExamId) return;
     setPastSubjectFilter("all");
+    setPastExamYearFilter("all");
     const timer = setTimeout(() => {
       const el = document.getElementById(`kokushi-exam-${targetExamId}`);
       if (el) {
@@ -138,11 +156,14 @@ export default function KokushiDashboard() {
     setPastExamSubmitted((prev) => ({ ...prev, [qId]: true }));
   };
 
-  // フィルタリングされた過去問リスト
+  // フィルタリングされた過去問リスト（科目 ＆ 回次）
   const filteredPastExams = useMemo(() => {
-    if (pastSubjectFilter === "all") return KOKUSHI_PAST_EXAMS;
-    return KOKUSHI_PAST_EXAMS.filter((q) => q.subject === pastSubjectFilter);
-  }, [pastSubjectFilter]);
+    return KOKUSHI_PAST_EXAMS.filter((q) => {
+      const matchSubject = pastSubjectFilter === "all" || q.subject === pastSubjectFilter;
+      const matchYear = pastExamYearFilter === "all" || q.examNumber === pastExamYearFilter;
+      return matchSubject && matchYear;
+    });
+  }, [pastSubjectFilter, pastExamYearFilter]);
 
   const handleSelectOption = (questionId: string, optIdx: number) => {
     if (submitted[questionId]) return;
@@ -324,27 +345,47 @@ export default function KokushiDashboard() {
               <Zap className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
             </span>
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  本日の忘却曲線デイリー特訓（3問）
+                  {isWeakPointsOnly
+                    ? `弱点克服・間違えた問題特訓（${displayedDailyQuestions.length}問）`
+                    : "本日の忘却曲線デイリー特訓（3問）"}
                 </h2>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#83BEA8]">
-                  毎日自動更新
+                  {isWeakPointsOnly ? "苦手集中" : "毎日自動更新"}
                 </span>
               </div>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
-                過去の誤答履歴や学習間隔から、今日復習すべき最も効果的な問題を厳選抽出しています。
+                {isWeakPointsOnly
+                  ? "過去に間違えた問題を集中的に再挑戦し、弱点を完全に克服します。"
+                  : "過去の誤答履歴や学習間隔から、今日復習すべき最も効果的な問題を厳選抽出しています。"}
               </p>
             </div>
           </div>
-          <span className="font-mono text-xs text-[#737C77] dark:text-[#8899A6]">
-            {todayStr}
-          </span>
+
+          <div className="flex items-center gap-2.5">
+            {incorrectQuestions.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setIsWeakPointsOnly(!isWeakPointsOnly)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+                  isWeakPointsOnly
+                    ? "bg-[#B86924] text-white border-[#B86924]"
+                    : "bg-[#FAF8F5] dark:bg-[#121920] text-[#B86924] dark:text-[#E6C387] border-[#B86924]/40 hover:bg-[#FCF4EB]"
+                }`}
+              >
+                {isWeakPointsOnly ? "デイリー3問に戻る" : `🔥 間違えた問題のみ解く（${incorrectQuestions.length}問）`}
+              </button>
+            )}
+            <span className="font-mono text-xs text-[#737C77] dark:text-[#8899A6]">
+              {todayStr}
+            </span>
+          </div>
         </div>
 
-        {/* 3問リスト */}
+        {/* 出題リスト */}
         <div className="space-y-6">
-          {dailyQuestions.map((item, qIdx) => {
+          {displayedDailyQuestions.map((item, qIdx) => {
             const isSub = submitted[item.question.id];
             const userChoice = userAnswers[item.question.id];
             const isCorrect = userChoice === item.question.correctIndex;
@@ -603,32 +644,50 @@ export default function KokushiDashboard() {
             </div>
           </div>
 
-          {/* コントロール（印刷ボタン・科目フィルター） */}
-          <div className="flex items-center gap-2 print:hidden self-start sm:self-auto">
+          {/* コントロール（印刷ボタン・科目・回次フィルター） */}
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-2 print:hidden self-start lg:self-auto">
             <button
               type="button"
               onClick={() => window.print()}
-              className="px-3 py-1.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#EBF3EF] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs"
+              className="px-3 py-1.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#EBF3EF] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs shrink-0"
               title="A4暗記チェックシートとして印刷"
             >
               <Printer className="w-3.5 h-3.5" />
-              <span>A4暗記シート印刷</span>
+              <span>A4印刷</span>
             </button>
 
             {/* 科目フィルター */}
-            <div className="inline-flex p-1 rounded-xl bg-[#FAF8F5] dark:bg-[#10161C] border border-[#E8E1D1] dark:border-[#263542]">
-              {(["all", "東洋医学概論", "経絡経穴概論"] as const).map((sub) => (
+            <div className="flex flex-wrap items-center gap-1 p-1 rounded-xl bg-[#FAF8F5] dark:bg-[#10161C] border border-[#E8E1D1] dark:border-[#263542]">
+              {(["all", "東洋医学概論", "経絡経穴概論", "東洋医学臨床論"] as const).map((sub) => (
                 <button
                   key={sub}
                   type="button"
                   onClick={() => setPastSubjectFilter(sub)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                     pastSubjectFilter === sub
                       ? "bg-[#1E3D34] text-white shadow-xs"
                       : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34]"
                   }`}
                 >
                   {sub === "all" ? "全科目" : sub}
+                </button>
+              ))}
+            </div>
+
+            {/* 回次フィルター */}
+            <div className="flex flex-wrap items-center gap-1 p-1 rounded-xl bg-[#FAF8F5] dark:bg-[#10161C] border border-[#E8E1D1] dark:border-[#263542]">
+              {(["all", 33, 32, 31, 30] as const).map((yr) => (
+                <button
+                  key={yr}
+                  type="button"
+                  onClick={() => setPastExamYearFilter(yr)}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    pastExamYearFilter === yr
+                      ? "bg-[#B86924] text-white shadow-xs"
+                      : "text-[#59615D] dark:text-[#8899A6] hover:text-[#B86924]"
+                  }`}
+                >
+                  {yr === "all" ? "全回次" : `第${yr}回`}
                 </button>
               ))}
             </div>

@@ -65,6 +65,7 @@ export default function MyNotesPage() {
     updatePatientNote,
     removePatientNote,
     exportAllDataAsJson,
+    exportAllDataAsCsv,
     importDataFromJson,
     addMemo,
     syncStatus,
@@ -355,6 +356,18 @@ export default function MyNotesPage() {
     URL.revokeObjectURL(url);
   };
 
+  // CSV形式でのダウンロード（Excel対応BOM付き）
+  const handleDownloadCsv = () => {
+    const csvStr = exportAllDataAsCsv();
+    const blob = new Blob([csvStr], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `haritaro_patient_notes_${new Date().toISOString().split("T")[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   // ファイル復元
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -413,26 +426,36 @@ export default function MyNotesPage() {
           </p>
         </div>
 
-        {/* 右側：補助アクション（ファイル保存・読込） */}
-        <div className="flex items-center gap-2 shrink-0">
+        {/* 右側：補助アクション（ファイル保存・CSV出力・読込） */}
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={handleDownloadCsv}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] bg-white dark:bg-[#1A2530] hover:bg-[#F3EFE6] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
+            title="Excelや表計算ソフトで開けるCSVファイルを出力"
+          >
+            <FileText className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
+            <span>CSV出力</span>
+          </button>
+
           <button
             type="button"
             onClick={handleDownloadBackup}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] bg-white dark:bg-[#1A2530] hover:bg-[#F3EFE6] dark:hover:bg-[#22303D] transition-colors"
-            title="手元にファイルとしてバックアップ保存"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] bg-white dark:bg-[#1A2530] hover:bg-[#F3EFE6] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
+            title="手元にファイルとしてJSONバックアップ保存"
           >
             <Download className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <span>記録をファイルに保存</span>
+            <span>ファイルに保存</span>
           </button>
 
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] bg-white dark:bg-[#1A2530] hover:bg-[#F3EFE6] dark:hover:bg-[#22303D] transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] bg-white dark:bg-[#1A2530] hover:bg-[#F3EFE6] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
             title="ファイルからバックアップを読み込む"
           >
             <Upload className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>ファイルから読み込む</span>
+            <span>読込</span>
           </button>
           <input
             type="file"
@@ -443,6 +466,26 @@ export default function MyNotesPage() {
           />
         </div>
       </div>
+
+      {/* データ保護・定期バックアップ案内バナー（3件以上で表示） */}
+      {patientNoteCount >= 3 && (
+        <div className="p-3.5 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#1E3D34] dark:text-[#83BEA8]">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 shrink-0 text-[#1E3D34] dark:text-[#74BA9E]" />
+            <span>
+              <strong>データ保護のご案内：</strong>
+              臨床ノートが{patientNoteCount}件蓄積されています。ブラウザの履歴消去等に備え、定期的に「CSV出力」または「ファイルに保存」を行っておくことをお勧めします。
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={handleDownloadCsv}
+            className="shrink-0 px-3 py-1.5 bg-[#1E3D34] dark:bg-[#74BA9E] text-white dark:text-[#10161C] rounded-lg font-bold text-xs hover:opacity-90 transition-opacity cursor-pointer whitespace-nowrap"
+          >
+            CSVを保存
+          </button>
+        </div>
+      )}
 
       {/* 保存および同期についての動的ステータス案内 */}
       <div

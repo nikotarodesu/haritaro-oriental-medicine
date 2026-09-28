@@ -40,3 +40,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# CI workflow (managed locally or via GitHub Web UI without OAuth scope clash)
+.github
+

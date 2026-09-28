@@ -12,6 +12,8 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import MyClinicalRecordDrawer from "@/components/MyClinicalRecordDrawer";
 import MobileBottomNav from "@/components/navigation/MobileBottomNav";
 import ClinicalDrawerTrigger from "@/components/ClinicalDrawerTrigger";
+import PwaRegister from "@/components/pwa/PwaRegister";
+import PwaInstallPrompt from "@/components/pwa/PwaInstallPrompt";
 
 const notoSerifJP = Noto_Serif_JP({
   variable: "--font-noto-serif",
@@ -175,6 +177,8 @@ export default function RootLayout({
                     <MyClinicalRecordDrawer />
                     <ClinicalDrawerTrigger />
                     <MobileBottomNav />
+                    <PwaInstallPrompt />
+                    <PwaRegister />
                   </CurriculumProgressProvider>
                 </ClinicalMemoProvider>
               </AuthProvider>

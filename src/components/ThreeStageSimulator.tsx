@@ -53,6 +53,18 @@ import { Tsubo } from "@/types/oriental";
 
 const STORAGE_KEY = "haritaro_simulator_state_v1";
 
+// 兼証（随証病態）の代表的配穴マップ
+const SECONDARY_POINT_MAP: Record<QixueshuiType, { label: string; pairName: string; primary: string; secondary: string; role: string; desc: string }> = {
+  qixu: { label: "気虚（元気不足）", pairName: "健脾益気ペア", primary: "足三里", secondary: "太白", role: "合土穴・原土穴", desc: "後天の気を補い、生体エネルギーの底上げを図る" },
+  qizhi: { label: "気滞（ストレス・緊張）", pairName: "疏肝理気ペア", primary: "太衝", secondary: "陽陵泉", role: "原木穴・筋会", desc: "肝気の鬱滞を緩め、気機の円滑な巡りを促進" },
+  qini: { label: "気逆（のぼせ・咳逆）", pairName: "和胃降気ペア", primary: "内関", secondary: "中脘", role: "八脈交会穴・胃募穴", desc: "上逆する気機を降ろし、胸腹部の衝逆感を鎮める" },
+  xuexu: { label: "血虚（血流不足・乾燥）", pairName: "養血調血ペア", primary: "三陰交", secondary: "血海", role: "三陰交会・脾経", desc: "肝脾腎の血分を滋養し、筋膜や組織の乾燥を改善" },
+  yuxue: { label: "瘀血（微小循環障害）", pairName: "活血化瘀ペア", primary: "膈兪", secondary: "血海", role: "血会・血海", desc: "血液の粘稠・停滞を散らし、刺痛や局所硬結を緩和" },
+  shuitai: { label: "水滞（むくみ・痰湿）", pairName: "利水化湿ペア", primary: "陰陵泉", secondary: "水分", role: "合水穴・任脈", desc: "組織間の停滞水分を排出し、重だるさを解消" },
+  yinxu: { label: "陰虚（虚熱・ほてり）", pairName: "滋陰降火ペア", primary: "太渓", secondary: "照海", role: "原穴・八脈交会穴", desc: "腎陰・津液を潤し、手足のほてりや口渇を沈静" },
+  yangxu: { label: "陽虚（深部冷え・代謝低下）", pairName: "温陽補腎ペア", primary: "関元", secondary: "命門", role: "小腸募穴・督脈", desc: "丹田・命門の陽気を温め、深部の冷えを回復" },
+};
+
 export default function ThreeStageSimulator() {
   const router = useRouter();
   // ステップ1: 八綱
@@ -60,8 +72,11 @@ export default function ThreeStageSimulator() {
   const [temp, setTemp] = useState<TemperatureType>("heat");
   const [state, setState] = useState<StateType>("excess");
 
-  // ステップ2: 気血水
+  // ステップ2: 気血水（主病態）
   const [qixueshui, setQixueshui] = useState<QixueshuiType>("qizhi");
+
+  // ステップ2+: 兼証（随証病態：任意選択）
+  const [secondaryQixueshui, setSecondaryQixueshui] = useState<QixueshuiType | "none">("none");
 
   // ステップ3: 臓腑経絡
   const [zangfu, setZangfu] = useState<ZangfuType>("liver");
@@ -106,17 +121,25 @@ export default function ThreeStageSimulator() {
   // 臨床ノートへの下書き引き渡し
   const handleSaveToNoteDraft = () => {
     const primaryOpt = diagnosis.acupointOptions[0];
-    const pointsStr = primaryOpt 
+    const secConfig = secondaryQixueshui !== "none" ? SECONDARY_POINT_MAP[secondaryQixueshui] : null;
+    const basePointsStr = primaryOpt 
       ? `${primaryOpt.primaryAcupoint.name}, ${primaryOpt.secondaryAcupoint.name}`
       : "";
+    const pointsStr = secConfig 
+      ? (basePointsStr ? `${basePointsStr}、 ${secConfig.primary}、 ${secConfig.secondary}` : `${secConfig.primary}、 ${secConfig.secondary}`)
+      : basePointsStr;
+
+    const fullSyndrome = secConfig 
+      ? `${diagnosis.syndromeName}（兼 ${secConfig.label}）` 
+      : diagnosis.syndromeName;
 
     saveDraftPatientNote({
       sourceTool: "臨床弁証シミュレーター",
-      syndrome: diagnosis.syndromeName,
-      constitution: `一文の証: ${diagnosis.oneSentenceFormula}`,
+      syndrome: fullSyndrome,
+      constitution: `一文の証: ${diagnosis.oneSentenceFormula}${secConfig ? ` ＋ 随証（${secConfig.label}）` : ""}`,
       chiefComplaint: `八綱・気血水・臓腑経絡の推論（${diagnosis.summary}）`,
       selectedPointsInput: pointsStr,
-      treatmentPlan: `【臨床弁証シミュレーター推論】\n証名候補: ${diagnosis.syndromeName}（${diagnosis.syndromeReading}）\n治則: ${diagnosis.treatmentPrinciple.rule}\n介入戦略: ${diagnosis.treatmentPrinciple.strategy}${primaryOpt ? `\n代表配穴: ${primaryOpt.pairName}（${primaryOpt.intendedEffect}）` : ""}\n※本内容はシミュレーターによる推論候補・下書きです。確定診断としてではなく、臨床家の所見に基づき編集してご活用ください。`,
+      treatmentPlan: `【臨床弁証シミュレーター推論】\n証名候補: ${fullSyndrome}\n治則: ${diagnosis.treatmentPrinciple.rule}\n介入戦略: ${diagnosis.treatmentPrinciple.strategy}${primaryOpt ? `\n【本治・主配穴 70%】: ${primaryOpt.pairName}（${primaryOpt.intendedEffect}）` : ""}${secConfig ? `\n【随証・兼証 30%】: ${secConfig.pairName}（${secConfig.primary}・${secConfig.secondary} / ${secConfig.desc}）` : ""}\n※本内容はシミュレーターによる推論候補・下書きです。確定診断としてではなく、臨床家の所見に基づき編集してご活用ください。`,
     });
     router.push("/notes");
   };
@@ -673,6 +696,54 @@ export default function ThreeStageSimulator() {
                 </button>
               ))}
             </div>
+
+            {/* 兼証（挟雑病態の併存・任意選択） */}
+            <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#263542] space-y-2.5">
+              <div className="flex flex-wrap items-center justify-between gap-1.5">
+                <span className="text-xs sm:text-sm font-bold text-[#404743] dark:text-[#C5D2DB] flex items-center gap-1.5">
+                  <span className="text-[#B86924] dark:text-[#E6C387]">＋</span>
+                  <span>兼証（挟雑病態の併存）を考慮する</span>
+                  <span className="text-[10px] font-normal text-[#737C77] dark:text-[#8899A6]">※任意（本治70% : 随証30%）</span>
+                </span>
+                {secondaryQixueshui !== "none" && (
+                  <button
+                    type="button"
+                    onClick={() => setSecondaryQixueshui("none")}
+                    className="text-[11px] font-bold text-[#B86924] dark:text-[#E6C387] hover:underline cursor-pointer"
+                  >
+                    兼証を解除
+                  </button>
+                )}
+              </div>
+
+              <div className="flex flex-wrap gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setSecondaryQixueshui("none")}
+                  className={`px-2.5 py-1.5 rounded-lg text-xs font-bold border transition-all cursor-pointer ${
+                    secondaryQixueshui === "none"
+                      ? "bg-[#1E3D34] text-white border-[#1E3D34] dark:bg-[#2B6958]"
+                      : "bg-white dark:bg-[#17212A] text-[#59615D] dark:text-[#A0B0BC] border-[#D5CCBC] dark:border-[#2D3E50] hover:bg-[#F2EDE4]"
+                  }`}
+                >
+                  兼証なし（単一主証）
+                </button>
+                {QIXUESHUI_OPTIONS.filter((opt) => opt.value !== qixueshui).map((opt) => (
+                  <button
+                    key={`sec-${opt.value}`}
+                    type="button"
+                    onClick={() => setSecondaryQixueshui(opt.value)}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-bold border transition-all cursor-pointer ${
+                      secondaryQixueshui === opt.value
+                        ? "bg-[#B86924] text-white border-[#B86924] dark:bg-[#D48B47] shadow-xs"
+                        : "bg-white dark:bg-[#17212A] text-[#59615D] dark:text-[#A0B0BC] border-[#D5CCBC] dark:border-[#2D3E50] hover:border-[#B86924]/60"
+                    }`}
+                  >
+                    ＋ {opt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* STEP 3: 臓腑経絡弁証 */}
@@ -1178,6 +1249,55 @@ export default function ThreeStageSimulator() {
                   <strong className="text-[#1E3D34] dark:text-[#74BA9E] mr-1.5 font-bold">🎯 この配穴で狙うこと:</strong>
                   <span className="text-[#404743] dark:text-[#C5D2DB] leading-relaxed">{primaryOpt.intendedEffect}</span>
                 </div>
+
+                {/* 兼証（随証病態）が選択されている場合の複合処方・比率表示 */}
+                {secondaryQixueshui !== "none" && (() => {
+                  const secConfig = SECONDARY_POINT_MAP[secondaryQixueshui];
+                  if (!secConfig) return null;
+
+                  return (
+                    <div className="pt-3 border-t border-[#E8E1D1] dark:border-[#22303D] space-y-2.5">
+                      <div className="flex flex-wrap items-center justify-between gap-1.5">
+                        <div className="flex items-center gap-2">
+                          <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-[#B86924] text-white">
+                            随証配穴（30%）
+                          </span>
+                          <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
+                            兼証：{secConfig.label} への補佐介入
+                          </span>
+                        </div>
+                        <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                          処方バランス：本治 70% ＋ 随証 30%
+                        </span>
+                      </div>
+
+                      {/* 処方比率バー */}
+                      <div className="w-full h-2 rounded-full overflow-hidden flex bg-[#E8E1D1] dark:bg-[#22303D]">
+                        <div className="bg-[#1E3D34] dark:bg-[#2B6958] h-full" style={{ width: "70%" }} title="本治 70%" />
+                        <div className="bg-[#B86924] dark:bg-[#D48B47] h-full" style={{ width: "30%" }} title="随証 30%" />
+                      </div>
+
+                      <div className="p-3.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#F2ECE0] dark:border-[#2A3B4A] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
+                              {secConfig.pairName}（{secConfig.primary} ＋ {secConfig.secondary}）
+                            </span>
+                            <span className="text-[10px] px-1.5 py-0.2 rounded bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] font-mono font-bold">
+                              {secConfig.role}
+                            </span>
+                          </div>
+                          <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
+                            {secConfig.desc}
+                          </p>
+                        </div>
+                        <span className="text-[11px] font-bold text-[#B86924] dark:text-[#E6C387] bg-[#FCF4EB] dark:bg-[#221811] px-2.5 py-1 rounded-md shrink-0">
+                          随証補佐
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 {/* 配穴設計・臨床演習への導線 */}
                 <div className="mt-3 p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-[#F0F7F4] to-[#FAF8F5] dark:from-[#162720] dark:to-[#17212A] border border-[#74BA9E]/40 dark:border-[#2D5A46] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
