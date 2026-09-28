@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Compass, Ruler, ArrowLeft, Layers, ShieldCheck, Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "骨度法・取穴の基礎知識｜体表目印と同身寸の測り方 | はり太郎の経穴辞典",
+  title: "骨度法・取穴の基礎知識｜体表目印と同身寸の測り方",
   description:
     "東洋医学の取穴に欠かせない「骨度法（骨度折量寸法）」と「同身寸（指寸）」の基準表。前額部・胸腹部・背部・上肢・下肢の基準寸法と触診目印を徹底解説。",
   alternates: {

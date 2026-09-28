@@ -35,9 +35,9 @@ const SPECIAL_POINT_MAP: Record<string, TsuboSimulatorLinkInfo> = {
   },
   li4: {
     depth: "exterior",
-    temp: "cold",
+    temp: "heat",
     state: "excess",
-    qixueshui: "qixu",
+    qixueshui: "qizhi",
     zangfu: "lung",
     syndromeName: "外感風熱・経絡鬱滞",
     syndromeReading: "がいかんふうねつ・けいらくうったい",

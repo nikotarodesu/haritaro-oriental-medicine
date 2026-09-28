@@ -64,7 +64,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   }
 
   return {
-    title: "体系学習カリキュラム | はり太郎の東洋医学",
+    title: "体系学習カリキュラム",
     description:
       "陰陽・五行・気血水から診断・治療・臨床実践まで全81レッスン。丸暗記ではなく、身体のバランスやつながりを理解する基礎を身につけます。",
     alternates: {

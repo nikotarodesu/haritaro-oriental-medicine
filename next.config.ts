@@ -9,6 +9,21 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
   },
+  // 恒久リダイレクト設定（旧URL・誤リンクの救済）
+  async redirects() {
+    return [
+      {
+        source: "/login",
+        destination: "/auth/login",
+        permanent: true,
+      },
+      {
+        source: "/mynote",
+        destination: "/notes",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const title = `${point.name}（${point.code}）の場所・取穴と注意点｜はり太郎`;
+  const title = `${point.name}（${point.code}）の場所・取穴と注意点`;
   const description = `${point.name}（${point.code} / ${point.meridian}）。${point.locationSimple} WHO標準取穴部位、解剖断面構造、主治適応症、臨床応用・運針のポイントを整理。`;
 
   return {
@@ -388,7 +388,7 @@ export default async function AcupointDetailPage({ params }: Props) {
               <Link
                 href={`/practice/haiketsu?add=${encodeURIComponent(point.name)}`}
                 className="px-3 py-2 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] bg-[#EBF3EF] dark:bg-[#182823] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs"
-                title="この経穴を配穴オプティマイザーの処方に組み込む"
+                title="この経穴を配穴設計の処方に組み込む"
               >
                 <SlidersHorizontal className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
                 <span>配穴処方に追加</span>

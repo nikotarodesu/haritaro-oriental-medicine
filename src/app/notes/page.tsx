@@ -481,7 +481,7 @@ export default function MyNotesPage() {
         <div className="flex items-center gap-3 shrink-0">
           {!isAuthenticated ? (
             <Link
-              href="/login"
+              href="/auth/login?returnTo=/notes"
               className="font-bold underline text-[#B86924] dark:text-[#E6C387] shrink-0 hover:opacity-80"
             >
               ログインしてクラウド同期する →

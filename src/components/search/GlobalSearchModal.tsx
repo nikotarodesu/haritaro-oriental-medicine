@@ -101,7 +101,7 @@ const STATIC_TOOLS: SearchResultItem[] = [
   {
     id: "tool-haiketsu-optimizer",
     type: "tool",
-    title: "臨床配穴オプティマイザー",
+    title: "配穴設計",
     subtitle: "原穴・絡穴・背兪穴・募穴・八脈交会穴等の名配穴組み合わせと臨床意図",
     badge: "臨床ツール",
     url: "/practice/haiketsu",
@@ -823,7 +823,7 @@ export default function GlobalSearchModal({
             <span>↵ 決定</span>
             <span>ESC 閉じる</span>
           </div>
-          <span>はり太郎 AMBOSS型 統合横断検索</span>
+          <span>はり太郎 統合横断検索</span>
         </div>
       </div>
     </div>

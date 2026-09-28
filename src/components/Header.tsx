@@ -336,7 +336,7 @@ export default function Header() {
                     </div>
                     <div>
                       <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] block">
-                        配穴設計オプティマイザー
+                        配穴設計
                       </span>
                       <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
                         原絡・兪募・八脈交会穴の処方解析＆禁忌アラート
@@ -411,7 +411,7 @@ export default function Header() {
               className="px-3 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 text-[#285A52] dark:text-[#6EC5B8] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
             >
               <FileText className="w-4 h-4" />
-              <span>マイカルテ</span>
+              <span>マイノート</span>
               {clipCount > 0 && (
                 <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#B86924] text-white">
                   {clipCount}

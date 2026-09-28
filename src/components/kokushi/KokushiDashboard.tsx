@@ -198,7 +198,7 @@ export default function KokushiDashboard() {
         id: "zangfu",
         title: "蔵象学説・臓腑弁証",
         subtitle: "第4講（全10講義）",
-        targetLectureId: "lecture-zangfu-1",
+        targetLectureId: "lecture-lifedynamics-6",
         importance: "状況設定問題の核心",
         badgeColor: "bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300",
         description: "五臓六腑の主宰機能、臓腑相関（木乗土、心腎不交等）、実証と虚証の鑑別。",
@@ -207,7 +207,7 @@ export default function KokushiDashboard() {
         id: "byoin",
         title: "病因病機・外感内傷",
         subtitle: "第5講（全7講義）",
-        targetLectureId: "lecture-pathology-1",
+        targetLectureId: "lecture-pathomechanism-1",
         importance: "鑑別の基礎",
         badgeColor: "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300",
         description: "六淫（風寒暑湿燥火）、七情内傷、飲食労倦、痰飲・瘀血の二次的病因。",
@@ -249,7 +249,7 @@ export default function KokushiDashboard() {
         <div className="flex justify-between items-end">
           <div>
             <h1 className="text-xl font-bold font-serif">はり師・きゅう師 国家試験対策 暗記チェックシート</h1>
-            <p className="text-xs text-slate-600 mt-1">はり太郎の東洋医学（haritaro.jp）｜ 東洋医学概論・経絡経穴概論 最重要実問セレクション</p>
+            <p className="text-xs text-slate-600 mt-1">はり太郎の東洋医学（haritaro.jp）｜ 東洋医学概論・経絡経穴概論 最重要精選演習セレクション</p>
           </div>
           <div className="text-right text-xs text-slate-500">
             <span>印刷日: {todayStr}</span>
@@ -591,14 +591,14 @@ export default function KokushiDashboard() {
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  本試験過去問アーカイブ特訓（実問・4択）
+                  国試対策演習アーカイブ（精選4択）
                 </h2>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#1E3D34] text-white">
                   実戦4択
                 </span>
               </div>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
-                近年の国家試験本番問題から、東洋医学概論・経絡経穴概論の頻出・最重要問を厳選。
+                東洋医学概論・経絡経穴概論・臨床論の頻出重要テーマを徹底攻略する精選演習問題集。
               </p>
             </div>
           </div>
@@ -651,9 +651,15 @@ export default function KokushiDashboard() {
                 {/* メタ情報バッジ */}
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-md bg-[#1E3D34] text-white print:border print:border-slate-400 print:text-black print:bg-transparent">
-                      第{item.examNumber}回
-                    </span>
+                    {item.examNumber ? (
+                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-md bg-[#1E3D34] text-white print:border print:border-slate-400 print:text-black print:bg-transparent">
+                        第{item.examNumber}回
+                      </span>
+                    ) : (
+                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-md bg-[#B86924] text-white print:border print:border-slate-400 print:text-black print:bg-transparent">
+                        精選予想
+                      </span>
+                    )}
                     <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] border border-[#E8E1D1] dark:border-[#2D3E50] print:border-slate-300 print:text-black">
                       {item.subject}
                     </span>

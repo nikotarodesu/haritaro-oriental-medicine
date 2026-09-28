@@ -214,7 +214,7 @@ export const GLOSSARY_TERMS: Record<string, GlossaryTerm> = {
     relatedLectureId: "lecture-treatment-3",
     relatedLectureTitle: "治法論 レッスン3：伝統的名配穴の臨床応用",
     relatedToolUrl: "/practice/haiketsu",
-    relatedToolTitle: "臨床配穴オプティマイザー"
+    relatedToolTitle: "配穴設計"
   },
   四総穴: {
     term: "四総穴",

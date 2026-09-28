@@ -54,12 +54,8 @@ export default function HaiketsuPracticePage() {
     return Object.values(ACUPOINT_ROLES);
   }, []);
 
-  // ツボの追加/削除（プレミアム限定）
+  // ツボの追加/削除（無料会員は4穴まで自由演習、5穴以上の高度処方はプレミアム）
   const togglePoint = (id: string) => {
-    if (!isPremium) {
-      setAuthModalOpen(true);
-      return;
-    }
     if (selectedPointIds.includes(id)) {
       setSelectedPointIds(selectedPointIds.filter(p => p !== id));
       setSaved(false);
@@ -68,14 +64,19 @@ export default function HaiketsuPracticePage() {
         alert("演習で選択できる経穴は最大8穴までです。");
         return;
       }
+      if (!isPremium && selectedPointIds.length >= 4) {
+        setAuthModalOpen(true);
+        return;
+      }
       setSelectedPointIds([...selectedPointIds, id]);
       setSaved(false);
     }
   };
 
-  // プリセットの読み込み（プレミアム限定）
+  // プリセットの読み込み（最初の2件は無料でお試し可能、3件目以降はプレミアム限定）
   const handleLoadPreset = (presetId: string) => {
-    if (!isPremium) {
+    const presetIndex = OVERDOSE_PRESETS.findIndex(item => item.id === presetId);
+    if (!isPremium && presetIndex >= 2) {
       setAuthModalOpen(true);
       return;
     }
@@ -88,7 +89,6 @@ export default function HaiketsuPracticePage() {
     }
   };
 
-  
   // 臨床ノート（患者ノート）への下書き引き渡し
   const handleSaveToNoteDraft = () => {
     const pointNames = selectedPointIds.map(id => ACUPOINT_ROLES[id]?.name || id);
@@ -100,14 +100,10 @@ export default function HaiketsuPracticePage() {
     router.push("/notes");
   };
 
-  // マイノートに保存（プレミアム限定）
+  // マイノートに保存（無料枠: 最大20件、プレミアム: 最大1000件）
   const handleSaveToMemo = () => {
-    if (!isPremium) {
-      setAuthModalOpen(true);
-      return;
-    }
     const pointNames = selectedPointIds.map(id => ACUPOINT_ROLES[id]?.name || id);
-    addMemo({
+    const success = addMemo({
       id: `haiketsu-${Date.now()}`,
       type: "pair",
       title: prescriptionTitle || "自作配穴処方",
@@ -119,7 +115,12 @@ export default function HaiketsuPracticePage() {
       mechanism: `構成分析: 本治${analysis.rootCount}穴 / 標治${analysis.branchCount}穴（${analysis.status === "optimal" ? "少数精鋭" : "標準"}）`,
       personalNotes: `配穴演習にて設計 (${new Date().toLocaleDateString("ja-JP")})`
     });
-    setSaved(true);
+
+    if (success) {
+      setSaved(true);
+    } else {
+      setAuthModalOpen(true);
+    }
   };
 
   return (
@@ -143,6 +144,9 @@ export default function HaiketsuPracticePage() {
             </h1>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] max-w-2xl leading-relaxed">
               基本32穴の中から目的に応じた経穴を選定し、本治穴（体質根本）と標治穴（局所対症）のバランスや昇降・寒熱の方向性を整理します。選定理由を自ら言語化し、教材の代表例と比較して推論力を高める練習です。
+            </p>
+            <p className="text-xs text-[#737C77] dark:text-[#8899A6] max-w-2xl">
+              ※無料会員でも基本穴の選定・本治標治分析・臨床ノートへの下書き引き継ぎ・配穴保存（最大20件まで）をご利用いただけます。5穴以上の高度多穴処方や無制限保存はプレミアム会員で解放されます。
             </p>
           </div>
 

@@ -570,7 +570,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
     bodySide: "右手",
     posture: "手背を上に向けて軽く握った肢位",
     axes: { horizontal: ["橈側 (親指側)", "尺側 (小指側)"], vertical: ["手背側 (表面)", "手掌側 (深面)"] },
-    summaryTakeaway: "第2中手骨の橈側骨縁を目印に、第1背側骨間筋から母指内転筋への重なりと、橈骨神経浅枝・深掌動脈弓の近接関係を理解します。",
+    summaryTakeaway: "【手背中手骨部模式図】第2中手骨の橈側骨縁を目印に、第1背側骨間筋から母指内転筋への重なりと、橈骨神経浅枝・深掌動脈弓の近接関係を理解します（※合谷周囲の局所解剖モデル）。",
     layers: [
       { depthIndex: 1, id: "skin", name: "手背皮膚", category: "skin", depthDescription: "表面層", description: "薄く可動性のある皮膚。", dangerLevel: "safe", clinicalSignificance: "素早い切皮" },
       { depthIndex: 2, id: "subcutaneous", name: "皮下組織・手背静脈網", category: "subcutaneous", depthDescription: "浅層", description: "手背静脈と皮神経が走る層。", dangerLevel: "safe", clinicalSignificance: "皮下出血予防" },
@@ -1250,13 +1250,30 @@ function generateNeedleTrackForPoint(point: AcupointMaster, sliceType: SliceType
 }
 
 /**
- * 経穴マスター情報から完全な CrossSectionModel を動的に生成
+ * 手指・足趾末端・爪甲角の経穴（井穴など）
+ * 中手骨・中足骨断面モデルと解剖構造が乖離するため、誤った共通断面図の表示を防止
  */
-export function generateCrossSectionModel(point: AcupointMaster): CrossSectionModel {
+export const TERMINAL_DIGIT_POINTS = new Set([
+  // 手指（爪甲角・指端・末節）
+  "li1", "li2", "lu11", "pc9", "ht9", "te1", "te2", "si1", "si2",
+  // 足趾（爪甲角・趾端・末節）
+  "lr1", "lr2", "sp1", "sp2", "st45", "st44", "bl67", "bl66", "gb44", "gb43"
+]);
+
+/**
+ * 経穴マスター情報から完全な CrossSectionModel を動的に生成
+ * ※指先・爪甲角など解剖モデルが合致しない末梢穴には誤った図を出さず undefined を返す
+ */
+export function generateCrossSectionModel(point: AcupointMaster): CrossSectionModel | undefined {
+  if (TERMINAL_DIGIT_POINTS.has(point.codeLower)) {
+    return undefined;
+  }
+
   const sliceType = classifyAcupointSlice(point);
   const template = SLICE_TEMPLATES[sliceType];
-  const needleTrack = generateNeedleTrackForPoint(point, sliceType);
+  if (!template) return undefined;
 
+  const needleTrack = generateNeedleTrackForPoint(point, sliceType);
   const title = `${point.name}（${point.code}）${template.titleTemplate}`;
 
   return {

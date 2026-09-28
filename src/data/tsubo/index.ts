@@ -67,10 +67,10 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
     const cs = point.crossSection || generateCrossSectionModel(point);
     return {
       ...point,
-      crossSection: {
+      crossSection: cs ? {
         ...cs,
         sliceType: cs.sliceType || classifyAcupointSlice(point),
-      },
+      } : undefined,
       locationSimple: getFriendlyLocationSimple(point),
       caution: point.caution || generateCaution(point),
     };
@@ -86,10 +86,10 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
     const cs = point.crossSection || generateCrossSectionModel(point);
     return {
       ...point,
-      crossSection: {
+      crossSection: cs ? {
         ...cs,
         sliceType: cs.sliceType || classifyAcupointSlice(point),
-      },
+      } : undefined,
       locationSimple: getFriendlyLocationSimple(point),
       caution: point.caution || generateCaution(point),
     };
@@ -111,10 +111,11 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
 }
 
 /**
- * 経穴が詳細解説・精密断面図を保持しているかを判定（全穴対応により常に true）
+ * 経穴が精密解剖モデル・個別文献エビデンスを保持しているかを判定
  */
 export function isDetailedAcupoint(codeOrId: string): boolean {
-  return true;
+  const clean = codeOrId.trim().toLowerCase().replace(/^tsubo-/, "");
+  return Boolean(DETAILED_ACUPOINTS[clean]);
 }
 
 

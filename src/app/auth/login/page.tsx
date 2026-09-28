@@ -37,14 +37,19 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  const { login, loginWithGoogle, setDemoRole, isConfigured } = useAuth();
+  const { login, loginWithGoogle, isConfigured } = useAuth();
   const router = useRouter();
+  const [returnTo, setReturnTo] = useState<string>("/account/subscription");
 
-  // URLパラメータ（OAuthエラー等の検知）
+  // URLパラメータ（OAuthエラー・戻り先URL等の検知）
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("error") === "oauth_failed") {
       setError("Google認証に失敗したか、キャンセルされました。もう一度お試しください。");
+    }
+    const rawReturnTo = params.get("returnTo");
+    if (rawReturnTo && rawReturnTo.startsWith("/") && !rawReturnTo.startsWith("//") && !rawReturnTo.includes("\\")) {
+      setReturnTo(rawReturnTo);
     }
   }, []);
 
@@ -53,7 +58,7 @@ export default function LoginPage() {
     setIsGoogleLoading(true);
     setError(null);
     try {
-      const result = await loginWithGoogle("/account/subscription");
+      const result = await loginWithGoogle(returnTo);
       if (!result.success) {
         setError(result.error || "Googleログインの開始に失敗しました");
         setIsGoogleLoading(false);
@@ -77,7 +82,7 @@ export default function LoginPage() {
     try {
       const result = await login(email, password);
       if (result.success) {
-        router.push("/account/subscription");
+        router.push(returnTo);
       } else {
         setError(result.error || "ログインに失敗しました");
       }
@@ -86,11 +91,6 @@ export default function LoginPage() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleQuickDemo = (role: "free" | "premium") => {
-    setDemoRole(role, "monthly");
-    router.push("/account/subscription");
   };
 
   return (
@@ -196,29 +196,6 @@ export default function LoginPage() {
           >
             無料会員登録（新規作成）
           </Link>
-        </div>
-
-        {/* 動作確認用シミュレーター */}
-        <div className="border-t border-[#E8E1D1] dark:border-[#22303D] pt-4 space-y-2">
-          <span className="text-[11px] font-bold text-[#737C77] dark:text-[#8899A6] block text-center">
-            動作確認用ワンクリックログイン
-          </span>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => handleQuickDemo("free")}
-              className="py-2 px-2.5 rounded-lg border border-[#D8CFC0] dark:border-[#384C5E] text-[11px] font-bold text-[#404743] dark:text-[#C5D2DB] hover:bg-[#EBE4D5] dark:hover:bg-[#1C2732]"
-            >
-              無料会員で入る
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickDemo("premium")}
-              className="py-2 px-2.5 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#B86924] text-[11px] font-bold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FCECD8]"
-            >
-              プレミアムで入る
-            </button>
-          </div>
         </div>
       </div>
     </div>
