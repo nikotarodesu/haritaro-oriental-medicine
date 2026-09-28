@@ -27,6 +27,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import AuthModal from "@/components/auth/AuthModal";
 import { SUBSCRIPTION_CONFIG, isSubscriptionSalesEnabled } from "@/config/subscription";
+import { getCaseSimulatorPreset, buildSimulatorUrlFromCase } from "@/data/cases/caseSimulatorMapping";
+import { SlidersHorizontal, FlaskConical } from "lucide-react";
 
 export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: ClinicalCase }) {
   const { isPremium } = useAuth();
@@ -433,6 +435,21 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                   <Bookmark className="w-3.5 h-3.5 fill-current" />
                   <span>{isAlreadySaved ? "学習ノート保存済み" : "学習ノートに登録"}</span>
                 </button>
+
+                {/* シミュレーターで動的検証ボタン */}
+                {(() => {
+                  const simPreset = getCaseSimulatorPreset(clinicalCase.id);
+                  if (!simPreset) return null;
+                  return (
+                    <Link
+                      href={buildSimulatorUrlFromCase(simPreset)}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#EBF3EF] dark:bg-[#182823] hover:bg-[#D4EAE0] dark:hover:bg-[#203930] text-[#1E3D34] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243] transition-all shadow-xs group"
+                    >
+                      <FlaskConical className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                      <span>シミュレーターで検証 ➜</span>
+                    </Link>
+                  );
+                })()}
               </div>
 
               {/* 確定診断要約テーブル */}
@@ -538,7 +555,29 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                       この症例の学びを次につなぐ
                     </h4>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    {(() => {
+                      const simPreset = getCaseSimulatorPreset(clinicalCase.id);
+                      if (!simPreset) return null;
+                      return (
+                        <Link
+                          href={buildSimulatorUrlFromCase(simPreset)}
+                          className="p-3.5 rounded-xl bg-gradient-to-br from-[#EBF3EF] to-[#FAF8F5] dark:from-[#182823] dark:to-[#17212A] border-2 border-[#1E3D34]/30 dark:border-[#2A5243] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-left space-y-1 group transition-all block shadow-xs"
+                        >
+                          <div className="flex items-center justify-between text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                            <span className="flex items-center gap-1">
+                              <FlaskConical className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                              <span>シミュレーターで実験</span>
+                            </span>
+                            <SlidersHorizontal className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                          </div>
+                          <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
+                            八綱や臓腑を動かして配穴の変化を検証
+                          </p>
+                        </Link>
+                      );
+                    })()}
+
                     <button
                       type="button"
                       onClick={handleSaveToMemo}

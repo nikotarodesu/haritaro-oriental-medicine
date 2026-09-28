@@ -20,7 +20,8 @@ import {
   GraduationCap,
   ArrowUp,
   SlidersHorizontal,
-  FileText
+  FileText,
+  FlaskConical
 } from "lucide-react";
 import { 
   DepthType, 
@@ -93,6 +94,9 @@ export default function ThreeStageSimulator() {
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [changeNotice, setChangeNotice] = useState<string | null>(null);
 
+  // 症例演習からの連動情報
+  const [fromCaseInfo, setFromCaseInfo] = useState<{ number: string; title: string } | null>(null);
+
   // 診断推論の算出
   
   // 臨床ノートへの下書き引き渡し
@@ -117,9 +121,41 @@ export default function ThreeStageSimulator() {
     return synthesizeComprehensiveDiagnosis(depth, temp, state, qixueshui, zangfu, complexState);
   }, [depth, temp, state, qixueshui, zangfu, complexState]);
 
-  // sessionStorage からの初期復元
+  // URL searchParams または sessionStorage からの初期復元
   useEffect(() => {
     if (typeof window === "undefined") return;
+
+    // 1. URL searchParams の優先チェック（症例等からの連携）
+    const searchParams = new URLSearchParams(window.location.search);
+    const fromCase = searchParams.get("fromCase");
+    const caseTitle = searchParams.get("caseTitle");
+
+    if (fromCase) {
+      const qDepth = searchParams.get("depth") as DepthType | null;
+      const qTemp = searchParams.get("temp") as TemperatureType | null;
+      const qState = searchParams.get("state") as StateType | null;
+      const qQixueshui = searchParams.get("qixueshui") as QixueshuiType | null;
+      const qZangfu = searchParams.get("zangfu") as ZangfuType | null;
+      const qComplex = searchParams.get("complexState") as ComplexStateType | null;
+
+      if (qDepth) setDepth(qDepth);
+      if (qTemp) setTemp(qTemp);
+      if (qState) setState(qState);
+      if (qQixueshui) setQixueshui(qQixueshui);
+      if (qZangfu) setZangfu(qZangfu);
+      if (qComplex) setComplexState(qComplex);
+
+      setFromCaseInfo({
+        number: fromCase,
+        title: caseTitle || `症例 ${fromCase}`,
+      });
+      setActivePresetId(null);
+      setChangeNotice(`症例${fromCase}（${caseTitle || ""}）の臨床所見を反映しました。条件を動かして配穴変化を観察できます。`);
+      setIsMounted(true);
+      return;
+    }
+
+    // 2. 通常の sessionStorage 復元
     try {
       const saved = sessionStorage.getItem(STORAGE_KEY);
       if (saved) {
@@ -310,6 +346,36 @@ export default function ThreeStageSimulator() {
 
   return (
     <div className="space-y-6 sm:space-y-10">
+      {/* 症例連携通知バナー */}
+      {fromCaseInfo && (
+        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#EBF3EF] to-[#FAF8F5] dark:from-[#182823] dark:to-[#17212A] border-2 border-[#1E3D34] dark:border-[#74BA9E] shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fadeIn">
+          <div className="flex items-center gap-3">
+            <span className="p-2.5 rounded-xl bg-[#1E3D34] text-white shrink-0">
+              <FlaskConical className="w-5 h-5 text-[#E6C387]" />
+            </span>
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#1E3D34] text-white">
+                  症例 {fromCaseInfo.number} 連動中
+                </span>
+                <span className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
+                  {fromCaseInfo.title}
+                </span>
+              </div>
+              <p className="text-xs text-[#59615D] dark:text-[#96A6B2] mt-0.5 leading-relaxed">
+                症例の八綱・気血水・臓腑が反映されています。条件を変更して、もし寒熱や臓腑が異なっていた場合の配穴変化を観察できます。
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => setFromCaseInfo(null)}
+            className="text-xs font-semibold text-[#59615D] dark:text-[#96A6B2] hover:text-[#1E3D34] underline cursor-pointer shrink-0"
+          >
+            連動を解除
+          </button>
+        </div>
+      )}
+
       {/* ============================================================ */}
       {/* 1. 条件選択枠（入力エリア）                                    */}
       {/* ============================================================ */}

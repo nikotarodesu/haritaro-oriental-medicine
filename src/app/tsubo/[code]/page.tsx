@@ -32,9 +32,11 @@ import {
   HelpCircle,
   HeartPulse,
   Flame,
-  Hand
+  Hand,
+  GraduationCap
 } from "lucide-react";
 import { SYMPTOMS } from "@/data/symptomData";
+import { getLecturesForAcupoint } from "@/utils/acupointCurriculumMatcher";
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -99,6 +101,9 @@ export default async function AcupointDetailPage({ params }: Props) {
     if (meridian.includes("腎") || meridian.includes("膀胱")) return ["水"];
     return [];
   };
+
+  // この経穴が登場する講義（カリキュラム）
+  const relatedLectures = getLecturesForAcupoint(point.name, point.code);
 
   // FAQ データ作成（Google FAQPage 構造化データ対応）
   const faqs = [
@@ -726,6 +731,61 @@ export default async function AcupointDetailPage({ params }: Props) {
                   </div>
                   <div className="mt-2.5 pt-2 border-t border-[#EAE3D4] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-medium">
                     <span>東洋医学メカニズムと養生法を見る</span>
+                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* 6.5. この経穴が登場する講義教材（カリキュラム連動） */}
+        {relatedLectures.length > 0 && (
+          <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-4 sm:space-y-6 transition-colors">
+            <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
+              <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                <GraduationCap className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
+                <h2>この経穴が登場する講義教材（全81講義カリキュラム）</h2>
+              </div>
+              <Link
+                href="/curriculum"
+                className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
+              >
+                <span>全講義一覧へ</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              {relatedLectures.map((lec) => (
+                <Link
+                  key={lec.id}
+                  href={lec.url}
+                  className="p-4 rounded-xl border border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#10171F] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group flex flex-col justify-between space-y-2 shadow-2xs"
+                >
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                        {lec.stageTitle}
+                      </span>
+                      {lec.seriesTitle && (
+                        <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                          {lec.seriesTitle}
+                        </span>
+                      )}
+                      <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] ml-auto">
+                        約{lec.duration}
+                      </span>
+                    </div>
+                    <h3 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                      {lec.title}
+                    </h3>
+                    <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] line-clamp-2 leading-relaxed">
+                      {lec.excerpt}
+                    </p>
+                  </div>
+                  <div className="pt-2 border-t border-[#EAE3D4] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-medium">
+                    <span>講義を読んで理論を深掘りする</span>
                     <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </Link>

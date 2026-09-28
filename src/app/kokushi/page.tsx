@@ -1,0 +1,39 @@
+import { Metadata } from "next";
+import KokushiDashboard from "@/components/kokushi/KokushiDashboard";
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "国家試験対策特設ハブ｜東洋医学・経絡経穴で満点を狙う最短ルート｜はり太郎",
+  description: "はり太郎の国家試験対策特設ハブ。鍼灸師・あん摩マッサージ指圧師の国家試験に向け、忘却曲線に基づく日替わり特訓、状況設定症例演習、要穴・骨度法マスター、禁忌安全管理、全81講義の弱点克服カリキュラムを提供。",
+  alternates: {
+    canonical: "/kokushi",
+  },
+  openGraph: {
+    title: "国家試験対策特設ハブ｜東洋医学・経絡経穴で満点を狙う最短ルート｜はり太郎",
+    description: "忘却曲線復習・状況設定演習・要穴骨度法・禁忌安全を統合した鍼灸国試対策ハブ。",
+    url: "https://www.haritaro.jp/kokushi",
+  },
+};
+
+export default function KokushiPage() {
+  return (
+    <div className="min-h-screen py-6 sm:py-12 px-3 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
+        {/* パンくずリスト */}
+        <nav className="flex items-center gap-1.5 text-xs text-[#737C77] dark:text-[#8899A6]">
+          <Link href="/" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
+            ホーム
+          </Link>
+          <ChevronRight className="w-3.5 h-3.5" />
+          <span className="text-[#232826] dark:text-[#FAF8F5] font-bold">
+            国家試験対策特設ハブ
+          </span>
+        </nav>
+
+        {/* 国試ダッシュボード本体 */}
+        <KokushiDashboard />
+      </div>
+    </div>
+  );
+}

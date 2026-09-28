@@ -30,6 +30,12 @@ import {
   AcupointRoleMetadata,
   OverdosePreset
 } from "@/data/haiketsuData";
+import { 
+  isPregnancyContraindicated, 
+  isChestBackPneumothoraxRisk, 
+  isContraindicatedNeedle,
+  isContraindicatedMoxa 
+} from "@/data/tsubo/safetyAndLandmarks";
 import ClipButton from "@/components/ClipButton";
 
 export default function HaiketsuOptimizer() {
@@ -57,6 +63,89 @@ export default function HaiketsuOptimizer() {
   // 分析結果
   const analysis = useMemo(() => {
     return analyzePrescription(selectedIds);
+  }, [selectedIds]);
+
+  // 選択ツボの安全性・禁忌チェック
+  const safetyAlerts = useMemo(() => {
+    const alerts: {
+      type: "pregnancy" | "pneumothorax" | "needle_strict";
+      title: string;
+      level: "critical" | "warning";
+      points: { id: string; name: string; code: string; caution: string }[];
+    }[] = [];
+
+    const pregnancyPoints: { id: string; name: string; code: string; caution: string }[] = [];
+    const pneumoPoints: { id: string; name: string; code: string; caution: string }[] = [];
+    const strictPoints: { id: string; name: string; code: string; caution: string }[] = [];
+
+    selectedIds.forEach((id) => {
+      const role = ACUPOINT_ROLES[id];
+      if (!role) return;
+
+      const codeLower = role.code.toLowerCase();
+
+      if (isContraindicatedNeedle(codeLower)) {
+        strictPoints.push({
+          id,
+          name: role.name,
+          code: role.code,
+          caution: "刺鍼厳禁穴。感染・腹膜炎・深部損傷のリスクがあるため刺鍼を行わないこと。",
+        });
+      }
+
+      if (isPregnancyContraindicated(codeLower)) {
+        let note = "子宮収縮を強く誘発する恐れがあるため、妊娠中の患者への強刺激・深刺・長時間の施灸は禁忌・慎重を要します。";
+        if (codeLower === "li4" || codeLower === "sp6") {
+          note = "【代表的妊婦禁忌穴】下気・駆瘀血作用が極めて強力なため、妊娠中は刺鍼厳禁。";
+        } else if (codeLower === "gb21") {
+          note = "強い降気作用により胎気を下垂・流産誘発の危険があるため、妊娠中の強刺激は厳禁。";
+        }
+        pregnancyPoints.push({
+          id,
+          name: role.name,
+          code: role.code,
+          caution: note,
+        });
+      }
+
+      if (isChestBackPneumothoraxRisk(codeLower)) {
+        pneumoPoints.push({
+          id,
+          name: role.name,
+          code: role.code,
+          caution: "【気胸リスク穴】直刺深刺は胸膜・肺実質穿刺の危険。直刺を避け、肋骨に沿った斜刺（刺入深度10〜15mm以内）を厳守すること。",
+        });
+      }
+    });
+
+    if (strictPoints.length > 0) {
+      alerts.push({
+        type: "needle_strict",
+        title: "刺鍼絶対禁忌穴が含まれています",
+        level: "critical",
+        points: strictPoints,
+      });
+    }
+
+    if (pregnancyPoints.length > 0) {
+      alerts.push({
+        type: "pregnancy",
+        title: "妊婦禁忌・慎重穴が含まれています",
+        level: "critical",
+        points: pregnancyPoints,
+      });
+    }
+
+    if (pneumoPoints.length > 0) {
+      alerts.push({
+        type: "pneumothorax",
+        title: "気胸注意・刺鍼深度厳守穴（胸背部）",
+        level: "warning",
+        points: pneumoPoints,
+      });
+    }
+
+    return alerts;
   }, [selectedIds]);
 
   // 選択切り替え
@@ -414,6 +503,90 @@ export default function HaiketsuOptimizer() {
                   </div>
                 );
               })}
+            </div>
+          )}
+
+          {/* 臨床安全・禁忌アラート（妊婦禁忌・気胸リスク・深刺注意） */}
+          {selectedIds.length > 0 && (
+            <div className="space-y-3 pt-2">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#737C77] dark:text-[#8899A6] px-1 flex items-center justify-between">
+                <span>臨床安全性・禁忌チェック</span>
+                {safetyAlerts.length > 0 ? (
+                  <span className="text-[10px] text-red-600 dark:text-red-400 font-bold">
+                    ⚠️ 要確認 {safetyAlerts.length}件
+                  </span>
+                ) : (
+                  <span className="text-[10px] text-[#1E3D34] dark:text-[#74BA9E] font-bold">
+                    ✓ 禁忌穴混入なし
+                  </span>
+                )}
+              </h4>
+
+              {safetyAlerts.length > 0 ? (
+                safetyAlerts.map((alert, idx) => {
+                  const isCritical = alert.level === "critical";
+                  return (
+                    <div
+                      key={idx}
+                      className={`p-4 rounded-2xl border transition-all ${
+                        isCritical
+                          ? "bg-rose-50/90 dark:bg-[#281315] border-rose-200 dark:border-[#522125] text-[#232826] dark:text-[#FAF8F5]"
+                          : "bg-amber-50/90 dark:bg-[#261C14] border-amber-200 dark:border-[#4D3520] text-[#232826] dark:text-[#FAF8F5]"
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="mt-0.5 shrink-0">
+                          {isCritical ? (
+                            <ShieldAlert className="w-5 h-5 text-rose-600 dark:text-rose-400" />
+                          ) : (
+                            <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                          )}
+                        </div>
+                        <div className="space-y-2 flex-1">
+                          <div className="flex flex-wrap items-center justify-between gap-1.5">
+                            <span className="text-xs font-bold">{alert.title}</span>
+                            <span
+                              className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
+                                isCritical
+                                  ? "bg-rose-600 text-white"
+                                  : "bg-amber-600 text-white"
+                              }`}
+                            >
+                              {isCritical ? "禁忌警告" : "安全深度厳守"}
+                            </span>
+                          </div>
+
+                          <div className="space-y-1.5">
+                            {alert.points.map((pt) => (
+                              <div
+                                key={pt.id}
+                                className="bg-white/90 dark:bg-[#1A1E24] p-2.5 rounded-xl border border-rose-100 dark:border-rose-950/60 text-xs space-y-1"
+                              >
+                                <div className="flex items-center gap-1.5 font-bold">
+                                  <span className="font-mono text-[11px] text-[#1E3D34] dark:text-[#74BA9E] px-1.5 py-0.2 bg-[#EBF3EF] dark:bg-[#182823] rounded">
+                                    {pt.code}
+                                  </span>
+                                  <span className="text-[#232826] dark:text-[#FAF8F5]">
+                                    {pt.name}
+                                  </span>
+                                </div>
+                                <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                                  {pt.caution}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="p-3.5 rounded-2xl bg-[#EBF3EF]/60 dark:bg-[#182823]/60 border border-[#C5DED4] dark:border-[#2A5243] flex items-center gap-2.5 text-xs text-[#1E3D34] dark:text-[#74BA9E]">
+                  <CheckCircle2 className="w-4 h-4 shrink-0" />
+                  <span>妊婦禁忌穴および気胸ハイリスク穴の混入はありません。</span>
+                </div>
+              )}
             </div>
           )}
 

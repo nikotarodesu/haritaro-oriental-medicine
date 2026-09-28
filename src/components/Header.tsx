@@ -21,6 +21,7 @@ import {
   FileText,
   RotateCcw,
   Search,
+  Award,
 } from "lucide-react";
 import YinYangSwitch from "./YinYangSwitch";
 import FontSizeControl from "./FontSizeControl";
@@ -251,6 +252,18 @@ export default function Header() {
             >
               <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#83BEA8]" />
               <span>学ぶ</span>
+            </Link>
+
+            {/* 国試対策（特設ハブ） */}
+            <Link
+              href="/kokushi"
+              className="px-3 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936]"
+            >
+              <Award className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+              <span>国試対策</span>
+              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#E6C387]/30 text-[#B86924] dark:text-[#E6C387]">
+                特設
+              </span>
             </Link>
 
             {/* 3. 辞典 ドロップダウン */}
@@ -625,6 +638,19 @@ export default function Header() {
             >
               <GraduationCap className="w-4 h-4" />
               <span>東洋医学カリキュラム</span>
+            </Link>
+            <Link
+              href="/kokushi"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between px-3 py-2 rounded-xl text-sm font-bold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2016]"
+            >
+              <div className="flex items-center gap-3">
+                <Award className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <span>国家試験対策特設ハブ</span>
+              </div>
+              <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-[#E6C387]/30 text-[#B86924] dark:text-[#E6C387]">
+                特設
+              </span>
             </Link>
             <Link
               href="/tsubo"
