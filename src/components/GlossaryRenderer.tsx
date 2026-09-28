@@ -29,6 +29,10 @@ export default function GlossaryRenderer({
     return new RegExp(`(${escaped.join("|")})`, "g");
   }, [termKeys]);
 
+  // コンポーネント単位で追跡するフォールバック用のSet
+  const fallbackSeenTerms = useMemo(() => new Set<string>(), [text]);
+  const activeSeenTerms = seenTerms || fallbackSeenTerms;
+
   if (!text) return null;
 
   // 用語をボタンとして描画する関数
@@ -38,7 +42,6 @@ export default function GlossaryRenderer({
     }
 
     const segments = rawStr.split(termRegex);
-    const localSeen = seenTerms || new Set<string>();
 
     return (
       <React.Fragment key={keyPrefix}>
@@ -46,22 +49,29 @@ export default function GlossaryRenderer({
           const matchedTerm = GLOSSARY_TERMS[seg];
 
           if (matchedTerm) {
-            // 初回登場時または主要用語はクリック可能なポップアップリンクとして描画
-            return (
-              <button
-                key={`${keyPrefix}-term-${sIdx}`}
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setActiveTerm(matchedTerm);
-                }}
-                className="inline-flex items-baseline font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-dotted border-[#1E3D34] dark:border-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] rounded px-0.5 transition-colors cursor-pointer text-left"
-                title={`${matchedTerm.term}（${matchedTerm.reading}）の解説を見る`}
-              >
-                {seg}
-              </button>
-            );
+            const termKey = matchedTerm.term;
+            if (!activeSeenTerms.has(termKey)) {
+              // 初回登場時（最初の1回目）のみクリック可能なポップアップリンクとして描画
+              activeSeenTerms.add(termKey);
+              return (
+                <button
+                  key={`${keyPrefix}-term-${sIdx}`}
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setActiveTerm(matchedTerm);
+                  }}
+                  className="inline-flex items-baseline font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-dotted border-[#1E3D34] dark:border-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] rounded px-0.5 transition-colors cursor-pointer text-left"
+                  title={`${matchedTerm.term}（${matchedTerm.reading}）の解説を見る`}
+                >
+                  {seg}
+                </button>
+              );
+            }
+
+            // 2回目以降の登場は点線ボタンにせず、通常のテキストとして描画（視認性を確保）
+            return renderTextWithBreaks(seg, `${keyPrefix}-seg-${sIdx}`);
           }
 
           return renderTextWithBreaks(seg, `${keyPrefix}-seg-${sIdx}`);

@@ -73,7 +73,8 @@ export default async function ArticleDetailPage({ params }: Props) {
   const relatedArticles = ARTICLES.filter((a) => a.id !== article.id && (a.category === article.category || Math.abs(ARTICLES.indexOf(a) - articleIndex) <= 2)).slice(0, 2);
 
   const resolvedReferences = resolveArticleReferences(article.references || []);
-  const seenTerms = new Set<string>();
+  const summarySeenTerms = new Set<string>();
+  const bodySeenTerms = new Set<string>();
 
   // 構造化データ（Article ＆ BreadcrumbList）
   const jsonLd = {
@@ -229,7 +230,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                       <CitationTextRenderer
                         text={point}
                         resolvedReferences={resolvedReferences}
-                        seenTerms={seenTerms}
+                        seenTerms={summarySeenTerms}
                       />
                     </span>
                   </li>
@@ -241,13 +242,13 @@ export default async function ArticleDetailPage({ params }: Props) {
           {/* 要約ボックス */}
           <div className="bg-[#FAF8F5] dark:bg-[#121920] p-4 sm:p-5 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#4E8C76] text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
             <strong className="block font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] mb-1">【本稿の要旨】</strong>
-            <GlossaryRenderer text={article.summary} seenTerms={seenTerms} />
+            <GlossaryRenderer text={article.summary} seenTerms={summarySeenTerms} />
           </div>
 
           {/* 本文 */}
           <MarkdownBody
             contentMarkdown={article.contentMarkdown}
-            seenTerms={seenTerms}
+            seenTerms={bodySeenTerms}
             idPrefix="article-heading"
             resolvedReferences={resolvedReferences}
           />

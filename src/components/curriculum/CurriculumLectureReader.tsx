@@ -92,7 +92,8 @@ export default function CurriculumLectureReader({ lecture }: Props) {
   );
   const isCompleted = isMounted && !!completedLectures[lecture.id];
 
-  const seenTerms = new Set<string>();
+  const keyPointsSeenTerms = new Set<string>();
+  const bodySeenTerms = new Set<string>();
   const resolvedReferences = resolveArticleReferences(
     lecture.references,
     lecture.contentMarkdown
@@ -266,7 +267,7 @@ export default function CurriculumLectureReader({ lecture }: Props) {
                 {lecture.keyPoints.map((point, idx) => (
                   <li key={idx} className="flex items-start gap-2">
                     <span className="text-[#1E3D34] dark:text-[#74BA9E] font-bold shrink-0 mt-0.5">✓</span>
-                    <span><GlossaryRenderer text={point} seenTerms={seenTerms} /></span>
+                    <span><GlossaryRenderer text={point} seenTerms={keyPointsSeenTerms} /></span>
                   </li>
                 ))}
               </ul>
@@ -277,7 +278,7 @@ export default function CurriculumLectureReader({ lecture }: Props) {
         {/* 本文（MarkdownBody） */}
         <MarkdownBody
           contentMarkdown={lecture.contentMarkdown}
-          seenTerms={seenTerms}
+          seenTerms={bodySeenTerms}
           idPrefix="curriculum-heading"
           resolvedReferences={resolvedReferences}
         />
