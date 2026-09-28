@@ -19,6 +19,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-09-20"),
     },
     {
+      url: `${baseUrl}/kokushi`,
+      lastModified: new Date("2026-09-28"),
+    },
+    {
+      url: `${baseUrl}/library`,
+      lastModified: new Date("2026-09-28"),
+    },
+    {
       url: `${baseUrl}/diagnosis`,
       lastModified: new Date("2026-09-20"),
     },
@@ -28,11 +36,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/simulator`,
-      lastModified: new Date("2026-09-20"),
+      lastModified: new Date("2026-09-28"),
+    },
+    {
+      url: `${baseUrl}/simulator/compare`,
+      lastModified: new Date("2026-09-28"),
     },
     {
       url: `${baseUrl}/practice/haiketsu`,
-      lastModified: new Date("2026-09-20"),
+      lastModified: new Date("2026-09-28"),
     },
     {
       url: `${baseUrl}/tsubo`,

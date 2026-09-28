@@ -60,6 +60,22 @@ export default function HaiketsuOptimizer() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [modalTsubo]);
 
+  // URLクエリ（?add=経穴名）からの動的追加
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const searchParams = new URLSearchParams(window.location.search);
+    const addParam = searchParams.get("add");
+    if (addParam) {
+      const decoded = decodeURIComponent(addParam).trim();
+      const targetTsubo = TSUBOS.find(
+        (t) => t.name === decoded || t.code.toLowerCase() === decoded.toLowerCase() || t.id.toLowerCase() === decoded.toLowerCase()
+      );
+      if (targetTsubo) {
+        setSelectedIds((prev) => (prev.includes(targetTsubo.id) ? prev : [...prev, targetTsubo.id]));
+      }
+    }
+  }, []);
+
   // 分析結果
   const analysis = useMemo(() => {
     return analyzePrescription(selectedIds);

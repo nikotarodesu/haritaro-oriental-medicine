@@ -92,7 +92,7 @@ export default function Header() {
 
   return (
     <header 
-      className="sticky top-0 z-50 bg-[#FAF8F5]/95 dark:bg-[#10161C]/95 backdrop-blur-md border-b border-[#E8E1D1] dark:border-[#22303D] transition-all duration-500"
+      className="sticky top-0 z-50 bg-[#FAF8F5]/95 dark:bg-[#10161C]/95 backdrop-blur-md border-b border-[#E8E1D1] dark:border-[#22303D] transition-all duration-500 print:hidden"
       style={{ borderTop: `2.5px solid ${currentSeason.accentHex}` }}
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">

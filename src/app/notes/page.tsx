@@ -1524,8 +1524,8 @@ export default function MyNotesPage() {
 
       {/* 5. 患者向け養生シート A4印刷プレビューモーダル */}
       {printNote && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-fadeIn overflow-y-auto">
-          <div className="bg-white text-black w-full max-w-3xl rounded-2xl shadow-2xl p-6 sm:p-8 my-8 space-y-6 max-h-[92vh] overflow-y-auto print:p-0 print:m-0 print:shadow-none print:w-full">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-fadeIn overflow-y-auto print:fixed print:inset-0 print:z-[9999] print:bg-white print:p-0 print:m-0 print:overflow-visible">
+          <div className="bg-white text-black w-full max-w-3xl rounded-2xl shadow-2xl p-6 sm:p-8 my-8 space-y-6 max-h-[92vh] overflow-y-auto print:p-6 print:m-0 print:shadow-none print:w-full print:max-h-none print:rounded-none print:border-none">
             
             {/* 画面用操作バー（印刷時には非表示） */}
             <div className="flex items-center justify-between border-b pb-4 print:hidden">
@@ -1655,8 +1655,8 @@ export default function MyNotesPage() {
 
       {/* 6. 待合室用案内用紙 A4印刷モーダル */}
       {isPopModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-fadeIn overflow-y-auto">
-          <div className="bg-white text-black w-full max-w-3xl rounded-2xl shadow-2xl p-6 sm:p-8 my-8 space-y-6 max-h-[92vh] overflow-y-auto print:p-0 print:m-0 print:shadow-none print:w-full">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-fadeIn overflow-y-auto print:fixed print:inset-0 print:z-[9999] print:bg-white print:p-0 print:m-0 print:overflow-visible">
+          <div className="bg-white text-black w-full max-w-3xl rounded-2xl shadow-2xl p-6 sm:p-8 my-8 space-y-6 max-h-[92vh] overflow-y-auto print:p-6 print:m-0 print:shadow-none print:w-full print:max-h-none print:rounded-none print:border-none">
             <div className="flex items-center justify-between border-b pb-4 print:hidden">
               <span className="text-xs font-bold text-gray-700">
                 待合室案内用紙（A4縦）

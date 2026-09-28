@@ -33,7 +33,8 @@ import {
   HeartPulse,
   Flame,
   Hand,
-  GraduationCap
+  GraduationCap,
+  SlidersHorizontal
 } from "lucide-react";
 import { SYMPTOMS } from "@/data/symptomData";
 import { getLecturesForAcupoint } from "@/utils/acupointCurriculumMatcher";
@@ -377,6 +378,15 @@ export default async function AcupointDetailPage({ params }: Props) {
               >
                 <GitCompare className="w-4 h-4" />
                 <span>2穴比較</span>
+              </Link>
+
+              <Link
+                href={`/practice/haiketsu?add=${encodeURIComponent(point.name)}`}
+                className="px-3 py-2 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] bg-[#EBF3EF] dark:bg-[#182823] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs"
+                title="この経穴を配穴オプティマイザーの処方に組み込む"
+              >
+                <SlidersHorizontal className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <span>配穴処方に追加</span>
               </Link>
 
               <Link

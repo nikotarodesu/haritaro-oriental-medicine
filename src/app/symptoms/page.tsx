@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { SYMPTOMS } from "@/data/symptomData";
 import { TSUBOS } from "@/data/tsuboData";
-import { HeartPulse, Utensils, Activity, ArrowRight, Sparkles, CheckCircle2, Stethoscope, ChevronDown, ChevronUp, Layers } from "lucide-react";
+import { HeartPulse, Utensils, Activity, ArrowRight, Sparkles, CheckCircle2, Stethoscope, ChevronDown, ChevronUp, Layers, FileText } from "lucide-react";
 import EastWestIntegrativeSwitch from "@/components/EastWestIntegrativeSwitch";
 
 export default function SymptomsPage() {
@@ -195,6 +195,29 @@ export default function SymptomsPage() {
                     />
                   </div>
                 )}
+              </div>
+
+              {/* 臨床・専門ツールへのステップアップ導線 */}
+              <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center justify-between gap-2 text-xs">
+                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                  医療関係者・学生の方へ:
+                </span>
+                <div className="flex items-center gap-3">
+                  <Link
+                    href="/simulator"
+                    className="inline-flex items-center gap-1 text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-bold"
+                  >
+                    <Layers className="w-3.5 h-3.5" />
+                    <span>シミュレーターで弁証推論 ➜</span>
+                  </Link>
+                  <Link
+                    href="/cases"
+                    className="inline-flex items-center gap-1 text-[#B86924] dark:text-[#E6C387] hover:underline font-bold"
+                  >
+                    <FileText className="w-3.5 h-3.5" />
+                    <span>関連症例演習 ➜</span>
+                  </Link>
+                </div>
               </div>
             </div>
           );

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { ShieldCheck, ArrowUpRight, Sparkles, Crown, X } from "lucide-react";
+import { ShieldCheck, ArrowUpRight, Sparkles, Crown, X, Award, Layers } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function Footer() {
@@ -45,7 +45,7 @@ export default function Footer() {
   }, [user?.role, setDemoRole]);
 
   return (
-    <footer className="bg-[#F2EDE4] dark:bg-[#131A21] border-t border-[#E3DBCB] dark:border-[#22303D] text-[#59615D] dark:text-[#96A6B2] text-sm mt-auto transition-colors duration-300">
+    <footer className="bg-[#F2EDE4] dark:bg-[#131A21] border-t border-[#E3DBCB] dark:border-[#22303D] text-[#59615D] dark:text-[#96A6B2] text-sm mt-auto transition-colors duration-300 print:hidden">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-10 sm:py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-10">
           {/* サイト概要 */}
@@ -60,66 +60,83 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* 一般向けセルフケア */}
+          {/* 臨床実践ツール */}
           <div>
             <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm sm:text-base tracking-wider mb-3.5 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5 flex items-center gap-1.5">
-              <span>一般向けセルフケア</span>
+              <span>臨床実践ツール</span>
             </h3>
             <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
-                <Link href="/diagnosis" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
-                  <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                  <span>気血水 体質チェック</span>
+                <Link href="/tsubo" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
+                  経穴辞典（全361穴・骨度法）
                 </Link>
               </li>
               <li>
-                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-                  症状別セルフケアガイド
+                <Link href="/simulator" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
+                  <Layers className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
+                  <span>臨床弁証シミュレーター</span>
                 </Link>
               </li>
               <li>
-                <Link href="/diagnosis?tab=gorou" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-                  五労チェッカー
+                <Link href="/practice/haiketsu" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
+                  配穴設計オプティマイザー
+                </Link>
+              </li>
+              <li>
+                <Link href="/cases" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
+                  臨床症例演習（全20症例）
+                </Link>
+              </li>
+              <li>
+                <Link href="/notes" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors font-semibold text-[#1E3D34] dark:text-[#74BA9E]">
+                  マイカルテ（配穴・養生シート）
+                </Link>
+              </li>
+              <li>
+                <Link href="/tsubo/compare" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors text-xs text-[#737C77] dark:text-[#8899A6]">
+                  経穴比較・鑑別 ➜
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* 専門家・学生向け */}
+          {/* 学ぶ・国試対策 */}
           <div>
-            <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm sm:text-base tracking-wider mb-3.5 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5">
-              専門家・学生向け
+            <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm sm:text-base tracking-wider mb-3.5 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5 flex items-center gap-1.5">
+              <span>学ぶ・国試対策</span>
             </h3>
             <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
-                <Link href="/curriculum" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-                  東洋医学8大体系カリキュラム
+                <Link href="/curriculum" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors font-medium">
+                  東洋医学カリキュラム（全81講義）
                 </Link>
               </li>
               <li>
-                <Link href="/tsubo" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-                  経穴辞典（全361穴）
+                <Link href="/kokushi" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1 font-semibold text-[#B86924] dark:text-[#E6C387]">
+                  <Award className="w-3.5 h-3.5" />
+                  <span>国家試験対策特設ハブ</span>
+                  <span className="text-[9px] px-1 py-0.2 rounded bg-[#E6C387]/30 font-bold">特設</span>
                 </Link>
               </li>
               <li>
-                <Link href="/cases" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-                  臨床症例演習
-                </Link>
-              </li>
-              <li>
-                <Link href="/notes" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-                  マイノート（臨床録・配穴集）
+                <Link href="/library" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
+                  古典条文・医学論文ライブラリ
                 </Link>
               </li>
               <li>
                 <Link href="/articles" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-                  コラム・文献アーカイブ
+                  学術コラム・文献解説
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1 font-semibold text-[#B86924] dark:text-[#E6C387]">
-                  <Crown className="w-3.5 h-3.5" />
-                  <span>プレミアム・料金プラン</span>
+                <Link href="/diagnosis" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                  <span>気血水体質チェック・五労</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors text-xs text-[#737C77] dark:text-[#8899A6]">
+                  症状別セルフケアガイド ➜
                 </Link>
               </li>
             </ul>
