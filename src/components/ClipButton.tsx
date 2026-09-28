@@ -22,10 +22,23 @@ export default function ClipButton({
 }: ClipButtonProps) {
   const { isClipped, toggleClip } = useClinicalMemo();
   const clipped = isClipped(item.id);
+  const [isBouncing, setIsBouncing] = React.useState(false);
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    // 触覚フィードバック（対応端末で微小なクリック振動）
+    if (typeof window !== "undefined" && "vibrate" in navigator) {
+      try {
+        navigator.vibrate([15, 30, 15]);
+      } catch (err) {
+        // 未許可環境は静かにフォールバック
+      }
+    }
+
+    setIsBouncing(true);
+    setTimeout(() => setIsBouncing(false), 250);
     toggleClip(item);
   };
 
@@ -43,9 +56,11 @@ export default function ClipButton({
         onClick={handleClick}
         title={clipped ? "マイノートから解除" : "マイノートに保存"}
         aria-label={clipped ? "マイノートから解除" : "マイノートに保存"}
-        className={`rounded-full flex items-center justify-center transition-all ${sizeClasses} ${
+        className={`rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 ${sizeClasses} ${
+          isBouncing ? "scale-110" : ""
+        } ${
           clipped
-            ? "bg-[#B86924] text-white shadow-xs hover:bg-[#9B551B] scale-105"
+            ? "bg-[#B86924] text-white shadow-xs hover:bg-[#9B551B]"
             : "bg-[#FAF8F5] dark:bg-[#1A2530] text-[#737C77] dark:text-[#8899A6] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:text-[#B86924] hover:border-[#B86924] dark:hover:border-[#E6C387]"
         } ${className}`}
       >
@@ -64,7 +79,9 @@ export default function ClipButton({
       <button
         type="button"
         onClick={handleClick}
-        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
+        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium transition-all duration-200 active:scale-95 ${
+          isBouncing ? "scale-105" : ""
+        } ${
           clipped
             ? "bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4D331F]"
             : "bg-[#FAF8F5] dark:bg-[#17212A] text-[#59615D] dark:text-[#96A6B2] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] hover:text-[#B86924]"
@@ -87,7 +104,9 @@ export default function ClipButton({
     <button
       type="button"
       onClick={handleClick}
-      className={`inline-flex items-center justify-center font-medium rounded-xl transition-all shadow-2xs ${sizeClasses} ${
+      className={`inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 active:scale-95 shadow-2xs ${sizeClasses} ${
+        isBouncing ? "scale-105" : ""
+      } ${
         clipped
           ? "bg-[#B86924] text-white hover:bg-[#9B551B] border border-[#9B551B]"
           : "bg-white dark:bg-[#1A2530] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] dark:hover:bg-[#202E3C] hover:border-[#B86924] dark:hover:border-[#E6C387] hover:text-[#B86924] dark:hover:text-[#E6C387]"

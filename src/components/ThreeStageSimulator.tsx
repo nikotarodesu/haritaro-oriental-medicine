@@ -98,6 +98,8 @@ export default function ThreeStageSimulator() {
   const [fromCaseInfo, setFromCaseInfo] = useState<{ number: string; title: string } | null>(null);
   // 体質診断からの連動情報
   const [fromDiagnosisInfo, setFromDiagnosisInfo] = useState<{ diagName: string } | null>(null);
+  // 経穴詳細からの連動情報（逆引き推論）
+  const [fromTsuboInfo, setFromTsuboInfo] = useState<{ code: string; name: string; targetRole?: string } | null>(null);
 
   // 診断推論の算出
   
@@ -178,6 +180,36 @@ export default function ThreeStageSimulator() {
       });
       setActivePresetId(null);
       setChangeNotice(`気血水体質診断（${diagName || ""}）の所見を反映しました。八綱・臓腑の連動配穴を検証できます。`);
+      setIsMounted(true);
+      return;
+    }
+
+    const fromTsubo = searchParams.get("fromTsubo");
+    const tsuboName = searchParams.get("tsuboName");
+    const targetRole = searchParams.get("targetRole");
+
+    if (fromTsubo) {
+      const qDepth = searchParams.get("depth") as DepthType | null;
+      const qTemp = searchParams.get("temp") as TemperatureType | null;
+      const qState = searchParams.get("state") as StateType | null;
+      const qQixueshui = searchParams.get("qixueshui") as QixueshuiType | null;
+      const qZangfu = searchParams.get("zangfu") as ZangfuType | null;
+      const qComplex = searchParams.get("complexState") as ComplexStateType | null;
+
+      if (qDepth) setDepth(qDepth);
+      if (qTemp) setTemp(qTemp);
+      if (qState) setState(qState);
+      if (qQixueshui) setQixueshui(qQixueshui);
+      if (qZangfu) setZangfu(qZangfu);
+      if (qComplex) setComplexState(qComplex);
+
+      setFromTsuboInfo({
+        code: fromTsubo,
+        name: tsuboName || fromTsubo,
+        targetRole: targetRole || undefined,
+      });
+      setActivePresetId(null);
+      setChangeNotice(`経穴「${tsuboName || fromTsubo}」が主治・特効穴となる代表的病態を展開しました。`);
       setIsMounted(true);
       return;
     }
@@ -427,6 +459,38 @@ export default function ThreeStageSimulator() {
           <button
             onClick={() => setFromDiagnosisInfo(null)}
             className="text-xs font-semibold text-[#59615D] dark:text-[#96A6B2] hover:text-[#B86924] underline cursor-pointer shrink-0"
+          >
+            連動を解除
+          </button>
+        </div>
+      )}
+
+      {/* 経穴詳細からの逆引き推論バナー */}
+      {fromTsuboInfo && (
+        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#EBF3EF] to-[#FAF8F5] dark:from-[#182823] dark:to-[#17212A] border-2 border-[#1E3D34] dark:border-[#74BA9E] shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fadeIn">
+          <div className="flex items-center gap-3">
+            <span className="p-2.5 rounded-xl bg-[#1E3D34] text-white shrink-0">
+              <Compass className="w-5 h-5 text-[#E6C387]" />
+            </span>
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#1E3D34] text-white">
+                  経穴 {fromTsuboInfo.name}（{fromTsuboInfo.code}）連動中
+                </span>
+                {fromTsuboInfo.targetRole && (
+                  <span className="font-bold text-xs sm:text-sm text-[#1E3D34] dark:text-[#74BA9E]">
+                    {fromTsuboInfo.targetRole}
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-[#59615D] dark:text-[#96A6B2] mt-0.5 leading-relaxed">
+                「{fromTsuboInfo.name}」が主治・特効穴となる代表病態をシミュレートしています。八綱や気血水の条件を変えることで、配穴の変化を多角的に観察できます。
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => setFromTsuboInfo(null)}
+            className="text-xs font-semibold text-[#59615D] dark:text-[#96A6B2] hover:text-[#1E3D34] underline cursor-pointer shrink-0"
           >
             連動を解除
           </button>

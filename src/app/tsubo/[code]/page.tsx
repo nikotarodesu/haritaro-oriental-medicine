@@ -39,6 +39,7 @@ import {
 } from "lucide-react";
 import { SYMPTOMS } from "@/data/symptomData";
 import { getLecturesForAcupoint } from "@/utils/acupointCurriculumMatcher";
+import { getSimulatorParamsForAcupoint } from "@/utils/tsuboSimulatorMatcher";
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -106,6 +107,9 @@ export default async function AcupointDetailPage({ params }: Props) {
 
   // この経穴が登場する講義（カリキュラム）
   const relatedLectures = getLecturesForAcupoint(point.name, point.code);
+
+  // 弁証シミュレーターへの逆引き推論パラメータ
+  const simLink = getSimulatorParamsForAcupoint(point.code, point.meridianId);
 
   // FAQ データ作成（Google FAQPage 構造化データ対応）
   const faqs = [
@@ -391,6 +395,15 @@ export default async function AcupointDetailPage({ params }: Props) {
               </Link>
 
               <Link
+                href={`/simulator?fromTsubo=${point.code}&tsuboName=${encodeURIComponent(point.name)}&depth=${simLink.depth}&temp=${simLink.temp}&state=${simLink.state}&qixueshui=${simLink.qixueshui}&zangfu=${simLink.zangfu}&targetRole=${encodeURIComponent(simLink.targetRole)}`}
+                className="px-3 py-2 rounded-xl border border-[#C5DED4] dark:border-[#2A5243] hover:border-[#1E3D34] bg-[#FAF8F5] dark:bg-[#121920] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs"
+                title={`「${point.name}」が主穴となる証（${simLink.syndromeName}）を弁証シミュレーターで検証`}
+              >
+                <Layers className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <span>弁証推論で開く</span>
+              </Link>
+
+              <Link
                 href={`/tsubo/practice?course=meridian_${point.meridianId.toLowerCase()}`}
                 className="px-3 py-2 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#B86924] bg-[#FAF8F5] dark:bg-[#10171F] text-xs font-semibold text-[#B86924] dark:text-[#E6C387] transition-all inline-flex items-center gap-1.5"
                 title="この経脈をクイズで学習"
@@ -663,6 +676,29 @@ export default async function AcupointDetailPage({ params }: Props) {
               </div>
             </div>
           )}
+
+          {/* 弁証シミュレーターへの逆引き推論カード */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#FAF8F5] via-[#EBF3EF]/40 to-[#FAF8F5] dark:from-[#152028] dark:via-[#182823]/40 dark:to-[#152028] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                <Layers className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <span>臨床逆引き推論 ｜ 弁証シミュレーター連動</span>
+              </div>
+              <h4 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
+                「{point.name}」が主治・特効穴となる証：【{simLink.syndromeName}】
+              </h4>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                八綱（{simLink.depth === "interior" ? "裏" : "表"}・{simLink.temp === "heat" ? "熱" : "寒"}・{simLink.state === "excess" ? "実" : "虚"}）・気血水・臓腑の連動から、この経穴を核とした配穴ロジックをシミュレーターで追体験できます。
+              </p>
+            </div>
+            <Link
+              href={`/simulator?fromTsubo=${point.code}&tsuboName=${encodeURIComponent(point.name)}&depth=${simLink.depth}&temp=${simLink.temp}&state=${simLink.state}&qixueshui=${simLink.qixueshui}&zangfu=${simLink.zangfu}&targetRole=${encodeURIComponent(simLink.targetRole)}`}
+              className="shrink-0 px-4 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] text-xs font-bold shadow-xs inline-flex items-center gap-1.5 transition-all"
+            >
+              <span>シミュレーターで検証</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
 
           {/* 禁忌・臨床上の注意事項 */}
           {point.caution && (

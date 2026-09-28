@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Lecture, CURRICULUM_DATA } from "@/data/curriculumData";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
@@ -78,6 +79,8 @@ export default function CurriculumLectureReader({ lecture }: Props) {
     }
   }, [lecture?.id]);
 
+  const router = useRouter();
+
   // 現在の講義の位置と前後ナビゲーション
   const currentIndex = allLectures.findIndex((l) => l.id === lecture.id);
   const prevLecture = currentIndex > 0 ? allLectures[currentIndex - 1] : null;
@@ -85,6 +88,30 @@ export default function CurriculumLectureReader({ lecture }: Props) {
     currentIndex >= 0 && currentIndex < allLectures.length - 1
       ? allLectures[currentIndex + 1]
       : null;
+
+  // キーボード前後送りショートカット（[ で前へ、] で次へ、Alt+← で前へ、Alt+→ で次へ）
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // フォーム入力中はスキップ
+      const target = e.target as HTMLElement | null;
+      const isInput =
+        target?.tagName === "INPUT" ||
+        target?.tagName === "TEXTAREA" ||
+        target?.isContentEditable;
+      if (isInput) return;
+
+      if ((e.key === "[" || (e.altKey && e.key === "ArrowLeft")) && prevLecture) {
+        e.preventDefault();
+        router.push(`/curriculum?lecture=${prevLecture.id}`);
+      } else if ((e.key === "]" || (e.altKey && e.key === "ArrowRight")) && nextLecture) {
+        e.preventDefault();
+        router.push(`/curriculum?lecture=${nextLecture.id}`);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [prevLecture, nextLecture, router]);
 
   // 同シリーズのレッスン一覧
   const activeSeriesLessons = allLectures.filter(
@@ -315,9 +342,13 @@ export default function CurriculumLectureReader({ lecture }: Props) {
               <Link
                 href={`/curriculum?lecture=${prevLecture.id}`}
                 className="min-h-[44px] px-4 py-2 rounded-xl border border-[#E8E1D1] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#FAF8F5] dark:hover:bg-[#1A2530] text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
+                title="前のレッスンへ（ショートカット: [ キー）"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>前のレッスン</span>
+                <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono rounded bg-[#FAF8F5] dark:bg-[#202E3C] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#737C77] dark:text-[#8899A6]">
+                  [
+                </kbd>
               </Link>
             )}
 
@@ -332,8 +363,12 @@ export default function CurriculumLectureReader({ lecture }: Props) {
               <Link
                 href={`/curriculum?lecture=${nextLecture.id}`}
                 className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+                title="次のレッスンへ（ショートカット: ] キー）"
               >
                 <span>次のレッスン</span>
+                <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono rounded bg-white/20 text-white border border-white/30">
+                  ]
+                </kbd>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             ) : (

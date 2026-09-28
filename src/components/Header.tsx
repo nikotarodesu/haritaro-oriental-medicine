@@ -3,25 +3,23 @@
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { 
-  HeartPulse, 
   Stethoscope, 
   Menu, 
   X, 
   Compass, 
   GraduationCap, 
   BookOpen, 
-  ChevronDown,
-  ArrowRight,
-  Layers,
-  Activity,
-  SlidersHorizontal,
-  Crown,
-  User as UserIcon,
-  Sparkles,
-  FileText,
-  RotateCcw,
-  Search,
-  Award,
+  ChevronDown, 
+  ArrowRight, 
+  Layers, 
+  Activity, 
+  SlidersHorizontal, 
+  Crown, 
+  User as UserIcon, 
+  Sparkles, 
+  FileText, 
+  Search, 
+  Award, 
 } from "lucide-react";
 import YinYangSwitch from "./YinYangSwitch";
 import FontSizeControl from "./FontSizeControl";

@@ -17,7 +17,9 @@ import {
   SlidersHorizontal,
   Layers,
   ArrowDown,
-  Award
+  Award,
+  GitCompare,
+  Library
 } from "lucide-react";
 import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
 import PrimeStudentCard from "@/components/PrimeStudentCard";
@@ -172,8 +174,8 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* 4ツールのカード（PC: 2列×2行、スマホ: 1列） */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        {/* 6ツールのカード（PC: 3列×2行、タブレット: 2列、スマホ: 1列） */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* ツール1: 気血水体質チェック */}
           <Link
             href="/diagnosis"
@@ -261,7 +263,36 @@ export default function HomePage() {
             </div>
           </Link>
 
-          {/* ツール4: 配穴設計 */}
+          {/* ツール4: 2案並列 鑑別シミュレーター */}
+          <Link
+            href="/simulator/compare"
+            className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] p-5 sm:p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
+          >
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
+                  <GitCompare className="w-3 h-3" />
+                  <span>2案を左右比較</span>
+                </span>
+                <span className="text-xs text-[#737C77] dark:text-[#8899A6]">鑑別推論</span>
+              </div>
+
+              <h3 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors">
+                2案鑑別シミュレーター
+              </h3>
+
+              <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                迷いやすい2つの証を左右並列で比較。病理機序、主穴・配穴処方、刺鍼手技、禁忌の違いを一目で確認できます。
+              </p>
+            </div>
+
+            <div className="pt-3.5 mt-3.5 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+              <span>2案を鑑別比較する</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
+
+          {/* ツール5: 配穴設計 */}
           <Link
             href="/practice/haiketsu"
             className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] p-5 sm:p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
@@ -286,6 +317,35 @@ export default function HomePage() {
 
             <div className="pt-3.5 mt-3.5 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
               <span>配穴を考える</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
+
+          {/* ツール6: お悩み・症状別ガイド */}
+          <Link
+            href="/symptoms"
+            className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] p-5 sm:p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
+          >
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded bg-[#EAEFF5] dark:bg-[#152331] text-[#1E2D3D] dark:text-[#7BAAD8]">
+                  <Compass className="w-3 h-3" />
+                  <span>主訴から逆引き</span>
+                </span>
+                <span className="text-xs text-[#737C77] dark:text-[#8899A6]">症状別ガイド</span>
+              </div>
+
+              <h3 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E2D3D] dark:group-hover:text-[#7BAAD8] transition-colors">
+                お悩み・症状別ガイド
+              </h3>
+
+              <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                頭痛・肩こり・不眠・冷えなど日々の臨床や相談で多い症状から、適応経穴・弁証パターン・セルフケア指標を逆引き検索。
+              </p>
+            </div>
+
+            <div className="pt-3.5 mt-3.5 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8]">
+              <span>症状から探す</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </div>
           </Link>
@@ -505,8 +565,8 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* 補助カード3枚（PC: 3列、スマホ: 1列） */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        {/* 補助カード4枚（PC: 4列、タブレット: 2列、スマホ: 1列） */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {/* 補助1: 経穴を調べる */}
           <Link
             href="/tsubo"
@@ -581,6 +641,32 @@ export default function HomePage() {
 
             <div className="pt-3.5 mt-3.5 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs font-bold text-[#285A52] dark:text-[#6EC5B8]">
               <span>症例演習を始める</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
+
+          {/* 補助4: 古典・文献アーカイブ */}
+          <Link
+            href="/library"
+            className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] p-5 sm:p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
+          >
+            <div className="space-y-2.5">
+              <div className="inline-flex items-center gap-1.5 text-[#1E3D34] dark:text-[#74BA9E]">
+                <Library className="w-4 h-4" />
+                <span className="text-xs font-bold font-serif">学術探究</span>
+              </div>
+
+              <h4 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors">
+                古典・実例アーカイブ
+              </h4>
+
+              <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                古典条文から近代治験例、現代論文のエビデンスまで。理論の背景と臨床実証データを横断検索。
+              </p>
+            </div>
+
+            <div className="pt-3.5 mt-3.5 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+              <span>文献・実例を開く</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </div>
           </Link>
