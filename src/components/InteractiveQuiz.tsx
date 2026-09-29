@@ -14,6 +14,7 @@ import {
   BookOpen,
   ArrowUp,
 } from 'lucide-react';
+import { trackEvent } from '@/utils/analytics';
 
 interface InteractiveQuizProps {
   quiz: LessonQuizGroup;
@@ -77,9 +78,15 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz }) => {
     if (prevAnsweredCountRef.current < totalQuestions && isAllAnswered && isPassed && !hasAutoCompletedRef.current) {
       hasAutoCompletedRef.current = true;
       setLectureCompleted(quiz.lectureId, true);
+      trackEvent("quiz_complete", {
+        tool_id: "diagnosis_qixueshui", // または汎用
+        passed: isPassed,
+        score: correctCount,
+        total: totalQuestions,
+      });
     }
     prevAnsweredCountRef.current = answeredCount;
-  }, [isMounted, answeredCount, totalQuestions, isAllAnswered, isPassed, quiz.lectureId, setLectureCompleted]);
+  }, [isMounted, answeredCount, totalQuestions, isAllAnswered, isPassed, correctCount, quiz.lectureId, setLectureCompleted]);
 
   // 選択肢をクリックしたときの処理
   const handleSelectOption = (question: QuizQuestionItem, optionIndex: number) => {

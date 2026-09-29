@@ -4,6 +4,7 @@ import React from "react";
 import { Bookmark, Check, Plus } from "lucide-react";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { ClinicalMemoItem } from "@/types/clinicalMemo";
+import { trackEvent } from "@/utils/analytics";
 
 interface ClipButtonProps {
   item: Omit<ClinicalMemoItem, "createdAt" | "updatedAt">;
@@ -40,6 +41,13 @@ export default function ClipButton({
     setIsBouncing(true);
     setTimeout(() => setIsBouncing(false), 250);
     toggleClip(item);
+
+    if (!clipped) {
+      trackEvent("clip_item", {
+        item_type: item.type,
+        item_id: item.id,
+      });
+    }
   };
 
   // 1. アイコン単体バリアント

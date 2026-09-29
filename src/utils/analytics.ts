@@ -25,7 +25,12 @@ export type AnalyticsEventName =
   | "note_reopen"
   | "context_link_click"
   | "nav_customize_save"
-  | "upgrade_click";
+  | "upgrade_click"
+  | "clip_item"
+  | "simulator_diagnose"
+  | "quiz_answer"
+  | "quiz_complete"
+  | "diagnosis_complete";
 
 export interface AnalyticsEventParams {
   entry_source?: "home_learning" | "home_clinical" | "nav" | "footer";

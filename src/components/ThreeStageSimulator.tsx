@@ -142,6 +142,12 @@ export default function ThreeStageSimulator() {
       selectedPointsInput: pointsStr,
       treatmentPlan: `【臨床弁証シミュレーター推論】\n証名候補: ${fullSyndrome}\n治則: ${diagnosis.treatmentPrinciple.rule}\n介入戦略: ${diagnosis.treatmentPrinciple.strategy}${primaryOpt ? `\n【本治・主配穴 70%】: ${primaryOpt.pairName}（${primaryOpt.intendedEffect}）` : ""}${secConfig ? `\n【随証・兼証 30%】: ${secConfig.pairName}（${secConfig.primary}・${secConfig.secondary} / ${secConfig.desc}）` : ""}\n※本内容はシミュレーターによる推論候補・下書きです。確定診断としてではなく、臨床家の所見に基づき編集してご活用ください。`,
     });
+
+    trackEvent("tool_complete", {
+      tool_id: "simulator",
+      destination_type: "note",
+    });
+
     router.push("/notes");
   };
 

@@ -20,7 +20,7 @@ import {
 import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 
 export const metadata: Metadata = {
-  title: "鍼灸師の弁証・配穴と臨床ノート｜はり太郎",
+  title: "鍼灸師の弁証・配穴と臨床ノート",
   description:
     "弁証と配穴の考えを整理し、次の臨床に残す。八綱・気血水・臓腑の推論から配穴設計、臨床ノートへの保存・A4養生シート印刷まで。鍼灸師のための臨床ツール案内。",
   alternates: {

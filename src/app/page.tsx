@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
 import PrimeStudentCard from "@/components/PrimeStudentCard";
+import HomeHeroQuickSearch from "@/components/home/HomeHeroQuickSearch";
 import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 
 export default function HomePage() {
@@ -54,6 +55,9 @@ export default function HomePage() {
             <p className="text-xs sm:text-base text-[#4A534F] dark:text-[#A8B8C4] leading-relaxed max-w-2xl mx-auto">
               基礎学習から弁証・配穴、日々の振り返りまで。学生の学びと臨床家の実践をひとつの場所で自然につなぎます。
             </p>
+
+            {/* クイック経穴・症状検索バー */}
+            <HomeHeroQuickSearch />
           </div>
 
           {/* 2大入口カード（PC: 横並び、スマホ: 縦並び） */}

@@ -1,0 +1,78 @@
+"use client";
+
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Search, Sparkles, ArrowRight } from "lucide-react";
+import { trackEvent } from "@/utils/analytics";
+
+const QUICK_TAGS = [
+  { label: "合谷 (LI4)", href: "/tsubo/li4" },
+  { label: "足三里 (ST36)", href: "/tsubo/st36" },
+  { label: "太衝 (LR3)", href: "/tsubo/lr3" },
+  { label: "三陰交 (SP6)", href: "/tsubo/sp6" },
+  { label: "頭痛のツボ", href: "/symptoms" },
+  { label: "気血水チェック", href: "/diagnosis" },
+  { label: "弁証推論", href: "/simulator" },
+];
+
+export default function HomeHeroQuickSearch() {
+  const router = useRouter();
+  const [query, setQuery] = useState("");
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = query.trim();
+    if (!trimmed) return;
+
+    trackEvent("tool_start", {
+      tool_id: "haiketsu",
+      placement: "hero_quick_search",
+    });
+
+    // 経穴検索ページへ遷移
+    router.push(`/tsubo?q=${encodeURIComponent(trimmed)}`);
+  };
+
+  return (
+    <div className="w-full max-w-2xl mx-auto space-y-2.5 pt-2">
+      {/* 検索入力フォーム */}
+      <form onSubmit={handleSearch} className="relative flex items-center">
+        <div className="absolute left-3.5 sm:left-4 text-[#737C77] dark:text-[#8899A6] pointer-events-none">
+          <Search className="w-4 h-4 sm:w-5 sm:h-5 text-[#1E3D34] dark:text-[#74BA9E]" />
+        </div>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="経穴名（合谷・足三里）、コード（LI4）、お悩み・症状で探す..."
+          className="w-full pl-10 sm:pl-12 pr-24 sm:pr-28 py-3 sm:py-3.5 text-xs sm:text-sm rounded-2xl bg-white dark:bg-[#17212A] border-2 border-[#D8CFC0] dark:border-[#2A3B4A] focus:border-[#1E3D34] dark:focus:border-[#74BA9E] focus:outline-none shadow-sm text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A9590] dark:placeholder-[#6C7D8A] transition-all"
+        />
+        <button
+          type="submit"
+          className="absolute right-1.5 sm:right-2 px-3.5 sm:px-4 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] text-xs font-bold transition-all shadow-xs flex items-center gap-1 cursor-pointer"
+        >
+          <span>検索</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </button>
+      </form>
+
+      {/* 人気クイックタグ */}
+      <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs">
+        <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] flex items-center gap-1 mr-1">
+          <Sparkles className="w-3 h-3 text-[#B86924] dark:text-[#E6C387]" />
+          <span>人気:</span>
+        </span>
+        {QUICK_TAGS.map((tag) => (
+          <button
+            key={tag.label}
+            type="button"
+            onClick={() => router.push(tag.href)}
+            className="px-2.5 py-1 rounded-lg bg-white/90 dark:bg-[#17212A]/90 border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-[11px] font-medium text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-all cursor-pointer shadow-2xs"
+          >
+            {tag.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}

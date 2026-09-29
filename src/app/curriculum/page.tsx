@@ -42,7 +42,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     const lectureId = resolveLectureId(rawLectureId);
     const lecture = allLectures.find((l) => l.id === lectureId);
     if (lecture) {
-      const title = `${lecture.title} | 体系学習カリキュラム | はり太郎の東洋医学`;
+      const title = `${lecture.title} | 体系学習カリキュラム`;
       const description =
         lecture.summary ||
         lecture.whatYouWillLearn?.canDo ||

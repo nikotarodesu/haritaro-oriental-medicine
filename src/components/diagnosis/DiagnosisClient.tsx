@@ -131,6 +131,10 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
     });
 
     setResult(DIAGNOSIS_RESULTS[highestType]);
+    trackEvent("diagnosis_complete", {
+      tool_id: "diagnosis_qixueshui",
+      primary_type: highestType,
+    });
     scrollToResult();
   };
 

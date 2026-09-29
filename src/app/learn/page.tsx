@@ -16,7 +16,7 @@ import {
 import EightSystemsRoadmap from "@/components/EightSystemsRoadmap";
 
 export const metadata: Metadata = {
-  title: "東洋医学を基礎から学ぶ｜鍼灸学生・学び直し｜はり太郎",
+  title: "東洋医学を基礎から学ぶ｜鍼灸学生・学び直し",
   description:
     "陰陽五行から始まる全81講義カリキュラム、国試精選演習、全361穴の経穴辞典、忘却曲線に基づく日々の復習まで。鍼灸学生と学び直しのための東洋医学学習総合案内。",
   alternates: {
