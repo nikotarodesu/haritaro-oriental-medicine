@@ -168,8 +168,8 @@ export const NAV_PRESETS: Record<NavPresetType, { name: string; description: str
   },
   student: {
     name: "学生・学習者セット",
-    description: "カリキュラム、復習、国試、検索を素早く開く",
-    items: ["curriculum", "review", "kokushi", "search"],
+    description: "カリキュラム、国試、経穴、マイノートを素早く開く",
+    items: ["curriculum", "kokushi", "tsubo", "notes"],
   },
   clinician: {
     name: "臨床家セット",

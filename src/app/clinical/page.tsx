@@ -1,0 +1,590 @@
+import { Metadata } from "next";
+import Link from "next/link";
+import { 
+  Stethoscope, 
+  Layers, 
+  SlidersHorizontal, 
+  Sparkles, 
+  Activity, 
+  FileText, 
+  ArrowRight, 
+  CheckCircle2, 
+  Printer, 
+  History, 
+  ShieldCheck, 
+  HelpCircle, 
+  BookOpen, 
+  Award,
+  Crown
+} from "lucide-react";
+import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
+
+export const metadata: Metadata = {
+  title: "鍼灸師の弁証・配穴と臨床ノート｜はり太郎",
+  description:
+    "弁証と配穴の考えを整理し、次の臨床に残す。八綱・気血水・臓腑の推論から配穴設計、臨床ノートへの保存・A4養生シート印刷まで。鍼灸師のための臨床ツール案内。",
+  alternates: {
+    canonical: "https://www.haritaro.jp/clinical",
+  },
+  openGraph: {
+    title: "鍼灸師の弁証・配穴と臨床ノート｜はり太郎",
+    description:
+      "弁証と配穴の考えを整理し、次の臨床に残す。所見の整理から配穴の検討、臨床ノートへの記録まで。日々の臨床を振り返るためのツールをまとめました。",
+    url: "https://www.haritaro.jp/clinical",
+  },
+};
+
+export default function ClinicalLandingPage() {
+  const { limits, pricing } = SUBSCRIPTION_CONFIG;
+
+  const faqs = [
+    {
+      q: "ツールの利用に会員登録や課金は必要ですか？",
+      a: "気血水チェック、五労チェッカー、弁証シミュレーター、配穴設計などの推論ツールは、登録不要ですぐに無料でお使いいただけます。臨床ノートへの保存も無料枠（3件、配穴20件まで）の範囲でご利用いただけます。",
+    },
+    {
+      q: "患者の個人情報はどのように保護されますか？",
+      a: "氏名や連絡先などの直接の個人識別情報は保持しない設計となっており、カルテID（例: PT-001）のみで管理します。また、カルテ本文や症状記述を公開URLや外部解析サービスへ送信することは一切ありません。",
+    },
+    {
+      q: "ツールの結果は診断を確定するものですか？",
+      a: "いいえ。本ツール群は鍼灸師の先生が所見を整理し、思考プロセスを記録・点検するための臨床推論支援ツールです。医学的な診断の確定や治療効果を自動保証するものではなく、最終的な配穴判断や施術は施術者ご自身の責任において行われます。",
+    },
+    {
+      q: "プレミアムプランへの移行はいつでもできますか？",
+      a: "はい。日々の臨床ノートを継続して蓄積したい場合は、マイページからいつでもアップグレードおよび解約が可能です。無料期間内に保存したデータもそのまま引き継がれます。",
+    },
+  ];
+
+  return (
+    <div className="min-h-screen py-8 sm:py-14 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-16 sm:space-y-24">
+      {/* 1. ヒーロー ＆ 主CTA */}
+      <section className="text-center max-w-3xl mx-auto space-y-5 sm:space-y-6 pt-4">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] text-xs sm:text-sm font-bold shadow-2xs">
+          <Stethoscope className="w-4 h-4" />
+          <span>鍼灸師・臨床家の方へ</span>
+        </div>
+
+        <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-tight">
+          弁証と配穴の考えを整理し、<br className="hidden sm:inline" />
+          次の臨床に残す。
+        </h1>
+
+        <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-2xl mx-auto">
+          所見の整理から配穴の検討、臨床ノートへの記録まで。日々の臨床を振り返るための思考・記録ツールをまとめました。
+        </p>
+
+        {/* 主CTA ＆ 副リンク */}
+        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+          <Link
+            href="/simulator"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] text-sm sm:text-base font-bold shadow-sm transition-all inline-flex items-center justify-center gap-2"
+          >
+            <Layers className="w-4 h-4" />
+            <span>弁証シミュレーターを使う（主CTA）</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+
+          <a
+            href="#tools"
+            className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-[#1E3D34] dark:text-[#74BA9E] text-xs sm:text-sm font-semibold transition-all text-center"
+          >
+            使えるツールを見る ↓
+          </a>
+        </div>
+
+        <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+          ※登録不要ですぐに利用可能・無料枠でのノート保存に対応
+        </p>
+      </section>
+
+      {/* 2. 臨床での利用場面（誰の何を助けるか） */}
+      <section aria-label="臨床での利用場面" className="space-y-6">
+        <div className="text-center max-w-2xl mx-auto space-y-1.5">
+          <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
+            Clinical Scenarios
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+            このような場面で活用できます
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 space-y-3">
+            <div className="w-10 h-10 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center font-bold">
+              1
+            </div>
+            <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+              所見を客観的に整理したい
+            </h3>
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+              気血水の偏りや五労の蓄積をチェックシートで可視化。問診所見の抜け漏れを防ぎ、全体像を速やかに把握できます。
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 space-y-3">
+            <div className="w-10 h-10 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center font-bold">
+              2
+            </div>
+            <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+              配穴の選定理由を残したい
+            </h3>
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+              なぜその経穴を選んだのか、本治・標治のバランスや兼証への配慮を言語化。感覚だけに頼らない再現性のある配穴を設計できます。
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 space-y-3">
+            <div className="w-10 h-10 rounded-xl bg-[#EAEFF5] dark:bg-[#152331] text-[#1E2D3D] dark:text-[#7BAAD8] flex items-center justify-center font-bold">
+              3
+            </div>
+            <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+              前回の考えを振り返りたい
+            </h3>
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+              施術直後の変化や次回の課題を臨床ノートに蓄積。再来院時に前回の弁証仮説と結果を素早く確認し、方針を最適化できます。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. 三段階の使い方 */}
+      <section className="bg-gradient-to-r from-[#FAF8F5] to-[#EBF3EF] dark:from-[#17212A] dark:to-[#13221C] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-10 space-y-6">
+        <div className="text-center max-w-2xl mx-auto space-y-1.5">
+          <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
+            Three Steps
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+            検討から記録、振り返りまでの3ステップ
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+          <div className="bg-white/90 dark:bg-[#121920]/90 p-5 rounded-2xl border border-[#EDE7D8] dark:border-[#22303D] space-y-2">
+            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4" />
+              ステップ1：ツールで検討
+            </span>
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+              弁証シミュレーターや配穴設計ツールで、主証・兼証のバランスや適応穴を導出・比較します。
+            </p>
+          </div>
+
+          <div className="bg-white/90 dark:bg-[#121920]/90 p-5 rounded-2xl border border-[#EDE7D8] dark:border-[#22303D] space-y-2">
+            <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] flex items-center gap-1.5">
+              <FileText className="w-4 h-4" />
+              ステップ2：ノートに保存
+            </span>
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+              結果画面からワンクリックで下書き引き渡し。施術直後の変化や考察メモを添えて保存します。
+            </p>
+          </div>
+
+          <div className="bg-white/90 dark:bg-[#121920]/90 p-5 rounded-2xl border border-[#EDE7D8] dark:border-[#22303D] space-y-2">
+            <span className="text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8] flex items-center gap-1.5">
+              <History className="w-4 h-4" />
+              ステップ3：次回に振り返る
+            </span>
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+              再来時に患者番号や主訴で検索。前回の仮説と今回の状態を比較し、臨床経験を確実に蓄積します。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. 主要4ツール一覧 */}
+      <section id="tools" className="scroll-mt-20 space-y-6">
+        <div className="border-b border-[#E8E1D1] dark:border-[#22303D] pb-3">
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+            臨床で使える主要4ツール
+          </h2>
+          <p className="text-xs sm:text-sm text-[#737C77] dark:text-[#8899A6] mt-1">
+            目的に応じていつでも自由に選べます。順序の制約や必須設定はありません。
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          {/* ツール1: 気血水体質チェック */}
+          <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 shadow-xs flex flex-col justify-between space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
+                  状態整理
+                </span>
+                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">無料・登録不要</span>
+              </div>
+              <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+                気血水体質チェック
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                12問の問診項目から気虚・気滞・血虚・瘀血・水滞の偏りを即座に点検し、適応穴を提示。
+              </p>
+            </div>
+            <Link
+              href="/diagnosis"
+              className="w-full py-2 px-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-between transition-colors"
+            >
+              <span>チェックを始める</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          {/* ツール2: 五労チェッカー */}
+          <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 shadow-xs flex flex-col justify-between space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387]">
+                  生活負担点検
+                </span>
+                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">無料・登録不要</span>
+              </div>
+              <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+                五労チェッカー
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                久視・久坐・久立など生活動作の偏りから五臓の疲弊度を算出し、生活指導の根拠を整理。
+              </p>
+            </div>
+            <Link
+              href="/diagnosis?tab=gorou"
+              className="w-full py-2 px-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] hover:border-[#B86924] text-xs font-bold text-[#B86924] dark:text-[#E6C387] flex items-center justify-between transition-colors"
+            >
+              <span>五労を点検する</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          {/* ツール3: 弁証シミュレーター */}
+          <div className="bg-white dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34]/30 dark:border-[#74BA9E]/30 p-5 shadow-xs flex flex-col justify-between space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#1E3D34] text-white">
+                  主機能
+                </span>
+                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">無料・登録不要</span>
+              </div>
+              <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+                弁証シミュレーター
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                八綱・気血水・臓腑の三段階推論。主証70%＋兼証30%の複合推論や2案並列比較にも対応。
+              </p>
+            </div>
+            <Link
+              href="/simulator"
+              className="w-full py-2 px-3 rounded-xl bg-[#1E3D34] text-white hover:bg-[#2B5A46] text-xs font-bold flex items-center justify-between transition-colors"
+            >
+              <span>弁証を導出する</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          {/* ツール4: 配穴設計 */}
+          <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 shadow-xs flex flex-col justify-between space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387]">
+                  処方バランス
+                </span>
+                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">無料・登録不要</span>
+              </div>
+              <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+                配穴設計
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                本治穴・標治穴の選定バランスを検証。選定根拠を整理し、臨床ノートへ直接下書き保存。
+              </p>
+            </div>
+            <Link
+              href="/practice/haiketsu"
+              className="w-full py-2 px-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] hover:border-[#B86924] text-xs font-bold text-[#B86924] dark:text-[#E6C387] flex items-center justify-between transition-colors"
+            >
+              <span>配穴を設計する</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. 臨床ノートの保存・再利用例 */}
+      <section className="bg-white dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-10 shadow-xs space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="lg:col-span-6 space-y-4">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#1E3D34]/10 text-[#1E3D34] dark:text-[#74BA9E]">
+              <FileText className="w-3.5 h-3.5" />
+              <span>臨床ノート機能</span>
+            </div>
+
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
+              ツールの出力を、そのまま日々のカルテに活かす
+            </h2>
+
+            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+              ツールが出力した弁証名や採用経穴を、手動で書き写す必要はありません。「臨床ノートに保存」ボタンを押すだけで、下書きとして自動引き渡しされます。
+            </p>
+
+            <div className="space-y-2 pt-1 text-xs">
+              <div className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
+                <span>
+                  <strong>ツールの出力と本人の考察を分離：</strong>自動導出された証名と、ご自身が記入した所見・次回指示を明確に区別して記録。
+                </span>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
+                <span>
+                  <strong>患者用A4養生シート印刷：</strong>患者さんに手渡しできる養生アドバイスと経穴マップをワンクリック印刷。
+                </span>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
+                <span>
+                  <strong>Excel対応CSVエクスポート：</strong>蓄積したカルテをBOM付きUTF-8形式でいつでも手元にバックアップ・集計可能。
+                </span>
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <Link
+                href="/notes"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#2B5A46] transition-all"
+              >
+                <span>臨床ノート画面を見る</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+
+          {/* 右側：記入見本カード */}
+          <div className="lg:col-span-6 bg-[#FAF8F5] dark:bg-[#121920] p-5 rounded-2xl border border-[#EDE7D8] dark:border-[#22303D] space-y-3">
+            <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-2 text-xs">
+              <span className="font-mono font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                ID: PT-042（架空のサンプル）
+              </span>
+              <span className="text-[#737C77] dark:text-[#8899A6]">2026.03.22</span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="p-2 rounded bg-white dark:bg-[#17212A] border border-[#EDE7D8] dark:border-[#263542]">
+                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">弁証</span>
+                <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">肝鬱気滞・脾虚</span>
+              </div>
+              <div className="p-2 rounded bg-white dark:bg-[#17212A] border border-[#EDE7D8] dark:border-[#263542]">
+                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">兼証</span>
+                <span className="font-bold text-[#B86924] dark:text-[#E6C387]">瘀血傾向</span>
+              </div>
+            </div>
+            <div className="text-xs space-y-1">
+              <span className="text-[11px] font-bold text-[#59615D] dark:text-[#A0B0BC]">採用経穴</span>
+              <div className="flex flex-wrap gap-1.5">
+                {["太衝", "足三里", "合谷", "三陰交"].map((pt) => (
+                  <span
+                    key={pt}
+                    className="px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-semibold border border-[#C5DED4] dark:border-[#2A5243]"
+                  >
+                    {pt}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="p-2.5 rounded bg-white dark:bg-[#17212A] border border-[#EDE7D8] dark:border-[#263542] text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+              <strong>直後の変化：</strong>胸脇苦満が軽減し、呼吸が深くなったと発言。次回は睡眠状態の変化を確認。
+            </div>
+            <div className="flex items-center justify-between text-[11px] text-[#737C77] dark:text-[#8899A6] pt-1 border-t border-[#F2ECE0] dark:border-[#22303D]">
+              <span className="flex items-center gap-1 font-bold text-[#285A52] dark:text-[#6EC5B8]">
+                <Printer className="w-3.5 h-3.5" />
+                <span>A4養生シート印刷対応</span>
+              </span>
+              <span>端末内に安全保存</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. 無料とプレミアムの違い（SUBSCRIPTION_CONFIG参照） */}
+      <section className="space-y-6">
+        <div className="text-center max-w-2xl mx-auto space-y-1.5">
+          <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
+            Plans & Limits
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+            無料とプレミアムの範囲
+          </h2>
+          <p className="text-xs sm:text-sm text-[#737C77] dark:text-[#8899A6]">
+            ツールの利用は無料。臨床ノートの保存件数に応じてプランをお選びいただけます。
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {/* 無料プラン */}
+          <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 space-y-5 flex flex-col justify-between">
+            <div className="space-y-4">
+              <div>
+                <span className="text-xs font-bold text-[#59615D] dark:text-[#8899A6] uppercase tracking-wider">
+                  Free
+                </span>
+                <h3 className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-1">
+                  無料プラン
+                </h3>
+                <p className="text-xs text-[#737C77] dark:text-[#8899A6] mt-1">
+                  まず手軽にツールを体験したい方に
+                </p>
+              </div>
+
+              <div className="font-mono text-3xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+                ¥0
+              </div>
+
+              <div className="space-y-2 pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] text-xs">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
+                  <span>全臨床ツールの利用（無制限）</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
+                  <span>臨床ノート保存（最大{limits.freePatientNoteMax}件）</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
+                  <span>配穴ストック保存（最大{limits.freeMemoMax}件）</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
+                  <span>A4養生シート印刷・CSV出力</span>
+                </div>
+              </div>
+            </div>
+
+            <Link
+              href="/simulator"
+              className="w-full py-2.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] text-center transition-colors block"
+            >
+              登録不要ですぐ試す
+            </Link>
+          </div>
+
+          {/* プレミアムプラン */}
+          <div className="bg-white dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34] dark:border-[#74BA9E] p-6 space-y-5 flex flex-col justify-between relative shadow-sm">
+            <div className="absolute -top-3 right-4 px-3 py-0.5 rounded-full bg-[#1E3D34] text-white text-[11px] font-bold">
+              臨床家向け
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1">
+                  <Crown className="w-3.5 h-3.5" />
+                  Premium
+                </span>
+                <h3 className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-1">
+                  プレミアム会員
+                </h3>
+                <p className="text-xs text-[#737C77] dark:text-[#8899A6] mt-1">
+                  日々の臨床記録を本格的に蓄積したい方に
+                </p>
+              </div>
+
+              <div className="flex items-baseline gap-2">
+                <span className="font-mono text-3xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  {pricing.monthly.displayPrice}
+                </span>
+                <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
+                  / 月（年額 {pricing.yearly.displayPrice}・{pricing.yearly.savingLabel}）
+                </span>
+              </div>
+
+              <div className="space-y-2 pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] text-xs">
+                <div className="flex items-center gap-2 font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                  <CheckCircle2 className="w-4 h-4 shrink-0" />
+                  <span>臨床ノート保存（最大{limits.premiumPatientNoteMax}件）</span>
+                </div>
+                <div className="flex items-center gap-2 font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                  <CheckCircle2 className="w-4 h-4 shrink-0" />
+                  <span>配穴ストック保存（最大{limits.premiumMemoMax}件）</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
+                  <span>端末間クラウド自動同期</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
+                  <span>臨床症例演習 全ステップ解放</span>
+                </div>
+              </div>
+            </div>
+
+            <Link
+              href="/pricing"
+              className="w-full py-2.5 rounded-xl bg-[#1E3D34] text-white hover:bg-[#2B5A46] text-xs font-bold text-center transition-colors block shadow-sm"
+            >
+              プレミアムの詳細・お申し込みへ
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. 執筆・監修・根拠と支援範囲の説明 */}
+      <section className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-4">
+        <div className="flex items-center gap-2 text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider">
+          <ShieldCheck className="w-4 h-4" />
+          <span>執筆・監修とツールの支援範囲</span>
+        </div>
+
+        <h3 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+          臨床思考を支えるための客観的指標
+        </h3>
+
+        <div className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed space-y-2.5">
+          <p>
+            はり太郎の各ツールは、現役の鍼灸院院長が企画・設計し、新版東洋医学概論・経絡経穴概論、WHO標準経穴部位、および中医基礎理論の標準的枠組みに準拠して制作されています。
+          </p>
+          <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] text-[11px] sm:text-xs text-[#737C77] dark:text-[#8899A6] space-y-1">
+            <p><strong>【支援範囲と限界について】</strong></p>
+            <p>
+              本ツールは臨床家の思考整理と記録を支援するものであり、特定の疾病の診断確定、治療成績の自動向上、または正解の自動導出を保証するものではありません。患者さんの状態把握や施術方針の決定は、必ず施術者ご自身の責任と四診合参に基づいて行ってください。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. よくある質問（FAQ） ＆ 主CTA再掲 */}
+      <section className="space-y-6">
+        <div className="border-b border-[#E8E1D1] dark:border-[#22303D] pb-3">
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+            よくある質問
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {faqs.map((faq, idx) => (
+            <div
+              key={idx}
+              className="bg-white dark:bg-[#17212A] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2"
+            >
+              <h3 className="text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5] flex items-start gap-2">
+                <span className="text-[#1E3D34] dark:text-[#74BA9E] font-bold">Q.</span>
+                <span>{faq.q}</span>
+              </h3>
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed pl-5">
+                {faq.a}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* 主CTA再掲 */}
+        <div className="pt-6 text-center space-y-3">
+          <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+            まずは弁証シミュレーターで、推論手順を体験してみませんか？
+          </h3>
+          <Link
+            href="/simulator"
+            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] text-sm sm:text-base font-bold shadow-md transition-all"
+          >
+            <Layers className="w-4 h-4" />
+            <span>弁証シミュレーターを試す</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
+}

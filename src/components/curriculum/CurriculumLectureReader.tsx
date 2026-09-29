@@ -318,6 +318,50 @@ export default function CurriculumLectureReader({ lecture }: Props) {
         {/* 参考文献・学術エビデンス */}
         <ArticleReferences references={resolvedReferences} />
 
+        {/* 学びと実践をつなぐ臨床ツール連携バナー */}
+        <div className="bg-gradient-to-r from-[#FAF8F5] to-[#EBF3EF] dark:from-[#17212A] dark:to-[#13221C] rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] p-4 sm:p-5 shadow-2xs space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+              学んだ理論を臨床ツールで試す
+            </span>
+            <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+              登録不要・即座に体験
+            </span>
+          </div>
+
+          <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+            講義で学んだ陰陽・気血水・病機の概念を、実際の所見整理や弁証推論ツールで検証してみましょう。
+          </p>
+
+          <div className="flex flex-wrap gap-2.5 pt-1">
+            <Link
+              href="/diagnosis"
+              className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#C5DED4] dark:border-[#2A5243] hover:border-[#1E3D34] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs"
+            >
+              <span>気血水体質チェックで点検</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+
+            <Link
+              href="/simulator"
+              className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#F2D7B3] dark:border-[#4D331F] hover:border-[#B86924] text-xs font-bold text-[#B86924] dark:text-[#E6C387] transition-all inline-flex items-center gap-1.5 shadow-2xs"
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>弁証シミュレーターで推論</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+
+            <Link
+              href="/practice/haiketsu"
+              className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-xs font-bold text-[#59615D] dark:text-[#A0B0BC] transition-all inline-flex items-center gap-1.5 shadow-2xs"
+            >
+              <span>配穴設計ツール</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+
         {/* 講義受講修了フッター */}
         <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">

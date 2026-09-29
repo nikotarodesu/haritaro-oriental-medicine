@@ -21,6 +21,7 @@ import {
   NavUserConfig,
   saveNavUserConfig
 } from "@/config/navigationItems";
+import { trackEvent } from "@/utils/analytics";
 
 interface NavCustomizeModalProps {
   isOpen: boolean;
@@ -134,6 +135,9 @@ export default function NavCustomizeModal({
       updatedAt: new Date().toISOString(),
     };
     saveNavUserConfig(newConfig);
+    trackEvent("nav_customize_save", {
+      preset: activePreset || "custom",
+    });
     onSaved(newConfig);
     onClose();
   };

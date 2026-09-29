@@ -19,8 +19,10 @@ import {
   BookOpen,
   Zap,
   TrendingUp,
-  FileText
+  FileText,
+  ExternalLink
 } from "lucide-react";
+import { trackEvent } from "@/utils/analytics";
 import { useAuth } from "@/contexts/AuthContext";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import AuthModal from "@/components/auth/AuthModal";
@@ -97,6 +99,7 @@ export default function HaiketsuPracticePage() {
       selectedPointsInput: pointNames.join(", "),
       treatmentPlan: `【配穴設計処方】\n処方名: ${prescriptionTitle || "自作配穴処方"}\n選定理由・方針: ${rationaleText || "未記入"}\n構成分析: 本治${analysis.rootCount}穴・標治${analysis.branchCount}穴（計${pointNames.length}穴）\n※配穴設計演習からの下書きです。確定診断や固定意図ではありません。`,
     });
+    trackEvent("note_save_success", { tool_id: "haiketsu", destination_type: "note" });
     router.push("/notes");
   };
 
@@ -117,6 +120,7 @@ export default function HaiketsuPracticePage() {
     });
 
     if (success) {
+      trackEvent("note_save_success", { tool_id: "haiketsu", destination_type: "note" });
       setSaved(true);
     } else {
       setAuthModalOpen(true);
@@ -367,9 +371,28 @@ export default function HaiketsuPracticePage() {
                               {role.tierLabel}
                             </span>
                           </div>
-                          <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-tight">
-                            {role.specificRole} / {role.energyLabel}
-                          </p>
+                          <div className="flex items-center gap-2 pt-0.5">
+                            <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-tight">
+                              {role.specificRole} / {role.energyLabel}
+                            </p>
+                            <Link
+                              href={`/tsubo/${role.code.toLowerCase()}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => {
+                                trackEvent("context_link_click", {
+                                  context_pair: "haiketsu_tsubo",
+                                  destination_type: "tool",
+                                  placement: "haiketsu_card",
+                                });
+                              }}
+                              className="text-[10px] text-[#1E3D34] dark:text-[#74BA9E] hover:underline inline-flex items-center gap-0.5 font-semibold shrink-0"
+                              title={`${role.name}（${role.code}）の取穴と解剖安全を別タブで確認`}
+                            >
+                              <span>取穴詳細</span>
+                              <ExternalLink className="w-2.5 h-2.5" />
+                            </Link>
+                          </div>
                         </div>
 
                         <button

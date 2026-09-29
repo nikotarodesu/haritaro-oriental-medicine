@@ -21,8 +21,12 @@ export default function HomeLearningProgressCard() {
 
   const resumeId = isMounted ? getNextResumeLectureId(allIds) : allIds[0];
   const resumeLecture = allLectures.find((l) => l.id === resumeId) || allLectures[0];
-  const incorrectCount = isMounted ? getIncorrectQuestions().length : 0;
   const isStarted = isMounted && totalCompleted > 0;
+
+  // 履歴がない初回訪問者には空の進捗カードを見せない
+  if (!isMounted || !isStarted) {
+    return null;
+  }
 
   return (
     <div className="bg-gradient-to-br from-[#1E3D34] via-[#24493E] to-[#142B24] text-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-lg border border-emerald-600/30 relative overflow-hidden">

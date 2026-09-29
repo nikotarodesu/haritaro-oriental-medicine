@@ -21,6 +21,40 @@ import {
 } from "lucide-react";
 import GorouWorkstyleChecker from "@/components/GorouWorkstyleChecker";
 import { saveDraftPatientNote } from "@/utils/draftNote";
+import { trackEvent } from "@/utils/analytics";
+
+const TYPE_LECTURE_MAP: Record<string, { lectureId: string; lectureTitle: string; conceptName: string }> = {
+  qi_deficiency: {
+    lectureId: "lecture-pathomechanism-3",
+    lectureTitle: "気の不足と運動の失調",
+    conceptName: "気虚の病態と生成メカニズム",
+  },
+  qi_stagnation: {
+    lectureId: "lecture-pathomechanism-3",
+    lectureTitle: "気の不足と運動の失調",
+    conceptName: "気滞の病態と気機不暢",
+  },
+  blood_deficiency: {
+    lectureId: "lecture-pathomechanism-5",
+    lectureTitle: "血の失調と瘀血の形成",
+    conceptName: "血虚の病態と滋養不足",
+  },
+  blood_stasis: {
+    lectureId: "lecture-pathomechanism-5",
+    lectureTitle: "血の失調と瘀血の形成",
+    conceptName: "瘀血の形成と微小循環の滞流",
+  },
+  water_retention: {
+    lectureId: "lecture-pathomechanism-4",
+    lectureTitle: "津液代謝の失調",
+    conceptName: "水滞・痰飲の代謝失調",
+  },
+  yang_deficiency: {
+    lectureId: "lecture-pathomechanism-6",
+    lectureTitle: "寒熱と陰陽の失調",
+    conceptName: "陽虚・温煦作用の低下",
+  },
+};
 
 interface Props {
   initialTab?: "self" | "gorou";
@@ -52,6 +86,9 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
   };
 
   const handleToggle = (id: number) => {
+    if (selectedAnswers.length === 0) {
+      trackEvent("tool_start", { tool_id: "diagnosis_qixueshui" });
+    }
     if (selectedAnswers.includes(id)) {
       setSelectedAnswers(selectedAnswers.filter((item) => item !== id));
     } else {
@@ -64,6 +101,8 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
       alert("当てはまる項目を1つ以上選択してください。");
       return;
     }
+
+    trackEvent("tool_complete", { tool_id: "diagnosis_qixueshui" });
 
     const counts: Record<string, number> = {
       qi_deficiency: 0,
@@ -310,29 +349,50 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
                   </div>
                 </div>
 
-                {/* 臨床・学術解説記事への誘導 */}
-                <div className="p-4 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row items-center justify-between gap-3">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-[#1E3D34] text-white flex items-center justify-center shrink-0">
-                      <BookOpen className="w-4 h-4" />
+                {/* 臨床・学術解説講義への相互誘導 */}
+                {(() => {
+                  const targetLecture = TYPE_LECTURE_MAP[result.type] || {
+                    lectureId: "lecture-pathomechanism-3",
+                    lectureTitle: "気の不足と運動の失調",
+                    conceptName: `${result.name}の考え方と病機`,
+                  };
+                  return (
+                    <div className="p-4 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row items-center justify-between gap-3">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-[#1E3D34] text-white flex items-center justify-center shrink-0">
+                          <BookOpen className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#83BEA8] block">
+                              講義で確認：{targetLecture.conceptName}
+                            </span>
+                            <span className="text-[10px] px-1.5 py-0.2 rounded bg-white/70 dark:bg-[#121920] text-[#1E3D34] dark:text-[#74BA9E] font-semibold border border-[#C5DED4] dark:border-[#2A5243]">
+                              カリキュラム連携
+                            </span>
+                          </div>
+                          <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] block mt-0.5">
+                            第5章 病因病機学説「{targetLecture.lectureTitle}」で、{result.name}が生じる根本原因と病理機序を詳しく学べます。
+                          </span>
+                        </div>
+                      </div>
+                      <Link
+                        href={`/curriculum?lecture=${targetLecture.lectureId}`}
+                        onClick={() => {
+                          trackEvent("context_link_click", {
+                            context_pair: "qixueshui",
+                            destination_type: "curriculum",
+                            placement: "diagnosis_result",
+                          });
+                        }}
+                        className="px-4 py-2 rounded-xl bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#162E27] text-white dark:text-[#121920] text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm whitespace-nowrap"
+                      >
+                        <span>{result.name}の解説講義へ</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
                     </div>
-                    <div>
-                      <span className="text-xs font-bold text-[#1E3D34] dark:text-[#83BEA8] block">
-                        「気血津液の科学」でさらに詳しく学ぶ
-                      </span>
-                      <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC]">
-                        微小循環や体液代謝、気のシステムダイナミクスを自然科学の視点から解説。
-                      </span>
-                    </div>
-                  </div>
-                  <Link
-                    href="/articles/science-of-qi-blood-fluid"
-                    className="px-4 py-2 rounded-xl bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#162E27] text-white dark:text-[#121920] text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm"
-                  >
-                    <span>解説記事を読む</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
+                  );
+                })()}
 
                 {/* 臨床シミュレーター連携バナー */}
                 <div className="bg-[#FAF8F5] dark:bg-[#152028] p-4 rounded-xl border-2 border-[#B86924]/30 dark:border-[#E6C387]/30 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">

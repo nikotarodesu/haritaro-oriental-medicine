@@ -154,13 +154,36 @@ export default function Header() {
                       学ぶ・国試対策
                     </span>
                     <Link
-                      href="/curriculum"
+                      href="/learn"
                       onClick={() => setOpenDropdown(null)}
                       className="text-[11px] text-[#1E2D3D] dark:text-[#7BAAD8] hover:underline font-semibold"
                     >
-                      カリキュラム一覧 ➜
+                      学びの総合案内 ➜
                     </Link>
                   </div>
+
+                  <Link
+                    href="/learn"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl bg-[#EAEFF5]/60 dark:bg-[#152331]/60 hover:bg-[#EAEFF5] dark:hover:bg-[#152331] transition-colors group border border-[#1E2D3D]/10 dark:border-[#7BAAD8]/20"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#1E2D3D] text-[#FAF8F5] flex items-center justify-center shrink-0 mt-0.5">
+                      <GraduationCap className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8] block">
+                          学びの総合案内
+                        </span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#1E2D3D] text-white">
+                          案内
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
+                        初学者・国試・経穴・復習の4大開始点と学び方
+                      </span>
+                    </div>
+                  </Link>
 
                   <Link
                     href="/curriculum"
@@ -282,13 +305,36 @@ export default function Header() {
                       臨床実践ツール
                     </span>
                     <Link
-                      href="/#clinical-tools"
+                      href="/clinical"
                       onClick={() => setOpenDropdown(null)}
                       className="text-[11px] text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-semibold"
                     >
-                      ツール一覧へ ➜
+                      鍼灸師・臨床案内 ➜
                     </Link>
                   </div>
+
+                  <Link
+                    href="/clinical"
+                    onClick={() => setOpenDropdown(null)}
+                    className="flex items-start gap-3 p-2.5 rounded-xl bg-[#EBF3EF]/60 dark:bg-[#182823]/60 hover:bg-[#EBF3EF] dark:hover:bg-[#182823] transition-colors group border border-[#1E3D34]/10 dark:border-[#74BA9E]/20"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#1E3D34] text-[#FAF8F5] flex items-center justify-center shrink-0 mt-0.5">
+                      <Stethoscope className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
+                          鍼灸師向け・臨床実践案内
+                        </span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#1E3D34] text-white">
+                          案内
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
+                        弁証・配穴・臨床ノートの活用法と機能詳細
+                      </span>
+                    </div>
+                  </Link>
 
                   <Link
                     href="/tsubo"
@@ -604,13 +650,23 @@ export default function Header() {
               <span className="text-[11px] font-bold uppercase tracking-wider text-[#1E3D34] dark:text-[#74BA9E]">
                 臨床で使う
               </span>
-              <Link
-                href="/#clinical-tools"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-[11px] text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-semibold"
-              >
-                ツール一覧へ
-              </Link>
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/clinical"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-[11px] text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-semibold"
+                >
+                  臨床案内 ➜
+                </Link>
+                <span className="text-[#C8C2B3] dark:text-[#384C5E]">|</span>
+                <Link
+                  href="/#clinical-tools"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] hover:underline"
+                >
+                  ツール一覧
+                </Link>
+              </div>
             </div>
             <Link
               href="/diagnosis"
@@ -663,9 +719,18 @@ export default function Header() {
 
           {/* 2. 学ぶ・調べる */}
           <div className="space-y-1 pt-2 border-t border-[#E8E1D1] dark:border-[#22303D]">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#1E2D3D] dark:text-[#7BAAD8] px-2">
-              学ぶ・調べる
-            </span>
+            <div className="flex items-center justify-between px-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#1E2D3D] dark:text-[#7BAAD8]">
+                学ぶ・調べる
+              </span>
+              <Link
+                href="/learn"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-[11px] text-[#1E2D3D] dark:text-[#7BAAD8] hover:underline font-semibold"
+              >
+                学び総合案内 ➜
+              </Link>
+            </div>
             <Link
               href="/curriculum"
               onClick={() => setMobileMenuOpen(false)}

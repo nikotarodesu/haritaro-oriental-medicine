@@ -33,6 +33,7 @@ import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { ClinicalMemoItem, PatientNoteItem, SAMPLE_PATIENT_NOTES } from "@/types/clinicalMemo";
 import { loadAndClearDraftPatientNote } from "@/utils/draftNote";
+import { trackEvent } from "@/utils/analytics";
 import GogyoBadge from "@/components/GogyoBadge";
 
 const CONSTITUTION_TAGS = [
@@ -100,6 +101,7 @@ export default function MyNotesPage() {
   const [patientReaction, setPatientReaction] = useState("");
   const [nextAction, setNextAction] = useState("");
   const [formError, setFormError] = useState<string | null>(null);
+  const [isSavingNote, setIsSavingNote] = useState(false);
 
   // 配穴ピッカーモーダル（フォーム入力中に配穴集から選ぶ）
   const [isPointPickerOpen, setIsPointPickerOpen] = useState(false);
@@ -256,6 +258,7 @@ export default function MyNotesPage() {
 
   // モーダルを開く（編集）
   const openEditNoteModal = (note: PatientNoteItem) => {
+    trackEvent("note_reopen", { destination_type: "note" });
     setEditingNoteId(note.id);
     setPatientIdentifier(note.patientIdentifier);
     setGender(note.gender || "");
@@ -275,6 +278,8 @@ export default function MyNotesPage() {
   // 臨床ノート保存
   const handleSaveNote = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSavingNote) return;
+
     if (!patientIdentifier.trim()) {
       setFormError("患者識別（IDまたはイニシャル）を入力してください");
       return;
@@ -284,36 +289,44 @@ export default function MyNotesPage() {
       return;
     }
 
-    const pointsArray = selectedPointsInput
-      .split(/[,、\s]+/)
-      .map(p => p.trim())
-      .filter(Boolean);
+    setIsSavingNote(true);
 
-    const notePayload = {
-      patientIdentifier: patientIdentifier.trim(),
-      gender: gender ? (gender as any) : undefined,
-      ageGroup: ageGroup.trim() || undefined,
-      visitDate,
-      chiefComplaint: chiefComplaint.trim(),
-      constitution: constitution.trim(),
-      syndrome: syndrome.trim(),
-      selectedPoints: pointsArray,
-      treatmentPlan: treatmentPlan.trim(),
-      patientReaction: patientReaction.trim(),
-      nextAction: nextAction.trim(),
-    };
+    try {
+      const pointsArray = selectedPointsInput
+        .split(/[,、\s]+/)
+        .map(p => p.trim())
+        .filter(Boolean);
 
-    if (editingNoteId) {
-      updatePatientNote(editingNoteId, notePayload);
-    } else {
-      const success = addPatientNote(notePayload);
-      if (!success) {
-        setFormError(`保存上限（${maxPatientNoteLimit}件）に達しているため保存できませんでした。`);
-        return;
+      const notePayload = {
+        patientIdentifier: patientIdentifier.trim(),
+        gender: gender ? (gender as any) : undefined,
+        ageGroup: ageGroup.trim() || undefined,
+        visitDate,
+        chiefComplaint: chiefComplaint.trim(),
+        constitution: constitution.trim(),
+        syndrome: syndrome.trim(),
+        selectedPoints: pointsArray,
+        treatmentPlan: treatmentPlan.trim(),
+        patientReaction: patientReaction.trim(),
+        nextAction: nextAction.trim(),
+      };
+
+      if (editingNoteId) {
+        updatePatientNote(editingNoteId, notePayload);
+      } else {
+        const success = addPatientNote(notePayload);
+        if (!success) {
+          setFormError(`無料会員の保存上限（${maxPatientNoteLimit}件）に達しています。不要なノートを整理するか、プレミアム会員（上限500件）へのアップグレードをご検討ください。`);
+          setIsSavingNote(false);
+          return;
+        }
+        trackEvent("note_save_success", { destination_type: "note" });
       }
-    }
 
-    setIsNoteModalOpen(false);
+      setIsNoteModalOpen(false);
+    } finally {
+      setIsSavingNote(false);
+    }
   };
 
   // 自作配穴の保存

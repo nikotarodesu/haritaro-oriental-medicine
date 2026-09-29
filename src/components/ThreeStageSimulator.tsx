@@ -23,6 +23,7 @@ import {
   FileText,
   FlaskConical
 } from "lucide-react";
+import { trackEvent } from "@/utils/analytics";
 import { 
   DepthType, 
   TemperatureType, 
@@ -562,11 +563,11 @@ export default function ThreeStageSimulator() {
                 </h3>
               </div>
               <Link
-                href="/curriculum?lecture=lecture-diagnosis-7"
+                href="/curriculum?lecture=lecture-pathomechanism-1"
                 className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
-                title="第6講 診断論：八綱で病態を整理する"
+                title="第5章 病因病機学説：病機とは何か（八綱・病理の整理）"
               >
-                <span>講義で学ぶ（第6講）</span>
+                <span>八綱・病機の解説講義を読む</span>
                 <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
@@ -1081,6 +1082,33 @@ export default function ThreeStageSimulator() {
             <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
               {diagnosis.syndromeName}
             </h3>
+          </div>
+
+          {/* 病因病機講義への相互リンク */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] text-xs">
+            <div className="flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
+              <span className="text-[#59615D] dark:text-[#A0B0BC]">
+                この証の病因・病理機序を講義で確認：
+              </span>
+              <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">
+                第5章 病因病機学説「慢性化と複合病態」
+              </span>
+            </div>
+            <Link
+              href="/curriculum?lecture=lecture-pathomechanism-10"
+              onClick={() => {
+                trackEvent("context_link_click", {
+                  context_pair: "simulator",
+                  destination_type: "curriculum",
+                  placement: "simulator_result",
+                });
+              }}
+              className="text-[#1E3D34] dark:text-[#74BA9E] font-bold hover:underline inline-flex items-center gap-1 shrink-0"
+            >
+              <span>病機解説講義を読む</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
 
           {/* 一文の証（重要ハイライト） */}
