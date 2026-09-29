@@ -20,16 +20,16 @@ import {
 import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 
 export const metadata: Metadata = {
-  title: "鍼灸師の弁証・配穴と臨床ノート",
+  title: "臨床ツール案内｜東洋医学の問診・弁証・配穴・臨床記録",
   description:
-    "弁証と配穴の考えを整理し、次の臨床に残す。八綱・気血水・臓腑の推論から配穴設計、臨床ノートへの保存・A4養生シート印刷まで。鍼灸師のための臨床ツール案内。",
+    "鍼灸臨床での「調べる・問診する・説明して記録する」を支える臨床ツール一覧。気血水対面問診、弁証推論、配穴設計、患者説明用A4養生シート印刷に対応。",
   alternates: {
     canonical: "https://www.haritaro.jp/clinical",
   },
   openGraph: {
-    title: "鍼灸師の弁証・配穴と臨床ノート｜はり太郎",
+    title: "臨床ツール案内｜東洋医学の問診・弁証・配穴・臨床記録｜はり太郎",
     description:
-      "弁証と配穴の考えを整理し、次の臨床に残す。所見の整理から配穴の検討、臨床ノートへの記録まで。日々の臨床を振り返るためのツールをまとめました。",
+      "鍼灸臨床での「調べる・問診する・説明して記録する」を支える臨床ツール一覧。気血水対面問診、弁証推論、配穴設計、患者説明用A4養生シート印刷に対応。",
     url: "https://www.haritaro.jp/clinical",
   },
 };
@@ -40,7 +40,7 @@ export default function ClinicalLandingPage() {
   const faqs = [
     {
       q: "ツールの利用に会員登録や課金は必要ですか？",
-      a: "気血水チェック、五労チェッカー、弁証シミュレーター、配穴設計などの推論ツールは、登録不要ですぐに無料でお使いいただけます。臨床ノートへの保存も無料枠（3件、配穴20件まで）の範囲でご利用いただけます。",
+      a: "気血水チェック、五労チェッカー、弁証シミュレーター、配穴設計（4穴まで）などの推論ツールは、登録不要ですぐに無料でお使いいただけます。臨床ノートへの保存も無料枠（3件、配穴20件まで）の範囲でご利用いただけます。無料アカウント登録で端末間の自動同期にも対応しています。",
     },
     {
       q: "患者の個人情報はどのように保護されますか？",
@@ -66,35 +66,36 @@ export default function ClinicalLandingPage() {
         </div>
 
         <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-tight">
-          弁証と配穴の考えを整理し、<br className="hidden sm:inline" />
-          次の臨床に残す。
+          調べるときも、<br className="hidden sm:inline" />
+          患者さんへの問診にも。
         </h1>
 
         <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-2xl mx-auto">
-          所見の整理から配穴の検討、臨床ノートへの記録まで。日々の臨床を振り返るための思考・記録ツールをまとめました。
+          経穴や弁証の確認から、患者さんと行う体調・生活習慣のチェック、説明と臨床ノートへの記録まで。鍼灸師の日々の実践を支えるツールです。
         </p>
 
         {/* 主CTA ＆ 副リンク */}
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
-          <Link
-            href="/simulator"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] text-sm sm:text-base font-bold shadow-sm transition-all inline-flex items-center justify-center gap-2"
-          >
-            <Layers className="w-4 h-4" />
-            <span>弁証シミュレーターを使う（主CTA）</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-
           <a
             href="#tools"
-            className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-[#1E3D34] dark:text-[#74BA9E] text-xs sm:text-sm font-semibold transition-all text-center"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] text-sm sm:text-base font-bold shadow-sm transition-all inline-flex items-center justify-center gap-2"
           >
-            使えるツールを見る ↓
+            <Activity className="w-4 h-4" />
+            <span>問診に使うツールを見る</span>
+            <ArrowRight className="w-4 h-4" />
           </a>
+
+          <Link
+            href="/simulator"
+            className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-[#1E3D34] dark:text-[#74BA9E] text-xs sm:text-sm font-semibold transition-all inline-flex items-center justify-center gap-2"
+          >
+            <Layers className="w-4 h-4" />
+            <span>経穴・弁証を調べる</span>
+          </Link>
         </div>
 
         <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-          ※登録不要ですぐに利用可能・無料枠でのノート保存に対応
+          ※回答から状態の傾向を整理する補助ツールです。回答だけで診断や施術方針は確定しません。
         </p>
       </section>
 
@@ -437,19 +438,23 @@ export default function ClinicalLandingPage() {
               <div className="space-y-2 pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] text-xs">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-                  <span>全臨床ツールの利用（無制限）</span>
+                  <span>臨床ツールの基本利用（気血水・五労・弁証・配穴4穴まで）</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-                  <span>臨床ノート保存（最大{limits.freePatientNoteMax}件）</span>
+                  <span>臨床ノート保存（無料枠 最大{limits.freePatientNoteMax}件）</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-                  <span>配穴ストック保存（最大{limits.freeMemoMax}件）</span>
+                  <span>配穴ストック保存（無料枠 最大{limits.freeMemoMax}件）</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-                  <span>A4養生シート印刷・CSV出力</span>
+                  <span>無料アカウント登録で端末間クラウド自動同期</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
+                  <span>本日の説明・養生メモA4印刷</span>
                 </div>
               </div>
             </div>
@@ -500,13 +505,13 @@ export default function ClinicalLandingPage() {
                   <CheckCircle2 className="w-4 h-4 shrink-0" />
                   <span>配穴ストック保存（最大{limits.premiumMemoMax}件）</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-                  <span>端末間クラウド自動同期</span>
+                <div className="flex items-center gap-2 font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                  <CheckCircle2 className="w-4 h-4 shrink-0" />
+                  <span>配穴シミュレーター 5穴以上の高度処方</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-                  <span>臨床症例演習 全ステップ解放</span>
+                  <span>臨床症例演習 全20症例の完全解放</span>
                 </div>
               </div>
             </div>

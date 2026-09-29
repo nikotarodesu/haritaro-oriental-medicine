@@ -273,7 +273,7 @@ export default function Header() {
             >
               <div className="flex items-center">
                 <Link
-                  href="/#clinical-tools"
+                  href="/clinical"
                   className={`px-3 py-2 rounded-l-xl text-sm font-bold transition-all flex items-center gap-1.5 ${
                     openDropdown === "clinical"
                       ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]"
@@ -660,7 +660,7 @@ export default function Header() {
                 </Link>
                 <span className="text-[#C8C2B3] dark:text-[#384C5E]">|</span>
                 <Link
-                  href="/#clinical-tools"
+                  href="/clinical"
                   onClick={() => setMobileMenuOpen(false)}
                   className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] hover:underline"
                 >

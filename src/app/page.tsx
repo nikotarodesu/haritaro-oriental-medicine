@@ -22,7 +22,6 @@ import {
   MapPin
 } from "lucide-react";
 import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
-import PrimeStudentCard from "@/components/PrimeStudentCard";
 import HomeHeroQuickSearch from "@/components/home/HomeHeroQuickSearch";
 import HomeWelcomeGuide from "@/components/home/HomeWelcomeGuide";
 import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
@@ -127,11 +126,11 @@ export default function HomePage() {
                 </div>
 
                 <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
-                  弁証と配穴を整理し、臨床に残す
+                  調べる・問診する・臨床に残す
                 </h2>
 
                 <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  八綱・気血水・臓腑の弁証推論、本治標治の配穴設計、施術直後の変化や次回課題を蓄積する臨床ノート。
+                  八綱・気血水・臓腑の弁証推論、本治標治の配穴設計、患者さんへの対面問診と説明、施術直後の変化や次回課題を蓄積する臨床ノート。
                 </p>
               </div>
 
@@ -145,18 +144,24 @@ export default function HomePage() {
                   <ArrowRight className="w-4 h-4" />
                 </Link>
 
-                <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="grid grid-cols-3 gap-1.5 text-xs">
+                  <Link
+                    href="/diagnosis?tab=clinical"
+                    className="p-2 rounded-lg bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E] font-semibold text-center truncate transition-colors"
+                  >
+                    対面問診
+                  </Link>
                   <Link
                     href="/simulator"
                     className="p-2 rounded-lg bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E] font-semibold text-center truncate transition-colors"
                   >
-                    弁証推論・2案比較
+                    弁証推論
                   </Link>
                   <Link
-                    href="/practice/haiketsu"
+                    href="/notes"
                     className="p-2 rounded-lg bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#B86924] text-[#B86924] dark:text-[#E6C387] font-semibold text-center truncate transition-colors"
                   >
-                    配穴設計ツール
+                    臨床ノート
                   </Link>
                 </div>
               </div>
@@ -531,11 +536,6 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* 7. 学生向け案内（Prime Student） */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <PrimeStudentCard variant="banner" />
       </section>
     </div>
   );

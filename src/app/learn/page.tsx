@@ -14,6 +14,7 @@ import {
   Compass
 } from "lucide-react";
 import EightSystemsRoadmap from "@/components/EightSystemsRoadmap";
+import PrimeStudentCard from "@/components/PrimeStudentCard";
 
 export const metadata: Metadata = {
   title: "東洋医学を基礎から学ぶ｜鍼灸学生・学び直し",
@@ -321,6 +322,11 @@ export default function LearnGuidePage() {
           </p>
         </div>
         <EightSystemsRoadmap />
+      </section>
+
+      {/* 5. 鍼灸学生向け支援案内（Prime Student） */}
+      <section aria-label="学生向け支援" className="pt-4">
+        <PrimeStudentCard variant="banner" />
       </section>
     </div>
   );

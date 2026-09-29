@@ -32,10 +32,10 @@ const notoSansJP = Noto_Sans_JP({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.haritaro.jp"),
   title: {
-    default: "はり太郎の東洋医学｜鍼灸師・学生の学習と臨床活用",
-    template: "%s | はり太郎の東洋医学",
+    default: "はり太郎｜東洋医学の学習・臨床推論・患者問診メモ",
+    template: "%s | はり太郎",
   },
-  description: "陰陽・五行から弁証・配穴まで、東洋医学を体系的に学ぶ。経穴辞典、体質チェック、臨床演習、マイノートで、学習と日々の臨床の振り返りを支えます。",
+  description: "鍼灸学生の基礎学習から臨床家の弁証推論・配穴設計、患者への対面問診・説明、A4養生シート印刷まで。東洋医学の学びと実践をつなぐ統合Webプラットフォーム。",
   verification: {
     google: "EQTaU5bcfwSgFprso13sFiyF35uZ5IHhaGz56GXqXbo",
   },
@@ -43,9 +43,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ja_JP",
     url: "https://www.haritaro.jp",
-    siteName: "はり太郎の東洋医学",
-    title: "はり太郎の東洋医学｜鍼灸師・学生の学習と臨床活用",
-    description: "陰陽・五行から弁証・配穴まで、東洋医学を体系的に学ぶ。経穴辞典、体質チェック、臨床演習、マイノートで、学習と日々の臨床の振り返りを支えます。",
+    siteName: "はり太郎",
+    title: "はり太郎｜東洋医学の学習・臨床推論・患者問診メモ",
+    description: "鍼灸学生の基礎学習から臨床家の弁証推論・配穴設計、患者への対面問診・説明、A4養生シート印刷まで。東洋医学の学びと実践をつなぐ統合Webプラットフォーム。",
     images: [
       {
         url: "/og-image.png",

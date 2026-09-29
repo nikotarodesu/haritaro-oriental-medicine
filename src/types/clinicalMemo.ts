@@ -120,7 +120,8 @@ export interface PatientNoteItem {
   chiefComplaint: string;   // 主訴・お悩み（例: "慢性の後頭部痛と不眠、眼精疲労"）
   constitution?: string;    // 気血水・体質見立て（気虚、気滞、血虚、瘀血、水滞、陽虚など）
   syndrome?: string;        // 弁証・病態仮説（例: "肝気鬱結・心腎不交"）
-  selectedPoints: string[]; // 採用配穴・ツボ（例: ["太衝", "陽陵泉", "神門"]）
+  selectedPoints: string[]; // 採用配穴・ツボ（施術用 例: ["太衝", "陽陵泉", "神門"]）
+  selfCarePoints?: string[];// 患者セルフケア用ツボ（養生シート用・任意 最大3穴 例: ["太衝", "三陰交"]）
   treatmentPlan?: string;   // 施術方針・手技メモ（刺鍼法、置針時間、施灸壮数など）
   patientReaction?: string; // 施術直後の反応・変化（例: "首の回旋可動域改善、頭の重さが半減"）
   nextAction?: string;      // 次回への申し送り・養生セルフケア指導メモ（例: "就寝前の足湯指導、次回7日後"）
@@ -140,6 +141,7 @@ export const SAMPLE_PATIENT_NOTES: PatientNoteItem[] = [
     constitution: "気滞・肝鬱化火",
     syndrome: "肝陽上亢・肝胆経気機不暢",
     selectedPoints: ["太衝", "陽陵泉", "風池", "百会"],
+    selfCarePoints: ["太衝", "百会"],
     treatmentPlan: "太衝・風池に瀉法（置針15分）。陽陵泉に筋膜刺激。百会に軽微な雀啄。",
     patientReaction: "施術直後より頭部の熱感と締め付け感が消失。目の開けやすさを自覚。",
     nextAction: "就寝前のスマホ制限とホットアイマスク指導。次回は1週間後に経過確認。",
@@ -156,6 +158,7 @@ export const SAMPLE_PATIENT_NOTES: PatientNoteItem[] = [
     constitution: "気虚・脾胃虚弱",
     syndrome: "脾失健運・中気下陥",
     selectedPoints: ["足三里", "中脘", "天枢"],
+    selfCarePoints: ["足三里"],
     treatmentPlan: "中脘・足三里に補法。関元に温筒灸3壮施灸。",
     patientReaction: "お腹が鳴り始め、全身がじんわり温まる感覚。呼吸が深くなったと発言。",
     nextAction: "冷飲食の禁止（常温または白湯推奨）。次回10日後。",

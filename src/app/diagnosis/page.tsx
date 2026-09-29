@@ -32,9 +32,9 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     };
   }
 
-  const title = "気血水体質診断・五労ワークスタイル診断｜東洋医学セルフチェック";
+  const title = "気血水体質診断・対面問診ツール｜東洋医学の問診・説明・臨床記録";
   const description =
-    "簡単な質問に答えるだけで気虚・気滞・血虚・瘀血・陰虚・痰湿の体質傾向をスコアリング。デスクワークや現代の生活習慣に対応した五労チェックと、あなたに最適なツボ・養生法を提案。";
+    "気血水12問による体質チェックおよび鍼灸臨床での対面問診補助ツール。回答から状態の傾向を整理し、患者説明用の要約表示や臨床ノートへの連携に対応。五労チェッカーも併載。";
   const url = "https://www.haritaro.jp/diagnosis";
 
   return {
@@ -57,6 +57,11 @@ export default async function DiagnosisPage({ searchParams }: Props) {
     params.tab === "gorou" ||
     params.tab === "workstyle" ||
     params.tab === "checker";
+  const isClinical = params.tab === "clinical";
 
-  return <DiagnosisClient initialTab={isGorou ? "gorou" : "self"} />;
+  let initialTab: "self" | "clinical" | "gorou" = "self";
+  if (isGorou) initialTab = "gorou";
+  else if (isClinical) initialTab = "clinical";
+
+  return <DiagnosisClient initialTab={initialTab} />;
 }

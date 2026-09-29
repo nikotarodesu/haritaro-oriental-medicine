@@ -35,6 +35,7 @@ import { ClinicalMemoItem, PatientNoteItem, SAMPLE_PATIENT_NOTES } from "@/types
 import { loadAndClearDraftPatientNote } from "@/utils/draftNote";
 import { trackEvent } from "@/utils/analytics";
 import GogyoBadge from "@/components/GogyoBadge";
+import { TSUBOS } from "@/data/tsuboData";
 
 const CONSTITUTION_TAGS = [
   "気虚（元気不足）",
@@ -97,6 +98,7 @@ export default function MyNotesPage() {
   const [constitution, setConstitution] = useState("");
   const [syndrome, setSyndrome] = useState("");
   const [selectedPointsInput, setSelectedPointsInput] = useState("");
+  const [selfCarePointsInput, setSelfCarePointsInput] = useState("");
   const [treatmentPlan, setTreatmentPlan] = useState("");
   const [patientReaction, setPatientReaction] = useState("");
   const [nextAction, setNextAction] = useState("");
@@ -127,7 +129,7 @@ export default function MyNotesPage() {
     const draft = loadAndClearDraftPatientNote();
     if (draft) {
       setEditingNoteId(null);
-      setPatientIdentifier(`PT-${String(patientNotes.length + 1).padStart(3, "0")}`);
+      setPatientIdentifier(draft.patientIdentifier || `PT-${String(patientNotes.length + 1).padStart(3, "0")}`);
       setGender("");
       setAgeGroup("");
       setVisitDate(new Date().toISOString().split("T")[0]);
@@ -135,6 +137,7 @@ export default function MyNotesPage() {
       setConstitution(draft.constitution || "");
       setSyndrome(draft.syndrome || "");
       setSelectedPointsInput(draft.selectedPointsInput || "");
+      setSelfCarePointsInput(draft.selectedPointsInput || "");
       setTreatmentPlan(draft.treatmentPlan || "");
       setPatientReaction(draft.patientReaction || "");
       setNextAction(draft.nextAction || "");
@@ -226,6 +229,7 @@ export default function MyNotesPage() {
     setConstitution("");
     setSyndrome("");
     setSelectedPointsInput("");
+    setSelfCarePointsInput("");
     setTreatmentPlan("");
     setPatientReaction("");
     setNextAction("");
@@ -249,6 +253,7 @@ export default function MyNotesPage() {
     setConstitution(sample.constitution || "");
     setSyndrome(sample.syndrome || "");
     setSelectedPointsInput(sample.selectedPoints.join("、 "));
+    setSelfCarePointsInput(sample.selfCarePoints && sample.selfCarePoints.length > 0 ? sample.selfCarePoints.join("、 ") : "");
     setTreatmentPlan(sample.treatmentPlan || "");
     setPatientReaction("");
     setNextAction(sample.nextAction || "");
@@ -268,6 +273,7 @@ export default function MyNotesPage() {
     setConstitution(note.constitution || "");
     setSyndrome(note.syndrome || "");
     setSelectedPointsInput(note.selectedPoints.join("、 "));
+    setSelfCarePointsInput(note.selfCarePoints && note.selfCarePoints.length > 0 ? note.selfCarePoints.join("、 ") : "");
     setTreatmentPlan(note.treatmentPlan || "");
     setPatientReaction(note.patientReaction || "");
     setNextAction(note.nextAction || "");
@@ -297,6 +303,11 @@ export default function MyNotesPage() {
         .map(p => p.trim())
         .filter(Boolean);
 
+      const selfCareArray = selfCarePointsInput
+        .split(/[,、\s]+/)
+        .map(p => p.trim())
+        .filter(Boolean);
+
       const notePayload = {
         patientIdentifier: patientIdentifier.trim(),
         gender: gender ? (gender as any) : undefined,
@@ -306,6 +317,7 @@ export default function MyNotesPage() {
         constitution: constitution.trim(),
         syndrome: syndrome.trim(),
         selectedPoints: pointsArray,
+        selfCarePoints: selfCareArray,
         treatmentPlan: treatmentPlan.trim(),
         patientReaction: patientReaction.trim(),
         nextAction: nextAction.trim(),
@@ -1340,6 +1352,37 @@ export default function MyNotesPage() {
                   </p>
                 </div>
 
+                {/* 患者セルフケア用ツボ */}
+                <div className="space-y-2 pt-2 border-t border-[#E8E1D1]/60 dark:border-[#22303D]/60">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                      患者セルフケア用ツボ（養生シート用・任意・最大3穴）
+                    </label>
+                    {selectedPointsInput && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const pts = selectedPointsInput.split(/[,、\s]+/).filter(Boolean).slice(0, 3);
+                          setSelfCarePointsInput(pts.join("、 "));
+                        }}
+                        className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] hover:underline"
+                      >
+                        採用配穴から転記
+                      </button>
+                    )}
+                  </div>
+                  <input
+                    type="text"
+                    value={selfCarePointsInput}
+                    onChange={(e) => setSelfCarePointsInput(e.target.value)}
+                    placeholder="例: 太衝、百会（空欄の場合はツボ欄のない養生シートになります）"
+                    className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-base text-[#232826] dark:text-[#FAF8F5]"
+                  />
+                  <p className="text-[11px] text-[#737C77]">
+                    ※患者さんにお渡しする養生シートに印刷するご自宅用のツボです。空欄の場合はツボ欄を省略し、生活養生・食事メモのみのA4シートとして綺麗に出力されます。
+                  </p>
+                </div>
+
                 <div className="space-y-1">
                   <label className="block text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
                     施術方針・手技メモ（施術者用）
@@ -1613,44 +1656,44 @@ export default function MyNotesPage() {
             </div>
 
             {/* 実際の印刷用シート本文（A4形式） */}
-            <div className="p-4 sm:p-8 border sm:border-2 border-gray-300 rounded-xl space-y-6 font-sans">
-              <div className="flex items-start justify-between border-b-2 border-gray-800 pb-4">
+            <div className="p-4 sm:p-8 border sm:border-2 border-gray-300 rounded-xl space-y-5 font-sans print:p-6 print:border-none print:shadow-none print:space-y-4">
+              <div className="flex items-start justify-between border-b-2 border-gray-800 pb-3">
                 <div>
-                  <h2 className="text-2xl font-serif font-bold text-gray-900 tracking-wide">
-                    東洋医学 養生＆セルフケア処方せん
+                  <h2 className="text-xl sm:text-2xl font-serif font-bold text-gray-900 tracking-wide">
+                    本日の説明・養生メモ
                   </h2>
-                  <p className="text-xs text-gray-600 mt-1">
-                    本日のお体の状態と、ご自宅でできるツボ・生活養生アドバイスです。
+                  <p className="text-xs text-gray-600 mt-0.5">
+                    東洋医学 養生アドバイスシート（本日のお体の状態とご自宅でのセルフケア）
                   </p>
                 </div>
                 <div className="text-right text-xs text-gray-700 space-y-0.5">
                   <p className="font-bold">カルテNo.: {printNote.patientIdentifier}</p>
                   <p>発行日: {printNote.visitDate}</p>
-                  <p className="text-[10px] text-gray-400">はり太郎の東洋医学 発行</p>
+                  <p className="text-[10px] text-gray-400">はり太郎の東洋医学 (haritaro.jp)</p>
                 </div>
               </div>
 
               {/* 1. お悩み・主訴 */}
-              <div className="space-y-1">
+              <div className="space-y-1 break-inside-avoid">
                 <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider border-l-4 border-emerald-800 pl-2">
                   【本日のお悩み・主訴】
                 </h4>
-                <div className="p-3 bg-gray-50 rounded-lg text-sm text-gray-900 font-semibold leading-relaxed">
+                <div className="p-2.5 bg-gray-50 rounded-lg text-sm text-gray-900 font-semibold leading-relaxed">
                   {printNote.chiefComplaint}
                 </div>
               </div>
 
               {/* 2. お体の見立て */}
               {(printNote.constitution || printNote.syndrome) && (
-                <div className="space-y-1">
+                <div className="space-y-1 break-inside-avoid">
                   <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider border-l-4 border-emerald-800 pl-2">
                     【東洋医学的なお体のバランス・体質タイプ】
                   </h4>
-                  <div className="p-3 bg-emerald-50/60 rounded-lg text-xs text-gray-800 space-y-1">
+                  <div className="p-2.5 bg-emerald-50/60 rounded-lg text-xs text-gray-800 space-y-1">
                     <p className="font-bold text-emerald-900 text-sm">
                       {[printNote.constitution, printNote.syndrome].filter(Boolean).join(" ／ ")}
                     </p>
-                    <p className="text-gray-600 leading-relaxed">
+                    <p className="text-gray-600 leading-relaxed text-[11px]">
                       東洋医学では「気・血・水」や「五臓」のバランスの乱れから症状が現れると考えます。
                       過度の緊張や冷え、疲労の蓄積により巡りが滞っている状態です。
                     </p>
@@ -1658,33 +1701,49 @@ export default function MyNotesPage() {
                 </div>
               )}
 
-              {/* 3. ご自宅でケアできるツボ */}
-              {printNote.selectedPoints.length > 0 && (
-                <div className="space-y-1.5">
-                  <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider border-l-4 border-emerald-800 pl-2">
-                    【ご自宅で温める・押すと良いおすすめのツボ】
-                  </h4>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                    {printNote.selectedPoints.map((pt, i) => (
-                      <div key={i} className="p-2.5 rounded-lg border border-gray-200 text-center space-y-1">
-                        <span className="text-xs font-bold text-gray-900 block">
-                          {pt}
-                        </span>
-                        <span className="text-[10px] text-gray-500 block">
-                          痛気持ちいい強さで5秒×3回、または温灸
-                        </span>
-                      </div>
-                    ))}
+              {/* 3. ご自宅でケアできるツボ（セルフケア穴が指定されている場合のみ表示） */}
+              {(() => {
+                const carePoints =
+                  printNote.selfCarePoints && printNote.selfCarePoints.length > 0
+                    ? printNote.selfCarePoints
+                    : [];
+                if (carePoints.length === 0) return null;
+
+                return (
+                  <div className="space-y-1.5 break-inside-avoid">
+                    <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider border-l-4 border-emerald-800 pl-2">
+                      【ご自宅で温める・押すと良いおすすめのツボ】
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      {carePoints.slice(0, 3).map((pt, i) => {
+                        const found = TSUBOS.find((t) => t.name === pt);
+                        return (
+                          <div key={i} className="p-2 rounded-lg border border-gray-200 text-left space-y-0.5">
+                            <span className="text-xs font-bold text-gray-900 block">
+                              {pt}
+                              {found && (
+                                <span className="text-[10px] text-gray-500 font-normal ml-1">
+                                  （{found.meridianShort}）
+                                </span>
+                              )}
+                            </span>
+                            <span className="text-[10px] text-gray-600 block line-clamp-2">
+                              {found ? found.locationSimple : "痛気持ちいい強さで5秒×3回、または温灸"}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* 4. 生活養生アドバイス */}
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 break-inside-avoid">
                 <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider border-l-4 border-amber-800 pl-2">
                   【日常生活でのセルフケア・養生アドバイス】
                 </h4>
-                <div className="p-4 bg-amber-50/60 border border-amber-200 rounded-lg text-xs text-gray-800 space-y-2 leading-relaxed">
+                <div className="p-3 bg-amber-50/60 border border-amber-200 rounded-lg text-xs text-gray-800 space-y-2 leading-relaxed">
                   {printNote.nextAction ? (
                     <p className="font-medium text-amber-950 whitespace-pre-wrap">
                       {printNote.nextAction}
@@ -1700,7 +1759,7 @@ export default function MyNotesPage() {
               </div>
 
               {/* フッター */}
-              <div className="pt-4 border-t border-gray-200 flex items-center justify-between text-[10px] text-gray-500">
+              <div className="pt-3 border-t border-gray-200 flex items-center justify-between text-[10px] text-gray-500 break-inside-avoid">
                 <p>※本シートはセルフケアのための健康情報メモです。気になる症状が続く場合は専門医にご相談ください。</p>
                 <p>監修: はり太郎の東洋医学 (haritaro.jp)</p>
               </div>

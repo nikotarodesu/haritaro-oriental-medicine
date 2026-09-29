@@ -20,7 +20,6 @@ import {
   FileText,
 } from "lucide-react";
 import { getGogyoColor, GOGYO_COLORS } from "@/utils/gogyoColor";
-import ClipButton from "@/components/ClipButton";
 import { saveDraftPatientNote } from "@/utils/draftNote";
 
 // 五労の定義型
@@ -233,22 +232,23 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
 
 export default function GorouWorkstyleChecker() {
   const router = useRouter();
-  const [selectedGorou, setSelectedGorou] = useState<GorouId[]>(["kyushi", "kyuza"]);
+  const [selectedGorou, setSelectedGorou] = useState<GorouId[]>([]);
   const [activeTab, setActiveTab] = useState<"radar" | "action" | "tsubo">("radar");
 
   // チェックトグル
   const handleToggle = (id: GorouId) => {
     if (selectedGorou.includes(id)) {
-      if (selectedGorou.length > 1) {
-        setSelectedGorou(selectedGorou.filter((g) => g !== id));
-      }
+      setSelectedGorou(selectedGorou.filter((g) => g !== id));
     } else {
       setSelectedGorou([...selectedGorou, id]);
     }
   };
 
-  // 五臓の疲弊度計算 (0 - 100)
+  // 五臓の負担傾向スコア (0 - 100)
   const organScores = useMemo(() => {
+    if (selectedGorou.length === 0) {
+      return { liver: 0, heart: 0, spleen: 0, lung: 0, kidney: 0 };
+    }
     const totals = { liver: 0, heart: 0, spleen: 0, lung: 0, kidney: 0 };
     selectedGorou.forEach((id) => {
       const g = GOROU_DEFS[id];
@@ -259,14 +259,13 @@ export default function GorouWorkstyleChecker() {
       totals.kidney += g.organImpacts.kidney;
     });
 
-    // スケーリング（最大100に収まるよう正規化しつつ最小20を担保）
     const count = selectedGorou.length;
     return {
-      liver: Math.min(100, Math.round((totals.liver / count) * 1.6 + 15)),
-      heart: Math.min(100, Math.round((totals.heart / count) * 1.6 + 15)),
-      spleen: Math.min(100, Math.round((totals.spleen / count) * 1.6 + 15)),
-      lung: Math.min(100, Math.round((totals.lung / count) * 1.6 + 15)),
-      kidney: Math.min(100, Math.round((totals.kidney / count) * 1.6 + 15)),
+      liver: Math.min(100, Math.round((totals.liver / count) * 1.4 + 10)),
+      heart: Math.min(100, Math.round((totals.heart / count) * 1.4 + 10)),
+      spleen: Math.min(100, Math.round((totals.spleen / count) * 1.4 + 10)),
+      lung: Math.min(100, Math.round((totals.lung / count) * 1.4 + 10)),
+      kidney: Math.min(100, Math.round((totals.kidney / count) * 1.4 + 10)),
     };
   }, [selectedGorou]);
 
@@ -358,10 +357,10 @@ export default function GorouWorkstyleChecker() {
   const handleSaveToNoteDraft = () => {
     saveDraftPatientNote({
       sourceTool: "五労チェッカー",
-      constitution: `五労所傷・${mostFatiguedOrgan.name}（${mostFatiguedOrgan.element}行）疲弊`,
+      constitution: `五労所傷・${mostFatiguedOrgan.name}系（${mostFatiguedOrgan.element}行）への負担傾向`,
       chiefComplaint: `生活・職業動作の偏りによる疲労（${selectedGorou.map((id) => GOROU_DEFS[id].classicName).join("・")}）`,
       selectedPointsInput: selectedGorou.map((id) => GOROU_DEFS[id].quickTsubo.name).join(", "),
-      treatmentPlan: `【五労チェッカー診断結果】\n最疲弊臓腑: ${mostFatiguedOrgan.name}（${mostFatiguedOrgan.harmTissue}が過重負荷 / 疲弊度${mostFatiguedOrgan.score}%）\n選択パターン: ${selectedGorou.map((id) => `${GOROU_DEFS[id].classicName}（${GOROU_DEFS[id].modernTitle}）`).join("、")}\n中庸アクション処方:\n${selectedGorou.map((id) => `・${GOROU_DEFS[id].classicName}: ${GOROU_DEFS[id].chuyoAction}`).join("\n")}\n※本内容は生活習慣・五労所傷の参考分析です。臨床家の診察・判断に基づき加筆修正してください。`,
+      treatmentPlan: `【五労チェック結果】\n最も負荷が集中しやすい臓腑: ${mostFatiguedOrgan.name}（${mostFatiguedOrgan.harmTissue}への負荷集中 / 推定負荷${mostFatiguedOrgan.score}%）\n選択パターン: ${selectedGorou.map((id) => `${GOROU_DEFS[id].classicName}（${GOROU_DEFS[id].modernTitle}）`).join("、")}\n中庸アクション処方:\n${selectedGorou.map((id) => `・${GOROU_DEFS[id].classicName}: ${GOROU_DEFS[id].chuyoAction}`).join("\n")}\n※本内容は生活習慣・五労所傷の参考分析です。臨床家の診察・判断に基づき加筆修正してください。`,
     });
     router.push("/notes");
   };
@@ -433,19 +432,30 @@ export default function GorouWorkstyleChecker() {
         </div>
       </div>
 
-      {/* 2. 動的五臓疲弊度レーダーチャート ＆ 診断サマリー */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
-        {/* レーダーチャート (5 cols) */}
-        <div className="lg:col-span-5 bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-6 shadow-sm space-y-3 sm:space-y-4">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-[#B86924]" />
-              <span>五臓疲弊度レーダー</span>
-            </span>
-            <span className="text-[10px] font-bold text-[#737C77] dark:text-[#8899A6]">
-              選択中：{selectedGorou.length}習慣連動
-            </span>
-          </div>
+      {/* 2. 動的五臓負担傾向レーダーチャート ＆ 診断サマリー */}
+      {selectedGorou.length === 0 ? (
+        <div className="p-8 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] text-center space-y-2">
+          <Info className="w-6 h-6 text-[#737C77] mx-auto" />
+          <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
+            生活習慣・動作の偏りを選択してください
+          </h4>
+          <p className="text-xs text-[#737C77] dark:text-[#8899A6] max-w-md mx-auto">
+            上のリストから当てはまる項目を選択すると、古典『素問』宣明五気篇の理論に基づき、五臓や各組織にかかりやすい負担傾向と中庸セルフケアが表示されます。
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
+          {/* レーダーチャート (5 cols) */}
+          <div className="lg:col-span-5 bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-6 shadow-sm space-y-3 sm:space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#B86924]" />
+                <span>五臓への負担傾向</span>
+              </span>
+              <span className="text-[10px] font-bold text-[#737C77] dark:text-[#8899A6]">
+                選択中：{selectedGorou.length}習慣
+              </span>
+            </div>
 
           <div className="relative aspect-square max-w-[300px] mx-auto flex items-center justify-center">
             <svg viewBox="0 0 300 300" className="w-full h-full overflow-visible">
@@ -565,48 +575,33 @@ export default function GorouWorkstyleChecker() {
 
         {/* 診断サマリー＆中庸の処方箋 (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
-          {/* 最疲弊臓腑の警告カード */}
+          {/* 負担傾向臓腑のサマリーカード */}
           <div className="bg-white dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34] dark:border-[#74BA9E] p-3.5 sm:p-6 shadow-md relative overflow-hidden">
             <div className="flex items-center gap-2 mb-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
               <Stethoscope className="w-4 h-4" />
-              <span>五労診断結果・最疲弊ポイント</span>
+              <span>五労チェック結果・負担傾向ポイント</span>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
               <div>
-                <span className="text-xs text-[#737C77] dark:text-[#8899A6]">最も過重負荷を受けている五臓：</span>
+                <span className="text-xs text-[#737C77] dark:text-[#8899A6]">最も負荷が集中しやすい五臓：</span>
                 <div className="flex items-center gap-2 mt-1">
-                  <h3 className="text-xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-                    【{mostFatiguedOrgan.name}】が疲弊（疲弊度 {mostFatiguedOrgan.score}%）
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                    【{mostFatiguedOrgan.name}】への負担傾向（推定負荷 {mostFatiguedOrgan.score}%）
                   </h3>
                 </div>
               </div>
               <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
-                <span className="text-xs px-2.5 py-1 rounded bg-[#FEE2E2] text-[#DC2626] font-bold">
-                  {mostFatiguedOrgan.harmTissue} が悲鳴
+                <span className="text-xs px-2.5 py-1 rounded bg-[#FEF3C7] dark:bg-[#2D2415] text-[#92400E] dark:text-[#FCD34D] font-bold border border-[#FDE68A] dark:border-[#78350F]">
+                  {mostFatiguedOrgan.harmTissue} への負荷集中
                 </span>
-                <ClipButton
-                  item={{
-                    id: `diagnosis-gorou-${mostFatiguedOrgan.name}`,
-                    type: "diagnosis",
-                    title: `五労診断：【${mostFatiguedOrgan.name}（${mostFatiguedOrgan.element}行）】疲弊（${mostFatiguedOrgan.score}%）`,
-                    subTitle: `過重負荷：${selectedGorou.map(id => GOROU_DEFS[id].classicName).join("・")}`,
-                    points: selectedGorou.map(id => GOROU_DEFS[id].quickTsubo.name),
-                    elements: [mostFatiguedOrgan.element as any],
-                    indications: selectedGorou.map(id => GOROU_DEFS[id].modernTitle),
-                    summary: `疲弊五臓【${mostFatiguedOrgan.name}】。日常の中庸アクション処方と特効ツボ（${selectedGorou.map(id => GOROU_DEFS[id].quickTsubo.name).join("、")}）による中庸処方箋。`,
-                    mechanism: `偏りを正し、五行（相生相剋）を円滑に循環させる日常処方箋。`
-                  }}
-                  variant="button"
-                  size="sm"
-                />
               </div>
             </div>
 
             <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3">
               <p className="text-xs sm:text-sm text-[#404743] dark:text-[#D1D5DB] leading-relaxed">
                 現在のワークスタイルでは、<strong>{selectedGorou.map((id) => GOROU_DEFS[id].classicName).join(" と ")}</strong>の負荷が重なり、
-                特に<strong>【{mostFatiguedOrgan.name}（{mostFatiguedOrgan.element}行）】</strong>のエネルギーが消耗しています。
+                特に<strong>【{mostFatiguedOrgan.name}（{mostFatiguedOrgan.element}行）】</strong>への負担傾向が強まりやすくなっています。
                 東洋医学の原則は<strong>「偏りを正し、五行を円滑に回す（中庸）」</strong>こと。以下の処方箋を日常に取り入れてください。
               </p>
             </div>
@@ -686,6 +681,7 @@ export default function GorouWorkstyleChecker() {
           </div>
         </div>
       </div>
+      )}
 
       {/* 3. 深掘り解説：『黄帝内経』が教える五労所傷のメカニズム */}
       <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-7 space-y-3 sm:space-y-4">

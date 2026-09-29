@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "配穴設計・練習ツール｜経穴の選定理由を整理",
+  title: "配穴設計ツール｜本治・標治・主治のツボ処方シミュレーション",
   description:
-    "経穴を選び、治療方針との関係や選定意図を整理する配穴演習。既存の教材例や記録機能を使って考え方を振り返ります。",
+    "主訴や弁証に応じた経穴の組み合わせをシミュレーション。五行の相生相剋バランス、要穴理論に基づき、本治・標治の役割分担を整理した配穴処方を設計。",
   alternates: {
     canonical: "/practice/haiketsu",
   },
   openGraph: {
-    title: "配穴設計・練習ツール｜経穴の選定理由を整理",
+    title: "配穴設計ツール｜本治・標治・主治のツボ処方シミュレーション｜はり太郎",
     description:
-      "経穴を選び、治療方針との関係や選定意図を整理する配穴演習。既存の教材例や記録機能を使って考え方を振り返ります。",
+      "主訴や弁証に応じた経穴の組み合わせをシミュレーション。五行の相生相剋バランス、要穴理論に基づき、本治・標治の役割分担を整理した配穴処方を設計。",
     url: "https://www.haritaro.jp/practice/haiketsu",
   },
 };
