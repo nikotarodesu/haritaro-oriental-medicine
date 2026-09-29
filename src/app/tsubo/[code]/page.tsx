@@ -40,6 +40,7 @@ import {
 import { SYMPTOMS } from "@/data/symptomData";
 import { getLecturesForAcupoint } from "@/utils/acupointCurriculumMatcher";
 import { getSimulatorParamsForAcupoint } from "@/utils/tsuboSimulatorMatcher";
+import { getSymptomsForAcupoint, getCasesForAcupoint } from "@/utils/tsuboTopicClusterMatcher";
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -110,6 +111,10 @@ export default async function AcupointDetailPage({ params }: Props) {
 
   // 弁証シミュレーターへの逆引き推論パラメータ
   const simLink = getSimulatorParamsForAcupoint(point.code, point.meridianId);
+
+  // トピッククラスタ連動（症状ガイド ＆ 臨床症例）
+  const relatedSymptoms = getSymptomsForAcupoint(point.codeLower, point.name);
+  const relatedCases = getCasesForAcupoint(point.codeLower);
 
   // FAQ データ作成（Google FAQPage 構造化データ対応）
   const faqs = [
@@ -209,30 +214,6 @@ export default async function AcupointDetailPage({ params }: Props) {
       </div>
     );
   };
-
-  // 関連する症状別ガイド（逆引き相互リンク）
-  const relatedSymptoms = SYMPTOMS.filter((sym) => {
-    const isIdMatch = sym.recommendedTsuboIds.some((id) => {
-      if (id === "gokoku" && point.codeLower === "li4") return true;
-      if (id === "hyakue" && point.codeLower === "gv20") return true;
-      if (id === "taishou" && point.codeLower === "lr3") return true;
-      if (id === "naikan" && point.codeLower === "pc6") return true;
-      if (id === "yusen" && point.codeLower === "ki1") return true;
-      if (id === "ashisanri" && point.codeLower === "st36") return true;
-      if (id === "chukan" && point.codeLower === "cv12") return true;
-      if (id === "sanyinkou" && point.codeLower === "sp6") return true;
-      if (id === "jinyu" && point.codeLower === "bl23") return true;
-      return false;
-    });
-    if (isIdMatch) return true;
-    const indStr = point.indications.join(" ");
-    if (sym.category === "頭・首・肩" && (indStr.includes("頭痛") || indStr.includes("肩") || indStr.includes("項") || indStr.includes("頚"))) return true;
-    if (sym.category === "消化器・お腹" && (indStr.includes("胃") || indStr.includes("腹") || indStr.includes("嘔") || indStr.includes("便") || indStr.includes("下痢"))) return true;
-    if (sym.category === "メンタル・睡眠" && (indStr.includes("不眠") || indStr.includes("心悸") || indStr.includes("精神") || indStr.includes("癲狂") || indStr.includes("煩"))) return true;
-    if (sym.category === "女性特有" && (indStr.includes("月経") || indStr.includes("帯下") || indStr.includes("不妊") || indStr.includes("胎") || indStr.includes("陰"))) return true;
-    if (sym.category === "全身・疲労" && (indStr.includes("虚") || indStr.includes("労") || indStr.includes("倦怠") || indStr.includes("無力"))) return true;
-    return false;
-  }).slice(0, 2);
 
   const pageUrl = `https://www.haritaro.jp/tsubo/${point.codeLower}`;
   const pageTitle = `${point.name}（${point.code}）の場所・取穴と注意点`;
@@ -764,6 +745,70 @@ export default async function AcupointDetailPage({ params }: Props) {
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
+
+          {/* お悩み・症状別ガイド ＆ 臨床症例 トピッククラスタ連動 */}
+          {(relatedSymptoms.length > 0 || relatedCases.length > 0) && (
+            <div className="space-y-3 pt-2">
+              <span className="text-xs font-semibold text-[#737C77] dark:text-[#8899A6] block">
+                関連する症状ガイド・臨床症例：
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* 症状ガイドリンク */}
+                {relatedSymptoms.map((sym) => (
+                  <Link
+                    key={sym.id}
+                    href={`/symptoms`}
+                    className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group flex flex-col justify-between"
+                  >
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#FCF4EB] text-[#B86924] dark:bg-[#231A12] dark:text-[#E6C387]">
+                          症状ガイド：{sym.category}
+                        </span>
+                        <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] group-hover:translate-x-0.5 transition-all" />
+                      </div>
+                      <h5 className="font-serif font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors">
+                        {sym.title}
+                      </h5>
+                      <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] line-clamp-2">
+                        {sym.summary}
+                      </p>
+                    </div>
+                    <span className="text-[10px] font-semibold text-[#1E3D34] dark:text-[#74BA9E] mt-2 block">
+                      食養生・生活習慣アドバイスを見る →
+                    </span>
+                  </Link>
+                ))}
+
+                {/* 臨床症例リンク */}
+                {relatedCases.map((cs) => (
+                  <Link
+                    key={cs.id}
+                    href={`/cases/${cs.id}`}
+                    className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#2C5282] dark:hover:border-[#90CDF4] transition-all group flex flex-col justify-between"
+                  >
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#EEF2F6] text-[#2C5282] dark:bg-[#1E2C3B] dark:text-[#90CDF4]">
+                          臨床症例：{cs.pattern}
+                        </span>
+                        <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:text-[#2C5282] dark:group-hover:text-[#90CDF4] group-hover:translate-x-0.5 transition-all" />
+                      </div>
+                      <h5 className="font-serif font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#2C5282] dark:group-hover:text-[#90CDF4] transition-colors">
+                        {cs.title}
+                      </h5>
+                      <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] line-clamp-2">
+                        {cs.explanation}
+                      </p>
+                    </div>
+                    <span className="text-[10px] font-semibold text-[#2C5282] dark:text-[#90CDF4] mt-2 block">
+                      症例カルテ・弁証論治を読む →
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* 禁忌・臨床上の注意事項 */}
           {point.caution && (

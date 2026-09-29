@@ -260,7 +260,7 @@ export default function LearnGuidePage() {
                 端末内に自動で進捗記録
               </span>
               <Link
-                href="/review"
+                href="/kokushi"
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#B86924] text-white hover:bg-[#96531B] text-xs font-bold transition-all"
               >
                 <span>今日の復習を解く</span>

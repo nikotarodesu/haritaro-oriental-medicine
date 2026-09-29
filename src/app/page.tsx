@@ -24,6 +24,7 @@ import {
 import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
 import PrimeStudentCard from "@/components/PrimeStudentCard";
 import HomeHeroQuickSearch from "@/components/home/HomeHeroQuickSearch";
+import HomeWelcomeGuide from "@/components/home/HomeWelcomeGuide";
 import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 
 export default function HomePage() {
@@ -58,6 +59,11 @@ export default function HomePage() {
 
             {/* クイック経穴・症状検索バー */}
             <HomeHeroQuickSearch />
+          </div>
+
+          {/* 初見ユーザー向け30秒ウェルカムガイド（LocalStorage保存で次回非表示） */}
+          <div className="max-w-5xl mx-auto">
+            <HomeWelcomeGuide />
           </div>
 
           {/* 2大入口カード（PC: 横並び、スマホ: 縦並び） */}
@@ -218,16 +224,16 @@ export default function HomePage() {
               </Link>
 
               <Link
-                href="/review"
-                className="p-2.5 rounded-xl bg-white/80 dark:bg-[#17212A]/80 border border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E2D3D] dark:hover:border-[#7BAAD8] flex flex-col items-center gap-1.5 text-center transition-all group"
+                href="/tsubo/practice"
+                className="p-2.5 rounded-xl bg-white/80 dark:bg-[#17212A]/80 border border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] flex flex-col items-center gap-1.5 text-center transition-all group"
               >
-                <div className="w-8 h-8 rounded-lg bg-[#EAEFF5] dark:bg-[#152331] text-[#1E2D3D] dark:text-[#7BAAD8] flex items-center justify-center">
-                  <RotateCcw className="w-4 h-4" />
+                <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#1C332A] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center">
+                  <Compass className="w-4 h-4" />
                 </div>
-                <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E2D3D] dark:group-hover:text-[#7BAAD8]">
-                  今日の復習
+                <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
+                  経穴ドリル
                 </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">忘却曲線定着</span>
+                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">14経脈反復暗記</span>
               </Link>
 
               <Link

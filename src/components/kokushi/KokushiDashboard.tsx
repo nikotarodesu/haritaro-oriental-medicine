@@ -23,12 +23,15 @@ import {
   ChevronRight,
   Flame,
   Check,
-  Printer
+  Printer,
+  SlidersHorizontal
 } from "lucide-react";
 import { useCurriculumProgress, QuizResultRecord } from "@/contexts/CurriculumProgressContext";
 import { CURRICULUM_QUIZZES, QuizQuestionItem, LessonQuizGroup } from "@/data/curriculumQuizzes";
 import { CURRICULUM_DATA } from "@/data/curriculumData";
 import { KOKUSHI_PAST_EXAMS, KokushiPastExamQuestion } from "@/data/kokushiPastExams";
+import AcupointQuickModal from "@/components/tsubo/AcupointQuickModal";
+import { extractAcupointsFromText } from "@/utils/acupointTextExtractor";
 
 // 国試ターゲット日（第34回 鍼灸師国家試験 想定：2027年2月28日）
 const TARGET_EXAM_DATE = new Date("2027-02-28T09:00:00+09:00");
@@ -128,6 +131,9 @@ export default function KokushiDashboard() {
   const [pastExamYearFilter, setPastExamYearFilter] = useState<"all" | 33 | 32 | 31 | 30>("all");
   const [pastExamAnswers, setPastExamAnswers] = useState<Record<string, number>>({});
   const [pastExamSubmitted, setPastExamSubmitted] = useState<Record<string, boolean>>({});
+
+  // 経穴クイックモーダルの選択ステート
+  const [selectedAcupointForModal, setSelectedAcupointForModal] = useState<string | null>(null);
 
   // 外部・検索モーダルからの直通リンク（?examId=xxx）検知時に自動スクロール
   useEffect(() => {
@@ -336,6 +342,66 @@ export default function KokushiDashboard() {
       </section>
 
       {/* ============================================================ */}
+      {/* 1.5 演習・トレーニング統合ナビ（散らばっていた学習ツールを1本化） */}
+      {/* ============================================================ */}
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 print:hidden">
+        <div className="p-4 rounded-2xl bg-[#EBF3EF] dark:bg-[#162A24] border-2 border-[#1E3D34] dark:border-[#74BA9E] flex items-start gap-3 shadow-xs">
+          <span className="p-2 rounded-xl bg-[#1E3D34] text-white shrink-0">
+            <GraduationCap className="w-5 h-5 text-[#E6C387]" />
+          </span>
+          <div className="space-y-1">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#1E3D34] text-white">現在地</span>
+              <h3 className="font-bold text-xs sm:text-sm text-[#1E3D34] dark:text-[#74BA9E]">国試過去問・忘却曲線</h3>
+            </div>
+            <p className="text-[11px] text-[#4A534F] dark:text-[#A8B8C4]">
+              第30〜33回本試験実問アーカイブ、日替わり忘却曲線3問、苦手問題克服。
+            </p>
+          </div>
+        </div>
+
+        <Link
+          href="/tsubo/practice"
+          className="p-4 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] flex items-start gap-3 transition-all group shadow-xs hover:shadow-md"
+        >
+          <span className="p-2 rounded-xl bg-[#FAF0E6] text-[#B86924] dark:bg-[#2A2016] dark:text-[#E6C387] shrink-0 group-hover:scale-105 transition-transform">
+            <Compass className="w-5 h-5" />
+          </span>
+          <div className="space-y-1">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors">
+                十四経脈・361穴 ドリル
+              </h3>
+              <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform" />
+            </div>
+            <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+              十四経脈別の小単位テスト。取穴部位や骨度法・要穴の暗記を徹底反復。
+            </p>
+          </div>
+        </Link>
+
+        <Link
+          href="/practice/haiketsu"
+          className="p-4 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#2C5282] dark:hover:border-[#90CDF4] flex items-start gap-3 transition-all group shadow-xs hover:shadow-md"
+        >
+          <span className="p-2 rounded-xl bg-[#EEF2F6] text-[#2C5282] dark:bg-[#1E2C3B] dark:text-[#90CDF4] shrink-0 group-hover:scale-105 transition-transform">
+            <SlidersHorizontal className="w-5 h-5" />
+          </span>
+          <div className="space-y-1">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#2C5282] dark:group-hover:text-[#90CDF4] transition-colors">
+                臨床配穴シミュレーター
+              </h3>
+              <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform" />
+            </div>
+            <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+              ツボの組み合わせ（君臣佐使）を組み、ドーゼ過多や禁忌をリアルタイム検証。
+            </p>
+          </div>
+        </Link>
+      </section>
+
+      {/* ============================================================ */}
       {/* 2. 本日の忘却曲線デイリー復習（毎日3問）                      */}
       {/* ============================================================ */}
       <section className="bg-white dark:bg-[#17212A] rounded-3xl border-2 border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-8 shadow-sm space-y-6 print:hidden">
@@ -503,6 +569,30 @@ export default function KokushiDashboard() {
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </Link>
                     </div>
+
+                    {/* 登場した経穴の即時ポップアップ復習 */}
+                    {(() => {
+                      const extracted = extractAcupointsFromText(item.question.question + " " + item.question.explanation);
+                      if (extracted.length === 0) return null;
+                      return (
+                        <div className="pt-2 border-t border-dashed border-emerald-200/60 dark:border-emerald-800/60 flex flex-wrap items-center gap-1.5 pl-7">
+                          <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1">
+                            <Sparkles className="w-3 h-3 text-[#B86924] dark:text-[#E6C387]" />
+                            登場経穴を即時確認：
+                          </span>
+                          {extracted.map((name) => (
+                            <button
+                              key={name}
+                              type="button"
+                              onClick={() => setSelectedAcupointForModal(name)}
+                              className="px-2 py-0.5 rounded-md text-xs font-bold bg-white dark:bg-[#1A2530] text-[#1E3D34] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243] hover:bg-[#1E3D34] hover:text-white dark:hover:bg-[#74BA9E] dark:hover:text-[#0D1512] transition-colors cursor-pointer shadow-2xs"
+                            >
+                              {name}
+                            </button>
+                          ))}
+                        </div>
+                      );
+                    })()}
                   </div>
                 )}
               </div>
@@ -838,6 +928,30 @@ export default function KokushiDashboard() {
                         </Link>
                       </div>
                     )}
+
+                    {/* 登場した経穴の即時ポップアップ復習 */}
+                    {(() => {
+                      const extracted = extractAcupointsFromText(item.question + " " + item.explanation);
+                      if (extracted.length === 0) return null;
+                      return (
+                        <div className="pt-2 border-t border-dashed border-emerald-200/60 dark:border-emerald-800/60 flex flex-wrap items-center gap-1.5 pl-7">
+                          <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1">
+                            <Sparkles className="w-3 h-3 text-[#B86924] dark:text-[#E6C387]" />
+                            登場経穴を即時確認：
+                          </span>
+                          {extracted.map((name) => (
+                            <button
+                              key={name}
+                              type="button"
+                              onClick={() => setSelectedAcupointForModal(name)}
+                              className="px-2 py-0.5 rounded-md text-xs font-bold bg-white dark:bg-[#1A2530] text-[#1E3D34] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243] hover:bg-[#1E3D34] hover:text-white dark:hover:bg-[#74BA9E] dark:hover:text-[#0D1512] transition-colors cursor-pointer shadow-2xs"
+                            >
+                              {name}
+                            </button>
+                          ))}
+                        </div>
+                      );
+                    })()}
                   </div>
                 )}
 
@@ -981,6 +1095,12 @@ export default function KokushiDashboard() {
           </div>
         </section>
       )}
+
+      {/* 経穴即時プレビュー用クイックモーダル */}
+      <AcupointQuickModal
+        acupointIdentifier={selectedAcupointForModal}
+        onClose={() => setSelectedAcupointForModal(null)}
+      />
     </div>
   );
 }

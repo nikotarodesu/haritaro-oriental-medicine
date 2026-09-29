@@ -65,7 +65,7 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
     shortLabel: "復習",
     description: "忘却曲線に基づく日替わり知識定着演習",
     icon: RotateCcw,
-    href: "/review",
+    href: "/kokushi",
   },
   kokushi: {
     id: "kokushi",
