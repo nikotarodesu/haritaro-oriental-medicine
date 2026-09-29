@@ -44,3 +44,8 @@ next-env.d.ts
 # CI workflow (managed locally or via GitHub Web UI without OAuth scope clash)
 .github
 
+# credentials & API keys
+credentials/
+*service-account*.json
+*ga4*.json
+
