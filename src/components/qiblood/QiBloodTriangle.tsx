@@ -165,7 +165,7 @@ export default function QiBloodTriangle() {
               </p>
               <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-xs">
                 <strong className="text-[#C62828] block mb-1">【臨床の現れ】気滞 ➜ 瘀血</strong>
-                ストレスで気の巡りが止まる（気滞）と、たちまち血流も渋滞してドロドロ血（瘀血）になります。「血流を改善したければ、まず気を巡らせよ」という鉄則の根拠です。
+                ストレスで気の巡りが止まる（気滞）と、たちまち微小循環が渋滞して血液粘稠度が亢進（瘀血病証）します。「血流を改善したければ、まず気を巡らせよ（気為血之帥）」という鉄則の根拠です。
               </div>
             </div>
           )}
@@ -225,7 +225,7 @@ export default function QiBloodTriangle() {
               </p>
               <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-xs">
                 <strong className="text-[#7B1FA2] block mb-1">【臨床の現れ】「奪汗者無血、奪血者無汗」</strong>
-                大汗をかいて脱水した人に瀉血（刺絡）を行ってはならず、大出血した人に発汗させてはならないという古典の鉄則です。脱水は直ちに血液ドロドロ（瘀血）を誘発します。
+                大汗をかいて脱水した人に瀉血（刺絡）を行ってはならず、大出血した人に発汗させてはならないという古典の鉄則です。脱水は直ちに血漿分を喪失させ、血液粘稠度亢進（瘀血病証）を誘発します。
               </div>
             </div>
           )}

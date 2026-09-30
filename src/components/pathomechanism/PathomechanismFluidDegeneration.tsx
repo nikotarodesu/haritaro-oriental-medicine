@@ -12,7 +12,7 @@ interface FluidStep {
   visualBg: string;
   darkVisualBg: string;
   state: string;
-  viscosity: "極低（サラサラ）" | "低（停滞気味）" | "中高（ドロドロ）" | "超高（固形化・沈殿）";
+  viscosity: "極低（清澄・高流動性）" | "低（停滞傾向）" | "中高（高粘稠・粘液化）" | "超高（固形化・器質的沈殿）";
   symptoms: string[];
   mechanism: string;
   action: string;
@@ -28,7 +28,7 @@ const FLUID_STEPS: FluidStep[] = [
     visualBg: "bg-[#E1F5FE] text-[#0277BD] border-[#B3E5FC]",
     darkVisualBg: "dark:bg-[#0288D1]/20 dark:text-[#81D4FA]",
     state: "澄んだ清らかな水",
-    viscosity: "極低（サラサラ）",
+    viscosity: "極低（清澄・高流動性）",
     symptoms: ["皮膚のみずみずしさ", "潤滑な関節運動", "快調な排尿（薄い麦わら色）", "快便"],
     mechanism: "脾（抽出・運化）➜ 肺（散布・通降）➜ 腎（温煦・気化排泄）のスムーズな三焦リレーによって、全身の細胞間隙を潤滑に循環している状態。",
     action: "維持：適度な水分補給（常温〜温水）、胃腸を冷やさない食事習慣。",
@@ -42,7 +42,7 @@ const FLUID_STEPS: FluidStep[] = [
     visualBg: "bg-[#E0F2F1] text-[#00695C] border-[#80CBC4]",
     darkVisualBg: "dark:bg-[#00897B]/20 dark:text-[#80CBC4]",
     state: "淀んだ水たまり（一過性）",
-    viscosity: "低（停滞気味）",
+    viscosity: "低（停滞傾向）",
     symptoms: ["夕方の足のむくみ", "雨の日の頭重感", "口の中のネバつき", "軟便・下痢しやすい"],
     mechanism: "冷飲食や運動不足、湿気によって脾胃の運化スピードが鈍化。水が組織間に一過性に溜まるが、まだ物質的な変質（ゴミ化）はしていない段階。",
     action: "利水：ハトムギ茶、小豆、軽く汗をかく運動で水分代謝の蛇口を開ける。",
@@ -51,12 +51,12 @@ const FLUID_STEPS: FluidStep[] = [
     step: 3,
     name: "痰湿（たんしつ / 物質的変質）",
     kana: "たんしつ",
-    stageBadge: "中期：粘液ヘドロ化",
+    stageBadge: "中期：病理的粘稠化（痰湿）",
     color: "#689F38",
     visualBg: "bg-[#F1F8E9] text-[#33691E] border-[#C5E1A5]",
     darkVisualBg: "dark:bg-[#689F38]/20 dark:text-[#AED581]",
-    state: "粘り気を帯びたヘドロ",
-    viscosity: "中高（ドロドロ）",
+    state: "粘稠性を帯びた病理的粘液（痰飲）",
+    viscosity: "中高（高粘稠・粘液化）",
     symptoms: ["濡れタオルを巻かれたような激しい頭重", "喉に絡む痰", "めまい（メニエール様）", "内臓脂肪・脂質異常"],
     mechanism: "滞留した水湿に体温（熱）が加わり、水分が煮詰まって粘稠な老廃物（痰）へ変質。自力で流れる力を完全に失い、経絡や血管内皮にこびりつく。",
     action: "化痰：白砂糖・油物・アルコールを完全遮断。二陳湯、半夏白朮天麻湯。",
@@ -69,10 +69,10 @@ const FLUID_STEPS: FluidStep[] = [
     color: "#4E342E",
     visualBg: "bg-[#EFEBE9] text-[#3E2723] border-[#BCAAA4]",
     darkVisualBg: "dark:bg-[#4E342E]/30 dark:text-[#D7CCC8]",
-    state: "コンクリート状の固形沈殿物",
-    viscosity: "超高（固形化・沈殿）",
+    state: "膠着した固形沈殿物",
+    viscosity: "超高（固形化・器質的沈殿）",
     symptoms: ["頑固な慢性痛・しこり", "血管プラーク・動脈硬化", "子宮筋腫・のう胞", "慢性腎臓病・難治性皮膚疾患"],
-    mechanism: "ドロドロの痰湿が血流を堰き止め、停滞した血（瘀血）と合体（痰瘀互結）。膠着したセメントのように組織を線維化させ、病態を恒久的に固定化する。",
+    mechanism: "高粘稠度の痰湿が血流を阻害し、停滞した血（瘀血）と合体（痰瘀互結）。膠着した結合織のように組織を線維化させ、病態を恒久的に固定化する。",
     action: "化痰活血：強固な結合を解く長期アプローチ。桂枝茯苓丸加ヨクイニン、刺絡療法。",
   },
 ];

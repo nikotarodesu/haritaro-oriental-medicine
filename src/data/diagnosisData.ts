@@ -58,7 +58,7 @@ export const DIAGNOSIS_RESULTS: Record<string, DiagnosisResultType> = {
   blood_stasis: {
     type: "blood_stasis",
     name: "瘀血（おけつ）タイプ",
-    reading: "血流が滞りドロドロになった状態",
+    reading: "気血の運行が滞り微小循環が鬱滞した状態",
     summary: "血液の循環が悪くなり、体内の局所で滞留しています。東洋医学では「痛みの根源」「生活習慣病の引き金」と捉えられます。",
     symptoms: ["刺すような固定性の痛み（頭痛・肩こり・腰痛）", "目の下のクマ・唇の暗赤色", "重い生理痛・経血の塊", "静脈瘤やシミの増加"],
     cause: "冷え、運動不足、高脂質・高塩分の偏食、慢性的なストレス。",

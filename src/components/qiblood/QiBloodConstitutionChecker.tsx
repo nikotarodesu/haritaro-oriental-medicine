@@ -90,7 +90,7 @@ const CONSTITUTIONS: Constitution[] = [
     category: "血",
     color: "#880E4F",
     tagColor: "bg-[#FCE4EC] text-[#880E4F] border-[#F8BBD0] dark:bg-[#880E4F]/20 dark:text-[#F48FB1]",
-    statusTitle: "血行障害・微小循環不全（血のドロドロ・滞留）",
+    statusTitle: "微小循環不全・血液粘稠度亢進（血瘀・滞留）",
     mechanism: "血流の巡りが悪く、毛細血管レベルで滞っている状態。川の底にヘドロが沈殿しているイメージ。刺すような固定痛や黒ずみを引き起こす。",
     questions: [
       { id: "q10", text: "肩こりや腰痛、生理痛など、いつも決まった場所が刺すように痛む" },
