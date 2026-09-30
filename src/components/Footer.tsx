@@ -115,8 +115,8 @@ export default function Footer() {
               <div className="flex items-start gap-2 text-[#737C77] dark:text-[#8899A6]">
                 <ShieldCheck className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
                 <div className="space-y-1 leading-normal">
-                  <p className="text-[11px] sm:text-xs">
-                    当サイトの情報は健康増進と伝統医学の学術的理解を目的としており、医師による診断・治療に代わるものではありません。
+                  <p className="text-[11px] sm:text-xs leading-relaxed">
+                    当サイトで提供する情報は東洋医学の学術的理解および臨床思考補助を目的としており、医師法第17条に定める診断・治療等の医療行為ではありません。急変時や特定の疾病については医師等の専門医療機関を受診してください。
                   </p>
                   <p className="text-[10px] text-[#88928D] dark:text-[#6E7D8A]">
                     ※当サイトはAmazonアソシエイト・プログラムの参加者であり、適格販売により収入を得ています。
@@ -150,6 +150,7 @@ export default function Footer() {
             <Link href="/terms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">利用規約</Link>
             <Link href="/tokushoho" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">特定商取引法に基づく表記</Link>
             <Link href="/privacy" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">プライバシーポリシー</Link>
+            <a href="/llms.txt" target="_blank" rel="noopener noreferrer" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">llms.txt</a>
             <Link href="/contact" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">お問い合わせ</Link>
           </div>
         </div>

@@ -41,6 +41,7 @@ import { SYMPTOMS } from "@/data/symptomData";
 import { getLecturesForAcupoint } from "@/utils/acupointCurriculumMatcher";
 import { getSimulatorParamsForAcupoint } from "@/utils/tsuboSimulatorMatcher";
 import { getSymptomsForAcupoint, getCasesForAcupoint } from "@/utils/tsuboTopicClusterMatcher";
+import { MERIDIAN_RELATIONS } from "@/utils/tsuboRelations";
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -115,6 +116,16 @@ export default async function AcupointDetailPage({ params }: Props) {
   // トピッククラスタ連動（症状ガイド ＆ 臨床症例）
   const relatedSymptoms = getSymptomsForAcupoint(point.codeLower, point.name);
   const relatedCases = getCasesForAcupoint(point.codeLower);
+
+  // 安全・禁忌判定
+  const isNeedleBan = isContraindicatedNeedle(point.codeLower);
+  const isMoxaBan = isContraindicatedMoxa(point.codeLower);
+  const isPregnancyBan = isPregnancyContraindicated(point.codeLower, point.bodyPart);
+  const isPneumoRisk = isChestBackPneumothoraxRisk(point.codeLower, point.bodyPart, point.locationDetail);
+  const hasSafetyWarning = isNeedleBan || isMoxaBan || isPregnancyBan || isPneumoRisk;
+
+  // 表裏経・同名経の相互トピッククラスタ
+  const meridianRelations = MERIDIAN_RELATIONS[point.meridianId] || [];
 
   // FAQ データ作成（Google FAQPage 構造化データ対応）
   const faqs = [
@@ -493,6 +504,42 @@ export default async function AcupointDetailPage({ params }: Props) {
             </div>
           </div>
         </section>
+
+        {/* ⚠️ 安全上の注意（禁忌・気胸リスク・妊婦注意アラート） */}
+        {hasSafetyWarning && (
+          <div className="rounded-2xl border-2 border-amber-500/40 dark:border-amber-500/50 bg-[#FFFBEB] dark:bg-[#251D12] p-4 sm:p-5 shadow-xs space-y-2.5 transition-colors">
+            <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300 font-bold text-xs sm:text-sm">
+              <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
+              <span>安全上の重要警告（臨床運針・セルフケア時の厳守事項）</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-[#523E24] dark:text-[#E6D5B8]">
+              {isNeedleBan && (
+                <div className="p-2.5 rounded-xl bg-red-100/70 dark:bg-red-950/60 border border-red-300 dark:border-red-800 text-red-900 dark:text-red-200">
+                  <strong className="block font-bold">🚫 刺鍼絶対禁忌</strong>
+                  <span>この経穴は深部組織の感染や重篤な炎症リスクがあるため、刺鍼は行いません。</span>
+                </div>
+              )}
+              {isPregnancyBan && (
+                <div className="p-2.5 rounded-xl bg-amber-100/70 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200">
+                  <strong className="block font-bold">⚠️ 妊娠中の強い刺激禁忌</strong>
+                  <span>子宮収縮や陣痛を誘発するリスクがあるため、妊娠中の強刺激・深刺・強圧は避けてください。</span>
+                </div>
+              )}
+              {isPneumoRisk && (
+                <div className="p-2.5 rounded-xl bg-orange-100/70 dark:bg-orange-950/60 border border-orange-300 dark:border-orange-800 text-orange-900 dark:text-orange-200">
+                  <strong className="block font-bold">⚠️ 気胸リスク部位（直刺深刺厳禁）</strong>
+                  <span>胸膜および肺尖・肺実質への誤刺を防ぐため、直刺深刺を厳禁とし、斜刺・横刺または浅刺を遵守してください。</span>
+                </div>
+              )}
+              {isMoxaBan && (
+                <div className="p-2.5 rounded-xl bg-amber-100/70 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200">
+                  <strong className="block font-bold">🔥 直接灸の禁忌・注意</strong>
+                  <span>眼球周囲や大血管走行部であるため、直接灸や火傷の危険を伴う施灸は避けてください。</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* 2. 取穴・位置セクション（一般向け vs WHO標準） */}
         <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
@@ -946,6 +993,60 @@ export default async function AcupointDetailPage({ params }: Props) {
                     <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* 6.8. 表裏経・同名経トピッククラスタ（陰陽ペア・手足同名ペア） */}
+        {meridianRelations.length > 0 && (
+          <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-4 sm:space-y-6 transition-colors">
+            <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
+              <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                <Layers className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
+                <h2>表裏経・同名経の連動ネットワーク（陰陽・手足ペア）</h2>
+              </div>
+              <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
+                配穴・弁証の連動経絡
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {meridianRelations.map((rel, rIdx) => (
+                <div
+                  key={rIdx}
+                  className="p-4 rounded-xl border border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#10171F] space-y-3 shadow-2xs"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
+                      {rel.relationType}：{rel.pairedName}
+                    </span>
+                    <Link
+                      href={`/tsubo?meridian=${encodeURIComponent(rel.pairedShort)}`}
+                      className="text-xs text-[#B86924] dark:text-[#E6C387] font-semibold hover:underline flex items-center gap-1"
+                    >
+                      <span>一覧へ</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  </div>
+                  <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                    {rel.explanation}
+                  </p>
+                  <div className="pt-2 border-t border-[#EAE3D4] dark:border-[#22303D] flex items-center gap-2 flex-wrap">
+                    <span className="text-[11px] font-semibold text-[#737C77] dark:text-[#8899A6]">
+                      代表要穴：
+                    </span>
+                    {rel.keyPoints.map((kp) => (
+                      <Link
+                        key={kp.code}
+                        href={`/tsubo/${kp.code}`}
+                        className="text-xs font-semibold px-2 py-0.5 rounded-md bg-white dark:bg-[#17212A] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#1E3D34] dark:text-[#74BA9E] hover:border-[#1E3D34] transition-all"
+                      >
+                        {kp.name}（{kp.code.toUpperCase()}）
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </section>

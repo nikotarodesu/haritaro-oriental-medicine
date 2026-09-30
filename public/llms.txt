@@ -1,0 +1,43 @@
+# はり太郎の東洋医学 (Haritaro Oriental Medicine)
+
+> 鍼灸師・鍼灸学生・東洋医学学習者のための学習・臨床推論・患者問診メモ統合Webプラットフォーム。陰陽五行・気血津液の基礎理論から、WHO標準361経穴、八綱・臓腑弁証推論、配穴設計、臨床ノート作成までを網羅。
+
+## サイト概要と特徴
+- **名称**: はり太郎（haritaro.jp）
+- **対象**: 鍼灸師、はり師・きゅう師養成校の学生、東洋医学を学ぶ医療従事者、日頃の体質セルフケアに関心のある一般ユーザー
+- **学術的基準**: WHO標準経穴部位（2008年公式規格）、日本現行教科書（新版 経絡経穴概論・東洋医学概論）、黄帝内経（素問・霊枢）、難経、針灸甲乙経、傷寒雑病論等に準拠
+- **URL**: https://www.haritaro.jp
+
+## 体系学習カリキュラム（全81講義）
+東洋医学の基礎から臨床応用までを体系的に学ぶオンライン教材。
+- [体系学習カリキュラム 目次](https://www.haritaro.jp/curriculum): 全8章・81講義の一覧
+- [第1章 基礎理論編](https://www.haritaro.jp/curriculum?lecture=lecture-yinyang-1): 陰陽五行説、気血津液の基礎、人体の動的平衡
+- [第2章 臓腑学説編](https://www.haritaro.jp/curriculum?lecture=lecture-zangfu-1): 五臓六腑の生理機能、蔵象学説、臓腑連動
+- [第3章 経絡経穴編](https://www.haritaro.jp/curriculum?lecture=lecture-meridian-1): 十四経脈の流注、骨度寸法、要穴の配穴理論
+- [第4章 診察法（四診）編](https://www.haritaro.jp/curriculum?lecture=lecture-diagnosis-1): 望診（舌診）、聞診、問診、切診（脈診・腹診）
+- [第5章 病因病機学説編](https://www.haritaro.jp/curriculum?lecture=lecture-pathomechanism-1): 外感病因（六淫）、内傷病因（七情）、病理機序
+- [第6章 弁証論治編](https://www.haritaro.jp/curriculum?lecture=lecture-syndrome-1): 八綱弁証、気血水弁証、臓腑弁証の推論モデル
+- [第7章 治則・治法編](https://www.haritaro.jp/curriculum?lecture=lecture-treatment-1): 本治法・標治法、補瀉、配穴の原則
+- [第8章 臨床実践・ケーススタディ編](https://www.haritaro.jp/curriculum?lecture=lecture-practice-1): 臨床症例の検討と配穴の実際
+
+## 経穴辞典（WHO標準361穴）
+全361経穴の標準取穴部位、解剖断面構造、主治、臨床運針の注意点、禁鍼・禁灸・妊婦禁忌情報を網羅したデータベース。
+- [経穴辞典 トップ](https://www.haritaro.jp/tsubo): 十四経脈別・部位別・要穴別のインデックス
+- [骨度寸法ガイド](https://www.haritaro.jp/tsubo/basics/bone-cun): 正確な取穴に必須の骨度法解説
+- [経穴暗記ドリル](https://www.haritaro.jp/tsubo/practice): 14経脈の流注と要穴の反復習得ツール
+- [経穴比較ツール](https://www.haritaro.jp/tsubo/compare): 2つの経穴の部位・主治・五行属性の並行比較
+
+## 臨床支援・推論ツール群
+- [臨床弁証シミュレーター](https://www.haritaro.jp/simulator): 八綱（表裏・寒熱・虚実・陰陽）×気血水×臓腑の多軸弁証推論と推奨配穴生成
+- [配穴設計ツール](https://www.haritaro.jp/practice/haiketsu): 本治穴（体質改善）と標治穴（症状緩和）の論理的バランス設計
+- [気血水体質セルフ診断](https://www.haritaro.jp/diagnosis): 12問による気虚・気滞・血虚・瘀血・水滞・陽虚の傾向判定と養生法
+- [気血水 対面問診モード](https://www.haritaro.jp/diagnosis?tab=clinical): 臨床家が患者の訴えを聞き取り、所見を整理する対面ツール
+- [五労チェッカー](https://www.haritaro.jp/diagnosis?tab=gorou): 久視・久臥・久坐・久立・久行による五臓負荷判定
+- [臨床ノート・カルテメモ](https://www.haritaro.jp/notes): 所見・弁証・配穴・施術後反応を記録し、患者向けA4養生シートをワンクリック印刷
+
+## 国試対策・演習
+- [国試演習ハブ](https://www.haritaro.jp/kokushi): はり師・きゅう師国家試験の精選過去問・要点演習
+
+## 安全性・法的免責事項
+- 刺鍼・施灸の禁忌（神闕・乳中の禁鍼、眼周囲の禁灸等）および妊娠中の刺激禁忌（合谷・三陰交・肩井等）、気胸リスク部位（缺盆・肩井・背部兪穴等）の安全警告を各経穴に明記。
+- 本プラットフォームの情報は、医師法第17条およびあん摩マツサージ指圧師、はり師、きゆう師等に関する法律に準拠した教育・学習および臨床思考補助を目的としており、医師の診断や医療行為を代替するものではありません。

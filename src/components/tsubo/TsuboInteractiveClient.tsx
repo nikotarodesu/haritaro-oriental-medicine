@@ -368,6 +368,30 @@ export default function TsuboInteractiveClient() {
             <span>{showBodyMap ? "人体図・詳細条件を閉じる ▲" : "人体図・部位から探す ▼"}</span>
           </button>
         </div>
+
+        {/* 常時アクセス可能な要穴クイックピルフィルター */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-1.5 text-xs no-scrollbar">
+          <span className="text-[11px] font-bold text-[#737C77] dark:text-[#8899A6] shrink-0">
+            要穴絞り込み:
+          </span>
+          {["すべて", "原穴", "郄穴", "絡穴", "募穴", "背部兪穴", "四総穴", "八会穴"].map((cat) => {
+            const isSelected = selectedCategory === cat;
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-2.5 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                  isSelected
+                    ? "bg-[#B86924] text-white shadow-2xs dark:bg-[#9C5417]"
+                    : "bg-white/80 dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#A0B0BC] hover:border-[#B86924] hover:text-[#B86924]"
+                }`}
+              >
+                {cat}
+              </button>
+            );
+          })}
+        </div>
       </section>
 
       {/* 「2穴比較／今日の復習／奇経八脈」コンパクトナビゲーション */}
