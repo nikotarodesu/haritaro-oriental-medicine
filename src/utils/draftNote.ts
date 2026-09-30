@@ -4,7 +4,7 @@
  */
 
 export interface DraftPatientNote {
-  sourceTool: "気血水体質チェック" | "五労チェッカー" | "臨床弁証シミュレーター" | "配穴設計";
+  sourceTool: "気血水体質チェック" | "五労チェッカー" | "臨床弁証シミュレーター" | "配穴設計" | "カリキュラム講義";
   patientIdentifier?: string;
   constitution?: string;
   syndrome?: string;

@@ -27,6 +27,8 @@ import {
   MessageSquare,
   ShieldCheck,
   UserCheck,
+  Share2,
+  Copy,
 } from "lucide-react";
 import GorouWorkstyleChecker from "@/components/GorouWorkstyleChecker";
 import { saveDraftPatientNote } from "@/utils/draftNote";
@@ -98,6 +100,7 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
   // セルフチェック用State
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const [selfResult, setSelfResult] = useState<DiagnosisResultType | null>(null);
+  const [copiedShare, setCopiedShare] = useState(false);
 
   // 対面問診モード用State
   const [patientIdentifier, setPatientIdentifier] = useState("");
@@ -192,6 +195,17 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
     setSelectedAnswers([]);
     setSelfResult(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleShareCopy = () => {
+    if (!selfResult) return;
+    const shareText = `【気血水 体質セルフ診断】私の診断結果は「${selfResult.name}」でした！ 東洋医学の視点で気・血・水のバランスとおすすめ養生法をチェック。\nhttps://www.haritaro.jp/diagnosis\n#ハリタロー #東洋医学 #体質診断`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareText);
+      setCopiedShare(true);
+      setTimeout(() => setCopiedShare(false), 2500);
+      trackEvent("share", { method: "clipboard", content_type: "diagnosis_result" });
+    }
   };
 
   // --- 対面問診ハンドラー ---
@@ -662,6 +676,73 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
                     <span>この内容を臨床ノートに残す</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
+                </div>
+
+                {/* SNSシェア・結果共有 */}
+                <div className="p-4 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E8E1D1] dark:border-[#2A3B4A] shadow-xs space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+                      <Share2 className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                      診断結果をシェア・保存する
+                    </span>
+                    <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                      体質の記録や養生法の共有に
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {/* X (旧Twitter) シェア */}
+                    <a
+                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                        `【気血水 体質セルフ診断】私の診断結果は「${selfResult.name}」でした！ 東洋医学の視点で気・血・水のバランスとおすすめ養生法をチェック。\nhttps://www.haritaro.jp/diagnosis\n#ハリタロー #東洋医学 #体質診断`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => trackEvent("share", { method: "twitter", content_type: "diagnosis_result" })}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-black hover:bg-neutral-800 text-white text-xs font-semibold transition-all shadow-2xs"
+                    >
+                      <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 24.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                      </svg>
+                      <span>Xでシェア</span>
+                    </a>
+
+                    {/* LINE シェア */}
+                    <a
+                      href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
+                        "https://www.haritaro.jp/diagnosis"
+                      )}&text=${encodeURIComponent(
+                        `【気血水 体質セルフ診断】私の診断結果は「${selfResult.name}」でした！ 東洋医学の視点で気・血・水のバランスとおすすめ養生法をチェックできます。`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => trackEvent("share", { method: "line", content_type: "diagnosis_result" })}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#06C755] hover:bg-[#05b34c] text-white text-xs font-semibold transition-all shadow-2xs"
+                    >
+                      <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2C6.48 2 2 5.96 2 10.84c0 3.09 1.79 5.81 4.54 7.37-.2.74-.72 2.7-.82 3.12-.13.52.19.51.4.38.16-.1 2.58-1.74 3.63-2.45.73.11 1.48.18 2.25.18 5.52 0 10-3.96 10-8.84S17.52 2 12 2z" />
+                      </svg>
+                      <span>LINEで送る</span>
+                    </a>
+
+                    {/* URL・結果コピー */}
+                    <button
+                      type="button"
+                      onClick={handleShareCopy}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#FAF8F5] dark:bg-[#121920] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#333D38] dark:text-[#E2ECF2] hover:bg-[#F2EDE4] dark:hover:bg-[#1A2530] text-xs font-semibold transition-all shadow-2xs cursor-pointer"
+                    >
+                      {copiedShare ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                          <span className="text-emerald-600 dark:text-emerald-400">コピーしました！</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5 text-[#59615D] dark:text-[#A0B0BC]" />
+                          <span>結果テキストをコピー</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
 

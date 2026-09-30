@@ -30,7 +30,9 @@ export type AnalyticsEventName =
   | "simulator_diagnose"
   | "quiz_answer"
   | "quiz_complete"
-  | "diagnosis_complete";
+  | "diagnosis_complete"
+  | "share"
+  | "curriculum_save_to_note";
 
 export interface AnalyticsEventParams {
   entry_source?: "home_learning" | "home_clinical" | "nav" | "footer";

@@ -32,9 +32,9 @@ export const SUBSCRIPTION_CONFIG = {
 
   // 保存上限設定（無料会員 / プレミアム会員）
   limits: {
-    freeMemoMax: 20, // 無料会員のツボ・配穴保存上限（20件）
+    freeMemoMax: 30, // 無料会員のツボ・配穴保存上限（30件に拡張）
     premiumMemoMax: 1000, // プレミアム会員のツボ・配穴保存上限（1,000件）
-    freePatientNoteMax: 3, // 無料会員の臨床ノート（症例）上限（3件）
+    freePatientNoteMax: 10, // 無料会員の臨床ノート（症例）上限（10件に拡張）
     premiumPatientNoteMax: 500, // プレミアム会員の臨床ノート（症例）上限（500件）
     freeTrialCaseCount: 3, // 無料で体験可能な症例演習数（初期仕様: 3例）
   },
@@ -66,7 +66,7 @@ export const SUBSCRIPTION_CONFIG = {
       id: "clinical_memos",
       title: "臨床ノート・配穴の保存",
       description: "日々の臨床ノートや自作の配穴をブラウザ内に保存・管理。振り返りや学習の蓄積に活用できます。",
-      free: "ノート3件／配穴20件",
+      free: "ノート10件／配穴30件",
       premium: "ノート500件／配穴1,000件",
     },
     {

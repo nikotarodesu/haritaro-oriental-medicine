@@ -21,8 +21,11 @@ import {
   Layers, 
   Check,
   X,
-  BookOpen
+  BookOpen,
+  FileText,
 } from "lucide-react";
+import { saveDraftPatientNote } from "@/utils/draftNote";
+import { trackEvent } from "@/utils/analytics";
 
 interface Props {
   lecture: Lecture;
@@ -40,6 +43,18 @@ export default function CurriculumLectureReader({ lecture }: Props) {
   } = useCurriculumProgress();
 
   const allLectures = CURRICULUM_DATA.flatMap((s) => s.lectures);
+
+  const handleSaveToNote = () => {
+    trackEvent("curriculum_save_to_note", { lecture_id: lecture.id });
+    const sectionName = lecture.seriesTitle || lecture.stageTitle;
+    saveDraftPatientNote({
+      sourceTool: "カリキュラム講義",
+      chiefComplaint: `講義記録: ${lecture.title}`,
+      constitution: sectionName,
+      treatmentPlan: `【受講講義】${lecture.title}（${sectionName}）\n\n【講義要約】\n${lecture.summary}\n\n【臨床への応用メモ・臨床所見】\n`,
+    });
+    router.push("/notes");
+  };
 
   // 閲覧履歴を記録
   useEffect(() => {
@@ -359,6 +374,16 @@ export default function CurriculumLectureReader({ lecture }: Props) {
               <span>配穴設計ツール</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
+
+            <button
+              type="button"
+              onClick={handleSaveToNote}
+              className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#1E3D34]/40 dark:border-[#74BA9E]/40 hover:border-[#1E3D34] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs cursor-pointer"
+            >
+              <FileText className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
+              <span>この講義を臨床ノートに記録</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
           </div>
         </div>
 

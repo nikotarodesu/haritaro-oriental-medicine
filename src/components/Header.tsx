@@ -21,9 +21,12 @@ import {
   Search, 
   Award, 
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import YinYangSwitch from "./YinYangSwitch";
 import FontSizeControl from "./FontSizeControl";
-import GlobalSearchModal from "./search/GlobalSearchModal";
+const GlobalSearchModal = dynamic(() => import("./search/GlobalSearchModal"), {
+  ssr: false,
+});
 import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -871,11 +874,13 @@ export default function Header() {
         </div>
       )}
 
-      {/* サイト全体横断検索モーダル（Cmd+K / Ctrl+K） */}
-      <GlobalSearchModal
-        isOpen={isSearchOpen}
-        onClose={() => setIsSearchOpen(false)}
-      />
+      {/* サイト全体横断検索モーダル（Cmd+K / Ctrl+K - 検索起動時のみ動的ロード） */}
+      {isSearchOpen && (
+        <GlobalSearchModal
+          isOpen={isSearchOpen}
+          onClose={() => setIsSearchOpen(false)}
+        />
+      )}
     </header>
   );
 }

@@ -122,7 +122,7 @@ export default function PricingPage() {
         </div>
 
         <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
-          ※無料で臨床ノート3件・配穴20件まで保存可能。会員登録不要ですぐにお試しいただけます。
+          ※無料で臨床ノート10件・配穴30件まで保存可能。会員登録不要ですぐにお試しいただけます。
         </p>
       </div>
 
@@ -389,7 +389,7 @@ export default function PricingPage() {
                 <ul className="text-sm space-y-3 text-[#59615D] dark:text-[#96A6B2]">
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
-                    <span>臨床ノート3件・配穴20件まで保存</span>
+                    <span>臨床ノート10件・配穴30件まで保存</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
@@ -634,7 +634,7 @@ export default function PricingPage() {
                 マイノートの保存枠
               </h3>
               <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-                無料版はノート3件・配穴20件。プレミアムなら<strong className="text-[#1E3D34] dark:text-[#74BA9E]">ノート500件・配穴1,000件</strong>まで拡張され、日々の臨床を継続して蓄積できます。
+                無料版はノート10件・配穴30件。プレミアムなら<strong className="text-[#1E3D34] dark:text-[#74BA9E]">ノート500件・配穴1,000件</strong>まで拡張され、日々の臨床を継続して蓄積できます。
               </p>
             </div>
             <div className="pt-2 border-t border-[#E8E1D1] dark:border-[#22303D] text-[11px] text-[#737C77] dark:text-[#8899A6]">
@@ -717,7 +717,7 @@ export default function PricingPage() {
                   臨床ノートの保存件数
                 </td>
                 <td className="p-4 text-center text-[#59615D] dark:text-[#96A6B2]">
-                  3件
+                  10件
                 </td>
                 <td className="p-4 text-center font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF]/30 dark:bg-[#182823]/30">
                   500件
@@ -728,7 +728,7 @@ export default function PricingPage() {
                   配穴の保存件数
                 </td>
                 <td className="p-4 text-center text-[#59615D] dark:text-[#96A6B2]">
-                  20件
+                  30件
                 </td>
                 <td className="p-4 text-center font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF]/30 dark:bg-[#182823]/30">
                   1,000件
@@ -785,8 +785,8 @@ export default function PricingPage() {
         {/* スマホ向けカード型2段表示 */}
         <div className="md:hidden space-y-3">
           {[
-            { title: "臨床ノートの保存件数", free: "3件", premium: "500件" },
-            { title: "配穴の保存件数", free: "20件", premium: "1,000件" },
+            { title: "臨床ノートの保存件数", free: "10件", premium: "500件" },
+            { title: "配穴の保存件数", free: "30件", premium: "1,000件" },
             { title: "養生シートの印刷", free: "無料枠内のノートで印刷可能", premium: "保存した全ノートで印刷可能" },
             { title: "バックアップ・復元", free: "無料枠内でファイル保存・読込可能", premium: "全データでファイル保存・読込可能" },
             { title: "臨床症例演習", free: "3症例", premium: "全20症例" },
@@ -848,7 +848,7 @@ export default function PricingPage() {
               <ChevronDown className="w-4 h-4 text-[#737C77] transition-transform group-open:rotate-180 shrink-0 ml-2" />
             </summary>
             <p className="mt-3 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed border-t border-[#E8E1D1] dark:border-[#22303D] pt-3">
-              主な違いは保存できる件数です。無料版では臨床ノート3件・配穴20件までですが、プレミアムでは臨床ノート500件・配穴1,000件まで保存枠が広がります。養生シートの印刷やクラウド自動同期、バックアップ機能は無料枠内でもお試しいただけます。
+              主な違いは保存できる件数です。無料版では臨床ノート10件・配穴30件までですが、プレミアムでは臨床ノート500件・配穴1,000件まで保存枠が広がります。養生シートの印刷やクラウド自動同期、バックアップ機能は無料枠内でもお試しいただけます。
             </p>
           </details>
 
@@ -881,7 +881,7 @@ export default function PricingPage() {
               <ChevronDown className="w-4 h-4 text-[#737C77] transition-transform group-open:rotate-180 shrink-0 ml-2" />
             </summary>
             <p className="mt-3 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed border-t border-[#E8E1D1] dark:border-[#22303D] pt-3">
-              解約後も、これまでに保存された既存のノートや配穴はそのまま閲覧・印刷できます。ただし、無料枠の上限（ノート3件・配穴20件）を超えている場合は新しいノートの追加保存ができなくなります。必要に応じて解約前にバックアップファイルを保存してください。
+              解約後も、これまでに保存された既存のノートや配穴はそのまま閲覧・印刷できます。ただし、無料枠の上限（ノート10件・配穴30件）を超えている場合は新しいノートの追加保存ができなくなります。必要に応じて解約前にバックアップファイルを保存してください。
             </p>
           </details>
 

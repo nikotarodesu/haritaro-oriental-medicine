@@ -175,83 +175,83 @@ export default function HomePage() {
                 よく使う機能へ直接アクセス
               </span>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+            <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-2.5">
               <Link
                 href="/tsubo"
-                className="p-2.5 rounded-xl bg-white/80 dark:bg-[#17212A]/80 border border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] flex flex-col items-center gap-1.5 text-center transition-all group"
+                className="p-2 sm:p-2.5 rounded-xl bg-white/80 dark:bg-[#17212A]/80 border border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] flex flex-col items-center gap-1 sm:gap-1.5 text-center transition-all group"
               >
-                <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center">
-                  <MapPin className="w-4 h-4" />
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0">
+                  <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
-                <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
+                <span className="text-[11px] sm:text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] truncate max-w-full">
                   経穴辞典
                 </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">全361穴・解剖</span>
+                <span className="hidden sm:block text-[10px] text-[#737C77] dark:text-[#8899A6]">全361穴・解剖</span>
               </Link>
 
               <Link
                 href="/simulator"
-                className="p-2.5 rounded-xl bg-white/80 dark:bg-[#17212A]/80 border border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] flex flex-col items-center gap-1.5 text-center transition-all group"
+                className="p-2 sm:p-2.5 rounded-xl bg-white/80 dark:bg-[#17212A]/80 border border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] flex flex-col items-center gap-1 sm:gap-1.5 text-center transition-all group"
               >
-                <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center">
-                  <Layers className="w-4 h-4" />
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0">
+                  <Layers className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
-                <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
+                <span className="text-[11px] sm:text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] truncate max-w-full">
                   弁証推論
                 </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">主証＋兼証推論</span>
+                <span className="hidden sm:block text-[10px] text-[#737C77] dark:text-[#8899A6]">主証＋兼証推論</span>
               </Link>
 
               <Link
                 href="/practice/haiketsu"
-                className="p-2.5 rounded-xl bg-white/80 dark:bg-[#17212A]/80 border border-[#E8E1D1] dark:border-[#263542] hover:border-[#B86924] dark:hover:border-[#E6C387] flex flex-col items-center gap-1.5 text-center transition-all group"
+                className="p-2 sm:p-2.5 rounded-xl bg-white/80 dark:bg-[#17212A]/80 border border-[#E8E1D1] dark:border-[#263542] hover:border-[#B86924] dark:hover:border-[#E6C387] flex flex-col items-center gap-1 sm:gap-1.5 text-center transition-all group"
               >
-                <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center">
-                  <SlidersHorizontal className="w-4 h-4" />
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0">
+                  <SlidersHorizontal className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
-                <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387]">
+                <span className="text-[11px] sm:text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] truncate max-w-full">
                   配穴設計
                 </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">本治・標治バランス</span>
+                <span className="hidden sm:block text-[10px] text-[#737C77] dark:text-[#8899A6]">本治・標治</span>
               </Link>
 
               <Link
                 href="/kokushi"
-                className="p-2.5 rounded-xl bg-white/80 dark:bg-[#17212A]/80 border border-[#E8E1D1] dark:border-[#263542] hover:border-[#B86924] dark:hover:border-[#E6C387] flex flex-col items-center gap-1.5 text-center transition-all group"
+                className="p-2 sm:p-2.5 rounded-xl bg-white/80 dark:bg-[#17212A]/80 border border-[#E8E1D1] dark:border-[#263542] hover:border-[#B86924] dark:hover:border-[#E6C387] flex flex-col items-center gap-1 sm:gap-1.5 text-center transition-all group"
               >
-                <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center">
-                  <Award className="w-4 h-4" />
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0">
+                  <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
-                <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387]">
+                <span className="text-[11px] sm:text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] truncate max-w-full">
                   国試演習
                 </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">過去問・特訓ドリル</span>
+                <span className="hidden sm:block text-[10px] text-[#737C77] dark:text-[#8899A6]">過去問・演習</span>
               </Link>
 
               <Link
                 href="/tsubo/practice"
-                className="p-2.5 rounded-xl bg-white/80 dark:bg-[#17212A]/80 border border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] flex flex-col items-center gap-1.5 text-center transition-all group"
+                className="p-2 sm:p-2.5 rounded-xl bg-white/80 dark:bg-[#17212A]/80 border border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] flex flex-col items-center gap-1 sm:gap-1.5 text-center transition-all group"
               >
-                <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#1C332A] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center">
-                  <Compass className="w-4 h-4" />
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#1C332A] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0">
+                  <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
-                <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
+                <span className="text-[11px] sm:text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] truncate max-w-full">
                   経穴ドリル
                 </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">14経脈反復暗記</span>
+                <span className="hidden sm:block text-[10px] text-[#737C77] dark:text-[#8899A6]">14経脈特訓</span>
               </Link>
 
               <Link
                 href="/notes"
-                className="p-2.5 rounded-xl bg-white/80 dark:bg-[#17212A]/80 border border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] flex flex-col items-center gap-1.5 text-center transition-all group"
+                className="p-2 sm:p-2.5 rounded-xl bg-white/80 dark:bg-[#17212A]/80 border border-[#E8E1D1] dark:border-[#263542] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] flex flex-col items-center gap-1 sm:gap-1.5 text-center transition-all group"
               >
-                <div className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center">
-                  <FileText className="w-4 h-4" />
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0">
+                  <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
-                <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
+                <span className="text-[11px] sm:text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] truncate max-w-full">
                   マイノート
                 </span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">臨床ノート・配穴</span>
+                <span className="hidden sm:block text-[10px] text-[#737C77] dark:text-[#8899A6]">臨床・配穴</span>
               </Link>
             </div>
           </div>

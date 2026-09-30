@@ -22,6 +22,11 @@ const nextConfig: NextConfig = {
         destination: "/notes",
         permanent: true,
       },
+      {
+        source: "/review",
+        destination: "/kokushi",
+        permanent: true,
+      },
     ];
   },
 };
