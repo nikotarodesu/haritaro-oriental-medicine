@@ -395,14 +395,14 @@ export default function HomePage() {
               <span className="text-xs text-[#737C77] dark:text-[#8899A6]">改訂履歴</span>
             </div>
 
-            <div className="space-y-2.5">
+            <div className="space-y-1">
               <Link
                 href="/clinical"
-                className="block p-3 rounded-xl bg-white dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group"
+                className="block p-3 rounded-xl hover:bg-white/90 dark:hover:bg-[#121920]/80 transition-all group"
               >
                 <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-1">
                   <span className="font-mono">2026.09.29</span>
-                  <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
                     臨床LP
                   </span>
                 </div>
@@ -413,11 +413,11 @@ export default function HomePage() {
 
               <Link
                 href="/learn"
-                className="block p-3 rounded-xl bg-white dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group"
+                className="block p-3 rounded-xl hover:bg-white/90 dark:hover:bg-[#121920]/80 transition-all group"
               >
                 <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-1">
                   <span className="font-mono">2026.09.29</span>
-                  <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-[#EAEFF5] dark:bg-[#152331] text-[#1E2D3D] dark:text-[#7BAAD8]">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EAEFF5] dark:bg-[#152331] text-[#1E2D3D] dark:text-[#7BAAD8]">
                     学び案内
                   </span>
                 </div>
@@ -428,11 +428,11 @@ export default function HomePage() {
 
               <Link
                 href="/tsubo"
-                className="block p-3 rounded-xl bg-white dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group"
+                className="block p-3 rounded-xl hover:bg-white/90 dark:hover:bg-[#121920]/80 transition-all group"
               >
                 <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-1">
                   <span className="font-mono">2026.09.28</span>
-                  <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-[#FCF4EB] dark:bg-[#2A1D12] text-[#B86924] dark:text-[#E6C387]">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A1D12] text-[#B86924] dark:text-[#E6C387]">
                     経穴断面図
                   </span>
                 </div>
@@ -468,13 +468,13 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="space-y-2.5">
+            <div className="space-y-1">
               <Link
                 href="/articles/science-of-yinyang-gogyo"
-                className="block p-3 rounded-xl bg-white dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group"
+                className="block p-3 rounded-xl hover:bg-white/90 dark:hover:bg-[#121920]/80 transition-all group"
               >
                 <div className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6] mb-1">
-                  <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
                     古典深読み
                   </span>
                   <span>読了目安 約22分</span>
@@ -486,10 +486,10 @@ export default function HomePage() {
 
               <Link
                 href="/articles/science-of-qi-blood-fluid"
-                className="block p-3 rounded-xl bg-white dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group"
+                className="block p-3 rounded-xl hover:bg-white/90 dark:hover:bg-[#121920]/80 transition-all group"
               >
                 <div className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6] mb-1">
-                  <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-[#FCF4EB] dark:bg-[#2A1D12] text-[#B86924] dark:text-[#E6C387]">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A1D12] text-[#B86924] dark:text-[#E6C387]">
                     基礎理論
                   </span>
                   <span>読了目安 約18分</span>
@@ -501,10 +501,10 @@ export default function HomePage() {
 
               <Link
                 href="/library"
-                className="block p-3 rounded-xl bg-white dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group"
+                className="block p-3 rounded-xl hover:bg-white/90 dark:hover:bg-[#121920]/80 transition-all group"
               >
                 <div className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6] mb-1">
-                  <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-[#EAEFF5] dark:bg-[#152331] text-[#1E2D3D] dark:text-[#7BAAD8]">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EAEFF5] dark:bg-[#152331] text-[#1E2D3D] dark:text-[#7BAAD8]">
                     文献アーカイブ
                   </span>
                   <span>古典・論文</span>

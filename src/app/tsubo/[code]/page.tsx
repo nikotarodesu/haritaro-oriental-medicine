@@ -390,44 +390,19 @@ export default async function AcupointDetailPage({ params }: Props) {
               )}
             </div>
 
-            {/* アクションボタン群（保存・比較・学習） */}
+            {/* アクションボタン群（主アクション：配穴追加・クリップ保存、副アクション：推論・比較・復習） */}
             <div className="flex items-center gap-2 self-start flex-wrap">
-              <Link
-                href={`/tsubo/compare?a=${point.codeLower}`}
-                className="px-3 py-2 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] bg-[#FAF8F5] dark:bg-[#10171F] text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5"
-                title="この経穴を2穴比較ツールで開く"
-              >
-                <GitCompare className="w-4 h-4" />
-                <span>2穴比較</span>
-              </Link>
-
+              {/* 主アクション：配穴処方に追加 */}
               <Link
                 href={`/practice/haiketsu?add=${encodeURIComponent(point.name)}`}
-                className="px-3 py-2 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] bg-[#EBF3EF] dark:bg-[#182823] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs"
+                className="px-3.5 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] text-xs font-bold transition-all inline-flex items-center gap-1.5 shadow-2xs cursor-pointer"
                 title="この経穴を配穴設計の処方に組み込む"
               >
-                <SlidersHorizontal className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>配穴処方に追加</span>
+                <SlidersHorizontal className="w-4 h-4 text-[#E6C387]" />
+                <span>配穴に追加</span>
               </Link>
 
-              <Link
-                href={`/simulator?fromTsubo=${point.code}&tsuboName=${encodeURIComponent(point.name)}&depth=${simLink.depth}&temp=${simLink.temp}&state=${simLink.state}&qixueshui=${simLink.qixueshui}&zangfu=${simLink.zangfu}&targetRole=${encodeURIComponent(simLink.targetRole)}`}
-                className="px-3 py-2 rounded-xl border border-[#C5DED4] dark:border-[#2A5243] hover:border-[#1E3D34] bg-[#FAF8F5] dark:bg-[#121920] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs"
-                title={`「${point.name}」が主穴となる証（${simLink.syndromeName}）を弁証シミュレーターで検証`}
-              >
-                <Layers className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>弁証推論で開く</span>
-              </Link>
-
-              <Link
-                href={`/tsubo/practice?course=meridian_${point.meridianId.toLowerCase()}`}
-                className="px-3 py-2 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#B86924] bg-[#FAF8F5] dark:bg-[#10171F] text-xs font-semibold text-[#B86924] dark:text-[#E6C387] transition-all inline-flex items-center gap-1.5"
-                title="この経脈をクイズで学習"
-              >
-                <BookOpen className="w-4 h-4" />
-                <span>復習・テスト</span>
-              </Link>
-
+              {/* 主アクション：マイノート保存 */}
               <ClipButton
                 item={{
                   id: `tsubo-${point.id}`,
@@ -443,6 +418,36 @@ export default async function AcupointDetailPage({ params }: Props) {
                 variant="button"
                 size="md"
               />
+
+              {/* 副アクション群：推論・比較・テスト（スッキリ整理） */}
+              <div className="flex items-center gap-1.5 bg-[#FAF8F5] dark:bg-[#121920] p-1 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
+                <Link
+                  href={`/simulator?fromTsubo=${point.code}&tsuboName=${encodeURIComponent(point.name)}&depth=${simLink.depth}&temp=${simLink.temp}&state=${simLink.state}&qixueshui=${simLink.qixueshui}&zangfu=${simLink.zangfu}&targetRole=${encodeURIComponent(simLink.targetRole)}`}
+                  className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] transition-colors inline-flex items-center gap-1"
+                  title={`「${point.name}」が主穴となる証（${simLink.syndromeName}）を弁証シミュレーターで検証`}
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>弁証推論</span>
+                </Link>
+
+                <Link
+                  href={`/tsubo/compare?a=${point.codeLower}`}
+                  className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-[#59615D] dark:text-[#A0B0BC] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] hover:bg-white dark:hover:bg-[#1A2530] transition-colors inline-flex items-center gap-1"
+                  title="この経穴を2穴比較ツールで開く"
+                >
+                  <GitCompare className="w-3.5 h-3.5" />
+                  <span>比較</span>
+                </Link>
+
+                <Link
+                  href={`/tsubo/practice?course=meridian_${point.meridianId.toLowerCase()}`}
+                  className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2016] transition-colors inline-flex items-center gap-1"
+                  title="この経脈をクイズで学習"
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>復習</span>
+                </Link>
+              </div>
             </div>
           </div>
 

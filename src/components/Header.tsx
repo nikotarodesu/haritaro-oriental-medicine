@@ -478,20 +478,8 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* デスクトップ右側：国試ボタン ＆ 検索ボタン ＆ 会員マイページ ＆ 表示設定 */}
+          {/* デスクトップ右側：検索ボタン ＆ 会員マイページ ＆ 表示設定 */}
           <div className="hidden lg:flex items-center gap-2">
-            {/* 国試対策クイック直行ボタン */}
-            <Link
-              href="/kokushi"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#F3DEC5] dark:border-[#4D331F] text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBEAD4] transition-all text-xs font-bold shadow-2xs"
-            >
-              <Award className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-              <span>国試対策</span>
-              <span className="text-[9px] px-1 rounded bg-[#B86924] text-white font-mono">
-                特設
-              </span>
-            </Link>
-
             {/* サイト全体横断検索（Cmd+K） */}
             <button
               type="button"

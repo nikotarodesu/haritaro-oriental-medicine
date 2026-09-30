@@ -116,11 +116,9 @@
     font-family: var(--font-noto-serif), "Hiragino Mincho ProN", "Yu Mincho", serif;
   }
 
-  /* 和紙風の微細なテクスチャ（陽） */
+  /* 和紙トーンの背景（文字の輪郭干渉・チラつき防止のためドット斑点を引き算） */
   .washi-pattern {
     background-color: var(--bg-washi);
-    background-image: radial-gradient(var(--border-subtle) 0.75px, transparent 0.75px);
-    background-size: 24px 24px;
   }
 
   /* 墨のアクセント */
