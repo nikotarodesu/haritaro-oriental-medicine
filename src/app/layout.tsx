@@ -14,6 +14,7 @@ import MobileBottomNav from "@/components/navigation/MobileBottomNav";
 import ClinicalDrawerTrigger from "@/components/ClinicalDrawerTrigger";
 import PwaRegister from "@/components/pwa/PwaRegister";
 import PwaInstallPrompt from "@/components/pwa/PwaInstallPrompt";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const notoSerifJP = Noto_Serif_JP({
   variable: "--font-noto-serif",
@@ -74,20 +75,8 @@ export default function RootLayout({
   return (
     <html lang="ja" suppressHydrationWarning className={`${notoSerifJP.variable} ${notoSansJP.variable} h-full antialiased`}>
       <head>
-        {/* Google Analytics 4 (gtag.js) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GC398NZKVE" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-GC398NZKVE', {
-                page_path: window.location.pathname,
-              });
-            `,
-          }}
-        />
+        {/* Google Analytics 4 (gtag.js - 環境変数 NEXT_PUBLIC_GA_ID 対応) */}
+        <GoogleAnalytics />
         {/* Microsoft Clarity */}
         <script
           dangerouslySetInnerHTML={{

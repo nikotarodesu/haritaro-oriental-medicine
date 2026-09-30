@@ -492,6 +492,32 @@ export default function MyNotesPage() {
         </div>
       </div>
 
+      {/* 未ログイン時のクラウド自動同期・アカウント登録案内バナー */}
+      {!isAuthenticated && (
+        <div className="p-4 rounded-2xl bg-gradient-to-r from-[#FAF8F5] via-[#EBF3EF]/60 to-[#FAF8F5] dark:from-[#17212A] dark:via-[#162A24]/60 dark:to-[#17212A] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs">
+          <div className="flex items-start sm:items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-white dark:bg-[#10171F] text-[#1E3D34] dark:text-[#74BA9E] shrink-0 border border-[#D5E6DE] dark:border-[#223E34]">
+              <Cloud className="w-4 h-4" />
+            </div>
+            <div>
+              <p className="font-bold text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm">
+                現在ブラウザローカル保存中（無料会員登録でPC・スマホ間の自動同期に対応）
+              </p>
+              <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
+                無料アカウントを作成すると、記録した臨床ノートや配穴集が暗号化クラウドに安全同期され、端末変更時も安心です。
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/auth/login"
+            className="shrink-0 px-4 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] font-bold text-xs shadow-xs transition-colors flex items-center justify-center gap-1.5"
+          >
+            <span>無料でアカウント登録・ログイン</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+      )}
+
       {/* データ保護・定期バックアップ案内バナー（3件以上で表示） */}
       {patientNoteCount >= 3 && (
         <div className="p-3.5 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#1E3D34] dark:text-[#83BEA8]">

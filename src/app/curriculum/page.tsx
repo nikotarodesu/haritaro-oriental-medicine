@@ -96,8 +96,83 @@ export default async function CurriculumPage({ searchParams }: Props) {
       notFound();
     }
 
-    return <CurriculumLectureReader lecture={lecture} />;
+    const lectureJsonLd = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": ["WebPage", "LearningResource"],
+          "@id": `https://www.haritaro.jp/curriculum?lecture=${lecture.id}#webpage`,
+          url: `https://www.haritaro.jp/curriculum?lecture=${lecture.id}`,
+          name: `${lecture.title} | はり太郎の東洋医学`,
+          description: lecture.summary || `${lecture.title}の解説講義。東洋医学の基礎から実践まで体系的に学びます。`,
+          learningResourceType: "Lesson",
+          educationalLevel: "Professional / Academic",
+          inLanguage: "ja",
+          provider: {
+            "@type": "Organization",
+            name: "はり太郎",
+            url: "https://www.haritaro.jp",
+          },
+        },
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "ホーム",
+              item: "https://www.haritaro.jp",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "カリキュラム",
+              item: "https://www.haritaro.jp/curriculum",
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: lecture.title,
+              item: `https://www.haritaro.jp/curriculum?lecture=${lecture.id}`,
+            },
+          ],
+        },
+      ],
+    };
+
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(lectureJsonLd) }}
+        />
+        <CurriculumLectureReader lecture={lecture} />
+      </>
+    );
   }
 
-  return <CurriculumIndexClient />;
+  const indexJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: "東洋医学体系学習カリキュラム全81講",
+    description: "陰陽・五行・気血水から診断・治療・臨床実践まで全81レッスン。丸暗記ではなく、身体のバランスやつながりを理解する基礎を身につけます。",
+    url: "https://www.haritaro.jp/curriculum",
+    provider: {
+      "@type": "Organization",
+      name: "はり太郎",
+      url: "https://www.haritaro.jp",
+    },
+    educationalLevel: "Beginner to Advanced",
+    inLanguage: "ja",
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(indexJsonLd) }}
+      />
+      <CurriculumIndexClient />
+    </>
+  );
 }
