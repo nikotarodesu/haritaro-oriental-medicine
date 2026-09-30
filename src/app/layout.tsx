@@ -15,6 +15,7 @@ import ClinicalDrawerTrigger from "@/components/ClinicalDrawerTrigger";
 import PwaRegister from "@/components/pwa/PwaRegister";
 import PwaInstallPrompt from "@/components/pwa/PwaInstallPrompt";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import Script from "next/script";
 
 const notoSerifJP = Noto_Serif_JP({
   variable: "--font-noto-serif",
@@ -77,8 +78,10 @@ export default function RootLayout({
       <head>
         {/* Google Analytics 4 (gtag.js - 環境変数 NEXT_PUBLIC_GA_ID 対応) */}
         <GoogleAnalytics />
-        {/* Microsoft Clarity */}
-        <script
+        {/* Microsoft Clarity (lazyOnload で初回レンダリングへの影響を完全に排除) */}
+        <Script
+          id="microsoft-clarity"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               (function(c,l,a,r,i,t,y){

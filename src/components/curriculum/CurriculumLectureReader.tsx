@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { saveDraftPatientNote } from "@/utils/draftNote";
 import { trackEvent } from "@/utils/analytics";
+import FontSizeControl from "@/components/FontSizeControl";
 
 interface Props {
   lecture: Lecture;
@@ -174,17 +175,20 @@ export default function CurriculumLectureReader({ lecture }: Props) {
           <span>カリキュラム一覧へ戻る</span>
         </Link>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <FontSizeControl variant="compact" />
+
           <Link
             href="/simulator"
-            className="min-h-[44px] inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#B86924] dark:text-[#E6C387] bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F2D7B3] dark:border-[#4D331F] hover:bg-[#FBE9D5] px-3.5 py-2 rounded-xl transition-colors"
+            className="min-h-[38px] sm:min-h-[44px] inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#B86924] dark:text-[#E6C387] bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F2D7B3] dark:border-[#4D331F] hover:bg-[#FBE9D5] px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl transition-colors"
           >
             <Layers className="w-4 h-4" />
-            <span>シミュレーターで試す</span>
+            <span className="hidden sm:inline">シミュレーターで試す</span>
+            <span className="sm:hidden">推論</span>
           </Link>
 
-          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2]">
-            <Clock className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+          <div className="flex items-center gap-1 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2]">
+            <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
             <span>約 {lecture.duration}</span>
           </div>
         </div>

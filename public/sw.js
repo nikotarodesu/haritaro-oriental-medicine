@@ -1,11 +1,16 @@
 // はり太郎の東洋医学 Service Worker
-const CACHE_NAME = "haritaro-cache-v1";
+const CACHE_NAME = "haritaro-cache-v2";
 const OFFLINE_URLS = [
   "/",
   "/tsubo",
   "/notes",
   "/kokushi",
   "/curriculum",
+  "/diagnosis",
+  "/simulator",
+  "/practice/haiketsu",
+  "/tsubo/basics/bone-cun",
+  "/llms.txt",
   "/icon.png",
   "/apple-icon.png",
   "/manifest.webmanifest",

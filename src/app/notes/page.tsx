@@ -118,6 +118,30 @@ export default function MyNotesPage() {
 
   // 患者向け養生シート印刷モーダル
   const [printNote, setPrintNote] = useState<PatientNoteItem | null>(null);
+  const [copiedNoteId, setCopiedNoteId] = useState<string | null>(null);
+
+  const handleCopyNoteText = (note: PatientNoteItem) => {
+    const text = [
+      `【患者ID】${note.patientIdentifier}（${[note.ageGroup, note.gender].filter(Boolean).join("・") || "未設定"}）`,
+      `【来院日】${note.visitDate}`,
+      `【主訴】${note.chiefComplaint}`,
+      `【体質・証】${[note.constitution, note.syndrome].filter(Boolean).join(" ／ ") || "なし"}`,
+      `【配穴処方】${note.selectedPoints.join("、 ") || "なし"}`,
+      note.treatmentPlan ? `【施術計画・所見】\n${note.treatmentPlan}` : "",
+      note.patientReaction ? `【施術直後反応】\n${note.patientReaction}` : "",
+      note.nextAction ? `【次回課題・セルフケア指導】\n${note.nextAction}` : "",
+      note.selfCarePoints && note.selfCarePoints.length > 0 ? `【セルフケア推奨穴】\n${note.selfCarePoints.join("、 ")}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n\n");
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      setCopiedNoteId(note.id);
+      setTimeout(() => setCopiedNoteId(null), 2500);
+      trackEvent("note_save_success", { placement: "copy_note_text" });
+    }
+  };
 
   // ファイルインポート用ref
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -811,6 +835,24 @@ export default function MyNotesPage() {
                       </div>
 
                       <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleCopyNoteText(note)}
+                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-[#FAF8F5] dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#59615D] dark:text-[#A0B0BC] hover:border-[#1E3D34] hover:text-[#1E3D34] transition-all cursor-pointer"
+                          title="電子カルテや外部アプリ転記用に整形テキストをコピー"
+                        >
+                          {copiedNoteId === note.id ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                              <span className="text-emerald-600 dark:text-emerald-400 font-bold">コピー完了！</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5" />
+                              <span>カルテ転記</span>
+                            </>
+                          )}
+                        </button>
                         <button
                           type="button"
                           onClick={() => setPrintNote(note)}

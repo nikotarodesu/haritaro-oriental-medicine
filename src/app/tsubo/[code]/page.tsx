@@ -643,6 +643,21 @@ export default async function AcupointDetailPage({ params }: Props) {
               </div>
             )}
           </div>
+
+          {/* 骨度寸法ガイドへのクイック参照リンク */}
+          <div className="pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs">
+            <span className="text-[#737C77] dark:text-[#8899A6] flex items-center gap-1.5">
+              <Compass className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
+              <span>取穴の基準（何寸）に迷ったら：</span>
+            </span>
+            <Link
+              href="/tsubo/basics/bone-cun"
+              className="text-[#1E3D34] dark:text-[#74BA9E] font-bold hover:underline inline-flex items-center gap-1"
+            >
+              <span>全身の骨度寸法ガイドを見る</span>
+              <ArrowRight className="w-3 h-3" />
+            </Link>
+          </div>
         </section>
 
         {/* 3. 断面解剖モデル */}
