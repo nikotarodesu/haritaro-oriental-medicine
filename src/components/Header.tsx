@@ -583,32 +583,18 @@ export default function Header() {
             </div>
           </div>
 
-          {/* モバイルヘッダー右側（検索、マイノートへの短い入口、メニューボタン） */}
+          {/* モバイルヘッダー右側（検索、メニューボタン） */}
           <div className="flex items-center gap-1.5 lg:hidden shrink-0">
             {/* モバイル検索ボタン */}
             <button
               type="button"
               onClick={() => setIsSearchOpen(true)}
-              className="p-1.5 sm:p-2 rounded-xl text-[#404743] dark:text-[#C5D2DB] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] transition-colors cursor-pointer shrink-0"
+              className="p-2 rounded-xl text-[#404743] dark:text-[#C5D2DB] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] transition-colors cursor-pointer shrink-0"
               aria-label="サイト内検索を開く"
               title="サイト内検索"
             >
               <Search className="w-5 h-5 text-[#1E3D34] dark:text-[#74BA9E]" />
             </button>
-
-            <Link
-              href="/notes"
-              className="flex items-center gap-1 px-2.5 py-1.5 rounded-full border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-bold shrink-0"
-              title="マイノートを開く"
-            >
-              <FileText className="w-3.5 h-3.5" />
-              <span>ノート</span>
-              {clipCount > 0 && (
-                <span className="px-1.5 py-0.2 rounded-full text-[9px] font-bold bg-[#B86924] text-white">
-                  {clipCount}
-                </span>
-              )}
-            </Link>
 
             <button
               ref={menuButtonRef}

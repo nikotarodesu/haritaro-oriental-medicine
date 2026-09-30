@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { 
   GraduationCap, 
   Compass, 
@@ -524,9 +525,11 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-7 items-start">
             {/* 運営者情報 */}
             <div className="flex items-start gap-3.5 sm:gap-4">
-              <img
+              <Image
                 src="/icon.png"
                 alt="運営者 はり太郎"
+                width={64}
+                height={64}
                 className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover shadow-xs border border-[#D5CCBC] dark:border-[#2A3B4A] shrink-0"
               />
               <div className="space-y-2 flex-1 min-w-0">

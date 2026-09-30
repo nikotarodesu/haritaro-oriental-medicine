@@ -63,5 +63,58 @@ export default async function DiagnosisPage({ searchParams }: Props) {
   if (isGorou) initialTab = "gorou";
   else if (isClinical) initialTab = "clinical";
 
-  return <DiagnosisClient initialTab={initialTab} />;
+  const pageTitle = isGorou
+    ? "五労チェッカー（久視・久臥・久坐・久立・久行）｜東洋医学セルフチェック"
+    : "気血水体質診断・対面問診ツール｜東洋医学の問診・説明・臨床記録";
+  const pageUrl = isGorou
+    ? "https://www.haritaro.jp/diagnosis?tab=gorou"
+    : "https://www.haritaro.jp/diagnosis";
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["WebPage", "MedicalWebPage"],
+        "@id": `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: pageTitle,
+        description: isGorou
+          ? "『素問』宣明五気篇に基づく五労理論から動作偏向と五臓の疲弊を判定。"
+          : "気血水12問による体質チェックおよび鍼灸臨床での対面問診補助ツール。",
+        inLanguage: "ja",
+        provider: {
+          "@type": "Organization",
+          name: "はり太郎の東洋医学",
+          url: "https://www.haritaro.jp",
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "ホーム",
+            item: "https://www.haritaro.jp",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: isGorou ? "五労チェッカー" : "気血水体質診断",
+            item: pageUrl,
+          },
+        ],
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <DiagnosisClient initialTab={initialTab} />
+    </>
+  );
 }

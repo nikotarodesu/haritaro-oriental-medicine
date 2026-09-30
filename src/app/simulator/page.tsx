@@ -18,8 +18,49 @@ export const metadata: Metadata = {
 };
 
 export default function SimulatorPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": "https://www.haritaro.jp/simulator#app",
+        url: "https://www.haritaro.jp/simulator",
+        name: "東洋医学 臨床弁証推論シミュレーター",
+        applicationCategory: "HealthApplication",
+        operatingSystem: "All",
+        description: "患者の四診所見から八綱・気血水・臓腑弁証を自動推論し、本治・標治の配穴根拠を臨床的に整理・鑑別するシミュレーションツール。",
+        provider: {
+          "@type": "Organization",
+          name: "はり太郎の東洋医学",
+          url: "https://www.haritaro.jp",
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "ホーム",
+            item: "https://www.haritaro.jp",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "臨床弁証シミュレーター",
+            item: "https://www.haritaro.jp/simulator",
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-14 space-y-6 sm:space-y-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* パンくずリスト */}
       <nav className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6]">
         <Link href="/" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">

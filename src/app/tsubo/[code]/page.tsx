@@ -319,8 +319,8 @@ export default async function AcupointDetailPage({ params }: Props) {
 
       <div className="max-w-5xl mx-auto space-y-6 sm:space-y-10">
         
-        {/* パンくずリスト ＆ 戻るリンク */}
-        <nav className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
+        {/* パンくずリスト ＆ 前後経穴クイックナビ */}
+        <nav className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] gap-3 flex-wrap">
           <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
             <Link href="/" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
               ホーム
@@ -339,13 +339,29 @@ export default async function AcupointDetailPage({ params }: Props) {
             </span>
           </div>
 
-          <Link
-            href="/tsubo"
-            className="inline-flex items-center gap-1 text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline shrink-0"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">経穴一覧へ戻る</span>
-          </Link>
+          {/* 前後のツボへの直接切り替えボタン */}
+          <div className="flex items-center gap-2 shrink-0">
+            {prevPoint && (
+              <Link
+                href={`/tsubo/${prevPoint.codeLower}`}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-xs font-semibold text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-all"
+                title={`前の経穴: ${prevPoint.name}（${prevPoint.code}）`}
+              >
+                <ArrowLeft className="w-3 h-3" />
+                <span>{prevPoint.code} {prevPoint.name}</span>
+              </Link>
+            )}
+            {nextPoint && (
+              <Link
+                href={`/tsubo/${nextPoint.codeLower}`}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-xs font-semibold text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-all"
+                title={`次の経穴: ${nextPoint.name}（${nextPoint.code}）`}
+              >
+                <span>{nextPoint.code} {nextPoint.name}</span>
+                <ArrowRight className="w-3 h-3" />
+              </Link>
+            )}
+          </div>
         </nav>
 
         {/* 1. 基本情報ヘッダーカード */}
