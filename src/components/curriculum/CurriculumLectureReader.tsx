@@ -381,7 +381,17 @@ export default function CurriculumLectureReader({ lecture }: Props) {
 
         {/* レッスン理解度チェック（クイズ演習） */}
         {CURRICULUM_QUIZZES[lecture.id] && (
-          <InteractiveQuiz quiz={CURRICULUM_QUIZZES[lecture.id]} />
+          <InteractiveQuiz
+            quiz={CURRICULUM_QUIZZES[lecture.id]}
+            nextLecture={
+              nextLecture
+                ? {
+                    id: nextLecture.id,
+                    title: nextLecture.title,
+                  }
+                : null
+            }
+          />
         )}
 
         {/* 参考文献・学術エビデンス */}
