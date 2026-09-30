@@ -36,24 +36,16 @@ export interface RelatedCaseItem {
  */
 export function getSymptomsForAcupoint(codeLower: string, tsuboName?: string): SymptomGuide[] {
   const matchedSymptoms: SymptomGuide[] = [];
-  const targetId = CODE_TO_TSUBO_ID[codeLower];
+  const targetLegacyId = CODE_TO_TSUBO_ID[codeLower];
 
   for (const symptom of SYMPTOMS) {
-    // 1. 推奨ツボIDに直接合致する場合（特効穴）
-    if (targetId && symptom.recommendedTsuboIds.includes(targetId)) {
-      matchedSymptoms.push(symptom);
-      continue;
-    }
-
-    // 2. 代表的な主要経穴の別名・補足マッチ
+    // 1. 最新の経穴コード（codeLower）に直接合致する場合、または旧IDに合致する場合
     if (
-      (codeLower === "lu7" && symptom.id === "headache-stiff-neck") || // 列缺
-      (codeLower === "gb20" && symptom.id === "headache-stiff-neck") || // 風池
-      (codeLower === "ht7" && symptom.id === "stress-insomnia") || // 神門
-      (codeLower === "sp9" && (symptom.id === "stomach-fatigue" || symptom.id === "menstrual-pain-chill")) || // 陰陵泉
-      (codeLower === "cv4" && (symptom.id === "menstrual-pain-chill" || symptom.id === "chronic-fatigue-lethargy")) // 関元
+      symptom.recommendedTsuboIds.includes(codeLower) ||
+      (targetLegacyId && symptom.recommendedTsuboIds.includes(targetLegacyId))
     ) {
       matchedSymptoms.push(symptom);
+      continue;
     }
   }
 

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { SYMPTOMS } from "@/data/symptomData";
-import { TSUBOS } from "@/data/tsuboData";
+import { ACUPOINTS_MASTER } from "@/data/tsubo/acupointsMaster";
 import { HeartPulse, Utensils, Activity, ArrowRight, Sparkles, CheckCircle2, Stethoscope, ChevronDown, ChevronUp, Layers, FileText } from "lucide-react";
 import EastWestIntegrativeSwitch from "@/components/EastWestIntegrativeSwitch";
 
@@ -14,6 +14,8 @@ export default function SymptomsPage() {
   const categories = [
     "すべて",
     "頭・首・肩",
+    "背中・腰",
+    "足・脚",
     "メンタル・睡眠",
     "消化器・お腹",
     "女性特有",
@@ -66,7 +68,7 @@ export default function SymptomsPage() {
       {/* 症状一覧カード */}
       <div className="space-y-6 sm:space-y-8">
         {filteredSymptoms.map((symptom) => {
-          const relatedTsubos = TSUBOS.filter((t) => symptom.recommendedTsuboIds.includes(t.id));
+          const relatedTsubos = ACUPOINTS_MASTER.filter((t) => symptom.recommendedTsuboIds.includes(t.codeLower));
 
           return (
             <div

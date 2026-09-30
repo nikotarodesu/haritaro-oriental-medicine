@@ -13,6 +13,7 @@ export interface ReferenceItem {
   isbn?: string; // ISBN
   amazonUrl?: string; // Amazon URL
   amazonSearchUrl?: string; // リンク切れ防止の安全なAmazon検索URL
+  libraryUrl?: string; // サイト内古典ライブラリへの直通URL（例: "/library?q=素問"）
   studyDesign?: string;
   sampleSize?: number;
   note?: string; // 臨床要点・概要

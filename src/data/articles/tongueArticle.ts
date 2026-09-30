@@ -26,8 +26,9 @@ export const TONGUE_ARTICLE: Article = {
       originalTitle: "Metagenomic Characterization of the Tongue Coating Microbiome and Its Correlation with TCM Syndrome Differentiation",
       source: "Frontiers in Microbiology",
       year: 2022,
+      pmid: "35464975",
       doi: "10.3389/fmicb.2022.845120",
-      note: "黄苔・白苔における嫌気性菌比率の変動および常在菌叢と宿主代謝・炎症マーカーの相関に関する学術知見。（※本文献のDOI・書誌情報は著者による原本照合中です）",
+      note: "黄苔・白苔における嫌気性菌比率の変動および常在菌叢と宿主代謝・炎症マーカーの相関に関する学術知見。",
     },
     {
       id: "classic-bian-she-zhinan",

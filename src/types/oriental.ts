@@ -20,7 +20,7 @@ export interface Tsubo {
 export interface SymptomGuide {
   id: string;
   title: string;
-  category: "頭・首・肩" | "メンタル・睡眠" | "消化器・お腹" | "女性特有" | "全身・疲労" | "冷え・むくみ";
+  category: "頭・首・肩" | "背中・腰" | "足・脚" | "メンタル・睡眠" | "消化器・お腹" | "女性特有" | "全身・疲労" | "冷え・むくみ";
   summary: string;
   orientalMechanism: string; // 東洋医学的なメカニズム（気血水の乱れなど）
   recommendedTsuboIds: string[]; // 関連するツボID

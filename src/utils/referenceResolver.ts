@@ -53,11 +53,23 @@ export function resolveArticleReferences(
       ? item.authors.join(" ")
       : item.authors;
 
-    // AmazonアソシエイトURLの自動生成・正規化（404リンク切れ完全防止）
+    // AmazonアソシエイトURLおよび古典ライブラリURLの自動生成・正規化（404リンク切れ完全防止）
     let amazonUrl = item.amazonUrl;
     let amazonSearchUrl: string | undefined;
+    let libraryUrl = item.libraryUrl;
 
-    if (
+    if (item.type === "classic") {
+      // 古典文献の場合：サイト内古典ライブラリへの直通リンク
+      const cleanKeyword = item.title.replace(/[『』【】「」]/g, "").trim();
+      libraryUrl = `/library?q=${encodeURIComponent(cleanKeyword.slice(0, 4))}`;
+
+      // 古典の解説書・訳注書を探す安全な検索URL
+      amazonSearchUrl = buildAmazonAssociateSearchUrl({
+        title: item.title,
+        author: authorStr,
+      });
+      amazonUrl = amazonSearchUrl;
+    } else if (
       item.type === "book" ||
       item.asin ||
       item.isbn ||
@@ -69,18 +81,15 @@ export function resolveArticleReferences(
         author: authorStr,
       });
 
-      amazonUrl = buildAmazonAssociateUrl({
-        asin: item.asin,
-        url: item.amazonUrl || item.url,
-        title: item.title,
-        author: authorStr,
-      });
+      // リンク切れ防止のため、常に安全な和書検索URLを優先
+      amazonUrl = amazonSearchUrl;
     }
 
     const resolved: ResolvedReference = {
       ...item,
       amazonUrl,
       amazonSearchUrl,
+      libraryUrl,
       index,
       anchorId: `ref-${index}`,
     };
