@@ -27,6 +27,7 @@ import {
   CheckCircle2, 
   ArrowLeft, 
   ArrowRight, 
+  ArrowDown, 
   FileText,
   ShieldCheck,
   GitCompare,
@@ -689,6 +690,81 @@ export default async function AcupointDetailPage({ params }: Props) {
               <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
+        </section>
+
+        {/* 2.5 家庭でのツボ押し・セルフケアの目安（一般・初学者向けガイド） */}
+        <section
+          aria-label={`${point.name}の家庭での押し方・セルフケア目安`}
+          className="bg-gradient-to-br from-[#FAF7F0] via-[#FFFFFF] to-[#F5EFE4] dark:from-[#17222C] dark:via-[#131B23] dark:to-[#17212A] rounded-2xl sm:rounded-3xl border border-[#ECDCC7] dark:border-[#2C3E50] p-4 sm:p-7 shadow-xs space-y-4 transition-colors"
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#EFE5D5] dark:border-[#22303D] pb-3">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0">
+                <HeartPulse className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  家庭でのツボ押し・セルフケアの目安
+                </h3>
+                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                  指圧やお灸を安全・効果的に行うための3つの基本原則
+                </span>
+              </div>
+            </div>
+            <a
+              href="#faq"
+              className="text-xs font-semibold text-[#B86924] dark:text-[#E6C387] hover:underline self-start sm:self-auto inline-flex items-center gap-1"
+            >
+              <span>セルフケアQ&Aを見る</span>
+              <ArrowDown className="w-3 h-3" />
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs sm:text-sm">
+            <div className="p-3.5 rounded-xl bg-white/90 dark:bg-[#121920]/80 border border-[#E8DFC9] dark:border-[#263542] space-y-1.5 shadow-2xs">
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+                <span className="w-5 h-5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] text-[11px] font-bold flex items-center justify-center shrink-0">1</span>
+                <span>力加減：痛気持ちいい強さ</span>
+              </span>
+              <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed text-xs">
+                親指の腹を当て、垂直にゆっくり体重を乗せます。骨を強く突かず「ズーンと響く痛気持ちいい感覚」を目安にしてください。
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-white/90 dark:bg-[#121920]/80 border border-[#E8DFC9] dark:border-[#263542] space-y-1.5 shadow-2xs">
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+                <span className="w-5 h-5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] text-[11px] font-bold flex items-center justify-center shrink-0">2</span>
+                <span>呼吸と時間：息を吐きながら</span>
+              </span>
+              <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed text-xs">
+                細く息を吐きながら3〜5秒かけてゆっくり押し、息を吸いながら力を緩めます。力任せの連打や揉み返しは避けましょう。
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-white/90 dark:bg-[#121920]/80 border border-[#E8DFC9] dark:border-[#263542] space-y-1.5 shadow-2xs">
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+                <span className="w-5 h-5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] text-[11px] font-bold flex items-center justify-center shrink-0">3</span>
+                <span>回数と頻度：1回3〜5セット</span>
+              </span>
+              <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed text-xs">
+                1回あたり3〜5回を1日数回（朝・休憩時・入浴後など）。温熱灸（台座灸）を使う場合は1回1壮、心地よい温かさで十分です。
+              </p>
+            </div>
+          </div>
+
+          {/* 禁忌・注意ワンライナー */}
+          {hasSafetyWarning ? (
+            <div className="p-2.5 rounded-xl bg-[#FFFBEB] dark:bg-[#251D12] border border-amber-300 dark:border-amber-800 text-xs text-amber-900 dark:text-amber-200 flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+              <span>
+                ※このツボには安全上の注意点（妊娠中の強刺激・直接灸の制限など）があります。上部の「安全上の重要警告」を必ずご確認ください。
+              </span>
+            </div>
+          ) : (
+            <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+              ※食後すぐ・飲酒時・発熱時・皮膚に傷や腫れがある部位への刺激はお控えください。
+            </p>
+          )}
         </section>
 
         {/* 3. 断面解剖モデル */}

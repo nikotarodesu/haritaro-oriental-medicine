@@ -20,7 +20,8 @@ import {
   Award, 
   RotateCcw,
   Library,
-  MapPin
+  MapPin,
+  HeartPulse
 } from "lucide-react";
 import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
 import HomeHeroQuickSearch from "@/components/home/HomeHeroQuickSearch";
@@ -42,7 +43,7 @@ export default function HomePage() {
           <div className="text-center max-w-3xl mx-auto space-y-3.5 sm:space-y-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-xs sm:text-sm font-semibold tracking-wide shadow-2xs">
               <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-              <span>鍼灸学生・鍼灸師のための東洋医学 学習・実践サイト</span>
+              <span>鍼灸学生・臨床家・東洋医学を日常に活かしたいすべての方へ</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-[1.25]">
@@ -64,6 +65,43 @@ export default function HomePage() {
           {/* 初見ユーザー向け30秒ウェルカムガイド（LocalStorage保存で次回非表示） */}
           <div className="max-w-5xl mx-auto">
             <HomeWelcomeGuide />
+          </div>
+
+          {/* 一般・セルフケアでお越しの方へ（お悩み症状別ガイド ＆ 気血水体質チェック） */}
+          <div className="max-w-5xl mx-auto p-4 sm:p-4.5 rounded-2xl bg-gradient-to-r from-[#FCF4EB] via-[#FAF8F5] to-[#F7EFE4] dark:from-[#251D14] dark:via-[#1A222B] dark:to-[#17212A] border border-[#ECD9C5] dark:border-[#382C1E] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FCF4EB] dark:bg-[#332213] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 border border-[#F0DFCD] dark:border-[#4A3520]">
+                <HeartPulse className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
+                    一般・セルフケアでお探しの方へ
+                  </span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FCF4EB] text-[#B86924] dark:bg-[#332213] dark:text-[#E6C387]">
+                    不調・体質改善
+                  </span>
+                </div>
+                <p className="text-xs text-[#59615D] dark:text-[#A8B8C4] mt-0.5">
+                  肩こり・頭痛・冷えなどの症状別ツボや、体質に合わせた養生法をお探しですか？
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto text-xs">
+              <Link
+                href="/symptoms"
+                className="px-3.5 py-2 rounded-xl bg-[#B86924] hover:bg-[#9E571B] text-white font-bold transition-all shadow-2xs flex items-center gap-1"
+              >
+                <span>症状別ツボを見る</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+              <Link
+                href="/diagnosis"
+                className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#ECD9C5] dark:border-[#382C1E] text-[#B86924] dark:text-[#E6C387] hover:bg-[#FAF8F5] font-semibold transition-all"
+              >
+                体質チェック
+              </Link>
+            </div>
           </div>
 
           {/* 2大入口カード（PC: 横並び、スマホ: 縦並び。枠線の圧迫を減らし、箇条書きで即座に読める構成へ） */}
@@ -219,6 +257,45 @@ export default function HomePage() {
               </Link>
 
               <Link
+                href="/symptoms"
+                className="p-3 rounded-2xl bg-white/90 dark:bg-[#17212A]/90 shadow-2xs hover:shadow-xs hover:bg-[#FAF8F5] dark:hover:bg-[#1D2A36] flex flex-col items-center gap-1.5 text-center transition-all group"
+              >
+                <div className="w-9 h-9 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <HeartPulse className="w-4 h-4" />
+                </div>
+                <span className="text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] truncate max-w-full">
+                  症状別ツボ
+                </span>
+                <span className="hidden sm:block text-[11px] text-[#737C77] dark:text-[#8899A6]">お悩みセルフケア</span>
+              </Link>
+
+              <Link
+                href="/diagnosis"
+                className="p-3 rounded-2xl bg-white/90 dark:bg-[#17212A]/90 shadow-2xs hover:shadow-xs hover:bg-[#FAF8F5] dark:hover:bg-[#1D2A36] flex flex-col items-center gap-1.5 text-center transition-all group"
+              >
+                <div className="w-9 h-9 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <Activity className="w-4 h-4" />
+                </div>
+                <span className="text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] truncate max-w-full">
+                  体質診断
+                </span>
+                <span className="hidden sm:block text-[11px] text-[#737C77] dark:text-[#8899A6]">気血水12問判定</span>
+              </Link>
+
+              <Link
+                href="/curriculum"
+                className="p-3 rounded-2xl bg-white/90 dark:bg-[#17212A]/90 shadow-2xs hover:shadow-xs hover:bg-[#FAF8F5] dark:hover:bg-[#1D2A36] flex flex-col items-center gap-1.5 text-center transition-all group"
+              >
+                <div className="w-9 h-9 rounded-xl bg-[#EAEFF5] dark:bg-[#152331] text-[#1E2D3D] dark:text-[#7BAAD8] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <GraduationCap className="w-4 h-4" />
+                </div>
+                <span className="text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E2D3D] dark:group-hover:text-[#7BAAD8] truncate max-w-full">
+                  カリキュラム
+                </span>
+                <span className="hidden sm:block text-[11px] text-[#737C77] dark:text-[#8899A6]">全81講義・基礎</span>
+              </Link>
+
+              <Link
                 href="/simulator"
                 className="p-3 rounded-2xl bg-white/90 dark:bg-[#17212A]/90 shadow-2xs hover:shadow-xs hover:bg-[#FAF8F5] dark:hover:bg-[#1D2A36] flex flex-col items-center gap-1.5 text-center transition-all group"
               >
@@ -232,19 +309,6 @@ export default function HomePage() {
               </Link>
 
               <Link
-                href="/practice/haiketsu"
-                className="p-3 rounded-2xl bg-white/90 dark:bg-[#17212A]/90 shadow-2xs hover:shadow-xs hover:bg-[#FAF8F5] dark:hover:bg-[#1D2A36] flex flex-col items-center gap-1.5 text-center transition-all group"
-              >
-                <div className="w-9 h-9 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                  <SlidersHorizontal className="w-4 h-4" />
-                </div>
-                <span className="text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] truncate max-w-full">
-                  配穴設計
-                </span>
-                <span className="hidden sm:block text-[11px] text-[#737C77] dark:text-[#8899A6]">本治・標治</span>
-              </Link>
-
-              <Link
                 href="/kokushi"
                 className="p-3 rounded-2xl bg-white/90 dark:bg-[#17212A]/90 shadow-2xs hover:shadow-xs hover:bg-[#FAF8F5] dark:hover:bg-[#1D2A36] flex flex-col items-center gap-1.5 text-center transition-all group"
               >
@@ -255,32 +319,6 @@ export default function HomePage() {
                   国試演習
                 </span>
                 <span className="hidden sm:block text-[11px] text-[#737C77] dark:text-[#8899A6]">過去問・演習</span>
-              </Link>
-
-              <Link
-                href="/tsubo/practice"
-                className="p-3 rounded-2xl bg-white/90 dark:bg-[#17212A]/90 shadow-2xs hover:shadow-xs hover:bg-[#FAF8F5] dark:hover:bg-[#1D2A36] flex flex-col items-center gap-1.5 text-center transition-all group"
-              >
-                <div className="w-9 h-9 rounded-xl bg-[#EBF3EF] dark:bg-[#1C332A] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                  <Compass className="w-4 h-4" />
-                </div>
-                <span className="text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] truncate max-w-full">
-                  経穴ドリル
-                </span>
-                <span className="hidden sm:block text-[11px] text-[#737C77] dark:text-[#8899A6]">14経脈特訓</span>
-              </Link>
-
-              <Link
-                href="/notes"
-                className="p-3 rounded-2xl bg-white/90 dark:bg-[#17212A]/90 shadow-2xs hover:shadow-xs hover:bg-[#FAF8F5] dark:hover:bg-[#1D2A36] flex flex-col items-center gap-1.5 text-center transition-all group"
-              >
-                <div className="w-9 h-9 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                  <FileText className="w-4 h-4" />
-                </div>
-                <span className="text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] truncate max-w-full">
-                  マイノート
-                </span>
-                <span className="hidden sm:block text-[11px] text-[#737C77] dark:text-[#8899A6]">臨床・配穴</span>
               </Link>
             </div>
           </div>

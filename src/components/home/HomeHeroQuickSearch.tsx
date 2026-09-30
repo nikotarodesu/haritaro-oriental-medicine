@@ -6,12 +6,12 @@ import { Search, Sparkles, ArrowRight } from "lucide-react";
 import { trackEvent } from "@/utils/analytics";
 
 const QUICK_TAGS = [
+  { label: "肩こり・首こり", href: "/symptoms" },
+  { label: "頭痛・眼精疲労", href: "/symptoms" },
   { label: "合谷 (LI4)", href: "/tsubo/li4" },
   { label: "足三里 (ST36)", href: "/tsubo/st36" },
-  { label: "太衝 (LR3)", href: "/tsubo/lr3" },
   { label: "三陰交 (SP6)", href: "/tsubo/sp6" },
-  { label: "頭痛のツボ", href: "/symptoms" },
-  { label: "気血水チェック", href: "/diagnosis" },
+  { label: "気血水体質チェック", href: "/diagnosis" },
   { label: "弁証推論", href: "/simulator" },
 ];
 
@@ -44,7 +44,7 @@ export default function HomeHeroQuickSearch() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="経穴名（合谷・足三里）、コード（LI4）、お悩み・症状で探す..."
+          placeholder="ツボ名（合谷・足三里）、コード（LI4）、お悩み（肩こり・頭痛）で探す..."
           className="w-full pl-10 sm:pl-12 pr-24 sm:pr-28 py-3 sm:py-3.5 text-xs sm:text-sm rounded-2xl bg-white dark:bg-[#17212A] border-2 border-[#D8CFC0] dark:border-[#2A3B4A] focus:border-[#1E3D34] dark:focus:border-[#74BA9E] focus:outline-none shadow-sm text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A9590] dark:placeholder-[#6C7D8A] transition-all"
         />
         <button
