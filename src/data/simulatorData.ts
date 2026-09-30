@@ -1375,7 +1375,7 @@ export function synthesizeComprehensiveDiagnosis(
           evidenceLevel: {
             classical: "『四総穴歌』頭項は列缺に尋ねよ。『千金方』風池は首筋の百病・外感風邪を主る。",
             modernResearch: "後頭下筋群への刺激が椎骨動脈循環を改善し、大後頭神経刺激を介して頭痛受容を遮断する。",
-            clinicalPerspective: "施術後に温かい生姜湯や白湯を飲ませ、安静に就寝させると劇的に治癒する。"
+            clinicalPerspective: "施術後に温かい生姜湯や白湯を飲ませ、安静に就寝させると速やかに軽快・治癒へ向かう。"
           }
         },
         {

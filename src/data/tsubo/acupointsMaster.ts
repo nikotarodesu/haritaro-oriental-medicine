@@ -499,7 +499,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
       "四関穴",
       "四総穴（面目）"
     ],
-    "clinicalNote": "「面目は合谷に収む」と古来より伝わる頭部・顔面症状の特効穴。気の滞りを劇的に散らし、鎮痛・消炎作用に優れる。臨床では太衝と組み合わせて「四関」として開通させる手技が極めて有効。",
+    "clinicalNote": "「面目は合谷に収む」と古来より伝わる頭部・顔面症状の特効穴。気の滞りを強力に散らし、鎮痛・消炎作用に優れる。臨床では太衝と組み合わせて「四関」として開通させる手技が極めて有効。",
     "caution": "強力な降気・子宮収縮促進作用があるため、妊娠中の強い刺激は禁忌。",
     "status": "published",
     "hasDetailedAnatomy": true,
@@ -9688,7 +9688,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
         "partnerCode": "GB34",
         "partnerName": "陽陵泉",
         "prescriptionName": "肝胆相照配穴",
-        "effect": "肝胆の気機を疏通し、脇肋痛、こむら返り、筋緊張を劇的に緩める"
+        "effect": "肝胆の気機を疏通し、脇肋痛、こむら返り、筋緊張を速やかに緩める"
       }
     ],
     "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",

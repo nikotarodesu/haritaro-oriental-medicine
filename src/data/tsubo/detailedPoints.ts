@@ -42,7 +42,7 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
       "自律神経失調・精神緊張・不眠",
     ],
     categories: ["原穴", "四総穴（面目を治す）", "四関穴"],
-    clinicalNote: "「面目は合谷に収む」と古来より伝わる頭部・顔面症状の特効穴。気の滞りを劇的に散らし、鎮痛・消炎作用に優れる。臨床では太衝と組み合わせて「四関」として開通させる手技が極めて有効。",
+    clinicalNote: "「面目は合谷に収む」と古来より伝わる頭部・顔面症状の特効穴。気の滞りを強力に散らし、鎮痛・消炎作用に優れる。臨床では太衝と組み合わせて「四関」として開通させる手技が極めて有効。",
     caution: "強力な降気・子宮収縮促進作用があるため、妊娠中の強い刺激は禁忌。",
     status: "published",
     hasDetailedAnatomy: true,
@@ -306,7 +306,7 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     hasDetailedAnatomy: false,
     goldenPairs: [
       { partnerCode: "LI4", partnerName: "合谷", prescriptionName: "四関穴", effect: "気血を全身へ開通させ、激しい頭痛・めまい・精神抑鬱・痙攣を鎮める" },
-      { partnerCode: "GB34", partnerName: "陽陵泉", prescriptionName: "肝胆相照配穴", effect: "肝胆の気機を疏通し、脇肋痛、こむら返り、筋緊張を劇的に緩める" }
+      { partnerCode: "GB34", partnerName: "陽陵泉", prescriptionName: "肝胆相照配穴", effect: "肝胆の気機を疏通し、脇肋痛、こむら返り、筋緊張を速やかに緩める" }
     ],
     punctureMethod: "直刺 0.5〜0.8寸。酸脹感を感じるまで刺入。足背動脈の穿刺を避ける。",
     moxibustion: "灸3〜5壮、または温灸5〜10分。",

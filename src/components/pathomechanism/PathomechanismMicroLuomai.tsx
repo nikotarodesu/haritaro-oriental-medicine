@@ -78,7 +78,7 @@ export default function PathomechanismMicroLuomai() {
               <circle cx="195" cy="105" r="4" fill="#B71C1C" />
               <circle cx="205" cy="96" r="4" fill="#880E4F" />
 
-              {/* 周囲の痰湿・線維化ヘドロ */}
+              {/* 周囲の痰湿・線維化組織 */}
               <path d="M 170 115 C 200 125 220 110 230 130" stroke="#689F38" strokeWidth="5" strokeLinecap="round" fill="none" strokeDasharray="3 3" />
               <text x="210" y="145" fontSize="8" fontWeight="bold" fill="#33691E">
                 痰湿の付着

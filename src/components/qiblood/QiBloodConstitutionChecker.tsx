@@ -91,7 +91,7 @@ const CONSTITUTIONS: Constitution[] = [
     color: "#880E4F",
     tagColor: "bg-[#FCE4EC] text-[#880E4F] border-[#F8BBD0] dark:bg-[#880E4F]/20 dark:text-[#F48FB1]",
     statusTitle: "微小循環不全・血液粘稠度亢進（血瘀・滞留）",
-    mechanism: "血流の巡りが悪く、毛細血管レベルで滞っている状態。川の底にヘドロが沈殿しているイメージ。刺すような固定痛や黒ずみを引き起こす。",
+    mechanism: "血流の巡りが悪く、毛細血管レベルで滞っている状態。川底に沈殿物が滞留しているイメージ。刺すような固定痛や黒ずみを引き起こす。",
     questions: [
       { id: "q10", text: "肩こりや腰痛、生理痛など、いつも決まった場所が刺すように痛む" },
       { id: "q11", text: "目の下にクマができやすい、顔色がくすんでシミ・色素沈着が気になる" },
@@ -110,7 +110,7 @@ const CONSTITUTIONS: Constitution[] = [
     category: "水",
     color: "#0288D1",
     tagColor: "bg-[#E1F5FE] text-[#0277BD] border-[#B3E5FC] dark:bg-[#0288D1]/20 dark:text-[#81D4FA]",
-    statusTitle: "水液停滞・老廃物の蓄積（身体の重だるいヘドロ）",
+    statusTitle: "水液停滞・病理的液性の蓄積（重だるい痰湿の停滞）",
     mechanism: "水分代謝が乱れ、体内に濁った不要な液体が滞留している状態。水浸しのスポンジや湿った布団を背負っているような重さを感じる。",
     questions: [
       { id: "q13", text: "雨の日や湿度の高い日に、身体や頭が重だるく調子を崩しやすい" },

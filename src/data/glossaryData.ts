@@ -113,7 +113,7 @@ export const GLOSSARY_TERMS: Record<string, GlossaryTerm> = {
     reading: "おけつ",
     category: "気血水・病態",
     oneLiner: "血液粘稠度が高まり、毛細血管や静脈系の微小循環が滞留・鬱血した病的血行障害。",
-    analogy: "「ドブ川のヘドロ詰まり」や「冷えて固まりかけた油」。",
+    analogy: "「流れが滞って沈殿物が溜まった水路」や「冷えて固まりかけた油濁」。",
     summary: "局所の刺すような固定性の激痛、肩こり、唇や舌の暗紫色、舌下静脈の怒張、月経痛（レバー状の血塊）、シミやくすみの原因となる。",
     relatedLectureId: "lecture-qiblood-3",
     relatedLectureTitle: "気血水理論 レッスン3：血の病態（血虚・瘀血）",

@@ -91,7 +91,7 @@ export default function PathomechanismFluidDegeneration() {
             <span>画像解説④：水の変質 4ステップ・グラデーションカード</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            清らかな津液が「濁ったヘドロ」へと固まる ── 流体システムの破綻4段階
+            清らかな津液が「高粘稠な病理的停滞物（痰飲）」へと固まる ── 流体システムの破綻4段階
           </h4>
         </div>
         <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">

@@ -20,7 +20,7 @@ export default function PathomechanismIcebergTimeline() {
       name: "中期：流体システムの濁り（数ヶ月〜半年）",
       surface: "頭痛、胃もたれ、めまい、下肢のむくみ、PMS、朝の起きづらさ",
       underwater: "気が滞ることで三焦水道が塞がり【水湿 ➜ 痰湿】が沈殿。リンパ流うっ滞や間質浮腫が慢性化。",
-      pathology: "機能障害から物質的停滞へ転化。身体が『重だるい』ヘドロを背負った状態。",
+      pathology: "機能障害から物質的停滞へ転化。身体が重だるい病理的湿痰を抱え込んだ状態。",
       color: "#0288D1",
     },
     {
