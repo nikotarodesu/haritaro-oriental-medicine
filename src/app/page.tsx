@@ -126,6 +126,18 @@ export default function HomePage() {
                     国試演習ハブ
                   </Link>
                 </div>
+
+                {/* 臨床への架け橋 */}
+                <div className="pt-1 text-center">
+                  <Link
+                    href="/simulator"
+                    className="text-[11px] font-semibold text-[#59615D] dark:text-[#A0B0BC] hover:text-[#1E2D3D] dark:hover:text-[#7BAAD8] transition-colors inline-flex items-center gap-1 group"
+                  >
+                    <Sparkles className="w-3 h-3 text-[#B86924] dark:text-[#E6C387]" />
+                    <span>学んだ理論を試す：弁証シミュレーターへ</span>
+                    <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+                  </Link>
+                </div>
               </div>
             </div>
 
@@ -191,6 +203,18 @@ export default function HomePage() {
                     className="py-2 px-2 rounded-lg bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#FCF4EB] dark:hover:bg-[#281E15] text-[#B86924] dark:text-[#E6C387] font-semibold text-center truncate transition-colors"
                   >
                     臨床ノート
+                  </Link>
+                </div>
+
+                {/* 基礎への立ち戻り架け橋 */}
+                <div className="pt-1 text-center">
+                  <Link
+                    href="/curriculum"
+                    className="text-[11px] font-semibold text-[#59615D] dark:text-[#A0B0BC] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors inline-flex items-center gap-1 group"
+                  >
+                    <BookOpen className="w-3 h-3 text-[#1E3D34] dark:text-[#74BA9E]" />
+                    <span>迷った時の立ち戻り：基礎理論カリキュラム全81講義へ</span>
+                    <span className="group-hover:translate-x-0.5 transition-transform">→</span>
                   </Link>
                 </div>
               </div>
@@ -295,14 +319,15 @@ export default function HomePage() {
       {/* 4. 学びから実践へのつながりを示す具体例（思考プロセス図） */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="text-center max-w-2xl mx-auto space-y-2">
-          <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
-            Learning to Practice
+          <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center justify-center gap-1.5">
+            <RotateCcw className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+            <span>Continuous Learning Loop</span>
           </span>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-            学びと実践がつながる、ひとつの思考フロー
+            学びと実践が循環する、ひとつの思考ループ
           </h2>
           <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-            基礎理論を学ぶだけで終わらせず、臨床推論、処方設計、カルテ蓄積までを一貫して深められます。
+            基礎理論を学ぶだけで終わらせず、臨床推論・処方設計・カルテ蓄積を行い、臨床の気づきから再び基礎理論へ立ち戻る。学生と臨床家の双方が高め合える思考サイクルです。
           </p>
         </div>
 
@@ -378,6 +403,30 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
+        </div>
+
+        {/* STEP 4から再びSTEP 1へ戻る循環ループ案内 */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#FAF8F5] via-[#EBF3EF] to-[#FAF8F5] dark:from-[#17212A] dark:via-[#13221C] dark:to-[#17212A] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-[#1E3D34] text-white flex items-center justify-center shrink-0">
+              <RotateCcw className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-xs sm:text-sm">
+                臨床の振り返りから、再び基礎理論（STEP 1）へ
+              </span>
+              <p className="text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
+                臨床で壁に当たった時こそ、陰陽五行・気血水・臓腑経絡の原本に立ち戻る。この往復運動こそが、暗記を「使える臨床知」へと昇華させます。
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/curriculum"
+            className="px-4 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white font-bold transition-all shrink-0 self-end sm:self-auto inline-flex items-center gap-1.5 shadow-2xs"
+          >
+            <span>全81講義の理論へ立ち戻る</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </section>
 

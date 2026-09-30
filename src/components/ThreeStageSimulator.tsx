@@ -66,6 +66,123 @@ const SECONDARY_POINT_MAP: Record<QixueshuiType, { label: string; pairName: stri
   yangxu: { label: "陽虚（深部冷え・代謝低下）", pairName: "温陽補腎ペア", primary: "関元", secondary: "命門", role: "小腸募穴・督脈", desc: "丹田・命門の陽気を温め、深部の冷えを回復" },
 };
 
+// 選択された病態（気血水・臓腑・複合病態）に応じた関連カリキュラム講義のマッピング
+interface RelatedLectureInfo {
+  id: string;
+  chapter: string;
+  title: string;
+}
+
+function getRelatedLectures(
+  qixueshui: QixueshuiType,
+  zangfu: ZangfuType,
+  complexState: ComplexStateType
+): {
+  pathomechanism: RelatedLectureInfo;
+  treatment: RelatedLectureInfo;
+} {
+  // 1. 病因病機講義（第5講）
+  let pathomechanism: RelatedLectureInfo;
+
+  if (complexState !== "none") {
+    pathomechanism = {
+      id: "lecture-pathomechanism-10",
+      chapter: "第5講 レッスン10",
+      title: "慢性化と複合病態（虚実挟雑・本虚標実・寒熱錯雑）",
+    };
+  } else {
+    switch (qixueshui) {
+      case "qixu":
+        pathomechanism = {
+          id: "lecture-pathomechanism-3",
+          chapter: "第5講 レッスン3",
+          title: "気の不足と運動の失調（気虚の病理機序）",
+        };
+        break;
+      case "qizhi":
+      case "qini":
+        pathomechanism = {
+          id: "lecture-pathomechanism-3",
+          chapter: "第5講 レッスン3",
+          title: "気の不足と運動の失調（気滞・気逆の病理機序）",
+        };
+        break;
+      case "xuexu":
+        pathomechanism = {
+          id: "lecture-pathomechanism-5",
+          chapter: "第5講 レッスン5",
+          title: "血の失調と瘀血の形成（血虚の生起機序）",
+        };
+        break;
+      case "yuxue":
+        pathomechanism = {
+          id: "lecture-pathomechanism-5",
+          chapter: "第5講 レッスン5",
+          title: "血の失調と瘀血の形成（瘀血・脈絡阻滞）",
+        };
+        break;
+      case "shuitai":
+        pathomechanism = {
+          id: "lecture-pathomechanism-4",
+          chapter: "第5講 レッスン4",
+          title: "津液代謝の失調（水湿・痰濁の病理機序）",
+        };
+        break;
+      case "yinxu":
+        pathomechanism = {
+          id: "lecture-pathomechanism-6",
+          chapter: "第5講 レッスン6",
+          title: "寒熱と陰陽の失調（陰虚内熱・虚熱病機）",
+        };
+        break;
+      case "yangxu":
+        pathomechanism = {
+          id: "lecture-pathomechanism-6",
+          chapter: "第5講 レッスン6",
+          title: "寒熱と陰陽の失調（陽虚生寒・虚寒病機）",
+        };
+        break;
+      default:
+        pathomechanism = {
+          id: "lecture-pathomechanism-1",
+          chapter: "第5講 レッスン1",
+          title: "病機とは何か（病因・病機・証の思考体系）",
+        };
+        break;
+    }
+  }
+
+  // 2. 治法・配穴講義（第7講）
+  let treatment: RelatedLectureInfo;
+  if (qixueshui === "qixu" || qixueshui === "qizhi" || qixueshui === "qini") {
+    treatment = {
+      id: "lecture-treatment-5",
+      chapter: "第7講 レッスン5",
+      title: "気への治法を整理する（補気・理気・降気）",
+    };
+  } else if (qixueshui === "xuexu" || qixueshui === "yuxue" || qixueshui === "shuitai" || qixueshui === "yinxu") {
+    treatment = {
+      id: "lecture-treatment-6",
+      chapter: "第7講 レッスン6",
+      title: "血・津液への治法を整理する（養血・活血・滋陰・利水化痰）",
+    };
+  } else if (qixueshui === "yangxu") {
+    treatment = {
+      id: "lecture-treatment-3",
+      chapter: "第7講 レッスン3",
+      title: "補瀉・寒熱の原則を理解する（温補陽気）",
+    };
+  } else {
+    treatment = {
+      id: "lecture-treatment-2",
+      chapter: "第7講 レッスン2",
+      title: "証から治則・治法へつなぐ（多層構造と判断）",
+    };
+  }
+
+  return { pathomechanism, treatment };
+}
+
 export default function ThreeStageSimulator() {
   const router = useRouter();
   // ステップ1: 八綱
@@ -154,6 +271,10 @@ export default function ThreeStageSimulator() {
   const diagnosis: ComprehensiveDiagnosis = useMemo(() => {
     return synthesizeComprehensiveDiagnosis(depth, temp, state, qixueshui, zangfu, complexState);
   }, [depth, temp, state, qixueshui, zangfu, complexState]);
+
+  const relatedLectures = useMemo(() => {
+    return getRelatedLectures(qixueshui, zangfu, complexState);
+  }, [qixueshui, zangfu, complexState]);
 
   // URL searchParams または sessionStorage からの初期復元
   useEffect(() => {
@@ -1098,11 +1219,11 @@ export default function ThreeStageSimulator() {
                 この証の病因・病理機序を講義で確認：
               </span>
               <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">
-                第5章 病因病機学説「慢性化と複合病態」
+                {relatedLectures.pathomechanism.chapter}「{relatedLectures.pathomechanism.title}」
               </span>
             </div>
             <Link
-              href="/curriculum?lecture=lecture-pathomechanism-10"
+              href={`/curriculum?lecture=${relatedLectures.pathomechanism.id}`}
               onClick={() => {
                 trackEvent("context_link_click", {
                   context_pair: "simulator",
@@ -1717,6 +1838,31 @@ export default function ThreeStageSimulator() {
                       </div>
                     );
                   })}
+                </div>
+
+                {/* 配穴設計理論への立ち戻りリンク */}
+                <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                  <div className="flex items-center gap-2">
+                    <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
+                    <span className="text-[#59615D] dark:text-[#A0B0BC]">配穴の論理的根拠を深める：</span>
+                    <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">
+                      第7講 レッスン8「経絡・経穴を選択する（局所遠隔・要穴の配穴設計）」
+                    </span>
+                  </div>
+                  <Link
+                    href="/curriculum?lecture=lecture-treatment-8"
+                    onClick={() => {
+                      trackEvent("context_link_click", {
+                        context_pair: "simulator",
+                        destination_type: "curriculum",
+                        placement: "acupoint_panel",
+                      });
+                    }}
+                    className="text-[#1E3D34] dark:text-[#74BA9E] font-bold hover:underline inline-flex items-center gap-1 shrink-0"
+                  >
+                    <span>配穴理論講義へ</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
               </div>
             )}
