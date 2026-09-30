@@ -332,7 +332,7 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white/95 dark:bg-[#17212A]/95 p-5 rounded-2xl shadow-2xs hover:shadow-xs space-y-3 relative border border-[#EBE3D3] dark:border-[#263747] transition-all">
+          <div className="bg-white/95 dark:bg-[#17212A]/95 p-5 rounded-2xl shadow-2xs hover:shadow-xs space-y-3 relative border border-[#E8E1D1] dark:border-[#243545] hover:border-[#1E2D3D] dark:hover:border-[#7BAAD8] transition-all">
             <span className="font-mono text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8] bg-[#EAEFF5] dark:bg-[#152331] px-2.5 py-1 rounded-md">
               STEP 1
             </span>
@@ -350,7 +350,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="bg-white/95 dark:bg-[#17212A]/95 p-5 rounded-2xl shadow-2xs hover:shadow-xs space-y-3 relative border border-[#DCEBE2] dark:border-[#203D32] transition-all">
+          <div className="bg-white/95 dark:bg-[#17212A]/95 p-5 rounded-2xl shadow-2xs hover:shadow-xs space-y-3 relative border border-[#E8E1D1] dark:border-[#243545] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all">
             <span className="font-mono text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] dark:bg-[#182823] px-2.5 py-1 rounded-md">
               STEP 2
             </span>
@@ -368,7 +368,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="bg-white/95 dark:bg-[#17212A]/95 p-5 rounded-2xl shadow-2xs hover:shadow-xs space-y-3 relative border border-[#F5E6D3] dark:border-[#3D2C1C] transition-all">
+          <div className="bg-white/95 dark:bg-[#17212A]/95 p-5 rounded-2xl shadow-2xs hover:shadow-xs space-y-3 relative border border-[#E8E1D1] dark:border-[#243545] hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all">
             <span className="font-mono text-xs font-bold text-[#B86924] dark:text-[#E6C387] bg-[#FCF4EB] dark:bg-[#2A2016] px-2.5 py-1 rounded-md">
               STEP 3
             </span>
@@ -386,7 +386,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="bg-white/95 dark:bg-[#17212A]/95 p-5 rounded-2xl shadow-2xs hover:shadow-xs space-y-3 relative border border-[#DCEBE2] dark:border-[#203D32] transition-all">
+          <div className="bg-white/95 dark:bg-[#17212A]/95 p-5 rounded-2xl shadow-2xs hover:shadow-xs space-y-3 relative border border-[#E8E1D1] dark:border-[#243545] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all">
             <span className="font-mono text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] dark:bg-[#182823] px-2.5 py-1 rounded-md">
               STEP 4
             </span>

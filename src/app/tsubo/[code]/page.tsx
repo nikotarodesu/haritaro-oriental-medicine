@@ -8,7 +8,6 @@ import {
   getMeridianPoints,
   isDetailedAcupoint,
   generateFaqLocationAnswer,
-  generateFaqSelfCareAnswer,
   isContraindicatedNeedle,
   isContraindicatedMoxa,
   isPregnancyContraindicated,
@@ -31,7 +30,6 @@ import {
   ShieldCheck,
   GitCompare,
   HelpCircle,
-  HeartPulse,
   Flame,
   Hand,
   GraduationCap,
@@ -135,14 +133,10 @@ export default async function AcupointDetailPage({ params }: Props) {
       answer: generateFaqLocationAnswer(point),
     },
     {
-      question: `「${point.name}」はどのような症状や悩みに用いられますか？`,
+      question: `「${point.name}」はどのような症状・臨床病態に用いられますか？`,
       answer: `主な主治適応症として「${point.indications.join("、")}」などが挙げられます。${point.meridian}に属し、${
         point.clinicalNote ? point.clinicalNote : "気血の巡りを整え、関連する臓腑や局所のバランスを回復させる重要な経穴です。"
       }`,
-    },
-    {
-      question: `自分で指圧やお灸（セルフケア）をする際の注意点はありますか？`,
-      answer: generateFaqSelfCareAnswer(point),
     },
   ];
 
@@ -1019,52 +1013,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           </div>
         </section>
 
-        {/* 6. 関連するお悩み・症状別セルフケアガイド */}
-        {relatedSymptoms.length > 0 && (
-          <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-4 sm:space-y-6 transition-colors">
-            <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
-              <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                <HeartPulse className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
-                <h2>関連する症状・セルフケアガイド</h2>
-              </div>
-              <Link
-                href="/symptoms"
-                className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
-              >
-                <span>すべての症状を見る</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              {relatedSymptoms.map((sym) => (
-                <Link
-                  key={sym.id}
-                  href="/symptoms"
-                  className="p-3.5 sm:p-4 rounded-xl border border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#10171F] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group flex flex-col justify-between"
-                >
-                  <div className="space-y-1.5">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                      {sym.category}
-                    </span>
-                    <h3 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors">
-                      {sym.title}
-                    </h3>
-                    <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] line-clamp-2 leading-relaxed">
-                      {sym.summary}
-                    </p>
-                  </div>
-                  <div className="mt-2.5 pt-2 border-t border-[#EAE3D4] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-medium">
-                    <span>東洋医学メカニズムと養生法を見る</span>
-                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* 6.5. この経穴が登場する講義教材（カリキュラム連動） */}
+        {/* 6. この経穴が登場する講義教材（カリキュラム連動） */}
         {relatedLectures.length > 0 && (
           <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-4 sm:space-y-6 transition-colors">
             <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">

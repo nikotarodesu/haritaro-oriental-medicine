@@ -174,14 +174,9 @@ export default function Header() {
                       <GraduationCap className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8] block">
-                          学びの総合案内
-                        </span>
-                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#1E2D3D] text-white">
-                          案内
-                        </span>
-                      </div>
+                      <span className="text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8] block">
+                        学びの総合案内
+                      </span>
                       <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
                         初学者・国試・経穴・復習の4大開始点と学び方
                       </span>
@@ -215,14 +210,9 @@ export default function Header() {
                       <Award className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] block">
-                          国家試験対策特設ハブ
-                        </span>
-                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#E6C387]/30 text-[#B86924] dark:text-[#E6C387]">
-                          特設
-                        </span>
-                      </div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] block">
+                        国家試験対策特設ハブ
+                      </span>
                       <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
                         忘却曲線デイリー復習・本試験過去問実問・3大特訓
                       </span>
@@ -325,14 +315,9 @@ export default function Header() {
                       <Stethoscope className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                          鍼灸師向け・臨床実践案内
-                        </span>
-                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#1E3D34] text-white">
-                          案内
-                        </span>
-                      </div>
+                      <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
+                        鍼灸師向け・臨床実践案内
+                      </span>
                       <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
                         弁証・配穴・臨床ノートの活用法と機能詳細
                       </span>
@@ -402,14 +387,9 @@ export default function Header() {
                       <FileText className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
-                          臨床症例演習（全20症例）
-                        </span>
-                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#E6C387] text-[#1E3D34]">
-                          全例連動
-                        </span>
-                      </div>
+                      <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] block">
+                        臨床症例演習（全20症例）
+                      </span>
                       <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
                         四診所見からシミュレーターで配穴を直接検証
                       </span>
