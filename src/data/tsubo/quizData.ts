@@ -45,54 +45,150 @@ export function cleanLocationPrompt(pt: AcupointMaster): string {
   return text;
 }
 
+// ==================== 高精度決定論的PRNG＆シャッフル ====================
+
+/**
+ * 32ビットシード文字列から高品質な決定論的乱数生成器（Mulberry32）を生成
+ */
+export function createPrng(seedStr: string): () => number {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < seedStr.length; i++) {
+    h ^= seedStr.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  let state = h >>> 0;
+  return function nextFloat(): number {
+    state |= 0;
+    state = (state + 0x6d2b79f5) | 0;
+    let t = Math.imul(state ^ (state >>> 15), 1 | state);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/**
+ * シード文字列に基づく完全均等フィッシャー–イェーツ・シャッフル
+ */
+export function seededShuffle<T>(array: T[], seed: string): T[] {
+  const copy = [...array];
+  const rand = createPrng(seed);
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
 // ==================== クイズ生成エンジン ====================
+
+/**
+ * 正解穴に対して鑑別価値の高い誤答穴（同部位・同経脈・類似属性）を動的サンプリング
+ */
+function pickIntelligentDistractors(
+  pt: AcupointMaster,
+  allMaster: AcupointMaster[],
+  seedSuffix: string = ""
+): AcupointMaster[] {
+  // 1. 同部位の経穴（解剖学的な鑑別。最も紛らわしく実践的）
+  const sameBodyPart = allMaster.filter(
+    (p) => p.bodyPart === pt.bodyPart && p.code !== pt.code
+  );
+  // 2. 同経脈の経穴（同一流注上の前後穴鑑別）
+  const sameMeridian = allMaster.filter(
+    (p) => p.meridianId === pt.meridianId && p.code !== pt.code
+  );
+  // 3. その他全体
+  const others = allMaster.filter(
+    (p) => p.code !== pt.code && p.bodyPart !== pt.bodyPart && p.meridianId !== pt.meridianId
+  );
+
+  // それぞれをシードシャッフルして特定穴（SP1〜3など）の固定を完全に防ぐ
+  const shuffledBody = seededShuffle(sameBodyPart, `${pt.code}_body_${seedSuffix}`);
+  const shuffledMeridian = seededShuffle(sameMeridian, `${pt.code}_mer_${seedSuffix}`);
+  const shuffledOthers = seededShuffle(others, `${pt.code}_oth_${seedSuffix}`);
+
+  const distractors: AcupointMaster[] = [];
+  const seenCodes = new Set<string>([pt.code]);
+
+  // 同部位から最大2穴
+  for (const cand of shuffledBody) {
+    if (!seenCodes.has(cand.code)) {
+      seenCodes.add(cand.code);
+      distractors.push(cand);
+      if (distractors.length >= 2) break;
+    }
+  }
+
+  // 同経脈から追加して計3穴を目指す
+  for (const cand of shuffledMeridian) {
+    if (!seenCodes.has(cand.code)) {
+      seenCodes.add(cand.code);
+      distractors.push(cand);
+      if (distractors.length >= 3) break;
+    }
+  }
+
+  // それでも不足する場合は全体から補完
+  if (distractors.length < 3) {
+    for (const cand of shuffledOthers) {
+      if (!seenCodes.has(cand.code)) {
+        seenCodes.add(cand.code);
+        distractors.push(cand);
+        if (distractors.length >= 3) break;
+      }
+    }
+  }
+
+  return distractors;
+}
 
 /**
  * 指定の経穴群から、指定スキルの一意なクイズリストを生成
  */
 export function generateQuestionsForPoints(
   points: AcupointMaster[],
-  skill: StudySkillType = "location_to_name",
-  limit?: number
+  skill: StudySkillType | "mixed" = "location_to_name",
+  limit?: number,
+  sessionSeed?: string
 ): QuizQuestion[] {
   const allMaster = ALL_ACUPOINTS;
   const questions: QuizQuestion[] = [];
+  const baseSeed = sessionSeed || "daily_study";
 
-  for (const pt of points) {
-    if (skill === "location_to_name") {
+  const skillPool: StudySkillType[] = [
+    "location_to_name",
+    "puncture_method",
+    "five_elements_shu",
+    "golden_pairs",
+    "category_of_point",
+  ];
+
+  for (let idx = 0; idx < points.length; idx++) {
+    const pt = points[idx];
+    const itemSeed = `${baseSeed}_${pt.code}_${idx}`;
+
+    // mixedモードの場合は穴の適性に応じてスキルを選択
+    let targetSkill: StudySkillType;
+    if (skill === "mixed") {
+      const availableSkills: StudySkillType[] = ["location_to_name"];
+      if (pt.punctureMethod) availableSkills.push("puncture_method");
+      if (pt.fiveElementsCategory) availableSkills.push("five_elements_shu");
+      if (pt.goldenPairs && pt.goldenPairs.length > 0) availableSkills.push("golden_pairs");
+      if (pt.categories.length > 0) availableSkills.push("category_of_point");
+
+      const rand = createPrng(itemSeed);
+      const chosenIdx = Math.floor(rand() * availableSkills.length);
+      targetSkill = availableSkills[chosenIdx];
+    } else {
+      targetSkill = skill;
+    }
+
+    // ========== 1. 部位・取穴 ➔ 経穴名 ==========
+    if (targetSkill === "location_to_name") {
       const cleanLoc = cleanLocationPrompt(pt);
       const prompt = `【部位・取穴法】\n${cleanLoc}\n\n上記の部位・骨性目印に位置する経穴はどれか？`;
 
-      // 誤答選択肢（同経または同部位のリアルな経穴から抽出）
-      const sameMeridianPoints = allMaster.filter(
-        (p) => p.meridianId === pt.meridianId && p.code !== pt.code
-      );
-      const sameBodyPartPoints = allMaster.filter(
-        (p) => p.bodyPart === pt.bodyPart && p.code !== pt.code
-      );
-      
-      const candidatePool = [...sameMeridianPoints, ...sameBodyPartPoints];
-      const distractors: AcupointMaster[] = [];
-      const seenCodes = new Set<string>([pt.code]);
-
-      for (const cand of candidatePool) {
-        if (!seenCodes.has(cand.code)) {
-          seenCodes.add(cand.code);
-          distractors.push(cand);
-          if (distractors.length === 3) break;
-        }
-      }
-
-      // プール不足時は全体から補完
-      if (distractors.length < 3) {
-        for (const cand of allMaster) {
-          if (!seenCodes.has(cand.code)) {
-            seenCodes.add(cand.code);
-            distractors.push(cand);
-            if (distractors.length === 3) break;
-          }
-        }
-      }
+      const distractors = pickIntelligentDistractors(pt, allMaster, itemSeed);
 
       const options = [
         { id: pt.code, text: `${pt.name}（${pt.code}）`, subtext: `${pt.meridianShort} / ${pt.bodyPart}` },
@@ -103,27 +199,192 @@ export function generateQuestionsForPoints(
         })),
       ];
 
-      // 選択肢のシャッフル（問題IDハッシュによる決定論的シャッフルでSSR整合性を保持）
-      const shuffledOptions = deterministicShuffle(options, pt.code);
+      const shuffledOptions = seededShuffle(options, `${itemSeed}_opt`);
 
       questions.push({
-        id: `q_loc_${pt.codeLower}`,
+        id: `q_loc_${pt.codeLower}_${idx}`,
         acupointCode: pt.code,
         skill: "location_to_name",
         prompt,
         options: shuffledOptions,
         correctOptionId: pt.code,
-        explanation: `${pt.name}（${pt.code}）：${pt.meridian}。\n部位：${pt.locationDetail}\n要穴分類：${pt.categories.join("、") || "なし"}。\n臨床メモ：${pt.clinicalNote}`,
+        explanation: `【正解】${pt.name}（${pt.code}）：${pt.meridian}。\n【解剖部位】${pt.locationDetail}\n【要穴分類】${pt.categories.join("、") || "特記なし"}\n【臨床鑑別の鍵】${pt.clinicalNote}`,
         meridianName: pt.meridian,
         locationReference: pt.locationDetail,
       });
-    } else if (skill === "meridian_of_point") {
+    }
+
+    // ========== 2. 臨床刺鍼手技・安全深度 ==========
+    else if (targetSkill === "puncture_method") {
+      const correctMethod = pt.punctureMethod || "直刺 0.5〜1.0寸。局所の深部組織・神経血管の走行に配慮する。";
+      const prompt = `経穴「${pt.name}（${pt.code} / ${pt.meridianShort} / ${pt.bodyPart}）」の刺鍼手技・安全深度および臨床配慮として正しいものはどれか？`;
+
+      // 異なる手技特性を持つ他の経穴から誤答をサンプリング
+      const methodCandidates = allMaster.filter(
+        (p) => p.code !== pt.code && p.punctureMethod && p.punctureMethod !== correctMethod
+      );
+      const shuffledMethods = seededShuffle(methodCandidates, `${itemSeed}_punc`);
+      const distractorPoints = shuffledMethods.slice(0, 3);
+
+      const options = [
+        { id: "correct", text: correctMethod, subtext: `適応経穴: ${pt.name}` },
+        ...distractorPoints.map((dp, i) => ({
+          id: `dist_${i}`,
+          text: dp.punctureMethod || "直刺 1.0〜1.5寸深刺する。",
+          subtext: `※他穴の手技例`,
+        })),
+      ];
+
+      const shuffledOptions = seededShuffle(options, `${itemSeed}_opt_punc`);
+      const correctOpt = shuffledOptions.find((o) => o.id === "correct");
+
+      questions.push({
+        id: `q_punc_${pt.codeLower}_${idx}`,
+        acupointCode: pt.code,
+        skill: "puncture_method",
+        prompt,
+        options: shuffledOptions,
+        correctOptionId: correctOpt ? correctOpt.id : "correct",
+        explanation: `【正解手技】${correctMethod}\n【解剖学的背景】${pt.locationDetail}\n【安全上の盲点】${pt.clinicalNote}`,
+        meridianName: pt.meridian,
+        locationReference: pt.locationDetail,
+      });
+    }
+
+    // ========== 3. 五輸穴・五行属性（木火土金水） ==========
+    else if (targetSkill === "five_elements_shu") {
+      if (!pt.fiveElementsCategory) {
+        // 五輸穴属性がない経穴の場合は、十二正経の五輸穴から代替出題
+        const fiveShuPool = allMaster.filter((p) => p.fiveElementsCategory);
+        const altPt = seededShuffle(fiveShuPool, `${itemSeed}_alt`)[0] || pt;
+        if (!altPt.fiveElementsCategory) continue;
+
+        const correctAttr = altPt.fiveElementsCategory;
+        const prompt = `経穴「${altPt.name}（${altPt.code} / ${altPt.meridian}）」の五輸穴分類および五行属性として正しいものはどれか？`;
+
+        const allAttrs = [
+          "井木穴", "滎火穴", "輸土穴", "経金穴", "合水穴",
+          "井金穴", "滎水穴", "輸木穴", "経火穴", "合土穴"
+        ];
+        const distractorAttrs = seededShuffle(
+          allAttrs.filter((a) => !a.startsWith(correctAttr.slice(0, 2))),
+          `${itemSeed}_shu`
+        ).slice(0, 3);
+
+        const options = [
+          { id: correctAttr, text: `${correctAttr}穴` },
+          ...distractorAttrs.map((a) => ({ id: a, text: `${a}` })),
+        ];
+
+        const shuffledOptions = seededShuffle(options, `${itemSeed}_opt_shu`);
+
+        questions.push({
+          id: `q_shu_${altPt.codeLower}_${idx}`,
+          acupointCode: altPt.code,
+          skill: "five_elements_shu",
+          prompt,
+          options: shuffledOptions,
+          correctOptionId: correctAttr,
+          explanation: `【正解】${altPt.name}（${altPt.code}）は${altPt.meridian}の「${correctAttr}穴」です。\n部位：${altPt.locationDetail}\n要穴分類：${altPt.categories.join("、")}`,
+          meridianName: altPt.meridian,
+          locationReference: altPt.locationDetail,
+        });
+      } else {
+        const correctAttr = pt.fiveElementsCategory;
+        const prompt = `経穴「${pt.name}（${pt.code} / ${pt.meridian}）」の五輸穴分類および五行属性として正しいものはどれか？`;
+
+        const allAttrs = [
+          "井木穴", "滎火穴", "輸土穴", "経金穴", "合水穴",
+          "井金穴", "滎水穴", "輸木穴", "経火穴", "合土穴"
+        ];
+        const distractorAttrs = seededShuffle(
+          allAttrs.filter((a) => a !== `${correctAttr}穴` && a !== correctAttr),
+          `${itemSeed}_shu`
+        ).slice(0, 3);
+
+        const options = [
+          { id: correctAttr, text: correctAttr.endsWith("穴") ? correctAttr : `${correctAttr}穴` },
+          ...distractorAttrs.map((a) => ({ id: a, text: a })),
+        ];
+
+        const shuffledOptions = seededShuffle(options, `${itemSeed}_opt_shu`);
+
+        questions.push({
+          id: `q_shu_${pt.codeLower}_${idx}`,
+          acupointCode: pt.code,
+          skill: "five_elements_shu",
+          prompt,
+          options: shuffledOptions,
+          correctOptionId: correctAttr.endsWith("穴") ? correctAttr : correctAttr,
+          explanation: `【正解】${pt.name}（${pt.code}）は${pt.meridian}の「${correctAttr}穴」です。\n部位：${pt.locationDetail}\n要穴分類：${pt.categories.join("、")}`,
+          meridianName: pt.meridian,
+          locationReference: pt.locationDetail,
+        });
+      }
+    }
+
+    // ========== 4. 伝統的名配穴（ゴールデンペア・相乗効果） ==========
+    else if (targetSkill === "golden_pairs") {
+      let partnerPt: AcupointMaster | null = null;
+      let pairDesc = "";
+
+      if (pt.goldenPairs && pt.goldenPairs.length > 0) {
+        const gp = pt.goldenPairs[0];
+        pairDesc = `${gp.partnerName}（${gp.partnerCode}）- 【${gp.prescriptionName}】${gp.effect}`;
+        partnerPt = allMaster.find((p) => p.code.toUpperCase() === gp.partnerCode.toUpperCase()) || null;
+      }
+
+      // パートナー穴がない場合は、表裏経の原穴・絡穴・募穴・背部兪穴から実効ペアを生成
+      if (!partnerPt) {
+        const pairCandidate = allMaster.find(
+          (p) => (p.meridianId === pt.meridianId || p.bodyPart === pt.bodyPart) && p.code !== pt.code && p.categories.length > 0
+        ) || allMaster[(idx * 7) % allMaster.length];
+        partnerPt = pairCandidate;
+        pairDesc = `${partnerPt.name}（${partnerPt.code}）- 同部局所の気血巡行・調整を助ける協調配穴`;
+      }
+
+      const prompt = `臨床において経穴「${pt.name}（${pt.code} / ${pt.meridianShort}）」と併用され、強力な相乗効果・調整作用を発揮する伝統的名配穴（協調処方）はどれか？`;
+
+      // 誤答穴（遠隔や全く無関係な部位のツボをシャッフル）
+      const distractors = seededShuffle(
+        allMaster.filter((p) => p.code !== pt.code && p.code !== partnerPt?.code),
+        `${itemSeed}_gpair`
+      ).slice(0, 3);
+
+      const options = [
+        {
+          id: partnerPt.code,
+          text: `${partnerPt.name}（${partnerPt.code}）`,
+          subtext: `${partnerPt.meridianShort} / ${partnerPt.bodyPart}`,
+        },
+        ...distractors.map((d) => ({
+          id: d.code,
+          text: `${d.name}（${d.code}）`,
+          subtext: `${d.meridianShort} / ${d.bodyPart}`,
+        })),
+      ];
+
+      const shuffledOptions = seededShuffle(options, `${itemSeed}_opt_gp`);
+
+      questions.push({
+        id: `q_gp_${pt.codeLower}_${idx}`,
+        acupointCode: pt.code,
+        skill: "golden_pairs",
+        prompt,
+        options: shuffledOptions,
+        correctOptionId: partnerPt.code,
+        explanation: `【正解の配穴処方】${pairDesc}\n【主治適応】${pt.name}の臨床メモ：${pt.clinicalNote}`,
+        meridianName: pt.meridian,
+        locationReference: pt.locationDetail,
+      });
+    }
+
+    // ========== 5. 所属経脈当て ==========
+    else if (targetSkill === "meridian_of_point") {
       const prompt = `経穴「${pt.name}（${pt.code}）」が所属する経脈はどれか？`;
       const correctMeridian = pt.meridian;
       const otherMeridians = MERIDIANS.filter((m) => m.name !== correctMeridian);
-      
-      // 決定論的シャッフルで誤答3つ選出
-      const distractorMeridians = deterministicShuffle(otherMeridians, pt.code).slice(0, 3);
+      const distractorMeridians = seededShuffle(otherMeridians, `${itemSeed}_mer`).slice(0, 3);
 
       const options = [
         { id: correctMeridian, text: correctMeridian, subtext: pt.meridianShort },
@@ -131,24 +392,31 @@ export function generateQuestionsForPoints(
       ];
 
       questions.push({
-        id: `q_mer_${pt.codeLower}`,
+        id: `q_mer_${pt.codeLower}_${idx}`,
         acupointCode: pt.code,
         skill: "meridian_of_point",
         prompt,
-        options: deterministicShuffle(options, pt.code + "_mer"),
+        options: seededShuffle(options, `${itemSeed}_opt_mer`),
         correctOptionId: correctMeridian,
         explanation: `${pt.name}（${pt.code}）は${pt.meridian}に属します。部位：${pt.locationSimple}`,
         meridianName: pt.meridian,
         locationReference: pt.locationDetail,
       });
-    } else if (skill === "category_of_point") {
-      if (pt.categories.length === 0) continue; // 要穴のない穴はスキップ
+    }
+
+    // ========== 6. 要穴分類当て ==========
+    else if (targetSkill === "category_of_point") {
+      if (pt.categories.length === 0) continue;
       const primaryCategory = pt.categories[0];
       const prompt = `経穴「${pt.name}（${pt.code}）」が該当する要穴分類として正しいものはどれか？`;
 
-      const allCategories = ["原穴", "絡穴", "郄穴", "募穴", "背部兪穴", "四総穴", "八会穴", "八脈交会穴", "合穴", "井穴", "滎穴", "輸穴", "経穴"];
-      const otherCats = allCategories.filter((c) => !pt.categories.includes(c));
-      const distractorCats = deterministicShuffle(otherCats, pt.code).slice(0, 3);
+      const allCategories = [
+        "原穴", "絡穴", "郄穴", "募穴", "背部兪穴",
+        "四総穴", "八会穴", "八脈交会穴", "下合穴",
+        "合穴", "井穴", "滎穴", "輸穴", "経穴"
+      ];
+      const otherCats = allCategories.filter((c) => !pt.categories.some((pc) => pc.includes(c)));
+      const distractorCats = seededShuffle(otherCats, `${itemSeed}_cat`).slice(0, 3);
 
       const options = [
         { id: primaryCategory, text: primaryCategory },
@@ -156,13 +424,13 @@ export function generateQuestionsForPoints(
       ];
 
       questions.push({
-        id: `q_cat_${pt.codeLower}`,
+        id: `q_cat_${pt.codeLower}_${idx}`,
         acupointCode: pt.code,
         skill: "category_of_point",
         prompt,
-        options: deterministicShuffle(options, pt.code + "_cat"),
+        options: seededShuffle(options, `${itemSeed}_opt_cat`),
         correctOptionId: primaryCategory,
-        explanation: `${pt.name}（${pt.code}）の要穴分類は「${pt.categories.join("、")}」です。`,
+        explanation: `${pt.name}（${pt.code}）の要穴分類は「${pt.categories.join("、")}」です。部位：${pt.locationSimple}`,
         meridianName: pt.meridian,
         locationReference: pt.locationDetail,
       });
@@ -174,24 +442,6 @@ export function generateQuestionsForPoints(
   }
 
   return questions;
-}
-
-/**
- * 決定論的シャッフル（配列とシード文字列から安定した順序を生成）
- */
-function deterministicShuffle<T>(array: T[], seed: string): T[] {
-  const copy = [...array];
-  let hash = 0;
-  for (let i = 0; i < seed.length; i++) {
-    hash = (hash << 5) - hash + seed.charCodeAt(i);
-    hash |= 0;
-  }
-
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.abs((hash * (i + 1) * 31) % (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
 }
 
 // ==================== 14経脈小単位ユニットコース定義 ====================

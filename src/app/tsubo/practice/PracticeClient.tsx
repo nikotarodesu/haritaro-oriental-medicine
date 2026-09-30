@@ -79,6 +79,9 @@ function PracticePageContent() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [importStatus, setImportStatus] = useState<{ message: string; success: boolean } | null>(null);
 
+  // 出題スキル切り替え（部位・刺鍼手技・五輸穴・名配穴・要穴分類・総合MIX）
+  const [selectedSkill, setSelectedSkill] = useState<StudySkillType | "mixed">("mixed");
+
   // 回答ステート（1問ずつモード用一時選択）
   const [tempSelectedOption, setTempSelectedOption] = useState<string | null>(null);
   const [isAnswerConfirmed, setIsAnswerConfirmed] = useState(false);
@@ -159,7 +162,7 @@ function PracticePageContent() {
   // 14経脈小単位ユニットの開始
   const startUnitSession = (unit: typeof COURSE_UNITS[0], mode: "batch" | "one_by_one" = "batch") => {
     const targetPoints = allPoints.filter((p) => unit.targetPointCodes.includes(p.code));
-    const questions = generateQuestionsForPoints(targetPoints, "location_to_name");
+    const questions = generateQuestionsForPoints(targetPoints, selectedSkill, undefined, `unit_${unit.id}_${Date.now()}`);
     startNewSession(unit.id, `${unit.courseTitle} - ${unit.unitTitle}`, questions, mode);
   };
 
@@ -173,7 +176,7 @@ function PracticePageContent() {
 
     const targetPoints = allPoints.filter((p) => due.some((d) => d.acupointCode === p.code));
     // 復習は最大15問
-    const questions = generateQuestionsForPoints(targetPoints, "location_to_name", 15);
+    const questions = generateQuestionsForPoints(targetPoints, selectedSkill, 15, `review_${Date.now()}`);
     startNewSession("due_review", `今日の復習（${questions.length}問）`, questions, "batch");
   };
 
@@ -182,17 +185,25 @@ function PracticePageContent() {
     if (courseId.startsWith("meridian_")) {
       const merPrefix = courseId.replace("meridian_", "").toUpperCase();
       const targetPoints = allPoints.filter((p) => p.meridianId.toUpperCase().includes(merPrefix) || p.code.startsWith(merPrefix));
-      const questions = generateQuestionsForPoints(targetPoints, "location_to_name", 10);
+      const questions = generateQuestionsForPoints(targetPoints, selectedSkill, 10, `mer_${courseId}_${Date.now()}`);
       startNewSession(courseId, `十四経脈学習`, questions, "batch");
     } else if (courseId === "saved") {
       const savedCodes = memos.filter((m) => m.type === "tsubo").map((m) => m.id.replace("tsubo-", "").toUpperCase());
       const targetPoints = allPoints.filter((p) => savedCodes.includes(p.code));
-      const questions = generateQuestionsForPoints(targetPoints, "location_to_name");
+      const questions = generateQuestionsForPoints(targetPoints, selectedSkill, undefined, `saved_${Date.now()}`);
       startNewSession("saved", `保存したマイカルテ経穴（${questions.length}問）`, questions, "batch");
     } else if (courseId === "five_shu") {
       const targetPoints = allPoints.filter((p) => p.categories.some((c) => c.includes("穴") && (c.includes("井") || c.includes("滎") || c.includes("輸") || c.includes("経") || c.includes("合"))));
-      const questions = generateQuestionsForPoints(targetPoints, "category_of_point", 10);
-      startNewSession("five_shu", "五兪穴（井滎輸経合）特訓", questions, "batch");
+      const questions = generateQuestionsForPoints(targetPoints, "five_elements_shu", 10, `five_shu_${Date.now()}`);
+      startNewSession("five_shu", "五兪穴・五行マスター特訓", questions, "batch");
+    } else if (courseId === "puncture") {
+      const targetPoints = allPoints.filter((p) => p.punctureMethod);
+      const questions = generateQuestionsForPoints(targetPoints, "puncture_method", 10, `punc_${Date.now()}`);
+      startNewSession("puncture", "臨床刺鍼手技・安全深度特訓", questions, "batch");
+    } else if (courseId === "golden_pairs") {
+      const targetPoints = allPoints.filter((p) => p.goldenPairs && p.goldenPairs.length > 0);
+      const questions = generateQuestionsForPoints(targetPoints, "golden_pairs", 10, `gp_${Date.now()}`);
+      startNewSession("golden_pairs", "伝統的名配穴・ゴールデンペア特訓", questions, "batch");
     }
   };
 
@@ -533,9 +544,22 @@ function PracticePageContent() {
                   }`}
                 >
                   <div className="flex items-center justify-between text-xs text-[#737C77] mb-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
-                    <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                      第 {idx + 1} 問 / {totalQ}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                        第 {idx + 1} 問 / {totalQ}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EBF3EF] dark:bg-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E]">
+                        {q.skill === "puncture_method"
+                          ? "刺鍼手技・安全深度"
+                          : q.skill === "five_elements_shu"
+                          ? "五輸穴・五行"
+                          : q.skill === "golden_pairs"
+                          ? "伝統名配穴"
+                          : q.skill === "category_of_point"
+                          ? "要穴分類"
+                          : "部位・取穴法"}
+                      </span>
+                    </div>
                     <span className="text-[11px]">{q.meridianName}</span>
                   </div>
 
@@ -627,9 +651,22 @@ function PracticePageContent() {
           {/* 1問カード */}
           <div className="bg-white dark:bg-[#17212A] rounded-3xl border-2 border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 shadow-sm space-y-5">
             <div className="space-y-2">
-              <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
-                {currentQ.meridianName}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
+                  {currentQ.meridianName}
+                </span>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EBF3EF] dark:bg-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E]">
+                  {currentQ.skill === "puncture_method"
+                    ? "刺鍼手技・安全深度"
+                    : currentQ.skill === "five_elements_shu"
+                    ? "五輸穴・五行"
+                    : currentQ.skill === "golden_pairs"
+                    ? "伝統名配穴"
+                    : currentQ.skill === "category_of_point"
+                    ? "要穴分類"
+                    : "部位・取穴法"}
+                </span>
+              </div>
               <p className="text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5] font-medium leading-relaxed whitespace-pre-line">
                 {currentQ.prompt}
               </p>
@@ -877,6 +914,56 @@ function PracticePageContent() {
           </div>
         </div>
 
+        {/* 出題スキル・特訓テーマ切り替えタブ */}
+        <div className="bg-white dark:bg-[#17212A] p-4 sm:p-5 rounded-3xl border-2 border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span className="text-[10px] font-bold text-[#B86924] uppercase tracking-wider block">
+                Practice Skill Focus
+              </span>
+              <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
+                <Target className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+                <span>出題スキル・特訓テーマの選択</span>
+              </h3>
+            </div>
+            <span className="text-[11px] text-[#737C77]">
+              選択したスキルで十四経脈コースや復習が出題されます
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+            {[
+              { id: "mixed", label: "総合MIX特訓", desc: "全種別からランダム" },
+              { id: "location_to_name", label: "部位・取穴法", desc: "解剖骨性目印当て" },
+              { id: "puncture_method", label: "刺鍼手技・深度", desc: "深度・角度・気胸注意" },
+              { id: "five_elements_shu", label: "五輸穴・五行", desc: "井滎輸経合・木火土金水" },
+              { id: "golden_pairs", label: "伝統名配穴", desc: "四関・相乗効果ペア" },
+              { id: "category_of_point", label: "要穴分類", desc: "原絡郄募兪穴の暗記" },
+            ].map((sk) => {
+              const isSelected = selectedSkill === sk.id;
+              return (
+                <button
+                  key={sk.id}
+                  type="button"
+                  onClick={() => setSelectedSkill(sk.id as any)}
+                  className={`p-2.5 sm:p-3 rounded-2xl border text-left transition-all flex flex-col justify-between ${
+                    isSelected
+                      ? "bg-[#1E3D34] text-white border-[#1E3D34] shadow-sm"
+                      : "bg-[#FAF8F5] dark:bg-[#10171F] border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5] hover:border-[#1E3D34]/50"
+                  }`}
+                >
+                  <span className={`text-xs font-bold block ${isSelected ? "text-white" : "text-[#1E3D34] dark:text-[#74BA9E]"}`}>
+                    {sk.label}
+                  </span>
+                  <span className={`text-[10px] mt-0.5 line-clamp-1 ${isSelected ? "text-white/80" : "text-[#737C77]"}`}>
+                    {sk.desc}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* メインアクションCTA（優先順位：復習 ➜ 再開 ➜ 今日の10問） */}
         <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#1E3D34] to-[#162A24] text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-5">
           <div className="space-y-1">
@@ -974,14 +1061,32 @@ function PracticePageContent() {
           <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
             テーマ別・特別コース
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             <button
               type="button"
               onClick={() => startCourseSession("five_shu")}
               className="p-4 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] text-left transition-all space-y-1"
             >
-              <strong className="text-xs font-bold text-[#B86924] block">五兪穴特訓</strong>
-              <p className="text-[11px] text-[#737C77]">井・滎・輸・経・合穴の分類暗記</p>
+              <strong className="text-xs font-bold text-[#B86924] block">五兪穴・五行特訓</strong>
+              <p className="text-[11px] text-[#737C77]">井・滎・輸・経・合穴と五行属性</p>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => startCourseSession("puncture")}
+              className="p-4 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-left transition-all space-y-1"
+            >
+              <strong className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">刺鍼手技・深度特訓</strong>
+              <p className="text-[11px] text-[#737C77]">刺入深度・角度・気胸注意など</p>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => startCourseSession("golden_pairs")}
+              className="p-4 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-left transition-all space-y-1"
+            >
+              <strong className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">伝統名配穴ペア特訓</strong>
+              <p className="text-[11px] text-[#737C77]">四関など強力な相乗効果処方</p>
             </button>
 
             <button

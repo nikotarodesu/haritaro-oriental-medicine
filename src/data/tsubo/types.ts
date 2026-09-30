@@ -152,7 +152,13 @@ export interface NearbyPoint {
 
 // ==================== 学習・クイズ型定義 ====================
 
-export type StudySkillType = "location_to_name" | "meridian_of_point" | "category_of_point";
+export type StudySkillType = 
+  | "location_to_name" 
+  | "meridian_of_point" 
+  | "category_of_point"
+  | "puncture_method"
+  | "golden_pairs"
+  | "five_elements_shu";
 
 export type MasteryLevel = "unlearned" | "learning" | "confirmed" | "mastered";
 
