@@ -306,20 +306,52 @@ export default function LibraryClient() {
                           </span>
                         </div>
 
-                        <div className="p-3 rounded-xl bg-[#FCFBF8] dark:bg-[#141C24] border border-[#EFE8D8] dark:border-[#25323E] space-y-2">
-                          <p className="font-serif text-sm text-[#232826] dark:text-[#FAF8F5] leading-relaxed tracking-wide">
-                            {classic.original}
-                          </p>
-                          <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed border-t border-[#EFE8D8] dark:border-[#25323E] pt-2">
-                            {classic.translation}
-                          </p>
+                        <div className="p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#141C24] border border-[#EFE8D8] dark:border-[#25323E] space-y-2.5">
+                          <div>
+                            <span className="text-[10px] font-bold text-[#737C77] dark:text-[#8899A6] block mb-0.5">漢文原典：</span>
+                            <p className="font-serif text-sm text-[#232826] dark:text-[#FAF8F5] leading-relaxed tracking-wide">
+                              {classic.original}
+                            </p>
+                          </div>
+                          {classic.reading && (
+                            <div className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-2">
+                              <span className="text-[10px] font-bold text-[#B86924] dark:text-[#E6C387] block mb-0.5">訓読・書き下し：</span>
+                              <p className="font-serif text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                                {classic.reading}
+                              </p>
+                            </div>
+                          )}
+                          <div className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-2">
+                            <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-0.5">現代語訳：</span>
+                            <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
+                              {classic.translation}
+                            </p>
+                          </div>
                         </div>
 
-                        <div className="text-xs text-[#59615D] dark:text-[#96A6B2] bg-[#EBF3EF]/40 dark:bg-[#182823]/40 p-2.5 rounded-xl border border-[#C5DED4]/40 dark:border-[#2A5243]/40">
-                          <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-0.5">
-                            💡 臨床応用:
-                          </span>
-                          <span>{classic.clinicalApplication}</span>
+                        <div className="text-xs text-[#59615D] dark:text-[#96A6B2] bg-[#EBF3EF]/40 dark:bg-[#182823]/40 p-3 rounded-xl border border-[#C5DED4]/40 dark:border-[#2A5243]/40 space-y-1.5">
+                          <div>
+                            <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-0.5">
+                              💡 臨床応用・配穴根拠:
+                            </span>
+                            <span className="leading-relaxed">{classic.clinicalApplication}</span>
+                          </div>
+                          {classic.relatedPoints && classic.relatedPoints.length > 0 && (
+                            <div className="flex items-center gap-1.5 pt-1.5 border-t border-[#C5DED4]/40 dark:border-[#2A5243]/40">
+                              <span className="text-[10px] font-bold text-[#737C77] dark:text-[#8899A6]">連動経穴:</span>
+                              <div className="flex flex-wrap gap-1">
+                                {classic.relatedPoints.map(pt => (
+                                  <Link
+                                    key={pt}
+                                    href={`/tsubo/${pt.toLowerCase()}`}
+                                    className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-white dark:bg-[#1A2632] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#74BA9E] hover:underline"
+                                  >
+                                    {pt}
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
 

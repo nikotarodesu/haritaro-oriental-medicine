@@ -23,6 +23,8 @@ import {
   X,
   BookOpen,
   FileText,
+  GraduationCap,
+  Activity,
 } from "lucide-react";
 import { saveDraftPatientNote } from "@/utils/draftNote";
 import { trackEvent } from "@/utils/analytics";
@@ -328,6 +330,54 @@ export default function CurriculumLectureReader({ lecture }: Props) {
           idPrefix="curriculum-heading"
           resolvedReferences={resolvedReferences}
         />
+
+        {/* 国家試験出題チェックポイント（あん摩・はり師・きゅう師） */}
+        {lecture.nationalExamPoints && lecture.nationalExamPoints.length > 0 && (
+          <div className="bg-[#FAF8F5] dark:bg-[#152029] rounded-2xl border-2 border-emerald-600/30 dark:border-emerald-500/30 p-4 sm:p-6 shadow-2xs space-y-3">
+            <div className="flex items-center justify-between border-b border-[#E8DEC9] dark:border-[#223342] pb-2.5">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+                <span>国家試験 出題チェックポイント（はり師・きゅう師・あはき）</span>
+              </div>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
+                過去問頻出論点
+              </span>
+            </div>
+            <ul className="space-y-2 text-xs sm:text-sm text-[#333835] dark:text-[#C5D2DB]">
+              {lecture.nationalExamPoints.map((pt, idx) => (
+                <li key={idx} className="flex items-start gap-2.5">
+                  <span className="w-4 h-4 rounded-full bg-emerald-700 dark:bg-emerald-600 text-white text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                    ✓
+                  </span>
+                  <span className="leading-relaxed font-medium">{pt}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* 現代医学・生理学との統合考察（EBM / Integrative Medicine） */}
+        {lecture.integrativeMedicine && (
+          <div className="bg-[#FFFFFF] dark:bg-[#121920] rounded-2xl border border-[#D5E4DB] dark:border-[#243F36] p-4 sm:p-6 shadow-2xs space-y-3">
+            <div className="flex items-center justify-between border-b border-[#F0EBE0] dark:border-[#20302B] pb-2.5">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                <Activity className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <span>現代生理学・解剖学との統合的考察（Integrative Medicine）</span>
+              </div>
+              <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                メカニズム解説
+              </span>
+            </div>
+            <div className="space-y-1.5">
+              <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
+                【対応する現代生理学的概念】：{lecture.integrativeMedicine.focus}
+              </span>
+              <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                {lecture.integrativeMedicine.explanation}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* レッスン理解度チェック（クイズ演習） */}
         {CURRICULUM_QUIZZES[lecture.id] && (

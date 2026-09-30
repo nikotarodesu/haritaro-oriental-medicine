@@ -237,6 +237,10 @@ export interface AcupointMaster {
   indications: string[]; // 主治症
   categories: string[]; // ["原穴", "四総穴", "四関穴"]
   clinicalNote: string; // はり太郎の臨床知見
+  punctureMethod?: string; // 刺鍼深度・角度（例: "直刺 0.3〜0.5寸。酸脹感を手先へ放散させる。"）
+  moxibustion?: string; // 施灸法（例: "灸3〜5壮、温灸5〜10分"）
+  fiveElementsCategory?: string; // 五輸穴五行属性（例: "井金穴", "滎水穴", "兪木穴", "経火穴", "合土穴"）
+  goldenPairs?: { partnerCode: string; partnerName: string; prescriptionName: string; effect: string }[]; // 臨床ゴールデンペア
   caution?: string; // 禁忌・注意事項
   status: AcupointStatus;
   hasDetailedAnatomy: boolean;

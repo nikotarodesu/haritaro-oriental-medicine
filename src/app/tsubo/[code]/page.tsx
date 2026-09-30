@@ -35,7 +35,8 @@ import {
   Flame,
   Hand,
   GraduationCap,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Crosshair
 } from "lucide-react";
 import { SYMPTOMS } from "@/data/symptomData";
 import { getLecturesForAcupoint } from "@/utils/acupointCurriculumMatcher";
@@ -731,6 +732,81 @@ export default async function AcupointDetailPage({ params }: Props) {
               ※伝統的な鍼灸臨床の知見および文献的考察に基づく参考情報です。実際の施術にあたっては患者個々の体格・病態や触診所見を最優先としてください。
             </p>
           </div>
+
+          {/* 臨床運針・刺鍼手技ガイド（深度・角度・施灸適応） */}
+          {(point.punctureMethod || point.moxibustion) && (
+            <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs space-y-3">
+              <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-2.5">
+                <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                  <Crosshair className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                  <span>臨床運針・刺鍼手技ガイド（針灸専門指標）</span>
+                </div>
+                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                  国家試験出題基準・臨床安全深度準拠
+                </span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                {point.punctureMethod && (
+                  <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#16222C] border border-[#E8E1D1] dark:border-[#2A3B4A] space-y-1">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                      <span className="w-2 h-2 rounded-full bg-[#1E3D34] dark:bg-[#74BA9E]"></span>
+                      <span>刺鍼手技・推奨深度・角度</span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-[#333835] dark:text-[#C5D2DB] leading-relaxed pl-3.5">
+                      {point.punctureMethod}
+                    </p>
+                  </div>
+                )}
+                {point.moxibustion && (
+                  <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#16222C] border border-[#E8E1D1] dark:border-[#2A3B4A] space-y-1">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
+                      <Flame className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                      <span>施灸適応・壮数・温灸</span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-[#333835] dark:text-[#C5D2DB] leading-relaxed pl-3.5">
+                      {point.moxibustion}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* 臨床ゴールデンペア（名配穴・相乗効果） */}
+          {point.goldenPairs && point.goldenPairs.length > 0 && (
+            <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#FAF8F5] to-[#F3EFE6] dark:from-[#152028] dark:to-[#17222B] border border-[#DED6C5] dark:border-[#2D3E50] space-y-3">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                <GitCompare className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <span>臨床ゴールデンペア（伝統的名配穴・相乗効果処方）</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                {point.goldenPairs.map((pair, idx) => (
+                  <div
+                    key={idx}
+                    className="p-3.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5 flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
+                          【{pair.prescriptionName}】
+                        </span>
+                        <Link
+                          href={`/tsubo/${pair.partnerCode.toLowerCase()}`}
+                          className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline inline-flex items-center gap-1"
+                        >
+                          <span>＋ {pair.partnerName}（{pair.partnerCode}）</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </Link>
+                      </div>
+                      <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed mt-1">
+                        {pair.effect}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* EBM・科学研究エビデンス */}
           {point.researchEvidence && (

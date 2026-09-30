@@ -25,16 +25,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第1肋間と同じ高さ、鎖骨下窩の外側、前正中線の外方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肺経の関連症状",
-      "局所疼痛・機能調整"
+      "咳嗽・気喘・気管支炎",
+      "胸痛・胸部満悶感",
+      "肩背部痛・五十肩初期",
+      "鎖骨下窩の圧痛・呼吸浅表"
     ],
     "categories": [
       "肺の募穴",
       "交会穴（手足太陰）"
     ],
-    "clinicalNote": "手の太陰肺経の第1穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "肺の宣発・粛降作用を整え、気管支・呼吸器の鬱滞を解消する。外邪による表証の初期発汗や、呼吸困難・咳嗽の気機下行に多用される。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "lu2",
@@ -54,13 +58,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、鎖骨下窩の陥凹部、烏口突起の内側、前正中線の外方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肺経の関連症状",
-      "局所疼痛・機能調整"
+      "咳嗽・気喘・喀痰",
+      "胸痛・肋間神経痛",
+      "肩関節周囲炎・腕の挙上不能"
     ],
     "categories": [],
-    "clinicalNote": "手の太陰肺経の第2穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "肺の宣発・粛降作用を整え、気管支・呼吸器の鬱滞を解消する。外邪による表証の初期発汗や、呼吸困難・咳嗽の気機下行に多用される。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "lu3",
@@ -80,13 +87,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腕前外側、上腕二頭筋外側縁、腋窩横紋前端の下方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肺経の関連症状",
-      "局所疼痛・機能調整"
+      "咳嗽・気喘・喘鳴",
+      "上腕前外側痛・五十肩",
+      "鼻出血・嗅覚異常"
     ],
     "categories": [],
-    "clinicalNote": "手の太陰肺経の第3穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "肺の宣発・粛降作用を整え、気管支・呼吸器の鬱滞を解消する。外邪による表証の初期発汗や、呼吸困難・咳嗽の気機下行に多用される。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lu4",
@@ -106,13 +116,15 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腕前外側、上腕二頭筋外側縁、腋窩横紋前端の下方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肺経の関連症状",
-      "局所疼痛・機能調整"
+      "咳嗽・喀血・胸痛",
+      "上腕内側面痛・息切れ"
     ],
     "categories": [],
-    "clinicalNote": "手の太陰肺経の第4穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "肺の宣発・粛降作用を整え、気管支・呼吸器の鬱滞を解消する。外邪による表証の初期発汗や、呼吸困難・咳嗽の気機下行に多用される。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lu5",
@@ -132,17 +144,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肘窩横紋上、上腕二頭筋腱の橈側陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "激しい咳・喘息・咽頭痛",
-      "気管支炎",
-      "肘関節痛",
-      "胸苦しさ・潮熱"
+      "咳嗽・気喘・喀血",
+      "咽喉腫痛・急性気管支炎",
+      "肘関節炎・肘屈伸痛",
+      "小児のひきつけ・高熱"
     ],
     "categories": [
       "合水穴"
     ],
     "clinicalNote": "肺経の合水穴。「実すればその子を瀉す」の原則に従い、肺熱・上気道炎・激しい咳を急速に鎮静（清熱降気）させる瀉法の名穴。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "合水穴",
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lu6",
@@ -162,15 +177,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕前外側、尺沢と太淵を結ぶ線上、手関節掌側横紋の上方7寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肺経の関連症状",
-      "局所疼痛・機能調整"
+      "急性喀血・激しい咳嗽・喘息発作",
+      "咽喉腫痛・声枯れ",
+      "前腕橈側痛・肘屈曲障害",
+      "痔出血"
     ],
     "categories": [
       "郄穴"
     ],
-    "clinicalNote": "手の太陰肺経の第6穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "肺の宣発・粛降作用を整え、気管支・呼吸器の鬱滞を解消する。外邪による表証の初期発汗や、呼吸困難・咳嗽の気機下行に多用される。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lu7",
@@ -190,20 +209,31 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕橈側、茎状突起の上方、長母指外転筋腱と短母指伸筋腱の間、手関節掌側横紋の上方1寸5分。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭痛・項背部痛",
-      "風邪の初期症状（寒気・鼻水）",
-      "咳・喘息",
-      "顔面神経麻痺",
-      "喉の痛み"
+      "頭痛・片頭痛・後頭部痛",
+      "項部硬直・寝違え",
+      "顔面神経麻痺・三叉神経痛",
+      "咳嗽・感冒・鼻炎",
+      "手関節腱鞘炎"
     ],
     "categories": [
       "絡穴",
       "八脈交会穴（任脈に通ず）",
-      "四総穴（頭項を治す）"
+      "四総穴（頭項を治す）",
+      "四総穴（頭項）"
     ],
     "clinicalNote": "「頭項は列缺に尋ねよ」。肺経の絡穴であり任脈に通じる。風池と組み合わせることで体表を侵襲した風寒の邪気を発散（宣肺解表）させ、初期の風邪や後頭部痛を即座に緩解する。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "goldenPairs": [
+      {
+        "partnerCode": "KI6",
+        "partnerName": "照海",
+        "prescriptionName": "八脈交会配穴（任脈・陰蹻）",
+        "effect": "喉の痛み・乾燥、嗄声（声枯れ）、喘息、胸部閉塞感を平定する"
+      }
+    ],
+    "punctureMethod": "直刺 0.3〜0.5寸。骨間隙に沿って刺入し特有の響きを得る。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lu8",
@@ -223,15 +253,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕前外側、橈骨茎状突起の内側で橈骨動脈の拍動部、手関節掌側横紋の上方1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肺経の関連症状",
-      "局所疼痛・機能調整"
+      "咳嗽・気喘・喉の閉塞感",
+      "胸痛・無脈症",
+      "手関節掌側橈側痛"
     ],
     "categories": [
       "経金穴"
     ],
-    "clinicalNote": "手の太陰肺経の第8穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "肺の宣発・粛降作用を整え、気管支・呼吸器の鬱滞を解消する。外邪による表証の初期発汗や、呼吸困難・咳嗽の気機下行に多用される。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "経金穴",
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lu9",
@@ -251,17 +285,23 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手関節前外側、橈骨茎状突起と舟状骨の間の陥凹部、長母指外転筋腱の尺側、手関節掌側横紋上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肺経の関連症状",
-      "局所疼痛・機能調整"
+      "咳嗽・慢性気管支炎・肺気虚",
+      "動脈硬化・無脈症・血行障害",
+      "咽喉乾燥・声枯れ",
+      "手関節橈側痛・腱鞘炎"
     ],
     "categories": [
+      "兪土穴・原穴",
       "原穴",
       "輸土穴",
       "八会穴（脈会）"
     ],
-    "clinicalNote": "手の太陰肺経の第9穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "肺の宣発・粛降作用を整え、気管支・呼吸器の鬱滞を解消する。外邪による表証の初期発汗や、呼吸困難・咳嗽の気機下行に多用される。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "兪土穴・原穴",
+    "punctureMethod": "直刺 0.3〜0.5寸。骨間隙に沿って刺入し特有の響きを得る。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lu10",
@@ -281,15 +321,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手掌、第1中手骨中点の橈側、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肺経の関連症状",
-      "局所疼痛・機能調整"
+      "咽喉腫痛・急性咽頭炎・発熱",
+      "咳嗽・喀血・声枯れ",
+      "母指球筋萎縮・母指CM関節症",
+      "掌のほてり"
     ],
     "categories": [
       "滎火穴"
     ],
-    "clinicalNote": "手の太陰肺経の第10穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "肺の宣発・粛降作用を整え、気管支・呼吸器の鬱滞を解消する。外邪による表証の初期発汗や、呼吸困難・咳嗽の気機下行に多用される。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "滎火穴",
+    "punctureMethod": "直刺 0.3〜0.5寸。骨間隙に沿って刺入し特有の響きを得る。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lu11",
@@ -309,15 +354,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手母指末節骨橈側、爪甲角の近位外方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肺経の関連症状",
-      "局所疼痛・機能調整"
+      "急性扁桃炎・咽頭浮腫・咽痛",
+      "高熱・中暑・昏睡の救急蘇生",
+      "小児の疳の虫・ひきつけ",
+      "鼻出血"
     ],
     "categories": [
       "井木穴"
     ],
-    "clinicalNote": "手の太陰肺経の第11穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "肺の宣発・粛降作用を整え、気管支・呼吸器の鬱滞を解消する。外邪による表証の初期発汗や、呼吸困難・咳嗽の気機下行に多用される。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "井木穴",
+    "punctureMethod": "直刺 0.1〜0.2寸、または三稜針・微小鍼による点刺出血。",
+    "moxibustion": "糸状灸・米粒大灸3〜5壮。熱病や急性炎症には点刺出血を優先。"
   },
   {
     "id": "li1",
@@ -337,15 +387,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手示指末節骨橈側、爪甲角の近位外方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "急性歯痛・歯肉炎",
+      "咽喉腫痛・扁桃炎",
+      "高熱・昏睡救急",
+      "示指麻痺・指関節痛"
     ],
     "categories": [
       "井金穴"
     ],
-    "clinicalNote": "手の陽明大腸経の第1穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "井金穴",
+    "punctureMethod": "直刺 0.1〜0.2寸、または三稜針・微小鍼による点刺出血。",
+    "moxibustion": "糸状灸・米粒大灸3〜5壮。熱病や急性炎症には点刺出血を優先。"
   },
   {
     "id": "li2",
@@ -365,15 +420,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "示指橈側、第2中手指節関節の遠位陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "目のかすみ・充血",
+      "歯痛・咽喉痛",
+      "発熱・口渇",
+      "手背痛・指関節のこわばり"
     ],
     "categories": [
       "滎水穴"
     ],
-    "clinicalNote": "手の陽明大腸経の第2穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "滎水穴",
+    "punctureMethod": "直刺 0.3〜0.5寸。骨間隙に沿って刺入し特有の響きを得る。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li3",
@@ -393,15 +453,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "示指橈側、第2中手指節関節の近位陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "歯痛・三叉神経痛",
+      "眼痛・結膜炎",
+      "示指・手背の腫脹と疼痛",
+      "腹部膨満・下痢"
     ],
     "categories": [
+      "兪木穴",
       "輸木穴"
     ],
-    "clinicalNote": "手の陽明大腸経の第3穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "兪木穴",
+    "punctureMethod": "直刺 0.3〜0.5寸。骨間隙に沿って刺入し特有の響きを得る。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li4",
@@ -421,23 +487,39 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "第2中手骨中点の橈側（親指側）の陥凹部。第1・第2中手骨底の交点から前方に取穴する。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭痛",
-      "歯痛",
-      "目の充血・疲れ",
-      "肩こり",
-      "顔面神経麻痺",
-      "便秘・腹痛",
-      "自律神経調整"
+      "頭痛・片頭痛・緊張型頭痛",
+      "歯痛・抜歯後痛・三叉神経痛",
+      "顔面神経麻痺・口眼歪斜",
+      "便秘・腹痛・消化器不調",
+      "眼精疲労・鼻炎・風邪初期"
     ],
     "categories": [
       "原穴",
       "四総穴（面目を治す）",
-      "四関穴"
+      "四関穴",
+      "四総穴（面目）"
     ],
     "clinicalNote": "「面目は合谷に収む」と古来より伝わる頭部・顔面症状の特効穴。気の滞りを劇的に散らし、鎮痛・消炎作用に優れる。臨床では太衝と組み合わせて「四関」として開通させる手技が極めて有効。",
     "caution": "強力な降気・子宮収縮促進作用があるため、妊娠中の強い刺激は禁忌。",
     "status": "published",
-    "hasDetailedAnatomy": true
+    "hasDetailedAnatomy": true,
+    "fiveElementsCategory": "原穴",
+    "goldenPairs": [
+      {
+        "partnerCode": "LR3",
+        "partnerName": "太衝",
+        "prescriptionName": "四関穴",
+        "effect": "気血を全身へ開通させ、激しい頭痛・めまい・精神抑鬱・痙攣を鎮める"
+      },
+      {
+        "partnerCode": "LU7",
+        "partnerName": "列缺",
+        "prescriptionName": "原絡配穴（肺大腸）",
+        "effect": "表裏同治として感冒の初期症状、悪寒、頭痛、鼻炎を即座に散らす"
+      }
+    ],
+    "punctureMethod": "直刺 0.3〜0.5寸。骨間隙に沿って刺入し特有の響きを得る。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li5",
@@ -457,15 +539,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手関節後外側、解剖学的嗅ぎタバコ入れ（スナッフボックス）の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "頭痛・耳鳴・難聴",
+      "歯痛・眼充血",
+      "手関節背側橈側痛・腱鞘炎",
+      "小児の消化不良"
     ],
     "categories": [
       "経火穴"
     ],
-    "clinicalNote": "手の陽明大腸経の第5穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "経火穴",
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li6",
@@ -485,15 +572,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後外側、陽渓と曲池を結ぶ線上、手関節背側横紋の上方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "耳鳴・耳痛・難聴",
+      "鼻出血・鼻炎",
+      "水腫・排尿困難",
+      "前腕痛・腕の脱力"
     ],
     "categories": [
       "絡穴"
     ],
-    "clinicalNote": "手の陽明大腸経の第6穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li7",
@@ -513,15 +604,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後外側、陽渓と曲池を結ぶ線上、手関節背側横紋の上方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "急性頭痛・顔面浮腫",
+      "咽喉腫痛・舌炎",
+      "腸鳴・急性腹痛",
+      "前腕外側痛"
     ],
     "categories": [
       "郄穴"
     ],
-    "clinicalNote": "手の陽明大腸経の第7穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li8",
@@ -541,13 +636,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後外側、陽渓と曲池を結ぶ線上、肘窩横紋の下方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・大腸経部の疼痛・腫脹・運動制限",
+      "歯痛・抜歯後疼痛",
+      "頭痛・顔面神経麻痺",
+      "咽喉腫痛・鼻炎・鼻出血",
+      "便秘・腹痛・下痢"
     ],
     "categories": [],
-    "clinicalNote": "手の陽明大腸経の第8穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li9",
@@ -567,13 +667,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後外側、陽渓と曲池を結ぶ線上、肘窩横紋の下方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・大腸経部の疼痛・腫脹・運動制限",
+      "歯痛・抜歯後疼痛",
+      "頭痛・顔面神経麻痺",
+      "咽喉腫痛・鼻炎・鼻出血",
+      "便秘・腹痛・下痢"
     ],
     "categories": [],
-    "clinicalNote": "手の陽明大腸経の第9穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li10",
@@ -593,17 +698,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後外側面、曲池（LI11）の下方2寸、橈骨小頭下縁の高さ。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頑固な首こり・肩こり",
-      "テニス肘・前腕疲労",
-      "胃腸の張り",
-      "歯痛"
+      "肘関節痛・テニス肘（外側上顆炎）",
+      "前腕・示指の麻痺・脱力",
+      "消化不良・胃もたれ",
+      "肩こり・首の張り"
     ],
     "categories": [
       "陽明経の要穴"
     ],
     "clinicalNote": "曲池や合谷と同時に選ばれがちだが、局所の筋硬結・上肢過労に対する標治穴として独立した切れ味を持つ。選びすぎると上肢への刺激が過密になり、気の散乱を招く代表穴。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li11",
@@ -623,19 +730,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "尺沢と上腕骨外側上顆を結ぶ線の中点。肘窩横紋外端の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "皮膚のかゆみ・湿疹",
-      "高血圧",
-      "発熱・のどの痛み",
-      "肩・腕の痛み",
-      "便秘",
-      "テニス肘"
+      "高熱・急性炎症・皮膚炎（アトピー・蕁麻疹）",
+      "高血圧・自律神経興奮",
+      "テニス肘・肘関節痛",
+      "上肢麻痺・五十肩",
+      "便秘・腹痛"
     ],
     "categories": [
       "合土穴"
     ],
     "clinicalNote": "清熱解表（熱を冷まし炎症を抑える）の要穴。アトピー性皮膚炎や蕁麻疹など皮膚疾患の痒み止めとして臨床上多用される。腸内環境と皮膚の関連（肺大腸相表裏）を象徴するツボ。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "合土穴",
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li12",
@@ -655,13 +764,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肘後外側、上腕骨外側上顆の上縁、上腕骨外側顆上稜の前縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・大腸経部の疼痛・腫脹・運動制限",
+      "歯痛・抜歯後疼痛",
+      "頭痛・顔面神経麻痺",
+      "咽喉腫痛・鼻炎・鼻出血",
+      "便秘・腹痛・下痢"
     ],
     "categories": [],
-    "clinicalNote": "手の陽明大腸経の第12穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li13",
@@ -681,13 +795,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腕外側、曲池と肩髃を結ぶ線上、肘窩横紋の上方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・大腸経部の疼痛・腫脹・運動制限",
+      "歯痛・抜歯後疼痛",
+      "頭痛・顔面神経麻痺",
+      "咽喉腫痛・鼻炎・鼻出血",
+      "便秘・腹痛・下痢"
     ],
     "categories": [],
-    "clinicalNote": "手の陽明大腸経の第13穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li14",
@@ -707,13 +826,17 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腕外側、三角筋の前縁、曲池の上方7寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "肩関節周囲炎・三角筋付着部炎",
+      "上肢挙上不能・五十肩",
+      "頸部リンパ節腫脹",
+      "眼病・かすみ目"
     ],
     "categories": [],
-    "clinicalNote": "手の陽明大腸経の第14穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li15",
@@ -733,15 +856,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肩周囲部、肩峰外縁の前端と大結節の間の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "肩関節周囲炎・五十肩・腱板炎",
+      "上肢痛・挙上困難",
+      "頚肩部強直・寝違え",
+      "蕁麻疹・皮膚掻痒感"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "手の陽明大腸経の第15穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li16",
@@ -761,15 +888,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肩周囲部、鎖骨肩峰端と肩甲棘の間の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "首・肩・大腸経部の疼痛・腫脹・運動制限",
+      "歯痛・抜歯後疼痛",
+      "頭痛・顔面神経麻痺",
+      "咽喉腫痛・鼻炎・鼻出血",
+      "便秘・腹痛・下痢"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "手の陽明大腸経の第16穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li17",
@@ -789,13 +921,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、輪状軟骨と同じ高さ、胸鎖乳突筋の後縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "首・肩・大腸経部の疼痛・腫脹・運動制限",
+      "歯痛・抜歯後疼痛",
+      "頭痛・顔面神経麻痺",
+      "咽喉腫痛・鼻炎・鼻出血",
+      "便秘・腹痛・下痢"
     ],
     "categories": [],
-    "clinicalNote": "手の陽明大腸経の第17穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li18",
@@ -815,13 +952,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、甲状軟骨上縁と同じ高さ、胸鎖乳突筋の前縁と後縁の間の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "首・肩・大腸経部の疼痛・腫脹・運動制限",
+      "歯痛・抜歯後疼痛",
+      "頭痛・顔面神経麻痺",
+      "咽喉腫痛・鼻炎・鼻出血",
+      "便秘・腹痛・下痢"
     ],
     "categories": [],
-    "clinicalNote": "手の陽明大腸経の第18穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "li19",
@@ -841,13 +983,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、人中溝の中点と同じ高さ、鼻孔外縁の直下。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・大腸経部の疼痛・腫脹・運動制限",
+      "歯痛・抜歯後疼痛",
+      "頭痛・顔面神経麻痺",
+      "咽喉腫痛・鼻炎・鼻出血",
+      "便秘・腹痛・下痢"
     ],
     "categories": [],
-    "clinicalNote": "手の陽明大腸経の第19穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸。顔面神経・顔面動静脈を避けて愛護的に操作。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "li20",
@@ -867,15 +1014,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、鼻翼外縁の中点と同じ高さ、鼻唇溝中。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "大腸経の関連症状",
-      "局所疼痛・機能調整"
+      "鼻閉（鼻づまり）・アレルギー性鼻炎",
+      "副鼻腔炎（蓄膿症）・嗅覚減退",
+      "顔面神経麻痺・口眼歪斜",
+      "鼻出血・美肌効果（顔面血流促進）"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "手の陽明大腸経の第20穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "大腸経の経気を通して頭面部・五官（目・鼻・歯・喉）の熱邪を清解し、腑気を通して便通や消化器の停滞を疏通する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸。顔面神経・顔面動静脈を避けて愛護的に操作。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "st1",
@@ -895,15 +1046,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、眼球と眼窩下縁の間、瞳孔の直下。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "眼精疲労・視力低下・目の充血",
+      "顔面神経麻痺・眼瞼痙攣",
+      "結膜炎・夜盲症・近視"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の陽明胃経の第1穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "患者に上を見させ、検者の指で眼球を愛護的に上方へ押し上げながら眼窩下壁に沿って直刺 0.3〜0.7寸。提挿・回旋は厳禁。抜針後は圧迫止血を徹底。",
+    "moxibustion": "直接灸・温灸ともに原則禁忌（眼球熱傷・結膜充血防止）。温罨法のみ。"
   },
   {
     "id": "st2",
@@ -923,13 +1077,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、眼窩下孔部、瞳孔の直下。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "三叉神経痛（第2枝）・顔面神経麻痺",
+      "眼瞼痙攣・副鼻腔炎",
+      "歯痛・口内炎"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第2穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "浅刺（直刺または斜刺 0.2〜0.4寸）。血管損傷・皮下出血に配慮し愛護的に刺入。",
+    "moxibustion": "直接灸・温灸ともに原則禁忌（眼球熱傷・結膜充血防止）。温罨法のみ。"
   },
   {
     "id": "st3",
@@ -949,15 +1106,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、瞳孔の直下、鼻翼下縁と同じ高さ。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の陽明胃経の第3穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸。顔面神経・顔面動静脈を避けて愛護的に操作。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "st4",
@@ -977,15 +1139,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、口角の外方0.4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "顔面神経麻痺・口角下垂・流涎",
+      "三叉神経痛（第2・3枝）",
+      "歯痛・顎関節症"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の陽明胃経の第4穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸。顔面神経・顔面動静脈を避けて愛護的に操作。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "st5",
@@ -1005,13 +1170,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、下顎角の前方、咬筋付着部の前方陥凹部、顔面動脈の拍動部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第5穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "st6",
@@ -1031,13 +1201,17 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、下顎角の前上方1横指（中指）。噛みしめると咬筋が隆起するところ。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "歯痛・下顎骨痛",
+      "顎関節症・開口障害",
+      "顔面神経麻痺・口眼歪斜",
+      "耳下腺炎（おたふくかぜ）"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第6穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "st7",
@@ -1057,15 +1231,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、頬骨弓の下縁中央と下顎切痕の間の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "顎関節症・開口時雑音・咀嚼筋痛",
+      "耳鳴・耳痛・難聴",
+      "顔面神経麻痺・三叉神経痛",
+      "歯痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の陽明胃経の第7穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "st8",
@@ -1085,15 +1263,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、額角髪際の上方0.5寸、前神庭の外方4.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "頭痛・めまい・片頭痛",
+      "眼精疲労・かすみ目",
+      "顔面神経痛・精神疲労"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の陽明胃経の第8穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "st9",
@@ -1113,15 +1294,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、甲状軟骨上縁と同じ高さ、胸鎖乳突筋の前縁、総頸動脈の拍動部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "首・肩・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の陽明胃経の第9穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st10",
@@ -1141,13 +1327,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、輪状軟骨と同じ高さ、胸鎖乳突筋の前縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "首・肩・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第10穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st11",
@@ -1167,13 +1358,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、小鎖骨上窩、鎖骨胸骨端の上方、胸鎖乳突筋の胸骨頭と鎖骨頭の間の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "首・肩・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第11穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st12",
@@ -1193,13 +1389,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、大鎖骨上窩、鎖骨上方の陥凹部、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "咳・気喘・咽喉閉塞感",
+      "頸肩腕症候群・胸郭出口症候群",
+      "鎖骨上窩痛・息切れ"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第12穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（胸郭外方へ向ける）。直刺深刺による気胸を避けるため細心の注意を払う。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st13",
@@ -1219,13 +1418,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、鎖骨下縁、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第13穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st14",
@@ -1245,13 +1449,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第1肋間、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第14穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st15",
@@ -1271,13 +1480,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第2肋間、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第15穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st16",
@@ -1297,13 +1511,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第3肋間、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第16穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st17",
@@ -1323,13 +1542,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第4肋間、乳頭中央。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第17穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st18",
@@ -1349,13 +1573,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第5肋間、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第18穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st19",
@@ -1375,13 +1604,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方6寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第19穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st20",
@@ -1401,13 +1635,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方5寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第20穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st21",
@@ -1427,13 +1666,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方4寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "急性・慢性胃炎・胃痛",
+      "胃もたれ・食欲不振・嘔吐",
+      "胃潰瘍・十二指腸潰瘍"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第21穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.2寸。肝脾腫大がないか触診で確認し、腹壁厚に応じて深度を調整。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st22",
@@ -1453,13 +1695,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方3寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第22穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st23",
@@ -1479,13 +1726,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方2寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第23穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st24",
@@ -1505,13 +1757,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方1寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第24穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st25",
@@ -1531,17 +1788,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腹部、臍中央の外方2寸。腹直筋上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "便秘・下痢・過敏性腸症候群",
-      "腹部膨満・ガス腹",
-      "慢性胃腸炎",
-      "月経痛・骨盤内うっ血"
+      "便秘・宿便・下痢・過敏性腸症候群",
+      "急性・慢性腸炎・腹痛",
+      "月経不順・月経困難症",
+      "腹部膨満・臍周囲痛"
     ],
     "categories": [
       "大腸の募穴"
     ],
     "clinicalNote": "天地の枢（かなめ）。大腸の気が集まる募穴であり、便秘にも下痢にも両方向に働く自律神経調整の名穴。中脘や足三里と多穴で選ばれがちだが、腸内停滞に特化して単独で用いると切れ味が増す。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st26",
@@ -1561,13 +1820,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方1寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第26穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st27",
@@ -1587,13 +1851,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方2寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第27穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st28",
@@ -1613,13 +1882,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方3寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第28穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st29",
@@ -1639,13 +1913,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方4寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第29穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st30",
@@ -1665,15 +1944,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "鼠径部、恥骨結合上縁と同じ高さ、前正中線の外方2寸、大腿動脈拍動部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の陽明胃経の第30穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "st31",
@@ -1693,13 +1977,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿前面、上前腸骨棘と膝蓋骨底外端を結ぶ線上、殿溝と同じ高さの陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第31穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st32",
@@ -1719,13 +2008,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿前外側、上前腸骨棘と膝蓋骨外端を結ぶ線上、膝蓋骨底の上方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第32穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st33",
@@ -1745,13 +2039,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿前外側、大腿直筋腱の外側、膝蓋骨底の上方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第33穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st34",
@@ -1771,15 +2070,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿前外側、外側広筋と大腿直筋腱外縁の間、膝蓋骨底の上方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "急性胃痛・胃痙攣・胃酸過多",
+      "乳腺炎・乳房痛",
+      "膝関節痛・大腿四頭筋痙攣",
+      "下肢麻痺"
     ],
     "categories": [
       "郄穴"
     ],
-    "clinicalNote": "足の陽明胃経の第34穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st35",
@@ -1799,13 +2102,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "膝前面、膝蓋靭帯外側の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第35穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st36",
@@ -1825,23 +2133,39 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "犢鼻（膝蓋靭帯外側の陥凹部）の下3寸、前脛骨筋上。脛骨前縁の外側約1横指（中指幅）。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃痛・胃もたれ",
-      "食欲不振",
-      "消化不良",
-      "下痢・便秘",
-      "慢性疲労",
-      "下肢倦怠感",
-      "免疫力向上"
+      "急性・慢性胃炎・胃痛・胃もたれ",
+      "食欲不振・消化不良・腹部膨満",
+      "下痢・便秘・過敏性腸症候群",
+      "全身倦怠感・虚弱体質・免疫力低下",
+      "膝関節痛・下肢麻痺・歩行困難"
     ],
     "categories": [
       "合土穴",
       "胃の下合穴",
-      "四総穴（腹を治す）"
+      "四総穴（腹を治す）",
+      "四総穴（肚腹）"
     ],
     "clinicalNote": "古来より「三里に灸せざる者とは旅をするな」と言われる無病息災・長寿の代表穴。脾胃（消化吸収機能）の働きを底上げし、後天の気（エネルギー）を補給する万能穴。",
     "caution": "特に重篤な禁忌はないが、虚弱が極端な場合は強刺激を避け、温灸が適す。",
     "status": "published",
-    "hasDetailedAnatomy": true
+    "hasDetailedAnatomy": true,
+    "fiveElementsCategory": "合土穴",
+    "goldenPairs": [
+      {
+        "partnerCode": "CV12",
+        "partnerName": "中脘",
+        "prescriptionName": "脾胃協調配穴",
+        "effect": "後天の気（消化吸収）を最大化し、慢性疲労・胃痛・食欲不振を改善する"
+      },
+      {
+        "partnerCode": "SP6",
+        "partnerName": "三陰交",
+        "prescriptionName": "気血双補配穴",
+        "effect": "脾胃と肝腎を同時に養い、全身の気血虚弱、貧血、立ちくらみを補う"
+      }
+    ],
+    "punctureMethod": "直刺 1.0〜1.5寸。前脛骨筋の筋腹に刺入し下肢前面への響きを得る。",
+    "moxibustion": "灸5〜9壮、または台座灸・温灸10〜15分。温陽補気・養生灸に極めて適す。"
   },
   {
     "id": "st37",
@@ -1861,15 +2185,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿前外側、犢鼻と解渓を結ぶ線上、犢鼻の下方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "慢性下痢・便秘・過敏性腸症候群",
+      "虫垂炎初期・急性腸炎",
+      "下肢麻痺・すねの痛み"
     ],
     "categories": [
       "大腸の下合穴"
     ],
-    "clinicalNote": "足の陽明胃経の第37穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st38",
@@ -1889,13 +2216,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿前外側、犢鼻と解渓を結ぶ線上、犢鼻の下方8寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [],
-    "clinicalNote": "足の陽明胃経の第38穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st39",
@@ -1915,15 +2247,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿前外側、犢鼻と解渓を結ぶ線上、犢鼻の下方9寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "小腸気痛・下腹部痛",
+      "精巣痛・鼠径ヘルニア",
+      "下肢脱力・坐骨神経痛"
     ],
     "categories": [
       "小腸の下合穴"
     ],
-    "clinicalNote": "足の陽明胃経の第39穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st40",
@@ -1943,18 +2278,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿前外側、前脛骨筋外縁、外果尖の上方8寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "痰が多い咳・気管支炎",
-      "頭重感・めまい",
-      "高脂血症・肥満",
-      "むくみ・水滞",
-      "便秘・腹部膨満"
+      "痰湿鬱滞・喀痰過多・気管支炎",
+      "高脂血症・肥満・動脈硬化",
+      "めまい・メニエール病・頭重感",
+      "下肢麻痺・膝下浮腫"
     ],
     "categories": [
-      "胃経の絡穴"
+      "胃経の絡穴",
+      "絡穴"
     ],
     "clinicalNote": "「痰証を治すには必ず豊隆を取る」と称される化痰（病理的体液代謝産物の排出）の最重要穴。中脘と併用することで脾胃の湿滞を解消し、頭の重さやめまいを一掃する。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st41",
@@ -1974,15 +2311,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足関節前面、足関節前面中央の陥凹部、長母指伸筋腱と長趾伸筋腱の間。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "足関節痛・捻挫後遺症・下垂足",
+      "頭痛・めまい・顔面浮腫",
+      "便秘・腹部膨満",
+      "前脛骨筋緊張"
     ],
     "categories": [
       "経火穴"
     ],
-    "clinicalNote": "足の陽明胃経の第41穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "経火穴",
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st42",
@@ -2002,15 +2344,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足背、第2中足骨底と中間楔状骨の間、足背動脈の拍動部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [
       "原穴"
     ],
-    "clinicalNote": "足の陽明胃経の第42穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "原穴",
+    "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st43",
@@ -2030,15 +2378,22 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足背、第2・第3中足骨間、第2中足指節関節の近位陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胃経部の疼痛・腫脹・運動制限",
+      "胃痛・胃もたれ・急性胃炎",
+      "食欲不振・消化不良",
+      "腹部膨満・腹痛・便秘",
+      "頭痛・顔面痛・三叉神経痛"
     ],
     "categories": [
+      "兪木穴",
       "輸木穴"
     ],
-    "clinicalNote": "足の陽明胃経の第43穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "兪木穴",
+    "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st44",
@@ -2058,15 +2413,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足背、第2・第3足指間、みずかきの近位縁、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "歯痛・歯肉腫脹・口内炎",
+      "胃火熾盛・胸焼け・口渇・口臭",
+      "発熱・鼻出血・便秘",
+      "足背痛・第2足指痛"
     ],
     "categories": [
       "滎水穴"
     ],
-    "clinicalNote": "足の陽明胃経の第44穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "滎水穴",
+    "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "st45",
@@ -2086,15 +2446,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足第2指末節骨外側、爪甲角の近位外方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の関連症状",
-      "局所疼痛・機能調整"
+      "急性胃痛・消化管出血・悪心",
+      "高熱・中暑・悪夢・不眠",
+      "顔面浮腫・三叉神経痛",
+      "足指麻痺"
     ],
     "categories": [
       "井金穴"
     ],
-    "clinicalNote": "足の陽明胃経の第45穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胃は後天の本、気血生化の源」。胃気の受納・腐熟作用を促し、昇降の失調（胃もたれ、悪心、腹満）を是正して全身の元気を賦活する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "井金穴",
+    "punctureMethod": "直刺 0.1〜0.2寸、または三稜針・微小鍼による点刺出血。",
+    "moxibustion": "糸状灸・米粒大灸3〜5壮。熱病や急性炎症には点刺出血を優先。"
   },
   {
     "id": "sp1",
@@ -2114,15 +2479,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足母指末節骨内側、爪甲角の近位内方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "機能性子宮出血・月経過多",
+      "血便・血尿・急性出血証",
+      "腹部膨満・急な下痢",
+      "悪夢・不眠・精神不安"
     ],
     "categories": [
       "井木穴"
     ],
-    "clinicalNote": "足の太陰脾経の第1穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "井木穴",
+    "punctureMethod": "直刺 0.1〜0.2寸、または三稜針・微小鍼による点刺出血。",
+    "moxibustion": "糸状灸・米粒大灸3〜5壮。熱病や急性炎症には点刺出血を優先。"
   },
   {
     "id": "sp2",
@@ -2142,15 +2512,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足母指内側、第1中足指節関節の遠位陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "胃痛・腹痛・嘔吐",
+      "便秘・腹部膨満",
+      "熱病の無汗・倦怠感",
+      "足母指関節痛・外反母趾痛"
     ],
     "categories": [
       "滎火穴"
     ],
-    "clinicalNote": "足の太陰脾経の第2穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "滎火穴",
+    "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "sp3",
@@ -2170,19 +2545,23 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足内側、第1中足指節関節の近位陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "消化不良・胃もたれ",
-      "腹部膨満・腹鳴",
-      "慢性下痢・軟便",
-      "食後の強い眠気",
-      "全身のだるさ・浮腫"
+      "食欲不振・腹部膨満・胃下垂",
+      "慢性下痢・軟便・消化不良",
+      "全身倦怠感・筋肉無力症",
+      "糖尿病・体重減少",
+      "足底痛・内反小足"
     ],
     "categories": [
+      "兪土穴・原穴",
       "原穴",
       "輸土穴（自経自穴）"
     ],
     "clinicalNote": "脾経の原穴であり、脾胃の運化（消化吸収機能）を根底から高める要穴。足三里と組み合わせることで中焦（消化管）の気血生成力を最大限に活性化させる。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "兪土穴・原穴",
+    "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "sp4",
@@ -2202,16 +2581,22 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足内側、第1中足骨底の前下方、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "急性・慢性胃痛・悪心嘔吐",
+      "逆流性食道炎・胃痙攣",
+      "下痢・赤痢様腹痛",
+      "月経痛・月経不順",
+      "心胸痛・胸の圧迫感"
     ],
     "categories": [
       "絡穴",
-      "八脈交会穴（衝脈）"
+      "八脈交会穴（衝脈）",
+      "八脈交会穴（衝脈に通ず）"
     ],
-    "clinicalNote": "足の太陰脾経の第4穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "sp5",
@@ -2231,15 +2616,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足内側、内果前下方の陥凹部、舟状骨粗面と内果尖を結ぶ線の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・脾経部の疼痛・腫脹・運動制限",
+      "食欲不振・腹部膨満・泥状便",
+      "全身倦怠感・四肢無力",
+      "月経不順・機能性子宮出血",
+      "浮腫・水湿停滞"
     ],
     "categories": [
       "経金穴"
     ],
-    "clinicalNote": "足の太陰脾経の第5穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "経金穴",
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "sp6",
@@ -2259,20 +2650,37 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "内果尖の上3寸、脛骨内側面の後縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "月経不順・生理痛",
-      "更年期障害",
-      "冷え症・むくみ",
-      "不妊症",
-      "腹部膨満・軟便",
-      "不眠"
+      "月経不順・生理痛・更年期障害",
+      "冷え症・下肢浮腫・むくみ",
+      "不眠症・自律神経失調症",
+      "排尿痛・頻尿・遺尿",
+      "下痢・消化不良・慢性疲労"
     ],
     "categories": [
-      "交会穴（足の太陰脾経・足の少陰腎経・足の厥陰肝経）"
+      "交会穴（足の太陰脾経・足の少陰腎経・足の厥陰肝経）",
+      "三陰交",
+      "足の三陰の交会穴"
     ],
     "clinicalNote": "肝・脾・腎の3つの陰経が交わる「女性の要穴」。血を養い、瘀血を取り除き、陰陽のバランスを保つ。冷えによる婦人科疾患・下半身の血流改善には欠かせない。",
     "caution": "合谷と同様、妊娠初期〜中期の強刺激は避ける。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "goldenPairs": [
+      {
+        "partnerCode": "KI3",
+        "partnerName": "太渓",
+        "prescriptionName": "滋陰補腎配穴",
+        "effect": "腎陰・肝血を潤し、更年期障害のホットフラッシュ・腰痛・不眠を改善する"
+      },
+      {
+        "partnerCode": "CV4",
+        "partnerName": "関元",
+        "prescriptionName": "培元固本配穴",
+        "effect": "下焦の元気を補益し、月経不順・不妊・慢性冷え性を根本から温める"
+      }
+    ],
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸5〜9壮、または台座灸・温灸10〜15分。温陽補気・養生灸に極めて適す。"
   },
   {
     "id": "sp7",
@@ -2292,13 +2700,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿内側、脛骨内側面後縁、内果尖の上方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・脾経部の疼痛・腫脹・運動制限",
+      "食欲不振・腹部膨満・泥状便",
+      "全身倦怠感・四肢無力",
+      "月経不順・機能性子宮出血",
+      "浮腫・水湿停滞"
     ],
     "categories": [],
-    "clinicalNote": "足の太陰脾経の第7穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "sp8",
@@ -2318,15 +2731,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿内側、脛骨内側面後縁、陰陵泉の下方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "急性月経困難症・生理痛発作",
+      "月経不順・無月経",
+      "腹痛・急性下痢・便秘",
+      "排尿痛・下肢内側痛"
     ],
     "categories": [
       "郄穴"
     ],
-    "clinicalNote": "足の太陰脾経の第8穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "sp9",
@@ -2346,17 +2763,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿内側、脛骨内側顆下縁の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "下肢浮腫・むくみ",
-      "下痢・軟便",
-      "排尿困難・頻尿",
-      "重だるい疲労・膝痛"
+      "浮腫（むくみ）・腹水・脚気",
+      "小便不利・排尿困難・尿道炎",
+      "下痢・軟便・水溶性下痢",
+      "膝関節内側痛・関節リウマチ",
+      "陰部掻痒症"
     ],
     "categories": [
       "合水穴"
     ],
     "clinicalNote": "脾経の合水穴として、全身の水毒・湿邪を利尿作用によって強力に排出する利水の名穴。陽陵泉と対をなすが、水分代謝失調（水滞）の主治穴として太白と併用すると健脾利水が研ぎ澄まされる。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "合水穴",
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "sp10",
@@ -2376,13 +2797,17 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿前内側、内側広筋隆起部、膝蓋骨底内端の上方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "月経不順・月経困難症・無月経",
+      "蕁麻疹・湿疹・アトピー性皮膚炎",
+      "皮膚掻痒症・紫斑",
+      "大腿内側痛・膝痛"
     ],
     "categories": [],
-    "clinicalNote": "足の太陰脾経の第10穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "sp11",
@@ -2402,13 +2827,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿内側、縫工筋と薄筋の間、大腿動脈拍動部、膝蓋骨底内端の上方8寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・脾経部の疼痛・腫脹・運動制限",
+      "食欲不振・腹部膨満・泥状便",
+      "全身倦怠感・四肢無力",
+      "月経不順・機能性子宮出血",
+      "浮腫・水湿停滞"
     ],
     "categories": [],
-    "clinicalNote": "足の太陰脾経の第11穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "sp12",
@@ -2428,15 +2858,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "鼠径部、恥骨結合上縁と同じ高さ、前正中線の外方3.5寸、大腿動脈の拍動部の外側。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "食欲不振・腹部膨満・泥状便",
+      "全身倦怠感・四肢無力",
+      "月経不順・機能性子宮出血",
+      "浮腫・水湿停滞"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の太陰脾経の第12穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "sp13",
@@ -2456,15 +2891,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方4.3寸、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "食欲不振・腹部膨満・泥状便",
+      "全身倦怠感・四肢無力",
+      "月経不順・機能性子宮出血",
+      "浮腫・水湿停滞"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の太陰脾経の第13穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "sp14",
@@ -2484,13 +2924,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方1.3寸、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "食欲不振・腹部膨満・泥状便",
+      "全身倦怠感・四肢無力",
+      "月経不順・機能性子宮出血",
+      "浮腫・水湿停滞"
     ],
     "categories": [],
-    "clinicalNote": "足の太陰脾経の第14穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "sp15",
@@ -2510,13 +2955,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "食欲不振・腹部膨満・泥状便",
+      "全身倦怠感・四肢無力",
+      "月経不順・機能性子宮出血",
+      "浮腫・水湿停滞"
     ],
     "categories": [],
-    "clinicalNote": "足の太陰脾経の第15穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.2寸。肝脾腫大がないか触診で確認し、腹壁厚に応じて深度を調整。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "sp16",
@@ -2536,13 +2986,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方3寸、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "食欲不振・腹部膨満・泥状便",
+      "全身倦怠感・四肢無力",
+      "月経不順・機能性子宮出血",
+      "浮腫・水湿停滞"
     ],
     "categories": [],
-    "clinicalNote": "足の太陰脾経の第16穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "sp17",
@@ -2562,13 +3017,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第5肋間、前正中線の外方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "食欲不振・腹部膨満・泥状便",
+      "全身倦怠感・四肢無力",
+      "月経不順・機能性子宮出血",
+      "浮腫・水湿停滞"
     ],
     "categories": [],
-    "clinicalNote": "足の太陰脾経の第17穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "sp18",
@@ -2588,13 +3048,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第4肋間、前正中線の外方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "食欲不振・腹部膨満・泥状便",
+      "全身倦怠感・四肢無力",
+      "月経不順・機能性子宮出血",
+      "浮腫・水湿停滞"
     ],
     "categories": [],
-    "clinicalNote": "足の太陰脾経の第18穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "sp19",
@@ -2614,13 +3079,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第3肋間、前正中線の外方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "食欲不振・腹部膨満・泥状便",
+      "全身倦怠感・四肢無力",
+      "月経不順・機能性子宮出血",
+      "浮腫・水湿停滞"
     ],
     "categories": [],
-    "clinicalNote": "足の太陰脾経の第19穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "sp20",
@@ -2640,13 +3110,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第2肋間、前正中線の外方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "食欲不振・腹部膨満・泥状便",
+      "全身倦怠感・四肢無力",
+      "月経不順・機能性子宮出血",
+      "浮腫・水湿停滞"
     ],
     "categories": [],
-    "clinicalNote": "足の太陰脾経の第20穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "sp21",
@@ -2666,15 +3141,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "側胸部、第6肋間、中腋窩線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の関連症状",
-      "局所疼痛・機能調整"
+      "全身の関節痛・筋肉痛・脱力感",
+      "胸脇部痛・呼吸困難",
+      "慢性疲労症候群"
     ],
     "categories": [
       "脾の大絡"
     ],
-    "clinicalNote": "足の太陰脾経の第21穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "脾の運化作用を助けて水湿の停滞を解消し、統血作用を介して出血病態や婦人科愁訴、四肢の重だるさを改善する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ht1",
@@ -2694,13 +3172,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腋窩中央、腋窩動脈拍動部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心経の関連症状",
-      "局所疼痛・機能調整"
+      "心胸痛・狭心症様症状・息切れ",
+      "肋間神経痛・腋窩腫痛",
+      "上肢内側冷感・肩関節痛"
     ],
     "categories": [],
-    "clinicalNote": "手の少陰心経の第1穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「心は神明を主どる」。心血・心気を補い、自律神経中枢の過剰興奮を鎮静（安神）させ、動悸や不眠、精神焦燥を鎮める要穴。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ht2",
@@ -2720,13 +3201,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腕内側、上腕二頭筋内側縁、肘窩横紋の上方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・心経部の疼痛・腫脹・運動制限",
+      "動悸・不整脈・胸痛",
+      "不眠・多夢・健忘",
+      "精神不安・焦燥感・パニック",
+      "舌痛・舌炎・言語障害"
     ],
     "categories": [],
-    "clinicalNote": "手の少陰心経の第2穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「心は神明を主どる」。心血・心気を補い、自律神経中枢の過剰興奮を鎮静（安神）させ、動悸や不眠、精神焦燥を鎮める要穴。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ht3",
@@ -2746,15 +3232,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肘前内側、上腕骨内側上顆の前下方、肘窩横紋と同じ高さ。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心経の関連症状",
-      "局所疼痛・機能調整"
+      "肘関節痛・尺骨神経麻痺",
+      "心胸痛・動悸・心痛",
+      "手の震え（振戦）・尺側痙攣",
+      "うつ病・精神焦燥"
     ],
     "categories": [
       "合水穴"
     ],
-    "clinicalNote": "手の少陰心経の第3穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「心は神明を主どる」。心血・心気を補い、自律神経中枢の過剰興奮を鎮静（安神）させ、動悸や不眠、精神焦燥を鎮める要穴。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "合水穴",
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ht4",
@@ -2774,15 +3265,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕前内側、尺側手根屈筋腱の橈側縁、手関節掌側横紋の上方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・心経部の疼痛・腫脹・運動制限",
+      "動悸・不整脈・胸痛",
+      "不眠・多夢・健忘",
+      "精神不安・焦燥感・パニック",
+      "舌痛・舌炎・言語障害"
     ],
     "categories": [
       "経金穴"
     ],
-    "clinicalNote": "手の少陰心経の第4穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「心は神明を主どる」。心血・心気を補い、自律神経中枢の過剰興奮を鎮静（安神）させ、動悸や不眠、精神焦燥を鎮める要穴。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "経金穴",
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ht5",
@@ -2802,15 +3299,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕前内側、尺側手根屈筋腱の橈側縁、手関節掌側横紋の上方1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心経の関連症状",
-      "局所疼痛・機能調整"
+      "言語障害・失語症・舌強硬",
+      "動悸・不整脈・徐脈",
+      "手関節痛・前腕痛",
+      "月経過多・精神不安"
     ],
     "categories": [
       "絡穴"
     ],
-    "clinicalNote": "手の少陰心経の第5穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「心は神明を主どる」。心血・心気を補い、自律神経中枢の過剰興奮を鎮静（安神）させ、動悸や不眠、精神焦燥を鎮める要穴。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ht6",
@@ -2830,15 +3331,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕前内側、尺側手根屈筋腱の橈側縁、手関節掌側横紋の上方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心経の関連症状",
-      "局所疼痛・機能調整"
+      "心痛・激しい狭心痛",
+      "盗汗（寝汗）・骨蒸潮熱",
+      "不眠・驚悸・恐怖感",
+      "喀血・鼻出血"
     ],
     "categories": [
       "郄穴"
     ],
-    "clinicalNote": "手の少陰心経の第6穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「心は神明を主どる」。心血・心気を補い、自律神経中枢の過剰興奮を鎮静（安神）させ、動悸や不眠、精神焦燥を鎮める要穴。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ht7",
@@ -2858,18 +3363,23 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手関節前掌側横紋上、尺側手根屈筋腱の橈側縁の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "不眠・中途覚醒",
-      "動悸・胸苦しさ",
-      "不安・パニック・精神不安",
-      "健忘・物忘れ"
+      "不眠症・入眠困難・中途覚醒",
+      "動悸・頻脈・不安神経症",
+      "健忘・認知機能低下・多夢",
+      "ヒステリー・パニック障害",
+      "手関節尺側痛・手のひらの熱感"
     ],
     "categories": [
+      "兪土穴・原穴",
       "原穴",
       "輸土穴"
     ],
     "clinicalNote": "「心蔵神（心は精神を宿す）」の門戸を開く原穴。興奮した大脳皮質を静め、副交感神経を優位にする安神の特効穴。内関と組み合わせるか、単独で夜間安眠穴として活用する。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "兪土穴・原穴",
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ht8",
@@ -2889,15 +3399,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手掌、第4・第5中手骨間、第4・第5中手指節関節の近位陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心経の関連症状",
-      "局所疼痛・機能調整"
+      "心悸・動悸・胸悶",
+      "手のひらの発熱・掌内痛",
+      "排尿困難・排尿痛",
+      "精神錯乱・小児のひきつけ"
     ],
     "categories": [
       "滎火穴"
     ],
-    "clinicalNote": "手の少陰心経の第8穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「心は神明を主どる」。心血・心気を補い、自律神経中枢の過剰興奮を鎮静（安神）させ、動悸や不眠、精神焦燥を鎮める要穴。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "滎火穴",
+    "punctureMethod": "直刺 0.3〜0.5寸。骨間隙に沿って刺入し特有の響きを得る。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ht9",
@@ -2917,15 +3432,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手小指末節骨橈側、爪甲角の近位外方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心経の関連症状",
-      "局所疼痛・機能調整"
+      "心臓発作救急・狭心痛",
+      "高熱・脳卒中前駆症状・昏迷",
+      "胸脇部痛・喉の詰まり感",
+      "小指痛"
     ],
     "categories": [
       "井木穴"
     ],
-    "clinicalNote": "手の少陰心経の第9穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「心は神明を主どる」。心血・心気を補い、自律神経中枢の過剰興奮を鎮静（安神）させ、動悸や不眠、精神焦燥を鎮める要穴。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "井木穴",
+    "punctureMethod": "直刺 0.1〜0.2寸、または三稜針・微小鍼による点刺出血。",
+    "moxibustion": "糸状灸・米粒大灸3〜5壮。熱病や急性炎症には点刺出血を優先。"
   },
   {
     "id": "si1",
@@ -2945,15 +3465,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手小指末節骨尺側、爪甲角の近位内方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "母乳分泌不足（乳汁不通）",
+      "急性乳腺炎・乳房痛",
+      "高熱・昏迷救急",
+      "頭痛・結膜炎・耳鳴"
     ],
     "categories": [
       "井金穴"
     ],
-    "clinicalNote": "手の太陽小腸経の第1穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "井金穴",
+    "punctureMethod": "直刺 0.1〜0.2寸、または三稜針・微小鍼による点刺出血。",
+    "moxibustion": "糸状灸・米粒大灸3〜5壮。熱病や急性炎症には点刺出血を優先。"
   },
   {
     "id": "si2",
@@ -2973,15 +3498,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "小指尺側、第5中手指節関節の遠位陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・小腸経部の疼痛・腫脹・運動制限",
+      "耳鳴・難聴・耳痛",
+      "頚肩腕症候群・肩甲背部痛",
+      "後頭部痛・項部硬直",
+      "頬部腫脹・咽頭痛"
     ],
     "categories": [
       "滎水穴"
     ],
-    "clinicalNote": "手の太陽小腸経の第2穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "滎水穴",
+    "punctureMethod": "直刺 0.3〜0.5寸。骨間隙に沿って刺入し特有の響きを得る。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "si3",
@@ -3001,18 +3532,23 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "第5中手指節関節尺側の近位陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・後頭部痛・むち打ち",
-      "肩甲骨内縁痛",
-      "急性腰痛（ギックリ腰）",
-      "寝違え"
+      "後頭部痛・項部硬直・寝違え",
+      "急性腰痛・脊柱起立筋攣縮",
+      "耳鳴・難聴・目赤",
+      "手指痙攣・小指尺側痛",
+      "てんかん・精神焦燥"
     ],
     "categories": [
+      "兪木穴",
       "輸木穴",
       "八脈交会穴（督脈に通ず）"
     ],
     "clinicalNote": "八脈交会穴として背骨を通る督脈に通じ、脊柱起立筋群の急性痙攣・過緊張を一瞬で緩解する切れ味を持つ。申脈と対穴として用いられるが、頸項部の標治穴として単独でも極めて速効性がある。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "兪木穴",
+    "punctureMethod": "直刺 0.3〜0.5寸。骨間隙に沿って刺入し特有の響きを得る。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "si4",
@@ -3032,15 +3568,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手関節後内側、第5中手骨底と三角骨の間の陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "手関節尺側痛・腱鞘炎",
+      "黄疸・胆嚢炎・発熱",
+      "項部硬直・肩腕痛",
+      "耳鳴・耳痛"
     ],
     "categories": [
       "原穴"
     ],
-    "clinicalNote": "手の太陽小腸経の第4穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "原穴",
+    "punctureMethod": "直刺 0.3〜0.5寸。骨間隙に沿って刺入し特有の響きを得る。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "si5",
@@ -3060,15 +3601,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手関節後内側、尺骨茎状突起と三角骨の間の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・小腸経部の疼痛・腫脹・運動制限",
+      "耳鳴・難聴・耳痛",
+      "頚肩腕症候群・肩甲背部痛",
+      "後頭部痛・項部硬直",
+      "頬部腫脹・咽頭痛"
     ],
     "categories": [
       "経火穴"
     ],
-    "clinicalNote": "手の太陽小腸経の第5穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "経火穴",
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "si6",
@@ -3088,15 +3635,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後内側、尺骨頭の橈側の陥凹部、手関節背側横紋の上方1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・小腸経部の疼痛・腫脹・運動制限",
+      "耳鳴・難聴・耳痛",
+      "頚肩腕症候群・肩甲背部痛",
+      "後頭部痛・項部硬直",
+      "頬部腫脹・咽頭痛"
     ],
     "categories": [
       "郄穴"
     ],
-    "clinicalNote": "手の太陽小腸経の第6穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "si7",
@@ -3116,15 +3668,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後内側、尺骨内縁と尺側手根屈筋の間、手関節背側横紋の上方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・小腸経部の疼痛・腫脹・運動制限",
+      "耳鳴・難聴・耳痛",
+      "頚肩腕症候群・肩甲背部痛",
+      "後頭部痛・項部硬直",
+      "頬部腫脹・咽頭痛"
     ],
     "categories": [
       "絡穴"
     ],
-    "clinicalNote": "手の太陽小腸経の第7穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "si8",
@@ -3144,15 +3701,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肘後内側、肘頭と上腕骨内側上顆の間の陥凹部（尺骨神経溝）。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "肘関節痛・尺骨神経痛・肘部管症候群",
+      "小指麻痺・上肢尺側痛",
+      "頚部リンパ節腫脹",
+      "精神錯乱・てんかん"
     ],
     "categories": [
       "合土穴"
     ],
-    "clinicalNote": "手の太陽小腸経の第8穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "合土穴",
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "si9",
@@ -3172,13 +3734,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肩周囲部、腋窩横紋後端の上方1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "肩関節周囲炎・五十肩・肩甲後部痛",
+      "上肢挙上不能・肩甲間部痛",
+      "腕神経叢麻痺"
     ],
     "categories": [],
-    "clinicalNote": "手の太陽小腸経の第9穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "si10",
@@ -3198,15 +3763,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肩周囲部、肩甲棘下縁と肩甲骨関節窩の間の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "首・肩・小腸経部の疼痛・腫脹・運動制限",
+      "耳鳴・難聴・耳痛",
+      "頚肩腕症候群・肩甲背部痛",
+      "後頭部痛・項部硬直",
+      "頬部腫脹・咽頭痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "手の太陽小腸経の第10穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "si11",
@@ -3226,13 +3796,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肩甲部、肩甲棘中点と肩甲骨下角を結ぶ線の上から1/3の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "肩甲骨部痛・五十肩・背部張痛",
+      "乳腺炎・乳房腫痛",
+      "頸肩腕症候群・上肢脱力"
     ],
     "categories": [],
-    "clinicalNote": "手の太陽小腸経の第11穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "si12",
@@ -3252,15 +3825,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肩甲部、棘上窩、肩甲棘の中点の上方。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "首・肩・小腸経部の疼痛・腫脹・運動制限",
+      "耳鳴・難聴・耳痛",
+      "頚肩腕症候群・肩甲背部痛",
+      "後頭部痛・項部硬直",
+      "頬部腫脹・咽頭痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "手の太陽小腸経の第12穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "si13",
@@ -3280,13 +3858,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肩甲部、肩甲棘の内端の上方陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・小腸経部の疼痛・腫脹・運動制限",
+      "耳鳴・難聴・耳痛",
+      "頚肩腕症候群・肩甲背部痛",
+      "後頭部痛・項部硬直",
+      "頬部腫脹・咽頭痛"
     ],
     "categories": [],
-    "clinicalNote": "手の太陽小腸経の第13穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "si14",
@@ -3306,13 +3889,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第1胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・小腸経部の疼痛・腫脹・運動制限",
+      "耳鳴・難聴・耳痛",
+      "頚肩腕症候群・肩甲背部痛",
+      "後頭部痛・項部硬直",
+      "頬部腫脹・咽頭痛"
     ],
     "categories": [],
-    "clinicalNote": "手の太陽小腸経の第14穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "si15",
@@ -3332,13 +3920,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第7頸椎棘突起下縁と同じ高さ、後正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "首・肩・小腸経部の疼痛・腫脹・運動制限",
+      "耳鳴・難聴・耳痛",
+      "頚肩腕症候群・肩甲背部痛",
+      "後頭部痛・項部硬直",
+      "頬部腫脹・咽頭痛"
     ],
     "categories": [],
-    "clinicalNote": "手の太陽小腸経の第15穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "si16",
@@ -3358,13 +3951,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、胸鎖乳突筋の後縁、甲状軟骨上縁と同じ高さ。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "首・肩・小腸経部の疼痛・腫脹・運動制限",
+      "耳鳴・難聴・耳痛",
+      "頚肩腕症候群・肩甲背部痛",
+      "後頭部痛・項部硬直",
+      "頬部腫脹・咽頭痛"
     ],
     "categories": [],
-    "clinicalNote": "手の太陽小腸経の第16穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "si17",
@@ -3384,13 +3982,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、下顎角の後方、胸鎖乳突筋の前縁陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "首・肩・小腸経部の疼痛・腫脹・運動制限",
+      "耳鳴・難聴・耳痛",
+      "頚肩腕症候群・肩甲背部痛",
+      "後頭部痛・項部硬直",
+      "頬部腫脹・咽頭痛"
     ],
     "categories": [],
-    "clinicalNote": "手の太陽小腸経の第17穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "si18",
@@ -3410,15 +4013,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、頬骨下縁の陥凹部、外眼角の直下。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・小腸経部の疼痛・腫脹・運動制限",
+      "耳鳴・難聴・耳痛",
+      "頚肩腕症候群・肩甲背部痛",
+      "後頭部痛・項部硬直",
+      "頬部腫脹・咽頭痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "手の太陽小腸経の第18穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "浅刺（直刺または斜刺 0.2〜0.4寸）。血管損傷・皮下出血に配慮し愛護的に刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "si19",
@@ -3438,15 +4046,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、耳珠中央の前方、下顎骨関節突起の後方の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "小腸経の関連症状",
-      "局所疼痛・機能調整"
+      "耳鳴・難聴・中耳炎",
+      "顎関節症・開口痛",
+      "歯痛・偏頭痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "手の太陽小腸経の第19穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "小腸の受盛・化物作用を調え、経絡の流注に沿って肩甲部・頸項部の筋膜緊張や耳鳴・難聴などの五官病変を解熱・鎮痛する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "bl1",
@@ -3466,15 +4077,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、内眼角の内上方0.1寸、眼窩内側壁の間。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "眼精疲労・かすみ目・視力低下",
+      "結膜炎・角膜炎・涙道閉塞",
+      "近視・白内障初期",
+      "緑内障の眼圧調整補助"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の太陽膀胱経の第1穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "眼球を外側へ押しやり、内側壁に沿って直刺 0.3〜0.5寸。提挿・回旋厳禁。抜針後圧迫止血。",
+    "moxibustion": "直接灸・温灸ともに原則禁忌（眼球熱傷・結膜充血防止）。温罨法のみ。"
   },
   {
     "id": "bl2",
@@ -3494,13 +4109,17 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、眉弓の内端、前頭切痕の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "頭痛・前頭部痛・目の奥の痛み",
+      "眼精疲労・眼瞼痙攣",
+      "三叉神経痛（第1枝）",
+      "副鼻腔炎・鼻閉"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第2穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "浅刺（直刺または斜刺 0.2〜0.4寸）。血管損傷・皮下出血に配慮し愛護的に刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "bl3",
@@ -3520,13 +4139,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方0.5寸、前正中線の外方0.75寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第3穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "bl4",
@@ -3546,13 +4170,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方0.5寸、前正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第4穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "bl5",
@@ -3572,13 +4201,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方1寸、前正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第5穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "bl6",
@@ -3598,13 +4232,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方2.5寸、前正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第6穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "bl7",
@@ -3624,13 +4263,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方4寸、前正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第7穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "bl8",
@@ -3650,13 +4294,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方5.5寸、前正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第8穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "bl9",
@@ -3676,13 +4325,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、外後頭隆起上縁と同じ高さ、後正中線の外方1.3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第9穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "bl10",
@@ -3702,13 +4356,17 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "後頸部、第2頸椎棘突起上縁と同じ高さ、僧帽筋外縁の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "後頭部痛・緊張型頭痛・頚椎症",
+      "項部硬直・寝違え・肩こり",
+      "眼精疲労・鼻閉",
+      "めまい・不眠・自律神経失調"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第10穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸。顔面神経・顔面動静脈を避けて愛護的に操作。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "bl11",
@@ -3728,15 +4386,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第1胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "感冒・悪寒発熱・咳嗽",
+      "骨粗鬆症・全身骨痛・脊柱痛",
+      "頚肩部強直・項背痛",
+      "気管支炎・気喘"
     ],
     "categories": [
       "八会穴（骨会）"
     ],
-    "clinicalNote": "足の太陽膀胱経の第11穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl12",
@@ -3756,15 +4418,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第2胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の太陽膀胱経の第12穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl13",
@@ -3784,15 +4451,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第3胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "咳嗽・気喘・気管支炎・肺炎",
+      "肺結核・喀血・潮熱",
+      "盗汗（寝汗）・胸背痛",
+      "アレルギー性鼻炎・皮膚炎"
     ],
     "categories": [
-      "肺の背部兪穴"
+      "肺の背部兪穴",
+      "肺兪"
     ],
-    "clinicalNote": "足の太陽膀胱経の第13穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl14",
@@ -3812,15 +4484,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第4胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [
-      "心包の背部兪穴"
+      "心包の背部兪穴",
+      "厥陰兪（心包兪）"
     ],
-    "clinicalNote": "足の太陽膀胱経の第14穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl15",
@@ -3840,15 +4518,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第5胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "動悸・頻脈・不整脈・狭心痛",
+      "不眠症・健忘・多夢",
+      "不安神経症・抑鬱・パニック",
+      "胸背部痛・盗汗"
     ],
     "categories": [
-      "心の背部兪穴"
+      "心の背部兪穴",
+      "心兪"
     ],
-    "clinicalNote": "足の太陽膀胱経の第15穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl16",
@@ -3868,13 +4551,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第6胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第16穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl17",
@@ -3894,18 +4582,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "第7胸椎棘突起下縁と同じ高さ、後正中線の外方1寸5分。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "血行不良・瘀血",
-      "貧血・月経痛",
-      "胸背部痛・肩甲間部痛",
-      "しゃっくり・逆流性食道炎",
-      "慢性皮膚疾患"
+      "貧血・慢性出血疾患・紫斑",
+      "胃痛・しゃっくり・食道痙攣",
+      "喘息・咳嗽・呼吸困難",
+      "胸背部痛・自律神経失調"
     ],
     "categories": [
       "八会穴（血会）"
     ],
     "clinicalNote": "全身の血液動態を統括する「血会」。血行鬱滞（瘀血）の駆除および新血の生成（補血）の双方に必須。内関と組み合わせることで心胸部の血流鬱滞（狭心・動悸・刺痛）を速やかに開通させる。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl18",
@@ -3925,17 +4614,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "第9胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "眼精疲労・目のかすみ",
-      "ストレス・イライラ・自律神経失調",
-      "肝機能障害",
-      "側腹部痛・背部痛"
+      "胸脇苦満・肋間神経痛・胆石症",
+      "肝炎・脂肪肝・目のかすみ・充血",
+      "めまい・頭痛・高血圧",
+      "月経不順・情緒不安定"
     ],
     "categories": [
-      "肝の背部兪穴"
+      "肝の背部兪穴",
+      "肝兪"
     ],
     "clinicalNote": "肝の病変が背部に現れる反応点であり調整穴。太衝（原穴）や期門（募穴）と「兪募配穴」を構成するが、背部兪穴を複数同時に選びすぎると自律神経反射が干渉するため注意が必要。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl19",
@@ -3955,15 +4647,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第10胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [
-      "胆の背部兪穴"
+      "胆の背部兪穴",
+      "胆兪"
     ],
-    "clinicalNote": "足の太陽膀胱経の第19穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl20",
@@ -3983,17 +4681,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "第11胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "消化不良・食欲不振",
-      "慢性胃炎・下痢",
-      "四肢倦怠・無力感",
-      "貧血"
+      "消化不良・食欲不振・胃もたれ",
+      "慢性下痢・軟便・浮腫",
+      "胃下垂・内臓下垂",
+      "全身倦怠感・貧血・四肢脱力"
     ],
     "categories": [
-      "脾の背部兪穴"
+      "脾の背部兪穴",
+      "脾兪"
     ],
     "clinicalNote": "後天の気（消化吸収・脾の運化）を賦活する背部の名穴。足三里（合穴）や章門（募穴）と組み合わせることで消化器系を底上げする。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl21",
@@ -4013,15 +4714,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第12胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "胃痛・胃潰瘍・十二指腸潰瘍",
+      "悪心・嘔吐・胃もたれ",
+      "腹部膨満・消化器不全",
+      "背部痛・肋間痛"
     ],
     "categories": [
-      "胃の背部兪穴"
+      "胃の背部兪穴",
+      "胃兪"
     ],
-    "clinicalNote": "足の太陽膀胱経の第21穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl22",
@@ -4041,15 +4747,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腰部、第1腰椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [
-      "三焦の背部兪穴"
+      "三焦の背部兪穴",
+      "三焦兪"
     ],
-    "clinicalNote": "足の太陽膀胱経の第22穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl23",
@@ -4069,19 +4781,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "第2腰椎棘突起下縁と同じ高さ、後正中線の外方1寸5分。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "慢性腰痛",
-      "疲労倦怠・無気力",
-      "冷え症",
-      "耳鳴り・難聴",
-      "頻尿・夜間尿",
-      "エイジングケア"
+      "急性・慢性腰痛・ぎっくり腰",
+      "脊柱管狭窄症・坐骨神経痛",
+      "腎炎・浮腫・頻尿・尿閉",
+      "耳鳴・難聴・めまい",
+      "インポテンツ・早漏・不妊症・月経不順"
     ],
     "categories": [
-      "腎の背部兪穴"
+      "腎の背部兪穴",
+      "腎兪"
     ],
     "clinicalNote": "先天の気（生命力・精）を蓄える「腎」の気を直接養う兪穴。加齢による衰え、慢性的な過労、冷えからくる腰痛には、温熱療法（お灸や温熱シート）を施すと極めて効果的。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸5〜9壮、または台座灸・温灸10〜15分。温陽補気・養生灸に極めて適す。"
   },
   {
     "id": "bl24",
@@ -4101,13 +4815,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腰部、第3腰椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第24穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl25",
@@ -4127,15 +4846,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腰部、第4腰椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "腰痛・仙腸関節痛",
+      "便秘・宿便・下痢・腸炎",
+      "過敏性腸症候群・腹部膨満",
+      "下肢麻痺・坐骨神経痛"
     ],
     "categories": [
-      "大腸の背部兪穴"
+      "大腸の背部兪穴",
+      "大腸兪"
     ],
-    "clinicalNote": "足の太陽膀胱経の第25穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl26",
@@ -4155,13 +4879,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腰部、第5腰椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第26穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl27",
@@ -4181,15 +4910,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、第1仙骨孔と同じ高さ、正中仙骨稜の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [
-      "小腸の背部兪穴"
+      "小腸の背部兪穴",
+      "小腸兪"
     ],
-    "clinicalNote": "足の太陽膀胱経の第27穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl28",
@@ -4209,15 +4944,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、第2仙骨孔と同じ高さ、正中仙骨稜の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "排尿困難・膀胱炎・尿道炎",
+      "頻尿・遺尿・前立腺肥大",
+      "仙骨部痛・臀部痛",
+      "便秘・下痢"
     ],
     "categories": [
-      "膀胱の背部兪穴"
+      "膀胱の背部兪穴",
+      "膀胱兪"
     ],
-    "clinicalNote": "足の太陽膀胱経の第28穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl29",
@@ -4237,13 +4977,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、第3仙骨孔と同じ高さ、正中仙骨稜の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第29穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl30",
@@ -4263,13 +5008,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、第4仙骨孔と同じ高さ、正中仙骨稜の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第30穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl31",
@@ -4289,13 +5039,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、第1後仙骨孔。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第31穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl32",
@@ -4315,13 +5070,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、第2後仙骨孔。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第32穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl33",
@@ -4341,13 +5101,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、第3後仙骨孔。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第33穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl34",
@@ -4367,13 +5132,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、第4後仙骨孔。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第34穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl35",
@@ -4393,13 +5163,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "臀部、尾骨下端の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第35穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl36",
@@ -4419,13 +5194,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "臀部、殿溝の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第36穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl37",
@@ -4445,13 +5225,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿後面、大腿二頭筋と半腱様筋の間、殿溝の下方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第37穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl38",
@@ -4471,13 +5256,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "膝後面、大腿二頭筋腱の内縁、膝窩横紋の上方1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第38穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl39",
@@ -4497,15 +5287,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "膝後面、膝窩横紋上、大腿二頭筋腱の内縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "小便不利・排尿障害・浮腫",
+      "膝窩痛・下肢痙攣",
+      "便秘・腹部膨満"
     ],
     "categories": [
       "三焦の下合穴"
     ],
-    "clinicalNote": "足の太陽膀胱経の第39穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl40",
@@ -4525,19 +5318,31 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "膝窩横紋の中点、大腿二頭筋腱と半腱様筋腱の間。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腰痛・ギックリ腰",
-      "坐骨神経痛",
-      "下肢のだるさ・こむら返り",
-      "膝関節痛"
+      "腰痛・急性ぎっくり腰・坐骨神経痛",
+      "膝関節痛・膝窩部腫脹",
+      "下肢麻痺・こむら返り",
+      "中暑（熱中症）・丹毒・皮膚疾患"
     ],
     "categories": [
       "合土穴",
       "膀胱の下合穴",
-      "四総穴（腰背を治す）"
+      "四総穴（腰背を治す）",
+      "四総穴（腰背）"
     ],
     "clinicalNote": "「腰背は委中に収む」と称される腰背部疾患の最重要穴。腰部の鬱血・血瘀を遠隔から解き放つ。急性腰痛において委中への刺鍼や刺絡は劇的な筋緊張緩和をもたらす。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "合土穴",
+    "goldenPairs": [
+      {
+        "partnerCode": "BL23",
+        "partnerName": "腎兪",
+        "prescriptionName": "腰背兪合配穴",
+        "effect": "急・慢性の腰痛、坐骨神経痛、下肢の脱力・冷えを解消する"
+      }
+    ],
+    "punctureMethod": "直刺 0.5〜1.0寸、または三稜針による膝窩静脈の点刺出血。膝窩動脈の直刺は避ける。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl41",
@@ -4557,13 +5362,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第2胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第41穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl42",
@@ -4583,13 +5393,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第3胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第42穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl43",
@@ -4609,13 +5424,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第4胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第43穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl44",
@@ -4635,13 +5455,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第5胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第44穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl45",
@@ -4661,13 +5486,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第6胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第45穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl46",
@@ -4687,13 +5517,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第7胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第46穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl47",
@@ -4713,13 +5548,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第9胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第47穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl48",
@@ -4739,13 +5579,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第10胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第48穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl49",
@@ -4765,13 +5610,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第11胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第49穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl50",
@@ -4791,13 +5641,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第12胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第50穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl51",
@@ -4817,13 +5672,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腰部、第1腰椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第51穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl52",
@@ -4843,13 +5703,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腰部、第2腰椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第52穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl53",
@@ -4869,13 +5734,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "臀部、第2後仙骨孔と同じ高さ、正中仙骨稜の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第53穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl54",
@@ -4895,13 +5765,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "臀部、第4後仙骨孔と同じ高さ、正中仙骨稜の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "重度の腰痛・坐骨神経痛",
+      "臀部痛・梨状筋症候群",
+      "排尿痛・便秘・痔疾"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第54穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "bl55",
@@ -4921,13 +5794,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿後面、委中と承山を結ぶ線上、委中の下方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第55穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl56",
@@ -4947,13 +5825,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿後面、腓腹筋の2つの筋腹の間、委中の下方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第56穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl57",
@@ -4973,13 +5856,17 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿後面、腓腹筋の筋腹と腱の移行部の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "こむら返り・腓腹筋痙攣",
+      "下肢の冷え・重だるさ",
+      "痔核・痔瘻・便秘",
+      "腰背部強直・膝痛"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第57穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl58",
@@ -4999,15 +5886,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿後外側、腓腹筋外側頭下縁、崑崙の上方7寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "坐骨神経痛・下肢外側痛",
+      "頭痛・めまい・鼻閉",
+      "痔疾・便秘",
+      "足関節痛"
     ],
     "categories": [
       "絡穴"
     ],
-    "clinicalNote": "足の太陽膀胱経の第58穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl59",
@@ -5027,15 +5918,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿後外側、腓骨後縁、崑崙の上方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [
       "陽蹻脈の郄穴"
     ],
-    "clinicalNote": "足の太陽膀胱経の第59穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl60",
@@ -5055,15 +5951,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足関節後外側、外果尖とアキレス腱の間の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "頭痛・項部硬直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "アキレス腱炎・踵骨部痛",
+      "難産・胎盤残留促進"
     ],
     "categories": [
       "経火穴"
     ],
-    "clinicalNote": "足の太陽膀胱経の第60穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "経火穴",
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl61",
@@ -5083,13 +5984,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足外側、踵骨外側、崑崙の直下、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [],
-    "clinicalNote": "足の太陽膀胱経の第61穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl62",
@@ -5109,15 +6015,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足外側、外果尖の直下、外果下縁の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "不眠症・過眠症（睡眠覚醒障害）",
+      "てんかん・日中発作",
+      "後頭部痛・項背痛",
+      "足関節外側痛・捻挫後遺症"
     ],
     "categories": [
-      "八脈交会穴（陽蹻脈）"
+      "八脈交会穴（陽蹻脈）",
+      "八脈交会穴（陽蹻脈に通ず）"
     ],
-    "clinicalNote": "足の太陽膀胱経の第62穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl63",
@@ -5137,15 +6048,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足背、外果前下方の陥凹部、立方骨粗面の後方。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [
       "郄穴"
     ],
-    "clinicalNote": "足の太陽膀胱経の第63穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl64",
@@ -5165,15 +6081,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足外側、第5中足骨粗面の遠位前方の陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [
       "原穴"
     ],
-    "clinicalNote": "足の太陽膀胱経の第64穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "原穴",
+    "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl65",
@@ -5193,15 +6115,22 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足外側、第5中足指節関節の近位陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [
+      "兪木穴",
       "輸木穴"
     ],
-    "clinicalNote": "足の太陽膀胱経の第65穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "兪木穴",
+    "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl66",
@@ -5221,15 +6150,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足第5指外側、第5中足指節関節の遠位陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "頭痛・項背部強直・寝違え",
+      "急性・慢性腰痛・坐骨神経痛",
+      "下肢後面のしびれ・こむら返り",
+      "排尿痛・頻尿・残尿感"
     ],
     "categories": [
       "滎水穴"
     ],
-    "clinicalNote": "足の太陽膀胱経の第66穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "滎水穴",
+    "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "bl67",
@@ -5249,15 +6184,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足第5指末節骨外側、爪甲角の近位外方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "膀胱経の関連症状",
-      "局所疼痛・機能調整"
+      "胎位異常（逆子の特効穴）",
+      "難産・陣痛微弱",
+      "頭痛・頭頂部熱感",
+      "鼻閉・眼病"
     ],
     "categories": [
       "井金穴"
     ],
-    "clinicalNote": "足の太陽膀胱経の第67穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "全身の陽気を総括する太陽膀胱経に属し、外邪（風寒）の排泄、脊柱起立筋群の過緊張緩和、五臓六腑の兪穴を通じた内臓機能調整を担う。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "井金穴",
+    "punctureMethod": "直刺 0.1〜0.2寸、または三稜針・微小鍼による点刺出血。",
+    "moxibustion": "糸状灸・米粒大灸3〜5壮。熱病や急性炎症には点刺出血を優先。"
   },
   {
     "id": "ki1",
@@ -5277,19 +6217,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足底の前方中央、足指を屈曲したときの凹み。第2・第3中足骨間、底側。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足の冷え・むくみ",
-      "のぼせ・不眠",
-      "高血圧",
-      "体力低下・精力減退",
-      "こむら返り",
-      "自律神経調整"
+      "失神・ショック・脳卒中救急",
+      "高血圧・重度ののぼせ・頭痛",
+      "不眠症・不安焦燥・精神分裂",
+      "足底筋膜炎・足底熱感",
+      "小児のひきつけ・嘔吐下痢"
     ],
     "categories": [
       "井木穴"
     ],
     "clinicalNote": "腎経の起点であり、生命エネルギーが泉のように湧き出る穴。頭部に上った気（のぼせ・イライラ・不眠）を足元へ引き下ろす（引火帰元）作用に優れ、寝る前の足湯や押圧に最適。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "井木穴",
+    "punctureMethod": "足底面から直刺 0.5〜1.0寸。酸脹感を強く与える。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ki2",
@@ -5309,15 +6251,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足内側、舟状骨粗面の前下方、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "足底痛・内果下部痛",
+      "月経不順・帯下・陰部掻痒",
+      "骨蒸潮熱・盗汗・口渇",
+      "糖尿病・咽頭乾燥"
     ],
     "categories": [
       "滎火穴"
     ],
-    "clinicalNote": "足の少陰腎経の第2穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "滎火穴",
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ki3",
@@ -5337,20 +6284,23 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足関節後内側、内果尖とアキレス腱の間の陥凹部。後脛骨動脈の拍動部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足腰の冷え・脱力感",
-      "耳鳴り・難聴",
-      "不眠・寝汗（盗汗）",
-      "咽喉の乾燥感",
-      "頻尿・遺尿",
-      "慢性疲労"
+      "慢性腰痛・膝関節脱力・足腰の冷え",
+      "耳鳴・難聴・めまい",
+      "慢性腎炎・頻尿・夜間多尿",
+      "不眠・健忘・更年期障害",
+      "アキレス腱炎・踵骨部痛"
     ],
     "categories": [
+      "兪土穴・原穴",
       "原穴",
       "輸土穴"
     ],
     "clinicalNote": "先天の原気を蔵する腎の原穴。腎陰・腎陽の両方を滋養できる根幹穴であり、照海と併用して陰虚（体内の潤い不足・ほてり）を潤し虚熱を鎮静化する。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "兪土穴・原穴",
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ki4",
@@ -5370,15 +6320,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足内側、内果後下方、踵骨上縁、アキレス腱付着部内側前方の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [
       "絡穴"
     ],
-    "clinicalNote": "足の少陰腎経の第4穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ki5",
@@ -5398,15 +6353,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足内側、太谿の直下1寸、踵骨隆起前方の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [
       "郄穴"
     ],
-    "clinicalNote": "足の少陰腎経の第5穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ki6",
@@ -5426,19 +6386,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足内側、内果尖の下方1寸、内果下結節の下方陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "のどの渇き・咽喉痛",
-      "不眠・不安",
-      "便秘（乾燥便）",
-      "月経不順",
-      "下腹部痛",
-      "足の内側のつっぱり"
+      "咽喉乾燥・声枯れ・慢性咽頭炎",
+      "不眠症・夜間頻尿",
+      "月経不順・子宮脱・不妊症",
+      "下肢冷感・内果痛"
     ],
     "categories": [
       "八脈交会穴（陰蹻脈に通ず）"
     ],
     "clinicalNote": "八脈交会穴の一つで陰蹻脈を統括。全身の陰液（潤い）を引上げ、夜間の不眠や口喉の渇き、から咳を鎮める名穴。太谿とのペアで腎陰虚に対する切れ味を発揮する。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ki7",
@@ -5458,17 +6418,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿内側、太谿（内果尖）の上方2寸、アキレス腱の前縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "寝汗（盗汗）・自汗",
-      "下半身の冷え・むくみ",
-      "腰痛・膝のだるさ",
-      "腎機能低下"
+      "無汗症・自汗・盗汗（寝汗）",
+      "下肢浮腫・腎性浮腫・脚気",
+      "慢性下痢・腹部膨満",
+      "腰痛・下肢麻痺"
     ],
     "categories": [
+      "経金穴",
       "経金穴（母穴）"
     ],
     "clinicalNote": "「虚すればその母を補う」に基づき、腎水を力強く生み出す補腎の名穴。自律神経性の異常発汗や寝汗を止め、津液を全身に巡らせる。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "経金穴",
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ki8",
@@ -5488,15 +6452,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿内側、脛骨内側面後縁の陥凹部、内果尖の上方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [
       "陰蹻脈の郄穴"
     ],
-    "clinicalNote": "足の少陰腎経の第8穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ki9",
@@ -5516,15 +6485,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿後内側、ヒラメ筋とアキレス腱の間、内果尖の上方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [
       "陰維脈の郄穴"
     ],
-    "clinicalNote": "足の少陰腎経の第9穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ki10",
@@ -5544,15 +6518,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "膝後内側、半腱様筋腱と半膜様筋腱の間、膝窩横紋上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "膝関節内側痛・関節リウマチ",
+      "インポテンツ・陰部痛・ヘルニア",
+      "不正性器出血・排尿痛",
+      "精神不安・下腹部痛"
     ],
     "categories": [
       "合水穴"
     ],
-    "clinicalNote": "足の少陰腎経の第10穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "合水穴",
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "ki11",
@@ -5572,15 +6551,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、恥骨結合上縁と同じ高さ、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陰腎経の第11穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki12",
@@ -5600,15 +6584,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方4寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陰腎経の第12穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki13",
@@ -5628,15 +6617,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方3寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陰腎経の第13穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki14",
@@ -5656,15 +6650,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方2寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陰腎経の第14穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki15",
@@ -5684,15 +6683,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方1寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陰腎経の第15穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki16",
@@ -5712,15 +6716,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陰腎経の第16穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki17",
@@ -5740,15 +6749,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方2寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陰腎経の第17穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki18",
@@ -5768,15 +6782,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方3寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陰腎経の第18穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki19",
@@ -5796,15 +6815,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方4寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陰腎経の第19穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki20",
@@ -5824,15 +6848,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方5寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陰腎経の第20穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki21",
@@ -5852,15 +6881,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方6寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陰腎経の第21穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki22",
@@ -5880,13 +6914,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第5肋間、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [],
-    "clinicalNote": "足の少陰腎経の第22穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki23",
@@ -5906,13 +6945,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第4肋間、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [],
-    "clinicalNote": "足の少陰腎経の第23穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki24",
@@ -5932,13 +6976,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第3肋間、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [],
-    "clinicalNote": "足の少陰腎経の第24穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki25",
@@ -5958,13 +7007,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第2肋間、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [],
-    "clinicalNote": "足の少陰腎経の第25穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki26",
@@ -5984,13 +7038,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第1肋間、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [],
-    "clinicalNote": "足の少陰腎経の第26穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "ki27",
@@ -6010,13 +7069,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、鎖骨下縁、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腎経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腰痛・膝関節脱力感・足底痛",
+      "めまい・耳鳴・難聴",
+      "不眠・盗汗・手足のほてり",
+      "浮腫・頻尿・夜間多尿"
     ],
     "categories": [],
-    "clinicalNote": "足の少陰腎経の第27穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「腎は先天の本、蔵精・生殖を主どる」。腎陰・腎陽を補益し、骨髄を充実させ、下焦の虚冷、耳鳴り、腰膝の倦怠感を根本から立て直す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "pc1",
@@ -6036,15 +7100,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第4肋間、乳頭外方1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心包経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・心包経部の疼痛・腫脹・運動制限",
+      "心悸亢進・心胸痛・胸悶",
+      "胃痛・悪心・嘔吐・乗り物酔い",
+      "不眠・不安神経症・躁うつ",
+      "掌中発熱・前腕掌側痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "手の厥陰心包経の第1穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "心包は心の外衛として邪気を受け止める。精神的ストレスに伴う胸悶・動悸を鎮静し、胃腸の逆流気運を降伏させる。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "pc2",
@@ -6064,13 +7133,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腕前面、上腕二頭筋長頭と短頭の間、腋窩横紋前端の下方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心包経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・心包経部の疼痛・腫脹・運動制限",
+      "心悸亢進・心胸痛・胸悶",
+      "胃痛・悪心・嘔吐・乗り物酔い",
+      "不眠・不安神経症・躁うつ",
+      "掌中発熱・前腕掌側痛"
     ],
     "categories": [],
-    "clinicalNote": "手の厥陰心包経の第2穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "心包は心の外衛として邪気を受け止める。精神的ストレスに伴う胸悶・動悸を鎮静し、胃腸の逆流気運を降伏させる。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "pc3",
@@ -6090,15 +7164,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肘前面、肘窩横紋上、上腕二頭筋腱の尺側縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心包経の関連症状",
-      "局所疼痛・機能調整"
+      "急性胃腸炎・劇しい嘔吐下痢",
+      "熱病の意識混濁・中暑（熱中症）",
+      "肘関節痛・前腕痙攣",
+      "心胸痛・動悸"
     ],
     "categories": [
       "合水穴"
     ],
-    "clinicalNote": "手の厥陰心包経の第3穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "心包は心の外衛として邪気を受け止める。精神的ストレスに伴う胸悶・動悸を鎮静し、胃腸の逆流気運を降伏させる。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "合水穴",
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "pc4",
@@ -6118,15 +7197,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕前面、長掌筋腱と橈側手根屈筋腱の間、手関節掌側横紋の上方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心包経の関連症状",
-      "局所疼痛・機能調整"
+      "急性狭心痛・心筋梗塞前駆症状",
+      "動悸・不整脈・胸悶",
+      "喀血・吐血・鼻出血",
+      "情緒不安定・パニック"
     ],
     "categories": [
       "郄穴"
     ],
-    "clinicalNote": "手の厥陰心包経の第4穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "心包は心の外衛として邪気を受け止める。精神的ストレスに伴う胸悶・動悸を鎮静し、胃腸の逆流気運を降伏させる。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "pc5",
@@ -6146,15 +7229,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕前面、長掌筋腱と橈側手根屈筋腱の間、手関節掌側横紋の上方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心包経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・心包経部の疼痛・腫脹・運動制限",
+      "心悸亢進・心胸痛・胸悶",
+      "胃痛・悪心・嘔吐・乗り物酔い",
+      "不眠・不安神経症・躁うつ",
+      "掌中発熱・前腕掌側痛"
     ],
     "categories": [
       "経金穴"
     ],
-    "clinicalNote": "手の厥陰心包経の第5穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "心包は心の外衛として邪気を受け止める。精神的ストレスに伴う胸悶・動悸を鎮静し、胃腸の逆流気運を降伏させる。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "経金穴",
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "pc6",
@@ -6174,20 +7263,37 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手関節掌側横紋の上2寸、橈側手根屈筋腱と長掌筋腱の間。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "吐き気・乗り物酔い",
-      "胃痛・胸焼け",
-      "動悸・息切れ",
-      "不安・不眠",
-      "自律神経失調症"
+      "吐き気・乗り物酔い・つわり",
+      "逆流性食道炎・胃痛・嘔吐",
+      "動悸・不整脈・狭心痛",
+      "不眠・不安神経症・パニック",
+      "前腕痛・手根管症候群"
     ],
     "categories": [
       "絡穴",
       "八脈交会穴（陰維脈に通ず）",
-      "四総穴（心胸を治す）"
+      "四総穴（心胸を治す）",
+      "四総穴（心胸）"
     ],
     "clinicalNote": "「心胸は内関に尋ねよ」。自律神経の中枢や迷走神経と深く関わり、精神的緊張に伴う動悸や消化器の逆流（悪心・嘔吐）を鎮める。WHOでも乗り物酔い・つわりへの有効性が認められている。",
     "status": "published",
-    "hasDetailedAnatomy": true
+    "hasDetailedAnatomy": true,
+    "goldenPairs": [
+      {
+        "partnerCode": "SP4",
+        "partnerName": "公孫",
+        "prescriptionName": "八脈交会配穴（陰維・衝脈）",
+        "effect": "心胸・胃腸の逆流、悪心嘔吐、胃痛、動悸を速やかに鎮める"
+      },
+      {
+        "partnerCode": "HT7",
+        "partnerName": "神門",
+        "prescriptionName": "寧心安神配穴",
+        "effect": "自律神経の過剰興奮を鎮静し、不安症・パニック・不眠を緩和する"
+      }
+    ],
+    "punctureMethod": "直刺 0.5〜0.8寸。正中神経への直撃を避けるため腱間に愛護的に刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "pc7",
@@ -6207,16 +7313,22 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手関節前面、長掌筋腱と橈側手根屈筋腱の間、手関節掌側横紋上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心包経の関連症状",
-      "局所疼痛・機能調整"
+      "心痛・動悸・胸部圧迫感",
+      "不眠症・多夢・精神興奮",
+      "手根管症候群・手関節掌側痛",
+      "口臭・胃熱・嘔吐"
     ],
     "categories": [
+      "兪土穴・原穴",
       "原穴",
       "輸土穴"
     ],
-    "clinicalNote": "手の厥陰心包経の第7穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "心包は心の外衛として邪気を受け止める。精神的ストレスに伴う胸悶・動悸を鎮静し、胃腸の逆流気運を降伏させる。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "兪土穴・原穴",
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "pc8",
@@ -6236,15 +7348,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手掌、第2・第3中手骨間、中手指節関節の近位、拳を握ったとき中指の先端が当たるところ。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心包経の関連症状",
-      "局所疼痛・機能調整"
+      "手のひらのほてり・掌熱",
+      "口内炎・口臭・舌炎",
+      "心痛・動悸・胸悶",
+      "精神錯乱・ヒステリー・癲癇"
     ],
     "categories": [
       "滎火穴"
     ],
-    "clinicalNote": "手の厥陰心包経の第8穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "心包は心の外衛として邪気を受け止める。精神的ストレスに伴う胸悶・動悸を鎮静し、胃腸の逆流気運を降伏させる。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "滎火穴",
+    "punctureMethod": "直刺 0.3〜0.5寸。骨間隙に沿って刺入し特有の響きを得る。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "pc9",
@@ -6264,15 +7381,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手中指末節骨先端中央。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心包経の関連症状",
-      "局所疼痛・機能調整"
+      "心臓発作救急・失神・熱中症",
+      "高熱・昏睡・小児ひきつけ",
+      "舌強直・言語障害",
+      "手の指の腫脹・冷感"
     ],
     "categories": [
       "井木穴"
     ],
-    "clinicalNote": "手の厥陰心包経の第9穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "心包は心の外衛として邪気を受け止める。精神的ストレスに伴う胸悶・動悸を鎮静し、胃腸の逆流気運を降伏させる。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "井木穴",
+    "punctureMethod": "直刺 0.1〜0.2寸、または三稜針・微小鍼による点刺出血。",
+    "moxibustion": "糸状灸・米粒大灸3〜5壮。熱病や急性炎症には点刺出血を優先。"
   },
   {
     "id": "te1",
@@ -6292,15 +7414,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手薬指末節骨尺側、爪甲角の近位内方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "急性咽頭炎・扁桃腫痛",
+      "頭痛・発熱・耳鳴・難聴",
+      "結膜炎・かすみ目",
+      "薬指麻痺・指関節痛"
     ],
     "categories": [
       "井金穴"
     ],
-    "clinicalNote": "手の少陽三焦経の第1穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "井金穴",
+    "punctureMethod": "直刺 0.1〜0.2寸、または三稜針・微小鍼による点刺出血。",
+    "moxibustion": "糸状灸・米粒大灸3〜5壮。熱病や急性炎症には点刺出血を優先。"
   },
   {
     "id": "te2",
@@ -6320,15 +7447,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手背、薬指と小指の間、みずかきの近位縁、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・三焦経部の疼痛・腫脹・運動制限",
+      "偏頭痛・耳鳴・難聴",
+      "目尻の痛み・目の充血",
+      "頚部リンパ節腫脹・肩甲骨周囲痛",
+      "上肢外側痛・薬指可動不全"
     ],
     "categories": [
       "滎水穴"
     ],
-    "clinicalNote": "手の少陽三焦経の第2穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "滎水穴",
+    "punctureMethod": "直刺 0.3〜0.5寸。骨間隙に沿って刺入し特有の響きを得る。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "te3",
@@ -6348,15 +7481,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手背、第4・第5中手骨間、第4中手指節関節の近位陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "耳鳴・難聴・中耳炎",
+      "偏頭痛・後頭部痛・項強",
+      "手の甲の腫脹・指の屈伸不能",
+      "咽喉腫痛・目赤"
     ],
     "categories": [
+      "兪木穴",
       "輸木穴"
     ],
-    "clinicalNote": "手の少陽三焦経の第3穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "兪木穴",
+    "punctureMethod": "直刺 0.3〜0.5寸。骨間隙に沿って刺入し特有の響きを得る。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "te4",
@@ -6376,15 +7515,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手関節後側、総指伸筋腱の尺側陥凹部、手関節背側横紋上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "手関節背側痛・腱鞘炎",
+      "糖尿病・口渇",
+      "感冒・悪寒発熱",
+      "肩甲骨部痛・腕痛"
     ],
     "categories": [
       "原穴"
     ],
-    "clinicalNote": "手の少陽三焦経の第4穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "原穴",
+    "punctureMethod": "直刺 0.3〜0.5寸。骨間隙に沿って刺入し特有の響きを得る。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "te5",
@@ -6404,16 +7548,22 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後面、橈骨と尺骨の骨間の中点、手関節背側横紋の上方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "感冒・悪寒発熱・頭痛",
+      "耳鳴・突発性難聴・耳痛",
+      "肋間神経痛・胸脇部痛",
+      "頚肩腕症候群・五十肩",
+      "手首・前腕の腱鞘炎"
     ],
     "categories": [
       "絡穴",
-      "八脈交会穴（陽維脈）"
+      "八脈交会穴（陽維脈）",
+      "八脈交会穴（陽維脈に通ず）"
     ],
-    "clinicalNote": "手の少陽三焦経の第5穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "te6",
@@ -6433,15 +7583,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後面、橈骨と尺骨の骨間の中点、手関節背側横紋の上方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "習慣性便秘・弛緩性便秘",
+      "胸脇苦満・肋間神経痛",
+      "耳鳴・突発性難聴・耳痛",
+      "上肢痛・前腕伸側麻痺"
     ],
     "categories": [
       "経火穴"
     ],
-    "clinicalNote": "手の少陽三焦経の第6穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "経火穴",
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "te7",
@@ -6461,15 +7616,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後面、尺骨の橈側縁、手関節背側横紋の上方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・三焦経部の疼痛・腫脹・運動制限",
+      "偏頭痛・耳鳴・難聴",
+      "目尻の痛み・目の充血",
+      "頚部リンパ節腫脹・肩甲骨周囲痛",
+      "上肢外側痛・薬指可動不全"
     ],
     "categories": [
       "郄穴"
     ],
-    "clinicalNote": "手の少陽三焦経の第7穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "te8",
@@ -6489,13 +7649,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後面、橈骨と尺骨の骨間の中点、手関節背側横紋の上方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・三焦経部の疼痛・腫脹・運動制限",
+      "偏頭痛・耳鳴・難聴",
+      "目尻の痛み・目の充血",
+      "頚部リンパ節腫脹・肩甲骨周囲痛",
+      "上肢外側痛・薬指可動不全"
     ],
     "categories": [],
-    "clinicalNote": "手の少陽三焦経の第8穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "te9",
@@ -6515,13 +7680,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後面、橈骨と尺骨の骨間の中点、肘頭の下方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・三焦経部の疼痛・腫脹・運動制限",
+      "偏頭痛・耳鳴・難聴",
+      "目尻の痛み・目の充血",
+      "頚部リンパ節腫脹・肩甲骨周囲痛",
+      "上肢外側痛・薬指可動不全"
     ],
     "categories": [],
-    "clinicalNote": "手の少陽三焦経の第9穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "te10",
@@ -6541,15 +7711,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肘後面、肘頭の上方1寸の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "肘関節痛・上顆炎・肘後痛",
+      "頚部リンパ節結核・甲状腺腫",
+      "偏頭痛・項背痛",
+      "てんかん・精神焦燥"
     ],
     "categories": [
       "合土穴"
     ],
-    "clinicalNote": "手の少陽三焦経の第10穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "合土穴",
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "te11",
@@ -6569,13 +7744,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腕後面、肘頭と肩峰角を結ぶ線上、肘頭の上方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・三焦経部の疼痛・腫脹・運動制限",
+      "偏頭痛・耳鳴・難聴",
+      "目尻の痛み・目の充血",
+      "頚部リンパ節腫脹・肩甲骨周囲痛",
+      "上肢外側痛・薬指可動不全"
     ],
     "categories": [],
-    "clinicalNote": "手の少陽三焦経の第11穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "te12",
@@ -6595,13 +7775,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腕後面、肘頭と肩峰角を結ぶ線上、肘頭の上方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・三焦経部の疼痛・腫脹・運動制限",
+      "偏頭痛・耳鳴・難聴",
+      "目尻の痛み・目の充血",
+      "頚部リンパ節腫脹・肩甲骨周囲痛",
+      "上肢外側痛・薬指可動不全"
     ],
     "categories": [],
-    "clinicalNote": "手の少陽三焦経の第12穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "te13",
@@ -6621,13 +7806,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腕後面、三角筋の後縁、肩峰角の下方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "手・腕・三焦経部の疼痛・腫脹・運動制限",
+      "偏頭痛・耳鳴・難聴",
+      "目尻の痛み・目の充血",
+      "頚部リンパ節腫脹・肩甲骨周囲痛",
+      "上肢外側痛・薬指可動不全"
     ],
     "categories": [],
-    "clinicalNote": "手の少陽三焦経の第13穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.5〜1.0寸。筋腹または筋間隙を捉えて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "te14",
@@ -6647,13 +7837,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肩周囲部、肩峰角と上腕骨大結節の間の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "肩関節周囲炎・五十肩・腱板断裂",
+      "肩関節外側痛・三角筋部痛",
+      "上肢挙上困難・腕の重だるさ"
     ],
     "categories": [],
-    "clinicalNote": "手の少陽三焦経の第14穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "te15",
@@ -6673,15 +7866,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肩甲部、肩甲骨上角の上方陥凹部、曲垣と肩井を結ぶ線の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "首・肩・三焦経部の疼痛・腫脹・運動制限",
+      "偏頭痛・耳鳴・難聴",
+      "目尻の痛み・目の充血",
+      "頚部リンパ節腫脹・肩甲骨周囲痛",
+      "上肢外側痛・薬指可動不全"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "手の少陽三焦経の第15穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "te16",
@@ -6701,13 +7899,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、下顎角と同じ高さ、胸鎖乳突筋の後縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "首・肩・三焦経部の疼痛・腫脹・運動制限",
+      "偏頭痛・耳鳴・難聴",
+      "目尻の痛み・目の充血",
+      "頚部リンパ節腫脹・肩甲骨周囲痛",
+      "上肢外側痛・薬指可動不全"
     ],
     "categories": [],
-    "clinicalNote": "手の少陽三焦経の第16穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "te17",
@@ -6727,15 +7930,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、耳垂後方、乳様突起下端前方の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "耳鳴・突発性難聴・中耳炎",
+      "顔面神経麻痺・口眼歪斜",
+      "顎関節症・耳下腺炎",
+      "偏頭痛・めまい"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "手の少陽三焦経の第17穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸。顔面神経・顔面動静脈を避けて愛護的に操作。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "te18",
@@ -6755,13 +7962,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、乳様突起の中央、翳風と角孫を結ぶ線上の下から1/3。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・三焦経部の疼痛・腫脹・運動制限",
+      "偏頭痛・耳鳴・難聴",
+      "目尻の痛み・目の充血",
+      "頚部リンパ節腫脹・肩甲骨周囲痛",
+      "上肢外側痛・薬指可動不全"
     ],
     "categories": [],
-    "clinicalNote": "手の少陽三焦経の第18穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "te19",
@@ -6781,13 +7993,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、翳風と角孫を結ぶ線上の上から1/3。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・三焦経部の疼痛・腫脹・運動制限",
+      "偏頭痛・耳鳴・難聴",
+      "目尻の痛み・目の充血",
+      "頚部リンパ節腫脹・肩甲骨周囲痛",
+      "上肢外側痛・薬指可動不全"
     ],
     "categories": [],
-    "clinicalNote": "手の少陽三焦経の第19穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "te20",
@@ -6807,15 +8024,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、耳尖の直上、髪際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・三焦経部の疼痛・腫脹・運動制限",
+      "偏頭痛・耳鳴・難聴",
+      "目尻の痛み・目の充血",
+      "頚部リンパ節腫脹・肩甲骨周囲痛",
+      "上肢外側痛・薬指可動不全"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "手の少陽三焦経の第20穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "te21",
@@ -6835,13 +8057,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、耳珠の上切痕の前方、下顎骨関節突起の後方の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "耳鳴・難聴・耳漏・中耳炎",
+      "顎関節症・開口障害",
+      "歯痛・偏頭痛"
     ],
     "categories": [],
-    "clinicalNote": "手の少陽三焦経の第21穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "te22",
@@ -6861,15 +8086,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、耳介の付け根の前方、浅側頭動脈の後縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・三焦経部の疼痛・腫脹・運動制限",
+      "偏頭痛・耳鳴・難聴",
+      "目尻の痛み・目の充血",
+      "頚部リンパ節腫脹・肩甲骨周囲痛",
+      "上肢外側痛・薬指可動不全"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "手の少陽三焦経の第22穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "te23",
@@ -6889,13 +8119,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、眉毛の外端の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "三焦経の関連症状",
-      "局所疼痛・機能調整"
+      "偏頭痛・前頭部痛",
+      "目の充血・眼精疲労・かすみ目",
+      "顔面神経麻痺・眼瞼痙攣"
     ],
     "categories": [],
-    "clinicalNote": "手の少陽三焦経の第23穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "三焦は「決瀆の官、水道出づ」。全身の水液代謝と気機循環を統括し、側頭部痛・耳疾および少陽の半表半裏証を和解する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "浅刺（直刺または斜刺 0.2〜0.4寸）。血管損傷・皮下出血に配慮し愛護的に刺入。",
+    "moxibustion": "直接灸・温灸ともに原則禁忌（眼球熱傷・結膜充血防止）。温罨法のみ。"
   },
   {
     "id": "gb1",
@@ -6915,15 +8148,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、外眼角の外方0.5寸の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "眼精疲労・結膜炎・夜盲症",
+      "偏頭痛・三叉神経痛",
+      "顔面神経麻痺・眼瞼痙攣"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第1穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "浅刺（直刺または斜刺 0.2〜0.4寸）。血管損傷・皮下出血に配慮し愛護的に刺入。",
+    "moxibustion": "直接灸・温灸ともに原則禁忌（眼球熱傷・結膜充血防止）。温罨法のみ。"
   },
   {
     "id": "gb2",
@@ -6943,13 +8179,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、耳珠間切痕の前方、下顎骨関節突起の後方の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "耳鳴・難聴・耳痛・中耳炎",
+      "顎関節症・開口障害",
+      "歯痛・耳下腺炎"
     ],
     "categories": [],
-    "clinicalNote": "足の少陽胆経の第2穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb3",
@@ -6969,15 +8208,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、頬骨弓中央の上縁の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第3穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb4",
@@ -6997,15 +8241,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、頭維と曲鬢を結ぶ線上、頭維から1/4の点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第4穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb5",
@@ -7025,15 +8274,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、頭維と曲鬢を結ぶ線の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第5穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb6",
@@ -7053,15 +8307,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、頭維と曲鬢を結ぶ線上、頭維から3/4の点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第6穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb7",
@@ -7081,15 +8340,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、耳尖を通る水平線と側頭部髪際後縁の垂線が交わる点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第7穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb8",
@@ -7109,15 +8373,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、耳尖の直上、髪際の上方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第8穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb9",
@@ -7137,13 +8406,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、耳介根後端の直上、髪際の上方2寸、率谷の後方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [],
-    "clinicalNote": "足の少陽胆経の第9穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb10",
@@ -7163,15 +8437,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、乳様突起の後上方、天衝と完骨を結ぶ線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第10穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb11",
@@ -7191,15 +8470,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、乳様突起の上方、浮白と完骨を結ぶ線の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第11穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb12",
@@ -7219,15 +8503,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、乳様突起の後下方陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第12穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb13",
@@ -7247,15 +8536,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方0.5寸、神庭と頭維を結ぶ線上の外から1/3。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第13穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb14",
@@ -7275,15 +8569,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、眉弓の中央の上方1寸、瞳孔の直上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "前頭部痛・目の奥の激痛",
+      "眼瞼下垂・顔面神経麻痺",
+      "眼精疲労・結膜充血",
+      "三叉神経痛（第1枝）"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第14穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb15",
@@ -7303,15 +8601,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方0.5寸、瞳孔の直上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第15穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb16",
@@ -7331,15 +8634,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方1.5寸、瞳孔の直上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第16穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb17",
@@ -7359,15 +8667,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方2.5寸、瞳孔の直上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第17穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb18",
@@ -7387,15 +8700,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方4寸、瞳孔の直上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第18穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb19",
@@ -7415,15 +8733,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、外後頭隆起上縁と同じ高さ、後正中線の外方2.25寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第19穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb20",
@@ -7443,18 +8766,28 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "後頭部、僧帽筋外縁と胸鎖乳突筋後縁の間の陥凹部、乳様突起下端と同じ高さ。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首こり・肩こり",
-      "緊張型頭痛・片頭痛",
-      "風邪初期の寒気",
-      "眼精疲労",
-      "めまい・耳鳴り"
+      "偏頭痛・緊張型頭痛・後頭部痛",
+      "高血圧・めまい・耳鳴",
+      "項部硬直・頚椎症・肩こり",
+      "眼精疲労・鼻閉・風邪初期",
+      "不眠・自律神経失調"
     ],
     "categories": [
       "交会穴（胆経・三焦経・陽維脈・陽蹻脈）"
     ],
     "clinicalNote": "風邪（病因）が池のように溜まる部位。頭頸部の筋緊張と脳循環を改善し、外邪を発散させる。列缺との併用で頭項部の風寒表証を解消する。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "goldenPairs": [
+      {
+        "partnerCode": "BL10",
+        "partnerName": "天柱",
+        "prescriptionName": "項背解筋配穴",
+        "effect": "後頭下筋群の過緊張を解放し、緊張型頭痛・眼精疲労・頚部痛を即効改善する"
+      }
+    ],
+    "punctureMethod": "針先を対側の眼球方向、または鼻尖方向へ向けて斜刺 0.8〜1.2寸。上方刺入・深刺は厳禁。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gb21",
@@ -7474,15 +8807,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肩甲部、第7頸椎棘突起と肩峰外端を結ぶ線の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "重度の肩こり・頚肩腕症候群",
+      "五十肩・上肢挙上障害",
+      "乳腺炎・乳汁不通・乳房痛",
+      "頭痛・めまい・寝違え",
+      "難産・胎盤排出促進"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第21穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（胸郭外方へ向ける）。直刺深刺による気胸を避けるため細心の注意を払う。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb22",
@@ -7502,13 +8840,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "側胸部、第4肋間、中腋窩線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [],
-    "clinicalNote": "足の少陽胆経の第22穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gb23",
@@ -7528,15 +8871,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "側胸部、第4肋間、淵腋の前方1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第23穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gb24",
@@ -7556,15 +8904,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第7肋間、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "胆嚢炎・胆石症・黄疸",
+      "胸脇苦満・肋間神経痛",
+      "嘔吐・呑酸・食欲不振"
     ],
     "categories": [
       "胆の募穴"
     ],
-    "clinicalNote": "足の少陽胆経の第24穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gb25",
@@ -7584,15 +8935,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "側腹部、第12肋骨遊離端の下縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "腎の募穴"
     ],
-    "clinicalNote": "足の少陽胆経の第25穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gb26",
@@ -7612,15 +8968,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "側腹部、第11肋骨遊離端の直下、臍と同じ高さ。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴（帯脈）"
     ],
-    "clinicalNote": "足の少陽胆経の第26穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gb27",
@@ -7640,15 +9001,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "側腹部、上前腸骨棘の内側、臍中央の下方3寸と同じ高さ。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴（帯脈）"
     ],
-    "clinicalNote": "足の少陽胆経の第27穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gb28",
@@ -7668,15 +9034,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、上前腸骨棘の前下方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴（帯脈）"
     ],
-    "clinicalNote": "足の少陽胆経の第28穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gb29",
@@ -7696,15 +9067,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "臀部、上前腸骨棘と大転子頂点を結ぶ線の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第29穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb30",
@@ -7724,15 +9100,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "臀部、大転子頂点と仙骨裂孔を結ぶ線上、外側から1/3の点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "坐骨神経痛・梨状筋症候群",
+      "腰痛・股関節炎・臀部痛",
+      "下肢麻痺・片麻痺後遺症",
+      "下肢冷え・こむら返り"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "足の少陽胆経の第30穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.5〜2.5寸。坐骨神経に達すると下肢末端へ放散する得気（電撃感）が得られる。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb31",
@@ -7752,13 +9132,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿外側、腸脛靭帯の後縁、膝窩横紋の上方7寸。直立し手を下垂したとき中指先端が当たる点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [],
-    "clinicalNote": "足の少陽胆経の第31穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb32",
@@ -7778,13 +9163,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿外側、腸脛靭帯の後縁、膝窩横紋の上方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [],
-    "clinicalNote": "足の少陽胆経の第32穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb33",
@@ -7804,13 +9194,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "膝外側、大腿二頭筋腱と腸脛靭帯の間、大腿骨外側上顆の後上方の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [],
-    "clinicalNote": "足の少陽胆経の第33穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb34",
@@ -7830,12 +9225,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿外側、腓骨頭の前下方の陥凹部。長腓骨筋腱の付着部付近。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脇腹の張り・痛み",
-      "下肢のしびれ・坐骨神経痛",
-      "筋痙攣・こむら返り",
-      "胆嚢炎・胆石症",
-      "イライラ・口の苦み",
-      "膝関節痛"
+      "胆石症・胆嚢炎・胸脇苦満",
+      "膝関節痛・変形性膝関節症",
+      "坐骨神経痛・下肢麻痺・筋痙攣",
+      "全身の筋肉腱の障害・こむら返り",
+      "習慣性便秘・高血圧"
     ],
     "categories": [
       "合土穴",
@@ -7844,7 +9238,10 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     ],
     "clinicalNote": "全身の筋・腱・筋膜の運動器疾患を統括する「筋会」。肝胆の気機を疏通させる名穴で、太衝と組み合わせることで自律神経の過剰緊張と側腹部の張り・筋膜緊張を同時に解放する。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "合土穴",
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb35",
@@ -7864,15 +9261,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿外側、腓骨後縁、外果尖の上方7寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "陽維脈の郄穴"
     ],
-    "clinicalNote": "足の少陽胆経の第35穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb36",
@@ -7892,15 +9294,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿外側、腓骨前縁、外果尖の上方7寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "郄穴"
     ],
-    "clinicalNote": "足の少陽胆経の第36穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb37",
@@ -7920,15 +9327,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿外側、腓骨前縁、外果尖の上方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "夜盲症・近視・視力減退",
+      "眼精疲労・目の奥の痛み",
+      "下肢痛・下腿外側痛・麻痺"
     ],
     "categories": [
       "絡穴"
     ],
-    "clinicalNote": "足の少陽胆経の第37穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb38",
@@ -7948,15 +9358,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿外側、腓骨前縁、外果尖の上方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "経火穴"
     ],
-    "clinicalNote": "足の少陽胆経の第38穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "経火穴",
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb39",
@@ -7976,15 +9392,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿外側、腓骨前縁、外果尖の上方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "頚肩部強直・項背部痛",
+      "下肢麻痺・脳卒中片麻痺",
+      "骨粗鬆症・貧血・白血球減少",
+      "足関節外側痛"
     ],
     "categories": [
       "八会穴（髄会）"
     ],
-    "clinicalNote": "足の少陽胆経の第39穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb40",
@@ -8004,15 +9424,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足関節前外側、長趾伸筋腱外側、外果前下方の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "足関節捻挫・外果部腫脹痛",
+      "胸脇部痛・肋間痛",
+      "胆嚢疾患・胆石仙痛",
+      "下肢外側麻痺"
     ],
     "categories": [
       "原穴"
     ],
-    "clinicalNote": "足の少陽胆経の第40穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "原穴",
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb41",
@@ -8032,16 +9457,23 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足背、第4・第5中足骨底結合部の前方の陥凹部、小指伸筋腱外側。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "偏頭痛・目尻の痛み・かすみ目",
+      "乳腺炎・乳房緊満・月経不順",
+      "胸脇部痛・肋間神経痛",
+      "足背外側痛・第4足指痛"
     ],
     "categories": [
+      "兪木穴",
       "輸木穴",
-      "八脈交会穴（帯脈）"
+      "八脈交会穴（帯脈）",
+      "八脈交会穴（帯脈に通ず）"
     ],
-    "clinicalNote": "足の少陽胆経の第41穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "兪木穴",
+    "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb42",
@@ -8061,13 +9493,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足背、第4・第5中足骨間、第4中足指節関節の近位陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [],
-    "clinicalNote": "足の少陽胆経の第42穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb43",
@@ -8087,15 +9524,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足背、第4・第5足指間、みずかきの近位縁、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "偏頭痛・側頭部痛・目の奥の痛み",
+      "めまい・耳鳴・口の苦み",
+      "胸脇苦満・肋間神経痛",
+      "坐骨神経痛・股関節痛・外側大腿痛"
     ],
     "categories": [
       "滎水穴"
     ],
-    "clinicalNote": "足の少陽胆経の第43穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "滎水穴",
+    "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gb44",
@@ -8115,15 +9558,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足第4指末節骨外側、爪甲角の近位外方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胆経の関連症状",
-      "局所疼痛・機能調整"
+      "偏頭痛・頭頂部熱感",
+      "耳鳴・難聴・中耳炎",
+      "目赤・眼痛",
+      "不眠・多夢・悪夢"
     ],
     "categories": [
       "井金穴"
     ],
-    "clinicalNote": "足の少陽胆経の第44穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「胆は中正の官、決断を出だす」。肝胆の気機を疏通して側頭部痛や肋間神経痛、下肢外側の運動障害・坐骨神経痛を治療する。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "井金穴",
+    "punctureMethod": "直刺 0.1〜0.2寸、または三稜針・微小鍼による点刺出血。",
+    "moxibustion": "糸状灸・米粒大灸3〜5壮。熱病や急性炎症には点刺出血を優先。"
   },
   {
     "id": "lr1",
@@ -8143,15 +9591,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足母指末節骨外側、爪甲角の近位外方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肝経の関連症状",
-      "局所疼痛・機能調整"
+      "機能性子宮出血・過多月経",
+      "月経困難症・不正出血",
+      "排尿痛・閉尿・遺尿",
+      "ヘルニア・精巣炎・陰部痛",
+      "失神救急・小児ひきつけ"
     ],
     "categories": [
       "井木穴"
     ],
-    "clinicalNote": "足の厥陰肝経の第1穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「肝は疏泄を主どり、条達を喜ぶ」。ストレスによる気滞・血瘀を散らし、情緒の安定、筋の痙攣緩和、眼病および婦人科疾患に卓効を示す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "井木穴",
+    "punctureMethod": "直刺 0.1〜0.2寸、または三稜針・微小鍼による点刺出血。",
+    "moxibustion": "糸状灸・米粒大灸3〜5壮。熱病や急性炎症には点刺出血を優先。"
   },
   {
     "id": "lr2",
@@ -8171,18 +9625,22 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足背、第1・第2指間、みずかきの後縁、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "激しい頭痛・目の充血",
-      "のぼせ・高血圧",
-      "怒り・急躁",
-      "不眠・多夢",
-      "月経過多"
+      "激しい頭痛・めまい・目の充血",
+      "イライラ・怒り・不眠症",
+      "口渇・口苦・高血圧",
+      "月経困難症・機能性出血",
+      "排尿痛・足背痛"
     ],
     "categories": [
+      "滎火穴",
       "滎火穴（子穴・瀉穴）"
     ],
     "clinicalNote": "肝経の滎火穴であり、「実すれば其の子を瀉す」の原則に基づき、燃え上がる肝火（興奮・高血圧・目の充血・激しい頭痛）を強力に鎮静化する瀉火の特効穴。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "滎火穴",
+    "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lr3",
@@ -8202,14 +9660,14 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "第1・第2中足骨底結合部の前方の陥凹部。足背動脈の拍動を触れるところ。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "イライラ・ストレス",
-      "自律神経失調",
-      "頭痛・めまい",
-      "高血圧",
-      "月経痛・月経不順",
-      "眼精疲労"
+      "高血圧・めまい・緊張型頭痛",
+      "自律神経失調症・抑鬱・パニック",
+      "眼精疲労・目のかすみ・充血",
+      "月経不順・月経前症候群（PMS）",
+      "こむら返り・筋緊張・足背痛"
     ],
     "categories": [
+      "兪土穴・原穴",
       "原穴",
       "輸土穴",
       "四関穴"
@@ -8217,7 +9675,24 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "clinicalNote": "肝気の鬱結（ストレスによる滞り）を疏通させる名穴。現代人の交感神経優位・ストレス性疾患において、合谷と併用する「開四関」は気の巡りを整える基幹処方。",
     "caution": "刺激が強すぎると迷走神経反射を起こしやすいため、やさしい押圧から始める。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "兪土穴・原穴",
+    "goldenPairs": [
+      {
+        "partnerCode": "LI4",
+        "partnerName": "合谷",
+        "prescriptionName": "四関穴",
+        "effect": "上下で陰陽を通導し、肝気鬱結・自律神経失調・高血圧を平定する"
+      },
+      {
+        "partnerCode": "GB34",
+        "partnerName": "陽陵泉",
+        "prescriptionName": "肝胆相照配穴",
+        "effect": "肝胆の気機を疏通し、脇肋痛、こむら返り、筋緊張を劇的に緩める"
+      }
+    ],
+    "punctureMethod": "直刺または斜刺 0.3〜0.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lr4",
@@ -8237,15 +9712,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足関節前内側、前脛骨筋腱の内側、内果尖の前方。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肝経の関連症状",
-      "局所疼痛・機能調整"
+      "足関節内側痛・内果部痛",
+      "排尿困難・尿閉・膀胱炎",
+      "下腹部痛・ヘルニア・精巣痛"
     ],
     "categories": [
       "経金穴"
     ],
-    "clinicalNote": "足の厥陰肝経の第4穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「肝は疏泄を主どり、条達を喜ぶ」。ストレスによる気滞・血瘀を散らし、情緒の安定、筋の痙攣緩和、眼病および婦人科疾患に卓効を示す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "経金穴",
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lr5",
@@ -8265,15 +9744,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿前内側、脛骨内側面の中央、内果尖の上方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肝経の関連症状",
-      "局所疼痛・機能調整"
+      "陰部掻痒症・陰部湿疹・白帯下",
+      "月経不順・睾丸炎・ヘルニア",
+      "排尿障害・持続勃起症",
+      "下腿内側痛"
     ],
     "categories": [
       "絡穴"
     ],
-    "clinicalNote": "足の厥陰肝経の第5穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「肝は疏泄を主どり、条達を喜ぶ」。ストレスによる気滞・血瘀を散らし、情緒の安定、筋の痙攣緩和、眼病および婦人科疾患に卓効を示す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lr6",
@@ -8293,15 +9776,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿前内側、脛骨内側面の中央、内果尖の上方7寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肝経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・肝経部の疼痛・腫脹・運動制限",
+      "イライラ・怒りっぽい・精神抑鬱",
+      "頭頂部痛・目の充血・視力減退",
+      "胸脇部痛・月経不順・月経前症候群",
+      "下腹部痛・陰部痛・ヘルニア"
     ],
     "categories": [
       "郄穴"
     ],
-    "clinicalNote": "足の厥陰肝経の第6穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「肝は疏泄を主どり、条達を喜ぶ」。ストレスによる気滞・血瘀を散らし、情緒の安定、筋の痙攣緩和、眼病および婦人科疾患に卓効を示す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lr7",
@@ -8321,13 +9809,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿内側、脛骨内側顆の下後方、陰陵泉の後方1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肝経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・肝経部の疼痛・腫脹・運動制限",
+      "イライラ・怒りっぽい・精神抑鬱",
+      "頭頂部痛・目の充血・視力減退",
+      "胸脇部痛・月経不順・月経前症候群",
+      "下腹部痛・陰部痛・ヘルニア"
     ],
     "categories": [],
-    "clinicalNote": "足の厥陰肝経の第7穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「肝は疏泄を主どり、条達を喜ぶ」。ストレスによる気滞・血瘀を散らし、情緒の安定、筋の痙攣緩和、眼病および婦人科疾患に卓効を示す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lr8",
@@ -8347,15 +9840,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "膝内側、半腱・半膜様筋腱付着部前方の陥凹部、膝窩横紋内側端。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肝経の関連症状",
-      "局所疼痛・機能調整"
+      "膝関節痛・膝内側痛",
+      "月経困難症・子宮下垂",
+      "前立腺炎・排尿困難",
+      "下腹部冷痛・陰部痛"
     ],
     "categories": [
       "合水穴"
     ],
-    "clinicalNote": "足の厥陰肝経の第8穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「肝は疏泄を主どり、条達を喜ぶ」。ストレスによる気滞・血瘀を散らし、情緒の安定、筋の痙攣緩和、眼病および婦人科疾患に卓効を示す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "fiveElementsCategory": "合水穴",
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lr9",
@@ -8375,13 +9873,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿内側、縫工筋と薄筋の間、大腿骨内側上顆の上方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肝経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・肝経部の疼痛・腫脹・運動制限",
+      "イライラ・怒りっぽい・精神抑鬱",
+      "頭頂部痛・目の充血・視力減退",
+      "胸脇部痛・月経不順・月経前症候群",
+      "下腹部痛・陰部痛・ヘルニア"
     ],
     "categories": [],
-    "clinicalNote": "足の厥陰肝経の第9穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「肝は疏泄を主どり、条達を喜ぶ」。ストレスによる気滞・血瘀を散らし、情緒の安定、筋の痙攣緩和、眼病および婦人科疾患に卓効を示す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lr10",
@@ -8401,13 +9904,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿内側、長内転筋の外側、恥骨結合上縁の下方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肝経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・肝経部の疼痛・腫脹・運動制限",
+      "イライラ・怒りっぽい・精神抑鬱",
+      "頭頂部痛・目の充血・視力減退",
+      "胸脇部痛・月経不順・月経前症候群",
+      "下腹部痛・陰部痛・ヘルニア"
     ],
     "categories": [],
-    "clinicalNote": "足の厥陰肝経の第10穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「肝は疏泄を主どり、条達を喜ぶ」。ストレスによる気滞・血瘀を散らし、情緒の安定、筋の痙攣緩和、眼病および婦人科疾患に卓効を示す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lr11",
@@ -8427,13 +9935,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿内側、長内転筋の外側、恥骨結合上縁の下方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肝経の関連症状",
-      "局所疼痛・機能調整"
+      "足・脚・肝経部の疼痛・腫脹・運動制限",
+      "イライラ・怒りっぽい・精神抑鬱",
+      "頭頂部痛・目の充血・視力減退",
+      "胸脇部痛・月経不順・月経前症候群",
+      "下腹部痛・陰部痛・ヘルニア"
     ],
     "categories": [],
-    "clinicalNote": "足の厥陰肝経の第11穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「肝は疏泄を主どり、条達を喜ぶ」。ストレスによる気滞・血瘀を散らし、情緒の安定、筋の痙攣緩和、眼病および婦人科疾患に卓効を示す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "lr12",
@@ -8453,13 +9966,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "鼠径部、恥骨結合上縁と同じ高さ、前正中線の外方2.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肝経の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・肝経部の疼痛・腫脹・運動制限",
+      "イライラ・怒りっぽい・精神抑鬱",
+      "頭頂部痛・目の充血・視力減退",
+      "胸脇部痛・月経不順・月経前症候群",
+      "下腹部痛・陰部痛・ヘルニア"
     ],
     "categories": [],
-    "clinicalNote": "足の厥陰肝経の第12穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「肝は疏泄を主どり、条達を喜ぶ」。ストレスによる気滞・血瘀を散らし、情緒の安定、筋の痙攣緩和、眼病および婦人科疾患に卓効を示す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "lr13",
@@ -8479,16 +9997,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "側腹部、第11肋骨遊離端の下端。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肝経の関連症状",
-      "局所疼痛・機能調整"
+      "食欲不振・腹部膨満・消化不良",
+      "肝脾腫大・胸脇苦満",
+      "嘔吐・下痢・腸鳴",
+      "肋間神経痛・腰痛"
     ],
     "categories": [
       "脾の募穴",
       "八会穴（臓会）"
     ],
-    "clinicalNote": "足の厥陰肝経の第13穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「肝は疏泄を主どり、条達を喜ぶ」。ストレスによる気滞・血瘀を散らし、情緒の安定、筋の痙攣緩和、眼病および婦人科疾患に卓効を示す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.2寸。肝脾腫大がないか触診で確認し、腹壁厚に応じて深度を調整。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "lr14",
@@ -8508,15 +10030,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第6肋間、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "肝経の関連症状",
-      "局所疼痛・機能調整"
+      "胸脇苦満・肋間神経痛・胸部刺痛",
+      "急性・慢性肝炎・胆嚢炎",
+      "吃逆（しゃっくり）・胃もたれ",
+      "月経痛・乳房緊満痛"
     ],
     "categories": [
       "肝の募穴"
     ],
-    "clinicalNote": "足の厥陰肝経の第14穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「肝は疏泄を主どり、条達を喜ぶ」。ストレスによる気滞・血瘀を散らし、情緒の安定、筋の痙攣緩和、眼病および婦人科疾患に卓効を示す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gv1",
@@ -8536,15 +10062,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "会陰部、尾骨尖端と肛門の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "痔核・脱肛・直腸脱・便秘",
+      "仙骨痛・腰痛・脊柱痛",
+      "てんかん・精神疾患",
+      "排尿障害・遺尿"
     ],
     "categories": [
       "督脈の絡穴"
     ],
-    "clinicalNote": "督脈の第1穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gv2",
@@ -8564,13 +10094,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、仙骨裂孔部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第2穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gv3",
@@ -8590,13 +10123,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腰部、第4腰椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第3穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gv4",
@@ -8616,18 +10152,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "後正中線上、第2腰椎棘突起下の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "腰の激しい冷え・腰痛",
-      "全身の寒がり・四肢厥冷",
-      "慢性下痢（五更下痢）",
-      "精力減退・インポテンス",
-      "浮腫"
+      "慢性腰痛・ぎっくり腰・脊柱管狭窄症",
+      "足腰の冷え・下肢脱力",
+      "夜間頻尿・前立腺肥大・遺精",
+      "インポテンツ・不妊症・月経不順",
+      "慢性疲労・真元衰弱"
     ],
     "categories": [
       "督脈の要穴"
     ],
     "clinicalNote": "生命の門（火）であり、全身の温熱・代謝の根源である命門の火を司る。関元と併せて温灸を施すことで、真寒仮熱や重度の陽虚状態を回復させる最重要穴。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gv5",
@@ -8647,13 +10185,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腰部、第1腰椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第5穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 1.0〜1.8寸。重だるい酸脹感を臀部・下肢へ放散させる。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gv6",
@@ -8673,13 +10214,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第11胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第6穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gv7",
@@ -8699,13 +10243,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第10胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第7穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gv8",
@@ -8725,13 +10272,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第9胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第8穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gv9",
@@ -8751,13 +10301,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第7胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第9穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gv10",
@@ -8777,13 +10330,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第6胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第10穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gv11",
@@ -8803,13 +10359,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第5胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第11穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gv12",
@@ -8829,13 +10388,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第3胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第12穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gv13",
@@ -8855,15 +10417,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第1胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "督脈の第13穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.3〜0.5寸（脊柱方向の内下方へ向けて刺入）。直刺深刺による気胸・肋膜損傷を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "gv14",
@@ -8883,15 +10448,20 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "後頸部、第7頸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "感冒・高熱・悪寒・インフルエンザ",
+      "頚椎症・肩こり・寝違え",
+      "気管支喘息・咳嗽",
+      "アトピー性皮膚炎・皮膚掻痒",
+      "自律神経失調・うつ"
     ],
     "categories": [
       "交会穴（手足三陽）"
     ],
-    "clinicalNote": "督脈の第14穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "gv15",
@@ -8911,15 +10481,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "後頭部、第2頸椎棘突起上縁の陥凹部、後髪際の上方0.5寸、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [
       "交会穴（陽維脈）"
     ],
-    "clinicalNote": "督脈の第15穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gv16",
@@ -8939,15 +10512,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "後頭部、外後頭隆起の直下、僧帽筋間の陥凹部、後髪際の上方1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "後頭部痛・項部硬直・めまい",
+      "感冒・鼻閉・咽頭腫痛",
+      "言語障害・失語症",
+      "精神疾患・てんかん"
     ],
     "categories": [
       "交会穴（陽維脈）"
     ],
-    "clinicalNote": "督脈の第16穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "伏臥位で頭部を軽度前屈させ、直刺またはわずかに下方へ向けて 0.5〜0.8寸。上方への刺入は延髄損傷の危険があるため絶対禁忌。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gv17",
@@ -8967,15 +10544,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、外後頭隆起上縁の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "督脈の第17穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gv18",
@@ -8995,13 +10575,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、後髪際の上方4寸、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第18穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gv19",
@@ -9021,13 +10604,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、百会の後方1.5寸、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第19穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gv20",
@@ -9047,19 +10633,36 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭頂部正中線上、前髪際の上5寸（百病が集まり治まる意）。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭痛・片頭痛",
-      "めまい",
-      "自律神経失調症",
-      "不眠・不安",
-      "脱肛・痔疾",
-      "疲労回復・集中力向上"
+      "頭痛・片頭痛・頭重感",
+      "めまい・メニエール病・立ちくらみ",
+      "不眠症・自律神経失調症・うつ病",
+      "脳卒中片麻痺・言語障害",
+      "脱肛・胃下垂・子宮脱（昇挙陽気）"
     ],
     "categories": [
-      "交会穴（督脈・手足の三陽経・足の厥陰肝経）"
+      "交会穴（督脈・手足の三陽経・足の厥陰肝経）",
+      "百会",
+      "諸陽の会"
     ],
     "clinicalNote": "百の経絡が集まる頭頂の至宝穴。陽気を引き上げる（昇提陽気）とともに、亢進した頭部の熱や興奮を沈静化させる双方向の調節作用を持つ。うつ傾向や脳疲労に必須。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "goldenPairs": [
+      {
+        "partnerCode": "KI1",
+        "partnerName": "湧泉",
+        "prescriptionName": "上下相応・引火帰元",
+        "effect": "頭部に逆上した虚火・のぼせ・高血圧を足底へ引き下ろして安神する"
+      },
+      {
+        "partnerCode": "EX-HN3",
+        "partnerName": "印堂",
+        "prescriptionName": "通脳開竅配穴",
+        "effect": "大脳の疲労・不眠・不安・前頭部緊張を解消する"
+      }
+    ],
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gv21",
@@ -9079,13 +10682,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、百会の前方1.5寸、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第21穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gv22",
@@ -9105,13 +10711,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方2寸、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第22穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gv23",
@@ -9131,13 +10740,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方1寸、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第23穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gv24",
@@ -9157,15 +10769,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方0.5寸、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "不眠症・不安神経症・焦燥感",
+      "頭痛・めまい・認知機能低下",
+      "鼻炎・鼻閉・副鼻腔炎",
+      "眼精疲労・結膜炎"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "督脈の第24穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "骨膜に沿って平刺（横刺）0.3〜0.5寸。帽状腱膜下を滑らせるように刺入。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gv25",
@@ -9185,13 +10801,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、鼻尖の中央。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第25穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸。顔面神経・顔面動静脈を避けて愛護的に操作。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gv26",
@@ -9211,15 +10830,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、人中溝の中点、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "ショック・失神・脳卒中昏迷救急",
+      "急性ぎっくり腰（腰部捻挫）",
+      "顔面神経麻痺・口眼歪斜",
+      "小児のひきつけ・精神ヒステリー"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "督脈の第26穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "わずかに上方へ向けて斜刺 0.3〜0.5寸。強い提挿・雀啄手技で気至を得る。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gv27",
@@ -9239,13 +10862,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、上唇結節の中央、皮膚と口唇粘膜の境目。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "督脈の第27穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸。顔面神経・顔面動静脈を避けて愛護的に操作。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "gv28",
@@ -9265,15 +10891,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、上唇小帯の接合部、歯肉上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "督脈の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "督脈の第28穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「督脈は陽脈の海」。全身の陽気を統括して脳・脊髄を滋養し、背部痛、精神疾患、虚脱状態からの意識覚醒を促す。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸。顔面神経・顔面動静脈を避けて愛護的に操作。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   },
   {
     "id": "cv1",
@@ -9293,15 +10922,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "会陰部、男性は陰嚢根部と肛門の中点、女性は後陰唇交連と肛門の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "任脈の第1穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv2",
@@ -9321,15 +10953,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、恥骨結合上縁中央、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "任脈の第2穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv3",
@@ -9349,15 +10984,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方4寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "急性膀胱炎・尿道炎・排尿痛",
+      "頻尿・遺尿・尿閉",
+      "月経不順・生理痛・不正出血",
+      "帯下・前立腺肥大・陰部痛"
     ],
     "categories": [
       "膀胱の募穴"
     ],
-    "clinicalNote": "任脈の第3穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv4",
@@ -9377,11 +11016,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前正中線上、臍中央の下方3寸（丹田）。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "下腹部の冷え・無力感",
-      "慢性下痢・軟便",
-      "頻尿・遺尿・前立腺肥大",
-      "月経困難・不妊",
-      "極度の疲労・虚脱"
+      "全身極度の疲労・虚弱体質・冷え性",
+      "月経不順・無月経・生理痛・不妊症",
+      "夜間頻尿・前立腺肥大・膀胱炎",
+      "慢性下痢・過敏性腸症候群",
+      "更年期障害・インポテンツ"
     ],
     "categories": [
       "小腸の募穴",
@@ -9389,7 +11028,17 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     ],
     "clinicalNote": "「丹田」に位置し、原気（生命の根本エネルギー）が関所のように集まる穴。命門とお灸で併用することで、衰えた脾腎の陽気を急速に温め蘇らせる（温陽補腎・回陽救逆）。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "goldenPairs": [
+      {
+        "partnerCode": "CV6",
+        "partnerName": "気海",
+        "prescriptionName": "下丹田補気配穴",
+        "effect": "真元の下虚を補い、冷え症・下痢・夜間頻尿・極度の倦怠を好転させる"
+      }
+    ],
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸5〜9壮、または台座灸・温灸10〜15分。温陽補気・養生灸に極めて適す。"
   },
   {
     "id": "cv5",
@@ -9409,15 +11058,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方2寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [
       "三焦の募穴"
     ],
-    "clinicalNote": "任脈の第5穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv6",
@@ -9437,13 +11089,21 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方1.5寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "下腹部膨満感・冷え・慢性疲労",
+      "胃下垂・脱肛・内臓下垂",
+      "月経不順・生理痛・帯下",
+      "遺尿・頻尿・浮腫",
+      "便秘・軟便"
     ],
-    "categories": [],
-    "clinicalNote": "任脈の第6穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "categories": [
+      "気海",
+      "丹田"
+    ],
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸5〜9壮、または台座灸・温灸10〜15分。温陽補気・養生灸に極めて適す。"
   },
   {
     "id": "cv7",
@@ -9463,15 +11123,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方1寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "任脈の第7穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv8",
@@ -9491,13 +11154,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍の中央。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "慢性腹膜炎・下痢・消化不良",
+      "冷え症・胃下垂・ショック虚脱",
+      "腹痛・臍周囲痛"
     ],
     "categories": [],
-    "clinicalNote": "任脈の第8穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "刺鍼絶対禁忌（感染・腹膜刺激回避のため）。施灸のみ適応。",
+    "moxibustion": "塩灸（臍窩を食塩で満たし生姜を敷いて施灸）、または温灸15〜20分。灸の最重要特効穴。"
   },
   {
     "id": "cv9",
@@ -9517,13 +11183,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方1寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "任脈の第9穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv10",
@@ -9543,15 +11212,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方2寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "任脈の第10穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv11",
@@ -9571,13 +11243,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方3寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "任脈の第11穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv12",
@@ -9597,12 +11272,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前正中線上、臍中央の上4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃痛・胃酸過多",
-      "食欲不振",
-      "胃下垂",
-      "腹部膨満",
-      "ストレス性胃腸障害",
-      "痰湿の除去"
+      "急性・慢性胃炎・胃痛・胃もたれ",
+      "食欲不振・消化不良・胃下垂",
+      "悪心・嘔吐・逆流性食道炎",
+      "腹部膨満・便秘・下痢",
+      "精神不安・不眠症"
     ],
     "categories": [
       "胃の募穴",
@@ -9610,7 +11284,17 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     ],
     "clinicalNote": "六腑の気を統括する腑会であり、胃の募穴。消化器系のあらゆる症状の中心点。ここに温灸を施すことで冷えた中焦（胃腸）が温まり、全身の気血生成力が高まる。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "goldenPairs": [
+      {
+        "partnerCode": "ST36",
+        "partnerName": "足三里",
+        "prescriptionName": "健脾和胃配穴",
+        "effect": "消化管運動能を正常化し、胃もたれ・胃炎・逆流を抑制する"
+      }
+    ],
+    "punctureMethod": "直刺 0.8〜1.2寸。肝脾腫大がないか触診で確認し、腹壁厚に応じて深度を調整。",
+    "moxibustion": "灸5〜9壮、または台座灸・温灸10〜15分。温陽補気・養生灸に極めて適す。"
   },
   {
     "id": "cv13",
@@ -9630,15 +11314,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方5寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "任脈の第13穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.2寸。肝脾腫大がないか触診で確認し、腹壁厚に応じて深度を調整。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv14",
@@ -9658,15 +11345,19 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方6寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "心胸痛・狭心症様発作・動悸",
+      "不眠・不安神経症・焦燥感",
+      "胃痛・悪心・吃逆（しゃっくり）",
+      "胸部圧迫感・息切れ"
     ],
     "categories": [
       "心の募穴"
     ],
-    "clinicalNote": "任脈の第14穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.2寸。肝脾腫大がないか触診で確認し、腹壁厚に応じて深度を調整。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv15",
@@ -9686,15 +11377,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、胸骨体下端の下方1寸、臍中央の上方7寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [
       "任脈の絡穴"
     ],
-    "clinicalNote": "任脈の第15穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺 0.5〜0.8寸（下方へ向ける）。直刺深刺は心臓・肝臓損傷の危険があるため厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv16",
@@ -9714,13 +11408,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、胸骨体と剣状突起の結合部、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "任脈の第16穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv17",
@@ -9740,10 +11437,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前正中線上、第4肋間と同じ高さの胸骨体上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸のつかえ・息苦しさ",
-      "強いストレス・悲哀・抑鬱",
-      "動悸・不整脈",
-      "母乳分泌不全"
+      "動悸・不整脈・胸痛・胸悶",
+      "気管支喘息・咳嗽・呼吸困難",
+      "母乳分泌不全・乳房腫痛",
+      "ストレス・抑鬱・喉の詰まり（梅核気）",
+      "逆流性食道炎・胃酸過多"
     ],
     "categories": [
       "八会穴（気会）",
@@ -9751,7 +11449,9 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     ],
     "clinicalNote": "「気は膻中に会す」と謳われる全身の気会の要穴。胸中に鬱滞した情動（悲しみ・ストレス）を散じ、横隔膜の緊張を解除する。内関との組み合わせで胸部絞扼感を解放する。",
     "status": "published",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv18",
@@ -9771,13 +11471,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第3肋間と同じ高さ、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "任脈の第18穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv19",
@@ -9797,13 +11500,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第2肋間と同じ高さ、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "任脈の第19穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv20",
@@ -9823,13 +11529,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第1肋間と同じ高さ、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "任脈の第20穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸（肋骨上縁に沿わせる）。直刺深刺による胸膜・肺実質穿刺（気胸）を厳禁。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv21",
@@ -9849,13 +11558,16 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、胸骨角の中央、天突の下方1寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [],
-    "clinicalNote": "任脈の第21穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺 0.8〜1.5寸。膀胱充満時は排尿後に取穴し、子宮・腸管への過刺を避ける。",
+    "moxibustion": "灸3〜7壮、または温灸10〜15分。"
   },
   {
     "id": "cv22",
@@ -9875,15 +11587,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、頸切痕の中央、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "首・肩・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [
       "交会穴（陰維脈）"
     ],
-    "clinicalNote": "任脈の第22穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "cv23",
@@ -9903,15 +11618,18 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、舌骨体の上方、舌骨上窩の陥凹部、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "首・肩・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [
       "交会穴（陰維脈）"
     ],
-    "clinicalNote": "任脈の第23穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "直刺または斜刺 0.5〜1.0寸。頸動脈・椎骨動脈の拍動部を避けて刺入。",
+    "moxibustion": "灸3〜5壮、温灸5〜10分。局所の温感を心地よく感じる程度に調整。"
   },
   {
     "id": "cv24",
@@ -9931,14 +11649,17 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、オトガイ唇溝の中央、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "任脈の関連症状",
-      "局所疼痛・機能調整"
+      "頭部・顔面・任脈部の疼痛・腫脹・運動制限",
+      "局所疼痛・循環障害",
+      "経脈の気血鬱滞"
     ],
     "categories": [
       "交会穴"
     ],
-    "clinicalNote": "任脈の第24穴。経絡の走行に沿った経気調節・局所循環改善に広く応用される。",
+    "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
-    "hasDetailedAnatomy": false
+    "hasDetailedAnatomy": false,
+    "punctureMethod": "斜刺または平刺 0.3〜0.5寸。顔面神経・顔面動静脈を避けて愛護的に操作。",
+    "moxibustion": "直接灸は瘢痕予防のため不可。温筒灸または間接灸3壮を短時間施灸。"
   }
 ];
