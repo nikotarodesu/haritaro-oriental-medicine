@@ -73,22 +73,22 @@
     font-size: 131.25%;
   }
 
-  /* スマホ表示時の文字サイズ底上げと、余白・ボックス圧迫の改善 */
+  /* スマホ表示時の余白圧迫防止と文字サイズの適正化 */
   @media (max-width: 640px) {
     html {
-      font-size: 112.5%; /* スマホ標準を約18px基準に少し大きく */
+      font-size: 100%; /* rem連動の余白肥大化を防ぎ、横幅375px画面での十分なテキスト表示幅を確保 */
     }
 
     html[data-font-size="normal"] {
-      font-size: 112.5%;
+      font-size: 100%;
     }
 
     html[data-font-size="large"] {
-      font-size: 125%;
+      font-size: 112.5%;
     }
 
     html[data-font-size="xlarge"] {
-      font-size: 137.5%;
+      font-size: 125%;
     }
 
     /* 文字サイズ拡大時にボックス内部や左右余白がrem連動で膨らみすぎて圧迫されるのを防ぎ、十分なコンテンツ横幅を確保 */

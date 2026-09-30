@@ -19,6 +19,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-09-20"),
     },
     {
+      url: `${baseUrl}/learn`,
+      lastModified: new Date("2026-09-29"),
+    },
+    {
+      url: `${baseUrl}/clinical`,
+      lastModified: new Date("2026-09-29"),
+    },
+    {
       url: `${baseUrl}/kokushi`,
       lastModified: new Date("2026-09-28"),
     },

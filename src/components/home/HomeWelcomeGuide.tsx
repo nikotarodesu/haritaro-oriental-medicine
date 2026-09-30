@@ -68,39 +68,39 @@ export default function HomeWelcomeGuide() {
           </p>
         </div>
 
-        {/* 3大機能ハイライト */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
+        {/* 3大機能ハイライト（余白を広げ、過剰な枠線を緩和） */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <Link
             href="/tsubo"
-            className="flex items-start gap-2.5 p-3 rounded-xl bg-white/80 dark:bg-[#1A2530]/80 border border-[#E8E1D1] dark:border-[#263747] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group"
+            className="flex items-start gap-3 p-3.5 rounded-xl bg-white/95 dark:bg-[#1A2530]/90 shadow-2xs hover:shadow-xs hover:bg-[#FAF8F5] dark:hover:bg-[#202E3C] transition-all group"
           >
-            <span className="w-8 h-8 rounded-lg bg-[#EBF3EF] dark:bg-[#1C332A] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+            <span className="w-9 h-9 rounded-xl bg-[#EBF3EF] dark:bg-[#1C332A] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
               <BookOpen className="w-4 h-4" />
             </span>
-            <div className="min-w-0">
-              <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors flex items-center gap-1">
+            <div className="min-w-0 flex-1">
+              <div className="text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors flex items-center justify-between">
                 <span>361穴・解剖断面辞典</span>
-                <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <ChevronRight className="w-3.5 h-3.5 text-[#8A9590] group-hover:translate-x-0.5 transition-transform" />
               </div>
-              <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] mt-0.5 line-clamp-2">
-                WHO標準取穴・深部解剖構造・刺鍼深度・気胸リスクを完全網羅。
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] mt-1 leading-relaxed">
+                WHO標準取穴・局所解剖・安全深度・気胸リスクを完全網羅。
               </p>
             </div>
           </Link>
 
           <Link
             href="/simulator"
-            className="flex items-start gap-2.5 p-3 rounded-xl bg-white/80 dark:bg-[#1A2530]/80 border border-[#E8E1D1] dark:border-[#263747] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group"
+            className="flex items-start gap-3 p-3.5 rounded-xl bg-white/95 dark:bg-[#1A2530]/90 shadow-2xs hover:shadow-xs hover:bg-[#FAF8F5] dark:hover:bg-[#202E3C] transition-all group"
           >
-            <span className="w-8 h-8 rounded-lg bg-[#F5EFE6] dark:bg-[#32281D] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+            <span className="w-9 h-9 rounded-xl bg-[#F5EFE6] dark:bg-[#32281D] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
               <Compass className="w-4 h-4" />
             </span>
-            <div className="min-w-0">
-              <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors flex items-center gap-1">
+            <div className="min-w-0 flex-1">
+              <div className="text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors flex items-center justify-between">
                 <span>3段階 弁証シミュレーター</span>
-                <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <ChevronRight className="w-3.5 h-3.5 text-[#8A9590] group-hover:translate-x-0.5 transition-transform" />
               </div>
-              <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] mt-0.5 line-clamp-2">
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] mt-1 leading-relaxed">
                 八綱・気血水・臓腑から最適な配穴をリアルタイム自動推論。
               </p>
             </div>
@@ -108,17 +108,17 @@ export default function HomeWelcomeGuide() {
 
           <Link
             href="/kokushi"
-            className="flex items-start gap-2.5 p-3 rounded-xl bg-white/80 dark:bg-[#1A2530]/80 border border-[#E8E1D1] dark:border-[#263747] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group"
+            className="flex items-start gap-3 p-3.5 rounded-xl bg-white/95 dark:bg-[#1A2530]/90 shadow-2xs hover:shadow-xs hover:bg-[#FAF8F5] dark:hover:bg-[#202E3C] transition-all group"
           >
-            <span className="w-8 h-8 rounded-lg bg-[#EEF2F6] dark:bg-[#1E2C3B] text-[#2C5282] dark:text-[#90CDF4] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+            <span className="w-9 h-9 rounded-xl bg-[#EEF2F6] dark:bg-[#1E2C3B] text-[#2C5282] dark:text-[#90CDF4] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
               <GraduationCap className="w-4 h-4" />
             </span>
-            <div className="min-w-0">
-              <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#2C5282] dark:group-hover:text-[#90CDF4] transition-colors flex items-center gap-1">
+            <div className="min-w-0 flex-1">
+              <div className="text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#2C5282] dark:group-hover:text-[#90CDF4] transition-colors flex items-center justify-between">
                 <span>国試対策＆忘却曲線演習</span>
-                <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <ChevronRight className="w-3.5 h-3.5 text-[#8A9590] group-hover:translate-x-0.5 transition-transform" />
               </div>
-              <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] mt-0.5 line-clamp-2">
+              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] mt-1 leading-relaxed">
                 日替わり忘却曲線復習・状況設定症例・要穴マスター特訓。
               </p>
             </div>

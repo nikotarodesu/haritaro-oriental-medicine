@@ -33,10 +33,10 @@ function GoogleAnalyticsTracker({ gaId }: { gaId: string }) {
 }
 
 export default function GoogleAnalytics() {
-  const gaId = process.env.NEXT_PUBLIC_GA_ID || "G-GC398NZKVE";
+  const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
-  // GA4の測定IDが設定されていない場合は何も出力しない（安全設計）
-  if (!gaId) {
+  // 正しい専用GA4の測定IDが環境変数に設定されていない場合、または旧サイトIDの場合は安全に無効化
+  if (!gaId || gaId === "G-GC398NZKVE") {
     return null;
   }
 

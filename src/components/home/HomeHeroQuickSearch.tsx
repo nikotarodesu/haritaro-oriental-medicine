@@ -56,18 +56,18 @@ export default function HomeHeroQuickSearch() {
         </button>
       </form>
 
-      {/* 人気クイックタグ */}
-      <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs">
-        <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] flex items-center gap-1 mr-1">
-          <Sparkles className="w-3 h-3 text-[#B86924] dark:text-[#E6C387]" />
-          <span>人気:</span>
+      {/* 人気クイックタグ（枠線を控えめにして視覚ノイズを削減） */}
+      <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-xs">
+        <span className="text-xs text-[#59615D] dark:text-[#A8B8C4] flex items-center gap-1 font-medium mr-0.5">
+          <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+          <span>人気のツボ・機能:</span>
         </span>
         {QUICK_TAGS.map((tag) => (
           <button
             key={tag.label}
             type="button"
             onClick={() => router.push(tag.href)}
-            className="px-2.5 py-1 rounded-lg bg-white/90 dark:bg-[#17212A]/90 border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-[11px] font-medium text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-all cursor-pointer shadow-2xs"
+            className="px-3 py-1.5 rounded-full bg-[#EFE9DD]/80 dark:bg-[#1E2B36] hover:bg-[#E5DEC9] dark:hover:bg-[#283847] text-xs font-medium text-[#2E3632] dark:text-[#E6EFEA] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-all cursor-pointer shadow-2xs"
           >
             {tag.label}
           </button>
