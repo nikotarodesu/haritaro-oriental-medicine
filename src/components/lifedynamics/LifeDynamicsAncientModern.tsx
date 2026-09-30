@@ -144,7 +144,7 @@ export default function LifeDynamicsAncientModern() {
 
           <div className="text-xs text-[#59615D] dark:text-[#96A6B2] space-y-1">
             <div><strong>主病因：</strong>内傷七情（ストレス）・生活起居の乱れ・運動不足</div>
-            <div><strong>体質基盤：</strong>虚実挟雑（ベースが虚弱なのに、表面はゴミだらけ）</div>
+            <div><strong>体質基盤：</strong>虚実挟雑（ベースが虚弱でありながら、表層に病理産物や気滞・痰湿が停滞）</div>
             <div><strong>治法：</strong>根っこを補いつつ滞りを解く「扶正袪邪・標本兼治」が必須</div>
           </div>
         </div>

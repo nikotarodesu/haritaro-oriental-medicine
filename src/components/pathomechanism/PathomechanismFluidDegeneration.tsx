@@ -44,7 +44,7 @@ const FLUID_STEPS: FluidStep[] = [
     state: "淀んだ水たまり（一過性）",
     viscosity: "低（停滞傾向）",
     symptoms: ["夕方の足のむくみ", "雨の日の頭重感", "口の中のネバつき", "軟便・下痢しやすい"],
-    mechanism: "冷飲食や運動不足、湿気によって脾胃の運化スピードが鈍化。水が組織間に一過性に溜まるが、まだ物質的な変質（ゴミ化）はしていない段階。",
+    mechanism: "冷飲食や運動不足、湿気によって脾胃の運化スピードが鈍化。水が組織間に一過性に溜まるが、まだ病理的産物（痰湿）への変質には至っていない段階。",
     action: "利水：ハトムギ茶、小豆、軽く汗をかく運動で水分代謝の蛇口を開ける。",
   },
   {
@@ -192,7 +192,7 @@ export default function PathomechanismFluidDegeneration() {
         {/* 攻略の順序解説 */}
         <div className="p-3 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] text-xs leading-relaxed text-[#59615D] dark:text-[#CBD5E1]">
           <strong className="text-[#1E3D34] dark:text-[#74BA9E]">水毒攻略の3ステップ順序：</strong>
-          ゴミ溜めに栄養（補法）を注いではなりません。
+          病理産物が鬱滞している部位に無秩序な補法を注いではなりません。
           <strong>「① 水を動かす（利水） ➜ ② 気を巡らす（理気） ➜ ③ 陽気を起こす（温陽）」</strong>
           という順序を守ることで、頑固な痰湿と瘀血の結託を安全に解体できます。
         </div>

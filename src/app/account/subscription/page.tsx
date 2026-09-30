@@ -39,10 +39,14 @@ export default function SubscriptionManagementPage() {
   const [actionMessage, setActionMessage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [migrationReport, setMigrationReport] = useState<any>(null);
+  const [showDebugSimulator, setShowDebugSimulator] = useState(false);
 
   // URLパラメータのチェック（Stripe Checkout後のリダイレクト等）
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    if (params.get("debug") === "1" || params.get("simulator") === "1" || process.env.NODE_ENV !== "production") {
+      setShowDebugSimulator(true);
+    }
     const isUpgraded = params.get("upgraded") === "true" || params.get("demo_upgraded") === "true";
     const plan = (params.get("plan") as any) === "yearly" ? "yearly" : "monthly";
 
@@ -412,48 +416,50 @@ export default function SubscriptionManagementPage() {
         )}
       </div>
 
-      {/* 開発・検証・動作確認用ツール（デモ切り替えスイッチ） */}
-      <div className="p-5 rounded-2xl bg-[#F4EFE6] dark:bg-[#10171F] border border-[#E0D5C1] dark:border-[#263745] space-y-3">
-        <div className="flex items-center gap-2 text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
-          <Sliders className="w-4 h-4" />
-          <span>動作検証用・ワンクリック権限シミュレーター</span>
+      {/* 開発・検証・動作確認用ツール（デモ切り替えスイッチ・本番ではdebugパラメータまたは開発時のみ表示） */}
+      {showDebugSimulator && (
+        <div className="p-5 rounded-2xl bg-[#F4EFE6] dark:bg-[#10171F] border border-[#E0D5C1] dark:border-[#263745] space-y-3">
+          <div className="flex items-center gap-2 text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
+            <Sliders className="w-4 h-4" />
+            <span>動作検証用・ワンクリック権限シミュレーター（検証環境・デバッグ専用）</span>
+          </div>
+          <p className="text-xs text-[#59615D] dark:text-[#8899A6]">
+            このツールにより、Stripeの決済を実行する前の段階でも「無料会員（ノート上限10件・配穴30件・3症例体験）」「プレミアム月額会員（1,000件・全機能）」「プレミアム年額会員」の挙動を即座にテストできます。
+          </p>
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            <button
+              type="button"
+              onClick={() => {
+                setDemoRole("free");
+                setActionMessage("無料会員モードに切り替えました（ノート上限10件・配穴30件、症例3例体験）");
+              }}
+              className="px-3 py-1.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-xs font-bold text-[#232826] dark:text-[#FAF8F5] hover:bg-[#FAF8F5]"
+            >
+              無料会員としてテスト
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setDemoRole("premium", "monthly");
+                setActionMessage("プレミアム会員（月額980円）に切り替えました（全機能解放）");
+              }}
+              className="px-3 py-1.5 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#B86924] text-xs font-bold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FCECD8]"
+            >
+              プレミアム月額としてテスト
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setDemoRole("premium", "yearly");
+                setActionMessage("プレミアム会員（年額9,800円）に切り替えました（全機能解放）");
+              }}
+              className="px-3 py-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] border border-[#1E3D34] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#D8EADB]"
+            >
+              プレミアム年額としてテスト
+            </button>
+          </div>
         </div>
-        <p className="text-xs text-[#59615D] dark:text-[#8899A6]">
-          このツールにより、Stripeの決済を実行する前の段階でも「無料会員（20件上限・3症例体験）」「プレミアム月額会員（1,000件・全機能）」「プレミアム年額会員」の挙動を即座にテストできます。
-        </p>
-        <div className="flex flex-wrap items-center gap-2 pt-1">
-          <button
-            type="button"
-            onClick={() => {
-              setDemoRole("free");
-              setActionMessage("無料会員モードに切り替えました（ノート上限20件、症例3例体験）");
-            }}
-            className="px-3 py-1.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-xs font-bold text-[#232826] dark:text-[#FAF8F5] hover:bg-[#FAF8F5]"
-          >
-            無料会員としてテスト
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setDemoRole("premium", "monthly");
-              setActionMessage("プレミアム会員（月額980円）に切り替えました（全機能解放）");
-            }}
-            className="px-3 py-1.5 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#B86924] text-xs font-bold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FCECD8]"
-          >
-            プレミアム月額としてテスト
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setDemoRole("premium", "yearly");
-              setActionMessage("プレミアム会員（年額9,800円）に切り替えました（全機能解放）");
-            }}
-            className="px-3 py-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] border border-[#1E3D34] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#D8EADB]"
-          >
-            プレミアム年額としてテスト
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

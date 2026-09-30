@@ -136,7 +136,7 @@ export default function LifeDynamicsDynamicXushi() {
           <div className="lg:col-span-5 flex flex-col items-center justify-center">
             <div className="relative w-full max-w-[260px] aspect-[1/1.3]">
               <svg viewBox="0 0 240 320" className="w-full h-full">
-                {/* 樹木の枝葉（標実：ゴミが詰まる） */}
+                {/* 樹木の枝葉（標実：病理産物が停滞） */}
                 <ellipse cx="120" cy="80" rx="90" ry="60" fill="#FFEBEE" stroke="#D32F2F" strokeWidth="2" className="dark:fill-[#D32F2F]/20 dark:stroke-[#EF5350]" />
                 <text x="120" y="65" textAnchor="middle" fill="#C62828" fontSize="12" fontWeight="bold" className="dark:fill-[#EF9A9A]">
                   【枝葉】標実（ひょうじつ）
@@ -164,7 +164,7 @@ export default function LifeDynamicsDynamicXushi() {
                   脾腎のエネルギー枯渇（気虚・陽虚）
                 </text>
                 <text x="120" y="285" textAnchor="middle" fill="#0277BD" fontSize="9" fontWeight="bold">
-                  （動力不足によるゴミ排出不能）
+                  （推進力不足による病理産物排出不全）
                 </text>
               </svg>
             </div>
@@ -180,14 +180,14 @@ export default function LifeDynamicsDynamicXushi() {
                 本虚標実（ほんきょひょうじつ）の臨床原則
               </h5>
               <p className="text-xs text-[#59615D] dark:text-[#CBD5E1] leading-relaxed">
-                現代人の慢性疾患の9割は「本虚標実」です。局所の激痛や腫れ、炎症（標実）だけを見て「瀉法（鎮痛剤や強い揉みほぐし）」を続けると、患者の根本体力（本虚）がさらに削られ、ますますゴミが溜まりやすい身体になります。
+                現代人の慢性疾患の9割は「本虚標実」です。局所の激痛や腫れ、炎症（標実）だけを見て「瀉法（鎮痛剤や強い揉みほぐし）」を続けると、患者の根本体力（本虚）がさらに削られ、病理産物（湿痰・瘀血）がますます停滞しやすい病態に陥ります。
               </p>
             </div>
 
             <div className="space-y-2 text-xs">
               <div className="p-3 rounded-xl bg-white dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#2A3B4A]">
                 <strong className="text-[#1E3D34] dark:text-[#74BA9E]">本（ほん・根源）：</strong>
-                脾胃の弱り（後天の本虚）や腎精の不足（先天の本虚）。エネルギーが足りないからゴミを流せない。
+                脾胃の弱り（後天の本虚）や腎精の不足（先天の本虚）。推進力（気）が不足しているため、代謝産物や湿痰を順調に排泄・運搬できない。
               </div>
               <div className="p-3 rounded-xl bg-white dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#2A3B4A]">
                 <strong className="text-[#D32F2F] dark:text-[#EF5350]">標（ひょう・枝葉）：</strong>

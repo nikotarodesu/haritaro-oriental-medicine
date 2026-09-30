@@ -22,7 +22,7 @@ interface FlowCase {
   step3: {
     label: "治療方針（治則・治法）";
     principle: string;
-    method: "補法（エネルギー補填）" | "通法・瀉法（渋滞解消）" | "化湿（ゴミ掃除）";
+    method: "補法（エネルギー補填）" | "通法・瀉法（渋滞解消）" | "化湿（水湿・病理産物の排除）";
   };
   step4: {
     label: "代表ツボ・処方例";

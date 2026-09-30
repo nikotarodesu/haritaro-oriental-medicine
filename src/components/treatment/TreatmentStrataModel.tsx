@@ -74,7 +74,7 @@ export default function TreatmentStrataModel() {
               激烈な肩こり、締め付けられる頭痛、むくみ、イライラ、胃のつかえ
             </div>
             <p className="text-[11px] text-[#59615D] dark:text-[#CBD5E1] mt-1 leading-relaxed">
-              気滞・瘀血・痰湿など、巡りが止まって局所に溜まった「ゴミと交通渋滞」。患者が最も訴える自覚症状。
+              気滞・瘀血・痰湿など、巡りが止まって局所に鬱滞した病理産物と血行不全。患者が最も訴える自覚症状。
             </p>
           </button>
 
@@ -99,7 +99,7 @@ export default function TreatmentStrataModel() {
               脾気虚弱（胃腸吸収力低下）、腎陽虚（先天バッテリーの消耗）、気血両虚
             </div>
             <p className="text-[11px] text-[#59615D] dark:text-[#CBD5E1] mt-1 leading-relaxed">
-              エネルギーを生み出せず、ゴミを押し流す推進力そのものが底をついている「根本の地盤沈下」。
+              エネルギーを生み出せず、病理産物を排泄・循環させる推進力そのものが底をついている「根本の地盤沈下」。
             </p>
           </button>
         </div>

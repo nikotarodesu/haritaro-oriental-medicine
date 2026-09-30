@@ -425,7 +425,7 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
       "高血圧・低血圧（自律神経双方向調整）"
     ],
     categories: ["百会", "諸陽の会"],
-    clinicalNote: "「百脉の朝宗、諸陽の会」。手足の三陽経と督脈がすべて頭頂で交会する万能の調整穴。自律神経を鎮静（安神）させると同時に、陽気の下陥を引き上げる（昇提陽気）という相反する病態を調整できる奇穴。",
+    clinicalNote: "「百脉の朝宗、諸陽の会」。手足の三陽経と督脈がすべて頭頂で交会する中枢性・全身性の調整要穴。自律神経を鎮静（安神）させると同時に、陽気の下陥を引き上げる（昇提陽気）という相反する病態を調整できる名穴。",
     caution: "乳幼児の大泉門未閉鎖時には刺鍼禁忌。",
     status: "published",
     hasDetailedAnatomy: false,
