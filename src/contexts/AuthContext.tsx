@@ -14,6 +14,7 @@ interface AuthContextType {
   isPremium: boolean;
   isConfigured: boolean;
   loginWithGoogle: (redirectTo?: string) => Promise<{ success: boolean; error?: string }>;
+  loginWithGoogleIdToken: (idToken: string, nonce?: string) => Promise<{ success: boolean; error?: string }>;
   login: (email: string, password?: string) => Promise<{ success: boolean; error?: string }>;
   register: (email: string, name?: string, password?: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
@@ -207,6 +208,64 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return { success: false, error: error.message || "Googleログインの開始に失敗しました" };
     }
   }, []);
+
+  // Google Identity Services (IDトークン) による直接ログイン・登録
+  const loginWithGoogleIdToken = useCallback(
+    async (idToken: string, nonce?: string) => {
+      try {
+        if (!isSupabaseConfigured()) {
+          return {
+            success: false,
+            error: "Supabaseの設定が完了していません。環境変数（NEXT_PUBLIC_SUPABASE_URL と NEXT_PUBLIC_SUPABASE_ANON_KEY）を設定してください。",
+          };
+        }
+        const supabase = createClient();
+        const { data, error } = await supabase.auth.signInWithIdToken({
+          provider: "google",
+          token: idToken,
+          nonce,
+        });
+
+        if (error) {
+          return { success: false, error: error.message };
+        }
+
+        if (data?.user) {
+          const userMetaRole = data.user.user_metadata?.role;
+          const userMetaSub = data.user.user_metadata?.subscription;
+          let effectiveRole: UserRole = userMetaRole || "free";
+          let effectiveSub: UserSubscription | undefined = userMetaSub;
+
+          const googleUser: User = {
+            id: data.user.id,
+            email: data.user.email || "",
+            name:
+              data.user.user_metadata?.full_name ||
+              data.user.user_metadata?.name ||
+              data.user.email?.split("@")[0] ||
+              "東洋医学会員",
+            avatarUrl:
+              data.user.user_metadata?.avatar_url ||
+              data.user.user_metadata?.picture,
+            authProvider: "google",
+            role: effectiveRole,
+            subscription: effectiveSub,
+            createdAt: new Date(data.user.created_at).getTime(),
+            updatedAt: Date.now(),
+          };
+          setUser(googleUser);
+        }
+
+        return { success: true };
+      } catch (error: any) {
+        return {
+          success: false,
+          error: error.message || "Googleログインの処理中にエラーが発生しました",
+        };
+      }
+    },
+    []
+  );
 
   // 簡易メールログイン（従来互換）
   const login = useCallback(async (email: string, _password?: string) => {
@@ -497,6 +556,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isPremium: !!isPremium,
         isConfigured,
         loginWithGoogle,
+        loginWithGoogleIdToken,
         login,
         register,
         logout,
