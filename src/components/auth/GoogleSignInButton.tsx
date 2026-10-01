@@ -58,7 +58,6 @@ async function generateNonce(): Promise<{ nonce: string; hashedNonce: string }> 
     const hashedNonce = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
     return { nonce, hashedNonce };
   } catch (e) {
-    // 万が一 Web Crypto が使えない環境（非HTTPS等）のフォールバック
     const fallback = Math.random().toString(36).substring(2) + Date.now().toString(36);
     return { nonce: fallback, hashedNonce: fallback };
   }
@@ -92,7 +91,36 @@ export default function GoogleSignInButton({
     generateNonce().then(setNonceData);
   }, []);
 
-  // 2. Google Identity Services 初期化とボタン描画
+  // 2. スクリプトの読み込み検知（キャッシュ・事前ロード・動的挿入の対応）
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    if (window.google?.accounts?.id) {
+      setIsScriptReady(true);
+      return;
+    }
+
+    const existingScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+    if (!existingScript) {
+      const script = document.createElement("script");
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      script.onload = () => setIsScriptReady(true);
+      document.body.appendChild(script);
+    } else {
+      existingScript.addEventListener("load", () => setIsScriptReady(true));
+      const interval = setInterval(() => {
+        if (window.google?.accounts?.id) {
+          setIsScriptReady(true);
+          clearInterval(interval);
+        }
+      }, 100);
+      return () => clearInterval(interval);
+    }
+  }, []);
+
+  // 3. Google Identity Services 初期化とボタン描画
   useEffect(() => {
     if (!clientId || !isScriptReady || !nonceData || !containerRef.current) return;
     if (typeof window === "undefined" || !window.google?.accounts?.id) return;
@@ -125,7 +153,6 @@ export default function GoogleSignInButton({
         context: mode === "register" ? "signup" : "signin",
       });
 
-      // 親要素の横幅に合わせてレスポンシブに描画（Google許容幅: 200〜400px）
       const parentWidth = containerRef.current.offsetWidth || 340;
       const targetWidth = Math.max(200, Math.min(parentWidth, 380));
 
@@ -141,23 +168,13 @@ export default function GoogleSignInButton({
         locale: "ja",
       });
 
-      // Google One Tap プロンプトの表示（対応ブラウザ）
-      window.google.accounts.id.prompt(() => {
-        // One Tap の通知はサイレントに処理
-      });
+      window.google.accounts.id.prompt(() => {});
     } catch (e) {
       console.error("Failed to initialize Google Identity Services:", e);
     }
   }, [clientId, isScriptReady, nonceData, mode, returnTo, loginWithGoogleIdToken, onError, router]);
 
-  // すでに window.google が読み込まれているか検知
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.google?.accounts?.id) {
-      setIsScriptReady(true);
-    }
-  }, []);
-
-  // 3. フォールバック処理（OAuthリダイレクト）
+  // フォールバック処理（OAuthリダイレクト）
   const handleFallbackOAuthLogin = async () => {
     setIsLoading(true);
     onError?.("");
@@ -175,40 +192,30 @@ export default function GoogleSignInButton({
 
   return (
     <div className={`space-y-3 ${className}`}>
-      {/* Google Identity Services SDK の非同期ロード */}
       {clientId && (
         <Script
           src="https://accounts.google.com/gsi/client"
           strategy="afterInteractive"
-          onLoad={() => setIsScriptReady(true)}
+          onReady={() => setIsScriptReady(true)}
         />
       )}
 
-      {/* 処理中のローディング表示 */}
       {isLoading ? (
         <div className="w-full py-3 px-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#1C2732] border-2 border-[#D8CFC0] dark:border-[#384C5E] text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm font-bold shadow-sm flex items-center justify-center gap-3">
           <Loader2 className="w-5 h-5 animate-spin text-[#1E3D34] dark:text-[#74BA9E]" />
           <span>Googleアカウントを確認中...</span>
         </div>
       ) : clientId ? (
-        /* GIS が設定されている場合: Google公式のレンダリングボタンコンテナ */
         <div className="flex flex-col items-center justify-center w-full">
           <div ref={containerRef} className="flex justify-center w-full min-h-[44px]" />
           {!isScriptReady && (
-            <button
-              type="button"
-              onClick={handleFallbackOAuthLogin}
-              className="w-full py-3 px-4 rounded-2xl bg-white dark:bg-[#1C2732] border-2 border-[#D8CFC0] dark:border-[#384C5E] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:bg-[#FAF8F5] dark:hover:bg-[#22303D] text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm font-bold shadow-sm transition-all flex items-center justify-center gap-3 cursor-pointer group"
-            >
-              <GoogleIcon className="w-5 h-5 shrink-0" />
-              <span>
-                {mode === "register" ? "Google アカウントで登録 / ログイン" : "Google アカウントでログイン / 登録"}
-              </span>
-            </button>
+            <div className="w-full py-3 px-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#1C2732] border-2 border-[#D8CFC0] dark:border-[#384C5E] text-[#737C77] dark:text-[#8899A6] text-xs sm:text-sm font-bold shadow-sm flex items-center justify-center gap-3">
+              <Loader2 className="w-4 h-4 animate-spin text-[#1E3D34] dark:text-[#74BA9E]" />
+              <span>Google ログインを準備中...</span>
+            </div>
           )}
         </div>
       ) : (
-        /* NEXT_PUBLIC_GOOGLE_CLIENT_ID 未設定時の安全なフォールバックボタン */
         <button
           type="button"
           onClick={handleFallbackOAuthLogin}
@@ -221,7 +228,6 @@ export default function GoogleSignInButton({
         </button>
       )}
 
-      {/* サブテキスト案内 */}
       <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#737C77] dark:text-[#8899A6]">
         <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
         <span>
