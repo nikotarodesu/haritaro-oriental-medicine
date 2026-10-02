@@ -1,3 +1,4 @@
+import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import Link from "next/link";
 import { 
@@ -27,6 +28,7 @@ export const metadata: Metadata = {
     canonical: "https://www.haritaro.jp/clinical",
   },
   openGraph: {
+      images: SHARED_OG_IMAGES,
     title: "臨床ツール案内｜東洋医学の問診・弁証・配穴・臨床記録｜はり太郎",
     description:
       "鍼灸臨床での「調べる・問診する・説明して記録する」を支える臨床ツール一覧。気血水対面問診、弁証推論、配穴設計、患者説明用A4養生シート印刷に対応。",

@@ -1,3 +1,4 @@
+import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import CompareClient from "./CompareClient";
 
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
     canonical: "/tsubo/compare",
   },
   openGraph: {
+      images: SHARED_OG_IMAGES,
     title: "経穴比較ツール｜ツボの場所・鑑別・臨床配合の横並び対比 | はり太郎の東洋医学",
     description:
       "混同しやすい経穴やペア要穴を横並びで精密対比。部位・解剖・主治の鑑別ツール。",

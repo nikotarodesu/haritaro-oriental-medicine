@@ -220,7 +220,7 @@ export const IncorrectQuestionsModal: React.FC<IncorrectQuestionsModalProps> = (
                       return (
                         <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex justify-end">
                           <Link
-                            href={`/curriculum?lecture=${item.lectureId}&focus=${encodeURIComponent(topic)}`}
+                            href={`/curriculum/${item.lectureId}?focus=${encodeURIComponent(topic)}`}
                             onClick={onClose}
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] hover:bg-[#D5EADF] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-bold transition-all shadow-2xs group"
                           >

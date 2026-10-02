@@ -1,3 +1,4 @@
+import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import React from "react";
 
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
     canonical: "/articles",
   },
   openGraph: {
+      images: SHARED_OG_IMAGES,
     title: "東洋医学コラム・文献抄読・臨床知見アーカイブ",
     description: "古典文献の精緻な読み解きから最新医学論文抄読、臨床知見までを網羅した解説記事アーカイブ。",
     url: "https://www.haritaro.jp/articles",

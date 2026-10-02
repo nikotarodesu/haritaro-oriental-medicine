@@ -1,3 +1,4 @@
+import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import React from "react";
 
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
     canonical: "/contact",
   },
   openGraph: {
+      images: SHARED_OG_IMAGES,
     title: "お問い合わせ",
     description: "はり太郎の東洋医学に関するご質問、学術内容のご指摘、執筆・取材のご依頼窓口。",
     url: "https://www.haritaro.jp/contact",

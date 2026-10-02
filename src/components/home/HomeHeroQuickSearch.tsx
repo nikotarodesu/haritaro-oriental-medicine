@@ -24,8 +24,7 @@ export default function HomeHeroQuickSearch() {
     const trimmed = query.trim();
     if (!trimmed) return;
 
-    trackEvent("tool_start", {
-      tool_id: "haiketsu",
+    trackEvent("search_submit", {
       placement: "hero_quick_search",
     });
 
@@ -41,11 +40,12 @@ export default function HomeHeroQuickSearch() {
           <Search className="w-4 h-4 sm:w-5 sm:h-5 text-[#1E3D34] dark:text-[#74BA9E]" />
         </div>
         <input
+          aria-label="経穴を検索"
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="経穴名（合谷・足三里）、コード（LI4）、要穴名、主治で探す..."
-          className="w-full pl-10 sm:pl-12 pr-24 sm:pr-28 py-3 sm:py-3.5 text-xs sm:text-sm rounded-2xl bg-white dark:bg-[#17212A] border-2 border-[#D8CFC0] dark:border-[#2A3B4A] focus:border-[#1E3D34] dark:focus:border-[#74BA9E] focus:outline-none shadow-sm text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A9590] dark:placeholder-[#6C7D8A] transition-all"
+          className="w-full pl-10 sm:pl-12 pr-24 sm:pr-28 py-3 sm:py-3.5 text-base rounded-2xl bg-white dark:bg-[#17212A] border-2 border-[#D8CFC0] dark:border-[#2A3B4A] focus:border-[#1E3D34] dark:focus:border-[#74BA9E] focus:outline-none shadow-sm text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A9590] dark:placeholder-[#6C7D8A] transition-all"
         />
         <button
           type="submit"
@@ -62,12 +62,12 @@ export default function HomeHeroQuickSearch() {
           <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
           <span>人気のツボ・機能:</span>
         </span>
-        {QUICK_TAGS.map((tag) => (
+        {QUICK_TAGS.map((tag, index) => (
           <button
             key={tag.label}
             type="button"
             onClick={() => router.push(tag.href)}
-            className="px-3 py-1.5 rounded-full bg-[#EFE9DD]/80 dark:bg-[#1E2B36] hover:bg-[#E5DEC9] dark:hover:bg-[#283847] text-xs font-medium text-[#2E3632] dark:text-[#E6EFEA] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-all cursor-pointer shadow-2xs"
+            className={`${index > 1 ? "hidden sm:inline-flex" : "inline-flex"} px-3 py-1.5 rounded-full bg-[#EFE9DD]/80 dark:bg-[#1E2B36] hover:bg-[#E5DEC9] dark:hover:bg-[#283847] text-xs font-medium text-[#2E3632] dark:text-[#E6EFEA] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-all cursor-pointer shadow-2xs`}
           >
             {tag.label}
           </button>

@@ -1,3 +1,4 @@
+import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
@@ -34,6 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: `/cases/${clinicalCase.id}`,
     },
     openGraph: {
+      images: SHARED_OG_IMAGES,
       title,
       description,
       url: `https://www.haritaro.jp/cases/${clinicalCase.id}`,

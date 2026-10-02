@@ -7,11 +7,11 @@ import { buildAmazonAssociateUrl, buildAmazonAssociateSearchUrl } from "./amazon
  * ReferenceItem 形式に正規化して返す。見つからない場合は null。
  */
 export function getPaperReferenceById(id: string): ReferenceItem | null {
-  const paper = PAPERS_DATABASE.find((p) => p.id === id);
+  const paper = PAPERS_DATABASE.find((p) => p.id === id || p.pmid === id);
   if (!paper) return null;
 
   return {
-    id: paper.id,
+    id,
     type: "paper",
     title: paper.japaneseTitle || paper.title,
     originalTitle: paper.title,

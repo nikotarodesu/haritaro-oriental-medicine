@@ -33,7 +33,7 @@ export default function MarkdownBody({
   );
 
   return (
-    <div className="prose max-w-none text-[#232826] dark:text-[#D5E0DC] leading-relaxed space-y-6 text-sm sm:text-base">
+    <div className="prose max-w-none text-[#232826] dark:text-[#D5E0DC] leading-[1.9] space-y-6 text-base">
       {blocks.map((block, index) => {
         switch (block.type) {
           case "h1":
@@ -41,7 +41,7 @@ export default function MarkdownBody({
               <h1
                 key={index}
                 id={`${idPrefix}-${index}`}
-                className="font-sans text-2xl sm:text-3xl lg:text-4xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-10 mb-4 scroll-mt-36 leading-relaxed"
+                className="font-sans text-2xl sm:text-3xl lg:text-4xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-10 mb-4 scroll-mt-36 leading-[1.9]"
               >
                 {renderText(block.content)}
               </h1>
@@ -51,7 +51,7 @@ export default function MarkdownBody({
               <h2
                 key={index}
                 id={`${idPrefix}-${index}`}
-                className="font-sans text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-10 scroll-mt-36 leading-relaxed"
+                className="font-sans text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-10 scroll-mt-36 leading-[1.9]"
               >
                 {renderText(block.content)}
               </h2>
@@ -61,7 +61,7 @@ export default function MarkdownBody({
               <h3
                 key={index}
                 id={`${idPrefix}-${index}`}
-                className="font-sans text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-8 scroll-mt-36 leading-relaxed"
+                className="font-sans text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-8 scroll-mt-36 leading-[1.9]"
               >
                 {renderText(block.content)}
               </h3>
@@ -71,7 +71,7 @@ export default function MarkdownBody({
               <h4
                 key={index}
                 id={`${idPrefix}-${index}`}
-                className="font-sans text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] mt-6 scroll-mt-36 leading-relaxed"
+                className="font-sans text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] mt-6 scroll-mt-36 leading-[1.9]"
               >
                 {renderText(block.content)}
               </h4>
@@ -80,7 +80,7 @@ export default function MarkdownBody({
             return (
               <blockquote
                 key={index}
-                className="bg-[#EBF3EF] dark:bg-[#162A24] border-l-4 border-[#1E3D34] dark:border-[#4E8C76] p-3 sm:p-4 rounded-r-xl text-xs sm:text-sm italic text-[#232826] dark:text-[#E6EFEA] leading-relaxed my-4"
+                className="bg-[#EBF3EF] dark:bg-[#162A24] border-l-4 border-[#1E3D34] dark:border-[#4E8C76] p-3 sm:p-4 rounded-r-xl text-xs sm:text-sm italic text-[#232826] dark:text-[#E6EFEA] leading-[1.9] my-4"
               >
                 {renderText(block.content)}
               </blockquote>
@@ -117,7 +117,7 @@ export default function MarkdownBody({
                         {row.map((cell, cIdx) => (
                           <td
                             key={cIdx}
-                            className={`px-2.5 sm:px-5 py-2.5 sm:py-3.5 text-[#333835] dark:text-[#C5D2DB] leading-relaxed ${
+                            className={`px-2.5 sm:px-5 py-2.5 sm:py-3.5 text-[#333835] dark:text-[#C5D2DB] leading-[1.9] ${
                               cIdx === 0
                                 ? "font-medium text-[#232826] dark:text-[#FAF8F5] bg-[#EBF3EF]/15 dark:bg-[#182823]/15 border-r border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 whitespace-nowrap"
                                 : ""
@@ -141,10 +141,10 @@ export default function MarkdownBody({
                   block.ordered
                     ? "list-decimal marker:font-bold marker:text-[#1E3D34] dark:marker:text-[#74BA9E]"
                     : "list-disc marker:text-[#1E3D34] dark:marker:text-[#74BA9E]"
-                } text-sm sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed`}
+                } text-base text-[#333835] dark:text-[#C5D2DB] leading-[1.9]`}
               >
                 {block.items.map((item, iIdx) => (
-                  <li key={iIdx} className="leading-relaxed pl-1 whitespace-pre-line">
+                  <li key={iIdx} className="leading-[1.9] pl-1 whitespace-pre-line">
                     {renderText(item)}
                   </li>
                 ))}
@@ -155,7 +155,7 @@ export default function MarkdownBody({
             return (
               <p
                 key={index}
-                className="leading-relaxed whitespace-pre-line text-[#333835] dark:text-[#C5D2DB] text-sm sm:text-base my-3"
+                className="leading-[1.9] whitespace-pre-line text-[#333835] dark:text-[#C5D2DB] text-base my-3"
               >
                 {renderText(block.content)}
               </p>

@@ -1,3 +1,4 @@
+import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Suspense } from "react";
 import { Metadata } from "next";
 import KokushiDashboard from "@/components/kokushi/KokushiDashboard";
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
     canonical: "/kokushi",
   },
   openGraph: {
+      images: SHARED_OG_IMAGES,
     title: "国家試験対策特設ハブ｜東洋医学・経絡経穴で満点を狙う最短ルート | はり太郎の東洋医学",
     description: "忘却曲線復習・状況設定演習・要穴骨度法・禁忌安全を統合した鍼灸国試対策ハブ。",
     url: "https://www.haritaro.jp/kokushi",

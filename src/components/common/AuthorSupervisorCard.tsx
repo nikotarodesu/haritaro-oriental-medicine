@@ -43,9 +43,8 @@ export default function AuthorSupervisorCard({ className = "", topic }: Props) {
 
       <div className="space-y-2 text-xs text-[#59615D] dark:text-[#C5D2DB] leading-relaxed">
         <p>
-          {topic
-            ? `当コンテンツ（${topic}）は、世界保健機関（WHO）標準経穴部位規格および『新版 東洋医学概論』『経絡経穴概論』に準拠し、臨床現場での安全性（刺鍼深度・禁忌）と実効性を検証した上で執筆・監修しています。`
-            : "当サイトの記事・解説は、世界保健機関（WHO）標準経穴部位規格および最新の鍼灸・東洋医学学術知見に基づき、臨床現場での安全性と実効性を検証した上で執筆・監修しています。"}
+          {topic ? "「" + topic + "」の学習用解説です。" : "東洋医学の学習・臨床推論を支援する解説です。"}
+          古典に基づく伝統理論、研究で得られた知見、理解を助ける比喩は根拠の種類が異なります。参考文献と研究の対象・限界を確認してください。教材の記述だけで個人の診断や施術の安全性を判断せず、必要に応じて医療機関へ相談してください。
         </p>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
           <span className="inline-flex items-center gap-1">
@@ -58,7 +57,7 @@ export default function AuthorSupervisorCard({ className = "", topic }: Props) {
           </span>
           <span className="inline-flex items-center gap-1">
             <ShieldCheck className="w-3.5 h-3.5 text-[#1E2D3D] dark:text-[#7BAAD8]" />
-            解剖学的刺鍼深度・禁忌事項の定期検証
+            出典と適用範囲を確認しながら学ぶ
           </span>
         </div>
       </div>

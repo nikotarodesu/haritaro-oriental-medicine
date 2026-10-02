@@ -99,11 +99,11 @@ export const PAPERS_DATABASE: PaperReference[] = [
     id: "meta-musculoskeletal-pain-yuan-2016",
     title: "Acupuncture for musculoskeletal pain: A meta-analysis and meta-regression of sham-controlled randomized clinical trials",
     japaneseTitle: "筋骨格系疼痛に対する鍼治療：偽鍼対照ランダム化臨床試験のメタアナリシスおよびメタ回帰分析",
-    authors: ["Qi-ling Yuan", "Peng Wang", "Liu Liu", "Zhi-wen Sun", "Chao-long Hou", "Min-liang Yao", "Zhi-xing Zou", "Yong-gang Zhou", "Bao-bao Xing", "Fang Shen", "Wen-tang Wang", "Yu-shun Chen"],
+    authors: ["Qi-ling Yuan", "Peng Wang", "Liang Liu", "Fu Sun", "Yong-song Cai", "Wen-tao Wu", "Mao-lin Ye", "Jiang-tao Ma", "Bang-bang Xu", "Yin-gang Zhang"],
     journal: "Scientific Reports (Nature Publishing Group)",
     year: 2016,
-    pmid: "27464878",
-    pmcid: "PMC4965824",
+    pmid: "27471137",
+    pmcid: "PMC4965798",
     doi: "10.1038/srep30675",
     studyDesign: "システマティックレビュー、メタアナリシスおよびメタ回帰 (Meta-analysis & Meta-regression)",
     sampleSize: 6382,
@@ -111,15 +111,11 @@ export const PAPERS_DATABASE: PaperReference[] = [
     primaryOutcomes: "疼痛強度（VAS/NRS等、介入直後≦1週間のSMD）",
     secondaryOutcomes: "身体障害度・機能改善（ODI, WOMAC, NPQ等）",
     keyFindings: [
-      "全63試験（6,382名）を統合した結果、本物の鍼治療は偽鍼（Sham）と比較して有意な疼痛緩和（59試験 4,980名, SMD -0.61 [95% CI -0.76 to -0.47], p < 0.001：VASで約12mm改善の中等度効果）を示した。",
-      "機能障害の改善においても大きな効果（31試験 4,876名, SMD -0.77 [95% CI -1.05 to -0.49], p < 0.001）を認めた。",
-      "【疾患別のエビデンス強度（GRADE）】慢性頸部痛（高品質）、肩痛（高品質）、慢性腰痛（中等度）、筋膜性疼痛（中等度）、変形性関節症（低品質・効果は大 SMD -0.77）。",
-      "【偽鍼（Sham）タイプの影響】偽鍼の刺入深度（非刺入・浅刺・通常深度）や位置（同部位・経穴外・無関係部）の違いは、本物の鍼治療の効果推定値（SMD）に有意な交互作用を与えなかった（Shamタイプにかかわらず実鍼が優位）。",
-      "重篤な有害事象は極めて稀であり、副作用発生率はオピオイドやNSAIDsよりも大幅に低い。"
+      "63試験・6,382名を含むレビュー。短期の疼痛では偽鍼に対しSMD -0.61（95% CI -0.76〜-0.47）、機能障害では-0.77（-1.05〜-0.49）の差を報告。",
+      "著者は全体のエビデンスの質を低いと評価。研究間の異質性とバイアスを踏まえて解釈する必要がある。"
     ],
     clinicalTakeaways: [
-      "「鍼は単なるプラセボ」という批判を、世界基準の偽鍼対照63試験のメタアナリシスで統計的に完全論破した最高峰のエビデンス。",
-      "特に頸部痛・肩痛・腰痛・変形性関節症・トリガーポイント（筋膜性疼痛）において、偽鍼を上回る明確な特異的鎮痛効果（Specific Effect）が立証されている。"
+      "筋骨格系疼痛における短期効果の研究。長期効果や他疾患への効果、安全性の他薬との優劣をこの研究だけで判断しない。"
     ],
     tags: ["メタアナリシス", "筋骨格系疼痛", "偽鍼対照", "腰痛", "頸部痛", "変形性関節症", "肩痛", "GRADE", "エビデンス"],
     abstract: "The aims of this systematic review were to study the analgesic effect of real acupuncture and to explore whether sham acupuncture (SA) type is related to the estimated effect of real acupuncture for musculoskeletal pain..."
@@ -700,39 +696,20 @@ export const PAPERS_DATABASE: PaperReference[] = [
   {
     id: "chronic-low-back-pain-ankle-acupuncture-fmri-xiang-2021",
     title: "Frequency-Specific Blood Oxygen Level Dependent Oscillations Associated With Pain Relief From Ankle Acupuncture in Patients With Chronic Low Back Pain",
-    japaneseTitle: "慢性腰痛患者における足関節部浅刺鍼の鎮痛効果と関連する周波数特異的BOLD信号振動：安静時fMRI研究",
-    authors: ["Anren Xiang","Min Chen","et al."],
+    japaneseTitle: "慢性腰痛と足関節部鍼刺激：鎮痛と関連する周波数別の安静時fMRI変化",
+    authors: ["Anfeng Xiang", "Meiyu Chen", "Chuan Qin", "Jun Rong", "Can Wang", "Xueyong Shen", "Sheng Liu"],
     journal: "Frontiers in Neuroscience",
     year: 2021,
-    pmid: "35002604",
-    pmcid: "PMC8733221",
-    doi: "10.3389/fnins.2021.758872",
-    studyDesign: "シャム対照無作為化クロスオーバー安静時fMRI研究 (Sham-controlled rs-fMRI study)",
-    sampleSize: 40,
-    targetCondition: "慢性腰痛 (Chronic Low Back Pain: CLBP)",
-    interventionProtocol: {
-      name: "足関節部浅刺鍼（踝鍼法：Ankle Acupuncture without Deqi）",
-      acupoints: ["Lower 5 / Lower 6 (外果上方3横指・アキレス腱外側縁/内側縁の足関節浅刺点)"],
-      description: "ステンレス鍼（0.25×40mm）を用い、皮膚表面に対し約30度で刺入後、水平に倒して皮下筋膜表層へ沿わせて30〜35mm進針。得気（ひびき）を一切生じさせない浅刺手技で30分間置針。"
-    },
-    controlProtocol: {
-      name: "皮膚接触プラセボ偽鍼群 (Streitberger Contact Sham)",
-      acupoints: ["同一足関節部位"],
-      description: "皮膚を貫通せず先端が引っ込むStreitberger偽鍼を用い、刺入感のみを与えて置針。"
-    },
-    primaryOutcomes: "安静時fMRIにおける周波数特異的低周波振幅（ALFF: slow-4 [0.027-0.073 Hz] および slow-5 [0.010-0.027 Hz]）、VAS腰痛スコア",
-    secondaryOutcomes: "疼痛閾値（PPT）、デフォルト・モード・ネットワーク（DMN）および島皮質・小脳の機能的結合性",
-    keyFindings: [
-      "足関節部への浅刺鍼（得気なし）により、VAS腰痛スコアがシャム偽鍼群と比較して有意に低下（即時鎮痛効果）。",
-      "安静時fMRI解析により、浅刺鍼は後帯状皮質（PCC/プレクネウス：DMNの要）、前帯状皮質（ACC）、島皮質、小脳においてslow-4およびslow-5帯域のALFF振動を有意に再同期・調節。",
-      "これらの脳内ネットワーク振動の変化量は、臨床的な腰痛緩和度と統計学的に有意に相関していた。"
-    ],
-    clinicalTakeaways: [
-      "「得気（ひびき）」を伴わない皮下浅刺手技であっても、脳内疼痛ネットワーク（DMN、島皮質、小脳）の低周波神経振動を再構築し、確実な中枢性鎮痛をもたらすことがfMRIで証明された。",
-      "強い刺激や得気が苦手な過敏患者や高齢者に対しても、足関節部等の浅刺鍼（踝鍼療法）が科学的根拠に基づいた有効な鎮痛選択肢となる。"
-    ],
-    tags: ["Chronic Low Back Pain","Ankle Acupuncture","fMRI","ALFF","Default Mode Network","Insula","Shallow Needling","Front Neurosci"],
-    abstract: "慢性腰痛患者40名を対象に、足関節部浅刺鍼（踝鍼：得気なし）とStreitberger偽鍼の鎮痛効果および脳活動への影響を安静時fMRI（BOLD振動周波数帯域slow-4/slow-5解析）で検証。浅刺鍼は偽鍼に比べ有意な即時腰痛緩和をもたらし、後帯状皮質（DMN）、島皮質、小脳の周波数特異的ALFF振動を調節した。ひびきを伴わない浅刺手技の中枢鎮痛機序を証明。"
+    pmcid: "PMC8688988",
+    doi: "10.3389/fnins.2021.786490",
+    studyDesign: "患者・健常者における足関節部鍼刺激と接触偽鍼の安静時fMRI比較研究",
+    sampleSize: 52,
+    targetCondition: "慢性腰痛患者27名および健常者25名",
+    primaryOutcomes: "周波数帯別の低周波振幅（ALFF）とVAS疼痛評価",
+    keyFindings: ["鍼刺激後の小脳・島皮質などのALFF変化と疼痛評価との関連を報告。画像上の相関は、治療効果の因果機序や長期の有効性の確定を意味しない。"],
+    clinicalTakeaways: ["小規模な機序研究。標準治療との長期比較試験とは区別して読む。"],
+    tags: ["慢性腰痛", "足関節部鍼刺激", "fMRI", "ALFF"],
+    abstract: "慢性腰痛患者と健常者に足関節部鍼刺激および接触偽鍼を行い、安静時脳活動と疼痛評価の関連を調べた研究。"
   },
   {
     id: "fgid-emotional-symptoms-acupuncture-meta-analysis-wang-2022",

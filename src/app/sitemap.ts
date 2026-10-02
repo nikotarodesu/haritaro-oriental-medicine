@@ -134,7 +134,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 学術アーカイブ記事ページ（個別記事公開日を反映）
   const articlePages: MetadataRoute.Sitemap = ARTICLES.map((article) => ({
     url: `${baseUrl}/articles/${article.id}`,
-    lastModified: article.publishedAt ? new Date(article.publishedAt) : new Date("2026-03-01"),
+    lastModified: new Date(article.updatedAt || article.publishedAt),
   }));
 
   // 臨床症例演習ページ（全20症例）

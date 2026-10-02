@@ -47,28 +47,33 @@ export default function HomePage() {
             </div>
 
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-[1.25]">
-              東洋医学の「わかる」を、<br className="hidden sm:inline" />
+              東洋医学の「わかる」を、<br />
               <span className="text-[#1E3D34] dark:text-[#74BA9E] relative">
                 臨床の「考えられる」へ。
                 <span className="absolute bottom-1 left-0 w-full h-2.5 bg-[#E6C387]/35 dark:bg-[#E6C387]/20 -z-10" />
               </span>
             </h1>
 
-            <p className="text-xs sm:text-base text-[#4A534F] dark:text-[#A8B8C4] leading-relaxed max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base text-[#4A534F] dark:text-[#A8B8C4] leading-relaxed max-w-2xl mx-auto">
               基礎学習から弁証・配穴、日々の振り返りまで。学生の学びと臨床家の実践をひとつの場所で自然につなぎます。
             </p>
 
+            <nav aria-label="目的から選ぶ" className="grid grid-cols-2 gap-3 pt-2">
+              <Link href="/learn" className="flex items-center justify-center gap-2 rounded-xl bg-[#1E3D34] text-white px-3 py-3.5 text-sm font-bold hover:bg-[#2B5A46] focus-visible:outline-2 focus-visible:outline-offset-4"><GraduationCap className="w-5 h-5" />基礎から学ぶ</Link>
+              <Link href="/clinical" className="flex items-center justify-center gap-2 rounded-xl border-2 border-[#1E3D34] dark:border-[#74BA9E] text-[#1E3D34] dark:text-[#74BA9E] px-3 py-3 text-sm font-bold hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-4"><Stethoscope className="w-5 h-5" />臨床で使う</Link>
+            </nav>
             {/* クイック経穴・症状検索バー */}
             <HomeHeroQuickSearch />
           </div>
+
+          <HomeHeroDualEntry />
 
           {/* 初見ユーザー向け30秒ウェルカムガイド（LocalStorage保存で次回非表示） */}
           <div className="max-w-5xl mx-auto">
             <HomeWelcomeGuide />
           </div>
 
-          {/* 2大入口カード（PC: 横並び、スマホ: タブ切替でファーストビューをスリム化） */}
-          <HomeHeroDualEntry />
+
 
           {/* 3. よく使う機能へのダイレクトアクセス（視覚ノイズを抑えたミニマルタイル） */}
           <div className="pt-3 max-w-5xl mx-auto">

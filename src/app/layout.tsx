@@ -59,8 +59,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "はり太郎の東洋医学｜鍼灸師・学生の学習と臨床活用",
-    description: "陰陽・五行から弁証・配穴まで、東洋医学を体系的に学ぶ。経穴辞典、体質チェック、臨床演習、マイノートで、学習と日々の臨床の振り返りを支えます。",
     images: ["/og-image.png"],
   },
   alternates: {

@@ -1,3 +1,4 @@
+import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import LibraryClient from "./LibraryClient";
 
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
     canonical: "/library",
   },
   openGraph: {
+      images: SHARED_OG_IMAGES,
     title: "文献・古典・臨床実例アーカイブ | はり太郎の東洋医学",
     description:
       "古典医典条文、現代RCT論文エビデンス、運動器臨床実例をシームレスに統合した学術ナレッジベース。",

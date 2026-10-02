@@ -117,7 +117,7 @@ export default function GlossaryPopup({
           <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap gap-2">
             {term.relatedLectureId && (
               <Link
-                href={`/curriculum?lecture=${term.relatedLectureId}`}
+                href={`/curriculum/${term.relatedLectureId}`}
                 onClick={onClose}
                 className="flex-1 min-w-[180px] p-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#162E27] text-white text-xs font-bold transition-all flex items-center justify-between shadow-2xs group"
               >

@@ -27,10 +27,13 @@ import { GLOSSARY_TERMS } from "@/data/glossaryData";
 import { KOKUSHI_PAST_EXAMS } from "@/data/kokushiPastExams";
 import { CLASSICAL_TEXTS } from "@/data/classicalTextsData";
 import { PAPERS_DATABASE } from "@/data/references/papersData";
+import { ARTICLES } from "@/data/articleData";
+import { trackEvent } from "@/utils/analytics";
 import { SYMPTOMS } from "@/data/symptomData";
 import { ALL_ARCHIVE_CASES } from "@/data/cases/archiveCases";
 
 export type SearchItemType =
+  | "article"
   | "acupoint"
   | "lecture"
   | "case"
@@ -161,7 +164,7 @@ interface GlobalSearchModalProps {
   onClose: () => void;
 }
 
-type CategoryFilter = "all" | "acupoint" | "lecture" | "kokushi" | "case" | "library" | "symptom" | "tool";
+type CategoryFilter = "article" | "all" | "acupoint" | "lecture" | "kokushi" | "case" | "library" | "symptom" | "tool";
 
 export default function GlobalSearchModal({
   isOpen,
@@ -172,6 +175,7 @@ export default function GlobalSearchModal({
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>("all");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   // 検索履歴の読み込み
@@ -216,6 +220,11 @@ export default function GlobalSearchModal({
 
     // 1. ツール群
     list.push(...STATIC_TOOLS);
+    list.push(...ARTICLES.map((article): SearchResultItem => ({
+      id: article.id, type: "article", title: article.title,
+      subtitle: article.summary, badge: "解説記事",
+      url: '/articles/' + article.id, tags: article.tags,
+    })));
 
     // 2. 講義カリキュラム（全81レッスン）
     CURRICULUM_DATA.forEach((chapter) => {
@@ -226,7 +235,7 @@ export default function GlobalSearchModal({
           title: lec.title,
           subtitle: `${lec.stageTitle} ➜ ${lec.seriesTitle || "講義"}（約${lec.duration}）`,
           badge: "講義教材",
-          url: `/curriculum?lecture=${lec.id}`,
+          url: `/curriculum/${lec.id}`,
           tags: [
             lec.title,
             lec.subtitle || "",
@@ -401,7 +410,7 @@ export default function GlobalSearchModal({
         subtitle: term.oneLiner,
         badge: `用語：${term.category}`,
         url: term.relatedLectureId
-          ? `/curriculum?lecture=${term.relatedLectureId}`
+          ? `/curriculum/${term.relatedLectureId}`
           : term.relatedToolUrl || `/curriculum`,
         tags: [term.term, term.reading, term.oneLiner, term.summary],
       });
@@ -422,6 +431,7 @@ export default function GlobalSearchModal({
 
     // カテゴリフィルタ条件
     const matchCategory = (item: SearchResultItem): boolean => {
+      if (activeCategory === "article") return item.type === "article";
       if (activeCategory === "all") return true;
       if (activeCategory === "acupoint") return item.type === "acupoint";
       if (activeCategory === "lecture") return item.type === "lecture";
@@ -495,17 +505,30 @@ export default function GlobalSearchModal({
       setQuery("");
       setActiveCategory("all");
       setSelectedIndex(0);
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 50);
+      const previousFocus = document.activeElement as HTMLElement | null;
+      const previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      const timer = setTimeout(() => inputRef.current?.focus(), 50);
+      return () => {
+        clearTimeout(timer);
+        document.body.style.overflow = previousOverflow;
+        previousFocus?.focus();
+      };
     }
   }, [isOpen]);
 
   // キーボードナビゲーション（上下移動、Enter、Esc）
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isOpen) return;
+      if (!isOpen || e.isComposing || e.keyCode === 229) return;
 
+      if (e.key === "Tab") {
+        const elements = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>('button, input, a[href]') || []).filter(el => el.offsetParent !== null);
+        const first = elements[0], last = elements[elements.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      }
+      if (document.activeElement !== inputRef.current && e.key !== "Escape") return;
       if (e.key === "Escape") {
         onClose();
       } else if (e.key === "ArrowDown") {
@@ -526,6 +549,7 @@ export default function GlobalSearchModal({
           const target = filteredResults[selectedIndex];
           saveRecentSearch(query || target.title);
           onClose();
+          trackEvent("search_result_click", { placement: "global_search", result_type: target.type });
           router.push(target.url);
         }
       }
@@ -550,6 +574,7 @@ export default function GlobalSearchModal({
 
   const categoryChips: { id: CategoryFilter; label: string }[] = [
     { id: "all", label: "すべて" },
+    { id: "article", label: "解説記事" },
     { id: "acupoint", label: "経穴 (361)" },
     { id: "kokushi", label: "国試過去問" },
     { id: "lecture", label: "講義 (81)" },
@@ -567,6 +592,10 @@ export default function GlobalSearchModal({
       className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-start justify-center p-3 sm:p-6 sm:pt-16 animate-in fade-in duration-150"
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="サイト内検索"
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-3xl bg-[#FAF8F5] dark:bg-[#16212B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in zoom-in-95 duration-150"
       >
@@ -574,6 +603,7 @@ export default function GlobalSearchModal({
         <div className="p-3.5 sm:p-4 border-b border-[#F2ECE0] dark:border-[#22303D] flex items-center gap-3 bg-white dark:bg-[#1A2632]">
           <Search className="w-5 h-5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
           <input
+            aria-label="経穴・記事・講義などを検索"
             ref={inputRef}
             type="text"
             value={query}
@@ -581,18 +611,20 @@ export default function GlobalSearchModal({
               setQuery(e.target.value);
               setSelectedIndex(0);
             }}
-            placeholder="経穴（合谷 / LI4）、国試問、古典、論文、症状（頭痛・膝痛）、講義を検索..."
+            placeholder="経穴・記事・講義・症状を検索"
             className="flex-1 bg-transparent text-[#232826] dark:text-[#FAF8F5] placeholder-[#8C9691] dark:placeholder-[#64748B] text-sm sm:text-base outline-hidden"
           />
           {query && (
             <button
               type="button"
+              aria-label="検索語を消去"
               onClick={() => setQuery("")}
               className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600"
             >
               <X className="w-4 h-4" />
             </button>
           )}
+          <button type="button" onClick={onClose} aria-label="検索を閉じる" className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"><X className="w-5 h-5" /></button>
           <kbd className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-md">
             ESC
           </kbd>
@@ -602,6 +634,7 @@ export default function GlobalSearchModal({
         <div className="flex items-center gap-1.5 px-3 py-2 bg-[#F2EDE4]/70 dark:bg-[#121920]/80 border-b border-[#E8E1D1] dark:border-[#22303D] overflow-x-auto no-scrollbar text-xs">
           {categoryChips.map((chip) => (
             <button
+              aria-pressed={activeCategory === chip.id}
               key={chip.id}
               type="button"
               onClick={() => {
@@ -741,6 +774,7 @@ export default function GlobalSearchModal({
                     onClick={() => {
                       saveRecentSearch(query || item.title);
                       onClose();
+                      trackEvent("search_result_click", { placement: "global_search", result_type: item.type });
                       router.push(item.url);
                     }}
                     onMouseEnter={() => setSelectedIndex(idx)}

@@ -1,3 +1,4 @@
+import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import Link from "next/link";
 import SimulatorHub from "@/components/SimulatorHub";
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
     canonical: "https://www.haritaro.jp/simulator",
   },
   openGraph: {
+      images: SHARED_OG_IMAGES,
     title: "臨床弁証推論シミュレーター｜八綱・気血水・臓腑の連動分析｜はり太郎",
     description:
       "患者の自覚症状・身体サインから八綱・気血水・臓腑弁証を推論。2案比較検討機能により、病態の鑑別と本治・標治の配穴根拠を臨床的に整理。",

@@ -607,7 +607,7 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
                         </div>
                       </div>
                       <Link
-                        href={`/curriculum?lecture=${targetLecture.lectureId}`}
+                        href={`/curriculum/${targetLecture.lectureId}`}
                         className="px-4 py-2 rounded-xl bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#162E27] text-white dark:text-[#121920] text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm whitespace-nowrap"
                       >
                         <span>解説講義へ</span>

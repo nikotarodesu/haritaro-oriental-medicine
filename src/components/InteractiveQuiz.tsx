@@ -271,7 +271,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
   // 次の講義へ進む
   const handleGoToNextLecture = useCallback(() => {
     if (nextLecture) {
-      router.push(`/curriculum?lecture=${nextLecture.id}`);
+      router.push(`/curriculum/${nextLecture.id}`);
     }
   }, [nextLecture, router]);
 

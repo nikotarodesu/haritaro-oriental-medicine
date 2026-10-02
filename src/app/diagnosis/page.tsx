@@ -1,3 +1,4 @@
+import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import DiagnosisClient from "@/components/diagnosis/DiagnosisClient";
 
@@ -25,6 +26,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
         canonical: url,
       },
       openGraph: {
+      images: SHARED_OG_IMAGES,
         title,
         description,
         url,
@@ -44,6 +46,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
       canonical: url,
     },
     openGraph: {
+      images: SHARED_OG_IMAGES,
       title,
       description,
       url,

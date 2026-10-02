@@ -356,7 +356,7 @@ export default function PricingPage() {
             料金プラン
           </h2>
           <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#8899A6]">
-            無料でも3件まで記録可能。日々の臨床を蓄積したい方にプレミアムを用意しています。
+            無料でも臨床ノート{SUBSCRIPTION_CONFIG.limits.freePatientNoteMax}件、配穴メモ{SUBSCRIPTION_CONFIG.limits.freeMemoMax}件まで記録可能。日々の臨床を蓄積したい方にプレミアムを用意しています。
           </p>
         </div>
 
@@ -906,7 +906,7 @@ export default function PricingPage() {
           まずはマイノートの使い心地をお試しください
         </h3>
         <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2]">
-          会員登録なしで、今すぐ3件のノート作成と養生シート印刷を体験できます。
+          会員登録なしで、今すぐ{SUBSCRIPTION_CONFIG.limits.freePatientNoteMax}件のノート作成と養生シート印刷を体験できます。
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           <Link

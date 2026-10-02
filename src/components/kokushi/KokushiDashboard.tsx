@@ -561,7 +561,7 @@ export default function KokushiDashboard() {
                         関連テーマ: 『{topic || item.group.lectureTitle}』
                       </span>
                       <Link
-                        href={`/curriculum?lecture=${item.group.lectureId}&focus=${encodeURIComponent(topic)}`}
+                        href={`/curriculum/${item.group.lectureId}?focus=${encodeURIComponent(topic)}`}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shadow-xs group"
                       >
                         <BookOpen className="w-3.5 h-3.5" />
@@ -919,7 +919,7 @@ export default function KokushiDashboard() {
                           関連講義: 『{item.relatedLectureTitle || "カリキュラム"}』
                         </span>
                         <Link
-                          href={`/curriculum?lecture=${item.relatedLectureId}`}
+                          href={`/curriculum/${item.relatedLectureId}`}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shadow-xs"
                         >
                           <BookOpen className="w-3.5 h-3.5" />
@@ -1006,7 +1006,7 @@ export default function KokushiDashboard() {
           {categoryStats.map((cat) => (
             <Link
               key={cat.id}
-              href={`/curriculum?lecture=${cat.targetLectureId}`}
+              href={`/curriculum/${cat.targetLectureId}`}
               className="p-4 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#121920] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group flex flex-col justify-between space-y-3"
             >
               <div className="space-y-1.5">
@@ -1083,7 +1083,7 @@ export default function KokushiDashboard() {
                       正解: {item.options[item.correctAnswerIndex]}
                     </span>
                     <Link
-                      href={`/curriculum?lecture=${item.lectureId}&focus=${encodeURIComponent(topic)}`}
+                      href={`/curriculum/${item.lectureId}?focus=${encodeURIComponent(topic)}`}
                       className="font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-0.5"
                     >
                       <span>復習 ➜</span>

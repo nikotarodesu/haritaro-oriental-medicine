@@ -1,6 +1,8 @@
+import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { parseMarkdownBlocks } from "@/utils/markdownParser";
 import { ARTICLES } from "@/data/articleData";
 import { resolveArticleReferences } from "@/utils/referenceResolver";
 import MarkdownBody from "@/components/MarkdownBody";
@@ -43,19 +45,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const title = `${article.title}｜東洋医学学術アーカイブ`;
-  const description = `${article.summary}（読了約${article.readTime} / 執筆・監修：${article.author.name}）`;
+  const description = `${article.summary}（読了約${article.readTime} / 執筆：${article.author.name}）`;
 
   return {
     title,
     description,
+    twitter: { card: "summary_large_image", title, description, images: ["https://www.haritaro.jp/og-image.png"] },
     alternates: {
       canonical: `https://www.haritaro.jp/articles/${article.id}`,
     },
     openGraph: {
+      images: SHARED_OG_IMAGES,
       title,
       description,
       url: `https://www.haritaro.jp/articles/${article.id}`,
       type: "article",
+      publishedTime: article.publishedAt,
+      modifiedTime: article.updatedAt || article.publishedAt,
     },
   };
 }
@@ -71,9 +77,18 @@ export default async function ArticleDetailPage({ params }: Props) {
   const article = ARTICLES[articleIndex];
   const prevArticle = articleIndex > 0 ? ARTICLES[articleIndex - 1] : null;
   const nextArticle = articleIndex < ARTICLES.length - 1 ? ARTICLES[articleIndex + 1] : null;
-  const relatedArticles = ARTICLES.filter((a) => a.id !== article.id && (a.category === article.category || Math.abs(ARTICLES.indexOf(a) - articleIndex) <= 2)).slice(0, 2);
+  const relatedArticles = ARTICLES.filter(a => a.id !== article.id)
+    .map(a => ({ article: a, score: a.tags.filter(tag => article.tags.includes(tag)).length * 3 + (a.category === article.category ? 1 : 0) }))
+    .filter(item => item.score > 0).sort((a, b) => b.score - a.score).slice(0, 2).map(item => item.article);
+  const headings = parseMarkdownBlocks(article.contentMarkdown).flatMap((block, index) =>
+    block.type === "h2" ? [{ label: block.content.replaceAll("**", ""), id: "article-heading-" + index }] : []);
+  const nextLearning = article.category === "経穴・経絡学"
+    ? { href: "/tsubo", label: "経穴辞典で位置・解剖を確認する" }
+    : article.category === "臨床・実践知見"
+    ? { href: "/clinical", label: "臨床学習の進め方を確認する" }
+    : { href: "/curriculum", label: "講義で基礎から学ぶ" };
 
-  const resolvedReferences = resolveArticleReferences(article.references || []);
+  const resolvedReferences = resolveArticleReferences(article.references || [], article.contentMarkdown);
   const summarySeenTerms = new Set<string>();
   const bodySeenTerms = new Set<string>();
 
@@ -88,7 +103,7 @@ export default async function ArticleDetailPage({ params }: Props) {
         "url": `https://www.haritaro.jp/articles/${article.id}`,
         "mainEntityOfPage": `https://www.haritaro.jp/articles/${article.id}`,
         "datePublished": article.publishedAt || "2026-03-01",
-        "dateModified": "2026-09-26",
+        "dateModified": article.updatedAt || article.publishedAt,
         "image": "https://www.haritaro.jp/og-image.png",
         "author": {
           "@type": "Person",
@@ -168,7 +183,7 @@ export default async function ArticleDetailPage({ params }: Props) {
         </nav>
 
         {/* 記事メインカード */}
-        <article className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm space-y-6 sm:space-y-8 transition-colors">
+        <article id="article-top" className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm space-y-6 sm:space-y-8 transition-colors">
           {/* ヘッダー部 */}
           <header className="space-y-3 sm:space-y-4 border-b border-[#F2ECE0] dark:border-[#22303D] pb-5 sm:pb-6">
             <div className="flex flex-wrap items-center justify-between gap-2">
@@ -214,6 +229,20 @@ export default async function ArticleDetailPage({ params }: Props) {
             </div>
           </header>
 
+          <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
+            公開：<time dateTime={article.publishedAt}>{article.publishedAt}</time>
+            {article.updatedAt && <> ／ 更新：<time dateTime={article.updatedAt}>{article.updatedAt}</time></>}
+          </p>
+          <aside aria-label="この記事の読み方" className="rounded-xl border border-[#C5DED4] dark:border-[#2A5243] p-4 text-sm leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
+            <strong className="block mb-1">この記事の読み方</strong>
+            伝統理論の説明、研究で得られた知見、筆者による比較・比喩を区別してお読みください。生理学との対比表や「ネットワーク」などの説明は、伝統概念との同一性や治療効果を証明するものではありません。研究結果は対象・方法・限界とともに確認してください。
+          </aside>
+          {headings.length > 0 && <details open className="rounded-xl bg-[#FAF8F5] dark:bg-[#121920] p-4">
+            <summary className="cursor-pointer font-bold text-[#1E3D34] dark:text-[#74BA9E]">目次：知りたいところから読む</summary>
+            <nav aria-label="記事の目次" className="mt-3"><ol className="space-y-2 text-sm">
+              {headings.map(heading => <li key={heading.id}><a href={"#" + heading.id} className="inline-block py-1 underline underline-offset-4 text-[#1E3D34] dark:text-[#74BA9E]">{heading.label}</a></li>)}
+            </ol></nav>
+          </details>}
           {/* 10秒でわかる本稿の3ポイント */}
           {article.keyPoints && article.keyPoints.length > 0 && (
             <div className="bg-gradient-to-br from-[#EBF3EF] via-[#F5FAF8] to-[#FAF8F5] dark:from-[#162721] dark:via-[#14211C] dark:to-[#101915] p-4 sm:p-6 rounded-2xl border-2 border-[#1E3D34]/30 dark:border-[#3D6E5C] shadow-xs space-y-3">
@@ -254,6 +283,10 @@ export default async function ArticleDetailPage({ params }: Props) {
             resolvedReferences={resolvedReferences}
           />
 
+          <nav aria-label="読了後の学習" className="flex flex-wrap items-center gap-4 border-t border-[#E8E1D1] dark:border-[#22303D] pt-5 text-sm">
+            <Link href={nextLearning.href} className="inline-flex items-center gap-2 rounded-xl bg-[#1E3D34] px-4 py-3 font-bold text-white">{nextLearning.label}<ArrowRight className="w-4 h-4" /></Link>
+            <a href="#article-top" className="underline underline-offset-4 text-[#1E3D34] dark:text-[#74BA9E]">記事の先頭へ</a>
+          </nav>
           {/* 参考文献・学術エビデンス（PubMed・DOI・古典原典） */}
           <ArticleReferences references={resolvedReferences} />
 

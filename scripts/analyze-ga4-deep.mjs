@@ -5,7 +5,10 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const propertyId = '553537039';
+const propertyId = process.env.GA4_PROPERTY_ID || process.argv[2];
+if (!propertyId || !/^\d+$/.test(propertyId)) {
+  throw new Error('GA4_PROPERTY_ID または第1引数で、対象サイトのプロパティIDを指定してください。');
+}
 const keyFilePath = path.resolve(__dirname, '../credentials/ga4-key.json');
 
 const client = new BetaAnalyticsDataClient({ keyFilename: keyFilePath });

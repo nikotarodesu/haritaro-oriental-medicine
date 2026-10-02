@@ -47,7 +47,7 @@ export function getLecturesForAcupoint(acupointName: string, acupointCode?: stri
           title: lecture.title,
           duration: lecture.duration,
           excerpt: excerpt.length > 90 ? excerpt.slice(0, 90) + "…" : excerpt,
-          url: `/curriculum?lecture=${lecture.id}`,
+          url: `/curriculum/${lecture.id}`,
         });
 
         // 最大4件まで

@@ -41,14 +41,6 @@ export default function MobileBottomNav() {
   const handleOpenSearch = (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
     window.dispatchEvent(new CustomEvent("haritaro:open-search"));
-    window.dispatchEvent(
-      new KeyboardEvent("keydown", {
-        key: "k",
-        metaKey: true,
-        ctrlKey: true,
-        bubbles: true,
-      })
-    );
   };
 
   const isItemActive = (id: NavItemId, href: string): boolean => {

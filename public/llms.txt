@@ -11,14 +11,14 @@
 ## 体系学習カリキュラム（全81講義）
 東洋医学の基礎から臨床応用までを体系的に学ぶオンライン教材。
 - [体系学習カリキュラム 目次](https://www.haritaro.jp/curriculum): 全8章・81講義の一覧
-- [第1章 基礎理論編](https://www.haritaro.jp/curriculum?lecture=lecture-yinyang-1): 陰陽五行説、気血津液の基礎、人体の動的平衡
-- [第2章 臓腑学説編](https://www.haritaro.jp/curriculum?lecture=lecture-zangfu-1): 五臓六腑の生理機能、蔵象学説、臓腑連動
-- [第3章 経絡経穴編](https://www.haritaro.jp/curriculum?lecture=lecture-meridian-1): 十四経脈の流注、骨度寸法、要穴の配穴理論
-- [第4章 診察法（四診）編](https://www.haritaro.jp/curriculum?lecture=lecture-diagnosis-1): 望診（舌診）、聞診、問診、切診（脈診・腹診）
-- [第5章 病因病機学説編](https://www.haritaro.jp/curriculum?lecture=lecture-pathomechanism-1): 外感病因（六淫）、内傷病因（七情）、病理機序
-- [第6章 弁証論治編](https://www.haritaro.jp/curriculum?lecture=lecture-syndrome-1): 八綱弁証、気血水弁証、臓腑弁証の推論モデル
-- [第7章 治則・治法編](https://www.haritaro.jp/curriculum?lecture=lecture-treatment-1): 本治法・標治法、補瀉、配穴の原則
-- [第8章 臨床実践・ケーススタディ編](https://www.haritaro.jp/curriculum?lecture=lecture-practice-1): 臨床症例の検討と配穴の実際
+- [第1章 基礎理論編](https://www.haritaro.jp/curriculum/lecture-yinyang-1): 陰陽五行説、気血津液の基礎、人体の動的平衡
+- [第2章 臓腑学説編](https://www.haritaro.jp/curriculum/lecture-zangfu-1): 五臓六腑の生理機能、蔵象学説、臓腑連動
+- [第3章 経絡経穴編](https://www.haritaro.jp/curriculum/lecture-meridian-1): 十四経脈の流注、骨度寸法、要穴の配穴理論
+- [第4章 診察法（四診）編](https://www.haritaro.jp/curriculum/lecture-diagnosis-1): 望診（舌診）、聞診、問診、切診（脈診・腹診）
+- [第5章 病因病機学説編](https://www.haritaro.jp/curriculum/lecture-pathomechanism-1): 外感病因（六淫）、内傷病因（七情）、病理機序
+- [第6章 弁証論治編](https://www.haritaro.jp/curriculum/lecture-syndrome-1): 八綱弁証、気血水弁証、臓腑弁証の推論モデル
+- [第7章 治則・治法編](https://www.haritaro.jp/curriculum/lecture-treatment-1): 本治法・標治法、補瀉、配穴の原則
+- [第8章 臨床実践・ケーススタディ編](https://www.haritaro.jp/curriculum/lecture-practice-1): 臨床症例の検討と配穴の実際
 
 ## 経穴辞典（WHO標準361穴）
 全361経穴の標準取穴部位、解剖断面構造、主治、臨床運針の注意点、禁鍼・禁灸・妊婦禁忌情報を網羅したデータベース。

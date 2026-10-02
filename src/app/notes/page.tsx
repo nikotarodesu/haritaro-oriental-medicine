@@ -139,7 +139,7 @@ export default function MyNotesPage() {
       navigator.clipboard.writeText(text);
       setCopiedNoteId(note.id);
       setTimeout(() => setCopiedNoteId(null), 2500);
-      trackEvent("note_save_success", { placement: "copy_note_text" });
+      trackEvent("note_export", { placement: "copy_note_text" });
     }
   };
 

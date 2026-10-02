@@ -1,3 +1,4 @@
+import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { CURRICULUM_DATA, Lecture } from "@/data/curriculumData";
@@ -64,6 +65,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: `https://www.haritaro.jp/curriculum/${lecture.id}`,
     },
     openGraph: {
+      images: SHARED_OG_IMAGES,
       title: `${title} | はり太郎の東洋医学`,
       description,
       url: `https://www.haritaro.jp/curriculum/${lecture.id}`,

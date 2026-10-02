@@ -1,3 +1,4 @@
+import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import Link from "next/link";
 import { Sparkles, ShieldCheck, ArrowRight, Compass, BookOpen, GraduationCap, Stethoscope } from "lucide-react";
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
     canonical: "/about",
   },
   openGraph: {
+      images: SHARED_OG_IMAGES,
     title: "サイトの志と運営方針",
     description: "基礎理論から臨床実践までを体系化する東洋医学ポータル「はり太郎の東洋医学」の創設理念と運営方針。",
     url: "https://www.haritaro.jp/about",

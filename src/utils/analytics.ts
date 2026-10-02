@@ -17,6 +17,9 @@ declare global {
 }
 
 export type AnalyticsEventName =
+  | "search_submit"
+  | "search_result_click"
+  | "note_export"
   | "entry_select"
   | "clinical_cta_click"
   | "tool_start"
@@ -54,33 +57,21 @@ export function trackEvent(name: AnalyticsEventName, params?: AnalyticsEventPara
   }
 
   try {
-    // 送信前に許可された非機微パラメータのみをフィルタリング
-    const safeParams: Record<string, unknown> = {};
-    if (params) {
-      for (const [key, value] of Object.entries(params)) {
-        if (value !== undefined && value !== null) {
-          // 禁止キー（自由記述・個人情報）の二重防御ガード
-          const lowerKey = key.toLowerCase();
-          if (
-            lowerKey.includes("text") ||
-            lowerKey.includes("note") ||
-            lowerKey.includes("memo") ||
-            lowerKey.includes("patient") ||
-            lowerKey.includes("symptom") ||
-            lowerKey.includes("email") ||
-            lowerKey.includes("query") ||
-            lowerKey.includes("name")
-          ) {
-            continue;
-          }
-          safeParams[key] = value;
-        }
-      }
-    }
-
-    window.gtag("event", name, safeParams);
+    window.gtag("event", name, sanitizeAnalyticsParams(params));
   } catch (err) {
     // 計測エラーがUI操作を妨げないよう握りつぶす
     console.warn("[Analytics] Track event failed:", err);
   }
+}
+
+// Allow only navigation attributes. Search text, note content and diagnostic results are excluded.
+export function sanitizeAnalyticsParams(params: AnalyticsEventParams = {}): Record<string, string | number | boolean> {
+  const allowedKeys = new Set(["entry_source", "destination_type", "tool_id", "placement", "context_pair", "preset", "plan", "result_type", "item_type", "method", "content_type", "lecture_id"]);
+  const safe: Record<string, string | number | boolean> = {};
+  for (const [key, value] of Object.entries(params)) {
+    if (allowedKeys.has(key) && typeof value === "string" && /^[a-z0-9_-]{1,80}$/i.test(value)) safe[key] = value;
+    if (["score", "total", "result_count"].includes(key) && typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 10000) safe[key] = value;
+    if (key === "passed" && typeof value === "boolean") safe[key] = value;
+  }
+  return safe;
 }

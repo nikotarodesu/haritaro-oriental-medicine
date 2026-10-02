@@ -1,3 +1,4 @@
+import { SHARED_OG_IMAGES } from "@/config/seo";
 import type { Metadata } from "next";
 import React from "react";
 
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
     canonical: "/simulator/compare",
   },
   openGraph: {
+      images: SHARED_OG_IMAGES,
     title: "条件比較シミュレーター｜証と配穴の相違点・鑑別比較教材",
     description: "異なる病態条件から証名と配穴の使い分けを学ぶ鑑別比較教材。",
     url: "https://www.haritaro.jp/simulator/compare",

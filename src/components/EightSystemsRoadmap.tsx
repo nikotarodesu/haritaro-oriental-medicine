@@ -124,7 +124,7 @@ export default function EightSystemsRoadmap() {
           {SYSTEMS.map((sys) => (
             <Link
               key={sys.number}
-              href={`/curriculum?lecture=${sys.lectureId}`}
+              href={`/curriculum/${sys.lectureId}`}
               className="flex flex-col justify-between p-3 rounded-xl bg-white dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-xs transition-all group min-h-[105px]"
             >
               <div className="space-y-1">

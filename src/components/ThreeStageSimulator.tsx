@@ -690,7 +690,7 @@ export default function ThreeStageSimulator() {
                 </h3>
               </div>
               <Link
-                href="/curriculum?lecture=lecture-pathomechanism-1"
+                href="/curriculum/lecture-pathomechanism-1"
                 className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
                 title="第5章 病因病機学説：病機とは何か（八綱・病理の整理）"
               >
@@ -795,7 +795,7 @@ export default function ThreeStageSimulator() {
                 </h3>
               </div>
               <Link
-                href="/curriculum?lecture=lecture-qiblood-1"
+                href="/curriculum/lecture-qiblood-1"
                 className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
                 title="第3講 気血水論：生命を巡る基本三要素"
               >
@@ -1223,7 +1223,7 @@ export default function ThreeStageSimulator() {
               </span>
             </div>
             <Link
-              href={`/curriculum?lecture=${relatedLectures.pathomechanism.id}`}
+              href={`/curriculum/${relatedLectures.pathomechanism.id}`}
               onClick={() => {
                 trackEvent("context_link_click", {
                   context_pair: "simulator",
@@ -1268,7 +1268,7 @@ export default function ThreeStageSimulator() {
                 </h4>
               </div>
               <Link
-                href="/curriculum?lecture=lecture-treatment-1"
+                href="/curriculum/lecture-treatment-1"
                 className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
                 title="第7講 治法論：証から治則・治法・配穴設計へ"
               >
@@ -1850,7 +1850,7 @@ export default function ThreeStageSimulator() {
                     </span>
                   </div>
                   <Link
-                    href="/curriculum?lecture=lecture-treatment-8"
+                    href="/curriculum/lecture-treatment-8"
                     onClick={() => {
                       trackEvent("context_link_click", {
                         context_pair: "simulator",

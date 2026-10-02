@@ -31,6 +31,10 @@ export default function ArticleReferences({
       <div className="bg-[#FFFFFF] dark:bg-[#151D25] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs overflow-hidden">
         {/* ヘッダー */}
         <div
+          role="button"
+          tabIndex={0}
+          aria-expanded={isExpanded}
+          onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setIsExpanded(!isExpanded); } }}
           onClick={() => setIsExpanded(!isExpanded)}
           className="p-3.5 sm:p-5 flex items-center justify-between cursor-pointer select-none bg-[#FAF8F5] dark:bg-[#19242E] hover:bg-[#F2ECE0] dark:hover:bg-[#1E2B38] transition-colors"
         >
@@ -51,7 +55,7 @@ export default function ArticleReferences({
                 </span>
               </div>
               <p className="text-[10px] sm:text-[11px] text-[#737C77] dark:text-[#8899A6] mt-0.5">
-                PubMed掲載査読論文・原典古典・各種ガイドライン等の学術的根拠
+                論文・古典・診療指針では根拠の種類と適用範囲が異なります
               </p>
             </div>
           </div>
@@ -139,7 +143,7 @@ export default function ArticleReferences({
                         <span className="font-semibold text-[#232826] dark:text-[#E6EFEA]">
                           {ref.source}
                         </span>
-                        {ref.year && <span>({ref.year}年)</span>}
+                        {ref.year && <span>({ref.year}{typeof ref.year === "number" ? "年" : ""})</span>}
                         {ref.pmid && (
                           <span className="font-mono text-[#1E3D34] dark:text-[#74BA9E]">
                             PMID: {ref.pmid}

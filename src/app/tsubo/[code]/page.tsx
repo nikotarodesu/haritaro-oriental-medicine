@@ -1,3 +1,4 @@
+import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -74,6 +75,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: `/tsubo/${point.codeLower}`,
     },
     openGraph: {
+      images: SHARED_OG_IMAGES,
       title,
       description,
       url: `https://www.haritaro.jp/tsubo/${point.codeLower}`,
@@ -488,7 +490,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
               <Sparkles className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>経穴サマリー（AI Overview / 臨床エッセンス）</span>
+              <span>この経穴の要点</span>
             </div>
             <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] hidden sm:inline">
               WHO標準・解剖学的指標準拠
@@ -920,7 +922,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                 {relatedSymptoms.map((sym) => (
                   <Link
                     key={sym.id}
-                    href={`/symptoms`}
+                    href={`/symptoms#${sym.id}`}
                     className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group flex flex-col justify-between"
                   >
                     <div className="space-y-1">

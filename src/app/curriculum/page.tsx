@@ -1,3 +1,4 @@
+import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import { permanentRedirect } from "next/navigation";
 import CurriculumIndexClient from "@/components/curriculum/CurriculumIndexClient";
@@ -27,7 +28,7 @@ function resolveLectureId(rawId: string): string {
 }
 
 interface Props {
-  searchParams: Promise<{ lecture?: string }>;
+  searchParams: Promise<{ lecture?: string; focus?: string }>;
 }
 
 export const metadata: Metadata = {
@@ -38,6 +39,7 @@ export const metadata: Metadata = {
     canonical: "https://www.haritaro.jp/curriculum",
   },
   openGraph: {
+      images: SHARED_OG_IMAGES,
     title: "体系学習カリキュラム | はり太郎の東洋医学",
     description:
       "陰陽・五行・気血水から診断・治療・臨床実践まで全81レッスン。丸暗記ではなく、身体のバランスやつながりを理解する基礎を身につけます。",
@@ -49,10 +51,11 @@ export default async function CurriculumPage({ searchParams }: Props) {
   const params = await searchParams;
   const rawLectureId = params.lecture;
 
-  // 旧クエリURL（/curriculum?lecture=[id]）からのアクセスは静的個別URL（/curriculum/[id]）へ308恒久転送
+  // 旧クエリURL（lectureクエリパラメータ付き）からのアクセスは静的個別URL（/curriculum/[id]）へ308恒久転送
   if (rawLectureId) {
     const lectureId = resolveLectureId(rawLectureId);
-    permanentRedirect(`/curriculum/${lectureId}`);
+    const focusQuery = params.focus ? `?focus=${encodeURIComponent(params.focus)}` : "";
+    permanentRedirect(`/curriculum/${lectureId}${focusQuery}`);
   }
 
   const indexJsonLd = {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { SYMPTOMS } from "@/data/symptomData";
 import { ACUPOINTS_MASTER } from "@/data/tsubo/acupointsMaster";
@@ -11,16 +11,20 @@ export default function SymptomsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
   const [expandedMatrixId, setExpandedMatrixId] = useState<string | null>(null);
 
-  const categories = [
-    "すべて",
-    "頭・首・肩",
-    "背中・腰",
-    "足・脚",
-    "メンタル・睡眠",
-    "消化器・お腹",
-    "女性特有",
-    "全身・疲労"
-  ];
+  const categories = ["すべて", ...new Set(SYMPTOMS.map(s => s.category))];
+
+  useEffect(() => {
+    const revealHash = () => {
+      const id = window.location.hash.slice(1);
+      if (SYMPTOMS.some(s => s.id === id)) {
+        setSelectedCategory("すべて");
+        requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView());
+      }
+    };
+    revealHash();
+    window.addEventListener("hashchange", revealHash);
+    return () => window.removeEventListener("hashchange", revealHash);
+  }, []);
 
   const caseMap: Record<string, string> = {
     "stomach-fatigue": "gerd-gastric",
@@ -44,7 +48,7 @@ export default function SymptomsPage() {
           お悩み・症状別 セルフケアガイド
         </h1>
         <p className="mt-2 text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-3xl leading-relaxed">
-          「病院に行くほどではないけれどつらい」「なんとなく調子が悪い」といった未病の不調。東洋医学の観点から根本的な原因を解き明かし、自分でできるツボ押しや食養生、生活改善法をお伝えします。
+          「病院に行くほどではないけれどつらい」「なんとなく調子が悪い」といった未病の不調。東洋医学の伝統的な見立てを紹介し、自分でできるツボ押しや食養生、生活改善法をお伝えします。
         </p>
       </div>
 
@@ -98,7 +102,7 @@ export default function SymptomsPage() {
                 <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                     <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                    <span>東洋医学での見立て（なぜ起こるのか？）</span>
+                    <span>東洋医学での見立て（伝統理論での説明）</span>
                   </div>
                   <p className="text-xs sm:text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
                     {symptom.orientalMechanism}
@@ -109,7 +113,7 @@ export default function SymptomsPage() {
               {/* おすすめのツボ */}
               <div className="space-y-3">
                 <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block">
-                  📍 おすすめの特効穴（ツボ）
+                  📍 セルフケアで使われるツボ
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                   {relatedTsubos.map((tsubo) => (
@@ -167,8 +171,9 @@ export default function SymptomsPage() {
               </div>
 
               {/* 東西医学の「相補マトリクス」切り替えスイッチ */}
-              <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D]">
+              {caseMap[symptom.id] && <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D]">
                 <button
+                  aria-expanded={expandedMatrixId === symptom.id}
                   onClick={() => setExpandedMatrixId(expandedMatrixId === symptom.id ? null : symptom.id)}
                   className="w-full flex items-center justify-between p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:bg-[#F4EFE6] dark:hover:bg-[#1A2530] transition-colors text-left"
                 >
@@ -192,12 +197,10 @@ export default function SymptomsPage() {
 
                 {expandedMatrixId === symptom.id && (
                   <div className="mt-4 animate-fadeIn">
-                    <EastWestIntegrativeSwitch 
-                      initialCaseId={caseMap[symptom.id] || "gerd-gastric"} 
-                    />
+                    <EastWestIntegrativeSwitch initialCaseId={caseMap[symptom.id]} />
                   </div>
                 )}
-              </div>
+              </div>}
 
               {/* 臨床・専門ツールへのステップアップ導線 */}
               <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center justify-between gap-2 text-xs">
