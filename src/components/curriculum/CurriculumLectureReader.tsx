@@ -120,10 +120,10 @@ export default function CurriculumLectureReader({ lecture }: Props) {
 
       if ((e.key === "[" || (e.altKey && e.key === "ArrowLeft")) && prevLecture) {
         e.preventDefault();
-        router.push(`/curriculum?lecture=${prevLecture.id}`);
+        router.push(`/curriculum/${prevLecture.id}`);
       } else if ((e.key === "]" || (e.altKey && e.key === "ArrowRight")) && nextLecture) {
         e.preventDefault();
-        router.push(`/curriculum?lecture=${nextLecture.id}`);
+        router.push(`/curriculum/${nextLecture.id}`);
       }
     };
 
@@ -215,7 +215,7 @@ export default function CurriculumLectureReader({ lecture }: Props) {
               return (
                 <Link
                   key={lec.id}
-                  href={`/curriculum?lecture=${lec.id}`}
+                  href={`/curriculum/${lec.id}`}
                   className={`min-h-[40px] px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
                     isActive
                       ? "bg-[#1E3D34] text-white shadow-xs"
@@ -473,7 +473,7 @@ export default function CurriculumLectureReader({ lecture }: Props) {
           <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
             {prevLecture && (
               <Link
-                href={`/curriculum?lecture=${prevLecture.id}`}
+                href={`/curriculum/${prevLecture.id}`}
                 className="min-h-[44px] px-4 py-2 rounded-xl border border-[#E8E1D1] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#FAF8F5] dark:hover:bg-[#1A2530] text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
                 title="前のレッスンへ（ショートカット: [ キー）"
               >
@@ -494,7 +494,7 @@ export default function CurriculumLectureReader({ lecture }: Props) {
 
             {nextLecture ? (
               <Link
-                href={`/curriculum?lecture=${nextLecture.id}`}
+                href={`/curriculum/${nextLecture.id}`}
                 className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
                 title="次のレッスンへ（ショートカット: ] キー）"
               >

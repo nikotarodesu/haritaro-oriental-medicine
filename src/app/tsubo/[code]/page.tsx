@@ -41,6 +41,7 @@ import { getLecturesForAcupoint } from "@/utils/acupointCurriculumMatcher";
 import { getSimulatorParamsForAcupoint } from "@/utils/tsuboSimulatorMatcher";
 import { getSymptomsForAcupoint, getCasesForAcupoint } from "@/utils/tsuboTopicClusterMatcher";
 import { MERIDIAN_RELATIONS } from "@/utils/tsuboRelations";
+import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -1185,7 +1186,75 @@ export default async function AcupointDetailPage({ params }: Props) {
           )}
         </div>
 
-        {/* 6. 免責・監修・更新情報 */}
+        {/* 6. 次のアクション：この経穴を臨床・学習で深める */}
+        <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#FAF8F5] via-[#EBF3EF]/40 to-[#FAF8F5] dark:from-[#17212A] dark:via-[#162922]/30 dark:to-[#17212A] border border-[#C5DED4] dark:border-[#2A5243] space-y-4">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+            <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
+              「{point.name}」を臨床・学習でさらに活用する
+            </h3>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Link
+              href={`/practice/haiketsu?acupoint=${encodeURIComponent(point.name)}`}
+              className="p-3.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-xs transition-all group flex flex-col justify-between space-y-2"
+            >
+              <div className="space-y-1">
+                <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1">
+                  <SlidersHorizontal className="w-3.5 h-3.5" />
+                  配穴設計ツール
+                </span>
+                <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                  本治・標治のツボ組み合わせを設計し、バランスを点検
+                </p>
+              </div>
+              <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] group-hover:underline inline-flex items-center gap-0.5">
+                配穴を試す →
+              </span>
+            </Link>
+
+            <Link
+              href="/kokushi"
+              className="p-3.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E2D3D] dark:hover:border-[#7BAAD8] hover:shadow-xs transition-all group flex flex-col justify-between space-y-2"
+            >
+              <div className="space-y-1">
+                <span className="text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8] flex items-center gap-1">
+                  <GraduationCap className="w-3.5 h-3.5" />
+                  国試対策演習
+                </span>
+                <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                  {point.meridianShort}・要穴・取穴の過去問・日替わり復習
+                </p>
+              </div>
+              <span className="text-[11px] font-bold text-[#1E2D3D] dark:text-[#7BAAD8] group-hover:underline inline-flex items-center gap-0.5">
+                問題を解く →
+              </span>
+            </Link>
+
+            <Link
+              href="/notes"
+              className="p-3.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] dark:hover:border-[#E6C387] hover:shadow-xs transition-all group flex flex-col justify-between space-y-2"
+            >
+              <div className="space-y-1">
+                <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] flex items-center gap-1">
+                  <FileText className="w-3.5 h-3.5" />
+                  マイノート
+                </span>
+                <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                  このツボを自分の臨床ノートや配穴メモに保存・蓄積
+                </p>
+              </div>
+              <span className="text-[11px] font-bold text-[#B86924] dark:text-[#E6C387] group-hover:underline inline-flex items-center gap-0.5">
+                ノートを見る →
+              </span>
+            </Link>
+          </div>
+        </div>
+
+        {/* 7. E-E-A-T 専門家監修情報カード */}
+        <AuthorSupervisorCard topic={`${point.name}（${point.code}）の経穴解説・取穴・臨床応用`} />
+
+        {/* 8. 免責・出典・更新情報 */}
         <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] text-[11px] text-[#737C77] dark:text-[#8899A6] space-y-1.5">
           <div className="flex items-center gap-1.5 font-bold text-[#59615D] dark:text-[#A0B0BC]">
             <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />

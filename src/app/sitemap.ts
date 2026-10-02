@@ -116,12 +116,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // カリキュラム全81レッスン（個別教材の正規URL）
+  // カリキュラム全81レッスン（個別教材の正規URL・SSG静的ページ）
   const allLectures = CURRICULUM_DATA.flatMap((stage) => stage.lectures).filter(
     (l) => l.isPublished !== false
   );
   const curriculumLessonPages: MetadataRoute.Sitemap = allLectures.map((lecture) => ({
-    url: `${baseUrl}/curriculum?lecture=${lecture.id}`,
+    url: `${baseUrl}/curriculum/${lecture.id}`,
     lastModified: new Date("2026-09-20"),
   }));
 

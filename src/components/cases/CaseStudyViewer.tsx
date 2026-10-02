@@ -618,6 +618,28 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                         8体系カリキュラムで病因病機を深掘り
                       </p>
                     </Link>
+
+                    {/* 非プレミアムユーザー向け：全20症例アンロック案内 */}
+                    {!isPremium && (
+                      <div className="col-span-full p-4 rounded-xl bg-gradient-to-r from-[#FCF4EB] to-[#FAF8F5] dark:from-[#251B12] dark:to-[#17212A] border border-[#F3DEC5] dark:border-[#4D331F] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-1.5 text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
+                            <Crown className="w-3.5 h-3.5" />
+                            <span>全20症例の臨床演習に挑戦しませんか？</span>
+                          </div>
+                          <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
+                            プレミアム会員なら、腰痛・不眠・自律神経失調・難治性頭痛など残り17症例の臨床推論プロセスをすべて解放できます。
+                          </p>
+                        </div>
+                        <Link
+                          href="/pricing"
+                          className="px-4 py-2 rounded-lg bg-[#B86924] hover:bg-[#A35B1D] text-white text-xs font-bold transition-all shadow-xs shrink-0 flex items-center gap-1"
+                        >
+                          <span>全症例を解放する</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

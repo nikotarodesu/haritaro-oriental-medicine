@@ -258,7 +258,7 @@ export default function CurriculumIndexClient() {
             <div className="pt-1 flex flex-wrap items-center gap-3">
               {resumeLecture && (
                 <Link
-                  href={`/curriculum?lecture=${resumeLecture.id}`}
+                  href={`/curriculum/${resumeLecture.id}`}
                   className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#E6C387] text-[#1E3D34] font-bold text-xs sm:text-sm hover:bg-[#DFC07D] shadow-md transition-all cursor-pointer"
                 >
                   <PlayCircle className="w-4 h-4 text-[#1E3D34]" />
@@ -349,7 +349,7 @@ export default function CurriculumIndexClient() {
         onClose={() => setShowIncorrectModal(false)}
         onNavigateToLecture={(lectureId) => {
           setShowIncorrectModal(false);
-          window.location.href = `/curriculum?lecture=${lectureId}`;
+          window.location.href = `/curriculum/${lectureId}`;
         }}
       />
 
@@ -457,7 +457,7 @@ export default function CurriculumIndexClient() {
                       return (
                         <Link
                           key={lec.id}
-                          href={`/curriculum?lecture=${lec.id}`}
+                          href={`/curriculum/${lec.id}`}
                           className={`p-3.5 rounded-xl border transition-all flex flex-col justify-between group cursor-pointer block ${
                             isLecCompleted
                               ? "bg-emerald-50/40 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800/80 shadow-2xs"

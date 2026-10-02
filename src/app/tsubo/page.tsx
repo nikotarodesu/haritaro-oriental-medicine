@@ -80,6 +80,44 @@ export default function TsuboPage() {
             ))}
           </div>
         </div>
+
+        {/* 全361経穴 完全インデックス（初期HTML出力保証・SEOクローラー網羅） */}
+        <details className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] group">
+          <summary className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline cursor-pointer flex items-center justify-between py-1 select-none">
+            <span>十四経脈・全361経穴 完全一覧を開く（クリックで展開）</span>
+            <span className="text-[11px] font-normal text-[#737C77] group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <div className="pt-4 space-y-5">
+            {MERIDIANS.map((m) => {
+              const meridianPoints = ALL_ACUPOINTS.filter((p) => p.meridianId === m.id);
+              return (
+                <div key={m.id} className="space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-xs text-[#232826] dark:text-[#FAF8F5]">
+                      {m.name}
+                    </span>
+                    <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                      （{meridianPoints.length}穴）
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-1 text-[11px]">
+                    {meridianPoints.map((pt) => (
+                      <Link
+                        key={pt.code}
+                        href={`/tsubo/${pt.code.toLowerCase()}`}
+                        className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#10171F] border border-[#EAE3D2] dark:border-[#263748] text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] hover:border-[#1E3D34] transition-colors"
+                        title={`${pt.name} (${pt.code}) - ${pt.indications.slice(0, 2).join('・')}`}
+                      >
+                        <span className="font-medium">{pt.name}</span>
+                        <span className="font-mono text-[9px] text-[#8A9590] ml-0.5">{pt.code}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </details>
       </nav>
 
       {/* 3. インタラクティブ操作（人体図・検索・絞り込み・カード一覧） */}

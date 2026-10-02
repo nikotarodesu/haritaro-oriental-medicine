@@ -8,6 +8,7 @@ import ArticleReferences from "@/components/ArticleReferences";
 import PrimeStudentCard from "@/components/PrimeStudentCard";
 import CitationTextRenderer from "@/components/CitationTextRenderer";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
+import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import { 
   BookOpen, 
   Clock, 
@@ -370,6 +371,9 @@ export default async function ArticleDetailPage({ params }: Props) {
             </div>
           </section>
         )}
+
+        {/* E-E-A-T 専門家監修情報カード */}
+        <AuthorSupervisorCard topic={`${article.title}（${article.category}）`} />
 
       </div>
     </div>

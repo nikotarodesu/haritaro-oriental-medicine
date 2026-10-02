@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const propertyId = '553537039';
+const propertyId = process.env.GA4_PROPERTY_ID || process.argv[2] || '553537039';
 const keyFilePath = path.resolve(__dirname, '../credentials/ga4-key.json');
 
 const analyticsDataClient = new BetaAnalyticsDataClient({
@@ -15,6 +15,10 @@ const analyticsDataClient = new BetaAnalyticsDataClient({
 async function runReport() {
   console.log(`\n==============================================`);
   console.log(`📊 GA4 データ分析レポート取得開始 (Property: ${propertyId})`);
+  if (propertyId === '553537039') {
+    console.log(`💡【お知らせ】プロパティID 553537039 は旧設定です。はり太郎専用プロパティを指定する場合は:`);
+    console.log(`   node scripts/fetch-ga4.mjs <HARITARO_PROPERTY_ID> または GA4_PROPERTY_ID 環境変数をご設定ください。`);
+  }
   console.log(`==============================================\n`);
 
   try {

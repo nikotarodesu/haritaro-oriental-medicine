@@ -1,10 +1,6 @@
 import { Metadata } from "next";
-import { notFound, permanentRedirect } from "next/navigation";
-import { CURRICULUM_DATA, Lecture } from "@/data/curriculumData";
-import CurriculumLectureReader from "@/components/curriculum/CurriculumLectureReader";
+import { permanentRedirect } from "next/navigation";
 import CurriculumIndexClient from "@/components/curriculum/CurriculumIndexClient";
-
-const allLectures: Lecture[] = CURRICULUM_DATA.flatMap((s) => s.lectures);
 
 // 旧形式IDのマッピング
 const OLD_ID_MAP: Record<string, string> = {
@@ -34,128 +30,37 @@ interface Props {
   searchParams: Promise<{ lecture?: string }>;
 }
 
-export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
-  const params = await searchParams;
-  const rawLectureId = params.lecture;
-
-  if (rawLectureId) {
-    const lectureId = resolveLectureId(rawLectureId);
-    const lecture = allLectures.find((l) => l.id === lectureId);
-    if (lecture) {
-      const title = `${lecture.title} | 体系学習カリキュラム`;
-      const description =
-        lecture.summary ||
-        lecture.whatYouWillLearn?.canDo ||
-        `${lecture.title}の解説講義。東洋医学の基礎から実践まで体系的に学びます。`;
-
-      return {
-        title,
-        description,
-        alternates: {
-          canonical: `https://www.haritaro.jp/curriculum?lecture=${lecture.id}`,
-        },
-        openGraph: {
-          title,
-          description,
-          url: `https://www.haritaro.jp/curriculum?lecture=${lecture.id}`,
-        },
-      };
-    }
-  }
-
-  return {
-    title: "体系学習カリキュラム",
+export const metadata: Metadata = {
+  title: "体系学習カリキュラム | 東洋医学基礎から臨床実践まで全81講",
+  description:
+    "陰陽・五行・気血水から診断・治療・臨床実践まで全81レッスン。丸暗記ではなく、身体のバランスやつながりを理解する基礎を身につけます。",
+  alternates: {
+    canonical: "https://www.haritaro.jp/curriculum",
+  },
+  openGraph: {
+    title: "体系学習カリキュラム | はり太郎の東洋医学",
     description:
       "陰陽・五行・気血水から診断・治療・臨床実践まで全81レッスン。丸暗記ではなく、身体のバランスやつながりを理解する基礎を身につけます。",
-    alternates: {
-      canonical: "https://www.haritaro.jp/curriculum",
-    },
-    openGraph: {
-      title: "体系学習カリキュラム | はり太郎の東洋医学",
-      description:
-        "陰陽・五行・気血水から診断・治療・臨床実践まで全81レッスン。丸暗記ではなく、身体のバランスやつながりを理解する基礎を身につけます。",
-      url: "https://www.haritaro.jp/curriculum",
-    },
-  };
-}
+    url: "https://www.haritaro.jp/curriculum",
+  },
+};
 
 export default async function CurriculumPage({ searchParams }: Props) {
   const params = await searchParams;
   const rawLectureId = params.lecture;
 
+  // 旧クエリURL（/curriculum?lecture=[id]）からのアクセスは静的個別URL（/curriculum/[id]）へ308恒久転送
   if (rawLectureId) {
     const lectureId = resolveLectureId(rawLectureId);
-
-    // 旧形式IDからのアクセスの場合は正規URLへ恒久転送
-    if (rawLectureId !== lectureId) {
-      permanentRedirect(`/curriculum?lecture=${lectureId}`);
-    }
-
-    const lecture = allLectures.find((l) => l.id === lectureId);
-    if (!lecture) {
-      notFound();
-    }
-
-    const lectureJsonLd = {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": ["WebPage", "LearningResource"],
-          "@id": `https://www.haritaro.jp/curriculum?lecture=${lecture.id}#webpage`,
-          url: `https://www.haritaro.jp/curriculum?lecture=${lecture.id}`,
-          name: `${lecture.title} | はり太郎の東洋医学`,
-          description: lecture.summary || `${lecture.title}の解説講義。東洋医学の基礎から実践まで体系的に学びます。`,
-          learningResourceType: "Lesson",
-          educationalLevel: "Professional / Academic",
-          inLanguage: "ja",
-          provider: {
-            "@type": "Organization",
-            name: "はり太郎",
-            url: "https://www.haritaro.jp",
-          },
-        },
-        {
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            {
-              "@type": "ListItem",
-              position: 1,
-              name: "ホーム",
-              item: "https://www.haritaro.jp",
-            },
-            {
-              "@type": "ListItem",
-              position: 2,
-              name: "カリキュラム",
-              item: "https://www.haritaro.jp/curriculum",
-            },
-            {
-              "@type": "ListItem",
-              position: 3,
-              name: lecture.title,
-              item: `https://www.haritaro.jp/curriculum?lecture=${lecture.id}`,
-            },
-          ],
-        },
-      ],
-    };
-
-    return (
-      <>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(lectureJsonLd) }}
-        />
-        <CurriculumLectureReader lecture={lecture} />
-      </>
-    );
+    permanentRedirect(`/curriculum/${lectureId}`);
   }
 
   const indexJsonLd = {
     "@context": "https://schema.org",
     "@type": "Course",
     name: "東洋医学体系学習カリキュラム全81講",
-    description: "陰陽・五行・気血水から診断・治療・臨床実践まで全81レッスン。丸暗記ではなく、身体のバランスやつながりを理解する基礎を身につけます。",
+    description:
+      "陰陽・五行・気血水から診断・治療・臨床実践まで全81レッスン。丸暗記ではなく、身体のバランスやつながりを理解する基礎を身につけます。",
     url: "https://www.haritaro.jp/curriculum",
     provider: {
       "@type": "Organization",
