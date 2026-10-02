@@ -42,7 +42,6 @@ import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { PROCEDURE_PUBLICATION_NOTICE, getPublicCrossSectionModel } from "@/data/medicalSafety";
 import { SYMPTOMS } from "@/data/symptomData";
 import { getLecturesForAcupoint } from "@/utils/acupointCurriculumMatcher";
-import { getSimulatorParamsForAcupoint } from "@/utils/tsuboSimulatorMatcher";
 import { getSymptomsForAcupoint, getCasesForAcupoint } from "@/utils/tsuboTopicClusterMatcher";
 import { MERIDIAN_RELATIONS } from "@/utils/tsuboRelations";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
@@ -117,8 +116,8 @@ export default async function AcupointDetailPage({ params }: Props) {
   // この経穴が登場する講義（カリキュラム）
   const relatedLectures = getLecturesForAcupoint(point.name, point.code);
 
-  // 弁証シミュレーターへの逆引き推論パラメータ
-  const simLink = getSimulatorParamsForAcupoint(point.code, point.meridianId);
+  // 経穴名だけを参照として渡す。所属経脈や経穴だけから証を決めない。
+  const simulatorUrl = `/simulator?fromTsubo=${encodeURIComponent(point.code)}&tsuboName=${encodeURIComponent(point.name)}`;
 
   // トピッククラスタ連動（症状ガイド ＆ 臨床症例）
   const relatedSymptoms = getSymptomsForAcupoint(point.codeLower, point.name);
@@ -438,9 +437,9 @@ export default async function AcupointDetailPage({ params }: Props) {
               {/* 副アクション群：推論・比較・テスト（スッキリ整理） */}
               <div className="flex items-center gap-1.5 bg-[#FAF8F5] dark:bg-[#121920] p-1 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
                 <Link
-                  href={`/simulator?fromTsubo=${point.code}&tsuboName=${encodeURIComponent(point.name)}&depth=${simLink.depth}&temp=${simLink.temp}&state=${simLink.state}&qixueshui=${simLink.qixueshui}&zangfu=${simLink.zangfu}&targetRole=${encodeURIComponent(simLink.targetRole)}`}
+                  href={simulatorUrl}
                   className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] transition-colors inline-flex items-center gap-1"
-                  title={`「${point.name}」が主穴となる証（${simLink.syndromeName}）を弁証シミュレーターで検証`}
+                  title={`「${point.name}」を参照しながら弁証の学習条件を選ぶ`}
                 >
                   <Layers className="w-3.5 h-3.5" />
                   <span>弁証推論</span>
@@ -503,7 +502,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           {/* GEO / AIO 最適化：直接定義構文（AI検索エンジンが回答元として最優先抜粋） */}
           <div className="p-3.5 sm:p-4 rounded-xl bg-white/95 dark:bg-[#10171F]/90 border border-[#DCE8E2] dark:border-[#263A32] shadow-2xs">
             <p className="text-sm sm:text-base text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
-              <strong className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">{point.name}（{point.kana} / {point.code}）とは</strong>、{point.meridian}に属するWHO標準経穴であり、{point.locationSimple}に位置します。主に<strong>{point.indications.slice(0, 4).join("、")}</strong>などの症状改善に頻用される重要なツボです。
+              <strong className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">{point.name}（{point.kana} / {point.code}）とは</strong>、{point.meridian}に属する経穴です。位置の目安は「{point.locationSimple}」。伝統的な主治には<strong>{point.indications.slice(0, 4).join("、")}</strong>などが挙げられます。これは、この経穴単独の治療効果や個人への適応を示すものではありません。
             </p>
           </div>
 
@@ -861,20 +860,20 @@ export default async function AcupointDetailPage({ params }: Props) {
             <div className="space-y-1.5">
               <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                 <Layers className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>臨床逆引き推論 ｜ 弁証シミュレーター連動</span>
+                <span>経穴から弁証の学習へ</span>
               </div>
               <h4 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
-                「{point.name}」が主治・特効穴となる証：【{simLink.syndromeName}】
+                「{point.name}」を参照しながら条件を比較する
               </h4>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                八綱（{simLink.depth === "interior" ? "裏" : "表"}・{simLink.temp === "heat" ? "熱" : "寒"}・{simLink.state === "excess" ? "実" : "虚"}）・気血水・臓腑の連動から、この経穴を核とした配穴ロジックをシミュレーターで追体験できます。
+                経穴名だけで八綱・気血水・臓腑の証を決めることはできません。所見に応じて学習条件を選び、教材内の配穴候補がどう変わるか比較できます。
               </p>
             </div>
             <Link
-              href={`/simulator?fromTsubo=${point.code}&tsuboName=${encodeURIComponent(point.name)}&depth=${simLink.depth}&temp=${simLink.temp}&state=${simLink.state}&qixueshui=${simLink.qixueshui}&zangfu=${simLink.zangfu}&targetRole=${encodeURIComponent(simLink.targetRole)}`}
+              href={simulatorUrl}
               className="shrink-0 px-4 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] text-xs font-bold shadow-xs inline-flex items-center gap-1.5 transition-all"
             >
-              <span>シミュレーターで検証</span>
+              <span>学習条件を選ぶ</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -1228,11 +1227,11 @@ export default async function AcupointDetailPage({ params }: Props) {
         <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] text-[11px] text-[#737C77] dark:text-[#8899A6] space-y-1.5">
           <div className="flex items-center gap-1.5 font-bold text-[#59615D] dark:text-[#A0B0BC]">
             <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <span>監修・出典・更新情報</span>
+            <span>出典・確認状況</span>
           </div>
           <p className="leading-relaxed">
-            執筆・解剖考証：はり太郎（鍼灸師・鍼灸院院長）｜ 最終検証：2026年9月<br />
-            採用標準：WHO Standard Acupuncture Point Locations in the Western Pacific Region (2008)
+            本人確認の担当：はり太郎｜ 個別の取穴・図版・医学記述の確認と承認は未完了です。<br />
+            位置情報の参照元：WHO Standard Acupuncture Point Locations in the Western Pacific Region (2008)。参照元の記載だけでは、全経穴の照合完了を意味しません。
           </p>
           <p className="text-[10px] text-[#88928D] dark:text-[#6E7D8A]">
             ※当サイトに掲載されている経穴の位置や解説は学術的学習および臨床思考の整理を目的としており、個別の疾患治療は医師・有資格鍼灸師の判断に従ってください。

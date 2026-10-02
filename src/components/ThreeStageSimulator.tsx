@@ -235,7 +235,7 @@ export default function ThreeStageSimulator() {
   // 体質診断からの連動情報
   const [fromDiagnosisInfo, setFromDiagnosisInfo] = useState<{ diagName: string } | null>(null);
   // 経穴詳細からの連動情報（逆引き推論）
-  const [fromTsuboInfo, setFromTsuboInfo] = useState<{ code: string; name: string; targetRole?: string } | null>(null);
+  const [fromTsuboInfo, setFromTsuboInfo] = useState<{ code: string; name: string } | null>(null);
 
   // 診断推論の算出
   
@@ -339,30 +339,15 @@ export default function ThreeStageSimulator() {
 
     const fromTsubo = searchParams.get("fromTsubo");
     const tsuboName = searchParams.get("tsuboName");
-    const targetRole = searchParams.get("targetRole");
 
     if (fromTsubo) {
-      const qDepth = searchParams.get("depth") as DepthType | null;
-      const qTemp = searchParams.get("temp") as TemperatureType | null;
-      const qState = searchParams.get("state") as StateType | null;
-      const qQixueshui = searchParams.get("qixueshui") as QixueshuiType | null;
-      const qZangfu = searchParams.get("zangfu") as ZangfuType | null;
-      const qComplex = searchParams.get("complexState") as ComplexStateType | null;
-
-      if (qDepth) setDepth(qDepth);
-      if (qTemp) setTemp(qTemp);
-      if (qState) setState(qState);
-      if (qQixueshui) setQixueshui(qQixueshui);
-      if (qZangfu) setZangfu(qZangfu);
-      if (qComplex) setComplexState(qComplex);
-
+      // 古い経穴リンクの自動推論条件も採用しない。経穴から証は確定できない。
       setFromTsuboInfo({
         code: fromTsubo,
         name: tsuboName || fromTsubo,
-        targetRole: targetRole || undefined,
       });
       setActivePresetId(null);
-      setChangeNotice(`経穴「${tsuboName || fromTsubo}」が主治・特効穴となる代表的病態を展開しました。`);
+      setChangeNotice(`参照元の経穴は「${tsuboName || fromTsubo}」です。初期条件はこの経穴の適応病態を示しません。所見に応じて学習条件を選び直してください。`);
       setIsMounted(true);
       return;
     }
@@ -620,16 +605,11 @@ export default function ThreeStageSimulator() {
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#1E3D34] text-white">
-                  経穴 {fromTsuboInfo.name}（{fromTsuboInfo.code}）連動中
+                  参照元：{fromTsuboInfo.name}（{fromTsuboInfo.code}）
                 </span>
-                {fromTsuboInfo.targetRole && (
-                  <span className="font-bold text-xs sm:text-sm text-[#1E3D34] dark:text-[#74BA9E]">
-                    {fromTsuboInfo.targetRole}
-                  </span>
-                )}
               </div>
               <p className="text-xs text-[#59615D] dark:text-[#96A6B2] mt-0.5 leading-relaxed">
-                「{fromTsuboInfo.name}」が主治・特効穴となる代表病態をシミュレートしています。八綱や気血水の条件を変えることで、配穴の変化を多角的に観察できます。
+                「{fromTsuboInfo.name}」を参照しています。初期条件はこの経穴の適応病態を示しません。経穴名から証を決めず、所見に応じて条件を選び直してください。候補の一致だけで個人への適応は判断できません。
               </p>
             </div>
           </div>
