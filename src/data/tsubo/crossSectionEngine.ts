@@ -6,17 +6,7 @@ import {
   SvgAnatomicalElement,
   AcupointMaster,
 } from "./types";
-import {
-  isChestBackPneumothoraxRisk,
-  isNeckCarotidRisk,
-  isBrainstemRisk,
-  isSuboccipitalRisk,
-  isSternalRisk,
-  isSpinalCordRisk,
-  isContraindicatedNeedle,
-  isContraindicatedMoxa,
-  isPregnancyContraindicated,
-} from "./safetyAndLandmarks";
+import { generateCaution } from "./safetyAndLandmarks";
 
 /**
  * 人体解剖断面スライスの体系的識別子（26大スライス）
@@ -300,7 +290,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
       { id: "calvaria-bone", name: "頭蓋骨（頭頂骨）", category: "bone", position: "深部不動境界", relation: "脳を保護する強固な骨壁", description: "大人の刺鍼で貫通することはない。", palpationTip: "硬い骨面を触知", dangerLevel: "safe" },
     ],
     adjacentStructures: [
-      { id: "superior-sagittal-sinus", name: "上矢状静脈洞（頭蓋内）", category: "vessel", relation: "頭蓋冠直下の硬膜内（骨により保護）", dangerLevel: "safe", description: "頭蓋骨内を走る静脈洞。", clinicalSignificance: "頭蓋骨があるため刺鍼による穿刺リスクなし" },
+      { id: "superior-sagittal-sinus", name: "上矢状静脈洞（頭蓋内）", category: "vessel", relation: "頭蓋冠直下の硬膜内（骨により保護）", dangerLevel: "safe", description: "頭蓋骨内を走る静脈洞。", clinicalSignificance: "頭蓋骨の存在だけで損傷リスクがないとは判断しない。泉門未閉鎖や手術後などの状態も確認する" },
     ],
     svgElements: [
       { layerId: "calvaria-bone", elementId: "hv-skull", label: "頭蓋骨（頭頂骨）", shapeType: "path", d: "M 40,165 Q 250,175 460,165 L 460,235 Q 250,245 40,235 Z", fill: "#E8E3D8", stroke: "#78716C", strokeWidth: 2.5, labelPos: { x: 250, y: 200, anchor: "middle" } },
@@ -332,7 +322,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
       { id: "mastoid-process", name: "乳様突起", category: "bone", position: "外側基準指標", relation: "風池の外側境界骨", description: "耳の後ろの丸い骨。", palpationTip: "耳の後ろの硬い骨を触知", dangerLevel: "safe" },
     ],
     adjacentStructures: [
-      { id: "foramen-magnum-brainstem", name: "大後頭孔・延髄（生命中枢）", category: "organ", relation: "正中深部（上方へ深刺した時）", dangerLevel: "hazard", description: "針先を上方へ深刺すると延髄を損傷する重大事故のリスク。", clinicalSignificance: "上方への刺入は絶対厳禁。鼻尖または対側眼球へ向けて浅刺" },
+      { id: "foramen-magnum-brainstem", name: "大後頭孔・延髄（生命中枢）", category: "organ", relation: "正中深部（上方へ深刺した時）", dangerLevel: "hazard", description: "針先を上方へ深刺すると延髄を損傷する重大事故のリスク。", clinicalSignificance: "上方への刺入は絶対厳禁。外表の目印だけで安全な針路を判断しない" },
       { id: "vertebral-artery", name: "椎骨動脈（環椎後頭膜上）", category: "vessel", relation: "後頭下三角内を走行", dangerLevel: "hazard", description: "脳底動脈へ向かう主要動脈。内側深部への激しい雀啄・回旋は避ける。", clinicalSignificance: "深刺を避け筋層内にとどめる" },
     ],
     svgElements: [
@@ -365,7 +355,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
       { id: "thyroid-cartilage", name: "甲状軟骨（喉頭隆起）", category: "bone", position: "前正中境界", relation: "人迎・扶突高位の目印", description: "いわゆる「のどぼとけ」。", palpationTip: "喉頭隆起の尖端を触知", dangerLevel: "safe" },
     ],
     adjacentStructures: [
-      { id: "common-carotid-artery", name: "総頸動脈（頸動脈洞）", category: "vessel", relation: "胸鎖乳突筋前縁の直下深部", dangerLevel: "hazard", description: "動脈直上への刺入や過度な圧迫は徐脈・血圧低下（頸動脈洞反射）の危険あり。", clinicalSignificance: "指先で拍動を外側に除けて刺入。直刺深刺は厳禁" },
+      { id: "common-carotid-artery", name: "総頸動脈（頸動脈洞）", category: "vessel", relation: "胸鎖乳突筋前縁の直下深部", dangerLevel: "hazard", description: "動脈直上への刺入や過度な圧迫は徐脈・血圧低下（頸動脈洞反射）の危険あり。", clinicalSignificance: "動脈を指で押しのける操作を安全の根拠にしない" },
     ],
     svgElements: [
       { layerId: "common-carotid-artery", elementId: "na-sheath", label: "頸動脈鞘（危険領域）", shapeType: "ellipse", cx: 210, cy: 175, rx: 40, ry: 30, fill: "#FDEDEC", stroke: "#E07A70", strokeWidth: 1.5, strokeDasharray: "4 2" },
@@ -386,18 +376,18 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
     bodySide: "前頸部・正中",
     posture: "仰臥位（頸部軽度後屈位）",
     axes: { horizontal: ["前正中線", "深部 (気管側)"], vertical: ["胸骨上端 (表面)", "胸骨柄後面 (胸腔内方向)"] },
-    summaryTakeaway: "直下の気管前壁および深部の大動脈弓・腕頭動脈を回避するため、直刺2分後に針尖を胸骨柄の背面に沿わせて下方へ斜刺する特殊手技を理解します。",
+    summaryTakeaway: "気管および重要な血管などとの位置関係を学びます。固定した深度や胸骨後面に沿わせる操作だけで安全性を判断しません。",
     layers: [
       { depthIndex: 1, id: "skin", name: "皮膚", category: "skin", depthDescription: "表面層", description: "胸骨上切痕の薄いくぼんだ皮膚。", dangerLevel: "safe", clinicalSignificance: "愛護的切皮" },
       { depthIndex: 2, id: "sternohyoid", name: "舌骨下筋群（胸骨舌骨筋・胸骨甲状筋）", category: "muscle", depthDescription: "薄い筋層", description: "気管の前面を覆う薄い筋帯。", dangerLevel: "safe", clinicalSignificance: "針尖の通過層" },
-      { depthIndex: 3, id: "trachea-anterior", name: "気管前壁結合組織", category: "fascia", depthDescription: "気管前結合組織", description: "胸骨柄と気管の間にある疎松組織。", dangerLevel: "caution", clinicalSignificance: "胸骨柄の背面に沿わせる安全進針路" },
+      { depthIndex: 3, id: "trachea-anterior", name: "気管前壁結合組織", category: "fascia", depthDescription: "気管前結合組織", description: "胸骨柄と気管の間にある疎松組織。", dangerLevel: "caution", clinicalSignificance: "深部の重要構造との位置関係を学ぶ模式図" },
     ],
     boundaries: [
       { id: "sternal-notch", name: "胸骨頸切痕（胸骨柄上縁）", category: "bone", position: "前下方骨性指標", relation: "針尖を沿わせる不動の骨膜面", description: "左右の鎖骨の間にある半月状の骨のくぼみ。", palpationTip: "胸骨上縁の硬い骨のくぼみを触知", dangerLevel: "safe" },
     ],
     adjacentStructures: [
-      { id: "trachea", name: "気管（気管軟骨・気管腔）", category: "organ", relation: "天突の直下深部（直刺で直撃）", dangerLevel: "hazard", description: "空気の通り道。直刺すると激しい咳嗽や気管穿刺事故を引き起こす。", clinicalSignificance: "直刺深刺は絶対厳禁。必ず下方に針を寝かせる" },
-      { id: "brachiocephalic-artery", name: "腕頭動脈・大動脈弓", category: "vessel", relation: "胸骨柄後面の深部胸腔内", dangerLevel: "hazard", description: "心臓から出る大血管。深刺（1寸以上）は致死的大出血の恐れ。", clinicalSignificance: "胸骨柄背面の浅層（0.5〜0.8寸）にとどめる" },
+      { id: "trachea", name: "気管（気管軟骨・気管腔）", category: "organ", relation: "天突の直下深部（直刺で直撃）", dangerLevel: "hazard", description: "空気の通り道。直刺すると激しい咳嗽や気管穿刺事故を引き起こす。", clinicalSignificance: "気管損傷に注意し、特定の方向を向ければ安全という保証はない" },
+      { id: "brachiocephalic-artery", name: "腕頭動脈・大動脈弓", category: "vessel", relation: "胸骨柄後面の深部胸腔内", dangerLevel: "hazard", description: "心臓から出る大血管。損傷すれば重大な出血を招くおそれがある。危険となる距離には個人差がある。", clinicalSignificance: "模式図の寸数から個人の安全深度を決めない" },
     ],
     svgElements: [
       { layerId: "trachea", elementId: "ns-trachea", label: "気管（直刺厳禁！）", shapeType: "ellipse", cx: 250, cy: 190, rx: 45, ry: 35, fill: "#FDEDEC", stroke: "#E07A70", strokeWidth: 2, strokeDasharray: "4 2" },
@@ -418,18 +408,18 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
     bodySide: "肩部・背部",
     posture: "座位（両腕を下垂しリラックスさせた肢位）",
     axes: { horizontal: ["内側 (頸椎・大椎側)", "外側 (肩峰側)"], vertical: ["肩上部表面 (皮膚)", "深部 (第1肋骨・肺尖側)"] },
-    summaryTakeaway: "僧帽筋・肩甲挙筋の筋腹と、直下に位置する第1肋骨および肺尖（胸膜）の近接関係を理解し、肩井での気胸事故防止の刺入角度を厳守します。",
+    summaryTakeaway: "僧帽筋・肩甲挙筋の筋腹と、直下に位置する第1肋骨および肺尖（胸膜）の近接関係を理解し、体格や姿勢による位置関係の違いを学びます。",
     layers: [
       { depthIndex: 1, id: "skin", name: "皮膚", category: "skin", depthDescription: "表面層", description: "肩上部の皮膚。", dangerLevel: "safe", clinicalSignificance: "切皮" },
       { depthIndex: 2, id: "trapezius-upper", name: "僧帽筋（上部線維）", category: "muscle", depthDescription: "浅層強大筋", description: "首から肩を覆う筋腹。肩こりの最主要座。肩井の第1得気層。", dangerLevel: "safe", clinicalSignificance: "肩こり・頭痛緩和の主目標" },
       { depthIndex: 3, id: "levator-scapulae-supraspinatus", name: "肩甲挙筋 / 棘上筋", category: "muscle", depthDescription: "中層筋", description: "僧帽筋の深面にある筋肉。", dangerLevel: "safe", clinicalSignificance: "深部筋硬結の解消" },
     ],
     boundaries: [
-      { id: "first-rib", name: "第1肋骨（骨面）", category: "bone", position: "深部安全壁", relation: "針先を受け止める骨膜", description: "鎖骨と肺尖の間にある最初の肋骨。", palpationTip: "深部で骨面に触れると安全ストッパーとなる", dangerLevel: "safe" },
+      { id: "first-rib", name: "第1肋骨（骨面）", category: "bone", position: "深部骨性指標", relation: "周囲構造を把握するための骨性指標", description: "鎖骨と肺尖の間にある最初の肋骨。", palpationTip: "骨の存在や触知は安全深度の保証にならない", dangerLevel: "safe" },
       { id: "c7-spinous", name: "第7頸椎棘突起（大椎）", category: "bone", position: "内側基準指標", relation: "肩井寸法の内側起点", description: "首を曲げたときに最も飛び出る骨。", palpationTip: "大椎の突起を触知", dangerLevel: "safe" },
     ],
     adjacentStructures: [
-      { id: "pleural-cupula-lung-apex", name: "肺尖・胸膜頂（気胸最大危険領域）", category: "organ", relation: "第1肋骨の内側深部（鎖骨上窩・肩井直下）", dangerLevel: "hazard", description: "肺の最上部は鎖骨より2〜3cm上に突出。肩井直刺による深刺は気胸事故の代表例。", clinicalSignificance: "直刺深刺は絶対厳禁！必ず前後に向けた浅い斜刺（0.5寸）とする" },
+      { id: "pleural-cupula-lung-apex", name: "肺尖・胸膜頂（気胸最大危険領域）", category: "organ", relation: "第1肋骨の内側深部（鎖骨上窩・肩井直下）", dangerLevel: "hazard", description: "肺の最上部は鎖骨より2〜3cm上に突出。肩井直刺による深刺は気胸事故の代表例。", clinicalSignificance: "体格と局所解剖を確認し、固定した寸数や方向を一律に当てはめない" },
     ],
     svgElements: [
       { layerId: "pleural-cupula-lung-apex", elementId: "ss-lung-apex", label: "肺尖・胸膜頂（気胸危険領域！）", shapeType: "path", d: "M 60,195 Q 250,210 440,195 L 440,255 L 60,255 Z", fill: "#FDEDEC", stroke: "#E07A70", strokeWidth: 2, strokeDasharray: "4 2" },
@@ -528,7 +518,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
       { id: "radius-bone", name: "橈骨（骨幹部）", category: "bone", position: "橈側骨性境界", relation: "前腕の外側骨格", description: "親指側の骨。", palpationTip: "前腕外側縁として触知", dangerLevel: "safe" },
     ],
     adjacentStructures: [
-      { id: "median-nerve", name: "正中神経", category: "nerve", relation: "2腱の間隙・浅指屈筋の深面を直走", dangerLevel: "caution", description: "手掌の知覚と母指球筋を支配。針先が接触すると指先へ電撃痛が走る。", clinicalSignificance: "電撃痛時は針先を少し引き微調整する" },
+      { id: "median-nerve", name: "正中神経", category: "nerve", relation: "2腱の間隙・浅指屈筋の深面を直走", dangerLevel: "caution", description: "手掌の知覚と母指球筋を支配。針先が接触すると指先へ電撃痛が走る。", clinicalSignificance: "電撃様の痛みを得気の目安にせず、刺激を中止して症状を評価する" },
       { id: "radial-artery", name: "橈骨動脈", category: "vessel", relation: "橈側手根屈筋腱の外側（太淵・経渠ライン）", dangerLevel: "caution", description: "脈拍を触知する動脈。", clinicalSignificance: "太淵・経渠取穴時は拍動直撃を回避" },
     ],
     svgElements: [
@@ -554,7 +544,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
     bodySide: "右前腕",
     posture: "手背を上（回内位）にして軽く前腕を置いた肢位",
     axes: { horizontal: ["橈側 (親指側)", "尺側 (小指側)"], vertical: ["背側面 (表面)", "掌側面 (深面)"] },
-    summaryTakeaway: "橈骨と尺骨の間の前腕骨間膜と、総指伸筋・長母指伸筋等の伸筋群の走行、および後骨間神経の位置関係を理解します。",
+    summaryTakeaway: "橈骨と尺骨の間の前腕骨間膜と、総指伸筋・長母指伸筋等の伸筋群の走行、および後骨間神経の位置関係を理解します。神経そのものを刺激の標的にする説明ではありません。",
     layers: [
       { depthIndex: 1, id: "skin", name: "皮膚", category: "skin", depthDescription: "表面層", description: "手背側からの連続する皮膚。", dangerLevel: "safe", clinicalSignificance: "素早い切皮" },
       { depthIndex: 2, id: "subcutaneous", name: "皮下組織・手背静脈網", category: "subcutaneous", depthDescription: "浅層", description: "表在静脈が発達した層。", dangerLevel: "safe", clinicalSignificance: "皮下出血予防" },
@@ -566,7 +556,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
       { id: "ulna-post", name: "尺骨（骨間縁）", category: "bone", position: "尺側骨性境界", relation: "尺骨頭から肘頭へのライン", description: "前腕小指側の骨。", palpationTip: "尺骨の背側縁を触知", dangerLevel: "safe" },
     ],
     adjacentStructures: [
-      { id: "posterior-interosseous-nv", name: "後骨間神経・動脈", category: "nerve", relation: "伸筋群の深層・骨間膜上を走行", dangerLevel: "caution", description: "橈骨神経深枝の延長。針先の接触で前腕深部に強い重だるい響きが生じる。", clinicalSignificance: "強い響きを得るポイント" },
+      { id: "posterior-interosseous-nv", name: "後骨間神経・動脈", category: "nerve", relation: "伸筋群の深層・骨間膜上を走行", dangerLevel: "caution", description: "橈骨神経深枝の延長。針先の接触で前腕深部に強い重だるい響きが生じる。", clinicalSignificance: "神経損傷に注意し、強い放散痛を得気の目安にしない" },
     ],
     svgElements: [
       { layerId: "radius-post", elementId: "fap-radius", label: "橈骨", shapeType: "ellipse", cx: 110, cy: 155, rx: 30, ry: 25, fill: "#E8E3D8", stroke: "#78716C", strokeWidth: 2, labelPos: { x: 110, y: 158, anchor: "middle" } },
@@ -598,7 +588,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
       { id: "second-metacarpal", name: "第2中手骨骨縁", category: "bone", position: "尺側境界", relation: "不動の触診基準線", description: "示指の骨幹部中点。", palpationTip: "第2中手骨の骨際で止まるくぼみ", dangerLevel: "safe" },
     ],
     adjacentStructures: [
-      { id: "radial-nerve-superficial", name: "橈骨神経浅枝", category: "nerve", relation: "皮下組織内を走行", dangerLevel: "caution", description: "電撃痛を生じやすい皮神経。", clinicalSignificance: "強い放散痛時は針先を微調整" },
+      { id: "radial-nerve-superficial", name: "橈骨神経浅枝", category: "nerve", relation: "皮下組織内を走行", dangerLevel: "caution", description: "電撃痛を生じやすい皮神経。", clinicalSignificance: "強い放散痛があれば刺激を中止して症状を評価する" },
       { id: "deep-palmar-arch", name: "深掌動脈弓", category: "vessel", relation: "母指内転筋の深面", dangerLevel: "hazard", description: "手掌深部の動脈弓。過度の深刺は避ける。", clinicalSignificance: "貫通深刺の防止" },
     ],
     svgElements: [
@@ -615,12 +605,12 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
 
   // 27. 指端・爪甲角部（井穴・末節骨レベル）
   terminal_digit: {
-    titleTemplate: "爪甲角・指端部 局所解剖モデル（井穴・点刺出血安全指標）",
+    titleTemplate: "爪甲角・指端部 局所解剖モデル（体表位置の学習）",
     level: "指端・趾端 爪甲根部レベル水平横断",
     bodySide: "手指・足趾末梢",
     posture: "指先をリラックスさせ、爪甲を正面・水平に観察する肢位",
     axes: { horizontal: ["橈側/脛側 (内側)", "尺側/腓側 (外側)"], vertical: ["爪甲・背側面 (表面)", "指腹・掌側面 (深面)"] },
-    summaryTakeaway: "【指端・爪甲角模式図】爪甲角部（爪甲根部より0.1寸）における表皮・真皮・爪甲・末節骨の局所構造。浅刺0.1寸（1〜2mm）または三稜針による点刺出血の安全基準を理解します（深刺は骨膜損傷・激痛を招くため禁忌）。",
+    summaryTakeaway: "【指端・爪甲角模式図】表皮・真皮・爪甲・末節骨の位置関係を学びます。爪甲角からの体表位置を示す寸数と、刺入深度は別です。出血を伴う手技の自己施術は案内しません。",
     layers: [
       { depthIndex: 1, id: "skin", name: "皮膚（表皮角質層）", category: "skin", depthDescription: "極浅層（0.1mm）", description: "指端の緻密な角質層と表皮。", dangerLevel: "safe", clinicalSignificance: "素早い切皮または細刺" },
       { depthIndex: 2, id: "subcutaneous", name: "真皮乳頭層・毛細血管網", category: "subcutaneous", depthDescription: "浅層（1〜2mm）", description: "豊富な毛細血管網と知覚神経終末の集積層。井穴の目標座。", dangerLevel: "safe", clinicalSignificance: "点刺出血・浅刺得気の主座" },
@@ -659,10 +649,10 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
       { depthIndex: 4, id: "pectoralis-minor", name: "小胸筋 / 外肋間筋", category: "muscle", depthDescription: "中深層筋", description: "肋骨間を埋める筋群。", dangerLevel: "caution", clinicalSignificance: "これより深部への直刺刺入は厳禁" },
     ],
     boundaries: [
-      { id: "rib-cortex", name: "肋骨（骨皮質）", category: "bone", position: "深部骨性境界", relation: "針先が胸膜へ侵入するのを防ぐ安全ストッパー", description: "あばら骨の骨面。", palpationTip: "肋骨の硬い骨面を指腹で触知", dangerLevel: "safe" },
+      { id: "rib-cortex", name: "肋骨（骨皮質）", category: "bone", position: "深部骨性境界", relation: "肋間と肺・胸膜の位置関係を学ぶための骨性指標", description: "あばら骨の骨面。", palpationTip: "肋骨の硬い骨面を指腹で触知", dangerLevel: "safe" },
     ],
     adjacentStructures: [
-      { id: "pleura-lung", name: "壁側胸膜・肺実質", category: "organ", relation: "肋間筋の直下深層（深刺で直撃）", dangerLevel: "hazard", description: "肺を包む胸膜腔。直刺深刺により胸膜を穿刺すると外傷性気胸を招く重大リスク。", clinicalSignificance: "直刺深刺は絶対厳禁。必ず肋骨に沿った浅い斜刺・横刺とする" },
+      { id: "pleura-lung", name: "壁側胸膜・肺実質", category: "organ", relation: "肋間筋の直下深層（深刺で直撃）", dangerLevel: "hazard", description: "肺を包む胸膜腔。直刺深刺により胸膜を穿刺すると外傷性気胸を招く重大リスク。", clinicalSignificance: "肋間の血管や肺・胸膜の損傷リスクに留意し、方向だけで安全を判断しない" },
       { id: "intercostal-nv", name: "肋間動静脈・肋間神経", category: "vessel", relation: "各肋骨の下縁を走行", dangerLevel: "caution", description: "肋骨下縁に沿う血管神経束。", clinicalSignificance: "肋骨下縁を避け、肋骨上縁または肋間中央を狙う" },
     ],
     svgElements: [
@@ -748,20 +738,20 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
     bodySide: "後正中線上（左右対称中心）",
     posture: "座位または伏臥位（軽度脊柱前屈位にて棘突起間隙を開大）",
     axes: { horizontal: ["前側 (椎体・脊柱管)", "後側 (棘突起先端・皮膚)"], vertical: ["上位椎骨棘突起", "下位椎骨棘突起"] },
-    summaryTakeaway: "棘上靭帯・棘間靭帯の抵抗感を指先で確かめながら、針先をやや上方へ向けて刺入します。深部の黄靭帯を貫通して硬膜外腔・脊髄腔へ進入しないよう直刺深刺は絶対厳禁です。",
+    summaryTakeaway: "棘上靭帯・棘間靭帯、黄靭帯、脊柱管の位置関係を学びます。抵抗感だけで安全限界や針先の位置は確認できません。",
     layers: [
       { depthIndex: 1, id: "skin", name: "皮膚", category: "skin", depthDescription: "表面層 (0〜2mm)", description: "後背部の厚く緻密な皮膚。", dangerLevel: "safe", clinicalSignificance: "愛護的切皮" },
       { depthIndex: 2, id: "supraspinal-ligament", name: "棘上靭帯（または項靭帯）", category: "fascia", depthDescription: "浅部靭帯層 (2〜6mm)", description: "棘突起先端を結ぶ強靭な膠原線維束。", dangerLevel: "safe", clinicalSignificance: "ずっしりとした重い得気の主座" },
-      { depthIndex: 3, id: "interspinal-ligament", name: "棘間靭帯（目標組織）", category: "fascia", depthDescription: "中間靭帯層 (6〜15mm)", description: "上下の棘突起間に張る強固な線維膜。", dangerLevel: "safe", clinicalSignificance: "安全刺入目標層（深刺厳禁）" },
-      { depthIndex: 4, id: "ligamentum-flavum", name: "黄靭帯・硬膜外腔（危険限界）", category: "fascia", depthDescription: "最深部境界 (15〜20mm以上)", description: "弾性線維に富む黄靭帯と硬膜外腔静脈叢。", dangerLevel: "hazard", clinicalSignificance: "【危険域】貫通厳禁（脊柱管・脊髄保護）" },
+      { depthIndex: 3, id: "interspinal-ligament", name: "棘間靭帯（目標組織）", category: "fascia", depthDescription: "中間靭帯層（深さには個人差あり）", description: "上下の棘突起間に張る強固な線維膜。", dangerLevel: "safe", clinicalSignificance: "安全刺入目標層（深刺厳禁）" },
+      { depthIndex: 4, id: "ligamentum-flavum", name: "黄靭帯・硬膜外腔（危険限界）", category: "fascia", depthDescription: "深部境界（深さには個人差あり）", description: "弾性線維に富む黄靭帯と硬膜外腔静脈叢。", dangerLevel: "hazard", clinicalSignificance: "【危険域】貫通厳禁（脊柱管・脊髄保護）" },
     ],
     boundaries: [
       { id: "upper-spinous", name: "上位棘突起（下縁）", category: "bone", position: "上方指標", relation: "針先の触知骨面", description: "上位椎骨の棘突起。", palpationTip: "棘突起先端を触知", dangerLevel: "safe" },
       { id: "lower-spinous", name: "下位棘突起（上縁）", category: "bone", position: "下方指標", relation: "針先の触知骨面", description: "下位椎骨の棘突起。", palpationTip: "棘突起間隙を確認", dangerLevel: "safe" },
-      { id: "interspinal-space", name: "棘突起間隙", category: "membrane", position: "刺入ルート", relation: "鍼を進める安全間隙", description: "靭帯組織が充実する間隙。", palpationTip: "圧痛・硬結を捉える", dangerLevel: "safe" },
+      { id: "interspinal-space", name: "棘突起間隙", category: "membrane", position: "刺入ルート", relation: "脊柱管との近接に注意する間隙", description: "靭帯組織が充実する間隙。", palpationTip: "圧痛・硬結を捉える", dangerLevel: "safe" },
     ],
     adjacentStructures: [
-      { id: "spinal-cord", name: "硬膜外腔・脊髄腔", category: "organ", relation: "黄靭帯直下深部", dangerLevel: "hazard", description: "深刺直刺による脊髄損傷・硬膜外血腫を絶対に避ける。", clinicalSignificance: "直刺深刺は絶対厳禁。必ずやや上方へ斜刺する" },
+      { id: "spinal-cord", name: "硬膜外腔・脊髄腔", category: "organ", relation: "黄靭帯直下深部", dangerLevel: "hazard", description: "深刺直刺による脊髄損傷・硬膜外血腫を絶対に避ける。", clinicalSignificance: "特定の方向に斜刺すれば安全という保証はない" },
       { id: "erector-spinae-lateral", name: "脊柱起立筋（内側部）", category: "organ", relation: "左右両外側", dangerLevel: "caution", description: "正中から外れると筋腹に進入する。", clinicalSignificance: "正中線を外さない" },
     ],
     svgElements: [
@@ -785,7 +775,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
     bodySide: "背部",
     posture: "腹臥位または座位（背中を丸めた肢位）",
     axes: { horizontal: ["後正中線 (棘突起側)", "外側 (肩甲骨・肋骨側)"], vertical: ["背部体表 (皮膚)", "深部 (肋骨・胸膜側)"] },
-    summaryTakeaway: "僧帽筋・菱形筋から脊柱起立筋への重なりと、直下を走る肋骨面を指標とした気胸予防の刺針角度を理解します。",
+    summaryTakeaway: "僧帽筋・菱形筋から脊柱起立筋への重なりと、直下を走る肋骨、肺・胸膜との位置関係と個人差を学びます。",
     layers: [
       { depthIndex: 1, id: "skin", name: "皮膚", category: "skin", depthDescription: "表面層", description: "厚く緻密な背部皮膚。", dangerLevel: "safe", clinicalSignificance: "しっかりした切皮" },
       { depthIndex: 2, id: "trapezius-rhomboid", name: "僧帽筋 / 菱形筋", category: "muscle", depthDescription: "浅背筋群", description: "背部のコリの主座。", dangerLevel: "safe", clinicalSignificance: "筋緊張緩和" },
@@ -793,15 +783,15 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
     ],
     boundaries: [
       { id: "spinous-process", name: "胸椎棘突起（後正中線）", category: "bone", position: "内側基準指標", relation: "高さを数える不動の指標", description: "背骨の中心の突起。", palpationTip: "背骨の中心を触知", dangerLevel: "safe" },
-      { id: "rib-angle", name: "肋骨（骨面）", category: "bone", position: "深部安全壁", relation: "針先を受け止める骨面", description: "脊柱起立筋の底面を支える肋骨。", palpationTip: "深部で骨面に触れると安全", dangerLevel: "safe" },
+      { id: "rib-angle", name: "肋骨（骨面）", category: "bone", position: "深部安全壁", relation: "針先を受け止める骨面", description: "脊柱起立筋の底面を支える肋骨。", palpationTip: "骨を触れることは安全の保証にならない", dangerLevel: "safe" },
     ],
     adjacentStructures: [
-      { id: "pleura-lung-back", name: "壁側胸膜・肺実質（背側）", category: "organ", relation: "肋骨間隙の直下深層", dangerLevel: "hazard", description: "外側への直刺深刺は気胸を引き起こす重大リスク。", clinicalSignificance: "必ず脊柱方向に向けた斜刺とする" },
+      { id: "pleura-lung-back", name: "壁側胸膜・肺実質（背側）", category: "organ", relation: "肋骨間隙の直下深層", dangerLevel: "hazard", description: "外側への直刺深刺は気胸を引き起こす重大リスク。", clinicalSignificance: "方向だけで気胸のリスクがなくなるわけではない" },
     ],
     svgElements: [
       { layerId: "pleura-lung-back", elementId: "bp-danger", label: "肺実質・胸膜腔（気胸危険領域！）", shapeType: "path", d: "M 150,210 Q 300,225 460,210 L 460,260 L 150,260 Z", fill: "#FDEDEC", stroke: "#E07A70", strokeWidth: 1.5, strokeDasharray: "4 2" },
       { layerId: "spinous-process", elementId: "bp-vert", label: "胸椎棘突起", shapeType: "path", d: "M 40,60 L 110,60 L 140,160 L 90,240 L 40,240 Z", fill: "#E8E3D8", stroke: "#78716C", strokeWidth: 2.5, labelPos: { x: 75, y: 150, anchor: "middle" } },
-      { layerId: "rib-angle", elementId: "bp-rib", label: "肋骨（安全ストッパー）", shapeType: "ellipse", cx: 320, cy: 195, rx: 45, ry: 18, fill: "#E8E3D8", stroke: "#78716C", strokeWidth: 2, labelPos: { x: 320, y: 198, anchor: "middle" } },
+      { layerId: "rib-angle", elementId: "bp-rib", label: "肋骨（解剖学的指標）", shapeType: "ellipse", cx: 320, cy: 195, rx: 45, ry: 18, fill: "#E8E3D8", stroke: "#78716C", strokeWidth: 2, labelPos: { x: 320, y: 198, anchor: "middle" } },
       { layerId: "erector-spinae", elementId: "bp-erector", label: "脊柱起立筋（主目標組織）", shapeType: "path", d: "M 130,115 Q 280,120 440,125 L 440,185 Q 280,195 130,175 Z", fill: "#E8D8C8", stroke: "#C49A75", strokeWidth: 2, labelPos: { x: 260, y: 152, anchor: "middle" } },
       { layerId: "skin", elementId: "bp-skin", label: "皮膚・皮下組織", shapeType: "path", d: "M 40,40 Q 250,45 460,55 L 460,95 Q 280,85 110,80 L 40,60 Z", fill: "#FDF8F2", stroke: "#B8A995", strokeWidth: 2, labelPos: { x: 250, y: 65, anchor: "middle" } },
       { layerId: "needle-indicator", elementId: "bp-needle-path", label: "安全斜刺針路（脊柱方向へ内側斜刺）", shapeType: "path", d: "M 310,15 L 240,145", fill: "none", stroke: "#2E7D32", strokeWidth: 2.5 },
@@ -859,7 +849,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
       { id: "sacral-hiatus", name: "仙骨裂孔（仙骨下端）", category: "bone", position: "内側基準指標", relation: "環跳のラインの内側端", description: "お尻の割れ目の上端。", palpationTip: "仙骨下端のV字のくぼみを触知", dangerLevel: "safe" },
     ],
     adjacentStructures: [
-      { id: "sciatic-nerve", name: "坐骨神経（人体最大の神経幹）", category: "nerve", relation: "梨状筋下孔を通過し大腿後面へ下行", dangerLevel: "hazard", description: "直撃すると足先へ強烈な電撃痛が走る。激しい雀啄・回旋は避ける。", clinicalSignificance: "電撃痛時はわずかに針を引き、神経近傍で留針する" },
+      { id: "sciatic-nerve", name: "坐骨神経（人体最大の神経幹）", category: "nerve", relation: "梨状筋下孔を通過し大腿後面へ下行", dangerLevel: "hazard", description: "直撃すると足先へ強烈な電撃痛が走る。激しい雀啄・回旋は避ける。", clinicalSignificance: "電撃様の痛みを施術継続の目安にせず、刺激を中止して症状を評価する" },
     ],
     svgElements: [
       { layerId: "greater-trochanter", elementId: "bg-trochanter", label: "大転子（大腿骨）", shapeType: "ellipse", cx: 400, cy: 165, rx: 35, ry: 30, fill: "#E8E3D8", stroke: "#78716C", strokeWidth: 2.5, labelPos: { x: 400, y: 168, anchor: "middle" } },
@@ -888,7 +878,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
       { depthIndex: 3, id: "quadriceps-femoris", name: "大腿四頭筋（外側広筋・大腿直筋）", category: "muscle", depthDescription: "強大筋層", description: "膝を伸ばす最大の筋肉群。伏兎・梁丘の主座。", dangerLevel: "safe", clinicalSignificance: "膝痛・大腿神経痛の治療点" },
     ],
     boundaries: [
-      { id: "femur-shaft", name: "大腿骨（骨幹部）", category: "bone", position: "中心骨格", relation: "深部安全ストッパー", description: "大腿の中心を通る太い骨。", palpationTip: "深部の骨感を意識", dangerLevel: "safe" },
+      { id: "femur-shaft", name: "大腿骨（骨幹部）", category: "bone", position: "中心骨格", relation: "深部の骨性構造", description: "大腿の中心を通る太い骨。", palpationTip: "深部の骨感を意識", dangerLevel: "safe" },
       { id: "patella-superior", name: "膝蓋骨（お皿）", category: "bone", position: "下方基準指標", relation: "梁丘・伏兎寸法の起点", description: "膝のお皿の上縁。", palpationTip: "膝蓋骨底（上縁）を触知", dangerLevel: "safe" },
     ],
     adjacentStructures: [
@@ -941,18 +931,18 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
     bodySide: "右膝関節",
     posture: "座位（膝関節90度屈曲位）",
     axes: { horizontal: ["内側 (内側膝眼側)", "外側 (外側膝眼・犢鼻側)"], vertical: ["膝前面 (皮膚)", "深部 (膝蓋下脂肪体・関節腔)"] },
-    summaryTakeaway: "膝蓋靭帯の両側のくぼみ（外側膝眼・内側膝眼）から膝蓋下脂肪体を通り、膝関節腔内へ斜めに進める針路を理解します。",
+    summaryTakeaway: "膝蓋靭帯、膝蓋下脂肪体、関節包・関節腔の位置関係を学びます。感染予防の観点から、関節腔内への刺鍼は行うべきではありません。",
     layers: [
       { depthIndex: 1, id: "skin", name: "皮膚", category: "skin", depthDescription: "表面層", description: "膝前面の皮膚。", dangerLevel: "safe", clinicalSignificance: "切皮" },
       { depthIndex: 2, id: "infrapatellar-fat-pad", name: "膝蓋下脂肪体（ホッファ脂肪体）", category: "subcutaneous", depthDescription: "関節前クッション", description: "膝蓋靭帯の深面を満たす豊富な神経終末を持つ脂肪組織。変形性膝関節症で痛みの発生源になりやすい。", dangerLevel: "safe", clinicalSignificance: "膝痛・炎症消退の主目標" },
-      { depthIndex: 3, id: "joint-cavity", name: "膝関節腔 / 滑膜", category: "fascia", depthDescription: "深部関節腔", description: "関節軟骨・半月板が存在する関節包内。", dangerLevel: "caution", clinicalSignificance: "感染予防のため厳重な局所消毒" },
+      { depthIndex: 3, id: "joint-cavity", name: "膝関節腔 / 滑膜", category: "fascia", depthDescription: "深部関節腔", description: "関節軟骨・半月板が存在する関節包内。", dangerLevel: "caution", clinicalSignificance: "消毒をした場合でも、関節腔内への刺鍼は行うべきではない" },
     ],
     boundaries: [
       { id: "patellar-ligament", name: "膝蓋靭帯（中央腱）", category: "tendon", position: "中央指標", relation: "犢鼻（外側）と内膝眼を分ける腱", description: "膝蓋骨から脛骨粗面をつなぐ太い靭帯。", palpationTip: "膝のお皿の下の中央の太いスジを触知", dangerLevel: "safe" },
       { id: "patella-inferior", name: "膝蓋骨下端", category: "bone", position: "上方基準骨", relation: "犢鼻の高さの目印", description: "膝のお皿の一番下の尖端。", palpationTip: "膝蓋骨の尖端を触知", dangerLevel: "safe" },
     ],
     adjacentStructures: [
-      { id: "meniscus", name: "内外側半月板・軟骨面", category: "organ", relation: "関節腔の深部隙間", dangerLevel: "safe", description: "大腿骨と脛骨の間の線維軟骨。", clinicalSignificance: "針先で軟骨を過度に擦らない愛護的操作" },
+      { id: "meniscus", name: "内外側半月板・軟骨面", category: "organ", relation: "関節腔の深部隙間", dangerLevel: "hazard", description: "大腿骨と脛骨の間の線維軟骨。", clinicalSignificance: "関節腔内を刺鍼の標的にしない" },
     ],
     svgElements: [
       { layerId: "patellar-ligament", elementId: "kj-ligament", label: "膝蓋靭帯（中央）", shapeType: "ellipse", cx: 250, cy: 110, rx: 35, ry: 25, fill: "#EDE6DA", stroke: "#8C8275", strokeWidth: 2, labelPos: { x: 250, y: 113, anchor: "middle" } },
@@ -1095,218 +1085,20 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
 };
 
 /**
- * 経穴固有の刺針深度・針路を精確に生成
+ * 未照合の固定刺入条件を生成しないための公開用説明
  */
-function generateNeedleTrackForPoint(point: AcupointMaster, sliceType: SliceType): {
-  angle: string;
-  safeDepth: string;
-  targetStructure: string;
-  warning?: string;
-} {
-  const code = point.codeLower;
-
-  // 1. 神闕（CV8）
-  if (code === "cv8") {
-    return {
-      angle: "刺鍼絶対厳禁（禁鍼穴・温灸のみ適応）",
-      safeDepth: "0寸（刺鍼不可）",
-      targetStructure: "皮膚表面（温熱刺激のみ適応）",
-      warning: "臍中央への刺鍼は腹膜炎リスクのため絶対禁忌。温灸（塩灸・間接灸）のみ適応。",
-    };
-  }
-
-  // 2. 乳中（ST17）
-  if (code === "st17") {
-    return {
-      angle: "鍼灸絶対禁忌（禁鍼・禁灸穴）",
-      safeDepth: "0寸（刺激不可・触診指標のみ）",
-      targetStructure: "骨度法・触診の目印のみ",
-      warning: "乳頭中心への刺鍼・施灸は絶対禁忌。第4肋間・鎖骨中線の指標としてのみ使用。",
-    };
-  }
-
-  // 3. 延髄リスク（風府・唖門）
-  if (isBrainstemRisk(code)) {
-    return {
-      angle: "下顎方向へ向けた直刺またはわずかに下方へ斜刺 0.5〜0.8寸（上方深刺絶対厳禁）",
-      safeDepth: "0.5〜0.8寸（項筋群・項靭帯深層にとどめる）",
-      targetStructure: "頭板状筋・頭半棘筋筋膜",
-      warning: "上方（大後頭孔・頭蓋腔方向）への刺入は延髄（呼吸・循環中枢）損傷の危険があるため絶対禁忌。",
-    };
-  }
-
-  // 4. 胸骨正中穴（CV16〜CV21：膻中・中庭・玉堂・紫宮・華蓋・璇璣）
-  if (isSternalRisk(code) || sliceType === "chest_sternal") {
-    return {
-      angle: "胸骨骨膜上に沿わせた平刺（横刺）0.3〜0.5寸",
-      safeDepth: "0.3〜0.5寸（胸骨骨膜上・皮下組織）",
-      targetStructure: "胸骨体骨膜および胸骨筋膜",
-      warning: "直刺は胸骨骨膜痛を招き、稀な胸骨孔変異による胸腔内臓器穿刺を防ぐため、針を寝かせて骨膜上を平刺する。",
-    };
-  }
-
-  // 5. 脊椎後正中穴（督脈：大椎・陶道・身柱・神道・至陽・命門・腰陽関など）
-  if (isSpinalCordRisk(code) || sliceType === "spine_posterior_median") {
-    return {
-      angle: "棘突起間をわずかに上方へ向けた斜刺 0.5〜1.0寸",
-      safeDepth: "0.5〜1.0寸（棘間靭帯内にとどめる）",
-      targetStructure: "棘間靭帯および棘上靭帯",
-      warning: "直刺深刺は黄靭帯を貫通し硬膜外腔・脊柱管（脊髄）を穿刺する危険があるため、棘突起間をわずかに上方へ斜刺し深刺を避ける。",
-    };
-  }
-
-  // 6. 天突（CV22）
-  if (code === "cv22") {
-    return {
-      angle: "直刺0.2寸後、胸骨柄後面に沿わせて下方へ斜刺 0.5〜1.0寸",
-      safeDepth: "0.5〜1.0寸（胸骨柄後面浅層）",
-      targetStructure: "胸骨舌骨筋および気管前結合組織",
-      warning: "直刺すると直下の気管前壁を穿刺するため厳禁。胸骨背面に密着させて下行させる。",
-    };
-  }
-
-  // 7. 側頸部・頸動脈洞リスク（人迎・水突など）
-  if (isNeckCarotidRisk(code)) {
-    return {
-      angle: "動脈拍動を指先で外側に避けて直刺 0.3〜0.5寸",
-      safeDepth: "0.3〜0.5寸（SCM筋膜・表層筋層）",
-      targetStructure: "胸鎖乳突筋前縁筋膜",
-      warning: "総頸動脈直上への刺入や過度な圧迫は頸動脈洞反射（血圧低下・失神）の危険あり。",
-    };
-  }
-
-  // 8. 後頭下部（風池・天柱）
-  if (isSuboccipitalRisk(code)) {
-    return {
-      angle: "鼻尖または対側眼球へ向けた斜刺 0.8〜1.2寸",
-      safeDepth: "0.8〜1.2寸（頭板状筋筋膜）",
-      targetStructure: "頭板状筋・大後頭神経近接部",
-      warning: "内側深部への深刺は椎骨動脈や大後頭孔に近接するため、刺入角度を厳守する。",
-    };
-  }
-
-  // 9. 肩井（GB21）
-  if (code === "gb21") {
-    return {
-      angle: "前後に向けた浅い斜刺 0.5寸（直刺深刺は絶対厳禁）",
-      safeDepth: "0.5寸（僧帽筋筋腹内にとどめる）",
-      targetStructure: "僧帽筋上部線維（肩こりの主座）",
-      warning: "直刺深刺は直下の肺尖・胸膜を穿刺し外傷性気胸を引き起こす危険が極めて高いため絶対禁忌。",
-    };
-  }
-
-  // 10. 気胸リスク胸背部穴
-  if (isChestBackPneumothoraxRisk(code, point.bodyPart, point.locationDetail)) {
-    return {
-      angle: "肋骨に沿った浅い斜刺または横刺 0.3〜0.5寸",
-      safeDepth: "0.3〜0.5寸（肋骨・胸壁/背筋層内）",
-      targetStructure: "大胸筋深面または脊柱起立筋筋腹",
-      warning: "直刺による深刺は胸膜・肺実質を穿刺し外傷性気胸を引き起こす危険があるため絶対禁忌。",
-    };
-  }
-
-  // 11. 環跳・臀部穴
-  if (sliceType === "buttock_gluteal") {
-    return {
-      angle: "大転子方向へ向けた直刺 1.5〜2.5寸",
-      safeDepth: "1.5〜2.5寸（梨状筋筋膜・深層）",
-      targetStructure: "梨状筋および坐骨神経近傍",
-      warning: "坐骨神経直撃による電撃痛時は直ちに針を少し引き、角度を微調整する。",
-    };
-  }
-
-  // スライス別デフォルト
-  switch (sliceType) {
-    case "face_anterior":
-      return {
-        angle: "斜刺または平刺 0.2〜0.5寸",
-        safeDepth: "0.2〜0.5寸（表情筋層内）",
-        targetStructure: "表情筋群筋腹（心地よい得気）",
-        warning: "毛細血管が豊富なため内出血に留意し、抜針後は優しく圧迫止血する。",
-      };
-    case "head_vertex":
-      return {
-        angle: "横刺（平刺）0.5〜1.0寸（頭皮に沿って進める）",
-        safeDepth: "0.5〜1.0寸（帽状腱膜下層）",
-        targetStructure: "帽状腱膜下結合組織",
-        warning: "直刺は骨膜痛を招くため、針を15〜30度に寝かせて平刺する。",
-      };
-    case "abdomen_anterior":
-      return {
-        angle: "直刺 0.8〜1.2寸（体格に応じて調節）",
-        safeDepth: "0.8〜1.2寸（腹直筋層内）",
-        targetStructure: "腹直筋筋腹（心地よい得気の主座）",
-        warning: "腹膜腔への進入（深刺）を避けるため、排尿後に取穴し腹壁筋層内にとどめる。",
-      };
-    case "thigh_anterior":
-      return {
-        angle: "直刺または斜刺 1.0〜1.5寸",
-        safeDepth: "1.0〜1.5寸（大腿四頭筋筋腹）",
-        targetStructure: "大腿四頭筋（外側広筋・直筋）",
-        warning: "大腿骨膜への直撃を避け、豊かな筋腹中央を捉える。",
-      };
-    case "thigh_medial":
-      return {
-        angle: "直刺または斜刺 0.8〜1.2寸",
-        safeDepth: "0.8〜1.2寸（内側広筋・内転筋）",
-        targetStructure: "内側広筋または大内転筋",
-        warning: "大腿動脈の拍動部（箕門・衝門ライン）を確認し、血管直撃を避ける。",
-      };
-    case "knee_joint":
-      return {
-        angle: "斜刺 0.5〜1.0寸（関節腔方向へ）",
-        safeDepth: "0.5〜1.0寸（膝蓋下脂肪体）",
-        targetStructure: "膝蓋下脂肪体（ホッファ脂肪体）",
-        warning: "関節腔内への刺鍼時は手指および局所の厳重な消毒を行う。",
-      };
-    case "lower_leg_anterior":
-      return {
-        angle: "直刺 1.0〜1.5寸",
-        safeDepth: "1.0〜1.5寸（前脛骨筋筋腹）",
-        targetStructure: "前脛骨筋（主たる酸脹感の座）",
-        warning: "脛骨骨膜への直撃を避け、筋腹中央を捉える。",
-      };
-    case "lower_leg_medial":
-      return {
-        angle: "直刺 0.8〜1.2寸（脛骨後縁に沿って）",
-        safeDepth: "0.8〜1.2寸（ヒラメ筋・後脛骨筋）",
-        targetStructure: "ヒラメ筋深面・長趾屈筋筋膜",
-        warning: "後脛骨動脈の拍動を確認し、血管直撃を避ける。",
-      };
-    case "lower_leg_posterior":
-      return {
-        angle: "直刺 0.8〜1.5寸",
-        safeDepth: "0.8〜1.5寸（腓腹筋・ヒラメ筋）",
-        targetStructure: "腓腹筋筋腹または筋間隙",
-        warning: "膝窩中央（委中）では膝窩動静脈・脛骨神経の拍動を指腹で避ける。",
-      };
-    case "forearm_anterior":
-      return {
-        angle: "直刺 0.5〜0.8寸",
-        safeDepth: "0.5〜0.8寸（浅指屈筋内）",
-        targetStructure: "浅指屈筋および腱間隙",
-        warning: "正中神経への接触による電撃痛時は直ちに針を少し引き微調整する。",
-      };
-    case "terminal_digit":
-      return {
-        angle: "直刺または斜刺 0.1寸（1〜2mm）、または三稜針による点刺出血",
-        safeDepth: "0.1寸（1〜2mm・真皮毛細血管網）",
-        targetStructure: "真皮毛細血管網および指端受容器",
-        warning: "末節骨の骨膜への深刺直撃は激痛と骨膜炎リスクがあるため深刺厳禁。浅刺・速刺にとどめる。",
-      };
-    default:
-      return {
-        angle: "直刺または斜刺 0.5〜1.0寸",
-        safeDepth: "0.5〜1.0寸（局所筋層内）",
-        targetStructure: "局所の筋組織・筋膜（得気の主座）",
-        warning: "周囲の動脈拍動および重要神経の走向を確認し愛護的に刺入する。",
-      };
-  }
+function generateNeedleTrackForPoint(point: AcupointMaster, sliceType: SliceType): CrossSectionModel["needleTrack"] {
+  return {
+    angle: "専門家確認待ち（刺入方向を指定しません）",
+    safeDepth: "個別評価が必要（固定した安全深度を提示しません）",
+    targetStructure: "解剖学的位置関係を学ぶための模式図",
+    warning: sliceType === "knee_joint"
+      ? "関節腔内への刺鍼は感染予防の観点から行うべきではありません。消毒をすれば安全という意味ではありません。"
+      : generateCaution(point),
+  };
 }
 
-/**
- * 経穴マスター情報から完全な CrossSectionModel を動的に生成
- */
+/** 部位別の教育用模式図。個別の安全刺入深度・針路を生成しない。 */
 export function generateCrossSectionModel(point: AcupointMaster): CrossSectionModel | undefined {
   const sliceType = classifyAcupointSlice(point);
   const template = SLICE_TEMPLATES[sliceType];
@@ -1317,6 +1109,7 @@ export function generateCrossSectionModel(point: AcupointMaster): CrossSectionMo
 
   return {
     id: `cs-${point.codeLower}`,
+    procedureReviewStatus: "pending_expert_review",
     title,
     level: template.level,
     sliceType,
@@ -1330,7 +1123,29 @@ export function generateCrossSectionModel(point: AcupointMaster): CrossSectionMo
     boundaries: template.boundaries,
     adjacentStructures: template.adjacentStructures,
     svgElements: template.svgElements,
-    references: template.references,
-    verifiedDate: "2026-09",
+    references: [
+      "WHO Standard Acupuncture Point Locations in the Western Pacific Region (2008)：体表取穴の参考。断面図や刺入深度の検証資料ではありません。",
+      "全日本鍼灸学会 鍼灸安全対策ガイドライン2025年版 https://safety.jsam.jp/img/file.pdf：一般安全原則の参考。個別の図座標は未確認です。",
+    ],
+    referenceLedger: [
+      {
+        title: "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
+        year: 2008,
+        author: "World Health Organization",
+        url: "https://iris.who.int/bitstream/handle/10665/353407/9789290613831-eng.pdf",
+        confirmationStatus: "pending_source_review",
+        unconfirmedOrReserved: "この経穴の体表位置の個別照合は進行中。断面形状・組織深度の根拠には使用しません。",
+      },
+      {
+        title: "鍼灸安全対策ガイドライン2025年版（改訂第2版）",
+        year: 2025,
+        author: "全日本鍼灸学会 臨床情報部安全性委員会",
+        url: "https://safety.jsam.jp/img/file.pdf",
+        confirmationStatus: "source_checked",
+        confirmedItems: ["一般的な臓器・神経損傷、気胸、感染リスクの注意事項"],
+        unconfirmedOrReserved: "特定の経穴の図座標・針路・安全深度や、専門家による本教材の監修を示しません。",
+      },
+    ],
+    verifiedDate: "個別の解剖・実技条件は未確認",
   };
 }

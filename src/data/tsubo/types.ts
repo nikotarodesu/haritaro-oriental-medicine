@@ -89,7 +89,7 @@ export interface ReferenceLedgerItem {
   confirmedItems?: string[];
   supportedStructures?: string[];
   unconfirmedOrReserved?: string;
-  confirmationStatus?: "confirmed" | "schematic_model";
+  confirmationStatus?: "confirmed" | "schematic_model" | "pending_source_review" | "source_checked";
   notes?: string;
 }
 
@@ -111,6 +111,7 @@ export interface SurfaceMapData {
 }
 
 export interface CrossSectionModel {
+  procedureReviewStatus?: "pending_expert_review";
   id: string;
   title: string;
   level: string;
@@ -224,6 +225,7 @@ export interface TsuboStudyDataV1 {
 }
 
 export interface AcupointMaster {
+  procedureReviewStatus?: "pending_expert_review";
   id: string; // "li4", "pc6", "st36"
   legacyId: string; // "gokoku", "naikan", "ashisanri" (互換用)
   code: string; // "LI4", "PC6", "ST36"

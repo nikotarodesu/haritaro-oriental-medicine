@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { getPublicCrossSectionElements, getPublicAnatomyDescription } from "@/data/medicalSafety";
 import { 
   CrossSectionModel, 
   AnatomicalLayer, 
@@ -62,7 +63,7 @@ export default function CrossSectionViewer({
     return "標準断面モデル";
   };
 
-  const summaryText = model.summary || model.summaryTakeaway;
+  const summaryText = "周辺の組織の関係を学ぶための模式図です。図の構造・配置は専門家確認待ちで、個人の刺入経路や安全域を示しません。";
 
   return (
     <section 
@@ -218,7 +219,7 @@ export default function CrossSectionViewer({
           aria-label={`${pointName}の横断面解剖図`}
         >
           {/* 断面要素描画 */}
-          {model.svgElements.map((el) => {
+          {getPublicCrossSectionElements(model).map((el) => {
             const isSelected = selectedStructureId === el.layerId;
             const opacity = selectedStructureId && !isSelected ? 0.35 : 1;
             const stroke = isSelected ? "#B86924" : el.stroke || "none";
@@ -331,12 +332,6 @@ export default function CrossSectionViewer({
               {activeStructure.dangerLevel === "hazard" ? "深刺警戒" : activeStructure.dangerLevel === "caution" ? "接触注意" : "通過層/境界目印"}
             </span>
 
-            {"depthDescription" in activeStructure && activeStructure.depthDescription && (
-              <span className="px-2 py-0.5 rounded-md bg-white dark:bg-[#1C2833] border border-[#E5DEC9] dark:border-[#2B3C4E] text-[#59615D] dark:text-[#A0B0BC]">
-                模式図内の深浅目安: {activeStructure.depthDescription}
-              </span>
-            )}
-
             {"position" in activeStructure && activeStructure.position && (
               <span className="px-2 py-0.5 rounded-md bg-white dark:bg-[#1C2833] border border-[#E5DEC9] dark:border-[#2B3C4E] text-[#59615D] dark:text-[#A0B0BC]">
                 位置: {activeStructure.position}
@@ -352,31 +347,10 @@ export default function CrossSectionViewer({
 
           {/* 詳細説明 */}
           <p className="text-xs sm:text-sm text-[#404743] dark:text-[#CBD8E2] leading-relaxed">
-            {activeStructure.description}
+            {getPublicAnatomyDescription(activeStructure)}
           </p>
 
-          {/* 臨床要点・響き */}
-          {"clinicalSignificance" in activeStructure && Boolean(activeStructure.clinicalSignificance) && (
-            <div className="p-2.5 rounded-xl bg-[#FCF4EB] dark:bg-[#231C14] border border-[#E5DEC9] dark:border-[#382E25] text-xs">
-              <strong className="text-[#B86924] dark:text-[#E6C387]">臨床的意義・響き：</strong>
-              <span className="text-[#333835] dark:text-[#D5E0EA]">{activeStructure.clinicalSignificance}</span>
-            </div>
-          )}
-
-          {/* 鑑別・触診のコツ */}
-          {"differentiationTip" in activeStructure && Boolean(activeStructure.differentiationTip) && (
-            <div className="p-2.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E8DEC9] dark:border-[#263542] text-xs text-[#59615D] dark:text-[#A0B0BC]">
-              <strong className="text-[#1E3D34] dark:text-[#74BA9E]">鑑別・手技のコツ：</strong>
-              <span>{activeStructure.differentiationTip}</span>
-            </div>
-          )}
-
-          {"palpationTip" in activeStructure && Boolean(activeStructure.palpationTip) && (
-            <div className="p-2.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E8DEC9] dark:border-[#263542] text-xs text-[#59615D] dark:text-[#A0B0BC]">
-              <strong className="text-[#1E3D34] dark:text-[#74BA9E]">触診指標：</strong>
-              <span>{activeStructure.palpationTip}</span>
-            </div>
-          )}
+          <p className="text-xs leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">実技・刺激の説明は専門家確認待ちです。参照資料の掲載だけで、この模式図の位置や手技が検証されたことにはなりません。</p>
         </div>
       )}
     </section>

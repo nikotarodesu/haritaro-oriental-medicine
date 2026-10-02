@@ -15,6 +15,7 @@ export default function EditorialPolicyPage() {
       <p className="font-bold">全件の医学的正確性の照合と、専門家による監修は完了していません。</p>
       <p>記事・講義・経穴・症例・クイズなどから{summary.statements.toLocaleString('ja-JP')}件の記述を確認台帳へ抽出しました。このうち{summary.priorityStatements.toLocaleString('ja-JP')}件には、断定表現・数値・安全性などを優先確認する印が付いています。これは確認対象の一覧であり、確認済みの件数ではありません。</p>
     </section>
+    <section className="space-y-3"><h2 className="text-xl font-bold">安全性を優先した今回の修正</h2><p>全日本鍼灸学会の2025年版安全対策ガイドラインなどを参照し、経穴教材の一律の安全深度・骨による安全保証を取り下げました。記事の伝統理論と医学的診断の同一視、症状ガイドの受診案内も修正しています。これは該当箇所の照合・修正であり、全件の監修完了を意味しません。</p><p>出典を確認できない施術手順や症例アーカイブの公開は保留しています。</p><Link href="/safety" className="underline">受診の目安・安全性の出典と確認範囲</Link></section>
     <section className="space-y-3"><h2 className="text-xl font-bold">記述ごとに確認すること</h2><ol className="list-decimal pl-5 space-y-2">
       <li>出典の著者、題名、年、識別子が一致しているか。訂正・撤回がないか。</li>
       <li>原典のどのページ・表・段落が記述を支持するか。</li>

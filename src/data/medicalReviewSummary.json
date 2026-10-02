@@ -1,29 +1,30 @@
 {
   "generatedAt": "2026-10-02",
-  "statements": 18471,
-  "priorityStatements": 2364,
+  "statements": 18382,
+  "priorityStatements": 2390,
   "counts": {
-    "articles": 1084,
-    "curriculum": 6425,
-    "acupoints": 3904,
-    "acupoint-anatomy": 782,
-    "cases": 996,
+    "articles": 830,
+    "curriculum": 6213,
+    "acupoints": 3908,
+    "acupoint-anatomy": 802,
+    "cases": 1267,
     "case-training": 153,
     "case-reasons": 107,
-    "quizzes": 1452,
+    "quizzes": 1460,
     "exam-practice": 109,
     "classics": 234,
     "protocols": 425,
-    "symptoms": 76,
+    "symptoms": 129,
     "simulator": 71,
     "simulator-reasons": 0,
-    "diagnosis": 74,
-    "techniques": 609,
+    "diagnosis": 86,
+    "techniques": 610,
     "archived-cases": 1136,
     "papers": 803,
-    "paper-interpretations": 31
+    "paper-interpretations": 31,
+    "medical-safety": 8
   },
   "reviewStatus": "pending",
   "expertApproved": 0,
-  "scope": "Inventory is not verification. Every statement needs passage-level source checking and expert sign-off."
+  "scope": "Inventory includes withheld source archives and is not verification. Rendered UI, generated diagrams and source passages also need separate review and expert sign-off."
 }

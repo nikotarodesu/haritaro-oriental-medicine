@@ -500,7 +500,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
       "四総穴（面目）"
     ],
     "clinicalNote": "「面目は合谷に収む」と古来より伝わる頭部・顔面症状の特効穴。気の滞りを強力に散らし、鎮痛・消炎作用に優れる。臨床では太衝と組み合わせて「四関」として開通させる手技が極めて有効。",
-    "caution": "強力な降気・子宮収縮促進作用があるため、妊娠中の強い刺激は禁忌。",
+    "caution": "伝統的に妊娠中の慎重穴とされますが、子宮収縮作用を経穴名だけで断定できません。妊娠中はどの部位でも強刺激を避け、産科の担当者へ相談してください。",
     "status": "published",
     "hasDetailedAnatomy": true,
     "fiveElementsCategory": "原穴",
@@ -2146,7 +2146,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
       "四総穴（肚腹）"
     ],
     "clinicalNote": "古来より「三里に灸せざる者とは旅をするな」と言われる無病息災・長寿の代表穴。脾胃（消化吸収機能）の働きを底上げし、後天の気を補給して全身を滋養する「健脾和胃・扶正培元」の第一要穴（胃の合土穴・下合穴・四総穴）。",
-    "caution": "特に重篤な禁忌はないが、虚弱が極端な場合は強刺激を避け、温灸が適す。",
+    "caution": "経穴名だけで禁忌がないとは判断できません。体調・既往歴・服薬・妊娠などを確認し、資格を持つ施術者が個別に評価します。",
     "status": "published",
     "hasDetailedAnatomy": true,
     "fiveElementsCategory": "合土穴",
@@ -2662,7 +2662,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
       "足の三陰の交会穴"
     ],
     "clinicalNote": "肝・脾・腎の3つの陰経が交わる「女性の要穴」。血を養い、瘀血を取り除き、陰陽のバランスを保つ。冷えによる婦人科疾患・下半身の血流改善には欠かせない。",
-    "caution": "合谷と同様、妊娠初期〜中期の強刺激は避ける。",
+    "caution": "伝統的な妊娠中の慎重穴です。妊娠の時期を問わず強刺激を避け、産科の担当者と資格を持つ施術者へ相談してください。",
     "status": "published",
     "hasDetailedAnatomy": false,
     "goldenPairs": [
@@ -11162,7 +11162,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "clinicalNote": "「任脈は陰脈の海」。全身の陰血・精液を総覧し、生殖・泌尿機能、下焦の虚冷、腹部臓腑の気血調和に中核的役割を果たす。",
     "status": "basic",
     "hasDetailedAnatomy": false,
-    "punctureMethod": "刺鍼絶対禁忌（感染・腹膜刺激回避のため）。施灸のみ適応。",
+    "punctureMethod": "臍部への刺鍼は行いません。温熱刺激にも熱傷リスクがあるため、施灸のみなら安全とは判断できません。",
     "moxibustion": "塩灸（臍窩を食塩で満たし生姜を敷いて施灸）、または温灸15〜20分。灸の最重要特効穴。"
   },
   {

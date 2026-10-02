@@ -24,7 +24,8 @@ import {
 import { VERIFIED_PAPERS as PAPERS_DATABASE, PaperReference } from "@/data/references/papersData";
 import { CLASSICAL_TEXTS, ClassicalText } from "@/data/classicalTextsData";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
-import { ALL_ARCHIVE_CASES, ArchiveClinicalCase } from "@/data/cases/archiveCases";
+import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
+import { PUBLIC_ARCHIVE_CASES, ARCHIVE_CASES_NOTICE, ArchiveClinicalCase } from "@/data/cases/archiveCases";
 import { ClinicalCase } from "@/types/clinicalCase";
 import { KIKEI_VESSELS } from "@/data/kikeiData";
 import { useAuth } from "@/contexts/AuthContext";
@@ -64,7 +65,7 @@ export default function LibraryClient() {
 
   const filteredCases = useMemo(() => CLINICAL_CASES.filter(c => matchesSearchText(searchQuery, [c.title, c.patient.chiefComplaint, c.correctDiagnosis.pattern, ...c.correctDiagnosis.primaryPoints])), [searchQuery]);
 
-  const filteredArchives = useMemo(() => ALL_ARCHIVE_CASES.filter(ac => matchesSearchText(searchQuery, [ac.title, ac.category, ac.location, ac.symptoms, ac.treatmentAndCourse, ...ac.usedAcupoints, ...ac.tags])), [searchQuery]);
+  const filteredArchives = useMemo(() => PUBLIC_ARCHIVE_CASES.filter(ac => matchesSearchText(searchQuery, [ac.title, ac.category, ac.location, ac.symptoms, ac.treatmentAndCourse, ...ac.usedAcupoints, ...ac.tags])), [searchQuery]);
 
   // マイカルテへ保存
   const handleSaveItem = (item: { id: string; title: string; summary: string; points?: string[] }) => {
@@ -435,7 +436,7 @@ export default function LibraryClient() {
                 <div className="flex items-center gap-2">
                   <Activity className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                   <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                    運動器疾患・自律神経 臨床実例アーカイブ（全32症例）
+                    症例アーカイブ（出典確認待ち）
                   </h2>
                 </div>
                 <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
@@ -443,6 +444,7 @@ export default function LibraryClient() {
                 </span>
               </div>
 
+              <MedicalSafetyNotice title="症例アーカイブの掲載は保留中です" message={ARCHIVE_CASES_NOTICE} />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {filteredArchives.map(ac => {
                   const isSaved = savedIds.includes(ac.id);

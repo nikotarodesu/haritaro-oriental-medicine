@@ -22,7 +22,8 @@ import {
   RotateCcw
 } from "lucide-react";
 import { ClinicalCase } from "@/types/clinicalCase";
-import { CLINICAL_CASES } from "@/data/clinicalCasesData";
+import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
+import { CLINICAL_CASES, CLINICAL_CASE_SCOPE, CLINICAL_CASE_SAFETY_GUIDANCE } from "@/data/clinicalCasesData";
 import { useAuth } from "@/contexts/AuthContext";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import AuthModal from "@/components/auth/AuthModal";
@@ -106,6 +107,9 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
           {clinicalCase.subTitle}
         </p>
       </div>
+
+      <MedicalSafetyNotice title="演習を始める前に" message={CLINICAL_CASE_SCOPE} />
+      {CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id] && <MedicalSafetyNotice title="この症例の受診・安全上の注意" {...CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id]} />}
 
       {/* ステップ 1: 患者基本情報 ＆ 主訴・現病歴 */}
       <div className="rounded-3xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-6 shadow-xs">
@@ -240,7 +244,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                 <button
                   key={t.id}
                   type="button"
-                  onClick={() => setActiveExamTab(t.id as any)}
+                  onClick={() => setActiveExamTab(t.id as typeof activeExamTab)}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
                     activeExamTab === t.id
                       ? "bg-[#1E3D34] text-white"

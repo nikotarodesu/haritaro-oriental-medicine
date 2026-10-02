@@ -125,6 +125,8 @@ export default function Footer() {
                 </div>
               </div>
               <div className="space-y-1.5 pt-1">
+                <div><Link href="/safety" className="text-[#1E3D34] dark:text-[#74BA9E] text-xs hover:underline">受診の目安と鍼灸の安全性</Link></div>
+                <div><Link href="/editorial-policy" className="text-[#1E3D34] dark:text-[#74BA9E] text-xs hover:underline">医学記述・出典の確認状況</Link></div>
                 <div>
                   <Link href="/about" className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline inline-flex items-center gap-1 text-xs">
                     <span>サイト理念・はり太郎について</span>

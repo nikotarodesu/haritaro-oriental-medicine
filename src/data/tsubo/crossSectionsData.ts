@@ -3,11 +3,12 @@ import { CrossSectionModel } from "./types";
 /**
  * 旗艦3穴（合谷 LI4, 内関 PC6, 足三里 ST36）の断面解剖データ
  * 2026年9月17日改訂：体表切断線連動、通過層・境界目印・神経血管の3群完全分離、
- * Casey GP (2022) 等の医学資料台帳に基づく精密モデル
+ * 教育用模式図。個別の図座標・深度・実技条件は専門家確認待ち
  */
 export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
   li4: {
     id: "cs-li4",
+    procedureReviewStatus: "pending_expert_review",
     title: "合谷（LI4）局所深浅・断面解剖モデル",
     level: "第2中手骨中点レベル水平横断（手背部）",
     bodySide: "右手",
@@ -20,16 +21,16 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
       simplifications: "手掌側深部屈筋腱・虫様筋・手掌動脈網は局所境界として背景化。骨幹部断面は教材用に模式化。",
     },
     summaryTakeaway:
-      "第2中手骨の橈側骨縁を目印に、第1背側骨間筋から母指内転筋への重なりと、橈骨神経浅枝・深掌動脈弓の近接関係を理解します。",
+      "第2中手骨の橈側骨縁を目印に、第1背側骨間筋と周辺の血管・神経の位置関係を学ぶ模式図です。層の重なりや図の位置を個人の刺入指示に使用しません。",
     axes: {
       horizontal: ["橈側 (Radial / 親指側)", "尺側 (Ulnar / 示指骨側)"],
       vertical: ["手背側 (Dorsal / 表面)", "手掌側 (Palmar / 深面)"],
     },
     needleTrack: {
-      angle: "直刺 0.5〜1.0寸（体格・筋量による個体差あり）",
-      safeDepth: "0.5〜1.0寸（第1背側骨間筋〜母指内転筋筋膜）※教育用標準目安",
-      targetStructure: "第1背側骨間筋深部および母指内転筋筋膜（得気の主座）",
-      warning: "深刺しすぎると手掌面の深掌動脈弓・正中神経掌枝領域へ達するため過度の刺入は避ける",
+      angle: "専門家確認待ち（刺入方向を指定しません）",
+      safeDepth: "個別評価が必要（固定した安全深度を提示しません）",
+      targetStructure: "筋・血管・神経の位置関係を学ぶための模式図",
+      warning: "解剖標本の所見から、個人の安全刺入深度や最適な標的組織は決まりません。",
     },
 
     // 1. 層の重なり（通過層：確認済みの浅深順序）
@@ -123,7 +124,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
         relation: "皮下組織内・第1背側骨間筋表面付近を走行",
         dangerLevel: "caution",
         description: "手背橈側半の知覚を司る皮神経。針尖が接触すると母指・示指背側に鋭い電撃様放散痛を生じる。",
-        differentiationTip: "皮下を走る微小な知覚枝。拍動はなく、刺入時の電撃感で識別される。",
+        differentiationTip: "皮下を走る知覚枝。電撃様の痛みを神経の位置を探す目印にしないでください。",
         clinicalSignificance: "強い放散痛が生じた際はわずかに針を引き、角度を微調整する",
       },
       {
@@ -433,15 +434,15 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
         journal: "The Anatomical Record",
         volume: "305(1):144–155",
         doi: "10.1002/ar.24681",
+        url: "https://anatomypubs.onlinelibrary.wiley.com/doi/10.1002/ar.24681",
         supportedStructures: [
           "第1背側骨間筋",
-          "母指内転筋（斜頭・横頭）",
-          "第2中手骨橈側縁",
           "橈骨神経浅枝",
-          "第1背側中手動脈",
+          "静脈・動脈枝",
+          "尺骨神経深枝",
         ],
-        confirmationStatus: "confirmed",
-        notes: "25手のホルマリン固定手解剖において、LI4が第2中手骨橈側縁に位置し、第1骨間筋および母指内転筋を順次通過することを確認。",
+        confirmationStatus: "source_checked",
+        notes: "25手の解剖標本で合谷周辺の血管・神経などの位置関係と変異を観察した研究です。原著の書誌とこの要約を確認しましたが、図の座標・固定深度・母指内転筋までの針路を検証したという意味ではありません。",
       },
       {
         id: "who-2008-li4",
@@ -450,16 +451,17 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
         title: "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
         journal: "WHO Western Pacific Regional Office",
         supportedStructures: ["第2中手骨中点の橈側陥凹部"],
-        confirmationStatus: "confirmed",
+        confirmationStatus: "pending_source_review",
         notes: "標準取穴部位の規定定義。",
       },
     ],
 
-    verifiedDate: "2026-09",
+    verifiedDate: "個別の解剖・実技条件は未確認",
   },
 
   pc6: {
     id: "cs-pc6",
+    procedureReviewStatus: "pending_expert_review",
     title: "内関（PC6）局所深浅・断面解剖モデル",
     level: "手関節掌側横紋の上方2寸レベル前腕水平横断",
     bodySide: "右前腕",
@@ -478,10 +480,10 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
       vertical: ["掌側面 (Volar / 前面)", "背側面 (Dorsal / 後面)"],
     },
     needleTrack: {
-      angle: "直刺 0.5〜0.8寸（体格・筋量による個体差あり）",
-      safeDepth: "0.5〜0.8寸（腱間より浅指屈筋筋膜）※教育用標準目安",
-      targetStructure: "橈側手根屈筋腱と長掌筋腱の腱間間隙、浅指屈筋筋膜鞘",
-      warning: "正中神経本幹への直接穿刺は厳禁。第1〜3指への電撃痛が生じた場合は直ちに針を浅く引くこと",
+      angle: "専門家確認待ち（刺入方向を指定しません）",
+      safeDepth: "個別評価が必要（固定した安全深度を提示しません）",
+      targetStructure: "腱・筋・正中神経の位置関係を学ぶための模式図",
+      warning: "正中神経に近接します。電撃様の痛みを得気の目安にせず、刺激を中止して症状を評価する必要があります。",
     },
 
     // 1. 層の重なり（通過層：確認済みの浅深順序）
@@ -598,7 +600,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
         description:
           "前腕から手根管を通り母指球・第1〜3指の運動と知覚を司る大神経本幹。内関刺入路の直下あるいは極めて近傍に位置する。",
         differentiationTip: "長掌筋腱の直下、深さ約4〜8mmに位置する。拍動はないが、接触時に手指へ激烈な放散痛が走る。",
-        clinicalSignificance: "最重要警戒構造。手指へ電撃痛が走った場合は直ちに針を浅く引くか角度を微修正する",
+        clinicalSignificance: "最重要警戒構造。手指への電撃様の痛みを施術継続の目安にせず、刺激を中止して症状を評価する",
       },
       {
         id: "anterior-interosseous-bundle",
@@ -940,7 +942,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
         title: "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
         journal: "WHO Western Pacific Regional Office",
         supportedStructures: ["長掌筋腱と橈側手根屈筋腱の間、手関節掌側横紋の上方2寸"],
-        confirmationStatus: "confirmed",
+        confirmationStatus: "pending_source_review",
         notes: "標準取穴部位の規定定義。",
       },
       {
@@ -956,16 +958,17 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
           "深指屈筋",
           "正中神経本幹の走行位置",
         ],
-        confirmationStatus: "confirmed",
+        confirmationStatus: "pending_source_review",
         notes: "前腕遠位部における正中神経の表在性と屈筋支帯近傍の解剖学的走行。",
       },
     ],
 
-    verifiedDate: "2026-09",
+    verifiedDate: "個別の解剖・実技条件は未確認",
   },
 
   st36: {
     id: "cs-st36",
+    procedureReviewStatus: "pending_expert_review",
     title: "足三里（ST36）局所深浅・断面解剖モデル",
     level: "犢鼻の下方3寸レベル下腿水平横断",
     bodySide: "右下腿",
@@ -984,10 +987,10 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
       vertical: ["前側 (Anterior / すね側)", "後側 (Posterior / ふくらはぎ側)"],
     },
     needleTrack: {
-      angle: "直刺 1.0〜1.5寸（体格・筋量による個体差あり）",
-      safeDepth: "1.0〜1.5寸（前脛骨筋筋腹中央）※教育用標準目安",
-      targetStructure: "前脛骨筋筋腹および深部筋膜（下行性疼痛抑制・胃運動反射の主要トリガー）",
-      warning: "外側深く斜刺しすぎると長腓骨筋・深腓骨神経・前脛骨動脈束へ干渉するため、脛骨前縁から1横指外側の直刺を基本とする",
+      angle: "専門家確認待ち（刺入方向を指定しません）",
+      safeDepth: "個別評価が必要（固定した安全深度を提示しません）",
+      targetStructure: "筋・血管・神経の位置関係を学ぶための模式図",
+      warning: "体表取穴の1横指や3寸を、安全な刺入深度に読み替えてはいけません。個別の局所解剖と体格を評価する必要があります。",
     },
 
     // 1. 層の重なり（通過層：確認済みの浅深順序）
@@ -1081,7 +1084,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
         dangerLevel: "caution",
         description: "下腿前区画の主要運動・知覚神経。針先が近接・接触すると足背第1・第2趾間に放散する強い響きを生じる。",
         differentiationTip: "前脛骨筋の外側深部を走行。直刺では通常直撃しないが、外側斜刺で接触しやすい。",
-        clinicalSignificance: "深部刺激時の放散感の主座。激しい電撃痛時は角度を内側（脛骨寄り）へ修正",
+        clinicalSignificance: "神経損傷に注意する構造。激しい電撃様の痛みがあれば刺激を中止して症状を評価する",
       },
       {
         id: "anterior-tibial-artery",
@@ -1345,7 +1348,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
     references: [
       "WHO Standard Acupuncture Point Locations in the Western Pacific Region (2008)",
       "クリニカルマッサージ ひとめでわかる筋解剖学と触診・治療の基本（医道の日本社）下腿前区画",
-      "Anatomical depth and safety margins of acupoint ST36 (Zusanli): A computed tomography study",
+      "全日本鍼灸学会 鍼灸安全対策ガイドライン2025年版 https://safety.jsam.jp/img/file.pdf（一般安全原則のみ）",
     ],
 
     referenceLedger: [
@@ -1356,7 +1359,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
         title: "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
         journal: "WHO Western Pacific Regional Office",
         supportedStructures: ["下腿前面、犢鼻と解渓を結ぶ線上、犢鼻の下方3寸、脛骨前縁の外方1横指"],
-        confirmationStatus: "confirmed",
+        confirmationStatus: "pending_source_review",
         notes: "標準取穴部位の規定定義。",
       },
       {
@@ -1371,11 +1374,11 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
           "前筋間中隔",
           "深腓骨神経の筋間走行",
         ],
-        confirmationStatus: "confirmed",
+        confirmationStatus: "pending_source_review",
         notes: "下腿前区画における筋膜区画と前脛骨動脈・深腓骨神経の解剖学的走行。",
       },
     ],
 
-    verifiedDate: "2026-09",
+    verifiedDate: "個別の解剖・実技条件は未確認",
   },
 };

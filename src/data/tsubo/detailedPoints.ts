@@ -43,7 +43,7 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     ],
     categories: ["原穴", "四総穴（面目を治す）", "四関穴"],
     clinicalNote: "伝統的には頭部・顔面の症状などとの関連を学ぶ経穴です。太衝との組み合わせは「四関」として扱われますが、配穴名だけで臨床効果や個人への適応は決まりません。",
-    caution: "強力な降気・子宮収縮促進作用があるため、妊娠中の強い刺激は禁忌。",
+    caution: "伝統的に妊娠中の慎重穴とされますが、子宮収縮作用を経穴名だけで断定できません。妊娠中はどの部位でも強刺激を避け、産科の担当者へ相談してください。",
     status: "published",
     hasDetailedAnatomy: true,
     crossSection: CROSS_SECTIONS.li4,
@@ -123,7 +123,7 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     ],
     categories: ["絡穴", "八脈交会穴（陰維脈に通ず）", "四総穴（心胸を治す）"],
     clinicalNote: "伝統的には心胸・胃の症状との関連を学ぶ経穴です。術後悪心・嘔吐の研究は、その対象と刺激・併用条件を確認して読みます。",
-    caution: "直下に正中神経が走行するため、手指への電撃様放散痛が生じた場合は速やかに針を後退させること。",
+    caution: "正中神経に近接します。電撃様の痛みを得気の目安にせず、刺激を中止して症状を評価する必要があります。",
     status: "published",
     hasDetailedAnatomy: true,
     crossSection: CROSS_SECTIONS.pc6,
@@ -204,7 +204,7 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     ],
     categories: ["合土穴", "胃の下合穴", "四総穴（腹を治す）"],
     clinicalNote: "足の陽明胃経の合穴として、伝統的には胃腸の症状や全身状態との関連を学びます。動物の電気刺激研究と、人への治療効果を区別します。",
-    caution: "特に重篤な禁忌はないが、極度の虚弱者には強刺激を避け、温灸または軽微な補法が適す。",
+    caution: "経穴名だけで禁忌がないとは判断できません。体調・既往歴・服薬・妊娠などを確認し、資格を持つ施術者が個別に評価します。",
     status: "published",
     hasDetailedAnatomy: true,
     crossSection: CROSS_SECTIONS.st36,
@@ -289,7 +289,7 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     ],
     categories: ["兪土穴・原穴", "四関穴"],
     clinicalNote: "肝経の原穴・兪土穴です。伝統的には気の巡りなどとの関連を整理し、合谷との「四関」を学びます。「一瞬で改善する」などの効果を保証するものではありません。",
-    caution: "強力な疏通・降圧作用があるため、妊娠中の強刺激・深刺は注意。",
+    caution: "伝統的な慎重穴としての扱いと、降圧作用などの現代的な臨床効果は分けて考えます。妊娠中は部位を問わず強刺激を避け、担当者へ相談してください。",
     status: "published",
     hasDetailedAnatomy: false,
     goldenPairs: [
@@ -341,7 +341,7 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
       "脛骨内側縁（骨のシャープな後縁）",
       "ヒラメ筋・長指屈筋の筋腱境界"
     ],
-    pitfalls: "脛骨の骨面上に刺すと骨膜痛を与えるため、必ず骨の後ろ側（骨際）に指を滑り込ませて取穴します。妊婦への強刺激は子宮収縮を誘発するため禁忌です。",
+    pitfalls: "脛骨の骨面上に刺すと骨膜痛を与えるため、必ず骨の後ろ側（骨際）に指を滑り込ませて取穴します。妊娠中は部位を問わず強刺激を避けます。経穴名だけで子宮収縮作用が確定しているという意味ではありません。",
     indications: [
       "月経不順・生理痛・無月経・機能性出血",
       "更年期障害・ホットフラッシュ・冷えのぼせ",
@@ -352,7 +352,7 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     ],
     categories: ["三陰交", "足の三陰の交会穴"],
     clinicalNote: "足の太陰脾経・足の少陰腎経・足の厥陰肝経の三つの陰経が合流する女性医学・婦人科の至宝穴。脾（気血の生成）・腎（先天の本・生殖）・肝（血の貯蔵と疏泄）を同時に補導する。",
-    caution: "子宮収縮作用が極めて強力なため、妊娠中の強刺激・深刺・強圧は厳禁。",
+    caution: "伝統的に妊娠中の慎重穴とされます。子宮収縮作用の強さは断定できません。妊娠中は部位を問わず強刺激を避け、産科の担当者へ相談してください。",
     status: "published",
     hasDetailedAnatomy: false,
     goldenPairs: [
@@ -476,7 +476,7 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     ],
     categories: ["胃の募穴", "八会穴（腑会）"],
     clinicalNote: "「六腑の気、皆中脘に会す」。六腑（胃・胆・小腸・大腸・膀胱・三焦）の疾患すべての中枢であり、消化吸収器管の司令塔。足三里と組み合わせることで後天の気（生命エネルギー）を最大化する。",
-    caution: "極度の腹満・腹膜刺激徴候がある急性腹症時は深刺を避ける。",
+    caution: "急な強い腹痛や腹膜刺激徴候が疑われる場合は、深度を変えて施術を続けず、医療機関での評価を優先します。",
     status: "published",
     hasDetailedAnatomy: false,
     goldenPairs: [
@@ -537,7 +537,7 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     ],
     categories: ["小腸の募穴", "下丹田", "足の三陰と任脈の交会穴"],
     clinicalNote: "「元気を関（とざ）して漏らさず」。人体の根本エネルギー（先天の原気）が宿る下丹田の中枢。生命力の枯渇、下焦の極度の冷え、生殖器・泌尿器系の慢性虚弱を補益する最高の温補穴。",
-    caution: "膀胱緊満時の深刺禁忌。妊娠中の強刺激禁忌。",
+    caution: "深部の膀胱などの損傷に注意が必要です。WHOの安全指針では妊婦の下腹部・腰仙部への刺鍼を避けるとしています。妊娠中は自己施術せず産科の担当者へ相談してください。",
     status: "published",
     hasDetailedAnatomy: false,
     goldenPairs: [
@@ -661,7 +661,7 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     ],
     categories: ["合土穴"],
     clinicalNote: "手の陽明大腸経の合穴であり、全身の熱邪を強力に清解する「解熱・消炎・抗アレルギー」の第一選択穴。自律神経の過緊張を鎮め血圧を安定させるとともに、皮膚疾患の痒みを速やかに抑える。",
-    caution: "特に重篤な禁忌はないが、局所感染部位への刺鍼は避ける。",
+    caution: "局所の感染・炎症や、体調・既往歴・服薬などを確認し、資格を持つ施術者が個別に施術の適否を評価します。経穴名だけで禁忌がないとは判断できません。",
     status: "published",
     hasDetailedAnatomy: false,
     goldenPairs: [
@@ -722,7 +722,7 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     ],
     categories: ["大腸の募穴"],
     clinicalNote: "「天枢の上は天気が司り、天枢の下は地気が司る」。上下の気運の転換点（枢紐）に位置し、大腸の募穴として腸内環境と蠕動運動を双方向性に正常化する（下痢を止め、便秘を通じる）。",
-    caution: "急性虫垂炎や腹膜炎が疑われる場合は強刺激を避ける。",
+    caution: "急性虫垂炎や腹膜炎が疑われる場合は、刺激を弱めて施術を続けず、医療機関での評価・治療を優先します。",
     status: "published",
     hasDetailedAnatomy: false,
     goldenPairs: [

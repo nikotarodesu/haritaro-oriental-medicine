@@ -38,6 +38,8 @@ import {
   SlidersHorizontal,
   Crosshair
 } from "lucide-react";
+import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
+import { PROCEDURE_PUBLICATION_NOTICE, getPublicCrossSectionModel } from "@/data/medicalSafety";
 import { SYMPTOMS } from "@/data/symptomData";
 import { getLecturesForAcupoint } from "@/utils/acupointCurriculumMatcher";
 import { getSimulatorParamsForAcupoint } from "@/utils/tsuboSimulatorMatcher";
@@ -544,26 +546,26 @@ export default async function AcupointDetailPage({ params }: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-[#523E24] dark:text-[#E6D5B8]">
               {isNeedleBan && (
                 <div className="p-2.5 rounded-xl bg-red-100/70 dark:bg-red-950/60 border border-red-300 dark:border-red-800 text-red-900 dark:text-red-200">
-                  <strong className="block font-bold">🚫 刺鍼絶対禁忌</strong>
-                  <span>この経穴は深部組織の感染や重篤な炎症リスクがあるため、刺鍼は行いません。</span>
+                  <strong className="block font-bold">伝統資料の刺鍼禁忌の記載</strong>
+                  <span>古典上の分類と、現代の禁忌部位・損傷リスクを分けて確認します。下記の注意事項と原典を確認し、個別手順は専門家確認が完了するまで掲載を保留します。</span>
                 </div>
               )}
               {isPregnancyBan && (
                 <div className="p-2.5 rounded-xl bg-amber-100/70 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200">
-                  <strong className="block font-bold">⚠️ 妊娠中の強い刺激禁忌</strong>
-                  <span>子宮収縮や陣痛を誘発するリスクがあるため、妊娠中の強刺激・深刺・強圧は避けてください。</span>
+                  <strong className="block font-bold">妊娠中の注意（伝統的慎重穴の分類）</strong>
+                  <span>この分類は子宮収縮作用を確立した穴の一覧ではありません。全日本鍼灸学会の指針では妊娠中は部位を問わず強刺激を避け、特に腹部周囲へ注意を払います。担当者と必要に応じて主治医へ確認してください。</span>
                 </div>
               )}
               {isPneumoRisk && (
                 <div className="p-2.5 rounded-xl bg-orange-100/70 dark:bg-orange-950/60 border border-orange-300 dark:border-orange-800 text-orange-900 dark:text-orange-200">
-                  <strong className="block font-bold">⚠️ 気胸リスク部位（直刺深刺厳禁）</strong>
-                  <span>胸膜および肺尖・肺実質への誤刺を防ぐため、直刺深刺を厳禁とし、斜刺・横刺または浅刺を遵守してください。</span>
+                  <strong className="block font-bold">胸郭周囲の気胸リスク</strong>
+                  <span>胸膜・肺などの損傷に注意が必要です。斜刺・横刺や固定の寸数だけでは安全を保証できません。施術後の胸痛・息苦しさは速やかに受診し、強い呼吸困難では119番への連絡を優先します。</span>
                 </div>
               )}
               {isMoxaBan && (
                 <div className="p-2.5 rounded-xl bg-amber-100/70 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200">
-                  <strong className="block font-bold">🔥 直接灸の禁忌・注意</strong>
-                  <span>眼球周囲や大血管走行部であるため、直接灸や火傷の危険を伴う施灸は避けてください。</span>
+                  <strong className="block font-bold">伝統資料の灸禁忌・注意の記載</strong>
+                  <span>古典の禁灸分類と現代の熱傷・感染などの注意は区別します。顔面や皮膚病変などへの施灸は安全指針を確認し、自己灸や未確認手順の再現は避けてください。</span>
                 </div>
               )}
             </div>
@@ -694,7 +696,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         {point.crossSection && point.crossSection.svgElements && point.crossSection.svgElements.length > 0 && (
           <section className="space-y-6">
             <CrossSectionViewer
-              model={point.crossSection}
+              model={getPublicCrossSectionModel(point.crossSection)}
               pointName={point.name}
               pointCode={point.code}
               individualModel={individualModel}
@@ -763,44 +765,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             </p>
           </div>
 
-          {/* 臨床運針・刺鍼手技ガイド（深度・角度・施灸適応） */}
-          {(point.punctureMethod || point.moxibustion) && (
-            <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs space-y-3">
-              <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-2.5">
-                <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                  <Crosshair className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                  <span>臨床運針・刺鍼手技ガイド（針灸専門指標）</span>
-                </div>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
-                  経穴学習・資料の適用範囲を確認
-                </span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
-                {point.punctureMethod && (
-                  <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#16222C] border border-[#E8E1D1] dark:border-[#2A3B4A] space-y-1">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                      <span className="w-2 h-2 rounded-full bg-[#1E3D34] dark:bg-[#74BA9E]"></span>
-                      <span>刺鍼手技・推奨深度・角度</span>
-                    </div>
-                    <p className="text-xs sm:text-sm text-[#333835] dark:text-[#C5D2DB] leading-relaxed pl-3.5">
-                      {point.punctureMethod}
-                    </p>
-                  </div>
-                )}
-                {point.moxibustion && (
-                  <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#16222C] border border-[#E8E1D1] dark:border-[#2A3B4A] space-y-1">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
-                      <Flame className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                      <span>施灸適応・壮数・温灸</span>
-                    </div>
-                    <p className="text-xs sm:text-sm text-[#333835] dark:text-[#C5D2DB] leading-relaxed pl-3.5">
-                      {point.moxibustion}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
+          <MedicalSafetyNotice title="刺鍼・施灸の個別手順は確認待ちです" message={PROCEDURE_PUBLICATION_NOTICE} />
 
           {/* 臨床ゴールデンペア（名配穴・相乗効果） */}
           {point.goldenPairs && point.goldenPairs.length > 0 && (

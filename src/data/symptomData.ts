@@ -1,148 +1,371 @@
 import { SymptomGuide } from "@/types/oriental";
 
+export const SYMPTOM_GUIDANCE_SCOPE = "症状別ガイドは、伝統医学の考え方を学ぶための資料です。症状の原因や病名を判定するものではありません。経穴名は学習用の関連例で、自己刺鍼・自己灸の手順ではありません。新しい症状や悪化は、セルフケアで受診を遅らせず医療機関に相談してください。";
+
+interface SafetyGuidance { message: string; sources: { title: string; url: string; section: string }[]; }
+
+export const SYMPTOM_SAFETY_GUIDANCE: Record<string, SafetyGuidance> = {
+  "headache-stiff-neck": {
+    "message": "突然の激しい頭痛、意識の異常、急な手足の脱力や話しにくさがある場合は119番。新しく始まった頭痛、いつもと異なる・悪化する頭痛は医療機関に相談し、首肩こりだけが原因と決めないでください。",
+    "sources": [
+      {
+        "title": "消防庁：救急車利用マニュアル",
+        "url": "https://www.fdma.go.jp/publication/portal/post2.html",
+        "section": "ためらわず救急車を呼んでほしい症状（成人）"
+      },
+      {
+        "title": "NHS：頭痛",
+        "url": "https://www.nhs.uk/symptoms/headaches/",
+        "section": "Urgent advice / Immediate action required"
+      }
+    ]
+  },
+  "stress-insomnia": {
+    "message": "不眠の原因はストレスだけとは限りません。生活に支障が続く場合は医療機関に相談し、処方薬を自己判断で中止・減量しないでください。",
+    "sources": [
+      {
+        "title": "NHS：不眠",
+        "url": "https://www.nhs.uk/conditions/insomnia/",
+        "section": "See a GP / Treatment"
+      }
+    ]
+  },
+  "stomach-fatigue": {
+    "message": "吐血、黒いタール状の便、強い腹痛や失神は早急な医療評価が必要です。大量の出血、持続する激痛、意識の異常は119番。食欲低下や軟便が続く場合も原因を確認してください。",
+    "sources": [
+      {
+        "title": "消防庁：救急車利用マニュアル",
+        "url": "https://www.fdma.go.jp/publication/portal/post2.html",
+        "section": "ためらわず救急車を呼んでほしい症状（成人）"
+      },
+      {
+        "title": "NIDDK：消化性潰瘍の症状と原因",
+        "url": "https://www.niddk.nih.gov/health-information/digestive-diseases/peptic-ulcers-stomach-ulcers/symptoms-causes",
+        "section": "Symptoms of complications / Causes"
+      }
+    ]
+  },
+  "menstrual-pain-chill": {
+    "message": "日常生活を妨げる月経痛や出血の増加は婦人科に相談してください。妊娠中・妊娠の可能性がある場合の腹痛や出血を月経痛と決めつけないでください。激痛、多量の出血、失神を伴う場合は119番。片脚だけの原因不明の腫れも早めの受診が必要です。",
+    "sources": [
+      {
+        "title": "NHS：妊娠中の出血",
+        "url": "https://www.nhs.uk/pregnancy/common-symptoms/vaginal-bleeding/",
+        "section": "Urgent advice / Immediate action required"
+      },
+      {
+        "title": "NHS：足・脚のむくみ",
+        "url": "https://www.nhs.uk/conditions/oedema/",
+        "section": "Urgent advice / Immediate action required"
+      }
+    ]
+  },
+  "chronic-fatigue-lethargy": {
+    "message": "原因の分からない疲労が数週間続く、生活に支障がある、体重減少などを伴う場合は医療機関に相談してください。急な呼吸困難、胸痛、意識の異常は119番です。",
+    "sources": [
+      {
+        "title": "消防庁：救急車利用マニュアル",
+        "url": "https://www.fdma.go.jp/publication/portal/post2.html",
+        "section": "ためらわず救急車を呼んでほしい症状（成人）"
+      },
+      {
+        "title": "NHS：持続する疲労",
+        "url": "https://www.nhs.uk/symptoms/tiredness-and-fatigue/",
+        "section": "See a GP / Causes"
+      }
+    ]
+  },
+  "lower-back-pain-sciatica": {
+    "message": "腰痛や脚への放散痛に、新しい排尿・排便の異常、会陰部の感覚低下が加わった場合は、馬尾症候群などの緊急評価が必要です。新しい・進行する脚の脱力も速やかに受診し、ストレッチやツボ刺激の反応を待たないでください。",
+    "sources": [
+      {
+        "title": "NICE NG127：神経症状の認識と紹介",
+        "url": "https://www.nice.org.uk/guidance/ng127/chapter/Recommendations-for-adults-aged-over-16",
+        "section": "1.7.3 Severe low back pain together with other symptoms"
+      }
+    ]
+  },
+  "eye-strain-fatigue": {
+    "message": "急な強い眼痛、充血、視界のかすみ・視力低下、吐き気などは緊急の眼科評価が必要です。画面の見過ぎと決めつけず、目を押したり温めたりして様子を見ないでください。",
+    "sources": [
+      {
+        "title": "NHS：緑内障",
+        "url": "https://www.nhs.uk/conditions/glaucoma/",
+        "section": "Symptoms / Immediate action required"
+      }
+    ]
+  },
+  "constipation-ibs": {
+    "message": "血便、黒い便、体重減少、発熱、持続する強い腹痛などがある場合は医療機関で評価を受けてください。腹痛や便通の変化だけでIBSと自己判断することはできません。",
+    "sources": [
+      {
+        "title": "NIDDK：IBSの診断",
+        "url": "https://www.niddk.nih.gov/health-information/digestive-diseases/irritable-bowel-syndrome/diagnosis",
+        "section": "Medical history / Physical exam / Tests"
+      }
+    ]
+  },
+  "dizziness-tinnitus": {
+    "message": "急なめまいに話しにくさ、手足の脱力、歩けない状態などが伴う場合は119番。突然の難聴は耳鼻科で速やかな評価が必要です。めまい・耳鳴りだけでメニエール病や水分過剰と判断しないでください。",
+    "sources": [
+      {
+        "title": "消防庁：救急車利用マニュアル",
+        "url": "https://www.fdma.go.jp/publication/portal/post2.html",
+        "section": "ためらわず救急車を呼んでほしい症状（成人）"
+      },
+      {
+        "title": "NICE NG98：成人の難聴",
+        "url": "https://www.nice.org.uk/guidance/ng98/chapter/recommendations",
+        "section": "1.1.2 Sudden or rapid worsening of hearing loss"
+      }
+    ]
+  },
+  "climacteric-hot-flash": {
+    "message": "のぼせや動悸が続く場合は、更年期だけが原因と決めず医療機関に相談してください。閉経後の出血は少量でも婦人科で確認が必要です。急な胸痛・呼吸困難は119番です。",
+    "sources": [
+      {
+        "title": "消防庁：救急車利用マニュアル",
+        "url": "https://www.fdma.go.jp/publication/portal/post2.html",
+        "section": "ためらわず救急車を呼んでほしい症状（成人）"
+      },
+      {
+        "title": "NHS：閉経後の出血",
+        "url": "https://www.nhs.uk/symptoms/post-menopausal-bleeding/",
+        "section": "See a GP"
+      }
+    ]
+  },
+  "allergic-rhinitis-hayfever": {
+    "message": "急な息苦しさや口・喉の腫れ、意識の異常を伴う場合は119番。鼻炎のケアとしてドライヤーの温風を皮膚へ当て続けたり、自己灸で加熱したりしないでください。",
+    "sources": [
+      {"title":"NHS：アナフィラキシー","url":"https://www.nhs.uk/conditions/anaphylaxis/","section":"Symptoms / Immediate action required"},
+      {
+        "title": "消防庁：救急車利用マニュアル",
+        "url": "https://www.fdma.go.jp/publication/portal/post2.html",
+        "section": "ためらわず救急車を呼んでほしい症状（成人）"
+      }
+    ]
+  },
+  "knee-joint-pain": {
+    "message": "急に赤く熱を持って腫れた膝、発熱を伴う関節痛、外傷後に体重をかけられない状態は早めの医療評価が必要です。痛む膝を無理に伸ばしたり、強く揉んだりしないでください。",
+    "sources": [
+      {
+        "title": "NHS：膝の痛み",
+        "url": "https://www.nhs.uk/symptoms/knee-pain/",
+        "section": "Urgent advice"
+      }
+    ]
+  }
+};
+
 export const SYMPTOMS: SymptomGuide[] = [
   {
-    id: "headache-stiff-neck",
-    title: "慢性的な頭痛・首肩こり",
-    category: "頭・首・肩",
-    summary: "デスクワークやスマホの長時間使用、緊張による血流低下と気の滞りが原因で起こる頭重感・首肩のこわばり。",
-    orientalMechanism: "「不通則痛（通ぜざれば則ち痛む）」。長時間の同一姿勢やストレスによって「気」が滞り（気滞）、血液の巡りが悪化して局所に「瘀血（おけつ）」が生じることで激しいコリや鈍痛が発生します。",
-    recommendedTsuboIds: ["li4", "gv20", "gb20", "lu7"],
-    lifestyleAdvice: {
-      diet: "体を温め血流を促進する生姜、長ネギ、黒豆、玉ねぎなどを積極的に摂取しましょう。冷たい飲み物は血管を収縮させるため控えます。",
-      habit: "1時間に1回は肩甲骨を後ろに回し、深呼吸（吐く息を長く）を意識。首の後ろ（風池・天柱）を蒸しタオルで温めるのも効果的です。"
+    "id": "headache-stiff-neck",
+    "title": "慢性的な頭痛・首肩こり",
+    "category": "頭・首・肩",
+    "summary": "頭重感や首肩のこわばり。姿勢や緊張が関わることもありますが、頭痛の原因はさまざまです。",
+    "orientalMechanism": "伝統医学では「不通則痛」「気滞・瘀血」などの分類を用いて所見を整理します。この分類は血管の異常を証明したり、危険な頭痛を除外したりする検査ではありません。",
+    "recommendedTsuboIds": [
+      "li4",
+      "gv20",
+      "gb20",
+      "lu7"
+    ],
+    "lifestyleAdvice": {
+      "diet": "食事と水分を規則的に取りましょう。特定の食材や飲み物で頭痛が治るとは限りません。",
+      "habit": "症状の経過や誘因を記録し、同じ姿勢が続くときは無理のない範囲で休憩を。新しい・悪化する頭痛は、原因の評価を優先してください。"
     }
   },
   {
-    id: "stress-insomnia",
-    title: "ストレス・不安・寝付きの悪さ（不眠症）",
-    category: "メンタル・睡眠",
-    summary: "頭が冴えて眠れない、夜中に目が覚める、些細なことでイライラや不安が募る現代特有の自律神経の乱れ。",
-    orientalMechanism: "「心腎不交」「肝気鬱結」。過度な精神労働やストレスにより「肝」の疏泄機能が失調し、熱が頭部に昇り「心神」が休まらない状態です。夜間に陰気が不足し陽気が収まらないため眠れなくなります。",
-    recommendedTsuboIds: ["lr3", "pc6", "gv20", "ki1", "ht7"],
-    lifestyleAdvice: {
-      diet: "精神を安定させる「安神」食材（ナツメ、百合根、蓮の実、温かいハーブティーやカモミール）を取り入れましょう。",
-      habit: "就寝前の足湯（40度前後で10〜15分）で湧泉を温め、頭に昇った血と気を足元へ引き下ろします。寝床でのスマホ閲覧は厳禁。"
+    "id": "stress-insomnia",
+    "title": "ストレス・不安・寝付きの悪さ",
+    "category": "メンタル・睡眠",
+    "summary": "寝付きにくさ、中途覚醒、日中の疲れや不安。症状だけで自律神経の病気や不眠症を確定することはできません。",
+    "orientalMechanism": "伝統医学では「心腎不交」「肝気鬱結」などを、睡眠や気分に関する所見を整理する候補として学びます。心・肝・腎は伝統理論上の機能分類で、心臓・肝臓・腎臓の病気を意味しません。",
+    "recommendedTsuboIds": [
+      "lr3",
+      "pc6",
+      "gv20",
+      "ki1",
+      "ht7"
+    ],
+    "lifestyleAdvice": {
+      "diet": "就寝に近い時間のカフェインや飲酒が睡眠に影響していないか確認しましょう。ハーブやサプリメントは、薬との相互作用も含め医師・薬剤師へ相談してください。",
+      "habit": "起床時刻をなるべく一定にし、眠る前は落ち着ける時間を作りましょう。生活への支障が続く場合は受診してください。"
     }
   },
   {
-    id: "stomach-fatigue",
-    title: "胃もたれ・食欲不振・軟便（胃腸の弱り）",
-    category: "消化器・お腹",
-    summary: "少し食べただけで胃が重い、冷たいものでお腹を下しやすい、朝起きた時に口の中が粘るなどの消化力低下。",
-    orientalMechanism: "「脾胃虚弱」「水湿停滞」。東洋医学の「脾」は食べたものから気血を作り出す製造工場です。冷飲食や過食、思い悩みすぎ（思慮過度）によって脾の運化作用が落ち、体内に余分な水分（湿）が溜まっています。",
-    recommendedTsuboIds: ["st36", "cv12", "li4", "sp4"],
-    lifestyleAdvice: {
-      diet: "脾を補う黄色い自然な甘みの食材（かぼちゃ、さつまいも、山芋、米粥、大根）を中心に、温かく消化の良い食事を腹八分目に。",
-      habit: "食後すぐに横にならず、10分ほど軽やかに足踏みや散歩を。お腹（特にへそ周り）を腹巻きやカイロで冷やさない工夫を。"
+    "id": "stomach-fatigue",
+    "title": "胃もたれ・食欲不振・軟便",
+    "category": "消化器・お腹",
+    "summary": "食後の重さ、食欲の低下、軟便など。症状から消化器の病気の有無を判定することはできません。",
+    "orientalMechanism": "伝統医学の「脾胃虚弱」「水湿停滞」は、食欲・便通・疲労などを整理する分類です。消化酵素の不足や臓器の病気と同一ではありません。",
+    "recommendedTsuboIds": [
+      "st36",
+      "cv12",
+      "li4",
+      "sp4"
+    ],
+    "lifestyleAdvice": {
+      "diet": "食べられるものを無理のない量で取り、症状が出る食事を記録しましょう。食材の色で消化機能の回復が決まるわけではありません。",
+      "habit": "症状と食事・便通の記録は受診時にも役立ちます。カイロを肌へ直接当てたり、就寝中に使用したりすることは避けてください。"
     }
   },
   {
-    id: "menstrual-pain-chill",
-    title: "生理痛・冷え性・下肢むくみ",
-    category: "女性特有",
-    summary: "下半身や手足の冷え、重い月経痛、夕方になると足がパンパンになるむくみなど、血行不良によるお悩み。",
-    orientalMechanism: "「寒凝血瘀」「水湿内停」。体が冷えることで経絡の流れが滞り、子宮や下半身に古い血（瘀血）が停滞。また腎の陽気が不足すると水分を巡らせる力が落ちてむくみへとつながります。",
-    recommendedTsuboIds: ["sp6", "bl23", "ki1", "cv4", "sp9"],
-    lifestyleAdvice: {
-      diet: "血を補い巡らせる食材（黒ごま、クコの実、レバー、ほうれん草、シナモン）とお灸の組み合わせが効果的な体質改善を促します。",
-      habit: "足首・手首・首の「三つの首」を露出させない服装を意識。三陰交へのお灸は生理前の1週間から毎晩続けるのがベストです。"
+    "id": "menstrual-pain-chill",
+    "title": "生理痛・冷え・下肢のむくみ",
+    "category": "女性特有",
+    "summary": "月経時の痛みや手足の冷え、脚のむくみ。これらが同じ原因で生じているとは限りません。",
+    "orientalMechanism": "伝統医学では「寒凝血瘀」「水湿内停」などの候補を比較します。「瘀血」は子宮に古い血がたまっていることを確認する医学検査ではありません。",
+    "recommendedTsuboIds": [
+      "sp6",
+      "bl23",
+      "ki1",
+      "cv4",
+      "sp9"
+    ],
+    "lifestyleAdvice": {
+      "diet": "食事全体の偏りを避けましょう。痛みや出血が強い場合は食養生で様子を見ず受診してください。",
+      "habit": "月経周期、出血量、痛みと生活への影響を記録しましょう。妊娠中や妊娠の可能性がある場合に、このガイドの経穴例から自己灸を始めないでください。"
     }
   },
   {
-    id: "chronic-fatigue-lethargy",
-    title: "慢性疲労・だるさ・朝起きられない",
-    category: "全身・疲労",
-    summary: "休日に寝ても疲れが取れない、声に力が入らない、風邪を引きやすいといった生命エネルギー（気）の枯渇状態。",
-    orientalMechanism: "「気虚（ききょ）」「腎虚（じんきょ）」。生命活動の根源である「先天の気（腎）」と日々の食事から得る「後天の気（脾胃）」の両方が低下。防衛力（衛気）も弱まり免疫が低下しています。",
-    recommendedTsuboIds: ["st36", "bl23", "gv20", "cv6"],
-    lifestyleAdvice: {
-      diet: "気を補う「補気」の食材（うなぎ、鶏肉、きのこ類、栗、長芋、玄米）を少量ずつよく噛んで食べましょう。",
-      habit: "無理な激しい運動はかえって気を消耗するため、深呼吸を伴う軽めの散歩や太極拳・ヨガが適しています。睡眠時間を確保することが最優先。"
+    "id": "chronic-fatigue-lethargy",
+    "title": "慢性疲労・だるさ・朝起きられない",
+    "category": "全身・疲労",
+    "summary": "休んでも取れない疲れや朝の起きにくさ。睡眠や生活習慣のほか、病気や薬が関わることもあります。",
+    "orientalMechanism": "「気虚」「腎虚」は伝統医学上の候補です。この分類から免疫機能や腎臓機能の低下を判定することはできません。",
+    "recommendedTsuboIds": [
+      "st36",
+      "bl23",
+      "gv20",
+      "cv6"
+    ],
+    "lifestyleAdvice": {
+      "diet": "食事と水分を取り、極端な食事制限を避けましょう。食欲不振や体重減少がある場合は医療機関へ相談してください。",
+      "habit": "睡眠と休息を確保し、疲労が強まる活動を無理に続けないでください。長引く疲労の原因評価を運動やツボ刺激で置き換えないでください。"
     }
   },
   {
-    id: "lower-back-pain-sciatica",
-    title: "腰痛・ぎっくり腰・坐骨神経痛",
-    category: "背中・腰",
-    summary: "長時間の座位や前屈動作での腰の重だるさ、立ち上がり時の激痛、お尻から太もも裏へのピリピリするしびれ感。",
-    orientalMechanism: "「腎虚不栄」「風寒湿痺」。腰は「腎の府」とされ、加齢や過労で腎精が衰えると腰周囲の支持組織が脆弱化します。そこに寒冷や湿気の外邪が侵入して気血を阻滞させることで痛みが固定化します。",
-    recommendedTsuboIds: ["bl23", "bl40", "bl60", "gb30", "gv4"],
-    lifestyleAdvice: {
-      diet: "腎を養い骨・筋を強める黒い食材（黒ごま、黒豆、きくらげ、くるみ）や羊肉、海老を適度に取り入れましょう。",
-      habit: "腰椎の過度な前傾を防ぐため、股関節腸腰筋とお尻（殿筋群）のストレッチを毎日行い、就寝時は膝下に枕を入れて腰椎の緊張を抜きます。"
+    "id": "lower-back-pain-sciatica",
+    "title": "腰痛・ぎっくり腰・坐骨神経痛",
+    "category": "背中・腰",
+    "summary": "腰の痛み、お尻から脚にかけての痛みやしびれ。新しい神経症状がある場合は医療評価が重要です。",
+    "orientalMechanism": "伝統医学では「腎虚不栄」「風寒湿痺」などを比較します。これらの証名から、神経の圧迫・感染・骨折などの有無を判断することはできません。",
+    "recommendedTsuboIds": [
+      "bl23",
+      "bl40",
+      "bl60",
+      "gb30",
+      "gv4"
+    ],
+    "lifestyleAdvice": {
+      "diet": "普段のバランスのよい食事を基本にしましょう。黒い食材が骨や神経を修復するという意味ではありません。",
+      "habit": "痛みやしびれが強まる動きを無理に行わず、神経症状や経過を医療機関に伝えてください。新しい排尿・排便の異常や会陰部感覚の変化があれば、ストレッチを試す前に緊急評価を受けてください。"
     }
   },
   {
-    id: "eye-strain-fatigue",
-    title: "眼精疲労・ドライアイ・目のかすみ",
-    category: "頭・首・肩",
-    summary: "PC・スマホの見過ぎによるピント調節不全、目の奥のズキズキ痛、目の充血、乾き、視界のかすみ。",
-    orientalMechanism: "「久視傷血（久しく視れば血を傷る）」「肝開竅於目」。肝は血を蔵し目に栄養を供給します。目を酷使し続けると肝血が消耗し、目の潤いと栄養が途絶えて熱感やかゆみ、視力低下が生じます。",
-    recommendedTsuboIds: ["gb20", "lr3", "li4", "gb37"],
-    lifestyleAdvice: {
-      diet: "肝血を補い目に良いカロテン・アントシアニンを含む食材（クコの実、ブルーベリー、人参、ほうれん草、菊花茶）を常用します。",
-      habit: "30分画面を見たら30秒間遠くの景色（5m以上先）を眺める習慣をつけ、こめかみや後頭部の生え際を指の腹で優しく揉みほぐします。"
+    "id": "eye-strain-fatigue",
+    "title": "眼精疲労・ドライアイ・目のかすみ",
+    "category": "頭・首・肩",
+    "summary": "画面作業に伴う疲れや乾き、目のかすみ。急な痛み・充血・見え方の変化を画面の見過ぎと決めないことが大切です。",
+    "orientalMechanism": "「久視傷血」「肝開竅於目」は伝統医学の説明です。肝血の分類だけで眼科疾患の有無や視力低下の原因を判定することはできません。",
+    "recommendedTsuboIds": [
+      "gb20",
+      "lr3",
+      "li4",
+      "gb37"
+    ],
+    "lifestyleAdvice": {
+      "diet": "特定の食品を常用して眼科治療を置き換えないでください。食物アレルギーや服薬がある場合は、食事・サプリメントの変更も相談しましょう。",
+      "habit": "画面作業の合間に目を休め、目の痛みや見え方の変化が続く場合は眼科へ。目や眼窩を強く押したり、自己刺鍼したりしないでください。"
     }
   },
   {
-    id: "constipation-ibs",
-    title: "便秘・腹部膨満・過敏性腸症候群（IBS）",
-    category: "消化器・お腹",
-    summary: "何日も便が出ない、ウサギの糞のようなコロコロ便、または緊張すると急に下腹部が痛くなり下痢になるお腹のトラブル。",
-    orientalMechanism: "「肝脾不和」「大腸気滞」。ストレスによって肝の疏泄が乱れると、自律神経を介して腸管の蠕動運動が痙攣性に乱れます（気秘・泄瀉）。また腸内の潤い不足（陰虚腸燥）も便秘の主要因です。",
-    recommendedTsuboIds: ["st25", "st36", "te6", "li11"],
-    lifestyleAdvice: {
-      diet: "水溶性食物繊維（海藻、納豆、オクラ、寒天）と、腸内を潤す良質な植物油（オリーブオイル、えごま油、白ごま）を毎朝スプーン1杯。",
-      habit: "朝起床時にコップ1杯の白湯を飲み、朝食後に便意がなくてもトイレに5分座る排便リズムの条件付けを行います。"
+    "id": "constipation-ibs",
+    "title": "便秘・腹部膨満・便通の変化",
+    "category": "消化器・お腹",
+    "summary": "便秘、硬い便、お腹の張り、腹痛や下痢。過敏性腸症候群（IBS）の診断には症状の経過と医療評価が必要です。",
+    "orientalMechanism": "伝統医学では「肝脾不和」「大腸気滞」「陰虚腸燥」などの候補を学びます。これらの証とIBSの診断は同じものではありません。",
+    "recommendedTsuboIds": [
+      "st25",
+      "st36",
+      "te6",
+      "li11"
+    ],
+    "lifestyleAdvice": {
+      "diet": "症状が出る食事を記録し、水分や食物繊維の取り方を医師・管理栄養士に相談しましょう。食物繊維や油を一律に増やせばよいとは限りません。",
+      "habit": "便意を我慢しすぎず、無理にいきまないようにしましょう。血便や体重減少、持続する強い腹痛は生活習慣の工夫だけで経過を見ないでください。"
     }
   },
   {
-    id: "dizziness-tinnitus",
-    title: "めまい・耳鳴り・ふらつき（メニエール症状）",
-    category: "頭・首・肩",
-    summary: "急に立ち上がるとクラッとする、周囲がぐるぐる回る、耳の中でキーン・ジーという音が鳴り止まない症状。",
-    orientalMechanism: "「無痰不作眩（痰無ければ眩を作さず）」「肝陽上亢」。内耳の水液代謝障害（水毒・痰飲）が平衡感覚を狂わせるタイプと、精神的緊張や高血圧によって肝の熱が頭部に吹き上がるタイプに大別されます。",
-    recommendedTsuboIds: ["gb20", "te17", "ki3", "st40", "lr3"],
-    lifestyleAdvice: {
-      diet: "水はけを促す食材（ハトムギ、あずき、冬瓜、黒豆）を取り入れ、塩分過多やアルコール、カフェインの過剰摂取を控えます。",
-      habit: "首筋や側頭部の筋緊張が内耳動脈の血流を阻害するため、顎関節の噛み締め（食いしばり）を意識的に緩め、十分な睡眠をとります。"
+    "id": "dizziness-tinnitus",
+    "title": "めまい・耳鳴り・ふらつき",
+    "category": "頭・首・肩",
+    "summary": "立ちくらみ、回転感、ふらつき、耳鳴り。原因は内耳だけとは限らず、急な難聴や神経症状は速やかな評価が必要です。",
+    "orientalMechanism": "「痰湿」「肝陽上亢」などは伝統医学の候補です。痰湿を内耳の水分量と同一視したり、首こりで内耳動脈が塞がったと断定したりすることはできません。",
+    "recommendedTsuboIds": [
+      "gb20",
+      "te17",
+      "ki3",
+      "st40",
+      "lr3"
+    ],
+    "lifestyleAdvice": {
+      "diet": "体質分類だけを理由に水分を減らしたり、発汗で水分を抜こうとしたりしないでください。医師から水分・塩分の指示がある場合は、その指示を優先します。",
+      "habit": "転倒を避けられる場所で休み、運転や高所作業を避けてください。症状が続く場合は受診し、急な難聴や神経症状は受診を遅らせないでください。"
     }
   },
   {
-    id: "climacteric-hot-flash",
-    title: "更年期障害・ホットフラッシュ・冷えのぼせ",
-    category: "女性特有",
-    summary: "突然顔がカッと熱くなって汗が噴き出す、上半身は暑いのに足先は氷のように冷える、情緒が不安定になる症状。",
-    orientalMechanism: "「肝腎陰虚」「上熱下寒」。40代後半から腎の陰液（ホルモンや体液）が急激に減少し、相対的に陽気が上部に浮き上がって「虚火」となります。下半身は温める陽気が届かず冷えるという上下の解離が生じます。",
-    recommendedTsuboIds: ["sp6", "ki3", "lr3", "cv4", "ht7"],
-    lifestyleAdvice: {
-      diet: "植物性エストロゲンを含む大豆製品（豆乳、豆腐、納豆）や、陰液を補う山芋、黒ごま、牡蠣、百合根が効果的です。",
-      habit: "足首を温めながら上半身は風通し良くする「頭寒足熱」の衣服調整を徹底し、就寝前の腹式呼吸で自律神経の昂ぶりを静めます。"
+    "id": "climacteric-hot-flash",
+    "title": "更年期のほてり・冷えのぼせ",
+    "category": "女性特有",
+    "summary": "ほてりや発汗、気分の変化など。更年期にみられることがありますが、年齢だけで原因を確定することはできません。",
+    "orientalMechanism": "伝統医学では「肝腎陰虚」「上熱下寒」などを比較します。腎の陰液はホルモン濃度を表す検査値ではなく、伝統理論上の説明です。",
+    "recommendedTsuboIds": [
+      "sp6",
+      "ki3",
+      "lr3",
+      "cv4",
+      "ht7"
+    ],
+    "lifestyleAdvice": {
+      "diet": "通常の食品として偏りなく食べましょう。大豆食品やサプリメントでホルモン治療の代わりになると考えず、服薬・治療中の場合は主治医に相談してください。",
+      "habit": "室温や衣服を快適に調整し、症状と生活への影響を記録しましょう。困る症状が続く場合は婦人科などへ相談してください。"
     }
   },
   {
-    id: "allergic-rhinitis-hayfever",
-    title: "アレルギー性鼻炎・花粉症・鼻閉",
-    category: "頭・首・肩",
-    summary: "春先や季節の変わり目に止まらないくしゃみ、サラサラした水様性鼻汁、鼻づまり、目のかゆみ。",
-    orientalMechanism: "「肺気虚寒」「衛気不固」。東洋医学では呼吸器・皮膚・鼻を「肺」が司ります。体表を守るバリア機能（衛気）が低下すると、外界の風邪・花粉（外邪）が鼻粘膜から容易に侵入してアレルギー反応を引き起こします。",
-    recommendedTsuboIds: ["li20", "li4", "gv14", "lu7"],
-    lifestyleAdvice: {
-      diet: "肺を温め鼻を通す辛味食材（生姜、紫蘇、ネギ、ミントティー）を摂り、体内に湿熱を溜める甘い菓子や脂っこい食事を避けます。",
-      habit: "首の後ろの大椎穴周辺にドライヤーの温風を当てて温める（温灸効果）と、鼻の通りが即座に改善します。"
+    "id": "allergic-rhinitis-hayfever",
+    "title": "アレルギー性鼻炎・花粉症・鼻閉",
+    "category": "頭・首・肩",
+    "summary": "くしゃみ、鼻水、鼻づまり、目のかゆみ。原因や適切な治療は医療機関で確認します。",
+    "orientalMechanism": "「肺気虚」「衛気不固」などは伝統医学上の分類です。衛気の強さからアレルギー反応や免疫機能を判定することはできません。",
+    "recommendedTsuboIds": [
+      "li20",
+      "li4",
+      "gv14",
+      "lu7"
+    ],
+    "lifestyleAdvice": {
+      "diet": "特定の辛味食材で鼻炎が治るとは限りません。食品やハーブを試す場合も、食物アレルギーや薬との関係に注意しましょう。",
+      "habit": "原因となる花粉などへの曝露を減らす工夫と、医師・薬剤師に相談した治療を基本に。ドライヤーを温灸の代用にして皮膚へ当てる方法は案内しません。"
     }
   },
   {
-    id: "knee-joint-pain",
-    title: "膝の痛み・階段昇降時の違和感",
-    category: "足・脚",
-    summary: "階段の降りる時に膝がズキッと痛む、正座ができない、動き始めに膝のこわばりや引っかかりを感じる症状。",
-    orientalMechanism: "「肝主筋」「腎主骨」「風寒湿着」。軟骨や骨の代謝は「腎」が、関節を支える靭帯・腱・筋肉は「肝」が司ります。肝腎の衰退に加え、関節周囲の冷えと水湿の鬱滞が痛みを増悪させます。",
-    recommendedTsuboIds: ["st36", "sp9", "gb34", "st34"],
-    lifestyleAdvice: {
-      diet: "コラーゲンやカルシウムを含む小魚、海藻、ネバネバ食材（オクラ、納豆、メカブ）と関節を温める生姜スープを摂取。",
-      habit: "大腿四頭筋（太もも前側）の筋力維持のため、椅子に座って足を水平に伸ばすストレッチを行い、膝関節を冷風から守るサポーターを活用します。"
+    "id": "knee-joint-pain",
+    "title": "膝の痛み・階段昇降時の違和感",
+    "category": "足・脚",
+    "summary": "動き始めや階段での膝の痛み、こわばり。関節の状態や痛みの原因は症状だけでは確定できません。",
+    "orientalMechanism": "「肝主筋」「腎主骨」「風寒湿」などは伝統医学の枠組みです。肝・腎の証から軟骨の状態や炎症・感染の有無を判定するものではありません。",
+    "recommendedTsuboIds": [
+      "st36",
+      "sp9",
+      "gb34",
+      "st34"
+    ],
+    "lifestyleAdvice": {
+      "diet": "食事は偏りなく取りましょう。特定の食品やコラーゲンで軟骨が再生すると期待して、必要な治療を遅らせないでください。",
+      "habit": "運動の種類や負荷は膝の状態に合わせて相談しましょう。急な腫れ・熱感や外傷後の強い痛みがあるときに、無理なストレッチを始めないでください。"
     }
   }
 ];

@@ -966,7 +966,7 @@ function PracticePageContent() {
             {[
               { id: "mixed", label: "総合MIX特訓", desc: "全種別からランダム" },
               { id: "location_to_name", label: "部位・取穴法", desc: "解剖骨性目印当て" },
-              { id: "puncture_method", label: "刺鍼の安全確認", desc: "深度・角度・気胸注意" },
+              { id: "puncture_method", label: "施術前の安全確認", desc: "解剖・体格・禁忌の確認原則" },
               { id: "five_elements_shu", label: "五輸穴・五行", desc: "井滎輸経合・木火土金水" },
               { id: "golden_pairs", label: "伝統名配穴", desc: "登録された配穴例" },
               { id: "category_of_point", label: "要穴分類", desc: "原絡郄募兪穴の暗記" },
@@ -1107,8 +1107,8 @@ function PracticePageContent() {
               onClick={() => startCourseSession("puncture")}
               className="p-4 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-left transition-all space-y-1"
             >
-              <strong className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">刺鍼の安全確認特訓</strong>
-              <p className="text-[11px] text-[#737C77]">刺入深度・角度・気胸注意など</p>
+              <strong className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">施術前の安全確認特訓</strong>
+              <p className="text-[11px] text-[#737C77]">個別の深度を決める問題ではありません</p>
             </button>
 
             <button

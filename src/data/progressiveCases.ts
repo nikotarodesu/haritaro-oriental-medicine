@@ -53,7 +53,10 @@ export const PROGRESSIVE_CASES: ProgressiveCase[] = [
   {
     id: 'back-pain-referral', title: '急性腰痛：紹介を優先する', lectureId: 'lecture-diagnosis-2',
     presentation: '架空の症例：35歳。昨日から強い腰痛と両脚のしびれが出ています。「腰を治療してほしい」と希望しています。',
-    sources: [{ title: 'North Bristol NHS Trust：馬尾症候群の危険兆候と緊急評価', url: 'https://www.nbt.nhs.uk/our-services/a-z-services/neurosurgery/neurosurgery-patient-information/same-day-emergency-clinic-sdec-cauda-equina-syndrome-sec' }],
+    sources: [
+      { title: 'NICE NG127 1.7.3：腰痛・放散痛と新しい排尿等の異常は直ちに紹介', url: 'https://www.nice.org.uk/guidance/ng127/chapter/Recommendations-for-adults-aged-over-16' },
+      { title: 'North Bristol NHS Trust：馬尾症候群の危険兆候と緊急評価', url: 'https://www.nbt.nhs.uk/our-services/a-z-services/neurosurgery/neurosurgery-patient-information/same-day-emergency-clinic-sdec-cauda-equina-syndrome-sec' },
+    ],
     steps: [
       { domain: '追加質問', question: '最優先で追加確認する内容は？', options: [
         right('新しい排尿・排便の異常、会陰部の感覚変化、脚の筋力低下を確認する', '急性腰痛と神経症状では、緊急評価が必要な兆候を確認します。'),

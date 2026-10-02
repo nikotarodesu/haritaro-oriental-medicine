@@ -27,7 +27,7 @@ export * from "./safetyAndLandmarks";
 export * from "./friendlyLocations";
 export * from "./crossSectionEngine";
 export { ACUPOINTS_MASTER } from "./acupointsMaster";
-export const ALL_ACUPOINTS = ACUPOINTS_MASTER;
+export const ALL_ACUPOINTS: AcupointMaster[] = ACUPOINTS_MASTER.map(point => ({ ...point, procedureReviewStatus: "pending_expert_review" }));
 export { DETAILED_ACUPOINTS } from "./detailedPoints";
 export { MERIDIANS } from "./meridiansData";
 export { ACUPOINT_CATEGORIES } from "./categoriesData";
@@ -50,6 +50,7 @@ export function getAcupointByCode(codeOrId: string): AcupointMaster | undefined 
   if (!found) return undefined;
   return {
     ...found,
+    procedureReviewStatus: "pending_expert_review",
     locationSimple: getFriendlyLocationSimple(found),
   };
 }
@@ -67,6 +68,7 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
     const cs = point.crossSection || generateCrossSectionModel(point);
     return {
       ...point,
+      procedureReviewStatus: "pending_expert_review",
       crossSection: cs ? {
         ...cs,
         sliceType: cs.sliceType || classifyAcupointSlice(point),
@@ -86,6 +88,7 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
     const cs = point.crossSection || generateCrossSectionModel(point);
     return {
       ...point,
+      procedureReviewStatus: "pending_expert_review",
       crossSection: cs ? {
         ...cs,
         sliceType: cs.sliceType || classifyAcupointSlice(point),
@@ -100,6 +103,7 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
   const crossSection = generateCrossSectionModel(master);
   return {
     ...master,
+    procedureReviewStatus: "pending_expert_review",
     locationSimple: friendlySimple,
     howToLocate: generateHowToLocate(master),
     palpationLandmarks: generatePalpationLandmarks(master),
@@ -123,14 +127,14 @@ export function isDetailedAcupoint(codeOrId: string): boolean {
  * 全経穴を取得
  */
 export function getAllAcupoints(): AcupointMaster[] {
-  return ACUPOINTS_MASTER;
+  return ALL_ACUPOINTS;
 }
 
 /**
  * 公開済み経穴（32穴）を取得
  */
 export function getPublishedAcupoints(): AcupointMaster[] {
-  return ACUPOINTS_MASTER.filter((p) => p.status === "published");
+  return ALL_ACUPOINTS.filter((p) => p.status === "published");
 }
 
 /**

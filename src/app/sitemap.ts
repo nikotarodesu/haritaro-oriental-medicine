@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // 静的公開ページ台帳（実質更新日に基づく lastModified）
   const staticPages: MetadataRoute.Sitemap = [
+    { url: `${baseUrl}/safety`, lastModified: new Date("2026-10-02") },
     { url: `${baseUrl}/editorial-policy`, lastModified: new Date("2026-10-02") },
     {
       url: `${baseUrl}`,
@@ -134,7 +135,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 臨床症例演習ページ（全20症例）
   const casePages: MetadataRoute.Sitemap = CLINICAL_CASES.map((c) => ({
     url: `${baseUrl}/cases/${c.id}`,
-    lastModified: new Date("2026-09-15"),
+    lastModified: new Date("2026-10-02"),
   }));
 
   // 奇経八脈詳細ページ（全8経脈）

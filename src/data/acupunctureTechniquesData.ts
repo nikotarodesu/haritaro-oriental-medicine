@@ -26,7 +26,8 @@ export const ACUPUNCTURE_TECHNIQUE_CATEGORIES = [
   "特殊鍼法・低侵襲療法（赤羽式皮内鍼・シーソー現象・接触鍼・瀉血代替）"
 ] as const;
 
-export const ACUPUNCTURE_TECHNIQUES: AcupunctureTechnique[] = [
+// 出典・医学的妥当性を確認するための原資料。公開手順として使用しない。
+export const SOURCE_ACUPUNCTURE_TECHNIQUES: AcupunctureTechnique[] = [
   {
     id: "sensitivity-needling",
     title: "患者の感受性に応じた刺鍼法",
@@ -398,6 +399,9 @@ export const ACUPUNCTURE_TECHNIQUES: AcupunctureTechnique[] = [
     rawContent: "基本概念\r\n圧診点の普遍性\r\nほぼすべての疾病に圧診点が存在\r\n硬結、痛み、陥没、不快感として触知\r\n内臓と体表の密接な関係性\r\nツボの本質的理解\r\n従来の深さの概念への疑問\r\n皮膚表層における重要性\r\n知覚神経受容器の密集\r\n治療原則\r\n一点治療の有効性\r\n皮内鍼による劇的効果\r\n的確な一点の重要性\r\n過剰な刺鍼の不要性\r\n治療期間\r\n皮内鍼は3-5日が適当\r\n効果の持続性\r\n重要な考察点\r\n深部病変への対応\r\n深刺の必要性への疑問\r\n体表刺激の有効性\r\n内臓-体表の相互反射\r\n治療効率\r\n的確な一点の重要性\r\n多数の刺鍼の無駄\r\n正確な狙いの必要性\r\n臨床的示唆：\r\n診断の精密さ\r\n治療点の厳選\r\n最小限の刺激\r\n効果判定の重要性\r\nこの考え方は：\r\n治療の効率化\r\n患者の負担軽減\r\n技術の向上 に貢献します。"
   }
 ];
+
+export const ACUPUNCTURE_TECHNIQUES: AcupunctureTechnique[] = [];
+export const TECHNIQUE_REVIEW_NOTICE = "固定の深さと組織層の対応、性別・季節による手技、禁穴と現代の損傷リスクを混同する記述があるため、原資料は照合・専門家確認まで公開を保留しています。";
 
 export function getTechniqueById(id: string): AcupunctureTechnique | undefined {
   return ACUPUNCTURE_TECHNIQUES.find(t => t.id === id);

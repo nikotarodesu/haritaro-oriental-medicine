@@ -30,7 +30,7 @@ import { VERIFIED_PAPERS as PAPERS_DATABASE } from "@/data/references/papersData
 import { ARTICLES } from "@/data/articleData";
 import { trackEvent } from "@/utils/analytics";
 import { SYMPTOMS } from "@/data/symptomData";
-import { ALL_ARCHIVE_CASES } from "@/data/cases/archiveCases";
+import { PUBLIC_ARCHIVE_CASES } from "@/data/cases/archiveCases";
 import { TOOL_CATALOG } from "@/config/toolCatalog";
 import { prepareSearchItem, scoreSearchItem } from "@/utils/search";
 
@@ -381,14 +381,14 @@ export default function GlobalSearchModal({
       });
     });
 
-    // 9. 運動器・自律神経実例アーカイブ（全32症例）
-    ALL_ARCHIVE_CASES.forEach((ac) => {
+    // 9. 運動器・自律神経実例アーカイブ（出典確認待ち）
+    PUBLIC_ARCHIVE_CASES.forEach((ac) => {
       list.push({
         id: `archive-case-${ac.id}`,
         type: "case",
         title: ac.title,
         subtitle: `${ac.category}｜${ac.location}・${ac.symptoms.slice(0, 40)}...`,
-        badge: "臨床実例",
+        badge: "症例資料",
         url: `/library#archive-${ac.id}`,
         tags: [
           ac.title,

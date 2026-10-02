@@ -24,6 +24,7 @@ const groups = [
   ['archived-cases', 'src/data/cases/archiveCases', 'ALL_ARCHIVE_CASES'],
   ['papers', 'src/data/references/papersData', 'SOURCE_PAPERS'],
   ['paper-interpretations', 'src/data/references/paperInterpretations', 'PAPER_INTERPRETATIONS'],
+  ['medical-safety', 'src/data/medicalSafety', null],
 ];
 const statements = [];
 const previousReviews = fs.existsSync('docs/medical-review/inventory.json') ? new Map(JSON.parse(fs.readFileSync('docs/medical-review/inventory.json', 'utf8')).map(item => [item.id, item])) : new Map();
@@ -61,11 +62,20 @@ const headers = Object.keys(statements[0]);
 for (const statement of statements) {
   const previous = previousReviews.get(statement.id);
   if (previous) for (const field of ['review_status', 'reviewer', 'qualification', 'source_locator', 'decision', 'reviewed_at']) statement[field] = previous[field] || statement[field];
+  const allowed = ['pending', 'source-checked', 'expert-approved', 'needs-correction', 'unsupported'];
+  if (!allowed.includes(statement.review_status)) throw new Error(`Unknown review status: ${statement.id}`);
+  if (statement.review_status === 'expert-approved') {
+    for (const field of ['reviewer', 'qualification', 'source_locator', 'decision', 'reviewed_at']) {
+      if (!statement[field].trim()) throw new Error(`Expert approval missing ${field}: ${statement.id}`);
+    }
+    if (/codex|chatgpt|openai|自動確認|AI確認/i.test(statement.reviewer)) throw new Error(`Automated review cannot be expert approval: ${statement.id}`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(statement.reviewed_at)) throw new Error(`Expert approval needs a date: ${statement.id}`);
+  }
 }
 const quote = value => '"' + String(value ?? '').replace(/"/g, '""') + '"';
 fs.mkdirSync(path.resolve('docs/medical-review'), { recursive: true });
 fs.writeFileSync('docs/medical-review/statements.csv', '\ufeff' + [headers, ...statements.map(statement => headers.map(header => statement[header]))].map(row => row.map(quote).join(',')).join('\r\n') + '\r\n');
 fs.writeFileSync('docs/medical-review/inventory.json', JSON.stringify(statements, null, 2) + '\n');
-const summary = { generatedAt: new Date().toISOString().slice(0, 10), statements: statements.length, priorityStatements: statements.filter(statement => statement.flags).length, counts, reviewStatus: 'pending', expertApproved: statements.filter(statement => statement.review_status === 'expert-approved').length, scope: 'Inventory is not verification. Every statement needs passage-level source checking and expert sign-off.' };
+const summary = { generatedAt: new Date().toISOString().slice(0, 10), statements: statements.length, priorityStatements: statements.filter(statement => statement.flags).length, counts, reviewStatus: 'pending', expertApproved: statements.filter(statement => statement.review_status === 'expert-approved').length, scope: 'Inventory includes withheld source archives and is not verification. Rendered UI, generated diagrams and source passages also need separate review and expert sign-off.' };
 fs.writeFileSync('src/data/medicalReviewSummary.json', JSON.stringify(summary, null, 2) + '\n');
 console.log(JSON.stringify(summary, null, 2));

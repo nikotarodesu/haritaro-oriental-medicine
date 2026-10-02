@@ -3,7 +3,8 @@
 import { useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { DIAGNOSIS_QUESTIONS, DIAGNOSIS_RESULTS } from "@/data/diagnosisData";
+import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
+import { DIAGNOSIS_QUESTIONS, DIAGNOSIS_RESULTS, DIAGNOSIS_GUIDANCE_SCOPE } from "@/data/diagnosisData";
 import { DiagnosisResultType } from "@/types/oriental";
 import { TSUBOS } from "@/data/tsuboData";
 import {
@@ -70,20 +71,20 @@ const TYPE_LECTURE_MAP: Record<string, { lectureId: string; lectureTitle: string
 // ゼロ選択（偏りなし・中庸）時の標準結果
 const NEUTRAL_RESULT: DiagnosisResultType = {
   type: "neutral",
-  name: "平穏・中庸傾向（大きな偏りなし）",
-  reading: "へいおん・ちゅうようけいこう",
+  name: "回答上の分類保留（該当項目なし）",
+  reading: "かいとうじょうのぶんるいほりゅう",
   summary:
-    "現時点で気・血・水の顕著な偏りや停滞傾向は回答上見られません。心身の調和（中庸）が保たれている安定した状態です。現在の健康維持に向けた良質な生活習慣を継続しましょう。",
+    "この質問票では該当項目が選ばれていません。病気がないこと、健康状態や心身のバランスが良好であることは、この回答だけでは判断できません。気になる症状があれば医療機関へ相談してください。",
   symptoms: [
-    "気血水の明らかな偏りは回答上認められません",
-    "心身のバランスが比較的保たれています",
+    "この質問票では該当項目が選ばれていません",
+    "未回答・不明な所見がないかも確認してください",
   ],
-  cause: "大きな負荷や極端な偏りがなく、日常の恒常性が維持されています。",
+  cause: "この質問票の回答だけでは、原因や体質を確定できません。",
   advice: {
     food: ["旬の野菜", "雑穀米", "季節の果物", "温かい汁物"],
     lifestyle:
       "現在の規則正しい生活リズムと良質な睡眠を保ち、季節の変わり目の冷えや疲労蓄積に気を配りましょう。",
-    tsubo: ["足三里", "太衝", "合谷"],
+    tsubo: [],
   },
 };
 
@@ -355,6 +356,7 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
 
   return (
     <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-16 space-y-8 sm:space-y-10">
+      <MedicalSafetyNotice title="チェックの利用範囲" message={DIAGNOSIS_GUIDANCE_SCOPE} />
       {/* モード切り替えタブ */}
       <div className="flex justify-center">
         <div className="inline-flex p-1 sm:p-1.5 rounded-2xl bg-[#EFE9DD] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2D3E50] shadow-inner max-w-full overflow-x-auto gap-1">
@@ -368,7 +370,7 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
             }`}
           >
             <Stethoscope className="w-4 h-4" />
-            <span>① 気血水セルフ診断</span>
+            <span>① 気血水セルフチェック</span>
           </button>
 
           <button
@@ -433,7 +435,7 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
           {/* 設問一覧 */}
           <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-3.5 sm:p-9 rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-4 sm:space-y-6 transition-colors">
             <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 text-xs text-[#59615D] dark:text-[#96A6B2]">
-              <span>全12問（複数選択可・0個でも診断可能）</span>
+              <span>全12問（複数選択可・該当なしも確認できます）</span>
               <span>
                 選択中: <strong className="text-[#1E3D34] dark:text-[#74BA9E]">{selectedAnswers.length}</strong> 項目
               </span>
@@ -663,7 +665,7 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
                         </span>
                       </div>
                       <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-tight block mt-0.5">
-                        体質見立て「{selfResult.name}」と推奨経穴を下書きとして引き継ぎます。
+                        体質見立て「{selfResult.name}」と学習用の関連経穴を下書きとして引き継ぎます。
                       </span>
                     </div>
                   </div>

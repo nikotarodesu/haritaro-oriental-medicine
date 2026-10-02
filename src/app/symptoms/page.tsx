@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { SYMPTOMS } from "@/data/symptomData";
+import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
+import { SYMPTOMS, SYMPTOM_GUIDANCE_SCOPE, SYMPTOM_SAFETY_GUIDANCE } from "@/data/symptomData";
 import { ACUPOINTS_MASTER } from "@/data/tsubo/acupointsMaster";
 import { HeartPulse, Utensils, Activity, ArrowRight, Sparkles, CheckCircle2, Stethoscope, ChevronDown, ChevronUp, Layers, FileText } from "lucide-react";
 import EastWestIntegrativeSwitch from "@/components/EastWestIntegrativeSwitch";
@@ -52,6 +53,8 @@ export default function SymptomsPage() {
         </p>
       </div>
 
+      <MedicalSafetyNotice title="症状ガイドの利用範囲" message={SYMPTOM_GUIDANCE_SCOPE} />
+
       {/* カテゴリ切り替えタブ */}
       <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 border-b border-[#E8E1D1] dark:border-[#22303D] pb-3 sm:pb-4">
         {categories.map((cat) => (
@@ -97,6 +100,7 @@ export default function SymptomsPage() {
                 <div className="space-y-1.5 sm:space-y-2">
                   <span className="text-xs font-bold text-[#59615D] dark:text-[#96A6B2] block">症状の現れ方</span>
                   <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">{symptom.summary}</p>
+                  {SYMPTOM_SAFETY_GUIDANCE[symptom.id] && <MedicalSafetyNotice title="受診を優先する症状" {...SYMPTOM_SAFETY_GUIDANCE[symptom.id]} />}
                 </div>
 
                 <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
