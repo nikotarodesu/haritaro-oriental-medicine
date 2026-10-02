@@ -182,7 +182,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                 <span>{isSubscriptionSalesEnabled() ? "プレミアム限定エリア（ステップ2〜5）" : SUBSCRIPTION_CONFIG.statusMessages.comingSoonBadge}</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-                {isSubscriptionSalesEnabled() ? "四診詳細・推論演習・確定配穴の完全解説" : "症例04以降は有料プラン公開に合わせて開放されます"}
+                {isSubscriptionSalesEnabled() ? "四診詳細・推論演習・学習用の配穴例と解説" : "症例04以降は有料プラン公開に合わせて開放されます"}
               </h2>
               <div className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed text-left bg-white dark:bg-[#10171F] p-4 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5">
                 <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">
@@ -191,8 +191,8 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                 <ul className="space-y-1 text-xs list-disc list-inside">
                   <li><strong>ステップ 2: 四診情報</strong>（望診・舌診・問診一問一答・脈診・腹証）</li>
                   <li><strong>ステップ 3: 臨床推論演習</strong>（病理・治法を導く選択問題）</li>
-                  <li><strong>ステップ 4: 確定弁証・処方配穴</strong>（主穴・配穴・参考方剤）</li>
-                  <li><strong>ステップ 5: 専門解説</strong>（病態機序・鑑別診断・配穴理由・古典根拠）</li>
+                  <li><strong>ステップ 4: 教材上の証と配穴例</strong>（主穴・配穴・参考方剤）</li>
+                  <li><strong>ステップ 5: 教材解説</strong>（候補比較・配穴理由・参照する伝統理論）</li>
                   <li><strong>学習ノート保存</strong>（ワンクリックで復習帳へ記録）</li>
                 </ul>
               </div>
@@ -410,7 +410,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                 className="w-full py-3.5 px-4 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <BookOpen className="w-4 h-4 text-[#F3DEC5]" />
-                <span>{showExplanation ? "解説を閉じる" : "確定診断・治法・配穴処方と専門解説を開く"}</span>
+                <span>{showExplanation ? "解説を閉じる" : "教材の解答・治法・配穴例と解説を開く"}</span>
               </button>
             </div>
           </div>
@@ -422,7 +422,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
                   <h3 className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                    確定診断と処方配穴
+                    教材上の証と配穴例
                   </h3>
                 </div>
 
@@ -459,7 +459,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
               {/* 確定診断要約テーブル */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
                 <div className="p-4 rounded-2xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
-                  <span className="text-[#737C77] text-xs font-semibold">八綱弁証 / 確定証名</span>
+                  <span className="text-[#737C77] text-xs font-semibold">八綱弁証 / 教材上の候補</span>
                   <div className="text-base font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                     {clinicalCase.correctDiagnosis.pattern}
                   </div>
@@ -515,7 +515,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                 <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
                   <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
                     <HelpCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                    <span>鑑別診断（間違えやすい他証との対比）</span>
+                    <span>候補比較（他の証との対比）</span>
                   </h4>
                   <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                     {clinicalCase.clinicalExplanation.differentialDiagnosis}
