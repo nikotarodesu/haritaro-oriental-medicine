@@ -2,6 +2,7 @@ import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import { permanentRedirect } from "next/navigation";
 import CurriculumIndexClient from "@/components/curriculum/CurriculumIndexClient";
+import { getArticlePreviews } from "@/data/articleData";
 
 // 旧形式IDのマッピング
 const OLD_ID_MAP: Record<string, string> = {
@@ -80,7 +81,14 @@ export default async function CurriculumPage({ searchParams }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(indexJsonLd) }}
       />
-      <CurriculumIndexClient />
+      <CurriculumIndexClient relatedArticles={getArticlePreviews([
+        "science-of-oriental-medicine-history",
+        "science-of-yinyang-gogyo",
+        "science-of-qi-blood-fluid",
+        "science-of-acupuncture-neuroscience",
+        "science-of-kampo-network-pharmacology",
+        "east-west-integrative-unified-theory",
+      ])} />
     </>
   );
 }

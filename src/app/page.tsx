@@ -2,36 +2,30 @@ import Link from "next/link";
 import Image from "next/image";
 import { 
   GraduationCap, 
-  Compass, 
   Stethoscope, 
   FileText,
   ArrowRight, 
   Sparkles, 
   Bell,
-  Activity, 
-  CheckCircle2, 
-  Printer, 
-  History, 
-  ShieldCheck, 
-  ChevronRight, 
   BookOpen, 
   SlidersHorizontal, 
   Layers, 
   Award, 
   RotateCcw,
-  Library,
   MapPin
 } from "lucide-react";
 import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
 import HomeHeroQuickSearch from "@/components/home/HomeHeroQuickSearch";
-import { ARTICLES } from "@/data/articleData";
+import { getArticlePreviews } from "@/data/articleData";
 import { TOOL_CATALOG } from "@/config/toolCatalog";
 import { SITE_UPDATES } from "@/config/contentUpdates";
 import HomeHeroDualEntry from "@/components/home/HomeHeroDualEntry";
-import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 
 export default function HomePage() {
-  const { limits } = SUBSCRIPTION_CONFIG;
+  const featuredArticles = getArticlePreviews([
+    "science-of-yinyang-gogyo",
+    "science-of-qi-blood-fluid",
+  ]);
 
   return (
     <div className="space-y-12 sm:space-y-16 pb-20">
@@ -322,35 +316,23 @@ export default function HomePage() {
             </div>
 
             <div className="space-y-1">
-              <Link
-                href="/articles/science-of-yinyang-gogyo"
-                className="block p-3 rounded-xl hover:bg-white/90 dark:hover:bg-[#121920]/80 transition-all group"
-              >
-                <div className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6] mb-1">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                    古典深読み
-                  </span>
-                  <span>読了目安 約22分</span>
-                </div>
-                <h3 className="font-serif font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors line-clamp-1">
-                  陰陽五行の科学：動的平衡とシステム制御理論
-                </h3>
-              </Link>
-
-              <Link
-                href="/articles/science-of-qi-blood-fluid"
-                className="block p-3 rounded-xl hover:bg-white/90 dark:hover:bg-[#121920]/80 transition-all group"
-              >
-                <div className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6] mb-1">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A1D12] text-[#B86924] dark:text-[#E6C387]">
-                    {ARTICLES.find(article => article.id === "science-of-qi-blood-fluid")?.category}
-                  </span>
-                  <span>読了目安 約18分</span>
-                </div>
-                <h3 className="font-serif font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors line-clamp-1">
-                  気血津液の生体工学：エネルギー代謝と体液循環
-                </h3>
-              </Link>
+              {featuredArticles.map(article => (
+                <Link
+                  key={article.id}
+                  href={`/articles/${article.id}`}
+                  className="block p-3 rounded-xl hover:bg-white/90 dark:hover:bg-[#121920]/80 transition-all group"
+                >
+                  <div className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6] mb-1">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                      {article.category}
+                    </span>
+                    <span>読了目安 約{article.readTime}</span>
+                  </div>
+                  <h3 className="font-serif font-bold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors line-clamp-1">
+                    {article.title}
+                  </h3>
+                </Link>
+              ))}
 
               <Link
                 href="/library"

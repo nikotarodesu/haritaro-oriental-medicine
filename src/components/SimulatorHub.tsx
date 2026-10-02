@@ -2,11 +2,12 @@
 
 import React from "react";
 import Link from "next/link";
-import { Layers, Sparkles, ArrowRight, BookOpen, GraduationCap, AlertCircle } from "lucide-react";
+import { Layers, Sparkles, ArrowRight, BookOpen, AlertCircle } from "lucide-react";
 import ProgressiveCaseTraining from "@/components/learning/ProgressiveCaseTraining";
 import ThreeStageSimulator from "@/components/ThreeStageSimulator";
+import type { ArticlePreview } from "@/data/articleData";
 
-export default function SimulatorHub() {
+export default function SimulatorHub({ relatedArticles }: { relatedArticles: ArticlePreview[] }) {
   return (
     <div className="space-y-8 sm:space-y-12">
       {/* ツール見出し */}
@@ -93,28 +94,18 @@ export default function SimulatorHub() {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-            <Link
-              href="/articles/science-of-yinyang-gogyo"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] dark:bg-[#1A2E26] hover:bg-[#D8EADB] dark:hover:bg-[#234237] px-3.5 py-2 rounded-xl transition-all"
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>陰陽五行の科学</span>
-            </Link>
-            <Link
-              href="/articles/science-of-kampo-network-pharmacology"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] dark:bg-[#1A2E26] hover:bg-[#D8EADB] dark:hover:bg-[#234237] px-3.5 py-2 rounded-xl transition-all"
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>漢方医学の科学</span>
-            </Link>
-            <Link
-              href="/articles/science-of-qi-blood-fluid"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#1E3D34] dark:bg-[#2B6958] hover:opacity-90 px-3.5 py-2 rounded-xl transition-all shadow-sm"
-            >
-              <span>気血津液の科学</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0 sm:max-w-sm">
+            {relatedArticles.map(article => (
+              <Link
+                key={article.id}
+                href={`/articles/${article.id}`}
+                className="inline-flex max-w-full items-center gap-1.5 text-left text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] dark:bg-[#1A2E26] hover:bg-[#D8EADB] dark:hover:bg-[#234237] px-3.5 py-2 rounded-xl transition-all"
+              >
+                <BookOpen className="w-3.5 h-3.5 shrink-0" />
+                <span>{article.title}</span>
+                <ArrowRight className="w-3.5 h-3.5 shrink-0" />
+              </Link>
+            ))}
           </div>
         </div>
 

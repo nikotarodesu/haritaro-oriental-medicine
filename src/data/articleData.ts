@@ -35,5 +35,17 @@ export const ARTICLES: Article[] = SOURCE_ARTICLES.map(article => ({
   keyPoints: ARTICLE_LEARNING_GUIDES[article.id] ? [ARTICLE_LEARNING_GUIDES[article.id].focus, ARTICLE_LEARNING_GUIDES[article.id].limitation] : article.keyPoints,
 }));
 
+export type ArticlePreview = Pick<Article, "id" | "title" | "summary" | "category" | "readTime">;
+
+// ページ側で抽出し、操作画面には紹介に必要な情報だけを渡す。
+export function getArticlePreviews(articleIds: readonly string[]): ArticlePreview[] {
+  return articleIds.flatMap(id => {
+    const article = ARTICLES.find(candidate => candidate.id === id);
+    if (!article) return [];
+    const { title, summary, category, readTime } = article;
+    return [{ id, title, summary, category, readTime }];
+  });
+}
+
 // 下書きアーカイブ（必要に応じて保存）
 export const DRAFT_ARTICLES: Article[] = [];

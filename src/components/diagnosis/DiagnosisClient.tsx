@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { DIAGNOSIS_QUESTIONS, DIAGNOSIS_RESULTS, DIAGNOSIS_GUIDANCE_SCOPE } from "@/data/diagnosisData";
-import { DiagnosisResultType } from "@/types/oriental";
+import type { DiagnosisResultType } from "@/types/oriental";
+import type { ArticlePreview } from "@/data/articleData";
 import { TSUBOS } from "@/data/tsuboData";
 import {
   Stethoscope,
@@ -68,7 +69,7 @@ const TYPE_LECTURE_MAP: Record<string, { lectureId: string; lectureTitle: string
   },
 };
 
-// ゼロ選択（偏りなし・中庸）時の標準結果
+// 該当項目なしの場合は健康や体質を推定せず、分類を保留する。
 const NEUTRAL_RESULT: DiagnosisResultType = {
   type: "neutral",
   name: "回答上の分類保留（該当項目なし）",
@@ -83,7 +84,7 @@ const NEUTRAL_RESULT: DiagnosisResultType = {
   advice: {
     food: ["旬の野菜", "雑穀米", "季節の果物", "温かい汁物"],
     lifestyle:
-      "現在の規則正しい生活リズムと良質な睡眠を保ち、季節の変わり目の冷えや疲労蓄積に気を配りましょう。",
+      "睡眠・食事などの生活リズムを振り返り、気になる症状があれば医療機関へ相談してください。回答だけで現在の生活習慣や健康状態は判断できません。",
     tsubo: [],
   },
 };
@@ -92,9 +93,10 @@ type QuestionStatus = "unconfirmed" | "applicable" | "not_applicable" | "unknown
 
 interface Props {
   initialTab?: "self" | "clinical" | "gorou";
+  relatedArticles: ArticlePreview[];
 }
 
-export default function DiagnosisClient({ initialTab = "self" }: Props) {
+export default function DiagnosisClient({ initialTab = "self", relatedArticles }: Props) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"self" | "clinical" | "gorou">(initialTab);
 
@@ -200,7 +202,7 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
 
   const handleShareCopy = () => {
     if (!selfResult) return;
-    const shareText = `【気血水 体質セルフ診断】私の診断結果は「${selfResult.name}」でした！ 東洋医学の視点で気・血・水のバランスとおすすめ養生法をチェック。\nhttps://www.haritaro.jp/diagnosis\n#ハリタロー #東洋医学 #体質診断`;
+    const shareText = `【気血水 体質セルフチェック】学習上の分類結果は「${selfResult.name}」でした！ 東洋医学の視点で気・血・水のバランスと伝統分類を学習。\nhttps://www.haritaro.jp/diagnosis\n#ハリタロー #東洋医学 #体質チェック`;
     if (navigator.clipboard) {
       navigator.clipboard.writeText(shareText);
       setCopiedShare(true);
@@ -416,11 +418,11 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
               <span>東洋医学式 気・血・水 バランスチェック</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-              気血水 体質セルフ診断
+              気血水 体質セルフチェック
             </h1>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-xl mx-auto leading-relaxed">
               あなたの今の心身の傾きはどこにあるでしょうか？
-              直近1〜2週間の状態に当てはまるものにチェックを入れ、「診断する」を押してください。
+              直近1〜2週間の状態に当てはまるものにチェックを入れ、「体質傾向を分析する」を押してください。
             </p>
           </div>
 
@@ -428,7 +430,7 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
           <div className="p-3.5 sm:p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-start gap-2.5 text-xs text-[#59615D] dark:text-[#96A6B2] shadow-2xs">
             <AlertCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] shrink-0 mt-0.5" />
             <p className="leading-relaxed">
-              <strong>【ご利用にあたっての注意】</strong>本セルフ診断は東洋医学の気血水理論に基づき日頃の体質傾向やセルフケアの参考としていただくための学習・参考情報です。医師法に定める診断・治療等の医療行為ではありません。急激な体調変化や重篤な症状がある場合は速やかに医師等の専門医療機関を受診してください。
+              <strong>【ご利用にあたっての注意】</strong>本チェックは伝統医学の気血水分類を学ぶための参考情報です。病気の有無を判断する検査ではありません。急激な体調変化や重篤な症状がある場合は、受診・救急要請を優先してください。
             </p>
           </div>
 
@@ -658,7 +660,7 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                          この診断結果から臨床ノートを作成
+                          このチェック結果から臨床ノートの下書きを作成
                         </span>
                         <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#1E3D34] text-white">
                           下書き連携
@@ -685,7 +687,7 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
                       <Share2 className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                      診断結果をシェア・保存する
+                      チェック結果をシェア・保存する
                     </span>
                     <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
                       体質の記録や養生法の共有に
@@ -695,7 +697,7 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
                     {/* X (旧Twitter) シェア */}
                     <a
                       href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                        `【気血水 体質セルフ診断】私の診断結果は「${selfResult.name}」でした！ 東洋医学の視点で気・血・水のバランスとおすすめ養生法をチェック。\nhttps://www.haritaro.jp/diagnosis\n#ハリタロー #東洋医学 #体質診断`
+                        `【気血水 体質セルフチェック】学習上の分類結果は「${selfResult.name}」でした！ 東洋医学の視点で気・血・水のバランスと伝統分類を学習。\nhttps://www.haritaro.jp/diagnosis\n#ハリタロー #東洋医学 #体質チェック`
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -713,7 +715,7 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
                       href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
                         "https://www.haritaro.jp/diagnosis"
                       )}&text=${encodeURIComponent(
-                        `【気血水 体質セルフ診断】私の診断結果は「${selfResult.name}」でした！ 東洋医学の視点で気・血・水のバランスとおすすめ養生法をチェックできます。`
+                        `【気血水 体質セルフチェック】学習上の分類結果は「${selfResult.name}」でした！ 東洋医学の視点で気・血・水のバランスと伝統分類を学習できます。`
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -754,7 +756,7 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
                   onClick={handleResetSelf}
                   className="px-6 py-2.5 rounded-xl border border-[#D5CCBC] dark:border-[#2D3E50] text-xs font-semibold text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#FAF8F5] dark:hover:bg-[#1A2530] cursor-pointer"
                 >
-                  もう一度診断する
+                  もう一度チェックする
                 </button>
               </div>
             </div>
@@ -1216,7 +1218,7 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
               <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#E5DEC9] space-y-3">
                 <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34]">
                   <Activity className="w-4 h-4" />
-                  <span>ご自宅でできるおすすめのツボ</span>
+                  <span>学習用の関連経穴</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                   {patientModalData.result.advice.tsubo.map((tsuboName, idx) => {
@@ -1235,14 +1237,14 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
                           )}
                         </span>
                         <p className="text-[11px] text-[#59615D] leading-tight">
-                          {found ? found.locationSimple : "指で心地よい強さで押してください。"}
+                          {found ? found.locationSimple : "取穴の目安は経穴教材で確認してください。"}
                         </p>
                       </div>
                     );
                   })}
                 </div>
                 <p className="text-[11px] text-[#737C77] leading-relaxed">
-                  ※ツボを押すときは「痛気持ちいい」と感じる強さで、深呼吸しながら5秒押してゆっくり離す動作を3回ほど繰り返してください。
+                  ※体質分類だけで個人の施術適応は判断できません。経穴の位置は学習用の目安で、自己刺鍼・自己灸の手順ではありません。
                 </p>
               </div>
 
@@ -1277,13 +1279,13 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
           <div>
             <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
               <Sparkles className="w-4 h-4" />
-              <span>Academic Articles: Diagnostic Science</span>
+              <span>四診の学習と研究</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              東洋医学の診断学（四診）を自然科学で深掘りする
+              四診の伝統的な説明と、研究で確認できる範囲を学ぶ
             </h2>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1 leading-relaxed max-w-2xl">
-              東洋医学の四診（望・聞・問・切）の中でも、脈診・腹診・舌診は生体シグナルの解読技術です。現代の血行動態学・生体力学・画像解析と融合した学術解説記事を公開しています。
+              脈診・腹診・舌診の所見、検者間の一致、研究の対象と限界を確認します。伝統的な分類と医学的な診断精度を区別して読んでください。
             </p>
           </div>
           <Link
@@ -1296,71 +1298,29 @@ export default function DiagnosisClient({ initialTab = "self" }: Props) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {/* 脈診 */}
-          <Link
-            href="/articles/science-of-pulse-diagnosis"
-            className="bg-[#FFFFFF] dark:bg-[#17212A] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between"
-          >
-            <div className="space-y-2">
-              <div className="flex items-center justify-end text-xs text-[#737C77] dark:text-[#8899A6]">
-                <span className="text-[11px]">約 16分</span>
+          {relatedArticles.map(article => (
+            <Link
+              key={article.id}
+              href={`/articles/${article.id}`}
+              className="bg-[#FFFFFF] dark:bg-[#17212A] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center justify-end text-xs text-[#737C77] dark:text-[#8899A6]">
+                  <span className="text-[11px]">{article.readTime}</span>
+                </div>
+                <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
+                  {article.title}
+                </h3>
+                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
+                  {article.summary}
+                </p>
               </div>
-              <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
-                【脈診の科学】橈骨動脈拍動の血行動態学と生体情報解析
-              </h3>
-              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
-                動脈弾性、末梢血管抵抗、脈波伝播速度（PWV）、血管ツリー共鳴理論から浮・沈・遅・数・滑・濇・弦・緊・微・代などの脈象を血行動態学的にモデル化。
-              </p>
-            </div>
-            <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>記事を読む</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </div>
-          </Link>
-
-          {/* 腹診 */}
-          <Link
-            href="/articles/science-of-abdominal-diagnosis"
-            className="bg-[#FFFFFF] dark:bg-[#17212A] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between"
-          >
-            <div className="space-y-2">
-              <div className="flex items-center justify-end text-xs text-[#737C77] dark:text-[#8899A6]">
-                <span className="text-[11px]">約 14分</span>
+              <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+                <span>記事を読む</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
               </div>
-              <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
-                【腹診の科学】内臓体制反射・腹壁筋緊張度と自律神経評価
-              </h3>
-              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
-                心下痞鞕、胸脇苦満、小腹急結、腹皮拘急などの腹証を内臓体制反射、腹膜機械受容器、迷走神経求心路、腸脳相関から解明。
-              </p>
-            </div>
-            <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>記事を読む</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </div>
-          </Link>
-
-          {/* 舌診 */}
-          <Link
-            href="/articles/science-of-tongue-diagnosis"
-            className="bg-[#FFFFFF] dark:bg-[#17212A] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between"
-          >
-            <div className="space-y-2">
-              <div className="flex items-center justify-end text-xs text-[#737C77] dark:text-[#8899A6]">
-                <span className="text-[11px]">約 13分</span>
-              </div>
-              <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
-                【舌診の科学】舌質微小循環と舌苔マイクロバイオーム
-              </h3>
-              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
-                舌質の色調（淡白・紅・紫）と粘膜血流、舌苔（白・黄・厚・剥）と細菌叢・サイトカイン動態、AI画像解析による客観的診断基準を体系化。
-              </p>
-            </div>
-            <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>記事を読む</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </div>
-          </Link>
+            </Link>
+          ))}
         </div>
       </section>
     </div>

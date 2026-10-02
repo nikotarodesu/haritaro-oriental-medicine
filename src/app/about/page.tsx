@@ -2,6 +2,7 @@ import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import Link from "next/link";
 import { Sparkles, ShieldCheck, ArrowRight, Compass, BookOpen, GraduationCap, Stethoscope } from "lucide-react";
+import { getArticlePreviews } from "@/data/articleData";
 
 export const metadata: Metadata = {
   title: "サイトの志と運営方針",
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
+  const [comparisonArticle] = getArticlePreviews(["east-west-integrative-unified-theory"]);
   return (
     <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-16 space-y-8 sm:space-y-12">
       {/* ページ見出し */}
@@ -357,20 +359,20 @@ export default function AboutPage() {
           <div className="space-y-1 text-center sm:text-left">
             <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center justify-center sm:justify-start gap-1.5">
               <Sparkles className="w-3.5 h-3.5" />
-              当サイトの理論的支柱：人体統一理論
+              筆者の学習モデルと、研究による検証を区別する
             </span>
             <h4 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
-              【東西医学の統合と人体統一理論】二つの人体モデルの架橋
+              {comparisonArticle?.title}
             </h4>
             <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-xl">
-              「分析」の現代医学と「統合」の東洋医学。同一の複雑適応系を異なる抽象化レベルで記述した補完モデルとして、17層構造の中で再定義する総括論文を公開しています。
+              {comparisonArticle?.summary}
             </p>
           </div>
           <Link
             href="/articles/east-west-integrative-unified-theory"
             className="px-5 py-2.5 rounded-xl bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#162E27] text-white dark:text-[#121920] text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm"
           >
-            <span>総括論文を読む</span>
+            <span>比較と検証の考え方を読む</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>

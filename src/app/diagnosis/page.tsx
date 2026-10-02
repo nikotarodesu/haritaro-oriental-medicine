@@ -1,6 +1,9 @@
 import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import DiagnosisClient from "@/components/diagnosis/DiagnosisClient";
+import { getArticlePreviews } from "@/data/articleData";
+
+const RELATED_ARTICLE_IDS = ["science-of-pulse-diagnosis", "science-of-abdominal-diagnosis", "science-of-tongue-diagnosis"];
 
 interface Props {
   searchParams: Promise<{ tab?: string }>;
@@ -16,7 +19,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   if (isGorou) {
     const title = "五労チェッカー（久視・久臥・久坐・久立・久行）｜東洋医学セルフチェック";
     const description =
-      "『素問』宣明五気篇に基づく五労（久視・久臥・久坐・久立・久行）理論から、デスクワークや立ち仕事等の動作偏向と五臓の疲弊を判定。生活養生と経穴アドバイスを提供。";
+      "『素問』宣明五気篇の五労（久視・久臥・久坐・久立・久行）を参考に、作業や生活動作の偏りを振り返る学習用チェック。臓器の異常や病気を判定する検査ではありません。";
     const url = "https://www.haritaro.jp/diagnosis?tab=gorou";
 
     return {
@@ -34,7 +37,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     };
   }
 
-  const title = "気血水体質診断・対面問診ツール｜東洋医学の問診・説明・臨床記録";
+  const title = "気血水体質チェック・対面問診ツール｜東洋医学の学習・問診補助";
   const description =
     "気血水12問による体質チェックおよび鍼灸臨床での対面問診補助ツール。回答から状態の傾向を整理し、患者説明用の要約表示や臨床ノートへの連携に対応。五労チェッカーも併載。";
   const url = "https://www.haritaro.jp/diagnosis";
@@ -68,7 +71,7 @@ export default async function DiagnosisPage({ searchParams }: Props) {
 
   const pageTitle = isGorou
     ? "五労チェッカー（久視・久臥・久坐・久立・久行）｜東洋医学セルフチェック"
-    : "気血水体質診断・対面問診ツール｜東洋医学の問診・説明・臨床記録";
+    : "気血水体質チェック・対面問診ツール｜東洋医学の学習・問診補助";
   const pageUrl = isGorou
     ? "https://www.haritaro.jp/diagnosis?tab=gorou"
     : "https://www.haritaro.jp/diagnosis";
@@ -82,7 +85,7 @@ export default async function DiagnosisPage({ searchParams }: Props) {
         url: pageUrl,
         name: pageTitle,
         description: isGorou
-          ? "『素問』宣明五気篇に基づく五労理論から動作偏向と五臓の疲弊を判定。"
+          ? "五労の伝統的分類を参考に生活動作の偏りを振り返る学習用チェック。臓器や病気を判定する検査ではありません。"
           : "気血水12問による体質チェックおよび鍼灸臨床での対面問診補助ツール。",
         inLanguage: "ja",
         provider: {
@@ -103,7 +106,7 @@ export default async function DiagnosisPage({ searchParams }: Props) {
           {
             "@type": "ListItem",
             position: 2,
-            name: isGorou ? "五労チェッカー" : "気血水体質診断",
+            name: isGorou ? "五労チェッカー" : "気血水体質チェック",
             item: pageUrl,
           },
         ],
@@ -117,7 +120,7 @@ export default async function DiagnosisPage({ searchParams }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <DiagnosisClient initialTab={initialTab} />
+      <DiagnosisClient initialTab={initialTab} relatedArticles={getArticlePreviews(RELATED_ARTICLE_IDS)} />
     </>
   );
 }

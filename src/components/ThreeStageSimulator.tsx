@@ -284,6 +284,21 @@ export default function ThreeStageSimulator() {
     const restoreTimer = setTimeout(() => {
     // 1. URL searchParams の優先チェック（症例・体質診断等からの連携）
     const searchParams = new URLSearchParams(window.location.search);
+    const fromTsubo = searchParams.get("fromTsubo");
+    const tsuboName = searchParams.get("tsuboName");
+
+    if (fromTsubo) {
+      // 古い経穴リンクの自動推論条件も採用しない。経穴から証は確定できない。
+      setFromTsuboInfo({
+        code: fromTsubo,
+        name: tsuboName || fromTsubo,
+      });
+      setActivePresetId(null);
+      setChangeNotice(`参照元の経穴は「${tsuboName || fromTsubo}」です。初期条件はこの経穴の適応病態を示しません。所見に応じて学習条件を選び直してください。`);
+      setIsMounted(true);
+      return;
+    }
+
     const fromCase = searchParams.get("fromCase");
     const caseTitle = searchParams.get("caseTitle");
 
@@ -333,21 +348,6 @@ export default function ThreeStageSimulator() {
       });
       setActivePresetId(null);
       setChangeNotice(`気血水体質診断（${diagName || ""}）の所見を反映しました。八綱・臓腑の連動配穴を検証できます。`);
-      setIsMounted(true);
-      return;
-    }
-
-    const fromTsubo = searchParams.get("fromTsubo");
-    const tsuboName = searchParams.get("tsuboName");
-
-    if (fromTsubo) {
-      // 古い経穴リンクの自動推論条件も採用しない。経穴から証は確定できない。
-      setFromTsuboInfo({
-        code: fromTsubo,
-        name: tsuboName || fromTsubo,
-      });
-      setActivePresetId(null);
-      setChangeNotice(`参照元の経穴は「${tsuboName || fromTsubo}」です。初期条件はこの経穴の適応病態を示しません。所見に応じて学習条件を選び直してください。`);
       setIsMounted(true);
       return;
     }

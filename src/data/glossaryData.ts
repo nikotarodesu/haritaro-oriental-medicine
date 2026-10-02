@@ -232,13 +232,13 @@ export const GLOSSARY_TERMS: Record<string, GlossaryTerm> = {
     term: "得気",
     reading: "とっき",
     category: "経絡・経穴",
-    oneLiner: "鍼が適切な深さに達したとき、患者が感じる「ズーンと重だるい響き」や施術者の指に伝わる吸い付き感。",
-    analogy: "「魚釣りのアタリ（ヒット）」のように、狙った組織や神経に刺激がジャストミートした手応え。",
-    summary: "神経生理学的には筋膜や神経周囲のポリモーダル受容器やAδ線維の刺激に相当し、内因性鎮痛物質の分泌や血流改善の契機となる。",
+    oneLiner: "刺鍼中の重だるさなどの患者の感覚や、施術者が感じる抵抗を伝統的に説明する用語。",
+    analogy: "実習で共有する感覚の表現。感じ方は刺激の条件や個人によって異なります。",
+    summary: "患者が感じたことと、施術者が触知したことを分けて記録します。得気の有無だけでは適切な刺入深度、安全性、患者の症状改善を判断できません。組織の機械的反応や神経の研究と、臨床効果を区別して学びます。",
     relatedLectureId: "lecture-treatment-1",
     relatedLectureTitle: "治法論 レッスン1：補瀉と刺鍼手技の基礎",
     relatedToolUrl: "/articles/science-of-acupuncture-neuroscience",
-    relatedToolTitle: "鍼灸の科学（神経生理学）"
+    relatedToolTitle: "鍼灸の科学：作用機序と臨床効果を分けて読む"
   },
   五労: {
     term: "五労",

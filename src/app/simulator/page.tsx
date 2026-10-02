@@ -2,6 +2,7 @@ import { SHARED_OG_IMAGES } from "@/config/seo";
 import { Metadata } from "next";
 import Link from "next/link";
 import SimulatorHub from "@/components/SimulatorHub";
+import { getArticlePreviews } from "@/data/articleData";
 
 export const metadata: Metadata = {
   title: "臨床弁証推論シミュレーター｜八綱・気血水・臓腑の連動分析",
@@ -75,7 +76,11 @@ export default function SimulatorPage() {
       </nav>
 
       {/* シミュレーター統合ハブ */}
-      <SimulatorHub />
+      <SimulatorHub relatedArticles={getArticlePreviews([
+        "science-of-yinyang-gogyo",
+        "science-of-kampo-network-pharmacology",
+        "science-of-qi-blood-fluid",
+      ])} />
     </div>
   );
 }

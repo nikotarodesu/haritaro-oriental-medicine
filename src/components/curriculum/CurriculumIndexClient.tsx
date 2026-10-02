@@ -1,6 +1,7 @@
 "use client";
 
 import LearningReviewPanel from "@/components/learning/LearningReviewPanel";
+import type { ArticlePreview } from "@/data/articleData";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -145,7 +146,7 @@ const CHAPTER_DEFINITIONS: ChapterDef[] = [
   },
 ];
 
-export default function CurriculumIndexClient() {
+export default function CurriculumIndexClient({ relatedArticles }: { relatedArticles: ArticlePreview[] }) {
   const [showLearningMap, setShowLearningMap] = useState<boolean>(false);
   const [showIncorrectModal, setShowIncorrectModal] = useState<boolean>(false);
   const [expandedChapters, setExpandedChapters] = useState<Record<number, boolean>>({ 1: true });
@@ -574,156 +575,54 @@ export default function CurriculumIndexClient() {
         })}
       </div>
 
-      {/* 学術深化・東洋医学自然科学講義録アーカイブ */}
+      {/* 伝統医学と研究の関連解説 */}
       <section className="bg-gradient-to-r from-[#EBF3EF]/60 via-[#FAF8F5] to-[#FCF4EB]/60 dark:from-[#172621]/60 dark:via-[#17212A] dark:to-[#221F1A]/60 rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-10 space-y-4 sm:space-y-6 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-[#E8E1D1] dark:border-[#22303D] pb-5">
           <div>
-            <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
+            <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] tracking-wider mb-1">
               <Sparkles className="w-4 h-4" />
-              <span>Advanced Academic Lectures & Natural Science</span>
+              <span>伝統的な分類と、研究で分かる範囲を学ぶ</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              学術深化：東洋医学の自然科学的機序を深掘りする学術記事
+              学びを深める：伝統医学と現代研究の解説
             </h2>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1 leading-relaxed max-w-2xl">
-              東洋医学の歴史的誕生（システム同定）から、陰陽五行（二値モデル・多要素制御）、気血津液（生体ダイナミクス・微小循環）まで、自然科学・複雑系科学の言葉で再定義した学術知見アーカイブです。
+              陰陽五行・気血津液の伝統的な考え方、鍼灸・漢方の研究、医学的な評価の違いを整理します。研究の対象・比較条件・限界を確認しながら読み進めます。
             </p>
           </div>
           <Link
             href="/articles"
             className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1 shrink-0"
           >
-            <span>論文・学術アーカイブ一覧へ</span>
+            <span>解説記事の一覧へ</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <Link
-            href="/articles/science-of-oriental-medicine-history"
-            className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
-          >
-            <div className="space-y-2">
-              <div className="flex items-center justify-end text-xs">
-                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">約 18分</span>
+          {relatedArticles.map(article => (
+            <Link
+              key={article.id}
+              href={`/articles/${article.id}`}
+              className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center justify-end text-xs">
+                  <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">約{article.readTime}</span>
+                </div>
+                <h3 className="font-sans text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
+                  {article.title}
+                </h3>
+                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
+                  {article.summary}
+                </p>
               </div>
-              <h3 className="font-sans text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
-                【東洋医学史】ブラックボックス解析としての経験医学
-              </h3>
-              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
-                『黄帝内経』のネットワーク階層構造、二千年におよぶ経験医学と科学的医学（RCT・EBM）の相違、日本漢方・管鍼法・腹診の適応進化。
-              </p>
-            </div>
-            <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>記事全文を読む</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </div>
-          </Link>
-
-          <Link
-            href="/articles/science-of-yinyang-gogyo"
-            className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
-          >
-            <div className="space-y-2">
-              <div className="flex items-center justify-end text-xs">
-                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">約 22分</span>
+              <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+                <span>記事全文を読む</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
               </div>
-              <h3 className="font-sans text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
-                【陰陽五行の科学】二値モデルと五つの機能ネットワーク
-              </h3>
-              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
-                二値分類と情報圧縮、陰陽四原則（拮抗制御・負のフィードバック・相転移）、寒熱表裏虚実の状態空間、相生・相剋・相乗・相侮の制御工学。
-              </p>
-            </div>
-            <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>記事全文を読む</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </div>
-          </Link>
-
-          <Link
-            href="/articles/science-of-qi-blood-fluid"
-            className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
-          >
-            <div className="space-y-2">
-              <div className="flex items-center justify-end text-xs">
-                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">約 20分</span>
-              </div>
-              <h3 className="font-sans text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
-                【気血津液の科学】人体のシステムダイナミクス
-              </h3>
-              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
-                創発としての気、気の五大機能、気虚気滞気逆気陥、濡養と微小循環、体液コンパートメントとリンパ系、三位一体の共鳴ループ。
-              </p>
-            </div>
-            <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>記事全文を読む</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </div>
-          </Link>
-
-          <Link
-            href="/articles/science-of-acupuncture-neuroscience"
-            className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
-          >
-            <div className="space-y-2">
-              <div className="flex items-center justify-end text-xs">
-                <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B]">約 25分</span>
-              </div>
-              <h3 className="font-sans text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
-                【鍼灸の科学】生体情報制御学としての鍼灸医学
-              </h3>
-              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
-                メカノトランスダクション、細胞外ATP/アデノシン、ゲート制御とPAG-RVM下行性疼痛抑制、自律神経HRV、炎症反射、刺激パラメータ。
-              </p>
-            </div>
-            <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>記事全文を読む</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </div>
-          </Link>
-
-          <Link
-            href="/articles/science-of-kampo-network-pharmacology"
-            className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
-          >
-            <div className="space-y-2">
-              <div className="flex items-center justify-end text-xs">
-                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">約 20分</span>
-              </div>
-              <h3 className="font-sans text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
-                【漢方医学の科学】状態空間への多点介入
-              </h3>
-              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
-                同病異治・異病同治、君臣佐使の制御工学（多入力MIMO）、証のベイズ推論モデル、ネットワーク薬理学、大建中湯・六君子湯のエビデンス。
-              </p>
-            </div>
-            <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>記事全文を読む</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </div>
-          </Link>
-
-          <Link
-            href="/articles/east-west-integrative-unified-theory"
-            className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
-          >
-            <div className="space-y-2">
-              <div className="flex items-center justify-end text-xs">
-                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">約 19分</span>
-              </div>
-              <h3 className="font-sans text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
-                【人体統一理論】東西二大モデルの統合
-              </h3>
-              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
-                モデル依存実在論、17層構造における高次機能統合モデル、証・気・経絡のコンセンサス、閉ループ制御工学、データ医学・AIへの進化。
-              </p>
-            </div>
-            <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-              <span>記事全文を読む</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </div>
-          </Link>
+            </Link>
+          ))}
         </div>
       </section>
 
