@@ -15,17 +15,28 @@ export default function SubscriptionManagementPage() {
       const url='/api/stripe/status'+(sessionId?'?session_id='+encodeURIComponent(sessionId):'');
       const response=await fetch(url,{cache:'no-store'});const data=await response.json();
       if(!response.ok)throw new Error(data.error||'契約情報を確認できませんでした。');
-      if(data.pending){setMessage('決済の確定を待っています。少し時間をおいて「契約状態を再確認」を押してください。');return;}
+      if(data.pending){setMessage('決済の確定を待っています。自動で再確認します。しばらく反映されない場合は「契約状態を再確認」を押してください。');return true;}
       await refreshUser();
       if(sessionId){setMessage(data.role==='premium'?'決済と会員権限の反映を確認しました。':'決済情報を確認しました。現在の契約状態をご確認ください。');window.history.replaceState({},'',window.location.pathname);}
       else setMessage('サーバーの契約状態を確認しました。');
     }catch(err){setError(err instanceof Error?err.message:'契約情報を確認できませんでした。');}
     finally{setProcessing(false);}
+    return false;
   },[refreshUser]);
   useEffect(()=>{
     if(isLoading||!user?.id)return;
-    const timer=setTimeout(()=>void checkBilling(new URLSearchParams(window.location.search).get('session_id')||undefined),0);
-    return ()=>clearTimeout(timer);
+    let stopped=false;let attempts=0;
+    const sessionId=new URLSearchParams(window.location.search).get('session_id')||undefined;
+    let timer:ReturnType<typeof setTimeout>;
+    const poll=async()=>{
+      if(stopped)return;
+      const pending=await checkBilling(sessionId);
+      if(stopped||!pending)return;
+      if(attempts++<5)timer=setTimeout(()=>void poll(),attempts*2000);
+      else setMessage('決済の確定に時間がかかっています。再度お申し込みせず「契約状態を再確認」を押してください。反映されない場合はお問い合わせください。');
+    };
+    timer=setTimeout(()=>void poll(),0);
+    return ()=>{stopped=true;clearTimeout(timer);};
   },[isLoading,user?.id,checkBilling]);
   const openPortal=async()=>{
     setProcessing(true);setError('');

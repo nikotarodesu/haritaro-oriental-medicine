@@ -12,7 +12,11 @@ export async function GET(request: Request) {
       subscriptionId = typeof session.subscription === 'string' ? session.subscription : session.subscription?.id;
       if (!subscriptionId) throw new BillingError('契約情報を確認できません。', 409);
     }
-    if (subscriptionId) user = await syncSubscription(stripeClient(), subscriptionId, user.id);
+    if (subscriptionId) {
+      const synced = await syncSubscription(stripeClient(), subscriptionId, user.id);
+      if (!synced) throw new BillingError('ご本人の契約を確認できません。', 409);
+      user = synced;
+    }
     return Response.json({ role: user.app_metadata.role || 'free', subscription: user.app_metadata.subscription || null }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return billingErrorResponse(error); }
 }

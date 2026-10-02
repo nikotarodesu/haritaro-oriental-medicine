@@ -11,7 +11,8 @@
     "test:content": "node scripts/content-regression.cjs",
     "test:learning": "node scripts/learning-regression.cjs",
     "test:site": "node scripts/site-regression.cjs",
-    "test:billing": "node scripts/billing-regression.cjs"
+    "test:billing": "node scripts/billing-regression.cjs",
+    "check:billing": "node scripts/billing-readiness.cjs"
   },
   "dependencies": {
     "@google-analytics/data": "^7.2.1",

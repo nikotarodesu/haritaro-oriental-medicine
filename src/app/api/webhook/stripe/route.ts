@@ -7,11 +7,13 @@ export async function POST(request: Request) {
   if (!secret) return Response.json({ error: 'Webhook is not configured' }, { status: 503 });
   let event: Stripe.Event;
   let stripe: Stripe;
+  try { stripe = stripeClient(); }
+  catch (error) { return billingErrorResponse(error); }
   try {
-    stripe = stripeClient();
     event = stripe.webhooks.constructEvent(await request.text(), signature, secret);
   } catch { return Response.json({ error: 'Invalid webhook signature' }, { status: 400 }); }
   try {
+    if (event.livemode !== /^(sk|rk)_live_/.test(process.env.STRIPE_SECRET_KEY || '')) return Response.json({ error: 'Webhook mode mismatch' }, { status: 400 });
     const object = event.data.object;
     let subscriptionId: string | undefined;
     if (event.type === 'checkout.session.completed' || event.type === 'checkout.session.async_payment_succeeded') {
@@ -27,5 +29,8 @@ export async function POST(request: Request) {
     }
     if (subscriptionId) await syncSubscription(stripe, subscriptionId);
     return Response.json({ received: true });
-  } catch (error) { return billingErrorResponse(error); }
+  } catch (error) {
+    console.error('Stripe webhook fulfillment failed', { eventId: event.id, eventType: event.type });
+    return billingErrorResponse(error);
+  }
 }
