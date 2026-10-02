@@ -13,7 +13,7 @@ export const SUBSCRIPTION_CONFIG = {
       displayPrice: "¥980",
       periodLabel: "月",
       billingInterval: "month",
-      stripePriceId: process.env.STRIPE_PRICE_ID_MONTHLY || "price_haritaro_monthly_980",
+      stripePriceId: process.env.STRIPE_PRICE_ID_MONTHLY || "",
       description: "手軽に始められる月額プラン。いつでもマイページから解約可能。",
     },
     yearly: {
@@ -23,7 +23,7 @@ export const SUBSCRIPTION_CONFIG = {
       displayPrice: "¥9,800",
       periodLabel: "年",
       billingInterval: "year",
-      stripePriceId: process.env.STRIPE_PRICE_ID_YEARLY || "price_haritaro_yearly_9800",
+      stripePriceId: process.env.STRIPE_PRICE_ID_YEARLY || "",
       description: "2ヶ月分お得な年額プラン（実質月額約817円）。じっくり学びたい方に最適。",
       savingLabel: "2ヶ月分お得",
       discountPercentage: 17,
@@ -40,7 +40,7 @@ export const SUBSCRIPTION_CONFIG = {
   },
 
   // 本番販売有効化フラグ
-  // false または環境変数未設定時は、安全なデモ・プレビューモードとして動作し、動作確認が可能です。
+  // false または未設定時は新規申し込みを停止します。会員権限のデモ付与は行いません。
   enableSubscriptionSales: process.env.NEXT_PUBLIC_ENABLE_SUBSCRIPTION_SALES === "true",
 
   // Stripe公開鍵

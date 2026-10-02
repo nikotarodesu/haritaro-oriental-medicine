@@ -10,7 +10,8 @@
     "verify:integrity": "node scripts/verify-integrity.mjs",
     "test:content": "node scripts/content-regression.cjs",
     "test:learning": "node scripts/learning-regression.cjs",
-    "test:site": "node scripts/site-regression.cjs"
+    "test:site": "node scripts/site-regression.cjs",
+    "test:billing": "node scripts/billing-regression.cjs"
   },
   "dependencies": {
     "@google-analytics/data": "^7.2.1",

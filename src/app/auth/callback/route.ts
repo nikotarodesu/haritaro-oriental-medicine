@@ -1,28 +1,16 @@
-import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
-
+import { NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
+import { safeReturnPath } from '@/utils/authPolicy';
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
-  const code = searchParams.get("code");
-  // リダイレクト先の決定（指定がなければマイページへ）
-  const next = searchParams.get("next") ?? "/account/subscription";
-
+  const url = new URL(request.url);
+  const next = safeReturnPath(url.searchParams.get('next'));
+  const code = url.searchParams.get('code');
   if (code) {
-    const supabase = await createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
-      const forwardedHost = request.headers.get("x-forwarded-host");
-      const isLocalEnv = process.env.NODE_ENV === "development";
-      if (isLocalEnv) {
-        return NextResponse.redirect(`${origin}${next}`);
-      } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`);
-      } else {
-        return NextResponse.redirect(`${origin}${next}`);
-      }
-    }
+    try { const { error } = await (await createClient()).auth.exchangeCodeForSession(code);
+      if (!error) return NextResponse.redirect(new URL(next, url.origin));
+    } catch { /* Return a retry link without exposing provider errors. */ }
   }
-
-  // 認証エラー時はログイン画面へエラーパラメータ付きでリダイレクト
-  return NextResponse.redirect(`${origin}/auth/login?error=oauth_failed`);
+  const destination = new URL('/auth/login', url.origin);
+  destination.searchParams.set('error','oauth_failed'); destination.searchParams.set('returnTo',next);
+  return NextResponse.redirect(destination);
 }

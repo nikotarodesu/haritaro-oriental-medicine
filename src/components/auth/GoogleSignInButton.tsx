@@ -1,241 +1,56 @@
 "use client";
-
-import React, { useEffect, useRef, useState } from "react";
-import Script from "next/script";
-import { useRouter } from "next/navigation";
-import { ShieldCheck, Loader2 } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
-
-declare global {
-  interface Window {
-    google?: {
-      accounts: {
-        id: {
-          initialize: (config: any) => void;
-          renderButton: (parent: HTMLElement, options: any) => void;
-          prompt: (momentListener?: (notification: any) => void) => void;
-          cancel: () => void;
-        };
-      };
-    };
-  }
+import { useEffect, useRef, useState } from 'react';
+import Script from 'next/script';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+import { safeReturnPath } from '@/utils/authPolicy';
+interface Credential { credential?: string }
+interface GoogleId {
+  initialize: (config: {client_id: string; callback: (response: Credential)=>void; nonce: string; auto_select: boolean; context: string}) => void;
+  renderButton: (parent: HTMLElement, options: {type: string;theme: string;size: string;text: string;shape: string;width: number;locale: string}) => void;
+  cancel: () => void;
 }
-
-// Google アイコン（フォールバック用）
-function GoogleIcon({ className = "w-5 h-5" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24">
-      <path
-        fill="#4285F4"
-        d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"
-      />
-      <path
-        fill="#34A853"
-        d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24Z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.03 0 12s.45 3.82 1.25 5.42l4.03-3.15Z"
-      />
-      <path
-        fill="#EA4335"
-        d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98Z"
-      />
-    </svg>
-  );
-}
-
-// 暗号学的に安全な Nonce の生成（Supabase Nonce 検証用）
-async function generateNonce(): Promise<{ nonce: string; hashedNonce: string }> {
-  try {
-    const rawValues = new Uint8Array(32);
-    window.crypto.getRandomValues(rawValues);
-    const nonce = btoa(String.fromCharCode(...rawValues));
-    const encoder = new TextEncoder();
-    const encodedNonce = encoder.encode(nonce);
-    const hashBuffer = await window.crypto.subtle.digest("SHA-256", encodedNonce);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashedNonce = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-    return { nonce, hashedNonce };
-  } catch (e) {
-    const fallback = Math.random().toString(36).substring(2) + Date.now().toString(36);
-    return { nonce: fallback, hashedNonce: fallback };
-  }
-}
-
-interface GoogleSignInButtonProps {
-  mode?: "login" | "register";
-  returnTo?: string;
-  onError?: (error: string) => void;
-  className?: string;
-}
-
-export default function GoogleSignInButton({
-  mode = "login",
-  returnTo = "/account/subscription",
-  onError,
-  className = "",
-}: GoogleSignInButtonProps) {
-  const router = useRouter();
-  const { loginWithGoogle, loginWithGoogleIdToken } = useAuth();
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [isScriptReady, setIsScriptReady] = useState(false);
-  const [nonceData, setNonceData] = useState<{ nonce: string; hashedNonce: string } | null>(null);
-
-  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-
-  // 1. 初回マウント時に Nonce を事前生成
-  useEffect(() => {
-    generateNonce().then(setNonceData);
-  }, []);
-
-  // 2. スクリプトの読み込み検知（キャッシュ・事前ロード・動的挿入の対応）
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    if (window.google?.accounts?.id) {
-      setIsScriptReady(true);
-      return;
-    }
-
-    const existingScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
-    if (!existingScript) {
-      const script = document.createElement("script");
-      script.src = "https://accounts.google.com/gsi/client";
-      script.async = true;
-      script.defer = true;
-      script.onload = () => setIsScriptReady(true);
-      document.body.appendChild(script);
-    } else {
-      existingScript.addEventListener("load", () => setIsScriptReady(true));
-      const interval = setInterval(() => {
-        if (window.google?.accounts?.id) {
-          setIsScriptReady(true);
-          clearInterval(interval);
-        }
-      }, 100);
-      return () => clearInterval(interval);
-    }
-  }, []);
-
-  // 3. Google Identity Services 初期化とボタン描画
-  useEffect(() => {
-    if (!clientId || !isScriptReady || !nonceData || !containerRef.current) return;
-    if (typeof window === "undefined" || !window.google?.accounts?.id) return;
-
+declare global { interface Window { google?: { accounts: { id: GoogleId } } } }
+export default function GoogleSignInButton({mode='login', returnTo='/account/subscription', onError, className=''}: {mode?: 'login'|'register';returnTo?: string;onError?: (message:string)=>void;className?: string}) {
+  const router = useRouter(); const {isConfigured,loginWithGoogle,loginWithGoogleIdToken}=useAuth();
+  const container=useRef<HTMLDivElement>(null); const report=useRef(onError);
+  const [busy,setBusy]=useState(false); const [ready,setReady]=useState(false);
+  const [nonce,setNonce]=useState<{raw:string;hash:string}|null>(null);
+  const clientId=process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+  useEffect(()=>{report.current=onError;},[onError]);
+  useEffect(()=>{
+    let active=true;
+    const prepare=async()=>{
+      try {
+        const bytes=crypto.getRandomValues(new Uint8Array(32)); const raw=Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
+        const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(raw));
+        if(active)setNonce({raw,hash:Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('')});
+      } catch { /* OAuth remains available if secure nonce generation fails. */ }
+    }; void prepare(); return ()=>{active=false;};
+  },[]);
+  useEffect(()=>{
+    if(!isConfigured||!clientId||!ready||!nonce||!container.current||!window.google?.accounts.id)return;
     try {
-      window.google.accounts.id.initialize({
-        client_id: clientId,
-        callback: async (response: { credential?: string }) => {
-          if (!response.credential) {
-            onError?.("Googleから認証情報を受信できませんでした。");
-            return;
-          }
-          setIsLoading(true);
-          try {
-            const res = await loginWithGoogleIdToken(response.credential, nonceData.nonce);
-            if (res.success) {
-              router.push(returnTo);
-            } else {
-              onError?.(res.error || "Googleログインに失敗しました。");
-              setIsLoading(false);
-            }
-          } catch (err: any) {
-            onError?.(err.message || "予期しないエラーが発生しました。");
-            setIsLoading(false);
-          }
-        },
-        nonce: nonceData.hashedNonce,
-        use_fedcm_for_prompt: true,
-        auto_select: false,
-        context: mode === "register" ? "signup" : "signin",
-      });
-
-      const parentWidth = containerRef.current.offsetWidth || 340;
-      const targetWidth = Math.max(200, Math.min(parentWidth, 380));
-
-      containerRef.current.innerHTML = "";
-      window.google.accounts.id.renderButton(containerRef.current, {
-        type: "standard",
-        theme: "outline",
-        size: "large",
-        text: mode === "register" ? "signup_with" : "signin_with",
-        shape: "pill",
-        logo_alignment: "left",
-        width: targetWidth,
-        locale: "ja",
-      });
-
-      window.google.accounts.id.prompt(() => {});
-    } catch (e) {
-      console.error("Failed to initialize Google Identity Services:", e);
-    }
-  }, [clientId, isScriptReady, nonceData, mode, returnTo, loginWithGoogleIdToken, onError, router]);
-
-  // フォールバック処理（OAuthリダイレクト）
-  const handleFallbackOAuthLogin = async () => {
-    setIsLoading(true);
-    onError?.("");
-    try {
-      const result = await loginWithGoogle(returnTo);
-      if (!result.success) {
-        onError?.(result.error || "Googleログインの開始に失敗しました。");
-        setIsLoading(false);
-      }
-    } catch (err: any) {
-      onError?.(err.message || "予期しないエラーが発生しました。");
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <div className={`space-y-3 ${className}`}>
-      {clientId && (
-        <Script
-          src="https://accounts.google.com/gsi/client"
-          strategy="afterInteractive"
-          onReady={() => setIsScriptReady(true)}
-        />
-      )}
-
-      {isLoading ? (
-        <div className="w-full py-3 px-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#1C2732] border-2 border-[#D8CFC0] dark:border-[#384C5E] text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm font-bold shadow-sm flex items-center justify-center gap-3">
-          <Loader2 className="w-5 h-5 animate-spin text-[#1E3D34] dark:text-[#74BA9E]" />
-          <span>Googleアカウントを確認中...</span>
-        </div>
-      ) : clientId ? (
-        <div className="flex flex-col items-center justify-center w-full">
-          <div ref={containerRef} className="flex justify-center w-full min-h-[44px]" />
-          {!isScriptReady && (
-            <div className="w-full py-3 px-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#1C2732] border-2 border-[#D8CFC0] dark:border-[#384C5E] text-[#737C77] dark:text-[#8899A6] text-xs sm:text-sm font-bold shadow-sm flex items-center justify-center gap-3">
-              <Loader2 className="w-4 h-4 animate-spin text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>Google ログインを準備中...</span>
-            </div>
-          )}
-        </div>
-      ) : (
-        <button
-          type="button"
-          onClick={handleFallbackOAuthLogin}
-          className="w-full py-3 px-4 rounded-2xl bg-white dark:bg-[#1C2732] border-2 border-[#D8CFC0] dark:border-[#384C5E] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:bg-[#FAF8F5] dark:hover:bg-[#22303D] text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm font-bold shadow-sm transition-all flex items-center justify-center gap-3 cursor-pointer group"
-        >
-          <GoogleIcon className="w-5 h-5 shrink-0" />
-          <span>
-            {mode === "register" ? "Google アカウントで登録 / ログイン" : "Google アカウントでログイン / 登録"}
-          </span>
-        </button>
-      )}
-
-      <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#737C77] dark:text-[#8899A6]">
-        <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-        <span>
-          {mode === "register"
-            ? "パスワード設定不要・1クリックで安全に登録"
-            : "パスワード不要・1クリックで安全にログイン"}
-        </span>
-      </div>
-    </div>
-  );
+      window.google.accounts.id.initialize({client_id:clientId,nonce:nonce.hash,auto_select:false,context:mode==='register'?'signup':'signin',callback:async response=>{
+        if(!response.credential)return;
+        setBusy(true); report.current?.('');
+        try { const result=await loginWithGoogleIdToken(response.credential,nonce.raw);
+          if(result.success){router.replace(safeReturnPath(returnTo));router.refresh();}
+          else report.current?.(result.error||'Google認証を確認できませんでした。');
+        } finally {setBusy(false);}
+      }});
+      container.current.replaceChildren();
+      window.google.accounts.id.renderButton(container.current,{type:'standard',theme:'outline',size:'large',text:mode==='register'?'signup_with':'signin_with',shape:'pill',width:Math.min(300,container.current.clientWidth||260),locale:'ja'});
+    } catch { /* The redirect button below remains available. */ }
+    return ()=>window.google?.accounts.id.cancel();
+  },[isConfigured,clientId,ready,nonce,mode,returnTo,loginWithGoogleIdToken,router]);
+  const oauth=async()=>{setBusy(true);report.current?.('');const result=await loginWithGoogle(safeReturnPath(returnTo));if(!result.success){report.current?.(result.error||'Googleログインを開始できませんでした。');setBusy(false);}};
+  return <div className={'space-y-3 '+className}>
+    {clientId&&isConfigured&&<Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" onReady={()=>setReady(true)} />}
+    <div ref={container} className="flex justify-center w-full" />
+    <button type="button" disabled={busy||!isConfigured} onClick={oauth} className="min-h-11 w-full rounded-xl border border-[#D8CFC0] dark:border-[#384C5E] bg-white dark:bg-[#1C2732] px-3 py-3 font-bold text-sm text-[#232826] dark:text-[#FAF8F5] disabled:opacity-60">
+      {busy?'Googleアカウントを確認中...':ready&&nonce?'Googleログインを別の方法で開く':'Googleアカウントでログイン・登録'}
+    </button>
+    <p className="text-xs text-center text-[#59615D] dark:text-[#96A6B2]">{isConfigured?'ボタンが表示されない場合も、上のリンクでGoogle認証へ進めます。':'ログインは現在準備中です。学習コンテンツは引き続き利用できます。'}</p>
+  </div>;
 }

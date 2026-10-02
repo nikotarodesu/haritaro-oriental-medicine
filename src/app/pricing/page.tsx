@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { 
   Check, 
@@ -28,12 +28,15 @@ export default function PricingPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { user, isPremium } = useAuth();
-  const salesEnabled = isSubscriptionSalesEnabled();
+  const [billingReady,setBillingReady]=useState(false);
+  useEffect(()=>{let active=true;fetch('/api/stripe/availability',{cache:'no-store'}).then(response=>response.ok?response.json():null).then(data=>{if(active)setBillingReady(data?.available===true);}).catch(()=>{});return()=>{active=false;};},[]);
+  const salesEnabled = isSubscriptionSalesEnabled() && billingReady;
 
   const currentPricing = SUBSCRIPTION_CONFIG.pricing[billingCycle];
 
   const handleSubscribe = async () => {
     if (!salesEnabled) return;
+    if (!user) { window.location.assign('/auth/login?returnTo=%2Fpricing%23pricing-cards'); return; }
     setIsLoading(true);
     setError(null);
     try {
@@ -42,19 +45,17 @@ export default function PricingPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           plan: billingCycle,
-          userId: user?.id,
-          userEmail: user?.email,
         }),
       });
 
       const data = await res.json();
 
-      if (data.url) {
+      if (res.ok && data.url) {
         window.location.href = data.url;
       } else {
         setError(data.error || "決済画面の起動に失敗しました。時間をおいてお試しください。");
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error("Checkout error:", e);
       setError("通信エラーが発生しました。ネットワーク状況をご確認ください。");
     } finally {
@@ -859,7 +860,7 @@ export default function PricingPage() {
               <ChevronDown className="w-4 h-4 text-[#737C77] transition-transform group-open:rotate-180 shrink-0 ml-2" />
             </summary>
             <p className="mt-3 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed border-t border-[#E8E1D1] dark:border-[#22303D] pt-3">
-              はい、無料ログイン（Googleログイン等）していただくことで、クラウド自動保存・PCスマホ間同期が有効になり、PCで書いたノートを通勤中のスマホですぐに確認・編集できます。行レベルセキュリティ（RLS）によりご本人アカウント以外のアクセスを厳格に制限し、患者さんの実名も保持しない設計のため安全にご利用いただけます。また、未ログイン時でも手動バックアップ（ファイル保存・読込）によるデータ移行が可能です。
+              はい、無料ログイン（Googleログイン）していただくことで、クラウド自動保存・PCスマホ間同期が有効になり、PCで書いたノートを通勤中のスマホですぐに確認・編集できます。行レベルセキュリティ（RLS）によりご本人アカウント以外のアクセスを厳格に制限し、患者さんの実名も保持しない設計のため安全にご利用いただけます。また、未ログイン時でも手動バックアップ（ファイル保存・読込）によるデータ移行が可能です。
             </p>
           </details>
 
