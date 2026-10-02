@@ -6,15 +6,15 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "国家試験対策特設ハブ｜東洋医学・経絡経穴で満点を狙う最短ルート",
-  description: "はり太郎の国家試験対策特設ハブ。鍼灸師・あん摩マッサージ指圧師の国家試験に向け、忘却曲線に基づく日替わり特訓、状況設定症例演習、要穴・骨度法マスター、禁忌安全管理、全81講義の弱点克服カリキュラムを提供。",
+  title: "国家試験対策特設ハブ｜東洋医学・経絡経穴で復習・症例・経穴をつなぐ学習ハブ",
+  description: "はり太郎の国家試験対策特設ハブ。鍼灸師・あん摩マッサージ指圧師の国家試験に向け、間隔反復に基づく日替わり特訓、状況設定症例演習、要穴・骨度法マスター、禁忌安全管理、全81講義の弱点克服カリキュラムを提供。",
   alternates: {
     canonical: "/kokushi",
   },
   openGraph: {
       images: SHARED_OG_IMAGES,
-    title: "国家試験対策特設ハブ｜東洋医学・経絡経穴で満点を狙う最短ルート | はり太郎の東洋医学",
-    description: "忘却曲線復習・状況設定演習・要穴骨度法・禁忌安全を統合した鍼灸国試対策ハブ。",
+    title: "国家試験対策特設ハブ｜東洋医学・経絡経穴で復習・症例・経穴をつなぐ学習ハブ | はり太郎の東洋医学",
+    description: "間隔反復復習・状況設定演習・要穴骨度法・禁忌安全を統合した鍼灸国試対策ハブ。",
     url: "https://www.haritaro.jp/kokushi",
   },
 };
@@ -24,7 +24,7 @@ export default function KokushiPage() {
     "@context": "https://schema.org",
     "@type": "LearningResource",
     name: "はり師・きゅう師 国家試験対策特設ハブ",
-    description: "鍼灸師・あん摩マッサージ指圧師国家試験（東洋医学概論・経絡経穴概論・東洋医学臨床論）の完全攻略ハブ。忘却曲線復習、本試験実問アーカイブ、状況設定問題、禁忌・リスク管理を網羅。",
+    description: "鍼灸師・あん摩マッサージ指圧師国家試験（東洋医学概論・経絡経穴概論・東洋医学臨床論）の学習ハブ。間隔反復復習、オリジナル4択演習、状況設定問題、禁忌・リスク管理を網羅。",
     url: "https://www.haritaro.jp/kokushi",
     learningResourceType: "Exam Preparation Resource",
     educationalLevel: "National Certification Exam",
@@ -70,7 +70,7 @@ export default function KokushiPage() {
             国家試験対策特設ハブ
           </h1>
           <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] max-w-3xl leading-relaxed">
-            鍼灸師・あん摩マッサージ指圧師国家試験（東洋医学概論・経絡経穴概論・東洋医学臨床論）を攻略。忘却曲線に基づく日替わり特訓、重要演習問題、要穴・骨度法マスター、全81講義カリキュラムへの弱点直通復習を統合した特設ハブです。
+            鍼灸師・あん摩マッサージ指圧師国家試験（東洋医学概論・経絡経穴概論・東洋医学臨床論）を攻略。間隔反復に基づく日替わり特訓、重要演習問題、要穴・骨度法マスター、全81講義カリキュラムへの弱点直通復習を統合した特設ハブです。
           </p>
         </div>
 

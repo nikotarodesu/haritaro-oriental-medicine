@@ -216,79 +216,20 @@ export function generateQuestionsForPoints(
 
     // ========== 2. 臨床刺鍼手技・安全深度 ==========
     else if (targetSkill === "puncture_method") {
-      const correctMethod = pt.punctureMethod || "直刺 0.5〜1.0寸。局所の深部組織・神経血管の走行に配慮する。";
-      const prompt = `経穴「${pt.name}（${pt.code} / ${pt.meridianShort} / ${pt.bodyPart}）」の刺鍼手技・安全深度および臨床配慮として正しいものはどれか？`;
-
-      // 異なる手技特性を持つ他の経穴から誤答をサンプリング
-      const methodCandidates = allMaster.filter(
-        (p) => p.code !== pt.code && p.punctureMethod && p.punctureMethod !== correctMethod
-      );
-      const shuffledMethods = seededShuffle(methodCandidates, `${itemSeed}_punc`);
-      const distractorPoints = shuffledMethods.slice(0, 3);
-
+      const prompt = `経穴「${pt.name}（${pt.code}）」の刺鍼計画を立てる際、安全上適切な確認はどれか？`;
       const options = [
-        { id: "correct", text: correctMethod, subtext: `適応経穴: ${pt.name}` },
-        ...distractorPoints.map((dp, i) => ({
-          id: `dist_${i}`,
-          text: dp.punctureMethod || "直刺 1.0〜1.5寸深刺する。",
-          subtext: `※他穴の手技例`,
-        })),
+        { id: "correct", text: "局所解剖、体格・体位、刺入方向、禁忌を確認し、必要に応じて刺鍼を保留する" },
+        { id: "dist_0", text: "骨度分寸による取穴位置の寸数を、そのまま刺鍼深度に使う" },
+        { id: "dist_1", text: "同じ経穴なら、体格や体位が異なっても同じ方向・深度で刺入する" },
+        { id: "dist_2", text: "経穴名と位置が分かれば、深部の神経・血管・臓器の確認を省く" },
       ];
-
-      const shuffledOptions = seededShuffle(options, `${itemSeed}_opt_punc`);
-      const correctOpt = shuffledOptions.find((o) => o.id === "correct");
-
-      questions.push({
-        id: `q_punc_${pt.codeLower}_${idx}`,
-        acupointCode: pt.code,
-        skill: "puncture_method",
-        prompt,
-        options: shuffledOptions,
-        correctOptionId: correctOpt ? correctOpt.id : "correct",
-        explanation: `【正解手技】${correctMethod}\n【解剖学的背景】${pt.locationDetail}\n【安全上の盲点】${pt.clinicalNote}`,
-        meridianName: pt.meridian,
-        locationReference: pt.locationDetail,
-      });
+      questions.push({ id: `q_punc_${pt.codeLower}_${idx}`, acupointCode: pt.code, skill: "puncture_method", prompt, options: seededShuffle(options, `${itemSeed}_opt_punc`), correctOptionId: "correct", explanation: `骨度分寸は取穴位置の比例基準で、刺鍼深度を一律に決める値ではありません。局所解剖と体格・体位・禁忌を照合します。取穴位置：${pt.locationDetail.replace(/[。\s]+$/, '')}。本問は安全確認の学習で、個人への具体的刺入深度を指示するものではありません。`, meridianName: pt.meridian, locationReference: pt.locationDetail });
     }
 
     // ========== 3. 五輸穴・五行属性（木火土金水） ==========
     else if (targetSkill === "five_elements_shu") {
       if (!pt.fiveElementsCategory) {
-        // 五輸穴属性がない経穴の場合は、十二正経の五輸穴から代替出題
-        const fiveShuPool = allMaster.filter((p) => p.fiveElementsCategory);
-        const altPt = seededShuffle(fiveShuPool, `${itemSeed}_alt`)[0] || pt;
-        if (!altPt.fiveElementsCategory) continue;
-
-        const correctAttr = altPt.fiveElementsCategory;
-        const prompt = `経穴「${altPt.name}（${altPt.code} / ${altPt.meridian}）」の五輸穴分類および五行属性として正しいものはどれか？`;
-
-        const allAttrs = [
-          "井木穴", "滎火穴", "輸土穴", "経金穴", "合水穴",
-          "井金穴", "滎水穴", "輸木穴", "経火穴", "合土穴"
-        ];
-        const distractorAttrs = seededShuffle(
-          allAttrs.filter((a) => !a.startsWith(correctAttr.slice(0, 2))),
-          `${itemSeed}_shu`
-        ).slice(0, 3);
-
-        const options = [
-          { id: correctAttr, text: `${correctAttr}穴` },
-          ...distractorAttrs.map((a) => ({ id: a, text: `${a}` })),
-        ];
-
-        const shuffledOptions = seededShuffle(options, `${itemSeed}_opt_shu`);
-
-        questions.push({
-          id: `q_shu_${altPt.codeLower}_${idx}`,
-          acupointCode: altPt.code,
-          skill: "five_elements_shu",
-          prompt,
-          options: shuffledOptions,
-          correctOptionId: correctAttr,
-          explanation: `【正解】${altPt.name}（${altPt.code}）は${altPt.meridian}の「${correctAttr}穴」です。\n部位：${altPt.locationDetail}\n要穴分類：${altPt.categories.join("、")}`,
-          meridianName: altPt.meridian,
-          locationReference: altPt.locationDetail,
-        });
+        continue;
       } else {
         const correctAttr = pt.fiveElementsCategory;
         const prompt = `経穴「${pt.name}（${pt.code} / ${pt.meridian}）」の五輸穴分類および五行属性として正しいものはどれか？`;
@@ -315,8 +256,8 @@ export function generateQuestionsForPoints(
           skill: "five_elements_shu",
           prompt,
           options: shuffledOptions,
-          correctOptionId: correctAttr.endsWith("穴") ? correctAttr : correctAttr,
-          explanation: `【正解】${pt.name}（${pt.code}）は${pt.meridian}の「${correctAttr}穴」です。\n部位：${pt.locationDetail}\n要穴分類：${pt.categories.join("、")}`,
+          correctOptionId: correctAttr,
+          explanation: `【正解】${pt.name}（${pt.code}）は${pt.meridian}の「${correctAttr.endsWith("穴") ? correctAttr : `${correctAttr}穴`}」です。\n部位：${pt.locationDetail}\n要穴分類：${pt.categories.join("、")}`,
           meridianName: pt.meridian,
           locationReference: pt.locationDetail,
         });
@@ -330,24 +271,18 @@ export function generateQuestionsForPoints(
 
       if (pt.goldenPairs && pt.goldenPairs.length > 0) {
         const gp = pt.goldenPairs[0];
-        pairDesc = `${gp.partnerName}（${gp.partnerCode}）- 【${gp.prescriptionName}】${gp.effect}`;
+        pairDesc = `${gp.partnerName}（${gp.partnerCode}）- 【${gp.prescriptionName}】`;
         partnerPt = allMaster.find((p) => p.code.toUpperCase() === gp.partnerCode.toUpperCase()) || null;
       }
 
-      // パートナー穴がない場合は、表裏経の原穴・絡穴・募穴・背部兪穴から実効ペアを生成
-      if (!partnerPt) {
-        const pairCandidate = allMaster.find(
-          (p) => (p.meridianId === pt.meridianId || p.bodyPart === pt.bodyPart) && p.code !== pt.code && p.categories.length > 0
-        ) || allMaster[(idx * 7) % allMaster.length];
-        partnerPt = pairCandidate;
-        pairDesc = `${partnerPt.name}（${partnerPt.code}）- 同部局所の気血巡行・調整を助ける協調配穴`;
-      }
+      if (!partnerPt) continue;
+      const knownPartners = new Set((pt.goldenPairs || []).map(pair => pair.partnerCode.toUpperCase()));
 
-      const prompt = `臨床において経穴「${pt.name}（${pt.code} / ${pt.meridianShort}）」と併用され、強力な相乗効果・調整作用を発揮する伝統的名配穴（協調処方）はどれか？`;
+      const prompt = `本サイトに登録した経穴「${pt.name}（${pt.code}）」の伝統的な配穴例で、組み合わせる経穴はどれか？`;
 
       // 誤答穴（遠隔や全く無関係な部位のツボをシャッフル）
       const distractors = seededShuffle(
-        allMaster.filter((p) => p.code !== pt.code && p.code !== partnerPt?.code),
+        allMaster.filter((p) => p.code !== pt.code && !knownPartners.has(p.code.toUpperCase())),
         `${itemSeed}_gpair`
       ).slice(0, 3);
 
@@ -373,7 +308,7 @@ export function generateQuestionsForPoints(
         prompt,
         options: shuffledOptions,
         correctOptionId: partnerPt.code,
-        explanation: `【正解の配穴処方】${pairDesc}\n【主治適応】${pt.name}の臨床メモ：${pt.clinicalNote}`,
+        explanation: `【本サイトに登録した配穴例】${pairDesc}\n${pt.name}の所属：${pt.meridian}。要穴分類：${pt.categories.join("、")}。\n伝統的な配穴の組合せを学ぶ問題です。個人への適応・効果・相乗作用を保証するものではありません。`,
         meridianName: pt.meridian,
         locationReference: pt.locationDetail,
       });

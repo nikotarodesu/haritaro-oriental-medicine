@@ -189,6 +189,7 @@ export interface QuizQuestion {
 
 export interface StudySession {
   sessionId: string;
+  contentVersion?: number;
   courseId: string;
   courseTitle: string;
   mode: "batch" | "one_by_one" | "self_check";

@@ -6,7 +6,7 @@ import SimulatorHub from "@/components/SimulatorHub";
 export const metadata: Metadata = {
   title: "臨床弁証推論シミュレーター｜八綱・気血水・臓腑の連動分析",
   description:
-    "患者の自覚症状・身体サインから八綱・気血水・臓腑弁証を推論。2案比較検討機能により、病態の鑑別と本治・標治の配穴根拠を臨床的に整理。",
+    "学生向けの東洋医学学習ツール。3つの架空症例を6段階で検討し、追加問診、安全確認、弁証候補、配穴の根拠、再評価を練習。所見の矛盾や情報不足も確認できます。",
   alternates: {
     canonical: "https://www.haritaro.jp/simulator",
   },
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
       images: SHARED_OG_IMAGES,
     title: "臨床弁証推論シミュレーター｜八綱・気血水・臓腑の連動分析｜はり太郎",
     description:
-      "患者の自覚症状・身体サインから八綱・気血水・臓腑弁証を推論。2案比較検討機能により、病態の鑑別と本治・標治の配穴根拠を臨床的に整理。",
+      "3つの架空症例を6段階で検討。追加問診、安全確認、弁証候補、配穴の根拠、再評価を学ぶ学生向けのシミュレーターです。",
     url: "https://www.haritaro.jp/simulator",
   },
 };
@@ -28,9 +28,9 @@ export default function SimulatorPage() {
         "@id": "https://www.haritaro.jp/simulator#app",
         url: "https://www.haritaro.jp/simulator",
         name: "東洋医学 臨床弁証推論シミュレーター",
-        applicationCategory: "HealthApplication",
+        applicationCategory: "EducationalApplication",
         operatingSystem: "All",
-        description: "患者の四診所見から八綱・気血水・臓腑弁証を自動推論し、本治・標治の配穴根拠を臨床的に整理・鑑別するシミュレーションツール。",
+        description: "架空症例の段階式演習と、四診所見に基づく伝統医学上の候補・矛盾・情報不足を整理する教育用ツール。実際の患者の診断や個別の治療指示には使用しません。",
         provider: {
           "@type": "Organization",
           name: "はり太郎の東洋医学",

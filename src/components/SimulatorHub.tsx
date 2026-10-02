@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { Layers, Sparkles, ArrowRight, BookOpen, GraduationCap, AlertCircle } from "lucide-react";
+import ProgressiveCaseTraining from "@/components/learning/ProgressiveCaseTraining";
 import ThreeStageSimulator from "@/components/ThreeStageSimulator";
 
 export default function SimulatorHub() {
@@ -22,7 +23,7 @@ export default function SimulatorHub() {
         <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
           八綱（深浅・勢い） ➜ 気血水（動態） ➜ 臓腑経絡（局在病位）を段階的に選択することで、
           複雑な病態から<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「一文の証」</strong>を抽出し、
-          最小手数で最大の効果を狙う<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「最小構成のペアツボ」</strong>を瞬時に導き出します。
+          採用条件を比較する<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「配穴の学習例」</strong>を表示します。確認した所見・矛盾・不足情報を分けて学べます。
         </p>
 
         {/* このツールでできること（3ステップ）＆ こんな人におすすめ */}
@@ -64,12 +65,14 @@ export default function SimulatorHub() {
                 <span>経穴選定の確認</span>
               </div>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                最小構成のペアツボ・推奨要穴と、選定根拠・作用機序を確認・学習ノートへ保存。
+                配穴例と、採用条件・伝統理論と研究の違いを確認・学習ノートへ保存。
               </p>
             </div>
           </div>
         </div>
       </div>
+
+      <ProgressiveCaseTraining />
 
       {/* 臨床弁証シミュレーター本体 */}
       <ThreeStageSimulator />
@@ -80,13 +83,13 @@ export default function SimulatorHub() {
           <div className="space-y-1">
             <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" />
-              弁証理論の科学的基盤を学ぶ
+              伝統理論と現代研究の関係を学ぶ
             </span>
             <h4 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
-              八綱・気血水・臓腑経絡の「数理・システム科学的機序」
+              八綱・気血水・臓腑経絡の学習と現代研究
             </h4>
             <p className="text-xs text-[#59615D] dark:text-[#96A6B2] max-w-2xl">
-              本シミュレーターの基盤となる「表裏・寒熱・虚実（状態空間モデル）」と「気血水（動態システム）」の学術講義録を公開しています。
+              伝統医学の分類と現代科学の概念を比較する解説です。対応関係は教育上の整理であり、生理学的な同一性の証明ではありません。
             </p>
           </div>
 

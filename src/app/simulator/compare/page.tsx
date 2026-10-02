@@ -30,7 +30,7 @@ interface SimulationProfile {
   pattern: string; // 証名
   hachiko: {
     depth: "表" | "裏";
-    temp: "寒" | "熱";
+    temp: "寒" | "熱" | "未確定";
     state: "虚" | "実";
   };
   primaryOrgan: string; // 主病臓腑
@@ -51,13 +51,13 @@ const PRESET_COMPARISONS = [
       name: "案A: 肝気鬱結証（気滞・実）",
       category: "気血病変",
       pattern: "肝気鬱結証",
-      hachiko: { depth: "裏" as const, temp: "寒" as const, state: "実" as const },
+      hachiko: { depth: "裏" as const, temp: "未確定" as const, state: "実" as const },
       primaryOrgan: "肝",
       coreMechanism: "情志失調（ストレス）により肝の疎泄機能が失調し、気機が滞る。胸脇苦満、易怒、ため息、情緒不安定。",
       primaryPoints: ["太衝", "期門"],
       secondaryPoints: ["陽陵泉", "内関", "膻中"],
       needleMethod: "平補平瀉（気機を巡らせる）。太衝・陽陵泉で肝胆の気を疏通。",
-      contraindications: "過度の補法や温灸は気がさらに滞るおそれがあるため避ける。"
+      contraindications: "熱の所見、体力、皮膚状態などを追加確認し、刺激量・施灸の適否を個別に検討。"
     },
     planB: {
       id: "b1",
@@ -69,26 +69,26 @@ const PRESET_COMPARISONS = [
       coreMechanism: "長引く気鬱が熱化し、火熱の邪が経絡を上衝。激しい頭痛、目の充血、耳鳴り、口苦、急躁易怒。",
       primaryPoints: ["行間", "侠渓"],
       secondaryPoints: ["太衝", "風池", "太陽"],
-      needleMethod: "瀉法（清熱降火）。行間（栄火穴）・侠渓で激しい肝胆の熱を速やかに抜く。",
-      contraindications: "温熱刺激・施灸は火に油を注ぐため厳禁。"
+      needleMethod: "清熱を目的とする伝統的な配穴例。行間（栄火穴）・侠渓などを所見と照合して検討。",
+      contraindications: "強い頭痛、眼の異常、発熱などは現代医学的な評価を優先。温熱刺激の適否も個別に判断。"
     },
-    differentialSummary: "案Aは「気の渋滞（気滞）」であるため疏肝理気が主眼ですが、案Bは「熱化して上衝（実熱）」しているため、配穴を太衝（原穴）から行間（栄火穴）へシフトし、直ちに瀉法で抜熱する必要があります。"
+    differentialSummary: "案Aは気滞、案Bは熱の徴候を伴う伝統的な候補です。気滞だけで寒熱は確定しません。四診所見と経過を比較して治則を検討し、この一覧だけで手技を決定しません。"
   },
   {
     title: "【脾胃病変の鑑別】脾気虚・中気下陥 vs 寒湿困脾",
-    desc: "胃下垂・脱力（虚）と、水分過多・重だるさ（実湿）の治療方針対比",
+    desc: "脱力・軟便などと、冷え・重だるさなどの所見を比較する学習例",
     planA: {
       id: "a2",
       name: "案A: 脾気虚・中気下陥証（虚）",
       category: "臓腑病変",
       pattern: "中気下陥証",
-      hachiko: { depth: "裏" as const, temp: "寒" as const, state: "虚" as const },
+      hachiko: { depth: "裏" as const, temp: "未確定" as const, state: "虚" as const },
       primaryOrgan: "脾・胃",
-      coreMechanism: "脾の昇清機能が失調し、内臓や気が下垂。食後の腹部膨満、内臓下垂、脱力感、軟便、息切れ。",
+      coreMechanism: "伝統医学では脾の昇清の不足として整理。脱力感、軟便などを確認する。胃下垂などの医学的診断と同一視しない。",
       primaryPoints: ["百会", "足三里"],
       secondaryPoints: ["中脘", "気海", "脾兪"],
-      needleMethod: "補法・温灸（昇提益気）。百会への施灸で清陽の気を引き上げる。",
-      contraindications: "強い瀉法や抜熱手技は陽気を損なうため避ける。"
+      needleMethod: "補気・昇提を目的とする伝統的な配穴例。気虚だけで寒証とはせず、温灸の必要性は追加検討。",
+      contraindications: "持続する疲労・息切れなどは原因の医学的評価を検討。刺激量と温熱の適否は個別に確認。"
     },
     planB: {
       id: "b2",
@@ -100,10 +100,10 @@ const PRESET_COMPARISONS = [
       coreMechanism: "過度の生冷飲食や湿気により寒湿が脾を圧迫。頭重感、四肢倦怠、口の中が粘る、浮腫、泥状便。",
       primaryPoints: ["陰陵泉", "水分"],
       secondaryPoints: ["豊隆", "脾兪", "天枢"],
-      needleMethod: "瀉法または平補平瀉＋温灸（健脾化湿）。陰陵泉・水分で湿邪を尿中へ排出。",
-      contraindications: "滋陰薬・甘味過多など湿を助長するアプローチは禁忌。"
+      needleMethod: "健脾・化湿を目的とする伝統的な配穴例。陰陵泉・水分の選択を検討するが、尿への排出という機序や効果は断定できない。",
+      contraindications: "むくみの急な出現や増悪、息苦しさなどは医療機関での評価を優先。薬剤の適否を本ツールで判断しない。"
     },
-    differentialSummary: "案Aは気の持ち上げ（百会の昇提）が必要な「虚」ですが、案Bは余分な水分と冷えの排除（陰陵泉・水分による利水）が必要な「実」です。病態のベクトルが真逆となります。"
+    differentialSummary: "案Aでは不足の所見、案Bでは寒湿の所見を比較します。虚と湿は併存することもあり、単純な二者択一にはせず、根拠と不足する情報を記録します。"
   },
   {
     title: "【腎病変の鑑別】腎陰虚 vs 腎陽虚",
@@ -118,8 +118,8 @@ const PRESET_COMPARISONS = [
       coreMechanism: "腎の陰液（潤い）が消耗し、虚熱が内生。手足のほてり（五心煩熱）、潮熱、盗汗、口渇、耳鳴り、腰膝酸軟。",
       primaryPoints: ["太谿", "照海"],
       secondaryPoints: ["三陰交", "腎兪", "復溜"],
-      needleMethod: "補法（滋陰降火）。施灸は控えめにし、刺鍼で深く静かに補う。",
-      contraindications: "強刺激の温灸は陰液を焦がすため注意が必要。"
+      needleMethod: "滋陰を目的とする伝統的な配穴例。刺鍼深度は証名だけで決めず、局所解剖や体格などから判断。",
+      contraindications: "熱感や乾燥の原因、服薬、皮膚の状態を確認。温熱刺激の適否は個別に検討。"
     },
     planB: {
       id: "b3",
@@ -131,10 +131,10 @@ const PRESET_COMPARISONS = [
       coreMechanism: "腎の命門の火が衰え、全身を温められない。激しい腰下肢の冷え、夜間頻尿、下肢浮腫、無気力、インポテンツ。",
       primaryPoints: ["命門", "関元"],
       secondaryPoints: ["腎兪", "太谿", "志室"],
-      needleMethod: "強補法・多壮灸（温補腎陽）。命門・関元への透熱灸・温筒灸が著効。",
-      contraindications: "寒涼性のツボ刺激や過剰な瀉法は避ける。"
+      needleMethod: "温陽を目的とする伝統的な配穴例。刺激量や施灸は体力・局所の安全性を確認して検討し、効果を保証しない。",
+      contraindications: "感覚障害・皮膚障害などがある場合の熱傷リスクを確認。むくみや排尿症状は医学的評価も検討。"
     },
-    differentialSummary: "同じ「腰痛・耳鳴り」でも、五心煩熱（ほてり・赤み）があれば案A（太谿・照海で潤す）、悪寒・夜間頻尿・足腰の極度の冷えがあれば案B（命門・関元で燃やす）となり、施灸の要否が正反対となります。"
+    differentialSummary: "腰膝の症状に、乾燥・ほてりが伴うか、冷えなどが伴うかを比較する学習例です。少数の症状で確定せず、他の候補と医学的評価の必要性を確認します。"
   }
 ];
 

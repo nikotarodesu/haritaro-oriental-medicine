@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, Suspense } from "react";
+import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
+import { questionRevision } from "@/utils/learningReview";
+import React, { useState, useEffect, useMemo, useCallback, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { 
@@ -69,13 +71,21 @@ function PracticePageContent() {
   const searchParams = useSearchParams();
   const allPoints = useMemo(() => getAllAcupoints(), []);
   const { memos } = useClinicalMemo();
+  const { saveQuizResult } = useCurriculumProgress();
+  const saveSharedAnswer = (q: QuizQuestion, selectedId: string) => {
+    const options = [...q.options].sort((a,b) => a.id.localeCompare(b.id));
+    const correctIndex = options.findIndex(o => o.id === q.correctOptionId);
+    const userAnswerIndex = options.findIndex(o => o.id === selectedId);
+    const text = options.map(o => o.text);
+    saveQuizResult({ questionId: `tsubo-${q.acupointCode}-${q.skill}`, lectureId: "lecture-treatment-8", lectureTitle: `${q.acupointCode}・経穴演習`, chapterId: "tsubo", chapterTitle: "経穴演習", questionText: q.prompt, options: text, correctAnswerIndex: correctIndex, userAnswerIndex, isCorrect: userAnswerIndex === correctIndex, explanation: q.explanation, answeredAt: new Date().toISOString(), kind: "acupoint", practiceHref: `/tsubo/practice?course=meridian_${q.acupointCode.replace(/[0-9]/g, "").toLowerCase()}`, revision: questionRevision(q.prompt, [options[correctIndex].text], 0, q.explanation) });
+  };
 
   // 今日の日付（現地時間基準）
   const todayStr = useMemo(() => getTodayString(), []);
 
   // 学習サマリー＆アクティブセッション
-  const [summary, setSummary] = useState(() => getStudySummary(todayStr));
-  const [activeSession, setActiveSession] = useState<StudySession | null>(() => loadActiveSession());
+  const [summary, setSummary] = useState<ReturnType<typeof getStudySummary>>({ todayAnswered: 0, todayGoal: 10, progressPercent: 0, streakDays: 0, totalPracticedPoints: 0, totalMasteredPoints: 0, dueReviewCount: 0, dueRecords: [], settings: { dailyGoal: 10, defaultMode: "batch" } });
+  const [activeSession, setActiveSession] = useState<StudySession | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [importStatus, setImportStatus] = useState<{ message: string; success: boolean } | null>(null);
 
@@ -92,12 +102,15 @@ function PracticePageContent() {
     setSummary(getStudySummary(todayStr));
   };
 
-  // URLパラメータ（?course=meridian_li などの直接開始）
+  // 保存データは初期HTMLとの一致を保って、マウント後に復元する。
   useEffect(() => {
-    const courseParam = searchParams.get("course");
-    if (courseParam && !activeSession) {
-      startCourseSession(courseParam);
-    }
+    const timer = setTimeout(() => {
+      setSummary(getStudySummary(todayStr));
+      const saved = loadActiveSession();
+      if (saved) setActiveSession(saved);
+      else { const course = searchParams.get("course"); if (course) startCourseSession(course); }
+    }, 0);
+    return () => clearTimeout(timer);
   }, [searchParams]);
 
   // キーボードショートカット（1問ずつモード用：1〜4で選択、Enterで確定）
@@ -105,6 +118,8 @@ function PracticePageContent() {
     if (!activeSession || activeSession.mode !== "one_by_one" || activeSession.isCompleted) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (e.isComposing || e.ctrlKey || e.metaKey || e.altKey || target?.closest("input, textarea, select, [contenteditable=true]")) return;
       const q = activeSession.questions[activeSession.currentIndex];
       if (!q) return;
 
@@ -114,9 +129,10 @@ function PracticePageContent() {
           setTempSelectedOption(q.options[idx].id);
         }
       } else if (e.key === "Enter") {
-        if (!isAnswerConfirmed && tempSelectedOption) {
+        e.preventDefault();
+        if (!isAnswerConfirmed && !activeSession.answers[q.id] && tempSelectedOption) {
           handleConfirmOneAnswer();
-        } else if (isAnswerConfirmed) {
+        } else if (isAnswerConfirmed || activeSession.answers[q.id]) {
           handleNextQuestion();
         }
       }
@@ -141,6 +157,7 @@ function PracticePageContent() {
 
     const session: StudySession = {
       sessionId: `session_${Date.now()}`,
+      contentVersion: 2,
       courseId,
       courseTitle,
       mode,
@@ -181,7 +198,7 @@ function PracticePageContent() {
   };
 
   // 経絡全体または特定コースの開始
-  const startCourseSession = (courseId: string) => {
+  function startCourseSession(courseId: string) {
     if (courseId.startsWith("meridian_")) {
       const merPrefix = courseId.replace("meridian_", "").toUpperCase();
       const targetPoints = allPoints.filter((p) => p.meridianId.toUpperCase().includes(merPrefix) || p.code.startsWith(merPrefix));
@@ -199,7 +216,7 @@ function PracticePageContent() {
     } else if (courseId === "puncture") {
       const targetPoints = allPoints.filter((p) => p.punctureMethod);
       const questions = generateQuestionsForPoints(targetPoints, "puncture_method", 10, `punc_${Date.now()}`);
-      startNewSession("puncture", "臨床刺鍼手技・安全深度特訓", questions, "batch");
+      startNewSession("puncture", "刺鍼の安全確認特訓", questions, "batch");
     } else if (courseId === "golden_pairs") {
       const targetPoints = allPoints.filter((p) => p.goldenPairs && p.goldenPairs.length > 0);
       const questions = generateQuestionsForPoints(targetPoints, "golden_pairs", 10, `gp_${Date.now()}`);
@@ -209,7 +226,7 @@ function PracticePageContent() {
 
   // ==================== 回答操作（1問ずつモード） ====================
 
-  const handleConfirmOneAnswer = () => {
+  function handleConfirmOneAnswer() {
     if (!activeSession || !tempSelectedOption) return;
     const currentQ = activeSession.questions[activeSession.currentIndex];
     if (!currentQ) return;
@@ -218,6 +235,7 @@ function PracticePageContent() {
 
     // 回答をストアへ永続化（日次実績・定着段階・復習予定を更新）
     recordAnswerInStore(currentQ, tempSelectedOption, isCorrect, todayStr);
+    saveSharedAnswer(currentQ, tempSelectedOption);
 
     const updatedAnswers = {
       ...activeSession.answers,
@@ -239,7 +257,7 @@ function PracticePageContent() {
     refreshSummary();
   };
 
-  const handleNextQuestion = () => {
+  function handleNextQuestion() {
     if (!activeSession) return;
     const nextIdx = activeSession.currentIndex + 1;
 
@@ -285,7 +303,7 @@ function PracticePageContent() {
 
   // ==================== 回答操作（まとめ表示モード） ====================
 
-  const handleSelectBatchOption = (questionId: string, optionId: string) => {
+  const handleSelectBatchOption = useCallback((questionId: string, optionId: string) => {
     if (!activeSession || activeSession.isCompleted) return;
     const q = activeSession.questions.find((x) => x.id === questionId);
     if (!q) return;
@@ -307,7 +325,7 @@ function PracticePageContent() {
 
     setActiveSession(updatedSession);
     saveActiveSession(updatedSession);
-  };
+  }, [activeSession]);
 
   // 一括採点
   const handleSubmitBatch = () => {
@@ -326,6 +344,7 @@ function PracticePageContent() {
       const ans = activeSession.answers[q.id];
       if (ans) {
         recordAnswerInStore(q, ans.selectedOptionId, ans.isCorrect, todayStr);
+        saveSharedAnswer(q, ans.selectedOptionId);
       }
     }
 
@@ -550,7 +569,7 @@ function PracticePageContent() {
                       </span>
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EBF3EF] dark:bg-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E]">
                         {q.skill === "puncture_method"
-                          ? "刺鍼手技・安全深度"
+                          ? "刺鍼の安全確認"
                           : q.skill === "five_elements_shu"
                           ? "五輸穴・五行"
                           : q.skill === "golden_pairs"
@@ -657,7 +676,7 @@ function PracticePageContent() {
                 </span>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EBF3EF] dark:bg-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E]">
                   {currentQ.skill === "puncture_method"
-                    ? "刺鍼手技・安全深度"
+                    ? "刺鍼の安全確認"
                     : currentQ.skill === "five_elements_shu"
                     ? "五輸穴・五行"
                     : currentQ.skill === "golden_pairs"
@@ -935,9 +954,9 @@ function PracticePageContent() {
             {[
               { id: "mixed", label: "総合MIX特訓", desc: "全種別からランダム" },
               { id: "location_to_name", label: "部位・取穴法", desc: "解剖骨性目印当て" },
-              { id: "puncture_method", label: "刺鍼手技・深度", desc: "深度・角度・気胸注意" },
+              { id: "puncture_method", label: "刺鍼の安全確認", desc: "深度・角度・気胸注意" },
               { id: "five_elements_shu", label: "五輸穴・五行", desc: "井滎輸経合・木火土金水" },
-              { id: "golden_pairs", label: "伝統名配穴", desc: "四関・相乗効果ペア" },
+              { id: "golden_pairs", label: "伝統名配穴", desc: "登録された配穴例" },
               { id: "category_of_point", label: "要穴分類", desc: "原絡郄募兪穴の暗記" },
             ].map((sk) => {
               const isSelected = selectedSkill === sk.id;
@@ -945,7 +964,7 @@ function PracticePageContent() {
                 <button
                   key={sk.id}
                   type="button"
-                  onClick={() => setSelectedSkill(sk.id as any)}
+                  onClick={() => setSelectedSkill(sk.id as StudySkillType | "mixed")}
                   className={`p-2.5 sm:p-3 rounded-2xl border text-left transition-all flex flex-col justify-between ${
                     isSelected
                       ? "bg-[#1E3D34] text-white border-[#1E3D34] shadow-sm"
@@ -1076,7 +1095,7 @@ function PracticePageContent() {
               onClick={() => startCourseSession("puncture")}
               className="p-4 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-left transition-all space-y-1"
             >
-              <strong className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">刺鍼手技・深度特訓</strong>
+              <strong className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">刺鍼の安全確認特訓</strong>
               <p className="text-[11px] text-[#737C77]">刺入深度・角度・気胸注意など</p>
             </button>
 
@@ -1086,7 +1105,7 @@ function PracticePageContent() {
               className="p-4 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-left transition-all space-y-1"
             >
               <strong className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">伝統名配穴ペア特訓</strong>
-              <p className="text-[11px] text-[#737C77]">四関など強力な相乗効果処方</p>
+              <p className="text-[11px] text-[#737C77]">四関などの伝統的な配穴例</p>
             </button>
 
             <button

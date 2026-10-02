@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Lecture, CURRICULUM_DATA } from "@/data/curriculumData";
@@ -11,6 +11,7 @@ import ArticleReferences from "@/components/ArticleReferences";
 import { resolveArticleReferences } from "@/utils/referenceResolver";
 import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
 import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
+import ReviewQuestionCard from "@/components/learning/ReviewQuestionCard";
 import { InteractiveQuiz } from "@/components/InteractiveQuiz";
 import { 
   Clock, 
@@ -71,11 +72,20 @@ export default function CurriculumLectureReader({ lecture }: Props) {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const focusParam = params.get("focus");
+      const reviewParam = params.get("review");
+
+      if (reviewParam) {
+        const timer = setTimeout(() => {
+          setFocusBanner(null);
+          articleTopRef.current?.scrollIntoView({ behavior: "instant", block: "start" });
+        }, 0);
+        return () => clearTimeout(timer);
+      }
 
       if (focusParam) {
-        setFocusBanner(focusParam);
         const timer = setTimeout(() => {
-          const elements = Array.from(document.querySelectorAll("h1, h2, h3, h4, p, strong"));
+          setFocusBanner(`「${focusParam}」に関連する箇所を確認します。`);
+          const elements = Array.from(articleTopRef.current?.querySelectorAll("#lecture-content h2, #lecture-content h3, #lecture-content h4, #lecture-content p, #lecture-content strong") || []);
           const target = elements.find((el) => el.textContent?.includes(focusParam));
           if (target) {
             target.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -83,6 +93,8 @@ export default function CurriculumLectureReader({ lecture }: Props) {
             setTimeout(() => {
               target.classList.remove("ring-4", "ring-amber-400", "bg-amber-100/90", "dark:bg-amber-950/90");
             }, 4000);
+          } else {
+            setFocusBanner(`「${focusParam}」の見出しは見つかりませんでした。講義全体と理解度チェックで確認してください。`);
           }
         }, 400);
         return () => clearTimeout(timer);
@@ -149,12 +161,16 @@ export default function CurriculumLectureReader({ lecture }: Props) {
       {/* 読書進捗バー */}
       <ReadingProgressBar />
 
+      <Suspense fallback={null}>
+        <ReviewQuestionCard lectureId={lecture.id} />
+      </Suspense>
+
       {/* 復習ジャンプ通知バナー */}
       {focusBanner && (
         <div className="p-3 sm:p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 flex items-center justify-between gap-3 text-xs sm:text-sm text-amber-950 dark:text-amber-200 shadow-2xs animate-in fade-in slide-in-from-top-2">
           <div className="flex items-center gap-2 font-bold">
             <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
-            <span>【復習モード】クイズ該当テーマ「{focusBanner}」の解説箇所を表示中</span>
+            <span>【復習モード】{focusBanner}</span>
           </div>
           <button
             type="button"
@@ -324,12 +340,14 @@ export default function CurriculumLectureReader({ lecture }: Props) {
         </div>
 
         {/* 本文（MarkdownBody） */}
+        <div id="lecture-content">
         <MarkdownBody
           contentMarkdown={lecture.contentMarkdown}
           seenTerms={bodySeenTerms}
           idPrefix="curriculum-heading"
           resolvedReferences={resolvedReferences}
         />
+        </div>
 
         {/* 国家試験出題チェックポイント（あん摩・はり師・きゅう師） */}
         {lecture.nationalExamPoints && lecture.nationalExamPoints.length > 0 && (

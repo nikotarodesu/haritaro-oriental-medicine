@@ -158,7 +158,8 @@ export function loadActiveSession(): StudySession | null {
   try {
     const raw = localStorage.getItem(ACTIVE_SESSION_KEY);
     if (!raw) return null;
-    return JSON.parse(raw) as StudySession;
+    const session = JSON.parse(raw) as StudySession;
+    return session.contentVersion === 2 ? session : null;
   } catch (e) {
     console.error("Failed to load active study session", e);
     return null;

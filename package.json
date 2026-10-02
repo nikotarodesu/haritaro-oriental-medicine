@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "verify:integrity": "node scripts/verify-integrity.mjs",
-    "test:content": "node scripts/content-regression.cjs"
+    "test:content": "node scripts/content-regression.cjs",
+    "test:learning": "node scripts/learning-regression.cjs"
   },
   "dependencies": {
     "@google-analytics/data": "^7.2.1",

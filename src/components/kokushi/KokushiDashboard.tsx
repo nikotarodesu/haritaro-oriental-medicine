@@ -30,11 +30,12 @@ import { useCurriculumProgress, QuizResultRecord } from "@/contexts/CurriculumPr
 import { CURRICULUM_QUIZZES, QuizQuestionItem, LessonQuizGroup } from "@/data/curriculumQuizzes";
 import { CURRICULUM_DATA } from "@/data/curriculumData";
 import { KOKUSHI_PAST_EXAMS, KokushiPastExamQuestion } from "@/data/kokushiPastExams";
+import LearningReviewPanel from "@/components/learning/LearningReviewPanel";
+import QuestionEvidence from "@/components/learning/QuestionEvidence";
+import { questionRevision, shuffledIndices } from "@/utils/learningReview";
 import AcupointQuickModal from "@/components/tsubo/AcupointQuickModal";
 import { extractAcupointsFromText } from "@/utils/acupointTextExtractor";
 
-// 国試ターゲット日（第34回 鍼灸師国家試験 想定：2027年2月28日）
-const TARGET_EXAM_DATE = new Date("2027-02-28T09:00:00+09:00");
 
 export default function KokushiDashboard() {
   const searchParams = useSearchParams();
@@ -48,13 +49,6 @@ export default function KokushiDashboard() {
     totalCompleted, 
     totalPublished 
   } = useCurriculumProgress();
-
-  // 国試カウントダウン（日数）
-  const daysUntilExam = useMemo(() => {
-    const now = new Date();
-    const diffTime = TARGET_EXAM_DATE.getTime() - now.getTime();
-    return Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
-  }, []);
 
   // 今日の日付文字列（YYYY-MM-DD）
   const todayStr = useMemo(() => {
@@ -73,38 +67,13 @@ export default function KokushiDashboard() {
     return list;
   }, []);
 
-  // 忘却曲線アルゴリズムに基づく「今日復習すべき3問」
+  const [dailyRoundIds, setDailyRoundIds] = useState<string[] | null>(null);
   const dailyQuestions = useMemo(() => {
-    if (allQuestionsWithMeta.length === 0) return [];
-
-    const incorrectList = Object.values(quizResults).filter((r) => !r.isCorrect);
-    const selected: { group: LessonQuizGroup; question: QuizQuestionItem; reason: string }[] = [];
-
-    // 1. 直近で間違えた問題から優先選出（最大2問）
-    for (const inc of incorrectList) {
-      const found = allQuestionsWithMeta.find((item) => item.question.id === inc.questionId);
-      if (found && !selected.some((s) => s.question.id === found.question.id)) {
-        selected.push({ ...found, reason: "過去の間違え復習" });
-        if (selected.length >= 2) break;
-      }
-    }
-
-    // 2. 残りは日付シードによる日替わり出題（全243問から均等にローテーション）
-    let dateHash = 0;
-    for (let i = 0; i < todayStr.length; i++) {
-      dateHash = (dateHash * 31 + todayStr.charCodeAt(i)) % allQuestionsWithMeta.length;
-    }
-
-    for (let offset = 0; offset < allQuestionsWithMeta.length && selected.length < 3; offset++) {
-      const idx = (dateHash + offset * 17) % allQuestionsWithMeta.length;
-      const candidate = allQuestionsWithMeta[idx];
-      if (!selected.some((s) => s.question.id === candidate.question.id)) {
-        selected.push({ ...candidate, reason: "本日の忘却曲線レコメンド" });
-      }
-    }
-
-    return selected;
-  }, [allQuestionsWithMeta, quizResults, todayStr]);
+    if (dailyRoundIds) return dailyRoundIds.map(id => allQuestionsWithMeta.find(item => item.question.id === id)).filter((item): item is { group: LessonQuizGroup; question: QuizQuestionItem } => !!item).map(item => ({ ...item, reason: "今回の復習" }));
+    const due = allQuestionsWithMeta.filter(item => quizResults[item.question.id]?.nextReviewDate && quizResults[item.question.id].nextReviewDate! <= todayStr).sort((a,b) => quizResults[a.question.id].nextReviewDate!.localeCompare(quizResults[b.question.id].nextReviewDate!));
+    const fresh = allQuestionsWithMeta.filter(item => !quizResults[item.question.id]);
+    return [...due.map(item => ({ ...item, reason: "復習予定日が到来" })), ...fresh.map(item => ({ ...item, reason: "未回答・改訂後の確認" }))].slice(0,3);
+  }, [allQuestionsWithMeta, quizResults, todayStr, dailyRoundIds]);
 
   // デイリークイズの回答状態
   const [userAnswers, setUserAnswers] = useState<Record<string, number>>({});
@@ -128,7 +97,6 @@ export default function KokushiDashboard() {
 
   // 本試験過去問アーカイブのステート
   const [pastSubjectFilter, setPastSubjectFilter] = useState<"all" | "東洋医学概論" | "経絡経穴概論" | "東洋医学臨床論">("all");
-  const [pastExamYearFilter, setPastExamYearFilter] = useState<"all" | 33 | 32 | 31 | 30>("all");
   const [pastExamAnswers, setPastExamAnswers] = useState<Record<string, number>>({});
   const [pastExamSubmitted, setPastExamSubmitted] = useState<Record<string, boolean>>({});
 
@@ -138,9 +106,8 @@ export default function KokushiDashboard() {
   // 外部・検索モーダルからの直通リンク（?examId=xxx）検知時に自動スクロール
   useEffect(() => {
     if (!targetExamId) return;
-    setPastSubjectFilter("all");
-    setPastExamYearFilter("all");
     const timer = setTimeout(() => {
+      setPastSubjectFilter("all");
       const el = document.getElementById(`kokushi-exam-${targetExamId}`);
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -159,17 +126,20 @@ export default function KokushiDashboard() {
   };
 
   const handleSubmitPastAnswer = (qId: string) => {
-    setPastExamSubmitted((prev) => ({ ...prev, [qId]: true }));
+    const item = KOKUSHI_PAST_EXAMS.find(q => q.id === qId);
+    const selected = pastExamAnswers[qId];
+    if (!item || selected === undefined || pastExamSubmitted[qId]) return;
+    saveQuizResult({ questionId: item.id, lectureId: item.relatedLectureId || "lecture-treatment-8", lectureTitle: item.relatedLectureTitle || item.subject, chapterId: "kokushi", chapterTitle: item.subject, questionText: item.question, userAnswerIndex: selected, correctAnswerIndex: item.correctIndex, isCorrect: selected === item.correctIndex, explanation: item.explanation, options: [...item.options], answeredAt: new Date().toISOString() });
+    setPastExamSubmitted(prev => ({ ...prev, [qId]: true }));
   };
 
   // フィルタリングされた過去問リスト（科目 ＆ 回次）
   const filteredPastExams = useMemo(() => {
     return KOKUSHI_PAST_EXAMS.filter((q) => {
       const matchSubject = pastSubjectFilter === "all" || q.subject === pastSubjectFilter;
-      const matchYear = pastExamYearFilter === "all" || q.examNumber === pastExamYearFilter;
-      return matchSubject && matchYear;
+      return matchSubject;
     });
-  }, [pastSubjectFilter, pastExamYearFilter]);
+  }, [pastSubjectFilter]);
 
   const handleSelectOption = (questionId: string, optIdx: number) => {
     if (submitted[questionId]) return;
@@ -181,6 +151,7 @@ export default function KokushiDashboard() {
     if (selected === undefined) return;
 
     const isCorrect = selected === item.question.correctIndex;
+    if (!dailyRoundIds) setDailyRoundIds(displayedDailyQuestions.map(q => q.question.id));
     setSubmitted((prev) => ({ ...prev, [item.question.id]: true }));
 
     // 進捗コンテキストへ保存
@@ -271,6 +242,7 @@ export default function KokushiDashboard() {
 
   return (
     <div className="space-y-8 sm:space-y-12">
+      <LearningReviewPanel />
       {/* 印刷専用A4シートタイトルヘッダー */}
       <div className="hidden print:block mb-6 border-b-2 border-[#1E3D34] pb-3 text-black">
         <div className="flex justify-between items-end">
@@ -301,23 +273,15 @@ export default function KokushiDashboard() {
               </span>
             </div>
 
-            {/* カウントダウンタイマー */}
-            <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-black/30 border border-white/15 backdrop-blur-xs">
-              <Calendar className="w-4 h-4 text-[#E6C387]" />
-              <span className="text-xs text-[#E6EFEA]">第34回 鍼灸国試まで</span>
-              <span className="font-mono text-xl sm:text-2xl font-extrabold text-[#E6C387] px-1">
-                {daysUntilExam}
-              </span>
-              <span className="text-xs text-[#E6EFEA]">日</span>
-            </div>
+            <a href="https://ahaki.or.jp/exam/" target="_blank" rel="noopener noreferrer" className="text-xs underline text-[#E6C387]">試験日・出題基準は試験財団の公式案内で確認</a>
           </div>
 
           <div className="max-w-2xl space-y-2">
-            <h1 className="font-serif text-2xl sm:text-4xl font-extrabold leading-tight text-[#FAF8F5]">
-              東洋医学・経絡経穴で<br className="hidden sm:inline" />満点を掴み取る最短ルート
-            </h1>
+            <h2 className="font-serif text-2xl sm:text-4xl font-extrabold leading-tight text-[#FAF8F5]">
+              東洋医学・経絡経穴で<br className="hidden sm:inline" />復習と症例をつなぐ学習ルート
+            </h2>
             <p className="text-xs sm:text-sm text-[#D1E0D9] leading-relaxed">
-              単なる過去問の丸暗記ではなく、「全81講義の理論 ⇄ 全361穴の辞典 ⇄ 20症例の臨床推論」を自在に往復。忘却曲線に基づく復習エンジンで、本番まで知識を強固に定着させます。
+              「全81講義の理論 ⇄ 全361穴の辞典 ⇄ 症例の臨床推論」を自在に往復。回答日と連続正解数に基づく間隔反復で、本番まで知識を強固に定着させます。
             </p>
           </div>
 
@@ -329,7 +293,7 @@ export default function KokushiDashboard() {
             </div>
             <div className="flex items-center gap-1.5">
               <Target className="w-4 h-4 text-[#E6C387]" />
-              <span>クイズ解答履歴: <strong>{Object.keys(quizResults).length}</strong> / 243問</span>
+              <span>学習問題の解答履歴: <strong>{Object.keys(quizResults).length}</strong> 問（経穴演習を含む）</span>
             </div>
             {incorrectQuestions.length > 0 && (
               <div className="flex items-center gap-1.5 text-rose-300">
@@ -352,10 +316,10 @@ export default function KokushiDashboard() {
           <div className="space-y-1">
             <div className="flex items-center gap-1.5">
               <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#1E3D34] text-white">現在地</span>
-              <h3 className="font-bold text-xs sm:text-sm text-[#1E3D34] dark:text-[#74BA9E]">国試過去問・忘却曲線</h3>
+              <h3 className="font-bold text-xs sm:text-sm text-[#1E3D34] dark:text-[#74BA9E]">国試演習・間隔反復</h3>
             </div>
             <p className="text-[11px] text-[#4A534F] dark:text-[#A8B8C4]">
-              第30〜33回本試験実問アーカイブ、日替わり忘却曲線3問、苦手問題克服。
+              オリジナル4択10問、講義の理解度チェック、復習予定に沿った苦手問題の再確認。
             </p>
           </div>
         </div>
@@ -395,7 +359,7 @@ export default function KokushiDashboard() {
               <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform" />
             </div>
             <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-              ツボの組み合わせ（君臣佐使）を組み、ドーゼ過多や禁忌をリアルタイム検証。
+              ツボの組合せを整理し、刺激量や安全確認の論点を学ぶ配穴設計ツール。
             </p>
           </div>
         </Link>
@@ -415,7 +379,7 @@ export default function KokushiDashboard() {
                 <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
                   {isWeakPointsOnly
                     ? `弱点克服・間違えた問題特訓（${displayedDailyQuestions.length}問）`
-                    : "本日の忘却曲線デイリー特訓（3問）"}
+                    : "本日の間隔反復・理解度チェック"}
                 </h2>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#83BEA8]">
                   {isWeakPointsOnly ? "苦手集中" : "毎日自動更新"}
@@ -423,8 +387,8 @@ export default function KokushiDashboard() {
               </div>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
                 {isWeakPointsOnly
-                  ? "過去に間違えた問題を集中的に再挑戦し、弱点を完全に克服します。"
-                  : "過去の誤答履歴や学習間隔から、今日復習すべき最も効果的な問題を厳選抽出しています。"}
+                  ? "過去に間違えた問題を再確認し、理解が不十分な点を見つけます。"
+                  : "復習予定日が来た問題を優先し、残りは未回答の問題を出題します。"}
               </p>
             </div>
           </div>
@@ -487,7 +451,8 @@ export default function KokushiDashboard() {
 
                 {/* 3択選択肢 */}
                 <div className="space-y-2 pt-1">
-                  {item.question.options.map((opt, optIdx) => {
+                  {shuffledIndices(item.question.options.length, `${todayStr}-${item.question.id}`).map((optIdx, displayIdx) => {
+                    const opt = item.question.options[optIdx];
                     let optStyle = "bg-white dark:bg-[#17212A] border-[#E5DEC9] dark:border-[#263542] hover:border-[#1E3D34] text-[#232826] dark:text-[#FAF8F5]";
                     
                     if (isSub) {
@@ -511,7 +476,7 @@ export default function KokushiDashboard() {
                         className={`w-full p-3.5 rounded-xl border text-left text-xs sm:text-sm flex items-start gap-3 transition-all cursor-pointer ${optStyle}`}
                       >
                         <span className="font-mono font-bold text-xs shrink-0 mt-0.5">
-                          {["A", "B", "C"][optIdx]}.
+                          {["A", "B", "C"][displayIdx]}.
                         </span>
                         <span className="flex-1 leading-relaxed">{opt}</span>
                         {isSub && optIdx === item.question.correctIndex && (
@@ -555,17 +520,18 @@ export default function KokushiDashboard() {
                       )}
                     </div>
                     <p className="leading-relaxed pl-7">{item.question.explanation}</p>
+                    <QuestionEvidence lectureId={item.group.lectureId} revision={questionRevision(item.question.question, item.question.options, item.question.correctIndex, item.question.explanation)} />
 
                     <div className="pt-2 border-t border-emerald-200/50 dark:border-emerald-800/50 flex flex-wrap items-center justify-between gap-2 pl-7">
                       <span className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
                         関連テーマ: 『{topic || item.group.lectureTitle}』
                       </span>
                       <Link
-                        href={`/curriculum/${item.group.lectureId}?focus=${encodeURIComponent(topic)}`}
+                        href={`/curriculum/${item.group.lectureId}?review=${encodeURIComponent(item.question.id)}`}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shadow-xs group"
                       >
                         <BookOpen className="w-3.5 h-3.5" />
-                        <span>講義本文の該当箇所で復習する</span>
+                        <span>問題の要点と講義で復習する</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </Link>
                     </div>
@@ -660,7 +626,7 @@ export default function KokushiDashboard() {
                 要穴・取穴・骨度法マスター
               </h3>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                五行穴（井滎兪経合）、原絡郄、兪募穴、四総穴の暗記と、WHO標準解剖取穴・骨度法寸数の完全マスター。
+                五兪穴（井滎兪経合）、原絡郄、兪募穴、四総穴と、経穴の位置・骨度法を反復練習。
               </p>
             </div>
             <div className="pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-col gap-2">
@@ -699,7 +665,7 @@ export default function KokushiDashboard() {
                 禁忌・過誤防止セーフティ
               </h3>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                妊婦禁忌穴（合谷・三陰交等）、気胸リスク穴（胸背部直刺深度）、延髄危険穴の刺鍼基準を網羅チェック。
+                妊娠中の施術、胸背部・頸部の解剖、刺激量など、安全性を判断するための確認事項を学習。
               </p>
             </div>
             <div className="pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs font-bold text-rose-600 dark:text-rose-400">
@@ -713,7 +679,7 @@ export default function KokushiDashboard() {
       {/* ============================================================ */}
       {/* 4. 本試験過去問アーカイブ特訓（第30回〜第33回 実問4択）         */}
       {/* ============================================================ */}
-      <section className="bg-white dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-8 shadow-sm space-y-6">
+      <section id="exam-practice" className="scroll-mt-24 bg-white dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-8 shadow-sm space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4">
           <div className="flex items-center gap-2">
             <span className="p-2 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387]">
@@ -722,7 +688,7 @@ export default function KokushiDashboard() {
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  国試対策演習アーカイブ（精選4択）
+                  国試対策演習（オリジナル4択・全10問）
                 </h2>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#1E3D34] text-white">
                   実戦4択
@@ -764,23 +730,6 @@ export default function KokushiDashboard() {
               ))}
             </div>
 
-            {/* 回次フィルター */}
-            <div className="flex flex-wrap items-center gap-1 p-1 rounded-xl bg-[#FAF8F5] dark:bg-[#10161C] border border-[#E8E1D1] dark:border-[#263542]">
-              {(["all", 33, 32, 31, 30] as const).map((yr) => (
-                <button
-                  key={yr}
-                  type="button"
-                  onClick={() => setPastExamYearFilter(yr)}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                    pastExamYearFilter === yr
-                      ? "bg-[#B86924] text-white shadow-xs"
-                      : "text-[#59615D] dark:text-[#8899A6] hover:text-[#B86924]"
-                  }`}
-                >
-                  {yr === "all" ? "全回次" : `第${yr}回`}
-                </button>
-              ))}
-            </div>
           </div>
         </div>
 
@@ -899,6 +848,8 @@ export default function KokushiDashboard() {
                       )}
                     </div>
                     <p className="leading-relaxed pl-7 whitespace-pre-line">{item.explanation}</p>
+                    <QuestionEvidence lectureId={item.relatedLectureId || "lecture-treatment-8"} revision={questionRevision(item.question, item.options, item.correctIndex, item.explanation)} sources={[{ title: "試験財団：公式問題・正答肢表（本問はオリジナル）", url: "https://ahaki.or.jp/exam/archives/" }, ...(item.id.includes("82") ? [{ title: "WHO：経穴位置標準・骨度分寸", url: "https://iris.who.int/bitstream/handle/10665/353407/9789290613831-eng.pdf" }] : [])]} />
+                    <button type="button" className="underline" onClick={() => { setPastExamSubmitted(prev => ({ ...prev, [item.id]: false })); setPastExamAnswers(prev => { const next = { ...prev }; delete next[item.id]; return next; }); }}>もう一度解く</button>
 
                     {item.keyPoints && item.keyPoints.length > 0 && (
                       <div className="pl-7 pt-1">
@@ -919,7 +870,7 @@ export default function KokushiDashboard() {
                           関連講義: 『{item.relatedLectureTitle || "カリキュラム"}』
                         </span>
                         <Link
-                          href={`/curriculum/${item.relatedLectureId}`}
+                          href={`/curriculum/${item.relatedLectureId}?review=${encodeURIComponent(item.id)}`}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shadow-xs"
                         >
                           <BookOpen className="w-3.5 h-3.5" />
@@ -1083,7 +1034,7 @@ export default function KokushiDashboard() {
                       正解: {item.options[item.correctAnswerIndex]}
                     </span>
                     <Link
-                      href={`/curriculum/${item.lectureId}?focus=${encodeURIComponent(topic)}`}
+                      href={item.practiceHref || `/curriculum/${item.lectureId}?focus=${encodeURIComponent(topic)}`}
                       className="font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-0.5"
                     >
                       <span>復習 ➜</span>

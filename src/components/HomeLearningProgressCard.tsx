@@ -78,7 +78,7 @@ export default function HomeLearningProgressCard() {
         {/* アクションボタン */}
         <div className="shrink-0 flex items-center gap-3 w-full md:w-auto">
           <Link
-            href={`/curriculum${resumeLecture ? `?lecture=${resumeLecture.id}` : ''}`}
+            href={resumeLecture ? `/curriculum/${resumeLecture.id}` : '/curriculum/lecture-yinyang-1'}
             className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white text-[#142B24] font-bold text-xs sm:text-sm hover:bg-emerald-50 active:scale-95 shadow-md transition-all group"
           >
             <PlayCircle className="w-4 h-4 text-emerald-700" />

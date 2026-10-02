@@ -49,6 +49,7 @@ import {
   AcupointOption
 } from "@/data/simulatorData";
 import { saveDraftPatientNote } from "@/utils/draftNote";
+import type { SafetyReview } from "@/data/simulatorReasoning";
 import { TSUBOS } from "@/data/tsuboData";
 import { Tsubo } from "@/types/oriental";
 
@@ -56,14 +57,14 @@ const STORAGE_KEY = "haritaro_simulator_state_v1";
 
 // 兼証（随証病態）の代表的配穴マップ
 const SECONDARY_POINT_MAP: Record<QixueshuiType, { label: string; pairName: string; primary: string; secondary: string; role: string; desc: string }> = {
-  qixu: { label: "気虚（元気不足）", pairName: "健脾益気ペア", primary: "足三里", secondary: "太白", role: "合土穴・原土穴", desc: "後天の気を補い、生体エネルギーの底上げを図る" },
-  qizhi: { label: "気滞（ストレス・緊張）", pairName: "疏肝理気ペア", primary: "太衝", secondary: "陽陵泉", role: "原木穴・筋会", desc: "肝気の鬱滞を緩め、気機の円滑な巡りを促進" },
-  qini: { label: "気逆（のぼせ・咳逆）", pairName: "和胃降気ペア", primary: "内関", secondary: "中脘", role: "八脈交会穴・胃募穴", desc: "上逆する気機を降ろし、胸腹部の衝逆感を鎮める" },
-  xuexu: { label: "血虚（血流不足・乾燥）", pairName: "養血調血ペア", primary: "三陰交", secondary: "血海", role: "三陰交会・脾経", desc: "肝脾腎の血分を滋養し、筋膜や組織の乾燥を改善" },
-  yuxue: { label: "瘀血（微小循環障害）", pairName: "活血化瘀ペア", primary: "膈兪", secondary: "血海", role: "血会・血海", desc: "血液の粘稠・停滞を散らし、刺痛や局所硬結を緩和" },
-  shuitai: { label: "水滞（むくみ・痰湿）", pairName: "利水化湿ペア", primary: "陰陵泉", secondary: "水分", role: "合水穴・任脈", desc: "組織間の停滞水分を排出し、重だるさを解消" },
-  yinxu: { label: "陰虚（虚熱・ほてり）", pairName: "滋陰降火ペア", primary: "太渓", secondary: "照海", role: "原穴・八脈交会穴", desc: "腎陰・津液を潤し、手足のほてりや口渇を沈静" },
-  yangxu: { label: "陽虚（深部冷え・代謝低下）", pairName: "温陽補腎ペア", primary: "関元", secondary: "命門", role: "小腸募穴・督脈", desc: "丹田・命門の陽気を温め、深部の冷えを回復" },
+  qixu: { label: "気虚（元気不足）", pairName: "健脾益気ペア", primary: "足三里", secondary: "太白", role: "合土穴・原土穴", desc: "伝統的な補気の目的で検討する例" },
+  qizhi: { label: "気滞（ストレス・緊張）", pairName: "疏肝理気ペア", primary: "太衝", secondary: "陽陵泉", role: "原木穴・筋会", desc: "伝統的な理気の目的で検討する例" },
+  qini: { label: "気逆（のぼせ・咳逆）", pairName: "和胃降気ペア", primary: "内関", secondary: "中脘", role: "八脈交会穴・胃募穴", desc: "伝統的な降気の目的で検討する例" },
+  xuexu: { label: "血虚（滋養の不足）", pairName: "養血調血ペア", primary: "三陰交", secondary: "血海", role: "三陰交会・脾経", desc: "肝脾腎の血分を滋養し、滋養を補うことを伝統的な目的として検討" },
+  yuxue: { label: "瘀血（血の運行の滞り）", pairName: "活血化瘀ペア", primary: "膈兪", secondary: "血海", role: "血会・血海", desc: "伝統的な活血の目的で検討する例" },
+  shuitai: { label: "水滞（むくみ・痰湿）", pairName: "利水化湿ペア", primary: "陰陵泉", secondary: "水分", role: "合水穴・任脈", desc: "水湿を扱う伝統的な治則として、所見と照合" },
+  yinxu: { label: "陰虚（虚熱・ほてり）", pairName: "滋陰降火ペア", primary: "太渓", secondary: "照海", role: "原穴・八脈交会穴", desc: "伝統的な滋陰の目的で検討する例" },
+  yangxu: { label: "陽虚（温煦の不足）", pairName: "温陽補腎ペア", primary: "関元", secondary: "命門", role: "小腸募穴・督脈", desc: "伝統的な温陽の目的で検討する例" },
 };
 
 // 選択された病態（気血水・臓腑・複合病態）に応じた関連カリキュラム講義のマッピング
@@ -211,6 +212,8 @@ export default function ThreeStageSimulator() {
     tongue: "unconfirmed"
   });
 
+  const [safetyReview, setSafetyReview] = useState<SafetyReview>("unconfirmed");
+
   // サンプルプリセット追跡
   const [activePresetId, setActivePresetId] = useState<string | null>("preset-ganki");
 
@@ -239,7 +242,7 @@ export default function ThreeStageSimulator() {
   // 臨床ノートへの下書き引き渡し
   const handleSaveToNoteDraft = () => {
     const primaryOpt = diagnosis.acupointOptions[0];
-    const secConfig = secondaryQixueshui !== "none" ? SECONDARY_POINT_MAP[secondaryQixueshui] : null;
+    const secConfig = diagnosis.acupointOptions.length && secondaryQixueshui !== "none" ? SECONDARY_POINT_MAP[secondaryQixueshui] : null;
     const basePointsStr = primaryOpt 
       ? `${primaryOpt.primaryAcupoint.name}, ${primaryOpt.secondaryAcupoint.name}`
       : "";
@@ -257,7 +260,7 @@ export default function ThreeStageSimulator() {
       constitution: `一文の証: ${diagnosis.oneSentenceFormula}${secConfig ? ` ＋ 随証（${secConfig.label}）` : ""}`,
       chiefComplaint: `八綱・気血水・臓腑経絡の推論（${diagnosis.summary}）`,
       selectedPointsInput: pointsStr,
-      treatmentPlan: `【臨床弁証シミュレーター推論】\n証名候補: ${fullSyndrome}\n治則: ${diagnosis.treatmentPrinciple.rule}\n介入戦略: ${diagnosis.treatmentPrinciple.strategy}${primaryOpt ? `\n【本治・主配穴 70%】: ${primaryOpt.pairName}（${primaryOpt.intendedEffect}）` : ""}${secConfig ? `\n【随証・兼証 30%】: ${secConfig.pairName}（${secConfig.primary}・${secConfig.secondary} / ${secConfig.desc}）` : ""}\n※本内容はシミュレーターによる推論候補・下書きです。確定診断としてではなく、臨床家の所見に基づき編集してご活用ください。`,
+      treatmentPlan: `【臨床弁証シミュレーター推論】\n証名候補: ${fullSyndrome}\n治則: ${diagnosis.treatmentPrinciple.rule}\n介入戦略: ${diagnosis.treatmentPrinciple.strategy}${primaryOpt ? `\n【主病態への配穴候補】: ${primaryOpt.pairName}（${primaryOpt.intendedEffect}）` : ""}${secConfig ? `\n【補助的な病態への配穴候補】: ${secConfig.pairName}（${secConfig.primary}・${secConfig.secondary} / ${secConfig.desc}）` : ""}\n※本内容はシミュレーターによる推論候補・下書きです。確定診断としてではなく、臨床家の所見に基づき編集してご活用ください。`,
     });
 
     trackEvent("tool_complete", {
@@ -268,9 +271,7 @@ export default function ThreeStageSimulator() {
     router.push("/notes");
   };
 
-  const diagnosis: ComprehensiveDiagnosis = useMemo(() => {
-    return synthesizeComprehensiveDiagnosis(depth, temp, state, qixueshui, zangfu, complexState);
-  }, [depth, temp, state, qixueshui, zangfu, complexState]);
+  const diagnosis: ComprehensiveDiagnosis = synthesizeComprehensiveDiagnosis(depth, temp, state, qixueshui, zangfu, complexState, fourExams, safetyReview);
 
   const relatedLectures = useMemo(() => {
     return getRelatedLectures(qixueshui, zangfu, complexState);
@@ -280,6 +281,7 @@ export default function ThreeStageSimulator() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    const restoreTimer = setTimeout(() => {
     // 1. URL searchParams の優先チェック（症例・体質診断等からの連携）
     const searchParams = new URLSearchParams(window.location.search);
     const fromCase = searchParams.get("fromCase");
@@ -396,6 +398,8 @@ export default function ThreeStageSimulator() {
     } finally {
       setIsMounted(true);
     }
+    }, 0);
+    return () => clearTimeout(restoreTimer);
   }, []);
 
   // 状態変更時の sessionStorage 保存
@@ -464,8 +468,8 @@ export default function ThreeStageSimulator() {
       setDepth(updates.depth);
     }
     if (updates.temp !== undefined && updates.temp !== temp) {
-      const fromLabel = temp === "heat" ? "熱（亢進・炎症）" : "寒（代謝低下・冷え）";
-      const toLabel = updates.temp === "heat" ? "熱（亢進・炎症）" : "寒（代謝低下・冷え）";
+      const fromLabel = temp === "heat" ? "熱（熱の徴候）" : "寒（冷えの徴候）";
+      const toLabel = updates.temp === "heat" ? "熱（熱の徴候）" : "寒（冷えの徴候）";
       noticeText = `寒熱：『${fromLabel}』➔『${toLabel}』へ変更。治療方針と配穴の狙いが切り替わりました。`;
       setTemp(updates.temp);
     }
@@ -504,26 +508,9 @@ export default function ThreeStageSimulator() {
   };
 
   // 四診キーサインの切り替え
-  const handleFourExamChange = (field: keyof FourExaminationsInput, val: any) => {
-    setFourExams((prev) => ({ ...prev, [field]: val }));
-
-    // 四診所見から八綱・複雑状態への自動連動アシスト
-    if (field === "palpation") {
-      if (val === "an_ki") handleUpdate({ state: "deficiency" });
-      if (val === "an_kyo") handleUpdate({ state: "excess" });
-    }
-    if (field === "tempReaction") {
-      if (val === "warm_relief") handleUpdate({ temp: "cold" });
-      if (val === "cool_relief") handleUpdate({ temp: "heat" });
-    }
-    if (field === "drinking") {
-      if (val === "warm_drink") handleUpdate({ temp: "cold" });
-      if (val === "cold_drink") handleUpdate({ temp: "heat" });
-    }
-    if (field === "tongue") {
-      if (val === "pale_white") handleUpdate({ temp: "cold", state: "deficiency" });
-      if (val === "red_yellow") handleUpdate({ temp: "heat", state: "excess" });
-    }
+  const handleFourExamChange = <K extends keyof FourExaminationsInput>(field: K, val: FourExaminationsInput[K]) => {
+    setFourExams(prev => ({ ...prev, [field]: val }));
+    setChangeNotice("四診の所見を更新しました。すべての所見と選択条件を照合し、不一致を表示します。");
   };
 
   // リセット（初期状態へ戻す）
@@ -534,6 +521,7 @@ export default function ThreeStageSimulator() {
     setQixueshui("qizhi");
     setZangfu("liver");
     setComplexState("none");
+    setSafetyReview("unconfirmed");
     setFourExams({
       palpation: "unconfirmed",
       tempReaction: "unconfirmed",
@@ -556,6 +544,12 @@ export default function ThreeStageSimulator() {
 
   return (
     <div className="space-y-6 sm:space-y-10">
+<section className="rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 space-y-3 text-sm">
+        <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5]">安全判断の学習設定</h3>
+        <p className="text-xs leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">急な胸痛・呼吸困難・意識障害、腰痛に伴う新しい排尿障害や会陰部の感覚変化など、医療評価を優先する兆候を確認します。この選択だけで疾患を除外することはできません。</p>
+        <div className="flex flex-wrap gap-2">{([{ value: "unconfirmed", label: "危険兆候：未確認" }, { value: "no_flags", label: "確認した範囲では認めない" }, { value: "red_flags", label: "危険兆候がある設定" }] as const).map(option => <button key={option.value} type="button" aria-pressed={safetyReview === option.value} onClick={() => setSafetyReview(option.value)} className={`rounded-lg border p-2 text-xs ${safetyReview === option.value ? "bg-[#1E3D34] border-[#1E3D34] text-white" : "border-[#E5DEC9] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#A0B0BC]"}`}>{option.label}</button>)}</div>
+      </section>
+
       {/* 症例連携通知バナー */}
       {fromCaseInfo && (
         <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#EBF3EF] to-[#FAF8F5] dark:from-[#182823] dark:to-[#17212A] border-2 border-[#1E3D34] dark:border-[#74BA9E] shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fadeIn">
@@ -672,7 +666,7 @@ export default function ThreeStageSimulator() {
           </div>
 
           <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-            選択条件に応じて、病態の推論根拠・不足している情報・最適な配穴候補がリアルタイムに更新されます。
+            選択条件に応じて、病態の推論根拠・不足している情報・学習用の配穴例がリアルタイムに更新されます。
           </p>
         </div>
 
@@ -831,7 +825,7 @@ export default function ThreeStageSimulator() {
                 <span className="text-xs sm:text-sm font-bold text-[#404743] dark:text-[#C5D2DB] flex items-center gap-1.5">
                   <span className="text-[#B86924] dark:text-[#E6C387]">＋</span>
                   <span>兼証（挟雑病態の併存）を考慮する</span>
-                  <span className="text-[10px] font-normal text-[#737C77] dark:text-[#8899A6]">※任意（本治70% : 随証30%）</span>
+                  <span className="text-[10px] font-normal text-[#737C77] dark:text-[#8899A6]">※任意（主病態と補助的な病態を区別）</span>
                 </span>
                 {secondaryQixueshui !== "none" && (
                   <button
@@ -912,8 +906,7 @@ export default function ThreeStageSimulator() {
             </div>
           </div>
 
-          {/* オプション：複雑な状態も試す（非表示設定） */}
-          {false && (
+          {/* 所見の照合と複合病態の学習 */}
             <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D]">
               <button
                 type="button"
@@ -1004,7 +997,7 @@ export default function ThreeStageSimulator() {
                         <span>四診の判断材料（症例サンプルの設定・キーサイン）:</span>
                       </span>
                       <p className="text-xs text-[#737C77] dark:text-[#8899A6] mt-0.5">
-                        所見を切り替えると、虚実・寒熱の判定が連動して切り替わります。
+                        四診をまとめて照合します。寒熱・虚実の選択条件は自動で上書きしません。
                       </p>
                     </div>
 
@@ -1101,7 +1094,6 @@ export default function ThreeStageSimulator() {
                 </div>
               )}
             </div>
-          )}
         </div>
 
         {/* 選択状態パンくずバー ＆ 結果ジャンプボタン */}
@@ -1295,8 +1287,8 @@ export default function ThreeStageSimulator() {
           {/* 代表配穴（ファーストビュー: 王道の主配穴ペア） */}
           {diagnosis.acupointOptions.length > 0 && (() => {
             const primaryOpt = diagnosis.acupointOptions[0];
-            const pTsubo = TSUBOS.find((t) => t.id === primaryOpt.primaryAcupoint.id);
-            const sTsubo = TSUBOS.find((t) => t.id === primaryOpt.secondaryAcupoint.id);
+            const pTsubo = TSUBOS.find((t) => t.id === primaryOpt.primaryAcupoint.id || t.code.toLowerCase() === primaryOpt.primaryAcupoint.id.toLowerCase());
+            const sTsubo = TSUBOS.find((t) => t.id === primaryOpt.secondaryAcupoint.id || t.code.toLowerCase() === primaryOpt.secondaryAcupoint.id.toLowerCase());
 
             return (
               <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border-2 border-[#1E3D34] dark:border-[#4E8C76] p-4 sm:p-5 space-y-3">
@@ -1415,21 +1407,15 @@ export default function ThreeStageSimulator() {
                       <div className="flex flex-wrap items-center justify-between gap-1.5">
                         <div className="flex items-center gap-2">
                           <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-[#B86924] text-white">
-                            随証配穴（30%）
+                            随証の配穴例
                           </span>
                           <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
                             兼証：{secConfig.label} への補佐介入
                           </span>
                         </div>
                         <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                          処方バランス：本治 70% ＋ 随証 30%
+                          採用の優先順位は、所見・緊急性・体力から検討
                         </span>
-                      </div>
-
-                      {/* 処方比率バー */}
-                      <div className="w-full h-2 rounded-full overflow-hidden flex bg-[#E8E1D1] dark:bg-[#22303D]">
-                        <div className="bg-[#1E3D34] dark:bg-[#2B6958] h-full" style={{ width: "70%" }} title="本治 70%" />
-                        <div className="bg-[#B86924] dark:bg-[#D48B47] h-full" style={{ width: "30%" }} title="随証 30%" />
                       </div>
 
                       <div className="p-3.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#F2ECE0] dark:border-[#2A3B4A] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
@@ -1687,8 +1673,8 @@ export default function ThreeStageSimulator() {
               <div id="panel-acupoints" className="p-4 sm:p-6 bg-white dark:bg-[#17212A] border-t border-[#E5DEC9] dark:border-[#2A3B4A] space-y-6 animate-fadeIn">
                 <div className="space-y-4">
                   {diagnosis.acupointOptions.map((opt, idx) => {
-                    const pTsubo = TSUBOS.find((t) => t.id === opt.primaryAcupoint.id);
-                    const sTsubo = TSUBOS.find((t) => t.id === opt.secondaryAcupoint.id);
+                    const pTsubo = TSUBOS.find((t) => t.id === opt.primaryAcupoint.id || t.code.toLowerCase() === opt.primaryAcupoint.id.toLowerCase());
+                    const sTsubo = TSUBOS.find((t) => t.id === opt.secondaryAcupoint.id || t.code.toLowerCase() === opt.secondaryAcupoint.id.toLowerCase());
 
                     return (
                       <div
@@ -1908,7 +1894,7 @@ export default function ThreeStageSimulator() {
                         <strong className="text-[#1E3D34] dark:text-[#83BEA8]">🏛️ 古典・伝統理論</strong>：{diagnosis.acupointOptions[0].evidenceLevel.classical}
                       </p>
                       <p className="leading-relaxed">
-                        <strong className="text-[#1E2D3D] dark:text-[#7BAAD8]">🔬 現代研究で確認された範囲</strong>：{diagnosis.acupointOptions[0].evidenceLevel.modernResearch}
+                        <strong className="text-[#1E2D3D] dark:text-[#7BAAD8]">🔬 現代研究との区別・限界</strong>：{diagnosis.acupointOptions[0].evidenceLevel.modernResearch}
                       </p>
                       <p className="leading-relaxed">
                         <strong className="text-[#B86924] dark:text-[#E6C387]">💡 著者の臨床的見解・注意事項</strong>：{diagnosis.acupointOptions[0].evidenceLevel.clinicalPerspective}
@@ -1928,6 +1914,7 @@ export default function ThreeStageSimulator() {
                   <p className="text-[#59615D] dark:text-[#96A6B2] text-xs leading-relaxed">
                     {ACADEMIC_STANDARDS.description}
                   </p>
+                  <p className="text-xs leading-relaxed"><a className="underline" href="https://www.who.int/publications/i/item/9290611057" target="_blank" rel="noopener noreferrer">WHO：経穴名称</a> ／ <a className="underline" href="https://www.nccih.nih.gov/health/acupuncture-effectiveness-and-safety" target="_blank" rel="noopener noreferrer">NCCIH：鍼の研究と限界</a></p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 text-xs text-[#737C77] dark:text-[#8899A6]">
                     <div>
                       <strong className="block text-[#404743] dark:text-[#C5D2DB]">国際標準用語基準:</strong>

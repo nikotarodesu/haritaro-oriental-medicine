@@ -1,5 +1,7 @@
 "use client";
 
+import LearningReviewPanel from "@/components/learning/LearningReviewPanel";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
@@ -174,7 +176,8 @@ export default function CurriculumIndexClient() {
     if (isMounted && resumeLecture) {
       const def = CHAPTER_DEFINITIONS.find((c) => c.seriesId === resumeLecture.seriesId);
       if (def) {
-        setExpandedChapters((prev) => ({ ...prev, [def.chapterNumber]: true }));
+        const timer = setTimeout(() => setExpandedChapters(prev => ({ ...prev, [def.chapterNumber]: true })), 0);
+        return () => clearTimeout(timer);
       }
     }
   }, [isMounted, resumeLecture]);
@@ -213,6 +216,7 @@ export default function CurriculumIndexClient() {
 
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12 space-y-8 sm:space-y-10">
+      <LearningReviewPanel />
       {/* ページ見出し */}
       <div className="border-b border-[#E8E1D1] dark:border-[#22303D] pb-6 text-center max-w-3xl mx-auto space-y-3">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-semibold tracking-wider">

@@ -50,13 +50,14 @@ try {
     errors.push("src/data/kokushiPastExams.ts not found.");
   } else {
     const content = fs.readFileSync(kokushiFile, "utf-8");
-    const idMatches = content.match(/id:\s*["']([^"']+)["']/g) || [];
+    const idMatches = content.match(/["']?id["']?:\s*["']([^"']+)["']/g) || [];
     const ids = idMatches.map((m) => {
-      const match = m.match(/["']([^"']+)["']/);
+      const match = m.match(/["']?id["']?:\s*["']([^"']+)["']/);
       return match ? match[1] : "";
     }).filter(Boolean);
     console.log(`  ✓ Kokushi Questions: detected ${ids.length} questions.`);
     
+    if (ids.length !== 10) errors.push(`Expected 10 original practice questions, found ${ids.length}.`);
     const uniqueIds = new Set();
     for (const id of ids) {
       if (uniqueIds.has(id)) {

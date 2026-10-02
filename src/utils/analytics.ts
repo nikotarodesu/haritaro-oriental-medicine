@@ -40,7 +40,7 @@ export type AnalyticsEventName =
 export interface AnalyticsEventParams {
   entry_source?: "home_learning" | "home_clinical" | "nav" | "footer";
   destination_type?: "learn" | "clinical" | "tool" | "note" | "curriculum";
-  tool_id?: "diagnosis_qixueshui" | "diagnosis_gorou" | "simulator" | "haiketsu" | "clinical_interview_qixueshui";
+  tool_id?: "diagnosis_qixueshui" | "diagnosis_gorou" | "simulator" | "haiketsu" | "clinical_interview_qixueshui" | "curriculum_quiz";
   placement?: string;
   context_pair?: "qixueshui" | "simulator" | "haiketsu_tsubo";
   preset?: string;

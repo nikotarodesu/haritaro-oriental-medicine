@@ -1,9 +1,11 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { getCurriculumStats } from '@/data/curriculumData';
+import { LEARNING_QUESTION_MAP } from '@/data/learningQuestionBank';
+import { ReviewSchedule, localStudyDate, updateReviewSchedule } from '@/utils/learningReview';
 
-export interface QuizResultRecord {
+export interface QuizResultRecord extends ReviewSchedule {
   questionId: string;
   lectureId: string;
   chapterId: string;
@@ -16,6 +18,8 @@ export interface QuizResultRecord {
   explanation: string;
   options: string[];
   answeredAt: string;
+  kind?: 'lecture' | 'exam' | 'acupoint';
+  practiceHref?: string;
 }
 
 export interface ChapterProgressInfo {
@@ -30,6 +34,7 @@ export interface CurriculumProgressContextType {
   completedLectures: Record<string, boolean>;
   lastVisitedLectureId: string | null;
   quizResults: Record<string, QuizResultRecord>;
+  revisedQuestionCount: number;
   toggleLectureCompleted: (lectureId: string) => void;
   setLectureCompleted: (lectureId: string, completed: boolean) => void;
   recordVisitedLecture: (lectureId: string) => void;
@@ -56,10 +61,18 @@ export function CurriculumProgressProvider({ children }: { children: React.React
   const [isMounted, setIsMounted] = useState(false);
   const [completedLectures, setCompletedLectures] = useState<Record<string, boolean>>({});
   const [lastVisitedLectureId, setLastVisitedLectureId] = useState<string | null>(null);
-  const [quizResults, setQuizResults] = useState<Record<string, QuizResultRecord>>({});
+  const [storedQuizResults, setQuizResults] = useState<Record<string, QuizResultRecord>>({});
+  const [reviewSchedules, setReviewSchedules] = useState<Record<string, ReviewSchedule>>({});
+  const scheduleRef = useRef<Record<string, ReviewSchedule>>({});
+  const quizResults = useMemo(() => Object.fromEntries(Object.entries(storedQuizResults).filter(([id, record]) => {
+    const current = LEARNING_QUESTION_MAP.get(id);
+    return current ? record.revision === current.revision : record.kind === 'acupoint' && !!record.revision;
+  })), [storedQuizResults]);
+  const revisedQuestionCount = Object.keys(storedQuizResults).filter(id => LEARNING_QUESTION_MAP.has(id) && !quizResults[id]).length;
 
   // クライアントサイドでのみlocalStorageから復元
   useEffect(() => {
+    const timer = setTimeout(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
@@ -67,11 +80,15 @@ export function CurriculumProgressProvider({ children }: { children: React.React
         if (parsed.completedLectures) setCompletedLectures(parsed.completedLectures);
         if (parsed.lastVisitedLectureId) setLastVisitedLectureId(parsed.lastVisitedLectureId);
         if (parsed.quizResults) setQuizResults(parsed.quizResults);
+        scheduleRef.current = parsed.reviewSchedules || {};
+        setReviewSchedules(scheduleRef.current);
       }
     } catch (e) {
       console.error('Failed to load learning progress from localStorage:', e);
     }
     setIsMounted(true);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // 変更時にlocalStorageへ保存
@@ -83,13 +100,14 @@ export function CurriculumProgressProvider({ children }: { children: React.React
         JSON.stringify({
           completedLectures,
           lastVisitedLectureId,
-          quizResults,
+          quizResults: storedQuizResults,
+          reviewSchedules,
         })
       );
     } catch (e) {
       console.error('Failed to save learning progress to localStorage:', e);
     }
-  }, [completedLectures, lastVisitedLectureId, quizResults, isMounted]);
+  }, [completedLectures, lastVisitedLectureId, storedQuizResults, reviewSchedules, isMounted]);
 
   const toggleLectureCompleted = (lectureId: string) => {
     setCompletedLectures((prev) => {
@@ -119,26 +137,34 @@ export function CurriculumProgressProvider({ children }: { children: React.React
     setLastVisitedLectureId(lectureId);
   };
 
-  const saveQuizResult = (record: QuizResultRecord) => {
+  const saveQuizResult = useCallback((record: QuizResultRecord) => {
+    const current = LEARNING_QUESTION_MAP.get(record.questionId);
+    const revision = current?.revision || record.revision;
+    if (!revision) return;
+    const schedule = updateReviewSchedule(scheduleRef.current[record.questionId], record.isCorrect, revision, localStudyDate(new Date(record.answeredAt)));
+    scheduleRef.current = { ...scheduleRef.current, [record.questionId]: schedule };
+    setReviewSchedules(scheduleRef.current);
     setQuizResults((prev) => ({
       ...prev,
-      [record.questionId]: record,
+      [record.questionId]: { ...record, ...schedule, kind: current?.kind || record.kind, practiceHref: current?.href || record.practiceHref },
     }));
-  };
+  }, []);
 
-  const clearQuizResult = (questionId: string) => {
+  const clearQuizResult = useCallback((questionId: string) => {
     setQuizResults((prev) => {
       const next = { ...prev };
       delete next[questionId];
       return next;
     });
-  };
+  }, []);
 
   const resetAllProgress = () => {
     if (confirm('受講進捗とクイズの回答履歴をすべてリセットしますか？この操作は取り消せません。')) {
       setCompletedLectures({});
       setLastVisitedLectureId(null);
       setQuizResults({});
+      setReviewSchedules({});
+      scheduleRef.current = {};
       try {
         localStorage.removeItem(STORAGE_KEY);
       } catch (e) {
@@ -229,6 +255,7 @@ const CHAPTER_PREFIX_MAP: Record<string, string[]> = {
         completedLectures,
         lastVisitedLectureId,
         quizResults,
+        revisedQuestionCount,
         toggleLectureCompleted,
         setLectureCompleted,
         recordVisitedLecture,
