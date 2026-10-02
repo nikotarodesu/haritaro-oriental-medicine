@@ -1,3 +1,5 @@
+import { ARTICLE_LEARNING_GUIDES } from "./articleLearningGuides";
+import { SITE_REVISED_AT } from "@/config/contentUpdates";
 import { Article } from "@/types/oriental";
 import { HISTORY_ARTICLE } from "./articles/historyArticle";
 import { YINYANG_GOGYO_ARTICLE } from "./articles/yinyangGogyoArticle";
@@ -13,7 +15,7 @@ import { UNIFIED_THEORY_ARTICLE } from "./articles/unifiedTheoryArticle";
 import { GERD_ARTICLE } from "./articles/gerdArticle";
 
 // 公開記事配列（東洋医学自然科学講義録・学術論文・経穴経絡学・四診科学・東西統合臨床・人体統一理論アーカイブ）
-export const ARTICLES: Article[] = [
+const SOURCE_ARTICLES: Article[] = [
   HISTORY_ARTICLE,
   YINYANG_GOGYO_ARTICLE,
   KIKETSUSUI_ARTICLE,
@@ -27,6 +29,11 @@ export const ARTICLES: Article[] = [
   UNIFIED_THEORY_ARTICLE,
   GERD_ARTICLE,
 ];
+
+export const ARTICLES: Article[] = SOURCE_ARTICLES.map(article => ({
+  ...article, summary: ARTICLE_LEARNING_GUIDES[article.id]?.summary || article.summary, updatedAt: SITE_REVISED_AT,
+  keyPoints: ARTICLE_LEARNING_GUIDES[article.id] ? [ARTICLE_LEARNING_GUIDES[article.id].focus, ARTICLE_LEARNING_GUIDES[article.id].limitation] : article.keyPoints,
+}));
 
 // 下書きアーカイブ（必要に応じて保存）
 export const DRAFT_ARTICLES: Article[] = [];

@@ -8,6 +8,7 @@ import {
   getAcupointDetail, 
   getMeridianPoints,
   isDetailedAcupoint,
+  DETAILED_ACUPOINTS,
   generateFaqLocationAnswer,
   isContraindicatedNeedle,
   isContraindicatedMoxa,
@@ -43,6 +44,7 @@ import { getSimulatorParamsForAcupoint } from "@/utils/tsuboSimulatorMatcher";
 import { getSymptomsForAcupoint, getCasesForAcupoint } from "@/utils/tsuboTopicClusterMatcher";
 import { MERIDIAN_RELATIONS } from "@/utils/tsuboRelations";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
+import AcupointInformationScope from '@/components/tsubo/AcupointInformationScope';
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -65,8 +67,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const title = `${point.name}（${point.code}）のツボの位置・効果・押し方と禁忌【鍼灸師監修】`;
-  const description = `${point.name}（${point.code} / ${point.meridian}）。${point.locationSimple} WHO標準取穴部位、解剖断面構造、主治適応症、セルフケアの押し方・禁忌事項・臨床運針のポイントを鍼灸師が解説。`;
+  const title = `${point.name}（${point.code}）の位置・伝統的な主治・注意事項｜鍼灸学習`;
+  const description = `${point.name}（${point.code} / ${point.meridian}）。${point.locationSimple} 位置情報の参照元、伝統的な主治、教育用断面模式図とその適用範囲、注意事項を分けて学べます。`;
 
   return {
     title,
@@ -92,6 +94,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   }
 
   const isDetailed = isDetailedAcupoint(point.codeLower);
+  const individualModel = Boolean(DETAILED_ACUPOINTS[point.codeLower]?.crossSection);
 
   // 同経脈の経穴リスト（前後の経穴導線用）
   const meridianPoints = getMeridianPoints(point.meridianId);
@@ -137,9 +140,7 @@ export default async function AcupointDetailPage({ params }: Props) {
     },
     {
       question: `「${point.name}」はどのような症状・臨床病態に用いられますか？`,
-      answer: `主な主治適応症として「${point.indications.join("、")}」などが挙げられます。${point.meridian}に属し、${
-        point.clinicalNote ? point.clinicalNote : "気血の巡りを整え、関連する臓腑や局所のバランスを回復させる重要な経穴です。"
-      }`,
+      answer: `伝統的な主治・学習上の関連として「${point.indications.join("、")}」などが挙げられます。${point.meridian}に属します。この一覧は経穴単独の治療効果や、個人への適応を保証するものではありません。臨床研究は対象・比較条件・限界とともに確認してください。`,
     },
   ];
 
@@ -377,7 +378,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                 </span>
                 {isDetailed ? (
                   <span className="text-xs px-2.5 py-1 rounded-lg bg-[#EBF3EF] dark:bg-[#1A332B] border border-[#C5DED4] dark:border-[#2D5A4A] text-[#1E3D34] dark:text-[#74BA9E] font-bold">
-                    詳細解剖図収録
+                    個別編集データあり
                   </span>
                 ) : (
                   <span className="text-xs px-2 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#2D3E50] text-[#737C77] dark:text-[#8899A6]">
@@ -519,7 +520,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                 ② 取穴と安全
               </span>
               <p className="text-[#4A534F] dark:text-[#A0B0BC]">
-                {point.locationSimple}。{point.caution ? `注意：${point.caution}` : "体表面の骨・筋指標に従い安全深度を遵守。"}
+                {point.locationSimple}。{point.caution ? `注意：${point.caution}` : "体表の骨・筋の指標を確認。個別の安全性は専門資料と臨床評価で判断してください。"}
               </p>
             </div>
             <div className="bg-white/80 dark:bg-[#10171F]/80 p-3.5 rounded-xl border border-[#E8E1D1]/70 dark:border-[#263542]">
@@ -688,6 +689,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           </div>
         </section>
 
+        <AcupointInformationScope code={point.code} locationSource={point.locationSource} individualModel={individualModel} />
         {/* 3. 断面解剖モデル */}
         {point.crossSection && point.crossSection.svgElements && point.crossSection.svgElements.length > 0 && (
           <section className="space-y-6">
@@ -695,6 +697,7 @@ export default async function AcupointDetailPage({ params }: Props) {
               model={point.crossSection}
               pointName={point.name}
               pointCode={point.code}
+              individualModel={individualModel}
             />
 
             {/* 近隣経穴リンク（シンプルチップ） */}
@@ -769,7 +772,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                   <span>臨床運針・刺鍼手技ガイド（針灸専門指標）</span>
                 </div>
                 <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
-                  国家試験出題基準・臨床安全深度準拠
+                  経穴学習・資料の適用範囲を確認
                 </span>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
@@ -840,14 +843,14 @@ export default async function AcupointDetailPage({ params }: Props) {
             <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-3">
               <div className="flex items-center gap-2 text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8]">
                 <BookOpen className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>現代神経科学・解剖学的機序（EBM研究知見）</span>
+                <span>研究の対象・結果・適用範囲</span>
               </div>
               <p className="text-xs sm:text-sm text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
                 {point.researchEvidence.findings}
               </p>
               <div className="space-y-1 pt-1">
                 <span className="text-[11px] font-bold text-[#59615D] dark:text-[#A0B0BC] block">
-                  解明されている主な生理機序：
+                  研究で扱った観察・条件：
                 </span>
                 <ul className="list-disc list-inside space-y-0.5 text-xs text-[#59615D] dark:text-[#A0B0BC]">
                   {point.researchEvidence.mechanisms.map((m, i) => (

@@ -22,6 +22,8 @@ import {
   Award, 
 } from "lucide-react";
 import dynamic from "next/dynamic";
+import RecentToolTracker from "./home/RecentTools";
+import { TOOL_CATALOG } from "@/config/toolCatalog";
 import YinYangSwitch from "./YinYangSwitch";
 import FontSizeControl from "./FontSizeControl";
 const GlobalSearchModal = dynamic(() => import("./search/GlobalSearchModal"), {
@@ -35,6 +37,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<"clinical" | "learn" | "search" | "settings" | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchInitialQuery, setSearchInitialQuery] = useState('');
 
   const { clipCount } = useClinicalMemo();
   const { currentSeason } = useSeasonalTheme();
@@ -59,7 +62,9 @@ export default function Header() {
       }
     };
 
-    const handleCustomOpenSearch = () => {
+    const handleCustomOpenSearch = (event: Event) => {
+      const detail = (event as CustomEvent<{ query?: string }>).detail;
+      setSearchInitialQuery(typeof detail?.query === 'string' ? detail.query : '');
       setIsSearchOpen(true);
     };
 
@@ -214,7 +219,7 @@ export default function Header() {
                         国家試験対策特設ハブ
                       </span>
                       <span className="text-[11px] text-[#59615D] dark:text-[#8899A6] block leading-tight mt-0.5">
-                        忘却曲線デイリー復習・本試験過去問実問・3大特訓
+                        {TOOL_CATALOG.kokushi.description}
                       </span>
                     </div>
                   </Link>
@@ -828,11 +833,14 @@ export default function Header() {
         </div>
       )}
 
+      <RecentToolTracker />
       {/* サイト全体横断検索モーダル（Cmd+K / Ctrl+K - 検索起動時のみ動的ロード） */}
       {isSearchOpen && (
         <GlobalSearchModal
+          key={searchInitialQuery}
           isOpen={isSearchOpen}
-          onClose={() => setIsSearchOpen(false)}
+          initialQuery={searchInitialQuery}
+          onClose={() => { setIsSearchOpen(false); setSearchInitialQuery(''); }}
         />
       )}
     </header>

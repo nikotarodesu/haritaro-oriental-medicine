@@ -1,5 +1,6 @@
 "use client";
 
+import { TOOL_CATALOG } from "@/config/toolCatalog";
 import { useState } from "react";
 import Link from "next/link";
 import { 
@@ -21,7 +22,7 @@ export default function HomeHeroDualEntry() {
         <button
           type="button"
           onClick={() => setActiveTab("learn")}
-          className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+          className={`flex-1 min-h-11 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
             activeTab === "learn"
               ? "bg-[#1E2D3D] text-white shadow-xs"
               : "text-[#59615D] dark:text-[#A0B0BC] hover:text-[#1E2D3D]"
@@ -33,7 +34,7 @@ export default function HomeHeroDualEntry() {
         <button
           type="button"
           onClick={() => setActiveTab("clinical")}
-          className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+          className={`flex-1 min-h-11 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
             activeTab === "clinical"
               ? "bg-[#1E3D34] text-white shadow-xs"
               : "text-[#59615D] dark:text-[#A0B0BC] hover:text-[#1E3D34]"
@@ -78,7 +79,7 @@ export default function HomeHeroDualEntry() {
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#1E2D3D] dark:text-[#7BAAD8] shrink-0 mt-0.5" />
-                <span><strong className="text-[#232826] dark:text-[#FAF8F5]">忘却曲線＆国試精選演習:</strong> 日替わり復習で本番得点力を強化</span>
+                <span><strong className="text-[#232826] dark:text-[#FAF8F5]">間隔復習・国試演習:</strong> {TOOL_CATALOG.kokushi.short}</span>
               </li>
             </ul>
           </div>

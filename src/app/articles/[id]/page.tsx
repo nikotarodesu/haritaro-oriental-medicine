@@ -3,12 +3,13 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { parseMarkdownBlocks } from "@/utils/markdownParser";
+import { ARTICLE_LEARNING_GUIDES } from "@/data/articleLearningGuides";
+import LearningPathLinks from "@/components/learning/LearningPathLinks";
 import { ARTICLES } from "@/data/articleData";
 import { resolveArticleReferences } from "@/utils/referenceResolver";
 import MarkdownBody from "@/components/MarkdownBody";
 import ArticleReferences from "@/components/ArticleReferences";
 import PrimeStudentCard from "@/components/PrimeStudentCard";
-import CitationTextRenderer from "@/components/CitationTextRenderer";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import { 
@@ -17,7 +18,6 @@ import {
   ArrowLeft, 
   ArrowRight, 
   Sparkles, 
-  Zap, 
   Layers, 
   ChevronRight,
   ShieldCheck 
@@ -82,11 +82,7 @@ export default async function ArticleDetailPage({ params }: Props) {
     .filter(item => item.score > 0).sort((a, b) => b.score - a.score).slice(0, 2).map(item => item.article);
   const headings = parseMarkdownBlocks(article.contentMarkdown).flatMap((block, index) =>
     block.type === "h2" ? [{ label: block.content.replaceAll("**", ""), id: "article-heading-" + index }] : []);
-  const nextLearning = article.category === "経穴・経絡学"
-    ? { href: "/tsubo", label: "経穴辞典で位置・解剖を確認する" }
-    : article.category === "臨床・実践知見"
-    ? { href: "/clinical", label: "臨床学習の進め方を確認する" }
-    : { href: "/curriculum", label: "講義で基礎から学ぶ" };
+  const learningGuide = ARTICLE_LEARNING_GUIDES[article.id];
 
   const resolvedReferences = resolveArticleReferences(article.references || [], article.contentMarkdown);
   const summarySeenTerms = new Set<string>();
@@ -237,38 +233,18 @@ export default async function ArticleDetailPage({ params }: Props) {
             <strong className="block mb-1">この記事の読み方</strong>
             伝統理論の説明、研究で得られた知見、筆者による比較・比喩を区別してお読みください。生理学との対比表や「ネットワーク」などの説明は、伝統概念との同一性や治療効果を証明するものではありません。研究結果は対象・方法・限界とともに確認してください。
           </aside>
+          {learningGuide && <section aria-label="先に押さえる要点と限界" className="rounded-xl bg-[#EBF3EF] dark:bg-[#182823] p-4 space-y-3 text-sm leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
+            <h2 className="font-bold">先に押さえる要点と限界</h2>
+            <p><strong>学ぶポイント：</strong>{learningGuide.focus}</p>
+            <p><strong>判断の限界：</strong>{learningGuide.limitation}</p>
+            <p className="text-xs">根拠は本文の引用と参考文献で、原典・研究対象・方法を確認できます。伝統理論と筆者の対比モデルを区別してください。</p>
+          </section>}
           {headings.length > 0 && <details open className="rounded-xl bg-[#FAF8F5] dark:bg-[#121920] p-4">
             <summary className="cursor-pointer font-bold text-[#1E3D34] dark:text-[#74BA9E]">目次：知りたいところから読む</summary>
             <nav aria-label="記事の目次" className="mt-3"><ol className="space-y-2 text-sm">
               {headings.map(heading => <li key={heading.id}><a href={"#" + heading.id} className="inline-block py-1 underline underline-offset-4 text-[#1E3D34] dark:text-[#74BA9E]">{heading.label}</a></li>)}
             </ol></nav>
           </details>}
-          {/* 10秒でわかる本稿の3ポイント */}
-          {article.keyPoints && article.keyPoints.length > 0 && (
-            <div className="bg-gradient-to-br from-[#EBF3EF] via-[#F5FAF8] to-[#FAF8F5] dark:from-[#162721] dark:via-[#14211C] dark:to-[#101915] p-4 sm:p-6 rounded-2xl border-2 border-[#1E3D34]/30 dark:border-[#3D6E5C] shadow-xs space-y-3">
-              <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#83BEA8]">
-                <Zap className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] fill-current" />
-                <span className="tracking-wide">10秒でわかる本稿の3ポイント</span>
-              </div>
-              <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-sm text-[#232826] dark:text-[#E6EFEA]">
-                {article.keyPoints.map((point, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5">
-                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] font-mono text-[11px] font-bold shrink-0 mt-0.5 shadow-2xs">
-                      {idx + 1}
-                    </span>
-                    <span className="leading-relaxed font-medium flex-1">
-                      <CitationTextRenderer
-                        text={point}
-                        resolvedReferences={resolvedReferences}
-                        seenTerms={summarySeenTerms}
-                      />
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
           {/* 要約ボックス */}
           <div className="bg-[#FAF8F5] dark:bg-[#121920] p-4 sm:p-5 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#4E8C76] text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
             <strong className="block font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] mb-1">【本稿の要旨】</strong>
@@ -284,12 +260,13 @@ export default async function ArticleDetailPage({ params }: Props) {
           />
 
           <nav aria-label="読了後の学習" className="flex flex-wrap items-center gap-4 border-t border-[#E8E1D1] dark:border-[#22303D] pt-5 text-sm">
-            <Link href={nextLearning.href} className="inline-flex items-center gap-2 rounded-xl bg-[#1E3D34] px-4 py-3 font-bold text-white">{nextLearning.label}<ArrowRight className="w-4 h-4" /></Link>
+            {learningGuide && <LearningPathLinks lectureId={learningGuide.lectureId} caseId={learningGuide.caseId} />}
             <a href="#article-top" className="underline underline-offset-4 text-[#1E3D34] dark:text-[#74BA9E]">記事の先頭へ</a>
           </nav>
           {/* 参考文献・学術エビデンス（PubMed・DOI・古典原典） */}
           <ArticleReferences references={resolvedReferences} />
 
+          <Link href={"/contact?source=" + encodeURIComponent("/articles/" + article.id)} className="inline-flex min-h-11 items-center text-sm underline text-[#1E3D34] dark:text-[#83BEA8]">この記事の訂正・出典について連絡する</Link>
           {/* 学生向け専門書・教科書サポート（Prime Student） */}
           <PrimeStudentCard variant="card" className="mt-8" />
 

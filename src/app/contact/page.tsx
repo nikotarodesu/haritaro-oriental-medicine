@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { 
   Mail, 
@@ -23,6 +23,16 @@ export default function ContactPage() {
     message: "",
     botCheck: "", // ハニーポット
   });
+
+  useEffect(() => {
+    const source = new URLSearchParams(window.location.search).get('source');
+    if (!source || !/^\/(tsubo|articles)\/[a-z0-9-]+$/.test(source)) return;
+    const timer = setTimeout(() => setFormData(previous => ({ ...previous,
+      subject: previous.subject || '掲載内容・出典の確認：' + source,
+      message: previous.message || '対象ページ：https://www.haritaro.jp' + source + '\n\n確認・訂正をお願いしたい箇所：\n\n参照資料（分かる場合）：\n',
+    })), 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");

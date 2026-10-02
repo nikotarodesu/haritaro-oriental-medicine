@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { matchesSearchText } from '@/utils/search';
 import Link from "next/link";
 import { 
   BookOpen, 
@@ -40,56 +41,30 @@ export default function LibraryClient() {
   const [searchQuery, setSearchQuery] = useState("");
   const [savedIds, setSavedIds] = useState<string[]>([]);
 
+  useEffect(() => {
+    let frame = 0;
+    const revealLinkedItem = () => {
+      const id = window.location.hash.slice(1);
+      if (!/^(paper|classic|archive)-[a-z0-9-]+$/i.test(id)) return;
+      setActiveTab('all');
+      setSearchQuery('');
+      frame = requestAnimationFrame(() => {
+        frame = requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ block: 'start' }));
+      });
+    };
+    frame = requestAnimationFrame(revealLinkedItem);
+    window.addEventListener('hashchange', revealLinkedItem);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('hashchange', revealLinkedItem); };
+  }, []);
+
   // フィルタリング処理
-  const filteredPapers = useMemo(() => {
-    if (!searchQuery.trim()) return PAPERS_DATABASE;
-    const q = searchQuery.toLowerCase().trim();
-    return PAPERS_DATABASE.filter(p => 
-      p.title.toLowerCase().includes(q) || 
-      p.japaneseTitle.includes(q) ||
-      p.targetCondition.includes(q) ||
-      p.tags.some(t => t.toLowerCase().includes(q)) ||
-      p.interventionProtocol?.acupoints.some(pt => pt.includes(q))
-    );
-  }, [searchQuery]);
+  const filteredPapers = useMemo(() => PAPERS_DATABASE.filter(p => matchesSearchText(searchQuery, [p.title, p.japaneseTitle, p.targetCondition, ...p.tags, ...(p.interventionProtocol?.acupoints || [])])), [searchQuery]);
 
-  const filteredClassics = useMemo(() => {
-    if (!searchQuery.trim()) return CLASSICAL_TEXTS;
-    const q = searchQuery.toLowerCase().trim();
-    return CLASSICAL_TEXTS.filter(c => 
-      c.book.includes(q) ||
-      c.chapter.includes(q) ||
-      c.theme.includes(q) ||
-      c.original.includes(q) ||
-      c.translation.includes(q) ||
-      c.tags.some(t => t.includes(q))
-    );
-  }, [searchQuery]);
+  const filteredClassics = useMemo(() => CLASSICAL_TEXTS.filter(c => matchesSearchText(searchQuery, [c.book, c.chapter, c.theme, c.original, c.translation, ...c.tags])), [searchQuery]);
 
-  const filteredCases = useMemo(() => {
-    if (!searchQuery.trim()) return CLINICAL_CASES;
-    const q = searchQuery.toLowerCase().trim();
-    return CLINICAL_CASES.filter(c => 
-      c.title.includes(q) || 
-      c.patient.chiefComplaint.includes(q) || 
-      c.correctDiagnosis.pattern.includes(q) || 
-      c.correctDiagnosis.primaryPoints.some((pt: string) => pt.includes(q))
-    );
-  }, [searchQuery]);
+  const filteredCases = useMemo(() => CLINICAL_CASES.filter(c => matchesSearchText(searchQuery, [c.title, c.patient.chiefComplaint, c.correctDiagnosis.pattern, ...c.correctDiagnosis.primaryPoints])), [searchQuery]);
 
-  const filteredArchives = useMemo(() => {
-    if (!searchQuery.trim()) return ALL_ARCHIVE_CASES;
-    const q = searchQuery.toLowerCase().trim();
-    return ALL_ARCHIVE_CASES.filter(ac => 
-      ac.title.includes(q) ||
-      ac.category.includes(q) ||
-      ac.location.includes(q) ||
-      ac.symptoms.includes(q) ||
-      ac.treatmentAndCourse.includes(q) ||
-      ac.usedAcupoints.some(pt => pt.includes(q)) ||
-      ac.tags.some(t => t.includes(q))
-    );
-  }, [searchQuery]);
+  const filteredArchives = useMemo(() => ALL_ARCHIVE_CASES.filter(ac => matchesSearchText(searchQuery, [ac.title, ac.category, ac.location, ac.symptoms, ac.treatmentAndCourse, ...ac.usedAcupoints, ...ac.tags])), [searchQuery]);
 
   // マイカルテへ保存
   const handleSaveItem = (item: { id: string; title: string; summary: string; points?: string[] }) => {
@@ -160,7 +135,7 @@ export default function LibraryClient() {
           ].map(tab => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`px-4 py-2 rounded-xl font-bold shrink-0 transition-all flex items-center gap-1.5 ${
                 activeTab === tab.id
                   ? "bg-[#B86924] text-white shadow-sm"
@@ -197,7 +172,8 @@ export default function LibraryClient() {
                   return (
                     <div
                       key={paper.id}
-                      className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 shadow-2xs space-y-4 flex flex-col justify-between hover:border-[#B86924] transition-all"
+                      id={`paper-${paper.id}`}
+                      className="scroll-mt-28 target:ring-2 target:ring-[#B86924] bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 shadow-2xs space-y-4 flex flex-col justify-between hover:border-[#B86924] transition-all"
                     >
                       <div className="space-y-3">
                         <div className="flex items-center justify-between gap-2">
@@ -294,7 +270,8 @@ export default function LibraryClient() {
                   return (
                     <div
                       key={classic.id}
-                      className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 shadow-2xs space-y-4 flex flex-col justify-between hover:border-[#B86924] transition-all"
+                      id={`classic-${classic.id}`}
+                      className="scroll-mt-28 target:ring-2 target:ring-[#B86924] bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 shadow-2xs space-y-4 flex flex-col justify-between hover:border-[#B86924] transition-all"
                     >
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
@@ -470,7 +447,8 @@ export default function LibraryClient() {
                   return (
                     <div
                       key={ac.id}
-                      className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 shadow-2xs space-y-3 flex flex-col justify-between hover:border-emerald-600 dark:hover:border-emerald-500 transition-all"
+                      id={`archive-${ac.id}`}
+                      className="scroll-mt-28 target:ring-2 target:ring-[#B86924] bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 shadow-2xs space-y-3 flex flex-col justify-between hover:border-emerald-600 dark:hover:border-emerald-500 transition-all"
                     >
                       <div className="space-y-2.5">
                         <div className="flex items-center justify-between gap-2">

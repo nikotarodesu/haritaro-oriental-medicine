@@ -1,5 +1,6 @@
 'use client';
 
+import { trackEvent } from '@/utils/analytics';
 import { useState } from 'react';
 import Link from 'next/link';
 import { useCurriculumProgress } from '@/contexts/CurriculumProgressContext';
@@ -15,6 +16,7 @@ export default function LearningReviewPanel() {
   const [index, setIndex] = useState(0);
   const [choice, setChoice] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [sessionCorrect, setSessionCorrect] = useState(0);
   const [sessionSeed, setSessionSeed] = useState('review');
   const today = localStudyDate();
   const acupointQuestions: LearningQuestion[] = Object.values(quizResults).filter(r => r.kind === 'acupoint').map(r => ({
@@ -30,6 +32,9 @@ export default function LearningReviewPanel() {
   const unlearned = LEARNING_QUESTIONS.filter(q => !quizResults[q.id]);
   const q = queue[index];
   const start = (questions: LearningQuestion[]) => {
+    if (!questions.length) return;
+    trackEvent('review_start', { placement: 'learning_review', total: questions.length });
+    setSessionCorrect(0);
     setQueue(questions); setIndex(0); setChoice(null); setSubmitted(false); setSessionSeed(String(Date.now()));
   };
   const answer = () => {
@@ -46,6 +51,7 @@ export default function LearningReviewPanel() {
         correctOptionId: String(q.correctIndex), explanation: q.explanation,
         meridianName: '', locationReference: '' }, String(choice), choice === q.correctIndex, today);
     }
+    if (choice === q.correctIndex) setSessionCorrect(count => count + 1);
     setSubmitted(true);
   };
   const similar = q && LEARNING_QUESTIONS.find(other => other.id !== q.id && other.lectureId === q.lectureId);
@@ -53,7 +59,7 @@ export default function LearningReviewPanel() {
     <section id="learning-review" className="scroll-mt-24 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-4 sm:p-6 space-y-4 print:hidden">
       <h2 className="font-serif text-lg font-bold text-[#1E3D34] dark:text-[#83BEA8]">今日の学習</h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-        <button type="button" disabled={!isMounted} onClick={() => start(due.length ? due.slice(0, 10) : unlearned.slice(0, 3))} className="rounded-xl bg-[#1E3D34] text-white p-3 text-left disabled:opacity-50">今日の復習：{isMounted ? due.length : '…'}問<br /><span className="text-xs">{due.length ? '予定日が来た問題を確認' : '未回答の問題から始める'}</span></button>
+        <button type="button" disabled={!isMounted} onClick={() => start(due.length ? due.slice(0, 10) : unlearned.slice(0, 3))} className="min-h-11 rounded-xl bg-[#1E3D34] text-white p-3 text-left disabled:opacity-50">今日の復習：{isMounted ? due.length : '…'}問<br /><span className="text-xs">{due.length ? '予定日が来た問題を確認' : '未回答の問題から始める'}</span></button>
         <Link href={lastVisitedLectureId ? `/curriculum/${lastVisitedLectureId}` : '/curriculum/lecture-yinyang-1'} className="rounded-xl bg-white dark:bg-[#17212A] p-3 text-[#1E3D34] dark:text-[#83BEA8]">前回の続き<br /><span className="text-xs">講義を読み、理解度を確認</span></Link>
         <button type="button" disabled={!isMounted || !weak.length} onClick={() => start(weak)} className="rounded-xl bg-white dark:bg-[#17212A] p-3 text-left text-[#1E3D34] dark:text-[#83BEA8] disabled:opacity-50">苦手分野：{isMounted ? weak.length : '…'}問<br /><span className="text-xs">講義・国試演習・経穴を横断</span></button>
       </div>
@@ -76,7 +82,7 @@ export default function LearningReviewPanel() {
             {similar && <button type="button" className="underline" onClick={() => start([similar])}>同じテーマの類題で確認</button>}
             <Link className="underline" href="/simulator#case-training">症例演習へ</Link>
           </div>
-          <button type="button" onClick={() => { setIndex(index + 1); setChoice(null); setSubmitted(false); }} className="rounded-lg bg-[#1E3D34] text-white px-4 py-2">{index + 1 < queue.length ? '次の問題へ' : '復習を完了する'}</button>
+          <button type="button" onClick={() => { if (index + 1 === queue.length) trackEvent('review_complete', { placement: 'learning_review', score: sessionCorrect, total: queue.length }); setIndex(index + 1); setChoice(null); setSubmitted(false); }} className="rounded-lg bg-[#1E3D34] text-white px-4 py-2">{index + 1 < queue.length ? '次の問題へ' : '復習を完了する'}</button>
           <QuestionEvidence lectureId={q.lectureId} revision={q.revision} />
         </div>}
       </div>}

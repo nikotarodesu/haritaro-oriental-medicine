@@ -42,32 +42,26 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
       "自律神経失調・精神緊張・不眠",
     ],
     categories: ["原穴", "四総穴（面目を治す）", "四関穴"],
-    clinicalNote: "「面目は合谷に収む」と古来より伝わる頭部・顔面症状の特効穴。気の滞りを強力に散らし、鎮痛・消炎作用に優れる。臨床では太衝と組み合わせて「四関」として開通させる手技が極めて有効。",
+    clinicalNote: "伝統的には頭部・顔面の症状などとの関連を学ぶ経穴です。太衝との組み合わせは「四関」として扱われますが、配穴名だけで臨床効果や個人への適応は決まりません。",
     caution: "強力な降気・子宮収縮促進作用があるため、妊娠中の強い刺激は禁忌。",
     status: "published",
     hasDetailedAnatomy: true,
     crossSection: CROSS_SECTIONS.li4,
     researchEvidence: {
-      focus: "fMRIによる大脳辺縁系・下行性疼痛抑制系の賦活メカニズム",
-      findings: "合谷（LI4）への手技鍼刺激により、前帯状回（ACC）、扁桃体、島皮質の過剰活動が沈静化し、延髄縫線核（RVM）を介した内因性オピオイド（β-エンドルフィン）の分泌が促進されることが確認されている。",
-      mechanisms: [
-        "広域受容野鎮痛（DNIC / 下行性疼痛抑制系）の起動",
-        "顔面・三叉神経核への求心性抑制性反射",
-        "交感神経過緊張の抑制と末梢微小循環の改善",
+      "focus": "健常者への合谷刺激とfMRI信号の変化",
+      "findings": "健常者13人を対象とした2000年の予備的fMRI研究で、合谷への鍼操作に伴う脳信号の変化が報告されています。画像信号の変化は、患者への鎮痛効果やオピオイド分泌を直接証明したものではありません。",
+      "mechanisms": [
+        "感覚刺激と脳の画像信号との関連を調べた研究",
+        "得気と痛みを感じた参加者で反応が異なったという観察"
       ],
-      sources: [
+      "sources": [
         {
-          title: "Acupuncture at LI4 (Hegu) modulates the default mode network in healthy subjects: an fMRI study",
-          pmid: "23758253",
-          year: "2013",
-        },
-        {
-          title: "Neural substrates of acupuncture point LI4: a systematic review and meta-analysis of neuroimaging studies",
-          doi: "10.1136/acupmed-2017-011409",
-          year: "2018",
-        },
+          "title": "Acupuncture modulates the limbic system and subcortical gray structures of the human brain: evidence from fMRI studies in normal subjects",
+          "pmid": "10643726",
+          "year": "2000"
+        }
       ],
-      limitations: "個別症例における感受性の差や、単一穴刺激と多穴併用処方（太衝との四関配穴）の相乗効果については更なる比較検証が必要。",
+      "limitations": "少人数の健常者での画像研究です。対象疾患の治療効果、合谷単独の特異的効果、患者ごとの反応を確定する研究ではありません。"
     },
     classicalReferences: [
       {
@@ -128,32 +122,26 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
       "手根管症候群・前腕掌側痛",
     ],
     categories: ["絡穴", "八脈交会穴（陰維脈に通ず）", "四総穴（心胸を治す）"],
-    clinicalNote: "「心胸は内関に尋ねよ」。自律神経の中枢や迷走神経と深く関わり、精神的緊張に伴う動悸や消化器の逆流（悪心・嘔吐）を鎮める。WHOでも乗り物酔い・つわりへの有効性が認められている。",
+    clinicalNote: "伝統的には心胸・胃の症状との関連を学ぶ経穴です。術後悪心・嘔吐の研究は、その対象と刺激・併用条件を確認して読みます。",
     caution: "直下に正中神経が走行するため、手指への電撃様放散痛が生じた場合は速やかに針を後退させること。",
     status: "published",
     hasDetailedAnatomy: true,
     crossSection: CROSS_SECTIONS.pc6,
     researchEvidence: {
-      focus: "迷走神経背側運動核の調整による胃運動能改善および悪心抑制",
-      findings: "コクラン共同計画（Cochrane Review）のメタ解析をはじめとする多数のRCTにおいて、内関（PC6）刺激は術後悪心嘔吐（PONV）および化学療法誘発性悪心嘔吐（CINV）に対して制吐薬と同等以上の有効性が確立されている。",
-      mechanisms: [
-        "延髄孤束核（NTS）および最後野（CTZ）の化学受容体トリガー抑制",
-        "心拍変動（HRV）の高周波成分（HF / 迷走神経活動）の亢進",
-        "胃筋電図（EGG）における胃前庭部徐波の正常化（胃運動律動回復）",
+      "focus": "術後悪心・嘔吐の予防に関するPC6刺激の臨床研究",
+      "findings": "2025年のCochraneレビューでは、侵襲的・非侵襲的なPC6刺激と制吐薬の併用が、偽刺激などとの比較で術後悪心・嘔吐を減らす可能性が示されています。エビデンスへの確信度は全般に低く、制吐薬より優れていると一律には言えません。",
+      "mechanisms": [
+        "このレビューは術後悪心・嘔吐の転帰を評価しており、作用機序を確定したものではない",
+        "刺激方法・併用薬・比較条件を分けて結果を読む"
       ],
-      sources: [
+      "sources": [
         {
-          title: "Acupuncture-point stimulation for chemotherapy-induced nausea or vomiting",
-          pmid: "16437524",
-          year: "2006",
-        },
-        {
-          title: "PC6 acupressure for prevention of postoperative nausea and vomiting: a systematic review and meta-analysis",
-          pmid: "26385317",
-          year: "2015",
-        },
+          "title": "Stimulation of the wrist acupuncture point PC6 for preventing postoperative nausea and vomiting: a network meta-analysis",
+          "doi": "10.1002/14651858.CD003281.pub5",
+          "year": "2025"
+        }
       ],
-      limitations: "指圧バンドと鍼治療による持続時間の差、心臓疾患における薬物療法代替としての過信は禁忌。",
+      "limitations": "手術を受けた人での結果です。化学療法やその他の原因の悪心へそのまま一般化しません。有害事象の報告が少なく、安全性の確実性にも限界があります。"
     },
     classicalReferences: [
       {
@@ -215,33 +203,33 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
       "高血圧・動脈硬化予防（無病息災の灸）",
     ],
     categories: ["合土穴", "胃の下合穴", "四総穴（腹を治す）"],
-    clinicalNote: "古来より「三里に灸せざる者とは旅をするな」と言われる無病息災・長寿の代表穴。脾胃（消化吸収機能）の働きを底上げし、後天の気を補給して全身を滋養する「健脾和胃・扶正培元」の第一要穴（胃の合土穴・下合穴・四総穴）。",
+    clinicalNote: "足の陽明胃経の合穴として、伝統的には胃腸の症状や全身状態との関連を学びます。動物の電気刺激研究と、人への治療効果を区別します。",
     caution: "特に重篤な禁忌はないが、極度の虚弱者には強刺激を避け、温灸または軽微な補法が適す。",
     status: "published",
     hasDetailedAnatomy: true,
     crossSection: CROSS_SECTIONS.st36,
     researchEvidence: {
-      focus: "神経免疫連関（Neuro-Immune Axis）および迷走神経-副腎抗炎症経路の解読",
-      findings: "ハーバード大学マ・チュアンファン教授らによるネイチャー（Nature）掲載研究（2021年）により、足三里への鍼刺激がPROKR2発現感覚神経を選択的に活性化し、迷走神経-副腎反射を介して全身性致死性炎症（サイトカインストーム）を抑制する分子神経解剖学的経路が実証された。",
-      mechanisms: [
-        "PROKR2陽性知覚神経を介する迷走神経-副腎抗炎症軸の活性化",
-        "消化管運動の双方向性調整（胃前庭部運動亢進と幽門痙攣解除）",
-        "マクロファージTNF-α、IL-6等の炎症性サイトカイン放出抑制",
+      "focus": "マウスの電気鍼刺激と迷走神経―副腎経路の基礎研究",
+      "findings": "2021年のマウス研究では、足三里相当部位への低強度の電気刺激と、PROKR2標識感覚神経を介した迷走神経―副腎経路との関係が示されました。2014年の研究も、マウスの炎症モデルで神経・副腎・ドーパミンとの関係を検討しています。",
+      "mechanisms": [
+        "マウスでの電気刺激条件と神経経路の関係",
+        "動物の炎症モデルでの反応を評価した基礎研究"
       ],
-      sources: [
+      "sources": [
         {
-          title: "A neuroanatomical basis for electroacupuncture to drive the vagal-adrenal axis",
-          pmid: "34646018",
-          doi: "10.1038/s41586-021-04001-4",
-          year: "2021",
+          "title": "A neuroanatomical basis for electroacupuncture to drive the vagal-adrenal axis",
+          "pmid": "34646018",
+          "doi": "10.1038/s41586-021-04001-4",
+          "year": "2021"
         },
         {
-          title: "Electroacupuncture at ST36 activates the cholinergic anti-inflammatory pathway in animal models of sepsis",
-          pmid: "24562388",
-          year: "2014",
-        },
+          "title": "Dopamine mediates vagal modulation of the immune system by electroacupuncture",
+          "pmid": "24562381",
+          "doi": "10.1038/nm.3479",
+          "year": "2014"
+        }
       ],
-      limitations: "刺激強度や周波数パラメータに依存し、過剰な刺激強度は交感神経反射を惹起するため至適刺激量の個別設計が必要。",
+      "limitations": "動物の実験条件での知見です。人の敗血症・炎症性疾患への効果や、通常の手技鍼・指圧への適用を確立したものではありません。"
     },
     classicalReferences: [
       {
@@ -300,7 +288,7 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
       "こむら返り・下肢筋痙攣・足背痛"
     ],
     categories: ["兪土穴・原穴", "四関穴"],
-    clinicalNote: "「肝は将軍の官、謀慮を出だす」。全身の気機を円滑に巡らせる（疏泄作用）最重要原穴。手の合谷と組み合わせた「四関穴」は、自律神経の極度の興奮や全身の気血の滞りを一瞬で解き放つ名配穴。",
+    clinicalNote: "肝経の原穴・兪土穴です。伝統的には気の巡りなどとの関連を整理し、合谷との「四関」を学びます。「一瞬で改善する」などの効果を保証するものではありません。",
     caution: "強力な疏通・降圧作用があるため、妊娠中の強刺激・深刺は注意。",
     status: "published",
     hasDetailedAnatomy: false,

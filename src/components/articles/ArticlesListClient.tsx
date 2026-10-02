@@ -1,5 +1,6 @@
 "use client";
 
+import { matchesSearchText } from "@/utils/search";
 import { useState } from "react";
 import Link from "next/link";
 import { ARTICLES } from "@/data/articleData";
@@ -9,24 +10,12 @@ export default function ArticlesListClient() {
   const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const categories = [
-    "すべて",
-    "古典深読み",
-    "経穴・経絡学",
-    "論文・文献抄読",
-    "臨床・実践知見"
-  ];
+  const categories = ["すべて", ...new Set(ARTICLES.map(article => article.category))];
 
   // フィルタリング（カテゴリ + 検索ワード）
   const filteredArticles = ARTICLES.filter((a) => {
     const matchCat = selectedCategory === "すべて" || a.category === selectedCategory;
-    const query = searchQuery.trim().toLowerCase();
-    const matchSearch =
-      !query ||
-      a.title.toLowerCase().includes(query) ||
-      a.summary.toLowerCase().includes(query) ||
-      a.tags.some((t) => t.toLowerCase().includes(query)) ||
-      a.category.toLowerCase().includes(query);
+    const matchSearch = matchesSearchText(searchQuery, [a.title, a.summary, a.category, ...a.tags]);
     return matchCat && matchSearch;
   });
 

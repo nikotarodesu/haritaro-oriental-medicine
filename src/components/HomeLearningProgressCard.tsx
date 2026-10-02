@@ -1,92 +1,30 @@
 'use client';
-
-import React from 'react';
 import Link from 'next/link';
 import { useCurriculumProgress } from '@/contexts/CurriculumProgressContext';
-import { PlayCircle, CheckCircle2, AlertCircle, Compass, ArrowRight } from 'lucide-react';
 import { CURRICULUM_DATA } from '@/data/curriculumData';
+import { localStudyDate } from '@/utils/learningReview';
+import { trackEvent } from '@/utils/analytics';
+import { useRecentTools } from '@/components/home/RecentTools';
 
+const LECTURES = CURRICULUM_DATA.flatMap(chapter => chapter.lectures);
+const IDS = LECTURES.map(lecture => lecture.id);
 export default function HomeLearningProgressCard() {
-  const {
-    isMounted,
-    totalCompleted,
-    totalPercentage,
-    completedLectures,
-    getNextResumeLectureId,
-    getIncorrectQuestions,
-  } = useCurriculumProgress();
-
-  const allLectures = CURRICULUM_DATA.flatMap((s) => s.lectures);
-  const allIds = allLectures.map((l) => l.id);
-
-  const resumeId = isMounted ? getNextResumeLectureId(allIds) : allIds[0];
-  const resumeLecture = allLectures.find((l) => l.id === resumeId) || allLectures[0];
-  const isStarted = isMounted && totalCompleted > 0;
-
-  // 履歴がない初回訪問者には空の進捗カードを見せない
-  if (!isMounted || !isStarted) {
-    return null;
-  }
-
+  const { isMounted, totalCompleted, totalPercentage, lastVisitedLectureId, quizResults, getNextResumeLectureId } = useCurriculumProgress();
+  const recentTools = useRecentTools();
+  const started = isMounted && Boolean(lastVisitedLectureId || totalCompleted || Object.keys(quizResults).length);
+  const resume = LECTURES.find(lecture => lecture.id === getNextResumeLectureId(IDS)) || LECTURES[0];
+  const due = Object.values(quizResults).filter(result => result.nextReviewDate && result.nextReviewDate <= localStudyDate()).length;
+  const weak = Object.values(quizResults).filter(result => !result.isCorrect).length;
   return (
-    <div className="bg-gradient-to-br from-[#1E3D34] via-[#24493E] to-[#142B24] text-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-lg border border-emerald-600/30 relative overflow-hidden">
-      {/* 背景のやわらかなグロー */}
-      <div className="absolute -top-10 -right-10 w-48 h-48 bg-emerald-400/10 rounded-full blur-2xl pointer-events-none" />
-
-      <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-        <div className="space-y-2 flex-1">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-800/80 text-emerald-200 border border-emerald-600/40">
-              <Compass className="w-3.5 h-3.5" />
-              東洋医学8大体系（全81レッスン）
-            </span>
-            {isStarted && (
-              <span className="text-xs font-bold text-emerald-300">
-                受講中
-              </span>
-            )}
-          </div>
-
-          <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
-            {isStarted
-              ? `続きから再開：${resumeLecture ? resumeLecture.title : '陰陽論 レッスン1'}`
-              : 'まずはここから：第1章 陰陽論 レッスン1'}
-          </h3>
-
-          {/* 進捗表示（受講中のみプログレスバーを強調、未受講時は案内表示） */}
-          {isStarted ? (
-            <div className="flex items-center gap-3 pt-1 max-w-md">
-              <div className="flex-1 h-2 bg-emerald-950/80 rounded-full overflow-hidden border border-emerald-700/40">
-                <div
-                  className="h-full bg-emerald-400 rounded-full transition-all duration-700"
-                  style={{ width: `${isMounted ? totalPercentage : 0}%` }}
-                />
-              </div>
-              <span className="text-xs font-mono font-bold text-emerald-200">
-                {isMounted ? `${totalCompleted}/${allLectures.length}レッスン完了 (${totalPercentage}%)` : '受講中'}
-              </span>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2 pt-1 text-xs text-emerald-200/90 font-medium">
-              <span>所要時間: 約10分</span>
-              <span>•</span>
-              <span>全8章・81レッスン公開中</span>
-            </div>
-          )}
-        </div>
-
-        {/* アクションボタン */}
-        <div className="shrink-0 flex items-center gap-3 w-full md:w-auto">
-          <Link
-            href={resumeLecture ? `/curriculum/${resumeLecture.id}` : '/curriculum/lecture-yinyang-1'}
-            className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white text-[#142B24] font-bold text-xs sm:text-sm hover:bg-emerald-50 active:scale-95 shadow-md transition-all group"
-          >
-            <PlayCircle className="w-4 h-4 text-emerald-700" />
-            <span>{isStarted ? '続きから学ぶ' : '最初のレッスンを始める'}</span>
-            <ArrowRight className="w-4 h-4 text-emerald-700 group-hover:translate-x-0.5 transition-transform" />
-          </Link>
-        </div>
+    <section aria-label="あなたの学習と最近のツール" className="rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-4 sm:p-6 text-[#1E3D34] dark:text-[#83BEA8] space-y-3">
+      <h2 className="font-serif text-lg font-bold">{started ? '今日の学習を再開する' : 'はじめてなら、最初の10分から'}</h2>
+      <p className="text-sm leading-relaxed">{started ? totalCompleted + ' / ' + LECTURES.length + '講義完了（' + totalPercentage + '％）。前回の続き、または復習から進めましょう。' : '陰陽の基本を読み、確認クイズで理解を確かめます。学習履歴はこのブラウザに保存されます。'}</p>
+      <div className="grid gap-2 sm:grid-cols-3 text-sm">
+        <Link onClick={() => trackEvent('context_link_click', { placement: 'learning_start', lecture_id: resume.id })} href={'/curriculum/' + resume.id} className="min-h-11 rounded-xl bg-[#1E3D34] p-3 text-white font-bold">{started ? '前回の続き' : '第1講を始める'} →<span className="block mt-1 text-xs font-normal">{resume.title}</span></Link>
+        <Link onClick={() => trackEvent('context_link_click', { placement: 'learning_review' })} href="/kokushi#learning-review" className="min-h-11 rounded-xl bg-white dark:bg-[#17212A] p-3 font-bold">今日の復習：{isMounted ? due : '…'}問<span className="block mt-1 text-xs font-normal">苦手分野 {isMounted ? weak : '…'}問も確認</span></Link>
+        <Link href="/simulator#case-training" className="min-h-11 rounded-xl bg-white dark:bg-[#17212A] p-3 font-bold">症例で判断を練習<span className="block mt-1 text-xs font-normal">追加質問・安全判断・判断根拠</span></Link>
       </div>
-    </div>
+      {recentTools.length > 0 && <nav aria-label="最近使ったツール" className="flex flex-wrap items-center gap-2 text-xs"><span>最近使ったツール：</span>{recentTools.map(tool => <Link key={tool.href} href={tool.href} className="inline-flex min-h-11 items-center rounded-lg border border-[#C5DED4] dark:border-[#2A5243] px-3 underline">{tool.title}</Link>)}</nav>}
+    </section>
   );
 }

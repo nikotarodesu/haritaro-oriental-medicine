@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
   Search,
@@ -31,6 +31,8 @@ import { ARTICLES } from "@/data/articleData";
 import { trackEvent } from "@/utils/analytics";
 import { SYMPTOMS } from "@/data/symptomData";
 import { ALL_ARCHIVE_CASES } from "@/data/cases/archiveCases";
+import { TOOL_CATALOG } from "@/config/toolCatalog";
+import { prepareSearchItem, scoreSearchItem } from "@/utils/search";
 
 export type SearchItemType =
   | "article"
@@ -59,17 +61,17 @@ const STATIC_TOOLS: SearchResultItem[] = [
   {
     id: "tool-kokushi",
     type: "tool",
-    title: "国家試験対策特設ハブ",
-    subtitle: "忘却曲線復習・日替わり特訓・本試験過去問・安全管理・状況設定問題を網羅",
+    title: TOOL_CATALOG.kokushi.title,
+    subtitle: TOOL_CATALOG.kokushi.description,
     badge: "国試対策",
     url: "/kokushi",
-    tags: ["国試", "国家試験", "過去問", "忘却曲線", "日替わり", "合格", "問題演習"],
+    tags: ["国試", "国家試験", "オリジナル問題", "間隔復習", "日替わり", "問題演習"],
   },
   {
     id: "tool-simulator",
     type: "tool",
-    title: "臨床弁証シミュレーター",
-    subtitle: "八綱 ➜ 気血水 ➜ 臓腑経絡の3段階連動で一文の証とペアツボを瞬時に導出",
+    title: TOOL_CATALOG.simulator.title,
+    subtitle: TOOL_CATALOG.simulator.description,
     badge: "臨床ツール",
     url: "/simulator",
     tags: ["シミュレーター", "弁証", "配穴", "八綱", "気血水", "臓腑", "鑑別"],
@@ -104,8 +106,8 @@ const STATIC_TOOLS: SearchResultItem[] = [
   {
     id: "tool-haiketsu-optimizer",
     type: "tool",
-    title: "配穴設計",
-    subtitle: "原穴・絡穴・背兪穴・募穴・八脈交会穴等の名配穴組み合わせと臨床意図",
+    title: TOOL_CATALOG.haiketsu.title,
+    subtitle: TOOL_CATALOG.haiketsu.description,
     badge: "臨床ツール",
     url: "/practice/haiketsu",
     tags: ["配穴", "処方", "原穴", "絡穴", "四関", "四総穴", "組み合わせ"],
@@ -162,6 +164,7 @@ const RECENT_SEARCHES_KEY = "haritaro_recent_searches";
 interface GlobalSearchModalProps {
   isOpen: boolean;
   onClose: () => void;
+  initialQuery?: string;
 }
 
 type CategoryFilter = "article" | "all" | "acupoint" | "lecture" | "kokushi" | "case" | "library" | "symptom" | "tool";
@@ -169,34 +172,32 @@ type CategoryFilter = "article" | "all" | "acupoint" | "lecture" | "kokushi" | "
 export default function GlobalSearchModal({
   isOpen,
   onClose,
+  initialQuery = "",
 }: GlobalSearchModalProps) {
   const router = useRouter();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>("all");
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [recentSearches, setRecentSearches] = useState<string[]>(() => {
+    try {
+      const raw = typeof window !== 'undefined' ? localStorage.getItem(RECENT_SEARCHES_KEY) : null;
+      const saved: unknown = raw ? JSON.parse(raw) : [];
+      return Array.isArray(saved) ? saved.filter((item): item is string => typeof item === 'string').slice(0, 6) : [];
+    } catch { return []; }
+  });
+  const [resultLimit, setResultLimit] = useState(25);
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // 検索履歴の読み込み
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(RECENT_SEARCHES_KEY);
-      if (raw) {
-        setRecentSearches(JSON.parse(raw));
-      }
-    } catch (e) {}
-  }, []);
-
-  const saveRecentSearch = (text: string) => {
+  const saveRecentSearch = useCallback((text: string) => {
     const trimmed = text.trim();
     if (!trimmed) return;
     try {
       const updated = [trimmed, ...recentSearches.filter((s) => s !== trimmed)].slice(0, 6);
       setRecentSearches(updated);
       localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
-    } catch (e) {}
-  };
+    } catch { /* Search remains usable without storage. */ }
+  }, [recentSearches]);
 
   const removeRecentSearch = (e: React.MouseEvent, text: string) => {
     e.stopPropagation();
@@ -279,12 +280,12 @@ export default function GlobalSearchModal({
       list.push({
         id: `kokushi-${k.id}`,
         type: "kokushi",
-        title: `第${k.examNumber}回国試 ${k.subject}【${k.questionNumber}】`,
+        title: k.questionType === 'official_past_exam' ? `第${k.examNumber}回国試 ${k.subject}【${k.questionNumber}】` : `${k.questionNumber}｜${k.subject}`,
         subtitle: `${k.question.slice(0, 48)}...`,
-        badge: `国試実問：${k.category}`,
+        badge: `${k.questionType === 'official_past_exam' ? '公式過去問' : k.questionType === 'modified_past_exam' ? '改変問題' : 'オリジナル演習'}：${k.category}`,
         url: `/kokushi?examId=${k.id}`,
         tags: [
-          `第${k.examNumber}回`,
+          ...(k.examNumber ? [`第${k.examNumber}回`] : []),
           k.subject,
           k.category,
           k.questionNumber,
@@ -304,7 +305,7 @@ export default function GlobalSearchModal({
         title: `『${c.book}』${c.chapter}：${c.theme}`,
         subtitle: `${c.translation.slice(0, 48)}...`,
         badge: `古典：${c.book}`,
-        url: `/library`,
+        url: `/library#classic-${c.id}`,
         tags: [
           c.book,
           c.chapter,
@@ -325,7 +326,7 @@ export default function GlobalSearchModal({
         title: p.japaneseTitle,
         subtitle: `${p.targetCondition}｜${p.studyDesign}・${p.journal} (${p.year})`,
         badge: "医学論文",
-        url: `/library`,
+        url: `/library#paper-${p.id}`,
         tags: [
           p.title,
           p.japaneseTitle,
@@ -388,7 +389,7 @@ export default function GlobalSearchModal({
         title: ac.title,
         subtitle: `${ac.category}｜${ac.location}・${ac.symptoms.slice(0, 40)}...`,
         badge: "臨床実例",
-        url: `/library`,
+        url: `/library#archive-${ac.id}`,
         tags: [
           ac.title,
           ac.category,
@@ -409,9 +410,7 @@ export default function GlobalSearchModal({
         title: `${term.term}（${term.reading}）`,
         subtitle: term.oneLiner,
         badge: `用語：${term.category}`,
-        url: term.relatedLectureId
-          ? `/curriculum/${term.relatedLectureId}`
-          : term.relatedToolUrl || `/curriculum`,
+        url: `/glossary#term-${encodeURIComponent(term.term)}`,
         tags: [term.term, term.reading, term.oneLiner, term.summary],
       });
     });
@@ -419,15 +418,10 @@ export default function GlobalSearchModal({
     return list;
   }, []);
 
-  // AMBOSS型・多段階重み付けスコアリング検索
+  const searchIndex = useMemo(() => allItems.map(prepareSearchItem), [allItems]);
+  // The whole matching set is retained so users can continue past the first page.
   const filteredResults = useMemo(() => {
-    const rawQ = query.trim().toLowerCase();
-    if (!rawQ) return [];
-
-    // カタカナ ➜ ひらがな変換
-    const hiraQ = rawQ.replace(/[\u30a1-\u30f6]/g, (m) =>
-      String.fromCharCode(m.charCodeAt(0) - 0x60)
-    );
+    if (!query.trim()) return [];
 
     // カテゴリフィルタ条件
     const matchCategory = (item: SearchResultItem): boolean => {
@@ -443,68 +437,19 @@ export default function GlobalSearchModal({
       return true;
     };
 
-    const scored: { item: SearchResultItem; score: number }[] = [];
+    return searchIndex.filter(index => matchCategory(index.item))
+      .map(index => ({ item: index.item, score: scoreSearchItem(index, query) }))
+      .filter(result => result.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map(result => result.item);
+  }, [searchIndex, query, activeCategory]);
+  const visibleResults = useMemo(() => filteredResults.slice(0, resultLimit), [filteredResults, resultLimit]);
+  const updateQuery = (next: string) => { setQuery(next); setSelectedIndex(0); setResultLimit(25); };
 
-    for (const item of allItems) {
-      if (!matchCategory(item)) continue;
-
-      let score = 0;
-      const titleLower = item.title.toLowerCase();
-
-      // 1. 経穴コード（LI4など）完全一致: 超高得点
-      if (item.exactCode && item.exactCode === rawQ) {
-        score += 150;
-      }
-
-      // 2. タイトル完全一致
-      if (titleLower === rawQ || titleLower === hiraQ) {
-        score += 120;
-      }
-      // タイトル前方一致
-      else if (titleLower.startsWith(rawQ) || titleLower.startsWith(hiraQ)) {
-        score += 90;
-      }
-      // タイトル部分一致
-      else if (titleLower.includes(rawQ) || titleLower.includes(hiraQ)) {
-        score += 60;
-      }
-
-      // 3. サブタイトル部分一致
-      if (item.subtitle && (item.subtitle.toLowerCase().includes(rawQ) || item.subtitle.includes(hiraQ))) {
-        score += 20;
-      }
-
-      // 4. タグ・キーワード一致
-      if (item.tags) {
-        for (const t of item.tags) {
-          const tLower = t.toLowerCase();
-          if (tLower === rawQ || tLower === hiraQ) {
-            score += 45;
-            break;
-          } else if (tLower.includes(rawQ) || tLower.includes(hiraQ)) {
-            score += 25;
-            break;
-          }
-        }
-      }
-
-      if (score > 0) {
-        scored.push({ item, score });
-      }
-    }
-
-    // スコア降順ソート
-    scored.sort((a, b) => b.score - a.score);
-
-    return scored.slice(0, 25).map((s) => s.item);
-  }, [allItems, query, activeCategory]);
 
   // モーダル開閉時のフォーカス制御 & 入力クリア
   useEffect(() => {
     if (isOpen) {
-      setQuery("");
-      setActiveCategory("all");
-      setSelectedIndex(0);
       const previousFocus = document.activeElement as HTMLElement | null;
       const previousOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
@@ -534,19 +479,19 @@ export default function GlobalSearchModal({
       } else if (e.key === "ArrowDown") {
         e.preventDefault();
         setSelectedIndex((prev) =>
-          filteredResults.length > 0 ? (prev + 1) % filteredResults.length : 0
+          visibleResults.length > 0 ? (prev + 1) % visibleResults.length : 0
         );
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
         setSelectedIndex((prev) =>
-          filteredResults.length > 0
-            ? (prev - 1 + filteredResults.length) % filteredResults.length
+          visibleResults.length > 0
+            ? (prev - 1 + visibleResults.length) % visibleResults.length
             : 0
         );
       } else if (e.key === "Enter") {
-        if (filteredResults[selectedIndex]) {
+        if (visibleResults[selectedIndex]) {
           e.preventDefault();
-          const target = filteredResults[selectedIndex];
+          const target = visibleResults[selectedIndex];
           saveRecentSearch(query || target.title);
           onClose();
           trackEvent("search_result_click", { placement: "global_search", result_type: target.type });
@@ -557,13 +502,13 @@ export default function GlobalSearchModal({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, filteredResults, selectedIndex, onClose, router, query]);
+  }, [isOpen, visibleResults, selectedIndex, onClose, router, query, saveRecentSearch]);
 
   // クイックサジェストのキーワード
   const quickSearches = [
     { label: "合谷 (LI4)", q: "合谷" },
     { label: "足三里 (ST36)", q: "足三里" },
-    { label: "第33回 国試", q: "第33回" },
+    { label: "国試演習", q: "陰陽五行" },
     { label: "気虚", q: "気虚" },
     { label: "治未病 (古典)", q: "治未病" },
     { label: "肩こり・頭痛", q: "頭痛" },
@@ -576,7 +521,7 @@ export default function GlobalSearchModal({
     { id: "all", label: "すべて" },
     { id: "article", label: "解説記事" },
     { id: "acupoint", label: "経穴 (361)" },
-    { id: "kokushi", label: "国試過去問" },
+    { id: "kokushi", label: "国試演習" },
     { id: "lecture", label: "講義 (81)" },
     { id: "symptom", label: "症状別ケア" },
     { id: "library", label: "論文・古典" },
@@ -608,7 +553,7 @@ export default function GlobalSearchModal({
             type="text"
             value={query}
             onChange={(e) => {
-              setQuery(e.target.value);
+              updateQuery(e.target.value);
               setSelectedIndex(0);
             }}
             placeholder="経穴・記事・講義・症状を検索"
@@ -618,7 +563,7 @@ export default function GlobalSearchModal({
             <button
               type="button"
               aria-label="検索語を消去"
-              onClick={() => setQuery("")}
+              onClick={() => updateQuery("")}
               className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600"
             >
               <X className="w-4 h-4" />
@@ -638,10 +583,10 @@ export default function GlobalSearchModal({
               key={chip.id}
               type="button"
               onClick={() => {
-                setActiveCategory(chip.id);
+                setActiveCategory(chip.id); setResultLimit(25);
                 setSelectedIndex(0);
               }}
-              className={`px-2.5 py-1 rounded-lg font-bold shrink-0 transition-all ${
+              className={`min-h-11 px-2.5 py-1 rounded-lg font-bold shrink-0 transition-all ${
                 activeCategory === chip.id
                   ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white shadow-2xs"
                   : "bg-white dark:bg-[#1C2733] text-[#59615D] dark:text-[#96A6B2] hover:text-[#1E3D34] dark:hover:text-white border border-[#E5DEC9] dark:border-[#2A3B4A]"
@@ -678,13 +623,13 @@ export default function GlobalSearchModal({
                     {recentSearches.map((term) => (
                       <div
                         key={term}
-                        onClick={() => setQuery(term)}
                         className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-xs font-semibold text-[#232826] dark:text-[#FAF8F5] transition-all hover:shadow-2xs cursor-pointer group"
                       >
-                        <span>{term}</span>
+                        <button type="button" onClick={() => updateQuery(term)} className="min-h-11 px-1">{term}</button>
                         <button
                           type="button"
                           onClick={(e) => removeRecentSearch(e, term)}
+                          aria-label={`${term}を検索履歴から削除`}
                           className="text-slate-400 group-hover:text-slate-600 p-0.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
                         >
                           <X className="w-3 h-3" />
@@ -706,7 +651,7 @@ export default function GlobalSearchModal({
                     <button
                       key={item.label}
                       type="button"
-                      onClick={() => setQuery(item.q)}
+                      onClick={() => updateQuery(item.q)}
                       className="px-3 py-1.5 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-xs font-semibold text-[#232826] dark:text-[#FAF8F5] transition-all hover:shadow-2xs cursor-pointer"
                     >
                       {item.label}
@@ -755,7 +700,7 @@ export default function GlobalSearchModal({
                 <span className="text-[10px]">↑↓キーで選択・Enterで移動</span>
               </div>
 
-              {filteredResults.map((item, idx) => {
+              {visibleResults.map((item, idx) => {
                 const isSelected = idx === selectedIndex;
                 let Icon = BookOpen;
                 if (item.type === "acupoint") Icon = MapPin;
@@ -836,6 +781,8 @@ export default function GlobalSearchModal({
             </div>
           )}
 
+          {filteredResults.length > visibleResults.length && <button type="button" onClick={() => setResultLimit(limit => limit + 25)} className="w-full min-h-11 rounded-xl border border-[#C5DED4] p-3 text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8]">さらに表示（残り{filteredResults.length - visibleResults.length}件）</button>}
+
           {/* 検索結果ゼロ */}
           {query && filteredResults.length === 0 && (
             <div className="py-12 text-center space-y-2">
@@ -846,6 +793,7 @@ export default function GlobalSearchModal({
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
                 ひらがな・漢字、または経穴コード（例: LI4, ST36）、問題番号（例: 第33回）でお試しください。
               </p>
+              <button type="button" onClick={() => { setActiveCategory("all"); updateQuery("合谷"); }} className="min-h-11 rounded-xl bg-[#1E3D34] px-4 py-2 text-sm text-white">全カテゴリーで「合谷」を試す</button>
             </div>
           )}
         </div>

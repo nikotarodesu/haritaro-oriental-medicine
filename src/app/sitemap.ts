@@ -1,3 +1,4 @@
+import { PAGE_REVISIONS, SITE_REVISED_AT } from "@/config/contentUpdates";
 import type { MetadataRoute } from "next";
 import { ALL_ACUPOINTS } from "@/data/tsubo";
 import { ARTICLES } from "@/data/articleData";
@@ -39,10 +40,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-09-20"),
     },
     {
-      url: `${baseUrl}/diagnosis?tab=gorou`,
-      lastModified: new Date("2026-09-20"),
-    },
-    {
       url: `${baseUrl}/simulator`,
       lastModified: new Date("2026-09-28"),
     },
@@ -77,10 +74,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/cases`,
       lastModified: new Date("2026-09-15"),
-    },
-    {
-      url: `${baseUrl}/notes`,
-      lastModified: new Date("2026-09-26"),
     },
     {
       url: `${baseUrl}/pricing`,
@@ -122,13 +115,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
   const curriculumLessonPages: MetadataRoute.Sitemap = allLectures.map((lecture) => ({
     url: `${baseUrl}/curriculum/${lecture.id}`,
-    lastModified: new Date("2026-09-20"),
+    lastModified: new Date(SITE_REVISED_AT),
   }));
 
   // 全361経穴詳細ページ
   const acupointPages: MetadataRoute.Sitemap = ALL_ACUPOINTS.map((pt) => ({
     url: `${baseUrl}/tsubo/${pt.code.toLowerCase()}`,
-    lastModified: new Date(pt.hasDetailedAnatomy ? "2026-09-25" : "2026-09-20"),
+    lastModified: new Date(SITE_REVISED_AT),
   }));
 
   // 学術アーカイブ記事ページ（個別記事公開日を反映）
@@ -150,11 +143,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   return [
+    { url: `${baseUrl}/glossary`, lastModified: new Date(SITE_REVISED_AT) },
     ...staticPages,
     ...curriculumLessonPages,
     ...articlePages,
     ...casePages,
     ...kikeiPages,
     ...acupointPages,
-  ];
+  ].map(page => {
+    const pathname = new URL(page.url).pathname;
+    return PAGE_REVISIONS[pathname] ? { ...page, lastModified: new Date(PAGE_REVISIONS[pathname]) } : page;
+  });
 }

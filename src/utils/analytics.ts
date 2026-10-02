@@ -35,7 +35,13 @@ export type AnalyticsEventName =
   | "quiz_complete"
   | "diagnosis_complete"
   | "share"
-  | "curriculum_save_to_note";
+  | "curriculum_save_to_note"
+  | "review_start"
+  | "review_complete"
+  | "case_training_start"
+  | "case_stage_complete"
+  | "case_training_complete";
+// Learning events contain only navigation attributes and aggregate counts.
 
 export interface AnalyticsEventParams {
   entry_source?: "home_learning" | "home_clinical" | "nav" | "footer";

@@ -28,8 +28,7 @@ export default function HomeHeroQuickSearch() {
       placement: "hero_quick_search",
     });
 
-    // 経穴検索ページへ遷移
-    router.push(`/tsubo?q=${encodeURIComponent(trimmed)}`);
+    window.dispatchEvent(new CustomEvent('haritaro:open-search', { detail: { query: trimmed } }));
   };
 
   return (
@@ -40,11 +39,11 @@ export default function HomeHeroQuickSearch() {
           <Search className="w-4 h-4 sm:w-5 sm:h-5 text-[#1E3D34] dark:text-[#74BA9E]" />
         </div>
         <input
-          aria-label="経穴を検索"
+          aria-label="経穴・記事・講義を検索"
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="経穴名（合谷・足三里）、コード（LI4）、要穴名、主治で探す..."
+          placeholder="経穴・記事・講義を検索（合谷、LI4、陰陽五行など）"
           className="w-full pl-10 sm:pl-12 pr-24 sm:pr-28 py-3 sm:py-3.5 text-base rounded-2xl bg-white dark:bg-[#17212A] border-2 border-[#D8CFC0] dark:border-[#2A3B4A] focus:border-[#1E3D34] dark:focus:border-[#74BA9E] focus:outline-none shadow-sm text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A9590] dark:placeholder-[#6C7D8A] transition-all"
         />
         <button

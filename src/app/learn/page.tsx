@@ -14,13 +14,15 @@ import {
   FileText,
   Compass
 } from "lucide-react";
+import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
+import { TOOL_CATALOG } from "@/config/toolCatalog";
 import EightSystemsRoadmap from "@/components/EightSystemsRoadmap";
 import PrimeStudentCard from "@/components/PrimeStudentCard";
 
 export const metadata: Metadata = {
   title: "東洋医学を基礎から学ぶ｜鍼灸学生・学び直し",
   description:
-    "陰陽五行から始まる全81講義カリキュラム、国試精選演習、全361穴の経穴辞典、忘却曲線に基づく日々の復習まで。鍼灸学生と学び直しのための東洋医学学習総合案内。",
+    "陰陽五行から始まる全81講義カリキュラム、国試精選演習、全361穴の経穴辞典、回答履歴に応じた間隔復習による日々の復習まで。鍼灸学生と学び直しのための東洋医学学習総合案内。",
   alternates: {
     canonical: "https://www.haritaro.jp/learn",
   },
@@ -28,7 +30,7 @@ export const metadata: Metadata = {
       images: SHARED_OG_IMAGES,
     title: "東洋医学を基礎から学ぶ｜鍼灸学生・学び直し｜はり太郎",
     description:
-      "陰陽五行から始まる全81講義カリキュラム、国試精選演習、全361穴の経穴辞典、忘却曲線に基づく日々の復習まで。",
+      "陰陽五行から始まる全81講義カリキュラム、国試精選演習、全361穴の経穴辞典、回答履歴に応じた間隔復習による日々の復習まで。",
     url: "https://www.haritaro.jp/learn",
   },
 };
@@ -53,6 +55,7 @@ export default function LearnGuidePage() {
         </p>
       </section>
 
+      <HomeLearningProgressCard />
       {/* 2. 4大学習スタート地点 */}
       <section aria-label="学習の開始点" className="space-y-6">
         <div className="text-center sm:text-left border-b border-[#E8E1D1] dark:border-[#22303D] pb-3">
@@ -127,7 +130,7 @@ export default function LearnGuidePage() {
                   <Award className="w-5 h-5" />
                 </div>
                 <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387]">
-                  第30〜33回対応
+                  オリジナル4択演習
                 </span>
               </div>
 
@@ -141,7 +144,7 @@ export default function LearnGuidePage() {
               </div>
 
               <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                東洋医学概論・経絡経穴概論・東洋医学臨床論の頻出過去問。要穴・骨度寸法の特訓ドリルや、苦手な問題だけの集中再挑戦モードも搭載。
+                {TOOL_CATALOG.kokushi.description}
               </p>
 
               <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] text-xs">
@@ -157,7 +160,7 @@ export default function LearnGuidePage() {
 
             <div className="pt-5 mt-5 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between">
               <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
-                科目・回次別フィルター付き
+                科目・テーマ別に確認
               </span>
               <Link
                 href="/kokushi"
@@ -230,7 +233,7 @@ export default function LearnGuidePage() {
                   <RotateCcw className="w-5 h-5" />
                 </div>
                 <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387]">
-                  忘却曲線モデル
+                  回答履歴に応じた間隔復習
                 </span>
               </div>
 

@@ -18,6 +18,7 @@ import {
   Award,
   Crown
 } from "lucide-react";
+import { TOOL_CATALOG } from "@/config/toolCatalog";
 import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 
 export const metadata: Metadata = {
@@ -270,7 +271,7 @@ export default function ClinicalLandingPage() {
                 弁証シミュレーター
               </h3>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                八綱・気血水・臓腑の三段階推論。主証70%＋兼証30%の複合推論や2案並列比較にも対応。
+                {TOOL_CATALOG.simulator.description}
               </p>
             </div>
             <Link

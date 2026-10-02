@@ -20,12 +20,14 @@ interface CrossSectionViewerProps {
   model: CrossSectionModel;
   pointName: string;
   pointCode: string;
+  individualModel?: boolean;
 }
 
 export default function CrossSectionViewer({
   model,
   pointName,
   pointCode,
+  individualModel = false,
 }: CrossSectionViewerProps) {
   // 選択された組織ID（null時は全体表示）
   const [selectedStructureId, setSelectedStructureId] = useState<string | null>(null);
@@ -105,7 +107,7 @@ export default function CrossSectionViewer({
           aria-expanded={isReferenceLedgerOpen}
         >
           <BookOpen className="w-3.5 h-3.5" />
-          <span>根拠資料台帳（Casey 2022等）</span>
+          <span>参照資料と確認範囲</span>
         </button>
       </div>
 
@@ -154,7 +156,7 @@ export default function CrossSectionViewer({
                   </div>
                   {item.confirmedItems && item.confirmedItems.length > 0 && (
                     <div className="pt-1 text-[11px] text-[#404743] dark:text-[#C5D2DB]">
-                      <span className="font-semibold text-[#1E3D34] dark:text-[#74BA9E]">確認済構造：</span>
+                      <span className="font-semibold text-[#1E3D34] dark:text-[#74BA9E]">台帳に記載された構造：</span>
                       {item.confirmedItems.join("、")}
                     </div>
                   )}
@@ -175,13 +177,16 @@ export default function CrossSectionViewer({
             )}
 
             <div className="p-2.5 rounded-lg bg-[#F2EDE4] dark:bg-[#17232F] text-[11px] text-[#59615D] dark:text-[#9FB1C1] leading-relaxed">
-              <strong>【編集方針】</strong> 医学的エビデンスおよびWHO標準規格・査読論文に基づき、確認が取れた層構造と境界指標のみを採用しています。個人差の大きい詳細深度ミリ数値は排し、教育用標準目安（寸）として提示しています。
+              <strong>【資料の扱い】</strong> 台帳はモデルが参照する資料と記述の範囲を示します。参照資料の存在だけで、この経穴の全層構造や表示位置が個別に検証されたことにはなりません。WHOの位置標準、解剖資料、研究結果の適用範囲を分けて確認してください。
             </div>
           </div>
         </div>
       )}
 
       {/* 2. メイン図エリア：SVG断面図（主役） */}
+      <p className="rounded-xl bg-[#EBF3EF] dark:bg-[#182823] p-3 text-xs leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
+        <strong>{individualModel ? '個別に編集した教育用模式図' : '部位別の共通模式図'}</strong>：層の関係を学ぶための図です。縮尺・深度・境界は個人の画像計測値ではなく、刺鍼の安全域や経路の決定には使用できません。
+      </p>
       <div className="relative w-full bg-[#FAF8F5] dark:bg-[#10171F] rounded-2xl sm:rounded-3xl border border-[#E8E1D1] dark:border-[#22303D] p-3 sm:p-6 overflow-hidden shadow-inner select-none">
         
         {/* 部位・側別インジケーター（一瞬で部位・観察面が分かるバッジ） */}
@@ -328,7 +333,7 @@ export default function CrossSectionViewer({
 
             {"depthDescription" in activeStructure && activeStructure.depthDescription && (
               <span className="px-2 py-0.5 rounded-md bg-white dark:bg-[#1C2833] border border-[#E5DEC9] dark:border-[#2B3C4E] text-[#59615D] dark:text-[#A0B0BC]">
-                深度: {activeStructure.depthDescription}
+                模式図内の深浅目安: {activeStructure.depthDescription}
               </span>
             )}
 

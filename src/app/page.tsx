@@ -24,7 +24,9 @@ import {
 } from "lucide-react";
 import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
 import HomeHeroQuickSearch from "@/components/home/HomeHeroQuickSearch";
-import HomeWelcomeGuide from "@/components/home/HomeWelcomeGuide";
+import { ARTICLES } from "@/data/articleData";
+import { TOOL_CATALOG } from "@/config/toolCatalog";
+import { SITE_UPDATES } from "@/config/contentUpdates";
 import HomeHeroDualEntry from "@/components/home/HomeHeroDualEntry";
 import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 
@@ -66,14 +68,8 @@ export default function HomePage() {
             <HomeHeroQuickSearch />
           </div>
 
-          <HomeHeroDualEntry />
-
-          {/* 初見ユーザー向け30秒ウェルカムガイド（LocalStorage保存で次回非表示） */}
-          <div className="max-w-5xl mx-auto">
-            <HomeWelcomeGuide />
-          </div>
-
-
+          <div className="max-w-5xl mx-auto"><HomeLearningProgressCard /></div>
+          <details className="max-w-5xl mx-auto rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-4"><summary className="min-h-11 flex items-center cursor-pointer font-bold text-[#1E3D34] dark:text-[#74BA9E]">目的別の使い方を詳しく見る</summary><HomeHeroDualEntry /></details>
 
           {/* 3. よく使う機能へのダイレクトアクセス（視覚ノイズを抑えたミニマルタイル） */}
           <div className="pt-3 max-w-5xl mx-auto">
@@ -119,7 +115,7 @@ export default function HomePage() {
                 <span className="text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] truncate max-w-full">
                   国試演習
                 </span>
-                <span className="hidden sm:block text-[11px] text-[#737C77] dark:text-[#8899A6]">過去問・演習</span>
+                <span className="hidden sm:block text-[11px] text-[#737C77] dark:text-[#8899A6]">{TOOL_CATALOG.kokushi.short}</span>
               </Link>
 
               <Link
@@ -132,7 +128,7 @@ export default function HomePage() {
                 <span className="text-xs sm:text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] truncate max-w-full">
                   弁証推論
                 </span>
-                <span className="hidden sm:block text-[11px] text-[#737C77] dark:text-[#8899A6]">主証＋兼証推論</span>
+                <span className="hidden sm:block text-[11px] text-[#737C77] dark:text-[#8899A6]">{TOOL_CATALOG.simulator.short}</span>
               </Link>
 
               <Link
@@ -163,11 +159,6 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* 2. 継続利用者の「続きから」（履歴がある時のみ表示される安全コンポーネント） */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <HomeLearningProgressCard />
       </section>
 
       {/* 4. 学びから実践へのつながりを示す具体例（思考プロセス図） */}
@@ -212,7 +203,7 @@ export default function HomePage() {
               所見から弁証を推論する
             </h3>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              四診所見から証名を導出。主証70%＋兼証30%の複合推論や2案比較で鑑別。
+              {TOOL_CATALOG.simulator.description}
             </p>
             <div className="pt-1">
               <Link href="/simulator" className="text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline inline-flex items-center gap-1">
@@ -230,7 +221,7 @@ export default function HomePage() {
               本治・標治の配穴を設計
             </h3>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              選定した経穴のバランスを点検。解剖学的安全深度・禁忌を確認しながら処方を決定。
+              {TOOL_CATALOG.haiketsu.description}
             </p>
             <div className="pt-1">
               <Link href="/practice/haiketsu" className="text-xs sm:text-sm font-bold text-[#B86924] dark:text-[#E6C387] hover:underline inline-flex items-center gap-1">
@@ -299,52 +290,10 @@ export default function HomePage() {
               <span className="text-xs text-[#737C77] dark:text-[#8899A6]">改訂履歴</span>
             </div>
 
-            <div className="space-y-1">
-              <Link
-                href="/clinical"
-                className="block p-3 rounded-xl hover:bg-white/90 dark:hover:bg-[#121920]/80 transition-all group"
-              >
-                <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-1">
-                  <span className="font-mono">2026.09.29</span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                    臨床LP
-                  </span>
-                </div>
-                <p className="font-semibold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors line-clamp-1">
-                  鍼灸師向け臨床ツール案内ページ（/clinical）を開設
-                </p>
-              </Link>
-
-              <Link
-                href="/learn"
-                className="block p-3 rounded-xl hover:bg-white/90 dark:hover:bg-[#121920]/80 transition-all group"
-              >
-                <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-1">
-                  <span className="font-mono">2026.09.29</span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EAEFF5] dark:bg-[#152331] text-[#1E2D3D] dark:text-[#7BAAD8]">
-                    学び案内
-                  </span>
-                </div>
-                <p className="font-semibold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors line-clamp-1">
-                  基礎学習・国試・復習の総合案内ハブ（/learn）を開設
-                </p>
-              </Link>
-
-              <Link
-                href="/tsubo"
-                className="block p-3 rounded-xl hover:bg-white/90 dark:hover:bg-[#121920]/80 transition-all group"
-              >
-                <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-1">
-                  <span className="font-mono">2026.09.28</span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A1D12] text-[#B86924] dark:text-[#E6C387]">
-                    経穴断面図
-                  </span>
-                </div>
-                <p className="font-semibold text-xs sm:text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors line-clamp-1">
-                  井穴・指端部の局所解剖断面モデルを拡充
-                </p>
-              </Link>
-            </div>
+            <div className="space-y-1">{SITE_UPDATES.map(update => <Link key={update.label} href={update.href} className="block rounded-xl p-3 hover:bg-white dark:hover:bg-[#121920]">
+              <div className="flex items-center justify-between gap-2 text-xs text-[#737C77] dark:text-[#8899A6]"><time dateTime={update.date}>{update.date.replaceAll('-', '.')}</time><span>{update.label}</span></div>
+              <p className="mt-1 text-sm font-semibold text-[#232826] dark:text-[#FAF8F5]">{update.text}</p>
+            </Link>)}</div>
           </div>
 
           {/* おすすめ記事 ＆ 文献 */}
@@ -394,7 +343,7 @@ export default function HomePage() {
               >
                 <div className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6] mb-1">
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A1D12] text-[#B86924] dark:text-[#E6C387]">
-                    基礎理論
+                    {ARTICLES.find(article => article.id === "science-of-qi-blood-fluid")?.category}
                   </span>
                   <span>読了目安 約18分</span>
                 </div>
