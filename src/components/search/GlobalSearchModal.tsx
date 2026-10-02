@@ -26,7 +26,7 @@ import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { GLOSSARY_TERMS } from "@/data/glossaryData";
 import { KOKUSHI_PAST_EXAMS } from "@/data/kokushiPastExams";
 import { CLASSICAL_TEXTS } from "@/data/classicalTextsData";
-import { PAPERS_DATABASE } from "@/data/references/papersData";
+import { VERIFIED_PAPERS as PAPERS_DATABASE } from "@/data/references/papersData";
 import { ARTICLES } from "@/data/articleData";
 import { trackEvent } from "@/utils/analytics";
 import { SYMPTOMS } from "@/data/symptomData";

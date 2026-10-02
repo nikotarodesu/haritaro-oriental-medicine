@@ -1,5 +1,8 @@
 "use client";
 
+import { useLearningSync } from "@/contexts/LearningSyncContext";
+import { useAuth } from "@/contexts/AuthContext";
+import LearningSyncStatus from "@/components/learning/LearningSyncStatus";
 import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
 import { questionRevision } from "@/utils/learningReview";
 import React, { useState, useEffect, useMemo, useCallback, Suspense } from "react";
@@ -59,9 +62,11 @@ import {
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 
 export default function PracticeClient() {
+  const { ready } = useLearningSync();
+  const { user } = useAuth();
   return (
     <Suspense fallback={<div className="min-h-screen py-16 text-center text-xs text-[#737C77]">学習システムを読み込み中...</div>}>
-      <PracticePageContent />
+      {ready ? <PracticePageContent key={user?.id || "guest"} /> : <p role="status" className="p-8 text-center">学習履歴を確認中...</p>}
     </Suspense>
   );
 }
@@ -72,6 +77,7 @@ function PracticePageContent() {
   const allPoints = useMemo(() => getAllAcupoints(), []);
   const { memos } = useClinicalMemo();
   const { saveQuizResult } = useCurriculumProgress();
+  const { values } = useLearningSync();
   const saveSharedAnswer = (q: QuizQuestion, selectedId: string) => {
     const options = [...q.options].sort((a,b) => a.id.localeCompare(b.id));
     const correctIndex = options.findIndex(o => o.id === q.correctOptionId);
@@ -112,6 +118,11 @@ function PracticePageContent() {
     }, 0);
     return () => clearTimeout(timer);
   }, [searchParams]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setSummary(getStudySummary(todayStr)), 0);
+    return () => clearTimeout(timer);
+  }, [values, todayStr]);
 
   // キーボードショートカット（1問ずつモード用：1〜4で選択、Enterで確定）
   useEffect(() => {
@@ -835,6 +846,7 @@ function PracticePageContent() {
             <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
               経穴を学ぶ・復習する
             </h1>
+          <LearningSyncStatus />
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-xl">
               短時間の小テストと間隔反復（1日・3日・7日・14日・30日）で、経穴の部位・要穴・経脈を確実に定着させます。
             </p>

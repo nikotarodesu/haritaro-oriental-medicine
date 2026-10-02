@@ -87,6 +87,7 @@ export default function Footer() {
                   古典条文・医学論文ライブラリ
                 </Link>
               </li>
+              <li><Link href="/editorial-policy" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">出典確認・専門家監修の方針</Link></li>
               <li>
                 <Link href="/articles" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
                   学術コラム・文献解説

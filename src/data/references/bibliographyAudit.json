@@ -1,0 +1,870 @@
+{
+  "rct-insomnia-heart-liver-2025": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/40791639/",
+    "canonical": {
+      "title": "Comparative Effects of Two Acupuncture Protocols in the Management of Chronic Insomnia: A Randomized Controlled Trial",
+      "authors": [
+        "Li L",
+        "Xia M",
+        "Chen X",
+        "Wang F",
+        "Li J",
+        "Zhao N",
+        "Liu Z",
+        "Chen Y"
+      ],
+      "journal": "Nature and science of sleep",
+      "year": 2025,
+      "pmid": "40791639",
+      "doi": "10.2147/NSS.S521578"
+    },
+    "mismatches": []
+  },
+  "langevin-connective-tissue-2002": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/12467083/",
+    "canonical": {
+      "title": "Relationship of acupuncture points and meridians to connective tissue planes",
+      "authors": [
+        "Langevin HM",
+        "Yandow JA"
+      ],
+      "journal": "The Anatomical record",
+      "year": 2002,
+      "pmid": "12467083",
+      "doi": "10.1002/ar.10185"
+    },
+    "mismatches": []
+  },
+  "meta-musculoskeletal-pain-yuan-2016": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/27471137/",
+    "canonical": {
+      "title": "Acupuncture for musculoskeletal pain: A meta-analysis and meta-regression of sham-controlled randomized clinical trials",
+      "authors": [
+        "Yuan QL",
+        "Wang P",
+        "Liu L",
+        "Sun F",
+        "Cai YS",
+        "Wu WT",
+        "Ye ML",
+        "Ma JT",
+        "Xu BB",
+        "Zhang YG"
+      ],
+      "journal": "Scientific reports",
+      "year": 2016,
+      "pmid": "27471137",
+      "doi": "10.1038/srep30675"
+    },
+    "mismatches": []
+  },
+  "han-electroacupuncture-frequencies-2003": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/12495858/",
+    "canonical": {
+      "title": "Acupuncture: neuropeptide release produced by electrical stimulation of different frequencies",
+      "authors": [
+        "Han JS"
+      ],
+      "journal": "Trends in neurosciences",
+      "year": 2003,
+      "pmid": "12495858",
+      "doi": "10.1016/s0166-2236(02)00006-1"
+    },
+    "mismatches": [
+      "pmid"
+    ]
+  },
+  "angiotensin-ii-analog-hypertension-1976": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "unverified",
+    "claimsStatus": "needs-review",
+    "mismatches": []
+  },
+  "auricular-cancer-pain-alimi-2003": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/14615440/",
+    "canonical": {
+      "title": "Analgesic effect of auricular acupuncture for cancer pain: a randomized, blinded, controlled trial",
+      "authors": [
+        "Alimi D",
+        "Rubino C",
+        "Pichard-Léandri E",
+        "Fermand-Brulé S",
+        "Dubreuil-Lemaire ML",
+        "Hill C"
+      ],
+      "journal": "Journal of clinical oncology : official journal of the American Society of Clinical Oncology",
+      "year": 2003,
+      "pmid": "14615440",
+      "doi": "10.1200/JCO.2003.09.011"
+    },
+    "mismatches": []
+  },
+  "ryodoraku-skin-resistance-influencing-factors-1985": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "unverified",
+    "claimsStatus": "needs-review",
+    "mismatches": []
+  },
+  "development-acupuncture-west-vicenza-589-cases": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "unverified",
+    "claimsStatus": "needs-review",
+    "mismatches": []
+  },
+  "objective-evaluation-meridians-hyodo-1980": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "unverified",
+    "claimsStatus": "needs-review",
+    "mismatches": []
+  },
+  "electrodermal-ryodoraku-qigong-sancier-2003": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "unverified",
+    "claimsStatus": "needs-review",
+    "mismatches": []
+  },
+  "review-acupuncture-diabetic-neuropathy-baek-2021": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "unverified",
+    "claimsStatus": "needs-review",
+    "mismatches": []
+  },
+  "review-acupuncture-sports-injuries-athletes-2020": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "unverified",
+    "claimsStatus": "needs-review",
+    "mismatches": []
+  },
+  "electroacupuncture-microcurrent-frequency-therapy-mayor-2007": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "unverified",
+    "claimsStatus": "needs-review",
+    "mismatches": []
+  },
+  "bibliometric-acupuncture-pain-20-years-lee-2020": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/32104058/",
+    "canonical": {
+      "title": "Bibliometric Analysis of Research Assessing the Use of Acupuncture for Pain Treatment Over the Past 20 Years",
+      "authors": [
+        "Lee IS",
+        "Lee H",
+        "Chen YH",
+        "Chae Y"
+      ],
+      "journal": "Journal of pain research",
+      "year": 2020,
+      "pmid": "32104058",
+      "doi": "10.2147/JPR.S235047"
+    },
+    "mismatches": []
+  },
+  "meridian-response-current-electrical-pulse-hung-2020": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/32651748/",
+    "canonical": {
+      "title": "Meridian study on the response current affected by electrical pulse and acupuncture",
+      "authors": [
+        "Hung YC",
+        "Chen WC",
+        "Chang TC",
+        "Zheng HX",
+        "Liu YW",
+        "Tan YF",
+        "Lin SK",
+        "Lu YH",
+        "Hu WL",
+        "Tsai TM"
+      ],
+      "journal": "Nanoscale research letters",
+      "year": 2020,
+      "pmid": "32651748",
+      "doi": "10.1186/s11671-020-03373-2"
+    },
+    "mismatches": []
+  },
+  "acupuncture-alcohol-dependence-arcuate-nucleus-chang-2019": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/31517050/",
+    "canonical": {
+      "title": "Acupuncture attenuates alcohol dependence through activation of endorphinergic input to the nucleus accumbens from the arcuate nucleus",
+      "authors": [
+        "Chang S",
+        "Kim DH",
+        "Jang EY",
+        "Yoon SS",
+        "Gwak YS",
+        "Yi YJ",
+        "Lee JY",
+        "Ahn SH",
+        "Kim JM",
+        "Ryu YH",
+        "Kim SN",
+        "Roh HS",
+        "Lee MY",
+        "Kim SC",
+        "Lee BH",
+        "Kim HY",
+        "Yang CH"
+      ],
+      "journal": "Science advances",
+      "year": 2019,
+      "pmid": "31517050",
+      "doi": "10.1126/sciadv.aax1342"
+    },
+    "mismatches": []
+  },
+  "migraine-acupuncture-bloodletting-carbamazepine-sun-2020": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "conflict",
+    "claimsStatus": "needs-review",
+    "source": "https://doi.org/10.1016/j.wjam.2020.10.005",
+    "canonical": {
+      "title": "Observation of clinical therapeutic effect of different techniques of acupotomy on coracoid pain of frozen shoulder",
+      "authors": [
+        "Guang-tao WANG",
+        "Xue-chun LIU"
+      ],
+      "journal": "World Journal of Acupuncture - Moxibustion",
+      "year": 2021,
+      "doi": "10.1016/j.wjam.2020.10.005"
+    },
+    "mismatches": [
+      "title",
+      "year"
+    ]
+  },
+  "perimenopausal-insomnia-electroacupuncture-li-2020": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/33376432/",
+    "canonical": {
+      "title": "Electroacupuncture versus Sham Acupuncture for Perimenopausal Insomnia: A Randomized Controlled Clinical Trial",
+      "authors": [
+        "Li S",
+        "Wang Z",
+        "Wu H",
+        "Yue H",
+        "Yin P",
+        "Zhang W",
+        "Lao L",
+        "Mi Y",
+        "Xu S"
+      ],
+      "journal": "Nature and science of sleep",
+      "year": 2020,
+      "pmid": "33376432",
+      "doi": "10.2147/NSS.S282315"
+    },
+    "mismatches": []
+  },
+  "substance-p-neurogenic-spots-acupuncture-hypertension-fan-2021": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/32956833/",
+    "canonical": {
+      "title": "The role of substance P in acupuncture signal transduction and effects",
+      "authors": [
+        "Fan Y",
+        "Kim DH",
+        "Gwak YS",
+        "Ahn D",
+        "Ryu Y",
+        "Chang S",
+        "Lee BH",
+        "Bills KB",
+        "Steffensen SC",
+        "Yang CH",
+        "Kim HY"
+      ],
+      "journal": "Brain, behavior, and immunity",
+      "year": 2021,
+      "pmid": "32956833",
+      "doi": "10.1016/j.bbi.2020.08.016"
+    },
+    "mismatches": []
+  },
+  "acupuncture-adverse-events-japan-case-series-tatebe-2021": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "unverified",
+    "claimsStatus": "needs-review",
+    "mismatches": []
+  },
+  "cancer-pain-electroacupuncture-auricular-peace-trial-mao-2021": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/33734288/",
+    "canonical": {
+      "title": "Effectiveness of Electroacupuncture or Auricular Acupuncture vs Usual Care for Chronic Musculoskeletal Pain Among Cancer Survivors: The PEACE Randomized Clinical Trial",
+      "authors": [
+        "Mao JJ",
+        "Liou KT",
+        "Baser RE",
+        "Bao T",
+        "Panageas KS",
+        "Romero SAD",
+        "Li QS",
+        "Gallagher RM",
+        "Kantoff PW"
+      ],
+      "journal": "JAMA oncology",
+      "year": 2021,
+      "pmid": "33734288",
+      "doi": "10.1001/jamaoncol.2021.0310"
+    },
+    "mismatches": []
+  },
+  "chronic-low-back-pain-ankle-acupuncture-fmri-xiang-2021": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/34949986/",
+    "canonical": {
+      "title": "Frequency-Specific Blood Oxygen Level Dependent Oscillations Associated With Pain Relief From Ankle Acupuncture in Patients With Chronic Low Back Pain",
+      "authors": [
+        "Xiang A",
+        "Chen M",
+        "Qin C",
+        "Rong J",
+        "Wang C",
+        "Shen X",
+        "Liu S"
+      ],
+      "journal": "Frontiers in neuroscience",
+      "year": 2021,
+      "pmid": "34949986",
+      "doi": "10.3389/fnins.2021.786490"
+    },
+    "mismatches": []
+  },
+  "fgid-emotional-symptoms-acupuncture-meta-analysis-wang-2022": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/35085351/",
+    "canonical": {
+      "title": "Acupuncture for emotional symptoms in patients with functional gastrointestinal disorders: A systematic review and meta-analysis",
+      "authors": [
+        "Wang L",
+        "Xian J",
+        "Sun M",
+        "Wang X",
+        "Zang X",
+        "Zhang X",
+        "Yu H",
+        "Tan QW"
+      ],
+      "journal": "PloS one",
+      "year": 2022,
+      "pmid": "35085351",
+      "doi": "10.1371/journal.pone.0263166"
+    },
+    "mismatches": [
+      "pmid"
+    ]
+  },
+  "acute-stroke-rehab-acupuncture-xingnao-fu-2022": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "retracted",
+    "claimsStatus": "do-not-use",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/35242206/",
+    "canonical": {
+      "title": "Effect of Acupuncture and Rehabilitation Therapy on the Recovery of Neurological Function and Prognosis of Stroke Patients",
+      "authors": [
+        "Fu L",
+        "Wang F",
+        "Ma Z",
+        "Zhang J",
+        "Xiong W",
+        "Wang L"
+      ],
+      "journal": "Computational and mathematical methods in medicine",
+      "year": 2022,
+      "pmid": "35242206",
+      "doi": "10.1155/2022/4581248"
+    },
+    "mismatches": []
+  },
+  "depression-insomnia-electroacupuncture-rct-yin-2022": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/35797047/",
+    "canonical": {
+      "title": "Effect of Electroacupuncture on Insomnia in Patients With Depression: A Randomized Clinical Trial",
+      "authors": [
+        "Yin X",
+        "Li W",
+        "Liang T",
+        "Lu B",
+        "Yue H",
+        "Li S",
+        "Zhong VW",
+        "Zhang W",
+        "Li X",
+        "Zhou S",
+        "Mi Y",
+        "Wu H",
+        "Xu S"
+      ],
+      "journal": "JAMA network open",
+      "year": 2022,
+      "pmid": "35797047",
+      "doi": "10.1001/jamanetworkopen.2022.20563"
+    },
+    "mismatches": []
+  },
+  "chronic-neck-shoulder-pain-pain-catastrophizing-fmri-hui-2022": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "unverified",
+    "claimsStatus": "needs-review",
+    "mismatches": [
+      "pmid"
+    ]
+  },
+  "poststroke-motor-aphasia-acupuncture-xingnao-rct-li-2024": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/38252438/",
+    "canonical": {
+      "title": "Effect of Acupuncture vs Sham Acupuncture on Patients With Poststroke Motor Aphasia: A Randomized Clinical Trial",
+      "authors": [
+        "Li B",
+        "Deng S",
+        "Zhuo B",
+        "Sang B",
+        "Chen J",
+        "Zhang M",
+        "Tian G",
+        "Zhang L",
+        "Du Y",
+        "Zheng P",
+        "Yue G",
+        "Meng Z"
+      ],
+      "journal": "JAMA network open",
+      "year": 2024,
+      "pmid": "38252438",
+      "doi": "10.1001/jamanetworkopen.2023.52580"
+    },
+    "mismatches": []
+  },
+  "menstrual-migraine-acupuncture-acupressure-yu-2018": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/29654841/",
+    "canonical": {
+      "title": "Comparison of the Prophylactic Effect Between Acupuncture and Acupressure on Menstrual Migraine: Results of a Pilot Study",
+      "authors": [
+        "Yu X",
+        "Salmoni A"
+      ],
+      "journal": "Journal of acupuncture and meridian studies",
+      "year": 2018,
+      "pmid": "29654841",
+      "doi": "10.1016/j.jams.2018.04.003"
+    },
+    "mismatches": []
+  },
+  "shoulder-pain-electroacupuncture-rct-guerra-2004": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/15561384/",
+    "canonical": {
+      "title": "Randomised trial of long term effect of acupuncture for shoulder pain",
+      "authors": [
+        "Guerra de Hoyos JA",
+        "Martín MDCA",
+        "Leon EBYB",
+        "Lopez MV",
+        "López TM",
+        "Morilla FAV",
+        "Moreno MJG"
+      ],
+      "journal": "Pain",
+      "year": 2004,
+      "pmid": "15561384",
+      "doi": "10.1016/j.pain.2004.08.030"
+    },
+    "mismatches": []
+  },
+  "shoulder-impingement-manual-acupuncture-meta-analysis-an-2024": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/39287298/",
+    "canonical": {
+      "title": "Effects of acupuncture on shoulder impingement syndrome: A systematic review and meta-analysis",
+      "authors": [
+        "An SJ",
+        "Shin WC",
+        "Joo S",
+        "Cho JH",
+        "Chung WS",
+        "Song MY",
+        "Kim H"
+      ],
+      "journal": "Medicine",
+      "year": 2024,
+      "pmid": "39287298",
+      "doi": "10.1097/MD.0000000000039696"
+    },
+    "mismatches": []
+  },
+  "cfs-acupuncture-moxibustion-hrv-li-2025": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/40315935/",
+    "canonical": {
+      "title": "Effects of acupuncture and moxibustion on heart rate variability in chronic fatigue syndrome patients: Regulating the autonomic nervous system in a clinical randomized controlled trial",
+      "authors": [
+        "Li T",
+        "Litscher G",
+        "Zhou Y",
+        "Song Y",
+        "Shu Q",
+        "Chen L",
+        "Huang Q",
+        "Wang Y",
+        "Tian H",
+        "Teng R",
+        "Wang H",
+        "Liang F"
+      ],
+      "journal": "Complementary therapies in medicine",
+      "year": 2025,
+      "pmid": "40315935",
+      "doi": "10.1016/j.ctim.2025.103184"
+    },
+    "mismatches": []
+  },
+  "menopausal-symptoms-hrv-japanese-acupuncture-kouzuma-2022": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/36311889/",
+    "canonical": {
+      "title": "Heart Rate and Autonomic Nervous System Activity Relationship During Acupuncture Associated with Postural Change and Effect on Menopausal Symptoms: A Prospective Randomized Trial",
+      "authors": [
+        "Kouzuma N",
+        "Taguchi T",
+        "Higuchi M"
+      ],
+      "journal": "Medical acupuncture",
+      "year": 2022,
+      "pmid": "36311889",
+      "doi": "10.1089/acu.2022.0004"
+    },
+    "mismatches": []
+  },
+  "chronic-insomnia-disorder-meta-tsa-yu-2025": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/40371085/",
+    "canonical": {
+      "title": "Acupuncture for chronic insomnia disorder: a systematic review with meta-analysis and trial sequential analysis",
+      "authors": [
+        "Yu Y",
+        "Li X",
+        "Zhu Z",
+        "Wang Y",
+        "Xi Q",
+        "Qiu J",
+        "Xu Y",
+        "Liang R",
+        "Guo Y",
+        "Zhang M"
+      ],
+      "journal": "Frontiers in neurology",
+      "year": 2025,
+      "pmid": "40371085",
+      "doi": "10.3389/fneur.2025.1541276"
+    },
+    "mismatches": []
+  },
+  "acupuncture-parasympathetic-tone-hrv-meta-hamvas-2022": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/36494036/",
+    "canonical": {
+      "title": "Acupuncture increases parasympathetic tone, modulating HRV - Systematic review and meta-analysis",
+      "authors": [
+        "Hamvas S",
+        "Hegyi P",
+        "Kiss S",
+        "Lohner S",
+        "McQueen D",
+        "Havasi M"
+      ],
+      "journal": "Complementary therapies in medicine",
+      "year": 2023,
+      "pmid": "36494036",
+      "doi": "10.1016/j.ctim.2022.102905"
+    },
+    "mismatches": [
+      "year"
+    ]
+  },
+  "shiatsu-vs-acupressure-distinction-cabo-2018": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/29881477/",
+    "canonical": {
+      "title": "Shiatsu and Acupressure: Two Different and Distinct Techniques",
+      "authors": [
+        "Cabo F",
+        "Baskwill A",
+        "Aguaristi I",
+        "Christophe-Tchakaloff S",
+        "Guichard JP"
+      ],
+      "journal": "International journal of therapeutic massage & bodywork",
+      "year": 2018,
+      "pmid": "29881477"
+    },
+    "mismatches": []
+  },
+  "physical-stress-ans-hrv-acupuncture-li-2025": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/41307072/",
+    "canonical": {
+      "title": "Regulation of autonomic nervous system by acupuncture: a heart rate variability study on physical stress",
+      "authors": [
+        "Li L",
+        "Liang S",
+        "Bai J",
+        "Zeng Y",
+        "Zhang M",
+        "Li Z",
+        "Yan D",
+        "Hu Y",
+        "He L",
+        "Liu Y",
+        "Liu Q",
+        "Zhang Y",
+        "Feng M"
+      ],
+      "journal": "Frontiers in human neuroscience",
+      "year": 2025,
+      "pmid": "41307072",
+      "doi": "10.3389/fnhum.2025.1676863"
+    },
+    "mismatches": [
+      "doi",
+      "pmid"
+    ]
+  },
+  "body-weight-control-electroacupuncture-auricular-protocol-zhong-2016": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/27457720/",
+    "canonical": {
+      "title": "The combination effects of body acupuncture and auricular acupressure compared to sham acupuncture for body weight control: study protocol for a randomized controlled trial",
+      "authors": [
+        "Zhong LL",
+        "Kun W",
+        "Lam TF",
+        "Zhang SP",
+        "Yang JJ",
+        "Ziea TC",
+        "Ng B",
+        "Bian ZX"
+      ],
+      "journal": "Trials",
+      "year": 2016,
+      "pmid": "27457720",
+      "doi": "10.1186/s13063-016-1458-2"
+    },
+    "mismatches": []
+  },
+  "insomnia-acupuncture-systematic-review-cao-2009": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/19922248/",
+    "canonical": {
+      "title": "Acupuncture for treatment of insomnia: a systematic review of randomized controlled trials",
+      "authors": [
+        "Cao H",
+        "Pan X",
+        "Li H",
+        "Liu J"
+      ],
+      "journal": "Journal of alternative and complementary medicine (New York, N.Y.)",
+      "year": 2009,
+      "pmid": "19922248",
+      "doi": "10.1089/acm.2009.0041"
+    },
+    "mismatches": []
+  },
+  "shiatsu-acupressure-systematic-review-robinson-2011": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/21982157/",
+    "canonical": {
+      "title": "The evidence for Shiatsu: a systematic review of Shiatsu and acupressure",
+      "authors": [
+        "Robinson N",
+        "Lorenc A",
+        "Liao X"
+      ],
+      "journal": "BMC complementary and alternative medicine",
+      "year": 2011,
+      "pmid": "21982157",
+      "doi": "10.1186/1472-6882-11-88"
+    },
+    "mismatches": []
+  },
+  "musculoskeletal-pain-acupoint-stimulation-network-meta-liu-2025": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/40665700/",
+    "canonical": {
+      "title": "Comparison of the efficacy of acupoint stimulation therapy in the treatment of pain in musculoskeletal diseases: A network meta-analysis based on randomized controlled trials",
+      "authors": [
+        "Liu Z",
+        "Cheng Z",
+        "Zhang K",
+        "Lin X",
+        "Fu Y",
+        "Wang L",
+        "Zhang Q",
+        "Zhang F",
+        "Wu X",
+        "Dong B"
+      ],
+      "journal": "Journal of back and musculoskeletal rehabilitation",
+      "year": 2026,
+      "pmid": "40665700",
+      "doi": "10.1177/10538127251358729"
+    },
+    "mismatches": [
+      "year"
+    ]
+  },
+  "cancer-pain-acupuncture-acupressure-jama-he-2020": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/31855257/",
+    "canonical": {
+      "title": "Clinical Evidence for Association of Acupuncture and Acupressure With Improved Cancer Pain: A Systematic Review and Meta-Analysis",
+      "authors": [
+        "He Y",
+        "Guo X",
+        "May BH",
+        "Zhang AL",
+        "Liu Y",
+        "Lu C",
+        "Mao JJ",
+        "Xue CC",
+        "Zhang H"
+      ],
+      "journal": "JAMA oncology",
+      "year": 2020,
+      "pmid": "31855257",
+      "doi": "10.1001/jamaoncol.2019.5233"
+    },
+    "mismatches": []
+  },
+  "primary-insomnia-acupuncture-double-dummy-rct-guo-2013": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/24159338/",
+    "canonical": {
+      "title": "Efficacy of acupuncture for primary insomnia: a randomized controlled clinical trial",
+      "authors": [
+        "Guo J",
+        "Wang LP",
+        "Liu CZ",
+        "Zhang J",
+        "Wang GL",
+        "Yi JH",
+        "Cheng JL"
+      ],
+      "journal": "Evidence-based complementary and alternative medicine : eCAM",
+      "year": 2013,
+      "pmid": "24159338",
+      "doi": "10.1155/2013/163850"
+    },
+    "mismatches": [
+      "doi",
+      "pmid"
+    ]
+  },
+  "poststroke-shoulder-pain-acupuncture-meta-analysis-lee-2016": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/27547224/",
+    "canonical": {
+      "title": "Acupuncture for Poststroke Shoulder Pain: A Systematic Review and Meta-Analysis",
+      "authors": [
+        "Lee SH",
+        "Lim SM"
+      ],
+      "journal": "Evidence-based complementary and alternative medicine : eCAM",
+      "year": 2016,
+      "pmid": "27547224",
+      "doi": "10.1155/2016/3549878"
+    },
+    "mismatches": []
+  },
+  "katakori-needling-depth-rct-osaki-2018": {
+    "checkedAt": "2026-10-02",
+    "bibliographyStatus": "matched",
+    "claimsStatus": "needs-review",
+    "source": "https://doi.org/10.3777/jjsam.68.10",
+    "canonical": {
+      "title": "Differences between therapeutic effects of deep and superficial  acupuncture needle insertion for shoulder stiffness: A pilot randomized controlled clinical trial",
+      "authors": [
+        "Ayaka OSAKI",
+        "Miwa IMAEDA",
+        "Hiroshi KITAKOJI",
+        "Megumi ITOI",
+        "Motohiro INOUE"
+      ],
+      "journal": "Zen Nihon Shinkyu Gakkai zasshi (Journal of the Japan Society of Acupuncture and Moxibustion)",
+      "year": 2018,
+      "doi": "10.3777/jjsam.68.10"
+    },
+    "mismatches": []
+  }
+}

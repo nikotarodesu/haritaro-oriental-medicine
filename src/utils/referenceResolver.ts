@@ -22,6 +22,7 @@ export function getPaperReferenceById(id: string): ReferenceItem | null {
     pmid: paper.pmid,
     studyDesign: paper.studyDesign,
     sampleSize: paper.sampleSize,
+    bibliographyStatus: paper.bibliographyStatus, claimsStatus: paper.claimsStatus, sourceCheckedAt: paper.sourceCheckedAt,
     url: paper.pmid
       ? `https://pubmed.ncbi.nlm.nih.gov/${paper.pmid}/`
       : paper.doi
@@ -87,6 +88,7 @@ export function resolveArticleReferences(
 
     const resolved: ResolvedReference = {
       ...item,
+      ...(item.type === 'paper' && !item.bibliographyStatus ? { bibliographyStatus: 'unverified' as const, claimsStatus: 'needs-review' as const } : {}),
       amazonUrl,
       amazonSearchUrl,
       libraryUrl,
@@ -117,10 +119,7 @@ export function resolveArticleReferences(
         // オブジェクトで渡された場合、もしDBに一致するIDがあればDB情報で補完
         const fromDb = getPaperReferenceById(ref.id);
         if (fromDb) {
-          addOrGet({
-            ...fromDb,
-            ...ref,
-          });
+          addOrGet({ ...ref, ...fromDb });
         } else {
           addOrGet(ref);
         }

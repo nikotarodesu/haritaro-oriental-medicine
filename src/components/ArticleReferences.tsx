@@ -101,7 +101,7 @@ export default function ArticleReferences({
                         {ref.type && (
                           <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#10161C] border border-[#E5DEC9] dark:border-[#2D3E50] text-[#59615D] dark:text-[#A0B0BC] font-medium">
                             {ref.type === "paper"
-                              ? "査読論文 (Peer-Reviewed)"
+                              ? "研究論文"
                               : ref.type === "classic"
                               ? "東洋医学古典原典"
                               : ref.type === "guideline"
@@ -126,6 +126,10 @@ export default function ArticleReferences({
                       </div>
 
                       {/* タイトル */}
+                      {ref.bibliographyStatus && <p className="text-xs leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">
+                        {ref.bibliographyStatus === 'matched' ? '書誌情報：原典照合済み' : ref.bibliographyStatus === 'retracted' ? '撤回論文：治療の根拠として使用しません' : '書誌情報：照合未完了。根拠としての利用は保留'}
+                        {ref.bibliographyStatus === 'matched' && (ref.claimsStatus === 'source-checked' ? ' ／ 要約の対象・限界を照合済み（専門家監修とは別）' : ' ／ 結果の解釈は照合中')}
+                      </p>}
                       <div>
                         <h4 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
                           {ref.title}

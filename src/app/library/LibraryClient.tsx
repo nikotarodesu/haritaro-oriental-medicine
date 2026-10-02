@@ -21,7 +21,7 @@ import {
   Layers,
   MapPin,
 } from "lucide-react";
-import { PAPERS_DATABASE, PaperReference } from "@/data/references/papersData";
+import { VERIFIED_PAPERS as PAPERS_DATABASE, PaperReference } from "@/data/references/papersData";
 import { CLASSICAL_TEXTS, ClassicalText } from "@/data/classicalTextsData";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { ALL_ARCHIVE_CASES, ArchiveClinicalCase } from "@/data/cases/archiveCases";
@@ -90,7 +90,7 @@ export default function LibraryClient() {
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]">
               <BookOpen className="w-3.5 h-3.5" />
-              <span>古典医典 ✕ 現代RCTエビデンス ✕ 臨床実例</span>
+              <span>古典医典・研究資料・症例教材</span>
             </span>
             <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-medium border border-[#C5DED4] dark:border-[#2A5243]">
               臨床文献ナレッジベース
@@ -102,9 +102,11 @@ export default function LibraryClient() {
               文献・古典・臨床実例アーカイブ
             </h1>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] max-w-3xl leading-relaxed">
-              数千年の叡智が凝縮された古典条文（素問・霊枢・難経）と、国際学術誌の最新RCT論文、さらに運動器疾患・自律神経実例32例をシームレスに統合。臨床の理論的根拠と実践力を確かなものにします。
+              古典条文（素問・霊枢・難経）、原典と書誌情報を照合した研究資料、症例教材をまとめています。研究の種類・対象・限界を確認しながら学ぶための資料集です。
             </p>
           </div>
+
+          <p className="text-xs leading-relaxed">論文は書誌情報の照合済み資料を掲載しています。治療結果の解釈には照合中の資料があり、全件の専門家監修は未完了です。<Link href="/editorial-policy" className="underline">出典確認・監修の進捗を見る</Link></p>
 
           {/* 検索バー */}
           <div className="pt-2 max-w-xl">

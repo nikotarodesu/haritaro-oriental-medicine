@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // 静的公開ページ台帳（実質更新日に基づく lastModified）
   const staticPages: MetadataRoute.Sitemap = [
+    { url: `${baseUrl}/editorial-policy`, lastModified: new Date("2026-10-02") },
     {
       url: `${baseUrl}`,
       lastModified: new Date("2026-09-26"),

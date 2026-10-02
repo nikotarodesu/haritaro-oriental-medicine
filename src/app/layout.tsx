@@ -8,6 +8,7 @@ import { FontSizeProvider } from "@/contexts/FontSizeContext";
 import { SeasonalThemeProvider } from "@/contexts/SeasonalThemeContext";
 import { ClinicalMemoProvider } from "@/contexts/ClinicalMemoContext";
 import { CurriculumProgressProvider } from "@/contexts/CurriculumProgressContext";
+import { LearningSyncProvider } from "@/contexts/LearningSyncContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import MyClinicalRecordDrawer from "@/components/MyClinicalRecordDrawer";
 import MobileBottomNav from "@/components/navigation/MobileBottomNav";
@@ -170,7 +171,7 @@ export default function RootLayout({
             <SeasonalThemeProvider>
               <AuthProvider>
                 <ClinicalMemoProvider>
-                  <CurriculumProgressProvider>
+                  <LearningSyncProvider><CurriculumProgressProvider>
                     <Header />
                     <div className="flex-1 pb-16 lg:pb-0">
                       {children}
@@ -181,7 +182,7 @@ export default function RootLayout({
                     <MobileBottomNav />
                     <PwaInstallPrompt />
                     <PwaRegister />
-                  </CurriculumProgressProvider>
+                  </CurriculumProgressProvider></LearningSyncProvider>
                 </ClinicalMemoProvider>
               </AuthProvider>
             </SeasonalThemeProvider>

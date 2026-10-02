@@ -5,7 +5,7 @@ import LibraryClient from "./LibraryClient";
 export const metadata: Metadata = {
   title: "文献・古典・臨床実例アーカイブ",
   description:
-    "数千年の知恵が凝縮された古典医典（素問・霊枢・難経）から国際学術誌のRCT論文エビデンス、運動器疾患・自律神経の臨床実例まで。臨床判断と学術的探求を支える統合ナレッジベース。",
+    "古典条文、原典と書誌情報を照合した研究資料、症例教材の資料集。研究対象・限界・内容の確認状況を区別して学べます。",
   alternates: {
     canonical: "/library",
   },
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       images: SHARED_OG_IMAGES,
     title: "文献・古典・臨床実例アーカイブ | はり太郎の東洋医学",
     description:
-      "古典医典条文、現代RCT論文エビデンス、運動器臨床実例をシームレスに統合した学術ナレッジベース。",
+      "古典・書誌を照合した研究資料・症例教材。研究対象、限界、確認状況を公開する学習用資料集。",
     url: "https://www.haritaro.jp/library",
   },
 };

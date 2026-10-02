@@ -4,12 +4,15 @@ import {
   AcupointStudyRecord, 
   StudySession, 
   QuizQuestion, 
-  StudySkillType,
-  MasteryLevel 
+  StudySkillType
 } from "./types";
+import { getLearningStorageAdapter } from '@/utils/learningStorageBridge';
 
-const STORAGE_KEY = "haritaro_tsubo_study_v1";
 const ACTIVE_SESSION_KEY = "haritaro_tsubo_active_session_v1";
+interface PracticeAttempt {
+  recordKey: string; record: AcupointStudyRecord; date: string; answeredAt: string;
+  correct?: boolean; evaluation?: 'remembered' | 'needsReview';
+}
 
 export const DEFAULT_SETTINGS: StudySettings = {
   dailyGoal: 10,
@@ -125,30 +128,70 @@ export function computeNextReview(
 
 export function loadStudyData(): TsuboStudyDataV1 {
   if (typeof window === "undefined") return INITIAL_STUDY_DATA;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return INITIAL_STUDY_DATA;
-    const parsed = JSON.parse(raw);
-    if (parsed && parsed.version === 1) {
-      return {
-        ...INITIAL_STUDY_DATA,
-        ...parsed,
-        settings: { ...DEFAULT_SETTINGS, ...(parsed.settings || {}) },
-      };
+  const adapter = getLearningStorageAdapter();
+  if (adapter) {
+    const values = adapter.values();
+    const records = Object.fromEntries(Object.entries(values).filter(([key, value]) => key.startsWith('tsubo:record:') && value && typeof value === 'object').map(([key, value]) => [key.slice(13), structuredClone(value) as AcupointStudyRecord]));
+    const attempts = Object.entries(values).filter(([key, value]) => key.startsWith('tsubo:answer:') && value && typeof value === 'object')
+      .map(([key, value]) => ({ key, ...(value as PracticeAttempt) }))
+      .filter(attempt => attempt.record?.acupointCode && attempt.date && attempt.answeredAt && (typeof attempt.correct === 'boolean' || ['remembered', 'needsReview'].includes(attempt.evaluation || '')))
+      .sort((a, b) => a.answeredAt.localeCompare(b.answeredAt) || a.record.totalAttempts - b.record.totalAttempts || a.key.localeCompare(b.key));
+    const replayed: Record<string, AcupointStudyRecord> = {};
+    for (const attempt of attempts) {
+      let record = replayed[attempt.recordKey];
+      if (!record) record = structuredClone(attempt.record); // Keeps practice that predates cloud sync.
+      else if (typeof attempt.correct === 'boolean') record = computeNextReview(record, record.acupointCode, record.skill, attempt.correct, attempt.date);
+      else {
+        record.totalAttempts++;
+        record.selfEvaluationCount ||= { remembered: 0, needsReview: 0 };
+        record.selfEvaluationCount[attempt.evaluation!]++;
+        if (attempt.evaluation === 'needsReview') { record.flaggedForReview = true; record.nextReviewDate = addDays(attempt.date, 1); }
+      }
+      replayed[attempt.recordKey] = record;
     }
-  } catch (e) {
-    console.error("Failed to load tsubo study data", e);
+    for (const [key, record] of Object.entries(replayed)) {
+      const snapshot = records[key];
+      records[key] = { ...record, totalAttempts: Math.max(record.totalAttempts, snapshot?.totalAttempts || 0), totalCorrect: Math.max(record.totalCorrect, snapshot?.totalCorrect || 0), flaggedForReview: snapshot?.flaggedForReview ?? record.flaggedForReview };
+    }
+    const days: Record<string, { date: string; answeredCount: number; correctCount: number }> = {};
+    for (const [key, value] of Object.entries(values)) if (key.startsWith('tsubo:event:') || key.startsWith('tsubo:baseline:')) {
+      const day = value as { date: string; answeredCount: number; correctCount: number };
+      if (!day?.date || !Number.isFinite(day.answeredCount) || !Number.isFinite(day.correctCount)) continue;
+      const previous = days[day.date] || { date: day.date, answeredCount: 0, correctCount: 0 };
+      days[day.date] = { date: day.date, answeredCount: previous.answeredCount + day.answeredCount, correctCount: previous.correctCount + day.correctCount };
+    }
+    const history = Object.values(days).sort((a, b) => a.date.localeCompare(b.date));
+    let streakDays = history.length ? 1 : 0;
+    for (let i = history.length - 1; i > 0 && addDays(history[i].date, -1) === history[i - 1].date; i--) streakDays++;
+    return { version: 1, records, history, settings: { ...DEFAULT_SETTINGS, ...(values['settings:tsubo'] as StudySettings || {}) }, streakDays, lastStudiedDate: history.at(-1)?.date };
   }
-  return INITIAL_STUDY_DATA;
+  // Legacy files are imported only into the guest namespace by the account provider.
+  // During authentication, never fall back to an unowned browser history.
+  return { ...INITIAL_STUDY_DATA, records: {}, history: [] };
 }
 
 export function saveStudyData(data: TsuboStudyDataV1): void {
   if (typeof window === "undefined") return;
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  } catch (e) {
-    console.error("Failed to save tsubo study data", e);
+  const adapter = getLearningStorageAdapter();
+  if (adapter) {
+    const previous = loadStudyData();
+    for (const [id, record] of Object.entries(data.records)) if (JSON.stringify(previous.records[id]) !== JSON.stringify(record)) adapter.set('tsubo:record:' + id, record);
+    for (const id of Object.keys(previous.records)) if (!data.records[id]) adapter.set('tsubo:record:' + id, null);
+    adapter.set('settings:tsubo', data.settings);
+    for (const day of data.history) {
+      const old = previous.history.find(item => item.date === day.date);
+      const answeredCount = day.answeredCount - (old?.answeredCount || 0);
+      const correctCount = day.correctCount - (old?.correctCount || 0);
+      if (answeredCount > 0 || correctCount > 0) adapter.set('tsubo:event:' + crypto.randomUUID(), { date: day.date, answeredCount: Math.max(0, answeredCount), correctCount: Math.max(0, correctCount) });
+    }
+    return;
   }
+  // Writes wait for the account-scoped adapter.
+}
+
+function activeSessionKey(): string | null {
+  const adapter = getLearningStorageAdapter();
+  return adapter ? ACTIVE_SESSION_KEY + ':' + adapter.owner : null;
 }
 
 // ==================== アクティブセッションI/O ====================
@@ -156,7 +199,9 @@ export function saveStudyData(data: TsuboStudyDataV1): void {
 export function loadActiveSession(): StudySession | null {
   if (typeof window === "undefined") return null;
   try {
-    const raw = localStorage.getItem(ACTIVE_SESSION_KEY);
+    const key = activeSessionKey();
+    if (!key) return null;
+    const raw = localStorage.getItem(key);
     if (!raw) return null;
     const session = JSON.parse(raw) as StudySession;
     return session.contentVersion === 2 ? session : null;
@@ -169,10 +214,12 @@ export function loadActiveSession(): StudySession | null {
 export function saveActiveSession(session: StudySession | null): void {
   if (typeof window === "undefined") return;
   try {
+    const key = activeSessionKey();
+    if (!key) return;
     if (!session) {
-      localStorage.removeItem(ACTIVE_SESSION_KEY);
+      localStorage.removeItem(key);
     } else {
-      localStorage.setItem(ACTIVE_SESSION_KEY, JSON.stringify(session));
+      localStorage.setItem(key, JSON.stringify(session));
     }
   } catch (e) {
     console.error("Failed to save active study session", e);
@@ -227,6 +274,7 @@ export function recordAnswerInStore(
   }
 
   saveStudyData(data);
+  getLearningStorageAdapter()?.set('tsubo:answer:' + crypto.randomUUID(), { recordKey, record: updatedRecord, date: todayStr, answeredAt: new Date().toISOString(), correct: isCorrect } satisfies PracticeAttempt);
 }
 
 /**
@@ -260,6 +308,7 @@ export function recordSelfEvaluationInStore(
 
   data.records[recordKey] = record;
   saveStudyData(data);
+  getLearningStorageAdapter()?.set('tsubo:answer:' + crypto.randomUUID(), { recordKey, record, date: todayStr, answeredAt: new Date().toISOString(), evaluation } satisfies PracticeAttempt);
 }
 
 /**
@@ -360,6 +409,7 @@ export function importStudyDataJson(
     }
 
     if (mode === "replace") {
+      resetAllStudyData();
       saveStudyData(parsed);
       return { success: true, message: "学習記録を正常に復元しました（全置換）" };
     } else {
@@ -396,6 +446,6 @@ export function importStudyDataJson(
 
 export function resetAllStudyData(): void {
   if (typeof window === "undefined") return;
-  localStorage.removeItem(STORAGE_KEY);
-  localStorage.removeItem(ACTIVE_SESSION_KEY);
+  getLearningStorageAdapter()?.set('settings:tsubo-reset', true);
+  saveActiveSession(null);
 }

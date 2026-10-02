@@ -17,6 +17,9 @@ export interface ReferenceItem {
   studyDesign?: string;
   sampleSize?: number;
   note?: string; // 臨床要点・概要
+  bibliographyStatus?: 'matched' | 'conflict' | 'unverified' | 'retracted';
+  claimsStatus?: 'source-checked' | 'needs-review' | 'do-not-use';
+  sourceCheckedAt?: string;
 }
 
 export interface ResolvedReference extends ReferenceItem {

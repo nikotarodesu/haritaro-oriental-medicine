@@ -51,8 +51,8 @@ export const ARTICLE_LEARNING_GUIDES: Record<string, ArticleLearningGuide> = {
   'science-of-tongue-diagnosis': {
     lectureId: 'lecture-diagnosis-5', caseId: 'mixed-temperature',
     focus: '観察した舌色・舌苔・舌形と、それを解釈する分類を分ける。',
-    limitation: '舌の見た目だけで全身状態や病名を確定しません。時間尺度の説明は筆者のモデルです。',
-    summary: '舌色・舌苔・舌形の観察と伝統的な解釈を、現代の研究と比較します。舌が一定期間の全身状態を映すという説明は筆者の理解モデルであり、検証済みの診断指標と区別します。',
+    limitation: '舌の見た目だけで全身状態や病名を確定しません。持続する症状は口腔の医学的評価につなぎます。',
+    summary: '舌色・舌苔・舌形の観察と、伝統的な候補の解釈を分けます。公的な医療情報を参照し、口腔乾燥や白い斑点の原因評価、見た目だけでは確定できない範囲を学びます。',
   },
   'science-of-acupuncture-neuroscience': {
     lectureId: 'lecture-treatment-9', caseId: 'back-pain-referral',

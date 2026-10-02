@@ -1,3 +1,5 @@
+import auditData from './bibliographyAudit.json';
+import { PAPER_INTERPRETATIONS } from './paperInterpretations';
 export interface PaperReference {
   id: string;
   title: string;
@@ -27,9 +29,12 @@ export interface PaperReference {
   clinicalTakeaways: string[];
   tags: string[];
   abstract: string;
+  bibliographyStatus?: 'matched' | 'conflict' | 'unverified' | 'retracted';
+  claimsStatus?: 'source-checked' | 'needs-review' | 'do-not-use';
+  sourceCheckedAt?: string;
 }
 
-export const PAPERS_DATABASE: PaperReference[] = [
+export const SOURCE_PAPERS: PaperReference[] = [
   {
     id: "rct-insomnia-heart-liver-2025",
     title: "Comparative Effects of Two Acupuncture Protocols in the Management of Chronic Insomnia: A Randomized Controlled Trial",
@@ -176,11 +181,11 @@ export const PAPERS_DATABASE: PaperReference[] = [
     id: "auricular-cancer-pain-alimi-2003",
     title: "Analgesic effect of auricular acupuncture for cancer pain: a randomized, blinded, controlled trial",
     japaneseTitle: "がん性疼痛に対する耳鍼（耳介鍼）の鎮痛効果：二重盲検ランダム化対照試験",
-    authors: ["David Alimi", "Claude Rubino", "Evelyne Pichard-Léandri", "Sylvie Fermand-Brulé", "Anne-Marie Dubreuil-Lemaire", "Maurice Leandri"],
+    authors: ["David Alimi", "Carole Rubino", "Evelyne Pichard-Léandri", "Sabine Fermand-Brulé", "Marie-Laure Dubreuil-Lemaire", "Catherine Hill"],
     journal: "Journal of Clinical Oncology (JCO)",
     year: 2003,
-    pmid: "14645428",
-    doi: "10.1200/JCO.2003.09.121",
+    pmid: "14615440",
+    doi: "10.1200/JCO.2003.09.011",
     studyDesign: "二重盲検ランダム化比較試験 (Double-blind RCT)",
     sampleSize: 90,
     targetCondition: "鎮痛薬治療抵抗性のがん性疼痛 (Cancer Pain, VAS≧30mm)",
@@ -425,9 +430,9 @@ export const PAPERS_DATABASE: PaperReference[] = [
     authors: ["In-Seon Lee","Hyangsook Lee","et al."],
     journal: "Journal of Pain Research",
     year: 2020,
-    pmid: "32110078",
-    pmcid: "PMC7047913",
-    doi: "10.2147/JPR.S233267",
+    pmid: "32104058",
+    pmcid: "PMC7023857",
+    doi: "10.2147/JPR.S235047",
     studyDesign: "計量書誌学分析 (Bibliometric Analysis)",
     sampleSize: 4595,
     targetCondition: "疼痛疾患全般 (Pain Management, Chronic Pain)",
@@ -454,12 +459,12 @@ export const PAPERS_DATABASE: PaperReference[] = [
     id: "meridian-response-current-electrical-pulse-hung-2020",
     title: "Meridian study on the response current affected by electrical pulse and acupuncture",
     japaneseTitle: "電気パルスと鍼刺激によって作用する応答電流に関する経絡研究",
-    authors: ["Chien-Chih Hung","Chien-Hung Chen","Chun-Ping Jen","et al."],
+    authors: ["Yu-Chiang Hung","Wen-Chung Chen","Ting-Chang Chang","Hao-Xuan Zheng","Yan-Wen Liu","Yung-Fang Tan","Shih-Kai Lin","Ying-Hsin Lu","Wen-Long Hu","Tsung-Ming Tsai"],
     journal: "Nanoscale Research Letters",
     year: 2020,
-    pmid: "32671569",
-    pmcid: "PMC7363842",
-    doi: "10.1186/s11671-020-03377-5",
+    pmid: "32651748",
+    pmcid: "PMC7352033",
+    doi: "10.1186/s11671-020-03373-2",
     studyDesign: "生体物理学・ナノスケール実験研究 (Biophysical experimental study)",
     sampleSize: 30,
     targetCondition: "経絡・経穴の物理的電気特性（手の陽明大腸経：LI4合谷〜LI11曲池）",
@@ -559,15 +564,15 @@ export const PAPERS_DATABASE: PaperReference[] = [
   },
   {
     id: "perimenopausal-insomnia-electroacupuncture-li-2020",
-    title: "Electroacupuncture for Perimenopausal Insomnia: A Randomized Controlled Trial",
+    title: "Electroacupuncture versus Sham Acupuncture for Perimenopausal Insomnia: A Randomized Controlled Clinical Trial",
     japaneseTitle: "更年期不眠症に対する鍼通電療法：ランダム化比較試験",
-    authors: ["Shao-jie Li","et al."],
+    authors: ["Shanshan Li","Zhaoqin Wang","Huangan Wu","Hongyu Yue","Ping Yin","Wei Zhang","Lixing Lao","Yiqun Mi","Shifen Xu"],
     journal: "Nature and Science of Sleep",
     year: 2020,
-    pmid: "33244274",
-    pmcid: "PMC7680076",
-    doi: "10.2147/NSS.S274488",
-    studyDesign: "二重盲検シャム対照ランダム化比較試験 (Double-blind sham-controlled RCT)",
+    pmid: "33376432",
+    pmcid: "PMC7764880",
+    doi: "10.2147/NSS.S282315",
+    studyDesign: "患者盲検・偽鍼対照ランダム化比較試験",
     sampleSize: 84,
     targetCondition: "更年期不眠症 (Perimenopausal Insomnia: PMI)",
     interventionProtocol: {
@@ -598,11 +603,12 @@ export const PAPERS_DATABASE: PaperReference[] = [
     id: "substance-p-neurogenic-spots-acupuncture-hypertension-fan-2021",
     title: "The role of substance P in acupuncture signal transduction and effects",
     japaneseTitle: "鍼治療のシグナル伝達と降圧効果におけるサブスタンスPの役割",
-    authors: ["Ying Fan","Dong-Hyun Kim","et al."],
+    authors: ["Yu Fan","Do-Hee Kim","Young Seob Gwak","Danbi Ahn","Yeonhee Ryu","Suchan Chang","Bong Hyo Lee","Kyle B Bills","Scott C Steffensen","Chae Ha Yang","Hee Young Kim"],
     journal: "Brain, Behavior, and Immunity",
     year: 2021,
-    pmid: "33421528",
-    doi: "10.1016/j.bbi.2021.01.007",
+    pmid: "32956833",
+    pmcid: "PMC7749828",
+    doi: "10.1016/j.bbi.2020.08.016",
     studyDesign: "動物基礎実験・神経電気生理学・免疫組織化学研究 (Experimental neurobiology & single-fiber recording)",
     targetCondition: "高血圧症および経穴局所シグナル伝達 (Hypertension & Acupoint Neurogenic Spots)",
     interventionProtocol: {
@@ -658,7 +664,7 @@ export const PAPERS_DATABASE: PaperReference[] = [
   },
   {
     id: "cancer-pain-electroacupuncture-auricular-peace-trial-mao-2021",
-    title: "Acupuncture vs Battlefield Auricular Acupuncture vs Usual Care for Chronic Musculoskeletal Pain in Cancer Survivors: A Randomized Clinical Trial (PEACE)",
+    title: "Effectiveness of Electroacupuncture or Auricular Acupuncture vs Usual Care for Chronic Musculoskeletal Pain Among Cancer Survivors: The PEACE Randomized Clinical Trial",
     japaneseTitle: "がんサバイバーの慢性筋骨格系疼痛に対する鍼通電療法 vs 戦場耳鍼療法 vs 通常ケア：ランダム化比較試験（PEACE試験）",
     authors: ["Jun J. Mao","Katherine S. Panageas","et al."],
     journal: "JAMA Oncology",
@@ -750,14 +756,14 @@ export const PAPERS_DATABASE: PaperReference[] = [
   },
   {
     id: "acute-stroke-rehab-acupuncture-xingnao-fu-2022",
-    title: "Effect of Acupuncture and Rehabilitation Therapy on the Recovery of Neurological Function and Prognosis in Patients with Acute Stroke",
+    title: "Effect of Acupuncture and Rehabilitation Therapy on the Recovery of Neurological Function and Prognosis of Stroke Patients",
     japaneseTitle: "急性期脳卒中患者の神経機能回復および予後に対する鍼治療とリハビリテーション併用療法の効果",
-    authors: ["Chunling Fu","et al."],
+    authors: ["Lanping Fu","Fei Wang","Zhiyi Ma","Jin Zhang","Wuzhong Xiong","Le Wang"],
     journal: "Computational and Mathematical Methods in Medicine",
     year: 2022,
-    pmid: "35251241",
-    pmcid: "PMC8894101",
-    doi: "10.1155/2022/6890352",
+    pmid: "35242206",
+    pmcid: "PMC8888046",
+    doi: "10.1155/2022/4581248",
     studyDesign: "臨床前向き対照観察研究 (Clinical prospective controlled observational study)",
     sampleSize: 100,
     targetCondition: "急性期脳卒中（脳梗塞・脳出血急性期）",
@@ -1473,12 +1479,11 @@ export const PAPERS_DATABASE: PaperReference[] = [
   },
   {
     id: "katakori-needling-depth-rct-osaki-2018",
-    title: "Difference in effect of acupuncture needling depth on stiff shoulders: A preliminary randomized controlled trial",
+    title: "Differences between therapeutic effects of deep and superficial acupuncture needle insertion for shoulder stiffness: A pilot randomized controlled clinical trial",
     japaneseTitle: "肩こりに対する鍼の刺入深度の違いによる効果の相違－予備的ランダム化比較試験－",
     authors: ["大崎彩加 (Ayaka Osaki)","今枝美和 (Miwa Imaeda)","北小路博司 (Hiroshi Kitakoji)"],
     journal: "全日本鍼灸学会雑誌 (Journal of the Japan Society of Acupuncture and Moxibustion)",
     year: 2018,
-    pmid: "医中誌 Web ID: 2020056397",
     doi: "10.3777/jjsam.68.10",
     studyDesign: "ランダム化比較試験（予備的RCT）",
     sampleSize: 16,
@@ -1508,3 +1513,27 @@ export const PAPERS_DATABASE: PaperReference[] = [
     abstract: "慢性肩こり患者16名を対象に、刺入深度の違い（浅刺約5mm vs 筋内深刺10-20mm）が鎮痛・持続効果に与える影響を比較したランダム化比較試験（明治国際医療大学）。初回直後のVAS軽減度（10.9 vs 29.6mm, P < 0.05）および治療4週後の効果持続性（-1.9 vs 28.0mm, P < 0.05）の双方において深刺群が有意に優れた。ひびき感の惹起を伴う責任筋への適切な深刺が、肩こりの長期寛解に不可欠であることが実証された。"
   }
 ];
+
+interface AuditRecord { checkedAt: string; bibliographyStatus: NonNullable<PaperReference['bibliographyStatus']>; canonical?: { title?: string; authors?: string[]; journal?: string; year?: number; pmid?: string; doi?: string } }
+const BIBLIOGRAPHY_AUDIT = auditData as Record<string, AuditRecord>;
+export const PAPERS_DATABASE: PaperReference[] = SOURCE_PAPERS.map(paper => {
+  const audit = BIBLIOGRAPHY_AUDIT[paper.id];
+  const matched = audit?.bibliographyStatus === 'matched';
+  const interpretation = matched ? PAPER_INTERPRETATIONS[paper.id] : undefined;
+  const canonical = matched ? audit.canonical : undefined;
+  return {
+    ...paper, ...(canonical ? { title: canonical.title || paper.title, authors: canonical.authors || paper.authors, journal: canonical.journal || paper.journal, year: canonical.year || paper.year } : {}),
+    pmid: matched ? canonical?.pmid || (/^\d+$/.test(paper.pmid || '') ? paper.pmid : undefined) : audit?.bibliographyStatus === 'retracted' ? paper.pmid : undefined,
+    doi: matched || audit?.bibliographyStatus === 'retracted' ? canonical?.doi || paper.doi : undefined,
+    pmcid: undefined, // Do not publish an unchecked full-text identifier.
+    bibliographyStatus: audit?.bibliographyStatus || 'unverified', sourceCheckedAt: audit?.checkedAt,
+    claimsStatus: audit?.bibliographyStatus === 'retracted' ? 'do-not-use' : interpretation ? 'source-checked' : 'needs-review',
+    sampleSize: interpretation?.sampleSize, studyDesign: interpretation?.design || '研究方法・結果の解釈は原典照合中',
+    interventionProtocol: undefined, controlProtocol: undefined,
+    primaryOutcomes: interpretation ? '下記の原典照合済み要約を参照' : '原典照合中', secondaryOutcomes: undefined,
+    keyFindings: interpretation?.findings || [],
+    clinicalTakeaways: interpretation?.limitations || [audit?.bibliographyStatus === 'retracted' ? '撤回論文のため、治療の根拠として使用しません。' : '書誌の照合と研究結果の解釈は別です。効果量・配穴・安全性の解説は照合を終えるまで掲載を保留します。'],
+    abstract: interpretation?.summary || '研究結果・臨床への適用範囲は照合中です。原典を確認してください。',
+  };
+});
+export const VERIFIED_PAPERS = PAPERS_DATABASE.filter(paper => paper.bibliographyStatus === 'matched');

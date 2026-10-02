@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { useClinicalMemo } from '@/contexts/ClinicalMemoContext';
 import { SUBSCRIPTION_CONFIG } from '@/config/subscription';
+import LearningSyncStatus from '@/components/learning/LearningSyncStatus';
 export default function SubscriptionManagementPage() {
   const {user,isLoading,isPremium,refreshUser,logout,migrateLocalData}=useAuth();
   const {clipCount,maxLimit,patientNoteCount,maxPatientNoteLimit,syncStatus,triggerSync}=useClinicalMemo();
@@ -69,7 +70,8 @@ export default function SubscriptionManagementPage() {
       <h2 className="text-xl font-bold">保存データと同期状態</h2>
       <p className="text-sm">臨床ノート {patientNoteCount} / {maxPatientNoteLimit}件 ／ 配穴・ツボストック {clipCount} / {maxLimit}件</p>
       <p role="status" className="text-sm font-bold">{syncLabels[syncStatus]}</p>
-      <p className="text-xs leading-relaxed">学習進捗・クイズ履歴はこのブラウザに保存されます。クラウド同期の表示は臨床ノートと配穴ストックの状態です。マイノートから手元にバックアップも保存できます。</p>
+      <LearningSyncStatus />
+      <p className="text-xs leading-relaxed">ノートと学習履歴は別々に同期します。それぞれの表示をご確認ください。マイノートから手元にバックアップも保存できます。</p>
       <div className="flex flex-wrap gap-3"><button disabled={!user||syncStatus==='syncing'} onClick={()=>void triggerSync()} className={button}>ノートの同期を再試行</button><button onClick={()=>setLocalReport(migrateLocalData())} className={button}>端末内の学習データ件数を確認</button><Link href="/notes" className={button}>マイノート・バックアップへ</Link></div>
       {localReport&&<p className="text-xs">このブラウザ：配穴・ツボ {localReport.memoCount}件、完了した講義 {localReport.curriculumProgressCount}件、クイズ履歴 {localReport.quizResultCount}件。件数確認はデータ移行や同期の完了を意味しません。</p>}
     </section>

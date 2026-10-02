@@ -10,6 +10,7 @@
     "verify:integrity": "node scripts/verify-integrity.mjs",
     "test:content": "node scripts/content-regression.cjs",
     "test:learning": "node scripts/learning-regression.cjs",
+    "test:sync": "node scripts/learning-sync-regression.cjs",
     "test:site": "node scripts/site-regression.cjs",
     "test:billing": "node scripts/billing-regression.cjs",
     "check:billing": "node scripts/billing-readiness.cjs"
@@ -26,6 +27,7 @@
     "stripe": "^22.6.2"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.5.8",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
