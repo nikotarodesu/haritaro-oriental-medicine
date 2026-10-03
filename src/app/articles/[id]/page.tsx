@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { parseMarkdownBlocks } from "@/utils/markdownParser";
 import { ARTICLE_LEARNING_GUIDES } from "@/data/articleLearningGuides";
+import { ARTICLE_READING_GUIDES } from "@/data/articleReadingGuides";
 import LearningPathLinks from "@/components/learning/LearningPathLinks";
 import { ARTICLES } from "@/data/articleData";
 import { resolveArticleReferences } from "@/utils/referenceResolver";
@@ -12,15 +13,12 @@ import ArticleReferences from "@/components/ArticleReferences";
 import PrimeStudentCard from "@/components/PrimeStudentCard";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
+import ReadingProgressBar from "@/components/ReadingProgressBar";
 import { 
-  BookOpen, 
   Clock, 
   ArrowLeft, 
   ArrowRight, 
-  Sparkles, 
-  Layers, 
   ChevronRight,
-  ShieldCheck 
 } from "lucide-react";
 
 interface Props {
@@ -75,11 +73,21 @@ export default async function ArticleDetailPage({ params }: Props) {
   }
 
   const article = ARTICLES[articleIndex];
-  const prevArticle = articleIndex > 0 ? ARTICLES[articleIndex - 1] : null;
-  const nextArticle = articleIndex < ARTICLES.length - 1 ? ARTICLES[articleIndex + 1] : null;
-  const relatedArticles = ARTICLES.filter(a => a.id !== article.id)
-    .map(a => ({ article: a, score: a.tags.filter(tag => article.tags.includes(tag)).length * 3 + (a.category === article.category ? 1 : 0) }))
-    .filter(item => item.score > 0).sort((a, b) => b.score - a.score).slice(0, 2).map(item => item.article);
+  const readingGuide = ARTICLE_READING_GUIDES[article.id];
+  const nextArticleIds = new Set<string>();
+  const nextArticles = (readingGuide?.nextArticles || []).flatMap(item => {
+    const next = ARTICLES.find(candidate => candidate.id === item.articleId);
+    if (!next || next.id === article.id || nextArticleIds.has(next.id)) return [];
+    nextArticleIds.add(next.id);
+    return [{ article: next, reason: item.reason }];
+  }).slice(0, 3);
+  const firstRelated = nextArticles[0];
+  const relatedReading = firstRelated ? {
+    href: `/articles/${firstRelated.article.id}`,
+    title: firstRelated.article.title,
+    description: firstRelated.reason,
+    meta: `読了約 ${firstRelated.article.readTime}`,
+  } : undefined;
   const headings = parseMarkdownBlocks(article.contentMarkdown).flatMap((block, index) =>
     block.type === "h2" ? [{ label: block.content.replaceAll("**", ""), id: "article-heading-" + index }] : []);
   const learningGuide = ARTICLE_LEARNING_GUIDES[article.id];
@@ -145,6 +153,7 @@ export default async function ArticleDetailPage({ params }: Props) {
 
   return (
     <div className="min-h-screen py-6 sm:py-16 px-3 sm:px-6 lg:px-8">
+      <ReadingProgressBar key={article.id} bodySelector="#article-content [data-reading-body]" headings={headings.map(heading => ({ id: heading.id, text: heading.label, level: 2 }))} />
       {/* 構造化データ埋め込み */}
       <script
         type="application/ld+json"
@@ -154,7 +163,7 @@ export default async function ArticleDetailPage({ params }: Props) {
       <div className="max-w-4xl mx-auto space-y-6 sm:space-y-10">
         
         {/* パンくずリスト */}
-        <nav className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
+        <nav aria-label="パンくず" className="flex items-center justify-between gap-3 text-sm text-[#737C77] dark:text-[#8899A6]">
           <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
             <Link href="/" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
               ホーム
@@ -171,7 +180,8 @@ export default async function ArticleDetailPage({ params }: Props) {
 
           <Link
             href="/articles"
-            className="inline-flex items-center gap-1 text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline shrink-0"
+            aria-label="記事一覧へ戻る"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-1 text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline shrink-0"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">一覧へ戻る</span>
@@ -179,14 +189,14 @@ export default async function ArticleDetailPage({ params }: Props) {
         </nav>
 
         {/* 記事メインカード */}
-        <article id="article-top" className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm space-y-6 sm:space-y-8 transition-colors">
+        <article id="article-top" className="scroll-mt-36 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm space-y-6 sm:space-y-8 transition-colors">
           {/* ヘッダー部 */}
           <header className="space-y-3 sm:space-y-4 border-b border-[#F2ECE0] dark:border-[#22303D] pb-5 sm:pb-6">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-semibold">
+              <span className="px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-sm font-semibold">
                 {article.category}
               </span>
-              <span className="text-xs text-[#737C77] dark:text-[#8899A6] flex items-center gap-1">
+              <span className="text-sm text-[#737C77] dark:text-[#8899A6] flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5" />
                 <span>読了約 {article.readTime}</span>
               </span>
@@ -202,7 +212,7 @@ export default async function ArticleDetailPage({ params }: Props) {
               </p>
             )}
 
-            <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-[#59615D] dark:text-[#96A6B2] pt-2">
+            <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-[#59615D] dark:text-[#96A6B2] pt-2">
               <div className="flex items-center gap-2">
                 <img
                   src="/icon.png"
@@ -217,7 +227,7 @@ export default async function ArticleDetailPage({ params }: Props) {
 
               <div className="flex flex-wrap items-center gap-1.5">
                 {article.tags.map((t, idx) => (
-                  <span key={idx} className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] text-[10px] sm:text-[11px] text-[#404743] dark:text-[#C5D2DB]">
+                  <span key={idx} className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-sm text-[#404743] dark:text-[#C5D2DB]">
                     #{t}
                   </span>
                 ))}
@@ -225,44 +235,61 @@ export default async function ArticleDetailPage({ params }: Props) {
             </div>
           </header>
 
-          <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
+          <nav aria-label="この記事の読み進め方" className="flex flex-wrap gap-2">
+            <a href="#article-content" className="inline-flex min-h-11 items-center rounded-lg bg-[#1E3D34] px-4 text-sm font-bold text-white dark:bg-[#2B6958] focus-visible:outline-2 focus-visible:outline-offset-2">本文を読む</a>
+            {readingGuide?.inserts[0] && <a href={`#reading-figure-${readingGuide.inserts[0].figure.id}`} className="inline-flex min-h-11 items-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] focus-visible:outline-2 focus-visible:outline-offset-2">図解を見る</a>}
+            {nextArticles.length > 0 && <a href="#article-next-reading" className="inline-flex min-h-11 items-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] focus-visible:outline-2 focus-visible:outline-offset-2">次に読む</a>}
+            {resolvedReferences.length > 0 && <a href="#article-references-section" className="inline-flex min-h-11 items-center rounded-lg px-4 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] underline underline-offset-4">出典と確認範囲</a>}
+          </nav>
+          <p className="text-sm text-[#59615D] dark:text-[#A0B0BC]">
             公開：<time dateTime={article.publishedAt}>{article.publishedAt}</time>
             {article.updatedAt && <> ／ 更新：<time dateTime={article.updatedAt}>{article.updatedAt}</time></>}
           </p>
-          <aside aria-label="この記事の読み方" className="rounded-xl border border-[#C5DED4] dark:border-[#2A5243] p-4 text-sm leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
-            <strong className="block mb-1">この記事の読み方</strong>
+          <section aria-label="この記事の要点と読み方" className="space-y-3 text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
+            <p><GlossaryRenderer text={article.summary} seenTerms={summarySeenTerms} /></p>
+            {learningGuide && <div className="border-l-2 border-[#C5DED4] dark:border-[#2A5243] pl-4 space-y-2 text-sm">
+              <p><strong>学ぶポイント：</strong>{learningGuide.focus}</p>
+              <p><strong>判断の限界：</strong>{learningGuide.limitation}</p>
+            </div>}
+            <details className="text-sm">
+              <summary className="flex min-h-11 cursor-pointer items-center gap-2 font-bold text-[#1E3D34] dark:text-[#74BA9E]">この記事の読み方・説明の範囲 <ChevronRight aria-hidden="true" className="h-4 w-4" /></summary>
+              <p className="pt-2">
             伝統理論の説明、研究で得られた知見、筆者による比較・比喩を区別してお読みください。生理学との対比表や「ネットワーク」などの説明は、伝統概念との同一性や治療効果を証明するものではありません。研究結果は対象・方法・限界とともに確認してください。
-          </aside>
-          {learningGuide && <section aria-label="先に押さえる要点と限界" className="rounded-xl bg-[#EBF3EF] dark:bg-[#182823] p-4 space-y-3 text-sm leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
-            <h2 className="font-bold">先に押さえる要点と限界</h2>
-            <p><strong>学ぶポイント：</strong>{learningGuide.focus}</p>
-            <p><strong>判断の限界：</strong>{learningGuide.limitation}</p>
-            <p className="text-xs">根拠は本文の引用と参考文献で、原典・研究対象・方法を確認できます。伝統理論と筆者の対比モデルを区別してください。</p>
-          </section>}
-          {headings.length > 0 && <details open className="rounded-xl bg-[#FAF8F5] dark:bg-[#121920] p-4">
-            <summary className="cursor-pointer font-bold text-[#1E3D34] dark:text-[#74BA9E]">目次：知りたいところから読む</summary>
+              </p>
+              {resolvedReferences.length > 0 && <a href="#article-references-section" className="inline-flex min-h-11 items-center underline text-[#1E3D34] dark:text-[#74BA9E]">原典・研究対象・方法を出典で確認する</a>}
+            </details>
+          </section>
+          {headings.length > 0 && <details className="rounded-xl bg-[#FAF8F5] dark:bg-[#121920] px-4 py-2">
+            <summary className="flex min-h-11 items-center cursor-pointer font-bold text-[#1E3D34] dark:text-[#74BA9E]">目次：知りたいところから読む</summary>
             <nav aria-label="記事の目次" className="mt-3"><ol className="space-y-2 text-sm">
-              {headings.map(heading => <li key={heading.id}><a href={"#" + heading.id} className="inline-block py-1 underline underline-offset-4 text-[#1E3D34] dark:text-[#74BA9E]">{heading.label}</a></li>)}
+              {headings.map(heading => <li key={heading.id}><a href={"#" + heading.id} className="inline-flex min-h-11 items-center py-2 underline underline-offset-4 text-[#1E3D34] dark:text-[#74BA9E]">{heading.label}</a></li>)}
             </ol></nav>
           </details>}
-          {/* 要約ボックス */}
-          <div className="bg-[#FAF8F5] dark:bg-[#121920] p-4 sm:p-5 rounded-2xl border-l-4 border-[#1E3D34] dark:border-[#4E8C76] text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-            <strong className="block font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] mb-1">【本稿の要旨】</strong>
-            <GlossaryRenderer text={article.summary} seenTerms={summarySeenTerms} />
-          </div>
-
           {/* 本文 */}
+          <div id="article-content" className="scroll-mt-36">
           <MarkdownBody
             contentMarkdown={article.contentMarkdown}
             seenTerms={bodySeenTerms}
             idPrefix="article-heading"
             resolvedReferences={resolvedReferences}
+            readingInserts={readingGuide?.inserts}
+            relatedReading={relatedReading}
           />
+          </div>
 
-          <nav aria-label="読了後の学習" className="flex flex-wrap items-center gap-4 border-t border-[#E8E1D1] dark:border-[#22303D] pt-5 text-sm">
+          {nextArticles.length > 0 && <section id="article-next-reading" aria-labelledby="article-next-reading-title" className="scroll-mt-36 space-y-4 border-t border-[#E8E1D1] dark:border-[#22303D] pt-6">
+            <div className="space-y-1"><h2 id="article-next-reading-title" className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">次に読む</h2><p className="text-sm text-[#59615D] dark:text-[#A0B0BC]">いま読んだ内容を、別の視点から確かめる記事です。</p></div>
+            <div className="grid gap-3 sm:grid-cols-3">{nextArticles.map(({ article: next, reason }) => <Link key={next.id} href={`/articles/${next.id}`} className="flex flex-col gap-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] p-4 hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2">
+              <p className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">{reason}</p>
+              <h3 className="font-serif text-base font-bold leading-relaxed text-[#232826] dark:text-[#FAF8F5]">{next.title}</h3>
+              <span className="mt-auto inline-flex min-h-11 items-center justify-between gap-2 text-sm text-[#59615D] dark:text-[#A0B0BC]"><span>読了約 {next.readTime}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></span>
+            </Link>)}</div>
+          </section>}
+
+          <div className="space-y-3 border-t border-[#E8E1D1] dark:border-[#22303D] pt-5 text-sm">
             {learningGuide && <LearningPathLinks lectureId={learningGuide.lectureId} caseId={learningGuide.caseId} />}
-            <a href="#article-top" className="underline underline-offset-4 text-[#1E3D34] dark:text-[#74BA9E]">記事の先頭へ</a>
-          </nav>
+            <a href="#article-top" className="inline-flex min-h-11 items-center underline underline-offset-4 text-[#1E3D34] dark:text-[#74BA9E]">記事の先頭へ</a>
+          </div>
           {/* 参考文献・学術エビデンス（PubMed・DOI・古典原典） */}
           <ArticleReferences references={resolvedReferences} />
 
@@ -277,12 +304,12 @@ export default async function ArticleDetailPage({ params }: Props) {
               alt="はり太郎"
               className="w-14 h-14 rounded-2xl object-cover shadow-xs border border-[#E5DEC9] dark:border-[#2A3B4A] shrink-0"
             />
-            <div className="space-y-1.5 text-xs flex-1">
+            <div className="space-y-1.5 text-sm flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 <h3 className="font-serif font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
-                  執筆・監修：{article.author.name}
+                  執筆・編集：{article.author.name}
                 </h3>
-                <span className="px-2 py-0.5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-[10px] font-bold">
+                <span className="px-2 py-0.5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-xs font-bold">
                   鍼灸師／鍼灸院院長
                 </span>
               </div>
@@ -292,7 +319,7 @@ export default async function ArticleDetailPage({ params }: Props) {
               <div className="pt-1">
                 <Link
                   href="/about"
-                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline"
+                  className="inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline"
                 >
                   <span>運営理念と執筆方針を見る</span>
                   <ChevronRight className="w-3 h-3" />
@@ -301,86 +328,6 @@ export default async function ArticleDetailPage({ params }: Props) {
             </div>
           </div>
         </article>
-
-        {/* 前後の記事ナビゲーション */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {prevArticle ? (
-            <Link
-              href={`/articles/${prevArticle.id}`}
-              className="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-sm transition-all group flex items-center gap-3"
-            >
-              <div className="w-8 h-8 rounded-full bg-[#FAF8F5] dark:bg-[#10171F] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 group-hover:-translate-x-1 transition-transform">
-                <ArrowLeft className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">前の記事</span>
-                <span className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] line-clamp-1">
-                  {prevArticle.title}
-                </span>
-              </div>
-            </Link>
-          ) : (
-            <div className="p-4 rounded-2xl bg-[#FAF8F5]/60 dark:bg-[#121920]/60 border border-dashed border-[#E5DEC9] dark:border-[#22303D] text-xs text-[#8A948F] flex items-center">
-              <span>最初の記事です</span>
-            </div>
-          )}
-
-          {nextArticle ? (
-            <Link
-              href={`/articles/${nextArticle.id}`}
-              className="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-sm transition-all group flex items-center justify-between"
-            >
-              <div className="text-right">
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">次の記事</span>
-                <span className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] line-clamp-1">
-                  {nextArticle.title}
-                </span>
-              </div>
-              <div className="w-8 h-8 rounded-full bg-[#FAF8F5] dark:bg-[#10171F] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 group-hover:translate-x-1 transition-transform">
-                <ArrowRight className="w-4 h-4" />
-              </div>
-            </Link>
-          ) : (
-            <div className="p-4 rounded-2xl bg-[#FAF8F5]/60 dark:bg-[#121920]/60 border border-dashed border-[#E5DEC9] dark:border-[#22303D] text-xs text-[#8A948F] flex items-center justify-end">
-              <span>最新の記事です</span>
-            </div>
-          )}
-        </div>
-
-        {/* おすすめの関連記事 */}
-        {relatedArticles.length > 0 && (
-          <section className="space-y-4">
-            <h3 className="font-serif font-bold text-base text-[#232826] dark:text-[#FAF8F5] flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>あわせて読みたい学術記事</span>
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {relatedArticles.map((rel) => (
-                <Link
-                  key={rel.id}
-                  href={`/articles/${rel.id}`}
-                  className="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-md transition-all group flex flex-col justify-between"
-                >
-                  <div className="space-y-1.5">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#EBE4D5] dark:border-[#22303D] text-[#1E3D34] dark:text-[#83BEA8]">
-                      {rel.category}
-                    </span>
-                    <h4 className="font-serif font-bold text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors line-clamp-2">
-                      {rel.title}
-                    </h4>
-                    <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] line-clamp-2">
-                      {rel.summary}
-                    </p>
-                  </div>
-                  <div className="mt-3 pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-medium">
-                    <span>記事を読む</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
 
         {/* E-E-A-T 専門家監修情報カード */}
         <AuthorSupervisorCard topic={`${article.title}（${article.category}）`} />

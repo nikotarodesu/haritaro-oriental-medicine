@@ -4,7 +4,7 @@ export const ACUPOINT_PAGE_REVISED_AT = '2026-10-03';
 export const PAGE_REVISIONS: Record<string, string> = {
   '/learn': SITE_REVISED_AT, '/kokushi': SITE_REVISED_AT,
   '/simulator': SITE_REVISED_AT,
-  '/articles': SITE_REVISED_AT, '/contact': SITE_REVISED_AT,
+  '/articles': '2026-10-03', '/contact': SITE_REVISED_AT,
   '/tsubo/practice': SITE_REVISED_AT, '/pricing': SITE_REVISED_AT,
   '/symptoms': SITE_REVISED_AT, '/diagnosis': SITE_REVISED_AT, '/cases': SITE_REVISED_AT,
   // 実際に改訂したページだけを更新する。全教材の確認日には用いない。
@@ -21,6 +21,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/curriculum/lecture-yinyang-8': '2026-10-03',
 };
 export const SITE_UPDATES = [
+  { date: '2026-10-03', label: '図解と記事の回遊', href: '/articles', text: '12記事と陰陽4講義の本文に20個の図解を追加。テーマから探す入口、読み進めた位置、次に学べる内容を示す関連記事を整備' },
   { date: '2026-10-03', label: '導線と読みやすさ', href: '/tsubo', text: 'スマホの学習入口、経穴検索・ページ内目次、文献の分類と検索解除を改善。日本語書体・文字サイズ・カードの余白を統一' },
   { date: '2026-10-03', label: '教材の説明を見直し', href: '/editorial-policy', text: '陰陽8講義と関連図・用語・古典・配穴例で伝統的な説明と医学的根拠を区別。電子本文の引用範囲と未確認の底本を明示' },
   { date: '2026-10-03', label: '経穴の情報と操作', href: '/tsubo/li4', text: '合谷の位置説明、検索用の監修表示、共有情報を修正し、スマホの保存・比較・復習操作を改善' },

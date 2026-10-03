@@ -11,6 +11,8 @@ import ArticleReferences from "@/components/ArticleReferences";
 import { resolveArticleReferences } from "@/utils/referenceResolver";
 import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
 import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
+import { getCurriculumReadingInserts } from "@/data/curriculumReadingGuides";
+import type { ReadingLink } from "@/types/reading";
 import ReviewQuestionCard from "@/components/learning/ReviewQuestionCard";
 import { InteractiveQuiz } from "@/components/InteractiveQuiz";
 import { 
@@ -32,9 +34,10 @@ import FontSizeControl from "@/components/FontSizeControl";
 
 interface Props {
   lecture: Lecture;
+  relatedReadingLinks?: ReadingLink[];
 }
 
-export default function CurriculumLectureReader({ lecture }: Props) {
+export default function CurriculumLectureReader({ lecture, relatedReadingLinks = [] }: Props) {
   const articleTopRef = useRef<HTMLDivElement | null>(null);
   const [focusBanner, setFocusBanner] = useState<string | null>(null);
 
@@ -153,6 +156,18 @@ export default function CurriculumLectureReader({ lecture }: Props) {
   const resolvedReferences = resolveArticleReferences(
     lecture.references,
     lecture.contentMarkdown
+  );
+  const readingInserts = getCurriculumReadingInserts(lecture.id);
+  const articleReadingLinks = relatedReadingLinks.slice(0, 2);
+  const relatedFigureReading: ReadingLink | undefined = articleReadingLinks[0] ?? (
+    lecture.id === "lecture-yinyang-8" && nextLecture
+      ? {
+          href: `/curriculum/${nextLecture.id}`,
+          title: nextLecture.title,
+          description: "陰陽の学習を終えたら、五行の分類と関係へ進みます。",
+          meta: `次の講義 · 約${nextLecture.duration}`,
+        }
+      : undefined
   );
 
   return (
@@ -352,8 +367,32 @@ export default function CurriculumLectureReader({ lecture }: Props) {
           seenTerms={bodySeenTerms}
           idPrefix="curriculum-heading"
           resolvedReferences={resolvedReferences}
+          readingInserts={readingInserts}
+          relatedReading={relatedFigureReading}
         />
         </div>
+
+        {articleReadingLinks.length > 0 && (
+          <nav aria-label="この講義に関連する記事" className="border-t border-[#E5DEC9] dark:border-[#2A3B4A] pt-5">
+            <p className="text-base font-semibold text-[#1E3D34] dark:text-[#83BEA8]">関連する記事で読み深める</p>
+            <div className="mt-2 divide-y divide-[#E5DEC9] dark:divide-[#2A3B4A]">
+              {articleReadingLinks.map((reading) => (
+                <Link
+                  key={reading.href}
+                  href={reading.href}
+                  className="group block min-h-11 rounded-lg py-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]"
+                >
+                  <div className="flex items-start justify-between gap-3 text-base font-semibold leading-relaxed text-[#1E3D34] dark:text-[#83BEA8]">
+                    <span className="group-hover:underline underline-offset-4">{reading.title}</span>
+                    <ArrowRight aria-hidden="true" className="mt-1 h-4 w-4 shrink-0" />
+                  </div>
+                  <p className="mt-1 text-base leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">{reading.description}</p>
+                  {reading.meta && <span className="mt-1 block text-sm text-[#59615D] dark:text-[#A0B0BC]">{reading.meta}</span>}
+                </Link>
+              ))}
+            </div>
+          </nav>
+        )}
 
         {/* 国家試験出題チェックポイント（あん摩・はり師・きゅう師） */}
         {lecture.nationalExamPoints && lecture.nationalExamPoints.length > 0 && (

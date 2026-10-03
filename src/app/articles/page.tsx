@@ -1,5 +1,6 @@
 import { permanentRedirect, notFound } from "next/navigation";
 import { ARTICLES } from "@/data/articleData";
+import { ARTICLE_READING_GUIDES } from "@/data/articleReadingGuides";
 import ArticlesListClient from "@/components/articles/ArticlesListClient";
 
 interface Props {
@@ -21,5 +22,10 @@ export default async function ArticlesPage({ searchParams }: Props) {
     }
   }
 
-  return <ArticlesListClient />;
+  const articles = ARTICLES.map(({ id, title, subtitle, category, readTime, summary, tags, author }) => ({
+    id, title, subtitle, category, readTime, summary, tags,
+    authorName: author.name,
+    hasFigures: (ARTICLE_READING_GUIDES[id]?.inserts.length || 0) > 0,
+  }));
+  return <ArticlesListClient articles={articles} />;
 }

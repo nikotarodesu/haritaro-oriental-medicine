@@ -13,6 +13,7 @@
     "test:learning": "node scripts/learning-regression.cjs",
     "test:sync": "node scripts/learning-sync-regression.cjs",
     "test:site": "node scripts/site-regression.cjs",
+    "test:reading": "node scripts/reading-experience-regression.cjs",
     "test:billing": "node scripts/billing-regression.cjs",
     "check:billing": "node scripts/billing-readiness.cjs"
   },

@@ -1,11 +1,15 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
+import InlineConceptFigure from "@/components/reading/InlineConceptFigure";
 import CitationTextRenderer from "@/components/CitationTextRenderer";
 import EastWestTermSwitch from "@/components/EastWestTermSwitch";
 import CurriculumDiagram from "@/components/CurriculumDiagram";
 import { parseMarkdownBlocks } from "@/utils/markdownParser";
 import { ResolvedReference } from "@/types/references";
+import type { ReadingInsert, ReadingLink } from "@/types/reading";
+import { resolveReadingInsertions } from "@/utils/readingInserts";
 
 interface MarkdownBodyProps {
   contentMarkdown: string;
@@ -13,6 +17,8 @@ interface MarkdownBodyProps {
   onNextLecture?: () => void;
   idPrefix?: string;
   resolvedReferences?: ResolvedReference[];
+  readingInserts?: ReadingInsert[];
+  relatedReading?: ReadingLink;
 }
 
 export default function MarkdownBody({
@@ -21,8 +27,12 @@ export default function MarkdownBody({
   onNextLecture,
   idPrefix = "section-heading",
   resolvedReferences,
+  readingInserts,
+  relatedReading,
 }: MarkdownBodyProps) {
   const blocks = parseMarkdownBlocks(contentMarkdown);
+  const figurePlacements = resolveReadingInsertions(blocks, readingInserts ?? []);
+  const lastFigureIndex = Math.max(-1, ...figurePlacements.keys());
 
   const renderText = (text: string) => (
     <CitationTextRenderer
@@ -32,9 +42,7 @@ export default function MarkdownBody({
     />
   );
 
-  return (
-    <div className="prose max-w-none text-[#232826] dark:text-[#D5E0DC] leading-[1.9] space-y-6 text-base">
-      {blocks.map((block, index) => {
+  const renderBlock = (block: (typeof blocks)[number], index: number) => {
         switch (block.type) {
           case "h1":
             return (
@@ -191,7 +199,25 @@ export default function MarkdownBody({
           default:
             return null;
         }
-      })}
+      };
+
+  return (
+    <div data-reading-body className="prose max-w-none text-[#232826] dark:text-[#D5E0DC] leading-[1.9] space-y-6 text-base">
+      {blocks.map((block, index) => (
+        <React.Fragment key={index}>
+          {renderBlock(block, index)}
+          {figurePlacements.get(index)?.map((figure) => <InlineConceptFigure key={figure.id} figure={figure} />)}
+          {relatedReading && index === lastFigureIndex ? (
+            <aside className="not-prose rounded-xl border-l-2 border-[#8CAA99] bg-[#F6F8F4] px-4 py-3 sm:px-5 dark:border-[#608C75] dark:bg-[#15261D]" aria-label="関連する読みもの">
+              <p className="text-sm leading-relaxed text-[#58695D] dark:text-[#B7CBBD]">{relatedReading.description}</p>
+              <Link href={relatedReading.href} className="mt-1 flex min-h-11 items-center justify-between gap-3 rounded-lg py-2 text-base font-semibold leading-relaxed text-[#1E3D34] underline-offset-4 hover:underline dark:text-[#B4D6C0]">
+                <span>{relatedReading.title}{relatedReading.meta ? <span className="mt-1 block text-sm font-normal text-[#66776A] dark:text-[#ADC2B3]">{relatedReading.meta}</span> : null}</span>
+                <span className="shrink-0" aria-hidden="true">↗</span>
+              </Link>
+            </aside>
+          ) : null}
+        </React.Fragment>
+      ))}
     </div>
   );
 }

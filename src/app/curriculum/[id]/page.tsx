@@ -3,6 +3,8 @@ import { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { CURRICULUM_DATA, Lecture } from "@/data/curriculumData";
 import CurriculumLectureReader from "@/components/curriculum/CurriculumLectureReader";
+import { getArticlePreviews } from "@/data/articleData";
+import { createCurriculumReadingLinks, getCurriculumRelatedArticleIds } from "@/data/curriculumReadingGuides";
 
 const allLectures: Lecture[] = CURRICULUM_DATA.flatMap((s) => s.lectures);
 
@@ -146,7 +148,7 @@ export default async function CurriculumDetailPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(lectureJsonLd) }}
       />
-      <CurriculumLectureReader lecture={lecture} />
+      <CurriculumLectureReader lecture={lecture} relatedReadingLinks={createCurriculumReadingLinks(lecture.id, getArticlePreviews(getCurriculumRelatedArticleIds(lecture.id)))} />
     </>
   );
 }
