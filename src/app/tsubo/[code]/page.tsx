@@ -227,7 +227,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   };
 
   const pageUrl = `https://www.haritaro.jp/tsubo/${point.codeLower}`;
-  const pageTitle = `${acupointPageTitle(point)} | はり太郎`;
+  const pageTitle = acupointPageTitle(point);
 
   // JSON-LD 構造化データ（MedicalWebPage ＆ DefinedTerm ＆ BreadcrumbList ＆ FAQPage）
   const jsonLd = {
