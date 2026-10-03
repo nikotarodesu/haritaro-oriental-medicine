@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
+import { pageSocialMetadata } from '@/config/seo';
 import Link from 'next/link';
 import summary from '@/data/medicalReviewSummary.json';
 import audit from '@/data/references/bibliographyAudit.json';
-export const metadata: Metadata = { title: '医学記述・出典の確認方針', description: '書誌の照合、研究結果の解釈、専門家による監修の状況を分けて公開します。', alternates: { canonical: '/editorial-policy' } };
+export const metadata: Metadata = { title: '医学記述・出典の確認方針', description: '書誌の照合、研究結果の解釈、専門家による監修の状況を分けて公開します。', ...pageSocialMetadata('医学記述・出典の確認方針', '書誌の照合、研究結果の解釈、専門家による監修の状況を分けて公開します。', '/editorial-policy'), alternates: { canonical: '/editorial-policy' } };
 export default function EditorialPolicyPage() {
   const records = Object.values(audit);
   return <main className="mx-auto max-w-3xl px-4 py-12 space-y-7 text-[#232826] dark:text-[#FAF8F5]">

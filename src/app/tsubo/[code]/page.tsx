@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES } from "@/config/seo";
+import { SHARED_OG_IMAGES, acupointPageTitle } from "@/config/seo";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const title = `${point.name}（${point.code}）の位置・伝統的な主治・注意事項｜鍼灸学習`;
+  const title = acupointPageTitle(point);
   const description = `${point.name}（${point.code} / ${point.meridian}）。${point.locationSimple} 位置情報の参照元、伝統的な主治、教育用断面模式図とその適用範囲、注意事項を分けて学べます。`;
 
   return {
@@ -227,7 +227,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   };
 
   const pageUrl = `https://www.haritaro.jp/tsubo/${point.codeLower}`;
-  const pageTitle = `${point.name}（${point.code}）のツボの位置・効果・押し方と禁忌【鍼灸師監修】`;
+  const pageTitle = `${acupointPageTitle(point)} | はり太郎`;
 
   // JSON-LD 構造化データ（MedicalWebPage ＆ DefinedTerm ＆ BreadcrumbList ＆ FAQPage）
   const jsonLd = {
@@ -410,7 +410,7 @@ export default async function AcupointDetailPage({ params }: Props) {
               {/* 主アクション：配穴処方に追加 */}
               <Link
                 href={`/practice/haiketsu?add=${encodeURIComponent(point.name)}`}
-                className="px-3.5 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] text-xs font-bold transition-all inline-flex items-center gap-1.5 shadow-2xs cursor-pointer"
+                className="min-h-11 px-3.5 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] text-xs font-bold transition-all inline-flex items-center gap-1.5 shadow-2xs cursor-pointer"
                 title="この経穴を配穴設計の処方に組み込む"
               >
                 <SlidersHorizontal className="w-4 h-4 text-[#E6C387]" />
@@ -432,13 +432,14 @@ export default async function AcupointDetailPage({ params }: Props) {
                 }}
                 variant="button"
                 size="md"
+                className="min-h-11"
               />
 
               {/* 副アクション群：推論・比較・テスト（スッキリ整理） */}
               <div className="flex items-center gap-1.5 bg-[#FAF8F5] dark:bg-[#121920] p-1 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
                 <Link
                   href={simulatorUrl}
-                  className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] transition-colors inline-flex items-center gap-1"
+                  className="min-h-11 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] transition-colors inline-flex items-center gap-1"
                   title={`「${point.name}」を参照しながら弁証の学習条件を選ぶ`}
                 >
                   <Layers className="w-3.5 h-3.5" />
@@ -447,7 +448,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
                 <Link
                   href={`/tsubo/compare?a=${point.codeLower}`}
-                  className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-[#59615D] dark:text-[#A0B0BC] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] hover:bg-white dark:hover:bg-[#1A2530] transition-colors inline-flex items-center gap-1"
+                  className="min-h-11 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-[#59615D] dark:text-[#A0B0BC] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] hover:bg-white dark:hover:bg-[#1A2530] transition-colors inline-flex items-center gap-1"
                   title="この経穴を2穴比較ツールで開く"
                 >
                   <GitCompare className="w-3.5 h-3.5" />
@@ -456,7 +457,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
                 <Link
                   href={`/tsubo/practice?course=meridian_${point.meridianId.toLowerCase()}`}
-                  className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2016] transition-colors inline-flex items-center gap-1"
+                  className="min-h-11 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2016] transition-colors inline-flex items-center gap-1"
                   title="この経脈をクイズで学習"
                 >
                   <BookOpen className="w-3.5 h-3.5" />
@@ -771,7 +772,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#FAF8F5] to-[#F3EFE6] dark:from-[#152028] dark:to-[#17222B] border border-[#DED6C5] dark:border-[#2D3E50] space-y-3">
               <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                 <GitCompare className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>臨床ゴールデンペア（伝統的名配穴・相乗効果処方）</span>
+                <span>伝統的な配穴例（組み合わせの学習）</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                 {point.goldenPairs.map((pair, idx) => (
@@ -1192,7 +1193,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                   国試対策演習
                 </span>
                 <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  {point.meridianShort}・要穴・取穴の過去問・日替わり復習
+                  {point.meridianShort}・要穴・取穴のオリジナル演習・間隔復習
                 </p>
               </div>
               <span className="text-[11px] font-bold text-[#1E2D3D] dark:text-[#7BAAD8] group-hover:underline inline-flex items-center gap-0.5">

@@ -483,7 +483,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 4,
     "bodyPart": "手・腕",
     "bodyRegionDetail": "手・腕・大腸経部",
-    "locationSimple": "手の甲側で、親指と人差し指の骨が合わさる付け根のくぼみ。",
+    "locationSimple": "手の甲側で、人差し指につながる骨の長さの中央付近、その親指側にあります。",
     "locationDetail": "第2中手骨中点の橈側（親指側）の陥凹部。第1・第2中手骨底の交点から前方に取穴する。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [

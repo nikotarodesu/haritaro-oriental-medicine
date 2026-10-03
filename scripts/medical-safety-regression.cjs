@@ -4,6 +4,16 @@ const fs = require('node:fs');
 const { createDataLoader } = require('./data-loader.cjs');
 const load = createDataLoader();
 const points = load('src/data/tsubo/index');
+const li4 = points.getAcupointDetail('li4');
+assert.match(li4.locationSimple, /中央/);
+assert.match(points.getAcupointByCode('li4').locationSimple, /中央/);
+assert.match(li4.locationDetail, /第2中手骨中点/);
+assert(!/効果が減弱|指を潜り込ませ|治癒に導く/.test(JSON.stringify(li4)), 'LI4 must not promise a cure or instruct deep pressure');
+const seo = load('src/config/seo');
+assert(!/監修|効果・押し方/.test(seo.acupointPageTitle(li4)), 'Unreviewed pages must not claim completed supervision');
+for (const route of ['/safety', '/editorial-policy']) {
+  assert.equal(seo.pageSocialMetadata('title', 'description', route).openGraph.url, `https://www.haritaro.jp${route}`);
+}
 const { getPublicCrossSectionElements, getPublicAnatomyDescription, getPublicCrossSectionModel } = load('src/data/medicalSafety');
 let withheldElements = 0;
 for (const point of points.ALL_ACUPOINTS) {
