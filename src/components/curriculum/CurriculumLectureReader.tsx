@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, Suspense } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Lecture, CURRICULUM_DATA } from "@/data/curriculumData";
+import type { Lecture } from "@/data/curriculumData";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
 import MarkdownBody from "@/components/MarkdownBody";
@@ -11,7 +11,9 @@ import ArticleReferences from "@/components/ArticleReferences";
 import { resolveArticleReferences } from "@/utils/referenceResolver";
 import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
 import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
-import { getCurriculumReadingInserts } from "@/data/curriculumReadingGuides";
+import { getCurriculumReadingInserts, CURRICULUM_READING_QUESTIONS } from "@/data/curriculumReadingGuides";
+import { getLearningCoursesForLecture } from "@/data/learningCourses";
+import { parseMarkdownBlocks } from "@/utils/markdownParser";
 import type { ReadingLink } from "@/types/reading";
 import ReviewQuestionCard from "@/components/learning/ReviewQuestionCard";
 import { InteractiveQuiz } from "@/components/InteractiveQuiz";
@@ -34,10 +36,11 @@ import FontSizeControl from "@/components/FontSizeControl";
 
 interface Props {
   lecture: Lecture;
+  lectureNavigation: ReadonlyArray<Pick<Lecture, "id" | "title" | "seriesId" | "lessonNumber" | "lectureNumber" | "duration" | "isPublished">>;
   relatedReadingLinks?: ReadingLink[];
 }
 
-export default function CurriculumLectureReader({ lecture, relatedReadingLinks = [] }: Props) {
+export default function CurriculumLectureReader({ lecture, lectureNavigation, relatedReadingLinks = [] }: Props) {
   const articleTopRef = useRef<HTMLDivElement | null>(null);
   const [focusBanner, setFocusBanner] = useState<string | null>(null);
 
@@ -48,7 +51,7 @@ export default function CurriculumLectureReader({ lecture, relatedReadingLinks =
     recordVisitedLecture,
   } = useCurriculumProgress();
 
-  const allLectures = CURRICULUM_DATA.flatMap((s) => s.lectures);
+  const allLectures = lectureNavigation;
 
   const handleSaveToNote = () => {
     trackEvent("curriculum_save_to_note", { lecture_id: lecture.id });
@@ -101,6 +104,13 @@ export default function CurriculumLectureReader({ lecture, relatedReadingLinks =
         }, 400);
         return () => clearTimeout(timer);
       } else {
+        const fragment = window.location.hash.slice(1);
+        let target: HTMLElement | null = null;
+        try { target = fragment ? document.getElementById(decodeURIComponent(fragment)) : null; } catch { /* Invalid fragments fall back to the lecture top. */ }
+        if (target && articleTopRef.current?.contains(target)) {
+          target.scrollIntoView({ behavior: "instant", block: "start" });
+          return;
+        }
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
         document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
@@ -158,6 +168,14 @@ export default function CurriculumLectureReader({ lecture, relatedReadingLinks =
     lecture.contentMarkdown
   );
   const readingInserts = getCurriculumReadingInserts(lecture.id);
+  const lectureHeadings = parseMarkdownBlocks(lecture.contentMarkdown).flatMap((block, index) =>
+    block.type === "h2" ? [{ label: block.content, id: `curriculum-heading-${index}` }] : [],
+  );
+  const readingQuestions = (CURRICULUM_READING_QUESTIONS[lecture.id] ?? []).flatMap((item) => {
+    const heading = lectureHeadings.find((candidate) => candidate.label === item.heading);
+    return heading ? [{ question: item.question, id: heading.id }] : [];
+  });
+  const learningCourses = getLearningCoursesForLecture(lecture.id);
   const articleReadingLinks = relatedReadingLinks.slice(0, 2);
   const relatedFigureReading: ReadingLink | undefined = articleReadingLinks[0] ?? (
     lecture.id === "lecture-yinyang-8" && nextLecture
@@ -225,6 +243,19 @@ export default function CurriculumLectureReader({ lecture, relatedReadingLinks =
           </div>
         </div>
       </div>
+
+      {learningCourses.length > 0 && (
+        <nav aria-label="この講義を含む学習コース" className="flex flex-wrap gap-2">
+          {learningCourses.map((course) => (
+            <Link key={course.slug} href={`/learn/courses/${course.slug}`}
+              onClick={() => trackEvent("context_link_click", { placement: "lecture_course_return", course_id: course.slug, lecture_id: lecture.id })}
+              className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#D5E4DB] bg-white px-3.5 py-2 text-sm font-semibold leading-relaxed text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A5243] dark:bg-[#17212A] dark:text-[#83BEA8] dark:hover:bg-[#182823]">
+              <ArrowLeft aria-hidden="true" className="h-4 w-4 shrink-0" />
+              <span>「{course.title}」の道順を見る</span>
+            </Link>
+          ))}
+        </nav>
+      )}
 
       {/* シリーズ進捗インジケーター */}
       {activeSeriesLessons.length > 1 && (
@@ -315,6 +346,7 @@ export default function CurriculumLectureReader({ lecture, relatedReadingLinks =
 
         <nav aria-label="講義内の移動" className="flex flex-wrap gap-2">
           <a href="#lecture-content" aria-label="講義本文を読む" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">本文</a>
+          {readingInserts[0] && <a href={`#reading-figure-${readingInserts[0].figure.id}`} className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] px-4 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A3B4A] dark:text-[#83BEA8] dark:hover:bg-[#182823]">図で整理</a>}
           {CURRICULUM_QUIZZES[lecture.id] && <a href="#lecture-quiz" aria-label="理解度チェックのクイズへ" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">クイズ</a>}
           {resolvedReferences.length > 0 && <a href="#article-references-section" aria-label="出典と確認範囲へ" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">出典</a>}
         </nav>
@@ -359,6 +391,37 @@ export default function CurriculumLectureReader({ lecture, relatedReadingLinks =
             </div>
           )}
         </div>
+
+        {readingQuestions.length > 0 && (
+          <section aria-labelledby="lecture-reading-questions-title" className="space-y-3 rounded-2xl border border-[#D6E3DA] bg-[#F6F9F4] p-4 sm:p-5 dark:border-[#304A3E] dark:bg-[#172A22]">
+            <h2 id="lecture-reading-questions-title" className="text-base font-bold text-[#1E3D34] dark:text-[#D9EDE0]">知りたいことから読む</h2>
+            <nav aria-label="疑問から講義の解説へ">
+              <ul className="divide-y divide-[#D6E3DA] dark:divide-[#304A3E]">
+                {readingQuestions.map((item) => (
+                  <li key={item.id}>
+                    <a href={`#${item.id}`} className="group flex min-h-11 items-center justify-between gap-3 rounded-lg py-3 text-base font-medium leading-relaxed text-[#244B3C] focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-[#D9EDE0]">
+                      <span className="group-hover:underline underline-offset-4">{item.question}</span>
+                      <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </section>
+        )}
+
+        {lectureHeadings.length > 0 && (
+          <details className="rounded-xl bg-[#FAF8F5] px-4 py-2 dark:bg-[#121920]">
+            <summary className="flex min-h-11 cursor-pointer items-center text-base font-bold text-[#1E3D34] dark:text-[#83BEA8]">講義の目次</summary>
+            <nav aria-label="講義の目次" className="mt-2">
+              <ol className="space-y-1">
+                {lectureHeadings.map((heading) => (
+                  <li key={heading.id}><a href={`#${heading.id}`} className="inline-flex min-h-11 items-center rounded-lg py-2 text-base leading-relaxed text-[#1E3D34] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-[#83BEA8]">{heading.label}</a></li>
+                ))}
+              </ol>
+            </nav>
+          </details>
+        )}
 
         {/* 本文（MarkdownBody） */}
         <div id="lecture-content" className="scroll-mt-28">
@@ -481,7 +544,7 @@ export default function CurriculumLectureReader({ lecture, relatedReadingLinks =
           <div className="flex flex-wrap gap-2.5 pt-1">
             <Link
               href="/diagnosis"
-              className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#C5DED4] dark:border-[#2A5243] hover:border-[#1E3D34] text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs"
+              className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#C5DED4] dark:border-[#2A5243] hover:border-[#1E3D34] text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs"
             >
               <span>気血水体質チェックで点検</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -489,7 +552,7 @@ export default function CurriculumLectureReader({ lecture, relatedReadingLinks =
 
             <Link
               href="/simulator"
-              className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#F2D7B3] dark:border-[#4D331F] hover:border-[#B86924] text-sm font-bold text-[#B86924] dark:text-[#E6C387] transition-all inline-flex items-center gap-1.5 shadow-2xs"
+              className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#F2D7B3] dark:border-[#4D331F] hover:border-[#B86924] text-sm font-bold text-[#B86924] dark:text-[#E6C387] transition-all inline-flex items-center gap-1.5 shadow-2xs"
             >
               <Layers className="w-3.5 h-3.5" />
               <span>弁証シミュレーターで推論</span>
@@ -498,7 +561,7 @@ export default function CurriculumLectureReader({ lecture, relatedReadingLinks =
 
             <Link
               href="/practice/haiketsu"
-              className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-sm font-bold text-[#59615D] dark:text-[#A0B0BC] transition-all inline-flex items-center gap-1.5 shadow-2xs"
+              className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-sm font-bold text-[#59615D] dark:text-[#A0B0BC] transition-all inline-flex items-center gap-1.5 shadow-2xs"
             >
               <span>配穴設計ツール</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -507,7 +570,7 @@ export default function CurriculumLectureReader({ lecture, relatedReadingLinks =
             <button
               type="button"
               onClick={handleSaveToNote}
-              className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#1E3D34]/40 dark:border-[#74BA9E]/40 hover:border-[#1E3D34] text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs cursor-pointer"
+              className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#1E3D34]/40 dark:border-[#74BA9E]/40 hover:border-[#1E3D34] text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs cursor-pointer"
             >
               <FileText className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
               <span>この講義を臨床ノートに記録</span>

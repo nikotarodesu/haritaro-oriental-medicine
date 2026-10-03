@@ -6,6 +6,8 @@ import { parseMarkdownBlocks } from "@/utils/markdownParser";
 import { ARTICLE_LEARNING_GUIDES } from "@/data/articleLearningGuides";
 import { ARTICLE_READING_GUIDES } from "@/data/articleReadingGuides";
 import LearningPathLinks from "@/components/learning/LearningPathLinks";
+import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
+import { LEARNING_COURSES } from "@/data/learningCourses";
 import { ARTICLES } from "@/data/articleData";
 import { resolveArticleReferences } from "@/utils/referenceResolver";
 import MarkdownBody from "@/components/MarkdownBody";
@@ -74,6 +76,9 @@ export default async function ArticleDetailPage({ params }: Props) {
   }
 
   const article = ARTICLES[articleIndex];
+  const relatedCourses = LEARNING_COURSES.filter(course =>
+    course.reading.some(item => item.href === `/articles/${article.id}`) ||
+    course.steps.some(step => step.lectureId === ARTICLE_LEARNING_GUIDES[article.id]?.lectureId));
   const readingGuide = ARTICLE_READING_GUIDES[article.id];
   const nextArticleIds = new Set<string>();
   const nextArticles = (readingGuide?.nextArticles || []).flatMap(item => {
@@ -280,15 +285,19 @@ export default async function ArticleDetailPage({ params }: Props) {
 
           {nextArticles.length > 0 && <section id="article-next-reading" aria-labelledby="article-next-reading-title" className="scroll-mt-36 space-y-4 border-t border-[#E8E1D1] dark:border-[#22303D] pt-6">
             <div className="space-y-1"><h2 id="article-next-reading-title" className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">次に読む</h2><p className="text-sm text-[#59615D] dark:text-[#A0B0BC]">いま読んだ内容を、別の視点から確かめる記事です。</p></div>
-            <div className="grid gap-3 sm:grid-cols-3">{nextArticles.map(({ article: next, reason }) => <Link key={next.id} href={`/articles/${next.id}`} className="flex flex-col gap-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] p-4 hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2">
+            <div className="grid gap-3 sm:grid-cols-3">{nextArticles.map(({ article: next, reason }) => <ContentNavigationLink key={next.id} href={`/articles/${next.id}`} placement="article_next" articleId={next.id} className="flex flex-col gap-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] p-4 hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2">
               <p className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">{reason}</p>
               <h3 className="font-serif text-base font-bold leading-relaxed text-[#232826] dark:text-[#FAF8F5]">{next.title}</h3>
               <span className="mt-auto inline-flex min-h-11 items-center justify-between gap-2 text-sm text-[#59615D] dark:text-[#A0B0BC]"><span>読了約 {next.readTime}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></span>
-            </Link>)}</div>
+            </ContentNavigationLink>)}</div>
           </section>}
 
           <div className="space-y-3 border-t border-[#E8E1D1] dark:border-[#22303D] pt-5 text-sm">
             {learningGuide && <LearningPathLinks lectureId={learningGuide.lectureId} caseId={learningGuide.caseId} />}
+            {relatedCourses.length > 0 && <div className="rounded-xl bg-[#EBF3EF] p-4 dark:bg-[#182823]">
+              <p className="font-semibold text-[#184F49] dark:text-[#83BEA8]">このテーマを順に学ぶ</p>
+              <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2">{relatedCourses.map(course => <ContentNavigationLink key={course.slug} href={`/learn/courses/${course.slug}`} placement="article_course" courseId={course.slug} className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#83BEA8]">{course.title}<ArrowRight aria-hidden="true" className="h-4 w-4" /></ContentNavigationLink>)}</div>
+            </div>}
             <a href="#article-top" className="inline-flex min-h-11 items-center underline underline-offset-4 text-[#1E3D34] dark:text-[#74BA9E]">記事の先頭へ</a>
           </div>
           {/* 参考文献・学術エビデンス（PubMed・DOI・古典原典） */}

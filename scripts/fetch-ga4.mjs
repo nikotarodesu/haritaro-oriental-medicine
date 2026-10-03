@@ -9,11 +9,20 @@ const propertyId = process.env.GA4_PROPERTY_ID || process.argv[2];
 if (!propertyId || !/^\d+$/.test(propertyId)) {
   throw new Error('GA4_PROPERTY_ID または第1引数で、対象サイトのプロパティIDを指定してください。');
 }
-const keyFilePath = path.resolve(__dirname, '../credentials/ga4-key.json');
+const keyFilePath = process.env.GOOGLE_APPLICATION_CREDENTIALS || path.resolve(__dirname, '../credentials/ga4-key.json');
 
 const analyticsDataClient = new BetaAnalyticsDataClient({
   keyFilename: keyFilePath,
 });
+
+// Never mix another site's visits into the haritaro improvement report.
+const haritaroFilter = { filter: { fieldName: 'hostName', stringFilter: {
+  matchType: 'FULL_REGEXP', value: '^(www\\.)?haritaro\\.jp$', caseSensitive: false,
+} } };
+
+async function runHaritaroReport(request) {
+  return analyticsDataClient.runReport({ ...request, dimensionFilter: haritaroFilter });
+}
 
 async function runReport() {
   console.log(`\n==============================================`);
@@ -26,11 +35,11 @@ async function runReport() {
 
   try {
     // 1. 全体サマリー（過去30日間・過去7日間）
-    const [summaryResponse] = await analyticsDataClient.runReport({
+    const [summaryResponse] = await runHaritaroReport({
       property: `properties/${propertyId}`,
       dateRanges: [
-        { startDate: '30daysAgo', endDate: 'today' },
-        { startDate: '7daysAgo', endDate: 'today' },
+        { startDate: '30daysAgo', endDate: 'yesterday' },
+        { startDate: '7daysAgo', endDate: 'yesterday' },
       ],
       metrics: [
         { name: 'activeUsers' },
@@ -58,7 +67,7 @@ async function runReport() {
     }
 
     // 2. 人気ページ Top 15（過去30日）
-    const [pageResponse] = await analyticsDataClient.runReport({
+    const [pageResponse] = await runHaritaroReport({
       property: `properties/${propertyId}`,
       dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
       dimensions: [{ name: 'pagePath' }, { name: 'pageTitle' }],
@@ -85,7 +94,7 @@ async function runReport() {
     }
 
     // 3. 流入元・参照元 Top 5
-    const [trafficResponse] = await analyticsDataClient.runReport({
+    const [trafficResponse] = await runHaritaroReport({
       property: `properties/${propertyId}`,
       dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
       dimensions: [{ name: 'sessionSourceMedium' }],

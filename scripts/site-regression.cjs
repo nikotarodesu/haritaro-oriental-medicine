@@ -58,7 +58,20 @@ assert.equal(queryPages[0].url, 'https://www.haritaro.jp/diagnosis?tab=gorou');
 assert(!sitemap.some(page=>new URL(page.url).pathname==='/notes'));
 assert.equal(new Set(sitemap.map(page=>page.url)).size,sitemap.length);
 for(const pathname of ['/','/glossary','/library','/tsubo/li4','/tsubo/sp6',...Array.from({length:8},(_,index)=>`/curriculum/lecture-yinyang-${index+1}`)]) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-03',pathname);
-for(const pathname of ['/kokushi','/simulator','/articles/science-of-yinyang-gogyo','/curriculum/lecture-wuxing-1']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-02',pathname);
+for(const pathname of ['/kokushi','/simulator','/articles/science-of-yinyang-gogyo','/curriculum/lecture-wuxing-2']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-02',pathname);
+const { LEARNING_COURSES, getCourseProgress } = load('src/data/learningCourses');
+assert.equal(new Set(LEARNING_COURSES.map(course=>course.slug)).size, 3);
+for (const course of LEARNING_COURSES) {
+ assert(sitemap.some(page=>page.url===`https://www.haritaro.jp/learn/courses/${course.slug}`),course.slug+' sitemap');
+ assert(course.steps.every(step=>lectureIds.has(step.lectureId) && CURRICULUM_QUIZZES[step.lectureId]),course.slug+' live lesson and quiz');
+ const complete=Object.fromEntries(course.steps.map(step=>[step.lectureId,'2026-10-03']));
+ assert(getCourseProgress(course,complete).finished,course.slug+' completed');
+ assert.equal(getCourseProgress(course,{},'unrelated-lecture').nextStep.lectureId,course.steps[0].lectureId,course.slug+' isolated resume');
+ const undone={...complete}; delete undone[course.steps[1].lectureId];
+ assert.equal(getCourseProgress(course,undone).nextStep.lectureId,course.steps[1].lectureId,course.slug+' completion removal');
+}
+const { LEARNING_DISCOVERY } = load('src/data/learningDiscovery');
+for(const item of LEARNING_DISCOVERY) assert(item.articleId ? ARTICLES.some(article=>article.id===item.articleId) : lectureIds.has(item.lectureId),item.id+' question target');
 const { sanitizeAnalyticsParams } = load('src/utils/analytics');
 assert.deepEqual(Object.keys(sanitizeAnalyticsParams({placement:'case_training',total:6,query:'private',patient_name:'private',case_id:'private',answers:'private'})).sort(),['placement','total']);
 assert(!fs.readFileSync(path.join(root, 'src/app/layout.tsx'), 'utf8').includes('clarity.ms/tag'), 'Free-text learning and clinical pages must not load global session replay');

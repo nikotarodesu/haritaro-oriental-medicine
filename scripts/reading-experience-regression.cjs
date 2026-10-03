@@ -34,7 +34,7 @@ const { resolveReadingInsertions } = load('src/utils/readingInserts');
 const { ARTICLES, getArticlePreviews } = load('src/data/articleData');
 const { ARTICLE_READING_GUIDES } = load('src/data/articleReadingGuides');
 const { CURRICULUM_DATA } = load('src/data/curriculumData');
-const { CURRICULUM_READING_INSERTS, createCurriculumReadingLinks, getCurriculumRelatedArticleIds } = load('src/data/curriculumReadingGuides');
+const { CURRICULUM_READING_INSERTS, CURRICULUM_READING_QUESTIONS, createCurriculumReadingLinks, getCurriculumRelatedArticleIds } = load('src/data/curriculumReadingGuides');
 const MarkdownBody = load('src/components/MarkdownBody').default;
 const articleIds = new Set(ARTICLES.map(article => article.id));
 const figureIds = new Set();
@@ -82,6 +82,13 @@ for (const [lectureId, inserts] of Object.entries(CURRICULUM_READING_INSERTS)) {
   assert(lecture, lectureId + ' exists');
   checkInsertions(lectureId, lecture.contentMarkdown, inserts);
 }
+for (const [lectureId, questions] of Object.entries(CURRICULUM_READING_QUESTIONS)) {
+  const lecture = lectures.find(item => item.id === lectureId);
+  assert(lecture, lectureId + ' question guide exists');
+  const headings = parseMarkdownBlocks(lecture.contentMarkdown).filter(block => block.type === 'h2').map(block => block.content);
+  assert(questions.length >= 2 && questions.length <= 3, lectureId + ' concise question guide');
+  for (const question of questions) assert(headings.includes(question.heading), lectureId + ' question points to an existing heading');
+}
 for (const lecture of lectures) {
   const links = createCurriculumReadingLinks(lecture.id, getArticlePreviews(getCurriculumRelatedArticleIds(lecture.id)));
   assert(links.length <= 2, lecture.id + ' limited related reading');
@@ -97,5 +104,5 @@ const positions = resolveReadingInsertions(sampleBlocks, [{ afterHeading: 'A', a
 assert.equal(sampleBlocks[Array.from(positions.keys())[0]].content, 'Two.');
 assert.equal(resolveReadingInsertions(sampleBlocks, [{ afterHeading: 'Missing', afterParagraph: 1, figure: marker }]).size, 0);
 assert.equal(resolveReadingInsertions(sampleBlocks, [{ afterHeading: 'B', afterParagraph: 2, figure: marker }]).size, 0);
-assert.equal(checkedFigures, 20);
+assert.equal(checkedFigures, 26);
 console.log(`Passed: ${ARTICLES.length} articles, ${Object.keys(CURRICULUM_READING_INSERTS).length} lectures, ${checkedFigures} figure placements/renderings, stable heading anchors, 36 related destinations, and metadata-only article previews.`);

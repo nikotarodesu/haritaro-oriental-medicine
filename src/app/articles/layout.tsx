@@ -1,21 +1,17 @@
-import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
+import { pageSocialMetadata, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
 import React from "react";
 
+const title = "東洋医学の図解記事｜陰陽五行・気血津液・経絡・四診";
+const description = "陰陽五行、気・血・津液、経絡・経穴、脈診・舌診などを図解で学ぶ12の解説記事。要点から本文、関連講義と確認クイズへ進めます。伝統的な説明と研究知見を区別し、出典と確認範囲を掲載しています。";
+
 export const metadata: Metadata = {
-  title: "東洋医学コラム・文献抄読・臨床知見アーカイブ",
-  description:
-    "古典（素問・霊枢・傷寒論・鍼灸大成）の精緻な読み解きから最新の現代医学・神経科学論文抄読、臨床実践知見まで。東洋医学の奥深さを探求する学術解説アーカイブ。",
+  title,
+  description,
   alternates: {
     canonical: "/articles",
   },
-  openGraph: {
-      images: SHARED_OG_IMAGES,
-      siteName: SITE_NAME,
-    title: "東洋医学コラム・文献抄読・臨床知見アーカイブ",
-    description: "古典文献の精緻な読み解きから最新医学論文抄読、臨床知見までを網羅した解説記事アーカイブ。",
-    url: "https://www.haritaro.jp/articles",
-  },
+  ...pageSocialMetadata(`${title} | ${SITE_NAME}`, description, "/articles"),
 };
 
 export default function ArticlesLayout({

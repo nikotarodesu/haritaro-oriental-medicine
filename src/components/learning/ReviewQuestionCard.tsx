@@ -15,11 +15,11 @@ export default function ReviewQuestionCard({ lectureId }: { lectureId: string })
       <p className="font-semibold whitespace-pre-line">{question.question}</p>
       <p className="leading-relaxed whitespace-pre-line">{question.explanation}</p>
       <div className="flex flex-wrap gap-4 font-semibold">
-        <a className="underline" href="#interactive-quiz-container">講義の類題で確認</a>
-        <Link className="underline" href="/kokushi#learning-review">復習問題に戻る</Link>
-        <Link className="underline" href="/simulator#case-training">症例で判断を練習</Link>
+        <a className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4" href="#interactive-quiz-container">講義の類題で確認</a>
+        <Link className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4" href="/kokushi#learning-review">復習問題に戻る</Link>
+        <Link className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4" href="/simulator#case-training">症例で判断を練習</Link>
       </div>
-      <p className="text-xs">以下の講義本文で背景と関連事項を確認できます。</p>
+      <p className="text-sm">以下の講義本文で背景と関連事項を確認できます。</p>
     </section>
   );
 }

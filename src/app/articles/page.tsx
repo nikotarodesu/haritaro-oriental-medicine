@@ -2,6 +2,7 @@ import { permanentRedirect, notFound } from "next/navigation";
 import { ARTICLES } from "@/data/articleData";
 import { ARTICLE_READING_GUIDES } from "@/data/articleReadingGuides";
 import ArticlesListClient from "@/components/articles/ArticlesListClient";
+import { SITE_NAME } from "@/config/seo";
 
 interface Props {
   searchParams: Promise<{ article?: string }>;
@@ -27,5 +28,21 @@ export default async function ArticlesPage({ searchParams }: Props) {
     authorName: author.name,
     hasFigures: (ARTICLE_READING_GUIDES[id]?.inserts.length || 0) > 0,
   }));
-  return <ArticlesListClient articles={articles} />;
+  const pageUrl = "https://www.haritaro.jp/articles";
+  const collection = {
+    "@context": "https://schema.org", "@type": "CollectionPage",
+    "@id": `${pageUrl}#webpage`, url: pageUrl,
+    name: `東洋医学の図解記事 | ${SITE_NAME}`, inLanguage: "ja",
+    mainEntity: {
+      "@type": "ItemList", numberOfItems: articles.length,
+      itemListElement: articles.map((article, index) => ({
+        "@type": "ListItem", position: index + 1,
+        item: { "@type": "Article", name: article.title, url: `${pageUrl}/${article.id}` },
+      })),
+    },
+  };
+  return <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collection).replace(/</g, "\\u003c") }} />
+    <ArticlesListClient articles={articles} />
+  </>;
 }

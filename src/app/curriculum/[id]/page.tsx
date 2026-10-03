@@ -150,7 +150,11 @@ export default async function CurriculumDetailPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(lectureJsonLd) }}
       />
-      <CurriculumLectureReader lecture={lecture} relatedReadingLinks={createCurriculumReadingLinks(lecture.id, getArticlePreviews(getCurriculumRelatedArticleIds(lecture.id)))} />
+      <CurriculumLectureReader
+        lecture={lecture}
+        lectureNavigation={allLectures.map(({ id, title, seriesId, lessonNumber, lectureNumber, duration, isPublished }) => ({ id, title, seriesId, lessonNumber, lectureNumber, duration, isPublished }))}
+        relatedReadingLinks={createCurriculumReadingLinks(lecture.id, getArticlePreviews(getCurriculumRelatedArticleIds(lecture.id)))}
+      />
     </>
   );
 }

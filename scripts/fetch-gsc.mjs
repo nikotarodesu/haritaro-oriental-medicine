@@ -1,11 +1,12 @@
 import { google } from 'googleapis';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { isHaritaroProperty } from './growth-report.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const keyFilePath = path.resolve(__dirname, '../credentials/ga4-key.json');
+const keyFilePath = process.env.GOOGLE_APPLICATION_CREDENTIALS || path.resolve(__dirname, '../credentials/ga4-key.json');
 
 const auth = new google.auth.GoogleAuth({
   keyFile: keyFilePath,
@@ -34,7 +35,11 @@ async function runGscReport() {
     siteList.forEach(s => console.log(`   - ${s.siteUrl} (権限: ${s.permissionLevel})`));
 
     // メインサイトの選定（haritaro.jp を含むプロパティ）
-    const targetSite = siteList.find(s => s.siteUrl.includes('haritaro.jp')) || siteList[0];
+    const targetSite = siteList.find(s => isHaritaroProperty(s.siteUrl) && s.permissionLevel !== 'siteUnverifiedUser');
+    if (!targetSite) {
+      console.log('はり太郎のプロパティへの閲覧権限がありません。他のサイトを代わりに集計せず終了します。');
+      return;
+    }
     const siteUrl = targetSite.siteUrl;
 
     console.log(`\n--- [対象サイト: ${siteUrl}] ---`);

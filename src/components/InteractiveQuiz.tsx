@@ -124,6 +124,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
   const isAllAnswered = answeredCount === totalQuestions;
 
   const celebrationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const measuredAttempt = useRef({ lectureId: quiz.lectureId, started: false, answered: new Set<string>() });
   useEffect(() => () => { if (celebrationTimer.current) clearTimeout(celebrationTimer.current); }, []);
 
   // 選択肢をクリックしたときの処理
@@ -131,9 +132,19 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
     (question: QuizQuestionItem, optionIndex: number) => {
       // 既に回答済みの場合は変更不可
       if (selectedAnswers[question.id] !== undefined) return;
+      if (measuredAttempt.current.lectureId !== quiz.lectureId) {
+        measuredAttempt.current = { lectureId: quiz.lectureId, started: false, answered: new Set<string>() };
+      }
+      if (measuredAttempt.current.answered.has(question.id)) return;
+      measuredAttempt.current.answered.add(question.id);
+      if (!measuredAttempt.current.started) {
+        measuredAttempt.current.started = true;
+        trackEvent('quiz_start', { tool_id: 'curriculum_quiz', lecture_id: quiz.lectureId, total: quiz.questions.length });
+      }
 
       // Contextに結果を保存（復習用）
       const isCorrect = optionIndex === question.correctIndex;
+      trackEvent('quiz_answer', { tool_id: 'curriculum_quiz', lecture_id: quiz.lectureId, passed: isCorrect });
       saveQuizResult({
         questionId: question.id,
         lectureId: quiz.lectureId,
@@ -177,6 +188,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
 
   // もう一度挑戦する（全問リセット）
   const handleRetryAll = useCallback(() => {
+    measuredAttempt.current = { lectureId: quiz.lectureId, started: false, answered: new Set<string>() };
     quiz.questions.forEach((q) => {
       clearQuizResult(q.id);
     });
@@ -187,10 +199,11 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
     if (container) {
       container.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }, [quiz.questions, clearQuizResult, isShuffleEnabled]);
+  }, [quiz.lectureId, quiz.questions, clearQuizResult, isShuffleEnabled]);
 
   // 間違えた問題だけ再挑戦（不正解のみリセット）
   const handleRetryMissed = useCallback(() => {
+    measuredAttempt.current = { lectureId: quiz.lectureId, started: false, answered: new Set<string>() };
     quiz.questions.forEach(q => {
       if (selectedAnswers[q.id] !== undefined && selectedAnswers[q.id] !== q.correctIndex) clearQuizResult(q.id);
     });
@@ -209,7 +222,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
         }
       }
     }, 150);
-  }, [quiz.questions, selectedAnswers, clearQuizResult, isShuffleEnabled]);
+  }, [quiz.lectureId, quiz.questions, selectedAnswers, clearQuizResult, isShuffleEnabled]);
 
   // 次の講義へ進む
   const handleGoToNextLecture = useCallback(() => {

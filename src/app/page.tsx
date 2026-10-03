@@ -20,6 +20,9 @@ import { getArticlePreviews } from "@/data/articleData";
 import { TOOL_CATALOG } from "@/config/toolCatalog";
 import { SITE_UPDATES } from "@/config/contentUpdates";
 import HomeHeroDualEntry from "@/components/home/HomeHeroDualEntry";
+import LearningCourseCards from "@/components/learning/LearningCourseCards";
+import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
+import { LEARNING_COURSES } from "@/data/learningCourses";
 
 export default function HomePage() {
   const featuredArticles = getArticlePreviews([
@@ -153,6 +156,18 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section aria-labelledby="home-courses-title" className="mx-auto max-w-5xl space-y-5 px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div className="space-y-2">
+            <p className="text-sm font-semibold text-[#184F49] dark:text-[#83BEA8]">まずは一つのテーマから</p>
+            <h2 id="home-courses-title" className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">目的別の学習コース</h2>
+            <p className="text-base leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">図解で理解し、講義のクイズで確かめる。学ぶ順番が決まった3つの入口です。</p>
+          </div>
+          <ContentNavigationLink href="/learn/courses" placement="home_courses" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#83BEA8]">コース一覧へ<ArrowRight className="h-4 w-4" aria-hidden="true" /></ContentNavigationLink>
+        </div>
+        <LearningCourseCards courses={LEARNING_COURSES} placement="home_course_select" />
       </section>
 
       {/* 4. 学びから実践へのつながりを示す具体例（思考プロセス図） */}

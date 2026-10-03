@@ -32,6 +32,7 @@ import { SYMPTOMS } from "@/data/symptomData";
 import { PUBLIC_ARCHIVE_CASES } from "@/data/cases/archiveCases";
 import { TOOL_CATALOG } from "@/config/toolCatalog";
 import { prepareSearchItem, scoreSearchItem } from "@/utils/search";
+import { LEARNING_COURSES } from "@/data/learningCourses";
 
 export type SearchItemType =
   | "article"
@@ -220,6 +221,11 @@ export default function GlobalSearchModal({
 
     // 1. ツール群
     list.push(...STATIC_TOOLS);
+    list.push(...LEARNING_COURSES.map((course): SearchResultItem => ({
+      id: `course-${course.slug}`, type: "lecture", title: course.title,
+      subtitle: `${course.steps.length}ステップ｜${course.description}`, badge: "目的別コース",
+      url: `/learn/courses/${course.slug}`, tags: ["コース", "学び直し", course.eyebrow, ...course.goals],
+    })));
     list.push(...ARTICLES.map((article): SearchResultItem => ({
       id: article.id, type: "article", title: article.title,
       subtitle: article.summary, badge: "解説記事",

@@ -19,8 +19,15 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/curriculum/lecture-yinyang-6': '2026-10-03',
   '/curriculum/lecture-yinyang-7': '2026-10-03',
   '/curriculum/lecture-yinyang-8': '2026-10-03',
+  '/curriculum/lecture-wuxing-1': '2026-10-03',
+  '/curriculum/lecture-wuxing-3': '2026-10-03',
+  '/curriculum/lecture-qiblood-1': '2026-10-03',
+  '/curriculum/lecture-qiblood-3': '2026-10-03',
+  '/curriculum/lecture-qiblood-4': '2026-10-03',
+  '/curriculum/lecture-qiblood-5': '2026-10-03',
 };
 export const SITE_UPDATES = [
+  { date: '2026-10-03', label: '目的別の学習コース', href: '/learn/courses', text: '陰陽・五行・気血津液の3コースを追加。講義の進捗と苦手問題に応じた再開、疑問から読む入口と比較図を整備' },
   { date: '2026-10-03', label: '検索と利用案内', href: '/learn', text: '検索語を保った再検索と経穴の条件解除を整備。教材の確認範囲・公開機能の説明と、ページ別の検索用情報を見直し' },
   { date: '2026-10-03', label: '図解と記事の回遊', href: '/articles', text: '12記事と陰陽4講義の本文に20個の図解を追加。テーマから探す入口、読み進めた位置、次に学べる内容を示す関連記事を整備' },
   { date: '2026-10-03', label: '導線と読みやすさ', href: '/tsubo', text: 'スマホの学習入口、経穴検索・ページ内目次、文献の分類と検索解除を改善。日本語書体・文字サイズ・カードの余白を統一' },
