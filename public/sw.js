@@ -1,5 +1,5 @@
 // はり太郎の東洋医学 Service Worker
-const CACHE_NAME = "haritaro-cache-v2";
+const CACHE_NAME = "haritaro-cache-v3-brand";
 const OFFLINE_URLS = [
   "/",
   "/tsubo",
@@ -13,6 +13,10 @@ const OFFLINE_URLS = [
   "/llms.txt",
   "/icon.png",
   "/apple-icon.png",
+  "/favicon.svg",
+  "/icon-192.png",
+  "/icon-512.png",
+  "/apple-touch-icon.png",
   "/manifest.webmanifest",
 ];
 

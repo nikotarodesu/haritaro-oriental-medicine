@@ -10,6 +10,8 @@
 
 @layer base {
   :root {
+    --brand-ink: #184F49;
+    --brand-paper: #F6F4EE;
     --bg-washi: #F5F1E8; /* 眩しさを抑えた落ち着いた和紙・生成り色 */
     --bg-card: #FCFAF6;  /* 純白のギラつきを抑えた柔らかな絹白色 */
     --bg-muted: #EDE7DA; /* 落ち着いた淡灰茶・練色 */

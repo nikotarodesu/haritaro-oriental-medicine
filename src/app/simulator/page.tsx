@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES } from "@/config/seo";
+import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
 import Link from "next/link";
 import SimulatorHub from "@/components/SimulatorHub";
@@ -13,7 +13,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
       images: SHARED_OG_IMAGES,
-    title: "臨床弁証推論シミュレーター｜八綱・気血水・臓腑の連動分析｜はり太郎",
+    siteName: SITE_NAME,
+    title: `臨床弁証推論シミュレーター｜八綱・気血水・臓腑の連動分析 | ${SITE_NAME}`,
     description:
       "3つの架空症例を6段階で検討。追加問診、安全確認、弁証候補、配穴の根拠、再評価を学ぶ学生向けのシミュレーターです。",
     url: "https://www.haritaro.jp/simulator",

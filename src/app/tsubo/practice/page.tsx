@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES } from "@/config/seo";
+import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
 import PracticeClient from "./PracticeClient";
 
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
       images: SHARED_OG_IMAGES,
+      siteName: SITE_NAME,
     title: "経穴学習・今日の復習｜間隔反復と14経脈小単位クイズ | はり太郎の東洋医学",
     description:
       "忘却曲線に基づき今日復習すべき経穴を自動選定。十四経脈別クイズと弱点克服ドリル。",

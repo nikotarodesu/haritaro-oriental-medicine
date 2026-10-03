@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES } from "@/config/seo";
+import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
 import { permanentRedirect } from "next/navigation";
 import CurriculumIndexClient from "@/components/curriculum/CurriculumIndexClient";
@@ -41,6 +41,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
       images: SHARED_OG_IMAGES,
+      siteName: SITE_NAME,
     title: "体系学習カリキュラム | はり太郎の東洋医学",
     description:
       "陰陽・五行・気血水から診断・治療・臨床実践まで全81レッスン。丸暗記ではなく、身体のバランスやつながりを理解する基礎を身につけます。",

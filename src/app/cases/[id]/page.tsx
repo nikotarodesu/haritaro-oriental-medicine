@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES } from "@/config/seo";
+import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
@@ -36,6 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     openGraph: {
       images: SHARED_OG_IMAGES,
+      siteName: SITE_NAME,
       title,
       description,
       url: `https://www.haritaro.jp/cases/${clinicalCase.id}`,

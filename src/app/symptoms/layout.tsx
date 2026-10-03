@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES } from "@/config/seo";
+import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
 import React from "react";
 import { SYMPTOMS } from "@/data/symptomData";
@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
       images: SHARED_OG_IMAGES,
+      siteName: SITE_NAME,
     title: "お悩み・症状別ツボ検索ガイド｜頭痛・肩こり・不眠・胃腸の東洋医学ケア",
     description: "症状別の原因弁証と効果的なツボ・セルフケア配穴ガイド。統合的アプローチで解説。",
     url: "https://www.haritaro.jp/symptoms",

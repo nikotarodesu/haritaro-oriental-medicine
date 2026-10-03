@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES } from "@/config/seo";
+import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
 import DiagnosisClient from "@/components/diagnosis/DiagnosisClient";
 import { getArticlePreviews } from "@/data/articleData";
@@ -30,6 +30,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
       },
       openGraph: {
       images: SHARED_OG_IMAGES,
+      siteName: SITE_NAME,
         title,
         description,
         url,
@@ -50,6 +51,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     },
     openGraph: {
       images: SHARED_OG_IMAGES,
+      siteName: SITE_NAME,
       title,
       description,
       url,

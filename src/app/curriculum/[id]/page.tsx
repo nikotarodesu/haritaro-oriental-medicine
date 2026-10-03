@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES } from "@/config/seo";
+import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { CURRICULUM_DATA, Lecture } from "@/data/curriculumData";
@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!lecture) {
     return {
-      title: "講義が見つかりません | はり太郎",
+      title: "講義が見つかりません",
       description: "指定された講義は存在しないか、準備中です。",
     };
   }
@@ -68,15 +68,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     openGraph: {
       images: SHARED_OG_IMAGES,
-      title: `${title} | はり太郎の東洋医学`,
+      siteName: SITE_NAME,
+      title: `${title} | ${SITE_NAME}`,
       description,
       url: `https://www.haritaro.jp/curriculum/${lecture.id}`,
       type: "article",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | はり太郎の東洋医学`,
+      title: `${title} | ${SITE_NAME}`,
       description,
+      images: SHARED_OG_IMAGES.map(image => image.url),
     },
   };
 }

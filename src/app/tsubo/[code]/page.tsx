@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES, acupointPageTitle } from "@/config/seo";
+import { SHARED_OG_IMAGES, acupointPageTitle, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -76,6 +76,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     openGraph: {
       images: SHARED_OG_IMAGES,
+      siteName: SITE_NAME,
       title,
       description,
       url: `https://www.haritaro.jp/tsubo/${point.codeLower}`,

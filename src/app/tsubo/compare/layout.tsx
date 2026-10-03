@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES } from "@/config/seo";
+import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
 import React from "react";
 
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
       images: SHARED_OG_IMAGES,
+      siteName: SITE_NAME,
     title: "経穴比較ツール｜ツボの場所・鑑別・臨床配合の横並び対比",
     description: "合谷と太衝、内関と外関など、混同しやすい経穴や伝統的な配穴を8大項目で横並び比較。",
     url: "https://www.haritaro.jp/tsubo/compare",

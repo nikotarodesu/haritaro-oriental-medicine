@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Noto_Serif_JP, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -17,6 +17,7 @@ import PwaRegister from "@/components/pwa/PwaRegister";
 import PwaInstallPrompt from "@/components/pwa/PwaInstallPrompt";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import Script from "next/script";
+import { SHARED_OG_IMAGES, SITE_NAME, SITE_TITLE } from "@/config/seo";
 
 const notoSerifJP = Noto_Serif_JP({
   variable: "--font-noto-serif",
@@ -28,15 +29,16 @@ const notoSerifJP = Noto_Serif_JP({
 const notoSansJP = Noto_Sans_JP({
   variable: "--font-noto-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.haritaro.jp"),
+  applicationName: SITE_NAME,
   title: {
-    default: "はり太郎｜東洋医学の学習・臨床推論・患者問診メモ",
-    template: "%s | はり太郎",
+    default: SITE_TITLE,
+    template: `%s | ${SITE_NAME}`,
   },
   description: "鍼灸学生の基礎学習から臨床家の弁証推論・配穴設計、患者への対面問診・説明、A4養生シート印刷まで。東洋医学の学びと実践をつなぐ統合Webプラットフォーム。",
   verification: {
@@ -46,25 +48,31 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ja_JP",
     url: "https://www.haritaro.jp",
-    siteName: "はり太郎",
-    title: "はり太郎｜東洋医学の学習・臨床推論・患者問診メモ",
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
     description: "鍼灸学生の基礎学習から臨床家の弁証推論・配穴設計、患者への対面問診・説明、A4養生シート印刷まで。東洋医学の学びと実践をつなぐ統合Webプラットフォーム。",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "はり太郎の東洋医学｜鍼灸師・学生の学習と臨床活用",
-      },
-    ],
+    images: SHARED_OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",
-    images: ["/og-image.png"],
+    images: SHARED_OG_IMAGES.map(image => image.url),
+  },
+  // favicon.ico は app のファイル規約から自動追加されるため重複指定しない。
+  // icons を明示すると icon/apple の自動追加は行われないので、両方をここで設定する。
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", type: "image/png", sizes: "180x180" }],
   },
   alternates: {
     canonical: "./",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#184F49",
 };
 
 export default function RootLayout({
@@ -136,7 +144,7 @@ export default function RootLayout({
                   "@type": "WebSite",
                   "@id": "https://www.haritaro.jp/#website",
                   "url": "https://www.haritaro.jp",
-                  "name": "はり太郎の東洋医学",
+                  "name": SITE_NAME,
                   "description": "陰陽・五行から弁証・配穴まで、東洋医学を体系的に学ぶ。経穴辞典、体質チェック、臨床演習、マイノートで、学習と日々の臨床の振り返りを支えます。",
                   "publisher": {
                     "@id": "https://www.haritaro.jp/#organization",
@@ -150,9 +158,9 @@ export default function RootLayout({
                 {
                   "@type": "Organization",
                   "@id": "https://www.haritaro.jp/#organization",
-                  "name": "はり太郎の東洋医学",
+                  "name": SITE_NAME,
                   "url": "https://www.haritaro.jp",
-                  "logo": "https://www.haritaro.jp/icon.png",
+                  "logo": "https://www.haritaro.jp/icon-512.png",
                   "description": "基礎理論から臨床実践までを体系化する東洋医学ポータル。",
                   "founder": {
                     "@type": "Person",

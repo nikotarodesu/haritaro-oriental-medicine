@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES } from "@/config/seo";
+import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
 import Link from "next/link";
 import { 
@@ -28,7 +28,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
       images: SHARED_OG_IMAGES,
-    title: "東洋医学を基礎から学ぶ｜鍼灸学生・学び直し｜はり太郎",
+    siteName: SITE_NAME,
+    title: `東洋医学を基礎から学ぶ｜鍼灸学生・学び直し | ${SITE_NAME}`,
     description:
       "陰陽五行から始まる全81講義カリキュラム、国試精選演習、全361穴の経穴辞典、回答履歴に応じた間隔復習による日々の復習まで。",
     url: "https://www.haritaro.jp/learn",

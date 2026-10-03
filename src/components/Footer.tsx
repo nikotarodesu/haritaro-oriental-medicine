@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { ArrowUpRight, Sparkles, Award, Layers, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { SITE_NAME } from "@/config/seo";
 
 export default function Footer() {
   const { user } = useAuth();
@@ -16,7 +17,7 @@ export default function Footer() {
           <div className="md:col-span-1 space-y-3">
             <Link href="/" className="inline-block">
               <span className="font-serif text-xl font-bold text-[#232826] dark:text-[#E6EFEA] tracking-wide hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-                はり太郎の東洋医学
+                {SITE_NAME}
               </span>
             </Link>
             <p className="text-xs sm:text-sm leading-relaxed text-[#59615D] dark:text-[#96A6B2]">
@@ -147,7 +148,7 @@ export default function Footer() {
         {/* 最下部コピーライトと各種規約・法定リンク（重複を解消） */}
         <div className="border-t border-[#E3DBCB] dark:border-[#22303D] mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#737C77] dark:text-[#8899A6]">
           <p className="flex items-center gap-1.5 flex-wrap">
-            <span>© {new Date().getFullYear()} はり太郎の東洋医学. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} {SITE_NAME}. All rights reserved.</span>
           </p>
           <div className="flex items-center flex-wrap gap-4 sm:gap-6">
             <Link href="/terms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">利用規約</Link>
