@@ -339,8 +339,13 @@ export default function CurriculumLectureReader({ lecture }: Props) {
           )}
         </div>
 
+        <nav aria-label="講義内の移動" className="flex flex-wrap gap-2">
+          <a href="#lecture-content" className="inline-flex min-h-11 items-center rounded-lg border border-[#D5DED8] px-3 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8]">本文を読む</a>
+          {CURRICULUM_QUIZZES[lecture.id] && <a href="#lecture-quiz" className="inline-flex min-h-11 items-center rounded-lg border border-[#D5DED8] px-3 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8]">理解度チェックへ</a>}
+          {resolvedReferences.length > 0 && <a href="#article-references-section" className="inline-flex min-h-11 items-center rounded-lg border border-[#D5DED8] px-3 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8]">出典・確認範囲へ</a>}
+        </nav>
         {/* 本文（MarkdownBody） */}
-        <div id="lecture-content">
+        <div id="lecture-content" className="scroll-mt-28">
         <MarkdownBody
           contentMarkdown={lecture.contentMarkdown}
           seenTerms={bodySeenTerms}
@@ -380,15 +385,15 @@ export default function CurriculumLectureReader({ lecture }: Props) {
             <div className="flex items-center justify-between border-b border-[#F0EBE0] dark:border-[#20302B] pb-2.5">
               <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                 <Activity className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>現代生理学・解剖学との統合的考察（Integrative Medicine）</span>
+                <span>現代医学との比較・説明の範囲</span>
               </div>
               <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
-                メカニズム解説
+                伝統分類と研究を区別
               </span>
             </div>
             <div className="space-y-1.5">
               <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
-                【対応する現代生理学的概念】：{lecture.integrativeMedicine.focus}
+                【比較する観点】：{lecture.integrativeMedicine.focus}
               </span>
               <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                 {lecture.integrativeMedicine.explanation}
@@ -399,6 +404,7 @@ export default function CurriculumLectureReader({ lecture }: Props) {
 
         {/* レッスン理解度チェック（クイズ演習） */}
         {CURRICULUM_QUIZZES[lecture.id] && (
+          <section id="lecture-quiz" aria-label="理解度チェック" className="scroll-mt-28">
           <InteractiveQuiz
             quiz={CURRICULUM_QUIZZES[lecture.id]}
             nextLecture={
@@ -410,6 +416,7 @@ export default function CurriculumLectureReader({ lecture }: Props) {
                 : null
             }
           />
+          </section>
         )}
 
         {/* 参考文献・学術エビデンス */}

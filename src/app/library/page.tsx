@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES } from "@/config/seo";
+import { pageSocialMetadata } from "@/config/seo";
 import { Metadata } from "next";
 import LibraryClient from "./LibraryClient";
 
@@ -9,13 +9,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/library",
   },
-  openGraph: {
-      images: SHARED_OG_IMAGES,
-    title: "文献・古典・臨床実例アーカイブ | はり太郎の東洋医学",
-    description:
-      "古典・書誌を照合した研究資料・症例教材。研究対象、限界、確認状況を公開する学習用資料集。",
-    url: "https://www.haritaro.jp/library",
-  },
+  ...pageSocialMetadata(
+    "文献・古典・臨床実例アーカイブ",
+    "古典・書誌を照合した研究資料・症例教材。研究対象、限界、確認状況を公開する学習用資料集。",
+    "/library",
+  ),
 };
 
 export default function LibraryPage() {

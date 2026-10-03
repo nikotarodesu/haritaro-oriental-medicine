@@ -61,7 +61,7 @@ export default function LibraryClient() {
   // フィルタリング処理
   const filteredPapers = useMemo(() => PAPERS_DATABASE.filter(p => matchesSearchText(searchQuery, [p.title, p.japaneseTitle, p.targetCondition, ...p.tags, ...(p.interventionProtocol?.acupoints || [])])), [searchQuery]);
 
-  const filteredClassics = useMemo(() => CLASSICAL_TEXTS.filter(c => matchesSearchText(searchQuery, [c.book, c.chapter, c.theme, c.original, c.translation, ...c.tags])), [searchQuery]);
+  const filteredClassics = useMemo(() => CLASSICAL_TEXTS.filter(c => matchesSearchText(searchQuery, [c.book, c.chapter, c.theme, c.original, c.verifiedQuotation?.text || '', c.verifiedQuotation?.section || '', c.translation, ...c.tags])), [searchQuery]);
 
   const filteredCases = useMemo(() => CLINICAL_CASES.filter(c => matchesSearchText(searchQuery, [c.title, c.patient.chiefComplaint, c.correctDiagnosis.pattern, ...c.correctDiagnosis.primaryPoints])), [searchQuery]);
 
@@ -115,6 +115,7 @@ export default function LibraryClient() {
               <Search className="w-4 h-4 text-[#8A948F] absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
+                aria-label="文献・古典・症例を検索"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="症状（膝痛、不眠、坐骨神経痛）、ツボ名（太衝、足三里）、古典名で検索..."
@@ -138,6 +139,9 @@ export default function LibraryClient() {
           ].map(tab => (
             <button
               key={tab.id}
+              type="button"
+              aria-pressed={activeTab === tab.id}
+              style={{ minHeight: 44 }}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`px-4 py-2 rounded-xl font-bold shrink-0 transition-all flex items-center gap-1.5 ${
                 activeTab === tab.id
@@ -267,7 +271,7 @@ export default function LibraryClient() {
                 </span>
               </div>
 
-              <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">古典の考え方を学ぶ資料です。版・原文の照合と専門家による確認は完了していません。伝統的な配穴意図と、現代の疾患に対する治療効果は分けて読みます。</p>
+              <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">古典の考え方を学ぶ資料です。{CLASSICAL_TEXTS.filter(classic => classic.verifiedQuotation).length}件に電子本文からの引用と確認範囲を表示しています。底本画像との照合・専門家による確認は未完了です。伝統的な配穴意図と、現代の疾患に対する治療効果は分けて読みます。</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {filteredClassics.map(classic => {
                   const isSaved = savedIds.includes(classic.id);
@@ -291,7 +295,7 @@ export default function LibraryClient() {
                           <div>
                             <span className="text-[10px] font-bold text-[#737C77] dark:text-[#8899A6] block mb-0.5">掲載条文（原典との一致は未確認）：</span>
                             <p className="font-serif text-sm text-[#232826] dark:text-[#FAF8F5] leading-relaxed tracking-wide">
-                              {classic.originalPublicationStatus === 'withheld_pending_verification' ? '比較資料との不一致が見つかったため、原典の引用としての掲載を保留しています。下の確認事項をご覧ください。' : classic.original}
+                              {classic.originalPublicationStatus === 'withheld_pending_verification' ? '元の掲載文は字句・出典の確認が必要なため、原典の引用としての掲載を保留しています。下の確認事項をご覧ください。' : classic.original}
                             </p>
                           </div>
                           {classic.reading && (
@@ -302,6 +306,20 @@ export default function LibraryClient() {
                               </p>
                             </div>
                           )}
+                          {classic.verifiedQuotation && (
+                            <section className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-3 space-y-2" aria-label="電子本文の引用と確認範囲">
+                              <h4 className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">電子本文からの引用（底本画像は未確認）</h4>
+                              <blockquote className="font-serif text-sm leading-relaxed break-words">{classic.verifiedQuotation.text}</blockquote>
+                              <dl className="text-xs leading-relaxed space-y-1">
+                                <div><dt className="inline font-bold">資料・該当箇所：</dt><dd className="inline">{classic.verifiedQuotation.sourceTitle} — {classic.verifiedQuotation.section}</dd></div>
+                                <div><dt className="inline font-bold">版情報：</dt><dd className="inline">{classic.verifiedQuotation.edition || '未確認'}</dd></div>
+                                <div><dt className="inline font-bold">頁標識：</dt><dd className="inline">{classic.verifiedQuotation.page || '未確認'}</dd></div>
+                                <div><dt className="inline font-bold">電子本文の確認日：</dt><dd className="inline">{classic.verifiedQuotation.checkedAt}</dd></div>
+                              </dl>
+                              <p className="text-xs leading-relaxed">{classic.verifiedQuotation.limitation}</p>
+                              <a href={classic.verifiedQuotation.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1 text-xs font-bold underline">引用元の電子本文を見る<ExternalLink className="h-3 w-3" aria-hidden="true" /></a>
+                            </section>
+                          )}
                           <div className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-2">
                             <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-0.5">学習用の現代語解説：</span>
                             <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
@@ -310,7 +328,7 @@ export default function LibraryClient() {
                           </div>
                           {classic.verificationNote && <div className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-2 text-xs leading-relaxed text-[#A83629] dark:text-[#F2A99F]">
                             <p>{classic.verificationNote}</p>
-                            {classic.comparisonSourceUrl && <a href={classic.comparisonSourceUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block underline">照合に使用した比較資料</a>}
+                            {classic.comparisonSourceUrl && <a href={classic.comparisonSourceUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex min-h-11 items-center underline">照合に使用した比較資料</a>}
                           </div>}
                         </div>
 

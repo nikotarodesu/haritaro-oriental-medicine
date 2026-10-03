@@ -34,7 +34,7 @@ export const GLOSSARY_TERMS: Record<string, GlossaryTerm> = {
     relatedLectureId: "lecture-qiblood-1",
     relatedLectureTitle: "気血水理論 レッスン1：気の概念と五大作用",
     relatedToolUrl: "/diagnosis",
-    relatedToolTitle: "気血水セルフ診断"
+    relatedToolTitle: "気血水セルフチェック"
   },
   相侮: {
     term: "相侮",
@@ -70,7 +70,7 @@ export const GLOSSARY_TERMS: Record<string, GlossaryTerm> = {
     relatedLectureId: "lecture-qiblood-2",
     relatedLectureTitle: "気血水理論 レッスン2：気の病態（気虚・気滞・気逆）",
     relatedToolUrl: "/diagnosis",
-    relatedToolTitle: "気血水セルフ診断"
+    relatedToolTitle: "気血水セルフチェック"
   },
   気滞: {
     term: "気滞",
@@ -82,7 +82,7 @@ export const GLOSSARY_TERMS: Record<string, GlossaryTerm> = {
     relatedLectureId: "lecture-qiblood-2",
     relatedLectureTitle: "気血水理論 レッスン2：気の病態（気虚・気滞・気逆）",
     relatedToolUrl: "/diagnosis",
-    relatedToolTitle: "気血水セルフ診断"
+    relatedToolTitle: "気血水セルフチェック"
   },
   気逆: {
     term: "気逆",
@@ -106,7 +106,7 @@ export const GLOSSARY_TERMS: Record<string, GlossaryTerm> = {
     relatedLectureId: "lecture-qiblood-3",
     relatedLectureTitle: "気血水理論 レッスン3：血の病態（血虚・瘀血）",
     relatedToolUrl: "/diagnosis",
-    relatedToolTitle: "気血水セルフ診断"
+    relatedToolTitle: "気血水セルフチェック"
   },
   瘀血: {
     term: "瘀血",
@@ -118,7 +118,7 @@ export const GLOSSARY_TERMS: Record<string, GlossaryTerm> = {
     relatedLectureId: "lecture-qiblood-3",
     relatedLectureTitle: "気血水理論 レッスン3：血の病態（血虚・瘀血）",
     relatedToolUrl: "/diagnosis",
-    relatedToolTitle: "気血水セルフ診断"
+    relatedToolTitle: "気血水セルフチェック"
   },
   水滞: {
     term: "水滞",
@@ -130,7 +130,7 @@ export const GLOSSARY_TERMS: Record<string, GlossaryTerm> = {
     relatedLectureId: "lecture-qiblood-4",
     relatedLectureTitle: "気血水理論 レッスン4：津液の病態（津液不足・水滞・痰湿）",
     relatedToolUrl: "/diagnosis",
-    relatedToolTitle: "気血水セルフ診断"
+    relatedToolTitle: "気血水セルフチェック"
   },
   陰虚: {
     term: "陰虚",

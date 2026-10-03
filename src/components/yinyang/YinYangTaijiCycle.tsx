@@ -18,7 +18,7 @@ export default function YinYangTaijiCycle() {
             <span>画像解説①：陰陽太極図とダイナミック循環</span>
           </span>
           <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            循環し続ける「健康」の姿
+            陰陽の変化を表す太極図
           </h4>
         </div>
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-xs text-[#59615D] dark:text-[#96A6B2] self-start sm:self-auto">
@@ -162,16 +162,16 @@ export default function YinYangTaijiCycle() {
           <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-[#FFFFFF] dark:bg-[#1A2530] border-2 border-[#1E3D34]/30 dark:border-[#74BA9E]/40 shadow-sm space-y-2">
             <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
               <Activity className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              <span>陰陽論が描く「健康」の真の定義</span>
+              <span>陰陽論で学ぶ調和のイメージ</span>
             </div>
             <p className="font-serif text-base sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
               「止まらず、偏らず、<br className="hidden sm:inline" />
-              行き来できている状態 ＝ <span className="text-[#1E3D34] dark:text-[#74BA9E] underline decoration-[#E6C387] decoration-2">健康</span>」
+              行き来できている状態 ＝ <span className="text-[#1E3D34] dark:text-[#74BA9E] underline decoration-[#E6C387] decoration-2">調和の比喩</span>」
             </p>
             <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              陰陽論は、白と黒を切り離す「二元論」ではありません。
-              昼が来れば活動し（陽）、夜が来れば深く眠る（陰）。熱くなれば汗で冷やし、冷えれば代謝で温める。
-              この<strong>滑らかな往復運動が滞りなく回転し続けている動的平衡</strong>こそが、東洋医学の考える真の治癒力です。
+              陰陽論では、二つの側面の関係と変化を捉えます。
+              昼の活動を陽、夜の休息を陰にたとえ、<strong>互いに移り変わる関係</strong>を図示しています。
+              この回転は学習上の表現で、健康状態の測定や治癒力の証明を示すものではありません。
             </p>
           </div>
 
@@ -183,7 +183,7 @@ export default function YinYangTaijiCycle() {
                 <span>陽の相</span>
               </div>
               <p className="text-[11px] text-[#59615D] dark:text-[#D1A39D] leading-tight">
-                活動・温熱・光・昼・覚醒・交感神経・機能亢進
+                活動・温熱・光・昼などを陽に分類する例
               </p>
             </div>
 
@@ -193,12 +193,15 @@ export default function YinYangTaijiCycle() {
                 <span>陰の相</span>
               </div>
               <p className="text-[11px] text-[#59615D] dark:text-[#9FB7CE] leading-tight">
-                静止・寒涼・闇・夜・睡眠・副交感神経・構造維持
+                静止・寒涼・闇・夜などを陰に分類する例
               </p>
             </div>
           </div>
         </div>
       </div>
+      <figcaption className="relative z-10 mt-4 text-[11px] leading-relaxed text-[#737C77] dark:text-[#96A6B2]">
+        伝統理論の関係を示す模式図です。陰陽を交感神経・副交感神経と固定対応させず、医学的な診断や治療効果とは区別します。
+      </figcaption>
     </figure>
   );
 }

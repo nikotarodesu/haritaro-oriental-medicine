@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Sparkles, Cog, Check, ArrowRightLeft, Shield, HeartPulse } from "lucide-react";
+import { Sparkles, Cog, Check, Shield, HeartPulse } from "lucide-react";
 
 export default function YinYangEastWestMatrix() {
   return (
@@ -14,11 +14,11 @@ export default function YinYangEastWestMatrix() {
             <span>画像解説⑧：東西医学の相補マトリクス</span>
           </span>
           <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            歯車のように噛み合う「西洋医学（陽）× 東洋医学（陰）」の統合医療
+            必要な医療評価と補完的ケアの併用を考える
           </h4>
         </div>
         <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-          対立ではなく「相互補完」の最適解
+          方法・症状ごとの根拠と安全性を確認
         </span>
       </div>
 
@@ -31,25 +31,25 @@ export default function YinYangEastWestMatrix() {
               <div className="flex items-center gap-2">
                 <HeartPulse className="w-5 h-5 text-[#C45A4A]" />
                 <h5 className="font-serif font-bold text-base text-[#C45A4A] dark:text-[#F87171]">
-                  西洋医学（陽の医療）
+                  現代医学による診療
                 </h5>
               </div>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FCF4EB] text-[#C45A4A]">
-                構造・局所・救急
+                診断・治療・経過観察
               </span>
             </div>
             <ul className="space-y-1.5 text-xs text-[#59615D] dark:text-[#A0B0BC]">
               <li className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-[#C45A4A] shrink-0" />
-                <span><strong>アプローチ：</strong>要素還元論・局所解剖・病因特定</span>
+                <span><strong>アプローチ：</strong>病歴・診察・検査と研究に基づく評価</span>
               </li>
               <li className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-[#C45A4A] shrink-0" />
-                <span><strong>診断武器：</strong>血液検査・画像診断（CT/MRI）・生検</span>
+                <span><strong>検査例：</strong>必要に応じた血液検査・画像診断・生検</span>
               </li>
               <li className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-[#C45A4A] shrink-0" />
-                <span><strong>得意領域：</strong>感染症撲滅・救急蘇生・外科手術・急性期</span>
+                <span><strong>対応例：</strong>救急医療・感染症の診療・手術・慢性疾患の管理</span>
               </li>
             </ul>
           </div>
@@ -61,7 +61,7 @@ export default function YinYangEastWestMatrix() {
               <Cog className="w-8 h-8 text-[#1E3A5F] dark:text-[#60A5FA] -ml-2.5 -mt-3 animate-spin" style={{ animationDuration: "9s", animationDirection: "reverse" }} />
             </div>
             <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] mt-2 text-center">
-              シームレスに連動
+              情報共有して検討
             </span>
           </div>
 
@@ -71,25 +71,25 @@ export default function YinYangEastWestMatrix() {
               <div className="flex items-center gap-2">
                 <Shield className="w-5 h-5 text-[#1E3A5F] dark:text-[#60A5FA]" />
                 <h5 className="font-serif font-bold text-base text-[#1E3A5F] dark:text-[#60A5FA]">
-                  東洋医学（陰の医療）
+                  伝統医学・補完的ケア
                 </h5>
               </div>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#EBF1F6] text-[#1E3A5F] dark:text-[#60A5FA]">
-                機能・全体・未病
+                伝統分類・施術・養生
               </span>
             </div>
             <ul className="space-y-1.5 text-xs text-[#59615D] dark:text-[#A0B0BC]">
               <li className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-[#1E3A5F] dark:text-[#60A5FA] shrink-0" />
-                <span><strong>アプローチ：</strong>複雑系全体論・生体情報ネットワーク・証診断</span>
+                <span><strong>伝統的な枠組み：</strong>陰陽・気血・臓腑等による証の分類</span>
               </li>
               <li className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-[#1E3A5F] dark:text-[#60A5FA] shrink-0" />
-                <span><strong>診断武器：</strong>四診（望聞問切）・脈診・舌診・腹診</span>
+                <span><strong>観察法：</strong>四診・脈診・舌診・腹診等（医学的診断とは区別）</span>
               </li>
               <li className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-[#1E3A5F] dark:text-[#60A5FA] shrink-0" />
-                <span><strong>得意領域：</strong>自律神経失調・慢性疼痛・冷え・不定愁訴・未病治</span>
+                <span><strong>施術の評価：</strong>方法・症状ごとに有効性と安全性を検討</span>
               </li>
             </ul>
           </div>
@@ -102,50 +102,54 @@ export default function YinYangEastWestMatrix() {
           <thead className="bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-bold border-b border-[#E5DEC9] dark:border-[#2A3B4A]">
             <tr>
               <th className="p-3.5 font-serif w-28">病期ステージ</th>
-              <th className="p-3.5 font-serif text-[#C45A4A] dark:text-[#F87171]">西洋医学（主導 / 支援）</th>
-              <th className="p-3.5 font-serif text-[#1E3A5F] dark:text-[#60A5FA]">東洋医学（主導 / 支援）</th>
-              <th className="p-3.5 font-serif">理想の統合医療モデル</th>
+              <th className="p-3.5 font-serif text-[#C45A4A] dark:text-[#F87171]">現代医学による評価・治療</th>
+              <th className="p-3.5 font-serif text-[#1E3A5F] dark:text-[#60A5FA]">補完的ケアを検討する条件</th>
+              <th className="p-3.5 font-serif">併用時の考え方</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[#E5DEC9]/60 dark:divide-[#2A3B4A]/60 bg-white dark:bg-[#17212A]">
             <tr className="hover:bg-[#FAF8F5] dark:hover:bg-[#1C2834]">
               <td className="p-3.5 font-bold text-[#232826] dark:text-[#FAF8F5]">
-                <span className="px-2 py-0.5 rounded bg-[#FCF4EB] text-[#C45A4A] font-mono text-[10px] block w-fit mb-1">陽の病期</span>
+                <span className="px-2 py-0.5 rounded bg-[#FCF4EB] text-[#C45A4A] font-mono text-[10px] block w-fit mb-1">医療評価を優先</span>
                 急性期・救急<br />（骨折・心筋梗塞・高熱感染症など）
               </td>
               <td className="p-3.5 text-[#333835] dark:text-[#C5D2DB]">
-                <strong className="text-[#C45A4A] block mb-0.5">【主導】</strong>
-                画像診断・抗生剤投与・外科的切除・心肺蘇生による速やかな生命維持。
+                <strong className="text-[#C45A4A] block mb-0.5">【優先】</strong>
+                緊急症状が疑われる場合は救急の医療評価を受け、原因と状態に応じて必要な処置・治療を選ぶ。
               </td>
               <td className="p-3.5 text-[#333835] dark:text-[#C5D2DB]">
-                <strong className="text-[#1E3A5F] dark:text-[#60A5FA] block mb-0.5">【支援】</strong>
-                術後の麻酔・嘔気緩和、体力回復（補気）、局所浮腫の早期軽減。
+                <strong className="text-[#1E3A5F] dark:text-[#60A5FA] block mb-0.5">【評価後に検討】</strong>
+                術後の補助的な施術も、担当医と適応・安全性を確認する。急性期の診断や救急処置に代わる方法としては扱わない。
               </td>
               <td className="p-3.5 text-[#59615D] dark:text-[#96A6B2]">
-                まず西洋医学で危険を除外（レッドフラッグ鑑別）し、安全を確保。
+                必要な救急対応を遅らせず、使用する施術や薬の情報を医療者間で共有する。
               </td>
             </tr>
 
             <tr className="hover:bg-[#FAF8F5] dark:hover:bg-[#1C2834]">
               <td className="p-3.5 font-bold text-[#232826] dark:text-[#FAF8F5]">
-                <span className="px-2 py-0.5 rounded bg-[#EBF1F6] text-[#1E3A5F] dark:text-[#60A5FA] font-mono text-[10px] block w-fit mb-1">陰の病期</span>
+                <span className="px-2 py-0.5 rounded bg-[#EBF1F6] text-[#1E3A5F] dark:text-[#60A5FA] font-mono text-[10px] block w-fit mb-1">継続的な評価</span>
                 慢性期・不定愁訴<br />（自律神経失調・慢性疲労・冷え・PMS）
               </td>
               <td className="p-3.5 text-[#333835] dark:text-[#C5D2DB]">
-                <strong className="text-[#C45A4A] block mb-0.5">【支援】</strong>
-                重大疾患の潜伏スクリーニング、定期的な血液生化学モニタリング。
+                <strong className="text-[#C45A4A] block mb-0.5">【原因・状態を評価】</strong>
+                症状に応じた診察・検査・治療・経過観察を行う。慢性期も必要な医学的評価と治療を継続する。
               </td>
               <td className="p-3.5 text-[#333835] dark:text-[#C5D2DB]">
-                <strong className="text-[#1E3A5F] dark:text-[#60A5FA] block mb-0.5">【主導】</strong>
-                経絡・臓腑調整、気血水の動的平衡回復、体質改善・生活指導。
+                <strong className="text-[#1E3A5F] dark:text-[#60A5FA] block mb-0.5">【併用の可否を検討】</strong>
+                鍼灸等を希望する場合は、症状・方法ごとの根拠、負担、安全性、併用する治療を確認する。伝統分類だけで効果を保証しない。
               </td>
               <td className="p-3.5 text-[#59615D] dark:text-[#96A6B2]">
-                「検査で異常なし」と言われた不調を東洋医学が丸ごと引き受けて改善。
+                検査で異常が見つからなくても、症状の持続・変化に応じて再評価し、目標と効果を共有する。
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+      <figcaption className="mt-4 text-[11px] leading-relaxed text-[#737C77] dark:text-[#96A6B2]">
+        歯車は連携を考えるための比喩です。医療体系を陰・陽へ固定分類せず、病期だけで担当や効果を決めません。
+        参考：<a href="https://www.nccih.nih.gov/health/complementary-alternative-or-integrative-health-whats-in-a-name" className="underline">NIH / NCCIH の併用の説明</a>、<a href="https://www.nccih.nih.gov/health/acupuncture-effectiveness-and-safety" className="underline">鍼灸の有効性と安全性</a>。
+      </figcaption>
     </figure>
   );
 }

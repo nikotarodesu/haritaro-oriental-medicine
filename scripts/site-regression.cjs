@@ -55,7 +55,7 @@ const sitemap=load('src/app/sitemap').default();
 assert(!sitemap.some(page=>new URL(page.url).search));
 assert(!sitemap.some(page=>new URL(page.url).pathname==='/notes'));
 assert.equal(new Set(sitemap.map(page=>page.url)).size,sitemap.length);
-for(const pathname of ['/','/glossary','/library','/tsubo/li4','/tsubo/sp6','/curriculum/lecture-yinyang-1','/curriculum/lecture-yinyang-2','/curriculum/lecture-yinyang-3']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-03',pathname);
+for(const pathname of ['/','/glossary','/library','/tsubo/li4','/tsubo/sp6',...Array.from({length:8},(_,index)=>`/curriculum/lecture-yinyang-${index+1}`)]) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-03',pathname);
 for(const pathname of ['/kokushi','/simulator','/articles/science-of-yinyang-gogyo','/curriculum/lecture-wuxing-1']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-02',pathname);
 const { sanitizeAnalyticsParams } = load('src/utils/analytics');
 assert.deepEqual(Object.keys(sanitizeAnalyticsParams({placement:'case_training',total:6,query:'private',patient_name:'private',case_id:'private',answers:'private'})).sort(),['placement','total']);

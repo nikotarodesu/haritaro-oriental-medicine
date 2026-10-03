@@ -11,7 +11,7 @@ assert.match(li4.locationDetail, /第2中手骨中点/);
 assert(!/効果が減弱|指を潜り込ませ|治癒に導く/.test(JSON.stringify(li4)), 'LI4 must not promise a cure or instruct deep pressure');
 const seo = load('src/config/seo');
 assert(!/監修|効果・押し方/.test(seo.acupointPageTitle(li4)), 'Unreviewed pages must not claim completed supervision');
-for (const route of ['/safety', '/editorial-policy']) {
+for (const route of ['/safety', '/editorial-policy', '/library', '/glossary']) {
   assert.equal(seo.pageSocialMetadata('title', 'description', route).openGraph.url, `https://www.haritaro.jp${route}`);
 }
 const { getPublicCrossSectionElements, getPublicAnatomyDescription, getPublicCrossSectionModel } = load('src/data/medicalSafety');
@@ -58,11 +58,19 @@ for (const [caseId, preset] of Object.entries(CASE_SIMULATOR_PRESETS)) {
 }
 const quizzes = load('src/data/curriculumQuizzes').CURRICULUM_QUIZZES;
 const lectures = load('src/data/curriculumData').CURRICULUM_DATA.flatMap(stage => stage.lectures);
-for (const id of ['lecture-yinyang-1', 'lecture-yinyang-2', 'lecture-yinyang-3']) {
+for (const id of Array.from({ length: 8 }, (_, index) => `lecture-yinyang-${index + 1}`)) {
   const lecture = lectures.find(item => item.id === id);
   assert(lecture, `${id}: learning URL must remain available`);
   assert(!/1分たりとも生きられません|極めて高度に整合|生理学的にも完全に合致|ミリ単位で/.test(JSON.stringify(lecture)), `${id}: unsupported physiology claims`);
+  assert(!/深刺1\.5|1\.5〜2\.0寸|局所の実邪を瀉法で速やかに除去/.test(JSON.stringify(lecture)), `${id}: emergency response and needle depth require separate evaluation`);
   assert(lecture.references.some(ref => typeof ref === 'object' && ref.url && ref.note), `${id}: source scope missing`);
+  for (const referenceId of ['classic-somon-05-yinyang', 'book-toyo-gairon']) {
+    const reference = lecture.references.find(ref => typeof ref === 'object' && ref.id === referenceId);
+    assert.equal(reference?.bibliographyStatus, 'unverified', `${id}: unchecked edition must be visible`);
+    assert.equal(reference.claimsStatus, 'needs-review');
+    assert.match(reference.note, /未完了|未確認/);
+    assert(!/完全収録/.test(reference.note));
+  }
   assert.equal(quizzes[id].questions.length, 3, `${id}: preserve learning progress`);
   for (const question of quizzes[id].questions) {
     assert.equal(question.options.length, 3);
@@ -71,8 +79,26 @@ for (const id of ['lecture-yinyang-1', 'lecture-yinyang-2', 'lecture-yinyang-3']
   }
 }
 const classics = load('src/data/classicalTextsData');
+for (const file of ['src/components/yinyang/YinYangTreatmentFlow.tsx', 'src/components/yinyang/YinYangShishinChart.tsx']) {
+  assert(!/深刺1\.5|1\.5〜2\.0寸|持続的な代謝回復/.test(fs.readFileSync(file, 'utf8')), `${file}: no unverified needle procedure or effect`);
+}
 assert.equal(classics.SOURCE_CLASSICAL_TEXTS.length, 24);
 assert.equal(classics.CLASSICAL_TEXTS.length, 24);
+const quotationIds = ['classic-somon-05-clear', 'classic-somon-29', 'classic-nankyo-75', 'classic-taisei-shisou', 'classic-taisei-hachimyaku', 'classic-taisei-shougyoku'];
+assert.equal(classics.CLASSICAL_TEXTS.filter(item => item.verifiedQuotation).length, quotationIds.length);
+for (const id of quotationIds) {
+  const published = classics.CLASSICAL_TEXTS.find(item => item.id === id);
+  const quote = published?.verifiedQuotation;
+  assert(quote?.text && quote.sourceTitle && quote.section, `${id}: quotation needs its actual source and passage`);
+  assert.match(quote.sourceUrl, /^https:\/\//);
+  assert.equal(quote.verificationScope, 'electronic_text', `${id}: do not claim image or all-edition verification`);
+  assert.match(quote.limitation, /未確認|未完了/);
+  assert.match(quote.checkedAt, /^\d{4}-\d{2}-\d{2}$/);
+  assert.equal(published.originalPublicationStatus, 'withheld_pending_verification');
+}
+assert.match(classics.CLASSICAL_TEXTS.find(item => item.id === 'classic-somon-29').verifiedQuotation.text, /四支皆稟氣於胃/);
+assert.match(classics.CLASSICAL_TEXTS.find(item => item.id === 'classic-somon-05-clear').verifiedQuotation.text, /清陽發腠理/);
+assert.deepEqual(Array.from(classics.CLASSICAL_TEXTS.find(item => item.id === 'classic-taisei-shougyoku').relatedPoints), ['GV20', 'CV13']);
 for (const source of classics.SOURCE_CLASSICAL_TEXTS) {
   const published = classics.CLASSICAL_TEXTS.find(item => item.id === source.id);
   assert(published, `${source.id}: preserve learning links`);

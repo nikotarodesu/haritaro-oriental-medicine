@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { BookOpen, ExternalLink, ChevronDown, ChevronUp, FileText, CheckCircle2, ShoppingBag } from "lucide-react";
+import { BookOpen, ExternalLink, ChevronDown, ChevronUp, FileText, ShoppingBag } from "lucide-react";
 import { ResolvedReference } from "@/types/references";
 
 interface ArticleReferencesProps {
@@ -13,7 +13,7 @@ interface ArticleReferencesProps {
 
 export default function ArticleReferences({
   references,
-  title = "参考文献・学術エビデンス",
+  title = "参考文献・出典と確認範囲",
   defaultExpanded = true,
 }: ArticleReferencesProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
@@ -25,7 +25,7 @@ export default function ArticleReferences({
   return (
     <section
       id="article-references-section"
-      className="mt-12 pt-8 border-t-2 border-[#E5DEC9] dark:border-[#263542] transition-colors"
+      className="scroll-mt-28 mt-12 pt-8 border-t-2 border-[#E5DEC9] dark:border-[#263542] transition-colors"
       aria-labelledby="references-heading"
     >
       <div className="bg-[#FFFFFF] dark:bg-[#151D25] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs overflow-hidden">
@@ -103,9 +103,9 @@ export default function ArticleReferences({
                             {ref.type === "paper"
                               ? "研究論文"
                               : ref.type === "classic"
-                              ? "東洋医学古典原典"
+                              ? "古典・伝統資料"
                               : ref.type === "guideline"
-                              ? "診療ガイドライン"
+                              ? "公的資料・ガイドライン"
                               : ref.type === "book"
                               ? "東洋医学推薦図書・成書"
                               : ref.type}
@@ -127,7 +127,7 @@ export default function ArticleReferences({
 
                       {/* タイトル */}
                       {ref.bibliographyStatus && <p className="text-xs leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">
-                        {ref.bibliographyStatus === 'matched' ? '書誌情報：原典照合済み' : ref.bibliographyStatus === 'retracted' ? '撤回論文：治療の根拠として使用しません' : '書誌情報：照合未完了。根拠としての利用は保留'}
+                        {ref.bibliographyStatus === 'matched' ? '書誌情報：照合済み' : ref.bibliographyStatus === 'retracted' ? '撤回論文：治療の根拠として使用しません' : '書誌情報：照合未完了。根拠としての利用は保留'}
                         {ref.bibliographyStatus === 'matched' && (ref.claimsStatus === 'source-checked' ? ' ／ 要約の対象・限界を照合済み（専門家監修とは別）' : ' ／ 結果の解釈は照合中')}
                       </p>}
                       <div>
@@ -169,8 +169,8 @@ export default function ArticleReferences({
                       {ref.note && (
                         <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EBE4D5] dark:border-[#22303D] text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                           <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] inline-flex items-center gap-1 mr-1">
-                            <CheckCircle2 className="w-3.5 h-3.5" />
-                            <span>臨床的意義・エビデンス要約:</span>
+                            <BookOpen className="w-3.5 h-3.5" />
+                            <span>参照した内容・適用範囲:</span>
                           </span>
                           <span>{ref.note}</span>
                         </div>
@@ -181,11 +181,12 @@ export default function ArticleReferences({
                         {ref.libraryUrl && (
                           <Link
                             href={ref.libraryUrl}
+                            style={{ minHeight: 44 }}
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#DCECE5] dark:hover:bg-[#1E362D] text-xs sm:text-sm font-bold transition-all shadow-2xs group"
-                            title="はり太郎の古典医典ライブラリで原典条文・現代語訳を読む"
+                            title="古典ライブラリで掲載条文・解説と確認状況を読む"
                           >
                             <BookOpen className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-                            <span>古典ライブラリで原典条文を見る</span>
+                            <span>古典の掲載文・確認状況を見る</span>
                             <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                           </Link>
                         )}
@@ -193,6 +194,7 @@ export default function ArticleReferences({
                         {ref.amazonUrl && (
                           <a
                             href={ref.amazonUrl}
+                            style={{ minHeight: 44 }}
                             target="_blank"
                             rel="noopener noreferrer nofollow sponsored"
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#F3DEC5] dark:border-[#4D331F] hover:border-[#B86924] dark:hover:border-[#E6C387] text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBE8D6] dark:hover:bg-[#382618] text-xs sm:text-sm font-bold transition-all shadow-2xs group"
@@ -211,6 +213,7 @@ export default function ArticleReferences({
                         {ref.url && (
                           <a
                             href={ref.url}
+                            style={{ minHeight: 44 }}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FAF8F5] dark:bg-[#1C2834] border border-[#D8CFC0] dark:border-[#2E4254] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#15232F] text-xs sm:text-sm font-bold transition-all shadow-2xs group"

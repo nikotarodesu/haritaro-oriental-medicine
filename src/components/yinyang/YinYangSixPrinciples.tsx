@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Sparkles, ArrowRightLeft, Scale, Activity, RefreshCw, GitBranch, Split } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 interface Principle {
   id: string;
@@ -35,7 +35,7 @@ export default function YinYangSixPrinciples() {
       ),
       metaphor: "尾を噛み合う双魚 / 光と影 / 機能と肉体",
       summary: "互いに相手を自己の存在基盤（根）とし、単独では存在し得ない関係。",
-      clinicalExample: "活動エネルギー（気・陽）を使うには肉体・血液（血・陰）が必要。血を巡らせるには気が必要。「無陰則陽無以生、無陽則陰無以化」。",
+      clinicalExample: "伝統理論では、陽の働きと、それを支える陰の側面を相互依存として説明する。「気」「血」はここで使う理論上の概念で、エネルギーや血液の測定値と同義ではない。",
       tag: "存在の不可分性"
     },
     {
@@ -52,10 +52,10 @@ export default function YinYangSixPrinciples() {
           <circle cx="36" cy="18" r="5" fill="#1E3A5F" stroke="#1E3A5F" />
         </svg>
       ),
-      metaphor: "水平に保たれたシーソー / 交感・副交感の拮抗",
+      metaphor: "水平に保たれたシーソー / 過不足を抑える関係",
       summary: "双方が互いを抑制・制御し合うことで、一方の過剰な暴走（亢進）を防ぐ。",
-      clinicalExample: "身体が熱を持てば発汗（陰液）で冷やし、体が冷えればシバリング（陽気）で温める。このブレーキが壊れると「陽勝」「陰勝」へ暴走する。",
-      tag: "恒常性・フィードバック"
+      clinicalExample: "暑さと涼しさを釣り合わせるイメージで捉える。体温調節を例に連想しても、陰陽をその制御機構と同一視しない。陰陽の偏りという分類だけで医学的な原因は診断できない。",
+      tag: "相互制約・均衡"
     },
     {
       id: "shoucyou",
@@ -71,10 +71,10 @@ export default function YinYangSixPrinciples() {
           <circle cx="33" cy="34" r="3" fill="#1E3A5F" />
         </svg>
       ),
-      metaphor: "朝昼夜の波 / サーカディアンリズム",
+      metaphor: "朝昼夜の波 / 周期的な増減",
       summary: "絶え間なくシーソーのように増減（此消彼長・此長彼消）を繰り返す量的動態。",
-      clinicalExample: "日の出から正午に向かって陽気が増大（陽長陰消）し、夕暮れから真夜中に向けて陰気が満ちる（陰長陽消）。静止することは一瞬もない。",
-      tag: "生体リズム・周期的変化"
+      clinicalExample: "昼に向けて陽が増し、夜に向けて陰が増すという伝統的な分類で、変化を表す。図の波は生体リズムの測定値や、自律神経の活動量を示すグラフではない。",
+      tag: "増減・周期的変化"
     },
     {
       id: "tenka",
@@ -88,10 +88,10 @@ export default function YinYangSixPrinciples() {
           <polyline points="30,24 36,30 42,24" stroke="#C45A4A" strokeWidth="2.5" fill="none" strokeLinecap="round" />
         </svg>
       ),
-      metaphor: "冬至（陰極まりて陽生ず） / 臨界点での相転移",
-      summary: "一定の極限（臨界点）に達すると、反対の極性へと質的に反転する法則。",
-      clinicalExample: "「重陽必陰、重陰必陽」「寒極生熱、熱極生寒」。急性高熱（極陽）が限界を超えると突然四肢厥冷・意識混濁（虚脱・陰証）へと急転落する。",
-      tag: "臨界反転・相転移"
+      metaphor: "冬から春への変化 / 性質の移り変わり",
+      summary: "一定の条件で、陰と陽の性質が互いへ転じると説明する伝統的な考え方。",
+      clinicalExample: "季節の移り変わりなどを、陰陽の質的な転換として学ぶ。高熱に意識の変化が伴う場合は、この理論で急変を診断したり経過を待ったりせず、緊急の医療評価を受ける。",
+      tag: "条件による転換"
     },
     {
       id: "kafun",
@@ -110,7 +110,7 @@ export default function YinYangSixPrinciples() {
       ),
       metaphor: "多層構造 / マトリョーシカ / 入れ子構造",
       summary: "陰と陽は絶対的な固定物ではなく、いかなる部分も無限に陰陽へ細分化できる。",
-      clinicalExample: "人体の「上半身（陽）」の中にも「背部（陽中の陽）」と「胸腹部（陽中の陰）」がある。昼（陽）の中にも「午前（陽中の陽）」と「午後（陽中の陰）」がある。",
+      clinicalExample: "伝統的な分類では、昼を陽としても、その中を午前と午後に分けて相対的な陰陽を考える。分類の基準を変えれば位置づけも変わり、部位や時間に絶対的な陰陽があるとするものではない。",
       tag: "相対性・多階層解析"
     },
     {
@@ -126,9 +126,9 @@ export default function YinYangSixPrinciples() {
           <circle cx="24" cy="24" r="4" fill="currentColor" opacity="0.3" />
         </svg>
       ),
-      metaphor: "屈筋と伸筋の協調 / 作用と反作用",
-      summary: "相反する2つのベクトルが向かい合うことで、1つの統一的な生命現象を成立させる。",
-      clinicalExample: "上腕二頭筋（屈筋・陰）が収縮するとき、上腕三頭筋（伸筋・陽）が弛緩することで肘が滑らかに曲がる。対立し合うからこそ運動が成立する。",
+      metaphor: "逆向きの矢印 / 相反する側面の関係",
+      summary: "相反する二つの側面を、ひとつの関係の中で捉える伝統的な考え方。",
+      clinicalExample: "屈筋と伸筋の関係を比喩に使う場合も、筋を陰・陽へ固定分類せず、異なる働きの協調を連想するために用いる。実際の運動制御の仕組みを陰陽論で証明するものではない。",
       tag: "対立統一・協調ダイナミクス"
     }
   ];
@@ -145,11 +145,11 @@ export default function YinYangSixPrinciples() {
             <span>画像解説②：陰陽6大原理のインフォグラフィック</span>
           </span>
           <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            人体の動的力学を支配する「6つの基本ルール」
+            陰陽の関係を学ぶ「6つの原理」
           </h4>
         </div>
         <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-          各カードをクリックして詳細と臨床例を展開
+          各カードを選んで説明と学習例を展開
         </span>
       </div>
 
@@ -160,6 +160,8 @@ export default function YinYangSixPrinciples() {
           return (
             <button
               key={p.id}
+              type="button"
+              aria-pressed={isSelected}
               onClick={() => setSelectedId(p.id)}
               className={`p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl text-left transition-all flex flex-col justify-between border ${
                 isSelected
@@ -223,7 +225,7 @@ export default function YinYangSixPrinciples() {
 
           <div className="p-4 rounded-xl bg-[#FCF4EB]/70 dark:bg-[#1F1712] border border-[#F3E1CB] dark:border-[#3D281C] space-y-1.5">
             <span className="text-[11px] font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider block">
-              【臨床・生理学的現れ】
+              【伝統分類・学習上の例】
             </span>
             <p className="text-[#404743] dark:text-[#D1C6BA] leading-relaxed">
               {active.clinicalExample}
@@ -231,6 +233,10 @@ export default function YinYangSixPrinciples() {
           </div>
         </div>
       </div>
+      <figcaption className="mt-4 text-[11px] leading-relaxed text-[#737C77] dark:text-[#96A6B2]">
+        六つの原理は伝統理論の学習用整理です。比喩と生理学の実証を区別し、症状の医学的な評価をこの図で置き換えません。
+        急な発熱や意識の変化についての参考：<a href="https://medlineplus.gov/sepsis.html" className="underline">NIH / MedlinePlus</a>。
+      </figcaption>
     </figure>
   );
 }

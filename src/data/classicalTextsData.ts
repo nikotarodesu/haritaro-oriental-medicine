@@ -1,20 +1,33 @@
 /**
- * 東洋医学古典原典条文データベース（素問、霊枢、難経、傷寒論、金匱要略、鍼灸大成、鍼灸甲乙経、千金要方）
+ * 東洋医学古典条文の学習データ（素問、霊枢、難経、傷寒論、金匱要略、鍼灸大成、鍼灸甲乙経、千金要方）
  * 学習用の現代語訳・伝統的な配穴例。古典の記述は現代の診断・治療効果の証明とは区別する。
  */
+
+export interface VerifiedClassicalQuotation {
+  text: string; // 照合した電子本文からの限定引用。元の original を上書きしない
+  sourceTitle: string;
+  section: string;
+  sourceUrl: string;
+  edition?: string; // 資料が示す版情報。原本画像を確認したことは意味しない
+  page?: string; // 確認できた頁標識。実際の原本頁を推測で補わない
+  checkedAt: string;
+  verificationScope: 'electronic_text'; // この引用部分の電子本文一致のみ
+  limitation: string; // 底本画像・版・校訂等について未確認の範囲
+}
 
 export interface ClassicalText {
   id: string;
   book: string; // "素問" | "霊枢" | "難経" | "傷寒論" | "鍼灸大成" | "金匱要略" | "千金要方" など
   chapter: string; // "陰陽応象大論篇 第五" など
   theme: string; // 現代的なテーマ・臨床論点
-  original: string; // 漢文原典
+  original: string; // 保存された掲載文。原典との一致は各項目の確認範囲による
   reading?: string; // 書き下し・訓読
   translation: string; // 古典の考え方を説明する学習用現代語訳
   clinicalApplication: string; // 伝統理論・配穴例と現代医療への適用限界
   verificationNote?: string; // 原文の形式・出典照合に関する確認事項
   comparisonSourceUrl?: string; // 原文を比較するための資料（底本一致を保証しない）
   originalPublicationStatus?: 'withheld_pending_verification'; // 出典照合まで原文・訓読を公開しない
+  verifiedQuotation?: VerifiedClassicalQuotation; // 旧掲載文とは別に、確認範囲を示す引用
   relatedPoints?: string[]; // 関連する主要経穴コード
   tags: string[];
 }
@@ -65,7 +78,20 @@ export const SOURCE_CLASSICAL_TEXTS: ClassicalText[] = [
     reading: "清陽は上竅に出で、濁陰は下竅に出づ。清陽は臠理に発し、濁陰は五臓に走る。清陽は四肢を実し、濁陰は六腑に帰す。",
     translation: "上部の開竅・体表・四肢と「清陽」、下部の開竅・五臓・六腑と「濁陰」の関係を述べ、人体の働きを陰陽と昇降によって説明している。清陽・濁陰は古典理論上の用語であり、特定の栄養素、老廃物、筋膜などと一対一に対応するものではない。",
     clinicalApplication: "清陽不升・濁陰不降など、伝統的な昇降の説明を比較する学習資料。百会・中脘・天枢・陰陵泉は配穴例として扱い、めまい・浮腫・便秘の原因や効果をこの条文から断定しない。突然まったく尿が出なくなった場合は鍼灸による排泄を待たず、急いで医療機関を受診する。",
-    verificationNote: "掲載文の「臠理」は「腠理」等との異同を含め、使用底本の再照合が必要です。原文の一致確認は完了していません。",
+    verificationNote: "旧掲載文の「臠理」は、漢リポの四部叢刊電子本文の「腠理」と一致しません。「四肢／四支」「五臟／五藏」「六腑／六府」にも字句の違いがあり、旧原文・訓読の公開を保留しています。別欄は引用部分を電子本文と照合したもので、底本画像や全版本との一致は未確認です。",
+    comparisonSourceUrl: "https://github.com/kanripo/KR3e0001/blob/master/KR3e0001_002.txt",
+    originalPublicationStatus: 'withheld_pending_verification',
+    verifiedQuotation: {
+      text: "故清陽出上竅，濁隂出下竅；清陽發腠理，濁隂走五藏；清陽實四支，濁隂歸六府。",
+      sourceTitle: "漢リポ『重廣補注黄帝内經素問』SBCK 電子本文",
+      section: "巻二・隂陽應象大論篇第五",
+      sourceUrl: "https://github.com/kanripo/KR3e0001/blob/master/KR3e0001_002.txt",
+      edition: "SBCK（四部叢刊）。漢リポの版識別子による。",
+      page: "巻二 2a（電子本文の頁標識 KR3e0001_SBCK_002-2a）",
+      checkedAt: "2026-10-03",
+      verificationScope: 'electronic_text',
+      limitation: "引用部分の電子転写を確認し、注釈を除いて句読点を補いました。底本画像は未確認です。全篇の校訂・異本照合や専門家による監修は完了していません。",
+    },
     relatedPoints: ["GV20", "CV12", "ST25", "SP9"],
     tags: ["清陽昇降", "気機代謝", "気血水循環", "中気下陥"]
   },
@@ -88,8 +114,22 @@ export const SOURCE_CLASSICAL_TEXTS: ClassicalText[] = [
     theme: "脾主四肢・水穀の気を用いた伝統的な身体観",
     original: "帝曰：脾病而四肢不用，何也？岐伯曰：四肢皆稟氣於脾，而不得至經，必因於脾，乃得稟也。今脾病不能為胃行其津液，四肢不得稟水穀氣，氣日以衰，脈道不利，筋骨肌肉皆無氣以生，故不用焉。",
     reading: "帝曰く、脾病みて四肢用いられざるは何ぞや。岐伯曰く、四肢は皆気を脾に稟く…今、脾病みて胃の為にその津液を行うこと能わざれば、四肢は水穀の気を得るを得ず…故に用いられざるなり。",
-    translation: "黄帝が「脾が病むと四肢が働かなくなるのはなぜか」と問うた。岐伯は、四肢は脾を介して水穀の気を受けるが、脾が胃の津液を運べなくなると、筋・骨・肌肉が気を受けられず働きにくくなる、と古典の枠組みで説明した。この「脾」は伝統理論上の機能概念であり、現代の脾臓や筋代謝と同義ではない。",
+    translation: "照合した電子本文は、四肢が気を受ける源を「胃」とし、脾を介して初めて受け取れる、と説明する。続く条文では、脾が胃の津液を運べなくなると筋・骨・肌肉が気を受けられず、四肢が働きにくくなると述べる。これは古典の身体観であり、「脾」は現代の脾臓や筋代謝と同義ではない。",
     clinicalApplication: "「脾主四肢」と健脾和胃の考え方、足三里・脾兪・太白の伝統的な配穴例を学ぶ資料。この条文はサルコペニアや重症筋無力症の治療効果、筋組織への栄養供給の再建を示す根拠ではない。重症筋無力症は神経筋接合部に関わる自己免疫疾患であり、筋力低下には原因に応じた医療評価が必要となる。",
+    verificationNote: "旧掲載文の「四肢皆稟氣於脾」は、漢リポの四部叢刊電子本文の「四支皆稟氣於胃」と一致しません。意味に関わる相違のため、旧原文・訓読の公開を保留しています。別欄の限定引用は電子本文と照合しましたが、底本画像や全版本との一致は未確認です。",
+    comparisonSourceUrl: "https://github.com/kanripo/KR3e0001/blob/master/KR3e0001_008.txt",
+    originalPublicationStatus: 'withheld_pending_verification',
+    verifiedQuotation: {
+      text: "四支皆稟氣於胃，而不得至經，必因於脾，乃得禀也。",
+      sourceTitle: "漢リポ『重廣補注黄帝内經素問』SBCK 電子本文",
+      section: "巻八・太隂陽明論篇第二十九",
+      sourceUrl: "https://github.com/kanripo/KR3e0001/blob/master/KR3e0001_008.txt",
+      edition: "SBCK（四部叢刊）。漢リポの版識別子による。",
+      page: "巻八 19a（電子本文の頁標識 KR3e0001_SBCK_008-19a）",
+      checkedAt: "2026-10-03",
+      verificationScope: 'electronic_text',
+      limitation: "引用部分の電子転写を確認し、注釈を除いて句読点を補いました。「禀」等は転写の字形を保持しています。底本画像は未確認で、全篇の校訂・異本照合や専門家による監修は完了していません。",
+    },
     relatedPoints: ["ST36", "BL20", "SP3", "CV12"],
     tags: ["脾主四肢", "脾胃学派", "筋肉代謝", "倦怠感", "後天の気"]
   },
@@ -208,11 +248,21 @@ export const SOURCE_CLASSICAL_TEXTS: ClassicalText[] = [
     theme: "瀉南補北・相生相克連動による高度五行調和",
     original: "東方実，西方虚，瀉南方，補北方者，何謂也？然：金木水火土，当更相平也。東方木也，西方金也。木欲剋土，土不可剋，東方之木反侮於西方之金。故瀉南方火，令木不得生火，補北方水，令水能生木克火。",
     reading: "東方実し、西方虚すれば、南方を瀉し、北方を補うとは何の謂いぞや。木実し金虚する時、南方の火を瀉し、北方の水を補う。",
-    translation: "「東方実・西方虚」に対する「瀉南方・補北方」を、木・金・火・水の五行関係で説明する考え方。掲載文は比較資料の本文と一致しない部分があるため、逐語訳としての扱いには再照合が必要である。伝統理論の学習上の説明であり、臓器の実際の状態や治療効果を表すものではない。",
+    translation: "『難経懸解』が引く七十五難は、「東方が実し、西方が虚すとき、南方を瀉し北方を補う」とは何かを問い、五行が互いに均衡を取るという考え方で説明を始める。別欄はその冒頭の限定引用である。伝統理論の学習上の説明であり、臓器の実際の状態や治療効果を表すものではない。",
     clinicalApplication: "五行の相生・相克と補瀉に関する解釈を比較する学習資料。この条文から、高血圧や喘息に特定の配穴が有効と断定しない。また復溜は腎経の金穴であり、水穴は陰谷である。原文と配穴例の関係は出典を再照合して検討する。",
-    verificationNote: "掲載文の後半は『難経懸解』の七十五難として公開される本文と異なります。解説の再構成が混在している可能性があり、底本・異同の照合が必要です。現在の掲載文を確認済みの原典引用として扱うことはできません。",
-    comparisonSourceUrl: "https://ctext.org/wiki.pl?chapter=281168&if=en",
+    verificationNote: "旧掲載文の後半は『難経懸解』が引用する七十五難の電子本文と一致せず、旧原文・訓読の公開を保留しています。別欄は同書にある冒頭のみの限定引用です。『難経』全体の底本・異本照合や原本画像の確認は完了していません。",
+    comparisonSourceUrl: "https://zh.wikisource.org/zh-hant/%E9%9A%BE%E7%BB%8F%E6%82%AC%E8%A7%A3",
     originalPublicationStatus: 'withheld_pending_verification',
+    verifiedQuotation: {
+      text: "七十五難曰：經言東方實，西方虛，瀉南方，補北方，何謂也？然：金木水火土，當更相平。",
+      sourceTitle: "維基文庫『難經懸解』（黄元御）電子本文",
+      section: "巻下・七十五難に引用される『難経』の冒頭",
+      sourceUrl: "https://zh.wikisource.org/zh-hant/%E9%9A%BE%E7%BB%8F%E6%82%AC%E8%A7%A3",
+      edition: "電子本文の底本・刊行版は未確認。序の日付を刊行年とは扱いません。",
+      checkedAt: "2026-10-03",
+      verificationScope: 'electronic_text',
+      limitation: "『難経懸解』が引く冒頭の電子本文のみを照合しました。原本頁・底本画像は未確認で、『難経』の全篇・全版本を校訂したものではありません。専門家による監修も未完了です。",
+    },
     relatedPoints: ["LR2", "KI7", "KI10", "LU9"],
     tags: ["瀉南補北", "五行相克", "難経七十五難", "肝実肺虚", "高度配穴"]
   },
@@ -271,9 +321,21 @@ export const SOURCE_CLASSICAL_TEXTS: ClassicalText[] = [
     theme: "四総穴・身体の部位と経穴を対応づける歌訣",
     original: "肚腹三里に留め、腰背委中に求む。頭項列缺に尋ね、面目合谷に収む。",
     reading: "肚腹は三里に留め、腰背は委中に求む。頭項は列缺に尋ね、面目は合谷に収む。",
-    translation: "腹部と足三里、腰背部と委中、頭や項と列缺、顔面や目と合谷を対応づけて覚える歌訣である。部位別の伝統的な主治を簡潔に示しており、その部位のあらゆる病気が治るという意味にはしない。",
+    translation: "照合した電子本文は、腹部と足三里、腰背部と委中、頭や項と列缺、「面口」（顔面と口）と合谷を対応づけて覚える歌訣である。部位別の伝統的な主治を簡潔に示しており、その部位のあらゆる病気が治るという意味にはしない。",
     clinicalApplication: "四総穴の組み合わせを覚え、部位別の伝統的な取穴思想を学ぶ資料。現代の疾患に対する第一選択の治療を決定する根拠ではなく、各症状の原因、適応、注意事項を別に検討する。",
-    verificationNote: "この「原文」欄は日本語の訓読調の掲載文です。漢文原典の逐語引用ではなく、使用底本・原文の字句の照合は未完了です。",
+    verificationNote: "旧掲載文は日本語の訓読調で、末句の「面目」も比較した電子本文の「面口」と一致しません。漢文原典の逐語引用として旧原文・訓読の公開を保留し、別欄に照合した電子本文を示します。底本画像と原本頁は未確認です。",
+    comparisonSourceUrl: "https://jicheng.tw/tcm/book/%E9%87%9D%E7%81%B8%E5%A4%A7%E6%88%90_1/index.html",
+    originalPublicationStatus: 'withheld_pending_verification',
+    verifiedQuotation: {
+      text: "肚腹三里留，腰背委中求，頭項尋列缺，面口合谷收。",
+      sourceTitle: "中医笈成『針灸大成』（楊継洲）電子本文",
+      section: "巻三・四總穴歌",
+      sourceUrl: "https://jicheng.tw/tcm/book/%E9%87%9D%E7%81%B8%E5%A4%A7%E6%88%90_1/index.html",
+      edition: "資料は底本を北京大学図書館掃描本と表示。刊行版・版年は未確認。",
+      checkedAt: "2026-10-03",
+      verificationScope: 'electronic_text',
+      limitation: "この歌の電子本文と字句を照合しました。資料の句読点を保持しています。原本頁・底本画像は未確認で、全版本との一致や専門家による監修を示すものではありません。",
+    },
     relatedPoints: ["ST36", "BL40", "LU7", "LI4"],
     tags: ["鍼灸大成", "四総穴", "主治歌訣", "伝統的配穴", "配穴方解"]
   },
@@ -284,9 +346,21 @@ export const SOURCE_CLASSICAL_TEXTS: ClassicalText[] = [
     theme: "八脈交会穴・奇経八脈と十二正経の立体交差配穴",
     original: "公孫衝脈胃心胸，内関陰維下里通。後渓督脈内眥頸，申脈陽蹻絡亦同。臨泣胆経連帯脈，外関陽維耳後繞。列缺任脈行肺系，照海陰蹻咽喉照。",
     reading: "公孫は衝脈にして胃心胸、内関は陰維にして下里に通ず…後渓は督脈、申脈は陽蹻…臨泣は帯脈、外関は陽維…列缺は任脈、照海は陰蹻。",
-    translation: "公孫と衝脈、内関と陰維脈、後渓と督脈、申脈と陽蹻脈、足臨泣と帯脈、外関と陽維脈、列缺と任脈、照海と陰蹻脈を関連づけ、胃・心胸、内眥・頸、耳の後ろ、肺系、咽喉などの部位とともに覚える歌訣である。掲載文は現代疾患の治癒や配穴の効果を保証しない。",
+    translation: "照合した「八法交会八穴歌」は、公孫と衝脈、内関と陰維脈、足臨泣と帯脈、外関と陽維脈、後渓と督脈、申脈と陽蹻脈、列缺と任脈、照海と陰蹻脈を関連づける。胃・心胸、目の外側の角、内眥・頸、肺系、胸膈・咽喉などの部位とともに覚える歌訣であり、現代疾患の治癒や配穴の効果を保証しない。",
     clinicalApplication: "公孫＋内関、後渓＋申脈、足臨泣＋外関、列缺＋照海などの伝統的な組み合わせを比較する資料。奇経は伝統理論上の概念であり、実証された深部の解剖学的ネットワークや2穴の相乗効果を意味しない。胸部症状は配穴で判断せず、原因に応じた医療評価を受ける。",
-    verificationNote: "歌の名称、字句、対応部位には異伝があります。この掲載文と『鍼灸大成』の使用底本との一致は未確認であり、逐語引用としての照合が必要です。",
+    verificationNote: "旧掲載文の歌名・句順・「下里通」「耳後繞」「咽喉照」等は、比較した電子本文の「八法交會八穴歌」と一致しません。異伝か再構成かは確定できず、旧原文・訓読の公開を保留しています。別欄の歌は電子本文と照合したもので、底本画像・原本頁・他の異本は未確認です。",
+    comparisonSourceUrl: "https://jicheng.tw/tcm/book/%E9%87%9D%E7%81%B8%E5%A4%A7%E6%88%90_1/index.html",
+    originalPublicationStatus: 'withheld_pending_verification',
+    verifiedQuotation: {
+      text: "公孫衝脈胃心胸，內關陰維下總同，臨泣膽經連帶脈，陽維目銳外關逢，後谿督脈內眥頸，申脈陽蹺絡亦通，列缺任脈行肺系，陰蹺照海膈喉嚨。",
+      sourceTitle: "中医笈成『針灸大成』（楊継洲）電子本文",
+      section: "巻五・八法交會八穴歌",
+      sourceUrl: "https://jicheng.tw/tcm/book/%E9%87%9D%E7%81%B8%E5%A4%A7%E6%88%90_1/index.html",
+      edition: "資料は底本を北京大学図書館掃描本と表示。刊行版・版年は未確認。",
+      checkedAt: "2026-10-03",
+      verificationScope: 'electronic_text',
+      limitation: "この歌の電子本文と字句を照合しました。資料の句読点を保持しています。原本頁・底本画像は未確認で、全版本との一致や専門家による監修を示すものではありません。",
+    },
     relatedPoints: ["SP4", "PC6", "SI3", "BL62", "GB41", "TE5", "LU7", "KI6"],
     tags: ["八脈八法歌", "奇経八脈", "八脈交会穴", "伝統的配穴", "歌訣"]
   },
@@ -294,15 +368,25 @@ export const SOURCE_CLASSICAL_TEXTS: ClassicalText[] = [
     id: "classic-taisei-shougyoku",
     book: "鍼灸大成",
     chapter: "勝玉歌",
-    theme: "勝玉歌の配穴学習・掲載文の原典照合が必要",
+    theme: "勝玉歌の配穴学習・電子本文からの限定引用",
     original: "勝玉歌、針法奇…熱病汗不出，商陽合谷見奇功。頭痛眩暈百会好，中脘足三里調胃中。腰痛腎兪委中在，婦人血病三陰通。",
     reading: "勝玉歌、針法奇なり…熱病汗出でざるは、商陽・合谷奇功を見る。頭痛眩暈には百会よく、中脘・足三里は胃中を調う。腰痛には腎兪・委中あり、婦人の血病には三陰通ず。",
-    translation: "掲載文は、熱病と商陽・合谷、頭痛・眩暈と百会、胃の不調と中脘・足三里、腰痛と腎兪・委中、婦人の血病と三陰交を関連づけている。ただし比較資料の『勝玉歌』全文と一致しない句があり、原文の要約・再構成が混在した可能性があるため、確認済みの古典の現代語訳としては扱えない。",
-    clinicalApplication: "掲載文の出典と字句を再照合するための学習資料。『奇功』等の古典的な賞賛を現代の奇跡的効果に置き換えず、即効性、婦人科疾患への効果、第一選択としての適応を断定しない。出典の照合が完了するまで、この掲載文を配穴を推奨する根拠にはしない。",
-    verificationNote: "識典古籍で公開される『針灸大成』勝玉歌の全文と、掲載文の複数の句が一致しません。使用底本・出典の確認は未完了です。掲載文は比較のため保持していますが、本物の原典引用としての使用を保留しています。",
-    comparisonSourceUrl: "https://www.shidianguji.com/zh/book/NCM011X411999030508/chapter/1ly7mwljljea1",
+    translation: "別欄に引用した二句は、頭痛・眩暈に百会、「心疼・脾痛」に上脘を挙げる伝統的な主治の歌訣である。古典の「心疼」「脾痛」は現代の心臓病・脾臓病の診断名と同義ではない。旧掲載文にあった中脘・足三里等の句はこの引用には含まれず、同じ歌の確認済み本文としては扱わない。",
+    clinicalApplication: "百会・上脘と古典上の症候の対応を学ぶ資料。古典的な効能表現を現代の奇跡的効果に置き換えず、即効性や第一選択としての適応を断定しない。突然の激しい頭痛や胸の痛みは歌訣による配穴で判断せず、必要な医療評価を優先する。",
+    verificationNote: "旧掲載文の複数の句は、中医笈成・識典古籍の『針灸大成』勝玉歌の電子本文と一致せず、旧原文・訓読の公開を保留しています。別欄は中医笈成で照合した二句のみの限定引用です。底本画像・原本頁・全版本との一致は未確認です。",
+    comparisonSourceUrl: "https://jicheng.tw/tcm/book/%E9%87%9D%E7%81%B8%E5%A4%A7%E6%88%90_1/index.html",
     originalPublicationStatus: 'withheld_pending_verification',
-    relatedPoints: ["LI1", "LI4", "GV20", "CV12", "ST36", "BL23", "BL40", "SP6"],
+    verifiedQuotation: {
+      text: "頭痛眩暈百會好，心疼脾痛上脘先",
+      sourceTitle: "中医笈成『針灸大成』（楊継洲）電子本文",
+      section: "巻三・勝玉歌（楊氏）の二句",
+      sourceUrl: "https://jicheng.tw/tcm/book/%E9%87%9D%E7%81%B8%E5%A4%A7%E6%88%90_1/index.html",
+      edition: "資料は底本を北京大学図書館掃描本と表示。刊行版・版年は未確認。",
+      checkedAt: "2026-10-03",
+      verificationScope: 'electronic_text',
+      limitation: "上記二句の電子本文のみを照合しました。歌の全文を公開するものではありません。原本頁・底本画像は未確認で、全版本との一致や専門家による監修を示すものではありません。",
+    },
+    relatedPoints: ["GV20", "CV13"],
     tags: ["勝玉歌", "鍼灸大成", "出典照合が必要", "伝統的配穴", "歌訣"]
   },
   {

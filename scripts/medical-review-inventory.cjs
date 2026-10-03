@@ -13,8 +13,10 @@ const groups = [
   ['case-training', 'src/data/progressiveCases', 'PROGRESSIVE_CASES'],
   ['case-reasons', 'src/data/caseReasoningRubrics', 'CASE_REASONING_RUBRICS'],
   ['quizzes', 'src/data/curriculumQuizzes', 'CURRICULUM_QUIZZES'],
+  ['glossary', 'src/data/glossaryData', 'GLOSSARY_TERMS'],
+  ['clinical-pairs', 'src/types/clinicalMemo', 'CLASSIC_CLINICAL_PAIRS'],
   ['exam-practice', 'src/data/kokushiPastExams', 'KOKUSHI_PAST_EXAMS'],
-  ['classics', 'src/data/classicalTextsData', 'CLASSICAL_TEXTS'],
+  ['classics', 'src/data/classicalTextsData', 'SOURCE_CLASSICAL_TEXTS'],
   ['protocols', 'src/data/tcmProtocolsData', null],
   ['symptoms', 'src/data/symptomData', null],
   ['simulator', 'src/data/simulatorData', null],
@@ -45,7 +47,12 @@ function walk(value, trail, group, file, references = []) {
     }
   } else if (Array.isArray(value)) value.forEach((item, i) => walk(item, trail + '[' + i + ']', group, file, references));
   else if (value && typeof value === 'object') {
-    const refs = value.references || value.sources || references;
+    const refs = value.references || value.sources || (value.verifiedQuotation ? [{
+      title: value.verifiedQuotation.sourceTitle,
+      url: value.verifiedQuotation.sourceUrl,
+      section: value.verifiedQuotation.section,
+      verificationScope: value.verifiedQuotation.verificationScope,
+    }] : references);
     for (const [key, child] of Object.entries(value)) {
       if (['id', 'code', 'slug', 'href', 'url', 'imageUrl', 'publishedAt', 'updatedAt', 'references', 'sources', 'pmid', 'pmcid', 'doi', 'title', 'japaneseTitle', 'authors', 'tags'].includes(key)) continue;
       walk(child, trail + '.' + key, group, file, refs);
@@ -74,7 +81,7 @@ for (const statement of statements) {
 }
 const quote = value => '"' + String(value ?? '').replace(/"/g, '""') + '"';
 fs.mkdirSync(path.resolve('docs/medical-review'), { recursive: true });
-fs.writeFileSync('docs/medical-review/statements.csv', '\ufeff' + [headers, ...statements.map(statement => headers.map(header => statement[header]))].map(row => row.map(quote).join(',')).join('\r\n') + '\r\n');
+fs.writeFileSync('docs/medical-review/statements.csv', '\ufeff' + [headers, ...statements.map(statement => headers.map(header => statement[header]))].map(row => row.map(quote).join(',')).join('\n') + '\n');
 fs.writeFileSync('docs/medical-review/inventory.json', JSON.stringify(statements, null, 2) + '\n');
 const summary = { generatedAt: new Date().toISOString().slice(0, 10), statements: statements.length, priorityStatements: statements.filter(statement => statement.flags).length, counts, reviewStatus: 'pending', expertApproved: statements.filter(statement => statement.review_status === 'expert-approved').length, scope: 'Inventory includes withheld source archives and is not verification. Rendered UI, generated diagrams and source passages also need separate review and expert sign-off.' };
 fs.writeFileSync('src/data/medicalReviewSummary.json', JSON.stringify(summary, null, 2) + '\n');

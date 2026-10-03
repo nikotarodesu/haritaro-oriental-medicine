@@ -21,7 +21,7 @@ export default function YinYangToWuxingBridge({ onNextLecture }: Props) {
             <span>画像解説⑨：陰陽から五行への展開概念図</span>
           </span>
           <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            二値モデルから五相ネットワークへ ── 五行論への架け橋
+            陰陽の二つの側面から五行の関係へ ── 学習の架け橋
           </h4>
         </div>
       </div>
@@ -96,27 +96,31 @@ export default function YinYangToWuxingBridge({ onNextLecture }: Props) {
           {/* 右側：解説と格言 */}
           <div className="lg:col-span-6 space-y-4">
             <blockquote className="p-4 rounded-xl bg-white dark:bg-[#1A2530] border-l-4 border-[#B86924] dark:border-[#E6C387] text-xs sm:text-sm text-[#404743] dark:text-[#D1C6BA] italic leading-relaxed shadow-xs">
-              「陰陽論が治療の**『ベクトル（方向性）』**を決める大まかな地図なら、五行論はその中を詳細に歩くための**『拡大地図（ターゲットと臓器連鎖）』**である。」
+              学習上の比喩：陰陽論が<strong>「二つの側面を捉える地図」</strong>なら、五行論は<strong>「五つの分類と関係を学ぶ地図」</strong>です。
             </blockquote>
 
             <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              陰陽論で「熱か寒か」「虚か実か」という大局的な傾きを掴んだ後、
-              「どの臓器が火を噴き、どの臓器が衰弱しているのか」「臓器同士がどのように悪循環のバトンを渡しているのか」を解明するのが次章**「五行論」**の役割です。
+              陰陽論で寒熱などの伝統的な分類を学んだ後、
+              次章の<strong>「五行論」</strong>では木・火・土・金・水と相生・相剋の関係を整理します。
+              五行の臓腑分類は、現代の臓器の病変や臓器間の病態を診断する仕組みとは区別します。
             </p>
 
             <div className="grid grid-cols-2 gap-2 text-[11px]">
               <div className="p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#E8E1D1] dark:border-[#2A3B4A]">
                 <strong className="text-[#1E3D34] dark:text-[#74BA9E] block mb-0.5">陰陽論の役割</strong>
-                <span>二値化（興奮/抑制・熱/寒）による迅速な方針決定</span>
+                <span>寒熱などの相対的な分類と、その関係を捉える</span>
               </div>
               <div className="p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#E8E1D1] dark:border-[#2A3B4A]">
                 <strong className="text-[#B86924] dark:text-[#E6C387] block mb-0.5">五行論の役割</strong>
-                <span>多臓器ネットワーク（相生・相剋）の連鎖解析</span>
+                <span>五つの伝統分類と相生・相剋の関係を学ぶ</span>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <figcaption className="relative z-10 mt-4 text-[11px] leading-relaxed text-[#737C77] dark:text-[#96A6B2]">
+        陰陽と五行の対応はこの図の教育上の整理です。臓器ネットワークの実証や治療方針の決定を示す図ではなく、引用原典の照合・監修が完了したことも意味しません。
+      </figcaption>
 
     </figure>
   );
