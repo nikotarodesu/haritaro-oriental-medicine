@@ -2,6 +2,12 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Tailwind utilities and base typography use the same self-hosted Japanese fonts. */
+@theme inline {
+  --font-sans: var(--font-noto-sans), "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --font-serif: var(--font-noto-serif), "Hiragino Mincho ProN", "Yu Mincho", serif;
+}
+
 @layer base {
   :root {
     --bg-washi: #F5F1E8; /* 眩しさを抑えた落ち着いた和紙・生成り色 */

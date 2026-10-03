@@ -12,29 +12,21 @@ import {
   GraduationCap, 
   FileText, 
   ChevronRight, 
-  Sparkles, 
   Activity, 
-  Crown, 
-  Lock,
   ArrowRight,
-  Filter,
-  Layers,
   MapPin,
+  X,
 } from "lucide-react";
-import { VERIFIED_PAPERS as PAPERS_DATABASE, PaperReference } from "@/data/references/papersData";
-import { CLASSICAL_TEXTS, ClassicalText } from "@/data/classicalTextsData";
+import { VERIFIED_PAPERS as PAPERS_DATABASE } from "@/data/references/papersData";
+import { CLASSICAL_TEXTS } from "@/data/classicalTextsData";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
-import { PUBLIC_ARCHIVE_CASES, ARCHIVE_CASES_NOTICE, ArchiveClinicalCase } from "@/data/cases/archiveCases";
-import { ClinicalCase } from "@/types/clinicalCase";
-import { KIKEI_VESSELS } from "@/data/kikeiData";
-import { useAuth } from "@/contexts/AuthContext";
+import { PUBLIC_ARCHIVE_CASES, ARCHIVE_CASES_NOTICE } from "@/data/cases/archiveCases";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import AuthModal from "@/components/auth/AuthModal";
 import PrimeStudentCard from "@/components/PrimeStudentCard";
 
 export default function LibraryClient() {
-  const { isPremium } = useAuth();
   const { addMemo } = useClinicalMemo();
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -67,6 +59,15 @@ export default function LibraryClient() {
 
   const filteredArchives = useMemo(() => PUBLIC_ARCHIVE_CASES.filter(ac => matchesSearchText(searchQuery, [ac.title, ac.category, ac.location, ac.symptoms, ac.treatmentAndCourse, ...ac.usedAcupoints, ...ac.tags])), [searchQuery]);
 
+  const totalResults = filteredPapers.length + filteredClassics.length + filteredCases.length + filteredArchives.length;
+  const visibleResultCount = {
+    all: totalResults,
+    papers: filteredPapers.length,
+    classics: filteredClassics.length,
+    cases: filteredCases.length,
+    archives: filteredArchives.length,
+  }[activeTab];
+
   // マイカルテへ保存
   const handleSaveItem = (item: { id: string; title: string; summary: string; points?: string[] }) => {
     addMemo({
@@ -84,16 +85,16 @@ export default function LibraryClient() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
+    <div className="min-h-screen bg-[#F5F1E8] dark:bg-[#10161C] text-base leading-relaxed text-[#232826] dark:text-[#FAF8F5]">
       {/* ヒーローヘッダー */}
-      <div className="bg-white dark:bg-[#17212A] border-b border-[#E5DEC9] dark:border-[#2A3B4A] py-10 sm:py-14">
+      <div className="bg-[#FCFAF6] dark:bg-[#17212A] border-b border-[#E5DEC9] dark:border-[#2A3B4A] py-8 sm:py-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-4">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]">
               <BookOpen className="w-3.5 h-3.5" />
               <span>古典医典・研究資料・症例教材</span>
             </span>
-            <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-medium border border-[#C5DED4] dark:border-[#2A5243]">
+            <span className="text-sm px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-medium border border-[#C5DED4] dark:border-[#2A5243]">
               臨床文献ナレッジベース
             </span>
           </div>
@@ -102,40 +103,45 @@ export default function LibraryClient() {
             <h1 className="font-serif text-2xl sm:text-4xl font-bold tracking-tight text-[#232826] dark:text-[#FAF8F5]">
               文献・古典・臨床実例アーカイブ
             </h1>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] max-w-3xl leading-relaxed">
+            <p className="text-base text-[#59615D] dark:text-[#96A6B2] max-w-3xl leading-relaxed">
               古典条文（素問・霊枢・難経）、原典と書誌情報を照合した研究資料、症例教材をまとめています。研究の種類・対象・限界を確認しながら学ぶための資料集です。
             </p>
           </div>
 
-          <p className="text-xs leading-relaxed">論文は書誌情報の照合済み資料を掲載しています。治療結果の解釈には照合中の資料があり、全件の専門家監修は未完了です。<Link href="/editorial-policy" className="underline">出典確認・監修の進捗を見る</Link></p>
+          <p className="text-base leading-relaxed">論文は書誌情報の照合済み資料を掲載しています。治療結果の解釈には照合中の資料があり、全件の専門家監修は未完了です。<Link href="/editorial-policy" className="underline">出典確認・監修の進捗を見る</Link></p>
 
           {/* 検索バー */}
           <div className="pt-2 max-w-xl">
+            <label htmlFor="library-search" className="mb-2 block text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">資料を検索</label>
             <div className="relative">
-              <Search className="w-4 h-4 text-[#8A948F] absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-5 h-5 text-[#737C77] absolute left-3 top-1/2 -translate-y-1/2" aria-hidden="true" />
               <input
-                type="text"
+                id="library-search"
+                type="search"
                 aria-label="文献・古典・症例を検索"
+                aria-describedby="library-search-hint"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                placeholder="症状（膝痛、不眠、坐骨神経痛）、ツボ名（太衝、足三里）、古典名で検索..."
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl text-xs sm:text-sm bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A948F] focus:outline-none focus:border-[#B86924]"
+                placeholder="キーワードを入力"
+                className="w-full min-h-11 pl-10 pr-14 py-3 rounded-lg text-base bg-[#FFFFFF] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5] placeholder-[#737C77] focus:outline-none focus:border-[#1E3D34] focus:ring-2 focus:ring-[#1E3D34]/20"
               />
+              {searchQuery.length > 0 && <button type="button" aria-label="検索をクリア" onClick={() => setSearchQuery('')} className="absolute right-1 top-1/2 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-md text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#E8EFEA] dark:hover:bg-[#182823]"><X className="h-5 w-5" aria-hidden="true" /></button>}
             </div>
+            <p id="library-search-hint" className="mt-2 text-sm text-[#59615D] dark:text-[#A0B0BC]">例：膝痛、足三里、素問</p>
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
         
         {/* カテゴリタブ */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-[#E5DEC9] dark:border-[#2A3B4A] text-xs sm:text-sm">
+        <div role="group" aria-label="資料の分類" className="flex flex-wrap items-center gap-2 pb-4 border-b border-[#E5DEC9] dark:border-[#2A3B4A] text-sm">
           {[
-            { id: "all", label: "すべての資料", count: filteredPapers.length + filteredClassics.length + filteredCases.length + filteredArchives.length },
-            { id: "papers", label: "現代RCT・論文エビデンス", count: filteredPapers.length },
-            { id: "classics", label: "古典医典条文・解釈", count: filteredClassics.length },
-            { id: "cases", label: "弁証思考症例", count: filteredCases.length },
-            { id: "archives", label: "運動器・局所実例", count: filteredArchives.length },
+            { id: "all", label: "すべて", count: totalResults },
+            { id: "papers", label: "論文", count: filteredPapers.length },
+            { id: "classics", label: "古典", count: filteredClassics.length },
+            { id: "cases", label: "症例", count: filteredCases.length },
+            { id: "archives", label: "実例", count: filteredArchives.length },
           ].map(tab => (
             <button
               key={tab.id}
@@ -143,32 +149,45 @@ export default function LibraryClient() {
               aria-pressed={activeTab === tab.id}
               style={{ minHeight: 44 }}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-4 py-2 rounded-xl font-bold shrink-0 transition-all flex items-center gap-1.5 ${
+              className={`px-3 py-2 rounded-lg border font-bold transition-colors flex items-center gap-1.5 ${
                 activeTab === tab.id
-                  ? "bg-[#B86924] text-white shadow-sm"
-                  : "bg-white dark:bg-[#17212A] text-[#59615D] dark:text-[#96A6B2] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5]"
+                  ? "bg-[#1E3D34] border-[#1E3D34] text-white dark:bg-[#2B6958] dark:border-[#2B6958]"
+                  : "bg-[#FCFAF6] dark:bg-[#17212A] text-[#59615D] dark:text-[#A0B0BC] border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#E8EFEA] dark:hover:bg-[#182823]"
               }`}
             >
               <span>{tab.label}</span>
-              <span className="text-[11px] opacity-80">({tab.count})</span>
+              <span className="text-sm opacity-90">({tab.count})</span>
             </button>
           ))}
         </div>
 
+        <p role="status" className="text-sm text-[#59615D] dark:text-[#A0B0BC]">表示中：{visibleResultCount} 件</p>
+
+        {visibleResultCount === 0 && <section aria-labelledby="library-empty-title" className="rounded-xl bg-[#FCFAF6] dark:bg-[#17212A] p-5 sm:p-6 space-y-3">
+          <h2 id="library-empty-title" className="font-serif text-xl font-bold">該当する資料がありません</h2>
+          <p className="text-base text-[#59615D] dark:text-[#A0B0BC]">{searchQuery.trim() ? 'キーワードを変えるか、検索をクリアして資料を探してください。' : 'この分類に掲載中の資料はありません。ほかの分類もご覧ください。'}</p>
+          <div className="flex flex-wrap gap-3">
+            {searchQuery.length > 0 && <button type="button" onClick={() => setSearchQuery('')} className="inline-flex min-h-11 items-center rounded-lg bg-[#1E3D34] px-4 py-2 text-sm font-bold text-white dark:bg-[#2B6958]">検索をクリア</button>}
+            {activeTab !== 'all' && <button type="button" onClick={() => { setActiveTab('all'); setSearchQuery(''); }} className="inline-flex min-h-11 items-center rounded-lg border border-[#E5DEC9] dark:border-[#2A3B4A] px-4 py-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">すべての資料を見る</button>}
+          </div>
+        </section>}
+
+        {activeTab === "archives" && <div className="[&_p]:text-base [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_a]:text-sm"><MedicalSafetyNotice title="症例アーカイブの掲載は保留中です" message={ARCHIVE_CASES_NOTICE} /></div>}
+
         {/* コンテンツエリア */}
-        <div className="space-y-10">
+        {visibleResultCount > 0 && <div className="space-y-8">
           
           {/* セクション 1: 現代RCT論文 */}
-          {(activeTab === "all" || activeTab === "papers") && (
+          {(activeTab === "all" || activeTab === "papers") && filteredPapers.length > 0 && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-2">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-2">
                 <div className="flex items-center gap-2">
                   <GraduationCap className="w-5 h-5 text-[#1E3D34] dark:text-[#74BA9E]" />
                   <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
                     現代医学研究・RCT論文エビデンス
                   </h2>
                 </div>
-                <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
+                <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
                   {filteredPapers.length} 件
                 </span>
               </div>
@@ -180,28 +199,30 @@ export default function LibraryClient() {
                     <div
                       key={paper.id}
                       id={`paper-${paper.id}`}
-                      className="scroll-mt-28 target:ring-2 target:ring-[#B86924] bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 shadow-2xs space-y-4 flex flex-col justify-between hover:border-[#B86924] transition-all"
+                      className="scroll-mt-28 target:ring-2 target:ring-[#B86924] bg-[#FCFAF6] dark:bg-[#17212A] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-5 space-y-4 flex flex-col justify-between hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-colors"
                     >
                       <div className="space-y-3">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950 text-blue-800 dark:text-blue-300">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                             {paper.studyDesign}
                           </span>
-                          <span className="text-[10px] text-[#737C77]">
+                          <span className="text-sm text-[#59615D] dark:text-[#A0B0BC]">
                             {paper.journal} ({paper.year})
                           </span>
                         </div>
 
                         <div>
-                          <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
+                          <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
                             {paper.japaneseTitle}
                           </h3>
-                          <p className="text-xs text-[#737C77] dark:text-[#8899A6] italic mt-1 line-clamp-1">
-                            {paper.title}
-                          </p>
+                          <details className="mt-2 text-sm text-[#59615D] dark:text-[#A0B0BC]">
+                            <summary className="min-h-11 py-2 font-bold cursor-pointer">書誌情報</summary>
+                            <p className="break-words leading-relaxed">{paper.title}</p>
+                            <p className="mt-2 leading-relaxed">{paper.journal} ({paper.year})</p>
+                          </details>
                         </div>
 
-                        <div className="space-y-1.5 text-xs text-[#59615D] dark:text-[#96A6B2]">
+                        <div className="space-y-3 text-base text-[#59615D] dark:text-[#A0B0BC]">
                           <div>
                             <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">対象疾患: </span>
                             <span>{paper.targetCondition}</span>
@@ -212,13 +233,13 @@ export default function LibraryClient() {
                               <span>{paper.interventionProtocol.name}（使用ツボ: {paper.interventionProtocol.acupoints.join("、")}）</span>
                             </div>
                           )}
-                          <p className="line-clamp-2 bg-[#FAF8F5] dark:bg-[#121920] p-2.5 rounded-xl border border-[#E5DEC9]/40 dark:border-[#2A3B4A]/40 text-[11px] leading-relaxed">
+                          <p className="break-words text-base leading-relaxed">
                             {paper.primaryOutcomes}
                           </p>
                         </div>
                       </div>
 
-                      <div className="pt-3 border-t border-[#E5DEC9]/50 dark:border-[#2A3B4A]/50 flex items-center justify-between">
+                      <div className="pt-3 border-t border-[#E5DEC9]/50 dark:border-[#2A3B4A]/50 flex flex-wrap items-center justify-between gap-3">
                         <button
                           type="button"
                           onClick={() => handleSaveItem({
@@ -227,7 +248,7 @@ export default function LibraryClient() {
                             summary: paper.primaryOutcomes,
                             points: paper.interventionProtocol?.acupoints
                           })}
-                          className={`text-xs font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors cursor-pointer ${
+                          className={`min-h-11 text-sm font-bold flex items-center gap-1.5 px-3 py-2 rounded-lg border transition-colors cursor-pointer ${
                             isSaved
                               ? "bg-emerald-50 dark:bg-[#142820] text-emerald-700 dark:text-emerald-300 border-emerald-300"
                               : "bg-[#FAF8F5] dark:bg-[#1A2632] text-[#59615D] dark:text-[#96A6B2] border-[#E5DEC9] dark:border-[#2A3B4A] hover:text-[#1E3D34]"
@@ -242,7 +263,7 @@ export default function LibraryClient() {
                             href={`https://pubmed.ncbi.nlm.nih.gov/${paper.pmid}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-xs text-[#B86924] dark:text-[#E6C387] font-bold hover:underline inline-flex items-center gap-1"
+                            className="min-h-11 text-sm text-[#1E3D34] dark:text-[#74BA9E] font-bold hover:underline inline-flex items-center gap-1"
                           >
                             <span>PubMed</span>
                             <ExternalLink className="w-3 h-3" />
@@ -257,21 +278,21 @@ export default function LibraryClient() {
           )}
 
           {/* セクション 2: 古典原典条文 */}
-          {(activeTab === "all" || activeTab === "classics") && (
+          {(activeTab === "all" || activeTab === "classics") && filteredClassics.length > 0 && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-2">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-2">
                 <div className="flex items-center gap-2">
                   <BookOpen className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
                   <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
                     古典条文・伝統的な解釈
                   </h2>
                 </div>
-                <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
+                <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
                   {filteredClassics.length} 件
                 </span>
               </div>
 
-              <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">古典の考え方を学ぶ資料です。{CLASSICAL_TEXTS.filter(classic => classic.verifiedQuotation).length}件に電子本文からの引用と確認範囲を表示しています。底本画像との照合・専門家による確認は未完了です。伝統的な配穴意図と、現代の疾患に対する治療効果は分けて読みます。</p>
+              <p className="text-base leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">古典の考え方を学ぶ資料です。{CLASSICAL_TEXTS.filter(classic => classic.verifiedQuotation).length}件に電子本文からの引用と確認範囲を表示しています。底本画像との照合・専門家による確認は未完了です。伝統的な配穴意図と、現代の疾患に対する治療効果は分けて読みます。</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {filteredClassics.map(classic => {
                   const isSaved = savedIds.includes(classic.id);
@@ -279,75 +300,78 @@ export default function LibraryClient() {
                     <div
                       key={classic.id}
                       id={`classic-${classic.id}`}
-                      className="scroll-mt-28 target:ring-2 target:ring-[#B86924] bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 shadow-2xs space-y-4 flex flex-col justify-between hover:border-[#B86924] transition-all"
+                      className="scroll-mt-28 target:ring-2 target:ring-[#B86924] bg-[#FCFAF6] dark:bg-[#17212A] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-5 space-y-4 flex flex-col justify-between hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-colors"
                     >
                       <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-300">
+                        <div className="flex min-w-0 flex-col items-start gap-2">
+                          <span className="max-w-full break-words text-sm font-bold text-[#59615D] dark:text-[#A0B0BC]">
                             『{classic.book}』{classic.chapter}
                           </span>
-                          <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
+                          <h3 className="min-w-0 max-w-full break-words font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
                             {classic.theme}
-                          </span>
+                          </h3>
                         </div>
 
-                        <div className="p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#141C24] border border-[#EFE8D8] dark:border-[#25323E] space-y-2.5">
+                        <div className="space-y-4">
                           <div>
-                            <span className="text-[10px] font-bold text-[#737C77] dark:text-[#8899A6] block mb-0.5">掲載条文（原典との一致は未確認）：</span>
-                            <p className="font-serif text-sm text-[#232826] dark:text-[#FAF8F5] leading-relaxed tracking-wide">
+                            <span className="text-sm font-bold text-[#737C77] dark:text-[#8899A6] block mb-0.5">掲載条文（原典との一致は未確認）：</span>
+                            <p className="font-serif text-base text-[#232826] dark:text-[#FAF8F5] leading-relaxed break-words">
                               {classic.originalPublicationStatus === 'withheld_pending_verification' ? '元の掲載文は字句・出典の確認が必要なため、原典の引用としての掲載を保留しています。下の確認事項をご覧ください。' : classic.original}
                             </p>
                           </div>
                           {classic.reading && (
-                            <div className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-2">
-                              <span className="text-[10px] font-bold text-[#B86924] dark:text-[#E6C387] block mb-0.5">訓読・書き下し：</span>
-                              <p className="font-serif text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                            <details className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-2">
+                              <summary className="min-h-11 py-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] cursor-pointer">訓読・書き下し：</summary>
+                              <p className="font-serif text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                                 {classic.reading}
                               </p>
-                            </div>
+                            </details>
                           )}
                           {classic.verifiedQuotation && (
                             <section className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-3 space-y-2" aria-label="電子本文の引用と確認範囲">
-                              <h4 className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">電子本文からの引用（底本画像は未確認）</h4>
-                              <blockquote className="font-serif text-sm leading-relaxed break-words">{classic.verifiedQuotation.text}</blockquote>
-                              <dl className="text-xs leading-relaxed space-y-1">
+                              <h4 className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">電子本文からの引用（底本画像は未確認）</h4>
+                              <blockquote className="font-serif text-base leading-relaxed break-words">{classic.verifiedQuotation.text}</blockquote>
+                              <details className="text-sm leading-relaxed">
+                                <summary className="min-h-11 py-2 font-bold cursor-pointer">資料・版・頁の詳細</summary>
+                              <dl className="space-y-2">
                                 <div><dt className="inline font-bold">資料・該当箇所：</dt><dd className="inline">{classic.verifiedQuotation.sourceTitle} — {classic.verifiedQuotation.section}</dd></div>
                                 <div><dt className="inline font-bold">版情報：</dt><dd className="inline">{classic.verifiedQuotation.edition || '未確認'}</dd></div>
                                 <div><dt className="inline font-bold">頁標識：</dt><dd className="inline">{classic.verifiedQuotation.page || '未確認'}</dd></div>
                                 <div><dt className="inline font-bold">電子本文の確認日：</dt><dd className="inline">{classic.verifiedQuotation.checkedAt}</dd></div>
                               </dl>
-                              <p className="text-xs leading-relaxed">{classic.verifiedQuotation.limitation}</p>
-                              <a href={classic.verifiedQuotation.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1 text-xs font-bold underline">引用元の電子本文を見る<ExternalLink className="h-3 w-3" aria-hidden="true" /></a>
+                              </details>
+                              <p className="text-base leading-relaxed">{classic.verifiedQuotation.limitation}</p>
+                              <a href={classic.verifiedQuotation.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1 text-sm font-bold underline">引用元の電子本文を見る<ExternalLink className="h-3 w-3" aria-hidden="true" /></a>
                             </section>
                           )}
                           <div className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-2">
-                            <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-0.5">学習用の現代語解説：</span>
-                            <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
+                            <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-0.5">学習用の現代語解説：</span>
+                            <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                               {classic.translation}
                             </p>
                           </div>
-                          {classic.verificationNote && <div className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-2 text-xs leading-relaxed text-[#A83629] dark:text-[#F2A99F]">
+                          {classic.verificationNote && <div className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-3 text-base leading-relaxed text-[#A83629] dark:text-[#F2A99F]">
                             <p>{classic.verificationNote}</p>
                             {classic.comparisonSourceUrl && <a href={classic.comparisonSourceUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex min-h-11 items-center underline">照合に使用した比較資料</a>}
                           </div>}
                         </div>
 
-                        <div className="text-xs text-[#59615D] dark:text-[#96A6B2] bg-[#EBF3EF]/40 dark:bg-[#182823]/40 p-3 rounded-xl border border-[#C5DED4]/40 dark:border-[#2A5243]/40 space-y-1.5">
+                        <div className="text-base text-[#59615D] dark:text-[#A0B0BC] border-l-2 border-[#C5DED4] dark:border-[#2A5243] pl-4 space-y-3">
                           <div>
-                            <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-0.5">
+                            <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-0.5">
                               伝統的な配穴意図・現代医療への適用限界:
                             </span>
                             <span className="leading-relaxed">{classic.clinicalApplication}</span>
                           </div>
                           {classic.relatedPoints && classic.relatedPoints.length > 0 && (
-                            <div className="flex items-center gap-1.5 pt-1.5 border-t border-[#C5DED4]/40 dark:border-[#2A5243]/40">
-                              <span className="text-[10px] font-bold text-[#737C77] dark:text-[#8899A6]">連動経穴:</span>
+                            <div className="flex flex-wrap items-center gap-2 pt-2">
+                              <span className="text-sm font-bold text-[#737C77] dark:text-[#8899A6]">連動経穴:</span>
                               <div className="flex flex-wrap gap-1">
                                 {classic.relatedPoints.map(pt => (
                                   <Link
                                     key={pt}
                                     href={`/tsubo/${pt.toLowerCase()}`}
-                                    className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-white dark:bg-[#1A2632] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#74BA9E] hover:underline"
+                                    className="inline-flex min-h-11 min-w-11 items-center justify-center px-3 py-2 rounded-lg text-sm font-mono font-bold bg-[#E8EFEA] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] hover:underline"
                                   >
                                     {pt}
                                   </Link>
@@ -358,7 +382,7 @@ export default function LibraryClient() {
                         </div>
                       </div>
 
-                      <div className="pt-3 border-t border-[#E5DEC9]/50 dark:border-[#2A3B4A]/50 flex items-center justify-between">
+                      <div className="pt-3 border-t border-[#E5DEC9]/50 dark:border-[#2A3B4A]/50 flex flex-wrap items-center justify-between gap-3">
                         <button
                           type="button"
                           onClick={() => handleSaveItem({
@@ -366,7 +390,7 @@ export default function LibraryClient() {
                             title: `『${classic.book}』${classic.theme}`,
                             summary: classic.clinicalApplication
                           })}
-                          className={`text-xs font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors cursor-pointer ${
+                          className={`min-h-11 text-sm font-bold flex items-center gap-1.5 px-3 py-2 rounded-lg border transition-colors cursor-pointer ${
                             isSaved
                               ? "bg-emerald-50 dark:bg-[#142820] text-emerald-700 dark:text-emerald-300 border-emerald-300"
                               : "bg-[#FAF8F5] dark:bg-[#1A2632] text-[#59615D] dark:text-[#96A6B2] border-[#E5DEC9] dark:border-[#2A3B4A] hover:text-[#1E3D34]"
@@ -378,7 +402,7 @@ export default function LibraryClient() {
 
                         <div className="flex flex-wrap gap-1">
                           {classic.tags.slice(0, 2).map(tag => (
-                            <span key={tag} className="text-[10px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                            <span key={tag} className="text-sm px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
                               #{tag}
                             </span>
                           ))}
@@ -392,9 +416,9 @@ export default function LibraryClient() {
           )}
 
           {/* セクション 3: 弁証思考症例演習 (20例) */}
-          {(activeTab === "all" || activeTab === "cases") && (
+          {(activeTab === "all" || activeTab === "cases") && filteredCases.length > 0 && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-2">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-2">
                 <div className="flex items-center gap-2">
                   <FileText className="w-5 h-5 text-blue-600" />
                   <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
@@ -403,7 +427,7 @@ export default function LibraryClient() {
                 </div>
                 <Link
                   href="/cases"
-                  className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] hover:underline flex items-center gap-1"
+                  className="text-sm font-bold text-[#B86924] dark:text-[#E6C387] hover:underline flex items-center gap-1"
                 >
                   <span>症例演習ページへ</span>
                   <ChevronRight className="w-3 h-3" />
@@ -415,10 +439,10 @@ export default function LibraryClient() {
                   <Link
                     key={c.id}
                     href={`/cases/${c.id}`}
-                    className="group bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 shadow-2xs hover:border-[#B86924] transition-all space-y-2.5 flex flex-col justify-between"
+                    className="group bg-[#FCFAF6] dark:bg-[#17212A] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-colors space-y-2.5 flex flex-col justify-between"
                   >
                     <div className="space-y-2">
-                      <div className="flex items-center justify-between text-[10px]">
+                      <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
                         <span className="font-bold text-[#737C77]">
                           症例 {c.id} / {c.category}
                         </span>
@@ -433,16 +457,16 @@ export default function LibraryClient() {
                         )}
                       </div>
 
-                      <h3 className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] transition-colors leading-snug">
+                      <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] transition-colors leading-snug">
                         {c.title}
                       </h3>
 
-                      <p className="text-xs text-[#59615D] dark:text-[#96A6B2] line-clamp-2 leading-relaxed">
+                      <p className="text-base text-[#59615D] dark:text-[#A0B0BC] break-words leading-relaxed">
                         主訴: {c.patient.chiefComplaint} ({c.patient.gender} {c.patient.age})
                       </p>
                     </div>
 
-                    <div className="pt-2 border-t border-[#E5DEC9]/40 flex items-center justify-between text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
+                    <div className="pt-2 border-t border-[#E5DEC9]/40 flex flex-wrap items-center justify-between gap-2 text-sm font-bold text-[#B86924] dark:text-[#E6C387]">
                       <span>確定証: {c.correctDiagnosis.pattern}</span>
                       <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 transition-transform" />
                     </div>
@@ -453,21 +477,20 @@ export default function LibraryClient() {
           )}
 
           {/* セクション 4: 運動器・自律神経実例アーカイブ (32例) */}
-          {(activeTab === "all" || activeTab === "archives") && (
+          {(activeTab === "all" || activeTab === "archives") && filteredArchives.length > 0 && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-2">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-2">
                 <div className="flex items-center gap-2">
                   <Activity className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                   <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
                     症例アーカイブ（出典確認待ち）
                   </h2>
                 </div>
-                <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
+                <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
                   {filteredArchives.length} 件
                 </span>
               </div>
 
-              <MedicalSafetyNotice title="症例アーカイブの掲載は保留中です" message={ARCHIVE_CASES_NOTICE} />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {filteredArchives.map(ac => {
                   const isSaved = savedIds.includes(ac.id);
@@ -475,14 +498,14 @@ export default function LibraryClient() {
                     <div
                       key={ac.id}
                       id={`archive-${ac.id}`}
-                      className="scroll-mt-28 target:ring-2 target:ring-[#B86924] bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 shadow-2xs space-y-3 flex flex-col justify-between hover:border-emerald-600 dark:hover:border-emerald-500 transition-all"
+                      className="scroll-mt-28 target:ring-2 target:ring-[#B86924] bg-[#FCFAF6] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 space-y-3 flex flex-col justify-between hover:border-emerald-600 dark:hover:border-emerald-500 transition-all"
                     >
                       <div className="space-y-2.5">
                         <div className="flex items-center justify-between gap-2">
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
+                          <span className="text-sm font-bold px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
                             {ac.category}
                           </span>
-                          <span className="text-[10px] text-[#737C77] flex items-center gap-1">
+                          <span className="text-sm text-[#737C77] flex items-center gap-1">
                             <MapPin className="w-3 h-3" />
                             {ac.location}｜{ac.patient.ageGroup} {ac.patient.gender}
                           </span>
@@ -492,12 +515,12 @@ export default function LibraryClient() {
                           {ac.title}
                         </h3>
 
-                        <div className="space-y-1 text-xs text-[#59615D] dark:text-[#96A6B2]">
-                          <p className="line-clamp-2">
+                        <div className="space-y-3 text-base text-[#59615D] dark:text-[#A0B0BC]">
+                          <p className="break-words">
                             <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">症状: </span>
                             {ac.symptoms}
                           </p>
-                          <p className="line-clamp-2">
+                          <p className="break-words">
                             <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">施術経過: </span>
                             {ac.treatmentAndCourse}
                           </p>
@@ -505,13 +528,13 @@ export default function LibraryClient() {
 
                         {ac.usedAcupoints.length > 0 && (
                           <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                            <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                            <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                               使用ツボ:
                             </span>
                             {ac.usedAcupoints.map(pt => (
                               <span
                                 key={pt}
-                                className="text-[10px] px-1.5 py-0.2 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5]"
+                                className="text-sm px-1.5 py-0.2 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5]"
                               >
                                 {pt}
                               </span>
@@ -520,7 +543,7 @@ export default function LibraryClient() {
                         )}
                       </div>
 
-                      <div className="pt-3 border-t border-[#E5DEC9]/50 dark:border-[#2A3B4A]/50 flex items-center justify-between">
+                      <div className="pt-3 border-t border-[#E5DEC9]/50 dark:border-[#2A3B4A]/50 flex flex-wrap items-center justify-between gap-3">
                         <button
                           type="button"
                           onClick={() => handleSaveItem({
@@ -529,7 +552,7 @@ export default function LibraryClient() {
                             summary: ac.summary,
                             points: ac.usedAcupoints
                           })}
-                          className={`text-xs font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors cursor-pointer ${
+                          className={`min-h-11 text-sm font-bold flex items-center gap-1.5 px-3 py-2 rounded-lg border transition-colors cursor-pointer ${
                             isSaved
                               ? "bg-emerald-50 dark:bg-[#142820] text-emerald-700 dark:text-emerald-300 border-emerald-300"
                               : "bg-[#FAF8F5] dark:bg-[#1A2632] text-[#59615D] dark:text-[#96A6B2] border-[#E5DEC9] dark:border-[#2A3B4A] hover:text-[#1E3D34]"
@@ -541,7 +564,7 @@ export default function LibraryClient() {
 
                         <div className="flex flex-wrap gap-1">
                           {ac.tags.slice(0, 2).map(tag => (
-                            <span key={tag} className="text-[10px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                            <span key={tag} className="text-sm px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
                               #{tag}
                             </span>
                           ))}
@@ -554,7 +577,9 @@ export default function LibraryClient() {
             </div>
           )}
 
-        </div>
+        </div>}
+
+        {activeTab === "all" && <div className="[&_p]:text-base [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_a]:text-sm"><MedicalSafetyNotice title="症例アーカイブの掲載は保留中です" message={ARCHIVE_CASES_NOTICE} /></div>}
 
         {/* 学生向け専門書・教科書サポート（Prime Student） */}
         <PrimeStudentCard variant="banner" className="mt-12" />

@@ -110,7 +110,7 @@ export default function Header() {
       style={{ borderTop: `2.5px solid ${currentSeason.accentHex}` }}
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between gap-3 h-20">
           {/* ロゴエリア */}
           <div className="flex items-center min-w-0 shrink-0">
             <Link href="/" className="flex items-center group">
@@ -120,8 +120,8 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* デスクトップ ナビゲーション（基本分類：臨床で使う・学ぶ・辞典・料金・マイノート） */}
-          <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2">
+          {/* 大画面ではフルナビ、それ未満では検索と全機能メニューを表示 */}
+          <nav className="hidden 2xl:flex shrink-0 items-center gap-2 whitespace-nowrap">
             {/* 1. 学ぶ・国試（ドロップダウン） */}
             <div
               className="relative"
@@ -156,7 +156,7 @@ export default function Header() {
               </div>
 
               {openDropdown === "learn" && (
-                <div className="absolute top-full left-0 mt-1 w-80 p-2 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 border-[#1E2D3D]/20 dark:border-[#2A3B4A] shadow-xl z-50 animate-fadeIn space-y-1">
+                <div className="absolute top-full left-0 mt-1 w-80 p-2 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 border-[#1E2D3D]/20 dark:border-[#2A3B4A] shadow-xl z-50 animate-fadeIn space-y-1 whitespace-normal">
                   <div className="px-3 py-1.5 border-b border-[#E8E1D1] dark:border-[#263542] flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-[#1E2D3D] dark:text-[#7BAAD8] uppercase">
                       学ぶ・国試対策
@@ -297,7 +297,7 @@ export default function Header() {
               </div>
 
               {openDropdown === "clinical" && (
-                <div className="absolute top-full left-0 mt-1 w-84 p-2 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34]/20 dark:border-[#2A3B4A] shadow-xl z-50 animate-fadeIn space-y-1">
+                <div className="absolute top-full left-0 mt-1 w-84 p-2 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34]/20 dark:border-[#2A3B4A] shadow-xl z-50 animate-fadeIn space-y-1 whitespace-normal">
                   <div className="px-3 py-1.5 border-b border-[#E8E1D1] dark:border-[#263542] flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-[#1E3D34] dark:text-[#74BA9E] uppercase">
                       臨床実践ツール
@@ -464,7 +464,7 @@ export default function Header() {
           </nav>
 
           {/* デスクトップ右側：検索ボタン ＆ 会員マイページ ＆ 表示設定 */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden 2xl:flex shrink-0 items-center gap-2 whitespace-nowrap">
             {/* サイト全体横断検索（Cmd+K） */}
             <button
               type="button"
@@ -536,7 +536,7 @@ export default function Header() {
               </button>
 
               {openDropdown === "settings" && (
-                <div className="absolute top-full right-0 mt-1 w-64 p-3 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34]/20 dark:border-[#2A3B4A] shadow-xl z-50 animate-fadeIn space-y-3">
+                <div className="absolute top-full right-0 mt-1 w-64 p-3 bg-[#FAF8F5] dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34]/20 dark:border-[#2A3B4A] shadow-xl z-50 animate-fadeIn space-y-3 whitespace-normal">
                   <div className="border-b border-[#E8E1D1] dark:border-[#263542] pb-2">
                     <span className="text-[10px] font-bold tracking-wider text-[#1E3D34] dark:text-[#83BEA8] uppercase">
                       文字サイズ・外観設定
@@ -568,13 +568,13 @@ export default function Header() {
             </div>
           </div>
 
-          {/* モバイルヘッダー右側（検索、メニューボタン） */}
-          <div className="flex items-center gap-1.5 lg:hidden shrink-0">
+          {/* スマホ・タブレット・中画面ヘッダー右側（検索、メニューボタン） */}
+          <div className="flex items-center gap-1.5 2xl:hidden shrink-0">
             {/* モバイル検索ボタン */}
             <button
               type="button"
               onClick={() => setIsSearchOpen(true)}
-              className="p-2 rounded-xl text-[#404743] dark:text-[#C5D2DB] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] transition-colors cursor-pointer shrink-0"
+              className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center p-2 rounded-xl text-[#404743] dark:text-[#C5D2DB] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] transition-colors cursor-pointer shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2"
               aria-label="サイト内検索を開く"
               title="サイト内検索"
             >
@@ -583,8 +583,9 @@ export default function Header() {
 
             <button
               ref={menuButtonRef}
+              type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-1.5 sm:p-2 rounded-lg text-[#404743] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] transition-colors shrink-0"
+              className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center p-2 rounded-xl text-[#404743] dark:text-[#E6EFEA] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] transition-colors shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2"
               aria-expanded={mobileMenuOpen}
               aria-label={mobileMenuOpen ? "メニューを閉じる" : "メニューを開く"}
             >
@@ -596,7 +597,7 @@ export default function Header() {
 
       {/* モバイルナビゲーション ドロワー（3大分類：臨床で使う・学ぶ/調べる・利用案内） */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#131A21] px-4 pt-4 pb-7 space-y-4 shadow-lg max-h-[85vh] overflow-y-auto">
+          <div className="2xl:hidden border-t border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#131A21] px-4 pt-4 pb-7 space-y-4 shadow-lg max-h-[85vh] overflow-y-auto">
           {/* 表示設定（文字サイズ・陰陽テーマ） */}
           <div className="p-3 bg-white dark:bg-[#1A2530] rounded-xl border border-[#EDE7D8] dark:border-[#22303D] space-y-2">
             <div className="flex items-center justify-between">

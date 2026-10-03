@@ -77,13 +77,11 @@ export default function MobileBottomNav() {
                   key={`${item.id}-${idx}`}
                   type="button"
                   onClick={handleOpenSearch}
-                  className="flex-1 flex flex-col items-center justify-center py-1 text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] active:scale-95 transition-all cursor-pointer relative"
+                  className="flex-1 min-h-[44px] flex flex-col items-center justify-center py-1 text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] active:scale-95 transition-all cursor-pointer relative"
                   aria-label={item.label}
                 >
-                  <div className="w-8 h-8 rounded-full bg-[#EBF3EF] dark:bg-[#182823] flex items-center justify-center text-[#1E3D34] dark:text-[#74BA9E] shadow-2xs">
-                    <Icon className="w-4 h-4" />
-                  </div>
-                  <span className="text-[10px] font-bold mt-0.5 tracking-tight">
+                  <Icon className="w-5 h-5 text-[#1E3D34] dark:text-[#74BA9E]" />
+                  <span className="text-xs font-bold mt-0.5 tracking-tight">
                     {item.shortLabel}
                   </span>
                 </button>
@@ -94,12 +92,13 @@ export default function MobileBottomNav() {
               <Link
                 key={`${item.id}-${idx}`}
                 href={item.href}
-                className={`flex-1 flex flex-col items-center justify-center py-1 transition-all active:scale-95 relative ${
+                className={`flex-1 min-h-[44px] flex flex-col items-center justify-center py-1 transition-all active:scale-95 relative ${
                   active
                     ? "text-[#1E3D34] dark:text-[#74BA9E] font-bold"
                     : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
                 }`}
                 aria-label={item.label}
+                aria-current={active ? "page" : undefined}
               >
                 <div className="relative">
                   <Icon className={`w-5 h-5 ${active ? "stroke-[2.5]" : "stroke-2"}`} />
@@ -109,7 +108,7 @@ export default function MobileBottomNav() {
                     </span>
                   )}
                 </div>
-                <span className="text-[10px] mt-0.5 tracking-tight truncate max-w-[64px]">
+                <span className="text-xs mt-0.5 tracking-tight truncate max-w-[64px]">
                   {item.shortLabel}
                 </span>
               </Link>
@@ -120,15 +119,16 @@ export default function MobileBottomNav() {
           <button
             type="button"
             onClick={() => setIsMoreOpen(true)}
-            className={`flex-1 flex flex-col items-center justify-center py-1 text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] active:scale-95 transition-all cursor-pointer relative ${
+            className={`flex-1 min-h-[44px] flex flex-col items-center justify-center py-1 text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] active:scale-95 transition-all cursor-pointer relative ${
               isMoreOpen ? "text-[#1E3D34] dark:text-[#74BA9E] font-bold" : ""
             }`}
             aria-label="その他メニューを展開"
+            aria-expanded={isMoreOpen}
           >
             <div className="relative">
               <MoreHorizontal className="w-5 h-5" />
             </div>
-            <span className="text-[10px] mt-0.5 tracking-tight">
+            <span className="text-xs mt-0.5 tracking-tight">
               その他
             </span>
           </button>

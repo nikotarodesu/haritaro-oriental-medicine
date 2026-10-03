@@ -204,8 +204,8 @@ export default function NavCustomizeModal({
                   <LayoutGrid className="w-3.5 h-3.5" />
                   <span>標準</span>
                 </div>
-                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5 line-clamp-1">
-                  ホーム・経穴・検索・ノート
+                <div className="text-xs text-[#737C77] dark:text-[#8899A6] mt-0.5 leading-relaxed">
+                  学ぶ・経穴・検索・ノート
                 </div>
               </button>
 
@@ -222,8 +222,8 @@ export default function NavCustomizeModal({
                   <GraduationCap className="w-3.5 h-3.5" />
                   <span>学生向け</span>
                 </div>
-                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5 line-clamp-1">
-                  学ぶ・復習・国試・検索
+                <div className="text-xs text-[#737C77] dark:text-[#8899A6] mt-0.5 leading-relaxed">
+                  学ぶ・国試・経穴・ノート
                 </div>
               </button>
 
@@ -240,7 +240,7 @@ export default function NavCustomizeModal({
                   <Stethoscope className="w-3.5 h-3.5" />
                   <span>臨床家向け</span>
                 </div>
-                <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-0.5 line-clamp-1">
+                <div className="text-xs text-[#737C77] dark:text-[#8899A6] mt-0.5 leading-relaxed">
                   弁証・配穴・経穴・ノート
                 </div>
               </button>

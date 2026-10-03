@@ -21,6 +21,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/curriculum/lecture-yinyang-8': '2026-10-03',
 };
 export const SITE_UPDATES = [
+  { date: '2026-10-03', label: '導線と読みやすさ', href: '/tsubo', text: 'スマホの学習入口、経穴検索・ページ内目次、文献の分類と検索解除を改善。日本語書体・文字サイズ・カードの余白を統一' },
   { date: '2026-10-03', label: '教材の説明を見直し', href: '/editorial-policy', text: '陰陽8講義と関連図・用語・古典・配穴例で伝統的な説明と医学的根拠を区別。電子本文の引用範囲と未確認の底本を明示' },
   { date: '2026-10-03', label: '経穴の情報と操作', href: '/tsubo/li4', text: '合谷の位置説明、検索用の監修表示、共有情報を修正し、スマホの保存・比較・復習操作を改善' },
   { date: SITE_REVISED_AT, label: '受診と施術の安全性', href: '/safety', text: '救急受診の目安を明確にし、固定の安全深度・未照合の施術手順を掲載保留' },

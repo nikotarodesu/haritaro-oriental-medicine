@@ -163,8 +163,8 @@ export type NavPresetType = "standard" | "student" | "clinician";
 export const NAV_PRESETS: Record<NavPresetType, { name: string; description: string; items: [NavItemId, NavItemId, NavItemId, NavItemId] }> = {
   standard: {
     name: "標準セット",
-    description: "ホーム、経穴、検索、マイノートの基本構成",
-    items: ["home", "tsubo", "search", "notes"],
+    description: "学ぶ、経穴、検索、マイノートの基本構成",
+    items: ["curriculum", "tsubo", "search", "notes"],
   },
   student: {
     name: "学生・学習者セット",
@@ -189,9 +189,9 @@ export interface NavUserConfig {
 
 export const DEFAULT_NAV_CONFIG: NavUserConfig = {
   version: 1,
-  items: ["home", "tsubo", "search", "notes"],
+  items: ["curriculum", "tsubo", "search", "notes"],
   preset: "standard",
-  updatedAt: "2026-09-28",
+  updatedAt: "2026-10-03",
 };
 
 /**

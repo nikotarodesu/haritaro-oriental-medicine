@@ -310,20 +310,25 @@ export default function TsuboInteractiveClient() {
     <div className="space-y-8 sm:space-y-12">
       {/* 大型検索バー（最優先配置） */}
       <section className="max-w-4xl mx-auto space-y-3">
+        <label htmlFor="tsubo-search" className="block text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
+          経穴を検索
+        </label>
         <div className="relative">
           <Search className="w-5 h-5 text-[#737C77] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
+            id="tsubo-search"
+            aria-describedby="tsubo-search-examples"
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="経穴名、よみ、コード（合谷、ごうこく、LI4）、主治（頭痛、胃痛など）..."
-            className="w-full pl-12 pr-12 py-3.5 rounded-2xl border-2 border-[#D8CFC0] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A] text-sm text-[#232826] dark:text-[#FAF8F5] focus:outline-hidden focus:border-[#1E3D34] dark:focus:border-[#74BA9E] transition-all shadow-xs min-h-[48px]"
+            placeholder="経穴名・コード"
+            className="w-full pl-12 pr-16 py-3.5 rounded-2xl border-2 border-[#D8CFC0] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A] text-base text-[#232826] dark:text-[#FAF8F5] focus:outline-hidden focus:border-[#1E3D34] dark:focus:border-[#74BA9E] transition-all shadow-xs min-h-[56px]"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#737C77] hover:text-[#232826] p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="absolute right-2 top-1/2 -translate-y-1/2 min-h-[44px] min-w-[44px] inline-flex items-center justify-center text-[#737C77] hover:text-[#232826] dark:hover:text-[#FAF8F5] p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
               title="検索語をクリア"
               aria-label="検索語をクリア"
             >
@@ -331,6 +336,9 @@ export default function TsuboInteractiveClient() {
             </button>
           )}
         </div>
+        <p id="tsubo-search-examples" className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+          例：合谷、ごうこく、LI4、頭痛
+        </p>
 
         {/* 検索直下のサマリー ＆ 人体図トグルバー */}
         <div className="flex flex-wrap items-center justify-between gap-2.5 px-1">

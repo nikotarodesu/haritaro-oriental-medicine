@@ -27,12 +27,12 @@ export default function FontSizeControl({
       <button
         type="button"
         onClick={cycleFontSize}
-        className={`relative flex items-center justify-center gap-0.5 px-2 py-1.5 rounded-full border border-[#E5DEC9] dark:border-[#2D3E50] bg-[#FAF8F5] dark:bg-[#151D25] text-[#404743] dark:text-[#C5D2DB] hover:bg-[#EBF3EF] dark:hover:bg-[#1C2834] transition-all shadow-2xs group ${className}`}
+        className={`relative min-h-11 flex items-center justify-center gap-1.5 px-3 py-2 rounded-full border border-[#E5DEC9] dark:border-[#2D3E50] bg-[#FAF8F5] dark:bg-[#151D25] text-[#404743] dark:text-[#C5D2DB] hover:bg-[#EBF3EF] dark:hover:bg-[#1C2834] transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 ${className}`}
         title={`文字サイズ切り替え（現在: ${labels[fontSize]}）`}
         aria-label={`文字サイズ切り替え 現在は${labels[fontSize]}`}
       >
         <Type className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-        <span className="text-[10px] font-bold tracking-tight text-[#1E3D34] dark:text-[#74BA9E]">
+        <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
           {labels[fontSize]}
         </span>
       </button>
@@ -43,12 +43,12 @@ export default function FontSizeControl({
   if (variant === "drawer") {
     return (
       <div className={`p-3 rounded-2xl bg-[#F2EDE4] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2D3E50] space-y-2 ${className}`}>
-        <div className="flex items-center justify-between text-xs font-bold text-[#59615D] dark:text-[#96A6B2]">
+        <div className="flex flex-wrap gap-2 items-center justify-between text-sm font-bold text-[#59615D] dark:text-[#96A6B2]">
           <span className="flex items-center gap-1.5 text-[#1E3D34] dark:text-[#74BA9E]">
             <Type className="w-4 h-4" />
             <span>文字サイズ変更</span>
           </span>
-          <span className="text-[11px] font-medium text-[#737C77] dark:text-[#8899A6]">
+          <span className="text-sm font-medium text-[#59615D] dark:text-[#96A6B2]">
             現在: {labels[fontSize]}
           </span>
         </div>
@@ -60,7 +60,8 @@ export default function FontSizeControl({
                 key={size}
                 type="button"
                 onClick={() => setFontSize(size)}
-                className={`py-2 px-3 rounded-lg text-xs font-bold transition-all ${
+                aria-pressed={isActive}
+                className={`min-h-11 py-2 px-3 rounded-lg text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${
                   isActive
                     ? "bg-[#1E3D34] text-[#FAF8F5] dark:bg-[#2B6958] dark:text-white shadow-sm scale-[1.02]"
                     : "text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#EBF3EF] dark:hover:bg-[#1E2B37]"
@@ -84,7 +85,7 @@ export default function FontSizeControl({
     >
       <div className="flex items-center gap-1 pl-2 pr-1 text-[#737C77] dark:text-[#8899A6] select-none">
         <Type className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-        <span className="text-[11px] font-bold hidden xl:inline">文字</span>
+        <span className="text-sm font-bold hidden xl:inline">文字</span>
       </div>
 
       <div className="flex items-center gap-0.5">
@@ -95,7 +96,8 @@ export default function FontSizeControl({
               key={size}
               type="button"
               onClick={() => setFontSize(size)}
-              className={`px-2.5 py-0.5 rounded-full text-xs transition-all ${
+              aria-pressed={isActive}
+              className={`min-h-11 min-w-11 px-2.5 py-2 rounded-full text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${
                 isActive
                   ? "bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] font-bold shadow-xs scale-100"
                   : "text-[#59615D] dark:text-[#A0B0BC] font-medium hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] hover:bg-[#EBF3EF] dark:hover:bg-[#1E2B37]"
