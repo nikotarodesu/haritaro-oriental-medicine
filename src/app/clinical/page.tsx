@@ -3,9 +3,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { 
   Stethoscope, 
+  Compass,
   Layers, 
-  SlidersHorizontal, 
-  Sparkles, 
   Activity, 
   FileText, 
   ArrowRight, 
@@ -13,9 +12,6 @@ import {
   Printer, 
   History, 
   ShieldCheck, 
-  HelpCircle, 
-  BookOpen, 
-  Award,
   Crown
 } from "lucide-react";
 import { TOOL_CATALOG } from "@/config/toolCatalog";
@@ -48,7 +44,7 @@ export default function ClinicalLandingPage() {
     },
     {
       q: "患者の個人情報はどのように保護されますか？",
-      a: "氏名や連絡先などの直接の個人識別情報は保持しない設計となっており、カルテID（例: PT-001）のみで管理します。また、カルテ本文や症状記述を公開URLや外部解析サービスへ送信することは一切ありません。",
+      a: "氏名・電話番号・住所の専用入力欄はありません。カルテIDなどの記号を使い、自由記述やメモにも患者さんを特定できる情報を入力しないでください。未ログイン時の記録は利用中のブラウザに保存され、ログイン時は自分のアカウントへの同期に対応します。ノートの本文は保存処理で公開URLに含めません。",
     },
     {
       q: "ツールの結果は診断を確定するものですか？",
@@ -79,10 +75,10 @@ export default function ClinicalLandingPage() {
         </p>
 
         {/* 主CTA ＆ 副リンク */}
-        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+        <div className="pt-2 flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-3.5">
           <a
             href="#tools"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] text-sm sm:text-base font-bold shadow-sm transition-all inline-flex items-center justify-center gap-2"
+            className="w-full sm:w-auto min-h-11 px-8 py-3.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] text-sm sm:text-base font-bold shadow-sm transition-all inline-flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             <Activity className="w-4 h-4" />
             <span>問診に使うツールを見る</span>
@@ -90,11 +86,19 @@ export default function ClinicalLandingPage() {
           </a>
 
           <Link
+            href="/tsubo"
+            className="w-full sm:w-auto min-h-11 px-6 py-3.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-[#1E3D34] dark:text-[#74BA9E] text-sm font-semibold transition-all inline-flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2"
+          >
+            <Compass aria-hidden="true" className="w-4 h-4" />
+            <span>経穴を調べる</span>
+          </Link>
+
+          <Link
             href="/simulator"
-            className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-[#1E3D34] dark:text-[#74BA9E] text-xs sm:text-sm font-semibold transition-all inline-flex items-center justify-center gap-2"
+            className="w-full sm:w-auto min-h-11 px-6 py-3.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-[#1E3D34] dark:text-[#74BA9E] text-sm font-semibold transition-all inline-flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             <Layers className="w-4 h-4" />
-            <span>経穴・弁証を調べる</span>
+            <span>弁証を検討する</span>
           </Link>
         </div>
 
@@ -171,7 +175,7 @@ export default function ClinicalLandingPage() {
               ステップ1：ツールで検討
             </span>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              弁証シミュレーターや配穴設計ツールで、主証・兼証のバランスや適応穴を導出・比較します。
+              弁証シミュレーターで候補・根拠・不足所見を整理し、配穴設計で学習用の組み合わせと選定理由を比較します。
             </p>
           </div>
 
@@ -222,7 +226,7 @@ export default function ClinicalLandingPage() {
                 気血水体質チェック
               </h3>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                12問の問診項目から気虚・気滞・血虚・瘀血・水滞の偏りを即座に点検し、適応穴を提示。
+                問診の回答から、気血水の学習上の傾向と関連する養生・経穴情報を整理。診断や個別の施術適応は確定しません。
               </p>
             </div>
             <Link
@@ -247,7 +251,7 @@ export default function ClinicalLandingPage() {
                 五労チェッカー
               </h3>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                久視・久坐・久立など生活動作の偏りから五臓の疲弊度を算出し、生活指導の根拠を整理。
+                久視・久坐・久立など生活動作の偏りを、五労の伝統的な分類で整理。医学的検査とは区別し、生活習慣を振り返る参考にします。
               </p>
             </div>
             <Link
@@ -279,7 +283,7 @@ export default function ClinicalLandingPage() {
               href="/simulator"
               className="w-full py-2 px-3 rounded-xl bg-[#1E3D34] text-white hover:bg-[#2B5A46] text-xs font-bold flex items-center justify-between transition-colors"
             >
-              <span>弁証を導出する</span>
+              <span>弁証を検討する</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -332,7 +336,7 @@ export default function ClinicalLandingPage() {
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
                 <span>
-                  <strong>ツールの出力と本人の考察を分離：</strong>自動導出された証名と、ご自身が記入した所見・次回指示を明確に区別して記録。
+                  <strong>ツールの出力と本人の考察を分離：</strong>学習用の弁証候補と、ご自身が記入した所見・次回の検討事項を区別して記録。
                 </span>
               </div>
               <div className="flex items-start gap-2">
@@ -399,7 +403,7 @@ export default function ClinicalLandingPage() {
                 <Printer className="w-3.5 h-3.5" />
                 <span>A4養生シート印刷対応</span>
               </span>
-              <span>端末内に安全保存</span>
+              <span>下書き保存・同期に対応</span>
             </div>
           </div>
         </div>
@@ -530,21 +534,22 @@ export default function ClinicalLandingPage() {
         </div>
       </section>
 
-      {/* 7. 執筆・監修・根拠と支援範囲の説明 */}
+      {/* 7. 参照資料・確認状況と支援範囲の説明 */}
       <section className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-4">
         <div className="flex items-center gap-2 text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider">
           <ShieldCheck className="w-4 h-4" />
-          <span>執筆・監修とツールの支援範囲</span>
+          <span>参照資料・確認状況とツールの支援範囲</span>
         </div>
 
         <h3 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-          臨床思考を支えるための客観的指標
+          ツールの参照資料と確認範囲
         </h3>
 
         <div className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed space-y-2.5">
           <p>
-            はり太郎の各ツールは、現役の鍼灸院院長が企画・設計し、新版東洋医学概論・経絡経穴概論、WHO標準経穴部位、および中医基礎理論の標準的枠組みに準拠して制作されています。
+            はり太郎の各ツールは、現役の鍼灸院院長が企画・設計し、新版東洋医学概論・経絡経穴概論、WHO標準経穴部位、および中医基礎理論を参考に制作しています。全件の医学記述の照合と専門家による監修は未完了です。
           </p>
+          <Link href="/editorial-policy" className="inline-flex min-h-11 items-center text-sm font-semibold text-[#1E3D34] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-[#83BEA8]">出典と確認範囲を見る</Link>
           <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] text-[11px] sm:text-xs text-[#737C77] dark:text-[#8899A6] space-y-1">
             <p><strong>【支援範囲と限界について】</strong></p>
             <p>

@@ -15,10 +15,15 @@ import {
   Crown
 } from "lucide-react";
 import { KIKEI_VESSELS, HACHIMYAKU_PAIRS } from "@/data/kikeiData";
+import { pageSocialMetadata } from "@/config/seo";
+
+const pageTitle = "奇経八脈（きけいはちみゃく）詳説・八脈交会穴";
+const pageDescription = "奇経八脈（督脈・任脈・衝脈・帯脈・陰陽蹻脈・陰陽維脈）の流注と、八脈交会穴4対の伝統的な主治・配穴を学ぶ資料集。正経十二経脈との関係や古典の説明を確認できます。";
 
 export const metadata: Metadata = {
-  title: "奇経八脈（きけいはちみゃく）詳説・八脈交会穴",
-  description: "正経十二経脈の気血の過不足を調整する「奇経八脈（督脈・任脈・衝脈・帯脈・陰陽蹻脈・陰陽維脈）」と、臨床で著効を示す八脈交会穴4対の流注・主治病証・配穴を完全体系化。",
+  title: pageTitle,
+  description: pageDescription,
+  ...pageSocialMetadata(pageTitle, pageDescription, "/kikei"),
 };
 
 export default function KikeiIndexPage() {

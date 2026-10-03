@@ -345,7 +345,7 @@ export default function HomePage() {
                   <span>古典・論文</span>
                 </div>
                 <h3 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors line-clamp-2">
-                  『素問』『霊枢』古典条文・RCT論文・運動器実例
+                  古典の引用・医学論文と出典の確認状況
                 </h3>
               </Link>
             </div>

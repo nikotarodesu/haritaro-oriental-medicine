@@ -42,6 +42,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-09-20"),
     },
     {
+      url: `${baseUrl}/diagnosis?tab=gorou`,
+      lastModified: new Date(PAGE_REVISIONS["/diagnosis"] || SITE_REVISED_AT),
+    },
+    {
       url: `${baseUrl}/simulator`,
       lastModified: new Date("2026-09-28"),
     },

@@ -1,11 +1,15 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { Scale, ArrowLeft, ShieldCheck, Mail, FileText, CheckCircle2 } from "lucide-react";
+import { pageSocialMetadata } from "@/config/seo";
+
+const pageTitle = "特定商取引法に基づく表記";
+const pageDescription = "「はり太郎の東洋医学」における特定商取引法（通信販売）に基づく法定記載事項をご案内します。";
 
 export const metadata: Metadata = {
-  title: "特定商取引法に基づく表記",
-  description:
-    "「はり太郎の東洋医学」における特定商取引法（通信販売）に基づく法定記載事項をご案内します。",
+  title: pageTitle,
+  description: pageDescription,
+  ...pageSocialMetadata(pageTitle, pageDescription, "/tokushoho"),
 };
 
 export default function TokushohoPage() {

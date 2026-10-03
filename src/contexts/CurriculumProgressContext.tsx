@@ -1,8 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useMemo, useCallback } from 'react';
-import { getCurriculumStats } from '@/data/curriculumData';
-import { LEARNING_QUESTION_MAP } from '@/data/learningQuestionBank';
+import type { LearningProgressCatalog } from '@/types/learningProgressCatalog';
 import { ReviewSchedule, localStudyDate, updateReviewSchedule } from '@/utils/learningReview';
 import { useLearningSync } from '@/contexts/LearningSyncContext';
 import { validQuizRecord, mergeQuizAttempts } from '@/utils/learningQuizHistory';
@@ -54,13 +53,12 @@ export interface CurriculumProgressContextType {
   getIncorrectQuestions: () => QuizResultRecord[];
 }
 
-const CURRICULUM_STATS = getCurriculumStats();
-const TOTAL_ALL_LECTURES = CURRICULUM_STATS.totalPublishedLessons; // 全81レッスン
-const TOTAL_PLANNED_LECTURES = CURRICULUM_STATS.totalPlannedLessons; // 全81レッスン
-
 const CurriculumProgressContext = createContext<CurriculumProgressContextType | undefined>(undefined);
 
-export function CurriculumProgressProvider({ children }: { children: React.ReactNode }) {
+export function CurriculumProgressProvider({ children, catalog }: { children: React.ReactNode; catalog: LearningProgressCatalog }) {
+  const LEARNING_QUESTION_MAP = useMemo(() => new Map(catalog.questions.map(question => [question.id, question])), [catalog.questions]);
+  const TOTAL_ALL_LECTURES = catalog.totalPublished;
+  const TOTAL_PLANNED_LECTURES = catalog.totalPlanned;
   const { values, ready: isMounted, setEntry, reset } = useLearningSync();
   const completedLectures = useMemo(() => Object.fromEntries(Object.entries(values).filter(([key, value]) => key.startsWith('lecture:') && value === true).map(([key]) => [key.slice(8), true])), [values]);
   const lastVisitedLectureId = typeof values['last-visit'] === 'string' ? values['last-visit'] : null;
@@ -72,7 +70,7 @@ export function CurriculumProgressProvider({ children }: { children: React.React
   const quizResults = useMemo(() => Object.fromEntries(Object.entries(storedQuizResults).filter(([id, record]) => {
     const current = LEARNING_QUESTION_MAP.get(id);
     return current ? record.revision === current.revision : record.kind === 'acupoint' && !!record.revision;
-  })), [storedQuizResults]);
+  })), [storedQuizResults, LEARNING_QUESTION_MAP]);
   const revisedQuestionCount = Object.keys(storedQuizResults).filter(id => LEARNING_QUESTION_MAP.has(id) && !quizResults[id]).length;
 
   const toggleLectureCompleted = (lectureId: string) => {
@@ -95,7 +93,7 @@ export function CurriculumProgressProvider({ children }: { children: React.React
     const saved = { ...record, ...schedule, historyEpoch: String(values['settings:quiz-epoch/' + record.questionId] || 'legacy'), kind: current?.kind || record.kind, practiceHref: current?.href || record.practiceHref };
     setEntry('quiz:' + record.questionId, saved);
     setEntry('attempt:' + crypto.randomUUID(), saved);
-  }, [storedQuizResults, setEntry, values]);
+  }, [storedQuizResults, setEntry, values, LEARNING_QUESTION_MAP]);
 
   const clearQuizResult = useCallback((questionId: string) => {
     setEntry('quiz:' + questionId, null);

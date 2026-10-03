@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
+import { pageSocialMetadata, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
 import Link from "next/link";
 import { 
@@ -11,7 +11,6 @@ import {
   Sparkles, 
   CheckCircle2, 
   Layers, 
-  FileText,
   Compass
 } from "lucide-react";
 import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
@@ -19,21 +18,16 @@ import { TOOL_CATALOG } from "@/config/toolCatalog";
 import EightSystemsRoadmap from "@/components/EightSystemsRoadmap";
 import PrimeStudentCard from "@/components/PrimeStudentCard";
 
+const pageTitle = "東洋医学を基礎から学ぶ｜鍼灸学生・学び直し";
+const pageDescription = "陰陽五行から始まる全81講義カリキュラム、国試精選演習、全361穴の経穴辞典、回答履歴に応じた間隔復習による日々の復習まで。鍼灸学生と学び直しのための東洋医学学習総合案内。";
+
 export const metadata: Metadata = {
-  title: "東洋医学を基礎から学ぶ｜鍼灸学生・学び直し",
-  description:
-    "陰陽五行から始まる全81講義カリキュラム、国試精選演習、全361穴の経穴辞典、回答履歴に応じた間隔復習による日々の復習まで。鍼灸学生と学び直しのための東洋医学学習総合案内。",
+  title: pageTitle,
+  description: pageDescription,
   alternates: {
     canonical: "https://www.haritaro.jp/learn",
   },
-  openGraph: {
-      images: SHARED_OG_IMAGES,
-    siteName: SITE_NAME,
-    title: `東洋医学を基礎から学ぶ｜鍼灸学生・学び直し | ${SITE_NAME}`,
-    description:
-      "陰陽五行から始まる全81講義カリキュラム、国試精選演習、全361穴の経穴辞典、回答履歴に応じた間隔復習による日々の復習まで。",
-    url: "https://www.haritaro.jp/learn",
-  },
+  ...pageSocialMetadata(`${pageTitle} | ${SITE_NAME}`, pageDescription, "/learn"),
 };
 
 export default function LearnGuidePage() {
@@ -54,6 +48,16 @@ export default function LearnGuidePage() {
           用語の丸暗記を脱却し、身体の動態システムとして理解する。
           基礎学習から国試演習、経穴の取穴、日々の復習まで、目的に応じた4つの学び方を用意しています。
         </p>
+      </section>
+
+      <section aria-labelledby="learn-review-scope" className="space-y-2 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-4 sm:p-5">
+        <h2 id="learn-review-scope" className="text-base font-bold text-[#1E3D34] dark:text-[#74BA9E]">学習教材の確認状況</h2>
+        <p className="text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
+          伝統理論と医学的な評価を区別して学びます。全教材の医学記述の照合・専門家監修は未完了です。未確認の刺鍼深度・角度・針路などの個別手順は掲載を保留しています。
+        </p>
+        <Link href="/editorial-policy" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">
+          出典と確認範囲を見る<ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </Link>
       </section>
 
       <HomeLearningProgressCard />
@@ -187,7 +191,7 @@ export default function LearnGuidePage() {
 
               <div>
                 <span className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] block">
-                  取穴手順・局所解剖
+                  位置・分類・教育用の解剖模式図
                 </span>
                 <h3 className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-0.5">
                   経穴を調べる・覚える（経穴辞典）
@@ -195,7 +199,7 @@ export default function LearnGuidePage() {
               </div>
 
               <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                WHO標準部位、要穴分類、刺鍼深度と解剖学的安全ガイド（気胸・神経血管リスク）。断面図ビューアや2穴比較ツールで視覚的に理解できます。
+                WHO標準部位の参照元、要穴分類、注意事項を分けて確認できます。断面ビューアは教育用の模式図です。個人の解剖や安全な刺鍼深度を示すものではありません。2穴比較で位置や分類の違いを学べます。
               </p>
 
               <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] text-xs">
@@ -204,7 +208,7 @@ export default function LearnGuidePage() {
                   配穴設計ツールへの追加
                 </span>
                 <p className="text-[#59615D] dark:text-[#A0B0BC]">
-                  覚えたツボを「配穴処方に追加」ボタンで臨床ツールへ送り、処方バランスを試すことができます。
+                  経穴ページから配穴設計へ追加し、学習用の組み合わせと選定理由を整理できます。個別の施術適応は医学的評価と専門資料を基に判断します。
                 </p>
               </div>
             </div>
@@ -248,7 +252,7 @@ export default function LearnGuidePage() {
               </div>
 
               <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                学んだ講義のチェッククイズを、最適な復習インターバル（翌日・1週間後・1ヶ月後）で日替わり出題。無理なく長期記憶へ定着させます。
+                講義クイズや経穴ドリルの回答履歴と内容の版に応じて、復習予定を表示します。同日の繰り返しで間隔を延ばさず、正誤の履歴に合わせて次の復習日を調整します。
               </p>
 
               <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] text-xs">
@@ -290,7 +294,7 @@ export default function LearnGuidePage() {
         </h2>
 
         <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-3xl">
-          はり太郎では、学んだ理論をそのまま臨床ツールで試すことができます。気血水や弁証を学んだら、体質チェックや弁証シミュレーターで推論手順を確かめ、配穴設計で自分の処方を組み立ててみましょう。
+          気血水や弁証を学んだら、体質傾向チェックや弁証シミュレーターで、候補・根拠・不足する所見を整理できます。配穴設計では学習用の組み合わせと選定理由を考えます。これらは疾患の除外や確定診断、治療効果の保証を行うものではありません。
         </p>
 
         <div className="pt-2 flex flex-wrap gap-3">

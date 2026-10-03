@@ -19,6 +19,7 @@ const { CURRICULUM_QUIZZES } = load('src/data/curriculumQuizzes');
 const { KOKUSHI_PAST_EXAMS } = load('src/data/kokushiPastExams');
 const { CURRICULUM_DATA } = load('src/data/curriculumData');
 const { LEARNING_QUESTIONS } = load('src/data/learningQuestionBank');
+const { getLearningProgressCatalog } = load('src/data/learningProgressCatalog');
 const { questionRevision, updateReviewSchedule, shuffledIndices } = load('src/utils/learningReview');
 const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
 const { generateQuestionsForPoints } = load('src/data/tsubo/quizData');
@@ -30,6 +31,15 @@ const lectureIds = new Set(CURRICULUM_DATA.flatMap(s => s.lectures).map(l => l.i
 assert.equal(Object.keys(CURRICULUM_QUIZZES).length, 81);
 assert.equal(LEARNING_QUESTIONS.length, 253);
 assert.equal(new Set(LEARNING_QUESTIONS.map(q => q.id)).size, 253);
+const progressCatalog = getLearningProgressCatalog();
+const publishedCount = CURRICULUM_DATA.flatMap(chapter=>chapter.lectures).length;
+assert.equal(progressCatalog.totalPublished, publishedCount);
+assert.equal(progressCatalog.questions.length, LEARNING_QUESTIONS.length);
+for (const [index, question] of LEARNING_QUESTIONS.entries()) {
+  const summary = progressCatalog.questions[index];
+  assert.equal(JSON.stringify(Object.keys(summary).sort()), JSON.stringify(['href','id','kind','revision']));
+  for (const key of ['id','revision','kind','href']) assert.equal(summary[key], question[key], `${question.id}: ${key}`);
+}
 for (const q of LEARNING_QUESTIONS) {
   assert(lectureIds.has(q.lectureId), `${q.id}: missing lecture`);
   assert(q.correctIndex >= 0 && q.correctIndex < q.options.length, `${q.id}: invalid answer`);

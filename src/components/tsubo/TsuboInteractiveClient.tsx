@@ -8,23 +8,15 @@ import {
   getPublishedAcupoints, 
   AcupointMaster, 
   MERIDIANS, 
-  BODY_REGIONS,
   compareAcupointsByMeridianOrder 
 } from "@/data/tsubo";
 import { 
   Compass, 
   Search, 
-  Sparkles, 
   ArrowRight, 
-  Layers, 
   Bookmark, 
   RotateCcw, 
   BookOpen, 
-  Eye, 
-  Activity, 
-  CheckCircle2, 
-  AlertTriangle, 
-  HelpCircle, 
   GitCompare, 
   GitCommit, 
   LayoutGrid, 
@@ -53,6 +45,8 @@ const MERIDIAN_ELEMENT_MAP: Record<string, "木" | "火" | "土" | "金" | "水"
   liver: "木",
 };
 
+type SortOption = "meridian" | "kana" | "detailed";
+
 export default function TsuboInteractiveClient() {
   const allPoints = useMemo(() => getAllAcupoints(), []);
   const publishedCount = useMemo(() => getPublishedAcupoints().length, []);
@@ -65,7 +59,7 @@ export default function TsuboInteractiveClient() {
   const initialCategory = searchParams?.get("category") || "すべて";
   const initialPublished = searchParams?.get("published") === "true";
   const initialSort = (["meridian", "kana", "detailed"].includes(searchParams?.get("sort") || "")) 
-    ? (searchParams!.get("sort") as "meridian" | "kana" | "detailed") 
+    ? (searchParams!.get("sort") as SortOption)
     : "meridian";
   const initialView = searchParams?.get("view") === "table" ? "table" : "grid";
   const initialPage = parseInt(searchParams?.get("page") || "1", 10) || 1;
@@ -80,18 +74,19 @@ export default function TsuboInteractiveClient() {
 
   // 表示・ページネーション・並び順ステート
   const [viewMode, setViewMode] = useState<"grid" | "table">(initialView);
-  const [sortOption, setSortOption] = useState<"meridian" | "kana" | "detailed">(initialSort);
-  const [pageSize, setPageSize] = useState<number>(24);
+  const [sortOption, setSortOption] = useState<SortOption>(initialSort);
+  const [pageSize] = useState<number>(24);
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
 
   // 人体図・フィルターの開閉ステート（検索クエリがある場合は初期折りたたみ）
   const [showBodyMap, setShowBodyMap] = useState<boolean>(!initialQ);
 
-  const { memos, isClipped, toggleClip } = useClinicalMemo();
+  const { memos } = useClinicalMemo();
   const savedTsuboMemos = useMemo(() => memos.filter((m) => m.type === "tsubo"), [memos]);
 
   // 初回マウントフラグ（初回ロード時のページ番号リセットを防止）
   const isFirstRender = useRef(true);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   // 検索クエリが入力されたら人体図を自動で折りたたむ（空に戻ったら自動展開）
   const prevQueryRef = useRef(initialQ);
@@ -123,10 +118,12 @@ export default function TsuboInteractiveClient() {
     const mer = searchParams.get("meridian") || "すべて";
     const cat = searchParams.get("category") || "すべて";
     const pub = searchParams.get("published") === "true";
-    const sort = (searchParams.get("sort") as "meridian" | "kana" | "detailed") || "meridian";
+    const sort = (searchParams.get("sort") as SortOption) || "meridian";
     const view = (searchParams.get("view") as "grid" | "table") || "grid";
     const pg = parseInt(searchParams.get("page") || "1", 10) || 1;
 
+    // ブラウザの戻る・進むなどで変わる外部URLを、検索状態へ同期する。
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSearchQuery((prev) => (prev !== q ? q : prev));
     setSelectedBodyPart((prev) => (prev !== bp ? bp : prev));
     setSelectedMeridian((prev) => (prev !== mer ? mer : prev));
@@ -295,16 +292,28 @@ export default function TsuboInteractiveClient() {
     return filteredTsubos.slice(start, start + pageSize);
   }, [filteredTsubos, currentPage, pageSize, isAllPages]);
 
-  // フィルター解除ヘルパー
-  const resetAllFilters = () => {
-    setSearchQuery("");
+  // 検索語を保って、部位・経脈などの条件だけを解除する。
+  const resetSelectionFilters = () => {
     setSelectedBodyPart("すべて");
     setSelectedMeridian("すべて");
     setSelectedCategory("すべて");
     setOnlyPublished(false);
+    setCurrentPage(1);
+    searchInputRef.current?.focus();
+  };
+  const clearSearchQuery = () => {
+    setSearchQuery("");
+    setCurrentPage(1);
+    searchInputRef.current?.focus();
+  };
+  const resetAllFilters = () => {
+    setSearchQuery("");
+    resetSelectionFilters();
   };
 
-  const hasActiveFilters = searchQuery || selectedBodyPart !== "すべて" || selectedMeridian !== "すべて" || selectedCategory !== "すべて" || onlyPublished;
+  const hasSearchQuery = searchQuery.trim().length > 0;
+  const hasSelectionFilters = selectedBodyPart !== "すべて" || selectedMeridian !== "すべて" || selectedCategory !== "すべて" || onlyPublished;
+  const hasActiveFilters = hasSearchQuery || hasSelectionFilters;
 
   return (
     <div className="space-y-8 sm:space-y-12">
@@ -317,6 +326,7 @@ export default function TsuboInteractiveClient() {
           <Search className="w-5 h-5 text-[#737C77] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             id="tsubo-search"
+            ref={searchInputRef}
             aria-describedby="tsubo-search-examples"
             type="text"
             value={searchQuery}
@@ -327,7 +337,7 @@ export default function TsuboInteractiveClient() {
           {searchQuery && (
             <button
               type="button"
-              onClick={() => setSearchQuery("")}
+              onClick={clearSearchQuery}
               className="absolute right-2 top-1/2 -translate-y-1/2 min-h-[44px] min-w-[44px] inline-flex items-center justify-center text-[#737C77] hover:text-[#232826] dark:hover:text-[#FAF8F5] p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
               title="検索語をクリア"
               aria-label="検索語をクリア"
@@ -342,23 +352,25 @@ export default function TsuboInteractiveClient() {
 
         {/* 検索直下のサマリー ＆ 人体図トグルバー */}
         <div className="flex flex-wrap items-center justify-between gap-2.5 px-1">
-          <div className="flex items-center gap-2 text-xs">
-            {searchQuery.trim() ? (
-              <span className="text-[#333835] dark:text-[#C5D2DB]">
-                「<strong className="text-[#1E3D34] dark:text-[#74BA9E] font-bold">{searchQuery.trim()}</strong>」の検索結果：
-                該当 <strong className="font-mono text-sm text-[#1E3D34] dark:text-[#74BA9E]">{totalItems}</strong> 穴
-              </span>
-            ) : (
-              <span className="text-[#59615D] dark:text-[#A0B0BC]">
-                全361穴から絞り込み中：該当 <strong className="font-mono text-sm text-[#1E3D34] dark:text-[#74BA9E]">{totalItems}</strong> 穴
-              </span>
-            )}
+          <div className="flex flex-wrap items-center gap-2 text-sm">
+            <p role="status" aria-live="polite" aria-atomic="true">
+              {searchQuery.trim() ? (
+                <span className="text-[#333835] dark:text-[#C5D2DB]">
+                  「<strong className="text-[#1E3D34] dark:text-[#74BA9E] font-bold">{searchQuery.trim()}</strong>」の検索結果：
+                  該当 <strong className="font-mono text-sm text-[#1E3D34] dark:text-[#74BA9E]">{totalItems}</strong> 穴
+                </span>
+              ) : (
+                <span className="text-[#59615D] dark:text-[#A0B0BC]">
+                  全361穴から絞り込み中：該当 <strong className="font-mono text-sm text-[#1E3D34] dark:text-[#74BA9E]">{totalItems}</strong> 穴
+                </span>
+              )}
+            </p>
 
             {searchQuery.trim() && (
               <button
                 type="button"
-                onClick={() => setSearchQuery("")}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#182823] border border-[#D8CFC0] dark:border-[#2A5243] text-[#B86924] dark:text-[#E6C387] font-bold hover:bg-white text-xs transition-colors"
+                onClick={clearSearchQuery}
+                className="inline-flex min-h-11 items-center gap-1 px-2.5 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#182823] border border-[#D8CFC0] dark:border-[#2A5243] text-[#B86924] dark:text-[#E6C387] font-bold hover:bg-white text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 <X className="w-3.5 h-3.5" />
                 <span>検索解除</span>
@@ -370,12 +382,20 @@ export default function TsuboInteractiveClient() {
           <button
             type="button"
             onClick={() => setShowBodyMap(!showBodyMap)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#FAF8F5] dark:hover:bg-[#1f2c38] transition-colors shadow-xs"
+            aria-expanded={showBodyMap}
+            className="inline-flex min-h-11 items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A] text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#FAF8F5] dark:hover:bg-[#1f2c38] transition-colors shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             <Compass className="w-3.5 h-3.5" />
             <span>{showBodyMap ? "人体図・詳細条件を閉じる ▲" : "人体図・部位から探す ▼"}</span>
           </button>
         </div>
+
+        {hasActiveFilters && (
+          <div className="flex flex-wrap gap-2">
+            {hasSelectionFilters && hasSearchQuery && <button type="button" onClick={resetSelectionFilters} className="inline-flex min-h-11 items-center rounded-lg border border-[#C5DED4] px-3 py-2 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A5243] dark:text-[#83BEA8] dark:hover:bg-[#182823]">検索語を保って条件を解除</button>}
+            <button type="button" onClick={resetAllFilters} className="inline-flex min-h-11 items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold text-[#1E3D34] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-[#83BEA8]"><RotateCcw aria-hidden="true" className="h-4 w-4" />検索・条件をすべて解除</button>
+          </div>
+        )}
 
         {/* 常時アクセス可能な要穴クイックピルフィルター */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-1.5 text-xs no-scrollbar">
@@ -524,16 +544,6 @@ export default function TsuboInteractiveClient() {
                 </span>
               </label>
 
-              {hasActiveFilters && (
-                <button
-                  type="button"
-                  onClick={resetAllFilters}
-                  className="inline-flex items-center gap-1 text-xs text-[#737C77] hover:text-[#B86924] transition-colors"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  <span>条件をすべてリセット</span>
-                </button>
-              )}
             </div>
           </div>
         </section>
@@ -553,7 +563,7 @@ export default function TsuboInteractiveClient() {
             {/* 並び順 */}
             <select
               value={sortOption}
-              onChange={(e) => setSortOption(e.target.value as any)}
+              onChange={(e) => setSortOption(e.target.value as SortOption)}
               className="bg-white dark:bg-[#17212A] border border-[#D8CFC0] dark:border-[#2A3B4A] rounded-lg px-2.5 py-1 text-xs text-[#333835] dark:text-[#C5D2DB]"
             >
               <option value="meridian">流注順（経絡順）</option>
@@ -584,7 +594,18 @@ export default function TsuboInteractiveClient() {
         </div>
 
         {/* 経穴グリッド表示 */}
-        {viewMode === "grid" ? (
+        {totalItems === 0 ? (
+          <div className="rounded-2xl border border-[#E5DEC9] bg-white px-4 py-8 text-center dark:border-[#2A3B4A] dark:bg-[#17212A]">
+            <Search aria-hidden="true" className="mx-auto h-7 w-7 text-[#737C77] dark:text-[#8899A6]" />
+            <h3 className="mt-3 text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">条件に合う経穴が見つかりませんでした</h3>
+            <p className="mt-2 text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">経穴名・読み方・コードや、部位・経脈・要穴の条件を変えてお試しください。</p>
+            <div className="mt-4 flex flex-wrap justify-center gap-2">
+              {hasSearchQuery && hasSelectionFilters && <button type="button" onClick={resetSelectionFilters} className="min-h-11 rounded-xl border border-[#C5DED4] px-4 py-2 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A5243] dark:text-[#83BEA8] dark:hover:bg-[#182823]">同じ検索語で条件を解除</button>}
+              {hasSearchQuery && <button type="button" onClick={() => searchInputRef.current?.focus()} className="min-h-11 rounded-xl border border-[#C5DED4] px-4 py-2 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A5243] dark:text-[#83BEA8] dark:hover:bg-[#182823]">検索語を編集する</button>}
+              <button type="button" onClick={resetAllFilters} className="min-h-11 rounded-xl bg-[#1E3D34] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2B5A46] focus-visible:outline-2 focus-visible:outline-offset-2 dark:bg-[#2B6958]">検索・条件を解除して全{allPoints.length}穴を表示</button>
+            </div>
+          </div>
+        ) : viewMode === "grid" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
             {paginatedTsubos.map((point) => {
               const matchReason = searchQuery ? getMatchReason(point, searchQuery) : null;

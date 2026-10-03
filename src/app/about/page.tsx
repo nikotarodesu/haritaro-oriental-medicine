@@ -1,23 +1,20 @@
-import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
+import { pageSocialMetadata } from "@/config/seo";
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Sparkles, ShieldCheck, ArrowRight, Compass, BookOpen, GraduationCap, Stethoscope } from "lucide-react";
 import { getArticlePreviews } from "@/data/articleData";
 
+const pageTitle = "サイトの志と運営方針";
+const pageDescription = "東洋医学の学習と臨床思考を支える「はり太郎の東洋医学」の運営者、編集方針、教材の確認状況をご案内します。";
+
 export const metadata: Metadata = {
-  title: "サイトの志と運営方針",
-  description:
-    "基礎理論から臨床実践までを体系化する東洋医学ポータル「はり太郎の東洋医学」の創設理念、編集方針、E-E-A-T基準、運営者情報をご紹介します。",
+  title: pageTitle,
+  description: pageDescription,
   alternates: {
     canonical: "/about",
   },
-  openGraph: {
-      images: SHARED_OG_IMAGES,
-      siteName: SITE_NAME,
-    title: "サイトの志と運営方針",
-    description: "基礎理論から臨床実践までを体系化する東洋医学ポータル「はり太郎の東洋医学」の創設理念と運営方針。",
-    url: "https://www.haritaro.jp/about",
-  },
+  ...pageSocialMetadata(pageTitle, pageDescription, "/about"),
 };
 
 export default function AboutPage() {
@@ -38,6 +35,16 @@ export default function AboutPage() {
         </p>
       </div>
 
+      <section aria-labelledby="about-review-scope" className="space-y-3 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-4 sm:p-6">
+        <h2 id="about-review-scope" className="text-lg font-bold text-[#1E3D34] dark:text-[#74BA9E]">教材の用途と確認状況</h2>
+        <p className="text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
+          伝統的な分類、現代医学の研究結果、理解を助ける比喩を区別した学習教材です。全件の医学記述の照合と専門家による監修は未完了です。経穴の位置や教育用模式図は、個別の診断・施術手順や安全性を保証するものではありません。
+        </p>
+        <Link href="/editorial-policy" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">
+          出典の確認範囲と編集方針を見る<ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </Link>
+      </section>
+
       {/* メイン理念 */}
       <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-12 shadow-sm space-y-6 sm:space-y-8 transition-colors">
         <div className="space-y-3 sm:space-y-4">
@@ -51,7 +58,7 @@ export default function AboutPage() {
             一つは、一般の方にとって「難解な漢字や専門用語が多くて、どう自分に役立てればいいかわからない」という壁。もう一つは、「非科学的な迷信と誤解され、本来の奥深い体系性が正当に評価されない」という壁です。
           </p>
           <p className="text-xs sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
-            「はり太郎の東洋医学」は、この壁を取り払うために誕生しました。これまで長年にわたり臨床現場で培い、書き溜めてきた臨床録、古典文献の考証、そして最新の神経科学・医学論文の知見をすべて統合し、「基礎理論から臨床実践までを体系化し、わかりやすくかつ確かな臨床根拠に根ざした東洋医学の拠点」を築くことが私たちの使命です。
+            「はり太郎の東洋医学」は、基礎理論を学び、臨床での考え方を振り返るための拠点を目指しています。筆者の臨床経験、古典の記述、現代の医学研究を、それぞれの出典と確認範囲を示しながら紹介します。経験や伝統的な説明だけで、治療効果が確立したとは扱いません。
           </p>
         </div>
 
@@ -93,7 +100,7 @@ export default function AboutPage() {
                   </li>
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#1E2D3D] dark:text-[#7BAAD8] shrink-0">2.</span>
-                    <span><Link href="/tsubo" className="font-semibold underline hover:text-[#1E2D3D]">経穴辞典</Link>でWHO標準部位と局所解剖断面を確認</span>
+                    <span><Link href="/tsubo" className="font-semibold underline hover:text-[#1E2D3D]">経穴辞典</Link>で位置の参照元と教育用の解剖模式図を確認</span>
                   </li>
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#1E2D3D] dark:text-[#7BAAD8] shrink-0">3.</span>
@@ -131,7 +138,7 @@ export default function AboutPage() {
                   </li>
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] shrink-0">2.</span>
-                    <span><Link href="/simulator" className="font-semibold underline hover:text-[#1E3D34]">弁証シミュレーター</Link>で主証・兼証を導出</span>
+                    <span><Link href="/simulator" className="font-semibold underline hover:text-[#1E3D34]">弁証シミュレーター</Link>で候補・根拠・不足所見を整理</span>
                   </li>
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] shrink-0">3.</span>
@@ -160,20 +167,20 @@ export default function AboutPage() {
                   </div>
                 </div>
                 <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  原典の条文考証から現代の神経生理学、東西医学統合モデルを深く探究したい方へ。
+                  古典の記述、現代医学の研究、筆者の学習モデルを、それぞれの確認範囲とともに読みたい方へ。
                 </p>
                 <ul className="text-xs space-y-1.5 text-[#404743] dark:text-[#C5D2DB]">
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#B86924] dark:text-[#E6C387] shrink-0">1.</span>
-                    <span><Link href="/library" className="font-semibold underline hover:text-[#B86924]">文献ライブラリ</Link>で『素問』『霊枢』の条文検索</span>
+                    <span><Link href="/library" className="font-semibold underline hover:text-[#B86924]">文献ライブラリ</Link>で論文と古典の引用・照合状況を確認</span>
                   </li>
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#B86924] dark:text-[#E6C387] shrink-0">2.</span>
-                    <span><Link href="/articles" className="font-semibold underline hover:text-[#B86924]">学術論考</Link>で生体工学・システム制御論を精読</span>
+                    <span><Link href="/articles" className="font-semibold underline hover:text-[#B86924]">学術コラム</Link>で伝統的な説明と研究結果の違いを読む</span>
                   </li>
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#B86924] dark:text-[#E6C387] shrink-0">3.</span>
-                    <span><Link href="/cases" className="font-semibold underline hover:text-[#B86924]">臨床症例アーカイブ</Link>で実践例を検証</span>
+                    <span><Link href="/cases" className="font-semibold underline hover:text-[#B86924]">架空症例教材</Link>で所見から判断の理由を練習</span>
                   </li>
                 </ul>
               </div>
@@ -200,9 +207,9 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
-              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">02. 臨床と科学の二重奏</span>
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">02. 出典と説明の区別</span>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                古典の精神を尊重しながらも、現代の生理学・神経伝達物質・fMRI等のエビデンスを交えて解説します。
+                古典の分類、研究で検討された結果、学習用の比喩を区別します。文献の書誌一致と、解説がその文献に支持されるかは別々に確認します。
               </p>
             </div>
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
@@ -221,30 +228,32 @@ export default function AboutPage() {
             <span>医療情報に関する免責事項</span>
           </div>
           <p className="leading-relaxed">
-            当サイトに掲載されているツボ、食養生、体質診断などの情報は、日常の健康維持および東洋医学の学術的理解を深めることを目的として提供されています。これらは医師や鍼灸師による個別の診断・治療に代わるものではありません。
+            当サイトに掲載されている経穴、養生、体質傾向チェックなどの情報は、東洋医学の学術的理解や臨床思考の整理を目的とした教材です。医師や鍼灸師による個別の診断・治療に代わるものではありません。
           </p>
           <p className="leading-relaxed">
             激しい痛み、意識障害、急激な体調の悪化、妊娠中の重篤な症状などがある場合は、自己判断によるツボ刺激を行わず、速やかに専門の医療機関を受診してください。
           </p>
         </div>
 
-        {/* 執筆・監修者：はり太郎について */}
+        {/* 執筆・運営者：はり太郎について */}
         <div className="space-y-4 sm:space-y-6 pt-4 sm:pt-6 border-t border-[#F2ECE0] dark:border-[#22303D]">
           <div className="flex items-center gap-2">
             <span className="p-1.5 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
               <ShieldCheck className="w-4 h-4" />
             </span>
             <h2 className="text-lg sm:text-2xl font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-              執筆・監修者について
+              執筆・運営者について
             </h2>
           </div>
 
           <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl sm:rounded-3xl border border-[#E8E1D1] dark:border-[#22303D] p-3.5 sm:p-8 space-y-4 sm:space-y-6">
             {/* プロフィールヘッダー */}
             <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 border-b border-[#E8E1D1] dark:border-[#263542] pb-6">
-              <img
+              <Image
                 src="/icon.png"
                 alt="はり太郎"
+                width={80}
+                height={80}
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover shadow-sm border border-[#D5CCBC] dark:border-[#2A3B4A] shrink-0"
               />
               <div className="space-y-1.5">
@@ -327,7 +336,7 @@ export default function AboutPage() {
                     誤りの訂正方針と更新ポリシー
                   </span>
                   <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                    医学・東洋医学の情報は常に検証と更新が求められます。内容の誤り、古典解釈の不備、最新医学知見との乖離については読者・専門家からのご指摘を真摯に受け止め、原本照合のうえ速やかに訂正・履歴反映を行います。
+                    医学・東洋医学の情報は継続的に確認します。読者・専門家からのご指摘について該当する出典と記述を確認し、訂正内容と確認範囲を記録します。原典を確認できない内容は、その状態を明示し、必要に応じて掲載を保留します。
                   </p>
                 </div>
 

@@ -13,7 +13,6 @@ import {
   ArrowRight,
   Clock,
   Sparkles,
-  Command,
   FileCheck,
   HeartPulse,
   Award,
@@ -89,7 +88,7 @@ const STATIC_TOOLS: SearchResultItem[] = [
     id: "tool-library",
     type: "tool",
     title: "医学文献・古典アーカイブ",
-    subtitle: "素問・霊枢・難経の原典条文と臨床応用、最新の医学論文（エビデンス）を横断検索",
+    subtitle: "古典の学習用引用・文献情報を探し、出典や書誌の照合状況を確認",
     badge: "文献アーカイブ",
     url: "/library",
     tags: ["古典", "素問", "霊枢", "難経", "論文", "エビデンス", "治未病", "ライブラリ"],
@@ -98,7 +97,7 @@ const STATIC_TOOLS: SearchResultItem[] = [
     id: "tool-symptoms",
     type: "tool",
     title: "お悩み・症状別 セルフケアガイド",
-    subtitle: "頭痛・肩こり・不眠・胃もたれ・生理痛などの病態メカニズムと特効穴・食養生",
+    subtitle: "頭痛・肩こり・不眠などの受診目安と、セルフケア・養生を学ぶ",
     badge: "セルフケア",
     url: "/symptoms",
     tags: ["症状", "セルフケア", "お悩み", "頭痛", "肩こり", "不眠", "胃もたれ", "生理痛", "冷え性"],
@@ -205,14 +204,14 @@ export default function GlobalSearchModal({
       const updated = recentSearches.filter((s) => s !== text);
       setRecentSearches(updated);
       localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
-    } catch (e) {}
+    } catch { /* Search remains usable without browser storage. */ }
   };
 
   const clearAllRecentSearches = () => {
     try {
       setRecentSearches([]);
       localStorage.removeItem(RECENT_SEARCHES_KEY);
-    } catch (e) {}
+    } catch { /* Search remains usable without browser storage. */ }
   };
 
   // 全データのインデックス化（初回マウント時に一度だけ生成）
@@ -446,7 +445,18 @@ export default function GlobalSearchModal({
       .map(result => result.item);
   }, [searchIndex, query, activeCategory]);
   const visibleResults = useMemo(() => filteredResults.slice(0, resultLimit), [filteredResults, resultLimit]);
+  const hasQuery = query.trim().length > 0;
   const updateQuery = (next: string) => { setQuery(next); setSelectedIndex(0); setResultLimit(25); };
+  const searchAllCategories = () => {
+    setActiveCategory("all");
+    setSelectedIndex(0);
+    setResultLimit(25);
+    inputRef.current?.focus();
+  };
+  const clearQueryAndFocus = () => {
+    updateQuery("");
+    inputRef.current?.focus();
+  };
 
 
   // モーダル開閉時のフォーカス制御 & 入力クリア
@@ -559,7 +569,7 @@ export default function GlobalSearchModal({
               setSelectedIndex(0);
             }}
             placeholder="経穴・記事・講義・症状を検索"
-            className="flex-1 bg-transparent text-[#232826] dark:text-[#FAF8F5] placeholder-[#8C9691] dark:placeholder-[#64748B] text-sm sm:text-base outline-hidden"
+            className="flex-1 min-w-0 min-h-11 rounded-md bg-transparent text-[#232826] dark:text-[#FAF8F5] placeholder-[#8C9691] dark:placeholder-[#64748B] text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#74BA9E]"
           />
           {query && (
             <button
@@ -601,8 +611,11 @@ export default function GlobalSearchModal({
 
         {/* 検索結果・サジェスト一覧（スクロールエリア） */}
         <div className="flex-1 overflow-y-auto p-2 sm:p-3 space-y-1">
+          <p role="status" aria-live="polite" aria-atomic="true" className={hasQuery ? "px-3 py-1 text-sm font-semibold text-[#59615D] dark:text-[#A0B0BC]" : "sr-only"}>
+            {hasQuery ? `検索結果：${filteredResults.length}件` : "検索語を入力してください。"}
+          </p>
           {/* 未入力時：最近の検索 ＆ クイック検索候補 */}
-          {!query && (
+          {!hasQuery && (
             <div className="p-4 sm:p-6 space-y-5">
               {/* 最近調べたキーワード（履歴） */}
               {recentSearches.length > 0 && (
@@ -695,12 +708,9 @@ export default function GlobalSearchModal({
           )}
 
           {/* 検索結果あり */}
-          {query && filteredResults.length > 0 && (
+          {hasQuery && filteredResults.length > 0 && (
             <div className="space-y-1">
-              <div className="px-3 py-1 text-[11px] font-bold text-[#737C77] dark:text-[#8899A6] flex items-center justify-between">
-                <span>検索結果: {filteredResults.length}件</span>
-                <span className="text-[10px]">↑↓キーで選択・Enterで移動</span>
-              </div>
+              <p className="px-3 py-1 text-sm text-[#59615D] dark:text-[#A0B0BC]">↑↓キーで選択・Enterで移動</p>
 
               {visibleResults.map((item, idx) => {
                 const isSelected = idx === selectedIndex;
@@ -724,7 +734,10 @@ export default function GlobalSearchModal({
                       trackEvent("search_result_click", { placement: "global_search", result_type: item.type });
                       router.push(item.url);
                     }}
-                    onMouseEnter={() => setSelectedIndex(idx)}
+                    onMouseMove={(event) => {
+                      // 結果の再描画で静止中のポインタが重なっても、キーボードの選択は保つ。
+                      if (event.movementX !== 0 || event.movementY !== 0) setSelectedIndex(idx);
+                    }}
                     className={`w-full text-left p-3 rounded-xl transition-all flex items-start gap-3 cursor-pointer ${
                       isSelected
                         ? "bg-[#1E3D34] text-white shadow-sm"
@@ -786,16 +799,20 @@ export default function GlobalSearchModal({
           {filteredResults.length > visibleResults.length && <button type="button" onClick={() => setResultLimit(limit => limit + 25)} className="w-full min-h-11 rounded-xl border border-[#C5DED4] p-3 text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8]">さらに表示（残り{filteredResults.length - visibleResults.length}件）</button>}
 
           {/* 検索結果ゼロ */}
-          {query && filteredResults.length === 0 && (
-            <div className="py-12 text-center space-y-2">
+          {hasQuery && filteredResults.length === 0 && (
+            <div className="px-3 py-10 text-center space-y-3">
               <Search className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto" />
               <p className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
                 「{query}」に一致するコンテンツが見つかりませんでした
               </p>
-              <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
-                ひらがな・漢字、または経穴コード（例: LI4, ST36）、問題番号（例: 第33回）でお試しください。
+              <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">
+                {activeCategory !== "all" ? "検索語はそのままで、ほかのカテゴリーも探せます。" : "別の言い方や、経穴コード（例：LI4、ST36）でお試しください。"}
               </p>
-              <button type="button" onClick={() => { setActiveCategory("all"); updateQuery("合谷"); }} className="min-h-11 rounded-xl bg-[#1E3D34] px-4 py-2 text-sm text-white">全カテゴリーで「合谷」を試す</button>
+              <div className="flex flex-wrap justify-center gap-2 pt-1">
+                {activeCategory !== "all" && <button type="button" onClick={searchAllCategories} className="min-h-11 rounded-xl bg-[#1E3D34] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2B5A46] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:bg-[#2B6958] dark:focus-visible:outline-[#74BA9E]">同じ検索語ですべてを検索</button>}
+                <button type="button" onClick={() => inputRef.current?.focus()} className="min-h-11 rounded-xl border border-[#C5DED4] px-4 py-2 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A5243] dark:text-[#83BEA8] dark:hover:bg-[#182823]">検索語を編集する</button>
+                {activeCategory === "all" && <button type="button" onClick={clearQueryAndFocus} className="min-h-11 rounded-xl bg-[#1E3D34] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2B5A46] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:bg-[#2B6958] dark:focus-visible:outline-[#74BA9E]">検索語を消して入力し直す</button>}
+              </div>
             </div>
           )}
         </div>

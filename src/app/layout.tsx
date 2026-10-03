@@ -16,8 +16,8 @@ import ClinicalDrawerTrigger from "@/components/ClinicalDrawerTrigger";
 import PwaRegister from "@/components/pwa/PwaRegister";
 import PwaInstallPrompt from "@/components/pwa/PwaInstallPrompt";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import Script from "next/script";
 import { SHARED_OG_IMAGES, SITE_NAME, SITE_TITLE } from "@/config/seo";
+import { getLearningProgressCatalog } from "@/data/learningProgressCatalog";
 
 const notoSerifJP = Noto_Serif_JP({
   variable: "--font-noto-serif",
@@ -85,20 +85,6 @@ export default function RootLayout({
       <head>
         {/* Google Analytics 4 (gtag.js - 環境変数 NEXT_PUBLIC_GA_ID 対応) */}
         <GoogleAnalytics />
-        {/* Microsoft Clarity (lazyOnload で初回レンダリングへの影響を完全に排除) */}
-        <Script
-          id="microsoft-clarity"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-              })(window, document, "clarity", "script", "ypobv9qync");
-            `,
-          }}
-        />
         {/* 初期テーマ適用スクリプト（画面ちらつき防止） */}
         <script
           dangerouslySetInnerHTML={{
@@ -174,14 +160,15 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col font-sans bg-[#F5F1E8] dark:bg-[#10161C] text-[#232826] dark:text-[#E6EFEA] selection:bg-[#E2D5C3] dark:selection:bg-[#2A4B3E] selection:text-[#1E3D34] dark:selection:text-[#E6EFEA]">
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[200] focus:rounded-lg focus:bg-[#184F49] focus:px-4 focus:py-3 focus:text-white focus:outline-2 focus:outline-offset-2">本文へ移動</a>
         <ThemeProvider>
           <FontSizeProvider>
             <SeasonalThemeProvider>
               <AuthProvider>
                 <ClinicalMemoProvider>
-                  <LearningSyncProvider><CurriculumProgressProvider>
+                  <LearningSyncProvider><CurriculumProgressProvider catalog={getLearningProgressCatalog()}>
                     <Header />
-                    <div className="flex-1 pb-16 lg:pb-0">
+                    <div id="main-content" tabIndex={-1} className="flex-1 pb-16 lg:pb-0">
                       {children}
                     </div>
                     <Footer />

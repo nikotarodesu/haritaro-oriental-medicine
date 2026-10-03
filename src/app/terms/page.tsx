@@ -1,11 +1,15 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { FileCheck, ArrowLeft, ShieldAlert, Mail, BookOpen } from "lucide-react";
+import { pageSocialMetadata } from "@/config/seo";
+
+const pageTitle = "利用規約";
+const pageDescription = "「はり太郎の東洋医学」のサービス利用規約です。当サイトのご利用にあたっての条件、有料プラン、知的財産権、免責事項等について定めています。";
 
 export const metadata: Metadata = {
-  title: "利用規約",
-  description:
-    "「はり太郎の東洋医学」のサービス利用規約です。当サイトのご利用にあたっての条件、有料プラン、知的財産権、免責事項等について定めています。",
+  title: pageTitle,
+  description: pageDescription,
+  ...pageSocialMetadata(pageTitle, pageDescription, "/terms"),
 };
 
 export default function TermsPage() {
