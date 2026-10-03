@@ -259,7 +259,7 @@ export default function LibraryClient() {
                 <div className="flex items-center gap-2">
                   <BookOpen className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
                   <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                    古典医典条文・現代臨床解釈
+                    古典条文・伝統的な解釈
                   </h2>
                 </div>
                 <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
@@ -267,6 +267,7 @@ export default function LibraryClient() {
                 </span>
               </div>
 
+              <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">古典の考え方を学ぶ資料です。版・原文の照合と専門家による確認は完了していません。伝統的な配穴意図と、現代の疾患に対する治療効果は分けて読みます。</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {filteredClassics.map(classic => {
                   const isSaved = savedIds.includes(classic.id);
@@ -288,9 +289,9 @@ export default function LibraryClient() {
 
                         <div className="p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#141C24] border border-[#EFE8D8] dark:border-[#25323E] space-y-2.5">
                           <div>
-                            <span className="text-[10px] font-bold text-[#737C77] dark:text-[#8899A6] block mb-0.5">漢文原典：</span>
+                            <span className="text-[10px] font-bold text-[#737C77] dark:text-[#8899A6] block mb-0.5">掲載条文（原典との一致は未確認）：</span>
                             <p className="font-serif text-sm text-[#232826] dark:text-[#FAF8F5] leading-relaxed tracking-wide">
-                              {classic.original}
+                              {classic.originalPublicationStatus === 'withheld_pending_verification' ? '比較資料との不一致が見つかったため、原典の引用としての掲載を保留しています。下の確認事項をご覧ください。' : classic.original}
                             </p>
                           </div>
                           {classic.reading && (
@@ -302,17 +303,21 @@ export default function LibraryClient() {
                             </div>
                           )}
                           <div className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-2">
-                            <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-0.5">現代語訳：</span>
+                            <span className="text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-0.5">学習用の現代語解説：</span>
                             <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
                               {classic.translation}
                             </p>
                           </div>
+                          {classic.verificationNote && <div className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-2 text-xs leading-relaxed text-[#A83629] dark:text-[#F2A99F]">
+                            <p>{classic.verificationNote}</p>
+                            {classic.comparisonSourceUrl && <a href={classic.comparisonSourceUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block underline">照合に使用した比較資料</a>}
+                          </div>}
                         </div>
 
                         <div className="text-xs text-[#59615D] dark:text-[#96A6B2] bg-[#EBF3EF]/40 dark:bg-[#182823]/40 p-3 rounded-xl border border-[#C5DED4]/40 dark:border-[#2A5243]/40 space-y-1.5">
                           <div>
                             <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-0.5">
-                              💡 臨床応用・配穴根拠:
+                              伝統的な配穴意図・現代医療への適用限界:
                             </span>
                             <span className="leading-relaxed">{classic.clinicalApplication}</span>
                           </div>

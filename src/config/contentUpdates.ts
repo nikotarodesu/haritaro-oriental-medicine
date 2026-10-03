@@ -1,15 +1,23 @@
 /** Significant content revisions only; never replace these with the build date. */
 export const SITE_REVISED_AT = '2026-10-02';
+export const ACUPOINT_PAGE_REVISED_AT = '2026-10-03';
 export const PAGE_REVISIONS: Record<string, string> = {
-  '/': SITE_REVISED_AT, '/learn': SITE_REVISED_AT, '/clinical': SITE_REVISED_AT,
-  '/kokushi': SITE_REVISED_AT, '/curriculum': SITE_REVISED_AT,
-  '/simulator': SITE_REVISED_AT, '/library': SITE_REVISED_AT,
+  '/learn': SITE_REVISED_AT, '/kokushi': SITE_REVISED_AT,
+  '/simulator': SITE_REVISED_AT,
   '/articles': SITE_REVISED_AT, '/contact': SITE_REVISED_AT,
   '/tsubo/practice': SITE_REVISED_AT, '/pricing': SITE_REVISED_AT,
-  '/safety': SITE_REVISED_AT, '/editorial-policy': SITE_REVISED_AT,
   '/symptoms': SITE_REVISED_AT, '/diagnosis': SITE_REVISED_AT, '/cases': SITE_REVISED_AT,
+  // 実際に改訂したページだけを更新する。全教材の確認日には用いない。
+  '/': '2026-10-03', '/tsubo': '2026-10-03', '/about': '2026-10-03',
+  '/clinical': '2026-10-03', '/safety': '2026-10-03', '/editorial-policy': '2026-10-03',
+  '/library': '2026-10-03', '/glossary': '2026-10-03', '/curriculum': '2026-10-03',
+  '/curriculum/lecture-yinyang-1': '2026-10-03',
+  '/curriculum/lecture-yinyang-2': '2026-10-03',
+  '/curriculum/lecture-yinyang-3': '2026-10-03',
 };
 export const SITE_UPDATES = [
+  { date: '2026-10-03', label: '教材の説明を見直し', href: '/editorial-policy', text: '陰陽講義・用語・古典・配穴例で伝統的な説明と医学的根拠を区別。古典の未照合箇所を明示' },
+  { date: '2026-10-03', label: '経穴の情報と操作', href: '/tsubo/li4', text: '合谷の位置説明、検索用の監修表示、共有情報を修正し、スマホの保存・比較・復習操作を改善' },
   { date: SITE_REVISED_AT, label: '受診と施術の安全性', href: '/safety', text: '救急受診の目安を明確にし、固定の安全深度・未照合の施術手順を掲載保留' },
   { date: SITE_REVISED_AT, label: '文献の照合', href: '/editorial-policy', text: '出典の誤りを修正し、書誌照合・内容の確認・専門家監修の状態を区別して公開' },
   { date: SITE_REVISED_AT, label: 'ログイン・契約管理', href: '/auth/login', text: 'Google認証へ一本化し、決済状態の確認・契約管理・同期表示を改善' },

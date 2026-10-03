@@ -1,4 +1,4 @@
-import { PAGE_REVISIONS, SITE_REVISED_AT } from "@/config/contentUpdates";
+import { PAGE_REVISIONS, SITE_REVISED_AT, ACUPOINT_PAGE_REVISED_AT } from "@/config/contentUpdates";
 import type { MetadataRoute } from "next";
 import { ALL_ACUPOINTS } from "@/data/tsubo";
 import { ARTICLES } from "@/data/articleData";
@@ -123,7 +123,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 全361経穴詳細ページ
   const acupointPages: MetadataRoute.Sitemap = ALL_ACUPOINTS.map((pt) => ({
     url: `${baseUrl}/tsubo/${pt.code.toLowerCase()}`,
-    lastModified: new Date(SITE_REVISED_AT),
+    lastModified: new Date(ACUPOINT_PAGE_REVISED_AT),
   }));
 
   // 学術アーカイブ記事ページ（個別記事公開日を反映）

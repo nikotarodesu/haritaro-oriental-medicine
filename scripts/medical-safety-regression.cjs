@@ -57,6 +57,41 @@ for (const [caseId, preset] of Object.entries(CASE_SIMULATOR_PRESETS)) {
   assert.match(preset.explanation, /学習用仮説/);
 }
 const quizzes = load('src/data/curriculumQuizzes').CURRICULUM_QUIZZES;
+const lectures = load('src/data/curriculumData').CURRICULUM_DATA.flatMap(stage => stage.lectures);
+for (const id of ['lecture-yinyang-1', 'lecture-yinyang-2', 'lecture-yinyang-3']) {
+  const lecture = lectures.find(item => item.id === id);
+  assert(lecture, `${id}: learning URL must remain available`);
+  assert(!/1分たりとも生きられません|極めて高度に整合|生理学的にも完全に合致|ミリ単位で/.test(JSON.stringify(lecture)), `${id}: unsupported physiology claims`);
+  assert(lecture.references.some(ref => typeof ref === 'object' && ref.url && ref.note), `${id}: source scope missing`);
+  assert.equal(quizzes[id].questions.length, 3, `${id}: preserve learning progress`);
+  for (const question of quizzes[id].questions) {
+    assert.equal(question.options.length, 3);
+    assert(question.correctIndex >= 0 && question.correctIndex < 3);
+    assert(question.explanation);
+  }
+}
+const classics = load('src/data/classicalTextsData');
+assert.equal(classics.SOURCE_CLASSICAL_TEXTS.length, 24);
+assert.equal(classics.CLASSICAL_TEXTS.length, 24);
+for (const source of classics.SOURCE_CLASSICAL_TEXTS) {
+  const published = classics.CLASSICAL_TEXTS.find(item => item.id === source.id);
+  assert(published, `${source.id}: preserve learning links`);
+  if (source.originalPublicationStatus === 'withheld_pending_verification') {
+    assert(source.original, `${source.id}: original audit material retained`);
+    assert.equal(published.original, '', `${source.id}: unverified quotation withheld`);
+    assert(!published.reading, `${source.id}: unverified reading withheld`);
+    assert(published.verificationNote && published.comparisonSourceUrl);
+  } else {
+    assert.equal(published.original, source.original);
+  }
+  assert(!/奇跡的な効果|全疾患が治る|栄養供給を再建|最重要である根拠|現代臨床でもそのまま第一選択/.test(published.translation + published.clinicalApplication), `${source.id}: ancient text is not proof of modern clinical efficacy`);
+}
+const pairs = load('src/types/clinicalMemo').CLASSIC_CLINICAL_PAIRS;
+assert.equal(pairs.length, 8);
+for (const pair of pairs) {
+  assert(!/特効配穴|根本治療に必須|リセットします|迷走神経反射を強力に抑制|根底から解消|即効処方/.test(pair.summary + pair.mechanism), `${pair.id}: unverified clinical promise`);
+  assert(pair.points.length >= 2);
+}
 const cauda = quizzes['lecture-diagnosis-2'].questions[1];
 assert.match(cauda.explanation, /直ち|医療/);
 assert(!cauda.explanation.includes('数時間以内'));

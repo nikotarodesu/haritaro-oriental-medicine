@@ -351,13 +351,13 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
       "頻尿・夜間多尿・排尿困難"
     ],
     categories: ["三陰交", "足の三陰の交会穴"],
-    clinicalNote: "足の太陰脾経・足の少陰腎経・足の厥陰肝経の三つの陰経が合流する女性医学・婦人科の至宝穴。脾（気血の生成）・腎（先天の本・生殖）・肝（血の貯蔵と疏泄）を同時に補導する。",
+    clinicalNote: "伝統的に足の太陰脾経・足の少陰腎経・足の厥陰肝経が交わるとされる経穴です。月経や下腹部などの症状に関連づけて学びますが、分類や配穴名だけで婦人科疾患への効果は判断できません。",
     caution: "伝統的に妊娠中の慎重穴とされます。子宮収縮作用の強さは断定できません。妊娠中は部位を問わず強刺激を避け、産科の担当者へ相談してください。",
     status: "published",
     hasDetailedAnatomy: false,
     goldenPairs: [
-      { partnerCode: "KI3", partnerName: "太渓", prescriptionName: "滋陰補腎配穴", effect: "腎陰・肝血を潤し、更年期障害のホットフラッシュ・腰痛・不眠を改善する" },
-      { partnerCode: "CV4", partnerName: "関元", prescriptionName: "培元固本配穴", effect: "下焦の元気を補益し、月経不順・不妊・慢性冷え性を根本から温める" }
+      { partnerCode: "KI3", partnerName: "太渓", prescriptionName: "滋陰補腎配穴", effect: "腎陰・肝血に関連づける伝統的な配穴意図。更年期症状・腰痛・不眠への二穴の効果は、この説明からは確定できません。" },
+      { partnerCode: "CV4", partnerName: "関元", prescriptionName: "培元固本配穴", effect: "下焦の元気を補うとされる伝統的な配穴意図。月経症状や不妊への治療効果を保証するものではありません。" }
     ],
     punctureMethod: "直刺 0.5〜1.0寸。針先をやや上方へ向けて刺入し、下腿内側を上行する重だるい響きを得る。",
     moxibustion: "灸5〜7壮、温灸10〜15分。婦人科冷え症・下腹痛に温灸が著効。",

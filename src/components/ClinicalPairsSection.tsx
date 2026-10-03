@@ -10,19 +10,18 @@ export default function ClinicalPairsSection() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedElement, setSelectedElement] = useState<string>("すべて");
 
-  const elements = ["すべて", "木", "火", "土", "金", "水"];
+  const elements = ["すべて", "木", "火", "土", "金", "水"] as const;
 
   const filteredPairs = CLASSIC_CLINICAL_PAIRS.filter(pair => {
     if (selectedElement === "すべて") return true;
-    return pair.elements.includes(selectedElement as any);
+    return pair.elements.some(element => element === selectedElement);
   });
 
   return (
     <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-6 shadow-xs transition-all">
       {/* ヘッダー・開閉トグル領域 */}
       <div
-        onClick={() => setIsOpen(!isOpen)}
-        className="cursor-pointer select-none group flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4"
+        className="select-none group flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4"
       >
         <div className="flex-1">
           <div className="flex items-center gap-2 text-xs font-bold text-[#B86924] dark:text-[#E6C387] tracking-wider uppercase mb-1">
@@ -33,10 +32,10 @@ export default function ClinicalPairsSection() {
             </span>
           </div>
           <h2 className="text-lg sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors">
-            臨床名配穴
+            伝統的な配穴の学習例
           </h2>
           <p className="mt-1 text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-2xl leading-relaxed">
-            単穴刺激にとどまらず、相乗効果を生み出す伝統的な配穴（太衝＋陽陵泉、開四関など）。ワンクリックで学習ノートに保存し、自分だけの要穴集として活用できます。
+            太衝＋陽陵泉、開四関などの構成と伝統的な配穴意図を比較できます。組み合わせによる治療効果や相乗効果は、この分類だけでは判断できません。学習ノートへ保存して復習に使えます。
           </p>
         </div>
 
@@ -44,8 +43,10 @@ export default function ClinicalPairsSection() {
         <div className="flex items-center self-start sm:self-center gap-2">
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] transition-colors shadow-2xs"
+            onClick={() => setIsOpen(open => !open)}
+            className="min-h-11 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] transition-colors shadow-2xs"
             aria-expanded={isOpen}
+            aria-controls="traditional-pairs"
           >
             {isOpen ? (
               <>
@@ -64,7 +65,7 @@ export default function ClinicalPairsSection() {
 
       {/* 開閉コンテンツ */}
       {isOpen && (
-        <div className="pt-5 mt-5 border-t border-[#E8E1D1] dark:border-[#22303D] space-y-6">
+        <div id="traditional-pairs" className="pt-5 mt-5 border-t border-[#E8E1D1] dark:border-[#22303D] space-y-6">
           {/* 五行フィルター */}
           <div className="flex items-center justify-between gap-3 flex-wrap bg-[#FAF8F5] dark:bg-[#121920] p-3 rounded-xl border border-[#EDE7DB] dark:border-[#22303D]">
             <div className="flex items-center gap-1.5 flex-wrap">
@@ -72,11 +73,13 @@ export default function ClinicalPairsSection() {
               {elements.map(el => (
                 <button
                   key={el}
+                  type="button"
+                  aria-pressed={selectedElement === el}
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedElement(el);
                   }}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                  className={`min-h-11 min-w-11 px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
                     selectedElement === el
                       ? "bg-[#232826] text-white dark:bg-white dark:text-[#10161C] shadow-xs"
                       : "bg-[#FFFFFF] dark:bg-[#17212A] text-[#59615D] dark:text-[#96A6B2] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#EBF3EF]"
@@ -117,7 +120,7 @@ export default function ClinicalPairsSection() {
                   )}
                 </div>
 
-                <ClipButton item={pair} variant="icon" size="sm" />
+                <ClipButton item={pair} variant="icon" size="sm" className="min-h-11 min-w-11" />
               </div>
 
               {/* 構成ツボ */}
@@ -134,7 +137,7 @@ export default function ClinicalPairsSection() {
 
               {/* 主治・適応症 */}
               <div className="space-y-1">
-                <span className="text-[11px] font-semibold text-[#737C77] dark:text-[#8899A6] block">主な適応症状:</span>
+                <span className="text-[11px] font-semibold text-[#737C77] dark:text-[#8899A6] block">伝統的に関連づける症状・分類:</span>
                 <div className="flex flex-wrap gap-1">
                   {pair.indications.map((ind, idx) => (
                     <span
@@ -155,19 +158,20 @@ export default function ClinicalPairsSection() {
               {pair.mechanism && (
                 <div className="bg-white dark:bg-[#17212A] p-3 rounded-lg border border-[#E5DEC9] dark:border-[#2A3B4A] text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
                   <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
-                    💡 臨床メカニズム・配穴意図
+                    伝統的な配穴意図と説明の限界
                   </span>
                   {pair.mechanism}
                 </div>
               )}
+              {pair.caution && <p className="text-xs leading-relaxed text-[#A83629] dark:text-[#F2A99F]">{pair.caution}</p>}
             </div>
 
             {/* クリップアクションバー */}
             <div className="pt-2 border-t border-[#E5DEC9] dark:border-[#2A3B4A] flex items-center justify-between">
               <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                相補作用で効果最大化
+                組み合わせを学習ノートに記録
               </span>
-              <ClipButton item={pair} variant="button" size="sm" />
+              <ClipButton item={pair} variant="button" size="sm" className="min-h-11" />
             </div>
           </div>
         ))}
@@ -178,9 +182,9 @@ export default function ClinicalPairsSection() {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] text-[#59615D] dark:text-[#A0B0BC] border border-[#E5DEC9] dark:border-[#2A3B4A] transition-colors"
+              className="min-h-11 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] text-[#59615D] dark:text-[#A0B0BC] border border-[#E5DEC9] dark:border-[#2A3B4A] transition-colors"
             >
-              <span>臨床名配穴を折りたたむ</span>
+              <span>配穴一覧を折りたたむ</span>
               <ChevronUp className="w-4 h-4" />
             </button>
           </div>

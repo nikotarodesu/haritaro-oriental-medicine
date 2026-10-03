@@ -96,7 +96,7 @@ export default function AboutPage() {
                   </li>
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#1E2D3D] dark:text-[#7BAAD8] shrink-0">3.</span>
-                    <span><Link href="/kokushi" className="font-semibold underline hover:text-[#1E2D3D]">国試演習ハブ</Link>で過去問・忘却曲線復習に挑戦</span>
+                    <span><Link href="/kokushi" className="font-semibold underline hover:text-[#1E2D3D]">国試演習ハブ</Link>でオリジナル演習・間隔復習に挑戦</span>
                   </li>
                 </ul>
               </div>

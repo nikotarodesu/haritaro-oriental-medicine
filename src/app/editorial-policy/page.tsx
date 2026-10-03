@@ -14,9 +14,15 @@ export default function EditorialPolicyPage() {
       <p>5件の要約は原典の対象・比較・結果の適用範囲を確認して書き直しました。それ以外の効果量・配穴・安全性の詳細は、照合が完了するまで掲載を保留しています。</p>
       <p><Link href="/articles/science-of-tongue-diagnosis" className="underline">舌診の記事</Link>では別分野の論文を指していた引用を取り下げ、観察・伝統的な解釈・口腔の医学的評価を区別した説明へ修正しました。</p>
       <p className="font-bold">全件の医学的正確性の照合と、専門家による監修は完了していません。</p>
-      <p>記事・講義・経穴・症例・クイズなどから{summary.statements.toLocaleString('ja-JP')}件の記述を確認台帳へ抽出しました。このうち{summary.priorityStatements.toLocaleString('ja-JP')}件には、断定表現・数値・安全性などを優先確認する印が付いています。これは確認対象の一覧であり、確認済みの件数ではありません。</p>
+      <p>{summary.generatedAt}時点で、記事・講義・経穴・症例・クイズなどから{summary.statements.toLocaleString('ja-JP')}件の記述を確認台帳へ抽出しました。このうち{summary.priorityStatements.toLocaleString('ja-JP')}件には、断定表現・数値・安全性などを優先確認する印が付いています。これは確認対象の一覧であり、確認済みの件数ではありません。</p>
     </section>
     <section className="space-y-3"><h2 className="text-xl font-bold">安全性を優先した今回の修正</h2><p>全日本鍼灸学会の2025年版安全対策ガイドラインなどを参照し、経穴教材の一律の安全深度・骨による安全保証を取り下げました。記事の伝統理論と医学的診断の同一視、症状ガイドの受診案内も修正しています。これは該当箇所の照合・修正であり、全件の監修完了を意味しません。</p><p>出典を確認できない施術手順や症例アーカイブの公開は保留しています。</p><Link href="/safety" className="underline">受診の目安・安全性の出典と確認範囲</Link></section>
+    <section className="space-y-3"><h2 className="text-xl font-bold">2026年10月3日の教材改訂</h2>
+      <p>陰陽の3講義と関連クイズでは、伝統的な分類と自律神経・恒常性などの生理学的な概念を区別しました。用語集、古典条文の解説、配穴の学習例も、特効・相乗効果や現代の疾患の治癒を断定しない説明へ改訂しました。</p>
+      <p>古典の掲載文は底本との一致を確認できていないため、その状態を表示しています。七十五難・四総穴歌・勝玉歌には比較資料と確認が必要な点を追記しました。版や全文の照合、他の講義・図版・症例の確認、専門家による監修は継続しています。</p>
+      <p>合谷の位置説明を統一し、経穴ページの検索用データに残っていた「鍼灸師監修」の表示を修正しました。これは今回変更した箇所の記録であり、全教材の確認完了を示すものではありません。</p>
+      <p className="text-sm">参照した資料：<a className="underline" href="https://www.who.int/publications/i/item/9789240042322">WHOの伝統医学用語集の書誌</a>、<a className="underline" href="https://www.nccih.nih.gov/health/acupuncture-effectiveness-and-safety">NCCIHの鍼治療の研究と安全性</a>。各資料が支持する範囲と未確認の範囲は、講義の参考文献と古典の注記に記載しています。</p>
+    </section>
     <section className="space-y-3"><h2 className="text-xl font-bold">記述ごとに確認すること</h2><ol className="list-decimal pl-5 space-y-2">
       <li>出典の著者、題名、年、識別子が一致しているか。訂正・撤回がないか。</li>
       <li>原典のどのページ・表・段落が記述を支持するか。</li>
