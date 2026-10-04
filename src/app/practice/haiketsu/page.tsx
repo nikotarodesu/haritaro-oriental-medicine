@@ -581,5 +581,6 @@ function IncomingAcupoint({ onSelect }: { onSelect: (id: string) => void }) {
     const timer = setTimeout(() => onSelect(point.id), 0);
     return () => clearTimeout(timer);
   }, [point, onSelect]);
+  if (requested && !point) return <p role="status" className="mx-auto max-w-6xl px-4 pt-5 text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">配穴演習は基本32穴を対象にしています。指定された経穴はこの教材に含まれないため、表示中の基本配穴から練習できます。</p>;
   return null;
 }
