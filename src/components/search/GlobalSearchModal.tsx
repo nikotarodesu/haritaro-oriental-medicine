@@ -610,7 +610,7 @@ export default function GlobalSearchModal({
         </div>
 
         {/* 検索結果・サジェスト一覧（スクロールエリア） */}
-        <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-2 sm:p-3 space-y-1">
+        <div ref={scrollRef} className="search-results-scroll flex-1 min-h-0 overflow-y-auto overscroll-contain p-2 sm:p-3 space-y-1">
           <p id={statusId} role="status" aria-live="polite" aria-atomic="true" className={hasQuery ? "px-3 py-1 text-sm font-semibold text-[#59615D] dark:text-[#A0B0BC]" : "sr-only"}>
             {hasQuery ? `${activeCategoryLabel}：${filteredResults.length}件${filteredResults.length > visibleResults.length ? `（${visibleResults.length}件を表示）` : ""}` : "検索語を入力してください。"}
           </p>

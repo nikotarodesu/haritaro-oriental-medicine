@@ -2,6 +2,14 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Keep compact search controls clear while preserving keyboard/touch scrolling. */
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.search-results-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-washi) transparent;
+}
+
 /* Tailwind utilities and base typography use the same self-hosted Japanese fonts. */
 @theme inline {
   --font-sans: var(--font-noto-sans), "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
