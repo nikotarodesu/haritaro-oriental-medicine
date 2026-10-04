@@ -221,8 +221,8 @@ export default function ThreeStageSimulator() {
   const [modalTsubo, setModalTsubo] = useState<Tsubo | null>(null);
 
   // 結果エリアの4大折りたたみアコーディオン（デフォルト閉）
-  const [isReasonOpen, setIsReasonOpen] = useState<boolean>(false);
-  const [isDifferentialOpen, setIsDifferentialOpen] = useState<boolean>(false);
+  const [isReasonOpen, setIsReasonOpen] = useState<boolean>(true);
+  const [isDifferentialOpen, setIsDifferentialOpen] = useState<boolean>(true);
   const [isAcupointOpen, setIsAcupointOpen] = useState<boolean>(false);
   const [isEvidenceOpen, setIsEvidenceOpen] = useState<boolean>(false);
 

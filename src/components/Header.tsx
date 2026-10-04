@@ -29,7 +29,8 @@ const LEARN_LINKS: readonly HeaderLink[] = [
   { href: "/articles", label: "コラム・文献解説" },
 ];
 const CLINICAL_LINKS: readonly HeaderLink[] = [
-  { href: "/clinical", label: "臨床ツールの総合案内" },
+  { href: "/clinical", label: "鍼灸師の臨床ホーム", description: "主訴から確認・前回記録から再開" },
+  { href: "/clinical/workspace", label: "所見から記録まで", description: "四診・候補比較・配穴の理由・再評価" },
   { href: TOOL_CATALOG.simulator.href, label: TOOL_CATALOG.simulator.title, description: TOOL_CATALOG.simulator.short },
   { href: TOOL_CATALOG.haiketsu.href, label: TOOL_CATALOG.haiketsu.title, description: TOOL_CATALOG.haiketsu.short },
   { href: "/cases", label: "臨床症例演習" },

@@ -486,31 +486,31 @@ export interface OverdosePreset {
 export const OVERDOSE_PRESETS: OverdosePreset[] = [
   {
     id: "headache_excess",
-    name: "頭痛・首肩こりで7穴選んでしまった例",
+    name: "頭痛・首肩こり：7穴の構成を比較する例",
     symptomSummary: "こめかみ頭痛・肩甲骨こり・イライラ",
     initialPointIds: ["gokoku", "taishou", "fuuchi", "kyokuchi", "hyakue", "rekketu", "tesanri"],
-    mistakePattern: "上肢要穴（合谷・曲池・手三里）の重複と、百会（昇提）と太衝（降気）のベクトル衝突。"
+    mistakePattern: "各穴の目的、昇提・降気という伝統的な説明の採用理由を比較します。併用が無効・危険であるという判定ではありません。"
   },
   {
     id: "digestive_excess",
-    name: "胃もたれ・慢性疲労で6穴選んでしまった例",
+    name: "胃もたれ・疲労：6穴の構成を比較する例",
     symptomSummary: "食後もたれ・軟便・無気力",
     initialPointIds: ["ashisanri", "chuukan", "taihaku", "tensu", "houryuu", "hiyu"],
-    mistakePattern: "胃経・脾経への介入が5穴重複。中焦へのシグナルが過密になり、気の運化が停滞。"
+    mistakePattern: "消化器症状に対して各穴を選ぶ理由と役割の重なりを比較します。穴数だけで効果や有害性を判断しません。"
   },
   {
     id: "autonomic_excess",
-    name: "自律神経失調・不眠で7穴選んでしまった例",
+    name: "不眠・胸部の訴え：7穴の構成を比較する例",
     symptomSummary: "動悸・胸苦しさ・不眠・のぼせ",
     initialPointIds: ["neikan", "taishou", "shinmon", "sanyinkou", "hyakue", "koukan", "shoukai"],
-    mistakePattern: "安神穴（内関・神門）の重複と、百会（昇）と行間（瀉火下降）の激しい気機混乱。"
+    mistakePattern: "伝統的な安神・昇提・清熱の目的を確認し、主訴と所見に対する採用理由を比較します。神経機構の検証済みモデルではありません。"
   },
   {
     id: "lumbago_excess",
-    name: "急性腰痛・坐骨神経痛で6穴選んでしまった例",
+    name: "腰痛：6穴の構成を比較する例",
     symptomSummary: "前屈制限・臀部から下肢への放散痛",
     initialPointIds: ["ichuu", "jinyu", "youryousen", "meimon", "koukei", "kangen"],
-    mistakePattern: "腰部・下肢・背部の穴を散発的に選びすぎ、急性期の鎮痛シグナルが散乱。"
+    mistakePattern: "安全確認を先に行い、局所と遠隔穴の目的を比較します。穴数だけで鎮痛効果を判断しません。"
   }
 ];
 
@@ -552,8 +552,8 @@ export function analyzePrescription(selectedIds: string[]): PrescriptionAnalysis
       id: "overdose-severe",
       type: "overdose",
       severity: "high",
-      title: `穴数過多による相殺警報（現在${count}穴）`,
-      description: "ツボが多すぎるため生体へのシグナルが干渉し、生体の自己治癒反応が散乱しています。「刺せば刺すほど効く」は錯覚であり、相殺効果により全体の切れ味が著しく低下しています。",
+      title: `各穴の採用理由を確認（現在${count}穴）`,
+      description: "穴数が増えたときは、各穴の目的と役割の重なりを確認します。穴数だけでは治療効果や刺激量の適否を判定できません。",
       involvedPointIds: selectedIds
     });
   } else if (count === 5) {
@@ -562,8 +562,8 @@ export function analyzePrescription(selectedIds: string[]): PrescriptionAnalysis
       id: "overdose-moderate",
       type: "overdose",
       severity: "medium",
-      title: "配穴がやや過密（5穴）",
-      description: "許容範囲内ですが、1〜2穴削ぎ落として本治1＋標治2などの最小構成に絞り込むことで、刺激のフォーカスが格段に鋭くなります。",
+      title: "5穴それぞれの目的を確認",
+      description: "主訴と治法に対する各穴の役割を説明し、代替案と比較してください。少数穴の効果が必ず高いという意味ではありません。",
       involvedPointIds: selectedIds
     });
   }
@@ -580,8 +580,8 @@ export function analyzePrescription(selectedIds: string[]): PrescriptionAnalysis
       id: "conflict-ascending-descending",
       type: "conflict_energy",
       severity: "high",
-      title: "昇降ベクトルの衝突（相殺効果発生）",
-      description: `気を頭頂へ引き上げる昇提穴（${ascendingPoints.join("・")}）と、気を足元へ引き下ろす降気穴（${descendingPoints.join("・")}）が拮抗しています。気機の方向性が定まらず、効果が相殺されます。病態が「気虚下陥」か「気逆上衝」かいずれか一方に主軸を定めて剪定すべきです。`,
+      title: "昇提・降気の目的を比較",
+      description: `昇提（${ascendingPoints.join("・")}）と降気（${descendingPoints.join("・")}）に分類した学習例が併存しています。各穴の目的と所見を確認します。効果の相殺や併用の禁止を示す検証済みルールではありません。`,
       involvedPointIds: selectedRoles.filter(r => r.energy === "ascending" || r.energy === "descending").map(r => r.id)
     });
   }
@@ -597,8 +597,8 @@ export function analyzePrescription(selectedIds: string[]): PrescriptionAnalysis
       id: "conflict-warm-cool",
       type: "conflict_energy",
       severity: "high",
-      title: "温補と清熱瀉火の干渉（シグナルの矛盾）",
-      description: `深部を温熱補益する穴（${warmPoints.join("・")}）と、熱邪を冷ます瀉火穴（${coolPoints.join("・")}）が同時に選ばれています。生体への刺激指令が正反対となり、自律神経反射が干渉します。`,
+      title: "温補・清熱の目的を比較",
+      description: `温補（${warmPoints.join("・")}）と清熱（${coolPoints.join("・")}）に分類した学習例が併存しています。寒熱が混在する所見や各穴の目的を確認します。生理的な干渉を証明する分析ではありません。`,
       involvedPointIds: selectedRoles.filter(r => r.energy === "warming" || r.energy === "cooling").map(r => r.id)
     });
   }
@@ -628,8 +628,8 @@ export function analyzePrescription(selectedIds: string[]): PrescriptionAnalysis
         id: `redundancy-${system}`,
         type: "redundancy",
         severity: "medium",
-        title: `${systemNameMap[system] || system}への重複刺激（${names.join("・")}）`,
-        description: `同一系統に対して${names.length}穴が密集しています。同効穴をいくつも重ねるより、原穴または合穴の1穴に絞り込む方が、気の感受性が高まり刺激の純度が保たれます。`,
+        title: `${systemNameMap[system] || system}に分類した穴の役割を確認（${names.join("・")}）`,
+        description: `同一系統の学習分類に${names.length}穴があります。各穴の採用条件や目的を比較してください。同系統の併用が無効であるという判定ではありません。`,
         involvedPointIds: selectedRoles.filter(r => r.system === system).map(r => r.id)
       });
     }
@@ -642,8 +642,8 @@ export function analyzePrescription(selectedIds: string[]): PrescriptionAnalysis
       id: "imbalance-no-root",
       type: "imbalance",
       severity: "medium",
-      title: "本治穴（根本調整）の欠如",
-      description: "選択されたツボがすべて標治穴（対症療法）に偏っています。局所症状を鎮めるだけでなく、五臓の原穴や合穴など【本治穴】を1穴加えることで再発を防ぐ持続的な効果が生まれます。",
+      title: "今回の本治・標治の役割を検討",
+      description: "教材の分類では標治に偏っています。今回の所見と治法を踏まえて役割を確認してください。本治穴の追加が再発を防ぐという保証ではありません。",
       involvedPointIds: []
     });
   } else if (count >= 5 && branchCount === 0) {
@@ -652,8 +652,8 @@ export function analyzePrescription(selectedIds: string[]): PrescriptionAnalysis
       id: "imbalance-no-branch",
       type: "imbalance",
       severity: "info",
-      title: "本治穴の過多（即効性の不足）",
-      description: "本治穴ばかりが5穴以上重複しています。根本調整は1〜2穴に厳選し、主訴に対する標治穴（阿是穴や四総穴）を適正に配置してください。",
+      title: "主訴に対する各穴の目的を確認",
+      description: "教材の分類では本治に偏っています。今回の主訴に対する目的と再評価指標を確認します。即効性や適切な穴数を自動判定するものではありません。",
       involvedPointIds: []
     });
   }
@@ -662,17 +662,17 @@ export function analyzePrescription(selectedIds: string[]): PrescriptionAnalysis
   const calculatedScore = Math.max(15, Math.min(100, 100 - scoreDeduction));
 
   let status: "optimal" | "acceptable" | "warning" | "danger" = "optimal";
-  let statusText = "秀逸な最小構成（至適シグナル）";
+  let statusText = "教材の分類上、確認項目が少ない構成";
 
   if (calculatedScore < 50) {
     status = "danger";
-    statusText = "相殺警報：刺激の散乱・過密";
+    statusText = "採用理由の確認項目が多い構成";
   } else if (calculatedScore < 75) {
     status = "warning";
-    statusText = "注意：重複または干渉リスクあり";
+    statusText = "複数の採用理由を確認する構成";
   } else if (calculatedScore < 90) {
     status = "acceptable";
-    statusText = "許容範囲（剪定の余地あり）";
+    statusText = "採用理由を確認する構成";
   }
 
   // 削ぎ落とし提案の生成
@@ -687,7 +687,7 @@ export function analyzePrescription(selectedIds: string[]): PrescriptionAnalysis
     branchCount,
     rootRatio,
     alerts,
-    pruningProposal
+    pruningProposal: pruningProposal ? { ...pruningProposal, corePrinciple: "教材の分類を使った比較案", clinicalRationale: "各穴の目的を確認するための少数穴の比較案です。効果の向上や安全性を保証する最適処方ではありません。所見・治法・患者の状態を再確認します。" } : null
   };
 }
 

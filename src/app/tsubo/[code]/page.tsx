@@ -1,5 +1,6 @@
 import { SHARED_OG_IMAGES, acupointPageTitle, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
+import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { 
@@ -315,6 +316,7 @@ export default async function AcupointDetailPage({ params }: Props) {
       />
 
       <div className="max-w-5xl mx-auto space-y-5 sm:space-y-8">
+        <ClinicalToolBridge />
         
         {/* パンくずリスト ＆ 前後経穴クイックナビ */}
         <nav className="flex flex-wrap items-center justify-between gap-2 text-sm text-[#737C77] dark:text-[#8899A6] gap-3 flex-wrap">

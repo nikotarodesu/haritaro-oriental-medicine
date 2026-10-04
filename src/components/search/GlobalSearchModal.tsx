@@ -36,6 +36,7 @@ import { SEARCH_CATEGORIES, matchesSearchCategory, nextSearchResultIndex, prepar
 import { LEARNING_COURSES } from "@/data/learningCourses";
 import { REFLECTION_CASES } from "@/data/learningReflectionCatalog";
 import { useModalDialog } from "@/hooks/useModalDialog";
+import { CLINICAL_COMPLAINTS } from "@/data/clinicalWorkflow";
 
 export type { SearchItemType } from "@/utils/search";
 
@@ -51,6 +52,9 @@ export interface SearchResultItem {
 }
 
 const STATIC_TOOLS: SearchResultItem[] = [
+  { id: 'clinical-home', type: 'tool', title: '鍼灸師の臨床ホーム', subtitle: '主訴・所見・前回記録から始める', badge: '臨床', url: '/clinical', tags: ['主訴','問診','臨床','鍼灸師'] },
+  { id: 'clinical-workspace', type: 'tool', title: '所見から記録まで', subtitle: '四診・候補比較・配穴の理由・再評価', badge: '臨床記録', url: '/clinical/workspace', tags: ['四診','所見','弁証','配穴','再評価'] },
+  ...CLINICAL_COMPLAINTS.map(item => ({ id: `clinical-${item.slug}`, type: 'tool' as const, title: `${item.title}｜鍼灸師の確認ガイド`, subtitle: item.summary, badge: '主訴別・専門家', url: `/clinical/symptoms/${item.slug}`, tags: [item.title,'主訴','問診','四診','再評価'] })),
   {
     id: "tool-kokushi",
     type: "tool",

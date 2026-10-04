@@ -54,6 +54,7 @@ export default function SymptomsPage() {
       </div>
 
       <MedicalSafetyNotice title="症状ガイドの利用範囲" message={SYMPTOM_GUIDANCE_SCOPE} />
+      <Link href="/clinical#chief-complaints" className="inline-flex min-h-11 items-center rounded-lg border border-[#C8D4CD] px-4 py-2 font-semibold text-[#1E3D34] dark:border-[#496153] dark:text-[#9CCDB8]">鍼灸師の方：主訴別の問診・所見比較ガイドへ →</Link>
 
       {/* カテゴリ切り替えタブ */}
       <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 border-b border-[#E8E1D1] dark:border-[#22303D] pb-3 sm:pb-4">

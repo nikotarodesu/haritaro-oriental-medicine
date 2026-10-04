@@ -6,6 +6,7 @@ import { CURRICULUM_DATA } from "@/data/curriculumData";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { KIKEI_VESSELS } from "@/data/kikeiData";
 import { LEARNING_COURSES } from "@/data/learningCourses";
+import { CLINICAL_COMPLAINTS } from "@/data/clinicalWorkflow";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.haritaro.jp";
@@ -150,6 +151,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   return [
+    ...CLINICAL_COMPLAINTS.map(item => ({ url: `${baseUrl}/clinical/symptoms/${item.slug}`, lastModified: new Date('2026-10-04') })),
     { url: `${baseUrl}/glossary`, lastModified: new Date(SITE_REVISED_AT) },
     { url: `${baseUrl}/learn/courses`, lastModified: new Date("2026-10-03") },
     ...LEARNING_COURSES.map(course => ({ url: `${baseUrl}/learn/courses/${course.slug}`, lastModified: new Date("2026-10-03") })),

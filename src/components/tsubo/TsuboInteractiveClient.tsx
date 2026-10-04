@@ -29,6 +29,7 @@ import BodyMapSvg from "@/components/tsubo/BodyMapSvg";
 import ClipButton from "@/components/ClipButton";
 import ClinicalPairsSection from "@/components/ClinicalPairsSection";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
+import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
 
 const MERIDIAN_ELEMENT_MAP: Record<string, "木" | "火" | "土" | "金" | "水"> = {
   lung: "金",
@@ -317,6 +318,7 @@ export default function TsuboInteractiveClient() {
 
   return (
     <div className="space-y-8 sm:space-y-12">
+      <ClinicalToolBridge />
       {/* 大型検索バー（最優先配置） */}
       <section className="max-w-4xl mx-auto space-y-3">
         <label htmlFor="tsubo-search" className="block text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">

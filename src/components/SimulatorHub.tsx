@@ -5,11 +5,14 @@ import Link from "next/link";
 import { Layers, Sparkles, ArrowRight, BookOpen, AlertCircle } from "lucide-react";
 import ProgressiveCaseTraining from "@/components/learning/ProgressiveCaseTraining";
 import ThreeStageSimulator from "@/components/ThreeStageSimulator";
+import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
+import ClinicalRevisionTraining from "@/components/clinical/ClinicalRevisionTraining";
 import type { ArticlePreview } from "@/data/articleData";
 
 export default function SimulatorHub({ relatedArticles }: { relatedArticles: ArticlePreview[] }) {
   return (
     <div className="space-y-8 sm:space-y-12">
+      <ClinicalToolBridge />
       {/* ツール見出し */}
       <div className="text-center space-y-3 sm:space-y-4 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-semibold tracking-wider">
@@ -109,6 +112,7 @@ export default function SimulatorHub({ relatedArticles }: { relatedArticles: Art
           </div>
         </div>
 
+        <ClinicalRevisionTraining />
         {/* 臨床学習・医師法に関する免責事項 */}
         <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-start gap-3 text-xs text-[#59615D] dark:text-[#96A6B2]">
           <AlertCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] shrink-0 mt-0.5" />

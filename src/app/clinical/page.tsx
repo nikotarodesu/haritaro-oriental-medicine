@@ -16,20 +16,21 @@ import {
 } from "lucide-react";
 import { TOOL_CATALOG } from "@/config/toolCatalog";
 import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
+import ClinicalDashboard from "@/components/clinical/ClinicalDashboard";
 
 export const metadata: Metadata = {
-  title: "臨床ツール案内｜東洋医学の問診・弁証・配穴・臨床記録",
+  title: "鍼灸師の臨床ホーム｜主訴・四診・候補比較・再評価",
   description:
-    "鍼灸臨床での「調べる・問診する・説明して記録する」を支える臨床ツール一覧。気血水対面問診、弁証推論、配穴設計、患者説明用A4養生シート印刷に対応。",
+    "鍼灸師の主訴別ガイドと臨床記録。安全確認・四診所見・弁証候補の比較・配穴の理由・施術後と次回来院時の再評価を一つの流れで整理します。",
   alternates: {
     canonical: "https://www.haritaro.jp/clinical",
   },
   openGraph: {
       images: SHARED_OG_IMAGES,
     siteName: SITE_NAME,
-    title: `臨床ツール案内｜東洋医学の問診・弁証・配穴・臨床記録 | ${SITE_NAME}`,
+    title: `鍼灸師の臨床ホーム｜主訴・四診・候補比較・再評価 | ${SITE_NAME}`,
     description:
-      "鍼灸臨床での「調べる・問診する・説明して記録する」を支える臨床ツール一覧。気血水対面問診、弁証推論、配穴設計、患者説明用A4養生シート印刷に対応。",
+      "主訴・所見の整理から候補比較・配穴の理由・前回記録との再評価まで、鍼灸師の実践を支える臨床ホーム。",
     url: "https://www.haritaro.jp/clinical",
   },
 };
@@ -40,7 +41,7 @@ export default function ClinicalLandingPage() {
   const faqs = [
     {
       q: "ツールの利用に会員登録や課金は必要ですか？",
-      a: "気血水チェック、五労チェッカー、弁証シミュレーター、配穴設計（4穴まで）などの推論ツールは、登録不要ですぐに無料でお使いいただけます。臨床ノートへの保存も無料枠（10件、配穴30件まで）の範囲でご利用いただけます。無料アカウント登録で端末間の自動同期にも対応しています。",
+      a: `主訴別ガイド、臨床ワークスペース、気血水チェック、五労チェッカー、弁証シミュレーター、配穴構成演習（4穴まで）は登録不要です。臨床ノートは無料${limits.freePatientNoteMax}件、配穴集は無料${limits.freeMemoMax}件まで保存できます。ワークスペースの配穴理由の記録は登録不要で利用できます。無料アカウント登録で端末間の自動同期にも対応しています。`,
     },
     {
       q: "患者の個人情報はどのように保護されますか？",
@@ -58,6 +59,7 @@ export default function ClinicalLandingPage() {
 
   return (
     <div className="min-h-screen py-8 sm:py-14 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-16 sm:space-y-24">
+      <ClinicalDashboard />
       {/* 1. ヒーロー ＆ 主CTA */}
       <section className="text-center max-w-3xl mx-auto space-y-5 sm:space-y-6 pt-4">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] text-xs sm:text-sm font-bold shadow-2xs">
@@ -65,10 +67,10 @@ export default function ClinicalLandingPage() {
           <span>鍼灸師・臨床家の方へ</span>
         </div>
 
-        <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-tight">
+        <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-tight">
           調べるときも、<br className="hidden sm:inline" />
           患者さんへの問診にも。
-        </h1>
+        </h2>
 
         <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-2xl mx-auto">
           経穴や弁証の確認から、患者さんと行う体調・生活習慣のチェック、説明と臨床ノートへの記録まで。鍼灸師の日々の実践を支えるツールです。

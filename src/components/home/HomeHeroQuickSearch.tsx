@@ -6,6 +6,8 @@ import { Search, Sparkles, ArrowRight } from "lucide-react";
 import { trackEvent } from "@/utils/analytics";
 
 const QUICK_TAGS = [
+  { label: "主訴から調べる", href: "/clinical#chief-complaints" },
+  { label: "所見から記録", href: "/clinical/workspace" },
   { label: "合谷 (LI4)", href: "/tsubo/li4" },
   { label: "足三里 (ST36)", href: "/tsubo/st36" },
   { label: "太衝 (LR3)", href: "/tsubo/lr3" },
@@ -69,7 +71,7 @@ export default function HomeHeroQuickSearch() {
             <Link
               key={tag.label}
               href={tag.href}
-              className={`${index > 1 ? "hidden sm:inline-flex" : "inline-flex"} min-h-[44px] items-center justify-center px-3 py-2 rounded-full bg-[#EFE9DD]/80 dark:bg-[#1E2B36] hover:bg-[#E5DEC9] dark:hover:bg-[#283847] text-sm font-medium text-[#2E3632] dark:text-[#E6EFEA] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-all shadow-2xs focus-visible:outline-2 focus-visible:outline-offset-2`}
+              className={`${index > 3 ? "hidden sm:inline-flex" : "inline-flex"} min-h-[44px] items-center justify-center px-3 py-2 rounded-full bg-[#EFE9DD]/80 dark:bg-[#1E2B36] hover:bg-[#E5DEC9] dark:hover:bg-[#283847] text-sm font-medium text-[#2E3632] dark:text-[#E6EFEA] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-all shadow-2xs focus-visible:outline-2 focus-visible:outline-offset-2`}
             >
               {tag.label}
             </Link>

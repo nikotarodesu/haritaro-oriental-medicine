@@ -8,6 +8,7 @@ export default function EditorialPolicyPage() {
   const records = Object.values(audit);
   return <main className="mx-auto max-w-3xl px-4 py-12 space-y-7 text-[#232826] dark:text-[#FAF8F5]">
     <h1 className="font-serif text-3xl font-bold">医学記述・出典の確認方針</h1>
+    <section className="space-y-3"><h2 className="text-xl font-bold">臨床用の記録・学習モデルの確認範囲（2026年10月4日）</h2><p>主訴別の確認ガイドと臨床ワークスペースでは、伝統理論、現代医学の受診目安、理解を助ける比喩を区別します。所見の照合は本サイトが整理した7つの限定的な学習モデルで、診断確率・治療効果・医学的な原因の除外を示しません。</p><p>WHOの標準用語は用語体系の参照に用い、個別の配穴の効果や照合ルールの検証資料とは扱いません。新しい学習モデルの臨床的妥当性と専門家監修は未確認です。</p><Link className="inline-flex min-h-11 items-center underline" href="/clinical">主訴別ガイドと参照範囲を見る</Link></section>
     <p className="leading-relaxed">伝統的な分類、現代医学の研究結果、理解を助ける比喩を区別します。文献が存在することと、教材の説明がその文献で支持されることは別々に確認します。</p>
     <section className="space-y-3"><h2 className="text-xl font-bold">現在の確認状況</h2>
       <p>登録論文44件を照合し、書誌一致を確認できたものは{records.filter(record => record.bibliographyStatus === 'matched').length}件です。撤回論文、書誌の不一致、原典を確認できない文献は研究資料一覧と検索の対象から外しています。</p>

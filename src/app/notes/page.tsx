@@ -35,6 +35,9 @@ import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { ClinicalMemoItem, PatientNoteItem, SAMPLE_PATIENT_NOTES } from "@/types/clinicalMemo";
 import { loadAndClearDraftPatientNote } from "@/utils/draftNote";
+import ClinicalNoteTimeline from "@/components/clinical/ClinicalNoteTimeline";
+import { clinicalToday } from "@/utils/clinicalEncounter";
+import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 import { trackEvent } from "@/utils/analytics";
 import GogyoBadge from "@/components/GogyoBadge";
 import { TSUBOS } from "@/data/tsuboData";
@@ -173,6 +176,7 @@ function ClinicalNotesPage() {
   // 診断結果等からのURLクエリパラメータ引き継ぎ ＆ 見本パラメータ検知
   useEffect(() => {
     if (typeof window === "undefined") return;
+    const restoreDraftTimer = setTimeout(() => {
     // ツールからの安全な下書き引き渡しをチェック
     const draft = loadAndClearDraftPatientNote();
     if (draft) {
@@ -180,12 +184,12 @@ function ClinicalNotesPage() {
       setPatientIdentifier(draft.patientIdentifier || `PT-${String(patientNotes.length + 1).padStart(3, "0")}`);
       setGender("");
       setAgeGroup("");
-      setVisitDate(new Date().toISOString().split("T")[0]);
+      setVisitDate(draft.visitDate || clinicalToday());
       setChiefComplaint(draft.chiefComplaint || "");
       setConstitution(draft.constitution || "");
       setSyndrome(draft.syndrome || "");
       setSelectedPointsInput(draft.selectedPointsInput || "");
-      setSelfCarePointsInput(draft.selectedPointsInput || "");
+      setSelfCarePointsInput("");
       setTreatmentPlan(draft.treatmentPlan || "");
       setPatientReaction(draft.patientReaction || "");
       setNextAction(draft.nextAction || "");
@@ -231,6 +235,8 @@ function ClinicalNotesPage() {
 
       window.history.replaceState({}, document.title, window.location.pathname);
     }
+    }, 0);
+    return () => clearTimeout(restoreDraftTimer);
   }, [patientNotes.length]);
 
   // 臨床ノートの検索フィルタリング
@@ -249,7 +255,7 @@ function ClinicalNotesPage() {
   // 配穴集のフィルタリング
   const filteredMemos = useMemo(() => {
     return memos.filter(item => {
-      const matchTag = selectedTag === "all" || item.elements.includes(selectedTag as any);
+      const matchTag = selectedTag === "all" || item.elements.includes(selectedTag as ClinicalMemoItem['elements'][number]);
       const q = searchQuery.toLowerCase().trim();
       const matchQuery =
         !q ||
@@ -358,7 +364,7 @@ function ClinicalNotesPage() {
 
       const notePayload = {
         patientIdentifier: patientIdentifier.trim(),
-        gender: gender ? (gender as any) : undefined,
+        gender: gender || undefined,
         ageGroup: ageGroup.trim() || undefined,
         visitDate,
         chiefComplaint: chiefComplaint.trim(),
@@ -657,6 +663,8 @@ function ClinicalNotesPage() {
       )}
 
       {/* ======================================================== */}
+      <ClinicalNoteTimeline notes={patientNotes} />
+      {draftNotice && <Link href="/clinical/workspace" className="inline-flex min-h-11 items-center rounded-lg border border-[#C8D4CD] px-4 py-2 font-semibold dark:border-[#496153]">作業中の所見・配穴の理由へ戻って修正 →</Link>}
       {/* 3. タブ切り替え（臨床ノート / 配穴集） */}
       {/* ======================================================== */}
       <div className="space-y-4">
@@ -813,7 +821,7 @@ function ClinicalNotesPage() {
                   </div>
 
                   <div className="pt-3 border-t border-[#E8E1D1] dark:border-[#243340] text-[11px] text-[#737C77] dark:text-[#8899A6] space-y-1 max-w-md mx-auto">
-                    <p>※ 無料枠として3件のノートと20件の配穴を保存可能。見本を見るだけで保存枠が減ることはありません。</p>
+                    <p>※ 無料枠として{SUBSCRIPTION_CONFIG.limits.freePatientNoteMax}件のノートと{SUBSCRIPTION_CONFIG.limits.freeMemoMax}件の配穴を保存可能。見本を見るだけで保存枠が減ることはありません。</p>
                     <p className="text-[#1E3D34] dark:text-[#74BA9E] font-medium">※ 実名等の直接識別情報は保持しない設計。無料ログインでPC・スマホ間の自動同期が有効になります。</p>
                   </div>
                 </div>
@@ -1340,7 +1348,7 @@ function ClinicalNotesPage() {
                     <label className="block text-xs font-medium text-[#737C77]">性別（任意）</label>
                     <select
                       value={gender}
-                      onChange={(e) => setGender(e.target.value as any)}
+                      onChange={(e) => setGender(e.target.value as typeof gender)}
                       className="w-full p-2 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-sm text-[#232826] dark:text-[#FAF8F5]"
                     >
                       <option value="">未選択</option>

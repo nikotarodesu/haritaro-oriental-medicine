@@ -18,6 +18,7 @@ import {
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { useAuth } from "@/contexts/AuthContext";
 import AuthModal from "@/components/auth/AuthModal";
+import ClinicalRevisionTraining from "@/components/clinical/ClinicalRevisionTraining";
 
 export default function CasesIndexPage() {
   const { isPremium } = useAuth();
@@ -50,6 +51,7 @@ export default function CasesIndexPage() {
       </nav>
 
       {/* ヒーローヘッダー */}
+      <ClinicalRevisionTraining />
       <div className="text-center space-y-3 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#F3DEC5] dark:border-[#4D331F] text-[#B86924] dark:text-[#E6C387] text-xs font-semibold tracking-wider">
           <GraduationCap className="w-3.5 h-3.5" />

@@ -27,6 +27,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/curriculum/lecture-qiblood-5': '2026-10-03',
 };
 export const SITE_UPDATES = [
+  { date: '2026-10-04', label: '所見から記録・再評価へ', href: '/clinical', text: '鍼灸師の臨床ホームと6つの主訴別ガイドを追加。四診の未確認・候補比較・配穴の理由・前回との経過比較を整備し、講義と見立て修正の演習を接続' },
   { date: '2026-10-04', label: '途中から続ける・目的から探す', href: '/articles', text: '記事の保存した節から再開する入口を追加。検索の候補選択と種類別の件数、中断した経穴演習の保存、スマホメニューの操作と表示を改善' },
   { date: '2026-10-04', label: '考え方から復習・記録へ', href: '/kokushi#learning-focus-review', text: '症例で迷った理由から既存の解説と問題へ案内。前回と今回の考えを比べる学習ノート、今日の一歩、コースを保った次の学習と無料範囲の案内を整備' },
   { date: '2026-10-03', label: '目的別の学習コース', href: '/learn/courses', text: '陰陽・五行・気血津液の3コースを追加。講義の進捗と苦手問題に応じた再開、疑問から読む入口と比較図を整備' },

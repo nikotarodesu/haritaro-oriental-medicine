@@ -36,6 +36,7 @@ import FontSizeControl from "@/components/FontSizeControl";
 import { CourseJourneyResolver } from "@/components/learning/LearningCourseLink";
 import { createCourseLectureHref, getCourseNextAction, type CourseJourney } from "@/utils/courseJourney";
 import { buildLearningReflectionHref } from "@/utils/learningReflection";
+import ClinicalLectureApplication from "@/components/clinical/ClinicalLectureApplication";
 
 interface Props {
   lecture: Lecture;
@@ -410,6 +411,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           )}
         </div>
 
+        <ClinicalLectureApplication lectureId={lecture.id} takeaway={lecture.whatYouWillLearn.canDo} />
         {readingQuestions.length > 0 && (
           <section aria-labelledby="lecture-reading-questions-title" className="space-y-3 rounded-2xl border border-[#D6E3DA] bg-[#F6F9F4] p-4 sm:p-5 dark:border-[#304A3E] dark:bg-[#172A22]">
             <h2 id="lecture-reading-questions-title" className="text-base font-bold text-[#1E3D34] dark:text-[#D9EDE0]">知りたいことから読む</h2>

@@ -26,6 +26,9 @@ import {
   OVERDOSE_PRESETS,
 } from "@/data/haiketsuData";
 import { saveDraftPatientNote } from "@/utils/draftNote";
+import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
+import { clinicalEncounterDraft, readClinicalEncounter, writeClinicalEncounter, type ClinicalPointPlan } from "@/utils/clinicalEncounter";
+import { ACUPOINTS_MASTER } from "@/data/tsubo/acupointsMaster";
 
 export default function HaiketsuPracticePage() {
   const router = useRouter();
@@ -37,6 +40,13 @@ export default function HaiketsuPracticePage() {
   const [prescriptionTitle, setPrescriptionTitle] = useState("四関開竅・自律神経調整処方");
   const [rationaleText, setRationaleText] = useState("太衝（足厥陰肝経・原穴）で肝気鬱結を疏通させ、合谷（手陽明大腸経・原穴）で気機の昇降を助け、全身の気血巡行を調和させる。");
   const [saved, setSaved] = useState(false);
+  const restoreClinicalPoints = useCallback((codes: string[]) => {
+    const roles = Object.values(ACUPOINT_ROLES).filter(point => codes.includes(point.code));
+    setSelectedPointIds(roles.map(point => point.id));
+    setPrescriptionTitle("作業中の配穴を検討");
+    setRationaleText("各経穴の採用理由は臨床ワークスペースで確認・編集してください。");
+    setSaved(false);
+  }, []);
 
   const selectIncomingPoint = useCallback((id: string) => {
     const point = ACUPOINT_ROLES[id];
@@ -95,11 +105,26 @@ export default function HaiketsuPracticePage() {
   // 臨床ノート（患者ノート）への下書き引き渡し
   const handleSaveToNoteDraft = () => {
     const pointNames = selectedPointIds.map(id => ACUPOINT_ROLES[id]?.name || id);
-    saveDraftPatientNote({
+    const encounter = readClinicalEncounter().encounter;
+    if (encounter) {
+      if (encounter.safety !== 'reviewed') { alert('安全確認が未完了、または医療評価を優先するため、配穴の転記を保留します。作業画面で確認してください。'); return; }
+      const editableCodes = Object.values(ACUPOINT_ROLES).map(point => point.code);
+      const codes = selectedPointIds.map(id => ACUPOINT_ROLES[id]?.code).filter(Boolean);
+      const points: ClinicalPointPlan[] = codes.map(code => encounter.points.find(point => point.code === code) || { code, role: 'other', reason: '', alternative: '' });
+      points.push(...encounter.points.filter(point => !editableCodes.includes(point.code)));
+      if (points.length > 12) { alert('作業画面で経穴の構成を確認してください。12穴まで引き継げます。'); return; }
+      const next = { ...encounter, points };
+      const names = points.map(point => ACUPOINTS_MASTER.find(item => item.code === point.code)?.name || point.code);
+      if (!writeClinicalEncounter(next) || !saveDraftPatientNote(clinicalEncounterDraft(next, names))) { alert('下書きを保存できませんでした。この画面で選択を保持しています。'); return; }
+      router.push('/notes');
+      return;
+    }
+    const stored = saveDraftPatientNote({
       sourceTool: "配穴設計",
       selectedPointsInput: pointNames.join(", "),
       treatmentPlan: `【配穴設計処方】\n処方名: ${prescriptionTitle || "自作配穴処方"}\n${isPremium ? "選定理由・方針" : "教材例の説明（現在の配穴の選定理由ではありません）"}: ${rationaleText || "未記入"}\n構成分析: 本治${analysis.rootCount}穴・標治${analysis.branchCount}穴（計${pointNames.length}穴）\n※配穴設計演習からの下書きです。確定診断や固定意図ではありません。`,
     });
+    if (!stored) { alert('下書きを保存できませんでした。この画面で選択を保持しています。'); return; }
     trackEvent("note_save_success", { tool_id: "haiketsu", destination_type: "note" });
     router.push("/notes");
   };
@@ -131,6 +156,7 @@ export default function HaiketsuPracticePage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
       <Suspense fallback={null}><IncomingAcupoint onSelect={selectIncomingPoint} /></Suspense>
+      <ClinicalToolBridge selectedCodes={selectedPointIds.map(id => ACUPOINT_ROLES[id]?.code).filter(Boolean)} editableCodes={Object.values(ACUPOINT_ROLES).map(point => point.code)} onRestore={restoreClinicalPoints} />
       {/* ヒーローヘッダー */}
       <div className="bg-white dark:bg-[#17212A] border-b border-[#E5DEC9] dark:border-[#2A3B4A] py-10 sm:py-14">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-4">
@@ -279,7 +305,7 @@ export default function HaiketsuPracticePage() {
                         ? "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300"
                         : "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300"
                     }`}>
-                      {analysis.status === "optimal" ? "調和（少数精鋭構成）" : analysis.status === "acceptable" ? "標準的構成" : "多穴・要精査"}
+                      {analysis.statusText}
                     </span>
                     <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
                       ※臨床効果の断定ではなく教材例との対比指標
@@ -373,6 +399,7 @@ export default function HaiketsuPracticePage() {
                               {role.tierLabel}
                             </span>
                           </div>
+                          <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">伝統的な役割の学習例：{role.energyLabel}。本治・標治の役割は、今回の治法と所見を踏まえて検討してください。</p>
                           <div className="flex items-center gap-2 pt-0.5">
                             <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-tight">
                               {role.specificRole} / {role.energyLabel}
@@ -474,7 +501,7 @@ export default function HaiketsuPracticePage() {
 
                 <div>
                   <label htmlFor="haiketsu-rationale" className="font-bold text-[#737C77] dark:text-[#8899A6] block mb-1">
-                    この配穴を選定した理由・狙う作用機序
+                    この配穴を検討する理由・伝統的な目的
                   </label>
                   <textarea
                     id="haiketsu-rationale"
