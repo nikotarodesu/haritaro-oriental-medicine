@@ -129,6 +129,7 @@ export default function ClinicalLandingPage() {
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
               気血水の偏りや五労の蓄積をチェックシートで可視化。問診所見の抜け漏れを防ぎ、全体像を速やかに把握できます。
             </p>
+            <Link href="/diagnosis" className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#1E3D34] underline dark:text-[#74BA9E] focus-visible:outline-2 focus-visible:outline-offset-4">気血水チェックを開く<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
           </div>
 
           <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 space-y-3">
@@ -141,6 +142,7 @@ export default function ClinicalLandingPage() {
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
               なぜその経穴を選んだのか、本治・標治のバランスや兼証への配慮を言語化。感覚だけに頼らない再現性のある配穴を設計できます。
             </p>
+            <Link href="/practice/haiketsu" className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#1E3D34] underline dark:text-[#74BA9E] focus-visible:outline-2 focus-visible:outline-offset-4">配穴を組み合わせて試す<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
           </div>
 
           <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 space-y-3">
@@ -153,6 +155,8 @@ export default function ClinicalLandingPage() {
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
               施術直後の変化や次回の課題を臨床ノートに蓄積。再来院時に前回の弁証仮説と結果を素早く確認し、方針を最適化できます。
             </p>
+            <Link href="/notes" className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#1E3D34] underline dark:text-[#74BA9E] focus-visible:outline-2 focus-visible:outline-offset-4">臨床ノートを開く<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+            <Link href="/notes?tab=learning" className="block min-h-11 content-center text-sm text-[#59615D] underline dark:text-[#A0B0BC] focus-visible:outline-2 focus-visible:outline-offset-4">講義・症例の学びを記録する</Link>
           </div>
         </div>
       </section>

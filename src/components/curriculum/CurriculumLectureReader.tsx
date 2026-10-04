@@ -33,6 +33,9 @@ import {
 import { saveDraftPatientNote } from "@/utils/draftNote";
 import { trackEvent } from "@/utils/analytics";
 import FontSizeControl from "@/components/FontSizeControl";
+import { CourseJourneyResolver } from "@/components/learning/LearningCourseLink";
+import { createCourseLectureHref, getCourseNextAction, type CourseJourney } from "@/utils/courseJourney";
+import { buildLearningReflectionHref } from "@/utils/learningReflection";
 
 interface Props {
   lecture: Lecture;
@@ -43,6 +46,8 @@ interface Props {
 export default function CurriculumLectureReader({ lecture, lectureNavigation, relatedReadingLinks = [] }: Props) {
   const articleTopRef = useRef<HTMLDivElement | null>(null);
   const [focusBanner, setFocusBanner] = useState<string | null>(null);
+  const [resolvedCourse, setResolvedCourse] = useState<{ lectureId: string; journey: CourseJourney | null } | null>(null);
+  const courseJourney = resolvedCourse?.lectureId === lecture.id ? resolvedCourse.journey : null;
 
   const {
     isMounted,
@@ -50,6 +55,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
     toggleLectureCompleted,
     recordVisitedLecture,
   } = useCurriculumProgress();
+  const courseNextAction = courseJourney ? getCourseNextAction(courseJourney, completedLectures) : null;
 
   const allLectures = lectureNavigation;
 
@@ -130,6 +136,10 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
     currentIndex >= 0 && currentIndex < allLectures.length - 1
       ? allLectures[currentIndex + 1]
       : null;
+  const previousHref = courseJourney
+    ? courseJourney.previousStep ? createCourseLectureHref(courseJourney.course.slug, courseJourney.previousStep.lectureId) : null
+    : prevLecture ? `/curriculum/${prevLecture.id}` : null;
+  const nextHref = courseNextAction?.href || (nextLecture ? `/curriculum/${nextLecture.id}` : null);
 
   // キーボード前後送りショートカット（[ で前へ、] で次へ、Alt+← で前へ、Alt+→ で次へ）
   useEffect(() => {
@@ -139,21 +149,24 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
       const isInput =
         target?.tagName === "INPUT" ||
         target?.tagName === "TEXTAREA" ||
+        target?.tagName === "SELECT" ||
+        target?.tagName === "BUTTON" ||
+        target?.tagName === "A" ||
         target?.isContentEditable;
       if (isInput) return;
 
-      if ((e.key === "[" || (e.altKey && e.key === "ArrowLeft")) && prevLecture) {
+      if ((e.key === "[" || (e.altKey && e.key === "ArrowLeft")) && previousHref) {
         e.preventDefault();
-        router.push(`/curriculum/${prevLecture.id}`);
-      } else if ((e.key === "]" || (e.altKey && e.key === "ArrowRight")) && nextLecture) {
+        router.push(previousHref);
+      } else if ((e.key === "]" || (e.altKey && e.key === "ArrowRight")) && nextHref) {
         e.preventDefault();
-        router.push(`/curriculum/${nextLecture.id}`);
+        router.push(nextHref);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [prevLecture, nextLecture, router]);
+  }, [previousHref, nextHref, router]);
 
   // 同シリーズのレッスン一覧
   const activeSeriesLessons = allLectures.filter(
@@ -244,14 +257,19 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
         </div>
       </div>
 
-      {learningCourses.length > 0 && (
+      <Suspense fallback={null}><CourseJourneyResolver lectureId={lecture.id} onResolve={setResolvedCourse} /></Suspense>
+      {courseJourney && <section aria-label="学習中のコース" className="rounded-2xl border border-[#C5DED4] bg-[#EBF3EF] p-4 text-[#184F49] dark:border-[#2A5243] dark:bg-[#182823] dark:text-[#9CCBBC]">
+        <p className="text-sm font-semibold">{courseJourney.course.title} · ステップ {courseJourney.stepIndex + 1} / {courseJourney.course.steps.length}</p>
+        <Link href={`/learn/courses/${courseJourney.course.slug}#course-next`} className="mt-2 inline-flex min-h-11 items-center gap-2 text-base font-bold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4"><ArrowLeft aria-hidden="true" className="h-4 w-4" />コースの進捗・到達目標へ</Link>
+      </section>}
+      {!courseJourney && learningCourses.length > 0 && (
         <nav aria-label="この講義を含む学習コース" className="flex flex-wrap gap-2">
           {learningCourses.map((course) => (
-            <Link key={course.slug} href={`/learn/courses/${course.slug}`}
+            <Link key={course.slug} href={createCourseLectureHref(course.slug, lecture.id)}
               onClick={() => trackEvent("context_link_click", { placement: "lecture_course_return", course_id: course.slug, lecture_id: lecture.id })}
               className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#D5E4DB] bg-white px-3.5 py-2 text-sm font-semibold leading-relaxed text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A5243] dark:bg-[#17212A] dark:text-[#83BEA8] dark:hover:bg-[#182823]">
               <ArrowLeft aria-hidden="true" className="h-4 w-4 shrink-0" />
-              <span>「{course.title}」の道順を見る</span>
+              <span>「{course.title}」のコースで学ぶ</span>
             </Link>
           ))}
         </nav>
@@ -510,6 +528,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           <section id="lecture-quiz" aria-label="理解度チェック" className="scroll-mt-28">
           <InteractiveQuiz
             quiz={CURRICULUM_QUIZZES[lecture.id]}
+            courseJourney={courseJourney}
             nextLecture={
               nextLecture
                 ? {
@@ -524,6 +543,11 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
 
         {/* 参考文献・学術エビデンス */}
         <ArticleReferences references={resolvedReferences} />
+        <section aria-label="講義の学習振り返り" className="rounded-2xl border border-[#C5DED4] bg-[#EBF3EF] p-4 sm:p-5 dark:border-[#2A5243] dark:bg-[#182823]">
+          <h2 className="text-lg font-bold text-[#184F49] dark:text-[#9CCBBC]">学んだことを、自分の言葉で残す</h2>
+          <p className="mt-2 text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">押さえた要点、まだ迷うこと、次に確認することを記録して、後から振り返れます。</p>
+          <Link href={buildLearningReflectionHref({ type: 'lecture', id: lecture.id })} onClick={() => trackEvent('context_link_click', { placement: 'lecture_reflection', lecture_id: lecture.id, item_type: 'learning_note' })} className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#184F49] px-4 py-3 text-base font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-4 dark:bg-[#285F54]"><FileText aria-hidden="true" className="h-4 w-4" />学習の振り返りを書く<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link>
+        </section>
 
         {/* 学びと実践をつなぐ臨床ツール連携バナー */}
         <div className="bg-gradient-to-r from-[#FAF8F5] to-[#EBF3EF] dark:from-[#17212A] dark:to-[#13221C] rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] p-4 sm:p-5 shadow-2xs space-y-3">
@@ -599,6 +623,11 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+            {courseJourney && courseNextAction && <Link href={courseNextAction.href}
+              onClick={() => trackEvent("context_link_click", { placement: courseNextAction.kind === 'complete' ? 'course_complete_return' : 'course_continue', course_id: courseJourney.course.slug, lecture_id: courseNextAction.lectureId })}
+              className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#184F49] px-4 py-3 text-base font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-4 dark:bg-[#285F54]">
+              <span>{courseNextAction.label}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+            </Link>}
             {prevLecture && (
               <Link
                 href={`/curriculum/${prevLecture.id}`}
@@ -606,8 +635,8 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
                 title="前のレッスンへ（ショートカット: [ キー）"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span>前のレッスン</span>
-                <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-sm font-mono rounded bg-[#FAF8F5] dark:bg-[#202E3C] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#737C77] dark:text-[#8899A6]">
+                <span>{courseJourney ? '全講義の前のレッスン' : '前のレッスン'}</span>
+                <kbd className={`${courseJourney ? 'hidden' : 'hidden sm:inline-block'} px-1.5 py-0.5 text-sm font-mono rounded bg-[#FAF8F5] dark:bg-[#202E3C] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#737C77] dark:text-[#8899A6]`}>
                   [
                 </kbd>
               </Link>
@@ -623,11 +652,11 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
             {nextLecture ? (
               <Link
                 href={`/curriculum/${nextLecture.id}`}
-                className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+                className={courseJourney ? "min-h-11 rounded-xl border border-[#D9E3DD] px-4 py-3 text-sm font-semibold dark:border-[#2A3B4A]" : "min-h-[44px] px-5 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"}
                 title="次のレッスンへ（ショートカット: ] キー）"
               >
-                <span>次のレッスン</span>
-                <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-sm font-mono rounded bg-white/20 text-white border border-white/30">
+                <span>{courseJourney ? '全講義の次のレッスン' : '次のレッスン'}</span>
+                <kbd className={`${courseJourney ? 'hidden' : 'hidden sm:inline-block'} px-1.5 py-0.5 text-sm font-mono rounded bg-white/20 text-white border border-white/30`}>
                   ]
                 </kbd>
                 <ArrowRight className="w-4 h-4" />
@@ -637,7 +666,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
                 href="/curriculum"
                 className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#B86924] hover:bg-[#9E571B] text-white text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
               >
-                <span>全講義修了！一覧へ</span>
+                <span>全講義の一覧へ</span>
                 <Sparkles className="w-4 h-4" />
               </Link>
             )}

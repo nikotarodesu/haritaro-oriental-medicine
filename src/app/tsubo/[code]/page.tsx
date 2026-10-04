@@ -1193,7 +1193,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             </Link>
 
             <Link
-              href="/kokushi"
+              href={`/tsubo/practice?course=meridian_${point.meridianId.toLowerCase()}`}
               className="p-3.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E2D3D] dark:hover:border-[#7BAAD8] hover:shadow-xs transition-all group flex flex-col justify-between space-y-2"
             >
               <div className="space-y-1">

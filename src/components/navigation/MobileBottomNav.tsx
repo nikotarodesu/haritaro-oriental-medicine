@@ -28,11 +28,12 @@ export default function MobileBottomNav() {
   }, []);
 
   useEffect(() => {
-    refreshConfig();
+    const timer = setTimeout(refreshConfig, 0);
     const handleNavUpdated = () => refreshConfig();
     window.addEventListener("haritaro:nav-updated", handleNavUpdated);
     window.addEventListener("storage", handleNavUpdated);
     return () => {
+      clearTimeout(timer);
       window.removeEventListener("haritaro:nav-updated", handleNavUpdated);
       window.removeEventListener("storage", handleNavUpdated);
     };
@@ -46,13 +47,15 @@ export default function MobileBottomNav() {
   const isItemActive = (id: NavItemId, href: string): boolean => {
     if (id === "home") return pathname === "/";
     if (id === "search") return false;
+    if (id === "curriculum") return pathname.startsWith("/learn") || pathname.startsWith("/curriculum");
+    if (id === "review") return pathname === "/kokushi";
     if (id === "notes") return pathname.startsWith("/notes") || pathname.startsWith("/mynote");
     if (id === "diagnosis") return pathname === "/diagnosis";
     if (id === "gorou") return pathname.startsWith("/diagnosis") && typeof window !== "undefined" && window.location.search.includes("gorou");
     if (id === "simulator") return pathname === "/simulator";
     if (id === "simulator_compare") return pathname.startsWith("/simulator/compare");
     if (id === "haiketsu") return pathname.startsWith("/practice/haiketsu");
-    return pathname.startsWith(href);
+    return pathname.startsWith(href.split(/[?#]/)[0]);
   };
 
   return (

@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { ArrowRight, BookOpen, CheckCircle2, RotateCcw } from 'lucide-react';
 import { useCurriculumProgress } from '@/contexts/CurriculumProgressContext';
-import { getCourseProgress, type LearningCourse } from '@/data/learningCourses';
+import { getCourseProgress, getLearningCourse, type LearningCourse } from '@/data/learningCourses';
+import { createCourseLectureHref } from '@/utils/courseJourney';
 import { trackEvent } from '@/utils/analytics';
 import LearningSyncStatus from './LearningSyncStatus';
 
@@ -20,11 +21,13 @@ export default function LearningCourseProgress({ course }: { course: LearningCou
   });
   const started = isMounted && (progress.completedCount > 0 || courseLectureIds.has(lastVisitedLectureId || ''));
   const nextStep = progress.nextStep || course.steps[0];
+  const nextCourse = course.nextCourseSlug ? getLearningCourse(course.nextCourseSlug) : undefined;
   const primaryLectureId = progress.finished && weakSteps.length ? weakSteps[0].lectureId : nextStep.lectureId;
-  const primaryHref = progress.finished && weakSteps.length
-    ? `/curriculum/${weakSteps[0].lectureId}?review=${encodeURIComponent(weakSteps[0].questionId)}`
-    : `/curriculum/${nextStep.lectureId}${progress.finished ? '#interactive-quiz-container' : ''}`;
-  const primaryLabel = progress.finished ? weakSteps.length ? '苦手の解説を確認する' : 'クイズで振り返る' : started ? 'コースの続きを学ぶ' : 'このコースを始める';
+  const primaryHref = progress.finished && nextCourse ? `/learn/courses/${nextCourse.slug}` : progress.finished && weakSteps.length
+    ? `${createCourseLectureHref(course.slug, weakSteps[0].lectureId)}&review=${encodeURIComponent(weakSteps[0].questionId)}#review-question-card`
+    : createCourseLectureHref(course.slug, nextStep.lectureId, progress.finished ? 'interactive-quiz-container' : undefined);
+  const primaryLabel = progress.finished ? nextCourse ? '次のテーマへ進む' : weakSteps.length ? '苦手の解説を確認する' : 'クイズで振り返る' : started ? 'コースの続きを学ぶ' : 'このコースを始める';
+  const primaryTitle = progress.finished && nextCourse ? nextCourse.title : progress.finished && weakSteps.length ? weakSteps[0].title : nextStep.title;
 
   return (
     <div className="space-y-8">
@@ -35,8 +38,8 @@ export default function LearningCourseProgress({ course }: { course: LearningCou
         </div>
         <progress className="mt-4 h-2 w-full overflow-hidden rounded-full accent-[#184F49] dark:accent-[#9CCBBC]" value={progress.completedCount} max={course.steps.length} aria-label="このコースの受講進捗" />
         <p className="mt-3 text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">受講進捗は講義画面の「受講済みにする」と、確認クイズの受講完了記録に連動します。</p>
-        <Link href={primaryHref} onClick={() => trackEvent('context_link_click', { placement: progress.finished ? 'course_review' : started ? 'course_resume' : 'course_start', course_id: course.slug, lecture_id: primaryLectureId })} className={`mt-4 flex min-h-11 items-center justify-between gap-3 rounded-xl bg-[#184F49] p-4 font-bold text-white hover:bg-[#103D37] dark:bg-[#285F54] ${focusClass}`}>
-          <span className="min-w-0"><span className="block text-base">{primaryLabel}</span><span className="mt-1 block text-sm font-normal leading-relaxed">{progress.finished && weakSteps.length ? weakSteps[0].title : nextStep.title}</span></span>
+        <Link href={primaryHref} onClick={() => trackEvent('context_link_click', { placement: progress.finished && nextCourse ? 'course_next' : progress.finished ? 'course_review' : started ? 'course_resume' : 'course_start', course_id: course.slug, lecture_id: progress.finished && nextCourse ? undefined : primaryLectureId })} className={`mt-4 flex min-h-11 items-center justify-between gap-3 rounded-xl bg-[#184F49] p-4 font-bold text-white hover:bg-[#103D37] dark:bg-[#285F54] ${focusClass}`}>
+          <span className="min-w-0"><span className="block text-base">{primaryLabel}</span><span className="mt-1 block text-sm font-normal leading-relaxed">{primaryTitle}</span></span>
           <ArrowRight aria-hidden="true" className="h-5 w-5 shrink-0" />
         </Link>
       </section>
@@ -57,8 +60,8 @@ export default function LearningCourseProgress({ course }: { course: LearningCou
                     <p className="mt-2 text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">{step.focus}</p>
                     {weakCount > 0 && <p className="mt-2 text-sm text-[#96531B] dark:text-[#E6C387]">解説で確認したい問題：{weakCount}問</p>}
                     <div className="mt-3 flex flex-wrap gap-2 text-sm font-semibold">
-                      <Link href={`/curriculum/${step.lectureId}`} onClick={() => trackEvent('context_link_click', { placement: 'course_step', course_id: course.slug, lecture_id: step.lectureId, item_type: 'lecture' })} className={`inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#EBF3EF] px-3 py-2 text-[#184F49] hover:bg-[#DCEBE3] dark:bg-[#182823] dark:text-[#9CCBBC] ${focusClass}`}><BookOpen aria-hidden="true" className="h-4 w-4" />講義を読む</Link>
-                      <Link href={`/curriculum/${step.lectureId}#interactive-quiz-container`} onClick={() => trackEvent('context_link_click', { placement: 'course_step', course_id: course.slug, lecture_id: step.lectureId, item_type: 'quiz' })} className={`inline-flex min-h-11 items-center rounded-lg border border-[#D9E3DD] px-3 py-2 text-[#184F49] dark:border-[#2A3B4A] dark:text-[#9CCBBC] ${focusClass}`}>確認クイズへ</Link>
+                      <Link href={createCourseLectureHref(course.slug, step.lectureId)} onClick={() => trackEvent('context_link_click', { placement: 'course_step', course_id: course.slug, lecture_id: step.lectureId, item_type: 'lecture' })} className={`inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#EBF3EF] px-3 py-2 text-[#184F49] hover:bg-[#DCEBE3] dark:bg-[#182823] dark:text-[#9CCBBC] ${focusClass}`}><BookOpen aria-hidden="true" className="h-4 w-4" />講義を読む</Link>
+                      <Link href={createCourseLectureHref(course.slug, step.lectureId, 'interactive-quiz-container')} onClick={() => trackEvent('context_link_click', { placement: 'course_step', course_id: course.slug, lecture_id: step.lectureId, item_type: 'quiz' })} className={`inline-flex min-h-11 items-center rounded-lg border border-[#D9E3DD] px-3 py-2 text-[#184F49] dark:border-[#2A3B4A] dark:text-[#9CCBBC] ${focusClass}`}>確認クイズへ</Link>
                     </div>
                   </div>
                 </div>
@@ -71,10 +74,10 @@ export default function LearningCourseProgress({ course }: { course: LearningCou
       <section aria-labelledby="course-review-heading" className="rounded-2xl border border-[#D9E3DD] bg-[#FCFAF6] p-4 sm:p-6 dark:border-[#2A3B4A] dark:bg-[#17212A]">
         <h2 id="course-review-heading" className="flex items-center gap-2 font-serif text-xl font-bold"><RotateCcw aria-hidden="true" className="h-5 w-5 text-[#184F49] dark:text-[#9CCBBC]" />苦手から解説へ戻る</h2>
         <p className="mt-3 text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">{!isMounted ? '回答履歴を確認しています。' : weakSteps.length ? `このコースで、直近の回答が不正解だった問題は${weakQuestions.length}問です。関連する講義で、要点と解説を確認できます。` : '確認クイズで間違えた問題があると、ここに関連講義が表示されます。講義を読み終えたら、クイズで理解を確かめましょう。'}</p>
-        {weakSteps.length > 0 && <ul className="mt-4 space-y-2">{weakSteps.map((step) => <li key={step.lectureId}><Link href={`/curriculum/${step.lectureId}?review=${encodeURIComponent(step.questionId)}`} onClick={() => trackEvent('context_link_click', { placement: 'course_review', course_id: course.slug, lecture_id: step.lectureId })} className={`flex min-h-11 items-center justify-between gap-3 rounded-xl bg-[#F6F4EE] p-3 text-base font-semibold text-[#184F49] dark:bg-[#1E2B36] dark:text-[#9CCBBC] ${focusClass}`}><span>{step.title}<span className="ml-2 text-sm font-normal">{step.count}問</span></span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link></li>)}</ul>}
+        {weakSteps.length > 0 && <ul className="mt-4 space-y-2">{weakSteps.map((step) => <li key={step.lectureId}><Link href={`${createCourseLectureHref(course.slug, step.lectureId)}&review=${encodeURIComponent(step.questionId)}#review-question-card`} onClick={() => trackEvent('context_link_click', { placement: 'course_review', course_id: course.slug, lecture_id: step.lectureId })} className={`flex min-h-11 items-center justify-between gap-3 rounded-xl bg-[#F6F4EE] p-3 text-base font-semibold text-[#184F49] dark:bg-[#1E2B36] dark:text-[#9CCBBC] ${focusClass}`}><span>{step.title}<span className="ml-2 text-sm font-normal">{step.count}問</span></span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link></li>)}</ul>}
         <Link href="/kokushi#learning-review" onClick={() => trackEvent('context_link_click', { placement: 'course_review', course_id: course.slug, item_type: 'review' })} className={`mt-3 inline-flex min-h-11 items-center gap-2 text-base font-semibold text-[#184F49] underline underline-offset-4 dark:text-[#9CCBBC] ${focusClass}`}>今日の復習予定を見る<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
       </section>
-      <LearningSyncStatus />
+      <LearningSyncStatus returnTo={`/learn/courses/${course.slug}`} />
     </div>
   );
 }

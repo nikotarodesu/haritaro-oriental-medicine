@@ -1421,8 +1421,8 @@ export default function ThreeStageSimulator() {
                 })()}
 
                 {/* 配穴設計・臨床演習への導線 */}
-                <div className="mt-3 p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-[#F0F7F4] to-[#FAF8F5] dark:from-[#162720] dark:to-[#17212A] border border-[#74BA9E]/40 dark:border-[#2D5A46] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
-                  <div>
+                <div className="mt-3 min-w-0 p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-[#F0F7F4] to-[#FAF8F5] dark:from-[#162720] dark:to-[#17212A] border border-[#74BA9E]/40 dark:border-[#2D5A46] flex flex-col sm:flex-row sm:flex-wrap sm:items-center justify-between gap-3 shadow-xs">
+                  <div className="min-w-0 flex-1">
                     <div className="text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
                       <SlidersHorizontal className="w-4 h-4 text-[#2D5A46] dark:text-[#74BA9E] shrink-0" />
                       <span>配穴設計・臨床演習で実践する</span>
@@ -1431,23 +1431,24 @@ export default function ThreeStageSimulator() {
                       この推奨配穴をもとに、自分で主穴・配穴を自由に組み立てて学習ノートに記録できます。
                     </p>
                   </div>
-                  <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex min-w-0 w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
                     <button
                       type="button"
                       onClick={handleSaveToNoteDraft}
-                      className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs font-bold shadow-sm transition-all whitespace-nowrap cursor-pointer"
+                      aria-label="この内容を臨床ノートに残す"
+                      className="inline-flex min-h-11 min-w-0 w-full max-w-full items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs text-center font-bold shadow-sm transition-all sm:w-auto cursor-pointer"
                     >
-                      <FileText className="w-3.5 h-3.5" />
-                      <span>この内容を臨床ノートに残す</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <FileText className="w-3.5 h-3.5 shrink-0" />
+                      <span className="min-w-0 whitespace-normal leading-relaxed">臨床ノートへ</span>
                     </button>
                     <Link
                       href="/practice/haiketsu"
-                    className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#2D5A46] hover:bg-[#1E3D34] text-white text-xs font-bold shadow-sm transition-all whitespace-nowrap self-start sm:self-auto cursor-pointer"
-                  >
-                    <span>配穴練習を始める</span>
-                    <span aria-hidden="true">➜</span>
-                  </Link>
+                      aria-label="配穴練習を始める"
+                      className="inline-flex min-h-11 min-w-0 w-full max-w-full items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#2D5A46] hover:bg-[#1E3D34] text-white text-xs text-center font-bold shadow-sm transition-all sm:w-auto cursor-pointer"
+                    >
+                      <span className="min-w-0 whitespace-normal leading-relaxed">配穴を試す</span>
+                      <span aria-hidden="true" className="shrink-0">➜</span>
+                    </Link>
                   </div>
                 </div>
               </div>

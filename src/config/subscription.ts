@@ -73,8 +73,8 @@ export const SUBSCRIPTION_CONFIG = {
       id: "practice_haiketsu",
       title: "配穴の練習",
       description: "経穴を組み合わせて選んだ理由を言語化。教材の名配穴と即座に比較検証できます。",
-      free: "基本配穴の閲覧",
-      premium: "自作配穴・選んだ理由の記録・教材との比較",
+      free: "4穴までの選択・構成分析・教材2例",
+      premium: "8穴までの選択・タイトルと理由の編集・全教材例",
     },
     {
       id: "kikei_hachimai",

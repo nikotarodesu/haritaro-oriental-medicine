@@ -10,6 +10,7 @@ import QuestionEvidence from './QuestionEvidence';
 import { recordAnswerInStore } from '@/data/tsubo/studyStorage';
 import type { StudySkillType } from '@/data/tsubo/types';
 import LearningSyncStatus from './LearningSyncStatus';
+import LearningFocusReview from './LearningFocusReview';
 
 export default function LearningReviewPanel() {
   const { quizResults, quizHistory, saveQuizResult, lastVisitedLectureId, revisedQuestionCount, isMounted } = useCurriculumProgress();
@@ -69,8 +70,9 @@ export default function LearningReviewPanel() {
       <p className="text-xs leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">正解を別の日に確認できた回数に応じ、1・3・7・14・30日後に復習します。同日の再挑戦は練習として記録し、復習間隔を延ばしません。保存・同期の状態は上の表示で確認できます。</p>
       {isMounted && revisedQuestionCount > 0 && <p className="text-xs font-semibold text-[#B86924] dark:text-[#E6C387]">{revisedQuestionCount}問に旧形式・改訂前の回答があります。旧回答を採点に使わず、再確認の対象にしています。</p>}
       <Link href="/simulator#case-training" className="inline-block text-sm font-semibold underline text-[#1E3D34] dark:text-[#83BEA8]">症例で判断の根拠を練習する →</Link>
+      <LearningFocusReview onStart={start} />
       {queue.length > 0 && !q && <p role="status" className="text-sm font-bold">今回の復習が完了しました。次の予定日にもう一度確認しましょう。</p>}
-      {q && <div className="rounded-xl bg-white dark:bg-[#17212A] p-4 space-y-3 text-sm text-[#232826] dark:text-[#FAF8F5]">
+      {q && <div id="learning-review-practice" className="scroll-mt-28 rounded-xl bg-white dark:bg-[#17212A] p-4 space-y-3 text-sm text-[#232826] dark:text-[#FAF8F5]">
         <p className="text-xs">{index + 1} / {queue.length} ｜ {q.chapterTitle}</p>
         <h3 className="font-bold whitespace-pre-line">{q.question}</h3>
         <div className="space-y-2">{shuffledIndices(q.options.length, `${sessionSeed}-${q.id}`).map((original, display) => <button key={original} type="button" disabled={submitted} aria-pressed={choice === original} onClick={() => setChoice(original)} className={`block w-full rounded-lg border p-3 text-left ${choice === original ? 'border-[#1E3D34] bg-[#EBF3EF] dark:bg-[#182823]' : 'border-[#E8E1D1] dark:border-[#263542]'}`}>

@@ -12,6 +12,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import RecentToolTracker from "./home/RecentTools";
 import YinYangSwitch from "./YinYangSwitch";
 import FontSizeControl from "./FontSizeControl";
+import { LEARNING_COURSES } from "@/data/learningCourses";
 
 const GlobalSearchModal = dynamic(() => import("./search/GlobalSearchModal"), { ssr: false });
 
@@ -20,6 +21,8 @@ interface HeaderLink { href: string; label: string; description?: string; }
 
 const LEARN_LINKS: readonly HeaderLink[] = [
   { href: "/learn", label: "学びの総合案内", description: "目的に合う学び方から始める" },
+  ...LEARNING_COURSES.map(course => ({ href: `/learn/courses/${course.slug}`, label: course.title, description: `${course.steps.length}ステップの入門コース` })),
+  { href: "/kokushi#learning-review", label: "今日の復習", description: "回答履歴と復習予定から取り組む" },
   { href: "/curriculum", label: "東洋医学カリキュラム" },
   { href: TOOL_CATALOG.kokushi.href, label: "国家試験対策・演習", description: TOOL_CATALOG.kokushi.short },
   { href: "/library", label: "古典・医学論文ライブラリ" },

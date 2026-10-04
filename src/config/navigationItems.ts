@@ -53,19 +53,19 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
   curriculum: {
     id: "curriculum",
-    label: "学習カリキュラム",
+    label: "学びの総合案内",
     shortLabel: "学ぶ",
-    description: "基礎から体系的に学ぶ全81講義",
+    description: "目的別コース・全81講義・図解記事から学ぶ",
     icon: GraduationCap,
-    href: "/curriculum",
+    href: "/learn",
   },
   review: {
     id: "review",
     label: "今日の復習",
     shortLabel: "復習",
-    description: "忘却曲線に基づく日替わり知識定着演習",
+    description: "回答履歴と復習予定から取り組む知識定着演習",
     icon: RotateCcw,
-    href: "/kokushi",
+    href: "/kokushi#learning-review",
   },
   kokushi: {
     id: "kokushi",
@@ -168,7 +168,7 @@ export const NAV_PRESETS: Record<NavPresetType, { name: string; description: str
   },
   student: {
     name: "学生・学習者セット",
-    description: "カリキュラム、国試、経穴、マイノートを素早く開く",
+    description: "学びの案内、国試、経穴、マイノートを素早く開く",
     items: ["curriculum", "kokushi", "tsubo", "notes"],
   },
   clinician: {

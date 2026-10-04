@@ -1,28 +1,48 @@
 'use client';
 import Link from 'next/link';
+import { useMemo } from 'react';
+import { ArrowRight, BookOpen, RotateCcw, NotebookPen } from 'lucide-react';
 import { useCurriculumProgress } from '@/contexts/CurriculumProgressContext';
+import { useLearningSync } from '@/contexts/LearningSyncContext';
 import type { ResumeLecture } from '@/types/learningProgressCatalog';
 import { localStudyDate } from '@/utils/learningReview';
+import { getCaseLearningNeeds, readCaseLearningRecords } from '@/utils/learningFocus';
+import { getLearningRecommendation } from '@/utils/learningRecommendation';
 import { trackEvent } from '@/utils/analytics';
 import { useRecentTools } from '@/components/home/RecentTools';
 
 export default function HomeLearningProgressClient({ lectures }: { lectures: ResumeLecture[] }) {
-  const IDS = lectures.map(lecture => lecture.id);
-  const { isMounted, totalCompleted, totalPercentage, lastVisitedLectureId, quizResults, getNextResumeLectureId } = useCurriculumProgress();
+  const { isMounted, totalCompleted, completedLectures, lastVisitedLectureId, quizResults } = useCurriculumProgress();
+  const { values } = useLearningSync();
   const recentTools = useRecentTools();
-  const started = isMounted && Boolean(lastVisitedLectureId || totalCompleted || Object.keys(quizResults).length);
-  const resume = lectures.find(lecture => lecture.id === getNextResumeLectureId(IDS)) || lectures[0];
-  const due = Object.values(quizResults).filter(result => result.nextReviewDate && result.nextReviewDate <= localStudyDate()).length;
-  const weak = Object.values(quizResults).filter(result => !result.isCorrect).length;
+  const caseNeeds = useMemo(() => getCaseLearningNeeds(values), [values]);
+  const caseAttempts = useMemo(() => readCaseLearningRecords(values), [values]);
+  const recommendation = getLearningRecommendation({ lectures, completed: completedLectures, lastVisitedLectureId,
+    quizResults, caseNeeds, caseAttempts, today: localStudyDate() });
   return (
-    <section aria-label="あなたの学習と最近のツール" className="rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-4 sm:p-6 text-[#1E3D34] dark:text-[#83BEA8] space-y-3">
-      <h2 className="font-serif text-lg font-bold">{started ? '今日の学習を再開する' : 'はじめてなら、最初の10分から'}</h2>
-      <p className="text-base leading-relaxed">{started ? totalCompleted + ' / ' + lectures.length + '講義完了（' + totalPercentage + '％）。前回の続き、または復習から進めましょう。' : '陰陽の基本を読み、確認クイズで理解を確かめます。学習履歴はこのブラウザに保存されます。'}</p>
-      <div className="grid gap-3 sm:grid-cols-3 text-base">
-        <Link onClick={() => trackEvent('context_link_click', { placement: 'learning_start', lecture_id: resume.id })} href={'/curriculum/' + resume.id} className="min-h-11 rounded-xl bg-[#1E3D34] p-4 text-white font-bold focus-visible:outline-2 focus-visible:outline-offset-4">{started ? '前回の続き' : '第1講を始める'} →<span className="block mt-1 text-sm leading-relaxed font-normal">{resume.title}</span></Link>
-        <Link onClick={() => trackEvent('context_link_click', { placement: 'learning_review' })} href="/kokushi#learning-review" className="min-h-11 rounded-xl border border-[#C5DED4] dark:border-[#2A5243] p-4 font-bold hover:bg-white/60 dark:hover:bg-[#17212A] focus-visible:outline-2 focus-visible:outline-offset-4">今日の復習：{isMounted ? due : '…'}問<span className="block mt-1 text-sm leading-relaxed font-normal">苦手分野 {isMounted ? weak : '…'}問も確認</span></Link>
-        <Link href="/simulator#case-training" className="min-h-11 rounded-xl border border-[#C5DED4] dark:border-[#2A5243] p-4 font-bold hover:bg-white/60 dark:hover:bg-[#17212A] focus-visible:outline-2 focus-visible:outline-offset-4">症例で判断を練習<span className="block mt-1 text-sm leading-relaxed font-normal">追加質問・安全判断・判断根拠</span></Link>
+    <section aria-label="今日の学習と最近のツール" className="rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-5 sm:p-7 text-[#1E3D34] dark:text-[#83BEA8] space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="font-serif text-xl font-bold">今日の一歩</h2>
+        <span className="text-sm">{isMounted ? totalCompleted + ' / ' + lectures.length + '講義完了' : '学習履歴を確認中'}</span>
       </div>
+      <div className="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-center">
+        <div className="space-y-2">
+          <p className="text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">{isMounted ? recommendation.title : 'あなたに合った次の学習を準備しています'}</p>
+          <p className="text-base leading-relaxed">{isMounted ? recommendation.reason : '講義・復習・症例の履歴をもとに、おすすめを一つ選びます。'}</p>
+        </div>
+        {isMounted && <Link href={recommendation.href} onClick={() => trackEvent('context_link_click', { placement: 'learning_start', item_type: recommendation.kind })}
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#1E3D34] px-5 py-3 text-base font-bold text-white hover:bg-[#2B6958] focus-visible:outline-2 focus-visible:outline-offset-4">
+          {recommendation.action}<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+        </Link>}
+      </div>
+      <details className="border-t border-[#C5DED4] dark:border-[#2A5243] pt-3">
+        <summary className="min-h-11 cursor-pointer py-2 text-sm font-bold focus-visible:outline-2 focus-visible:outline-offset-4">別の目的から選ぶ</summary>
+        <nav aria-label="学習の別の入口" className="mt-2 grid gap-2 sm:grid-cols-3">
+          {[{ href: '/learn/courses', title: 'コースから学ぶ', Icon: BookOpen }, { href: '/kokushi#learning-review', title: '復習する', Icon: RotateCcw }, { href: '/notes?tab=learning', title: '学びを記録する', Icon: NotebookPen }].map(({ href, title, Icon }) =>
+            <Link key={href} href={href} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#C5DED4] dark:border-[#2A5243] px-3 py-2 text-sm font-bold hover:bg-white/60 dark:hover:bg-[#17212A] focus-visible:outline-2 focus-visible:outline-offset-4"><Icon aria-hidden="true" className="h-4 w-4" />{title}</Link>)}
+        </nav>
+        <Link href="/simulator#case-training" className="mt-2 inline-flex min-h-11 items-center text-sm underline focus-visible:outline-2 focus-visible:outline-offset-4">症例で判断と理由を練習する →</Link>
+      </details>
       {recentTools.length > 0 && <nav aria-label="最近使ったツール" className="flex flex-wrap items-center gap-2 text-sm"><span>最近使ったツール：</span>{recentTools.map(tool => <Link key={tool.href} href={tool.href} className="inline-flex min-h-11 items-center rounded-lg border border-[#C5DED4] dark:border-[#2A5243] px-3 underline focus-visible:outline-2 focus-visible:outline-offset-4">{tool.title}</Link>)}</nav>}
     </section>
   );

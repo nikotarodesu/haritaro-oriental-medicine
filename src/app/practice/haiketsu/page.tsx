@@ -1,24 +1,18 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useCallback, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { SUBSCRIPTION_CONFIG, isSubscriptionSalesEnabled } from "@/config/subscription";
 import { 
   SlidersHorizontal, 
-  ArrowLeft, 
   Bookmark, 
   Sparkles, 
   AlertTriangle, 
   CheckCircle2, 
   Crown, 
   Lock, 
-  Scissors, 
-  Plus, 
   X, 
-  HelpCircle,
-  BookOpen,
-  Zap,
-  TrendingUp,
   FileText,
   ExternalLink
 } from "lucide-react";
@@ -30,10 +24,8 @@ import {
   ACUPOINT_ROLES, 
   analyzePrescription, 
   OVERDOSE_PRESETS,
-  AcupointRoleMetadata 
 } from "@/data/haiketsuData";
 import { saveDraftPatientNote } from "@/utils/draftNote";
-import { HACHIMYAKU_PAIRS } from "@/data/kikeiData";
 
 export default function HaiketsuPracticePage() {
   const router = useRouter();
@@ -45,6 +37,15 @@ export default function HaiketsuPracticePage() {
   const [prescriptionTitle, setPrescriptionTitle] = useState("四関開竅・自律神経調整処方");
   const [rationaleText, setRationaleText] = useState("太衝（足厥陰肝経・原穴）で肝気鬱結を疏通させ、合谷（手陽明大腸経・原穴）で気機の昇降を助け、全身の気血巡行を調和させる。");
   const [saved, setSaved] = useState(false);
+
+  const selectIncomingPoint = useCallback((id: string) => {
+    const point = ACUPOINT_ROLES[id];
+    if (!point) return;
+    setSelectedPointIds([point.id]);
+    setPrescriptionTitle(`${point.name}から配穴を考える`);
+    setRationaleText(`【教材の経穴説明】${point.name}：${point.specificRole} / ${point.energyLabel}`);
+    setSaved(false);
+  }, []);
 
   // 選択中ツボの分析結果
   const analysis = useMemo(() => {
@@ -97,13 +98,13 @@ export default function HaiketsuPracticePage() {
     saveDraftPatientNote({
       sourceTool: "配穴設計",
       selectedPointsInput: pointNames.join(", "),
-      treatmentPlan: `【配穴設計処方】\n処方名: ${prescriptionTitle || "自作配穴処方"}\n選定理由・方針: ${rationaleText || "未記入"}\n構成分析: 本治${analysis.rootCount}穴・標治${analysis.branchCount}穴（計${pointNames.length}穴）\n※配穴設計演習からの下書きです。確定診断や固定意図ではありません。`,
+      treatmentPlan: `【配穴設計処方】\n処方名: ${prescriptionTitle || "自作配穴処方"}\n${isPremium ? "選定理由・方針" : "教材例の説明（現在の配穴の選定理由ではありません）"}: ${rationaleText || "未記入"}\n構成分析: 本治${analysis.rootCount}穴・標治${analysis.branchCount}穴（計${pointNames.length}穴）\n※配穴設計演習からの下書きです。確定診断や固定意図ではありません。`,
     });
     trackEvent("note_save_success", { tool_id: "haiketsu", destination_type: "note" });
     router.push("/notes");
   };
 
-  // マイノートに保存（無料枠: 最大20件、プレミアム: 最大1000件）
+  // 配穴集の保存上限は共通設定から参照する。
   const handleSaveToMemo = () => {
     const pointNames = selectedPointIds.map(id => ACUPOINT_ROLES[id]?.name || id);
     const success = addMemo({
@@ -114,7 +115,7 @@ export default function HaiketsuPracticePage() {
       points: pointNames,
       elements: ["木", "金"],
       indications: ["自律神経調整", "気滞血瘀"],
-      summary: rationaleText || "選定理由未記入",
+      summary: `${isPremium ? "選定理由" : "教材例の説明（現在の配穴の選定理由ではありません）"}: ${rationaleText || "未記入"}`,
       mechanism: `構成分析: 本治${analysis.rootCount}穴 / 標治${analysis.branchCount}穴（${analysis.status === "optimal" ? "少数精鋭" : "標準"}）`,
       personalNotes: `配穴演習にて設計 (${new Date().toLocaleDateString("ja-JP")})`
     });
@@ -129,6 +130,7 @@ export default function HaiketsuPracticePage() {
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
+      <Suspense fallback={null}><IncomingAcupoint onSelect={selectIncomingPoint} /></Suspense>
       {/* ヒーローヘッダー */}
       <div className="bg-white dark:bg-[#17212A] border-b border-[#E5DEC9] dark:border-[#2A3B4A] py-10 sm:py-14">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-4">
@@ -150,7 +152,7 @@ export default function HaiketsuPracticePage() {
               基本32穴の中から目的に応じた経穴を選定し、本治穴（体質根本）と標治穴（局所対症）のバランスや昇降・寒熱の方向性を整理します。選定理由を自ら言語化し、教材の代表例と比較して推論力を高める練習です。
             </p>
             <p className="text-xs text-[#737C77] dark:text-[#8899A6] max-w-2xl">
-              ※無料会員でも基本穴の選定・本治標治分析・臨床ノートへの下書き引き継ぎ・配穴保存（最大20件まで）をご利用いただけます。5穴以上の高度多穴処方や無制限保存はプレミアム会員で解放されます。
+              無料では4穴までの選択・構成分析・最初の2つの教材例・臨床ノートへの下書き引き継ぎを利用できます。配穴集は無料で最大{SUBSCRIPTION_CONFIG.limits.freeMemoMax}件、プレミアムで最大{SUBSCRIPTION_CONFIG.limits.premiumMemoMax.toLocaleString("ja-JP")}件です。
             </p>
           </div>
 
@@ -193,7 +195,7 @@ export default function HaiketsuPracticePage() {
                   <span>選定根拠をノートに保存</span>
                 </div>
                 <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  なぜその経穴を選んだのかの臨床理由を言語化し、学習ノートへワンクリック保存。
+                  選んだ穴を配穴集へ保存。プレミアムでは、選定理由を自分の言葉で記録できます。
                 </p>
               </div>
             </div>
@@ -212,10 +214,10 @@ export default function HaiketsuPracticePage() {
               </div>
               <div className="space-y-0.5">
                 <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
-                  無料体験モード（基本配穴の閲覧）
+                  無料で4穴まで組み合わせて試せます
                 </span>
                 <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-                  現在は代表的な基本配穴「四関穴」の構成と解説を閲覧できます。自作配穴の作成、選定理由の言語化、多穴教材比較、学習ノート保存はプレミアム限定です。
+                  穴を選び直して構成を確認し、配穴集にも保存できます。5〜8穴の選択、タイトル・理由の編集、3つ目以降の教材例はプレミアム機能です。
                 </p>
               </div>
             </div>
@@ -224,7 +226,7 @@ export default function HaiketsuPracticePage() {
               onClick={() => setAuthModalOpen(true)}
               className="px-4 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B6958] text-white text-xs font-bold shrink-0 transition-colors shadow-sm cursor-pointer min-h-[44px]"
             >
-              プレミアムで全解放
+              {isSubscriptionSalesEnabled() ? "プレミアム機能を確認" : "プレミアムの準備状況"}
             </button>
           </div>
         )}
@@ -238,18 +240,18 @@ export default function HaiketsuPracticePage() {
             {!isPremium && (
               <span className="text-[10px] text-[#B86924] dark:text-[#E6C387] font-semibold flex items-center gap-1">
                 <Crown className="w-3 h-3" />
-                <span>教材比較はプレミアム限定</span>
+                <span>最初の2例は無料</span>
               </span>
             )}
           </div>
           <div className="flex flex-wrap gap-2">
-            {OVERDOSE_PRESETS.map(preset => (
+            {OVERDOSE_PRESETS.map((preset, index) => (
               <button
                 key={preset.id}
                 onClick={() => handleLoadPreset(preset.id)}
-                className="text-xs px-3 py-1.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] text-[#59615D] dark:text-[#96A6B2] transition-colors flex items-center gap-1.5"
+                className="min-h-11 text-xs px-3 py-1.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] text-[#59615D] dark:text-[#96A6B2] transition-colors flex items-center gap-1.5"
               >
-                {!isPremium && <Crown className="w-3 h-3 text-[#B86924] dark:text-[#E6C387]" />}
+                {!isPremium && index >= 2 && <Lock aria-label="プレミアム機能" className="w-3 h-3 text-[#B86924] dark:text-[#E6C387]" />}
                 <span>📋 {preset.name}</span>
               </button>
             ))}
@@ -397,7 +399,8 @@ export default function HaiketsuPracticePage() {
 
                         <button
                           onClick={() => togglePoint(id)}
-                          className="p-1 rounded text-[#737C77] hover:text-red-600 transition-colors"
+                          className="min-h-11 min-w-11 shrink-0 inline-flex items-center justify-center rounded text-[#737C77] hover:text-red-600 transition-colors"
+                          aria-label={`${role.name}を配穴から外す`}
                           title="このツボを処方から外す"
                         >
                           <X className="w-3.5 h-3.5" />
@@ -420,7 +423,7 @@ export default function HaiketsuPracticePage() {
                     </h3>
                   </div>
                   <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2]">
-                    選択した配穴と選定理由を学習ノートに保存し、いつでも参照・復習できます。
+                    配穴集に保存するか、臨床ノートの下書きへ引き継ぎます。無料では教材例のタイトルと理由を表示します。
                   </p>
                 </div>
 
@@ -429,7 +432,7 @@ export default function HaiketsuPracticePage() {
                     type="button"
                     onClick={handleSaveToNoteDraft}
                     disabled={selectedPointIds.length === 0}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs font-bold shadow-sm transition-all cursor-pointer disabled:opacity-50"
+                    className="min-h-11 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs font-bold shadow-sm transition-all cursor-pointer disabled:opacity-50"
                   >
                     <FileText className="w-3.5 h-3.5" />
                     <span>この内容を臨床ノートに残す</span>
@@ -438,7 +441,7 @@ export default function HaiketsuPracticePage() {
                     type="button"
                     onClick={handleSaveToMemo}
                     disabled={saved || selectedPointIds.length === 0}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#B86924] hover:bg-[#9B551B] text-white text-xs font-bold shadow-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="min-h-11 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#B86924] hover:bg-[#9B551B] text-white text-xs font-bold shadow-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <Bookmark className={`w-3.5 h-3.5 ${saved ? "fill-current" : ""}`} />
                     <span>{saved ? "配穴集に保存済" : "配穴集に保存"}</span>
@@ -448,10 +451,11 @@ export default function HaiketsuPracticePage() {
 
               <div className="space-y-3 text-xs">
                 <div>
-                  <label className="font-bold text-[#737C77] dark:text-[#8899A6] block mb-1">
+                  <label htmlFor="haiketsu-title" className="font-bold text-[#737C77] dark:text-[#8899A6] block mb-1">
                     処方名・タイトル
                   </label>
                   <input
+                    id="haiketsu-title"
                     type="text"
                     value={prescriptionTitle}
                     readOnly={!isPremium}
@@ -462,17 +466,18 @@ export default function HaiketsuPracticePage() {
                       setSaved(false);
                     }}
                     placeholder="例: 頑固な自律神経失調・昇降調和処方"
-                    className={`w-full px-3 py-2 rounded-xl border text-[#232826] dark:text-[#FAF8F5] ${
+                    className={`min-h-11 w-full px-3 py-2 rounded-xl border text-[#232826] dark:text-[#FAF8F5] ${
                       !isPremium ? "bg-gray-50 dark:bg-[#151D24] border-dashed border-[#E5DEC9] cursor-pointer" : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#2A3B4A]"
                     }`}
                   />
                 </div>
 
                 <div>
-                  <label className="font-bold text-[#737C77] dark:text-[#8899A6] block mb-1">
+                  <label htmlFor="haiketsu-rationale" className="font-bold text-[#737C77] dark:text-[#8899A6] block mb-1">
                     この配穴を選定した理由・狙う作用機序
                   </label>
                   <textarea
+                    id="haiketsu-rationale"
                     value={rationaleText}
                     readOnly={!isPremium}
                     onClick={() => { if (!isPremium) setAuthModalOpen(true); }}
@@ -490,7 +495,7 @@ export default function HaiketsuPracticePage() {
                   {!isPremium && (
                     <p className="text-[10px] text-[#B86924] dark:text-[#E6C387] mt-1 flex items-center gap-1">
                       <Crown className="w-3 h-3" />
-                      <span>自作配穴・選定理由の自由記述はプレミアム限定です</span>
+                      <span>表示中は教材例です。タイトル・選定理由の編集はプレミアム機能です。</span>
                     </p>
                   )}
                 </div>
@@ -507,7 +512,7 @@ export default function HaiketsuPracticePage() {
                   臨床重要要穴パレット
                 </span>
                 <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                  {isPremium ? "クリックで追加・解除" : "ツボ選択はプレミアム"}
+                  {isPremium ? "8穴まで追加・解除" : "4穴まで追加・解除"}
                 </span>
               </div>
 
@@ -518,8 +523,9 @@ export default function HaiketsuPracticePage() {
                   return (
                     <button
                       key={point.id}
+                      aria-pressed={isSelected}
                       onClick={() => togglePoint(point.id)}
-                      className={`w-full text-left p-2.5 rounded-xl border text-xs transition-all flex items-center justify-between gap-2 ${
+                      className={`min-h-11 w-full text-left p-2.5 rounded-xl border text-xs transition-all flex items-center justify-between gap-2 ${
                         isSelected
                           ? "bg-[#FCF4EB] dark:bg-[#2A1E14] border-[#B86924] text-[#B86924] dark:text-[#E6C387] font-bold shadow-2xs"
                           : "bg-[#FAF8F5] dark:bg-[#131B22] border-[#E5DEC9] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#96A6B2] hover:border-[#B86924]"
@@ -559,8 +565,21 @@ export default function HaiketsuPracticePage() {
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
         title="配穴設計・臨床演習 プレミアム機能"
-        description="自作配穴の自由な組み立て・選定理由の言語化・教材比較ケースの全演習・学習ノート保存はプレミアム会員限定機能です。"
+        description={`5〜8穴の選択、タイトル・選定理由の編集、すべての教材例、配穴集の保存上限${SUBSCRIPTION_CONFIG.limits.premiumMemoMax.toLocaleString("ja-JP")}件がプレミアム機能です。無料でも4穴までの選択と配穴集への保存を利用できます。`}
       />
     </div>
   );
+}
+
+function IncomingAcupoint({ onSelect }: { onSelect: (id: string) => void }) {
+  const params = useSearchParams();
+  const requested = params.get("acupoint") || params.get("add");
+  // Resolve public names/codes only. Keep the tool's content in the initial HTML.
+  const point = Object.values(ACUPOINT_ROLES).find(item => item.name === requested || item.code.toLowerCase() === requested?.toLowerCase());
+  useEffect(() => {
+    if (!point) return;
+    const timer = setTimeout(() => onSelect(point.id), 0);
+    return () => clearTimeout(timer);
+  }, [point, onSelect]);
+  return null;
 }

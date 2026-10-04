@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { Suspense, useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+import { useSearchParams } from "next/navigation";
 import { 
   Bookmark, 
   Plus, 
@@ -36,6 +38,11 @@ import { loadAndClearDraftPatientNote } from "@/utils/draftNote";
 import { trackEvent } from "@/utils/analytics";
 import GogyoBadge from "@/components/GogyoBadge";
 import { TSUBOS } from "@/data/tsuboData";
+import { resolveLearningReflectionSource } from "@/utils/learningReflection";
+
+const LearningReflectionNotebook = dynamic(() => import("@/components/learning/LearningReflectionNotebook"), {
+  loading: () => <p role="status" className="px-4 py-12 text-center">学習ノートを開いています…</p>,
+});
 
 const CONSTITUTION_TAGS = [
   "気虚（元気不足）",
@@ -51,6 +58,23 @@ const CONSTITUTION_TAGS = [
 ];
 
 export default function MyNotesPage() {
+  return <Suspense fallback={<p role="status" className="px-4 py-12 text-center">ノートを確認しています…</p>}><NotesWorkspace /></Suspense>;
+}
+
+function NotesWorkspace() {
+  const params = useSearchParams();
+  const learning = params.get("tab") === "learning";
+  const source = resolveLearningReflectionSource(params.get("sourceType"), params.get("sourceId"));
+  return <>
+    <nav aria-label="ノートの種類" className="mx-auto flex max-w-5xl flex-wrap gap-2 px-3 pt-6 sm:px-6">
+      <Link href="/notes?tab=learning" aria-current={learning ? "page" : undefined} className={`inline-flex min-h-11 items-center rounded-xl border px-4 py-2 text-sm font-bold ${learning ? "border-[#1E3D34] bg-[#1E3D34] text-white dark:border-[#9CCDB8] dark:bg-[#9CCDB8] dark:text-[#11291F]" : "border-[#D8CFC0] dark:border-[#384C5E]"}`}>学習ノート</Link>
+      <Link href="/notes" aria-current={!learning ? "page" : undefined} className={`inline-flex min-h-11 items-center rounded-xl border px-4 py-2 text-sm font-bold ${!learning ? "border-[#1E3D34] bg-[#1E3D34] text-white dark:border-[#9CCDB8] dark:bg-[#9CCDB8] dark:text-[#11291F]" : "border-[#D8CFC0] dark:border-[#384C5E]"}`}>臨床ノート・配穴ストック</Link>
+    </nav>
+    {learning ? <LearningReflectionNotebook initialSource={source} /> : <ClinicalNotesPage />}
+  </>;
+}
+
+function ClinicalNotesPage() {
   const { isPremium, isAuthenticated } = useAuth();
   const {
     memos,

@@ -10,7 +10,7 @@
     "verify:integrity": "node scripts/verify-integrity.mjs",
     "test:content": "node scripts/content-regression.cjs",
     "test:medical-safety": "node scripts/medical-safety-regression.cjs",
-    "test:learning": "node scripts/learning-regression.cjs",
+    "test:learning": "node scripts/learning-regression.cjs && node scripts/course-journey-regression.cjs && node scripts/learning-focus-regression.cjs && node scripts/learning-notebook-regression.cjs && node scripts/learning-recommendation-regression.cjs",
     "test:sync": "node scripts/learning-sync-regression.cjs",
     "test:site": "node scripts/site-regression.cjs",
     "test:reading": "node scripts/reading-experience-regression.cjs",

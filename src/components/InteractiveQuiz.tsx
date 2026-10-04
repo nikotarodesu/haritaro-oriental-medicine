@@ -23,6 +23,8 @@ import { trackEvent } from '@/utils/analytics';
 import { questionRevision, shuffledIndices } from '@/utils/learningReview';
 import QuestionEvidence from '@/components/learning/QuestionEvidence';
 import Link from 'next/link';
+import { getLearningCourse } from '@/data/learningCourses';
+import { getCourseNextAction, type CourseJourney } from '@/utils/courseJourney';
 
 interface InteractiveQuizProps {
   quiz: LessonQuizGroup;
@@ -30,6 +32,7 @@ interface InteractiveQuizProps {
     id: string;
     title: string;
   } | null;
+  courseJourney?: CourseJourney | null;
 }
 
 // 選択肢のシャッフル関数 (Fisher-Yates)
@@ -71,14 +74,14 @@ const playCelebrationFanfare = () => {
   }
 };
 
-export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLecture }) => {
+export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLecture, courseJourney }) => {
   const router = useRouter();
   const {
     quizResults,
     saveQuizResult,
     clearQuizResult,
     setLectureCompleted,
-    isMounted,
+    completedLectures,
   } = useCurriculumProgress();
 
   // 各問題に対するユーザーの選択状態 (questionId -> optionIndex)
@@ -122,6 +125,9 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
   const isPassed = correctCount >= (quiz.passingScore || 2);
   const isPerfect = correctCount === totalQuestions && totalQuestions > 0;
   const isAllAnswered = answeredCount === totalQuestions;
+  const activeCourseJourney = courseJourney?.lectureId === quiz.lectureId ? courseJourney : null;
+  const courseNextAction = activeCourseJourney ? getCourseNextAction(activeCourseJourney, completedLectures) : null;
+  const nextCourse = activeCourseJourney?.course.nextCourseSlug ? getLearningCourse(activeCourseJourney.course.nextCourseSlug) : undefined;
 
   const celebrationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const measuredAttempt = useRef({ lectureId: quiz.lectureId, started: false, answered: new Set<string>() });
@@ -226,10 +232,13 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
 
   // 次の講義へ進む
   const handleGoToNextLecture = useCallback(() => {
-    if (nextLecture) {
+    if (courseNextAction) {
+      trackEvent('context_link_click', { placement: courseNextAction.kind === 'complete' ? 'course_complete_return' : 'course_continue', course_id: activeCourseJourney?.course.slug, lecture_id: courseNextAction.lectureId });
+      router.push(courseNextAction.href);
+    } else if (nextLecture) {
       router.push(`/curriculum/${nextLecture.id}`);
     }
-  }, [nextLecture, router]);
+  }, [courseNextAction, activeCourseJourney?.course.slug, nextLecture, router]);
 
   // キーボードショートカット (1, 2, 3 / A, B, C / Enter / R)
   useEffect(() => {
@@ -239,13 +248,16 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
       const isInput =
         target?.tagName === 'INPUT' ||
         target?.tagName === 'TEXTAREA' ||
+        target?.tagName === 'SELECT' ||
+        target?.tagName === 'BUTTON' ||
+        target?.tagName === 'A' ||
         target?.isContentEditable;
       if (isInput) return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
 
       // 1. 全問回答済みの場合のショートカット
       if (isAllAnswered) {
-        if (e.key === 'Enter' && isPassed && nextLecture) {
+        if (e.key === 'Enter' && isPassed && (courseNextAction || nextLecture)) {
           e.preventDefault();
           handleGoToNextLecture();
           return;
@@ -293,6 +305,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
     isAllAnswered,
     isPassed,
     nextLecture,
+    courseNextAction,
     missedCount,
     quiz.questions,
     selectedAnswers,
@@ -722,13 +735,13 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                     </span>
                   </div>
                   <p className="text-xs sm:text-sm text-emerald-700/80 dark:text-emerald-300/80">
-                    このレッスンの受講完了が自動記録されました。次のステップへ進みましょう！
+                    {courseNextAction?.kind === 'complete' ? 'このコースのすべての講義を受講しました。振り返りと次のテーマへ進めます。' : 'このレッスンの受講完了が自動記録されました。次のステップへ進みましょう！'}
                   </p>
                 </div>
               ) : (
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-center gap-2 text-lg font-bold text-rose-800 dark:text-rose-200">
-                    <span>あと{quiz.passingScore || 2 - correctCount}問正解で合格ラインです！</span>
+                    <span>あと{Math.max(0, (quiz.passingScore || 2) - correctCount)}問正解で合格ラインです！</span>
                   </div>
                   <p className="text-xs sm:text-sm text-rose-700/80 dark:text-rose-300/80">
                     各問題の解説を振り返り、間違えた問題を再挑戦してみましょう。
@@ -739,7 +752,14 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
               {/* アクションボタン群 */}
               <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
                 {/* 1. 次の講義へ進むボタン（合格時） */}
-                {isPassed && nextLecture && (
+                {isPassed && courseNextAction && <>
+                  <button type="button" onClick={handleGoToNextLecture} className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#184F49] px-5 py-3 text-base font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-4 dark:bg-[#285F54]">
+                    <span>{courseNextAction.label}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+                  </button>
+                  {courseNextAction.kind === 'complete' && nextCourse && <Link href={`/learn/courses/${nextCourse.slug}`} onClick={() => trackEvent('context_link_click', { placement: 'course_next', course_id: activeCourseJourney?.course.slug })} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#C5DED4] px-4 py-3 text-base font-semibold text-[#184F49] focus-visible:outline-2 focus-visible:outline-offset-4 dark:border-[#2A5243] dark:text-[#9CCBBC]">次のテーマ：{nextCourse.title}<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link>}
+                  {nextLecture && <Link href={`/curriculum/${nextLecture.id}`} className="inline-flex min-h-11 items-center px-3 text-sm font-semibold underline underline-offset-4">全講義の次のレッスンへ</Link>}
+                </>}
+                {isPassed && !activeCourseJourney && nextLecture && (
                   <button
                     type="button"
                     onClick={handleGoToNextLecture}
@@ -757,14 +777,14 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                 )}
 
                 {/* 2. カリキュラム完走（最終レッスンの場合） */}
-                {isPassed && !nextLecture && (
+                {isPassed && !activeCourseJourney && !nextLecture && (
                   <button
                     type="button"
                     onClick={() => router.push('/curriculum')}
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 shadow-md transition-all cursor-pointer"
                   >
                     <Trophy className="w-4 h-4" />
-                    <span>全レッスン修了！カリキュラム一覧へ</span>
+                    <span>カリキュラム一覧へ</span>
                   </button>
                 )}
 
