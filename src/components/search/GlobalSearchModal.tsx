@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useRef, useCallback, useId } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Search,
@@ -31,20 +32,12 @@ import { trackEvent } from "@/utils/analytics";
 import { SYMPTOMS } from "@/data/symptomData";
 import { PUBLIC_ARCHIVE_CASES } from "@/data/cases/archiveCases";
 import { TOOL_CATALOG } from "@/config/toolCatalog";
-import { prepareSearchItem, scoreSearchItem } from "@/utils/search";
+import { SEARCH_CATEGORIES, matchesSearchCategory, nextSearchResultIndex, prepareSearchItem, prepareSearchQuery, scoreSearchItem, searchMatchHint, type SearchCategory, type SearchItemType } from "@/utils/search";
 import { LEARNING_COURSES } from "@/data/learningCourses";
+import { REFLECTION_CASES } from "@/data/learningReflectionCatalog";
+import { useModalDialog } from "@/hooks/useModalDialog";
 
-export type SearchItemType =
-  | "article"
-  | "acupoint"
-  | "lecture"
-  | "case"
-  | "tool"
-  | "glossary"
-  | "kokushi"
-  | "classic"
-  | "paper"
-  | "symptom";
+export type { SearchItemType } from "@/utils/search";
 
 export interface SearchResultItem {
   id: string;
@@ -122,6 +115,15 @@ const STATIC_TOOLS: SearchResultItem[] = [
     tags: ["比較", "鑑別", "経穴", "ツボ比較"],
   },
   {
+    id: "tool-learning-notes",
+    type: "tool",
+    title: "学習ノート・振り返り",
+    subtitle: "講義や症例の要点・迷った理由・次に確かめることを記録し、以前の考え方と比較",
+    badge: "学習記録",
+    url: "/notes?tab=learning",
+    tags: ["学習ノート", "振り返り", "学習記録", "考え方", "復習"],
+  },
+  {
     id: "tool-notes",
     type: "tool",
     title: "臨床カルテ・配穴ストックノート",
@@ -167,8 +169,6 @@ interface GlobalSearchModalProps {
   initialQuery?: string;
 }
 
-type CategoryFilter = "article" | "all" | "acupoint" | "lecture" | "kokushi" | "case" | "library" | "symptom" | "tool";
-
 export default function GlobalSearchModal({
   isOpen,
   onClose,
@@ -176,8 +176,8 @@ export default function GlobalSearchModal({
 }: GlobalSearchModalProps) {
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
-  const [activeCategory, setActiveCategory] = useState<CategoryFilter>("all");
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [activeCategory, setActiveCategory] = useState<SearchCategory>("all");
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const [recentSearches, setRecentSearches] = useState<string[]>(() => {
     try {
       const raw = typeof window !== 'undefined' ? localStorage.getItem(RECENT_SEARCHES_KEY) : null;
@@ -188,6 +188,14 @@ export default function GlobalSearchModal({
   const [resultLimit, setResultLimit] = useState(25);
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const optionRefs = useRef<Array<HTMLAnchorElement | null>>([]);
+  const shouldScrollSelection = useRef(false);
+  const id = useId();
+  const listId = `${id}-results`;
+  const helpId = `${id}-help`;
+  const statusId = `${id}-status`;
+  useModalDialog(isOpen, dialogRef, onClose);
 
   const saveRecentSearch = useCallback((text: string) => {
     const trimmed = text.trim();
@@ -206,6 +214,7 @@ export default function GlobalSearchModal({
       setRecentSearches(updated);
       localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
     } catch { /* Search remains usable without browser storage. */ }
+    inputRef.current?.focus();
   };
 
   const clearAllRecentSearches = () => {
@@ -213,6 +222,7 @@ export default function GlobalSearchModal({
       setRecentSearches([]);
       localStorage.removeItem(RECENT_SEARCHES_KEY);
     } catch { /* Search remains usable without browser storage. */ }
+    inputRef.current?.focus();
   };
 
   // 全データのインデックス化（初回マウント時に一度だけ生成）
@@ -230,6 +240,12 @@ export default function GlobalSearchModal({
       id: article.id, type: "article", title: article.title,
       subtitle: article.summary, badge: "解説記事",
       url: '/articles/' + article.id, tags: article.tags,
+    })));
+    list.push(...REFLECTION_CASES.map((caseItem): SearchResultItem => ({
+      id: `progressive-case-${caseItem.id}`, type: "case", title: caseItem.title,
+      subtitle: "架空の教材で、追加質問・安全判断・候補の比較・根拠・再評価を段階的に練習",
+      badge: "段階式症例演習", url: `/simulator?case=${caseItem.id}#case-training`,
+      tags: ["症例", "段階式", "症例演習", "判断根拠", "安全確認", "再評価"],
     })));
 
     // 2. 講義カリキュラム（全81レッスン）
@@ -426,36 +442,33 @@ export default function GlobalSearchModal({
   }, []);
 
   const searchIndex = useMemo(() => allItems.map(prepareSearchItem), [allItems]);
+  const preparedQuery = useMemo(() => prepareSearchQuery(query), [query]);
   // The whole matching set is retained so users can continue past the first page.
-  const filteredResults = useMemo(() => {
-    if (!query.trim()) return [];
-
-    // カテゴリフィルタ条件
-    const matchCategory = (item: SearchResultItem): boolean => {
-      if (activeCategory === "article") return item.type === "article";
-      if (activeCategory === "all") return true;
-      if (activeCategory === "acupoint") return item.type === "acupoint";
-      if (activeCategory === "lecture") return item.type === "lecture";
-      if (activeCategory === "kokushi") return item.type === "kokushi";
-      if (activeCategory === "case") return item.type === "case";
-      if (activeCategory === "library") return item.type === "classic" || item.type === "paper";
-      if (activeCategory === "symptom") return item.type === "symptom";
-      if (activeCategory === "tool") return item.type === "tool";
-      return true;
-    };
-
-    return searchIndex.filter(index => matchCategory(index.item))
-      .map(index => ({ item: index.item, score: scoreSearchItem(index, query) }))
+  const matchingResults = useMemo(() => {
+    if (!preparedQuery.normalized) return [];
+    return searchIndex
+      .map(index => ({ item: index.item, score: scoreSearchItem(index, preparedQuery), hint: searchMatchHint(index, preparedQuery) }))
       .filter(result => result.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .map(result => result.item);
-  }, [searchIndex, query, activeCategory]);
+      .sort((a, b) => b.score - a.score);
+  }, [searchIndex, preparedQuery]);
+  const filteredResults = useMemo(() => matchingResults.filter(result => matchesSearchCategory(result.item.type, activeCategory)), [matchingResults, activeCategory]);
+  const categoryCounts = useMemo(() => Object.fromEntries(SEARCH_CATEGORIES.map(category => [category.id, matchingResults.filter(result => matchesSearchCategory(result.item.type, category.id)).length])), [matchingResults]);
   const visibleResults = useMemo(() => filteredResults.slice(0, resultLimit), [filteredResults, resultLimit]);
   const hasQuery = query.trim().length > 0;
-  const updateQuery = (next: string) => { setQuery(next); setSelectedIndex(0); setResultLimit(25); };
+  const selectedResult = selectedIndex >= 0 ? visibleResults[selectedIndex] : undefined;
+  const activeCategoryLabel = SEARCH_CATEGORIES.find(category => category.id === activeCategory)?.label;
+  const updateQuery = (next: string) => {
+    setQuery(next); setSelectedIndex(-1); setResultLimit(25);
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
+  };
+  const chooseQuery = (next: string, category: SearchCategory = "all") => {
+    updateQuery(next);
+    setActiveCategory(category);
+    inputRef.current?.focus();
+  };
   const searchAllCategories = () => {
     setActiveCategory("all");
-    setSelectedIndex(0);
+    setSelectedIndex(-1);
     setResultLimit(25);
     inputRef.current?.focus();
   };
@@ -465,86 +478,54 @@ export default function GlobalSearchModal({
   };
 
 
-  // モーダル開閉時のフォーカス制御 & 入力クリア
+  // Scroll only keyboard selections; a pointer hovering lower down must not jump the list.
   useEffect(() => {
-    if (isOpen) {
-      const previousFocus = document.activeElement as HTMLElement | null;
-      const previousOverflow = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      const timer = setTimeout(() => inputRef.current?.focus(), 50);
-      return () => {
-        clearTimeout(timer);
-        document.body.style.overflow = previousOverflow;
-        previousFocus?.focus();
-      };
+    if (shouldScrollSelection.current) {
+      optionRefs.current[selectedIndex]?.scrollIntoView({ block: "nearest" });
+      shouldScrollSelection.current = false;
     }
-  }, [isOpen]);
+  }, [selectedIndex, resultLimit]);
 
-  // キーボードナビゲーション（上下移動、Enter、Esc）
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isOpen || e.isComposing || e.keyCode === 229) return;
-
-      if (e.key === "Tab") {
-        const elements = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>('button, input, a[href]') || []).filter(el => el.offsetParent !== null);
-        const first = elements[0], last = elements[elements.length - 1];
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+  const recordResultClick = (item: SearchResultItem) => {
+    saveRecentSearch(query || item.title);
+    trackEvent("search_result_click", { placement: "global_search", result_type: item.type });
+  };
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.nativeEvent.isComposing || event.keyCode === 229 || event.ctrlKey || event.metaKey || event.altKey) return;
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      if (!filteredResults.length) return;
+      event.preventDefault();
+      const direction = event.key === "ArrowDown" ? "next" : "previous";
+      if (direction === "next" && selectedIndex === visibleResults.length - 1 && visibleResults.length < filteredResults.length) {
+        shouldScrollSelection.current = true;
+        setResultLimit(limit => limit + 25);
+        setSelectedIndex(selectedIndex + 1);
+      } else {
+        const next = nextSearchResultIndex(selectedIndex, direction, visibleResults.length);
+        if (next !== selectedIndex) { shouldScrollSelection.current = true; setSelectedIndex(next); }
       }
-      if (document.activeElement !== inputRef.current && e.key !== "Escape") return;
-      if (e.key === "Escape") {
+    } else if (event.key === "Enter") {
+      const target = selectedResult || visibleResults[0];
+      if (target) {
+        event.preventDefault();
+        recordResultClick(target.item);
         onClose();
-      } else if (e.key === "ArrowDown") {
-        e.preventDefault();
-        setSelectedIndex((prev) =>
-          visibleResults.length > 0 ? (prev + 1) % visibleResults.length : 0
-        );
-      } else if (e.key === "ArrowUp") {
-        e.preventDefault();
-        setSelectedIndex((prev) =>
-          visibleResults.length > 0
-            ? (prev - 1 + visibleResults.length) % visibleResults.length
-            : 0
-        );
-      } else if (e.key === "Enter") {
-        if (visibleResults[selectedIndex]) {
-          e.preventDefault();
-          const target = visibleResults[selectedIndex];
-          saveRecentSearch(query || target.title);
-          onClose();
-          trackEvent("search_result_click", { placement: "global_search", result_type: target.type });
-          router.push(target.url);
-        }
+        router.push(target.item.url);
       }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, visibleResults, selectedIndex, onClose, router, query, saveRecentSearch]);
+    }
+  };
 
   // クイックサジェストのキーワード
-  const quickSearches = [
+  const quickSearches: Array<{ label: string; q: string; category?: SearchCategory }> = [
     { label: "合谷 (LI4)", q: "合谷" },
     { label: "足三里 (ST36)", q: "足三里" },
-    { label: "国試演習", q: "陰陽五行" },
+    { label: "国試演習", q: "陰陽", category: "kokushi" },
     { label: "気虚", q: "気虚" },
-    { label: "治未病 (古典)", q: "治未病" },
+    { label: "治未病 (古典)", q: "治未病", category: "library" },
     { label: "肩こり・頭痛", q: "頭痛" },
     { label: "膝痛・ランナー", q: "膝" },
     { label: "坐骨神経痛", q: "坐骨" },
     { label: "シミュレーター", q: "シミュレーター" },
-  ];
-
-  const categoryChips: { id: CategoryFilter; label: string }[] = [
-    { id: "all", label: "すべて" },
-    { id: "article", label: "解説記事" },
-    { id: "acupoint", label: "経穴 (361)" },
-    { id: "kokushi", label: "国試演習" },
-    { id: "lecture", label: "講義 (81)" },
-    { id: "symptom", label: "症状別ケア" },
-    { id: "library", label: "論文・古典" },
-    { id: "case", label: "症例・実例" },
-    { id: "tool", label: "ツール" },
   ];
 
   if (!isOpen) return null;
@@ -556,24 +537,35 @@ export default function GlobalSearchModal({
     >
       <div
         ref={dialogRef}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-label="サイト内検索"
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-3xl bg-[#FAF8F5] dark:bg-[#16212B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in zoom-in-95 duration-150"
+        className="w-full max-w-3xl bg-[#FAF8F5] dark:bg-[#16212B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xl overflow-hidden flex flex-col max-h-[85dvh] animate-in zoom-in-95 duration-150"
       >
         {/* 検索入力ヘッダー */}
-        <div className="p-3.5 sm:p-4 border-b border-[#F2ECE0] dark:border-[#22303D] flex items-center gap-3 bg-white dark:bg-[#1A2632]">
+        <div className="shrink-0 p-3.5 sm:p-4 border-b border-[#F2ECE0] dark:border-[#22303D] flex items-center gap-3 bg-white dark:bg-[#1A2632]">
           <Search className="w-5 h-5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
           <input
             aria-label="経穴・記事・講義などを検索"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-haspopup="listbox"
+            aria-expanded={hasQuery && visibleResults.length > 0}
+            aria-controls={visibleResults.length > 0 ? listId : undefined}
+            aria-activedescendant={selectedResult ? `${id}-result-${selectedIndex}` : undefined}
+            aria-describedby={`${helpId} ${statusId}`}
+            data-modal-autofocus
             ref={inputRef}
             type="text"
+            autoComplete="off"
+            spellCheck={false}
             value={query}
             onChange={(e) => {
               updateQuery(e.target.value);
-              setSelectedIndex(0);
             }}
+            onKeyDown={handleInputKeyDown}
             placeholder="経穴・記事・講義・症状を検索"
             className="flex-1 min-w-0 min-h-11 rounded-md bg-transparent text-[#232826] dark:text-[#FAF8F5] placeholder-[#8C9691] dark:placeholder-[#64748B] text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#74BA9E]"
           />
@@ -581,45 +573,48 @@ export default function GlobalSearchModal({
             <button
               type="button"
               aria-label="検索語を消去"
-              onClick={() => updateQuery("")}
-              className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600"
+              onClick={clearQueryAndFocus}
+              className="flex min-h-11 min-w-11 items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-[#59615D] dark:text-[#A0B0BC] focus-visible:outline-2 focus-visible:outline-offset-2"
             >
               <X className="w-4 h-4" />
             </button>
           )}
-          <button type="button" onClick={onClose} aria-label="検索を閉じる" className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"><X className="w-5 h-5" /></button>
+          <button type="button" onClick={onClose} aria-label="検索を閉じる" className="flex min-h-11 min-w-11 items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2"><X className="w-5 h-5" /></button>
           <kbd className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-md">
             ESC
           </kbd>
         </div>
 
         {/* カテゴリクイックフィルターチップ */}
-        <div className="flex items-center gap-1.5 px-3 py-2 bg-[#F2EDE4]/70 dark:bg-[#121920]/80 border-b border-[#E8E1D1] dark:border-[#22303D] overflow-x-auto no-scrollbar text-xs">
-          {categoryChips.map((chip) => (
+        <div role="group" aria-label="検索結果の種類で絞り込む" className="shrink-0 flex items-center gap-1.5 px-3 py-2 bg-[#F2EDE4]/70 dark:bg-[#121920]/80 border-b border-[#E8E1D1] dark:border-[#22303D] overflow-x-auto no-scrollbar text-sm">
+          {SEARCH_CATEGORIES.map((chip) => (
             <button
               aria-pressed={activeCategory === chip.id}
               key={chip.id}
               type="button"
               onClick={() => {
                 setActiveCategory(chip.id); setResultLimit(25);
-                setSelectedIndex(0);
+                setSelectedIndex(-1);
+                if (scrollRef.current) scrollRef.current.scrollTop = 0;
               }}
-              className={`min-h-11 px-2.5 py-1 rounded-lg font-bold shrink-0 transition-all ${
+              className={`min-h-11 px-2.5 py-1 rounded-lg font-bold shrink-0 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#74BA9E] ${
                 activeCategory === chip.id
                   ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white shadow-2xs"
                   : "bg-white dark:bg-[#1C2733] text-[#59615D] dark:text-[#96A6B2] hover:text-[#1E3D34] dark:hover:text-white border border-[#E5DEC9] dark:border-[#2A3B4A]"
               }`}
             >
               {chip.label}
+              {hasQuery && <span className="ml-1.5 text-xs tabular-nums">{categoryCounts[chip.id]}</span>}
             </button>
           ))}
         </div>
 
         {/* 検索結果・サジェスト一覧（スクロールエリア） */}
-        <div className="flex-1 overflow-y-auto p-2 sm:p-3 space-y-1">
-          <p role="status" aria-live="polite" aria-atomic="true" className={hasQuery ? "px-3 py-1 text-sm font-semibold text-[#59615D] dark:text-[#A0B0BC]" : "sr-only"}>
-            {hasQuery ? `検索結果：${filteredResults.length}件` : "検索語を入力してください。"}
+        <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-2 sm:p-3 space-y-1">
+          <p id={statusId} role="status" aria-live="polite" aria-atomic="true" className={hasQuery ? "px-3 py-1 text-sm font-semibold text-[#59615D] dark:text-[#A0B0BC]" : "sr-only"}>
+            {hasQuery ? `${activeCategoryLabel}：${filteredResults.length}件${filteredResults.length > visibleResults.length ? `（${visibleResults.length}件を表示）` : ""}` : "検索語を入力してください。"}
           </p>
+          <p id={helpId} className="sr-only">複数のキーワードは空白で区切れます。上下の矢印キーで結果を選び、Enterで移動します。選択前にEnterを押すと先頭の結果へ移動します。</p>
           {/* 未入力時：最近の検索 ＆ クイック検索候補 */}
           {!hasQuery && (
             <div className="p-4 sm:p-6 space-y-5">
@@ -634,7 +629,7 @@ export default function GlobalSearchModal({
                     <button
                       type="button"
                       onClick={clearAllRecentSearches}
-                      className="text-[11px] text-[#8899A6] hover:text-rose-600 transition-colors flex items-center gap-1 cursor-pointer"
+                      className="min-h-11 px-2 text-xs text-[#59615D] dark:text-[#A0B0BC] hover:text-rose-600 transition-colors flex items-center gap-1 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
                       <Trash2 className="w-3 h-3" />
                       <span>履歴を消去</span>
@@ -644,14 +639,14 @@ export default function GlobalSearchModal({
                     {recentSearches.map((term) => (
                       <div
                         key={term}
-                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-xs font-semibold text-[#232826] dark:text-[#FAF8F5] transition-all hover:shadow-2xs cursor-pointer group"
+                        className="inline-flex max-w-full items-center gap-1.5 px-3 py-1 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-sm font-semibold text-[#232826] dark:text-[#FAF8F5] transition-all hover:shadow-2xs cursor-pointer group"
                       >
-                        <button type="button" onClick={() => updateQuery(term)} className="min-h-11 px-1">{term}</button>
+                        <button type="button" onClick={() => chooseQuery(term)} className="min-h-11 min-w-0 break-all px-1 text-left focus-visible:outline-2 focus-visible:outline-offset-2">{term}</button>
                         <button
                           type="button"
                           onClick={(e) => removeRecentSearch(e, term)}
                           aria-label={`${term}を検索履歴から削除`}
-                          className="text-slate-400 group-hover:text-slate-600 p-0.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+                          className="flex min-h-11 min-w-11 shrink-0 items-center justify-center text-[#59615D] dark:text-[#A0B0BC] rounded hover:bg-slate-100 dark:hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                           <X className="w-3 h-3" />
                         </button>
@@ -672,8 +667,8 @@ export default function GlobalSearchModal({
                     <button
                       key={item.label}
                       type="button"
-                      onClick={() => updateQuery(item.q)}
-                      className="px-3 py-1.5 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-xs font-semibold text-[#232826] dark:text-[#FAF8F5] transition-all hover:shadow-2xs cursor-pointer"
+                      onClick={() => chooseQuery(item.q, item.category)}
+                      className="min-h-11 px-3 py-1.5 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-sm font-semibold text-[#232826] dark:text-[#FAF8F5] transition-all hover:shadow-2xs cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
                       {item.label}
                     </button>
@@ -695,9 +690,9 @@ export default function GlobalSearchModal({
                         onClose();
                         router.push(tool.url);
                       }}
-                      className="p-2.5 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] text-left transition-colors flex items-center justify-between group cursor-pointer"
+                      className="min-h-11 p-2.5 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] text-left transition-colors flex items-center justify-between group cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
-                      <div>
+                      <div className="min-w-0">
                         <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block truncate">
                           {tool.title}
                         </span>
@@ -715,10 +710,11 @@ export default function GlobalSearchModal({
 
           {/* 検索結果あり */}
           {hasQuery && filteredResults.length > 0 && (
-            <div className="space-y-1">
-              <p className="px-3 py-1 text-sm text-[#59615D] dark:text-[#A0B0BC]">↑↓キーで選択・Enterで移動</p>
+            <>
+              <p className="px-3 py-1 text-sm text-[#59615D] dark:text-[#A0B0BC]">空白で複数語を検索 · ↑↓で選択 · Enterで移動</p>
+              <div id={listId} role="listbox" aria-label={`${activeCategoryLabel}の検索結果`} className="space-y-1">
 
-              {visibleResults.map((item, idx) => {
+              {visibleResults.map(({ item, hint }, idx) => {
                 const isSelected = idx === selectedIndex;
                 let Icon = BookOpen;
                 if (item.type === "acupoint") Icon = MapPin;
@@ -731,20 +727,25 @@ export default function GlobalSearchModal({
                 if (item.type === "symptom") Icon = HeartPulse;
 
                 return (
-                  <button
+                  <Link
                     key={item.id}
-                    type="button"
-                    onClick={() => {
-                      saveRecentSearch(query || item.title);
-                      onClose();
-                      trackEvent("search_result_click", { placement: "global_search", result_type: item.type });
-                      router.push(item.url);
-                    }}
+                    id={`${id}-result-${idx}`}
+                    ref={element => { optionRefs.current[idx] = element; }}
+                    href={item.url}
+                    prefetch={false}
+                    role="option"
+                    tabIndex={-1}
+                    aria-selected={isSelected}
+                    aria-posinset={idx + 1}
+                    aria-setsize={filteredResults.length}
+                    onClick={() => recordResultClick(item)}
+                    onNavigate={onClose}
                     onMouseMove={(event) => {
                       // 結果の再描画で静止中のポインタが重なっても、キーボードの選択は保つ。
-                      if (event.movementX !== 0 || event.movementY !== 0) setSelectedIndex(idx);
+                      if (event.movementX !== 0 || event.movementY !== 0) { shouldScrollSelection.current = false; setSelectedIndex(idx); }
                     }}
-                    className={`w-full text-left p-3 rounded-xl transition-all flex items-start gap-3 cursor-pointer ${
+                    onFocus={() => setSelectedIndex(idx)}
+                    className={`w-full text-left p-3 rounded-xl transition-all flex items-start gap-3 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 ${
                       isSelected
                         ? "bg-[#1E3D34] text-white shadow-sm"
                         : "bg-white dark:bg-[#1A2632] hover:bg-[#FAF8F5] dark:hover:bg-[#202E3C] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5]"
@@ -757,13 +758,13 @@ export default function GlobalSearchModal({
                           : "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]"
                       }`}
                     >
-                      <Icon className="w-4 h-4" />
+                      <Icon aria-hidden="true" className="w-4 h-4" />
                     </div>
 
                     <div className="flex-1 min-w-0 space-y-0.5">
-                      <div className="flex items-center gap-2">
+                      <div className="space-y-1">
                         <span
-                          className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full shrink-0 ${
+                          className={`inline-block text-xs font-bold px-1.5 py-0.5 rounded-full ${
                             isSelected
                               ? "bg-white/20 text-white"
                               : "bg-[#FAF8F5] dark:bg-[#121920] text-[#737C77] dark:text-[#8899A6] border border-[#E5DEC9] dark:border-[#2A3B4A]"
@@ -771,14 +772,14 @@ export default function GlobalSearchModal({
                         >
                           {item.badge}
                         </span>
-                        <h4 className="font-bold text-xs sm:text-sm truncate">
+                        <span className="block font-bold text-sm leading-relaxed line-clamp-2 break-words">
                           {item.title}
-                        </h4>
+                        </span>
                       </div>
 
                       {item.subtitle && (
                         <p
-                          className={`text-xs truncate ${
+                          className={`text-sm leading-relaxed line-clamp-2 break-words ${
                             isSelected
                               ? "text-emerald-100/90"
                               : "text-[#59615D] dark:text-[#A0B0BC]"
@@ -787,22 +788,25 @@ export default function GlobalSearchModal({
                           {item.subtitle}
                         </p>
                       )}
+                      {hint && <span className={`block text-xs ${isSelected ? "text-emerald-100" : "text-[#59615D] dark:text-[#A0B0BC]"}`}>{hint}</span>}
                     </div>
 
                     <ArrowRight
+                      aria-hidden="true"
                       className={`w-4 h-4 shrink-0 mt-2 transition-transform ${
                         isSelected
                           ? "translate-x-0.5 text-white"
                           : "text-slate-300 dark:text-slate-600"
                       }`}
                     />
-                  </button>
+                  </Link>
                 );
               })}
-            </div>
+              </div>
+            </>
           )}
 
-          {filteredResults.length > visibleResults.length && <button type="button" onClick={() => setResultLimit(limit => limit + 25)} className="w-full min-h-11 rounded-xl border border-[#C5DED4] p-3 text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8]">さらに表示（残り{filteredResults.length - visibleResults.length}件）</button>}
+          {filteredResults.length > visibleResults.length && <button type="button" onClick={() => { setResultLimit(limit => limit + 25); inputRef.current?.focus(); shouldScrollSelection.current = true; setSelectedIndex(visibleResults.length); }} className="w-full min-h-11 rounded-xl border border-[#C5DED4] p-3 text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8] focus-visible:outline-2 focus-visible:outline-offset-2">さらに表示（残り{filteredResults.length - visibleResults.length}件）</button>}
 
           {/* 検索結果ゼロ */}
           {hasQuery && filteredResults.length === 0 && (
@@ -824,7 +828,7 @@ export default function GlobalSearchModal({
         </div>
 
         {/* フッター操作ガイド */}
-        <div className="px-4 py-2.5 border-t border-[#F2ECE0] dark:border-[#22303D] bg-[#F2EDE4]/60 dark:bg-[#121920] flex items-center justify-between text-[11px] text-[#737C77] dark:text-[#8899A6]">
+        <div className="shrink-0 px-4 py-2.5 border-t border-[#F2ECE0] dark:border-[#22303D] bg-[#F2EDE4]/60 dark:bg-[#121920] flex flex-wrap items-center justify-between gap-2 text-xs text-[#59615D] dark:text-[#A0B0BC]">
           <div className="flex items-center gap-3">
             <span>↑↓ 選択</span>
             <span>↵ 決定</span>

@@ -15,7 +15,8 @@ import ArticleReferences from "@/components/ArticleReferences";
 import PrimeStudentCard from "@/components/PrimeStudentCard";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
-import ReadingProgressBar from "@/components/ReadingProgressBar";
+import ArticleReadingResume from "@/components/reading/ArticleReadingResume";
+import { articleReadingRevision } from "@/utils/articleReadingPosition";
 import { 
   Clock, 
   ArrowLeft, 
@@ -159,7 +160,6 @@ export default async function ArticleDetailPage({ params }: Props) {
 
   return (
     <div className="min-h-screen py-6 sm:py-16 px-3 sm:px-6 lg:px-8">
-      <ReadingProgressBar key={article.id} bodySelector="#article-content [data-reading-body]" headings={headings.map(heading => ({ id: heading.id, text: heading.label, level: 2 }))} />
       {/* 構造化データ埋め込み */}
       <script
         type="application/ld+json"
@@ -240,6 +240,8 @@ export default async function ArticleDetailPage({ params }: Props) {
               </div>
             </div>
           </header>
+
+          <ArticleReadingResume articleId={article.id} revision={articleReadingRevision(article.contentMarkdown)} headings={headings.map(heading => ({ id: heading.id, text: heading.label, level: 2 }))} />
 
           <nav aria-label="この記事の読み進め方" className="flex flex-wrap gap-2">
             <a href="#article-content" className="inline-flex min-h-11 items-center rounded-lg bg-[#1E3D34] px-4 text-sm font-bold text-white dark:bg-[#2B6958] focus-visible:outline-2 focus-visible:outline-offset-2">本文を読む</a>

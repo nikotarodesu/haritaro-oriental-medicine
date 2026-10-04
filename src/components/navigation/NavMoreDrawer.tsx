@@ -1,16 +1,16 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import Link from "next/link";
 import { 
   X, 
   SlidersHorizontal, 
-  ExternalLink,
   GraduationCap,
   Stethoscope,
   BookOpenCheck
 } from "lucide-react";
 import { ALL_NAV_ITEMS, NavItemId } from "@/config/navigationItems";
+import { useModalDialog } from "@/hooks/useModalDialog";
 
 interface NavMoreDrawerProps {
   isOpen: boolean;
@@ -26,27 +26,7 @@ export default function NavMoreDrawer({
   onOpenSearch,
 }: NavMoreDrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
-        onClose();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
+  useModalDialog(isOpen, drawerRef, onClose);
 
   if (!isOpen) return null;
 
@@ -91,6 +71,7 @@ export default function NavMoreDrawer({
     >
       <div
         ref={drawerRef}
+        tabIndex={-1}
         className="w-full max-w-lg bg-[#FAF8F5] dark:bg-[#151D24] rounded-t-2xl border-t border-x border-[#E8E1D1] dark:border-[#22303D] shadow-2xl flex flex-col max-h-[85vh] overflow-hidden"
         style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       >
@@ -101,17 +82,18 @@ export default function NavMoreDrawer({
         <div className="flex items-center justify-between px-5 py-2.5 border-b border-[#E8E1D1] dark:border-[#22303D]">
           <div>
             <h2 id="nav-more-title" className="text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
-              全機能メニュー
+              目的から探す
             </h2>
             <p className="text-xs text-[#59615D] dark:text-[#8899A6]">
-              はり太郎のすべてのツールと学習コンテンツ
+              学習・演習・記録へのショートカット
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="閉じる"
-            className="p-1.5 rounded-lg text-[#737C77] dark:text-[#8899A6] hover:bg-[#EAE4D3] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
+            data-modal-autofocus
+            className="min-h-11 min-w-11 flex items-center justify-center rounded-lg text-[#737C77] dark:text-[#8899A6] hover:bg-[#EAE4D3] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -131,14 +113,14 @@ export default function NavMoreDrawer({
               onClose();
               onOpenCustomize();
             }}
-            className="px-3 py-1.5 bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#2A5243] text-white dark:text-[#10161C] rounded-lg text-xs font-bold shadow-2xs cursor-pointer transition-colors"
+            className="min-h-11 shrink-0 px-3 py-1.5 bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#2A5243] text-white dark:text-[#10161C] rounded-lg text-xs font-bold shadow-2xs cursor-pointer transition-colors"
           >
             メニューを編集
           </button>
         </div>
 
         {/* メニューリスト（スクロール領域） */}
-        <div className="p-4 space-y-4 overflow-y-auto">
+        <div className="p-4 space-y-4 overflow-y-auto overscroll-contain">
           {categories.map((cat) => {
             const CatIcon = cat.icon;
             return (
@@ -164,10 +146,10 @@ export default function NavMoreDrawer({
                             <Icon className="w-4 h-4" />
                           </div>
                           <div className="min-w-0">
-                            <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] truncate">
+                            <div className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5] break-words">
                               {item.label}
                             </div>
-                            <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] line-clamp-1 mt-0.5">
+                            <div className="text-xs leading-relaxed text-[#59615D] dark:text-[#A8B8C4] mt-0.5">
                               {item.description}
                             </div>
                           </div>
@@ -186,16 +168,22 @@ export default function NavMoreDrawer({
                           <Icon className="w-4 h-4" />
                         </div>
                         <div className="min-w-0">
-                          <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] truncate">
+                          <div className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5] break-words">
                             {item.label}
                           </div>
-                          <div className="text-[10px] text-[#737C77] dark:text-[#8899A6] line-clamp-1 mt-0.5">
+                          <div className="text-xs leading-relaxed text-[#59615D] dark:text-[#A8B8C4] mt-0.5">
                             {item.description}
                           </div>
                         </div>
                       </Link>
                     );
                   })}
+                  {cat.title === "学習・国家試験対策" && (
+                    <Link href="/notes?tab=learning" onClick={onClose} className="rounded-xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-2.5 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                      学習ノート
+                      <span className="mt-1 block text-xs font-normal leading-relaxed">講義や症例で考えたことを振り返る</span>
+                    </Link>
+                  )}
                 </div>
               </div>
             );

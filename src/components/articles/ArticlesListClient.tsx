@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, BookOpen, Clock, Compass, FlaskConical, Leaf, Search, X } from "lucide-react";
 import { matchesSearchText } from "@/utils/search";
 import { trackEvent } from "@/utils/analytics";
+import { useLearningSync } from "@/contexts/LearningSyncContext";
+import { articleReadingResumeHref, readArticleReadingPositions } from "@/utils/articleReadingPosition";
 
 export interface ArticleListItem {
   id: string;
@@ -16,6 +18,8 @@ export interface ArticleListItem {
   tags: readonly string[];
   authorName: string;
   hasFigures: boolean;
+  readingRevision: string;
+  readingHeadingIds: readonly string[];
 }
 
 interface ArticlesListClientProps {
@@ -37,6 +41,9 @@ const READING_STARTS = [
 ];
 
 export default function ArticlesListClient({ articles }: ArticlesListClientProps) {
+  const { ready, values } = useLearningSync();
+  const readingCatalog = useMemo(() => articles.map(article => ({ articleId: article.id, revision: article.readingRevision, headingIds: article.readingHeadingIds })), [articles]);
+  const recentPositions = useMemo(() => readArticleReadingPositions(values, readingCatalog).slice(0, 3), [values, readingCatalog]);
   const [selectedCategory, setSelectedCategory] = useState("すべて");
   const [searchQuery, setSearchQuery] = useState("");
   const categories = ["すべて", ...new Set(articles.map(article => article.category))];
@@ -57,6 +64,17 @@ export default function ArticlesListClient({ articles }: ArticlesListClientProps
         <h1 className="font-serif text-2xl font-bold tracking-tight text-[#232826] dark:text-[#FAF8F5] sm:text-4xl">図解で学ぶ、東洋医学</h1>
         <p className="max-w-3xl text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">経絡・経穴・四診などの伝統的な用語と観察所見を学び、原著研究や公的な医療情報と比較する解説記事です。伝統的な見立て、研究で測定した結果、学習用の比喩を区別し、解釈の限界も確認します。</p>
       </header>
+
+      {ready && !hasFilters && recentPositions.length > 0 && <section aria-labelledby="article-resume-title" className="space-y-3">
+        <div><h2 id="article-resume-title" className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">保存した位置から読み直す</h2><p className="mt-1 text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">最近スクロールした記事です。途中の節から続けられます。</p></div>
+        <div className="grid gap-3 md:grid-cols-3">{recentPositions.map(position => {
+          const article = articles.find(item => item.id === position.articleId)!;
+          const metadata = readingCatalog.find(item => item.articleId === position.articleId)!;
+          return <Link key={position.articleId} href={articleReadingResumeHref(position, metadata)} onClick={() => trackEvent("context_link_click", { placement: "articles_resume", article_id: article.id })} className="flex min-h-11 min-w-0 flex-col gap-3 rounded-xl border border-[#C5DED4] bg-[#EBF3EF] p-4 focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A5243] dark:bg-[#182823]">
+            <h3 className="font-bold leading-relaxed text-[#232826] dark:text-[#FAF8F5] [overflow-wrap:anywhere]">{article.title}</h3><span className="text-sm text-[#59615D] dark:text-[#A0B0BC]">閲覧位置 {position.progress}% · 約 {article.readTime}</span><span className="mt-auto inline-flex min-h-11 items-center justify-between gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8]">保存した節を開く<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></span>
+          </Link>;
+        })}</div>
+      </section>}
 
       <section aria-labelledby="article-search-title" className="space-y-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">

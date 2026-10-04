@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { 
   X, 
   RotateCcw, 
@@ -22,6 +22,7 @@ import {
   saveNavUserConfig
 } from "@/config/navigationItems";
 import { trackEvent } from "@/utils/analytics";
+import { useModalDialog } from "@/hooks/useModalDialog";
 
 interface NavCustomizeModalProps {
   isOpen: boolean;
@@ -40,32 +41,7 @@ export default function NavCustomizeModal({
   const [slots, setSlots] = useState<[NavItemId, NavItemId, NavItemId, NavItemId]>(currentConfig.items);
   const [activePreset, setActivePreset] = useState<NavPresetType | undefined>(currentConfig.preset);
   const modalRef = useRef<HTMLDivElement>(null);
-
-  // モーダルオープン時に現在の設定を同期
-  useEffect(() => {
-    if (isOpen) {
-      setSlots(currentConfig.items);
-      setActivePreset(currentConfig.preset);
-      setSelectedSlotIndex(0);
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen, currentConfig]);
-
-  // Escapeキーで閉じる
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
-        onClose();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
+  useModalDialog(isOpen, modalRef, onClose);
 
   if (!isOpen) return null;
 
@@ -156,6 +132,7 @@ export default function NavCustomizeModal({
     >
       <div
         ref={modalRef}
+        tabIndex={-1}
         className="w-full max-w-lg bg-[#FAF8F5] dark:bg-[#151D24] rounded-t-2xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden"
       >
         {/* ヘッダー */}
@@ -177,14 +154,15 @@ export default function NavCustomizeModal({
             type="button"
             onClick={onClose}
             aria-label="閉じる"
-            className="p-1.5 rounded-lg text-[#737C77] dark:text-[#8899A6] hover:bg-[#EAE4D3] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
+            data-modal-autofocus
+            className="min-h-11 min-w-11 flex items-center justify-center rounded-lg text-[#737C77] dark:text-[#8899A6] hover:bg-[#EAE4D3] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* コンテンツ（スクロール領域） */}
-        <div className="p-4 sm:p-5 space-y-5 overflow-y-auto">
+        <div className="p-4 sm:p-5 space-y-5 overflow-y-auto overscroll-contain">
           {/* プリセット一括切替 */}
           <div>
             <div className="text-xs font-bold text-[#59615D] dark:text-[#8899A6] mb-2">
@@ -194,6 +172,7 @@ export default function NavCustomizeModal({
               <button
                 type="button"
                 onClick={() => applyPreset("standard")}
+                aria-pressed={activePreset === "standard"}
                 className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                   activePreset === "standard"
                     ? "border-[#1E3D34] dark:border-[#74BA9E] bg-[#EBF3EF] dark:bg-[#1E3D34]/30 shadow-xs"
@@ -212,6 +191,7 @@ export default function NavCustomizeModal({
               <button
                 type="button"
                 onClick={() => applyPreset("student")}
+                aria-pressed={activePreset === "student"}
                 className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                   activePreset === "student"
                     ? "border-[#B86924] dark:border-[#E6C387] bg-[#FCF4EB] dark:bg-[#B86924]/20 shadow-xs"
@@ -230,6 +210,7 @@ export default function NavCustomizeModal({
               <button
                 type="button"
                 onClick={() => applyPreset("clinician")}
+                aria-pressed={activePreset === "clinician"}
                 className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                   activePreset === "clinician"
                     ? "border-[#2A5243] dark:border-[#83BEA8] bg-[#EBF3EF] dark:bg-[#1E3D34]/30 shadow-xs"
@@ -265,6 +246,8 @@ export default function NavCustomizeModal({
                     key={`slot-${idx}`}
                     type="button"
                     onClick={() => setSelectedSlotIndex(idx)}
+                    aria-pressed={isSelected}
+                    aria-label={`枠${idx + 1}：${item.label}を編集`}
                     className={`flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-all cursor-pointer relative ${
                       isSelected
                         ? "border-[#1E3D34] dark:border-[#74BA9E] bg-[#EBF3EF] dark:bg-[#182823] shadow-xs"
@@ -296,7 +279,7 @@ export default function NavCustomizeModal({
                 type="button"
                 onClick={() => moveLeft(selectedSlotIndex)}
                 disabled={selectedSlotIndex === 0}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FAF8F5] dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#22303D] text-[#59615D] dark:text-[#A0B0BC] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#EAE4D3] text-xs cursor-pointer"
+                className="min-h-11 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FAF8F5] dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#22303D] text-[#59615D] dark:text-[#A0B0BC] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#EAE4D3] text-xs cursor-pointer"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>枠を左へ移動</span>
@@ -305,7 +288,7 @@ export default function NavCustomizeModal({
                 type="button"
                 onClick={() => moveRight(selectedSlotIndex)}
                 disabled={selectedSlotIndex === 3}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FAF8F5] dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#22303D] text-[#59615D] dark:text-[#A0B0BC] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#EAE4D3] text-xs cursor-pointer"
+                className="min-h-11 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FAF8F5] dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#22303D] text-[#59615D] dark:text-[#A0B0BC] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#EAE4D3] text-xs cursor-pointer"
               >
                 <span>枠を右へ移動</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -317,7 +300,7 @@ export default function NavCustomizeModal({
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold text-[#59615D] dark:text-[#8899A6]">
-                枠 {selectedSlotIndex + 1} に設定する機能を選択（全14項目）
+                枠 {selectedSlotIndex + 1} に設定する機能を選択（全{allItemIds.length}項目）
               </span>
             </div>
 
@@ -333,6 +316,7 @@ export default function NavCustomizeModal({
                     key={id}
                     type="button"
                     onClick={() => handleSelectItem(id)}
+                    aria-pressed={isCurrentInSlot}
                     className={`flex items-start gap-2.5 p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                       isCurrentInSlot
                         ? "border-[#1E3D34] dark:border-[#74BA9E] bg-[#EBF3EF] dark:bg-[#1E3D34]/30"
@@ -373,28 +357,28 @@ export default function NavCustomizeModal({
         </div>
 
         {/* フッター */}
-        <div className="px-5 py-3 border-t border-[#E8E1D1] dark:border-[#22303D] bg-white dark:bg-[#10161C] flex items-center justify-between gap-3">
+        <div className="px-5 py-3 border-t border-[#E8E1D1] dark:border-[#22303D] bg-white dark:bg-[#10161C] flex flex-col items-stretch justify-between gap-2 sm:flex-row sm:items-center sm:gap-3">
           <button
             type="button"
             onClick={handleReset}
-            className="inline-flex items-center gap-1.5 text-xs text-[#737C77] dark:text-[#8899A6] hover:text-[#232826] dark:hover:text-white transition-colors cursor-pointer"
+            className="min-h-11 inline-flex items-center gap-1.5 text-xs text-[#737C77] dark:text-[#8899A6] hover:text-[#232826] dark:hover:text-white transition-colors cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>初期状態に戻す</span>
           </button>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center justify-end gap-2">
             <button
               type="button"
               onClick={onClose}
-              className="px-3.5 py-2 text-xs font-bold text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#FAF8F5] dark:hover:bg-[#18222C] rounded-lg transition-colors cursor-pointer"
+              className="min-h-11 px-3.5 py-2 text-xs font-bold text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#FAF8F5] dark:hover:bg-[#18222C] rounded-lg transition-colors cursor-pointer"
             >
               キャンセル
             </button>
             <button
               type="button"
               onClick={handleSave}
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#2A5243] text-white dark:text-[#10161C] rounded-lg font-bold text-xs shadow-xs hover:shadow transition-all cursor-pointer"
+              className="min-h-11 inline-flex items-center gap-1.5 px-4 py-2 bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#2A5243] text-white dark:text-[#10161C] rounded-lg font-bold text-xs shadow-xs hover:shadow transition-all cursor-pointer"
             >
               <Check className="w-3.5 h-3.5" />
               <span>保存して適用</span>

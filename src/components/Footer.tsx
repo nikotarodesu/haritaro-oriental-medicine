@@ -1,16 +1,11 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
 import { ArrowUpRight, Sparkles, Award, Layers, ShieldCheck } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
 import { SITE_NAME } from "@/config/seo";
 
 export default function Footer() {
-  const { user } = useAuth();
-
   return (
-    <footer className="bg-[#F2EDE4] dark:bg-[#131A21] border-t border-[#E3DBCB] dark:border-[#22303D] text-[#59615D] dark:text-[#96A6B2] text-sm mt-auto transition-colors duration-300 print:hidden">
+    <footer className="bg-[#F2EDE4] dark:bg-[#131A21] border-t border-[#E3DBCB] dark:border-[#22303D] text-[#59615D] dark:text-[#96A6B2] text-sm mt-auto transition-colors duration-300 print:hidden [&_a]:min-h-11 [&_a]:items-center [&_a]:inline-flex [&_a]:focus-visible:outline-2 [&_a]:focus-visible:outline-offset-2">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-10 sm:py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-10">
           {/* サイト概要 */}
@@ -21,7 +16,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-xs sm:text-sm leading-relaxed text-[#59615D] dark:text-[#96A6B2]">
-              臨床観察に裏打ちされた東洋医学の智慧を体系化。「基礎理論から臨床実践までを体系化する東洋医学ポータル」として、わかりやすさと学術的根拠を追求しています。
+              図解で学び、演習で考え、ノートで振り返る。東洋医学の基礎理論・経穴辞典・臨床推論をつなぐ学習ポータルです。
             </p>
           </div>
 
@@ -30,7 +25,7 @@ export default function Footer() {
             <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm sm:text-base tracking-wider mb-3.5 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5 flex items-center gap-1.5">
               <span>臨床実践ツール</span>
             </h3>
-            <ul className="space-y-2.5 text-xs sm:text-sm">
+            <ul className="space-y-0.5 text-sm">
               <li>
                 <Link href="/tsubo" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
                   経穴辞典（全361穴・骨度法）
@@ -66,14 +61,29 @@ export default function Footer() {
           </div>
 
           {/* 学ぶ・国試対策 */}
-          <div>
+          <nav aria-label="学びのショートカット">
             <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm sm:text-base tracking-wider mb-3.5 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5 flex items-center gap-1.5">
               <span>学ぶ・国試対策</span>
             </h3>
-            <ul className="space-y-2.5 text-xs sm:text-sm">
+            <ul className="space-y-0.5 text-sm">
+              <li>
+                <Link href="/learn" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors font-medium">
+                  学びの総合案内
+                </Link>
+              </li>
+              <li>
+                <Link href="/learn/courses" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
+                  目的別の3つの学習コース
+                </Link>
+              </li>
               <li>
                 <Link href="/curriculum" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors font-medium">
                   東洋医学カリキュラム（全81講義）
+                </Link>
+              </li>
+              <li>
+                <Link href="/notes?tab=learning" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
+                  学習ノートで振り返る
                 </Link>
               </li>
               <li>
@@ -106,7 +116,7 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-          </div>
+          </nav>
 
           {/* 案内・免責事項 */}
           <div>

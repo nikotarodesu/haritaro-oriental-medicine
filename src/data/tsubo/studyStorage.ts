@@ -7,8 +7,10 @@ import {
   StudySkillType
 } from "./types";
 import { getLearningStorageAdapter } from '@/utils/learningStorageBridge';
+import { isValidStudySession } from './studySessionValidation';
 
 const ACTIVE_SESSION_KEY = "haritaro_tsubo_active_session_v1";
+const PAUSED_SESSIONS_KEY = "haritaro_tsubo_paused_sessions_v1";
 interface PracticeAttempt {
   recordKey: string; record: AcupointStudyRecord; date: string; answeredAt: string;
   correct?: boolean; evaluation?: 'remembered' | 'needsReview';
@@ -189,9 +191,9 @@ export function saveStudyData(data: TsuboStudyDataV1): void {
   // Writes wait for the account-scoped adapter.
 }
 
-function activeSessionKey(): string | null {
+function activeSessionKey(storageKey = ACTIVE_SESSION_KEY): string | null {
   const adapter = getLearningStorageAdapter();
-  return adapter ? ACTIVE_SESSION_KEY + ':' + adapter.owner : null;
+  return adapter ? storageKey + ':' + adapter.owner : null;
 }
 
 // ==================== アクティブセッションI/O ====================
@@ -203,26 +205,70 @@ export function loadActiveSession(): StudySession | null {
     if (!key) return null;
     const raw = localStorage.getItem(key);
     if (!raw) return null;
-    const session = JSON.parse(raw) as StudySession;
-    return session.contentVersion === 2 ? session : null;
+    const session: unknown = JSON.parse(raw);
+    return isValidStudySession(session) ? session : null;
   } catch (e) {
     console.error("Failed to load active study session", e);
     return null;
   }
 }
 
-export function saveActiveSession(session: StudySession | null): void {
-  if (typeof window === "undefined") return;
+export function saveActiveSession(session: StudySession | null): boolean {
+  if (typeof window === "undefined") return false;
+  if (session && !isValidStudySession(session)) return false;
   try {
     const key = activeSessionKey();
-    if (!key) return;
+    if (!key) return false;
     if (!session) {
       localStorage.removeItem(key);
     } else {
       localStorage.setItem(key, JSON.stringify(session));
     }
+    return true;
   } catch (e) {
     console.error("Failed to save active study session", e);
+    return false;
+  }
+}
+
+/** Interrupted questions stay on this device, separately for each account. */
+export function loadPausedSessions(): StudySession[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const key = activeSessionKey(PAUSED_SESSIONS_KEY);
+    if (!key) return [];
+    const parsed: unknown = JSON.parse(localStorage.getItem(key) || '[]');
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((session): session is StudySession => isValidStudySession(session) && !session.isCompleted);
+  } catch (error) {
+    console.error('Failed to load paused study sessions', error);
+    return [];
+  }
+}
+
+export function savePausedSession(session: StudySession): boolean {
+  if (typeof window === 'undefined') return false;
+  if (!isValidStudySession(session)) return false;
+  try {
+    const key = activeSessionKey(PAUSED_SESSIONS_KEY);
+    if (!key) return false;
+    const sessions = loadPausedSessions().filter(item => item.sessionId !== session.sessionId);
+    if (!session.isCompleted) sessions.unshift(session);
+    localStorage.setItem(key, JSON.stringify(sessions));
+    return true;
+  } catch (error) {
+    console.error('Failed to save paused study session', error);
+    return false;
+  }
+}
+
+export function removePausedSession(sessionId: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const key = activeSessionKey(PAUSED_SESSIONS_KEY);
+    if (key) localStorage.setItem(key, JSON.stringify(loadPausedSessions().filter(session => session.sessionId !== sessionId)));
+  } catch (error) {
+    console.error('Failed to remove paused study session', error);
   }
 }
 
@@ -448,4 +494,6 @@ export function resetAllStudyData(): void {
   if (typeof window === "undefined") return;
   getLearningStorageAdapter()?.set('settings:tsubo-reset', true);
   saveActiveSession(null);
+  const pausedKey = activeSessionKey(PAUSED_SESSIONS_KEY);
+  if (pausedKey) localStorage.removeItem(pausedKey);
 }

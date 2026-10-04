@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import LearningSyncStatus from "@/components/learning/LearningSyncStatus";
 import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
 import { questionRevision } from "@/utils/learningReview";
-import React, { useState, useEffect, useMemo, useCallback, Suspense } from "react";
+import React, { useState, useEffect, useEffectEvent, useMemo, useCallback, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { 
@@ -19,6 +19,9 @@ import {
   saveStudyData,
   loadActiveSession,
   saveActiveSession,
+  loadPausedSessions,
+  savePausedSession,
+  removePausedSession,
   recordAnswerInStore,
   recordSelfEvaluationInStore,
   toggleFlagForReview,
@@ -60,6 +63,7 @@ import {
   X
 } from "lucide-react";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
+import { getPracticeEntryAction, getPracticeSessionTitle, readRequestedPracticeCourse, resolvePracticeCourse } from "@/data/tsubo/practiceEntry";
 
 export default function PracticeClient() {
   const { ready } = useLearningSync();
@@ -74,6 +78,9 @@ export default function PracticeClient() {
 function PracticePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const requestedCourse = readRequestedPracticeCourse(searchParams);
+  const requestedCourseId = requestedCourse?.id || null;
+  const invalidCourseRequest = searchParams.has('course') && !requestedCourse;
   const allPoints = useMemo(() => getAllAcupoints(), []);
   const { memos } = useClinicalMemo();
   const { saveQuizResult } = useCurriculumProgress();
@@ -92,6 +99,9 @@ function PracticePageContent() {
   // 学習サマリー＆アクティブセッション
   const [summary, setSummary] = useState<ReturnType<typeof getStudySummary>>({ todayAnswered: 0, todayGoal: 10, progressPercent: 0, streakDays: 0, totalPracticedPoints: 0, totalMasteredPoints: 0, dueReviewCount: 0, dueRecords: [], settings: { dailyGoal: 10, defaultMode: "batch" } });
   const [activeSession, setActiveSession] = useState<StudySession | null>(null);
+  const [resumeSession, setResumeSession] = useState<StudySession | null>(null);
+  const [pausedSessions, setPausedSessions] = useState<StudySession[]>([]);
+  const [sessionRestored, setSessionRestored] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [importStatus, setImportStatus] = useState<{ message: string; success: boolean } | null>(null);
 
@@ -108,16 +118,23 @@ function PracticePageContent() {
     setSummary(getStudySummary(todayStr));
   };
 
-  // 保存データは初期HTMLとの一致を保って、マウント後に復元する。
+  // 復元・指定コースの判断はマウント後に行い、途中の回答を上書きしない。
+  const restoreSession = useEffectEvent((courseId: string | null) => {
+    setSummary(getStudySummary(todayStr));
+    setPausedSessions(loadPausedSessions());
+    const saved = loadActiveSession();
+    const requested = resolvePracticeCourse(courseId);
+    const action = getPracticeEntryAction(saved, requested);
+    setResumeSession(action === 'choose' ? saved : null);
+    setActiveSession(action === 'resume' ? saved : null);
+    if (action === 'start' && requested) startCourseSession(requested.id);
+    setSessionRestored(true);
+  });
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setSummary(getStudySummary(todayStr));
-      const saved = loadActiveSession();
-      if (saved) setActiveSession(saved);
-      else { const course = searchParams.get("course"); if (course) startCourseSession(course); }
-    }, 0);
+    const timer = setTimeout(() => restoreSession(requestedCourseId), 0);
     return () => clearTimeout(timer);
-  }, [searchParams]);
+  }, [requestedCourseId]);
 
   useEffect(() => {
     const timer = setTimeout(() => setSummary(getStudySummary(todayStr)), 0);
@@ -166,8 +183,14 @@ function PracticePageContent() {
       return;
     }
 
+    const previous = activeSession || resumeSession || loadActiveSession();
+    if (previous && !previous.isCompleted && !savePausedSession(previous)) {
+      alert('途中の回答を保存できませんでした。現在の学習を続けてください。');
+      return;
+    }
+
     const session: StudySession = {
-      sessionId: `session_${Date.now()}`,
+      sessionId: `session_${Date.now()}_${crypto.randomUUID()}`,
       contentVersion: 2,
       courseId,
       courseTitle,
@@ -180,8 +203,14 @@ function PracticePageContent() {
       startedAt: Date.now(),
     };
 
+    if (!saveActiveSession(session)) {
+      alert('新しい学習を保存できませんでした。途中の回答は残っています。');
+      setPausedSessions(loadPausedSessions());
+      return;
+    }
     setActiveSession(session);
-    saveActiveSession(session);
+    setResumeSession(null);
+    setPausedSessions(loadPausedSessions());
     setTempSelectedOption(null);
     setIsAnswerConfirmed(false);
     setIsCardFlipped(false);
@@ -210,11 +239,12 @@ function PracticePageContent() {
 
   // 経絡全体または特定コースの開始
   function startCourseSession(courseId: string) {
-    if (courseId.startsWith("meridian_")) {
-      const merPrefix = courseId.replace("meridian_", "").toUpperCase();
-      const targetPoints = allPoints.filter((p) => p.meridianId.toUpperCase().includes(merPrefix) || p.code.startsWith(merPrefix));
-      const questions = generateQuestionsForPoints(targetPoints, selectedSkill, 10, `mer_${courseId}_${Date.now()}`);
-      startNewSession(courseId, `十四経脈学習`, questions, "batch");
+    const course = resolvePracticeCourse(courseId);
+    if (!course) return;
+    if (course.meridianId) {
+      const targetPoints = allPoints.filter((p) => p.meridianId === course.meridianId);
+      const questions = generateQuestionsForPoints(targetPoints, selectedSkill, 10, `mer_${course.id}_${Date.now()}`);
+      startNewSession(course.id, `${course.title}（${questions.length}問）`, questions, "batch");
     } else if (courseId === "saved") {
       const savedCodes = memos.filter((m) => m.type === "tsubo").map((m) => m.id.replace("tsubo-", "").toUpperCase());
       const targetPoints = allPoints.filter((p) => savedCodes.includes(p.code));
@@ -407,14 +437,47 @@ function PracticePageContent() {
     refreshSummary();
   };
 
-  // セッション終了してホームへ戻る
+  const handleResumeSession = (session: StudySession) => {
+    const previous = loadActiveSession();
+    if (previous && previous.sessionId !== session.sessionId && !previous.isCompleted && !savePausedSession(previous)) {
+      alert('途中の回答を保存できませんでした。現在の学習を続けてください。');
+      return;
+    }
+    if (!saveActiveSession(session)) {
+      alert('学習を再開できませんでした。途中の回答は残っています。');
+      return;
+    }
+    removePausedSession(session.sessionId);
+    setActiveSession(session);
+    setResumeSession(null);
+    setPausedSessions(loadPausedSessions());
+    setTempSelectedOption(null);
+    setIsAnswerConfirmed(false);
+    setIsCardFlipped(false);
+    router.replace('/tsubo/practice', { scroll: false });
+  };
+
+  // 未完了なら回答・現在位置を端末に残してホームへ戻る。
   const handleExitSession = () => {
-    saveActiveSession(null);
+    if (activeSession && !activeSession.isCompleted && !savePausedSession(activeSession)) {
+      alert('途中の回答を保存できませんでした。現在の学習を続けてください。');
+      return;
+    }
+    if (!saveActiveSession(null)) {
+      alert('学習ホームに戻れませんでした。途中の回答は残っています。');
+      return;
+    }
     setActiveSession(null);
+    setResumeSession(null);
+    setPausedSessions(loadPausedSessions());
     refreshSummary();
   };
 
   // ==================== レンダリング：アクティブセッション中 ====================
+
+  if (!sessionRestored) {
+    return <p role="status" className="min-h-screen p-8 text-center text-sm text-[#737C77] dark:text-[#8899A6]">途中の学習を確認中...</p>;
+  }
 
   if (activeSession) {
     const totalQ = activeSession.questions.length;
@@ -442,7 +505,7 @@ function PracticePageContent() {
                 レッスン完了！
               </h2>
               <p className="text-xs sm:text-sm text-[#737C77] dark:text-[#8899A6]">
-                {activeSession.courseTitle}
+                {getPracticeSessionTitle(activeSession)}
               </p>
             </div>
 
@@ -527,24 +590,24 @@ function PracticePageContent() {
       return (
         <div className="min-h-screen py-6 sm:py-12 px-3 sm:px-6 lg:px-8 max-w-4xl mx-auto space-y-6">
           {/* セッションヘッダー */}
-          <div className="bg-white dark:bg-[#17212A] p-4 sm:p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs flex items-center justify-between gap-3 sticky top-4 z-20 backdrop-blur-md bg-white/90">
-            <div>
+          <div className="bg-white dark:bg-[#17212A] p-4 sm:p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs flex flex-wrap items-center justify-between gap-3 sticky top-4 z-20 backdrop-blur-md bg-white/90">
+            <div className="min-w-0">
               <span className="text-[10px] text-[#B86924] font-bold block uppercase tracking-wider">
                 まとめ表示モード
               </span>
               <h2 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
-                {activeSession.courseTitle}
+                {getPracticeSessionTitle(activeSession)}
               </h2>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex min-w-0 flex-wrap items-center gap-3">
               <span className="text-xs text-[#737C77] font-mono">
                 回答済: <strong className="text-[#1E3D34] dark:text-[#74BA9E] text-sm">{answeredCount}</strong> / {totalQ}
               </span>
               <button
                 type="button"
                 onClick={handleSubmitBatch}
-                className="px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shadow-sm flex items-center gap-1.5"
+                className="min-h-11 px-4 py-2 rounded-xl bg-[#1E3D34] text-white text-xs font-bold hover:bg-[#162E27] transition-all shadow-sm flex items-center gap-1.5"
               >
                 <Check className="w-4 h-4" />
                 <span>採点して終了</span>
@@ -552,8 +615,9 @@ function PracticePageContent() {
               <button
                 type="button"
                 onClick={handleExitSession}
-                className="p-2 rounded-xl text-[#737C77] hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="min-h-11 min-w-11 p-2 rounded-xl text-[#737C77] hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-center"
                 title="セッションを中断して保存"
+                aria-label="セッションを中断して保存"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -671,7 +735,7 @@ function PracticePageContent() {
             <button
               type="button"
               onClick={handleExitSession}
-              className="hover:underline flex items-center gap-1"
+              className="min-h-11 min-w-0 px-2 hover:underline flex items-center gap-1"
             >
               <X className="w-3.5 h-3.5" />
               <span>中断して保存</span>
@@ -819,6 +883,9 @@ function PracticePageContent() {
 
   // ==================== レンダリング：学習ホーム（Duolingo風） ====================
 
+  const resumableSessions = [...(resumeSession ? [resumeSession] : []), ...pausedSessions]
+    .filter((session, index, sessions) => sessions.findIndex(item => item.sessionId === session.sessionId) === index);
+
   return (
     <div className="min-h-screen py-8 sm:py-16 px-3 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-8 sm:space-y-10">
@@ -843,12 +910,12 @@ function PracticePageContent() {
               <BookOpen className="w-3.5 h-3.5" />
               <span>Acupoint Spaced Repetition Learning</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
               経穴を学ぶ・復習する
-            </h1>
+            </h2>
           <LearningSyncStatus />
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-xl">
-              短時間の小テストと間隔反復（1日・3日・7日・14日・30日）で、経穴の部位・要穴・経脈を確実に定着させます。
+              短時間の小テストと間隔反復（1日・3日・7日・14日・30日）で、経穴の部位・要穴・経脈を繰り返し確認できます。
             </p>
           </div>
 
@@ -861,6 +928,54 @@ function PracticePageContent() {
             <span>学習設定・データ管理</span>
           </button>
         </div>
+
+        {invalidCourseRequest && (
+          <p role="status" className="rounded-2xl border border-[#E5DEC9] bg-[#F6F4EE] p-4 text-sm text-[#59615D] dark:border-[#2A3B4A] dark:bg-[#17212A] dark:text-[#C5D2DB]">
+            指定された学習コースが見つかりません。下の経脈別コースから選んでください。
+          </p>
+        )}
+
+        {requestedCourse && (
+          <section aria-labelledby="requested-practice-heading" className="rounded-3xl border border-[#184F49]/30 bg-[#F6F4EE] p-5 space-y-4 dark:border-[#74BA9E]/40 dark:bg-[#162720]">
+            <div className="space-y-2">
+              <p className="text-xs font-bold text-[#184F49] dark:text-[#74BA9E]">指定された学習</p>
+              <h2 id="requested-practice-heading" className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">{requestedCourse.title}</h2>
+              <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#C5D2DB]">
+                {resumeSession ? '途中の学習を再開するか、指定したコースを新しく始めるか選べます。途中の回答と現在位置は、この端末に残ります。' : 'このコースで新しい問題に取り組めます。'}
+              </p>
+            </div>
+            <div className="grid min-w-0 gap-3 sm:grid-cols-2">
+              {resumeSession && (
+                <div className="min-w-0 rounded-2xl border border-[#D8CFC0] bg-white p-4 space-y-3 dark:border-[#2A3B4A] dark:bg-[#17212A]">
+                  <p className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">{getPracticeSessionTitle(resumeSession)}</p>
+                  <p className="text-xs text-[#737C77] dark:text-[#A0B0BC]">{Object.keys(resumeSession.answers).length} / {resumeSession.questions.length} 問回答済み</p>
+                  <button type="button" onClick={() => handleResumeSession(resumeSession)} className="min-h-11 min-w-0 w-full rounded-xl bg-[#184F49] px-4 py-3 text-sm font-bold text-white hover:bg-[#123D38] transition-colors">途中の学習を再開</button>
+                </div>
+              )}
+              <div className="min-w-0 rounded-2xl border border-[#D8CFC0] bg-white p-4 space-y-3 dark:border-[#2A3B4A] dark:bg-[#17212A]">
+                <p className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">{requestedCourse.title}</p>
+                <p className="text-xs leading-relaxed text-[#737C77] dark:text-[#A0B0BC]">現在選択している出題スキルで、新しい学習を始めます。</p>
+                <button type="button" onClick={() => startCourseSession(requestedCourse.id)} className="min-h-11 min-w-0 w-full rounded-xl border border-[#184F49] px-4 py-3 text-sm font-bold text-[#184F49] hover:bg-[#EBF3EF] dark:border-[#74BA9E] dark:text-[#74BA9E] dark:hover:bg-[#203D31] transition-colors">指定のコースを新しく始める</button>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {resumableSessions.some(session => session.sessionId !== resumeSession?.sessionId) && (
+          <section aria-labelledby="paused-practice-heading" className="space-y-3">
+            <h2 id="paused-practice-heading" className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">中断した学習から続ける</h2>
+            <p className="text-xs leading-relaxed text-[#737C77] dark:text-[#A0B0BC]">回答と現在位置をこの端末に保存しています。</p>
+            <div className="grid min-w-0 gap-3 sm:grid-cols-2">
+              {resumableSessions.filter(session => session.sessionId !== resumeSession?.sessionId).map(session => (
+                <div key={session.sessionId} className="min-w-0 rounded-2xl border border-[#E5DEC9] bg-white p-4 space-y-3 dark:border-[#2A3B4A] dark:bg-[#17212A]">
+                  <h3 className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">{getPracticeSessionTitle(session)}</h3>
+                  <p className="text-xs text-[#737C77] dark:text-[#A0B0BC]">{Object.keys(session.answers).length} / {session.questions.length} 問回答済み</p>
+                  <button type="button" onClick={() => handleResumeSession(session)} className="min-h-11 min-w-0 w-full rounded-xl bg-[#184F49] px-4 py-3 text-sm font-bold text-white hover:bg-[#123D38] transition-colors">この学習を再開</button>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* 7.1 最初に見せる情報：ダッシュボードカード */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -1250,6 +1365,8 @@ function PracticePageContent() {
                     resetAllStudyData();
                     refreshSummary();
                     setActiveSession(null);
+                    setResumeSession(null);
+                    setPausedSessions([]);
                     setIsSettingsOpen(false);
                   }
                 }}

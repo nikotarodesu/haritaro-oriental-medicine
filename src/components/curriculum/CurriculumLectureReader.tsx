@@ -204,7 +204,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
   return (
     <div ref={articleTopRef} className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-10 space-y-5 sm:space-y-6">
       {/* 読書進捗バー */}
-      <ReadingProgressBar />
+      <ReadingProgressBar bodySelector="#lecture-content [data-reading-body]" />
 
       <Suspense fallback={null}>
         <ReviewQuestionCard lectureId={lecture.id} />

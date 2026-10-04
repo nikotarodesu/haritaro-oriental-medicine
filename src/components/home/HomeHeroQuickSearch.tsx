@@ -62,7 +62,7 @@ export default function HomeHeroQuickSearch() {
       <div className="space-y-1.5 pt-1">
         <span className="text-sm text-[#59615D] dark:text-[#A8B8C4] flex items-center justify-center gap-1 font-medium">
           <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-          <span>人気のツボ・機能:</span>
+          <span>すぐに開ける経穴・機能</span>
         </span>
         <div className="flex flex-wrap items-center justify-center gap-2">
           {QUICK_TAGS.map((tag, index) => (

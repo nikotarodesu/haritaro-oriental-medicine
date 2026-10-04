@@ -22,6 +22,15 @@ export default function MobileBottomNav() {
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
 
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const closeHiddenMenus = () => {
+      if (desktop.matches) { setIsMoreOpen(false); setIsCustomizeOpen(false); }
+    };
+    desktop.addEventListener("change", closeHiddenMenus);
+    return () => desktop.removeEventListener("change", closeHiddenMenus);
+  }, []);
+
   // 設定読み込み＆更新イベント購読
   const refreshConfig = useCallback(() => {
     setConfig(loadNavUserConfig());
@@ -120,6 +129,7 @@ export default function MobileBottomNav() {
 
           {/* 5枠目：その他 ⋯ （固定） */}
           <button
+            id="mobile-more-trigger"
             type="button"
             onClick={() => setIsMoreOpen(true)}
             className={`flex-1 min-h-[44px] flex flex-col items-center justify-center py-1 text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] active:scale-95 transition-all cursor-pointer relative ${
@@ -147,14 +157,14 @@ export default function MobileBottomNav() {
       />
 
       {/* カスタマイズ編集モーダル */}
-      <NavCustomizeModal
+      {isCustomizeOpen && <NavCustomizeModal
         isOpen={isCustomizeOpen}
         onClose={() => setIsCustomizeOpen(false)}
         currentConfig={config}
         onSaved={(newConfig) => {
           setConfig(newConfig);
         }}
-      />
+      />}
     </>
   );
 }

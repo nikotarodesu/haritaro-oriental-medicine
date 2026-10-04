@@ -42,11 +42,13 @@ async function main() {
   study.recordSelfEvaluationInStore(q, 'needsReview', '2026-10-02');
   assert.equal(study.loadStudyData().records.LU1_location.totalAttempts, 2);
   assert.equal(study.loadStudyData().records.LU1_location.flaggedForReview, true);
-  study.saveActiveSession({ contentVersion: 2, id: 'private-session' });
+  study.saveActiveSession({ contentVersion: 2, sessionId: 'private-session', courseId: 'meridian_lung', courseTitle: '肺経', mode: 'batch',
+    questions: [{ id: 'q_loc_lu1_0', acupointCode: 'LU1', skill: 'location_to_name', prompt: '問題', options: [{ id: 'LU1', text: '中府' }, { id: 'LU2', text: '雲門' }], correctOptionId: 'LU1', explanation: '解説', meridianName: '手の太陰肺経', locationReference: '位置' }],
+    currentIndex: 0, answers: {}, isCompleted: false, startedAt: 1 });
   bridge.setLearningStorageAdapter(adapter(userB));
   assert.equal(study.loadActiveSession(), null, 'Active session belongs to its account');
   bridge.setLearningStorageAdapter(adapter(userA));
-  assert.equal(study.loadActiveSession().id, 'private-session');
+  assert.equal(study.loadActiveSession().sessionId, 'private-session');
   study.resetAllStudyData();
   assert.equal(Object.keys(study.loadStudyData().records).length, 0);
   assert.equal(sync.learningValues(document)['lecture:one'], true, 'Tsubo reset does not erase lecture progress');
