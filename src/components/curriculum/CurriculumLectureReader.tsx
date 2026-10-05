@@ -203,7 +203,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
   );
 
   return (
-    <div ref={articleTopRef} className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-10 space-y-5 sm:space-y-6">
+    <div ref={articleTopRef} className="reading-page max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-10 space-y-5 sm:space-y-6">
       {/* 読書進捗バー */}
       <ReadingProgressBar bodySelector="#lecture-content [data-reading-body]" />
 
@@ -239,7 +239,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           <span>カリキュラム一覧へ戻る</span>
         </Link>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-3">
           <FontSizeControl variant="compact" />
 
           <Link
@@ -284,7 +284,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
               <Layers className="w-4 h-4" />
               <span>{lecture.seriesTitle || "講義"} シリーズ進捗</span>
             </div>
-            <span className="font-mono text-sm text-[#737C77] dark:text-[#8899A6]">
+            <span className="font-mono text-sm text-[#59615D] dark:text-[#AFBDC8]">
               レッスン {lecture.lessonNumber || lecture.lectureNumber} / {activeSeriesLessons.length}
             </span>
           </div>
@@ -329,11 +329,11 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
                   {lecture.seriesTitle} レッスン {lecture.lessonNumber}
                 </span>
               ) : (
-                <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
+                <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
                   第 {lecture.lectureNumber} 講
                 </span>
               )}
-              <span className="text-[#737C77] dark:text-[#8899A6]">
+              <span className="text-[#59615D] dark:text-[#AFBDC8]">
                 約 {lecture.duration}
               </span>
             </div>
@@ -510,7 +510,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
                 <Activity className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
                 <span>現代医学との比較・説明の範囲</span>
               </div>
-              <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
+              <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
                 伝統分類と研究を区別
               </span>
             </div>
@@ -558,7 +558,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
               <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
               学んだ理論を臨床ツールで試す
             </span>
-            <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
+            <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
               登録不要・即座に体験
             </span>
           </div>
@@ -638,7 +638,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>{courseJourney ? '全講義の前のレッスン' : '前のレッスン'}</span>
-                <kbd className={`${courseJourney ? 'hidden' : 'hidden sm:inline-block'} px-1.5 py-0.5 text-sm font-mono rounded bg-[#FAF8F5] dark:bg-[#202E3C] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#737C77] dark:text-[#8899A6]`}>
+                <kbd className={`${courseJourney ? 'hidden' : 'hidden sm:inline-block'} px-1.5 py-0.5 text-sm font-mono rounded bg-[#FAF8F5] dark:bg-[#202E3C] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#AFBDC8]`}>
                   [
                 </kbd>
               </Link>

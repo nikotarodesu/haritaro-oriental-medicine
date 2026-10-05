@@ -42,6 +42,7 @@ import { trackEvent } from "@/utils/analytics";
 import GogyoBadge from "@/components/GogyoBadge";
 import { TSUBOS } from "@/data/tsuboData";
 import { resolveLearningReflectionSource } from "@/utils/learningReflection";
+import { useModalDialog } from "@/hooks/useModalDialog";
 
 const LearningReflectionNotebook = dynamic(() => import("@/components/learning/LearningReflectionNotebook"), {
   loading: () => <p role="status" className="px-4 py-12 text-center">学習ノートを開いています…</p>,
@@ -134,6 +135,10 @@ function ClinicalNotesPage() {
 
   // 配穴ピッカーモーダル（フォーム入力中に配穴集から選ぶ）
   const [isPointPickerOpen, setIsPointPickerOpen] = useState(false);
+  const noteDialogRef = useRef<HTMLDivElement>(null);
+  const pointPickerRef = useRef<HTMLDivElement>(null);
+  useModalDialog(isNoteModalOpen && !isPointPickerOpen, noteDialogRef, () => setIsNoteModalOpen(false));
+  useModalDialog(isPointPickerOpen, pointPickerRef, () => setIsPointPickerOpen(false));
 
   // 自作配穴追加モーダル
   const [isCustomStockModalOpen, setIsCustomStockModalOpen] = useState(false);
@@ -487,7 +492,7 @@ function ClinicalNotesPage() {
   const currentSample = SAMPLE_PATIENT_NOTES[selectedSampleIndex] || SAMPLE_PATIENT_NOTES[0];
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 text-[#232826] dark:text-[#FAF8F5]">
+    <div className="notes-page max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 text-[#232826] dark:text-[#FAF8F5]">
       
       {/* ======================================================== */}
       {/* 1. ページヘッダー（初回 / 継続で表示を調整） */}
@@ -510,7 +515,7 @@ function ClinicalNotesPage() {
           <button
             type="button"
             onClick={handleDownloadCsv}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] bg-white dark:bg-[#1A2530] hover:bg-[#F3EFE6] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] bg-white dark:bg-[#1A2530] hover:bg-[#F3EFE6] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
             title="Excelや表計算ソフトで開けるCSVファイルを出力"
           >
             <FileText className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
@@ -520,7 +525,7 @@ function ClinicalNotesPage() {
           <button
             type="button"
             onClick={handleDownloadBackup}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] bg-white dark:bg-[#1A2530] hover:bg-[#F3EFE6] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] bg-white dark:bg-[#1A2530] hover:bg-[#F3EFE6] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
             title="手元にファイルとしてJSONバックアップ保存"
           >
             <Download className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
@@ -530,7 +535,7 @@ function ClinicalNotesPage() {
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] bg-white dark:bg-[#1A2530] hover:bg-[#F3EFE6] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] bg-white dark:bg-[#1A2530] hover:bg-[#F3EFE6] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
             title="ファイルからバックアップを読み込む"
           >
             <Upload className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
@@ -548,23 +553,23 @@ function ClinicalNotesPage() {
 
       {/* 未ログイン時のクラウド自動同期・アカウント登録案内バナー */}
       {!isAuthenticated && (
-        <div className="p-4 rounded-2xl bg-gradient-to-r from-[#FAF8F5] via-[#EBF3EF]/60 to-[#FAF8F5] dark:from-[#17212A] dark:via-[#162A24]/60 dark:to-[#17212A] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs">
+        <div className="p-4 rounded-2xl bg-gradient-to-r from-[#FAF8F5] via-[#EBF3EF]/60 to-[#FAF8F5] dark:from-[#17212A] dark:via-[#162A24]/60 dark:to-[#17212A] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm shadow-2xs">
           <div className="flex items-start sm:items-center gap-2.5">
             <div className="p-2 rounded-xl bg-white dark:bg-[#10171F] text-[#1E3D34] dark:text-[#74BA9E] shrink-0 border border-[#D5E6DE] dark:border-[#223E34]">
               <Cloud className="w-4 h-4" />
             </div>
             <div>
-              <p className="font-bold text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm">
+              <p className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-sm">
                 現在ブラウザローカル保存中（無料会員登録でPC・スマホ間の自動同期に対応）
               </p>
-              <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
+              <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
                 無料アカウントを作成すると、記録した臨床ノートや配穴集が暗号化クラウドに安全同期され、端末変更時も安心です。
               </p>
             </div>
           </div>
           <Link
             href="/auth/login"
-            className="shrink-0 px-4 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] font-bold text-xs shadow-xs transition-colors flex items-center justify-center gap-1.5"
+            className="shrink-0 px-4 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] font-bold text-sm shadow-xs transition-colors flex items-center justify-center gap-1.5"
           >
             <span>無料でアカウント登録・ログイン</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -574,7 +579,7 @@ function ClinicalNotesPage() {
 
       {/* データ保護・定期バックアップ案内バナー（3件以上で表示） */}
       {patientNoteCount >= 3 && (
-        <div className="p-3.5 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#1E3D34] dark:text-[#83BEA8]">
+        <div className="p-3.5 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm text-[#1E3D34] dark:text-[#83BEA8]">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 shrink-0 text-[#1E3D34] dark:text-[#74BA9E]" />
             <span>
@@ -585,7 +590,7 @@ function ClinicalNotesPage() {
           <button
             type="button"
             onClick={handleDownloadCsv}
-            className="shrink-0 px-3 py-1.5 bg-[#1E3D34] dark:bg-[#74BA9E] text-white dark:text-[#10161C] rounded-lg font-bold text-xs hover:opacity-90 transition-opacity cursor-pointer whitespace-nowrap"
+            className="shrink-0 px-3 py-1.5 bg-[#1E3D34] dark:bg-[#74BA9E] text-white dark:text-[#10161C] rounded-lg font-bold text-sm hover:opacity-90 transition-opacity cursor-pointer whitespace-nowrap"
           >
             CSVを保存
           </button>
@@ -594,7 +599,7 @@ function ClinicalNotesPage() {
 
       {/* 保存および同期についての動的ステータス案内 */}
       <div
-        className={`p-3.5 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs ${
+        className={`p-3.5 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm ${
           syncStatus === "synced"
             ? "bg-[#EBF7F2] dark:bg-[#132820] border-[#BDE3D4] dark:border-[#285746] text-[#1D5E46] dark:text-[#8EE0C0]"
             : syncStatus === "syncing"
@@ -626,18 +631,18 @@ function ClinicalNotesPage() {
             )}
           </span>
         </div>
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex min-w-0 flex-wrap items-center gap-3">
           {!isAuthenticated ? (
             <Link
               href="/auth/login?returnTo=/notes"
-              className="font-bold underline text-[#B86924] dark:text-[#E6C387] shrink-0 hover:opacity-80"
+              className="min-w-0 font-bold underline text-[#B86924] dark:text-[#E6C387] hover:opacity-80"
             >
               ログインしてクラウド同期する →
             </Link>
           ) : !isPremium ? (
             <Link
               href="/pricing"
-              className="font-bold underline text-[#1D5E46] dark:text-[#8EE0C0] shrink-0 hover:opacity-80"
+              className="min-w-0 font-bold underline text-[#1D5E46] dark:text-[#8EE0C0] hover:opacity-80"
             >
               保存枠の料金を見る →
             </Link>
@@ -647,12 +652,12 @@ function ClinicalNotesPage() {
 
       {/* 無料枠上限到達時の案内 */}
       {isPatientNoteLimitReached && (
-        <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-xs sm:text-sm space-y-1">
+        <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-sm sm:text-sm space-y-1">
           <p className="font-bold flex items-center gap-1.5">
             <AlertCircle className="w-4 h-4 text-amber-700 dark:text-amber-400 shrink-0" />
             <span>無料枠の保存上限（{maxPatientNoteLimit}件）に達しています</span>
           </p>
-          <p className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
+          <p className="text-sm text-amber-800 dark:text-amber-300 leading-relaxed">
             新しい記録を追加するには、不要になった既存ノートを削除するか、最大500件まで保存できる
             <Link href="/pricing" className="underline font-bold mx-1">
               プレミアムプラン
@@ -670,7 +675,7 @@ function ClinicalNotesPage() {
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E8E1D1] dark:border-[#22303D] pb-3">
           
-          <div className="flex items-center gap-2">
+          <div className="notes-tabs flex min-w-0 flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={() => setActiveTab("notes")}
@@ -682,7 +687,7 @@ function ClinicalNotesPage() {
             >
               <FileText className="w-4 h-4" />
               <span>臨床ノート</span>
-              <span className={`px-2 py-0.5 rounded-full text-xs ${
+              <span className={`px-2 py-0.5 rounded-full text-sm ${
                 activeTab === "notes" ? "bg-white/20 text-white" : "bg-[#E8E1D1] dark:bg-[#263542] text-[#404743]"
               }`}>
                 {patientNoteCount} / {maxPatientNoteLimit}件
@@ -700,7 +705,7 @@ function ClinicalNotesPage() {
             >
               <Bookmark className="w-4 h-4" />
               <span>配穴集</span>
-              <span className={`px-2 py-0.5 rounded-full text-xs ${
+              <span className={`px-2 py-0.5 rounded-full text-sm ${
                 activeTab === "stock" ? "bg-white/20 text-white" : "bg-[#E8E1D1] dark:bg-[#263542] text-[#404743]"
               }`}>
                 {clipCount} / {maxLimit}件
@@ -715,7 +720,7 @@ function ClinicalNotesPage() {
                 type="button"
                 onClick={openNewNoteModal}
                 disabled={isPatientNoteLimitReached}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#1E3D34] hover:bg-[#162D26] shadow-xs transition-all disabled:opacity-50"
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm sm:text-sm font-bold text-white bg-[#1E3D34] hover:bg-[#162D26] shadow-xs transition-all disabled:opacity-50"
               >
                 <Plus className="w-4 h-4" />
                 <span>臨床ノートを新規作成</span>
@@ -724,7 +729,7 @@ function ClinicalNotesPage() {
               <button
                 type="button"
                 onClick={() => setIsCustomStockModalOpen(true)}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#B86924] hover:bg-[#975319] shadow-xs transition-all"
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm sm:text-sm font-bold text-white bg-[#B86924] hover:bg-[#975319] shadow-xs transition-all"
               >
                 <Plus className="w-4 h-4" />
                 <span>自作の配穴を追加</span>
@@ -738,7 +743,7 @@ function ClinicalNotesPage() {
           (activeTab === "stock" && memos.length > 0)) && (
           <div className="flex items-center gap-3">
             <div className="relative flex-1">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#737C77]" />
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#59615D]" />
               <input
                 type="text"
                 value={searchQuery}
@@ -764,10 +769,10 @@ function ClinicalNotesPage() {
                     key={tag}
                     type="button"
                     onClick={() => setSelectedTag(tag)}
-                    className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    className={`px-2.5 py-1.5 rounded-lg text-sm font-bold transition-all ${
                       selectedTag === tag
                         ? "bg-[#B86924] text-white"
-                        : "bg-white dark:bg-[#1A2530] text-[#737C77] border border-[#D8CFC0] dark:border-[#384C5E]"
+                        : "bg-white dark:bg-[#1A2530] text-[#59615D] border border-[#D8CFC0] dark:border-[#384C5E]"
                     }`}
                   >
                     {tag === "all" ? "すべて" : tag}
@@ -794,7 +799,7 @@ function ClinicalNotesPage() {
                     <h3 className="text-lg sm:text-xl font-bold font-serif text-[#232826] dark:text-[#FAF8F5]">
                       初めてマイノートをご利用の方へ
                     </h3>
-                    <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                    <p className="text-sm sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                       臨床での弁証・配穴・施術の反応をすばやく記録。患者さんへ手渡す「養生シート」もワンクリックで作成できます。
                     </p>
                   </div>
@@ -820,7 +825,7 @@ function ClinicalNotesPage() {
                     </button>
                   </div>
 
-                  <div className="pt-3 border-t border-[#E8E1D1] dark:border-[#243340] text-[11px] text-[#737C77] dark:text-[#8899A6] space-y-1 max-w-md mx-auto">
+                  <div className="pt-3 border-t border-[#E8E1D1] dark:border-[#243340] text-sm text-[#59615D] dark:text-[#AFBDC8] space-y-1 max-w-md mx-auto">
                     <p>※ 無料枠として{SUBSCRIPTION_CONFIG.limits.freePatientNoteMax}件のノートと{SUBSCRIPTION_CONFIG.limits.freeMemoMax}件の配穴を保存可能。見本を見るだけで保存枠が減ることはありません。</p>
                     <p className="text-[#1E3D34] dark:text-[#74BA9E] font-medium">※ 実名等の直接識別情報は保持しない設計。無料ログインでPC・スマホ間の自動同期が有効になります。</p>
                   </div>
@@ -828,17 +833,17 @@ function ClinicalNotesPage() {
               ) : (
                 /* 検索で見つからない場合 */
                 <div className="p-8 sm:p-12 text-center rounded-2xl border-2 border-dashed border-[#D8CFC0] dark:border-[#2A3B4A] bg-white/40 dark:bg-[#141C24]/40 space-y-3">
-                  <FileText className="w-10 h-10 text-[#737C77] mx-auto opacity-50" />
+                  <FileText className="w-10 h-10 text-[#59615D] mx-auto opacity-50" />
                   <h3 className="text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
                     条件に一致する臨床ノートがありません
                   </h3>
-                  <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#8899A6] max-w-md mx-auto">
+                  <p className="text-sm sm:text-sm text-[#59615D] dark:text-[#AFBDC8] max-w-md mx-auto">
                     検索キーワードを変更してお試しください。
                   </p>
                   <button
                     type="button"
                     onClick={() => setSearchQuery("")}
-                    className="px-4 py-2 rounded-xl text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] hover:opacity-80"
+                    className="px-4 py-2 rounded-xl text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] hover:opacity-80"
                   >
                     検索条件をクリア
                   </button>
@@ -849,28 +854,28 @@ function ClinicalNotesPage() {
                 {filteredNotes.map((note) => (
                   <div
                     key={note.id}
-                    className="p-5 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#2A3B4A] shadow-xs hover:border-[#1E3D34]/50 transition-all space-y-3"
+                    className="notes-record-card p-5 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#2A3B4A] shadow-xs hover:border-[#1E3D34]/50 transition-all space-y-3"
                   >
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F0EBE0] dark:border-[#243340] pb-2.5">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2.5 py-0.5 rounded-md font-mono text-xs font-bold bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E]">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="px-2.5 py-0.5 rounded-md font-mono text-sm font-bold bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E]">
                           {note.patientIdentifier}
                         </span>
                         {(note.ageGroup || note.gender) && (
-                          <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
+                          <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
                             {[note.ageGroup, note.gender].filter(Boolean).join("・")}
                           </span>
                         )}
-                        <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
+                        <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
                           {note.visitDate}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      <div className="notes-card-actions flex flex-wrap items-center gap-2">
                         <button
                           type="button"
                           onClick={() => handleCopyNoteText(note)}
-                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-[#FAF8F5] dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#59615D] dark:text-[#A0B0BC] hover:border-[#1E3D34] hover:text-[#1E3D34] transition-all cursor-pointer"
+                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-sm font-semibold bg-[#FAF8F5] dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#59615D] dark:text-[#A0B0BC] hover:border-[#1E3D34] hover:text-[#1E3D34] transition-all cursor-pointer"
                           title="電子カルテや外部アプリ転記用に整形テキストをコピー"
                         >
                           {copiedNoteId === note.id ? (
@@ -888,7 +893,7 @@ function ClinicalNotesPage() {
                         <button
                           type="button"
                           onClick={() => setPrintNote(note)}
-                          className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#FAF8F5] dark:bg-[#1F2C37] border border-[#D8CFC0] dark:border-[#384C5E] text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF]"
+                          className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-bold bg-[#FAF8F5] dark:bg-[#1F2C37] border border-[#D8CFC0] dark:border-[#384C5E] text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF]"
                         >
                           <Printer className="w-3.5 h-3.5" />
                           <span>養生シートを見る</span>
@@ -896,7 +901,7 @@ function ClinicalNotesPage() {
                         <button
                           type="button"
                           onClick={() => openEditNoteModal(note)}
-                          className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#1E3D34] text-white hover:bg-[#162D26]"
+                          className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-bold bg-[#1E3D34] text-white hover:bg-[#162D26]"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
                           <span>記録を開く</span>
@@ -908,7 +913,7 @@ function ClinicalNotesPage() {
                               removePatientNote(note.id);
                             }
                           }}
-                          className="p-1.5 rounded-lg text-[#737C77] hover:text-red-600 transition-colors"
+                          className="p-1.5 rounded-lg text-[#59615D] hover:text-red-600 transition-colors"
                           title="削除"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -924,7 +929,7 @@ function ClinicalNotesPage() {
                     </div>
 
                     {/* 弁証と配穴の要約 */}
-                    <div className="flex flex-wrap items-center gap-2 text-xs">
+                    <div className="flex flex-wrap items-center gap-2 text-sm">
                       {(note.constitution || note.syndrome) && (
                         <span className="px-2 py-0.5 rounded bg-[#FAF2E6] dark:bg-[#251D14] text-[#B86924] dark:text-[#E6C387] font-semibold">
                           {[note.constitution, note.syndrome].filter(Boolean).join(" ／ ")}
@@ -932,7 +937,7 @@ function ClinicalNotesPage() {
                       )}
                       {note.selectedPoints.length > 0 && (
                         <div className="flex items-center gap-1">
-                          <span className="text-[#737C77]">配穴:</span>
+                          <span className="text-[#59615D]">配穴:</span>
                           <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                             {note.selectedPoints.join("、 ")}
                           </span>
@@ -951,30 +956,30 @@ function ClinicalNotesPage() {
         {/* ======================================================== */}
         {activeTab === "stock" && (
           <div className="space-y-4">
-            <p className="text-xs text-[#59615D] dark:text-[#8899A6]">
+            <p className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
               保存した経穴・配穴を、臨床ノートの作成時に引用できます。
             </p>
 
             {filteredMemos.length === 0 ? (
               <div className="p-8 sm:p-12 text-center rounded-2xl border-2 border-dashed border-[#D8CFC0] dark:border-[#2A3B4A] bg-white/40 dark:bg-[#141C24]/40 space-y-3">
-                <Bookmark className="w-10 h-10 text-[#737C77] mx-auto opacity-50" />
+                <Bookmark className="w-10 h-10 text-[#59615D] mx-auto opacity-50" />
                 <h3 className="text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
                   保存された配穴がありません
                 </h3>
-                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#8899A6] max-w-md mx-auto">
+                <p className="text-sm sm:text-sm text-[#59615D] dark:text-[#AFBDC8] max-w-md mx-auto">
                   代表的な名配穴プリセットを読み込むか、経穴辞典からお気に入りのツボを保存してみましょう。
                 </p>
                 <div className="flex items-center justify-center gap-3 pt-2">
                   <button
                     type="button"
                     onClick={loadRecommendedPresets}
-                    className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#B86924] hover:bg-[#975319]"
+                    className="px-4 py-2 rounded-xl text-sm font-bold text-white bg-[#B86924] hover:bg-[#975319]"
                   >
                     重要配穴プリセットを読み込む
                   </button>
                   <Link
                     href="/tsubo"
-                    className="px-4 py-2 rounded-xl text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF]"
+                    className="px-4 py-2 rounded-xl text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF]"
                   >
                     経穴辞典を見る
                   </Link>
@@ -994,7 +999,7 @@ function ClinicalNotesPage() {
                             {item.elements.map((el) => (
                               <GogyoBadge key={el} target={el} size="sm" />
                             ))}
-                            <span className="text-[10px] font-bold text-[#737C77]">
+                            <span className="text-[10px] font-bold text-[#59615D]">
                               {item.type === "pair" ? "重要配穴" : item.type === "tsubo" ? "単穴" : "自作配穴"}
                             </span>
                           </div>
@@ -1002,7 +1007,7 @@ function ClinicalNotesPage() {
                             {item.title}
                           </h4>
                           {item.subTitle && (
-                            <span className="text-xs text-[#B86924] dark:text-[#E6C387] font-semibold block">
+                            <span className="text-sm text-[#B86924] dark:text-[#E6C387] font-semibold block">
                               {item.subTitle}
                             </span>
                           )}
@@ -1011,7 +1016,7 @@ function ClinicalNotesPage() {
                         <button
                           type="button"
                           onClick={() => removeMemo(item.id)}
-                          className="p-1 rounded-lg text-[#737C77] hover:text-red-600 transition-colors"
+                          className="p-1 rounded-lg text-[#59615D] hover:text-red-600 transition-colors"
                           title="削除"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -1023,19 +1028,19 @@ function ClinicalNotesPage() {
                         {item.points.map((pt, i) => (
                           <span
                             key={i}
-                            className="px-2 py-0.5 rounded-md text-xs font-bold bg-[#FAF2E6] dark:bg-[#251D14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]"
+                            className="px-2 py-0.5 rounded-md text-sm font-bold bg-[#FAF2E6] dark:bg-[#251D14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]"
                           >
                             {pt}
                           </span>
                         ))}
                       </div>
 
-                      <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-2">
+                      <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed ">
                         {item.summary}
                       </p>
                     </div>
 
-                    <div className="pt-2 border-t border-[#F0EBE0] dark:border-[#243340] flex items-center justify-between text-[11px] text-[#737C77]">
+                    <div className="pt-2 border-t border-[#F0EBE0] dark:border-[#243340] flex items-center justify-between text-sm text-[#59615D]">
                       <span>登録: {new Date(item.createdAt).toLocaleDateString("ja-JP")}</span>
                       <button
                         type="button"
@@ -1064,7 +1069,7 @@ function ClinicalNotesPage() {
       {/* ======================================================== */}
       <div className="pt-4 border-t border-[#E8E1D1] dark:border-[#22303D]">
         <details className="group rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#152028] p-5 [&_summary::-webkit-details-marker]:hidden">
-          <summary className="flex items-center justify-between font-bold text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] cursor-pointer hover:text-[#232826] dark:hover:text-[#FAF8F5]">
+          <summary className="flex items-center justify-between font-bold text-sm sm:text-sm text-[#59615D] dark:text-[#A0B0BC] cursor-pointer hover:text-[#232826] dark:hover:text-[#FAF8F5]">
             <span className="flex items-center gap-2">
               <Info className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
               <span>臨床での使い方とプライバシー保護について</span>
@@ -1072,14 +1077,14 @@ function ClinicalNotesPage() {
             <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180 shrink-0 ml-2" />
           </summary>
 
-          <div className="mt-4 space-y-4 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] border-t border-[#E8E1D1] dark:border-[#22303D] pt-4 leading-relaxed">
+          <div className="mt-4 space-y-4 text-sm sm:text-sm text-[#59615D] dark:text-[#96A6B2] border-t border-[#E8E1D1] dark:border-[#22303D] pt-4 leading-relaxed">
             <div className="space-y-2">
               <h4 className="font-bold text-[#232826] dark:text-[#FAF8F5]">【匿名設計とプライバシー保護について】</h4>
               <p>
                 本機能は臨床推論や配穴検討、患者さん向け養生シート作成を支援するための個人ノートです。
                 あはき法等の法定カルテの代わりではありません。
               </p>
-              <ul className="list-disc pl-5 space-y-1 mt-2 text-xs text-[#59615D] dark:text-[#96A6B2]">
+              <ul className="list-disc pl-5 space-y-1 mt-2 text-sm text-[#59615D] dark:text-[#96A6B2]">
                 <li>
                   <strong>直接識別情報の非保持:</strong> 患者さんの氏名・電話番号・住所・生年月日などの直接個人を特定できる情報はデータベースにカラムを設けておらず、保持しません。カルテ番号（例: PT-001）や記号での管理を前提としています。※自由入力欄やメモに個人が特定されうる情報を記入しないようご留意ください。
                 </li>
@@ -1098,7 +1103,7 @@ function ClinicalNotesPage() {
                 <button
                   type="button"
                   onClick={() => setIsPopModalOpen(true)}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#1E3D34] text-white hover:bg-[#162D26]"
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-bold bg-[#1E3D34] text-white hover:bg-[#162D26]"
                 >
                   <QrCode className="w-3.5 h-3.5" />
                   <span>待合室POPを印刷</span>
@@ -1122,10 +1127,10 @@ function ClinicalNotesPage() {
           <div className="bg-white dark:bg-[#17212A] w-full max-w-2xl rounded-2xl border-2 border-[#1E3D34] shadow-2xl p-6 my-8 space-y-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-[#E8E1D1] dark:border-[#263542] pb-3">
               <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded text-xs font-bold bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-200">
+                <span className="px-2 py-0.5 rounded text-sm font-bold bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-200">
                   見本・架空のサンプル
                 </span>
-                <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
+                <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
                   ※閲覧しても保存枠は消費されません
                 </span>
               </div>
@@ -1145,7 +1150,7 @@ function ClinicalNotesPage() {
                   key={s.id}
                   type="button"
                   onClick={() => setSelectedSampleIndex(idx)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  className={`px-3 py-1.5 rounded-lg text-sm font-bold transition-all ${
                     selectedSampleIndex === idx
                       ? "bg-[#1E3D34] text-white"
                       : "bg-[#FAF8F5] dark:bg-[#10171F] border border-[#D8CFC0] text-[#59615D]"
@@ -1158,7 +1163,7 @@ function ClinicalNotesPage() {
 
             {/* 見本内容 */}
             <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-3 text-sm">
-              <div className="flex items-center justify-between text-xs text-[#737C77]">
+              <div className="flex items-center justify-between text-sm text-[#59615D]">
                 <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">
                   {currentSample.patientIdentifier}（{currentSample.gender}・{currentSample.ageGroup}）
                 </span>
@@ -1166,13 +1171,13 @@ function ClinicalNotesPage() {
               </div>
 
               <div>
-                <span className="text-xs font-bold text-[#737C77] block">【主訴】</span>
+                <span className="text-sm font-bold text-[#59615D] block">【主訴】</span>
                 <p className="font-bold text-[#232826] dark:text-[#FAF8F5] mt-0.5">
                   {currentSample.chiefComplaint}
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="grid grid-cols-2 gap-2 text-sm">
                 <div>
                   <span className="text-gray-500 block">体質見立て</span>
                   <span className="font-bold text-[#B86924]">{currentSample.constitution}</span>
@@ -1184,10 +1189,10 @@ function ClinicalNotesPage() {
               </div>
 
               <div>
-                <span className="text-xs font-bold text-[#737C77] block">【採用配穴】</span>
+                <span className="text-sm font-bold text-[#59615D] block">【採用配穴】</span>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {currentSample.selectedPoints.map((pt) => (
-                    <span key={pt} className="px-2 py-0.5 rounded bg-white dark:bg-[#1A2530] border border-[#C5DED4] text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                    <span key={pt} className="px-2 py-0.5 rounded bg-white dark:bg-[#1A2530] border border-[#C5DED4] text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                       {pt}
                     </span>
                   ))}
@@ -1196,8 +1201,8 @@ function ClinicalNotesPage() {
 
               {currentSample.treatmentPlan && (
                 <div>
-                  <span className="text-xs font-bold text-[#737C77] block">【施術方針・手技メモ】</span>
-                  <p className="text-xs text-[#59615D] dark:text-[#96A6B2] mt-0.5">
+                  <span className="text-sm font-bold text-[#59615D] block">【施術方針・手技メモ】</span>
+                  <p className="text-sm text-[#59615D] dark:text-[#96A6B2] mt-0.5">
                     {currentSample.treatmentPlan}
                   </p>
                 </div>
@@ -1205,8 +1210,8 @@ function ClinicalNotesPage() {
 
               {currentSample.patientReaction && (
                 <div>
-                  <span className="text-xs font-bold text-[#737C77] block">【施術後の変化】</span>
-                  <p className="text-xs text-[#59615D] dark:text-[#96A6B2] mt-0.5">
+                  <span className="text-sm font-bold text-[#59615D] block">【施術後の変化】</span>
+                  <p className="text-sm text-[#59615D] dark:text-[#96A6B2] mt-0.5">
                     {currentSample.patientReaction}
                   </p>
                 </div>
@@ -1214,8 +1219,8 @@ function ClinicalNotesPage() {
 
               {currentSample.nextAction && (
                 <div>
-                  <span className="text-xs font-bold text-[#737C77] block">【養生セルフケア指導】</span>
-                  <p className="text-xs text-[#59615D] dark:text-[#96A6B2] mt-0.5">
+                  <span className="text-sm font-bold text-[#59615D] block">【養生セルフケア指導】</span>
+                  <p className="text-sm text-[#59615D] dark:text-[#96A6B2] mt-0.5">
                     {currentSample.nextAction}
                   </p>
                 </div>
@@ -1227,7 +1232,7 @@ function ClinicalNotesPage() {
               <button
                 type="button"
                 onClick={() => setPrintNote(currentSample)}
-                className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E] text-xs sm:text-sm font-bold hover:bg-[#EBF3EF] flex items-center justify-center gap-1.5"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E] text-sm sm:text-sm font-bold hover:bg-[#EBF3EF] flex items-center justify-center gap-1.5"
               >
                 <Printer className="w-4 h-4" />
                 <span>この見本の養生シートを見る</span>
@@ -1236,7 +1241,7 @@ function ClinicalNotesPage() {
               <button
                 type="button"
                 onClick={() => openCreateFromSample(currentSample)}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white text-xs sm:text-sm font-bold shadow-md flex items-center justify-center gap-1.5"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white text-sm sm:text-sm font-bold shadow-md flex items-center justify-center gap-1.5"
               >
                 <Plus className="w-4 h-4" />
                 <span>この形式でノートを作る</span>
@@ -1248,35 +1253,36 @@ function ClinicalNotesPage() {
 
       {/* 2. 臨床ノート新規作成 / 編集モーダル */}
       {isNoteModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-fadeIn overflow-y-auto">
-          <div className="bg-white dark:bg-[#17212A] w-full max-w-2xl rounded-2xl border-2 border-[#1E3D34] shadow-2xl p-5 sm:p-7 my-6 space-y-5 max-h-[92vh] overflow-y-auto">
+        <div className="notes-overlay site-overlay fixed left-0 right-0 z-[110] flex items-center justify-center bg-black/60 backdrop-blur-xs animate-fadeIn">
+          <div ref={noteDialogRef} role="dialog" aria-modal="true" aria-label="臨床ノートの作成・編集" tabIndex={-1} className="notes-modal bg-white dark:bg-[#17212A] w-full max-w-2xl rounded-2xl border-2 border-[#1E3D34] shadow-2xl space-y-5 overflow-y-auto">
             
-            <div className="flex items-center justify-between border-b border-[#E8E1D1] dark:border-[#263542] pb-3">
-              <div>
+            <div className="flex items-start justify-between gap-2 border-b border-[#E8E1D1] dark:border-[#263542] pb-3">
+              <div className="min-w-0">
                 <h3 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
                   {editingNoteId ? "臨床ノートの編集" : "新しい臨床ノートを作成"}
                 </h3>
-                <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
+                <p className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
                   実名は入力せず、カルテ番号やイニシャルで管理してください。
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setIsNoteModalOpen(false)}
-                className="p-1 rounded-lg text-gray-400 hover:text-gray-700"
+                aria-label="ノート作成を閉じる"
+                className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-lg text-gray-400 hover:text-gray-700"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {formError && (
-              <div className="p-3 rounded-xl bg-red-50 text-red-700 text-xs font-bold border border-red-200">
+              <div className="p-3 rounded-xl bg-red-50 text-red-700 text-sm font-bold border border-red-200">
                 {formError}
               </div>
             )}
 
             {draftNotice && (
-              <div className="p-3.5 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] flex items-start gap-2.5 text-xs text-[#1E3D34] dark:text-[#74BA9E] animate-fadeIn">
+              <div className="p-3.5 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] flex items-start gap-2.5 text-sm text-[#1E3D34] dark:text-[#74BA9E] animate-fadeIn">
                 <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] shrink-0 mt-0.5" />
                 <div className="flex-1 leading-relaxed">
                   <strong>下書き取り込み完了：</strong>{draftNotice}
@@ -1295,17 +1301,18 @@ function ClinicalNotesPage() {
               
               {/* グループ1: 基本情報 */}
               <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-4">
-                <span className="font-bold text-xs uppercase tracking-wider text-[#1E3D34] dark:text-[#74BA9E] block">
+                <span className="font-bold text-sm uppercase tracking-wider text-[#1E3D34] dark:text-[#74BA9E] block">
                   1. 基本情報
                 </span>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="notes-form-grid grid gap-4">
                   <div className="space-y-1">
                     <label className="block text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
                       患者識別（番号・イニシャル）<span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
+                      aria-label="患者識別（番号・イニシャル）"
                       required
                       value={patientIdentifier}
                       onChange={(e) => setPatientIdentifier(e.target.value)}
@@ -1320,6 +1327,7 @@ function ClinicalNotesPage() {
                     </label>
                     <input
                       type="date"
+                      aria-label="来院日"
                       required
                       value={visitDate}
                       onChange={(e) => setVisitDate(e.target.value)}
@@ -1343,9 +1351,9 @@ function ClinicalNotesPage() {
                 </div>
 
                 {/* 補助項目（性別・年代） */}
-                <div className="grid grid-cols-2 gap-4 pt-1">
+                <div className="notes-form-grid grid gap-4 pt-1">
                   <div className="space-y-1">
-                    <label className="block text-xs font-medium text-[#737C77]">性別（任意）</label>
+                    <label className="block text-sm font-medium text-[#59615D]">性別（任意）</label>
                     <select
                       value={gender}
                       onChange={(e) => setGender(e.target.value as typeof gender)}
@@ -1359,7 +1367,7 @@ function ClinicalNotesPage() {
                     </select>
                   </div>
                   <div className="space-y-1">
-                    <label className="block text-xs font-medium text-[#737C77]">年代（任意）</label>
+                    <label className="block text-sm font-medium text-[#59615D]">年代（任意）</label>
                     <select
                       value={ageGroup}
                       onChange={(e) => setAgeGroup(e.target.value)}
@@ -1380,7 +1388,7 @@ function ClinicalNotesPage() {
 
               {/* グループ2: 見立てと施術 */}
               <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-4">
-                <span className="font-bold text-xs uppercase tracking-wider text-[#1E3D34] dark:text-[#74BA9E] block">
+                <span className="font-bold text-sm uppercase tracking-wider text-[#1E3D34] dark:text-[#74BA9E] block">
                   2. 東洋医学的見立て ＆ 採用配穴
                 </span>
 
@@ -1405,7 +1413,7 @@ function ClinicalNotesPage() {
                           const base = tag.split("（")[0];
                           setConstitution(constitution ? `${constitution}、${base}` : base);
                         }}
-                        className="text-[11px] px-2 py-1 rounded bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#EBF3EF]"
+                        className="text-sm px-2 py-1 rounded bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#EBF3EF]"
                       >
                         +{tag.split("（")[0]}
                       </button>
@@ -1434,7 +1442,7 @@ function ClinicalNotesPage() {
                     <button
                       type="button"
                       onClick={() => setIsPointPickerOpen(true)}
-                      className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
+                      className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
                     >
                       <Bookmark className="w-3.5 h-3.5" />
                       <span>保存した配穴集から選ぶ</span>
@@ -1447,7 +1455,7 @@ function ClinicalNotesPage() {
                     placeholder="経穴を入力（例: 太衝、陽陵泉、風池）"
                     className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-base text-[#232826] dark:text-[#FAF8F5]"
                   />
-                  <p className="text-[11px] text-[#737C77]">
+                  <p className="text-sm text-[#59615D]">
                     ※複数のツボは読点（、）やスペースで区切って入力できます。
                   </p>
                 </div>
@@ -1465,7 +1473,7 @@ function ClinicalNotesPage() {
                           const pts = selectedPointsInput.split(/[,、\s]+/).filter(Boolean).slice(0, 3);
                           setSelfCarePointsInput(pts.join("、 "));
                         }}
-                        className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] hover:underline"
+                        className="text-sm font-bold text-[#B86924] dark:text-[#E6C387] hover:underline"
                       >
                         採用配穴から転記
                       </button>
@@ -1478,7 +1486,7 @@ function ClinicalNotesPage() {
                     placeholder="例: 太衝、百会（空欄の場合はツボ欄のない養生シートになります）"
                     className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-base text-[#232826] dark:text-[#FAF8F5]"
                   />
-                  <p className="text-[11px] text-[#737C77]">
+                  <p className="text-sm text-[#59615D]">
                     ※患者さんにお渡しする養生シートに印刷するご自宅用のツボです。空欄の場合はツボ欄を省略し、生活養生・食事メモのみのA4シートとして綺麗に出力されます。
                   </p>
                 </div>
@@ -1494,7 +1502,7 @@ function ClinicalNotesPage() {
                     placeholder="例: 太衝・風池に瀉法。置針15分。百会に軽微な雀啄。"
                     className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-base text-[#232826] dark:text-[#FAF8F5]"
                   />
-                  <p className="text-[11px] text-[#737C77]">
+                  <p className="text-sm text-[#59615D]">
                     ※この手技メモは施術者用であり、患者向け養生シートには印刷されません。
                   </p>
                 </div>
@@ -1502,7 +1510,7 @@ function ClinicalNotesPage() {
 
               {/* グループ3: 施術後と養生 */}
               <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-4">
-                <span className="font-bold text-xs uppercase tracking-wider text-[#1E3D34] dark:text-[#74BA9E] block">
+                <span className="font-bold text-sm uppercase tracking-wider text-[#1E3D34] dark:text-[#74BA9E] block">
                   3. 施術後の反応 ＆ 患者向け養生指導
                 </span>
 
@@ -1530,18 +1538,18 @@ function ClinicalNotesPage() {
                     placeholder="例: 就寝前のスマホ制限とホットアイマスク指導。足元の冷え対策としてぬるめの足湯を推奨。次回は1週間後。"
                     className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-base text-[#232826] dark:text-[#FAF8F5]"
                   />
-                  <p className="text-[11px] text-[#1E3D34] dark:text-[#74BA9E] font-medium">
+                  <p className="text-sm text-[#1E3D34] dark:text-[#74BA9E] font-medium">
                     ★ ここに入力したセルフケア指導は、患者向け「A4養生シート」にそのまま反映されます。
                   </p>
                 </div>
               </div>
 
               {/* 保存操作ボタン */}
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#E8E1D1] dark:border-[#263542]">
+              <div className="notes-save-actions flex flex-wrap items-center justify-end gap-3 pt-3 border-t border-[#E8E1D1] dark:border-[#263542]">
                 <button
                   type="button"
                   onClick={() => setIsNoteModalOpen(false)}
-                  className="px-4 py-2.5 rounded-xl text-sm font-bold text-[#737C77] hover:bg-gray-100 dark:hover:bg-[#1F2C37]"
+                  className="px-4 py-2.5 rounded-xl text-sm font-bold text-[#59615D] hover:bg-gray-100 dark:hover:bg-[#1F2C37]"
                 >
                   キャンセル
                 </button>
@@ -1554,7 +1562,7 @@ function ClinicalNotesPage() {
               </div>
 
                           {/* 保存先とプライバシーの注記 */}
-              <div className="flex items-center gap-1.5 text-[11px] text-[#737C77] dark:text-[#8899A6] pt-1">
+              <div className="flex items-center gap-1.5 text-sm text-[#59615D] dark:text-[#AFBDC8] pt-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
                 <span>※お使いの端末（ブラウザ）に保存。無料ログインで自動同期にも対応。直接の個人識別情報は保持しない設計です。</span>
               </div>
@@ -1566,8 +1574,8 @@ function ClinicalNotesPage() {
 
       {/* 3. 配穴ピッカーモーダル（フォーム入力補助） */}
       {isPointPickerOpen && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fadeIn">
-          <div className="bg-white dark:bg-[#17212A] w-full max-w-lg rounded-2xl border border-[#D8CFC0] p-5 space-y-4 max-h-[80vh] overflow-y-auto">
+        <div className="notes-overlay site-overlay fixed left-0 right-0 z-[120] flex items-center justify-center bg-black/50 backdrop-blur-xs animate-fadeIn">
+          <div ref={pointPickerRef} role="dialog" aria-modal="true" aria-label="配穴集からツボを追加" tabIndex={-1} className="notes-modal bg-white dark:bg-[#17212A] w-full max-w-lg rounded-2xl border border-[#D8CFC0] space-y-4 overflow-y-auto">
             <div className="flex items-center justify-between border-b pb-2">
               <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
                 配穴集からツボを追加
@@ -1575,24 +1583,25 @@ function ClinicalNotesPage() {
               <button
                 type="button"
                 onClick={() => setIsPointPickerOpen(false)}
-                className="text-gray-400 hover:text-gray-600"
+                aria-label="配穴の選択を閉じる"
+                className="flex min-h-11 min-w-11 shrink-0 items-center justify-center text-gray-400 hover:text-gray-600"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-xs text-[#737C77]">
+            <p className="text-sm text-[#59615D]">
               クリックすると現在の採用配穴欄にツボが追加されます。
             </p>
 
             <div className="space-y-3">
               {memos.length === 0 ? (
-                <p className="text-xs text-gray-500 py-4 text-center">
+                <p className="text-sm text-gray-500 py-4 text-center">
                   配穴集に保存されたツボがありません。
                 </p>
               ) : (
                 memos.map((m) => (
                   <div key={m.id} className="p-3 rounded-lg bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] space-y-1.5">
-                    <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] block">
+                    <span className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5] block">
                       {m.title}
                     </span>
                     <div className="flex flex-wrap gap-1">
@@ -1603,7 +1612,7 @@ function ClinicalNotesPage() {
                             key={pt}
                             type="button"
                             onClick={() => handlePickPoint(cleanPt)}
-                            className="px-2 py-0.5 rounded bg-white dark:bg-[#1A2530] border border-[#D8CFC0] text-xs font-bold text-[#1E3D34] hover:bg-[#EBF3EF]"
+                            className="px-2 py-0.5 rounded bg-white dark:bg-[#1A2530] border border-[#D8CFC0] text-sm font-bold text-[#1E3D34] hover:bg-[#EBF3EF]"
                           >
                             + {cleanPt}
                           </button>
@@ -1619,7 +1628,7 @@ function ClinicalNotesPage() {
               <button
                 type="button"
                 onClick={() => setIsPointPickerOpen(false)}
-                className="px-4 py-2 rounded-xl text-xs font-bold bg-[#1E3D34] text-white"
+                className="px-4 py-2 rounded-xl text-sm font-bold bg-[#1E3D34] text-white"
               >
                 完了
               </button>
@@ -1645,9 +1654,9 @@ function ClinicalNotesPage() {
               </button>
             </div>
 
-            <form onSubmit={handleSaveCustomStock} className="space-y-4 text-xs sm:text-sm">
+            <form onSubmit={handleSaveCustomStock} className="space-y-4 text-sm sm:text-sm">
               <div className="space-y-1">
-                <label className="block text-xs font-bold">配穴・処方名<span className="text-red-500">*</span></label>
+                <label className="block text-sm font-bold">配穴・処方名<span className="text-red-500">*</span></label>
                 <input
                   type="text"
                   required
@@ -1659,7 +1668,7 @@ function ClinicalNotesPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="block text-xs font-bold">構成ツボ（例: 太衝、陽陵泉）<span className="text-red-500">*</span></label>
+                <label className="block text-sm font-bold">構成ツボ（例: 太衝、陽陵泉）<span className="text-red-500">*</span></label>
                 <input
                   type="text"
                   required
@@ -1671,14 +1680,14 @@ function ClinicalNotesPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="block text-xs font-bold">五行属性</label>
+                <label className="block text-sm font-bold">五行属性</label>
                 <div className="flex items-center gap-2">
                   {(["木", "火", "土", "金", "水"] as const).map((el) => (
                     <button
                       key={el}
                       type="button"
                       onClick={() => setCustomStockElement(el)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                      className={`px-3 py-1.5 rounded-lg text-sm font-bold transition-all ${
                         customStockElement === el
                           ? "bg-[#B86924] text-white"
                           : "bg-gray-100 text-gray-700"
@@ -1691,7 +1700,7 @@ function ClinicalNotesPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="block text-xs font-bold">作用・臨床メモ</label>
+                <label className="block text-sm font-bold">作用・臨床メモ</label>
                 <textarea
                   rows={2}
                   value={customStockSummary}
@@ -1705,13 +1714,13 @@ function ClinicalNotesPage() {
                 <button
                   type="button"
                   onClick={() => setIsCustomStockModalOpen(false)}
-                  className="px-3 py-2 text-xs font-bold text-gray-500"
+                  className="px-3 py-2 text-sm font-bold text-gray-500"
                 >
                   キャンセル
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#B86924]"
+                  className="px-4 py-2 rounded-xl text-sm font-bold text-white bg-[#B86924]"
                 >
                   配穴集に保存
                 </button>

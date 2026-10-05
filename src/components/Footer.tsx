@@ -6,7 +6,7 @@ import { SITE_NAME } from "@/config/seo";
 export default function Footer() {
   return (
     <footer className="bg-[#F2EDE4] dark:bg-[#131A21] border-t border-[#E3DBCB] dark:border-[#22303D] text-[#59615D] dark:text-[#96A6B2] text-sm mt-auto transition-colors duration-300 print:hidden [&_a]:min-h-11 [&_a]:items-center [&_a]:inline-flex [&_a]:focus-visible:outline-2 [&_a]:focus-visible:outline-offset-2">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-10">
           {/* サイト概要 */}
           <div className="md:col-span-1 space-y-3">
@@ -15,7 +15,7 @@ export default function Footer() {
                 {SITE_NAME}
               </span>
             </Link>
-            <p className="text-xs sm:text-sm leading-relaxed text-[#59615D] dark:text-[#96A6B2]">
+            <p className="text-sm leading-[1.7] ui-muted">
               図解で学び、演習で考え、ノートで振り返る。東洋医学の基礎理論・経穴辞典・臨床推論をつなぐ学習ポータルです。
             </p>
           </div>
@@ -53,7 +53,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/tsubo/compare" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors text-xs text-[#737C77] dark:text-[#8899A6]">
+                <Link href="/tsubo/compare" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors text-sm ui-muted">
                   経穴比較・鑑別 ➜
                 </Link>
               </li>
@@ -90,7 +90,7 @@ export default function Footer() {
                 <Link href="/kokushi" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1 font-semibold text-[#B86924] dark:text-[#E6C387]">
                   <Award className="w-3.5 h-3.5" />
                   <span>国家試験対策特設ハブ</span>
-                  <span className="text-[9px] px-1 py-0.2 rounded bg-[#E6C387]/30 font-bold">特設</span>
+                  <span className="text-sm px-1 py-0.2 rounded bg-[#E6C387]/30 font-bold">特設</span>
                 </Link>
               </li>
               <li>
@@ -111,7 +111,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors text-xs text-[#737C77] dark:text-[#8899A6]">
+                <Link href="/symptoms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors text-sm ui-muted">
                   症状別セルフケアガイド ➜
                 </Link>
               </li>
@@ -123,29 +123,29 @@ export default function Footer() {
             <h3 className="font-serif font-semibold text-[#232826] dark:text-[#E6EFEA] text-sm sm:text-base tracking-wider mb-3.5 border-b border-[#D8CFC0] dark:border-[#2A3B4A] pb-1.5">
               案内・免責
             </h3>
-            <div className="space-y-3 text-xs sm:text-sm">
-              <div className="flex items-start gap-2 text-[#737C77] dark:text-[#8899A6]">
+            <div className="space-y-3 text-sm sm:text-sm">
+              <div className="flex items-start gap-2 ui-muted">
                 <ShieldCheck className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
                 <div className="space-y-1 leading-normal">
-                  <p className="text-[11px] sm:text-xs leading-relaxed">
+                  <p className="text-sm sm:text-sm leading-relaxed">
                     当サイトで提供する情報は東洋医学の学術的理解および臨床思考補助を目的としており、医師法第17条に定める診断・治療等の医療行為ではありません。急変時や特定の疾病については医師等の専門医療機関を受診してください。
                   </p>
-                  <p className="text-[10px] text-[#88928D] dark:text-[#6E7D8A]">
+                  <p className="text-sm ui-muted">
                     ※当サイトはAmazonアソシエイト・プログラムの参加者であり、適格販売により収入を得ています。
                   </p>
                 </div>
               </div>
               <div className="space-y-1.5 pt-1">
-                <div><Link href="/safety" className="text-[#1E3D34] dark:text-[#74BA9E] text-xs hover:underline">受診の目安と鍼灸の安全性</Link></div>
-                <div><Link href="/editorial-policy" className="text-[#1E3D34] dark:text-[#74BA9E] text-xs hover:underline">医学記述・出典の確認状況</Link></div>
+                <div><Link href="/safety" className="text-[#1E3D34] dark:text-[#74BA9E] text-sm hover:underline">受診の目安と鍼灸の安全性</Link></div>
+                <div><Link href="/editorial-policy" className="text-[#1E3D34] dark:text-[#74BA9E] text-sm hover:underline">医学記述・出典の確認状況</Link></div>
                 <div>
-                  <Link href="/about" className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline inline-flex items-center gap-1 text-xs">
+                  <Link href="/about" className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline inline-flex items-center gap-1 text-sm">
                     <span>サイト理念・はり太郎について</span>
                     <ArrowUpRight className="w-3 h-3" />
                   </Link>
                 </div>
                 <div>
-                  <Link href="/contact" className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline inline-flex items-center gap-1 text-xs">
+                  <Link href="/contact" className="text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline inline-flex items-center gap-1 text-sm">
                     <span>お問い合わせ</span>
                     <ArrowUpRight className="w-3 h-3" />
                   </Link>
@@ -156,11 +156,12 @@ export default function Footer() {
         </div>
 
         {/* 最下部コピーライトと各種規約・法定リンク（重複を解消） */}
-        <div className="border-t border-[#E3DBCB] dark:border-[#22303D] mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#737C77] dark:text-[#8899A6]">
+        <div className="border-t border-[#E3DBCB] dark:border-[#22303D] mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm ui-muted">
           <p className="flex items-center gap-1.5 flex-wrap">
             <span>© {new Date().getFullYear()} {SITE_NAME}. All rights reserved.</span>
           </p>
           <div className="flex items-center flex-wrap gap-4 sm:gap-6">
+            <Link href="/updates" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">更新情報</Link>
             <Link href="/terms" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">利用規約</Link>
             <Link href="/tokushoho" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">特定商取引法に基づく表記</Link>
             <Link href="/privacy" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">プライバシーポリシー</Link>

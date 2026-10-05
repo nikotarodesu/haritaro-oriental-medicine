@@ -13,7 +13,7 @@ export default function YinYangTaijiCycle() {
       {/* ヘッダー */}
       <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 mb-4 sm:mb-6">
         <div>
-          <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
+          <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
             <span>画像解説①：陰陽太極図とダイナミック循環</span>
           </span>
@@ -21,7 +21,7 @@ export default function YinYangTaijiCycle() {
             陰陽の変化を表す太極図
           </h4>
         </div>
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-xs text-[#59615D] dark:text-[#96A6B2] self-start sm:self-auto">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-sm text-[#59615D] dark:text-[#96A6B2] self-start sm:self-auto">
           <RefreshCw className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] animate-spin" style={{ animationDuration: "12s" }} />
           <span>時計回りの連続循環</span>
         </div>
@@ -31,7 +31,8 @@ export default function YinYangTaijiCycle() {
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-center bg-[#FAF8F5] dark:bg-[#121920] rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-3 sm:p-6 md:p-8">
         {/* 左側：回転する太極図と循環矢印SVG */}
         <div className="lg:col-span-6 flex flex-col items-center justify-center">
-          <div className="relative w-56 h-56 sm:w-72 sm:h-72 flex items-center justify-center">
+          <p className="taiji-label mb-2 rounded-lg bg-[#A83629] px-2.5 py-1 text-sm font-semibold text-white">極陽（正午・盛夏）</p>
+          <div className="taiji-orbit relative flex items-center justify-center">
             {/* 外周を回る循環軌道・矢印 */}
             <svg
               viewBox="0 0 300 300"
@@ -101,7 +102,7 @@ export default function YinYangTaijiCycle() {
 
             {/* 中央の回転するグラデーション太極図 */}
             <div
-              className="w-40 h-40 sm:w-56 sm:h-56 rounded-full shadow-xl transition-transform duration-700 hover:scale-105 animate-spin"
+              className="taiji-core rounded-full shadow-xl transition-transform duration-700 hover:scale-105 animate-spin"
               style={{ animationDuration: "25s" }}
             >
               <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-md">
@@ -142,16 +143,10 @@ export default function YinYangTaijiCycle() {
               </svg>
             </div>
 
-            {/* 上下の属性ラベル（固定表示） */}
-            <div className="absolute top-0 px-2.5 py-0.5 rounded-full bg-[#C45A4A] text-white text-[10px] font-bold shadow-sm">
-              極陽（正午・盛夏）
-            </div>
-            <div className="absolute bottom-0 px-2.5 py-0.5 rounded-full bg-[#1E3A5F] text-white text-[10px] font-bold shadow-sm">
-              極陰（真夜中・真冬）
-            </div>
           </div>
+          <p className="taiji-label mt-2 rounded-lg bg-[#1E3A5F] px-2.5 py-1 text-sm font-semibold text-white">極陰（真夜中・真冬）</p>
 
-          <p className="mt-4 text-[11px] text-[#737C77] dark:text-[#8A9AA7] text-center">
+          <p className="mt-4 text-sm text-[#59615D] dark:text-[#8A9AA7] text-center">
             ※ 太極図内部の「眼（魚眼）」は、極限の中にも相手の種子が宿る〈陰陽互根・転化〉を象徴
           </p>
         </div>
@@ -160,7 +155,7 @@ export default function YinYangTaijiCycle() {
         <div className="lg:col-span-6 space-y-4">
           {/* キャッチコピーバナー */}
           <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-[#FFFFFF] dark:bg-[#1A2530] border-2 border-[#1E3D34]/30 dark:border-[#74BA9E]/40 shadow-sm space-y-2">
-            <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+            <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
               <Activity className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
               <span>陰陽論で学ぶ調和のイメージ</span>
             </div>
@@ -168,7 +163,7 @@ export default function YinYangTaijiCycle() {
               「止まらず、偏らず、<br className="hidden sm:inline" />
               行き来できている状態 ＝ <span className="text-[#1E3D34] dark:text-[#74BA9E] underline decoration-[#E6C387] decoration-2">調和の比喩</span>」
             </p>
-            <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+            <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
               陰陽論では、二つの側面の関係と変化を捉えます。
               昼の活動を陽、夜の休息を陰にたとえ、<strong>互いに移り変わる関係</strong>を図示しています。
               この回転は学習上の表現で、健康状態の測定や治癒力の証明を示すものではありません。
@@ -176,30 +171,30 @@ export default function YinYangTaijiCycle() {
           </div>
 
           {/* 対比ミニカード */}
-          <div className="grid grid-cols-2 gap-2 sm:gap-3 pt-1">
+          <div className="reading-comparison-grid grid gap-2 sm:gap-3 pt-1">
             <div className="p-2.5 sm:p-3.5 rounded-xl bg-[#FCF4EB] dark:bg-[#251815] border border-[#F3E1CB] dark:border-[#522923]">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-[#C45A4A] dark:text-[#F87171] mb-1">
+              <div className="flex items-center gap-1.5 text-sm font-bold text-[#C45A4A] dark:text-[#F87171] mb-1">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#C45A4A]" />
                 <span>陽の相</span>
               </div>
-              <p className="text-[11px] text-[#59615D] dark:text-[#D1A39D] leading-tight">
+              <p className="text-sm text-[#59615D] dark:text-[#D1A39D] leading-tight">
                 活動・温熱・光・昼などを陽に分類する例
               </p>
             </div>
 
             <div className="p-2.5 sm:p-3.5 rounded-xl bg-[#EBF1F6] dark:bg-[#13202C] border border-[#D5E1EC] dark:border-[#22394E]">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3A5F] dark:text-[#60A5FA] mb-1">
+              <div className="flex items-center gap-1.5 text-sm font-bold text-[#1E3A5F] dark:text-[#60A5FA] mb-1">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#1E3A5F]" />
                 <span>陰の相</span>
               </div>
-              <p className="text-[11px] text-[#59615D] dark:text-[#9FB7CE] leading-tight">
+              <p className="text-sm text-[#59615D] dark:text-[#9FB7CE] leading-tight">
                 静止・寒涼・闇・夜などを陰に分類する例
               </p>
             </div>
           </div>
         </div>
       </div>
-      <figcaption className="relative z-10 mt-4 text-[11px] leading-relaxed text-[#737C77] dark:text-[#96A6B2]">
+      <figcaption className="relative z-10 mt-4 text-sm leading-relaxed text-[#59615D] dark:text-[#96A6B2]">
         伝統理論の関係を示す模式図です。陰陽を交感神経・副交感神経と固定対応させず、医学的な診断や治療効果とは区別します。
       </figcaption>
     </figure>

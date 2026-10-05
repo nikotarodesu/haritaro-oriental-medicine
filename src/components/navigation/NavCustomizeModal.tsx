@@ -125,7 +125,7 @@ export default function NavCustomizeModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="nav-customize-title"
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-0 sm:p-4 animate-in fade-in duration-200"
+      className="site-overlay fixed left-0 right-0 z-[110] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -133,7 +133,7 @@ export default function NavCustomizeModal({
       <div
         ref={modalRef}
         tabIndex={-1}
-        className="w-full max-w-lg bg-[#FAF8F5] dark:bg-[#151D24] rounded-t-2xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden"
+        className="nav-more-panel w-full max-w-lg bg-[#FAF8F5] dark:bg-[#151D24] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] shadow-2xl flex flex-col overflow-hidden"
       >
         {/* ヘッダー */}
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#E8E1D1] dark:border-[#22303D]">
@@ -145,7 +145,7 @@ export default function NavCustomizeModal({
               <h2 id="nav-customize-title" className="text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
                 下部メニューのカスタマイズ
               </h2>
-              <p className="text-xs text-[#59615D] dark:text-[#8899A6]">
+              <p className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
                 よく使う4つの機能を選んで好みに配置できます
               </p>
             </div>
@@ -155,20 +155,20 @@ export default function NavCustomizeModal({
             onClick={onClose}
             aria-label="閉じる"
             data-modal-autofocus
-            className="min-h-11 min-w-11 flex items-center justify-center rounded-lg text-[#737C77] dark:text-[#8899A6] hover:bg-[#EAE4D3] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
+            className="min-h-11 min-w-11 flex items-center justify-center rounded-lg text-[#59615D] dark:text-[#AFBDC8] hover:bg-[#EAE4D3] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* コンテンツ（スクロール領域） */}
-        <div className="p-4 sm:p-5 space-y-5 overflow-y-auto overscroll-contain">
+        <div className="nav-more-scroll p-4 sm:p-5 space-y-5 overflow-y-auto overscroll-contain">
           {/* プリセット一括切替 */}
           <div>
-            <div className="text-xs font-bold text-[#59615D] dark:text-[#8899A6] mb-2">
+            <div className="text-sm font-bold text-[#59615D] dark:text-[#AFBDC8] mb-2">
               用途別プリセットから選ぶ
             </div>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="nav-preset-grid grid gap-2">
               <button
                 type="button"
                 onClick={() => applyPreset("standard")}
@@ -179,11 +179,11 @@ export default function NavCustomizeModal({
                     : "border-[#E8E1D1] dark:border-[#22303D] bg-white dark:bg-[#10161C] hover:border-[#1E3D34]/50"
                 }`}
               >
-                <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                <div className="flex items-center gap-1.5 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                   <LayoutGrid className="w-3.5 h-3.5" />
                   <span>標準</span>
                 </div>
-                <div className="text-xs text-[#737C77] dark:text-[#8899A6] mt-0.5 leading-relaxed">
+                <div className="text-sm text-[#59615D] dark:text-[#AFBDC8] mt-0.5 leading-relaxed">
                   学ぶ・経穴・検索・ノート
                 </div>
               </button>
@@ -198,11 +198,11 @@ export default function NavCustomizeModal({
                     : "border-[#E8E1D1] dark:border-[#22303D] bg-white dark:bg-[#10161C] hover:border-[#B86924]/50"
                 }`}
               >
-                <div className="flex items-center gap-1.5 text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
+                <div className="flex items-center gap-1.5 text-sm font-bold text-[#B86924] dark:text-[#E6C387]">
                   <GraduationCap className="w-3.5 h-3.5" />
                   <span>学生向け</span>
                 </div>
-                <div className="text-xs text-[#737C77] dark:text-[#8899A6] mt-0.5 leading-relaxed">
+                <div className="text-sm text-[#59615D] dark:text-[#AFBDC8] mt-0.5 leading-relaxed">
                   学ぶ・国試・経穴・ノート
                 </div>
               </button>
@@ -217,11 +217,11 @@ export default function NavCustomizeModal({
                     : "border-[#E8E1D1] dark:border-[#22303D] bg-white dark:bg-[#10161C] hover:border-[#2A5243]/50"
                 }`}
               >
-                <div className="flex items-center gap-1.5 text-xs font-bold text-[#2A5243] dark:text-[#83BEA8]">
+                <div className="flex items-center gap-1.5 text-sm font-bold text-[#2A5243] dark:text-[#83BEA8]">
                   <Stethoscope className="w-3.5 h-3.5" />
                   <span>臨床家向け</span>
                 </div>
-                <div className="text-xs text-[#737C77] dark:text-[#8899A6] mt-0.5 leading-relaxed">
+                <div className="text-sm text-[#59615D] dark:text-[#AFBDC8] mt-0.5 leading-relaxed">
                   弁証・配穴・経穴・ノート
                 </div>
               </button>
@@ -230,12 +230,12 @@ export default function NavCustomizeModal({
 
           {/* 現在の配置スロット（4枠＋その他固定） */}
           <div className="bg-white dark:bg-[#10161C] p-3.5 rounded-xl border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
-            <div className="flex items-center justify-between text-xs font-bold text-[#59615D] dark:text-[#8899A6]">
+            <div className="flex items-center justify-between text-sm font-bold text-[#59615D] dark:text-[#AFBDC8]">
               <span>配置する4枠（タップして編集枠を選択）</span>
-              <span className="text-[11px] font-normal text-[#8899A6]">枠{selectedSlotIndex + 1}を選択中</span>
+              <span className="text-sm font-normal ui-muted">枠{selectedSlotIndex + 1}を選択中</span>
             </div>
 
-            <div className="grid grid-cols-5 gap-1.5">
+            <div className="nav-slot-grid grid grid-cols-5 gap-1.5">
               {slots.map((itemId, idx) => {
                 const item = ALL_NAV_ITEMS[itemId];
                 const Icon = item.icon;
@@ -254,11 +254,11 @@ export default function NavCustomizeModal({
                         : "border-dashed border-[#D5CDBD] dark:border-[#2C3B49] bg-[#FAF8F5] dark:bg-[#151D24] hover:border-[#1E3D34]/50"
                     }`}
                   >
-                    <span className="absolute -top-1.5 -left-1.5 w-4 h-4 rounded-full bg-[#59615D] text-white text-[9px] font-bold flex items-center justify-center">
+                    <span className="mb-1 rounded bg-[#59615D] px-1 text-white text-sm font-semibold leading-relaxed">
                       {idx + 1}
                     </span>
-                    <Icon className={`w-4 h-4 ${isSelected ? "text-[#1E3D34] dark:text-[#74BA9E]" : "text-[#737C77] dark:text-[#8899A6]"}`} />
-                    <span className="text-[10px] font-bold mt-1 text-[#232826] dark:text-[#FAF8F5] truncate max-w-full">
+                    <Icon className={`w-4 h-4 ${isSelected ? "text-[#1E3D34] dark:text-[#74BA9E]" : "text-[#59615D] dark:text-[#AFBDC8]"}`} />
+                    <span className="text-sm font-bold mt-1 text-[#232826] dark:text-[#FAF8F5]  max-w-full">
                       {item.shortLabel}
                     </span>
                   </button>
@@ -267,19 +267,19 @@ export default function NavCustomizeModal({
 
               {/* 5枠目は固定の「その他」 */}
               <div className="flex flex-col items-center justify-center p-2 rounded-lg border border-dashed border-[#E8E1D1] dark:border-[#22303D] bg-[#F2ECE0]/50 dark:bg-[#18222C]/40 opacity-70">
-                <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6]">⋯</span>
-                <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] mt-1">その他</span>
-                <span className="text-[8px] text-[#8899A6]">(固定)</span>
+                <span className="text-sm font-bold text-[#59615D] dark:text-[#AFBDC8]">⋯</span>
+                <span className="text-sm text-[#59615D] dark:text-[#AFBDC8] mt-1">その他</span>
+                <span className="text-sm ui-muted">(固定)</span>
               </div>
             </div>
 
             {/* スロットの並び替え左右ボタン */}
-            <div className="flex items-center justify-between pt-1 text-xs">
+            <div className="flex items-center justify-between pt-1 text-sm">
               <button
                 type="button"
                 onClick={() => moveLeft(selectedSlotIndex)}
                 disabled={selectedSlotIndex === 0}
-                className="min-h-11 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FAF8F5] dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#22303D] text-[#59615D] dark:text-[#A0B0BC] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#EAE4D3] text-xs cursor-pointer"
+                className="min-h-11 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FAF8F5] dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#22303D] text-[#59615D] dark:text-[#A0B0BC] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#EAE4D3] text-sm cursor-pointer"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>枠を左へ移動</span>
@@ -288,7 +288,7 @@ export default function NavCustomizeModal({
                 type="button"
                 onClick={() => moveRight(selectedSlotIndex)}
                 disabled={selectedSlotIndex === 3}
-                className="min-h-11 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FAF8F5] dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#22303D] text-[#59615D] dark:text-[#A0B0BC] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#EAE4D3] text-xs cursor-pointer"
+                className="min-h-11 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FAF8F5] dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#22303D] text-[#59615D] dark:text-[#A0B0BC] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#EAE4D3] text-sm cursor-pointer"
               >
                 <span>枠を右へ移動</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -299,12 +299,12 @@ export default function NavCustomizeModal({
           {/* 機能一覧から選択 */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-[#59615D] dark:text-[#8899A6]">
+              <span className="text-sm font-bold text-[#59615D] dark:text-[#AFBDC8]">
                 枠 {selectedSlotIndex + 1} に設定する機能を選択（全{allItemIds.length}項目）
               </span>
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="nav-choice-grid grid gap-2">
               {allItemIds.map((id) => {
                 const item = ALL_NAV_ITEMS[id];
                 const Icon = item.icon;
@@ -332,20 +332,20 @@ export default function NavCustomizeModal({
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between gap-1">
-                        <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] truncate">
+                        <span className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5] ">
                           {item.label}
                         </span>
                         {slotIndexWhereUsed !== -1 && (
-                          <span className={`text-[9px] px-1.5 py-0.2 rounded font-bold shrink-0 ${
+                          <span className={`text-sm px-1.5 py-0.2 rounded font-bold shrink-0 ${
                             isCurrentInSlot
                               ? "bg-[#1E3D34] text-white dark:bg-[#74BA9E] dark:text-[#10161C]"
-                              : "bg-[#EAE4D3] text-[#59615D] dark:bg-[#22303D] dark:text-[#8899A6]"
+                              : "bg-[#EAE4D3] text-[#59615D] dark:bg-[#22303D] dark:text-[#AFBDC8]"
                           }`}>
                             枠{slotIndexWhereUsed + 1}
                           </span>
                         )}
                       </div>
-                      <p className="text-[10px] text-[#737C77] dark:text-[#8899A6] line-clamp-1 mt-0.5">
+                      <p className="text-sm text-[#59615D] dark:text-[#AFBDC8]  mt-0.5">
                         {item.description}
                       </p>
                     </div>
@@ -361,7 +361,7 @@ export default function NavCustomizeModal({
           <button
             type="button"
             onClick={handleReset}
-            className="min-h-11 inline-flex items-center gap-1.5 text-xs text-[#737C77] dark:text-[#8899A6] hover:text-[#232826] dark:hover:text-white transition-colors cursor-pointer"
+            className="min-h-11 inline-flex items-center gap-1.5 text-sm text-[#59615D] dark:text-[#AFBDC8] hover:text-[#232826] dark:hover:text-white transition-colors cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>初期状態に戻す</span>
@@ -371,14 +371,14 @@ export default function NavCustomizeModal({
             <button
               type="button"
               onClick={onClose}
-              className="min-h-11 px-3.5 py-2 text-xs font-bold text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#FAF8F5] dark:hover:bg-[#18222C] rounded-lg transition-colors cursor-pointer"
+              className="min-h-11 px-3.5 py-2 text-sm font-bold text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#FAF8F5] dark:hover:bg-[#18222C] rounded-lg transition-colors cursor-pointer"
             >
               キャンセル
             </button>
             <button
               type="button"
               onClick={handleSave}
-              className="min-h-11 inline-flex items-center gap-1.5 px-4 py-2 bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#2A5243] text-white dark:text-[#10161C] rounded-lg font-bold text-xs shadow-xs hover:shadow transition-all cursor-pointer"
+              className="min-h-11 inline-flex items-center gap-1.5 px-4 py-2 bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#2A5243] text-white dark:text-[#10161C] rounded-lg font-bold text-sm shadow-xs hover:shadow transition-all cursor-pointer"
             >
               <Check className="w-3.5 h-3.5" />
               <span>保存して適用</span>

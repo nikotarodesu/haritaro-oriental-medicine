@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import { ArrowRight, ChevronDown, Crown, Menu, Search, User as UserIcon, X } from "lucide-react";
+import { ArrowRight, Bookmark, ChevronDown, Crown, Menu, Search, User as UserIcon, X } from "lucide-react";
 import dynamic from "next/dynamic";
 import BrandLogo from "@/components/brand/BrandLogo";
 import { TOOL_CATALOG } from "@/config/toolCatalog";
@@ -46,8 +46,8 @@ const ACCOUNT_LINKS: readonly HeaderLink[] = [
   { href: "/contact", label: "お問い合わせ" },
 ];
 const FOCUS_STYLE = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-ink)] dark:focus-visible:outline-white";
-const DESKTOP_LAYOUT = "hidden xl:flex [html[data-font-size=xlarge]_&]:hidden 2xl:[html[data-font-size=xlarge]_&]:flex";
-const COMPACT_LAYOUT = "flex xl:hidden [html[data-font-size=xlarge]_&]:flex 2xl:[html[data-font-size=xlarge]_&]:hidden";
+const DESKTOP_LAYOUT = "header-desktop";
+const COMPACT_LAYOUT = "header-compact";
 const NAV_CONTROL = `inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D] ${FOCUS_STYLE}`;
 
 function HeaderLinks({ links, pathname, onNavigate, clipCount = 0 }: { links: readonly HeaderLink[]; pathname: string; onNavigate: () => void; clipCount?: number }) {
@@ -68,7 +68,7 @@ function HeaderSettings() {
 
 export default function Header() {
   const pathname = usePathname();
-  const { clipCount } = useClinicalMemo();
+  const { clipCount, patientNoteCount, openDrawer } = useClinicalMemo();
   const { user, isPremium, isLoading } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<Dropdown | null>(null);
@@ -91,6 +91,15 @@ export default function Header() {
   const accountActive = ["/account", "/auth", "/notes", "/pricing"].some(path => pathname === path || pathname.startsWith(`${path}/`));
 
   const closeNavigation = useCallback(() => { setMobileMenuOpen(false); setOpenDropdown(null); }, []);
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+    const update = () => document.documentElement.style.setProperty("--site-header-height", `${header.getBoundingClientRect().height}px`);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, []);
   const openSearch = useCallback((query = "") => {
     const focused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     searchReturnFocus.current = focused;
@@ -183,12 +192,13 @@ export default function Header() {
   const accountInformation = <div className="space-y-2" aria-busy={isLoading}>
     <p className="min-w-0 whitespace-normal text-sm [overflow-wrap:anywhere] text-[#59615D] dark:text-[#A0B0BC]">{isLoading ? "アカウントを確認しています" : user ? `${user.name || "会員"} さん` : "学習の記録やプランを管理する"}</p>
     {!isLoading ? <Link href={accountHref} onClick={closeNavigation} aria-current={pathname === accountHref ? "page" : undefined} className={`flex min-h-[44px] items-center justify-between gap-3 rounded-lg bg-[var(--brand-paper)] px-3 py-2 text-sm font-semibold dark:bg-[#22303D] ${FOCUS_STYLE}`}><span>{accountLabel}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link> : null}
+    <button type="button" onClick={() => { closeNavigation(); openDrawer(); }} aria-haspopup="dialog" className={`flex min-h-[44px] w-full flex-wrap items-center gap-3 rounded-lg px-3 py-2 text-left text-sm ${FOCUS_STYLE}`}><Bookmark aria-hidden="true" className="h-5 w-5 shrink-0" /><span>保存一覧</span><span className="ui-count">{clipCount + patientNoteCount}件</span></button>
   </div>;
 
   return <>
     <header ref={headerRef} className="sticky top-0 z-50 border-b border-[#E5E8E5] bg-[#fff] text-[var(--brand-ink)] dark:border-[#22303D] dark:bg-[#10161C] dark:text-[#FAF8F5] print:hidden">
-      <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
-        <div className="flex h-[60px] items-center justify-between gap-4 xl:h-[68px]">
+      <div className="site-header-container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap min-h-[60px] items-center justify-between gap-3 py-1 xl:min-h-[68px]">
           <Link href="/" aria-label="はり太郎の東洋医学 トップへ" onClick={closeNavigation} className={`inline-flex min-h-[44px] shrink-0 items-center rounded-lg ${FOCUS_STYLE}`}>
             <BrandLogo className="gap-2.5" symbolClassName="h-[34px]! w-[34px]! shrink-0" wordmarkClassName="text-xl! font-semibold tracking-[0.025em]!" />
           </Link>
@@ -208,13 +218,13 @@ export default function Header() {
               {openDropdown === "account" ? <div id={dropdownId("account")} className="absolute right-0 top-full mt-2 max-h-[75vh] w-88 space-y-3 overflow-y-auto whitespace-normal rounded-xl border border-[#E5E8E5] bg-[#fff] p-3 shadow-lg dark:border-[#2A3B4A] dark:bg-[#17212A]">{accountInformation}<HeaderLinks links={ACCOUNT_LINKS} pathname={pathname} onNavigate={closeNavigation} clipCount={clipCount} /><HeaderSettings /></div> : null}
             </div>
           </nav>
-          <div className={`${COMPACT_LAYOUT} shrink-0 items-center gap-1.5`}>
+          <div className={`${COMPACT_LAYOUT} ml-auto shrink-0 items-center gap-1.5`}>
             <button ref={compactSearchRef} type="button" onClick={() => openSearch()} aria-label="サイト内検索を開く" aria-haspopup="dialog" title="サイト内検索" className={`inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D] ${FOCUS_STYLE}`}><Search aria-hidden="true" className="h-5 w-5" /></button>
             <button ref={menuButtonRef} type="button" onClick={() => { setOpenDropdown(null); setMobileMenuOpen(current => !current); }} aria-expanded={mobileMenuOpen} aria-controls={mobileMenuId} aria-label={mobileMenuOpen ? "メニューを閉じる" : "メニューを開く"} className={`inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D] ${FOCUS_STYLE}`}>{mobileMenuOpen ? <X aria-hidden="true" className="h-5 w-5" /> : <Menu aria-hidden="true" className="h-5 w-5" />}</button>
           </div>
         </div>
       </div>
-      {mobileMenuOpen ? <nav id={mobileMenuId} aria-label="サイトメニュー" className={`${COMPACT_LAYOUT} absolute left-0 right-0 top-full max-h-[calc(100dvh-72px)] flex-col overflow-y-auto border-b border-[#E5E8E5] bg-[#fff] px-3 py-4 shadow-lg dark:border-[#2A3B4A] dark:bg-[#17212A] sm:px-6`}>
+      {mobileMenuOpen ? <nav id={mobileMenuId} aria-label="サイトメニュー" className={`${COMPACT_LAYOUT} site-menu absolute left-0 right-0 top-full flex-col overflow-y-auto border-b border-[#E5E8E5] bg-[#fff] px-4 py-4 shadow-lg dark:border-[#2A3B4A] dark:bg-[#17212A] sm:px-6`}>
         <div className="mx-auto w-full max-w-3xl space-y-3">
           <div className="flex items-center justify-between gap-3"><h2 className="text-base font-semibold">メニュー</h2><button type="button" onClick={() => { closeNavigation(); menuButtonRef.current?.focus(); }} aria-label="メニューを閉じる" className={`inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg ${FOCUS_STYLE}`}><X aria-hidden="true" className="h-5 w-5" /></button></div>
           <details className="border-b border-[#E5E8E5] pb-2 dark:border-[#2A3B4A]"><summary className={`min-h-[44px] cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE}`}>学ぶ{learnActive ? <span className="ml-2 text-sm font-normal">（現在のカテゴリ）</span> : null}</summary><HeaderLinks links={LEARN_LINKS} pathname={pathname} onNavigate={closeNavigation} /></details>

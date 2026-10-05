@@ -537,7 +537,7 @@ export default function GlobalSearchModal({
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-start justify-center p-3 sm:p-6 sm:pt-16 animate-in fade-in duration-150"
+      className="site-overlay fixed left-0 right-0 z-[110] bg-black/60 backdrop-blur-xs flex items-start justify-center p-3 sm:p-6"
     >
       <div
         ref={dialogRef}
@@ -546,10 +546,10 @@ export default function GlobalSearchModal({
         aria-modal="true"
         aria-label="サイト内検索"
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-3xl bg-[#FAF8F5] dark:bg-[#16212B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xl overflow-hidden flex flex-col max-h-[85dvh] animate-in zoom-in-95 duration-150"
+        className="search-dialog w-full max-w-3xl bg-[#FAF8F5] dark:bg-[#16212B] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xl overflow-hidden flex flex-col"
       >
         {/* 検索入力ヘッダー */}
-        <div className="shrink-0 p-3.5 sm:p-4 border-b border-[#F2ECE0] dark:border-[#22303D] flex items-center gap-3 bg-white dark:bg-[#1A2632]">
+        <div className="search-dialog-header shrink-0 border-b border-[#F2ECE0] dark:border-[#22303D] flex items-center bg-white dark:bg-[#1A2632]">
           <Search className="w-5 h-5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
           <input
             aria-label="経穴・記事・講義などを検索"
@@ -571,7 +571,7 @@ export default function GlobalSearchModal({
             }}
             onKeyDown={handleInputKeyDown}
             placeholder="経穴・記事・講義・症状を検索"
-            className="flex-1 min-w-0 min-h-11 rounded-md bg-transparent text-[#232826] dark:text-[#FAF8F5] placeholder-[#8C9691] dark:placeholder-[#64748B] text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#74BA9E]"
+            className="flex-1 min-w-0 min-h-11 rounded-md bg-transparent text-[#232826] dark:text-[#FAF8F5] placeholder-[var(--text-secondary)] text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#74BA9E]"
           />
           {query && (
             <button
@@ -584,7 +584,7 @@ export default function GlobalSearchModal({
             </button>
           )}
           <button type="button" onClick={onClose} aria-label="検索を閉じる" className="flex min-h-11 min-w-11 items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2"><X className="w-5 h-5" /></button>
-          <kbd className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-md">
+          <kbd className="hidden sm:inline-block px-2 py-0.5 text-sm font-mono font-bold text-[#59615D] dark:text-[#AFBDC8] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-md">
             ESC
           </kbd>
         </div>
@@ -608,7 +608,7 @@ export default function GlobalSearchModal({
               }`}
             >
               {chip.label}
-              {hasQuery && <span className="ml-1.5 text-xs tabular-nums">{categoryCounts[chip.id]}</span>}
+              {hasQuery && <span className="ml-1.5 text-sm tabular-nums">{categoryCounts[chip.id]}</span>}
             </button>
           ))}
         </div>
@@ -626,14 +626,14 @@ export default function GlobalSearchModal({
               {recentSearches.length > 0 && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="text-sm font-bold text-[#59615D] dark:text-[#AFBDC8] uppercase tracking-wider flex items-center gap-1.5">
                       <Clock className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
                       最近調べたキーワード
                     </span>
                     <button
                       type="button"
                       onClick={clearAllRecentSearches}
-                      className="min-h-11 px-2 text-xs text-[#59615D] dark:text-[#A0B0BC] hover:text-rose-600 transition-colors flex items-center gap-1 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2"
+                      className="min-h-11 px-2 text-sm text-[#59615D] dark:text-[#A0B0BC] hover:text-rose-600 transition-colors flex items-center gap-1 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
                       <Trash2 className="w-3 h-3" />
                       <span>履歴を消去</span>
@@ -662,7 +662,7 @@ export default function GlobalSearchModal({
 
               {/* 人気のおすすめキーワード */}
               <div>
-                <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] uppercase tracking-wider block mb-2 flex items-center gap-1.5">
+                <span className="text-sm font-bold text-[#59615D] dark:text-[#AFBDC8] uppercase tracking-wider block mb-2 flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
                   おすすめの検索キーワード
                 </span>
@@ -682,10 +682,10 @@ export default function GlobalSearchModal({
 
               {/* 主要ツール・新設ハブへのクイックアクセス */}
               <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D]">
-                <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] uppercase tracking-wider block mb-2">
+                <span className="text-sm font-bold text-[#59615D] dark:text-[#AFBDC8] uppercase tracking-wider block mb-2">
                   主要ハブ・ツールへ直接アクセス
                 </span>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
                   {STATIC_TOOLS.slice(0, 6).map((tool) => (
                     <button
                       key={tool.id}
@@ -697,10 +697,10 @@ export default function GlobalSearchModal({
                       className="min-h-11 p-2.5 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] text-left transition-colors flex items-center justify-between group cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
                       <div className="min-w-0">
-                        <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block truncate">
+                        <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block ">
                           {tool.title}
                         </span>
-                        <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] line-clamp-1">
+                        <span className="text-sm text-[#59615D] dark:text-[#AFBDC8] ">
                           {tool.subtitle}
                         </span>
                       </div>
@@ -768,22 +768,22 @@ export default function GlobalSearchModal({
                     <div className="flex-1 min-w-0 space-y-0.5">
                       <div className="space-y-1">
                         <span
-                          className={`inline-block text-xs font-bold px-1.5 py-0.5 rounded-full ${
+                          className={`inline-block text-sm font-bold px-1.5 py-0.5 rounded-full ${
                             isSelected
                               ? "bg-white/20 text-white"
-                              : "bg-[#FAF8F5] dark:bg-[#121920] text-[#737C77] dark:text-[#8899A6] border border-[#E5DEC9] dark:border-[#2A3B4A]"
+                              : "bg-[#FAF8F5] dark:bg-[#121920] text-[#59615D] dark:text-[#AFBDC8] border border-[#E5DEC9] dark:border-[#2A3B4A]"
                           }`}
                         >
                           {item.badge}
                         </span>
-                        <span className="block font-bold text-sm leading-relaxed line-clamp-2 break-words">
+                        <span className="block font-bold text-sm leading-relaxed  break-words">
                           {item.title}
                         </span>
                       </div>
 
                       {item.subtitle && (
                         <p
-                          className={`text-sm leading-relaxed line-clamp-2 break-words ${
+                          className={`text-sm leading-relaxed  break-words ${
                             isSelected
                               ? "text-emerald-100/90"
                               : "text-[#59615D] dark:text-[#A0B0BC]"
@@ -792,7 +792,7 @@ export default function GlobalSearchModal({
                           {item.subtitle}
                         </p>
                       )}
-                      {hint && <span className={`block text-xs ${isSelected ? "text-emerald-100" : "text-[#59615D] dark:text-[#A0B0BC]"}`}>{hint}</span>}
+                      {hint && <span className={`block text-sm ${isSelected ? "text-emerald-100" : "text-[#59615D] dark:text-[#A0B0BC]"}`}>{hint}</span>}
                     </div>
 
                     <ArrowRight
@@ -832,7 +832,7 @@ export default function GlobalSearchModal({
         </div>
 
         {/* フッター操作ガイド */}
-        <div className="shrink-0 px-4 py-2.5 border-t border-[#F2ECE0] dark:border-[#22303D] bg-[#F2EDE4]/60 dark:bg-[#121920] flex flex-wrap items-center justify-between gap-2 text-xs text-[#59615D] dark:text-[#A0B0BC]">
+        <div className="shrink-0 px-4 py-2.5 border-t border-[#F2ECE0] dark:border-[#22303D] bg-[#F2EDE4]/60 dark:bg-[#121920] flex flex-wrap items-center justify-between gap-2 text-sm text-[#59615D] dark:text-[#A0B0BC]">
           <div className="flex items-center gap-3">
             <span>↑↓ 選択</span>
             <span>↵ 決定</span>

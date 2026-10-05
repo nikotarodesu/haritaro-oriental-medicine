@@ -308,7 +308,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   };
 
   return (
-    <div className="min-h-screen py-6 sm:py-12 px-3 sm:px-6 lg:px-8 [overflow-wrap:anywhere]">
+    <div className="reading-page min-h-screen py-6 sm:py-12 px-3 sm:px-6 lg:px-8 [overflow-wrap:anywhere]">
       {/* 構造化データ埋め込み */}
       <script
         type="application/ld+json"
@@ -319,7 +319,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         <ClinicalToolBridge />
         
         {/* パンくずリスト ＆ 前後経穴クイックナビ */}
-        <nav className="flex flex-wrap items-center justify-between gap-2 text-sm text-[#737C77] dark:text-[#8899A6] gap-3 flex-wrap">
+        <nav className="flex flex-wrap items-center justify-between gap-2 text-sm text-[#59615D] dark:text-[#AFBDC8] gap-3 flex-wrap">
           <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
             <Link href="/" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
               ホーム
@@ -339,7 +339,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           </div>
 
           {/* 前後のツボへの直接切り替えボタン */}
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
             {prevPoint && (
               <Link
                 href={`/tsubo/${prevPoint.codeLower}`}
@@ -382,7 +382,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                     個別編集データあり
                   </span>
                 ) : (
-                  <span className="text-sm px-2 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#2D3E50] text-[#737C77] dark:text-[#8899A6]">
+                  <span className="text-sm px-2 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#2D3E50] text-[#59615D] dark:text-[#AFBDC8]">
                     標準取穴情報
                   </span>
                 )}
@@ -399,7 +399,7 @@ export default async function AcupointDetailPage({ params }: Props) {
               </div>
 
               {point.aliases && point.aliases.length > 0 && (
-                <p className="text-base text-[#737C77] dark:text-[#8899A6]">
+                <p className="text-base text-[#59615D] dark:text-[#AFBDC8]">
                   別名：{point.aliases.join("、")}
                 </p>
               )}
@@ -470,7 +470,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           {/* 要穴分類バッジ群 */}
           {point.categories && point.categories.length > 0 && (
             <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center gap-2">
-              <span className="text-sm font-semibold text-[#737C77] dark:text-[#8899A6] mr-1">
+              <span className="text-sm font-semibold text-[#59615D] dark:text-[#AFBDC8] mr-1">
                 要穴分類：
               </span>
               {point.categories.map((cat, idx) => (
@@ -504,7 +504,7 @@ export default async function AcupointDetailPage({ params }: Props) {
               <Sparkles className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
               <span>この経穴の要点</span>
             </div>
-            <span className="text-sm text-[#737C77] dark:text-[#8899A6] hidden sm:inline">
+            <span className="text-sm text-[#59615D] dark:text-[#AFBDC8] hidden sm:inline">
               WHO標準・解剖学的指標準拠
             </span>
           </div>
@@ -607,7 +607,7 @@ export default async function AcupointDetailPage({ params }: Props) {
               <p className="text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed font-mono">
                 {point.locationDetail}
               </p>
-              <p className="text-sm text-[#737C77] dark:text-[#8899A6] pt-1">
+              <p className="text-sm text-[#59615D] dark:text-[#AFBDC8] pt-1">
                 出典：{point.locationSource}
               </p>
             </div>
@@ -686,7 +686,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
           {/* 骨度寸法ガイドへのクイック参照リンク */}
           <div className="pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center justify-between gap-2 text-sm">
-            <span className="text-[#737C77] dark:text-[#8899A6] flex items-center gap-1.5">
+            <span className="text-[#59615D] dark:text-[#AFBDC8] flex items-center gap-1.5">
               <Compass className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
               <span>取穴の基準（何寸）に迷ったら：</span>
             </span>
@@ -726,8 +726,8 @@ export default async function AcupointDetailPage({ params }: Props) {
                     >
                       <span className="font-mono font-bold text-[#1E3D34] dark:text-[#74BA9E]">{np.code}</span>
                       <span>{np.name}</span>
-                      <span className="text-sm text-[#737C77] dark:text-[#8899A6]">({np.relation})</span>
-                      <ArrowRight className="w-3 h-3 ml-0.5 text-[#737C77]" />
+                      <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">({np.relation})</span>
+                      <ArrowRight className="w-3 h-3 ml-0.5 text-[#59615D]" />
                     </Link>
                   ))}
                 </div>
@@ -745,7 +745,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
           {/* 主治症タグ一覧 */}
           <div className="space-y-2">
-            <span className="text-sm font-semibold text-[#737C77] dark:text-[#8899A6] block">
+            <span className="text-sm font-semibold text-[#59615D] dark:text-[#AFBDC8] block">
               主治・適応症（伝統的効果）：
             </span>
             <div className="flex flex-wrap gap-1.5 sm:gap-2">
@@ -769,7 +769,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             <p className="text-base text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
               {point.clinicalNote}
             </p>
-            <p className="text-base text-[#737C77] dark:text-[#8899A6] pt-1">
+            <p className="text-base text-[#59615D] dark:text-[#AFBDC8] pt-1">
               ※伝統的な鍼灸臨床の知見および文献的考察に基づく参考情報です。実際の施術にあたっては患者個々の体格・病態や触診所見を最優先としてください。
             </p>
           </div>
@@ -834,7 +834,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                   ))}
                 </ul>
               </div>
-              <p className="text-sm text-[#737C77] dark:text-[#8899A6] border-t border-[#E8DEC9] dark:border-[#22303D] pt-2">
+              <p className="text-sm text-[#59615D] dark:text-[#AFBDC8] border-t border-[#E8DEC9] dark:border-[#22303D] pt-2">
                 限界と注意：{point.researchEvidence.limitations}
               </p>
             </div>
@@ -843,7 +843,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           {/* 古典原典の引用 */}
           {point.classicalReferences && point.classicalReferences.length > 0 && (
             <div className="space-y-2.5 pt-1">
-              <span className="text-sm font-semibold text-[#737C77] dark:text-[#8899A6] block">
+              <span className="text-sm font-semibold text-[#59615D] dark:text-[#AFBDC8] block">
                 古典原典における記載：
               </span>
               <div className="space-y-2">
@@ -858,7 +858,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                     <p className="font-serif italic text-[#404743] dark:text-[#C5D2DB] text-base">
                       「{cr.quote}」
                     </p>
-                    <p className="text-base text-[#737C77] dark:text-[#8899A6]">
+                    <p className="text-base text-[#59615D] dark:text-[#AFBDC8]">
                       現代語要約：{cr.meaning}
                     </p>
                   </div>
@@ -893,7 +893,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           {/* お悩み・症状別ガイド ＆ 臨床症例 トピッククラスタ連動 */}
           {(relatedSymptoms.length > 0 || relatedCases.length > 0) && (
             <div className="space-y-3 pt-2">
-              <span className="text-sm font-semibold text-[#737C77] dark:text-[#8899A6] block">
+              <span className="text-sm font-semibold text-[#59615D] dark:text-[#AFBDC8] block">
                 関連する症状ガイド・臨床症例：
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -909,12 +909,12 @@ export default async function AcupointDetailPage({ params }: Props) {
                         <span className="text-sm font-bold px-2 py-0.5 rounded-md bg-[#FCF4EB] text-[#B86924] dark:bg-[#231A12] dark:text-[#E6C387]">
                           症状ガイド：{sym.category}
                         </span>
-                        <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] group-hover:translate-x-0.5 transition-all" />
+                        <ArrowRight className="w-3.5 h-3.5 text-[#59615D] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] group-hover:translate-x-0.5 transition-all" />
                       </div>
                       <h5 className="font-serif font-bold text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors">
                         {sym.title}
                       </h5>
-                      <p className="text-base text-[#737C77] dark:text-[#8899A6] line-clamp-2">
+                      <p className="text-base text-[#59615D] dark:text-[#AFBDC8] line-clamp-2">
                         {sym.summary}
                       </p>
                     </div>
@@ -936,12 +936,12 @@ export default async function AcupointDetailPage({ params }: Props) {
                         <span className="text-sm font-bold px-2 py-0.5 rounded-md bg-[#EEF2F6] text-[#2C5282] dark:bg-[#1E2C3B] dark:text-[#90CDF4]">
                           臨床症例：{cs.pattern}
                         </span>
-                        <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:text-[#2C5282] dark:group-hover:text-[#90CDF4] group-hover:translate-x-0.5 transition-all" />
+                        <ArrowRight className="w-3.5 h-3.5 text-[#59615D] group-hover:text-[#2C5282] dark:group-hover:text-[#90CDF4] group-hover:translate-x-0.5 transition-all" />
                       </div>
                       <h5 className="font-serif font-bold text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#2C5282] dark:group-hover:text-[#90CDF4] transition-colors">
                         {cs.title}
                       </h5>
-                      <p className="text-base text-[#737C77] dark:text-[#8899A6] line-clamp-2">
+                      <p className="text-base text-[#59615D] dark:text-[#AFBDC8] line-clamp-2">
                         {cs.explanation}
                       </p>
                     </div>
@@ -985,7 +985,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                     <span className="font-mono text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">Q{idx + 1}.</span>
                     <span>{faq.question}</span>
                   </div>
-                  <span className="text-[#737C77] dark:text-[#8899A6] group-open:rotate-180 transition-transform text-sm">▼</span>
+                  <span className="text-[#59615D] dark:text-[#AFBDC8] group-open:rotate-180 transition-transform text-sm">▼</span>
                 </summary>
                 <div className="mt-2.5 pt-2.5 border-t border-[#EAE3D4] dark:border-[#22303D] pl-2 sm:pl-6">
                   {renderFaqAnswer(faq.answer)}
@@ -1025,11 +1025,11 @@ export default async function AcupointDetailPage({ params }: Props) {
                         {lec.stageTitle}
                       </span>
                       {lec.seriesTitle && (
-                        <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
+                        <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
                           {lec.seriesTitle}
                         </span>
                       )}
-                      <span className="text-sm text-[#737C77] dark:text-[#8899A6] ml-auto">
+                      <span className="text-sm text-[#59615D] dark:text-[#AFBDC8] ml-auto">
                         約{lec.duration}
                       </span>
                     </div>
@@ -1058,7 +1058,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                 <Layers className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
                 <h2>表裏経・同名経の連動ネットワーク（陰陽・手足ペア）</h2>
               </div>
-              <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
+              <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
                 配穴・弁証の連動経絡
               </span>
             </div>
@@ -1085,7 +1085,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                     {rel.explanation}
                   </p>
                   <div className="pt-2 border-t border-[#EAE3D4] dark:border-[#22303D] flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-semibold text-[#737C77] dark:text-[#8899A6]">
+                    <span className="text-sm font-semibold text-[#59615D] dark:text-[#AFBDC8]">
                       代表要穴：
                     </span>
                     {rel.keyPoints.map((kp) => (
@@ -1120,7 +1120,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                   <ArrowLeft className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-sm text-[#737C77] dark:text-[#8899A6] block">
+                  <span className="text-sm text-[#59615D] dark:text-[#AFBDC8] block">
                     前穴（{point.meridianShort}）
                   </span>
                   <span className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
@@ -1128,7 +1128,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                   </span>
                 </div>
               </div>
-              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-sm font-mono font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded">
+              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-sm font-mono font-bold text-[#59615D] dark:text-[#AFBDC8] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded">
                 [
               </kbd>
             </Link>
@@ -1143,12 +1143,12 @@ export default async function AcupointDetailPage({ params }: Props) {
               href={`/tsubo/${nextPoint.codeLower}`}
               className="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-sm transition-all group flex flex-wrap items-center justify-between gap-2"
             >
-              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-sm font-mono font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded">
+              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-sm font-mono font-bold text-[#59615D] dark:text-[#AFBDC8] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded">
                 ]
               </kbd>
               <div className="flex items-center gap-3 justify-end text-right">
                 <div>
-                  <span className="text-sm text-[#737C77] dark:text-[#8899A6] block">
+                  <span className="text-sm text-[#59615D] dark:text-[#AFBDC8] block">
                     次穴（{point.meridianShort}）
                   </span>
                   <span className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
@@ -1236,7 +1236,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         <AuthorSupervisorCard topic={`${point.name}（${point.code}）の経穴解説・取穴・臨床応用`} />
 
         {/* 8. 免責・出典・更新情報 */}
-        <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] text-sm text-[#737C77] dark:text-[#8899A6] space-y-1.5">
+        <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] text-sm text-[#59615D] dark:text-[#AFBDC8] space-y-1.5">
           <div className="flex items-center gap-1.5 font-bold text-[#59615D] dark:text-[#A0B0BC]">
             <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
             <span>出典・確認状況</span>

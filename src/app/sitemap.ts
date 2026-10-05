@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // 静的公開ページ台帳（実質更新日に基づく lastModified）
   const staticPages: MetadataRoute.Sitemap = [
+    { url: `${baseUrl}/updates`, lastModified: new Date(PAGE_REVISIONS['/updates']) },
     { url: `${baseUrl}/safety`, lastModified: new Date("2026-10-02") },
     { url: `${baseUrl}/editorial-policy`, lastModified: new Date("2026-10-02") },
     {

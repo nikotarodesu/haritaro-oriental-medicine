@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import Link from "next/link";
 import { 
   X, 
@@ -31,6 +31,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { ClinicalMemoItem, ClinicalMemoType } from "@/types/clinicalMemo";
 import GogyoBadge from "@/components/GogyoBadge";
 import AuthModal from "@/components/auth/AuthModal";
+import { useModalDialog } from "@/hooks/useModalDialog";
 
 export default function MyClinicalRecordDrawer() {
   const { isPremium } = useAuth();
@@ -53,6 +54,8 @@ export default function MyClinicalRecordDrawer() {
     lastToast,
     dismissToast
   } = useClinicalMemo();
+  const drawerRef = useRef<HTMLDivElement>(null);
+  useModalDialog(isDrawerOpen && !authModalOpen, drawerRef, closeDrawer);
 
   const [drawerSection, setDrawerSection] = useState<"stock" | "notes">("stock");
   const [activeTab, setActiveTab] = useState<"all" | ClinicalMemoType>("all");
@@ -70,29 +73,6 @@ export default function MyClinicalRecordDrawer() {
   const [customNote, setCustomNote] = useState("");
 
   const { addMemo } = useClinicalMemo();
-
-  // 背景スクロール抑止
-  useEffect(() => {
-    if (isDrawerOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isDrawerOpen]);
-
-  // ESCキーで閉じる
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isDrawerOpen) {
-        closeDrawer();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isDrawerOpen, closeDrawer]);
 
   // フィルタリング
   const filteredMemos = useMemo(() => {
@@ -256,7 +236,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
   if (!isDrawerOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[120] flex justify-end animate-fadeIn print:static print:block print:z-auto print:bg-white">
+    <div className="site-overlay fixed left-0 right-0 z-[120] flex justify-end print:static print:block print:z-auto print:bg-white">
       {/* オーバーレイ背景 */}
       <div 
         className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity print:hidden"
@@ -264,16 +244,16 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
       />
 
       {/* スライドイン ドロワー本体 */}
-      <div className="relative w-full max-w-2xl bg-[#FAF8F5] dark:bg-[#10161C] h-full shadow-2xl flex flex-col border-l border-[#E5DEC9] dark:border-[#2A3B4A] z-10 animate-slideLeft print:max-w-none print:w-full print:h-auto print:shadow-none print:border-none print:bg-white print:text-black">
+      <div ref={drawerRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="保存一覧" className="saved-record-panel relative w-full max-w-2xl min-w-0 bg-[#FAF8F5] dark:bg-[#10161C] h-full shadow-2xl flex flex-col border-l border-[#E5DEC9] dark:border-[#2A3B4A] z-10 print:max-w-none print:w-full print:h-auto print:shadow-none print:border-none print:bg-white print:text-black">
         
         {/* 印刷専用ヘッダー（A4印刷時のみ出現） */}
         <div className="hidden print:block p-6 border-b-2 border-black/80 mb-4">
           <div className="flex justify-between items-end">
             <div>
               <h1 className="text-2xl font-serif font-bold text-black">はり太郎 東洋医学 臨床カルテ・要穴集</h1>
-              <p className="text-xs text-gray-600 mt-1">鍼灸・東洋医学 臨床ナレッジベース (https://www.haritaro.jp/)</p>
+              <p className="text-sm text-gray-600 mt-1">鍼灸・東洋医学 臨床ナレッジベース (https://www.haritaro.jp/)</p>
             </div>
-            <div className="text-right text-xs text-gray-600">
+            <div className="text-right text-sm text-gray-600">
               <p>出力日: {new Date().toLocaleDateString("ja-JP")}</p>
               <p>保存件数: {memos.length}件</p>
             </div>
@@ -281,7 +261,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
         </div>
 
         {/* 画面用ヘッダーエリア */}
-        <div className="p-3.5 sm:p-5 border-b border-[#E5DEC9] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A] flex items-center justify-between print:hidden">
+        <div className="saved-record-header p-3.5 sm:p-5 border-b border-[#E5DEC9] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A] flex flex-wrap items-center justify-between gap-2 print:hidden">
           <div className="flex items-center gap-2.5 sm:gap-3">
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FCF4EB] dark:bg-[#2C1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0 border border-[#F3DEC5] dark:border-[#4D331F]">
               <Bookmark className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
@@ -292,13 +272,13 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                   マイノート
                 </h2>
                 {isPremium && (
-                  <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#1E3D34] text-white flex items-center gap-0.5">
+                  <span className="text-sm font-bold px-2 py-0.5 rounded bg-[#1E3D34] text-white flex items-center gap-0.5">
                     <Crown className="w-3 h-3 text-[#E6C387]" />
                     <span>PREMIUM</span>
                   </span>
                 )}
               </div>
-              <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] mt-0.5">
+              <p className="text-sm text-[#59615D] dark:text-[#AFBDC8] mt-0.5">
                 配穴ストック & 臨床症例ノート
               </p>
             </div>
@@ -308,7 +288,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
             <Link
               href="/notes"
               onClick={closeDrawer}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#1E3D34] text-white hover:bg-[#162D26] transition-colors shadow-2xs"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-bold bg-[#1E3D34] text-white hover:bg-[#162D26] transition-colors shadow-2xs"
               title="マイノート全画面ページを開く"
             >
               <ExternalLink className="w-3.5 h-3.5" />
@@ -316,7 +296,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
             </Link>
             <button
               onClick={closeDrawer}
-              className="w-9 h-9 rounded-xl flex items-center justify-center text-[#737C77] dark:text-[#8899A6] hover:bg-[#FAF8F5] dark:hover:bg-[#1E2B36] hover:text-[#232826] dark:hover:text-[#FAF8F5] transition-colors"
+              className="min-w-11 min-h-11 shrink-0 rounded-xl flex items-center justify-center text-[#59615D] dark:text-[#AFBDC8] hover:bg-[#FAF8F5] dark:hover:bg-[#1E2B36] hover:text-[#232826] dark:hover:text-[#FAF8F5] transition-colors"
               aria-label="閉じる"
             >
               <X className="w-5 h-5" />
@@ -329,10 +309,10 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
           <button
             type="button"
             onClick={() => setDrawerSection("stock")}
-            className={`flex-1 py-2.5 text-xs font-bold flex items-center justify-center gap-1.5 border-b-2 transition-all ${
+            className={`flex-1 py-2.5 text-sm font-bold flex items-center justify-center gap-1.5 border-b-2 transition-all ${
               drawerSection === "stock"
                 ? "border-[#B86924] text-[#B86924] dark:text-[#E6C387] bg-white dark:bg-[#17212A]"
-                : "border-transparent text-[#737C77] dark:text-[#8899A6] hover:text-[#232826]"
+                : "border-transparent text-[#59615D] dark:text-[#AFBDC8] hover:text-[#232826]"
             }`}
           >
             <Bookmark className="w-3.5 h-3.5" />
@@ -341,10 +321,10 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
           <button
             type="button"
             onClick={() => setDrawerSection("notes")}
-            className={`flex-1 py-2.5 text-xs font-bold flex items-center justify-center gap-1.5 border-b-2 transition-all ${
+            className={`flex-1 py-2.5 text-sm font-bold flex items-center justify-center gap-1.5 border-b-2 transition-all ${
               drawerSection === "notes"
                 ? "border-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E] bg-white dark:bg-[#17212A]"
-                : "border-transparent text-[#737C77] dark:text-[#8899A6] hover:text-[#232826]"
+                : "border-transparent text-[#59615D] dark:text-[#AFBDC8] hover:text-[#232826]"
             }`}
           >
             <FileText className="w-3.5 h-3.5" />
@@ -359,6 +339,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
             <Search className="w-4 h-4 text-[#8A948F] dark:text-[#6A7C8B] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
+              aria-label="保存一覧内を検索"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={
@@ -366,14 +347,14 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                   ? "患者ID、主訴、採用配穴から検索..."
                   : "保存したツボ名、症状、配穴、メモから検索..."
               }
-              className="w-full pl-9 pr-4 py-2 rounded-xl text-xs bg-white dark:bg-[#1A2530] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A948F] focus:outline-none focus:border-[#B86924]"
+              className="w-full pl-9 pr-4 py-2 rounded-xl text-sm bg-white dark:bg-[#1A2530] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A948F] focus:outline-none focus:border-[#B86924]"
             />
           </div>
 
           {drawerSection === "stock" ? (
             <>
               {/* 種別タブ */}
-              <div className="flex items-center justify-between gap-2 overflow-x-auto pb-1 text-xs">
+              <div className="flex items-center justify-between gap-2 overflow-x-auto pb-1 text-sm">
                 <div className="flex items-center gap-1">
                   {[
                     { id: "all", label: `すべて (${memos.length})` },
@@ -384,7 +365,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                   ].map(tab => (
                     <button
                       key={tab.id}
-                      onClick={() => setActiveTab(tab.id as any)}
+                      onClick={() => setActiveTab(tab.id as "all" | ClinicalMemoType)}
                       className={`px-2.5 py-1 rounded-lg font-medium shrink-0 transition-colors ${
                         activeTab === tab.id
                           ? "bg-[#B86924] text-white"
@@ -398,7 +379,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
               </div>
 
               {/* アクションボタン（全件コピー・新規作成・全件消去） */}
-              <div className="flex items-center justify-between gap-2 pt-1 border-t border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 text-xs">
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 text-sm">
                 <button
                   onClick={() => setIsAddingCustom(!isAddingCustom)}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:opacity-90 transition-opacity"
@@ -458,8 +439,8 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
               </div>
             </>
           ) : (
-            <div className="flex items-center justify-between gap-2 pt-1 text-xs">
-              <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+            <div className="flex items-center justify-between gap-2 pt-1 text-sm">
+              <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
                 患者ID・主訴・採用配穴・手技の臨床録
               </span>
               <Link
@@ -478,16 +459,16 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
         {isAddingCustom && (
           <form onSubmit={handleCreateCustom} className="p-4 bg-[#FFFBEB] dark:bg-[#201B12] border-b border-[#FDE68A] dark:border-[#42361B] space-y-3 print:hidden">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[#B86924] dark:text-[#F59E0B]">新しい臨床メモの登録</span>
+              <span className="text-sm font-bold text-[#B86924] dark:text-[#F59E0B]">新しい臨床メモの登録</span>
               <button
                 type="button"
                 onClick={() => setIsAddingCustom(false)}
-                className="text-xs text-[#737C77] hover:underline"
+                className="text-sm text-[#59615D] hover:underline"
               >
                 キャンセル
               </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
               <input
                 type="text"
                 value={customTitle}
@@ -504,14 +485,14 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                 className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]"
               />
             </div>
-            <div className="flex items-center gap-2 text-xs">
-              <span className="text-[#737C77] dark:text-[#8899A6]">五行属性:</span>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-[#59615D] dark:text-[#AFBDC8]">五行属性:</span>
               {(["木", "火", "土", "金", "水"] as const).map(el => (
                 <button
                   key={el}
                   type="button"
                   onClick={() => setCustomElement(el)}
-                  className={`px-2 py-0.5 rounded text-xs font-bold ${
+                  className={`px-2 py-0.5 rounded text-sm font-bold ${
                     customElement === el
                       ? "bg-[#232826] text-white dark:bg-white dark:text-[#10161C]"
                       : "bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]"
@@ -526,19 +507,19 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
               onChange={e => setCustomSummary(e.target.value)}
               placeholder="臨床の要点・作用機序（例: 後頭下筋群の過緊張を緩め、肝気を降気させる）"
               rows={2}
-              className="w-full px-3 py-2 rounded-lg text-xs bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]"
+              className="w-full px-3 py-2 rounded-lg text-sm bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]"
             />
             <textarea
               value={customNote}
               onChange={e => setCustomNote(e.target.value)}
               placeholder="自分用の臨床メモ（例: ◯◯さんへの施術で右側強刺激が著効）"
               rows={2}
-              className="w-full px-3 py-2 rounded-lg text-xs bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]"
+              className="w-full px-3 py-2 rounded-lg text-sm bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]"
             />
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="px-4 py-1.5 rounded-lg bg-[#B86924] text-white text-xs font-bold hover:bg-[#9B551B] transition-colors"
+                className="px-4 py-1.5 rounded-lg bg-[#B86924] text-white text-sm font-bold hover:bg-[#9B551B] transition-colors"
               >
                 学習ノートに登録
               </button>
@@ -547,22 +528,22 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
         )}
 
         {/* リスト表示エリア */}
-        <div className="flex-1 overflow-y-auto p-3 sm:p-5 space-y-3 sm:space-y-4 print:overflow-visible print:h-auto print:p-0 print:space-y-4">
+        <div className="saved-record-content flex-1 min-h-0 overflow-y-auto p-3 sm:p-5 space-y-3 sm:space-y-4 print:overflow-visible print:h-auto print:p-0 print:space-y-4">
           {drawerSection === "notes" ? (
             <div className="space-y-3">
-              <div className="p-3 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] flex items-center justify-between text-xs">
+              <div className="p-3 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] flex items-center justify-between text-sm">
                 <div>
                   <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
                     患者臨床ノート ({patientNoteCount}/{maxPatientNoteLimit}件)
                   </span>
-                  <span className="text-[10px] text-[#59615D] dark:text-[#A0B0BC]">
+                  <span className="text-sm text-[#59615D] dark:text-[#A0B0BC]">
                     直接識別情報非保持・安全同期
                   </span>
                 </div>
                 <Link
                   href="/notes"
                   onClick={closeDrawer}
-                  className="px-3 py-1.5 rounded-lg bg-[#1E3D34] text-white font-bold hover:bg-[#162D26] text-xs flex items-center gap-1 shadow-2xs"
+                  className="px-3 py-1.5 rounded-lg bg-[#1E3D34] text-white font-bold hover:bg-[#162D26] text-sm flex items-center gap-1 shadow-2xs"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>新規作成 / 詳細</span>
@@ -571,14 +552,14 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
 
               {filteredNotes.length === 0 ? (
                 <div className="text-center p-8 bg-white dark:bg-[#17212A] rounded-2xl border border-dashed border-[#D8CFC0] dark:border-[#2A3B4A] space-y-2">
-                  <FileText className="w-8 h-8 mx-auto text-[#737C77] opacity-50" />
-                  <p className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  <FileText className="w-8 h-8 mx-auto text-[#59615D] opacity-50" />
+                  <p className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
                     臨床ノートがありません
                   </p>
                   <Link
                     href="/notes"
                     onClick={closeDrawer}
-                    className="inline-block mt-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#1E3D34]"
+                    className="inline-block mt-2 px-4 py-2 rounded-xl text-sm font-bold text-white bg-[#1E3D34]"
                   >
                     全画面ページで作成する
                   </Link>
@@ -594,26 +575,26 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                         <span className="font-serif font-bold text-sm text-[#1E3D34] dark:text-[#74BA9E]">
                           {note.patientIdentifier}
                         </span>
-                        <span className="text-[10px] text-[#737C77]">
+                        <span className="text-sm text-[#59615D]">
                           {note.visitDate}
                         </span>
                       </div>
                       <button
                         type="button"
                         onClick={() => removePatientNote(note.id)}
-                        className="text-[#737C77] hover:text-[#DC2626] p-1"
+                        className="text-[#59615D] hover:text-[#DC2626] p-1"
                         title="削除"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
-                    <p className="text-xs text-[#232826] dark:text-[#FAF8F5] font-medium line-clamp-2">
+                    <p className="text-sm text-[#232826] dark:text-[#FAF8F5] font-medium ">
                       {note.chiefComplaint}
                     </p>
                     {note.selectedPoints.length > 0 && (
                       <div className="flex flex-wrap gap-1 pt-0.5">
                         {note.selectedPoints.map((pt, i) => (
-                          <span key={i} className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#FAF2E6] dark:bg-[#251D14] text-[#B86924] dark:text-[#E6C387]">
+                          <span key={i} className="px-2 py-0.5 rounded text-sm font-bold bg-[#FAF2E6] dark:bg-[#251D14] text-[#B86924] dark:text-[#E6C387]">
                             {pt}
                           </span>
                         ))}
@@ -623,7 +604,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                       <Link
                         href="/notes"
                         onClick={closeDrawer}
-                        className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
+                        className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
                       >
                         <span>詳細・A4印刷・編集</span>
                         <ArrowRight className="w-3 h-3" />
@@ -644,7 +625,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                     ? "該当するメモが見つかりませんでした"
                     : "まだ保存された記録がありません"}
                 </h3>
-                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#8899A6] max-w-md mx-auto leading-relaxed">
+                <p className="text-sm sm:text-sm text-[#59615D] dark:text-[#AFBDC8] max-w-md mx-auto leading-relaxed">
                   経穴図鑑や症例演習で「保存」を押すと、ここにあなた専用の復習帳が作られます。
                 </p>
               </div>
@@ -652,11 +633,11 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
               {/* 保存できる4つのもの（アイコン付き案内） */}
               {!searchQuery && activeTab === "all" && (
                 <div className="space-y-3 pt-3 border-t border-[#F2ECE0] dark:border-[#22303D]">
-                  <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-center">
+                  <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-center">
                     マイノートに保存できる4つの記録：
                   </span>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-left">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-sm text-left">
                     <Link
                       href="/tsubo"
                       onClick={closeDrawer}
@@ -666,7 +647,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                         <span>📌 クリップした経穴</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </div>
-                      <p className="text-[#737C77] dark:text-[#8899A6] leading-tight text-xs">
+                      <p className="text-[#59615D] dark:text-[#AFBDC8] leading-tight text-sm">
                         十四経脈・経穴辞典から気になる穴をワンクリック保存
                       </p>
                     </Link>
@@ -680,7 +661,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                         <span>⚖️ 経穴比較セット</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </div>
-                      <p className="text-[#737C77] dark:text-[#8899A6] leading-tight text-xs">
+                      <p className="text-[#59615D] dark:text-[#AFBDC8] leading-tight text-sm">
                         2穴・3穴の解剖・要穴・主治の横並び対比結果を保存
                       </p>
                     </Link>
@@ -694,7 +675,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                         <span>📋 症例の解答・弁証メモ</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </div>
-                      <p className="text-[#737C77] dark:text-[#8899A6] leading-tight text-xs">
+                      <p className="text-[#59615D] dark:text-[#AFBDC8] leading-tight text-sm">
                         臨床症例演習で解いた証名・治法・処方配穴を復習用に記録
                       </p>
                     </Link>
@@ -708,7 +689,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                         <span>🧪 自作配穴・選定理由</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </div>
-                      <p className="text-[#737C77] dark:text-[#8899A6] leading-tight text-xs">
+                      <p className="text-[#59615D] dark:text-[#AFBDC8] leading-tight text-sm">
                         本治・標治のバランスや選定理由を言語化した自作処方
                       </p>
                     </Link>
@@ -717,7 +698,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                   <div className="pt-2 text-center">
                     <button
                       onClick={loadRecommendedPresets}
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#B86924] text-white text-xs font-bold shadow-sm hover:bg-[#9B551B] transition-colors"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#B86924] text-white text-sm font-bold shadow-sm hover:bg-[#9B551B] transition-colors"
                     >
                       <Sparkles className="w-4 h-4" />
                       <span>おすすめ重要名配穴（太衝＋陽陵泉など8組）を一括登録</span>
@@ -735,7 +716,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                 {/* カード上部：種別バッジ・五行・アクションボタン */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#737C77] dark:text-[#8899A6] print:border-gray-400 print:text-gray-800">
+                    <span className="text-sm font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#AFBDC8] print:border-gray-400 print:text-gray-800">
                       {item.type === "pair"
                         ? "重要配穴"
                         : item.type === "tsubo"
@@ -753,7 +734,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                     <button
                       onClick={() => handleCopySingle(item)}
                       title="このメモのテキストをコピー"
-                      className="p-1.5 rounded-lg text-[#737C77] dark:text-[#8899A6] hover:bg-[#FAF8F5] dark:hover:bg-[#202E3C] hover:text-[#B86924] transition-colors"
+                      className="p-1.5 rounded-lg text-[#59615D] dark:text-[#AFBDC8] hover:bg-[#FAF8F5] dark:hover:bg-[#202E3C] hover:text-[#B86924] transition-colors"
                     >
                       {copiedId === item.id ? (
                         <Check className="w-3.5 h-3.5 text-[#10B981]" />
@@ -764,7 +745,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                     <button
                       onClick={() => removeMemo(item.id)}
                       title="学習ノートから解除"
-                      className="p-1.5 rounded-lg text-[#737C77] dark:text-[#8899A6] hover:bg-[#FEE2E2] dark:hover:bg-[#3B1717] hover:text-[#DC2626] transition-colors"
+                      className="p-1.5 rounded-lg text-[#59615D] dark:text-[#AFBDC8] hover:bg-[#FEE2E2] dark:hover:bg-[#3B1717] hover:text-[#DC2626] transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -777,7 +758,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                     {item.title}
                   </h3>
                   {item.subTitle && (
-                    <p className="text-xs text-[#B86924] dark:text-[#E6C387] font-medium mt-0.5">
+                    <p className="text-sm text-[#B86924] dark:text-[#E6C387] font-medium mt-0.5">
                       {item.subTitle}
                     </p>
                   )}
@@ -789,7 +770,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                     {item.points.map((pt, idx) => (
                       <span
                         key={idx}
-                        className="text-xs px-2.5 py-0.8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-medium border border-[#C5DED4] dark:border-[#2A5243]"
+                        className="text-sm px-2.5 py-0.8 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-medium border border-[#C5DED4] dark:border-[#2A5243]"
                       >
                         {pt}
                       </span>
@@ -803,7 +784,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                     {item.indications.map((ind, idx) => (
                       <span
                         key={idx}
-                        className="text-[11px] px-2 py-0.5 rounded bg-[#F2EDE4] dark:bg-[#1E2B36] text-[#404743] dark:text-[#C5D2DB]"
+                        className="text-sm px-2 py-0.5 rounded bg-[#F2EDE4] dark:bg-[#1E2B36] text-[#404743] dark:text-[#C5D2DB]"
                       >
                         {ind}
                       </span>
@@ -812,12 +793,12 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                 )}
 
                 {/* 臨床要点・解説 */}
-                <p className="text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                <p className="text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                   {item.summary}
                 </p>
 
                 {item.mechanism && (
-                  <div className="bg-[#FAF8F5] dark:bg-[#121920] p-2.5 rounded-xl border border-[#EDE7DB] dark:border-[#22303D] text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
+                  <div className="bg-[#FAF8F5] dark:bg-[#121920] p-2.5 rounded-xl border border-[#EDE7DB] dark:border-[#22303D] text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
                     <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-0.5">
                       💡 臨床メカニズム・配穴意図
                     </span>
@@ -827,19 +808,19 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
 
                 {/* ユーザー専用 臨床個人メモ入力欄 */}
                 <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] space-y-1.5">
-                  <div className="flex items-center justify-between text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                  <div className="flex items-center justify-between text-sm text-[#59615D] dark:text-[#AFBDC8]">
                     <span className="flex items-center gap-1 font-medium text-[#B86924] dark:text-[#E6C387]">
                       <Edit3 className="w-3 h-3" />
                       私用臨床カルテメモ（自由加筆・自動保存）:
                     </span>
-                    <span className="text-[10px]">自動保存</span>
+                    <span className="text-sm">自動保存</span>
                   </div>
                   <textarea
                     defaultValue={item.personalNotes || ""}
                     onBlur={(e) => updatePersonalNote(item.id, e.target.value)}
                     placeholder="患者さんへの施術効果、自分の体質反応、取穴のコツなどを自由に記録..."
                     rows={2}
-                    className="w-full p-2.5 rounded-xl text-xs bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] focus:bg-white dark:focus:bg-[#1A2530] focus:border-[#B86924] text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A948F] transition-colors"
+                    className="w-full p-2.5 rounded-xl text-sm bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] focus:bg-white dark:focus:bg-[#1A2530] focus:border-[#B86924] text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A948F] transition-colors"
                   />
                 </div>
               </div>
@@ -848,7 +829,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
         </div>
 
         {/* フッターエリア */}
-        <div className="p-3.5 sm:p-4 bg-white dark:bg-[#17212A] border-t border-[#E5DEC9] dark:border-[#2A3B4A] flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
+        <div className="p-3.5 sm:p-4 bg-white dark:bg-[#17212A] border-t border-[#E5DEC9] dark:border-[#2A3B4A] flex items-center justify-between text-sm text-[#59615D] dark:text-[#AFBDC8]">
           <span>
             {drawerSection === "stock"
               ? `配穴ストック: ${clipCount}件 保存中`
@@ -876,7 +857,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
 
       {/* フローティングトースト通知 */}
       {lastToast && (
-        <div className="fixed bottom-5 right-5 z-[130] flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#232826] dark:bg-white text-white dark:text-[#232826] shadow-xl text-xs font-medium animate-fadeIn">
+        <div className="fixed bottom-5 right-5 z-[130] flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#232826] dark:bg-white text-white dark:text-[#232826] shadow-xl text-sm font-medium animate-fadeIn">
           {lastToast.type === "added" ? (
             <Bookmark className="w-4 h-4 text-[#F59E0B] fill-current" />
           ) : (

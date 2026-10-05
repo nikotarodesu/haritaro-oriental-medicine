@@ -142,7 +142,7 @@ export default function ReadingProgressBar({ bodySelector, headings: suppliedHea
         <div className="h-full bg-[#1E3D34] dark:bg-[#74BA9E] transition-[width] duration-150 motion-reduce:transition-none" style={{ width: `${progress}%` }} />
       </div>
       <div ref={barRef} data-reading-toolbar aria-hidden={!visible} inert={!visible} style={{ top: headerHeight === null ? "5rem" : headerHeight }} className={`fixed left-0 right-0 z-40 bg-[#FAF8F5]/95 dark:bg-[#10161C]/95 backdrop-blur-md border-b border-[#E8E1D1] dark:border-[#22303D] transition-all duration-200 motion-reduce:transition-none ${visible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"}`}>
-        <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 min-h-11 flex items-center justify-between gap-2">
+        <div className="reading-toolbar-row max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 min-h-11 flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0 flex-1">
             <Compass aria-hidden="true" className="w-4 h-4 shrink-0 text-[#1E3D34] dark:text-[#74BA9E]" />
             <span title={activeHeading?.text || "はじめに"} className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5] truncate">{activeHeading?.text || "はじめに"}</span>
