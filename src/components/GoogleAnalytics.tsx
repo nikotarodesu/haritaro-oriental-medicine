@@ -12,7 +12,8 @@ export default function GoogleAnalytics() {
   const [ready, setReady] = useState(false);
   const [documentPath] = useState(() => pathname ? publicAnalyticsPath(pathname) : null);
   const previousPath = useRef<string | null>(null);
-  const validId = !!gaId && /^G-[A-Z0-9]+$/.test(gaId) && !["G-GC398NZKVE", "G-XXXXXXXXXX"].includes(gaId);
+  // A verified property may reuse a previously configured measurement ID.
+  const validId = !!gaId && /^G-[A-Z0-9]+$/.test(gaId) && gaId !== "G-XXXXXXXXXX";
   const safePath = pathname ? publicAnalyticsPath(pathname) : null;
 
   useEffect(() => {

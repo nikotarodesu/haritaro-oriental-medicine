@@ -64,5 +64,10 @@ const ga = fs.readFileSync(path.join(root, 'src/components/GoogleAnalytics.tsx')
 assert(ga.includes('ga-disable-'));
 assert(ga.includes('allow_google_signals: false'));
 assert(ga.includes('G-XXXXXXXXXX'));
+// Evaluate the actual ID guard: the owner's confirmed stream must remain valid.
+const idGuard = ga.match(/const validId = (.+);/)[1];
+for (const [gaId, expected] of [['G-GC398NZKVE', true], ['G-GE4JNB164V', true], ['553537039', false], ['G-XXXXXXXXXX', false], ['', false], [undefined, false]]) {
+  assert.equal(vm.runInNewContext(idGuard, { gaId }), expected);
+}
 assert(fs.readFileSync(path.join(root, 'src/components/WebVitalsReporter.tsx'), 'utf8').includes('next/web-vitals'));
 console.log('Passed: public-route privacy, safe event queue, daily activity, 1–7-day return boundaries, and official Web Vitals values.');
