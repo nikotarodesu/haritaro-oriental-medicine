@@ -153,6 +153,15 @@ export default function PrivacyPage() {
             <p>
               当サイトでは、アクセス動向の把握やサイト品質向上のためにCookie（クッキー）を使用するアクセス解析ツールを利用することがあります。Cookieによりブラウザが識別されますが、個人を特定する情報は含まれません。ブラウザの設定によりCookieを無効化することも可能です。
             </p>
+            <p>
+              Google Analytics 4では、公開ページの閲覧や学習操作の集計を行います。検索語、ノート本文、問診内容、アカウントIDは送信しません。
+            </p>
+            <p>
+              Microsoft Clarityでは、トップページ、学習案内、コース一覧、記事一覧、運営者紹介の表示と操作を分析します。画面内の文字と画像をマスクし、Clarityの解析用Cookieを有効にせず利用します。検索入力、アカウントや保存メニューの操作、ページ移動が始まると記録を停止し、ノート・問診・診断・会員・決済ページは記録対象にしません。URLや参照元に検索条件などが含まれる場合も記録を開始しません。
+            </p>
+            <p>
+              詳しくは<Link href="https://privacy.microsoft.com/ja-jp/privacystatement" className="underline underline-offset-4">Microsoftのプライバシー声明</Link>をご確認ください。
+            </p>
           </section>
 
           {/* 6. 免責事項 */}

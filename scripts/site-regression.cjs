@@ -77,4 +77,5 @@ for(const item of LEARNING_DISCOVERY) assert(item.articleId ? ARTICLES.some(arti
 const { sanitizeAnalyticsParams } = load('src/utils/analytics');
 assert.deepEqual(Object.keys(sanitizeAnalyticsParams({placement:'case_training',total:6,query:'private',patient_name:'private',case_id:'private',answers:'private'})).sort(),['placement','total']);
 assert(!fs.readFileSync(path.join(root, 'src/app/layout.tsx'), 'utf8').includes('clarity.ms/tag'), 'Free-text learning and clinical pages must not load global session replay');
+assert(!fs.readFileSync(path.join(root, 'src/instrumentation-client.ts'), 'utf8').includes('sdk.identify('), 'Replay must not identify users');
 console.log('Passed: 361-point search, normalization, multiword matches, 12 article learning paths, glossary links, sitemap revisions and learning analytics privacy.');
