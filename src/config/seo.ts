@@ -1,7 +1,7 @@
 import { SITE_NAME } from "./brand";
 
 export { SITE_NAME } from "./brand";
-export const SITE_TITLE = `${SITE_NAME}｜学習・臨床推論・患者問診メモ`;
+export const SITE_TITLE = `${SITE_NAME}｜東洋医学・鍼灸の学習・臨床推論・全361経穴ポータル`;
 export const SHARED_OG_IMAGES = [{ url: "https://www.haritaro.jp/og-image.png", width: 1200, height: 630, alt: SITE_NAME }];
 
 export function acupointPageTitle(point: { name: string; code: string }) {

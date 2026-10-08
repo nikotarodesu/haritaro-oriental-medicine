@@ -652,6 +652,70 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
         </>
       )}
 
+      {/* トピッククラスター連携（関連症状ガイド・関連経穴辞典・体質診断への回遊） */}
+      <div className="rounded-3xl bg-gradient-to-br from-[#FAF8F5] to-[#F5EFE6] dark:from-[#152028] dark:to-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-6 shadow-xs">
+        <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
+          <Layers className="w-4 h-4" />
+          <span>関連する東洋医学知識・セルフケア連携</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* 症状別ガイド */}
+          <div className="p-4 rounded-2xl bg-white dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
+            <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">お悩み・症状別セルフケア</span>
+            <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
+              この症例（{clinicalCase.patient.chiefComplaint.slice(0, 32)}…）に対応する日常の食養生・生活指導・お灸ケアを確認できます。
+            </p>
+            <Link
+              href="/symptoms"
+              className="inline-flex items-center gap-1 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline pt-1"
+            >
+              <span>症状別セルフケアガイドを見る</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          {/* 気血水体質セルフ診断 */}
+          <div className="p-4 rounded-2xl bg-white dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
+            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">気血水 体質セルフ診断</span>
+            <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
+              本症例の証（{clinicalCase.correctDiagnosis.pattern}）に関連する12問の問診で、現在の体質バランスを測定できます。
+            </p>
+            <Link
+              href="/diagnosis"
+              className="inline-flex items-center gap-1 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline pt-1"
+            >
+              <span>体質セルフ診断を受ける</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+
+        {/* 症例の処方配穴（ツボ辞典リンク） */}
+        <div className="space-y-2.5 pt-2 border-t border-[#E8E1D1] dark:border-[#22303D]">
+          <span className="text-xs font-bold text-[#404743] dark:text-[#C5D2DB] block">
+            📍 本症例の関連ツボ（経穴辞典で骨度法・解剖指標を確認）
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {clinicalCase.correctDiagnosis.primaryPoints.map((pt) => {
+              const codeMatch = pt.match(/\(([A-Za-z0-9]+)\)/);
+              const code = codeMatch ? codeMatch[1].toLowerCase() : null;
+              if (!code) return <span key={pt} className="text-xs px-2.5 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#18232D] text-[#59615D]">{pt}</span>;
+              return (
+                <Link
+                  key={pt}
+                  href={`/tsubo/${code}`}
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white dark:bg-[#18232D] border border-[#E0D7C3] dark:border-[#2A3B4A] text-xs font-bold text-[#1E3D34] dark:text-[#83BEA8] hover:border-[#1E3D34] hover:shadow-2xs transition-all"
+                >
+                  <span>{pt}</span>
+                  <ChevronRight className="w-3 h-3 text-[#8C9690]" />
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
       {/* フッターナビゲーション */}
       <div className="flex items-center justify-between pt-6 border-t border-[#E8E1D1] dark:border-[#263542]">
         <Link

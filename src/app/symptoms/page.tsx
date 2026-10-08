@@ -33,6 +33,14 @@ export default function SymptomsPage() {
     "stress-insomnia": "insomnia-autonomic"
   };
 
+  const specificCaseMap: Record<string, { id: string; label: string }> = {
+    "headache-stiff-neck": { id: "case-01-headache-liver-fire", label: "頭痛の臨床症例演習（肝火上炎）" },
+    "chronic-fatigue-lethargy": { id: "case-02-fatigue-spleen-deficiency", label: "慢性疲労の臨床症例演習（脾胃気虚）" },
+    "menstrual-pain-chill": { id: "case-03-dysmenorrhea-cold-stasis", label: "激しい月経痛の臨床症例演習（寒凝血瘀）" },
+    "climacteric-hot-flash": { id: "case-04-menopause-yin-deficiency", label: "更年期・寝汗の臨床症例演習（肝腎陰虚）" },
+    "stress-insomnia": { id: "case-05-insomnia-heart-kidney", label: "不眠・不安の臨床症例演習（心腎不交）" },
+  };
+
   const filteredSymptoms = selectedCategory === "すべて"
     ? SYMPTOMS
     : SYMPTOMS.filter((s) => s.category === selectedCategory);
@@ -207,25 +215,34 @@ export default function SymptomsPage() {
                 )}
               </div>}
 
-              {/* 臨床・専門ツールへのステップアップ導線 */}
-              <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center justify-between gap-2 text-xs">
-                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                  医療関係者・学生の方へ:
-                </span>
+              {/* 臨床・専門ツール＆体質診断へのトピッククラスター導線 */}
+              <div className="pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center justify-between gap-2.5 text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-semibold text-[#737C77] dark:text-[#8899A6]">
+                    関連学習・診断:
+                  </span>
+                  <Link
+                    href="/diagnosis"
+                    className="inline-flex items-center gap-1 text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-bold"
+                  >
+                    <HeartPulse className="w-3.5 h-3.5" />
+                    <span>気血水セルフ診断で原因タイプを調べる ➜</span>
+                  </Link>
+                </div>
                 <div className="flex items-center gap-3">
                   <Link
                     href="/simulator"
-                    className="inline-flex items-center gap-1 text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-bold"
+                    className="inline-flex items-center gap-1 text-[#59615D] dark:text-[#A0B0BC] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] font-medium"
                   >
                     <Layers className="w-3.5 h-3.5" />
-                    <span>シミュレーターで弁証推論 ➜</span>
+                    <span>配穴シミュレータ</span>
                   </Link>
                   <Link
-                    href="/cases"
+                    href={specificCaseMap[symptom.id] ? `/cases/${specificCaseMap[symptom.id].id}` : "/cases"}
                     className="inline-flex items-center gap-1 text-[#B86924] dark:text-[#E6C387] hover:underline font-bold"
                   >
                     <FileText className="w-3.5 h-3.5" />
-                    <span>関連症例演習 ➜</span>
+                    <span>{specificCaseMap[symptom.id] ? `${specificCaseMap[symptom.id].label} ➜` : "関連症例演習 ➜"}</span>
                   </Link>
                 </div>
               </div>

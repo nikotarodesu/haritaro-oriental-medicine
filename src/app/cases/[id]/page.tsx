@@ -25,8 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const title = `症例${clinicalCase.caseNumber}: ${clinicalCase.title}｜臨床症例演習`;
-  const description = `${clinicalCase.patient.chiefComplaint}。${clinicalCase.subTitle}。四診合参から弁証・治法・処方配穴を導く臨床演習。`;
+  const title = `症例${clinicalCase.caseNumber}: ${clinicalCase.title}｜東洋医学・弁証推論演習`;
+  const description = `${clinicalCase.patient.chiefComplaint}（${clinicalCase.subTitle}）。四診合参から東洋医学の弁証・治法・ツボ処方配穴を導く臨床症例演習。`;
 
   return {
     title,
