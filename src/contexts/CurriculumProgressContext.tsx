@@ -68,7 +68,7 @@ export function CurriculumProgressProvider({ children, catalog }: { children: Re
   const completedLectures = useMemo(() => Object.fromEntries(Object.entries(values).filter(([key, value]) => key.startsWith('lecture:') && value === true).map(([key]) => [key.slice(8), true])), [values]);
   const lastVisitedLectureId = typeof values['last-visit'] === 'string' ? values['last-visit'] : null;
   const quizHistory = useMemo(() => Object.entries(values).filter(([key, value]) => key.startsWith('attempt:') && validQuizRecord(value)).sort(([keyA, valueA], [keyB, valueB]) => (valueA as QuizResultRecord).answeredAt.localeCompare((valueB as QuizResultRecord).answeredAt) || ((valueA as QuizResultRecord).attempts || 0) - ((valueB as QuizResultRecord).attempts || 0) || keyA.localeCompare(keyB)).map(([, value]) => value as QuizResultRecord), [values]);
-  const storedQuizResults = useMemo(() => Object.fromEntries(Object.entries(values).filter(([key, value]) => key.startsWith('quiz:') && validQuizRecord(value)).map(([key, value]) => {
+  const storedQuizResults = useMemo(() => Object.fromEntries(Object.entries(values).filter(([key, value]) => key.startsWith('quiz:') && validQuizRecord(value) && key.slice(5) === value.questionId).map(([key, value]) => {
     const record = value as QuizResultRecord;
     return [key.slice(5), mergeQuizAttempts(record, quizHistory)];
   })), [values, quizHistory]);
@@ -91,6 +91,7 @@ export function CurriculumProgressProvider({ children, catalog }: { children: Re
   };
 
   const saveQuizResult = useCallback((record: QuizResultRecord) => {
+    if (!validQuizRecord(record)) return;
     const current = LEARNING_QUESTION_MAP.get(record.questionId);
     const revision = current?.revision || record.revision;
     if (!revision) return;

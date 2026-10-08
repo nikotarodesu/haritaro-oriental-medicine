@@ -8,7 +8,9 @@ export function validQuizRecord(value: unknown): value is QuizResultRecord {
     && Array.isArray(record.options) && record.options.length >= 2 && record.options.every(option => typeof option === 'string')
     && Number.isInteger(record.userAnswerIndex) && record.userAnswerIndex >= 0 && record.userAnswerIndex < record.options.length
     && Number.isInteger(record.correctAnswerIndex) && record.correctAnswerIndex >= 0 && record.correctAnswerIndex < record.options.length
-    && typeof record.isCorrect === 'boolean' && Number.isFinite(Date.parse(record.answeredAt));
+    && typeof record.isCorrect === 'boolean'
+    && record.isCorrect === (record.userAnswerIndex === record.correctAnswerIndex)
+    && Number.isFinite(Date.parse(record.answeredAt));
 }
 
 /** Replay immutable attempts so two offline devices cannot erase each other's practice. */

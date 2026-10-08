@@ -78,6 +78,7 @@ const playCelebrationFanfare = () => {
 export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLecture, courseJourney }) => {
   const router = useRouter();
   const {
+    isMounted,
     quizResults,
     saveQuizResult,
     clearQuizResult,
@@ -96,7 +97,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
   const [soundEnabled, setSoundEnabled] = useState(true);
 
   // パーフェクト達成時の祝賀演出（紙吹雪）フラグ
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [celebratingLectureId, setCelebratingLectureId] = useState<string | null>(null);
 
   // 全問題数
   const totalQuestions = quiz.questions.length;
@@ -123,9 +124,11 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
     totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
 
   // 合格判定（設定された合格ライン以上、または2問以上正解）
-  const isPassed = correctCount >= (quiz.passingScore || 2);
+  const passingScore = quiz.passingScore || 2;
+  const isAllAnswered = totalQuestions > 0 && answeredCount === totalQuestions;
+  const isPassed = isAllAnswered && correctCount >= passingScore;
   const isPerfect = correctCount === totalQuestions && totalQuestions > 0;
-  const isAllAnswered = answeredCount === totalQuestions;
+  const showConfetti = isMounted && isPerfect && celebratingLectureId === quiz.lectureId;
   const activeCourseJourney = courseJourney?.lectureId === quiz.lectureId ? courseJourney : null;
   const courseNextAction = activeCourseJourney ? getCourseNextAction(activeCourseJourney, completedLectures) : null;
   const nextCourse = activeCourseJourney?.course.nextCourseSlug ? getLearningCourse(activeCourseJourney.course.nextCourseSlug) : undefined;
@@ -136,19 +139,40 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
   const practiceLabel = isClinicalStage ? '症例で確認' : activeCourseJourney ? '短い例で確認' : '用語を確認';
 
   const celebrationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const measuredAttempt = useRef({ lectureId: quiz.lectureId, started: false, answered: new Set<string>() });
+  const measuredAttempt = useRef({ lectureId: quiz.lectureId, started: false, answers: new Map<string, number>() });
+  const observedAnswers = useRef<{ lectureId: string; answers: Record<string, number> }>({ lectureId: quiz.lectureId, answers: {} });
   useEffect(() => () => { if (celebrationTimer.current) clearTimeout(celebrationTimer.current); }, []);
+  useEffect(() => {
+    const previous = observedAnswers.current;
+    if (!isMounted || measuredAttempt.current.lectureId !== quiz.lectureId) {
+      measuredAttempt.current = { lectureId: quiz.lectureId, started: false, answers: new Map() };
+    } else if (previous.lectureId === quiz.lectureId) {
+      // A reset, revision change, or retry removes stored answers. Release their
+      // transient duplicate guards without erasing other pending batched choices.
+      const removed = Object.keys(previous.answers).filter(id => selectedAnswers[id] === undefined);
+      for (const id of removed) measuredAttempt.current.answers.delete(id);
+      if (removed.length) measuredAttempt.current.started = false;
+    }
+    if (isMounted) for (const [id, answer] of Object.entries(selectedAnswers)) measuredAttempt.current.answers.set(id, answer);
+    observedAnswers.current = { lectureId: quiz.lectureId, answers: selectedAnswers };
+  }, [isMounted, quiz.lectureId, selectedAnswers]);
+
+  const clearCelebration = useCallback(() => {
+    if (celebrationTimer.current) clearTimeout(celebrationTimer.current);
+    celebrationTimer.current = null;
+    setCelebratingLectureId(null);
+  }, []);
 
   // 選択肢をクリックしたときの処理
   const handleSelectOption = useCallback(
     (question: QuizQuestionItem, optionIndex: number) => {
       // 既に回答済みの場合は変更不可
-      if (selectedAnswers[question.id] !== undefined) return;
+      if (!isMounted || selectedAnswers[question.id] !== undefined || !Number.isInteger(optionIndex) || optionIndex < 0 || optionIndex >= question.options.length) return;
       if (measuredAttempt.current.lectureId !== quiz.lectureId) {
-        measuredAttempt.current = { lectureId: quiz.lectureId, started: false, answered: new Set<string>() };
+        measuredAttempt.current = { lectureId: quiz.lectureId, started: false, answers: new Map() };
       }
-      if (measuredAttempt.current.answered.has(question.id)) return;
-      measuredAttempt.current.answered.add(question.id);
+      if (measuredAttempt.current.answers.has(question.id)) return;
+      measuredAttempt.current.answers.set(question.id, optionIndex);
       if (!measuredAttempt.current.started) {
         measuredAttempt.current.started = true;
         trackEvent('quiz_start', { tool_id: 'curriculum_quiz', lecture_id: quiz.lectureId, total: quiz.questions.length });
@@ -170,22 +194,24 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
         explanation: question.explanation,
         options: [...question.options],
         answeredAt: new Date().toISOString(),
+        revision: questionRevision(question.question, question.options, question.correctIndex, question.explanation),
+        kind: 'lecture',
       });
-      const nextAnswers = { ...selectedAnswers, [question.id]: optionIndex };
+      const nextAnswers = { ...selectedAnswers, ...Object.fromEntries(measuredAttempt.current.answers) };
       if (quiz.questions.every(q => nextAnswers[q.id] !== undefined)) {
         const score = quiz.questions.filter(q => nextAnswers[q.id] === q.correctIndex).length;
-        const passed = score >= quiz.passingScore;
+        const passed = score >= passingScore;
         if (passed) setLectureCompleted(quiz.lectureId, true);
         trackEvent('quiz_complete', { tool_id: 'curriculum_quiz', lecture_id: quiz.lectureId, passed, score, total: quiz.questions.length });
         if (score === quiz.questions.length) {
-          setShowConfetti(true);
+          setCelebratingLectureId(quiz.lectureId);
           if (soundEnabled) playCelebrationFanfare();
           if (celebrationTimer.current) clearTimeout(celebrationTimer.current);
-          celebrationTimer.current = setTimeout(() => setShowConfetti(false), 4500);
+          celebrationTimer.current = setTimeout(() => setCelebratingLectureId(null), 4500);
         }
       }
     },
-    [selectedAnswers, quiz, saveQuizResult, setLectureCompleted, soundEnabled]
+    [isMounted, selectedAnswers, quiz, passingScore, saveQuizResult, setLectureCompleted, soundEnabled]
   );
 
   // 選択肢シャッフルの切り替え
@@ -200,7 +226,8 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
 
   // もう一度挑戦する（全問リセット）
   const handleRetryAll = useCallback(() => {
-    measuredAttempt.current = { lectureId: quiz.lectureId, started: false, answered: new Set<string>() };
+    clearCelebration();
+    measuredAttempt.current = { lectureId: quiz.lectureId, started: false, answers: new Map<string, number>() };
     quiz.questions.forEach((q) => {
       clearQuizResult(q.id);
     });
@@ -211,11 +238,12 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
     if (container) {
       container.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }, [quiz.lectureId, quiz.questions, clearQuizResult, isShuffleEnabled]);
+  }, [quiz.lectureId, quiz.questions, clearQuizResult, isShuffleEnabled, clearCelebration]);
 
   // 間違えた問題だけ再挑戦（不正解のみリセット）
   const handleRetryMissed = useCallback(() => {
-    measuredAttempt.current = { lectureId: quiz.lectureId, started: false, answered: new Set<string>() };
+    clearCelebration();
+    measuredAttempt.current = { lectureId: quiz.lectureId, started: false, answers: new Map<string, number>() };
     quiz.questions.forEach(q => {
       if (selectedAnswers[q.id] !== undefined && selectedAnswers[q.id] !== q.correctIndex) clearQuizResult(q.id);
     });
@@ -234,7 +262,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
         }
       }
     }, 150);
-  }, [quiz.lectureId, quiz.questions, selectedAnswers, clearQuizResult, isShuffleEnabled]);
+  }, [quiz.lectureId, quiz.questions, selectedAnswers, clearQuizResult, isShuffleEnabled, clearCelebration]);
 
   // 次の講義へ進む
   const handleGoToNextLecture = useCallback(() => {
@@ -258,8 +286,8 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
         target?.tagName === 'BUTTON' ||
         target?.tagName === 'A' ||
         target?.isContentEditable;
-      if (isInput) return;
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (isInput || target?.closest?.('input, textarea, select, button, a, summary, [contenteditable], [role="dialog"], [role="button"], [role="link"], [role="textbox"], [role="combobox"], [role="listbox"]')) return;
+      if (!isMounted || e.defaultPrevented || e.isComposing || e.repeat || e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
 
       // 1. 全問回答済みの場合のショートカット
       if (isAllAnswered) {
@@ -294,8 +322,8 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
         if (firstUnanswered) {
           e.preventDefault();
           const displayOrder =
-            isShuffleEnabled && shuffleMap[firstUnanswered.id]
-              ? shuffleMap[firstUnanswered.id]
+            isShuffleEnabled
+              ? shuffleMap[firstUnanswered.id] ?? shuffledIndices(firstUnanswered.options.length, firstUnanswered.id)
               : [0, 1, 2];
           const originalIndex = displayOrder[chosenDisplayIdx];
           if (originalIndex !== undefined) {
@@ -308,6 +336,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [
+    isMounted,
     isAllAnswered,
     isPassed,
     nextLecture,
@@ -403,7 +432,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                 理解度チェック（全{totalQuestions}問・3択）
               </span>
               <span className="text-xs text-slate-500 dark:text-slate-400">
-                合格基準: {quiz.passingScore || 2}問以上正解でクリア
+                合格基準: {passingScore}問以上正解でクリア
               </span>
             </div>
             <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
@@ -415,6 +444,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                 </span>
               )}
             </h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">この{totalQuestions}問は講義の基本事項を確かめる練習です。間違えた問題は本文に戻り、時間を置いてもう一度確かめましょう。</p>
           </div>
 
           {/* 右上コントローラー（シャッフル切替・サウンド切替・ステータス） */}
@@ -424,6 +454,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
               type="button"
               onClick={toggleShuffle}
               title={isShuffleEnabled ? 'シャッフル解除（元の順序へ）' : '選択肢をシャッフル出題（位置暗記を防止）'}
+              aria-pressed={isShuffleEnabled}
               className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer border ${
                 isShuffleEnabled
                   ? 'bg-emerald-600 text-white border-emerald-700 shadow-2xs'
@@ -463,7 +494,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                 {isPerfect ? (
                   <>
                     <Trophy className="w-3.5 h-3.5" />
-                    パーフェクト（3/3）
+                    パーフェクト（{correctCount}/{totalQuestions}）
                   </>
                 ) : isPassed ? (
                   <>
@@ -473,7 +504,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                 ) : (
                   <>
                     <XCircle className="w-3.5 h-3.5" />
-                    あと{quiz.passingScore || 2 - correctCount}問で合格
+                    あと{Math.max(0, passingScore - correctCount)}問で合格
                   </>
                 )}
               </span>
@@ -482,7 +513,8 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
         </div>
 
         {/* キーボードショートカット案内チップ（未回答がある場合） */}
-        {!isAllAnswered && (
+        {!isMounted && <p role="status" className="text-sm text-slate-600 dark:text-slate-300">学習履歴を確認しています。読み込みが終わると回答できます。</p>}
+        {isMounted && !isAllAnswered && (
           <div className="flex flex-wrap items-center justify-between gap-2 px-3.5 py-2 rounded-xl bg-white/60 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/40 text-sm text-slate-600 dark:text-slate-300">
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
@@ -510,8 +542,8 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
 
             // 表示する選択肢の順番（シャッフルON時はマッピングを使用）
             const displayOrder =
-              isShuffleEnabled && shuffleMap[q.id]
-                ? shuffleMap[q.id]
+              isShuffleEnabled
+                ? shuffleMap[q.id] ?? shuffledIndices(q.options.length, q.id)
                 : q.options.map((_, i) => i);
 
             return (
@@ -524,6 +556,9 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                     : 'border-slate-200/80 dark:border-slate-700/60'
                 }`}
               >
+                <p className="sr-only" role="status" aria-atomic="true">
+                  {isAnswered ? `第${qIndex + 1}問、${isCorrect ? '正解' : '不正解'}。正答は${String.fromCharCode(65 + displayOrder.indexOf(q.correctIndex))}、${q.options[q.correctIndex]}` : ''}
+                </p>
                 {/* 設問番号 & 正否バッジ */}
                 <div className="flex items-center justify-between gap-2 mb-3">
                   <div className="flex items-center gap-2">
@@ -593,7 +628,8 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                         key={`${origIndex}-${displayIdx}`}
                         type="button"
                         onClick={() => handleSelectOption(q, origIndex)}
-                        disabled={isAnswered}
+                        disabled={!isMounted || isAnswered}
+                        aria-pressed={isOptionChosen}
                         className={`w-full text-left p-3.5 sm:p-4 rounded-xl border transition-all flex items-start gap-3.5 text-sm sm:text-base ${btnStyles} ${
                           !isAnswered ? 'cursor-pointer hover:shadow-xs' : 'cursor-default'
                         }`}
@@ -630,6 +666,9 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                 {/* 回答後のワンポイント解説 */}
                 {isAnswered && (
                   <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 bg-emerald-50/30 dark:bg-emerald-950/20 rounded-xl p-3.5 text-xs sm:text-sm space-y-2.5">
+                    <p className="font-semibold text-emerald-800 dark:text-emerald-300">
+                      正答：{String.fromCharCode(65 + displayOrder.indexOf(q.correctIndex))} {q.options[q.correctIndex]}
+                    </p>
                     <div>
                       <span className="font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1 mb-1">
                         <Award className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
@@ -652,13 +691,18 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                             onClick={() => {
                               if (typeof window !== 'undefined') {
                                 const elements = Array.from(
-                                  document.querySelectorAll('#lecture-content h2, #lecture-content h3, #lecture-content p, #lecture-content strong')
+                                  document.querySelectorAll<HTMLElement>('#lecture-content h2, #lecture-content h3, #lecture-content h4, #lecture-content p, #lecture-content strong')
                                 );
-                                const target = elements.find(
+                                const matched = elements.find(
                                   (el) => topic && el.textContent?.includes(topic)
                                 );
+                                const target = matched ?? document.getElementById('lecture-content');
                                 if (target) {
-                                  target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                  const behavior = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+                                  target.scrollIntoView({ behavior, block: matched ? 'center' : 'start' });
+                                  if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+                                  target.focus({ preventScroll: true });
+                                  if (!matched) return;
                                   target.classList.add(
                                     'ring-4',
                                     'ring-amber-400',
@@ -675,15 +719,13 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                                       'dark:bg-amber-950/90'
                                     );
                                   }, 3000);
-                                } else {
-                                  window.scrollTo({ top: 0, behavior: 'smooth' });
                                 }
                               }
                             }}
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-50 text-[#1E3D34] dark:text-[#74BA9E] text-xs font-bold transition-all shadow-2xs cursor-pointer group"
                           >
                             <BookOpen className="w-3.5 h-3.5" />
-                            <span>「{topic || 'このテーマ'}」を講義本文で読み直す</span>
+                            <span>{q.relatedSectionTitle ? `「${q.relatedSectionTitle}」を講義本文で読み直す` : '講義本文を読み直す'}</span>
                             <ArrowUp className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform" />
                           </button>
                         </div>
@@ -741,13 +783,13 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                     </span>
                   </div>
                   <p className="text-xs sm:text-sm text-emerald-700/80 dark:text-emerald-300/80">
-                    {courseNextAction?.kind === 'complete' ? 'このコースのすべての講義を受講しました。振り返りと次のテーマへ進めます。' : 'このレッスンの受講完了が自動記録されました。次のステップへ進みましょう！'}
+                    {courseNextAction?.kind === 'complete' ? 'このコースのすべての講義を受講しました。振り返りと次のテーマへ進めます。' : completedLectures[quiz.lectureId] ? 'このレッスンの受講完了を記録しています。次のステップへ進みましょう。' : '今回は合格基準を満たしています。受講完了の記録は講義末尾で確認できます。'}
                   </p>
                 </div>
               ) : (
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-center gap-2 text-lg font-bold text-rose-800 dark:text-rose-200">
-                    <span>あと{Math.max(0, (quiz.passingScore || 2) - correctCount)}問正解で合格ラインです！</span>
+                    <span>あと{Math.max(0, passingScore - correctCount)}問正解で合格ラインです！</span>
                   </div>
                   <p className="text-xs sm:text-sm text-rose-700/80 dark:text-rose-300/80">
                     各問題の解説を振り返り、間違えた問題を再挑戦してみましょう。

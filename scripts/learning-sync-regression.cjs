@@ -79,6 +79,12 @@ async function main() {
   assert.equal(combined.consecutiveCorrect, 0);
   assert.equal(history.mergeQuizAttempts({ ...base, historyEpoch: 'new' }, [base, other]).attempts, 1, 'Cleared question does not replay old attempts');
   assert.equal(history.validQuizRecord({ ...base, options: null }), false);
+  assert.equal(history.validQuizRecord(base), true, 'Consistent correct answer remains valid');
+  assert.equal(history.validQuizRecord(other), true, 'Consistent incorrect answer remains valid');
+  assert.equal(history.validQuizRecord({ ...base, isCorrect: false }), false, 'A correct answer cannot be stored as a mistake');
+  assert.equal(history.validQuizRecord({ ...other, isCorrect: true }), false, 'An incorrect answer cannot inflate the score or review interval');
+  assert.equal(history.validQuizRecord({ ...base, userAnswerIndex: -1 }), false);
+  assert.equal(history.validQuizRecord({ ...base, correctAnswerIndex: base.options.length }), false);
   for (const stages of Object.values(CASE_REASONING_RUBRICS)) for (const reasons of stages) {
     const support = reasons.filter(reason => reason.supports).map(reason => reason.id);
     assert.equal(score.gradeCaseReasoning(2, reasons, support).total, 6);
