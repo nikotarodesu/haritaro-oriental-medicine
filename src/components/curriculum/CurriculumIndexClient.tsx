@@ -379,21 +379,23 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
 
                                 <button
                                   type="button"
+                                  disabled={!isMounted}
                                   onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
-                                    toggleLectureCompleted(lec.id);
+                                    if (isMounted) toggleLectureCompleted(lec.id);
                                   }}
-                                  title={isLecCompleted ? "受講完了（クリックで解除）" : "受講済みにする"}
-                                  aria-label={`${lec.title}：${isLecCompleted ? "受講済みを解除" : "受講済みにする"}`}
+                                  title={!isMounted ? "進捗を確認中…" : isLecCompleted ? "受講完了（クリックで解除）" : "受講済みにする"}
+                                  aria-label={`${lec.title}：${!isMounted ? "進捗を確認中" : isLecCompleted ? "受講済みを解除" : "受講済みにする"}`}
                                   aria-pressed={isLecCompleted}
-                                  className={`min-h-11 min-w-11 p-1.5 rounded-lg transition-colors cursor-pointer flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-4 ${
+                                  className={`min-h-11 min-w-11 p-1.5 rounded-lg transition-colors cursor-pointer disabled:cursor-wait disabled:opacity-60 flex items-center justify-center gap-1 focus-visible:outline-2 focus-visible:outline-offset-4 ${
                                     isLecCompleted
                                       ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300"
                                       : "text-slate-300 dark:text-slate-600 hover:text-emerald-600 hover:bg-emerald-50"
                                   }`}
                                 >
                                   <CheckCircle2 className="w-4 h-4" />
+                                  {!isMounted && <span className="text-xs">確認中</span>}
                                 </button>
                               </div>
                             </div>

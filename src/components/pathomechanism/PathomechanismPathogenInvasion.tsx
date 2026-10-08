@@ -1,153 +1,61 @@
 "use client";
 
-import React, { useState } from "react";
-import { Sparkles, Shield, ShieldAlert, ShieldX, ArrowRight, Wind, Snowflake, CloudRain, Flame, Sun } from "lucide-react";
+import { useId, useState } from "react";
+
+const CLASSIFICATIONS = [
+  {
+    name: "表", subtitle: "身体の外側に関わる特徴を整理",
+    explanation: "悪寒・発熱などの組み合わせを、表という伝統分類の候補として読む練習です。実際の皮膚から病原体が侵入したことを意味しません。",
+    observation: "いつ始まったか、本人が感じる寒さ、測定した体温、ほかの症状を分けて記録します。",
+    unknown: "症状の原因や感染の有無は、この分類だけでは分かりません。",
+  },
+  {
+    name: "半表半裏", subtitle: "少陽の特徴との関係を比較",
+    explanation: "往来寒熱・胸脇苦満など、教科書で少陽と関連づける特徴を比較します。自律神経の異常や身体の中間層と一対一に対応する用語ではありません。",
+    observation: "寒さと熱さを感じる時間、胸脇の不快感、飲食や生活との関係などを確認します。",
+    unknown: "表から進んだ第二段階なのか、特定の処方が必要なのかは、この図から決められません。",
+  },
+  {
+    name: "裏", subtitle: "内側の機能に関わる特徴を整理",
+    explanation: "臓腑などの内側の働きに関係する特徴を整理する分類です。器質的な損傷、重症度、病原体が到達した深さをそのまま表してはいません。",
+    observation: "飲食・排泄・睡眠などの変化を、持続時間やほかの所見と合わせて記録します。",
+    unknown: "寒熱や虚実、医学的な疾患の有無は、別の情報を加えて確かめます。",
+  },
+] as const;
 
 export default function PathomechanismPathogenInvasion() {
-  const [activeBarrier, setActiveBarrier] = useState<number>(1);
-
-  const barriers = [
-    {
-      level: 1,
-      title: "第1防壁：体表バリア突破（表証段階）",
-      target: "皮膚 ➜ 腠理（毛穴） ➜ 孫絡 ➜ 経脈",
-      status: "衛気の弱まりを突いて侵入",
-      color: "#0288D1",
-      icon: Shield,
-      desc: "寒暖差や疲労、睡眠不足によって体表の「衛気（バリア）」が薄くなった瞬間、外邪が皮膚から侵入。悪寒、発熱、首の後ろのこわばりが生じる。",
-      bodyDefense: "生体は毛穴を閉じて発熱し、ウイルスを熱で不活性化しようと奮闘する（葛根湯・麻黄湯で発汗を後押しすべき段階）。",
-    },
-    {
-      level: 2,
-      title: "第2防壁：気機攪乱プログラム入力（半表半裏段階）",
-      target: "少陽（胆・三焦） ➜ 自律神経ネットワーク",
-      status: "六淫の異常コードが生体制御を混乱させる",
-      color: "#FFA000",
-      icon: ShieldAlert,
-      desc: "外邪が経絡内部に定着し、固有の異常プログラムを起動。風（遊走・めまい）、寒（収縮・激痛）、湿（重濁・停滞）、燥（乾燥・枯渇）、熱（充血・上炎）により自律神経の昇降リズムが狂う。",
-      bodyDefense: "往来寒熱（寒気と熱っぽさが交互に来る）、胸脇苦満、食欲不振、口の苦味。和解少陽（小柴胡湯）で内外の交通を調停する。",
-    },
-    {
-      level: 3,
-      title: "第3防壁：深層臓腑の内在化・器質化（裏証段階）",
-      target: "五臓六腑（胃腸・肺・腎） ➜ 慢性固定化",
-      status: "外邪が体質と結託して恒久病変へ",
-      color: "#D32F2F",
-      icon: ShieldX,
-      desc: "邪気が最深部の臓腑に到達。寒邪が腎陽を奪って深部冷えとなり、湿邪が脾胃に沈殿して慢性痰湿となり、熱邪が津液を焦がして慢性炎症・瘀血へ固定化される。",
-      bodyDefense: "もはや発汗などの表面的な治療では排出不能。臓腑の虚を補いながら固まった邪気を排出する長期戦が必要。",
-    },
-  ];
-
-  const current = barriers.find((b) => b.level === activeBarrier)!;
+  const [activeClassification, setActiveClassification] = useState(0);
+  const panelId = useId();
+  const selected = CLASSIFICATIONS[activeClassification];
 
   return (
-    <figure className="my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 shadow-sm transition-colors overflow-hidden">
-      {/* ヘッダー */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 mb-6">
-        <div>
-          <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説⑥：外邪侵入の3段階バリア突破インフォグラフィック</span>
-          </span>
-          <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            城壁（衛気）から本丸（五臓）へ ── 六淫が引き起こす生体プログラムの乗っ取り
-          </h4>
-        </div>
-        <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-          防壁レベルを選択して突破過程を確認
-        </span>
+    <figure className="my-8 overflow-hidden rounded-3xl border border-[#E5DEC9] bg-white p-6 shadow-sm dark:border-[#2A3B4A] dark:bg-[#17212A] sm:p-8">
+      <p className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">外感の学習で使う分類</p>
+      <h4 className="mt-1 font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">表・半表半裏・裏を並べて比較する</h4>
+      <p className="mt-3 text-sm leading-relaxed text-[#59615D] dark:text-[#CBD5E1]">外邪は伝統上の病因の表現です。ここでは所見を整理する観点を比べます。病原体の侵入経路や進行段階を示す図として読まないようにします。</p>
+      <div className="mt-5 grid gap-3 sm:grid-cols-3" role="group" aria-label="伝統分類を選ぶ">
+        {CLASSIFICATIONS.map((item, index) => (
+          <button key={item.name} type="button" aria-pressed={activeClassification === index} aria-controls={panelId} onClick={() => setActiveClassification(index)} className={`rounded-xl border p-4 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B86924] ${activeClassification === index ? "border-[#1E3D34] bg-[#1E3D34] text-white dark:border-[#74BA9E]" : "border-[#E5DEC9] bg-[#FAF8F5] text-[#59615D] dark:border-[#2A3B4A] dark:bg-[#121920] dark:text-[#CBD5E1]"}`}>
+            <span className="block text-lg font-bold">{item.name}</span>
+            <span className="mt-1 block text-xs leading-relaxed">{item.subtitle}</span>
+          </button>
+        ))}
       </div>
-
-      {/* 3段階の城壁ステップ */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
-        {barriers.map((b) => {
-          const isSelected = activeBarrier === b.level;
-          const Icon = b.icon;
-          return (
-            <div
-              key={b.level}
-              onClick={() => setActiveBarrier(b.level)}
-              className={`cursor-pointer rounded-2xl p-4 border-2 transition-all text-left ${
-                isSelected
-                  ? "bg-white dark:bg-[#17212A] shadow-md scale-[1.02]"
-                  : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E8E1D1] dark:border-[#22303D] opacity-75 hover:opacity-100"
-              }`}
-              style={{
-                borderColor: isSelected ? b.color : undefined,
-              }}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded border" style={{ color: b.color, borderColor: b.color }}>
-                  BARRIER 0{b.level}
-                </span>
-                <Icon className="w-4 h-4" style={{ color: b.color }} />
-              </div>
-              <h5 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5] mb-1">
-                {b.title.split("（")[0]}
-              </h5>
-              <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] line-clamp-1">
-                {b.target}
-              </p>
-            </div>
-          );
-        })}
+      <section id={panelId} aria-live="polite" className="mt-5 rounded-2xl border border-[#E8E1D1] bg-[#FAF8F5] p-5 dark:border-[#22303D] dark:bg-[#121920]">
+        <h5 className="font-bold text-[#232826] dark:text-[#FAF8F5]">{selected.name}という分類で何を考えるか</h5>
+        <p className="mt-2 text-sm leading-relaxed text-[#59615D] dark:text-[#CBD5E1]">{selected.explanation}</p>
+        <dl className="mt-4 space-y-3 text-sm leading-relaxed text-[#59615D] dark:text-[#CBD5E1]">
+          <div><dt className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">記録する事実</dt><dd className="mt-1">{selected.observation}</dd></div>
+          <div><dt className="font-bold text-[#B86924] dark:text-[#E6C387]">まだ分からないこと</dt><dd className="mt-1">{selected.unknown}</dd></div>
+        </dl>
+      </section>
+      <div className="mt-5 rounded-xl border border-[#E5DEC9] p-4 dark:border-[#2A3B4A]">
+        <p className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">六気・六淫で扱う六つの分類</p>
+        <ul className="mt-3 flex flex-wrap gap-2 text-sm font-bold text-[#59615D] dark:text-[#CBD5E1]">
+          {["風", "寒", "暑", "湿", "燥", "火"].map((name) => <li key={name} className="rounded-lg bg-[#F2ECE0] px-4 py-2 dark:bg-[#22303D]">{name}</li>)}
+        </ul>
       </div>
-
-      {/* 選択された防壁の詳細解説 */}
-      <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-5 sm:p-7 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#EAE4D5] dark:border-[#22303D] pb-3">
-          <div>
-            <span className="text-xs font-bold text-[#8C9691] dark:text-[#64748B]">
-              浸透深度：{current.target}
-            </span>
-            <h5 className="font-bold text-base text-[#232826] dark:text-[#FAF8F5] mt-0.5">
-              {current.title}
-            </h5>
-          </div>
-          <span className="text-xs font-bold px-3 py-1 rounded-full bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]" style={{ color: current.color }}>
-            {current.status}
-          </span>
-        </div>
-
-        <p className="text-xs sm:text-sm text-[#232826] dark:text-[#D1D5DB] leading-relaxed">
-          {current.desc}
-        </p>
-
-        <div className="bg-white dark:bg-[#17212A] rounded-xl p-4 border border-[#E5DEC9] dark:border-[#2A3B4A] text-xs">
-          <div className="flex items-center gap-1.5 font-bold text-[#1E3D34] dark:text-[#74BA9E] mb-1.5">
-            <Shield className="w-4 h-4" />
-            <span>生体防衛反応と臨床介入ポイント</span>
-          </div>
-          <p className="text-[#3E4541] dark:text-[#CBD5E1] leading-relaxed">
-            {current.bodyDefense}
-          </p>
-        </div>
-
-        {/* 六淫の異常プログラム一覧（第2防壁の補足） */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-[11px] pt-2">
-          <div className="p-2 rounded-lg bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] text-center">
-            <Wind className="w-3.5 h-3.5 mx-auto text-[#00897B] mb-1" />
-            <strong>風邪</strong>: 遊走・目眩
-          </div>
-          <div className="p-2 rounded-lg bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] text-center">
-            <Snowflake className="w-3.5 h-3.5 mx-auto text-[#0288D1] mb-1" />
-            <strong>寒邪</strong>: 凝固・激痛
-          </div>
-          <div className="p-2 rounded-lg bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] text-center">
-            <CloudRain className="w-3.5 h-3.5 mx-auto text-[#689F38] mb-1" />
-            <strong>湿邪</strong>: 重濁・むくみ
-          </div>
-          <div className="p-2 rounded-lg bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] text-center">
-            <Sun className="w-3.5 h-3.5 mx-auto text-[#FFA000] mb-1" />
-            <strong>燥邪</strong>: 乾燥・空咳
-          </div>
-          <div className="p-2 rounded-lg bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] text-center">
-            <Flame className="w-3.5 h-3.5 mx-auto text-[#D32F2F] mb-1" />
-            <strong>熱邪</strong>: 充血・炎症
-          </div>
-        </div>
-      </div>
+      <figcaption className="mt-4 text-xs leading-relaxed text-[#59615D] dark:text-[#96A6B2]">分類を比較する学習図です。三つは必ずこの順に進む悪化段階ではありません。六経・衛気営血などの体系とも区別し、診断や処方の選択はこの図から行いません。</figcaption>
     </figure>
   );
 }

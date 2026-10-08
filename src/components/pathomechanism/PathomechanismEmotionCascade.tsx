@@ -1,169 +1,52 @@
 "use client";
 
-import React, { useState } from "react";
-import { Sparkles, Brain, ArrowDown, Activity, AlertTriangle, ShieldCheck, HeartPulse, Stethoscope } from "lucide-react";
+import { useId, useState } from "react";
+
+const CANDIDATES = [
+  { name: "気滞", description: "気の働きが円滑でない状態として説明する伝統用語です。気分と胸腹部の不快感などの関係を、時間経過も含めて比較します。", limit: "自律神経の収縮や筋緊張と同じものだとは決められません。" },
+  { name: "痰湿", description: "津液に関わる所見を整理する伝統上の候補です。身体の重さなどの訴えがあっても、気滞から必ず生じるとは考えません。", limit: "体内に特定の物質が沈殿したことや、リンパの異常を示す言葉ではありません。" },
+  { name: "瘀血", description: "血の働きが円滑でない状態を説明する伝統用語です。痛みなどの所見はほかの候補でも起こり得るため、単独で決めません。", limit: "血栓、血液粘度の変化、微小血管の損傷をそのまま示すものではありません。" },
+  { name: "虚実錯雑", description: "不足を示す側面と停滞などを示す側面が同時にある、と整理する考え方です。所見ごとに根拠を示して比較します。", limit: "ほかの三つの末期段階、器質的な損傷、ホルモン系の枯渇を意味しません。" },
+] as const;
 
 export default function PathomechanismEmotionCascade() {
-  const [activeStep, setActiveStep] = useState<number>(1);
-
-  const steps = [
-    {
-      step: 1,
-      name: "【第1段階】気滞（機能的緊張）",
-      badge: "自律神経の収縮",
-      color: "#FFA000",
-      sign: "呼吸が浅い、ため息、胸や喉のつかえ（梅核気）、イライラ",
-      desc: "感情の我慢や過密スケジュールにより交感神経が持続興奮。横隔膜が硬直して呼吸が浅くなり、気のハイウェイが渋滞を起こす。",
-      modern: "自律神経トーンのアンバランス、筋筋膜の緊張拘縮、胃腸蠕動の低下",
-    },
-    {
-      step: 2,
-      name: "【第2段階】痰湿（流体の濁り）",
-      badge: "消化代謝の停止",
-      color: "#689F38",
-      sign: "頭が重い、めまい、下肢のむくみ、口の粘り、泥状便",
-      desc: "「肝木剋脾土」。肝の緊張が胃腸（脾胃）を直撃し、消化酵素や腸内フローラが乱れ、未消化の水分・脂質が高粘稠な病理産物（痰湿）となって全身間質に沈殿・停滞する。",
-      modern: "リンパ流うっ滞、間質浮腫、慢性低悪性度炎症、インスリン抵抗性",
-    },
-    {
-      step: 3,
-      name: "【第3段階】瘀血（循環の閉塞）",
-      badge: "微小血管の破綻",
-      color: "#D32F2F",
-      sign: "針で刺すような固定痛、夜間の痛み悪化、肌のくすみ、唇の暗紫",
-      desc: "気の推動停止と痰湿の物理的圧迫により、毛細血管網（絡脈）が次々と閉塞。赤血球が連鎖凝集し、局所組織が持続的な酸欠・壊死に直面する。",
-      modern: "微小循環不全、血液粘度上昇、血管内皮障害、組織線維化の開始",
-    },
-    {
-      step: 4,
-      name: "【第4段階】虚実錯雑（器質的固定化）",
-      badge: "構造のロック",
-      color: "#7B1FA2",
-      sign: "慢性不眠、自律神経失調症、線維筋痛、月経困難症、内臓下垂",
-      desc: "表層には病理産物が鬱滞（標実：気滞・痰湿・瘀血）している一方、生命活動の根底エネルギーは枯渇（本虚：脾腎虚）。精神的緊張の持続が身体組織の器質的硬化として固定化した状態。",
-      modern: "中枢性感作（痛みの脳記憶化）、HPA軸（視床下部-下垂体-副腎系）の完全疲弊",
-    },
-  ];
+  const [activeCandidate, setActiveCandidate] = useState(0);
+  const panelId = useId();
+  const selected = CANDIDATES[activeCandidate];
 
   return (
-    <figure className="my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 shadow-sm transition-colors overflow-hidden">
-      {/* ヘッダー */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 mb-6">
-        <div>
-          <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説⑦：情志内傷から器質化への4段階ドミノ倒しチャート</span>
-          </span>
-          <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            感情の抑圧は肉体へ物理沈殿する ── ストレスが組織変質へと転化するドミノ倒し
-          </h4>
-        </div>
-        <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-          各ステップをタップして進行度を確認
-        </span>
+    <figure className="my-8 overflow-hidden rounded-3xl border border-[#E5DEC9] bg-white p-6 shadow-sm dark:border-[#2A3B4A] dark:bg-[#17212A] sm:p-8">
+      <p className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">生活背景と所見を整理する比較図</p>
+      <h4 className="mt-1 font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">感情を原因と決めず、複数の解釈を比べる</h4>
+      <p className="mt-3 text-sm leading-relaxed text-[#59615D] dark:text-[#CBD5E1]">七情は自然な感情を伝統理論の中で扱う枠組みです。体調の変化を感情だけの責任にせず、睡眠・食事・仕事・既往などの背景と一緒に考えます。</p>
+      <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4" role="group" aria-label="解釈候補を比較する">
+        {CANDIDATES.map((candidate, index) => (
+          <button key={candidate.name} type="button" aria-pressed={activeCandidate === index} aria-controls={panelId} onClick={() => setActiveCandidate(index)} className={`rounded-xl border p-4 text-left font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B86924] ${activeCandidate === index ? "border-[#1E3D34] bg-[#1E3D34] text-white dark:border-[#74BA9E]" : "border-[#E5DEC9] bg-[#FAF8F5] text-[#59615D] dark:border-[#2A3B4A] dark:bg-[#121920] dark:text-[#CBD5E1]"}`}>
+            <span className="block">{candidate.name}</span>
+            <span className="mt-2 block text-xs font-normal">伝統上の解釈候補</span>
+          </button>
+        ))}
       </div>
-
-      {/* 起点ボックス */}
-      <div className="bg-[#FFF8E1] dark:bg-[#FFA000]/15 border border-[#FFE082]/60 rounded-2xl p-4 mb-6 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <Brain className="w-5 h-5 text-[#E65100] shrink-0" />
-          <div>
-            <strong className="text-[#5D4037] dark:text-[#FFE082]">【すべての起点】情報過多 ＆ 感情の持続的抑圧：</strong>
-            <span className="text-[#59615D] dark:text-[#CBD5E1] ml-1">
-              思慮過多（脾気停滞） ＋ 肝気鬱結（自律神経拘束）
-            </span>
-          </div>
-        </div>
-        <span className="text-[10px] px-2 py-0.5 rounded bg-white dark:bg-[#17212A] border border-[#FFE082] text-[#E65100] font-bold self-start sm:self-auto shrink-0">
-          トリガー入力
-        </span>
+      <section id={panelId} aria-live="polite" className="mt-5 rounded-2xl bg-[#FAF8F5] p-5 dark:bg-[#121920]">
+        <h5 className="font-bold text-[#232826] dark:text-[#FAF8F5]">{selected.name}として整理するとき</h5>
+        <p className="mt-2 text-sm leading-relaxed text-[#59615D] dark:text-[#CBD5E1]">{selected.description}</p>
+        <p className="mt-3 text-sm leading-relaxed text-[#B86924] dark:text-[#E6C387]">{selected.limit}</p>
+      </section>
+      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+        <section className="rounded-xl border border-[#E5DEC9] p-4 dark:border-[#2A3B4A]">
+          <h5 className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">事実：架空例の記録</h5>
+          <p className="mt-2 text-xs leading-relaxed text-[#59615D] dark:text-[#CBD5E1]">忙しい一週間に睡眠時間が短くなり、食事の時刻も変わった。本人は胸のつかえと疲れを訴えている。</p>
+        </section>
+        <section className="rounded-xl border border-[#E5DEC9] p-4 dark:border-[#2A3B4A]">
+          <h5 className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">解釈：仮説として比較</h5>
+          <p className="mt-2 text-xs leading-relaxed text-[#59615D] dark:text-[#CBD5E1]">伝統上の候補と生活背景を並べる。ただし、忙しさ・感情・症状の因果関係は、この記録だけでは確定しない。</p>
+        </section>
+        <section className="rounded-xl border border-[#E5DEC9] p-4 dark:border-[#2A3B4A]">
+          <h5 className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">不明点：追加の確認</h5>
+          <p className="mt-2 text-xs leading-relaxed text-[#59615D] dark:text-[#CBD5E1]">始まった時期、持続、ほかの症状、服薬や既往を確認する。医学的な原因や評価の必要性は別に検討する。</p>
+        </section>
       </div>
-
-      {/* ドミノ4ステップ（縦並び連鎖） */}
-      <div className="space-y-3 mb-6">
-        {steps.map((s) => {
-          const isSelected = activeStep === s.step;
-          return (
-            <div
-              key={s.step}
-              onClick={() => setActiveStep(s.step)}
-              className={`cursor-pointer rounded-2xl p-4 sm:p-5 border-2 transition-all ${
-                isSelected
-                  ? "bg-white dark:bg-[#17212A] shadow-md scale-[1.01]"
-                  : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E8E1D1] dark:border-[#22303D] opacity-80 hover:opacity-100"
-              }`}
-              style={{
-                borderColor: isSelected ? s.color : undefined,
-              }}
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-                <div className="flex items-center gap-2.5">
-                  <span
-                    className="w-6 h-6 rounded-lg flex items-center justify-center text-white text-xs font-mono font-bold"
-                    style={{ backgroundColor: s.color }}
-                  >
-                    0{s.step}
-                  </span>
-                  <h5 className="font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
-                    {s.name}
-                  </h5>
-                </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D]" style={{ color: s.color }}>
-                  {s.badge}
-                </span>
-              </div>
-
-              <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#CBD5E1] leading-relaxed mb-3">
-                {s.desc}
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs pt-2 border-t border-[#F2ECE0] dark:border-[#22303D]">
-                <div>
-                  <span className="text-[#8C9691] dark:text-[#64748B] block text-[10px]">
-                    現れる自覚サイン：
-                  </span>
-                  <span className="font-bold text-[#D32F2F] dark:text-[#EF5350]">
-                    {s.sign}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-[#8C9691] dark:text-[#64748B] block text-[10px]">
-                    現代医学の生理的符合：
-                  </span>
-                  <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                    {s.modern}
-                  </span>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* 身体操作による臨床介入コールアウト */}
-      <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-5 text-xs">
-        <div className="flex items-center gap-2 font-bold text-sm text-[#1E3D34] dark:text-[#74BA9E] mb-2">
-          <Stethoscope className="w-4 h-4" />
-          <span>精神論ではなく「身体介入」から解体する東洋医学のアプローチ</span>
-        </div>
-        <p className="text-[#59615D] dark:text-[#CBD5E1] leading-relaxed mb-3">
-          感情がすでに肉体の緊張や血流不全としてロックされている場合、「ポジティブに考えよう」という意識の努力だけでは自律神経は緩みません。東洋医学では、以下の<strong>3つの身体操作</strong>によって物理的にドミノ倒しを逆回転させます。
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-          <div className="p-3 bg-white dark:bg-[#17212A] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
-            <strong className="text-[#1E3D34] dark:text-[#74BA9E] block mb-1">① 呼吸の再教育</strong>
-            <span>横隔膜と肋間筋を鍼や温灸で解放し、深い呼気によって迷走神経（副交感神経）を物理的に刺激する。</span>
-          </div>
-          <div className="p-3 bg-white dark:bg-[#17212A] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
-            <strong className="text-[#B86924] dark:text-[#E6C387] block mb-1">② 気の沈降（引火帰元）</strong>
-            <span>頭部に突き上がった熱と過緊張を、「湧泉・太衝・照海」などの下肢穴に誘導して頭を冷やす。</span>
-          </div>
-          <div className="p-3 bg-white dark:bg-[#17212A] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
-            <strong className="text-[#D32F2F] dark:text-[#EF5350] block mb-1">③ 肝脾の調和</strong>
-            <span>「太衝（肝）」と「足三里（脾）」の配穴により、自律神経の緊張が胃腸を攻撃する悪循環を遮断する。</span>
-          </div>
-        </div>
-      </div>
+      <figcaption className="mt-4 text-xs leading-relaxed text-[#59615D] dark:text-[#96A6B2]">四つを必ず進む悪化の連鎖として示した図ではありません。伝統概念と現代の生理機構を同一視せず、ここから病名や施術の順序を決めないでください。</figcaption>
     </figure>
   );
 }

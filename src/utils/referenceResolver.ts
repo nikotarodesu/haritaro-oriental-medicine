@@ -1,6 +1,6 @@
 import { ReferenceItem, ResolvedReference } from "@/types/references";
 import { PAPERS_DATABASE } from "@/data/references/papersData";
-import { buildAmazonAssociateUrl, buildAmazonAssociateSearchUrl } from "./amazonAssociate";
+import { buildAmazonAssociateSearchUrl } from "./amazonAssociate";
 
 /**
  * IDに基づいて論文データベース（PAPERS_DATABASE）から論文情報を取得し、
@@ -69,7 +69,8 @@ export function resolveArticleReferences(
         title: item.title,
         author: authorStr,
       });
-      amazonUrl = amazonSearchUrl;
+      amazonUrl = item.bibliographyStatus === "matched" ? amazonSearchUrl : undefined;
+      if (item.bibliographyStatus !== "matched") amazonSearchUrl = undefined;
     } else if (
       item.type === "book" ||
       item.asin ||
@@ -83,12 +84,14 @@ export function resolveArticleReferences(
       });
 
       // リンク切れ防止のため、常に安全な和書検索URLを優先
-      amazonUrl = amazonSearchUrl;
+      amazonUrl = item.bibliographyStatus === "matched" ? amazonSearchUrl : undefined;
+      if (item.bibliographyStatus !== "matched") amazonSearchUrl = undefined;
     }
 
     const resolved: ResolvedReference = {
       ...item,
-      ...(item.type === 'paper' && !item.bibliographyStatus ? { bibliographyStatus: 'unverified' as const, claimsStatus: 'needs-review' as const } : {}),
+      bibliographyStatus: item.bibliographyStatus ?? 'unverified',
+      claimsStatus: item.claimsStatus ?? 'needs-review',
       amazonUrl,
       amazonSearchUrl,
       libraryUrl,

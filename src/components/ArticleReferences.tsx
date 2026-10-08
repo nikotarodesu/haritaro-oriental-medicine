@@ -9,12 +9,14 @@ interface ArticleReferencesProps {
   references: ResolvedReference[];
   title?: string;
   defaultExpanded?: boolean;
+  scopeNote?: string;
 }
 
 export default function ArticleReferences({
   references,
   title = "参考文献・出典と確認範囲",
   defaultExpanded = true,
+  scopeNote,
 }: ArticleReferencesProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
@@ -73,6 +75,7 @@ export default function ArticleReferences({
         {/* 参考文献カード一覧 */}
         {isExpanded && (
           <div className="p-3 sm:p-6 space-y-3 sm:space-y-4 divide-y divide-[#EBE4D5] dark:divide-[#22303D]">
+            {scopeNote && <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]" data-reference-scope>{scopeNote}</p>}
             {references.map((ref) => {
               const authorsText = Array.isArray(ref.authors)
                 ? ref.authors.length > 3
@@ -107,7 +110,7 @@ export default function ArticleReferences({
                               : ref.type === "guideline"
                               ? "公的資料・ガイドライン"
                               : ref.type === "book"
-                              ? "東洋医学推薦図書・成書"
+                              ? "書籍・成書"
                               : ref.type}
                           </span>
                         )}

@@ -79,10 +79,12 @@ export function CurriculumProgressProvider({ children, catalog }: { children: Re
   const revisedQuestionCount = Object.keys(storedQuizResults).filter(id => LEARNING_QUESTION_MAP.has(id) && !quizResults[id]).length;
 
   const toggleLectureCompleted = (lectureId: string) => {
+    if (!isMounted) return;
     setEntry('lecture:' + lectureId, !completedLectures[lectureId]);
   };
 
   const setLectureCompleted = (lectureId: string, completed: boolean) => {
+    if (!isMounted) return;
     setEntry('lecture:' + lectureId, completed);
   };
 

@@ -1,162 +1,74 @@
 "use client";
 
-import React, { useState } from "react";
-import { Sparkles, Flame, Snowflake, AlertOctagon, ArrowDown, Activity } from "lucide-react";
+import { useId, useState } from "react";
+
+const ZONES = [
+  { id: "all", label: "上下を比較" },
+  { id: "upper", label: "上部の訴え" },
+  { id: "lower", label: "下部の訴え" },
+] as const;
 
 export default function PathomechanismThermoXushi() {
-  const [highlightZone, setHighlightZone] = useState<"upper" | "lower" | "all">("all");
+  const [highlightZone, setHighlightZone] = useState<(typeof ZONES)[number]["id"]>("all");
+  const figureId = useId();
+  const heatId = `${figureId}-heat`;
+  const coolId = `${figureId}-cool`;
 
   return (
-    <figure className="my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 shadow-sm transition-colors overflow-hidden">
-      {/* ヘッダー */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 mb-6">
+    <figure className="my-8 overflow-hidden rounded-3xl border border-[#E5DEC9] bg-white p-6 shadow-sm dark:border-[#2A3B4A] dark:bg-[#17212A] sm:p-8">
+      <div className="mb-6 flex flex-col justify-between gap-4 border-b border-[#F2ECE0] pb-4 dark:border-[#22303D] sm:flex-row sm:items-center">
         <div>
-          <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説③：現代人の典型「上実下虚」サーモグラフィモデル</span>
-          </span>
-          <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            頭は過熱し足元は凍結する ── デスクワーク社会が生んだ「気機昇降の遮断」
-          </h4>
+          <p className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">寒熱錯雑の比較図</p>
+          <h4 className="mt-1 font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">「顔が熱く、足が冷たい」という訴えを分けて読む</h4>
         </div>
-
-        {/* ゾーン切り替え */}
-        <div className="flex items-center gap-1 bg-[#FAF8F5] dark:bg-[#121920] p-1 rounded-xl border border-[#E8E1D1] dark:border-[#2A3B4A] text-xs">
-          <button
-            onClick={() => setHighlightZone("all")}
-            className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-              highlightZone === "all" ? "bg-[#1E3D34] text-white shadow-xs" : "text-[#59615D] dark:text-[#96A6B2]"
-            }`}
-          >
-            全身比較
-          </button>
-          <button
-            onClick={() => setHighlightZone("upper")}
-            className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-              highlightZone === "upper" ? "bg-[#D32F2F] text-white shadow-xs" : "text-[#59615D] dark:text-[#96A6B2]"
-            }`}
-          >
-            上実（過熱）
-          </button>
-          <button
-            onClick={() => setHighlightZone("lower")}
-            className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-              highlightZone === "lower" ? "bg-[#0288D1] text-white shadow-xs" : "text-[#59615D] dark:text-[#96A6B2]"
-            }`}
-          >
-            下虚（冷却）
-          </button>
+        <div className="flex flex-wrap gap-1" role="group" aria-label="比較する部位">
+          {ZONES.map((zone) => (
+            <button key={zone.id} type="button" aria-pressed={highlightZone === zone.id} onClick={() => setHighlightZone(zone.id)} className={`rounded-lg px-3 py-2 text-xs font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B86924] ${highlightZone === zone.id ? "bg-[#1E3D34] text-white" : "bg-[#F2ECE0] text-[#59615D] dark:bg-[#22303D] dark:text-[#CBD5E1]"}`}>
+              {zone.label}
+            </button>
+          ))}
         </div>
       </div>
-
-      {/* サーモグラフィビジュアルと分析 */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-5 sm:p-7">
-        {/* 左側：サーモグラフィ人体模式図 */}
-        <div className="lg:col-span-5 flex flex-col items-center justify-center">
-          <div className="relative w-full max-w-[260px] aspect-[1/1.3] flex items-center justify-center">
-            <svg viewBox="0 0 240 320" className="w-full h-full">
-              <defs>
-                {/* 過熱サーモグラデーション */}
-                <linearGradient id="heatGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#D50000" />
-                  <stop offset="60%" stopColor="#FF6D00" />
-                  <stop offset="100%" stopColor="#FFD600" />
-                </linearGradient>
-                {/* 冷却サーモグラデーション */}
-                <linearGradient id="coolGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#00B0FF" />
-                  <stop offset="60%" stopColor="#2979FF" />
-                  <stop offset="100%" stopColor="#304FFE" />
-                </linearGradient>
-              </defs>
-
-              {/* 上半身（過熱サーモゾーン） */}
-              <rect
-                x="35"
-                y="15"
-                width="170"
-                height="135"
-                rx="20"
-                fill="url(#heatGrad)"
-                opacity={highlightZone === "lower" ? 0.25 : 0.9}
-                className="transition-opacity"
-              />
-              <circle cx="120" cy="50" r="26" fill="#D50000" />
-              <text x="120" y="54" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">
-                頭部過熱
-              </text>
-              <text x="120" y="105" textAnchor="middle" fill="#FFFFFF" fontSize="9" fontWeight="bold">
-                ▲ 交感神経・脳血流過剰（38.5℃相当）
-              </text>
-
-              {/* 遮断ブロック帯（横隔膜・みぞおち） */}
-              <rect x="25" y="152" width="190" height="20" rx="6" fill="#263238" />
-              <text x="120" y="165" textAnchor="middle" fill="#ECEFF1" fontSize="8" fontWeight="bold">
-                ⚡ 気機昇降の遮断ブロック（中焦痞塞）
-              </text>
-
-              {/* 下半身（冷却サーモゾーン） */}
-              <rect
-                x="35"
-                y="175"
-                width="170"
-                height="135"
-                rx="20"
-                fill="url(#coolGrad)"
-                opacity={highlightZone === "upper" ? 0.25 : 0.85}
-                className="transition-opacity"
-              />
-              <path d="M 85 200 L 75 295 M 155 200 L 165 295" stroke="#FFFFFF" strokeWidth="6" strokeLinecap="round" opacity="0.6" />
-              <text x="120" y="235" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">
-                下半身冷え
-              </text>
-              <text x="120" y="275" textAnchor="middle" fill="#FFFFFF" fontSize="9" fontWeight="bold">
-                ▼ 末梢循環・腎陽脱力（35.0℃相当）
-              </text>
-            </svg>
-          </div>
-          <span className="text-[11px] text-[#59615D] dark:text-[#96A6B2] mt-2 text-center">
-            現代人の典型：上焦が灼熱し、下焦が凍りつく「熱の二極化」
-          </span>
+      <div className="grid items-center gap-6 rounded-2xl bg-[#FAF8F5] p-5 dark:bg-[#121920] lg:grid-cols-2">
+        <div className="mx-auto w-full max-w-[280px]">
+          <svg viewBox="0 0 240 320" className="w-full" role="img" aria-label="上部に熱感、下部に冷感がある架空例。色は自覚的な訴えの区分で、測定温度を示さない。">
+            <defs>
+              <linearGradient id={heatId} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#D32F2F" /><stop offset="100%" stopColor="#F57C00" /></linearGradient>
+              <linearGradient id={coolId} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#0288D1" /><stop offset="100%" stopColor="#3949AB" /></linearGradient>
+            </defs>
+            <g opacity={highlightZone === "lower" ? 0.3 : 1}>
+              <rect x="35" y="15" width="170" height="135" rx="20" fill={`url(#${heatId})`} />
+              <circle cx="120" cy="50" r="25" fill="#B71C1C" />
+              <text x="120" y="54" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">顔の熱感</text>
+              <text x="120" y="109" textAnchor="middle" fill="white" fontSize="10">いつ・何をしていると感じる？</text>
+            </g>
+            <rect x="25" y="153" width="190" height="20" rx="6" fill="#455A64" />
+            <text x="120" y="167" textAnchor="middle" fill="white" fontSize="9">上下の訴えを別々に記録する</text>
+            <g opacity={highlightZone === "upper" ? 0.3 : 1}>
+              <rect x="35" y="176" width="170" height="135" rx="20" fill={`url(#${coolId})`} />
+              <path d="M85 200L75 295M155 200L165 295" stroke="white" strokeWidth="6" strokeLinecap="round" opacity="0.5" />
+              <text x="120" y="238" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">足の冷感</text>
+              <text x="120" y="278" textAnchor="middle" fill="white" fontSize="10">左右差・環境・持続時間は？</text>
+            </g>
+          </svg>
+          <p className="mt-2 text-center text-xs text-[#59615D] dark:text-[#96A6B2]">色は訴えを見分けるための表示です。サーモグラフィではありません。</p>
         </div>
-
-        {/* 右側：メカニズムと治療原則 */}
-        <div className="lg:col-span-7 space-y-3.5">
-          {/* 上実ゾーン詳細 */}
-          <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
-            <div className="flex items-center gap-2 font-bold text-xs text-[#D32F2F] dark:text-[#EF5350] mb-1.5">
-              <Flame className="w-4 h-4" />
-              <span>上実（じょうじつ）：過熱のメカニズム</span>
-            </div>
-            <p className="text-xs text-[#59615D] dark:text-[#CBD5E1] leading-relaxed">
-              PC画面の注視・情報過多・マルチタスクにより脳の神経細胞が連続発火。陽気（熱）が頭部・胸部に引っ張り上げられ、首や肩の僧帽筋が痙攣収縮して血管を圧迫。熱が逃げ場を失います。
-            </p>
-          </div>
-
-          {/* 下虚ゾーン詳細 */}
-          <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
-            <div className="flex items-center gap-2 font-bold text-xs text-[#0288D1] dark:text-[#81D4FA] mb-1.5">
-              <Snowflake className="w-4 h-4" />
-              <span>下虚（げきょ）：凍結のメカニズム</span>
-            </div>
-            <p className="text-xs text-[#59615D] dark:text-[#CBD5E1] leading-relaxed">
-              長時間の座位により下半身の骨格筋ポンプが休止。本来下半身を温めるべき「腎陽」の火種が中焦の詰まりで遮断され、足先や生殖器・大腸が深部から冷え切ります。
-            </p>
-          </div>
-
-          {/* 臨床的介入シークエンス */}
-          <div className="p-3.5 rounded-xl bg-[#FFF8E1] dark:bg-[#FFA000]/15 border border-[#FFE082]/60 text-xs space-y-1.5 text-[#5D4037] dark:text-[#FFE082]">
-            <div className="font-bold flex items-center gap-1.5">
-              <ArrowDown className="w-3.5 h-3.5 text-[#E65100]" />
-              <span>臨床の鉄則：補う前に「気の交通整理（疏通・降気）」</span>
-            </div>
-            <p className="leading-relaxed text-[11px]">
-              冷えているからといって高麗人参や温熱薬をやみくもに投入すると、上半身の熱（上実）に火に油を注ぎ、頭痛や不眠を激化させます。
-              まず<strong>「内関・太衝・足三里」</strong>で頭の熱を下へ引き下ろし（降気）、詰まった中焦の踏切を開通させてから下半身を温めるのがプロの治療手順です。
-            </p>
-          </div>
+        <div className="space-y-4 text-sm leading-relaxed text-[#59615D] dark:text-[#CBD5E1]">
+          <section className="rounded-xl border border-[#E5DEC9] bg-white p-4 dark:border-[#2A3B4A] dark:bg-[#17212A]">
+            <h5 className="mb-2 font-bold text-[#232826] dark:text-[#FAF8F5]">観察した事実</h5>
+            <p>架空例では「作業中に顔が熱い」「足先は冷たい」という本人の訴えがあります。測定した体温や皮膚温、始まった時期、周囲の温度は別に記録します。</p>
+          </section>
+          <section className="rounded-xl border border-[#E5DEC9] bg-white p-4 dark:border-[#2A3B4A] dark:bg-[#17212A]">
+            <h5 className="mb-2 font-bold text-[#232826] dark:text-[#FAF8F5]">伝統上の解釈候補</h5>
+            <p>上下で寒熱の特徴が異なるなら「上熱下寒」という整理を比較できます。これだけで上部が実、下部が虚とは決まりません。寒熱と虚実はそれぞれの所見から検討します。</p>
+          </section>
+          <section className="rounded-xl bg-[#FFF8E1] p-4 dark:bg-[#FFA000]/10">
+            <h5 className="mb-2 font-bold text-[#5D4037] dark:text-[#FFE082]">まだ分からないこと</h5>
+            <p>訴えの原因、医学的な病名、薬や施術の適応はこの図から判断できません。持続・変化・随伴症状を確かめ、必要な医学的評価と分けて考えます。</p>
+          </section>
         </div>
       </div>
+      <figcaption className="mt-4 text-xs leading-relaxed text-[#59615D] dark:text-[#96A6B2]">伝統分類を学ぶための模式図です。自律神経や血流の測定結果、腎陽の物理的な熱移動、一律の施術順を表していません。</figcaption>
     </figure>
   );
 }

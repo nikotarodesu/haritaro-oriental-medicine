@@ -4,8 +4,10 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { Sparkles } from "lucide-react";
 import { CURRICULUM_CHAPTERS_META } from "@/data/curriculumOutline";
+import { isCurriculumStudyDiagram } from "@/data/curriculumStudyDiagramIds";
 
 // Keep diagram HTML in the initial render, and load only diagrams used by this lecture.
+const CurriculumStudyDiagram = dynamic(() => import("./curriculum/CurriculumStudyDiagram"));
 const WuxingDynamicChart = dynamic(() => import("./WuxingDynamicChart"));
 const YinYangTaijiCycle = dynamic(() => import("./yinyang/YinYangTaijiCycle"));
 const YinYangSixPrinciples = dynamic(() => import("./yinyang/YinYangSixPrinciples"));
@@ -78,6 +80,9 @@ interface CurriculumDiagramProps {
 }
 
 export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagramProps) {
+  if (isCurriculumStudyDiagram(id)) {
+    return <CurriculumStudyDiagram id={id} />;
+  }
   if (id === "curriculum-learning-path") {
     return <figure className="my-8 space-y-4 rounded-2xl border border-[#D9E3DD] bg-[#F6F4EE] p-5 dark:border-[#2A3B4A] dark:bg-[#1E2B36]">
       <figcaption className="space-y-2"><p className="text-lg font-bold">概論から臨床の基礎へ、全{CURRICULUM_CHAPTERS_META.length}章の流れ</p><p className="text-sm leading-relaxed">基本の名称と正常な働きを学んでから関係モデルへ進み、後半に病機・情報整理・方針・再評価を扱います。</p></figcaption>

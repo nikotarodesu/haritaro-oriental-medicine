@@ -1,291 +1,88 @@
 "use client";
 
-import React, { useState } from "react";
-import { Sparkles, ArrowDown, ArrowUp, AlertCircle, RefreshCw, GitCommit, Split } from "lucide-react";
+import { useId, useState } from "react";
 
-type ModelMode = "up-down" | "root-branch" | "sanjiao-signs";
+const MODES = [
+  { id: "up-down", name: "上下の比較" },
+  { id: "root-branch", name: "本と標の比較" },
+  { id: "sanjiao-signs", name: "三焦の観点" },
+] as const;
+
+const SANJIAO = [
+  { name: "上焦", description: "胸より上の働きに関わる所見を整理する観点。呼吸や胸部の訴えなどを、始まった時期や状況とともに記録します。" },
+  { name: "中焦", description: "飲食・消化などに関わる所見を整理する観点。食事の時刻や量、腹部の訴え、排泄などの情報を比べます。" },
+  { name: "下焦", description: "排泄など下部の働きに関わる所見を整理する観点。変化の持続や随伴症状を確認し、必要な医学的評価と分けます。" },
+] as const;
 
 export default function LifeDynamicsDynamicXushi() {
-  const [mode, setMode] = useState<ModelMode>("up-down");
+  const [mode, setMode] = useState<(typeof MODES)[number]["id"]>("up-down");
+  const panelId = useId();
 
   return (
-    <figure className="my-8 bg-[#FFFFFF] dark:bg-[#17212A] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 shadow-sm transition-colors overflow-hidden">
-      {/* ヘッダー */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4 mb-6">
-        <div>
-          <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説③：虚実の偏在（上実下虚・本虚標実）動態グラフィック</span>
-          </span>
-          <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            対立ではなく「エネルギーの偏在」 ── 上下のアンバランスと本末の二重構造
-          </h4>
-        </div>
-
-        {/* タブ切り替え */}
-        <div className="flex items-center gap-1 bg-[#FAF8F5] dark:bg-[#121920] p-1 rounded-xl border border-[#E8E1D1] dark:border-[#2A3B4A] text-xs">
-          <button
-            onClick={() => setMode("up-down")}
-            className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-              mode === "up-down" ? "bg-[#D32F2F] text-white shadow-xs" : "text-[#59615D] dark:text-[#96A6B2]"
-            }`}
-          >
-            ① 上実下虚モデル
+    <figure className="my-8 overflow-hidden rounded-3xl border border-[#E5DEC9] bg-white p-6 shadow-sm dark:border-[#2A3B4A] dark:bg-[#17212A] sm:p-8">
+      <p className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">複合病機の学習図</p>
+      <h4 className="mt-1 font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">所見を一つの原因にまとめず、観点を変えて比較する</h4>
+      <div className="mt-5 flex flex-wrap gap-2" role="group" aria-label="比較の観点">
+        {MODES.map((item) => (
+          <button key={item.id} type="button" aria-pressed={mode === item.id} aria-controls={panelId} onClick={() => setMode(item.id)} className={`rounded-lg px-4 py-2 text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B86924] ${mode === item.id ? "bg-[#1E3D34] text-white" : "bg-[#F2ECE0] text-[#59615D] dark:bg-[#22303D] dark:text-[#CBD5E1]"}`}>
+            {item.name}
           </button>
-          <button
-            onClick={() => setMode("root-branch")}
-            className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-              mode === "root-branch" ? "bg-[#1E3D34] text-white shadow-xs" : "text-[#59615D] dark:text-[#96A6B2]"
-            }`}
-          >
-            ② 本虚標実（樹木）モデル
-          </button>
-          <button
-            onClick={() => setMode("sanjiao-signs")}
-            className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-              mode === "sanjiao-signs" ? "bg-[#FFA000] text-white shadow-xs" : "text-[#59615D] dark:text-[#96A6B2]"
-            }`}
-          >
-            ③ 三焦の虚実サイン
-          </button>
-        </div>
+        ))}
       </div>
-
-      {mode === "up-down" && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-5 sm:p-6">
-          {/* 左側：上実下虚SVG */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center">
-            <div className="relative w-full max-w-[260px] aspect-[1/1.3]">
-              <svg viewBox="0 0 240 320" className="w-full h-full">
-                {/* 人体シルエット */}
-                {/* 上半身（赤グラデーション：上実） */}
-                <rect x="30" y="20" width="180" height="135" rx="16" fill="#FFEBEE" className="dark:fill-[#D32F2F]/20" />
-                <circle cx="120" cy="55" r="28" fill="#D32F2F" opacity="0.85" />
-                <path d="M 120 90 L 120 145 M 80 120 L 160 120" stroke="#D32F2F" strokeWidth="6" strokeLinecap="round" />
-                <text x="120" y="58" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">
-                  上実（鬱熱）
-                </text>
-                <text x="120" y="115" textAnchor="middle" fill="#C62828" fontSize="9" fontWeight="bold" className="dark:fill-[#FFCDD2]">
-                  ▲ のぼせ・頭痛・怒り・眼充血
-                </text>
-
-                {/* 境界線（横隔膜・気機のブロック） */}
-                <line x1="30" y1="160" x2="210" y2="160" stroke="#757575" strokeWidth="2" strokeDasharray="4 4" />
-                <text x="120" y="164" textAnchor="middle" fill="#616161" fontSize="9" className="dark:fill-[#9E9E9E]">
-                  ── 中焦の気機閉塞（昇降不全） ──
-                </text>
-
-                {/* 下半身（青グラデーション：下虚） */}
-                <rect x="30" y="170" width="180" height="135" rx="16" fill="#E1F5FE" className="dark:fill-[#0288D1]/20" />
-                <path d="M 90 190 L 80 290 M 150 190 L 160 290" stroke="#0288D1" strokeWidth="5" strokeDasharray="4 4" strokeLinecap="round" />
-                <circle cx="120" cy="235" r="24" fill="#0288D1" opacity="0.4" />
-                <text x="120" y="238" textAnchor="middle" fill="#01579B" fontSize="11" fontWeight="bold" className="dark:fill-[#81D4FA]">
-                  下虚（虚寒）
-                </text>
-                <text x="120" y="280" textAnchor="middle" fill="#0277BD" fontSize="9" fontWeight="bold" className="dark:fill-[#B3E5FC]">
-                  ▼ 足腰の冷え・脱力・頻尿
-                </text>
-              </svg>
-            </div>
-            <span className="text-[11px] text-[#59615D] dark:text-[#96A6B2] mt-2 text-center">
-              頭はカッカと熱く、足先は氷のように冷たい「冷えのぼせ」の病態
-            </span>
+      <div id={panelId} aria-live="polite" className="mt-5 rounded-2xl bg-[#FAF8F5] p-5 dark:bg-[#121920]">
+        {mode === "up-down" && (
+          <div className="grid items-center gap-5 sm:grid-cols-2">
+            <svg viewBox="0 0 260 270" className="mx-auto w-full max-w-[260px]" role="img" aria-label="上部の訴えと下部の訴えを別々に記録し、寒熱と虚実をそれぞれ比較する模式図">
+              <rect x="35" y="15" width="190" height="105" rx="20" fill="#C66840" />
+              <text x="130" y="58" textAnchor="middle" fill="white" fontSize="15" fontWeight="bold">上部の訴え</text>
+              <text x="130" y="89" textAnchor="middle" fill="white" fontSize="11">熱感などを記録</text>
+              <path d="M65 138H195" stroke="#8A9A91" strokeWidth="4" strokeDasharray="6 6" />
+              <rect x="35" y="157" width="190" height="105" rx="20" fill="#41799B" />
+              <text x="130" y="199" textAnchor="middle" fill="white" fontSize="15" fontWeight="bold">下部の訴え</text>
+              <text x="130" y="230" textAnchor="middle" fill="white" fontSize="11">冷感などを記録</text>
+            </svg>
+            <section className="text-sm leading-relaxed text-[#59615D] dark:text-[#CBD5E1]">
+              <h5 className="font-bold text-[#232826] dark:text-[#FAF8F5]">上下の特徴が異なる場合</h5>
+              <p className="mt-2">上熱下寒と上実下虚は同じ分類ではありません。熱感・冷感という訴えと測定値を分け、寒熱と虚実の根拠をそれぞれ挙げます。</p>
+              <p className="mt-3">この色分けは温度やエネルギーの密度を測った結果ではありません。気機を、熱が物理的に上下へ移動する仕組みとして断定しないようにします。</p>
+            </section>
           </div>
-
-          {/* 右側：解説 */}
-          <div className="lg:col-span-7 space-y-4">
-            <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
-              <h5 className="font-bold text-sm text-[#D32F2F] dark:text-[#EF5350] mb-2">
-                上実下虚（じょうじつげきょ）のメカニズム
-              </h5>
-              <p className="text-xs text-[#59615D] dark:text-[#CBD5E1] leading-relaxed">
-                本来、火（陽気）は下半身（腎）を温めるために下に降り、水（陰液）は上半身を冷やすために上に昇る必要があります（水火既済）。しかし、ストレスや過労で中焦（胃腸・肝）が詰まると、<strong>熱が頭頂に閉じ込められて「上実」となり、熱が届かない下半身はスカスカに冷え切る「下虚」</strong>が生じます。
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-              <div className="p-3 rounded-lg bg-[#FFEBEE] dark:bg-[#D32F2F]/20 border border-[#FFCDD2]/50">
-                <span className="font-bold text-[#C62828] dark:text-[#EF9A9A] block mb-1">
-                  上の実（過密・充血）：
-                </span>
-                <p className="text-[#59615D] dark:text-[#CBD5E1]">
-                  頭痛、顔面のぼせ、イライラ、目の充血、不眠、高血圧傾向。
-                </p>
-              </div>
-              <div className="p-3 rounded-lg bg-[#E1F5FE] dark:bg-[#0288D1]/20 border border-[#B3E5FC]/50">
-                <span className="font-bold text-[#0277BD] dark:text-[#81D4FA] block mb-1">
-                  ー 下の虚（脱力・冷え）：
-                </span>
-                <p className="text-[#59615D] dark:text-[#CBD5E1]">
-                  腰痛、下肢の激しい冷え、朝起き上がれない、夜間頻尿、下痢。
-                </p>
-              </div>
-            </div>
-
-            <div className="p-3 rounded-xl bg-[#FFF8E1] dark:bg-[#FFA000]/15 border border-[#FFE082]/60 text-xs text-[#5D4037] dark:text-[#FFE082] leading-relaxed">
-              <strong>治療の鉄則（引火帰元・降気）：</strong>
-              頭の熱を冷まそうと氷嚢で冷やすだけでは下半身がさらに冷え悪化します。「足のツボ（太衝・太渓・湧泉）」にお灸や鍼をして、上に昇った気を下へ引き戻す（引火帰元）ことが根本治癒の要となります。
-            </div>
+        )}
+        {mode === "root-branch" && (
+          <div className="grid items-center gap-5 sm:grid-cols-2">
+            <svg viewBox="0 0 260 270" className="mx-auto w-full max-w-[260px]" role="img" aria-label="樹木を比喩として、本は背景の不足を示す候補、標は現在の停滞などを示す候補と区別する図">
+              <ellipse cx="130" cy="73" rx="110" ry="62" fill="#597D57" />
+              <path d="M130 118V224M130 220L65 250M130 220L195 250M130 220L130 262" stroke="#9A704C" strokeWidth="14" strokeLinecap="round" />
+              <text x="130" y="62" textAnchor="middle" fill="white" fontSize="15" fontWeight="bold">標：現在の特徴</text>
+              <text x="130" y="88" textAnchor="middle" fill="white" fontSize="11">気滞・痰湿・瘀血などの候補</text>
+              <rect x="39" y="162" width="182" height="51" rx="12" fill="#76563D" />
+              <text x="130" y="185" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">本：背景の特徴</text>
+              <text x="130" y="202" textAnchor="middle" fill="white" fontSize="10">不足などを示す候補</text>
+            </svg>
+            <section className="text-sm leading-relaxed text-[#59615D] dark:text-[#CBD5E1]">
+              <h5 className="font-bold text-[#232826] dark:text-[#FAF8F5]">本虚標実という整理</h5>
+              <p className="mt-2">不足を示す側面と、停滞などを示す側面が併存するという伝統上の説明です。根や枝は関係を覚える比喩であり、特定の物質の不足や体内の老廃物を描いてはいません。</p>
+              <p className="mt-3">慢性的な訴えがすべてこの型になるとは限りません。薬の害や施術の順序をこの図から決めず、各所見の根拠と別の説明を比べます。</p>
+            </section>
           </div>
-        </div>
-      )}
-
-      {mode === "root-branch" && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-5 sm:p-6">
-          {/* 左側：樹木モデルSVG */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center">
-            <div className="relative w-full max-w-[260px] aspect-[1/1.3]">
-              <svg viewBox="0 0 240 320" className="w-full h-full">
-                {/* 樹木の枝葉（標実：病理産物が停滞） */}
-                <ellipse cx="120" cy="80" rx="90" ry="60" fill="#FFEBEE" stroke="#D32F2F" strokeWidth="2" className="dark:fill-[#D32F2F]/20 dark:stroke-[#EF5350]" />
-                <text x="120" y="65" textAnchor="middle" fill="#C62828" fontSize="12" fontWeight="bold" className="dark:fill-[#EF9A9A]">
-                  【枝葉】標実（ひょうじつ）
-                </text>
-                <text x="120" y="82" textAnchor="middle" fill="#59615D" fontSize="9">
-                  局所の気滞・瘀血・痰湿
-                </text>
-                <text x="120" y="98" textAnchor="middle" fill="#C62828" fontSize="9" fontWeight="bold">
-                  （痛み・しこり・炎症）
-                </text>
-
-                {/* 幹（循環不全） */}
-                <rect x="105" y="140" width="30" height="70" fill="#8D6E63" rx="4" />
-
-                {/* 地面ライン */}
-                <line x1="20" y1="210" x2="220" y2="210" stroke="#795548" strokeWidth="3" />
-
-                {/* 根（本虚：根腐れ・栄養枯渇） */}
-                <path d="M 120 210 Q 90 260 60 290 M 120 210 Q 120 270 110 305 M 120 210 Q 150 260 180 290" stroke="#0288D1" strokeWidth="3" strokeDasharray="3 3" />
-                <rect x="40" y="225" width="160" height="75" rx="10" fill="#E1F5FE" opacity="0.6" className="dark:fill-[#0288D1]/20" />
-                <text x="120" y="250" textAnchor="middle" fill="#01579B" fontSize="12" fontWeight="bold" className="dark:fill-[#81D4FA]">
-                  【根】本虚（ほんきょ）
-                </text>
-                <text x="120" y="268" textAnchor="middle" fill="#59615D" fontSize="9">
-                  脾腎のエネルギー枯渇（気虚・陽虚）
-                </text>
-                <text x="120" y="285" textAnchor="middle" fill="#0277BD" fontSize="9" fontWeight="bold">
-                  （推進力不足による病理産物排出不全）
-                </text>
-              </svg>
-            </div>
-            <span className="text-[11px] text-[#59615D] dark:text-[#96A6B2] mt-2 text-center">
-              根（本）のパワーが足りないために、枝葉（標）に老廃物が停滞する二重構造
-            </span>
+        )}
+        {mode === "sanjiao-signs" && (
+          <div className="grid gap-4 sm:grid-cols-3">
+            {SANJIAO.map((item) => (
+              <section key={item.name} className="rounded-xl border border-[#E5DEC9] bg-white p-4 dark:border-[#2A3B4A] dark:bg-[#17212A]">
+                <h5 className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">{item.name}</h5>
+                <p className="mt-2 text-sm leading-relaxed text-[#59615D] dark:text-[#CBD5E1]">{item.description}</p>
+              </section>
+            ))}
+            <p className="text-xs leading-relaxed text-[#59615D] dark:text-[#96A6B2] sm:col-span-3">三焦は伝統理論の分類です。身体の三つの解剖区画や、臓器の病変をそのまま表すものではありません。各部位の所見から虚実を即断せず、全身の情報と合わせて考えます。</p>
           </div>
-
-          {/* 右側：解説 */}
-          <div className="lg:col-span-7 space-y-4">
-            <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
-              <h5 className="font-bold text-sm text-[#1E3D34] dark:text-[#74BA9E] mb-2">
-                本虚標実（ほんきょひょうじつ）の臨床原則
-              </h5>
-              <p className="text-xs text-[#59615D] dark:text-[#CBD5E1] leading-relaxed">
-                現代人の慢性疾患の9割は「本虚標実」です。局所の激痛や腫れ、炎症（標実）だけを見て「瀉法（鎮痛剤や強い揉みほぐし）」を続けると、患者の根本体力（本虚）がさらに削られ、病理産物（湿痰・瘀血）がますます停滞しやすい病態に陥ります。
-              </p>
-            </div>
-
-            <div className="space-y-2 text-xs">
-              <div className="p-3 rounded-xl bg-white dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#2A3B4A]">
-                <strong className="text-[#1E3D34] dark:text-[#74BA9E]">本（ほん・根源）：</strong>
-                脾胃の弱り（後天の本虚）や腎精の不足（先天の本虚）。推進力（気）が不足しているため、代謝産物や湿痰を順調に排泄・運搬できない。
-              </div>
-              <div className="p-3 rounded-xl bg-white dark:bg-[#17212A] border border-[#E8E1D1] dark:border-[#2A3B4A]">
-                <strong className="text-[#D32F2F] dark:text-[#EF5350]">標（ひょう・枝葉）：</strong>
-                首肩のこり、関節の腫れ、頭痛、脂肪肝、血栓、PMSなどの自覚症状。
-              </div>
-            </div>
-
-            <div className="p-3 rounded-xl bg-[#E8F5E9] dark:bg-[#1B5E20]/20 border border-[#A5D6A7]/50 text-xs text-[#1B5E20] dark:text-[#A5D6A7] leading-relaxed">
-              <strong>臨床の二刀流（標本兼治）：</strong>
-              「急なれば標を治し、緩なれば本を治す」。激痛時はまず標（局所の滞り）を緩解させ、痛みが引いたら直ちに本（根っこの胃腸や腎）を補うことで再発を完全に封じ込めます。
-            </div>
-          </div>
-        </div>
-      )}
-
-      {mode === "sanjiao-signs" && (
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* 上焦 */}
-            <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-5">
-              <div className="flex items-center justify-between mb-3 border-b border-[#EAE4D5] dark:border-[#22303D] pb-2">
-                <span className="font-bold text-sm text-[#C62828] dark:text-[#EF9A9A]">
-                  上焦（心・肺）
-                </span>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-[#FFEBEE] dark:bg-[#D32F2F]/20 text-[#C62828] font-bold">
-                  呼吸・心拍・頭部
-                </span>
-              </div>
-              <div className="space-y-3 text-xs">
-                <div className="p-3 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                  <span className="font-bold text-[#0288D1] block mb-1">【虚のサイン】</span>
-                  <p className="text-[#59615D] dark:text-[#CBD5E1]">
-                    声が細い、息切れ、風邪を引きやすい、自汗（動かなくても汗が出る）、顔色不良。
-                  </p>
-                </div>
-                <div className="p-3 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                  <span className="font-bold text-[#D32F2F] block mb-1">【実のサイン】</span>
-                  <p className="text-[#59615D] dark:text-[#CBD5E1]">
-                    激しい咳、喘鳴、顔面紅潮、胸苦しさ、熱感、喉の腫れと激痛。
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* 中焦 */}
-            <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-5">
-              <div className="flex items-center justify-between mb-3 border-b border-[#EAE4D5] dark:border-[#22303D] pb-2">
-                <span className="font-bold text-sm text-[#E65100] dark:text-[#FFE082]">
-                  中焦（脾・胃）
-                </span>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-[#FFF8E1] dark:bg-[#FFA000]/20 text-[#E65100] font-bold">
-                  消化・吸収・運化
-                </span>
-              </div>
-              <div className="space-y-3 text-xs">
-                <div className="p-3 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                  <span className="font-bold text-[#0288D1] block mb-1">【虚のサイン】</span>
-                  <p className="text-[#59615D] dark:text-[#CBD5E1]">
-                    食欲不振、胃もたれ、消化不良、泥状便・下痢、四肢無力、食後の強い眠気。
-                  </p>
-                </div>
-                <div className="p-3 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                  <span className="font-bold text-[#D32F2F] block mb-1">【実のサイン】</span>
-                  <p className="text-[#59615D] dark:text-[#CBD5E1]">
-                    食滞（胃のつかえ）、強い腹部膨満痛、口臭、胸焼け、押されると痛む（拒按）。
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* 下焦 */}
-            <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-5">
-              <div className="flex items-center justify-between mb-3 border-b border-[#EAE4D5] dark:border-[#22303D] pb-2">
-                <span className="font-bold text-sm text-[#0277BD] dark:text-[#81D4FA]">
-                  下焦（腎・膀胱・腸）
-                </span>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-[#E1F5FE] dark:bg-[#0288D1]/20 text-[#0277BD] font-bold">
-                  排泄・生殖・貯蔵
-                </span>
-              </div>
-              <div className="space-y-3 text-xs">
-                <div className="p-3 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                  <span className="font-bold text-[#0288D1] block mb-1">【虚のサイン】</span>
-                  <p className="text-[#59615D] dark:text-[#CBD5E1]">
-                    失禁・遺尿、足腰の脱力・だるさ、耳鳴り、朝一番の下痢（五更瀉）、性機能低下。
-                  </p>
-                </div>
-                <div className="p-3 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                  <span className="font-bold text-[#D32F2F] block mb-1">【実のサイン】</span>
-                  <p className="text-[#59615D] dark:text-[#CBD5E1]">
-                    頑固な熱性便秘、下腹部の硬結・刺痛、排尿痛・血尿、下肢の激しい浮腫。
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
+      <section className="mt-5 rounded-xl border border-[#E5DEC9] p-4 dark:border-[#2A3B4A]">
+        <h5 className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">小さな演習：何が事実で、何が解釈か</h5>
+        <p className="mt-2 text-xs leading-relaxed text-[#59615D] dark:text-[#CBD5E1]">架空例で、痛みのため活動が減り、本人が眠りにくさも訴えたとします。事実は記録した変化です。本虚標実などは比較する解釈候補で、痛み・活動・睡眠の因果関係や病名はまだ不明です。</p>
+      </section>
+      <figcaption className="mt-4 text-xs leading-relaxed text-[#59615D] dark:text-[#96A6B2]">観点を変えて学ぶ模式図です。伝統分類から検査結果、診断、治療効果を保証しません。急変や強い症状では、この分類を完成させることより必要な医学的評価を優先します。</figcaption>
     </figure>
   );
 }

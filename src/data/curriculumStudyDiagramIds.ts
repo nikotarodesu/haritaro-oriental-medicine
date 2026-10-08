@@ -1,0 +1,11 @@
+// Keep the routing list small; explanatory copy lives in the lazy-loaded renderer.
+export const CURRICULUM_STUDY_DIAGRAM_IDS = [
+  "pathomechanism-four-layers", "pathomechanism-thermo-quadrant", "pathomechanism-fluid-domino", "pathomechanism-chronic-three-factors", "pathomechanism-competing-hypotheses",
+  "diagnosis-five-layers", "diagnosis-feedback-loop", "diagnosis-chief-complaint-focus", "diagnosis-timeline-chart", "diagnosis-interview-funnel", "diagnosis-competing-hypothesis", "diagnosis-observation-template", "diagnosis-observation-layers", "diagnosis-tongue-separation", "diagnosis-listening-smelling", "diagnosis-pulse-four-gauges", "diagnosis-abdominal-topology", "diagnosis-acupoint-palpation", "diagnosis-eight-principles-axes", "diagnosis-surface-interior-pitfall", "diagnosis-mixed-patterns", "diagnosis-gray-zone-protocol", "diagnosis-true-false-patterns", "diagnosis-qi-patterns-cluster", "diagnosis-blood-patterns-cluster", "diagnosis-bodyfluid-patterns-cluster", "diagnosis-qiblood-complex-network", "diagnosis-zangfu-core-signs", "diagnosis-meridian-pathways", "diagnosis-zangfu-correlation", "diagnosis-competing-matrix", "diagnosis-resolving-contradictions", "diagnosis-cognitive-biases", "diagnosis-pattern-hierarchy", "diagnosis-root-branch-rules", "diagnosis-soap-format",
+  "treatment-three-tier-goals", "treatment-smart-goals", "treatment-boundaries-and-referral", "treatment-six-layers-pyramid", "treatment-principles-vs-methods", "treatment-buxie-mechanics", "treatment-cold-heat-control", "treatment-zhengzhi-fanzhi", "treatment-root-branch-roles", "treatment-priority-matrix", "treatment-dynamic-slider", "treatment-qi-methods-matrix", "treatment-buqi-vs-liqi", "treatment-ascent-descent-control", "treatment-blood-fluid-matrix", "treatment-blood-mechanics", "treatment-fluid-separation", "treatment-zangfu-methods-matrix", "treatment-zangfu-correlation-methods", "treatment-five-elements-points", "treatment-acupoint-dimensions", "treatment-special-points-circuits", "treatment-four-command-points",
+] as const;
+
+const studyDiagramIds: ReadonlySet<string> = new Set(CURRICULUM_STUDY_DIAGRAM_IDS);
+export function isCurriculumStudyDiagram(id: string): boolean {
+  return studyDiagramIds.has(id);
+}

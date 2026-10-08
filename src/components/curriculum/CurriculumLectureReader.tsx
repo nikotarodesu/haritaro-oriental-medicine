@@ -336,15 +336,17 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
             {/* 学習ステータス切替ボタン */}
             <button
               type="button"
-              onClick={() => toggleLectureCompleted(lecture.id)}
-              className={`min-h-[44px] inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-bold transition-colors cursor-pointer ${
+              disabled={!isMounted}
+              aria-pressed={isCompleted}
+              onClick={() => { if (isMounted) toggleLectureCompleted(lecture.id); }}
+              className={`min-h-[44px] inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-bold transition-colors cursor-pointer disabled:cursor-wait disabled:opacity-60 ${
                 isCompleted
                   ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"
                   : "bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 dark:bg-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700"
               }`}
             >
               <CheckCircle2 className={`w-4 h-4 ${isCompleted ? "text-emerald-600 dark:text-emerald-400" : "text-slate-400"}`} />
-              <span>{isCompleted ? "受講完了（済）" : "受講済みにする"}</span>
+              <span>{!isMounted ? "進捗を確認中…" : isCompleted ? "受講完了（済）" : "受講済みにする"}</span>
             </button>
           </div>
 
@@ -538,7 +540,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
         )}
 
         {/* 参考文献・学術エビデンス */}
-        <ArticleReferences references={resolvedReferences} />
+        <ArticleReferences references={resolvedReferences} scopeNote={lecture.evidenceScope} />
         <section aria-label="講義の学習振り返り" className="rounded-2xl border border-[#C5DED4] bg-[#EBF3EF] p-4 sm:p-5 dark:border-[#2A5243] dark:bg-[#182823]">
           <h2 className="text-lg font-bold text-[#184F49] dark:text-[#9CCBBC]">学んだことを、自分の言葉で残す</h2>
           <p className="mt-2 text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">押さえた要点、まだ迷うこと、次に確認することを記録して、後から振り返れます。</p>
@@ -613,8 +615,10 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => toggleLectureCompleted(lecture.id)}
-              className={`min-h-[44px] px-4 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 cursor-pointer shadow-xs ${
+              disabled={!isMounted}
+              aria-pressed={isCompleted}
+              onClick={() => { if (isMounted) toggleLectureCompleted(lecture.id); }}
+              className={`min-h-[44px] px-4 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 cursor-pointer disabled:cursor-wait disabled:opacity-60 shadow-xs ${
                 isCompleted
                   ? "bg-emerald-600 hover:bg-emerald-500 text-white"
                   : "bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700"
@@ -622,7 +626,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
             >
               <CheckCircle2 className={`w-4 h-4 ${isCompleted ? "text-white" : "text-slate-400"}`} />
               <span>
-                {isCompleted ? "受講完了（解除する）" : "受講済みにする"}
+                {!isMounted ? "進捗を確認中…" : isCompleted ? "受講完了（解除する）" : "受講済みにする"}
               </span>
             </button>
           </div>

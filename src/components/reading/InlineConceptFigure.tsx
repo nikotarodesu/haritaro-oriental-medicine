@@ -37,7 +37,7 @@ export default function InlineConceptFigure({ figure }: { figure: ReadingFigure 
   const titleId = `reading-figure-${figure.id}-title`;
   const captionId = `reading-figure-${figure.id}-caption`;
   const List = figure.layout === "steps" ? "ol" : "ul";
-  const grid = figure.items.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-3";
+  const grid = figure.items.length === 2 || figure.items.length > 3 ? "sm:grid-cols-2" : "sm:grid-cols-3";
 
   return (
     <figure id={`reading-figure-${figure.id}`} aria-labelledby={titleId} aria-describedby={captionId} data-reading-figure={figure.id} className="not-prose my-8 scroll-mt-40 overflow-hidden rounded-2xl border border-[#D6E3DA] bg-linear-to-br from-[#F1F6F1] via-[#F8FAF6] to-[#FAF8F2] p-4 sm:my-10 sm:p-7 dark:border-[#304A3E] dark:from-[#162920] dark:via-[#182A24] dark:to-[#1C2A27]">
@@ -45,7 +45,7 @@ export default function InlineConceptFigure({ figure }: { figure: ReadingFigure 
         <span className="mb-2 block text-sm font-medium tracking-[.12em] text-[#557465] dark:text-[#A2C8B4]">図で整理</span>
         <strong id={titleId} className="block text-lg font-bold leading-relaxed text-[#1E3D34] sm:text-xl dark:text-[#D9EDE0]">{figure.title}</strong>
       </figcaption>
-      <List className={`grid gap-x-8 ${grid}`}>
+      <List className={`grid gap-x-8 sm:gap-y-3 ${grid}`}>
         {figure.items.map((item, index) => (
           <li key={item.label} className="relative min-w-0">
             <div className="rounded-xl border border-[#DCE6DD] bg-white/80 p-3 sm:h-full sm:p-4 dark:border-[#375145] dark:bg-[#10221B]/55">
