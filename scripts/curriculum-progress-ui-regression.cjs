@@ -69,7 +69,7 @@ function harness(relative, props) {
     if (id === '@/components/learning/LearningCourseLink') return { CourseJourneyResolver: Empty };
     if (id.startsWith('@/components/')) return Empty;
   }).default;
-  return { render(nextProps = props, nextParams = params) { props = nextProps; params = nextParams; cursor = 0; updateProgress(); tree = Component(props); return tree; },
+  return { render(nextProps = props, nextParams = params) { props = nextProps; params = nextParams; cursor = 0; updateProgress(); tree = Component({ ...props, quiz: props.lecture ? load("src/data/curriculumQuizzes").CURRICULUM_QUIZZES[props.lecture.id] : undefined, resolvedReferences: [], reviewQuestions: LEARNING_QUESTIONS, questions: LEARNING_QUESTIONS, chapterAssessment: null }); return tree; },
     nodes: () => nodes(tree), text: () => text(tree) };
 }
 const reader = harness('src/components/curriculum/CurriculumLectureReader.tsx', { lecture: lectures[0], lectureNavigation: lectures });

@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function SymptomsPage() {
   const guides = SYMPTOMS.map(({ id, title, summary, category }) => ({ id, title, summary, category }));
   return (
-    <main className="reading-page mx-auto max-w-6xl space-y-7 px-4 py-8 text-[#232826] dark:text-[#FAF8F5] sm:py-12">
+    <div className="reading-page mx-auto max-w-6xl space-y-7 px-4 py-8 text-[#232826] dark:text-[#FAF8F5] sm:py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getSymptomsIndexJsonLd(title, description)).replace(/</g, '\\u003c') }} />
       <header className="max-w-3xl space-y-3">
         <p className="text-sm font-semibold text-[#1E3D34] dark:text-[#9CCDB8]">受診の目安と、伝統医学の考え方を学ぶ</p>
@@ -29,6 +29,6 @@ export default function SymptomsPage() {
       <MedicalSafetyNotice title="このガイドで確認できること" message={SYMPTOM_GUIDANCE_SCOPE} />
       <Link href="/clinical#chief-complaints" className="inline-flex min-h-11 items-center rounded-xl border border-[#D6DED7] px-4 py-2 font-semibold text-[#1E3D34] underline underline-offset-4 dark:border-[#34483C] dark:text-[#9CCDB8]">鍼灸師の方：主訴別の問診・所見比較ガイドへ →</Link>
       <SymptomsIndexClient guides={guides} />
-    </main>
+    </div>
   );
 }

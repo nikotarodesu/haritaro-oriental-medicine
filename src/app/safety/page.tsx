@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default function SafetyPage() {
-  return <main className="mx-auto max-w-3xl space-y-8 px-4 py-12 text-[#232826] dark:text-[#FAF8F5]">
+  return <div className="mx-auto max-w-3xl space-y-8 px-4 py-12 text-[#232826] dark:text-[#FAF8F5]">
     <h1 className="font-serif text-3xl font-bold">受診の目安と鍼灸の安全性</h1>
     <p className="leading-relaxed">体質チェックや弁証の結果で病気の有無や緊急性を判断することはできません。症状が続く、悪化する、普段と違う場合は医療機関へ相談してください。</p>
     <section id="emergency" className="space-y-3 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-950 dark:border-red-900 dark:bg-red-950/30 dark:text-red-100">
@@ -34,5 +34,5 @@ export default function SafetyPage() {
       <p className="text-sm">原典を確認した日：{MEDICAL_SAFETY_CHECKED_AT}。このページは編集上の原典照合に基づく説明です。サイト全件の照合と専門家監修は継続中です。</p>
       <Link href="/editorial-policy" className="underline">医学記述・出典の確認状況</Link>
     </section>
-  </main>;
+  </div>;
 }

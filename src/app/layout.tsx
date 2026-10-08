@@ -10,7 +10,7 @@ import { ClinicalMemoProvider } from "@/contexts/ClinicalMemoContext";
 import { CurriculumProgressProvider } from "@/contexts/CurriculumProgressContext";
 import { LearningSyncProvider } from "@/contexts/LearningSyncContext";
 import { AuthProvider } from "@/contexts/AuthContext";
-import MyClinicalRecordDrawer from "@/components/MyClinicalRecordDrawer";
+import DeferredClinicalDrawer from "@/components/DeferredClinicalDrawer";
 import MobileBottomNav from "@/components/navigation/MobileBottomNav";
 import PwaRegister from "@/components/pwa/PwaRegister";
 import PwaInstallPrompt from "@/components/pwa/PwaInstallPrompt";
@@ -168,12 +168,12 @@ export default function RootLayout({
                 <ClinicalMemoProvider>
                   <LearningSyncProvider><CurriculumProgressProvider catalog={getLearningProgressCatalog()}>
                     <div data-clarity-sensitive className="contents"><Header /></div>
-                    <div id="main-content" tabIndex={-1} className="flex-1 min-w-0">
+                    <main id="main-content" tabIndex={-1} className="flex-1 min-w-0">
                       {children}
-                    </div>
+                    </main>
                     <Footer />
                     <div data-clarity-sensitive className="contents">
-                      <MyClinicalRecordDrawer />
+                      <DeferredClinicalDrawer />
                       <MobileBottomNav />
                     </div>
                     <PwaInstallPrompt />

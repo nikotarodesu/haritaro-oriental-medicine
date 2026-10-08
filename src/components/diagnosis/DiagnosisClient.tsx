@@ -7,7 +7,7 @@ import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { DIAGNOSIS_QUESTIONS, DIAGNOSIS_RESULTS, DIAGNOSIS_GUIDANCE_SCOPE } from "@/data/diagnosisData";
 import type { DiagnosisResultType } from "@/types/oriental";
 import type { ArticlePreview } from "@/data/articleData";
-import { TSUBOS } from "@/data/tsuboData";
+import { ACUPOINT_LOOKUP as TSUBOS } from "@/data/acupointLookup";
 import {
   Stethoscope,
   CheckCircle2,

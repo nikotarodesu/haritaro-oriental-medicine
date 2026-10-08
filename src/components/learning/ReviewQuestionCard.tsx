@@ -3,18 +3,18 @@
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import { LEARNING_QUESTION_MAP } from '@/data/learningQuestionBank';
+import type { LearningQuestion } from '@/data/learningQuestionBank';
 import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
 import { getLearningCourseForSeries } from '@/data/learningCourses';
 import { reviewSessionReturnHref, validReviewSessionId } from '@/utils/reviewSession';
 import { useCurriculumProgress } from '@/contexts/CurriculumProgressContext';
 
-export default function ReviewQuestionCard({ lectureId }: { lectureId: string }) {
+export default function ReviewQuestionCard({ lectureId, questions }: { lectureId: string; questions: LearningQuestion[] }) {
   const params = useSearchParams();
   const { quizResults, isMounted } = useCurriculumProgress();
   const id = params.get('review');
   const record = id && isMounted ? quizResults[id] : undefined;
-  const question = (id ? LEARNING_QUESTION_MAP.get(id) : undefined) || (record?.kind === 'acupoint' ? {
+  const question = (id ? questions.find(question => question.id === id) : undefined) || (record?.kind === 'acupoint' ? {
     lectureId: record.lectureId, question: record.questionText, explanation: record.explanation, kind: record.kind,
   } : undefined);
   const reviewSession = params.get('reviewSession');

@@ -88,7 +88,7 @@ for (let rank = 0; rank < 3; rank++) {
   // A regression ceiling, not a claim that every length strategy is at chance.
   // Chance alone passes 7/27 (~26%) of lessons. Report the tie-aware results
   // below so review can distinguish that baseline from residual weak clues.
-  assert.ok(expectedPasses[rank] / groups.length <= 0.4, `length rank ${rank}: including ties, shortcut must not pass more than 40% of lessons`);
+  assert.ok(expectedPasses[rank] / groups.length <= 0.32, `length rank ${rank}: including ties, shortcut must not pass more than 32% of lessons`);
 }
 
 const diagnosis = CURRICULUM_QUIZZES['lecture-diagnosis-7'].questions;

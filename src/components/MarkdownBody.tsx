@@ -20,6 +20,7 @@ interface MarkdownBodyProps {
   resolvedReferences?: ResolvedReference[];
   readingInserts?: ReadingInsert[];
   relatedReading?: ReadingLink;
+  collapseAdvanced?: boolean;
 }
 
 export default function MarkdownBody({
@@ -30,12 +31,14 @@ export default function MarkdownBody({
   resolvedReferences,
   readingInserts,
   relatedReading,
+  collapseAdvanced = false,
 }: MarkdownBodyProps) {
   const blocks = parseMarkdownBlocks(contentMarkdown);
   const figurePlacements = resolveReadingInsertions(blocks, readingInserts ?? []);
   const lastFigureIndex = Math.max(-1, ...figurePlacements.keys());
 
   const textParts = blocks.flatMap((block) => {
+    if (block.type === "code") return [];
     if (block.type === "table") return [...block.headers, ...block.rows.flat()];
     if (block.type === "list") return block.items;
     return "content" in block ? [block.content] : [];
@@ -177,6 +180,10 @@ export default function MarkdownBody({
                 {renderText(block.content)}
               </p>
             );
+          case "card":
+            return <div key={index} className="my-4 min-w-0 rounded-xl border border-[#C5DED4] bg-[#F6F8F3] p-4 text-base leading-[1.9] whitespace-pre-line [overflow-wrap:anywhere] dark:border-[#2A5243] dark:bg-[#182823]">{renderText(block.content)}</div>;
+          case "code":
+            return <pre key={index} className="my-4 max-w-full overflow-x-auto rounded-xl bg-slate-100 p-4 text-sm dark:bg-slate-900"><code>{block.content}</code></pre>;
           case "diagram":
             return (
               <div key={index} className="not-prose my-6">
@@ -210,9 +217,7 @@ export default function MarkdownBody({
         }
       };
 
-  return (
-    <div data-reading-body className="prose max-w-none text-[#232826] dark:text-[#D5E0DC] leading-[1.9] space-y-6 text-base">
-      {blocks.map((block, index) => (
+  const renderedBlocks = blocks.map((block, index) => (
         <React.Fragment key={index}>
           {renderBlock(block, index)}
           {figurePlacements.get(index)?.map((figure) => <InlineConceptFigure key={figure.id} figure={figure} />)}
@@ -226,7 +231,21 @@ export default function MarkdownBody({
             </aside>
           ) : null}
         </React.Fragment>
-      ))}
+      ));
+  const content: React.ReactNode[] = [];
+  for (let index = 0; index < blocks.length; index++) {
+    const block = blocks[index];
+    content.push(renderedBlocks[index]);
+    if (collapseAdvanced && block.type === "h2" && /^(📘|🔬)/.test(block.content)) {
+      let end = index + 1;
+      while (end < blocks.length && blocks[end].type !== "h2") end++;
+      content.push(<details key={`advanced-${index}`} className="rounded-xl border border-[#D5DED8] p-4 dark:border-[#2A3B4A]"><summary className="min-h-11 cursor-pointer py-2 font-semibold">詳しい内容を読む（基礎を押さえてから）</summary><div className="space-y-5">{renderedBlocks.slice(index + 1, end)}</div></details>);
+      index = end - 1;
+    }
+  }
+  return (
+    <div data-reading-body className="prose max-w-none min-w-0 text-[#232826] dark:text-[#D5E0DC] leading-[1.9] space-y-6 text-base [overflow-wrap:anywhere]">
+      {content}
     </div>
   );
 }

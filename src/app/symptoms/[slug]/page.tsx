@@ -48,7 +48,7 @@ export default async function SymptomGuidePage({ params }: Props) {
   const sections = [{ id: 'safety', label: '受診の目安' }, { id: 'traditional', label: '伝統医学での分類' }, { id: 'acupoints', label: '関連経穴' }, { id: 'daily-life', label: '日常の工夫' }, { id: 'sources', label: '出典・研究資料' }, { id: 'learning', label: '次に学ぶ' }];
 
   return (
-    <main className="reading-page mx-auto max-w-4xl space-y-7 px-4 py-8 text-base leading-relaxed text-[#232826] dark:text-[#FAF8F5] sm:py-12">
+    <div className="reading-page mx-auto max-w-4xl space-y-7 px-4 py-8 text-base leading-relaxed text-[#232826] dark:text-[#FAF8F5] sm:py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getSymptomGuideJsonLd(guide)).replace(/</g, '\\u003c') }} />
       <nav aria-label="パンくず" className="flex flex-wrap items-center gap-2 text-sm"><Link href="/" className={linkClass}>ホーム</Link><span aria-hidden="true">/</span><Link href="/symptoms" className={linkClass}>症状別ガイド</Link><span aria-hidden="true">/</span><span aria-current="page">{guide.title}</span></nav>
       <header className="space-y-4">
@@ -99,6 +99,6 @@ export default async function SymptomGuidePage({ params }: Props) {
       </section>
       <AuthorSupervisorCard topic={guide.title} />
       <Link href={`/contact?source=${encodeURIComponent(symptomGuidePath(guide))}`} className={linkClass}>このガイドの記述・出典について連絡する →</Link>
-    </main>
+    </div>
   );
 }

@@ -49,7 +49,7 @@ import {
 } from "@/data/simulatorData";
 import { saveDraftPatientNote } from "@/utils/draftNote";
 import type { SafetyReview } from "@/data/simulatorReasoning";
-import { TSUBOS } from "@/data/tsuboData";
+import { ACUPOINT_LOOKUP as TSUBOS } from "@/data/acupointLookup";
 import { Tsubo } from "@/types/oriental";
 
 const STORAGE_KEY = "haritaro_simulator_state_v1";
@@ -218,6 +218,16 @@ export default function ThreeStageSimulator() {
 
   // 詳細ツボモーダル用
   const [modalTsubo, setModalTsubo] = useState<Tsubo | null>(null);
+  const openAcupoint = async (id: string) => {
+    setChangeNotice('経穴の詳しい情報を読み込んでいます。');
+    try {
+      const { TSUBOS: completePoints } = await import('@/data/tsuboData');
+      const point = completePoints.find(item => item.id === id);
+      if (!point) throw new Error('missing point');
+      setModalTsubo(point);
+      setChangeNotice(null);
+    } catch { setChangeNotice('経穴情報を読み込めませんでした。経穴の詳細ページから確認してください。'); }
+  };
 
   // 結果エリアの4大折りたたみアコーディオン（デフォルト閉）
   const [isReasonOpen, setIsReasonOpen] = useState<boolean>(true);
@@ -1312,7 +1322,7 @@ export default function ThreeStageSimulator() {
                     {pTsubo && (
                       <div className="flex items-center gap-3 pt-1">
                         <button
-                          onClick={() => setModalTsubo(pTsubo)}
+                          onClick={() => void openAcupoint(pTsubo.id)}
                           className="text-xs text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1 font-semibold cursor-pointer"
                         >
                           <BookOpen className="w-3.5 h-3.5" />
@@ -1354,7 +1364,7 @@ export default function ThreeStageSimulator() {
                     {sTsubo && (
                       <div className="flex items-center gap-3 pt-1">
                         <button
-                          onClick={() => setModalTsubo(sTsubo)}
+                          onClick={() => void openAcupoint(sTsubo.id)}
                           className="text-xs text-[#B86924] dark:text-[#E6C387] hover:underline flex items-center gap-1 font-semibold cursor-pointer"
                         >
                           <BookOpen className="w-3.5 h-3.5" />
@@ -1713,7 +1723,7 @@ export default function ThreeStageSimulator() {
                             {pTsubo && (
                               <div className="flex items-center gap-3 pt-1">
                                 <button
-                                  onClick={() => setModalTsubo(pTsubo)}
+                                  onClick={() => void openAcupoint(pTsubo.id)}
                                   className="text-xs text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1 font-semibold cursor-pointer"
                                 >
                                   <BookOpen className="w-3.5 h-3.5" />
@@ -1755,7 +1765,7 @@ export default function ThreeStageSimulator() {
                             {sTsubo && (
                               <div className="flex items-center gap-3 pt-1">
                                 <button
-                                  onClick={() => setModalTsubo(sTsubo)}
+                                  onClick={() => void openAcupoint(sTsubo.id)}
                                   className="text-xs text-[#B86924] dark:text-[#E6C387] hover:underline flex items-center gap-1 font-semibold cursor-pointer"
                                 >
                                   <BookOpen className="w-3.5 h-3.5" />

@@ -6,6 +6,12 @@ import CurriculumLectureReader from "@/components/curriculum/CurriculumLectureRe
 import { getArticlePreviews } from "@/data/articleData";
 import { createCurriculumReadingLinks, getCurriculumRelatedArticleIds } from "@/data/curriculumReadingGuides";
 
+import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
+import { resolveArticleReferences } from "@/utils/referenceResolver";
+import { LEARNING_QUESTIONS } from "@/data/learningQuestionBank";
+import { getChapterAssessment } from "@/data/curriculumAssessments";
+import { PAGE_REVISIONS } from "@/config/contentUpdates";
+
 const allLectures: Lecture[] = CURRICULUM_DATA.flatMap((s) => s.lectures);
 
 // 旧形式IDのマッピング
@@ -110,7 +116,10 @@ export default async function CurriculumDetailPage({ params }: Props) {
           lecture.summary ||
           `${lecture.title}の解説講義。東洋医学の基礎から実践まで体系的に学びます。`,
         learningResourceType: "Lesson",
-        educationalLevel: "Professional / Academic",
+        educationalLevel: "Beginner / Student",
+        author: { "@type": "Person", name: "はり太郎", url: "https://www.haritaro.jp/about" },
+        dateModified: PAGE_REVISIONS[`/curriculum/${lecture.id}`],
+        citation: resolveArticleReferences(lecture.references, lecture.contentMarkdown).flatMap(reference => reference.url ? [{ "@type": "CreativeWork", name: reference.title, url: reference.url }] : []),
         inLanguage: "ja",
         provider: {
           "@type": "Organization",
@@ -152,6 +161,10 @@ export default async function CurriculumDetailPage({ params }: Props) {
       />
       <CurriculumLectureReader
         lecture={lecture}
+        quiz={CURRICULUM_QUIZZES[lecture.id]}
+        resolvedReferences={resolveArticleReferences(lecture.references, lecture.contentMarkdown)}
+        reviewQuestions={LEARNING_QUESTIONS.filter(question => question.lectureId === lecture.id)}
+        chapterAssessment={getChapterAssessment(lecture.id)}
         lectureNavigation={allLectures.map(({ id, title, seriesId, lessonNumber, lectureNumber, duration, isPublished }) => ({ id, title, seriesId, lessonNumber, lectureNumber, duration, isPublished }))}
         relatedReadingLinks={createCurriculumReadingLinks(lecture.id, getArticlePreviews(getCurriculumRelatedArticleIds(lecture.id)))}
       />

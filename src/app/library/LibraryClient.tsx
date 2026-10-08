@@ -101,7 +101,7 @@ export default function LibraryClient() {
 
           <div className="space-y-2">
             <h1 className="font-serif text-2xl sm:text-4xl font-bold tracking-tight text-[#232826] dark:text-[#FAF8F5]">
-              文献・古典・臨床実例アーカイブ
+              文献・古典・症例教材
             </h1>
             <p className="text-base text-[#59615D] dark:text-[#96A6B2] max-w-3xl leading-relaxed">
               古典条文（素問・霊枢・難経）、原典と書誌情報を照合した研究資料、症例教材をまとめています。研究の種類・対象・限界を確認しながら学ぶための資料集です。
@@ -141,7 +141,7 @@ export default function LibraryClient() {
             { id: "papers", label: "論文", count: filteredPapers.length },
             { id: "classics", label: "古典", count: filteredClassics.length },
             { id: "cases", label: "症例", count: filteredCases.length },
-            { id: "archives", label: "実例", count: filteredArchives.length },
+            ...(PUBLIC_ARCHIVE_CASES.length > 0 ? [{ id: "archives", label: "臨床アーカイブ", count: filteredArchives.length }] : []),
           ].map(tab => (
             <button
               key={tab.id}

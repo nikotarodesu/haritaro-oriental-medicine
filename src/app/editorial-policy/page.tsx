@@ -8,7 +8,7 @@ import { CLASSICAL_TEXTS } from '@/data/classicalTextsData';
 export const metadata: Metadata = { title: '医学記述・出典の確認方針', description: '書誌の照合、研究結果の解釈、専門家による監修の状況を分けて公開します。', ...pageSocialMetadata('医学記述・出典の確認方針', '書誌の照合、研究結果の解釈、専門家による監修の状況を分けて公開します。', '/editorial-policy'), alternates: { canonical: '/editorial-policy' } };
 export default function EditorialPolicyPage() {
   const records = Object.values(audit);
-  return <main className="mx-auto max-w-3xl px-4 py-12 space-y-7 text-[#232826] dark:text-[#FAF8F5]">
+  return <div className="mx-auto max-w-3xl px-4 py-12 space-y-7 text-[#232826] dark:text-[#FAF8F5]">
     <h1 className="font-serif text-3xl font-bold">医学記述・出典の確認方針</h1>
     <section className="space-y-3"><h2 className="text-xl font-bold">臨床用の記録・学習モデルの確認範囲（2026年10月4日）</h2><p>主訴別の確認ガイドと臨床ワークスペースでは、伝統理論、現代医学の受診目安、理解を助ける比喩を区別します。所見の照合は本サイトが整理した7つの限定的な学習モデルで、診断確率・治療効果・医学的な原因の除外を示しません。</p><p>WHOの標準用語は用語体系の参照に用い、個別の配穴の効果や照合ルールの検証資料とは扱いません。新しい学習モデルの臨床的妥当性と専門家監修は未確認です。</p><Link className="inline-flex min-h-11 items-center underline" href="/clinical">主訴別ガイドと参照範囲を見る</Link></section>
     <p className="leading-relaxed">伝統的な分類、現代医学の研究結果、理解を助ける比喩を区別します。文献が存在することと、教材の説明がその文献で支持されることは別々に確認します。</p>
@@ -37,5 +37,5 @@ export default function EditorialPolicyPage() {
     <section className="space-y-3"><h2 className="text-xl font-bold">監修の記録</h2><p>監修者の氏名・資格、確認した記述の版、対象範囲、確認日、修正内容を記録します。執筆者情報や自動チェックの合格だけを「専門家監修済み」と表示することはありません。</p><p>本文を変更した場合、以前の確認を新しい記述へ自動で引き継ぎません。施術の安全性や緊急の対応が関わる記述を優先して確認します。</p></section>
     <p className="text-sm">確認台帳の作成日：{summary.generatedAt}。記述の誤りや出典の不一致は<Link href="/contact" className="underline">お問い合わせ</Link>からお知らせください。</p>
     <Link href="/library" className="inline-flex min-h-11 items-center underline">書誌を照合した研究資料を見る</Link>
-  </main>;
+  </div>;
 }

@@ -163,7 +163,7 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
   {
     slug: 'diagnosis-foundations', seriesId: 'diagnosis',
     title: '安全確認から情報整理へ', eyebrow: '判断の根拠を集める',
-    description: '診断・弁証の全体像、安全確認、主訴の時間軸、観察を4講で学びます。弁証の各論は章の全講義で続けて学べます。',
+    description: '診断・弁証の全体像、安全確認、主訴の時間軸、観察、八綱の分類軸を5講で学びます。弁証の各論は章の全講義で続けて学べます。',
     audience: '証名の暗記から、情報を集める順序へ進みたい方',
     goals: ['安全確認を先に行う理由を説明する。', '主訴と経過を整理し、観察事実と解釈を分ける。', '分からないことを記録し、追加確認の優先順位を考える。'],
     steps: [
@@ -171,6 +171,7 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
       { lectureId: 'lecture-diagnosis-2', title: '安全と対応範囲を確かめる', focus: '弁証を進める前に確認する情報を整理する。' },
       { lectureId: 'lecture-diagnosis-3', title: '主訴と時間軸を整理する', focus: '本人の困りごとと、いつ・どう変わったかを記録する。' },
       { lectureId: 'lecture-diagnosis-5', title: '観察した事実を記録する', focus: '見えたことと、そこから考えたことを分ける。' },
+      { lectureId: 'lecture-diagnosis-7', title: '八綱の分類軸を分ける', focus: '表裏・寒熱・虚実・陰陽を分け、根拠と不足情報を示す。' },
     ], reading: [],
   },
   {

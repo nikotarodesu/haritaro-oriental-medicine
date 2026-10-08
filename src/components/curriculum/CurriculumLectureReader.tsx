@@ -8,9 +8,13 @@ import ReadingProgressBar from "@/components/ReadingProgressBar";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
 import MarkdownBody from "@/components/MarkdownBody";
 import ArticleReferences from "@/components/ArticleReferences";
-import { resolveArticleReferences } from "@/utils/referenceResolver";
+import type { ResolvedReference } from "@/types/references";
+import type { ChapterAssessmentData } from "@/data/curriculumAssessments";
+import ChapterAssessment from "@/components/curriculum/ChapterAssessment";
+import { PAGE_REVISIONS } from "@/config/contentUpdates";
+import type { LearningQuestion } from "@/data/learningQuestionBank";
 import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
-import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
+import type { LessonQuizGroup } from "@/data/curriculumQuizTypes";
 import { getCurriculumReadingInserts, CURRICULUM_READING_QUESTIONS } from "@/data/curriculumReadingGuides";
 import { getLearningCoursesForLecture } from "@/data/learningCourses";
 import { parseMarkdownBlocks } from "@/utils/markdownParser";
@@ -44,9 +48,13 @@ interface Props {
   lecture: Lecture;
   lectureNavigation: ReadonlyArray<Pick<Lecture, "id" | "title" | "seriesId" | "lessonNumber" | "lectureNumber" | "duration" | "isPublished">>;
   relatedReadingLinks?: ReadingLink[];
+  quiz: LessonQuizGroup;
+  resolvedReferences: ResolvedReference[];
+  reviewQuestions: LearningQuestion[];
+  chapterAssessment: ChapterAssessmentData | null;
 }
 
-export default function CurriculumLectureReader({ lecture, lectureNavigation, relatedReadingLinks = [] }: Props) {
+export default function CurriculumLectureReader({ lecture, lectureNavigation, relatedReadingLinks = [], quiz, resolvedReferences, reviewQuestions, chapterAssessment }: Props) {
   const articleTopRef = useRef<HTMLDivElement | null>(null);
   const [focusBanner, setFocusBanner] = useState<string | null>(null);
   const [resolvedCourse, setResolvedCourse] = useState<{ lectureId: string; journey: CourseJourney | null } | null>(null);
@@ -171,10 +179,6 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
   const isCompleted = isMounted && !!completedLectures[lecture.id];
 
   const keyPointsSeenTerms = createGlossarySeenSnapshots(lecture.keyPoints);
-  const resolvedReferences = resolveArticleReferences(
-    lecture.references,
-    lecture.contentMarkdown
-  );
   const readingInserts = getCurriculumReadingInserts(lecture.id);
   const lectureHeadings = parseMarkdownBlocks(lecture.contentMarkdown).flatMap((block, index) =>
     block.type === "h2" ? [{ label: block.content, id: `curriculum-heading-${index}` }] : [],
@@ -202,7 +206,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
       <ReadingProgressBar bodySelector="#lecture-content [data-reading-body]" />
 
       <Suspense fallback={null}>
-        <ReviewQuestionCard lectureId={lecture.id} />
+        <ReviewQuestionCard lectureId={lecture.id} questions={reviewQuestions} />
       </Suspense>
 
       {/* 復習ジャンプ通知バナー */}
@@ -353,6 +357,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] leading-tight">
             {lecture.title}
           </h1>
+          <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">編集：<Link href="/about" className="underline underline-offset-4">はり太郎</Link> · 更新：<time dateTime={PAGE_REVISIONS[`/curriculum/${lecture.id}`]}>{PAGE_REVISIONS[`/curriculum/${lecture.id}`]}</time> · <Link href="/editorial-policy" className="underline underline-offset-4">出典確認・監修の範囲</Link>（専門家監修は未完了）</p>
           {lecture.subtitle && (
             <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
               {lecture.subtitle}
@@ -363,8 +368,9 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
         <nav aria-label="講義内の移動" className="flex flex-wrap gap-2">
           <a href="#lecture-content" aria-label="講義本文を読む" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">本文</a>
           {readingInserts[0] && <a href={`#reading-figure-${readingInserts[0].figure.id}`} className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] px-4 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A3B4A] dark:text-[#83BEA8] dark:hover:bg-[#182823]">図で整理</a>}
-          {CURRICULUM_QUIZZES[lecture.id] && <a href="#lecture-quiz" aria-label="理解度チェックのクイズへ" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">クイズ</a>}
+          {quiz && <a href="#lecture-quiz" aria-label="理解度チェックのクイズへ" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">クイズ</a>}
           {resolvedReferences.length > 0 && <a href="#article-references-section" aria-label="出典と確認範囲へ" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">出典</a>}
+          {chapterAssessment && <a href="#chapter-assessment" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] px-4 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A3B4A] dark:text-[#83BEA8] dark:hover:bg-[#182823]">章末演習</a>}
         </nav>
 
         {/* 学習ゴール枠 */}
@@ -442,8 +448,14 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
 
         {/* 本文（MarkdownBody） */}
         <div id="lecture-content" className="scroll-mt-28">
+        {lecture.seriesId === 'lifedynamics' && <aside aria-label="生命機能論の読み方" className="rounded-xl border border-[#C5DED4] bg-[#EBF3EF] p-4 dark:border-[#2A5243] dark:bg-[#182823]">
+          <h2 className="text-lg font-bold">まず押さえる内容</h2>
+          <p className="mt-2 leading-relaxed">要点と基本の節を読み、概念の役割を自分の言葉で説明しましょう。「詳しく学ぶ」「研究との接点」は、基礎を押さえてから開いて読めます。判断の注意点は先に確認します。</p>
+          <ul className="mt-3 space-y-2">{lectureHeadings.filter(h => !/^(📘|🔬)/.test(h.label)).map(h => <li key={h.id}><a href={`#${h.id}`} className="inline-flex min-h-11 items-center underline underline-offset-4">{h.label}</a></li>)}</ul>
+        </aside>}
         <MarkdownBody
           contentMarkdown={lecture.contentMarkdown}
+          collapseAdvanced={lecture.seriesId === "lifedynamics"}
           idPrefix="curriculum-heading"
           resolvedReferences={resolvedReferences}
           readingInserts={readingInserts}
@@ -479,10 +491,10 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E8DEC9] dark:border-[#223342] pb-2.5">
               <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                 <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-                <span>国家試験 出題チェックポイント（はり師・きゅう師・あはき）</span>
+                <span>国家試験の学習で確認したい基礎（はり師・きゅう師・あはき）</span>
               </div>
               <span className="text-sm font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
-                過去問頻出論点
+                基礎の確認
               </span>
             </div>
             <ul className="space-y-2 text-base text-[#333835] dark:text-[#C5D2DB]">
@@ -522,10 +534,10 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
         )}
 
         {/* レッスン理解度チェック（クイズ演習） */}
-        {CURRICULUM_QUIZZES[lecture.id] && (
+        {quiz && (
           <section id="lecture-quiz" aria-label="理解度チェック" className="scroll-mt-28">
           <InteractiveQuiz
-            quiz={CURRICULUM_QUIZZES[lecture.id]}
+            quiz={quiz}
             courseJourney={courseJourney}
             nextLecture={
               nextLecture
@@ -538,6 +550,8 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           />
           </section>
         )}
+
+        {chapterAssessment && <ChapterAssessment assessment={chapterAssessment} />}
 
         {/* 参考文献・学術エビデンス */}
         <ArticleReferences references={resolvedReferences} scopeNote={lecture.evidenceScope} />

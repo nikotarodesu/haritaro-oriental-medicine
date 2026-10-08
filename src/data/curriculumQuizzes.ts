@@ -4,29 +4,9 @@ import { CURRICULUM_CHAPTERS_META } from "./curriculumOutline";
 // 全章の講義に対応する3択の理解度チェック。本文データをクライアントへ取り込まない。
 // 各レッスン3問構成・完全3択（A, B, C）・合格ライン: 3問中2問以上正解でレッスンクリア！
 
-export interface QuizQuestionItem {
-  id: string;
-  question: string;
-  options: [string, string, string]; // 厳密に3択
-  correctIndex: number;
-  explanation: string;
-  relatedSectionTitle?: string; // 関連する講義の見出し・トピック
-}
-
-export function getQuizSectionTitle(question: QuizQuestionItem): string {
-  if (question.relatedSectionTitle) return question.relatedSectionTitle;
-  const match = question.question.match(/【([^】]+)】/);
-  return match ? match[1] : "";
-}
-
-export interface LessonQuizGroup {
-  lectureId: string;
-  chapterId: string;
-  chapterTitle: string;
-  lectureTitle: string;
-  passingScore: number;
-  questions: QuizQuestionItem[];
-}
+import type { LessonQuizGroup } from "./curriculumQuizTypes";
+export type { QuizQuestionItem, LessonQuizGroup } from "./curriculumQuizTypes";
+export { getQuizSectionTitle } from "./curriculumQuizTypes";
 
 const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
   "lecture-yinyang-1": {
@@ -129,11 +109,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-yinyang-3-q1",
       "question": "【陰陽制約】陰陽制約と現代の負のフィードバックを比較する際の理解として、最も適切なものはどれですか？",
-      "options": [
-        "調節の関係は比喩、同一の機序は未確認",
-        "調節の関係は比喩、同一の機序は確認済み",
-        "調節の関係は測定、同一の機序は確認済み"
-      ],
+      "options": ["調節の関係は比喩、同一の機序は未検証","調節の関係は比喩、同一の機序は検証済","調節の関係は測定、同一の機序は検証済"],
       "correctIndex": 0,
       "explanation": "陰陽制約は、互いの偏りを抑えるという伝統的な関係の説明です。フィードバックとの比較は理解を助けますが、測定や実験に基づく現代医学の機構と同一視しません。",
       "relatedSectionTitle": "2. 陰陽制約（いんようせいやく）"
@@ -153,11 +129,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-yinyang-3-q3",
       "question": "【医学的評価の優先】感染症に伴って意識の異常や息苦しさがある人への対応として、最も適切なものはどれですか？",
-      "options": [
-        "分類を確定してから受診の要否を決める",
-        "経過が陰陽モデルに合うかで重症度を決める",
-        "速やかな医学的評価を優先する"
-      ],
+      "options": ["陰陽の分類を先に確定して受診へつなぐ","症状の時間変化を先に記録して受診へつなぐ","緊急性の医学的評価を先に行い医療へつなぐ"],
       "correctIndex": 2,
       "explanation": "感染症に伴う意識の異常や息苦しさは、敗血症などでもみられます。陰陽だけで原因や重症度を確定することはできないため、速やかな医学的評価を優先し、鍼灸施術などで救急対応を遅らせてはいけません。",
       "relatedSectionTitle": "4. 臨床における着眼点"
@@ -354,11 +326,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-yinyang-8-q1",
       "question": "【分類・関係・変化の整理】陰陽論を学習例の整理に用いる目的として、最も適切なのはどれですか？",
-      "options": [
-        "観察は記録、分類は解釈、不明は未確認",
-        "観察は記録、分類は病名、不明は異常なし",
-        "観察は原因、分類は解釈、不明は異常なし"
-      ],
+      "options": ["観察は事実、分類は解釈、不明は未確認","観察は事実、分類は病名、不明は正常値","観察は原因、分類は解釈、不明は正常値"],
       "correctIndex": 0,
       "explanation": "陰陽論は伝統的な説明モデルです。分類・関係・変化の見方で情報を整理しますが、それだけで医学的な原因や検査値、治療効果が判定できるわけではありません。",
       "relatedSectionTitle": "1. 分類・関係・変化の整理"
@@ -377,12 +345,8 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     },
     {
       "id": "lecture-yinyang-8-q3",
-      "question": "【3. 気血津液論への接続】陰陽論の次に気血津液論を学ぶ目的として適切なのはどれですか？",
-      "options": [
-        "陰陽の配属を血液検査値へ対応させる",
-        "陰陽の配属から具体的な治療方針を決める",
-        "働き・滋養・潤いの基本役割を学ぶ"
-      ],
+      "question": "陰陽の対立・変化を学んだ後、気血津液論で新たに整理する中心課題はどれですか？",
+      "options": ["臓と腑の名称、表裏関係の組み合わせ","正常な生成、営衛と三焦の連携の詳細","働き・滋養・潤い、三つの基本的な役割"],
       "correctIndex": 2,
       "explanation": "陰陽は性質を比較する視点、気血津液は基本役割を整理する視点として学びます。現代の測定や生理機構との同一視を避けます。",
       "relatedSectionTitle": "3. 気血津液論への接続"
@@ -804,11 +768,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-qiblood-2-q1",
       "question": "【第1節：滋養・滋潤という役割】血の基本役割の伝統的な説明として適切なのはどれですか？",
-      "options": [
-        "身体を養い、潤す",
-        "身体を温め、活動を推進する",
-        "飲食物を受け入れ、伝化する"
-      ],
+      "options": ["身体各部を滋養し、潤いを支える役割","身体各部を温め、活動を推進する役割","飲食物を受け入れ、消化を進める役割"],
       "correctIndex": 0,
       "explanation": "血は滋養・滋潤という役割から学びます。赤血球などの定義や検査値と一対一には対応しません。",
       "relatedSectionTitle": "第1節：滋養・滋潤という役割"
@@ -939,11 +899,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-qiblood-5-q1",
       "question": "【第1節：架空例の情報を三つに分ける】Aさんが散歩後に「温かく感じた」と話した例で、記載された情報はどれですか？",
-      "options": [
-        "本人の温感の報告",
-        "測定した体温の記録",
-        "温煦作用が正常という判定"
-      ],
+      "options": ["本人が感じた温かさについての主観的な報告","体温計で確認した体温についての客観的な記録","伝統的な温煦作用について正常と評価した判定"],
       "correctIndex": 0,
       "explanation": "本人の訴えが記載されています。実測値や診断結果は示されていません。記載された事実と推測を分けます。",
       "relatedSectionTitle": "第1節：架空例の情報を三つに分ける"
@@ -951,11 +907,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-qiblood-5-q2",
       "question": "【第2節：一つの判断とその根拠】この架空例から最も適切に言えることはどれですか？",
-      "options": [
-        "温煦との関係は説明、気の量は十分と判定",
-        "温煦との関係は説明、気の量は未測定",
-        "温煦との関係は測定、治療の必要性も判定"
-      ],
+      "options": ["温煦との関係は説明、気の量は充足と判定","温煦との関係は説明、気の量は測定対象外","温煦との関係は測定、介入の要否まで判定"],
       "correctIndex": 1,
       "explanation": "温煦が身体を温める役割を表すことが根拠です。用語を理解したことと身体の状態を診断したことは別です。",
       "relatedSectionTitle": "第2節：一つの判断とその根拠"
@@ -1086,11 +1038,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-lifedynamics-3-q2",
       "question": "【宗気の生成モデル】胸中の宗気を説明するとき、本講で組み合わせる二つはどれですか？",
-      "options": [
-        "自然の清気と体外へ出す濁気",
-        "水穀の精微と自然の清気",
-        "体外へ出す濁気と飲食物の残渣"
-      ],
+      "options": ["自然の清気と呼吸で排出される濁気","水穀から得られる精微と自然の清気","排出される濁気と飲食物の消化残渣"],
       "correctIndex": 1,
       "explanation": "宗気は水穀の精微と自然の清気から説明する伝統的な生成モデルです。胸中・呼吸・血行と関連づけますが、ATPの産生反応や測定された物質の合成式にはしません。",
       "relatedSectionTitle": "第3節：宗気（そうき）の形成 ― 拍動と呼吸のエンジン"
@@ -1356,11 +1304,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-lifedynamics-9-q2",
       "question": "【季節と症状の関係】Aさんの「梅雨の週に身体が重い」という記録の解答として、適切なのはどれですか？",
-      "options": [
-        "重さは本人の報告、湿との因果は確認済み",
-        "重さは本人の報告、湿との因果は未確認",
-        "重さは測定結果、脾の機能低下は確認済み"
-      ],
+      "options": ["身体の重さは本人の報告、湿が原因と判定","身体の重さは本人の報告、湿の関係は仮説","身体の重さは測定結果、脾の低下まで判定"],
       "correctIndex": 1,
       "explanation": "同じ季節や週に現れたことだけでは因果は確認されません。実際の室温・湿度、屋内外の仕事、睡眠、他の症状などを分けて確認します。湿との関係は伝統的な説明候補です。",
       "relatedSectionTitle": "第2節：季節病のメカニズム ― 「同調のタイムラグ」"
@@ -1368,11 +1312,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-lifedynamics-9-q3",
       "question": "【地域・生活の違い】同じ冬に、屋外で働く人と暖房のある室内で働く人を比較する学習で、適切な進め方はどれですか？",
-      "options": [
-        "同じ暦なら食品と起床時刻をそろえる",
-        "冬の配当から二人の身体の状態を同じとする",
-        "実際の環境・仕事・生活を比較する"
-      ],
+      "options": ["同じ季節なので、食品と起床時刻の基準を共通にする","冬の配当から、二人の寒熱・虚実の分類を共通にする","実際の環境・仕事・生活から、二人の条件を比較する"],
       "correctIndex": 2,
       "explanation": "同じ季節でも地域・室内外の環境・生活背景は異なります。古典の季節表現は学習の手掛かりで、特定の食事・睡眠時刻・治療を一律に指定する根拠にはしません。",
       "relatedSectionTitle": "⚠️ 判断の注意点：古典の教えを「一律の命令」にしてはならない"
@@ -2211,11 +2151,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-diagnosis-4-q2",
       "question": "【問診における仮説検証と確証バイアス回避】問診の初期段階で「この患者は肝気鬱結だろう」と仮説を立てた施術者が、診断精度を高めるために取るべき最も適切な問診態度はどれですか？",
-      "options": [
-        "候補に合う報告を詳しくして確信度を上げる",
-        "候補に合わない経過や所見も尋ねる",
-        "質問する前に候補を伝え同意の有無で判断する"
-      ],
+      "options": ["候補を支持する症状を中心に経過を詳しく尋ねる","候補の支持情報と矛盾する所見を両方とも尋ねる","候補の証名を先に説明して本人の同意を尋ねる"],
       "correctIndex": 1,
       "explanation": "確証バイアス（自分の仮説に都合の良い証拠だけを集めてしまう心理）の回避です。臨床推論では、初期仮説を立てた後、反証所見（矛盾する兆候）を自ら探しに行くことで誤診を防ぎます。",
       "relatedSectionTitle": "第3節：仮説を「支持する質問」と「反証（否定）する質問」のペアリング"
@@ -2223,11 +2159,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-diagnosis-4-q3",
       "question": "【問診の質問設計：ファネル構造】患者から正確な病態情報を引き出すための「問診のファネル（漏斗）構造」として適切な手順はどれですか？",
-      "options": [
-        "病名の二択→同意する内容の聴取",
-        "想定した症状を提示→合う話だけ自由に聴く",
-        "自由な語り→焦点を絞った確認"
-      ],
+      "options": ["病名の二択を提示し、同意する理由を具体的に聴く","想定した症状を提示し、それに合う体験を自由に聴く","本人の体験を自由に聴き、時期や条件を具体的に聴く"],
       "correctIndex": 2,
       "explanation": "開かれた質問で患者の文脈と全体像を受容し、徐々に閉じた質問で寒熱・飲食・睡眠・排泄などの客観的鑑別点を絞り込むのが標準面接技法です。",
       "relatedSectionTitle": "第1節：質問の漏斗（ファネル）モデル"
@@ -2313,11 +2245,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-diagnosis-6-q3",
       "question": "本講の脈の観察項目として適切な組合せはどれですか？",
-      "options": [
-        "深さ・舌の色・苔の厚さ・声の強さ",
-        "速さ・腹部の張り・食欲・皮膚の温感",
-        "深さ・速さ・幅・強さや緊張"
-      ],
+      "options": ["脈の深さ・舌の色・苔の厚さ・声の強さ","脈の速さ・腹部の張り・食欲・皮膚の温感","脈の深さ・速さ・幅・力の強弱や緊張度"],
       "correctIndex": 2,
       "explanation": "本講ではこれらを脈の観察項目として整理します。触診の特徴と、寒熱・虚実・気滞等の伝統的な解釈は分けます。自律神経活動や病気を四つの項目だけで測定・判定するものではありません。",
       "relatedSectionTitle": "脈診の4大物理ゲージ"
@@ -2538,11 +2466,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-diagnosis-11-q3",
       "question": "「昨日から腰が痛いと本人が話した」という情報を扱う方法はどれですか？",
-      "options": [
-        "原因確認の所見としてOに記す",
-        "施術者の病機仮説としてAに記す",
-        "本人の報告としてSに記す"
-      ],
+      "options": ["原因を確認した所見としてOの欄に記す","施術者が立てた仮説としてAの欄に記す","本人が述べた自覚症状としてSの欄に記す"],
       "correctIndex": 2,
       "explanation": "本人の訴えは主観情報Sです。報告されたという事実と、原因が確認されたことは異なります。S/Oの得られた情報と、Aの仮説・評価、Pの計画を区別します。",
       "relatedSectionTitle": "第4節：東洋医学版SOAPカルテ記述フォーマット"
@@ -2673,11 +2597,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-treatment-2-q3",
       "question": "【同じ証と個別条件】同じ伝統的な証の候補でも、刺激への不安や持病・服薬が異なる二人の計画を分ける理由はどれですか？",
-      "options": [
-        "証名が同じなら条件も統一する",
-        "年齢だけで刺激量を決める",
-        "同じ証でも個別条件と安全性は異なり得る"
-      ],
+      "options": ["同じ証という分類を根拠に、刺激条件を二人でそろえる","年齢という条件を根拠に、刺激量を二人で使い分ける","個別の安全情報を根拠に、候補と制約を二人で比較する"],
       "correctIndex": 2,
       "explanation": "証名だけで方法や刺激量を一つに決めず、解剖、体格、持病、服薬、不安や同意などを確認します。同じ証という分類は、個別条件や安全性が同じという意味ではありません。",
       "relatedSectionTitle": "第3節：同一の「証」から異なる「処方」が導かれる理由"
@@ -2751,11 +2671,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-treatment-4-q2",
       "question": "【標本緩急の意思決定】長期の慢性脾胃虚弱（本虚）を抱えている患者が、激しい急性水様性下痢と嘔吐を起こして脱水危機（標実/標急）に瀕している場合、東洋医学の原則（標本緩急）に基づく最優先の介入方針はどれですか？",
-      "options": [
-        "慢性の背景への本治を先に完了する",
-        "救急医療を優先する",
-        "症状が自然に軽くなるまで紹介を保留する"
-      ],
+      "options": ["慢性の背景を優先し、本治の計画を先に完成させる","現在の脱水の危険を優先し、救急医療につなげる","伝統的な分類を優先し、標実の治法を先に決める"],
       "correctIndex": 1,
       "explanation": "「急則治其標」は伝統的な原則ですが、激しい嘔吐・下痢に意識異常や急激な悪化が伴う状況を鍼灸だけで対応する指示ではありません。医療評価と必要な救急対応を優先します。",
       "relatedSectionTitle": "第2節：優先順位を決める「4大評価軸」"
@@ -3009,11 +2925,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-treatment-10-q1",
       "question": "【生活背景への対応】睡眠を見直したい人に、夜勤と育児による制約があります。合意形成の方法はどれですか？",
-      "options": [
-        "続けられる小さな調整を本人と選ぶ",
-        "睡眠が原因と確定して同じ起床時刻を指定する",
-        "計画に合わない生活上の制約を記録から省く"
-      ],
+      "options": ["夜勤と育児の制約から、本人と小さな調整を選ぶ","睡眠の症状から、全員に共通の起床時刻を選ぶ","施術者の生活像から、本人の改善すべき点を選ぶ"],
       "correctIndex": 0,
       "explanation": "生活背景と症状の関係は候補として確認し、本人の事情に合う最小単位の調整や選択肢を相談します。一律の指示や原因の決めつけに代えず、実行後の変化も評価します。",
       "relatedSectionTitle": "2. 生活指導が失敗する原因と「合意形成」の技術"
@@ -3021,11 +2933,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-treatment-10-q2",
       "question": "生活背景への対応を計画に含める目的として適切なのはどれですか？",
-      "options": [
-        "生活との関係は原因、医学的評価の代わりに指導",
-        "生活との関係は候補、実行可能な調整を相談",
-        "生活との関係は分類、個人の事情を確認せず指導"
-      ],
+      "options": ["生活との関連を原因とし、医学的評価を指導に代える","生活との関連を仮説とし、実行できる調整を相談する","生活との関連を分類とし、同じ分類に同じ調整を勧める"],
       "correctIndex": 1,
       "explanation": "生活背景は関連する可能性のある情報です。生活調整で根本治療が完結する、調整しなければ再発が不可避という断定を避け、本人の文脈と必要な医療を確認します。",
       "relatedSectionTitle": "2. 生活指導が失敗する原因と「合意形成」の技術"
@@ -3106,18 +3014,14 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
       ],
       "correctIndex": 0,
       "explanation": "治療計画は分類名や方法だけでなく、評価指標、時期、継続・変更・中断を考える条件を含めます。安全確認、説明と同意なども別に確認します。",
-      "relatedSectionTitle": "1. 治療計画書：臨床の質を保証する7つの必須項目"
+      "relatedSectionTitle": "1. 治療計画書：判断を整理する7つの項目"
     },
     {
       "id": "lecture-treatment-12-q2",
-      "question": "【統合症例・再評価への接続】次章の架空例で確認する学習課題として、適切なのはどれですか？",
-      "options": [
-        "情報が増えても最初の計画を継続する",
-        "情報・安全性・計画・反応を見直す",
-        "Webの修了を実施技能の認定として扱う"
-      ],
+      "question": "計画を立てた架空例に、新しい症状と本人の負担の情報が加わった。次の判断として適切なのはどれですか？",
+      "options": ["当初の証名との整合を優先し、介入候補を追加する","安全性と反応を再確認し、継続・変更・終了を比較する","当初の予定回数を優先し、評価を終了時にまとめる"],
       "correctIndex": 1,
-      "explanation": "次章は架空例による統合と再評価の演習です。Webでの理解と実際の資格・診療技能を区別し、計画を柔軟に振り返ることを学びます。",
+      "explanation": "新しい症状や負担は、当初の判断を見直す情報です。緊急性と必要な医療評価を確認し、本人の目標・変化・負担から計画を更新します。",
       "relatedSectionTitle": "6. 次章「第11章 統合症例・再評価」への展望"
     },
     {
@@ -3130,7 +3034,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
       ],
       "correctIndex": 2,
       "explanation": "患者との信頼関係と治療成果は、専門用語を日常語に翻訳し、見通しとセルフケアの役割分担を透明に共有する合意形成によって支えられます。",
-      "relatedSectionTitle": "1. 治療計画書：臨床の質を保証する7つの必須項目"
+      "relatedSectionTitle": "1. 治療計画書：判断を整理する7つの項目"
     }
   ]
 },
@@ -3144,11 +3048,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-practice-1-q1",
       "question": "意思決定の各段階と自己修正の関係として適切なのはどれですか？",
-      "options": [
-        "新情報に応じて前の判断へ戻る",
-        "最初の安全確認を後の新症状にも適用する",
-        "追加情報は終了時だけ振り返りに使う"
-      ],
+      "options": ["新情報が加われば、前の段階の判断を再評価する","新情報が加われば、終了の段階まで判断を進める","新情報が加われば、初回の安全評価に判断をそろえる"],
       "correctIndex": 0,
       "explanation": "各段階は一方向に終わる手順ではありません。新情報や悪化があれば安全性や仮説へ戻ります。Webでの判断の学習と実際の診療技能も区別します。",
       "relatedSectionTitle": "2. 手順の遵守（プロトコル）と自己修正ループ"
@@ -3168,11 +3068,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-practice-1-q3",
       "question": "施術直後に楽になったという架空の報告から、追加で確認することはどれですか？",
-      "options": [
-        "直後の変化から完治とし、後の経過は確認しない",
-        "変化を病機と機序の証明とし、選定理由を確定する",
-        "持続時間・生活機能・有害な反応を確認する"
-      ],
+      "options": ["直後の変化と初診の証名を比べ、治療機序を確定する","直後の変化と選穴の理論を比べ、配穴の効果を確定する","持続時間・生活機能・有害な反応を記録し、経過を比較する"],
       "correctIndex": 2,
       "explanation": "改善の報告は評価材料ですが、完治や作用機序の証明ではありません。自然経過や他の介入などもあり得るため、時間を通した変化と安全性を確認します。",
       "relatedSectionTitle": "臨床で最も重要な2つのステップ"
@@ -3278,12 +3174,8 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
   "questions": [
     {
       "id": "lecture-practice-4-q1",
-      "question": "【質問の選択】「疲れた日に頭痛が気になる」との報告から、不足や停滞などの候補を比べるために補う情報はどれですか？",
-      "options": [
-        "活動・休息と変動の関係",
-        "最初に考えた候補を肯定する証名",
-        "施術者がよく使う経穴への本人の期待"
-      ],
+      "question": "「疲れた日に頭痛が気になる」という報告で、「疲れ」と増悪・軽減の関係を具体化する質問はどれですか？",
+      "options": ["活動量、休息の有無と頭痛の変動を尋ねる","痛みの位置、放散する範囲と部位を尋ねる","初回施術、経穴に対する期待と不安を尋ねる"],
       "correctIndex": 0,
       "explanation": "症状の名称だけで決めず、活動や休息、時間帯などと症状の変動を具体的に確認します。候補に合う言葉を引き出す誘導ではなく、候補を区別する情報を集めます。",
       "relatedSectionTitle": "1. 慢性頭痛における代表的な対立仮説"
@@ -3291,11 +3183,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-practice-4-q2",
       "question": "【問診技術：オープンクエスチョンとクローズドクエスチョンの使い分け】主訴が漠然としていて話が脱線しやすい患者に対し、限られた時間で正確な病態を把握するための問診戦略はどれですか？",
-      "options": [
-        "想定した症状の二択から同意する内容の聴取へ",
-        "自由な語りから焦点を絞った確認へ",
-        "自由な語りだけで経過の具体的確認は省く"
-      ],
+      "options": ["想定した症状の二択から、同意した内容の詳しい聴取へ進む","本人の自由な語りから、時期や条件を絞った具体的確認へ進む","本人の自由な語りから、その話の解釈についての同意へ進む"],
       "correctIndex": 1,
       "explanation": "問診の構造化です。導入では自由回答（オープン）で患者の世界観や主訴を把握し、病態鑑別フェーズでは絞り込み質問（クローズド）を的確に配置して鑑別仮説を検証します。",
       "relatedSectionTitle": "2. 【共通模擬症例：第3段階 開示】"
@@ -3426,11 +3314,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-practice-7-q2",
       "question": "【胸背部の安全確認】肩井や背部の経穴で気胸などの損傷リスクを検討する際、最も適切な考え方はどれですか？",
-      "options": [
-        "斜刺なら安全とする",
-        "局所解剖・体格・体位を確認し、必要なら保留する",
-        "骨があれば安全とする"
-      ],
+      "options": ["経穴の取穴位置を基準に、刺入の安全条件を判断する","局所解剖・体格・体位を確認し、実施の保留も検討する","同じ経穴の過去の反応を基準に、刺入の安全条件を判断する"],
       "correctIndex": 1,
       "explanation": "全日本鍼灸学会2025年版（印刷頁14、33、35）は個人体格を考慮することや気胸リスクへの注意を示しています。骨度分寸は取穴位置の基準であり、安全な深度を決める計測値ではありません。",
       "relatedSectionTitle": "出典と確認範囲"
@@ -3438,11 +3322,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-practice-7-q3",
       "question": "【手技・配穴・刺激条件のプログラミング】初診の患者に対する施術プログラムの組み立てとして、安全管理上最も推奨される手順はどれですか？",
-      "options": [
-        "配穴が決まれば初診の安全情報は十分とする",
-        "不安が強い場合は小さい刺激だけで確認を終える",
-        "安全情報と同意を確認し保留も考える"
-      ],
+      "options": ["配穴の伝統的理由を説明し、それを初診の安全確認に代える","小さい刺激から始める案を説明し、それを安全確認に代える","個別の安全情報と同意を確認し、実施の保留も選択肢にする"],
       "correctIndex": 2,
       "explanation": "遠隔穴や低刺激から始めても安全が保証されるわけではありません。具体的な方法の前に医療評価の必要性、個別のリスク、本人の同意を確認します。",
       "relatedSectionTitle": "出典と確認範囲"
@@ -3549,11 +3429,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-practice-10-q1",
       "question": "【経過の再評価】直後は軽減し、二日後に戻ったという報告から次回計画を考える際、最初に整理する情報はどれですか？",
-      "options": [
-        "直後・数日後・現在の経過を分ける",
-        "直後に改善したので継続の理由は十分とする",
-        "次回来院時に戻ったので初回の変化を記録から除く"
-      ],
+      "options": ["直後・数日後・現在を分け、同じ指標で経過を整理する","直後の軽減を中心に、計画を続ける理由として整理する","次回の再発を中心に、初回の効果がなかった例と整理する"],
       "correctIndex": 0,
       "explanation": "直後、数日後、現在を時間軸で分け、何が変化し何が戻ったかを記します。安全性、生活背景、仮説や方法も見直し、単一時点だけで継続・変更を確定しません。",
       "relatedSectionTitle": "1. 経過分析の3つの視点：何が良く、何が戻ったか？"
@@ -3561,11 +3437,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     {
       "id": "lecture-practice-10-q2",
       "question": "症状が不変だった、または悪化したという報告を受けた場合、再評価に必要なものはどれですか？",
-      "options": [
-        "不変と悪化を同じ扱いとし、配穴の変更だけを検討",
-        "程度と経過、安全性、仮説・介入・背景を再確認",
-        "分類の一貫性だけを根拠に、同じ計画の継続を決定"
-      ],
+      "options": ["不変と悪化をまとめ、配穴の変更と刺激の追加を再検討する","程度と経過を分け、安全性・仮説・介入・生活背景を再検討する","分類の一貫性を優先し、同じ証に同じ計画を続けるか再検討する"],
       "correctIndex": 1,
       "explanation": "不変と悪化は分けて評価します。有害事象や病状変化、他の原因もあり得るため、反応を弁証や刺激量のずれだけで説明しません。",
       "relatedSectionTitle": "1. 経過分析の3つの視点：何が良く、何が戻ったか？"

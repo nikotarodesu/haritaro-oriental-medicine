@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { LessonQuizGroup, QuizQuestionItem, getQuizSectionTitle } from '@/data/curriculumQuizzes';
+import { LessonQuizGroup, QuizQuestionItem, getQuizSectionTitle } from '@/data/curriculumQuizTypes';
 import { useCurriculumProgress } from '@/contexts/CurriculumProgressContext';
 import {
   CheckCircle2,

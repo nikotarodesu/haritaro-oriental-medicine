@@ -40,7 +40,7 @@ import { clinicalToday } from "@/utils/clinicalEncounter";
 import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 import { trackEvent } from "@/utils/analytics";
 import GogyoBadge from "@/components/GogyoBadge";
-import { TSUBOS } from "@/data/tsuboData";
+import { ACUPOINT_LOOKUP as TSUBOS } from "@/data/acupointLookup";
 import { resolveLearningReflectionSource } from "@/utils/learningReflection";
 import { useModalDialog } from "@/hooks/useModalDialog";
 
@@ -1837,7 +1837,7 @@ function ClinicalNotesPage() {
                               )}
                             </span>
                             <span className="text-[10px] text-gray-600 block line-clamp-2">
-                              {found ? found.locationSimple : "痛気持ちいい強さで5秒×3回、または温灸"}
+                              {found ? found.locationSimple : "取穴の目安は経穴教材で確認してください。"}
                             </span>
                           </div>
                         );

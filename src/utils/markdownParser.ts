@@ -8,6 +8,8 @@ export type MarkdownBlock =
   | { type: "table"; headers: string[]; rows: string[][] }
   | { type: "list"; ordered: boolean; items: string[] }
   | { type: "paragraph"; content: string }
+  | { type: "card"; content: string }
+  | { type: "code"; content: string; language: string }
   | { type: "diagram"; diagramId: string }
   | { type: "eastwest"; termId: string }
   | { type: "image"; src: string; alt: string };
@@ -49,6 +51,24 @@ export function parseMarkdownBlocks(markdown: string): MarkdownBlock[] {
 
     if (!trimmed) {
       i++;
+      continue;
+    }
+
+    if (trimmed === ":::card") {
+      const content: string[] = [];
+      i++;
+      while (i < lines.length && lines[i].trim() !== ":::") content.push(lines[i++]);
+      if (i < lines.length) i++;
+      blocks.push({ type: "card", content: content.join("\n").trim() });
+      continue;
+    }
+    const fence = trimmed.match(/^(`{3,})([^`]*)$/);
+    if (fence) {
+      const content: string[] = [];
+      i++;
+      while (i < lines.length && lines[i].trim() !== fence[1]) content.push(lines[i++]);
+      if (i < lines.length) i++;
+      blocks.push({ type: "code", content: content.join("\n"), language: fence[2].trim() });
       continue;
     }
 
@@ -184,6 +204,7 @@ export function parseMarkdownBlocks(markdown: string): MarkdownBlock[] {
         curTrim === "---" ||
         curTrim === "----" ||
         curTrim.startsWith(":::") ||
+        curTrim.startsWith("```") ||
         curTrim.startsWith("[DIAGRAM:") ||
         /^!\[.*?\]\(.*?\)$/.test(curTrim) ||
         curTrim.startsWith(">") ||
@@ -202,6 +223,11 @@ export function parseMarkdownBlocks(markdown: string): MarkdownBlock[] {
 
     if (pLines.length > 0) {
       blocks.push({ type: "paragraph", content: pLines.join("\n") });
+    } else {
+      // Unsupported or malformed block markers remain readable and cannot
+      // stall the parser on the same line indefinitely.
+      blocks.push({ type: "paragraph", content: lines[i].trim() });
+      i++;
     }
   }
 

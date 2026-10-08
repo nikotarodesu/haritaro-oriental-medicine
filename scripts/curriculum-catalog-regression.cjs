@@ -205,7 +205,7 @@ mocks.set('@/contexts/CurriculumProgressContext', { useCurriculumProgress: () =>
 const Reader = load('src/components/curriculum/CurriculumLectureReader').default;
 for (const chapter of catalog.chapters) {
   const lecture = lectures.find(item => item.id === chapter.firstLectureId);
-  const markup = renderToStaticMarkup(React.createElement(Reader, { lecture, lectureNavigation: catalog.lectures }));
+  const markup = renderToStaticMarkup(React.createElement(Reader, { lecture, lectureNavigation: catalog.lectures, quiz: load("src/data/curriculumQuizzes").CURRICULUM_QUIZZES[lecture.id], resolvedReferences: [], reviewQuestions: [], chapterAssessment: null }));
   const clinicalStage = ['stage-2', 'stage-3'].includes(chapter.stageId);
   if (clinicalStage) {
     assert(markup.includes('aria-label="この講義を実践につなぐ"'), chapter.id + ': later lectures keep the real clinical application guide');

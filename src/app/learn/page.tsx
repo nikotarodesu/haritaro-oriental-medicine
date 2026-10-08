@@ -27,7 +27,7 @@ const focusClass = 'focus-visible:outline-2 focus-visible:outline-offset-4';
 export default function LearnGuidePage() {
   const catalog = getCurriculumIndexCatalog();
   return (
-    <main className="mx-auto max-w-6xl space-y-10 px-4 py-8 sm:px-6 sm:py-12">
+    <div className="mx-auto max-w-6xl space-y-10 px-4 py-8 sm:px-6 sm:py-12">
       <header className="max-w-3xl space-y-4">
         <p className="flex items-center gap-2 text-sm font-semibold text-[#184F49] dark:text-[#9CCBBC]"><GraduationCap aria-hidden="true" className="h-5 w-5" />初学者・鍼灸学生のための学習案内</p>
         <h1 className="font-serif text-3xl font-bold leading-relaxed sm:text-4xl">まず、東洋医学の全体像を知る。</h1>
@@ -54,6 +54,6 @@ export default function LearnGuidePage() {
       <LearningDiscovery />
       <section aria-labelledby="learn-practice-heading" className="space-y-4"><h2 id="learn-practice-heading" className="font-serif text-2xl font-bold">学んだことを確かめる</h2><p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">各講義の確認クイズと復習で用語を確かめます。病機・診断以降では、章の学習を踏まえ、追加情報で判断を更新する症例演習へ進みます。</p><nav aria-label="学習内容を確かめる" className="flex flex-wrap gap-3">{[{ href: '/kokushi#learning-review', label: '今日の復習' }, { href: '/kokushi', label: '国試演習' }, { href: '/tsubo/practice', label: '経穴の基本演習' }, { href: '/simulator#case-training', label: '後半の6段階症例演習' }, { href: '/notes?tab=learning', label: '学習の振り返り' }].map(link => <Link key={link.href} href={link.href} className={`inline-flex min-h-11 items-center rounded-xl border border-[#D9E3DD] px-4 font-semibold text-[#184F49] dark:border-[#2A3B4A] dark:text-[#9CCBBC] ${focusClass}`}>{link.label}</Link>)}</nav></section>
       <PrimeStudentCard variant="banner" />
-    </main>
+    </div>
   );
 }
