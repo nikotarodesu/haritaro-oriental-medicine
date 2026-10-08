@@ -32,6 +32,10 @@ export interface PaperReference {
   bibliographyStatus?: 'matched' | 'conflict' | 'unverified' | 'retracted';
   claimsStatus?: 'source-checked' | 'needs-review' | 'do-not-use';
   sourceCheckedAt?: string;
+  claimsCheckedAt?: string;
+  sourceUrl?: string;
+  verificationScope?: 'abstract' | 'selected_full_text';
+  sourceLocator?: string;
 }
 
 export const SOURCE_PAPERS: PaperReference[] = [
@@ -1528,9 +1532,14 @@ export const PAPERS_DATABASE: PaperReference[] = SOURCE_PAPERS.map(paper => {
     pmcid: undefined, // Do not publish an unchecked full-text identifier.
     bibliographyStatus: audit?.bibliographyStatus || 'unverified', sourceCheckedAt: audit?.checkedAt,
     claimsStatus: audit?.bibliographyStatus === 'retracted' ? 'do-not-use' : interpretation ? 'source-checked' : 'needs-review',
+    claimsCheckedAt: interpretation?.checkedAt, sourceUrl: interpretation?.sourceUrl,
+    verificationScope: interpretation?.verificationScope, sourceLocator: interpretation?.sourceLocator,
     sampleSize: interpretation?.sampleSize, studyDesign: interpretation?.design || '研究方法・結果の解釈は原典照合中',
+    targetCondition: interpretation?.population || paper.targetCondition,
     interventionProtocol: undefined, controlProtocol: undefined,
-    primaryOutcomes: interpretation ? '下記の原典照合済み要約を参照' : '原典照合中', secondaryOutcomes: undefined,
+    primaryOutcomes: interpretation?.summary || (paper.id === 'katakori-needling-depth-rct-osaki-2018'
+      ? '原典照合中。J-STAGEの書誌ページは確認しましたが、抄録がなくPDFを取得できなかったため、結果の要約・人数・施術条件は掲載を保留しています。'
+      : '研究結果・臨床への適用範囲は原典照合中です。'), secondaryOutcomes: undefined,
     keyFindings: interpretation?.findings || [],
     clinicalTakeaways: interpretation?.limitations || [audit?.bibliographyStatus === 'retracted' ? '撤回論文のため、治療の根拠として使用しません。' : '書誌の照合と研究結果の解釈は別です。効果量・配穴・安全性の解説は照合を終えるまで掲載を保留します。'],
     abstract: interpretation?.summary || '研究結果・臨床への適用範囲は照合中です。原典を確認してください。',

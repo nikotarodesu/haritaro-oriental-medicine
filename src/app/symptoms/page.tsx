@@ -1,255 +1,34 @@
-"use client";
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import MedicalSafetyNotice from '@/components/MedicalSafetyNotice';
+import SymptomsIndexClient from '@/components/symptoms/SymptomsIndexClient';
+import { SYMPTOMS, SYMPTOM_GUIDANCE_SCOPE } from '@/data/symptomData';
+import { pageSocialMetadata } from '@/config/seo';
+import { getSymptomsIndexJsonLd } from '@/utils/symptomGuides';
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
-import { SYMPTOMS, SYMPTOM_GUIDANCE_SCOPE, SYMPTOM_SAFETY_GUIDANCE } from "@/data/symptomData";
-import { ACUPOINTS_MASTER } from "@/data/tsubo/acupointsMaster";
-import { HeartPulse, Utensils, Activity, ArrowRight, Sparkles, CheckCircle2, Stethoscope, ChevronDown, ChevronUp, Layers, FileText } from "lucide-react";
-import EastWestIntegrativeSwitch from "@/components/EastWestIntegrativeSwitch";
+const title = '症状別ガイド｜受診の目安・日常の工夫・東洋医学の学習';
+const description = '頭痛・首肩こり、不眠、胃腸の不調など12の症状別に、受診の目安、日常の工夫、伝統医学の分類と経穴例を学びます。症状の原因や病名を診断するガイドではありません。';
+
+export const metadata: Metadata = {
+  title,
+  description,
+  alternates: { canonical: '/symptoms' },
+  ...pageSocialMetadata(title, description, '/symptoms'),
+};
 
 export default function SymptomsPage() {
-  const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
-  const [expandedMatrixId, setExpandedMatrixId] = useState<string | null>(null);
-
-  const categories = ["すべて", ...new Set(SYMPTOMS.map(s => s.category))];
-
-  useEffect(() => {
-    const revealHash = () => {
-      const id = window.location.hash.slice(1);
-      if (SYMPTOMS.some(s => s.id === id)) {
-        setSelectedCategory("すべて");
-        requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView());
-      }
-    };
-    revealHash();
-    window.addEventListener("hashchange", revealHash);
-    return () => window.removeEventListener("hashchange", revealHash);
-  }, []);
-
-  const caseMap: Record<string, string> = {
-    "stomach-fatigue": "gerd-gastric",
-    "headache-stiff-neck": "headache-migraine",
-    "stress-insomnia": "insomnia-autonomic"
-  };
-
-  const specificCaseMap: Record<string, { id: string; label: string }> = {
-    "headache-stiff-neck": { id: "case-01-headache-liver-fire", label: "頭痛の臨床症例演習（肝火上炎）" },
-    "chronic-fatigue-lethargy": { id: "case-02-fatigue-spleen-deficiency", label: "慢性疲労の臨床症例演習（脾胃気虚）" },
-    "menstrual-pain-chill": { id: "case-03-dysmenorrhea-cold-stasis", label: "激しい月経痛の臨床症例演習（寒凝血瘀）" },
-    "climacteric-hot-flash": { id: "case-04-menopause-yin-deficiency", label: "更年期・寝汗の臨床症例演習（肝腎陰虚）" },
-    "stress-insomnia": { id: "case-05-insomnia-heart-kidney", label: "不眠・不安の臨床症例演習（心腎不交）" },
-  };
-
-  const filteredSymptoms = selectedCategory === "すべて"
-    ? SYMPTOMS
-    : SYMPTOMS.filter((s) => s.category === selectedCategory);
-
+  const guides = SYMPTOMS.map(({ id, title, summary, category }) => ({ id, title, summary, category }));
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-16 space-y-8 sm:space-y-10">
-      {/* ページヘッダー */}
-      <div className="border-b border-[#E8E1D1] dark:border-[#22303D] pb-6 sm:pb-8">
-        <div className="flex items-center gap-2 text-xs font-semibold text-[#B86924] dark:text-[#E6C387] tracking-widest uppercase mb-2">
-          <HeartPulse className="w-4 h-4" />
-          <span>Symptom & Self-Care Guide</span>
-        </div>
-        <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-          お悩み・症状別 セルフケアガイド
-        </h1>
-        <p className="mt-2 text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-3xl leading-relaxed">
-          「病院に行くほどではないけれどつらい」「なんとなく調子が悪い」といった未病の不調。東洋医学の伝統的な見立てを紹介し、自分でできるツボ押しや食養生、生活改善法をお伝えします。
-        </p>
-      </div>
-
-      <MedicalSafetyNotice title="症状ガイドの利用範囲" message={SYMPTOM_GUIDANCE_SCOPE} />
-      <Link href="/clinical#chief-complaints" className="inline-flex min-h-11 items-center rounded-lg border border-[#C8D4CD] px-4 py-2 font-semibold text-[#1E3D34] dark:border-[#496153] dark:text-[#9CCDB8]">鍼灸師の方：主訴別の問診・所見比較ガイドへ →</Link>
-
-      {/* カテゴリ切り替えタブ */}
-      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 border-b border-[#E8E1D1] dark:border-[#22303D] pb-3 sm:pb-4">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setSelectedCategory(cat)}
-            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-medium transition-all ${
-              selectedCategory === cat
-                ? "bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] shadow-sm"
-                : "bg-[#FFFFFF] dark:bg-[#17212A] text-[#59615D] dark:text-[#A0B0BC] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] dark:hover:bg-[#1E2B36]"
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      {/* 症状一覧カード */}
-      <div className="space-y-6 sm:space-y-8">
-        {filteredSymptoms.map((symptom) => {
-          const relatedTsubos = ACUPOINTS_MASTER.filter((t) => symptom.recommendedTsuboIds.includes(t.codeLower));
-
-          return (
-            <div
-              key={symptom.id}
-              id={symptom.id}
-              className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-9 shadow-sm hover:border-[#1E3D34] dark:hover:border-[#4E8C76] transition-all space-y-5 sm:space-y-6 scroll-mt-24"
-            >
-              {/* タイトルとカテゴリ */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 sm:pb-4">
-                <div>
-                  <span className="text-[11px] sm:text-xs font-semibold px-2 sm:px-2.5 py-0.5 rounded bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] border border-[#F3E1CB] dark:border-[#423321]">
-                    {symptom.category}
-                  </span>
-                  <h2 className="text-lg sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] mt-1.5 sm:mt-2">
-                    {symptom.title}
-                  </h2>
-                </div>
-              </div>
-
-              {/* 概要と東洋医学的メカニズム */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                <div className="space-y-1.5 sm:space-y-2">
-                  <span className="text-xs font-bold text-[#59615D] dark:text-[#96A6B2] block">症状の現れ方</span>
-                  <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">{symptom.summary}</p>
-                  {SYMPTOM_SAFETY_GUIDANCE[symptom.id] && <MedicalSafetyNotice title="受診を優先する症状" {...SYMPTOM_SAFETY_GUIDANCE[symptom.id]} />}
-                </div>
-
-                <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                    <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                    <span>東洋医学での見立て（伝統理論での説明）</span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
-                    {symptom.orientalMechanism}
-                  </p>
-                </div>
-              </div>
-
-              {/* おすすめのツボ */}
-              <div className="space-y-3">
-                <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block">
-                  📍 セルフケアで使われるツボ
-                </span>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                  {relatedTsubos.map((tsubo) => (
-                    <div
-                      key={tsubo.id}
-                      className="bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-4 rounded-xl border border-[#E5DEC9] dark:border-[#22303D] flex flex-col justify-between"
-                    >
-                      <div>
-                        <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6] mb-1">
-                          <span className="font-mono font-bold text-[#1E3D34] dark:text-[#83BEA8]">{tsubo.code}</span>
-                          <span>{tsubo.meridianShort}</span>
-                        </div>
-                        <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
-                          {tsubo.name} <span className="text-xs font-normal text-[#59615D] dark:text-[#96A6B2]">（{tsubo.kana}）</span>
-                        </h3>
-                        <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] mt-1.5 sm:mt-2 leading-relaxed">
-                          {tsubo.locationSimple}
-                        </p>
-                      </div>
-                      <div className="mt-2.5 sm:mt-3 pt-2 border-t border-[#EAE3D4] dark:border-[#22303D]">
-                        <Link
-                          href={`/tsubo/${tsubo.code.toLowerCase()}`}
-                          className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
-                        >
-                          <span>{tsubo.name}（{tsubo.code}）の詳細を見る</span>
-                          <ArrowRight className="w-3 h-3" />
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* 日常セルフケア（食養生 & 生活習慣） */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-1 sm:pt-2">
-                <div className="bg-[#FCF4EB]/70 dark:bg-[#231A12]/80 p-3 sm:p-4 rounded-xl border border-[#F3E1CB] dark:border-[#423321] space-y-1.5">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
-                    <Utensils className="w-4 h-4" />
-                    <span>おすすめ食養生</span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-[#404743] dark:text-[#D1C6BA] leading-relaxed">
-                    {symptom.lifestyleAdvice.diet}
-                  </p>
-                </div>
-
-                <div className="bg-[#EBF3EF]/70 dark:bg-[#14231E]/80 p-3 sm:p-4 rounded-xl border border-[#C5DED4] dark:border-[#234237] space-y-1.5">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                    <Activity className="w-4 h-4" />
-                    <span>おすすめ生活習慣・ストレッチ</span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-[#404743] dark:text-[#BACDD1] leading-relaxed">
-                    {symptom.lifestyleAdvice.habit}
-                  </p>
-                </div>
-              </div>
-
-              {/* 東西医学の「相補マトリクス」切り替えスイッチ */}
-              {caseMap[symptom.id] && <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D]">
-                <button
-                  aria-expanded={expandedMatrixId === symptom.id}
-                  onClick={() => setExpandedMatrixId(expandedMatrixId === symptom.id ? null : symptom.id)}
-                  className="w-full flex items-center justify-between p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:bg-[#F4EFE6] dark:hover:bg-[#1A2530] transition-colors text-left"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <span className="w-7 h-7 rounded-lg bg-[#1E3D34] text-white flex items-center justify-center shrink-0">
-                      <Layers className="w-4 h-4 text-[#E6C387]" />
-                    </span>
-                    <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">
-                      東西医学の「相補マトリクス」視点をチェック
-                    </span>
-                  </div>
-                  <div className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1 shrink-0">
-                    <span>{expandedMatrixId === symptom.id ? "閉じる" : "スイッチを開く"}</span>
-                    {expandedMatrixId === symptom.id ? (
-                      <ChevronUp className="w-4 h-4" />
-                    ) : (
-                      <ChevronDown className="w-4 h-4" />
-                    )}
-                  </div>
-                </button>
-
-                {expandedMatrixId === symptom.id && (
-                  <div className="mt-4 animate-fadeIn">
-                    <EastWestIntegrativeSwitch initialCaseId={caseMap[symptom.id]} />
-                  </div>
-                )}
-              </div>}
-
-              {/* 臨床・専門ツール＆体質診断へのトピッククラスター導線 */}
-              <div className="pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center justify-between gap-2.5 text-xs">
-                <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-semibold text-[#737C77] dark:text-[#8899A6]">
-                    関連学習・診断:
-                  </span>
-                  <Link
-                    href="/diagnosis"
-                    className="inline-flex items-center gap-1 text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-bold"
-                  >
-                    <HeartPulse className="w-3.5 h-3.5" />
-                    <span>気血水セルフ診断で原因タイプを調べる ➜</span>
-                  </Link>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Link
-                    href="/simulator"
-                    className="inline-flex items-center gap-1 text-[#59615D] dark:text-[#A0B0BC] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] font-medium"
-                  >
-                    <Layers className="w-3.5 h-3.5" />
-                    <span>配穴シミュレータ</span>
-                  </Link>
-                  <Link
-                    href={specificCaseMap[symptom.id] ? `/cases/${specificCaseMap[symptom.id].id}` : "/cases"}
-                    className="inline-flex items-center gap-1 text-[#B86924] dark:text-[#E6C387] hover:underline font-bold"
-                  >
-                    <FileText className="w-3.5 h-3.5" />
-                    <span>{specificCaseMap[symptom.id] ? `${specificCaseMap[symptom.id].label} ➜` : "関連症例演習 ➜"}</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
+    <main className="reading-page mx-auto max-w-6xl space-y-7 px-4 py-8 text-[#232826] dark:text-[#FAF8F5] sm:py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getSymptomsIndexJsonLd(title, description)).replace(/</g, '\\u003c') }} />
+      <header className="max-w-3xl space-y-3">
+        <p className="text-sm font-semibold text-[#1E3D34] dark:text-[#9CCDB8]">受診の目安と、伝統医学の考え方を学ぶ</p>
+        <h1 className="font-serif text-3xl font-bold leading-snug sm:text-4xl">症状別ガイド</h1>
+        <p className="text-base leading-relaxed">気になる症状から、受診を優先する目安、日常生活の工夫、東洋医学での分類とその限界を確認できます。詳しい説明と出典は、それぞれのガイドにまとめています。</p>
+      </header>
+      <MedicalSafetyNotice title="このガイドで確認できること" message={SYMPTOM_GUIDANCE_SCOPE} />
+      <Link href="/clinical#chief-complaints" className="inline-flex min-h-11 items-center rounded-xl border border-[#D6DED7] px-4 py-2 font-semibold text-[#1E3D34] underline underline-offset-4 dark:border-[#34483C] dark:text-[#9CCDB8]">鍼灸師の方：主訴別の問診・所見比較ガイドへ →</Link>
+      <SymptomsIndexClient guides={guides} />
+    </main>
   );
 }

@@ -108,7 +108,7 @@ export default function LibraryClient() {
             </p>
           </div>
 
-          <p className="text-base leading-relaxed">論文は書誌情報の照合済み資料を掲載しています。治療結果の解釈には照合中の資料があり、全件の専門家監修は未完了です。<Link href="/editorial-policy" className="underline">出典確認・監修の進捗を見る</Link></p>
+          <p className="text-base leading-relaxed">書誌を照合した論文{PAPERS_DATABASE.length}件のうち、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'abstract').length}件は抄録、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'selected_full_text').length}件は本文の一部を確認しています。{PAPERS_DATABASE.filter(paper => paper.claimsStatus !== 'source-checked').length}件は結果の要約を保留中です。全件の全文照合・専門家監修は未完了です。<Link href="/editorial-policy" className="underline">出典確認・監修の進捗を見る</Link></p>
 
           {/* 検索バー */}
           <div className="pt-2 max-w-xl">
@@ -184,7 +184,7 @@ export default function LibraryClient() {
                 <div className="flex items-center gap-2">
                   <GraduationCap className="w-5 h-5 text-[#1E3D34] dark:text-[#74BA9E]" />
                   <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                    現代医学研究・RCT論文エビデンス
+                    現代の研究論文・確認範囲
                   </h2>
                 </div>
                 <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
@@ -224,7 +224,7 @@ export default function LibraryClient() {
 
                         <div className="space-y-3 text-base text-[#59615D] dark:text-[#A0B0BC]">
                           <div>
-                            <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">対象疾患: </span>
+                            <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">研究対象: </span>
                             <span>{paper.targetCondition}</span>
                           </div>
                           {paper.interventionProtocol && (
@@ -236,6 +236,24 @@ export default function LibraryClient() {
                           <p className="break-words text-base leading-relaxed">
                             {paper.primaryOutcomes}
                           </p>
+                          {paper.sourceLocator && (
+                            <p className="text-sm leading-relaxed">
+                              <span className="font-bold">確認範囲: </span>
+                              {paper.verificationScope === 'abstract' ? '抄録を照合' : '本文の一部を照合'}（{paper.claimsCheckedAt}）。{paper.sourceLocator} 専門家による承認は未完了です。
+                            </p>
+                          )}
+                          {paper.keyFindings.length > 0 && (
+                            <details className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-2">
+                              <summary className="min-h-11 py-2 font-bold cursor-pointer">報告された結果</summary>
+                              <ul className="list-disc pl-5 space-y-2 leading-relaxed">
+                                {paper.keyFindings.map(finding => <li key={finding}>{finding}</li>)}
+                              </ul>
+                            </details>
+                          )}
+                          <div className="border-l-2 border-[#B86924] pl-3 space-y-2 leading-relaxed">
+                            <p className="font-bold text-[#232826] dark:text-[#FAF8F5]">限界・読み取れないこと</p>
+                            {paper.clinicalTakeaways.map(limitation => <p key={limitation}>{limitation}</p>)}
+                          </div>
                         </div>
                       </div>
 
@@ -255,17 +273,17 @@ export default function LibraryClient() {
                           }`}
                         >
                           {isSaved ? <Check className="w-3.5 h-3.5" /> : <Bookmark className="w-3.5 h-3.5" />}
-                          <span>{isSaved ? "カルテ保存済" : "配穴ストック"}</span>
+                          <span>{isSaved ? "学習メモに保存済" : "学習メモに保存"}</span>
                         </button>
 
-                        {paper.pmid && (
+                        {(paper.sourceUrl || paper.pmid || paper.doi) && (
                           <a
-                            href={`https://pubmed.ncbi.nlm.nih.gov/${paper.pmid}`}
+                            href={paper.sourceUrl || (paper.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${paper.pmid}/` : `https://doi.org/${paper.doi}`)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="min-h-11 text-sm text-[#1E3D34] dark:text-[#74BA9E] font-bold hover:underline inline-flex items-center gap-1"
                           >
-                            <span>PubMed</span>
+                            <span>{paper.sourceUrl ? '照合した原典' : '原典の書誌'}</span>
                             <ExternalLink className="w-3 h-3" />
                           </a>
                         )}

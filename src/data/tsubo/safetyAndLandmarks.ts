@@ -414,7 +414,7 @@ export function generateFaqLocationAnswer(point: {
   if (isEssentiallySame) {
     locationText = `「${point.name}（${point.code}）」の体表位置は、標準取穴の学習資料に基づき「${cleanDetail}」と記載しています。個別の原典照合は進行中です。`;
   } else {
-    locationText = `「${point.name}（${point.code}）」は、目安として${cleanSimple}に位置します。標準取穴の学習資料では「${cleanDetail}」と記載しています。個別の原典照合は進行中です。`;
+    locationText = `「${point.name}（${point.code}）」の位置の目安は「${cleanSimple}」。標準取穴の学習資料では「${cleanDetail}」と記載しています。個別の原典照合は進行中です。`;
   }
 
   // 触診ランドマーク
@@ -424,12 +424,12 @@ export function generateFaqLocationAnswer(point: {
     const uniqueLandmarks = Array.from(new Set(point.palpationLandmarks)).filter(
       (lm) => !lm.includes("の骨性指標・筋腱部") || point.palpationLandmarks!.length === 1
     );
-    landmarkPart = `探すコツとしては、基準となる目印（${uniqueLandmarks.join("、")}）から指腹を滑らせ、周囲の皮膚や筋肉と比べてわずかに指先が沈み込む「小さなくぼみ（陥凹）」や、押したときにズーンと奥に心地よく響く場所（酸脹点）を目安に取穴します。`;
+    if (uniqueLandmarks.length > 0) landmarkPart = `標準位置と照合する目印は、${uniqueLandmarks.join("、")}です。`;
   } else {
-    landmarkPart = "探すコツとしては、周囲の組織と比べて指先にわずかに感じる陥凹部や、圧迫時に特有のズーンと響く箇所を目安に取穴します。";
+    landmarkPart = "位置の学習では、記載された骨・筋・腱などの指標と照合してください。";
   }
 
-  return `${locationText} ${landmarkPart}`;
+  return `${locationText} ${landmarkPart} 圧痛や響きの有無だけで位置を判断しないでください。体表位置の説明は、個人の安全な刺入経路・深度や施術の適応を示すものではありません。`;
 }
 
 /**

@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { ShieldCheck, Award, GraduationCap, Stethoscope, ArrowRight } from "lucide-react";
+import { ShieldCheck, Award, Stethoscope, ArrowRight } from "lucide-react";
 
 interface Props {
   className?: string;
@@ -54,7 +54,7 @@ export default function AuthorSupervisorCard({ className = "", topic }: Props) {
           </span>
           <span className="inline-flex items-center gap-1">
             <Stethoscope className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-            臨床歴10年以上・日々の問診と配穴を実践
+            2017年免許取得・2023年開院
           </span>
           <span className="inline-flex items-center gap-1">
             <ShieldCheck className="w-3.5 h-3.5 text-[#1E2D3D] dark:text-[#7BAAD8]" />

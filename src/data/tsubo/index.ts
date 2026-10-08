@@ -22,12 +22,20 @@ import {
 } from "./crossSectionEngine";
 import { Tsubo } from "@/types/oriental";
 
+// Only these notes have been rewritten to separate traditional teaching from
+// medical effects. This does not record source verification or expert approval.
+const EDUCATIONAL_NOTE_CODES = new Set(['li4', 'pc6', 'st36', 'lr3', 'sp6']);
+function getPublicClinicalNote(point: AcupointMaster): string {
+  if (EDUCATIONAL_NOTE_CODES.has(point.codeLower)) return DETAILED_ACUPOINTS[point.codeLower].clinicalNote;
+  return '伝統的な主治は学習上の関連例です。個人への治療効果・適応・施術方法は、この分類から判断できません。未照合の作用機序・即効性・配穴や施術手順の解説は掲載を保留しています。';
+}
+
 export * from "./types";
 export * from "./safetyAndLandmarks";
 export * from "./friendlyLocations";
 export * from "./crossSectionEngine";
 export { ACUPOINTS_MASTER } from "./acupointsMaster";
-export const ALL_ACUPOINTS: AcupointMaster[] = ACUPOINTS_MASTER.map(point => ({ ...point, procedureReviewStatus: "pending_expert_review" }));
+export const ALL_ACUPOINTS: AcupointMaster[] = ACUPOINTS_MASTER.map(point => ({ ...point, clinicalNote: getPublicClinicalNote(point), procedureReviewStatus: "pending_expert_review" }));
 export { DETAILED_ACUPOINTS } from "./detailedPoints";
 export { MERIDIANS } from "./meridiansData";
 export { ACUPOINT_CATEGORIES } from "./categoriesData";
@@ -50,6 +58,7 @@ export function getAcupointByCode(codeOrId: string): AcupointMaster | undefined 
   if (!found) return undefined;
   return {
     ...found,
+    clinicalNote: getPublicClinicalNote(found),
     procedureReviewStatus: "pending_expert_review",
     locationSimple: getFriendlyLocationSimple(found),
   };
@@ -68,6 +77,7 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
     const cs = point.crossSection || generateCrossSectionModel(point);
     return {
       ...point,
+      clinicalNote: getPublicClinicalNote(point),
       procedureReviewStatus: "pending_expert_review",
       crossSection: cs ? {
         ...cs,
@@ -88,6 +98,7 @@ export function getAcupointDetail(codeOrId: string): AcupointDetail | undefined 
     const cs = point.crossSection || generateCrossSectionModel(point);
     return {
       ...point,
+      clinicalNote: getPublicClinicalNote(point),
       procedureReviewStatus: "pending_expert_review",
       crossSection: cs ? {
         ...cs,
@@ -254,6 +265,6 @@ export const TSUBOS: Tsubo[] = ACUPOINTS_MASTER.filter((p) => p.status === "publ
   locationDetail: p.locationDetail,
   indications: p.indications,
   category: p.categories,
-  clinicalNote: p.clinicalNote,
+  clinicalNote: getPublicClinicalNote(p),
   caution: p.caution,
 }));

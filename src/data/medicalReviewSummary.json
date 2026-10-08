@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-03",
-  "statements": 18837,
-  "priorityStatements": 2439,
+  "generatedAt": "2026-10-08",
+  "statements": 19320,
+  "priorityStatements": 2514,
   "counts": {
     "articles": 831,
     "curriculum": 6269,
@@ -14,7 +14,7 @@
     "glossary": 240,
     "clinical-pairs": 44,
     "exam-practice": 109,
-    "classics": 323,
+    "classics": 561,
     "protocols": 425,
     "symptoms": 129,
     "simulator": 71,
@@ -23,7 +23,7 @@
     "techniques": 610,
     "archived-cases": 1136,
     "papers": 803,
-    "paper-interpretations": 31,
+    "paper-interpretations": 276,
     "medical-safety": 8
   },
   "reviewStatus": "pending",

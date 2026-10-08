@@ -7,7 +7,7 @@ export function normalizeSearchText(text: string): string {
     .replace(/\s+/g, ' ').trim();
 }
 
-export interface SearchableItem { title: string; subtitle?: string; tags?: string[]; exactCode?: string }
+export interface SearchableItem { title: string; subtitle?: string; tags?: string[]; exactCode?: string; exactTerms?: string[] }
 export type SearchItemType = 'article' | 'acupoint' | 'lecture' | 'case' | 'tool' | 'glossary' | 'kokushi' | 'classic' | 'paper' | 'symptom';
 export type SearchCategory = 'all' | 'article' | 'acupoint' | 'lecture' | 'kokushi' | 'case' | 'library' | 'glossary' | 'symptom' | 'tool';
 export const SEARCH_CATEGORIES: ReadonlyArray<{ id: SearchCategory; label: string }> = [
@@ -47,7 +47,8 @@ export function matchesSearchText(query: string, fields: string[]): boolean {
 }
 export function prepareSearchItem<T extends SearchableItem>(item: T) {
   return { item, title: normalizeSearchText(item.title), subtitle: normalizeSearchText(item.subtitle || ''),
-    tags: (item.tags || []).map(normalizeSearchText), code: normalizeSearchText(item.exactCode || '') };
+    tags: (item.tags || []).map(normalizeSearchText), code: normalizeSearchText(item.exactCode || ''),
+    exactTerms: (item.exactTerms || []).map(normalizeSearchText) };
 }
 export function scoreSearchItem(index: ReturnType<typeof prepareSearchItem>, query: string | ReturnType<typeof prepareSearchQuery>): number {
   const { normalized, tokens } = typeof query === 'string' ? prepareSearchQuery(query) : query;

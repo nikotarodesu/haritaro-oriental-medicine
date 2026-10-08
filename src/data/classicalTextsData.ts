@@ -32,7 +32,7 @@ export interface ClassicalText {
   tags: string[];
 }
 
-export const SOURCE_CLASSICAL_TEXTS: ClassicalText[] = [
+const STORED_CLASSICAL_TEXTS: ClassicalText[] = [
   {
     id: "classic-somon-01",
     book: "素問",
@@ -402,6 +402,123 @@ export const SOURCE_CLASSICAL_TEXTS: ClassicalText[] = [
     tags: ["金匱要略", "三因説", "病因分類", "問診技術", "東洋医学診断学"]
   }
 ];
+
+const ELECTRONIC_QUOTATION_LIMIT = '引用した電子本文の字句だけを照合しています。底本画像・原本頁・全篇の校訂・異本照合・訳と臨床解釈の専門家監修は未完了です。古典の記述は現代の診断や治療効果の証明とは区別します。';
+const suwenQuote = (text: string, volume: string, section: string, page: string): VerifiedClassicalQuotation => ({
+  text, section, sourceTitle: '漢リポ『重廣補注黄帝内經素問』SBCK 電子本文',
+  sourceUrl: `https://github.com/kanripo/KR3e0001/blob/master/KR3e0001_${volume}.txt`,
+  edition: 'SBCK（四部叢刊）。漢リポの版識別子による。', page,
+  checkedAt: '2026-10-08', verificationScope: 'electronic_text',
+  limitation: `電子転写の注釈を除き、句読点を補いました。「…」は別箇所の間の省略です。${ELECTRONIC_QUOTATION_LIMIT}`,
+});
+const lingshuQuote = (text: string, section: string, listed = false): VerifiedClassicalQuotation => ({
+  text, section, sourceTitle: `中医笈成『靈樞${listed ? '（條列版）' : ''}』電子本文`,
+  sourceUrl: listed ? 'https://jicheng.tw/tcm/book/%E9%9D%88%E6%A8%9E_%E6%A2%9D%E5%88%97%E7%89%88/index.html' : 'https://jicheng.tw/tcm/book/%E9%9D%88%E6%A8%9E/index.html',
+  edition: listed ? '條列版電子本文。引用に対応する刊本の特定は未確認。' : '電子本文は行政院中醫藥委員會94年文本CM018から整理。資料に複数の刊本を列挙。',
+  checkedAt: '2026-10-08', verificationScope: 'electronic_text',
+  limitation: `改行を接続しています。「…」は別箇所の間の省略です。${ELECTRONIC_QUOTATION_LIMIT}`,
+});
+const shokanQuote = (text: string, section: string): VerifiedClassicalQuotation => ({
+  text, section, sourceTitle: '維基文庫『傷寒論（宋本）』電子本文', sourceUrl: 'https://zh.wikisource.org/zh/%E5%82%B7%E5%AF%92%E8%AB%96',
+  edition: '宋・林億等校。電子資料の序に明・趙開美校刻／沈琳同校の表示。',
+  checkedAt: '2026-10-08', verificationScope: 'electronic_text',
+  limitation: `綱領の一文のみを照合。資料には校訂・繁簡変換時の底本未照合に関する注意があり、この確認を原典校訂完了とは扱いません。${ELECTRONIC_QUOTATION_LIMIT}`,
+});
+type ClassicalAudit = Pick<ClassicalText, 'verificationNote' | 'verifiedQuotation'> & Partial<Pick<ClassicalText, 'translation'>>;
+const NEW_CLASSICAL_QUOTATIONS: Record<string, ClassicalAudit> = {
+  'classic-somon-01': {
+    verifiedQuotation: suwenQuote('上古之人，其知道者，法於隂陽，和於術數；食飲有節，起居有常，不妄作勞。故能形與神俱，而盡終其天年，度百嵗乃去。', '001', '巻一・上古天真論篇第一、岐伯の答え', '巻一 1b〜2a（KR3e0001_SBCK_001-1b／2a）'),
+    verificationNote: '保存文を底本未指定の原典引用として扱わず、四部叢刊電子本文の「隂」「嵗」の字形を保持した引用を別欄に表示します。百歳を超える記述は古典の理想像で、現代の寿命の保証ではありません。',
+  },
+  'classic-somon-02': {
+    verifiedQuotation: suwenQuote('夫四時隂陽者，萬物之根本也。所以聖人春夏養陽，秋冬養隂，以從其根。…是故聖人不治巳病治未病，不治巳亂治未亂，此之謂也。', '001', '巻一・四氣調神大論篇第二、二箇所の抜粋', '巻一 9a〜9b（KR3e0001_SBCK_001-9a／9b）'),
+    verificationNote: '別箇所の句を連続する全文のように扱わず、省略を明示します。「巳」「隂」「亂」は電子転写の字形です。既存の「已」「陰」「乱」を特定底本の原文として混用しません。',
+  },
+  'classic-somon-05': {
+    verifiedQuotation: suwenQuote('隂陽者，天地之道也，萬物之綱紀，變化之父母，生殺之本始，神明之府也。治病必求於本。', '002', '巻二・隂陽應象大論篇第五、冒頭', '巻二 1a〜1b（KR3e0001_SBCK_002-1a／1b）'),
+    verificationNote: '注釈を含む四部叢刊電子本文から本文だけを引用します。「隂」の字形を保持し、底本画像未確認の標準化された保存文・訓読は原典引用として公開しません。',
+  },
+  'classic-somon-12': {
+    verifiedQuotation: suwenQuote('故砭石者亦從東方來。…故灸焫者亦從北方來。…故導引按蹻者亦從中央出也。故聖人雜合以治，各得其所宜。', '004', '巻四・異法方宜論篇第十二、治法の由来の三箇所', '巻四 1b〜2b（KR3e0001_SBCK_004-1b／2a／2b）'),
+    verificationNote: '旧掲載文は三地域の説明を省略して連結しています。北方の病の句は確認した電子本文の「藏寒生滿病」と一致しないため、その句を原典の引用として公開せず、確認した治法の由来のみ別欄に示します。',
+  },
+  'classic-somon-74': {
+    verifiedQuotation: suwenQuote('諸風掉胘，皆屬於肝。諸寒收引，皆屬於腎。諸氣膹鬱，皆屬於肺。諸濕腫滿，皆屬於脾。諸熱瞀瘛，皆屬於火。諸痛痒瘡，皆屬於心。', '022', '巻二十二・至真要大論篇第七十四、病機の六句', '巻二十二 25b〜26a（KR3e0001_SBCK_022-25b／26a）'),
+    verificationNote: '電子転写は「胘」「痒」で、保存文の字形と異なります。「火（心）」の括弧は原文にはない解釈なので引用に含めません。病機十九条全体を照合した表示にはしません。',
+  },
+  'classic-somon-62': {
+    verifiedQuotation: suwenQuote('五藏之道，皆出於經隧，以行血氣。血氣不和，百病乃變化而生，是故守經隧焉。', '017', '巻十七・調經論篇第六十二、血気と経隧の説明', '巻十七 1b（KR3e0001_SBCK_017-1b）'),
+    verificationNote: '旧掲載文は複数の問答と補瀉の説明を連結しています。確認済みの引用は血気と経隧を述べる一節に限定し、旧文の全句・訓読を照合済みとは扱いません。',
+    translation: '引用した一節では、五蔵の働きが経隧を介して血気を行わせ、血気の不和から病が生じると説明する。これは古典の身体観であり、現代の血管や神経と経隧を同一視したり、個人の疾病原因を確定したりする記述ではない。',
+  },
+  'classic-reisu-01': {
+    verifiedQuotation: lingshuQuote('氣至而有效，效之信，若風之吹雲，明乎若見蒼天，刺之道畢矣。', '九鍼十二原第一、気至と効果を述べる一節'),
+    verificationNote: '気至を述べる一節だけを電子本文と照合しました。十二原の別の記述と連結した旧掲載文の全体・訓読は照合済みとしません。古典の効能表現を現代の効果保証に置き換えません。',
+  },
+  'classic-reisu-08': {
+    verifiedQuotation: lingshuQuote('天之在我者德也，地之在我者氣也。德流氣薄而生者也。故生之來謂之精；兩精相搏謂之神；隨神往來者謂之魂；並精而出入者謂之魄；所以任物者謂之心；心有所憶謂之意；意之所存謂之志；因志而存變謂之思；因思而遠慕謂之慮；因慮而處物謂之智。', '本神篇第八、岐伯の答えの精・神・魂魄・心意志思慮智', true),
+    verificationNote: '條列版の本神の一段を照合しました。精・神・魂魄などは古典の概念であり、脳内物質や精神疾患との対応を原文が実証したとは扱いません。底本を特定しない訓読は保留します。',
+  },
+  'classic-reisu-10': {
+    verifiedQuotation: lingshuQuote('經脈者，所以能決死生，處百病，調虛實，不可不通。', '經脈第十、雷公への黄帝の答え'),
+    verificationNote: '保存文の「所生病者」の説明と経脈の総論を、連続する原文として扱いません。別欄には経脈の総論の一文のみを引用し、経脈篇全体の校訂・病証分類の妥当性は未確認とします。',
+  },
+  'classic-reisu-07': {
+    verifiedQuotation: lingshuQuote('二曰遠道刺，遠道刺者，病在上，取之下，刺腑俞也。…八曰巨刺，巨刺者，左取右，右取左。', '官針篇第七、九刺のうち遠道刺・巨刺の二箇所', true),
+    verificationNote: '九刺の全記述・施術手順を公開せず、選穴の位置関係を述べる二句を省略付きで引用します。角度・刺入深度・手技の安全性や有効性をこの引用から推奨しません。',
+  },
+  'classic-reisu-66': {
+    verifiedQuotation: lingshuQuote('風雨寒熱，不得虛邪，不能獨傷人。', '百病始生第六十六、岐伯の答えの冒頭'),
+    verificationNote: '確認資料は「不得虛邪，不能獨傷人」で、旧掲載文の「不得虛，邪不能獨傷人」と句切り・語句が異なります。引用は電子本文の一文に限定し、感染や疾病が起こる条件の現代的な証明とは扱いません。',
+  },
+  'classic-nankyo-68': {
+    verifiedQuotation: {
+      text: '井主心下滿，滎主身熱，輸主體重節痛，經主喘咳寒熱，合主逆氣而泄。', sourceTitle: '中医笈成・葉霖『難經正義』所引の経文（電子本文）', section: '六十八難、五輸の所主病の五句',
+      sourceUrl: 'https://jicheng.tw/tcm/book/%E9%9B%A3%E7%B6%93%E6%AD%A3%E7%BE%A9/index.html', edition: '資料は1936年上海世界書局『珍本醫書集成』第一冊ほかの掃描本を列挙。引用の画像は未確認。',
+      checkedAt: '2026-10-08', verificationScope: 'electronic_text', limitation: ELECTRONIC_QUOTATION_LIMIT,
+    },
+    verificationNote: '『難經正義』の六十八難として掲載された経文を引用し、「輸」の字形を保持します。比較した『難經懸解』では同じ主題が六十七難と表示されるため、注釈書間の番号を混ぜません。',
+  },
+  'classic-nankyo-69': {
+    verifiedQuotation: {
+      text: '虛者補其母，實者瀉其子，當先補之，然後瀉之。', sourceTitle: '維基文庫・黄元御『難經懸解』所引の経文（電子本文）', section: '六十九難、虚実と母子の一節', sourceUrl: 'https://zh.wikisource.org/zh-hant/%E9%9A%BE%E7%BB%8F%E6%82%AC%E8%A7%A3',
+      checkedAt: '2026-10-08', verificationScope: 'electronic_text', limitation: `底本の刊行版・年は未確認です。${ELECTRONIC_QUOTATION_LIMIT}`,
+    },
+    verificationNote: '経文を後世の注釈と区別し、「虛者補其母、實者瀉其子」の節のみ照合しました。配穴例や疾患に対する有効性、補瀉手技の安全性はこの確認の対象外です。',
+  },
+  'classic-nankyo-77': {
+    verifiedQuotation: {
+      text: '所謂治未病者，見肝之病，則知肝當傳之於脾，故先實其脾氣，無令得受肝之邪也，故曰治未病焉。', sourceTitle: '維基文庫・黄元御『難經懸解』所引の経文（電子本文）', section: '七十七難、治未病の説明', sourceUrl: 'https://zh.wikisource.org/zh-hant/%E9%9A%BE%E7%BB%8F%E6%82%AC%E8%A7%A3',
+      checkedAt: '2026-10-08', verificationScope: 'electronic_text', limitation: `底本の刊行版・年は未確認です。${ELECTRONIC_QUOTATION_LIMIT}`,
+    },
+    verificationNote: '肝から脾への相伝を述べる節を照合しました。伝統上の肝・脾を現代の肝臓・脾臓と同義とせず、疾病予防の効果を証明する引用には用いません。',
+  },
+  'classic-shokan-taiyo': {
+    verifiedQuotation: shokanQuote('太陽之為病，脈浮，頭項強痛而惡寒。', '巻二・辨太陽病脈證並治（上）第五、冒頭の綱領一文'),
+    verificationNote: '宋本電子本文の冒頭の綱領のみを引用します。保存文を特定の版の全文照合済みとせず、訓読・診断への適用は専門家確認を別に行います。',
+  },
+  'classic-shokan-yomei': {
+    verifiedQuotation: shokanQuote('陽明之為病，胃家實是也。', '巻五・辨陽明病脈證並治第八、第180条の綱領一文'),
+    verificationNote: 'この宋本電子本文の「胃家實是也」を保持します。他の電子資料の「胃家實也」と混ぜて修正せず、後続の病証の句を綱領の続きとして引用しません。',
+  },
+  'classic-shokan-shoyo': {
+    verifiedQuotation: shokanQuote('少陽之為病，口苦，咽乾，目眩也。', '巻五・辨少陽病脈證並治第九、第263条の綱領一文'),
+    verificationNote: '旧掲載文の後半の「往来寒熱・胸脇苦満」等は、電子本文では太陽病中篇の別条にあります。少陽の綱領に連続する原文としては公開せず、第263条の一文のみを引用します。',
+  },
+  'classic-kinki-01': {
+    verifiedQuotation: {
+      text: '千般疢難，不越三條：一者，經絡受邪，入臟腑，為內所因也；二者，四肢九竅，血脈相傳，壅塞不通，為外皮膚所中也；三者，房室、金刃、蟲獸所傷。以此詳之，病由都盡。', sourceTitle: '中医笈成『金匱要略方論』電子本文', section: '臟腑經絡先後病脈證第一、病の三条の一段', sourceUrl: 'https://jicheng.tw/tcm/book/%E9%87%91%E5%8C%B1%E8%A6%81%E7%95%A5%E6%96%B9%E8%AB%96/index.html',
+      edition: '資料は趙開美刊本・四部叢刊・日本武村新兵衛刊本等を列挙。引用に対応する画像・原本頁は未確認。', checkedAt: '2026-10-08', verificationScope: 'electronic_text', limitation: ELECTRONIC_QUOTATION_LIMIT,
+    },
+    verificationNote: '旧掲載文の冒頭の問答は、確認した臟腑経絡篇の冒頭と一致せず、末尾も「病無餘義」ではなく「病由都盡」です。旧文・訓読は保留し、確認した三条の一段のみ引用します。後世の三因説や現代の病因分類とは区別します。',
+  },
+};
+
+// 旧文を監査資料に保持し、照合した引用の字形・出典・範囲を別に記録する。
+export const SOURCE_CLASSICAL_TEXTS: ClassicalText[] = STORED_CLASSICAL_TEXTS.map(text => {
+  const audit = NEW_CLASSICAL_QUOTATIONS[text.id];
+  return audit ? { ...text, ...audit, comparisonSourceUrl: audit.verifiedQuotation!.sourceUrl, originalPublicationStatus: 'withheld_pending_verification' } : text;
+});
 
 // 出典が一致しない原文・訓読は、画面や検索に渡す公開データから除く。
 export const CLASSICAL_TEXTS: ClassicalText[] = SOURCE_CLASSICAL_TEXTS.map((text) => (

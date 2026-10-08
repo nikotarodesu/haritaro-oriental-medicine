@@ -32,7 +32,8 @@ import { trackEvent } from "@/utils/analytics";
 import { SYMPTOMS } from "@/data/symptomData";
 import { PUBLIC_ARCHIVE_CASES } from "@/data/cases/archiveCases";
 import { TOOL_CATALOG } from "@/config/toolCatalog";
-import { SEARCH_CATEGORIES, matchesSearchCategory, nextSearchResultIndex, prepareSearchItem, prepareSearchQuery, scoreSearchItem, searchMatchHint, type SearchCategory, type SearchItemType } from "@/utils/search";
+import { SEARCH_CATEGORIES, matchesSearchCategory, nextSearchResultIndex, prepareSearchItem, type SearchCategory, type SearchItemType } from "@/utils/search";
+import { SEARCH_PURPOSES, preparePurposeSearchQuery, rankPurposeSearchResults, type PurposeSearchItem, type SearchPurpose } from "@/utils/searchPurpose";
 import { LEARNING_COURSES } from "@/data/learningCourses";
 import { REFLECTION_CASES } from "@/data/learningReflectionCatalog";
 import { useModalDialog } from "@/hooks/useModalDialog";
@@ -40,7 +41,7 @@ import { CLINICAL_COMPLAINTS } from "@/data/clinicalWorkflow";
 
 export type { SearchItemType } from "@/utils/search";
 
-export interface SearchResultItem {
+export interface SearchResultItem extends PurposeSearchItem {
   id: string;
   type: SearchItemType;
   title: string;
@@ -54,7 +55,7 @@ export interface SearchResultItem {
 const STATIC_TOOLS: SearchResultItem[] = [
   { id: 'clinical-home', type: 'tool', title: '鍼灸師の臨床ホーム', subtitle: '主訴・所見・前回記録から始める', badge: '臨床', url: '/clinical', tags: ['主訴','問診','臨床','鍼灸師'] },
   { id: 'clinical-workspace', type: 'tool', title: '所見から記録まで', subtitle: '四診・候補比較・配穴の理由・再評価', badge: '臨床記録', url: '/clinical/workspace', tags: ['四診','所見','弁証','配穴','再評価'] },
-  ...CLINICAL_COMPLAINTS.map(item => ({ id: `clinical-${item.slug}`, type: 'tool' as const, title: `${item.title}｜鍼灸師の確認ガイド`, subtitle: item.summary, badge: '主訴別・専門家', url: `/clinical/symptoms/${item.slug}`, tags: [item.title,'主訴','問診','四診','再評価'] })),
+  ...CLINICAL_COMPLAINTS.map(item => ({ id: `clinical-${item.slug}`, type: 'tool' as const, searchRole: 'professional-guide' as const, title: `${item.title}｜鍼灸師の確認ガイド`, subtitle: item.summary, badge: '主訴別・専門家', url: `/clinical/symptoms/${item.slug}`, tags: [item.title,'主訴','問診','四診','再評価'] })),
   {
     id: "tool-kokushi",
     type: "tool",
@@ -181,6 +182,7 @@ export default function GlobalSearchModal({
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
   const [activeCategory, setActiveCategory] = useState<SearchCategory>("all");
+  const [searchPurpose, setSearchPurpose] = useState<SearchPurpose>("auto");
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [recentSearches, setRecentSearches] = useState<string[]>(() => {
     try {
@@ -285,6 +287,7 @@ export default function GlobalSearchModal({
         badge: "経穴辞典",
         url: `/tsubo/${pt.codeLower}`,
         exactCode: pt.code.toLowerCase(),
+        exactTerms: [pt.name, pt.kana, ...(pt.aliases || [])],
         tags: [
           pt.name,
           pt.kana,
@@ -352,7 +355,8 @@ export default function GlobalSearchModal({
         type: "paper",
         title: p.japaneseTitle,
         subtitle: `${p.targetCondition}｜${p.studyDesign}・${p.journal} (${p.year})`,
-        badge: "医学論文",
+        badge: p.claimsStatus === "source-checked" ? "論文：原典要約の照合済み" : "論文：書誌照合済み・解釈確認待ち",
+        reviewStatus: p.claimsStatus,
         url: `/library#paper-${p.id}`,
         tags: [
           p.title,
@@ -360,6 +364,7 @@ export default function GlobalSearchModal({
           p.targetCondition,
           p.studyDesign,
           p.journal,
+          "論文", "研究", "文献", "エビデンス",
           ...p.tags,
           ...(p.interventionProtocol?.acupoints || []),
         ],
@@ -374,7 +379,7 @@ export default function GlobalSearchModal({
         title: s.title,
         subtitle: `${s.category}｜${s.summary.slice(0, 48)}...`,
         badge: "症状別ガイド",
-        url: `/symptoms#${s.id}`,
+        url: `/symptoms/${s.id}`,
         tags: [
           s.title,
           s.category,
@@ -446,15 +451,12 @@ export default function GlobalSearchModal({
   }, []);
 
   const searchIndex = useMemo(() => allItems.map(prepareSearchItem), [allItems]);
-  const preparedQuery = useMemo(() => prepareSearchQuery(query), [query]);
+  const searchContext = useMemo(() => preparePurposeSearchQuery(query, searchPurpose === "auto" && activeCategory === "library" ? "research" : searchPurpose), [query, searchPurpose, activeCategory]);
   // The whole matching set is retained so users can continue past the first page.
   const matchingResults = useMemo(() => {
-    if (!preparedQuery.normalized) return [];
-    return searchIndex
-      .map(index => ({ item: index.item, score: scoreSearchItem(index, preparedQuery), hint: searchMatchHint(index, preparedQuery) }))
-      .filter(result => result.score > 0)
-      .sort((a, b) => b.score - a.score);
-  }, [searchIndex, preparedQuery]);
+    if (!searchContext.query.normalized) return [];
+    return rankPurposeSearchResults(searchIndex, searchContext);
+  }, [searchIndex, searchContext]);
   const filteredResults = useMemo(() => matchingResults.filter(result => matchesSearchCategory(result.item.type, activeCategory)), [matchingResults, activeCategory]);
   const categoryCounts = useMemo(() => Object.fromEntries(SEARCH_CATEGORIES.map(category => [category.id, matchingResults.filter(result => matchesSearchCategory(result.item.type, category.id)).length])), [matchingResults]);
   const visibleResults = useMemo(() => filteredResults.slice(0, resultLimit), [filteredResults, resultLimit]);
@@ -615,8 +617,17 @@ export default function GlobalSearchModal({
 
         {/* 検索結果・サジェスト一覧（スクロールエリア） */}
         <div ref={scrollRef} className="search-results-scroll flex-1 min-h-0 overflow-y-auto overscroll-contain p-2 sm:p-3 space-y-1">
+          {hasQuery && <div className="px-3 pt-2 pb-3 space-y-2 border-b border-[#E8E1D1] dark:border-[#22303D]">
+            <div role="group" aria-label="検索の目的に合わせて表示順を変える" className="flex flex-wrap gap-2">
+              {SEARCH_PURPOSES.map(purpose => <button key={purpose.id} type="button" aria-pressed={searchPurpose === purpose.id} onClick={() => {
+                setSearchPurpose(purpose.id); setSelectedIndex(-1); setResultLimit(25);
+                if (scrollRef.current) scrollRef.current.scrollTop = 0;
+              }} className={`min-h-11 rounded-lg px-3 py-2 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 ${searchPurpose === purpose.id ? "bg-[#1E3D34] text-white dark:bg-[#2B6958]" : "border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823]"}`}>{purpose.label}</button>)}
+            </div>
+            <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">{searchContext.purpose === "research" ? "論文・古典を先に表示します。論文の確認状況は各結果に記載しています。" : "症状は受診目安・養生と鍼灸師向けガイドから調べられます。論文を探すときは「論文・原典」を選んでください。"}</p>
+          </div>}
           <p id={statusId} role="status" aria-live="polite" aria-atomic="true" className={hasQuery ? "px-3 py-1 text-sm font-semibold text-[#59615D] dark:text-[#A0B0BC]" : "sr-only"}>
-            {hasQuery ? `${activeCategoryLabel}：${filteredResults.length}件${filteredResults.length > visibleResults.length ? `（${visibleResults.length}件を表示）` : ""}` : "検索語を入力してください。"}
+            {hasQuery ? `${activeCategoryLabel}：${filteredResults.length}件${filteredResults.length > visibleResults.length ? `（${visibleResults.length}件を表示）` : ""} · ${searchContext.purpose === "research" ? "論文・原典を優先" : "ガイドを優先"}` : "検索語を入力してください。"}
           </p>
           <p id={helpId} className="sr-only">複数のキーワードは空白で区切れます。上下の矢印キーで結果を選び、Enterで移動します。選択前にEnterを押すと先頭の結果へ移動します。</p>
           {/* 未入力時：最近の検索 ＆ クイック検索候補 */}

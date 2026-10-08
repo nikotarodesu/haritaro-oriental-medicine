@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- CommonJS regression runner. */
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -57,8 +58,8 @@ assert.equal(queryPages.length, 1, 'Only the independently described Gorou check
 assert.equal(queryPages[0].url, 'https://www.haritaro.jp/diagnosis?tab=gorou');
 assert(!sitemap.some(page=>new URL(page.url).pathname==='/notes'));
 assert.equal(new Set(sitemap.map(page=>page.url)).size,sitemap.length);
-for(const pathname of ['/glossary','/library','/tsubo/li4','/tsubo/sp6',...Array.from({length:8},(_,index)=>`/curriculum/lecture-yinyang-${index+1}`)]) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-03',pathname);
-assert.equal(sitemap.find(page=>new URL(page.url).pathname==='/').lastModified.toISOString().slice(0,10),'2026-10-05');
+for(const pathname of ['/glossary',...Array.from({length:8},(_,index)=>`/curriculum/lecture-yinyang-${index+1}`)]) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-03',pathname);
+for(const pathname of ['/','/library','/tsubo/li4','/tsubo/sp6','/symptoms']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-08',pathname);
 for(const pathname of ['/kokushi','/simulator','/learn','/clinical']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-04',pathname);
 for(const pathname of ['/articles/science-of-yinyang-gogyo','/curriculum/lecture-wuxing-2']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-02',pathname);
 const { LEARNING_COURSES, getCourseProgress } = load('src/data/learningCourses');

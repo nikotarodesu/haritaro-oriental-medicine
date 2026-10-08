@@ -84,7 +84,7 @@ for (const file of ['src/components/yinyang/YinYangTreatmentFlow.tsx', 'src/comp
 }
 assert.equal(classics.SOURCE_CLASSICAL_TEXTS.length, 24);
 assert.equal(classics.CLASSICAL_TEXTS.length, 24);
-const quotationIds = ['classic-somon-05-clear', 'classic-somon-29', 'classic-nankyo-75', 'classic-taisei-shisou', 'classic-taisei-hachimyaku', 'classic-taisei-shougyoku'];
+const quotationIds = ['classic-somon-01', 'classic-somon-02', 'classic-somon-05', 'classic-somon-05-clear', 'classic-somon-12', 'classic-somon-29', 'classic-somon-74', 'classic-somon-62', 'classic-reisu-01', 'classic-reisu-08', 'classic-reisu-10', 'classic-reisu-07', 'classic-reisu-66', 'classic-nankyo-68', 'classic-nankyo-69', 'classic-nankyo-75', 'classic-nankyo-77', 'classic-shokan-taiyo', 'classic-shokan-yomei', 'classic-shokan-shoyo', 'classic-taisei-shisou', 'classic-taisei-hachimyaku', 'classic-taisei-shougyoku', 'classic-kinki-01'];
 assert.equal(classics.CLASSICAL_TEXTS.filter(item => item.verifiedQuotation).length, quotationIds.length);
 for (const id of quotationIds) {
   const published = classics.CLASSICAL_TEXTS.find(item => item.id === id);
@@ -98,6 +98,11 @@ for (const id of quotationIds) {
 }
 assert.match(classics.CLASSICAL_TEXTS.find(item => item.id === 'classic-somon-29').verifiedQuotation.text, /四支皆稟氣於胃/);
 assert.match(classics.CLASSICAL_TEXTS.find(item => item.id === 'classic-somon-05-clear').verifiedQuotation.text, /清陽發腠理/);
+assert.match(classics.CLASSICAL_TEXTS.find(item => item.id === 'classic-somon-74').verifiedQuotation.text, /諸熱瞀瘛，皆屬於火。/);
+assert(!classics.CLASSICAL_TEXTS.find(item => item.id === 'classic-somon-74').verifiedQuotation.text.includes('火（心）'), 'Do not insert interpretation into a quotation');
+assert.match(classics.CLASSICAL_TEXTS.find(item => item.id === 'classic-reisu-66').verifiedQuotation.text, /不得虛邪，不能獨傷人/);
+assert.equal(classics.CLASSICAL_TEXTS.find(item => item.id === 'classic-shokan-shoyo').verifiedQuotation.text, '少陽之為病，口苦，咽乾，目眩也。', 'Do not append a different Taiyang passage to Shaoyang');
+assert.match(classics.CLASSICAL_TEXTS.find(item => item.id === 'classic-kinki-01').verifiedQuotation.text, /病由都盡/);
 assert.deepEqual(Array.from(classics.CLASSICAL_TEXTS.find(item => item.id === 'classic-taisei-shougyoku').relatedPoints), ['GV20', 'CV13']);
 for (const source of classics.SOURCE_CLASSICAL_TEXTS) {
   const published = classics.CLASSICAL_TEXTS.find(item => item.id === source.id);
@@ -112,6 +117,25 @@ for (const source of classics.SOURCE_CLASSICAL_TEXTS) {
   }
   assert(!/奇跡的な効果|全疾患が治る|栄養供給を再建|最重要である根拠|現代臨床でもそのまま第一選択/.test(published.translation + published.clinicalApplication), `${source.id}: ancient text is not proof of modern clinical efficacy`);
 }
+const { VERIFIED_PAPERS } = load('src/data/references/papersData');
+assert.equal(VERIFIED_PAPERS.length, 32);
+assert.equal(VERIFIED_PAPERS.filter(paper => paper.claimsStatus === 'source-checked').length, 31);
+for (const paper of VERIFIED_PAPERS.filter(paper => paper.claimsStatus === 'source-checked')) {
+  assert.match(paper.sourceUrl, /^https:\/\//, `${paper.id}: checked source URL missing`);
+  assert.match(paper.claimsCheckedAt, /^\d{4}-\d{2}-\d{2}$/, `${paper.id}: interpretation date missing`);
+  assert(['abstract', 'selected_full_text'].includes(paper.verificationScope), `${paper.id}: unsupported review scope`);
+  assert(paper.sourceLocator && paper.keyFindings.length && paper.clinicalTakeaways.length, `${paper.id}: result and limitation must travel together`);
+  assert.equal(paper.interventionProtocol, undefined, `${paper.id}: a bounded source check cannot release procedural instructions`);
+}
+const paperById = id => VERIFIED_PAPERS.find(paper => paper.id === id);
+assert.match(paperById('rct-insomnia-heart-liver-2025').keyFindings.join(' '), /群間差は有意ではありません/);
+assert.equal(paperById('chronic-insomnia-disorder-meta-tsa-yu-2025').sampleSize, undefined, 'Conflicting 757/847 participant totals must remain withheld');
+assert.match(paperById('chronic-insomnia-disorder-meta-tsa-yu-2025').clinicalTakeaways.join(' '), /757.*847/);
+assert.equal(paperById('body-weight-control-electroacupuncture-auricular-protocol-zhong-2016').sampleSize, undefined, 'Planned trial enrollment is not a completed patient sample');
+assert.match(paperById('body-weight-control-electroacupuncture-auricular-protocol-zhong-2016').studyDesign, /計画書/);
+assert.match(paperById('cfs-acupuncture-moxibustion-hrv-li-2025').clinicalTakeaways.join(' '), /不一致/);
+assert.equal(paperById('katakori-needling-depth-rct-osaki-2018').claimsStatus, 'needs-review');
+assert.match(paperById('katakori-needling-depth-rct-osaki-2018').primaryOutcomes, /PDFを取得できなかった/);
 const pairs = load('src/types/clinicalMemo').CLASSIC_CLINICAL_PAIRS;
 assert.equal(pairs.length, 8);
 for (const pair of pairs) {

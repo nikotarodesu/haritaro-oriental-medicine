@@ -316,8 +316,6 @@ export default async function AcupointDetailPage({ params }: Props) {
       />
 
       <div className="max-w-5xl mx-auto space-y-5 sm:space-y-8">
-        <ClinicalToolBridge />
-        
         {/* パンくずリスト ＆ 前後経穴クイックナビ */}
         <nav className="flex flex-wrap items-center justify-between gap-2 text-sm text-[#59615D] dark:text-[#AFBDC8] gap-3 flex-wrap">
           <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
@@ -403,6 +401,17 @@ export default async function AcupointDetailPage({ params }: Props) {
                   別名：{point.aliases.join("、")}
                 </p>
               )}
+
+              <dl className="space-y-3 pt-2 text-base leading-relaxed" aria-label={`${point.name}の位置と重要な注意`}>
+                <div>
+                  <dt className="text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8]">位置の目安</dt>
+                  <dd className="mt-1 text-[#232826] dark:text-[#E6EFEA]">{point.locationSimple}</dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-bold text-amber-800 dark:text-amber-300">重要な注意</dt>
+                  <dd className="mt-1 text-[#4A534F] dark:text-[#AFBDC8]">{point.caution || "位置や模式図は学習用です。個人の安全な刺入深度・経路や施術適応は判断できません。"}</dd>
+                </div>
+              </dl>
             </div>
 
             {/* アクションボタン群（主アクション：配穴追加・クリップ保存、副アクション：推論・比較・復習） */}
@@ -494,22 +503,25 @@ export default async function AcupointDetailPage({ params }: Props) {
           <a href="#acupoint-sources" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-3 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">出典</a>
         </nav>
 
-        {/* 1.5 LLM / GEO 引用対応・定義文 ＆ ワンペーパー3行要約ブロック */}
-        <section
+        <ClinicalToolBridge />
+
+        {/* 所属と伝統的な主治の補足。位置と注意は冒頭で確認できる。 */}
+        <details
           aria-label={`${point.name}の概要と定義`}
           className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 space-y-4 transition-colors"
         >
+          <summary className="flex min-h-11 cursor-pointer items-center gap-2 text-base font-bold text-[#1E3D34] dark:text-[#83BEA8]">所属・伝統的な主治を確認する</summary>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
               <Sparkles className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
               <span>この経穴の要点</span>
             </div>
             <span className="text-sm text-[#59615D] dark:text-[#AFBDC8] hidden sm:inline">
-              WHO標準・解剖学的指標準拠
+              WHO標準部位を参照・個別照合は進行中
             </span>
           </div>
 
-          {/* GEO / AIO 最適化：直接定義構文（AI検索エンジンが回答元として最優先抜粋） */}
+          {/* 伝統的な主治と医学的な治療効果を区別する。 */}
           <div className="pb-4 border-b border-[#E8E1D1] dark:border-[#263542]">
             <p className="text-base text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
               <strong className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">{point.name}（{point.kana} / {point.code}）とは</strong>、{point.meridian}に属する経穴です。位置の目安は「{point.locationSimple}」。伝統的な主治には<strong>{point.indications.slice(0, 4).join("、")}</strong>などが挙げられます。これは、この経穴単独の治療効果や個人への適応を示すものではありません。
@@ -523,7 +535,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                 ① 所属と分類
               </span>
               <p className="text-[#4A534F] dark:text-[#A0B0BC] text-base">
-                {point.meridian}（{point.code}）。{point.categories && point.categories.length > 0 ? `要穴分類：${point.categories.join("・")}。` : "経脈の正穴として気血の巡りを担う標準経穴。"}
+                {point.meridian}（{point.code}）。{point.categories && point.categories.length > 0 ? `要穴分類：${point.categories.join("・")}。` : "所属経脈の名称と走行を学ぶ経穴です。"}
               </p>
             </div>
             <div className="py-3 first:pt-0 last:pb-0 md:py-0 md:px-4 md:first:pl-0 md:last:pr-0">
@@ -531,19 +543,19 @@ export default async function AcupointDetailPage({ params }: Props) {
                 ② 取穴と安全
               </span>
               <p className="text-[#4A534F] dark:text-[#A0B0BC] text-base">
-                {point.locationSimple}。{point.caution ? `注意：${point.caution}` : "体表の骨・筋の指標を確認。個別の安全性は専門資料と臨床評価で判断してください。"}
+                {point.locationSimple.replace(/。+$/, "")}。{point.caution ? `注意：${point.caution}` : "体表の骨・筋の指標を確認。個別の安全性は専門資料と臨床評価で判断してください。"}
               </p>
             </div>
             <div className="py-3 first:pt-0 last:pb-0 md:py-0 md:px-4 md:first:pl-0 md:last:pr-0">
               <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1 text-sm">
-                ③ 主治と臨床作用
+                ③ 伝統的な主治と解説
               </span>
               <p className="text-[#4A534F] dark:text-[#A0B0BC] text-base">
-                {point.indications.slice(0, 5).join("、")}等。{point.clinicalNote ? point.clinicalNote.slice(0, 50) + (point.clinicalNote.length > 50 ? "…" : "") : "経絡の気血を疏通し、関連臓腑と局所の症状を回復。"}
+                {point.indications.slice(0, 5).join("、")}等。{point.clinicalNote || "伝統的な分類との関連を学ぶ情報であり、個人の治療効果や施術適応を示すものではありません。"}
               </p>
             </div>
           </div>
-        </section>
+        </details>
 
         {/* ⚠️ 安全上の注意（禁忌・気胸リスク・妊婦注意アラート） */}
         {hasSafetyWarning && (
@@ -901,7 +913,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                 {relatedSymptoms.map((sym) => (
                   <Link
                     key={sym.id}
-                    href={`/symptoms#${sym.id}`}
+                  href={`/symptoms/${sym.id}`}
                     className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group flex flex-col justify-between"
                   >
                     <div className="space-y-1">

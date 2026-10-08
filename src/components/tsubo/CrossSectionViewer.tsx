@@ -2,12 +2,9 @@
 
 import React, { useState } from "react";
 import { getPublicCrossSectionElements, getPublicAnatomyDescription } from "@/data/medicalSafety";
-import { 
-  CrossSectionModel, 
-  AnatomicalLayer, 
-  AdjacentStructure, 
-  BoundaryLandmark,
-  ReferenceLedgerItem 
+import type {
+  CrossSectionModel,
+  ReferenceLedgerItem
 } from "@/data/tsubo/types";
 import { 
   Layers, 
@@ -226,7 +223,6 @@ export default function CrossSectionViewer({
             const strokeWidth = isSelected ? 3.5 : el.strokeWidth || 1;
 
             const commonProps = {
-              key: el.elementId,
               id: el.elementId,
               fill: el.fill,
               stroke,

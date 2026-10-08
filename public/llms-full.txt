@@ -1,55 +1,459 @@
-# はり太郎の東洋医学 (Haritaro Oriental Medicine) - 完全コンテキストマップ
+# はり太郎の東洋医学
 
-> 鍼灸師・鍼灸学生・東洋医学実践者のための学習・臨床推論・患者カルテ補助Webプラットフォーム。
-> 公式サイト: https://www.haritaro.jp
+> 鍼灸師・学生・東洋医学学習者向けの教材と臨床推論演習。確定診断や個別の施術指示を提供するサイトではありません。
 
-## 1. サイトの使命と信頼性基盤 (E-E-A-T)
-- **運営・学術監修**: はり師・きゅう師（国家資格保有）および東洋医学学術チーム
-- **医学・学術典拠**:
-  - WHO Standard Acupuncture Point Locations in the Western Pacific Region (2008)
-  - 新版 経絡経穴概論 / 東洋医学概論（医道の日本社 / 教科書執筆小委員会）
-  - 黄帝内経（素問・霊枢）
-  - 難経（八十一難経）
-  - 針灸甲乙経（皇甫謐）
-  - 傷寒論 / 金匱要略（張仲景）
-  - 医宗金鑑・刺灸心法要訣
-  - 近年の経穴・経絡・生体防御反応に関する学術論文（エビデンス情報）
+このファイルは公開ページへの案内です。2026年10月8日の公開内容に合わせています。この日付は全教材の照合・監修の完了日ではありません。各ページの出典・確認状況・適用範囲も参照してください。
 
-## 2. 十四経脈と経穴データベース (全361穴)
-- **手の太陰肺経 (LU: LU1〜LU11)**: 中府、雲門、天府、侠白、尺沢、孔最、列欠、経渠、太淵、魚際、少商
-- **手の陽明大腸経 (LI: LI1〜LI20)**: 商陽、二間、三間、合谷、陽渓、偏歴、温溜、下廉、上廉、手三里、曲池、肘髎、手五里、臂臑、肩髃、巨骨、天鼎、扶突、禾髎、迎香
-- **足の陽明胃経 (ST: ST1〜ST45)**: 承泣、四白、巨髎、地倉、大迎、頬車、下関、頭維、人迎、水突、気舎、缺盆、気戸、庫房、屋翳、膺窓、乳中、乳根、不容、承満、梁門、関門、太乙、滑肉門、天枢、外陵、大巨、水道、帰来、気衝、髀関、伏兎、陰市、梁丘、犢鼻、足三里、上巨虚、条口、下巨虚、豊隆、解渓、衝陽、陥谷、内庭、厲兌
-- **足の太陰脾経 (SP: SP1〜SP21)**: 隠白、大都、太白、公孫、商丘、三陰交、漏谷、地機、陰陵泉、血海、箕門、衝門、府舎、腹結、大横、腹哀、食竇、天渓、胸郷、周栄、大包
-- **手の少陰心経 (HT: HT1〜HT9)**: 極泉、青霊、少海、霊道、通里、陰郄、神門、少府、少衝
-- **手の太陽小腸経 (SI: SI1〜SI19)**: 少沢、前谷、後渓、腕骨、陽谷、養老、支正、小海、肩貞、臑兪、天宗、秉風、曲垣、肩外兪、肩中兪、天窓、天容、顴髎、聴宮
-- **足の太陽膀胱経 (BL: BL1〜BL67)**: 睛明、攅竹、眉衝、曲差、五処、承光、通天、絡却、玉枕、天柱、大杼、風門、肺兪、厥陰兪、心兪、督兪、膈兪、肝兪、胆兪、脾兪、胃兪、三焦兪、腎兪、気海兪、大腸兪、関元兪、小腸兪、膀胱兪、中膂兪、白環兪、上髎、次髎、中髎、下髎、会陽、承扶、殷門、浮郄、委陽、委中、附分、魄戸、膏肓、神堂、臑 sweat、膈関、魂門、陽綱、意舎、胃倉、肓門、志室、胞肓、秩辺、合陽、承筋、承山、飛陽、跗陽、崑崙、僕参、申脈、金門、京骨、束骨、足通谷、至陰
-- **足の少陰腎経 (KI: KI1〜KI27)**: 湧泉、然谷、太渓、大鐘、水泉、照海、復溜、交信、築賓、陰谷、横骨、大赫、気穴、四満、中注、肓兪、商曲、石関、陰都、腹通谷、幽門、歩廊、神封、霊墟、神蔵、彧中、兪府
-- **手の厥陰心包経 (PC: PC1〜PC9)**: 天池、天泉、曲沢、郄門、間使、内関、大陵、労宮、中衝
-- **手の少陽三焦経 (TE: TE1〜TE23)**: 関衝、液門、中渚、陽池、外関、支溝、会宗、三陽絡、四涜、天井、清冷淵、消濼、臑会、肩髎、天髎、天牖、翳風、瘈脈、顱息、角孫、耳門、和髎、糸竹空
-- **足の少陽胆経 (GB: GB1〜GB44)**: 瞳子髎、聴会、上関、頷厭、懸顱、懸厘、曲鬢、率谷、天衝、浮白、頭竅陰、完骨、本神、陽白、頭臨泣、目窓、正営、承霊、脳空、風池、肩井、淵腋、輒筋、日月、京門、帯脈、五枢、維道、居髎、環跳、風市、中瀆、膝陽関、陽陵泉、陽交、外丘、光明、陽輔、懸鐘、丘墟、足臨泣、地五会、侠渓、足竅陰
-- **足の厥陰肝経 (LR: LR1〜LR14)**: 大敦、行間、太衝、中封、蠡溝、中都、膝関、曲泉、陰包、足五里、陰廉、急脈、章門、期門
-- **督脈 (GV: GV1〜GV28)**: 長強、腰兪、腰陽関、命門、懸枢、脊中、中枢、筋縮、至陽、霊台、神道、身柱、陶道、大椎、啞門、風府、脳戸、強間、後頂、百会、前頂、囟会、上星、神庭、素髎、水溝、兌端、齦交
-- **任脈 (CV: CV1〜CV24)**: 会陰、曲骨、中極、関元、石門、気海、陰交、神闕、水分、下脘、建里、中脘、上脘、巨闕、鳩尾、中庭、膻中、玉堂、紫宮、華蓋、璇璣、天突、廉泉、承漿
+執筆・運営は現役鍼灸師のはり太郎による個人運営です。資格・経歴と編集体制は運営者ページに記載しています。運営者による執筆・編集と、専門家による監修の完了を区別しています。
 
-## 3. 主要臨床機能
-1. **臨床弁証シミュレーター (/simulator)**
-   - 八綱（表裏・寒熱・虚実・陰陽）の多面分析
-   - 気血水弁証（気虚・気滞・血虚・瘀血・水滞・陰虚・陽虚）
-   - 臓腑弁証（肝・心・脾・肺・腎の虚実連動）
-   - 推論に基づく本治穴（原穴・兪募穴）と標治穴の組み合わせ提示
-2. **臨床ノート・カルテメモ (/notes)**
-   - 患者識別子、主訴、所見、弁証見立て、配穴処方の記録
-   - 施術直後の好転反応や次回来院時の確認事項（Next Action）の管理
-   - 患者向けA4養生アドバイスシートのワンクリック印刷出力
-3. **気血水体質セルフ診断 (/diagnosis)**
-   - 一般向けの12問チェックによる体質傾向判定と食材・生活養生アドバイス
-   - 対面問診モードによるベッドサイドでの患者説明クリーンビュー
+## 確認状況
+- [受診の目安と鍼灸の安全性](https://www.haritaro.jp/safety): 救急受診を優先する症状と安全指針の出典。未専門家確認の刺入深度・角度・灸量・針路図は掲載を保留しています。
+- [医学記述・出典の確認方針](https://www.haritaro.jp/editorial-policy): 書誌の照合、研究結果の解釈、専門家監修の進捗を区別します。全件の医学的正確性の照合と専門家監修は未完了です。
+- [研究資料・古典・症例教材](https://www.haritaro.jp/library): 書誌一致を確認した論文を掲載します。研究対象・結果・適用範囲の照合中の資料があります。古典の分類を現代医学の生理学的機序の証明として扱いません。
+- 古典では確認した電子本文からの引用を、元の未照合掲載文と分けて示しています。底本画像との照合・専門家による監修は未完了です。電子本文・論文抄録・全文の確認範囲と確認日は各項目に表示しています。
+- 経穴の標準部位、伝統的な主治、解剖・安全性の解説は別の情報です。断面ビューアは教育用の模式図であり、個人の解剖や安全な刺鍼深度を示すものではありません。標準部位の掲載だけで施術の安全性や治療効果を保証しません。
+- 出典・公開同意・経過記録を確認できない症例アーカイブ101件と、未照合の手技原資料37件は公開を保留しています。架空症例演習は利用できます。
 
-## 4. 安全管理・禁忌ガイドライン
-- **刺鍼絶対禁忌**: 神闕（CV8：腹膜炎・感染リスク）、乳中（ST17：局所炎症リスク）
-- **直接灸禁忌**: 顔面・眼球周囲（睛明、承泣、球後、糸竹空、瞳子髎等）、大血管拍動部
-- **妊娠中刺激禁忌（子宮収縮・流早産リスク）**: 合谷（LI4）、三陰交（SP6）、肩井（GB21）、崑崙（BL60）、至陰（BL67）、太衝（LR3）、下腹部任脈（中極・関元等）、八髎穴（BL31〜BL34）
-- **気胸リスク（直刺深刺厳禁・斜刺浅刺指示）**: 缺盆（ST12）、肩井（GB21）、肺兪（BL13）等の背部兪穴上部、中府（LU1）、雲門（LU2）等の鎖骨下窩・胸郭周囲穴
+## 学ぶ
+- [体系学習カリキュラム](https://www.haritaro.jp/curriculum): 全81講義の正規URLはこの目次から確認できます。
+- [学習の入口](https://www.haritaro.jp/learn): 基礎講義・国試演習・経穴学習・回答履歴からの復習を選べます。教材の確認範囲も案内します。
+- [国試演習・今日の復習](https://www.haritaro.jp/kokushi#learning-review): 内容の版と回答履歴を照合し、復習予定を表示します。同日の繰り返しで復習間隔を延ばしません。
+- [用語集](https://www.haritaro.jp/glossary)
+- [学術コラム](https://www.haritaro.jp/articles): 伝統的な説明、学習用モデル、医学研究で検討された範囲を区別して読む12記事。記事ごとに出典と適用限界を示します。
 
-## 5. 法的ステートメント
-本プラットフォームで提供されるすべての情報は、東洋医学の学術的理解および鍼灸臨床における思考整理を目的とした教育・学習・臨床補助ツールです。医師法第17条に定める診断および治療等の医療行為を目的としたものではなく、確定的な疾患診断や治癒を保証するものではありません。
+## 経穴
+- [経穴辞典](https://www.haritaro.jp/tsubo): 全361穴。正規の詳細ページは辞典から参照してください。
+- [骨度寸法ガイド](https://www.haritaro.jp/tsubo/basics/bone-cun)
+- [経穴演習](https://www.haritaro.jp/tsubo/practice)
+- [経穴比較](https://www.haritaro.jp/tsubo/compare)
+
+## 臨床思考を学ぶ
+- [症状別の学習ガイド](https://www.haritaro.jp/symptoms): 主訴ごとの受診目安、伝統的な分類、日常生活の見直しと出典を確認できます。症状の原因や病名を判定せず、自己刺鍼・自己灸の手順を提供しません。
+- [臨床弁証シミュレーター](https://www.haritaro.jp/simulator): 選択条件に対応する候補、矛盾、不足情報、学習用配穴例を表示します。疾患の除外や確定診断を行いません。
+- [理由を選ぶ段階的症例演習](https://www.haritaro.jp/simulator#case-training): 架空の3症例で追加質問、安全判断、候補、判断根拠、治則、再評価を練習します。判断と理由を別々に採点します。
+- [架空症例教材](https://www.haritaro.jp/cases): 所見と判断の理由を学ぶ教材です。実例アーカイブは掲載を保留しています。
+- [配穴設計](https://www.haritaro.jp/practice/haiketsu): 経穴の組み合わせと選定理由を学習用に整理します。個人の治療効果や施術適応を自動判定しません。
+- [体質傾向チェック](https://www.haritaro.jp/diagnosis): 学習用の傾向整理。疾病の診断ではありません。
+- [臨床ノート](https://www.haritaro.jp/notes)
+
+## 案内
+- [運営者情報とサイトの使い方](https://www.haritaro.jp/about): 執筆・運営者の紹介と目的別の入口。執筆者情報だけで専門家監修の完了を示すものではありません。
+- [お問い合わせ](https://www.haritaro.jp/contact)
+- [利用規約](https://www.haritaro.jp/terms)
+- [プライバシーポリシー](https://www.haritaro.jp/privacy)
+
+## 公開ページの追加索引
+
+以下は上記の案内とサイトの公開データから生成した索引です。経穴名や症状との関連は治療効果・個人への適応を示すものではありません。確認範囲と出典はリンク先で確認してください。
+
+### 目的別の学習コース
+- [陰陽の基礎をつかむ](https://www.haritaro.jp/learn/courses/yinyang-foundations)
+- [五行の関係を整理する](https://www.haritaro.jp/learn/courses/five-elements-relations)
+- [気・血・津液を見分ける](https://www.haritaro.jp/learn/courses/qi-blood-fluid)
+
+### 症状別の学習ガイド
+- [慢性的な頭痛・首肩こり](https://www.haritaro.jp/symptoms/headache-stiff-neck): 頭重感や首肩のこわばり。姿勢や緊張が関わることもありますが、頭痛の原因はさまざまです。
+- [ストレス・不安・寝付きの悪さ](https://www.haritaro.jp/symptoms/stress-insomnia): 寝付きにくさ、中途覚醒、日中の疲れや不安。症状だけで自律神経の病気や不眠症を確定することはできません。
+- [胃もたれ・食欲不振・軟便](https://www.haritaro.jp/symptoms/stomach-fatigue): 食後の重さ、食欲の低下、軟便など。症状から消化器の病気の有無を判定することはできません。
+- [生理痛・冷え・下肢のむくみ](https://www.haritaro.jp/symptoms/menstrual-pain-chill): 月経時の痛みや手足の冷え、脚のむくみ。これらが同じ原因で生じているとは限りません。
+- [慢性疲労・だるさ・朝起きられない](https://www.haritaro.jp/symptoms/chronic-fatigue-lethargy): 休んでも取れない疲れや朝の起きにくさ。睡眠や生活習慣のほか、病気や薬が関わることもあります。
+- [腰痛・ぎっくり腰・坐骨神経痛](https://www.haritaro.jp/symptoms/lower-back-pain-sciatica): 腰の痛み、お尻から脚にかけての痛みやしびれ。新しい神経症状がある場合は医療評価が重要です。
+- [眼精疲労・ドライアイ・目のかすみ](https://www.haritaro.jp/symptoms/eye-strain-fatigue): 画面作業に伴う疲れや乾き、目のかすみ。急な痛み・充血・見え方の変化を画面の見過ぎと決めないことが大切です。
+- [便秘・腹部膨満・便通の変化](https://www.haritaro.jp/symptoms/constipation-ibs): 便秘、硬い便、お腹の張り、腹痛や下痢。過敏性腸症候群（IBS）の診断には症状の経過と医療評価が必要です。
+- [めまい・耳鳴り・ふらつき](https://www.haritaro.jp/symptoms/dizziness-tinnitus): 立ちくらみ、回転感、ふらつき、耳鳴り。原因は内耳だけとは限らず、急な難聴や神経症状は速やかな評価が必要です。
+- [更年期のほてり・冷えのぼせ](https://www.haritaro.jp/symptoms/climacteric-hot-flash): ほてりや発汗、気分の変化など。更年期にみられることがありますが、年齢だけで原因を確定することはできません。
+- [アレルギー性鼻炎・花粉症・鼻閉](https://www.haritaro.jp/symptoms/allergic-rhinitis-hayfever): くしゃみ、鼻水、鼻づまり、目のかゆみ。原因や適切な治療は医療機関で確認します。
+- [膝の痛み・階段昇降時の違和感](https://www.haritaro.jp/symptoms/knee-joint-pain): 動き始めや階段での膝の痛み、こわばり。関節の状態や痛みの原因は症状だけでは確定できません。
+
+### 経脈別の経穴索引
+
+位置・伝統的な主治・注意事項を分けて学ぶための索引です。刺入深度・角度・灸量・針路の指示は含みません。
+
+#### 手の太陰肺経（11穴）
+- [中府（LU1）](https://www.haritaro.jp/tsubo/lu1)
+- [雲門（LU2）](https://www.haritaro.jp/tsubo/lu2)
+- [天府（LU3）](https://www.haritaro.jp/tsubo/lu3)
+- [侠白（LU4）](https://www.haritaro.jp/tsubo/lu4)
+- [尺沢（LU5）](https://www.haritaro.jp/tsubo/lu5)
+- [孔最（LU6）](https://www.haritaro.jp/tsubo/lu6)
+- [列缺（LU7）](https://www.haritaro.jp/tsubo/lu7)
+- [経渠（LU8）](https://www.haritaro.jp/tsubo/lu8)
+- [太淵（LU9）](https://www.haritaro.jp/tsubo/lu9)
+- [魚際（LU10）](https://www.haritaro.jp/tsubo/lu10)
+- [少商（LU11）](https://www.haritaro.jp/tsubo/lu11)
+
+#### 手の陽明大腸経（20穴）
+- [商陽（LI1）](https://www.haritaro.jp/tsubo/li1)
+- [二間（LI2）](https://www.haritaro.jp/tsubo/li2)
+- [三間（LI3）](https://www.haritaro.jp/tsubo/li3)
+- [合谷（LI4）](https://www.haritaro.jp/tsubo/li4)
+- [陽渓（LI5）](https://www.haritaro.jp/tsubo/li5)
+- [偏歴（LI6）](https://www.haritaro.jp/tsubo/li6)
+- [温溜（LI7）](https://www.haritaro.jp/tsubo/li7)
+- [下廉（LI8）](https://www.haritaro.jp/tsubo/li8)
+- [上廉（LI9）](https://www.haritaro.jp/tsubo/li9)
+- [手三里（LI10）](https://www.haritaro.jp/tsubo/li10)
+- [曲池（LI11）](https://www.haritaro.jp/tsubo/li11)
+- [肘髎（LI12）](https://www.haritaro.jp/tsubo/li12)
+- [手五里（LI13）](https://www.haritaro.jp/tsubo/li13)
+- [臂臑（LI14）](https://www.haritaro.jp/tsubo/li14)
+- [肩髃（LI15）](https://www.haritaro.jp/tsubo/li15)
+- [巨骨（LI16）](https://www.haritaro.jp/tsubo/li16)
+- [天鼎（LI17）](https://www.haritaro.jp/tsubo/li17)
+- [扶突（LI18）](https://www.haritaro.jp/tsubo/li18)
+- [口禾髎（LI19）](https://www.haritaro.jp/tsubo/li19)
+- [迎香（LI20）](https://www.haritaro.jp/tsubo/li20)
+
+#### 足の陽明胃経（45穴）
+- [承泣（ST1）](https://www.haritaro.jp/tsubo/st1)
+- [四白（ST2）](https://www.haritaro.jp/tsubo/st2)
+- [巨髎（ST3）](https://www.haritaro.jp/tsubo/st3)
+- [地倉（ST4）](https://www.haritaro.jp/tsubo/st4)
+- [大迎（ST5）](https://www.haritaro.jp/tsubo/st5)
+- [頬車（ST6）](https://www.haritaro.jp/tsubo/st6)
+- [下関（ST7）](https://www.haritaro.jp/tsubo/st7)
+- [頭維（ST8）](https://www.haritaro.jp/tsubo/st8)
+- [人迎（ST9）](https://www.haritaro.jp/tsubo/st9)
+- [水突（ST10）](https://www.haritaro.jp/tsubo/st10)
+- [気舎（ST11）](https://www.haritaro.jp/tsubo/st11)
+- [缺盆（ST12）](https://www.haritaro.jp/tsubo/st12)
+- [気戸（ST13）](https://www.haritaro.jp/tsubo/st13)
+- [庫房（ST14）](https://www.haritaro.jp/tsubo/st14)
+- [屋翳（ST15）](https://www.haritaro.jp/tsubo/st15)
+- [膺窓（ST16）](https://www.haritaro.jp/tsubo/st16)
+- [乳中（ST17）](https://www.haritaro.jp/tsubo/st17)
+- [乳根（ST18）](https://www.haritaro.jp/tsubo/st18)
+- [不容（ST19）](https://www.haritaro.jp/tsubo/st19)
+- [承満（ST20）](https://www.haritaro.jp/tsubo/st20)
+- [梁門（ST21）](https://www.haritaro.jp/tsubo/st21)
+- [関門（ST22）](https://www.haritaro.jp/tsubo/st22)
+- [太乙（ST23）](https://www.haritaro.jp/tsubo/st23)
+- [滑肉門（ST24）](https://www.haritaro.jp/tsubo/st24)
+- [天枢（ST25）](https://www.haritaro.jp/tsubo/st25)
+- [外陵（ST26）](https://www.haritaro.jp/tsubo/st26)
+- [大巨（ST27）](https://www.haritaro.jp/tsubo/st27)
+- [水道（ST28）](https://www.haritaro.jp/tsubo/st28)
+- [帰来（ST29）](https://www.haritaro.jp/tsubo/st29)
+- [気衝（ST30）](https://www.haritaro.jp/tsubo/st30)
+- [髀関（ST31）](https://www.haritaro.jp/tsubo/st31)
+- [伏兎（ST32）](https://www.haritaro.jp/tsubo/st32)
+- [陰市（ST33）](https://www.haritaro.jp/tsubo/st33)
+- [梁丘（ST34）](https://www.haritaro.jp/tsubo/st34)
+- [犢鼻（ST35）](https://www.haritaro.jp/tsubo/st35)
+- [足三里（ST36）](https://www.haritaro.jp/tsubo/st36)
+- [上巨虚（ST37）](https://www.haritaro.jp/tsubo/st37)
+- [条口（ST38）](https://www.haritaro.jp/tsubo/st38)
+- [下巨虚（ST39）](https://www.haritaro.jp/tsubo/st39)
+- [豊隆（ST40）](https://www.haritaro.jp/tsubo/st40)
+- [解渓（ST41）](https://www.haritaro.jp/tsubo/st41)
+- [衝陽（ST42）](https://www.haritaro.jp/tsubo/st42)
+- [陥谷（ST43）](https://www.haritaro.jp/tsubo/st43)
+- [内庭（ST44）](https://www.haritaro.jp/tsubo/st44)
+- [厲兌（ST45）](https://www.haritaro.jp/tsubo/st45)
+
+#### 足の太陰脾経（21穴）
+- [隠白（SP1）](https://www.haritaro.jp/tsubo/sp1)
+- [大都（SP2）](https://www.haritaro.jp/tsubo/sp2)
+- [太白（SP3）](https://www.haritaro.jp/tsubo/sp3)
+- [公孫（SP4）](https://www.haritaro.jp/tsubo/sp4)
+- [商丘（SP5）](https://www.haritaro.jp/tsubo/sp5)
+- [三陰交（SP6）](https://www.haritaro.jp/tsubo/sp6)
+- [漏谷（SP7）](https://www.haritaro.jp/tsubo/sp7)
+- [地機（SP8）](https://www.haritaro.jp/tsubo/sp8)
+- [陰陵泉（SP9）](https://www.haritaro.jp/tsubo/sp9)
+- [血海（SP10）](https://www.haritaro.jp/tsubo/sp10)
+- [箕門（SP11）](https://www.haritaro.jp/tsubo/sp11)
+- [衝門（SP12）](https://www.haritaro.jp/tsubo/sp12)
+- [府舎（SP13）](https://www.haritaro.jp/tsubo/sp13)
+- [腹結（SP14）](https://www.haritaro.jp/tsubo/sp14)
+- [大横（SP15）](https://www.haritaro.jp/tsubo/sp15)
+- [腹哀（SP16）](https://www.haritaro.jp/tsubo/sp16)
+- [食竇（SP17）](https://www.haritaro.jp/tsubo/sp17)
+- [天渓（SP18）](https://www.haritaro.jp/tsubo/sp18)
+- [胸郷（SP19）](https://www.haritaro.jp/tsubo/sp19)
+- [周栄（SP20）](https://www.haritaro.jp/tsubo/sp20)
+- [大包（SP21）](https://www.haritaro.jp/tsubo/sp21)
+
+#### 手の少陰心経（9穴）
+- [極泉（HT1）](https://www.haritaro.jp/tsubo/ht1)
+- [青霊（HT2）](https://www.haritaro.jp/tsubo/ht2)
+- [少海（HT3）](https://www.haritaro.jp/tsubo/ht3)
+- [霊道（HT4）](https://www.haritaro.jp/tsubo/ht4)
+- [通里（HT5）](https://www.haritaro.jp/tsubo/ht5)
+- [陰郄（HT6）](https://www.haritaro.jp/tsubo/ht6)
+- [神門（HT7）](https://www.haritaro.jp/tsubo/ht7)
+- [少府（HT8）](https://www.haritaro.jp/tsubo/ht8)
+- [少衝（HT9）](https://www.haritaro.jp/tsubo/ht9)
+
+#### 手の太陽小腸経（19穴）
+- [少沢（SI1）](https://www.haritaro.jp/tsubo/si1)
+- [前谷（SI2）](https://www.haritaro.jp/tsubo/si2)
+- [後渓（SI3）](https://www.haritaro.jp/tsubo/si3)
+- [腕骨（SI4）](https://www.haritaro.jp/tsubo/si4)
+- [陽谷（SI5）](https://www.haritaro.jp/tsubo/si5)
+- [養老（SI6）](https://www.haritaro.jp/tsubo/si6)
+- [支正（SI7）](https://www.haritaro.jp/tsubo/si7)
+- [小海（SI8）](https://www.haritaro.jp/tsubo/si8)
+- [肩貞（SI9）](https://www.haritaro.jp/tsubo/si9)
+- [臑兪（SI10）](https://www.haritaro.jp/tsubo/si10)
+- [天宗（SI11）](https://www.haritaro.jp/tsubo/si11)
+- [秉風（SI12）](https://www.haritaro.jp/tsubo/si12)
+- [曲垣（SI13）](https://www.haritaro.jp/tsubo/si13)
+- [肩外兪（SI14）](https://www.haritaro.jp/tsubo/si14)
+- [肩中兪（SI15）](https://www.haritaro.jp/tsubo/si15)
+- [天窓（SI16）](https://www.haritaro.jp/tsubo/si16)
+- [天容（SI17）](https://www.haritaro.jp/tsubo/si17)
+- [顴髎（SI18）](https://www.haritaro.jp/tsubo/si18)
+- [聴宮（SI19）](https://www.haritaro.jp/tsubo/si19)
+
+#### 足の太陽膀胱経（67穴）
+- [睛明（BL1）](https://www.haritaro.jp/tsubo/bl1)
+- [攅竹（BL2）](https://www.haritaro.jp/tsubo/bl2)
+- [眉衝（BL3）](https://www.haritaro.jp/tsubo/bl3)
+- [曲差（BL4）](https://www.haritaro.jp/tsubo/bl4)
+- [五処（BL5）](https://www.haritaro.jp/tsubo/bl5)
+- [承光（BL6）](https://www.haritaro.jp/tsubo/bl6)
+- [通天（BL7）](https://www.haritaro.jp/tsubo/bl7)
+- [絡却（BL8）](https://www.haritaro.jp/tsubo/bl8)
+- [玉枕（BL9）](https://www.haritaro.jp/tsubo/bl9)
+- [天柱（BL10）](https://www.haritaro.jp/tsubo/bl10)
+- [大杼（BL11）](https://www.haritaro.jp/tsubo/bl11)
+- [風門（BL12）](https://www.haritaro.jp/tsubo/bl12)
+- [肺兪（BL13）](https://www.haritaro.jp/tsubo/bl13)
+- [厥陰兪（BL14）](https://www.haritaro.jp/tsubo/bl14)
+- [心兪（BL15）](https://www.haritaro.jp/tsubo/bl15)
+- [督兪（BL16）](https://www.haritaro.jp/tsubo/bl16)
+- [膈兪（BL17）](https://www.haritaro.jp/tsubo/bl17)
+- [肝兪（BL18）](https://www.haritaro.jp/tsubo/bl18)
+- [胆兪（BL19）](https://www.haritaro.jp/tsubo/bl19)
+- [脾兪（BL20）](https://www.haritaro.jp/tsubo/bl20)
+- [胃兪（BL21）](https://www.haritaro.jp/tsubo/bl21)
+- [三焦兪（BL22）](https://www.haritaro.jp/tsubo/bl22)
+- [腎兪（BL23）](https://www.haritaro.jp/tsubo/bl23)
+- [気海兪（BL24）](https://www.haritaro.jp/tsubo/bl24)
+- [大腸兪（BL25）](https://www.haritaro.jp/tsubo/bl25)
+- [関元兪（BL26）](https://www.haritaro.jp/tsubo/bl26)
+- [小腸兪（BL27）](https://www.haritaro.jp/tsubo/bl27)
+- [膀胱兪（BL28）](https://www.haritaro.jp/tsubo/bl28)
+- [中膂兪（BL29）](https://www.haritaro.jp/tsubo/bl29)
+- [白環兪（BL30）](https://www.haritaro.jp/tsubo/bl30)
+- [上髎（BL31）](https://www.haritaro.jp/tsubo/bl31)
+- [次髎（BL32）](https://www.haritaro.jp/tsubo/bl32)
+- [中髎（BL33）](https://www.haritaro.jp/tsubo/bl33)
+- [下髎（BL34）](https://www.haritaro.jp/tsubo/bl34)
+- [会陽（BL35）](https://www.haritaro.jp/tsubo/bl35)
+- [承扶（BL36）](https://www.haritaro.jp/tsubo/bl36)
+- [殷門（BL37）](https://www.haritaro.jp/tsubo/bl37)
+- [浮郄（BL38）](https://www.haritaro.jp/tsubo/bl38)
+- [委陽（BL39）](https://www.haritaro.jp/tsubo/bl39)
+- [委中（BL40）](https://www.haritaro.jp/tsubo/bl40)
+- [附分（BL41）](https://www.haritaro.jp/tsubo/bl41)
+- [魄戸（BL42）](https://www.haritaro.jp/tsubo/bl42)
+- [膏肓（BL43）](https://www.haritaro.jp/tsubo/bl43)
+- [神堂（BL44）](https://www.haritaro.jp/tsubo/bl44)
+- [譩譆（BL45）](https://www.haritaro.jp/tsubo/bl45)
+- [膈関（BL46）](https://www.haritaro.jp/tsubo/bl46)
+- [魂門（BL47）](https://www.haritaro.jp/tsubo/bl47)
+- [陽綱（BL48）](https://www.haritaro.jp/tsubo/bl48)
+- [意舎（BL49）](https://www.haritaro.jp/tsubo/bl49)
+- [胃倉（BL50）](https://www.haritaro.jp/tsubo/bl50)
+- [肓門（BL51）](https://www.haritaro.jp/tsubo/bl51)
+- [志室（BL52）](https://www.haritaro.jp/tsubo/bl52)
+- [胞肓（BL53）](https://www.haritaro.jp/tsubo/bl53)
+- [秩辺（BL54）](https://www.haritaro.jp/tsubo/bl54)
+- [合陽（BL55）](https://www.haritaro.jp/tsubo/bl55)
+- [承筋（BL56）](https://www.haritaro.jp/tsubo/bl56)
+- [承山（BL57）](https://www.haritaro.jp/tsubo/bl57)
+- [飛揚（BL58）](https://www.haritaro.jp/tsubo/bl58)
+- [跗陽（BL59）](https://www.haritaro.jp/tsubo/bl59)
+- [崑崙（BL60）](https://www.haritaro.jp/tsubo/bl60)
+- [僕参（BL61）](https://www.haritaro.jp/tsubo/bl61)
+- [申脈（BL62）](https://www.haritaro.jp/tsubo/bl62)
+- [金門（BL63）](https://www.haritaro.jp/tsubo/bl63)
+- [京骨（BL64）](https://www.haritaro.jp/tsubo/bl64)
+- [束骨（BL65）](https://www.haritaro.jp/tsubo/bl65)
+- [足通谷（BL66）](https://www.haritaro.jp/tsubo/bl66)
+- [至陰（BL67）](https://www.haritaro.jp/tsubo/bl67)
+
+#### 足の少陰腎経（27穴）
+- [湧泉（KI1）](https://www.haritaro.jp/tsubo/ki1)
+- [然谷（KI2）](https://www.haritaro.jp/tsubo/ki2)
+- [太谿（KI3）](https://www.haritaro.jp/tsubo/ki3)
+- [大鍾（KI4）](https://www.haritaro.jp/tsubo/ki4)
+- [水泉（KI5）](https://www.haritaro.jp/tsubo/ki5)
+- [照海（KI6）](https://www.haritaro.jp/tsubo/ki6)
+- [復溜（KI7）](https://www.haritaro.jp/tsubo/ki7)
+- [交信（KI8）](https://www.haritaro.jp/tsubo/ki8)
+- [築賓（KI9）](https://www.haritaro.jp/tsubo/ki9)
+- [陰谷（KI10）](https://www.haritaro.jp/tsubo/ki10)
+- [横骨（KI11）](https://www.haritaro.jp/tsubo/ki11)
+- [大赫（KI12）](https://www.haritaro.jp/tsubo/ki12)
+- [気穴（KI13）](https://www.haritaro.jp/tsubo/ki13)
+- [四満（KI14）](https://www.haritaro.jp/tsubo/ki14)
+- [中注（KI15）](https://www.haritaro.jp/tsubo/ki15)
+- [肓兪（KI16）](https://www.haritaro.jp/tsubo/ki16)
+- [商曲（KI17）](https://www.haritaro.jp/tsubo/ki17)
+- [石関（KI18）](https://www.haritaro.jp/tsubo/ki18)
+- [陰都（KI19）](https://www.haritaro.jp/tsubo/ki19)
+- [腹通谷（KI20）](https://www.haritaro.jp/tsubo/ki20)
+- [幽門（KI21）](https://www.haritaro.jp/tsubo/ki21)
+- [歩廊（KI22）](https://www.haritaro.jp/tsubo/ki22)
+- [神封（KI23）](https://www.haritaro.jp/tsubo/ki23)
+- [霊墟（KI24）](https://www.haritaro.jp/tsubo/ki24)
+- [神蔵（KI25）](https://www.haritaro.jp/tsubo/ki25)
+- [彧中（KI26）](https://www.haritaro.jp/tsubo/ki26)
+- [兪府（KI27）](https://www.haritaro.jp/tsubo/ki27)
+
+#### 手の厥陰心包経（9穴）
+- [天池（PC1）](https://www.haritaro.jp/tsubo/pc1)
+- [天泉（PC2）](https://www.haritaro.jp/tsubo/pc2)
+- [曲沢（PC3）](https://www.haritaro.jp/tsubo/pc3)
+- [郄門（PC4）](https://www.haritaro.jp/tsubo/pc4)
+- [間使（PC5）](https://www.haritaro.jp/tsubo/pc5)
+- [内関（PC6）](https://www.haritaro.jp/tsubo/pc6)
+- [大陵（PC7）](https://www.haritaro.jp/tsubo/pc7)
+- [労宮（PC8）](https://www.haritaro.jp/tsubo/pc8)
+- [中衝（PC9）](https://www.haritaro.jp/tsubo/pc9)
+
+#### 手の少陽三焦経（23穴）
+- [関衝（TE1）](https://www.haritaro.jp/tsubo/te1)
+- [液門（TE2）](https://www.haritaro.jp/tsubo/te2)
+- [中渚（TE3）](https://www.haritaro.jp/tsubo/te3)
+- [陽池（TE4）](https://www.haritaro.jp/tsubo/te4)
+- [外関（TE5）](https://www.haritaro.jp/tsubo/te5)
+- [支溝（TE6）](https://www.haritaro.jp/tsubo/te6)
+- [会宗（TE7）](https://www.haritaro.jp/tsubo/te7)
+- [三陽絡（TE8）](https://www.haritaro.jp/tsubo/te8)
+- [四瀆（TE9）](https://www.haritaro.jp/tsubo/te9)
+- [天井（TE10）](https://www.haritaro.jp/tsubo/te10)
+- [清冷淵（TE11）](https://www.haritaro.jp/tsubo/te11)
+- [消濼（TE12）](https://www.haritaro.jp/tsubo/te12)
+- [臑会（TE13）](https://www.haritaro.jp/tsubo/te13)
+- [肩髎（TE14）](https://www.haritaro.jp/tsubo/te14)
+- [天髎（TE15）](https://www.haritaro.jp/tsubo/te15)
+- [天牖（TE16）](https://www.haritaro.jp/tsubo/te16)
+- [翳風（TE17）](https://www.haritaro.jp/tsubo/te17)
+- [瘈脈（TE18）](https://www.haritaro.jp/tsubo/te18)
+- [顱息（TE19）](https://www.haritaro.jp/tsubo/te19)
+- [角孫（TE20）](https://www.haritaro.jp/tsubo/te20)
+- [耳門（TE21）](https://www.haritaro.jp/tsubo/te21)
+- [和髎（TE22）](https://www.haritaro.jp/tsubo/te22)
+- [糸竹空（TE23）](https://www.haritaro.jp/tsubo/te23)
+
+#### 足の少陽胆経（44穴）
+- [瞳子髎（GB1）](https://www.haritaro.jp/tsubo/gb1)
+- [聴会（GB2）](https://www.haritaro.jp/tsubo/gb2)
+- [上関（GB3）](https://www.haritaro.jp/tsubo/gb3)
+- [頷厭（GB4）](https://www.haritaro.jp/tsubo/gb4)
+- [懸顱（GB5）](https://www.haritaro.jp/tsubo/gb5)
+- [懸厘（GB6）](https://www.haritaro.jp/tsubo/gb6)
+- [曲鬢（GB7）](https://www.haritaro.jp/tsubo/gb7)
+- [率谷（GB8）](https://www.haritaro.jp/tsubo/gb8)
+- [天衝（GB9）](https://www.haritaro.jp/tsubo/gb9)
+- [浮白（GB10）](https://www.haritaro.jp/tsubo/gb10)
+- [頭竅陰（GB11）](https://www.haritaro.jp/tsubo/gb11)
+- [完骨（GB12）](https://www.haritaro.jp/tsubo/gb12)
+- [本神（GB13）](https://www.haritaro.jp/tsubo/gb13)
+- [陽白（GB14）](https://www.haritaro.jp/tsubo/gb14)
+- [頭臨泣（GB15）](https://www.haritaro.jp/tsubo/gb15)
+- [目窓（GB16）](https://www.haritaro.jp/tsubo/gb16)
+- [正営（GB17）](https://www.haritaro.jp/tsubo/gb17)
+- [承霊（GB18）](https://www.haritaro.jp/tsubo/gb18)
+- [脳空（GB19）](https://www.haritaro.jp/tsubo/gb19)
+- [風池（GB20）](https://www.haritaro.jp/tsubo/gb20)
+- [肩井（GB21）](https://www.haritaro.jp/tsubo/gb21)
+- [淵腋（GB22）](https://www.haritaro.jp/tsubo/gb22)
+- [輒筋（GB23）](https://www.haritaro.jp/tsubo/gb23)
+- [日月（GB24）](https://www.haritaro.jp/tsubo/gb24)
+- [京門（GB25）](https://www.haritaro.jp/tsubo/gb25)
+- [帯脈（GB26）](https://www.haritaro.jp/tsubo/gb26)
+- [五枢（GB27）](https://www.haritaro.jp/tsubo/gb27)
+- [維道（GB28）](https://www.haritaro.jp/tsubo/gb28)
+- [居髎（GB29）](https://www.haritaro.jp/tsubo/gb29)
+- [環跳（GB30）](https://www.haritaro.jp/tsubo/gb30)
+- [風市（GB31）](https://www.haritaro.jp/tsubo/gb31)
+- [中涜（GB32）](https://www.haritaro.jp/tsubo/gb32)
+- [膝陽関（GB33）](https://www.haritaro.jp/tsubo/gb33)
+- [陽陵泉（GB34）](https://www.haritaro.jp/tsubo/gb34)
+- [陽交（GB35）](https://www.haritaro.jp/tsubo/gb35)
+- [外丘（GB36）](https://www.haritaro.jp/tsubo/gb36)
+- [光明（GB37）](https://www.haritaro.jp/tsubo/gb37)
+- [陽輔（GB38）](https://www.haritaro.jp/tsubo/gb38)
+- [懸鐘（GB39）](https://www.haritaro.jp/tsubo/gb39)
+- [丘墟（GB40）](https://www.haritaro.jp/tsubo/gb40)
+- [足臨泣（GB41）](https://www.haritaro.jp/tsubo/gb41)
+- [地五会（GB42）](https://www.haritaro.jp/tsubo/gb42)
+- [侠渓（GB43）](https://www.haritaro.jp/tsubo/gb43)
+- [足竅陰（GB44）](https://www.haritaro.jp/tsubo/gb44)
+
+#### 足の厥陰肝経（14穴）
+- [大敦（LR1）](https://www.haritaro.jp/tsubo/lr1)
+- [行間（LR2）](https://www.haritaro.jp/tsubo/lr2)
+- [太衝（LR3）](https://www.haritaro.jp/tsubo/lr3)
+- [中封（LR4）](https://www.haritaro.jp/tsubo/lr4)
+- [蠡溝（LR5）](https://www.haritaro.jp/tsubo/lr5)
+- [中都（LR6）](https://www.haritaro.jp/tsubo/lr6)
+- [膝関（LR7）](https://www.haritaro.jp/tsubo/lr7)
+- [曲泉（LR8）](https://www.haritaro.jp/tsubo/lr8)
+- [陰包（LR9）](https://www.haritaro.jp/tsubo/lr9)
+- [足五里（LR10）](https://www.haritaro.jp/tsubo/lr10)
+- [陰廉（LR11）](https://www.haritaro.jp/tsubo/lr11)
+- [急脈（LR12）](https://www.haritaro.jp/tsubo/lr12)
+- [章門（LR13）](https://www.haritaro.jp/tsubo/lr13)
+- [期門（LR14）](https://www.haritaro.jp/tsubo/lr14)
+
+#### 督脈（28穴）
+- [長強（GV1）](https://www.haritaro.jp/tsubo/gv1)
+- [腰兪（GV2）](https://www.haritaro.jp/tsubo/gv2)
+- [腰陽関（GV3）](https://www.haritaro.jp/tsubo/gv3)
+- [命門（GV4）](https://www.haritaro.jp/tsubo/gv4)
+- [懸枢（GV5）](https://www.haritaro.jp/tsubo/gv5)
+- [脊中（GV6）](https://www.haritaro.jp/tsubo/gv6)
+- [中枢（GV7）](https://www.haritaro.jp/tsubo/gv7)
+- [筋縮（GV8）](https://www.haritaro.jp/tsubo/gv8)
+- [至陽（GV9）](https://www.haritaro.jp/tsubo/gv9)
+- [霊台（GV10）](https://www.haritaro.jp/tsubo/gv10)
+- [神道（GV11）](https://www.haritaro.jp/tsubo/gv11)
+- [身柱（GV12）](https://www.haritaro.jp/tsubo/gv12)
+- [陶道（GV13）](https://www.haritaro.jp/tsubo/gv13)
+- [大椎（GV14）](https://www.haritaro.jp/tsubo/gv14)
+- [瘂門（GV15）](https://www.haritaro.jp/tsubo/gv15)
+- [風府（GV16）](https://www.haritaro.jp/tsubo/gv16)
+- [脳戸（GV17）](https://www.haritaro.jp/tsubo/gv17)
+- [強間（GV18）](https://www.haritaro.jp/tsubo/gv18)
+- [後頂（GV19）](https://www.haritaro.jp/tsubo/gv19)
+- [百会（GV20）](https://www.haritaro.jp/tsubo/gv20)
+- [前頂（GV21）](https://www.haritaro.jp/tsubo/gv21)
+- [顖会（GV22）](https://www.haritaro.jp/tsubo/gv22)
+- [上星（GV23）](https://www.haritaro.jp/tsubo/gv23)
+- [神庭（GV24）](https://www.haritaro.jp/tsubo/gv24)
+- [素髎（GV25）](https://www.haritaro.jp/tsubo/gv25)
+- [水溝（GV26）](https://www.haritaro.jp/tsubo/gv26)
+- [兌端（GV27）](https://www.haritaro.jp/tsubo/gv27)
+- [齦交（GV28）](https://www.haritaro.jp/tsubo/gv28)
+
+#### 任脈（24穴）
+- [会陰（CV1）](https://www.haritaro.jp/tsubo/cv1)
+- [曲骨（CV2）](https://www.haritaro.jp/tsubo/cv2)
+- [中極（CV3）](https://www.haritaro.jp/tsubo/cv3)
+- [関元（CV4）](https://www.haritaro.jp/tsubo/cv4)
+- [石門（CV5）](https://www.haritaro.jp/tsubo/cv5)
+- [気海（CV6）](https://www.haritaro.jp/tsubo/cv6)
+- [陰交（CV7）](https://www.haritaro.jp/tsubo/cv7)
+- [神闕（CV8）](https://www.haritaro.jp/tsubo/cv8)
+- [水分（CV9）](https://www.haritaro.jp/tsubo/cv9)
+- [下脘（CV10）](https://www.haritaro.jp/tsubo/cv10)
+- [建里（CV11）](https://www.haritaro.jp/tsubo/cv11)
+- [中脘（CV12）](https://www.haritaro.jp/tsubo/cv12)
+- [上脘（CV13）](https://www.haritaro.jp/tsubo/cv13)
+- [巨闕（CV14）](https://www.haritaro.jp/tsubo/cv14)
+- [鳩尾（CV15）](https://www.haritaro.jp/tsubo/cv15)
+- [中庭（CV16）](https://www.haritaro.jp/tsubo/cv16)
+- [膻中（CV17）](https://www.haritaro.jp/tsubo/cv17)
+- [玉堂（CV18）](https://www.haritaro.jp/tsubo/cv18)
+- [紫宮（CV19）](https://www.haritaro.jp/tsubo/cv19)
+- [華蓋（CV20）](https://www.haritaro.jp/tsubo/cv20)
+- [璇璣（CV21）](https://www.haritaro.jp/tsubo/cv21)
+- [天突（CV22）](https://www.haritaro.jp/tsubo/cv22)
+- [廉泉（CV23）](https://www.haritaro.jp/tsubo/cv23)
+- [承漿（CV24）](https://www.haritaro.jp/tsubo/cv24)
