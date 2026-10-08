@@ -4,12 +4,6 @@ import React, { useState } from "react";
 import {
   Sparkles,
   GitBranch,
-  CheckCircle2,
-  HelpCircle,
-  AlertTriangle,
-  RotateCcw,
-  ArrowRight,
-  Sliders,
 } from "lucide-react";
 
 interface DecisionTreeItem {
@@ -67,7 +61,7 @@ const TREE_ITEMS: DecisionTreeItem[] = [
       badge: "bg-[#D32F2F] text-white",
     },
     clinicalInterpretation: "虚実の取り違え（実証に補法、虚証に強瀉法）、または寒熱の誤診（真寒仮熱への冷やし）。システムに逆行する介入を加えた状態。",
-    actionProtocol: "小手先の微修正を諦め、自分のプライドを捨てて最初の問診（第1章の漏斗）から全面的にリセットする。",
+    actionProtocol: "最初の問診へ戻り、見落とした情報と前提を確認して、評価と方針を組み直す。",
     nextPrescription: "主訴の質感翻訳を再点検し、八綱座標（表裏・寒熱・虚実）をゼロから再構築して全く新しい治則を宣言する。",
   },
 ];

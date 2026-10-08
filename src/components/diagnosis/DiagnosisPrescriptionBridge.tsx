@@ -4,13 +4,7 @@ import React, { useState } from "react";
 import {
   Sparkles,
   ArrowRight,
-  FileCode2,
-  Sliders,
-  CheckCircle2,
   BookOpen,
-  Send,
-  Workflow,
-  Zap,
 } from "lucide-react";
 
 interface Props {
@@ -213,7 +207,7 @@ export default function DiagnosisPrescriptionBridge({ onNextLecture }: Props) {
           onClick={onNextLecture}
           className="shrink-0 px-5 py-3 rounded-xl bg-[#FFA000] hover:bg-[#FF8F00] text-[#1E3D34] font-bold text-sm shadow-md transition-all flex items-center gap-2 hover:translate-x-0.5"
         >
-          <span>第7講へ進む</span>
+          <span>治則・治法へ進む</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>

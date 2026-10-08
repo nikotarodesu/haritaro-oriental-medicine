@@ -20,6 +20,11 @@ function load(candidate) {
   const filename = resolveSource(candidate);
   assert(filename, 'Module exists: ' + candidate);
   if (cache.has(filename)) return cache.get(filename);
+  if (filename.endsWith('.json')) {
+    const data = JSON.parse(fs.readFileSync(filename, 'utf8'));
+    cache.set(filename, data);
+    return data;
+  }
   const exports = {};
   cache.set(filename, exports);
   const source = ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
@@ -39,6 +44,9 @@ function load(candidate) {
 
 const { CURRICULUM_DATA, PLANNED_UNPUBLISHED_LESSONS, getCurriculumStats } = load('src/data/curriculumData');
 const { getCurriculumIndexCatalog } = load('src/data/curriculumIndexCatalog');
+const { CURRICULUM_CHAPTERS_META } = load('src/data/curriculumOutline');
+const { LEARNING_COURSES } = load('src/data/learningCourses');
+const { COURSE_MINI_CASES } = load('src/data/courseMiniCases');
 const lectures = CURRICULUM_DATA.flatMap(stage => stage.lectures);
 const catalog = getCurriculumIndexCatalog();
 const same = (actual, expected, message) => assert.equal(JSON.stringify(actual), JSON.stringify(expected), message);
@@ -54,6 +62,14 @@ for (const [index, preview] of catalog.lectures.entries()) {
   same(preview.whatYouWillLearn, { topics: lecture.whatYouWillLearn.topics, canDo: lecture.whatYouWillLearn.canDo }, lecture.id + ': visible objectives preserved');
 }
 same(catalog.plannedLessons, PLANNED_UNPUBLISHED_LESSONS, 'Planned lecture cards remain available');
+same(catalog.chapters.map(chapter => chapter.seriesId), CURRICULUM_CHAPTERS_META.map(chapter => chapter.seriesId), 'Chapter cards follow the shared teaching order');
+for (const chapter of catalog.chapters) {
+  const currentLectures = lectures.filter(lecture => lecture.seriesId === chapter.seriesId && lecture.isPublished !== false);
+  same(chapter.lectureIds, currentLectures.map(lecture => lecture.id), chapter.id + ': progress uses the current public IDs');
+  assert.equal(chapter.firstLectureId, currentLectures[0]?.id);
+  assert.equal(chapter.stageTitle, currentLectures[0]?.stageTitle);
+  assert.equal(chapter.courseSlug, LEARNING_COURSES.find(course => course.seriesId === chapter.seriesId)?.slug);
+}
 assert(!/"(?:contentMarkdown|references|keyPoints|nationalExamPoints|integrativeMedicine)"\s*:/.test(JSON.stringify(catalog)), 'Large lecture-only fields must not cross the index boundary');
 assert(Buffer.byteLength(JSON.stringify(catalog)) < Buffer.byteLength(JSON.stringify(CURRICULUM_DATA)) / 4, 'The index receives a substantially smaller catalog');
 
@@ -93,7 +109,7 @@ function eagerDependencies(entry, visited = new Set()) {
   }
   return visited;
 }
-for (const entry of ['src/components/curriculum/CurriculumIndexClient.tsx', 'src/components/kokushi/KokushiDashboard.tsx', 'src/contexts/CurriculumProgressContext.tsx']) {
+for (const entry of ['src/components/curriculum/CurriculumIndexClient.tsx', 'src/components/kokushi/KokushiDashboard.tsx', 'src/contexts/CurriculumProgressContext.tsx', 'src/components/practice/PracticeGrandMasterMap.tsx']) {
   const graph = eagerDependencies(entry);
   assert(!graph.has(resolveSource('src/data/curriculumData')), entry + ': the initial client dependency graph must not import every lecture body');
   assert(!graph.has(resolveSource('src/data/curriculumIndexCatalog')), entry + ': the catalog builder stays on the server');
@@ -105,6 +121,8 @@ assert.match(serverPage, /catalog=\{getCurriculumIndexCatalog\(\)\}/, 'The serve
 let resumeId = null;
 const stats = getCurriculumStats();
 mocks.set('next/link', ({ href, children, ...props }) => React.createElement('a', { href, ...props }, children));
+mocks.set('next/navigation', { useRouter: () => ({ push() {} }) });
+mocks.set('@/components/learning/LearningSyncStatus', () => null);
 mocks.set('@/components/learning/LearningReviewPanel', () => null);
 mocks.set('@/components/LearningMap', { LearningMap: () => null });
 mocks.set('@/components/IncorrectQuestionsModal', { IncorrectQuestionsModal: () => null });
@@ -120,10 +138,86 @@ const renderIndex = () => renderToStaticMarkup(React.createElement(Index, { cata
 let html = renderIndex();
 assert(html.includes(`href="/curriculum/${lectures[0].id}"`), 'The first lecture link remains visible');
 assert(html.includes('受講完了（クリックで解除）'), 'Completion toggle state remains visible');
+assert(html.includes(`course-mini-case-${catalog.chapters[0].seriesId}`), 'The actual index includes the first chapter short exercise');
+assert(html.includes('解答例を読む'), 'The actual short exercise is rendered, not replaced by a placeholder');
+for (const anchor of html.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)) {
+  assert(!/<button\b/.test(anchor[0]), 'Completion controls are separate from lecture links');
+}
 resumeId = lectures.at(-1).id;
 html = renderIndex();
 assert(html.includes(`href="/curriculum/${resumeId}"`), 'Resume supports the last lecture in another chapter');
 assert(html.includes(lectures.at(-1).title), 'Resume shows the current lecture title');
+
+// Render the real shared exercise: question, native disclosure and theory-return context.
+const MiniCase = load('src/components/learning/CourseMiniCase').default;
+for (const chapter of catalog.chapters) {
+  const course = LEARNING_COURSES.find(item => item.seriesId === chapter.seriesId);
+  const example = COURSE_MINI_CASES[chapter.seriesId];
+  const markup = renderToStaticMarkup(React.createElement(MiniCase, { seriesId: chapter.seriesId }));
+  assert(markup.includes(`id="course-mini-case-${chapter.seriesId}"`));
+  assert(markup.includes(example.question), chapter.id + ': a concrete question is shown');
+  assert(/<details\b[\s\S]*?<summary\b[^>]*>解答例を読む<\/summary>/.test(markup), chapter.id + ': answer can be opened with native keyboard-accessible disclosure');
+  assert(markup.includes(example.answer), chapter.id + ': answer is present in server HTML');
+  const links = [...markup.matchAll(/href="([^"]+)"/g)].map(match => match[1].replaceAll('&amp;', '&'));
+  const theory = new URL(links.find(href => href.startsWith('/curriculum/')), 'https://www.haritaro.jp');
+  assert.equal(theory.pathname, '/curriculum/' + example.lectureId);
+  assert.equal(theory.searchParams.get('course'), course.slug);
+  assert.equal(theory.searchParams.get('miniCase'), course.seriesId);
+  assert(course.steps.some(step => step.lectureId === example.lectureId), chapter.id + ': reader can resolve the same course and return to this example');
+  const laterStage = ['stage-2', 'stage-3'].includes(chapter.stageId);
+  assert.equal(links.includes('/simulator#case-training'), laterStage, chapter.id + ': full staged cases are an advanced step');
+  assert(!/<form\b|<input\b|<button\b/.test(markup), chapter.id + ': reflection is not presented as a graded or saved attempt');
+}
+assert.equal(renderToStaticMarkup(React.createElement(MiniCase, { seriesId: 'unknown' })), '', 'Unknown example IDs render no misleading links');
+const nestedExample = renderToStaticMarkup(React.createElement(MiniCase, { seriesId: 'intro', headingLevel: 3 }));
+assert(nestedExample.includes('<h3 id="course-mini-case-intro-title"'), 'Chapter exercise headings preserve the document hierarchy');
+
+// The legacy diagram token remains renderable, without claiming unverified completion.
+const ReflectionMap = load('src/components/practice/PracticeGrandMasterMap').default;
+const reflection = renderToStaticMarkup(React.createElement(ReflectionMap));
+assert(reflection.includes(`全${CURRICULUM_CHAPTERS_META.length}章のつながり`));
+assert(reflection.includes(`全${lectures.length}講`));
+assert.equal([...reflection.matchAll(/<button\b/g)].length, CURRICULUM_CHAPTERS_META.length, 'Every current chapter has a reflection selector');
+assert.equal([...reflection.matchAll(/aria-pressed="true"/g)].length, 1, 'One chapter is visibly and accessibly selected');
+let previousChapter = -1;
+for (const chapter of CURRICULUM_CHAPTERS_META) {
+  const position = reflection.indexOf(chapter.shortTitle);
+  assert(position > previousChapter, chapter.id + ': reflection selectors follow the shared teaching order');
+  previousChapter = position;
+}
+assert(reflection.includes(`/curriculum#chapter-${CURRICULUM_CHAPTERS_META.at(-1).id}`), 'The selected chapter links to the same index anchor');
+assert(reflection.includes('/learn/review'));
+assert(reflection.includes('学んだ内容を振り返る'));
+assert(!/全8|公式修了認定|完全走破|CURRICULUM COMPLETE/.test(reflection), 'Rendering a diagram never grants an unverified completion or clinical qualification');
+
+// Render only the real lecture reader, so common layout/Footer destinations
+// cannot be mistaken for a premature clinical CTA in the lesson itself.
+mocks.set('next/navigation', { useRouter: () => ({ push() {} }), useSearchParams: () => new URLSearchParams() });
+mocks.set('@/components/FontSizeControl', () => null);
+mocks.set('@/components/CurriculumDiagram', () => null);
+mocks.set('@/components/EastWestTermSwitch', () => null);
+mocks.set('@/components/learning/ReviewQuestionCard', () => null);
+mocks.set('@/components/learning/QuestionEvidence', () => null);
+mocks.set('@/contexts/CurriculumProgressContext', { useCurriculumProgress: () => ({
+  isMounted: true, completedLectures: {}, quizResults: {}, toggleLectureCompleted() {}, recordVisitedLecture() {},
+  saveQuizResult() {}, clearQuizResult() {}, setLectureCompleted() {},
+}) });
+const Reader = load('src/components/curriculum/CurriculumLectureReader').default;
+for (const chapter of catalog.chapters) {
+  const lecture = lectures.find(item => item.id === chapter.firstLectureId);
+  const markup = renderToStaticMarkup(React.createElement(Reader, { lecture, lectureNavigation: catalog.lectures }));
+  const clinicalStage = ['stage-2', 'stage-3'].includes(chapter.stageId);
+  if (clinicalStage) {
+    assert(markup.includes('aria-label="この講義を実践につなぐ"'), chapter.id + ': later lectures keep the real clinical application guide');
+    assert(markup.includes('href="/simulator#case-training"') && markup.includes('6段階の症例演習で振り返る'));
+    assert(markup.includes('配穴設計ツール') && markup.includes('この講義を臨床ノートに記録'));
+  } else {
+    assert(!markup.includes('aria-label="この講義を実践につなぐ"'), chapter.id + ': early lectures do not render clinical application prompts');
+    assert(markup.includes('学習ガイドを見る') && markup.includes('aria-label="基礎を振り返る"'));
+    assert(markup.includes('href="/glossary"') && markup.includes('用語辞典で振り返る'));
+    assert(!markup.includes('配穴設計ツール') && !markup.includes('この講義を臨床ノートに記録') && !markup.includes('6段階の症例演習で振り返る'));
+  }
+}
 
 if (process.argv.includes('--bundles')) {
   const baseline = JSON.parse(fs.readFileSync(path.join(root, 'scripts/fixtures/curriculum-bundle-baseline.json'), 'utf8'));

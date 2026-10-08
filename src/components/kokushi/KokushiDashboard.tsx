@@ -5,31 +5,32 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { 
   GraduationCap, 
-  Calendar, 
   Sparkles, 
-  Clock, 
   CheckCircle2, 
   AlertCircle, 
-  RotateCcw, 
   BookOpen, 
   ArrowRight, 
   ShieldAlert, 
   Layers, 
   FileText, 
   Target, 
-  Award, 
   Zap, 
   Compass, 
   ChevronRight,
-  Flame,
   Check,
   Printer,
   SlidersHorizontal
 } from "lucide-react";
-import { useCurriculumProgress, QuizResultRecord } from "@/contexts/CurriculumProgressContext";
+import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
 import { CURRICULUM_QUIZZES, QuizQuestionItem, LessonQuizGroup } from "@/data/curriculumQuizzes";
-import { KOKUSHI_PAST_EXAMS, KokushiPastExamQuestion } from "@/data/kokushiPastExams";
+import { KOKUSHI_PAST_EXAMS } from "@/data/kokushiPastExams";
 import LearningReviewPanel from "@/components/learning/LearningReviewPanel";
+import { CURRICULUM_CHAPTERS_META, CURRICULUM_TOTAL_LESSONS } from "@/data/curriculumOutline";
+
+function chapterSummary(seriesIds: string[]) {
+  const chapters = CURRICULUM_CHAPTERS_META.filter(chapter => seriesIds.includes(chapter.seriesId));
+  return `第${chapters.map(chapter => chapter.chapterNumber).join("・")}章（${chapters.reduce((count, chapter) => count + chapter.plannedLessons, 0)}講義）`;
+}
 import QuestionEvidence from "@/components/learning/QuestionEvidence";
 import { questionRevision, shuffledIndices } from "@/utils/learningReview";
 import AcupointQuickModal from "@/components/tsubo/AcupointQuickModal";
@@ -41,12 +42,10 @@ export default function KokushiDashboard() {
   const targetExamId = searchParams.get("examId");
 
   const { 
-    isMounted, 
     quizResults, 
     saveQuizResult, 
     getIncorrectQuestions, 
-    totalCompleted, 
-    totalPublished 
+    totalCompleted,
   } = useCurriculumProgress();
 
   // 今日の日付文字列（YYYY-MM-DD）
@@ -176,7 +175,7 @@ export default function KokushiDashboard() {
       {
         id: "yinyang-wuxing",
         title: "陰陽五行論・基本人体観",
-        subtitle: "第1〜2講（全14講義）",
+        subtitle: chapterSummary(["yinyang", "wuxing"]),
         targetLectureId: "lecture-yinyang-1",
         importance: "必須・毎年出題",
         badgeColor: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
@@ -185,7 +184,7 @@ export default function KokushiDashboard() {
       {
         id: "qixueshui",
         title: "気血津液・病理動態",
-        subtitle: "第3講（全7講義）",
+        subtitle: chapterSummary(["qiblood", "pathomechanism"]),
         targetLectureId: "lecture-qiblood-1",
         importance: "最頻出・臨床直結",
         badgeColor: "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
@@ -194,8 +193,8 @@ export default function KokushiDashboard() {
       {
         id: "zangfu",
         title: "蔵象学説・臓腑弁証",
-        subtitle: "第4講（全10講義）",
-        targetLectureId: "lecture-lifedynamics-6",
+        subtitle: chapterSummary(["zangfu", "lifedynamics"]),
+        targetLectureId: "lecture-zangfu-1",
         importance: "状況設定問題の核心",
         badgeColor: "bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300",
         description: "五臓六腑の主宰機能、臓腑相関（木乗土、心腎不交等）、実証と虚証の鑑別。",
@@ -203,7 +202,7 @@ export default function KokushiDashboard() {
       {
         id: "byoin",
         title: "病因病機・外感内傷",
-        subtitle: "第5講（全7講義）",
+        subtitle: chapterSummary(["pathomechanism"]),
         targetLectureId: "lecture-pathomechanism-1",
         importance: "鑑別の基礎",
         badgeColor: "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300",
@@ -212,7 +211,7 @@ export default function KokushiDashboard() {
       {
         id: "shishin",
         title: "四診・弁証論治",
-        subtitle: "第6講（全8講義）",
+        subtitle: chapterSummary(["diagnosis"]),
         targetLectureId: "lecture-diagnosis-1",
         importance: "毎年連問出題",
         badgeColor: "bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300",
@@ -221,7 +220,7 @@ export default function KokushiDashboard() {
       {
         id: "keiraku-acupoints",
         title: "十四経脈・要穴・配穴法",
-        subtitle: "第7講（全8講義）",
+        subtitle: chapterSummary(["meridians", "treatment"]),
         targetLectureId: "lecture-treatment-1",
         importance: "配点最大・暗記必須",
         badgeColor: "bg-orange-100 text-orange-800 dark:bg-orange-950 dark:text-orange-300",
@@ -280,7 +279,7 @@ export default function KokushiDashboard() {
               東洋医学・経絡経穴で<br className="hidden sm:inline" />復習と症例をつなぐ学習ルート
             </h2>
             <p className="text-xs sm:text-sm text-[#D1E0D9] leading-relaxed">
-              「全81講義の理論 ⇄ 全361穴の辞典 ⇄ 症例の臨床推論」を自在に往復。回答日と連続正解数に基づく間隔反復で、本番まで知識を強固に定着させます。
+              「体系講義の理論 ⇄ 全361穴の辞典 ⇄ 症例の臨床推論」を自在に往復。回答日と連続正解数に基づく間隔反復で、本番まで知識を強固に定着させます。
             </p>
           </div>
 
@@ -288,7 +287,7 @@ export default function KokushiDashboard() {
           <div className="pt-2 flex flex-wrap items-center gap-4 text-xs text-[#D1E0D9]">
             <div className="flex items-center gap-1.5">
               <CheckCircle2 className="w-4 h-4 text-[#74BA9E]" />
-              <span>全81レッスン中 <strong>{totalCompleted}</strong> 完了</span>
+              <span>全{CURRICULUM_TOTAL_LESSONS}講義中 <strong>{totalCompleted}</strong> 完了</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Target className="w-4 h-4 text-[#E6C387]" />
@@ -940,7 +939,7 @@ export default function KokushiDashboard() {
                 単元別・弱点克服カリキュラム
               </h2>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
-                苦手な分野をクリックして、全81講義の体系テキストへ直接復習に飛べます。
+                苦手な分野をクリックして、体系講義の体系テキストへ直接復習に飛べます。
               </p>
             </div>
           </div>

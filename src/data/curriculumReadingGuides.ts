@@ -73,8 +73,8 @@ export const CURRICULUM_READING_INSERTS: Readonly<Record<string, ReadingInsert[]
   ],
   "lecture-wuxing-1": [
     {
-      afterHeading: "3. 陰陽論と五行論の相補関係",
-      afterParagraph: 2,
+      afterHeading: "第2節：陰陽・臓腑との学習上の関係",
+      afterParagraph: 1,
       figure: {
         id: "wuxing-two-viewpoints",
         title: "陰陽と五行で、見る観点を分ける",
@@ -89,8 +89,8 @@ export const CURRICULUM_READING_INSERTS: Readonly<Record<string, ReadingInsert[]
   ],
   "lecture-wuxing-3": [
     {
-      afterHeading: "第2節：相剋関係（暴走を抑えるブレーキ機構）",
-      afterParagraph: 2,
+      afterHeading: "第2節：相剋と関係の向き",
+      afterParagraph: 1,
       figure: {
         id: "wuxing-generation-restraint",
         title: "相生と相剋は、関係の意味と順序で比べる",
@@ -104,70 +104,135 @@ export const CURRICULUM_READING_INSERTS: Readonly<Record<string, ReadingInsert[]
     },
   ],
   "lecture-qiblood-1": [
-    {
-      afterHeading: "第3節：気虚・気滞・気逆・気陥を区別する",
-      afterParagraph: 2,
-      figure: {
-        id: "qiblood-amount-movement",
-        title: "気の分類を、量と動きに分けて整理する",
-        layout: "compare",
-        items: [
-          { label: "量に注目する", description: "気虚は、気の不足として説明される分類。", icon: "balance" },
-          { label: "動きに注目する", description: "気滞・気逆・気陥は、滞りや動きの向きに注目する分類。", icon: "compass" },
-        ],
-        caption: "本文の用語を区別するための学習図です。症状だけで原因や病名を決めるための判定表ではありません。",
-      },
-    },
-  ],
+  {
+    "afterHeading": "第1節：気・血・津液の基本役割",
+    "afterParagraph": 1,
+    "figure": {
+      "id": "qiblood-basic-roles",
+      "title": "気・血・津液は、役割を分けて読む",
+      "layout": "triad",
+      "items": [
+        {
+          "label": "気",
+          "description": "身体の活動や働きを説明する伝統的な概念。",
+          "icon": "compass"
+        },
+        {
+          "label": "血",
+          "description": "滋養・滋潤という役割を説明する伝統的な概念。",
+          "icon": "book"
+        },
+        {
+          "label": "津液",
+          "description": "潤いを支える体内の水液を説明する伝統的な概念。",
+          "icon": "drop"
+        }
+      ],
+      "caption": "基本用語を整理する学習図です。現代医学の物質・数値・診断との一対一の対応を示しません。"
+    }
+  }
+],
+  "lecture-qiblood-2": [
+  {
+    "afterHeading": "第1節：滋養・滋潤という役割",
+    "afterParagraph": 1,
+    "figure": {
+      "id": "qiblood-blood-basic-functions",
+      "title": "滋養と滋潤を言葉で区別する",
+      "layout": "compare",
+      "items": [
+        {
+          "label": "滋養",
+          "description": "身体を養うという、血の伝統的な役割。",
+          "icon": "book"
+        },
+        {
+          "label": "滋潤",
+          "description": "身体を潤すという、血の伝統的な役割。",
+          "icon": "drop"
+        }
+      ],
+      "caption": "血の基本的な説明を整理する図です。血液検査の項目や病名を示すものではありません。"
+    }
+  }
+],
   "lecture-qiblood-3": [
-    {
-      afterHeading: "導入：水・津液の伝統的な分類を学ぶ",
-      afterParagraph: 3,
-      figure: {
-        id: "qiblood-jin-ye",
-        title: "津と液は、性質に注目して読む",
-        layout: "compare",
-        items: [
-          { label: "津（しん）", description: "本文では、比較的さらさらした性質の水分として説明する。", icon: "drop" },
-          { label: "液（えき）", description: "本文では、比較的濃厚な性質の水分として説明する。", icon: "drop" },
-        ],
-        caption: "伝統的な用語の違いを整理する図です。現代医学の体液区分と一対一に対応する分類ではありません。",
-      },
-    },
-  ],
+  {
+    "afterHeading": "第1節：津と液の区分",
+    "afterParagraph": 1,
+    "figure": {
+      "id": "qiblood-jin-ye",
+      "title": "津と液は、性質に注目して読む",
+      "layout": "compare",
+      "items": [
+        {
+          "label": "津（しん）",
+          "description": "比較的さらさらした性質の水液として説明する。",
+          "icon": "drop"
+        },
+        {
+          "label": "液（えき）",
+          "description": "比較的濃厚な性質の水液として説明する。",
+          "icon": "drop"
+        }
+      ],
+      "caption": "伝統的な用語を整理する図です。現代医学の体液区分と一対一に対応する分類ではありません。"
+    }
+  }
+],
   "lecture-qiblood-4": [
-    {
-      afterHeading: "第2節：現在の状態と長期的な傾向を分ける",
-      afterParagraph: 2,
-      figure: {
-        id: "qiblood-state-tendency",
-        title: "今の状態と、長期的な傾向を分ける",
-        layout: "compare",
-        items: [
-          { label: "今の状態（証）", description: "現在の訴えや所見を、時間の経過とともに整理する。", icon: "eye" },
-          { label: "長期的な傾向（体質）", description: "以前から繰り返している傾向を、現在の変化と分けて整理する。", icon: "book" },
-        ],
-        caption: "本文の二つの観点を区別する図です。体質や診断をこの図だけで確定するものではありません。",
-      },
-    },
-  ],
+  {
+    "afterHeading": "第1節：気と血の関係",
+    "afterParagraph": 1,
+    "figure": {
+      "id": "qiblood-normal-relations",
+      "title": "役割を知ってから、関係を読む",
+      "layout": "compare",
+      "items": [
+        {
+          "label": "気から血を見る",
+          "description": "生成・運行・保持との関わりを、伝統用語で整理する。",
+          "icon": "compass"
+        },
+        {
+          "label": "血から気を見る",
+          "description": "活動を支える滋養との関わりを、伝統用語で整理する。",
+          "icon": "book"
+        }
+      ],
+      "caption": "伝統モデル内の関係です。血管・神経などの医学的な機序や治療効果を示しません。"
+    }
+  }
+],
   "lecture-qiblood-5": [
-    {
-      afterHeading: "第3節：次章「人体機能動態論」へつなぐ",
-      afterParagraph: 1,
-      figure: {
-        id: "qiblood-foundation-viewpoints",
-        title: "三つの基礎理論を、別の観点としてつなぐ",
-        layout: "triad",
-        items: [
-          { label: "陰陽", description: "対になる性質と、比較する基準を整理する。", icon: "balance" },
-          { label: "五行", description: "五つの分類と、要素どうしの関係を整理する。", icon: "leaf" },
-          { label: "気血水", description: "気・血・水の役割と、相互関係を整理する。", icon: "drop" },
-        ],
-        caption: "学習した章を振り返るための整理図です。三つの理論を生体の実測値や医学的な機構と同一視しません。",
-      },
-    },
-  ],
+  {
+    "afterHeading": "第1節：架空例の情報を三つに分ける",
+    "afterParagraph": 1,
+    "figure": {
+      "id": "qiblood-foundation-viewpoints",
+      "title": "一つの例を、事実・解釈・不明点に分ける",
+      "layout": "triad",
+      "items": [
+        {
+          "label": "事実",
+          "description": "教材に書かれた訴えや時間の情報を、そのまま記録する。",
+          "icon": "eye"
+        },
+        {
+          "label": "解釈",
+          "description": "基本用語との関係を、根拠を添えて説明する。",
+          "icon": "book"
+        },
+        {
+          "label": "不明点",
+          "description": "追加で確かめたいことと、まだ決められないことを挙げる。",
+          "icon": "compass"
+        }
+      ],
+      "caption": "架空例で情報を整理するための図です。証名・病名・治法を確定する段階ではありません。"
+    }
+  }
+],
 };
 
 export interface CurriculumReadingQuestion {
@@ -178,30 +243,64 @@ export interface CurriculumReadingQuestion {
 // 質問から既存本文の見出しへ案内する。医学的な説明や本文は追加・変更しない。
 export const CURRICULUM_READING_QUESTIONS: Readonly<Record<string, readonly CurriculumReadingQuestion[]>> = {
   "lecture-wuxing-1": [
-    { question: "五行は何を整理する考え方？", heading: "2. 「五行」という言葉の意味" },
-    { question: "陰陽と五行はどう使い分ける？", heading: "3. 陰陽論と五行論の相補関係" },
+    { question: "五行は何を整理する考え方？", heading: "第1節：木・火・土・金・水という分類" },
+    { question: "陰陽・臓腑と五行はどうつながる？", heading: "第2節：陰陽・臓腑との学習上の関係" },
   ],
   "lecture-wuxing-3": [
-    { question: "相生とはどんな関係？", heading: "第1節：相生関係（生み育てる母子の循環）" },
-    { question: "相剋とはどんな関係？", heading: "第2節：相剋関係（暴走を抑えるブレーキ機構）" },
-    { question: "相乗と相侮はどう違う？", heading: "第4節：平衡の破綻 ― 相乗（そうじょう）と相侮（そうぶ）" },
+    { question: "相生とはどんな関係？", heading: "第1節：相生と母子の関係" },
+    { question: "相剋とはどんな関係？", heading: "第2節：相剋と関係の向き" },
+    { question: "相乗と相侮はどう違う？", heading: "第3節：相乗・相侮は応用の入り口" },
   ],
   "lecture-qiblood-1": [
-    { question: "気の働きはどう分類する？", heading: "第1節：気の5大作用を整理する" },
-    { question: "気虚・気滞・気逆・気陥はどう違う？", heading: "第3節：気虚・気滞・気逆・気陥を区別する" },
-  ],
+  {
+    "question": "気・血・津液はどんな役割？",
+    "heading": "第1節：気・血・津液の基本役割"
+  },
+  {
+    "question": "気の五つの作用を整理したい",
+    "heading": "第2節：気の五つの作用"
+  }
+],
+  "lecture-qiblood-2": [
+  {
+    "question": "血の滋養・滋潤とは？",
+    "heading": "第1節：滋養・滋潤という役割"
+  },
+  {
+    "question": "血の生成や病態はどこで学ぶ？",
+    "heading": "第3節：生成と病態は後の章で学ぶ"
+  }
+],
   "lecture-qiblood-3": [
-    { question: "津と液はどう違う？", heading: "導入：水・津液の伝統的な分類を学ぶ" },
-    { question: "津液の生成・循環・排泄をどう整理する？", heading: "第1節：津液と臓腑の伝統的な役割" },
-  ],
+  {
+    "question": "津と液はどう違う？",
+    "heading": "第1節：津と液の区分"
+  },
+  {
+    "question": "伝統的な潤いと医学的な水分評価を区別したい",
+    "heading": "第3節：水分量の評価と分ける"
+  }
+],
   "lecture-qiblood-4": [
-    { question: "気・血・水の関係を振り返りたい", heading: "第1節：気・血・水の3大相互関係" },
-    { question: "現在の状態と体質はどう分ける？", heading: "第2節：現在の状態と長期的な傾向を分ける" },
-  ],
+  {
+    "question": "気と血の正常な関係を振り返りたい",
+    "heading": "第1節：気と血の関係"
+  },
+  {
+    "question": "関係の説明と医学的な機序はどう分ける？",
+    "heading": "第3節：関係の説明と医学的な機序を分ける"
+  }
+],
   "lecture-qiblood-5": [
-    { question: "気血水の組み合わせを復習したい", heading: "第1節：4つの複合する分類と治法の用語" },
-    { question: "陰陽・五行・気血水をつなげて振り返りたい", heading: "第3節：次章「人体機能動態論」へつなぐ" },
-  ],
+  {
+    "question": "学習例の事実と解釈を分けたい",
+    "heading": "第1節：架空例の情報を三つに分ける"
+  },
+  {
+    "question": "次に臓腑を学ぶ理由は？",
+    "heading": "第3節：次章「臓腑論」への接続"
+  }
+],
 };
 
 export function getCurriculumReadingInserts(lectureId: string): ReadingInsert[] {

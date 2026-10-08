@@ -96,7 +96,7 @@ export default function AboutPage() {
                 <ul className="text-xs space-y-1.5 text-[#404743] dark:text-[#C5D2DB]">
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#1E2D3D] dark:text-[#7BAAD8] shrink-0">1.</span>
-                    <span><Link href="/curriculum" className="font-semibold underline hover:text-[#1E2D3D]">カリキュラム全81講義</Link>を第1章から順に体系理解</span>
+                    <span><Link href="/curriculum" className="font-semibold underline hover:text-[#1E2D3D]">カリキュラム全講義</Link>を第1章から順に体系理解</span>
                   </li>
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#1E2D3D] dark:text-[#7BAAD8] shrink-0">2.</span>

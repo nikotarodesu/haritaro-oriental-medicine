@@ -1,11 +1,14 @@
 "use client";
 
 import LearningReviewPanel from "@/components/learning/LearningReviewPanel";
+import CourseMiniCase from "@/components/learning/CourseMiniCase";
+import LearningSyncStatus from "@/components/learning/LearningSyncStatus";
 import type { ArticlePreview } from "@/data/articleData";
 import type { CurriculumIndexCatalog } from "@/types/curriculumIndexCatalog";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
 import { LearningMap } from "@/components/LearningMap";
 import { IncorrectQuestionsModal } from "@/components/IncorrectQuestionsModal";
@@ -17,136 +20,19 @@ import {
   Sparkles,
   Award,
   Lock,
-  Compass,
-  Droplets,
-  Search,
-  Target,
   PlayCircle,
   AlertCircle,
   Map,
   Check,
   ChevronDown,
   ChevronUp,
-  HeartPulse,
-  Flame,
 } from "lucide-react";
-
-interface ChapterDef {
-  chapterNumber: number;
-  id: string;
-  seriesId: string;
-  title: string;
-  shortTitle?: string;
-  lead: string;
-  description: string;
-  plannedLessons: number;
-  icon: typeof Flame;
-  progressKey: string;
-}
-
-const CHAPTER_DEFINITIONS: ChapterDef[] = [
-  {
-    chapterNumber: 1,
-    id: "yin-yang",
-    seriesId: "yinyang",
-    title: "第1章 陰陽論",
-    shortTitle: "陰陽論",
-    lead: "生命のバランスを読み解く、東洋医学の基礎の基礎",
-    description: "ものごとを2つの視点で比べ、身体の偏りや変化の関係性を理解する最初の基本講義です。",
-    plannedLessons: 8,
-    icon: Flame,
-    progressKey: "yin-yang",
-  },
-  {
-    chapterNumber: 2,
-    id: "five-elements",
-    seriesId: "wuxing",
-    title: "第2章 五行論",
-    shortTitle: "五行論",
-    lead: "内臓のつながりと循環を解き明かす五行の仕組み",
-    description: "木・火・土・金・水の性質と相生・相剋の関係から、五臓の連動や感情・体調への影響を整理して学びます。",
-    plannedLessons: 8,
-    icon: Compass,
-    progressKey: "wuxing",
-  },
-  {
-    chapterNumber: 3,
-    id: "qi-blood-water",
-    seriesId: "qiblood",
-    title: "第3章 気血水理論",
-    shortTitle: "気血水理論",
-    lead: "身体を満たす気・血・水の働きと不調のメカニズム",
-    description: "エネルギー（気）・栄養と血流（血）・体液（水）の3要素がどう作られ巡るのか、不足や滞りのサインを学びます。",
-    plannedLessons: 5,
-    icon: Droplets,
-    progressKey: "qiblood",
-  },
-  {
-    chapterNumber: 4,
-    id: "vital-function",
-    seriesId: "lifedynamics",
-    title: "第4章 生命機能論",
-    shortTitle: "生命機能論",
-    lead: "身体を守り、代謝を支える生命維持の仕組み",
-    description: "身体の表面を守る力（衛気）や内側の栄養（営気）、全身の水分代謝を担う三焦の働きを学びます。",
-    plannedLessons: 12,
-    icon: HeartPulse,
-    progressKey: "lifedynamics",
-  },
-  {
-    chapterNumber: 5,
-    id: "pathology",
-    seriesId: "pathomechanism",
-    title: "第5章 病機論",
-    shortTitle: "病機論",
-    lead: "病気が起こる原因と、身体の中で不調が広がる流れ",
-    description: "外からの刺激（邪気）と体力の低下（正気不足）がどう重なり、不調が進行していくのかを順序立てて学びます。",
-    plannedLessons: 12,
-    icon: AlertCircle,
-    progressKey: "pathomechanism",
-  },
-  {
-    chapterNumber: 6,
-    id: "diagnosis",
-    seriesId: "diagnosis",
-    title: "第6章 臨床診断論",
-    shortTitle: "臨床診断論",
-    lead: "問診・望診・舌診・脈診から見立てを導く診察法",
-    description: "患者さんの状態を観察・質問し（四診）、八綱や気血水、臓腑経絡の見立てへと整理していく実践的な手順を学びます。",
-    plannedLessons: 12,
-    icon: Search,
-    progressKey: "diagnosis",
-  },
-  {
-    chapterNumber: 7,
-    id: "treatment",
-    seriesId: "treatment",
-    title: "第7章 治法論",
-    shortTitle: "治法論",
-    lead: "ツボの選び方・刺激の加減・治療計画の立て方",
-    description: "補瀉（補う・巡らせる）の選択やツボの組み合わせ、体質に合わせた刺激量の調節と治療方針を学びます。",
-    plannedLessons: 12,
-    icon: Target,
-    progressKey: "treatment",
-  },
-  {
-    chapterNumber: 8,
-    id: "practice",
-    seriesId: "practice",
-    title: "第8章 臨床実践論",
-    shortTitle: "臨床実践論",
-    lead: "問診から施術後の振り返りまで、臨床の一連の流れ",
-    description: "初診時の聞き取りから見立ての説明、施術後の反応確認、次回の治療計画への生かし方を総合的に学びます。",
-    plannedLessons: 12,
-    icon: Award,
-    progressKey: "practice",
-  },
-];
 
 export default function CurriculumIndexClient({ catalog, relatedArticles }: {
   catalog: CurriculumIndexCatalog;
   relatedArticles: ArticlePreview[];
 }) {
+  const router = useRouter();
   const [showLearningMap, setShowLearningMap] = useState<boolean>(false);
   const [showIncorrectModal, setShowIncorrectModal] = useState<boolean>(false);
   const [expandedChapters, setExpandedChapters] = useState<Record<number, boolean>>({ 1: true });
@@ -159,13 +45,14 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
     totalPercentage,
     totalPublished,
     totalPlanned,
-    getChapterProgress,
     getNextResumeLectureId,
     getIncorrectQuestions,
     resetAllProgress,
   } = useCurriculumProgress();
 
   const allLectures = catalog.lectures;
+  const publishedCount = allLectures.filter(lecture => lecture.isPublished !== false).length;
+  const plannedCount = catalog.chapters.reduce((sum, chapter) => sum + chapter.plannedLessons, 0);
 
   const resumeLectureId = isMounted
     ? getNextResumeLectureId(allLectures.map((l) => l.id))
@@ -174,14 +61,18 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
   const incorrectQuestions = isMounted ? getIncorrectQuestions() : [];
 
   useEffect(() => {
-    if (isMounted && resumeLecture) {
-      const def = CHAPTER_DEFINITIONS.find((c) => c.seriesId === resumeLecture.seriesId);
-      if (def) {
-        const timer = setTimeout(() => setExpandedChapters(prev => ({ ...prev, [def.chapterNumber]: true })), 0);
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [isMounted, resumeLecture]);
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const openTarget = () => {
+      const hashChapter = catalog.chapters.find(chapter => window.location.hash === `#chapter-${chapter.id}`);
+      const def = hashChapter || (isMounted ? catalog.chapters.find(chapter => chapter.seriesId === resumeLecture?.seriesId) : undefined);
+      if (!def) return;
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => setExpandedChapters(previous => ({ ...previous, [def.chapterNumber]: true })), 0);
+    };
+    openTarget();
+    window.addEventListener('hashchange', openTarget);
+    return () => { if (timer) clearTimeout(timer); window.removeEventListener('hashchange', openTarget); };
+  }, [isMounted, resumeLecture?.seriesId, catalog.chapters]);
 
   const toggleChapter = (chapterNum: number) => {
     setExpandedChapters((prev) => ({
@@ -190,14 +81,14 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
     }));
   };
 
-  const areAllExpanded = CHAPTER_DEFINITIONS.every((c) => expandedChapters[c.chapterNumber]);
+  const areAllExpanded = catalog.chapters.every((c) => expandedChapters[c.chapterNumber]);
 
   const toggleAllChapters = () => {
     if (areAllExpanded) {
       setExpandedChapters({});
     } else {
       const all: Record<number, boolean> = {};
-      CHAPTER_DEFINITIONS.forEach((c) => {
+      catalog.chapters.forEach((c) => {
         all[c.chapterNumber] = true;
       });
       setExpandedChapters(all);
@@ -205,31 +96,32 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
   };
 
   const handleSelectChapterFromMap = (chapterId: string) => {
-    const target = CHAPTER_DEFINITIONS.find((c) => c.id === chapterId);
+    const target = catalog.chapters.find((c) => c.id === chapterId);
     if (target) {
       setExpandedChapters((prev) => ({ ...prev, [target.chapterNumber]: true }));
       const el = document.getElementById(`chapter-${target.id}`);
       if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        el.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? "instant" : "smooth", block: "start" });
+        el.querySelector<HTMLButtonElement>('button')?.focus({ preventScroll: true });
       }
     }
   };
 
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12 space-y-8 sm:space-y-10">
-      <LearningReviewPanel />
       {/* ページ見出し */}
       <div className="border-b border-[#E8E1D1] dark:border-[#22303D] pb-6 text-center max-w-3xl mx-auto space-y-3">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-semibold tracking-wider">
           <GraduationCap className="w-4 h-4" />
-          <span>東洋医学8大体系カリキュラム</span>
+          <span>東洋医学{catalog.chapters.length}章カリキュラム</span>
         </div>
         <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
           体系学習カリキュラム
         </h1>
         <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          陰陽・五行・気血水から診断・治療・臨床実践まで全81レッスン。丸暗記ではなく、身体のバランスやつながりを理解する基礎を身につけます。
+          概論から陰陽・気血津液・臓腑へ。関係モデル、病機、情報整理、治療方針、経過の振り返りを全{plannedCount}講で学びます。
         </p>
+        <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">各章を詳しく学ぶ目次です。短く全体像をつかむには、<Link href="/learn/courses" className="inline-flex min-h-11 items-center font-semibold text-[#184F49] underline focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">3〜5講の基礎コース</Link>から始められます。講義の受講記録は共通です。</p>
       </div>
 
       {/* 最上部「最初のレッスンを始める / 続きから学ぶ」ダッシュボード & 全体進捗 */}
@@ -256,7 +148,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
               </div>
             ) : (
               <h3 className="text-lg font-bold text-white">
-                全81レッスンの学習へようこそ！
+                全{plannedCount}講の学習へようこそ！
               </h3>
             )}
 
@@ -292,7 +184,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
               <div className="flex items-center justify-between text-xs font-bold mb-1.5 text-emerald-200">
                 <span>全体受講ステータス</span>
                 <span className="font-mono text-sm text-white">
-                  {isMounted ? `${totalCompleted} / ${totalPublished || 81}` : `0 / ${totalPublished || 81}`} 講完了
+                  {isMounted ? `${totalCompleted} / ${totalPublished || publishedCount}` : `0 / ${totalPublished || publishedCount}`} 講完了
                 </span>
               </div>
               <div className="w-full h-2.5 rounded-full bg-emerald-950/60 overflow-hidden border border-emerald-700/40">
@@ -302,7 +194,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
                 />
               </div>
               <div className="mt-1.5 flex items-center justify-between text-[11px] text-emerald-200">
-                <span>全{totalPlanned || 81}レッスン（公開中）</span>
+                <span>全{totalPlanned || plannedCount}レッスン（公開中）</span>
                 <span className="font-bold">公開分進捗: {isMounted ? totalPercentage : 0}%</span>
               </div>
             </div>
@@ -334,7 +226,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
               >
                 <span className="flex items-center gap-1.5">
                   <Map className="w-4 h-4" />
-                  <span>{showLearningMap ? "学習マップを閉じる" : "全8大体系 学習マップを表示"}</span>
+                  <span>{showLearningMap ? "学習マップを閉じる" : `全${catalog.chapters.length}章の学習マップを表示`}</span>
                 </span>
                 <span className="text-[10px]">{showLearningMap ? "▲" : "▼"}</span>
               </button>
@@ -343,10 +235,11 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
         </div>
       </div>
 
-      {/* 全8大体系 学習マップ */}
+      {/* 章構成から導く学習マップ */}
       {showLearningMap && (
-        <LearningMap onSelectChapter={handleSelectChapterFromMap} />
+        <LearningMap chapters={catalog.chapters} onSelectChapter={handleSelectChapterFromMap} />
       )}
+      <LearningReviewPanel />
 
       {/* 間違えた問題の復習モーダル */}
       <IncorrectQuestionsModal
@@ -354,14 +247,14 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
         onClose={() => setShowIncorrectModal(false)}
         onNavigateToLecture={(lectureId) => {
           setShowIncorrectModal(false);
-          window.location.href = `/curriculum/${lectureId}`;
+          router.push(`/curriculum/${lectureId}`);
         }}
       />
 
       {/* 補助操作：すべて展開 / すべて折りたたむ */}
       <div className="flex items-center justify-between border-b border-[#E8E1D1] dark:border-[#22303D] pb-3">
         <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-          カリキュラム目次（全8章）
+          カリキュラム目次（全{catalog.chapters.length}章）
         </h2>
         <button
           type="button"
@@ -372,22 +265,22 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
         </button>
       </div>
 
-      {/* 8章アコーディオン一覧 ＆ 各レッスンカード */}
+      {/* 章構成に沿った目次と各レッスンカード */}
       <div className="space-y-4 sm:space-y-6">
-        {CHAPTER_DEFINITIONS.map((chapter) => {
+        {catalog.chapters.map((chapter) => {
           const isExpanded = !!expandedChapters[chapter.chapterNumber];
           const chapterLectures = allLectures.filter((l) => l.seriesId === chapter.seriesId);
           const publishedCount = chapterLectures.filter((l) => l.isPublished !== false).length;
           const chapterProgress = isMounted
-            ? getChapterProgress(chapter.progressKey, publishedCount)
+            ? { completedCount: chapter.lectureIds.filter(id => completedLectures[id]).length, percentage: publishedCount ? Math.round(chapter.lectureIds.filter(id => completedLectures[id]).length / publishedCount * 100) : 0 }
             : { completedCount: 0, percentage: 0 };
-          const Icon = chapter.icon;
+          const Icon = GraduationCap;
 
           return (
             <section
               key={chapter.chapterNumber}
               id={`chapter-${chapter.id}`}
-              className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xs overflow-hidden transition-all"
+              className="scroll-mt-28 bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xs overflow-hidden transition-all"
             >
               {/* 章ヘッダー */}
               <button
@@ -395,6 +288,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
                 onClick={() => toggleChapter(chapter.chapterNumber)}
                 className="w-full text-left p-4 sm:p-5 hover:bg-[#FAF8F5] dark:hover:bg-[#141E28] transition-colors flex items-center justify-between gap-3 cursor-pointer select-none"
                 aria-expanded={isExpanded}
+                aria-controls={`chapter-content-${chapter.id}`}
               >
                 <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
                   <div className="w-10 h-10 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0">
@@ -450,19 +344,20 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
 
               {/* 章詳細展開 */}
               {isExpanded && (
-                <div className="p-4 sm:p-6 border-t border-[#F2ECE0] dark:border-[#22303D] bg-[#FCFBF8] dark:bg-[#121920]/60 space-y-4">
+                <div id={`chapter-content-${chapter.id}`} className="p-4 sm:p-6 border-t border-[#F2ECE0] dark:border-[#22303D] bg-[#FCFBF8] dark:bg-[#121920]/60 space-y-4">
                   <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                     {chapter.description}
                   </p>
 
+                  <p className="text-base font-semibold">この段階の目標：{chapter.goal}</p>
+                  <Link href={`/learn/courses/${chapter.courseSlug}`} className="inline-flex min-h-11 items-center font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">この章の短い基礎コースへ →</Link>
                   {/* レッスン一覧グリッド */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {chapterLectures.map((lec) => {
                       const isLecCompleted = isMounted && !!completedLectures[lec.id];
                       return (
-                        <Link
+                        <div
                           key={lec.id}
-                          href={`/curriculum/${lec.id}`}
                           className={`p-3.5 rounded-xl border transition-all flex flex-col justify-between group cursor-pointer block ${
                             isLecCompleted
                               ? "bg-emerald-50/40 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800/80 shadow-2xs"
@@ -490,7 +385,9 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
                                     toggleLectureCompleted(lec.id);
                                   }}
                                   title={isLecCompleted ? "受講完了（クリックで解除）" : "受講済みにする"}
-                                  className={`min-h-[36px] min-w-[36px] p-1.5 rounded-lg transition-colors cursor-pointer flex items-center justify-center ${
+                                  aria-label={`${lec.title}：${isLecCompleted ? "受講済みを解除" : "受講済みにする"}`}
+                                  aria-pressed={isLecCompleted}
+                                  className={`min-h-11 min-w-11 p-1.5 rounded-lg transition-colors cursor-pointer flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-4 ${
                                     isLecCompleted
                                       ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300"
                                       : "text-slate-300 dark:text-slate-600 hover:text-emerald-600 hover:bg-emerald-50"
@@ -503,7 +400,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
 
                             {/* レッスン名 */}
                             <h4 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug line-clamp-1">
-                              {lec.title}
+                              <Link href={`/curriculum/${lec.id}`} className="focus-visible:outline-2 focus-visible:outline-offset-4">{lec.title}</Link>
                             </h4>
 
                             {/* 概要 */}
@@ -514,10 +411,10 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
 
                           {/* カード下部リンク */}
                           <div className="pt-2.5 mt-2.5 border-t border-[#EDE7DC] dark:border-[#22303D] flex items-center justify-between text-xs">
-                            <span className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                            <Link href={`/curriculum/${lec.id}`} className="min-h-11 text-[#1E3D34] dark:text-[#74BA9E] font-semibold flex items-center gap-1 focus-visible:outline-2 focus-visible:outline-offset-4">
                               <span>講義を読む</span>
                               <ArrowRight className="w-3.5 h-3.5" />
-                            </span>
+                            </Link>
                             {isLecCompleted ? (
                               <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5">
                                 <Check className="w-3 h-3" />
@@ -529,7 +426,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
                               </span>
                             )}
                           </div>
-                        </Link>
+                        </div>
                       );
                     })}
 
@@ -568,6 +465,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
                       </div>
                     ))}
                   </div>
+                  <CourseMiniCase seriesId={chapter.seriesId} headingLevel={3} />
                 </div>
               )}
             </section>
@@ -628,7 +526,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
 
       {/* 受講履歴・進捗データ管理 */}
       <div className="pt-4 pb-2 text-center text-xs text-slate-400 dark:text-slate-600 flex flex-wrap items-center justify-center gap-3">
-        <span>受講進捗および演習クイズ回答データはお使いの端末（localStorage）に自動保存されています。</span>
+        <LearningSyncStatus returnTo="/curriculum" />
         <button
           type="button"
           onClick={resetAllProgress}

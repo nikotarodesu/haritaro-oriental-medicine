@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { GlossaryTerm } from "@/data/glossaryData";
 import {
@@ -10,7 +11,6 @@ import {
   ArrowRight,
   Layers,
   Lightbulb,
-  Compass,
 } from "lucide-react";
 
 interface GlossaryPopupProps {
@@ -37,9 +37,9 @@ export default function GlossaryPopup({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen || !term) return null;
+  if (!isOpen || !term || typeof document === "undefined") return null;
 
-  return (
+  return createPortal(
     <div
       onClick={onClose}
       className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-150"
@@ -47,6 +47,9 @@ export default function GlossaryPopup({
       {/* PC: 中央カード / スマホ: ボトムシート */}
       <div
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="glossary-popup-title"
         className="w-full sm:max-w-lg bg-[#FAF8F5] dark:bg-[#16212B] rounded-t-3xl sm:rounded-3xl border-t sm:border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xl p-5 sm:p-7 space-y-4 max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-200"
       >
         {/* スマホ用ドラッグハンドルバー */}
@@ -65,7 +68,7 @@ export default function GlossaryPopup({
                 読み：{term.reading}
               </span>
             </div>
-            <h3 className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+            <h3 id="glossary-popup-title" className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
               {term.term}
             </h3>
           </div>
@@ -153,6 +156,7 @@ export default function GlossaryPopup({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

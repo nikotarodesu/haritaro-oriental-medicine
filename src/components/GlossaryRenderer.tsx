@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { GLOSSARY_TERMS, GlossaryTerm } from "@/data/glossaryData";
 import GlossaryPopup from "@/components/glossary/GlossaryPopup";
+import { splitGlossaryText } from "@/utils/glossaryOccurrences";
 
 interface GlossaryRendererProps {
   text: string;
-  seenTerms?: Set<string>;
+  seenTerms?: ReadonlySet<string>;
   enablePopup?: boolean;
 }
 
@@ -17,31 +18,19 @@ export default function GlossaryRenderer({
 }: GlossaryRendererProps) {
   const [activeTerm, setActiveTerm] = useState<GlossaryTerm | null>(null);
 
-  // 用語リスト（長い語順でソートして部分一致の誤爆を防ぐ）
-  const termKeys = useMemo(() => {
-    return Object.keys(GLOSSARY_TERMS).sort((a, b) => b.length - a.length);
-  }, []);
-
-  // 用語検出用正規表現パターン
-  const termRegex = useMemo(() => {
-    if (termKeys.length === 0) return null;
-    const escaped = termKeys.map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
-    return new RegExp(`(${escaped.join("|")})`, "g");
-  }, [termKeys]);
-
-  // コンポーネント単位で追跡するフォールバック用のSet
-  const fallbackSeenTerms = useMemo(() => new Set<string>(), [text]);
-  const activeSeenTerms = seenTerms || fallbackSeenTerms;
+  // This render owns its working copy. Props and hook state must remain intact
+  // when React replays rendering, hydrates, or opens/closes the popup.
+  const activeSeenTerms = new Set(seenTerms);
 
   if (!text) return null;
 
   // 用語をボタンとして描画する関数
   const renderInteractiveText = (rawStr: string, keyPrefix: string) => {
-    if (!termRegex || !enablePopup) {
+    if (!enablePopup) {
       return renderTextWithBreaks(rawStr, keyPrefix);
     }
 
-    const segments = rawStr.split(termRegex);
+    const segments = splitGlossaryText(rawStr);
 
     return (
       <React.Fragment key={keyPrefix}>

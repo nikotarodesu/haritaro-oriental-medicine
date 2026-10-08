@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, type ReactNode } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { trackEvent } from '@/utils/analytics';
-import { readCourseSlug, resolveCourseJourney, type CourseJourney } from '@/utils/courseJourney';
+import { readCourseSlug, readCourseMiniCase, resolveCourseJourney, type CourseJourney } from '@/utils/courseJourney';
 
 export default function LearningCourseLink({ href, courseId, placement, children, className }: {
   href: string;
@@ -24,8 +24,9 @@ export function CourseJourneyResolver({ lectureId, onResolve }: {
 }) {
   const params = useSearchParams();
   const courseSlug = readCourseSlug(params);
+  const miniCaseId = readCourseMiniCase(params, courseSlug);
   useEffect(() => {
-    onResolve({ lectureId, journey: resolveCourseJourney(lectureId, courseSlug) });
-  }, [lectureId, courseSlug, onResolve]);
+    onResolve({ lectureId, journey: resolveCourseJourney(lectureId, courseSlug, miniCaseId) });
+  }, [lectureId, courseSlug, miniCaseId, onResolve]);
   return null;
 }

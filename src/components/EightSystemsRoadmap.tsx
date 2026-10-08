@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, BookOpen } from 'lucide-react';
+import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
 
 interface SystemStep {
   number: string;
@@ -14,80 +15,15 @@ interface SystemStep {
   tagColor: string;
 }
 
-const SYSTEMS: SystemStep[] = [
-  {
-    number: "01",
-    numInt: 1,
-    title: "第1章 陰陽論",
-    phase: "基礎理論",
-    keyword: "変化と循環の力学モデル",
-    lectureId: "lecture-yinyang-1",
-    tagColor: "bg-[#1E3D34]/10 text-[#1E3D34] dark:bg-[#74BA9E]/15 dark:text-[#74BA9E] border-[#1E3D34]/20 dark:border-[#74BA9E]/30",
-  },
-  {
-    number: "02",
-    numInt: 2,
-    title: "第2章 五行論",
-    phase: "基礎理論",
-    keyword: "多臓器連動と生剋乗侮",
-    lectureId: "lecture-wuxing-1",
-    tagColor: "bg-[#2D5A46]/10 text-[#2D5A46] dark:bg-[#83BEA8]/15 dark:text-[#83BEA8] border-[#2D5A46]/20 dark:border-[#83BEA8]/30",
-  },
-  {
-    number: "03",
-    numInt: 3,
-    title: "第3章 気血水理論",
-    phase: "基礎理論",
-    keyword: "三層実体と代謝循環",
-    lectureId: "lecture-qiblood-1",
-    tagColor: "bg-[#B86924]/10 text-[#B86924] dark:bg-[#E6C387]/15 dark:text-[#E6C387] border-[#B86924]/20 dark:border-[#E6C387]/30",
-  },
-  {
-    number: "04",
-    numInt: 4,
-    title: "第4章 生命機能論",
-    phase: "基礎理論",
-    keyword: "臓腑機能層とネットワーク",
-    lectureId: "lecture-lifedynamics-1",
-    tagColor: "bg-[#1E2D3D]/10 text-[#1E2D3D] dark:bg-[#7BAAD8]/15 dark:text-[#7BAAD8] border-[#1E2D3D]/20 dark:border-[#7BAAD8]/30",
-  },
-  {
-    number: "05",
-    numInt: 5,
-    title: "第5章 病機論",
-    phase: "病機",
-    keyword: "邪正盛衰と病理連鎖",
-    lectureId: "lecture-pathomechanism-1",
-    tagColor: "bg-[#A83629]/10 text-[#A83629] dark:bg-[#F08C80]/15 dark:text-[#F08C80] border-[#A83629]/20 dark:border-[#F08C80]/30",
-  },
-  {
-    number: "06",
-    numInt: 6,
-    title: "第6章 臨床診断論",
-    phase: "診断",
-    keyword: "四診客観化と弁証導出",
-    lectureId: "lecture-diagnosis-1",
-    tagColor: "bg-[#4A3B69]/10 text-[#4A3B69] dark:bg-[#BCA8E6]/15 dark:text-[#BCA8E6] border-[#4A3B69]/20 dark:border-[#BCA8E6]/30",
-  },
-  {
-    number: "07",
-    numInt: 7,
-    title: "第7章 治法論",
-    phase: "治法",
-    keyword: "本標・補瀉と配穴設計",
-    lectureId: "lecture-treatment-1",
-    tagColor: "bg-[#285A52]/10 text-[#285A52] dark:bg-[#6EC5B8]/15 dark:text-[#6EC5B8] border-[#285A52]/20 dark:border-[#6EC5B8]/30",
-  },
-  {
-    number: "08",
-    numInt: 8,
-    title: "第8章 臨床実践論",
-    phase: "実践",
-    keyword: "臨床意思決定と動的評価",
-    lectureId: "lecture-practice-1",
-    tagColor: "bg-[#1E2D3D]/10 text-[#1E2D3D] dark:bg-[#88A9C3]/15 dark:text-[#88A9C3] border-[#1E2D3D]/20 dark:border-[#88A9C3]/30",
-  }
-];
+const SYSTEMS: SystemStep[] = CURRICULUM_CHAPTERS_META.map(chapter => ({
+  number: String(chapter.chapterNumber).padStart(2, '0'),
+  numInt: chapter.chapterNumber,
+  title: chapter.title,
+  phase: chapter.stageId === 'stage-0' ? '導入' : chapter.stageId === 'stage-1' ? '身体の基本' : chapter.stageId === 'stage-2' ? '病態と診察・治療' : '統合',
+  keyword: chapter.lead,
+  lectureId: chapter.lectureIds[0],
+  tagColor: 'bg-[#1E3D34]/10 text-[#1E3D34] dark:bg-[#74BA9E]/15 dark:text-[#74BA9E] border-[#1E3D34]/20 dark:border-[#74BA9E]/30',
+}));
 
 export default function EightSystemsRoadmap() {
   return (
@@ -106,7 +42,7 @@ export default function EightSystemsRoadmap() {
               </h2>
             </div>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC]">
-              基礎理論から病態、診断、治法、臨床実践へ。一貫した思考プロセスを順に学びます。
+              概論で全体像をつかみ、身体の基本から病態・診察・治療・統合症例へ進みます。
             </p>
           </div>
 
@@ -119,7 +55,7 @@ export default function EightSystemsRoadmap() {
           </Link>
         </div>
 
-        {/* 8章の全体像一覧（PC: 4列×2段 / スマホ: 2列×4段、横スワイプ不要） */}
+        {/* 章構成の一覧（小さな画面でも横スクロールを使わない） */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
           {SYSTEMS.map((sys) => (
             <Link
@@ -141,7 +77,7 @@ export default function EightSystemsRoadmap() {
                   {sys.title}
                 </h3>
 
-                <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-tight line-clamp-1">
+                <p className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                   {sys.keyword}
                 </p>
               </div>

@@ -1,4 +1,8 @@
 import { PUBLIC_CLINICAL_GUIDE_PATHS, PUBLIC_SYMPTOM_PATHS } from '@/config/publicGuideRoutes';
+import { LEARNING_COURSES } from '@/data/learningCourses';
+
+const PUBLIC_COURSE_SLUGS = new Set(LEARNING_COURSES.map(course => course.slug));
+const PUBLIC_COURSE_PATHS = new Set(LEARNING_COURSES.map(course => `/learn/courses/${course.slug}`));
 
 /** Public navigation and aggregate learning measurements only. */
 
@@ -77,7 +81,7 @@ export function sanitizeAnalyticsParams(params: AnalyticsEventParams = {}): Reco
     if (["metric_value", "value"].includes(key) && typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 600000) safe[key] = value;
     if (key === "passed" && typeof value === "boolean") safe[key] = value;
   }
-  if (safe.course_id && !["yinyang-foundations", "five-elements-relations", "qi-blood-fluid"].includes(String(safe.course_id))) delete safe.course_id;
+  if (safe.course_id && !PUBLIC_COURSE_SLUGS.has(String(safe.course_id))) delete safe.course_id;
   if (typeof safe.return_gap_days === "number" && (safe.return_gap_days < 1 || safe.return_gap_days > 7)) delete safe.return_gap_days;
   return safe;
 }
@@ -91,12 +95,11 @@ const PUBLIC_PAGES = new Set([
   ...PUBLIC_SYMPTOM_PATHS, ...PUBLIC_CLINICAL_GUIDE_PATHS,
 ]);
 const PUBLIC_DETAIL = /^\/(?:articles|cases|curriculum|kikei|tsubo)\/[a-z0-9-]{1,80}$/i;
-const COURSE_DETAIL = /^\/learn\/courses\/(?:yinyang-foundations|five-elements-relations|qi-blood-fluid)$/;
 
 /** Unknown, private and user-created routes are excluded, including URL suffixes. */
 export function publicAnalyticsPath(value: string): string | null {
   const pathname = value.split(/[?#]/)[0].replace(/\/$/, "") || "/";
-  return PUBLIC_PAGES.has(pathname) || PUBLIC_DETAIL.test(pathname) || COURSE_DETAIL.test(pathname) ? pathname : null;
+  return PUBLIC_PAGES.has(pathname) || PUBLIC_DETAIL.test(pathname) || PUBLIC_COURSE_PATHS.has(pathname) ? pathname : null;
 }
 
 /** External referrers retain the origin only; private same-site paths are removed. */

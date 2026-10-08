@@ -3,6 +3,7 @@
 import React from "react";
 import dynamic from "next/dynamic";
 import { Sparkles } from "lucide-react";
+import { CURRICULUM_CHAPTERS_META } from "@/data/curriculumOutline";
 
 // Keep diagram HTML in the initial render, and load only diagrams used by this lecture.
 const WuxingDynamicChart = dynamic(() => import("./WuxingDynamicChart"));
@@ -77,7 +78,14 @@ interface CurriculumDiagramProps {
 }
 
 export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagramProps) {
-  // 体系カリキュラム①：陰陽論の9大図解
+  if (id === "curriculum-learning-path") {
+    return <figure className="my-8 space-y-4 rounded-2xl border border-[#D9E3DD] bg-[#F6F4EE] p-5 dark:border-[#2A3B4A] dark:bg-[#1E2B36]">
+      <figcaption className="space-y-2"><p className="text-lg font-bold">概論から臨床の基礎へ、全{CURRICULUM_CHAPTERS_META.length}章の流れ</p><p className="text-sm leading-relaxed">基本の名称と正常な働きを学んでから関係モデルへ進み、後半に病機・情報整理・方針・再評価を扱います。</p></figcaption>
+      <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{CURRICULUM_CHAPTERS_META.map(chapter => <li key={chapter.id} className="rounded-xl border border-[#D9E3DD] bg-white p-4 dark:border-[#2A3B4A] dark:bg-[#17212A]"><p className="font-semibold">{chapter.title}</p><p className="mt-2 text-sm leading-relaxed">{chapter.lead}</p><p className="mt-2 text-sm text-[#59615D] dark:text-[#B7C5CF]">全{chapter.plannedLessons}講</p></li>)}</ol>
+      <p className="text-sm leading-relaxed">各章の短い例で考え、必要な理論に戻って同じ問いを見直します。学習順を示す図で、身体の機序や治療効果を示す図ではありません。</p>
+    </figure>;
+  }
+  // 第2章：陰陽論の図解
   if (id === "yinyang-taiji-cycle") {
     return <YinYangTaijiCycle />;
   }
@@ -114,7 +122,7 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
     return <YinYangToWuxingBridge onNextLecture={onNextLecture} />;
   }
 
-  // 体系カリキュラム②：五行論の8大図解
+  // 第6章：五行論の図解
   if (id === "wuxing-differentiation-model") {
     return <WuxingDifferentiationModel />;
   }
@@ -168,7 +176,7 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
     return <QiBloodClinicalFlow onNextLecture={onNextLecture} />;
   }
 
-  // 体系カリキュラム④：生命機能論の8大図解
+  // 第5章：生命機能論の図解
   if (id === "lifedynamics-four-layers") {
     return <LifeDynamicsFourLayers />;
   }
@@ -201,7 +209,7 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
     return <LifeDynamicsBreakdownBridge onNextLecture={onNextLecture} />;
   }
 
-  // 体系カリキュラム⑤：病機論の8大図解
+  // 第8章：病機論の図解
   if (id === "pathomechanism-iceberg-timeline") {
     return <PathomechanismIcebergTimeline />;
   }
@@ -234,7 +242,7 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
     return <PathomechanismDiagnosticBridge onNextLecture={onNextLecture} />;
   }
 
-  // 体系カリキュラム⑥：診断論の8大図解
+  // 第9章：診断論の図解
   if (id === "diagnosis-funnel-model") {
     return <DiagnosisFunnelModel />;
   }
@@ -267,7 +275,7 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
     return <DiagnosisPrescriptionBridge onNextLecture={onNextLecture} />;
   }
 
-  // 体系カリキュラム⑦：治法論の9大図解
+  // 第10章：治法論の図解
   if (id === "treatment-feedback-loop") {
     return <TreatmentFeedbackLoop />;
   }
@@ -304,7 +312,7 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
     return <TreatmentSystemToPracticeBridge onNextLecture={onNextLecture} />;
   }
 
-  // 体系カリキュラム⑧：実践論の9大図解
+  // 第11章：実践論の図解
   if (id === "practice-execution-loop") {
     return <PracticeExecutionLoop />;
   }

@@ -70,7 +70,8 @@ assert.equal(session.reviewSessionReturnHref('javascript:alert(1)'), '/kokushi#l
 
 // Execute real ReviewWorkspace event handlers, then remount it as a route navigation would.
 let auth = { user: { id: owner }, isLoading: false };
-let progress = { isMounted: true, quizResults: {}, quizHistory: [], revisedQuestionCount: 0, lastVisitedLectureId: null };
+let progress = { isMounted: true, quizResults: {}, quizHistory: [], completedLectures: {}, revisedQuestionCount: 0, lastVisitedLectureId: null };
+let sync = { ready: true, values: {} };
 let answersSaved = 0;
 progress.saveQuizResult = record => { answersSaved++; progress.quizResults = { ...progress.quizResults, [record.questionId]: record }; };
 let hooks = [], cursor = 0, uuid = 1;
@@ -89,6 +90,7 @@ function client(relative) {
     if (name === 'next/navigation') return { useSearchParams: () => new URLSearchParams(browser.location.search) };
     if (name === '@/contexts/AuthContext') return { useAuth: () => auth };
     if (name === '@/contexts/CurriculumProgressContext') return { useCurriculumProgress: () => progress };
+    if (name === '@/contexts/LearningSyncContext') return { useLearningSync: () => sync };
     if (name === '@/utils/analytics') return { trackEvent() {} };
     if (name === '@/data/tsubo/studyStorage') return { recordAnswerInStore() {} };
     if (name === './LearningFocusReview') return FocusReview;
@@ -120,8 +122,43 @@ function text(node) {
   return typeof node === 'string' || typeof node === 'number' ? String(node) : node && typeof node === 'object' ? text(node.props?.children) : '';
 }
 function button(label) { const node = nodes(tree).find(node => node.type === 'button' && text(node).includes(label)); assert(node, label); return node; }
+function showsCaseReview() { return nodes(tree).some(node => node.type === FocusReview); }
+const { CURRICULUM_CHAPTERS_META } = load('src/data/curriculumOutline');
 mount();
-nodes(tree).find(node => node.type === FocusReview).props.onStart(questions); render();
+assert(!showsCaseReview(), 'A new learner is not shown advanced case reasoning controls');
+assert(nodes(tree).some(node => node.type === Link && node.props.href === '/learn/courses/oriental-medicine-introduction#course-mini-case-intro'));
+progress.completedLectures = { 'lecture-yinyang-1': true }; progress.lastVisitedLectureId = 'lecture-yinyang-2'; mount();
+assert(!showsCaseReview(), 'Basic study remains focused on review and short examples');
+assert(nodes(tree).some(node => node.type === Link && node.props.href === '/learn/courses/yinyang-foundations#course-mini-case-yinyang'));
+progress.completedLectures = { 'lecture-diagnosis-1': false }; progress.lastVisitedLectureId = null; mount();
+assert(!showsCaseReview(), 'An unchecked completion flag does not imply clinical study');
+for (const chapter of CURRICULUM_CHAPTERS_META.filter(chapter => ['stage-2', 'stage-3'].includes(chapter.stageId))) {
+  progress.completedLectures = { [chapter.lectureIds[0]]: true }; mount();
+  assert(showsCaseReview(), chapter.id + ': later chapter study preserves case review');
+}
+progress.completedLectures = {}; progress.lastVisitedLectureId = 'lecture-diagnosis-1'; mount();
+assert(showsCaseReview(), 'Returning to a later lecture preserves its case-learning context');
+progress.lastVisitedLectureId = null; progress.quizResults = { fixture: { kind: 'lecture', lectureId: 'lecture-pathomechanism-1' } }; mount();
+assert(showsCaseReview(), 'A later lecture answer is also a study record');
+progress.quizResults = {};
+const { PROGRESSIVE_CASES } = load('src/data/progressiveCases');
+const { CASE_REASONING_RUBRICS } = load('src/data/caseReasoningRubrics');
+const { getCaseRevision, readCaseLearningRecords } = load('src/utils/learningFocus');
+const caseItem = PROGRESSIVE_CASES[0];
+const caseRecord = { caseId: caseItem.id, score: 36, revision: getCaseRevision(caseItem.id),
+  answers: Object.fromEntries(caseItem.steps.map((step, index) => [index, step.options.findIndex(option => option.points === 2)])),
+  reasonAnswers: Object.fromEntries(CASE_REASONING_RUBRICS[caseItem.id].map((rubric, index) => [index, rubric.filter(reason => reason.supports).map(reason => reason.id)])),
+  safetyReviewRequired: false, answeredAt: '2026-10-08T00:00:00.000Z' };
+sync.values = { ['case:' + caseItem.id]: caseRecord };
+assert.equal(readCaseLearningRecords(sync.values).length, 1, 'The case-only history fixture is valid'); mount();
+assert(showsCaseReview(), 'Case history alone keeps its review even without lecture progress');
+sync = { ready: false, values: sync.values }; mount();
+assert(!showsCaseReview(), 'Unready owner data does not reveal the previous owner case history');
+sync = { ready: true, values: { ['case:' + caseItem.id]: { ...caseRecord, revision: 'obsolete' } } }; mount();
+assert(!showsCaseReview(), 'An obsolete case record does not trigger advanced suggestions');
+sync.values = {};
+mount();
+button('今日の復習').props.onClick(); render();
 const started = JSON.parse(storage.getItem(session.REVIEW_SESSION_KEY));
 button(questions[0].options[questions[0].correctIndex]).props.onClick(); render();
 const grade = button('回答を確定').props.onClick;
@@ -155,7 +192,7 @@ assert(text(tree).includes('今回の復習が完了しました'));
 mount();
 assert(!text(tree).includes(questions[2].question), 'completed sets cannot resurrect');
 browser.location.search = ''; mount();
-nodes(tree).find(node => node.type === FocusReview).props.onStart(questions); render();
+button('今日の復習').props.onClick(); render();
 auth = { ...auth, user: { id: 'other-owner' } }; mount();
 assert.equal(storage.getItem(session.REVIEW_SESSION_KEY), null);
 assert(!nodes(tree).some(node => node.props?.id === 'learning-review-practice'), 'account switch hides all previous selections');
@@ -176,6 +213,7 @@ const acupoint = { id: `tsubo-${generated.acupointCode}-${generated.skill}`, que
   href: '/tsubo/practice', revision: questionRevision(generated.prompt, [ordered[correctIndex].text], 0, generated.explanation) };
 auth = { user: { id: owner }, isLoading: false };
 progress.quizResults[acupoint.id] = { ...acupoint, questionId: acupoint.id, questionText: acupoint.question, correctAnswerIndex: acupoint.correctIndex, practiceHref: acupoint.href };
+progress.completedLectures = { 'lecture-diagnosis-1': true };
 browser.location.search = ''; mount();
 nodes(tree).find(node => node.type === FocusReview).props.onStart([acupoint]); render();
 button(acupoint.options[correctIndex]).props.onClick(); render();
@@ -216,4 +254,4 @@ assert.equal(key('[', {}, true), false);
 assert.equal(pushes.length, 0, 'browser history, composing and interactive controls are untouched');
 assert.equal(key('['), true); assert.equal(key(']'), true);
 assert.deepEqual(pushes, ['/previous-lecture','/next-lecture']);
-console.log('Passed: revision-safe temporary review sessions, route return/selection/grading/answer order, duplicate-submit protection, completion/new sets/owner isolation, blocked storage, and real lecture keyboard handlers.');
+console.log('Passed: staged basic/case review entry, case-only history, revision-safe temporary review sessions, route return/selection/grading/answer order, duplicate-submit protection, completion/new sets/owner isolation, blocked storage, and real lecture keyboard handlers.');

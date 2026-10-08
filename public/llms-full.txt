@@ -15,7 +15,7 @@
 - 出典・公開同意・経過記録を確認できない症例アーカイブ101件と、未照合の手技原資料37件は公開を保留しています。架空症例演習は利用できます。
 
 ## 学ぶ
-- [体系学習カリキュラム](https://www.haritaro.jp/curriculum): 全81講義の正規URLはこの目次から確認できます。
+- [体系学習カリキュラム](https://www.haritaro.jp/curriculum): 概論から陰陽・気血津液・臓腑・生命活動・五行・経絡、病因病機・四診・治法・統合症例へ進みます。各講義の正規URLはこの目次から確認できます。
 - [学習の入口](https://www.haritaro.jp/learn): 基礎講義・国試演習・経穴学習・回答履歴からの復習を選べます。教材の確認範囲も案内します。
 - [国試演習・今日の復習](https://www.haritaro.jp/kokushi#learning-review): 内容の版と回答履歴を照合し、復習予定を表示します。同日の繰り返しで復習間隔を延ばしません。
 - [用語集](https://www.haritaro.jp/glossary)
@@ -47,9 +47,17 @@
 以下は上記の案内とサイトの公開データから生成した索引です。経穴名や症状との関連は治療効果・個人への適応を示すものではありません。確認範囲と出典はリンク先で確認してください。
 
 ### 目的別の学習コース
+- [東洋医学の学び方と全体像](https://www.haritaro.jp/learn/courses/oriental-medicine-introduction)
 - [陰陽の基礎をつかむ](https://www.haritaro.jp/learn/courses/yinyang-foundations)
-- [五行の関係を整理する](https://www.haritaro.jp/learn/courses/five-elements-relations)
 - [気・血・津液を見分ける](https://www.haritaro.jp/learn/courses/qi-blood-fluid)
+- [臓腑の基本を知る](https://www.haritaro.jp/learn/courses/zangfu-foundations)
+- [生命活動を全体として見る](https://www.haritaro.jp/learn/courses/life-functions-foundations)
+- [五行の関係を整理する](https://www.haritaro.jp/learn/courses/five-elements-relations)
+- [経絡・経穴の基本を知る](https://www.haritaro.jp/learn/courses/meridians-foundations)
+- [経過から病機の仮説を考える](https://www.haritaro.jp/learn/courses/pathomechanism-foundations)
+- [安全確認から情報整理へ](https://www.haritaro.jp/learn/courses/diagnosis-foundations)
+- [治療方針と評価の考え方を知る](https://www.haritaro.jp/learn/courses/treatment-foundations)
+- [症例の経過を振り返る](https://www.haritaro.jp/learn/courses/clinical-process-foundations)
 
 ### 症状別の学習ガイド
 - [慢性的な頭痛・首肩こり](https://www.haritaro.jp/symptoms/headache-stiff-neck): 頭重感や首肩のこわばり。姿勢や緊張が関わることもありますが、頭痛の原因はさまざまです。

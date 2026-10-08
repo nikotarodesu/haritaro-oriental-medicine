@@ -5,6 +5,7 @@ export interface CourseJourney {
   lectureId: string;
   stepIndex: number;
   previousStep: LearningCourseStep | null;
+  miniCaseId?: string;
 }
 
 export interface CourseNextAction {
@@ -20,13 +21,20 @@ export function readCourseSlug(params: { getAll: (name: string) => string[] }): 
   return slugs.length === 1 && getLearningCourse(slugs[0]) ? slugs[0] : null;
 }
 
+export function readCourseMiniCase(params: { getAll: (name: string) => string[] }, courseSlug: string | null): string | undefined {
+  const ids = params.getAll('miniCase');
+  const course = courseSlug ? getLearningCourse(courseSlug) : undefined;
+  return ids.length === 1 && ids[0] === course?.seriesId ? ids[0] : undefined;
+}
+
 // An explicit course must contain this lecture. Direct visits never infer a
 // course from previous browsing or choose between overlapping courses.
-export function resolveCourseJourney(lectureId: string, courseSlug: string | null | undefined): CourseJourney | null {
+export function resolveCourseJourney(lectureId: string, courseSlug: string | null | undefined, miniCaseId?: string): CourseJourney | null {
   const course = courseSlug ? getLearningCourse(courseSlug) : undefined;
   const stepIndex = course?.steps.findIndex((step) => step.lectureId === lectureId) ?? -1;
   if (!course || stepIndex < 0) return null;
-  return { course, lectureId, stepIndex, previousStep: course.steps[stepIndex - 1] || null };
+  return { course, lectureId, stepIndex, previousStep: course.steps[stepIndex - 1] || null,
+    ...(miniCaseId && miniCaseId === course.seriesId ? { miniCaseId } : {}) };
 }
 
 export function createCourseLectureHref(courseSlug: string, lectureId: string, fragment?: 'interactive-quiz-container'): string {

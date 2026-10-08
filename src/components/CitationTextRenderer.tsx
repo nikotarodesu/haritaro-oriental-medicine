@@ -6,11 +6,12 @@ import { ResolvedReference } from "@/types/references";
 import { tokenizeCitationInline, CitationInlineToken } from "@/utils/citationInlineTokens";
 import CitationBadge from "./CitationBadge";
 import GlossaryRenderer from "./GlossaryRenderer";
+import { createGlossarySeenSnapshots } from "@/utils/glossaryOccurrences";
 
 interface CitationTextRendererProps {
   text: string;
   resolvedReferences?: ResolvedReference[];
-  seenTerms?: Set<string>;
+  seenTerms?: ReadonlySet<string>;
 }
 
 export default function CitationTextRenderer({
@@ -25,9 +26,21 @@ export default function CitationTextRenderer({
     return <GlossaryRenderer text={text} seenTerms={seenTerms} />;
   }
 
+  // Determine first occurrences before children render, independently of React's
+  // child traversal, replay, or selective hydration order.
+  const inlineParts: CitationInlineToken[] = tokens.flatMap<CitationInlineToken>((token) =>
+    token.type === "text"
+      ? token.value.split(/(\*\*)/g).filter(Boolean).map((value) => ({ type: "text" as const, value }))
+      : [token]
+  );
+  const seenBeforeToken = createGlossarySeenSnapshots(
+    inlineParts.map((token) => token.type === "text" && token.value !== "**" ? token.value : ""),
+    seenTerms,
+  );
+
   const renderToken = (token: CitationInlineToken, index: number): React.ReactNode => {
     if (token.type === "text") {
-      return <GlossaryRenderer key={"text-" + index} text={token.value} seenTerms={seenTerms} />;
+      return <GlossaryRenderer key={"text-" + index} text={token.value} seenTerms={seenBeforeToken[index]} />;
     }
     if (token.type === "link") {
       const label = <GlossaryRenderer text={token.label} enablePopup={false} />;
@@ -59,11 +72,6 @@ export default function CitationTextRenderer({
 
   // Keep emphasis spanning links/citations. Link labels handle their own
   // emphasis through GlossaryRenderer with glossary interaction disabled.
-  const inlineParts: CitationInlineToken[] = tokens.flatMap<CitationInlineToken>((token) =>
-    token.type === "text"
-      ? token.value.split(/(\*\*)/g).filter(Boolean).map((value) => ({ type: "text" as const, value }))
-      : [token]
-  );
   const markerCount = inlineParts.filter((token) => token.type === "text" && token.value === "**").length;
   const pairedMarkers = markerCount - (markerCount % 2);
   const parts: React.ReactNode[] = [];

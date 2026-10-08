@@ -100,8 +100,6 @@ export default async function ArticleDetailPage({ params }: Props) {
   const learningGuide = ARTICLE_LEARNING_GUIDES[article.id];
 
   const resolvedReferences = resolveArticleReferences(article.references || [], article.contentMarkdown);
-  const summarySeenTerms = new Set<string>();
-  const bodySeenTerms = new Set<string>();
 
   // 構造化データ（Article ＆ BreadcrumbList）
   const jsonLd = {
@@ -254,7 +252,7 @@ export default async function ArticleDetailPage({ params }: Props) {
             {article.updatedAt && <> ／ 更新：<time dateTime={article.updatedAt}>{article.updatedAt}</time></>}
           </p>
           <section aria-label="この記事の要点と読み方" className="space-y-3 text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
-            <p><GlossaryRenderer text={article.summary} seenTerms={summarySeenTerms} /></p>
+            <p><GlossaryRenderer text={article.summary} /></p>
             {learningGuide && <div className="border-l-2 border-[#C5DED4] dark:border-[#2A5243] pl-4 space-y-2 text-sm">
               <p><strong>学ぶポイント：</strong>{learningGuide.focus}</p>
               <p><strong>判断の限界：</strong>{learningGuide.limitation}</p>
@@ -277,7 +275,6 @@ export default async function ArticleDetailPage({ params }: Props) {
           <div id="article-content" className="scroll-mt-36">
           <MarkdownBody
             contentMarkdown={article.contentMarkdown}
-            seenTerms={bodySeenTerms}
             idPrefix="article-heading"
             resolvedReferences={resolvedReferences}
             readingInserts={readingGuide?.inserts}

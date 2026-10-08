@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Sparkles, ArrowRight, CheckCircle2, AlertOctagon, RefreshCw, BookOpen, ShieldAlert } from "lucide-react";
+import { Sparkles, ArrowRight, CheckCircle2, AlertOctagon, BookOpen } from "lucide-react";
 
 interface Props {
   onNextLecture?: () => void;
@@ -174,7 +174,7 @@ export default function LifeDynamicsBreakdownBridge({ onNextLecture }: Props) {
           onClick={onNextLecture}
           className="shrink-0 px-5 py-3 rounded-xl bg-[#FFA000] hover:bg-[#FF8F00] text-[#1E3D34] font-bold text-sm shadow-md transition-all flex items-center gap-2 hover:translate-x-0.5"
         >
-          <span>第5講へ進む</span>
+          <span>病因・病機を学ぶ</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>

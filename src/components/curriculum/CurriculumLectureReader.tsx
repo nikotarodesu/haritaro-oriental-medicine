@@ -38,6 +38,7 @@ import { createCourseLectureHref, getCourseNextAction, type CourseJourney } from
 import { buildLearningReflectionHref } from "@/utils/learningReflection";
 import ClinicalLectureApplication from "@/components/clinical/ClinicalLectureApplication";
 import { getLectureShortcut } from "@/utils/lectureKeyboardNavigation";
+import { createGlossarySeenSnapshots } from "@/utils/glossaryOccurrences";
 
 interface Props {
   lecture: Lecture;
@@ -50,6 +51,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
   const [focusBanner, setFocusBanner] = useState<string | null>(null);
   const [resolvedCourse, setResolvedCourse] = useState<{ lectureId: string; journey: CourseJourney | null } | null>(null);
   const courseJourney = resolvedCourse?.lectureId === lecture.id ? resolvedCourse.journey : null;
+  const isClinicalStage = lecture.stageId === "stage-2" || lecture.stageId === "stage-3";
 
   const {
     isMounted,
@@ -168,8 +170,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
   );
   const isCompleted = isMounted && !!completedLectures[lecture.id];
 
-  const keyPointsSeenTerms = new Set<string>();
-  const bodySeenTerms = new Set<string>();
+  const keyPointsSeenTerms = createGlossarySeenSnapshots(lecture.keyPoints);
   const resolvedReferences = resolveArticleReferences(
     lecture.references,
     lecture.contentMarkdown
@@ -236,12 +237,12 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           <FontSizeControl variant="compact" />
 
           <Link
-            href="/simulator"
+            href={isClinicalStage ? "/simulator#case-training" : "/learn"}
             className="min-h-11 inline-flex items-center gap-1.5 text-sm font-bold text-[#B86924] dark:text-[#E6C387] bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F2D7B3] dark:border-[#4D331F] hover:bg-[#FBE9D5] px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl transition-colors"
           >
             <Layers className="w-4 h-4" />
-            <span className="hidden sm:inline">シミュレーターで試す</span>
-            <span className="sm:hidden">推論</span>
+            <span className="hidden sm:inline">{isClinicalStage ? "症例演習で考える" : "学習ガイドを見る"}</span>
+            <span className="sm:hidden">{isClinicalStage ? "症例演習" : "学習ガイド"}</span>
           </Link>
 
           <div className="flex items-center gap-1 text-sm text-[#59615D] dark:text-[#96A6B2]">
@@ -255,6 +256,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
       {courseJourney && <section aria-label="学習中のコース" className="rounded-2xl border border-[#C5DED4] bg-[#EBF3EF] p-4 text-[#184F49] dark:border-[#2A5243] dark:bg-[#182823] dark:text-[#9CCBBC]">
         <p className="text-sm font-semibold">{courseJourney.course.title} · ステップ {courseJourney.stepIndex + 1} / {courseJourney.course.steps.length}</p>
         <Link href={`/learn/courses/${courseJourney.course.slug}#course-next`} className="mt-2 inline-flex min-h-11 items-center gap-2 text-base font-bold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4"><ArrowLeft aria-hidden="true" className="h-4 w-4" />コースの進捗・到達目標へ</Link>
+        {courseJourney.miniCaseId && <Link href={`/learn/courses/${courseJourney.course.slug}#course-mini-case-${courseJourney.miniCaseId}`} className="ml-4 mt-2 inline-flex min-h-11 items-center gap-2 text-base font-bold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4"><ArrowLeft aria-hidden="true" className="h-4 w-4" />短い例に戻る</Link>}
       </section>}
       {!courseJourney && learningCourses.length > 0 && (
         <nav aria-label="この講義を含む学習コース" className="flex flex-wrap gap-2">
@@ -396,7 +398,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
                 {lecture.keyPoints.map((point, idx) => (
                   <li key={idx} className="flex items-start gap-2">
                     <span className="text-[#1E3D34] dark:text-[#74BA9E] font-bold shrink-0 mt-0.5">✓</span>
-                    <span><GlossaryRenderer text={point} seenTerms={keyPointsSeenTerms} /></span>
+                    <span><GlossaryRenderer text={point} seenTerms={keyPointsSeenTerms[idx]} /></span>
                   </li>
                 ))}
               </ul>
@@ -404,7 +406,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           )}
         </div>
 
-        <ClinicalLectureApplication lectureId={lecture.id} takeaway={lecture.whatYouWillLearn.canDo} />
+        {isClinicalStage && <ClinicalLectureApplication lectureId={lecture.id} takeaway={lecture.whatYouWillLearn.canDo} />}
         {readingQuestions.length > 0 && (
           <section aria-labelledby="lecture-reading-questions-title" className="space-y-3 rounded-2xl border border-[#D6E3DA] bg-[#F6F9F4] p-4 sm:p-5 dark:border-[#304A3E] dark:bg-[#172A22]">
             <h2 id="lecture-reading-questions-title" className="text-base font-bold text-[#1E3D34] dark:text-[#D9EDE0]">知りたいことから読む</h2>
@@ -440,7 +442,6 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
         <div id="lecture-content" className="scroll-mt-28">
         <MarkdownBody
           contentMarkdown={lecture.contentMarkdown}
-          seenTerms={bodySeenTerms}
           idPrefix="curriculum-heading"
           resolvedReferences={resolvedReferences}
           readingInserts={readingInserts}
@@ -544,20 +545,29 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           <Link href={buildLearningReflectionHref({ type: 'lecture', id: lecture.id })} onClick={() => trackEvent('context_link_click', { placement: 'lecture_reflection', lecture_id: lecture.id, item_type: 'learning_note' })} className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#184F49] px-4 py-3 text-base font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-4 dark:bg-[#285F54]"><FileText aria-hidden="true" className="h-4 w-4" />学習の振り返りを書く<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link>
         </section>
 
-        {/* 学びと実践をつなぐ臨床ツール連携バナー */}
-        <div className="bg-gradient-to-r from-[#FAF8F5] to-[#EBF3EF] dark:from-[#17212A] dark:to-[#13221C] rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] p-4 sm:p-5 shadow-2xs space-y-3">
+        {/* 既習の段階に合わせて、復習と症例演習を案内する。 */}
+        {!isClinicalStage ? (
+          <section aria-label="基礎を振り返る" className="rounded-2xl border border-[#C5DED4] bg-[#FAF8F5] p-4 sm:p-5 dark:border-[#2A5243] dark:bg-[#17212A]">
+            <h2 className="text-lg font-bold text-[#1E3D34] dark:text-[#74BA9E]">学んだ用語を、短い例でもう一度確かめる</h2>
+            <p className="mt-2 text-base leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">用語の意味を自分の言葉で説明し、事実と解釈を分けてみましょう。詳しい病態や治療方針は、後の章で学びます。</p>
+            <div className="mt-3 flex flex-wrap gap-3">
+              <Link href="/glossary" className="inline-flex min-h-11 items-center font-semibold text-[#1E3D34] underline underline-offset-4 dark:text-[#74BA9E]">用語辞典で振り返る</Link>
+              {courseJourney && <Link href={`/learn/courses/${courseJourney.course.slug}#course-mini-case-${courseJourney.course.seriesId}`} className="inline-flex min-h-11 items-center font-semibold text-[#1E3D34] underline underline-offset-4 dark:text-[#74BA9E]">このコースの短い例で考える</Link>}
+            </div>
+          </section>
+        ) : <div className="bg-gradient-to-r from-[#FAF8F5] to-[#EBF3EF] dark:from-[#17212A] dark:to-[#13221C] rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] p-4 sm:p-5 shadow-2xs space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-              学んだ理論を臨床ツールで試す
+              架空例で、情報整理と判断の根拠を練習する
             </span>
             <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
-              登録不要・即座に体験
+              後半の学習を振り返る
             </span>
           </div>
 
           <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-            講義で学んだ陰陽・気血水・病機の概念を、実際の所見整理や弁証推論ツールで検証してみましょう。
+            講義で学んだ概念を使って、教材の所見・解釈・不足情報を分けてみましょう。追加情報によって仮説を見直す練習につなげます。
           </p>
 
           <div className="flex flex-wrap gap-2.5 pt-1">
@@ -570,11 +580,11 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
             </Link>
 
             <Link
-              href="/simulator"
+              href="/simulator#case-training"
               className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#F2D7B3] dark:border-[#4D331F] hover:border-[#B86924] text-sm font-bold text-[#B86924] dark:text-[#E6C387] transition-all inline-flex items-center gap-1.5 shadow-2xs"
             >
               <Layers className="w-3.5 h-3.5" />
-              <span>弁証シミュレーターで推論</span>
+              <span>6段階の症例演習で振り返る</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
 
@@ -596,7 +606,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
-        </div>
+        </div>}
 
         {/* 講義受講修了フッター */}
         <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">

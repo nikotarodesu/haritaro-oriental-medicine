@@ -40,7 +40,7 @@ export default function HomeLearningProgressClient({ lectures }: { lectures: Res
               <p className="text-lg font-semibold">{unavailable ? '履歴を読み込めませんでした' : entry.title}</p>
               <p className="ui-muted">{unavailable ? '入門コースから学べます。履歴は削除していません。' : entry.reason}</p>
             </div>
-            <Link href={unavailable ? '/learn/courses/yinyang-foundations' : entry.href} onClick={() => trackEvent('context_link_click', { placement: 'learning_start', item_type: entry.started ? 'resume' : 'course' })}
+            <Link href={unavailable ? '/learn/courses/oriental-medicine-introduction' : entry.href} onClick={() => trackEvent('context_link_click', { placement: 'learning_start', item_type: entry.started ? 'resume' : 'course' })}
               className="ui-button ui-button-primary">
               {unavailable || !entry.started ? '入門コースへ' : '続きから学ぶ'}<ArrowRight aria-hidden="true" />
             </Link>

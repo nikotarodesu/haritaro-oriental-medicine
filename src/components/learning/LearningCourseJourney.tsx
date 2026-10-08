@@ -2,9 +2,9 @@ import { BookOpen, Check, RotateCcw } from 'lucide-react';
 
 export default function LearningCourseJourney() {
   const stages = [
-    { title: '講義を読む', description: '要点と図解から理解する', Icon: BookOpen },
-    { title: 'クイズで確かめる', description: '講義の最後で確認する', Icon: Check },
-    { title: '苦手を振り返る', description: '関連する解説へ戻る', Icon: RotateCcw },
+    { title: '短い例で考える', description: '最初は事実と不明点を分ける', Icon: Check },
+    { title: '必要な理論を読む', description: '講義・図解・クイズで確かめる', Icon: BookOpen },
+    { title: '同じ例を見直す', description: '解答例と比べ、考えた理由を振り返る', Icon: RotateCcw },
   ];
   return (
     <ol aria-label="コースの学び方" className="grid gap-3 sm:grid-cols-3">

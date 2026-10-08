@@ -1,40 +1,42 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { 
   Sparkles, 
   X, 
-  BookOpen, 
-  Compass, 
-  GraduationCap, 
-  Smartphone, 
   ArrowRight, 
-  CheckCircle2,
-  ChevronRight
 } from "lucide-react";
 
 const STORAGE_KEY = "haritaro_welcome_guide_dismissed";
+const STORAGE_EVENT = "haritaro-welcome-guide-change";
+
+function readDismissed() {
+  try { return Boolean(localStorage.getItem(STORAGE_KEY)); } catch { return false; }
+}
+function subscribeDismissed(onChange: () => void) {
+  window.addEventListener("storage", onChange);
+  window.addEventListener(STORAGE_EVENT, onChange);
+  return () => {
+    window.removeEventListener("storage", onChange);
+    window.removeEventListener(STORAGE_EVENT, onChange);
+  };
+}
+function serverDismissed() { return true; }
 
 export default function HomeWelcomeGuide() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const dismissed = localStorage.getItem(STORAGE_KEY);
-    if (!dismissed) {
-      // 初回訪問時のみ表示
-      setIsOpen(true);
-    }
-  }, []);
+  const dismissed = useSyncExternalStore(subscribeDismissed, readDismissed, serverDismissed);
+  const [closed, setClosed] = useState(false);
 
   const handleDismiss = () => {
-    setIsOpen(false);
-    localStorage.setItem(STORAGE_KEY, "true");
+    setClosed(true);
+    try {
+      localStorage.setItem(STORAGE_KEY, "true");
+      window.dispatchEvent(new Event(STORAGE_EVENT));
+    } catch { /* 保存できない端末でも、今回の案内は閉じられる。 */ }
   };
 
-  if (!mounted || !isOpen) return null;
+  if (dismissed || closed) return null;
 
   return (
     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#F5F1E8] via-[#FAF8F5] to-[#EAE3D4] dark:from-[#17222C] dark:via-[#131B23] dark:to-[#0F161C] border border-[#E3DAC6]/70 dark:border-[#22303D] px-4 py-3 sm:px-5 sm:py-3.5 shadow-2xs mb-5 transition-all duration-300">
@@ -45,16 +47,16 @@ export default function HomeWelcomeGuide() {
             はじめての方へ
           </span>
           <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] truncate">
-            理論・国試演習（全81講義）から臨床推論・患者カルテまでをひとつの場所で。
+            概論から基礎理論、臨床の基礎へ。学ぶ順番を学習ガイドで確認できます。
           </p>
         </div>
 
         <div className="flex items-center gap-3 shrink-0 self-end sm:self-auto text-xs">
           <Link
-            href="/about"
+            href="/learn"
             className="font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline inline-flex items-center gap-1"
           >
-            <span>制作理念と使い方</span>
+            <span>学習ガイドへ</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
           <button

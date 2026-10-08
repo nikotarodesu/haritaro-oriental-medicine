@@ -73,12 +73,12 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/learn/courses" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-                  目的別の3つの学習コース
+                  章ごとの基礎学習コース
                 </Link>
               </li>
               <li>
                 <Link href="/curriculum" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors font-medium">
-                  東洋医学カリキュラム（全81講義）
+                  東洋医学カリキュラム（全講義）
                 </Link>
               </li>
               <li>

@@ -1013,7 +1013,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
               <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                 <GraduationCap className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
-                <h2>この経穴が登場する講義教材（全81講義カリキュラム）</h2>
+                <h2>この経穴が登場する講義教材（体系学習カリキュラム）</h2>
               </div>
               <Link
                 href="/curriculum"

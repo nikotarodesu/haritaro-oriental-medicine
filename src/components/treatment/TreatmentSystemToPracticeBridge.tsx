@@ -6,10 +6,6 @@ import {
   Cog,
   ArrowRight,
   BookOpen,
-  CheckCircle2,
-  Workflow,
-  Stethoscope,
-  Layers,
 } from "lucide-react";
 
 interface Props {
@@ -150,7 +146,7 @@ export default function TreatmentSystemToPracticeBridge({ onNextLecture }: Props
           onClick={onNextLecture}
           className="shrink-0 px-5 py-3 rounded-xl bg-[#FFA000] hover:bg-[#FF8F00] text-[#1E3D34] font-bold text-sm shadow-md transition-all flex items-center gap-2 hover:translate-x-0.5"
         >
-          <span>第8講へ進む</span>
+          <span>統合症例へ進む</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>

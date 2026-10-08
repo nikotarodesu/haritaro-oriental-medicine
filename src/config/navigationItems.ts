@@ -55,7 +55,7 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
     id: "curriculum",
     label: "学びの総合案内",
     shortLabel: "学ぶ",
-    description: "目的別コース・全81講義・図解記事から学ぶ",
+    description: "目的別コース・全講義・図解記事から学ぶ",
     icon: GraduationCap,
     href: "/learn",
   },

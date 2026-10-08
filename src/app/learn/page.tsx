@@ -1,358 +1,59 @@
-import { pageSocialMetadata, SITE_NAME } from "@/config/seo";
-import { Metadata } from "next";
-import Link from "next/link";
-import { 
-  GraduationCap, 
-  BookOpen, 
-  Award, 
-  MapPin, 
-  RotateCcw, 
-  ArrowRight, 
-  Sparkles, 
-  CheckCircle2, 
-  Layers, 
-  Compass
-} from "lucide-react";
-import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
-import { TOOL_CATALOG } from "@/config/toolCatalog";
-import EightSystemsRoadmap from "@/components/EightSystemsRoadmap";
-import PrimeStudentCard from "@/components/PrimeStudentCard";
-import LearningCourseCards from "@/components/learning/LearningCourseCards";
-import LearningDiscovery from "@/components/learning/LearningDiscovery";
-import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
-import { LEARNING_COURSES } from "@/data/learningCourses";
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { ArrowRight, GraduationCap } from 'lucide-react';
+import { pageSocialMetadata, SITE_NAME } from '@/config/seo';
+import { LEARNING_COURSES } from '@/data/learningCourses';
+import { getCurriculumIndexCatalog } from '@/data/curriculumIndexCatalog';
+import { CURRICULUM_TOTAL_CHAPTERS, CURRICULUM_TOTAL_LESSONS, FIRST_CURRICULUM_LECTURE_ID } from '@/data/curriculumOutline';
+import HomeLearningProgressCard from '@/components/HomeLearningProgressCard';
+import { LearningMap } from '@/components/LearningMap';
+import LearningCourseCards from '@/components/learning/LearningCourseCards';
+import LearningCourseJourney from '@/components/learning/LearningCourseJourney';
+import LearningDiscovery from '@/components/learning/LearningDiscovery';
+import CourseMiniCase from '@/components/learning/CourseMiniCase';
+import ContentNavigationLink from '@/components/learning/ContentNavigationLink';
+import PrimeStudentCard from '@/components/PrimeStudentCard';
 
-const pageTitle = "東洋医学を基礎から学ぶ｜鍼灸学生・学び直し";
-const pageDescription = "陰陽の基礎・五行の関係・気血津液を目的別の短いコースで学ぶ。疑問から図解記事へ、全81講義の確認クイズと回答履歴に応じた復習へ進める、鍼灸学生と学び直しのための学習案内。";
-
+const pageTitle = '東洋医学を概論から学ぶ｜初学者・鍼灸学生';
+const pageDescription = `概論から陰陽・気血津液・臓腑・経絡へ。全${CURRICULUM_TOTAL_CHAPTERS}章${CURRICULUM_TOTAL_LESSONS}講と${LEARNING_COURSES.length}の短い基礎コースで、観察・理論・短い例の振り返りを通じて臨床の基礎を学びます。`;
 export const metadata: Metadata = {
-  title: pageTitle,
-  description: pageDescription,
-  alternates: {
-    canonical: "https://www.haritaro.jp/learn",
-  },
-  ...pageSocialMetadata(`${pageTitle} | ${SITE_NAME}`, pageDescription, "/learn"),
+  title: pageTitle, description: pageDescription,
+  alternates: { canonical: 'https://www.haritaro.jp/learn' },
+  ...pageSocialMetadata(`${pageTitle} | ${SITE_NAME}`, pageDescription, '/learn'),
 };
 
+const focusClass = 'focus-visible:outline-2 focus-visible:outline-offset-4';
+
 export default function LearnGuidePage() {
+  const catalog = getCurriculumIndexCatalog();
   return (
-    <div className="min-h-screen py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-12 sm:space-y-16">
-      {/* 1. ヘッダー ＆ 案内コピー */}
-      <section className="text-center max-w-3xl mx-auto space-y-4 sm:space-y-5">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EAEFF5] dark:bg-[#152331] text-[#1E2D3D] dark:text-[#7BAAD8] text-sm sm:text-base font-semibold shadow-2xs">
-          <GraduationCap className="w-4 h-4" />
-          <span>鍼灸学生・学び直したい方へ</span>
-        </div>
-
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-tight">
-          東洋医学を、基礎から体系的に学ぶ。
-        </h1>
-
-        <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-2xl mx-auto">
-          用語の丸暗記を脱却し、身体の動態システムとして理解する。
-          まずは短いコースで一つのテーマを整理。図解と講義で学び、確認クイズと日々の復習へ進めます。
-        </p>
-      </section>
-
-      <section aria-labelledby="learn-review-scope" className="space-y-2 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-4 sm:p-5">
-        <h2 id="learn-review-scope" className="text-base font-bold text-[#1E3D34] dark:text-[#74BA9E]">学習教材の確認状況</h2>
-        <p className="text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
-          伝統理論と医学的な評価を区別して学びます。全教材の医学記述の照合・専門家監修は未完了です。未確認の刺鍼深度・角度・針路などの個別手順は掲載を保留しています。
-        </p>
-        <Link href="/editorial-policy" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">
-          出典と確認範囲を見る<ArrowRight className="h-4 w-4" aria-hidden="true" />
-        </Link>
-      </section>
-
+    <main className="mx-auto max-w-6xl space-y-10 px-4 py-8 sm:px-6 sm:py-12">
+      <header className="max-w-3xl space-y-4">
+        <p className="flex items-center gap-2 text-sm font-semibold text-[#184F49] dark:text-[#9CCBBC]"><GraduationCap aria-hidden="true" className="h-5 w-5" />初学者・鍼灸学生のための学習案内</p>
+        <h1 className="font-serif text-3xl font-bold leading-relaxed sm:text-4xl">まず、東洋医学の全体像を知る。</h1>
+        <p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">何を学び、何のために使うのか。4つの概論から始め、基本用語、身体の働き、関係モデル、臨床の基礎へ進みます。短い例では、観察したこととまだ分からないことを分ける練習から始めます。</p>
+        <div className="flex flex-wrap gap-3"><ContentNavigationLink href="/learn/courses/oriental-medicine-introduction" placement="learn_intro_start" className={`inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#184F49] px-4 py-3 font-bold text-white dark:bg-[#285F54] ${focusClass}`}>4講の概論から始める<ArrowRight aria-hidden="true" className="h-4 w-4" /></ContentNavigationLink><Link href={`/curriculum/${FIRST_CURRICULUM_LECTURE_ID}`} className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>概論の第1講を開く</Link></div>
+      </header>
       <HomeLearningProgressCard />
-      <section aria-labelledby="learn-courses-title" className="space-y-5">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div className="space-y-2">
-            <h2 id="learn-courses-title" className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5] sm:text-2xl">一つのテーマを、順に学ぶ</h2>
-            <p className="text-base leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">目標と学ぶ順番が決まった、3つのコース。前回の続きもここから。</p>
-          </div>
-          <ContentNavigationLink href="/learn/courses" placement="learn_courses" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#83BEA8]">コースの選び方を見る<ArrowRight className="h-4 w-4" aria-hidden="true" /></ContentNavigationLink>
+
+      <section aria-labelledby="learn-routes-heading" className="space-y-5">
+        <h2 id="learn-routes-heading" className="font-serif text-2xl font-bold">短く見渡す、詳しく学ぶ。</h2>
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="space-y-3 rounded-2xl border border-[#C5DED4] bg-[#EBF3EF] p-5 dark:border-[#2A5243] dark:bg-[#182823]"><h3 className="text-xl font-bold">3〜5講の基礎コース</h3><p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">各章の入口になる講義を選び、全体像をつかみます。概論から順に進め、短い例で一つずつ考えます。</p><Link href="/learn/courses" className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>全{LEARNING_COURSES.length}コースを見る →</Link></div>
+          <div className="space-y-3 rounded-2xl border border-[#D9E3DD] p-5 dark:border-[#2A3B4A]"><h3 className="text-xl font-bold">全{catalog.chapters.length}章の体系学習</h3><p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">全{catalog.lectures.length}講を章の順番で詳しく学びます。基礎コースで省いた各論や総合演習も扱い、後半の症例演習につなげます。</p><Link href="/curriculum" className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>全講義の目次を見る →</Link></div>
         </div>
-        <LearningCourseCards courses={LEARNING_COURSES} placement="learn_course_select" />
+        <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">どちらも同じ講義を使い、受講記録は共通です。短いコースの完了と、章の全講義の完了は別々に確認できます。</p>
       </section>
+      <LearningCourseJourney />
+      <section aria-labelledby="learn-courses-heading" className="space-y-5"><h2 id="learn-courses-heading" className="font-serif text-2xl font-bold">最初の4コース</h2><LearningCourseCards courses={LEARNING_COURSES.slice(0, 4)} placement="learn_course_select" /><ContentNavigationLink href="/learn/courses" placement="learn_courses" className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>この後の学習順を見る →</ContentNavigationLink></section>
+      <CourseMiniCase seriesId="intro" />
+
+      <section aria-labelledby="learn-review-scope" className="space-y-3 rounded-2xl border border-[#C5DED4] bg-[#EBF3EF] p-5 dark:border-[#2A5243] dark:bg-[#182823]"><h2 id="learn-review-scope" className="text-lg font-bold">教材の用途と確認範囲</h2><p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">伝統理論と医学的な評価を区別して学びます。全教材の医学記述の照合・専門家監修は未完了です。未確認の刺鍼深度・角度・針路などの個別手順は掲載を保留しています。Web学習の受講完了は、実際の施術能力の認定を意味しません。</p><Link href="/editorial-policy" className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>出典と確認範囲を見る →</Link></section>
+
+      <LearningMap chapters={catalog.chapters} />
       <LearningDiscovery />
-      {/* 2. 4大学習スタート地点 */}
-      <section aria-label="学習の開始点" className="space-y-6">
-        <div className="text-center sm:text-left border-b border-[#E8E1D1] dark:border-[#22303D] pb-3">
-          <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-            目的に合わせて選べる4つの開始点
-          </h2>
-          <p className="text-sm sm:text-base text-[#737C77] dark:text-[#8899A6] mt-1">
-            今の学習段階や試験時期に合わせて、最適なアプローチから始められます。
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-          {/* 1. 基礎から順に学ぶ */}
-          <div className="bg-white dark:bg-[#17212A] rounded-2xl border-2 border-[#1E2D3D]/20 dark:border-[#7BAAD8]/30 hover:border-[#1E2D3D] dark:hover:border-[#7BAAD8] p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
-            <div className="space-y-3.5">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#EAEFF5] dark:bg-[#152331] text-[#1E2D3D] dark:text-[#7BAAD8] flex items-center justify-center font-bold">
-                  <BookOpen className="w-5 h-5" />
-                </div>
-                <span className="text-sm font-bold px-2.5 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
-                  全81講義・8章構成
-                </span>
-              </div>
-
-              <div>
-                <span className="text-sm font-semibold text-[#1E2D3D] dark:text-[#7BAAD8] block">
-                  基礎学習・学び直し
-                </span>
-                <h3 className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-0.5">
-                  基礎から順に学ぶ（カリキュラム）
-                </h3>
-              </div>
-
-              <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                陰陽五行、気血水、蔵象学説、病因病機から弁証論治まで。一つひとつの理論がつながるように設計された体系カリキュラムです。
-              </p>
-
-              {/* 初めての方向け「まずここから」の推奨講義 */}
-              <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] text-sm">
-                <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5 mb-1">
-                  <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                  まずここから始めるなら
-                </span>
-                <p className="text-[#59615D] dark:text-[#A0B0BC]">
-                  第1章 陰陽論「第1講：陰陽の起源と基本性質」から読み進めるのがおすすめです。
-                </p>
-              </div>
-            </div>
-
-            <div className="pt-5 mt-5 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center justify-between gap-3">
-              <Link
-                href="/curriculum/lecture-yinyang-1"
-                className="inline-flex min-h-11 items-center text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline focus-visible:outline-2 focus-visible:outline-offset-4"
-              >
-                第1講を開く →
-              </Link>
-              <Link
-                href="/curriculum"
-                className="inline-flex min-h-11 items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E2D3D] text-[#FAF8F5] dark:bg-[#7BAAD8] dark:text-[#121920] text-sm font-bold hover:opacity-90 transition-opacity"
-              >
-                <span>カリキュラム目次へ</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          </div>
-
-          {/* 2. 国試に向けて学ぶ */}
-          <div className="bg-white dark:bg-[#17212A] rounded-2xl border-2 border-[#B86924]/20 dark:border-[#E6C387]/30 hover:border-[#B86924] dark:hover:border-[#E6C387] p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
-            <div className="space-y-3.5">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center font-bold">
-                  <Award className="w-5 h-5" />
-                </div>
-                <span className="text-sm font-bold px-2.5 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387]">
-                  オリジナル4択演習
-                </span>
-              </div>
-
-              <div>
-                <span className="text-sm font-semibold text-[#B86924] dark:text-[#E6C387] block">
-                  試験対策・頻出論点
-                </span>
-                <h3 className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-0.5">
-                  国試に向けて学ぶ（国試演習ハブ）
-                </h3>
-              </div>
-
-              <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                {TOOL_CATALOG.kokushi.description}
-              </p>
-
-              <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] text-sm">
-                <span className="font-bold text-[#B86924] dark:text-[#E6C387] flex items-center gap-1.5 mb-1">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  解説と講義の相互リンク
-                </span>
-                <p className="text-[#59615D] dark:text-[#A0B0BC]">
-                  問題を解いて疑問が残ったら、関連するカリキュラム講義を1クリックで開いて復習できます。
-                </p>
-              </div>
-            </div>
-
-            <div className="pt-5 mt-5 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center justify-between gap-3">
-              <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
-                科目・テーマ別に確認
-              </span>
-              <Link
-                href="/kokushi"
-                className="inline-flex min-h-11 items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#B86924] text-white hover:bg-[#96531B] text-sm font-bold transition-all"
-              >
-                <span>国試ハブを開く</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          </div>
-
-          {/* 3. 経穴を調べる・覚える */}
-          <div className="bg-white dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34]/20 dark:border-[#74BA9E]/30 hover:border-[#1E3D34] dark:hover:border-[#74BA9E] p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
-            <div className="space-y-3.5">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center font-bold">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <span className="text-sm font-bold px-2.5 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
-                  全361穴 収録
-                </span>
-              </div>
-
-              <div>
-                <span className="text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] block">
-                  位置・分類・教育用の解剖模式図
-                </span>
-                <h3 className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-0.5">
-                  経穴を調べる・覚える（経穴辞典）
-                </h3>
-              </div>
-
-              <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                WHO標準部位の参照元、要穴分類、注意事項を分けて確認できます。断面ビューアは教育用の模式図です。個人の解剖や安全な刺鍼深度を示すものではありません。2穴比較で位置や分類の違いを学べます。
-              </p>
-
-              <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] text-sm">
-                <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5 mb-1">
-                  <Compass className="w-3.5 h-3.5" />
-                  配穴設計ツールへの追加
-                </span>
-                <p className="text-[#59615D] dark:text-[#A0B0BC]">
-                  経穴ページから配穴設計へ追加し、学習用の組み合わせと選定理由を整理できます。個別の施術適応は医学的評価と専門資料を基に判断します。
-                </p>
-              </div>
-            </div>
-
-            <div className="pt-5 mt-5 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center justify-between gap-3">
-              <Link
-                href="/tsubo/compare"
-                className="inline-flex min-h-11 items-center text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline focus-visible:outline-2 focus-visible:outline-offset-4"
-              >
-                2穴比較を開く →
-              </Link>
-              <Link
-                href="/tsubo"
-                className="inline-flex min-h-11 items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E3D34] text-[#FAF8F5] hover:bg-[#2B5A46] text-sm font-bold transition-all"
-              >
-                <span>経穴辞典を開く</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          </div>
-
-          {/* 4. 前回の続き・復習 */}
-          <div className="bg-white dark:bg-[#17212A] rounded-2xl border-2 border-[#B86924]/20 dark:border-[#E6C387]/30 hover:border-[#B86924] dark:hover:border-[#E6C387] p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
-            <div className="space-y-3.5">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center font-bold">
-                  <RotateCcw className="w-5 h-5" />
-                </div>
-                <span className="text-sm font-bold px-2.5 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387]">
-                  回答履歴に応じた間隔復習
-                </span>
-              </div>
-
-              <div>
-                <span className="text-sm font-semibold text-[#B86924] dark:text-[#E6C387] block">
-                  知識定着・デイリー演習
-                </span>
-                <h3 className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-0.5">
-                  前回の続き・復習（今日の復習）
-                </h3>
-              </div>
-
-              <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                講義クイズや経穴ドリルの回答履歴と内容の版に応じて、復習予定を表示します。同日の繰り返しで間隔を延ばさず、正誤の履歴に合わせて次の復習日を調整します。
-              </p>
-
-              <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EDE7D8] dark:border-[#22303D] text-sm">
-                <span className="font-bold text-[#B86924] dark:text-[#E6C387] flex items-center gap-1.5 mb-1">
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  スキマ時間の3分学習
-                </span>
-                <p className="text-[#59615D] dark:text-[#A0B0BC]">
-                  スマートフォンからいつでもサッと復習でき、学習のブランクを防ぎます。
-                </p>
-              </div>
-            </div>
-
-            <div className="pt-5 mt-5 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center justify-between gap-3">
-              <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
-                端末内に自動で進捗記録
-              </span>
-              <Link
-                href="/kokushi"
-                className="inline-flex min-h-11 items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#B86924] text-white hover:bg-[#96531B] text-sm font-bold transition-all"
-              >
-                <span>今日の復習を解く</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. 学びから実践へのつながり */}
-      <section className="bg-gradient-to-r from-[#FAF8F5] to-[#EBF3EF] dark:from-[#17212A] dark:to-[#13221C] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-4">
-        <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
-          <Layers className="w-4 h-4" />
-          <span>学びから臨床実践へのステップ</span>
-        </div>
-
-        <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-          知識を「覚える」だけで終わらせず、臨床で「考える」道具へ。
-        </h2>
-
-        <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-3xl">
-          気血水や弁証を学んだら、体質傾向チェックや弁証シミュレーターで、候補・根拠・不足する所見を整理できます。配穴設計では学習用の組み合わせと選定理由を考えます。これらは疾患の除外や確定診断、治療効果の保証を行うものではありません。
-        </p>
-
-        <div className="pt-2 flex flex-wrap gap-3">
-          <Link
-            href="/diagnosis"
-            className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#C5DED4] dark:border-[#2A5243] text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:border-[#1E3D34] transition-all inline-flex items-center gap-1.5"
-          >
-            <span>気血水体質チェックを試す</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-          <Link
-            href="/simulator"
-            className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#C5DED4] dark:border-[#2A5243] text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:border-[#1E3D34] transition-all inline-flex items-center gap-1.5"
-          >
-            <span>弁証シミュレーターを試す</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-          <Link
-            href="/clinical"
-            className="min-h-11 px-3.5 py-2 rounded-xl text-sm font-bold text-[#59615D] dark:text-[#A0B0BC] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5] transition-colors inline-flex items-center gap-1"
-          >
-            <span>鍼灸師向け臨床ツール案内を見る →</span>
-          </Link>
-        </div>
-      </section>
-
-      {/* 4. 全8章ロードマップ */}
-      <section className="space-y-4">
-        <div className="border-b border-[#E8E1D1] dark:border-[#22303D] pb-3">
-          <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-            全8章カリキュラムの全体像
-          </h2>
-          <p className="text-sm sm:text-base text-[#737C77] dark:text-[#8899A6] mt-0.5">
-            各章をクリックすると講義一覧へ直接移動できます。
-          </p>
-        </div>
-        <EightSystemsRoadmap />
-      </section>
-
-      {/* 5. 鍼灸学生向け支援案内（Prime Student） */}
-      <section aria-label="学生向け支援" className="pt-4">
-        <PrimeStudentCard variant="banner" />
-      </section>
-    </div>
+      <section aria-labelledby="learn-practice-heading" className="space-y-4"><h2 id="learn-practice-heading" className="font-serif text-2xl font-bold">学んだことを確かめる</h2><p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">各講義の確認クイズと復習で用語を確かめます。病機・診断以降では、章の学習を踏まえ、追加情報で判断を更新する症例演習へ進みます。</p><nav aria-label="学習内容を確かめる" className="flex flex-wrap gap-3">{[{ href: '/kokushi#learning-review', label: '今日の復習' }, { href: '/kokushi', label: '国試演習' }, { href: '/tsubo/practice', label: '経穴の基本演習' }, { href: '/simulator#case-training', label: '後半の6段階症例演習' }, { href: '/notes?tab=learning', label: '学習の振り返り' }].map(link => <Link key={link.href} href={link.href} className={`inline-flex min-h-11 items-center rounded-xl border border-[#D9E3DD] px-4 font-semibold text-[#184F49] dark:border-[#2A3B4A] dark:text-[#9CCBBC] ${focusClass}`}>{link.label}</Link>)}</nav></section>
+      <PrimeStudentCard variant="banner" />
+    </main>
   );
 }

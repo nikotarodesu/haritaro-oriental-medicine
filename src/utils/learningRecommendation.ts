@@ -66,12 +66,16 @@ export function getLearningRecommendation(input: RecommendationInput): LearningR
     const next = getCourseProgress(nextCourse, completed).nextStep!;
     return { kind: 'course', title: next.title, reason: Object.values(completed).some(Boolean)
       ? `「${nextCourse.title}」の未完了ステップから、基礎を一つずつ整理します。`
-      : 'はじめてなら陰陽の基本から。短い講義と確認クイズで、次の学習の土台を作ります。',
+      : 'はじめてなら東洋医学の概論から。学ぶ範囲と全体像を知り、短い例で観察と解釈を分けます。',
       href: createCourseLectureHref(nextCourse.slug, next.lectureId), action: 'この講義を始める' };
   }
+  const nextLecture = lectures.find(lecture => !completed[lecture.id]);
+  if (nextLecture) return { kind: 'lecture', title: nextLecture.title,
+    reason: '短いコースで学んだ内容を、体系講義で深めます。未完了の講義から続けられます。',
+    href: `/curriculum/${nextLecture.id}`, action: '体系講義を続ける' };
   const counts = new Map<string, number>();
   for (const attempt of caseAttempts) counts.set(attempt.caseId, (counts.get(attempt.caseId) || 0) + 1);
   const nextCase = [...CASES].sort((a, b) => (counts.get(a.id) || 0) - (counts.get(b.id) || 0))[0];
-  return { kind: 'case', title: nextCase.title, reason: '3つの基礎コースを終えました。取り組んだ回数が少ない症例で、判断とその根拠を練習しましょう。',
+  return { kind: 'case', title: nextCase.title, reason: '体系講義を終えました。取り組んだ回数が少ない症例で、判断とその根拠を練習しましょう。',
     href: `/simulator?case=${nextCase.id}#case-training`, action: '症例で考える' };
 }

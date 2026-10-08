@@ -45,8 +45,7 @@ import {
   QIXUESHUI_OPTIONS,
   ZANGFU_OPTIONS,
   synthesizeComprehensiveDiagnosis,
-  ComprehensiveDiagnosis,
-  AcupointOption
+  ComprehensiveDiagnosis
 } from "@/data/simulatorData";
 import { saveDraftPatientNote } from "@/utils/draftNote";
 import type { SafetyReview } from "@/data/simulatorReasoning";
@@ -88,7 +87,7 @@ function getRelatedLectures(
   if (complexState !== "none") {
     pathomechanism = {
       id: "lecture-pathomechanism-10",
-      chapter: "第5講 レッスン10",
+      chapter: "病機論 レッスン10",
       title: "慢性化と複合病態（虚実挟雑・本虚標実・寒熱錯雑）",
     };
   } else {
@@ -96,7 +95,7 @@ function getRelatedLectures(
       case "qixu":
         pathomechanism = {
           id: "lecture-pathomechanism-3",
-          chapter: "第5講 レッスン3",
+          chapter: "病機論 レッスン3",
           title: "気の不足と運動の失調（気虚の病理機序）",
         };
         break;
@@ -104,49 +103,49 @@ function getRelatedLectures(
       case "qini":
         pathomechanism = {
           id: "lecture-pathomechanism-3",
-          chapter: "第5講 レッスン3",
+          chapter: "病機論 レッスン3",
           title: "気の不足と運動の失調（気滞・気逆の病理機序）",
         };
         break;
       case "xuexu":
         pathomechanism = {
           id: "lecture-pathomechanism-5",
-          chapter: "第5講 レッスン5",
+          chapter: "病機論 レッスン5",
           title: "血の失調と瘀血の形成（血虚の生起機序）",
         };
         break;
       case "yuxue":
         pathomechanism = {
           id: "lecture-pathomechanism-5",
-          chapter: "第5講 レッスン5",
+          chapter: "病機論 レッスン5",
           title: "血の失調と瘀血の形成（瘀血・脈絡阻滞）",
         };
         break;
       case "shuitai":
         pathomechanism = {
           id: "lecture-pathomechanism-4",
-          chapter: "第5講 レッスン4",
+          chapter: "病機論 レッスン4",
           title: "津液代謝の失調（水湿・痰濁の病理機序）",
         };
         break;
       case "yinxu":
         pathomechanism = {
           id: "lecture-pathomechanism-6",
-          chapter: "第5講 レッスン6",
+          chapter: "病機論 レッスン6",
           title: "寒熱と陰陽の失調（陰虚内熱・虚熱病機）",
         };
         break;
       case "yangxu":
         pathomechanism = {
           id: "lecture-pathomechanism-6",
-          chapter: "第5講 レッスン6",
+          chapter: "病機論 レッスン6",
           title: "寒熱と陰陽の失調（陽虚生寒・虚寒病機）",
         };
         break;
       default:
         pathomechanism = {
           id: "lecture-pathomechanism-1",
-          chapter: "第5講 レッスン1",
+          chapter: "病機論 レッスン1",
           title: "病機とは何か（病因・病機・証の思考体系）",
         };
         break;
@@ -158,25 +157,25 @@ function getRelatedLectures(
   if (qixueshui === "qixu" || qixueshui === "qizhi" || qixueshui === "qini") {
     treatment = {
       id: "lecture-treatment-5",
-      chapter: "第7講 レッスン5",
+      chapter: "治法論 レッスン5",
       title: "気への治法を整理する（補気・理気・降気）",
     };
   } else if (qixueshui === "xuexu" || qixueshui === "yuxue" || qixueshui === "shuitai" || qixueshui === "yinxu") {
     treatment = {
       id: "lecture-treatment-6",
-      chapter: "第7講 レッスン6",
+      chapter: "治法論 レッスン6",
       title: "血・津液への治法を整理する（養血・活血・滋陰・利水化痰）",
     };
   } else if (qixueshui === "yangxu") {
     treatment = {
       id: "lecture-treatment-3",
-      chapter: "第7講 レッスン3",
+      chapter: "治法論 レッスン3",
       title: "補瀉・寒熱の原則を理解する（温補陽気）",
     };
   } else {
     treatment = {
       id: "lecture-treatment-2",
-      chapter: "第7講 レッスン2",
+      chapter: "治法論 レッスン2",
       title: "証から治則・治法へつなぐ（多層構造と判断）",
     };
   }
@@ -409,7 +408,7 @@ export default function ThreeStageSimulator() {
         scrollY: window.scrollY
       };
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
-    } catch (e) {
+    } catch {
       // 保存不可時は無視
     }
   }, [
@@ -523,7 +522,7 @@ export default function ThreeStageSimulator() {
     if (typeof window !== "undefined") {
       try {
         sessionStorage.removeItem(STORAGE_KEY);
-      } catch (e) {}
+      } catch {}
     }
   };
 
@@ -666,7 +665,7 @@ export default function ThreeStageSimulator() {
               <Link
                 href="/curriculum/lecture-pathomechanism-1"
                 className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
-                title="第5章 病因病機学説：病機とは何か（八綱・病理の整理）"
+                title="病因・病機：病機とは何か（八綱・病理の整理）"
               >
                 <span>八綱・病機の解説講義を読む</span>
                 <ArrowRight className="w-3 h-3" />
@@ -771,9 +770,9 @@ export default function ThreeStageSimulator() {
               <Link
                 href="/curriculum/lecture-qiblood-1"
                 className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
-                title="第3講 気血水論：生命を巡る基本三要素"
+                title="気血津液論：基本用語と役割"
               >
-                <span>講義で学ぶ（第3講）</span>
+                <span>気血津液の基礎を学ぶ</span>
                 <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
@@ -1242,9 +1241,9 @@ export default function ThreeStageSimulator() {
               <Link
                 href="/curriculum/lecture-treatment-1"
                 className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
-                title="第7講 治法論：証から治則・治法・配穴設計へ"
+                title="治法論：証から治則・治法・配穴設計へ"
               >
-                <span>治法論（第7講）で学ぶ</span>
+                <span>治法論で学ぶ</span>
                 <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
@@ -1813,7 +1812,7 @@ export default function ThreeStageSimulator() {
                     <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
                     <span className="text-[#59615D] dark:text-[#A0B0BC]">配穴の論理的根拠を深める：</span>
                     <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">
-                      第7講 レッスン8「経絡・経穴を選択する（局所遠隔・要穴の配穴設計）」
+                      治法論 レッスン8「経絡・経穴を選択する（局所遠隔・要穴の配穴設計）」
                     </span>
                   </div>
                   <Link

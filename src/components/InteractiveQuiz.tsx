@@ -24,6 +24,7 @@ import { questionRevision, shuffledIndices } from '@/utils/learningReview';
 import QuestionEvidence from '@/components/learning/QuestionEvidence';
 import Link from 'next/link';
 import { getLearningCourse } from '@/data/learningCourses';
+import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
 import { getCourseNextAction, type CourseJourney } from '@/utils/courseJourney';
 
 interface InteractiveQuizProps {
@@ -128,6 +129,11 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
   const activeCourseJourney = courseJourney?.lectureId === quiz.lectureId ? courseJourney : null;
   const courseNextAction = activeCourseJourney ? getCourseNextAction(activeCourseJourney, completedLectures) : null;
   const nextCourse = activeCourseJourney?.course.nextCourseSlug ? getLearningCourse(activeCourseJourney.course.nextCourseSlug) : undefined;
+  const chapter = CURRICULUM_CHAPTERS_META.find(item => item.lectureIds.includes(quiz.lectureId));
+  const isClinicalStage = chapter?.stageId === 'stage-2' || chapter?.stageId === 'stage-3';
+  const practiceHref = isClinicalStage ? '/simulator#case-training'
+    : activeCourseJourney ? `/learn/courses/${activeCourseJourney.course.slug}#course-mini-case-${activeCourseJourney.course.seriesId}` : '/glossary';
+  const practiceLabel = isClinicalStage ? '症例で確認' : activeCourseJourney ? '短い例で確認' : '用語を確認';
 
   const celebrationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const measuredAttempt = useRef({ lectureId: quiz.lectureId, started: false, answered: new Set<string>() });
@@ -633,7 +639,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                         {q.explanation}
                       </p>
                       <QuestionEvidence lectureId={quiz.lectureId} revision={questionRevision(q.question, q.options, q.correctIndex, q.explanation)} />
-                      <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">次回復習：{quizResults[q.id]?.nextReviewDate || '翌日'}。<Link className="underline" href="/kokushi#learning-review">復習と類題へ</Link> ／ <Link className="underline" href="/simulator#case-training">症例で確認</Link></p>
+                      <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">次回復習：{quizResults[q.id]?.nextReviewDate || '翌日'}。<Link className="underline" href="/kokushi#learning-review">復習と類題へ</Link> ／ <Link className="underline" href={practiceHref}>{practiceLabel}</Link></p>
                     </div>
 
                     {/* 講義の該当箇所へスクロールして復習するボタン */}

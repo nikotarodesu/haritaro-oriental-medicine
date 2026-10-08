@@ -21,6 +21,24 @@ export interface PlannedCurriculumLecturePreview {
 }
 
 export interface CurriculumIndexCatalog {
+  chapters: readonly CurriculumChapterPreview[];
   lectures: readonly CurriculumLecturePreview[];
   plannedLessons: Record<string, readonly PlannedCurriculumLecturePreview[]>;
+}
+
+export interface CurriculumChapterPreview {
+  chapterNumber: number;
+  id: string;
+  seriesId: string;
+  title: string;
+  shortTitle: string;
+  lead: string;
+  description: string;
+  plannedLessons: number;
+  lectureIds: readonly string[];
+  firstLectureId?: string;
+  stageId: string;
+  stageTitle: string;
+  goal: string;
+  courseSlug: string;
 }

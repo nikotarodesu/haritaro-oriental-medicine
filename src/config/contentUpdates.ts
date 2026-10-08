@@ -1,8 +1,11 @@
+import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
+import { LEARNING_COURSES } from '@/data/learningCourses';
+
 /** Significant content revisions only; never replace these with the build date. */
 export const SITE_REVISED_AT = '2026-10-02';
 export const ACUPOINT_PAGE_REVISED_AT = '2026-10-08';
 export const PAGE_REVISIONS: Record<string, string> = {
-  '/learn': '2026-10-04', '/kokushi': '2026-10-08',
+  '/learn': '2026-10-08', '/kokushi': '2026-10-08',
   '/simulator': '2026-10-04',
   '/articles': '2026-10-03', '/contact': SITE_REVISED_AT,
   '/tsubo/practice': '2026-10-04', '/pricing': SITE_REVISED_AT,
@@ -26,8 +29,13 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/curriculum/lecture-qiblood-3': '2026-10-08',
   '/curriculum/lecture-qiblood-4': '2026-10-08',
   '/curriculum/lecture-qiblood-5': '2026-10-08',
+  // 2026-10-08: chapter structure, learning order and lesson navigation were revised.
+  ...Object.fromEntries(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [`/curriculum/${id}`, '2026-10-08']))),
+  ...Object.fromEntries(LEARNING_COURSES.map(course => [`/learn/courses/${course.slug}`, '2026-10-08'])),
+  '/learn/courses': '2026-10-08',
 };
 export const SITE_UPDATES = [
+  { date: '2026-10-08', label: '概論から始まるカリキュラムへ再構成', href: '/learn', text: '概論4講・臓腑5講・経絡4講を追加し、気血津液と臓腑の基礎を五行より前へ。短いコースと体系学習の順序、各章の学習例、理論から例へ戻る導線と確認問題を整備' },
   { date: '2026-10-08', label: '教材の整合性・復習の継続・一覧表示を改善', href: '/curriculum', text: '体質傾向の検索用情報と気血水の本文・図解・確認問題を学習用途に統一。用語の参照先と表記ゆれ検索、解説から戻る復習の途中保存、ブラウザの戻る操作を改善し、講義一覧の読み込みを軽量化' },
   { date: '2026-10-08', label: '症状別の入口・検索・出典を改善', href: '/symptoms', text: '症状ごとの学習ガイドと検索の目的別表示を整備。経穴の位置と注意を冒頭へ移し、本文・構造化データ・AI向け案内の整合性と文献の確認範囲を見直し' },
   { date: '2026-10-05', label: 'スマホの表示と操作を整理', href: '/', text: 'トップの改行・余白・情報順序と検索欄を整理。保存一覧をその他メニューへ移し、文字拡大と固定ナビに合わせた表示を整備' },

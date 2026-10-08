@@ -104,5 +104,5 @@ const positions = resolveReadingInsertions(sampleBlocks, [{ afterHeading: 'A', a
 assert.equal(sampleBlocks[Array.from(positions.keys())[0]].content, 'Two.');
 assert.equal(resolveReadingInsertions(sampleBlocks, [{ afterHeading: 'Missing', afterParagraph: 1, figure: marker }]).size, 0);
 assert.equal(resolveReadingInsertions(sampleBlocks, [{ afterHeading: 'B', afterParagraph: 2, figure: marker }]).size, 0);
-assert.equal(checkedFigures, 26);
+assert.equal(checkedFigures, 27);
 console.log(`Passed: ${ARTICLES.length} articles, ${Object.keys(CURRICULUM_READING_INSERTS).length} lectures, ${checkedFigures} figure placements/renderings, stable heading anchors, 36 related destinations, and metadata-only article previews.`);

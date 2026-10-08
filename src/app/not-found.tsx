@@ -4,7 +4,6 @@ import {
   BookOpen, 
   Stethoscope, 
   Layers, 
-  Award, 
   Home, 
   ArrowRight,
   AlertCircle 
@@ -78,7 +77,7 @@ export default function NotFound() {
                 </div>
                 <div>
                   <span className="font-serif text-xs font-bold text-[#232826] dark:text-[#FAF8F5] block group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
-                    学習カリキュラム（全81講義）
+                    学習カリキュラム（全講義）
                   </span>
                   <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
                     陰陽五行・気血水・臓腑弁証

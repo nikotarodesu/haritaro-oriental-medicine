@@ -1,5 +1,21 @@
-// Public material metadata only. Keep in sync with curriculumData/progressiveCases; checked by learning-notebook-regression.
+// Generated public metadata only. Run node scripts/generate-learning-reflections.cjs after curriculum edits.
 export const REFLECTION_LECTURES: ReadonlyArray<{id: string; title: string}> = [
+  {
+    "id": "lecture-intro-1",
+    "title": "東洋医学概論 レッスン1：東洋医学とは何か"
+  },
+  {
+    "id": "lecture-intro-2",
+    "title": "東洋医学概論 レッスン2：臨床の全体像"
+  },
+  {
+    "id": "lecture-intro-3",
+    "title": "東洋医学概論 レッスン3：伝統概念・現代医学・根拠の読み方"
+  },
+  {
+    "id": "lecture-intro-4",
+    "title": "東洋医学概論 レッスン4：観察事実・解釈・不明点を分ける"
+  },
   {
     "id": "lecture-yinyang-1",
     "title": "陰陽論 レッスン1：陰陽とは何か"
@@ -33,56 +49,44 @@ export const REFLECTION_LECTURES: ReadonlyArray<{id: string; title: string}> = [
     "title": "陰陽論 レッスン8：総合演習・次章への接続"
   },
   {
-    "id": "lecture-wuxing-1",
-    "title": "五行論 レッスン1：五行論とは何か"
-  },
-  {
-    "id": "lecture-wuxing-2",
-    "title": "五行論 レッスン2：木・火・土・金・水の性質"
-  },
-  {
-    "id": "lecture-wuxing-3",
-    "title": "五行論 レッスン3：五行の相互作用系 ― 相生・相剋・相乗・相侮のフィードバック制御"
-  },
-  {
-    "id": "lecture-wuxing-4",
-    "title": "五行論 レッスン4：五行から五臓へ ― 機能モジュールの対応"
-  },
-  {
-    "id": "lecture-wuxing-5",
-    "title": "五行論 レッスン5：五臓と身体器官・組織の対応連動"
-  },
-  {
-    "id": "lecture-wuxing-6",
-    "title": "五行論 レッスン6：五神五志 ― 五臓と感情・精神活動の生理病理"
-  },
-  {
-    "id": "lecture-wuxing-7",
-    "title": "五行論 レッスン7：自然環境・生活リズムと五行の連動"
-  },
-  {
-    "id": "lecture-wuxing-8",
-    "title": "五行論 レッスン8：五行思考の臨床推論アルゴリズムと総合演習"
-  },
-  {
     "id": "lecture-qiblood-1",
-    "title": "気血水理論 レッスン1：気血水の全体像と「気」の伝統的分類"
+    "title": "気血津液論 レッスン1：気・血・津液の概観と気の基本作用"
   },
   {
     "id": "lecture-qiblood-2",
-    "title": "気血水理論 レッスン2：「血」の働きと血虚・瘀血の伝統的分類"
+    "title": "気血津液論 レッスン2：血の基本的な役割"
   },
   {
     "id": "lecture-qiblood-3",
-    "title": "気血水理論 レッスン3：「水・津液」と水滞・痰飲の伝統的分類"
+    "title": "気血津液論 レッスン3：津液の基本的な役割"
   },
   {
     "id": "lecture-qiblood-4",
-    "title": "気血水理論 レッスン4：気・血・水の関係と現代医学との比較"
+    "title": "気血津液論 レッスン4：気・血・津液の正常な関係"
   },
   {
     "id": "lecture-qiblood-5",
-    "title": "気血水理論 レッスン5：気血水の分類を使う学習演習"
+    "title": "気血津液論 レッスン5：基本用語を使う一判断演習"
+  },
+  {
+    "id": "lecture-zangfu-1",
+    "title": "臓腑の基礎 レッスン1：臓腑とは何を表すか"
+  },
+  {
+    "id": "lecture-zangfu-2",
+    "title": "臓腑の基礎 レッスン2：肺と心の働き"
+  },
+  {
+    "id": "lecture-zangfu-3",
+    "title": "臓腑の基礎 レッスン3：脾胃の働き"
+  },
+  {
+    "id": "lecture-zangfu-4",
+    "title": "臓腑の基礎 レッスン4：肝と腎の働き"
+  },
+  {
+    "id": "lecture-zangfu-5",
+    "title": "臓腑の基礎 レッスン5：六腑・表裏関係と全身の統合"
   },
   {
     "id": "lecture-lifedynamics-1",
@@ -131,6 +135,54 @@ export const REFLECTION_LECTURES: ReadonlyArray<{id: string; title: string}> = [
   {
     "id": "lecture-lifedynamics-12",
     "title": "総合演習・次章への接続"
+  },
+  {
+    "id": "lecture-wuxing-1",
+    "title": "五行論 レッスン1：五行とは何か ― 五つの分類を学ぶ"
+  },
+  {
+    "id": "lecture-wuxing-2",
+    "title": "五行論 レッスン2：五行の基本的な性質 ― 曲直・炎上・稼穡・従革・潤下"
+  },
+  {
+    "id": "lecture-wuxing-3",
+    "title": "五行論 レッスン3：五行の相互関係 ― 相生・相剋・相乗・相侮"
+  },
+  {
+    "id": "lecture-wuxing-4",
+    "title": "五行論 レッスン4：既習の五臓を五行で整理する"
+  },
+  {
+    "id": "lecture-wuxing-5",
+    "title": "五行論 レッスン5：五官・五体・五華の伝統的な配当"
+  },
+  {
+    "id": "lecture-wuxing-6",
+    "title": "五行論 レッスン6：五神・五志の伝統的な配当"
+  },
+  {
+    "id": "lecture-wuxing-7",
+    "title": "五行論 レッスン7：季節・気候・五味の伝統的な配当"
+  },
+  {
+    "id": "lecture-wuxing-8",
+    "title": "五行論 レッスン8：関係の説明・根拠・保留の総合演習"
+  },
+  {
+    "id": "lecture-meridians-1",
+    "title": "経絡・経穴の基礎 レッスン1：経絡と経穴とは何か"
+  },
+  {
+    "id": "lecture-meridians-2",
+    "title": "経絡・経穴の基礎 レッスン2：十二経脈の名称と全体像"
+  },
+  {
+    "id": "lecture-meridians-3",
+    "title": "経絡・経穴の基礎 レッスン3：経穴の位置と分類を学ぶ基礎"
+  },
+  {
+    "id": "lecture-meridians-4",
+    "title": "経絡・経穴の基礎 レッスン4：所見と経絡を関連づける学習演習"
   },
   {
     "id": "lecture-pathomechanism-1",

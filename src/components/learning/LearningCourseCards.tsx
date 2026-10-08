@@ -9,6 +9,7 @@ import { useLearningSync } from '@/contexts/LearningSyncContext';
 import { useProgressAvailability } from '@/hooks/useProgressAvailability';
 
 const shortDescriptions: Record<string, string> = {
+  'oriental-medicine-introduction': '学ぶ目的と全体像を知り、事実と不明点を分けます。',
   'yinyang-foundations': '比較の基準と、陰陽の関係・変化を学びます。',
   'five-elements-relations': '五行の相生・相剋と、五臓への配当を整理します。',
   'qi-blood-fluid': '気・血・津液の伝統的な役割と用語を見分けます。',
@@ -31,7 +32,7 @@ export default function LearningCourseCards({ courses, placement = 'course_selec
             </div>}
             <h3 className="font-serif text-xl font-bold leading-relaxed text-[#232826] dark:text-[#E6EFEA]">{course.title}</h3>
             <p className="mt-3 text-base leading-[1.7] ui-muted">{compact ? shortDescriptions[course.slug] || course.description : course.description}</p>
-            <p className="mt-4 text-sm ui-muted">{course.steps.length}ステップ · 講義と確認クイズ</p>
+            <p className="mt-4 text-sm ui-muted">{course.steps.length}講 · 理論と短い例の振り返り</p>
             <div className="mt-auto pt-5">
               <p className="mb-2 text-sm ui-muted">{availability === 'ready' ? `${progress.completedCount} / ${course.steps.length} 講義完了` : availability === 'loading' ? '進捗を確認中…' : '進捗を取得できませんでした'}</p>
               {availability === 'ready' && <progress className="h-1.5 w-full overflow-hidden rounded-full accent-[#184F49] dark:accent-[#9CCBBC]" value={progress.completedCount} max={course.steps.length} aria-label={`${course.title}の受講進捗`} />}

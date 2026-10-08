@@ -254,7 +254,7 @@ export default function GlobalSearchModal({
       tags: ["症例", "段階式", "症例演習", "判断根拠", "安全確認", "再評価"],
     })));
 
-    // 2. 講義カリキュラム（全81レッスン）
+    // 2. 講義カリキュラム（全講義）
     CURRICULUM_DATA.forEach((chapter) => {
       chapter.lectures.forEach((lec) => {
         list.push({

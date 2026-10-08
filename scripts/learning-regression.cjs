@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- CommonJS offline regression runner. */
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -28,9 +29,10 @@ const { PROGRESSIVE_CASES } = load('src/data/progressiveCases');
 const { computeNextReview } = load('src/data/tsubo/studyStorage');
 
 const lectureIds = new Set(CURRICULUM_DATA.flatMap(s => s.lectures).map(l => l.id));
-assert.equal(Object.keys(CURRICULUM_QUIZZES).length, 81);
-assert.equal(LEARNING_QUESTIONS.length, 253);
-assert.equal(new Set(LEARNING_QUESTIONS.map(q => q.id)).size, 253);
+assert.equal(Object.keys(CURRICULUM_QUIZZES).length, lectureIds.size);
+const expectedQuestionCount = Object.values(CURRICULUM_QUIZZES).reduce((count, quiz) => count + quiz.questions.length, 0) + KOKUSHI_PAST_EXAMS.length;
+assert.equal(LEARNING_QUESTIONS.length, expectedQuestionCount);
+assert.equal(new Set(LEARNING_QUESTIONS.map(q => q.id)).size, expectedQuestionCount);
 const progressCatalog = getLearningProgressCatalog();
 const publishedCount = CURRICULUM_DATA.flatMap(chapter=>chapter.lectures).length;
 assert.equal(progressCatalog.totalPublished, publishedCount);
@@ -132,4 +134,4 @@ for (const c of PROGRESSIVE_CASES) {
   assert.equal(c.steps.length,6); assert(lectureIds.has(c.lectureId));
   for (const step of c.steps) { assert.equal(step.options.filter(o=>o.points===2).length,1); assert(step.reveal); }
 }
-console.log(`Passed: 253 learning questions, ${generatedCount} generated acupoint questions, review intervals/revisions, ${scenarios} simulator combinations and 18 case decisions.`);
+console.log(`Passed: ${LEARNING_QUESTIONS.length} learning questions, ${generatedCount} generated acupoint questions, review intervals/revisions, ${scenarios} simulator combinations and 18 case decisions.`);

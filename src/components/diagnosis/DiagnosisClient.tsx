@@ -27,7 +27,6 @@ import {
   Check,
   Minus,
   MessageSquare,
-  ShieldCheck,
   UserCheck,
   Share2,
   Copy,
@@ -606,7 +605,7 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
                             </span>
                           </div>
                           <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] block mt-0.5">
-                            第5章 病因病機学説「{targetLecture.lectureTitle}」で病理機序を詳しく学べます。
+                            病因・病機の講義「{targetLecture.lectureTitle}」で詳しく学べます。
                           </span>
                         </div>
                       </div>

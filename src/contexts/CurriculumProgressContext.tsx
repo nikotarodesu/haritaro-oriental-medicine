@@ -5,6 +5,11 @@ import type { LearningProgressCatalog } from '@/types/learningProgressCatalog';
 import { ReviewSchedule, localStudyDate, updateReviewSchedule } from '@/utils/learningReview';
 import { useLearningSync } from '@/contexts/LearningSyncContext';
 import { validQuizRecord, mergeQuizAttempts } from '@/utils/learningQuizHistory';
+import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
+
+const CURRENT_LECTURE_IDS = new Set(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds));
+const CHAPTER_LECTURE_IDS = new Map(CURRICULUM_CHAPTERS_META.flatMap(chapter =>
+  [chapter.id, chapter.progressKey, chapter.seriesId].map(key => [key, new Set(chapter.lectureIds)] as const)));
 
 export interface QuizResultRecord extends ReviewSchedule {
   questionId: string;
@@ -107,7 +112,7 @@ export function CurriculumProgressProvider({ children, catalog }: { children: Re
   };
 
   const totalCompleted = Object.keys(completedLectures).filter(
-    (key) => completedLectures[key]
+    (key) => CURRENT_LECTURE_IDS.has(key) && completedLectures[key]
   ).length;
 
   const totalPercentage = Math.min(
@@ -115,32 +120,16 @@ export function CurriculumProgressProvider({ children, catalog }: { children: Re
     Math.round((totalCompleted / TOTAL_ALL_LECTURES) * 100)
   );
 
-const CHAPTER_PREFIX_MAP: Record<string, string[]> = {
-  'yin-yang': ['lecture-yinyang-'],
-  'yinyang': ['lecture-yinyang-'],
-  'five-elements': ['lecture-wuxing-'],
-  'wuxing': ['lecture-wuxing-'],
-  'qi-blood-water': ['lecture-qiblood-'],
-  'qiblood': ['lecture-qiblood-'],
-  'vital-function': ['lecture-lifedynamics-'],
-  'lifedynamics': ['lecture-lifedynamics-'],
-  'pathology': ['lecture-pathomechanism-'],
-  'pathomechanism': ['lecture-pathomechanism-'],
-  'diagnosis': ['lecture-diagnosis-'],
-  'treatment': ['lecture-treatment-'],
-  'practice': ['lecture-practice-'],
-};
-
   const getChapterProgress = (
     chapterId: string,
     totalInChapter: number
   ): ChapterProgressInfo => {
-    const prefixes = CHAPTER_PREFIX_MAP[chapterId] || [`lecture-${chapterId}-`];
+    const chapterLectures = CHAPTER_LECTURE_IDS.get(chapterId);
     const completedCount = Object.keys(completedLectures).filter(
-      (key) => prefixes.some((p) => key.startsWith(p)) && completedLectures[key]
+      (key) => chapterLectures?.has(key) && completedLectures[key]
     ).length;
 
-    const percentage = totalInChapter > 0 ? Math.round((completedCount / totalInChapter) * 100) : 0;
+    const percentage = totalInChapter > 0 ? Math.min(100, Math.round((completedCount / totalInChapter) * 100)) : 0;
 
     return {
       chapterId,
@@ -154,7 +143,7 @@ const CHAPTER_PREFIX_MAP: Record<string, string[]> = {
     if (!allLectureIds || allLectureIds.length === 0) return null;
 
     // 1. 最後に訪問した講義が未完了ならそれを優先
-    if (lastVisitedLectureId && !completedLectures[lastVisitedLectureId]) {
+    if (lastVisitedLectureId && allLectureIds.includes(lastVisitedLectureId) && !completedLectures[lastVisitedLectureId]) {
       return lastVisitedLectureId;
     }
 
