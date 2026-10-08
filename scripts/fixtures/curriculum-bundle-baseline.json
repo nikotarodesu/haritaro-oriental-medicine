@@ -1,0 +1,15 @@
+{
+  "commit": "e461da2",
+  "nextVersion": "16.3.4",
+  "measuredAt": "2026-10-08",
+  "description": "Next build first-load JS diagnostics; gzip sums compress each local chunk separately and are not measured network transfer sizes.",
+  "routes": {
+    "/curriculum": { "uncompressedBytes": 2111369, "gzipBytes": 646923 },
+    "/kokushi": {
+      "uncompressedBytes": 1966560,
+      "gzipBytes": 501143,
+      "permittedGrowthBytes": 16384,
+      "budgetReason": "The old unused curriculumData import was already removed by Next SWC. Allow up to 16 KiB for the new shared review-session flow and public analytics route metadata; require zero lecture-body markers and no eager full-body imports. See docs/performance/curriculum-catalog.md."
+    }
+  }
+}

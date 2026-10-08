@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { Sparkles, Layers, Cpu, Compass, Activity, Zap, Droplets, Heart } from "lucide-react";
+import { Sparkles, Cpu, Compass, Zap } from "lucide-react";
+import QiBloodLearningScope from './QiBloodLearningScope';
 
 export default function QiBloodThreeLayers() {
   return (
@@ -18,11 +19,11 @@ export default function QiBloodThreeLayers() {
             <span>画像解説①：東洋医学の三層レイヤー構造図</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            陰陽 ➜ 五行 ➜ 気血水の多層アーキテクチャ
+            陰陽 ➜ 五行 ➜ 気血水を整理する三層の学習モデル
           </h4>
         </div>
         <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-          生命を駆動する3つの階層
+          伝統理論を整理する3つの観点
         </span>
       </div>
 
@@ -38,10 +39,10 @@ export default function QiBloodThreeLayers() {
                 <polygon points="10,50 100,90 100,100 10,60" fill="#FFA000" opacity="0.8" />
                 <polygon points="190,50 100,90 100,100 190,60" fill="#FF8F00" opacity="0.9" />
                 <text x="100" y="55" textAnchor="middle" fill="#B86924" fontSize="12" fontWeight="bold" className="dark:fill-[#FFE082]">
-                  ★ 気・血・水（実体）
+                  ★ 気・血・水（分類）
                 </text>
                 <text x="100" y="70" textAnchor="middle" fill="#737C77" fontSize="9">
-                  流れるエネルギー・流体
+                  働き・滋養・潤いを捉える
                 </text>
               </g>
 
@@ -54,7 +55,7 @@ export default function QiBloodThreeLayers() {
                   ◆ 五行論（ネットワーク）
                 </text>
                 <text x="100" y="70" textAnchor="middle" fill="#737C77" fontSize="9">
-                  五臓六腑の回路地図
+                  臓腑の伝統的な関係図
                 </text>
               </g>
 
@@ -67,7 +68,7 @@ export default function QiBloodThreeLayers() {
                   ● 陰陽論（根本原理）
                 </text>
                 <text x="100" y="70" textAnchor="middle" fill="#737C77" fontSize="9">
-                  動的平衡・二値化OS
+                  比較の基準・関係の整理
                 </text>
               </g>
 
@@ -84,14 +85,14 @@ export default function QiBloodThreeLayers() {
             <div className="flex items-center justify-between">
               <span className="font-serif font-bold text-xs sm:text-sm text-[#B86924] dark:text-[#FFA000] flex items-center gap-1.5">
                 <Zap className="w-4 h-4 text-[#FFA000]" />
-                <span>最上層：気・血・水（流体・実体・ソフトウェア）</span>
+                <span>最上層：気・血・水（働き・滋養・潤いの分類）</span>
               </span>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#FFF8E1] dark:bg-[#3E2703] text-[#B86924] font-bold">
                 日々の動的変動
               </span>
             </div>
             <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              身体の中をリアルタイムに流れるエネルギー（気）と液体（血・水）。疲労、睡眠不足、ストレスによって刻一刻と増減・滞留する「最も即応性の高い実体」です。
+              伝統理論で、身体の働きを「気」、滋養を「血」、潤いを「水・津液」と関連づけて整理します。ATP、血液検査、体液の量を測定した結果ではありません。
             </p>
           </div>
 
@@ -100,14 +101,14 @@ export default function QiBloodThreeLayers() {
             <div className="flex items-center justify-between">
               <span className="font-serif font-bold text-xs sm:text-sm text-[#2E7D32] dark:text-[#81C784] flex items-center gap-1.5">
                 <Cpu className="w-4 h-4 text-[#2E7D32]" />
-                <span>中間層：五行論（臓腑回路・ハードウェア）</span>
+                <span>中間層：五行論（臓腑の伝統的な関係）</span>
               </span>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#EBF5EE] dark:bg-[#15281B] text-[#2E7D32] font-bold">
-                構造と多臓器連関
+                配当と関係の整理
               </span>
             </div>
             <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              気血水が巡るための拠点（肝・心・脾・肺・腎）と通路（経絡）。相生・相剋のフィードバックループにより、局所の破綻を全体で補完・調整する「多臓器ネットワーク」です。
+              肝・心・脾・肺・腎の配当と、相生・相剋などの関係を学びます。臓腑名は伝統的な機能分類で、現代医学の臓器や神経・血管の回路と一対一には対応しません。
             </p>
           </div>
 
@@ -116,18 +117,19 @@ export default function QiBloodThreeLayers() {
             <div className="flex items-center justify-between">
               <span className="font-serif font-bold text-xs sm:text-sm text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
                 <Compass className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-                <span>最下層：陰陽論（根本原理・オペレーティングシステム）</span>
+                <span>最下層：陰陽論（比較の基準）</span>
               </span>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] font-bold">
-                動的平衡の土台
+                関係を捉える観点
               </span>
             </div>
             <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              「熱と寒」「動と静」「活動と休息」のバランスを評価する思考の基底OS。生命現象のすべての増減と極限反転を規定する根本ルールです。
+              「熱と寒」「動と静」などを、同じ比較条件で捉える伝統理論上の観点です。ここでの階層は理解を助ける比喩で、生理機能を制御する実体の説明ではありません。
             </p>
           </div>
         </div>
       </div>
+      <QiBloodLearningScope />
     </figure>
   );
 }

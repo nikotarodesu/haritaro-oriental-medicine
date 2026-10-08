@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Sparkles, Zap, Heart, Droplets, ArrowRight, RefreshCw, Layers } from "lucide-react";
+import { Sparkles } from "lucide-react";
+import QiBloodLearningScope from './QiBloodLearningScope';
 
 type TriangleRelation = "qi-blood" | "blood-qi" | "qi-water" | "blood-water";
 
@@ -18,7 +19,7 @@ export default function QiBloodTriangle() {
             <span>画像解説②：気・血・水の相互依存・循環トライアングル</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            三位一体の力学 ── 気・血・水が互いを生み、動かし、支え合う
+            気・血・水の関係を、伝統理論の用語から学ぶ
           </h4>
         </div>
 
@@ -144,7 +145,7 @@ export default function QiBloodTriangle() {
             </svg>
           </div>
           <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] mt-2 text-center">
-            三位一体で生命恒常性（ホメオスタシス）を維持
+            矢印は伝統理論上の関係を整理する比喩
           </span>
         </div>
 
@@ -161,11 +162,11 @@ export default function QiBloodTriangle() {
                 </span>
               </div>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                血は自力では流れることができません。気が推進力（推動作用）となって血を引っ張ることで、初めて全身の毛細血管や組織へと巡ります。
+                「気為血之帥」は、血の巡りを気の推動作用と関連づける伝統的な説明です。気が物理的に血液を引っ張ることや、心臓・血管の働きの機序を示すものではありません。
               </p>
               <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-xs">
-                <strong className="text-[#C62828] block mb-1">【臨床の現れ】気滞 ➜ 瘀血</strong>
-                ストレスで気の巡りが止まる（気滞）と、たちまち微小循環が渋滞して血液粘稠度が亢進（瘀血病証）します。「血流を改善したければ、まず気を巡らせよ（気為血之帥）」という鉄則の根拠です。
+                <strong className="text-[#C62828] block mb-1">【伝統的な関連例】気滞と瘀血</strong>
+                張りと固定痛などの所見から、気滞と瘀血の候補を比較することがあります。この関連から、微小循環障害や血液粘稠度の変化を確定することはできません。
               </div>
             </div>
           )}
@@ -181,11 +182,11 @@ export default function QiBloodTriangle() {
                 </span>
               </div>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                気は実体のないエネルギーであるため、放っておくと空気中に霧散してしまいます。血が物理的な「器（乗り物）」となることで、気は体内に留まり安定して働き続けられます。
+                「血為気之母」は、血の滋養と気の働きを相互に関連づける伝統的な説明です。「器・乗り物」は記憶を助ける比喩で、気が空気中へ霧散するという物理現象を意味しません。
               </p>
               <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-xs">
-                <strong className="text-[#D32F2F] block mb-1">【臨床の現れ】気随血脱（大出血でのショック）</strong>
-                大出血を起こすと、血だけでなく気も一気に抜け落ちて激しい脱力・意識混濁（虚脱）に陥ります。また、慢性貧血（血虚）の患者が疲れやすいのは、気を宿す器が足りないためです。
+                <strong className="text-[#D32F2F] block mb-1">【用語と安全性】気随血脱</strong>
+                出血と著しい衰弱を関連づけた伝統的な用語です。大出血や意識の異常は救急評価を優先します。血虚を貧血の診断と同一視せず、疲労などの原因は医学的に確認します。
               </div>
             </div>
           )}
@@ -201,11 +202,11 @@ export default function QiBloodTriangle() {
                 </span>
               </div>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                水分（津液）の生成・散布・排泄は、すべて「気の気化作用」によって行われます。肺の宣発、脾の運化、腎の気化という気のエンジンがあって初めて水はサラサラと巡ります。
+                津液の生成・散布・排泄を、肺の宣発、脾の運化、腎の気化などと関連づけて学びます。これらは伝統理論の分類で、腎機能や水分代謝の医学的評価を代替しません。
               </p>
               <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-xs">
-                <strong className="text-[#0288D1] block mb-1">【臨床の現れ】気虚 ➜ 水滞（むくみ）</strong>
-                エネルギー不足（気虚）になると水分を押し流すポンプが止まり、全身のむくみや胃内停水、重だるさが発生します。利水には補気薬（気を補う生薬）が欠かせません。
+                <strong className="text-[#0288D1] block mb-1">【伝統的な関連例】気虚と水滞</strong>
+                疲労とむくみなどの所見から候補を比較する学習例です。むくみの原因や薬の必要性は、この図や伝統分類だけでは判断できません。
               </div>
             </div>
           )}
@@ -217,20 +218,21 @@ export default function QiBloodTriangle() {
                   【津血同源（しんけつどうげん）】
                 </span>
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#F3E5F5] text-[#7B1FA2] font-bold">
-                  流体互換
+                  津液と血の関係
                 </span>
               </div>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                血の液体成分（血漿）と身体の潤い（津液）は、もともと脾胃で消化された飲食物から作られた同根の兄弟です。血管の内外を自由に行き来して互いに補い合っています。
+                「津血同源」は、津液と血の生成・滋養を共通の由来から説明する伝統的な概念です。津液を血漿と同一視したり、血管内外の液体の交換をこの概念だけで説明したりしません。
               </p>
               <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-xs">
-                <strong className="text-[#7B1FA2] block mb-1">【臨床の現れ】「奪汗者無血、奪血者無汗」</strong>
-                大汗をかいて脱水した人に瀉血（刺絡）を行ってはならず、大出血した人に発汗させてはならないという古典の鉄則です。脱水は直ちに血漿分を喪失させ、血液粘稠度亢進（瘀血病証）を誘発します。
+                <strong className="text-[#7B1FA2] block mb-1">【古典の読み方】汗と血の喪失を関連づける記述</strong>
+                古典上の注意を学ぶ際も、原文・文脈・底本を確認します。脱水や出血を瘀血の確定材料にせず、医療評価を優先してください。この図から発汗・刺絡の手順や適応を判断しません。
               </div>
             </div>
           )}
         </div>
       </div>
+      <QiBloodLearningScope />
     </figure>
   );
 }

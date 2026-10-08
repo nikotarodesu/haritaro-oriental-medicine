@@ -1,10 +1,12 @@
+import { normalizeSearchAliases } from './searchAliases';
+
 /** Normalize both the query and the index, preserving word boundaries. */
 export function normalizeSearchText(text: string): string {
-  return text.normalize('NFKC').toLowerCase()
+  return normalizeSearchAliases(text.normalize('NFKC').toLowerCase()
     .replace(/[\u30a1-\u30f6]/g, char => String.fromCharCode(char.charCodeAt(0) - 0x60))
     .replace(/谿/g, '渓').replace(/兪/g, '輸')
     .replace(/([a-z]{2})\s+(\d+)/g, '$1$2')
-    .replace(/\s+/g, ' ').trim();
+    .replace(/\s+/g, ' ').trim());
 }
 
 export interface SearchableItem { title: string; subtitle?: string; tags?: string[]; exactCode?: string; exactTerms?: string[] }

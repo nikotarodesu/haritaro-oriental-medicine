@@ -59,7 +59,7 @@ export const KOKUSHI_PAST_EXAMS: KokushiPastExamQuestion[] = [
     "correctIndex": 1,
     "explanation": "宗気は清気と水穀の精気が合わさり胸中に集まるとされ、呼吸や血脈の運行に関わる伝統的な概念です。「腎の精気から生まれ、経脈外を巡る」は原気と衛気の説明を混ぜた誤りです。脈中を巡って滋養するのは営気、先天の精を源とするのは原気です。現代医学の物質・器官と同一視しません。",
     "relatedLectureId": "lecture-qiblood-1",
-    "relatedLectureTitle": "気血水理論 レッスン1：気血水の全体像と「気」の生理・病態",
+    "relatedLectureTitle": "気血水理論 レッスン1：気血水の全体像と「気」の伝統的分類",
     "keyPoints": [
       "宗気＝清気＋水穀の精気（胸中膻中に集まり、呼吸と拍動を司る）"
     ]

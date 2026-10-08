@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Sparkles, ArrowRight, AlertTriangle, Flame, ShieldAlert, Activity, Heart, Droplets, Zap, CheckCircle2 } from "lucide-react";
+import QiBloodLearningScope from './QiBloodLearningScope';
 
 type DominoRoute = "stress" | "fatigue";
 
@@ -13,58 +14,58 @@ export default function QiBloodDominoProcess() {
     {
       step: 1,
       title: "精神ストレス",
-      badge: "始動（トリガー）",
-      target: "肝失疎泄",
+      badge: "観察の入口",
+      target: "情志と症状の関連を記録",
       color: "#1E3D34",
       bgClass: "bg-[#E0F2F1] text-[#00695C] dark:bg-[#004D40]/30 dark:text-[#80CBC4] border-[#80CBC4]/30",
       accentBorder: "border-[#00897B]",
       icon: AlertTriangle,
-      tag: "情動・自律神経負荷",
-      desc: "職場・生活の緊張や怒り、抑圧が継続。東洋医学の「肝」が司る疎泄（気の巡りを伸びやかに保つ）機能が阻害される。",
+      tag: "情志の変化を観察",
+      desc: "緊張・怒りなどと、身体の訴えが変化する時期を記録する学習例です。伝統理論では情志と肝の疏泄を関連づけますが、ストレスだけで症状の原因を確定しません。",
       clinicalSign: "ため息が増える、気分の波、胃の不快感、首肩のこわばり",
-      modernLink: "交感神経の過剰興奮、ストレスホルモン（コルチゾール）の上昇",
+      assessment: "この分類から自律神経の状態やホルモン値を推定せず、必要な医学的評価を別に確認します。",
     },
     {
       step: 2,
       title: "気滞（きたい）",
-      badge: "第1ドミノ",
-      target: "自律神経緊張・気の鬱滞",
+      badge: "比較する候補①",
+      target: "伝統的な気の巡りの分類",
       color: "#FFA000",
       bgClass: "bg-[#FFF8E1] text-[#E65100] dark:bg-[#FFA000]/20 dark:text-[#FFE082] border-[#FFE082]/40",
       accentBorder: "border-[#FFA000]",
       icon: Zap,
       tag: "気の停滞",
-      desc: "気の流れが滞り、身体の各所で内圧が上昇。張るような痛みやガス溜まり、情緒不安定が起こる。",
+      desc: "張り、つかえ感、情志による変動などを「気滞」と関連づけて整理します。気の流れや身体の内圧を測定した説明ではありません。",
       clinicalSign: "胸脇部や腹部の張り、喉のつかえ感（梅核気）、イライラ、月経前のPMS",
-      modernLink: "胃腸の蠕動不全、血管痙攣による末梢循環不全の萌芽",
+      assessment: "喉・胸部・腹部の症状の原因を、この分類だけで説明したり病気を除外したりしません。",
     },
     {
       step: 3,
       title: "瘀血（おけつ）",
-      badge: "第2ドミノ",
-      target: "気滞血瘀（血流停滞）",
+      badge: "比較する候補②",
+      target: "伝統的な血の巡りの分類",
       color: "#D32F2F",
       bgClass: "bg-[#FFEBEE] text-[#C62828] dark:bg-[#D32F2F]/20 dark:text-[#EF9A9A] border-[#FFCDD2]/40",
       accentBorder: "border-[#D32F2F]",
       icon: Heart,
       tag: "血の鬱滞",
-      desc: "「気は血の帥」であるため、気が滞ると血も巡らなくなり停滞する（気滞血瘀）。組織が酸欠・低栄養に陥り刺痛が生じる。",
+      desc: "固定痛や暗い舌色などを「瘀血」と関連づけて整理する学習例です。気滞との併存を考えることはありますが、必ずこの順に進む病気の経路ではありません。",
       clinicalSign: "針で刺すような固定痛、舌裏の静脈怒張・暗紫舌、顔のくすみ・目の下のクマ",
-      modernLink: "微小循環障害、血液粘稠度亢進（流動性低下）、血管内皮の慢性炎症",
+      assessment: "瘀血は、血栓・微小循環障害・血液粘稠度の検査結果と同じ意味ではありません。",
     },
     {
       step: 4,
       title: "水滞・痰湿（たんしつ）",
-      badge: "最終ドミノ",
-      target: "気滞水停・老廃物蓄積",
+      badge: "比較する候補③",
+      target: "伝統的な潤いと停滞の分類",
       color: "#0288D1",
       bgClass: "bg-[#E1F5FE] text-[#0277BD] dark:bg-[#0288D1]/20 dark:text-[#81D4FA] border-[#B3E5FC]/40",
       accentBorder: "border-[#0288D1]",
       icon: Droplets,
-      tag: "水の沈殿",
-      desc: "気の推動が途絶え、血液循環も悪化した結果、体液の濾過・循環が滞り、濁った病的産物「痰湿」が身体に沈殿する。",
+      tag: "水滞・痰湿の候補",
+      desc: "重だるさやむくみなどの所見を、水滞・痰湿の候補として比較します。体内の沈殿物や老廃物を検出したという説明ではありません。",
       clinicalSign: "頭が重い（濡れタオルを巻かれたよう）、下肢の重度なむくみ、めまい、関節重痛",
-      modernLink: "リンパ流うっ滞、間質浮腫、慢性疲労症候群、動脈硬化・内臓脂肪蓄積",
+      assessment: "むくみや疲労の医学的な原因は別に評価し、動脈硬化などの病名と同一視しません。",
     },
   ];
 
@@ -72,58 +73,58 @@ export default function QiBloodDominoProcess() {
     {
       step: 1,
       title: "過労・胃腸虚弱",
-      badge: "始動（トリガー）",
-      target: "脾胃損傷・エネルギー枯渇",
+      badge: "観察の入口",
+      target: "生活・食事と症状の経過",
       color: "#59615D",
       bgClass: "bg-[#F5F5F5] text-[#424242] dark:bg-[#2A3B4A]/40 dark:text-[#E0E0E0] border-[#E0E0E0]/30",
       accentBorder: "border-[#757575]",
       icon: AlertTriangle,
       tag: "後天の精（補給）不足",
-      desc: "休養のない連続勤務、暴飲暴食や過度の節食により、エネルギー抽出工場である「脾胃（消化吸収系）」が疲弊する。",
+      desc: "活動・休息・食事と症状の経過を記録する学習例です。伝統理論上の脾胃という分類を、消化器の病気や吸収障害の診断と同じ意味では使いません。",
       clinicalSign: "食欲不振、胃もたれ、手足がだるい、朝から起き上がれない",
-      modernLink: "消化酵素分泌低下、腸内フローラ乱れ、ミトコンドリア機能低下",
+      assessment: "食欲低下・体重変化・疲労などの医学的な原因を、この図から推定しません。",
     },
     {
       step: 2,
       title: "気虚（ききょ）",
-      badge: "第1ドミノ",
-      target: "生体エネルギー・バッテリー切れ",
+      badge: "比較する候補①",
+      target: "伝統的な気の不足の分類",
       color: "#FFA000",
       bgClass: "bg-[#FFF8E1] text-[#E65100] dark:bg-[#FFA000]/20 dark:text-[#FFE082] border-[#FFE082]/40",
       accentBorder: "border-[#FFA000]",
       icon: Zap,
       tag: "気の不足",
-      desc: "推進力・防衛力（衛気）が激減。体温維持や内臓保持ができず、わずかな動作でも息切れ・異常発汗が生じる。",
+      desc: "疲労、声の弱さなどの所見を気虚と関連づけて比較します。「バッテリー」は比喩で、細胞内のエネルギー量や免疫機能を測定したことを意味しません。",
       clinicalSign: "全身倦怠、話す声に力がない、風邪を引きやすい、食後の強い眠気・泥状便",
-      modernLink: "ATP産生低下、細胞性免疫低下、自律神経の低活動（副交感優位の停滞）",
+      assessment: "疲労や息切れなどを気虚だけで説明せず、持続する症状や悪化の医学的評価を優先します。",
     },
     {
       step: 3,
       title: "血虚（けっきょ）",
-      badge: "第2ドミノ",
-      target: "気不生血・材料枯渇",
+      badge: "比較する候補②",
+      target: "伝統的な血の不足の分類",
       color: "#D32F2F",
       bgClass: "bg-[#FFEBEE] text-[#C62828] dark:bg-[#D32F2F]/20 dark:text-[#EF9A9A] border-[#FFCDD2]/40",
       accentBorder: "border-[#D32F2F]",
       icon: Heart,
       tag: "血の不足",
-      desc: "「気は血を生む」ため、気虚が長引くと新しい血が作られなくなる（気不生血）。脳や全身組織のガソリンが枯渇する。",
+      desc: "顔色、乾燥、めまいなどの所見を血虚の候補として比較します。気虚との併存を学びますが、造血が停止したことや脳の栄養不足を示すものではありません。",
       clinicalSign: "顔色が蒼白・土色、立ちくらみ・めまい、爪の割れ・筋の痙攣（こむら返り）、不眠・不安",
-      modernLink: "潜在性鉄欠乏（フェリチン低下）、貧血、セロトニン・神経伝達物質合成不全",
+      assessment: "血虚は貧血・鉄欠乏の診断と同じではなく、薬や食事制限の選択には使いません。",
     },
     {
       step: 4,
-      title: "陰虚（いんきょ）➜ 慢性炎症",
-      badge: "最終ドミノ",
-      target: "冷却水枯渇・虚熱の空焚き",
+      title: "陰虚（いんきょ）",
+      badge: "比較する候補③",
+      target: "伝統的な潤いの不足の分類",
       color: "#7B1FA2",
       bgClass: "bg-[#F3E5F5] text-[#6A1B9A] dark:bg-[#7B1FA2]/20 dark:text-[#CE93D8] border-[#E1BEE7]/40",
       accentBorder: "border-[#7B1FA2]",
       icon: Flame,
-      tag: "陰液（血＋水）の枯渇",
-      desc: "血と水（陰液）が底をつき、身体を冷やすラジエーターが消失。抑制を失った陽気が暴走し「虚熱（空焚き微熱）」となって組織を焦がす。",
+      tag: "潤いの不足という分類",
+      desc: "乾燥、寝汗、ほてりなどを陰虚と関連づけて比較します。「冷却水」は記憶のための比喩で、身体が空焚きになったり組織が焦げたりするという機序ではありません。",
       clinicalSign: "夕方の微熱・手足のほてり、激しい寝汗（盗汗）、喉や皮膚の強い乾燥、不眠悪化",
-      modernLink: "低悪性度慢性炎症、副腎疲労、視床下部-下垂体-副腎系（HPA軸）失調",
+      assessment: "発熱・寝汗・乾燥などの原因を別に評価し、陰虚から慢性炎症やホルモン異常を確定しません。",
     },
   ];
 
@@ -137,10 +138,10 @@ export default function QiBloodDominoProcess() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説③：気血水の運動異常と「不調のドミノ倒し」連鎖図</span>
+            <span>画像解説③：気血水の候補と関係を比較する学習図</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            放置すると隣の要素へ波及する ── 2大病理カスケードの全貌
+            情志・疲労に関する所見から、複数の伝統分類を比較する
           </h4>
         </div>
 
@@ -158,7 +159,7 @@ export default function QiBloodDominoProcess() {
             }`}
           >
             <ShieldAlert className="w-3.5 h-3.5" />
-            ① ストレス由来ルート（滞り型）
+            ① 情志・張りの比較
           </button>
           <button
             onClick={() => {
@@ -172,7 +173,7 @@ export default function QiBloodDominoProcess() {
             }`}
           >
             <Flame className="w-3.5 h-3.5" />
-            ② 疲労消耗ルート（虚損型）
+            ② 疲労・不足の比較
           </button>
         </div>
       </div>
@@ -182,10 +183,10 @@ export default function QiBloodDominoProcess() {
         <div className="flex items-center justify-between text-xs mb-2">
           <span className="font-bold text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-[#D32F2F] animate-pulse" />
-            {activeRoute === "stress" ? "【実証・鬱滞カスケード】" : "【虚証・消耗カスケード】"}
+            {activeRoute === "stress" ? "【情志・張りに関する比較例】" : "【疲労・不足に関する比較例】"}
             {activeRoute === "stress"
-              ? "精神ストレス ➜ 気滞 ➜ 瘀血 ➜ 水滞・痰湿"
-              : "過労・胃腸弱 ➜ 気虚 ➜ 血虚 ➜ 陰虚 ➜ 慢性炎症"}
+              ? "気滞・瘀血・水滞・痰湿を比較"
+              : "気虚・血虚・陰虚を比較"}
           </span>
           <span className="text-[#59615D] dark:text-[#96A6B2]">
             ステップをタップして詳細を確認
@@ -193,8 +194,8 @@ export default function QiBloodDominoProcess() {
         </div>
         <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
           {activeRoute === "stress"
-            ? "気の滞り（自律神経緊張）が血管を締め付けて血行障害を招き、最終的に代謝の老廃物（水滞）を沈殿させる典型的な「緊張・過積載」の病理経路です。"
-            : "エネルギーの枯渇（気虚）が血液の製造停止を招き、冷却水（陰液）が蒸発して空焚きの慢性炎症へと至る「消耗・底抜け」の病理経路です。"}
+            ? "情志による変化、張り、固定痛、重だるさなどの支持・反証を分けて確認します。表示順は病気の進行段階ではありません。"
+            : "疲労、乾燥、めまい、ほてりなどから候補を比較します。必ず気虚から血虚・陰虚へ進むという意味ではありません。"}
         </p>
       </div>
 
@@ -291,7 +292,7 @@ export default function QiBloodDominoProcess() {
           <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
             <div className="flex items-center gap-1.5 font-bold text-[#D32F2F] dark:text-[#EF5350] mb-2">
               <AlertTriangle className="w-4 h-4" />
-              <span>現れる自覚症状・身体シグナル</span>
+              <span>伝統的に関連づける所見の例</span>
             </div>
             <p className="text-[#3E4541] dark:text-[#CBD5E1] leading-relaxed font-medium">
               {currentStep.clinicalSign}
@@ -302,10 +303,10 @@ export default function QiBloodDominoProcess() {
           <div className="bg-white dark:bg-[#17212A] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
             <div className="flex items-center gap-1.5 font-bold text-[#1E3D34] dark:text-[#74BA9E] mb-2">
               <Activity className="w-4 h-4" />
-              <span>現代生理学・病理学への翻訳</span>
+              <span>医学的評価との区別</span>
             </div>
             <p className="text-[#3E4541] dark:text-[#CBD5E1] leading-relaxed font-medium">
-              {currentStep.modernLink}
+              {currentStep.assessment}
             </p>
           </div>
         </div>
@@ -314,14 +315,15 @@ export default function QiBloodDominoProcess() {
         <div className="mt-4 p-3.5 rounded-xl bg-[#FFF9C4]/40 dark:bg-[#FFA000]/10 border border-[#FFE082]/60 dark:border-[#FFA000]/20 flex items-start gap-2.5">
           <CheckCircle2 className="w-4 h-4 text-[#FFA000] shrink-0 mt-0.5" />
           <p className="text-xs text-[#5D4037] dark:text-[#FFE082] leading-relaxed font-medium">
-            <span className="font-bold">東洋医学の臨床原則：</span>
-            病気は突然完成するのではなく、この連鎖によって段階的に深く侵食します。
+            <span className="font-bold">候補を比較する観点：</span>
+            複数の所見と経過を照合し、反証や未確認の情報も残します。
             {activeRoute === "stress"
-              ? "「瘀血」や「水滞」の段階であっても、根本の「気滞（自律神経の緊張）」を解かない限り、血流改善薬や利水剤だけでは症状が再発を繰り返します。"
-              : "「血虚」や「陰虚」であっても、胃腸（脾胃）の消化吸収力が落ちていれば補血薬は胃もたれを起こします。まず第1・第2ドミノの「気虚（胃腸エネルギー）」を立て直すことが鉄則です。"}
+              ? "情志との関連だけで原因を決めず、痛みやむくみの医学的評価を別に確認します。"
+              : "疲労などを伝統分類だけで説明せず、この図から治療や薬の変更を決めません。"}
           </p>
         </div>
       </div>
+      <QiBloodLearningScope />
     </figure>
   );
 }

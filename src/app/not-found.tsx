@@ -98,7 +98,7 @@ export default function NotFound() {
                 </div>
                 <div>
                   <span className="font-serif text-xs font-bold text-[#232826] dark:text-[#FAF8F5] block group-hover:text-[#B86924] dark:group-hover:text-[#E6C387]">
-                    気血水 体質セルフ診断
+                    気血水 体質セルフチェック
                   </span>
                   <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
                     12問で偏りチェック・養生法

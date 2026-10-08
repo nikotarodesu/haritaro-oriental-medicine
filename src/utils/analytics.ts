@@ -1,3 +1,5 @@
+import { PUBLIC_CLINICAL_GUIDE_PATHS, PUBLIC_SYMPTOM_PATHS } from '@/config/publicGuideRoutes';
+
 /** Public navigation and aggregate learning measurements only. */
 
 declare global {
@@ -85,7 +87,8 @@ const PUBLIC_PAGES = new Set([
   "/cases", "/curriculum", "/kikei", "/glossary", "/kokushi", "/pricing", "/tsubo",
   "/tsubo/practice", "/tsubo/compare", "/tsubo/basics/bone-cun", "/practice/haiketsu",
   "/library", "/learn", "/learn/courses", "/tokushoho", "/simulator", "/simulator/compare",
-  "/terms", "/safety", "/symptoms", "/privacy",
+  "/terms", "/safety", "/symptoms", "/privacy", "/updates",
+  ...PUBLIC_SYMPTOM_PATHS, ...PUBLIC_CLINICAL_GUIDE_PATHS,
 ]);
 const PUBLIC_DETAIL = /^\/(?:articles|cases|curriculum|kikei|tsubo)\/[a-z0-9-]{1,80}$/i;
 const COURSE_DETAIL = /^\/learn\/courses\/(?:yinyang-foundations|five-elements-relations|qi-blood-fluid)$/;

@@ -66,23 +66,23 @@ export const REFLECTION_LECTURES: ReadonlyArray<{id: string; title: string}> = [
   },
   {
     "id": "lecture-qiblood-1",
-    "title": "気血水理論 レッスン1：気血水の全体像と「気」の生理・病態"
+    "title": "気血水理論 レッスン1：気血水の全体像と「気」の伝統的分類"
   },
   {
     "id": "lecture-qiblood-2",
-    "title": "気血水理論 レッスン2：「血」の生理・生成と病理メカニズム"
+    "title": "気血水理論 レッスン2：「血」の働きと血虚・瘀血の伝統的分類"
   },
   {
     "id": "lecture-qiblood-3",
-    "title": "気血水理論 レッスン3：「水・津液」の代謝回路と水滞・痰飲の病理"
+    "title": "気血水理論 レッスン3：「水・津液」と水滞・痰飲の伝統的分類"
   },
   {
     "id": "lecture-qiblood-4",
-    "title": "気血水理論 レッスン4：気・血・水の動態相互連動と現代医学的解釈"
+    "title": "気血水理論 レッスン4：気・血・水の関係と現代医学との比較"
   },
   {
     "id": "lecture-qiblood-5",
-    "title": "気血水理論 レッスン5：気血水 総合弁証推論演習・次章への接続"
+    "title": "気血水理論 レッスン5：気血水の分類を使う学習演習"
   },
   {
     "id": "lecture-lifedynamics-1",

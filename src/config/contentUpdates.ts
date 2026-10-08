@@ -2,15 +2,15 @@
 export const SITE_REVISED_AT = '2026-10-02';
 export const ACUPOINT_PAGE_REVISED_AT = '2026-10-08';
 export const PAGE_REVISIONS: Record<string, string> = {
-  '/learn': '2026-10-04', '/kokushi': '2026-10-04',
+  '/learn': '2026-10-04', '/kokushi': '2026-10-08',
   '/simulator': '2026-10-04',
   '/articles': '2026-10-03', '/contact': SITE_REVISED_AT,
   '/tsubo/practice': '2026-10-04', '/pricing': SITE_REVISED_AT,
-  '/symptoms': '2026-10-08', '/diagnosis': SITE_REVISED_AT, '/cases': SITE_REVISED_AT,
+  '/symptoms': '2026-10-08', '/diagnosis': '2026-10-08', '/cases': SITE_REVISED_AT,
   // 実際に改訂したページだけを更新する。全教材の確認日には用いない。
   '/': '2026-10-08', '/updates': '2026-10-08', '/tsubo': '2026-10-03', '/about': '2026-10-03',
   '/clinical': '2026-10-04', '/practice/haiketsu': '2026-10-04', '/safety': '2026-10-03', '/editorial-policy': '2026-10-08',
-  '/library': '2026-10-08', '/glossary': '2026-10-03', '/curriculum': '2026-10-03',
+  '/library': '2026-10-08', '/glossary': '2026-10-08', '/curriculum': '2026-10-08',
   '/curriculum/lecture-yinyang-1': '2026-10-03',
   '/curriculum/lecture-yinyang-2': '2026-10-03',
   '/curriculum/lecture-yinyang-3': '2026-10-03',
@@ -21,12 +21,14 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/curriculum/lecture-yinyang-8': '2026-10-03',
   '/curriculum/lecture-wuxing-1': '2026-10-03',
   '/curriculum/lecture-wuxing-3': '2026-10-03',
-  '/curriculum/lecture-qiblood-1': '2026-10-03',
-  '/curriculum/lecture-qiblood-3': '2026-10-03',
-  '/curriculum/lecture-qiblood-4': '2026-10-03',
-  '/curriculum/lecture-qiblood-5': '2026-10-03',
+  '/curriculum/lecture-qiblood-1': '2026-10-08',
+  '/curriculum/lecture-qiblood-2': '2026-10-08',
+  '/curriculum/lecture-qiblood-3': '2026-10-08',
+  '/curriculum/lecture-qiblood-4': '2026-10-08',
+  '/curriculum/lecture-qiblood-5': '2026-10-08',
 };
 export const SITE_UPDATES = [
+  { date: '2026-10-08', label: '教材の整合性・復習の継続・一覧表示を改善', href: '/curriculum', text: '体質傾向の検索用情報と気血水の本文・図解・確認問題を学習用途に統一。用語の参照先と表記ゆれ検索、解説から戻る復習の途中保存、ブラウザの戻る操作を改善し、講義一覧の読み込みを軽量化' },
   { date: '2026-10-08', label: '症状別の入口・検索・出典を改善', href: '/symptoms', text: '症状ごとの学習ガイドと検索の目的別表示を整備。経穴の位置と注意を冒頭へ移し、本文・構造化データ・AI向け案内の整合性と文献の確認範囲を見直し' },
   { date: '2026-10-05', label: 'スマホの表示と操作を整理', href: '/', text: 'トップの改行・余白・情報順序と検索欄を整理。保存一覧をその他メニューへ移し、文字拡大と固定ナビに合わせた表示を整備' },
   { date: '2026-10-04', label: '所見から記録・再評価へ', href: '/clinical', text: '鍼灸師の臨床ホームと6つの主訴別ガイドを追加。四診の未確認・候補比較・配穴の理由・前回との経過比較を整備し、講義と見立て修正の演習を接続' },

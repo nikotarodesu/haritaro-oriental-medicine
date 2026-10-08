@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { permanentRedirect } from "next/navigation";
 import CurriculumIndexClient from "@/components/curriculum/CurriculumIndexClient";
 import { getArticlePreviews } from "@/data/articleData";
+import { getCurriculumIndexCatalog } from "@/data/curriculumIndexCatalog";
 
 // 旧形式IDのマッピング
 const OLD_ID_MAP: Record<string, string> = {
@@ -82,7 +83,7 @@ export default async function CurriculumPage({ searchParams }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(indexJsonLd) }}
       />
-      <CurriculumIndexClient relatedArticles={getArticlePreviews([
+      <CurriculumIndexClient catalog={getCurriculumIndexCatalog()} relatedArticles={getArticlePreviews([
         "science-of-oriental-medicine-history",
         "science-of-yinyang-gogyo",
         "science-of-qi-blood-fluid",

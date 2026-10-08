@@ -2,13 +2,10 @@
 
 import LearningReviewPanel from "@/components/learning/LearningReviewPanel";
 import type { ArticlePreview } from "@/data/articleData";
+import type { CurriculumIndexCatalog } from "@/types/curriculumIndexCatalog";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-  CURRICULUM_DATA,
-  PLANNED_UNPUBLISHED_LESSONS,
-} from "@/data/curriculumData";
 import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
 import { LearningMap } from "@/components/LearningMap";
 import { IncorrectQuestionsModal } from "@/components/IncorrectQuestionsModal";
@@ -146,7 +143,10 @@ const CHAPTER_DEFINITIONS: ChapterDef[] = [
   },
 ];
 
-export default function CurriculumIndexClient({ relatedArticles }: { relatedArticles: ArticlePreview[] }) {
+export default function CurriculumIndexClient({ catalog, relatedArticles }: {
+  catalog: CurriculumIndexCatalog;
+  relatedArticles: ArticlePreview[];
+}) {
   const [showLearningMap, setShowLearningMap] = useState<boolean>(false);
   const [showIncorrectModal, setShowIncorrectModal] = useState<boolean>(false);
   const [expandedChapters, setExpandedChapters] = useState<Record<number, boolean>>({ 1: true });
@@ -165,7 +165,7 @@ export default function CurriculumIndexClient({ relatedArticles }: { relatedArti
     resetAllProgress,
   } = useCurriculumProgress();
 
-  const allLectures = CURRICULUM_DATA.flatMap((s) => s.lectures);
+  const allLectures = catalog.lectures;
 
   const resumeLectureId = isMounted
     ? getNextResumeLectureId(allLectures.map((l) => l.id))
@@ -534,7 +534,7 @@ export default function CurriculumIndexClient({ relatedArticles }: { relatedArti
                     })}
 
                     {/* 準備中レッスン */}
-                    {PLANNED_UNPUBLISHED_LESSONS[chapter.seriesId]?.map((plan) => (
+                    {catalog.plannedLessons[chapter.seriesId]?.map((plan) => (
                       <div
                         key={`plan-${chapter.seriesId}-${plan.lessonNumber}`}
                         className="p-3.5 rounded-xl border border-dashed border-[#D8CFC0] dark:border-[#2E3F50] bg-[#FAF8F5]/50 dark:bg-[#10171F]/40 flex flex-col justify-between opacity-75"

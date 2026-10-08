@@ -1,8 +1,9 @@
 'use client';
 
 import { trackEvent } from '@/utils/analytics';
-import { useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthContext';
 import { useCurriculumProgress } from '@/contexts/CurriculumProgressContext';
 import { LEARNING_QUESTIONS, LearningQuestion } from '@/data/learningQuestionBank';
 import { localStudyDate, shuffledIndices } from '@/utils/learningReview';
@@ -11,50 +12,128 @@ import { recordAnswerInStore } from '@/data/tsubo/studyStorage';
 import type { StudySkillType } from '@/data/tsubo/types';
 import LearningSyncStatus from './LearningSyncStatus';
 import LearningFocusReview from './LearningFocusReview';
+import {
+  advanceReviewSession, browserReviewStorage, chooseReviewAnswer, createReviewSession,
+  restoreReviewSession, reviewSessionScore, saveReviewSession, submitReviewAnswer,
+  validateReviewSession, type ReviewSession, type ReviewSessionStatus,
+} from '@/utils/reviewSession';
+
+interface ReviewState {
+  session: ReviewSession | null;
+  status: ReviewSessionStatus | 'active' | 'complete';
+}
 
 export default function LearningReviewPanel() {
+  const { user, isLoading } = useAuth();
+  const { isMounted } = useCurriculumProgress();
+  // Mount only after the current owner's catalog is ready. Never render the previous owner's answers.
+  if (isLoading || !isMounted) return <section id="learning-review" className="scroll-mt-24 p-4" role="status">学習履歴を確認しています。</section>;
+  return <ReviewWorkspace key={user?.id || 'guest'} owner={user?.id || 'guest'} />;
+}
+
+function ReviewWorkspace({ owner }: { owner: string }) {
   const { quizResults, quizHistory, saveQuizResult, lastVisitedLectureId, revisedQuestionCount, isMounted } = useCurriculumProgress();
-  const [queue, setQueue] = useState<LearningQuestion[]>([]);
-  const [index, setIndex] = useState(0);
-  const [choice, setChoice] = useState<number | null>(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [sessionCorrect, setSessionCorrect] = useState(0);
-  const [sessionSeed, setSessionSeed] = useState('review');
   const today = localStudyDate();
-  const acupointQuestions: LearningQuestion[] = Object.values(quizResults).filter(r => r.kind === 'acupoint').map(r => ({
+  const bank = useMemo(() => [...LEARNING_QUESTIONS, ...Object.values(quizResults).filter(r => r.kind === 'acupoint').map((r): LearningQuestion => ({
     id: r.questionId, question: r.questionText, options: r.options, correctIndex: r.correctAnswerIndex,
     explanation: r.explanation, lectureId: r.lectureId, lectureTitle: r.lectureTitle,
     chapterId: r.chapterId, chapterTitle: r.chapterTitle, kind: 'acupoint',
     href: r.practiceHref || '/tsubo/practice', revision: r.revision || '',
-  }));
-  const bank = [...LEARNING_QUESTIONS, ...acupointQuestions];
+  }))], [quizResults]);
+  const [review, setReview] = useState<ReviewState>(() => {
+    const requested = typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('resumeReview');
+    return restoreReviewSession(browserReviewStorage(), owner, bank, requested);
+  });
+  const sessionRef = useRef(review.session);
+  const focusQuestion = useRef(review.status === 'restored' && typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('resumeReview'));
+  const [storageAvailable, setStorageAvailable] = useState(review.status !== 'unavailable');
+  const session = useMemo(() => review.session ? validateReviewSession(review.session, owner, bank) : null, [review.session, owner, bank]);
+  const bankById = useMemo(() => new Map(bank.map(question => [question.id, question])), [bank]);
+  const queue = session?.questions.map(reference => bankById.get(reference.id)!) || [];
+  const index = session?.index || 0;
+  const choice = session?.choice ?? null;
+  const submitted = Boolean(session && session.answers[index] !== null);
+  const sessionSeed = session?.id || 'review';
   const due = bank.filter(q => quizResults[q.id]?.nextReviewDate && quizResults[q.id].nextReviewDate! <= today)
     .sort((a, b) => (quizResults[a.id].nextReviewDate || '').localeCompare(quizResults[b.id].nextReviewDate || ''));
   const weak = bank.filter(q => quizResults[q.id] && !quizResults[q.id].isCorrect);
   const unlearned = LEARNING_QUESTIONS.filter(q => !quizResults[q.id]);
   const q = queue[index];
+
+  const replaceSession = (next: ReviewSession | null, status: ReviewState['status'] = 'active') => {
+    sessionRef.current = next;
+    setStorageAvailable(saveReviewSession(browserReviewStorage(), next));
+    setReview({ session: next, status });
+  };
+  const currentSession = () => {
+    const current = sessionRef.current;
+    const valid = current && validateReviewSession(current, owner, bank);
+    if (current && !valid) replaceSession(null, 'invalid');
+    return valid;
+  };
+
+  useEffect(() => {
+    if (!review.session || session) return;
+    // Hide invalid content immediately; remove its checkpoint without replaying any answer.
+    const invalidId = review.session.id;
+    if (sessionRef.current?.id === invalidId) {
+      sessionRef.current = null;
+      saveReviewSession(browserReviewStorage(), null);
+    }
+    const timer = setTimeout(() => setReview(current => current.session?.id === invalidId ? { session: null, status: 'invalid' } : current), 0);
+    return () => clearTimeout(timer);
+  }, [review.session, session]);
+  useEffect(() => {
+    if (!session || !focusQuestion.current) return;
+    const timer = setTimeout(() => {
+      const target = document.getElementById('learning-review-practice');
+      target?.scrollIntoView({ block: 'start', behavior: 'instant' });
+      target?.focus({ preventScroll: true });
+      focusQuestion.current = false;
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [session]);
+
   const start = (questions: LearningQuestion[]) => {
     if (!questions.length) return;
+    const next = createReviewSession(questions, owner, crypto.randomUUID());
+    if (!next) return;
     trackEvent('review_start', { placement: 'learning_review', total: questions.length });
-    setSessionCorrect(0);
-    setQueue(questions); setIndex(0); setChoice(null); setSubmitted(false); setSessionSeed(String(Date.now()));
+    focusQuestion.current = true;
+    replaceSession(next);
+  };
+  const choose = (answerIndex: number) => {
+    const current = currentSession();
+    const next = current && chooseReviewAnswer(current, answerIndex, bank);
+    if (next) replaceSession(next);
   };
   const answer = () => {
-    if (!q || choice === null || submitted) return;
-    saveQuizResult({ questionId: q.id, lectureId: q.lectureId, lectureTitle: q.lectureTitle,
-      chapterId: q.chapterId, chapterTitle: q.chapterTitle, questionText: q.question,
-      userAnswerIndex: choice, correctAnswerIndex: q.correctIndex, isCorrect: choice === q.correctIndex,
-      options: [...q.options], explanation: q.explanation, answeredAt: new Date().toISOString(),
-      revision: q.revision, kind: q.kind, practiceHref: q.href });
-    if (q.kind === 'acupoint') {
-      const [, code, skill] = q.id.split('-');
-      recordAnswerInStore({ id: q.id, acupointCode: code, skill: skill as StudySkillType,
-        prompt: q.question, options: q.options.map((text, i) => ({ id: String(i), text })),
-        correctOptionId: String(q.correctIndex), explanation: q.explanation,
-        meridianName: '', locationReference: '' }, String(choice), choice === q.correctIndex, today);
+    const current = currentSession();
+    const next = current && submitReviewAnswer(current, bank);
+    if (!next || next.choice === null) return;
+    const question = bank.find(item => item.id === next.questions[next.index].id)!;
+    // Update the ref synchronously: rapid clicks and restoring a submitted question cannot grade twice.
+    replaceSession(next);
+    saveQuizResult({ questionId: question.id, lectureId: question.lectureId, lectureTitle: question.lectureTitle,
+      chapterId: question.chapterId, chapterTitle: question.chapterTitle, questionText: question.question,
+      userAnswerIndex: next.choice, correctAnswerIndex: question.correctIndex, isCorrect: next.choice === question.correctIndex,
+      options: [...question.options], explanation: question.explanation, answeredAt: new Date().toISOString(),
+      revision: question.revision, kind: question.kind, practiceHref: question.href });
+    if (question.kind === 'acupoint') {
+      const [, code, skill] = question.id.split('-');
+      recordAnswerInStore({ id: question.id, acupointCode: code, skill: skill as StudySkillType,
+        prompt: question.question, options: question.options.map((text, i) => ({ id: String(i), text })),
+        correctOptionId: String(question.correctIndex), explanation: question.explanation,
+        meridianName: '', locationReference: '' }, String(next.choice), next.choice === question.correctIndex, today);
     }
-    if (choice === q.correctIndex) setSessionCorrect(count => count + 1);
-    setSubmitted(true);
+  };
+  const nextQuestion = () => {
+    const current = currentSession();
+    if (!current || current.answers[current.index] === null) return;
+    const next = advanceReviewSession(current, bank);
+    if (!next) trackEvent('review_complete', { placement: 'learning_review', score: reviewSessionScore(current, bank), total: current.questions.length });
+    focusQuestion.current = Boolean(next);
+    replaceSession(next, next ? 'active' : 'complete');
   };
   const similar = q && LEARNING_QUESTIONS.find(other => other.id !== q.id && other.lectureId === q.lectureId);
   return (
@@ -71,11 +150,14 @@ export default function LearningReviewPanel() {
       {isMounted && revisedQuestionCount > 0 && <p className="text-xs font-semibold text-[#B86924] dark:text-[#E6C387]">{revisedQuestionCount}問に旧形式・改訂前の回答があります。旧回答を採点に使わず、再確認の対象にしています。</p>}
       <Link href="/simulator#case-training" className="inline-block text-sm font-semibold underline text-[#1E3D34] dark:text-[#83BEA8]">症例で判断の根拠を練習する →</Link>
       <LearningFocusReview onStart={start} />
-      {queue.length > 0 && !q && <p role="status" className="text-sm font-bold">今回の復習が完了しました。次の予定日にもう一度確認しましょう。</p>}
-      {q && <div id="learning-review-practice" className="scroll-mt-28 rounded-xl bg-white dark:bg-[#17212A] p-4 space-y-3 text-sm text-[#232826] dark:text-[#FAF8F5]">
+      {review.status === 'restored' && session && <p role="status" className="text-sm font-semibold">中断した復習を再開しました（{index + 1} / {queue.length}問）。選択と回答結果を引き継いでいます。</p>}
+      {(review.status === 'invalid' || review.status === 'different') && <p role="status" className="text-sm">中断した復習は終了・期限切れ・教材の改訂などで再開できません。上の「今日の復習」から現在の問題を始められます。保存済みの回答履歴は残っています。</p>}
+      {!storageAvailable && session && <p role="status" className="text-sm">このブラウザでは復習の途中状態を一時保存できません。ページを移動すると、このセットの途中状態を引き継げない場合があります。</p>}
+      {review.status === 'complete' && <p role="status" className="text-sm font-bold">今回の復習が完了しました。次の予定日にもう一度確認しましょう。</p>}
+      {q && session && <div id="learning-review-practice" tabIndex={-1} aria-label="現在の復習問題" className="scroll-mt-28 rounded-xl bg-white dark:bg-[#17212A] p-4 space-y-3 text-sm text-[#232826] dark:text-[#FAF8F5]">
         <p className="text-xs">{index + 1} / {queue.length} ｜ {q.chapterTitle}</p>
         <h3 className="font-bold whitespace-pre-line">{q.question}</h3>
-        <div className="space-y-2">{shuffledIndices(q.options.length, `${sessionSeed}-${q.id}`).map((original, display) => <button key={original} type="button" disabled={submitted} aria-pressed={choice === original} onClick={() => setChoice(original)} className={`block w-full rounded-lg border p-3 text-left ${choice === original ? 'border-[#1E3D34] bg-[#EBF3EF] dark:bg-[#182823]' : 'border-[#E8E1D1] dark:border-[#263542]'}`}>
+        <div className="space-y-2">{shuffledIndices(q.options.length, `${sessionSeed}-${q.id}`).map((original, display) => <button key={original} type="button" disabled={submitted} aria-pressed={choice === original} onClick={() => choose(original)} className={`block w-full rounded-lg border p-3 text-left ${choice === original ? 'border-[#1E3D34] bg-[#EBF3EF] dark:bg-[#182823]' : 'border-[#E8E1D1] dark:border-[#263542]'}`}>
           {display + 1}. {q.options[original]}
         </button>)}</div>
         {!submitted ? <button type="button" onClick={answer} disabled={choice === null} className="rounded-lg bg-[#1E3D34] text-white px-4 py-2 disabled:opacity-40">回答を確定</button> : <div className="space-y-3">
@@ -83,11 +165,11 @@ export default function LearningReviewPanel() {
           <p className="whitespace-pre-line leading-relaxed">{q.explanation}</p>
           <p className="text-xs">次回復習：{quizResults[q.id]?.nextReviewDate}</p>
           <div className="flex flex-wrap gap-3 text-sm">
-            <Link className="underline" href={`/curriculum/${q.lectureId}?review=${encodeURIComponent(q.id)}`}>要点と関連講義を読む</Link>
+            <Link className="underline" href={`/curriculum/${q.lectureId}?review=${encodeURIComponent(q.id)}&reviewSession=${session.id}#review-question-card`}>要点と関連講義を読む</Link>
             {similar && <button type="button" className="underline" onClick={() => start([similar])}>同じテーマの類題で確認</button>}
             <Link className="underline" href="/simulator#case-training">症例演習へ</Link>
           </div>
-          <button type="button" onClick={() => { if (index + 1 === queue.length) trackEvent('review_complete', { placement: 'learning_review', score: sessionCorrect, total: queue.length }); setIndex(index + 1); setChoice(null); setSubmitted(false); }} className="rounded-lg bg-[#1E3D34] text-white px-4 py-2">{index + 1 < queue.length ? '次の問題へ' : '復習を完了する'}</button>
+          <button type="button" onClick={nextQuestion} className="rounded-lg bg-[#1E3D34] text-white px-4 py-2">{index + 1 < queue.length ? '次の問題へ' : '復習を完了する'}</button>
           <QuestionEvidence lectureId={q.lectureId} revision={q.revision} />
         </div>}
       </div>}

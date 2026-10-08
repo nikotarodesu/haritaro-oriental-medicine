@@ -37,6 +37,7 @@ import { CourseJourneyResolver } from "@/components/learning/LearningCourseLink"
 import { createCourseLectureHref, getCourseNextAction, type CourseJourney } from "@/utils/courseJourney";
 import { buildLearningReflectionHref } from "@/utils/learningReflection";
 import ClinicalLectureApplication from "@/components/clinical/ClinicalLectureApplication";
+import { getLectureShortcut } from "@/utils/lectureKeyboardNavigation";
 
 interface Props {
   lecture: Lecture;
@@ -142,24 +143,16 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
     : prevLecture ? `/curriculum/${prevLecture.id}` : null;
   const nextHref = courseNextAction?.href || (nextLecture ? `/curriculum/${nextLecture.id}` : null);
 
-  // キーボード前後送りショートカット（[ で前へ、] で次へ、Alt+← で前へ、Alt+→ で次へ）
+  // 講義移動は修飾キーなしの [ / ] のみ。ブラウザ履歴の操作は上書きしない。
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // フォーム入力中はスキップ
       const target = e.target as HTMLElement | null;
-      const isInput =
-        target?.tagName === "INPUT" ||
-        target?.tagName === "TEXTAREA" ||
-        target?.tagName === "SELECT" ||
-        target?.tagName === "BUTTON" ||
-        target?.tagName === "A" ||
-        target?.isContentEditable;
-      if (isInput) return;
-
-      if ((e.key === "[" || (e.altKey && e.key === "ArrowLeft")) && previousHref) {
+      const interactiveTarget = Boolean(target?.isContentEditable || target?.closest?.('input, textarea, select, button, a, summary, [contenteditable], [role="dialog"]'));
+      const direction = getLectureShortcut(e, interactiveTarget);
+      if (direction === "previous" && previousHref) {
         e.preventDefault();
         router.push(previousHref);
-      } else if ((e.key === "]" || (e.altKey && e.key === "ArrowRight")) && nextHref) {
+      } else if (direction === "next" && nextHref) {
         e.preventDefault();
         router.push(nextHref);
       }

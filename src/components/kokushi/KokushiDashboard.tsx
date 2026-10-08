@@ -28,7 +28,6 @@ import {
 } from "lucide-react";
 import { useCurriculumProgress, QuizResultRecord } from "@/contexts/CurriculumProgressContext";
 import { CURRICULUM_QUIZZES, QuizQuestionItem, LessonQuizGroup } from "@/data/curriculumQuizzes";
-import { CURRICULUM_DATA } from "@/data/curriculumData";
 import { KOKUSHI_PAST_EXAMS, KokushiPastExamQuestion } from "@/data/kokushiPastExams";
 import LearningReviewPanel from "@/components/learning/LearningReviewPanel";
 import QuestionEvidence from "@/components/learning/QuestionEvidence";

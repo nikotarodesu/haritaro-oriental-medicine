@@ -33,7 +33,7 @@ function load(relative) {
   return exports;
 }
 
-const { prepareSearchItem, prepareSearchQuery, scoreSearchItem, matchesSearchCategory, nextSearchResultIndex, SEARCH_CATEGORIES, searchMatchHint } = load('src/utils/search');
+const { normalizeSearchText, prepareSearchItem, prepareSearchQuery, scoreSearchItem, matchesSearchCategory, nextSearchResultIndex, SEARCH_CATEGORIES, searchMatchHint } = load('src/utils/search');
 const { preparePurposeSearchQuery, rankPurposeSearchResults } = load('src/utils/searchPurpose');
 const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
 const pointIndex = ACUPOINTS_MASTER.map(point => prepareSearchItem({ title: `${point.name} (${point.code})`, exactCode: point.code, tags: [point.kana, point.code, ...(point.aliases || []), ...(point.indications || [])] }));
@@ -115,6 +115,24 @@ for (const option of options) {
 }
 assert(render('学習ノート').includes('href="/notes?tab=learning"'));
 function optionUrls(html) { return Array.from(html.matchAll(/<a(?=[^>]*role="option")[^>]*href="([^"]+)"/g), match => match[1]); }
+for (const [canonical, aliases] of [
+  ['肝気鬱結', ['肝気郁結', '肝気欝結', 'かんきうっけつ', 'カンキウッケツ']],
+  ['瘀血', ['お血', 'おけつ', 'オケツ']],
+  ['肩こり', ['肩凝り', 'かたこり']],
+  ['陰陽', ['いんよう', 'インヨウ']],
+  ['相克', ['相剋', 'そうこく']],
+]) {
+  const expected = optionUrls(render(canonical));
+  assert(expected.length > 0, canonical + ': the canonical query finds actual catalog content');
+  for (const alias of aliases) {
+    assert.equal(normalizeSearchText(alias), normalizeSearchText(canonical), alias);
+    assert.deepEqual(optionUrls(render(alias)), expected, alias + ': the same term returns the same ordered public destinations');
+    assert.deepEqual(optionUrls(render(alias + ' 論文')), optionUrls(render(canonical + ' 論文')), alias + ': research intent is preserved');
+  }
+}
+assert.equal(normalizeSearchText('郁子'), '郁子', 'Do not replace unrelated characters in names');
+assert.notEqual(normalizeSearchText('うつ病'), normalizeSearchText('肝気鬱結'), 'A medical diagnosis is not a traditional term alias');
+assert.notEqual(normalizeSearchText('血栓'), normalizeSearchText('瘀血'), 'No aliases from medical findings to traditional patterns');
 const shoulder = render('肩こり');
 const shoulderUrls = optionUrls(shoulder);
 assert.equal(shoulderUrls[0], '/symptoms/headache-stiff-neck', 'Symptom lookup opens the individual public guide first');

@@ -105,7 +105,7 @@ export const CURRICULUM_READING_INSERTS: Readonly<Record<string, ReadingInsert[]
   ],
   "lecture-qiblood-1": [
     {
-      afterHeading: "第3節：気の4大病態（気虚・気滞・気逆・気陥）の鑑別",
+      afterHeading: "第3節：気虚・気滞・気逆・気陥を区別する",
       afterParagraph: 2,
       figure: {
         id: "qiblood-amount-movement",
@@ -121,7 +121,7 @@ export const CURRICULUM_READING_INSERTS: Readonly<Record<string, ReadingInsert[]
   ],
   "lecture-qiblood-3": [
     {
-      afterHeading: "導入：水とは「全身を潤す体液ネットワーク」である",
+      afterHeading: "導入：水・津液の伝統的な分類を学ぶ",
       afterParagraph: 3,
       figure: {
         id: "qiblood-jin-ye",
@@ -137,7 +137,7 @@ export const CURRICULUM_READING_INSERTS: Readonly<Record<string, ReadingInsert[]
   ],
   "lecture-qiblood-4": [
     {
-      afterHeading: "第2節：「状態（証）」と「体質」を峻別せよ",
+      afterHeading: "第2節：現在の状態と長期的な傾向を分ける",
       afterParagraph: 2,
       figure: {
         id: "qiblood-state-tendency",
@@ -153,7 +153,7 @@ export const CURRICULUM_READING_INSERTS: Readonly<Record<string, ReadingInsert[]
   ],
   "lecture-qiblood-5": [
     {
-      afterHeading: "第3節：第4章「人体機能動態論」への大いなる飛躍",
+      afterHeading: "第3節：次章「人体機能動態論」へつなぐ",
       afterParagraph: 1,
       figure: {
         id: "qiblood-foundation-viewpoints",
@@ -187,20 +187,20 @@ export const CURRICULUM_READING_QUESTIONS: Readonly<Record<string, readonly Curr
     { question: "相乗と相侮はどう違う？", heading: "第4節：平衡の破綻 ― 相乗（そうじょう）と相侮（そうぶ）" },
   ],
   "lecture-qiblood-1": [
-    { question: "気の働きはどう分類する？", heading: "第1節：気の5大作用（生体を駆動するエンジンの働き）" },
-    { question: "気虚・気滞・気逆・気陥はどう違う？", heading: "第3節：気の4大病態（気虚・気滞・気逆・気陥）の鑑別" },
+    { question: "気の働きはどう分類する？", heading: "第1節：気の5大作用を整理する" },
+    { question: "気虚・気滞・気逆・気陥はどう違う？", heading: "第3節：気虚・気滞・気逆・気陥を区別する" },
   ],
   "lecture-qiblood-3": [
-    { question: "津と液はどう違う？", heading: "導入：水とは「全身を潤す体液ネットワーク」である" },
-    { question: "津液の生成・循環・排泄をどう整理する？", heading: "第1節：津液の代謝回路 ― 肺・脾・腎・三焦の連携" },
+    { question: "津と液はどう違う？", heading: "導入：水・津液の伝統的な分類を学ぶ" },
+    { question: "津液の生成・循環・排泄をどう整理する？", heading: "第1節：津液と臓腑の伝統的な役割" },
   ],
   "lecture-qiblood-4": [
     { question: "気・血・水の関係を振り返りたい", heading: "第1節：気・血・水の3大相互関係" },
-    { question: "現在の状態と体質はどう分ける？", heading: "第2節：「状態（証）」と「体質」を峻別せよ" },
+    { question: "現在の状態と体質はどう分ける？", heading: "第2節：現在の状態と長期的な傾向を分ける" },
   ],
   "lecture-qiblood-5": [
-    { question: "気血水の組み合わせを復習したい", heading: "第1節：臨床で頻出する4大複合病態" },
-    { question: "陰陽・五行・気血水をつなげて振り返りたい", heading: "第3節：第4章「人体機能動態論」への大いなる飛躍" },
+    { question: "気血水の組み合わせを復習したい", heading: "第1節：4つの複合する分類と治法の用語" },
+    { question: "陰陽・五行・気血水をつなげて振り返りたい", heading: "第3節：次章「人体機能動態論」へつなぐ" },
   ],
 };
 

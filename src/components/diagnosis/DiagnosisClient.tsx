@@ -55,7 +55,7 @@ const TYPE_LECTURE_MAP: Record<string, { lectureId: string; lectureTitle: string
   blood_stasis: {
     lectureId: "lecture-pathomechanism-5",
     lectureTitle: "血の失調と瘀血の形成",
-    conceptName: "瘀血の形成と微小循環の滞流",
+    conceptName: "瘀血の伝統的な分類と関連所見",
   },
   water_retention: {
     lectureId: "lecture-pathomechanism-4",
@@ -407,7 +407,7 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
       </div>
 
       {/* ============================================================== */}
-      {/* 1. 一般向け12問セルフ診断 */}
+      {/* 1. 一般向け12問セルフチェック */}
       {/* ============================================================== */}
       {activeTab === "self" && (
         <div className="space-y-8 sm:space-y-12 animate-fadeIn max-w-4xl mx-auto">
@@ -635,7 +635,7 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
                           </span>
                         </div>
                         <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-tight block mt-0.5">
-                          診断傾向「{selfResult.name}」をシミュレーターへ引き継ぎ、八綱・気血水・臓腑の連動配穴を検証できます。
+                          回答上の分類「{selfResult.name}」をシミュレーターへ引き継ぎ、八綱・気血水・臓腑の伝統的な関係を学習できます。
                         </span>
                       </div>
                     </div>

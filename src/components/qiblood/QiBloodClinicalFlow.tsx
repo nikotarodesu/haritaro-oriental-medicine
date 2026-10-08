@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Sparkles, ArrowRight, CheckCircle2, ChevronRight, Stethoscope, Compass, Zap, Heart, Droplets, BookOpen } from "lucide-react";
+import { Sparkles, ArrowRight, CheckCircle2, Stethoscope, BookOpen } from "lucide-react";
+import QiBloodLearningScope from "./QiBloodLearningScope";
 
 interface FlowCase {
   id: string;
@@ -9,23 +10,23 @@ interface FlowCase {
   attributeColor: string;
   symptomTitle: string;
   step1: {
-    label: "気血水の判定";
+    label: "伝統分類の候補";
     result: string;
     sub: string;
   };
   step2: {
-    label: "随伴症状から臓腑を同定";
+    label: "随伴情報と不足情報";
     symptoms: string;
     targetOrgan: string;
     organKana: string;
   };
   step3: {
-    label: "治療方針（治則・治法）";
+    label: "治則の意味を学ぶ";
     principle: string;
-    method: "補法（エネルギー補填）" | "通法・瀉法（渋滞解消）" | "化湿（水湿・病理産物の排除）";
+    method: "補法（伝統的な分類）" | "通法・瀉法（伝統的な分類）" | "化湿（伝統的な分類）";
   };
   step4: {
-    label: "代表ツボ・処方例";
+    label: "関連用語の学習例";
     acupoints: string[];
     herbalFormula: string;
     rationale: string;
@@ -37,112 +38,112 @@ const FLOW_CASES: FlowCase[] = [
     id: "case-1",
     category: "気虚",
     attributeColor: "#FFA000",
-    symptomTitle: "「だるくて動けない・食後に猛烈に眠い」ケース",
+    symptomTitle: "「疲れやすく、食後に眠気を感じる」学習ケース",
     step1: {
-      label: "気血水の判定",
-      result: "気虚（ききょ）",
-      sub: "生命力・推進力のバッテリー切れ",
+      label: "伝統分類の候補",
+      result: "気虚（ききょ）などを比較",
+      sub: "働きの不足という伝統的な見方",
     },
     step2: {
-      label: "随伴症状から臓腑を同定",
-      symptoms: "食後強い眠気、軟便・泥状便、手足がだるい",
-      targetOrgan: "脾気虚（ひききょ）",
+      label: "随伴情報と不足情報",
+      symptoms: "眠気・軟便・だるさの経過は？ 睡眠・食事・医療評価の情報は十分か？",
+      targetOrgan: "脾気虚（ひききょ）を候補として比較",
       organKana: "ひききょ",
     },
     step3: {
-      label: "治療方針（治則・治法）",
+      label: "治則の意味を学ぶ",
       principle: "健脾益気（けんぴえっき）",
-      method: "補法（エネルギー補填）",
+      method: "補法（伝統的な分類）",
     },
     step4: {
-      label: "代表ツボ・処方例",
+      label: "関連用語の学習例",
       acupoints: ["足三里（あしさんり）", "中脘（ちゅうかん）", "脾兪（ひゆ）"],
       herbalFormula: "補中益気湯（ほちゅうえっきとう）、六君子湯",
-      rationale: "脾胃の消化吸収エンジンを底上げし、飲食物からの気血産生を再起動する。",
+      rationale: "気虚や脾気虚の用語を候補として比べる例です。疲労の経過や睡眠、食事など、確認できていない情報を残します。",
     },
   },
   {
     id: "case-2",
     category: "気滞",
     attributeColor: "#00897B",
-    symptomTitle: "「胸や脇が張り、怒りっぽく喉がつまる」ケース",
+    symptomTitle: "「張りや喉の違和感、気分の変化がある」学習ケース",
     step1: {
-      label: "気血水の判定",
-      result: "気滞（きたい）",
-      sub: "自律神経の過緊張・気の流通障害",
+      label: "伝統分類の候補",
+      result: "気滞（きたい）などを比較",
+      sub: "巡りの停滞という伝統的な見方",
     },
     step2: {
-      label: "随伴症状から臓腑を同定",
-      symptoms: "胸脇苦満、イライラ・怒り、喉の異物感（梅核気）",
-      targetOrgan: "肝気鬱結（かんきうっけつ）",
+      label: "随伴情報と不足情報",
+      symptoms: "張り・気分の変化・喉の違和感の時間や程度は？ 他の説明を検討したか？",
+      targetOrgan: "肝気鬱結（かんきうっけつ）を候補として比較",
       organKana: "かんきうっけつ",
     },
     step3: {
-      label: "治療方針（治則・治法）",
+      label: "治則の意味を学ぶ",
       principle: "疏肝理気（そかんりき）",
-      method: "通法・瀉法（渋滞解消）",
+      method: "通法・瀉法（伝統的な分類）",
     },
     step4: {
-      label: "代表ツボ・処方例",
-      acupoints: ["太衝（たいしょう）", "壇中（だんちゅう）", "内関（ないかん）"],
+      label: "関連用語の学習例",
+      acupoints: ["太衝（たいしょう）", "膻中（だんちゅう）", "内関（ないかん）"],
       herbalFormula: "四逆散（しぎゃくさん）、半夏厚朴湯、加味逍遙散",
-      rationale: "肝の緊張を緩めて気の巡りを解放し、自律神経の渋滞を解除する。",
+      rationale: "張りや気分の変化だけで、肝気鬱結や自律神経の状態は確定できません。観察した事実と、伝統分類による解釈を分ける例です。",
     },
   },
   {
     id: "case-3",
     category: "血虚",
     attributeColor: "#D32F2F",
-    symptomTitle: "「動悸がして眠れない・不安で夢を多く見る」ケース",
+    symptomTitle: "「動悸・眠りの浅さ・不安感が気になる」学習ケース",
     step1: {
-      label: "気血水の判定",
-      result: "血虚（けっきょ）",
-      sub: "精神を養う燃料（血）の枯渇",
+      label: "伝統分類の候補",
+      result: "血虚（けっきょ）などを比較",
+      sub: "養う働きの不足という伝統的な見方",
     },
     step2: {
-      label: "随伴症状から臓腑を同定",
-      symptoms: "動悸、不眠・多夢、健忘、不安感、顔色不良",
-      targetOrgan: "心血虚（しんけっきょ）",
+      label: "随伴情報と不足情報",
+      symptoms: "動悸や睡眠の変化の経過は？ 生活・服薬・医療評価の情報は十分か？",
+      targetOrgan: "心血虚（しんけっきょ）を候補として比較",
       organKana: "しんけっきょ",
     },
     step3: {
-      label: "治療方針（治則・治法）",
+      label: "治則の意味を学ぶ",
       principle: "養心補血・安神（あんしん）",
-      method: "補法（エネルギー補填）",
+      method: "補法（伝統的な分類）",
     },
     step4: {
-      label: "代表ツボ・処方例",
+      label: "関連用語の学習例",
       acupoints: ["神門（しんもん）", "三陰交（さんいんこう）", "心兪（しんゆ）"],
       herbalFormula: "帰脾湯（きひとう）、酸棗仁湯（さんそうにんとう）",
-      rationale: "精神の拠点である「心」に血を満たし、脳の興奮と不安を鎮静させる。",
+      rationale: "血虚・心血虚は、貧血や不安の病名を判定する語ではありません。症状の経過と未確認の情報を整理し、伝統的な説明の範囲を確かめます。",
     },
   },
   {
     id: "case-4",
     category: "瘀血",
     attributeColor: "#880E4F",
-    symptomTitle: "「生理痛が刺すように重く、血塊が出る」ケース",
+    symptomTitle: "「月経時の痛みや血塊が気になる」学習ケース",
     step1: {
-      label: "気血水の判定",
-      result: "瘀血（おけつ）",
-      sub: "骨盤内・微小毛細血管のうっ滞",
+      label: "伝統分類の候補",
+      result: "瘀血（おけつ）などを比較",
+      sub: "血の巡りの停滞という伝統的な見方",
     },
     step2: {
-      label: "随伴症状から臓腑を同定",
-      symptoms: "下腹部の針刺痛、暗紫色の血塊、唇の色が悪い",
-      targetOrgan: "胞宮瘀血（ほうきゅうおけつ）",
+      label: "随伴情報と不足情報",
+      symptoms: "痛みや月経の経過は？ 医療評価・他の説明・変化を確認できているか？",
+      targetOrgan: "胞宮瘀血（ほうきゅうおけつ）を候補として比較",
       organKana: "ほうきゅうおけつ",
     },
     step3: {
-      label: "治療方針（治則・治法）",
+      label: "治則の意味を学ぶ",
       principle: "活血化瘀（かっけつかお）",
-      method: "通法・瀉法（渋滞解消）",
+      method: "通法・瀉法（伝統的な分類）",
     },
     step4: {
-      label: "代表ツボ・処方例",
+      label: "関連用語の学習例",
       acupoints: ["血海（けっかい）", "合谷（ごうこく）", "次髎（じりょう）"],
       herbalFormula: "桂枝茯苓丸（けいしぶくりょうがん）、当帰芍薬散",
-      rationale: "局所の血塊を融解し、骨盤内の微小循環を再疎通させて痛みの緩解を導く。",
+      rationale: "瘀血は血栓や微小循環障害を示す検査結果ではありません。痛みと月経の経過を整理し、観察と解釈を分ける学習例です。",
     },
   },
 ];
@@ -162,14 +163,14 @@ export default function QiBloodClinicalFlow({ onNextLecture }: Props) {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説⑤：気血水 ➜ 臓腑 ➜ 治則の臨床推論フローチャート</span>
+            <span>画像解説⑤：気血水・臓腑・治則の用語を比較する学習フロー</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            全身の実体から「標的臓腑」を絞り込み、治療のベクトルを決定する
+            所見と解釈を分け、候補と不足情報を整理する
           </h4>
         </div>
         <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-          症例を選んで推論プロセスを確認
+          学習ケースを選んで、説明の範囲を確認
         </span>
       </div>
 
@@ -196,7 +197,7 @@ export default function QiBloodClinicalFlow({ onNextLecture }: Props) {
                   style={{ backgroundColor: fc.attributeColor }}
                 />
                 <span className="text-xs font-bold" style={{ color: fc.attributeColor }}>
-                  {fc.category}パターン
+                  {fc.category}を比べる例
                 </span>
               </div>
               <div className="font-bold text-xs text-[#232826] dark:text-[#FAF8F5] line-clamp-1">
@@ -212,12 +213,12 @@ export default function QiBloodClinicalFlow({ onNextLecture }: Props) {
         <div className="flex items-center gap-2 mb-5">
           <Stethoscope className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
           <h5 className="font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
-            臨床推論の4ステップ：{currentCase.symptomTitle}
+            学習の4ステップ：{currentCase.symptomTitle}
           </h5>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 relative">
-          {/* STEP 1: 気血水の失調 */}
+          {/* STEP 1: 伝統分類の候補 */}
           <div className="bg-white dark:bg-[#17212A] rounded-xl p-4 border border-[#E5DEC9] dark:border-[#2A3B4A] relative">
             <div className="text-[10px] font-mono font-bold text-[#8C9691] dark:text-[#64748B] mb-1">
               STEP 01
@@ -236,7 +237,7 @@ export default function QiBloodClinicalFlow({ onNextLecture }: Props) {
             </div>
           </div>
 
-          {/* STEP 2: 標的臓腑の特定 */}
+          {/* STEP 2: 候補の比較と不足情報 */}
           <div className="bg-white dark:bg-[#17212A] rounded-xl p-4 border border-[#E5DEC9] dark:border-[#2A3B4A] relative">
             <div className="text-[10px] font-mono font-bold text-[#8C9691] dark:text-[#64748B] mb-1">
               STEP 02
@@ -248,7 +249,7 @@ export default function QiBloodClinicalFlow({ onNextLecture }: Props) {
               【{currentCase.step2.targetOrgan}】
             </div>
             <div className="text-[11px] text-[#59615D] dark:text-[#96A6B2]">
-              根拠：{currentCase.step2.symptoms}
+              確認したい情報：{currentCase.step2.symptoms}
             </div>
           </div>
 
@@ -268,7 +269,7 @@ export default function QiBloodClinicalFlow({ onNextLecture }: Props) {
             </div>
           </div>
 
-          {/* STEP 4: ツボ・処方 */}
+          {/* STEP 4: 用語の学習例 */}
           <div className="bg-white dark:bg-[#17212A] rounded-xl p-4 border border-[#E5DEC9] dark:border-[#2A3B4A]">
             <div className="text-[10px] font-mono font-bold text-[#8C9691] dark:text-[#64748B] mb-1">
               STEP 04
@@ -277,21 +278,21 @@ export default function QiBloodClinicalFlow({ onNextLecture }: Props) {
               {currentCase.step4.label}
             </div>
             <div className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] mb-1">
-              {currentCase.step4.herbalFormula}
+              方剤名の例：{currentCase.step4.herbalFormula}
             </div>
             <div className="text-[11px] text-[#59615D] dark:text-[#96A6B2]">
-              ツボ：{currentCase.step4.acupoints.join("、")}
+              経穴名の例：{currentCase.step4.acupoints.join("、")}
             </div>
           </div>
         </div>
 
-        {/* 臨床メカニズム補足 */}
+        {/* 学習モデルの解釈範囲 */}
         <div className="mt-4 p-3.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-start gap-2.5">
           <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
           <p className="text-xs text-[#3E4541] dark:text-[#CBD5E1] leading-relaxed">
-            <span className="font-bold">推論のポイント：</span>
+            <span className="font-bold">解釈の限界：</span>
             {currentCase.step4.rationale}
-            東洋医学の診断は、「全身の気血水の状態（マクロ）」を把握してから「どの臓腑が主座か（ミクロ）」を絞り込むため、症状の根本原因を撃ち抜くことができます。
+            臓腑名は伝統的な機能分類を表し、解剖学的臓器の病名を確定するものではありません。方剤・経穴の例示から適応や効果を決めず、使用・施術の提案とも区別して学びます。
           </p>
         </div>
       </div>
@@ -307,7 +308,7 @@ export default function QiBloodClinicalFlow({ onNextLecture }: Props) {
             体系学習カリキュラム④：生命機能論（営衛・三焦・気化システム）
           </h5>
           <p className="text-xs text-[#E8F5E9]/90 mt-1 max-w-xl leading-relaxed">
-            気血水がどのように体内を循環し、昼夜のリズム（営衛の交代）や全身の水分代謝ハイウェイ（三焦水道）を駆動しているのか、動態システムの深奥を学びます。
+            営衛・三焦などの伝統的用語の役割を学び、現代医学の説明との違いを整理します。
           </p>
         </div>
 
@@ -319,6 +320,7 @@ export default function QiBloodClinicalFlow({ onNextLecture }: Props) {
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
+      <QiBloodLearningScope />
     </figure>
   );
 }
