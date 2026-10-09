@@ -1,5 +1,8 @@
 export interface ClinicalLearningGuide { situation: string; check: string; pitfall: string; complaintSlug: string; }
 export const CLINICAL_LEARNING_GUIDES: Record<string, ClinicalLearningGuide> = {
+  intro: { situation: '学習用の相談例から、本人の報告・解釈・不明点を分けるとき', check: '何が書かれているか、どの説明が仮説か、次に何を確認するかを三つに分けて記録する。', pitfall: '伝統用語を知ったことだけで原因や施術方法が分かったとしない。', complaintSlug: 'fatigue' },
+  zangfu: { situation: '食後のもたれや疲労を、臓腑の伝統的な役割と関連づけて学ぶとき', check: '本人が話した症状と、運化・疏泄などの役割の説明を分け、経過や他の情報で未確認の点を残す。', pitfall: '脾・肝・腎という分類名を、同じ名前の臓器の病気に置き換えない。', complaintSlug: 'digestion' },
+  meridians: { situation: '首や肩の学習例で、経絡の名称・経穴番号・所見の場所を区別するとき', check: '左右と部位、名称と番号の対応、本人の報告と観察条件を分けて記録する。', pitfall: '経絡の走行や圧痛の場所だけで原因を確定せず、体表の位置を刺入の指示に使わない。', complaintSlug: 'shoulder' },
   yinyang: { situation: '冷えとほてり、虚と実の所見が混在して迷ったとき', check: '部位・時刻・経過・温めた際の変化を分け、分類の根拠と不一致を記録する。', pitfall: '一つの症状や自律神経の名称を、そのまま陰陽の判定に置き換えない。', complaintSlug: 'fatigue' },
   wuxing: { situation: '情志・消化・睡眠など、複数の訴えの関係を整理するとき', check: '症状が現れた順序と生活背景を確認し、相生・相剋は伝統的な説明モデルとして扱う。', pitfall: '五行の関係だけで原因や臓器の疾患を断定しない。', complaintSlug: 'sleep' },
   qiblood: { situation: '疲労、張り、固定痛、重だるさの材料を比較するとき', check: '症状の性状・変動、食欲・便、舌脈を照合し、気血津液の候補と不足情報を分ける。', pitfall: '気虚を貧血、瘀血を血栓などの医学的診断と同一視しない。', complaintSlug: 'digestion' },

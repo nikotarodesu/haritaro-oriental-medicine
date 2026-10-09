@@ -213,6 +213,8 @@ for (const chapter of catalog.chapters) {
     assert(markup.includes('配穴設計ツール') && markup.includes('この講義を臨床ノートに記録'));
   } else {
     assert(!markup.includes('aria-label="この講義を実践につなぐ"'), chapter.id + ': early lectures do not render clinical application prompts');
+    assert.equal(markup.includes('aria-label="この講義で練習すること"'), ['intro', 'zangfu', 'meridians'].includes(lecture.seriesId), chapter.id + ': new foundation guides render as learning exercises');
+    assert(!markup.includes('href="/clinical/workspace"') && !markup.includes('href="/cases#revision-training"'), chapter.id + ': foundation guides do not bypass the staged learning route');
     assert(markup.includes('学習ガイドを見る') && markup.includes('aria-label="基礎を振り返る"'));
     assert(markup.includes('href="/glossary"') && markup.includes('用語辞典で振り返る'));
     assert(!markup.includes('配穴設計ツール') && !markup.includes('この講義を臨床ノートに記録') && !markup.includes('6段階の症例演習で振り返る'));

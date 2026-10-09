@@ -26,6 +26,7 @@ const body = id => byId.get(`lecture-${id}`).contentMarkdown;
 
 // Guard contradictions between the cautious diagrams/quizzes and legacy body text.
 const regressions = {
+  'pathomechanism-1': /全く同一の概念区分|中焦が凍結|血流が詰まった|最終的結論|完璧な調和/,
   'pathomechanism-9': /伝染ハイウェイ|第4ドミノ|完全な現代科学的実体/,
   'pathomechanism-11': /激甚に悪化します|三流です|最先端の人工知能.*完全に同調/,
   'diagnosis-4': /瘢痕組織が経絡を断裂|因果関係を自ら捏造/,
@@ -63,4 +64,29 @@ assert.match(practiceGuide.situation, /情報収集.*再評価/);
 assert.match(practiceGuide.check, /不足情報.*次の段階/);
 assert(!CURRICULUM_QUIZZES['lecture-qiblood-1'].questions[2].question.includes('順番'));
 assert.equal(new Set(CURRICULUM_QUIZZES['lecture-practice-5'].questions.map(q => q.question)).size, 3);
-console.log(`Passed: ${lectures.length} lessons, ${links} labelled lesson links, distinct prompts, 17 known editorial regressions, shared-case chronology and worked SOAP.`);
+assert(body('pathomechanism-1').includes(':::diagram pathomechanism-four-layers'));
+assert.match(body('pathomechanism-1'), /架空例.*Aさん/);
+assert.match(body('pathomechanism-1'), /解答例/);
+assert.match(body('pathomechanism-1'), /本人の報告.*未確認/s);
+assert(byId.get('lecture-pathomechanism-1').references.some(ref => typeof ref !== 'string' && ref.id === 'who-tcm-terminology-publisher-overview'));
+const glossary = load('src/data/glossaryData').GLOSSARY_TERMS;
+for (const term of ['相生', '相克', '相乗', '相侮', '陰陽', '五労', '弁証論治']) {
+  const entry = glossary[term];
+  assert(!/内臓同士がエネルギー|真犯人|打ちのめ|エンジンが壊れる|東洋医学版「職業病」|根本の病態パターン/.test(JSON.stringify(entry)), term + ' unsupported explanation');
+  assert.match(entry.summary, /伝統|分類|モデル|陰陽/);
+  assert.match(entry.summary, /ではない|だけで|だけから|確定|未確認|意味しない/);
+}
+assert.match(glossary['相生'].summary, /測定したものではない/);
+assert.match(glossary['相克'].summary, /同一の生理機構ではない/);
+assert.match(glossary['相乗'].oneLiner, /同じ向き/);
+assert.match(glossary['相侮'].oneLiner, /逆向き/);
+for (const quiz of Object.values(CURRICULUM_QUIZZES)) {
+  for (const question of quiz.questions) assert(!/(次章|次の\S+論)で学ぶ(?:主な目的|内容)/.test(question.question), question.id + ' chapter-navigation trivia');
+}
+assert.equal(CURRICULUM_QUIZZES['lecture-lifedynamics-12'].questions[2].relatedSectionTitle, '第1節：生成・巡り・排泄の整理');
+assert.equal(CURRICULUM_QUIZZES['lecture-wuxing-8'].questions[2].relatedSectionTitle, '第1節：分類と関係を説明する');
+assert.match(body('wuxing-8'), /木乗土.*土侮木/);
+const scripts = require('../package.json').scripts;
+assert(scripts['test:learning'].includes('scripts/clinical-workflow-regression.cjs'));
+assert(scripts['test:learning'].includes('scripts/curriculum-editorial-regression.cjs'));
+console.log(`Passed: ${lectures.length} lessons, ${links} labelled lesson links, distinct prompts, ${Object.keys(regressions).length} known editorial regressions, seven glossary corrections, shared-case chronology and worked SOAP.`);

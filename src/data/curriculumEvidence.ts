@@ -56,6 +56,9 @@ export function getCurriculumReferences(id: string, seriesId: string, declared?:
       if (!references.some(ref => typeof ref !== "string" && ref.id === source.id)) references.push(source);
     }
   }
+  if (id === "lecture-pathomechanism-1" && !references.some(ref => typeof ref !== "string" && ref.id === terminology.id)) {
+    references.push({ ...terminology, sourceCheckedAt: "2026-10-09" });
+  }
   if (references.length > 0) return references;
   if (seriesId === "diagnosis") references.push(terminology);
   if (seriesId === "treatment") references.push(terminology, acupuncture);

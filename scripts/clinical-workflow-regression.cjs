@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const ts = require('typescript');
+const React = require('react');
+const { renderToStaticMarkup } = require('react-dom/server');
 const { createDataLoader } = require('./data-loader.cjs');
 const memory = new Map();
 const sessionStorage = { getItem: key => memory.get(key) || null, setItem: (key,value) => memory.set(key,value), removeItem: key => memory.delete(key) };
@@ -23,7 +29,39 @@ for (const pattern of workflow.CLINICAL_PATTERNS) {
   assert(lectureIds.has(pattern.lectureId), pattern.lectureId);
   for (const point of pattern.points) assert(codes.has(point.code), point.code);
 }
-for (const lecture of lectures) assert(CLINICAL_LEARNING_GUIDES[lecture.id.replace('lecture-','').replace(/-\d+$/,'')], lecture.id + ' application guide');
+const componentFile = path.resolve(__dirname, '../src/components/clinical/ClinicalLectureApplication.tsx');
+const componentExports = {};
+const componentCode = ts.transpileModule(fs.readFileSync(componentFile, 'utf8'), {
+  fileName: componentFile,
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true },
+}).outputText;
+vm.runInNewContext(componentCode, { exports: componentExports, require: id => {
+  if (id === '@/data/clinicalLearning') return { CLINICAL_LEARNING_GUIDES };
+  if (id === 'next/link') return ({ href, children, ...props }) => React.createElement('a', { href, ...props }, children);
+  return require(id);
+} }, { filename: componentFile });
+const Application = componentExports.default;
+const complaintSlugs = new Set(workflow.CLINICAL_COMPLAINTS.map(complaint => complaint.slug));
+for (const lecture of lectures) {
+  const guide = CLINICAL_LEARNING_GUIDES[lecture.id.replace('lecture-','').replace(/-\d+$/,'')];
+  assert(guide, lecture.id + ' application guide');
+  assert(complaintSlugs.has(guide.complaintSlug), lecture.id + ' published complaint route');
+  const markup = renderToStaticMarkup(React.createElement(Application, { lectureId: lecture.id, takeaway: lecture.summary }));
+  assert(markup.includes('aria-label="この講義を実践につなぐ"'), lecture.id + ' rendered application');
+  for (const value of [guide.situation, guide.check, guide.pitfall]) assert(markup.includes(value), lecture.id + ' guide content');
+  for (const href of [`/clinical/symptoms/${guide.complaintSlug}`, '/cases#revision-training', '/clinical/workspace']) assert(markup.includes(`href="${href}"`), lecture.id + ' rendered destination');
+}
+assert.equal(renderToStaticMarkup(React.createElement(Application, { lectureId: 'unknown', takeaway: '' })), '');
+assert.equal(lectures.filter(lecture => /^lecture-(intro|zangfu|meridians)-/.test(lecture.id)).length, 13);
+for (const lecture of lectures.filter(lecture => /^lecture-(intro|zangfu|meridians)-/.test(lecture.id))) {
+  const markup = renderToStaticMarkup(React.createElement(Application, { lectureId: lecture.id, takeaway: lecture.summary, foundation: true }));
+  assert(markup.includes('aria-label="この講義で練習すること"'), lecture.id + ' foundation exercise');
+  assert(markup.includes('href="/glossary"') && markup.includes('実際の診断・施術の手順ではありません'));
+  assert(!markup.includes('/clinical/') && !markup.includes('/cases'), lecture.id + ' no premature clinical call to action');
+}
+assert.match(CLINICAL_LEARNING_GUIDES.intro.check, /報告|仮説/);
+assert.match(CLINICAL_LEARNING_GUIDES.zangfu.pitfall, /臓器/);
+assert.match(CLINICAL_LEARNING_GUIDES.meridians.pitfall, /刺入/);
 for (const example of CLINICAL_REVISION_CASES) {
   assert(lectureIds.has(example.lectureId));
   assert.equal(example.choices.filter(choice => choice.appropriate).length, 1);
