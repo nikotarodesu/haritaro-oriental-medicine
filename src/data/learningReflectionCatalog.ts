@@ -314,7 +314,7 @@ export const REFLECTION_LECTURES: ReadonlyArray<{id: string; title: string}> = [
   },
   {
     "id": "lecture-treatment-9",
-    "title": "介入方法と刺激量を設計する"
+    "title": "介入方法・刺激量の検討事項と限界"
   },
   {
     "id": "lecture-treatment-10",

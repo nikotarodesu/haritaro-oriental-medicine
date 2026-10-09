@@ -10,31 +10,60 @@ const load = createDataLoader();
 const { CURRICULUM_DATA } = load('src/data/curriculumData');
 const { CURRICULUM_CHAPTERS_META } = load('src/data/curriculumOutline');
 const { getChapterAssessment } = load('src/data/curriculumAssessments');
+const { CURRICULUM_QUIZZES } = load('src/data/curriculumQuizzes');
+const { CHAPTER_APPLIED_QUESTIONS, CHAPTER_WRITING_EXERCISES } = load('src/data/curriculumAssessmentQuestions');
 const { getLearningCourse } = load('src/data/learningCourses');
 const { parseMarkdownBlocks } = load('src/utils/markdownParser');
+const { shuffledIndices } = load('src/utils/learningReview');
 const lectures = CURRICULUM_DATA.flatMap(s => s.lectures);
 const lectureMap = new Map(lectures.map(l => [l.id, l]));
 const ids = new Set();
+const lessonPrompts = new Set(Object.values(CURRICULUM_QUIZZES).flatMap(quiz => quiz.questions.map(q => q.question.trim())));
+const chapterPrompts = new Set();
+const writingExamples = new Set();
+assert.deepEqual(Object.keys(CHAPTER_APPLIED_QUESTIONS).sort(), Array.from(CURRICULUM_CHAPTERS_META, c => c.seriesId).sort());
+assert.deepEqual(Object.keys(CHAPTER_WRITING_EXERCISES).sort(), Object.keys(CHAPTER_APPLIED_QUESTIONS).sort());
 for (const chapter of CURRICULUM_CHAPTERS_META) {
   const last = chapter.lectureIds.at(-1);
   const assessment = getChapterAssessment(last);
   assert.equal(assessment.questions.length, 9);
   assert.equal(getChapterAssessment(chapter.lectureIds[0]), null);
+  assert.equal(CHAPTER_APPLIED_QUESTIONS[chapter.seriesId].length, 8);
+  const answerPositions = [0, 0, 0];
+  const displayedPositions = [0, 0, 0];
   const sources = new Set();
   for (const question of assessment.questions) {
     assert(!ids.has(question.id)); ids.add(question.id);
+    assert(!lessonPrompts.has(question.question.trim()), `${question.id}: not copied from a lesson quiz`);
+    assert(!chapterPrompts.has(question.question.trim()), `${question.id}: distinct chapter prompt`);
+    chapterPrompts.add(question.question.trim());
     assert.equal(new Set(question.options).size, 3);
     assert(Number.isInteger(question.correctIndex) && question.correctIndex >= 0 && question.correctIndex < 3);
+    answerPositions[question.correctIndex]++;
+    displayedPositions[shuffledIndices(3, question.id).indexOf(question.correctIndex)]++;
     const url = new URL(question.href, 'https://www.haritaro.jp');
     const source = lectureMap.get(url.pathname.split('/').at(-1));
     assert(source && chapter.lectureIds.includes(source.id)); sources.add(source.id);
-    if (url.searchParams.get('focus')) assert(source.contentMarkdown.includes(url.searchParams.get('focus')));
+    const focus = url.searchParams.get('focus');
+    if (focus) {
+      const blocks = parseMarkdownBlocks(source.contentMarkdown);
+      const index = blocks.findIndex(block => (block.type === 'h2' || block.type === 'h3' || block.type === 'h4') && block.content === focus);
+      assert(index >= 0, `${question.id}: exact source heading`);
+      assert.equal(url.hash, `#curriculum-heading-${index}`, `${question.id}: direct anchor also works within the current lecture`);
+    }
     assert(question.explanation.length >= 30);
   }
   assert(sources.size >= Math.min(5, chapter.lectureIds.length), chapter.id + ': covers multiple lessons');
   assert.equal(assessment.writing.criteria.length, 3);
+  assert(answerPositions.every(count => count >= 2 && count <= 4), `${chapter.id}: varied answer positions`);
+  assert(displayedPositions.every(count => count >= 2 && count <= 4), `${chapter.id}: varied positions after the actual UI shuffle`);
+  assert(assessment.writing.prompt.length >= 60 && assessment.writing.example.length >= 120);
+  assert(!assessment.writing.example.includes('という目標に照らし'), `${chapter.id}: worked answer, not a generic instruction`);
+  writingExamples.add(assessment.writing.example);
 }
 assert.equal(ids.size, 99);
+assert.equal(chapterPrompts.size, 99);
+assert.equal(writingExamples.size, 11);
 for (const lecture of lectures) {
   assert(!/```|[┌┐└┘┬┼]/.test(lecture.contentMarkdown), lecture.id + ': no fixed-width drawing');
   parseMarkdownBlocks(lecture.contentMarkdown);
@@ -127,4 +156,4 @@ drawerOpened = true; drawerExports.default();
 assert.equal(drawerExports.default().type, drawerType);
 drawerOpened = false;
 assert.equal(drawerExports.default().type, drawerType);
-console.log('Passed: 11 chapter assessments / 99 questions, source links, wrapping content, prerequisites, procedure safety, real grading/retry, notebook-save readiness and persistent lazy drawer.');
+console.log('Passed: 11 chapter assessments / 99 independent questions / 11 worked writing examples, exact source links, wrapping content, prerequisites, procedure safety, real grading/retry, notebook-save readiness and persistent lazy drawer.');

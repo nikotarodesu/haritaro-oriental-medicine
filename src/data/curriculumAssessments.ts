@@ -1,6 +1,7 @@
 import { CURRICULUM_CHAPTERS_META } from './curriculumOutline';
-import { CURRICULUM_QUIZZES } from './curriculumQuizzes';
+import { CHAPTER_APPLIED_QUESTIONS, CHAPTER_WRITING_EXERCISES } from './curriculumAssessmentQuestions';
 import { CURRICULUM_DATA } from './curriculumData';
+import { parseMarkdownBlocks } from '../utils/markdownParser';
 
 export interface ChapterAssessmentData {
   id: string;
@@ -28,23 +29,19 @@ const integrated: Record<string, [string, [string, string, string], number, stri
 export function getChapterAssessment(lectureId: string): ChapterAssessmentData | null {
   const chapter = CURRICULUM_CHAPTERS_META.find(c => c.lectureIds.at(-1) === lectureId);
   if (!chapter) return null;
-  const lectures = CURRICULUM_DATA.flatMap(s => s.lectures);
-  const questions = Array.from({ length: 8 }, (_, i) => {
-    const sourceId = chapter.lectureIds[Math.floor(i * chapter.lectureIds.length / 8)];
-    const group = CURRICULUM_QUIZZES[sourceId];
-    const cycle = Math.floor(i / chapter.lectureIds.length);
-    const q = group.questions[(i + cycle) % 3];
-    return { ...q, id: `chapter-${chapter.seriesId}-q${i + 1}`, href: `/curriculum/${sourceId}?focus=${encodeURIComponent(q.relatedSectionTitle ?? '')}` };
+  const lectures = CURRICULUM_DATA.flatMap(stage => stage.lectures);
+  const questions: ChapterAssessmentData['questions'] = CHAPTER_APPLIED_QUESTIONS[chapter.seriesId].map(([lesson, section, question, options, correctIndex, explanation], i) => {
+    const sourceId = chapter.lectureIds[lesson - 1];
+    const source = lectures.find(lecture => lecture.id === sourceId)!;
+    const headingIndex = parseMarkdownBlocks(source.contentMarkdown).findIndex(block => (block.type === 'h2' || block.type === 'h3' || block.type === 'h4') && block.content === section);
+    if (headingIndex < 0) throw new Error(`Missing chapter assessment heading: ${sourceId} / ${section}`);
+    // The fragment also handles same-lecture navigation, where the reader stays mounted.
+    return { id: `chapter-${chapter.seriesId}-q${i + 1}`, question, options, correctIndex, explanation, href: `/curriculum/${sourceId}?focus=${encodeURIComponent(section)}#curriculum-heading-${headingIndex}` };
   });
   const [question, options, correctIndex, explanation] = integrated[chapter.seriesId];
-  const last = lectures.find(l => l.id === lectureId)!;
   questions.push({ id: `chapter-${chapter.seriesId}-q9`, question, options, correctIndex, explanation, href: `/curriculum/${lectureId}#lecture-content` });
   return {
     id: `chapter-${chapter.seriesId}`, title: chapter.title, lectureId, questions,
-    writing: {
-      prompt: `${question}\n選んだ判断、その根拠、追加確認したいことを自分の言葉で書いてください。`,
-      example: `${explanation}\nこの章の「${last.whatYouWillLearn.canDo}」という目標に照らし、説明できた点と不足する点を分けます。`,
-      criteria: ['判断と、その根拠になる情報を区別して書いたか', '伝統的な説明と、医学的な診断・効果の評価を区別したか', 'まだ分からないことと、次に確認する内容を示したか'],
-    },
+    writing: CHAPTER_WRITING_EXERCISES[chapter.seriesId],
   };
 }

@@ -2878,7 +2878,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
   "lectureId": "lecture-treatment-9",
   "chapterId": "treatment",
   "chapterTitle": "第10章 治則・治法",
-  "lectureTitle": "介入方法と刺激量を設計する",
+  "lectureTitle": "介入方法・刺激量の検討事項と限界",
   "passingScore": 2,
   "questions": [
     {

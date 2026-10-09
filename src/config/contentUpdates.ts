@@ -17,6 +17,8 @@ export const CURRICULUM_EDITORIAL_REVISIONS = [
   ...Array.from({ length: 4 }, (_, index) => `lecture-intro-${index + 1}`),
   ...Array.from({ length: 5 }, (_, index) => `lecture-zangfu-${index + 1}`),
   ...Array.from({ length: 4 }, (_, index) => `lecture-meridians-${index + 1}`),
+  'lecture-yinyang-8', 'lecture-pathomechanism-12', 'lecture-diagnosis-12',
+  'lecture-treatment-9', 'lecture-treatment-12',
 ] as const;
 export const PAGE_REVISIONS: Record<string, string> = {
   '/learn': '2026-10-08', '/kokushi': '2026-10-08',
@@ -50,6 +52,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/learn/courses': '2026-10-08',
 };
 export const SITE_UPDATES = [
+  { date: '2026-10-09', label: '章末問題の独立化と初期計画書の具体化', href: '/curriculum', text: '各講のクイズを再掲していた章末88問を、分類・比較・記録の読み取りを問う独立した問題へ変更。全11章の記述課題に具体的な解答例を追加し、治療戦略の学習目標・記入済み計画書・次章との症例の切り替えを明確化' },
   { date: '2026-10-09', label: '本文と用語集の整合性・基礎講義の接続を改善', href: '/curriculum', text: '病機論の導入と用語集7項目を見直し、伝統的な説明と確認された機序を区別。基礎13講に学習例の整理・記録の案内を補完し、確認問題2問を用語の役割・関係を判断する問題へ改訂' },
   { date: '2026-10-09', label: '講義本文・症例の接続・確認問題を改訂', href: '/curriculum', text: '29講の本文を見直し、学習目標と確認問題・参照見出しを修正。症例の比較表・評価指標・SOAP記録を具体化し、誇張や未確認の医学的断定を整理。講義URLと問題IDは維持' },
   { date: '2026-10-09', label: 'トップの学習コースを整理', href: '/', text: '概論・陰陽・気血津液・臓腑の最初の4コースを紹介し、全11コースの一覧へつながる入口を明示' },
