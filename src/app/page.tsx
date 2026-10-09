@@ -64,10 +64,10 @@ export default function HomePage() {
         <HomeHeroDualEntry />
         <section aria-labelledby="home-courses-title" className="home-section">
           <div className="home-section-header">
-            <h2 id="home-courses-title" className="home-section-title">学習コース</h2>
-            <ContentNavigationLink href="/learn/courses" placement="home_courses" className="ui-text-link">コース一覧<ArrowRight aria-hidden="true" /></ContentNavigationLink>
+            <h2 id="home-courses-title" className="home-section-title">最初の4コース</h2>
+            <ContentNavigationLink href="/learn/courses" placement="home_courses" className="ui-text-link">全{LEARNING_COURSES.length}コース<ArrowRight aria-hidden="true" /></ContentNavigationLink>
           </div>
-          <LearningCourseCards courses={LEARNING_COURSES} placement="home_course_select" compact />
+          <LearningCourseCards courses={LEARNING_COURSES.slice(0, 4)} placement="home_course_select" compact />
         </section>
         <section aria-labelledby="home-flow-title" className="home-section">
           <h2 id="home-flow-title" className="home-section-title">学びと実践の流れ</h2>

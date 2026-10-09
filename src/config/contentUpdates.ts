@@ -11,7 +11,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/tsubo/practice': '2026-10-04', '/pricing': SITE_REVISED_AT,
   '/symptoms': '2026-10-08', '/diagnosis': '2026-10-08', '/cases': SITE_REVISED_AT,
   // 実際に改訂したページだけを更新する。全教材の確認日には用いない。
-  '/': '2026-10-08', '/updates': '2026-10-08', '/tsubo': '2026-10-03', '/about': '2026-10-03',
+  '/': '2026-10-09', '/updates': '2026-10-09', '/tsubo': '2026-10-03', '/about': '2026-10-03',
   '/clinical': '2026-10-04', '/practice/haiketsu': '2026-10-04', '/safety': '2026-10-03', '/editorial-policy': '2026-10-08',
   '/library': '2026-10-08', '/glossary': '2026-10-08', '/curriculum': '2026-10-08',
   '/curriculum/lecture-yinyang-1': '2026-10-03',
@@ -35,6 +35,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/learn/courses': '2026-10-08',
 };
 export const SITE_UPDATES = [
+  { date: '2026-10-09', label: 'トップの学習コースを整理', href: '/', text: '概論・陰陽・気血津液・臓腑の最初の4コースを紹介し、全11コースの一覧へつながる入口を明示' },
   { date: '2026-10-08', label: '章末演習・安全記述・スマホ表示を改善', href: '/curriculum', text: '全11章に9問の総合チェックと記述演習を追加。治療条件と未検証の数値・断定を見直し、文字図を折り返せるカードへ変更。八綱の前提学習、生命機能論の詳読区分、編集者・更新日、読み込みと本文ランドマークを改善' },
   { date: '2026-10-08', label: '概論から始まるカリキュラムへ再構成', href: '/learn', text: '概論4講・臓腑5講・経絡4講を追加し、気血津液と臓腑の基礎を五行より前へ。短いコースと体系学習の順序、各章の学習例、理論から例へ戻る導線と確認問題を整備' },
   { date: '2026-10-08', label: '教材の整合性・復習の継続・一覧表示を改善', href: '/curriculum', text: '体質傾向の検索用情報と気血水の本文・図解・確認問題を学習用途に統一。用語の参照先と表記ゆれ検索、解説から戻る復習の途中保存、ブラウザの戻る操作を改善し、講義一覧の読み込みを軽量化' },
