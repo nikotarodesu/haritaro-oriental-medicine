@@ -58,9 +58,11 @@ assert.equal(queryPages.length, 1, 'Only the independently described Gorou check
 assert.equal(queryPages[0].url, 'https://www.haritaro.jp/diagnosis?tab=gorou');
 assert(!sitemap.some(page=>new URL(page.url).pathname==='/notes'));
 assert.equal(new Set(sitemap.map(page=>page.url)).size,sitemap.length);
-for(const lectureId of lectureIds) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/curriculum/${lectureId}`).lastModified.toISOString().slice(0,10),'2026-10-08',lectureId);
-for(const pathname of ['/library','/tsubo/li4','/tsubo/sp6','/symptoms','/diagnosis','/glossary','/curriculum','/kokushi',...Array.from({length:5},(_,index)=>`/curriculum/lecture-qiblood-${index+1}`)]) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-08',pathname);
-for(const pathname of ['/','/updates']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-09',pathname);
+const { CURRICULUM_EDITORIAL_REVISIONS } = load('src/config/contentUpdates');
+assert.equal(CURRICULUM_EDITORIAL_REVISIONS.length, 34);
+for(const lectureId of lectureIds) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/curriculum/${lectureId}`).lastModified.toISOString().slice(0,10),CURRICULUM_EDITORIAL_REVISIONS.includes(lectureId) ? '2026-10-09' : '2026-10-08',lectureId);
+for(const pathname of ['/library','/tsubo/li4','/tsubo/sp6','/symptoms','/diagnosis','/glossary','/kokushi','/curriculum/lecture-qiblood-4']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-08',pathname);
+for(const pathname of ['/','/updates','/curriculum']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-09',pathname);
 for(const pathname of ['/simulator','/clinical']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-04',pathname);
 assert.equal(sitemap.find(page=>new URL(page.url).pathname==='/learn').lastModified.toISOString().slice(0,10),'2026-10-08');
 assert.equal(sitemap.find(page=>new URL(page.url).pathname==='/articles/science-of-yinyang-gogyo').lastModified.toISOString().slice(0,10),'2026-10-02');

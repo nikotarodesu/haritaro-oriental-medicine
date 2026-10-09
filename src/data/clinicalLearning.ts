@@ -7,7 +7,7 @@ export const CLINICAL_LEARNING_GUIDES: Record<string, ClinicalLearningGuide> = {
   pathomechanism: { situation: '発症から現在までの変化を整理し、仮説を見直すとき', check: '増悪・軽減条件、既往・服薬・受診結果を整理し、仮説と観察事実を分ける。', pitfall: '伝統的な病因だけで、現代医学的な原因評価を済ませたとしない。', complaintSlug: 'headache' },
   diagnosis: { situation: '主訴から、次に聞く・観察する項目を決めるとき', check: '安全確認を先に行い、四診の未確認と陰性所見を区別し、矛盾も記録する。', pitfall: '証名を先に決めて、それに合う所見だけを集めない。', complaintSlug: 'back' },
   treatment: { situation: '治法と各経穴を選んだ理由を説明するとき', check: '支持所見、各穴の役割、局所の注意事項、変更条件と再評価指標を記録する。', pitfall: '穴数・構成スコアだけで、個別の処方の適否や効果を決めない。', complaintSlug: 'shoulder' },
-  practice: { situation: '施術直後と次回来院時の違いを振り返るとき', check: '同じ指標で症状と生活動作を比較し、有害な反応・受診結果・見立ての修正を残す。', pitfall: '直後の変化だけで成功とせず、悪化を好転反応として片付けない。', complaintSlug: 'shoulder' },
+  practice: { situation: '共通の頭痛症例で、情報収集から計画・再評価までをつなぐとき', check: '本人の報告・観察所見・候補・不足情報を分け、目標と評価指標、判断を見直す条件を次の段階へ渡す。', pitfall: '候補名や直後の変化だけで結論を決めず、新しい危険徴候や生活上の支障も確認する。', complaintSlug: 'headache' },
 };
 export const CLINICAL_REVISION_CASES = [
   { id: 'mixed-cold-heat', title: '冷えとほてりが混在する', presentation: '架空例：足の冷えを訴えていますが、夕方には顔がほてります。舌脈はまだ確認していません。', question: '次に行う検討は？', choices: [

@@ -23,7 +23,7 @@ const sharedDecision: ReferenceItem = {
 const soap: ReferenceItem = {
   id: "maryland-acupuncture-soap-documentation", type: "guideline", title: "Professional Documentation Standard（SOAP Notes）",
   source: "Maryland Department of Health, Board of Acupuncture",
-  url: "https://health.maryland.gov/bacc/Pages/Professional-Documentation-(SOAP-Notes).aspx", ...checked,
+  url: "https://health.maryland.gov/bacc/Pages/Professional-Documentation-(SOAP-Notes).aspx", ...checked, sourceCheckedAt: "2026-10-09",
   note: "公式ページのS（本人の報告）、O（観察・検査）、A（評価）、P（計画）の区分と、記録を連携に役立てる説明を確認。米国メリーランド州の資料であり、日本の法的記録要件や本サイトの採点基準を示すものではありません。",
 };
 const emergencies: ReferenceItem = {
@@ -33,8 +33,8 @@ const emergencies: ReferenceItem = {
   note: "呼吸の異常、意識の変化、胸部症状、突然の強い痛みなどで必要な医療対応を遅らせない原則を確認。米国の案内であり、掲載の電話番号や処置手順を日本向けに転用せず、本講の受診目安を網羅する資料とも扱いません。",
 };
 
-const sharedDecisionLectures = new Set(["lecture-treatment-1", "lecture-treatment-4", "lecture-treatment-10", "lecture-treatment-11", "lecture-treatment-12", "lecture-practice-4", "lecture-practice-9", "lecture-practice-10", "lecture-practice-11", "lecture-practice-12"]);
-const soapLectures = new Set(["lecture-diagnosis-1", "lecture-diagnosis-2", "lecture-diagnosis-3", "lecture-diagnosis-10", "lecture-diagnosis-11", "lecture-practice-1", "lecture-practice-2", "lecture-practice-3", "lecture-practice-12"]);
+const sharedDecisionLectures = new Set(["lecture-treatment-1", "lecture-treatment-4", "lecture-treatment-10", "lecture-treatment-11", "lecture-treatment-12", "lecture-practice-4", "lecture-practice-6", "lecture-practice-7", "lecture-practice-8", "lecture-practice-9", "lecture-practice-10", "lecture-practice-11", "lecture-practice-12"]);
+const soapLectures = new Set(["lecture-diagnosis-1", "lecture-diagnosis-2", "lecture-diagnosis-3", "lecture-diagnosis-10", "lecture-diagnosis-11", "lecture-practice-1", "lecture-practice-2", "lecture-practice-3", "lecture-practice-8", "lecture-practice-12"]);
 const safetyLectures = new Set(["lecture-diagnosis-1", "lecture-diagnosis-7", "lecture-treatment-1", "lecture-treatment-9", "lecture-treatment-12", "lecture-practice-1", "lecture-practice-8", "lecture-practice-12"]);
 
 /** Preserve declared sources; fill the previously empty sections with clearly scoped background material. */
@@ -51,6 +51,11 @@ export function getCurriculumReferences(id: string, seriesId: string, declared?:
     }
     return ref;
   });
+  if (id === "lecture-practice-8") {
+    for (const source of [soap, sharedDecision]) {
+      if (!references.some(ref => typeof ref !== "string" && ref.id === source.id)) references.push(source);
+    }
+  }
   if (references.length > 0) return references;
   if (seriesId === "diagnosis") references.push(terminology);
   if (seriesId === "treatment") references.push(terminology, acupuncture);

@@ -4,6 +4,16 @@ import { LEARNING_COURSES } from '@/data/learningCourses';
 /** Significant content revisions only; never replace these with the build date. */
 export const SITE_REVISED_AT = '2026-10-02';
 export const ACUPOINT_PAGE_REVISED_AT = '2026-10-08';
+// Includes question-only changes, but not unchanged lessons in the same chapter.
+export const CURRICULUM_EDITORIAL_REVISIONS = [
+  'lecture-qiblood-1', 'lecture-qiblood-2', 'lecture-qiblood-3', 'lecture-qiblood-5',
+  'lecture-lifedynamics-7', 'lecture-lifedynamics-9',
+  'lecture-pathomechanism-7', 'lecture-pathomechanism-9', 'lecture-pathomechanism-11',
+  'lecture-diagnosis-1', 'lecture-diagnosis-3', 'lecture-diagnosis-4', 'lecture-diagnosis-5',
+  'lecture-diagnosis-6', 'lecture-diagnosis-7', 'lecture-diagnosis-9', 'lecture-diagnosis-10', 'lecture-diagnosis-11',
+  'lecture-treatment-1', 'lecture-treatment-3', 'lecture-treatment-6', 'lecture-treatment-10',
+  ...Array.from({ length: 12 }, (_, index) => `lecture-practice-${index + 1}`),
+] as const;
 export const PAGE_REVISIONS: Record<string, string> = {
   '/learn': '2026-10-08', '/kokushi': '2026-10-08',
   '/simulator': '2026-10-04',
@@ -13,7 +23,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   // 実際に改訂したページだけを更新する。全教材の確認日には用いない。
   '/': '2026-10-09', '/updates': '2026-10-09', '/tsubo': '2026-10-03', '/about': '2026-10-03',
   '/clinical': '2026-10-04', '/practice/haiketsu': '2026-10-04', '/safety': '2026-10-03', '/editorial-policy': '2026-10-08',
-  '/library': '2026-10-08', '/glossary': '2026-10-08', '/curriculum': '2026-10-08',
+  '/library': '2026-10-08', '/glossary': '2026-10-08', '/curriculum': '2026-10-09',
   '/curriculum/lecture-yinyang-1': '2026-10-03',
   '/curriculum/lecture-yinyang-2': '2026-10-03',
   '/curriculum/lecture-yinyang-3': '2026-10-03',
@@ -31,10 +41,12 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/curriculum/lecture-qiblood-5': '2026-10-08',
   // 2026-10-08: chapter structure, learning order and lesson navigation were revised.
   ...Object.fromEntries(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [`/curriculum/${id}`, '2026-10-08']))),
+  ...Object.fromEntries(CURRICULUM_EDITORIAL_REVISIONS.map(id => [`/curriculum/${id}`, '2026-10-09'])),
   ...Object.fromEntries(LEARNING_COURSES.map(course => [`/learn/courses/${course.slug}`, '2026-10-08'])),
   '/learn/courses': '2026-10-08',
 };
 export const SITE_UPDATES = [
+  { date: '2026-10-09', label: '講義本文・症例の接続・確認問題を改訂', href: '/curriculum', text: '29講の本文を見直し、学習目標と確認問題・参照見出しを修正。症例の比較表・評価指標・SOAP記録を具体化し、誇張や未確認の医学的断定を整理。講義URLと問題IDは維持' },
   { date: '2026-10-09', label: 'トップの学習コースを整理', href: '/', text: '概論・陰陽・気血津液・臓腑の最初の4コースを紹介し、全11コースの一覧へつながる入口を明示' },
   { date: '2026-10-08', label: '章末演習・安全記述・スマホ表示を改善', href: '/curriculum', text: '全11章に9問の総合チェックと記述演習を追加。治療条件と未検証の数値・断定を見直し、文字図を折り返せるカードへ変更。八綱の前提学習、生命機能論の詳読区分、編集者・更新日、読み込みと本文ランドマークを改善' },
   { date: '2026-10-08', label: '概論から始まるカリキュラムへ再構成', href: '/learn', text: '概論4講・臓腑5講・経絡4講を追加し、気血津液と臓腑の基礎を五行より前へ。短いコースと体系学習の順序、各章の学習例、理論から例へ戻る導線と確認問題を整備' },
