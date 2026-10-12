@@ -2,6 +2,8 @@
 
 2026年10月12日。添付指示書に基づく実装・検証記録。
 
+この文書は先行する共通UI改善の記録。追加の本文校閲と最新の確認状態は[followup-report.md](followup-report.md)と[inventory.json](inventory.json)を参照。
+
 ## 実装した範囲
 
 | 対象 | 対応 |

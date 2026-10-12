@@ -1,5 +1,5 @@
 import { ARTICLE_LEARNING_GUIDES } from "./articleLearningGuides";
-import { SITE_REVISED_AT } from "@/config/contentUpdates";
+import { PAGE_REVISIONS, SITE_REVISED_AT } from "@/config/contentUpdates";
 import { Article } from "@/types/oriental";
 import { HISTORY_ARTICLE } from "./articles/historyArticle";
 import { YINYANG_GOGYO_ARTICLE } from "./articles/yinyangGogyoArticle";
@@ -31,7 +31,8 @@ const SOURCE_ARTICLES: Article[] = [
 ];
 
 export const ARTICLES: Article[] = SOURCE_ARTICLES.map(article => ({
-  ...article, summary: ARTICLE_LEARNING_GUIDES[article.id]?.summary || article.summary, updatedAt: SITE_REVISED_AT,
+  ...article, summary: ARTICLE_LEARNING_GUIDES[article.id]?.summary || article.summary,
+  updatedAt: PAGE_REVISIONS[`/articles/${article.id}`] || SITE_REVISED_AT,
   keyPoints: ARTICLE_LEARNING_GUIDES[article.id] ? [ARTICLE_LEARNING_GUIDES[article.id].focus, ARTICLE_LEARNING_GUIDES[article.id].limitation] : article.keyPoints,
 }));
 

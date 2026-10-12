@@ -63,8 +63,8 @@ export default function CasesIndexPage() {
         </h1>
 
         <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          机上の理論から臨床現場の思考へ。主訴・現病歴から四診情報を段階的に開示し、
-          八綱 ➜ 弁証 ➜ 治法 ➜ 配穴処方を自分の頭で導き出します。
+          模擬症例の主訴・経過・四診情報を順に読み、
+          八綱、弁証候補、治法、配穴の理由を考えます。
           全症例に鑑別診断・作用機序・古典根拠の解説付き。
         </p>
 
@@ -92,7 +92,7 @@ export default function CasesIndexPage() {
             臨床弁証シミュレーター・配穴演習
           </h2>
           <p className="text-xs sm:text-sm text-[#C5D2DB] leading-relaxed">
-            患者の主訴・四診所見から治療方針・推奨配穴をリアルタイム解析するシミュレーターや、自ら主穴・配穴を組み立てて学習ノートに記録・演習できる実践ツールを活用できます。
+            シミュレーターでは、選んだ条件に対応する証名と配穴の学習例を確認できます。配穴演習では、経穴を選び、選定理由をノートに残せます。
           </p>
         </div>
 

@@ -1,0 +1,1752 @@
+{
+  "checkedAt": "2026-10-12",
+  "baselineCommit": "a15d9bf5ea8b728c7aff7bcdd58eb2b4e0272953",
+  "scope": "基礎13講・39問・用語32項目の本文全文、要約、説明、学習リンクの個別校閲。医学的な正答・定義や参考資料の再照合を完了したという意味ではない。",
+  "policy": "明快な文章は維持。本文内の暗黙の参照を実在講義へのリンクにし、抽象的なクイズ解説は同講の既存説明で具体化。文献・引用・定義の条件・現代医学と伝統理論の区別・効果の限界を維持。専門的な条件は推測で直さない。",
+  "counts": {
+    "lectures": 13,
+    "questions": 39,
+    "glossaryTerms": 32,
+    "reviewed": 84,
+    "changed": 24,
+    "specialistReview": 6,
+    "changedByType": {
+      "lecture": 12,
+      "question": 9,
+      "glossary": 3
+    }
+  },
+  "checks": [
+    "基礎13講・39問・用語32項目の件数と掲載順を維持",
+    "全13講のID・題名・文献・引用記号・見出し文字と順序を維持",
+    "全39問のID・設問・選択肢・正答・復習節名を維持し、復習先見出しの存在を確認",
+    "本文の講義リンク13件は公開講義の実在IDと一致。リンク名は講義題名に対応",
+    "全32用語の関連講義・ツールURLとタイトルを維持。関連講義IDの実在を確認",
+    "既存 curriculum-editorial-regression、curriculum-quiz-regression、glossary-rendering-regression はすべて成功"
+  ],
+  "entries": [
+    {
+      "type": "lecture",
+      "id": "lecture-intro-1",
+      "url": "/curriculum/lecture-intro-1",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文",
+        "既存学習リンク",
+        "参考欄の確認範囲"
+      ],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "section": "次の講へ",
+          "before": "「東洋医学を学ぶと何ができるようになりたいか」を一文で書いてみましょう。例えば「症状例の情報を整理し、伝統用語の意味を説明できる」がこの教材の最初の目標になります。次の講では、その知識が臨床のどの段階で使われるかを確認します。",
+          "after": "「東洋医学を学ぶと何ができるようになりたいか」を一文で書いてみましょう。例えば「症状例の情報を整理し、伝統用語の意味を説明できる」がこの教材の最初の目標になります。次の[臨床の全体像](/curriculum/lecture-intro-2)では、相談から情報収集、解釈、方針、再評価へ進む流れの中で、その知識をどこで使うか確認します。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-intro-2",
+      "url": "/curriculum/lecture-intro-2",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文",
+        "既存学習リンク",
+        "参考欄の確認範囲"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-intro-3",
+      "url": "/curriculum/lecture-intro-3",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文",
+        "既存学習リンク",
+        "参考欄の確認範囲"
+      ],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "section": "読み終えたら",
+          "before": "今後の講義で気になる一文を見つけたら、「これは定義、伝統的な説明、比喩、研究結果のどれか」と考えてみましょう。分類に迷ったこと自体も、次に確認する問いになります。",
+          "after": "今後の講義で気になる一文を見つけたら、「これは定義、伝統的な説明、比喩、研究結果のどれか」と考えてみましょう。分類に迷ったこと自体も、次に確認する問いになります。次の[観察事実・解釈・不明点を分ける](/curriculum/lecture-intro-4)では、短い相談記録を使い、書かれている情報と自分の解釈を分ける練習をします。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-intro-4",
+      "url": "/curriculum/lecture-intro-4",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文",
+        "既存学習リンク",
+        "参考欄の確認範囲"
+      ],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "section": "解釈は理由と一緒に書く",
+          "before": "解釈の欄には、「就寝時刻の変化とだるさの時間的な関係を調べたい」と書けます。関連を疑う根拠は同じ時期に語られた二つの情報ですが、睡眠時間や以前の状態は不明です。原因を一つに絞る代わりに、何を比べたいかを述べると、根拠の範囲が伝わります。",
+          "after": "解釈の欄には、「就寝時刻の変化とだるさの時間的な関係を調べたい」と書けます。本人が就寝の遅れとだるさの両方を話したため、二つの変化に関係があるかを調べます。ただし、睡眠時間や以前の状態は不明です。原因を一つに絞る代わりに、何を比べたいかを述べると、根拠の範囲が伝わります。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "不明点は次の問いになる",
+          "before": "「ほかの症状は書かれていない」と「ほかの症状はない」も区別します。記録の省略は、確認した結果ではありません。経過が変われば以前の記録だけで判断を続けず、情報を取り直す必要があります。臨床の全体像で学んだ再評価も、この姿勢につながります。",
+          "after": "「ほかの症状は書かれていない」と「ほかの症状はない」も区別します。記録の省略は、確認した結果ではありません。経過が変われば以前の記録だけで判断を続けず、情報を取り直す必要があります。[臨床の全体像](/curriculum/lecture-intro-2)の「評価は後から付け足すものではない」で、初めの状態を記録して比較する理由も確認できます。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-zangfu-1",
+      "url": "/curriculum/lecture-zangfu-1",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文",
+        "既存学習リンク",
+        "参考欄の確認範囲"
+      ],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "section": "次の講へ",
+          "before": "五臓の名前を書き、それぞれの下に働きを書く余白を作りましょう。次の講から少しずつ埋めます。全部の症状を暗記するより、働きの説明を短い言葉で言い直せることを目指してください。",
+          "after": "五臓の名前を書き、それぞれの下に働きを書く余白を作りましょう。次の[肺と心の働き](/curriculum/lecture-zangfu-2)から少しずつ埋めます。全部の症状を暗記するより、働きの説明を短い言葉で言い直せることを目指してください。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-zangfu-2",
+      "url": "/curriculum/lecture-zangfu-2",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文",
+        "既存学習リンク",
+        "参考欄の確認範囲"
+      ],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "section": "肺を「主気」から読む",
+          "before": "気血津液の講義で読んだ気の働きを思い出しましょう。そこで出てきた「気」という語に「肺」が付くと、肺という臓の働きに関わる気の説明になります。気を一種類の物質と決めるより、どの働きを説明する場面かを確かめると読みやすくなります。",
+          "after": "[気血津液論のレッスン1](/curriculum/lecture-qiblood-1)で読んだ気の働きを思い出しましょう。そこで出てきた「気」という語に「肺」が付くと、肺という臓の働きに関わる気の説明になります。気を一種類の物質と決めるより、どの働きを説明する場面かを確かめると読みやすくなります。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "整理して覚える",
+          "before": "肺には「気・呼吸」「宣発・粛降」、心には「血脈」「神」と二行ずつ書き、自分の言葉で短い説明を加えましょう。次の脾胃の講では、食事に関わる働きが加わり、臓腑をまたぐ関係を考える準備ができます。",
+          "after": "肺には「気・呼吸」「宣発・粛降」、心には「血脈」「神」と二行ずつ書き、自分の言葉で短い説明を加えましょう。次の[脾胃の働き](/curriculum/lecture-zangfu-3)では、食事に関わる働きが加わり、臓腑をまたぐ関係を考える準備ができます。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-zangfu-3",
+      "url": "/curriculum/lecture-zangfu-3",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文",
+        "既存学習リンク",
+        "参考欄の確認範囲"
+      ],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "section": "升清という方向の説明",
+          "before": "ここでは、脾に関する説明が食事だけで完結せず、ほかの臓腑との関係へ広がることを理解すれば十分です。気血津液の生成や循環を詳しく読む段階で、この脾胃の働きと肺・心などの関係をもう一度整理します。先に役割を知っておくことで、生成の文章の主語を見失いにくくなります。",
+          "after": "ここでは、脾に関する説明が食事だけで完結せず、ほかの臓腑との関係へ広がることを理解すれば十分です。気血津液の生成や循環を詳しく読む段階で、この脾胃の働きと肺・心などの関係をもう一度整理します。先に役割を知っておくと、文章に出てくる臓腑名と、その臓腑の働きを結びつけて読めます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "次の講へ",
+          "before": "脾と胃の下に代表的な働きを一つずつ書き、気血津液のどの説明で使われそうかを考えましょう。まだ詳しい循環を説明できなくても構いません。次に肝と腎を加えることで、動き・血・精という別の話題を整理できます。",
+          "after": "脾と胃の下に代表的な働きを一つずつ書き、気血津液のどの説明で使われそうかを考えましょう。まだ詳しい循環を説明できなくても構いません。次の[肝と腎の働き](/curriculum/lecture-zangfu-4)で、気の流れ・血・精という別の話題を整理します。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-zangfu-4",
+      "url": "/curriculum/lecture-zangfu-4",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文",
+        "既存学習リンク",
+        "参考欄の確認範囲"
+      ],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "section": "五臓の基礎をまとめる",
+          "before": "肺、心、脾、肝、腎について代表的な働きを一つずつ言ってみましょう。次の講では六腑と表裏関係を加え、単独の名称から全身の関係へ視点を広げます。",
+          "after": "肺、心、脾、肝、腎について代表的な働きを一つずつ言ってみましょう。次の[六腑・表裏関係と全身の統合](/curriculum/lecture-zangfu-5)では、どの臓腑がどの組に入るかを学び、名称の組合せと症状の原因を区別します。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-zangfu-5",
+      "url": "/curriculum/lecture-zangfu-5",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文",
+        "既存学習リンク",
+        "参考欄の確認範囲"
+      ],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "section": "次の学習につなぐ",
+          "before": "五臓の代表的な働きと、六組の表裏関係をノート一枚にまとめましょう。気血津液の生成・循環を読み直すと、どの臓腑がどの働きの説明に登場するかを追えます。五行では関係の整理法を、経絡では臓腑と全身をつなぐ伝統的な分類を学びます。",
+          "after": "五臓の代表的な働きと、六組の表裏関係をノート一枚にまとめましょう。[飲食と呼吸から生命を支える](/curriculum/lecture-lifedynamics-3)を読み直すと、飲食物や気血津液の説明に、脾胃・肺・心がどう登場するか確認できます。五行では関係の整理法を、経絡では臓腑と全身をつなぐ伝統的な分類を学びます。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-meridians-1",
+      "url": "/curriculum/lecture-meridians-1",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文",
+        "既存学習リンク",
+        "参考欄の確認範囲"
+      ],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "section": "次の講へ",
+          "before": "経絡、経脈、経穴という三つの語を一文ずつ説明してみましょう。次の講では、十二経脈を手・足、陰・陽、臓腑名から整理します。名称の構造が分かると、長い漢字の名前も読みやすくなります。",
+          "after": "経絡、経脈、経穴という三つの語を一文ずつ説明してみましょう。次の[十二経脈の名称と全体像](/curriculum/lecture-meridians-2)では、手・足、陰・陽、臓腑名から整理します。名称の構造が分かると、長い漢字の名前も読みやすくなります。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-meridians-2",
+      "url": "/curriculum/lecture-meridians-2",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文",
+        "既存学習リンク",
+        "参考欄の確認範囲"
+      ],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "section": "臓腑の学習とつなぐ",
+          "before": "肺経と大腸経、心経と小腸経、脾経と胃経、肝経と胆経、腎経と膀胱経、心包経と三焦経という組を見つけてみましょう。臓腑で学んだ表裏の組合せと結びつけると、十二という数の中に心包と三焦が登場する理由を整理できます。",
+          "after": "肺経と大腸経、心経と小腸経、脾経と胃経、肝経と胆経、腎経と膀胱経、心包経と三焦経という組を見つけてみましょう。[六腑・表裏関係と全身の統合](/curriculum/lecture-zangfu-5)の「表裏関係は六組で読む」に戻ると、五臓の一覧と六組の表裏関係の違いを確認できます。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-meridians-3",
+      "url": "/curriculum/lecture-meridians-3",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文",
+        "既存学習リンク",
+        "参考欄の確認範囲"
+      ],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "section": "一つの経穴を四つの欄で読む",
+          "before": "例えば「LI4」のようなコードは、英字が経脈、数字がその経脈における番号を表します。前の講の一覧を使えば、LIが大腸経だと確認できます。コードは経穴を識別する情報であり、数字が距離や刺激の強さを表しているわけではありません。",
+          "after": "例えば「LI4」のようなコードは、英字が経脈、数字がその経脈における番号を表します。[十二経脈の名称と全体像](/curriculum/lecture-meridians-2)の一覧を使えば、LIが大腸経だと確認できます。コードは経穴を識別する情報であり、数字が距離や刺激の強さを表しているわけではありません。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-meridians-4",
+      "url": "/curriculum/lecture-meridians-4",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文",
+        "既存学習リンク",
+        "参考欄の確認範囲"
+      ],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "section": "位置の訴えから始める",
+          "before": "本人が示した場所と、観察者が確認した場所も区別します。時間や動作によって場所が変わる場合は、その変化を残します。記録にない情報を図に合うように補うと、後の比較が成り立たなくなります。概論で学んだ事実・解釈・不明点の三つの欄をここでも使います。",
+          "after": "本人が示した場所と、観察者が確認した場所も区別します。時間や動作によって場所が変わる場合は、その変化を残します。記録にない情報を図に合うように補うと、後の比較が成り立たなくなります。[観察事実・解釈・不明点を分ける](/curriculum/lecture-intro-4)で学んだ三つの欄をここでも使います。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-1-q1",
+      "url": "/curriculum/lecture-intro-1",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-1-q2",
+      "url": "/curriculum/lecture-intro-1",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "全身をみる学習では、訴えの内容や経過、生活との関係を具体的に集めます。用語を当てたり、記録にない情報を補ったりすることとは区別します。",
+          "after": "いつから疲れるのか、休むとどう変わるのか、学業や仕事で何に困るのかを確認します。別の症状の有無だけでは、疲れの経過や生活との関係は分かりません。一つの訴えから証名を確定したり、記録にない情報を補ったりしません。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-1-q3",
+      "url": "/curriculum/lecture-intro-1",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-2-q1",
+      "url": "/curriculum/lecture-intro-2",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-2-q2",
+      "url": "/curriculum/lecture-intro-2",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-2-q3",
+      "url": "/curriculum/lecture-intro-2",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-3-q1",
+      "url": "/curriculum/lecture-intro-3",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-3-q2",
+      "url": "/curriculum/lecture-intro-3",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-3-q3",
+      "url": "/curriculum/lecture-intro-3",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-4-q1",
+      "url": "/curriculum/lecture-intro-4",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-4-q2",
+      "url": "/curriculum/lecture-intro-4",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "未確認と「ない」は別です。書かれていない情報を補わず、必要な問いとして残します。",
+          "after": "食欲をまだ確認していないので、「正常」とも「低下」とも書けません。食欲は未確認と記録し、次に質問して確かめる情報として残します。未確認と「異常がない」は別です。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-4-q3",
+      "url": "/curriculum/lecture-intro-4",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-1-q1",
+      "url": "/curriculum/lecture-zangfu-1",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-1-q2",
+      "url": "/curriculum/lecture-zangfu-1",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "臓腑には伝統的な働きや関係が含まれます。共通する話題があっても、現代医学の同じ漢字の臓器へそのまま置換することはできません。",
+          "after": "臓腑名は、伝統的な働きと全身との関係を含めて読みます。例えば「脾」と食事の関係を学んでも、脾臓の病気を確認したことにはなりません。臓器の疾患分類や検査結果と、そのまま置き換えることはできません。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-1-q3",
+      "url": "/curriculum/lecture-zangfu-1",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-2-q1",
+      "url": "/curriculum/lecture-zangfu-2",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "宣発と粛降は異なる方向の働きを説明する伝統用語です。良い・悪いの区別や、測定された物質の経路図とは分けて読みます。",
+          "after": "宣発は上方・外方へ広がる働き、粛降は下方・内方へ向かう働きという伝統的な説明です。方向を入れ替えずに覚えます。良い・悪いの区別や、測定された物質の経路図とは分けて読みます。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-2-q2",
+      "url": "/curriculum/lecture-zangfu-2",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "心は血脈と神に関連づけて学びます。神の説明を解剖学的な心臓だけの精神活動へ置き換えず、伝統用語の範囲を保ちます。",
+          "after": "心は血脈を主ることと、神を蔵することに関連づけて学びます。神は精神活動をめぐる伝統用語です。解剖学的な心臓だけが精神活動を行うという意味には置き換えません。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-2-q3",
+      "url": "/curriculum/lecture-zangfu-2",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-3-q1",
+      "url": "/curriculum/lecture-zangfu-3",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "運化は飲食物や津液に関わる働きの伝統的な説明です。特定の臓器、酵素、検査値そのものと定義することはしません。",
+          "after": "運化は、飲食物や津液を変化させ、必要なものを配分するという伝統的な説明です。気が広がる方向や精を蔵する働きとは、説明する対象が違います。特定の臓器、酵素、検査値そのものと定義することはしません。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-3-q2",
+      "url": "/curriculum/lecture-zangfu-3",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-3-q3",
+      "url": "/curriculum/lecture-zangfu-3",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-4-q1",
+      "url": "/curriculum/lecture-zangfu-4",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-4-q2",
+      "url": "/curriculum/lecture-zangfu-4",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "腎精は伝統医学の説明の中で学びます。現代の特定の物質や検査値へ置き換えたり、その人の将来を固定したりしません。",
+          "after": "腎精は、生来の要素と飲食による養いに関連づける伝統用語です。DNAや特定のホルモンの検査値と同じものには置き換えません。生来の要素を含む説明でも、その人の将来が固定されるという意味ではありません。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-4-q3",
+      "url": "/curriculum/lecture-zangfu-4",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-5-q1",
+      "url": "/curriculum/lecture-zangfu-5",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-5-q2",
+      "url": "/curriculum/lecture-zangfu-5",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "三焦は伝統的な全身の働きを考える入り口として学びます。特定の現代医学の臓器への一対一の置換や、五臓の数え直しは行いません。",
+          "after": "三焦は上焦・中焦・下焦をまとめる伝統用語で、気や水の通り道と働きに関連づけて学びます。上・中・下焦を一つの解剖学的臓器に置き換えたり、三つの臓として五臓へ加えたりしません。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-5-q3",
+      "url": "/curriculum/lecture-zangfu-5",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-1-q1",
+      "url": "/curriculum/lecture-meridians-1",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-1-q2",
+      "url": "/curriculum/lecture-meridians-1",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-1-q3",
+      "url": "/curriculum/lecture-meridians-1",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-2-q1",
+      "url": "/curriculum/lecture-meridians-2",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-2-q2",
+      "url": "/curriculum/lecture-meridians-2",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-2-q3",
+      "url": "/curriculum/lecture-meridians-2",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-3-q1",
+      "url": "/curriculum/lecture-meridians-3",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-3-q2",
+      "url": "/curriculum/lecture-meridians-3",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-3-q3",
+      "url": "/curriculum/lecture-meridians-3",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "分類は情報を整理する軸です。複数の軸が同時に付くこともあり、分類名だけで位置、実施方法、有効性が決まるわけではありません。",
+          "after": "所属経脈は「どの経脈の一覧で探すか」、五輸穴などは「伝統理論のどの分類に入るか」を整理する情報です。一つの経穴に複数の分類が付いても、矛盾とは限りません。分類名だけで位置、実施方法、有効性が決まるわけではありません。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-4-q1",
+      "url": "/curriculum/lecture-meridians-4",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-4-q2",
+      "url": "/curriculum/lecture-meridians-4",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-4-q3",
+      "url": "/curriculum/lecture-meridians-4",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitleの実在"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "疏泄",
+      "url": null,
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "伝統的には気の運行、情志、消化、月経などとの関係を学ぶ。「肝」は臓腑の理論上の分類であり、疏泄を現代医学の肝臓の機能、胆汁分泌や自律神経の制御と一対一に対応させない。症状の原因は医学的評価を通じて確認する。",
+          "after": "伝統的には気の運行、情志（感情）、消化、月経などとの関係を学ぶ。「肝」は臓腑の理論上の分類であり、疏泄を現代医学の肝臓の機能、胆汁分泌や自律神経の制御と一対一に対応させない。症状の原因は医学的評価を通じて確認する。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "固摂",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "相侮",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "相乗",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "気虚",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "気滞",
+      "url": null,
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "喉のつかえ（梅核気）、胸脇部の張り、腹部膨満感、ため息などを伝統的に関連づけて学ぶ。これらの症状をすべてストレスや気滞で説明することはできず、胸部や喉の症状、消化器症状には医学的な原因の評価が必要。",
+          "after": "喉のつかえ（梅核気）、胸や脇腹の張り（胸脇部の張り）、おなかの張り（腹部膨満感）、ため息などを伝統的に関連づけて学ぶ。これらの症状をすべてストレスや気滞で説明することはできず、胸部や喉の症状、消化器症状には医学的な原因の評価が必要。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "気逆",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "血虚",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "瘀血",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "水滞",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "陰虚",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "陽虚",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "陰陽",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "相生",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "相克",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "原穴",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "四関",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": true,
+      "status": "needs-specialist-review",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": [
+        {
+          "field": "summary",
+          "text": "『針灸大成』では、四関を左右の合谷と太衝と記す。",
+          "confirmation": "底本・該当篇・原文を特定し、この要約と「左右」の読みを照合する。古典記載の確認と配穴の臨床効果を区別する。",
+          "retained": true
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "四総穴",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": true,
+      "status": "needs-specialist-review",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": [
+        {
+          "field": "summary",
+          "text": "『針灸大成』の四総穴歌は「肚腹は三里に留め、腰背は委中に求む、頭項は列欠に尋ね、面口は合谷に収む」。",
+          "confirmation": "底本・原文・日本語訳の逐語照合、歌訣の部位名称と四穴の対応を専門家が確認する。引用と出典帰属を推測で書き換えない。",
+          "retained": true
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "得気",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "五労",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": true,
+      "status": "needs-specialist-review",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": [
+        {
+          "field": "summary",
+          "text": "久視・久臥・久坐・久立・久行と、血・気・肉・骨・筋との伝統的な関連を学ぶ。",
+          "confirmation": "既存の未照合表示を維持。古典の底本と対応順序・訳の確認を要する。活動と臓器損傷の医学的因果関係を意味しないことも維持する。",
+          "retained": true
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "弁証論治",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "合谷",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "太衝",
+      "url": null,
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "伝統理論では肝気鬱結・肝火上炎などの証や、頭痛・目の充血・月経の不調と関連づけて学ぶ。合谷と合わせる四関の構成穴。これらの伝統的な関連は、肝臓の病気の診断や血圧低下、PMSの即時改善を保証しない。",
+          "after": "伝統理論では肝気鬱結・肝火上炎などの証や、頭痛・目の充血・月経の不調と関連づけて学ぶ。合谷と合わせる四関の構成穴。これらの伝統的な関連は、肝臓の病気の診断や血圧低下、月経前症候群（PMS）の即時改善を保証しない。"
+        }
+      ],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "足三里",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "三陰交",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": true,
+      "status": "needs-specialist-review",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": [
+        {
+          "field": "summary",
+          "text": "妊娠中の施術は個別評価を要し、三陰交に限らず強い刺激を避ける。自己判断で刺激せず、産科医と有資格鍼灸師に相談する。",
+          "confirmation": "妊娠の時期・状態、刺激の種類と「強い刺激」の条件、根拠資料、個別評価の説明範囲を有資格者が確認する。この編集では刺激条件や安全性を推測しない。",
+          "retained": true
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "内関",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "百会",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "関元",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": true,
+      "status": "needs-specialist-review",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": [
+        {
+          "field": "summary",
+          "text": "妊娠中の腹部への施術は特に慎重な評価が必要。体表の寸数は刺入深度や灸量の指示ではない。",
+          "confirmation": "妊娠中の腹部施術に関する評価条件と根拠、位置情報と施術条件の区別を有資格者が確認する。施術手順や安全条件を追加しない。",
+          "retained": true
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "中脘",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": true,
+      "status": "needs-specialist-review",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": [
+        {
+          "field": "summary",
+          "text": "伝統的な主治として胃痛、胃もたれ、呑酸、食欲不振、腹部膨満などを学ぶ。",
+          "confirmation": "読者に説明のない「呑酸」の定義・読みと、運営教材で使う平易な言い換えを確認する。逆流性食道炎などの現代医学の診断へ置き換えず、主治の範囲を専門家が確認する。",
+          "retained": true
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "天枢",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "風池",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    },
+    {
+      "type": "glossary",
+      "id": "委中",
+      "url": null,
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連講義・ツールリンク"
+      ],
+      "changes": [],
+      "specialistReview": []
+    }
+  ],
+  "verificationLimits": "ビルド・本番画面の検証は統合作業で実施。今回の84件の読解校閲と回帰検証は、臨床技能・正答の専門監修や全参考資料の逐語照合を意味しない。"
+}

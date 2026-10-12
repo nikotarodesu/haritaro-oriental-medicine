@@ -1,0 +1,3515 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-12",
+  "scope": {
+    "sourceFiles": [
+      "src/data/curriculumData.ts",
+      "src/data/curriculumQuizzes.ts"
+    ],
+    "lectureCount": 81,
+    "questionCount": 243,
+    "excludedSourceFiles": [
+      "src/data/curriculumFoundations.ts",
+      "src/data/curriculumFoundationQuizzes.ts"
+    ]
+  },
+  "reviewMethod": "全81講の要約・学習内容・到達目標・Markdown本文・243問の解説を個別に読み、抽象文、不要な比喩、命令調、具体例と復習先を点検。明快な既存文は維持。専門的な正誤・治療推奨・正答一意性を推測で改訂せず確認事項に分けた。",
+  "limits": [
+    "文章の校閲・導線の点検は医学的な監修・原典の逐語照合ではない。",
+    "正答・誤答の医学的妥当性と一意性の専門家審査は今回実施していない。",
+    "既存の未照合文献・出典確認範囲・安全性の限定を維持。"
+  ],
+  "preserved": [
+    "講義・問題IDとURL",
+    "見出し名と順序・復習節名",
+    "問題文・選択肢・正答・合格基準",
+    "古典引用全文と参考文献・脚注・根拠範囲",
+    "図IDと出典参照",
+    "専門確認一覧の既存の断定と正答"
+  ],
+  "integrityChecks": {
+    "passed": true,
+    "lecturesCompared": 81,
+    "questionsCompared": 243,
+    "headingsAndOrder": "unchanged",
+    "questionIdsOptionsAnswersAndSourceTitles": "unchanged",
+    "referencesAndScope": "unchanged",
+    "classicalBlockQuotes": "unchanged",
+    "diagramIds": "unchanged",
+    "internalLectureLinks": "all targets exist",
+    "addedInternalLectureLinks": 18
+  },
+  "counts": {
+    "reviewed": 81,
+    "changed": 31,
+    "retained": 50,
+    "changedQuestionExplanations": 4,
+    "specialistReviewLectures": 20,
+    "specialistReviewItems": 41
+  },
+  "changedLectureIds": [
+    "lecture-yinyang-1",
+    "lecture-yinyang-2",
+    "lecture-yinyang-3",
+    "lecture-lifedynamics-1",
+    "lecture-lifedynamics-2",
+    "lecture-lifedynamics-3",
+    "lecture-lifedynamics-4",
+    "lecture-lifedynamics-5",
+    "lecture-lifedynamics-7",
+    "lecture-lifedynamics-8",
+    "lecture-lifedynamics-9",
+    "lecture-lifedynamics-10",
+    "lecture-lifedynamics-11",
+    "lecture-lifedynamics-12",
+    "lecture-wuxing-1",
+    "lecture-pathomechanism-3",
+    "lecture-pathomechanism-4",
+    "lecture-pathomechanism-5",
+    "lecture-pathomechanism-6",
+    "lecture-pathomechanism-7",
+    "lecture-pathomechanism-8",
+    "lecture-diagnosis-9",
+    "lecture-diagnosis-11",
+    "lecture-diagnosis-12",
+    "lecture-treatment-2",
+    "lecture-treatment-3",
+    "lecture-treatment-5",
+    "lecture-treatment-6",
+    "lecture-treatment-11",
+    "lecture-practice-7",
+    "lecture-practice-12"
+  ],
+  "lectures": [
+    {
+      "id": "lecture-yinyang-1",
+      "url": "/curriculum/lecture-yinyang-1",
+      "title": "陰陽論 レッスン1：陰陽とは何か",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2004,
+      "reviewedQuestionIds": [
+        "lecture-yinyang-1-q1",
+        "lecture-yinyang-1-q2",
+        "lecture-yinyang-1-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "東洋医学を学ぶ者が最初に直面し、かつ最も奥深い根幹が「陰陽論」です。\n\n",
+          "after": ""
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "本レッスンを終えたら、以下の問いに対してご自身の言葉でノートやメモに説明してみましょう。",
+          "after": "次の問いについて、比較の対象と基準が分かるように、ノートやメモに書いて確認します。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-yinyang-2",
+      "url": "/curriculum/lecture-yinyang-2",
+      "title": "陰陽論 レッスン2：陰陽は比較によって決まる",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / changed",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2016,
+      "reviewedQuestionIds": [
+        "lecture-yinyang-2-q1",
+        "lecture-yinyang-2-q2",
+        "lecture-yinyang-2-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown",
+        "whatYouWillLearn"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "しかし、陰陽論の真髄は**「相対性（比較によって初めて決まる）」**にあります。",
+          "after": "陰陽論で大切なのは**「相対性（比較によって初めて決まる）」**です。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "部位と基準を分けて多角的にスキャンします。",
+          "after": "部位ごとに、どの訴えをどの基準で分類したかを記録します。"
+        },
+        {
+          "field": "whatYouWillLearn.goals[1]",
+          "before": "比較の参照点が変わることで、同一の対象が陽にも陰にも反転する具体例を説明できる",
+          "after": "同じ温度の水でも、比較相手によって陽にも陰にもなることを説明できる"
+        },
+        {
+          "field": "whatYouWillLearn.goals[2]",
+          "before": "「陰陽可分（どこまでも細かく分ける考え方）」の概念を把握し、現象を多階層に細分化して分析できるようになる",
+          "after": "陰陽可分を説明し、昼・夜の区分をさらに午前・午後などに分ける例を示せる"
+        }
+      ],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "大腿前部（陰中の陽）／ 臀部・深部（陰中の陰）",
+          "confirmationNeeded": "下半身内の配属の比較基準、教材・古典出典、上半身の区分や図・問題との一致。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-yinyang-3",
+      "url": "/curriculum/lecture-yinyang-3",
+      "title": "陰陽論 レッスン3：陰陽はどう関係するか",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / changed",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1928,
+      "reviewedQuestionIds": [
+        "lecture-yinyang-3-q1",
+        "lecture-yinyang-3-q2",
+        "lecture-yinyang-3-q3"
+      ],
+      "changedFields": [
+        "whatYouWillLearn"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "相反しながら、支え合う関係を読み解く",
+          "after": "対立・制約・互根の三つの関係を区別して説明する"
+        }
+      ],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "「陰在内、陽之守也。陽在外、陰之使也。」（陰は内に在りて陽の守なり。陽は外に在りて陰の使なり。）──『黄帝内経 素問』",
+          "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+          "action": "引用全文と既存の確認範囲を維持",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-yinyang-4",
+      "url": "/curriculum/lecture-yinyang-4",
+      "title": "陰陽論 レッスン4：陰陽はどう変化するか",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1745,
+      "reviewedQuestionIds": [
+        "lecture-yinyang-4-q1",
+        "lecture-yinyang-4-q2",
+        "lecture-yinyang-4-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-yinyang-5",
+      "url": "/curriculum/lecture-yinyang-5",
+      "title": "陰陽論 レッスン5：身体を陰陽で捉える",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1697,
+      "reviewedQuestionIds": [
+        "lecture-yinyang-5-q1",
+        "lecture-yinyang-5-q2",
+        "lecture-yinyang-5-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-yinyang-6",
+      "url": "/curriculum/lecture-yinyang-6",
+      "title": "陰陽論 レッスン6：陰陽の偏りを理解する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2006,
+      "reviewedQuestionIds": [
+        "lecture-yinyang-6-q1",
+        "lecture-yinyang-6-q2",
+        "lecture-yinyang-6-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-yinyang-7",
+      "url": "/curriculum/lecture-yinyang-7",
+      "title": "陰陽論 レッスン7：所見を組み合わせて考える",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2384,
+      "reviewedQuestionIds": [
+        "lecture-yinyang-7-q1",
+        "lecture-yinyang-7-q2",
+        "lecture-yinyang-7-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-yinyang-8",
+      "url": "/curriculum/lecture-yinyang-8",
+      "title": "陰陽論 レッスン8：総合演習・次章への接続",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2195,
+      "reviewedQuestionIds": [
+        "lecture-yinyang-8-q1",
+        "lecture-yinyang-8-q2",
+        "lecture-yinyang-8-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-qiblood-1",
+      "url": "/curriculum/lecture-qiblood-1",
+      "title": "気血津液論 レッスン1：気・血・津液の概観と気の基本作用",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1328,
+      "reviewedQuestionIds": [
+        "lecture-qiblood-1-q1",
+        "lecture-qiblood-1-q2",
+        "lecture-qiblood-1-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-qiblood-2",
+      "url": "/curriculum/lecture-qiblood-2",
+      "title": "気血津液論 レッスン2：血の基本的な役割",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1064,
+      "reviewedQuestionIds": [
+        "lecture-qiblood-2-q1",
+        "lecture-qiblood-2-q2",
+        "lecture-qiblood-2-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-qiblood-3",
+      "url": "/curriculum/lecture-qiblood-3",
+      "title": "気血津液論 レッスン3：津液の基本的な役割",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1145,
+      "reviewedQuestionIds": [
+        "lecture-qiblood-3-q1",
+        "lecture-qiblood-3-q2",
+        "lecture-qiblood-3-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-qiblood-4",
+      "url": "/curriculum/lecture-qiblood-4",
+      "title": "気血津液論 レッスン4：気・血・津液の正常な関係",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1102,
+      "reviewedQuestionIds": [
+        "lecture-qiblood-4-q1",
+        "lecture-qiblood-4-q2",
+        "lecture-qiblood-4-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-qiblood-5",
+      "url": "/curriculum/lecture-qiblood-5",
+      "title": "気血津液論 レッスン5：基本用語を使う一判断演習",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1209,
+      "reviewedQuestionIds": [
+        "lecture-qiblood-5-q1",
+        "lecture-qiblood-5-q2",
+        "lecture-qiblood-5-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-lifedynamics-1",
+      "url": "/curriculum/lecture-lifedynamics-1",
+      "title": "生命活動を全体として捉える",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1537,
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-1-q1",
+        "lecture-lifedynamics-1-q2",
+        "lecture-lifedynamics-1-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown",
+        "whatYouWillLearn",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-lifedynamics-1-q1",
+        "lecture-lifedynamics-1-q2"
+      ],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "生命機能論を学ぶ際、最も初学者が混乱しやすいのが「似たような概念がいくつも登場すること」です。気血水、営気・衛気、三焦、昇降出入──これらはすべて同じ身体を説明していますが、**着目している「問いの角度」が異なります**。",
+          "after": "気血水、営気・衛気、三焦、昇降出入は、同じ身体について異なる視点から説明する用語です。次の表で、**それぞれが何を説明するか**を比べます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "このように、「いま自分は生体の【要素】を見ているのか、【分担】を見ているのか、【空間】を見ているのか、【運動方向】を見ているのか」を常に意識することが、生命機能論をマスターする最大の鍵となります。",
+          "after": "用語を説明するときは、要素・分担・領域・方向のどの視点かを添えると、似た言葉を区別しやすくなります。"
+        },
+        {
+          "field": "whatYouWillLearn.goals[2]",
+          "before": "五行と病機の応用は後の章として位置づける",
+          "after": "五行は関係の整理、病機は失調の説明として後の章で学ぶことを示す"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-lifedynamics-1-q1",
+          "before": "新しい順序では、基本用語と臓腑の役割の後に正常な連携を学びます。五行の整理は次章で扱います。",
+          "after": "基本用語と臓腑の役割を学んだ後に、この章で営衛・三焦・昇降出入などの正常な連携を整理します。五行による整理は次章で扱います。"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-lifedynamics-1-q2",
+          "before": "着目する役割・領域・方向を分けて学びます。現代の物質や機構と同一視しません。",
+          "after": "営衛は役割の分担、三焦は上・中・下の領域、昇降出入は動きの方向に着目します。視点が異なる用語を、同じ物質や機構の別名として扱いません。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-lifedynamics-2",
+      "url": "/curriculum/lecture-lifedynamics-2",
+      "title": "精・気・血・津液・神の関係",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / changed",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2569,
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-2-q1",
+        "lecture-lifedynamics-2-q2",
+        "lecture-lifedynamics-2-q3"
+      ],
+      "changedFields": [
+        "summary",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "私たちは日々の生活で、「深く悩みすぎると胃が痛くなる」「激しい肉体疲労で気力が湧かず、判断力が鈍る」といった心身の連動を当たり前に経験しています。東洋医学はこの現象を、**「精・気・血・津液・神」という五大要素の相互転化モデル**によって論理的に説明します。",
+          "after": "伝統理論では、身体と精神の関係を**精・気・血・津液・神**の五つの用語で説明します。ここでは、それぞれの役割と支え合う関係を整理します。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "本レッスンでは、生命の源である「精」から、日々の活動を駆動する「気・血・津液」、そして最高次の統括司令塔である「神（精神・意識）」がどのように支え合っているのか、その階層的タワー構造を解き明かします。",
+          "after": "まず精・気・神の役割を確認し、次に血・津液との関係、最後に五神の配当を学びます。気・血・津液の基本役割が曖昧な場合は、[気血津液論の概観](/curriculum/lecture-qiblood-1)を先に復習できます。"
+        },
+        {
+          "field": "summary",
+          "before": "精・気・血・津液・神の支え合いを伝統理論の中で整理する。先天・後天の精と五神の配当を学び、遺伝情報・脳機能・精神疾患の原因と同一視しない。",
+          "after": "精・気・血・津液・神の支え合いを伝統理論の中で整理します。先天・後天の精と五神の配当を学び、遺伝情報・脳機能・精神疾患の原因と同一視しません。"
+        }
+      ],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "精が足りなければ血が補い、血が充実していれば精へと変換されて蓄えられます。",
+          "confirmationNeeded": "精血同源の互相化生の底本・条件・説明範囲。一律の変換規則と述べられるか。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "五臓それぞれに固有の知性と感情（五神：ごしん）が宿り、互いに分担して全人格を形成しています。",
+          "confirmationNeeded": "五神・五志の区別、知性・感情・人格形成との関係が原典・標準教材に沿うか。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "悪夢、情緒不安定、決断不能、幻覚様感覚",
+          "confirmationNeeded": "五神の表の精神症状と配当の根拠・掲載範囲。診断の対応表ではない限定は維持。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "「天の我に来す者は徳なり、地の我に来す者は気なり、徳流れて気薄りて生あり。故に生之の来たるをこれ精と謂い、両精相搏つをこれ神と謂い、神に随いて往来する者をこれ魂と謂い、精並びて出入する者をこれ魄と謂い",
+          "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+          "action": "引用全文と既存の確認範囲を維持",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-3",
+      "url": "/curriculum/lecture-lifedynamics-3",
+      "title": "飲食と呼吸から生命を支える",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / changed",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2216,
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-3-q1",
+        "lecture-lifedynamics-3-q2",
+        "lecture-lifedynamics-3-q3"
+      ],
+      "changedFields": [
+        "summary",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "私たちが生きているということは、絶え間なく外界と物質・エネルギーを交換しているということです。この「外部からのインプット」を担当するのが、消化を司る**「脾胃（ひい）」**と、呼吸を司る**「肺（はい）」**です。",
+          "after": "この講では、飲食を受け入れ変化させる**脾胃（ひい）**と、呼吸に関わる**肺（はい）**を対比します。どの用語がどの役割を表すかを、節ごとに確認します。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "本レッスンでは、口から入った飲食物がどのように分解・吸収され、鼻から吸い込んだ空気とどこで合流し、全身を動かすエネルギーへと変換されていくのか、その伝統的な連動の説明を辿ります。実際の吸収・代謝を測定した経路と同一視しません。",
+          "after": "水穀の精微と自然の清気を関係づける宗気の説明までを学びます。伝統的な生成モデルと、実際の吸収・代謝を測定した経路は区別します。"
+        },
+        {
+          "field": "summary",
+          "before": "飲食と呼吸を胃・脾・肺の役割から関係づけ、宗気の伝統的な説明を読む。用語のモデルと現代の代謝反応、症状の医学的な原因を区別する。",
+          "after": "飲食と呼吸を胃・脾・肺の役割から関係づけ、宗気の伝統的な説明を読みます。用語のモデルと現代の代謝反応、症状の医学的な原因を区別します。"
+        }
+      ],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "体内の代謝廃棄物である「濁気（だっき）」",
+          "confirmationNeeded": "濁気の読みと定義、代謝廃棄物という表現の範囲。酸素・二酸化炭素との同一視を招かないか。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "最も純粋な栄養物質（水穀の精微）を抽出・吸収する",
+          "confirmationNeeded": "水穀の精微と運化について、伝統的役割と実際の栄養素の抽出・吸収の境界。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "まず肺に送られて清気と合わさり、心に注がれて赤い「血」へと化成（生血）され",
+          "confirmationNeeded": "直前の五臓生成篇引用がこの生成順を支持するか。篇章・原文・訳と解説の対応。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "「諸血の心に属する者は、皆目に注ぐ。諸気の肺に属する者は、皆皮に注ぐ。諸筋の肝に属する者は、皆関節に注ぐ。諸骨の腎に属する者は、皆髄に注ぐ。諸脈の脾に属する者は、皆営に注ぐ。」",
+          "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+          "action": "引用全文と既存の確認範囲を維持",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-4",
+      "url": "/curriculum/lecture-lifedynamics-4",
+      "title": "営気と衛気の役割",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / changed",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2441,
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-4-q1",
+        "lecture-lifedynamics-4-q2",
+        "lecture-lifedynamics-4-q3"
+      ],
+      "changedFields": [
+        "summary",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "「人体を巡るエネルギーは、すべてが同じ場所を同じように流れているわけではない。城郭都市に例えるなら、城内で食料や物資を運搬・配給する『兵站部隊（営気）』と、城壁の外側をパトロールして外敵を警戒する『警備部隊（衛気）』の二重構造で生命を守っている。」",
+          "after": "営気は内を養う役割、衛気は外を守る役割に着目する伝統用語です。同じ「気」という言葉でも、説明する役割と運行の場を分けて学びます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "全身を巡る「気」の中で、特に生理的役割が明確に分化しているのが**「営気（えいき）」**と**「衛気（えき）」**です。この2つの気は、どちらか一方だけでは生きていくことができません。内側が豊かに養われているからこそ外側の警備が機能し、外側の警備が鉄壁であるからこそ内側の平穏が保たれます。",
+          "after": "**営気（えいき）**と**衛気（えき）**の役割は、互いに支え合う関係として説明されます。まずそれぞれを確認し、第3節の表で共通点と違いを比較します。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "本レッスンでは、この相補的な二層エネルギーの走行ルート、生理作用、そして両者の調和（営衛協調）のメカニズムを深く掘り下げます。",
+          "after": "本レッスンでは、脈中・脈外という運行の説明、営気・衛気の作用、営衛協調を学びます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "営気と衛気は、別々に孤立して動いているのではなく、互いに手を取り合って同期しています。古典ではこれを",
+          "after": "営気と衛気は、互いに関係しながら運行すると説明されます。古典ではこれを"
+        },
+        {
+          "field": "summary",
+          "before": "内を養う営気と外を守る衛気を、脈中・脈外と役割で対比する。営衛協調や日夜の運行を、免疫・睡眠の実測された仕組みとは区別して学ぶ。",
+          "after": "内を養う営気と外を守る衛気を、脈中・脈外と役割で比べます。営衛協調や日夜の運行を、免疫・睡眠の実測された仕組みとは区別して学びます。"
+        }
+      ],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "皮膚や筋肉、内臓を温め、生体機能を正常な温度に保つ。",
+          "confirmationNeeded": "衛気の温煦の説明範囲と生体の温度調節を測定・保証する説明の違い。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "経脈の外・皮膚筋膜（脈外）",
+          "confirmationNeeded": "脈外・分肉・腠理を皮膚筋膜と併記する説明が特定の解剖構造との同一視を招かないか。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "「営は脈中に在り、衛は脈外に在り、周流して休まず、五十度にして復た大会す。陰陽相貫き、環の端無きが如し。」",
+          "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+          "action": "引用全文と既存の確認範囲を維持",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-5",
+      "url": "/curriculum/lecture-lifedynamics-5",
+      "title": "三焦で全身の働きを整理する",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / changed",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2182,
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-5-q1",
+        "lecture-lifedynamics-5-q2",
+        "lecture-lifedynamics-5-q3"
+      ],
+      "changedFields": [
+        "summary",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "胃や大腸、膀胱のように「袋状の臓器」として実体がある他の腑と異なり、三焦は身体の**「上・中・下の空間領域全体」**を指し、そこを貫く**「気と水の連絡ハイウェイ（水道）」**として定義されます。",
+          "after": "この講では三焦を、身体の**上・中・下の領域**と、そこをつなぐ**気と水液の通路**という二つの視点から学びます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "人体を縦に三分割し、それぞれの領域で何が行われ、どう連携しているかを整理する三焦モデルは、複雑な全身症状を一目で立体的に把握するための極めて強力な地図となります。",
+          "after": "第1節で各領域と役割を比べ、第2節で全身の通路としての説明を確認します。脾胃と肺の役割は、前の[飲食と呼吸の講義](/curriculum/lecture-lifedynamics-3)で復習できます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "東洋医学史上最も美しい三つの比喩が記されています。",
+          "after": "三つの比喩が記されています。"
+        },
+        {
+          "field": "summary",
+          "before": "三焦で上・中・下の領域と役割を整理する。霧・漚・瀆の比喩を学び、間質・リンパなどの解剖学的な実体や症状の原因とは区別する。",
+          "after": "三焦で上・中・下の領域と役割を整理します。霧・漚・瀆の比喩を学び、間質・リンパなどの解剖学的な実体や症状の原因とは区別します。"
+        }
+      ],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "適度な熱でじっくり発酵・分解（腐熟）させ",
+          "confirmationNeeded": "中焦・腐熟の比喩と実際の発酵反応の区別。漚の原典の読み・訳と表の対応。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "全身の皮膚・筋肉・臓腑へ均一に噴霧・散布・散開させる。",
+          "confirmationNeeded": "上焦如霧の比喩を均一な噴霧・組織への散布と説明する範囲。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "古代中国の医学書『難経』第25難・第38難",
+          "confirmationNeeded": "三焦の名有りて形無しの篇章、論争の記述、網膜・腸間膜・腹膜という語の出典。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-6",
+      "url": "/curriculum/lecture-lifedynamics-6",
+      "title": "臓腑の表裏関係を理解する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1276,
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-6-q1",
+        "lecture-lifedynamics-6-q2",
+        "lecture-lifedynamics-6-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-lifedynamics-7",
+      "url": "/curriculum/lecture-lifedynamics-7",
+      "title": "昇降出入で機能をつなぐ",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / changed",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2412,
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-7-q1",
+        "lecture-lifedynamics-7-q2",
+        "lecture-lifedynamics-7-q3"
+      ],
+      "changedFields": [
+        "summary",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "本レッスンでは、臓腑同士がどのような運動方向で支え合っているのか、その動態エンジンの構造を解明します。",
+          "after": "本レッスンでは、まず四つの方向を確認し、次に脾と胃、肝と肺、心と腎の三組で、方向を対比する説明を学びます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "人体の中には、昇降の調和を保つための「3大循環ループ」が組み込まれています。",
+          "after": "ここでは、昇降の関係を三組の臓腑で比較します。"
+        },
+        {
+          "field": "summary",
+          "before": "昇降出入の四つの方向から臓腑の関係を学ぶ。脾胃などの対比や水火既済を伝統的なモデルとして説明し、血流・消化の実測された機序とは区別する。",
+          "after": "昇降出入の四つの方向から臓腑の関係を学びます。脾胃などの対比や水火既済を伝統的なモデルとして説明し、血流・消化の実測された機序とは区別します。"
+        }
+      ],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "肝の「拡散」を行き過ぎないように肺が「抑制」し",
+          "confirmationNeeded": "肝左昇・肺右降の出典と拡散・抑制として説明する条件。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "「健康」とは各組織のサイズや数値が正常であること以上に",
+          "confirmationNeeded": "気機の説明を健康の定義として述べる範囲と医学的な組織・検査値の評価との関係。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "「升降出入、無器不有。故に器なる者は生化の宇なり。器散ずれば則ち分翔し、生化息す。故に無生、無長、無化、無収、無蔵、無生長壮老已。非升降出入にあらざれば、何をもってこれを生ぜん。」",
+          "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+          "action": "引用全文と既存の確認範囲を維持",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-8",
+      "url": "/curriculum/lecture-lifedynamics-8",
+      "title": "活動と休息のリズムを理解する",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / changed",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2459,
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-8-q1",
+        "lecture-lifedynamics-8-q2",
+        "lecture-lifedynamics-8-q3"
+      ],
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "活動と休息を日夜の営衛運行という伝統的なモデルで学ぶ。古典的な周数や時刻表と体内時計の実測を区別し、睡眠の訴えと未確認の原因を分ける。",
+          "after": "活動と休息を日夜の営衛運行という伝統的なモデルで学びます。古典的な周数や時刻表と体内時計の実測を区別し、睡眠の訴えと未確認の原因を分けます。"
+        }
+      ],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "腠理（毛穴）を開閉し",
+          "confirmationNeeded": "腠理を毛穴と併記する定義。営衛の講の単一の毛穴・汗腺と同一視しない説明との整合性。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "脳と筋肉の緊張をオフにして「睡眠」へ導く。",
+          "confirmationNeeded": "衛気の夜の運行を脳・筋の緊張の解除という医学的機序で述べる根拠・範囲。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "夜になってもスマホのブルーライトを浴び続けたり、仕事のプレッシャーで興奮していると",
+          "confirmationNeeded": "生活状況と陽不入陰を関係づける条件。不眠原因を確定しない限定との整合性。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "**「陽気尽きて陰に入れば臥（ふ）し、陰気尽きて陽に出れば寤（さ）む。」**（『霊枢』口問篇）",
+          "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+          "action": "引用全文と既存の確認範囲を維持",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-9",
+      "url": "/curriculum/lecture-lifedynamics-9",
+      "title": "季節・環境への適応を理解する",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / changed",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2346,
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-9-q1",
+        "lecture-lifedynamics-9-q2",
+        "lecture-lifedynamics-9-q3"
+      ],
+      "changedFields": [
+        "summary",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "東洋医学の根底には、**「天人相応（てんじんそうおう）」**という壮大な生命観があります。天（大自然・環境）と人（生体）は別々に隔てられた存在ではなく、呼吸や食事、皮膚感覚を通じて絶え間なく交感し、同じリズムで脈打っています。",
+          "after": "**天人相応（てんじんそうおう）**は、自然環境と人の関係を重視する伝統的な考え方です。ここでは、季節の特徴を表す言葉と、個人の生活の記録を分けて学びます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "さらに大きなタイムスケールである**「1年・五季（春・夏・土用・秋・冬）のダイナミクス」**",
+          "after": "**一年と五季（春・夏・土用・秋・冬）の変化**"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "重要なのは、**「古典が説く気の重心移動の原理」を理解した上で、その人の生活環境・体質・地域に合わせて柔軟にカスタマイズすること**です。",
+          "after": "季節の表現を学ぶ際も、**本人の生活環境・身体の状態・地域を具体的に確認すること**が大切です。"
+        },
+        {
+          "field": "summary",
+          "before": "季節を春生・夏長・秋収・冬蔵で整理し、環境と人との関係を学ぶ。地域・空調・生活背景を確認し、季節の配当と個人の症状・生活指示を区別する。",
+          "after": "季節を春生・夏長・秋収・冬蔵で整理し、環境と人との関係を学びます。地域・空調・生活背景を確認し、季節の配当と個人の症状・生活指示を区別します。"
+        }
+      ],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "（夜更かしせず朝早く起き",
+          "confirmationNeeded": "四気調神大論の夜に臥し早く起きの訳・解説、底本・季節・時代の文脈。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-10",
+      "url": "/curriculum/lecture-lifedynamics-10",
+      "title": "正常な調節と、失調の入口を区別する",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / changed",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2440,
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-10-q1",
+        "lecture-lifedynamics-10-q2",
+        "lecture-lifedynamics-10-q3"
+      ],
+      "changedFields": [
+        "summary",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "本レッスンでは、東洋医学が考える**「健康（正気）の本質」**を再定義し、日常の生理的なゆらぎと、後の章で学ぶ「病機」の入口を明確に峻別する思考力を養います。",
+          "after": "本レッスンでは、正気の説明を確認し、日常の変化と持続する訴えを経過から比較します。第2節の表で、記録することと、その情報だけでは決められないことを分けます。"
+        },
+        {
+          "field": "summary",
+          "before": "日常の変化と持続する訴えを、経過や生活への影響から比較する。正気・虚実は伝統的な整理として学び、検査結果や医薬品の適応をその分類だけで判断しない。",
+          "after": "日常の変化と持続する訴えを、経過や生活への影響から比較する。正気・虚実は伝統的な整理として学び、検査結果や医薬品の適応をその分類だけで判断しません。"
+        }
+      ],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "『黄帝内経素問』調経論には、虚実の定義について決定的な一文",
+          "confirmationNeeded": "直後の邪気盛んなる者は実なり、精気奪わるる者は虚なりの篇章帰属・原文・訳。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "**「正気、内に存すれば、邪干すべからず。」**（『素問』刺法論）",
+          "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+          "action": "引用全文と既存の確認範囲を維持",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-11",
+      "url": "/curriculum/lecture-lifedynamics-11",
+      "title": "生命システムを統合して説明する",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / changed",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2829,
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-11-q1",
+        "lecture-lifedynamics-11-q2",
+        "lecture-lifedynamics-11-q3"
+      ],
+      "changedFields": [
+        "summary",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "「バイオリンだけでは交響曲を奏でられない。トランペットだけでも、ティンパニだけでも曲にはならない。すべての楽器が同時に鳴り響き、指揮者のもとで息を合わせるとき、そこに壮大なハーモニーが立ち現れる。人体の関係を覚えるための比喩であり、医学的な機序が同じと測定された意味ではない。」",
+          "after": "一つの働きに複数の臓腑が関わることを、オーケストラにたとえて考えます。これは役割の関係を覚える比喩で、医学的な機序が同じだと確認されたことを意味しません。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "第11講となる本レッスンは、これらすべてのピースを一つに結合し、**「生命システム全体の統合モデル」**を完成させるクライマックスです。一つの生命活動が、いかに多くの臓腑・機能の多重サポートによって支えられているかを俯瞰します。",
+          "after": "この講では、生成・分配・防御・排泄・貯蔵の五つの役割に分けて、学んだ用語を整理します。津液の例では、肺・脾・腎・三焦を関連づけて説明する練習をします。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "東洋医学を学ぶと、誰もが驚く事実があります。それは、**「人体の重要な機能は、決して単一の臓腑だけに任されていない」**ということです。",
+          "after": "伝統理論では、**一つの働きに複数の臓腑を関連づけて説明します。** 以下では、津液の役割を例に比べます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "第2講で学んだ精・気・神は、肉体組織としても美しい多層タワーを形成しています。",
+          "after": "第2講で学んだ精と身体の諸概念の関係を、次の六つの項目で振り返ります。"
+        },
+        {
+          "field": "summary",
+          "before": "生成・分配・防御・排泄・貯蔵の役割から、複数の臓腑の関係を統合する。学習モデルの説明と、検証していない医学的な因果・治療効果を分ける。",
+          "after": "生成・分配・防御・排泄・貯蔵の役割から、複数の臓腑の関係をまとめます。学習モデルの説明と、検証していない医学的な因果・治療効果を分けます。"
+        }
+      ],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "肝（疎泄による血量配分）",
+          "confirmationNeeded": "疏泄と蔵血の役割区分、血量配分を疏泄に関連づける根拠。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "脾（気血の統血）",
+          "confirmationNeeded": "統血の対象・定義と、気血の統血という表現と既習内容との一致。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "**「凡そこの十二官は、相失するを得ず。故に主明らかなれば則ち下安く、主不明なれば則ち十二官危うし。」**",
+          "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+          "action": "引用全文と既存の確認範囲を維持",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-12",
+      "url": "/curriculum/lecture-lifedynamics-12",
+      "title": "総合演習・次章への接続",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 910,
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-12-q1",
+        "lecture-lifedynamics-12-q2",
+        "lecture-lifedynamics-12-q3"
+      ],
+      "changedFields": [
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-lifedynamics-12-q2"
+      ],
+      "changes": [
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-lifedynamics-12-q2",
+          "before": "説明の根拠を示し、まだ確認していないことを添えます。正常の説明から病気の原因が自動的に確定するわけではありません。",
+          "after": "例えば脾の運化と飲食物の精微を関係づけたら、運化という役割を根拠として示し、検査や生理機構を確認した説明とは分けます。正常な連携の説明だけでは、病気の原因は確定しません。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-wuxing-1",
+      "url": "/curriculum/lecture-wuxing-1",
+      "title": "五行論 レッスン1：五行とは何か ― 五つの分類を学ぶ",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1068,
+      "reviewedQuestionIds": [
+        "lecture-wuxing-1-q1",
+        "lecture-wuxing-1-q2",
+        "lecture-wuxing-1-q3"
+      ],
+      "changedFields": [
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-wuxing-1-q2"
+      ],
+      "changes": [
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-wuxing-1-q2",
+          "before": "臓腑・生命機能を先に学び、五行を整理の視点として用います。用語が曖昧なら前の章を確認します。",
+          "after": "臓腑・生命機能で学んだ役割や連携を、五行の配当と関係で整理します。臓腑の名称や基本役割が曖昧な場合は、臓腑論に戻って確認します。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-wuxing-2",
+      "url": "/curriculum/lecture-wuxing-2",
+      "title": "五行論 レッスン2：五行の基本的な性質 ― 曲直・炎上・稼穡・従革・潤下",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 982,
+      "reviewedQuestionIds": [
+        "lecture-wuxing-2-q1",
+        "lecture-wuxing-2-q2",
+        "lecture-wuxing-2-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-wuxing-3",
+      "url": "/curriculum/lecture-wuxing-3",
+      "title": "五行論 レッスン3：五行の相互関係 ― 相生・相剋・相乗・相侮",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1097,
+      "reviewedQuestionIds": [
+        "lecture-wuxing-3-q1",
+        "lecture-wuxing-3-q2",
+        "lecture-wuxing-3-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-wuxing-4",
+      "url": "/curriculum/lecture-wuxing-4",
+      "title": "五行論 レッスン4：既習の五臓を五行で整理する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 845,
+      "reviewedQuestionIds": [
+        "lecture-wuxing-4-q1",
+        "lecture-wuxing-4-q2",
+        "lecture-wuxing-4-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-wuxing-5",
+      "url": "/curriculum/lecture-wuxing-5",
+      "title": "五行論 レッスン5：五官・五体・五華の伝統的な配当",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 874,
+      "reviewedQuestionIds": [
+        "lecture-wuxing-5-q1",
+        "lecture-wuxing-5-q2",
+        "lecture-wuxing-5-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-wuxing-6",
+      "url": "/curriculum/lecture-wuxing-6",
+      "title": "五行論 レッスン6：五神・五志の伝統的な配当",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 869,
+      "reviewedQuestionIds": [
+        "lecture-wuxing-6-q1",
+        "lecture-wuxing-6-q2",
+        "lecture-wuxing-6-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-wuxing-7",
+      "url": "/curriculum/lecture-wuxing-7",
+      "title": "五行論 レッスン7：季節・気候・五味の伝統的な配当",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 899,
+      "reviewedQuestionIds": [
+        "lecture-wuxing-7-q1",
+        "lecture-wuxing-7-q2",
+        "lecture-wuxing-7-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-wuxing-8",
+      "url": "/curriculum/lecture-wuxing-8",
+      "title": "五行論 レッスン8：関係の説明・根拠・保留の総合演習",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1284,
+      "reviewedQuestionIds": [
+        "lecture-wuxing-8-q1",
+        "lecture-wuxing-8-q2",
+        "lecture-wuxing-8-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-pathomechanism-1",
+      "url": "/curriculum/lecture-pathomechanism-1",
+      "title": "病機とは何か",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1970,
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-1-q1",
+        "lecture-pathomechanism-1-q2",
+        "lecture-pathomechanism-1-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-pathomechanism-2",
+      "url": "/curriculum/lecture-pathomechanism-2",
+      "title": "発症を左右する条件",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2460,
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-2-q1",
+        "lecture-pathomechanism-2-q2",
+        "lecture-pathomechanism-2-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-pathomechanism-3",
+      "url": "/curriculum/lecture-pathomechanism-3",
+      "title": "気の不足と運動の失調",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2232,
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-3-q1",
+        "lecture-pathomechanism-3-q2",
+        "lecture-pathomechanism-3-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "この講では、気血津液・臓腑・生命機能で学んだ正常な役割を手掛かりに、失調を比較します。",
+          "after": "この講では、気血津液・臓腑・生命機能で学んだ正常な役割を手掛かりに、失調を比較します。 気の五つの役割は[気の基本作用](/curriculum/lecture-qiblood-1)、動きの方向は[昇降出入](/curriculum/lecture-lifedynamics-7)で復習できます。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-pathomechanism-4",
+      "url": "/curriculum/lecture-pathomechanism-4",
+      "title": "津液代謝の失調",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2423,
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-4-q1",
+        "lecture-pathomechanism-4-q2",
+        "lecture-pathomechanism-4-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "気血津液論では正常な役割を学びました。",
+          "after": "気血津液論では正常な役割を学びました。 正常な潤いと巡りは[津液の基本役割](/curriculum/lecture-qiblood-3)で復習できます。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-pathomechanism-5",
+      "url": "/curriculum/lecture-pathomechanism-5",
+      "title": "血の失調と瘀血の形成",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2404,
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-5-q1",
+        "lecture-pathomechanism-5-q2",
+        "lecture-pathomechanism-5-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "この講では正常な血の役割を復習し、気や寒熱などとの関係を比較します。",
+          "after": "この講では正常な血の役割を復習し、気や寒熱などとの関係を比較します。 滋養・滋潤の用語は[血の基本役割](/curriculum/lecture-qiblood-2)で復習できます。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-pathomechanism-6",
+      "url": "/curriculum/lecture-pathomechanism-6",
+      "title": "寒熱と陰陽の失調",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2036,
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-6-q1",
+        "lecture-pathomechanism-6-q2",
+        "lecture-pathomechanism-6-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "本講の表・図は伝統理論の分類を学ぶ教材です。",
+          "after": "本講の表・図は伝統理論の分類を学ぶ教材です。 四分類の違いが曖昧な場合は、[陰陽の偏り](/curriculum/lecture-yinyang-6)の過剰・不足の比較に戻って確認できます。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-pathomechanism-7",
+      "url": "/curriculum/lecture-pathomechanism-7",
+      "title": "外的要因から病態を考える",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1755,
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-7-q1",
+        "lecture-pathomechanism-7-q2",
+        "lecture-pathomechanism-7-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "営衛の章では、内を養う営と外を守る衛を対比しました。",
+          "after": "営衛の章では、内を養う営と外を守る衛を対比しました。 営と衛の役割は[営気と衛気](/curriculum/lecture-lifedynamics-4)で復習できます。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-pathomechanism-8",
+      "url": "/curriculum/lecture-pathomechanism-8",
+      "title": "情志・飲食・労倦から病態を考える",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2040,
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-8-q1",
+        "lecture-pathomechanism-8-q2",
+        "lecture-pathomechanism-8-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "脾胃の受納・運化、五神の配当、活動と休息は、生命機能論で学んだ役割の説明です。",
+          "after": "脾胃の受納・運化、五神の配当、活動と休息は、生命機能論で学んだ役割の説明です。 五神と五志の用語の違いは[五神・五志の配当](/curriculum/lecture-wuxing-6)で確認できます。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-pathomechanism-9",
+      "url": "/curriculum/lecture-pathomechanism-9",
+      "title": "病理が波及する仕組み",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1078,
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-9-q1",
+        "lecture-pathomechanism-9-q2",
+        "lecture-pathomechanism-9-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-pathomechanism-10",
+      "url": "/curriculum/lecture-pathomechanism-10",
+      "title": "慢性化と複合病態",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1855,
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-10-q1",
+        "lecture-pathomechanism-10-q2",
+        "lecture-pathomechanism-10-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-pathomechanism-11",
+      "url": "/curriculum/lecture-pathomechanism-11",
+      "title": "病機の仮説を比較する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1193,
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-11-q1",
+        "lecture-pathomechanism-11-q2",
+        "lecture-pathomechanism-11-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-pathomechanism-12",
+      "url": "/curriculum/lecture-pathomechanism-12",
+      "title": "総合演習・次章への接続",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1265,
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-12-q1",
+        "lecture-pathomechanism-12-q2",
+        "lecture-pathomechanism-12-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-diagnosis-1",
+      "url": "/curriculum/lecture-diagnosis-1",
+      "title": "診断・弁証の目的と全体像",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1148,
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-1-q1",
+        "lecture-diagnosis-1-q2",
+        "lecture-diagnosis-1-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-diagnosis-2",
+      "url": "/curriculum/lecture-diagnosis-2",
+      "title": "安全性と対応範囲を先に確認する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / retained",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1092,
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-2-q1",
+        "lecture-diagnosis-2-q2",
+        "lecture-diagnosis-2-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "whatYouWillLearn.goals[1]",
+          "quote": "医原性事故を未然に防止する",
+          "confirmationNeeded": "Webで説明できる目標と指導下の実技能力・事故防止の保証の区別。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-diagnosis-3",
+      "url": "/curriculum/lecture-diagnosis-3",
+      "title": "主訴と時間軸を整理する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1054,
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-3-q1",
+        "lecture-diagnosis-3-q2",
+        "lecture-diagnosis-3-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-diagnosis-4",
+      "url": "/curriculum/lecture-diagnosis-4",
+      "title": "問診を設計する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / retained",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1156,
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-4-q1",
+        "lecture-diagnosis-4-q2",
+        "lecture-diagnosis-4-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": [
+        {
+          "questionId": "lecture-diagnosis-4-q2",
+          "field": "quiz.explanation",
+          "quote": "反証所見（矛盾する兆候）を自ら探しに行くことで誤診を防ぎます。",
+          "confirmationNeeded": "反証の確認が誤診を防ぐという表現の根拠・条件と推論の学習目標の範囲。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": "lecture-diagnosis-4-q3",
+          "field": "quiz.explanation",
+          "quote": "客観的鑑別点を絞り込むのが標準面接技法です。",
+          "confirmationNeeded": "本人の回答と客観所見の区別、標準面接技法の出典・適用条件。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-diagnosis-5",
+      "url": "/curriculum/lecture-diagnosis-5",
+      "title": "望診・聞診で観察する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1155,
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-5-q1",
+        "lecture-diagnosis-5-q2",
+        "lecture-diagnosis-5-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-diagnosis-6",
+      "url": "/curriculum/lecture-diagnosis-6",
+      "title": "切診の情報を扱う",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1543,
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-6-q1",
+        "lecture-diagnosis-6-q2",
+        "lecture-diagnosis-6-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-diagnosis-7",
+      "url": "/curriculum/lecture-diagnosis-7",
+      "title": "八綱で病態を整理する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1231,
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-7-q1",
+        "lecture-diagnosis-7-q2",
+        "lecture-diagnosis-7-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-diagnosis-8",
+      "url": "/curriculum/lecture-diagnosis-8",
+      "title": "気血津液の異常を検討する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2431,
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-8-q1",
+        "lecture-diagnosis-8-q2",
+        "lecture-diagnosis-8-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-diagnosis-9",
+      "url": "/curriculum/lecture-diagnosis-9",
+      "title": "臓腑・経絡との関係を検討する",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1222,
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-9-q1",
+        "lecture-diagnosis-9-q2",
+        "lecture-diagnosis-9-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "臓腑論で学んだ役割と、経絡の基礎で学んだ走行を、情報の整理に使います。",
+          "after": "[臓腑の基本役割](/curriculum/lecture-zangfu-1)と[経絡の基礎](/curriculum/lecture-meridians-1)で学んだ内容を、情報の整理に使います。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-diagnosis-10",
+      "url": "/curriculum/lecture-diagnosis-10",
+      "title": "仮説を比較し、矛盾を扱う",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1172,
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-10-q1",
+        "lecture-diagnosis-10-q2",
+        "lecture-diagnosis-10-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-diagnosis-11",
+      "url": "/curriculum/lecture-diagnosis-11",
+      "title": "証を統合し、判断を記録する",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1543,
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-11-q1",
+        "lecture-diagnosis-11-q2",
+        "lecture-diagnosis-11-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "分類名だけでなく、支持情報・反証・不足情報、安全上の確認、本人の希望、判断を見直す条件を引き継ぎます。",
+          "after": "分類名だけでなく、支持情報・反証・不足情報、安全上の確認、本人の希望、判断を見直す条件を引き継ぎます。次の[診断論の総合演習](/curriculum/lecture-diagnosis-12)で、これらを7項目の記録にまとめます。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-diagnosis-12",
+      "url": "/curriculum/lecture-diagnosis-12",
+      "title": "総合演習・次章への接続",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 3220,
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-12-q1",
+        "lecture-diagnosis-12-q2",
+        "lecture-diagnosis-12-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "次章へ渡すのは、確定した分類名だけではありません。支持情報と反証、不足する情報、安全上の確認、判断を見直す条件をまとめます。",
+          "after": "次の[治則・治法](/curriculum/lecture-treatment-1)へ、支持情報と反証、不足する情報、安全上の確認、判断を見直す条件をまとめて渡します。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-treatment-1",
+      "url": "/curriculum/lecture-treatment-1",
+      "title": "治療の目的と適応範囲",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1150,
+      "reviewedQuestionIds": [
+        "lecture-treatment-1-q1",
+        "lecture-treatment-1-q2",
+        "lecture-treatment-1-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-treatment-2",
+      "url": "/curriculum/lecture-treatment-2",
+      "title": "証から治則・治法へつなぐ",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / changed",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1746,
+      "reviewedQuestionIds": [
+        "lecture-treatment-2-q1",
+        "lecture-treatment-2-q2",
+        "lecture-treatment-2-q3"
+      ],
+      "changedFields": [
+        "whatYouWillLearn"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "病態の判断（証）と、介入の選択（治則・治法・配穴・手技）を論理的に切り分けて説明できる",
+          "after": "証の候補と、治則・治法・配穴・手技を選ぶ理由を分けて説明できる"
+        },
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "「証名が決まればツボが自動的に決まる」という機械的短絡を排し、各階層の論理的連鎖を把握する",
+          "after": "証・治則・治法・配穴・操作と刺激量・評価について、それぞれ何を検討する段階か説明する"
+        },
+        {
+          "field": "whatYouWillLearn.goals[2]",
+          "before": "カルテにおいて、Assessment（証）とPlan（治法・配穴）を明確に峻別して記録する習慣を確立する",
+          "after": "カルテのAssessmentに証の判断、Planに治法・配穴の計画を分けて記録する"
+        }
+      ],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "keyPoints",
+          "quote": "臨床での応用力と安全性を完全に奪う",
+          "confirmationNeeded": "短絡的選穴の危険を説明する断定の根拠・強さと本文の限定との整合性。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "keyPoints",
+          "quote": "治法は「介入する具体的な生体機能」を定義する",
+          "confirmationNeeded": "治法を伝統的な働きへの方針とする本文と、生体機能の定義とする要点の整合性。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-3",
+      "url": "/curriculum/lecture-treatment-3",
+      "title": "補瀉・寒熱の原則を理解する",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1563,
+      "reviewedQuestionIds": [
+        "lecture-treatment-3-q1",
+        "lecture-treatment-3-q2",
+        "lecture-treatment-3-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "前講では、証から治則・治法、具体的な方法、評価へと進む段階を学びました。",
+          "after": "前の[証から治則・治法への接続](/curriculum/lecture-treatment-2)で、判断・方針・方法・評価の段階を学びました。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-treatment-4",
+      "url": "/curriculum/lecture-treatment-4",
+      "title": "本治・標治と優先順位",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / retained",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1407,
+      "reviewedQuestionIds": [
+        "lecture-treatment-4-q1",
+        "lecture-treatment-4-q2",
+        "lecture-treatment-4-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "whatYouWillLearn.goals[0]",
+          "quote": "「本治優先」と「まず標を通す」という2つの流派",
+          "confirmationNeeded": "二つの流派という分類の出典・条件。Webの比較学習と実患者への使い分け技能の区別。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-5",
+      "url": "/curriculum/lecture-treatment-5",
+      "title": "気への治法を整理する",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / changed",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1771,
+      "reviewedQuestionIds": [
+        "lecture-treatment-5-q1",
+        "lecture-treatment-5-q2",
+        "lecture-treatment-5-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "補気・理気・降気・昇提・固摂を、気の働きや方向に着目する伝統用語として整理します。",
+          "after": "補気・理気・降気・昇提・固摂を、気の働きや方向に着目する伝統用語として整理します。不足・滞り・上逆・下陥の違いは、[気の不足と運動の失調](/curriculum/lecture-pathomechanism-3)で復習できます。"
+        }
+      ],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "whatYouWillLearn.goals",
+          "quote": "気は巡らなければ補えず、満ちていなければ巡らない",
+          "confirmationNeeded": "補気・理気の原則の出典・適用条件、処方を組み立てるというWeb目標の範囲。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        },
+        {
+          "questionId": null,
+          "field": "whatYouWillLearn.goals",
+          "quote": "医療過誤（補気滞気）を自覚的に回避できる",
+          "confirmationNeeded": "補気滞気の定義・条件・根拠、医療過誤回避を保証するように読める目標と本文の限定の整合性。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-6",
+      "url": "/curriculum/lecture-treatment-6",
+      "title": "血・津液への治法を整理する",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1588,
+      "reviewedQuestionIds": [
+        "lecture-treatment-6-q1",
+        "lecture-treatment-6-q2",
+        "lecture-treatment-6-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "気血津液論で学んだ役割を、治法の目的から振り返ります。",
+          "after": "気血津液論で学んだ役割を、治法の目的から振り返ります。不足と停滞の違いは、[血の失調](/curriculum/lecture-pathomechanism-5)と[津液の失調](/curriculum/lecture-pathomechanism-4)で比べられます。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-treatment-7",
+      "url": "/curriculum/lecture-treatment-7",
+      "title": "臓腑の機能に介入する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2253,
+      "reviewedQuestionIds": [
+        "lecture-treatment-7-q1",
+        "lecture-treatment-7-q2",
+        "lecture-treatment-7-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-treatment-8",
+      "url": "/curriculum/lecture-treatment-8",
+      "title": "経絡・経穴を選択する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / retained",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2757,
+      "reviewedQuestionIds": [
+        "lecture-treatment-8-q1",
+        "lecture-treatment-8-q2",
+        "lecture-treatment-8-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "contentMarkdown",
+          "quote": "梁丘と中脘、外丘と陽陵泉",
+          "confirmationNeeded": "郄穴・八会穴として挙げた組合せの伝統的出典・分類・条件。効果・安全性未確認の限定は維持。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-9",
+      "url": "/curriculum/lecture-treatment-9",
+      "title": "介入方法・刺激量の検討事項と限界",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1027,
+      "reviewedQuestionIds": [
+        "lecture-treatment-9-q1",
+        "lecture-treatment-9-q2",
+        "lecture-treatment-9-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-treatment-10",
+      "url": "/curriculum/lecture-treatment-10",
+      "title": "生活背景・病因への対応を組み込む",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1200,
+      "reviewedQuestionIds": [
+        "lecture-treatment-10-q1",
+        "lecture-treatment-10-q2",
+        "lecture-treatment-10-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-treatment-11",
+      "url": "/curriculum/lecture-treatment-11",
+      "title": "評価・継続・変更・終了を設計する",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / changed",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1051,
+      "reviewedQuestionIds": [
+        "lecture-treatment-11-q1",
+        "lecture-treatment-11-q2",
+        "lecture-treatment-11-q3"
+      ],
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "事実と解釈を分け、有害事象を含めて手順を見直します。",
+          "after": "事実と解釈を分け、有害事象を含めて手順を見直します。次の[初期計画書の総合演習](/curriculum/lecture-treatment-12)では、評価の指標・時期と変更・終了の条件を記録します。"
+        }
+      ],
+      "specialistReviewItems": [
+        {
+          "questionId": null,
+          "field": "whatYouWillLearn.goals[2]",
+          "quote": "4分岐意思決定モデルを臨床で適用できる",
+          "confirmationNeeded": "学習例で分岐理由を説明する目標と臨床判断技能の認定の区別。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-12",
+      "url": "/curriculum/lecture-treatment-12",
+      "title": "総合演習・次章への接続",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / retained",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2838,
+      "reviewedQuestionIds": [
+        "lecture-treatment-12-q1",
+        "lecture-treatment-12-q2",
+        "lecture-treatment-12-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": [
+        {
+          "questionId": "lecture-treatment-12-q3",
+          "field": "quiz.explanation",
+          "quote": "患者との信頼関係と治療成果は",
+          "confirmationNeeded": "合意形成と治療成果の関係の根拠・条件。説明・理解確認と治療成果への因果主張の区別。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-practice-1",
+      "url": "/curriculum/lecture-practice-1",
+      "title": "臨床の全体プロセスを確認する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1380,
+      "reviewedQuestionIds": [
+        "lecture-practice-1-q1",
+        "lecture-practice-1-q2",
+        "lecture-practice-1-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-practice-2",
+      "url": "/curriculum/lecture-practice-2",
+      "title": "症例情報を読み解く",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1185,
+      "reviewedQuestionIds": [
+        "lecture-practice-2-q1",
+        "lecture-practice-2-q2",
+        "lecture-practice-2-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-practice-3",
+      "url": "/curriculum/lecture-practice-3",
+      "title": "最初の対応を決める",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1064,
+      "reviewedQuestionIds": [
+        "lecture-practice-3-q1",
+        "lecture-practice-3-q2",
+        "lecture-practice-3-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-practice-4",
+      "url": "/curriculum/lecture-practice-4",
+      "title": "問診と観察を進める",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1056,
+      "reviewedQuestionIds": [
+        "lecture-practice-4-q1",
+        "lecture-practice-4-q2",
+        "lecture-practice-4-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-practice-5",
+      "url": "/curriculum/lecture-practice-5",
+      "title": "仮説を比較して弁証する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 939,
+      "reviewedQuestionIds": [
+        "lecture-practice-5-q1",
+        "lecture-practice-5-q2",
+        "lecture-practice-5-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-practice-6",
+      "url": "/curriculum/lecture-practice-6",
+      "title": "治療目標と優先順位を決める",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1037,
+      "reviewedQuestionIds": [
+        "lecture-practice-6-q1",
+        "lecture-practice-6-q2",
+        "lecture-practice-6-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-practice-7",
+      "url": "/curriculum/lecture-practice-7",
+      "title": "方法・配穴・刺激条件を計画する",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1366,
+      "reviewedQuestionIds": [
+        "lecture-practice-7-q1",
+        "lecture-practice-7-q2",
+        "lecture-practice-7-q3"
+      ],
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "方法・配穴・刺激条件を計画する。目標・候補・個別の安全条件を分けて比較する。施術を保留する選択肢も本人と共有する。次の説明と再評価へ未確認事項を引き継ぐ。",
+          "after": "共通症例の方法・配穴・刺激条件を、目標・候補・個別の安全条件に分けて比べます。施術を保留する選択肢も共有し、未確認事項を次の説明と再評価へ引き継ぎます。"
+        }
+      ],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-practice-8",
+      "url": "/curriculum/lecture-practice-8",
+      "title": "説明・合意・記録を行う",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1239,
+      "reviewedQuestionIds": [
+        "lecture-practice-8-q1",
+        "lecture-practice-8-q2",
+        "lecture-practice-8-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-practice-9",
+      "url": "/curriculum/lecture-practice-9",
+      "title": "実施中・実施後の反応を評価する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": true,
+      "status": "reviewed / retained",
+      "specialistStatus": "専門確認必要",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1058,
+      "reviewedQuestionIds": [
+        "lecture-practice-9-q1",
+        "lecture-practice-9-q2",
+        "lecture-practice-9-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": [
+        {
+          "questionId": "lecture-practice-9-q2",
+          "field": "quiz.explanation",
+          "quote": "反応があり単純な失神が疑われる場合は、外傷や呼吸困難がなければ仰向けで下肢を上げます。",
+          "confirmationNeeded": "失神時の体位・下肢挙上の条件の原典・救急手順照合。反応・呼吸・外傷・医療連携の条件を専門家確認。",
+          "action": "既存の専門的説明を変更せず保留",
+          "status": "専門確認必要"
+        }
+      ]
+    },
+    {
+      "id": "lecture-practice-10",
+      "url": "/curriculum/lecture-practice-10",
+      "title": "次回の計画を修正する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 978,
+      "reviewedQuestionIds": [
+        "lecture-practice-10-q1",
+        "lecture-practice-10-q2",
+        "lecture-practice-10-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-practice-11",
+      "url": "/curriculum/lecture-practice-11",
+      "title": "経過全体を管理する",
+      "reviewed": true,
+      "changed": false,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / retained",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 1073,
+      "reviewedQuestionIds": [
+        "lecture-practice-11-q1",
+        "lecture-practice-11-q2",
+        "lecture-practice-11-q3"
+      ],
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "changes": [],
+      "specialistReviewItems": []
+    },
+    {
+      "id": "lecture-practice-12",
+      "url": "/curriculum/lecture-practice-12",
+      "title": "総合ケース演習・修了課題",
+      "reviewed": true,
+      "changed": true,
+      "requiresSpecialistReview": false,
+      "status": "reviewed / changed",
+      "specialistStatus": "今回の校閲で新たな確認項目なし（医学的妥当性の認定ではない）",
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedBodyCharacters": 2915,
+      "reviewedQuestionIds": [
+        "lecture-practice-12-q1",
+        "lecture-practice-12-q2",
+        "lecture-practice-12-q3"
+      ],
+      "changedFields": [
+        "summary",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "総合ケース演習・修了課題。異なる架空例で安全性を優先する判断を説明する。判断の根拠と不確実性を自分の言葉で書く。Webの受講記録と実際の資格・技能を区別する。",
+          "after": "異なる架空例で、安全性を優先する判断とその根拠を説明する修了課題です。不確かな点と次に学ぶことを振り返り、Webの受講記録と実際の資格・技能を区別します。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "おめでとうございます。あなたは今、東洋医学体系学習カリキュラムの最終講義・最終章の前に立っています。",
+          "after": "最終講義では、全11章で学んだ用語と判断の手順を振り返ります。"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "最終レッスンである本章では、共通模擬ケースで学んだ標準プロセスを応用し、**「異なる判断が必要な多様な臨床ケース」**に挑みます。",
+          "after": "共通模擬ケースで練習した手順を使い、七つの状況で何を確認するかを考えます。続く修了課題では、**68歳男性の別の架空例**について、判断と根拠を書きます。"
+        }
+      ],
+      "specialistReviewItems": []
+    }
+  ],
+  "specialistReviewItems": [
+    {
+      "lectureId": "lecture-yinyang-2",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "大腿前部（陰中の陽）／ 臀部・深部（陰中の陰）",
+      "confirmationNeeded": "下半身内の配属の比較基準、教材・古典出典、上半身の区分や図・問題との一致。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-2",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "精が足りなければ血が補い、血が充実していれば精へと変換されて蓄えられます。",
+      "confirmationNeeded": "精血同源の互相化生の底本・条件・説明範囲。一律の変換規則と述べられるか。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-2",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "五臓それぞれに固有の知性と感情（五神：ごしん）が宿り、互いに分担して全人格を形成しています。",
+      "confirmationNeeded": "五神・五志の区別、知性・感情・人格形成との関係が原典・標準教材に沿うか。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-2",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "悪夢、情緒不安定、決断不能、幻覚様感覚",
+      "confirmationNeeded": "五神の表の精神症状と配当の根拠・掲載範囲。診断の対応表ではない限定は維持。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-3",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "体内の代謝廃棄物である「濁気（だっき）」",
+      "confirmationNeeded": "濁気の読みと定義、代謝廃棄物という表現の範囲。酸素・二酸化炭素との同一視を招かないか。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-3",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "最も純粋な栄養物質（水穀の精微）を抽出・吸収する",
+      "confirmationNeeded": "水穀の精微と運化について、伝統的役割と実際の栄養素の抽出・吸収の境界。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-3",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "まず肺に送られて清気と合わさり、心に注がれて赤い「血」へと化成（生血）され",
+      "confirmationNeeded": "直前の五臓生成篇引用がこの生成順を支持するか。篇章・原文・訳と解説の対応。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-4",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "皮膚や筋肉、内臓を温め、生体機能を正常な温度に保つ。",
+      "confirmationNeeded": "衛気の温煦の説明範囲と生体の温度調節を測定・保証する説明の違い。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-4",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "経脈の外・皮膚筋膜（脈外）",
+      "confirmationNeeded": "脈外・分肉・腠理を皮膚筋膜と併記する説明が特定の解剖構造との同一視を招かないか。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-5",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "適度な熱でじっくり発酵・分解（腐熟）させ",
+      "confirmationNeeded": "中焦・腐熟の比喩と実際の発酵反応の区別。漚の原典の読み・訳と表の対応。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-5",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "全身の皮膚・筋肉・臓腑へ均一に噴霧・散布・散開させる。",
+      "confirmationNeeded": "上焦如霧の比喩を均一な噴霧・組織への散布と説明する範囲。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-5",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "古代中国の医学書『難経』第25難・第38難",
+      "confirmationNeeded": "三焦の名有りて形無しの篇章、論争の記述、網膜・腸間膜・腹膜という語の出典。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-7",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "肝の「拡散」を行き過ぎないように肺が「抑制」し",
+      "confirmationNeeded": "肝左昇・肺右降の出典と拡散・抑制として説明する条件。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-7",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "「健康」とは各組織のサイズや数値が正常であること以上に",
+      "confirmationNeeded": "気機の説明を健康の定義として述べる範囲と医学的な組織・検査値の評価との関係。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-8",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "腠理（毛穴）を開閉し",
+      "confirmationNeeded": "腠理を毛穴と併記する定義。営衛の講の単一の毛穴・汗腺と同一視しない説明との整合性。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-8",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "脳と筋肉の緊張をオフにして「睡眠」へ導く。",
+      "confirmationNeeded": "衛気の夜の運行を脳・筋の緊張の解除という医学的機序で述べる根拠・範囲。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-8",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "夜になってもスマホのブルーライトを浴び続けたり、仕事のプレッシャーで興奮していると",
+      "confirmationNeeded": "生活状況と陽不入陰を関係づける条件。不眠原因を確定しない限定との整合性。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-9",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "（夜更かしせず朝早く起き",
+      "confirmationNeeded": "四気調神大論の夜に臥し早く起きの訳・解説、底本・季節・時代の文脈。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-10",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "『黄帝内経素問』調経論には、虚実の定義について決定的な一文",
+      "confirmationNeeded": "直後の邪気盛んなる者は実なり、精気奪わるる者は虚なりの篇章帰属・原文・訳。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-11",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "肝（疎泄による血量配分）",
+      "confirmationNeeded": "疏泄と蔵血の役割区分、血量配分を疏泄に関連づける根拠。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-11",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "脾（気血の統血）",
+      "confirmationNeeded": "統血の対象・定義と、気血の統血という表現と既習内容との一致。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-diagnosis-2",
+      "questionId": null,
+      "field": "whatYouWillLearn.goals[1]",
+      "quote": "医原性事故を未然に防止する",
+      "confirmationNeeded": "Webで説明できる目標と指導下の実技能力・事故防止の保証の区別。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-diagnosis-4",
+      "questionId": "lecture-diagnosis-4-q2",
+      "field": "quiz.explanation",
+      "quote": "反証所見（矛盾する兆候）を自ら探しに行くことで誤診を防ぎます。",
+      "confirmationNeeded": "反証の確認が誤診を防ぐという表現の根拠・条件と推論の学習目標の範囲。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-diagnosis-4",
+      "questionId": "lecture-diagnosis-4-q3",
+      "field": "quiz.explanation",
+      "quote": "客観的鑑別点を絞り込むのが標準面接技法です。",
+      "confirmationNeeded": "本人の回答と客観所見の区別、標準面接技法の出典・適用条件。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-treatment-2",
+      "questionId": null,
+      "field": "keyPoints",
+      "quote": "臨床での応用力と安全性を完全に奪う",
+      "confirmationNeeded": "短絡的選穴の危険を説明する断定の根拠・強さと本文の限定との整合性。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-treatment-2",
+      "questionId": null,
+      "field": "keyPoints",
+      "quote": "治法は「介入する具体的な生体機能」を定義する",
+      "confirmationNeeded": "治法を伝統的な働きへの方針とする本文と、生体機能の定義とする要点の整合性。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-treatment-4",
+      "questionId": null,
+      "field": "whatYouWillLearn.goals[0]",
+      "quote": "「本治優先」と「まず標を通す」という2つの流派",
+      "confirmationNeeded": "二つの流派という分類の出典・条件。Webの比較学習と実患者への使い分け技能の区別。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-treatment-5",
+      "questionId": null,
+      "field": "whatYouWillLearn.goals",
+      "quote": "気は巡らなければ補えず、満ちていなければ巡らない",
+      "confirmationNeeded": "補気・理気の原則の出典・適用条件、処方を組み立てるというWeb目標の範囲。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-treatment-5",
+      "questionId": null,
+      "field": "whatYouWillLearn.goals",
+      "quote": "医療過誤（補気滞気）を自覚的に回避できる",
+      "confirmationNeeded": "補気滞気の定義・条件・根拠、医療過誤回避を保証するように読める目標と本文の限定の整合性。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-treatment-8",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "梁丘と中脘、外丘と陽陵泉",
+      "confirmationNeeded": "郄穴・八会穴として挙げた組合せの伝統的出典・分類・条件。効果・安全性未確認の限定は維持。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-treatment-11",
+      "questionId": null,
+      "field": "whatYouWillLearn.goals[2]",
+      "quote": "4分岐意思決定モデルを臨床で適用できる",
+      "confirmationNeeded": "学習例で分岐理由を説明する目標と臨床判断技能の認定の区別。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-treatment-12",
+      "questionId": "lecture-treatment-12-q3",
+      "field": "quiz.explanation",
+      "quote": "患者との信頼関係と治療成果は",
+      "confirmationNeeded": "合意形成と治療成果の関係の根拠・条件。説明・理解確認と治療成果への因果主張の区別。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-practice-9",
+      "questionId": "lecture-practice-9-q2",
+      "field": "quiz.explanation",
+      "quote": "反応があり単純な失神が疑われる場合は、外傷や呼吸困難がなければ仰向けで下肢を上げます。",
+      "confirmationNeeded": "失神時の体位・下肢挙上の条件の原典・救急手順照合。反応・呼吸・外傷・医療連携の条件を専門家確認。",
+      "action": "既存の専門的説明を変更せず保留",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-yinyang-3",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "「陰在内、陽之守也。陽在外、陰之使也。」（陰は内に在りて陽の守なり。陽は外に在りて陰の使なり。）──『黄帝内経 素問』",
+      "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+      "action": "引用全文と既存の確認範囲を維持",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-2",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "「天の我に来す者は徳なり、地の我に来す者は気なり、徳流れて気薄りて生あり。故に生之の来たるをこれ精と謂い、両精相搏つをこれ神と謂い、神に随いて往来する者をこれ魂と謂い、精並びて出入する者をこれ魄と謂い",
+      "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+      "action": "引用全文と既存の確認範囲を維持",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-3",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "「諸血の心に属する者は、皆目に注ぐ。諸気の肺に属する者は、皆皮に注ぐ。諸筋の肝に属する者は、皆関節に注ぐ。諸骨の腎に属する者は、皆髄に注ぐ。諸脈の脾に属する者は、皆営に注ぐ。」",
+      "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+      "action": "引用全文と既存の確認範囲を維持",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-4",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "「営は脈中に在り、衛は脈外に在り、周流して休まず、五十度にして復た大会す。陰陽相貫き、環の端無きが如し。」",
+      "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+      "action": "引用全文と既存の確認範囲を維持",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-7",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "「升降出入、無器不有。故に器なる者は生化の宇なり。器散ずれば則ち分翔し、生化息す。故に無生、無長、無化、無収、無蔵、無生長壮老已。非升降出入にあらざれば、何をもってこれを生ぜん。」",
+      "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+      "action": "引用全文と既存の確認範囲を維持",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-8",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "**「陽気尽きて陰に入れば臥（ふ）し、陰気尽きて陽に出れば寤（さ）む。」**（『霊枢』口問篇）",
+      "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+      "action": "引用全文と既存の確認範囲を維持",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-10",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "**「正気、内に存すれば、邪干すべからず。」**（『素問』刺法論）",
+      "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+      "action": "引用全文と既存の確認範囲を維持",
+      "status": "専門確認必要"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-11",
+      "questionId": null,
+      "field": "contentMarkdown",
+      "quote": "**「凡そこの十二官は、相失するを得ず。故に主明らかなれば則ち下安く、主不明なれば則ち十二官危うし。」**",
+      "confirmationNeeded": "古典引用の底本・篇章・原文・訳・前後の文脈の逐語照合。文章校閲を原典の医学的確認として扱わない。",
+      "action": "引用全文と既存の確認範囲を維持",
+      "status": "専門確認必要"
+    }
+  ],
+  "validation": {
+    "editorial": "passed",
+    "quizQuality": "passed",
+    "evidence": "passed",
+    "medicalSafety": "passed",
+    "build": "root担当の結合ビルドで確認"
+  }
+}

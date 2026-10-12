@@ -9,6 +9,8 @@ import LearningPathLinks from "@/components/learning/LearningPathLinks";
 import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
 import { LEARNING_COURSES } from "@/data/learningCourses";
 import { ARTICLES } from "@/data/articleData";
+import { getCurriculumIndexCatalog } from "@/data/curriculumIndexCatalog";
+import { PROGRESSIVE_CASES } from "@/data/progressiveCases";
 import { resolveArticleReferences } from "@/utils/referenceResolver";
 import MarkdownBody from "@/components/MarkdownBody";
 import ArticleReferences from "@/components/ArticleReferences";
@@ -98,6 +100,8 @@ export default async function ArticleDetailPage({ params }: Props) {
   const headings = parseMarkdownBlocks(article.contentMarkdown).flatMap((block, index) =>
     block.type === "h2" ? [{ label: block.content.replaceAll("**", ""), id: "article-heading-" + index }] : []);
   const learningGuide = ARTICLE_LEARNING_GUIDES[article.id];
+  const learningLectureTitle = learningGuide ? getCurriculumIndexCatalog().lectures.find(lecture => lecture.id === learningGuide.lectureId)?.title : undefined;
+  const learningCaseTitle = learningGuide ? PROGRESSIVE_CASES.find(item => item.id === learningGuide.caseId)?.title : undefined;
 
   const resolvedReferences = resolveArticleReferences(article.references || [], article.contentMarkdown);
 
@@ -292,7 +296,7 @@ export default async function ArticleDetailPage({ params }: Props) {
           </section>}
 
           <div className="space-y-3 border-t border-[#E8E1D1] dark:border-[#22303D] pt-5 text-sm">
-            {learningGuide && <LearningPathLinks lectureId={learningGuide.lectureId} caseId={learningGuide.caseId} />}
+            {learningGuide && <LearningPathLinks lectureId={learningGuide.lectureId} caseId={learningGuide.caseId} lectureTitle={learningLectureTitle} caseTitle={learningCaseTitle} />}
             {relatedCourses.length > 0 && <div className="rounded-xl bg-[#EBF3EF] p-4 dark:bg-[#182823]">
               <p className="font-semibold text-[#184F49] dark:text-[#83BEA8]">このテーマを順に学ぶ</p>
               <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2">{relatedCourses.map(course => <ContentNavigationLink key={course.slug} href={`/learn/courses/${course.slug}`} placement="article_course" courseId={course.slug} className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#83BEA8]">{course.title}<ArrowRight aria-hidden="true" className="h-4 w-4" /></ContentNavigationLink>)}</div>

@@ -25,9 +25,9 @@ export default function SimulatorHub({ relatedArticles }: { relatedArticles: Art
         </h1>
 
         <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          八綱（深浅・勢い） ➜ 気血水（動態） ➜ 臓腑経絡（局在病位）を段階的に選択することで、
-          複雑な病態から<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「一文の証」</strong>を抽出し、
-          採用条件を比較する<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「配穴の学習例」</strong>を表示します。確認した所見・矛盾・不足情報を分けて学べます。
+          八綱、気血水、臓腑経絡の条件を順に選ぶと、
+          選んだ条件に応じた<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「一文の証」</strong>と、
+          <strong className="text-[#1E3D34] dark:text-[#74BA9E]">「配穴の学習例」</strong>を表示します。確認した所見、候補に合わない所見、足りない情報を比べる教材で、選択結果だけでは診断や施術方針は決まりません。
         </p>
 
         {/* このツールでできること（3ステップ）＆ こんな人におすすめ */}
@@ -46,20 +46,20 @@ export default function SimulatorHub({ relatedArticles }: { relatedArticles: Art
             <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
               <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
                 <span className="w-5 h-5 rounded-full bg-[#1E3D34] text-white flex items-center justify-center text-xs font-mono">1</span>
-                <span>証の選択</span>
+                <span>所見・条件を選ぶ</span>
               </div>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                八綱（表裏・寒熱・虚実）と気血水、臓腑経絡の病態条件を直感的に選択。
+                八綱（表裏・寒熱・虚実）、気血水、臓腑経絡の欄で、確認した条件を選びます。
               </p>
             </div>
 
             <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
               <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
                 <span className="w-5 h-5 rounded-full bg-[#B86924] text-white flex items-center justify-center text-xs font-mono">2</span>
-                <span>病態推論の可視化</span>
+                <span>条件と候補を見比べる</span>
               </div>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                選択した組み合わせから「一文の証名」「治法（治療原則）」を即座に導出。
+                選択した組み合わせに対応する証名と治法の教材表示を読み、候補を支持する所見・矛盾・不足情報を確認します。
               </p>
             </div>
 

@@ -50,7 +50,7 @@ export default function GlossaryPopup({
         role="dialog"
         aria-modal="true"
         aria-labelledby="glossary-popup-title"
-        className="w-full sm:max-w-lg bg-[#FAF8F5] dark:bg-[#16212B] rounded-t-3xl sm:rounded-3xl border-t sm:border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xl p-5 sm:p-7 space-y-4 max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-200"
+        className="glossary-popup w-full sm:max-w-lg bg-[#FAF8F5] dark:bg-[#16212B] rounded-t-3xl sm:rounded-3xl border-t sm:border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xl p-5 sm:p-7 space-y-4 max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-200"
       >
         {/* スマホ用ドラッグハンドルバー */}
         <div className="sm:hidden flex justify-center pb-1">
@@ -89,7 +89,7 @@ export default function GlossaryPopup({
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
             一言でいうと？
           </span>
-          <p className="text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
+          <p className="text-base font-bold text-[#232826] dark:text-[#FAF8F5] leading-[1.75]">
             {term.oneLiner}
           </p>
         </div>
@@ -101,14 +101,14 @@ export default function GlossaryPopup({
               <Lightbulb className="w-3.5 h-3.5" />
               身近な例え
             </span>
-            <p className="text-xs sm:text-sm text-[#404743] dark:text-[#E6EFEA] leading-relaxed">
+            <p className="text-base text-[#404743] dark:text-[#E6EFEA] leading-[1.75]">
               {term.analogy}
             </p>
           </div>
         )}
 
         {/* 詳細解説 */}
-        <div className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed space-y-1">
+        <div className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-[1.75] space-y-1">
           <span className="text-[11px] font-bold text-[#737C77] dark:text-[#8899A6] block">
             詳細な解説:
           </span>
@@ -119,24 +119,27 @@ export default function GlossaryPopup({
         {(term.relatedLectureId || term.relatedToolUrl) && (
           <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap gap-2">
             {term.relatedLectureId && (
+              <div className="min-w-0 flex-1 basis-full space-y-1">
+              {term.relatedLectureTitle && <p className="text-sm text-[#59615D] dark:text-[#A0B0BC]">読む講義：{term.relatedLectureTitle}</p>}
               <Link
                 href={`/curriculum/${term.relatedLectureId}`}
                 onClick={onClose}
-                className="flex-1 min-w-[180px] p-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#162E27] text-white text-xs font-bold transition-all flex items-center justify-between shadow-2xs group"
+                className="min-h-11 min-w-0 p-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#162E27] text-white text-base font-bold transition-all flex items-center justify-between gap-2 shadow-2xs group focus-visible:outline-2 focus-visible:outline-offset-4"
               >
-                <span className="flex items-center gap-1.5 truncate">
+                <span className="flex min-w-0 items-center gap-1.5">
                   <BookOpen className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
-                  <span className="truncate">{term.relatedLectureTitle || "講義で詳しく学ぶ"}</span>
+                  <span>講義で{term.term}を確認する</span>
                 </span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform shrink-0" />
               </Link>
+              </div>
             )}
 
             {term.relatedToolUrl && (
               <Link
                 href={term.relatedToolUrl}
                 onClick={onClose}
-                className="p-2.5 rounded-xl bg-white dark:bg-[#1A2632] hover:bg-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-bold transition-all flex items-center gap-1.5 shrink-0"
+                className="min-w-0 p-2.5 rounded-xl bg-white dark:bg-[#1A2632] hover:bg-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#1E3D34] dark:text-[#74BA9E] text-base font-bold transition-all flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-4"
               >
                 <Layers className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
                 <span>{term.relatedToolTitle || "関連ツール"}</span>
@@ -150,7 +153,7 @@ export default function GlossaryPopup({
           <button
             type="button"
             onClick={onClose}
-            className="w-full sm:w-auto px-5 py-2 rounded-xl bg-[#EFE9DD] dark:bg-[#202E3C] hover:bg-[#E5DEC9] text-[#232826] dark:text-[#FAF8F5] text-xs font-bold transition-colors cursor-pointer"
+            className="w-full sm:w-auto px-5 py-2 rounded-xl bg-[#EFE9DD] dark:bg-[#202E3C] hover:bg-[#E5DEC9] text-[#232826] dark:text-[#FAF8F5] text-base font-bold transition-colors cursor-pointer"
           >
             閉じる
           </button>

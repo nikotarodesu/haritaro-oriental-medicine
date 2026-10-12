@@ -1,0 +1,748 @@
+{
+  "measuredAt": "2026-10-12",
+  "viewport": [
+    {
+      "client": 305,
+      "entryPadding": "0px",
+      "paragraphs": [
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "16px",
+          "line": "28px"
+        }
+      ],
+      "scroll": 305,
+      "url": "/glossary",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "entryPadding": "0px",
+      "paragraphs": [
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "16px",
+          "line": "28px"
+        }
+      ],
+      "scroll": 360,
+      "url": "/glossary",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "entryPadding": "0px",
+      "paragraphs": [
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "16px",
+          "line": "28px"
+        }
+      ],
+      "scroll": 375,
+      "url": "/glossary",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "entryPadding": "0px",
+      "paragraphs": [
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "16px",
+          "line": "28px"
+        }
+      ],
+      "scroll": 415,
+      "url": "/glossary",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "entryPadding": "21.25px",
+      "paragraphs": [
+        {
+          "font": "17px",
+          "line": "29.75px"
+        },
+        {
+          "font": "17px",
+          "line": "29.75px"
+        }
+      ],
+      "scroll": 1265,
+      "url": "/glossary",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "descriptionFont": "16px",
+      "scroll": 305,
+      "title": "「はり太郎の東洋医学」について",
+      "url": "/about",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "descriptionFont": "16px",
+      "scroll": 360,
+      "title": "「はり太郎の東洋医学」について",
+      "url": "/about",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "descriptionFont": "16px",
+      "scroll": 375,
+      "title": "「はり太郎の東洋医学」について",
+      "url": "/about",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "descriptionFont": "16px",
+      "scroll": 415,
+      "title": "「はり太郎の東洋医学」について",
+      "url": "/about",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "descriptionFont": "17px",
+      "scroll": 1265,
+      "title": "「はり太郎の東洋医学」について",
+      "url": "/about",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "気血津液を学ぶ：伝統的な分類と医学的評価",
+      "url": "/articles/science-of-qi-blood-fluid",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "気血津液を学ぶ：伝統的な分類と医学的評価",
+      "url": "/articles/science-of-qi-blood-fluid",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "気血津液を学ぶ：伝統的な分類と医学的評価",
+      "url": "/articles/science-of-qi-blood-fluid",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "気血津液を学ぶ：伝統的な分類と医学的評価",
+      "url": "/articles/science-of-qi-blood-fluid",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "気血津液を学ぶ：伝統的な分類と医学的評価",
+      "url": "/articles/science-of-qi-blood-fluid",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "精・気・血・津液・神の関係",
+      "url": "/curriculum/lecture-lifedynamics-2",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "精・気・血・津液・神の関係",
+      "url": "/curriculum/lecture-lifedynamics-2",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "精・気・血・津液・神の関係",
+      "url": "/curriculum/lecture-lifedynamics-2",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "精・気・血・津液・神の関係",
+      "url": "/curriculum/lecture-lifedynamics-2",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "精・気・血・津液・神の関係",
+      "url": "/curriculum/lecture-lifedynamics-2",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "東洋医学の疑問を、講義とクイズで確かめる。",
+      "url": "/",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "東洋医学の疑問を、講義とクイズで確かめる。",
+      "url": "/",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "東洋医学の疑問を、講義とクイズで確かめる。",
+      "url": "/",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "東洋医学の疑問を、講義とクイズで確かめる。",
+      "url": "/",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "東洋医学の疑問を、講義とクイズで確かめる。",
+      "url": "/",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "鍼灸国家試験対策ハブ｜オリジナル演習・東洋医学3科目の要点確認",
+      "url": "/kokushi",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "鍼灸国家試験対策ハブ｜オリジナル演習・東洋医学3科目の要点確認",
+      "url": "/kokushi",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "鍼灸国家試験対策ハブ｜オリジナル演習・東洋医学3科目の要点確認",
+      "url": "/kokushi",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "鍼灸国家試験対策ハブ｜オリジナル演習・東洋医学3科目の要点確認",
+      "url": "/kokushi",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "鍼灸国家試験対策ハブ｜オリジナル演習・東洋医学3科目の要点確認",
+      "url": "/kokushi",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "所見を整理し、考えた理由を残す。",
+      "url": "/clinical",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "所見を整理し、考えた理由を残す。",
+      "url": "/clinical",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "所見を整理し、考えた理由を残す。",
+      "url": "/clinical",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "所見を整理し、考えた理由を残す。",
+      "url": "/clinical",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "所見を整理し、考えた理由を残す。",
+      "url": "/clinical",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "配穴設計・臨床演習",
+      "url": "/practice/haiketsu",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "配穴設計・臨床演習",
+      "url": "/practice/haiketsu",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "配穴設計・臨床演習",
+      "url": "/practice/haiketsu",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "配穴設計・臨床演習",
+      "url": "/practice/haiketsu",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "配穴設計・臨床演習",
+      "url": "/practice/haiketsu",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "臨床弁証シミュレーター",
+      "url": "/simulator",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "臨床弁証シミュレーター",
+      "url": "/simulator",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "臨床弁証シミュレーター",
+      "url": "/simulator",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "臨床弁証シミュレーター",
+      "url": "/simulator",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "臨床弁証シミュレーター",
+      "url": "/simulator",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "url": "/cases",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "url": "/cases",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "url": "/cases",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "url": "/cases",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "url": "/cases",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "dialogClient": 290,
+      "dialogScroll": 290,
+      "links": [
+        {
+          "height": 44,
+          "href": "/curriculum/lecture-qiblood-1",
+          "text": "講義で固摂を確認する"
+        },
+        {
+          "height": 46,
+          "href": "/diagnosis",
+          "text": "気血水セルフチェック"
+        }
+      ],
+      "mode": "popup",
+      "paragraphs": [
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "14px",
+          "line": "20px"
+        }
+      ],
+      "scroll": 305,
+      "url": "/articles/science-of-qi-blood-fluid",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "dialogClient": 345,
+      "dialogScroll": 345,
+      "links": [
+        {
+          "height": 44,
+          "href": "/curriculum/lecture-qiblood-1",
+          "text": "講義で固摂を確認する"
+        },
+        {
+          "height": 46,
+          "href": "/diagnosis",
+          "text": "気血水セルフチェック"
+        }
+      ],
+      "mode": "popup",
+      "paragraphs": [
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "14px",
+          "line": "20px"
+        }
+      ],
+      "scroll": 360,
+      "url": "/articles/science-of-qi-blood-fluid",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "dialogClient": 360,
+      "dialogScroll": 360,
+      "links": [
+        {
+          "height": 44,
+          "href": "/curriculum/lecture-qiblood-1",
+          "text": "講義で固摂を確認する"
+        },
+        {
+          "height": 46,
+          "href": "/diagnosis",
+          "text": "気血水セルフチェック"
+        }
+      ],
+      "mode": "popup",
+      "paragraphs": [
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "14px",
+          "line": "20px"
+        }
+      ],
+      "scroll": 375,
+      "url": "/articles/science-of-qi-blood-fluid",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "dialogClient": 400,
+      "dialogScroll": 400,
+      "links": [
+        {
+          "height": 44,
+          "href": "/curriculum/lecture-qiblood-1",
+          "text": "講義で固摂を確認する"
+        },
+        {
+          "height": 46,
+          "href": "/diagnosis",
+          "text": "気血水セルフチェック"
+        }
+      ],
+      "mode": "popup",
+      "paragraphs": [
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "16px",
+          "line": "28px"
+        },
+        {
+          "font": "14px",
+          "line": "20px"
+        }
+      ],
+      "scroll": 415,
+      "url": "/articles/science-of-qi-blood-fluid",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "dialogClient": 521,
+      "dialogScroll": 521,
+      "links": [
+        {
+          "height": 46.421875,
+          "href": "/curriculum/lecture-qiblood-1",
+          "text": "講義で固摂を確認する"
+        },
+        {
+          "height": 48.421875,
+          "href": "/diagnosis",
+          "text": "気血水セルフチェック"
+        }
+      ],
+      "mode": "popup",
+      "paragraphs": [
+        {
+          "font": "17px",
+          "line": "29.75px"
+        },
+        {
+          "font": "17px",
+          "line": "29.75px"
+        },
+        {
+          "font": "17px",
+          "line": "29.75px"
+        },
+        {
+          "font": "14.875px",
+          "line": "21.25px"
+        }
+      ],
+      "scroll": 1265,
+      "url": "/articles/science-of-qi-blood-fluid",
+      "width": 1280
+    }
+  ],
+  "text200": [
+    {
+      "bodyFont": "32px",
+      "client": 320,
+      "dialogClient": 276,
+      "dialogScroll": 276,
+      "rootFont": "32px",
+      "scriptCount": 0,
+      "scroll": 320,
+      "url": "/_readability-text200/popup.html",
+      "width": 320
+    },
+    {
+      "bodyFont": "32px",
+      "client": 375,
+      "dialogClient": 356,
+      "dialogScroll": 356,
+      "rootFont": "32px",
+      "scriptCount": 0,
+      "scroll": 375,
+      "url": "/_readability-text200/popup.html",
+      "width": 375
+    },
+    {
+      "bodyFont": "32px",
+      "client": 390,
+      "dialogClient": 373,
+      "dialogScroll": 373,
+      "rootFont": "32px",
+      "scriptCount": 0,
+      "scroll": 390,
+      "url": "/_readability-text200/popup.html",
+      "width": 390
+    },
+    {
+      "bodyFont": "32px",
+      "client": 430,
+      "dialogClient": 413,
+      "dialogScroll": 413,
+      "rootFont": "32px",
+      "scriptCount": 0,
+      "scroll": 430,
+      "url": "/_readability-text200/popup.html",
+      "width": 430
+    },
+    {
+      "bodyFont": "32px",
+      "client": 1280,
+      "dialogClient": 1007,
+      "dialogScroll": 1007,
+      "rootFont": "32px",
+      "scriptCount": 0,
+      "scroll": 1280,
+      "url": "/_readability-text200/popup.html",
+      "width": 1280
+    },
+    {
+      "bodyFont": "32px",
+      "client": 305,
+      "rootFont": "32px",
+      "scriptCount": 0,
+      "scroll": 305,
+      "url": "/_readability-text200/about.html",
+      "width": 320
+    },
+    {
+      "bodyFont": "32px",
+      "client": 360,
+      "rootFont": "32px",
+      "scriptCount": 0,
+      "scroll": 360,
+      "url": "/_readability-text200/about.html",
+      "width": 375
+    },
+    {
+      "bodyFont": "32px",
+      "client": 375,
+      "rootFont": "32px",
+      "scriptCount": 0,
+      "scroll": 375,
+      "url": "/_readability-text200/about.html",
+      "width": 390
+    },
+    {
+      "bodyFont": "32px",
+      "client": 415,
+      "rootFont": "32px",
+      "scriptCount": 0,
+      "scroll": 415,
+      "url": "/_readability-text200/about.html",
+      "width": 430
+    },
+    {
+      "bodyFont": "32px",
+      "client": 1265,
+      "rootFont": "32px",
+      "scriptCount": 0,
+      "scroll": 1265,
+      "url": "/_readability-text200/about.html",
+      "width": 1280
+    },
+    {
+      "bodyFont": "32px",
+      "client": 305,
+      "rootFont": "32px",
+      "scriptCount": 0,
+      "scroll": 305,
+      "url": "/_readability-text200/glossary.html",
+      "width": 320
+    },
+    {
+      "bodyFont": "32px",
+      "client": 360,
+      "rootFont": "32px",
+      "scriptCount": 0,
+      "scroll": 360,
+      "url": "/_readability-text200/glossary.html",
+      "width": 375
+    },
+    {
+      "bodyFont": "32px",
+      "client": 375,
+      "rootFont": "32px",
+      "scriptCount": 0,
+      "scroll": 375,
+      "url": "/_readability-text200/glossary.html",
+      "width": 390
+    },
+    {
+      "bodyFont": "32px",
+      "client": 415,
+      "rootFont": "32px",
+      "scriptCount": 0,
+      "scroll": 415,
+      "url": "/_readability-text200/glossary.html",
+      "width": 430
+    },
+    {
+      "bodyFont": "32px",
+      "client": 1265,
+      "rootFont": "32px",
+      "scriptCount": 0,
+      "scroll": 1265,
+      "url": "/_readability-text200/glossary.html",
+      "width": 1280
+    }
+  ],
+  "text200Method": "描画済みのmainまたは用語ポップアップと実CSSから、スクリプトなしのローカルHTMLを作りhtml font-sizeを32pxへ拡大。本文・ポップアップの表示検証のみ。回答・保存や共通ナビの操作検証ではない。"
+}

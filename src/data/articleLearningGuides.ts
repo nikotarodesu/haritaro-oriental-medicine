@@ -10,7 +10,7 @@ export const ARTICLE_LEARNING_GUIDES: Record<string, ArticleLearningGuide> = {
     lectureId: 'lecture-yinyang-1', caseId: 'fatigue-reasoning',
     focus: '古典の成立と日本での展開を、現代の臨床研究と分けて読む。',
     limitation: '長い使用歴や歴史的説明だけでは、現在の治療効果を証明できません。',
-    summary: '東洋医学の成立、日本での展開、経験的な知識と現代の研究方法の違いを整理します。システム科学との比較は、歴史を理解するための筆者の解釈として扱います。',
+    summary: '『黄帝内経』の成立と、日本の古方派・管鍼法・腹診の展開をたどります。経験の蓄積と現代の比較研究の違いを学び、システム科学との比較は筆者の解釈として読みます。',
   },
   'science-of-yinyang-gogyo': {
     lectureId: 'lecture-yinyang-3', caseId: 'mixed-temperature',
@@ -32,13 +32,13 @@ export const ARTICLE_LEARNING_GUIDES: Record<string, ArticleLearningGuide> = {
   },
   'science-of-acupoints-mechanotransduction': {
     lectureId: 'lecture-treatment-8', caseId: 'back-pain-referral',
-    focus: '経穴の位置、局所解剖、刺激に関する研究を別々の根拠として読む。',
+    focus: '経穴の位置、局所解剖、刺激の研究で、それぞれ何を確かめたか確認する。',
     limitation: '細胞・動物・画像研究の結果を、特定の経穴の臨床効果へ直接置き換えません。',
     summary: '経穴の位置の標準化と、結合組織・機械刺激の研究を区別して学びます。局所や動物での反応が、すべての経穴の機能や患者の症状改善を証明するわけではないことを確認します。',
   },
   'science-of-pulse-diagnosis': {
     lectureId: 'lecture-diagnosis-6', caseId: 'mixed-temperature',
-    focus: '脈の触知所見、検者間の一致、病気の診断精度を区別する。',
+    focus: '触れて記録した脈の特徴、検者間の一致、病気を判別する精度を区別する。',
     limitation: '脈の特徴だけでは個人の疾患や証を確定できません。',
     summary: '伝統的な脈状と触知の条件を学び、検者間の一致を調べた原著を読みます。再現性と診断精度を区別し、不整脈の評価や動悸に伴う症状の受診判断につなげます。',
   },
@@ -46,19 +46,19 @@ export const ARTICLE_LEARNING_GUIDES: Record<string, ArticleLearningGuide> = {
     lectureId: 'lecture-diagnosis-6', caseId: 'fatigue-reasoning',
     focus: '腹証の記述、触診で得た所見、現代医学の評価を分ける。',
     limitation: '腹証を器質的疾患の診断・除外や、処方の自動決定に使いません。',
-    summary: '代表的な腹証と観察の条件を整理し、腹診教育用シミュレータの原著を読みます。教育研究を診断精度の証明にせず、腹痛の受診判断と処方を自動決定できない範囲を学びます。',
+    summary: '代表的な腹証と観察の条件を整理し、腹診教育用シミュレータの原著を読みます。教育研究と診断精度の検証を分け、腹痛で受診すべき徴候や、腹証だけで処方を決められない理由を学びます。',
   },
   'science-of-tongue-diagnosis': {
     lectureId: 'lecture-diagnosis-5', caseId: 'mixed-temperature',
     focus: '観察した舌色・舌苔・舌形と、それを解釈する分類を分ける。',
     limitation: '舌の見た目だけで全身状態や病名を確定しません。持続する症状は口腔の医学的評価につなぎます。',
-    summary: '舌色・舌苔・舌形の観察と、伝統的な候補の解釈を分けます。公的な医療情報を参照し、口腔乾燥や白い斑点の原因評価、見た目だけでは確定できない範囲を学びます。',
+    summary: '舌色・舌苔・舌形について見た特徴と、伝統的な分類の候補を分けて記録します。公的な医療情報を読み、口腔乾燥や白い斑点の原因を確認する理由と、見た目だけで判断できないことを学びます。',
   },
   'science-of-acupuncture-neuroscience': {
     lectureId: 'lecture-treatment-9', caseId: 'back-pain-referral',
     focus: '作用機序を調べる研究と、臨床効果を調べる試験を区別する。',
     limitation: '効果は対象疾患・比較条件・介入方法によって異なり、機序研究だけでは決まりません。',
-    summary: '鍼刺激と組織・神経の反応に関する研究、臨床効果の評価、安全性を整理します。提案されている作用機序と患者の転帰を区別し、対象疾患や比較条件を確認します。',
+    summary: '鍼刺激と組織・神経の反応に関する研究、臨床効果の評価、安全性を整理します。組織や動物で測定した反応と、患者の症状・機能の変化を分けて読み、対象疾患や比較条件を確認します。',
   },
   'science-of-kampo-network-pharmacology': {
     lectureId: 'lecture-treatment-1', caseId: 'fatigue-reasoning',

@@ -528,6 +528,11 @@ html:not(.dark) .reading-page .text-\[\#C45A4A\] { color: #A83629; }
 }
 /* Reading typography is scoped: evidence and review metadata retain their styles. */
 .header-wordmark { font-family: var(--font-serif); }
+.glossary-popup svg { flex-shrink: 0; }
+.about-page p, .about-page ul { font-size: 1rem; line-height: 1.75; }
+.glossary-popup button, .glossary-popup a { min-height: 44px; max-width: 100%; }
+.glossary-popup .flex > div, .glossary-popup a > span { min-width: 0; }
+.glossary-popup a, .glossary-entry a { overflow-wrap: anywhere; }
 .quiz-result, .quiz-explanation-title { font-size: 1.125rem; font-weight: 700; }
 .quiz-explanation-body { font-size: 1rem; line-height: 1.75; }
 .quiz-option { font-size: 1rem; }
@@ -557,6 +562,7 @@ html:not(.dark) .reading-page .text-\[\#C45A4A\] { color: #A83629; }
   #chapter-assessment .chapter-question { padding-inline: 0; background: transparent; }
   .review-question, .kikei-quiz { padding-inline: 0; background: transparent; border: 0; box-shadow: none; }
   .review-explanation { padding: 0; background: transparent; border: 0; border-radius: 0; }
+  .glossary-page .glossary-entry { padding-inline: 0; background: transparent; border: 0; border-radius: 0; border-bottom: 1px solid var(--border-washi); padding-bottom: 32px; }
 }
 @media (max-width: 1023px) {
   .reading-page, .reading-toolbar-row { padding-inline: var(--content-gutter); }

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   const [comparisonArticle] = getArticlePreviews(["east-west-integrative-unified-theory"]);
   return (
-    <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-16 space-y-8 sm:space-y-12">
+    <div className="about-page max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-16 space-y-8 sm:space-y-12">
       {/* ページ見出し */}
       <div className="text-center space-y-3 sm:space-y-4">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-semibold tracking-wider">
@@ -31,7 +31,7 @@ export default function AboutPage() {
           「はり太郎の東洋医学」について
         </h1>
         <p className="text-sm sm:text-lg text-[#59615D] dark:text-[#A0B0BC] max-w-2xl mx-auto leading-relaxed">
-          基礎理論から臨床実践までを体系化する東洋医学ポータル。
+          講義で基礎を学び、クイズと症例演習で考え、ノートで振り返る東洋医学の学習サイトです。
         </p>
       </div>
 
@@ -73,7 +73,7 @@ export default function AboutPage() {
               目的別：はり太郎の歩き方
             </h3>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC]">
-              ご自身の学習段階や臨床目的に合わせて、以下の3つのアプローチからスムーズにご活用いただけます。
+              基礎から学ぶ方、所見を記録する鍼灸師、古典や研究を読む方へ、それぞれの始め方を案内します。
             </p>
           </div>
 
@@ -91,12 +91,12 @@ export default function AboutPage() {
                   </div>
                 </div>
                 <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  陰陽五行・気血水から臓腑経絡まで、理論を構造で理解し国家試験に備える方へ。
+                  陰陽五行・気血水・臓腑経絡の用語と関係を学び、確認問題で国家試験に備える方へ。
                 </p>
                 <ul className="text-xs space-y-1.5 text-[#404743] dark:text-[#C5D2DB]">
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#1E2D3D] dark:text-[#7BAAD8] shrink-0">1.</span>
-                    <span><Link href="/curriculum" className="font-semibold underline hover:text-[#1E2D3D]">カリキュラム全講義</Link>を第1章から順に体系理解</span>
+                    <span><Link href="/curriculum" className="font-semibold underline hover:text-[#1E2D3D]">カリキュラム全講義</Link>を第1章から読み、各講のクイズで確かめる</span>
                   </li>
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#1E2D3D] dark:text-[#7BAAD8] shrink-0">2.</span>

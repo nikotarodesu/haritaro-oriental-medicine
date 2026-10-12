@@ -126,10 +126,10 @@ export default function ClinicalLandingPage() {
               1
             </div>
             <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
-              所見を客観的に整理したい
+              聞き取った内容と未確認事項を残したい
             </h3>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              気血水の偏りや五労の蓄積をチェックシートで可視化。問診所見の抜け漏れを防ぎ、全体像を速やかに把握できます。
+              チェックシートの回答を確認し、聞き取った症状や生活習慣を記録します。回答だけで原因を決めず、まだ確認していない項目も残せます。
             </p>
             <Link href="/diagnosis" className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#1E3D34] underline dark:text-[#74BA9E] focus-visible:outline-2 focus-visible:outline-offset-4">気血水チェックを開く<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
           </div>
@@ -142,7 +142,7 @@ export default function ClinicalLandingPage() {
               配穴の選定理由を残したい
             </h3>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              なぜその経穴を選んだのか、本治・標治のバランスや兼証への配慮を言語化。感覚だけに頼らない再現性のある配穴を設計できます。
+              選んだ経穴、本治・標治の目的、併存する候補への配慮を記録します。次に見直すとき、経穴の名前だけでなく選定理由も読み返せます。
             </p>
             <Link href="/practice/haiketsu" className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#1E3D34] underline dark:text-[#74BA9E] focus-visible:outline-2 focus-visible:outline-offset-4">配穴を組み合わせて試す<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
           </div>
@@ -155,7 +155,7 @@ export default function ClinicalLandingPage() {
               前回の考えを振り返りたい
             </h3>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              施術直後の変化や次回の課題を臨床ノートに蓄積。再来院時に前回の弁証仮説と結果を素早く確認し、方針を最適化できます。
+              施術直後の変化と次回の確認事項を臨床ノートに残します。再来院時には、前回の候補・選定理由・経過を読み返して、今回の情報と比べられます。
             </p>
             <Link href="/notes" className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#1E3D34] underline dark:text-[#74BA9E] focus-visible:outline-2 focus-visible:outline-offset-4">臨床ノートを開く<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
             <Link href="/notes?tab=learning" className="block min-h-11 content-center text-sm text-[#59615D] underline dark:text-[#A0B0BC] focus-visible:outline-2 focus-visible:outline-offset-4">講義・症例の学びを記録する</Link>

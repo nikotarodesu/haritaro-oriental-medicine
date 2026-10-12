@@ -147,7 +147,7 @@ export default function RootLayout({
                   "name": SITE_NAME,
                   "url": "https://www.haritaro.jp",
                   "logo": "https://www.haritaro.jp/icon-512.png",
-                  "description": "基礎理論から臨床実践までを体系化する東洋医学ポータル。",
+                  "description": "講義・クイズ・経穴辞典・症例演習・ノートで東洋医学を学ぶサイト。",
                   "founder": {
                     "@type": "Person",
                     "name": "はり太郎",

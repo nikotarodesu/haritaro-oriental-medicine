@@ -1,0 +1,2114 @@
+{
+  "checkedAt": "2026-10-12",
+  "purpose": "公開経路を持つ奇経・経穴比較・症状別比較モデルの専門確認待ち文の読み取り監査。医学的正誤を断定せず、条件と出典の確認事項を記録する。",
+  "policy": "対象コンポーネント・医学データ・正答・一般案内文は変更しない。文字ヒットだけで公開問題とは判断せず、ルートからの利用経路と表示条件を確認した。",
+  "sourceSnapshots": [
+    {
+      "sourcePath": "src/app/kikei/page.tsx",
+      "sha256": "4247d044b6d6c3162c22f35fde9389bcc8f844290229e33fbc0386d2189037b4"
+    },
+    {
+      "sourcePath": "src/components/kikei/KikeiQuizSection.tsx",
+      "sha256": "2e5ab087d16711df53e28d970a61cd1f16bdc96edba475fb58c37149d981ea8d"
+    },
+    {
+      "sourcePath": "src/data/kikeiData.ts",
+      "sha256": "9955a3fd851fb158948bf5572fde4b6a2c839fe8753a2efc0e39b5b66cd74e9d"
+    },
+    {
+      "sourcePath": "src/app/tsubo/compare/CompareClient.tsx",
+      "sha256": "8768de3e323b9f5f802afdb078e41ff9cfe0aaa78876434bea14a8fd422ca20b"
+    },
+    {
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "sha256": "14cfc3f59b2e367e52f77fe050dc02fb31068b3506b0bc1d6fb6b0509ec4c7b8"
+    }
+  ],
+  "coverage": {
+    "kikeiVesselIds": [
+      "toku",
+      "nin",
+      "sho",
+      "tai",
+      "yokyo",
+      "inkyo",
+      "yoi",
+      "ini"
+    ],
+    "kikeiPairIds": [
+      "kouson-naikan",
+      "koukei-shinmyaku",
+      "rinshyu-gaikan",
+      "rekkesu-shoukai"
+    ],
+    "kikeiQuizIds": [
+      "toku/q1",
+      "toku/q2",
+      "toku/q3",
+      "nin/q1",
+      "nin/q2",
+      "nin/q3",
+      "sho/q1",
+      "sho/q2",
+      "sho/q3",
+      "tai/q1",
+      "tai/q2",
+      "tai/q3",
+      "yokyo/q1",
+      "yokyo/q2",
+      "yokyo/q3",
+      "inkyo/q1",
+      "inkyo/q2",
+      "inkyo/q3",
+      "yoi/q1",
+      "yoi/q2",
+      "yoi/q3",
+      "ini/q1",
+      "ini/q2",
+      "ini/q3"
+    ],
+    "comparisonPresetIds": [
+      "LI4-LR3",
+      "ST36-SP6",
+      "PC6-HT7",
+      "BL40-BL23"
+    ],
+    "integrativeCaseIds": [
+      "gerd-gastric",
+      "headache-migraine",
+      "insomnia-autonomic"
+    ],
+    "findingCount": 71
+  },
+  "publicUseEvidence": [
+    {
+      "route": "/kikei",
+      "path": "src/app/kikei/page.tsx",
+      "condition": "8脈のnature、4ペアのclinicalSignificance・indicationsを公開表示。"
+    },
+    {
+      "routes": [
+        "/kikei/toku",
+        "/kikei/nin",
+        "/kikei/sho",
+        "/kikei/tai",
+        "/kikei/yokyo",
+        "/kikei/inkyo",
+        "/kikei/yoi",
+        "/kikei/ini"
+      ],
+      "path": "src/app/kikei/[slug]/page.tsx",
+      "via": "src/components/kikei/KikeiDetailClient.tsx",
+      "condition": "natureと主穴・配穴は全8ルートのヘッダーに表示。clinicalTips・indications・古典・クイズは督脈/任脈が無料、他6脈がプレミアム。"
+    },
+    {
+      "route": "/tsubo/compare",
+      "path": "src/app/tsubo/compare/CompareClient.tsx",
+      "condition": "PRESET_TSUBO_COMPARISONS.mapで4件のnameとdescを表示。"
+    },
+    {
+      "routes": [
+        "/symptoms/stomach-fatigue",
+        "/symptoms/headache-stiff-neck",
+        "/symptoms/stress-insomnia"
+      ],
+      "path": "src/app/symptoms/[slug]/page.tsx",
+      "via": "src/components/symptoms/SymptomPerspective.tsx",
+      "mappingSource": "src/utils/symptomGuides.ts",
+      "condition": "resources.perspectiveCaseIdがある3症状ページで、利用者が比較モデルを展開するとEastWestIntegrativeSwitchを動的読み込み。初期viewはoriental、westernとmatrixへ切替可能。伝統概念と現代医学・効果の同一性を証明しないという既存注記あり。"
+    }
+  ],
+  "exclusions": [
+    "CurriculumStudyDiagramのdispatch後に使われない旧図解は本監査の公開根拠にしない。",
+    "EastWestIntegrativeSwitchのsubtitle、western.title、oriental.titleはデータに存在するが本コンポーネントでは直接表示していないため、その文字列だけを公開問題として列挙しない。"
+  ],
+  "limitations": "ルート・import・表示式のソース追跡で公開利用を確認。実会員での画面表示、医学的正誤、資料全文、最新ガイドラインの再照合は未実施。既存症状ページの安全案内と個別出典が、比較コンポーネントの全主張を裏づけるとは扱わない。",
+  "findings": [
+    {
+      "id": "kikei:index:immediate-effect",
+      "sourcePath": "src/app/kikei/page.tsx",
+      "line": 50,
+      "displayRoutes": [
+        "/kikei"
+      ],
+      "quote": "正経十二経脈を「縦横に流れる溝渠（河川）」に例えるなら、奇経八脈は「湖や貯水池」。正経の気血が溢れたときに蓄え、不足したときに補うことで、生体の動的平衡を保ちます。臨床では「八脈交会穴」を介して頑固な慢性病や自律神経失調に即効性を発揮します。",
+      "category": "効果の速度・範囲／伝統モデルと生理機構",
+      "expertConfirmation": "「慢性病」「自律神経失調」の対象定義、配穴と施術方法、比較対象、即効性を評価した時点と指標、害の報告を確認。貯水池の比喩と測定された生理学的な動的平衡を区別できる記述か専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "access": "public"
+    },
+    {
+      "id": "kikei:quiz:q1:template",
+      "sourcePath": "src/components/kikei/KikeiQuizSection.tsx",
+      "line": 41,
+      "displayRoutes": [
+        "/kikei/toku",
+        "/kikei/nin",
+        "/kikei/sho",
+        "/kikei/tai",
+        "/kikei/yokyo",
+        "/kikei/inkyo",
+        "/kikei/yoi",
+        "/kikei/ini"
+      ],
+      "quote": "${vessel.name}の八脈交会穴（主穴）は「${vessel.masterPoint.name}（${vessel.masterPoint.code}）」です。奇経八脈の気血を駆動する要穴として臨床で多用されます。",
+      "category": "機序・利用頻度",
+      "expertConfirmation": "主穴の伝統的な対応と「気血を駆動」「臨床で多用」の主張を区別し、典拠と実際の利用頻度を示す資料を確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "toku/q1",
+        "nin/q1",
+        "sho/q1",
+        "tai/q1",
+        "yokyo/q1",
+        "inkyo/q1",
+        "yoi/q1",
+        "ini/q1"
+      ],
+      "expandedStatements": [
+        {
+          "id": "toku/q1",
+          "route": "/kikei/toku",
+          "access": "public-free",
+          "quote": "督脈の八脈交会穴（主穴）は「後渓（SI3）」です。奇経八脈の気血を駆動する要穴として臨床で多用されます。"
+        },
+        {
+          "id": "nin/q1",
+          "route": "/kikei/nin",
+          "access": "public-free",
+          "quote": "任脈の八脈交会穴（主穴）は「列欠（LU7）」です。奇経八脈の気血を駆動する要穴として臨床で多用されます。"
+        },
+        {
+          "id": "sho/q1",
+          "route": "/kikei/sho",
+          "access": "premium-body-and-quiz",
+          "quote": "衝脈の八脈交会穴（主穴）は「公孫（SP4）」です。奇経八脈の気血を駆動する要穴として臨床で多用されます。"
+        },
+        {
+          "id": "tai/q1",
+          "route": "/kikei/tai",
+          "access": "premium-body-and-quiz",
+          "quote": "帯脈の八脈交会穴（主穴）は「足臨泣（GB41）」です。奇経八脈の気血を駆動する要穴として臨床で多用されます。"
+        },
+        {
+          "id": "yokyo/q1",
+          "route": "/kikei/yokyo",
+          "access": "premium-body-and-quiz",
+          "quote": "陽蹻脈の八脈交会穴（主穴）は「申脈（BL62）」です。奇経八脈の気血を駆動する要穴として臨床で多用されます。"
+        },
+        {
+          "id": "inkyo/q1",
+          "route": "/kikei/inkyo",
+          "access": "premium-body-and-quiz",
+          "quote": "陰蹻脈の八脈交会穴（主穴）は「照海（KI6）」です。奇経八脈の気血を駆動する要穴として臨床で多用されます。"
+        },
+        {
+          "id": "yoi/q1",
+          "route": "/kikei/yoi",
+          "access": "premium-body-and-quiz",
+          "quote": "陽維脈の八脈交会穴（主穴）は「外関（TE5）」です。奇経八脈の気血を駆動する要穴として臨床で多用されます。"
+        },
+        {
+          "id": "ini/q1",
+          "route": "/kikei/ini",
+          "access": "premium-body-and-quiz",
+          "quote": "陰維脈の八脈交会穴（主穴）は「内関（PC6）」です。奇経八脈の気血を駆動する要穴として臨床で多用されます。"
+        }
+      ]
+    },
+    {
+      "id": "kikei:quiz:q2:template",
+      "sourcePath": "src/components/kikei/KikeiQuizSection.tsx",
+      "line": 52,
+      "displayRoutes": [
+        "/kikei/toku",
+        "/kikei/nin",
+        "/kikei/sho",
+        "/kikei/tai",
+        "/kikei/yokyo",
+        "/kikei/inkyo",
+        "/kikei/yoi",
+        "/kikei/ini"
+      ],
+      "quote": "${vessel.name}は「${vessel.pairName}」を構成し、主に【${vessel.pairTargetArea}】の病態に即効性を示します。主穴と相補的に作用します。",
+      "category": "即効・配穴相補の断定",
+      "expertConfirmation": "各ペアで列挙した領域・疾患への即効性を、対象、配穴、刺鍼等の方法、比較対象、評価時点、効果量と安全性ごとに確認する。「相補的に作用」の根拠も単穴との比較で確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "toku/q2",
+        "nin/q2",
+        "sho/q2",
+        "tai/q2",
+        "yokyo/q2",
+        "inkyo/q2",
+        "yoi/q2",
+        "ini/q2"
+      ],
+      "expandedStatements": [
+        {
+          "id": "toku/q2",
+          "route": "/kikei/toku",
+          "access": "public-free",
+          "quote": "督脈は「後渓 - 申脈ペア」を構成し、主に【目内眥・頚・項・耳・肩背・腰背部】の病態に即効性を示します。主穴と相補的に作用します。"
+        },
+        {
+          "id": "nin/q2",
+          "route": "/kikei/nin",
+          "access": "public-free",
+          "quote": "任脈は「列欠 - 照海ペア」を構成し、主に【肺系・咽喉・胸部・呼吸器・生殖器】の病態に即効性を示します。主穴と相補的に作用します。"
+        },
+        {
+          "id": "sho/q2",
+          "route": "/kikei/sho",
+          "access": "premium-body-and-quiz",
+          "quote": "衝脈は「公孫 - 内関ペア」を構成し、主に【心・胸・胃・腹部・消化器全般】の病態に即効性を示します。主穴と相補的に作用します。"
+        },
+        {
+          "id": "tai/q2",
+          "route": "/kikei/tai",
+          "access": "premium-body-and-quiz",
+          "quote": "帯脈は「足臨泣 - 外関ペア」を構成し、主に【目外眥・耳後・頚・肩・側頭部・側腹部】の病態に即効性を示します。主穴と相補的に作用します。"
+        },
+        {
+          "id": "yokyo/q2",
+          "route": "/kikei/yokyo",
+          "access": "premium-body-and-quiz",
+          "quote": "陽蹻脈は「申脈 - 後渓ペア」を構成し、主に【目内眥・側頭・背腰部・外果部】の病態に即効性を示します。主穴と相補的に作用します。"
+        },
+        {
+          "id": "inkyo/q2",
+          "route": "/kikei/inkyo",
+          "access": "premium-body-and-quiz",
+          "quote": "陰蹻脈は「照海 - 列欠ペア」を構成し、主に【肺系・咽喉・胸部・内果部】の病態に即効性を示します。主穴と相補的に作用します。"
+        },
+        {
+          "id": "yoi/q2",
+          "route": "/kikei/yoi",
+          "access": "premium-body-and-quiz",
+          "quote": "陽維脈は「外関 - 足臨泣ペア」を構成し、主に【目外眥・耳・肩・頚・体表部全般】の病態に即効性を示します。主穴と相補的に作用します。"
+        },
+        {
+          "id": "ini/q2",
+          "route": "/kikei/ini",
+          "access": "premium-body-and-quiz",
+          "quote": "陰維脈は「内関 - 公孫ペア」を構成し、主に【心・胸・胃・腹部・精神神経系】の病態に即効性を示します。主穴と相補的に作用します。"
+        }
+      ]
+    },
+    {
+      "id": "kikei:quiz:q3:template",
+      "sourcePath": "src/components/kikei/KikeiQuizSection.tsx",
+      "line": 62,
+      "displayRoutes": [
+        "/kikei/toku",
+        "/kikei/nin",
+        "/kikei/sho",
+        "/kikei/tai",
+        "/kikei/yokyo",
+        "/kikei/inkyo",
+        "/kikei/yoi",
+        "/kikei/ini"
+      ],
+      "quote": "${vessel.name}の主治には「${vessel.indications.slice(0, 2).join(\"・\")}」などがあり、頑固な慢性疾患や気血の偏在調整に不可欠です。",
+      "category": "臨床適応・不可欠の断定",
+      "expertConfirmation": "「頑固な慢性疾患」の対象と、どの条件で「不可欠」といえるのかを確認する。伝統的な主治と現代医学の適応・必須性を区別し、他の治療を置き換える説明になっていないか確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "toku/q3",
+        "nin/q3",
+        "sho/q3",
+        "tai/q3",
+        "yokyo/q3",
+        "inkyo/q3",
+        "yoi/q3",
+        "ini/q3"
+      ],
+      "expandedStatements": [
+        {
+          "id": "toku/q3",
+          "route": "/kikei/toku",
+          "access": "public-free",
+          "quote": "督脈の主治には「脊柱の強直・背部痛・腰痛・坐骨神経痛・頭痛・めまい・頸部こり・後頭部痛」などがあり、頑固な慢性疾患や気血の偏在調整に不可欠です。"
+        },
+        {
+          "id": "nin/q3",
+          "route": "/kikei/nin",
+          "access": "public-free",
+          "quote": "任脈の主治には「月経不順・無月経・不妊症・帯下異常・更年期障害・下腹部痛・冷え・便秘・尿閉・遺尿・前立腺肥大」などがあり、頑固な慢性疾患や気血の偏在調整に不可欠です。"
+        },
+        {
+          "id": "sho/q3",
+          "route": "/kikei/sho",
+          "access": "premium-body-and-quiz",
+          "quote": "衝脈の主治には「気の突き上げ（逆気・上気・動悸・パニック様症状）・激しい腹痛・胃痙攣・胸やけ・呑酸・悪心・胃下垂」などがあり、頑固な慢性疾患や気血の偏在調整に不可欠です。"
+        },
+        {
+          "id": "tai/q3",
+          "route": "/kikei/tai",
+          "access": "premium-body-and-quiz",
+          "quote": "帯脈の主治には「帯脈の弛緩による帯下異常（おりもの・帯下の過多）・腰椎骨盤の不安定感（「水の中に座っているような腰の重だるさ」）」などがあり、頑固な慢性疾患や気血の偏在調整に不可欠です。"
+        },
+        {
+          "id": "yokyo/q3",
+          "route": "/kikei/yokyo",
+          "access": "premium-body-and-quiz",
+          "quote": "陽蹻脈の主治には「下肢外側の筋痙攣・強直（内反足・外側が突っ張る歩行困難）・不眠症・目が冴えて眠れない（陽気亢進・開目）」などがあり、頑固な慢性疾患や気血の偏在調整に不可欠です。"
+        },
+        {
+          "id": "inkyo/q3",
+          "route": "/kikei/inkyo",
+          "access": "premium-body-and-quiz",
+          "quote": "陰蹻脈の主治には「下肢内側の筋痙攣・引きつれ（外反足・内側が突っ張る）・過剰な傾眠・日中に強烈な眠気に襲われる（嗜眠・閉目）」などがあり、頑固な慢性疾患や気血の偏在調整に不可欠です。"
+        },
+        {
+          "id": "yoi/q3",
+          "route": "/kikei/yoi",
+          "access": "premium-body-and-quiz",
+          "quote": "陽維脈の主治には「悪寒発熱の往来（少陽病・マラリア様の寒熱交代）・体表の風邪症状・急性の悪寒・無汗・全身の筋肉痛」などがあり、頑固な慢性疾患や気血の偏在調整に不可欠です。"
+        },
+        {
+          "id": "ini/q3",
+          "route": "/kikei/ini",
+          "access": "premium-body-and-quiz",
+          "quote": "陰維脈の主治には「心痛・胸痛・胸内苦悶・心悸亢進・狭心症様症状・重度の精神不安・抑うつ・不眠・感情の不安定・悲哀感」などがあり、頑固な慢性疾患や気血の偏在調整に不可欠です。"
+        }
+      ]
+    },
+    {
+      "id": "kikei:toku:clinicalTips",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 67,
+      "displayRoutes": [
+        "/kikei/toku"
+      ],
+      "quote": "督脈の病変には通督脈穴の後渓を用い、申脈を配穴することで脊柱・項背部の筋緊張を急速に緩和させます。百会や大椎との併用で陽気の昇発・自律神経調整に卓効があります。",
+      "category": "配穴の治療効果・速度・機序",
+      "expertConfirmation": "主治の古典的な説明と検証された臨床効果を区別する。列挙した対象疾患、配穴・刺激方法、比較群、評価期間、効果量、安全性、「卓効」「絶大」「即効」「特効」「改善」等の断定強度を支える資料を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "toku"
+      ],
+      "access": "public-free",
+      "field": "clinicalTips"
+    },
+    {
+      "id": "kikei:nin:clinicalTips",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 109,
+      "displayRoutes": [
+        "/kikei/nin"
+      ],
+      "quote": "任脈は気血・津液の根本であり、列欠（通任脈）と照海（通陰蹻脈）の組み合わせは、喉の乾燥や慢性の咳、喉のつかえ感（梅核気）、婦人科系疾患に絶大な効果を発揮します。中脘・気海・関元への施灸との併用が著効です。",
+      "category": "配穴の治療効果・速度・機序",
+      "expertConfirmation": "主治の古典的な説明と検証された臨床効果を区別する。列挙した対象疾患、配穴・刺激方法、比較群、評価期間、効果量、安全性、「卓効」「絶大」「即効」「特効」「改善」等の断定強度を支える資料を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "nin"
+      ],
+      "access": "public-free",
+      "field": "clinicalTips"
+    },
+    {
+      "id": "kikei:sho:clinicalTips",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 151,
+      "displayRoutes": [
+        "/kikei/sho"
+      ],
+      "quote": "公孫（通衝脈）と内関（通陰維脈）のペアは八脈交会穴の中で最も使用頻度が高く、「胃・心・胸」のすべての逆気・自律神経緊張に即効性があります。過敏性腸症候群や胃痛・パニック発作の第一選択です。",
+      "category": "配穴の治療効果・速度・機序",
+      "expertConfirmation": "主治の古典的な説明と検証された臨床効果を区別する。列挙した対象疾患、配穴・刺激方法、比較群、評価期間、効果量、安全性、「卓効」「絶大」「即効」「特効」「改善」等の断定強度を支える資料を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "sho"
+      ],
+      "access": "premium-body",
+      "field": "clinicalTips"
+    },
+    {
+      "id": "kikei:tai:clinicalTips",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 191,
+      "displayRoutes": [
+        "/kikei/tai"
+      ],
+      "quote": "足臨泣（通帯脈）と外関（通陽維脈）を併用することで、少陽経の熱を清解しつつ帯脈を引き締め、頑固な片頭痛や帯下・骨盤痛・側頭部痛を改善します。",
+      "category": "配穴の治療効果・速度・機序",
+      "expertConfirmation": "主治の古典的な説明と検証された臨床効果を区別する。列挙した対象疾患、配穴・刺激方法、比較群、評価期間、効果量、安全性、「卓効」「絶大」「即効」「特効」「改善」等の断定強度を支える資料を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "tai"
+      ],
+      "access": "premium-body",
+      "field": "clinicalTips"
+    },
+    {
+      "id": "kikei:yokyo:clinicalTips",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 232,
+      "displayRoutes": [
+        "/kikei/yokyo"
+      ],
+      "quote": "申脈（通陽蹻脈）は陽気の巡りを助け、後渓と組むことで下肢外側の引き攣れや睡眠リズム障害（特に「夜になっても目が冴えて眠れない」興奮状態）を沈静化します。",
+      "category": "配穴の治療効果・速度・機序",
+      "expertConfirmation": "主治の古典的な説明と検証された臨床効果を区別する。列挙した対象疾患、配穴・刺激方法、比較群、評価期間、効果量、安全性、「卓効」「絶大」「即効」「特効」「改善」等の断定強度を支える資料を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "yokyo"
+      ],
+      "access": "premium-body",
+      "field": "clinicalTips"
+    },
+    {
+      "id": "kikei:inkyo:clinicalTips",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 273,
+      "displayRoutes": [
+        "/kikei/inkyo"
+      ],
+      "quote": "照海（通陰蹻脈）は腎陰を補い、陰蹻の走行を潤します。列欠と併用することで、過眠症や夜間痛、喉の激しい乾燥を伴う慢性陰虚に素晴らしい効果をもたらします。",
+      "category": "配穴の治療効果・速度・機序",
+      "expertConfirmation": "主治の古典的な説明と検証された臨床効果を区別する。列挙した対象疾患、配穴・刺激方法、比較群、評価期間、効果量、安全性、「卓効」「絶大」「即効」「特効」「改善」等の断定強度を支える資料を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "inkyo"
+      ],
+      "access": "premium-body",
+      "field": "clinicalTips"
+    },
+    {
+      "id": "kikei:yoi:clinicalTips",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 314,
+      "displayRoutes": [
+        "/kikei/yoi"
+      ],
+      "quote": "外関（通陽維脈）は外邪を解表する要穴であり、足臨泣と組むことで体表の邪を速やかに追い払い、往来寒熱や側頭部の激痛を鎮めます。",
+      "category": "配穴の治療効果・速度・機序",
+      "expertConfirmation": "主治の古典的な説明と検証された臨床効果を区別する。列挙した対象疾患、配穴・刺激方法、比較群、評価期間、効果量、安全性、「卓効」「絶大」「即効」「特効」「改善」等の断定強度を支える資料を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "yoi"
+      ],
+      "access": "premium-body",
+      "field": "clinicalTips"
+    },
+    {
+      "id": "kikei:ini:clinicalTips",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 355,
+      "displayRoutes": [
+        "/kikei/ini"
+      ],
+      "quote": "内関（通陰維脈）は心神安寧の特効穴です。公孫と組むことで「心・胸・胃」のすべての気滞・瘀血・情志異常（ストレス性の胃痛や胸痛）を速やかに緩解させます。",
+      "category": "配穴の治療効果・速度・機序",
+      "expertConfirmation": "主治の古典的な説明と検証された臨床効果を区別する。列挙した対象疾患、配穴・刺激方法、比較群、評価期間、効果量、安全性、「卓効」「絶大」「即効」「特効」「改善」等の断定強度を支える資料を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "ini"
+      ],
+      "access": "premium-body",
+      "field": "clinicalTips"
+    },
+    {
+      "id": "hachimyaku:kouson-naikan:clinicalSignificance",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 386,
+      "displayRoutes": [
+        "/kikei"
+      ],
+      "quote": "八脈交会穴の中で最も臨床応用される黄金ペア。消化器の気逆と心神の不安を同時に整える。",
+      "category": "配穴の効果・機序・利用頻度",
+      "expertConfirmation": "伝統的な配穴の説明と、痛み・炎症・自律神経への臨床効果の主張を分けて確認する。対象、配穴方法、比較、評価時点、利用頻度、根拠資料を特定し、「リセット」「即効」等の表現が支持範囲内か確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "kouson-naikan"
+      ],
+      "access": "public",
+      "field": "clinicalSignificance"
+    },
+    {
+      "id": "hachimyaku:koukei-shinmyaku:clinicalSignificance",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 395,
+      "displayRoutes": [
+        "/kikei"
+      ],
+      "quote": "脊柱正中と身体後面の全陽気を統括。骨格・筋膜の強直を解き、姿勢と自律神経をリセットする。",
+      "category": "配穴の効果・機序・利用頻度",
+      "expertConfirmation": "伝統的な配穴の説明と、痛み・炎症・自律神経への臨床効果の主張を分けて確認する。対象、配穴方法、比較、評価時点、利用頻度、根拠資料を特定し、「リセット」「即効」等の表現が支持範囲内か確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "koukei-shinmyaku"
+      ],
+      "access": "public",
+      "field": "clinicalSignificance"
+    },
+    {
+      "id": "hachimyaku:rinshyu-gaikan:clinicalSignificance",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 404,
+      "displayRoutes": [
+        "/kikei"
+      ],
+      "quote": "側頭部から骨盤を包む少陽・帯脈系統を清熱。ストレスによる気滞や側面の痛みを即効で緩める。",
+      "category": "配穴の効果・機序・利用頻度",
+      "expertConfirmation": "伝統的な配穴の説明と、痛み・炎症・自律神経への臨床効果の主張を分けて確認する。対象、配穴方法、比較、評価時点、利用頻度、根拠資料を特定し、「リセット」「即効」等の表現が支持範囲内か確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "rinshyu-gaikan"
+      ],
+      "access": "public",
+      "field": "clinicalSignificance"
+    },
+    {
+      "id": "hachimyaku:rekkesu-shoukai:clinicalSignificance",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 413,
+      "displayRoutes": [
+        "/kikei"
+      ],
+      "quote": "金（肺）水（腎）相生を促し、全身の津液・陰液を滋養。呼吸器の炎症と婦人科・泌尿器の虚熱を鎮める。",
+      "category": "配穴の効果・機序・利用頻度",
+      "expertConfirmation": "伝統的な配穴の説明と、痛み・炎症・自律神経への臨床効果の主張を分けて確認する。対象、配穴方法、比較、評価時点、利用頻度、根拠資料を特定し、「リセット」「即効」等の表現が支持範囲内か確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "rekkesu-shoukai"
+      ],
+      "access": "public",
+      "field": "clinicalSignificance"
+    },
+    {
+      "id": "kikei:toku:indications-scope",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 63,
+      "displayRoutes": [
+        "/kikei/toku"
+      ],
+      "quote": "精神不安・てんかん・意識障害・自律神経失調",
+      "category": "主治・適応の範囲と医療評価",
+      "expertConfirmation": "意識障害・痙攣・胸痛・呼吸症状・尿閉・運動麻痺・強い精神症状などを伝統的主治のリストで示すとき、実際の疾患の診断・緊急性評価・医療上の適応が別に必要であることを、個別の状態と典拠に沿って専門家が確認する。この記録は主治そのものの専門的正誤を判定していない。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "toku"
+      ],
+      "field": "indications",
+      "access": "public-free",
+      "relatedQuotes": [
+        {
+          "line": 63,
+          "quote": "精神不安・てんかん・意識障害・自律神経失調",
+          "index": 2
+        },
+        {
+          "line": 64,
+          "quote": "小児のひきつけ・発熱性痙攣",
+          "index": 3
+        }
+      ]
+    },
+    {
+      "id": "kikei:nin:indications-scope",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 104,
+      "displayRoutes": [
+        "/kikei/nin"
+      ],
+      "quote": "下腹部痛・冷え・便秘・尿閉・遺尿・前立腺肥大",
+      "category": "主治・適応の範囲と医療評価",
+      "expertConfirmation": "意識障害・痙攣・胸痛・呼吸症状・尿閉・運動麻痺・強い精神症状などを伝統的主治のリストで示すとき、実際の疾患の診断・緊急性評価・医療上の適応が別に必要であることを、個別の状態と典拠に沿って専門家が確認する。この記録は主治そのものの専門的正誤を判定していない。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "nin"
+      ],
+      "field": "indications",
+      "access": "public-free",
+      "relatedQuotes": [
+        {
+          "line": 104,
+          "quote": "下腹部痛・冷え・便秘・尿閉・遺尿・前立腺肥大",
+          "index": 1
+        },
+        {
+          "line": 106,
+          "quote": "気管支喘息・咳・息切れ・咽喉腫痛（胸中壇中・天突）",
+          "index": 3
+        }
+      ]
+    },
+    {
+      "id": "kikei:sho:indications-scope",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 145,
+      "displayRoutes": [
+        "/kikei/sho"
+      ],
+      "quote": "気の突き上げ（逆気・上気・動悸・パニック様症状）",
+      "category": "主治・適応の範囲と医療評価",
+      "expertConfirmation": "意識障害・痙攣・胸痛・呼吸症状・尿閉・運動麻痺・強い精神症状などを伝統的主治のリストで示すとき、実際の疾患の診断・緊急性評価・医療上の適応が別に必要であることを、個別の状態と典拠に沿って専門家が確認する。この記録は主治そのものの専門的正誤を判定していない。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "sho"
+      ],
+      "field": "indications",
+      "access": "premium-body",
+      "relatedQuotes": [
+        {
+          "line": 145,
+          "quote": "気の突き上げ（逆気・上気・動悸・パニック様症状）",
+          "index": 0
+        },
+        {
+          "line": 149,
+          "quote": "胸内苦悶感・狭心症様胸痛・呼吸促迫",
+          "index": 4
+        }
+      ]
+    },
+    {
+      "id": "kikei:tai:indications-scope",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 187,
+      "displayRoutes": [
+        "/kikei/tai"
+      ],
+      "quote": "下肢の脱力・運動麻痺・冷え",
+      "category": "主治・適応の範囲と医療評価",
+      "expertConfirmation": "意識障害・痙攣・胸痛・呼吸症状・尿閉・運動麻痺・強い精神症状などを伝統的主治のリストで示すとき、実際の疾患の診断・緊急性評価・医療上の適応が別に必要であることを、個別の状態と典拠に沿って専門家が確認する。この記録は主治そのものの専門的正誤を判定していない。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "tai"
+      ],
+      "field": "indications",
+      "access": "premium-body",
+      "relatedQuotes": [
+        {
+          "line": 187,
+          "quote": "下肢の脱力・運動麻痺・冷え",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "id": "kikei:yokyo:indications-scope",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 228,
+      "displayRoutes": [
+        "/kikei/yokyo"
+      ],
+      "quote": "日中のてんかん発作・日中の意識もうろう",
+      "category": "主治・適応の範囲と医療評価",
+      "expertConfirmation": "意識障害・痙攣・胸痛・呼吸症状・尿閉・運動麻痺・強い精神症状などを伝統的主治のリストで示すとき、実際の疾患の診断・緊急性評価・医療上の適応が別に必要であることを、個別の状態と典拠に沿って専門家が確認する。この記録は主治そのものの専門的正誤を判定していない。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "yokyo"
+      ],
+      "field": "indications",
+      "access": "premium-body",
+      "relatedQuotes": [
+        {
+          "line": 228,
+          "quote": "日中のてんかん発作・日中の意識もうろう",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "id": "kikei:inkyo:indications-scope",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 268,
+      "displayRoutes": [
+        "/kikei/inkyo"
+      ],
+      "quote": "過剰な傾眠・日中に強烈な眠気に襲われる（嗜眠・閉目）",
+      "category": "主治・適応の範囲と医療評価",
+      "expertConfirmation": "意識障害・痙攣・胸痛・呼吸症状・尿閉・運動麻痺・強い精神症状などを伝統的主治のリストで示すとき、実際の疾患の診断・緊急性評価・医療上の適応が別に必要であることを、個別の状態と典拠に沿って専門家が確認する。この記録は主治そのものの専門的正誤を判定していない。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "inkyo"
+      ],
+      "field": "indications",
+      "access": "premium-body",
+      "relatedQuotes": [
+        {
+          "line": 268,
+          "quote": "過剰な傾眠・日中に強烈な眠気に襲われる（嗜眠・閉目）",
+          "index": 1
+        },
+        {
+          "line": 269,
+          "quote": "夜間のてんかん発作・夜間の下腹部痛",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "id": "kikei:yoi:indications-scope",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 311,
+      "displayRoutes": [
+        "/kikei/yoi"
+      ],
+      "quote": "耳鳴り・難聴・めまい・乗り物酔い",
+      "category": "主治・適応の範囲と医療評価",
+      "expertConfirmation": "意識障害・痙攣・胸痛・呼吸症状・尿閉・運動麻痺・強い精神症状などを伝統的主治のリストで示すとき、実際の疾患の診断・緊急性評価・医療上の適応が別に必要であることを、個別の状態と典拠に沿って専門家が確認する。この記録は主治そのものの専門的正誤を判定していない。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "yoi"
+      ],
+      "field": "indications",
+      "access": "premium-body",
+      "relatedQuotes": [
+        {
+          "line": 311,
+          "quote": "耳鳴り・難聴・めまい・乗り物酔い",
+          "index": 3
+        }
+      ]
+    },
+    {
+      "id": "kikei:ini:indications-scope",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 349,
+      "displayRoutes": [
+        "/kikei/ini"
+      ],
+      "quote": "心痛・胸痛・胸内苦悶・心悸亢進・狭心症様症状",
+      "category": "主治・適応の範囲と医療評価",
+      "expertConfirmation": "意識障害・痙攣・胸痛・呼吸症状・尿閉・運動麻痺・強い精神症状などを伝統的主治のリストで示すとき、実際の疾患の診断・緊急性評価・医療上の適応が別に必要であることを、個別の状態と典拠に沿って専門家が確認する。この記録は主治そのものの専門的正誤を判定していない。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "ini"
+      ],
+      "field": "indications",
+      "access": "premium-body",
+      "relatedQuotes": [
+        {
+          "line": 349,
+          "quote": "心痛・胸痛・胸内苦悶・心悸亢進・狭心症様症状",
+          "index": 0
+        },
+        {
+          "line": 350,
+          "quote": "重度の精神不安・抑うつ・不眠・感情の不安定・悲哀感",
+          "index": 1
+        },
+        {
+          "line": 353,
+          "quote": "甲状腺腫大・頚部のしこり・喉の異物感",
+          "index": 4
+        }
+      ]
+    },
+    {
+      "id": "hachimyaku:rinshyu-gaikan:indication-scope",
+      "sourcePath": "src/data/kikeiData.ts",
+      "line": 403,
+      "displayRoutes": [
+        "/kikei"
+      ],
+      "quote": "耳鳴り・突発性難聴・めまい",
+      "category": "現代疾患の適応と医療評価",
+      "expertConfirmation": "突発性難聴を含む主治一覧の典拠、医療評価の優先順位と時間条件を専門家が確認する。伝統的な関連を疾患への施術適応や改善保証として読ませる範囲になっていないか確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "rinshyu-gaikan"
+      ],
+      "field": "indications",
+      "access": "public"
+    },
+    {
+      "id": "compare:LI4-LR3:description",
+      "sourcePath": "src/app/tsubo/compare/CompareClient.tsx",
+      "line": 31,
+      "displayRoutes": [
+        "/tsubo/compare"
+      ],
+      "quote": "手陽明大腸経（気・昇）と足厥陰肝経（血・降）の原穴対比。全身の気血巡行を司る2大原穴。",
+      "category": "比較プリセットの伝統分類・効能・使い分け",
+      "expertConfirmation": "各穴の分類と部位・主治の典拠、比較に使った「気／血」「昇／降」「急性／慢性」「気虚／血虚」「自律神経」の基準を確認する。プリセットの要約から個人への使い分け・有効性が決まる説明になっていないか専門家が確認する。古典の歌訣を含むものは底本・原文・訳の逐語照合も必要。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "LI4-LR3"
+      ],
+      "presetName": "四関穴の対比（合谷 vs 太衝）",
+      "tsuboCodes": [
+        "LI4",
+        "LR3"
+      ],
+      "access": "public-preset",
+      "field": "desc"
+    },
+    {
+      "id": "compare:ST36-SP6:description",
+      "sourcePath": "src/app/tsubo/compare/CompareClient.tsx",
+      "line": 36,
+      "displayRoutes": [
+        "/tsubo/compare"
+      ],
+      "quote": "胃の合穴（後天の本・気虚改善）と足三陰の交会穴（血虚・婦人科疾患）の使い分け。",
+      "category": "比較プリセットの伝統分類・効能・使い分け",
+      "expertConfirmation": "各穴の分類と部位・主治の典拠、比較に使った「気／血」「昇／降」「急性／慢性」「気虚／血虚」「自律神経」の基準を確認する。プリセットの要約から個人への使い分け・有効性が決まる説明になっていないか専門家が確認する。古典の歌訣を含むものは底本・原文・訳の逐語照合も必要。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "ST36-SP6"
+      ],
+      "presetName": "下肢の2大補益穴（足三里 vs 三陰交）",
+      "tsuboCodes": [
+        "ST36",
+        "SP6"
+      ],
+      "access": "public-preset",
+      "field": "desc"
+    },
+    {
+      "id": "compare:PC6-HT7:description",
+      "sourcePath": "src/app/tsubo/compare/CompareClient.tsx",
+      "line": 41,
+      "displayRoutes": [
+        "/tsubo/compare"
+      ],
+      "quote": "心包経の絡穴（胸肋・胃腸・動悸の降気）と心経の原穴（心神安寧・不眠・健忘の鎮静）。",
+      "category": "比較プリセットの伝統分類・効能・使い分け",
+      "expertConfirmation": "各穴の分類と部位・主治の典拠、比較に使った「気／血」「昇／降」「急性／慢性」「気虚／血虚」「自律神経」の基準を確認する。プリセットの要約から個人への使い分け・有効性が決まる説明になっていないか専門家が確認する。古典の歌訣を含むものは底本・原文・訳の逐語照合も必要。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "PC6-HT7"
+      ],
+      "presetName": "心胸・自律神経の要穴（内関 vs 神門）",
+      "tsuboCodes": [
+        "PC6",
+        "HT7"
+      ],
+      "access": "public-preset",
+      "field": "desc"
+    },
+    {
+      "id": "compare:BL40-BL23:description",
+      "sourcePath": "src/app/tsubo/compare/CompareClient.tsx",
+      "line": 46,
+      "displayRoutes": [
+        "/tsubo/compare"
+      ],
+      "quote": "四総穴「腰背は委中に留む」（急性・瘀血・合穴）と腎の背部兪穴（慢性・腎虚腰痛）の比較。",
+      "category": "比較プリセットの伝統分類・効能・使い分け",
+      "expertConfirmation": "各穴の分類と部位・主治の典拠、比較に使った「気／血」「昇／降」「急性／慢性」「気虚／血虚」「自律神経」の基準を確認する。プリセットの要約から個人への使い分け・有効性が決まる説明になっていないか専門家が確認する。古典の歌訣を含むものは底本・原文・訳の逐語照合も必要。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "BL40-BL23"
+      ],
+      "presetName": "腰背部痛の2大要穴（委中 vs 腎兪）",
+      "tsuboCodes": [
+        "BL40",
+        "BL23"
+      ],
+      "access": "public-preset",
+      "field": "desc"
+    },
+    {
+      "id": "integrative:gerd-gastric:pathology",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 96,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue"
+      ],
+      "quote": "中焦（ちゅうしょう：脾胃）の気機昇降失調。正常であれば「胃気は下行（降濁）」し、「脾気は上昇（昇清）」して飲食物を運化する。ストレスや冷飲食により胃気が上逆（胃気上逆）することで呑酸・胸焼け・嘔気が生じる。",
+      "category": "伝統的病機と現代の原因・生理機構",
+      "expertConfirmation": "伝統用語のモデルと、逆流・血流・栄養失調・睡眠の現代医学的な機序を区別する。ストレスや冷飲食等から症状が生じる因果関係、疾患の病機を一般化する対象・条件・資料を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "gerd-gastric",
+      "viewMode": "oriental",
+      "field": "oriental.pathologyMechanism"
+    },
+    {
+      "id": "integrative:gerd-gastric:point:CV12",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 115,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue"
+      ],
+      "quote": "胃の募穴・八会穴の腑会。胃気の昇降バランスを整える最重要穴。",
+      "category": "単穴・配穴の効果と神経／経絡の関係",
+      "expertConfirmation": "この経穴単独と鍼治療全体の研究を区別する。対象疾患、刺激方法、比較、評価時点と臨床効果の大きさを確認する。自律神経・迷走神経・血流・睡眠中枢等の機序が、ヒトで測定された結果か、仮説・伝統モデルかを確認し、伝統用語との同一視や即時改善・正常化の保証にならない範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "gerd-gastric",
+      "viewMode": "oriental",
+      "field": "oriental.tsubos.pointRole",
+      "pointName": "中脘",
+      "pointCode": "CV12"
+    },
+    {
+      "id": "integrative:gerd-gastric:point:PC6",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 116,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue"
+      ],
+      "quote": "絡穴・八脈交会穴。迷走神経を介して嘔気・胃気上逆を強力に鎮める。",
+      "category": "単穴・配穴の効果と神経／経絡の関係",
+      "expertConfirmation": "この経穴単独と鍼治療全体の研究を区別する。対象疾患、刺激方法、比較、評価時点と臨床効果の大きさを確認する。自律神経・迷走神経・血流・睡眠中枢等の機序が、ヒトで測定された結果か、仮説・伝統モデルかを確認し、伝統用語との同一視や即時改善・正常化の保証にならない範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "gerd-gastric",
+      "viewMode": "oriental",
+      "field": "oriental.tsubos.pointRole",
+      "pointName": "内関",
+      "pointCode": "PC6"
+    },
+    {
+      "id": "integrative:gerd-gastric:point:ST36",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 117,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue"
+      ],
+      "quote": "合穴・下合穴。消化管運動を正常化し、胃気を下行へと導く。",
+      "category": "単穴・配穴の効果と神経／経絡の関係",
+      "expertConfirmation": "この経穴単独と鍼治療全体の研究を区別する。対象疾患、刺激方法、比較、評価時点と臨床効果の大きさを確認する。自律神経・迷走神経・血流・睡眠中枢等の機序が、ヒトで測定された結果か、仮説・伝統モデルかを確認し、伝統用語との同一視や即時改善・正常化の保証にならない範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "gerd-gastric",
+      "viewMode": "oriental",
+      "field": "oriental.tsubos.pointRole",
+      "pointName": "足三里",
+      "pointCode": "ST36"
+    },
+    {
+      "id": "integrative:gerd-gastric:point:LR3",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 118,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue"
+      ],
+      "quote": "原穴。ストレス性の肝気横逆（自律神経の過興奮）を鎮静。",
+      "category": "単穴・配穴の効果と神経／経絡の関係",
+      "expertConfirmation": "この経穴単独と鍼治療全体の研究を区別する。対象疾患、刺激方法、比較、評価時点と臨床効果の大きさを確認する。自律神経・迷走神経・血流・睡眠中枢等の機序が、ヒトで測定された結果か、仮説・伝統モデルかを確認し、伝統用語との同一視や即時改善・正常化の保証にならない範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "gerd-gastric",
+      "viewMode": "oriental",
+      "field": "oriental.tsubos.pointRole",
+      "pointName": "太衝",
+      "pointCode": "LR3"
+    },
+    {
+      "id": "integrative:gerd-gastric:lifestyle",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 120,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue"
+      ],
+      "quote": "食後2時間は横にならず上体を起こす。就寝前3時間の飲食禁止。白砂糖・脂っこい食事・炭酸・強烈な柑橘類を控え、みぞおちから腹部を冷やさない。",
+      "category": "生活指導の適用条件・効果",
+      "expertConfirmation": "対象疾患と個人差、食事や運動・温冷刺激の適用条件、禁止時間や内容の根拠、「著効」等の効果表現を確認する。一律の禁止・推奨ではなくどの状態で使う説明かを専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "gerd-gastric",
+      "viewMode": "oriental",
+      "field": "oriental.lifestyle"
+    },
+    {
+      "id": "integrative:gerd-gastric:coreConcept",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 123,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue"
+      ],
+      "quote": "構造的破壊を西洋医学で即時防ぎ、機能的滞りを東洋医学で根本治癒する協働モデル",
+      "category": "統合治療の改善・根本治癒の主張",
+      "expertConfirmation": "「即時」「根本治癒」「根本改善」「取り戻す」の対象、到達条件、比較介入、評価指標・期間、再発の評価、実証された併用の効果を確認する。役割分担のモデルと治癒・機能回復の保証を区別できるか専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "gerd-gastric",
+      "viewMode": "matrix",
+      "field": "matrix.coreConcept"
+    },
+    {
+      "id": "integrative:gerd-gastric:synergyEffect",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 150,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue"
+      ],
+      "quote": "西洋医学の「急性期粘膜防御」と東洋医学の「気機昇降・自律神経回復」が噛み合うことで、難治性胃痛の寛解率が飛躍的に向上します。",
+      "category": "併用による効果の増加・改善保証",
+      "expertConfirmation": "併用が単独介入より有効であることを示す比較研究、対象、効果量、期間、再発や害の評価を確認する。「飛躍的」「ゼロ」「身体に再学習」の断定と機序を支える出典を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "gerd-gastric",
+      "viewMode": "matrix",
+      "field": "matrix.synergyEffect"
+    },
+    {
+      "id": "integrative:gerd-gastric:step1",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 129,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue"
+      ],
+      "quote": "まず胃癌・食道癌・急性胃潰瘍・心筋梗塞関連痛を画像と生検で完全に除外。生命の安全を最優先で確立。",
+      "category": "疾患・リスク除外の確実性",
+      "expertConfirmation": "検査の対象・診断精度・限界・追加評価と医療判断を確認する。「完全に除外」「確定」「リスクを排除」等の保証や一律の段階を支える資料があるか専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "gerd-gastric",
+      "viewMode": "matrix",
+      "field": "matrix.steps[0].detail",
+      "step": "第1段階",
+      "action": "レッドフラッグ鑑別 ＆ 上部消化管内視鏡検査"
+    },
+    {
+      "id": "integrative:gerd-gastric:step3",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 141,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue"
+      ],
+      "quote": "PPI抵抗性の胸焼けや機能性ディスペプシアに対し、内関・足三里への刺鍼と半夏瀉心湯等で、胃の適応性弛緩と自律神経リズムを正常化。",
+      "category": "施術・漢方の神経機序と改善量",
+      "expertConfirmation": "個別の経穴・漢方処方、対象、方法、比較、評価指標と期間、安全性を確認する。神経・血流の機序と症状改善を区別し、「正常化」「激減」「機能を回復」を支える根拠の範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "gerd-gastric",
+      "viewMode": "matrix",
+      "field": "matrix.steps[2].detail",
+      "step": "第3段階",
+      "action": "中焦気機の昇降回復 ＆ NERD・自律神経機能調整"
+    },
+    {
+      "id": "integrative:gerd-gastric:step4",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 147,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue"
+      ],
+      "quote": "症状安定後はPPIを休薬・頓用化へ導き、東洋医学的な体質改善と生活養生で長期的な中庸状態を保つ。",
+      "category": "薬剤減量・休薬と再発予防",
+      "expertConfirmation": "薬剤の減量・頓用・休薬の対象と医師の判断、再発や離脱の評価、個別条件を確認する。鍼灸・漢方・体質改善から薬を手放せると一般化する根拠と安全性を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "gerd-gastric",
+      "viewMode": "matrix",
+      "field": "matrix.steps[3].detail",
+      "step": "第4段階",
+      "action": "薬物減量 ＆ 食養生による再発ゼロ体制の維持"
+    },
+    {
+      "id": "integrative:headache-migraine:pathology",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 182,
+      "displayRoutes": [
+        "/symptoms/headache-stiff-neck"
+      ],
+      "quote": "「頭為諸陽之会（頭は諸陽の会す所）」「不通則痛・不栄則痛」。頭部はすべての陽経が集まる場所。肝火の上昇（肝陽上亢）や、冷え・ストレスによる血流鬱滞（瘀血）、気血不足による栄養失調で発症。",
+      "category": "伝統的病機と現代の原因・生理機構",
+      "expertConfirmation": "伝統用語のモデルと、逆流・血流・栄養失調・睡眠の現代医学的な機序を区別する。ストレスや冷飲食等から症状が生じる因果関係、疾患の病機を一般化する対象・条件・資料を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "headache-migraine"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "headache-migraine",
+      "viewMode": "oriental",
+      "field": "oriental.pathologyMechanism"
+    },
+    {
+      "id": "integrative:headache-migraine:point:GB20",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 201,
+      "displayRoutes": [
+        "/symptoms/headache-stiff-neck"
+      ],
+      "quote": "後頭動脈と大後頭神経の交点。頭部の血流を一気に解放する要穴。",
+      "category": "単穴・配穴の効果と神経／経絡の関係",
+      "expertConfirmation": "この経穴単独と鍼治療全体の研究を区別する。対象疾患、刺激方法、比較、評価時点と臨床効果の大きさを確認する。自律神経・迷走神経・血流・睡眠中枢等の機序が、ヒトで測定された結果か、仮説・伝統モデルかを確認し、伝統用語との同一視や即時改善・正常化の保証にならない範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "headache-migraine"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "headache-migraine",
+      "viewMode": "oriental",
+      "field": "oriental.tsubos.pointRole",
+      "pointName": "風池",
+      "pointCode": "GB20"
+    },
+    {
+      "id": "integrative:headache-migraine:point:LI4",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 202,
+      "displayRoutes": [
+        "/symptoms/headache-stiff-neck"
+      ],
+      "quote": "四総穴（面目は合谷に収む）。頭面部全般の鎮痛と陽気降下。",
+      "category": "単穴・配穴の効果と神経／経絡の関係",
+      "expertConfirmation": "この経穴単独と鍼治療全体の研究を区別する。対象疾患、刺激方法、比較、評価時点と臨床効果の大きさを確認する。自律神経・迷走神経・血流・睡眠中枢等の機序が、ヒトで測定された結果か、仮説・伝統モデルかを確認し、伝統用語との同一視や即時改善・正常化の保証にならない範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "headache-migraine"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "headache-migraine",
+      "viewMode": "oriental",
+      "field": "oriental.tsubos.pointRole",
+      "pointName": "合谷",
+      "pointCode": "LI4"
+    },
+    {
+      "id": "integrative:headache-migraine:point:LR3",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 203,
+      "displayRoutes": [
+        "/symptoms/headache-stiff-neck"
+      ],
+      "quote": "肝陽上亢を抑え、こめかみの血管拍動痛を速やかに鎮静。",
+      "category": "単穴・配穴の効果と神経／経絡の関係",
+      "expertConfirmation": "この経穴単独と鍼治療全体の研究を区別する。対象疾患、刺激方法、比較、評価時点と臨床効果の大きさを確認する。自律神経・迷走神経・血流・睡眠中枢等の機序が、ヒトで測定された結果か、仮説・伝統モデルかを確認し、伝統用語との同一視や即時改善・正常化の保証にならない範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "headache-migraine"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "headache-migraine",
+      "viewMode": "oriental",
+      "field": "oriental.tsubos.pointRole",
+      "pointName": "太衝",
+      "pointCode": "LR3"
+    },
+    {
+      "id": "integrative:headache-migraine:point:GV20",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 204,
+      "displayRoutes": [
+        "/symptoms/headache-stiff-neck"
+      ],
+      "quote": "頭頂部で諸陽を統括し、自律神経の交感神経過緊張を解除。",
+      "category": "単穴・配穴の効果と神経／経絡の関係",
+      "expertConfirmation": "この経穴単独と鍼治療全体の研究を区別する。対象疾患、刺激方法、比較、評価時点と臨床効果の大きさを確認する。自律神経・迷走神経・血流・睡眠中枢等の機序が、ヒトで測定された結果か、仮説・伝統モデルかを確認し、伝統用語との同一視や即時改善・正常化の保証にならない範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "headache-migraine"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "headache-migraine",
+      "viewMode": "oriental",
+      "field": "oriental.tsubos.pointRole",
+      "pointName": "百会",
+      "pointCode": "GV20"
+    },
+    {
+      "id": "integrative:headache-migraine:lifestyle",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 206,
+      "displayRoutes": [
+        "/symptoms/headache-stiff-neck"
+      ],
+      "quote": "首の後ろを冷やさない。片頭痛の拍動時は暗く静かな部屋で安静にし局所を軽く冷やす。緊張型は肩甲骨の可動域拡大と入浴での温熱が著効。",
+      "category": "生活指導の適用条件・効果",
+      "expertConfirmation": "対象疾患と個人差、食事や運動・温冷刺激の適用条件、禁止時間や内容の根拠、「著効」等の効果表現を確認する。一律の禁止・推奨ではなくどの状態で使う説明かを専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "headache-migraine"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "headache-migraine",
+      "viewMode": "oriental",
+      "field": "oriental.lifestyle"
+    },
+    {
+      "id": "integrative:headache-migraine:coreConcept",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 209,
+      "displayRoutes": [
+        "/symptoms/headache-stiff-neck"
+      ],
+      "quote": "重大脳血管障害を西洋医学で即座に除外後、東洋医学で体質と血流の根本改善を行う統合体制",
+      "category": "統合治療の改善・根本治癒の主張",
+      "expertConfirmation": "「即時」「根本治癒」「根本改善」「取り戻す」の対象、到達条件、比較介入、評価指標・期間、再発の評価、実証された併用の効果を確認する。役割分担のモデルと治癒・機能回復の保証を区別できるか専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "headache-migraine"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "headache-migraine",
+      "viewMode": "matrix",
+      "field": "matrix.coreConcept"
+    },
+    {
+      "id": "integrative:headache-migraine:synergyEffect",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 236,
+      "displayRoutes": [
+        "/symptoms/headache-stiff-neck"
+      ],
+      "quote": "西洋医学の急性発作コントロール力と東洋医学の予防的体質改善が組み合わさり、頭痛難民をゼロにします。",
+      "category": "併用による効果の増加・改善保証",
+      "expertConfirmation": "併用が単独介入より有効であることを示す比較研究、対象、効果量、期間、再発や害の評価を確認する。「飛躍的」「ゼロ」「身体に再学習」の断定と機序を支える出典を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "headache-migraine"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "headache-migraine",
+      "viewMode": "matrix",
+      "field": "matrix.synergyEffect"
+    },
+    {
+      "id": "integrative:headache-migraine:step1",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 215,
+      "displayRoutes": [
+        "/symptoms/headache-stiff-neck"
+      ],
+      "quote": "くも膜下出血や脳血管奇形がないことを確定させ、安心して機能的アプローチを選択できる土台を確保。",
+      "category": "疾患・リスク除外の確実性",
+      "expertConfirmation": "検査の対象・診断精度・限界・追加評価と医療判断を確認する。「完全に除外」「確定」「リスクを排除」等の保証や一律の段階を支える資料があるか専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "headache-migraine"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "headache-migraine",
+      "viewMode": "matrix",
+      "field": "matrix.steps[0].detail",
+      "step": "第1段階",
+      "action": "MRI等による危険な器質性頭痛（二次性頭痛）の除外"
+    },
+    {
+      "id": "integrative:headache-migraine:step3",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 227,
+      "displayRoutes": [
+        "/symptoms/headache-stiff-neck"
+      ],
+      "quote": "風池・天柱への刺鍼と漢方で後頭部・側頭部の慢性虚血を解消し、頭痛の発生頻度そのものを激減させる。",
+      "category": "施術・漢方の神経機序と改善量",
+      "expertConfirmation": "個別の経穴・漢方処方、対象、方法、比較、評価指標と期間、安全性を確認する。神経・血流の機序と症状改善を区別し、「正常化」「激減」「機能を回復」を支える根拠の範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "headache-migraine"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "headache-migraine",
+      "viewMode": "matrix",
+      "field": "matrix.steps[2].detail",
+      "step": "第3段階",
+      "action": "鍼灸による筋緊張遮断 ＆ 釣藤散・瘀血治療"
+    },
+    {
+      "id": "integrative:headache-migraine:step4",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 233,
+      "displayRoutes": [
+        "/symptoms/headache-stiff-neck"
+      ],
+      "quote": "毎日の鎮痛薬依存から脱却させ、天候変化やストレスに揺るがない自律神経基盤を再構築。",
+      "category": "薬剤減量・休薬と再発予防",
+      "expertConfirmation": "薬剤の減量・頓用・休薬の対象と医師の判断、再発や離脱の評価、個別条件を確認する。鍼灸・漢方・体質改善から薬を手放せると一般化する根拠と安全性を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "headache-migraine"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "headache-migraine",
+      "viewMode": "matrix",
+      "field": "matrix.steps[3].detail",
+      "step": "第4段階",
+      "action": "薬剤乱用頭痛（MOH）の予防と自立的コンディショニング"
+    },
+    {
+      "id": "integrative:insomnia-autonomic:pathology",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 267,
+      "displayRoutes": [
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "「心腎不交（しんじんふこう）」「陽不入陰（ようふにゅういん）」。昼は陽気が体表を巡って活動し、夜は陽気が体内の陰に入って潜蔵することで睡眠が訪れる。過労やストレスで腎水が衰え心火を制御できなくなると、神（しん：精神意識）が休まらず不眠となる。",
+      "category": "伝統的病機と現代の原因・生理機構",
+      "expertConfirmation": "伝統用語のモデルと、逆流・血流・栄養失調・睡眠の現代医学的な機序を区別する。ストレスや冷飲食等から症状が生じる因果関係、疾患の病機を一般化する対象・条件・資料を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "insomnia-autonomic",
+      "viewMode": "oriental",
+      "field": "oriental.pathologyMechanism"
+    },
+    {
+      "id": "integrative:insomnia-autonomic:point:HT7",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 286,
+      "displayRoutes": [
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "原穴。心を養い精神不安を鎮める安神の代表穴。",
+      "category": "単穴・配穴の効果と神経／経絡の関係",
+      "expertConfirmation": "この経穴単独と鍼治療全体の研究を区別する。対象疾患、刺激方法、比較、評価時点と臨床効果の大きさを確認する。自律神経・迷走神経・血流・睡眠中枢等の機序が、ヒトで測定された結果か、仮説・伝統モデルかを確認し、伝統用語との同一視や即時改善・正常化の保証にならない範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "insomnia-autonomic",
+      "viewMode": "oriental",
+      "field": "oriental.tsubos.pointRole",
+      "pointName": "神門",
+      "pointCode": "HT7"
+    },
+    {
+      "id": "integrative:insomnia-autonomic:point:KI1",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 287,
+      "displayRoutes": [
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "井木穴。頭部に昇り詰めた気と血を足元へ引き下ろし陰陽を調和。",
+      "category": "単穴・配穴の効果と神経／経絡の関係",
+      "expertConfirmation": "この経穴単独と鍼治療全体の研究を区別する。対象疾患、刺激方法、比較、評価時点と臨床効果の大きさを確認する。自律神経・迷走神経・血流・睡眠中枢等の機序が、ヒトで測定された結果か、仮説・伝統モデルかを確認し、伝統用語との同一視や即時改善・正常化の保証にならない範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "insomnia-autonomic",
+      "viewMode": "oriental",
+      "field": "oriental.tsubos.pointRole",
+      "pointName": "湧泉",
+      "pointCode": "KI1"
+    },
+    {
+      "id": "integrative:insomnia-autonomic:point:PC6",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 288,
+      "displayRoutes": [
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "胸部の圧迫感や動悸を解除し、副交感神経を優位に導く。",
+      "category": "単穴・配穴の効果と神経／経絡の関係",
+      "expertConfirmation": "この経穴単独と鍼治療全体の研究を区別する。対象疾患、刺激方法、比較、評価時点と臨床効果の大きさを確認する。自律神経・迷走神経・血流・睡眠中枢等の機序が、ヒトで測定された結果か、仮説・伝統モデルかを確認し、伝統用語との同一視や即時改善・正常化の保証にならない範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "insomnia-autonomic",
+      "viewMode": "oriental",
+      "field": "oriental.tsubos.pointRole",
+      "pointName": "内関",
+      "pointCode": "PC6"
+    },
+    {
+      "id": "integrative:insomnia-autonomic:point:EX-HN16",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 289,
+      "displayRoutes": [
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "耳の後ろ（翳風と風池の中間）。睡眠中枢を直接穏やかにリラックス。",
+      "category": "単穴・配穴の効果と神経／経絡の関係",
+      "expertConfirmation": "この経穴単独と鍼治療全体の研究を区別する。対象疾患、刺激方法、比較、評価時点と臨床効果の大きさを確認する。自律神経・迷走神経・血流・睡眠中枢等の機序が、ヒトで測定された結果か、仮説・伝統モデルかを確認し、伝統用語との同一視や即時改善・正常化の保証にならない範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "insomnia-autonomic",
+      "viewMode": "oriental",
+      "field": "oriental.tsubos.pointRole",
+      "pointName": "安眠",
+      "pointCode": "EX-HN16"
+    },
+    {
+      "id": "integrative:insomnia-autonomic:lifestyle",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 291,
+      "displayRoutes": [
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "就寝前の足湯で湧泉を温める。夕方以降のカフェイン・激しい運動の禁止。寝床でのスマホ閲覧を絶ち、腹式呼吸で吐く息に意識を集中。",
+      "category": "生活指導の適用条件・効果",
+      "expertConfirmation": "対象疾患と個人差、食事や運動・温冷刺激の適用条件、禁止時間や内容の根拠、「著効」等の効果表現を確認する。一律の禁止・推奨ではなくどの状態で使う説明かを専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "insomnia-autonomic",
+      "viewMode": "oriental",
+      "field": "oriental.lifestyle"
+    },
+    {
+      "id": "integrative:insomnia-autonomic:coreConcept",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 294,
+      "displayRoutes": [
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "睡眠薬への依存を避けながら、自然なサーカディアンリズムと五臓の陰陽潜蔵を取り戻す",
+      "category": "統合治療の改善・根本治癒の主張",
+      "expertConfirmation": "「即時」「根本治癒」「根本改善」「取り戻す」の対象、到達条件、比較介入、評価指標・期間、再発の評価、実証された併用の効果を確認する。役割分担のモデルと治癒・機能回復の保証を区別できるか専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "insomnia-autonomic",
+      "viewMode": "matrix",
+      "field": "matrix.coreConcept"
+    },
+    {
+      "id": "integrative:insomnia-autonomic:synergyEffect",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 321,
+      "displayRoutes": [
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "薬で無理やり眠らせるのではなく、「自ら眠り、爽快に目覚める力」を身体に再学習させます。",
+      "category": "併用による効果の増加・改善保証",
+      "expertConfirmation": "併用が単独介入より有効であることを示す比較研究、対象、効果量、期間、再発や害の評価を確認する。「飛躍的」「ゼロ」「身体に再学習」の断定と機序を支える出典を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "insomnia-autonomic",
+      "viewMode": "matrix",
+      "field": "matrix.synergyEffect"
+    },
+    {
+      "id": "integrative:insomnia-autonomic:step1",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 300,
+      "displayRoutes": [
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "身体的・器質的な睡眠障害を特定し、心筋梗塞や重度精神疾患の併発リスクを排除。",
+      "category": "疾患・リスク除外の確実性",
+      "expertConfirmation": "検査の対象・診断精度・限界・追加評価と医療判断を確認する。「完全に除外」「確定」「リスクを排除」等の保証や一律の段階を支える資料があるか専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "insomnia-autonomic",
+      "viewMode": "matrix",
+      "field": "matrix.steps[0].detail",
+      "step": "第1段階",
+      "action": "睡眠時無呼吸（SAS）やうつ病など重大疾患のスクリーニング"
+    },
+    {
+      "id": "integrative:insomnia-autonomic:step3",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 312,
+      "displayRoutes": [
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "神門・湧泉・安眠穴への刺鍼や温灸で、交感神経緊張を解き、体が自ら「夜に陰へ潜る」機能を回復。",
+      "category": "施術・漢方の神経機序と改善量",
+      "expertConfirmation": "個別の経穴・漢方処方、対象、方法、比較、評価指標と期間、安全性を確認する。神経・血流の機序と症状改善を区別し、「正常化」「激減」「機能を回復」を支える根拠の範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "insomnia-autonomic",
+      "viewMode": "matrix",
+      "field": "matrix.steps[2].detail",
+      "step": "第3段階",
+      "action": "鍼灸による自律神経調律 ＆ 酸棗仁湯・帰脾湯による心神安寧"
+    },
+    {
+      "id": "integrative:insomnia-autonomic:step4",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 318,
+      "displayRoutes": [
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "入眠薬をスムーズに手放し、自然な目覚めと日中の活力に満ちた生活へ軟着陸。",
+      "category": "薬剤減量・休薬と再発予防",
+      "expertConfirmation": "薬剤の減量・頓用・休薬の対象と医師の判断、再発や離脱の評価、個別条件を確認する。鍼灸・漢方・体質改善から薬を手放せると一般化する根拠と安全性を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison",
+      "caseId": "insomnia-autonomic",
+      "viewMode": "matrix",
+      "field": "matrix.steps[3].detail",
+      "step": "第4段階",
+      "action": "薬剤漸減・休薬と「ぐっすり眠れる体質」への定着"
+    },
+    {
+      "id": "integrative:gerd-gastric:response-rate",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 92,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue"
+      ],
+      "quote": "内視鏡検査で「粘膜に異常なし」と判定される非びらん性胃食道逆流症（NERD）や機能性ディスペプシア（FD）では、PPIの著効割合が約50〜60%にとどまり、原因不明の灼熱感やもたれが持続しやすい。",
+      "category": "定量的な治療反応・西洋医学の限界",
+      "expertConfirmation": "PPIの著効割合「約50〜60%」の研究出典、NERDとFDの区別、対象、投与条件、著効の定義・指標と評価時点を確認する。原因不明や持続しやすさまで同じ根拠で支持されるか専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric"
+      ],
+      "access": "public-after-expanding-comparison",
+      "viewMode": "western",
+      "field": "western.limitations"
+    },
+    {
+      "id": "integrative:insomnia-autonomic:drug-safety",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 306,
+      "displayRoutes": [
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "極度の睡眠不足による中枢疲労を食い止めるため、依存性の極めて低い薬剤でまずは睡眠時間を確保。",
+      "category": "薬剤の安全性・依存性と適用条件",
+      "expertConfirmation": "薬剤別の対象、禁忌・注意、依存・耐性や有害事象の評価指標・期間、比較薬と根拠を確認する。「依存性の極めて低い」が全対象に一般化できるか専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison",
+      "viewMode": "matrix",
+      "field": "matrix.steps[1].detail",
+      "action": "安全性の高いオレキシン拮抗薬等で睡眠負債を一時リセット"
+    },
+    {
+      "id": "integrative:headache-migraine:rapid-return",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 221,
+      "displayRoutes": [
+        "/symptoms/headache-stiff-neck"
+      ],
+      "quote": "耐え難い急性拍動痛は我慢させず、トリプタンで速やかに日常生活への復帰を果たす。",
+      "category": "薬剤による速やかな生活機能改善",
+      "expertConfirmation": "トリプタンの対象・禁忌・使用条件、効果の時点と生活機能指標、比較研究を確認する。対象を限定せず速やかな復帰が得られると読める表現の根拠を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "headache-migraine"
+      ],
+      "access": "public-after-expanding-comparison",
+      "viewMode": "matrix",
+      "field": "matrix.steps[1].detail"
+    },
+    {
+      "id": "integrative:common:standard-medications-label",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 454,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue",
+        "/symptoms/headache-stiff-neck",
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "第一選択となる標準薬物群",
+      "category": "薬剤の第一選択という位置づけ",
+      "expertConfirmation": "3ケースに表示する薬剤それぞれの第一選択の対象・診断・重症度・禁忌と、最新ガイドラインの適用範囲を確認する。すべてが同じ優先順位の推奨薬として読める見出しになっていないか専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric",
+        "headache-migraine",
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison",
+      "viewMode": "western",
+      "relatedData": [
+        {
+          "caseId": "gerd-gastric",
+          "medications": [
+            "プロトンポンプ阻害薬（PPI）：胃酸分泌の最終段階を強力遮断",
+            "カリウムイオン競合型アシッドブロッカー（P-CAB）：速やかで持続的な酸抑制",
+            "消化管運動機能改善薬（モサプリド等）：胃排出能の促進"
+          ]
+        },
+        {
+          "caseId": "headache-migraine",
+          "medications": [
+            "急性期頓服薬：セロトニン1B/1D作動薬（トリプタン製剤）、NSAIDs",
+            "新規予防薬：抗CGRP抗体製剤（エムガルティ等）",
+            "筋弛緩薬・抗不安薬（緊張型頭痛における筋緊張緩和）"
+          ]
+        },
+        {
+          "caseId": "insomnia-autonomic",
+          "medications": [
+            "オレキシン受容体拮抗薬（スボレキサント、レンボレキサント）：覚醒シグナル遮断",
+            "メラトニン受容体作動薬（ラメルテオン）：生体リズム同調",
+            "※従来のベンゾジアゼピン系薬は依存性・耐性リスクのため短期最小限使用が推奨"
+          ]
+        }
+      ],
+      "relatedClaims": [
+        {
+          "id": "gerd-gastric/medication-1",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 81,
+          "displayRoutes": [
+            "/symptoms/stomach-fatigue"
+          ],
+          "quote": "プロトンポンプ阻害薬（PPI）：胃酸分泌の最終段階を強力遮断"
+        },
+        {
+          "id": "gerd-gastric/medication-2",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 82,
+          "displayRoutes": [
+            "/symptoms/stomach-fatigue"
+          ],
+          "quote": "カリウムイオン競合型アシッドブロッカー（P-CAB）：速やかで持続的な酸抑制"
+        },
+        {
+          "id": "gerd-gastric/medication-3",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 83,
+          "displayRoutes": [
+            "/symptoms/stomach-fatigue"
+          ],
+          "quote": "消化管運動機能改善薬（モサプリド等）：胃排出能の促進"
+        },
+        {
+          "id": "headache-migraine/medication-1",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 167,
+          "displayRoutes": [
+            "/symptoms/headache-stiff-neck"
+          ],
+          "quote": "急性期頓服薬：セロトニン1B/1D作動薬（トリプタン製剤）、NSAIDs"
+        },
+        {
+          "id": "headache-migraine/medication-2",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 168,
+          "displayRoutes": [
+            "/symptoms/headache-stiff-neck"
+          ],
+          "quote": "新規予防薬：抗CGRP抗体製剤（エムガルティ等）"
+        },
+        {
+          "id": "headache-migraine/medication-3",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 169,
+          "displayRoutes": [
+            "/symptoms/headache-stiff-neck"
+          ],
+          "quote": "筋弛緩薬・抗不安薬（緊張型頭痛における筋緊張緩和）"
+        },
+        {
+          "id": "insomnia-autonomic/medication-1",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 253,
+          "displayRoutes": [
+            "/symptoms/stress-insomnia"
+          ],
+          "quote": "オレキシン受容体拮抗薬（スボレキサント、レンボレキサント）：覚醒シグナル遮断"
+        },
+        {
+          "id": "insomnia-autonomic/medication-2",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 254,
+          "displayRoutes": [
+            "/symptoms/stress-insomnia"
+          ],
+          "quote": "メラトニン受容体作動薬（ラメルテオン）：生体リズム同調"
+        },
+        {
+          "id": "insomnia-autonomic/medication-3",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 255,
+          "displayRoutes": [
+            "/symptoms/stress-insomnia"
+          ],
+          "quote": "※従来のベンゾジアゼピン系薬は依存性・耐性リスクのため短期最小限使用が推奨"
+        }
+      ]
+    },
+    {
+      "id": "integrative:common:recommended-formulas-label",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 531,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue",
+        "/symptoms/headache-stiff-neck",
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "推奨方剤：",
+      "category": "症状・証から漢方処方を推奨する適用条件",
+      "expertConfirmation": "3ケースの全9証に示す方剤の典拠、個別評価、用量・禁忌・相互作用・有害事象、治療効果の根拠を確認する。学習モデル上の関連例と、本人への処方推奨を区別できる見出しか専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric/pattern-1",
+        "gerd-gastric/pattern-2",
+        "gerd-gastric/pattern-3",
+        "headache-migraine/pattern-1",
+        "headache-migraine/pattern-2",
+        "headache-migraine/pattern-3",
+        "insomnia-autonomic/pattern-1",
+        "insomnia-autonomic/pattern-2",
+        "insomnia-autonomic/pattern-3"
+      ],
+      "access": "public-after-expanding-comparison",
+      "viewMode": "oriental",
+      "relatedData": [
+        {
+          "caseId": "gerd-gastric",
+          "patterns": [
+            {
+              "name": "寒熱錯雑（かんねつさくざつ）・心下痞",
+              "features": "みぞおちのつかえ感、胃酸逆流（熱）と腹の冷え・軟便（寒）が混在する病態。",
+              "formula": "半夏瀉心湯（はんげしゃしんとう）：半夏・乾姜の辛温で痞えを開き、黄連・黄芩の苦寒で胃熱を冷ます「辛開苦降」の典型方剤。"
+            },
+            {
+              "name": "肝気犯胃（かんきはんい）",
+              "features": "精神的ストレス・怒り・緊張により肝の疏泄が乱れ、胃を攻撃して起こる発作性の胃痛・頻繁なゲップ。",
+              "formula": "四逆散（しぎゃくさん）合 安中散、柴胡疎肝散（さいこそかんさん）。"
+            },
+            {
+              "name": "脾胃虚寒（ひいきょかん）",
+              "features": "胃の冷え、食後の強いもたれ、温かい飲食で胃痛が和らぎ、疲労で悪化する虚弱タイプ。",
+              "formula": "六君子湯（りっくんしとう）、人参湯（にんじんとう）。"
+            }
+          ]
+        },
+        {
+          "caseId": "headache-migraine",
+          "patterns": [
+            {
+              "name": "肝陽上亢（かんようじょうこう）",
+              "features": "イライラや緊張で血圧上昇、こめかみがズキズキ拍動、目の充血や眩暈を伴う。",
+              "formula": "釣藤散（ちょうとうさん）、天麻鉤藤飲（てんまこうとういん）。"
+            },
+            {
+              "name": "気滞血瘀（きたいけつお）",
+              "features": "刺すような局所痛、夜間に悪化、頑固で慢性の首肩こりを伴う頭痛。",
+              "formula": "冠元顆粒（かんげんかりゅう）、桃紅四物湯（とうこうしもつとう）。"
+            },
+            {
+              "name": "風寒外襲・太陽頭痛",
+              "features": "風邪のひきはじめや冷えによる後頭部・首筋のこわばり痛。",
+              "formula": "川芎茶調散（せんきゅうちょうちょうさん）、葛根湯。"
+            }
+          ]
+        },
+        {
+          "caseId": "insomnia-autonomic",
+          "patterns": [
+            {
+              "name": "心腎不交・陰虚火旺",
+              "features": "寝付きが悪い、寝汗、手のひらや足裏のほてり、夢が多く眠りが浅い。",
+              "formula": "黄連阿膠湯（おうれんあきょうとう）、知柏地黄丸（ちばくじおうがん）。"
+            },
+            {
+              "name": "心脾両虚（しんぴりょうきょ）",
+              "features": "思い悩みが多く、食欲不振、疲労倦怠、途中で何度も目が覚める虚弱タイプ。",
+              "formula": "帰脾湯（きひとう）、加味帰脾湯（かみきひとう）。"
+            },
+            {
+              "name": "肝気鬱結・肝火上炎",
+              "features": "仕事のプレッシャー、怒り、イライラで頭が冴え渡って全く眠れない。",
+              "formula": "酸棗仁湯（さんそうにんとう）、抑肝散（よくかんさん）。"
+            }
+          ]
+        }
+      ],
+      "relatedClaims": [
+        {
+          "id": "gerd-gastric/pattern-1",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 101,
+          "displayRoutes": [
+            "/symptoms/stomach-fatigue"
+          ],
+          "quote": "半夏瀉心湯（はんげしゃしんとう）：半夏・乾姜の辛温で痞えを開き、黄連・黄芩の苦寒で胃熱を冷ます「辛開苦降」の典型方剤。",
+          "patternName": "寒熱錯雑（かんねつさくざつ）・心下痞"
+        },
+        {
+          "id": "gerd-gastric/pattern-2",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 106,
+          "displayRoutes": [
+            "/symptoms/stomach-fatigue"
+          ],
+          "quote": "四逆散（しぎゃくさん）合 安中散、柴胡疎肝散（さいこそかんさん）。",
+          "patternName": "肝気犯胃（かんきはんい）"
+        },
+        {
+          "id": "gerd-gastric/pattern-3",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 111,
+          "displayRoutes": [
+            "/symptoms/stomach-fatigue"
+          ],
+          "quote": "六君子湯（りっくんしとう）、人参湯（にんじんとう）。",
+          "patternName": "脾胃虚寒（ひいきょかん）"
+        },
+        {
+          "id": "headache-migraine/pattern-1",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 187,
+          "displayRoutes": [
+            "/symptoms/headache-stiff-neck"
+          ],
+          "quote": "釣藤散（ちょうとうさん）、天麻鉤藤飲（てんまこうとういん）。",
+          "patternName": "肝陽上亢（かんようじょうこう）"
+        },
+        {
+          "id": "headache-migraine/pattern-2",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 192,
+          "displayRoutes": [
+            "/symptoms/headache-stiff-neck"
+          ],
+          "quote": "冠元顆粒（かんげんかりゅう）、桃紅四物湯（とうこうしもつとう）。",
+          "patternName": "気滞血瘀（きたいけつお）"
+        },
+        {
+          "id": "headache-migraine/pattern-3",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 197,
+          "displayRoutes": [
+            "/symptoms/headache-stiff-neck"
+          ],
+          "quote": "川芎茶調散（せんきゅうちょうちょうさん）、葛根湯。",
+          "patternName": "風寒外襲・太陽頭痛"
+        },
+        {
+          "id": "insomnia-autonomic/pattern-1",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 272,
+          "displayRoutes": [
+            "/symptoms/stress-insomnia"
+          ],
+          "quote": "黄連阿膠湯（おうれんあきょうとう）、知柏地黄丸（ちばくじおうがん）。",
+          "patternName": "心腎不交・陰虚火旺"
+        },
+        {
+          "id": "insomnia-autonomic/pattern-2",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 277,
+          "displayRoutes": [
+            "/symptoms/stress-insomnia"
+          ],
+          "quote": "帰脾湯（きひとう）、加味帰脾湯（かみきひとう）。",
+          "patternName": "心脾両虚（しんぴりょうきょ）"
+        },
+        {
+          "id": "insomnia-autonomic/pattern-3",
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "line": 282,
+          "displayRoutes": [
+            "/symptoms/stress-insomnia"
+          ],
+          "quote": "酸棗仁湯（さんそうにんとう）、抑肝散（よくかんさん）。",
+          "patternName": "肝気鬱結・肝火上炎"
+        }
+      ]
+    },
+    {
+      "id": "integrative:common:specific-effect-label",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 546,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue",
+        "/symptoms/headache-stiff-neck",
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "臨床で著効を示す4大特効ツボ（配穴の妙）",
+      "category": "単穴・配穴の著効／特効の保証",
+      "expertConfirmation": "3ケースの各4穴、合計12の表示行について、対象、配穴の方法と単穴との違い、比較、評価指標・期間、効果量と安全性の出典を確認する。「著効」「特効」という統一見出しで保証できる範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric/CV12",
+        "gerd-gastric/PC6",
+        "gerd-gastric/ST36",
+        "gerd-gastric/LR3",
+        "headache-migraine/GB20",
+        "headache-migraine/LI4",
+        "headache-migraine/LR3",
+        "headache-migraine/GV20",
+        "insomnia-autonomic/HT7",
+        "insomnia-autonomic/KI1",
+        "insomnia-autonomic/PC6",
+        "insomnia-autonomic/EX-HN16"
+      ],
+      "access": "public-after-expanding-comparison",
+      "viewMode": "oriental"
+    },
+    {
+      "id": "integrative:common:referral",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 474,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue",
+        "/symptoms/headache-stiff-neck",
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "以下のサインが1つでもある場合、東洋医学的アプローチ（鍼灸・漢方）に固執せず、直ちに消化器内科・高次救急医療機関での精密検査を最優先してください。",
+      "category": "症状別の受診先・緊急度の条件",
+      "expertConfirmation": "頭痛・不眠・胃部症状で同じ消化器内科の案内を使う対象範囲、各サインの緊急度、適切な受診先、精密検査を一律に最優先とする条件と出典を専門家が確認する。急性・重症・進行の評価を個別に確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric",
+        "headache-migraine",
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison",
+      "viewMode": "western"
+    },
+    {
+      "id": "integrative:common:recurrence-free-plan",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 636,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue",
+        "/symptoms/headache-stiff-neck",
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "急性期や構造的危険は西洋医学が主導し、慢性期の機能失調や体質改善は東洋医学が主導。患者にとって最も安全で再発のない治療ロードマップを構築します。",
+      "category": "役割分担の一般化・安全性と再発の保証",
+      "expertConfirmation": "慢性症状や機能失調でも必要な医学的評価を継続する対象と条件、併用の比較研究、安全性・再発率・期間を確認する。「最も安全」「再発のない」と保証できる根拠があるか専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric",
+        "headache-migraine",
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison",
+      "viewMode": "matrix"
+    },
+    {
+      "id": "integrative:common:source-attribution",
+      "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+      "line": 699,
+      "displayRoutes": [
+        "/symptoms/stomach-fatigue",
+        "/symptoms/headache-stiff-neck",
+        "/symptoms/stress-insomnia"
+      ],
+      "quote": "『黄帝内経素問』陰陽応象大論 ＆ 現代消化器病学会ガイドライン準拠",
+      "category": "出典帰属とガイドライン準拠の確認",
+      "expertConfirmation": "古典の底本・篇・原文・訳を照合する。「現代消化器病学会ガイドライン」の正式名称、発行主体、版、該当推奨とリンクを特定し、頭痛・不眠を含む全3ケースのどの説明が準拠するのか専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "affectedIds": [
+        "gerd-gastric",
+        "headache-migraine",
+        "insomnia-autonomic"
+      ],
+      "access": "public-after-expanding-comparison"
+    }
+  ],
+  "checks": [
+    "全71項目の1始まりlineとquoteが現ファイルに一致",
+    "動的クイズ3テンプレートを8脈=24問へ展開し、対象IDと生成される文を列挙",
+    "8脈・4配穴ペア・4比較プリセット・3症状比較ケースの対象IDを省略せず列挙",
+    "薬物9行・推奨方剤9行は共通見出しの論点に加え、個別のsourcePath・line・route・quoteを関連行として保持",
+    "医学データ・コンポーネントは読み取りのみ"
+  ]
+}

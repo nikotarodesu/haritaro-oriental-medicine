@@ -1,0 +1,1084 @@
+{
+  "checkedAt": "2026-10-12",
+  "scope": "inventory.json.routesの全42ページ種類の入口・利用案内・ボタン・学習リンクを読み取り点検。共通クライアントに委譲された入口も追跡。",
+  "reviewMethod": "TSXソースから表示文章・日本語ラベル・リンク・importを抽出して読了し、委譲先の冒頭/操作案内を追跡した。実機の全42画面を操作したという意味ではない。",
+  "sourceBlocks": "引用・参考文献・原典/確認範囲のブロックは改稿対象外。",
+  "exclusions": [
+    "361経穴の位置・医学本文・安全条件の再照合",
+    "20模擬症例の正答・医学的説明の専門再審査",
+    "全症状データ・診断結果・配穴プリセットの医学的正確性の網羅的照合",
+    "法務・認証・決済の妥当性の審査",
+    "実会員での保存・課金・同期の操作"
+  ],
+  "summary": {
+    "routeCount": 42,
+    "entryCopyReviewedCount": 42,
+    "classifications": {
+      "changed": 10,
+      "outside scope": 8,
+      "specialist review": 7,
+      "reviewed clear": 17
+    },
+    "newSpecialistFindingCount": 9
+  },
+  "resolvedNonMedicalSuggestions": [
+    {
+      "source": "src/app/cases/page.tsx",
+      "action": "rootが模擬症例を順に読み、選択条件と学習例を比べる案内へ改稿した。現在の文を再読済み。"
+    },
+    {
+      "source": "src/app/kokushi/page.tsx",
+      "action": "rootがmetadata・OG・見出し・冒頭をオリジナル演習にそろえ、講義/日替わり復習への操作を具体化した。現在の文を再読済み。"
+    }
+  ],
+  "routes": [
+    {
+      "source": "src/app/about/page.tsx",
+      "route": "/about",
+      "entryReviewStatus": "reviewed",
+      "classification": "changed",
+      "routeImplementationChanged": true,
+      "changedSources": [
+        "src/app/about/page.tsx"
+      ],
+      "inspectedSources": [
+        {
+          "path": "src/app/about/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "冒頭を講義・クイズ・症例演習・ノートという実操作に変更。目的別の開始リンクを確認。",
+      "sourceSha256": "15978608df13e0e80a269095e2c3d18ee16a4ae8007e4472221e33fc4ed4e78e"
+    },
+    {
+      "source": "src/app/account/subscription/page.tsx",
+      "route": "/account/subscription",
+      "entryReviewStatus": "reviewed",
+      "classification": "outside scope",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/account/subscription/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "契約状態の再確認、管理画面、同期状態、バックアップへの操作を読了。契約・認証の必要な文は保持。",
+      "sourceSha256": "99243090911eb825445f162e9cc4ce688c010e7ffae0fb09b2ed41f09c6eee3a"
+    },
+    {
+      "source": "src/app/articles/page.tsx",
+      "route": "/articles",
+      "entryReviewStatus": "reviewed",
+      "classification": "changed",
+      "routeImplementationChanged": false,
+      "changedSources": [
+        "src/data/articleLearningGuides.ts"
+      ],
+      "inspectedSources": [
+        {
+          "path": "src/app/articles/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/articles/ArticlesListClient.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/data/articleLearningGuides.ts",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "検索、カテゴリ、読書位置から再開、目的別記事、学習コースへの案内が具体的。",
+      "sourceSha256": "febff02672117fbbca6d3161e8c44e549650c69b7b992183514018ace030850d"
+    },
+    {
+      "source": "src/app/articles/[id]/page.tsx",
+      "route": "/articles/[id]",
+      "entryReviewStatus": "reviewed",
+      "classification": "changed",
+      "routeImplementationChanged": true,
+      "changedSources": [
+        "src/app/articles/[id]/page.tsx",
+        "src/components/learning/LearningPathLinks.tsx",
+        "src/data/articleLearningGuides.ts",
+        "src/data/articleReadingGuides.ts"
+      ],
+      "inspectedSources": [
+        {
+          "path": "src/app/articles/[id]/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/learning/LearningPathLinks.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/data/articleLearningGuides.ts",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/data/articleReadingGuides.ts",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [
+        "docs/readability/article-editorial-audit.json"
+      ],
+      "notes": "本文・図解・目次・関連記事・出典・講義・クイズ・症例の行き先を区別し、実タイトルを表示。",
+      "sourceSha256": "f2a28e16d4f1f652111d5c23e1edf20c9c5077a76eb60e016142d9ffa24a7d25"
+    },
+    {
+      "source": "src/app/auth/login/page.tsx",
+      "route": "/auth/login",
+      "entryReviewStatus": "reviewed",
+      "classification": "outside scope",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/auth/login/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/auth/GoogleAuthForm.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "Google認証後の戻り先、無料登録、規約への案内が明快。認証文は保持。",
+      "sourceSha256": "49cf7c14396c026add86d766ec387c7c0b512cd8ca98f9963168531464a3d001"
+    },
+    {
+      "source": "src/app/auth/register/page.tsx",
+      "route": "/auth/register",
+      "entryReviewStatus": "reviewed",
+      "classification": "outside scope",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/auth/register/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/auth/GoogleAuthForm.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "ログインと無料登録が同じGoogle認証を使う説明を確認。必要な認証文は保持。",
+      "sourceSha256": "f18f06f36c12de4808c50f0eb11f85d600ecabc5eafc4c9b04a14ffd9463668a"
+    },
+    {
+      "source": "src/app/cases/page.tsx",
+      "route": "/cases",
+      "entryReviewStatus": "reviewed",
+      "classification": "changed",
+      "routeImplementationChanged": true,
+      "changedSources": [
+        "src/app/cases/page.tsx"
+      ],
+      "inspectedSources": [
+        {
+          "path": "src/app/cases/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "模擬症例の情報を順に読む、候補・治法・配穴の理由を考えるという操作へ具体化。無料3例と有料17例を区別。",
+      "sourceSha256": "372aaf2c7456673208f765a427114a20a50b2e9bfc7e5581e5f17a4256e52158"
+    },
+    {
+      "source": "src/app/cases/[id]/page.tsx",
+      "route": "/cases/[id]",
+      "entryReviewStatus": "reviewed",
+      "classification": "specialist review",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/cases/[id]/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/cases/CaseStudyViewer.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [
+        "entry-case-measurement"
+      ],
+      "relatedSpecialistAudits": [],
+      "notes": "症例の段階開示、解説を開く、ノートへ保存、次の症例への操作を確認。専門症例20件の再審査とは区別。",
+      "sourceSha256": "8e755582223c5669ee76ef0070a12856b91dd7dfde63033d43e5dbdecaafe3b9"
+    },
+    {
+      "source": "src/app/clinical/page.tsx",
+      "route": "/clinical",
+      "entryReviewStatus": "reviewed",
+      "classification": "changed",
+      "routeImplementationChanged": true,
+      "changedSources": [
+        "src/app/clinical/page.tsx"
+      ],
+      "inspectedSources": [
+        {
+          "path": "src/app/clinical/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "聞き取った回答・未確認事項、配穴の理由、前回記録の読み返しを具体化。",
+      "sourceSha256": "63c81696cbbbba2d7eb8b0605ba7eb80d8144d438cf1cf5bd3988cd0925fdd4b"
+    },
+    {
+      "source": "src/app/clinical/symptoms/[slug]/page.tsx",
+      "route": "/clinical/symptoms/[slug]",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/clinical/symptoms/[slug]/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/data/clinicalWorkflow.ts",
+          "scope": "6主訴のtitle/summary/questions/reviewと導線参照のみ"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "主訴から下書きへ進み、安全確認・候補比較・配穴理由・同じ指標の再評価という順序が明快。",
+      "sourceSha256": "b2cd0b455fb3550bd25ebeb370cdf48304bdb48c37fed27529c806ba1fc0fc10"
+    },
+    {
+      "source": "src/app/clinical/workspace/page.tsx",
+      "route": "/clinical/workspace",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/clinical/workspace/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/clinical/ClinicalWorkspace.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "作業中の下書き、新規記録、安全確認、事実と見立ての分離、ノートへの保存操作が具体的。",
+      "sourceSha256": "b4ad8effd388fa3a283d7dbd48b0756dd797749ae278e37132b629253061e476"
+    },
+    {
+      "source": "src/app/contact/page.tsx",
+      "route": "/contact",
+      "entryReviewStatus": "reviewed",
+      "classification": "outside scope",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/contact/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "問い合わせ種別、対象ページ・訂正箇所・参照資料、送信と再試行の案内を確認。連絡窓口の必要文は保持。",
+      "sourceSha256": "1929e9c2d417fbaa69f0b9917226391dc0c5f1617f869414e1e493e7ca1afb95"
+    },
+    {
+      "source": "src/app/curriculum/page.tsx",
+      "route": "/curriculum",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/curriculum/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/curriculum/CurriculumIndexClient.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "短いコースと全講義の違い、再開・受講済み・目次・クイズ復習への案内が具体的。",
+      "sourceSha256": "62600bb57f501bd09ef697d8d5cd145d4ad7affec6e7a164b9a6efb519c5f321"
+    },
+    {
+      "source": "src/app/curriculum/[id]/page.tsx",
+      "route": "/curriculum/[id]",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/curriculum/[id]/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/curriculum/CurriculumLectureReader.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [
+        "docs/readability/lecture-editorial-audit.json",
+        "docs/readability/foundation-glossary-audit.json"
+      ],
+      "notes": "冒頭要約、知りたい問い、本文・図・クイズ・出典・振り返り・前後講義への共通案内が明快。",
+      "sourceSha256": "7aae816da9e6ee2a64ee7a014eefd7a4c21c176f23626950eec6a6b2a54eed7f"
+    },
+    {
+      "source": "src/app/diagnosis/page.tsx",
+      "route": "/diagnosis",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/diagnosis/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/diagnosis/DiagnosisClient.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "直近1〜2週間の回答、分析・リセット、未確認/なしの分離、講義とノートへの引き継ぎを確認。結果の医学的再審査は別。",
+      "sourceSha256": "972203a8438f27c69632dacefcb97e17a90c8ed302726aa5f2bf3807dafe9e54"
+    },
+    {
+      "source": "src/app/editorial-policy/page.tsx",
+      "route": "/editorial-policy",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/editorial-policy/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "書誌・説明内容・専門監修の確認状況と、訂正窓口の区別が明快。出典ブロックは保持。",
+      "sourceSha256": "b99cc946e797111c736bcc08a4e58b214b1a90f8dcfaf167c77e741c29a42f4a"
+    },
+    {
+      "source": "src/app/glossary/page.tsx",
+      "route": "/glossary",
+      "entryReviewStatus": "reviewed",
+      "classification": "changed",
+      "routeImplementationChanged": true,
+      "changedSources": [
+        "src/app/glossary/page.tsx",
+        "src/components/glossary/GlossaryPopup.tsx"
+      ],
+      "inspectedSources": [
+        {
+          "path": "src/app/glossary/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/glossary/GlossaryPopup.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [
+        "docs/readability/foundation-glossary-audit.json"
+      ],
+      "notes": "索引から定義を読み、実講義タイトルを確認して講義へ進める。32定義の全文点検は別監査に記録。",
+      "sourceSha256": "4938ec4619520359706ec3f70959df90799ae4b1875cee9cea66b6104d194dd8"
+    },
+    {
+      "source": "src/app/kikei/page.tsx",
+      "route": "/kikei",
+      "entryReviewStatus": "reviewed",
+      "classification": "specialist review",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/kikei/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [
+        "docs/readability/tool-specialist-review.json"
+      ],
+      "notes": "8脈の一覧から詳細に進む操作は明快。冒頭の即効性などは既存専門一覧へ照合。",
+      "sourceSha256": "4247d044b6d6c3162c22f35fde9389bcc8f844290229e33fbc0386d2189037b4"
+    },
+    {
+      "source": "src/app/kikei/[slug]/page.tsx",
+      "route": "/kikei/[slug]",
+      "entryReviewStatus": "reviewed",
+      "classification": "specialist review",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/kikei/[slug]/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/kikei/KikeiDetailClient.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [
+        "docs/readability/tool-specialist-review.json"
+      ],
+      "notes": "無料2脈と有料6脈、流注図・詳細・クイズ・ノート保存への案内を確認。医学的なnature/主治/原文は専門一覧。",
+      "sourceSha256": "fc96000637090d2b3a4f8b551b5aef760188504111f4978aaf9765c15ef656b3"
+    },
+    {
+      "source": "src/app/kokushi/page.tsx",
+      "route": "/kokushi",
+      "entryReviewStatus": "reviewed",
+      "classification": "changed",
+      "routeImplementationChanged": true,
+      "changedSources": [
+        "src/app/kokushi/page.tsx"
+      ],
+      "inspectedSources": [
+        {
+          "path": "src/app/kokushi/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/kokushi/KokushiDashboard.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "実際のオリジナル10問に合わせ、過去問表現を修正。回答後に講義へ戻り、日替わり復習する操作を具体化。",
+      "sourceSha256": "daa4396c89d77f4b79bd083708249debc54a4732a22b709f901c50a320643946"
+    },
+    {
+      "source": "src/app/learn/courses/page.tsx",
+      "route": "/learn/courses",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/learn/courses/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/data/learningCourses.ts",
+          "scope": "11コースのtitle/description/audience/goalsのみ"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "4講の概論、各章3〜5講の短いコースと全講義の違い・共通受講記録が明快。",
+      "sourceSha256": "b04c2da1140b2e2357bc3080b2b3456f53f1a32a63dbc7caa9daf228f9b6a360"
+    },
+    {
+      "source": "src/app/learn/courses/[slug]/page.tsx",
+      "route": "/learn/courses/[slug]",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/learn/courses/[slug]/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/data/learningCourses.ts",
+          "scope": "11コースのtitle/description/audience/goalsのみ"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "到達目標、先に学ぶコース、短い例、講義順、次テーマの案内を確認。11コースの紹介データを読了。",
+      "sourceSha256": "2148f54353f950e0bf044524fe02f484c0f20e3832ce97d4d1759d19a5fd2039"
+    },
+    {
+      "source": "src/app/learn/page.tsx",
+      "route": "/learn",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/learn/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/data/learningCourses.ts",
+          "scope": "11コースのtitle/description/audience/goalsのみ"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "最初の概論と短いコース/全講義、今日の復習・国試・経穴・症例・ノートの違いが明快。",
+      "sourceSha256": "b436d765753a05206c11f8116c94027345e7ee4843f80d00ec627ee90559bea2"
+    },
+    {
+      "source": "src/app/library/page.tsx",
+      "route": "/library",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/library/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/app/library/LibraryClient.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "論文・古典・症例の分類、検索、確認範囲、原典へのリンクが明快。出典本文は改稿対象外。",
+      "sourceSha256": "8770d429698a530ec90f79194b8a18776c7f837e8ab2f4b4b14c7c19027632f7"
+    },
+    {
+      "source": "src/app/notes/page.tsx",
+      "route": "/notes",
+      "entryReviewStatus": "reviewed",
+      "classification": "specialist review",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/notes/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [
+        "entry-notes-pattern-label",
+        "entry-notes-home-stimulation",
+        "entry-notes-print-effective",
+        "entry-notes-print-prescription"
+      ],
+      "relatedSpecialistAudits": [],
+      "notes": "ノート種類、作成・検索・CSV/JSON保存・復元・養生シートの操作は明快。医学的な印刷案内は追加専門確認へ記録。",
+      "sourceSha256": "7b7f82be1b5a1a79b1bd2a88ba0f0647eefcc948a171530bd7cfdb9e43dfd702"
+    },
+    {
+      "source": "src/app/page.tsx",
+      "route": "/",
+      "entryReviewStatus": "reviewed",
+      "classification": "changed",
+      "routeImplementationChanged": true,
+      "changedSources": [
+        "src/app/page.tsx"
+      ],
+      "inspectedSources": [
+        {
+          "path": "src/app/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "疑問を講義とクイズで確かめ、迷った問題を本文で復習する主行動へ具体化。",
+      "sourceSha256": "0309df65858bdf649e4b7336adb6d904fd439cf01035523476162304ee565f83"
+    },
+    {
+      "source": "src/app/practice/haiketsu/page.tsx",
+      "route": "/practice/haiketsu",
+      "entryReviewStatus": "reviewed",
+      "classification": "changed",
+      "routeImplementationChanged": true,
+      "changedSources": [
+        "src/app/practice/haiketsu/page.tsx"
+      ],
+      "inspectedSources": [
+        {
+          "path": "src/app/practice/haiketsu/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "基本32穴を選び、本治/標治の内訳を比較し、理由を配穴集/ノートへ残す操作へ具体化。医学的なプリセット評価は別。",
+      "sourceSha256": "59d837f78f09eb8337bd6be806d500637e87c00acbf504b3b447a39e49492daf"
+    },
+    {
+      "source": "src/app/pricing/page.tsx",
+      "route": "/pricing",
+      "entryReviewStatus": "reviewed",
+      "classification": "outside scope",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/pricing/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [
+        "entry-pricing-care-example"
+      ],
+      "relatedSpecialistAudits": [],
+      "notes": "料金、保存枠、無料体験、契約・解約と申し込みの操作を確認。料金・契約文は保持。架空の養生例は専門確認。",
+      "sourceSha256": "fd74f79e5317424ec4cb3f09e7ca668be9e1fd807edd2e6883bd76d3180f67f3"
+    },
+    {
+      "source": "src/app/privacy/page.tsx",
+      "route": "/privacy",
+      "entryReviewStatus": "reviewed",
+      "classification": "outside scope",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/privacy/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "認証・保存・解析・免責・著作権の必要な文と窓口を確認。法的適否の確認は対象外。",
+      "sourceSha256": "31c78f50efd4d5a3f94a87712100775bc95d4f99ca8d18752917d751c605c3bc"
+    },
+    {
+      "source": "src/app/safety/page.tsx",
+      "route": "/safety",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/safety/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "受診を先に確認し、必要な相談/救急の連絡先と原典を見る順序が明快。医療案内の専門再審査は未実施。",
+      "sourceSha256": "37d94d3463a2c404ceb6a78066ebe846677b8a48695e45290310655d31801b96"
+    },
+    {
+      "source": "src/app/simulator/compare/page.tsx",
+      "route": "/simulator/compare",
+      "entryReviewStatus": "reviewed",
+      "classification": "specialist review",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/simulator/compare/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "案A/Bの比較とノート保存の操作を確認。伝統的候補の機序・配穴・手技判断は専門再審査が必要。",
+      "sourceSha256": "9ecfa45e1f42edb925e1bd588c344b469039cbca31cb087ffbed554e76a6d536"
+    },
+    {
+      "source": "src/app/simulator/page.tsx",
+      "route": "/simulator",
+      "entryReviewStatus": "reviewed",
+      "classification": "changed",
+      "routeImplementationChanged": false,
+      "changedSources": [
+        "src/components/SimulatorHub.tsx"
+      ],
+      "inspectedSources": [
+        {
+          "path": "src/app/simulator/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/SimulatorHub.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "3つの架空例と6段階演習、条件を選び学習例を表示する操作を確認。共通SimulatorHubの文を改稿。",
+      "sourceSha256": "3d6fd8caf46bedb2782f623d5dffcad4dd2dd6a8356fd82ba0b7030d13116df7"
+    },
+    {
+      "source": "src/app/symptoms/page.tsx",
+      "route": "/symptoms",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/symptoms/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/MedicalSafetyNotice.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/data/symptomData.ts",
+          "scope": "共通利用範囲と入口で使う安全案内・プレビューの参照経路のみ"
+        },
+        {
+          "path": "src/utils/symptomGuides.ts",
+          "scope": "紹介文と学習リソースの生成・リンク参照のみ"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "症状から受診の目安・日常の工夫・伝統分類の限界を読む用途が具体的。",
+      "sourceSha256": "9294609e3245b40870c0bb5ca3f21ab83332d654c7598666339478d8e378384d"
+    },
+    {
+      "source": "src/app/symptoms/[slug]/page.tsx",
+      "route": "/symptoms/[slug]",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/symptoms/[slug]/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/MedicalSafetyNotice.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/utils/symptomGuides.ts",
+          "scope": "紹介文と学習リソースの生成・リンク参照のみ"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [
+        "docs/readability/tool-specialist-review.json"
+      ],
+      "notes": "受診・分類・関連経穴・生活記録・出典・次の講義という目次とリンクが明快。比較モデル3例の専門問題は既存一覧。",
+      "sourceSha256": "ca0a994e53046f5695b697b721c0197c104a29abdc55f6a18d77286f8c7a18de"
+    },
+    {
+      "source": "src/app/terms/page.tsx",
+      "route": "/terms",
+      "entryReviewStatus": "reviewed",
+      "classification": "outside scope",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/terms/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "利用条件、契約、データ保全、法定記録との区別について必要な文を読了。法的適否の審査は対象外。",
+      "sourceSha256": "b0b8d5b38835fe025d77653ee46b17adfffc25756d329291cdf3e4af08e3302b"
+    },
+    {
+      "source": "src/app/tokushoho/page.tsx",
+      "route": "/tokushoho",
+      "entryReviewStatus": "reviewed",
+      "classification": "outside scope",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/tokushoho/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "販売条件、料金・支払・解約・連絡窓口の必要な文を読了。法的適否の審査は対象外。",
+      "sourceSha256": "6fe9d7673c979a665952a22a1dc330fdd3fa25b1ecb450c2051f283adc0aa0ec"
+    },
+    {
+      "source": "src/app/tsubo/basics/bone-cun/page.tsx",
+      "route": "/tsubo/basics/bone-cun",
+      "entryReviewStatus": "reviewed",
+      "classification": "specialist review",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/tsubo/basics/bone-cun/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [
+        "entry-bone-cun-accuracy",
+        "entry-finger-cun-values"
+      ],
+      "relatedSpecialistAudits": [],
+      "notes": "骨度折量寸と指寸の比較表への導入は理解可能。正確性の保証に読める冒頭と指幅基準は専門確認へ記録。",
+      "sourceSha256": "13fa70c6576630a9623741619b1a0dc37efb9d18c9ce3cfcbdf6350597ecbdb7"
+    },
+    {
+      "source": "src/app/tsubo/compare/page.tsx",
+      "route": "/tsubo/compare",
+      "entryReviewStatus": "reviewed",
+      "classification": "specialist review",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/tsubo/compare/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/app/tsubo/compare/CompareClient.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [
+        "entry-compare-default-safety"
+      ],
+      "relatedSpecialistAudits": [
+        "docs/readability/tool-specialist-review.json"
+      ],
+      "notes": "プリセット・検索・列の変更/削除・印刷・保存の操作を確認。医学的な比較と標準施灸の既定表示は専門確認。",
+      "sourceSha256": "40783626625fa48c583c171ee5b07ad88e3eddc5ddffcf761673691a9ee571e7"
+    },
+    {
+      "source": "src/app/tsubo/page.tsx",
+      "route": "/tsubo",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/tsubo/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/components/tsubo/TsuboInteractiveClient.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "名前・読み・コード・部位・経脈で検索し、詳細や比較・復習へ進む操作が明快。361経穴の医学本文の照合とは区別。",
+      "sourceSha256": "ecce89f6dd3ecb842461b43a48869a1f2cfb5063c2e4a8e1fc39644b7d0527c8"
+    },
+    {
+      "source": "src/app/tsubo/practice/page.tsx",
+      "route": "/tsubo/practice",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/tsubo/practice/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/app/tsubo/practice/PracticeClient.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        },
+        {
+          "path": "src/data/tsubo/practiceEntry.ts",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "保存した途中の回答から再開、新しいコース選択、今日の復習、小単位テスト・採点・保存の操作が具体的。",
+      "sourceSha256": "15efa49a69e8f6510d80f8d6b42d35fe202f36888c85a46e08272e900095947e"
+    },
+    {
+      "source": "src/app/tsubo/[code]/page.tsx",
+      "route": "/tsubo/[code]",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/tsubo/[code]/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "共通詳細テンプレートの位置・図・注意・出典への目次、配穴・比較・復習・ノート・講義導線を確認。361個別本文は対象外。",
+      "sourceSha256": "1d2d0ae03437e699ea96e9b29d65c7927a39b6e806e47f4e48a238e0e9df3803"
+    },
+    {
+      "source": "src/app/updates/page.tsx",
+      "route": "/updates",
+      "entryReviewStatus": "reviewed",
+      "classification": "reviewed clear",
+      "routeImplementationChanged": false,
+      "changedSources": [],
+      "inspectedSources": [
+        {
+          "path": "src/app/updates/page.tsx",
+          "scope": "冒頭・利用案内・表示ボタン・学習リンクのソース文章"
+        }
+      ],
+      "findingIds": [],
+      "relatedSpecialistAudits": [],
+      "notes": "機能改善と教材改訂を日付から読み、関連ページへ進む案内が明快。",
+      "sourceSha256": "bf3f7402161a5d89703b59cfbb3998628b0fc674e4167c61255227d8da7441f3"
+    }
+  ],
+  "findings": [
+    {
+      "id": "entry-notes-pattern-label",
+      "sourcePath": "src/app/notes/page.tsx",
+      "line": 57,
+      "displayRoutes": [
+        "/notes"
+      ],
+      "quote": "陽虚（冷え・代謝低下）",
+      "category": "伝統分類と医学的機序",
+      "expertConfirmation": "陽虚を代謝低下、血虚を栄養・血流不足等に対応させる入力候補の意味と、病名/検査結果との混同を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true
+    },
+    {
+      "id": "entry-notes-home-stimulation",
+      "sourcePath": "src/app/notes/page.tsx",
+      "line": 1824,
+      "displayRoutes": [
+        "/notes"
+      ],
+      "quote": "ご自宅で温める・押すと良いおすすめのツボ",
+      "category": "印刷物の個別適応",
+      "expertConfirmation": "自宅での温熱・押圧を一律に推奨する見出しが、入力された穴と個人の状態で適切か確認する。空欄時のセルフケア文も対象を分けて確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true
+    },
+    {
+      "id": "entry-notes-print-effective",
+      "sourcePath": "src/app/notes/page.tsx",
+      "line": 1949,
+      "displayRoutes": [
+        "/notes"
+      ],
+      "quote": "特効ツボ・おすすめ食材を判定",
+      "category": "診断・効能の断定",
+      "expertConfirmation": "12問の回答から特効ツボや食材を判定できるとする対象・評価方法・根拠を確認する。現在の診断ツールの分類保留/学習範囲との整合性も確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true
+    },
+    {
+      "id": "entry-notes-print-prescription",
+      "sourcePath": "src/app/notes/page.tsx",
+      "line": 1967,
+      "displayRoutes": [
+        "/notes"
+      ],
+      "quote": "本日の体調に最も適したツボ・施術処方を組み立てます。",
+      "category": "個別適応の保証",
+      "expertConfirmation": "待合室印刷案内で質問票の結果から最適な個別処方を保証していないか、所見・医学的評価・安全条件・比較の根拠を確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true
+    },
+    {
+      "id": "entry-case-measurement",
+      "sourcePath": "src/components/cases/CaseStudyViewer.tsx",
+      "line": 682,
+      "displayRoutes": [
+        "/cases/[id]"
+      ],
+      "quote": "現在の体質バランスを測定できます。",
+      "category": "検査と学習分類の混同",
+      "expertConfirmation": "12問のセルフチェックを「体質バランスの測定」と呼ぶ妥当性と、学習用分類・病気の診断の区別を確認する。20症例全文の医学的再審査を行ったという意味ではない。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true
+    },
+    {
+      "id": "entry-pricing-care-example",
+      "sourcePath": "src/app/pricing/page.tsx",
+      "line": 285,
+      "displayRoutes": [
+        "/pricing"
+      ],
+      "quote": "イライラ・頭痛を鎮める",
+      "category": "架空の印刷例の効能",
+      "expertConfirmation": "架空例でも自宅の温熱対象として太衝・風池等を示す文の適応・注意と、症状改善を断定する出典を専門家が確認する。料金と契約条件は今回保持。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true
+    },
+    {
+      "id": "entry-bone-cun-accuracy",
+      "sourcePath": "src/app/tsubo/basics/bone-cun/page.tsx",
+      "line": 174,
+      "displayRoutes": [
+        "/tsubo/basics/bone-cun"
+      ],
+      "quote": "体格や骨格の個人差を超えて正確に経穴を特定する",
+      "category": "測定の精度・適用範囲",
+      "expertConfirmation": "比率測定で個人差を超えて正確に位置を特定できるとする範囲、目印・触診・誤差の条件を確認する。位置の学習と個別施術の安全を分ける。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true
+    },
+    {
+      "id": "entry-finger-cun-values",
+      "sourcePath": "src/app/tsubo/basics/bone-cun/page.tsx",
+      "line": 200,
+      "displayRoutes": [
+        "/tsubo/basics/bone-cun"
+      ],
+      "quote": "示指・中指の2本幅を「1.5寸」",
+      "category": "伝統的計測の基準値",
+      "expertConfirmation": "2本幅1.5寸・3本幅2寸・4本幅3寸、どの指/関節/体位/本人の指を使うか、WHO・採用教科書の版と該当箇所を専門家が照合する。数値を推測で変更していない。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true
+    },
+    {
+      "id": "entry-compare-default-safety",
+      "sourcePath": "src/app/tsubo/compare/CompareClient.tsx",
+      "line": 523,
+      "displayRoutes": [
+        "/tsubo/compare"
+      ],
+      "quote": "標準的刺灸が可能",
+      "category": "注意情報がない場合の安全表示",
+      "expertConfirmation": "注意事項が空の場合の既定表示が、施術可能・安全確認済みと受け取られないか確認する。局所解剖・個人条件・未確認情報から判断できる範囲を専門家が確認する。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true
+    }
+  ]
+}

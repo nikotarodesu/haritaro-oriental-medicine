@@ -37,8 +37,8 @@ export default function HomePage() {
               <span>東洋医学 <span className="copy-phrase">学習・実践サイト</span></span>
             </p>
             <h1 className="home-headline font-serif">
-              <span className="home-copy-line"><span className="copy-phrase">東洋医学の</span><span className="copy-phrase">「わか<span className="copy-ending">る」を、</span></span></span>
-              <span className="home-copy-line home-copy-accent"><span className="copy-phrase">臨床の</span><span className="copy-phrase">「考えら<span className="copy-ending">れる」へ。</span></span></span>
+              <span className="home-copy-line"><span className="copy-phrase">東洋医学の</span><span className="copy-phrase">疑問を、</span></span>
+              <span className="home-copy-line home-copy-accent">講義とクイズで確かめる。</span>
             </h1>
             <p className="home-description ui-muted">
               <span>講義で用語の意味を学び、クイズで確かめる。</span>

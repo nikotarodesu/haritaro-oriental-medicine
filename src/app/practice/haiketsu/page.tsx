@@ -175,7 +175,7 @@ export default function HaiketsuPracticePage() {
               配穴設計・臨床演習
             </h1>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] max-w-2xl leading-relaxed">
-              基本32穴の中から目的に応じた経穴を選定し、本治穴（体質根本）と標治穴（局所対症）のバランスや昇降・寒熱の方向性を整理します。選定理由を自ら言語化し、教材の代表例と比較して推論力を高める練習です。
+              基本32穴から経穴を選び、本治・標治の内訳や、昇降・寒熱の方向を示す教材上の分類を確認します。選んだ理由を教材例と比べ、配穴集やノートに残す練習ができます。
             </p>
             <p className="text-xs text-[#737C77] dark:text-[#8899A6] max-w-2xl">
               無料では4穴までの選択・構成分析・最初の2つの教材例・臨床ノートへの下書き引き継ぎを利用できます。配穴集は無料で最大{SUBSCRIPTION_CONFIG.limits.freeMemoMax}件、プレミアムで最大{SUBSCRIPTION_CONFIG.limits.premiumMemoMax.toLocaleString("ja-JP")}件です。
@@ -198,10 +198,10 @@ export default function HaiketsuPracticePage() {
               <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
                 <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
                   <span className="w-5 h-5 rounded-full bg-[#1E3D34] text-white flex items-center justify-center text-xs font-mono">1</span>
-                  <span>主治から穴を選ぶ</span>
+                  <span>目的に合わせて穴を選ぶ</span>
                 </div>
                 <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  基本32穴の中から本治穴（体質根本）と標治穴（局所対症）を直感的に選択。
+                  基本32穴を本治・標治に分けて選び、組み合わせを画面で確認します。
                 </p>
               </div>
 
@@ -211,7 +211,7 @@ export default function HaiketsuPracticePage() {
                   <span>教材の模範配穴と比較</span>
                 </div>
                 <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  少数精鋭の調和バランスや多穴過剰傾向をリアルタイム解析モデルで検証。
+                  選んだ穴の数と本治・標治の内訳を確認し、教材例の構成と比べます。
                 </p>
               </div>
 

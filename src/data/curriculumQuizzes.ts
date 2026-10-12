@@ -381,7 +381,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
         "臓腑の役割は既習、五行で臓器の機能を実証"
       ],
       "correctIndex": 1,
-      "explanation": "臓腑・生命機能を先に学び、五行を整理の視点として用います。用語が曖昧なら前の章を確認します。",
+      "explanation": "臓腑・生命機能で学んだ役割や連携を、五行の配当と関係で整理します。臓腑の名称や基本役割が曖昧な場合は、臓腑論に戻って確認します。",
       "relatedSectionTitle": "第2節：陰陽・臓腑との学習上の関係"
     },
     {
@@ -946,7 +946,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
         "五行論・経絡の基礎・統合症例"
       ],
       "correctIndex": 0,
-      "explanation": "新しい順序では、基本用語と臓腑の役割の後に正常な連携を学びます。五行の整理は次章で扱います。",
+      "explanation": "基本用語と臓腑の役割を学んだ後に、この章で営衛・三焦・昇降出入などの正常な連携を整理します。五行による整理は次章で扱います。",
       "relatedSectionTitle": "第1節：既習の基本と正常な連携"
     },
     {
@@ -958,7 +958,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
         "営衛＝方向、三焦＝分担、昇降出入＝領域"
       ],
       "correctIndex": 1,
-      "explanation": "着目する役割・領域・方向を分けて学びます。現代の物質や機構と同一視しません。",
+      "explanation": "営衛は役割の分担、三焦は上・中・下の領域、昇降出入は動きの方向に着目します。視点が異なる用語を、同じ物質や機構の別名として扱いません。",
       "relatedSectionTitle": "第2節：四つの概念と、それが答える問い"
     },
     {
@@ -1441,7 +1441,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
         "役割は正常のモデル、反転すれば原因は確定"
       ],
       "correctIndex": 1,
-      "explanation": "説明の根拠を示し、まだ確認していないことを添えます。正常の説明から病気の原因が自動的に確定するわけではありません。",
+      "explanation": "例えば脾の運化と飲食物の精微を関係づけたら、運化という役割を根拠として示し、検査や生理機構を確認した説明とは分けます。正常な連携の説明だけでは、病気の原因は確定しません。",
       "relatedSectionTitle": "第2節：ひとつの関係を根拠とともに説明する"
     },
     {

@@ -1,0 +1,609 @@
+{
+  "date": "2026-10-12",
+  "scope": "公開12記事の本文全文、冒頭、副題、学習要約、既存関連記事と講義/症例導線の文章点検",
+  "sourceCatalog": "src/data/articleData.ts: SOURCE_ARTICLES",
+  "publishedCount": 12,
+  "draftCount": 0,
+  "drafts": [],
+  "reviewMeaning": "全文 reviewed は文章と学習導線の点検完了を示す。医学的監修・全参考文献の原著再照合完了を示さない。",
+  "externalSourcesReverifiedInThisPass": false,
+  "sourcePolicy": "引用、古典原文、文献、出典注記、医学的な数値・条件・根拠強度は保持。専門判断が必要な既存文は下の一覧に残し、推測で訂正していない。",
+  "validation": {
+    "readingRegression": "passed",
+    "contentRegression": "passed",
+    "sourceReferencesUnchanged": true,
+    "headingsAndOrderUnchanged": true,
+    "citationIdsAndOrderUnchanged": true,
+    "publishedRelatedLinks": 36
+  },
+  "articles": [
+    {
+      "articleId": "science-of-oriental-medicine-history",
+      "title": "東洋医学の歴史と進化：古代の臨床知から現代科学へ",
+      "file": "src/data/articles/historyArticle.ts",
+      "visibility": "published",
+      "fullTextStatus": "reviewed",
+      "fullTextChanged": true,
+      "openingStatus": "reviewed",
+      "learningSummaryStatus": "reviewed",
+      "relatedReadingStatus": "reviewed",
+      "specialistReviewStatus": "具体的な確認事項あり・専門家による確認待ち",
+      "editorialChanges": [
+        "副題・要約を、古典の成立と日本での展開が分かる表現に変更。公開用学習要約にも合わせた。",
+        "情報取得・ダイナミクス・状態推定・認知バイアスの説明を平易にし、結論を三つの読み取り作業に変更。",
+        "年代表の「超実践的医療へ純化」を、観察と治療手技の重視という具体的な表現に変更。",
+        "次の記事でネットワークという比喩を見直す理由を明示。"
+      ],
+      "unchangedClearSections": "下記改稿箇所以外の明快な本文・安全情報は保持。専門確認事項も推測で変更していない。",
+      "invariants": {
+        "referenceDataSha256": "2664ce17ca37f92c6f32ce4ca1a01899258a65628a1325c36d51e9e03405886b",
+        "referenceDataUnchanged": true,
+        "headingCount": 12,
+        "headingsAndOrderUnchanged": true,
+        "citationCount": 3,
+        "citationIdsAndOrderUnchanged": true
+      },
+      "learningDestinations": {
+        "lectureId": "lecture-yinyang-1",
+        "caseId": "fatigue-reasoning",
+        "nextArticles": [
+          "science-of-yinyang-gogyo",
+          "science-of-abdominal-diagnosis",
+          "east-west-integrative-unified-theory"
+        ]
+      },
+      "specialistReviewItems": [
+        {
+          "id": "hist-01",
+          "section": "序論の見出し・冒頭",
+          "sourceLine": 43,
+          "quotation": "人体を「複雑適応システム」として捉えた最初の医学",
+          "requiredConfirmation": "「最初」とする比較対象・年代・一次史料を確認する。見出しと既存アンカーを推測で改めていない。",
+          "reviewer": "医学史の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        },
+        {
+          "id": "hist-02",
+          "section": "序論",
+          "sourceLine": 53,
+          "quotation": "人体解剖が厳しく制限されていた古代中国において、筋肉、神経、内臓、血管を直接視覚的に観察することは困難を極めました。",
+          "requiredConfirmation": "どの時代・地域・社会制度の制限を指すかを史料で確認し、医学発展の理由を一つに限定できるか検討する。",
+          "reviewer": "医学史の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        },
+        {
+          "id": "hist-03",
+          "section": "1. 工学・システム同定としてのブラックボックス解析",
+          "sourceLine": 87,
+          "quotation": "古代東洋医学も全く同じ構造を持っていました。",
+          "requiredConfirmation": "工学と伝統診察の同一性を示す根拠と、筆者の学習用比喩の範囲を区別する。古代の医家が自律神経・内分泌などを推定したと読める後続文も確認する。",
+          "reviewer": "医学史・診察教育の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        },
+        {
+          "id": "hist-04",
+          "section": "1. 工学・システム同定としてのブラックボックス解析",
+          "sourceLine": 97,
+          "quotation": "現代医学が静的な「平均値・基準値」を重視するのに対し、東洋医学は「環境に対する応答性と変化率」を重視したのです。",
+          "requiredConfirmation": "現代医学と伝統医学の診察を一律に静的/動的と分ける説明の妥当性を確認する。具体的な診察・検査・研究対象での比較が必要。",
+          "reviewer": "医学史・臨床医学の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        },
+        {
+          "id": "hist-05",
+          "section": "3. 『黄帝内経』の設計図 ― 素問・霊枢と三層階層モデル",
+          "sourceLine": 127,
+          "quotation": "心は肺と関係し、肺は腎と関係し、腎は肝と関係し、肝は脾と関係し、脾は再び心へ還流する",
+          "requiredConfirmation": "この順序が古典のどの版・篇・条文のどの関係を指すかを確認する。五行の相生順序や実測された循環と混同しない説明にするかは専門家が判断する。",
+          "reviewer": "古典・五行論の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        },
+        {
+          "id": "hist-06",
+          "section": "3. 『黄帝内経』の設計図 ― 素問・霊枢と三層階層モデル",
+          "sourceLine": 129,
+          "quotation": "『黄帝内経』は病気を以下の三層階層モデルで捉えていました",
+          "requiredConfirmation": "三層分類が古典の明示的記述か筆者の再構成か、引用版・篇・条文を確認する。自律的制御網、多層オミクス、現代予防医学との対応の強さも確認する。",
+          "reviewer": "古典・医学史の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        },
+        {
+          "id": "hist-07",
+          "section": "4. なぜ東洋医学は二千年以上受け継がれたのか ― 経験医学と科学的医学の相違",
+          "sourceLine": 148,
+          "quotation": "二千年間、数億人規模の臨床で「改善例・悪化例・成功と失敗のデータ」が絶え間なくフィードバックされ、有効な法則だけが淘汰を生き残ってきた",
+          "requiredConfirmation": "人数・記録方法・比較条件・無効な慣行の排除を示す史料を確認する。長い使用歴だけでは有効性を証明できないという既存の学習案内との整合性を検討する。",
+          "reviewer": "医学史・臨床研究の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        },
+        {
+          "id": "hist-08",
+          "section": "4. なぜ東洋医学は二千年以上受け継がれたのか ― 経験医学と科学的医学の相違",
+          "sourceLine": 155,
+          "quotation": "脊髄後角での侵害受容伝達を遮断し、下降性疼痛抑制系",
+          "requiredConfirmation": "示唆と断定の範囲、動物種・刺激条件・測定対象・原著出典を確認する。この記事の歴史文献や症例集積だけで神経機序を裏付けたと読ませない。",
+          "reviewer": "鍼灸の神経生理研究の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        },
+        {
+          "id": "hist-09",
+          "section": "5. 日本東洋医学の成立と適応進化 ― 古方派・管鍼法・腹診の独自発展",
+          "sourceLine": 171,
+          "quotation": "痛覚受容器（自由神経終末）への機械的衝撃を最小限に抑えつつ、無痛に近い切皮とミリ単位の深度制御が可能",
+          "requiredConfirmation": "管鍼法で何を測定・比較した研究か、切皮と刺入深度の区別、刺激・痛みの個人差と条件を確認する。技術史の記述と生理学的機序・安全性の証明を区別する。",
+          "reviewer": "鍼灸手技・安全教育の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        },
+        {
+          "id": "hist-10",
+          "section": "5. 日本東洋医学の成立と適応進化 ― 古方派・管鍼法・腹診の独自発展",
+          "sourceLine": 174,
+          "quotation": "内臓病態と処方を直結させる診断体系を完成させました。",
+          "requiredConfirmation": "歴史的な方証相対の説明か、臓器疾患の診断精度・処方効果まで確立したという意味かを確認する。腹診記事の診断・処方の限界との整合性が必要。",
+          "reviewer": "漢方診察・医学史の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        },
+        {
+          "id": "hist-11",
+          "section": "5. 日本東洋医学の成立と適応進化 ― 古方派・管鍼法・腹診の独自発展",
+          "sourceLine": 177,
+          "quotation": "1976年には医療用漢方エキス製剤148処方が国民皆保険に収載されました。",
+          "requiredConfirmation": "1976年の収載処方数と、その後の追加時期を行政資料で照合する。数値や年代を推測で置き換えていない。",
+          "reviewer": "漢方の制度史に詳しい運営者・専門家",
+          "status": "専門確認待ち・既存文を保持"
+        },
+        {
+          "id": "hist-12",
+          "section": "5. 日本東洋医学の成立と適応進化 ― 古方派・管鍼法・腹診の独自発展",
+          "sourceLine": 177,
+          "quotation": "今日では日本の医師の約8割以上が日常診療で漢方薬を活用しており",
+          "requiredConfirmation": "調査年、対象医師、回答率、「使用経験」か「日常使用」かを確認する。「今日」の現行性と分母を特定する必要がある。",
+          "reviewer": "調査資料を確認できる運営者・専門家",
+          "status": "専門確認待ち・既存文を保持"
+        }
+      ]
+    },
+    {
+      "articleId": "science-of-yinyang-gogyo",
+      "title": "陰陽五行を学ぶ：伝統モデルと現代医学の違い",
+      "file": "src/data/articles/yinyangGogyoArticle.ts",
+      "visibility": "published",
+      "fullTextStatus": "reviewed",
+      "fullTextChanged": true,
+      "openingStatus": "reviewed",
+      "learningSummaryStatus": "reviewed",
+      "relatedReadingStatus": "reviewed",
+      "specialistReviewStatus": "具体的な確認事項あり・専門家による確認待ち",
+      "editorialChanges": [
+        "「生理機構」を「身体の仕組み」に変更。",
+        "腎の例で、同じ漢字でも伝統医学と現代医学では意味と確かめ方が異なることを明記。"
+      ],
+      "unchangedClearSections": "下記改稿箇所以外の明快な本文・安全情報は保持。専門確認事項も推測で変更していない。",
+      "invariants": {
+        "referenceDataSha256": "2e44f4cad71a1d9c316010a7f80a8f0e23c297f792775cd9fc4239f9e5be4f0b",
+        "referenceDataUnchanged": true,
+        "headingCount": 14,
+        "headingsAndOrderUnchanged": true,
+        "citationCount": 6,
+        "citationIdsAndOrderUnchanged": true
+      },
+      "learningDestinations": {
+        "lectureId": "lecture-yinyang-3",
+        "caseId": "mixed-temperature",
+        "nextArticles": [
+          "science-of-qi-blood-fluid",
+          "science-of-meridians-network",
+          "east-west-integrative-unified-theory"
+        ]
+      },
+      "specialistReviewItems": [
+        {
+          "id": "yy-01",
+          "section": "2. 陰陽の四原則・7. 相乗相侮・8. 五臓への配当",
+          "sourceLine": 117,
+          "quotation": "陰陽の関係は、学習上、次の四つに整理されます。",
+          "requiredConfirmation": "WHO用語集は既存注記でも一部定義のみ確認、参考書本文は未照合。四原則・相乗相侮・五臓配当の教材としての定義を、版・ページごとに照合する。",
+          "reviewer": "陰陽五行・古典教育の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        }
+      ]
+    },
+    {
+      "articleId": "science-of-qi-blood-fluid",
+      "title": "気血津液を学ぶ：伝統的な分類と医学的評価",
+      "file": "src/data/articles/kiketsusuiArticle.ts",
+      "visibility": "published",
+      "fullTextStatus": "reviewed",
+      "fullTextChanged": true,
+      "openingStatus": "reviewed",
+      "learningSummaryStatus": "reviewed",
+      "relatedReadingStatus": "reviewed",
+      "specialistReviewStatus": "具体的な確認事項あり・専門家による確認待ち",
+      "editorialChanges": [
+        "既存の疲労・食欲低下の学習例を、観察・伝統的な見立て・次の対応の三つに分けて表示。"
+      ],
+      "unchangedClearSections": "下記改稿箇所以外の明快な本文・安全情報は保持。専門確認事項も推測で変更していない。",
+      "invariants": {
+        "referenceDataSha256": "661da9ef8242ee24559b17ee003fc6a055cd3d643eeecd5cb130e60099db6beb",
+        "referenceDataUnchanged": true,
+        "headingCount": 7,
+        "headingsAndOrderUnchanged": true,
+        "citationCount": 10,
+        "citationIdsAndOrderUnchanged": true
+      },
+      "learningDestinations": {
+        "lectureId": "lecture-qiblood-1",
+        "caseId": "fatigue-reasoning",
+        "nextArticles": [
+          "science-of-yinyang-gogyo",
+          "science-of-kampo-network-pharmacology",
+          "science-of-tongue-diagnosis"
+        ]
+      },
+      "specialistReviewItems": [
+        {
+          "id": "qi-01",
+          "section": "2. 気の働きを学ぶ",
+          "sourceLine": 104,
+          "quotation": "自汗は睡眠中の汗だけを指す用語ではありません。",
+          "requiredConfirmation": "自汗と盗汗の定義、睡眠/覚醒との区別が読み手に十分伝わるか確認する。現状の否定文だけから正しい定義を推測して追加していない。",
+          "reviewer": "気血津液・診察教育の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        }
+      ]
+    },
+    {
+      "articleId": "science-of-meridians-network",
+      "title": "経絡を学ぶ：伝統理論と神経・結合組織の研究",
+      "file": "src/data/articles/meridianArticle.ts",
+      "visibility": "published",
+      "fullTextStatus": "reviewed",
+      "fullTextChanged": true,
+      "openingStatus": "reviewed",
+      "learningSummaryStatus": "reviewed",
+      "relatedReadingStatus": "reviewed",
+      "specialistReviewStatus": "具体的な確認事項あり・専門家による確認待ち",
+      "editorialChanges": [
+        "副題の「転帰」を患者の症状や機能の変化と表現。",
+        "位置・組織の反応・症状改善のどれを研究が調べたか、読み手の確認作業として説明。"
+      ],
+      "unchangedClearSections": "下記改稿箇所以外の明快な本文・安全情報は保持。専門確認事項も推測で変更していない。",
+      "invariants": {
+        "referenceDataSha256": "a9b5ed042549792e22733cb2e03436b99f54711f4e358db845076ab7b16ad44e",
+        "referenceDataUnchanged": true,
+        "headingCount": 6,
+        "headingsAndOrderUnchanged": true,
+        "citationCount": 3,
+        "citationIdsAndOrderUnchanged": true
+      },
+      "learningDestinations": {
+        "lectureId": "lecture-diagnosis-9",
+        "caseId": "back-pain-referral",
+        "nextArticles": [
+          "science-of-acupoints-mechanotransduction",
+          "science-of-acupuncture-neuroscience",
+          "east-west-integrative-unified-theory"
+        ]
+      },
+      "specialistReviewItems": [
+        {
+          "id": "mer-01",
+          "section": "1. 経絡の記述を学ぶ",
+          "sourceLine": 53,
+          "quotation": "経脈やその分枝である絡脈を区別し、十二正経と奇経八脈などを学びます。",
+          "requiredConfirmation": "WHO用語集の個別用語全件照合は既存注記でも未完了。経脈・絡脈・孫絡・奇経八脈・流注について教材の定義と典拠を確認する。",
+          "reviewer": "経絡教育・古典の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        }
+      ]
+    },
+    {
+      "articleId": "science-of-acupoints-mechanotransduction",
+      "title": "ツボ（経穴）の科学：位置と刺激の研究",
+      "file": "src/data/articles/acupointArticle.ts",
+      "visibility": "published",
+      "fullTextStatus": "reviewed",
+      "fullTextChanged": true,
+      "openingStatus": "reviewed",
+      "learningSummaryStatus": "reviewed",
+      "relatedReadingStatus": "reviewed",
+      "specialistReviewStatus": "今回新たな具体的問題を特定していない・専門家監修は未実施",
+      "editorialChanges": [
+        "位置以外の刺激条件が同時に変わる場合を、「位置だけに帰する」から、どの条件による違いか区別できないと表現。",
+        "学習の焦点を資料ごとに何を確かめたか確認する操作に変更し、図の「転帰」を症状や機能と表現。"
+      ],
+      "unchangedClearSections": "下記改稿箇所以外の明快な本文・安全情報は保持。専門確認事項も推測で変更していない。",
+      "invariants": {
+        "referenceDataSha256": "3ef15d78e95106d5caad669e04710f961ce608c056583f47f959525958787d20",
+        "referenceDataUnchanged": true,
+        "headingCount": 6,
+        "headingsAndOrderUnchanged": true,
+        "citationCount": 4,
+        "citationIdsAndOrderUnchanged": true
+      },
+      "learningDestinations": {
+        "lectureId": "lecture-treatment-8",
+        "caseId": "back-pain-referral",
+        "nextArticles": [
+          "science-of-meridians-network",
+          "science-of-acupuncture-neuroscience",
+          "science-of-pulse-diagnosis"
+        ]
+      },
+      "specialistReviewItems": []
+    },
+    {
+      "articleId": "science-of-pulse-diagnosis",
+      "title": "脈診を学ぶ：触知所見と循環評価の違い",
+      "file": "src/data/articles/pulseArticle.ts",
+      "visibility": "published",
+      "fullTextStatus": "reviewed",
+      "fullTextChanged": true,
+      "openingStatus": "reviewed",
+      "learningSummaryStatus": "reviewed",
+      "relatedReadingStatus": "reviewed",
+      "specialistReviewStatus": "今回新たな具体的問題を特定していない・専門家監修は未実施",
+      "editorialChanges": [
+        "冒頭で脈拍数・リズム・触れやすさを記録し、証の推定とは分けるという順序を明示。",
+        "学習の焦点と関連記事理由で、所見の一致・病気を判別する精度・治療の利益を区別。"
+      ],
+      "unchangedClearSections": "下記改稿箇所以外の明快な本文・安全情報は保持。専門確認事項も推測で変更していない。",
+      "invariants": {
+        "referenceDataSha256": "9713f2abf0a19d263b51c448ae5b104711f554eb64865297905534759fadfcba",
+        "referenceDataUnchanged": true,
+        "headingCount": 6,
+        "headingsAndOrderUnchanged": true,
+        "citationCount": 3,
+        "citationIdsAndOrderUnchanged": true
+      },
+      "learningDestinations": {
+        "lectureId": "lecture-diagnosis-6",
+        "caseId": "mixed-temperature",
+        "nextArticles": [
+          "science-of-tongue-diagnosis",
+          "science-of-abdominal-diagnosis",
+          "east-west-integrative-unified-theory"
+        ]
+      },
+      "specialistReviewItems": []
+    },
+    {
+      "articleId": "science-of-abdominal-diagnosis",
+      "title": "腹診を学ぶ：腹証の観察と受診判断",
+      "file": "src/data/articles/abdomenArticle.ts",
+      "visibility": "published",
+      "fullTextStatus": "reviewed",
+      "fullTextChanged": true,
+      "openingStatus": "reviewed",
+      "learningSummaryStatus": "reviewed",
+      "relatedReadingStatus": "reviewed",
+      "specialistReviewStatus": "今回新たな具体的問題を特定していない・専門家監修は未実施",
+      "editorialChanges": [
+        "観察例の主語を明確にし、検者が感じる抵抗と本人が訴える痛みを区別。",
+        "学習要約で、腹痛の受診すべき徴候と、腹証だけで処方を決められない理由を具体化。"
+      ],
+      "unchangedClearSections": "下記改稿箇所以外の明快な本文・安全情報は保持。専門確認事項も推測で変更していない。",
+      "invariants": {
+        "referenceDataSha256": "dcf9bd262c0c448eeea908a95c6eaef42dbb404ab49a86403e7b71826b8af757",
+        "referenceDataUnchanged": true,
+        "headingCount": 6,
+        "headingsAndOrderUnchanged": true,
+        "citationCount": 3,
+        "citationIdsAndOrderUnchanged": true
+      },
+      "learningDestinations": {
+        "lectureId": "lecture-diagnosis-6",
+        "caseId": "fatigue-reasoning",
+        "nextArticles": [
+          "science-of-kampo-network-pharmacology",
+          "east-west-integrative-gerd-gastric",
+          "science-of-pulse-diagnosis"
+        ]
+      },
+      "specialistReviewItems": []
+    },
+    {
+      "articleId": "science-of-tongue-diagnosis",
+      "title": "舌診の科学：観察できること・確定できないこと",
+      "file": "src/data/articles/tongueArticle.ts",
+      "visibility": "published",
+      "fullTextStatus": "reviewed",
+      "fullTextChanged": true,
+      "openingStatus": "reviewed",
+      "learningSummaryStatus": "reviewed",
+      "relatedReadingStatus": "reviewed",
+      "specialistReviewStatus": "具体的な確認事項あり・専門家による確認待ち",
+      "editorialChanges": [
+        "画像の診断性能・再現性・対象集団を、それぞれ何を確かめるかという言葉で説明。",
+        "学習要約を、見た特徴と伝統的な分類の候補を分けて記録する操作として表現。"
+      ],
+      "unchangedClearSections": "下記改稿箇所以外の明快な本文・安全情報は保持。専門確認事項も推測で変更していない。",
+      "invariants": {
+        "referenceDataSha256": "d5e7d48eccf84982a827639d8709cf9281ce364f31a1e7c7b15f5a4ecdc8d69e",
+        "referenceDataUnchanged": true,
+        "headingCount": 5,
+        "headingsAndOrderUnchanged": true,
+        "citationCount": 3,
+        "citationIdsAndOrderUnchanged": true
+      },
+      "learningDestinations": {
+        "lectureId": "lecture-diagnosis-5",
+        "caseId": "mixed-temperature",
+        "nextArticles": [
+          "science-of-pulse-diagnosis",
+          "science-of-qi-blood-fluid",
+          "east-west-integrative-unified-theory"
+        ]
+      },
+      "specialistReviewItems": [
+        {
+          "id": "tongue-01",
+          "section": "1. まず、観察と解釈を分ける・参考文献",
+          "sourceLine": 28,
+          "quotation": "伝統的な舌診文献 [^classic-bian-she-zhinan] の分類",
+          "requiredConfirmation": "『辨舌指南』は既存注記で引用版・巻・箇所の原典照合待ち。観察から寒証候補を考える例を含め、参照した具体的な分類を原典と照合する。",
+          "reviewer": "舌診・古典の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        }
+      ]
+    },
+    {
+      "articleId": "science-of-acupuncture-neuroscience",
+      "title": "鍼灸の科学：作用機序と臨床効果を分けて読む",
+      "file": "src/data/articles/acupunctureArticle.ts",
+      "visibility": "published",
+      "fullTextStatus": "reviewed",
+      "fullTextChanged": true,
+      "openingStatus": "reviewed",
+      "learningSummaryStatus": "reviewed",
+      "relatedReadingStatus": "reviewed",
+      "specialistReviewStatus": "今回新たな具体的問題を特定していない・専門家監修は未実施",
+      "editorialChanges": [
+        "副題と臨床試験の比較表で、「転帰」を症状や機能などの変化として説明。",
+        "学習要約を、組織や動物で測定した反応と患者の変化を分けて読む操作として表現。"
+      ],
+      "unchangedClearSections": "下記改稿箇所以外の明快な本文・安全情報は保持。専門確認事項も推測で変更していない。",
+      "invariants": {
+        "referenceDataSha256": "d84a0f736f24e97bf0763958c5ef52a69b8965319d9dcedfe88f33df1d6160d7",
+        "referenceDataUnchanged": true,
+        "headingCount": 7,
+        "headingsAndOrderUnchanged": true,
+        "citationCount": 5,
+        "citationIdsAndOrderUnchanged": true
+      },
+      "learningDestinations": {
+        "lectureId": "lecture-treatment-9",
+        "caseId": "back-pain-referral",
+        "nextArticles": [
+          "science-of-acupoints-mechanotransduction",
+          "science-of-meridians-network",
+          "east-west-integrative-unified-theory"
+        ]
+      },
+      "specialistReviewItems": []
+    },
+    {
+      "articleId": "science-of-kampo-network-pharmacology",
+      "title": "漢方薬を学ぶ：証・薬理研究・安全性",
+      "file": "src/data/articles/kampoArticle.ts",
+      "visibility": "published",
+      "fullTextStatus": "reviewed",
+      "fullTextChanged": true,
+      "openingStatus": "reviewed",
+      "learningSummaryStatus": "reviewed",
+      "relatedReadingStatus": "reviewed",
+      "specialistReviewStatus": "今回新たな具体的問題を特定していない・専門家監修は未実施",
+      "editorialChanges": [
+        "原著の確認項目を、誰に・どの製剤を・どの条件で・何と比べたかという問いに変更し、欠測を説明。"
+      ],
+      "unchangedClearSections": "下記改稿箇所以外の明快な本文・安全情報は保持。専門確認事項も推測で変更していない。",
+      "invariants": {
+        "referenceDataSha256": "807e180aa2d1d814cd82e6d6b4f8d50f634fe3777b8896f23f28d1d046847df7",
+        "referenceDataUnchanged": true,
+        "headingCount": 7,
+        "headingsAndOrderUnchanged": true,
+        "citationCount": 5,
+        "citationIdsAndOrderUnchanged": true
+      },
+      "learningDestinations": {
+        "lectureId": "lecture-treatment-1",
+        "caseId": "fatigue-reasoning",
+        "nextArticles": [
+          "science-of-abdominal-diagnosis",
+          "science-of-qi-blood-fluid",
+          "east-west-integrative-gerd-gastric"
+        ]
+      },
+      "specialistReviewItems": []
+    },
+    {
+      "articleId": "east-west-integrative-unified-theory",
+      "title": "東西医学を比較する：学習モデルと検証",
+      "file": "src/data/articles/unifiedTheoryArticle.ts",
+      "visibility": "published",
+      "fullTextStatus": "reviewed",
+      "fullTextChanged": true,
+      "openingStatus": "reviewed",
+      "learningSummaryStatus": "reviewed",
+      "relatedReadingStatus": "reviewed",
+      "specialistReviewStatus": "今回新たな具体的問題を特定していない・専門家監修は未実施",
+      "editorialChanges": [
+        "再現性・妥当性/診断精度・臨床的有用性を、三つの問いとして箇条書きで比較。",
+        "鍼の記事への理由を、組織・動物の反応と患者の症状改善を分ける練習として具体化。"
+      ],
+      "unchangedClearSections": "下記改稿箇所以外の明快な本文・安全情報は保持。専門確認事項も推測で変更していない。",
+      "invariants": {
+        "referenceDataSha256": "a6187a325d76d24a5c8f3ff18741c9c48fe00865ee2e8120f000c5a4a7a5c43b",
+        "referenceDataUnchanged": true,
+        "headingCount": 7,
+        "headingsAndOrderUnchanged": true,
+        "citationCount": 4,
+        "citationIdsAndOrderUnchanged": true
+      },
+      "learningDestinations": {
+        "lectureId": "lecture-diagnosis-10",
+        "caseId": "mixed-temperature",
+        "nextArticles": [
+          "science-of-acupuncture-neuroscience",
+          "science-of-kampo-network-pharmacology",
+          "science-of-pulse-diagnosis"
+        ]
+      },
+      "specialistReviewItems": []
+    },
+    {
+      "articleId": "east-west-integrative-gerd-gastric",
+      "title": "逆流性食道炎・胃痛の東西相補アプローチ",
+      "file": "src/data/articles/gerdArticle.ts",
+      "visibility": "published",
+      "fullTextStatus": "reviewed",
+      "fullTextChanged": true,
+      "openingStatus": "reviewed",
+      "learningSummaryStatus": "reviewed",
+      "relatedReadingStatus": "reviewed",
+      "specialistReviewStatus": "具体的な確認事項あり・専門家による確認待ち",
+      "editorialChanges": [
+        "「危険な疾患を100%否定できることは同じではありません」を、完全に否定できるとは限らないと表現。",
+        "関連記事の理由で、痛み・日常動作などの併用目的と、変化・害の再評価を明示。"
+      ],
+      "unchangedClearSections": "下記改稿箇所以外の明快な本文・安全情報は保持。専門確認事項も推測で変更していない。",
+      "invariants": {
+        "referenceDataSha256": "c94113f4e7c07d1db4dfbad45ca539aa6ce5a6cbe224d90745d5b2c327fab734",
+        "referenceDataUnchanged": true,
+        "headingCount": 6,
+        "headingsAndOrderUnchanged": true,
+        "citationCount": 6,
+        "citationIdsAndOrderUnchanged": true
+      },
+      "learningDestinations": {
+        "lectureId": "lecture-diagnosis-2",
+        "caseId": "fatigue-reasoning",
+        "nextArticles": [
+          "science-of-abdominal-diagnosis",
+          "science-of-kampo-network-pharmacology",
+          "east-west-integrative-unified-theory"
+        ]
+      },
+      "specialistReviewItems": [
+        {
+          "id": "gerd-01",
+          "section": "4. 東洋医学の見立ての位置づけ",
+          "sourceLine": 45,
+          "quotation": "「心下痞」はみぞおちのつかえなどを捉える用語で、『傷寒論』に半夏瀉心湯の記述があります。",
+          "requiredConfirmation": "第149条の版・条文番号・痞と痞鞕の区別を確認する。GERDやFDの診断・処方適応の証明とは区別した既存の限定を維持する。",
+          "reviewer": "漢方・古典の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        },
+        {
+          "id": "gerd-02",
+          "section": "2. 受診を優先する徴候",
+          "sourceLine": 33,
+          "quotation": "急な強い胸痛や息苦しさなどは救急受診を検討してください。",
+          "requiredConfirmation": "脈診記事などの119案内との表現の整合性と、救急要請/速やかな受診を使い分ける条件を専門家が確認する。医学的な緊急性を推測で改めていない。",
+          "reviewer": "救急・消化器の専門家",
+          "status": "専門確認待ち・既存文を保持"
+        }
+      ]
+    }
+  ]
+}

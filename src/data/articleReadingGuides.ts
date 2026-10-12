@@ -38,7 +38,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
     nextArticles: [
       { articleId: "science-of-yinyang-gogyo", reason: "歴史の中で使われた陰陽五行を、分類の意味と学習上の限界から学べます。" },
       { articleId: "science-of-abdominal-diagnosis", reason: "日本漢方で重視された腹診を、観察の記録と医学的な評価に分けて学べます。" },
-      { articleId: "east-west-integrative-unified-theory", reason: "歴史から生まれた説明を、仮説と臨床的な検証に分けて読み直せます。" },
+      { articleId: "east-west-integrative-unified-theory", reason: "人体をネットワークに例えた説明を、仮説と臨床的な検証に分けて読み直せます。" },
     ],
   },
   "science-of-yinyang-gogyo": {
@@ -152,7 +152,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
           items: [
             { label: "位置を比較する", description: "どの部位同士を比べるかを明確にする。", icon: "compass" },
             { label: "他の条件をそろえる", description: "深度・強度・手技・施術回数などの違いを確認する。", icon: "balance" },
-            { label: "転帰を評価する", description: "患者の症状・機能など、何が変わったかを比較する。", icon: "check" },
+            { label: "症状や機能を評価する", description: "患者の症状・機能など、何が変わったかを比較する。", icon: "check" },
           ],
           caption: "研究を読むための整理です。無治療との比較と、他の位置への刺激との比較は異なる問いに答えます。",
         },
@@ -184,7 +184,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
     nextArticles: [
       { articleId: "science-of-tongue-diagnosis", reason: "触れて得た情報と同じように、舌で見えた特徴も観察と解釈に分けて記録できます。" },
       { articleId: "science-of-abdominal-diagnosis", reason: "脈以外の切診を学び、腹部の抵抗や圧痛から確定できないことを確認できます。" },
-      { articleId: "east-west-integrative-unified-theory", reason: "再現性から診断精度、臨床的な有用性へ進むときの検証の違いを整理できます。" },
+      { articleId: "east-west-integrative-unified-theory", reason: "所見の一致、病気を判別する精度、治療の利益という三つの問いを整理できます。" },
     ],
   },
   "science-of-abdominal-diagnosis": {
@@ -314,7 +314,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
       },
     ],
     nextArticles: [
-      { articleId: "science-of-acupuncture-neuroscience", reason: "学習モデルの検証例として、鍼の機序研究と患者への臨床効果を分けて読めます。" },
+      { articleId: "science-of-acupuncture-neuroscience", reason: "鍼を題材に、組織や動物での反応と、患者の症状改善を分ける読み方を練習できます。" },
       { articleId: "science-of-kampo-network-pharmacology", reason: "併用療法の検討を、製剤ごとの研究・添付文書・副作用の確認につなげられます。" },
       { articleId: "science-of-pulse-diagnosis", reason: "再現性と診断精度を混同しない読み方を、脈診の具体的な研究例から学べます。" },
     ],
@@ -339,7 +339,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
     nextArticles: [
       { articleId: "science-of-abdominal-diagnosis", reason: "胃部症状の説明に出てくる心下痞を、腹証の観察と医学的診断の違いから学べます。" },
       { articleId: "science-of-kampo-network-pharmacology", reason: "漢方の併用を検討するときに、製剤の添付文書・重複成分・副作用を確認できます。" },
-      { articleId: "east-west-integrative-unified-theory", reason: "併用する目的と再評価の方法を整理し、必要な検査や標準治療と共有できます。" },
+      { articleId: "east-west-integrative-unified-theory", reason: "痛みや日常動作など併用の目的を定め、変化と害を再評価する方法を学べます。" },
     ],
   },
 };

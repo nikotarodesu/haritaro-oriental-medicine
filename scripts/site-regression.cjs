@@ -40,7 +40,7 @@ for(const article of ARTICLES) {
  const guide=ARTICLE_LEARNING_GUIDES[article.id]; assert(guide,article.id);
  assert(lectureIds.has(guide.lectureId),article.id+' lecture'); assert(CURRICULUM_QUIZZES[guide.lectureId],article.id+' quiz');
  assert(PROGRESSIVE_CASES.some(c=>c.id===guide.caseId),article.id+' case');
- assert.equal(article.summary,guide.summary); assert.equal(article.updatedAt,'2026-10-02');
+ assert.equal(article.summary,guide.summary); assert.equal(article.updatedAt,'2026-10-12');
 }
 const { GLOSSARY_TERMS } = load('src/data/glossaryData');
 const terms=Object.values(GLOSSARY_TERMS); assert.equal(new Set(terms.map(term=>term.term)).size,terms.length);
@@ -58,15 +58,18 @@ assert.equal(queryPages.length, 1, 'Only the independently described Gorou check
 assert.equal(queryPages[0].url, 'https://www.haritaro.jp/diagnosis?tab=gorou');
 assert(!sitemap.some(page=>new URL(page.url).pathname==='/notes'));
 assert.equal(new Set(sitemap.map(page=>page.url)).size,sitemap.length);
-const { CURRICULUM_EDITORIAL_REVISIONS } = load('src/config/contentUpdates');
+const { CURRICULUM_EDITORIAL_REVISIONS, READABILITY_EDITORIAL_REVISIONS } = load('src/config/contentUpdates');
 assert.equal(CURRICULUM_EDITORIAL_REVISIONS.length, 55);
 assert.equal(new Set(CURRICULUM_EDITORIAL_REVISIONS).size, 55);
-for(const lectureId of lectureIds) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/curriculum/${lectureId}`).lastModified.toISOString().slice(0,10),CURRICULUM_EDITORIAL_REVISIONS.includes(lectureId) ? '2026-10-09' : '2026-10-08',lectureId);
-for(const pathname of ['/library','/tsubo/li4','/tsubo/sp6','/symptoms','/diagnosis','/kokushi','/curriculum/lecture-qiblood-4']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-08',pathname);
-for(const pathname of ['/','/updates','/curriculum','/glossary']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-09',pathname);
-for(const pathname of ['/simulator','/clinical']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-04',pathname);
+assert.equal(READABILITY_EDITORIAL_REVISIONS.length, 43);
+assert.equal(new Set(READABILITY_EDITORIAL_REVISIONS).size, 43);
+for(const lectureId of READABILITY_EDITORIAL_REVISIONS) assert(lectureIds.has(lectureId), lectureId);
+for(const lectureId of lectureIds) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/curriculum/${lectureId}`).lastModified.toISOString().slice(0,10),READABILITY_EDITORIAL_REVISIONS.includes(lectureId) ? '2026-10-12' : CURRICULUM_EDITORIAL_REVISIONS.includes(lectureId) ? '2026-10-09' : '2026-10-08',lectureId);
+for(const pathname of ['/library','/tsubo/li4','/tsubo/sp6','/symptoms','/diagnosis','/curriculum/lecture-qiblood-4']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-08',pathname);
+assert.equal(sitemap.find(page=>new URL(page.url).pathname==='/curriculum').lastModified.toISOString().slice(0,10),'2026-10-09');
+for(const pathname of ['/','/updates','/glossary','/kokushi','/simulator','/clinical','/about','/cases','/practice/haiketsu']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-12',pathname);
 assert.equal(sitemap.find(page=>new URL(page.url).pathname==='/learn').lastModified.toISOString().slice(0,10),'2026-10-08');
-assert.equal(sitemap.find(page=>new URL(page.url).pathname==='/articles/science-of-yinyang-gogyo').lastModified.toISOString().slice(0,10),'2026-10-02');
+for(const article of ARTICLES) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/articles/${article.id}`).lastModified.toISOString().slice(0,10),article.updatedAt);
 const { LEARNING_COURSES, getCourseProgress } = load('src/data/learningCourses');
 const { CURRICULUM_TOTAL_CHAPTERS } = load('src/data/curriculumOutline');
 assert.equal(new Set(LEARNING_COURSES.map(course=>course.slug)).size, CURRICULUM_TOTAL_CHAPTERS);

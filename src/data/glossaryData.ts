@@ -20,7 +20,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     category: "陰陽五行・理論",
     oneLiner: "伝統理論で「肝」の働きとして、気の巡りや感情の変化と結びつけて説明する概念。",
     analogy: "「交通管制センター」という、伝統的な気の巡りを覚えるための比喩。",
-    summary: "伝統的には気の運行、情志、消化、月経などとの関係を学ぶ。「肝」は臓腑の理論上の分類であり、疏泄を現代医学の肝臓の機能、胆汁分泌や自律神経の制御と一対一に対応させない。症状の原因は医学的評価を通じて確認する。",
+    summary: "伝統的には気の運行、情志（感情）、消化、月経などとの関係を学ぶ。「肝」は臓腑の理論上の分類であり、疏泄を現代医学の肝臓の機能、胆汁分泌や自律神経の制御と一対一に対応させない。症状の原因は医学的評価を通じて確認する。",
     relatedLectureId: "lecture-zangfu-4",
     relatedToolUrl: "/simulator",
     relatedToolTitle: "臨床弁証シミュレーター（肝気鬱結）"
@@ -75,7 +75,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     category: "気血水・病態",
     oneLiner: "伝統理論で、「気」の巡りが滞っていると捉える証。張りやつかえ、情志の変化などと関連づける。",
     analogy: "「道路の渋滞」という、気の巡りの停滞を覚えるための比喩。",
-    summary: "喉のつかえ（梅核気）、胸脇部の張り、腹部膨満感、ため息などを伝統的に関連づけて学ぶ。これらの症状をすべてストレスや気滞で説明することはできず、胸部や喉の症状、消化器症状には医学的な原因の評価が必要。",
+    summary: "喉のつかえ（梅核気）、胸や脇腹の張り（胸脇部の張り）、おなかの張り（腹部膨満感）、ため息などを伝統的に関連づけて学ぶ。これらの症状をすべてストレスや気滞で説明することはできず、胸部や喉の症状、消化器症状には医学的な原因の評価が必要。",
     relatedLectureId: "lecture-pathomechanism-3",
     relatedToolUrl: "/diagnosis",
     relatedToolTitle: "気血水セルフチェック"
@@ -262,7 +262,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     category: "経絡・経穴",
     oneLiner: "足の甲の第1・第2中足骨の間にある、足の厥陰肝経の原穴・兪土穴（LR3）。",
     analogy: "伝統的な肝の分類と経穴の対応を覚える、経絡の路線図の目印。",
-    summary: "伝統理論では肝気鬱結・肝火上炎などの証や、頭痛・目の充血・月経の不調と関連づけて学ぶ。合谷と合わせる四関の構成穴。これらの伝統的な関連は、肝臓の病気の診断や血圧低下、PMSの即時改善を保証しない。",
+    summary: "伝統理論では肝気鬱結・肝火上炎などの証や、頭痛・目の充血・月経の不調と関連づけて学ぶ。合谷と合わせる四関の構成穴。これらの伝統的な関連は、肝臓の病気の診断や血圧低下、月経前症候群（PMS）の即時改善を保証しない。",
     relatedLectureId: "lecture-treatment-8",
     relatedToolUrl: "/tsubo/lr3",
     relatedToolTitle: "太衝（LR3）経穴辞典"
