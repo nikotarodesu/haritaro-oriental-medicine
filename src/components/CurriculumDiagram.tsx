@@ -85,9 +85,9 @@ export default function CurriculumDiagram({ id, onNextLecture }: CurriculumDiagr
   }
   if (id === "curriculum-learning-path") {
     return <figure className="my-8 space-y-4 rounded-2xl border border-[#D9E3DD] bg-[#F6F4EE] p-5 dark:border-[#2A3B4A] dark:bg-[#1E2B36]">
-      <figcaption className="space-y-2"><p className="text-lg font-bold">概論から臨床の基礎へ、全{CURRICULUM_CHAPTERS_META.length}章の流れ</p><p className="text-sm leading-relaxed">基本の名称と正常な働きを学んでから関係モデルへ進み、後半に病機・情報整理・方針・再評価を扱います。</p></figcaption>
+      <figcaption className="space-y-2"><p className="text-lg font-bold">概論から臨床の基礎へ、全{CURRICULUM_CHAPTERS_META.length}章の流れ</p><p className="text-sm leading-relaxed">陰陽・気血津液・臓腑の名称と正常な働きを学び、生命機能・五行・経絡で働きの関係を学びます。後半は、失調の説明、所見の記録、治療方針、経過の見直しへ進みます。</p></figcaption>
       <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{CURRICULUM_CHAPTERS_META.map(chapter => <li key={chapter.id} className="rounded-xl border border-[#D9E3DD] bg-white p-4 dark:border-[#2A3B4A] dark:bg-[#17212A]"><p className="font-semibold">{chapter.title}</p><p className="mt-2 text-sm leading-relaxed">{chapter.lead}</p><p className="mt-2 text-sm text-[#59615D] dark:text-[#B7C5CF]">全{chapter.plannedLessons}講</p></li>)}</ol>
-      <p className="text-sm leading-relaxed">各章の短い例で考え、必要な理論に戻って同じ問いを見直します。学習順を示す図で、身体の機序や治療効果を示す図ではありません。</p>
+      <p className="text-sm leading-relaxed">各章の短い例で、何が分かり何がまだ分からないかを考えます。用語や説明が曖昧なら、該当する理論に戻って確認します。学習順を示す図で、身体の機序や治療効果を示す図ではありません。</p>
     </figure>;
   }
   // 第2章：陰陽論の図解

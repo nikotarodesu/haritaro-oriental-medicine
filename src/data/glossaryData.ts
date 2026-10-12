@@ -20,7 +20,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     category: "陰陽五行・理論",
     oneLiner: "伝統理論で「肝」の働きとして、気の巡りや感情の変化と結びつけて説明する概念。",
     analogy: "「交通管制センター」という、伝統的な気の巡りを覚えるための比喩。",
-    summary: "伝統的には気の運行、情志（感情）、消化、月経などとの関係を学ぶ。「肝」は臓腑の理論上の分類であり、疏泄を現代医学の肝臓の機能、胆汁分泌や自律神経の制御と一対一に対応させない。症状の原因は医学的評価を通じて確認する。",
+    summary: "伝統的には気の運行、情志（感情）、消化、月経などとの関係を学ぶ。ここでいう「肝」は、臓腑の伝統理論で使う言葉。疏泄は、肝臓の機能、胆汁分泌、自律神経の制御を、そのまま別の名前で呼んだものではない。症状の原因は医学的な評価で確認する。",
     relatedLectureId: "lecture-zangfu-4",
     relatedToolUrl: "/simulator",
     relatedToolTitle: "臨床弁証シミュレーター（肝気鬱結）"
@@ -30,7 +30,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     reading: "こせつ",
     category: "気血水・病態",
     oneLiner: "伝統理論で、血・汗・尿などを保ち、漏れ出ることを防ぐと説明する気の働き。",
-    analogy: "「巾着袋の口を締める紐」という、保持する働きを覚えるための比喩。",
+    analogy: "巾着袋の口を紐で締めて中身を保つように、漏れ出るのを防ぐ働きを覚えるための比喩。",
     summary: "気の五大機能（推動・温煦・防御・固摂・気化）の一つ。伝統的には出血、多汗、尿失禁などを固摂の低下と関連づけて捉えることがある。この分類から出血や排尿の異常の原因を確定することはできず、症状に応じた医学的評価が必要。",
     relatedLectureId: "lecture-qiblood-1",
     relatedToolUrl: "/diagnosis",
@@ -64,7 +64,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     category: "気血水・病態",
     oneLiner: "伝統理論で、身体を動かし保つ「気」の働きが不足していると捉える証。",
     analogy: "「バッテリーが少ない状態」という理解のための比喩で、体内のエネルギー量を測った値ではない。",
-    summary: "倦怠感、疲れやすさ、声の力なさ、食欲の低下などを伝統的にまとめる分類。気虚という判断だけで疲労や息切れの原因を診断したり、検査や治療の必要性を決めたりすることはできない。症状が続く場合は医学的評価を受ける。",
+    summary: "倦怠感、疲れやすさ、力のない声、食欲の低下などを伝統的にまとめる分類。気虚と判断しても、それだけでは疲労や息切れの原因は分からず、検査や治療が必要かも決められない。症状が続く場合は医学的な評価を受ける。",
     relatedLectureId: "lecture-pathomechanism-3",
     relatedToolUrl: "/diagnosis",
     relatedToolTitle: "気血水セルフチェック"
@@ -97,7 +97,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     category: "気血水・病態",
     oneLiner: "伝統理論で、身体を養う「血」の働きが不足していると捉える証。",
     analogy: "「植物に養分や潤いが足りない状態」という、伝統的な血の働きを覚えるための比喩。",
-    summary: "顔色の淡さ、皮膚の乾燥、目の疲れ、立ちくらみなどを伝統的に関連づけて学ぶ。血虚を、造血の異常、貧血、栄養失調と同じ診断として扱わない。貧血などの確認には検査を含む医学的評価が必要で、この分類だけで鉄剤や食事療法を選ばない。",
+    summary: "顔色の淡さ、皮膚の乾燥、目の疲れ、立ちくらみなどを伝統的に関連づけて学ぶ。血虚という分類で、造血の異常、貧血、栄養失調が確認されたとは考えない。貧血などを確認するには、検査を含む医学的な評価が必要。この分類だけで鉄剤や食事療法を選ばない。",
     relatedLectureId: "lecture-pathomechanism-5",
     relatedToolUrl: "/diagnosis",
     relatedToolTitle: "気血水セルフチェック"
@@ -152,7 +152,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     category: "陰陽五行・理論",
     oneLiner: "伝統理論で、明暗・動静・寒熱など、対になる性質を比較して関係や変化を捉える考え方。",
     analogy: "コインの表と裏のように、一つの対象の異なる面を比較するための比喩。",
-    summary: "何と何を、どの基準で比較したかを示して用いる。対立・制約・互根・消長・転化などの関係を学ぶが、交感神経と副交感神経などの生理機構と一対一に対応する分類ではない。陰陽の説明だけで病気や治療方法を確定しない。",
+    summary: "明暗なら明るさ、寒熱なら温度のように、何を基準に何と何を比べたかを示して使う。対立・制約・互根・消長・転化などの関係を学ぶが、交感神経と副交感神経などの生理機構と一対一に対応する分類ではない。陰陽の説明だけで病気や治療方法を確定しない。",
     relatedLectureId: "lecture-yinyang-1",
     relatedToolUrl: "/curriculum",
     relatedToolTitle: "体系学習カリキュラム・陰陽論"
@@ -185,7 +185,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     category: "経絡・経穴",
     oneLiner: "十二経脈にそれぞれ1穴ずつあり、伝統理論で原気との関係を説明する経穴の分類。",
     analogy: "路線ごとに代表駅を覚えるような、十二経脈と経穴の対応を学ぶための分類。",
-    summary: "十二経脈の計12穴を指す。伝統的な診察や選穴で重視されるが、原穴の圧痛や反応だけで内臓の病気を診断することはできない。原気・臓腑との関連づけと、現代医学の診断や臨床効果の評価を区別する。",
+    summary: "十二経脈の計12穴を指す。伝統的な診察や選穴で重視されるが、原穴の圧痛や反応だけで内臓の病気を診断することはできない。原気や臓腑との関連は伝統理論の説明であり、現代医学の診断や治療効果の根拠は別に確認する。",
     relatedLectureId: "lecture-treatment-8",
     relatedToolUrl: "/tsubo",
     relatedToolTitle: "経穴辞典（原穴フィルター）"
@@ -196,7 +196,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     category: "経絡・経穴",
     oneLiner: "左右の合谷（LI4）と左右の太衝（LR3）、計4穴を組み合わせる伝統的な配穴。",
     analogy: "手と足にある4つの関所という、組み合わせを覚えるためのイメージ。",
-    summary: "『針灸大成』では、四関を左右の合谷と太衝と記す。伝統理論では気血の巡りなどに関連づけて学ぶ。全身の不調への万能処方、即効性や経穴の組み合わせの優越性が確立した治療としては扱わず、対象疾患と施術条件ごとの臨床研究を確認する。",
+    summary: "『針灸大成』では、四関を左右の合谷と太衝と記す。伝統理論では気血の巡りなどに関連づけて学ぶ。あらゆる不調に使える処方や、すぐに効くことが確かめられた治療としては扱わない。他の組み合わせより優れているかも、対象疾患と施術条件ごとの臨床研究で確認する。",
     relatedLectureId: "lecture-treatment-6",
     relatedToolUrl: "/practice/haiketsu",
     relatedToolTitle: "配穴設計"
@@ -218,7 +218,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     category: "経絡・経穴",
     oneLiner: "刺鍼中の重だるさなどの患者の感覚や、施術者が感じる抵抗を伝統的に説明する用語。",
     analogy: "実習で共有する感覚の表現。感じ方は刺激の条件や個人によって異なります。",
-    summary: "患者が感じたことと、施術者が触知したことを分けて記録します。得気の有無だけでは適切な刺入深度、安全性、患者の症状改善を判断できません。組織の機械的反応や神経の研究と、臨床効果を区別して学びます。",
+    summary: "患者が感じたことと、施術者が触れて感じた抵抗を、それぞれ記録します。得気の有無だけでは、刺入深度が適切か、安全か、症状が改善するかは判断できません。組織の機械的な反応や神経の働きを調べることと、患者の症状の改善を確かめることは、別の問いです。",
     relatedLectureId: "lecture-treatment-3",
     relatedToolUrl: "/articles/science-of-acupuncture-neuroscience",
     relatedToolTitle: "鍼灸の科学：作用機序と臨床効果を分けて読む"
@@ -229,7 +229,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     category: "診断・診察",
     oneLiner: "伝統理論で、長く見る・臥す・座る・立つ・歩くという五つの活動の偏りを捉える観点。",
     analogy: "一日の活動を五つの欄に分け、偏りや休息を振り返るための見方。",
-    summary: "久視・久臥・久坐・久立・久行と、血・気・肉・骨・筋との伝統的な関連を学ぶ。活動時間だけで臓器の損傷や職業病を診断する分類ではない。実際の負担は時間・姿勢・休息・症状などを分けて確認する。ここでは古典の底本・原文・訳文の照合済み引用とは扱わない。",
+    summary: "久視・久臥・久坐・久立・久行と、血・気・肉・骨・筋との伝統的な関連を学ぶ。活動時間だけで臓器の損傷や職業病を診断する分類ではない。実際の負担を考えるときは、活動の時間・姿勢・休息・症状をそれぞれ確認する。古典の底本・原文・訳文を照合した引用としては掲載していない。",
     relatedLectureId: "lecture-pathomechanism-8",
     relatedToolUrl: "/diagnosis?tab=gorou",
     relatedToolTitle: "五労チェッカー"
@@ -238,7 +238,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     term: "弁証論治",
     reading: "べんしょうろんち",
     category: "診断・診察",
-    oneLiner: "所見を伝統医学の枠組みで整理して証を考える弁証と、それに応じた方針を検討する論治をつなぐ考え方。",
+    oneLiner: "所見を整理して証を考える「弁証」と、その証に応じて方針を考える「論治」をつなぐ、伝統医学の考え方。",
     analogy: "材料を整理して仮の見通しを立て、新しい情報があれば計画を見直す過程。",
     summary: "支持する情報、合わない情報、未確認事項を併記する。同病異治・異病同治は、病名と証・治法の関係を説明する伝統的な考え方であり、体質だけで方法や効果が決まるという意味ではない。証を整理しても医学的な原因が確定したことにはならず、安全性や本人の希望を別に確認する。",
     relatedLectureId: "lecture-diagnosis-11",
@@ -273,7 +273,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     category: "経絡・経穴",
     oneLiner: "膝より下、すねの外側にある、足の陽明胃経の合土穴・胃の下合穴（ST36）。",
     analogy: "四総穴歌で腹部との対応を覚える、経穴の地図の目印。",
-    summary: "四総穴歌では腹部と関連づける。伝統的には胃腸の不調、食欲不振、疲れなどの主治を学ぶ。足三里の刺激による作用機序の研究、患者を対象にした鍼治療の研究、足三里単独の臨床効果を分けて読む。免疫の増強や疲労回復を一律に保証する穴としては扱わない。",
+    summary: "四総穴歌では腹部と関連づける。伝統的には胃腸の不調、食欲不振、疲れなどの主治を学ぶ。刺激が身体にどう作用するかを調べた研究と、患者の症状が改善するかを調べた研究を読み分ける。また、鍼治療全体の結果を、足三里だけの効果とは考えない。免疫の増強や疲労回復を一律に保証する穴としては扱わない。",
     relatedLectureId: "lecture-treatment-8",
     relatedToolUrl: "/tsubo/st36",
     relatedToolTitle: "足三里（ST36）経穴辞典"
@@ -295,7 +295,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     category: "経絡・経穴",
     oneLiner: "手首より肘側、前腕の内側にある、手の厥陰心包経の絡穴・八脈交会穴（PC6）。",
     analogy: "前腕にある経穴と、伝統的な主治や臨床研究を結びつけて学ぶための目印。",
-    summary: "伝統分類では陰維脈との関係を学び、吐き気や胸部の不快感などの主治が挙げられる。鍼・電気刺激・指圧バンドは異なる介入であり、研究対象と比較条件を確認する。がん治療に伴う吐き気の研究を、乗り物酔い、動悸、パニック症状にそのまま一般化しない。",
+    summary: "伝統分類では陰維脈との関係を学び、吐き気や胸部の不快感などの主治が挙げられる。鍼、電気刺激、指圧バンドでは方法が異なるため、どの方法を誰に行い、何と比べた研究なのかを確認する。がん治療に伴う吐き気の研究で得た結果を、乗り物酔い、動悸、パニック症状にもそのまま当てはめない。",
     relatedLectureId: "lecture-treatment-5",
     relatedToolUrl: "/tsubo/pc6",
     relatedToolTitle: "内関（PC6）経穴辞典"
@@ -306,7 +306,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     category: "経絡・経穴",
     oneLiner: "頭頂部にある督脈の経穴（GV20）。伝統理論では昇提などの治法と関連づけて学ぶ。",
     analogy: "頭部の経穴を覚えるための、頭頂部の目印。",
-    summary: "伝統的には頭部の症状や中気下陥などの証と関連づける。昇提という説明を、内臓下垂の治癒や自律神経の正常化が実証された作用と同一視しない。不眠やうつ症状については疾患と介入条件ごとに臨床研究を確認し、必要な医学的評価につなげる。",
+    summary: "伝統的には頭部の症状や中気下陥などの証と関連づける。昇提という伝統的な説明だけで、内臓下垂が治ることや、自律神経が正常になることが実証されたとはいえない。不眠やうつ症状については、対象疾患・用いた方法・実施条件を確かめて臨床研究を読み、必要な医学的な評価につなげる。",
     relatedLectureId: "lecture-treatment-5",
     relatedToolUrl: "/tsubo/gv20",
     relatedToolTitle: "百会（GV20）経穴辞典"

@@ -1,0 +1,1023 @@
+{
+  "draft": false,
+  "reviewedAt": "2026-10-12",
+  "baselineCommit": "7cd58127c6cb8517ef579caa57c808a482f751a3",
+  "scope": "実公開13図の全表示文、全切り替え説明、注記と出典を再読し、抽象的な表現・名詞の連結・翻訳調を必要な箇所だけ改稿。",
+  "method": "途中差分を独立に確認し、何を学ぶ・記録する・比較するかを具体化。明快な4図は維持。読み仮名1点を補修。",
+  "limits": "文章と実公開配置の監査であり、医学的監修や古典・原著資料の再照合完了ではない。",
+  "counts": {
+    "reviewed": 13,
+    "changed": 9,
+    "unchanged": 4,
+    "changedText": 27
+  },
+  "changedDiagramIds": [
+    "curriculum-learning-path",
+    "yinyang-taiji-cycle",
+    "yinyang-six-principles",
+    "yinyang-treatment-flow",
+    "yinyang-east-west-matrix",
+    "qiblood-triangle",
+    "pathomechanism-thermo-xushi",
+    "pathomechanism-emotion-cascade",
+    "lifedynamics-dynamic-xushi"
+  ],
+  "affectedLectureIds": [
+    "lecture-intro-2",
+    "lecture-yinyang-1",
+    "lecture-yinyang-3",
+    "lecture-yinyang-7",
+    "lecture-yinyang-8",
+    "lecture-qiblood-4",
+    "lecture-pathomechanism-6",
+    "lecture-pathomechanism-8",
+    "lecture-pathomechanism-10"
+  ],
+  "integrityChecks": {
+    "baselineMatchesCommit": true,
+    "onlyRecordedDisplayTextChanged": true,
+    "all13StatusesComplete": true,
+    "eachDiagramAppearsInIntendedActualLecture": true,
+    "diagramIdsAndDispatchUnchanged": true,
+    "buttonIdentifiersAndHandlersUnchanged": true,
+    "jsxStructureAndUiStylesUnchanged": true,
+    "medicalConditionsAndClaimStrengthPreserved": true,
+    "citationsAndSourceUrlsUnchanged": true,
+    "specialistProtectedQuotesUnchanged": true,
+    "hashNormalization": "UTF-8 source with CRLF normalized to LF"
+  },
+  "baseline": [
+    {
+      "id": "curriculum-learning-path",
+      "path": "src/components/CurriculumDiagram.tsx",
+      "sourceSha256": "492e6d15760ed1b09f4f98c7cf2a0f0efbfea8dfcd64203ea0fae5954ef9cb56"
+    },
+    {
+      "id": "yinyang-taiji-cycle",
+      "path": "src/components/yinyang/YinYangTaijiCycle.tsx",
+      "sourceSha256": "c8f478031c3d56539dfdd7233b53288fb195c76cb582e6d3c14760265bdecef3"
+    },
+    {
+      "id": "yinyang-six-principles",
+      "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+      "sourceSha256": "705744da1bbf320e8abcb59b03bd3acc96158228a9b4ff9f5ee3ea1d9963cc75"
+    },
+    {
+      "id": "yinyang-body-layers",
+      "path": "src/components/yinyang/YinYangBodyLayers.tsx",
+      "sourceSha256": "fede3476f1b3566e848c97a34792255e8b28d2995da24ef89b6f7902871a6d95"
+    },
+    {
+      "id": "yinyang-disharmony-map",
+      "path": "src/components/yinyang/YinYangDisharmonyMap.tsx",
+      "sourceSha256": "1e716bbd447e7d1ad215a07a7d8dfc46ef90fb1f8d33b7b50d023cd6111dd64a"
+    },
+    {
+      "id": "yinyang-shishin-chart",
+      "path": "src/components/yinyang/YinYangShishinChart.tsx",
+      "sourceSha256": "dbbff67023f9254961ba0d899cab552f41463c41ef154f4c9b8438d1333be6ac"
+    },
+    {
+      "id": "yinyang-treatment-flow",
+      "path": "src/components/yinyang/YinYangTreatmentFlow.tsx",
+      "sourceSha256": "5b1527519e762e287b162877b8a15a62b2621b249de5247dfbe4faeda32de6be"
+    },
+    {
+      "id": "yinyang-east-west-matrix",
+      "path": "src/components/yinyang/YinYangEastWestMatrix.tsx",
+      "sourceSha256": "d07b51f25a147d016f2eb134fb458e36383ffd49913bc6493d796720c98a671b"
+    },
+    {
+      "id": "qiblood-triangle",
+      "path": "src/components/qiblood/QiBloodTriangle.tsx",
+      "sourceSha256": "c2897c8d7ad4c00f96ac9fdd4888df1fd39cb8b8aca8d0ab1bd8979b8890e6d3"
+    },
+    {
+      "id": "pathomechanism-thermo-xushi",
+      "path": "src/components/pathomechanism/PathomechanismThermoXushi.tsx",
+      "sourceSha256": "fbd48636a4271b5e8b85d70fe677ab14901b82b50be7441f0f4c893e9737a26b"
+    },
+    {
+      "id": "pathomechanism-pathogen-invasion",
+      "path": "src/components/pathomechanism/PathomechanismPathogenInvasion.tsx",
+      "sourceSha256": "94e16a615c65ef5e12f64ec0bc9257e4b593d3421892afa06a2f4a708ef24b41"
+    },
+    {
+      "id": "pathomechanism-emotion-cascade",
+      "path": "src/components/pathomechanism/PathomechanismEmotionCascade.tsx",
+      "sourceSha256": "4f06d3d4b7d69b43467ffadbb7afa2dceea31f7eee2eacab854f3a3ca5832902"
+    },
+    {
+      "id": "lifedynamics-dynamic-xushi",
+      "path": "src/components/lifedynamics/LifeDynamicsDynamicXushi.tsx",
+      "sourceSha256": "95422a33890b9bbaa33c755b44f9a120d1cdc7c7619b9f61bf2c3d3788922beb"
+    }
+  ],
+  "entries": [
+    {
+      "type": "interactive-diagram",
+      "diagramId": "curriculum-learning-path",
+      "path": "src/components/CurriculumDiagram.tsx",
+      "lectureIds": [
+        "lecture-intro-2"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-intro-2"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "全表示文・見出し・ラベル",
+        "選択後に表示する全説明",
+        "条件・限定・出典",
+        "実公開講義への配置",
+        "図ID・識別子・ハンドラ・UIの保持"
+      ],
+      "baselineSourceSha256": "492e6d15760ed1b09f4f98c7cf2a0f0efbfea8dfcd64203ea0fae5954ef9cb56",
+      "currentSourceSha256": "ce58ff7c962e3b7e27e8eb1e823bf09429a77fd1c9406008efefe5ca51654381",
+      "representativeBeforeAfter": [
+        {
+          "diagramId": "curriculum-learning-path",
+          "path": "src/components/CurriculumDiagram.tsx",
+          "before": "基本の名称と正常な働きを学んでから関係モデルへ進み、後半に病機・情報整理・方針・再評価を扱います。",
+          "after": "陰陽・気血津液・臓腑の名称と正常な働きを学び、生命機能・五行・経絡で働きの関係を学びます。後半は、失調の説明、所見の記録、治療方針、経過の見直しへ進みます。",
+          "line": 88,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "curriculum-learning-path",
+          "path": "src/components/CurriculumDiagram.tsx",
+          "before": "各章の短い例で考え、必要な理論に戻って同じ問いを見直します。",
+          "after": "各章の短い例で、何が分かり何がまだ分からないかを考えます。用語や説明が曖昧なら、該当する理論に戻って確認します。",
+          "line": 90,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ],
+      "changes": [
+        {
+          "diagramId": "curriculum-learning-path",
+          "path": "src/components/CurriculumDiagram.tsx",
+          "before": "基本の名称と正常な働きを学んでから関係モデルへ進み、後半に病機・情報整理・方針・再評価を扱います。",
+          "after": "陰陽・気血津液・臓腑の名称と正常な働きを学び、生命機能・五行・経絡で働きの関係を学びます。後半は、失調の説明、所見の記録、治療方針、経過の見直しへ進みます。",
+          "line": 88,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "curriculum-learning-path",
+          "path": "src/components/CurriculumDiagram.tsx",
+          "before": "各章の短い例で考え、必要な理論に戻って同じ問いを見直します。",
+          "after": "各章の短い例で、何が分かり何がまだ分からないかを考えます。用語や説明が曖昧なら、該当する理論に戻って確認します。",
+          "line": 90,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ]
+    },
+    {
+      "type": "interactive-diagram",
+      "diagramId": "yinyang-taiji-cycle",
+      "path": "src/components/yinyang/YinYangTaijiCycle.tsx",
+      "lectureIds": [
+        "lecture-yinyang-1"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-yinyang-1"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "全表示文・見出し・ラベル",
+        "選択後に表示する全説明",
+        "条件・限定・出典",
+        "実公開講義への配置",
+        "図ID・識別子・ハンドラ・UIの保持"
+      ],
+      "baselineSourceSha256": "c8f478031c3d56539dfdd7233b53288fb195c76cb582e6d3c14760265bdecef3",
+      "currentSourceSha256": "116bb89532ceade77c970057517f594b96a968047ac81ab188544dfabbf8977b",
+      "representativeBeforeAfter": [
+        {
+          "diagramId": "yinyang-taiji-cycle",
+          "path": "src/components/yinyang/YinYangTaijiCycle.tsx",
+          "before": "画像解説①：陰陽太極図とダイナミック循環",
+          "after": "画像解説①：陰陽太極図と陰陽の移り変わり",
+          "line": 18,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-taiji-cycle",
+          "path": "src/components/yinyang/YinYangTaijiCycle.tsx",
+          "before": "時計回りの連続循環",
+          "after": "時計回りの回転表示",
+          "line": 26,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ],
+      "changes": [
+        {
+          "diagramId": "yinyang-taiji-cycle",
+          "path": "src/components/yinyang/YinYangTaijiCycle.tsx",
+          "before": "画像解説①：陰陽太極図とダイナミック循環",
+          "after": "画像解説①：陰陽太極図と陰陽の移り変わり",
+          "line": 18,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-taiji-cycle",
+          "path": "src/components/yinyang/YinYangTaijiCycle.tsx",
+          "before": "時計回りの連続循環",
+          "after": "時計回りの回転表示",
+          "line": 26,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ]
+    },
+    {
+      "type": "interactive-diagram",
+      "diagramId": "yinyang-six-principles",
+      "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+      "lectureIds": [
+        "lecture-yinyang-3"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-yinyang-3"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "全表示文・見出し・ラベル",
+        "選択後に表示する全説明",
+        "条件・限定・出典",
+        "実公開講義への配置",
+        "図ID・識別子・ハンドラ・UIの保持"
+      ],
+      "baselineSourceSha256": "705744da1bbf320e8abcb59b03bd3acc96158228a9b4ff9f5ee3ea1d9963cc75",
+      "currentSourceSha256": "c4b4e4d13e93ec2d8f1f104a2a23f537ddd1b7aa5f1f8375f88473257d79925c",
+      "representativeBeforeAfter": [
+        {
+          "diagramId": "yinyang-six-principles",
+          "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+          "before": "互いに相手を自己の存在基盤（根）とし、単独では存在し得ない関係。",
+          "after": "互いを自分の存在の前提とし、単独では存在し得ない関係。",
+          "line": 37,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-six-principles",
+          "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+          "before": "存在の不可分性",
+          "after": "互いが存在の前提",
+          "line": 39,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ],
+      "changes": [
+        {
+          "diagramId": "yinyang-six-principles",
+          "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+          "before": "互いに相手を自己の存在基盤（根）とし、単独では存在し得ない関係。",
+          "after": "互いを自分の存在の前提とし、単独では存在し得ない関係。",
+          "line": 37,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-six-principles",
+          "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+          "before": "存在の不可分性",
+          "after": "互いが存在の前提",
+          "line": 39,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-six-principles",
+          "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+          "before": "双方が互いを抑制・制御し合うことで、一方の過剰な暴走（亢進）を防ぐ。",
+          "after": "互いに抑制・制御し合い、一方が過剰に強くなること（亢進）を防ぐ関係。",
+          "line": 56,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-six-principles",
+          "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+          "before": "絶え間なくシーソーのように増減（此消彼長・此長彼消）を繰り返す量的動態。",
+          "after": "一方が減れば他方が増す（此消彼長・此長彼消）というように、陰陽の量が絶えず変化するという説明。",
+          "line": 75,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-six-principles",
+          "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+          "before": "多層構造 / マトリョーシカ / 入れ子構造",
+          "after": "入れ子構造 / 大きな区分の中をさらに分ける",
+          "line": 111,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-six-principles",
+          "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+          "before": "分類の基準を変えれば位置づけも変わり、",
+          "after": "比べる基準が変われば陰・陽の分け方も変わり、",
+          "line": 113,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-six-principles",
+          "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+          "before": "相対性・多階層解析",
+          "after": "基準を変えて細分する",
+          "line": 114,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-six-principles",
+          "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+          "before": "対立統一・協調ダイナミクス",
+          "after": "対立する側面の協調",
+          "line": 132,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-six-principles",
+          "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+          "before": "画像解説②：陰陽6大原理のインフォグラフィック",
+          "after": "画像解説②：陰陽の六つの原理を比べる図",
+          "line": 145,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-six-principles",
+          "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+          "before": "【基本概念・本質】",
+          "after": "【基本的な意味】",
+          "line": 219,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ]
+    },
+    {
+      "type": "interactive-diagram",
+      "diagramId": "yinyang-body-layers",
+      "path": "src/components/yinyang/YinYangBodyLayers.tsx",
+      "lectureIds": [
+        "lecture-yinyang-5"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-yinyang-5"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "全表示文・見出し・ラベル",
+        "選択後に表示する全説明",
+        "条件・限定・出典",
+        "実公開講義への配置",
+        "図ID・識別子・ハンドラ・UIの保持"
+      ],
+      "baselineSourceSha256": "fede3476f1b3566e848c97a34792255e8b28d2995da24ef89b6f7902871a6d95",
+      "currentSourceSha256": "fede3476f1b3566e848c97a34792255e8b28d2995da24ef89b6f7902871a6d95",
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "interactive-diagram",
+      "diagramId": "yinyang-disharmony-map",
+      "path": "src/components/yinyang/YinYangDisharmonyMap.tsx",
+      "lectureIds": [
+        "lecture-yinyang-6"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-yinyang-6"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "全表示文・見出し・ラベル",
+        "選択後に表示する全説明",
+        "条件・限定・出典",
+        "実公開講義への配置",
+        "図ID・識別子・ハンドラ・UIの保持"
+      ],
+      "baselineSourceSha256": "1e716bbd447e7d1ad215a07a7d8dfc46ef90fb1f8d33b7b50d023cd6111dd64a",
+      "currentSourceSha256": "1e716bbd447e7d1ad215a07a7d8dfc46ef90fb1f8d33b7b50d023cd6111dd64a",
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "interactive-diagram",
+      "diagramId": "yinyang-shishin-chart",
+      "path": "src/components/yinyang/YinYangShishinChart.tsx",
+      "lectureIds": [
+        "lecture-yinyang-7"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-yinyang-7"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "全表示文・見出し・ラベル",
+        "選択後に表示する全説明",
+        "条件・限定・出典",
+        "実公開講義への配置",
+        "図ID・識別子・ハンドラ・UIの保持"
+      ],
+      "baselineSourceSha256": "dbbff67023f9254961ba0d899cab552f41463c41ef154f4c9b8438d1333be6ac",
+      "currentSourceSha256": "dbbff67023f9254961ba0d899cab552f41463c41ef154f4c9b8438d1333be6ac",
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "interactive-diagram",
+      "diagramId": "yinyang-treatment-flow",
+      "path": "src/components/yinyang/YinYangTreatmentFlow.tsx",
+      "lectureIds": [
+        "lecture-yinyang-7"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-yinyang-7"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "全表示文・見出し・ラベル",
+        "選択後に表示する全説明",
+        "条件・限定・出典",
+        "実公開講義への配置",
+        "図ID・識別子・ハンドラ・UIの保持"
+      ],
+      "baselineSourceSha256": "5b1527519e762e287b162877b8a15a62b2621b249de5247dfbe4faeda32de6be",
+      "currentSourceSha256": "a46e5a698df20bdc757769a74b932e14a59bf8c90a3f78625e6beca34e08e16a",
+      "representativeBeforeAfter": [
+        {
+          "diagramId": "yinyang-treatment-flow",
+          "path": "src/components/yinyang/YinYangTreatmentFlow.tsx",
+          "before": "所見、経過、既往歴、医学的評価など、追加で必要な情報を整理します。",
+          "after": "所見の内容と経過、既往歴、受けた医学的評価を記録し、追加で確認する情報を挙げます。",
+          "line": 129,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-treatment-flow",
+          "path": "src/components/yinyang/YinYangTreatmentFlow.tsx",
+          "before": "具体的な施術条件は個別の一次資料との照合と専門家確認が未了です。",
+          "after": "具体的な施術条件については、個別の一次資料との照合と専門家による確認が未完了です。",
+          "line": 165,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ],
+      "changes": [
+        {
+          "diagramId": "yinyang-treatment-flow",
+          "path": "src/components/yinyang/YinYangTreatmentFlow.tsx",
+          "before": "所見、経過、既往歴、医学的評価など、追加で必要な情報を整理します。",
+          "after": "所見の内容と経過、既往歴、受けた医学的評価を記録し、追加で確認する情報を挙げます。",
+          "line": 129,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-treatment-flow",
+          "path": "src/components/yinyang/YinYangTreatmentFlow.tsx",
+          "before": "具体的な施術条件は個別の一次資料との照合と専門家確認が未了です。",
+          "after": "具体的な施術条件については、個別の一次資料との照合と専門家による確認が未完了です。",
+          "line": 165,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ]
+    },
+    {
+      "type": "interactive-diagram",
+      "diagramId": "yinyang-east-west-matrix",
+      "path": "src/components/yinyang/YinYangEastWestMatrix.tsx",
+      "lectureIds": [
+        "lecture-yinyang-8"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-yinyang-8"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "全表示文・見出し・ラベル",
+        "選択後に表示する全説明",
+        "条件・限定・出典",
+        "実公開講義への配置",
+        "図ID・識別子・ハンドラ・UIの保持"
+      ],
+      "baselineSourceSha256": "d07b51f25a147d016f2eb134fb458e36383ffd49913bc6493d796720c98a671b",
+      "currentSourceSha256": "3f9cc324d8fde58146615cac306508bea0da5f5a37a8137a1af4466e0619627d",
+      "representativeBeforeAfter": [
+        {
+          "diagramId": "yinyang-east-west-matrix",
+          "path": "src/components/yinyang/YinYangEastWestMatrix.tsx",
+          "before": "画像解説⑧：東西医学の相補マトリクス",
+          "after": "画像解説⑧：医療と補完的ケアを併用する条件",
+          "line": 14,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-east-west-matrix",
+          "path": "src/components/yinyang/YinYangEastWestMatrix.tsx",
+          "before": "病期ステージ",
+          "after": "病期・状況",
+          "line": 104,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ],
+      "changes": [
+        {
+          "diagramId": "yinyang-east-west-matrix",
+          "path": "src/components/yinyang/YinYangEastWestMatrix.tsx",
+          "before": "画像解説⑧：東西医学の相補マトリクス",
+          "after": "画像解説⑧：医療と補完的ケアを併用する条件",
+          "line": 14,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "yinyang-east-west-matrix",
+          "path": "src/components/yinyang/YinYangEastWestMatrix.tsx",
+          "before": "病期ステージ",
+          "after": "病期・状況",
+          "line": 104,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ]
+    },
+    {
+      "type": "interactive-diagram",
+      "diagramId": "qiblood-triangle",
+      "path": "src/components/qiblood/QiBloodTriangle.tsx",
+      "lectureIds": [
+        "lecture-qiblood-4"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-qiblood-4"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "全表示文・見出し・ラベル",
+        "選択後に表示する全説明",
+        "条件・限定・出典",
+        "実公開講義への配置",
+        "図ID・識別子・ハンドラ・UIの保持"
+      ],
+      "baselineSourceSha256": "c2897c8d7ad4c00f96ac9fdd4888df1fd39cb8b8aca8d0ab1bd8979b8890e6d3",
+      "currentSourceSha256": "982f2598704745f51037f8af5245a51a3f060b5ccca21662f1af733d26a83fb4",
+      "representativeBeforeAfter": [
+        {
+          "diagramId": "qiblood-triangle",
+          "path": "src/components/qiblood/QiBloodTriangle.tsx",
+          "before": "画像解説②：気・血・水の相互依存・循環トライアングル",
+          "after": "画像解説②：気・血・水の支え合う関係を示す三角図",
+          "line": 19,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "qiblood-triangle",
+          "path": "src/components/qiblood/QiBloodTriangle.tsx",
+          "before": "気・血・水の関係を、伝統理論の用語から学ぶ",
+          "after": "気・血・水（津液）の関係を、伝統理論の用語から学ぶ",
+          "line": 22,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ],
+      "changes": [
+        {
+          "diagramId": "qiblood-triangle",
+          "path": "src/components/qiblood/QiBloodTriangle.tsx",
+          "before": "画像解説②：気・血・水の相互依存・循環トライアングル",
+          "after": "画像解説②：気・血・水の支え合う関係を示す三角図",
+          "line": 19,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "qiblood-triangle",
+          "path": "src/components/qiblood/QiBloodTriangle.tsx",
+          "before": "気・血・水の関係を、伝統理論の用語から学ぶ",
+          "after": "気・血・水（津液）の関係を、伝統理論の用語から学ぶ",
+          "line": 22,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "qiblood-triangle",
+          "path": "src/components/qiblood/QiBloodTriangle.tsx",
+          "before": "気 ⇄ 水（推動と舞台）",
+          "after": "気 ⇄ 水（生成・散布・排泄）",
+          "line": 50,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "qiblood-triangle",
+          "path": "src/components/qiblood/QiBloodTriangle.tsx",
+          "before": "【血為気之母（けつはきの母）】",
+          "after": "【血為気之母（けつはきのはは）】",
+          "line": 178,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "qiblood-triangle",
+          "path": "src/components/qiblood/QiBloodTriangle.tsx",
+          "before": "器・担持",
+          "after": "血が気を支える関係",
+          "line": 181,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        },
+        {
+          "diagramId": "qiblood-triangle",
+          "path": "src/components/qiblood/QiBloodTriangle.tsx",
+          "before": "【気水連動：推動と運化の舞台】",
+          "after": "【気と津液：生成・散布・排泄との関係】",
+          "line": 198,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ]
+    },
+    {
+      "type": "interactive-diagram",
+      "diagramId": "pathomechanism-thermo-xushi",
+      "path": "src/components/pathomechanism/PathomechanismThermoXushi.tsx",
+      "lectureIds": [
+        "lecture-pathomechanism-6"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-pathomechanism-6"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "全表示文・見出し・ラベル",
+        "選択後に表示する全説明",
+        "条件・限定・出典",
+        "実公開講義への配置",
+        "図ID・識別子・ハンドラ・UIの保持"
+      ],
+      "baselineSourceSha256": "fbd48636a4271b5e8b85d70fe677ab14901b82b50be7441f0f4c893e9737a26b",
+      "currentSourceSha256": "f09f692343bd86dea22be4393c22ed23792d6525ee2bbb763af78c406da98aaa",
+      "representativeBeforeAfter": [
+        {
+          "diagramId": "pathomechanism-thermo-xushi",
+          "path": "src/components/pathomechanism/PathomechanismThermoXushi.tsx",
+          "before": "「上熱下寒」という整理を比較できます。",
+          "after": "「上熱下寒」という候補を考えられます。",
+          "line": 63,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ],
+      "changes": [
+        {
+          "diagramId": "pathomechanism-thermo-xushi",
+          "path": "src/components/pathomechanism/PathomechanismThermoXushi.tsx",
+          "before": "「上熱下寒」という整理を比較できます。",
+          "after": "「上熱下寒」という候補を考えられます。",
+          "line": 63,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ]
+    },
+    {
+      "type": "interactive-diagram",
+      "diagramId": "pathomechanism-pathogen-invasion",
+      "path": "src/components/pathomechanism/PathomechanismPathogenInvasion.tsx",
+      "lectureIds": [
+        "lecture-pathomechanism-7"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-pathomechanism-7"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "全表示文・見出し・ラベル",
+        "選択後に表示する全説明",
+        "条件・限定・出典",
+        "実公開講義への配置",
+        "図ID・識別子・ハンドラ・UIの保持"
+      ],
+      "baselineSourceSha256": "94e16a615c65ef5e12f64ec0bc9257e4b593d3421892afa06a2f4a708ef24b41",
+      "currentSourceSha256": "94e16a615c65ef5e12f64ec0bc9257e4b593d3421892afa06a2f4a708ef24b41",
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "interactive-diagram",
+      "diagramId": "pathomechanism-emotion-cascade",
+      "path": "src/components/pathomechanism/PathomechanismEmotionCascade.tsx",
+      "lectureIds": [
+        "lecture-pathomechanism-8"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-pathomechanism-8"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "全表示文・見出し・ラベル",
+        "選択後に表示する全説明",
+        "条件・限定・出典",
+        "実公開講義への配置",
+        "図ID・識別子・ハンドラ・UIの保持"
+      ],
+      "baselineSourceSha256": "4f06d3d4b7d69b43467ffadbb7afa2dceea31f7eee2eacab854f3a3ca5832902",
+      "currentSourceSha256": "05fb1e8b6e16a3241c5481033a12ed5aeaec0558cdecf41ab62bf045b59df051",
+      "representativeBeforeAfter": [
+        {
+          "diagramId": "pathomechanism-emotion-cascade",
+          "path": "src/components/pathomechanism/PathomechanismEmotionCascade.tsx",
+          "before": "痛みなどの所見はほかの候補でも起こり得るため、単独で決めません。",
+          "after": "痛みなどの所見はほかの候補でも起こり得るため、痛みだけで瘀血と決めません。",
+          "line": 8,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ],
+      "changes": [
+        {
+          "diagramId": "pathomechanism-emotion-cascade",
+          "path": "src/components/pathomechanism/PathomechanismEmotionCascade.tsx",
+          "before": "痛みなどの所見はほかの候補でも起こり得るため、単独で決めません。",
+          "after": "痛みなどの所見はほかの候補でも起こり得るため、痛みだけで瘀血と決めません。",
+          "line": 8,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ]
+    },
+    {
+      "type": "interactive-diagram",
+      "diagramId": "lifedynamics-dynamic-xushi",
+      "path": "src/components/lifedynamics/LifeDynamicsDynamicXushi.tsx",
+      "lectureIds": [
+        "lecture-pathomechanism-10"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-pathomechanism-10"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "全表示文・見出し・ラベル",
+        "選択後に表示する全説明",
+        "条件・限定・出典",
+        "実公開講義への配置",
+        "図ID・識別子・ハンドラ・UIの保持"
+      ],
+      "baselineSourceSha256": "95422a33890b9bbaa33c755b44f9a120d1cdc7c7619b9f61bf2c3d3788922beb",
+      "currentSourceSha256": "c1cff691d4e619c6cccbd1f5b7376a8b4910733eb88378e1cd9a20e575293070",
+      "representativeBeforeAfter": [
+        {
+          "diagramId": "lifedynamics-dynamic-xushi",
+          "path": "src/components/lifedynamics/LifeDynamicsDynamicXushi.tsx",
+          "before": "所見を一つの原因にまとめず、観点を変えて比較する",
+          "after": "上下・本と標・三焦の三つの見方で所見を比べる",
+          "line": 24,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ],
+      "changes": [
+        {
+          "diagramId": "lifedynamics-dynamic-xushi",
+          "path": "src/components/lifedynamics/LifeDynamicsDynamicXushi.tsx",
+          "before": "所見を一つの原因にまとめず、観点を変えて比較する",
+          "after": "上下・本と標・三焦の三つの見方で所見を比べる",
+          "line": 24,
+          "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+        }
+      ]
+    }
+  ],
+  "changes": [
+    {
+      "diagramId": "curriculum-learning-path",
+      "path": "src/components/CurriculumDiagram.tsx",
+      "before": "基本の名称と正常な働きを学んでから関係モデルへ進み、後半に病機・情報整理・方針・再評価を扱います。",
+      "after": "陰陽・気血津液・臓腑の名称と正常な働きを学び、生命機能・五行・経絡で働きの関係を学びます。後半は、失調の説明、所見の記録、治療方針、経過の見直しへ進みます。",
+      "line": 88,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "curriculum-learning-path",
+      "path": "src/components/CurriculumDiagram.tsx",
+      "before": "各章の短い例で考え、必要な理論に戻って同じ問いを見直します。",
+      "after": "各章の短い例で、何が分かり何がまだ分からないかを考えます。用語や説明が曖昧なら、該当する理論に戻って確認します。",
+      "line": 90,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-taiji-cycle",
+      "path": "src/components/yinyang/YinYangTaijiCycle.tsx",
+      "before": "画像解説①：陰陽太極図とダイナミック循環",
+      "after": "画像解説①：陰陽太極図と陰陽の移り変わり",
+      "line": 18,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-taiji-cycle",
+      "path": "src/components/yinyang/YinYangTaijiCycle.tsx",
+      "before": "時計回りの連続循環",
+      "after": "時計回りの回転表示",
+      "line": 26,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-six-principles",
+      "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+      "before": "互いに相手を自己の存在基盤（根）とし、単独では存在し得ない関係。",
+      "after": "互いを自分の存在の前提とし、単独では存在し得ない関係。",
+      "line": 37,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-six-principles",
+      "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+      "before": "存在の不可分性",
+      "after": "互いが存在の前提",
+      "line": 39,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-six-principles",
+      "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+      "before": "双方が互いを抑制・制御し合うことで、一方の過剰な暴走（亢進）を防ぐ。",
+      "after": "互いに抑制・制御し合い、一方が過剰に強くなること（亢進）を防ぐ関係。",
+      "line": 56,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-six-principles",
+      "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+      "before": "絶え間なくシーソーのように増減（此消彼長・此長彼消）を繰り返す量的動態。",
+      "after": "一方が減れば他方が増す（此消彼長・此長彼消）というように、陰陽の量が絶えず変化するという説明。",
+      "line": 75,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-six-principles",
+      "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+      "before": "多層構造 / マトリョーシカ / 入れ子構造",
+      "after": "入れ子構造 / 大きな区分の中をさらに分ける",
+      "line": 111,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-six-principles",
+      "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+      "before": "分類の基準を変えれば位置づけも変わり、",
+      "after": "比べる基準が変われば陰・陽の分け方も変わり、",
+      "line": 113,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-six-principles",
+      "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+      "before": "相対性・多階層解析",
+      "after": "基準を変えて細分する",
+      "line": 114,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-six-principles",
+      "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+      "before": "対立統一・協調ダイナミクス",
+      "after": "対立する側面の協調",
+      "line": 132,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-six-principles",
+      "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+      "before": "画像解説②：陰陽6大原理のインフォグラフィック",
+      "after": "画像解説②：陰陽の六つの原理を比べる図",
+      "line": 145,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-six-principles",
+      "path": "src/components/yinyang/YinYangSixPrinciples.tsx",
+      "before": "【基本概念・本質】",
+      "after": "【基本的な意味】",
+      "line": 219,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-treatment-flow",
+      "path": "src/components/yinyang/YinYangTreatmentFlow.tsx",
+      "before": "所見、経過、既往歴、医学的評価など、追加で必要な情報を整理します。",
+      "after": "所見の内容と経過、既往歴、受けた医学的評価を記録し、追加で確認する情報を挙げます。",
+      "line": 129,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-treatment-flow",
+      "path": "src/components/yinyang/YinYangTreatmentFlow.tsx",
+      "before": "具体的な施術条件は個別の一次資料との照合と専門家確認が未了です。",
+      "after": "具体的な施術条件については、個別の一次資料との照合と専門家による確認が未完了です。",
+      "line": 165,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-east-west-matrix",
+      "path": "src/components/yinyang/YinYangEastWestMatrix.tsx",
+      "before": "画像解説⑧：東西医学の相補マトリクス",
+      "after": "画像解説⑧：医療と補完的ケアを併用する条件",
+      "line": 14,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "yinyang-east-west-matrix",
+      "path": "src/components/yinyang/YinYangEastWestMatrix.tsx",
+      "before": "病期ステージ",
+      "after": "病期・状況",
+      "line": 104,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "qiblood-triangle",
+      "path": "src/components/qiblood/QiBloodTriangle.tsx",
+      "before": "画像解説②：気・血・水の相互依存・循環トライアングル",
+      "after": "画像解説②：気・血・水の支え合う関係を示す三角図",
+      "line": 19,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "qiblood-triangle",
+      "path": "src/components/qiblood/QiBloodTriangle.tsx",
+      "before": "気・血・水の関係を、伝統理論の用語から学ぶ",
+      "after": "気・血・水（津液）の関係を、伝統理論の用語から学ぶ",
+      "line": 22,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "qiblood-triangle",
+      "path": "src/components/qiblood/QiBloodTriangle.tsx",
+      "before": "気 ⇄ 水（推動と舞台）",
+      "after": "気 ⇄ 水（生成・散布・排泄）",
+      "line": 50,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "qiblood-triangle",
+      "path": "src/components/qiblood/QiBloodTriangle.tsx",
+      "before": "【血為気之母（けつはきの母）】",
+      "after": "【血為気之母（けつはきのはは）】",
+      "line": 178,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "qiblood-triangle",
+      "path": "src/components/qiblood/QiBloodTriangle.tsx",
+      "before": "器・担持",
+      "after": "血が気を支える関係",
+      "line": 181,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "qiblood-triangle",
+      "path": "src/components/qiblood/QiBloodTriangle.tsx",
+      "before": "【気水連動：推動と運化の舞台】",
+      "after": "【気と津液：生成・散布・排泄との関係】",
+      "line": 198,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "pathomechanism-thermo-xushi",
+      "path": "src/components/pathomechanism/PathomechanismThermoXushi.tsx",
+      "before": "「上熱下寒」という整理を比較できます。",
+      "after": "「上熱下寒」という候補を考えられます。",
+      "line": 63,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "pathomechanism-emotion-cascade",
+      "path": "src/components/pathomechanism/PathomechanismEmotionCascade.tsx",
+      "before": "痛みなどの所見はほかの候補でも起こり得るため、単独で決めません。",
+      "after": "痛みなどの所見はほかの候補でも起こり得るため、痛みだけで瘀血と決めません。",
+      "line": 8,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    },
+    {
+      "diagramId": "lifedynamics-dynamic-xushi",
+      "path": "src/components/lifedynamics/LifeDynamicsDynamicXushi.tsx",
+      "before": "所見を一つの原因にまとめず、観点を変えて比較する",
+      "after": "上下・本と標・三焦の三つの見方で所見を比べる",
+      "line": 24,
+      "reason": "表示文の対象・意味・比較する内容を明示し、不自然な日本語を改善"
+    }
+  ],
+  "validation": {
+    "curriculumConnectedDiagramRegression": "passed: 4 legacy figures / 13 native button flows",
+    "curriculumDiagramRegression": "passed: 72 actual diagram tokens / 59 study figures",
+    "recordedReplacementsMatchFullSources": "passed: all 13 sources match baseline plus recorded display edits",
+    "publicLecturePlacement": "passed: all 13 figures retain their intended lecture placement",
+    "build": "root integration task",
+    "commitPush": "not performed by this agent"
+  }
+}

@@ -16,10 +16,10 @@ export default function QiBloodTriangle() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説②：気・血・水の相互依存・循環トライアングル</span>
+            <span>画像解説②：気・血・水の支え合う関係を示す三角図</span>
           </span>
           <h4 className="font-serif font-bold text-lg sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            気・血・水の関係を、伝統理論の用語から学ぶ
+            気・血・水（津液）の関係を、伝統理論の用語から学ぶ
           </h4>
         </div>
 
@@ -47,7 +47,7 @@ export default function QiBloodTriangle() {
               activeRel === "qi-water" ? "bg-[#0288D1] text-white shadow-xs" : "text-[#59615D] dark:text-[#96A6B2]"
             }`}
           >
-            気 ⇄ 水（推動と舞台）
+            気 ⇄ 水（生成・散布・排泄）
           </button>
           <button
             onClick={() => setActiveRel("blood-water")}
@@ -175,10 +175,10 @@ export default function QiBloodTriangle() {
             <div className="p-5 rounded-2xl bg-white dark:bg-[#1A2530] border-2 border-[#D32F2F]/50 shadow-sm space-y-3">
               <div className="flex items-center justify-between">
                 <span className="font-serif font-bold text-base text-[#D32F2F]">
-                  【血為気之母（けつはきの母）】
+                  【血為気之母（けつはきのはは）】
                 </span>
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#FDECEC] text-[#D32F2F] font-bold">
-                  器・担持
+                  血が気を支える関係
                 </span>
               </div>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
@@ -195,7 +195,7 @@ export default function QiBloodTriangle() {
             <div className="p-5 rounded-2xl bg-white dark:bg-[#1A2530] border-2 border-[#0288D1]/50 shadow-sm space-y-3">
               <div className="flex items-center justify-between">
                 <span className="font-serif font-bold text-base text-[#0288D1]">
-                  【気水連動：推動と運化の舞台】
+                  【気と津液：生成・散布・排泄との関係】
                 </span>
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#E1F5FE] text-[#0288D1] font-bold">
                   気化・利水

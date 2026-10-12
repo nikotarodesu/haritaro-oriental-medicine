@@ -34,9 +34,9 @@ export default function YinYangSixPrinciples() {
         </svg>
       ),
       metaphor: "尾を噛み合う双魚 / 光と影 / 機能と肉体",
-      summary: "互いに相手を自己の存在基盤（根）とし、単独では存在し得ない関係。",
+      summary: "互いを自分の存在の前提とし、単独では存在し得ない関係。",
       clinicalExample: "伝統理論では、陽の働きと、それを支える陰の側面を相互依存として説明する。「気」「血」はここで使う理論上の概念で、エネルギーや血液の測定値と同義ではない。",
-      tag: "存在の不可分性"
+      tag: "互いが存在の前提"
     },
     {
       id: "seiyaku",
@@ -53,7 +53,7 @@ export default function YinYangSixPrinciples() {
         </svg>
       ),
       metaphor: "水平に保たれたシーソー / 過不足を抑える関係",
-      summary: "双方が互いを抑制・制御し合うことで、一方の過剰な暴走（亢進）を防ぐ。",
+      summary: "互いに抑制・制御し合い、一方が過剰に強くなること（亢進）を防ぐ関係。",
       clinicalExample: "暑さと涼しさを釣り合わせるイメージで捉える。体温調節を例に連想しても、陰陽をその制御機構と同一視しない。陰陽の偏りという分類だけで医学的な原因は診断できない。",
       tag: "相互制約・均衡"
     },
@@ -72,7 +72,7 @@ export default function YinYangSixPrinciples() {
         </svg>
       ),
       metaphor: "朝昼夜の波 / 周期的な増減",
-      summary: "絶え間なくシーソーのように増減（此消彼長・此長彼消）を繰り返す量的動態。",
+      summary: "一方が減れば他方が増す（此消彼長・此長彼消）というように、陰陽の量が絶えず変化するという説明。",
       clinicalExample: "昼に向けて陽が増し、夜に向けて陰が増すという伝統的な分類で、変化を表す。図の波は生体リズムの測定値や、自律神経の活動量を示すグラフではない。",
       tag: "増減・周期的変化"
     },
@@ -108,10 +108,10 @@ export default function YinYangSixPrinciples() {
           <circle cx="34" cy="38" r="3" fill="#1E3A5F" />
         </svg>
       ),
-      metaphor: "多層構造 / マトリョーシカ / 入れ子構造",
+      metaphor: "入れ子構造 / 大きな区分の中をさらに分ける",
       summary: "陰と陽は絶対的な固定物ではなく、いかなる部分も無限に陰陽へ細分化できる。",
-      clinicalExample: "伝統的な分類では、昼を陽としても、その中を午前と午後に分けて相対的な陰陽を考える。分類の基準を変えれば位置づけも変わり、部位や時間に絶対的な陰陽があるとするものではない。",
-      tag: "相対性・多階層解析"
+      clinicalExample: "伝統的な分類では、昼を陽としても、その中を午前と午後に分けて相対的な陰陽を考える。比べる基準が変われば陰・陽の分け方も変わり、部位や時間に絶対的な陰陽があるとするものではない。",
+      tag: "基準を変えて細分する"
     },
     {
       id: "tairitsu",
@@ -129,7 +129,7 @@ export default function YinYangSixPrinciples() {
       metaphor: "逆向きの矢印 / 相反する側面の関係",
       summary: "相反する二つの側面を、ひとつの関係の中で捉える伝統的な考え方。",
       clinicalExample: "屈筋と伸筋の関係を比喩に使う場合も、筋を陰・陽へ固定分類せず、異なる働きの協調を連想するために用いる。実際の運動制御の仕組みを陰陽論で証明するものではない。",
-      tag: "対立統一・協調ダイナミクス"
+      tag: "対立する側面の協調"
     }
   ];
 
@@ -142,7 +142,7 @@ export default function YinYangSixPrinciples() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説②：陰陽6大原理のインフォグラフィック</span>
+            <span>画像解説②：陰陽の六つの原理を比べる図</span>
           </span>
           <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             陰陽の関係を学ぶ「6つの原理」
@@ -216,7 +216,7 @@ export default function YinYangSixPrinciples() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
           <div className="p-4 rounded-xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
             <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block">
-              【基本概念・本質】
+              【基本的な意味】
             </span>
             <p className="text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
               {active.summary}

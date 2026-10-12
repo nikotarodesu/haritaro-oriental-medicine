@@ -10,14 +10,15 @@
 | 公開記事 | 18 |
 | 用語集 | 6 |
 | 公開ツール・比較モデル | 71 |
-| ページ入口・案内・印刷例 | 9 |
-| 合計 | 145 |
+| ページ入口・案内・印刷例（前回分） | 9 |
+| 今回の入口校閲で追加 | 1 |
+| 合計 | 146 |
 
-完全重複は0件、原文とソース位置の組合せは145件です。同じファイルかつ同じ原文だけを完全重複として数えました。論点が似ていても公開箇所や原文が違うものは残しています。たとえば、症状比較の「著効・特効」という共通見出し1項目と、12の経穴説明12項目は関連する論点ですが、確認する文が異なる13項目です。
+完全重複は0件、原文とソース位置の組合せは146件です。同じファイルかつ同じ原文だけを完全重複として数えました。論点が似ていても公開箇所や原文が違うものは残しています。たとえば、症状比較の「著効・特効」という共通見出し1項目と、12の経穴説明12項目は関連する論点ですが、確認する文が異なる13項目です。
 
 動的クイズは3つの解説テンプレートを3項目として数え、影響する8脈×3問の24問題IDを省略せず示しています。方剤9行・薬剤9行、同じ論点の主治行は関連文として示し、項目数に二重加算していません。古典引用とその解説も、別の文に別の確認事項がある場合は別項目です。
 
-機械読み取り用の全記録は [specialist-review-index.json](/C:/Users/秀喜/.codex/.chatgpt-projects/g-p-6aa3ba87681081918e12c72cdaff6379/haritaro-oriental-medicine/docs/readability/specialist-review-index.json) にあります。元監査は [lecture-editorial-audit.json](/C:/Users/秀喜/.codex/.chatgpt-projects/g-p-6aa3ba87681081918e12c72cdaff6379/haritaro-oriental-medicine/docs/readability/lecture-editorial-audit.json)、[article-editorial-audit.json](/C:/Users/秀喜/.codex/.chatgpt-projects/g-p-6aa3ba87681081918e12c72cdaff6379/haritaro-oriental-medicine/docs/readability/article-editorial-audit.json)、[foundation-glossary-audit.json](/C:/Users/秀喜/.codex/.chatgpt-projects/g-p-6aa3ba87681081918e12c72cdaff6379/haritaro-oriental-medicine/docs/readability/foundation-glossary-audit.json)、[tool-specialist-review.json](/C:/Users/秀喜/.codex/.chatgpt-projects/g-p-6aa3ba87681081918e12c72cdaff6379/haritaro-oriental-medicine/docs/readability/tool-specialist-review.json)、[entry-page-audit.json](/C:/Users/秀喜/.codex/.chatgpt-projects/g-p-6aa3ba87681081918e12c72cdaff6379/haritaro-oriental-medicine/docs/readability/entry-page-audit.json) です。
+機械読み取り用の全記録は [specialist-review-index.json](/C:/Users/秀喜/.codex/.chatgpt-projects/g-p-6aa3ba87681081918e12c72cdaff6379/haritaro-oriental-medicine/docs/readability/specialist-review-index.json) にあります。元監査は [lecture-editorial-audit.json](/C:/Users/秀喜/.codex/.chatgpt-projects/g-p-6aa3ba87681081918e12c72cdaff6379/haritaro-oriental-medicine/docs/readability/lecture-editorial-audit.json)、[article-editorial-audit.json](/C:/Users/秀喜/.codex/.chatgpt-projects/g-p-6aa3ba87681081918e12c72cdaff6379/haritaro-oriental-medicine/docs/readability/article-editorial-audit.json)、[foundation-glossary-audit.json](/C:/Users/秀喜/.codex/.chatgpt-projects/g-p-6aa3ba87681081918e12c72cdaff6379/haritaro-oriental-medicine/docs/readability/foundation-glossary-audit.json)、[tool-specialist-review.json](/C:/Users/秀喜/.codex/.chatgpt-projects/g-p-6aa3ba87681081918e12c72cdaff6379/haritaro-oriental-medicine/docs/readability/tool-specialist-review.json)、[entry-page-audit.json](/C:/Users/秀喜/.codex/.chatgpt-projects/g-p-6aa3ba87681081918e12c72cdaff6379/haritaro-oriental-medicine/docs/readability/entry-page-audit.json)、[natural-japanese-entry-audit.json](/C:/Users/秀喜/.codex/.chatgpt-projects/g-p-6aa3ba87681081918e12c72cdaff6379/haritaro-oriental-medicine/docs/readability/natural-japanese-entry-audit.json) です。
 
 ## 一覧の入口
 
@@ -2302,9 +2303,9 @@
 
 <a id="entry-pages"></a>
 
-## ページ入口・案内・印刷例（9項目）
+## ページ入口・案内・印刷例（10項目）
 
-入口42種類の監査で追加された9項目です。印刷例は該当の印刷物や例を表示したときの文章で、一般的な操作案内の改善とは分けて記録しています。
+入口42種類の監査の9項目と、今回の文章校閲で追加した1項目です。印刷例は該当の印刷物や例を表示したときの文章で、一般的な操作案内の改善とは分けて記録しています。
 
 ### entry:entry-notes-pattern-label
 
@@ -2449,6 +2450,22 @@
 > 標準的刺灸が可能
 
 確認したい事項：注意事項が空の場合の既定表示が、施術可能・安全確認済みと受け取られないか確認する。局所解剖・個人条件・未確認情報から判断できる範囲を専門家が確認する。
+
+### entry:natural-entry-01
+
+経穴数の集計ラベルと根拠
+
+公開先：[/practice/haiketsu](https://www.haritaro.jp/practice/haiketsu)。実装：[src/components/HaiketsuOptimizer.tsx:361](/C:/Users/秀喜/.codex/.chatgpt-projects/g-p-6aa3ba87681081918e12c72cdaff6379/haritaro-oriental-medicine/src/components/HaiketsuOptimizer.tsx:361)。
+
+対象ID：`natural-entry-01`。
+
+表示条件：選んだ経穴数を集計する表示ラベル。操作ボタンのみ文章を変更し、集計ルールとラベルは維持。
+
+原文（抜粋）：
+
+> 黄金比（2〜4穴）
+
+確認したい事項：「黄金比」は教材内の集計名か、臨床的な優位性を指すか。経穴数を2〜4とする根拠と適用条件を確認する。意味の確定に専門的判断が必要なため、操作ボタンのみ具体化し、このラベルと集計ルールは維持した。
 
 ## 確認範囲と除外
 

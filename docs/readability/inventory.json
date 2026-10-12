@@ -11,7 +11,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "固摂",
@@ -21,7 +23,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "相侮",
@@ -31,7 +35,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "相乗",
@@ -41,7 +47,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "気虚",
@@ -51,7 +59,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "気滞",
@@ -61,7 +71,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "気逆",
@@ -71,7 +83,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "血虚",
@@ -81,7 +95,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "瘀血",
@@ -91,7 +107,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "水滞",
@@ -101,7 +119,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "陰虚",
@@ -111,7 +131,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "陽虚",
@@ -121,7 +143,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "陰陽",
@@ -131,7 +155,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "相生",
@@ -141,7 +167,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "相克",
@@ -151,7 +179,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "原穴",
@@ -161,7 +191,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "四関",
@@ -171,7 +203,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "四総穴",
@@ -181,7 +215,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "得気",
@@ -191,7 +227,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "五労",
@@ -201,7 +239,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "弁証論治",
@@ -211,7 +251,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "合谷",
@@ -221,7 +263,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "太衝",
@@ -231,7 +275,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "足三里",
@@ -241,7 +287,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "三陰交",
@@ -251,7 +299,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "内関",
@@ -261,7 +311,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "百会",
@@ -271,7 +323,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "関元",
@@ -281,7 +335,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "中脘",
@@ -291,7 +347,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "天枢",
@@ -301,7 +359,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "風池",
@@ -311,7 +371,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     },
     {
       "id": "委中",
@@ -321,7 +383,9 @@
       "status": "定義・要約・関連講義を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": false
     }
   ],
   "articles": [
@@ -332,7 +396,9 @@
       "source": "src/data/articles/historyArticle.ts",
       "status": "本文全文・学習要約・関連記事と講義/症例の導線を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
-      "changedInFollowup": true
+      "changedInFollowup": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "science-of-yinyang-gogyo",
@@ -341,7 +407,9 @@
       "source": "src/data/articles/yinyangGogyoArticle.ts",
       "status": "本文全文・学習要約・関連記事と講義/症例の導線を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
-      "changedInFollowup": true
+      "changedInFollowup": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "science-of-qi-blood-fluid",
@@ -350,7 +418,9 @@
       "source": "src/data/articles/kiketsusuiArticle.ts",
       "status": "本文全文・学習要約・関連記事と講義/症例の導線を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
-      "changedInFollowup": true
+      "changedInFollowup": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "science-of-meridians-network",
@@ -359,7 +429,9 @@
       "source": "src/data/articles/meridianArticle.ts",
       "status": "本文全文・学習要約・関連記事と講義/症例の導線を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
-      "changedInFollowup": true
+      "changedInFollowup": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "science-of-acupoints-mechanotransduction",
@@ -368,7 +440,9 @@
       "source": "src/data/articles/acupointArticle.ts",
       "status": "本文全文・学習要約・関連記事と講義/症例の導線を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
-      "changedInFollowup": true
+      "changedInFollowup": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "science-of-pulse-diagnosis",
@@ -377,7 +451,9 @@
       "source": "src/data/articles/pulseArticle.ts",
       "status": "本文全文・学習要約・関連記事と講義/症例の導線を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
-      "changedInFollowup": true
+      "changedInFollowup": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "science-of-abdominal-diagnosis",
@@ -386,7 +462,9 @@
       "source": "src/data/articles/abdomenArticle.ts",
       "status": "本文全文・学習要約・関連記事と講義/症例の導線を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
-      "changedInFollowup": true
+      "changedInFollowup": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "science-of-tongue-diagnosis",
@@ -395,7 +473,9 @@
       "source": "src/data/articles/tongueArticle.ts",
       "status": "本文全文・学習要約・関連記事と講義/症例の導線を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
-      "changedInFollowup": true
+      "changedInFollowup": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "science-of-acupuncture-neuroscience",
@@ -404,7 +484,9 @@
       "source": "src/data/articles/acupunctureArticle.ts",
       "status": "本文全文・学習要約・関連記事と講義/症例の導線を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
-      "changedInFollowup": true
+      "changedInFollowup": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "science-of-kampo-network-pharmacology",
@@ -413,7 +495,9 @@
       "source": "src/data/articles/kampoArticle.ts",
       "status": "本文全文・学習要約・関連記事と講義/症例の導線を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
-      "changedInFollowup": true
+      "changedInFollowup": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "east-west-integrative-unified-theory",
@@ -422,7 +506,9 @@
       "source": "src/data/articles/unifiedTheoryArticle.ts",
       "status": "本文全文・学習要約・関連記事と講義/症例の導線を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
-      "changedInFollowup": true
+      "changedInFollowup": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     },
     {
       "id": "east-west-integrative-gerd-gastric",
@@ -431,7 +517,9 @@
       "source": "src/data/articles/gerdArticle.ts",
       "status": "本文全文・学習要約・関連記事と講義/症例の導線を個別点検済み。医学的監修とは区別。",
       "reviewed": true,
-      "changedInFollowup": true
+      "changedInFollowup": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseChanged": true
     }
   ],
   "additionalQuizSources": [
@@ -460,7 +548,9 @@
       "url": "/about",
       "entryCopyReviewed": true,
       "notes": "冒頭を講義・クイズ・症例演習・ノートという実操作に変更。目的別の開始リンクを確認。",
-      "audit": "entry-page-audit.json"
+      "audit": "entry-page-audit.json",
+      "naturalJapaneseChanged": true,
+      "latestAudit": "natural-japanese-entry-audit.json"
     },
     {
       "source": "src/app/account/subscription/page.tsx",
@@ -524,7 +614,9 @@
       "url": "/clinical",
       "entryCopyReviewed": true,
       "notes": "聞き取った回答・未確認事項、配穴の理由、前回記録の読み返しを具体化。",
-      "audit": "entry-page-audit.json"
+      "audit": "entry-page-audit.json",
+      "naturalJapaneseChanged": true,
+      "latestAudit": "natural-japanese-entry-audit.json"
     },
     {
       "source": "src/app/clinical/symptoms/[slug]/page.tsx",
@@ -620,7 +712,9 @@
       "url": "/learn/courses",
       "entryCopyReviewed": true,
       "notes": "4講の概論、各章3〜5講の短いコースと全講義の違い・共通受講記録が明快。",
-      "audit": "entry-page-audit.json"
+      "audit": "entry-page-audit.json",
+      "naturalJapaneseChanged": true,
+      "latestAudit": "natural-japanese-entry-audit.json"
     },
     {
       "source": "src/app/learn/courses/[slug]/page.tsx",
@@ -636,7 +730,9 @@
       "url": "/learn",
       "entryCopyReviewed": true,
       "notes": "最初の概論と短いコース/全講義、今日の復習・国試・経穴・症例・ノートの違いが明快。",
-      "audit": "entry-page-audit.json"
+      "audit": "entry-page-audit.json",
+      "naturalJapaneseChanged": true,
+      "latestAudit": "natural-japanese-entry-audit.json"
     },
     {
       "source": "src/app/library/page.tsx",
@@ -803,10 +899,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-intro-2",
@@ -819,10 +918,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-intro-3",
@@ -835,10 +937,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-intro-4",
@@ -851,10 +956,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-yinyang-1",
@@ -867,10 +975,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-yinyang-2",
@@ -883,10 +994,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-yinyang-3",
@@ -899,10 +1013,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-yinyang-4",
@@ -917,10 +1034,13 @@
       "review": [
         "- **Q2**: 「熱極生寒」と、発熱後に急に具合が悪くなった人の医学的な評価は、なぜ分けて考える必要がありますか？"
       ],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": false,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-yinyang-5",
@@ -933,10 +1053,13 @@
       "goals": 3,
       "comparisonTables": 6,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-yinyang-6",
@@ -952,10 +1075,13 @@
         "水と火の比喩を用いながら、内分泌機能や脱水の診断と同一視せず、治法の学習と実際の施術・薬の判断を分けて考えます。",
         "伝統的な分類と、現代医学の病名・検査結果・治療判断は分けて考えます。"
       ],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-yinyang-7",
@@ -970,10 +1096,13 @@
       "review": [
         "複数の所見がそろっても、伝統的な分類と医学的な診断は分けて考えます。"
       ],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": false,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-yinyang-8",
@@ -986,10 +1115,13 @@
       "goals": 3,
       "comparisonTables": 5,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-qiblood-1",
@@ -1002,10 +1134,13 @@
       "goals": 3,
       "comparisonTables": 12,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-qiblood-2",
@@ -1018,10 +1153,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-qiblood-3",
@@ -1034,10 +1172,13 @@
       "goals": 3,
       "comparisonTables": 4,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-qiblood-4",
@@ -1050,10 +1191,13 @@
       "goals": 3,
       "comparisonTables": 4,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-qiblood-5",
@@ -1066,10 +1210,13 @@
       "goals": 3,
       "comparisonTables": 5,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-zangfu-1",
@@ -1082,10 +1229,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-zangfu-2",
@@ -1098,10 +1248,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-zangfu-3",
@@ -1114,10 +1267,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-zangfu-4",
@@ -1130,10 +1286,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-zangfu-5",
@@ -1146,10 +1305,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-lifedynamics-1",
@@ -1162,10 +1324,13 @@
       "goals": 3,
       "comparisonTables": 6,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-lifedynamics-2",
@@ -1178,10 +1343,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-lifedynamics-3",
@@ -1194,10 +1362,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-lifedynamics-4",
@@ -1210,10 +1381,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-lifedynamics-5",
@@ -1226,10 +1400,13 @@
       "goals": 4,
       "comparisonTables": 5,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-lifedynamics-6",
@@ -1242,10 +1419,13 @@
       "goals": 3,
       "comparisonTables": 8,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-lifedynamics-7",
@@ -1258,10 +1438,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-lifedynamics-8",
@@ -1274,10 +1457,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-lifedynamics-9",
@@ -1290,10 +1476,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-lifedynamics-10",
@@ -1306,10 +1495,13 @@
       "goals": 3,
       "comparisonTables": 5,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-lifedynamics-11",
@@ -1322,10 +1514,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-lifedynamics-12",
@@ -1338,10 +1533,13 @@
       "goals": 3,
       "comparisonTables": 5,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-wuxing-1",
@@ -1354,10 +1552,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-wuxing-2",
@@ -1370,10 +1571,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-wuxing-3",
@@ -1386,10 +1590,13 @@
       "goals": 3,
       "comparisonTables": 4,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-wuxing-4",
@@ -1402,10 +1609,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-wuxing-5",
@@ -1418,10 +1628,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-wuxing-6",
@@ -1434,10 +1647,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-wuxing-7",
@@ -1450,10 +1666,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-wuxing-8",
@@ -1466,10 +1685,13 @@
       "goals": 3,
       "comparisonTables": 5,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-meridians-1",
@@ -1482,10 +1704,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-meridians-2",
@@ -1498,10 +1723,13 @@
       "goals": 3,
       "comparisonTables": 14,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-meridians-3",
@@ -1514,10 +1742,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-meridians-4",
@@ -1530,10 +1761,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-pathomechanism-1",
@@ -1546,10 +1780,13 @@
       "goals": 3,
       "comparisonTables": 6,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-pathomechanism-2",
@@ -1562,10 +1799,13 @@
       "goals": 3,
       "comparisonTables": 12,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-pathomechanism-3",
@@ -1578,10 +1818,13 @@
       "goals": 3,
       "comparisonTables": 6,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-pathomechanism-4",
@@ -1597,10 +1840,13 @@
         "## 導入：潤いの不足と停滞を分けて考える",
         "### 水滞という用語の位置づけ"
       ],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-pathomechanism-5",
@@ -1613,10 +1859,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-pathomechanism-6",
@@ -1629,10 +1878,13 @@
       "goals": 3,
       "comparisonTables": 6,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-pathomechanism-7",
@@ -1645,10 +1897,13 @@
       "goals": 3,
       "comparisonTables": 8,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-pathomechanism-8",
@@ -1661,10 +1916,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-pathomechanism-9",
@@ -1677,10 +1935,13 @@
       "goals": 3,
       "comparisonTables": 6,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-pathomechanism-10",
@@ -1693,10 +1954,13 @@
       "goals": 3,
       "comparisonTables": 5,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-pathomechanism-11",
@@ -1709,10 +1973,13 @@
       "goals": 3,
       "comparisonTables": 4,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-pathomechanism-12",
@@ -1725,10 +1992,13 @@
       "goals": 3,
       "comparisonTables": 10,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-diagnosis-1",
@@ -1741,10 +2011,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-diagnosis-2",
@@ -1757,10 +2030,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-diagnosis-3",
@@ -1773,10 +2049,13 @@
       "goals": 3,
       "comparisonTables": 11,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-diagnosis-4",
@@ -1789,10 +2068,13 @@
       "goals": 3,
       "comparisonTables": 5,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-diagnosis-5",
@@ -1805,10 +2087,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-diagnosis-6",
@@ -1823,10 +2108,13 @@
       "review": [
         "| 観察軸 | 記述例 | 分けて考えること |"
       ],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-diagnosis-7",
@@ -1841,10 +2129,13 @@
       "review": [
         "## 真寒仮熱・真熱仮寒の学習上の位置づけ"
       ],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-diagnosis-8",
@@ -1857,10 +2148,13 @@
       "goals": 3,
       "comparisonTables": 11,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-diagnosis-9",
@@ -1873,10 +2167,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-diagnosis-10",
@@ -1889,10 +2186,13 @@
       "goals": 3,
       "comparisonTables": 4,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-diagnosis-11",
@@ -1905,10 +2205,13 @@
       "goals": 3,
       "comparisonTables": 11,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-diagnosis-12",
@@ -1921,10 +2224,13 @@
       "goals": 3,
       "comparisonTables": 9,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-treatment-1",
@@ -1937,10 +2243,13 @@
       "goals": 3,
       "comparisonTables": 5,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-treatment-2",
@@ -1953,10 +2262,13 @@
       "goals": 3,
       "comparisonTables": 8,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-treatment-3",
@@ -1969,10 +2281,13 @@
       "goals": 3,
       "comparisonTables": 8,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-treatment-4",
@@ -1985,10 +2300,13 @@
       "goals": 3,
       "comparisonTables": 10,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-treatment-5",
@@ -2001,10 +2319,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-treatment-6",
@@ -2017,10 +2338,13 @@
       "goals": 3,
       "comparisonTables": 6,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-treatment-7",
@@ -2033,10 +2357,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-treatment-8",
@@ -2049,10 +2376,13 @@
       "goals": 3,
       "comparisonTables": 13,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": true
     },
     {
       "url": "/curriculum/lecture-treatment-9",
@@ -2065,10 +2395,13 @@
       "goals": 3,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-treatment-10",
@@ -2081,10 +2414,13 @@
       "goals": 3,
       "comparisonTables": 6,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-treatment-11",
@@ -2097,10 +2433,13 @@
       "goals": 4,
       "comparisonTables": 0,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-treatment-12",
@@ -2113,10 +2452,13 @@
       "goals": 4,
       "comparisonTables": 28,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-practice-1",
@@ -2129,10 +2471,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-practice-2",
@@ -2145,10 +2490,13 @@
       "goals": 3,
       "comparisonTables": 7,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-practice-3",
@@ -2161,10 +2509,13 @@
       "goals": 3,
       "comparisonTables": 5,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-practice-4",
@@ -2177,10 +2528,13 @@
       "goals": 3,
       "comparisonTables": 6,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-practice-5",
@@ -2193,10 +2547,13 @@
       "goals": 3,
       "comparisonTables": 6,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-practice-6",
@@ -2209,10 +2566,13 @@
       "goals": 3,
       "comparisonTables": 5,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-practice-7",
@@ -2225,10 +2585,13 @@
       "goals": 3,
       "comparisonTables": 10,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-practice-8",
@@ -2241,10 +2604,13 @@
       "goals": 3,
       "comparisonTables": 6,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-practice-9",
@@ -2257,10 +2623,13 @@
       "goals": 3,
       "comparisonTables": 6,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": true
+      "requiresSpecialistReview": true,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-practice-10",
@@ -2273,10 +2642,13 @@
       "goals": 3,
       "comparisonTables": 6,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-practice-11",
@@ -2289,10 +2661,13 @@
       "goals": 3,
       "comparisonTables": 6,
       "review": [],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": false,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     },
     {
       "url": "/curriculum/lecture-practice-12",
@@ -2307,10 +2682,13 @@
       "review": [
         "実際の診療に必要な資格・研修・技能と、Web上の受講記録や学習上の理解を分けて考えます。"
       ],
-      "editorialStatus": "冒頭・学習目標・本文全文・確認問題の文章を個別点検済み。医学的監修とは区別。",
+      "editorialStatus": "冒頭・目標・本文・解説を再読し、対象と確認手順が分かる自然な日本語へ必要な箇所を改稿。医学的監修とは区別。",
       "reviewed": true,
       "changedInFollowup": true,
-      "requiresSpecialistReview": false
+      "requiresSpecialistReview": false,
+      "naturalJapaneseReviewed": true,
+      "naturalJapaneseDataChanged": true,
+      "naturalJapaneseDiagramChanged": false
     }
   ],
   "reviewedAt": "2026-10-12",
@@ -2320,7 +2698,8 @@
     "foundation-glossary-audit.json",
     "article-editorial-audit.json",
     "entry-page-audit.json",
-    "specialist-review.md"
+    "specialist-review.md",
+    "natural-japanese-report.md"
   ],
   "followupCounts": {
     "lecturesReviewed": 94,
@@ -2332,5 +2711,23 @@
     "glossaryTermsChanged": 3,
     "entryPageTypesReviewed": 42,
     "specialistReviewItems": 145
-  }
+  },
+  "naturalJapaneseCounts": {
+    "lecturesReviewed": 94,
+    "lecturesWithDataChanges": 92,
+    "lecturePagesWithCopyOrDiagramChanges": 93,
+    "questionExplanationsChanged": 52,
+    "articlesReviewed": 12,
+    "articlesChanged": 12,
+    "articleParagraphsChanged": 73,
+    "glossaryTermsChanged": 13,
+    "studyDiagramsReviewed": 59,
+    "studyDiagramsChanged": 32,
+    "interactiveDiagramsReviewed": 13,
+    "interactiveDiagramsChanged": 9,
+    "entryCopyEdits": 43,
+    "coursesChanged": 6,
+    "specialistReviewItems": 146
+  },
+  "latestReport": "natural-japanese-report.md"
 }

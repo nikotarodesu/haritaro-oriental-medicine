@@ -60,7 +60,7 @@ export default function PathomechanismThermoXushi() {
           </section>
           <section className="rounded-xl border border-[#E5DEC9] bg-white p-4 dark:border-[#2A3B4A] dark:bg-[#17212A]">
             <h5 className="mb-2 font-bold text-[#232826] dark:text-[#FAF8F5]">伝統上の解釈候補</h5>
-            <p>上下で寒熱の特徴が異なるなら「上熱下寒」という整理を比較できます。これだけで上部が実、下部が虚とは決まりません。寒熱と虚実はそれぞれの所見から検討します。</p>
+            <p>上下で寒熱の特徴が異なるなら「上熱下寒」という候補を考えられます。これだけで上部が実、下部が虚とは決まりません。寒熱と虚実はそれぞれの所見から検討します。</p>
           </section>
           <section className="rounded-xl bg-[#FFF8E1] p-4 dark:bg-[#FFA000]/10">
             <h5 className="mb-2 font-bold text-[#5D4037] dark:text-[#FFE082]">まだ分からないこと</h5>

@@ -1,0 +1,495 @@
+{
+  "measuredAt": "2026-10-12",
+  "cases": [
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "東洋医学概論 レッスン1：東洋医学とは何か",
+      "url": "/curriculum/lecture-intro-1",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "東洋医学概論 レッスン1：東洋医学とは何か",
+      "url": "/curriculum/lecture-intro-1",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "東洋医学概論 レッスン1：東洋医学とは何か",
+      "url": "/curriculum/lecture-intro-1",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "東洋医学概論 レッスン1：東洋医学とは何か",
+      "url": "/curriculum/lecture-intro-1",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "東洋医学概論 レッスン1：東洋医学とは何か",
+      "url": "/curriculum/lecture-intro-1",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "陰陽論 レッスン3：陰陽はどう関係するか",
+      "url": "/curriculum/lecture-yinyang-3",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "陰陽論 レッスン3：陰陽はどう関係するか",
+      "url": "/curriculum/lecture-yinyang-3",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "陰陽論 レッスン3：陰陽はどう関係するか",
+      "url": "/curriculum/lecture-yinyang-3",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "陰陽論 レッスン3：陰陽はどう関係するか",
+      "url": "/curriculum/lecture-yinyang-3",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "陰陽論 レッスン3：陰陽はどう関係するか",
+      "url": "/curriculum/lecture-yinyang-3",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "陰陽論 レッスン7：所見を組み合わせて考える",
+      "url": "/curriculum/lecture-yinyang-7",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "陰陽論 レッスン7：所見を組み合わせて考える",
+      "url": "/curriculum/lecture-yinyang-7",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "陰陽論 レッスン7：所見を組み合わせて考える",
+      "url": "/curriculum/lecture-yinyang-7",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "陰陽論 レッスン7：所見を組み合わせて考える",
+      "url": "/curriculum/lecture-yinyang-7",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "陰陽論 レッスン7：所見を組み合わせて考える",
+      "url": "/curriculum/lecture-yinyang-7",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "気血津液論 レッスン4：気・血・津液の正常な関係",
+      "url": "/curriculum/lecture-qiblood-4",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "気血津液論 レッスン4：気・血・津液の正常な関係",
+      "url": "/curriculum/lecture-qiblood-4",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "気血津液論 レッスン4：気・血・津液の正常な関係",
+      "url": "/curriculum/lecture-qiblood-4",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "気血津液論 レッスン4：気・血・津液の正常な関係",
+      "url": "/curriculum/lecture-qiblood-4",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "気血津液論 レッスン4：気・血・津液の正常な関係",
+      "url": "/curriculum/lecture-qiblood-4",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "気血津液を学ぶ：伝統的な分類と医学的評価",
+      "url": "/articles/science-of-qi-blood-fluid",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "気血津液を学ぶ：伝統的な分類と医学的評価",
+      "url": "/articles/science-of-qi-blood-fluid",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "気血津液を学ぶ：伝統的な分類と医学的評価",
+      "url": "/articles/science-of-qi-blood-fluid",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "気血津液を学ぶ：伝統的な分類と医学的評価",
+      "url": "/articles/science-of-qi-blood-fluid",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "気血津液を学ぶ：伝統的な分類と医学的評価",
+      "url": "/articles/science-of-qi-blood-fluid",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "「はり太郎の東洋医学」について",
+      "url": "/about",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "「はり太郎の東洋医学」について",
+      "url": "/about",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "「はり太郎の東洋医学」について",
+      "url": "/about",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "「はり太郎の東洋医学」について",
+      "url": "/about",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "「はり太郎の東洋医学」について",
+      "url": "/about",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "東洋医学は、どの順番で学ぶ？",
+      "url": "/learn",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "東洋医学は、どの順番で学ぶ？",
+      "url": "/learn",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "東洋医学は、どの順番で学ぶ？",
+      "url": "/learn",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "東洋医学は、どの順番で学ぶ？",
+      "url": "/learn",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "東洋医学は、どの順番で学ぶ？",
+      "url": "/learn",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "東洋医学の基礎を、一歩ずつ。",
+      "url": "/learn/courses",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "東洋医学の基礎を、一歩ずつ。",
+      "url": "/learn/courses",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "東洋医学の基礎を、一歩ずつ。",
+      "url": "/learn/courses",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "東洋医学の基礎を、一歩ずつ。",
+      "url": "/learn/courses",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "東洋医学の基礎を、一歩ずつ。",
+      "url": "/learn/courses",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "生命活動を全体として見る",
+      "url": "/learn/courses/life-functions-foundations",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "生命活動を全体として見る",
+      "url": "/learn/courses/life-functions-foundations",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "生命活動を全体として見る",
+      "url": "/learn/courses/life-functions-foundations",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "生命活動を全体として見る",
+      "url": "/learn/courses/life-functions-foundations",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "生命活動を全体として見る",
+      "url": "/learn/courses/life-functions-foundations",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "東洋医学の用語集",
+      "url": "/glossary",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "東洋医学の用語集",
+      "url": "/glossary",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "東洋医学の用語集",
+      "url": "/glossary",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "東洋医学の用語集",
+      "url": "/glossary",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "東洋医学の用語集",
+      "url": "/glossary",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "臨床弁証シミュレーター",
+      "url": "/simulator",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "臨床弁証シミュレーター",
+      "url": "/simulator",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "臨床弁証シミュレーター",
+      "url": "/simulator",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "臨床弁証シミュレーター",
+      "url": "/simulator",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "臨床弁証シミュレーター",
+      "url": "/simulator",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "配穴設計・臨床演習",
+      "url": "/practice/haiketsu",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "配穴設計・臨床演習",
+      "url": "/practice/haiketsu",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "配穴設計・臨床演習",
+      "url": "/practice/haiketsu",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "配穴設計・臨床演習",
+      "url": "/practice/haiketsu",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "配穴設計・臨床演習",
+      "url": "/practice/haiketsu",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "文献・古典・症例教材",
+      "url": "/library",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "文献・古典・症例教材",
+      "url": "/library",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "文献・古典・症例教材",
+      "url": "/library",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "文献・古典・症例教材",
+      "url": "/library",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "文献・古典・症例教材",
+      "url": "/library",
+      "width": 1280
+    },
+    {
+      "client": 305,
+      "scroll": 305,
+      "title": "体系学習カリキュラム",
+      "url": "/curriculum",
+      "width": 320
+    },
+    {
+      "client": 360,
+      "scroll": 360,
+      "title": "体系学習カリキュラム",
+      "url": "/curriculum",
+      "width": 375
+    },
+    {
+      "client": 375,
+      "scroll": 375,
+      "title": "体系学習カリキュラム",
+      "url": "/curriculum",
+      "width": 390
+    },
+    {
+      "client": 415,
+      "scroll": 415,
+      "title": "体系学習カリキュラム",
+      "url": "/curriculum",
+      "width": 430
+    },
+    {
+      "client": 1265,
+      "scroll": 1265,
+      "title": "体系学習カリキュラム",
+      "url": "/curriculum",
+      "width": 1280
+    }
+  ]
+}

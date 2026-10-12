@@ -49,7 +49,7 @@ export default function ClinicalLandingPage() {
     },
     {
       q: "ツールの結果は診断を確定するものですか？",
-      a: "いいえ。本ツール群は鍼灸師の先生が所見を整理し、思考プロセスを記録・点検するための臨床推論支援ツールです。医学的な診断の確定や治療効果を自動保証するものではなく、最終的な配穴判断や施術は施術者ご自身の責任において行われます。",
+      a: "いいえ。これらのツールは、鍼灸師が所見と判断の理由を記録し、後から見直すためのものです。医学的な診断の確定や治療効果を自動保証するものではなく、最終的な配穴判断や施術は施術者ご自身の責任において行われます。",
     },
     {
       q: "プレミアムプランの受付状況はどこで確認できますか？",
@@ -142,7 +142,7 @@ export default function ClinicalLandingPage() {
               配穴の選定理由を残したい
             </h3>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              選んだ経穴、本治・標治の目的、併存する候補への配慮を記録します。次に見直すとき、経穴の名前だけでなく選定理由も読み返せます。
+              選んだ経穴、本治・標治の目的、ほかの候補をどう検討したかを記録します。次に見直すとき、経穴の名前だけでなく選定理由も読み返せます。
             </p>
             <Link href="/practice/haiketsu" className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#1E3D34] underline dark:text-[#74BA9E] focus-visible:outline-2 focus-visible:outline-offset-4">配穴を組み合わせて試す<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
           </div>

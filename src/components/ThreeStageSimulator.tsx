@@ -458,31 +458,31 @@ export default function ThreeStageSimulator() {
     if (updates.depth !== undefined && updates.depth !== depth) {
       const fromLabel = depth === "interior" ? "裏（深部・臓腑）" : "表（浅部・体表）";
       const toLabel = updates.depth === "interior" ? "裏（深部・臓腑）" : "表（浅部・体表）";
-      noticeText = `病位：『${fromLabel}』➔『${toLabel}』へ変更。病態の深さが切り替わりました。`;
+      noticeText = `病位の条件を「${fromLabel}」から「${toLabel}」に変更しました。候補の説明が更新されます。`;
       setDepth(updates.depth);
     }
     if (updates.temp !== undefined && updates.temp !== temp) {
       const fromLabel = temp === "heat" ? "熱（熱の徴候）" : "寒（冷えの徴候）";
       const toLabel = updates.temp === "heat" ? "熱（熱の徴候）" : "寒（冷えの徴候）";
-      noticeText = `寒熱：『${fromLabel}』➔『${toLabel}』へ変更。治療方針と配穴の狙いが切り替わりました。`;
+      noticeText = `寒熱の条件を「${fromLabel}」から「${toLabel}」に変更しました。方針と配穴の学習例が更新されます。`;
       setTemp(updates.temp);
     }
     if (updates.state !== undefined && updates.state !== state) {
       const fromLabel = state === "excess" ? "実（邪気の滞り）" : "虚（正気の不足）";
       const toLabel = updates.state === "excess" ? "実（邪気の滞り）" : "虚（正気の不足）";
-      noticeText = `虚実：『${fromLabel}』➔『${toLabel}』へ変更。瀉法（滞り打破）と補法（体力補給）の戦略が転換しました。`;
+      noticeText = `虚実の条件を「${fromLabel}」から「${toLabel}」に変更しました。方針と配穴の学習例が更新されます。`;
       setState(updates.state);
     }
     if (updates.qixueshui !== undefined && updates.qixueshui !== qixueshui) {
       const qFrom = QIXUESHUI_OPTIONS.find((q) => q.value === qixueshui)?.label.split("（")[0] || "";
       const qTo = QIXUESHUI_OPTIONS.find((q) => q.value === updates.qixueshui)?.label.split("（")[0] || "";
-      noticeText = `気血水：『${qFrom}』➔『${qTo}』へ変更。生体物質の動態推論が更新されました。`;
+      noticeText = `気血水の条件を「${qFrom}」から「${qTo}」に変更しました。候補と説明が更新されます。`;
       setQixueshui(updates.qixueshui);
     }
     if (updates.zangfu !== undefined && updates.zangfu !== zangfu) {
       const zFrom = ZANGFU_OPTIONS.find((z) => z.value === zangfu)?.label.split("（")[0] || "";
       const zTo = ZANGFU_OPTIONS.find((z) => z.value === updates.zangfu)?.label.split("（")[0] || "";
-      noticeText = `臓腑：『${zFrom}』➔『${zTo}』へ変更。局在系統と主経絡が切り替わりました。`;
+      noticeText = `臓腑の条件を「${zFrom}」から「${zTo}」に変更しました。対応する説明と主経絡が表示されます。`;
       setZangfu(updates.zangfu);
     }
     if (updates.complexState !== undefined && updates.complexState !== complexState) {
@@ -650,12 +650,12 @@ export default function ThreeStageSimulator() {
 
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold border border-[#C5DED4] dark:border-[#2A5243]">
               <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-              <span>3段階連動推論</span>
+              <span>3つの分類から条件を選ぶ</span>
             </span>
           </div>
 
           <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-            選択条件に応じて、病態の推論根拠・不足している情報・学習用の配穴例がリアルタイムに更新されます。
+            八綱・気血水・臓腑の条件を選ぶと、候補を支持する所見、不足している情報、学習用の配穴例が表示されます。条件を変えると、表示内容も変わります。
           </p>
         </div>
 
@@ -1471,7 +1471,7 @@ export default function ThreeStageSimulator() {
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
             <h4 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
-              臨床推論を深掘りする（詳しい説明）
+              候補の根拠と不足情報を読む
             </h4>
             <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
               各項目をクリックして展開

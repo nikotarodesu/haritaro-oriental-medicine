@@ -7,7 +7,7 @@ import LearningCourseCards from '@/components/learning/LearningCourseCards';
 import LearningCourseJourney from '@/components/learning/LearningCourseJourney';
 
 const title = '概論から始める基礎コース｜東洋医学の学習順';
-const description = `概論、陰陽、気血津液、臓腑、経絡から臨床の基礎まで。${LEARNING_COURSES.length}の3〜5講コースで理論と短い例を往復し、全講義を学ぶ目次や復習へ進めます。`;
+const description = `概論、陰陽、気血津液、臓腑、経絡から臨床の基礎まで。${LEARNING_COURSES.length}の短いコースで講義を3〜5講ずつ読み、相談記録の演習と復習で確かめます。全講義の目次にも進めます。`;
 const pageUrl = 'https://www.haritaro.jp/learn/courses';
 
 export const metadata: Metadata = {
@@ -32,7 +32,7 @@ export default function LearningCoursesPage() {
       <header className="max-w-3xl space-y-4">
         <p className="text-sm font-semibold tracking-wider text-[#184F49] dark:text-[#9CCBBC]">概論から、段階を追って</p>
         <h1 className="font-serif text-3xl font-bold leading-relaxed sm:text-4xl">東洋医学の基礎を、一歩ずつ。</h1>
-        <p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">初めての方は4講の概論から。各章の入口になる3〜5講を選んだコースで、用語と全体像をつかみます。短い例では、初めは観察した事実と不明点を分け、後半に仮説や評価を考えます。</p>
+        <p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">初めての方は、4講の概論から始めましょう。各コースでは、章の基本を扱う3〜5講を読みます。短い相談記録を使い、基礎コースでは記録から分かる事実と不明点を確かめ、後半のコースでは候補や判断の理由、経過を確認します。</p>
         <Link href="/learn/courses/oriental-medicine-introduction" className="inline-flex min-h-11 items-center rounded-xl bg-[#184F49] px-4 py-3 font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-4 dark:bg-[#285F54]">最初の概論コースを見る →</Link>
       </header>
       <LearningCourseJourney />

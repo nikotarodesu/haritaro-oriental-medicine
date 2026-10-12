@@ -1,0 +1,1987 @@
+{
+  "reviewedAt": "2026-10-12",
+  "baselineCommit": "7cd58127c6cb8517ef579caa57c808a482f751a3",
+  "sourcePath": "src/data/curriculumStudyDiagrams.ts",
+  "scope": "実公開59学習図の全タイトル・全項目説明・注記を再読。名詞の列挙だけで終わる項目、主語や確認対象が不明な説明、硬い表現を個別に改稿。",
+  "method": "図IDと項目位置を指定して、何を観察/記録/比較/確認するかを説明。症状例、医学的な対応関係、選穴ルールは追加しない。明快な図27件は維持。",
+  "limits": "図の文章・公開配置・レンダリングの点検であり、医学的監修や古典・原著資料の再照合完了ではない。",
+  "counts": {
+    "reviewed": 59,
+    "changed": 32,
+    "unchanged": 27,
+    "changedDescriptions": 51
+  },
+  "changedDiagramIds": [
+    "pathomechanism-fluid-domino",
+    "pathomechanism-chronic-three-factors",
+    "pathomechanism-competing-hypotheses",
+    "diagnosis-five-layers",
+    "diagnosis-feedback-loop",
+    "diagnosis-chief-complaint-focus",
+    "diagnosis-timeline-chart",
+    "diagnosis-competing-hypothesis",
+    "diagnosis-observation-template",
+    "diagnosis-observation-layers",
+    "diagnosis-pulse-four-gauges",
+    "diagnosis-abdominal-topology",
+    "diagnosis-acupoint-palpation",
+    "diagnosis-eight-principles-axes",
+    "diagnosis-mixed-patterns",
+    "diagnosis-qi-patterns-cluster",
+    "diagnosis-bodyfluid-patterns-cluster",
+    "diagnosis-qiblood-complex-network",
+    "diagnosis-zangfu-core-signs",
+    "diagnosis-zangfu-correlation",
+    "diagnosis-resolving-contradictions",
+    "diagnosis-pattern-hierarchy",
+    "diagnosis-soap-format",
+    "treatment-three-tier-goals",
+    "treatment-six-layers-pyramid",
+    "treatment-principles-vs-methods",
+    "treatment-cold-heat-control",
+    "treatment-priority-matrix",
+    "treatment-buqi-vs-liqi",
+    "treatment-ascent-descent-control",
+    "treatment-zangfu-methods-matrix",
+    "treatment-four-command-points"
+  ],
+  "integrityChecks": {
+    "idsAndOrderUnchanged": true,
+    "allTitlesUnchanged": true,
+    "layoutsUnchanged": true,
+    "itemLabelsCountOrderIconsUnchanged": true,
+    "all59CaptionsAndSafetyLimitsUnchanged": true,
+    "eachDiagramAppearsInOneActualLecture": true
+  },
+  "entries": [
+    {
+      "diagramId": "pathomechanism-four-layers",
+      "title": "病因・病機・症状・証を分ける",
+      "lectureIds": [
+        "lecture-pathomechanism-1"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-pathomechanism-1"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "pathomechanism-thermo-quadrant",
+      "title": "寒熱と虚実は二つの分類軸",
+      "lectureIds": [
+        "lecture-pathomechanism-6"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-pathomechanism-6"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "pathomechanism-fluid-domino",
+      "title": "津液の変調を考える三つの問い",
+      "lectureIds": [
+        "lecture-pathomechanism-9"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-pathomechanism-9"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "不足の候補",
+          "before": "乾燥などの所見は、何が・いつから起きているか。",
+          "after": "乾燥などの所見が、どこで、いつから起きたかを確認する。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "停滞の候補",
+          "before": "重さ・むくみなどは、どこに・どう変動しているか。",
+          "after": "重さ・むくみがどこにあり、どう変化するかを確認する。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "不足の候補",
+          "before": "乾燥などの所見は、何が・いつから起きているか。",
+          "after": "乾燥などの所見が、どこで、いつから起きたかを確認する。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "停滞の候補",
+          "before": "重さ・むくみなどは、どこに・どう変動しているか。",
+          "after": "重さ・むくみがどこにあり、どう変化するかを確認する。"
+        }
+      ]
+    },
+    {
+      "diagramId": "pathomechanism-chronic-three-factors",
+      "title": "慢性化を考える三つの視点",
+      "lectureIds": [
+        "lecture-pathomechanism-10"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-pathomechanism-10"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[1].description",
+          "label": "増悪・軽減要因",
+          "before": "何で強弱が変わるか、条件を聞く。",
+          "after": "症状が強くなる・和らぐのは、どんな条件のときかを聞く。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "維持要因",
+          "before": "何が持続に関与しているか、複数の可能性を比べる。",
+          "after": "症状が続く理由として、複数の可能性を比べる。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[1].description",
+          "label": "増悪・軽減要因",
+          "before": "何で強弱が変わるか、条件を聞く。",
+          "after": "症状が強くなる・和らぐのは、どんな条件のときかを聞く。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "維持要因",
+          "before": "何が持続に関与しているか、複数の可能性を比べる。",
+          "after": "症状が続く理由として、複数の可能性を比べる。"
+        }
+      ]
+    },
+    {
+      "diagramId": "pathomechanism-competing-hypotheses",
+      "title": "病機の仮説を比較する",
+      "lectureIds": [
+        "lecture-pathomechanism-11"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-pathomechanism-11"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[2].description",
+          "label": "保留と再評価",
+          "before": "不足情報を明示し、次に確かめる点を決める。",
+          "after": "まだ分からない情報を書き、次に何を確かめるかを決める。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[2].description",
+          "label": "保留と再評価",
+          "before": "不足情報を明示し、次に確かめる点を決める。",
+          "after": "まだ分からない情報を書き、次に何を確かめるかを決める。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-five-layers",
+      "title": "診断に関わる五つの層を分ける",
+      "lectureIds": [
+        "lecture-diagnosis-1"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-1"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[1].description",
+          "label": "症状・所見",
+          "before": "本人の言葉と観察・測定した事実。",
+          "after": "本人の言葉と、観察・測定した事実を記録する。"
+        },
+        {
+          "field": "items[4].description",
+          "label": "治療方針",
+          "before": "目標や安全面を含めて考える方向。",
+          "after": "どの方向で対応するかを、目標や安全面も含めて考える。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[1].description",
+          "label": "症状・所見",
+          "before": "本人の言葉と観察・測定した事実。",
+          "after": "本人の言葉と、観察・測定した事実を記録する。"
+        },
+        {
+          "field": "items[4].description",
+          "label": "治療方針",
+          "before": "目標や安全面を含めて考える方向。",
+          "after": "どの方向で対応するかを、目標や安全面も含めて考える。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-feedback-loop",
+      "title": "弁証は新しい情報で更新する",
+      "lectureIds": [
+        "lecture-diagnosis-1"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-1"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[1].description",
+          "label": "仮説を説明する",
+          "before": "根拠・反証・未確認の点を分ける。",
+          "after": "仮説に合う情報・合わない情報・未確認の点を、それぞれ示す。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[1].description",
+          "label": "仮説を説明する",
+          "before": "根拠・反証・未確認の点を分ける。",
+          "after": "仮説に合う情報・合わない情報・未確認の点を、それぞれ示す。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-chief-complaint-focus",
+      "title": "主訴を具体的な情報へ分ける",
+      "lectureIds": [
+        "lecture-diagnosis-3"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-3"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "場所と性質",
+          "before": "どこが、どのように、どれほど困るか。",
+          "after": "どこが、どのようにつらく、どれほど困っているかを聞く。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "経過と条件",
+          "before": "いつ始まり、何で変わり、何が伴うか。",
+          "after": "いつ始まり、どんな条件で変わり、何が伴うかを聞く。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "場所と性質",
+          "before": "どこが、どのように、どれほど困るか。",
+          "after": "どこが、どのようにつらく、どれほど困っているかを聞く。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "経過と条件",
+          "before": "いつ始まり、何で変わり、何が伴うか。",
+          "after": "いつ始まり、どんな条件で変わり、何が伴うかを聞く。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-timeline-chart",
+      "title": "経過を時間に沿って並べる",
+      "lectureIds": [
+        "lecture-diagnosis-3"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-3"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "発症前・発症時",
+          "before": "きっかけ、当時の状況、最初の症状。",
+          "after": "発症のきっかけ、当時の状況、最初の症状を記録する。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "現在までの変化",
+          "before": "増悪・軽減、受診・服薬・介入とその時期。",
+          "after": "受診・服薬・介入の時期と、症状が強まったか和らいだかを記録する。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "現在の状態",
+          "before": "残る症状、生活への影響、今後確認する点。",
+          "after": "残る症状、生活への影響、今後確認する点を記録する。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "発症前・発症時",
+          "before": "きっかけ、当時の状況、最初の症状。",
+          "after": "発症のきっかけ、当時の状況、最初の症状を記録する。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "現在までの変化",
+          "before": "増悪・軽減、受診・服薬・介入とその時期。",
+          "after": "受診・服薬・介入の時期と、症状が強まったか和らいだかを記録する。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "現在の状態",
+          "before": "残る症状、生活への影響、今後確認する点。",
+          "after": "残る症状、生活への影響、今後確認する点を記録する。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-interview-funnel",
+      "title": "問診は自由な語りから確認へ",
+      "lectureIds": [
+        "lecture-diagnosis-4"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-4"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "diagnosis-competing-hypothesis",
+      "title": "問診で仮説を見分ける",
+      "lectureIds": [
+        "lecture-diagnosis-4"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-4"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "仮説A",
+          "before": "この説明を支持する情報と、反証を挙げる。",
+          "after": "この説明に合う情報と、合わない情報を挙げる。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "追加の問い",
+          "before": "両者を区別する不足情報を、具体的に尋ねる。",
+          "after": "二つの仮説を見分けるために足りない情報を、具体的に尋ねる。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "仮説A",
+          "before": "この説明を支持する情報と、反証を挙げる。",
+          "after": "この説明に合う情報と、合わない情報を挙げる。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "追加の問い",
+          "before": "両者を区別する不足情報を、具体的に尋ねる。",
+          "after": "二つの仮説を見分けるために足りない情報を、具体的に尋ねる。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-observation-template",
+      "title": "観察記録を五つの項目に分ける",
+      "lectureIds": [
+        "lecture-diagnosis-5"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-5"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[2].description",
+          "label": "考えられる意味",
+          "before": "考えた分類と確信度を、事実の欄から分ける。",
+          "after": "考えた分類と、その判断がどの程度確かかを、事実とは別の欄に書く。"
+        },
+        {
+          "field": "items[4].description",
+          "label": "追加確認",
+          "before": "区別に必要な情報と、次に確かめる点を書く。",
+          "after": "別の説明と見分けるために必要な情報と、次に確かめる点を書く。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[2].description",
+          "label": "考えられる意味",
+          "before": "考えた分類と確信度を、事実の欄から分ける。",
+          "after": "考えた分類と、その判断がどの程度確かかを、事実とは別の欄に書く。"
+        },
+        {
+          "field": "items[4].description",
+          "label": "追加確認",
+          "before": "区別に必要な情報と、次に確かめる点を書く。",
+          "after": "別の説明と見分けるために必要な情報と、次に確かめる点を書く。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-observation-layers",
+      "title": "望診は全体と局所を往復する",
+      "lectureIds": [
+        "lecture-diagnosis-5"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-5"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "全体",
+          "before": "表情、姿勢、動作などの全体像。",
+          "after": "表情・姿勢・動作など、全体の様子を観察する。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "局所",
+          "before": "皮膚や舌など、観察した部位の特徴。",
+          "after": "皮膚や舌など、観察した部位の特徴を記録する。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "全体",
+          "before": "表情、姿勢、動作などの全体像。",
+          "after": "表情・姿勢・動作など、全体の様子を観察する。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "局所",
+          "before": "皮膚や舌など、観察した部位の特徴。",
+          "after": "皮膚や舌など、観察した部位の特徴を記録する。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-tongue-separation",
+      "title": "舌体と舌苔を分けて見る",
+      "lectureIds": [
+        "lecture-diagnosis-5"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-5"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "diagnosis-listening-smelling",
+      "title": "聞診の情報と受診判断を分ける",
+      "lectureIds": [
+        "lecture-diagnosis-5"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-5"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "diagnosis-pulse-four-gauges",
+      "title": "脈の複数の特徴を分ける",
+      "lectureIds": [
+        "lecture-diagnosis-6"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-6"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "深さ・速さ",
+          "before": "浮沈と遅数を別の観察軸にする。",
+          "after": "浮沈（深さ）と遅数（速さ）を分けて観察する。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "深さ・速さ",
+          "before": "浮沈と遅数を別の観察軸にする。",
+          "after": "浮沈（深さ）と遅数（速さ）を分けて観察する。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-abdominal-topology",
+      "title": "腹診は場所と反応を記録する",
+      "lectureIds": [
+        "lecture-diagnosis-6"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-6"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "場所",
+          "before": "観察した領域と範囲を明示する。",
+          "after": "どの領域をどの範囲まで観察したか、明らかにする。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "場所",
+          "before": "観察した領域と範囲を明示する。",
+          "after": "どの領域をどの範囲まで観察したか、明らかにする。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-acupoint-palpation",
+      "title": "経穴の反応から何を言えるか",
+      "lectureIds": [
+        "lecture-diagnosis-6"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-6"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "位置を確認",
+          "before": "所属経絡と解剖学的な位置を区別する。",
+          "after": "どの経絡に属するかと、解剖学的にはどこにあるかを別々に確認する。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "反応を記録",
+          "before": "圧痛などを本人の言葉と条件付きで記録する。",
+          "after": "圧痛などについて、本人が述べた言葉と観察した条件を記録する。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "位置を確認",
+          "before": "所属経絡と解剖学的な位置を区別する。",
+          "after": "どの経絡に属するかと、解剖学的にはどこにあるかを別々に確認する。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "反応を記録",
+          "before": "圧痛などを本人の言葉と条件付きで記録する。",
+          "after": "圧痛などについて、本人が述べた言葉と観察した条件を記録する。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-eight-principles-axes",
+      "title": "八綱は別々の問いで整理する",
+      "lectureIds": [
+        "lecture-diagnosis-7"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-7"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "表裏",
+          "before": "伝統的な病位を検討する軸。",
+          "after": "伝統的な病位を表・裏でどう説明するか考える。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "寒熱・虚実",
+          "before": "性質と不足・停滞などを別に検討する軸。",
+          "after": "寒熱の性質と、虚実の不足・停滞などを分けて考える。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "陰陽",
+          "before": "各軸の情報を総合して整理する枠組み。",
+          "after": "表裏・寒熱・虚実の情報を合わせて、陰陽でどう整理できるか考える。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "表裏",
+          "before": "伝統的な病位を検討する軸。",
+          "after": "伝統的な病位を表・裏でどう説明するか考える。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "寒熱・虚実",
+          "before": "性質と不足・停滞などを別に検討する軸。",
+          "after": "寒熱の性質と、虚実の不足・停滞などを分けて考える。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "陰陽",
+          "before": "各軸の情報を総合して整理する枠組み。",
+          "after": "表裏・寒熱・虚実の情報を合わせて、陰陽でどう整理できるか考える。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-surface-interior-pitfall",
+      "title": "急性・慢性と表裏を混同しない",
+      "lectureIds": [
+        "lecture-diagnosis-7"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-7"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "diagnosis-mixed-patterns",
+      "title": "混在は部位と軸を分けて記述する",
+      "lectureIds": [
+        "lecture-diagnosis-7"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-7"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[1].description",
+          "label": "軸別",
+          "before": "寒熱や虚実のどちらの情報が混在するか。",
+          "after": "寒熱と虚実を分け、どの情報が混在しているかを確かめる。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[1].description",
+          "label": "軸別",
+          "before": "寒熱や虚実のどちらの情報が混在するか。",
+          "after": "寒熱と虚実を分け、どの情報が混在しているかを確かめる。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-gray-zone-protocol",
+      "title": "情報が足りないときの手順",
+      "lectureIds": [
+        "lecture-diagnosis-7"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-7"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "diagnosis-true-false-patterns",
+      "title": "真偽を考える前に観察を確かめる",
+      "lectureIds": [
+        "lecture-diagnosis-7"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-7"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "diagnosis-qi-patterns-cluster",
+      "title": "気の不足・停滞・上逆を比較する",
+      "lectureIds": [
+        "lecture-diagnosis-8"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-8"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "気虚",
+          "before": "働きの不足として、所見のまとまりを考える。",
+          "after": "気の働きが不足しているという説明に、複数の所見が合うか考える。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "気滞",
+          "before": "巡りの停滞として、部位・変動を考える。",
+          "after": "気の巡りが滞っているという説明に、部位や変化の様子が合うか考える。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "気虚",
+          "before": "働きの不足として、所見のまとまりを考える。",
+          "after": "気の働きが不足しているという説明に、複数の所見が合うか考える。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "気滞",
+          "before": "巡りの停滞として、部位・変動を考える。",
+          "after": "気の巡りが滞っているという説明に、部位や変化の様子が合うか考える。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-blood-patterns-cluster",
+      "title": "血の病態は不足と停滞を区別する",
+      "lectureIds": [
+        "lecture-diagnosis-8"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-8"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "diagnosis-bodyfluid-patterns-cluster",
+      "title": "津液の不足と停滞を比較する",
+      "lectureIds": [
+        "lecture-diagnosis-8"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-8"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[2].description",
+          "label": "医学的な原因",
+          "before": "脱水、浮腫などの評価や服薬の影響を別に考える。",
+          "after": "伝統的な分類とは別に、脱水・浮腫などの評価や服薬の影響を考える。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[2].description",
+          "label": "医学的な原因",
+          "before": "脱水、浮腫などの評価や服薬の影響を別に考える。",
+          "after": "伝統的な分類とは別に、脱水・浮腫などの評価や服薬の影響を考える。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-qiblood-complex-network",
+      "title": "複合病態は所見の根拠を分ける",
+      "lectureIds": [
+        "lecture-diagnosis-8"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-8"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[2].description",
+          "label": "併存と反証",
+          "before": "両者が併存する理由と、合わない所見を説明する。",
+          "after": "不足と停滞が併存すると考えた理由と、説明に合わない所見を書く。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[2].description",
+          "label": "併存と反証",
+          "before": "両者が併存する理由と、合わない所見を説明する。",
+          "after": "不足と停滞が併存すると考えた理由と、説明に合わない所見を書く。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-zangfu-core-signs",
+      "title": "臓腑弁証は所見のまとまりで考える",
+      "lectureIds": [
+        "lecture-diagnosis-9"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-9"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[1].description",
+          "label": "関連する所見",
+          "before": "複数の所見が同じ候補を支持するか。",
+          "after": "複数の所見が、同じ候補に合うかを確かめる。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "別の候補",
+          "before": "反証・未確認の点と医学的な原因も検討する。",
+          "after": "説明に合わない点や未確認の点、医学的な原因も検討する。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[1].description",
+          "label": "関連する所見",
+          "before": "複数の所見が同じ候補を支持するか。",
+          "after": "複数の所見が、同じ候補に合うかを確かめる。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "別の候補",
+          "before": "反証・未確認の点と医学的な原因も検討する。",
+          "after": "説明に合わない点や未確認の点、医学的な原因も検討する。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-meridian-pathways",
+      "title": "経絡の走行と局所所見を照合する",
+      "lectureIds": [
+        "lecture-diagnosis-9"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-9"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "diagnosis-zangfu-correlation",
+      "title": "臓腑の関係は説明モデルとして使う",
+      "lectureIds": [
+        "lecture-diagnosis-9"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-9"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "一つ目の候補",
+          "before": "その臓腑を考える所見と根拠。",
+          "after": "その臓腑を候補に挙げた所見と、考えた理由を書く。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "照合する情報",
+          "before": "時間経過、反証、未確認の点。",
+          "after": "症状の経過、説明に合わない情報、未確認の点を確かめる。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "一つ目の候補",
+          "before": "その臓腑を考える所見と根拠。",
+          "after": "その臓腑を候補に挙げた所見と、考えた理由を書く。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "照合する情報",
+          "before": "時間経過、反証、未確認の点。",
+          "after": "症状の経過、説明に合わない情報、未確認の点を確かめる。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-competing-matrix",
+      "title": "候補ごとの支持・反証・不足を並べる",
+      "lectureIds": [
+        "lecture-diagnosis-10"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-10"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "diagnosis-resolving-contradictions",
+      "title": "矛盾を見つけたら条件を見直す",
+      "lectureIds": [
+        "lecture-diagnosis-10"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-10"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "食い違いを特定",
+          "before": "どの事実とどの仮説が合わないか。",
+          "after": "どの事実がどの仮説に合わないかを確かめる。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "食い違いを特定",
+          "before": "どの事実とどの仮説が合わないか。",
+          "after": "どの事実がどの仮説に合わないかを確かめる。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-cognitive-biases",
+      "title": "推論の四つの偏りを点検する",
+      "lectureIds": [
+        "lecture-diagnosis-10"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-10"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "diagnosis-pattern-hierarchy",
+      "title": "複数の証を主と副に整理する",
+      "lectureIds": [
+        "lecture-diagnosis-11"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-11"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "所見をまとめる",
+          "before": "支持する情報がある候補を列挙する。",
+          "after": "どの情報がどの候補に合うかを示し、候補を挙げる。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "所見をまとめる",
+          "before": "支持する情報がある候補を列挙する。",
+          "after": "どの情報がどの候補に合うかを示し、候補を挙げる。"
+        }
+      ]
+    },
+    {
+      "diagramId": "diagnosis-root-branch-rules",
+      "title": "本と標は安全・主訴と合わせて考える",
+      "lectureIds": [
+        "lecture-diagnosis-11"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-11"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "diagnosis-soap-format",
+      "title": "SOAPで事実と判断を分ける",
+      "lectureIds": [
+        "lecture-diagnosis-11"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-diagnosis-11"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[2].description",
+          "label": "P：計画",
+          "before": "次の確認、評価目標、紹介を含めた計画。",
+          "after": "次に何を確認し、何を目標に評価するか、紹介を含めて計画を書く。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[2].description",
+          "label": "P：計画",
+          "before": "次の確認、評価目標、紹介を含めた計画。",
+          "after": "次に何を確認し、何を目標に評価するか、紹介を含めて計画を書く。"
+        }
+      ]
+    },
+    {
+      "diagramId": "treatment-three-tier-goals",
+      "title": "目標を三つの層で考える",
+      "lectureIds": [
+        "lecture-treatment-1"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-1"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[1].description",
+          "label": "生活機能の改善",
+          "before": "睡眠、仕事、活動など、具体的な生活の目標。",
+          "after": "睡眠・仕事・活動など、生活の何を改善したいかを決める。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "セルフケア・回復の条件",
+          "before": "無理なく続けられる方法と、相談・見直しの条件。",
+          "after": "無理なく続けられる方法と、相談や見直しが必要になる条件を決める。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[1].description",
+          "label": "生活機能の改善",
+          "before": "睡眠、仕事、活動など、具体的な生活の目標。",
+          "after": "睡眠・仕事・活動など、生活の何を改善したいかを決める。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "セルフケア・回復の条件",
+          "before": "無理なく続けられる方法と、相談・見直しの条件。",
+          "after": "無理なく続けられる方法と、相談や見直しが必要になる条件を決める。"
+        }
+      ]
+    },
+    {
+      "diagramId": "treatment-smart-goals",
+      "title": "評価できる目標を具体化する",
+      "lectureIds": [
+        "lecture-treatment-1"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-1"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "treatment-boundaries-and-referral",
+      "title": "介入を考える前の安全確認",
+      "lectureIds": [
+        "lecture-treatment-1"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-1"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "treatment-six-layers-pyramid",
+      "title": "証から評価まで六つの段階を区別する",
+      "lectureIds": [
+        "lecture-treatment-2"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-2"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[5].description",
+          "label": "評価",
+          "before": "変化・負担を何で確かめ、どう見直すか。",
+          "after": "変化・負担を何で確かめ、どう見直すかを決める。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[5].description",
+          "label": "評価",
+          "before": "変化・負担を何で確かめ、どう見直すか。",
+          "after": "変化・負担を何で確かめ、どう見直すかを決める。"
+        }
+      ]
+    },
+    {
+      "diagramId": "treatment-principles-vs-methods",
+      "title": "治則と治法を区別する",
+      "lectureIds": [
+        "lecture-treatment-2"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-2"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[2].description",
+          "label": "具体的な選択",
+          "before": "経穴や方法の候補と、その根拠・評価目標。",
+          "after": "候補となる経穴・方法と、選ぶ根拠・評価目標を示す。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[2].description",
+          "label": "具体的な選択",
+          "before": "経穴や方法の候補と、その根拠・評価目標。",
+          "after": "候補となる経穴・方法と、選ぶ根拠・評価目標を示す。"
+        }
+      ]
+    },
+    {
+      "diagramId": "treatment-buxie-mechanics",
+      "title": "補瀉は方針と手技を分けて学ぶ",
+      "lectureIds": [
+        "lecture-treatment-3"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-3"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "treatment-cold-heat-control",
+      "title": "寒熱の分類から固定処方を導かない",
+      "lectureIds": [
+        "lecture-treatment-3"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-3"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "分類を検討",
+          "before": "寒熱の所見を、虚実や部位と合わせて確認する。",
+          "after": "寒熱を示す所見を、虚実や部位の情報と合わせて確認する。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "分類を検討",
+          "before": "寒熱の所見を、虚実や部位と合わせて確認する。",
+          "after": "寒熱を示す所見を、虚実や部位の情報と合わせて確認する。"
+        }
+      ]
+    },
+    {
+      "diagramId": "treatment-zhengzhi-fanzhi",
+      "title": "正治・反治は根拠を確認して学ぶ",
+      "lectureIds": [
+        "lecture-treatment-3"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-3"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "treatment-root-branch-roles",
+      "title": "本治と標治の役割を比較する",
+      "lectureIds": [
+        "lecture-treatment-4"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-4"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "treatment-priority-matrix",
+      "title": "優先順位は複数の条件で決める",
+      "lectureIds": [
+        "lecture-treatment-4"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-4"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "安全性・緊急性",
+          "before": "必要な医療評価や中止・紹介の条件。",
+          "after": "医学的な評価が必要か、中止・紹介を考える条件に当たるかを確認する。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "困りごと・希望",
+          "before": "生活への影響と本人が優先したいこと。",
+          "after": "生活への影響と、本人が何を先に改善したいかを確認する。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "根拠・実施条件",
+          "before": "期待できること、限界、技能と負担。",
+          "after": "期待できることと限界、実施に必要な技能、本人の負担を確認する。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "安全性・緊急性",
+          "before": "必要な医療評価や中止・紹介の条件。",
+          "after": "医学的な評価が必要か、中止・紹介を考える条件に当たるかを確認する。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "困りごと・希望",
+          "before": "生活への影響と本人が優先したいこと。",
+          "after": "生活への影響と、本人が何を先に改善したいかを確認する。"
+        },
+        {
+          "field": "items[2].description",
+          "label": "根拠・実施条件",
+          "before": "期待できること、限界、技能と負担。",
+          "after": "期待できることと限界、実施に必要な技能、本人の負担を確認する。"
+        }
+      ]
+    },
+    {
+      "diagramId": "treatment-dynamic-slider",
+      "title": "方針は経過に合わせて見直す",
+      "lectureIds": [
+        "lecture-treatment-4"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-4"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "treatment-qi-methods-matrix",
+      "title": "気の分類と治法の対応を学ぶ",
+      "lectureIds": [
+        "lecture-treatment-5"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-5"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "treatment-buqi-vs-liqi",
+      "title": "益気と理気は何を重視するか",
+      "lectureIds": [
+        "lecture-treatment-5"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-5"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[0].description",
+          "label": "益気",
+          "before": "不足を重視する。どの所見が支持するか。",
+          "after": "不足を重視する方針。どの所見から不足を考えたかを確認する。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "理気",
+          "before": "停滞を重視する。どの条件で変わるか。",
+          "after": "停滞を重視する方針。どの条件で状態が変わるかを確認する。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[0].description",
+          "label": "益気",
+          "before": "不足を重視する。どの所見が支持するか。",
+          "after": "不足を重視する方針。どの所見から不足を考えたかを確認する。"
+        },
+        {
+          "field": "items[1].description",
+          "label": "理気",
+          "before": "停滞を重視する。どの条件で変わるか。",
+          "after": "停滞を重視する方針。どの条件で状態が変わるかを確認する。"
+        }
+      ]
+    },
+    {
+      "diagramId": "treatment-ascent-descent-control",
+      "title": "昇降の方針と現代の機能を区別する",
+      "lectureIds": [
+        "lecture-treatment-5"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-5"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[2].description",
+          "label": "別の確認",
+          "before": "症状の医学的な原因、実施条件、評価目標。",
+          "after": "症状の医学的な原因、実施条件、評価目標を確認する。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[2].description",
+          "label": "別の確認",
+          "before": "症状の医学的な原因、実施条件、評価目標。",
+          "after": "症状の医学的な原因、実施条件、評価目標を確認する。"
+        }
+      ]
+    },
+    {
+      "diagramId": "treatment-blood-fluid-matrix",
+      "title": "血と津液の治法を混同しない",
+      "lectureIds": [
+        "lecture-treatment-6"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-6"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "treatment-blood-mechanics",
+      "title": "補血・活血の方針を区別する",
+      "lectureIds": [
+        "lecture-treatment-6"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-6"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "treatment-fluid-separation",
+      "title": "津液不足と停滞で問いを分ける",
+      "lectureIds": [
+        "lecture-treatment-6"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-6"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "treatment-zangfu-methods-matrix",
+      "title": "臓腑の名称から自動で治法を決めない",
+      "lectureIds": [
+        "lecture-treatment-7"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-7"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[2].description",
+          "label": "評価と限界",
+          "before": "具体的候補の根拠、未確認事項、確認する変化。",
+          "after": "具体的な候補の根拠、まだ確認していないこと、評価する変化を示す。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[2].description",
+          "label": "評価と限界",
+          "before": "具体的候補の根拠、未確認事項、確認する変化。",
+          "after": "具体的な候補の根拠、まだ確認していないこと、評価する変化を示す。"
+        }
+      ]
+    },
+    {
+      "diagramId": "treatment-zangfu-correlation-methods",
+      "title": "臓腑の関係から方針を比較する",
+      "lectureIds": [
+        "lecture-treatment-7"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-7"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "treatment-five-elements-points",
+      "title": "補母・瀉子の伝統的な考え方",
+      "lectureIds": [
+        "lecture-treatment-7"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-7"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "treatment-acupoint-dimensions",
+      "title": "局所・遠隔・特殊要穴で候補を整理する",
+      "lectureIds": [
+        "lecture-treatment-8"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-8"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "treatment-special-points-circuits",
+      "title": "特殊要穴の組み合わせを比較する",
+      "lectureIds": [
+        "lecture-treatment-8"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-8"
+      ],
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "diagramId": "treatment-four-command-points",
+      "title": "四総穴歌の部位と経穴の対応",
+      "lectureIds": [
+        "lecture-treatment-8"
+      ],
+      "displayRoutes": [
+        "/curriculum/lecture-treatment-8"
+      ],
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "title",
+        "全itemsのlabel/description",
+        "captionの条件・限定",
+        "実公開講義への配置"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "items[2].description",
+          "label": "使うときの区別",
+          "before": "伝統的な選穴理由、位置、安全性、効果の評価。",
+          "after": "伝統的な選穴理由、位置、安全性、効果の評価をそれぞれ確認する。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "items[2].description",
+          "label": "使うときの区別",
+          "before": "伝統的な選穴理由、位置、安全性、効果の評価。",
+          "after": "伝統的な選穴理由、位置、安全性、効果の評価をそれぞれ確認する。"
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "curriculumDiagramRegression": "passed: 72 diagram tokens / 59 figures",
+    "curriculumConnectedDiagramRegression": "passed: 4 legacy figures / 13 native button flows",
+    "diffCheck": "passed",
+    "build": "root integration task",
+    "commitPush": "not performed by this agent"
+  },
+  "specialistReviewIntegrity": {
+    "existingProtectedQuotes": 145,
+    "newRootEntryQuote": 1,
+    "totalProtectedQuotesPreserved": 146,
+    "allQuotesPresentInCurrentSource": true,
+    "sourceLinesAndSnapshotsUpdatedIn": "specialist-review-index.json"
+  }
+}

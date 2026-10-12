@@ -443,7 +443,7 @@ export default function HaiketsuOptimizer() {
                 {analysis.pruningProposal.removedPointIds.length > 0 && (
                   <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-white/10">
                     <span className="text-[11px] font-semibold text-[#B0C4BC] shrink-0">
-                      【削ぎ落とすツボ】
+                      【選択から外す経穴】
                     </span>
                     {analysis.pruningProposal.removedPointIds.map(id => {
                       const role = ACUPOINT_ROLES[id];
@@ -463,7 +463,7 @@ export default function HaiketsuOptimizer() {
                 className="w-full py-3.5 px-5 rounded-2xl bg-[#E6C387] text-[#1E3D34] hover:bg-[#DFC07D] font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-all group cursor-pointer"
               >
                 <Zap className="w-4 h-4 fill-current group-hover:scale-110 transition-transform" />
-                <span>この最小構成に最適化する（余剰穴を一括剪定）</span>
+                <span>上の構成に変更する（候補から外れた経穴を削除）</span>
               </button>
             </div>
           )}

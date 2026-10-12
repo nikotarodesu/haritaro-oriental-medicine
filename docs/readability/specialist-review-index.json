@@ -7,50 +7,51 @@
     "articles": 18,
     "glossary": 6,
     "tools": 71,
-    "totalRecorded": 145,
+    "totalRecorded": 146,
     "exactDuplicateRecords": 0,
-    "uniqueSourceQuotes": 145,
+    "uniqueSourceQuotes": 146,
     "lectures": 41,
-    "entryPages": 9
+    "entryPages": 10,
+    "newEntryPagesThisPass": 1
   },
   "countingRule": "一つの監査レコードを1項目として数える。動的クイズ3テンプレートの対象24問、推奨方剤9行・薬剤9行、同じ論点に含めた複数の主治行は関連表示として対象IDと原文を保持し、項目数へ二重加算しない。同じsourcePathかつ同じquoteのみ完全重複として数える。テーマが同じでも、公開箇所や原文が違うものは別項目とする。",
   "duplicates": [],
   "sourceSnapshots": [
     {
       "sourcePath": "src/data/curriculumData.ts",
-      "sha256": "56015269ed63cfa979dddba14ddc73926e1197118fd51d12bea328fe4575a692"
+      "sha256": "8afbfd36d34671baccce638751a8e1defcee326f9c2df0d1b5d273a777c57565"
     },
     {
       "sourcePath": "src/data/curriculumQuizzes.ts",
-      "sha256": "a789a9197e4bd2766cc870ef2354d7f5fd5b47ab628501a831f1865e3712243e"
+      "sha256": "2a94f31791b9573d866fa1f5433aaf51ebdb651f2f79042e4c0f27a74868bee2"
     },
     {
       "sourcePath": "src/data/articles/historyArticle.ts",
-      "sha256": "19d361d078fcbb8f07d566e5282accb135c181db48fec29565901136569aad30"
+      "sha256": "7fce40d136f2c46b2de9d7b92d9a60c94144b33324dfada5058f6a5f733206b5"
     },
     {
       "sourcePath": "src/data/articles/yinyangGogyoArticle.ts",
-      "sha256": "27089ae12a3603620a415f670b8de1f402272493b28c2887da7e103f4f192704"
+      "sha256": "d363ae6a8a59b37d66cbec0284d2a81940e87ada2430652b80697be86384ef03"
     },
     {
       "sourcePath": "src/data/articles/kiketsusuiArticle.ts",
-      "sha256": "4d439a7a411e9502d110216dfc1973cfec862495b9427fbdf5dc1bcb6432b890"
+      "sha256": "b73288f267a9e91a054562bb60c968e494a0ca7fea63ed1fac7e1447fc09ccaf"
     },
     {
       "sourcePath": "src/data/articles/meridianArticle.ts",
-      "sha256": "beeb61cd83d07d2e7a715a6498a39e8d67ef9b06b428c4e66e8f0fedf04e2011"
+      "sha256": "1e14277a518123fe0ab0dffc8aa632a0a6ee29ebcdaea1376f2afee6cc620044"
     },
     {
       "sourcePath": "src/data/articles/tongueArticle.ts",
-      "sha256": "65940036fb52baf75fccc526ab90a9b2945c51b02ea9f646a5663552c4642cd6"
+      "sha256": "7cea15062ee57cf50b2a2b4285768c7e683870f8537d01648c5ffa87d59740e2"
     },
     {
       "sourcePath": "src/data/articles/gerdArticle.ts",
-      "sha256": "138ae2b521b1626ce785db993cdecc5760e5f6817b6d8d925d4a4575364ce4a0"
+      "sha256": "230d3fd460e5d7933fcef42d3b865ab82da54f9519f4987fa11a8e88d6362ea7"
     },
     {
       "sourcePath": "src/data/glossaryData.ts",
-      "sha256": "690d2682d095db218d1fcb00d6ff7b8da549276a16c857f98b611a8b3f89e5bd"
+      "sha256": "6482402f13506af3c6a25b83d10a69cda09bec856572fea5ad10684e910a165b"
     },
     {
       "sourcePath": "src/app/kikei/page.tsx",
@@ -87,6 +88,10 @@
     {
       "sourcePath": "src/app/tsubo/basics/bone-cun/page.tsx",
       "sha256": "13fa70c6576630a9623741619b1a0dc37efb9d18c9ce3cfcbdf6350597ecbdb7"
+    },
+    {
+      "sourcePath": "src/components/HaiketsuOptimizer.tsx",
+      "sha256": "9c06a40aff6d52660ad1f1fb732dbbcf6d36716e649efa18d138ac6441fdf6c6"
     }
   ],
   "exclusions": [
@@ -4674,6 +4679,28 @@
       ],
       "access": "existing-page-or-print-example-access",
       "displayCondition": "経穴の注意事項が空欄のときの既定表示。"
+    },
+    {
+      "id": "entry:natural-entry-01",
+      "sourcePath": "src/components/HaiketsuOptimizer.tsx",
+      "line": 361,
+      "displayRoutes": [
+        "/practice/haiketsu"
+      ],
+      "title": "経穴数の集計ラベルと根拠",
+      "quote": "黄金比（2〜4穴）",
+      "expertConfirmation": "「黄金比」は教材内の集計名か、臨床的な優位性を指すか。経穴数を2〜4とする根拠と適用条件を確認する。意味の確定に専門的判断が必要なため、操作ボタンのみ具体化し、このラベルと集計ルールは維持した。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true,
+      "originAudit": "natural-japanese-entry-audit.json",
+      "originId": "natural-entry-01",
+      "group": "entry-pages",
+      "targetIds": [
+        "natural-entry-01"
+      ],
+      "lineVerified": true,
+      "access": "existing-page-or-print-example-access",
+      "displayCondition": "選んだ経穴数を集計する表示ラベル。操作ボタンのみ文章を変更し、集計ルールとラベルは維持。"
     }
   ],
   "originAudits": [
@@ -4681,16 +4708,32 @@
     "article-editorial-audit.json",
     "foundation-glossary-audit.json",
     "tool-specialist-review.json",
-    "entry-page-audit.json"
+    "entry-page-audit.json",
+    "natural-japanese-entry-audit.json"
   ],
   "finalValidation": {
     "allOriginAuditsFinal": true,
-    "exactQuotesAndLinesVerified": 145,
+    "exactQuotesAndLinesVerified": 146,
+    "protectedSourceQuotesPreserved": 146,
+    "relatedSourceQuotesAndLinesVerified": 32,
     "casePlaceholderExpandedToRoutes": 20,
+    "placeholderRoutesRemaining": 0,
+    "markdownContainsAllFindingIds": true,
+    "sourceLineAndSnapshotsRefreshedAfterNaturalJapaneseEdits": true,
     "externalMedicalSourcesReverified": false,
     "componentsOrMedicalDataEditedByThisIntegration": false,
-    "relatedSourceQuotesAndLinesVerified": 32,
-    "markdownContainsAllFindingIds": true,
-    "placeholderRoutesRemaining": 0
+    "postRenderFormattingOnly": {
+      "sourcePath": "src/data/curriculumData.ts",
+      "headingAndLinePositionsUnchanged": true,
+      "protectedQuotedTextUnchanged": true
+    }
+  },
+  "originAuditCounts": {
+    "lecture-editorial-audit.json": 41,
+    "article-editorial-audit.json": 18,
+    "foundation-glossary-audit.json": 6,
+    "tool-specialist-review.json": 71,
+    "entry-page-audit.json": 9,
+    "natural-japanese-entry-audit.json": 1
   }
 }

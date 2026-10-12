@@ -1,0 +1,282 @@
+{
+  "reviewedAt": "2026-10-12",
+  "baseline": "7cd58127c6cb8517ef579caa57c808a482f751a3",
+  "scope": "使い方・学習案内・臨床案内・文献一覧・ツールの操作案内・コース説明・フッターの文脈別改稿",
+  "policy": "引用・医学データ・専用出典ブロック・判定・保存・リンク先を維持。何を読み、選び、比較し、記録するかを具体化。",
+  "changedCourseSlugs": [
+    "oriental-medicine-introduction",
+    "qi-blood-fluid",
+    "life-functions-foundations",
+    "pathomechanism-foundations",
+    "treatment-foundations",
+    "clinical-process-foundations"
+  ],
+  "edits": [
+    {
+      "source": "src/app/about/page.tsx",
+      "before": "東洋医学は数千年の歴史の中で、膨大な人体観察と臨床の積み重ねから生み出された「生命の智慧」です。しかし現代において、東洋医学は二つの極端な壁にぶつかっていました。",
+      "after": "東洋医学には、陰陽・五行・気血津液など、日常では使わない言葉が多く登場します。初めて学ぶ方が、言葉の意味と使い方を一つずつ確認できるように、このサイトを作りました。"
+    },
+    {
+      "source": "src/app/about/page.tsx",
+      "before": "一つは、一般の方にとって「難解な漢字や専門用語が多くて、どう自分に役立てればいいかわからない」という壁。もう一つは、「非科学的な迷信と誤解され、本来の奥深い体系性が正当に評価されない」という壁です。",
+      "after": "古典に書かれた説明、筆者の臨床経験、研究で確認された結果は、同じ根拠としては扱えません。記事や講義では、どの資料を参照し、何を確認できたかを示します。"
+    },
+    {
+      "source": "src/app/about/page.tsx",
+      "before": "「はり太郎の東洋医学」は、基礎理論を学び、臨床での考え方を振り返るための拠点を目指しています。筆者の臨床経験、古典の記述、現代の医学研究を、それぞれの出典と確認範囲を示しながら紹介します。経験や伝統的な説明だけで、治療効果が確立したとは扱いません。",
+      "after": "講義とクイズで基礎を学び、架空の症例で所見と判断の理由を考え、ノートで読み返せる構成を目指しています。経験や伝統的な説明だけで、治療効果が確立したとは扱いません。"
+    },
+    {
+      "source": "src/app/about/page.tsx",
+      "before": "全件の医学記述の照合と専門家による監修は未完了です。",
+      "after": "すべての医学的な説明を原典と照合したわけではなく、専門家による監修も未完了です。"
+    },
+    {
+      "source": "src/app/about/page.tsx",
+      "before": "01. 徹底した可読性",
+      "after": "01. 専門用語を分かりやすく"
+    },
+    {
+      "source": "src/app/about/page.tsx",
+      "before": "難解な陰陽五行や臓腑弁証を、日々の食事や生活習慣、わかりやすい図解と言葉に翻訳します。",
+      "after": "陰陽五行や臓腑弁証の用語を短く説明し、図や生活の例で、どのような関係を表す言葉なのかを示します。"
+    },
+    {
+      "source": "src/app/about/page.tsx",
+      "before": "古典の分類、研究で検討された結果、学習用の比喩を区別します。文献の書誌一致と、解説がその文献に支持されるかは別々に確認します。",
+      "after": "古典の分類、研究で報告された結果、学習用の比喩を区別します。資料名や著者などの書誌情報に加え、掲載する説明がその資料に書かれているかも確認します。"
+    },
+    {
+      "source": "src/app/about/page.tsx",
+      "before": "03. 誠実な医療倫理",
+      "after": "03. 受診と安全性を優先する"
+    },
+    {
+      "source": "src/app/about/page.tsx",
+      "before": "東洋医学の万能視や過信を戒め、現代医学との適切な協調・受診推奨（トリアージ）を明記します。",
+      "after": "東洋医学ですべての症状に対応できるとは考えません。医療機関への受診が必要な場面や、施術の注意点を案内します。"
+    },
+    {
+      "source": "src/app/about/page.tsx",
+      "before": "haritaro.jpの核：「身体を観察し、病態を推論し、治療方針を組み立てるための思考体系」",
+      "after": "このサイトで学ぶこと：所見から候補とその理由を考え、方針を立て、経過を見て判断を見直す"
+    },
+    {
+      "source": "src/app/about/page.tsx",
+      "before": "当サイト「はり太郎の東洋医学」は、現役鍼灸師の「はり太郎」が一人で調査・執筆・プログラム開発を行っている個人運営の学習・臨床支援ポータルです。過大な「編集部」や架空の「監修委員会」を装わず、一人の臨床家の責任において実直な情報発信を行っています。",
+      "after": "現役鍼灸師の「はり太郎」が、一人で資料の調査、記事の執筆、サイトの開発を行っています。編集部や監修委員会による制作ではなく、運営者本人が掲載内容と出典を確認しています。"
+    },
+    {
+      "source": "src/components/Footer.tsx",
+      "before": "図解で学び、演習で考え、ノートで振り返る。東洋医学の基礎理論・経穴辞典・臨床推論をつなぐ学習ポータルです。",
+      "after": "講義と図解で東洋医学の用語を学び、クイズと架空症例で確かめるサイトです。経穴を調べ、考えた理由をノートに残せます。"
+    },
+    {
+      "source": "src/app/learn/page.tsx",
+      "before": "観察・理論・短い例の振り返りを通じて臨床の基礎を学びます。",
+      "after": "用語の意味を学び、クイズや架空の相談記録で、所見と判断の理由を確かめます。"
+    },
+    {
+      "source": "src/app/learn/page.tsx",
+      "before": "各章の入口になる講義を選び、全体像をつかみます。概論から順に進め、短い例で一つずつ考えます。",
+      "after": "各章の基本を扱う講義を3〜5講ずつまとめています。概論から順に読み、短い相談記録を使って、分かったことと未確認のことを書き出します。"
+    },
+    {
+      "source": "src/app/learn/page.tsx",
+      "before": "病機・診断以降では、章の学習を踏まえ、追加情報で判断を更新する症例演習へ進みます。",
+      "after": "病機・診断以降では、症例の情報を順に読み、追加の情報で候補や判断の理由がどう変わるか考えます。"
+    },
+    {
+      "source": "src/app/clinical/page.tsx",
+      "before": "本ツール群は鍼灸師の先生が所見を整理し、思考プロセスを記録・点検するための臨床推論支援ツールです。",
+      "after": "これらのツールは、鍼灸師が所見と判断の理由を記録し、後から見直すためのものです。"
+    },
+    {
+      "source": "src/app/clinical/page.tsx",
+      "before": "選んだ経穴、本治・標治の目的、併存する候補への配慮を記録します。",
+      "after": "選んだ経穴、本治・標治の目的、ほかの候補をどう検討したかを記録します。"
+    },
+    {
+      "source": "src/app/library/LibraryClient.tsx",
+      "before": "介入プロトコル: ",
+      "after": "研究で用いた方法: "
+    },
+    {
+      "source": "src/components/HaiketsuOptimizer.tsx",
+      "before": "【削ぎ落とすツボ】",
+      "after": "【選択から外す経穴】"
+    },
+    {
+      "source": "src/components/HaiketsuOptimizer.tsx",
+      "before": "この最小構成に最適化する（余剰穴を一括剪定）",
+      "after": "上の構成に変更する（候補から外れた経穴を削除）"
+    },
+    {
+      "source": "src/components/ThreeStageSimulator.tsx",
+      "before": "3段階連動推論",
+      "after": "3つの分類から条件を選ぶ"
+    },
+    {
+      "source": "src/components/ThreeStageSimulator.tsx",
+      "before": "選択条件に応じて、病態の推論根拠・不足している情報・学習用の配穴例がリアルタイムに更新されます。",
+      "after": "八綱・気血水・臓腑の条件を選ぶと、候補を支持する所見、不足している情報、学習用の配穴例が表示されます。条件を変えると、表示内容も変わります。"
+    },
+    {
+      "source": "src/components/ThreeStageSimulator.tsx",
+      "before": "臨床推論を深掘りする（詳しい説明）",
+      "after": "候補の根拠と不足情報を読む"
+    },
+    {
+      "source": "src/data/learningCourses.ts",
+      "courseSlug": "oriental-medicine-introduction",
+      "before": "4つの概論で見通しを持ち、観察したこととまだ分からないことを分ける練習から始めます。",
+      "after": "4講の概論を読み、短い相談記録から、書かれている事実とまだ分からないことを挙げる練習から始めます。"
+    },
+    {
+      "source": "src/data/learningCourses.ts",
+      "courseSlug": "oriental-medicine-introduction",
+      "before": "資料の役割と根拠の範囲、現代医療との関係を整理する。",
+      "after": "古典・用語集・臨床研究が、それぞれ何を確かめるための資料かを確認する。"
+    },
+    {
+      "source": "src/data/learningCourses.ts",
+      "courseSlug": "qi-blood-fluid",
+      "before": "正常な働きの用語を知り、臓腑の基礎へ進む土台を作ります。",
+      "after": "病態の各論へ進む前に、正常な働きを表す用語を確かめ、続く臓腑の講義に進みます。"
+    },
+    {
+      "source": "src/data/learningCourses.ts",
+      "courseSlug": "qi-blood-fluid",
+      "before": "気血水の用語を整理し、各講義を読み進める土台を作りたい方",
+      "after": "気・血・津液の意味と役割を確認してから、各講義を読み進めたい方"
+    },
+    {
+      "source": "src/data/learningCourses.ts",
+      "courseSlug": "life-functions-foundations",
+      "before": "基礎用語から全体の働きへ。生命機能論の4講を選び、役割と関係を見渡します。詳しい各機能は章の全講義で学べます。",
+      "after": "生命機能論の4講で、精・気・血・津液・神と臓腑の関係を確認します。それぞれの用語が何を説明するかを比べ、詳しい各機能は章の全講義で学びます。"
+    },
+    {
+      "source": "src/data/learningCourses.ts",
+      "courseSlug": "life-functions-foundations",
+      "before": "基礎理論それぞれが説明する側面を整理する。",
+      "after": "陰陽・気血津液・臓腑が、それぞれどの働きや関係を説明するかを示す。"
+    },
+    {
+      "source": "src/data/learningCourses.ts",
+      "courseSlug": "life-functions-foundations",
+      "before": "これまでの用語と生命機能論の役割を整理する。",
+      "after": "陰陽・気血津液・臓腑の説明を振り返り、生命機能論で何を学ぶか確認する。"
+    },
+    {
+      "source": "src/data/learningCourses.ts",
+      "courseSlug": "pathomechanism-foundations",
+      "before": "原因、過程、現れ、状態の整理を分ける。",
+      "after": "原因を表す病因、変化の過程を表す病機、現れた症状、所見から考える証を区別する。"
+    },
+    {
+      "source": "src/data/learningCourses.ts",
+      "courseSlug": "pathomechanism-foundations",
+      "before": "病機の意味、寒熱・虚実、仮説比較を4講で見渡します。一つの症状から結論を急がず、支持情報と不一致を探します。",
+      "after": "4講で病機の意味を学び、寒熱・虚実の分類と、複数の仮説を比較する方法を確認します。一つの症状で結論を決めず、候補に合う所見と合わない所見を探します。"
+    },
+    {
+      "source": "src/data/learningCourses.ts",
+      "courseSlug": "treatment-foundations",
+      "before": "目標、治則・治法、経穴選択、再評価の位置づけを4講で学びます。個別手技の習得とは分けて、教材の方針を読む土台を作ります。",
+      "after": "4講で、改善したいことを決め、治則・治法や経穴を選ぶ理由を確認し、経過から方針を見直す流れを学びます。Webでの学習と、実技指導を受けて手技を身につけることは区別します。"
+    },
+    {
+      "source": "src/data/learningCourses.ts",
+      "courseSlug": "treatment-foundations",
+      "before": "状態の整理と、介入の選択を分ける。",
+      "after": "どの所見から証を考えたかと、その証からどの方針を選ぶかを順に説明する。"
+    },
+    {
+      "source": "src/data/learningCourses.ts",
+      "courseSlug": "clinical-process-foundations",
+      "before": "各段階の判断と、見直しの位置を確認する。",
+      "after": "情報を集め、候補を比較し、方針を立て、記録と再評価へ進む順番を確認する。"
+    },
+    {
+      "source": "src/components/ThreeStageSimulator.tsx",
+      "field": "選択条件の変更通知",
+      "before": "noticeText = `病位：『${fromLabel}』➔『${toLabel}』へ変更。病態の深さが切り替わりました。`;",
+      "after": "noticeText = `病位の条件を「${fromLabel}」から「${toLabel}」に変更しました。候補の説明が更新されます。`;"
+    },
+    {
+      "source": "src/components/ThreeStageSimulator.tsx",
+      "field": "選択条件の変更通知",
+      "before": "noticeText = `寒熱：『${fromLabel}』➔『${toLabel}』へ変更。治療方針と配穴の狙いが切り替わりました。`;",
+      "after": "noticeText = `寒熱の条件を「${fromLabel}」から「${toLabel}」に変更しました。方針と配穴の学習例が更新されます。`;"
+    },
+    {
+      "source": "src/components/ThreeStageSimulator.tsx",
+      "field": "選択条件の変更通知",
+      "before": "noticeText = `虚実：『${fromLabel}』➔『${toLabel}』へ変更。瀉法（滞り打破）と補法（体力補給）の戦略が転換しました。`;",
+      "after": "noticeText = `虚実の条件を「${fromLabel}」から「${toLabel}」に変更しました。方針と配穴の学習例が更新されます。`;"
+    },
+    {
+      "source": "src/components/ThreeStageSimulator.tsx",
+      "field": "選択条件の変更通知",
+      "before": "noticeText = `気血水：『${qFrom}』➔『${qTo}』へ変更。生体物質の動態推論が更新されました。`;",
+      "after": "noticeText = `気血水の条件を「${qFrom}」から「${qTo}」に変更しました。候補と説明が更新されます。`;"
+    },
+    {
+      "source": "src/components/ThreeStageSimulator.tsx",
+      "field": "選択条件の変更通知",
+      "before": "noticeText = `臓腑：『${zFrom}』➔『${zTo}』へ変更。局在系統と主経絡が切り替わりました。`;",
+      "after": "noticeText = `臓腑の条件を「${zFrom}」から「${zTo}」に変更しました。対応する説明と主経絡が表示されます。`;"
+    },
+    {
+      "source": "src/app/about/page.tsx",
+      "field": "運営者の説明の見出し",
+      "before": "情報の捉え方：暗記ではなく「臨床の思考体系」として",
+      "after": "所見から考え、経過を見て確かめる"
+    },
+    {
+      "source": "src/app/learn/courses/page.tsx",
+      "field": "metadata / JSON-LD description",
+      "before": "の3〜5講コースで理論と短い例を往復し、全講義を学ぶ目次や復習へ進めます。",
+      "after": "の短いコースで講義を3〜5講ずつ読み、相談記録の演習と復習で確かめます。全講義の目次にも進めます。"
+    },
+    {
+      "source": "src/app/learn/courses/page.tsx",
+      "field": "opening",
+      "before": "初めての方は4講の概論から。各章の入口になる3〜5講を選んだコースで、用語と全体像をつかみます。短い例では、初めは観察した事実と不明点を分け、後半に仮説や評価を考えます。",
+      "after": "初めての方は、4講の概論から始めましょう。各コースでは、章の基本を扱う3〜5講を読みます。短い相談記録を使い、基礎コースでは記録から分かる事実と不明点を確かめ、後半のコースでは候補や判断の理由、経過を確認します。"
+    }
+  ],
+  "findings": [
+    {
+      "id": "natural-entry-01",
+      "sourcePath": "src/components/HaiketsuOptimizer.tsx",
+      "line": 361,
+      "displayRoutes": [
+        "/practice/haiketsu"
+      ],
+      "title": "経穴数の集計ラベルと根拠",
+      "quote": "黄金比（2〜4穴）",
+      "expertConfirmation": "「黄金比」は教材内の集計名か、臨床的な優位性を指すか。経穴数を2〜4とする根拠と適用条件を確認する。意味の確定に専門的判断が必要なため、操作ボタンのみ具体化し、このラベルと集計ルールは維持した。",
+      "status": "needs-specialist-review",
+      "sourceTextPreserved": true
+    }
+  ],
+  "counts": {
+    "contextualCopyEdits": 43,
+    "changedSources": 9,
+    "changedCourses": 6,
+    "additionalSpecialistFindings": 1
+  },
+  "validation": {
+    "lint": "入口・コース等の変更8ファイルはエラーなし。HaiketsuOptimizerのみ既存エラー1件・警告7件があり、HEADも同じ行・規則・件数と比較確認。",
+    "existingLintError": {
+      "source": "src/components/HaiketsuOptimizer.tsx",
+      "line": 74,
+      "rule": "react-hooks/set-state-in-effect",
+      "existedInBaseline": true
+    },
+    "operationalCodeChanged": false
+  }
+}

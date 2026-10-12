@@ -26,13 +26,13 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
   {
     slug: 'oriental-medicine-introduction', seriesId: 'intro',
     title: '東洋医学の学び方と全体像', eyebrow: 'まずここから',
-    description: '東洋医学とは何か、何のために学ぶのか。4つの概論で見通しを持ち、観察したこととまだ分からないことを分ける練習から始めます。',
+    description: '東洋医学とは何か、何のために学ぶのか。4講の概論を読み、短い相談記録から、書かれている事実とまだ分からないことを挙げる練習から始めます。',
     audience: '東洋医学を初めて学ぶ方、鍼灸学生',
     goals: ['教材で扱う東洋医学の範囲と、鍼灸・漢方・養生の位置づけを説明する。', '伝統的な説明、学習上の比喩、研究で確かめられたことを分ける。', '短い例から、観察した事実と未確認事項を挙げる。'],
     steps: [
       { lectureId: 'lecture-intro-1', title: '東洋医学とは何か', focus: '言葉の範囲と、この教材で学ぶことを知る。' },
       { lectureId: 'lecture-intro-2', title: '臨床の全体像を知る', focus: '相談から情報収集、解釈、方針、再評価までを見渡し、学ぶ目的を知る。' },
-      { lectureId: 'lecture-intro-3', title: '伝統概念・現代医学・根拠を分ける', focus: '資料の役割と根拠の範囲、現代医療との関係を整理する。' },
+      { lectureId: 'lecture-intro-3', title: '伝統概念・現代医学・根拠を分ける', focus: '古典・用語集・臨床研究が、それぞれ何を確かめるための資料かを確認する。' },
       { lectureId: 'lecture-intro-4', title: '短い例で観察してみる', focus: '証名や配穴を急がず、事実・解釈・不明点を分けてみる。' },
     ], reading: [],
   },
@@ -89,8 +89,8 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
     seriesId: 'qiblood',
     title: '気・血・津液を見分ける',
     eyebrow: '基本の役割を整理',
-    description: '気、血、津液の伝統的な役割を、3つの講義で一つずつ確認します。正常な働きの用語を知り、臓腑の基礎へ進む土台を作ります。',
-    audience: '気血水の用語を整理し、各講義を読み進める土台を作りたい方',
+    description: '気、血、津液の伝統的な役割を、3つの講義で一つずつ確認します。病態の各論へ進む前に、正常な働きを表す用語を確かめ、続く臓腑の講義に進みます。',
+    audience: '気・血・津液の意味と役割を確認してから、各講義を読み進めたい方',
     goals: [
       '気・血・津液について、伝統的に説明される役割を整理する。',
       '正常な働きの説明と、実際に観察したことを分けて読む。',
@@ -124,11 +124,11 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
   {
     slug: 'life-functions-foundations', seriesId: 'lifedynamics',
     title: '生命活動を全体として見る', eyebrow: '用語どうしをつなげる',
-    description: '基礎用語から全体の働きへ。生命機能論の4講を選び、役割と関係を見渡します。詳しい各機能は章の全講義で学べます。',
+    description: '生命機能論の4講で、精・気・血・津液・神と臓腑の関係を確認します。それぞれの用語が何を説明するかを比べ、詳しい各機能は章の全講義で学びます。',
     audience: '臓腑と気血津液を学び、全体の関係を整理したい方',
-    goals: ['基礎理論それぞれが説明する側面を整理する。', '臓腑の表裏関係と、複数の働きによる支え合いを説明する。', '生活の観察事実と、伝統理論による説明を分ける。'],
+    goals: ['陰陽・気血津液・臓腑が、それぞれどの働きや関係を説明するかを示す。', '臓腑の表裏関係と、複数の働きによる支え合いを説明する。', '生活の観察事実と、伝統理論による説明を分ける。'],
     steps: [
-      { lectureId: 'lecture-lifedynamics-1', title: '全体を見る視点を知る', focus: 'これまでの用語と生命機能論の役割を整理する。' },
+      { lectureId: 'lecture-lifedynamics-1', title: '全体を見る視点を知る', focus: '陰陽・気血津液・臓腑の説明を振り返り、生命機能論で何を学ぶか確認する。' },
       { lectureId: 'lecture-lifedynamics-2', title: '精・気・血・津液・神を整理する', focus: '新しい用語を含め、伝統的に説明される関係を確認する。' },
       { lectureId: 'lecture-lifedynamics-6', title: '臓腑の表裏関係を振り返る', focus: '組み合わせと、理論上の関係を説明する。' },
       { lectureId: 'lecture-lifedynamics-11', title: '働きのつながりを見渡す', focus: '個別の用語を、全体の働きの説明へつなげる。' },
@@ -150,11 +150,11 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
   {
     slug: 'pathomechanism-foundations', seriesId: 'pathomechanism',
     title: '経過から病機の仮説を考える', eyebrow: '複数の説明を比べる',
-    description: '病機の意味、寒熱・虚実、仮説比較を4講で見渡します。一つの症状から結論を急がず、支持情報と不一致を探します。',
+    description: '4講で病機の意味を学び、寒熱・虚実の分類と、複数の仮説を比較する方法を確認します。一つの症状で結論を決めず、候補に合う所見と合わない所見を探します。',
     audience: '基礎理論を学び、架空例の経過を整理したい方',
     goals: ['病因・病機・症状・証の違いを説明する。', '同じ所見に対して複数の仮説を挙げる。', '仮説を確認するための質問と未確認事項を示す。'],
     steps: [
-      { lectureId: 'lecture-pathomechanism-1', title: '病機という言葉を知る', focus: '原因、過程、現れ、状態の整理を分ける。' },
+      { lectureId: 'lecture-pathomechanism-1', title: '病機という言葉を知る', focus: '原因を表す病因、変化の過程を表す病機、現れた症状、所見から考える証を区別する。' },
       { lectureId: 'lecture-pathomechanism-6', title: '寒熱と虚実を分ける', focus: '二つの軸を混同せず、根拠が不足する部分は保留する。' },
       { lectureId: 'lecture-pathomechanism-11', title: '仮説を比較する', focus: '支持情報だけでなく、不一致や別の説明を検討する。' },
       { lectureId: 'lecture-pathomechanism-12', title: '追加確認へつなぐ', focus: '仮説を、次に確かめる質問へ変える。' },
@@ -177,12 +177,12 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
   {
     slug: 'treatment-foundations', seriesId: 'treatment',
     title: '治療方針と評価の考え方を知る', eyebrow: '選ぶ理由を説明する',
-    description: '目標、治則・治法、経穴選択、再評価の位置づけを4講で学びます。個別手技の習得とは分けて、教材の方針を読む土台を作ります。',
+    description: '4講で、改善したいことを決め、治則・治法や経穴を選ぶ理由を確認し、経過から方針を見直す流れを学びます。Webでの学習と、実技指導を受けて手技を身につけることは区別します。',
     audience: '診断・弁証の学習から、治療方針の理由を考える段階へ進む方',
     goals: ['証と治療方針を区別し、改善したいことを具体化する。', '教材の治法・経穴を選ぶ理由と前提条件を説明する。', '変化を何で確かめ、いつ方針を見直すかを示す。'],
     steps: [
       { lectureId: 'lecture-treatment-1', title: '目的と対応範囲を知る', focus: '何を改善するための方針かを、本人の希望とともに整理する。' },
-      { lectureId: 'lecture-treatment-2', title: '証から方針へつなぐ', focus: '状態の整理と、介入の選択を分ける。' },
+      { lectureId: 'lecture-treatment-2', title: '証から方針へつなぐ', focus: 'どの所見から証を考えたかと、その証からどの方針を選ぶかを順に説明する。' },
       { lectureId: 'lecture-treatment-8', title: '経穴を選ぶ理由を考える', focus: '教材の複数の選択肢を、目的と根拠で比較する。' },
       { lectureId: 'lecture-treatment-11', title: '評価と見直しを考える', focus: '継続・変更・終了を検討するための指標を整理する。' },
     ], reading: [],
@@ -194,7 +194,7 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
     audience: '基本的な判断をつなげ、症例の経過を振り返りたい方',
     goals: ['症例の事実、解釈、判断理由を分けて記録する。', '新しい情報や経過に応じて仮説を見直す。', '一時的な変化と、生活への持続的な変化を区別する。'],
     steps: [
-      { lectureId: 'lecture-practice-1', title: '全体の流れを振り返る', focus: '各段階の判断と、見直しの位置を確認する。' },
+      { lectureId: 'lecture-practice-1', title: '全体の流れを振り返る', focus: '情報を集め、候補を比較し、方針を立て、記録と再評価へ進む順番を確認する。' },
       { lectureId: 'lecture-practice-2', title: '症例情報を読み解く', focus: '重要な事実を要約し、解釈と分ける。' },
       { lectureId: 'lecture-practice-9', title: '反応を評価する', focus: '同じ指標で変化と有害な反応を確認する。' },
       { lectureId: 'lecture-practice-10', title: '次の計画を修正する', focus: '新情報を受けた変更や保留の理由を示す。' },

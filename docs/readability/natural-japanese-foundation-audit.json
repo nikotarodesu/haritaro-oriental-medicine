@@ -1,0 +1,2137 @@
+{
+  "reviewedAt": "2026-10-12",
+  "baselineCommit": "7cd58127c6cb8517ef579caa57c808a482f751a3",
+  "scope": "基礎13講・39問・用語32項目を再読し、抽象語・長い名詞連結・硬い翻訳調・不自然な主語を、具体的で自然な日本語に改稿。",
+  "method": "各段落の何を読む/比べる/記録するかを確認して個別編集。全段落の増量や機械的な一括置換は行わず、明快な文は維持。解説の具体化には同じ講義の既存説明・記録だけを使用した。",
+  "limits": "文章校閲と意味・構造の回帰確認。医学的監修、正答の専門的再審査、外部資料の再照合完了を意味しない。",
+  "counts": {
+    "lectures": 13,
+    "questions": 39,
+    "glossaryTerms": 32,
+    "reviewed": 84,
+    "changedLectures": 13,
+    "changedQuestions": 20,
+    "changedGlossaryTerms": 13,
+    "changedEntries": 46
+  },
+  "changedLectureIds": [
+    "lecture-intro-1",
+    "lecture-intro-2",
+    "lecture-intro-3",
+    "lecture-intro-4",
+    "lecture-zangfu-1",
+    "lecture-zangfu-2",
+    "lecture-zangfu-3",
+    "lecture-zangfu-4",
+    "lecture-zangfu-5",
+    "lecture-meridians-1",
+    "lecture-meridians-2",
+    "lecture-meridians-3",
+    "lecture-meridians-4"
+  ],
+  "changedQuestionIds": [
+    "lecture-intro-1-q1",
+    "lecture-intro-1-q3",
+    "lecture-intro-2-q1",
+    "lecture-intro-2-q3",
+    "lecture-intro-3-q1",
+    "lecture-intro-3-q3",
+    "lecture-intro-4-q1",
+    "lecture-zangfu-1-q3",
+    "lecture-zangfu-2-q3",
+    "lecture-zangfu-3-q3",
+    "lecture-zangfu-4-q1",
+    "lecture-zangfu-4-q3",
+    "lecture-zangfu-5-q3",
+    "lecture-meridians-1-q1",
+    "lecture-meridians-1-q2",
+    "lecture-meridians-2-q3",
+    "lecture-meridians-3-q1",
+    "lecture-meridians-4-q1",
+    "lecture-meridians-4-q2",
+    "lecture-meridians-4-q3"
+  ],
+  "changedGlossaryTerms": [
+    "疏泄",
+    "固摂",
+    "気虚",
+    "血虚",
+    "陰陽",
+    "原穴",
+    "四関",
+    "得気",
+    "五労",
+    "弁証論治",
+    "足三里",
+    "内関",
+    "百会"
+  ],
+  "integrityChecks": {
+    "lectureIdsTitlesReferencesUnchanged": true,
+    "headingTextAndOrderUnchanged": true,
+    "bodyCitationMarkersUnchanged": true,
+    "bodyUrlsAndOrderUnchanged": true,
+    "quizPromptsOptionsAnswersIdsSectionsUnchanged": true,
+    "glossaryIdentityReadingCategoryLinksUnchanged": true,
+    "specialistQuotedStatementsPreserved": 6,
+    "paragraphCountUnchanged": true
+  },
+  "bodyLength": {
+    "before": 18565,
+    "after": 18668
+  },
+  "entries": [
+    {
+      "type": "lecture",
+      "id": "lecture-intro-1",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "日本の鍼灸学習で用いられる基礎概念を入り口に、人体の働きと症状の関係を学びます。伝統理論、現代医学、臨床研究の問いを区別し、学習者として何を説明できるようになるかを確認します。",
+          "after": "日本の鍼灸学習で用いられる基礎概念から、人体の働きと症状の関係を学びます。用語の意味を学ぶこと、医学的な原因を調べること、治療の効果を確かめることの違いを押さえ、自分が何を説明できるようになりたいかを確認します。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "三つの問いを分ける",
+          "before": "そのため、伝統理論が一貫して説明できることだけで治療の有効性が証明されたとはいえません。逆に、ある介入の研究結果だけで、その介入に関わる伝統理論のすべてが証明されたともいえません。これらを分けると、伝統用語を落ち着いて学びながら、根拠も読み直せます。",
+          "after": "そのため、伝統理論に沿って矛盾なく説明できても、それだけで治療の効果が証明されたとはいえません。また、ある治療の研究結果だけで、その治療に関わる伝統理論のすべてが証明されたともいえません。用語の意味を理解することと、治療の効果を確かめることを区別し、それぞれを支える資料を読みましょう。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "日本の鍼灸学習で用いられる基礎概念を入り口に、人体の働きと症状の関係を学びます。伝統理論、現代医学、臨床研究の問いを区別し、学習者として何を説明できるようになるかを確認します。",
+          "after": "日本の鍼灸学習で用いられる基礎概念から、人体の働きと症状の関係を学びます。用語の意味を学ぶこと、医学的な原因を調べること、治療の効果を確かめることの違いを押さえ、自分が何を説明できるようになりたいかを確認します。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "三つの問いを分ける",
+          "before": "そのため、伝統理論が一貫して説明できることだけで治療の有効性が証明されたとはいえません。逆に、ある介入の研究結果だけで、その介入に関わる伝統理論のすべてが証明されたともいえません。これらを分けると、伝統用語を落ち着いて学びながら、根拠も読み直せます。",
+          "after": "そのため、伝統理論に沿って矛盾なく説明できても、それだけで治療の効果が証明されたとはいえません。また、ある治療の研究結果だけで、その治療に関わる伝統理論のすべてが証明されたともいえません。用語の意味を理解することと、治療の効果を確かめることを区別し、それぞれを支える資料を読みましょう。"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-intro-2",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "臨床を、相談、情報収集、解釈、方針の共有、再評価の連続として捉えます。初学者はまず情報の不足を見つけ、次に必要な確認を理由つきで選ぶ練習をします。",
+          "after": "臨床では、本人の相談を聞き、情報を集めて解釈し、方針を共有した後も変化を確認します。まずは架空の記録で足りない情報を見つけ、次に何を確認するかを理由とともに選ぶ練習をします。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "解釈と方針を分ける",
+          "before": "集めた情報から、どの伝統的な説明候補が合うか、何が合わないかを考えます。弁証とはこの整理に関わる学習です。候補を挙げることと、その候補に基づく方針を採用することは別の判断です。情報が不足していれば追加確認へ戻り、他の医療評価が必要であればその必要性を考えます。",
+          "after": "集めた情報にどの伝統的な説明が合うか、どこが合わないかを考えます。弁証では、こうして情報を整理します。説明の候補が挙がっても、それだけで方針は決まりません。情報が足りなければ追加で確認し、他の医療による評価が必要かも検討します。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "学ぶ知識の使いどころ",
+          "before": "気血津液・臓腑・経絡は説明候補の比較を助け、診察学は情報収集を、治則は方針の検討を助けます。どの講義も、この一連の流れのどこで使う知識かを意識して読むと、暗記した言葉が孤立しにくくなります。",
+          "after": "気血津液・臓腑・経絡の講では、集めた情報にどの伝統的な説明が合うかを考えます。診察学では情報をどう集めるかを、治則ではどんな方針を立てるかを学びます。相談から再評価までのどの段階で使う知識かを意識すると、覚えた用語を使う場面が見えてきます。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "臨床を、相談、情報収集、解釈、方針の共有、再評価の連続として捉えます。初学者はまず情報の不足を見つけ、次に必要な確認を理由つきで選ぶ練習をします。",
+          "after": "臨床では、本人の相談を聞き、情報を集めて解釈し、方針を共有した後も変化を確認します。まずは架空の記録で足りない情報を見つけ、次に何を確認するかを理由とともに選ぶ練習をします。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "解釈と方針を分ける",
+          "before": "集めた情報から、どの伝統的な説明候補が合うか、何が合わないかを考えます。弁証とはこの整理に関わる学習です。候補を挙げることと、その候補に基づく方針を採用することは別の判断です。情報が不足していれば追加確認へ戻り、他の医療評価が必要であればその必要性を考えます。",
+          "after": "集めた情報にどの伝統的な説明が合うか、どこが合わないかを考えます。弁証では、こうして情報を整理します。説明の候補が挙がっても、それだけで方針は決まりません。情報が足りなければ追加で確認し、他の医療による評価が必要かも検討します。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "学ぶ知識の使いどころ",
+          "before": "気血津液・臓腑・経絡は説明候補の比較を助け、診察学は情報収集を、治則は方針の検討を助けます。どの講義も、この一連の流れのどこで使う知識かを意識して読むと、暗記した言葉が孤立しにくくなります。",
+          "after": "気血津液・臓腑・経絡の講では、集めた情報にどの伝統的な説明が合うかを考えます。診察学では情報をどう集めるかを、治則ではどんな方針を立てるかを学びます。相談から再評価までのどの段階で使う知識かを意識すると、覚えた用語を使う場面が見えてきます。"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-intro-3",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "伝統概念、現代医学、臨床研究をそれぞれの問いに沿って読みます。参考資料の肩書きだけで判断せず、何を確認でき、何が未確認なのかを言葉にする練習をします。",
+          "after": "用語の意味、医学的な説明、治療の効果は、それぞれの問いに合う資料で確認します。資料名や発行元だけで判断せず、その資料から何が分かり、何がまだ分からないかを説明する練習をします。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "架空の学習演習：資料の用途",
+          "before": "**解答例：**用語の掲載から治療効果の証明へ飛躍している点です。「用語集で経絡の定義を確認できる。個々の介入の効果は、対象と比較を明示した研究で別に検討する」と分けます。出典の権威ではなく、出典が答えられる問いを見極める練習です。",
+          "after": "**解答例：**用語集への掲載を、治療効果の証明とした点です。「用語集で経絡の定義を確認できる。個々の介入の効果は、対象と比較を明示した研究で別に検討する」と分けます。誰が発行した資料かだけでなく、言葉の意味を確認する資料なのか、効果を調べた資料なのかを確かめる練習です。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "伝統概念、現代医学、臨床研究をそれぞれの問いに沿って読みます。参考資料の肩書きだけで判断せず、何を確認でき、何が未確認なのかを言葉にする練習をします。",
+          "after": "用語の意味、医学的な説明、治療の効果は、それぞれの問いに合う資料で確認します。資料名や発行元だけで判断せず、その資料から何が分かり、何がまだ分からないかを説明する練習をします。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "架空の学習演習：資料の用途",
+          "before": "**解答例：**用語の掲載から治療効果の証明へ飛躍している点です。「用語集で経絡の定義を確認できる。個々の介入の効果は、対象と比較を明示した研究で別に検討する」と分けます。出典の権威ではなく、出典が答えられる問いを見極める練習です。",
+          "after": "**解答例：**用語集への掲載を、治療効果の証明とした点です。「用語集で経絡の定義を確認できる。個々の介入の効果は、対象と比較を明示した研究で別に検討する」と分けます。誰が発行した資料かだけでなく、言葉の意味を確認する資料なのか、効果を調べた資料なのかを確かめる練習です。"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-intro-4",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "架空の相談記録を観察事実、解釈、不明点に整理します。正しい用語を当てるだけでなく、何を根拠に考え、どこから先が分からないかを説明する解答を練習します。",
+          "after": "架空の相談記録を、記録にある事実、自分の解釈、まだ確認していない情報に分けます。用語を答えるだけでなく、何を根拠に考え、何がまだ分からないかを説明する練習をします。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "解釈は理由と一緒に書く",
+          "before": "後に気血津液を学んだら、気の不足などの伝統的な説明候補を挙げることがあります。その場合も、「どの記録が候補を支持するか」「他に必要な情報は何か」を添えます。この例では詳細な所見が不足しているので、特定の証を確定する解答にはしません。",
+          "after": "気血津液を学んだ後は、気の不足などの伝統的な説明を候補に挙げることがあります。その場合も、「記録のどの部分がその説明に合うか」「他に必要な情報は何か」を添えます。この例では詳しい所見が足りないので、特定の証を確定する解答にはしません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "架空の相談記録を観察事実、解釈、不明点に整理します。正しい用語を当てるだけでなく、何を根拠に考え、どこから先が分からないかを説明する解答を練習します。",
+          "after": "架空の相談記録を、記録にある事実、自分の解釈、まだ確認していない情報に分けます。用語を答えるだけでなく、何を根拠に考え、何がまだ分からないかを説明する練習をします。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "解釈は理由と一緒に書く",
+          "before": "後に気血津液を学んだら、気の不足などの伝統的な説明候補を挙げることがあります。その場合も、「どの記録が候補を支持するか」「他に必要な情報は何か」を添えます。この例では詳細な所見が不足しているので、特定の証を確定する解答にはしません。",
+          "after": "気血津液を学んだ後は、気の不足などの伝統的な説明を候補に挙げることがあります。その場合も、「記録のどの部分がその説明に合うか」「他に必要な情報は何か」を添えます。この例では詳しい所見が足りないので、特定の証を確定する解答にはしません。"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-zangfu-1",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "臓腑の名称を、働きや全身との関係を説明する伝統概念として学びます。同じ漢字を使う現代医学の臓器名との違いを押さえ、五行の配属を暗記する前に基本の読み方を身につけます。",
+          "after": "臓腑名が伝統医学でどの働きや全身との関係を説明するかを学びます。「脾」と「脾臓」のように同じ漢字を使っていても、意味する範囲は同じではありません。五行の配属を覚える前に、この読み方を身につけます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "同じ名前をどう読むか",
+          "before": "ISOの伝統医学用語の構造でも、身体の体系には解剖学的構造、機能的な体系、抽象概念が含まれると整理されています。ここで大切なのは「実体が全くない」「現代の臓器と完全に同じ」の二択にすることではなく、今どの体系の言葉で何を説明しているかを明示することです。",
+          "after": "ISOの伝統医学用語の構造でも、身体の体系には解剖学的構造、機能的な体系、抽象概念が含まれると整理されています。「実体が全くない」「現代の臓器と完全に同じ」の二択で考えず、伝統理論の働きを説明しているのか、解剖学の臓器を説明しているのかを明らかにしましょう。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "臓腑の名称を、働きや全身との関係を説明する伝統概念として学びます。同じ漢字を使う現代医学の臓器名との違いを押さえ、五行の配属を暗記する前に基本の読み方を身につけます。",
+          "after": "臓腑名が伝統医学でどの働きや全身との関係を説明するかを学びます。「脾」と「脾臓」のように同じ漢字を使っていても、意味する範囲は同じではありません。五行の配属を覚える前に、この読み方を身につけます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "同じ名前をどう読むか",
+          "before": "ISOの伝統医学用語の構造でも、身体の体系には解剖学的構造、機能的な体系、抽象概念が含まれると整理されています。ここで大切なのは「実体が全くない」「現代の臓器と完全に同じ」の二択にすることではなく、今どの体系の言葉で何を説明しているかを明示することです。",
+          "after": "ISOの伝統医学用語の構造でも、身体の体系には解剖学的構造、機能的な体系、抽象概念が含まれると整理されています。「実体が全くない」「現代の臓器と完全に同じ」の二択で考えず、伝統理論の働きを説明しているのか、解剖学の臓器を説明しているのかを明らかにしましょう。"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-zangfu-2",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "肺の気・呼吸・宣発粛降と、心の血脈・神という代表的な働きを整理します。用語の方向や説明対象を言い直し、症状の名称だけで状態を決めずに具体化する練習をします。",
+          "after": "肺の気と呼吸、宣発・粛降、心の血脈と神について学びます。それぞれがどんな方向や働きを説明するかを言い直し、息苦しさや眠りにくさを感じる場面・経過を確認する練習をします。症状名だけで臓腑の状態を決めません。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "心の血脈と神",
+          "before": "心については、血脈を主ることと、神を蔵することを代表的な説明として押さえます。神はここでは精神活動をめぐる伝統的な用語です。心を学ぶ欄には、血脈に関する話題と精神活動に関する話題を分けて書くと、一つの働きだけに縮めずに整理できます。",
+          "after": "心については、血脈を主ることと、神を蔵することを代表的な説明として押さえます。神はここでは精神活動をめぐる伝統的な用語です。ノートには血脈と精神活動を別の行に書き、心の説明にこの二つの話題が含まれることを確認しましょう。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "働きから確認する話題へ",
+          "before": "ここで挙げた質問は、証を自動で判定する条件ではありません。元の記録を丁寧にするための練習です。伝統理論で整理することと、必要な現代医学の評価を受けることは別に考えます。症状の強さや経過の評価をせず、学習用の関連だけで方針を決めないことが大切です。",
+          "after": "ここで挙げた質問は、証を自動で判定する条件ではありません。本人の言葉が何を指すかを確かめ、記録を詳しくするための練習です。伝統理論で情報を整理しても、必要な現代医学の評価を受けたことにはなりません。症状の強さや経過を確認せず、学習用の関連だけで方針を決めないことが大切です。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "肺の気・呼吸・宣発粛降と、心の血脈・神という代表的な働きを整理します。用語の方向や説明対象を言い直し、症状の名称だけで状態を決めずに具体化する練習をします。",
+          "after": "肺の気と呼吸、宣発・粛降、心の血脈と神について学びます。それぞれがどんな方向や働きを説明するかを言い直し、息苦しさや眠りにくさを感じる場面・経過を確認する練習をします。症状名だけで臓腑の状態を決めません。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "心の血脈と神",
+          "before": "心については、血脈を主ることと、神を蔵することを代表的な説明として押さえます。神はここでは精神活動をめぐる伝統的な用語です。心を学ぶ欄には、血脈に関する話題と精神活動に関する話題を分けて書くと、一つの働きだけに縮めずに整理できます。",
+          "after": "心については、血脈を主ることと、神を蔵することを代表的な説明として押さえます。神はここでは精神活動をめぐる伝統的な用語です。ノートには血脈と精神活動を別の行に書き、心の説明にこの二つの話題が含まれることを確認しましょう。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "働きから確認する話題へ",
+          "before": "ここで挙げた質問は、証を自動で判定する条件ではありません。元の記録を丁寧にするための練習です。伝統理論で整理することと、必要な現代医学の評価を受けることは別に考えます。症状の強さや経過の評価をせず、学習用の関連だけで方針を決めないことが大切です。",
+          "after": "ここで挙げた質問は、証を自動で判定する条件ではありません。本人の言葉が何を指すかを確かめ、記録を詳しくするための練習です。伝統理論で情報を整理しても、必要な現代医学の評価を受けたことにはなりません。症状の強さや経過を確認せず、学習用の関連だけで方針を決めないことが大切です。"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-zangfu-3",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "脾の運化と升清を中心に、脾胃の働きを役割ごとに学びます。現代の消化器の名称への置換を避け、食事に関する複数の情報を分けて読む練習をします。",
+          "after": "脾の運化（変化させて配る働き）と升清（上方へ送る働き）を学び、胃の役割と比べます。伝統的な説明を現代医学の消化器の働きにそのまま置き換えず、食欲や実際に食べた量、食後の感じを別々に記録する練習をします。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "架空の学習演習：不足している情報",
+          "before": "**解答例：**食欲と実際の摂取状況を分けます。「食欲はあると述べたが、食べる量や時刻は別に確認する」と直します。この例で選ぶ判断は、食欲という一情報から飲食全体を代表させないことです。脾の状態や栄養状態を確定する課題ではありません。",
+          "after": "**解答例：**食欲と実際に食べた量・時刻を分けます。「食欲はあると述べたが、食べる量や時刻は別に確認する」と直します。食欲があることだけでは、食べた量や欠食の状況までは分かりません。脾の状態や栄養状態を確定する課題ではありません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "脾の運化と升清を中心に、脾胃の働きを役割ごとに学びます。現代の消化器の名称への置換を避け、食事に関する複数の情報を分けて読む練習をします。",
+          "after": "脾の運化（変化させて配る働き）と升清（上方へ送る働き）を学び、胃の役割と比べます。伝統的な説明を現代医学の消化器の働きにそのまま置き換えず、食欲や実際に食べた量、食後の感じを別々に記録する練習をします。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "架空の学習演習：不足している情報",
+          "before": "**解答例：**食欲と実際の摂取状況を分けます。「食欲はあると述べたが、食べる量や時刻は別に確認する」と直します。この例で選ぶ判断は、食欲という一情報から飲食全体を代表させないことです。脾の状態や栄養状態を確定する課題ではありません。",
+          "after": "**解答例：**食欲と実際に食べた量・時刻を分けます。「食欲はあると述べたが、食べる量や時刻は別に確認する」と直します。食欲があることだけでは、食べた量や欠食の状況までは分かりません。脾の状態や栄養状態を確定する課題ではありません。"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-zangfu-4",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "肝の疏泄・蔵血と、腎の蔵精という基本の働きを学びます。伝統的な精の説明を検査値や遺伝情報へ固定せず、短期の変化と長い経過を分けて読む練習をします。",
+          "after": "肝の疏泄・蔵血と、腎の蔵精という基本の働きを学びます。精を検査値や遺伝情報と同じものには扱いません。一時的な変化と長く続く状態を区別して記録する練習をします。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "肝の二つの働きを分ける",
+          "before": "「疏泄」という語を見たら「何の流れについて説明しているか」、「蔵血」という語を見たら「何を蔵すると説明しているか」を言い直しましょう。用語を動詞と対象に分けると、似た漢字の働きを混ぜずに理解できます。この説明は伝統的な人体観の中で読むもので、特定の神経や肝臓の検査値を直接示す言葉ではありません。",
+          "after": "「疏泄」という語を見たら「何の流れについて説明しているか」、「蔵血」という語を見たら「何を蔵すると説明しているか」を言い直しましょう。「何に、どんな働きをするか」を添えると、用語の違いが分かります。これは伝統的な人体観の説明で、特定の神経や肝臓の検査値を直接示す言葉ではありません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "肝の疏泄・蔵血と、腎の蔵精という基本の働きを学びます。伝統的な精の説明を検査値や遺伝情報へ固定せず、短期の変化と長い経過を分けて読む練習をします。",
+          "after": "肝の疏泄・蔵血と、腎の蔵精という基本の働きを学びます。精を検査値や遺伝情報と同じものには扱いません。一時的な変化と長く続く状態を区別して記録する練習をします。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "肝の二つの働きを分ける",
+          "before": "「疏泄」という語を見たら「何の流れについて説明しているか」、「蔵血」という語を見たら「何を蔵すると説明しているか」を言い直しましょう。用語を動詞と対象に分けると、似た漢字の働きを混ぜずに理解できます。この説明は伝統的な人体観の中で読むもので、特定の神経や肝臓の検査値を直接示す言葉ではありません。",
+          "after": "「疏泄」という語を見たら「何の流れについて説明しているか」、「蔵血」という語を見たら「何を蔵すると説明しているか」を言い直しましょう。「何に、どんな働きをするか」を添えると、用語の違いが分かります。これは伝統的な人体観の説明で、特定の神経や肝臓の検査値を直接示す言葉ではありません。"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-zangfu-5",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "六腑と六組の表裏関係を整理し、五臓を全身の関係の中で読み直します。関連する名称を知ることと、症状の因果関係を確定することを区別し、経絡や病因病機へつなげます。",
+          "after": "六腑の名称と六組の表裏関係を確認し、五臓と六腑の組合せを学びます。名称の組合せが分かっても、二つの症状の原因が同じと決めることはできません。その違いを押さえて、経絡や病因病機へ進みます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "架空の学習演習：表裏と原因",
+          "before": "**解答例：**「それぞれの経過を確認し、関係はまだ未確認とする」を選びます。肺と大腸の表裏関係は用語として説明できますが、この記録だけで因果関係や方針は決められません。名称の関係と記録の関係を区別する練習です。",
+          "after": "**解答例：**「それぞれの経過を確認し、関係はまだ未確認とする」を選びます。肺と大腸の表裏関係は用語として説明できますが、この記録だけで原因や方針は決められません。臓腑名の組合せを知ることと、本人の咳や便の変化に共通の原因があるかを確かめることは別です。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "六腑と六組の表裏関係を整理し、五臓を全身の関係の中で読み直します。関連する名称を知ることと、症状の因果関係を確定することを区別し、経絡や病因病機へつなげます。",
+          "after": "六腑の名称と六組の表裏関係を確認し、五臓と六腑の組合せを学びます。名称の組合せが分かっても、二つの症状の原因が同じと決めることはできません。その違いを押さえて、経絡や病因病機へ進みます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "架空の学習演習：表裏と原因",
+          "before": "**解答例：**「それぞれの経過を確認し、関係はまだ未確認とする」を選びます。肺と大腸の表裏関係は用語として説明できますが、この記録だけで因果関係や方針は決められません。名称の関係と記録の関係を区別する練習です。",
+          "after": "**解答例：**「それぞれの経過を確認し、関係はまだ未確認とする」を選びます。肺と大腸の表裏関係は用語として説明できますが、この記録だけで原因や方針は決められません。臓腑名の組合せを知ることと、本人の咳や便の変化に共通の原因があるかを確かめることは別です。"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-meridians-1",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "経絡、経脈、経穴の違いを整理し、図と辞典の役割を学びます。臓腑で学んだ全身の関係を経絡の分類へつなげ、名称と位置を確認する学習の土台を作ります。",
+          "after": "経絡が説明する全身のつながり、経脈の分類、個々の経穴の名前と位置を整理します。図では全体の配置を、辞典では各経穴の情報を確認し、臓腑で学んだ関係と結びつけます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "架空の学習演習：図から分かること",
+          "before": "**解答例：**「図が示す経脈や経穴の名称・配置を学べる」と直します。図は人物Hの診察記録ではありません。症状の原因や選択する方針を、その配置だけから確定することはできません。",
+          "after": "**解答例：**「図が示す経脈や経穴の名称・配置を学べる」と直します。図には、この人の症状や診察で得た情報は載っていません。経穴の配置だけから、症状の原因や方針を確定することはできません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "経絡、経脈、経穴の違いを整理し、図と辞典の役割を学びます。臓腑で学んだ全身の関係を経絡の分類へつなげ、名称と位置を確認する学習の土台を作ります。",
+          "after": "経絡が説明する全身のつながり、経脈の分類、個々の経穴の名前と位置を整理します。図では全体の配置を、辞典では各経穴の情報を確認し、臓腑で学んだ関係と結びつけます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "架空の学習演習：図から分かること",
+          "before": "**解答例：**「図が示す経脈や経穴の名称・配置を学べる」と直します。図は人物Hの診察記録ではありません。症状の原因や選択する方針を、その配置だけから確定することはできません。",
+          "after": "**解答例：**「図が示す経脈や経穴の名称・配置を学べる」と直します。図には、この人の症状や診察で得た情報は載っていません。経穴の配置だけから、症状の原因や方針を確定することはできません。"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-meridians-2",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "十二経脈を四群に分け、名称の構造とコードを学びます。全走行の暗記へ進む前に、同じ名前を図・文章・辞典で見つけられることを目指します。",
+          "after": "手三陰・手三陽・足三陰・足三陽の四群で十二経脈を整理し、名前と英字コードを学びます。詳しい走行を暗記する前に、同じ経脈を図・文章・辞典で探せることを目指します。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "臓腑の学習とつなぐ",
+          "before": "ただし、経脈の名称に臓腑名が含まれることから、その経脈に関連する位置の訴えがすべて同じ臓器の病気だと結論づけることはできません。名称の関連は伝統的な体系の学習であり、人物の所見を読む判断は、経過やほかの情報と合わせて別に行います。",
+          "after": "ただし、経脈名に臓腑名が含まれていても、その経脈の近くに訴えがある人が、すべて同じ臓器の病気だとはいえません。臓腑名と経脈名の対応は伝統理論の分類です。本人の状態を考えるには、症状の経過やほかの情報も確認します。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "十二経脈を四群に分け、名称の構造とコードを学びます。全走行の暗記へ進む前に、同じ名前を図・文章・辞典で見つけられることを目指します。",
+          "after": "手三陰・手三陽・足三陰・足三陽の四群で十二経脈を整理し、名前と英字コードを学びます。詳しい走行を暗記する前に、同じ経脈を図・文章・辞典で探せることを目指します。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "臓腑の学習とつなぐ",
+          "before": "ただし、経脈の名称に臓腑名が含まれることから、その経脈に関連する位置の訴えがすべて同じ臓器の病気だと結論づけることはできません。名称の関連は伝統的な体系の学習であり、人物の所見を読む判断は、経過やほかの情報と合わせて別に行います。",
+          "after": "ただし、経脈名に臓腑名が含まれていても、その経脈の近くに訴えがある人が、すべて同じ臓器の病気だとはいえません。臓腑名と経脈名の対応は伝統理論の分類です。本人の状態を考えるには、症状の経過やほかの情報も確認します。"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-meridians-3",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "経穴の位置を読むための基礎として、コード、部位、目印、比例寸を学びます。所属や五輸穴などの分類を情報整理の軸として理解し、分類名から実施方法や有効性を決めない練習をします。",
+          "after": "経穴のコードと、位置を示す部位・目印・比例寸を学びます。所属経脈や五輸穴などは、何を基準に分けた分類なのかを確かめます。分類名だけでは施術方法や効果を決められないことも押さえます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "分類は何を整理するか",
+          "before": "所属する経脈で分ける分類は、経穴をどの経脈の一覧で探すかを助けます。別の分類として、五輸穴という井・滎・輸・経・合の五つの名称や、原穴などの名称も登場します。これらは伝統的な理論に基づく整理の軸で、英字コードや体の部位とは異なる情報です。",
+          "after": "所属経脈が分かると、どの経脈の一覧でその経穴を探せばよいかが分かります。別の分類として、五輸穴という井・滎・輸・経・合の五つの名称や、原穴などの名称も登場します。これらは伝統理論で経穴を分類する名前です。経穴を識別する英字コードや、体のどこにあるかを示す部位とは、記す内容が違います。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "経穴の位置を読むための基礎として、コード、部位、目印、比例寸を学びます。所属や五輸穴などの分類を情報整理の軸として理解し、分類名から実施方法や有効性を決めない練習をします。",
+          "after": "経穴のコードと、位置を示す部位・目印・比例寸を学びます。所属経脈や五輸穴などは、何を基準に分けた分類なのかを確かめます。分類名だけでは施術方法や効果を決められないことも押さえます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "分類は何を整理するか",
+          "before": "所属する経脈で分ける分類は、経穴をどの経脈の一覧で探すかを助けます。別の分類として、五輸穴という井・滎・輸・経・合の五つの名称や、原穴などの名称も登場します。これらは伝統的な理論に基づく整理の軸で、英字コードや体の部位とは異なる情報です。",
+          "after": "所属経脈が分かると、どの経脈の一覧でその経穴を探せばよいかが分かります。別の分類として、五輸穴という井・滎・輸・経・合の五つの名称や、原穴などの名称も登場します。これらは伝統理論で経穴を分類する名前です。経穴を識別する英字コードや、体のどこにあるかを示す部位とは、記す内容が違います。"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "id": "lecture-meridians-4",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "subtitle",
+        "summary",
+        "whatYouWillLearn",
+        "keyPoints",
+        "contentMarkdown全文"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "架空の所見を具体化し、経絡の図や名称と比較するために必要な情報を選びます。候補、根拠、不足情報を分けた解答を練習し、後の診察・弁証・統合演習につなげます。",
+          "after": "架空の記録から、訴えの場所・左右・範囲など、経絡の図や名称と比べるために必要な情報を選びます。どの説明を候補にしたか、その根拠とまだ分からないことを書く練習をし、後の診察・弁証・統合演習につなげます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "情報が増えたら比較し直す",
+          "before": "次の記録が加わったら、最初の仮説を守るためではなく、比較を更新するために使います。例えば訴えの場所が一定しないなら、その事実を残します。図の一つの線に収まらないことを誤りとして消す必要はありません。情報が不足している場合は、候補を保留することも理由のある解答です。",
+          "after": "新しい記録が加わったら、最初に考えた説明が合うかを確かめ直します。例えば訴えの場所が一定しないなら、その事実を残します。図の一つの線に収まらないからといって、記録を誤りとして消す必要はありません。情報が足りず候補を決められない場合は、その理由を書いて判断を保留することも解答になります。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "架空の所見を具体化し、経絡の図や名称と比較するために必要な情報を選びます。候補、根拠、不足情報を分けた解答を練習し、後の診察・弁証・統合演習につなげます。",
+          "after": "架空の記録から、訴えの場所・左右・範囲など、経絡の図や名称と比べるために必要な情報を選びます。どの説明を候補にしたか、その根拠とまだ分からないことを書く練習をし、後の診察・弁証・統合演習につなげます。"
+        },
+        {
+          "field": "contentMarkdown",
+          "section": "情報が増えたら比較し直す",
+          "before": "次の記録が加わったら、最初の仮説を守るためではなく、比較を更新するために使います。例えば訴えの場所が一定しないなら、その事実を残します。図の一つの線に収まらないことを誤りとして消す必要はありません。情報が不足している場合は、候補を保留することも理由のある解答です。",
+          "after": "新しい記録が加わったら、最初に考えた説明が合うかを確かめ直します。例えば訴えの場所が一定しないなら、その事実を残します。図の一つの線に収まらないからといって、記録を誤りとして消す必要はありません。情報が足りず候補を決められない場合は、その理由を書いて判断を保留することも解答になります。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-1-q1",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "この教材では日本の鍼灸学習で用いられる基礎概念を中心に学びます。国や流派をすべて網羅することや、知識確認を臨床技能の修了とすることは到達目標に含めません。",
+          "after": "この教材では日本の鍼灸学習で用いられる基礎概念を中心に学びます。各国・各流派のすべてを説明する教材ではありません。また、確認問題に答えられても、診察や施術の実技を修了したことにはなりません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "この教材では日本の鍼灸学習で用いられる基礎概念を中心に学びます。国や流派をすべて網羅することや、知識確認を臨床技能の修了とすることは到達目標に含めません。",
+          "after": "この教材では日本の鍼灸学習で用いられる基礎概念を中心に学びます。各国・各流派のすべてを説明する教材ではありません。また、確認問題に答えられても、診察や施術の実技を修了したことにはなりません。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-1-q2",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-1-q3",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "本人の言葉を記録して具体化し、一つの訴えだけで説明を確定しないことが要点です。伝統的な説明候補と実際の原因の判断を分けます。",
+          "after": "疲れるとは、眠い、筋肉がだるい、集中しづらいなど、何を指すかを確かめて記録します。気の不足は説明の候補ですが、一つの訴えだけでは確定できません。伝統理論に合う説明を考えることと、実際の原因を確認することは別です。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "本人の言葉を記録して具体化し、一つの訴えだけで説明を確定しないことが要点です。伝統的な説明候補と実際の原因の判断を分けます。",
+          "after": "疲れるとは、眠い、筋肉がだるい、集中しづらいなど、何を指すかを確かめて記録します。気の不足は説明の候補ですが、一つの訴えだけでは確定できません。伝統理論に合う説明を考えることと、実際の原因を確認することは別です。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-2-q1",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "本人の困りごとと望む変化を確認すると、情報収集や評価の目的が具体的になります。分類や方針を先に選ぶことはできません。",
+          "after": "本人が何に困り、どうなりたいかが分かると、何を聞き、どの変化を評価するかが決まってきます。その確認をせずに、分類や方針を先に選ぶことはできません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "本人の困りごとと望む変化を確認すると、情報収集や評価の目的が具体的になります。分類や方針を先に選ぶことはできません。",
+          "after": "本人が何に困り、どうなりたいかが分かると、何を聞き、どの変化を評価するかが決まってきます。その確認をせずに、分類や方針を先に選ぶことはできません。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-2-q2",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-2-q3",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "相談の目的や経過の情報が不足しています。今は訴えを具体化する段階であり、経穴や方針を決める根拠はありません。",
+          "after": "どの場面で何に困っているか、どう変わってほしいかをまず確認します。「肩がつらい」だけでは相談の目的も経過も分からず、経穴や方針を決める根拠はありません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "相談の目的や経過の情報が不足しています。今は訴えを具体化する段階であり、経穴や方針を決める根拠はありません。",
+          "after": "どの場面で何に困っているか、どう変わってほしいかをまず確認します。「肩がつらい」だけでは相談の目的も経過も分からず、経穴や方針を決める根拠はありません。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-3-q1",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "定義の資料から確認できるのは用語の意味や範囲です。介入の改善量や検査値との一致率は、対象・比較・測定を示した別の研究で確認する問いです。資料の用途を分けて読みます。",
+          "after": "定義の資料から確認できるのは、用語の意味や範囲です。治療後にどれくらい改善したか、検査値との一致率はどれくらいかは、対象・比較・測定方法を示した別の研究で調べる内容です。用語の定義だけでは、その結果は分かりません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "定義の資料から確認できるのは用語の意味や範囲です。介入の改善量や検査値との一致率は、対象・比較・測定を示した別の研究で確認する問いです。資料の用途を分けて読みます。",
+          "after": "定義の資料から確認できるのは、用語の意味や範囲です。治療後にどれくらい改善したか、検査値との一致率はどれくらいかは、対象・比較・測定方法を示した別の研究で調べる内容です。用語の定義だけでは、その結果は分かりません。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-3-q2",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-3-q3",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "確認範囲を示し、取得できなかった本文の詳細を補いません。未確認は「ない」という結果とは違い、資料の限界として残します。",
+          "after": "抄録で読めた範囲だけを確認済みとし、本文の詳細や害の報告は未確認と記します。本文を読めなかったからといって、害がないことや安全性を確認したことにはなりません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "確認範囲を示し、取得できなかった本文の詳細を補いません。未確認は「ない」という結果とは違い、資料の限界として残します。",
+          "after": "抄録で読めた範囲だけを確認済みとし、本文の詳細や害の報告は未確認と記します。本文を読めなかったからといって、害がないことや安全性を確認したことにはなりません。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-4-q1",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "本人が述べた内容を、出どころと経過を添えて記録します。原因についての判断は解釈であり、未確認事項を異常なしとは書けません。",
+          "after": "Cがそう話したことは記録できますが、その発言だけでだるさの原因が確認されたわけではありません。誰が話し、いつからの訴えかを添えて記録します。食欲や体温などの未確認事項を、異常なしとは書けません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "本人が述べた内容を、出どころと経過を添えて記録します。原因についての判断は解釈であり、未確認事項を異常なしとは書けません。",
+          "after": "Cがそう話したことは記録できますが、その発言だけでだるさの原因が確認されたわけではありません。誰が話し、いつからの訴えかを添えて記録します。食欲や体温などの未確認事項を、異常なしとは書けません。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-4-q2",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-intro-4-q3",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-1-q1",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-1-q2",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-1-q3",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "伝統的な脾の説明から現代医学の脾臓の疾患へ飛躍しています。用語、本人の訴え、解釈候補を別に整理します。",
+          "after": "伝統的な脾が食事に関係するという説明から、その人に脾臓の病気があるとはいえません。食後の訴えを記録し、脾胃の働きという説明候補と、臓器の疾患の評価を別々に整理します。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "伝統的な脾の説明から現代医学の脾臓の疾患へ飛躍しています。用語、本人の訴え、解釈候補を別に整理します。",
+          "after": "伝統的な脾が食事に関係するという説明から、その人に脾臓の病気があるとはいえません。食後の訴えを記録し、脾胃の働きという説明候補と、臓器の疾患の評価を別々に整理します。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-2-q1",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-2-q2",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-2-q3",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "用語の関連だけでは状態は確定しません。睡眠の内容や経過、ほかの情報を確認して記録を具体化します。",
+          "after": "心と睡眠の伝統的な関係を学んでも、眠りにくさの原因はこの一文から決まりません。寝つきが悪いのか、途中で目が覚めるのかなどを確かめ、経過やほかの情報も確認します。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "用語の関連だけでは状態は確定しません。睡眠の内容や経過、ほかの情報を確認して記録を具体化します。",
+          "after": "心と睡眠の伝統的な関係を学んでも、眠りにくさの原因はこの一文から決まりません。寝つきが悪いのか、途中で目が覚めるのかなどを確かめ、経過やほかの情報も確認します。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-3-q1",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-3-q2",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-3-q3",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "食欲と実際の摂取状況は別の情報です。訴えを分けて読むことが、この架空例の判断の要点です。",
+          "after": "食欲があっても、授業のために昼食を抜く日があります。食欲があるかどうかだけでは、実際に食べた量や時刻は分かりません。それぞれを確認して記録します。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "食欲と実際の摂取状況は別の情報です。訴えを分けて読むことが、この架空例の判断の要点です。",
+          "after": "食欲があっても、授業のために昼食を抜く日があります。食欲があるかどうかだけでは、実際に食べた量や時刻は分かりません。それぞれを確認して記録します。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-4-q1",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "疏泄は気の流れ、蔵血は血を蔵するという異なる話題を説明します。二つを入れ替えたり、脾胃の飲食に関する役割と混ぜたりせず、働きの対象を添えて読めることが目標です。",
+          "after": "疏泄は気の流れを円滑にする働き、蔵血は血を蔵する働きという伝統的な説明です。何にどんな働きをするかを添えると、二つの違いが分かります。脾胃の飲食に関する役割とも混同しません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "疏泄は気の流れ、蔵血は血を蔵するという異なる話題を説明します。二つを入れ替えたり、脾胃の飲食に関する役割と混ぜたりせず、働きの対象を添えて読めることが目標です。",
+          "after": "疏泄は気の流れを円滑にする働き、蔵血は血を蔵する働きという伝統的な説明です。何にどんな働きをするかを添えると、二つの違いが分かります。脾胃の飲食に関する役割とも混同しません。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-4-q2",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-4-q3",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "昨日と今日の短期の変化から、生来の要素や長い経過は分かりません。時間の異なる話題を分けて記録します。",
+          "after": "昨日は遅くまで起き、今日は疲れたという本人の報告は記録できます。ただし、普段の状態や長期の経過はまだ分かりません。この一日の変化から、生来の精が不足しているとは決められません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "昨日と今日の短期の変化から、生来の要素や長い経過は分かりません。時間の異なる話題を分けて記録します。",
+          "after": "昨日は遅くまで起き、今日は疲れたという本人の報告は記録できます。ただし、普段の状態や長期の経過はまだ分かりません。この一日の変化から、生来の精が不足しているとは決められません。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-5-q1",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-5-q2",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-zangfu-5-q3",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "表裏の名称の関係と、本人の二つの訴えの因果関係は別です。記録にない時期を補わず、具体的な経過を確認します。",
+          "after": "肺と大腸が表裏関係にあることから、咳と便の変化が同じ原因で起きたとは決められません。いつ始まり、どう変化したかをそれぞれ確認します。記録にない時期は補いません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "表裏の名称の関係と、本人の二つの訴えの因果関係は別です。記録にない時期を補わず、具体的な経過を確認します。",
+          "after": "肺と大腸が表裏関係にあることから、咳と便の変化が同じ原因で起きたとは決められません。いつ始まり、どう変化したかをそれぞれ確認します。記録にない時期は補いません。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-1-q1",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "経絡は全身のつながりを説明する伝統的な体系として学びます。現代の特定の神経や血管へ、そのまま置き換えることはしません。",
+          "after": "経絡は、臓腑・四肢・体表などのつながりを説明する伝統的な体系です。神経の走行を別の名前で呼んだものでも、刺激量を計算する図でもありません。現代の特定の神経や血管にそのまま置き換えません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "経絡は全身のつながりを説明する伝統的な体系として学びます。現代の特定の神経や血管へ、そのまま置き換えることはしません。",
+          "after": "経絡は、臓腑・四肢・体表などのつながりを説明する伝統的な体系です。神経の走行を別の名前で呼んだものでも、刺激量を計算する図でもありません。現代の特定の神経や血管にそのまま置き換えません。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-1-q2",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "肺経は経脈の名前、LUはその識別に使う英字です。数字を加えたLU1は個々の経穴を識別します。所属する経脈の情報と、一つの経穴の情報を分けて読みます。",
+          "after": "肺経は経脈の名前で、LUは肺経を示す英字コードです。数字を加えたLU1は、一つの経穴を示すコードです。経脈全体を示す名前・英字と、個々の経穴を示す英字・数字の組を区別します。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "肺経は経脈の名前、LUはその識別に使う英字です。数字を加えたLU1は個々の経穴を識別します。所属する経脈の情報と、一つの経穴の情報を分けて読みます。",
+          "after": "肺経は経脈の名前で、LUは肺経を示す英字コードです。数字を加えたLU1は、一つの経穴を示すコードです。経脈全体を示す名前・英字と、個々の経穴を示す英字・数字の組を区別します。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-1-q3",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-2-q1",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-2-q2",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-2-q3",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "任脈（CV）と督脈（GV）を加えた分類が十四経脈です。何の一覧を数えているかを区別します。",
+          "after": "十二経脈に任脈（CV）と督脈（GV）の二つを加えたものが十四経脈です。心包経と三焦経は、すでに十二経脈に含まれています。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "任脈（CV）と督脈（GV）を加えた分類が十四経脈です。何の一覧を数えているかを区別します。",
+          "after": "十二経脈に任脈（CV）と督脈（GV）の二つを加えたものが十四経脈です。心包経と三焦経は、すでに十二経脈に含まれています。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-3-q1",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "コードは経穴を識別する情報です。LIは大腸経のコードで、数字は距離や刺激の強さではありません。",
+          "after": "LIは大腸経のコード、4はその経脈における経穴の番号です。「4」は距離や刺激の強さを表していません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "コードは経穴を識別する情報です。LIは大腸経のコードで、数字は距離や刺激の強さではありません。",
+          "after": "LIは大腸経のコード、4はその経脈における経穴の番号です。「4」は距離や刺激の強さを表していません。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-3-q2",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-3-q3",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-4-q1",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "前腕のどの側か、どの範囲かが不明です。位置を比較する目的に関係する情報を具体化します。",
+          "after": "前腕のどの側で、どこからどこまでつらいかが分かりません。まずその範囲を本人に確認し、図のどの位置と比べるかを考えます。経穴の効能や臓器の病名は、訴えの場所を詳しく記す情報にはなりません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "前腕のどの側か、どの範囲かが不明です。位置を比較する目的に関係する情報を具体化します。",
+          "after": "前腕のどの側で、どこからどこまでつらいかが分かりません。まずその範囲を本人に確認し、図のどの位置と比べるかを考えます。経穴の効能や臓器の病名は、訴えの場所を詳しく記す情報にはなりません。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-4-q2",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "候補を比較するには、支持情報だけでなく合わない情報や不明点も必要です。記録を候補に合わせて変更してはいけません。",
+          "after": "合う情報だけを残すと、説明と合わない点や、まだ確認していないことを見落とします。元の記録を残し、合う点・合わない点・不明点を並べて候補を比べます。記録を候補に合わせて変更してはいけません。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "候補を比較するには、支持情報だけでなく合わない情報や不明点も必要です。記録を候補に合わせて変更してはいけません。",
+          "after": "合う情報だけを残すと、説明と合わない点や、まだ確認していないことを見落とします。元の記録を残し、合う点・合わない点・不明点を並べて候補を比べます。記録を候補に合わせて変更してはいけません。"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "id": "lecture-meridians-4-q3",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "question",
+        "options",
+        "correctIndexの維持",
+        "explanation全文",
+        "relatedSectionTitle"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "explanation",
+          "before": "新しい情報は比較を更新するために使います。情報が足りなければ、未確定の範囲と理由を説明して保留することも学習上の解答になります。",
+          "after": "新しい情報をもとに、最初の説明が合うかを確かめ直します。合わない記録を消さず、候補を見直します。情報が足りない場合は、何が分からず、どの判断を保留するかを書くことも解答になります。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "explanation",
+          "before": "新しい情報は比較を更新するために使います。情報が足りなければ、未確定の範囲と理由を説明して保留することも学習上の解答になります。",
+          "after": "新しい情報をもとに、最初の説明が合うかを確かめ直します。合わない記録を消さず、候補を見直します。情報が足りない場合は、何が分からず、どの判断を保留するかを書くことも解答になります。"
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "疏泄",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "伝統的には気の運行、情志（感情）、消化、月経などとの関係を学ぶ。「肝」は臓腑の理論上の分類であり、疏泄を現代医学の肝臓の機能、胆汁分泌や自律神経の制御と一対一に対応させない。症状の原因は医学的評価を通じて確認する。",
+          "after": "伝統的には気の運行、情志（感情）、消化、月経などとの関係を学ぶ。ここでいう「肝」は、臓腑の伝統理論で使う言葉。疏泄は、肝臓の機能、胆汁分泌、自律神経の制御を、そのまま別の名前で呼んだものではない。症状の原因は医学的な評価で確認する。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "伝統的には気の運行、情志（感情）、消化、月経などとの関係を学ぶ。「肝」は臓腑の理論上の分類であり、疏泄を現代医学の肝臓の機能、胆汁分泌や自律神経の制御と一対一に対応させない。症状の原因は医学的評価を通じて確認する。",
+          "after": "伝統的には気の運行、情志（感情）、消化、月経などとの関係を学ぶ。ここでいう「肝」は、臓腑の伝統理論で使う言葉。疏泄は、肝臓の機能、胆汁分泌、自律神経の制御を、そのまま別の名前で呼んだものではない。症状の原因は医学的な評価で確認する。"
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "固摂",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "analogy",
+          "before": "「巾着袋の口を締める紐」という、保持する働きを覚えるための比喩。",
+          "after": "巾着袋の口を紐で締めて中身を保つように、漏れ出るのを防ぐ働きを覚えるための比喩。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "analogy",
+          "before": "「巾着袋の口を締める紐」という、保持する働きを覚えるための比喩。",
+          "after": "巾着袋の口を紐で締めて中身を保つように、漏れ出るのを防ぐ働きを覚えるための比喩。"
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "相侮",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "相乗",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "気虚",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "倦怠感、疲れやすさ、声の力なさ、食欲の低下などを伝統的にまとめる分類。気虚という判断だけで疲労や息切れの原因を診断したり、検査や治療の必要性を決めたりすることはできない。症状が続く場合は医学的評価を受ける。",
+          "after": "倦怠感、疲れやすさ、力のない声、食欲の低下などを伝統的にまとめる分類。気虚と判断しても、それだけでは疲労や息切れの原因は分からず、検査や治療が必要かも決められない。症状が続く場合は医学的な評価を受ける。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "倦怠感、疲れやすさ、声の力なさ、食欲の低下などを伝統的にまとめる分類。気虚という判断だけで疲労や息切れの原因を診断したり、検査や治療の必要性を決めたりすることはできない。症状が続く場合は医学的評価を受ける。",
+          "after": "倦怠感、疲れやすさ、力のない声、食欲の低下などを伝統的にまとめる分類。気虚と判断しても、それだけでは疲労や息切れの原因は分からず、検査や治療が必要かも決められない。症状が続く場合は医学的な評価を受ける。"
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "気滞",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "気逆",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "血虚",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "顔色の淡さ、皮膚の乾燥、目の疲れ、立ちくらみなどを伝統的に関連づけて学ぶ。血虚を、造血の異常、貧血、栄養失調と同じ診断として扱わない。貧血などの確認には検査を含む医学的評価が必要で、この分類だけで鉄剤や食事療法を選ばない。",
+          "after": "顔色の淡さ、皮膚の乾燥、目の疲れ、立ちくらみなどを伝統的に関連づけて学ぶ。血虚という分類で、造血の異常、貧血、栄養失調が確認されたとは考えない。貧血などを確認するには、検査を含む医学的な評価が必要。この分類だけで鉄剤や食事療法を選ばない。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "顔色の淡さ、皮膚の乾燥、目の疲れ、立ちくらみなどを伝統的に関連づけて学ぶ。血虚を、造血の異常、貧血、栄養失調と同じ診断として扱わない。貧血などの確認には検査を含む医学的評価が必要で、この分類だけで鉄剤や食事療法を選ばない。",
+          "after": "顔色の淡さ、皮膚の乾燥、目の疲れ、立ちくらみなどを伝統的に関連づけて学ぶ。血虚という分類で、造血の異常、貧血、栄養失調が確認されたとは考えない。貧血などを確認するには、検査を含む医学的な評価が必要。この分類だけで鉄剤や食事療法を選ばない。"
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "瘀血",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "水滞",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "陰虚",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "陽虚",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "陰陽",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "何と何を、どの基準で比較したかを示して用いる。対立・制約・互根・消長・転化などの関係を学ぶが、交感神経と副交感神経などの生理機構と一対一に対応する分類ではない。陰陽の説明だけで病気や治療方法を確定しない。",
+          "after": "明暗なら明るさ、寒熱なら温度のように、何を基準に何と何を比べたかを示して使う。対立・制約・互根・消長・転化などの関係を学ぶが、交感神経と副交感神経などの生理機構と一対一に対応する分類ではない。陰陽の説明だけで病気や治療方法を確定しない。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "何と何を、どの基準で比較したかを示して用いる。対立・制約・互根・消長・転化などの関係を学ぶが、交感神経と副交感神経などの生理機構と一対一に対応する分類ではない。陰陽の説明だけで病気や治療方法を確定しない。",
+          "after": "明暗なら明るさ、寒熱なら温度のように、何を基準に何と何を比べたかを示して使う。対立・制約・互根・消長・転化などの関係を学ぶが、交感神経と副交感神経などの生理機構と一対一に対応する分類ではない。陰陽の説明だけで病気や治療方法を確定しない。"
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "相生",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "相克",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "原穴",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "十二経脈の計12穴を指す。伝統的な診察や選穴で重視されるが、原穴の圧痛や反応だけで内臓の病気を診断することはできない。原気・臓腑との関連づけと、現代医学の診断や臨床効果の評価を区別する。",
+          "after": "十二経脈の計12穴を指す。伝統的な診察や選穴で重視されるが、原穴の圧痛や反応だけで内臓の病気を診断することはできない。原気や臓腑との関連は伝統理論の説明であり、現代医学の診断や治療効果の根拠は別に確認する。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "十二経脈の計12穴を指す。伝統的な診察や選穴で重視されるが、原穴の圧痛や反応だけで内臓の病気を診断することはできない。原気・臓腑との関連づけと、現代医学の診断や臨床効果の評価を区別する。",
+          "after": "十二経脈の計12穴を指す。伝統的な診察や選穴で重視されるが、原穴の圧痛や反応だけで内臓の病気を診断することはできない。原気や臓腑との関連は伝統理論の説明であり、現代医学の診断や治療効果の根拠は別に確認する。"
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "四関",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "『針灸大成』では、四関を左右の合谷と太衝と記す。伝統理論では気血の巡りなどに関連づけて学ぶ。全身の不調への万能処方、即効性や経穴の組み合わせの優越性が確立した治療としては扱わず、対象疾患と施術条件ごとの臨床研究を確認する。",
+          "after": "『針灸大成』では、四関を左右の合谷と太衝と記す。伝統理論では気血の巡りなどに関連づけて学ぶ。あらゆる不調に使える処方や、すぐに効くことが確かめられた治療としては扱わない。他の組み合わせより優れているかも、対象疾患と施術条件ごとの臨床研究で確認する。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "『針灸大成』では、四関を左右の合谷と太衝と記す。伝統理論では気血の巡りなどに関連づけて学ぶ。全身の不調への万能処方、即効性や経穴の組み合わせの優越性が確立した治療としては扱わず、対象疾患と施術条件ごとの臨床研究を確認する。",
+          "after": "『針灸大成』では、四関を左右の合谷と太衝と記す。伝統理論では気血の巡りなどに関連づけて学ぶ。あらゆる不調に使える処方や、すぐに効くことが確かめられた治療としては扱わない。他の組み合わせより優れているかも、対象疾患と施術条件ごとの臨床研究で確認する。"
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "四総穴",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "得気",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "患者が感じたことと、施術者が触知したことを分けて記録します。得気の有無だけでは適切な刺入深度、安全性、患者の症状改善を判断できません。組織の機械的反応や神経の研究と、臨床効果を区別して学びます。",
+          "after": "患者が感じたことと、施術者が触れて感じた抵抗を、それぞれ記録します。得気の有無だけでは、刺入深度が適切か、安全か、症状が改善するかは判断できません。組織の機械的な反応や神経の働きを調べることと、患者の症状の改善を確かめることは、別の問いです。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "患者が感じたことと、施術者が触知したことを分けて記録します。得気の有無だけでは適切な刺入深度、安全性、患者の症状改善を判断できません。組織の機械的反応や神経の研究と、臨床効果を区別して学びます。",
+          "after": "患者が感じたことと、施術者が触れて感じた抵抗を、それぞれ記録します。得気の有無だけでは、刺入深度が適切か、安全か、症状が改善するかは判断できません。組織の機械的な反応や神経の働きを調べることと、患者の症状の改善を確かめることは、別の問いです。"
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "五労",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "久視・久臥・久坐・久立・久行と、血・気・肉・骨・筋との伝統的な関連を学ぶ。活動時間だけで臓器の損傷や職業病を診断する分類ではない。実際の負担は時間・姿勢・休息・症状などを分けて確認する。ここでは古典の底本・原文・訳文の照合済み引用とは扱わない。",
+          "after": "久視・久臥・久坐・久立・久行と、血・気・肉・骨・筋との伝統的な関連を学ぶ。活動時間だけで臓器の損傷や職業病を診断する分類ではない。実際の負担を考えるときは、活動の時間・姿勢・休息・症状をそれぞれ確認する。古典の底本・原文・訳文を照合した引用としては掲載していない。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "久視・久臥・久坐・久立・久行と、血・気・肉・骨・筋との伝統的な関連を学ぶ。活動時間だけで臓器の損傷や職業病を診断する分類ではない。実際の負担は時間・姿勢・休息・症状などを分けて確認する。ここでは古典の底本・原文・訳文の照合済み引用とは扱わない。",
+          "after": "久視・久臥・久坐・久立・久行と、血・気・肉・骨・筋との伝統的な関連を学ぶ。活動時間だけで臓器の損傷や職業病を診断する分類ではない。実際の負担を考えるときは、活動の時間・姿勢・休息・症状をそれぞれ確認する。古典の底本・原文・訳文を照合した引用としては掲載していない。"
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "弁証論治",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "oneLiner",
+          "before": "所見を伝統医学の枠組みで整理して証を考える弁証と、それに応じた方針を検討する論治をつなぐ考え方。",
+          "after": "所見を整理して証を考える「弁証」と、その証に応じて方針を考える「論治」をつなぐ、伝統医学の考え方。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "oneLiner",
+          "before": "所見を伝統医学の枠組みで整理して証を考える弁証と、それに応じた方針を検討する論治をつなぐ考え方。",
+          "after": "所見を整理して証を考える「弁証」と、その証に応じて方針を考える「論治」をつなぐ、伝統医学の考え方。"
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "合谷",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "太衝",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "足三里",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "四総穴歌では腹部と関連づける。伝統的には胃腸の不調、食欲不振、疲れなどの主治を学ぶ。足三里の刺激による作用機序の研究、患者を対象にした鍼治療の研究、足三里単独の臨床効果を分けて読む。免疫の増強や疲労回復を一律に保証する穴としては扱わない。",
+          "after": "四総穴歌では腹部と関連づける。伝統的には胃腸の不調、食欲不振、疲れなどの主治を学ぶ。刺激が身体にどう作用するかを調べた研究と、患者の症状が改善するかを調べた研究を読み分ける。また、鍼治療全体の結果を、足三里だけの効果とは考えない。免疫の増強や疲労回復を一律に保証する穴としては扱わない。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "四総穴歌では腹部と関連づける。伝統的には胃腸の不調、食欲不振、疲れなどの主治を学ぶ。足三里の刺激による作用機序の研究、患者を対象にした鍼治療の研究、足三里単独の臨床効果を分けて読む。免疫の増強や疲労回復を一律に保証する穴としては扱わない。",
+          "after": "四総穴歌では腹部と関連づける。伝統的には胃腸の不調、食欲不振、疲れなどの主治を学ぶ。刺激が身体にどう作用するかを調べた研究と、患者の症状が改善するかを調べた研究を読み分ける。また、鍼治療全体の結果を、足三里だけの効果とは考えない。免疫の増強や疲労回復を一律に保証する穴としては扱わない。"
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "三陰交",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "内関",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "伝統分類では陰維脈との関係を学び、吐き気や胸部の不快感などの主治が挙げられる。鍼・電気刺激・指圧バンドは異なる介入であり、研究対象と比較条件を確認する。がん治療に伴う吐き気の研究を、乗り物酔い、動悸、パニック症状にそのまま一般化しない。",
+          "after": "伝統分類では陰維脈との関係を学び、吐き気や胸部の不快感などの主治が挙げられる。鍼、電気刺激、指圧バンドでは方法が異なるため、どの方法を誰に行い、何と比べた研究なのかを確認する。がん治療に伴う吐き気の研究で得た結果を、乗り物酔い、動悸、パニック症状にもそのまま当てはめない。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "伝統分類では陰維脈との関係を学び、吐き気や胸部の不快感などの主治が挙げられる。鍼・電気刺激・指圧バンドは異なる介入であり、研究対象と比較条件を確認する。がん治療に伴う吐き気の研究を、乗り物酔い、動悸、パニック症状にそのまま一般化しない。",
+          "after": "伝統分類では陰維脈との関係を学び、吐き気や胸部の不快感などの主治が挙げられる。鍼、電気刺激、指圧バンドでは方法が異なるため、どの方法を誰に行い、何と比べた研究なのかを確認する。がん治療に伴う吐き気の研究で得た結果を、乗り物酔い、動悸、パニック症状にもそのまま当てはめない。"
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "百会",
+      "reviewed": true,
+      "changed": true,
+      "status": "changed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [
+        {
+          "field": "summary",
+          "before": "伝統的には頭部の症状や中気下陥などの証と関連づける。昇提という説明を、内臓下垂の治癒や自律神経の正常化が実証された作用と同一視しない。不眠やうつ症状については疾患と介入条件ごとに臨床研究を確認し、必要な医学的評価につなげる。",
+          "after": "伝統的には頭部の症状や中気下陥などの証と関連づける。昇提という伝統的な説明だけで、内臓下垂が治ることや、自律神経が正常になることが実証されたとはいえない。不眠やうつ症状については、対象疾患・用いた方法・実施条件を確かめて臨床研究を読み、必要な医学的な評価につなげる。"
+        }
+      ],
+      "changes": [
+        {
+          "field": "summary",
+          "before": "伝統的には頭部の症状や中気下陥などの証と関連づける。昇提という説明を、内臓下垂の治癒や自律神経の正常化が実証された作用と同一視しない。不眠やうつ症状については疾患と介入条件ごとに臨床研究を確認し、必要な医学的評価につなげる。",
+          "after": "伝統的には頭部の症状や中気下陥などの証と関連づける。昇提という伝統的な説明だけで、内臓下垂が治ることや、自律神経が正常になることが実証されたとはいえない。不眠やうつ症状については、対象疾患・用いた方法・実施条件を確かめて臨床研究を読み、必要な医学的な評価につなげる。"
+        }
+      ]
+    },
+    {
+      "type": "glossary",
+      "id": "関元",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "中脘",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "天枢",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "風池",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    },
+    {
+      "type": "glossary",
+      "id": "委中",
+      "reviewed": true,
+      "changed": false,
+      "status": "reviewed",
+      "reviewScope": [
+        "oneLiner",
+        "analogy",
+        "summary全文",
+        "既存関連リンク"
+      ],
+      "representativeBeforeAfter": [],
+      "changes": []
+    }
+  ],
+  "validation": {
+    "curriculumEditorialRegression": "passed",
+    "curriculumQuizRegression": "passed",
+    "glossaryRenderingRegression": "passed",
+    "medicalSafetyRegression": "passed",
+    "build": "root integration task",
+    "commitPush": "not performed by this agent"
+  }
+}

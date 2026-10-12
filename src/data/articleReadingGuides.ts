@@ -36,9 +36,9 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
       },
     ],
     nextArticles: [
-      { articleId: "science-of-yinyang-gogyo", reason: "歴史の中で使われた陰陽五行を、分類の意味と学習上の限界から学べます。" },
+      { articleId: "science-of-yinyang-gogyo", reason: "古典に出てくる陰陽五行について、何を比べ、どう分類するかを学べます。" },
       { articleId: "science-of-abdominal-diagnosis", reason: "日本漢方で重視された腹診を、観察の記録と医学的な評価に分けて学べます。" },
-      { articleId: "east-west-integrative-unified-theory", reason: "人体をネットワークに例えた説明を、仮説と臨床的な検証に分けて読み直せます。" },
+      { articleId: "east-west-integrative-unified-theory", reason: "人体をネットワークに例えた説明が、診断や治療に役立つかを確かめる方法を学べます。" },
     ],
   },
   "science-of-yinyang-gogyo": {
@@ -75,7 +75,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
     ],
     nextArticles: [
       { articleId: "science-of-qi-blood-fluid", reason: "陰陽五行に続く気血津液の用語を、検査値や病名と区別して整理できます。" },
-      { articleId: "science-of-meridians-network", reason: "伝統的な関係の表し方を、経絡の名称・走行と現代の研究から学べます。" },
+      { articleId: "science-of-meridians-network", reason: "経絡の名称や走行を読み、神経・筋膜の研究でどの部位を調べたか確認できます。" },
       { articleId: "east-west-integrative-unified-theory", reason: "伝統モデルと現代医学を比較するときに、仮説と検証を分ける方法を学べます。" },
     ],
   },
@@ -89,7 +89,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
           title: "一つの症状から、病名を決めない",
           layout: "triad",
           items: [
-            { label: "観察した情報", description: "症状の経過、誘因、他の所見、生活への影響を記録する。", icon: "eye" },
+            { label: "観察した情報", description: "いつから続くか、何で変わるか、ほかの所見や生活への影響を記録する。", icon: "eye" },
             { label: "伝統的な候補", description: "複数の所見から、気虚・気滞などの分類を考える。", icon: "book" },
             { label: "医学的な評価", description: "原因を確かめるため、必要な問診・診察・検査を検討する。", icon: "flask" },
           ],
@@ -112,7 +112,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
       },
     ],
     nextArticles: [
-      { articleId: "science-of-yinyang-gogyo", reason: "気血津液の前提となる伝統的な分類を、相対的な陰陽や八綱から復習できます。" },
+      { articleId: "science-of-yinyang-gogyo", reason: "気血津液を読む前提として、陰陽の比較基準と寒熱・虚実などの分類を復習できます。" },
       { articleId: "science-of-kampo-network-pharmacology", reason: "気血の見立てを処方の自動決定にしないため、証と製剤の安全性を学べます。" },
       { articleId: "science-of-tongue-diagnosis", reason: "乾燥や色の所見を、観察・伝統的な解釈・医学的な原因評価に分けて学べます。" },
     ],
@@ -136,8 +136,8 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
     ],
     nextArticles: [
       { articleId: "science-of-acupoints-mechanotransduction", reason: "経絡上の経穴について、位置の共有・局所解剖・刺激条件の違いを学べます。" },
-      { articleId: "science-of-acupuncture-neuroscience", reason: "経絡と比較される刺激反応を、動物の機序研究と患者の臨床効果に分けて読めます。" },
-      { articleId: "east-west-integrative-unified-theory", reason: "ネットワークという比喩を、診断や治療の根拠に広げず使う方法を学べます。" },
+      { articleId: "science-of-acupuncture-neuroscience", reason: "鍼刺激で組織や動物に起こる反応と、患者の症状改善をどう調べるか学べます。" },
+      { articleId: "east-west-integrative-unified-theory", reason: "ネットワークという例えから、診断や治療について何が言えないかを確認できます。" },
     ],
   },
   "science-of-acupoints-mechanotransduction": {
@@ -161,7 +161,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
     nextArticles: [
       { articleId: "science-of-meridians-network", reason: "経穴の位置を含む経絡の枠組みを、神経・筋膜との比較の限界から学べます。" },
       { articleId: "science-of-acupuncture-neuroscience", reason: "位置や組織の反応から一歩進み、鍼の臨床効果と安全性を分けて検討できます。" },
-      { articleId: "science-of-pulse-diagnosis", reason: "測定できることと診断に役立つことの違いを、脈診の再現性研究から学べます。" },
+      { articleId: "science-of-pulse-diagnosis", reason: "脈の特徴を同じように記録できても、病気を正しく診断できるとは限らないと学べます。" },
     ],
   },
   "science-of-pulse-diagnosis": {
@@ -197,7 +197,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
           title: "触れた抵抗と、病気の原因を分ける",
           layout: "compare",
           items: [
-            { label: "触診で感じたこと", description: "抵抗は体位・呼吸・押圧・筋緊張などにも左右される。", icon: "eye" },
+            { label: "触診で感じたこと", description: "抵抗は姿勢・呼吸・押す強さ・筋緊張などにも左右される。", icon: "eye" },
             { label: "原因の評価", description: "腹証だけで臓器の病気を確定せず、必要な診察・検査を考える。", icon: "flask" },
           ],
           caption: "腹証の観察と医学的診断は別です。強い痛みを伝統的な見立てで済ませず、自分で強く押さないでください。",
@@ -207,7 +207,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
     nextArticles: [
       { articleId: "science-of-kampo-network-pharmacology", reason: "腹証から処方を考える際に、他の所見・添付文書・副作用も確認する理由を学べます。" },
       { articleId: "east-west-integrative-gerd-gastric", reason: "心下痞と胃部症状の例で、伝統用語とGERD・FDの医学的な評価を区別できます。" },
-      { articleId: "science-of-pulse-diagnosis", reason: "触診の教育や所見の一致を、病気を正しく見つける精度と分けて検討できます。" },
+      { articleId: "science-of-pulse-diagnosis", reason: "触れた所見の記録が一致することと、病気を正しく見つけることの違いを確認できます。" },
     ],
   },
   "science-of-tongue-diagnosis": {
@@ -229,7 +229,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
       },
     ],
     nextArticles: [
-      { articleId: "science-of-pulse-diagnosis", reason: "舌の観察と脈の触知を比べ、所見の記録と診断の確かさの違いを学べます。" },
+      { articleId: "science-of-pulse-diagnosis", reason: "舌を見た記録と脈に触れた記録を比べ、それぞれから判断できないことを学べます。" },
       { articleId: "science-of-qi-blood-fluid", reason: "乾燥や色から連想する気血津液の分類を、医学的な原因評価と区別できます。" },
       { articleId: "east-west-integrative-unified-theory", reason: "画像の特徴を分類できても、病気を正しく診断できるとは限らない理由を確認します。" },
     ],
@@ -241,7 +241,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
         afterParagraph: 2,
         figure: {
           id: "acupuncture-reaction-benefit",
-          title: "測定した反応と、患者への利益",
+          title: "測定した反応と、患者の症状改善",
           layout: "compare",
           items: [
             { label: "力学的な反応", description: "鍼を引き抜く抵抗など、組織との相互作用を測る。", icon: "flask" },
@@ -282,7 +282,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
           layout: "triad",
           items: [
             { label: "標的の予測", description: "成分と標的の関係から、作用の候補を考える。", icon: "compass" },
-            { label: "細胞・動物の実験", description: "そのモデルや条件で、指標・反応の変化を調べる。", icon: "flask" },
+            { label: "細胞・動物の実験", description: "どの細胞や動物を使い、どの条件で何が変わったかを調べる。", icon: "flask" },
             { label: "患者での検証", description: "製剤・対象・比較条件ごとに、症状への効果と害を調べる。", icon: "check" },
           ],
           caption: "それぞれ別の検証です。複雑なネットワークや動物の反応だけでは、人への有効性・安全性は決まりません。",
@@ -292,7 +292,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
     nextArticles: [
       { articleId: "science-of-abdominal-diagnosis", reason: "処方を考える情報の一つである腹証を、観察・解釈・医学的な評価に分けて学べます。" },
       { articleId: "science-of-qi-blood-fluid", reason: "証に使われる気血津液の用語を、ATPや検査値に固定対応させずに復習できます。" },
-      { articleId: "east-west-integrative-gerd-gastric", reason: "胃部症状への併用例で、処方名だけで治療を選ばず再評価する理由を確認できます。" },
+      { articleId: "east-west-integrative-gerd-gastric", reason: "胸やけや胃痛を例に、漢方の処方名だけで選ばず、症状の変化を見直す理由を学べます。" },
     ],
   },
   "east-west-integrative-unified-theory": {
@@ -306,7 +306,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
           layout: "steps",
           items: [
             { label: "観察・仮説", description: "所見を記録し、病気の可能性・伝統分類・情報不足を分ける。", icon: "eye" },
-            { label: "介入の検討", description: "標準治療や併用の目的、患者の希望、効果と害を確認する。", icon: "balance" },
+            { label: "介入の検討", description: "標準治療や併用で何を改善したいか、患者の希望、利益と害を確認する。", icon: "balance" },
             { label: "再評価", description: "症状・機能・有害事象を見直し、必要な変更や紹介を考える。", icon: "check" },
           ],
           caption: "筆者の学習モデルです。安全性の確認を優先し、診断・処方の代行や、恒常性の回復を保証する図として使いません。",

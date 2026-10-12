@@ -15,7 +15,7 @@ export default function YinYangTaijiCycle() {
         <div>
           <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説①：陰陽太極図とダイナミック循環</span>
+            <span>画像解説①：陰陽太極図と陰陽の移り変わり</span>
           </span>
           <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             陰陽の変化を表す太極図
@@ -23,7 +23,7 @@ export default function YinYangTaijiCycle() {
         </div>
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-sm text-[#59615D] dark:text-[#96A6B2] self-start sm:self-auto">
           <RefreshCw className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] animate-spin" style={{ animationDuration: "12s" }} />
-          <span>時計回りの連続循環</span>
+          <span>時計回りの回転表示</span>
         </div>
       </div>
 

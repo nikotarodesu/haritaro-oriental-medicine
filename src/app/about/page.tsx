@@ -38,7 +38,7 @@ export default function AboutPage() {
       <section aria-labelledby="about-review-scope" className="space-y-3 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-4 sm:p-6">
         <h2 id="about-review-scope" className="text-lg font-bold text-[#1E3D34] dark:text-[#74BA9E]">教材の用途と確認状況</h2>
         <p className="text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
-          伝統的な分類、現代医学の研究結果、理解を助ける比喩を区別した学習教材です。全件の医学記述の照合と専門家による監修は未完了です。経穴の位置や教育用模式図は、個別の診断・施術手順や安全性を保証するものではありません。
+          伝統的な分類、現代医学の研究結果、理解を助ける比喩を区別した学習教材です。すべての医学的な説明を原典と照合したわけではなく、専門家による監修も未完了です。経穴の位置や教育用模式図は、個別の診断・施術手順や安全性を保証するものではありません。
         </p>
         <Link href="/editorial-policy" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">
           出典の確認範囲と編集方針を見る<ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -52,13 +52,13 @@ export default function AboutPage() {
             サイト創設の志
           </h2>
           <p className="text-xs sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
-            東洋医学は数千年の歴史の中で、膨大な人体観察と臨床の積み重ねから生み出された「生命の智慧」です。しかし現代において、東洋医学は二つの極端な壁にぶつかっていました。
+            東洋医学には、陰陽・五行・気血津液など、日常では使わない言葉が多く登場します。初めて学ぶ方が、言葉の意味と使い方を一つずつ確認できるように、このサイトを作りました。
           </p>
           <p className="text-xs sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
-            一つは、一般の方にとって「難解な漢字や専門用語が多くて、どう自分に役立てればいいかわからない」という壁。もう一つは、「非科学的な迷信と誤解され、本来の奥深い体系性が正当に評価されない」という壁です。
+            古典に書かれた説明、筆者の臨床経験、研究で確認された結果は、同じ根拠としては扱えません。記事や講義では、どの資料を参照し、何を確認できたかを示します。
           </p>
           <p className="text-xs sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
-            「はり太郎の東洋医学」は、基礎理論を学び、臨床での考え方を振り返るための拠点を目指しています。筆者の臨床経験、古典の記述、現代の医学研究を、それぞれの出典と確認範囲を示しながら紹介します。経験や伝統的な説明だけで、治療効果が確立したとは扱いません。
+            講義とクイズで基礎を学び、架空の症例で所見と判断の理由を考え、ノートで読み返せる構成を目指しています。経験や伝統的な説明だけで、治療効果が確立したとは扱いません。
           </p>
         </div>
 
@@ -201,21 +201,21 @@ export default function AboutPage() {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 text-xs sm:text-sm">
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
-              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">01. 徹底した可読性</span>
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">01. 専門用語を分かりやすく</span>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                難解な陰陽五行や臓腑弁証を、日々の食事や生活習慣、わかりやすい図解と言葉に翻訳します。
+                陰陽五行や臓腑弁証の用語を短く説明し、図や生活の例で、どのような関係を表す言葉なのかを示します。
               </p>
             </div>
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
               <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">02. 出典と説明の区別</span>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                古典の分類、研究で検討された結果、学習用の比喩を区別します。文献の書誌一致と、解説がその文献に支持されるかは別々に確認します。
+                古典の分類、研究で報告された結果、学習用の比喩を区別します。資料名や著者などの書誌情報に加え、掲載する説明がその資料に書かれているかも確認します。
               </p>
             </div>
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
-              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">03. 誠実な医療倫理</span>
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">03. 受診と安全性を優先する</span>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                東洋医学の万能視や過信を戒め、現代医学との適切な協調・受診推奨（トリアージ）を明記します。
+                東洋医学ですべての症状に対応できるとは考えません。医療機関への受診が必要な場面や、施術の注意点を案内します。
               </p>
             </div>
           </div>
@@ -278,14 +278,14 @@ export default function AboutPage() {
             {/* 臨床思考と執筆姿勢 */}
             <div className="space-y-3">
               <h4 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
-                情報の捉え方：暗記ではなく「臨床の思考体系」として
+                所見から考え、経過を見て確かめる
               </h4>
               <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                 東洋医学には、陰陽・五行・気血津液・臓腑・経絡・病機・弁証など、多数の概念があります。しかし、それぞれを個別に暗記するだけでは、実際の診断や治療の中でどのようにつながっているのかが見えにくくなります。
               </p>
               <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2 sm:space-y-2.5">
                 <p className="text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                  haritaro.jpの核：「身体を観察し、病態を推論し、治療方針を組み立てるための思考体系」
+                  このサイトで学ぶこと：所見から候補とその理由を考え、方針を立て、経過を見て判断を見直す
                 </p>
                 <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                   臨床では、単に「症状のある場所に鍼をする」「症状とツボを対応させる」という考え方ではなく、
@@ -317,7 +317,7 @@ export default function AboutPage() {
                     一人運営・直接執筆の開示
                   </span>
                   <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                    当サイト「はり太郎の東洋医学」は、現役鍼灸師の「はり太郎」が一人で調査・執筆・プログラム開発を行っている個人運営の学習・臨床支援ポータルです。過大な「編集部」や架空の「監修委員会」を装わず、一人の臨床家の責任において実直な情報発信を行っています。
+                    現役鍼灸師の「はり太郎」が、一人で資料の調査、記事の執筆、サイトの開発を行っています。編集部や監修委員会による制作ではなく、運営者本人が掲載内容と出典を確認しています。
                   </p>
                 </div>
 

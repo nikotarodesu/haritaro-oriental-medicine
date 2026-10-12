@@ -1,0 +1,534 @@
+{
+  "checkedAt": "2026-10-12",
+  "baseline": "7cd5812",
+  "scope": "公開12記事の全文と、articleLearningGuides/ReadingGuidesの案内文を、文脈ごとに自然な日本語へ改稿。",
+  "limitations": "医学的正誤・全原著の再照合・専門家監修を行ったという意味ではない。既存専門確認18項目の引用文は保持。新しい医学的事例・施術条件・効果の数値は追加していない。",
+  "editingMethod": "一括語句置換ではなく、段落ごとに要点、主語、読者の確認作業を判断して改稿。見出し追加や順序変更、新規URL/記事はなし。",
+  "publishedArticleCount": 12,
+  "draftArticleCount": 0,
+  "fullTextReviewedCount": 12,
+  "changedArticleIds": [
+    "science-of-abdominal-diagnosis",
+    "science-of-acupoints-mechanotransduction",
+    "science-of-acupuncture-neuroscience",
+    "east-west-integrative-gerd-gastric",
+    "science-of-oriental-medicine-history",
+    "science-of-kampo-network-pharmacology",
+    "science-of-qi-blood-fluid",
+    "science-of-meridians-network",
+    "science-of-pulse-diagnosis",
+    "science-of-tongue-diagnosis",
+    "east-west-integrative-unified-theory",
+    "science-of-yinyang-gogyo"
+  ],
+  "changedParagraphCount": 73,
+  "changedLearningGuideFieldCount": 21,
+  "changedFigureCount": 5,
+  "changedNextReadingReasonCount": 10,
+  "protectedSpecialistQuotationCount": 18,
+  "checks": [
+    {
+      "command": "npm run test:reading",
+      "status": "passed"
+    },
+    {
+      "command": "npm run test:content",
+      "status": "passed"
+    },
+    {
+      "command": "npm run test:medical-safety",
+      "status": "passed"
+    },
+    {
+      "command": "7cd5812との12記事・案内データの不変比較",
+      "status": "passed",
+      "details": "文献/見出し/引用ID/URL/数字/記事metadata/講義・症例・関連記事ID/図ID・配置/既存専門確認引用文を比較"
+    },
+    {
+      "command": "git diff --check（対象15ファイル）",
+      "status": "passed"
+    }
+  ],
+  "articles": [
+    {
+      "articleId": "science-of-abdominal-diagnosis",
+      "title": "腹診を学ぶ：腹証の観察と受診判断",
+      "file": "src/data/articles/abdomenArticle.ts",
+      "fullTextStatus": "reviewed",
+      "status": "changed",
+      "changedParagraphCount": 6,
+      "reviewFocus": "抽象的な名詞連結・翻訳調・繰り返しを見直し、読者が何を読む/記録する/比較する/確認するかを具体的な文にした。明快な定義・研究結果・安全情報は保持。",
+      "representativeExamples": [
+        {
+          "before": "最初に分けたいのは、**「何を感じたか」と「それをどう解釈したか」**です。「右の肋骨弓の下で抵抗を感じ、本人は痛みを訴えた」は観察の記録、「胸脇苦満と考えた」は伝統的な解釈です。さらに胆道疾患などの医学的診断を行うには、その病気に必要な診察・検査を別に検討します。",
+          "after": "記録には、**「何を感じたか」と「それをどう解釈したか」**を別々に書きます。「右の肋骨弓の下で抵抗を感じ、本人は痛みを訴えた」は観察の記録です。「胸脇苦満と考えた」は伝統的な解釈です。胆道疾患などを診断するには、その病気に必要な診察や検査を別に考えます。"
+        },
+        {
+          "before": "矢久保らは、抵抗・抵抗減弱・振水音などの腹証を模型で体験できる教育用シミュレータを開発しました。[^yakubo-abdominal-simulator-2008] 触覚で学ぶ所見を再現しようとする、教育方法の研究です。",
+          "after": "矢久保らは、抵抗・抵抗減弱・振水音などの腹証を模型で体験できる教育用シミュレータを開発しました。[^yakubo-abdominal-simulator-2008] 触れて学ぶ感触を模型で再現しようとした、教育方法の研究です。"
+        },
+        {
+          "before": "腹診の学習では、観察を記録する、他の所見と照合する、限界を認める、受診が必要な徴候を見落とさない、という順序を大切にしてください。",
+          "after": "腹診の学習では、触れて分かったことを記録し、ほかの所見と比べ、そこから言えることと言えないことを確かめてください。受診が必要な徴候を認めたときは、腹証の判断より医療機関での評価を優先します。"
+        }
+      ],
+      "specialistQuotedStatementsPreserved": [],
+      "invariants": {
+        "referenceDataUnchanged": true,
+        "headingsAndOrderUnchanged": true,
+        "paragraphSlotsUnchanged": true,
+        "citationIdsAndOrderUnchanged": true,
+        "urlsUnchanged": true,
+        "numericResearchConditionsUnchanged": true,
+        "articleMetadataUnchanged": true,
+        "learningDestinationIdsUnchanged": true,
+        "relatedArticleIdsAndOrderUnchanged": true,
+        "figureIdsAndPlacementUnchanged": true
+      },
+      "beforeBodySha256": "57fd300fabc9228ff3ab89da8bf5ea2625479c7a84c24390c9290e9446ac8a3d",
+      "afterBodySha256": "8ffdd80865646d177b4095f53be358b9ca99e16319d3a50637b2c47f220a6a4c"
+    },
+    {
+      "articleId": "science-of-acupoints-mechanotransduction",
+      "title": "ツボ（経穴）の科学：位置と刺激の研究",
+      "file": "src/data/articles/acupointArticle.ts",
+      "fullTextStatus": "reviewed",
+      "status": "changed",
+      "changedParagraphCount": 6,
+      "reviewFocus": "抽象的な名詞連結・翻訳調・繰り返しを見直し、読者が何を読む/記録する/比較する/確認するかを具体的な文にした。明快な定義・研究結果・安全情報は保持。",
+      "representativeExamples": [
+        {
+          "before": "経穴は、伝統的な経絡の枠組みの中で名称・位置・主治などが整理されてきた刺激部位です。学習では、まず名称と位置を確認し、周囲の解剖を学びます。",
+          "after": "経穴は、伝統的な経絡の体系の中で、名前・位置・主治などが伝えられてきた刺激部位です。学習では、まず名前と位置を確認し、その周囲にどんな組織があるかを学びます。"
+        },
+        {
+          "before": "対象は限定された解剖学的な比較で、全身の十四経脈と筋膜との一致を証明した研究ではありません。位置が対応することは、そこを刺激すれば内臓の病気が治ることや、経絡の伝統的な機能全体が実証されたこととも別です。",
+          "after": "この研究は、限られた部位で位置を比較したものです。全身の十四経脈と筋膜が一致することを証明した研究ではありません。位置が対応していても、その場所への刺激で内臓の病気が治ることや、経絡の伝統的な働きすべてが実証されたことにはなりません。"
+        },
+        {
+          "before": "経穴を学ぶ目的は、伝統の整理、位置の共有、局所解剖の確認、臨床研究の検討をつなげることです。そのどれか一つが、残りすべての根拠になるわけではありません。",
+          "after": "経穴を学ぶときは、伝統的な分類を読み、位置と周囲の解剖を確認し、臨床研究でどのような結果が得られたかを調べます。位置が分かることだけでは治療効果は決まらず、治療の研究だけで取穴や安全性のすべてが分かるわけでもありません。"
+        }
+      ],
+      "specialistQuotedStatementsPreserved": [],
+      "invariants": {
+        "referenceDataUnchanged": true,
+        "headingsAndOrderUnchanged": true,
+        "paragraphSlotsUnchanged": true,
+        "citationIdsAndOrderUnchanged": true,
+        "urlsUnchanged": true,
+        "numericResearchConditionsUnchanged": true,
+        "articleMetadataUnchanged": true,
+        "learningDestinationIdsUnchanged": true,
+        "relatedArticleIdsAndOrderUnchanged": true,
+        "figureIdsAndPlacementUnchanged": true
+      },
+      "beforeBodySha256": "0464dc884402c62bea1bb4212db4469723179ba844af124eac4340c0842fb7f8",
+      "afterBodySha256": "1c2298e3eb361dd811cc373f8734288830765143176c0ad999c87647597652cc"
+    },
+    {
+      "articleId": "science-of-acupuncture-neuroscience",
+      "title": "鍼灸の科学：作用機序と臨床効果を分けて読む",
+      "file": "src/data/articles/acupunctureArticle.ts",
+      "fullTextStatus": "reviewed",
+      "status": "changed",
+      "changedParagraphCount": 7,
+      "reviewFocus": "抽象的な名詞連結・翻訳調・繰り返しを見直し、読者が何を読む/記録する/比較する/確認するかを具体的な文にした。明快な定義・研究結果・安全情報は保持。",
+      "representativeExamples": [
+        {
+          "before": "鍼は身体に機械的刺激を加える手段で、電気鍼では電気刺激も用います。灸は温熱を用います。刺激に対する局所・神経系の反応と、患者の症状・機能・生活の質への効果は、分けて検討する必要があります。",
+          "after": "鍼は身体に機械的な刺激を加え、電気鍼では電気刺激も使います。灸は温熱を使います。刺激した部位や神経系にどんな反応が起こるかと、患者の症状・機能・生活の質が改善するかは、別々に調べる必要があります。"
+        },
+        {
+          "before": "心拍変動やホルモン濃度、画像所見などの指標に変化が報告されても、「自律神経が正常化した」「ストレス反応がリセットされた」という個人への結論には、指標の意味、測定条件、症状との関係を追加で確認する必要があります。",
+          "after": "心拍変動、ホルモン濃度、画像所見などが変わっても、それだけで「この人の自律神経が正常化した」「ストレス反応がリセットされた」とは言えません。その指標が何を表し、どの条件で測り、症状の変化とどう関係するかを、さらに確認する必要があります。"
+        },
+        {
+          "before": "患者の役に立つかを判断するには、分子や回路の説明だけでなく、適切な比較、患者に意味のある転帰、安全性、標準的な診療との関係を確認することが欠かせません。",
+          "after": "患者に役立つかを判断するときは、分子や神経回路の説明だけでは不十分です。何と比べ、症状や生活機能の変化が患者にとって意味のあるものか、どんな害があったかを確認します。標準的な診療とどのように組み合わせるかも確かめる必要があります。"
+        }
+      ],
+      "specialistQuotedStatementsPreserved": [],
+      "invariants": {
+        "referenceDataUnchanged": true,
+        "headingsAndOrderUnchanged": true,
+        "paragraphSlotsUnchanged": true,
+        "citationIdsAndOrderUnchanged": true,
+        "urlsUnchanged": true,
+        "numericResearchConditionsUnchanged": true,
+        "articleMetadataUnchanged": true,
+        "learningDestinationIdsUnchanged": true,
+        "relatedArticleIdsAndOrderUnchanged": true,
+        "figureIdsAndPlacementUnchanged": true
+      },
+      "beforeBodySha256": "63e595df9f06d8621d511e3f40e5f8737187d5bd744bd23434699f967524d7db",
+      "afterBodySha256": "d8244176bae5f43e53cf431de7ff0e4e63dde56b186db8b96b3ad68e1e23122a"
+    },
+    {
+      "articleId": "east-west-integrative-gerd-gastric",
+      "title": "逆流性食道炎・胃痛の東西相補アプローチ",
+      "file": "src/data/articles/gerdArticle.ts",
+      "fullTextStatus": "reviewed",
+      "status": "changed",
+      "changedParagraphCount": 5,
+      "reviewFocus": "抽象的な名詞連結・翻訳調・繰り返しを見直し、読者が何を読む/記録する/比較する/確認するかを具体的な文にした。明快な定義・研究結果・安全情報は保持。",
+      "representativeExamples": [
+        {
+          "before": "症状が続く場合に、直ちに「自律神経が原因」「気の逆流」と決めつけるのは適切ではありません。薬の使い方、逆流以外の原因、追加評価の必要性を主治医と確認します。服薬の中止・減量は自己判断で行わないでください。",
+          "after": "症状が続いても、すぐに「自律神経が原因」「気の逆流」と決めつけないでください。薬をどう使っているか、逆流以外の原因はないか、さらに調べる必要があるかを主治医と確認します。服薬の中止・減量は自己判断で行わないでください。"
+        },
+        {
+          "before": "食事・睡眠・ストレスと症状の関係を問診で整理する補助として活用します。伝統的な証名だけで器質的疾患を除外することはできません。",
+          "after": "問診では、食事・睡眠・ストレスと症状にどんな関係があるかを記録し、伝統的な見立てを考える手がかりにします。ただし、伝統的な証名だけで器質的疾患を除外することはできません。"
+        },
+        {
+          "before": "それぞれの説明の根拠を明示し、効果と限界を共有することが、誤解のない学習と対話につながります。",
+          "after": "説明するときは、どの資料に基づくか、何が分かり、何がまだ分からないかも伝えてください。医学的な診断と伝統的な見立てを混同せず、併用の目的や確認する症状について話し合うために役立ちます。"
+        }
+      ],
+      "specialistQuotedStatementsPreserved": [
+        "gerd-01",
+        "gerd-02"
+      ],
+      "invariants": {
+        "referenceDataUnchanged": true,
+        "headingsAndOrderUnchanged": true,
+        "paragraphSlotsUnchanged": true,
+        "citationIdsAndOrderUnchanged": true,
+        "urlsUnchanged": true,
+        "numericResearchConditionsUnchanged": true,
+        "articleMetadataUnchanged": true,
+        "learningDestinationIdsUnchanged": true,
+        "relatedArticleIdsAndOrderUnchanged": true,
+        "figureIdsAndPlacementUnchanged": true
+      },
+      "beforeBodySha256": "9c1a696081cec2101b5d503359b30846f6479f5125d1646ca2b7418fe89a8bf9",
+      "afterBodySha256": "a2c8008800bc13c14030cb28a4782491b7216f9521ae5cecf79766016bc598b0"
+    },
+    {
+      "articleId": "science-of-oriental-medicine-history",
+      "title": "東洋医学の歴史と進化：古代の臨床知から現代科学へ",
+      "file": "src/data/articles/historyArticle.ts",
+      "fullTextStatus": "reviewed",
+      "status": "changed",
+      "changedParagraphCount": 6,
+      "reviewFocus": "抽象的な名詞連結・翻訳調・繰り返しを見直し、読者が何を読む/記録する/比較する/確認するかを具体的な文にした。明快な定義・研究結果・安全情報は保持。",
+      "representativeExamples": [
+        {
+          "before": "人類が医学を発展させ始めた最大の理由は極めて単純です。「生き残るため」でした。",
+          "after": "人類が医学を発展させ始めた最大の理由は、「生き残るため」でした。"
+        },
+        {
+          "before": "現代医学に例えるならば、生理学・病理学の教科書と、治療学・外科学の教科書が一対となって編纂された壮大な体系です。",
+          "after": "現代の教科書に例えると、生理学・病理学を扱う本と、治療学・外科学を扱う本が一対になった構成です。"
+        },
+        {
+          "before": "読み進める際は、「何を観察していたか」「どのように説明していたか」「現代の研究で何を確かめられるか」を分けて整理してください。歴史から学ぶことと、現在の診断・治療の効果を評価することをつなげるための読み方です。",
+          "after": "読んだ内容を、「当時の医家が観察したこと」「その説明」「現代の研究で確かめること」の三つの欄に書いてみましょう。当時の考え方を知ることと、現在の診断・治療に役立つかを調べることの違いを確認できます。"
+        }
+      ],
+      "specialistQuotedStatementsPreserved": [
+        "hist-01",
+        "hist-02",
+        "hist-03",
+        "hist-04",
+        "hist-05",
+        "hist-06",
+        "hist-07",
+        "hist-08",
+        "hist-09",
+        "hist-10",
+        "hist-11",
+        "hist-12"
+      ],
+      "invariants": {
+        "referenceDataUnchanged": true,
+        "headingsAndOrderUnchanged": true,
+        "paragraphSlotsUnchanged": true,
+        "citationIdsAndOrderUnchanged": true,
+        "urlsUnchanged": true,
+        "numericResearchConditionsUnchanged": true,
+        "articleMetadataUnchanged": true,
+        "learningDestinationIdsUnchanged": true,
+        "relatedArticleIdsAndOrderUnchanged": true,
+        "figureIdsAndPlacementUnchanged": true
+      },
+      "beforeBodySha256": "eb2d97ac219c4a9d63472deb9bb52c71d89b4aeedf99c77123c0320161763bec",
+      "afterBodySha256": "9054c3d97de999d6b695274f5bfa87f0a719104a2a8a2f8e25155d4934b3c51e"
+    },
+    {
+      "articleId": "science-of-kampo-network-pharmacology",
+      "title": "漢方薬を学ぶ：証・薬理研究・安全性",
+      "file": "src/data/articles/kampoArticle.ts",
+      "fullTextStatus": "reviewed",
+      "status": "changed",
+      "changedParagraphCount": 7,
+      "reviewFocus": "抽象的な名詞連結・翻訳調・繰り返しを見直し、読者が何を読む/記録する/比較する/確認するかを具体的な文にした。明快な定義・研究結果・安全情報は保持。",
+      "representativeExamples": [
+        {
+          "before": "**同病異治**は、同じ病名でも伝統的な見立てが異なれば、異なる治療を考えるという概念です。**異病同治**は、病名が異なっても伝統的な見立ての共通点から同じ治療を考える概念です。",
+          "after": "**同病異治**は、同じ病名でも、伝統的な見立てが違えば異なる治療を考えるという意味です。**異病同治**は、病名が違っても、伝統的な見立てに共通点があれば同じ治療を考えるという意味です。"
+        },
+        {
+          "before": "成分と標的の関係をネットワークで表す研究は、作用候補を考える手段です。データベース上の標的予測、培養細胞の変化、動物での反応、患者の症状改善は、それぞれ確認の段階が異なります。",
+          "after": "成分と標的のつながりを図にする研究は、どのような作用があり得るかを考えるためのものです。データベースで予測した結果、培養細胞の変化、動物の反応、患者の症状改善では、確かめたことがそれぞれ異なります。"
+        },
+        {
+          "before": "漢方の学習では、伝統的な処方の考え方、製剤ごとの研究、添付文書、安全性の観察を一緒に確認します。多成分の説明ができることと、その患者への適応や安全性を決められることは別です。",
+          "after": "漢方を学ぶときは、まず処方を考える伝統的な理由を読み、次にその製剤の研究と添付文書を確認します。使用中の症状の変化や、副作用が疑われる所見にも注意します。成分の作用を説明できても、それだけでその患者に適しているか、安全に使えるかは決まりません。"
+        }
+      ],
+      "specialistQuotedStatementsPreserved": [],
+      "invariants": {
+        "referenceDataUnchanged": true,
+        "headingsAndOrderUnchanged": true,
+        "paragraphSlotsUnchanged": true,
+        "citationIdsAndOrderUnchanged": true,
+        "urlsUnchanged": true,
+        "numericResearchConditionsUnchanged": true,
+        "articleMetadataUnchanged": true,
+        "learningDestinationIdsUnchanged": true,
+        "relatedArticleIdsAndOrderUnchanged": true,
+        "figureIdsAndPlacementUnchanged": true
+      },
+      "beforeBodySha256": "eee3a2fc8ae0c44fbec19c360c503f74d4a004c9cb3bdba3343ed5b1ea3c355f",
+      "afterBodySha256": "d11a20fd7d3b2bb2364990243d5142fbe16256d032fe6434a198a2647d7ce489"
+    },
+    {
+      "articleId": "science-of-qi-blood-fluid",
+      "title": "気血津液を学ぶ：伝統的な分類と医学的評価",
+      "file": "src/data/articles/kiketsusuiArticle.ts",
+      "fullTextStatus": "reviewed",
+      "status": "changed",
+      "changedParagraphCount": 5,
+      "reviewFocus": "抽象的な名詞連結・翻訳調・繰り返しを見直し、読者が何を読む/記録する/比較する/確認するかを具体的な文にした。明快な定義・研究結果・安全情報は保持。",
+      "representativeExamples": [
+        {
+          "before": "日本東洋医学会の解説でも、気・血・水を漢方の基本概念として取り上げています。ここで学ぶのは、症状や所見をどう伝統的に整理するかです。[^jsom-qi-patterns][^jsom-blood-patterns][^jsom-water-patterns]",
+          "after": "日本東洋医学会も、気・血・水を漢方の基本概念として解説しています。この記事では、それぞれの働きを読み、症状や所見をどの分類に関連づけているかを学びます。[^jsom-qi-patterns][^jsom-blood-patterns][^jsom-water-patterns]"
+        },
+        {
+          "before": "単一の症状を見つけて表の一行に当てはめる方法では不十分です。経過、誘因、他の所見、生活への影響を確認し、必要な診察や検査を先に考えます。",
+          "after": "症状を一つ見つけただけで、表の一行に当てはめるのは不十分です。いつから続き、何をきっかけに変わるか、ほかにどんな所見があり、生活で何に困っているかを確認します。そのうえで、必要な診察や検査を先に考えます。"
+        },
+        {
+          "before": "気・血・津液は、伝統理論で互いに支え合うものとして説明されます。気が血や津液の運行に関わる、血が気の活動を支える、といった関係をまとめることは、症状を一つの所見だけで判断しないための学習に役立ちます。",
+          "after": "気・血・津液は、伝統理論で互いに支え合うものとして説明されます。「気が血や津液の運行に関わる」「血が気の活動を支える」という文を読み、どの働きがどの働きに関係するかを確かめてみましょう。一つの所見だけで症状を判断しないための練習になります。"
+        }
+      ],
+      "specialistQuotedStatementsPreserved": [
+        "qi-01"
+      ],
+      "invariants": {
+        "referenceDataUnchanged": true,
+        "headingsAndOrderUnchanged": true,
+        "paragraphSlotsUnchanged": true,
+        "citationIdsAndOrderUnchanged": true,
+        "urlsUnchanged": true,
+        "numericResearchConditionsUnchanged": true,
+        "articleMetadataUnchanged": true,
+        "learningDestinationIdsUnchanged": true,
+        "relatedArticleIdsAndOrderUnchanged": true,
+        "figureIdsAndPlacementUnchanged": true
+      },
+      "beforeBodySha256": "1f2089ecbb566dc958e27431a266f565bdba4b7290daaa05f2ceb0e598b76e2c",
+      "afterBodySha256": "ece6f4f5f442f1c3703d7815dec9b6a65ea85cc06ae8b408f6a9e359bdb8dee3"
+    },
+    {
+      "articleId": "science-of-meridians-network",
+      "title": "経絡を学ぶ：伝統理論と神経・結合組織の研究",
+      "file": "src/data/articles/meridianArticle.ts",
+      "fullTextStatus": "reviewed",
+      "status": "changed",
+      "changedParagraphCount": 7,
+      "reviewFocus": "抽象的な名詞連結・翻訳調・繰り返しを見直し、読者が何を読む/記録する/比較する/確認するかを具体的な文にした。明快な定義・研究結果・安全情報は保持。",
+      "representativeExamples": [
+        {
+          "before": "学習では、走行・名称・伝統的な機能を整理することが出発点になります。一方、「胃経」という名称から胃の病気を診断したり、その経路を現代解剖学の胃につながる神経そのものとみなしたりすることはできません。伝統医学でいう臓腑にも、現代医学の臓器とは異なる意味が含まれます。",
+          "after": "まず経絡図で名称と走行を読み、伝統理論ではどのような働きを説明しているかを確認します。ただし、「胃経」という名前から胃の病気を診断したり、その経路を胃につながる神経そのものと考えたりすることはできません。伝統医学の臓腑名にも、現代医学の臓器名とは異なる意味が含まれます。"
+        },
+        {
+          "before": "筋筋膜の連続性を説明する別のモデルがあっても、伝統的な経絡との名称・位置・機能が同一であるかは、改めて検証する問いです。図の見た目の類似は、その検証を代替しません。",
+          "after": "筋筋膜のつながりを説明する別のモデルがあっても、伝統的な経絡と名称・位置・働きが一致するかは、別に調べる必要があります。図の形が似ているだけでは、同じものとは言えません。"
+        },
+        {
+          "before": "経絡の整理は、伝統医学の用語を学び、施術の根拠を問い直すために活用できます。患者の病名の診断、受診の必要性、標準治療の変更を経絡だけで決めることはできません。鍼灸を検討するときも、医学的な原因評価と施術の安全性を確認しながら考えます。",
+          "after": "名称・走行・伝統的な働きを学んだら、施術の説明がどの記述や研究に基づくかを確かめてください。経絡だけで病名を診断したり、受診の必要性や標準治療の変更を決めたりすることはできません。鍼灸を検討するときも、症状の原因を医学的に調べ、施術の安全性を確認する必要があります。"
+        }
+      ],
+      "specialistQuotedStatementsPreserved": [
+        "mer-01"
+      ],
+      "invariants": {
+        "referenceDataUnchanged": true,
+        "headingsAndOrderUnchanged": true,
+        "paragraphSlotsUnchanged": true,
+        "citationIdsAndOrderUnchanged": true,
+        "urlsUnchanged": true,
+        "numericResearchConditionsUnchanged": true,
+        "articleMetadataUnchanged": true,
+        "learningDestinationIdsUnchanged": true,
+        "relatedArticleIdsAndOrderUnchanged": true,
+        "figureIdsAndPlacementUnchanged": true
+      },
+      "beforeBodySha256": "fd3ca7ba082032312574e315e594178c7cdefec2f0159bc1f4f74391a095828d",
+      "afterBodySha256": "8ed9bf281fa36748ac40d415b88541fc8fae680641b04b8c067737d16ea8bb67"
+    },
+    {
+      "articleId": "science-of-pulse-diagnosis",
+      "title": "脈診を学ぶ：触知所見と循環評価の違い",
+      "file": "src/data/articles/pulseArticle.ts",
+      "fullTextStatus": "reviewed",
+      "status": "changed",
+      "changedParagraphCount": 5,
+      "reviewFocus": "抽象的な名詞連結・翻訳調・繰り返しを見直し、読者が何を読む/記録する/比較する/確認するかを具体的な文にした。明快な定義・研究結果・安全情報は保持。",
+      "representativeExamples": [
+        {
+          "before": "脈診は、主に手首の橈骨動脈を触れ、その触れ方を伝統的な分類で記録する切診の一つです。「寸・関・尺」や「浮・沈・遅・数」などは、この診察を学ぶための言葉です。",
+          "after": "脈診は、主に手首の橈骨動脈に触れ、どのような脈を感じたかを伝統的な分類で記録する診察です。触れて調べる「切診」の一つで、「寸・関・尺」や「浮・沈・遅・数」などの言葉を使います。"
+        },
+        {
+          "before": "「滑脈なら血液が正常」「渋脈なら血栓」と説明すると、伝統的な形容を未検証の医学的診断に置き換えてしまいます。観察は「不規則に感じた」「この圧で触れやすかった」のように、検者が確認した範囲で記録します。",
+          "after": "「滑脈なら血液が正常」「渋脈なら血栓」と説明すると、脈の触れ方を表す言葉から、まだ確かめていない病気の判断へ飛躍してしまいます。「不規則に感じた」「この圧で触れやすかった」のように、検者が実際に確認したことを記録します。"
+        },
+        {
+          "before": "これは「同じ所見をどの程度同じように記録できるか」という**再現性**の結果です。「疾患のある人を正しく見つける」「ない人を正しく除外する」という**診断精度**ではありません。著者も、妥当性の検証に進むための最初の段階と位置づけています。伝統的な臓腑対応が80%正しいと読み替えることはできません。",
+          "after": "この結果が示すのは、同じ所見をどの程度同じように記録できるかという**再現性**です。病気のある人を正しく見つけたり、病気のない人を正しく除外したりする**診断精度**ではありません。著者も、診察が目的の状態を正しく捉えるかを確かめるための、最初の段階と位置づけています。伝統的な臓腑対応が80%正しいという意味には読み替えられません。"
+        }
+      ],
+      "specialistQuotedStatementsPreserved": [],
+      "invariants": {
+        "referenceDataUnchanged": true,
+        "headingsAndOrderUnchanged": true,
+        "paragraphSlotsUnchanged": true,
+        "citationIdsAndOrderUnchanged": true,
+        "urlsUnchanged": true,
+        "numericResearchConditionsUnchanged": true,
+        "articleMetadataUnchanged": true,
+        "learningDestinationIdsUnchanged": true,
+        "relatedArticleIdsAndOrderUnchanged": true,
+        "figureIdsAndPlacementUnchanged": true
+      },
+      "beforeBodySha256": "24b2d29c2d170c25303f94397cf9b5c5548aa698034746f06cd3eeb1437f751c",
+      "afterBodySha256": "2f35de9d91c134936e33cbd8efaa17aa736cc54058d896aa343219a40a5ff996"
+    },
+    {
+      "articleId": "science-of-tongue-diagnosis",
+      "title": "舌診の科学：観察できること・確定できないこと",
+      "file": "src/data/articles/tongueArticle.ts",
+      "fullTextStatus": "reviewed",
+      "status": "changed",
+      "changedParagraphCount": 5,
+      "reviewFocus": "抽象的な名詞連結・翻訳調・繰り返しを見直し、読者が何を読む/記録する/比較する/確認するかを具体的な文にした。明快な定義・研究結果・安全情報は保持。",
+      "representativeExamples": [
+        {
+          "before": "舌診を学ぶときは「何が見えたか」と「そこから何を考えたか」を分けます。「舌の表面に白い部分がある」は観察、「寒証の候補を考える」は伝統的な分類による解釈です。この二つを同じ事実として記録しません。",
+          "after": "舌診の記録では、「見えたこと」と「そこから考えたこと」を別々に書きます。「舌の表面に白い部分がある」は観察です。「寒証の候補を考える」は伝統的な分類による解釈です。この二つを同じ事実として記録しません。"
+        },
+        {
+          "before": "「乾いているから陰虚が確定」「裂紋があるから栄養障害」とは判断しません。伝統的な候補を整理する場合も、医学的な原因評価を置き換えないようにします。",
+          "after": "「乾いているから陰虚が確定」「裂紋があるから栄養障害」とは判断しません。伝統的な候補を考えた場合も、症状の原因を医学的に調べることは省けません。"
+        },
+        {
+          "before": "学習上は、撮影条件や観察日時を記録すると比較しやすくなります。ただし、写真や分類結果から病気を判断するには、どの程度正しく判断できるか（診断性能）、同じ結果を得られるか（再現性）、どのような人で確かめたかを検証する必要があります。画像の特徴を分類できることと、病気を正しく診断できることを区別します。",
+          "after": "写真を比べるときは、撮影条件や観察日時も記録しておきます。写真や分類結果から病気を判断する技術については、どの程度正しく判断できるか、同じ結果が得られるか、どのような人で試したかを確認します。画像の特徴を分類できても、病気を正しく診断できるとは限りません。"
+        }
+      ],
+      "specialistQuotedStatementsPreserved": [
+        "tongue-01"
+      ],
+      "invariants": {
+        "referenceDataUnchanged": true,
+        "headingsAndOrderUnchanged": true,
+        "paragraphSlotsUnchanged": true,
+        "citationIdsAndOrderUnchanged": true,
+        "urlsUnchanged": true,
+        "numericResearchConditionsUnchanged": true,
+        "articleMetadataUnchanged": true,
+        "learningDestinationIdsUnchanged": true,
+        "relatedArticleIdsAndOrderUnchanged": true,
+        "figureIdsAndPlacementUnchanged": true
+      },
+      "beforeBodySha256": "ad9ec4bc40cafe7b4673a309609bbe9d084c9072ec750a2340332958d258d15e",
+      "afterBodySha256": "1fecbe4de7374f0b292236c4f2be1953626b6ffafcec6384ca18740c56d96cf8"
+    },
+    {
+      "articleId": "east-west-integrative-unified-theory",
+      "title": "東西医学を比較する：学習モデルと検証",
+      "file": "src/data/articles/unifiedTheoryArticle.ts",
+      "fullTextStatus": "reviewed",
+      "status": "changed",
+      "changedParagraphCount": 7,
+      "reviewFocus": "抽象的な名詞連結・翻訳調・繰り返しを見直し、読者が何を読む/記録する/比較する/確認するかを具体的な文にした。明快な定義・研究結果・安全情報は保持。",
+      "representativeExamples": [
+        {
+          "before": "生体を階層やネットワークで整理すると、観察・仮説・介入の関係を考えやすくなります。ただし、説明が一つにつながることと、説明が正しいことは別です。伝統的な概念に生理学の用語を当てはめただけでは、診断精度や治療効果の根拠にはなりません。",
+          "after": "身体の働きを階層やネットワークの図で示すと、何を観察し、どう考え、どんな対応を検討するかをたどりやすくなります。ただし、説明がつながっていても、それだけで正しいとは言えません。伝統的な概念に生理学の言葉を当てはめるだけでは、診断の正確さや治療効果の根拠にはなりません。"
+        },
+        {
+          "before": "併用する場合には、目的を「痛み」「睡眠」「日常生活の動作」など評価できる形にします。併用して症状が変化しても、自然経過、標準治療、生活の変化などの影響を切り分けるには適切な比較が必要です。",
+          "after": "併用を考えるときは、「痛み」「睡眠」「日常生活の動作」など、何の変化を確かめたいかを決めます。併用後に症状が変わっても、自然な経過、標準治療、生活の変化のどれが影響したかを調べるには、適切な比較が必要です。"
+        },
+        {
+          "before": "伝統の考え方を学び、現代の研究と比較する際は、観察した事実、伝統的な解釈、研究結果、筆者の仮説を分けて記録します。この区別を保つことが、学習内容を臨床で過大に使わないための基本になります。",
+          "after": "伝統の考え方と現代の研究を読み比べるときは、「観察した事実」「伝統的な解釈」「研究結果」「筆者の仮説」を別々に記録してください。どの説明にどの根拠があるかを確かめ、学習したモデルだけで臨床の判断を確定しないようにします。"
+        }
+      ],
+      "specialistQuotedStatementsPreserved": [],
+      "invariants": {
+        "referenceDataUnchanged": true,
+        "headingsAndOrderUnchanged": true,
+        "paragraphSlotsUnchanged": true,
+        "citationIdsAndOrderUnchanged": true,
+        "urlsUnchanged": true,
+        "numericResearchConditionsUnchanged": true,
+        "articleMetadataUnchanged": true,
+        "learningDestinationIdsUnchanged": true,
+        "relatedArticleIdsAndOrderUnchanged": true,
+        "figureIdsAndPlacementUnchanged": true
+      },
+      "beforeBodySha256": "8c9f56b3c7641ae40fbd0a893cee203956a92749dedb4b4c474406d174cdf6f4",
+      "afterBodySha256": "075788fcc56c9e34e243751f568c2ec3ba73730fe6169982f1f4829cdd7e6da4"
+    },
+    {
+      "articleId": "science-of-yinyang-gogyo",
+      "title": "陰陽五行を学ぶ：伝統モデルと現代医学の違い",
+      "file": "src/data/articles/yinyangGogyoArticle.ts",
+      "fullTextStatus": "reviewed",
+      "status": "changed",
+      "changedParagraphCount": 7,
+      "reviewFocus": "抽象的な名詞連結・翻訳調・繰り返しを見直し、読者が何を読む/記録する/比較する/確認するかを具体的な文にした。明快な定義・研究結果・安全情報は保持。",
+      "representativeExamples": [
+        {
+          "before": "この考え方を学ぶ際には、次の三つを分けると理解しやすくなります。",
+          "after": "説明を読むときは、次のどれに当たるかを確かめてください。"
+        },
+        {
+          "before": "相生と相剋を合わせて学ぶと、伝統モデルの中で「支える関係」と「抑える関係」を整理できます。ただし、相剋を、腎臓の水分調節、免疫による細胞監視、体温調節などの機構と直接対応させる根拠は、本稿では示せていません。",
+          "after": "相生と相剋の矢印をたどり、どの分類がどの分類を「支える」のか、「抑える」のかを比べてみましょう。ただし、相剋が腎臓の水分調節、免疫による細胞監視、体温調節などと直接対応する根拠は、この記事では示せていません。"
+        },
+        {
+          "before": "現代医学を「単一の標的だけを見る医療」、伝統医学を「全身を扱う優れた制御」と一括りにして優劣を決めることも避けます。説明のわかりやすさと、実際に安全で有効な診療であることは、別々に確かめる必要があります。",
+          "after": "現代医学を「一つの標的だけを見る医療」、伝統医学を「全身を扱う優れた制御」と決めつけ、優劣をつけることも避けます。説明が分かりやすくても、それだけで安全で有効な診療とは言えません。診療の効果と安全性は、研究で別に確かめる必要があります。"
+        }
+      ],
+      "specialistQuotedStatementsPreserved": [
+        "yy-01"
+      ],
+      "invariants": {
+        "referenceDataUnchanged": true,
+        "headingsAndOrderUnchanged": true,
+        "paragraphSlotsUnchanged": true,
+        "citationIdsAndOrderUnchanged": true,
+        "urlsUnchanged": true,
+        "numericResearchConditionsUnchanged": true,
+        "articleMetadataUnchanged": true,
+        "learningDestinationIdsUnchanged": true,
+        "relatedArticleIdsAndOrderUnchanged": true,
+        "figureIdsAndPlacementUnchanged": true
+      },
+      "beforeBodySha256": "12be07b99c37bd7779316bc43a121bcc13526194e99a25b27fe237dee0f34ff6",
+      "afterBodySha256": "6b58967d5d9c7730c9b4835367f080589e312ace95766272bd2b8b1bcd6601d4"
+    }
+  ]
+}

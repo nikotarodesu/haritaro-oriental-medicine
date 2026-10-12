@@ -16,7 +16,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-sm leading-[1.7] ui-muted">
-              図解で学び、演習で考え、ノートで振り返る。東洋医学の基礎理論・経穴辞典・臨床推論をつなぐ学習ポータルです。
+              講義と図解で東洋医学の用語を学び、クイズと架空症例で確かめるサイトです。経穴を調べ、考えた理由をノートに残せます。
             </p>
           </div>
 

@@ -126,7 +126,7 @@ export default function YinYangTreatmentFlow() {
                 本治・標治は伝統的な治療の考え方を整理する用語です。症状が慢性であることだけで、安全な状態・五臓の虚損・施術の適応を確定することはできません。
               </p>
               <div className="p-2.5 rounded-lg bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-[11px] text-[#404743] dark:text-[#C5D2DB] space-y-1">
-                <div><strong>学習の観点：</strong>所見、経過、既往歴、医学的評価など、追加で必要な情報を整理します。</div>
+                <div><strong>学習の観点：</strong>所見の内容と経過、既往歴、受けた医学的評価を記録し、追加で確認する情報を挙げます。</div>
                 <div><strong>保留する判断：</strong>具体的な選穴・刺入・留針・施灸の条件は、この図では案内しません。</div>
               </div>
             </div>
@@ -162,7 +162,7 @@ export default function YinYangTreatmentFlow() {
               骨・髄・五臓などを用いる伝統的な分類です。慢性症状や「深部」という言葉だけで、深い刺入・留針の必要性や効果は判断できません。
             </p>
             <div className="p-2 rounded bg-[#FAF8F5] dark:bg-[#15202B] text-[10px] text-[#232826] dark:text-[#D5E0DC] font-mono">
-              具体的な施術条件は個別の一次資料との照合と専門家確認が未了です。この図は実技手順の案内として使えません。
+              具体的な施術条件については、個別の一次資料との照合と専門家による確認が未完了です。この図は実技手順の案内として使えません。
             </div>
           </div>
         </div>

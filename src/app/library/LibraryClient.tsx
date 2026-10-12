@@ -229,7 +229,7 @@ export default function LibraryClient() {
                           </div>
                           {paper.interventionProtocol && (
                             <div>
-                              <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">介入プロトコル: </span>
+                              <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">研究で用いた方法: </span>
                               <span>{paper.interventionProtocol.name}（使用ツボ: {paper.interventionProtocol.acupoints.join("、")}）</span>
                             </div>
                           )}

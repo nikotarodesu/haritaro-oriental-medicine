@@ -21,7 +21,7 @@ export default function LifeDynamicsDynamicXushi() {
   return (
     <figure className="my-8 overflow-hidden rounded-3xl border border-[#E5DEC9] bg-white p-6 shadow-sm dark:border-[#2A3B4A] dark:bg-[#17212A] sm:p-8">
       <p className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">複合病機の学習図</p>
-      <h4 className="mt-1 font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">所見を一つの原因にまとめず、観点を変えて比較する</h4>
+      <h4 className="mt-1 font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">上下・本と標・三焦の三つの見方で所見を比べる</h4>
       <div className="mt-5 flex flex-wrap gap-2" role="group" aria-label="比較の観点">
         {MODES.map((item) => (
           <button key={item.id} type="button" aria-pressed={mode === item.id} aria-controls={panelId} onClick={() => setMode(item.id)} className={`rounded-lg px-4 py-2 text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B86924] ${mode === item.id ? "bg-[#1E3D34] text-white" : "bg-[#F2ECE0] text-[#59615D] dark:bg-[#22303D] dark:text-[#CBD5E1]"}`}>

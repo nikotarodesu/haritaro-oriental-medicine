@@ -1,0 +1,3662 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-12",
+  "baseCommit": "7cd5812",
+  "scope": {
+    "sourceFiles": [
+      "src/data/curriculumData.ts",
+      "src/data/curriculumQuizzes.ts"
+    ],
+    "lectureCount": 81,
+    "questionCount": 243,
+    "excludedSources": [
+      "src/data/curriculumFoundations.ts",
+      "src/data/curriculumFoundationQuizzes.ts"
+    ]
+  },
+  "reviewMethod": "前回の全講義校閲に続き、全81講の要約・到達目標・本文・243問の解説を、主語・対象・用語の意味・比較と記録の手順が分かるかという観点から再点検。既存の架空例や定義を使って箇所ごとに改稿し、機械的な一括置換や全段落への要約追加は行わない。既存の明快な文章は維持。",
+  "limits": [
+    "日本語と学習手順の校閲であり、医学的監修・原典の逐語照合・正答一意性の専門家審査ではない。",
+    "専門的な意味や根拠強度を推測で修正せず、既存専門確認一覧の引用41件を保持した。",
+    "専門確認事項は docs/readability/lecture-editorial-audit.json の specialistReviewItems を参照。"
+  ],
+  "counts": {
+    "reviewedLectures": 81,
+    "changedLectures": 79,
+    "retainedLectures": 2,
+    "reviewedQuestionExplanations": 243,
+    "changedQuestionExplanations": 32,
+    "summaryChanges": 42,
+    "learningGoalChanges": 61,
+    "changedBodies": 26,
+    "bodyRevisions": 30
+  },
+  "changedLectureIds": [
+    "lecture-yinyang-1",
+    "lecture-yinyang-2",
+    "lecture-yinyang-3",
+    "lecture-yinyang-5",
+    "lecture-yinyang-6",
+    "lecture-yinyang-8",
+    "lecture-qiblood-1",
+    "lecture-qiblood-2",
+    "lecture-qiblood-3",
+    "lecture-qiblood-4",
+    "lecture-qiblood-5",
+    "lecture-lifedynamics-1",
+    "lecture-lifedynamics-2",
+    "lecture-lifedynamics-3",
+    "lecture-lifedynamics-4",
+    "lecture-lifedynamics-5",
+    "lecture-lifedynamics-6",
+    "lecture-lifedynamics-7",
+    "lecture-lifedynamics-8",
+    "lecture-lifedynamics-9",
+    "lecture-lifedynamics-10",
+    "lecture-lifedynamics-11",
+    "lecture-lifedynamics-12",
+    "lecture-wuxing-1",
+    "lecture-wuxing-2",
+    "lecture-wuxing-3",
+    "lecture-wuxing-4",
+    "lecture-wuxing-5",
+    "lecture-wuxing-6",
+    "lecture-wuxing-7",
+    "lecture-wuxing-8",
+    "lecture-pathomechanism-1",
+    "lecture-pathomechanism-2",
+    "lecture-pathomechanism-3",
+    "lecture-pathomechanism-4",
+    "lecture-pathomechanism-5",
+    "lecture-pathomechanism-6",
+    "lecture-pathomechanism-7",
+    "lecture-pathomechanism-8",
+    "lecture-pathomechanism-9",
+    "lecture-pathomechanism-10",
+    "lecture-pathomechanism-11",
+    "lecture-pathomechanism-12",
+    "lecture-diagnosis-1",
+    "lecture-diagnosis-2",
+    "lecture-diagnosis-3",
+    "lecture-diagnosis-4",
+    "lecture-diagnosis-5",
+    "lecture-diagnosis-6",
+    "lecture-diagnosis-7",
+    "lecture-diagnosis-8",
+    "lecture-diagnosis-9",
+    "lecture-diagnosis-10",
+    "lecture-diagnosis-11",
+    "lecture-diagnosis-12",
+    "lecture-treatment-1",
+    "lecture-treatment-2",
+    "lecture-treatment-3",
+    "lecture-treatment-4",
+    "lecture-treatment-5",
+    "lecture-treatment-6",
+    "lecture-treatment-7",
+    "lecture-treatment-8",
+    "lecture-treatment-9",
+    "lecture-treatment-10",
+    "lecture-treatment-11",
+    "lecture-treatment-12",
+    "lecture-practice-1",
+    "lecture-practice-2",
+    "lecture-practice-3",
+    "lecture-practice-4",
+    "lecture-practice-5",
+    "lecture-practice-6",
+    "lecture-practice-7",
+    "lecture-practice-8",
+    "lecture-practice-9",
+    "lecture-practice-10",
+    "lecture-practice-11",
+    "lecture-practice-12"
+  ],
+  "changedQuestionIds": [
+    "lecture-yinyang-2-q2",
+    "lecture-yinyang-8-q1",
+    "lecture-qiblood-2-q1",
+    "lecture-qiblood-3-q1",
+    "lecture-qiblood-4-q3",
+    "lecture-qiblood-5-q3",
+    "lecture-lifedynamics-1-q3",
+    "lecture-lifedynamics-6-q2",
+    "lecture-lifedynamics-10-q1",
+    "lecture-wuxing-1-q3",
+    "lecture-wuxing-4-q1",
+    "lecture-wuxing-5-q2",
+    "lecture-wuxing-6-q2",
+    "lecture-wuxing-8-q1",
+    "lecture-pathomechanism-1-q1",
+    "lecture-pathomechanism-6-q2",
+    "lecture-pathomechanism-9-q3",
+    "lecture-pathomechanism-10-q2",
+    "lecture-pathomechanism-12-q1",
+    "lecture-pathomechanism-12-q3",
+    "lecture-diagnosis-3-q3",
+    "lecture-diagnosis-4-q3",
+    "lecture-diagnosis-7-q1",
+    "lecture-diagnosis-8-q3",
+    "lecture-diagnosis-10-q1",
+    "lecture-treatment-2-q2",
+    "lecture-treatment-5-q2",
+    "lecture-treatment-7-q1",
+    "lecture-treatment-10-q1",
+    "lecture-treatment-10-q2",
+    "lecture-practice-7-q1",
+    "lecture-practice-10-q1"
+  ],
+  "integrityChecks": {
+    "passed": true,
+    "comparedWithCommit": "7cd5812",
+    "lecturesCompared": 81,
+    "questionsCompared": 243,
+    "protectedSpecialistQuotes": 41,
+    "unchanged": [
+      "講義・問題IDとURL",
+      "問題文・選択肢・正答・復習節名・合格基準",
+      "見出し文字と順序",
+      "図ID・脚注・本文リンクURLと順序",
+      "参考文献・根拠範囲",
+      "引用ブロック全文",
+      "既存専門確認一覧の引用41件",
+      "HEADの本文・要約・学習内容・解説以外の講義プロパティ"
+    ]
+  },
+  "representativeExamples": [
+    {
+      "lectureId": "lecture-yinyang-1",
+      "field": "whatYouWillLearn.goals[0]",
+      "questionId": null,
+      "before": "陰陽論が、対になる性質の関係や変化を捉える伝統的な説明モデルであることを理解する",
+      "after": "陰陽が、対になる性質の関係や変化を説明する伝統的な考え方であると説明できる",
+      "reason": "対象・用語の意味・説明または比較の手順を明示"
+    },
+    {
+      "lectureId": "lecture-pathomechanism-3",
+      "field": "summary",
+      "questionId": null,
+      "before": "気虚と気機失調を、不足・滞り・上逆・下陥などの異なる観点から学ぶ。架空の訴えを三つに分け、伝統的な候補を立てることと、医学的な原因・治療を確定することの違いを確認する。",
+      "after": "気虚は働きの不足、気滞・気逆・気陥などは滞りや方向、支える働きの違いに着目します。「疲れやすく、食後にお腹が張る」という架空例を使い、本人の訴え・伝統的な候補・追加で確認することを分けます。",
+      "reason": "この講の既存例と学習者が行う確認を明示"
+    },
+    {
+      "lectureId": "lecture-diagnosis-5",
+      "field": "summary",
+      "questionId": null,
+      "before": "望診・聞診で得た特徴を、取得条件・解釈・別の説明・追加確認とともに記録する。",
+      "after": "舌の色や苔、声・呼吸など、見聞きした特徴を記録します。「赤く見えた」と「熱を考えた」を別に書き、照明や直前の飲食などの条件と、次に確認することを添えます。",
+      "reason": "この講の既存例と学習者が行う確認を明示"
+    },
+    {
+      "lectureId": "lecture-lifedynamics-12",
+      "field": "contentMarkdown",
+      "questionId": null,
+      "before": "例えば、脾の運化と飲食物の精微の関係を、教材で学んだ用語を使って説明します。次に、どの役割を根拠にしたか、現代の検査や生理機構については何を確認していないかを添えます。",
+      "after": "例えば「脾の運化は、飲食物の精微を運び変化させる働きとして説明される」と書きます。根拠は教材で学んだ運化の役割です。次に「これは伝統用語の説明で、消化吸収を検査や測定で確認した結果ではない」と、説明の範囲を添えます。",
+      "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+    },
+    {
+      "lectureId": "lecture-treatment-2",
+      "field": "quiz.explanation",
+      "questionId": "lecture-treatment-2-q2",
+      "before": "本講の対象は証・治則・治法・配穴や方法・操作や刺激量・評価の区別です。同じ分類名でも個別条件は異なります。未説明の八法や発汗・投薬を選択させる問題ではありません。",
+      "after": "証は状態の分類候補、配穴や方法は具体的な選択で、別の判断です。同じ証名でも体格・持病・服薬・本人の希望などは異なるため、方法と刺激条件、安全性、評価の計画をそれぞれ検討します。証名だけから一つの配穴は決まりません。",
+      "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+    },
+    {
+      "lectureId": "lecture-treatment-5",
+      "field": "whatYouWillLearn.goals[0]",
+      "questionId": null,
+      "before": "統一比較フォーマット（8項目）を用いて、気の治法を客観的かつ体系的に比較・分析できる",
+      "after": "気の治法について、対象となる失調、治法の目的、所見による根拠、名前だけでは決められない条件を表で比べられる",
+      "reason": "対象・用語の意味・説明または比較の手順を明示"
+    }
+  ],
+  "lectures": [
+    {
+      "id": "lecture-yinyang-1",
+      "title": "陰陽論 レッスン1：陰陽とは何か",
+      "url": "/curriculum/lecture-yinyang-1",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[0]",
+        "whatYouWillLearn.goals[1]"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-yinyang-1-q1",
+        "lecture-yinyang-1-q2",
+        "lecture-yinyang-1-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "陰陽論が、対になる性質の関係や変化を捉える伝統的な説明モデルであることを理解する",
+          "after": "陰陽が、対になる性質の関係や変化を説明する伝統的な考え方であると説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[1]",
+          "before": "動・静、熱・寒、明・暗、機能・物質といった陰陽の基本的属性を対比して把握する",
+          "after": "動と静、熱と寒、明と暗、機能と物質を対にして、伝統的な陰陽の配属を示せる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-yinyang-2",
+      "title": "陰陽論 レッスン2：陰陽は比較によって決まる",
+      "url": "/curriculum/lecture-yinyang-2",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[0]",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-yinyang-2-q2"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-yinyang-2-q1",
+        "lecture-yinyang-2-q2",
+        "lecture-yinyang-2-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "絶対的な陰や絶対的な陽は存在せず、すべては「比較の基準」によって定まる相対性を理解する",
+          "after": "対象に固定した陰・陽を付けるのではなく、何と比べ、どの性質に注目したかを説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "比較する基準がどこにあるのかを定義しなければ、陰陽の判定は下せません。",
+          "after": "陰・陽に分ける前に、何と比べ、温度・位置などのどの性質に注目するかを決めます。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "このように、対象そのものが変わらなくても、**「何と比較しているか」という参照点が変われば、陰陽は容易に反転します。**",
+          "after": "このように、同じ40℃の水でも、**0℃と比べれば陽、100℃と比べれば陰になります。** 対象の温度が変わったのではなく、比べる相手が変わっています。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-yinyang-2-q2",
+          "before": "陰陽可分では、大きな区分の中を別の基準でさらに分けます。この設問は伝統的な部位の配属を学ぶ例であり、解剖学的な位置や病変をその分類で測定できるという意味ではありません。",
+          "after": "まず人体全体を上半身と下半身に分け、次に上半身の中で背部と胸腹部を比べます。伝統的な配属では、背部が陽中の陽、胸腹部が陽中の陰です。部位の分類を学ぶ例であり、解剖学的な位置や病変をその分類で測定することはできません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-yinyang-3",
+      "title": "陰陽論 レッスン3：陰陽はどう関係するか",
+      "url": "/curriculum/lecture-yinyang-3",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[0]",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-yinyang-3-q1",
+        "lecture-yinyang-3-q2",
+        "lecture-yinyang-3-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "相反する性質を対として捉える「対立」を理解する",
+          "after": "温と寒、動と静などの相反する性質を対にして、陰陽対立を説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "kind": "rendered-list-markup",
+          "before": "   - 伝統理論では陰陽の関係を考える材料になりますが",
+          "after": "   伝統理論では陰陽の関係を考える材料になりますが"
+        },
+        {
+          "field": "contentMarkdown",
+          "kind": "rendered-list-markup",
+          "before": "   - 活動と休息の関係を振り返る学習例にできます",
+          "after": "   活動と休息の関係を振り返る学習例にできます"
+        }
+      ]
+    },
+    {
+      "id": "lecture-yinyang-4",
+      "title": "陰陽論 レッスン4：陰陽はどう変化するか",
+      "url": "/curriculum/lecture-yinyang-4",
+      "reviewed": true,
+      "changed": false,
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-yinyang-4-q1",
+        "lecture-yinyang-4-q2",
+        "lecture-yinyang-4-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": "既存の文章で対象と確認手順が示されているため、不要な重複や増量を避けて維持",
+      "changes": []
+    },
+    {
+      "id": "lecture-yinyang-5",
+      "title": "陰陽論 レッスン5：身体を陰陽で捉える",
+      "url": "/curriculum/lecture-yinyang-5",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals[0]"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-yinyang-5-q1",
+        "lecture-yinyang-5-q2",
+        "lecture-yinyang-5-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "比較の基準を変えながら身体を整理する",
+          "after": "上下・表裏・背腹など、比べる部位と基準を示して伝統的な陰陽配属を説明する",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "身体の上下・表裏・背腹について、比較の基準を示して伝統的な配属を整理する",
+          "after": "上下・表裏・背腹のそれぞれについて、どの部位同士を比べて陰・陽に配属したかを示せる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-yinyang-6",
+      "title": "陰陽論 レッスン6：陰陽の偏りを理解する",
+      "url": "/curriculum/lecture-yinyang-6",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals[0]",
+        "whatYouWillLearn.goals[1]",
+        "whatYouWillLearn.goals[2]"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-yinyang-6-q1",
+        "lecture-yinyang-6-q2",
+        "lecture-yinyang-6-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "過剰と不足による偏りを区別する",
+          "after": "陽盛と陰虚、陰盛と陽虚を、過剰と不足の違いから説明する",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "「陰平陽秘」を伝統医学における調和の表現として理解する",
+          "after": "陰平陽秘が、伝統医学で陰陽の調和した状態を表す言葉だと説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[1]",
+          "before": "陽盛と陰虚を、過剰と不足という伝統的な視点で区別する",
+          "after": "陽盛は陽の過剰、陰虚は陰の不足に着目するという違いを説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[2]",
+          "before": "陰盛と陽虚を、過剰と不足という伝統的な視点で区別する",
+          "after": "陰盛は陰の過剰、陽虚は陽の不足に着目するという違いを説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-yinyang-7",
+      "title": "陰陽論 レッスン7：所見を組み合わせて考える",
+      "url": "/curriculum/lecture-yinyang-7",
+      "reviewed": true,
+      "changed": false,
+      "changedFields": [],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-yinyang-7-q1",
+        "lecture-yinyang-7-q2",
+        "lecture-yinyang-7-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": "既存の文章で対象と確認手順が示されているため、不要な重複や増量を避けて維持",
+      "changes": []
+    },
+    {
+      "id": "lecture-yinyang-8",
+      "title": "陰陽論 レッスン8：総合演習・次章への接続",
+      "url": "/curriculum/lecture-yinyang-8",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-yinyang-8-q1"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-yinyang-8-q1",
+        "lecture-yinyang-8-q2",
+        "lecture-yinyang-8-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "ここまでのレッスンでは、陰陽の分類と、その関係・変化を捉える伝統的な考え方を学びました。このレッスンでは、ひとつの学習例を複数の視点から整理し、説明できることと医学的な評価が必要なことを分けます。",
+          "after": "ここまでに学んだ分類・関係・変化を、顔の熱感や足の冷えなどを訴える架空例で振り返ります。どの部位を比べ、どの関係を候補にし、いつからどう変わったかを分けて記録します。伝統理論で説明できることと、医学的な評価が必要なことも区別します。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-yinyang-8-q1",
+          "before": "陰陽論は伝統的な説明モデルです。分類・関係・変化の見方で情報を整理しますが、それだけで医学的な原因や検査値、治療効果が判定できるわけではありません。",
+          "after": "例えば「顔が熱く感じる」は本人の報告、「上下の寒熱を比べる」は伝統的な解釈です。原因や検査値が分からない部分は、未確認として残します。分類・関係・変化で情報を整理しても、医学的な原因や治療効果が分かったことにはなりません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-qiblood-1",
+      "title": "気血津液論 レッスン1：気・血・津液の概観と気の基本作用",
+      "url": "/curriculum/lecture-qiblood-1",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals[0]"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-qiblood-1-q1",
+        "lecture-qiblood-1-q2",
+        "lecture-qiblood-1-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "三つの役割の違いを説明し、気の基本作用を伝統用語として整理できる",
+          "after": "気の働き、血の滋養・滋潤、津液の潤いを比べ、気の五つの作用を役割とともに説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "気・血・津液の基本役割を比較する",
+          "after": "気・血・津液について、働き・滋養・潤いのどの役割に注目する用語かを説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-qiblood-2",
+      "title": "気血津液論 レッスン2：血の基本的な役割",
+      "url": "/curriculum/lecture-qiblood-2",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[2]",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-qiblood-2-q1"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-qiblood-2-q1",
+        "lecture-qiblood-2-q2",
+        "lecture-qiblood-2-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[2]",
+          "before": "血の生成と病態を後の章で学ぶ範囲として位置づける",
+          "after": "血の生成は臓腑・生命機能の章、血虚・瘀血などは病機論で学ぶ内容だと説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "この段階では、**どの役割を伝統理論で説明しているか**を確認しましょう。臓腑の役割を学んだ後、関係の整理を深めます。",
+          "after": "ここでは、血が身体を養い潤す役割と、精神活動を支えるという伝統的な説明を区別して覚えます。臓腑の役割を学んだ後、心神などとの関係を詳しく確認します。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-qiblood-2-q1",
+          "before": "血は滋養・滋潤という役割から学びます。赤血球などの定義や検査値と一対一には対応しません。",
+          "after": "滋養は身体を養い活動を支えること、滋潤は潤いを与えることを説明する伝統用語です。血をこの二つの役割から学びます。赤血球などの成分の定義や、血液検査の数値と一対一には対応しません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-qiblood-3",
+      "title": "気血津液論 レッスン3：津液の基本的な役割",
+      "url": "/curriculum/lecture-qiblood-3",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[1]",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-qiblood-3-q1"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-qiblood-3-q1",
+        "lecture-qiblood-3-q2",
+        "lecture-qiblood-3-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[1]",
+          "before": "津液の潤いと正常な巡りの概観を整理する",
+          "after": "津液の正常な役割を、生じる・巡り潤す・変化して排泄されるという三つの点から説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "津液の正常な役割を学ぶ際は、次の三つの視点で整理します。",
+          "after": "津液について、何に由来し、どこを潤し、どう排泄と関わるかを、次の三つに分けて学びます。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-qiblood-3-q1",
+          "before": "津と液は性質と役割の伝統的な対比です。現代医学の体液区分と一対一には対応しません。",
+          "after": "津は比較的さらさらして体表などを潤し、液は比較的濃厚で深部を潤すと説明されます。これは性質と役割の伝統的な区分で、津・液を細胞内液・細胞外液などと一対一に対応させる定義ではありません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-qiblood-4",
+      "title": "気血津液論 レッスン4：気・血・津液の正常な関係",
+      "url": "/curriculum/lecture-qiblood-4",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[1]",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-qiblood-4-q3"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-qiblood-4-q1",
+        "lecture-qiblood-4-q2",
+        "lecture-qiblood-4-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[1]",
+          "before": "気と津液、血と津液の正常な関係を整理する",
+          "after": "気の働きと津液の生成・巡り・排泄の関係、血と津液の由来や潤いの関係を説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-qiblood-4-q3",
+          "before": "用語の標準化、比喩、研究結果は確認する範囲が異なります。関係図を医学的な因果関係の証明へ読み替えません。",
+          "after": "図の矢印は、気・血・津液を伝統理論でどう関係づけるかを示します。人体内の因果関係を測定した結果ではありません。用語の意味をそろえる標準化、役割を覚える比喩、実際に何を調べたかという研究結果は、別に確認します。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-qiblood-5",
+      "title": "気血津液論 レッスン5：基本用語を使う一判断演習",
+      "url": "/curriculum/lecture-qiblood-5",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.canDo",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-qiblood-5-q3"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-qiblood-5-q1",
+        "lecture-qiblood-5-q2",
+        "lecture-qiblood-5-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "説明できる範囲を一つ選び、その根拠と判断できないことを言葉にできる",
+          "after": "架空例の活動と温かさの報告を気の役割で説明し、その根拠と、まだ判断できないことを挙げられる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-qiblood-5-q3",
+          "before": "記載がないことは、働きがないことでも正常を確認したことでもありません。用語から推測を埋めず、分かる範囲と未確認の範囲を分けます。",
+          "after": "血や津液の情報が書かれていない場合、分かるのは「情報がない」ということです。働いていないとも、正常だと確認されたとも言えません。記載のない状態を伝統用語から補わず、未確認として残します。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-1",
+      "title": "生命活動を全体として捉える",
+      "url": "/curriculum/lecture-lifedynamics-1",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals[0]",
+        "whatYouWillLearn.goals[1]",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-lifedynamics-1-q3"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-1-q1",
+        "lecture-lifedynamics-1-q2",
+        "lecture-lifedynamics-1-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "基本役割と連携の説明を区別し、この章で学ぶ問いを整理する",
+          "after": "気血津液の役割、営衛の分担、三焦の領域、昇降出入の方向を、異なる説明の視点として区別する",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "陰陽・気血津液・臓腑の基本を振り返る",
+          "after": "陰陽は性質の比較、気血津液は基本役割、臓腑は名称と役割を説明するという既習の違いを示せる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[1]",
+          "before": "役割・分担・領域・方向という説明の視点を分ける",
+          "after": "気血水・営衛・三焦・昇降出入が、それぞれ何の役割・分担・領域・方向を説明するかを示せる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "気の役割を「内と外の役割分担」として具体化する",
+          "after": "営気は内を養い、衛気は外を守る役割として比べる",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "諸機能を「運動の方向性（ダイナミクス）」として整理する",
+          "after": "昇・降・出・入の四つの方向で臓腑の役割を比べる",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-lifedynamics-1-q3",
+          "before": "正常な役割と連携が本章の中心です。未習の応用を先取りせず、順に前提を学びます。",
+          "after": "この章では、飲食と呼吸、営衛、三焦、昇降出入などの正常な役割と連携を学びます。証を決めたり経穴を選んだりする応用は、病機・診断・治則の前提を学んだ後の課題です。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-2",
+      "title": "精・気・血・津液・神の関係",
+      "url": "/curriculum/lecture-lifedynamics-2",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[2]"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-2-q1",
+        "lecture-lifedynamics-2-q2",
+        "lecture-lifedynamics-2-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[2]",
+          "before": "五神の配当を整理し、臓器・神経機能や治療効果の測定と同一視しない",
+          "after": "心の神・肝の魂・脾の意・肺の魄・腎の志を対応させ、配当と臓器・神経機能や治療効果の測定を区別する",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-3",
+      "title": "飲食と呼吸から生命を支える",
+      "url": "/curriculum/lecture-lifedynamics-3",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[0]"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-3-q1",
+        "lecture-lifedynamics-3-q2",
+        "lecture-lifedynamics-3-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "胃の受納・腐熟と脾の運化・昇清を役割で区別する",
+          "after": "胃が受け入れ変化させる受納・腐熟と、脾の運化・昇清を、それぞれの役割から説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-4",
+      "title": "営気と衛気の役割",
+      "url": "/curriculum/lecture-lifedynamics-4",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-4-q1",
+        "lecture-lifedynamics-4-q2",
+        "lecture-lifedynamics-4-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "**衛気の内側でのアンカー（支え）**",
+          "after": "**内側で衛気を支える**",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "**営気を外側で守るシールド（盾）**",
+          "after": "**営気を外側で守る**",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-5",
+      "title": "三焦で全身の働きを整理する",
+      "url": "/curriculum/lecture-lifedynamics-5",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.canDo"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-5-q1",
+        "lecture-lifedynamics-5-q2",
+        "lecture-lifedynamics-5-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "三焦の三領域と役割を説明し、特定の解剖組織や治療効果と同一視しない",
+          "after": "上焦・中焦・下焦に関連づける領域と役割を一つずつ挙げ、特定の解剖組織や治療効果とは区別する",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-6",
+      "title": "臓腑の表裏関係を理解する",
+      "url": "/curriculum/lecture-lifedynamics-6",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[0]",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-lifedynamics-6-q2"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-6-q1",
+        "lecture-lifedynamics-6-q2",
+        "lecture-lifedynamics-6-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "既習の臓と腑の役割を陰陽の対比として振り返る",
+          "after": "臓の蔵する役割と、腑の受け入れ・伝化・排泄の役割を、陰陽の対として説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-lifedynamics-6-q2",
+          "before": "表裏の配当と医学的な臓器間の機序を同一視しません。必要な医療評価を分類や自己判断の処置で置き換えません。",
+          "after": "肺と大腸は表裏として配当されますが、一方の症状が他方を引き起こしたと確認されたわけではありません。伝統的な組合せと、医学的な臓器間の機序を区別します。分類や自己判断の処置で必要な医療評価を置き換えません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-7",
+      "title": "昇降出入で機能をつなぐ",
+      "url": "/curriculum/lecture-lifedynamics-7",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[1]",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-7-q1",
+        "lecture-lifedynamics-7-q2",
+        "lecture-lifedynamics-7-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[1]",
+          "before": "脾の昇清と胃の降濁、肝と肺、心と腎の関係を対比する",
+          "after": "脾の昇清と胃の降濁を対にして説明し、肝と肺、心と腎でも上・下の方向を比べられる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "脾胃は人体の中心（お腹）にある「ギア（歯車）」です。これは受け入れ・運化・送り出しの関係を覚える比喩です。",
+          "after": "脾胃を「ギア（歯車）」にたとえると、受け入れ・運化・送り出しが関係することを覚えやすくなります。これは役割の関係を学ぶ比喩です。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-8",
+      "title": "活動と休息のリズムを理解する",
+      "url": "/curriculum/lecture-lifedynamics-8",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.canDo",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-8-q1",
+        "lecture-lifedynamics-8-q2",
+        "lecture-lifedynamics-8-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "日夜の役割を伝統的な説明として述べ、睡眠の訴えと原因・医学的な機序を分けられる",
+          "after": "昼の外側と夜の内側という運行の説明を比べ、実際の睡眠時刻・経過の記録と原因の判断を分けられる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "東洋医学における睡眠の定義は極めて明快です。",
+          "after": "睡眠と覚醒は、陽気が内側へ入ることと外側へ出ることを対にして説明されます。次の引用では、眠ることを「臥」、目覚めることを「寤」と表しています。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-9",
+      "title": "季節・環境への適応を理解する",
+      "url": "/curriculum/lecture-lifedynamics-9",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[0]"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-9-q1",
+        "lecture-lifedynamics-9-q2",
+        "lecture-lifedynamics-9-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "春生・夏長・秋収・冬蔵を季節の学習上の表現として整理する",
+          "after": "春の生じる、夏の成長、秋の収める、冬の蔵するという特徴を、春生・夏長・秋収・冬蔵の言葉で説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-10",
+      "title": "正常な調節と、失調の入口を区別する",
+      "url": "/curriculum/lecture-lifedynamics-10",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.goals[0]",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-lifedynamics-10-q1"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-10-q1",
+        "lecture-lifedynamics-10-q2",
+        "lecture-lifedynamics-10-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "日常の変化と持続する訴えを、経過や生活への影響から比較する。正気・虚実は伝統的な整理として学び、検査結果や医薬品の適応をその分類だけで判断しません。",
+          "after": "日常の変化と続く訴えを、いつ始まり、休息でどう変わり、生活にどんな支障があるかという点から比べます。正気・虚実の伝統的な説明と、検査結果や医薬品の適応の判断を分けて学びます。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "一時的な変化と持続する訴えを経過から比較する",
+          "after": "休息の前後で症状がどう変わり、どのくらい続いたかを記録して、一時的な変化と続く訴えを比べられる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "では、目の前の症状が生理的な調整反応なのか、病理的な失調の始まりなのかを、私たちはどう判断すればよいのでしょうか？ 以下は確認する情報を整理する三つの観点です。これだけで正常・異常を判定する基準ではありません。",
+          "after": "訴えを聞いたら、休息の前後、活動や食事との関係、ほかの変化を確認します。次の表は、経過を記録する三つの観点です。この三点だけで、生理的な調整反応か病理的な失調か、正常か異常かを判定することはできません。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-lifedynamics-10-q1",
+          "before": "確認できたのは経過の変化です。可逆性や刺激との関係は確認する観点ですが、正常・異常を決める診断条件ではありません。",
+          "after": "確認できたのは、休息の前後で訴えが変化したという経過です。休息後に戻るか、活動などとどう関係するかは記録する項目ですが、その情報だけで正常・異常を決めることはできません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-11",
+      "title": "生命システムを統合して説明する",
+      "url": "/curriculum/lecture-lifedynamics-11",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.goals[0]"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-11-q1",
+        "lecture-lifedynamics-11-q2",
+        "lecture-lifedynamics-11-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "生成・分配・防御・排泄・貯蔵の役割から、複数の臓腑の関係をまとめます。学習モデルの説明と、検証していない医学的な因果・治療効果を分けます。",
+          "after": "生成・分配・防御・排泄・貯蔵の五つの役割に、学んだ臓腑の用語を当てはめて振り返ります。津液の例で肺・脾・腎・三焦の関係を説明し、その説明だけでは医学的な原因や治療効果は確認できないことを確かめます。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "生成・分配・防御・排泄・貯蔵を役割の観点から整理する",
+          "after": "生成・分配・防御・排泄・貯蔵の五つの役割について、関連する臓腑の用語を挙げて説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-lifedynamics-12",
+      "title": "総合演習・次章への接続",
+      "url": "/curriculum/lecture-lifedynamics-12",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[0]",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-lifedynamics-12-q1",
+        "lecture-lifedynamics-12-q2",
+        "lecture-lifedynamics-12-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "生成・巡り・排泄の説明を正常な役割として整理する",
+          "after": "生成・巡り・排泄から一つ選び、関係する用語と臓腑の役割を添えて説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "例えば、脾の運化と飲食物の精微の関係を、教材で学んだ用語を使って説明します。次に、どの役割を根拠にしたか、現代の検査や生理機構については何を確認していないかを添えます。",
+          "after": "例えば「脾の運化は、飲食物の精微を運び変化させる働きとして説明される」と書きます。根拠は教材で学んだ運化の役割です。次に「これは伝統用語の説明で、消化吸収を検査や測定で確認した結果ではない」と、説明の範囲を添えます。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        }
+      ]
+    },
+    {
+      "id": "lecture-wuxing-1",
+      "title": "五行論 レッスン1：五行とは何か ― 五つの分類を学ぶ",
+      "url": "/curriculum/lecture-wuxing-1",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[1]",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-wuxing-1-q3"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-wuxing-1-q1",
+        "lecture-wuxing-1-q2",
+        "lecture-wuxing-1-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[1]",
+          "before": "陰陽の比較と五行の分類・関係の視点を分ける",
+          "after": "陰陽は対になる性質を比べ、五行は五つの分類と関係を説明するという違いを示せる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "この章の基本課題は、**何を分類し、どの関係を説明し、何は判断できないか**を示すことです。",
+          "after": "例えば「肝を木に配当する」「木は火を生み支える関係にある」「この配当だけでは肝臓病の有無は分からない」と、**分類・関係・判断できないこと**を分けて書きます。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-wuxing-1-q3",
+          "before": "図や工学の言葉は関係を覚える助けになりますが、分類・比喩・測定や研究の結果を分けます。",
+          "after": "回路やフィードバックは、五行の関係を覚えるための比喩として使います。図が描けたことや似た言葉があることを、臓器間の信号を測定した結果、恒常性の機序や治療効果が確認された結果とは扱いません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-wuxing-2",
+      "title": "五行論 レッスン2：五行の基本的な性質 ― 曲直・炎上・稼穡・従革・潤下",
+      "url": "/curriculum/lecture-wuxing-2",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[0]",
+        "whatYouWillLearn.goals[1]"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-wuxing-2-q1",
+        "lecture-wuxing-2-q2",
+        "lecture-wuxing-2-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "五行の性質に関する用語と読み方を整理する",
+          "after": "曲直・炎上・稼穡・従革・潤下の読み方と、各語がどの五行の性質を表すかを示せる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[1]",
+          "before": "自然のイメージを分類の手がかりとして用いる",
+          "after": "潤し下へ向かう性質は水の潤下、種をまき収穫するイメージは土の稼穡など、注目した性質と分類を説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-wuxing-3",
+      "title": "五行論 レッスン3：五行の相互関係 ― 相生・相剋・相乗・相侮",
+      "url": "/curriculum/lecture-wuxing-3",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[1]",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-wuxing-3-q1",
+        "lecture-wuxing-3-q2",
+        "lecture-wuxing-3-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[1]",
+          "before": "母・子の呼び方が相生の関係によって決まることを理解する",
+          "after": "木生火では木が母・火が子、火生土では火が母・土が子というように、選ぶ関係によって母子が変わることを説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "**制化（せいか）**は、相生と相剋の関係を合わせて調和を説明する伝統用語です。",
+          "after": "**制化（せいか）**は、相生による支える関係と、相剋による制約する関係を合わせて、調和を説明する伝統用語です。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        }
+      ]
+    },
+    {
+      "id": "lecture-wuxing-4",
+      "title": "五行論 レッスン4：既習の五臓を五行で整理する",
+      "url": "/curriculum/lecture-wuxing-4",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.canDo",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-wuxing-4-q1"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-wuxing-4-q1",
+        "lecture-wuxing-4-q2",
+        "lecture-wuxing-4-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "五臓の基本役割を五行の対応表で整理し、配当の意味と限界を説明できる",
+          "after": "肝は木など五臓と五行の対応を示し、既習の役割を表に書き、配当だけでは診断できないことを説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "この三つを区別すれば、配当表を覚えたことを、臓腑のすべての働きを説明できたことに置き換えずに済みます。",
+          "after": "「肝は木」という配当、「肝の疏泄・蔵血」という役割、「木生火・木剋土」という関係は、答えている問いが違います。配当表を覚えただけで、臓腑のすべての働きを説明できたとは考えません。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-wuxing-4-q1",
+          "before": "この表は、臓腑論で学んだ名称と役割を五行の配当で整理するものです。",
+          "after": "例えば肝を木、心を火に配当し、それぞれの欄に疏泄・蔵血、主血脈・蔵神などの既習の役割を書きます。この表は、臓腑論で学んだ名称と役割を五行で整理するために使います。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-wuxing-5",
+      "title": "五行論 レッスン5：五官・五体・五華の伝統的な配当",
+      "url": "/curriculum/lecture-wuxing-5",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[0]",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-wuxing-5-q2"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-wuxing-5-q1",
+        "lecture-wuxing-5-q2",
+        "lecture-wuxing-5-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "五官・五体・五華を五臓の配当と合わせて整理する",
+          "after": "目・筋・爪を肝に配当する例などで、五官・五体・五華の各項目を五臓と対応させられる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-wuxing-5-q2",
+          "before": "観察・記載された情報と配当は別です。この二つだけで医学的な原因や証は確定できません。",
+          "after": "「目に乾燥感がある」は本人の訴え、「目を肝に配当する」は伝統的な分類です。訴えと分類は別の情報で、この二つだけから肝臓病などの医学的な原因や証を確定することはできません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-wuxing-6",
+      "title": "五行論 レッスン6：五神・五志の伝統的な配当",
+      "url": "/curriculum/lecture-wuxing-6",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.goals[0]",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-wuxing-6-q2"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-wuxing-6-q1",
+        "lecture-wuxing-6-q2",
+        "lecture-wuxing-6-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "五神・五志の基本用語を配当表として整理します。精神活動の所在や感情による病気の機序を証明する説明、人格判定、治療の選択とは区別し、病態への応用は後の章につなぎます。",
+          "after": "五神は精神活動、五志は感情に関する伝統用語です。五臓との配当を表で確かめ、精神活動が臓器に存在する証明や、感情から病気・人格・治療を判断することと区別します。病態への応用は後の章で学びます。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "五神と五志の用語の違いを整理する",
+          "after": "五神は精神活動に関する分類、五志は感情の配当という用語の違いを説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-wuxing-6-q2",
+          "before": "伝統的な配当は精神機能の測定や物質の所在の証明ではありません。",
+          "after": "魂・神・意・魄・志を五臓に配当することは、精神活動と身体を伝統理論で関係づける説明です。精神機能の測定結果や、その物質が同名の臓器に存在する証明ではありません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-wuxing-7",
+      "title": "五行論 レッスン7：季節・気候・五味の伝統的な配当",
+      "url": "/curriculum/lecture-wuxing-7",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[1]"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-wuxing-7-q1",
+        "lecture-wuxing-7-q2",
+        "lecture-wuxing-7-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[1]",
+          "before": "長夏・土用の説明が教材によって異なることを知る",
+          "after": "長夏・土用・梅雨を常に同じ期間とせず、教材によって季節との関係の説明が異なることを示せる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-wuxing-8",
+      "title": "五行論 レッスン8：関係の説明・根拠・保留の総合演習",
+      "url": "/curriculum/lecture-wuxing-8",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.canDo",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-wuxing-8-q1"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-wuxing-8-q1",
+        "lecture-wuxing-8-q2",
+        "lecture-wuxing-8-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "五行の関係を説明し、その根拠と判断できないことを分けられる",
+          "after": "土生金などの関係を配当と矢印の向きから説明し、その関係だけでは原因や治療効果を判断できないことを示せる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-wuxing-8-q1",
+          "before": "相生の向きが関係の説明の根拠です。現実の病因や介入の効果を確認した根拠とは別です。",
+          "after": "土から金へ向かう相生関係を学んだことが、「土生金」と説明する根拠です。脾を土、肺を金に配当しても、胃腸と呼吸器の病気の因果関係や、介入の効果を確認したことにはなりません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-pathomechanism-1",
+      "title": "病機とは何か",
+      "url": "/curriculum/lecture-pathomechanism-1",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.goals[0]",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-pathomechanism-1-q1"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-1-q1",
+        "lecture-pathomechanism-1-q2",
+        "lecture-pathomechanism-1-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "病因・病機・症状・証を、背景・変化の仮説・現れ・現時点の分類として区別し、架空例の記録を整理する。",
+          "after": "残業の増加と食後の張り・げっぷを記した架空例で、病因・病機・症状・証を区別します。本人が話したこと、伝統理論で考えた説明、まだ確認していないことを分けて記録します。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "背景の候補と確認された原因を区別する",
+          "after": "残業が増えたという背景の記録と、それが症状の原因だと確かめたことを区別できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "背景の候補も、確認された原因とは限りません。",
+          "after": "この例の残業は背景の候補です。残業の増加と症状の時期が分かっても、残業が原因だったと確認されたわけではありません。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-pathomechanism-1-q1",
+          "before": "四つは異なる整理の層です。伝統的な説明を、検査で確認された生理機序や医学的な病名と同一視しません。背景の候補も、それだけで原因と確定した情報ではありません。",
+          "after": "病因では何が背景に関わったか、病機ではどの働きがどう失調したと考えたか、症状では何が現れ報告されたか、証では現在の状態をどう分類したかを書きます。背景の候補は確認された原因とは限らず、伝統的な説明を検査で確認された生理機序や医学的な病名と同一視しません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-pathomechanism-2",
+      "title": "発症を左右する条件",
+      "url": "/curriculum/lecture-pathomechanism-2",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-2-q1",
+        "lecture-pathomechanism-2-q2",
+        "lecture-pathomechanism-2-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "正気・邪気を伝統的な整理として学び、六淫・七情・飲食・労倦の基本を比較する。身体の状態と生活背景を多角的に確認し、原因の候補と事実を分ける。免疫・感染モデルとの同一視や、用語だけによる治療選択はしない。",
+          "after": "正気は身体の正常な働き、邪気は病気に関わる要因を説明する伝統用語です。六淫・七情・飲食・労倦を比べ、出来事と体調の変化を別々に記録します。用語だけで感染の有無や治療を判断しません。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-pathomechanism-3",
+      "title": "気の不足と運動の失調",
+      "url": "/curriculum/lecture-pathomechanism-3",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.canDo"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-3-q1",
+        "lecture-pathomechanism-3-q2",
+        "lecture-pathomechanism-3-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "気虚と気機失調を、不足・滞り・上逆・下陥などの異なる観点から学ぶ。架空の訴えを三つに分け、伝統的な候補を立てることと、医学的な原因・治療を確定することの違いを確認する。",
+          "after": "気虚は働きの不足、気滞・気逆・気陥などは滞りや方向、支える働きの違いに着目します。「疲れやすく、食後にお腹が張る」という架空例を使い、本人の訴え・伝統的な候補・追加で確認することを分けます。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "不足と運動の失調を比較し、訴えから考えた候補と未確認事項を分けて説明できる",
+          "after": "働きの不足と滞り・方向の失調を比べ、本人の訴え、気虚・気滞などの候補、まだ確認していないことを分けて説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-pathomechanism-4",
+      "title": "津液代謝の失調",
+      "url": "/curriculum/lecture-pathomechanism-4",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.goals[0]"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-4-q1",
+        "lecture-pathomechanism-4-q2",
+        "lecture-pathomechanism-4-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "津液の失調を、不足と停滞の観点から学ぶ。水湿・痰・飲・水滞の用語を比較し、必ず進む悪化段階や現代医学の病態と同一視せず、架空例の訴えと要確認事項を整理する。",
+          "after": "津液の不足と、水湿・痰・飲・水滞による停滞の説明を比べます。「口が乾き、夕方に足がむくむ感じがある」という架空例で、訴えと候補、まだ確認していないことを記録します。これらの用語を悪化の順序や現代医学の病態と同一視しません。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "津液の正常な滋潤作用と、生成・輸布・排泄という伝統的な整理を復習する",
+          "after": "津液が潤す役割と、生成・輸布・排泄に関連づける肺・脾・腎・三焦の役割を説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-pathomechanism-5",
+      "title": "血の失調と瘀血の形成",
+      "url": "/curriculum/lecture-pathomechanism-5",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-5-q1",
+        "lecture-pathomechanism-5-q2",
+        "lecture-pathomechanism-5-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "血虚と瘀血を、養い潤す働きの不足と停滞という観点から学ぶ。気・寒熱・外傷との関係を比較し、貧血・血栓・微小循環障害と同一視せず、架空例の訴えと確認事項を整理する。",
+          "after": "血虚は養い潤す働きの不足、瘀血は血の停滞に着目する伝統用語です。気・寒熱・外傷との関係を比べ、架空例の痛みの記録から言えることと確認が必要なことを分けます。貧血・血栓・微小循環障害とは区別します。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-pathomechanism-6",
+      "title": "寒熱と陰陽の失調",
+      "url": "/curriculum/lecture-pathomechanism-6",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.goals[1]",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-pathomechanism-6-q2"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-6-q1",
+        "lecture-pathomechanism-6-q2",
+        "lecture-pathomechanism-6-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "寒熱と虚実を別の軸として整理し、四分類と混在・真仮を比較する。伝統的な関係モデルと体温・神経・循環の測定を分け、架空例で観察と解釈の範囲を練習する。",
+          "after": "寒熱は熱や冷えの傾向、虚実は不足や過剰という別の観点で比べます。実熱・虚熱・実寒・虚寒と、寒熱が混在する場合や見かけと解釈が異なる場合を学び、本人の訴えと測定値を分けて記録します。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[1]",
+          "before": "上熱下寒を部位ごとの訴えを比較する候補として読む",
+          "after": "顔の熱感と足の冷えなど、部位ごとの訴えを残し、上熱下寒を候補にとどめて説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-pathomechanism-6-q2",
+          "before": "これは伝統的な寒熱分類です。陽や陰を実測した熱量や体液量そのものとは扱いません。発熱の原因、脱水、感染症などの医学的評価は別に必要です。",
+          "after": "実熱は陽・邪気の偏盛、虚熱は陰の不足に伴う相対的な熱として区別します。熱感の強弱だけによる区分ではありません。陽・陰を実測した熱量や体液量とは扱わず、発熱の原因、脱水、感染症などは別に医学的な評価が必要です。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-pathomechanism-7",
+      "title": "外的要因から病態を考える",
+      "url": "/curriculum/lecture-pathomechanism-7",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.goals[2]"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-7-q1",
+        "lecture-pathomechanism-7-q2",
+        "lecture-pathomechanism-7-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "六淫と外感の分類を、既習の正常な働きとの違いとして学ぶ。六経・衛気営血の枠組みと、医学的な感染経路・病原体・重症度の評価を分け、記録の前後だけで伝変を確定しない。",
+          "after": "風・寒・暑・湿・燥・火と、六経弁証・衛気営血弁証の分類を学びます。「昨日は寒気、今日は熱感」という記録から分かる経過と、まだ確認できない伝変を区別します。これらの分類で感染経路・病原体・重症度は判断しません。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[2]",
+          "before": "傷寒論の六経と温病の衛気営血を体系内の分類として比較する",
+          "after": "六経弁証の六つの名称と、衛気営血弁証の四つの名称を挙げ、別の体系として区別できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-pathomechanism-8",
+      "title": "情志・飲食・労倦から病態を考える",
+      "url": "/curriculum/lecture-pathomechanism-8",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.goals[0]"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-8-q1",
+        "lecture-pathomechanism-8-q2",
+        "lecture-pathomechanism-8-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "七情・飲食・労逸という伝統的な病因の観点を学び、生活と症状の前後関係だけで原因や病名を決めない。架空例で記録・仮説・不明点を整理し、身体と感情の相互関係を検討する。",
+          "after": "七情・飲食・労逸を、感情・食事・活動と休息に関する伝統的な病因の説明として学びます。忙しさ、眠りにくさ、不規則な食事を記した架空例で、出来事と症状の時期を確かめ、前後関係だけで原因を決めない練習をします。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "七情と気機の関係を伝統的な説明として整理する",
+          "after": "怒を気上、思を気結、恐を気下に関連づける例で、七情と気機の伝統的な関係を説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-pathomechanism-9",
+      "title": "病理が波及する仕組み",
+      "url": "/curriculum/lecture-pathomechanism-9",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.canDo",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-pathomechanism-9-q3"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-9-q1",
+        "lecture-pathomechanism-9-q2",
+        "lecture-pathomechanism-9-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "気血津液と臓腑の関係を、発症順の記録と区別しながら波及の候補として整理する。",
+          "after": "母病及子・子病犯母・相乗・相侮について、五行モデル内の関係の向きを比べます。食欲低下が先、不眠が後という架空の記録を使い、発症順が分かることと、一方が他方の原因と分かることを区別します。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "気血津液と臓腑の関係を、発症順の記録と区別しながら波及の候補として整理する。",
+          "after": "発症順をそのまま記録し、気血津液・五行の関係図で考えた波及の候補と分けて書ける",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-pathomechanism-9-q3",
+          "before": "これらは伝統分類の異なる側面です。必ず進む段階ではなく、関係図から検査結果や腫瘍などの病変の有無を決めることもできません。",
+          "after": "気滞は気の滞り、痰湿や瘀血はそれぞれ異なる側面を説明する伝統用語です。気滞から痰湿、瘀血へ必ず進むわけではありません。関係図だけから検査値が正常か、腫瘍などの病変があるかを決めることもできません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-pathomechanism-10",
+      "title": "慢性化と複合病態",
+      "url": "/curriculum/lecture-pathomechanism-10",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.canDo",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-pathomechanism-10-q2"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-10-q1",
+        "lecture-pathomechanism-10-q2",
+        "lecture-pathomechanism-10-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "不足と停滞、寒と熱などの併存を、伝統的な関係として整理する。時系列の三観点と架空例を用い、悪循環の仮説を確定した病因や治療の保証にしない。",
+          "after": "発症前後の出来事、症状が変わる条件、症状が続く背景を分けて確かめます。疲労と痛み、熱感と冷えなどが併存する場合も、それぞれを記録し、伝統的な説明の候補を一つの原因や治療の保証に置き換えません。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "複数の訴えを保ち、発症前後と現在の背景を分け、説明候補を見直せる",
+          "after": "併存する訴えをそれぞれ記録し、発症前後の出来事、現在症状が変わる条件、症状が続く背景を比べて候補を見直せる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-pathomechanism-10-q2",
+          "before": "始まった時と現在では関連する要因が異なる可能性があります。三つの視点で経過を整理し、それぞれを原因として確定した情報と区別します。",
+          "after": "発症前後に何があったか、現在何の前後で症状が変わるか、症状が続く背景は何かを別々に記録します。始まった時と現在で関係する要因は違う可能性があり、記録された前後関係を確定した原因とは扱いません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-pathomechanism-11",
+      "title": "病機の仮説を比較する",
+      "url": "/curriculum/lecture-pathomechanism-11",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.canDo",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-11-q1",
+        "lecture-pathomechanism-11-q2",
+        "lecture-pathomechanism-11-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "同じ症状に複数の候補を挙げ、支持・反証・不足情報を区別して仮説を更新する。",
+          "after": "「身体が重だるい」という架空例で、気虚と湿熱の候補を比べます。候補に合う情報、合わない情報、まだ聞いていない情報を分けて書き、追加の確認によって最初の判断を見直す練習をします。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "同じ症状に複数の候補を挙げ、支持・反証・不足情報を区別して仮説を更新する。",
+          "after": "同じ症状について候補ごとに合う情報・合わない情報・未確認事項を書き、追加情報で判断を見直せる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "数だけで多数決をせず、情報の確かさと意味を考えます。",
+          "after": "候補に合う情報が何件あるかだけで決めません。本人の報告か観察所見か、いつどの条件で得たか、その情報が候補を見直す理由になるかを確かめます。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        }
+      ]
+    },
+    {
+      "id": "lecture-pathomechanism-12",
+      "title": "総合演習・次章への接続",
+      "url": "/curriculum/lecture-pathomechanism-12",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[0]",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-pathomechanism-12-q1",
+        "lecture-pathomechanism-12-q3"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-pathomechanism-12-q1",
+        "lecture-pathomechanism-12-q2",
+        "lecture-pathomechanism-12-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "発生・波及・維持の三つの視点で学習例を整理する",
+          "after": "発生はいつ何が変わったか、波及は複数の訴えの関係、維持は続く背景として、架空例の記録を分けられる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-pathomechanism-12-q1",
+          "before": "三つの軸は仮説を整理する視点です。伝統的な連鎖図を必然的な医学因果として扱いません。",
+          "after": "発生ではいつ何が変わったか、波及では複数の訴えをどう関係づけるか、維持では続く状態に何が関わると考えたかを整理します。どれも仮説であり、別の説明も残します。図の順序を必ず進む医学的な因果関係には読み替えません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-pathomechanism-12-q3",
+          "before": "候補を確認する問いと未確認の事項を渡します。安全確認と必要な医療評価を優先します。",
+          "after": "候補に合う情報、合わない情報、まだ聞いていないこと、判断を保留した理由を次章へ渡します。分類名だけで済ませず、安全確認と必要な医療評価を先に行うための問いも残します。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-diagnosis-1",
+      "title": "診断・弁証の目的と全体像",
+      "url": "/curriculum/lecture-diagnosis-1",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-1-q1",
+        "lecture-diagnosis-1-q2",
+        "lecture-diagnosis-1-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "病名・症状・病機・証・治療方針を区別し、安全確認から再評価までの学習手順を説明する。",
+          "after": "本人の報告、観察した所見、医学的な病名、伝統的な病機・証、治療方針を区別します。安全確認から情報収集、候補の比較、記録と再評価へ進み、新しい情報が出たときに何を確かめ直すかを学びます。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-diagnosis-2",
+      "title": "安全性と対応範囲を先に確認する",
+      "url": "/curriculum/lecture-diagnosis-2",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.canDo"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-2-q1",
+        "lecture-diagnosis-2-q2",
+        "lecture-diagnosis-2-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "after": "弁証の前に確認する症状の経過・急変・持病・服薬・医療評価を挙げ、適切な受診勧奨、施術の保留、紹介時の情報共有ができる",
+          "reason": "リスク管理を本文にある確認・保留・情報共有の行動として具体化",
+          "before": "東洋医学的弁証を進める前に確認すべき安全情報を列挙し、適切な受診勧奨とリスク管理ができる"
+        }
+      ]
+    },
+    {
+      "id": "lecture-diagnosis-3",
+      "title": "主訴と時間軸を整理する",
+      "url": "/curriculum/lecture-diagnosis-3",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-diagnosis-3-q3"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-3-q1",
+        "lecture-diagnosis-3-q2",
+        "lecture-diagnosis-3-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "主訴を本人と確認し、発症・経過・増悪軽減・生活への支障を時間軸で要約する。",
+          "after": "本人が最も困っていることを聞き、いつ始まり、何の前後で症状が変わり、生活にどう影響するかを記録します。「仕事がつらい」を「約20分で作業を中断する」のように具体化し、追加で聞くことを決めます。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-diagnosis-3-q3",
+          "before": "時間軸から確認できるのは報告された経過です。前後関係は原因の候補を考える材料ですが、初発の真因や本標の因果を確定するものではありません。",
+          "after": "時間軸から分かるのは、本人が報告した発症と経過です。前後の出来事は原因を考える材料ですが、最初に症状を起こした原因や、本と標の因果関係が確認されたことにはなりません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-diagnosis-4",
+      "title": "問診を設計する",
+      "url": "/curriculum/lecture-diagnosis-4",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-diagnosis-4-q3"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-4-q1",
+        "lecture-diagnosis-4-q2",
+        "lecture-diagnosis-4-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "開かれた質問と具体的な確認を組み合わせ、候補に合う情報と合わない情報を集める。",
+          "after": "「だるい日の様子を教えてください」から始め、時期・頻度・活動との関係を具体的に聞く練習をします。候補に合う答えへ誘導せず、合わない情報も集め、服薬・既往歴・生活背景を記録します。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "前講で整理した時間軸の空欄を埋めます。症状を伝統用語に言い換えるためだけでなく、安全性、本人の希望、複数の候補を比較する情報を得るために質問します。",
+          "after": "前講で未確認だった発症時期や症状が変わる条件について、質問を選びます。安全性と本人の希望を確認し、最初の候補に合う情報だけでなく、別の候補と比べるための情報も集めます。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-diagnosis-4-q3",
+          "before": "開かれた質問で患者の文脈と全体像を受容し、徐々に閉じた質問で寒熱・飲食・睡眠・排泄などの客観的鑑別点を絞り込むのが標準面接技法です。",
+          "after": "開かれた質問で本人の症状や生活背景を幅広く聞き、その後に閉じた質問で寒熱・飲食・睡眠・排泄などの客観的鑑別点を絞り込むのが標準面接技法です。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-diagnosis-5",
+      "title": "望診・聞診で観察する",
+      "url": "/curriculum/lecture-diagnosis-5",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-5-q1",
+        "lecture-diagnosis-5-q2",
+        "lecture-diagnosis-5-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "望診・聞診で得た特徴を、取得条件・解釈・別の説明・追加確認とともに記録する。",
+          "after": "舌の色や苔、声・呼吸など、見聞きした特徴を記録します。「赤く見えた」と「熱を考えた」を別に書き、照明や直前の飲食などの条件と、次に確認することを添えます。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-diagnosis-6",
+      "title": "切診の情報を扱う",
+      "url": "/curriculum/lecture-diagnosis-6",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-6-q1",
+        "lecture-diagnosis-6-q2",
+        "lecture-diagnosis-6-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "切診で触れた特徴と伝統的な解釈を分け、取得条件と他の情報を照合する。",
+          "after": "脈の深さ・速さ・幅・力や、腹部・経穴で触れた特徴を記録します。安静や体位、触れる圧などの条件を添え、伝統的な解釈と分けて他の四診情報と比べます。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-diagnosis-7",
+      "title": "八綱で病態を整理する",
+      "url": "/curriculum/lecture-diagnosis-7",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.goals[0]",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-diagnosis-7-q1"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-7-q1",
+        "lecture-diagnosis-7-q2",
+        "lecture-diagnosis-7-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "表裏・寒熱・虚実と陰陽の総括を区別し、混在や判定保留を根拠とともに記録する。",
+          "after": "表裏は病位、寒熱は病性、虚実は不足や過剰の関係、陰陽は全体のまとめ方として学びます。顔の熱感と足の冷えを記した架空例で、部位ごとの訴えと、根拠が足りず判断を保留する点を記録します。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "表裏・寒熱・虚実は異なる問いとして比較する",
+          "after": "表裏は病位、寒熱は病性、虚実は不足や過剰の関係を考える問いとして、根拠を別々に示せる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-diagnosis-7-q1",
+          "before": "表裏は病位、寒熱は病性、虚実は勢力関係を整理する軸です。陰陽は全体を統括する枠組みとして学びます。各軸に対応する所見と不足情報を別に示します。",
+          "after": "表裏は病位、寒熱は病性、虚実は正気の不足と病邪・停滞などの勢力関係を考える軸です。各欄に、その判断に使った所見とまだ足りない情報を書きます。陰陽はこれらを含む全体をまとめる枠組みです。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-diagnosis-8",
+      "title": "気血津液の異常を検討する",
+      "url": "/curriculum/lecture-diagnosis-8",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.canDo",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-diagnosis-8-q3"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-8-q1",
+        "lecture-diagnosis-8-q2",
+        "lecture-diagnosis-8-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "気血津液の伝統的な候補を比較し、所見の組合せ・観察条件・支持情報と反証を整理する。血栓や貧血などの医学的評価と区別し、患者の説明と観察したことを分けて記録する。",
+          "after": "気・血・津液の不足や停滞の候補を、症状の組合せや観察条件から比べます。本人の原因についての考え、実際の訴え、観察した特徴を別に記録し、候補に合う点・合わない点・不明点を残します。貧血や血栓などの医学的評価とは区別します。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "複数の所見を保ち、伝統的な候補の支持情報・反証・不明点を比較できる",
+          "after": "複数の所見を残し、気血津液の候補ごとに合う点・合わない点・まだ確認していないことを書いて比べられる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-diagnosis-8-q3",
+          "before": "性状は候補を比較する材料であり、分類や病名を確定する検査ではありません。突然の激しい痛みなどは安全性と必要な医療評価を先に検討します。",
+          "after": "痛み方、部位、時間による変化をそれぞれ記録して、気滞・瘀血などの候補と比べます。痛みの性状だけで分類や病名は確定しません。突然の激しい痛みなどでは、安全性と必要な医療評価を先に検討します。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-diagnosis-9",
+      "title": "臓腑・経絡との関係を検討する",
+      "url": "/curriculum/lecture-diagnosis-9",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.canDo"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-9-q1",
+        "lecture-diagnosis-9-q2",
+        "lecture-diagnosis-9-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "臓腑と経絡の観点を比較し、症状の部位・経過・他所見から伝統的な候補を整理する。",
+          "after": "臓腑の役割と経絡の走行を、症状の記録と比べる方法を学びます。例えば側頭部の痛みを少陽の部位と関連づけても、その位置だけでは医学的な原因や治療する経穴は決まらないことを確認します。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "臓腑と経絡の観点を比較し、症状の部位・経過・他所見から伝統的な候補を整理する。",
+          "after": "臓腑の役割と経絡の走行を症状の部位・経過・他の所見と比べ、候補にした理由と不明点を書ける",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-diagnosis-10",
+      "title": "仮説を比較し、矛盾を扱う",
+      "url": "/curriculum/lecture-diagnosis-10",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-diagnosis-10-q1"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-10-q1",
+        "lecture-diagnosis-10-q2",
+        "lecture-diagnosis-10-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "仮説と合わない情報を残し、観察条件・別の候補・不足情報を見直す。",
+          "after": "舌の色が照明によって違って見えるなど、最初の候補と合わない情報を扱います。観察条件を確かめ、別の候補と比べ、まだ分からない点と次に確認することを書いて判断を見直します。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "| A | どの報告・所見か | 予想とどこが違うか | 条件・経過・他所見 |\n| B | どの報告・所見か | 予想とどこが違うか | 条件・経過・他所見 |",
+          "after": "| A | 候補と合う報告・所見 | 候補では説明しにくい報告・所見 | 未確認の観察条件・経過・他の所見 |\n| B | 候補と合う報告・所見 | 候補では説明しにくい報告・所見 | 未確認の観察条件・経過・他の所見 |",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-diagnosis-10-q1",
+          "before": "情報は数だけでなく観察条件、信頼性、重要性を確認します。支持・反証・不足を同じ表に置き、追加確認や保留の必要性を比較します。",
+          "after": "候補Aに合う情報が二つあっても、数だけでAを選びません。各情報がいつどの条件で得られ、どの程度確かなものか、判断にどんな意味があるかを確認します。A・B両方について、合う点・合わない点・未確認事項を同じ表で比べます。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-diagnosis-11",
+      "title": "証を統合し、判断を記録する",
+      "url": "/curriculum/lecture-diagnosis-11",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.canDo"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-11-q1",
+        "lecture-diagnosis-11-q2",
+        "lecture-diagnosis-11-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "主な候補・併存候補・判断の不確かさを整理し、SOAP形式で引き継ぐ。",
+          "after": "主な候補、同時に考える候補、判断の不確かさを記録します。頭痛と胃もたれの架空例を、S：本人の報告、O：観察所見、A：評価・解釈、P：計画に分けて書く練習をします。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "主な候補・併存候補・判断の不確かさを整理し、SOAP形式で引き継ぐ。",
+          "after": "主な候補と併存する候補、その根拠と不確かな点を書き、SOAPの各欄に報告・所見・評価・計画を分けられる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-diagnosis-12",
+      "title": "総合演習・次章への接続",
+      "url": "/curriculum/lecture-diagnosis-12",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-diagnosis-12-q1",
+        "lecture-diagnosis-12-q2",
+        "lecture-diagnosis-12-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "contentMarkdown",
+          "before": "同じ訴えが複数の候補で説明され得ることを保留します。",
+          "after": "同じ訴えから複数の候補を考えられるため、現時点では一つに決めません。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-1",
+      "title": "治療の目的と適応範囲",
+      "url": "/curriculum/lecture-treatment-1",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-treatment-1-q1",
+        "lecture-treatment-1-q2",
+        "lecture-treatment-1-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "本人の希望を症状・生活機能・参加の目標に分け、評価方法と対応範囲を共有する。",
+          "after": "本人の希望を、症状の軽減、仕事や家事のしやすさ、趣味などの再開という目標に分けます。いつ、何を比べて目標の達成を確かめるかと、対応できる範囲を本人と相談する練習をします。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "「元気になる」だけでなく、具体的で評価可能な活動を選び、実行可能性、本人にとっての意味、評価時期を相談します。",
+          "after": "「元気になる」という希望を聞いたら、再開したい仕事・家事・趣味などの活動を尋ねます。その活動を実行できるか、本人にとって大切か、いつ何を比べて確かめるかを相談します。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-2",
+      "title": "証から治則・治法へつなぐ",
+      "url": "/curriculum/lecture-treatment-2",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[1]",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-treatment-2-q2"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-treatment-2-q1",
+        "lecture-treatment-2-q2",
+        "lecture-treatment-2-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[1]",
+          "before": "同じ証であっても、患者の体力や状況に応じて異なる治則・治法が導かれる柔軟性を理解する",
+          "after": "同じ証の候補でも、体調・服薬・本人の不安などが違えば、治則・治法を選ぶ理由も変わることを説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "観察した情報と未確認の事項を整理したうえで、次の6段階を検討します。",
+          "after": "まず、本人の報告と観察した所見を記録し、まだ確認していないことを書きます。そのうえで、次の表の六つの問いを順に検討します。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-treatment-2-q2",
+          "before": "本講の対象は証・治則・治法・配穴や方法・操作や刺激量・評価の区別です。同じ分類名でも個別条件は異なります。未説明の八法や発汗・投薬を選択させる問題ではありません。",
+          "after": "証は状態の分類候補、配穴や方法は具体的な選択で、別の判断です。同じ証名でも体格・持病・服薬・本人の希望などは異なるため、方法と刺激条件、安全性、評価の計画をそれぞれ検討します。証名だけから一つの配穴は決まりません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-3",
+      "title": "補瀉・寒熱の原則を理解する",
+      "url": "/curriculum/lecture-treatment-3",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-treatment-3-q1",
+        "lecture-treatment-3-q2",
+        "lecture-treatment-3-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "補瀉・温清・正治と反治の伝統的な意味を比較し、実際の方法や安全性の判断と区別する。",
+          "after": "不足を補う補法と、過剰・停滞を取り除く瀉法、寒熱への対応を比べます。正治と反治の意味を確かめ、これらの伝統的な方針から実際の手技・刺激量や安全性が自動的に決まるわけではないことを学びます。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-4",
+      "title": "本治・標治と優先順位",
+      "url": "/curriculum/lecture-treatment-4",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.canDo"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-treatment-4-q1",
+        "lecture-treatment-4-q2",
+        "lecture-treatment-4-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "複数の病態が併存する症例において、何を先に扱い何を後回しにするかの論理的根拠と時間軸計画を示せる",
+          "after": "複数の病態が併存する症例で、何を先に扱い何を後にするか、その根拠と見直す時期を示せる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-5",
+      "title": "気への治法を整理する",
+      "url": "/curriculum/lecture-treatment-5",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.goals[0]",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-treatment-5-q2"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-treatment-5-q1",
+        "lecture-treatment-5-q2",
+        "lecture-treatment-5-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "統一比較フォーマット（8項目）を用いて、気の治法を客観的かつ体系的に比較・分析できる",
+          "after": "気の治法について、対象となる失調、治法の目的、所見による根拠、名前だけでは決められない条件を表で比べられる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-treatment-5-q2",
+          "before": "三つは異なる伝統的な目的です。気逆と降気の用語対応を確認する問題で、嘔吐やしゃっくりの原因・病名を分類だけで決めたり、個別の治療を指示したりしません。",
+          "after": "気逆は上逆、降気・降逆はその上逆を扱う目的として対応させます。昇提は下陥、固摂は漏出に着目する別の目的です。用語の対応を学ぶ問題で、嘔吐やしゃっくりの原因・病名や個別の治療を決める指示ではありません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-6",
+      "title": "血・津液への治法を整理する",
+      "url": "/curriculum/lecture-treatment-6",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-treatment-6-q1",
+        "lecture-treatment-6-q2",
+        "lecture-treatment-6-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "養血・活血・滋陰生津・利水化痰の目的を比較し、医学的な診断や個別の介入と区別する。",
+          "after": "養血は不足、活血は停滞に着目するという目的の違いを比べます。潤いの不足を扱う滋陰・生津と、停滞を扱う利水・化痰についても学び、治法名から検査値や個別の薬・施術の適否を決めないことを確認します。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-7",
+      "title": "臓腑の機能に介入する",
+      "url": "/curriculum/lecture-treatment-7",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-treatment-7-q1"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-treatment-7-q1",
+        "lecture-treatment-7-q2",
+        "lecture-treatment-7-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "五臓の治法名と臓腑相関を伝統体系内で整理する。五行穴の母子規則を学び、現代研究の条件・限界や医学的評価を分け、モデルから一律の配穴・薬・施術を導かない。",
+          "after": "五臓の働きと治法名を対応させ、疎肝健脾や培土生金などがどの臓腑の関係を説明するかを比べます。五行穴の母子規則と、実際の方法・効果・安全性の確認を分けて学びます。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-treatment-7-q1",
+          "before": "臓腑相関は伝統的な説明モデルとして扱います。治法の名称と実際の生理機序や機能回復を同一視せず、効果や安全性は別に評価します。",
+          "after": "例えば培土生金では、脾の土と肺の金という関係と、二つの役割を関連づける治法の目的を説明します。その説明だけで何が分からないかも残します。治法名を実際の生理機序や機能回復と同一視せず、効果・安全性は別に評価します。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-8",
+      "title": "経絡・経穴を選択する",
+      "url": "/curriculum/lecture-treatment-8",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.canDo",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-treatment-8-q1",
+        "lecture-treatment-8-q2",
+        "lecture-treatment-8-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "症例に対して複数の配穴候補を立案し、それぞれを選定した論理的理由を明確に説明できる",
+          "after": "症例で複数の配穴候補を挙げ、局所・遠隔・要穴のどの考え方で選んだか、その理由を説明できる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "似ている走行を見つけた場合も、どこが似ていてどこが異なるか、どの資料・測定で確認したかを示します。解剖学的な対応の仮説と、患者にとって有益な変化があったかという評価を分けましょう。",
+          "after": "走行を比べるときは、一致する部位と異なる部位、比較に使った資料や測定を示します。走行が似ているという仮説と、症状や生活への支障が軽くなったかという効果の評価は、別々に確かめます。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-9",
+      "title": "介入方法・刺激量の検討事項と限界",
+      "url": "/curriculum/lecture-treatment-9",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-treatment-9-q1",
+        "lecture-treatment-9-q2",
+        "lecture-treatment-9-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "方法・部位・本人の状態・安全上の制約を整理し、追加確認や実施を保留する理由を説明する。個別の刺激量の決定や実技技能の習得は、この講の到達目標に含めない。",
+          "after": "方法・部位・本人の状態ごとに、施術前に確認することを書き出します。情報が足りないときに実施を保留する理由も説明します。個別の刺激量の決定や実技技能の習得は、この講の目標に含めません。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-10",
+      "title": "生活背景・病因への対応を組み込む",
+      "url": "/curriculum/lecture-treatment-10",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-treatment-10-q1",
+        "lecture-treatment-10-q2"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-treatment-10-q1",
+        "lecture-treatment-10-q2",
+        "lecture-treatment-10-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "生活と症状の関係を確認し、本人が選べる小さな調整と医療連携を計画に含める。",
+          "after": "仕事・育児・睡眠・服薬と症状の経過を確認し、本人が実行できる生活の調整を相談します。短い休憩を試す架空例で、続けられるか、症状や作業への支障が変わるかを記録し、必要な医療連携を計画します。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-treatment-10-q1",
+          "before": "生活背景と症状の関係は候補として確認し、本人の事情に合う最小単位の調整や選択肢を相談します。一律の指示や原因の決めつけに代えず、実行後の変化も評価します。",
+          "after": "夜勤や育児で変えにくいことを確認し、今の生活で本人が試せる小さな調整を一緒に選びます。生活背景と症状の関係は候補として扱い、一律の指示や原因の決めつけを避けます。実行できたかと、その後の症状の変化も確認します。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-treatment-10-q2",
+          "before": "生活背景は関連する可能性のある情報です。生活調整で根本治療が完結する、調整しなければ再発が不可避という断定を避け、本人の文脈と必要な医療を確認します。",
+          "after": "仕事・育児・睡眠などは、症状との関係を確かめる情報です。本人の事情と必要な医療を確認し、生活を変えれば根本治療が終わる、変えなければ必ず再発するとは断定しません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-11",
+      "title": "評価・継続・変更・終了を設計する",
+      "url": "/curriculum/lecture-treatment-11",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-treatment-11-q1",
+        "lecture-treatment-11-q2",
+        "lecture-treatment-11-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "after": "症状、できる動作、睡眠や仕事への影響を客観的に評価する時期と指標を決めます。直後の変化と日常生活で続く変化を分け、継続・変更・終了・他科紹介のどれを検討するかを学びます。悪化を好転反応と決めず、有害事象と病状の変化も確認します。",
+          "reason": "評価の対象と時点、四つの判断と悪化時の確認を既存本文から示す",
+          "before": "治療への反応を客観的に評価する時期と指標を定め、「継続・変更・終了・他科紹介」の4分岐意思決定モデルと有害事象への対応基準を学びます。"
+        }
+      ]
+    },
+    {
+      "id": "lecture-treatment-12",
+      "title": "総合演習・次章への接続",
+      "url": "/curriculum/lecture-treatment-12",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "whatYouWillLearn.goals[2]",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-treatment-12-q1",
+        "lecture-treatment-12-q2",
+        "lecture-treatment-12-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "44歳男性の架空例で、本人の報告と未確認事項を分け、7項目の初期計画書を作成する。次章は別の43歳女性の症例で、情報の追加と判断の更新を練習する。",
+          "after": "44歳男性の架空例で、本人の報告と未確認事項を分け、7項目の初期計画書を作ります。判断を保留する理由、次に確認すること、変化を評価する方法を記入します。次章では別の43歳女性の症例を読み、判断を更新する練習をします。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[2]",
+          "before": "確認する手段の目的と不足を比較し、本人の希望と安全性を優先する",
+          "after": "医療評価を確認することと活動記録を読むことについて、それぞれ何が分かり何は分からないかを比べ、本人の希望と安全性を優先する",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "安全情報の確認と、生活の記録は、どちらか一方で済ませる代替治療ではありません。何を知るために使うかを比較します。",
+          "after": "安全情報の確認と生活の記録は、知りたいことが異なります。どちらか一方だけで確認を済ませず、次の表で、それぞれ何が分かり、何は分からないかを比べます。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        }
+      ]
+    },
+    {
+      "id": "lecture-practice-1",
+      "title": "臨床の全体プロセスを確認する",
+      "url": "/curriculum/lecture-practice-1",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-practice-1-q1",
+        "lecture-practice-1-q2",
+        "lecture-practice-1-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "共通症例で、情報収集から計画の見直しまでの判断手順を説明する。",
+          "after": "43歳女性の頭痛の架空例を、この章の各講で順に追います。情報が増えるたびに、安全性、説明の候補、目標と計画を見直す手順を確認します。Webで判断の理由を書く練習と、実際の施術技能を区別します。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-practice-2",
+      "title": "症例情報を読み解く",
+      "url": "/curriculum/lecture-practice-2",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-practice-2-q1",
+        "lecture-practice-2-q2",
+        "lecture-practice-2-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "頭痛の症例を、本人の報告・観察所見・原因についての考え・未確認事項に分けて要約する。",
+          "after": "43歳女性の頭痛の記録を、本人の訴え、観察所見、原因についての本人の考え、未確認事項に分けます。薬の名前などが書かれていない場合に、何を追加で聞くかも記録します。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-practice-3",
+      "title": "最初の対応を決める",
+      "url": "/curriculum/lecture-practice-3",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-practice-3-q1",
+        "lecture-practice-3-q2",
+        "lecture-practice-3-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "現在の症状と未確認の安全情報から、緊急対応・医療相談・追加確認を区別する。",
+          "after": "頭痛の症例に受診歴と服薬の情報を加え、現在の安全性を確認します。過去のMRI結果で新しい症状を否定せず、緊急対応・医療相談・追加確認のどれを優先するか、その理由を説明する練習をします。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-practice-4",
+      "title": "問診と観察を進める",
+      "url": "/curriculum/lecture-practice-4",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-practice-4-q1",
+        "lecture-practice-4-q2",
+        "lecture-practice-4-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "共通症例で複数の伝統的な候補を挙げ、候補を比較する質問と記録を作る。",
+          "after": "頭痛の症例で肝気鬱結・脾気虚・血虚・痰湿を候補として比べます。仕事の日と休みの日、活動と休息の前後などを聞き、候補に合う情報も合わない情報も集める質問を作ります。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "「ストレスがありますよね」と同意を求めると、想定した答えに寄りやすくなります。",
+          "after": "「ストレスがありますよね」と尋ねると、本人が質問に合わせた答えをしやすくなります。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        }
+      ]
+    },
+    {
+      "id": "lecture-practice-5",
+      "title": "仮説を比較して弁証する",
+      "url": "/curriculum/lecture-practice-5",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-practice-5-q1",
+        "lecture-practice-5-q2",
+        "lecture-practice-5-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "頭痛の共通症例について、候補ごとの支持情報・合わない点・不足情報を比較し、暫定的な要約を書く。",
+          "after": "頭痛の症例に舌・脈・頸肩部の観察記録を加え、四つの候補を表で比べます。各候補に合う点・説明しきれない点・確認が必要な点を書き、次の計画へ渡す暫定的な要約を作ります。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-practice-6",
+      "title": "治療目標と優先順位を決める",
+      "url": "/curriculum/lecture-practice-6",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-practice-6-q1",
+        "lecture-practice-6-q2",
+        "lecture-practice-6-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "本人の希望を、具体的な活動・指標・評価時期を含む目標に置き換える。",
+          "after": "「来週のプレゼン準備を進めたい」という本人の希望から、生活目標と評価方法を相談します。夕方の痛み、作業時間、中断回数をいつ比べるかを決め、達成を保証する約束と区別します。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-practice-7",
+      "title": "方法・配穴・刺激条件を計画する",
+      "url": "/curriculum/lecture-practice-7",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals[0]",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-practice-7-q1"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-practice-7-q1",
+        "lecture-practice-7-q2",
+        "lecture-practice-7-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "目標・候補・個別の安全条件を分けて比較する",
+          "after": "本人の生活目標、局所・全身に着目する二つの案、各案で確認する安全条件を分けて比べられる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "whatYouWillLearn.goals[0]",
+          "before": "目標・候補・個別の安全条件を分けて比較する",
+          "after": "夕方の作業への支障を目標に、プランA・Bで何を確認し、どの変化を評価するかを比べられる",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "[受診と安全性の案内](/safety)。本ページは個別の実技手順を指定しません。",
+          "after": "受診の目安は[受診と安全性の案内](/safety)で確認できます。本ページは個別の実技手順を指定しません。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-practice-7-q1",
+          "before": "経穴名だけでなく、目的、伝統的な選定理由、方法や刺激条件を考える個別の安全確認を示します。Webでの設計判断は実施技能や安全の保証ではありません。",
+          "after": "経穴名に加え、何を目標にしたか、どの伝統的な理由で候補にしたか、方法や刺激条件についてどの安全情報が必要かを説明します。Webで計画の理由を書けることは、実施技能や安全性の保証ではありません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-practice-8",
+      "title": "説明・合意・記録を行う",
+      "url": "/curriculum/lecture-practice-8",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-practice-8-q1",
+        "lecture-practice-8-q2",
+        "lecture-practice-8-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "目的・限界・リスク・選択肢を本人に説明し、共通症例のSOAP記録を作る。",
+          "after": "夕方の頭痛と仕事への支障をどう評価するか、不確かな点やリスク、他の選択肢を本人に説明する練習をします。本人との合意と、報告・観察・評価・計画を分けたSOAP記録を作ります。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-practice-9",
+      "title": "実施中・実施後の反応を評価する",
+      "url": "/curriculum/lecture-practice-9",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-practice-9-q1",
+        "lecture-practice-9-q2",
+        "lecture-practice-9-q3"
+      ],
+      "requiresSpecialistReview": true,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "施術直後の反応を同じ条件で比較し、症状の軽減と安全性を別々に評価する。",
+          "after": "同じ座位で尋ねた痛みの点数などを、施術の直前と直後で比べます。痛みが軽くなったことと、新しい不調がないかの確認を分け、持続時間や日常の作業への影響は後で確かめます。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-practice-10",
+      "title": "次回の計画を修正する",
+      "url": "/curriculum/lecture-practice-10",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary",
+        "quiz.explanation"
+      ],
+      "changedQuestionIds": [
+        "lecture-practice-10-q1"
+      ],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-practice-10-q1",
+        "lecture-practice-10-q2",
+        "lecture-practice-10-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "直後と1週間後の経過を比べ、安全性・目標・本人の希望から次の計画を修正する。",
+          "after": "直後の痛みの軽減と、1週間後の夕方の症状・作業時間を比べます。残る症状、通院の負担、服薬や仕事の変化も記録し、本人の希望と安全性を踏まえて次の計画を見直します。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        },
+        {
+          "field": "quiz.explanation",
+          "questionId": "lecture-practice-10-q1",
+          "before": "直後、数日後、現在を時間軸で分け、何が変化し何が戻ったかを記します。安全性、生活背景、仮説や方法も見直し、単一時点だけで継続・変更を確定しません。",
+          "after": "直後、数日後、現在の記録を分け、痛みと生活への支障がそれぞれどう変わったかを比べます。安全性、仕事や服薬の変化、最初の候補や方法も見直し、一つの時点だけで継続・変更を決めません。",
+          "reason": "設問の対象と正答の理由を本文の既存定義・例から説明"
+        }
+      ]
+    },
+    {
+      "id": "lecture-practice-11",
+      "title": "経過全体を管理する",
+      "url": "/curriculum/lecture-practice-11",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "summary"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-practice-11-q1",
+        "lecture-practice-11-q2",
+        "lecture-practice-11-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "summary",
+          "before": "経過と本人の希望に応じて、継続・間隔変更・終了と再相談の条件を話し合う。",
+          "after": "8週間後の症例の記録で、生活目標、残る症状、通院の負担、本人の希望を確かめます。継続・間隔変更・終了の理由と、症状が変わったときの再相談や受診の条件を話し合う練習をします。",
+          "reason": "この講の既存例と学習者が行う確認を明示"
+        }
+      ]
+    },
+    {
+      "id": "lecture-practice-12",
+      "title": "総合ケース演習・修了課題",
+      "url": "/curriculum/lecture-practice-12",
+      "reviewed": true,
+      "changed": true,
+      "changedFields": [
+        "whatYouWillLearn.canDo",
+        "contentMarkdown"
+      ],
+      "changedQuestionIds": [],
+      "reviewedFields": [
+        "summary",
+        "whatYouWillLearn.topics",
+        "whatYouWillLearn.canDo",
+        "whatYouWillLearn.goals",
+        "contentMarkdown",
+        "quiz.explanation"
+      ],
+      "reviewedQuestionIds": [
+        "lecture-practice-12-q1",
+        "lecture-practice-12-q2",
+        "lecture-practice-12-q3"
+      ],
+      "requiresSpecialistReview": false,
+      "retainedReason": null,
+      "changes": [
+        {
+          "field": "whatYouWillLearn.canDo",
+          "before": "異なる架空例で安全性を優先する判断を説明する",
+          "after": "68歳男性の架空例で、肩への施術より先に医療評価を優先する理由と、次に取る行動を説明する",
+          "reason": "対象・用語の意味・説明または比較の手順を明示"
+        },
+        {
+          "field": "contentMarkdown",
+          "before": "これまで学んだすべての知識は、バラバラの断片ではありません。\n用語の理解、情報の整理、安全性の確認、計画と再評価をつなげるための学習です。",
+          "after": "これまでの用語を使って記録を読み、安全性を確認し、判断と計画の理由を説明します。新しい情報が出たら、その記録に戻って判断を見直します。",
+          "reason": "既存の比較例・確認項目を示し、主語や対象が不明な文を改稿"
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "editorialAndAssessment": "passed",
+    "quizQuality": "passed",
+    "curriculumEvidence": "passed",
+    "diagramConnections": "passed",
+    "medicalSafety": "passed",
+    "actualQuizHandlerAndGrading": "passed",
+    "diffCheck": "passed",
+    "build": "親担当の結合ビルドで確認"
+  },
+  "postRenderQa": {
+    "lectureId": "lecture-yinyang-3",
+    "formattingEdits": 2,
+    "medicalWordsAndConditionsUnchanged": true,
+    "parsedBlockCountUnchanged": true,
+    "actualHeadingIndicesUnchanged": true,
+    "reason": "番号付き項目の説明の先頭に余分な「-」が表示されるため、本文中の入れ子記号だけを除去。"
+  }
+}

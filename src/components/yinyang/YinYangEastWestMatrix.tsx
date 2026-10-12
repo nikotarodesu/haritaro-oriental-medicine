@@ -11,7 +11,7 @@ export default function YinYangEastWestMatrix() {
         <div>
           <span className="text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>画像解説⑧：東西医学の相補マトリクス</span>
+            <span>画像解説⑧：医療と補完的ケアを併用する条件</span>
           </span>
           <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
             必要な医療評価と補完的ケアの併用を考える
@@ -101,7 +101,7 @@ export default function YinYangEastWestMatrix() {
         <table className="w-full text-xs text-left">
           <thead className="bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-bold border-b border-[#E5DEC9] dark:border-[#2A3B4A]">
             <tr>
-              <th className="p-3.5 font-serif w-28">病期ステージ</th>
+              <th className="p-3.5 font-serif w-28">病期・状況</th>
               <th className="p-3.5 font-serif text-[#C45A4A] dark:text-[#F87171]">現代医学による評価・治療</th>
               <th className="p-3.5 font-serif text-[#1E3A5F] dark:text-[#60A5FA]">補完的ケアを検討する条件</th>
               <th className="p-3.5 font-serif">併用時の考え方</th>
