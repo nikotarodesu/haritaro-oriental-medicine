@@ -294,12 +294,12 @@ export default function HaiketsuPracticePage() {
             
             {/* スコア・ステータスカード（点数による断定を排し、構成バランスの可視化へ） */}
             <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-6 shadow-sm space-y-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-xs text-[#737C77] dark:text-[#8899A6] block font-medium">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0">
+                  <span className="text-sm text-[#737C77] dark:text-[#8899A6] block font-medium">
                     配穴の構成バランス（教材モデル分析）
                   </span>
-                  <div className="flex items-center gap-2 mt-1">
+                  <div className="mt-2 flex flex-col items-start gap-2">
                     <span className={`text-sm sm:text-base font-bold px-3 py-1 rounded-full ${
                       analysis.status === "optimal" 
                         ? "bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300" 
@@ -309,13 +309,13 @@ export default function HaiketsuPracticePage() {
                     }`}>
                       {analysis.statusText}
                     </span>
-                    <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                    <span className="text-sm leading-relaxed text-[#737C77] dark:text-[#8899A6]">
                       ※臨床効果の断定ではなく教材例との対比指標
                     </span>
                   </div>
                 </div>
 
-                <div className="text-right text-xs text-[#737C77] dark:text-[#8899A6]">
+                <div className="shrink-0 text-left text-sm text-[#737C77] dark:text-[#8899A6] sm:text-right">
                   <p>選択中: <strong className="text-[#232826] dark:text-[#FAF8F5] text-base">{selectedPointIds.length}</strong> 穴</p>
                   <p className="text-[11px] mt-0.5">（基本32穴パレット）</p>
                   <p className="mt-1 text-xs">{getPrescriptionCountLabel(selectedPointIds.length)}</p>
