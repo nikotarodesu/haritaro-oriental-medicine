@@ -422,7 +422,7 @@ export default function KokushiDashboard() {
             return (
               <div
                 key={item.question.id}
-                className="p-5 sm:p-6 rounded-2xl border border-[#E8E1D1] dark:border-[#263542] bg-[#FAF8F5] dark:bg-[#121920] space-y-4 transition-all"
+                className="review-question p-5 sm:p-6 rounded-2xl border border-[#E8E1D1] dark:border-[#263542] bg-[#FAF8F5] dark:bg-[#121920] space-y-4 transition-all"
               >
                 {/* 問題ヘッダー */}
                 <div className="flex flex-wrap items-center justify-between gap-2">
@@ -459,7 +459,7 @@ export default function KokushiDashboard() {
                       } else if (userChoice === optIdx) {
                         optStyle = "bg-rose-50 dark:bg-[#281315] border-rose-500 text-rose-950 dark:text-rose-200";
                       } else {
-                        optStyle = "opacity-50 border-gray-200 dark:border-gray-800 text-gray-500";
+                        optStyle = "border-gray-200 dark:border-gray-700 text-slate-700 dark:text-slate-300";
                       }
                     } else if (userChoice === optIdx) {
                       optStyle = "bg-[#EBF3EF] dark:bg-[#1A2E26] border-[#1E3D34] dark:border-[#74BA9E] text-[#1E3D34] dark:text-[#74BA9E] font-bold shadow-xs";
@@ -471,12 +471,12 @@ export default function KokushiDashboard() {
                         type="button"
                         onClick={() => handleSelectOption(item.question.id, optIdx)}
                         disabled={isSub}
-                        className={`w-full p-3.5 rounded-xl border text-left text-xs sm:text-sm flex items-start gap-3 transition-all cursor-pointer ${optStyle}`}
+                        className={`quiz-option min-h-11 focus-visible:outline-2 focus-visible:outline-offset-4 w-full p-3.5 rounded-xl border text-left text-xs sm:text-sm flex items-start gap-3 transition-all cursor-pointer ${optStyle}`}
                       >
                         <span className="font-mono font-bold text-xs shrink-0 mt-0.5">
                           {["A", "B", "C"][displayIdx]}.
                         </span>
-                        <span className="flex-1 leading-relaxed">{opt}</span>
+                        <span className="flex-1 leading-relaxed">{opt}{isSub && (optIdx === item.question.correctIndex || userChoice === optIdx) && <strong className="mt-1 block">{optIdx === item.question.correctIndex ? "正解" : "選んだ回答（不正解）"}</strong>}</span>
                         {isSub && optIdx === item.question.correctIndex && (
                           <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                         )}
@@ -499,12 +499,12 @@ export default function KokushiDashboard() {
                   </div>
                 ) : (
                   /* 解説 ＆ 講義復習ジャンプ（提出後） */
-                  <div className={`p-4 rounded-xl space-y-3 animate-fadeIn text-xs sm:text-sm ${
+                  <div className={`review-explanation p-4 rounded-xl space-y-3 animate-fadeIn text-xs sm:text-sm ${
                     isCorrect
                       ? "bg-emerald-50 dark:bg-[#142820] border border-emerald-200 dark:border-emerald-800 text-emerald-950 dark:text-emerald-100"
                       : "bg-rose-50 dark:bg-[#281517] border border-rose-200 dark:border-rose-900 text-rose-950 dark:text-rose-100"
                   }`}>
-                    <div className="flex items-center gap-2 font-bold">
+                    <div className="quiz-result flex items-center gap-2 font-bold">
                       {isCorrect ? (
                         <>
                           <CheckCircle2 className="w-5 h-5 text-emerald-600" />
@@ -517,7 +517,7 @@ export default function KokushiDashboard() {
                         </>
                       )}
                     </div>
-                    <p className="leading-relaxed pl-7">{item.question.explanation}</p>
+                    <h4 className="quiz-explanation-title font-bold">解説</h4><p className="quiz-explanation-body">{item.question.explanation}</p>
                     <QuestionEvidence lectureId={item.group.lectureId} revision={questionRevision(item.question.question, item.question.options, item.question.correctIndex, item.question.explanation)} />
 
                     <div className="pt-2 border-t border-emerald-200/50 dark:border-emerald-800/50 flex flex-wrap items-center justify-between gap-2 pl-7">

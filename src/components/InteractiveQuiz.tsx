@@ -274,7 +274,11 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
     }
   }, [courseNextAction, activeCourseJourney?.course.slug, nextLecture, router]);
 
-  // キーボードショートカット (1, 2, 3 / A, B, C / Enter / R)
+  const [focusedQuestionId, setFocusedQuestionId] = useState<string | null>(null);
+  const currentQuestion = quiz.questions.find(q => q.id === focusedQuestionId)
+    ?? quiz.questions.find(q => selectedAnswers[q.id] === undefined);
+
+  // キーボードショートカット (数字 / 英字 / Enter / R)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // フォーム入力中はスキップ
@@ -287,7 +291,9 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
         target?.tagName === 'A' ||
         target?.isContentEditable;
       if (isInput || target?.closest?.('input, textarea, select, button, a, summary, [contenteditable], [role="dialog"], [role="button"], [role="link"], [role="textbox"], [role="combobox"], [role="listbox"]')) return;
-      if (!isMounted || e.defaultPrevented || e.isComposing || e.repeat || e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+      if (!isMounted || e.defaultPrevented || e.isComposing || e.keyCode === 229 || e.repeat || e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+      // A modal owns all shortcuts, even when its focus is temporarily on body.
+      if (document.querySelector('[aria-modal="true"], dialog[open]')) return;
 
       // 1. 全問回答済みの場合のショートカット
       if (isAllAnswered) {
@@ -309,24 +315,19 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
 
       // 2. 未回答問題に対するショートカット (1/2/3 または a/b/c)
       const key = e.key.toLowerCase();
-      let chosenDisplayIdx = -1;
-      if (key === '1' || key === 'a') chosenDisplayIdx = 0;
-      else if (key === '2' || key === 'b') chosenDisplayIdx = 1;
-      else if (key === '3' || key === 'c') chosenDisplayIdx = 2;
+      const chosenDisplayIdx = /^[1-9]$/.test(key) ? Number(key) - 1 : /^[a-z]$/.test(key) ? key.charCodeAt(0) - 97 : -1;
 
       if (chosenDisplayIdx !== -1) {
         // 最初の未回答設問を取得
-        const firstUnanswered = quiz.questions.find(
-          (q) => selectedAnswers[q.id] === undefined
-        );
-        if (firstUnanswered) {
-          e.preventDefault();
+        const firstUnanswered = currentQuestion;
+        if (firstUnanswered && selectedAnswers[firstUnanswered.id] === undefined) {
           const displayOrder =
             isShuffleEnabled
               ? shuffleMap[firstUnanswered.id] ?? shuffledIndices(firstUnanswered.options.length, firstUnanswered.id)
-              : [0, 1, 2];
+              : firstUnanswered.options.map((_, index) => index);
           const originalIndex = displayOrder[chosenDisplayIdx];
           if (originalIndex !== undefined) {
+            e.preventDefault();
             handleSelectOption(firstUnanswered, originalIndex);
           }
         }
@@ -336,6 +337,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [
+    currentQuestion,
     isMounted,
     isAllAnswered,
     isPassed,
@@ -353,9 +355,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
   ]);
 
   // 現在回答すべき「先頭の未回答設問」のIDを特定（アクティブ表示用）
-  const activeQuestionId = quiz.questions.find(
-    (q) => selectedAnswers[q.id] === undefined
-  )?.id;
+  const activeQuestionId = currentQuestion && selectedAnswers[currentQuestion.id] === undefined ? currentQuestion.id : undefined;
 
   return (
     <div
@@ -417,7 +417,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
       )}
 
       <div
-        className={`bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20 dark:from-slate-900/90 dark:via-emerald-950/20 dark:to-slate-900 border rounded-3xl p-6 sm:p-8 shadow-sm space-y-6 transition-all ${
+        className={`quiz-shell bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20 dark:from-slate-900/90 dark:via-emerald-950/20 dark:to-slate-900 border rounded-3xl p-6 sm:p-8 shadow-sm space-y-6 transition-all ${
           isPerfect
             ? 'border-amber-300 dark:border-amber-700/60 ring-2 ring-amber-400/20'
             : 'border-emerald-100 dark:border-emerald-900/50'
@@ -515,21 +515,9 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
         {/* キーボードショートカット案内チップ（未回答がある場合） */}
         {!isMounted && <p role="status" className="text-sm text-slate-600 dark:text-slate-300">学習履歴を確認しています。読み込みが終わると回答できます。</p>}
         {isMounted && !isAllAnswered && (
-          <div className="flex flex-wrap items-center justify-between gap-2 px-3.5 py-2 rounded-xl bg-white/60 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/40 text-sm text-slate-600 dark:text-slate-300">
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-              キーボードでも素早く回答できます:
-            </span>
-            <span className="font-mono flex min-w-0 flex-wrap items-center gap-1 text-slate-700 dark:text-slate-300">
-              <kbd className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded text-[10px]">1</kbd>
-              <kbd className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded text-[10px]">2</kbd>
-              <kbd className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded text-[10px]">3</kbd>
-              <span className="text-slate-400">または</span>
-              <kbd className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded text-[10px]">A</kbd>
-              <kbd className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded text-[10px]">B</kbd>
-              <kbd className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded text-[10px]">C</kbd>
-            </span>
-          </div>
+          <p className="quiz-keyboard-hint text-sm text-slate-600 dark:text-slate-300">
+            {currentQuestion && currentQuestion.options.length <= 9 ? `数字キー1〜${currentQuestion.options.length}でも回答できます。` : '英字キーを選択肢の記号に合わせて回答できます。'}
+          </p>
         )}
 
         {/* 3問の問題リスト */}
@@ -550,7 +538,9 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
               <div
                 key={q.id}
                 id={`quiz-card-${q.id}`}
-                className={`bg-white/80 dark:bg-slate-800/70 border rounded-2xl p-5 sm:p-6 transition-all ${
+                onPointerDown={() => setFocusedQuestionId(q.id)}
+                onFocusCapture={() => setFocusedQuestionId(q.id)}
+                className={`quiz-question bg-white/80 dark:bg-slate-800/70 border rounded-2xl p-5 sm:p-6 transition-all ${
                   isActive
                     ? 'ring-2 ring-emerald-500/40 border-emerald-300 dark:border-emerald-700 shadow-sm'
                     : 'border-slate-200/80 dark:border-slate-700/60'
@@ -574,7 +564,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
 
                   {isAnswered && (
                     <span
-                      className={`inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-full ${
+                      className={`quiz-result inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-full ${
                         isCorrect
                           ? 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300'
                           : 'bg-rose-100 dark:bg-rose-900/60 text-rose-800 dark:text-rose-300'
@@ -601,7 +591,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                 </h4>
 
                 {/* 3択の選択肢 */}
-                <div className="space-y-2.5">
+                <div className="space-y-3">
                   {displayOrder.map((origIndex, displayIdx) => {
                     const optionText = q.options[origIndex];
                     const isOptionChosen = chosen === origIndex;
@@ -616,10 +606,10 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                           'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/60 font-semibold text-emerald-900 dark:text-emerald-100 ring-2 ring-emerald-500/20';
                       } else if (isOptionChosen && !isCorrect) {
                         btnStyles =
-                          'border-rose-400 bg-rose-50/80 dark:bg-rose-950/40 text-rose-900 dark:text-rose-200 opacity-80';
+                          'border-rose-400 bg-rose-50/80 dark:bg-rose-950/40 text-rose-900 dark:text-rose-200';
                       } else {
                         btnStyles =
-                          'border-slate-200/50 dark:border-slate-800 bg-slate-100/40 dark:bg-slate-900/20 text-slate-400 dark:text-slate-500 opacity-60';
+                          'border-slate-200/50 dark:border-slate-800 bg-slate-100/40 dark:bg-slate-900/20 text-slate-700 dark:text-slate-300';
                       }
                     }
 
@@ -630,7 +620,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                         onClick={() => handleSelectOption(q, origIndex)}
                         disabled={!isMounted || isAnswered}
                         aria-pressed={isOptionChosen}
-                        className={`w-full text-left p-3.5 sm:p-4 rounded-xl border transition-all flex items-start gap-3.5 text-sm sm:text-base ${btnStyles} ${
+                        className={`quiz-option min-h-11 focus-visible:outline-2 focus-visible:outline-offset-4 w-full text-left p-3.5 sm:p-4 rounded-xl border transition-all flex items-start gap-3.5 text-sm sm:text-base ${btnStyles} ${
                           !isAnswered ? 'cursor-pointer hover:shadow-xs' : 'cursor-default'
                         }`}
                       >
@@ -646,18 +636,13 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                               : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
                           }`}
                         >
-                          {['A', 'B', 'C'][displayIdx]}
+                          {String.fromCharCode(65 + displayIdx)}
                         </span>
 
                         {/* 本文 */}
-                        <span className="flex-1 leading-snug">{optionText}</span>
+                        <span className="flex-1 leading-snug">{optionText}{isAnswered && (isOptionCorrectAnswer || isOptionChosen) && <span className="mt-1 block font-bold">{isOptionCorrectAnswer ? "正解" : "選んだ回答（不正解）"}</span>}</span>
 
-                        {/* キーボードショートカット記号の控えめな案内（アクティブ問題かつ未回答時） */}
-                        {isActive && !isAnswered && (
-                          <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono bg-slate-200/70 dark:bg-slate-700/70 text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-600">
-                            {displayIdx + 1}
-                          </kbd>
-                        )}
+
                       </button>
                     );
                   })}
@@ -665,16 +650,13 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
 
                 {/* 回答後のワンポイント解説 */}
                 {isAnswered && (
-                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 bg-emerald-50/30 dark:bg-emerald-950/20 rounded-xl p-3.5 text-xs sm:text-sm space-y-2.5">
-                    <p className="font-semibold text-emerald-800 dark:text-emerald-300">
-                      正答：{String.fromCharCode(65 + displayOrder.indexOf(q.correctIndex))} {q.options[q.correctIndex]}
-                    </p>
+                  <div className="quiz-explanation mt-6 space-y-3">
                     <div>
-                      <span className="font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1 mb-1">
+                      <h5 className="quiz-explanation-title font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1 mb-2">
                         <Award className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                        解説のポイント:
-                      </span>
-                      <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                        解説
+                      </h5>
+                      <p className="quiz-explanation-body text-slate-700 dark:text-slate-300">
                         {q.explanation}
                       </p>
                       <QuestionEvidence lectureId={quiz.lectureId} revision={questionRevision(q.question, q.options, q.correctIndex, q.explanation)} />
@@ -685,7 +667,8 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                     {(() => {
                       const topic = getQuizSectionTitle(q);
                       return (
-                        <div className="pt-2 border-t border-emerald-200/50 dark:border-emerald-800/40 flex justify-end">
+                        <div className="quiz-reading-link pt-2">
+                          {q.relatedSectionTitle && <p className="text-base text-slate-600 dark:text-slate-300">復習する節：{q.relatedSectionTitle}</p>}
                           <button
                             type="button"
                             onClick={() => {
@@ -722,10 +705,10 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                                 }
                               }
                             }}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-50 text-[#1E3D34] dark:text-[#74BA9E] text-xs font-bold transition-all shadow-2xs cursor-pointer group"
+                            className="inline-flex min-h-11 items-center gap-2 py-2 text-base font-semibold text-[#1E3D34] dark:text-[#74BA9E] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 cursor-pointer group"
                           >
                             <BookOpen className="w-3.5 h-3.5" />
-                            <span>{q.relatedSectionTitle ? `「${q.relatedSectionTitle}」を講義本文で読み直す` : '講義本文を読み直す'}</span>
+                            <span>講義本文で復習する</span>
                             <ArrowUp className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform" />
                           </button>
                         </div>

@@ -125,7 +125,7 @@
     }
 
     /* スマホ時の主要カード・ボックスの内側左右余白の圧迫を緩和 */
-    article, figure {
+    article:not(.lecture-article), figure {
       padding-left: clamp(0.75rem, 3.5vw, 1.25rem) !important;
       padding-right: clamp(0.75rem, 3.5vw, 1.25rem) !important;
     }
@@ -525,6 +525,38 @@ html:not(.dark) .reading-page .text-\[\#C45A4A\] { color: #A83629; }
 @container (max-width: 20em) {
   .reading-toolbar-row > :first-child { flex-basis: 100%; }
   .reading-toolbar-row > :last-child { margin-left: auto; }
+}
+/* Reading typography is scoped: evidence and review metadata retain their styles. */
+.header-wordmark { font-family: var(--font-serif); }
+.quiz-result, .quiz-explanation-title { font-size: 1.125rem; font-weight: 700; }
+.quiz-explanation-body { font-size: 1rem; line-height: 1.75; }
+.quiz-option { font-size: 1rem; }
+.quiz-option > .flex-1 { min-width: 0; line-height: 1.75; overflow-wrap: anywhere; }
+.quiz-option > span:first-child, .quiz-reading-link svg { flex-shrink: 0; }
+#lecture-content table:has(th:nth-child(2):last-child) { min-width: 0; width: 100%; }
+.quiz-question > .flex { flex-wrap: wrap; }
+.quiz-keyboard-hint { display: none; }
+.review-question > p, .review-question > h3 { font-size: 1rem; line-height: 1.75; }
+.review-question button, .kikei-quiz button { min-height: 44px; }
+.kikei-quiz .quiz-option { flex-wrap: wrap; }
+.kikei-quiz .quiz-option > div:first-child { flex: 1 1 12em; }
+.kikei-quiz .quiz-option > div:first-child > span:last-child { min-width: 0; }
+@media (min-width: 1024px) { .quiz-keyboard-hint { display: block; } }
+@media (max-width: 1023px) {
+  .reading-page > article.lecture-article {
+    padding-inline: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none;
+  }
+  #interactive-quiz-container .quiz-shell {
+    padding: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none;
+  }
+  #interactive-quiz-container .quiz-question {
+    padding: 0 0 32px; background: transparent; border: 0;
+    border-bottom: 1px solid var(--border-washi); border-radius: 0; box-shadow: none;
+  }
+  #chapter-assessment { padding-inline: 0; background: transparent; border: 0; }
+  #chapter-assessment .chapter-question { padding-inline: 0; background: transparent; }
+  .review-question, .kikei-quiz { padding-inline: 0; background: transparent; border: 0; box-shadow: none; }
+  .review-explanation { padding: 0; background: transparent; border: 0; border-radius: 0; }
 }
 @media (max-width: 1023px) {
   .reading-page, .reading-toolbar-row { padding-inline: var(--content-gutter); }

@@ -41,8 +41,8 @@ export default function HomePage() {
               <span className="home-copy-line home-copy-accent"><span className="copy-phrase">臨床の</span><span className="copy-phrase">「考えら<span className="copy-ending">れる」へ。</span></span></span>
             </h1>
             <p className="home-description ui-muted">
-              <span>基礎を学び、弁証・配穴に活かす。</span>
-              <span>学習と臨床をつなぐ東洋医学のツール。</span>
+              <span>講義で用語の意味を学び、クイズで確かめる。</span>
+              <span>迷った問題は解説から本文に戻って復習できます。</span>
             </p>
           </div>
           <nav aria-label="目的から選ぶ" className="home-entry-grid">
@@ -71,7 +71,7 @@ export default function HomePage() {
         </section>
         <section aria-labelledby="home-flow-title" className="home-section">
           <h2 id="home-flow-title" className="home-section-title">学びと実践の流れ</h2>
-          <p className="ui-muted">理論を学び、所見を整理し、配穴と記録へ。振り返りから次の学びにつなげます。</p>
+          <p className="ui-muted">講義で理論を学び、症例演習で所見と候補を比べます。配穴の理由や迷った点をノートに残し、次の復習で確かめましょう。</p>
           <ol aria-label="理論から弁証、配穴、記録へ進む流れ" className="home-flow">
             {flow.map((step, index) => <li key={step.href}><Link href={step.href} className="ui-card"><span className="ui-muted">{index + 1}</span><span>{step.label}</span>{index < flow.length - 1 && <ArrowRight aria-hidden="true" />}</Link></li>)}
           </ol>

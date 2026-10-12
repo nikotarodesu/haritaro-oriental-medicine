@@ -315,7 +315,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
       )}
 
       {/* 講義テキスト本体 */}
-      <article className="bg-white dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] px-3.5 py-6 sm:p-10 shadow-xs space-y-6 transition-colors">
+      <article className="lecture-article bg-white dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] px-3.5 py-6 sm:p-10 shadow-xs space-y-6 transition-colors">
         {/* 講義ヘッダー */}
         <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-5 space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -373,13 +373,15 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           {chapterAssessment && <a href="#chapter-assessment" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] px-4 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A3B4A] dark:text-[#83BEA8] dark:hover:bg-[#182823]">章末演習</a>}
         </nav>
 
+        <p className="text-base leading-[1.75] text-[#404743] dark:text-[#C5D2DB]">{lecture.summary}</p>
+
         {/* 学習ゴール枠 */}
         <div className="bg-[#FAF8F5] dark:bg-[#141E28] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-2xl p-4 sm:p-5 space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#EBE4D5] dark:border-[#22303D] pb-2.5">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
               <h2 className="font-serif text-sm sm:text-base font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                本レッスンの学習ゴール ＆ 重要要点
+                このページで分かること
               </h2>
             </div>
           </div>

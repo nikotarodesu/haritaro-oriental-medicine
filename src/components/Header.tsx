@@ -200,7 +200,7 @@ export default function Header() {
       <div className="site-header-container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap min-h-[60px] items-center justify-between gap-3 py-1 xl:min-h-[68px]">
           <Link href="/" aria-label="はり太郎の東洋医学 トップへ" onClick={closeNavigation} className={`inline-flex min-h-[44px] shrink-0 items-center rounded-lg ${FOCUS_STYLE}`}>
-            <BrandLogo className="gap-2.5" symbolClassName="h-[34px]! w-[34px]! shrink-0" wordmarkClassName="text-xl! font-semibold tracking-[0.025em]!" />
+            <BrandLogo className="gap-2.5" symbolClassName="h-[34px]! w-[34px]! shrink-0" wordmarkClassName="header-wordmark text-xl! font-semibold tracking-[0.025em]!" />
           </Link>
           <nav aria-label="主要ナビゲーション" className={`${DESKTOP_LAYOUT} shrink-0 items-center gap-3 whitespace-nowrap`}>
             <div className="relative">

@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     default: SITE_TITLE,
     template: `%s | ${SITE_NAME}【東洋医学・鍼灸】`,
   },
-  description: "鍼灸学生の基礎学習から臨床家の弁証推論・配穴設計、患者への対面問診・説明、全361経穴辞典、A4養生シート印刷まで。東洋医学の学びと実践をつなぐ統合Webプラットフォーム。",
+  description: "鍼灸学生・鍼灸師のための東洋医学学習サイト。講義で基本用語を学び、クイズと解説で復習できます。全361経穴の位置・注意事項、症例演習、学習ノートも利用できます。",
   verification: {
     google: "EQTaU5bcfwSgFprso13sFiyF35uZ5IHhaGz56GXqXbo",
   },
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     url: "https://www.haritaro.jp",
     siteName: SITE_NAME,
     title: SITE_TITLE,
-    description: "鍼灸学生の基礎学習から臨床家の弁証推論・配穴設計、患者への対面問診・説明、全361経穴辞典、A4養生シート印刷まで。東洋医学の学びと実践をつなぐ統合Webプラットフォーム。",
+    description: "鍼灸学生・鍼灸師のための東洋医学学習サイト。講義で基本用語を学び、クイズと解説で復習できます。全361経穴の位置・注意事項、症例演習、学習ノートも利用できます。",
     images: SHARED_OG_IMAGES,
   },
   twitter: {

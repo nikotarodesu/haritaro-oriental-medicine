@@ -231,7 +231,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
     nextArticles: [
       { articleId: "science-of-pulse-diagnosis", reason: "舌の観察と脈の触知を比べ、所見の記録と診断の確かさの違いを学べます。" },
       { articleId: "science-of-qi-blood-fluid", reason: "乾燥や色から連想する気血津液の分類を、医学的な原因評価と区別できます。" },
-      { articleId: "east-west-integrative-unified-theory", reason: "画像やAIが特徴を分類できることと、患者に役立つ診断になることを分けて考えられます。" },
+      { articleId: "east-west-integrative-unified-theory", reason: "画像の特徴を分類できても、病気を正しく診断できるとは限らない理由を確認します。" },
     ],
   },
   "science-of-acupuncture-neuroscience": {

@@ -28,7 +28,7 @@ export const ARTICLE_LEARNING_GUIDES: Record<string, ArticleLearningGuide> = {
     lectureId: 'lecture-diagnosis-9', caseId: 'back-pain-referral',
     focus: '伝統的な経絡の記述と、神経・筋膜などを調べる研究を分ける。',
     limitation: '神経や筋膜との類似だけで、経絡の走行や機能が実証されたとは言えません。',
-    summary: '十二正経・奇経八脈・絡脈という伝統的な整理を学び、結合組織や神経経路の原著研究を読みます。ネットワークの比喩、限られた部位や動物での実験、患者の治療効果を分けて考えます。',
+    summary: '十二正経・奇経八脈・絡脈という伝統的な整理を学び、結合組織や神経経路の原著研究を読みます。ネットワークの比喩は関係を理解するための説明です。限られた部位や動物での実験だけでは、患者の症状が改善するかは判断できません。',
   },
   'science-of-acupoints-mechanotransduction': {
     lectureId: 'lecture-treatment-8', caseId: 'back-pain-referral',

@@ -31,10 +31,10 @@ export default function ReviewQuestionCard({ lectureId, questions }: { lectureId
   }, [id, lectureId, question?.lectureId]);
   if (!question || question.lectureId !== lectureId) return null;
   return (
-    <section id="review-question-card" className="scroll-mt-28 rounded-2xl border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/50 p-4 sm:p-6 space-y-3 text-sm text-[#232826] dark:text-[#FAF8F5]">
+    <section id="review-question-card" className="scroll-mt-28 rounded-2xl border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/50 p-4 sm:p-6 space-y-3 text-base text-[#232826] dark:text-[#FAF8F5]">
       <h2 className="font-bold">この問題の要点を復習</h2>
       <p className="font-semibold whitespace-pre-line">{question.question}</p>
-      <p className="leading-relaxed whitespace-pre-line">{question.explanation}</p>
+      <h3 className="quiz-explanation-title font-bold">解説</h3><p className="quiz-explanation-body whitespace-pre-line">{question.explanation}</p>
       <div className="flex flex-wrap gap-4 font-semibold">
         {question.kind === 'acupoint'
           ? <Link className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4" href="/tsubo/practice">経穴演習で確認</Link>

@@ -1,0 +1,37 @@
+[
+  {
+    "client": 305,
+    "explanation": "32px",
+    "root": "32px",
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "client": 360,
+    "explanation": "32px",
+    "root": "32px",
+    "scroll": 360,
+    "width": 375
+  },
+  {
+    "client": 375,
+    "explanation": "32px",
+    "root": "32px",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "client": 415,
+    "explanation": "32px",
+    "root": "32px",
+    "scroll": 415,
+    "width": 430
+  },
+  {
+    "client": 1265,
+    "explanation": "32px",
+    "root": "32px",
+    "scroll": 1265,
+    "width": 1280
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "articlePadding": "0px",
+    "client": 305,
+    "explanationFont": "16px",
+    "hint": "none",
+    "quizWidth": 273,
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "articlePadding": "0px",
+    "client": 360,
+    "explanationFont": "16px",
+    "hint": "none",
+    "quizWidth": 328,
+    "scroll": 360,
+    "width": 375
+  },
+  {
+    "articlePadding": "0px",
+    "client": 375,
+    "explanationFont": "16px",
+    "hint": "none",
+    "quizWidth": 343,
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "articlePadding": "0px",
+    "client": 415,
+    "explanationFont": "16px",
+    "hint": "none",
+    "quizWidth": 383,
+    "scroll": 415,
+    "width": 430
+  },
+  {
+    "articlePadding": "40px",
+    "client": 1265,
+    "explanationFont": "16px",
+    "hint": "block",
+    "quizWidth": 750,
+    "scroll": 1265,
+    "width": 1280
+  }
+]

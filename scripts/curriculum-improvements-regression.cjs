@@ -115,7 +115,7 @@ const workspace = exportsObject.default({ assessment });
 let tree;
 function render() { cursor = 0; tree = workspace.type(workspace.props); }
 function nodes(node, list = []) { if (Array.isArray(node)) node.forEach(n => nodes(n, list)); else if (node && typeof node === 'object') { list.push(node); nodes(node.props?.children, list); } return list; }
-function text(node) { return Array.isArray(node) ? node.map(text).join('') : node && typeof node === 'object' ? text(node.props?.children) : node ?? ''; }
+function text(node) { return typeof node === 'boolean' ? '' : Array.isArray(node) ? node.map(text).join('') : node && typeof node === 'object' ? text(node.props?.children) : node ?? ''; }
 function button(label) { return nodes(tree).find(node => node.type === 'button' && text(node) === label); }
 render(); assert(button('採点と解説を表示').props.disabled);
 for (let i = 0; i < assessment.questions.length; i++) {

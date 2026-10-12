@@ -97,7 +97,7 @@ export default function KikeiQuizSection({ vessel }: Props) {
   };
 
   return (
-    <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-6 shadow-sm space-y-4">
+    <div className="kikei-quiz bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-6 shadow-sm space-y-4">
       {/* ヘッダー */}
       <div className="flex items-center justify-between border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
         <div className="flex items-center gap-2">
@@ -125,7 +125,7 @@ export default function KikeiQuizSection({ vessel }: Props) {
 
           {/* 問題文 */}
           <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9]/80 dark:border-[#2A3B4A]/80">
-            <p className="font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
+            <p className="quiz-result font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
               {currentQ.question}
             </p>
           </div>
@@ -145,7 +145,7 @@ export default function KikeiQuizSection({ vessel }: Props) {
                   btnStyle = "bg-rose-50 dark:bg-rose-950/40 border-2 border-rose-500 text-rose-950 dark:text-rose-100 font-bold ring-2 ring-rose-500/20";
                 } else {
                   // 選ばれていない不正解
-                  btnStyle = "bg-gray-50/50 dark:bg-[#121920]/40 border-gray-200 dark:border-gray-800 text-gray-400 dark:text-gray-500 opacity-50";
+                  btnStyle = "bg-gray-50/50 dark:bg-[#121920]/40 border-gray-200 dark:border-gray-800 text-slate-700 dark:text-slate-300";
                 }
               }
 
@@ -155,7 +155,7 @@ export default function KikeiQuizSection({ vessel }: Props) {
                   type="button"
                   onClick={() => handleSelect(idx)}
                   disabled={showAnswer}
-                  className={`w-full p-3.5 rounded-xl border text-xs sm:text-sm text-left transition-all flex items-center justify-between gap-3 ${btnStyle} ${
+                  className={`quiz-option min-h-11 focus-visible:outline-2 focus-visible:outline-offset-4 w-full p-3.5 rounded-xl border text-xs sm:text-sm text-left transition-all flex items-center justify-between gap-3 ${btnStyle} ${
                     !showAnswer ? "cursor-pointer hover:shadow-xs" : "cursor-default"
                   }`}
                 >
@@ -197,7 +197,7 @@ export default function KikeiQuizSection({ vessel }: Props) {
           {/* 回答後の判定アラート & 臨床解説 */}
           {showAnswer && (
             <div
-              className={`p-4 sm:p-5 rounded-2xl border transition-all space-y-3.5 animate-fadeIn ${
+              className={`review-explanation p-4 sm:p-5 rounded-2xl border transition-all space-y-3.5 animate-fadeIn ${
                 isSelectedCorrect
                   ? "bg-emerald-50/90 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-700/60"
                   : "bg-rose-50/90 dark:bg-rose-950/30 border-rose-300 dark:border-rose-700/60"
@@ -250,11 +250,11 @@ export default function KikeiQuizSection({ vessel }: Props) {
 
               {/* 臨床ポイント・解説文 */}
               <div className="space-y-1.5 text-xs sm:text-sm">
-                <div className="font-bold flex items-center gap-1.5 text-[#232826] dark:text-[#FAF8F5]">
+                <div className="quiz-explanation-title font-bold flex items-center gap-1.5 text-[#232826] dark:text-[#FAF8F5]">
                   <Award className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
                   <span>臨床ポイントの解説</span>
                 </div>
-                <p className="text-[#404743] dark:text-[#C5D2DB] leading-relaxed pl-5 sm:pl-6">
+                <p className="quiz-explanation-body text-[#404743] dark:text-[#C5D2DB]">
                   {currentQ.explanation}
                 </p>
               </div>

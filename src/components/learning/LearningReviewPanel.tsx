@@ -173,15 +173,15 @@ function ReviewWorkspace({ owner }: { owner: string }) {
       {(review.status === 'invalid' || review.status === 'different') && <p role="status" className="text-sm">中断した復習は終了・期限切れ・教材の改訂などで再開できません。上の「今日の復習」から現在の問題を始められます。保存済みの回答履歴は残っています。</p>}
       {!storageAvailable && session && <p role="status" className="text-sm">このブラウザでは復習の途中状態を一時保存できません。ページを移動すると、このセットの途中状態を引き継げない場合があります。</p>}
       {review.status === 'complete' && <p role="status" className="text-sm font-bold">今回の復習が完了しました。次の予定日にもう一度確認しましょう。</p>}
-      {q && session && <div id="learning-review-practice" tabIndex={-1} aria-label="現在の復習問題" className="scroll-mt-28 rounded-xl bg-white dark:bg-[#17212A] p-4 space-y-3 text-sm text-[#232826] dark:text-[#FAF8F5]">
+      {q && session && <div id="learning-review-practice" tabIndex={-1} aria-label="現在の復習問題" className="review-question scroll-mt-28 rounded-xl bg-white dark:bg-[#17212A] p-4 space-y-3 text-base text-[#232826] dark:text-[#FAF8F5]">
         <p className="text-xs">{index + 1} / {queue.length} ｜ {q.chapterTitle}</p>
         <h3 className="font-bold whitespace-pre-line">{q.question}</h3>
-        <div className="space-y-2">{shuffledIndices(q.options.length, `${sessionSeed}-${q.id}`).map((original, display) => <button key={original} type="button" disabled={submitted} aria-pressed={choice === original} onClick={() => choose(original)} className={`block w-full rounded-lg border p-3 text-left ${choice === original ? 'border-[#1E3D34] bg-[#EBF3EF] dark:bg-[#182823]' : 'border-[#E8E1D1] dark:border-[#263542]'}`}>
-          {display + 1}. {q.options[original]}
+        <div className="space-y-2">{shuffledIndices(q.options.length, `${sessionSeed}-${q.id}`).map((original, display) => <button key={original} type="button" disabled={submitted} aria-pressed={choice === original} onClick={() => choose(original)} className={`quiz-option min-h-11 block w-full rounded-lg border p-3 text-left ${choice === original ? 'border-[#1E3D34] bg-[#EBF3EF] dark:bg-[#182823]' : 'border-[#E8E1D1] dark:border-[#263542]'}`}>
+          {display + 1}. {q.options[original]}{submitted && (original === q.correctIndex || choice === original) && <strong className="mt-1 block">{original === q.correctIndex ? "正解" : "選んだ回答（不正解）"}</strong>}
         </button>)}</div>
         {!submitted ? <button type="button" onClick={answer} disabled={choice === null} className="rounded-lg bg-[#1E3D34] text-white px-4 py-2 disabled:opacity-40">回答を確定</button> : <div className="space-y-3">
-          <p role="status" className="font-bold">{choice === q.correctIndex ? '正解です。' : '解説で確認しましょう。'} 正解：{q.options[q.correctIndex]}</p>
-          <p className="whitespace-pre-line leading-relaxed">{q.explanation}</p>
+          <p role="status" className="quiz-result font-bold">{choice === q.correctIndex ? '正解です。' : '不正解です。解説で確認しましょう。'}</p>
+          <h4 className="quiz-explanation-title font-bold">解説</h4><p className="quiz-explanation-body whitespace-pre-line">{q.explanation}</p>
           <p className="text-xs">次回復習：{quizResults[q.id]?.nextReviewDate}</p>
           <div className="flex flex-wrap gap-3 text-sm">
             <Link className="underline" href={`/curriculum/${q.lectureId}?review=${encodeURIComponent(q.id)}&reviewSession=${session.id}#review-question-card`}>要点と関連講義を読む</Link>

@@ -31,16 +31,16 @@ function AssessmentWorkspace({ assessment }: { assessment: ChapterAssessmentData
       setMessage(status === 'memory' ? 'このセッションのノートに追加しました。端末への保存が利用できないため、ページを閉じる前に文章を控えてください。' : '振り返りノートに追加しました。保存・同期状況はノート画面で確認できます。');
     } catch (error) { setMessage(error instanceof Error ? error.message : '保存できませんでした。文章を控えてから再度お試しください。'); }
   };
-  return <section id="chapter-assessment" aria-labelledby="chapter-assessment-title" className="scroll-mt-28 space-y-5 rounded-2xl border border-[#C5DED4] bg-[#F6F8F3] p-4 dark:border-[#2A5243] dark:bg-[#182823] sm:p-6">
+  return <section id="chapter-assessment" aria-labelledby="chapter-assessment-title" className="chapter-assessment scroll-mt-28 space-y-5 rounded-2xl border border-[#C5DED4] bg-[#F6F8F3] p-4 dark:border-[#2A5243] dark:bg-[#182823] sm:p-6">
     <h2 id="chapter-assessment-title" className="text-xl font-bold">章全体の理解を確かめる：9問と記述演習</h2>
     <p className="text-base leading-relaxed">{assessment.title}の複数の講義を組み合わせて振り返ります。選択問題は全問回答後に解説を表示します。回答と点数はこのページでの練習用で、受講記録や技能認定には反映されません。</p>
-    {assessment.questions.map((q, qi) => <fieldset key={q.id} className="min-w-0 space-y-3 rounded-xl bg-white p-4 dark:bg-[#121920]">
+    {assessment.questions.map((q, qi) => <fieldset key={q.id} className="chapter-question min-w-0 space-y-3 rounded-xl bg-white p-4 dark:bg-[#121920]">
       <legend className="px-1 font-semibold leading-relaxed">{qi + 1}. {q.question}</legend>
       {shuffledIndices(q.options.length, q.id).map((index) => <label key={index} className="flex min-h-11 cursor-pointer items-start gap-3 rounded-lg border border-[#D5DED8] p-3 dark:border-[#2A3B4A]">
         <input type="radio" name={q.id} checked={answers[q.id] === index} disabled={submitted} onChange={() => setAnswers(previous => ({ ...previous, [q.id]: index }))} className="mt-1 h-4 w-4 shrink-0" />
-        <span className="text-base leading-relaxed">{q.options[index]}</span>
+        <span className="min-w-0 text-base leading-relaxed">{q.options[index]}{submitted && (index === q.correctIndex || answers[q.id] === index) && <strong className="mt-1 block">{index === q.correctIndex ? "正解" : "選んだ回答（不正解）"}</strong>}</span>
       </label>)}
-      {submitted && <div className="space-y-2 border-t pt-3 text-base leading-relaxed"><p className="font-bold">{answers[q.id] === q.correctIndex ? '正解' : 'もう一度確認'}：{q.options[q.correctIndex]}</p><p>{q.explanation}</p><Link href={q.href} className="inline-flex min-h-11 items-center underline underline-offset-4">根拠になる講義へ戻る</Link></div>}
+      {submitted && <div className="space-y-2 border-t pt-3 text-base leading-relaxed"><p className="text-lg font-bold">{answers[q.id] === q.correctIndex ? '正解' : '不正解'}</p><h3 className="text-lg font-bold">解説</h3><p className="leading-[1.75]">{q.explanation}</p><Link href={q.href} className="inline-flex min-h-11 items-center underline underline-offset-4">講義本文で復習する</Link></div>}
     </fieldset>)}
     {!submitted ? <div><button type="button" disabled={!allAnswered} onClick={() => setSubmitted(true)} className="min-h-11 rounded-xl bg-[#184F49] px-4 py-3 font-bold text-white disabled:opacity-50">採点と解説を表示</button><p className="mt-2 text-sm">回答済み：{Object.keys(answers).length} / 9問</p></div> : <div className="space-y-2"><p role="status" className="font-bold">9問中{score}問正解。迷った理由を講義で確かめましょう。</p><button type="button" className="min-h-11 underline" onClick={() => { setAnswers({}); setSubmitted(false); }}>選択問題をもう一度解く</button></div>}
     <div className="space-y-3 border-t border-[#C5DED4] pt-5">

@@ -30,14 +30,14 @@ export default function LearnGuidePage() {
     <div className="mx-auto max-w-6xl space-y-10 px-4 py-8 sm:px-6 sm:py-12">
       <header className="max-w-3xl space-y-4">
         <p className="flex items-center gap-2 text-sm font-semibold text-[#184F49] dark:text-[#9CCBBC]"><GraduationCap aria-hidden="true" className="h-5 w-5" />初学者・鍼灸学生のための学習案内</p>
-        <h1 className="font-serif text-3xl font-bold leading-relaxed sm:text-4xl">まず、東洋医学の全体像を知る。</h1>
-        <p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">何を学び、何のために使うのか。4つの概論から始め、基本用語、身体の働き、関係モデル、臨床の基礎へ進みます。短い例では、観察したこととまだ分からないことを分ける練習から始めます。</p>
+        <h1 className="font-serif text-3xl font-bold leading-relaxed sm:text-4xl">東洋医学は、どの順番で学ぶ？</h1>
+        <p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">初めて学ぶ方は、4講の概論から始めましょう。陰陽・気血津液・臓腑・経絡の順に基本用語を学び、各講のクイズで理解を確かめます。短い例では、観察した事実とまだ分からないことを別々に書く練習をします。</p>
         <div className="flex flex-wrap gap-3"><ContentNavigationLink href="/learn/courses/oriental-medicine-introduction" placement="learn_intro_start" className={`inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#184F49] px-4 py-3 font-bold text-white dark:bg-[#285F54] ${focusClass}`}>4講の概論から始める<ArrowRight aria-hidden="true" className="h-4 w-4" /></ContentNavigationLink><Link href={`/curriculum/${FIRST_CURRICULUM_LECTURE_ID}`} className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>概論の第1講を開く</Link></div>
       </header>
       <HomeLearningProgressCard />
 
       <section aria-labelledby="learn-routes-heading" className="space-y-5">
-        <h2 id="learn-routes-heading" className="font-serif text-2xl font-bold">短く見渡す、詳しく学ぶ。</h2>
+        <h2 id="learn-routes-heading" className="font-serif text-2xl font-bold">短い基礎コースと全講義、どちらから始める？</h2>
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-3 rounded-2xl border border-[#C5DED4] bg-[#EBF3EF] p-5 dark:border-[#2A5243] dark:bg-[#182823]"><h3 className="text-xl font-bold">3〜5講の基礎コース</h3><p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">各章の入口になる講義を選び、全体像をつかみます。概論から順に進め、短い例で一つずつ考えます。</p><Link href="/learn/courses" className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>全{LEARNING_COURSES.length}コースを見る →</Link></div>
           <div className="space-y-3 rounded-2xl border border-[#D9E3DD] p-5 dark:border-[#2A3B4A]"><h3 className="text-xl font-bold">全{catalog.chapters.length}章の体系学習</h3><p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">全{catalog.lectures.length}講を章の順番で詳しく学びます。基礎コースで省いた各論や総合演習も扱い、後半の症例演習につなげます。</p><Link href="/curriculum" className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>全講義の目次を見る →</Link></div>

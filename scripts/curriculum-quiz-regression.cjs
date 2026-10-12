@@ -34,7 +34,7 @@ function harness(props = { quiz }, overrides = {}) {
     if (!elements.has(id)) elements.set(id, { textContent, scrollIntoView: () => scrolls.push(id), focus: () => focused.push(id), hasAttribute: () => false, setAttribute() {}, classList: { add: () => highlights.push(id), remove() {} } });
     return elements.get(id);
   }
-  let cursor = 0, tree, timerId = 0;
+  let cursor = 0, tree, timerId = 0, modalOpen = false;
   const context = { isMounted: true, quizResults: {}, completedLectures: {}, ...overrides,
     saveQuizResult(record) { saved.push(record); context.quizResults = { ...context.quizResults, [record.questionId]: record }; },
     clearQuizResult(id) { cleared.push(id); const next = { ...context.quizResults }; delete next[id]; context.quizResults = next; },
@@ -61,10 +61,12 @@ function harness(props = { quiz }, overrides = {}) {
     if (id === '@/utils/analytics') return { trackEvent: (name, data) => events.push({ name, data }) };
     if (id.startsWith('@/')) return load('src/' + id.slice(2));
     return require(id);
-  }, window: browser, document: { getElementById: id => element(id), querySelectorAll: () => headings },
+  }, window: browser, document: { getElementById: id => element(id), querySelectorAll: () => headings, querySelector: () => modalOpen ? {} : null },
   Math: deterministicMath, Date, console, setTimeout: callback => { timers.set(++timerId, callback); return timerId; }, clearTimeout: id => timers.delete(id) }, { filename: sourceFile });
   const Component = exports.InteractiveQuiz;
   const api = { context, saved, cleared, completed, events, pushes, scrolls, focused, highlights,
+    modal(open) { modalOpen = open; },
+    focusQuestion(id) { nodes(tree).find(node => node.props?.id === 'quiz-card-' + id).props.onFocusCapture(); api.render(); },
     addHeading(id, label) { headings.push(element(id, label)); },
     render(next = props) { props = next; cursor = 0; tree = Component(props); while (scheduled.length) scheduled.shift()(); return tree; },
     tree: () => tree,
@@ -165,10 +167,10 @@ check('answer feedback identifies the correct option in its displayed order', ()
   assert(announcements().every(node => text(node) === ''));
   client.choose(question, (question.correctIndex + 1) % 3); client.render();
   const order = shuffledIndices(question.options.length, question.id);
-  assert(text(client.tree()).includes(`正答：${String.fromCharCode(65 + order.indexOf(question.correctIndex))} ${question.options[question.correctIndex]}`));
+  assert(text(client.options(question.id)[order.indexOf(question.correctIndex)]).includes(`${question.options[question.correctIndex]}正解`));
   assert(text(announcements()[0]).includes(`第1問、不正解。正答は${String.fromCharCode(65 + order.indexOf(question.correctIndex))}、${question.options[question.correctIndex]}`));
   client.button('シャッフルON').props.onClick(); client.render();
-  assert(text(client.tree()).includes(`正答：${String.fromCharCode(65 + question.correctIndex)} ${question.options[question.correctIndex]}`), 'Feedback stays accurate after changing the display order');
+  assert(text(client.options(question.id)[question.correctIndex]).includes(`${question.options[question.correctIndex]}正解`), 'Feedback stays accurate after changing the display order');
 });
 check('loading, reset and account readiness do not leave locked unanswered items', () => {
   const client = harness({ quiz }, { isMounted: false });
@@ -247,7 +249,7 @@ check('explanation reading uses a real heading or a focused body fallback', () =
   const explicitClient = harness({ quiz: { ...quiz, questions: [explicit, ...quiz.questions.slice(1)] } });
   explicitClient.addHeading('matched-heading', '確認する見出し');
   explicitClient.choose(explicit, explicit.correctIndex); explicitClient.render();
-  explicitClient.button('「確認する見出し」を講義本文で読み直す').props.onClick();
+  explicitClient.button('講義本文で復習する').props.onClick();
   assert.deepEqual(explicitClient.scrolls, ['matched-heading']);
   assert.deepEqual(explicitClient.focused, ['matched-heading']);
   assert.deepEqual(explicitClient.highlights, ['matched-heading']);
@@ -255,12 +257,34 @@ check('explanation reading uses a real heading or a focused body fallback', () =
   const fallback = harness({ quiz: { ...quiz, questions: [generic, ...quiz.questions.slice(1)] } });
   fallback.choose(generic, generic.correctIndex); fallback.render();
   assert(!text(fallback.tree()).includes('「見つからない設問ラベル」を講義本文で読み直す'), 'Inferred topics are not promised as specific headings');
-  fallback.button('講義本文を読み直す').props.onClick();
+  fallback.button('講義本文で復習する').props.onClick();
   assert.deepEqual(fallback.scrolls, ['lecture-content']);
   assert.deepEqual(fallback.focused, ['lecture-content'], 'Fallback moves keyboard focus to the reading body');
   assert.deepEqual(fallback.highlights, [], 'Fallback does not falsely highlight an unmatched topic');
 });
 let questionGrades = 0;
+check('focused questions and open modals cannot grade another card', () => {
+  const client = harness();
+  client.focusQuestion(quiz.questions[1].id);
+  client.modal(true);
+  assert.equal(client.key('1'), false);
+  client.modal(false);
+  assert.equal(client.key('1', { keyCode: 229 }), false);
+  assert.equal(client.key('1'), true); client.render();
+  assert.equal(client.saved[0].questionId, quiz.questions[1].id);
+  assert.equal(client.key('2'), false, 'An answered focused card cannot grade a different question');
+  assert.equal(client.saved.length, 1);
+});
+check('four-choice numeric and alphabet shortcuts follow real option count', () => {
+  const question = { ...quiz.questions[0], options: ['一', '二', '三', '四'], correctIndex: 3 };
+  for (const key of ['4', 'd']) {
+    const client = harness({ quiz: { ...quiz, questions: [question] } });
+    client.button('シャッフルON').props.onClick(); client.render();
+    assert.equal(client.key('5'), false);
+    assert.equal(client.key(key), true);
+    assert.equal(client.saved[0].userAnswerIndex, 3);
+  }
+});
 check('every published lecture grades real option clicks for perfect and incorrect attempts', () => {
   for (const group of Object.values(CURRICULUM_QUIZZES)) {
     for (const correct of [true, false]) {
