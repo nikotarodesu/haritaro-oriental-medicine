@@ -12,7 +12,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import RecentToolTracker from "./home/RecentTools";
 import YinYangSwitch from "./YinYangSwitch";
 import FontSizeControl from "./FontSizeControl";
-import { LEARNING_COURSES } from "@/data/learningCourses";
 
 const GlobalSearchModal = dynamic(() => import("./search/GlobalSearchModal"), { ssr: false });
 
@@ -21,7 +20,7 @@ interface HeaderLink { href: string; label: string; description?: string; }
 
 const LEARN_LINKS: readonly HeaderLink[] = [
   { href: "/learn", label: "学びの総合案内", description: "目的に合う学び方から始める" },
-  ...LEARNING_COURSES.map(course => ({ href: `/learn/courses/${course.slug}`, label: course.title, description: `${course.steps.length}ステップの入門コース` })),
+  { href: "/learn/courses", label: "基礎コース一覧", description: "全11コースから選ぶ" },
   { href: "/kokushi#learning-review", label: "今日の復習", description: "回答履歴と復習予定から取り組む" },
   { href: "/curriculum", label: "東洋医学カリキュラム" },
   { href: TOOL_CATALOG.kokushi.href, label: "国家試験対策・演習", description: TOOL_CATALOG.kokushi.short },
@@ -35,9 +34,7 @@ const CLINICAL_LINKS: readonly HeaderLink[] = [
   { href: TOOL_CATALOG.haiketsu.href, label: TOOL_CATALOG.haiketsu.title, description: TOOL_CATALOG.haiketsu.short },
   { href: "/cases", label: "臨床症例演習" },
   { href: "/diagnosis", label: "気血水体質チェック" },
-  { href: "/diagnosis?tab=gorou", label: "五労チェッカー" },
   { href: "/tsubo/compare", label: "経穴比較" },
-  { href: "/kikei", label: "奇経八脈" },
 ];
 const ACCOUNT_LINKS: readonly HeaderLink[] = [
   { href: "/notes", label: "マイノート" },
@@ -59,8 +56,9 @@ function HeaderLinks({ links, pathname, onNavigate, clipCount = 0 }: { links: re
   </li>)}</ul>;
 }
 
-function HeaderSettings() {
+function HeaderSettings({ onOpenInstall }: { onOpenInstall: () => void }) {
   return <section aria-label="文字サイズと外観の設定" className="space-y-3 border-t border-[#E5E8E5] pt-3 dark:border-[#2A3B4A]">
+    <button type="button" onClick={onOpenInstall} aria-haspopup="dialog" className="min-h-11 rounded-lg text-sm underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2">ホーム画面に追加</button>
     <div className="space-y-2"><p className="text-sm font-semibold">文字サイズ</p><FontSizeControl variant="segmented" /></div>
     <div className="flex flex-wrap items-center justify-between gap-3"><p className="text-sm font-semibold">外観（陽・陰）</p><div className="[&_button]:min-h-[44px] [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2"><YinYangSwitch /></div></div>
   </section>;
@@ -91,6 +89,14 @@ export default function Header() {
   const accountActive = ["/account", "/auth", "/notes", "/pricing"].some(path => pathname === path || pathname.startsWith(`${path}/`));
 
   const closeNavigation = useCallback(() => { setMobileMenuOpen(false); setOpenDropdown(null); }, []);
+  const openInstallGuide = useCallback(() => {
+    // The settings link disappears with its menu; return to a persistent trigger.
+    const accountTrigger = dropdownButtons.current.account;
+    const trigger = accountTrigger?.getClientRects().length ? accountTrigger : menuButtonRef.current;
+    trigger?.focus({ preventScroll: true });
+    closeNavigation();
+    window.dispatchEvent(new Event("haritaro:install-app"));
+  }, [closeNavigation]);
   useEffect(() => {
     const header = headerRef.current;
     if (!header) return;
@@ -215,7 +221,7 @@ export default function Header() {
             <button ref={desktopSearchRef} type="button" onClick={() => openSearch()} aria-label="サイト内検索を開く" aria-haspopup="dialog" title="サイト内検索（Ctrl+K / ⌘K）" className={NAV_CONTROL}><Search aria-hidden="true" className="h-5 w-5 shrink-0" /><span>検索</span></button>
             <div className="relative">
               {dropdownButton("account", "アカウント", accountActive)}
-              {openDropdown === "account" ? <div id={dropdownId("account")} className="absolute right-0 top-full mt-2 max-h-[75vh] w-88 space-y-3 overflow-y-auto whitespace-normal rounded-xl border border-[#E5E8E5] bg-[#fff] p-3 shadow-lg dark:border-[#2A3B4A] dark:bg-[#17212A]">{accountInformation}<HeaderLinks links={ACCOUNT_LINKS} pathname={pathname} onNavigate={closeNavigation} clipCount={clipCount} /><HeaderSettings /></div> : null}
+              {openDropdown === "account" ? <div id={dropdownId("account")} className="absolute right-0 top-full mt-2 max-h-[75vh] w-88 space-y-3 overflow-y-auto whitespace-normal rounded-xl border border-[#E5E8E5] bg-[#fff] p-3 shadow-lg dark:border-[#2A3B4A] dark:bg-[#17212A]">{accountInformation}<HeaderLinks links={ACCOUNT_LINKS} pathname={pathname} onNavigate={closeNavigation} clipCount={clipCount} /><HeaderSettings onOpenInstall={openInstallGuide} /></div> : null}
             </div>
           </nav>
           <div className={`${COMPACT_LAYOUT} ml-auto shrink-0 items-center gap-1.5`}>
@@ -231,7 +237,7 @@ export default function Header() {
           <details className="border-b border-[#E5E8E5] pb-2 dark:border-[#2A3B4A]"><summary className={`min-h-[44px] cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE}`}>臨床ツール{clinicalActive ? <span className="ml-2 text-sm font-normal">（現在のカテゴリ）</span> : null}</summary><HeaderLinks links={CLINICAL_LINKS} pathname={pathname} onNavigate={closeNavigation} /></details>
           <Link href="/tsubo" onClick={closeNavigation} aria-current={dictionaryActive ? pathname === "/tsubo" ? "page" : "true" : undefined} className={`flex min-h-[44px] items-center justify-between rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE} ${dictionaryActive ? "bg-[var(--brand-paper)] dark:bg-[#22303D]" : ""}`}>経穴辞典<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link>
           <section aria-label="アカウント" className="space-y-3 border-t border-[#E5E8E5] pt-4 dark:border-[#2A3B4A]"><h3 className="px-3 text-base font-semibold">アカウント</h3>{accountInformation}<HeaderLinks links={ACCOUNT_LINKS} pathname={pathname} onNavigate={closeNavigation} clipCount={clipCount} /></section>
-          <details className="border-t border-[#E5E8E5] pt-2 dark:border-[#2A3B4A]"><summary className={`min-h-[44px] cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE}`}>表示設定</summary><div className="px-3 pb-3"><HeaderSettings /></div></details>
+          <details className="border-t border-[#E5E8E5] pt-2 dark:border-[#2A3B4A]"><summary className={`min-h-[44px] cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE}`}>表示設定</summary><div className="px-3 pb-3"><HeaderSettings onOpenInstall={openInstallGuide} /></div></details>
         </div>
       </nav> : null}
       <RecentToolTracker />

@@ -237,26 +237,134 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           <span>カリキュラム一覧へ戻る</span>
         </Link>
 
-        <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-3">
-          <FontSizeControl variant="compact" />
-
-          <Link
-            href={isClinicalStage ? "/simulator#case-training" : "/learn"}
-            className="min-h-11 inline-flex items-center gap-1.5 text-sm font-bold text-[#B86924] dark:text-[#E6C387] bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F2D7B3] dark:border-[#4D331F] hover:bg-[#FBE9D5] px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl transition-colors"
-          >
-            <Layers className="w-4 h-4" />
-            <span className="hidden sm:inline">{isClinicalStage ? "症例演習で考える" : "学習ガイドを見る"}</span>
-            <span className="sm:hidden">{isClinicalStage ? "症例演習" : "学習ガイド"}</span>
-          </Link>
-
-          <div className="flex items-center gap-1 text-sm text-[#59615D] dark:text-[#96A6B2]">
-            <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <span>約 {lecture.duration}</span>
-          </div>
-        </div>
+        <FontSizeControl variant="compact" />
       </div>
 
       <Suspense fallback={null}><CourseJourneyResolver lectureId={lecture.id} onResolve={setResolvedCourse} /></Suspense>
+
+      {/* 講義テキスト本体 */}
+      <article className="lecture-article bg-white dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] px-3.5 py-6 sm:p-10 shadow-xs space-y-6 transition-colors">
+        {/* 講義ヘッダー */}
+        <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-5 space-y-3">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] leading-tight">
+            {lecture.title}
+          </h1>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-2 text-sm">
+              <span className="px-2.5 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] font-bold">
+                {lecture.stageTitle}
+              </span>
+              {lecture.seriesTitle && lecture.lessonNumber ? (
+                <span className="px-2.5 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#B86924] dark:text-[#E6C387] font-bold">
+                  {lecture.seriesTitle} レッスン {lecture.lessonNumber}
+                </span>
+              ) : (
+                <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
+                  第 {lecture.lectureNumber} 講
+                </span>
+              )}
+              <span className="inline-flex items-center gap-1 text-[#59615D] dark:text-[#AFBDC8]"><Clock aria-hidden="true" className="h-4 w-4" />読了目安：約{lecture.duration}</span>
+              {isCompleted && <span className="text-emerald-800 dark:text-emerald-300">受講済み</span>}
+            </div>
+
+          </div>
+
+          <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">編集：<Link href="/about" className="underline underline-offset-4">はり太郎</Link> · 更新：<time dateTime={PAGE_REVISIONS[`/curriculum/${lecture.id}`]}>{PAGE_REVISIONS[`/curriculum/${lecture.id}`]}</time> · <Link href="/editorial-policy" className="underline underline-offset-4">出典確認・監修の範囲</Link>（専門家監修は未完了）</p>
+          {lecture.subtitle && (
+            <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+              {lecture.subtitle}
+            </p>
+          )}
+        </div>
+
+        <nav aria-label="講義内の移動" className="flex flex-wrap gap-2">
+          <a href="#lecture-content" aria-label="講義本文を読む" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">本文</a>
+          {readingInserts[0] && <a href={`#reading-figure-${readingInserts[0].figure.id}`} className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] px-4 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A3B4A] dark:text-[#83BEA8] dark:hover:bg-[#182823]">図で整理</a>}
+          {quiz && <a href="#lecture-quiz" aria-label="理解度チェックのクイズへ" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">クイズ</a>}
+          {resolvedReferences.length > 0 && <a href="#article-references-section" aria-label="出典と確認範囲へ" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">出典</a>}
+          {chapterAssessment && <a href="#chapter-assessment" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] px-4 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A3B4A] dark:text-[#83BEA8] dark:hover:bg-[#182823]">章末演習</a>}
+        </nav>
+
+        <p className="text-base leading-[1.75] text-[#404743] dark:text-[#C5D2DB]">{lecture.summary}</p>
+
+        <details className="rounded-xl border border-[#E5DEC9] px-4 py-2 dark:border-[#2A3B4A]">
+          <summary className="flex min-h-11 cursor-pointer items-center text-base font-bold text-[#1E3D34] dark:text-[#83BEA8]">目次・学習の要点</summary>
+          <div className="space-y-5 pb-3 pt-2">
+        {readingQuestions.length > 0 && (
+          <section aria-labelledby="lecture-reading-questions-title" className="space-y-3 rounded-2xl border border-[#D6E3DA] bg-[#F6F9F4] p-4 sm:p-5 dark:border-[#304A3E] dark:bg-[#172A22]">
+            <h2 id="lecture-reading-questions-title" className="text-base font-bold text-[#1E3D34] dark:text-[#D9EDE0]">知りたいことから読む</h2>
+            <nav aria-label="疑問から講義の解説へ">
+              <ul className="divide-y divide-[#D6E3DA] dark:divide-[#304A3E]">
+                {readingQuestions.map((item) => (
+                  <li key={item.id}>
+                    <a href={`#${item.id}`} className="group flex min-h-11 items-center justify-between gap-3 rounded-lg py-3 text-base font-medium leading-relaxed text-[#244B3C] focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-[#D9EDE0]">
+                      <span className="group-hover:underline underline-offset-4">{item.question}</span>
+                      <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </section>
+        )}
+
+        {lectureHeadings.length > 0 && (
+          <section className="space-y-2">
+            <h2 className="text-base font-bold text-[#1E3D34] dark:text-[#83BEA8]">講義の目次</h2>
+            <nav aria-label="講義の目次" className="mt-2">
+              <ol className="space-y-1">
+                {lectureHeadings.map((heading) => (
+                  <li key={heading.id}><a href={`#${heading.id}`} className="inline-flex min-h-11 items-center rounded-lg py-2 text-base leading-relaxed text-[#1E3D34] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-[#83BEA8]">{heading.label}</a></li>
+                ))}
+              </ol>
+            </nav>
+          </section>
+        )}
+
+        <section className="space-y-3 border-t border-[#E5DEC9] pt-4 dark:border-[#2A3B4A]">
+          <h2 className="text-base font-bold text-[#1E3D34] dark:text-[#83BEA8]">学習の目標と要点</h2>
+          <p className="text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]">{lecture.whatYouWillLearn.topics}</p>
+          <p className="text-base leading-relaxed text-[#232826] dark:text-[#FAF8F5]"><strong className="font-semibold">目標：</strong>{lecture.whatYouWillLearn.canDo}</p>
+
+          {/* 重要ポイント */}
+          {lecture.keyPoints && lecture.keyPoints.length > 0 && (
+            <div className="pt-2 border-t border-[#EBE4D5] dark:border-[#22303D] space-y-1">
+              <ul className="space-y-1 text-base text-[#404743] dark:text-[#C5D2DB]">
+                {lecture.keyPoints.map((point, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="text-[#1E3D34] dark:text-[#74BA9E] font-bold shrink-0 mt-0.5">✓</span>
+                    <span><GlossaryRenderer text={point} seenTerms={keyPointsSeenTerms[idx]} /></span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+
+          </div>
+        </details>
+
+        {/* 本文（MarkdownBody） */}
+        <div id="lecture-content" className="scroll-mt-28">
+        {lecture.seriesId === 'lifedynamics' && <aside aria-label="生命機能論の読み方" className="rounded-xl border border-[#C5DED4] bg-[#EBF3EF] p-4 dark:border-[#2A5243] dark:bg-[#182823]">
+          <h2 className="text-lg font-bold">まず押さえる内容</h2>
+          <p className="mt-2 leading-relaxed">要点と基本の節を読み、概念の役割を自分の言葉で説明しましょう。「詳しく学ぶ」「研究との接点」は、基礎を押さえてから開いて読めます。判断の注意点は先に確認します。</p>
+        </aside>}
+        <MarkdownBody
+          contentMarkdown={lecture.contentMarkdown}
+          collapseAdvanced={lecture.seriesId === "lifedynamics"}
+          idPrefix="curriculum-heading"
+          resolvedReferences={resolvedReferences}
+          readingInserts={readingInserts}
+          relatedReading={relatedFigureReading}
+        />
+        </div>
+
+        {(isClinicalStage || ['intro', 'zangfu', 'meridians'].includes(lecture.seriesId ?? '')) && <ClinicalLectureApplication lectureId={lecture.id} takeaway={lecture.whatYouWillLearn.canDo} foundation={!isClinicalStage} />}
+
+        <details className="rounded-xl border border-[#E5DEC9] px-4 py-2 dark:border-[#2A3B4A]">
+          <summary className="flex min-h-11 cursor-pointer items-center text-base font-bold text-[#1E3D34] dark:text-[#83BEA8]">この章の講義・コースの進捗</summary>
+          <div className="space-y-4 pb-3 pt-2">
       {courseJourney && <section aria-label="学習中のコース" className="rounded-2xl border border-[#C5DED4] bg-[#EBF3EF] p-4 text-[#184F49] dark:border-[#2A5243] dark:bg-[#182823] dark:text-[#9CCBBC]">
         <p className="text-sm font-semibold">{courseJourney.course.title} · ステップ {courseJourney.stepIndex + 1} / {courseJourney.course.steps.length}</p>
         <Link href={`/learn/courses/${courseJourney.course.slug}#course-next`} className="mt-2 inline-flex min-h-11 items-center gap-2 text-base font-bold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4"><ArrowLeft aria-hidden="true" className="h-4 w-4" />コースの進捗・到達目標へ</Link>
@@ -314,156 +422,8 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
         </div>
       )}
 
-      {/* 講義テキスト本体 */}
-      <article className="lecture-article bg-white dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] px-3.5 py-6 sm:p-10 shadow-xs space-y-6 transition-colors">
-        {/* 講義ヘッダー */}
-        <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-5 space-y-3">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-2 text-sm">
-              <span className="px-2.5 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] font-bold">
-                {lecture.stageTitle}
-              </span>
-              {lecture.seriesTitle && lecture.lessonNumber ? (
-                <span className="px-2.5 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#B86924] dark:text-[#E6C387] font-bold">
-                  {lecture.seriesTitle} レッスン {lecture.lessonNumber}
-                </span>
-              ) : (
-                <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
-                  第 {lecture.lectureNumber} 講
-                </span>
-              )}
-              <span className="text-[#59615D] dark:text-[#AFBDC8]">
-                約 {lecture.duration}
-              </span>
-            </div>
-
-            {/* 学習ステータス切替ボタン */}
-            <button
-              type="button"
-              disabled={!isMounted}
-              aria-pressed={isCompleted}
-              onClick={() => { if (isMounted) toggleLectureCompleted(lecture.id); }}
-              className={`min-h-[44px] inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-bold transition-colors cursor-pointer disabled:cursor-wait disabled:opacity-60 ${
-                isCompleted
-                  ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"
-                  : "bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 dark:bg-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700"
-              }`}
-            >
-              <CheckCircle2 className={`w-4 h-4 ${isCompleted ? "text-emerald-600 dark:text-emerald-400" : "text-slate-400"}`} />
-              <span>{!isMounted ? "進捗を確認中…" : isCompleted ? "受講完了（済）" : "受講済みにする"}</span>
-            </button>
           </div>
-
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] leading-tight">
-            {lecture.title}
-          </h1>
-          <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">編集：<Link href="/about" className="underline underline-offset-4">はり太郎</Link> · 更新：<time dateTime={PAGE_REVISIONS[`/curriculum/${lecture.id}`]}>{PAGE_REVISIONS[`/curriculum/${lecture.id}`]}</time> · <Link href="/editorial-policy" className="underline underline-offset-4">出典確認・監修の範囲</Link>（専門家監修は未完了）</p>
-          {lecture.subtitle && (
-            <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              {lecture.subtitle}
-            </p>
-          )}
-        </div>
-
-        <nav aria-label="講義内の移動" className="flex flex-wrap gap-2">
-          <a href="#lecture-content" aria-label="講義本文を読む" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">本文</a>
-          {readingInserts[0] && <a href={`#reading-figure-${readingInserts[0].figure.id}`} className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] px-4 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A3B4A] dark:text-[#83BEA8] dark:hover:bg-[#182823]">図で整理</a>}
-          {quiz && <a href="#lecture-quiz" aria-label="理解度チェックのクイズへ" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">クイズ</a>}
-          {resolvedReferences.length > 0 && <a href="#article-references-section" aria-label="出典と確認範囲へ" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">出典</a>}
-          {chapterAssessment && <a href="#chapter-assessment" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] px-4 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A3B4A] dark:text-[#83BEA8] dark:hover:bg-[#182823]">章末演習</a>}
-        </nav>
-
-        <p className="text-base leading-[1.75] text-[#404743] dark:text-[#C5D2DB]">{lecture.summary}</p>
-
-        {/* 学習ゴール枠 */}
-        <div className="bg-[#FAF8F5] dark:bg-[#141E28] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-2xl p-4 sm:p-5 space-y-3">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#EBE4D5] dark:border-[#22303D] pb-2.5">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              <h2 className="font-serif text-sm sm:text-base font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                このページで分かること
-              </h2>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-            <div className="bg-white/80 dark:bg-[#1A2632]/80 p-3 rounded-xl border border-[#EDE7DC] dark:border-[#243444] space-y-1">
-              <span className="text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8] block">主な学習内容</span>
-              <p className="text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-                {lecture.whatYouWillLearn.topics}
-              </p>
-            </div>
-            <div className="bg-white/80 dark:bg-[#1A2632]/80 p-3 rounded-xl border border-[#EDE7DC] dark:border-[#243444] space-y-1">
-              <span className="text-sm font-bold text-[#B86924] dark:text-[#E6C387] block">習得ゴール（できるようになること）</span>
-              <p className="text-base font-semibold text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
-                {lecture.whatYouWillLearn.canDo}
-              </p>
-            </div>
-          </div>
-
-          {/* 重要ポイント */}
-          {lecture.keyPoints && lecture.keyPoints.length > 0 && (
-            <div className="pt-2 border-t border-[#EBE4D5] dark:border-[#22303D] space-y-1">
-              <ul className="space-y-1 text-base text-[#404743] dark:text-[#C5D2DB]">
-                {lecture.keyPoints.map((point, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-[#1E3D34] dark:text-[#74BA9E] font-bold shrink-0 mt-0.5">✓</span>
-                    <span><GlossaryRenderer text={point} seenTerms={keyPointsSeenTerms[idx]} /></span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-
-        {(isClinicalStage || ['intro', 'zangfu', 'meridians'].includes(lecture.seriesId ?? '')) && <ClinicalLectureApplication lectureId={lecture.id} takeaway={lecture.whatYouWillLearn.canDo} foundation={!isClinicalStage} />}
-        {readingQuestions.length > 0 && (
-          <section aria-labelledby="lecture-reading-questions-title" className="space-y-3 rounded-2xl border border-[#D6E3DA] bg-[#F6F9F4] p-4 sm:p-5 dark:border-[#304A3E] dark:bg-[#172A22]">
-            <h2 id="lecture-reading-questions-title" className="text-base font-bold text-[#1E3D34] dark:text-[#D9EDE0]">知りたいことから読む</h2>
-            <nav aria-label="疑問から講義の解説へ">
-              <ul className="divide-y divide-[#D6E3DA] dark:divide-[#304A3E]">
-                {readingQuestions.map((item) => (
-                  <li key={item.id}>
-                    <a href={`#${item.id}`} className="group flex min-h-11 items-center justify-between gap-3 rounded-lg py-3 text-base font-medium leading-relaxed text-[#244B3C] focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-[#D9EDE0]">
-                      <span className="group-hover:underline underline-offset-4">{item.question}</span>
-                      <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </section>
-        )}
-
-        {lectureHeadings.length > 0 && (
-          <details className="rounded-xl bg-[#FAF8F5] px-4 py-2 dark:bg-[#121920]">
-            <summary className="flex min-h-11 cursor-pointer items-center text-base font-bold text-[#1E3D34] dark:text-[#83BEA8]">講義の目次</summary>
-            <nav aria-label="講義の目次" className="mt-2">
-              <ol className="space-y-1">
-                {lectureHeadings.map((heading) => (
-                  <li key={heading.id}><a href={`#${heading.id}`} className="inline-flex min-h-11 items-center rounded-lg py-2 text-base leading-relaxed text-[#1E3D34] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-[#83BEA8]">{heading.label}</a></li>
-                ))}
-              </ol>
-            </nav>
-          </details>
-        )}
-
-        {/* 本文（MarkdownBody） */}
-        <div id="lecture-content" className="scroll-mt-28">
-        {lecture.seriesId === 'lifedynamics' && <aside aria-label="生命機能論の読み方" className="rounded-xl border border-[#C5DED4] bg-[#EBF3EF] p-4 dark:border-[#2A5243] dark:bg-[#182823]">
-          <h2 className="text-lg font-bold">まず押さえる内容</h2>
-          <p className="mt-2 leading-relaxed">要点と基本の節を読み、概念の役割を自分の言葉で説明しましょう。「詳しく学ぶ」「研究との接点」は、基礎を押さえてから開いて読めます。判断の注意点は先に確認します。</p>
-          <ul className="mt-3 space-y-2">{lectureHeadings.filter(h => !/^(📘|🔬)/.test(h.label)).map(h => <li key={h.id}><a href={`#${h.id}`} className="inline-flex min-h-11 items-center underline underline-offset-4">{h.label}</a></li>)}</ul>
-        </aside>}
-        <MarkdownBody
-          contentMarkdown={lecture.contentMarkdown}
-          collapseAdvanced={lecture.seriesId === "lifedynamics"}
-          idPrefix="curriculum-heading"
-          resolvedReferences={resolvedReferences}
-          readingInserts={readingInserts}
-          relatedReading={relatedFigureReading}
-        />
-        </div>
+        </details>
 
         {articleReadingLinks.length > 0 && (
           <nav aria-label="この講義に関連する記事" className="border-t border-[#E5DEC9] dark:border-[#2A3B4A] pt-5">
@@ -569,6 +529,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
             <h2 className="text-lg font-bold text-[#1E3D34] dark:text-[#74BA9E]">学んだ用語を、短い例でもう一度確かめる</h2>
             <p className="mt-2 text-base leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">用語の意味を自分の言葉で説明し、事実と解釈を分けてみましょう。詳しい病態や治療方針は、後の章で学びます。</p>
             <div className="mt-3 flex flex-wrap gap-3">
+              <Link href="/learn" className="inline-flex min-h-11 items-center font-semibold text-[#1E3D34] underline underline-offset-4 dark:text-[#74BA9E]">学習ガイドを見る</Link>
               <Link href="/glossary" className="inline-flex min-h-11 items-center font-semibold text-[#1E3D34] underline underline-offset-4 dark:text-[#74BA9E]">用語辞典で振り返る</Link>
               {courseJourney && <Link href={`/learn/courses/${courseJourney.course.slug}#course-mini-case-${courseJourney.course.seriesId}`} className="inline-flex min-h-11 items-center font-semibold text-[#1E3D34] underline underline-offset-4 dark:text-[#74BA9E]">このコースの短い例で考える</Link>}
             </div>

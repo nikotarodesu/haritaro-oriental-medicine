@@ -3,7 +3,6 @@ import Image from "next/image";
 import { GraduationCap, Stethoscope, FileText, ArrowRight, BookOpen, SlidersHorizontal, Layers, Award, MapPin } from "lucide-react";
 import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
 import HomeHeroQuickSearch from "@/components/home/HomeHeroQuickSearch";
-import HomeHeroDualEntry from "@/components/home/HomeHeroDualEntry";
 import LearningCourseCards from "@/components/learning/LearningCourseCards";
 import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
 import { createCourseLectureHref } from "@/utils/courseJourney";
@@ -18,12 +17,6 @@ const tools = [
   { href: "/simulator", label: "弁証推論", Icon: Layers },
   { href: "/practice/haiketsu", label: "配穴設計", Icon: SlidersHorizontal },
   { href: "/notes", label: "ノート", Icon: FileText },
-];
-const flow = [
-  { label: "理論", href: "/curriculum" },
-  { label: "弁証", href: "/simulator" },
-  { label: "配穴", href: "/practice/haiketsu" },
-  { label: "記録", href: "/notes" },
 ];
 
 export default function HomePage() {
@@ -50,7 +43,7 @@ export default function HomePage() {
             <Link href="/learn" className="ui-button ui-button-primary"><GraduationCap aria-hidden="true" /><span>基礎から学ぶ</span></Link>
             <Link href="/clinical" className="ui-button ui-button-outline"><Stethoscope aria-hidden="true" /><span>臨床で使う</span></Link>
           </nav>
-          <div className="mt-4 space-y-1">
+          <div className="mx-auto mb-4 mt-4 max-w-[760px] space-y-1">
             <ContentNavigationLink href={createCourseLectureHref(LEARNING_COURSES[0].slug, LEARNING_COURSES[0].steps[0].lectureId)} placement="home_first_lecture" className="inline-flex min-h-11 items-center gap-2 font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">初めての方：第1講から始める<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></ContentNavigationLink>
             <p className="text-sm ui-muted">「東洋医学とは何か」を読み、最後のクイズで確かめます。</p>
           </div>
@@ -66,20 +59,12 @@ export default function HomePage() {
             {tools.map(({ href, label, Icon }) => <Link key={href} href={href} className="ui-card home-tool"><Icon aria-hidden="true" /><span>{label}</span></Link>)}
           </nav>
         </section>
-        <HomeHeroDualEntry />
         <section aria-labelledby="home-courses-title" className="home-section">
           <div className="home-section-header">
             <h2 id="home-courses-title" className="home-section-title">最初の4コース</h2>
             <ContentNavigationLink href="/learn/courses" placement="home_courses" className="ui-text-link">全{LEARNING_COURSES.length}コース<ArrowRight aria-hidden="true" /></ContentNavigationLink>
           </div>
           <LearningCourseCards courses={LEARNING_COURSES.slice(0, 4)} placement="home_course_select" compact />
-        </section>
-        <section aria-labelledby="home-flow-title" className="home-section">
-          <h2 id="home-flow-title" className="home-section-title">学びと実践の流れ</h2>
-          <p className="ui-muted">講義で理論を学び、症例演習で所見と候補を比べます。配穴の理由や迷った点をノートに残し、次の復習で確かめましょう。</p>
-          <ol aria-label="理論から弁証、配穴、記録へ進む流れ" className="home-flow">
-            {flow.map((step, index) => <li key={step.href}><Link href={step.href} className="ui-card"><span className="ui-muted">{index + 1}</span><span>{step.label}</span>{index < flow.length - 1 && <ArrowRight aria-hidden="true" />}</Link></li>)}
-          </ol>
         </section>
         <section aria-labelledby="home-reading-title" className="home-section">
           <h2 id="home-reading-title" className="home-section-title">読みもの・文献</h2>
@@ -103,7 +88,6 @@ export default function HomePage() {
           <ul className="home-updates">{SITE_UPDATES.slice(0, 3).map(update => <li key={update.label}><Link href={update.href}>
             <time dateTime={update.date} className="ui-muted text-sm">{update.date.replaceAll("-", ".")}</time>
             <h3 className="text-base font-semibold">{update.label}</h3>
-            <p className="ui-muted">{update.text}</p>
           </Link></li>)}</ul>
         </section>
         <section aria-label="運営者と出典方針" className="ui-card home-operator">

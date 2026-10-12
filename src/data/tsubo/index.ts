@@ -250,7 +250,7 @@ export function searchAcupoints(
 }
 
 /**
- * 既存コンポーネント（Home, Simulator, HaiketsuOptimizerなど）への100%互換性エクスポート
+ * 既存の学習ツールが参照する互換性エクスポート
  */
 export const TSUBOS: Tsubo[] = ACUPOINTS_MASTER.filter((p) => p.status === "published").map((p) => ({
   id: p.legacyId,

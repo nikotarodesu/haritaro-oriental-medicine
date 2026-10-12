@@ -67,8 +67,10 @@ for(const lectureId of READABILITY_EDITORIAL_REVISIONS) assert(lectureIds.has(le
 assert.equal(NATURAL_JAPANESE_EDITORIAL_REVISIONS.length, 93);
 assert.equal(new Set(NATURAL_JAPANESE_EDITORIAL_REVISIONS).size, 93);
 for(const lectureId of NATURAL_JAPANESE_EDITORIAL_REVISIONS) assert(lectureIds.has(lectureId), lectureId);
-for(const lectureId of lectureIds) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/curriculum/${lectureId}`).lastModified.toISOString().slice(0,10),NATURAL_JAPANESE_EDITORIAL_REVISIONS.includes(lectureId) || READABILITY_EDITORIAL_REVISIONS.includes(lectureId) ? '2026-10-12' : CURRICULUM_EDITORIAL_REVISIONS.includes(lectureId) ? '2026-10-09' : '2026-10-08',lectureId);
-for(const pathname of ['/tsubo/li4','/tsubo/sp6','/symptoms','/diagnosis']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-08',pathname);
+// All lecture reading layouts and acupoint pages were revised; this is not a clinical-review date.
+for(const lectureId of lectureIds) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/curriculum/${lectureId}`).lastModified.toISOString().slice(0,10),'2026-10-12',lectureId);
+for(const pathname of ['/tsubo/li4','/tsubo/sp6','/pricing']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-12',pathname);
+for(const pathname of ['/symptoms','/diagnosis']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-08',pathname);
 for(const pathname of ['/','/updates','/glossary','/kokushi','/simulator','/clinical','/about','/cases','/practice/haiketsu','/curriculum','/learn','/library','/learn/courses']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-12',pathname);
 for(const article of ARTICLES) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/articles/${article.id}`).lastModified.toISOString().slice(0,10),article.updatedAt);
 const { LEARNING_COURSES, getCourseProgress } = load('src/data/learningCourses');

@@ -13,6 +13,7 @@ const shortDescriptions: Record<string, string> = {
   'yinyang-foundations': '比較の基準と、陰陽の関係・変化を学びます。',
   'five-elements-relations': '五行の相生・相剋と、五臓への配当を整理します。',
   'qi-blood-fluid': '気・血・津液の伝統的な役割と用語を見分けます。',
+  'zangfu-foundations': '五臓六腑の働きと関係を、解剖学の臓器と区別して学びます。',
 };
 
 export default function LearningCourseCardsClient({ courses, readingMinutes, placement = 'course_select', compact = false }: { courses: LearningCourse[]; readingMinutes: Record<string, number>; placement?: string; compact?: boolean }) {
@@ -37,7 +38,7 @@ export default function LearningCourseCardsClient({ courses, readingMinutes, pla
             <div className="mt-auto pt-5">
               <p className="mb-2 text-sm ui-muted">{availability === 'ready' ? `${progress.completedCount} / ${course.steps.length} 講義完了` : availability === 'loading' ? '進捗を確認中…' : '進捗を取得できませんでした'}</p>
               {availability === 'ready' && <progress className="h-1.5 w-full overflow-hidden rounded-full accent-[#184F49] dark:accent-[#9CCBBC]" value={progress.completedCount} max={course.steps.length} aria-label={`${course.title}の受講進捗`} />}
-              <Link href={`/learn/courses/${course.slug}`} onClick={() => trackEvent('context_link_click', { placement, course_id: course.slug })} className="mt-4 flex min-h-11 items-center justify-between gap-3 rounded-xl bg-[#184F49] px-4 py-3 text-base font-bold text-white hover:bg-[#103D37] focus-visible:outline-2 focus-visible:outline-offset-4 dark:bg-[#285F54]">
+              <Link href={`/learn/courses/${course.slug}`} onClick={() => trackEvent('context_link_click', { placement, course_id: course.slug })} className="mt-4 flex min-h-11 items-center justify-between gap-3 border-t border-[#D9E3DD] py-3 text-base font-semibold text-[#184F49] hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 dark:border-[#2A3B4A] dark:text-[#9CCBBC]">
                 <span>{progress.finished ? 'コースを振り返る' : progress.completedCount > 0 ? 'コースの続きを見る' : 'コースを見る'}</span>
                 <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
               </Link>

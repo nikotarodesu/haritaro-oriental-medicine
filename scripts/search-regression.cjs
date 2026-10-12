@@ -90,6 +90,18 @@ for (const query of ['LI4', 'ＬＩ ４', '合谷', 'ごうこく']) {
 assert(!rankedFixture('肩こり', 'research').includes('withdrawn-paper'), 'Do-not-use evidence is not a navigable search recommendation');
 assert.equal(preparePurposeSearchQuery('論文').query.normalized, '論文', 'An intent-only query still searches the catalog');
 assert.equal(preparePurposeSearchQuery('陰陽').purpose, 'guide', 'Ordinary study queries use guide ordering');
+const learningFixtures = [
+  { id: 'article', type: 'article', title: '陰陽', tags: ['陰陽'] },
+  { id: 'lecture', type: 'lecture', title: '陰陽論 レッスン1：陰陽とは何か' },
+  { id: 'definition', type: 'glossary', title: '陰陽（いんよう）', exactTerms: ['陰陽', 'いんよう'] },
+  { id: 'research', type: 'paper', title: '陰陽を扱う研究', reviewStatus: 'source-checked' },
+].map(prepareSearchItem);
+for (const query of ['陰陽', 'いんよう', '陰陽とは', '陰陽 意味', '陰陽 定義']) {
+  assert.deepEqual(rankPurposeSearchResults(learningFixtures, preparePurposeSearchQuery(query)).slice(0, 3).map(result => result.item.id),
+    ['definition', 'lecture', 'article'], query + ': define the term, then teach it, then expand it');
+}
+assert.equal(rankPurposeSearchResults(learningFixtures, preparePurposeSearchQuery('陰陽 論文'))[0].item.id, 'research', 'Explicit research intent keeps precedence over term definitions');
+assert.equal(preparePurposeSearchQuery('学習').query.normalized, '学習', 'An intent-only learning word remains searchable');
 
 const GlobalSearchModal = load('src/components/search/GlobalSearchModal').default;
 function render(query, isOpen = true) { return renderToStaticMarkup(React.createElement(GlobalSearchModal, { isOpen, initialQuery: query, onClose() {} })); }
@@ -141,6 +153,14 @@ const firstPoint = shoulderUrls.findIndex(url => url.startsWith('/tsubo/'));
 const firstPaper = shoulderUrls.findIndex(url => url.startsWith('/library#paper-'));
 assert(firstPoint >= 0 && (firstPaper === -1 || firstPoint < firstPaper), 'Points appear before specialized papers for a symptom query');
 assert.equal(optionUrls(render('合谷'))[0], '/tsubo/li4', 'The whole catalog retains exact point-name lookup');
+assert.equal(optionUrls(render('合谷とは'))[0], '/tsubo/li4', 'A definition question about a point retains direct lookup');
+for (const query of ['陰陽', '陰陽とは', '陰陽 意味', 'いんよう']) {
+  const urls = optionUrls(render(query));
+  assert.equal(urls[0], '/glossary#term-%E9%99%B0%E9%99%BD', query + ': the public definition is first');
+  const lecturePosition = urls.findIndex(url => url.startsWith('/curriculum/'));
+  const articlePosition = urls.findIndex(url => url.startsWith('/articles/'));
+  assert(lecturePosition >= 0 && (articlePosition < 0 || lecturePosition < articlePosition), query + ': a focused lecture precedes an article');
+}
 assert.equal(optionUrls(points)[0], '/tsubo/li4', 'The whole catalog retains exact point-code lookup');
 const research = render('肩こり 論文');
 assert(optionUrls(research)[0]?.startsWith('/library#paper-'), 'Explicit research intent promotes a relevant paper: ' + optionUrls(research).slice(0, 3).join(', '));

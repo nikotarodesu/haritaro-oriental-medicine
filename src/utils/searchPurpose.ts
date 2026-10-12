@@ -20,16 +20,23 @@ const RESEARCH_MODIFIERS = new Set([
   "システマティックレビュー", "系統的レビュー", "rct", "research", "study", "trial",
 ].map(normalizeSearchText));
 
+const LEARNING_MODIFIERS = new Set(["とは", "意味", "定義", "学ぶ", "学習", "入門"]);
+
 export function preparePurposeSearchQuery(query: string, requestedPurpose: SearchPurpose = "auto") {
   const originalQuery = prepareSearchQuery(query);
+  // Support a short definition question without treating "とは" as part of the term.
+  const lookupQuery = originalQuery.normalized.endsWith("とは") && originalQuery.normalized.length > 2
+    ? prepareSearchQuery(originalQuery.normalized.slice(0, -2)) : originalQuery;
   const hasResearchModifiers = originalQuery.tokens.some(token => RESEARCH_MODIFIERS.has(token));
   const researchFocus = originalQuery.tokens.some(token => token === "古典" || token === "原典") ? "classic" : hasResearchModifiers ? "paper" : "all";
-  const topicTokens = originalQuery.tokens.filter(token => !RESEARCH_MODIFIERS.has(token));
+  const learningFocus = lookupQuery !== originalQuery || originalQuery.tokens.some(token => LEARNING_MODIFIERS.has(token));
+  const topicTokens = lookupQuery.tokens.filter(token => !RESEARCH_MODIFIERS.has(token) && !LEARNING_MODIFIERS.has(token));
   const purpose = requestedPurpose === "auto" ? hasResearchModifiers ? "research" : "guide" : requestedPurpose;
   return {
     purpose,
     researchFocus,
-    query: hasResearchModifiers && topicTokens.length ? prepareSearchQuery(topicTokens.join(" ")) : originalQuery,
+    learningFocus,
+    query: (hasResearchModifiers || learningFocus) && topicTokens.length ? prepareSearchQuery(topicTokens.join(" ")) : originalQuery,
   };
 }
 
@@ -47,6 +54,9 @@ export function rankPurposeSearchResults<T extends PurposeSearchItem>(
     (item.type === "symptom" || item.searchRole === "professional-guide") &&
     context.query.tokens.some(token => token.length >= 2 && index.title.includes(token)),
   );
+  const hasExactDefinition = matches.some(({ index, item }) =>
+    item.type === "glossary" && index.exactTerms.includes(context.query.normalized),
+  );
 
   function priority({ index, item }: typeof matches[number]) {
     // An explicit point name, reading, alias or code remains a direct lookup in either mode.
@@ -56,11 +66,14 @@ export function rankPurposeSearchResults<T extends PurposeSearchItem>(
       if (item.type === "classic") return context.researchFocus === "classic" ? 95 : context.researchFocus === "paper" ? 70 : 85;
       return 60;
     }
+    if (item.type === "glossary" && index.exactTerms.includes(context.query.normalized)) return 98;
     if (isSymptomQuery) {
       if (item.type === "symptom") return 95;
       if (item.searchRole === "professional-guide") return 90;
       if (item.type === "acupoint") return 80;
     }
+    if ((hasExactDefinition || context.learningFocus) && item.type === "lecture" &&
+        context.query.tokens.some(token => index.title.includes(token))) return 75;
     if (item.type === "paper") return 30;
     if (item.type === "classic") return 40;
     return 60;

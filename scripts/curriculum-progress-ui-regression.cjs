@@ -80,7 +80,7 @@ function click(node) { node.props.onClick({ preventDefault() {}, stopPropagation
 // Loading controls are visibly disabled. Invoke their actual handlers as well,
 // proving that non-DOM callers cannot turn an ignored click into a saved flag.
 reader.render(); index.render();
-assert.equal(completionButtons(reader).length, 2, 'Both top and bottom reader controls are covered');
+assert.equal(completionButtons(reader).length, 1, 'The reader has one completion control after the lesson');
 assert.equal(completionButtons(index).length, CURRICULUM_CHAPTERS_META[0].lectureIds.length, 'Every expanded chapter completion control is covered');
 for (const client of [reader, index]) for (const button of completionButtons(client)) {
   assert.equal(button.props.disabled, true);
@@ -92,8 +92,8 @@ progress.toggleLectureCompleted(lectures[0].id);
 progress.setLectureCompleted(lectures[0].id, true);
 assert.equal(writes.length, 0, 'Neither control nor provider saves a loading-state completion');
 
-// A hydrated owner can mark and unmark the same lecture using either reader
-// position, and the actual index reflects the same shared record.
+// A hydrated owner can mark and unmark the same lecture using the reader
+// control, and the actual index reflects the same shared record.
 sync = { ready: true, values: {} }; owner = 'account-a';
 reader.render(); index.render();
 for (const client of [reader, index]) assert(completionButtons(client).every(button => !button.props.disabled));
@@ -101,7 +101,7 @@ click(completionButtons(reader)[0]); reader.render(); index.render();
 assert(completionButtons(reader).every(button => button.props['aria-pressed']));
 assert.equal(completionButtons(index)[0].props['aria-pressed'], true);
 assert(reader.text().includes('受講完了（解除する）'));
-click(completionButtons(reader)[1]); reader.render(); index.render();
+click(completionButtons(reader)[0]); reader.render(); index.render();
 assert.equal(completionButtons(index)[0].props['aria-pressed'], false);
 click(completionButtons(index)[1]); reader.render({ lecture: lectures[1], lectureNavigation: lectures });
 assert(completionButtons(reader).every(button => button.props['aria-pressed']), 'Index completion reaches the matching reader');

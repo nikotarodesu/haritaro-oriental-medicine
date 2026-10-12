@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect, useCallback, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { SUBSCRIPTION_CONFIG, isSubscriptionSalesEnabled } from "@/config/subscription";
+import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 import { 
   SlidersHorizontal, 
   Bookmark, 
@@ -17,6 +17,8 @@ import {
   ExternalLink
 } from "lucide-react";
 import { trackEvent } from "@/utils/analytics";
+import { buildPrescriptionMemo, getPrescriptionMemoTitle } from "@/utils/prescriptionMemo";
+import { useSubscriptionAvailability } from "@/hooks/useSubscriptionAvailability";
 import { useAuth } from "@/contexts/AuthContext";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import AuthModal from "@/components/auth/AuthModal";
@@ -35,12 +37,13 @@ import { ACUPOINTS_MASTER } from "@/data/tsubo/acupointsMaster";
 export default function HaiketsuPracticePage() {
   const router = useRouter();
   const { isPremium } = useAuth();
+  const { status, salesEnabled } = useSubscriptionAvailability();
   const { addMemo } = useClinicalMemo();
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [selectedPointIds, setSelectedPointIds] = useState<string[]>(["taishou", "gokoku"]); // 初期: 四関穴
-  const [prescriptionTitle, setPrescriptionTitle] = useState("四関開竅・自律神経調整処方");
-  const [rationaleText, setRationaleText] = useState("太衝（足厥陰肝経・原穴）で肝気鬱結を疏通させ、合谷（手陽明大腸経・原穴）で気機の昇降を助け、全身の気血巡行を調和させる。");
+  const [prescriptionTitle, setPrescriptionTitle] = useState("合谷と太衝の配穴例");
+  const [rationaleText, setRationaleText] = useState("合谷と太衝を組み合わせた教材例です。伝統的な分類と、各穴を選ぶ理由を確認します。");
   const [saved, setSaved] = useState(false);
   const restoreClinicalPoints = useCallback((codes: string[]) => {
     const roles = Object.values(ACUPOINT_ROLES).filter(point => codes.includes(point.code));
@@ -69,7 +72,7 @@ export default function HaiketsuPracticePage() {
     return Object.values(ACUPOINT_ROLES);
   }, []);
 
-  // ツボの追加/削除（無料会員は4穴まで自由演習、5穴以上の高度処方はプレミアム）
+  // ツボの追加/削除（無料会員は4穴まで自由演習、5〜8穴の選択はプレミアム）
   const togglePoint = (id: string) => {
     if (selectedPointIds.includes(id)) {
       setSelectedPointIds(selectedPointIds.filter(p => p !== id));
@@ -124,7 +127,7 @@ export default function HaiketsuPracticePage() {
     const stored = saveDraftPatientNote({
       sourceTool: "配穴設計",
       selectedPointsInput: pointNames.join(", "),
-      treatmentPlan: `【配穴設計処方】\n処方名: ${prescriptionTitle || "自作配穴処方"}\n${isPremium ? "選定理由・方針" : "教材例の説明（現在の配穴の選定理由ではありません）"}: ${rationaleText || "未記入"}\n構成分析: 本治${analysis.rootCount}穴・標治${analysis.branchCount}穴（計${pointNames.length}穴）\n※配穴設計演習からの下書きです。確定診断や固定意図ではありません。`,
+      treatmentPlan: `【配穴設計処方】\n処方名: ${getPrescriptionMemoTitle(pointNames, prescriptionTitle, isPremium)}\n${isPremium ? "選定理由・方針" : "教材例の説明（現在の配穴の選定理由ではありません）"}: ${rationaleText || "未記入"}\n構成分析: 本治${analysis.rootCount}穴・標治${analysis.branchCount}穴（計${pointNames.length}穴）\n※配穴設計演習からの下書きです。確定診断や固定意図ではありません。`,
     });
     if (!stored) { alert('下書きを保存できませんでした。この画面で選択を保持しています。'); return; }
     trackEvent("note_save_success", { tool_id: "haiketsu", destination_type: "note" });
@@ -133,19 +136,9 @@ export default function HaiketsuPracticePage() {
 
   // 配穴集の保存上限は共通設定から参照する。
   const handleSaveToMemo = () => {
-    const pointNames = selectedPointIds.map(id => ACUPOINT_ROLES[id]?.name || id);
-    const success = addMemo({
-      id: `haiketsu-${Date.now()}`,
-      type: "pair",
-      title: prescriptionTitle || "自作配穴処方",
-      subTitle: `配穴構成: 本治${analysis.rootCount}穴・標治${analysis.branchCount}穴（計${pointNames.length}穴）`,
-      points: pointNames,
-      elements: ["木", "金"],
-      indications: ["自律神経調整", "気滞血瘀"],
-      summary: `${isPremium ? "選定理由" : "教材例の説明（現在の配穴の選定理由ではありません）"}: ${rationaleText || "未記入"}`,
-      mechanism: `教材内の構成分析: 本治${analysis.rootCount}穴 / 標治${analysis.branchCount}穴（${analysis.statusText}）。治療効果や安全性の確認結果ではありません。`,
-      personalNotes: `配穴演習にて設計 (${new Date().toLocaleDateString("ja-JP")})`
-    });
+    const success = addMemo(buildPrescriptionMemo({
+      selectedPointIds, title: prescriptionTitle, rationale: rationaleText, isPremium,
+    }));
 
     if (success) {
       trackEvent("note_save_success", { tool_id: "haiketsu", destination_type: "note" });
@@ -254,7 +247,7 @@ export default function HaiketsuPracticePage() {
               onClick={() => setAuthModalOpen(true)}
               className="px-4 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B6958] text-white text-xs font-bold shrink-0 transition-colors shadow-sm cursor-pointer min-h-[44px]"
             >
-              {isSubscriptionSalesEnabled() ? "プレミアム機能を確認" : "プレミアムの準備状況"}
+              {salesEnabled ? "プレミアム機能を確認" : status === "unavailable" ? "プレミアムの準備状況" : "プレミアムの受付状況"}
             </button>
           </div>
         )}
@@ -595,6 +588,7 @@ export default function HaiketsuPracticePage() {
       <AuthModal
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
+        featureKey="practice_haiketsu"
         title="配穴設計・臨床演習 プレミアム機能"
         description={`5〜8穴の選択、タイトル・選定理由の編集、すべての教材例、配穴集の保存上限${SUBSCRIPTION_CONFIG.limits.premiumMemoMax.toLocaleString("ja-JP")}件がプレミアム機能です。無料でも4穴までの選択と配穴集への保存を利用できます。`}
       />

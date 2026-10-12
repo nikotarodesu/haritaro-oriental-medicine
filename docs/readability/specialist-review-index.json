@@ -2,7 +2,7 @@
   "date": "2026-10-12",
   "draft": false,
   "pendingAudits": [],
-  "meaning": "文章・学習導線の校閲で見つかった専門確認待ち箇所の一覧。医学的監修、医学的正誤の断定、文献全文の照合完了を示さない。専門判断が必要な既存文を推測で変更していない。 追加改善で集計ラベル1項目を実装上の事実に合わせて改稿。元の引用は履歴として保持し、専門確認待ちを継続する。",
+  "meaning": "文章・学習導線の校閲で見つかった専門確認待ち箇所の一覧。医学的監修、医学的正誤の断定、文献全文の照合完了を示さない。専門判断が必要な既存文を推測で変更していない。 追加改善で集計ラベル1項目を実装上の事実に合わせて改稿。元の引用は履歴として保持し、専門確認待ちを継続する。 全体整理では未使用部品1点を削除。専門確認記録の原文・件数・未確認状態は維持する。現在の公開箇所数を146件と断定しない。",
   "counts": {
     "articles": 18,
     "glossary": 6,
@@ -80,23 +80,19 @@
     },
     {
       "sourcePath": "src/components/cases/CaseStudyViewer.tsx",
-      "sha256": "9dc749255c921561b9ee4f814da32b4dc94aff01748d50af6e755ea602f1fc2b"
+      "sha256": "de05bb547621f94ae7eea4b4ae38e565df21cac00c93b5ecbd185007462d8f8f"
     },
     {
       "sourcePath": "src/app/pricing/page.tsx",
-      "sha256": "fd74f79e5317424ec4cb3f09e7ca668be9e1fd807edd2e6883bd76d3180f67f3"
+      "sha256": "4c357ff4ca1bb3dbc3628f45b3be033b500f37e9e02e6853fbc1fc1bad6503bd"
     },
     {
       "sourcePath": "src/app/tsubo/basics/bone-cun/page.tsx",
       "sha256": "13fa70c6576630a9623741619b1a0dc37efb9d18c9ce3cfcbdf6350597ecbdb7"
     },
     {
-      "sourcePath": "src/components/HaiketsuOptimizer.tsx",
-      "sha256": "3887371e8a7be0227b457c3601e28d9b16dcfca152b3a6c5054cf80fb1da64d6"
-    },
-    {
       "sourcePath": "src/app/practice/haiketsu/page.tsx",
-      "sha256": "636ddaadd6da8336852a132625552c8b531a80bf49627b8d4c91aa6d443f69cc"
+      "sha256": "5e9995f0b57b8a10f1c16cd40ba1e6e1989ee741f92786cd865dc70f9b0450ea"
     },
     {
       "sourcePath": "src/components/learning/PrescriptionScoringGuide.tsx",
@@ -4705,13 +4701,13 @@
       "targetIds": [
         "natural-entry-01"
       ],
-      "lineVerified": true,
-      "access": "currently-unreferenced-component",
-      "displayCondition": "現在、公開ルートから参照されない旧部品。原文は履歴として維持し、再利用時の専門確認項目として残す。実際の公開ページは src/app/practice/haiketsu/page.tsx。",
+      "lineVerified": false,
+      "access": "removed-unused-component",
+      "displayCondition": "公開ページから参照されない旧部品を削除。原文と専門確認記録は履歴として保持。現役の構成分析の専門的妥当性は未確認のまま。",
       "originalLine": 361,
       "originalExpertConfirmation": "「黄金比」は教材内の集計名か、臨床的な優位性を指すか。経穴数を2〜4とする根拠と適用条件を確認する。意味の確定に専門的判断が必要なため、操作ボタンのみ具体化し、このラベルと集計ルールは維持した。",
       "originalQuoteRetainedForReview": true,
-      "currentExpression": "{getPrescriptionCountLabel(analysis.totalCount)}",
+      "currentExpression": null,
       "editorialMitigation": {
         "date": "2026-10-12",
         "report": "learning-entry-improvements-report.md",
@@ -4723,7 +4719,8 @@
       "formerAssumedDisplayRoutes": [
         "/practice/haiketsu"
       ],
-      "currentlyPublished": false
+      "currentlyPublished": false,
+      "removedInReport": "site-refinement-report.md"
     }
   ],
   "originAudits": [
@@ -4766,5 +4763,97 @@
       "headingAndLinePositionsUnchanged": true,
       "protectedQuotedTextUnchanged": true
     }
-  }
+  },
+  "previousSnapshotSets": [
+    {
+      "date": "2026-10-12",
+      "report": "learning-entry-improvements-report.md",
+      "snapshots": [
+        {
+          "sourcePath": "src/data/curriculumData.ts",
+          "sha256": "8afbfd36d34671baccce638751a8e1defcee326f9c2df0d1b5d273a777c57565"
+        },
+        {
+          "sourcePath": "src/data/curriculumQuizzes.ts",
+          "sha256": "2a94f31791b9573d866fa1f5433aaf51ebdb651f2f79042e4c0f27a74868bee2"
+        },
+        {
+          "sourcePath": "src/data/articles/historyArticle.ts",
+          "sha256": "7fce40d136f2c46b2de9d7b92d9a60c94144b33324dfada5058f6a5f733206b5"
+        },
+        {
+          "sourcePath": "src/data/articles/yinyangGogyoArticle.ts",
+          "sha256": "d363ae6a8a59b37d66cbec0284d2a81940e87ada2430652b80697be86384ef03"
+        },
+        {
+          "sourcePath": "src/data/articles/kiketsusuiArticle.ts",
+          "sha256": "b73288f267a9e91a054562bb60c968e494a0ca7fea63ed1fac7e1447fc09ccaf"
+        },
+        {
+          "sourcePath": "src/data/articles/meridianArticle.ts",
+          "sha256": "1e14277a518123fe0ab0dffc8aa632a0a6ee29ebcdaea1376f2afee6cc620044"
+        },
+        {
+          "sourcePath": "src/data/articles/tongueArticle.ts",
+          "sha256": "7cea15062ee57cf50b2a2b4285768c7e683870f8537d01648c5ffa87d59740e2"
+        },
+        {
+          "sourcePath": "src/data/articles/gerdArticle.ts",
+          "sha256": "230d3fd460e5d7933fcef42d3b865ab82da54f9519f4987fa11a8e88d6362ea7"
+        },
+        {
+          "sourcePath": "src/data/glossaryData.ts",
+          "sha256": "6482402f13506af3c6a25b83d10a69cda09bec856572fea5ad10684e910a165b"
+        },
+        {
+          "sourcePath": "src/app/kikei/page.tsx",
+          "sha256": "4247d044b6d6c3162c22f35fde9389bcc8f844290229e33fbc0386d2189037b4"
+        },
+        {
+          "sourcePath": "src/components/kikei/KikeiQuizSection.tsx",
+          "sha256": "2e5ab087d16711df53e28d970a61cd1f16bdc96edba475fb58c37149d981ea8d"
+        },
+        {
+          "sourcePath": "src/data/kikeiData.ts",
+          "sha256": "9955a3fd851fb158948bf5572fde4b6a2c839fe8753a2efc0e39b5b66cd74e9d"
+        },
+        {
+          "sourcePath": "src/app/tsubo/compare/CompareClient.tsx",
+          "sha256": "8768de3e323b9f5f802afdb078e41ff9cfe0aaa78876434bea14a8fd422ca20b"
+        },
+        {
+          "sourcePath": "src/components/EastWestIntegrativeSwitch.tsx",
+          "sha256": "14cfc3f59b2e367e52f77fe050dc02fb31068b3506b0bc1d6fb6b0509ec4c7b8"
+        },
+        {
+          "sourcePath": "src/app/notes/page.tsx",
+          "sha256": "7b7f82be1b5a1a79b1bd2a88ba0f0647eefcc948a171530bd7cfdb9e43dfd702"
+        },
+        {
+          "sourcePath": "src/components/cases/CaseStudyViewer.tsx",
+          "sha256": "9dc749255c921561b9ee4f814da32b4dc94aff01748d50af6e755ea602f1fc2b"
+        },
+        {
+          "sourcePath": "src/app/pricing/page.tsx",
+          "sha256": "fd74f79e5317424ec4cb3f09e7ca668be9e1fd807edd2e6883bd76d3180f67f3"
+        },
+        {
+          "sourcePath": "src/app/tsubo/basics/bone-cun/page.tsx",
+          "sha256": "13fa70c6576630a9623741619b1a0dc37efb9d18c9ce3cfcbdf6350597ecbdb7"
+        },
+        {
+          "sourcePath": "src/components/HaiketsuOptimizer.tsx",
+          "sha256": "3887371e8a7be0227b457c3601e28d9b16dcfca152b3a6c5054cf80fb1da64d6"
+        },
+        {
+          "sourcePath": "src/app/practice/haiketsu/page.tsx",
+          "sha256": "636ddaadd6da8336852a132625552c8b531a80bf49627b8d4c91aa6d443f69cc"
+        },
+        {
+          "sourcePath": "src/components/learning/PrescriptionScoringGuide.tsx",
+          "sha256": "6a8e22e27488f41fecf47777692a85a7e1fecf0fb6d1cb6962ed4404ae4dfbf9"
+        }
+      ]
+    }
+  ]
 }

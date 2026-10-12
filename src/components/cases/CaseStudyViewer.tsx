@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { 
-  FileText, 
   Crown, 
   CheckCircle2, 
   XCircle, 
@@ -24,15 +23,17 @@ import {
 import { ClinicalCase } from "@/types/clinicalCase";
 import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { CLINICAL_CASES, CLINICAL_CASE_SCOPE, CLINICAL_CASE_SAFETY_GUIDANCE } from "@/data/clinicalCasesData";
+import { useSubscriptionAvailability } from "@/hooks/useSubscriptionAvailability";
+import SubscriptionAvailabilityNotice from "@/components/subscription/SubscriptionAvailabilityNotice";
 import { useAuth } from "@/contexts/AuthContext";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import AuthModal from "@/components/auth/AuthModal";
-import { SUBSCRIPTION_CONFIG, isSubscriptionSalesEnabled } from "@/config/subscription";
 import { getCaseSimulatorPreset, buildSimulatorUrlFromCase } from "@/data/cases/caseSimulatorMapping";
 import { SlidersHorizontal, FlaskConical } from "lucide-react";
 
 export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: ClinicalCase }) {
   const { isPremium } = useAuth();
+  const { status, salesEnabled, retry } = useSubscriptionAvailability();
   const { addMemo, isClipped } = useClinicalMemo();
 
   const isLocked = !clinicalCase.isFreeTrial && !isPremium;
@@ -179,10 +180,10 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
 
             <div className="space-y-3 max-w-lg mx-auto">
               <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] text-xs font-bold border border-[#F3DEC5] dark:border-[#4D331F]">
-                <span>{isSubscriptionSalesEnabled() ? "プレミアム限定エリア（ステップ2〜5）" : SUBSCRIPTION_CONFIG.statusMessages.comingSoonBadge}</span>
+                <span>プレミアム限定エリア（ステップ2〜5）</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-                {isSubscriptionSalesEnabled() ? "四診詳細・推論演習・学習用の配穴例と解説" : "症例04以降は有料プラン公開に合わせて開放されます"}
+                四診詳細・推論演習・学習用の配穴例と解説
               </h2>
               <div className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed text-left bg-white dark:bg-[#10171F] p-4 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5">
                 <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">
@@ -198,13 +199,14 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
               </div>
             </div>
 
+            {!salesEnabled ? <SubscriptionAvailabilityNotice status={status} onRetry={retry} /> : null}
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-              {isSubscriptionSalesEnabled() ? (
+              {salesEnabled ? (
                 <Link
                   href="/pricing"
                   className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white font-bold text-sm shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2 min-h-[44px]"
                 >
-                  <span>プレミアムプランで全症例を解放する</span>
+                  <span>料金と利用できる症例を確認する</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               ) : (
@@ -744,6 +746,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
       <AuthModal
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
+        featureKey="clinical_cases"
         title="プレミアム会員限定コンテンツです"
         description="この症例の完全な四診開示、推論ステップ、解説・古典根拠はプレミアム会員限定です。"
       />

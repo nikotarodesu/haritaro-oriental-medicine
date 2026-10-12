@@ -14,7 +14,6 @@ import { PROGRESSIVE_CASES } from "@/data/progressiveCases";
 import { resolveArticleReferences } from "@/utils/referenceResolver";
 import MarkdownBody from "@/components/MarkdownBody";
 import ArticleReferences from "@/components/ArticleReferences";
-import PrimeStudentCard from "@/components/PrimeStudentCard";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ArticleReadingResume from "@/components/reading/ArticleReadingResume";
@@ -307,39 +306,6 @@ export default async function ArticleDetailPage({ params }: Props) {
           <ArticleReferences references={resolvedReferences} />
 
           <Link href={"/contact?source=" + encodeURIComponent("/articles/" + article.id)} className="inline-flex min-h-11 items-center text-sm underline text-[#1E3D34] dark:text-[#83BEA8]">この記事の訂正・出典について連絡する</Link>
-          {/* 学生向け専門書・教科書サポート（Prime Student） */}
-          <PrimeStudentCard variant="card" className="mt-8" />
-
-          {/* 著者紹介フッター */}
-          <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-6 bg-[#FAF8F5] dark:bg-[#121920] p-4 sm:p-6 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] flex flex-col sm:flex-row items-start gap-4">
-            <img
-              src="/icon.png"
-              alt="はり太郎"
-              className="w-14 h-14 rounded-2xl object-cover shadow-xs border border-[#E5DEC9] dark:border-[#2A3B4A] shrink-0"
-            />
-            <div className="space-y-1.5 text-sm flex-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <h3 className="font-serif font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
-                  執筆・編集：{article.author.name}
-                </h3>
-                <span className="px-2 py-0.5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-xs font-bold">
-                  鍼灸師／鍼灸院院長
-                </span>
-              </div>
-              <p className="text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-                鍼灸師として臨床に携わりながら、東洋医学を「身体を観察し、病態を推論し、治療方針を組み立てる思考体系」として整理・発信。身体ケア・臨床領域10年以上、現役で鍼灸院を運営。「はり太郎の東洋医学」主宰。
-              </p>
-              <div className="pt-1">
-                <Link
-                  href="/about"
-                  className="inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline"
-                >
-                  <span>運営理念と執筆方針を見る</span>
-                  <ChevronRight className="w-3 h-3" />
-                </Link>
-              </div>
-            </div>
-          </div>
         </article>
 
         {/* E-E-A-T 専門家監修情報カード */}

@@ -10,7 +10,6 @@ import {
   getMeridianPoints,
   isDetailedAcupoint,
   DETAILED_ACUPOINTS,
-  generateFaqLocationAnswer,
   isContraindicatedNeedle,
   isContraindicatedMoxa,
   isPregnancyContraindicated,
@@ -25,15 +24,11 @@ import {
   BookOpen, 
   Sparkles, 
   AlertTriangle, 
-  CheckCircle2, 
   ArrowLeft, 
   ArrowRight, 
   FileText,
   ShieldCheck,
   GitCompare,
-  HelpCircle,
-  Flame,
-  Hand,
   GraduationCap,
   SlidersHorizontal
 } from "lucide-react";
@@ -132,103 +127,10 @@ export default async function AcupointDetailPage({ params }: Props) {
   // 表裏経・同名経の相互トピッククラスタ
   const meridianRelations = MERIDIAN_RELATIONS[point.meridianId] || [];
 
-  // FAQ データ作成（Google FAQPage 構造化データ対応）
-  const faqs = [
-    {
-      question: `「${point.name}（${point.code}）」はどこにありますか？ 取穴のコツは？`,
-      answer: generateFaqLocationAnswer(point),
-    },
-    {
-      question: `「${point.name}」はどのような症状・臨床病態に用いられますか？`,
-      answer: `伝統的な主治・学習上の関連として「${point.indications.join("、")}」などが挙げられます。${point.meridian}に属します。この一覧は経穴単独の治療効果や、個人への適応を保証するものではありません。臨床研究は対象・比較条件・限界とともに確認してください。`,
-    },
-  ];
-
-  // FAQ 回答を読みやすく構造化レンダリングするヘルパー
-  const renderFaqAnswer = (text: string) => {
-    const paragraphs = text.split(/\n\n+/).filter(Boolean);
-
-    // 【〜】を含むブロックがある場合（構造化されたセルフケアガイド等）
-    if (paragraphs.some((p) => p.startsWith("【"))) {
-      return (
-        <div className="space-y-3 pt-1">
-          {paragraphs.map((p, pIdx) => {
-            const match = p.match(/^【([^】]+)】([\s\S]*)$/);
-            if (match) {
-              const title = match[1];
-              const content = match[2].trim();
-
-              const isWarning =
-                title.includes("禁忌") ||
-                title.includes("注意") ||
-                title.includes("留意") ||
-                title.includes("重要") ||
-                title.includes("禁止");
-              const isAcupressure = title.includes("指圧");
-              const isMoxa = title.includes("お灸") || title.includes("灸");
-
-              let cardBg = "bg-white dark:bg-[#16222C] border-[#E8E1D1] dark:border-[#2A3B4A]";
-              let badgeColor = "bg-[#1E3D34] text-white dark:bg-[#2B6958]";
-              let icon = <CheckCircle2 className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />;
-
-              if (isWarning) {
-                cardBg = "bg-[#FDEDEC]/70 dark:bg-[#281816]/70 border-[#FADBD8] dark:border-[#3E2220]";
-                badgeColor = "bg-[#A83629] text-white";
-                icon = <AlertTriangle className="w-3.5 h-3.5 text-[#A83629] dark:text-[#E07A70] shrink-0" />;
-              } else if (isAcupressure) {
-                cardBg = "bg-[#EBF3EF]/70 dark:bg-[#162A24]/70 border-[#C5DED4] dark:border-[#2A5243]";
-                badgeColor = "bg-[#1E3D34] text-white dark:bg-[#2B6958]";
-                icon = <Hand className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />;
-              } else if (isMoxa) {
-                cardBg = "bg-[#FEF6EE]/70 dark:bg-[#2A1D13]/70 border-[#FBD8B5] dark:border-[#4E2E19]";
-                badgeColor = "bg-[#B86924] text-white";
-                icon = <Flame className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387] shrink-0" />;
-              }
-
-              return (
-                <div
-                  key={pIdx}
-                  className={`p-3 sm:p-3.5 rounded-xl border ${cardBg} space-y-1.5 transition-colors`}
-                >
-                  <div className="flex items-center gap-1.5">
-                    {icon}
-                    <span className={`text-sm font-bold px-2 py-0.5 rounded-md ${badgeColor}`}>
-                      {title}
-                    </span>
-                  </div>
-                  <p className="text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed pl-5">
-                    {content}
-                  </p>
-                </div>
-              );
-            }
-
-            return (
-              <p key={pIdx} className="text-base text-[#59615D] dark:text-[#C5D2DB] leading-relaxed">
-                {p}
-              </p>
-            );
-          })}
-        </div>
-      );
-    }
-
-    // 通常テキストの場合
-    return (
-      <div className="space-y-2">
-        {paragraphs.map((p, pIdx) => (
-          <p key={pIdx} className="text-base text-[#59615D] dark:text-[#C5D2DB] leading-relaxed">
-            {p}
-          </p>
-        ))}
-      </div>
-    );
-  };
-
   const pageUrl = `https://www.haritaro.jp/tsubo/${point.codeLower}`;
   const pageTitle = acupointPageTitle(point);
 
-  // JSON-LD 構造化データ（MedicalWebPage ＆ DefinedTerm ＆ BreadcrumbList ＆ FAQPage）
+  // 表示内容に対応するページ・用語・パンくずの構造化データ。
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -291,18 +193,6 @@ export default async function AcupointDetailPage({ params }: Props) {
             "item": pageUrl,
           },
         ],
-      },
-      {
-        "@type": "FAQPage",
-        "@id": `${pageUrl}#faq`,
-        "mainEntity": faqs.map((faq) => ({
-          "@type": "Question",
-          "name": faq.question,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": faq.answer,
-          },
-        })),
       },
     ],
   };
@@ -500,69 +390,16 @@ export default async function AcupointDetailPage({ params }: Props) {
             <a href="#acupoint-diagram" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-3 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">図</a>
           )}
           <a href={hasSafetyWarning ? "#acupoint-safety-warning" : "#acupoint-cautions"} className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-3 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">注意事項</a>
+          {point.researchEvidence && <a href="#acupoint-research" className="inline-flex min-h-11 items-center rounded-lg border border-[#D5DED8] px-3 text-sm font-semibold text-[#1E3D34] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A3B4A] dark:text-[#83BEA8]">研究</a>}
           <a href="#acupoint-sources" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-3 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">出典</a>
         </nav>
-
-        <ClinicalToolBridge />
-
-        {/* 所属と伝統的な主治の補足。位置と注意は冒頭で確認できる。 */}
-        <details
-          aria-label={`${point.name}の概要と定義`}
-          className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 space-y-4 transition-colors"
-        >
-          <summary className="flex min-h-11 cursor-pointer items-center gap-2 text-base font-bold text-[#1E3D34] dark:text-[#83BEA8]">所属・伝統的な主治を確認する</summary>
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>この経穴の要点</span>
-            </div>
-            <span className="text-sm text-[#59615D] dark:text-[#AFBDC8] hidden sm:inline">
-              WHO標準部位を参照・個別照合は進行中
-            </span>
-          </div>
-
-          {/* 伝統的な主治と医学的な治療効果を区別する。 */}
-          <div className="pb-4 border-b border-[#E8E1D1] dark:border-[#263542]">
-            <p className="text-base text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
-              <strong className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">{point.name}（{point.kana} / {point.code}）とは</strong>、{point.meridian}に属する経穴です。位置の目安は「{point.locationSimple}」。伝統的な主治には<strong>{point.indications.slice(0, 4).join("、")}</strong>などが挙げられます。これは、この経穴単独の治療効果や個人への適応を示すものではありません。
-            </p>
-          </div>
-
-          {/* 3要点構造化ブロック */}
-          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#E8E1D1] dark:divide-[#263542] text-base leading-relaxed text-[#232826] dark:text-[#FAF8F5]">
-            <div className="py-3 first:pt-0 last:pb-0 md:py-0 md:px-4 md:first:pl-0 md:last:pr-0">
-              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1 text-sm">
-                ① 所属と分類
-              </span>
-              <p className="text-[#4A534F] dark:text-[#A0B0BC] text-base">
-                {point.meridian}（{point.code}）。{point.categories && point.categories.length > 0 ? `要穴分類：${point.categories.join("・")}。` : "所属経脈の名称と走行を学ぶ経穴です。"}
-              </p>
-            </div>
-            <div className="py-3 first:pt-0 last:pb-0 md:py-0 md:px-4 md:first:pl-0 md:last:pr-0">
-              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1 text-sm">
-                ② 取穴と安全
-              </span>
-              <p className="text-[#4A534F] dark:text-[#A0B0BC] text-base">
-                {point.locationSimple.replace(/。+$/, "")}。{point.caution ? `注意：${point.caution}` : "体表の骨・筋の指標を確認。個別の安全性は専門資料と臨床評価で判断してください。"}
-              </p>
-            </div>
-            <div className="py-3 first:pt-0 last:pb-0 md:py-0 md:px-4 md:first:pl-0 md:last:pr-0">
-              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1 text-sm">
-                ③ 伝統的な主治と解説
-              </span>
-              <p className="text-[#4A534F] dark:text-[#A0B0BC] text-base">
-                {point.indications.slice(0, 5).join("、")}等。{point.clinicalNote || "伝統的な分類との関連を学ぶ情報であり、個人の治療効果や施術適応を示すものではありません。"}
-              </p>
-            </div>
-          </div>
-        </details>
 
         {/* ⚠️ 安全上の注意（禁忌・気胸リスク・妊婦注意アラート） */}
         {hasSafetyWarning && (
           <div id="acupoint-safety-warning" className="scroll-mt-28 rounded-2xl border-2 border-amber-500/40 dark:border-amber-500/50 bg-[#FFFBEB] dark:bg-[#251D12] p-4 sm:p-5 shadow-xs space-y-2.5 transition-colors">
             <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300 font-bold text-sm">
               <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
-              <span>安全上の重要警告（臨床運針・セルフケア時の厳守事項）</span>
+              <span>先に確認する安全上の注意</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-base leading-relaxed text-[#523E24] dark:text-[#E6D5B8]">
               {isNeedleBan && (
@@ -597,24 +434,14 @@ export default async function AcupointDetailPage({ params }: Props) {
         <section id="acupoint-location" className="scroll-mt-28 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
           <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
             <Compass className="w-5 h-5" />
-            <h2>位置と取穴手順（WHO標準部位・触診指標）</h2>
+            <h2>標準の位置と目印</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* 一般向け説明 */}
-            <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5">
-              <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                【一般向け・場所の目安】
-              </span>
-              <p className="text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
-                {point.locationSimple}
-              </p>
-            </div>
-
+          <div>
             {/* WHO標準部位 */}
             <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5">
               <span className="text-sm font-bold text-[#1E2D3D] dark:text-[#7BAAD8] block">
-                【WHO標準部位・専門記載】
+                標準部位の記載
               </span>
               <p className="text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed font-mono">
                 {point.locationDetail}
@@ -625,11 +452,13 @@ export default async function AcupointDetailPage({ params }: Props) {
             </div>
           </div>
 
+          <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#AFBDC8]">個別の原典照合は進行中です。圧痛や響きの有無だけで位置を判断しないでください。体表位置の説明は、個人の安全な刺入経路・深度や施術の適応を示すものではありません。</p>
+
           {/* 取穴手順ステップ */}
           {point.howToLocate && point.howToLocate.length > 0 && (
             <div className="space-y-3 pt-2">
               <h3 className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
-                ステップバイステップ取穴手順
+                位置を確認する手順
               </h3>
               <ol className="space-y-2 text-base text-[#404743] dark:text-[#C5D2DB]">
                 {point.howToLocate.map((step, idx) => (
@@ -748,17 +577,17 @@ export default async function AcupointDetailPage({ params }: Props) {
           </section>
         )}
 
-        {/* 4. 臨床知見・主治・EBM研究エビデンス */}
-        <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
+        {/* 伝統的な主治・配穴例・古典 */}
+        <section id="acupoint-traditional" className="scroll-mt-28 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
           <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
             <Sparkles className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
-            <h2>{point.researchEvidence ? "臨床知見・適応症・現代科学エビデンス" : "臨床知見・主治適応症"}</h2>
+            <h2>伝統的な主治</h2>
           </div>
 
           {/* 主治症タグ一覧 */}
           <div className="space-y-2">
             <span className="text-sm font-semibold text-[#59615D] dark:text-[#AFBDC8] block">
-              主治・適応症（伝統的効果）：
+              伝統資料で関連づけられる症状：
             </span>
             <div className="flex flex-wrap gap-1.5 sm:gap-2">
               {point.indications.map((ind, i) => (
@@ -776,13 +605,13 @@ export default async function AcupointDetailPage({ params }: Props) {
           <div className="p-4 sm:p-5 rounded-2xl bg-[#EBF3EF] dark:bg-[#162A24] border border-[#C5DED4] dark:border-[#2A5243] space-y-2">
             <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
               <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              <span>臨床応用・運針のポイント（臨床的考察）</span>
+              <span>学習上の補足</span>
             </div>
             <p className="text-base text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
               {point.clinicalNote}
             </p>
             <p className="text-base text-[#59615D] dark:text-[#AFBDC8] pt-1">
-              ※伝統的な鍼灸臨床の知見および文献的考察に基づく参考情報です。実際の施術にあたっては患者個々の体格・病態や触診所見を最優先としてください。
+              伝統的な主治の一覧は、この経穴単独の治療効果や個人への施術適応を示すものではありません。
             </p>
           </div>
 
@@ -823,32 +652,6 @@ export default async function AcupointDetailPage({ params }: Props) {
                   </div>
                 ))}
               </div>
-            </div>
-          )}
-
-          {/* EBM・科学研究エビデンス */}
-          {point.researchEvidence && (
-            <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-3">
-              <div className="flex items-center gap-2 text-sm font-bold text-[#1E2D3D] dark:text-[#7BAAD8]">
-                <BookOpen className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>研究の対象・結果・適用範囲</span>
-              </div>
-              <p className="text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
-                {point.researchEvidence.findings}
-              </p>
-              <div className="space-y-1 pt-1">
-                <span className="text-sm font-bold text-[#59615D] dark:text-[#A0B0BC] block">
-                  研究で扱った観察・条件：
-                </span>
-                <ul className="list-disc list-inside space-y-0.5 text-base text-[#59615D] dark:text-[#A0B0BC]">
-                  {point.researchEvidence.mechanisms.map((m, i) => (
-                    <li key={i}>{m}</li>
-                  ))}
-                </ul>
-              </div>
-              <p className="text-sm text-[#59615D] dark:text-[#AFBDC8] border-t border-[#E8DEC9] dark:border-[#22303D] pt-2">
-                限界と注意：{point.researchEvidence.limitations}
-              </p>
             </div>
           )}
 
@@ -966,46 +769,34 @@ export default async function AcupointDetailPage({ params }: Props) {
             </div>
           )}
 
-          {/* 禁忌・臨床上の注意事項 */}
-          {point.caution && (
-            <div className="p-3.5 sm:p-4 rounded-xl bg-[#FDEDEC] dark:bg-[#231816] border border-[#FADBD8] dark:border-[#3D2220] text-[#A83629] dark:text-[#C47A72] text-sm space-y-1">
-              <div className="flex items-center gap-1.5 font-bold">
-                <AlertTriangle className="w-4 h-4 shrink-0" />
-                <span>臨床上の禁忌・安全留意事項</span>
+        </section>
+
+        {/* 伝統的な主治とは分けて、研究対象・結果・限界を示す。 */}
+          {point.researchEvidence && (
+            <section id="acupoint-research" aria-labelledby="acupoint-research-title" className="scroll-mt-28 rounded-2xl border border-[#E8E1D1] bg-white p-4 sm:p-8 dark:border-[#22303D] dark:bg-[#17212A] space-y-3">
+              <div className="flex items-center gap-2 text-sm font-bold text-[#1E2D3D] dark:text-[#7BAAD8]">
+                <BookOpen className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <h2 id="acupoint-research-title" className="font-serif text-lg">研究で確認された範囲</h2>
               </div>
-              <p className="leading-relaxed pl-5.5 text-base">{point.caution}</p>
-            </div>
+              <p className="text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
+                {point.researchEvidence.findings}
+              </p>
+              <div className="space-y-1 pt-1">
+                <span className="text-sm font-bold text-[#59615D] dark:text-[#A0B0BC] block">
+                  研究で扱った観察・条件：
+                </span>
+                <ul className="list-disc list-inside space-y-0.5 text-base text-[#59615D] dark:text-[#A0B0BC]">
+                  {point.researchEvidence.mechanisms.map((m, i) => (
+                    <li key={i}>{m}</li>
+                  ))}
+                </ul>
+              </div>
+              <p className="text-sm text-[#59615D] dark:text-[#AFBDC8] border-t border-[#E8DEC9] dark:border-[#22303D] pt-2">
+                限界と注意：{point.researchEvidence.limitations}
+              </p>
+            </section>
           )}
-        </section>
 
-        {/* 5. よくある質問（FAQ） */}
-        <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-4 sm:space-y-6 transition-colors">
-          <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
-            <HelpCircle className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
-            <h2>{point.name}（{point.code}）に関するよくある質問（FAQ）</h2>
-          </div>
-
-          <div className="space-y-3">
-            {faqs.map((faq, idx) => (
-              <details
-                key={idx}
-                className="group rounded-xl border border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#10171F] p-3.5 sm:p-4 text-sm [&_summary::-webkit-details-marker]:hidden"
-                open={idx === 0}
-              >
-                <summary className="flex cursor-pointer items-center justify-between font-bold text-[#232826] dark:text-[#FAF8F5] gap-3">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">Q{idx + 1}.</span>
-                    <span>{faq.question}</span>
-                  </div>
-                  <span className="text-[#59615D] dark:text-[#AFBDC8] group-open:rotate-180 transition-transform text-sm">▼</span>
-                </summary>
-                <div className="mt-2.5 pt-2.5 border-t border-[#EAE3D4] dark:border-[#22303D] pl-2 sm:pl-6">
-                  {renderFaqAnswer(faq.answer)}
-                </div>
-              </details>
-            ))}
-          </div>
-        </section>
 
         {/* 6. この経穴が登場する講義教材（カリキュラム連動） */}
         {relatedLectures.length > 0 && (
@@ -1245,6 +1036,8 @@ export default async function AcupointDetailPage({ params }: Props) {
         </div>
 
         {/* 7. E-E-A-T 専門家監修情報カード */}
+        <ClinicalToolBridge />
+
         <AuthorSupervisorCard topic={`${point.name}（${point.code}）の経穴解説・取穴・臨床応用`} />
 
         {/* 8. 免責・出典・更新情報 */}

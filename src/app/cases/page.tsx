@@ -3,22 +3,22 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { 
-  FileText, 
   Crown, 
   Sparkles, 
   CheckCircle2, 
   ArrowRight, 
-  Layers, 
-  BookOpen,
-  HelpCircle,
   GraduationCap,
-  SlidersHorizontal,
   AlertCircle
 } from "lucide-react";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { useAuth } from "@/contexts/AuthContext";
 import AuthModal from "@/components/auth/AuthModal";
 import ClinicalRevisionTraining from "@/components/clinical/ClinicalRevisionTraining";
+import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
+
+const totalCaseCount = CLINICAL_CASES.length;
+const freeCaseCount = SUBSCRIPTION_CONFIG.limits.freeTrialCaseCount;
+const premiumCaseCount = totalCaseCount - freeCaseCount;
 
 export default function CasesIndexPage() {
   const { isPremium } = useAuth();
@@ -44,117 +44,87 @@ export default function CasesIndexPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-8 sm:space-y-12">
       {/* パンくずリスト */}
-      <nav className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6]">
+      <nav aria-label="パンくず" className="flex items-center gap-2 text-sm text-[#737C77] dark:text-[#8899A6]">
         <Link href="/" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">ホーム</Link>
-        <span>/</span>
-        <span className="text-[#232826] dark:text-[#FAF8F5] font-semibold">臨床症例演習</span>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page" className="text-[#232826] dark:text-[#FAF8F5] font-semibold">臨床症例演習</span>
       </nav>
 
       {/* ヒーローヘッダー */}
-      <ClinicalRevisionTraining />
-      <div className="text-center space-y-3 max-w-3xl mx-auto">
+
+      <div className="space-y-3 max-w-3xl">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#F3DEC5] dark:border-[#4D331F] text-[#B86924] dark:text-[#E6C387] text-xs font-semibold tracking-wider">
           <GraduationCap className="w-3.5 h-3.5" />
-          <span>全20症例・段階的臨床推論トレーニング</span>
+          <span>全{totalCaseCount}症例・段階的臨床推論トレーニング</span>
         </div>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-tight">
-          臨床症例演習モード
+          臨床症例演習
         </h1>
 
         <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
           模擬症例の主訴・経過・四診情報を順に読み、
           八綱、弁証候補、治法、配穴の理由を考えます。
-          全症例に鑑別診断・作用機序・古典根拠の解説付き。
+          解答例と比べて、判断の理由や確認が必要な情報を振り返ります。
         </p>
 
         {/* 無料体験案内バナー */}
-        <div className="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs">
+        <div className="pt-2 flex flex-wrap items-center gap-3 text-sm">
           <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-bold border border-[#C5DED4] dark:border-[#2A5243]">
             <CheckCircle2 className="w-4 h-4" />
-            <span>無料公開中：症例01〜03（全3例・全編完全解放）</span>
+            <span>{freeCaseCount}症例は全編無料</span>
           </span>
           <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] font-bold border border-[#F3DEC5] dark:border-[#4D331F]">
             <Crown className="w-4 h-4" />
-            <span>プレミアム限定：症例04〜20（全17例）</span>
+            <span>{premiumCaseCount}症例はプレミアム会員向け</span>
           </span>
-        </div>
-      </div>
-
-      {/* 臨床推論シミュレーター＆配穴演習への特別リンクバナー */}
-      <div className="bg-gradient-to-br from-[#1E2D3D] via-[#16222E] to-[#0E1720] dark:from-[#141E28] dark:via-[#0F161E] dark:to-[#080D12] text-white p-5 sm:p-7 rounded-3xl border border-[#2B4055] dark:border-[#223344] shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
-        <div className="space-y-1.5 z-10 max-w-xl">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#74BA9E]/20 text-[#74BA9E] text-xs font-bold border border-[#74BA9E]/30">
-            <Layers className="w-3.5 h-3.5" />
-            <span>対話型・臨床推論＆配穴設計</span>
-          </div>
-          <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#FAF8F5]">
-            臨床弁証シミュレーター・配穴演習
-          </h2>
-          <p className="text-xs sm:text-sm text-[#C5D2DB] leading-relaxed">
-            シミュレーターでは、選んだ条件に対応する証名と配穴の学習例を確認できます。配穴演習では、経穴を選び、選定理由をノートに残せます。
-          </p>
-        </div>
-
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 z-10 shrink-0 w-full md:w-auto">
-          <Link
-            href="/simulator"
-            className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#1E3D34] hover:bg-[#2B6958] text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all border border-[#74BA9E]/30 group cursor-pointer min-h-[44px]"
-          >
-            <span>シミュレーターを起動</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
-          <Link
-            href="/practice/haiketsu"
-            className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-[#FAF8F5] border border-white/20 font-bold text-xs sm:text-sm shadow-sm transition-all group cursor-pointer min-h-[44px]"
-          >
-            <SlidersHorizontal className="w-4 h-4 text-[#74BA9E]" />
-            <span>配穴設計・臨床演習</span>
-          </Link>
         </div>
       </div>
 
       {/* 症例一覧グリッド */}
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#737C77] dark:text-[#8899A6] px-1">
-          <span className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
-            全20症例一覧
-          </span>
+          <h2 className="font-bold text-lg text-[#232826] dark:text-[#FAF8F5]">
+            全{totalCaseCount}症例一覧
+          </h2>
 
           {/* 絞り込みタブ */}
-          <div className="inline-flex rounded-xl bg-[#FAF8F5] dark:bg-[#121920] p-1 border border-[#E8E1D1] dark:border-[#22303D]">
+          <div role="group" aria-label="症例の利用範囲で絞り込む" className="flex flex-wrap gap-1 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] p-1 border border-[#E8E1D1] dark:border-[#22303D]">
             <button
               type="button"
               onClick={() => setCaseFilter("all")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              aria-pressed={caseFilter === "all"}
+              className={`min-h-11 px-3 py-1.5 rounded-lg text-sm font-bold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 ${
                 caseFilter === "all"
                   ? "bg-white dark:bg-[#1A2530] text-[#1E3D34] dark:text-[#74BA9E] shadow-xs"
                   : "text-[#59615D] dark:text-[#8899A6] hover:text-[#232826]"
               }`}
             >
-              すべて（20例）
+              すべて（{totalCaseCount}例）
             </button>
             <button
               type="button"
               onClick={() => setCaseFilter("free")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              aria-pressed={caseFilter === "free"}
+              className={`min-h-11 px-3 py-1.5 rounded-lg text-sm font-bold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 ${
                 caseFilter === "free"
                   ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] shadow-xs"
                   : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34]"
               }`}
             >
-              無料公開中（3例）
+              無料公開中（{freeCaseCount}例）
             </button>
             <button
               type="button"
               onClick={() => setCaseFilter("premium")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              aria-pressed={caseFilter === "premium"}
+              className={`min-h-11 px-3 py-1.5 rounded-lg text-sm font-bold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 ${
                 caseFilter === "premium"
                   ? "bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] shadow-xs"
                   : "text-[#59615D] dark:text-[#8899A6] hover:text-[#B86924]"
               }`}
             >
-              プレミアム限定（17例）
+              プレミアム限定（{premiumCaseCount}例）
             </button>
           </div>
         </div>
@@ -165,7 +135,7 @@ export default function CasesIndexPage() {
               key={c.id}
               href={`/cases/${c.id}`}
               onClick={(e) => handleCaseClick(e, c)}
-              className={`group rounded-3xl bg-[#FAF8F5] dark:bg-[#152028] border-2 p-5 sm:p-6 flex flex-col justify-between space-y-4 transition-all hover:shadow-lg ${
+              className={`group rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border p-5 sm:p-6 flex flex-col justify-between space-y-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 ${
                 c.isFreeTrial 
                   ? "border-[#1E3D34]/40 hover:border-[#1E3D34] dark:border-[#2A5243] dark:hover:border-[#74BA9E]" 
                   : isPremium 
@@ -262,12 +232,21 @@ export default function CasesIndexPage() {
         </div>
       </div>
 
+      <details className="rounded-xl border border-[#D9E3DD] px-4 dark:border-[#2A3B4A]">
+        <summary className="min-h-11 cursor-pointer py-3 font-semibold focus-visible:outline-2 focus-visible:outline-offset-4">追加情報で判断が変わる過程を練習する</summary>
+        <div className="pb-5"><ClinicalRevisionTraining /></div>
+      </details>
+      <nav aria-label="関連する演習" className="flex flex-wrap gap-x-6 gap-y-1">
+        <Link href="/simulator" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">所見から弁証候補を比較する</Link>
+        <Link href="/practice/haiketsu" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">配穴の構成を考える</Link>
+      </nav>
       {/* プレミアム誘導モーダル */}
       <AuthModal
+        featureKey="clinical_cases"
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
         title="この症例はプレミアム会員限定です"
-        description={`「${selectedCaseTitle}」を含む17の専門症例の段階的四診開示、推論演習、解説・古典根拠はプレミアム会員限定コンテンツです。`}
+        description={`「${selectedCaseTitle}」を含む${premiumCaseCount}症例の演習と解説はプレミアム会員向けです。無料の${freeCaseCount}症例は全編を読めます。`}
       />
     </div>
   );

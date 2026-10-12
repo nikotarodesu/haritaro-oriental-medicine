@@ -41,7 +41,7 @@ export default function NavMoreDrawer({
     {
       title: "臨床・推論ツール",
       icon: Stethoscope,
-      items: ["diagnosis", "gorou", "simulator", "simulator_compare", "haiketsu", "cases"],
+      items: ["simulator", "haiketsu", "cases"],
     },
     {
       title: "学習・国家試験対策",
@@ -51,7 +51,7 @@ export default function NavMoreDrawer({
     {
       title: "総合辞典・記録・その他",
       icon: BookOpenCheck,
-      items: ["tsubo", "search", "library", "notes", "home"],
+      items: ["tsubo", "search", "library"],
     },
   ];
 
@@ -102,26 +102,6 @@ export default function NavMoreDrawer({
           </button>
         </div>
 
-        {/* カスタマイズへのクイックアクセスバナー */}
-        <div className="p-3 border-b border-[#E8E1D1] dark:border-[#22303D] flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <SlidersHorizontal className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-            <span className="text-sm ui-muted">
-              下部の4枠メニューを変更できます
-            </span>
-          </div>
-          <button
-            type="button"
-            onClick={() => {
-              onClose();
-              onOpenCustomize();
-            }}
-            className="min-h-11 shrink-0 px-3 py-1.5 bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#2A5243] text-white dark:text-[#10161C] rounded-lg text-sm font-bold shadow-2xs cursor-pointer transition-colors"
-          >
-            メニューを編集
-          </button>
-        </div>
-
         {/* メニューリスト（スクロール領域） */}
         <div className="nav-more-scroll p-4 space-y-4 overflow-y-auto overscroll-contain">
           <button type="button" onClick={() => { onClose(); openDrawer(); }} className="w-full flex min-h-11 flex-wrap items-center gap-3 ui-card text-left focus-visible:outline-2 focus-visible:outline-offset-4">
@@ -130,6 +110,7 @@ export default function NavMoreDrawer({
             <span className="ui-count" aria-label={`保存済み ${clipCount + patientNoteCount}件`}>{clipCount + patientNoteCount}件</span>
             <span className="basis-full text-sm ui-muted">経穴・記事の保存と臨床ノートを開く</span>
           </button>
+          <Link href="/clinical" onClick={onClose} className="inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-4">臨床ツールの一覧を見る</Link>
           {categories.map((cat) => {
             const CatIcon = cat.icon;
             return (
@@ -149,9 +130,9 @@ export default function NavMoreDrawer({
                           key={item.id}
                           type="button"
                           onClick={() => handleItemClick(item)}
-                          className="flex items-start gap-2.5 p-2.5 bg-white dark:bg-[#10161C] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] rounded-xl text-left transition-all cursor-pointer"
+                          className="flex items-start gap-2.5 min-h-11 p-2.5 hover:bg-white dark:hover:bg-[#10161C] rounded-lg text-left transition-all cursor-pointer"
                         >
-                          <div className="p-1.5 rounded-lg bg-[#FAF8F5] dark:bg-[#18222C] text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5">
+                          <div className="p-1.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5">
                             <Icon className="w-4 h-4" />
                           </div>
                           <div className="min-w-0">
@@ -171,9 +152,9 @@ export default function NavMoreDrawer({
                         key={item.id}
                         href={item.href}
                         onClick={onClose}
-                        className="flex items-start gap-2.5 p-2.5 bg-white dark:bg-[#10161C] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] rounded-xl text-left transition-all cursor-pointer"
+                        className="flex items-start gap-2.5 min-h-11 p-2.5 hover:bg-white dark:hover:bg-[#10161C] rounded-lg text-left transition-all cursor-pointer"
                       >
-                        <div className="p-1.5 rounded-lg bg-[#FAF8F5] dark:bg-[#18222C] text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5">
+                        <div className="p-1.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5">
                           <Icon className="w-4 h-4" />
                         </div>
                         <div className="min-w-0">
@@ -197,6 +178,13 @@ export default function NavMoreDrawer({
               </div>
             );
           })}
+          <details className="border-t border-[#D8CFC0] pt-3 dark:border-[#384C5E]">
+            <summary className="flex min-h-11 cursor-pointer items-center gap-2 text-sm font-semibold"><SlidersHorizontal aria-hidden="true" className="h-4 w-4" />メニュー・アプリの設定</summary>
+            <div className="flex flex-col items-start gap-1">
+              <button type="button" onClick={() => { onClose(); onOpenCustomize(); }} className="min-h-11 text-sm underline underline-offset-4">下部メニューを編集</button>
+              <button type="button" onClick={() => { onClose(); window.dispatchEvent(new Event("haritaro:install-app")); }} className="min-h-11 text-sm underline underline-offset-4">ホーム画面に追加</button>
+            </div>
+          </details>
         </div>
       </div>
     </div>

@@ -2699,7 +2699,8 @@
     "article-editorial-audit.json",
     "entry-page-audit.json",
     "specialist-review.md",
-    "natural-japanese-report.md"
+    "natural-japanese-report.md",
+    "site-refinement-report.md"
   ],
   "followupCounts": {
     "lecturesReviewed": 94,
@@ -2729,7 +2730,7 @@
     "coursesChanged": 6,
     "specialistReviewItems": 146
   },
-  "latestReport": "learning-entry-improvements-report.md",
+  "latestReport": "site-refinement-report.md",
   "learningEntryImprovements": {
     "prescriptionDisplayMitigated": true,
     "date": "2026-10-12",

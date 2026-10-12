@@ -60,14 +60,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const title = `${lecture.title} | 体系学習カリキュラム`;
+  const lessonTitle = lecture.title.replace(/^.*?レッスン\s*\d+\s*[：:]\s*/, "");
+  const title = `${lessonTitle}${lecture.seriesTitle && lecture.lessonNumber ? `｜${lecture.seriesTitle} 第${lecture.lessonNumber}講` : ""}｜はり太郎`;
   const description =
     lecture.summary ||
     lecture.whatYouWillLearn?.canDo ||
     `${lecture.title}の解説講義。東洋医学の基礎から実践まで体系的に学びます。`;
 
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: {
       canonical: `https://www.haritaro.jp/curriculum/${lecture.id}`,
@@ -75,14 +76,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       images: SHARED_OG_IMAGES,
       siteName: SITE_NAME,
-      title: `${title} | ${SITE_NAME}`,
+      title,
       description,
       url: `https://www.haritaro.jp/curriculum/${lecture.id}`,
       type: "article",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | ${SITE_NAME}`,
+      title,
       description,
       images: SHARED_OG_IMAGES.map(image => image.url),
     },

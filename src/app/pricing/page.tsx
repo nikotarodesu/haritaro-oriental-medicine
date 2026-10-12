@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { 
   Check, 
   Crown, 
@@ -10,33 +11,30 @@ import {
   ShieldCheck, 
   Bookmark,
   FileText, 
-  Compass, 
   CheckCircle2,
   RefreshCw,
-  AlertCircle,
-  GraduationCap,
   ChevronDown,
   Printer,
-  Maximize2
 } from "lucide-react";
-import { SUBSCRIPTION_CONFIG, isSubscriptionSalesEnabled } from "@/config/subscription";
+import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
+import { useSubscriptionAvailability } from "@/hooks/useSubscriptionAvailability";
+import SubscriptionAvailabilityNotice from "@/components/subscription/SubscriptionAvailabilityNotice";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function PricingPage() {
+  const router = useRouter();
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
   const [sampleViewTab, setSampleViewTab] = useState<"note" | "sheet">("note");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { user, isPremium } = useAuth();
-  const [billingReady,setBillingReady]=useState(false);
-  useEffect(()=>{let active=true;fetch('/api/stripe/availability',{cache:'no-store'}).then(response=>response.ok?response.json():null).then(data=>{if(active)setBillingReady(data?.available===true);}).catch(()=>{});return()=>{active=false;};},[]);
-  const salesEnabled = isSubscriptionSalesEnabled() && billingReady;
+  const { status, salesEnabled, retry } = useSubscriptionAvailability();
 
-  const currentPricing = SUBSCRIPTION_CONFIG.pricing[billingCycle];
+
 
   const handleSubscribe = async () => {
     if (!salesEnabled) return;
-    if (!user) { window.location.assign('/auth/login?returnTo=%2Fpricing%23pricing-cards'); return; }
+    if (!user) { router.push('/auth/login?returnTo=%2Fpricing%23pricing-cards'); return; }
     setIsLoading(true);
     setError(null);
     try {
@@ -69,13 +67,7 @@ export default function PricingPage() {
       {/* 決済準備中バナー（販売無効時のみ表示） */}
       {!salesEnabled && (
         <div className="p-4 sm:p-5 rounded-2xl bg-[#FCF4EB] dark:bg-[#251B12] border border-[#F3DEC5] dark:border-[#4D331F] text-center space-y-1 shadow-sm">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>{SUBSCRIPTION_CONFIG.statusMessages.comingSoonTitle}</span>
-          </div>
-          <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-            {SUBSCRIPTION_CONFIG.statusMessages.comingSoonSubtitle}
-          </p>
+          <SubscriptionAvailabilityNotice status={status} onRetry={retry} />
         </div>
       )}
 
@@ -570,11 +562,10 @@ export default function PricingPage() {
                     className="w-full py-3.5 px-6 rounded-xl bg-[#D8CFC0] dark:bg-[#2A3B4A] text-[#737C77] dark:text-[#8899A6] text-sm font-bold cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     <Sparkles className="w-4 h-4" />
-                    <span>現在お申し込み準備中（近日再開）</span>
+                    <span>{status === "checking" ? "受付状況を確認中…" : status === "error" ? "受付状況を確認できません" : "現在お申し込み準備中"}</span>
                   </button>
-                  <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] text-center">
-                    ※正式公開時にお知らせいたします。現在は無料機能をご利用ください。
-                  </p>
+                  {status === "error" ? <button type="button" onClick={retry} className="min-h-11 w-full rounded-lg text-sm font-semibold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2">受付状況を再確認する</button>
+                    : status === "unavailable" ? <p className="text-sm text-[#737C77] dark:text-[#8899A6] text-center">受付開始日は未定です。現在は無料機能をご利用ください。</p> : null}
                 </div>
               )}
 
