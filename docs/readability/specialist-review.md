@@ -2453,19 +2453,21 @@
 
 ### entry:natural-entry-01
 
-経穴数の集計ラベルと根拠
+経穴数の集計ラベルと根拠（現在は参照されない旧部品）
 
-公開先：[/practice/haiketsu](https://www.haritaro.jp/practice/haiketsu)。実装：[src/components/HaiketsuOptimizer.tsx:361](/C:/Users/秀喜/.codex/.chatgpt-projects/g-p-6aa3ba87681081918e12c72cdaff6379/haritaro-oriental-medicine/src/components/HaiketsuOptimizer.tsx:361)。
+参照経路の訂正：当初の記録では公開先を `/practice/haiketsu` としていたが、`HaiketsuOptimizer`は現在の公開ルートからimportされていない。実際の配穴ページは`src/app/practice/haiketsu/page.tsx`。旧部品の現在の表示式は`src/components/HaiketsuOptimizer.tsx:366`。
 
 対象ID：`natural-entry-01`。
 
-表示条件：選んだ経穴数を集計する表示ラベル。操作ボタンのみ文章を変更し、集計ルールとラベルは維持。
-
-原文（抜粋）：
+校閲時の原文（専門確認の履歴として保持）：
 
 > 黄金比（2〜4穴）
 
-確認したい事項：「黄金比」は教材内の集計名か、臨床的な優位性を指すか。経穴数を2〜4とする根拠と適用条件を確認する。意味の確定に専門的判断が必要なため、操作ボタンのみ具体化し、このラベルと集計ルールは維持した。
+2026年10月12日の追加改善：実際の配穴ページに、穴数と役割分類を使う独自集計の判定条件を追加。点数表示を避けて分類結果を示す従来の方針と、選択・保存操作は維持。旧部品も、未選択・穴数による減点なし・穴数に応じた減点の説明へ変更し、共通の判定説明を使用する。1〜4穴は穴数による減点なし、5穴は15点、6穴以上は（穴数−5）×15点であり、「2〜4穴が黄金比」という条件は実装にない。
+
+専門確認は継続：減点の重み、経穴の役割分類、臨床への適用条件・妥当性は専門家が確認する。表示の改善を、効果・安全性・医学的監修の確認完了とは扱わない。
+
+変更と検証：[learning-entry-improvements-report.md](learning-entry-improvements-report.md)。
 
 ## 確認範囲と除外
 

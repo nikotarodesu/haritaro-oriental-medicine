@@ -58,7 +58,7 @@ assert.equal(queryPages.length, 1, 'Only the independently described Gorou check
 assert.equal(queryPages[0].url, 'https://www.haritaro.jp/diagnosis?tab=gorou');
 assert(!sitemap.some(page=>new URL(page.url).pathname==='/notes'));
 assert.equal(new Set(sitemap.map(page=>page.url)).size,sitemap.length);
-const { CURRICULUM_EDITORIAL_REVISIONS, READABILITY_EDITORIAL_REVISIONS, NATURAL_JAPANESE_EDITORIAL_REVISIONS, NATURAL_JAPANESE_COURSE_REVISIONS } = load('src/config/contentUpdates');
+const { CURRICULUM_EDITORIAL_REVISIONS, READABILITY_EDITORIAL_REVISIONS, NATURAL_JAPANESE_EDITORIAL_REVISIONS } = load('src/config/contentUpdates');
 assert.equal(CURRICULUM_EDITORIAL_REVISIONS.length, 55);
 assert.equal(new Set(CURRICULUM_EDITORIAL_REVISIONS).size, 55);
 assert.equal(READABILITY_EDITORIAL_REVISIONS.length, 43);
@@ -75,7 +75,7 @@ const { LEARNING_COURSES, getCourseProgress } = load('src/data/learningCourses')
 const { CURRICULUM_TOTAL_CHAPTERS } = load('src/data/curriculumOutline');
 assert.equal(new Set(LEARNING_COURSES.map(course=>course.slug)).size, CURRICULUM_TOTAL_CHAPTERS);
 for (const course of LEARNING_COURSES) {
- assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/learn/courses/${course.slug}`).lastModified.toISOString().slice(0,10), NATURAL_JAPANESE_COURSE_REVISIONS.includes(course.slug) ? '2026-10-12' : '2026-10-08', course.slug + ' actual revision date');
+ assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/learn/courses/${course.slug}`).lastModified.toISOString().slice(0,10), '2026-10-12', course.slug + ' actual revision date');
  assert(sitemap.some(page=>page.url===`https://www.haritaro.jp/learn/courses/${course.slug}`),course.slug+' sitemap');
  assert(course.steps.every(step=>lectureIds.has(step.lectureId) && CURRICULUM_QUIZZES[step.lectureId]),course.slug+' live lesson and quiz');
  const complete=Object.fromEntries(course.steps.map(step=>[step.lectureId,'2026-10-03']));

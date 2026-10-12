@@ -2729,5 +2729,13 @@
     "coursesChanged": 6,
     "specialistReviewItems": 146
   },
-  "latestReport": "natural-japanese-report.md"
+  "latestReport": "learning-entry-improvements-report.md",
+  "learningEntryImprovements": {
+    "prescriptionDisplayMitigated": true,
+    "date": "2026-10-12",
+    "courseReadingEstimates": 11,
+    "sharedCaseComparison": "pathomechanism-foundations#concept-comparison",
+    "specialistReviewCompleted": false,
+    "firstLectureDirectEntry": true
+  }
 }

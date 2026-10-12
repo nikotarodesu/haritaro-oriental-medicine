@@ -217,8 +217,11 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(ARTICLE_EDITORIAL_REVISIONS.map(id => [`/articles/${id}`, '2026-10-12'])),
   ...Object.fromEntries(NATURAL_JAPANESE_EDITORIAL_REVISIONS.map(id => [`/curriculum/${id}`, '2026-10-12'])),
   ...Object.fromEntries(NATURAL_JAPANESE_COURSE_REVISIONS.map(slug => [`/learn/courses/${slug}`, '2026-10-12'])),
+  // Reading estimates were added to the actual detail pages of all 11 courses.
+  ...Object.fromEntries(LEARNING_COURSES.map(course => [`/learn/courses/${course.slug}`, '2026-10-12'])),
 };
 export const SITE_UPDATES = [
+  { date: '2026-10-12', label: '学習の入口・読書時間・概念比較・配穴の評価表示を改善', href: '/learn', text: 'トップから概論の第1講へ直接進む案内を追加。全11コースに各講義の読書時間の合計を表示し、病機論の同じ架空例による概念比較をコースでも読めるように変更。配穴の独自スコアは計算方法と未検証の範囲を明示し、評価を保証するように読める表示を修正' },
   { date: '2026-10-12', label: '抽象的な表現と不自然な日本語を改善', href: '/curriculum', text: '講義の要約・目標・本文、52問の解説、12記事、13用語、コースと図の説明を再校閲。比較する対象・記録する情報・読む手順を具体化し、名詞が重なる硬い表現を自然な日本語へ変更。引用・出典・正答・既存の操作を維持' },
   { date: '2026-10-12', label: '文章・学習導線・スマホの読みやすさを改善', href: '/learn', text: '全94講義・282問、12記事、用語32項目の文章と導線を点検。43講義・13解説・12記事の該当箇所を具体化し、用語説明と講義・クイズ・症例への案内を読みやすく変更。出典・引用・正答・既存URLを維持。医学的な専門確認は継続' },
   { date: '2026-10-09', label: '章末問題の独立化と初期計画書の具体化', href: '/curriculum', text: '各講のクイズを再掲していた章末88問を、分類・比較・記録の読み取りを問う独立した問題へ変更。全11章の記述課題に具体的な解答例を追加し、治療戦略の学習目標・記入済み計画書・次章との症例の切り替えを明確化' },

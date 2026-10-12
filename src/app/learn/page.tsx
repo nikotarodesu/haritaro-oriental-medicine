@@ -12,6 +12,7 @@ import LearningCourseJourney from '@/components/learning/LearningCourseJourney';
 import LearningDiscovery from '@/components/learning/LearningDiscovery';
 import CourseMiniCase from '@/components/learning/CourseMiniCase';
 import ContentNavigationLink from '@/components/learning/ContentNavigationLink';
+import { createCourseLectureHref } from '@/utils/courseJourney';
 import PrimeStudentCard from '@/components/PrimeStudentCard';
 
 const pageTitle = '東洋医学を概論から学ぶ｜初学者・鍼灸学生';
@@ -32,7 +33,7 @@ export default function LearnGuidePage() {
         <p className="flex items-center gap-2 text-sm font-semibold text-[#184F49] dark:text-[#9CCBBC]"><GraduationCap aria-hidden="true" className="h-5 w-5" />初学者・鍼灸学生のための学習案内</p>
         <h1 className="font-serif text-3xl font-bold leading-relaxed sm:text-4xl">東洋医学は、どの順番で学ぶ？</h1>
         <p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">初めて学ぶ方は、4講の概論から始めましょう。陰陽・気血津液・臓腑・経絡の順に基本用語を学び、各講のクイズで理解を確かめます。短い例では、観察した事実とまだ分からないことを別々に書く練習をします。</p>
-        <div className="flex flex-wrap gap-3"><ContentNavigationLink href="/learn/courses/oriental-medicine-introduction" placement="learn_intro_start" className={`inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#184F49] px-4 py-3 font-bold text-white dark:bg-[#285F54] ${focusClass}`}>4講の概論から始める<ArrowRight aria-hidden="true" className="h-4 w-4" /></ContentNavigationLink><Link href={`/curriculum/${FIRST_CURRICULUM_LECTURE_ID}`} className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>概論の第1講を開く</Link></div>
+        <div className="flex flex-wrap gap-3"><ContentNavigationLink href="/learn/courses/oriental-medicine-introduction" placement="learn_intro_start" className={`inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#184F49] px-4 py-3 font-bold text-white dark:bg-[#285F54] ${focusClass}`}>4講の概論から始める<ArrowRight aria-hidden="true" className="h-4 w-4" /></ContentNavigationLink><Link href={createCourseLectureHref(LEARNING_COURSES[0].slug, FIRST_CURRICULUM_LECTURE_ID)} className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>初めての方：第1講から始める</Link></div>
       </header>
       <HomeLearningProgressCard />
 
@@ -53,6 +54,7 @@ export default function LearnGuidePage() {
       <LearningMap chapters={catalog.chapters} />
       <LearningDiscovery />
       <section aria-labelledby="learn-practice-heading" className="space-y-4"><h2 id="learn-practice-heading" className="font-serif text-2xl font-bold">学んだことを確かめる</h2><p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">各講義の確認クイズと復習で用語を確かめます。病機・診断以降では、症例の情報を順に読み、追加の情報で候補や判断の理由がどう変わるか考えます。</p><nav aria-label="学習内容を確かめる" className="flex flex-wrap gap-3">{[{ href: '/kokushi#learning-review', label: '今日の復習' }, { href: '/kokushi', label: '国試演習' }, { href: '/tsubo/practice', label: '経穴の基本演習' }, { href: '/simulator#case-training', label: '後半の6段階症例演習' }, { href: '/notes?tab=learning', label: '学習の振り返り' }].map(link => <Link key={link.href} href={link.href} className={`inline-flex min-h-11 items-center rounded-xl border border-[#D9E3DD] px-4 font-semibold text-[#184F49] dark:border-[#2A3B4A] dark:text-[#9CCBBC] ${focusClass}`}>{link.label}</Link>)}</nav></section>
+      <aside className="space-y-2 rounded-2xl border border-[#D9E3DD] p-5 dark:border-[#2A3B4A]"><h2 className="text-lg font-bold">病機論で、似た用語の違いを確かめる</h2><p className="leading-relaxed ui-muted">基礎を学んだら、同じ架空例を使って病因・病機・症状・証を比べます。本人の報告と、そこから考えた仮説を分けて読みましょう。</p><Link href="/learn/courses/pathomechanism-foundations#concept-comparison" className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline underline-offset-4 dark:text-[#9CCBBC] ${focusClass}`}>同じ例による比較を見る →</Link></aside>
       <PrimeStudentCard variant="banner" />
     </div>
   );

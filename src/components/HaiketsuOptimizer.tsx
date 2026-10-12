@@ -1,5 +1,8 @@
 "use client";
 
+import { getPrescriptionCountLabel } from "@/utils/prescriptionScorePresentation";
+import PrescriptionScoringGuide from "@/components/learning/PrescriptionScoringGuide";
+
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { 
@@ -277,11 +280,11 @@ export default function HaiketsuOptimizer() {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-[11px] font-bold tracking-wider uppercase text-[#737C77] dark:text-[#8899A6]">
-                    Prescription Purity Analysis
+                    教材内の分類による確認
                   </span>
                 </div>
                 <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] mt-0.5">
-                  配穴の純度スコア
+                  配穴の学習スコア
                 </h3>
               </div>
 
@@ -293,7 +296,7 @@ export default function HaiketsuOptimizer() {
                       id: `haiketsu-custom-${[...selectedIds].sort().join("-")}`,
                       type: "pair",
                       title: `配穴処方（${selectedIds.map(id => ACUPOINT_ROLES[id]?.name || id).join(" ＋ ")}）`,
-                      subTitle: `純度スコア: ${analysis.purityScore}点（${analysis.statusText}）`,
+                      subTitle: `学習スコア: ${analysis.purityScore}点（${analysis.statusText}）`,
                       points: selectedIds.map(id => {
                         const r = ACUPOINT_ROLES[id];
                         return r ? `${r.name} (${r.code})` : id;
@@ -309,7 +312,7 @@ export default function HaiketsuOptimizer() {
                       }))),
                       indications: ["配穴シミュレーター自作構成"],
                       summary: `穴数: ${analysis.totalCount}穴（本治穴: ${analysis.rootCount}穴 / 標治穴: ${analysis.branchCount}穴）。本治比率: ${analysis.rootRatio}%。`,
-                      mechanism: analysis.alerts.length > 0 ? `臨床所見: ${analysis.alerts.map(a => a.title).join("、")}` : "気の昇降・寒熱のバランスがとれた至適配穴構成。"
+                      mechanism: analysis.alerts.length > 0 ? `教材内の確認項目: ${analysis.alerts.map(a => a.title).join("、")}` : "教材の集計ルールに該当する確認項目はありません。治療効果や安全性の確認済みを意味しません。"
                     }}
                     variant="button"
                     size="sm"
@@ -317,7 +320,7 @@ export default function HaiketsuOptimizer() {
                 )}
                 <div className={`px-4 py-2 rounded-2xl border text-center ${scoreBadgeColor}`}>
                   <span className="text-3xl sm:text-4xl font-serif font-bold">
-                    {analysis.purityScore}
+                    {selectedIds.length ? analysis.purityScore : "—"}
                   </span>
                   <span className="text-xs font-semibold ml-1">/ 100点</span>
                   <span className="block text-[11px] font-bold mt-0.5">
@@ -332,16 +335,18 @@ export default function HaiketsuOptimizer() {
               <div className="w-full h-3 rounded-full bg-[#EFE9DD] dark:bg-[#1A2530] overflow-hidden">
                 <div 
                   className={`h-full transition-all duration-500 rounded-full ${scoreBarColor}`}
-                  style={{ width: `${analysis.purityScore}%` }}
+                  style={{ width: `${selectedIds.length ? analysis.purityScore : 0}%` }}
                 />
               </div>
-              <div className="flex justify-between text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                <span>相殺・散乱（0〜50点）</span>
-                <span>注意（51〜74点）</span>
-                <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">至適最小構成（90点〜）</span>
+              <div className="grid grid-cols-2 gap-2 text-xs text-[#737C77] dark:text-[#8899A6]">
+                <span>50点未満：確認項目が多い</span>
+                <span>50〜74点：複数の理由を確認</span>
+                <span>75〜89点：採用理由を確認</span>
+                <span>90点以上：確認項目が少ない</span>
               </div>
             </div>
 
+            <PrescriptionScoringGuide />
             {/* 指標グリッド */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xs">
               <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D]">
@@ -358,7 +363,7 @@ export default function HaiketsuOptimizer() {
                   {analysis.totalCount} 穴
                 </span>
                 <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block mt-0.5">
-                  {analysis.totalCount <= 4 ? "黄金比（2〜4穴）" : "相殺リスク"}
+                  {getPrescriptionCountLabel(analysis.totalCount)}
                 </span>
               </div>
 
@@ -394,7 +399,7 @@ export default function HaiketsuOptimizer() {
                   {analysis.rootRatio} %
                 </span>
                 <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block mt-0.5">
-                  理想は40〜60%
+                  本治穴数 ÷ 全穴数
                 </span>
               </div>
             </div>
@@ -406,7 +411,7 @@ export default function HaiketsuOptimizer() {
               <div className="flex items-center justify-between">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EBF3EF]/20 text-[#E6C387] text-xs font-semibold">
                   <Scissors className="w-3.5 h-3.5" />
-                  <span>無駄を削ぎ落とす臨床アドバイス</span>
+                  <span>各穴の目的を比べる学習案</span>
                 </div>
                 <span className="text-xs font-mono font-bold text-[#E6C387]">
                   スコア {analysis.purityScore} ➜ {analysis.pruningProposal.projectedScore}点へ
@@ -611,10 +616,10 @@ export default function HaiketsuOptimizer() {
             <div className="p-6 rounded-3xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-center space-y-2 animate-fadeIn">
               <CheckCircle2 className="w-8 h-8 text-[#1E3D34] dark:text-[#74BA9E] mx-auto" />
               <h4 className="font-serif font-bold text-base text-[#1E3D34] dark:text-[#74BA9E]">
-                相殺のない秀逸な最小構成です
+                教材の集計ルールに該当する確認項目はありません
               </h4>
               <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] max-w-md mx-auto">
-                本治穴と標治穴が調和し、昇降の衝突や余計な重複がありません。生体の自己治癒シグナルが一点に研ぎ澄まされ、最速の切れ味を発揮します。
+                選んだ経穴について、教材内の分類による減点条件には該当しませんでした。各穴の採用理由は個別に確認してください。治療効果、相殺の有無、安全性を検証した結果ではありません。
               </p>
             </div>
           )}

@@ -7,6 +7,9 @@ import { getLearningCourse, LEARNING_COURSES } from '@/data/learningCourses';
 import LearningCourseProgress from '@/components/learning/LearningCourseProgress';
 import LearningCourseJourney from '@/components/learning/LearningCourseJourney';
 import LearningCourseLink from '@/components/learning/LearningCourseLink';
+import { getCurriculumIndexCatalog } from '@/data/curriculumIndexCatalog';
+import { getCourseReadingMinutes } from '@/utils/courseReadingTime';
+import PathomechanismComparison from '@/components/learning/PathomechanismComparison';
 import CourseMiniCase from '@/components/learning/CourseMiniCase';
 import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
 
@@ -29,6 +32,7 @@ export default async function LearningCoursePage({ params }: Props) {
   const { slug } = await params;
   const course = getLearningCourse(slug);
   if (!course) notFound();
+  const readingMinutes = getCourseReadingMinutes(course, getCurriculumIndexCatalog().lectures);
   const prerequisite = course.prerequisiteSlug ? getLearningCourse(course.prerequisiteSlug) : undefined;
   const nextCourse = course.nextCourseSlug ? getLearningCourse(course.nextCourseSlug) : undefined;
   const chapter = CURRICULUM_CHAPTERS_META.find(item => item.seriesId === course.seriesId);
@@ -49,11 +53,13 @@ export default async function LearningCoursePage({ params }: Props) {
         <p className="text-sm font-semibold tracking-wider text-[#184F49] dark:text-[#9CCBBC]">{course.eyebrow} · {course.steps.length}ステップ</p>
         <h1 className="font-serif text-3xl font-bold leading-relaxed sm:text-4xl">{course.title}</h1>
         <p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">{course.description}</p>
+        <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">読む目安：約{readingMinutes}分（各講義の目安の合計。クイズ・演習の時間は別です）</p>
         <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">こんな方に：{course.audience}</p>
       </header>
       <section aria-labelledby="course-goals-heading" className="rounded-2xl bg-[#F6F4EE] p-5 sm:p-6 dark:bg-[#1E2B36]"><h2 id="course-goals-heading" className="font-serif text-xl font-bold">このコースの到達目標</h2><ul className="mt-4 space-y-3">{course.goals.map((goal) => <li key={goal} className="flex items-start gap-3 text-base leading-relaxed"><Check aria-hidden="true" className="mt-1 h-5 w-5 shrink-0 text-[#184F49] dark:text-[#9CCBBC]" /><span>{goal}</span></li>)}</ul>{prerequisite && <p className="mt-5 text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">一つ前の段階は、<Link href={`/learn/courses/${prerequisite.slug}`} className="inline-flex min-h-11 items-center font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">{prerequisite.title}</Link>です。必要な用語を振り返ってから進めます。</p>}<Link href={`#course-mini-case-${course.seriesId}`} className="mt-3 inline-flex min-h-11 items-center font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">先に短い例で考えてみる →</Link></section>
       <LearningCourseJourney />
       <LearningCourseProgress course={course} />
+      {course.seriesId === 'pathomechanism' && <PathomechanismComparison />}
       <CourseMiniCase seriesId={course.seriesId} />
       {course.reading.length > 0 && <section aria-labelledby="course-reading-heading" className="space-y-4"><h2 id="course-reading-heading" className="font-serif text-2xl font-bold">図解で振り返る</h2><div className="grid gap-3">{course.reading.map((item) => <LearningCourseLink key={item.href} href={item.href} courseId={course.slug} placement="course_reading" className="flex min-h-11 items-center justify-between gap-4 rounded-2xl border border-[#D9E3DD] bg-[#FCFAF6] p-5 hover:border-[#184F49] focus-visible:outline-2 focus-visible:outline-offset-4 dark:border-[#2A3B4A] dark:bg-[#17212A] dark:hover:border-[#9CCBBC]"><span className="min-w-0"><span className="block text-lg font-bold text-[#184F49] dark:text-[#9CCBBC]">{item.title}</span><span className="mt-2 block text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">{item.description}</span></span><ArrowRight aria-hidden="true" className="h-5 w-5 shrink-0 text-[#184F49] dark:text-[#9CCBBC]" /></LearningCourseLink>)}</div></section>}
       {chapter && <aside className="space-y-3 rounded-2xl border border-[#D9E3DD] p-5 dark:border-[#2A3B4A]"><h2 className="text-lg font-bold">{course.steps.length === chapter.plannedLessons ? 'この章を振り返る' : 'この章を詳しく学ぶ'}</h2><p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">{course.steps.length === chapter.plannedLessons ? `このコースは章の全${chapter.plannedLessons}講を扱います。章の目次から各講義を振り返れます。` : `このコースは全${chapter.plannedLessons}講のうち${course.steps.length}講です。詳しい各論や総合演習は章の順番で続けて学べます。`}受講記録は共通で、コースと章の進捗はそれぞれ表示します。</p><Link href={`/curriculum#chapter-${chapter.id}`} className="inline-flex min-h-11 items-center font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">{chapter.title}の全講義を見る →</Link></aside>}

@@ -6,6 +6,7 @@ import HomeHeroQuickSearch from "@/components/home/HomeHeroQuickSearch";
 import HomeHeroDualEntry from "@/components/home/HomeHeroDualEntry";
 import LearningCourseCards from "@/components/learning/LearningCourseCards";
 import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
+import { createCourseLectureHref } from "@/utils/courseJourney";
 import { LEARNING_COURSES } from "@/data/learningCourses";
 import { getArticlePreviews } from "@/data/articleData";
 import { SITE_UPDATES } from "@/config/contentUpdates";
@@ -49,6 +50,10 @@ export default function HomePage() {
             <Link href="/learn" className="ui-button ui-button-primary"><GraduationCap aria-hidden="true" /><span>基礎から学ぶ</span></Link>
             <Link href="/clinical" className="ui-button ui-button-outline"><Stethoscope aria-hidden="true" /><span>臨床で使う</span></Link>
           </nav>
+          <div className="mt-4 space-y-1">
+            <ContentNavigationLink href={createCourseLectureHref(LEARNING_COURSES[0].slug, LEARNING_COURSES[0].steps[0].lectureId)} placement="home_first_lecture" className="inline-flex min-h-11 items-center gap-2 font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">初めての方：第1講から始める<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></ContentNavigationLink>
+            <p className="text-sm ui-muted">「東洋医学とは何か」を読み、最後のクイズで確かめます。</p>
+          </div>
           <HomeHeroQuickSearch />
         </div>
       </section>

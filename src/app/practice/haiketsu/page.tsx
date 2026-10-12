@@ -27,6 +27,8 @@ import {
 } from "@/data/haiketsuData";
 import { saveDraftPatientNote } from "@/utils/draftNote";
 import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
+import PrescriptionScoringGuide from "@/components/learning/PrescriptionScoringGuide";
+import { getPrescriptionCountLabel } from "@/utils/prescriptionScorePresentation";
 import { clinicalEncounterDraft, readClinicalEncounter, writeClinicalEncounter, type ClinicalPointPlan } from "@/utils/clinicalEncounter";
 import { ACUPOINTS_MASTER } from "@/data/tsubo/acupointsMaster";
 
@@ -141,7 +143,7 @@ export default function HaiketsuPracticePage() {
       elements: ["木", "金"],
       indications: ["自律神経調整", "気滞血瘀"],
       summary: `${isPremium ? "選定理由" : "教材例の説明（現在の配穴の選定理由ではありません）"}: ${rationaleText || "未記入"}`,
-      mechanism: `構成分析: 本治${analysis.rootCount}穴 / 標治${analysis.branchCount}穴（${analysis.status === "optimal" ? "少数精鋭" : "標準"}）`,
+      mechanism: `教材内の構成分析: 本治${analysis.rootCount}穴 / 標治${analysis.branchCount}穴（${analysis.statusText}）。治療効果や安全性の確認結果ではありません。`,
       personalNotes: `配穴演習にて設計 (${new Date().toLocaleDateString("ja-JP")})`
     });
 
@@ -316,9 +318,11 @@ export default function HaiketsuPracticePage() {
                 <div className="text-right text-xs text-[#737C77] dark:text-[#8899A6]">
                   <p>選択中: <strong className="text-[#232826] dark:text-[#FAF8F5] text-base">{selectedPointIds.length}</strong> 穴</p>
                   <p className="text-[11px] mt-0.5">（基本32穴パレット）</p>
+                  <p className="mt-1 text-xs">{getPrescriptionCountLabel(selectedPointIds.length)}</p>
                 </div>
               </div>
 
+              <PrescriptionScoringGuide />
               {/* 本治 vs 標治 比率バー */}
               <div className="space-y-1.5 pt-2 border-t border-[#E5DEC9] dark:border-[#2A3B4A]">
                 <div className="flex justify-between text-xs">
