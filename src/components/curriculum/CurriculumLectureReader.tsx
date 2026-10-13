@@ -269,12 +269,6 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
 
           </div>
 
-          <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">編集：<Link href="/about" className="underline underline-offset-4">はり太郎</Link> · 更新：<time dateTime={PAGE_REVISIONS[`/curriculum/${lecture.id}`]}>{PAGE_REVISIONS[`/curriculum/${lecture.id}`]}</time> · <Link href="/editorial-policy" className="underline underline-offset-4">出典確認・監修の範囲</Link>（専門家監修は未完了）</p>
-          {lecture.subtitle && (
-            <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              {lecture.subtitle}
-            </p>
-          )}
         </div>
 
         <nav aria-label="講義内の移動" className="flex flex-wrap gap-2">
@@ -285,11 +279,12 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           {chapterAssessment && <a href="#chapter-assessment" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] px-4 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A3B4A] dark:text-[#83BEA8] dark:hover:bg-[#182823]">章末演習</a>}
         </nav>
 
-        <p className="text-base leading-[1.75] text-[#404743] dark:text-[#C5D2DB]">{lecture.summary}</p>
-
-        <details className="rounded-xl border border-[#E5DEC9] px-4 py-2 dark:border-[#2A3B4A]">
-          <summary className="flex min-h-11 cursor-pointer items-center text-base font-bold text-[#1E3D34] dark:text-[#83BEA8]">目次・学習の要点</summary>
+        <details className="group rounded-xl border border-[#E5DEC9] px-4 py-2 dark:border-[#2A3B4A]">
+          <summary className="flex min-h-11 cursor-pointer items-center gap-2 text-base font-bold text-[#1E3D34] dark:text-[#83BEA8]"><span aria-hidden="true" className="group-open:hidden">＋</span><span aria-hidden="true" className="hidden group-open:inline">−</span>概要・目次</summary>
           <div className="space-y-5 pb-3 pt-2">
+            {lecture.subtitle && <p className="text-base font-semibold leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">{lecture.subtitle}</p>}
+            <p className="text-base leading-[1.75] text-[#404743] dark:text-[#C5D2DB]">{lecture.summary}</p>
+            <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">編集：<Link href="/about" className="underline underline-offset-4">はり太郎</Link> · 更新：<time dateTime={PAGE_REVISIONS[`/curriculum/${lecture.id}`]}>{PAGE_REVISIONS[`/curriculum/${lecture.id}`]}</time></p>
         {readingQuestions.length > 0 && (
           <section aria-labelledby="lecture-reading-questions-title" className="space-y-3 rounded-2xl border border-[#D6E3DA] bg-[#F6F9F4] p-4 sm:p-5 dark:border-[#304A3E] dark:bg-[#172A22]">
             <h2 id="lecture-reading-questions-title" className="text-base font-bold text-[#1E3D34] dark:text-[#D9EDE0]">知りたいことから読む</h2>
