@@ -131,7 +131,7 @@ export const PRESET_CASES: PresetCase[] = [
     id: "preset-hiki",
     name: "脾気虚弱証",
     label: "胃腸虚弱・食後倦怠（裏・寒・虚）",
-    description: "食欲不振、軟便、食後の強い眠気があり、消化吸収と全身エネルギーが枯渇した虚寒パターン。",
+    description: "食欲不振・軟便・食後の眠気を、伝統的な脾気虚の所見として比較する例。寒の条件を含むプリセットで、これらの症状だけで寒証を確定するものではありません。",
     values: { depth: "interior", temp: "cold", state: "deficiency", qixueshui: "qixu", zangfu: "spleen" }
   },
   {
@@ -157,7 +157,7 @@ export const DEPTH_OPTIONS: { value: DepthType; label: string; sub: string; desc
 ];
 
 export const TEMP_OPTIONS: { value: TemperatureType; label: string; sub: string; description: string }[] = [
-  { value: "cold", label: "寒（かん）", sub: "冷え・温めると軽減など", description: "手足の冷え、血流低下、水様性の分泌物、縮こまるような痛みなどの沈静状態。" },
+  { value: "cold", label: "寒（かん）", sub: "冷え・温めると軽減など", description: "冷え、温めると軽減する痛み、温かい飲み物を好むなどの所見を、伝統的な寒の候補として比較します。末梢血流を測定した判定ではありません。" },
   { value: "heat", label: "熱（ねつ）", sub: "熱感・赤み・口渇など", description: "体温上昇、局所の充血、のぼせ、口の渇き、焦燥感などの亢進状態。" }
 ];
 
@@ -167,20 +167,20 @@ export const STATE_OPTIONS: { value: StateType; label: string; sub: string; desc
 ];
 
 export const QIXUESHUI_OPTIONS: { value: QixueshuiType; label: string; sub: string; dynamicNature: string }[] = [
-  { value: "qizhi", label: "気滞（きたい）", sub: "気の鬱滞・巡り不全", dynamicNature: "エネルギーの運行が滞り、張りとイライラが生じる" },
-  { value: "qixu", label: "気虚（ききょ）", sub: "気エネルギーの枯渇", dynamicNature: "推進力と温煦力が衰え、無力感・息切れが生じる" },
+  { value: "qizhi", label: "気滞（きたい）", sub: "気の鬱滞・巡り不全", dynamicNature: "伝統医学でいう気の運行の滞りとして、張り・症状の変動・気分との関連などを比較する" },
+  { value: "qixu", label: "気虚（ききょ）", sub: "伝統医学でいう気の不足", dynamicNature: "推進力と温煦力が衰え、無力感・息切れが生じる" },
   { value: "qini", label: "気逆（きぎゃく）", sub: "気の異常上昇・突き上げ", dynamicNature: "下降すべき気が逆流し、のぼせ・咳・吐き気が生じる" },
-  { value: "xuexu", label: "血虚（けっきょ）", sub: "伝統的な滋養機能の不足", dynamicNature: "組織や脳への滋養が不足し、乾燥・めまい・不眠が生じる" },
-  { value: "yuxue", label: "瘀血（おけつ）", sub: "血行の病理的鬱滞", dynamicNature: "伝統医学では血の運行の滞りとして整理し、固定痛・暗紫色などを検討する" },
+  { value: "xuexu", label: "血虚（けっきょ）", sub: "伝統的な滋養機能の不足", dynamicNature: "伝統医学でいう滋養の不足として、淡白な顔色・舌、めまい・乾燥などを比較する。ヘモグロビンや脳血流の測定値ではない" },
+  { value: "yuxue", label: "瘀血（おけつ）", sub: "伝統医学でいう血の滞り", dynamicNature: "伝統医学では血の運行の滞りとして整理し、固定痛・暗紫色などを検討する" },
   { value: "yinxu", label: "陰虚（いんきょ）", sub: "伝統的な滋潤機能の不足", dynamicNature: "伝統医学では滋潤の不足と虚熱を整理し、乾燥やほてりなどを検討する" },
-  { value: "yangxu", label: "陽虚（ようきょ）", sub: "体内温熱エネルギーの衰退", dynamicNature: "生命の火が弱まり、内臓から四肢末梢まで芯から冷え切る" },
-  { value: "shuitai", label: "水滞・痰湿（すいたい）", sub: "体液代謝産物の停滞", dynamicNature: "水分の排泄運化が阻害され、重だるさ・むくみ・眩暈が生じる" }
+  { value: "yangxu", label: "陽虚（ようきょ）", sub: "伝統医学でいう温煦機能の不足", dynamicNature: "伝統医学でいう温煦の不足として、冷え・温めると軽減する訴え・弱い脈などを比較する" },
+  { value: "shuitai", label: "水滞・痰湿（すいたい）", sub: "伝統医学でいう水の偏り・滞り", dynamicNature: "水分の排泄運化が阻害され、重だるさ・むくみ・眩暈が生じる" }
 ];
 
 export const ZANGFU_OPTIONS: { value: ZangfuType; label: string; sub: string; organRole: string }[] = [
   { value: "liver", label: "肝・胆（かん・たん）", sub: "疏泄・蔵血・筋", organRole: "全身の気のめぐり（疏泄）と情動、筋腱の緊張を主導" },
   { value: "heart", label: "心・小腸（しん・しょうちょう）", sub: "心血・精神意識", organRole: "伝統医学では血脈と神明に関わる働きとして整理する" },
-  { value: "spleen", label: "脾・胃（ひ・い）", sub: "消化吸収・後天の気", organRole: "飲食物から気血津液を生み出し全身へ運化するエネルギー工場" },
+  { value: "spleen", label: "脾・胃（ひ・い）", sub: "消化吸収・後天の気", organRole: "伝統医学では飲食物から気血津液を生み、運ぶ働きとして整理する。解剖学的な脾臓の酵素・代謝機能を説明するものではない" },
   { value: "lung", label: "肺・大腸（はい・だいちょう）", sub: "呼吸・皮膚バリア・粛降", organRole: "清気の吸入、水分を全身・膀胱へ散布下降させ体表を守る" },
   { value: "kidney", label: "腎・膀胱（じん・ぼうこう）", sub: "先天の精・骨・水分代謝", organRole: "生命力の根本（精・原気）を蓄え、下行性の水分排泄と骨髄を司る" }
 ];
@@ -213,14 +213,14 @@ export const COMPLEX_STATE_OPTIONS: ComplexStateOption[] = [
     value: "benxu_biaoshi",
     label: "本虚標実（ほんきょひょうじつ）",
     category: "虚実",
-    summary: "虚実の夾雑：体力や臓腑の自活力が不足（本虚）し、局所に頑固なコリ・気滞・瘀血が滞留（標実）",
+    summary: "虚実の混在：伝統理論でいう気・陽などの不足を本虚、局所のこりや気滞・瘀血などを標実として、所見の組み合わせを比較する",
     explanation: "何が虚で何が実かを峻別することが最重要。不足と滞りそれぞれの所見を確認し、優先順位と刺激量を個別に検討します。"
   },
   {
     value: "biaoli_tongbing",
     label: "表裏同病（ひょうりどうびょう）",
     category: "表裏",
-    summary: "病位の重複：慢性の胃腸虚弱や内臓疾患（裏証）を抱えた人が、急性の風邪（表証）を併発",
+    summary: "表証と裏証が同時に見られる状態。以前からある症状と新しく現れた症状を分け、表証・裏証を考える所見を確認する",
     explanation: "表邪を追い払う解表と、裏の体力を支える補益のどちらを優先するか（急則治其標／緩則治其本）の判断が問われる病態。"
   },
   {

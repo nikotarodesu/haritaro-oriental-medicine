@@ -24,6 +24,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import AuthModal from "@/components/auth/AuthModal";
 import KikeiPathwaySvg from "@/components/kikei/KikeiPathwaySvg";
 import KikeiQuizSection from "@/components/kikei/KikeiQuizSection";
+import KikeiEvidenceNote from "@/components/kikei/KikeiEvidenceNote";
 
 interface Props {
   vessel: KikeiVessel;
@@ -59,7 +60,7 @@ export default function KikeiDetailClient({ vessel }: Props) {
       indications: vessel.indications.slice(0, 4),
       summary: vessel.clinicalTips,
       mechanism: vessel.nature,
-      personalNotes: `八脈交会穴: ${vessel.pairName}（適応: ${vessel.pairTargetArea}）`,
+      personalNotes: `八脈交会穴: ${vessel.pairName}（伝統的な関連部位: ${vessel.pairTargetArea}）`,
     });
     setSaved(true);
   };
@@ -137,7 +138,7 @@ export default function KikeiDetailClient({ vessel }: Props) {
               </div>
             </div>
             <p className="text-xs text-[#59615D] dark:text-[#96A6B2] mt-3">
-              <strong>ペア名:</strong> {vessel.pairName}（適応領域: <strong>{vessel.pairTargetArea}</strong>）
+              <strong>ペア名:</strong> {vessel.pairName}（伝統的な関連部位: <strong>{vessel.pairTargetArea}</strong>）
             </p>
           </div>
         </div>
@@ -230,7 +231,7 @@ export default function KikeiDetailClient({ vessel }: Props) {
               {/* 主治病証 */}
               <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 shadow-sm space-y-4">
                 <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
-                  主治病証（適応症状）
+                  伝統的な主治病証
                 </h3>
                 <ul className="space-y-2.5 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2]">
                   {vessel.indications.map((item, idx) => (
@@ -245,7 +246,7 @@ export default function KikeiDetailClient({ vessel }: Props) {
               {/* 臨床要点 */}
               <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 shadow-sm space-y-4">
                 <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
-                  臨床要点・配穴の勘所
+                  伝統的な配穴と、効果の評価範囲
                 </h3>
                 <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                   {vessel.clinicalTips}
@@ -253,6 +254,7 @@ export default function KikeiDetailClient({ vessel }: Props) {
               </div>
             </div>
 
+            <KikeiEvidenceNote />
             {/* 古典条文（難経・素問） */}
             <div className="bg-[#FAF8F5] dark:bg-[#151D25] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-4">
               <div className="flex items-center gap-2">

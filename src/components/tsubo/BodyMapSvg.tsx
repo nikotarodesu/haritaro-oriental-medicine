@@ -293,7 +293,7 @@ export default function BodyMapSvg({
             </svg>
 
             <span className="absolute bottom-1 right-2 text-[9px] text-[#88928D] dark:text-[#6A7C8B] font-mono">
-              ※身体本人の左右
+              ※左右は、図の人物から見た向きです
             </span>
           </div>
         </div>

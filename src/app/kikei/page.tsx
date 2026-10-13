@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { KIKEI_VESSELS, HACHIMYAKU_PAIRS } from "@/data/kikeiData";
 import { pageSocialMetadata } from "@/config/seo";
+import KikeiEvidenceNote from "@/components/kikei/KikeiEvidenceNote";
 
 const pageTitle = "奇経八脈（きけいはちみゃく）詳説・八脈交会穴";
 const pageDescription = "奇経八脈（督脈・任脈・衝脈・帯脈・陰陽蹻脈・陰陽維脈）の流注と、八脈交会穴4対の伝統的な主治・配穴を学ぶ資料集。正経十二経脈との関係や古典の説明を確認できます。";
@@ -35,10 +36,10 @@ export default function KikeiIndexPage() {
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]">
               <GitCommit className="w-3.5 h-3.5" />
-              <span>生体エネルギーの貯水池</span>
+              <span>気血を蓄える「貯水池」のたとえ</span>
             </span>
             <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-medium border border-[#C5DED4] dark:border-[#2A5243]">
-              全8脈・八脈交会穴（4対）完全網羅
+              奇経8脈と八脈交会穴4対を掲載
             </span>
           </div>
 
@@ -47,13 +48,14 @@ export default function KikeiIndexPage() {
               奇経八脈（きけいはちみゃく）と八脈交会穴
             </h1>
             <p className="text-sm sm:text-base text-[#59615D] dark:text-[#96A6B2] max-w-3xl leading-relaxed">
-              正経十二経脈を「縦横に流れる溝渠（河川）」に例えるなら、奇経八脈は「湖や貯水池」。正経の気血が溢れたときに蓄え、不足したときに補うことで、生体の動的平衡を保ちます。臨床では「八脈交会穴」を介して頑固な慢性病や自律神経失調に即効性を発揮します。
+              伝統的な経絡理論では、正経十二経脈を水路に、奇経八脈を湖や貯水池にたとえ、気血の偏りを調節すると説明します。気血は伝統医学の概念であり、血液量や自律神経機能の測定値とは区別します。このページでは8脈の流注と八脈交会穴4対の対応を学びます。治療効果については、下記の臨床研究の対象・比較条件・評価項目を確認してください。
             </p>
           </div>
         </div>
       </div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14 space-y-12">
+        <KikeiEvidenceNote />
         
         {/* セクション 1: 全8脈の体系別カード */}
         <div className="space-y-6">
@@ -154,7 +156,7 @@ export default function KikeiIndexPage() {
               </h2>
             </div>
             <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
-              四肢の8要穴で奇経八脈を駆動する臨床配穴法
+              手足の8つの経穴を組み合わせる、奇経八脈の配穴法
             </p>
           </div>
 
@@ -167,7 +169,7 @@ export default function KikeiIndexPage() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]">
-                      適応領域: {pair.targetArea}
+                      伝統的な関連部位: {pair.targetArea}
                     </span>
                     <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
                       {pair.master1.vessel} ✕ {pair.master2.vessel}

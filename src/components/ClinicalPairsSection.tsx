@@ -158,9 +158,14 @@ export default function ClinicalPairsSection() {
               {pair.mechanism && (
                 <div className="bg-white dark:bg-[#17212A] p-3 rounded-lg border border-[#E5DEC9] dark:border-[#2A3B4A] text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
                   <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
-                    伝統的な配穴意図と説明の限界
+                    伝統的な配穴意図と関連研究
                   </span>
                   {pair.mechanism}
+                  {pair.id === "pair-naikan-kouson" && (
+                    <a href="https://pubmed.ncbi.nlm.nih.gov/40938065/" target="_blank" rel="noopener noreferrer" className="mt-2 block underline underline-offset-2">
+                      術後の悪心・嘔吐に対するPC6刺激の研究（Cochrane、2025）
+                    </a>
+                  )}
                 </div>
               )}
               {pair.caution && <p className="text-xs leading-relaxed text-[#A83629] dark:text-[#F2A99F]">{pair.caution}</p>}

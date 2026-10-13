@@ -23,6 +23,7 @@ import {
 import { ClinicalCase } from "@/types/clinicalCase";
 import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { CLINICAL_CASES, CLINICAL_CASE_SCOPE, CLINICAL_CASE_SAFETY_GUIDANCE } from "@/data/clinicalCasesData";
+import { CLINICAL_CASE_EVIDENCE } from "@/data/clinicalCaseEvidence";
 import { useSubscriptionAvailability } from "@/hooks/useSubscriptionAvailability";
 import SubscriptionAvailabilityNotice from "@/components/subscription/SubscriptionAvailabilityNotice";
 import { useAuth } from "@/contexts/AuthContext";
@@ -507,7 +508,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                 <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
                   <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-                    <span>病態機序の詳細</span>
+                    <span>所見を伝統理論で整理する</span>
                   </h4>
                   <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                     {clinicalCase.clinicalExplanation.pathomechanism}
@@ -527,12 +528,27 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                 <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
                   <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
                     <Layers className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-                    <span>経穴選定の理由（作用機序）</span>
+                    <span>経穴を選ぶ理由</span>
                   </h4>
                   <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                     {clinicalCase.clinicalExplanation.pointRationale}
                   </p>
                 </div>
+
+                {CLINICAL_CASE_EVIDENCE[clinicalCase.id] && (
+                  <section aria-label="この症状に関する臨床研究" className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-3">
+                    <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">臨床研究で確認された結果</h4>
+                    <dl className="space-y-3 text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                      <div><dt className="font-semibold">対象</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].population}</dd></div>
+                      <div><dt className="font-semibold">比較・評価条件</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].comparison}</dd></div>
+                      <div><dt className="font-semibold">結果</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].result}</dd></div>
+                      <div><dt className="font-semibold">この症例への読み方</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].interpretation}</dd></div>
+                    </dl>
+                    <ul className="space-y-1 text-xs sm:text-sm">
+                      {CLINICAL_CASE_EVIDENCE[clinicalCase.id].sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-[#1E3D34] dark:text-[#74BA9E] underline">{source.title}（外部資料）</a></li>)}
+                    </ul>
+                  </section>
+                )}
 
                 <div className="p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 space-y-2">
                   <h4 className="font-bold text-sm text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
@@ -666,7 +682,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
           <div className="p-4 rounded-2xl bg-white dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
             <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">お悩み・症状別セルフケア</span>
             <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-              この症例（{clinicalCase.patient.chiefComplaint.slice(0, 32)}…）に対応する日常の食養生・生活指導・お灸ケアを確認できます。
+              症状別ガイドで、危険兆候、受診の目安、経過や生活動作の確認項目を読めます。
             </p>
             <Link
               href="/symptoms"
@@ -679,15 +695,15 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
 
           {/* 気血水体質セルフ診断 */}
           <div className="p-4 rounded-2xl bg-white dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
-            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">気血水 体質セルフ診断</span>
+            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">気血水 体質セルフチェック</span>
             <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-              本症例の証（{clinicalCase.correctDiagnosis.pattern}）に関連する12問の問診で、現在の体質バランスを測定できます。
+              12問への回答から、気虚・気滞・血虚などの伝統的な分類を学べます。質問票の得点は臓器機能・ホルモン・血流を測定した値ではなく、病気の診断精度を検証した検査ではありません。
             </p>
             <Link
               href="/diagnosis"
               className="inline-flex items-center gap-1 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline pt-1"
             >
-              <span>体質セルフ診断を受ける</span>
+              <span>体質セルフチェックをする</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>

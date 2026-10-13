@@ -315,7 +315,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
       { depthIndex: 1, id: "skin", name: "皮膚", category: "skin", depthDescription: "表面層", description: "頭髪が生える項部の皮膚。", dangerLevel: "safe", clinicalSignificance: "素早い切皮" },
       { depthIndex: 2, id: "subcutaneous", name: "皮下組織・項筋膜", category: "subcutaneous", depthDescription: "浅層", description: "大後頭神経の皮枝が貫通する結合組織。", dangerLevel: "safe", clinicalSignificance: "大後頭神経痛の刺激点" },
       { depthIndex: 3, id: "trapezius-splenius", name: "僧帽筋 / 頭板状筋", category: "muscle", depthDescription: "中層筋群", description: "首を支え回旋させる筋肉。風池・天柱の主要得気筋腹。", dangerLevel: "safe", clinicalSignificance: "筋緊張性頭痛の主たるコリの座" },
-      { depthIndex: 4, id: "semispinalis-capitis", name: "頭半棘筋 / 後頭下筋群", category: "muscle", depthDescription: "深層筋群", description: "後頭骨直下に張る深部筋群。自律神経調整の重要ポイント。", dangerLevel: "caution", clinicalSignificance: "過度の深刺は厳禁" },
+      { depthIndex: 4, id: "semispinalis-capitis", name: "頭半棘筋 / 後頭下筋群", category: "muscle", depthDescription: "深層筋群", description: "後頭骨のすぐ下にある深部の筋群。", dangerLevel: "caution", clinicalSignificance: "過度の深刺は厳禁" },
     ],
     boundaries: [
       { id: "nuchal-ligament", name: "項靭帯（後正中線）", category: "tendon", position: "内側基準指標", relation: "風府・唖門が位置する正中線", description: "後頭骨から頸椎棘突起をつなぐ腱組織。", palpationTip: "うなじ中央の縦の溝", dangerLevel: "safe" },
@@ -347,7 +347,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
     axes: { horizontal: ["前内側 (気管側)", "後外側 (胸鎖乳突筋側)"], vertical: ["頸部体表 (皮膚)", "深部 (頸動脈鞘・椎体)"] },
     summaryTakeaway: "胸鎖乳突筋の前縁・後縁と総頸動脈・内頸静脈・迷走神経の解剖学的位置関係を把握し、動脈直撃と迷走神経反射を避ける愛護的刺入を理解します。",
     layers: [
-      { depthIndex: 1, id: "skin", name: "皮膚", category: "skin", depthDescription: "表面層", description: "薄く進展性に富む頸部皮膚。", dangerLevel: "safe", clinicalSignificance: "愛護的切皮" },
+      { depthIndex: 1, id: "skin", name: "皮膚", category: "skin", depthDescription: "表面層", description: "薄く、伸展性に富む頸部の皮膚。", dangerLevel: "safe", clinicalSignificance: "愛護的切皮" },
       { depthIndex: 2, id: "platysma", name: "浅頸筋膜・広頸筋", category: "muscle", depthDescription: "皮下筋層", description: "顔面神経支配の薄い皮筋。", dangerLevel: "safe", clinicalSignificance: "浅層刺入部" },
       { depthIndex: 3, id: "sternocleidomastoid", name: "胸鎖乳突筋（SCM）", category: "muscle", depthDescription: "主筋層", description: "側頸部で最も太い筋肉。前縁と後縁が重要経穴の触診境界線。", dangerLevel: "safe", clinicalSignificance: "前縁または後縁の陥凹部を狙う" },
     ],
@@ -471,7 +471,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
     level: "上腕中央（上腕二頭筋筋腹）水平横断",
     bodySide: "右上腕",
     posture: "座位または仰臥位（肘関節軽度屈曲位）",
-    axes: { horizontal: ["前内側 (内側側)", "後外側 (外側側)"], vertical: ["前面体表 (力こぶ表面)", "後面深部 (上腕骨・三頭筋側)"] },
+    axes: { horizontal: ["前内側", "後外側"], vertical: ["前面体表 (力こぶ表面)", "後面深部 (上腕骨・三頭筋側)"] },
     summaryTakeaway: "上腕二頭筋外側縁・内側縁と上腕骨、および内側溝を走る上腕動静脈・正中神経の解剖配置を理解します。",
     layers: [
       { depthIndex: 1, id: "skin", name: "皮膚", category: "skin", depthDescription: "表面層", description: "上腕の皮膚。", dangerLevel: "safe", clinicalSignificance: "切皮" },
@@ -613,7 +613,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
     summaryTakeaway: "【指端・爪甲角模式図】表皮・真皮・爪甲・末節骨の位置関係を学びます。爪甲角からの体表位置を示す寸数と、刺入深度は別です。出血を伴う手技の自己施術は案内しません。",
     layers: [
       { depthIndex: 1, id: "skin", name: "皮膚（表皮角質層）", category: "skin", depthDescription: "極浅層（0.1mm）", description: "指端の緻密な角質層と表皮。", dangerLevel: "safe", clinicalSignificance: "素早い切皮または細刺" },
-      { depthIndex: 2, id: "subcutaneous", name: "真皮乳頭層・毛細血管網", category: "subcutaneous", depthDescription: "浅層（1〜2mm）", description: "豊富な毛細血管網と知覚神経終末の集積層。井穴の目標座。", dangerLevel: "safe", clinicalSignificance: "点刺出血・浅刺得気の主座" },
+      { depthIndex: 2, id: "subcutaneous", name: "真皮乳頭層・毛細血管網", category: "subcutaneous", depthDescription: "浅層（1〜2mm）", description: "毛細血管や知覚神経の終末が多く分布する層。", dangerLevel: "safe", clinicalSignificance: "点刺出血・浅刺得気の主座" },
       { depthIndex: 3, id: "nail-matrix", name: "爪甲根部・爪母", category: "fascia", depthDescription: "爪甲基部", description: "爪甲（ネイルプレート）を産生する基底組織。", dangerLevel: "caution", clinicalSignificance: "爪母への直接刺鍼は避ける" },
       { depthIndex: 4, id: "distal-phalanx", name: "末節骨・骨膜", category: "bone", depthDescription: "深層骨性境界", description: "指先の中軸を成す末節骨粗面。", dangerLevel: "hazard", clinicalSignificance: "骨膜直撃は激痛を招くため深刺禁忌" },
     ],
@@ -756,7 +756,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
     ],
     svgElements: [
       { layerId: "spinal-cord", elementId: "spm-danger", label: "脊柱管・脊髄（直刺深刺危険領域！）", shapeType: "path", d: "M 120,210 Q 280,220 440,210 L 440,260 L 120,260 Z", fill: "#FDEDEC", stroke: "#E07A70", strokeWidth: 1.5, strokeDasharray: "4 2" },
-      { layerId: "ligamentum-flavum", elementId: "spm-flavum", label: "黄靭帯（安全限界バリア）", shapeType: "path", d: "M 120,185 Q 280,190 440,185 L 440,205 Q 280,210 120,205 Z", fill: "#FDE68A", stroke: "#D97706", strokeWidth: 1.5 },
+      { layerId: "ligamentum-flavum", elementId: "spm-flavum", label: "黄靭帯（深部に硬膜外腔・脊柱管）", shapeType: "path", d: "M 120,185 Q 280,190 440,185 L 440,205 Q 280,210 120,205 Z", fill: "#FDE68A", stroke: "#D97706", strokeWidth: 1.5 },
       { layerId: "upper-spinous", elementId: "spm-spin-up", label: "上位棘突起", shapeType: "path", d: "M 40,65 L 140,65 L 160,140 L 80,170 L 40,170 Z", fill: "#E8E3D8", stroke: "#78716C", strokeWidth: 2, labelPos: { x: 90, y: 110, anchor: "middle" } },
       { layerId: "lower-spinous", elementId: "spm-spin-down", label: "下位棘突起", shapeType: "path", d: "M 340,65 L 440,65 L 440,170 L 320,170 L 340,140 Z", fill: "#E8E3D8", stroke: "#78716C", strokeWidth: 2, labelPos: { x: 390, y: 110, anchor: "middle" } },
       { layerId: "interspinal-ligament", elementId: "spm-interspinal", label: "棘間靭帯（刺鍼目標層）", shapeType: "path", d: "M 140,95 Q 280,100 340,95 L 340,185 Q 280,190 140,185 Z", fill: "#E2D9CC", stroke: "#A89F91", strokeWidth: 2, labelPos: { x: 240, y: 140, anchor: "middle" } },
@@ -783,7 +783,7 @@ const SLICE_TEMPLATES: Record<SliceType, BaseSliceTemplate> = {
     ],
     boundaries: [
       { id: "spinous-process", name: "胸椎棘突起（後正中線）", category: "bone", position: "内側基準指標", relation: "高さを数える不動の指標", description: "背骨の中心の突起。", palpationTip: "背骨の中心を触知", dangerLevel: "safe" },
-      { id: "rib-angle", name: "肋骨（骨面）", category: "bone", position: "深部安全壁", relation: "針先を受け止める骨面", description: "脊柱起立筋の底面を支える肋骨。", palpationTip: "骨を触れることは安全の保証にならない", dangerLevel: "safe" },
+      { id: "rib-angle", name: "肋骨（骨面）", category: "bone", position: "深部の骨性構造", relation: "脊柱起立筋の深部にある肋骨の骨面", description: "脊柱起立筋の底面を支える肋骨。", palpationTip: "骨を触れることは安全の保証にならない", dangerLevel: "safe" },
     ],
     adjacentStructures: [
       { id: "pleura-lung-back", name: "壁側胸膜・肺実質（背側）", category: "organ", relation: "肋骨間隙の直下深層", dangerLevel: "hazard", description: "外側への直刺深刺は気胸を引き起こす重大リスク。", clinicalSignificance: "方向だけで気胸のリスクがなくなるわけではない" },

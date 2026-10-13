@@ -606,7 +606,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
         "創造力を算出する検査の規則"
       ],
       "correctIndex": 1,
-      "explanation": "魂・神・意・魄・志を五臓に配当することは、精神活動と身体を伝統理論で関係づける説明です。精神機能の測定結果や、その物質が同名の臓器に存在する証明ではありません。",
+      "explanation": "魂・神・意・魄・志を五臓に配当することは、精神活動と身体を伝統理論で関係づける説明です。五神を臓腑に配当することは、精神機能を測定した結果でも、五神が物質として臓器に存在することを証明した結果でもありません。",
       "relatedSectionTitle": "第2節：配当を機能の測定へ置き換えない"
     },
     {
@@ -839,7 +839,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
         "口の乾きは報告、体液量は未確認"
       ],
       "correctIndex": 2,
-      "explanation": "乾燥という訴えと、体液量・電解質・原因の評価は別です。教材から水分量や薬を変更しません。",
+      "explanation": "乾燥という訴えと、体液量・電解質・原因の評価は別です。この教材だけを根拠に、飲む水分の量や薬の使い方を自己判断で変えないでください。",
       "relatedSectionTitle": "第3節：水分量の評価と分ける"
     }
   ]
@@ -992,7 +992,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
       ],
       "correctIndex": 0,
       "explanation": "先天は生来の要素、後天は飲食などの養いに関連づける区分です。先天の精をDNAや固定の残量として測定した説明ではありません。",
-      "relatedSectionTitle": "第1節：精・気・神の三宝（生命の三層ピラミッド）"
+      "relatedSectionTitle": "第1節：精・気・神の三宝と、それぞれの役割"
     },
     {
       "id": "lecture-lifedynamics-2-q2",
@@ -1147,7 +1147,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
       ],
       "correctIndex": 2,
       "explanation": "共通する話題があることと、同じ組織や機序だと実証されたことは違います。本講では間質などの個別原著を照合しておらず、三焦の名称から病因や治療効果も決まりません。",
-      "relatedSectionTitle": "🔬 研究との接点：間質、リンパ系、体腔膜ネットワーク"
+      "relatedSectionTitle": "🔬 現代医学との比較：間質の組織研究と、三焦の説明の違い"
     }
   ]
 },
@@ -1384,7 +1384,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
         "配当を臓器の代償とする"
       ],
       "correctIndex": 0,
-      "explanation": "津液の役割は肺・脾・腎や三焦などに関連づけて整理します。多重サポートは関係を覚える比喩で、解剖学的な臓器の同一性や病気の代償を保証するものではありません。",
+      "explanation": "津液の役割は肺・脾・腎や三焦などに関連づけて整理します。複数の臓腑が関わるという説明は、働きのつながりを覚えるための比喩です。解剖学的な臓器が同じものであることや、病気のときに別の臓器が働きを補えることを保証するものではありません。",
       "relatedSectionTitle": "第2節：多重サポート構造（冗長性）の神秘"
     },
     {
@@ -1409,7 +1409,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
       ],
       "correctIndex": 2,
       "explanation": "言葉や図の類似は、同じ物質・機序を実証した証拠ではありません。本講の個別原著は未照合なので、伝統的な関係の説明と研究で確認された因果を分けて読みます。",
-      "relatedSectionTitle": "🔬 研究との接点：システムバイオロジーとネットワーク医学"
+      "relatedSectionTitle": "🔬 現代医学との比較：遺伝子・タンパク質の関係を扱うネットワーク医学"
     }
   ]
 },
@@ -2165,7 +2165,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
       "question": "問診のファネル構造として適切な進め方はどれですか？",
       "options": ["病名の二択を提示し、同意する理由を具体的に聴く","想定した症状を提示し、それに合う体験を自由に聴く","本人の体験を自由に聴き、時期や条件を具体的に聴く"],
       "correctIndex": 2,
-      "explanation": "開かれた質問で本人の症状や生活背景を幅広く聞き、その後に閉じた質問で寒熱・飲食・睡眠・排泄などの客観的鑑別点を絞り込むのが標準面接技法です。",
+      "explanation": "まず、自由に答えられる質問で、本人の症状や生活背景を幅広く聞きます。その後、時期や条件を具体的に尋ね、寒熱の感じ方や飲食・睡眠・排泄の状況などを、答えの範囲を絞った質問で確認します。",
       "relatedSectionTitle": "第1節：質問の漏斗（ファネル）モデル"
     }
   ]
@@ -2318,7 +2318,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
       ],
       "correctIndex": 0,
       "explanation": "乾きとむくむ感覚は両方とも本人の報告として保持します。不足と停滞などの候補を比較し、部位、経過、医学的評価などの不足情報を確認します。一方だけで確定しません。",
-      "relatedSectionTitle": "第3節：津液の動態鑑別 ― 乾きか、水浸しか"
+      "relatedSectionTitle": "第3節：津液の異常を、不足と停滞の両面から考える"
     },
     {
       "id": "lecture-diagnosis-8-q2",
@@ -2363,7 +2363,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
       ],
       "correctIndex": 0,
       "explanation": "臓腑・経絡は伝統理論の分類です。部位だけで臓器疾患や物理的な流路を同定するものではなく、医学的な評価も別に必要です。",
-      "relatedSectionTitle": "第2節：経絡弁証 ― 痛みの走行と三陰三陽の同定"
+      "relatedSectionTitle": "第2節：経絡弁証 ― 痛みの部位と三陰三陽の関係を考える"
     },
     {
       "id": "lecture-diagnosis-9-q2",
@@ -2375,7 +2375,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
       ],
       "correctIndex": 1,
       "explanation": "肝気犯胃は臓腑の関係を説明する伝統的な候補です。この報告だけで解剖学的な肝臓・胃の病変、原因、介入を確定しません。",
-      "relatedSectionTitle": "第4節：臓腑相関 ― 2つ以上の臓腑が織りなす連鎖病態"
+      "relatedSectionTitle": "第4節：臓腑相関 ― 複数の臓腑の関係を考える"
     },
     {
       "id": "lecture-diagnosis-9-q3",
@@ -2674,7 +2674,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     },
     {
       "id": "lecture-treatment-4-q2",
-      "question": "【標本緩急の意思決定】長期の慢性脾胃虚弱（本虚）を抱えている患者が、激しい急性水様性下痢と嘔吐を起こして脱水危機（標実/標急）に瀕している場合、東洋医学の原則（標本緩急）に基づく最優先の介入方針はどれですか？",
+      "question": "【標本緩急の判断】慢性的な脾胃の虚弱（本虚）という伝統的な分類で説明されてきた人に、激しい水様性下痢と嘔吐が起こり、脱水の危険が迫っています。最優先の対応はどれですか？",
       "options": ["慢性の背景を優先し、本治の計画を先に完成させる","現在の脱水の危険を優先し、救急医療につなげる","伝統的な分類を優先し、標実の治法を先に決める"],
       "correctIndex": 1,
       "explanation": "「急則治其標」は伝統的な原則ですが、激しい嘔吐・下痢に意識異常や急激な悪化が伴う状況を鍼灸だけで対応する指示ではありません。医療評価と必要な救急対応を優先します。",
@@ -2755,7 +2755,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
         "滋陰・生津＝血の停滞、利水・祛痰＝血の不足"
       ],
       "correctIndex": 0,
-      "explanation": "滋陰・生津は潤す働きの不足、利水・祛痰は水湿や痰などの停滞を扱う目的として学びます。実際の体液量、薬、飲水などの判断は医学的評価や個別の安全確認と分けます。",
+      "explanation": "滋陰・生津は潤す働きの不足、利水・祛痰は水湿や痰などの停滞を扱う目的として学びます。実際の体液量の評価や、薬・飲水に関する判断は、この伝統的な分類とは分け、医学的な評価と個別の安全確認に基づいて行います。",
       "relatedSectionTitle": "第3節：津液の不足と停滞を分ける"
     },
     {
@@ -2788,7 +2788,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
   "lectureId": "lecture-treatment-7",
   "chapterId": "treatment",
   "chapterTitle": "第10章 治則・治法",
-  "lectureTitle": "臓腑の機能に介入する",
+  "lectureTitle": "臓腑の役割から治法を考える",
   "passingScore": 2,
   "questions": [
     {
@@ -2801,7 +2801,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
       ],
       "correctIndex": 0,
       "explanation": "例えば培土生金では、脾の土と肺の金という関係と、二つの役割を関連づける治法の目的を説明します。その説明だけで何が分からないかも残します。治法名を実際の生理機序や機能回復と同一視せず、効果・安全性は別に評価します。",
-      "relatedSectionTitle": "第2節：機能間連携の再建 ― 4大臓腑相関治法"
+      "relatedSectionTitle": "第2節：臓腑の関係から考える四つの治法"
     },
     {
       "id": "lecture-treatment-7-q2",
@@ -3037,7 +3037,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
         "目的・限界・期間・リスク・対応を共有する"
       ],
       "correctIndex": 2,
-      "explanation": "患者との信頼関係と治療成果は、専門用語を日常語に翻訳し、見通しとセルフケアの役割分担を透明に共有する合意形成によって支えられます。",
+      "explanation": "目的、期待できることと限界、期間、リスク、問題が起きたときの対応を、本人に伝わる言葉で説明します。説明しただけで同意が得られたとは考えず、本人の理解や希望、質問を確認します。セルフケアを含む役割分担も、本人と相談します。",
       "relatedSectionTitle": "1. 治療計画書：判断を整理する7つの項目"
     }
   ]
@@ -3300,7 +3300,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
   "lectureId": "lecture-practice-7",
   "chapterId": "practice",
   "chapterTitle": "第11章 統合症例・再評価",
-  "lectureTitle": "方法・配穴・刺激条件を計画する",
+  "lectureTitle": "方法の候補と施術前の確認事項を比較する",
   "passingScore": 2,
   "questions": [
     {

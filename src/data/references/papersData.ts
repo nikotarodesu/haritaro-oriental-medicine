@@ -462,7 +462,7 @@ export const SOURCE_PAPERS: PaperReference[] = [
   {
     id: "meridian-response-current-electrical-pulse-hung-2020",
     title: "Meridian study on the response current affected by electrical pulse and acupuncture",
-    japaneseTitle: "電気パルスと鍼刺激によって作用する応答電流に関する経絡研究",
+    japaneseTitle: "電気パルスと鍼刺激に対する応答電流から経絡を検討した研究",
     authors: ["Yu-Chiang Hung","Wen-Chung Chen","Ting-Chang Chang","Hao-Xuan Zheng","Yan-Wen Liu","Yung-Fang Tan","Shih-Kai Lin","Ying-Hsin Lu","Wen-Long Hu","Tsung-Ming Tsai"],
     journal: "Nanoscale Research Letters",
     year: 2020,

@@ -170,8 +170,8 @@ export default function AcupointQuickModal({
                 <span>刺鍼上の重要注意点</span>
               </div>
               <ul className="list-disc list-inside space-y-0.5 pl-1 text-[11px]">
-                {isPneumoRisk && <li>深刺・直刺による気胸リスク部位です。斜刺・横刺で安全深度を遵守。</li>}
-                {isPregnancyRisk && <li>強い子宮収縮を促す恐れがあるため妊婦への強刺激は禁忌・慎重を要します。</li>}
+                {isPneumoRisk && <li>胸膜や肺に鍼が到達すると、気胸を起こすおそれがある部位です。胸痛、息苦しさ、咳が施術後に出た場合は医療機関での評価が必要です。斜刺・横刺に変えることや一定の寸数だけでは、安全を判断できません。</li>}
+                {isPregnancyRisk && <li>伝統資料では妊娠中に慎重に扱う経穴とされます。「強い子宮収縮を起こす」という因果関係を経穴名だけで断定する根拠は確認できません。妊娠37週未満で禁忌穴とされる経穴を用いた試験の2019年レビューでも、安全性を判断するデータが不足していました。妊娠中の施術は、妊娠週数・症状・部位を含め、施術者と産科の担当者が個別に評価する必要があります。</li>}
               </ul>
             </div>
           )}
@@ -180,7 +180,7 @@ export default function AcupointQuickModal({
           {point.indications && point.indications.length > 0 && (
             <div className="space-y-1.5">
               <span className="text-xs font-semibold text-[#737C77] dark:text-[#8899A6] block">
-                代表的な主治・適応症：
+                伝統的な主治：
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {point.indications.slice(0, 6).map((ind, i) => (

@@ -1803,8 +1803,7 @@ function ClinicalNotesPage() {
                       {[printNote.constitution, printNote.syndrome].filter(Boolean).join(" ／ ")}
                     </p>
                     <p className="text-gray-600 leading-relaxed text-[11px]">
-                      東洋医学では「気・血・水」や「五臓」のバランスの乱れから症状が現れると考えます。
-                      過度の緊張や冷え、疲労の蓄積により巡りが滞っている状態です。
+                      この欄は、問診で用いた伝統医学の分類を記録しています。「気・血・水」や「五臓」は、その分類の概念です。症状の原因や臓器機能の評価は、病歴・診察・必要な検査と合わせて行います。
                     </p>
                   </div>
                 </div>
@@ -1914,10 +1913,10 @@ function ClinicalNotesPage() {
                   お待ちの間に、スマホで簡単２分
                 </h2>
                 <h1 className="text-xl sm:text-2xl font-serif font-bold text-emerald-900">
-                  東洋医学 体質セルフ診断 ＆ 五労チェッカー
+                  東洋医学の体質傾向チェックと五労の学習ツール
                 </h1>
                 <p className="text-xs text-gray-600 max-w-lg mx-auto leading-relaxed pt-1">
-                  あなたの「気・血・水」のバランスの乱れや、デスクワーク・立ち仕事による五臓の疲弊度を今すぐチェックできます。
+                  疲れやすさ・冷え・むくみなどの自覚症状と、見る・座る・立つなどの生活動作を振り返り、「気・血・水」と「五労」の伝統分類を学びます。
                 </p>
               </div>
 
@@ -1925,7 +1924,7 @@ function ClinicalNotesPage() {
                 <div className="inline-block p-4 bg-white rounded-2xl border-2 border-emerald-800 shadow-md">
                   <img
                     src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fwww.haritaro.jp%2Fdiagnosis"
-                    alt="体質診断 QRコード"
+                    alt="体質傾向チェックのQRコード"
                     className="w-48 h-48 sm:w-56 sm:h-56 mx-auto"
                   />
                 </div>
@@ -1943,28 +1942,28 @@ function ClinicalNotesPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left max-w-xl mx-auto pt-2">
                 <div className="p-3.5 rounded-xl bg-emerald-50/80 border border-emerald-200 space-y-1">
                   <span className="text-xs font-bold text-emerald-900 block">
-                    ① 気血水 12問セルフ診断
+                    ① 気血水 12問セルフチェック
                   </span>
                   <p className="text-[11px] text-gray-600 leading-relaxed">
-                    気虚・気滞・血虚・瘀血・水滞・陽虚の6タイプから、今の心身の傾きと特効ツボ・おすすめ食材を判定。
+                    12問の回答を6分類（気虚・気滞・血虚・瘀血・水滞・陽虚）に集計し、該当数が最も多い分類の説明を表示します。ツボと食材は、その分類に関連づけた学習用の例です。病気の診断や治療法の選択には使いません。
                   </p>
                 </div>
                 <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200 space-y-1">
                   <span className="text-xs font-bold text-amber-900 block">
-                    ② 現代職業病（五労）チェッカー
+                    ② 生活動作と五労のチェック
                   </span>
                   <p className="text-[11px] text-gray-600 leading-relaxed">
-                    長時間のPC作業（久視）や座りっぱなし（久坐）など、日頃の動作から疲弊している五臓をレーダーチャート化。
+                    見る・座る・立つ・歩く・横になる動作を選ぶと、教材で設定した五臓への配点をグラフに表示します。肝機能・腎機能・心機能や疲労度を測定する検査ではありません。
                   </p>
                 </div>
               </div>
 
               <div className="p-3.5 rounded-xl bg-emerald-900 text-white text-xs font-bold tracking-wide shadow-sm max-w-xl mx-auto space-y-1">
                 <p className="text-sm">
-                  ★ 診断結果が出ましたら、問診時に担当の先生にお見せください
+                  ★ 回答結果を、問診時に担当の施術者へお見せください
                 </p>
                 <p className="text-[11px] text-emerald-200 font-normal">
-                  診断結果をもとに、あなたの本日の体調に最も適したツボ・施術処方を組み立てます。
+                  回答した症状や生活習慣を、問診時に担当の施術者へ伝えてください。施術の適否・配穴・刺激の方法は、症状の経過、診察所見、持病・服薬などを確認して判断します。
                 </p>
               </div>
 

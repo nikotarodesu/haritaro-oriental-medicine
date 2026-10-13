@@ -208,7 +208,7 @@ export function generateQuestionsForPoints(
         prompt,
         options: shuffledOptions,
         correctOptionId: pt.code,
-        explanation: `【正解】${pt.name}（${pt.code}）：${pt.meridian}。\n【解剖部位】${pt.locationDetail}\n【要穴分類】${pt.categories.join("、") || "特記なし"}\n【臨床鑑別の鍵】${pt.clinicalNote}`,
+        explanation: `【正解】${pt.name}（${pt.code}）：${pt.meridian}。\n【解剖部位】${pt.locationDetail}\n【要穴分類】${pt.categories.join("、") || "特記なし"}\n【学習上の補足】${pt.clinicalNote}`,
         meridianName: pt.meridian,
         locationReference: pt.locationDetail,
       });
@@ -512,7 +512,7 @@ export const COURSE_UNITS: CourseUnitDefinition[] = [
     courseId: "meridian_bl",
     courseTitle: "足の太陽膀胱経",
     unitTitle: "膀胱経 頭部・項部（BL1〜BL10）",
-    description: "晴明・攅竹・眉衝・曲差・五処・承光・通天・玉枕・天柱",
+    description: "睛明・攅竹・眉衝・曲差・五処・承光・通天・玉枕・天柱",
     targetPointCodes: ["BL1", "BL2", "BL7", "BL10"],
   },
   {

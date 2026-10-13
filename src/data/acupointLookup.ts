@@ -502,7 +502,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "解渓",
     "code": "ST41",
     "meridianShort": "胃経",
-    "locationSimple": "解渓（ST41）は、足関節前面、足関節前面中央の陥凹部、長母指伸筋腱と長趾伸筋腱の間。"
+    "locationSimple": "解渓（ST41）は、足関節前面中央の陥凹部、長母指伸筋腱と長趾伸筋腱の間。"
   },
   {
     "id": "st42",

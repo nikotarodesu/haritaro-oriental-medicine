@@ -794,6 +794,22 @@ export default async function AcupointDetailPage({ params }: Props) {
               <p className="text-sm text-[#59615D] dark:text-[#AFBDC8] border-t border-[#E8DEC9] dark:border-[#22303D] pt-2">
                 限界と注意：{point.researchEvidence.limitations}
               </p>
+              <ul className="space-y-2 text-sm text-[#1E3D34] dark:text-[#83BEA8]" aria-label="研究の出典">
+                {point.researchEvidence.sources.map((source) => (
+                  <li key={`${source.title}-${source.year}`}>
+                    {source.pmid || source.doi ? (
+                      <a
+                        href={source.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${source.pmid}/` : `https://doi.org/${source.doi}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-4"
+                      >
+                        {source.title}（{source.year}）
+                      </a>
+                    ) : `${source.title}（${source.year}）`}
+                  </li>
+                ))}
+              </ul>
             </section>
           )}
 
@@ -859,7 +875,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
               <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                 <Layers className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
-                <h2>表裏経・同名経の連動ネットワーク（陰陽・手足ペア）</h2>
+                <h2>表裏の関係にある経脈・同名の経脈</h2>
               </div>
               <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
                 配穴・弁証の連動経絡
@@ -1047,7 +1063,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             <span>出典・確認状況</span>
           </div>
           <p className="leading-relaxed text-base">
-            本人確認の担当：はり太郎｜ 個別の取穴・図版・医学記述の確認と承認は未完了です。<br />
+            確認担当：はり太郎。経穴ごとの位置・図版・医学的な説明については、内容の確認と承認がまだ完了していません。<br />
             位置情報の参照元：WHO Standard Acupuncture Point Locations in the Western Pacific Region (2008)。参照元の記載だけでは、全経穴の照合完了を意味しません。
           </p>
           <p className="text-base text-[#88928D] dark:text-[#6E7D8A]">

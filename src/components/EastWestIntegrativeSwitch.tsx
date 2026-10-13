@@ -34,6 +34,7 @@ export interface IntegrativeCase {
     medications: string[];
     redFlags: string[];
     limitations: string;
+    redFlagAdvice: string;
   };
   oriental: {
     title: string;
@@ -51,11 +52,12 @@ export interface IntegrativeCase {
     }[];
     lifestyle: string;
   };
+  evidenceSources: { title: string; url: string; scope: string }[];
   matrix: {
     coreConcept: string;
     steps: {
       step: string;
-      role: "西洋医学（陽）" | "東洋医学（陰）" | "東西統合（相補）";
+      role: "西洋医学" | "東洋医学" | "東西統合（相補）";
       action: string;
       detail: string;
     }[];
@@ -65,261 +67,368 @@ export interface IntegrativeCase {
 
 export const INTEGRATIVE_CASES: IntegrativeCase[] = [
   {
-    id: "gerd-gastric",
-    shortTitle: "逆流性食道炎・胃痛",
-    title: "逆流性食道炎・胃痛・機能性ディスペプシア",
-    subtitle: "西洋の除外診断・制酸治療 × 東洋の中焦気機昇降論・辛開苦降",
-    western: {
-      title: "西洋医学の視点（陽：構造・病名・除外診断）",
-      anatomyMechanism: "下部食道括約筋（LES）の一過性弛緩や腹圧上昇により、胃酸および十二指腸液が食道へ逆流。食道粘膜の化学的炎症（ロサンゼルス分類 Grade A-D）や知覚過敏が生じる病態。",
-      diagnosticTools: [
-        "上部消化管内視鏡検査（胃カメラ）：粘膜びらん、潰瘍、食道癌・胃癌の直接視認",
-        "24時間pHモニタリング・食道インピーダンス検査：胃酸逆流時間率の客観的測定",
-        "ピロリ菌（H. pylori）抗体・呼気検査：胃炎・潰瘍リスクの同定"
+    "id": "gerd-gastric",
+    "shortTitle": "逆流性食道炎・胃痛",
+    "title": "逆流性食道炎・胃痛・機能性ディスペプシア",
+    "subtitle": "GERDと機能性ディスペプシアの評価・治療と、伝統的な脾胃の説明を比較する",
+    "western": {
+      "title": "医学的な評価：逆流症状と食後の上腹部症状",
+      "anatomyMechanism": "胃食道逆流症（GERD）は胃内容物の食道への逆流によって症状や粘膜傷害が生じる病態です。機能性ディスペプシア（FD）は、食後のもたれ・早期満腹感・心窩部痛などを生じる別の病態で、胃の適応性弛緩や知覚、腸と脳の相互作用などの関与が研究されています。胃痛を一律に胃酸の過剰や自律神経の異常とは判断しません。",
+      "diagnosticTools": [
+        "問診・診察：胸焼け、食後症状、発症・悪化の経過、服薬と危険徴候を確認します。",
+        "上部消化管内視鏡：嚥下困難、出血、体重減少などの警告症状や、経過に応じて医師が適応を判断します。",
+        "必要に応じた逆流モニタリング・H. pylori検査：正常な内視鏡だけでは症状の原因を確定できません。胸部症状では心疾患の評価も先に考えます。"
       ],
-      medications: [
-        "プロトンポンプ阻害薬（PPI）：胃酸分泌の最終段階を強力遮断",
-        "カリウムイオン競合型アシッドブロッカー（P-CAB）：速やかで持続的な酸抑制",
-        "消化管運動機能改善薬（モサプリド等）：胃排出能の促進"
+      "medications": [
+        "GERDの酸抑制治療：PPIなどを用い、症状と粘膜傷害の改善を評価します。薬剤・量・期間は病態に応じて医師が決めます。",
+        "FDの治療：原因・H. pylori感染・これまでの反応などを評価し、GERDと同じ処方を自動的に当てはめません。"
       ],
-      redFlags: [
-        "吐血または黒色便（タール便：消化管出血の兆候）",
-        "進行性の嚥下困難・つかえ感・嚥下痛",
-        "意図しない急激な体重減少（悪性腫瘍の警戒）",
-        "持続する激しい嘔吐や発熱",
-        "50歳以上での初めての激しい胃痛・心窩部痛"
+      "redFlags": [
+        "吐血・黒色便、強く続く腹痛、繰り返す嘔吐",
+        "進行する飲み込みにくさ、飲み込むときの痛み",
+        "意図しない体重減少や食欲低下",
+        "胸の圧迫感・冷汗・急な息苦しさを伴う痛み"
       ],
-      limitations: "内視鏡検査で「粘膜に異常なし」と判定される非びらん性胃食道逆流症（NERD）や機能性ディスペプシア（FD）では、PPIの著効割合が約50〜60%にとどまり、原因不明の灼熱感やもたれが持続しやすい。"
+      "limitations": "症状が続く場合は、服薬の状況、逆流の有無、FDやその他の原因を再評価します。有効性を比べる際は、対象となる病態と評価指標をそろえます。PPIに反応しないことだけで、鍼灸や漢方の適応と判断しません。",
+      "redFlagAdvice": "吐血、強い腹痛、胸の圧迫感や急な息苦しさなどは119番への連絡を優先します。進行する嚥下困難や体重減少も速やかに受診してください。内視鏡・画像・生検ですべての危険な原因を完全に除外できるわけではありません。"
     },
-    oriental: {
-      title: "東洋医学の視点（陰：機能・証・中焦気機）",
-      pathologyMechanism: "中焦（ちゅうしょう：脾胃）の気機昇降失調。正常であれば「胃気は下行（降濁）」し、「脾気は上昇（昇清）」して飲食物を運化する。ストレスや冷飲食により胃気が上逆（胃気上逆）することで呑酸・胸焼け・嘔気が生じる。",
-      patterns: [
+    "oriental": {
+      "title": "伝統理論の学習：脾胃・肝と気機の関係",
+      "pathologyMechanism": "伝統理論では、飲食物の受納・運化と、胃気の下降・脾気の上昇を関連づけます。「胃気上逆」「肝気犯胃」などは症状を整理する伝統用語で、酸逆流の検査結果や自律神経活動の測定値と同じものではありません。",
+      "patterns": [
         {
-          name: "寒熱錯雑（かんねつさくざつ）・心下痞",
-          features: "みぞおちのつかえ感、胃酸逆流（熱）と腹の冷え・軟便（寒）が混在する病態。",
-          formula: "半夏瀉心湯（はんげしゃしんとう）：半夏・乾姜の辛温で痞えを開き、黄連・黄芩の苦寒で胃熱を冷ます「辛開苦降」の典型方剤。"
+          "name": "寒熱錯雑（かんねつさくざつ）・心下痞",
+          "features": "みぞおちのつかえ感、胸焼け、腹部の冷え、軟便などを寒・熱の両面から比較する伝統的な説明。症状だけで寒熱錯雑や病名を確定しません。",
+          "formula": "半夏瀉心湯（はんげしゃしんとう）：半夏・乾姜の辛温で痞えを開き、黄連・黄芩の苦寒で胃熱を冷ます「辛開苦降」の典型方剤。"
         },
         {
-          name: "肝気犯胃（かんきはんい）",
-          features: "精神的ストレス・怒り・緊張により肝の疏泄が乱れ、胃を攻撃して起こる発作性の胃痛・頻繁なゲップ。",
-          formula: "四逆散（しぎゃくさん）合 安中散、柴胡疎肝散（さいこそかんさん）。"
+          "name": "肝気犯胃（かんきはんい）",
+          "features": "ストレスを感じる時期と胃痛・げっぷの経過を関連づけて検討する伝統的な候補。肝臓が胃を攻撃するという解剖学的な機序ではありません。",
+          "formula": "四逆散（しぎゃくさん）合 安中散、柴胡疎肝散（さいこそかんさん）。"
         },
         {
-          name: "脾胃虚寒（ひいきょかん）",
-          features: "胃の冷え、食後の強いもたれ、温かい飲食で胃痛が和らぎ、疲労で悪化する虚弱タイプ。",
-          formula: "六君子湯（りっくんしとう）、人参湯（にんじんとう）。"
+          "name": "脾胃虚寒（ひいきょかん）",
+          "features": "冷え、食後のもたれ、疲れやすさなどを不足・寒の観点で比較する伝統的な候補。症状の医学的原因は別に評価します。",
+          "formula": "六君子湯（りっくんしとう）、人参湯（にんじんとう）。"
         }
       ],
-      tsubos: [
-        { name: "中脘", code: "CV12", meridian: "任脈", pointRole: "胃の募穴・八会穴の腑会。胃気の昇降バランスを整える最重要穴。" },
-        { name: "内関", code: "PC6", meridian: "手厥陰心包経", pointRole: "絡穴・八脈交会穴。迷走神経を介して嘔気・胃気上逆を強力に鎮める。" },
-        { name: "足三里", code: "ST36", meridian: "足の陽明胃経", pointRole: "合穴・下合穴。消化管運動を正常化し、胃気を下行へと導く。" },
-        { name: "太衝", code: "LR3", meridian: "足の厥陰肝経", pointRole: "原穴。ストレス性の肝気横逆（自律神経の過興奮）を鎮静。" }
-      ],
-      lifestyle: "食後2時間は横にならず上体を起こす。就寝前3時間の飲食禁止。白砂糖・脂っこい食事・炭酸・強烈な柑橘類を控え、みぞおちから腹部を冷やさない。"
-    },
-    matrix: {
-      coreConcept: "構造的破壊を西洋医学で即時防ぎ、機能的滞りを東洋医学で根本治癒する協働モデル",
-      steps: [
+      "tsubos": [
         {
-          step: "第1段階",
-          role: "西洋医学（陽）",
-          action: "レッドフラッグ鑑別 ＆ 上部消化管内視鏡検査",
-          detail: "まず胃癌・食道癌・急性胃潰瘍・心筋梗塞関連痛を画像と生検で完全に除外。生命の安全を最優先で確立。"
+          "name": "中脘",
+          "code": "CV12",
+          "meridian": "任脈",
+          "pointRole": "胃の募穴・八会穴の腑会として学びます。胃疾患への効果をこの経穴単独で保証する資料ではありません。"
         },
         {
-          step: "第2段階",
-          role: "西洋医学（陽）",
-          action: "急性期の強力な酸抑制（PPI / P-CAB投与）",
-          detail: "びらん・潰瘍がある急性期は、粘膜損傷を食い止めるために速やかに胃酸分泌を遮断。"
+          "name": "内関",
+          "code": "PC6",
+          "meridian": "手厥陰心包経",
+          "pointRole": "絡穴・八脈交会穴として学びます。この胃痛教材から、迷走神経を介した効果や酸逆流の抑制を確定しません。"
         },
         {
-          step: "第3段階",
-          role: "東洋医学（陰）",
-          action: "中焦気機の昇降回復 ＆ NERD・自律神経機能調整",
-          detail: "PPI抵抗性の胸焼けや機能性ディスペプシアに対し、内関・足三里への刺鍼と半夏瀉心湯等で、胃の適応性弛緩と自律神経リズムを正常化。"
+          "name": "足三里",
+          "code": "ST36",
+          "meridian": "足の陽明胃経",
+          "pointRole": "合穴・下合穴として学びます。FDの研究に用いられる配穴と、単独の経穴の効果は区別します。"
         },
         {
-          step: "第4段階",
-          role: "東西統合（相補）",
-          action: "薬物減量 ＆ 食養生による再発ゼロ体制の維持",
-          detail: "症状安定後はPPIを休薬・頓用化へ導き、東洋医学的な体質改善と生活養生で長期的な中庸状態を保つ。"
+          "name": "太衝",
+          "code": "LR3",
+          "meridian": "足の厥陰肝経",
+          "pointRole": "原穴として学びます。「肝気」を自律神経の過興奮の同義語とは扱いません。"
         }
       ],
-      synergyEffect: "西洋医学の「急性期粘膜防御」と東洋医学の「気機昇降・自律神経回復」が噛み合うことで、難治性胃痛の寛解率が飛躍的に向上します。"
-    }
+      "lifestyle": "GERDでは就寝の2〜3時間前の食事を避け、夜間症状がある場合は寝床の頭側を高くする方法などを検討します。食品を一律に禁止せず、本人の症状との関係を記録します。FDの食事調整も、栄養状態や症状に応じて医療者と相談します。"
+    },
+    "matrix": {
+      "coreConcept": "胃痛・胸焼けの原因と危険徴候を評価し、GERD・FDの治療と、併用する方法の研究根拠を区別する",
+      "steps": [
+        {
+          "step": "第1段階",
+          "role": "西洋医学",
+          "action": "危険徴候と原因を、症状に合う診察・検査で評価する",
+          "detail": "吐血・黒色便、嚥下困難、体重減少などを評価します。胸の圧迫感や急な息苦しさでは心疾患も考え、119番への連絡を優先します。内視鏡や生検の適応は医師が判断し、一つの検査で全疾患の除外を保証しません。"
+        },
+        {
+          "step": "第2段階",
+          "role": "西洋医学",
+          "action": "診断と症状に応じた治療の反応を評価する",
+          "detail": "GERDではPPIなどによる酸抑制が治療の選択肢です。FDは食後症状などを評価する別の病態で、酸抑制に反応しないことだけから伝統的な証や鍼灸の適応を決めません。"
+        },
+        {
+          "step": "第3段階",
+          "role": "東洋医学",
+          "action": "FDの鍼治療研究を、対象・比較・期間から読む",
+          "detail": "Yangら（2020）は中国の18〜65歳の食後愁訴症候群278人で、4週間・12回の鍼治療と偽鍼を比較しました。4週時の全体的な症状改善の推定反応率は83.0%対51.6%でした。GERD全般、特定の経穴単独、半夏瀉心湯との併用効果を調べた試験ではありません。"
+        },
+        {
+          "step": "第4段階",
+          "role": "東西統合（相補）",
+          "action": "症状・生活への影響と、薬の継続条件を再評価する",
+          "detail": "PPIの継続・減量・頓用化は処方医が病態を踏まえて判断します。重い逆流性食道炎などでは維持治療が必要な場合があります。症状が安定したことや併用療法だけを理由に、薬を自己判断で中止しません。"
+        }
+      ],
+      "synergyEffect": "FDの鍼治療には偽鍼と比べた症状改善を示した試験がありますが、研究の反応率は治癒率ではありません。施術者の盲検化不能や脱落などの限界もあり、この画面の配穴と漢方の併用による相乗効果・根本治癒・再発ゼロを示した結果ではありません。"
+    },
+    "evidenceSources": [
+      {
+        "title": "ACG：GERD診療ガイドライン（2022）",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/8754510/",
+        "scope": "検査・酸抑制・生活調整・維持治療の条件。"
+      },
+      {
+        "title": "NIH NIDDK：ディスペプシアの症状と原因",
+        "url": "https://www.niddk.nih.gov/health-information/digestive-diseases/indigestion-dyspepsia/symptoms-causes",
+        "scope": "GERDとFDの区別、病態と警告症状。"
+      },
+      {
+        "title": "Yangら：食後愁訴症候群の鍼治療RCT（2020）",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/32422066/",
+        "scope": "成人278人、4週間12回、偽鍼比較。反応率は症状の全体評価で、治癒率ではない。"
+      }
+    ]
   },
   {
-    id: "headache-migraine",
-    shortTitle: "片頭痛・緊張型頭痛",
-    title: "慢性頭痛（片頭痛・緊張型頭痛・後頭神経痛）",
-    subtitle: "西洋の脳血管性病態・除外診断 × 東洋の頭為諸陽之会・気血瘀滞論",
-    western: {
-      title: "西洋医学の視点（陽：構造・病名・除外診断）",
-      anatomyMechanism: "片頭痛は三叉神経血管説（三叉神経末端からのCGRP放出による無菌性血管炎症と拡張）、緊張型頭痛は僧帽筋・頸部筋群の持続収縮と中枢感作が主因。",
-      diagnosticTools: [
-        "頭部MRI/CT：クモ膜下出血、脳動脈瘤、脳腫瘍、慢性硬膜下血腫の除外",
-        "国際頭痛分類（ICHD-3）診断基準に基づく鑑別",
-        "頭痛ダイアリーによる服薬過多・薬剤乱用頭痛（MOH）の識別"
+    "id": "headache-migraine",
+    "shortTitle": "片頭痛・緊張型頭痛",
+    "title": "慢性頭痛（片頭痛・緊張型頭痛・後頭神経痛）",
+    "subtitle": "頭痛の医学的な評価・急性期治療・予防と、伝統的な分類を比較する",
+    "western": {
+      "title": "医学的な評価：頭痛の特徴と二次性頭痛",
+      "anatomyMechanism": "成人の片頭痛は典型的には4〜72時間続く中等度〜重度の頭痛で、拍動性、日常動作による悪化、吐き気や光・音への過敏などが判断材料になります。緊張型頭痛は両側性の締め付ける痛みが典型で、日常動作では悪化しにくい特徴があります。症状の経過と診察から分類し、血流不足や首肩の筋収縮だけで原因を説明しません。",
+      "diagnosticTools": [
+        "発症の速さ、随伴症状、神経学的所見などを診察し、危険な二次性頭痛を評価します。",
+        "頭痛の特徴・持続時間・頻度と国際頭痛分類などを照合します。必要な画像検査は症状・所見に応じて医師が判断します。",
+        "頭痛日記：頭痛の日数、日常生活への影響、急性期薬の使用日数を記録します。"
       ],
-      medications: [
-        "急性期頓服薬：セロトニン1B/1D作動薬（トリプタン製剤）、NSAIDs",
-        "新規予防薬：抗CGRP抗体製剤（エムガルティ等）",
-        "筋弛緩薬・抗不安薬（緊張型頭痛における筋緊張緩和）"
+      "medications": [
+        "片頭痛の急性期治療：トリプタンやNSAIDsなどを、持病・服薬・禁忌に応じて医師が選びます。",
+        "予防治療：頭痛頻度、生活への支障、本人の希望に応じて検討します。必要性と反応は継続して見直します。",
+        "鎮痛薬を頻回に使う場合は、薬剤の使用過多による頭痛を評価します。使用日数と期間、薬剤の種類を確認します。"
       ],
-      redFlags: [
+      "redFlags": [
         "「バットで殴られたような」突然の激しい頭痛（クモ膜下出血の疑い）",
         "発熱、項部硬直、意識障害を伴う頭痛（髄膜炎・脳炎）",
         "手足の麻痺、しびれ、言語障害を伴う頭痛（脳卒中）",
         "50歳以降に初めて発症した頭痛（側頭動脈炎など）",
         "がん患者や免疫不全者における新規の頭痛"
       ],
-      limitations: "慢性連日性頭痛や鎮痛薬の常用による「薬剤乱用頭痛（MOH）」に陥った際、西洋薬の単独調整だけでは離脱期の苦痛を制御しにくい。"
+      "limitations": "急性期薬で痛みが軽くなっても、頭痛頻度や生活への影響が改善したとは限りません。薬剤使用過多による頭痛では、使用薬の調整と元の頭痛の予防、短期的な悪化への支援を医師と計画します。「依存」と一括して扱いません。",
+      "redFlagAdvice": "突然始まった激しい頭痛、急な麻痺・話しにくさ・意識の変化などは119番への連絡を優先します。発熱を伴う頭痛や、新しく進行する普段と異なる頭痛も速やかに医療評価を受けてください。過去の正常な画像だけで、今回の安全性を保証しません。"
     },
-    oriental: {
-      title: "東洋医学の視点（陰：機能・証・経絡気血）",
-      pathologyMechanism: "「頭為諸陽之会（頭は諸陽の会す所）」「不通則痛・不栄則痛」。頭部はすべての陽経が集まる場所。肝火の上昇（肝陽上亢）や、冷え・ストレスによる血流鬱滞（瘀血）、気血不足による栄養失調で発症。",
-      patterns: [
+    "oriental": {
+      "title": "伝統理論の学習：頭痛の部位・気血・臓腑の関係",
+      "pathologyMechanism": "「頭為諸陽之会」「不通則痛・不栄則痛」は、頭部と経絡、巡りや養いの関係を説明する伝統的な表現です。肝陽上亢や瘀血などは分類候補であり、脳血流の異常、血栓、栄養失調を確認した医学的診断ではありません。",
+      "patterns": [
         {
-          name: "肝陽上亢（かんようじょうこう）",
-          features: "イライラや緊張で血圧上昇、こめかみがズキズキ拍動、目の充血や眩暈を伴う。",
-          formula: "釣藤散（ちょうとうさん）、天麻鉤藤飲（てんまこうとういん）。"
+          "name": "肝陽上亢（かんようじょうこう）",
+          "features": "頭痛とめまい、目の赤み、情緒との関係などを比較する伝統的な候補。血圧上昇の有無や原因は実際の測定と医学的評価で確認します。",
+          "formula": "釣藤散（ちょうとうさん）、天麻鉤藤飲（てんまこうとういん）。"
         },
         {
-          name: "気滞血瘀（きたいけつお）",
-          features: "刺すような局所痛、夜間に悪化、頑固で慢性の首肩こりを伴う頭痛。",
-          formula: "冠元顆粒（かんげんかりゅう）、桃紅四物湯（とうこうしもつとう）。"
+          "name": "気滞血瘀（きたいけつお）",
+          "features": "固定した痛み、夜間の変化、首肩の症状などを比較する伝統的な候補。瘀血は血栓や慢性虚血の同義語ではありません。",
+          "formula": "冠元顆粒（かんげんかりゅう）、桃紅四物湯（とうこうしもつとう）。"
         },
         {
-          name: "風寒外襲・太陽頭痛",
-          features: "風邪のひきはじめや冷えによる後頭部・首筋のこわばり痛。",
-          formula: "川芎茶調散（せんきゅうちょうちょうさん）、葛根湯。"
+          "name": "風寒外襲・太陽頭痛",
+          "features": "悪寒、後頭部や首筋の痛みなどを比較する伝統的な候補。発熱・項部硬直・意識の変化などの医療評価を遅らせません。",
+          "formula": "川芎茶調散（せんきゅうちょうちょうさん）、葛根湯。"
         }
       ],
-      tsubos: [
-        { name: "風池", code: "GB20", meridian: "足の少陽胆経", pointRole: "後頭動脈と大後頭神経の交点。頭部の血流を一気に解放する要穴。" },
-        { name: "合谷", code: "LI4", meridian: "手の陽明大腸経", pointRole: "四総穴（面目は合谷に収む）。頭面部全般の鎮痛と陽気降下。" },
-        { name: "太衝", code: "LR3", meridian: "足の厥陰肝経", pointRole: "肝陽上亢を抑え、こめかみの血管拍動痛を速やかに鎮静。" },
-        { name: "百会", code: "GV20", meridian: "督脈", pointRole: "頭頂部で諸陽を統括し、自律神経の交感神経過緊張を解除。" }
-      ],
-      lifestyle: "首の後ろを冷やさない。片頭痛の拍動時は暗く静かな部屋で安静にし局所を軽く冷やす。緊張型は肩甲骨の可動域拡大と入浴での温熱が著効。"
-    },
-    matrix: {
-      coreConcept: "重大脳血管障害を西洋医学で即座に除外後、東洋医学で体質と血流の根本改善を行う統合体制",
-      steps: [
+      "tsubos": [
         {
-          step: "第1段階",
-          role: "西洋医学（陽）",
-          action: "MRI等による危険な器質性頭痛（二次性頭痛）の除外",
-          detail: "くも膜下出血や脳血管奇形がないことを確定させ、安心して機能的アプローチを選択できる土台を確保。"
+          "name": "風池",
+          "code": "GB20",
+          "meridian": "足の少陽胆経",
+          "pointRole": "後頭部の経穴として学びます。頭部の血流を解放することや、後頭神経痛の治療効果をこの説明から保証しません。"
         },
         {
-          step: "第2段階",
-          role: "西洋医学（陽）",
-          action: "重症片頭痛発作時のトリプタンによるシャットアウト",
-          detail: "耐え難い急性拍動痛は我慢させず、トリプタンで速やかに日常生活への復帰を果たす。"
+          "name": "合谷",
+          "code": "LI4",
+          "meridian": "手の陽明大腸経",
+          "pointRole": "四総穴の「面目は合谷に収む」という伝統的な選定理由を学びます。顔・頭のすべての痛みへの効果の保証ではありません。"
         },
         {
-          step: "第3段階",
-          role: "東洋医学（陰）",
-          action: "鍼灸による筋緊張遮断 ＆ 釣藤散・瘀血治療",
-          detail: "風池・天柱への刺鍼と漢方で後頭部・側頭部の慢性虚血を解消し、頭痛の発生頻度そのものを激減させる。"
+          "name": "太衝",
+          "code": "LR3",
+          "meridian": "足の厥陰肝経",
+          "pointRole": "原穴として学び、肝陽上亢などの伝統的な候補との関係を比較します。経穴単独で発作を速やかに止める根拠としては扱いません。"
         },
         {
-          step: "第4段階",
-          role: "東西統合（相補）",
-          action: "薬剤乱用頭痛（MOH）の予防と自立的コンディショニング",
-          detail: "毎日の鎮痛薬依存から脱却させ、天候変化やストレスに揺るがない自律神経基盤を再構築。"
+          "name": "百会",
+          "code": "GV20",
+          "meridian": "督脈",
+          "pointRole": "督脈の経穴として学びます。交感神経の過緊張を測定・解除したことを、この分類から判断しません。"
         }
       ],
-      synergyEffect: "西洋医学の急性発作コントロール力と東洋医学の予防的体質改善が組み合わさり、頭痛難民をゼロにします。"
-    }
+      "lifestyle": "頭痛日記で睡眠・生活・服薬と症状の関係を記録します。発作時に光や音がつらければ静かな環境で休むなど、本人に合う対応を医療者と相談します。入浴や温める方法を、すべての頭痛に著効する対処とは説明しません。"
+    },
+    "matrix": {
+      "coreConcept": "二次性頭痛の評価を優先し、片頭痛・緊張型頭痛の急性期治療と予防の選択肢を検討する",
+      "steps": [
+        {
+          "step": "第1段階",
+          "role": "西洋医学",
+          "action": "新しい危険徴候と、今回の症状を評価する",
+          "detail": "突然の激しい頭痛、麻痺、意識の変化などでは救急対応を優先します。画像検査は必要性に応じて医師が選び、正常なMRI一回だけで全疾患を完全に除外したとは判断しません。"
+        },
+        {
+          "step": "第2段階",
+          "role": "西洋医学",
+          "action": "片頭痛発作に対する薬剤の適否と反応を確認する",
+          "detail": "トリプタンやNSAIDsなどの急性期薬を、持病・他の薬・これまでの反応から選びます。使用後の痛みと生活への影響を確認し、全員が速やかに日常生活へ復帰できるとは保証しません。"
+        },
+        {
+          "step": "第3段階",
+          "role": "東洋医学",
+          "action": "鍼治療の予防研究を、対象と施術条件から読む",
+          "detail": "Xuら（2020）は中国の15〜65歳の、鍼治療経験がない前兆のない反復性片頭痛150人で、8週間・20回の手技鍼と非刺入偽鍼などを比較しました。17〜20週の4週間当たりの片頭痛日数減少は3.9日対2.2日、調整後の群間差は2.1日でした。頭痛全般、単独の経穴、漢方との相乗効果を検証した結果ではありません。"
+        },
+        {
+          "step": "第4段階",
+          "role": "東西統合（相補）",
+          "action": "薬剤乱用頭痛（MOH）の予防と自立的コンディショニング",
+          "detail": "頭痛日数と急性期薬の使用日数を記録し、薬剤使用過多による頭痛の可能性と予防治療を医師と検討します。減薬が必要な場合も、薬剤の種類や本人の状態に合わせた計画と経過確認が必要です。"
+        }
+      ],
+      "synergyEffect": "片頭痛の鍼治療は発作予防の選択肢として研究されています。英国NICEでは一定の予防薬が無効・不耐容・不適切な場合に鍼治療を検討します。薬との併用による効果の上乗せや再発ゼロは、この研究と図からは示せません。"
+    },
+    "evidenceSources": [
+      {
+        "title": "NICE CG150：頭痛の診断と治療（2025年更新）",
+        "url": "https://www.nice.org.uk/guidance/cg150/chapter/Recommendations",
+        "scope": "危険徴候、急性期・予防治療、薬剤使用過多による頭痛。英国の推奨であり国内の処方指示ではない。"
+      },
+      {
+        "title": "Xuら：片頭痛予防の手技鍼RCT（2020）",
+        "url": "https://www.bmj.com/content/368/bmj.m697",
+        "scope": "150人、8週間20回。17〜20週の4週間当たりの日数の群間差は調整後−2.1日、95%信頼区間−2.9〜−1.2日。"
+      }
+    ]
   },
   {
-    id: "insomnia-autonomic",
-    shortTitle: "不眠症・自律神経失調",
-    title: "不眠症・不安障害・自律神経失調症",
-    subtitle: "西洋の神経伝達物質・睡眠衛生論 × 東洋の心腎不交・神明失調論",
-    western: {
-      title: "西洋医学の視点（陽：構造・病名・除外診断）",
-      anatomyMechanism: "視床下部の視交叉上核（体内時計）の同調不全、オレキシン系の過剰覚醒、GABA作動性抑制系の減退による中枢神経系の過覚醒状態。",
-      diagnosticTools: [
-        "終夜睡眠ポリグラフ検査（PSG）：睡眠時無呼吸症候群（SAS）の確定診断",
-        "血液検査：甲状腺機能亢進症、貧血、副腎皮質ホルモン異常の除外",
-        "アテネ不眠尺度・PHQ-9：うつ病や全般性不安症のスクリーニング"
+    "id": "insomnia-autonomic",
+    "shortTitle": "不眠と日中の支障",
+    "title": "慢性不眠の評価と治療、伝統的な不眠の説明",
+    "subtitle": "不眠の評価・CBT-I・薬物療法と、心腎などの伝統用語を比較する",
+    "western": {
+      "title": "医学的な評価：睡眠の機会・経過と日中の支障",
+      "anatomyMechanism": "慢性不眠では、十分な睡眠の機会があるのに寝つけない・途中や早朝に目が覚めるなどの問題があり、日中の生活に支障が生じます。週3晩以上・3か月以上は診断で確認する条件です。過覚醒や体内時計、行動・心理要因などが関わりますが、全員をオレキシン過剰やGABA低下と判断するものではありません。",
+      "diagnosticTools": [
+        "問診・睡眠日誌：寝床にいる時間、入眠、覚醒、日中の眠気・支障、薬・飲酒などを確認します。",
+        "質問票：不眠の程度や併存する症状を整理します。質問票だけで病名や自律神経活動を確定しません。",
+        "いびき・無呼吸、むずむず脚、うつ症状などを評価し、疑いに応じて睡眠検査・採血を検討します。全員にPSGやホルモン検査を一律に行うものではありません。"
       ],
-      medications: [
-        "オレキシン受容体拮抗薬（スボレキサント、レンボレキサント）：覚醒シグナル遮断",
-        "メラトニン受容体作動薬（ラメルテオン）：生体リズム同調",
-        "※従来のベンゾジアゼピン系薬は依存性・耐性リスクのため短期最小限使用が推奨"
+      "medications": [
+        "慢性不眠の治療では、不眠の認知行動療法（CBT-I）をまず検討します。睡眠衛生の説明だけを単独治療とすることとは異なります。",
+        "薬が必要な場合は、オレキシン受容体拮抗薬などの選択肢について、効果・翌日の眠気・持病・併用薬を医師と確認します。",
+        "薬の量や中止方法は処方医と相談し、特に継続服用中の薬を自己判断で急に中止しません。"
       ],
-      redFlags: [
+      "redFlags": [
         "激しいいびきと夜間の呼吸停止（重症睡眠時無呼吸症候群：心血管リスク大）",
         "重篤な抑うつ気分、希死念慮、強い焦燥感",
         "夜間の激しい動悸・胸痛・呼吸困難（心不全や不整脈の可能性）",
         "突然の日中睡眠発作（ナルコレプシー等の中枢性過眠症）"
       ],
-      limitations: "睡眠薬を服用して入眠できても、「朝起きた時の深い熟睡感」や「日中のすっきりした気力」が戻らないケースが多い。"
+      "limitations": "入眠時間や途中覚醒の改善と、翌日の眠気・集中力・生活機能は分けて評価します。睡眠薬で全員が熟睡感を得られるとは限らず、薬の作用、睡眠機会、他の睡眠障害などを見直します。",
+      "redFlagAdvice": "胸痛・急な呼吸困難・意識の変化などが今ある場合は119番への連絡を優先します。自分を傷つけるおそれが切迫している場合も直ちに救急へつなぎます。いびきと呼吸停止、強い日中の眠気、持続する抑うつなどは速やかに医療機関へ相談してください。"
     },
-    oriental: {
-      title: "東洋医学の視点（陰：機能・証・心腎陰陽）",
-      pathologyMechanism: "「心腎不交（しんじんふこう）」「陽不入陰（ようふにゅういん）」。昼は陽気が体表を巡って活動し、夜は陽気が体内の陰に入って潜蔵することで睡眠が訪れる。過労やストレスで腎水が衰え心火を制御できなくなると、神（しん：精神意識）が休まらず不眠となる。",
-      patterns: [
+    "oriental": {
+      "title": "伝統理論の学習：心腎不交・陰陽と神の関係",
+      "pathologyMechanism": "「心腎不交」「陽不入陰」は、睡眠と臓腑・陰陽の関係を説明する伝統用語です。心火・腎水・神を、オレキシン、GABA、交感・副交感神経などの測定値へ一対一に対応させません。不眠の医学的な原因や治療は、睡眠の経過と必要な診察で検討します。",
+      "patterns": [
         {
-          name: "心腎不交・陰虚火旺",
-          features: "寝付きが悪い、寝汗、手のひらや足裏のほてり、夢が多く眠りが浅い。",
-          formula: "黄連阿膠湯（おうれんあきょうとう）、知柏地黄丸（ちばくじおうがん）。"
+          "name": "心腎不交・陰虚火旺",
+          "features": "寝付きが悪い、寝汗、手のひらや足裏のほてり、夢が多く眠りが浅い。",
+          "formula": "黄連阿膠湯（おうれんあきょうとう）、知柏地黄丸（ちばくじおうがん）。"
         },
         {
-          name: "心脾両虚（しんぴりょうきょ）",
-          features: "思い悩みが多く、食欲不振、疲労倦怠、途中で何度も目が覚める虚弱タイプ。",
-          formula: "帰脾湯（きひとう）、加味帰脾湯（かみきひとう）。"
+          "name": "心脾両虚（しんぴりょうきょ）",
+          "features": "思い悩みが多く、食欲不振、疲労倦怠、途中で何度も目が覚める虚弱タイプ。",
+          "formula": "帰脾湯（きひとう）、加味帰脾湯（かみきひとう）。"
         },
         {
-          name: "肝気鬱結・肝火上炎",
-          features: "仕事のプレッシャー、怒り、イライラで頭が冴え渡って全く眠れない。",
-          formula: "酸棗仁湯（さんそうにんとう）、抑肝散（よくかんさん）。"
+          "name": "肝気鬱結・肝火上炎",
+          "features": "仕事のプレッシャー、怒り、イライラで頭が冴え渡って全く眠れない。",
+          "formula": "酸棗仁湯（さんそうにんとう）、抑肝散（よくかんさん）。"
         }
       ],
-      tsubos: [
-        { name: "神門", code: "HT7", meridian: "手の少陰心経", pointRole: "原穴。心を養い精神不安を鎮める安神の代表穴。" },
-        { name: "湧泉", code: "KI1", meridian: "足の少陰腎経", pointRole: "井木穴。頭部に昇り詰めた気と血を足元へ引き下ろし陰陽を調和。" },
-        { name: "内関", code: "PC6", meridian: "手厥陰心包経", pointRole: "胸部の圧迫感や動悸を解除し、副交感神経を優位に導く。" },
-        { name: "安眠", code: "EX-HN16", meridian: "奇穴", pointRole: "耳の後ろ（翳風と風池の中間）。睡眠中枢を直接穏やかにリラックス。" }
-      ],
-      lifestyle: "就寝前の足湯で湧泉を温める。夕方以降のカフェイン・激しい運動の禁止。寝床でのスマホ閲覧を絶ち、腹式呼吸で吐く息に意識を集中。"
-    },
-    matrix: {
-      coreConcept: "睡眠薬への依存を避けながら、自然なサーカディアンリズムと五臓の陰陽潜蔵を取り戻す",
-      steps: [
+      "tsubos": [
         {
-          step: "第1段階",
-          role: "西洋医学（陽）",
-          action: "睡眠時無呼吸（SAS）やうつ病など重大疾患のスクリーニング",
-          detail: "身体的・器質的な睡眠障害を特定し、心筋梗塞や重度精神疾患の併発リスクを排除。"
+          "name": "神門",
+          "code": "HT7",
+          "meridian": "手の少陰心経",
+          "pointRole": "原穴で、安神という伝統的な目的と関連づけて学びます。不眠の原因や睡眠中枢への作用を確定した説明ではありません。"
         },
         {
-          step: "第2段階",
-          role: "西洋医学（陽）",
-          action: "安全性の高いオレキシン拮抗薬等で睡眠負債を一時リセット",
-          detail: "極度の睡眠不足による中枢疲労を食い止めるため、依存性の極めて低い薬剤でまずは睡眠時間を確保。"
+          "name": "湧泉",
+          "code": "KI1",
+          "meridian": "足の少陰腎経",
+          "pointRole": "井木穴で、陰陽の関係を学ぶ経穴例です。気血を足元へ物理的に移動させることを測定した資料ではありません。"
         },
         {
-          step: "第3段階",
-          role: "東洋医学（陰）",
-          action: "鍼灸による自律神経調律 ＆ 酸棗仁湯・帰脾湯による心神安寧",
-          detail: "神門・湧泉・安眠穴への刺鍼や温灸で、交感神経緊張を解き、体が自ら「夜に陰へ潜る」機能を回復。"
+          "name": "内関",
+          "code": "PC6",
+          "meridian": "手厥陰心包経",
+          "pointRole": "絡穴・八脈交会穴として学びます。動悸や胸部症状を経穴で先に処置し、必要な医療評価を遅らせません。"
         },
         {
-          step: "第4段階",
-          role: "東西統合（相補）",
-          action: "薬剤漸減・休薬と「ぐっすり眠れる体質」への定着",
-          detail: "入眠薬をスムーズに手放し、自然な目覚めと日中の活力に満ちた生活へ軟着陸。"
+          "name": "安眠",
+          "code": "EX-HN16",
+          "meridian": "奇穴",
+          "pointRole": "耳の後ろにある奇穴として紹介します。睡眠中枢への直接作用や不眠治療の効果を、この位置説明から保証しません。"
         }
       ],
-      synergyEffect: "薬で無理やり眠らせるのではなく、「自ら眠り、爽快に目覚める力」を身体に再学習させます。"
-    }
+      "lifestyle": "起床時刻や睡眠・日中の活動を記録し、就寝直前のカフェイン、飲酒、強い光などとの関係を確認します。慢性不眠ではこれらの工夫だけで十分とは限らず、CBT-Iなどの治療を相談します。足湯や呼吸法で治癒・減薬できるとは保証しません。"
+    },
+    "matrix": {
+      "coreConcept": "不眠と日中の支障、併存する睡眠・身体・精神の問題を評価し、CBT-Iを中心に治療の選択肢を検討する",
+      "steps": [
+        {
+          "step": "第1段階",
+          "role": "西洋医学",
+          "action": "睡眠の経過と、併存する病態・安全性を確認する",
+          "detail": "睡眠の機会、いびき・呼吸停止、日中の眠気、抑うつ、薬・飲酒などを確認します。診察や必要な検査へつなぎ、一度のスクリーニングで重大疾患や将来のリスクを排除したとは扱いません。"
+        },
+        {
+          "step": "第2段階",
+          "role": "西洋医学",
+          "action": "CBT-Iを検討し、必要なら薬の利益と不利益を相談する",
+          "detail": "CBT-Iは睡眠に関する考え方、刺激制御、睡眠時間の調整などを組み合わせた治療です。薬が必要な場合も、他の睡眠障害や翌日の眠気、併用薬を評価します。「睡眠負債をリセット」「一律に安全」とは説明しません。"
+        },
+        {
+          "step": "第3段階",
+          "role": "東洋医学",
+          "action": "鍼灸などの併用は、研究の質と評価項目を確認する",
+          "detail": "NCCIHが紹介する不眠の鍼治療研究では、施術回数・経穴選択などが異なり、研究の質にも限界があります。この画面の神門・湧泉・安眠の配穴で、睡眠中枢や自律神経の機能が回復するとは確定できません。"
+        },
+        {
+          "step": "第4段階",
+          "role": "東西統合（相補）",
+          "action": "睡眠と日中の状態を比べ、継続・変更を相談する",
+          "detail": "入眠までの時間、途中覚醒、睡眠の満足度、翌日の眠気や生活への支障を比較します。薬の変更・中止は処方医と相談し、鍼灸を受ければ睡眠薬をやめられるとは保証しません。"
+        }
+      ],
+      "synergyEffect": "慢性不眠ではCBT-Iが推奨され、睡眠衛生の助言だけとは区別します。鍼灸と漢方の併用によってCBT-Iや薬物療法を上回ること、この画面の配穴で減薬できることを示す根拠は掲載していません。"
+    },
+    "evidenceSources": [
+      {
+        "title": "AASM：慢性不眠の行動・心理治療ガイドライン（2021）",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7853203/",
+        "scope": "複数の要素を組み合わせたCBT-Iを強く推奨。睡眠衛生だけの単独治療とは異なる。"
+      },
+      {
+        "title": "VA/DoD：慢性不眠・睡眠時無呼吸ガイドライン（2025）",
+        "url": "https://healthquality.va.gov/HEALTHQUALITY/guidelines/CD/insomnia/I-OSA-CPG_2025-Guideline_final_20250915.pdf",
+        "scope": "診断で確認する条件、併存病態と薬物療法前の評価。"
+      },
+      {
+        "title": "NIH NCCIH：睡眠障害と補完療法",
+        "url": "https://www.nccih.nih.gov/health/sleep-disorders-and-complementary-health-approaches",
+        "scope": "不眠の鍼治療は研究間の違い・質に限界がある。特定配穴の治癒や減薬を保証しない。"
+      }
+    ]
   }
 ];
 
@@ -371,7 +480,7 @@ export default function EastWestIntegrativeSwitch({
           </div>
 
           <div className="grid grid-cols-3 gap-1 sm:gap-1.5 bg-white dark:bg-[#1A2530] p-1 sm:p-1.5 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-inner max-w-lg w-full sm:w-auto">
-            {/* 西洋医学（陽） */}
+            {/* 西洋医学 */}
             <button
               onClick={() => setViewMode("western")}
               className={`flex items-center justify-center gap-1 sm:gap-1.5 py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold transition-all ${
@@ -381,10 +490,10 @@ export default function EastWestIntegrativeSwitch({
               }`}
             >
               <HeartPulse className="w-3.5 h-3.5 shrink-0" />
-              <span>西洋医学（陽）</span>
+              <span>西洋医学</span>
             </button>
 
-            {/* 東洋医学（陰） */}
+            {/* 東洋医学 */}
             <button
               onClick={() => setViewMode("oriental")}
               className={`flex items-center justify-center gap-1 sm:gap-1.5 py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold transition-all ${
@@ -394,7 +503,7 @@ export default function EastWestIntegrativeSwitch({
               }`}
             >
               <Sparkles className="w-3.5 h-3.5 shrink-0" />
-              <span>東洋医学（陰）</span>
+              <span>東洋医学</span>
             </button>
 
             {/* 相補マトリクス（統合） */}
@@ -422,7 +531,7 @@ export default function EastWestIntegrativeSwitch({
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
               <span className="text-xs font-bold text-[#C45A4A] dark:text-[#F87171] flex items-center gap-1.5">
                 <HeartPulse className="w-3.5 h-3.5" />
-                解剖生理・構造的メカニズム
+                医学的な病態と、確認する症状
               </span>
               <p className="text-xs sm:text-sm text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
                 {currentCase.western.anatomyMechanism}
@@ -435,7 +544,7 @@ export default function EastWestIntegrativeSwitch({
               <div className="bg-white dark:bg-[#1A2530] p-3 sm:p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2.5 sm:space-y-3">
                 <span className="text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8] flex items-center gap-1.5">
                   <Stethoscope className="w-3.5 h-3.5" />
-                  客観的診断ツール・検査項目
+                  診察と、必要に応じて行う検査
                 </span>
                 <ul className="space-y-2 text-xs text-[#404743] dark:text-[#C5D2DB]">
                   {currentCase.western.diagnosticTools.map((tool, idx) => (
@@ -451,7 +560,7 @@ export default function EastWestIntegrativeSwitch({
               <div className="bg-white dark:bg-[#1A2530] p-3 sm:p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2.5 sm:space-y-3">
                 <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] flex items-center gap-1.5">
                   <Pill className="w-3.5 h-3.5" />
-                  第一選択となる標準薬物群
+                  医学的な治療の選択肢
                 </span>
                 <ul className="space-y-2 text-xs text-[#404743] dark:text-[#C5D2DB]">
                   {currentCase.western.medications.map((med, idx) => (
@@ -468,10 +577,10 @@ export default function EastWestIntegrativeSwitch({
             <div className="p-3 sm:p-5 rounded-2xl bg-red-50/80 dark:bg-red-950/20 border-2 border-red-300 dark:border-red-900/50 space-y-2.5 sm:space-y-3">
               <div className="flex items-center gap-2 text-red-700 dark:text-red-400 font-serif font-bold text-xs sm:text-sm">
                 <ShieldAlert className="w-4 sm:w-5 h-4 sm:h-5 text-red-600 shrink-0" />
-                <span>【最重要】医療従事者が厳守すべき除外診断（レッドフラッグ）</span>
+                <span>医療評価を優先する症状（レッドフラッグ）</span>
               </div>
               <p className="text-xs text-red-900/80 dark:text-red-300/80 leading-relaxed">
-                以下のサインが1つでもある場合、東洋医学的アプローチ（鍼灸・漢方）に固執せず、直ちに消化器内科・高次救急医療機関での精密検査を最優先してください。
+                {currentCase.western.redFlagAdvice}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-red-800 dark:text-red-300">
                 {currentCase.western.redFlags.map((flag, idx) => (
@@ -486,7 +595,7 @@ export default function EastWestIntegrativeSwitch({
             {/* 西洋医学の限界・死角 */}
             <div className="p-3 sm:p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] text-xs text-[#59615D] dark:text-[#96A6B2] space-y-1">
               <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">
-                西洋医学単独での臨床的限界・死角：
+                治療の反応を評価するときの注意：
               </span>
               <p className="leading-relaxed">
                 {currentCase.western.limitations}
@@ -502,7 +611,7 @@ export default function EastWestIntegrativeSwitch({
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
               <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5" />
-                東洋医学的病理・気機昇降メカニズム
+                症状を整理する伝統的な用語
               </span>
               <p className="text-xs sm:text-sm text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
                 {currentCase.oriental.pathologyMechanism}
@@ -512,7 +621,7 @@ export default function EastWestIntegrativeSwitch({
             {/* 弁証と証・方剤の鑑別 */}
             <div className="space-y-2.5 sm:space-y-3">
               <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block">
-                代表的な「証」の鑑別と漢方方剤
+                伝統的な分類候補と方剤の学習例
               </span>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
                 {currentCase.oriental.patterns.map((pat, idx) => (
@@ -528,7 +637,7 @@ export default function EastWestIntegrativeSwitch({
                     </p>
                     <div className="pt-2">
                       <span className="text-[10px] font-bold text-[#B86924] dark:text-[#E6C387] block mb-0.5">
-                        推奨方剤：
+                        伝統的な方剤例：
                       </span>
                       <p className="text-xs font-medium text-[#232826] dark:text-[#FAF8F5]">
                         {pat.formula}
@@ -539,11 +648,13 @@ export default function EastWestIntegrativeSwitch({
               </div>
             </div>
 
-            {/* 特効ツボ（経穴） */}
+            <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">方剤名は伝統理論を学ぶための例です。症状だけで服薬を決めず、製剤の適応・副作用・併用薬を医師・薬剤師と確認してください。経穴単独の効果や個別の施術条件も、この画面からは決められません。</p>
+
+            {/* 経穴の学習例 */}
             <div className="space-y-2.5 sm:space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block">
-                  臨床で著効を示す4大特効ツボ（配穴の妙）
+                  この学習例で比較する経穴と、伝統的な選定理由
                 </span>
                 <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B] flex items-center gap-1">
                   <BookOpen className="w-3 h-3 text-[#1E3D34] dark:text-[#74BA9E]" />
@@ -633,7 +744,7 @@ export default function EastWestIntegrativeSwitch({
                   {currentCase.matrix.coreConcept}
                 </h4>
                 <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  急性期や構造的危険は西洋医学が主導し、慢性期の機能失調や体質改善は東洋医学が主導。患者にとって最も安全で再発のない治療ロードマップを構築します。
+                  急性・慢性という区分だけで方法を決めず、診断、危険徴候、治療の根拠、本人の目標と有害事象を確認します。伝統的な分類の学習と、特定の方法の臨床効果を分けて考えます。
                 </p>
               </div>
             </div>
@@ -641,7 +752,7 @@ export default function EastWestIntegrativeSwitch({
             {/* 4段階の統合治療ステップ */}
             <div className="space-y-2.5 sm:space-y-3">
               <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] uppercase tracking-wider block">
-                東西医学が連動するシームレス治療プロトコル
+                医療上の評価と、併用を検討するときの確認事項
               </span>
               <div className="grid grid-cols-1 gap-2.5 sm:gap-3">
                 {currentCase.matrix.steps.map((st, idx) => {
@@ -685,21 +796,34 @@ export default function EastWestIntegrativeSwitch({
             <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] flex items-center gap-2.5 sm:gap-3">
               <Check className="w-4 sm:w-5 h-4 sm:h-5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
               <p className="text-xs sm:text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] leading-relaxed">
-                相乗効果：{currentCase.matrix.synergyEffect}
+                研究から分かること：{currentCase.matrix.synergyEffect}
               </p>
             </div>
           </div>
         )}
       </div>
 
+      <section className="px-3.5 py-4 sm:px-8 border-t border-[#E8E1D1] dark:border-[#22303D] space-y-2" aria-label="出典と根拠の範囲">
+        <h4 className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">出典と、確認した根拠の範囲</h4>
+        <ul className="space-y-2 text-xs text-[#59615D] dark:text-[#96A6B2]">
+          {currentCase.evidenceSources.map(source => (
+            <li key={source.url}>
+              <a href={source.url} target="_blank" rel="noopener noreferrer" className="underline text-[#1E3D34] dark:text-[#74BA9E]">{source.title}</a>
+              <p className="mt-1 leading-relaxed">{source.scope}</p>
+            </li>
+          ))}
+          <li><a href="https://kakarikata.mhlw.go.jp/kakaritsuke/urgency.html" target="_blank" rel="noopener noreferrer" className="underline text-[#1E3D34] dark:text-[#74BA9E]">厚生労働省：こんな時は迷わず119へ</a></li>
+        </ul>
+      </section>
+
       {/* フッターナビゲート */}
       <div className="bg-[#FAF8F5] dark:bg-[#121920] px-3.5 py-3 sm:px-6 sm:py-4 border-t border-[#E8E1D1] dark:border-[#22303D] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-[#59615D] dark:text-[#96A6B2]">
         <div className="flex items-center gap-1.5">
           <HelpCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-          <span>『黄帝内経素問』陰陽応象大論 ＆ 現代消化器病学会ガイドライン準拠</span>
+          <span>伝統理論の学習と、疾患・介入ごとの医学的な根拠を区別する</span>
         </div>
         <div className="flex items-center gap-1 text-[#1E3D34] dark:text-[#74BA9E] font-medium">
-          <span>医療連携モデル：除外診断優先 × 証治根本改善</span>
+          <span>症状・生活機能・安全性を継続して評価する</span>
         </div>
       </div>
 

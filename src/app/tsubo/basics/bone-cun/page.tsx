@@ -206,13 +206,13 @@ export default function BoneCunPage() {
                 3寸（横指同身寸）
               </span>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                示指・中指・薬指・小指の4本の第2関節幅を揃えた幅を「3寸」とする（足三里・三陰交の計測）。
+                本人の示指・中指・薬指・小指を伸ばしてそろえ、中指の近位指節間関節の背側のしわの高さで測った4指の幅を「3同身寸（3 F-cun）」とします。WHOの骨度分寸（B-cun）と区別し、骨・筋・腱の目印や骨度法で求めた位置を確認する補助に使います。
               </p>
             </div>
           </div>
 
           <div className="p-3.5 rounded-xl bg-[#FCF4EB] dark:bg-[#281E15] border border-[#F3DEC5] dark:border-[#423321] text-xs text-[#8C4F1A] dark:text-[#E6C387] leading-relaxed">
-            ⚠️ <strong>注意点：</strong>「指何本分」という同身寸はあくまでも目安であり、体格の肥痩や手足の比率によって骨度法とズレが生じることがあります。必ず触診による骨性目印・筋腱の陥凹部の触知と照合して決定してください。
+            ⚠️ <strong>注意点：</strong>骨度分寸（B-cun）は、決められた体表の目印の間を等分して測る方法です。手指同身寸（F-cun）は、本人の指の幅などを使う補助的な方法です。両者を機械的に置き換えたり、一定のセンチメートルに換算したりせず、骨・筋・腱などの目印と照らし合わせて経穴の位置を確認します。
           </div>
         </div>
 

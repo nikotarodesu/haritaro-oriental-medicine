@@ -6,7 +6,7 @@ export const CLINICAL_LEARNING_GUIDES: Record<string, ClinicalLearningGuide> = {
   yinyang: { situation: '冷えとほてり、虚と実の所見が混在して迷ったとき', check: '部位・時刻・経過・温めた際の変化を分け、分類の根拠と不一致を記録する。', pitfall: '一つの症状や自律神経の名称を、そのまま陰陽の判定に置き換えない。', complaintSlug: 'fatigue' },
   wuxing: { situation: '情志・消化・睡眠など、複数の訴えの関係を整理するとき', check: '症状が現れた順序と生活背景を確認し、相生・相剋は伝統的な説明モデルとして扱う。', pitfall: '五行の関係だけで原因や臓器の疾患を断定しない。', complaintSlug: 'sleep' },
   qiblood: { situation: '疲労、張り、固定痛、重だるさの材料を比較するとき', check: '症状の性状・変動、食欲・便、舌脈を照合し、気血津液の候補と不足情報を分ける。', pitfall: '気虚を貧血、瘀血を血栓などの医学的診断と同一視しない。', complaintSlug: 'digestion' },
-  lifedynamics: { situation: '全身の状態と局所症状の関係を考えるとき', check: '生活動作・睡眠・食事・症状の経過を確認し、臓腑の局在は追加所見で検討する。', pitfall: '伝統医学の臓腑を、解剖学的な臓器と一対一に対応させない。', complaintSlug: 'fatigue' },
+  lifedynamics: { situation: '全身の状態と局所症状の関係を考えるとき', check: '生活動作・睡眠・食事・症状の経過を確認し、どの伝統的な臓腑分類に関連づけるかは、追加所見と経過を確認して検討する。', pitfall: '伝統医学の臓腑を、解剖学的な臓器と一対一に対応させない。', complaintSlug: 'fatigue' },
   pathomechanism: { situation: '発症から現在までの変化を整理し、仮説を見直すとき', check: '増悪・軽減条件、既往・服薬・受診結果を整理し、仮説と観察事実を分ける。', pitfall: '伝統的な病因だけで、現代医学的な原因評価を済ませたとしない。', complaintSlug: 'headache' },
   diagnosis: { situation: '主訴から、次に聞く・観察する項目を決めるとき', check: '安全確認を先に行い、四診の未確認と陰性所見を区別し、矛盾も記録する。', pitfall: '証名を先に決めて、それに合う所見だけを集めない。', complaintSlug: 'back' },
   treatment: { situation: '治法と各経穴を選んだ理由を説明するとき', check: '支持所見、各穴の役割、局所の注意事項、変更条件と再評価指標を記録する。', pitfall: '穴数・構成スコアだけで、個別の処方の適否や効果を決めない。', complaintSlug: 'shoulder' },

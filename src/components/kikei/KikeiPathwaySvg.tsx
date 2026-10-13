@@ -50,7 +50,7 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
             { x: 110, y: 190, name: "至陽 (GV9)", code: "GV9", desc: "第7胸椎棘突起下。胸背部の陽気交通部。" },
             { x: 110, y: 135, name: "大椎 (GV14)", code: "GV14", desc: "第7頸椎棘突起下。手足の全陽経が交会する諸陽の会。" },
             { x: 110, y: 75, name: "風府 (GV16)", code: "GV16", desc: "外後頭隆起直下。脳内へと経脈が入る要衝。" },
-            { x: 92, y: 33, name: "百会 (GV20)", code: "GV20", desc: "頭頂部正中。天と交わり陽気を昇挙する最高穴。", isMaster: true },
+            { x: 92, y: 33, name: "百会 (GV20)", code: "GV20", desc: "頭頂部の正中線上、前髪際から上方5寸の百会（GV20）。「陽気を引き上げる」は伝統医学の治法の表現で、脳や自律神経の機能改善を実証した説明ではない。", isMaster: true },
             { x: 65, y: 85, name: "齦交 (GV28)", code: "GV28", desc: "上唇結節上唇小帯の中央。督脈の終点。", isEnd: true }
           ]
         };
@@ -89,7 +89,7 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
 
       case "tai": // 帯脈（体幹水平環状・全経束ね）
         return {
-          viewLabel: "体幹・腹腰部水平旋回観（ベルトリング）",
+          viewLabel: "腰の周囲を水平に巡る経路",
           isRing: true,
           nodes: [
             { x: 62, y: 205, name: "章門 (LR13)", code: "LR13", desc: "第11肋骨先端下。帯脈が起こる季肋部起点。", isStart: true },
@@ -130,7 +130,7 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
 
       case "yoi": // 陽維脈（足外側〜側腹〜肩井〜頭維〜風池）
         return {
-          viewLabel: "外側・体表網羅観（寒熱往来・諸陽の統制）",
+          viewLabel: "体の外側を上る経路",
           mainPath: "M 62 365 L 65 315 L 75 220 L 78 128 L 84 55 L 102 75",
           nodes: [
             { x: 62, y: 365, name: "金門 (BL63)", code: "BL63", desc: "外果前下方。諸陽経が交会し陽維脈が起こる点。", isStart: true },
@@ -423,7 +423,7 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
                 {activeNode.desc}
               </p>
               <div className="text-[11px] text-[#B86924] dark:text-[#E6C387] font-semibold flex items-center gap-1 pt-1">
-                <span>{activeNode.isMaster ? "★ 八脈交会穴（本脈を統括駆動する要穴）" : "通過部位・重要解剖ランドマーク"}</span>
+                <span>{activeNode.isMaster ? "八脈交会穴（この奇経に通じる経穴）" : "通過部位・重要解剖ランドマーク"}</span>
               </div>
             </div>
           ) : (
@@ -438,7 +438,7 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
           {/* 流注ステップ詳細リスト */}
           <div className="space-y-2">
             <span className="font-bold text-[#232826] dark:text-[#FAF8F5] text-xs block">
-              流注ステップ循行解説（起部から終部まで）:
+              流注の順序（起点から終点まで）
             </span>
             <div className="space-y-2">
               {vessel.pathway.map((step, idx) => (
@@ -466,10 +466,10 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
           <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#FAF8F5] to-[#FCF4EB] dark:from-[#151D25] dark:to-[#221810] border border-[#E5DEC9] dark:border-[#382618] text-xs space-y-1.5">
             <div className="flex items-center gap-1.5 text-[#B86924] dark:text-[#E6C387] font-bold">
               <Compass className="w-3.5 h-3.5" />
-              <span>八脈交会穴（通穴）による奇経駆動メカニズム</span>
+              <span>八脈交会穴を組み合わせる考え方</span>
             </div>
             <p className="text-[#59615D] dark:text-[#A8988B] leading-relaxed text-[11px]">
-              本脈の循行ライン上に病変（滞り・過緊張・虚脱）が現れた場合、四肢に位置する主穴<strong>「{vessel.masterPoint.name}」</strong>（{vessel.masterPoint.meridian}）と、対となる配穴<strong>「{vessel.couplePoint.name}」</strong>（{vessel.couplePoint.meridian}）を刺灸することで、奇経の気血を正経十二経脈へと循環させ、速やかな治効を導きます。
+              八脈交会穴を用いる配穴では、「{vessel.masterPoint.name}」（{vessel.masterPoint.meridian}）と「{vessel.couplePoint.name}」（{vessel.couplePoint.meridian}）を対として扱います。ここでは伝統的な組み合わせを学びます。個人への施術適応や治療効果を示すものではありません。
             </p>
           </div>
         </div>

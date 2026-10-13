@@ -57,7 +57,7 @@ const STORAGE_KEY = "haritaro_simulator_state_v1";
 // 兼証（随証病態）の代表的配穴マップ
 const SECONDARY_POINT_MAP: Record<QixueshuiType, { label: string; pairName: string; primary: string; secondary: string; role: string; desc: string }> = {
   qixu: { label: "気虚（元気不足）", pairName: "健脾益気ペア", primary: "足三里", secondary: "太白", role: "合土穴・原土穴", desc: "伝統的な補気の目的で検討する例" },
-  qizhi: { label: "気滞（ストレス・緊張）", pairName: "疏肝理気ペア", primary: "太衝", secondary: "陽陵泉", role: "原木穴・筋会", desc: "伝統的な理気の目的で検討する例" },
+  qizhi: { label: "気滞（ストレス・緊張）", pairName: "疏肝理気ペア", primary: "太衝", secondary: "陽陵泉", role: "原穴（太衝）・筋会（陽陵泉）", desc: "伝統的な理気の目的で検討する例" },
   qini: { label: "気逆（のぼせ・咳逆）", pairName: "和胃降気ペア", primary: "内関", secondary: "中脘", role: "八脈交会穴・胃募穴", desc: "伝統的な降気の目的で検討する例" },
   xuexu: { label: "血虚（滋養の不足）", pairName: "養血調血ペア", primary: "三陰交", secondary: "血海", role: "三陰交会・脾経", desc: "肝脾腎の血分を滋養し、滋養を補うことを伝統的な目的として検討" },
   yuxue: { label: "瘀血（血の運行の滞り）", pairName: "活血化瘀ペア", primary: "膈兪", secondary: "血海", role: "血会・血海", desc: "伝統的な活血の目的で検討する例" },
@@ -356,7 +356,7 @@ export default function ThreeStageSimulator() {
         diagName: diagName || "体質診断",
       });
       setActivePresetId(null);
-      setChangeNotice(`気血水体質診断（${diagName || ""}）の所見を反映しました。八綱・臓腑の連動配穴を検証できます。`);
+      setChangeNotice(`セルフチェックの分類「${diagName || ""}」を引き継ぎました。八綱・臓腑の条件を選び、配穴例を比較できます。`);
       setIsMounted(true);
       return;
     }
@@ -456,8 +456,8 @@ export default function ThreeStageSimulator() {
     let noticeText: string | null = null;
 
     if (updates.depth !== undefined && updates.depth !== depth) {
-      const fromLabel = depth === "interior" ? "裏（深部・臓腑）" : "表（浅部・体表）";
-      const toLabel = updates.depth === "interior" ? "裏（深部・臓腑）" : "表（浅部・体表）";
+      const fromLabel = depth === "interior" ? "裏（臓腑などの裏証）" : "表（外感の表証）";
+      const toLabel = updates.depth === "interior" ? "裏（臓腑などの裏証）" : "表（外感の表証）";
       noticeText = `病位の条件を「${fromLabel}」から「${toLabel}」に変更しました。候補の説明が更新されます。`;
       setDepth(updates.depth);
     }
@@ -591,7 +591,7 @@ export default function ThreeStageSimulator() {
                 </span>
               </div>
               <p className="text-xs text-[#59615D] dark:text-[#96A6B2] mt-0.5 leading-relaxed">
-                気血水体質診断の所見が反映されています。八綱や臓腑を切り替えて、配穴処方の変化を観察できます。
+                セルフチェックの回答から整理した分類を引き継いでいます。八綱や臓腑の条件を変え、表示される配穴例の違いを比べられます。
               </p>
             </div>
           </div>
@@ -686,7 +686,7 @@ export default function ThreeStageSimulator() {
               {/* ① 深浅: 表 vs 裏 */}
               <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#263542] space-y-2">
                 <span className="text-xs sm:text-sm font-bold text-[#404743] dark:text-[#C5D2DB] block">
-                  ① 病位の深浅（表裏）
+                  ① 病位の分類（表裏）
                 </span>
                 <div className="grid grid-cols-2 gap-2">
                   {DEPTH_OPTIONS.map((opt) => (
@@ -774,7 +774,7 @@ export default function ThreeStageSimulator() {
                   2
                 </span>
                 <h3 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
-                  気血水弁証（運動動態・代謝失調）
+                  気血水弁証（気・血・水の伝統的な分類）
                 </h3>
               </div>
               <Link
@@ -1437,7 +1437,7 @@ export default function ThreeStageSimulator() {
                       <span>配穴設計・臨床演習で実践する</span>
                     </div>
                     <p className="text-xs text-[#525B56] dark:text-[#9AA8A1] mt-0.5 leading-relaxed">
-                      この推奨配穴をもとに、自分で主穴・配穴を自由に組み立てて学習ノートに記録できます。
+                      この配穴例を参考に、経穴の組み合わせと選んだ理由を考え、学習ノートに記録できます。
                     </p>
                   </div>
                   <div className="flex min-w-0 w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
@@ -1566,7 +1566,7 @@ export default function ThreeStageSimulator() {
                     ② ほかの候補・追加で確認したい所見
                   </h5>
                   <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
-                    鑑別候補、確定診断に不足している情報、次に確認したい問診事項
+                    候補の鑑別に必要な追加情報と、次に確認する問診事項
                   </p>
                 </div>
               </div>

@@ -82,7 +82,7 @@ export const KOKUSHI_PAST_EXAMS: KokushiPastExamQuestion[] = [
     "relatedLectureId": "lecture-treatment-8",
     "relatedLectureTitle": "治療原則 レッスン8：経絡・経穴を選択する",
     "keyPoints": [
-      "両乳間＝8寸、胸剣〜臍＝8寸、臍〜恥骨＝5寸、前頭〜後頭＝12寸"
+      "両乳頭間＝8寸、胸剣結合部中点〜臍中央＝8寸、臍中央〜恥骨結合上縁＝5寸、前髪際中点〜後髪際中点＝12寸"
     ]
   },
   {

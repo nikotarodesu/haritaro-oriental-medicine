@@ -485,7 +485,7 @@ export default function LibraryClient() {
                     </div>
 
                     <div className="pt-2 border-t border-[#E5DEC9]/40 flex flex-wrap items-center justify-between gap-2 text-sm font-bold text-[#B86924] dark:text-[#E6C387]">
-                      <span>確定証: {c.correctDiagnosis.pattern}</span>
+                      <span>教材で設定した証の解答例: {c.correctDiagnosis.pattern}</span>
                       <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 transition-transform" />
                     </div>
                   </Link>

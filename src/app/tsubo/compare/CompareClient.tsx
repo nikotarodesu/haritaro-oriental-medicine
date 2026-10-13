@@ -209,7 +209,7 @@ function TsuboCompareContent() {
               <span>経穴横並び比較マトリクス</span>
             </span>
             <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#151D25] text-[#737C77] dark:text-[#8899A6] border border-[#E5DEC9] dark:border-[#2A3B4A]">
-              全361穴から最大3穴を厳密対比
+              収録した32穴から最大3穴を比較
             </span>
           </div>
 
@@ -219,7 +219,7 @@ function TsuboCompareContent() {
                 経穴（ツボ）比較ツール
               </h1>
               <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] max-w-2xl leading-relaxed">
-                似た効能を持つツボや、相反する経絡のツボを2〜3穴並べて、取穴法・五行・要穴区分・臨床の作用機序の違いを徹底比較できます。
+                経穴を2〜3穴並べて、標準位置の説明、所属する経絡、要穴の分類、伝統的な主治、学習上の補足、注意事項を比較できます。主治は伝統資料の分類で、現代の診断名ごとの有効性や患者への適応を確定するものではありません。
               </p>
             </div>
 
@@ -480,7 +480,7 @@ function TsuboCompareContent() {
                   {/* 主治・適応症 */}
                   <tr>
                     <td className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
-                      主治病証・適応
+                      伝統的な主治
                     </td>
                     {selectedTsubos.map(t => (
                       <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A]">
@@ -498,7 +498,7 @@ function TsuboCompareContent() {
                   {/* 臨床知見（ワンポイント） */}
                   <tr>
                     <td className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
-                      臨床知見・作用機序
+                      学習上の補足
                     </td>
                     {selectedTsubos.map(t => (
                       <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
@@ -510,7 +510,7 @@ function TsuboCompareContent() {
                   {/* 注意・禁忌 */}
                   <tr>
                     <td className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
-                      禁忌・安全深度
+                      禁忌・注意事項
                     </td>
                     {selectedTsubos.map(t => (
                       <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] text-xs">
@@ -520,7 +520,7 @@ function TsuboCompareContent() {
                             {t.caution}
                           </span>
                         ) : (
-                          <span className="text-green-700 dark:text-green-400">標準的刺灸が可能</span>
+                          <span className="text-green-700 dark:text-green-400">注意事項の個別記載はありません。施術の可否や安全な深度を示すものではありません。</span>
                         )}
                       </td>
                     ))}

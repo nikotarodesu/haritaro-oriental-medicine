@@ -69,12 +69,12 @@ export const CLASSIC_CLINICAL_PAIRS: Omit<ClinicalMemoItem, "createdAt" | "updat
     id: "pair-naikan-kouson",
     type: "pair",
     title: "内関 ＋ 公孫",
-    subTitle: "八脈交会穴・心胸胃気機調律",
+    subTitle: "八脈交会穴・心・胸・胃と関連づける伝統的配穴",
     points: ["内関 (PC6)", "公孫 (SP4)"],
     elements: ["火", "土"],
     indications: ["吐き気・つわり", "胃痛・胸焼け", "動悸・パニック感", "乗り物酔い", "胸腹部膨満感"],
     summary: "内関（陰維脈）と公孫（衝脈）を組み合わせる八脈交会穴の学習例。古典の『心・胸・胃』との関連と、現代医学の疾患や治療効果は区別します。",
-    mechanism: "伝統的には胃気の上逆などと関連づけます。内関への刺激を調べた研究結果を、この二穴の相乗効果や迷走神経反射の抑制の証明として扱うことはできません。",
+    mechanism: "伝統理論では内関・公孫を胃気の上逆などと関連づけます。2025年のCochraneレビューでは、手術後の悪心について、PC6への非侵襲刺激（リストバンドなど）の偽刺激に対する相対リスクは0.67（95%信頼区間0.58〜0.76、根拠の確かさは低い）でした。この結果は術後の予防に関するもので、つわり・動悸への効果や、公孫との併用効果を評価した結果ではありません。出典：Leeら、2025、doi:10.1002/14651858.CD003281.pub5。",
     caution: "急な強い胸痛や呼吸困難は救急要請を優先してください。"
   },
   {
@@ -104,7 +104,7 @@ export const CLASSIC_CLINICAL_PAIRS: Omit<ClinicalMemoItem, "createdAt" | "updat
     id: "pair-rekketu-shoukai",
     type: "pair",
     title: "列缺 ＋ 照海",
-    subTitle: "八脈交会穴・通宣宣肺・利咽止咳",
+    subTitle: "八脈交会穴・宣肺・利咽止咳（伝統的な配穴意図）",
     points: ["列缺 (LU7)", "照海 (KI6)"],
     elements: ["金", "水"],
     indications: ["慢性の咳・痰", "のどの痛み・乾燥感", "声がれ", "胸の息苦しさ", "梅核気（喉の異物感）"],

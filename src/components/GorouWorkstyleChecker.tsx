@@ -60,7 +60,7 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
     classicHarm: "傷血（血を傷る）",
     classicQuote: "『素問』宣明五気篇：「久視傷血」",
     modernTitle: "PC・スマホ・ディスプレイの長時間凝視",
-    modernSub: "1日6時間以上の画面作業・暗所でのスマホ・文字の連続注視",
+    modernSub: "画面や文字を休憩なしで見続ける、暗い場所で画面を見る",
     organImpacts: {
       liver: 40,
       heart: 35,
@@ -75,10 +75,10 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
       "夜ベッドに入っても頭が冴えて眠れない",
     ],
     mechanism:
-      "東洋医学では「目は肝の竅（あな）」「心は血脈を主る」とされます。視神経の過酷な連続使用は、網膜だけでなく脳と全身を巡る「血（心血・肝血）」を大量に激しく消耗させます。その結果、血虚（血の不足）が生じ、眼精疲労から不眠・焦燥感へと悪化します。",
+      "「久視傷血」は、長く見る行動と血を関連づけた伝統的な説明です。画面作業で心血・肝血が大量に消耗することを測定した機序ではありません。現代の説明では、画面を見る際にまばたきが減ることで眼表面が乾きやすくなるなど、視作業と目の負担を考えます。",
     chuyoAction: "【遠望法】20分に1回、6メートル先を20秒見つめる",
     chuyoDescription:
-      "近距離固定で緊張しきった毛様体筋と肝経の気を解放するため、意識的に視線を遠くの空や窓の外へ逃がします。温めたタオルを目元に当てる「温罨法」も血流を急速回復させます。",
+      "米国眼科学会は、画面作業中にまばたきと休憩を意識し、20分ごとに約6メートル先を20秒見る方法などを紹介しています。休憩の目安であり、肝経の気を解放したり血流を急速に回復したりする機序の証明ではありません。",
     quickTsubo: {
       name: "太陽（たいよう）",
       reading: "たいよう",
@@ -95,7 +95,7 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
     classicHarm: "傷肉（肉を傷る）",
     classicQuote: "『素問』宣明五気篇：「久坐傷肉」",
     modernTitle: "デスクワークでの終日座りっぱなし",
-    modernSub: "連続2時間以上の着席・運動不足・リモートワークでの歩行激減",
+    modernSub: "休憩なしの着席、日常で立つ・歩く機会が少ない",
     organImpacts: {
       liver: 15,
       heart: 10,
@@ -110,10 +110,10 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
       "身体全体が鉛のように重だるく、やる気が出ない",
     ],
     mechanism:
-      "「脾は肌肉（筋肉・運動）を主る」。下半身の筋肉は「第二の心臓」として静脈血やリンパ液を押し上げるポンプです。座りっぱなしで筋肉が動かないと、消化吸収と水分代謝を統括する「脾」の運化が停止し、体内に余分な水分（湿濁）が停滞して身体が重だるくなります。",
-    chuyoAction: "【起立ポンプ】30分ごとに立ち上がり、踵の上下運動を10回",
+      "「久坐傷肉」は、長く座る行動と肉を関連づけた伝統的な説明です。座ったことで消化吸収や水分代謝が停止するとは判断しません。現代の作業管理では、同じ姿勢を続けることや反復作業による筋肉・腱の負担を減らすため、作業環境と休憩を調整します。",
+    chuyoAction: "【座り続けたときの休憩例】立つ・歩く・無理のない範囲で足首を動かす",
     chuyoDescription:
-      "座りっぱなしの「陰（静）」を打破するには、意識的な「陽（動）」の介入が不可欠。ふくらはぎの腓腹筋・ヒラメ筋を収縮させて下半身の鬱血を中和します。",
+      "長い座位の合間に姿勢や作業を変える例です。米国OSHAは短い休憩や歩行などを紹介しています。回数や間隔は体調・作業条件に合わせ、むくみや脚の痛みがあれば原因と安全性を別に評価します。",
     quickTsubo: {
       name: "足三里（あしさんり）",
       reading: "あしさんり",
@@ -130,7 +130,7 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
     classicHarm: "傷骨（骨を傷る）",
     classicQuote: "『素問』宣明五気篇：「久立傷骨」",
     modernTitle: "立ちっぱなしの接客・調理・販売・通勤",
-    modernSub: "1日5時間以上の直立姿勢・硬い床での立ち作業・満員電車",
+    modernSub: "休憩なしの立ち仕事、硬い床での作業、長い立位通勤",
     organImpacts: {
       liver: 10,
       heart: 5,
@@ -145,10 +145,10 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
       "下半身が冷えるのに、上半身がぼんやり疲弊する",
     ],
     mechanism:
-      "「腎は骨を主り、髄を生じ、腰は腎の府（住まい）」。二足歩行の人間が直立し続けると、体重と重力の負荷がすべて骨格系（脊椎・骨盤・下肢骨）に集中します。これを支え続けることで、人体の根源的エネルギーを蓄える「腎気」が急速に消耗・摩耗します。",
-    chuyoAction: "【荷重分散＆除圧】片足ずつ足踏み ＆ 休憩時に足を高くして座る",
+      "「久立傷骨」は、長く立つ行動と骨を関連づけた伝統的な説明です。腰・脚の痛みや疲労には、姿勢、筋活動、作業環境など複数の要因が関わります。立ち仕事から腎気の消耗や腎臓の機能低下を推定することはできません。",
+    chuyoAction: "【立ち仕事の休憩例】姿勢を変え、休憩時に座る",
     chuyoDescription:
-      "骨に集中した重力ストレスを解放するため、重心を交互に左右へ移す「揺らぎ」を作り、休憩時には椅子に座って足を台に乗せ、骨への荷重をゼロにします。",
+      "同じ立位を続けず、座れる機会や姿勢を変える機会を作る例です。体調と作業条件に合わせて調整します。座ることで骨への荷重がゼロになるという説明はせず、症状が続く場合は医療者へ相談します。",
     quickTsubo: {
       name: "湧泉（ゆうせん）",
       reading: "ゆうせん",
@@ -165,7 +165,7 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
     classicHarm: "傷筋（筋を傷る）",
     classicQuote: "『素問』宣明五気篇：「久行傷筋」",
     modernTitle: "外回り営業・過度な歩行・激しい長距離移動",
-    modernSub: "1日1万歩以上の無理な歩行・重い荷物を持っての移動・過度なランニング",
+    modernSub: "普段より急に歩行・運動量を増やす、重い荷物で長く移動する",
     organImpacts: {
       liver: 60,
       heart: 10,
@@ -180,10 +180,10 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
       "階段を降りるときに太もも前面がプルプル震える",
     ],
     mechanism:
-      "「肝は筋（腱・靭帯・筋肉の収縮）を主る」。歩行の繰り返しは腱膜や靭帯に絶え間ない引張ストレスをかけます。過度の歩行が続くと、肝が蓄える血液の供給が追いつかなくなり、筋の柔軟性が失われて痙攣や微小断裂（腱鞘炎・足底腱膜炎）を引き起こします。",
-    chuyoAction: "【筋膜弛緩】アキレス腱ストレッチ ＆ ぬるめの入浴で筋を緩める",
+      "「久行傷筋」は、長く歩く行動と筋を関連づけた伝統的な説明です。腱の痛みでは荷重や活動量の変化などを評価します。肝に蓄えた血の供給不足から痙攣や腱の損傷が生じたと、この項目だけで判定することはできません。",
+    chuyoAction: "【歩行後の休憩例】歩行量・荷物・靴と症状の関係を振り返る",
     chuyoDescription:
-      "硬直した筋を無理に伸ばすのではなく、温めて血流を戻しながらじんわり伸張します。酸味のあるクエン酸飲料（レモン水・梅干し）も「酸入肝」により筋を柔らかくほぐします。",
+      "痛みがある場合は負荷の調整を考え、持続する症状は医療者に相談します。アキレス腱などの痛みには個別の評価と段階的な運動計画が必要です。酸味のある飲料が「酸入肝」によって筋をほぐすという効果は、この教材の根拠として示していません。",
     quickTsubo: {
       name: "承山（しょうざん）",
       reading: "しょうざん",
@@ -199,8 +199,8 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
     classicName: "久臥（きゅうが）",
     classicHarm: "傷気（気を傷る）",
     classicQuote: "『素問』宣明五気篇：「久臥傷気」",
-    modernTitle: "休日の寝だめ・1日中ゴロゴロ・浅い呼吸",
-    modernSub: "布団から出ない週末・日中の過度な横臥・運動ゼロの引きこもり",
+    modernTitle: "日中に横になって過ごす時間が長い",
+    modernSub: "余暇に体を動かす機会が少ない、日中の眠気や疲れが続く",
     organImpacts: {
       liver: 10,
       heart: 10,
@@ -215,10 +215,10 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
       "少し動いただけで動悸や息切れがする",
     ],
     mechanism:
-      "「肺は気（全身の気）を主る」。人間は立って動き、横隔膜をダイナミックに上下させることで新鮮な大気（清気）を取り込み、全身に気を巡らせています。横になり続けると呼吸が浅くなり、胸腔の換気量が低下して「肺気」が虚脱・停滞します。「寝すぎるとかえって疲れる」のはこのためです。",
-    chuyoAction: "【胸郭開放】窓を開けて朝の光を浴び、両手を広げて胸式深呼吸",
+      "「久臥傷気」は、長く横になる行動と気を関連づけた伝統的な説明です。横になることだけで肺気が虚脱したり、換気量が低下したりしたとは判断しません。日中の眠気や疲れが続く場合は睡眠の機会、薬、他の睡眠・身体の問題を確認します。",
+    chuyoAction: "【活動の振り返り】睡眠と日中の状態を記録し、体調に合う活動を考える",
     chuyoDescription:
-      "横たわる「沈降」のベクトルを、背骨を伸ばして天を仰ぐ「上昇・拡散」のベクトルへと転換。太陽光を浴びることで陽気を呼び覚まします。",
+      "病気や医療者の指示で休息が必要な場合は、その方針を優先します。休息を一律に有害とせず、無理のない活動や睡眠の問題を相談します。朝の光や呼吸法で肺気・陽気を回復できるとは保証しません。",
     quickTsubo: {
       name: "壇中（だんちゅう）",
       reading: "だんちゅう",
@@ -226,7 +226,7 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
       location: "胸の真ん中、左右の乳頭を結んだ線の中央の骨の上",
       technique: "指先でトントンと優しくタッピングするか、手のひらで温めながら深呼吸。",
     },
-    officeTip: "休日の寝坊は平日の＋1時間以内に留め、起きたらまずカーテンを開けてコップ1杯の白湯を飲みましょう。",
+    officeTip: "起床時刻、日中の眠気、生活への支障を記録します。眠気や息切れが続く場合は医療者に相談し、この分類だけで睡眠時間や飲水量を決めません。",
   },
 };
 
@@ -327,28 +327,28 @@ export default function GorouWorkstyleChecker() {
       name = "心";
       element = "火";
       kanji = "心";
-      harmTissue = "血（視神経・脳の血流）";
+      harmTissue = "血（伝統用語）";
     }
     if (organScores.spleen > max) {
       max = organScores.spleen;
       name = "脾";
       element = "土";
       kanji = "脾";
-      harmTissue = "肉（肌肉・消化器の運化）";
+      harmTissue = "肉（伝統用語）";
     }
     if (organScores.lung > max) {
       max = organScores.lung;
       name = "肺";
       element = "金";
       kanji = "肺";
-      harmTissue = "気（呼吸・全身のエネルギー）";
+      harmTissue = "気（伝統用語）";
     }
     if (organScores.kidney > max) {
       max = organScores.kidney;
       name = "腎";
       element = "水";
       kanji = "腎";
-      harmTissue = "骨（腰椎・関節の骨格系）";
+      harmTissue = "骨（伝統用語）";
     }
 
     return { name, element, kanji, harmTissue, score: max };
@@ -357,10 +357,10 @@ export default function GorouWorkstyleChecker() {
   const handleSaveToNoteDraft = () => {
     saveDraftPatientNote({
       sourceTool: "五労チェッカー",
-      constitution: `五労所傷・${mostFatiguedOrgan.name}系（${mostFatiguedOrgan.element}行）への負担傾向`,
-      chiefComplaint: `生活・職業動作の偏りによる疲労（${selectedGorou.map((id) => GOROU_DEFS[id].classicName).join("・")}）`,
+      constitution: `五労の学習分類：${mostFatiguedOrgan.name}（${mostFatiguedOrgan.element}行）`,
+      chiefComplaint: `選択した生活習慣（${selectedGorou.map((id) => GOROU_DEFS[id].classicName).join("・")}）※症状や原因を確認した記録ではありません`,
       selectedPointsInput: selectedGorou.map((id) => GOROU_DEFS[id].quickTsubo.name).join(", "),
-      treatmentPlan: `【五労チェック結果】\n最も負荷が集中しやすい臓腑: ${mostFatiguedOrgan.name}（${mostFatiguedOrgan.harmTissue}への負荷集中 / 推定負荷${mostFatiguedOrgan.score}%）\n選択パターン: ${selectedGorou.map((id) => `${GOROU_DEFS[id].classicName}（${GOROU_DEFS[id].modernTitle}）`).join("、")}\n中庸アクション処方:\n${selectedGorou.map((id) => `・${GOROU_DEFS[id].classicName}: ${GOROU_DEFS[id].chuyoAction}`).join("\n")}\n※本内容は生活習慣・五労所傷の参考分析です。臨床家の診察・判断に基づき加筆修正してください。`,
+      treatmentPlan: `【五労チェック結果】\n教材内で最も点数が高い分類: ${mostFatiguedOrgan.name}（${mostFatiguedOrgan.harmTissue} / 学習用点数${mostFatiguedOrgan.score}/100）\n選択パターン: ${selectedGorou.map((id) => `${GOROU_DEFS[id].classicName}（${GOROU_DEFS[id].modernTitle}）`).join("、")}\n休憩・動作の例:\n${selectedGorou.map((id) => `・${GOROU_DEFS[id].classicName}: ${GOROU_DEFS[id].chuyoAction}`).join("\n")}\n※固定値の平均を換算した教材の点数です。臓器負荷・疲労度・疾患リスクを測定した記録ではありません。経穴は学習例で、施術を決めた記録ではありません。症状や医学的な評価は別に確認してください。`,
     });
     router.push("/notes");
   };
@@ -440,7 +440,7 @@ export default function GorouWorkstyleChecker() {
             生活習慣・動作の偏りを選択してください
           </h4>
           <p className="text-xs text-[#737C77] dark:text-[#8899A6] max-w-md mx-auto">
-            上のリストから当てはまる項目を選択すると、古典『素問』宣明五気篇の理論に基づき、五臓や各組織にかかりやすい負担傾向と中庸セルフケアが表示されます。
+            上のリストから当てはまる項目を選択すると、五労の伝統的な分類に沿った学習用の点数と、休憩・動作の例が表示されます。臓器の機能や疲労度を測定するものではありません。
           </p>
         </div>
       ) : (
@@ -450,7 +450,7 @@ export default function GorouWorkstyleChecker() {
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-[#B86924]" />
-                <span>五臓への負担傾向</span>
+                <span>五労の分類に沿った学習用の点数</span>
               </span>
               <span className="text-[10px] font-bold text-[#737C77] dark:text-[#8899A6]">
                 選択中：{selectedGorou.length}習慣
@@ -560,7 +560,7 @@ export default function GorouWorkstyleChecker() {
                       className="text-[10px] font-mono font-bold"
                       fill={item.col.accent}
                     >
-                      {item.score}%
+                      {item.score}/100
                     </text>
                   </g>
                 );
@@ -569,7 +569,7 @@ export default function GorouWorkstyleChecker() {
           </div>
 
           <div className="text-[11px] text-center text-[#737C77] dark:text-[#8899A6] border-t border-[#E5DEC9] dark:border-[#2A3B4A] pt-3">
-            💡 <strong>五労所傷の数値化：</strong> 日常の動作の偏りによってどの組織・臓腑へ疲労が集中しているかを可視化しています。
+            💡 <strong>選択項目から計算した学習用の点数：</strong> 選んだ項目にあらかじめ割り当てた点数を平均し、0〜100の尺度で表示しています。五労の分類を学ぶための表示であり、臓器や組織の疲労度・病気の確率を測った値ではありません。
           </div>
         </div>
 
@@ -579,30 +579,30 @@ export default function GorouWorkstyleChecker() {
           <div className="bg-white dark:bg-[#17212A] rounded-2xl border-2 border-[#1E3D34] dark:border-[#74BA9E] p-3.5 sm:p-6 shadow-md relative overflow-hidden">
             <div className="flex items-center gap-2 mb-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
               <Stethoscope className="w-4 h-4" />
-              <span>五労チェック結果・負担傾向ポイント</span>
+              <span>五労の学習分類と点数</span>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
               <div>
-                <span className="text-xs text-[#737C77] dark:text-[#8899A6]">最も負荷が集中しやすい五臓：</span>
+                <span className="text-xs text-[#737C77] dark:text-[#8899A6]">教材内で最も点数が高い分類：</span>
                 <div className="flex items-center gap-2 mt-1">
                   <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-                    【{mostFatiguedOrgan.name}】への負担傾向（推定負荷 {mostFatiguedOrgan.score}%）
+                    【{mostFatiguedOrgan.name}】（学習用点数 {mostFatiguedOrgan.score}/100）
                   </h3>
                 </div>
               </div>
               <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
                 <span className="text-xs px-2.5 py-1 rounded bg-[#FEF3C7] dark:bg-[#2D2415] text-[#92400E] dark:text-[#FCD34D] font-bold border border-[#FDE68A] dark:border-[#78350F]">
-                  {mostFatiguedOrgan.harmTissue} への負荷集中
+                  {mostFatiguedOrgan.harmTissue} に関わる伝統的な分類
                 </span>
               </div>
             </div>
 
             <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3">
               <p className="text-xs sm:text-sm text-[#404743] dark:text-[#D1D5DB] leading-relaxed">
-                現在のワークスタイルでは、<strong>{selectedGorou.map((id) => GOROU_DEFS[id].classicName).join(" と ")}</strong>の負荷が重なり、
-                特に<strong>【{mostFatiguedOrgan.name}（{mostFatiguedOrgan.element}行）】</strong>への負担傾向が強まりやすくなっています。
-                東洋医学の原則は<strong>「偏りを正し、五行を円滑に回す（中庸）」</strong>こと。以下の処方箋を日常に取り入れてください。
+                選択した項目は<strong>{selectedGorou.map((id) => GOROU_DEFS[id].classicName).join(" と ")}</strong>です。
+                この教材の固定値では<strong>【{mostFatiguedOrgan.name}（{mostFatiguedOrgan.element}行）】</strong>の点数が最も高くなりました。
+                症状の原因や臓器の状態を診断した結果ではありません。下の休憩・動作の例を、体調と作業条件に合わせて振り返ってください。
               </p>
             </div>
 
@@ -610,7 +610,7 @@ export default function GorouWorkstyleChecker() {
             <div className="mt-3 pt-3 border-t border-[#E5DEC9] dark:border-[#2A3B4A] flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
               <div className="flex items-center gap-1.5 text-xs text-[#59615D] dark:text-[#A0B0BC]">
                 <FileText className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-                <span>疲弊五臓と中庸処方を下書きとして臨床ノートに引き継ぎます</span>
+                <span>選んだ生活習慣、学習用の点数、休憩の例を臨床ノートの下書きに引き継ぎます</span>
               </div>
               <button
                 type="button"
@@ -628,7 +628,7 @@ export default function GorouWorkstyleChecker() {
           <div className="space-y-2.5 sm:space-y-3">
             <div className="flex items-center gap-2 text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">
               <Zap className="w-4 h-4 text-[#B86924]" />
-              <span>選択中パターンに対する「中庸アクション処方箋」</span>
+              <span>選んだ生活習慣に合わせた休憩や動作の例</span>
             </div>
 
             {selectedGorou.map((id) => {
@@ -652,7 +652,7 @@ export default function GorouWorkstyleChecker() {
                   {/* 中庸アクション */}
                   <div className="text-xs">
                     <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-0.5">
-                      🔄 中庸アクション（逆の動作で中和）：
+                      🔄 休憩・動作の例：
                     </span>
                     <p className="font-bold text-[#232826] dark:text-[#FAF8F5] mb-1">
                       {def.chuyoAction}
@@ -665,7 +665,7 @@ export default function GorouWorkstyleChecker() {
                   {/* ツボ */}
                   <div className="pt-2 border-t border-[#E5DEC9]/40 dark:border-[#2A3B4A]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 text-[11px]">
                     <div className="flex items-center gap-1.5">
-                      <span className="font-bold text-[#B86924]">合間の特効ツボ：</span>
+                      <span className="font-bold text-[#B86924]">この項目で紹介する経穴：</span>
                       <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">
                         {def.quickTsubo.name}（{def.quickTsubo.reading}）
                       </span>
@@ -688,15 +688,22 @@ export default function GorouWorkstyleChecker() {
         <div className="flex items-center gap-2">
           <Lightbulb className="w-4 h-4 text-[#B86924]" />
           <h4 className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
-            東洋医学の智慧：「同一姿勢・同一動作の継続」こそが病を生む
+            五労の伝統的な分類と、現代の作業負担への対応
           </h4>
         </div>
 
         <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          『黄帝内経』では、病は細菌やウイルスだけでなく、<strong>「日常の姿勢や動作の過度な偏り（五労）」</strong>から生じると喝破しています。
-          「座るのが悪」でも「立っているのが悪」でもなく、<strong>「久しく（長時間連続して）」同じ状態を維持することが五行の循環を滞らせる根本原因</strong>です。
-          疲労を感じたら、その姿勢と「正反対のベクトル（座っていたら立つ、見ていたら遠くを見る、歩いていたら休む）」を1分間差し挟むこと。
-          これが東洋医学が2000年間伝え続ける最高の職業病予防法です。
+          五労は、長く見る・座る・立つ・歩く・横になる行動を、血・肉・骨・筋・気と関連づけた伝統的な分類です。細菌・ウイルスによる病態や、特定の臓器の損傷を説明した実測結果ではありません。
+          現代の職業性の負担への対応は、休憩・姿勢の変更・作業環境の調整などを組み合わせます。米国OSHAは、コンピューター作業に短い休憩を組み込み、目を画面から離す、立つ、歩くなどを例示しています。WHOは座位時間を減らし、可能な範囲で身体活動へ置き換えることを勧めています。
+          五労の分類だけで職業病の予防効果を保証したり、全員に同じ休憩間隔・運動量を指示したりするものではありません。
+        </p>
+
+        <p className="text-xs leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">
+          出典：<a href="https://www.osha.gov/etools/computer-workstations/work-process" target="_blank" rel="noopener noreferrer" className="underline">OSHA：コンピューター作業と休憩</a>、
+          <a href="https://www.who.int/publications/i/item/9789240015128" target="_blank" rel="noopener noreferrer" className="underline">WHO：身体活動と座位行動の指針</a>、
+          <a href="https://aao.org/eye-health/tips-prevention/computer-usage" target="_blank" rel="noopener noreferrer" className="underline">米国眼科学会：画面作業と目の負担</a>、
+          <a href="https://www.cuh.nhs.uk/patient-information/achilles-tendinopathy-management-advice/" target="_blank" rel="noopener noreferrer" className="underline">英国NHS：アキレス腱の痛みと負荷の調整</a>。
+          休憩方法の一般的な参考資料です。五労の臓腑対応や経穴の効果を検証した資料ではありません。
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 pt-2 border-t border-[#E5DEC9] dark:border-[#2A3B4A] text-center text-xs">
@@ -706,19 +713,19 @@ export default function GorouWorkstyleChecker() {
           </div>
           <div className="p-2 rounded-lg bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]">
             <span className="font-bold block text-[#1E3D34] dark:text-[#74BA9E]">久坐傷肉</span>
-            <span className="text-[10px] text-[#737C77]">30分に1回立つ</span>
+            <span className="text-[10px] text-[#737C77]">合間に立つ・歩く</span>
           </div>
           <div className="p-2 rounded-lg bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]">
             <span className="font-bold block text-[#1E3D34] dark:text-[#74BA9E]">久立傷骨</span>
-            <span className="text-[10px] text-[#737C77]">足踏み＆座って除圧</span>
+            <span className="text-[10px] text-[#737C77]">立ち方を変え、座って休む</span>
           </div>
           <div className="p-2 rounded-lg bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]">
             <span className="font-bold block text-[#1E3D34] dark:text-[#74BA9E]">久行傷筋</span>
-            <span className="text-[10px] text-[#737C77]">アキレス腱ストレッチ</span>
+            <span className="text-[10px] text-[#737C77]">運動量と痛みを振り返る</span>
           </div>
           <div className="p-2 rounded-lg bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]">
             <span className="font-bold block text-[#1E3D34] dark:text-[#74BA9E]">久臥傷気</span>
-            <span className="text-[10px] text-[#737C77]">窓を開けて深呼吸</span>
+            <span className="text-[10px] text-[#737C77]">睡眠と日中の状態を記録</span>
           </div>
         </div>
       </div>

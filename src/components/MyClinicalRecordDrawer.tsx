@@ -473,7 +473,7 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                 type="text"
                 value={customTitle}
                 onChange={e => setCustomTitle(e.target.value)}
-                placeholder="処方名・タイトル（例: 頑固な首こり即効配穴）*"
+                placeholder="記録のタイトル（例：首こりの配穴を検討した記録）*"
                 required
                 className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]"
               />
@@ -505,14 +505,14 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
             <textarea
               value={customSummary}
               onChange={e => setCustomSummary(e.target.value)}
-              placeholder="臨床の要点・作用機序（例: 後頭下筋群の過緊張を緩め、肝気を降気させる）"
+              placeholder="臨床の要点・選定理由（例：右回旋時の痛み、後頭部の圧痛、選んだ経穴と理由。観察所見と伝統理論上の解釈を分けて記録）"
               rows={2}
               className="w-full px-3 py-2 rounded-lg text-sm bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]"
             />
             <textarea
               value={customNote}
               onChange={e => setCustomNote(e.target.value)}
-              placeholder="自分用の臨床メモ（例: ◯◯さんへの施術で右側強刺激が著効）"
+              placeholder="自分用の臨床メモ（例：PT-042。首の右回旋時の痛みは施術前6/10、直後4/10。翌日の経過は未確認。氏名・連絡先は記入しない）"
               rows={2}
               className="w-full px-3 py-2 rounded-lg text-sm bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A]"
             />
@@ -537,7 +537,8 @@ ${item.mechanism ? `■ 作用機序: ${item.mechanism}\n` : ""}${item.personalN
                     患者臨床ノート ({patientNoteCount}/{maxPatientNoteLimit}件)
                   </span>
                   <span className="text-sm text-[#59615D] dark:text-[#A0B0BC]">
-                    直接識別情報非保持・安全同期
+                    氏名・連絡先は入力しないでください。保存・同期の条件は「個人情報の取り扱い」で確認できます。
+                    <Link href="/privacy" onClick={closeDrawer} className="inline-flex min-h-11 items-center underline">個人情報の取り扱いを読む</Link>
                   </span>
                 </div>
                 <Link

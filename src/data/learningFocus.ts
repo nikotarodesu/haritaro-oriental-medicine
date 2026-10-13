@@ -13,9 +13,9 @@ export interface LearningFocusDefinition {
 
 /** Explicit links to existing, reviewed teaching material; no new diagnosis rules. */
 export const LEARNING_FOCUS: readonly LearningFocusDefinition[] = [
-  { id: 'safety-check', title: '安全確認と対応の優先順位', description: '確認した項目と未確認を分け、評価を遅らせない判断を振り返ります。', check: 'この段階で、先に確認・対応することは何か。', lectureId: 'lecture-yinyang-7', heading: '標・本の考え方と対応の優先順位', questionIds: ['lecture-yinyang-7-q3', 'lecture-yinyang-4-q2'], priority: 0 },
+  { id: 'safety-check', title: '安全確認と対応の優先順位', description: '確認済みの項目と未確認の項目を分け、必要な医学的評価を遅らせないための判断を振り返ります。', check: 'この段階で、先に確認・対応することは何か。', lectureId: 'lecture-yinyang-7', heading: '標・本の考え方と対応の優先順位', questionIds: ['lecture-yinyang-7-q3', 'lecture-yinyang-4-q2'], priority: 0 },
   { id: 'missing-information', title: '情報が足りないときに保留する', description: '一つの所見だけで確定せず、追加で確かめたいことを整理します。', check: '確認済みのことと、まだ分からないことは何か。', lectureId: 'lecture-yinyang-7', heading: '四診と単一所見の限界', questionIds: ['lecture-yinyang-7-q1'], priority: 1 },
-  { id: 'reasoning-evidence', title: '事実と判断の根拠を分ける', description: '観察した事実、候補としての解釈、未確認を分けて読み直します。', check: 'その判断を支える事実は、どこに示されているか。', lectureId: 'lecture-yinyang-7', heading: '観察・解釈・保留を分ける練習', questionIds: ['lecture-yinyang-7-q1', 'lecture-yinyang-7-q2'], priority: 2 },
+  { id: 'reasoning-evidence', title: '観察した事実と解釈を分ける', description: '観察した事実、候補としての解釈、未確認を分けて読み直します。', check: 'その判断を支える事実は、どこに示されているか。', lectureId: 'lecture-yinyang-7', heading: '観察・解釈・保留を分ける練習', questionIds: ['lecture-yinyang-7-q1', 'lecture-yinyang-7-q2'], priority: 2 },
   { id: 'comparison', title: '比較する基準をそろえる', description: '部位・時間・比較相手をそろえ、合わない所見も残して考えます。', check: '何と何を、どの条件で比べているか。', lectureId: 'lecture-yinyang-2', heading: '比較する対象・基準の重要性', questionIds: ['lecture-yinyang-2-q1', 'lecture-yinyang-2-q2'], priority: 3 },
   { id: 'reevaluation', title: '同じ条件で変化を振り返る', description: '追加情報や経過を確認し、初めの候補に合わないときは見直します。', check: '前回と同じ条件で、何の変化を確認するか。', lectureId: 'lecture-yinyang-4', heading: '変化を観察する3つの視点', questionIds: ['lecture-yinyang-4-q3'], priority: 4 },
 ];

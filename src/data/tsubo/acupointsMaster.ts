@@ -229,7 +229,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
         "partnerCode": "KI6",
         "partnerName": "照海",
         "prescriptionName": "八脈交会配穴（任脈・陰蹻）",
-        "effect": "喉の痛み・乾燥、嗄声（声枯れ）、喘息、胸部閉塞感を平定する"
+        "effect": "喉の痛みや乾燥、声がれ、呼吸器や胸部の症状と関連づける伝統的な配穴例です。個人への適応や治療効果を示すものではありません。"
       }
     ],
     "punctureMethod": "直刺 0.3〜0.5寸。骨間隙に沿って刺入し特有の響きを得る。",
@@ -355,7 +355,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
       "急性扁桃炎・咽頭浮腫・咽痛",
-      "高熱・中暑・昏睡の救急蘇生",
+      "高熱・中暑・昏睡に関する伝統資料の記載。意識障害の救急評価・蘇生を経穴刺激で代替するものではありません。",
       "小児の疳の虫・ひきつけ",
       "鼻出血"
     ],
@@ -636,7 +636,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後外側、陽渓と曲池を結ぶ線上、肘窩横紋の下方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・大腸経部の疼痛・腫脹・運動制限",
+      "大腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "歯痛・抜歯後疼痛",
       "頭痛・顔面神経麻痺",
       "咽喉腫痛・鼻炎・鼻出血",
@@ -667,7 +667,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後外側、陽渓と曲池を結ぶ線上、肘窩横紋の下方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・大腸経部の疼痛・腫脹・運動制限",
+      "大腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "歯痛・抜歯後疼痛",
       "頭痛・顔面神経麻痺",
       "咽喉腫痛・鼻炎・鼻出血",
@@ -764,7 +764,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肘後外側、上腕骨外側上顆の上縁、上腕骨外側顆上稜の前縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・大腸経部の疼痛・腫脹・運動制限",
+      "大腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "歯痛・抜歯後疼痛",
       "頭痛・顔面神経麻痺",
       "咽喉腫痛・鼻炎・鼻出血",
@@ -795,7 +795,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腕外側、曲池と肩髃を結ぶ線上、肘窩横紋の上方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・大腸経部の疼痛・腫脹・運動制限",
+      "大腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "歯痛・抜歯後疼痛",
       "頭痛・顔面神経麻痺",
       "咽喉腫痛・鼻炎・鼻出血",
@@ -888,7 +888,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肩周囲部、鎖骨肩峰端と肩甲棘の間の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・肩・大腸経部の疼痛・腫脹・運動制限",
+      "大腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "歯痛・抜歯後疼痛",
       "頭痛・顔面神経麻痺",
       "咽喉腫痛・鼻炎・鼻出血",
@@ -921,7 +921,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、輪状軟骨と同じ高さ、胸鎖乳突筋の後縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・肩・大腸経部の疼痛・腫脹・運動制限",
+      "大腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "歯痛・抜歯後疼痛",
       "頭痛・顔面神経麻痺",
       "咽喉腫痛・鼻炎・鼻出血",
@@ -952,7 +952,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、甲状軟骨上縁と同じ高さ、胸鎖乳突筋の前縁と後縁の間の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・肩・大腸経部の疼痛・腫脹・運動制限",
+      "大腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "歯痛・抜歯後疼痛",
       "頭痛・顔面神経麻痺",
       "咽喉腫痛・鼻炎・鼻出血",
@@ -983,7 +983,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、人中溝の中点と同じ高さ、鼻孔外縁の直下。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・大腸経部の疼痛・腫脹・運動制限",
+      "大腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "歯痛・抜歯後疼痛",
       "頭痛・顔面神経麻痺",
       "咽喉腫痛・鼻炎・鼻出血",
@@ -1106,7 +1106,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、瞳孔の直下、鼻翼下縁と同じ高さ。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1170,7 +1170,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、下顎角の前方、咬筋付着部の前方陥凹部、顔面動脈の拍動部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1294,7 +1294,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、甲状軟骨上縁と同じ高さ、胸鎖乳突筋の前縁、総頸動脈の拍動部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・肩・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1327,7 +1327,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、輪状軟骨と同じ高さ、胸鎖乳突筋の前縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・肩・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1358,7 +1358,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、小鎖骨上窩、鎖骨胸骨端の上方、胸鎖乳突筋の胸骨頭と鎖骨頭の間の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・肩・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1418,7 +1418,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、鎖骨下縁、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1449,7 +1449,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第1肋間、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1480,7 +1480,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第2肋間、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1511,7 +1511,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第3肋間、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1542,7 +1542,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第4肋間、乳頭中央。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1573,7 +1573,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第5肋間、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1604,7 +1604,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方6寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1635,7 +1635,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方5寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1695,7 +1695,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方3寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1726,7 +1726,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方2寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1757,7 +1757,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方1寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1820,7 +1820,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方1寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1851,7 +1851,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方2寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1882,7 +1882,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方3寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1913,7 +1913,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方4寸、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1944,7 +1944,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "鼠径部、恥骨結合上縁と同じ高さ、前正中線の外方2寸、大腿動脈拍動部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -1977,7 +1977,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿前面、上前腸骨棘と膝蓋骨底外端を結ぶ線上、殿溝と同じ高さの陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -2008,7 +2008,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿前外側、上前腸骨棘と膝蓋骨外端を結ぶ線上、膝蓋骨底の上方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -2039,7 +2039,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿前外側、大腿直筋腱の外側、膝蓋骨底の上方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -2102,7 +2102,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "膝前面、膝蓋靭帯外側の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -2216,7 +2216,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿前外側、犢鼻と解渓を結ぶ線上、犢鼻の下方8寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -2307,8 +2307,8 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 41,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・胃経部",
-    "locationSimple": "解渓（ST41）は、足関節前面、足関節前面中央の陥凹部、長母指伸筋腱と長趾伸筋腱の間。",
-    "locationDetail": "足関節前面、足関節前面中央の陥凹部、長母指伸筋腱と長趾伸筋腱の間。",
+    "locationSimple": "解渓（ST41）は、足関節前面中央の陥凹部、長母指伸筋腱と長趾伸筋腱の間。",
+    "locationDetail": "足関節前面中央の陥凹部、長母指伸筋腱と長趾伸筋腱の間。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
       "足関節痛・捻挫後遺症・下垂足",
@@ -2344,7 +2344,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足背、第2中足骨底と中間楔状骨の間、足背動脈の拍動部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -2378,7 +2378,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足背、第2・第3中足骨間、第2中足指節関節の近位陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胃経部の疼痛・腫脹・運動制限",
+      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "胃痛・胃もたれ・急性胃炎",
       "食欲不振・消化不良",
       "腹部膨満・腹痛・便秘",
@@ -2616,7 +2616,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足内側、内果前下方の陥凹部、舟状骨粗面と内果尖を結ぶ線の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・脾経部の疼痛・腫脹・運動制限",
+      "脾経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "食欲不振・腹部膨満・泥状便",
       "全身倦怠感・四肢無力",
       "月経不順・機能性子宮出血",
@@ -2700,7 +2700,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿内側、脛骨内側面後縁、内果尖の上方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・脾経部の疼痛・腫脹・運動制限",
+      "脾経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "食欲不振・腹部膨満・泥状便",
       "全身倦怠感・四肢無力",
       "月経不順・機能性子宮出血",
@@ -2765,7 +2765,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "indications": [
       "浮腫（むくみ）・腹水・脚気",
       "小便不利・排尿困難・尿道炎",
-      "下痢・軟便・水溶性下痢",
+      "下痢・軟便・水様性下痢",
       "膝関節内側痛・関節リウマチ",
       "陰部掻痒症"
     ],
@@ -2827,7 +2827,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿内側、縫工筋と薄筋の間、大腿動脈拍動部、膝蓋骨底内端の上方8寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・脾経部の疼痛・腫脹・運動制限",
+      "脾経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "食欲不振・腹部膨満・泥状便",
       "全身倦怠感・四肢無力",
       "月経不順・機能性子宮出血",
@@ -2858,7 +2858,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "鼠径部、恥骨結合上縁と同じ高さ、前正中線の外方3.5寸、大腿動脈の拍動部の外側。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "脾経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "食欲不振・腹部膨満・泥状便",
       "全身倦怠感・四肢無力",
       "月経不順・機能性子宮出血",
@@ -2891,7 +2891,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方4.3寸、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "脾経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "食欲不振・腹部膨満・泥状便",
       "全身倦怠感・四肢無力",
       "月経不順・機能性子宮出血",
@@ -2924,7 +2924,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方1.3寸、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "脾経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "食欲不振・腹部膨満・泥状便",
       "全身倦怠感・四肢無力",
       "月経不順・機能性子宮出血",
@@ -2955,7 +2955,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "脾経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "食欲不振・腹部膨満・泥状便",
       "全身倦怠感・四肢無力",
       "月経不順・機能性子宮出血",
@@ -2986,7 +2986,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方3寸、前正中線の外方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "脾経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "食欲不振・腹部膨満・泥状便",
       "全身倦怠感・四肢無力",
       "月経不順・機能性子宮出血",
@@ -3017,7 +3017,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第5肋間、前正中線の外方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "脾経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "食欲不振・腹部膨満・泥状便",
       "全身倦怠感・四肢無力",
       "月経不順・機能性子宮出血",
@@ -3048,7 +3048,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第4肋間、前正中線の外方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "脾経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "食欲不振・腹部膨満・泥状便",
       "全身倦怠感・四肢無力",
       "月経不順・機能性子宮出血",
@@ -3079,7 +3079,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第3肋間、前正中線の外方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "脾経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "食欲不振・腹部膨満・泥状便",
       "全身倦怠感・四肢無力",
       "月経不順・機能性子宮出血",
@@ -3110,7 +3110,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第2肋間、前正中線の外方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・脾経部の疼痛・腫脹・運動制限",
+      "脾経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "食欲不振・腹部膨満・泥状便",
       "全身倦怠感・四肢無力",
       "月経不順・機能性子宮出血",
@@ -3201,7 +3201,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腕内側、上腕二頭筋内側縁、肘窩横紋の上方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・心経部の疼痛・腫脹・運動制限",
+      "心経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "動悸・不整脈・胸痛",
       "不眠・多夢・健忘",
       "精神不安・焦燥感・パニック",
@@ -3265,7 +3265,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕前内側、尺側手根屈筋腱の橈側縁、手関節掌側横紋の上方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・心経部の疼痛・腫脹・運動制限",
+      "心経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "動悸・不整脈・胸痛",
       "不眠・多夢・健忘",
       "精神不安・焦燥感・パニック",
@@ -3498,7 +3498,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "小指尺側、第5中手指節関節の遠位陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・小腸経部の疼痛・腫脹・運動制限",
+      "小腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "耳鳴・難聴・耳痛",
       "頚肩腕症候群・肩甲背部痛",
       "後頭部痛・項部硬直",
@@ -3601,7 +3601,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手関節後内側、尺骨茎状突起と三角骨の間の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・小腸経部の疼痛・腫脹・運動制限",
+      "小腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "耳鳴・難聴・耳痛",
       "頚肩腕症候群・肩甲背部痛",
       "後頭部痛・項部硬直",
@@ -3635,7 +3635,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後内側、尺骨頭の橈側の陥凹部、手関節背側横紋の上方1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・小腸経部の疼痛・腫脹・運動制限",
+      "小腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "耳鳴・難聴・耳痛",
       "頚肩腕症候群・肩甲背部痛",
       "後頭部痛・項部硬直",
@@ -3668,7 +3668,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後内側、尺骨内縁と尺側手根屈筋の間、手関節背側横紋の上方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・小腸経部の疼痛・腫脹・運動制限",
+      "小腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "耳鳴・難聴・耳痛",
       "頚肩腕症候群・肩甲背部痛",
       "後頭部痛・項部硬直",
@@ -3763,7 +3763,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肩周囲部、肩甲棘下縁と肩甲骨関節窩の間の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・肩・小腸経部の疼痛・腫脹・運動制限",
+      "小腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "耳鳴・難聴・耳痛",
       "頚肩腕症候群・肩甲背部痛",
       "後頭部痛・項部硬直",
@@ -3825,7 +3825,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肩甲部、棘上窩、肩甲棘の中点の上方。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・肩・小腸経部の疼痛・腫脹・運動制限",
+      "小腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "耳鳴・難聴・耳痛",
       "頚肩腕症候群・肩甲背部痛",
       "後頭部痛・項部硬直",
@@ -3858,7 +3858,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肩甲部、肩甲棘の内端の上方陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・小腸経部の疼痛・腫脹・運動制限",
+      "小腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "耳鳴・難聴・耳痛",
       "頚肩腕症候群・肩甲背部痛",
       "後頭部痛・項部硬直",
@@ -3889,7 +3889,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第1胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・小腸経部の疼痛・腫脹・運動制限",
+      "小腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "耳鳴・難聴・耳痛",
       "頚肩腕症候群・肩甲背部痛",
       "後頭部痛・項部硬直",
@@ -3920,7 +3920,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第7頸椎棘突起下縁と同じ高さ、後正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・肩・小腸経部の疼痛・腫脹・運動制限",
+      "小腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "耳鳴・難聴・耳痛",
       "頚肩腕症候群・肩甲背部痛",
       "後頭部痛・項部硬直",
@@ -3951,7 +3951,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、胸鎖乳突筋の後縁、甲状軟骨上縁と同じ高さ。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・肩・小腸経部の疼痛・腫脹・運動制限",
+      "小腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "耳鳴・難聴・耳痛",
       "頚肩腕症候群・肩甲背部痛",
       "後頭部痛・項部硬直",
@@ -3982,7 +3982,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、下顎角の後方、胸鎖乳突筋の前縁陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・肩・小腸経部の疼痛・腫脹・運動制限",
+      "小腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "耳鳴・難聴・耳痛",
       "頚肩腕症候群・肩甲背部痛",
       "後頭部痛・項部硬直",
@@ -4013,7 +4013,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、頬骨下縁の陥凹部、外眼角の直下。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・小腸経部の疼痛・腫脹・運動制限",
+      "小腸経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "耳鳴・難聴・耳痛",
       "頚肩腕症候群・肩甲背部痛",
       "後頭部痛・項部硬直",
@@ -4139,7 +4139,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方0.5寸、前正中線の外方0.75寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -4170,7 +4170,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方0.5寸、前正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -4201,7 +4201,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方1寸、前正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -4232,7 +4232,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方2.5寸、前正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -4263,7 +4263,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方4寸、前正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -4294,7 +4294,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方5.5寸、前正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -4325,7 +4325,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、外後頭隆起上縁と同じ高さ、後正中線の外方1.3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -4418,7 +4418,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第2胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -4484,7 +4484,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第4胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -4551,7 +4551,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第6胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -4647,7 +4647,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第10胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -4747,7 +4747,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腰部、第1腰椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -4815,7 +4815,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腰部、第3腰椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -4879,7 +4879,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腰部、第5腰椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -4910,7 +4910,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、第1仙骨孔と同じ高さ、正中仙骨稜の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -4977,7 +4977,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、第3仙骨孔と同じ高さ、正中仙骨稜の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5008,7 +5008,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、第4仙骨孔と同じ高さ、正中仙骨稜の外方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5039,7 +5039,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、第1後仙骨孔。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5070,7 +5070,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、第2後仙骨孔。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5101,7 +5101,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、第3後仙骨孔。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5132,7 +5132,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、第4後仙骨孔。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5163,7 +5163,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "臀部、尾骨下端の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5194,7 +5194,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "臀部、殿溝の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5225,7 +5225,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿後面、大腿二頭筋と半腱様筋の間、殿溝の下方6寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5256,7 +5256,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "膝後面、大腿二頭筋腱の内縁、膝窩横紋の上方1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5338,7 +5338,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
         "partnerCode": "BL23",
         "partnerName": "腎兪",
         "prescriptionName": "腰背兪合配穴",
-        "effect": "急・慢性の腰痛、坐骨神経痛、下肢の脱力・冷えを解消する"
+        "effect": "腰背部や下肢の病証と関連づける伝統的な配穴例です。腰痛、坐骨神経痛、脱力や冷えの原因・施術適応は、個別に評価する必要があります。"
       }
     ],
     "punctureMethod": "直刺 0.5〜1.0寸、または三稜針による膝窩静脈の点刺出血。膝窩動脈の直刺は避ける。",
@@ -5362,7 +5362,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第2胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5393,7 +5393,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第3胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5424,7 +5424,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第4胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5455,7 +5455,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第5胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5486,7 +5486,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第6胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5517,7 +5517,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第7胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5548,7 +5548,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第9胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5579,7 +5579,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第10胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5610,7 +5610,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第11胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5641,7 +5641,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第12胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5672,7 +5672,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腰部、第1腰椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5703,7 +5703,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腰部、第2腰椎棘突起下縁と同じ高さ、後正中線の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5734,7 +5734,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "臀部、第2後仙骨孔と同じ高さ、正中仙骨稜の外方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5794,7 +5794,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿後面、委中と承山を結ぶ線上、委中の下方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5825,7 +5825,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿後面、腓腹筋の2つの筋腹の間、委中の下方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5918,7 +5918,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿後外側、腓骨後縁、崑崙の上方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -5954,7 +5954,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
       "頭痛・項部硬直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "アキレス腱炎・踵骨部痛",
-      "難産・胎盤残留促進"
+      "難産・胎盤娩出に関する伝統資料の記載（出典の版・条文は未照合。陣痛促進や胎盤遺残への治療効果を示すものではありません）"
     ],
     "categories": [
       "経火穴"
@@ -5984,7 +5984,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足外側、踵骨外側、崑崙の直下、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -6048,7 +6048,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足背、外果前下方の陥凹部、立方骨粗面の後方。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -6081,7 +6081,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足外側、第5中足骨粗面の遠位前方の陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -6115,7 +6115,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足外側、第5中足指節関節の近位陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -6150,7 +6150,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足第5指外側、第5中足指節関節の遠位陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・膀胱経部の疼痛・腫脹・運動制限",
+      "膀胱経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "頭痛・項背部強直・寝違え",
       "急性・慢性腰痛・坐骨神経痛",
       "下肢後面のしびれ・こむら返り",
@@ -6219,7 +6219,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "indications": [
       "失神・ショック・脳卒中救急",
       "高血圧・重度ののぼせ・頭痛",
-      "不眠症・不安焦燥・精神分裂",
+      "不眠・不安・焦燥感（伝統資料の学習上の関連例。精神疾患の診断・治療効果は示していません）",
       "足底筋膜炎・足底熱感",
       "小児のひきつけ・嘔吐下痢"
     ],
@@ -6320,7 +6320,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足内側、内果後下方、踵骨上縁、アキレス腱付着部内側前方の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6353,7 +6353,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足内側、太谿の直下1寸、踵骨隆起前方の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6452,7 +6452,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿内側、脛骨内側面後縁の陥凹部、内果尖の上方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6485,7 +6485,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿後内側、ヒラメ筋とアキレス腱の間、内果尖の上方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6551,7 +6551,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、恥骨結合上縁と同じ高さ、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6584,7 +6584,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方4寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6617,7 +6617,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方3寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6650,7 +6650,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方2寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6683,7 +6683,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方1寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6716,7 +6716,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6749,7 +6749,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方2寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6782,7 +6782,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方3寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6815,7 +6815,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方4寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6848,7 +6848,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方5寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6881,7 +6881,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方6寸、前正中線の外方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6914,7 +6914,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第5肋間、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6945,7 +6945,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第4肋間、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -6976,7 +6976,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第3肋間、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -7007,7 +7007,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第2肋間、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -7038,7 +7038,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第1肋間、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -7069,7 +7069,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、鎖骨下縁、前正中線の外方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・腎経部の疼痛・腫脹・運動制限",
+      "腎経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "腰痛・膝関節脱力感・足底痛",
       "めまい・耳鳴・難聴",
       "不眠・盗汗・手足のほてり",
@@ -7100,7 +7100,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第4肋間、乳頭外方1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・心包経部の疼痛・腫脹・運動制限",
+      "心包経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "心悸亢進・心胸痛・胸悶",
       "胃痛・悪心・嘔吐・乗り物酔い",
       "不眠・不安神経症・躁うつ",
@@ -7133,7 +7133,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腕前面、上腕二頭筋長頭と短頭の間、腋窩横紋前端の下方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・心包経部の疼痛・腫脹・運動制限",
+      "心包経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "心悸亢進・心胸痛・胸悶",
       "胃痛・悪心・嘔吐・乗り物酔い",
       "不眠・不安神経症・躁うつ",
@@ -7164,7 +7164,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肘前面、肘窩横紋上、上腕二頭筋腱の尺側縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "急性胃腸炎・劇しい嘔吐下痢",
+      "急性胃腸炎・激しい嘔吐や下痢",
       "熱病の意識混濁・中暑（熱中症）",
       "肘関節痛・前腕痙攣",
       "心胸痛・動悸"
@@ -7229,7 +7229,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕前面、長掌筋腱と橈側手根屈筋腱の間、手関節掌側横紋の上方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・心包経部の疼痛・腫脹・運動制限",
+      "心包経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "心悸亢進・心胸痛・胸悶",
       "胃痛・悪心・嘔吐・乗り物酔い",
       "不眠・不安神経症・躁うつ",
@@ -7447,7 +7447,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "手背、薬指と小指の間、みずかきの近位縁、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・三焦経部の疼痛・腫脹・運動制限",
+      "三焦経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・耳鳴・難聴",
       "目尻の痛み・目の充血",
       "頚部リンパ節腫脹・肩甲骨周囲痛",
@@ -7616,7 +7616,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後面、尺骨の橈側縁、手関節背側横紋の上方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・三焦経部の疼痛・腫脹・運動制限",
+      "三焦経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・耳鳴・難聴",
       "目尻の痛み・目の充血",
       "頚部リンパ節腫脹・肩甲骨周囲痛",
@@ -7649,7 +7649,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後面、橈骨と尺骨の骨間の中点、手関節背側横紋の上方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・三焦経部の疼痛・腫脹・運動制限",
+      "三焦経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・耳鳴・難聴",
       "目尻の痛み・目の充血",
       "頚部リンパ節腫脹・肩甲骨周囲痛",
@@ -7680,7 +7680,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前腕後面、橈骨と尺骨の骨間の中点、肘頭の下方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・三焦経部の疼痛・腫脹・運動制限",
+      "三焦経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・耳鳴・難聴",
       "目尻の痛み・目の充血",
       "頚部リンパ節腫脹・肩甲骨周囲痛",
@@ -7744,7 +7744,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腕後面、肘頭と肩峰角を結ぶ線上、肘頭の上方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・三焦経部の疼痛・腫脹・運動制限",
+      "三焦経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・耳鳴・難聴",
       "目尻の痛み・目の充血",
       "頚部リンパ節腫脹・肩甲骨周囲痛",
@@ -7775,7 +7775,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腕後面、肘頭と肩峰角を結ぶ線上、肘頭の上方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・三焦経部の疼痛・腫脹・運動制限",
+      "三焦経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・耳鳴・難聴",
       "目尻の痛み・目の充血",
       "頚部リンパ節腫脹・肩甲骨周囲痛",
@@ -7806,7 +7806,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腕後面、三角筋の後縁、肩峰角の下方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "手・腕・三焦経部の疼痛・腫脹・運動制限",
+      "三焦経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・耳鳴・難聴",
       "目尻の痛み・目の充血",
       "頚部リンパ節腫脹・肩甲骨周囲痛",
@@ -7866,7 +7866,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "肩甲部、肩甲骨上角の上方陥凹部、曲垣と肩井を結ぶ線の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・肩・三焦経部の疼痛・腫脹・運動制限",
+      "三焦経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・耳鳴・難聴",
       "目尻の痛み・目の充血",
       "頚部リンパ節腫脹・肩甲骨周囲痛",
@@ -7899,7 +7899,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、下顎角と同じ高さ、胸鎖乳突筋の後縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・肩・三焦経部の疼痛・腫脹・運動制限",
+      "三焦経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・耳鳴・難聴",
       "目尻の痛み・目の充血",
       "頚部リンパ節腫脹・肩甲骨周囲痛",
@@ -7962,7 +7962,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、乳様突起の中央、翳風と角孫を結ぶ線上の下から1/3。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・三焦経部の疼痛・腫脹・運動制限",
+      "三焦経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・耳鳴・難聴",
       "目尻の痛み・目の充血",
       "頚部リンパ節腫脹・肩甲骨周囲痛",
@@ -7993,7 +7993,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、翳風と角孫を結ぶ線上の上から1/3。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・三焦経部の疼痛・腫脹・運動制限",
+      "三焦経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・耳鳴・難聴",
       "目尻の痛み・目の充血",
       "頚部リンパ節腫脹・肩甲骨周囲痛",
@@ -8024,7 +8024,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、耳尖の直上、髪際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・三焦経部の疼痛・腫脹・運動制限",
+      "三焦経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・耳鳴・難聴",
       "目尻の痛み・目の充血",
       "頚部リンパ節腫脹・肩甲骨周囲痛",
@@ -8086,7 +8086,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、耳介の付け根の前方、浅側頭動脈の後縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・三焦経部の疼痛・腫脹・運動制限",
+      "三焦経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・耳鳴・難聴",
       "目尻の痛み・目の充血",
       "頚部リンパ節腫脹・肩甲骨周囲痛",
@@ -8208,7 +8208,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、頬骨弓中央の上縁の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8241,7 +8241,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、頭維と曲鬢を結ぶ線上、頭維から1/4の点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8274,7 +8274,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、頭維と曲鬢を結ぶ線の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8307,7 +8307,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、頭維と曲鬢を結ぶ線上、頭維から3/4の点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8340,7 +8340,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、耳尖を通る水平線と側頭部髪際後縁の垂線が交わる点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8373,7 +8373,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、耳尖の直上、髪際の上方1.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8406,7 +8406,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、耳介根後端の直上、髪際の上方2寸、率谷の後方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8437,7 +8437,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、乳様突起の後上方、天衝と完骨を結ぶ線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8470,7 +8470,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、乳様突起の上方、浮白と完骨を結ぶ線の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8503,7 +8503,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、乳様突起の後下方陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8536,7 +8536,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方0.5寸、神庭と頭維を結ぶ線上の外から1/3。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8601,7 +8601,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方0.5寸、瞳孔の直上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8634,7 +8634,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方1.5寸、瞳孔の直上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8667,7 +8667,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方2.5寸、瞳孔の直上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8700,7 +8700,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方4寸、瞳孔の直上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8733,7 +8733,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、外後頭隆起上縁と同じ高さ、後正中線の外方2.25寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8840,7 +8840,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "側胸部、第4肋間、中腋窩線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8871,7 +8871,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "側胸部、第4肋間、淵腋の前方1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8935,7 +8935,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "側腹部、第12肋骨遊離端の下縁。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -8968,7 +8968,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "側腹部、第11肋骨遊離端の直下、臍と同じ高さ。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -9001,7 +9001,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "側腹部、上前腸骨棘の内側、臍中央の下方3寸と同じ高さ。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -9034,7 +9034,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、上前腸骨棘の前下方0.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -9067,7 +9067,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "臀部、上前腸骨棘と大転子頂点を結ぶ線の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -9132,7 +9132,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿外側、腸脛靭帯の後縁、膝窩横紋の上方7寸。直立し手を下垂したとき中指先端が当たる点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -9163,7 +9163,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿外側、腸脛靭帯の後縁、膝窩横紋の上方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -9194,7 +9194,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "膝外側、大腿二頭筋腱と腸脛靭帯の間、大腿骨外側上顆の後上方の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -9261,7 +9261,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿外側、腓骨後縁、外果尖の上方7寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -9294,7 +9294,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿外側、腓骨前縁、外果尖の上方7寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -9358,7 +9358,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿外側、腓骨前縁、外果尖の上方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -9426,7 +9426,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "indications": [
       "足関節捻挫・外果部腫脹痛",
       "胸脇部痛・肋間痛",
-      "胆嚢疾患・胆石仙痛",
+      "胆嚢疾患・胆石による疝痛",
       "下肢外側麻痺"
     ],
     "categories": [
@@ -9493,7 +9493,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足背、第4・第5中足骨間、第4中足指節関節の近位陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -9524,7 +9524,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "足背、第4・第5足指間、みずかきの近位縁、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・胆経部の疼痛・腫脹・運動制限",
+      "胆経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "偏頭痛・側頭部痛・目の奥の痛み",
       "めまい・耳鳴・口の苦み",
       "胸脇苦満・肋間神経痛",
@@ -9776,7 +9776,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿前内側、脛骨内側面の中央、内果尖の上方7寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・肝経部の疼痛・腫脹・運動制限",
+      "肝経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "イライラ・怒りっぽい・精神抑鬱",
       "頭頂部痛・目の充血・視力減退",
       "胸脇部痛・月経不順・月経前症候群",
@@ -9809,7 +9809,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腿内側、脛骨内側顆の下後方、陰陵泉の後方1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・肝経部の疼痛・腫脹・運動制限",
+      "肝経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "イライラ・怒りっぽい・精神抑鬱",
       "頭頂部痛・目の充血・視力減退",
       "胸脇部痛・月経不順・月経前症候群",
@@ -9873,7 +9873,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿内側、縫工筋と薄筋の間、大腿骨内側上顆の上方4寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・肝経部の疼痛・腫脹・運動制限",
+      "肝経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "イライラ・怒りっぽい・精神抑鬱",
       "頭頂部痛・目の充血・視力減退",
       "胸脇部痛・月経不順・月経前症候群",
@@ -9904,7 +9904,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿内側、長内転筋の外側、恥骨結合上縁の下方3寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・肝経部の疼痛・腫脹・運動制限",
+      "肝経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "イライラ・怒りっぽい・精神抑鬱",
       "頭頂部痛・目の充血・視力減退",
       "胸脇部痛・月経不順・月経前症候群",
@@ -9935,7 +9935,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "大腿内側、長内転筋の外側、恥骨結合上縁の下方2寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足・脚・肝経部の疼痛・腫脹・運動制限",
+      "肝経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "イライラ・怒りっぽい・精神抑鬱",
       "頭頂部痛・目の充血・視力減退",
       "胸脇部痛・月経不順・月経前症候群",
@@ -9966,7 +9966,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "鼠径部、恥骨結合上縁と同じ高さ、前正中線の外方2.5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・肝経部の疼痛・腫脹・運動制限",
+      "肝経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "イライラ・怒りっぽい・精神抑鬱",
       "頭頂部痛・目の充血・視力減退",
       "胸脇部痛・月経不順・月経前症候群",
@@ -10094,7 +10094,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "仙骨部、仙骨裂孔部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "背中・腰・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10123,7 +10123,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腰部、第4腰椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "背中・腰・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10185,7 +10185,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "腰部、第1腰椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "背中・腰・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10214,7 +10214,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第11胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "背中・腰・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10243,7 +10243,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第10胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "背中・腰・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10272,7 +10272,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第9胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "背中・腰・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10301,7 +10301,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "中背部、第7胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "背中・腰・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10330,7 +10330,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第6胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "背中・腰・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10359,7 +10359,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第5胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "背中・腰・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10388,7 +10388,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第3胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "背中・腰・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10417,7 +10417,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上背部、第1胸椎棘突起下の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "背中・腰・督脈部の疼痛・腫脹・運動制限",
+      "背中・腰・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10481,7 +10481,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "後頭部、第2頸椎棘突起上縁の陥凹部、後髪際の上方0.5寸、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "頭部・顔面・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10544,7 +10544,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、外後頭隆起上縁の陥凹部、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "頭部・顔面・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10575,7 +10575,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、後髪際の上方4寸、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "頭部・顔面・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10604,7 +10604,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、百会の後方1.5寸、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "頭部・顔面・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10630,7 +10630,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "bodyPart": "頭部・顔面",
     "bodyRegionDetail": "頭部・顔面・督脈部",
     "locationSimple": "左右の耳の穴を結んだ線と、顔の真ん中の縦線が頭頂部で交わる、わずかなくぼみ。",
-    "locationDetail": "頭頂部正中線上、前髪際の上5寸（百病が集まり治まる意）。",
+    "locationDetail": "頭頂部の正中線上、前髪際から上方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
       "頭痛・片頭痛・頭重感",
@@ -10682,7 +10682,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、百会の前方1.5寸、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "頭部・顔面・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10711,7 +10711,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方2寸、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "頭部・顔面・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10740,7 +10740,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "頭部、前髪際の上方1寸、後正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "頭部・顔面・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10801,7 +10801,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、鼻尖の中央。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "頭部・顔面・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10830,7 +10830,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、人中溝の中点、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "ショック・失神・脳卒中昏迷救急",
+      "ショック・失神・脳卒中に伴う意識障害（伝統資料の関連例。救急評価・蘇生を代替するものではありません）",
       "急性ぎっくり腰（腰部捻挫）",
       "顔面神経麻痺・口眼歪斜",
       "小児のひきつけ・精神ヒステリー"
@@ -10862,7 +10862,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、上唇結節の中央、皮膚と口唇粘膜の境目。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "頭部・顔面・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10891,7 +10891,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、上唇小帯の接合部、歯肉上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・督脈部の疼痛・腫脹・運動制限",
+      "頭部・顔面・督脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10922,7 +10922,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "会陰部、男性は陰嚢根部と肛門の中点、女性は後陰唇交連と肛門の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "胸・腹・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -10953,7 +10953,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、恥骨結合上縁中央、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "胸・腹・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -11058,7 +11058,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方2寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "胸・腹・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -11123,7 +11123,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "下腹部、臍中央の下方1寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "胸・腹・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -11183,7 +11183,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方1寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "胸・腹・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -11212,7 +11212,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方2寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "胸・腹・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -11243,7 +11243,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方3寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "胸・腹・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -11314,7 +11314,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、臍中央の上方5寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "胸・腹・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -11377,7 +11377,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "上腹部、胸骨体下端の下方1寸、臍中央の上方7寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "胸・腹・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -11408,7 +11408,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、胸骨体と剣状突起の結合部、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "胸・腹・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -11471,7 +11471,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第3肋間と同じ高さ、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "胸・腹・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -11500,7 +11500,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第2肋間と同じ高さ、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "胸・腹・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -11529,7 +11529,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、第1肋間と同じ高さ、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "胸・腹・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -11558,7 +11558,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前胸部、胸骨角の中央、天突の下方1寸、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胸・腹・任脈部の疼痛・腫脹・運動制限",
+      "胸・腹・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -11587,7 +11587,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、頸切痕の中央、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・肩・任脈部の疼痛・腫脹・運動制限",
+      "首・肩・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -11618,7 +11618,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "前頸部、舌骨体の上方、舌骨上窩の陥凹部、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "首・肩・任脈部の疼痛・腫脹・運動制限",
+      "首・肩・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],
@@ -11649,7 +11649,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "locationDetail": "顔面部、オトガイ唇溝の中央、前正中線上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭部・顔面・任脈部の疼痛・腫脹・運動制限",
+      "頭部・顔面・任脈の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
       "局所疼痛・循環障害",
       "経脈の気血鬱滞"
     ],

@@ -1080,7 +1080,7 @@ function PracticePageContent() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
             {[
               { id: "mixed", label: "総合MIX特訓", desc: "全種別からランダム" },
-              { id: "location_to_name", label: "部位・取穴法", desc: "解剖骨性目印当て" },
+              { id: "location_to_name", label: "部位・取穴法", desc: "骨などの目印から経穴を選ぶ" },
               { id: "puncture_method", label: "施術前の安全確認", desc: "解剖・体格・禁忌の確認原則" },
               { id: "five_elements_shu", label: "五輸穴・五行", desc: "井滎輸経合・木火土金水" },
               { id: "golden_pairs", label: "伝統名配穴", desc: "登録された配穴例" },
@@ -1123,7 +1123,7 @@ function PracticePageContent() {
             </h2>
             <p className="text-xs text-white/80 max-w-md">
               {summary.dueReviewCount > 0
-                ? "過去に学んだ経穴の間隔復習期日です。想起することで記憶を強固にします。"
+                ? "以前学んだ経穴を復習する日です。答えを見ずに思い出せるか、問題で確かめましょう。"
                 : "手の太陰肺経など、5〜10穴の小ユニットから手軽にスタートできます。"}
             </p>
           </div>

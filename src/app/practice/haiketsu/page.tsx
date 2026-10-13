@@ -127,7 +127,7 @@ export default function HaiketsuPracticePage() {
     const stored = saveDraftPatientNote({
       sourceTool: "配穴設計",
       selectedPointsInput: pointNames.join(", "),
-      treatmentPlan: `【配穴設計処方】\n処方名: ${getPrescriptionMemoTitle(pointNames, prescriptionTitle, isPremium)}\n${isPremium ? "選定理由・方針" : "教材例の説明（現在の配穴の選定理由ではありません）"}: ${rationaleText || "未記入"}\n構成分析: 本治${analysis.rootCount}穴・標治${analysis.branchCount}穴（計${pointNames.length}穴）\n※配穴設計演習からの下書きです。確定診断や固定意図ではありません。`,
+      treatmentPlan: `【配穴設計処方】\n処方名: ${getPrescriptionMemoTitle(pointNames, prescriptionTitle, isPremium)}\n${isPremium ? "選定理由・方針" : "教材例の説明（現在の配穴の選定理由ではありません）"}: ${rationaleText || "未記入"}\n構成分析: 本治${analysis.rootCount}穴・標治${analysis.branchCount}穴（計${pointNames.length}穴）\n※配穴設計演習からの下書きです。診断や治療方針を確定するものではありません。`,
     });
     if (!stored) { alert('下書きを保存できませんでした。この画面で選択を保持しています。'); return; }
     trackEvent("note_save_success", { tool_id: "haiketsu", destination_type: "note" });
@@ -320,7 +320,7 @@ export default function HaiketsuPracticePage() {
               <div className="space-y-1.5 pt-2 border-t border-[#E5DEC9] dark:border-[#2A3B4A]">
                 <div className="flex justify-between text-xs">
                   <span className="text-[#1E3D34] dark:text-[#74BA9E] font-bold">
-                    本治（体質根本）: {analysis.rootCount}穴
+                    本治（伝統理論上の全身・背景の病態を検討）: {analysis.rootCount}穴
                   </span>
                   <span className="text-[#B86924] dark:text-[#E6C387] font-bold">
                     標治（局所対症）: {analysis.branchCount}穴

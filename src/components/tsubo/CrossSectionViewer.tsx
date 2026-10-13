@@ -160,7 +160,7 @@ export default function CrossSectionViewer({
                   )}
                   {item.unconfirmedOrReserved && (
                     <div className="text-[11px] text-[#A83629] dark:text-[#E57373]">
-                      <span className="font-semibold">保留・未補間項目：</span>
+                      <span className="font-semibold">図に反映していない項目：</span>
                       {item.unconfirmedOrReserved}
                     </div>
                   )}

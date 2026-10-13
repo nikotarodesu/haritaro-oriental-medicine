@@ -14,7 +14,7 @@ export default function PathomechanismComparison() {
     <section id="concept-comparison" aria-labelledby="concept-comparison-title" className="scroll-mt-28 space-y-4 rounded-2xl border border-[#D9E3DD] bg-[#FCFAF6] p-5 dark:border-[#2A3B4A] dark:bg-[#17212A] sm:p-6">
       <h2 id="concept-comparison-title" className="font-serif text-xl font-bold">病因・病機・症状・証を、同じ例で比べる</h2>
       <p className="leading-relaxed">架空例：Aさんは「先週から残業が増え、夕食後にみぞおちが張って、げっぷが出る」と話しました。痛みの強さ、服薬、診察・検査結果はまだ記載されていません。</p>
-      <p className="text-sm leading-relaxed ui-muted">まず本人の報告を取り出し、その後に背景の候補、変化を説明する仮説、現時点の分類を比べます。</p>
+      <p className="text-sm leading-relaxed ui-muted">まず、本人が話した症状や経過を整理します。そのうえで、病因（発症・悪化に関わった可能性のある背景）、病機（働きの変化を説明する仮説）、証（現時点での分類）を区別して考えます。</p>
       <div role="table" aria-label="同じ架空例による四つの概念の比較" className="grid gap-3">
         {rows.map(row => <div role="row" key={row.term} className="grid gap-2 rounded-xl border border-[#D9E3DD] p-4 dark:border-[#2A3B4A] sm:grid-cols-[6rem_1fr]">
           <div role="rowheader" className="font-bold text-[#184F49] dark:text-[#9CCBBC]">{row.term}</div>

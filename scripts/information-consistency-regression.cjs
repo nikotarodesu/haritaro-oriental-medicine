@@ -109,7 +109,7 @@ for (const id of foundationIds) {
 assert.match(lesson(qiIds[0]).contentMarkdown, /気をATP.*置き換えることはできません/);
 assert.match(lesson(qiIds[1]).contentMarkdown, /血の各定義.*逐語照合.*扱っていません/);
 assert.match(lesson(qiIds[2]).contentMarkdown, /細胞外液.*細胞内液.*定義ではありません/);
-assert.match(lesson(qiIds[2]).contentMarkdown, /水分量.*薬.*自己判断で変更しません/);
+assert.match(lesson(qiIds[2]).contentMarkdown, /(?:水分量|水分摂取量).*薬.*自己判断で(?:変更しません|変えないでください)/);
 assert.match(lesson(qiIds[3]).contentMarkdown, /用語・モデルの説明/);
 assert.match(lesson(qiIds[3]).contentMarkdown, /学習上の比喩/);
 assert.match(lesson(qiIds[3]).contentMarkdown, /測定や研究の結果/);

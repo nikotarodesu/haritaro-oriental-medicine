@@ -237,7 +237,7 @@ export function generateHowToLocate(master: AcupointMaster): string[] {
     } else if (cleanDetail.includes("腰") || cleanDetail.includes("仙") || cleanDetail.includes("腸骨")) {
       step2 = "左右の腸骨稜の最高点を結ぶヤコビー線（第4腰椎棘突起）、または仙骨角・後上腸骨棘を目印に位置を定めます。";
     } else {
-      step2 = "脊椎棘突起（大椎・肩甲棘・肩甲骨下角）の高さを触診し、後正中線からの側方寸法（1.5寸または3寸ライン）を定めます。";
+      step2 = "大椎、肩甲棘、肩甲骨下角などを目印に脊椎の高さを確認し、後正中線から外側への距離（1.5寸または3寸）を定めます。";
     }
   } else if (master.bodyPart === "首・肩") {
     step2 = "頸椎棘突起、胸鎖乳突筋、肩甲棘、鎖骨などの骨・筋の境界を目印として触診します。";
@@ -273,12 +273,12 @@ export function generateHowToLocate(master: AcupointMaster): string[] {
     } else if (cleanDetail.includes("膝蓋") || cleanDetail.includes("膝関節") || cleanDetail.includes("膝窩")) {
       step2 = "膝関節裂隙、膝蓋骨下縁（膝蓋靭帯）、または膝窩横紋（半腱様筋腱・大腿二頭筋腱）を触知して高さを定めます。";
     } else {
-      step2 = "脛骨前縁・内側面、腓骨骨縁、内果・外果（くるぶし）、アキレス腱などの骨性指標を触知し、高さを測ります。";
+      step2 = "脛骨の前縁・内側面、腓骨の縁、内果・外果（くるぶし）、アキレス腱など、骨や腱の目印を触診して高さを測ります。";
     }
   }
 
   // Step 3: WHO標準位置に基づく決定と反応点の触診
-  const step3 = `WHO標準部位（${cleanDetail}）を指標とし、指腹で丁寧に骨際や筋間の陥凹部を探り、圧迫時に特有の響き（酸脹感）や緊張・くぼみを感じる部位に決定します。`;
+  const step3 = `WHO標準部位の記載（${cleanDetail}）と、骨・筋・腱などの目印を照らし合わせて位置を確認します。圧痛や響きの有無だけで位置を決めないでください。`;
 
   return [step1, step2, step3];
 }

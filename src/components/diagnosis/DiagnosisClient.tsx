@@ -1119,13 +1119,13 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
           <div className="text-center space-y-3 max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3E1CB] dark:border-[#423321] text-[#B86924] dark:text-[#E6C387] text-xs font-semibold tracking-wider">
               <Activity className="w-3.5 h-3.5 text-[#B86924]" />
-              <span>『素問』宣明五気篇準拠 動作偏向・中庸セルフケア</span>
+              <span>『素問』の五労を参考に、生活動作の偏りを振り返る</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
               五労チェッカー（久視・久臥・久坐・久立・久行）
             </h1>
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              「久視（長時間の画面注視）」「久坐（長時間の座位）」「久立（立ち仕事）」「久行（歩き回り）」「久臥（休日の寝だめ）」の偏り動作から、五臓への負担傾向を整理し、<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「五行を回す中庸セルフケア」</strong>を提案します。
+              「久視・久坐・久立・久行・久臥」の五労を参考に、見る・座る・立つ・歩く・横になるといった生活動作の偏りを振り返り、<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「生活動作の偏りを見直すための工夫」</strong>を提案します。
             </p>
           </div>
 

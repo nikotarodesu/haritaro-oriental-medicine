@@ -306,7 +306,7 @@ export const REFLECTION_LECTURES: ReadonlyArray<{id: string; title: string}> = [
   },
   {
     "id": "lecture-treatment-7",
-    "title": "臓腑の機能に介入する"
+    "title": "臓腑の役割から治法を考える"
   },
   {
     "id": "lecture-treatment-8",
@@ -354,7 +354,7 @@ export const REFLECTION_LECTURES: ReadonlyArray<{id: string; title: string}> = [
   },
   {
     "id": "lecture-practice-7",
-    "title": "方法・配穴・刺激条件を計画する"
+    "title": "方法の候補と施術前の確認事項を比較する"
   },
   {
     "id": "lecture-practice-8",

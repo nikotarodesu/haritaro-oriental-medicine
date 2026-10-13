@@ -542,7 +542,7 @@ export default function TsuboInteractiveClient() {
                   className="rounded border-[#D8CFC0] text-[#1E3D34] focus:ring-[#1E3D34]"
                 />
                 <span className="text-[#333835] dark:text-[#C5D2DB] font-medium">
-                  精密断面図解つき（{publishedCount}穴）のみ表示
+                  主要経穴（{publishedCount}穴）のみ表示
                 </span>
               </label>
 
@@ -570,7 +570,7 @@ export default function TsuboInteractiveClient() {
             >
               <option value="meridian">流注順（経絡順）</option>
               <option value="kana">五十音順</option>
-              <option value="detailed">図解充実度順</option>
+              <option value="detailed">主要経穴を先に表示</option>
             </select>
 
             {/* 表示モード（グリッド／テーブル） */}
