@@ -12,6 +12,8 @@ import {
 } from "@/data/tsubo";
 import { 
   Compass, 
+  SlidersHorizontal,
+  ChevronDown,
   Search, 
   ArrowRight, 
   Bookmark, 
@@ -79,8 +81,9 @@ export default function TsuboInteractiveClient() {
   const [pageSize] = useState<number>(24);
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
 
-  // 人体図・フィルターの開閉ステート（検索クエリがある場合は初期折りたたみ）
+  // 部位の図と詳細条件は、それぞれ開閉できる。
   const [showBodyMap, setShowBodyMap] = useState<boolean>(!initialQ);
+  const [showFilters, setShowFilters] = useState(initialMeridian !== "すべて" || initialCategory !== "すべて" || initialPublished);
 
   const { memos } = useClinicalMemo();
   const savedTsuboMemos = useMemo(() => memos.filter((m) => m.type === "tsubo"), [memos]);
@@ -101,15 +104,6 @@ export default function TsuboInteractiveClient() {
       prevQueryRef.current = searchQuery;
     }
   }, [searchQuery]);
-
-  // 部位ごとの経穴数を集計
-  const pointCountsByPart = useMemo(() => {
-    const counts: Record<string, number> = {};
-    allPoints.forEach((p) => {
-      counts[p.bodyPart] = (counts[p.bodyPart] || 0) + 1;
-    });
-    return counts;
-  }, [allPoints]);
 
   // URLクエリ変更の検知（ブラウザバック・フォワード・リンク遷移時の同期）
   useEffect(() => {
@@ -317,7 +311,7 @@ export default function TsuboInteractiveClient() {
   const hasActiveFilters = hasSearchQuery || hasSelectionFilters;
 
   return (
-    <div className="space-y-8 sm:space-y-12">
+    <div className="tsubo-search-layout space-y-8">
       <ClinicalToolBridge />
       {/* 大型検索バー（最優先配置） */}
       <section className="max-w-4xl mx-auto space-y-3">
@@ -352,139 +346,30 @@ export default function TsuboInteractiveClient() {
           例：合谷、ごうこく、LI4、頭痛
         </p>
 
-        {/* 検索直下のサマリー ＆ 人体図トグルバー */}
-        <div className="flex flex-wrap items-center justify-between gap-2.5 px-1">
-          <div className="flex flex-wrap items-center gap-2 text-sm">
-            <p role="status" aria-live="polite" aria-atomic="true">
-              {searchQuery.trim() ? (
-                <span className="text-[#333835] dark:text-[#C5D2DB]">
-                  「<strong className="text-[#1E3D34] dark:text-[#74BA9E] font-bold">{searchQuery.trim()}</strong>」の検索結果：
-                  該当 <strong className="font-mono text-sm text-[#1E3D34] dark:text-[#74BA9E]">{totalItems}</strong> 穴
-                </span>
-              ) : (
-                <span className="text-[#59615D] dark:text-[#A0B0BC]">
-                  全361穴から絞り込み中：該当 <strong className="font-mono text-sm text-[#1E3D34] dark:text-[#74BA9E]">{totalItems}</strong> 穴
-                </span>
-              )}
-            </p>
-
-            {searchQuery.trim() && (
-              <button
-                type="button"
-                onClick={clearSearchQuery}
-                className="inline-flex min-h-11 items-center gap-1 px-2.5 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#182823] border border-[#D8CFC0] dark:border-[#2A5243] text-[#B86924] dark:text-[#E6C387] font-bold hover:bg-white text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
-              >
-                <X className="w-3.5 h-3.5" />
-                <span>検索解除</span>
-              </button>
-            )}
-          </div>
-
-          {/* 人体図・フィルターの開閉ボタン */}
+        <div className="tsubo-filter-toggles">
           <button
             type="button"
             onClick={() => setShowBodyMap(!showBodyMap)}
             aria-expanded={showBodyMap}
-            className="inline-flex min-h-11 items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A] text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#FAF8F5] dark:hover:bg-[#1f2c38] transition-colors shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
+            aria-controls="tsubo-body-filter"
+            className="tsubo-filter-toggle"
           >
-            <Compass className="w-3.5 h-3.5" />
-            <span>{showBodyMap ? "人体図・詳細条件を閉じる ▲" : "人体図・部位から探す ▼"}</span>
+            <Compass aria-hidden="true" className="h-4 w-4" />
+            <span>部位から探す</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" />
           </button>
+          <button type="button" onClick={() => setShowFilters(!showFilters)} aria-expanded={showFilters} aria-controls="tsubo-detail-filters" className="tsubo-filter-toggle"><SlidersHorizontal aria-hidden="true" className="h-4 w-4" /><span>詳細条件</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" /></button>
         </div>
-
-        {hasActiveFilters && (
-          <div className="flex flex-wrap gap-2">
-            {hasSelectionFilters && hasSearchQuery && <button type="button" onClick={resetSelectionFilters} className="inline-flex min-h-11 items-center rounded-lg border border-[#C5DED4] px-3 py-2 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A5243] dark:text-[#83BEA8] dark:hover:bg-[#182823]">検索語を保って条件を解除</button>}
-            <button type="button" onClick={resetAllFilters} className="inline-flex min-h-11 items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold text-[#1E3D34] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-[#83BEA8]"><RotateCcw aria-hidden="true" className="h-4 w-4" />検索・条件をすべて解除</button>
-          </div>
-        )}
-
-        {/* 常時アクセス可能な要穴クイックピルフィルター */}
-        <div className="flex flex-wrap items-center gap-1.5 pb-1 pt-1.5 text-xs">
-          <span className="text-[11px] font-bold text-[#737C77] dark:text-[#8899A6] shrink-0">
-            要穴絞り込み:
-          </span>
-          {["すべて", "原穴", "郄穴", "絡穴", "募穴", "背部兪穴", "四総穴", "八会穴"].map((cat) => {
-            const isSelected = selectedCategory === cat;
-            return (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => setSelectedCategory(cat)}
-                className={`min-h-11 px-3 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                  isSelected
-                    ? "bg-[#B86924] text-white shadow-2xs dark:bg-[#9C5417]"
-                    : "bg-white/80 dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#A0B0BC] hover:border-[#B86924] hover:text-[#B86924]"
-                }`}
-              >
-                {cat}
-              </button>
-            );
-          })}
-        </div>
+        {hasSelectionFilters && <p className="tsubo-active-filters">選択中：{[selectedBodyPart !== 'すべて' && selectedBodyPart, selectedMeridian !== 'すべて' && selectedMeridian, selectedCategory !== 'すべて' && selectedCategory, onlyPublished && '主要経穴のみ'].filter(Boolean).join('・')}</p>}
       </section>
 
-      {/* 「2穴比較／今日の復習／奇経八脈」コンパクトナビゲーション */}
-      <section className="max-w-4xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5 text-xs">
-          <Link
-            href="/tsubo/compare"
-            className="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all flex items-center justify-between group shadow-xs"
-          >
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0">
-                <GitCompare className="w-3.5 h-3.5" />
-              </div>
-              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
-                2穴を比べる
-              </span>
-            </div>
-            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform shrink-0" />
-          </Link>
-
-          <Link
-            href="/tsubo/practice"
-            className="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all flex items-center justify-between group shadow-xs"
-          >
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="w-7 h-7 rounded-lg bg-[#FCF4EB] dark:bg-[#281E15] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0">
-                <BookOpen className="w-3.5 h-3.5" />
-              </div>
-              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387]">
-                今日の復習
-              </span>
-            </div>
-            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform shrink-0" />
-          </Link>
-
-          <Link
-            href="/kikei"
-            className="p-2.5 sm:p-3 rounded-2xl bg-gradient-to-r from-[#FCF4EB] to-[#FAF8F5] dark:from-[#261B12] dark:to-[#17212A] border border-[#F2DEB0] dark:border-[#4D361F] hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all flex items-center justify-between group shadow-xs"
-          >
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="w-7 h-7 rounded-lg bg-[#B86924] dark:bg-[#D48239] text-white flex items-center justify-center shrink-0 shadow-2xs">
-                <GitCommit className="w-3.5 h-3.5" />
-              </div>
-              <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] group-hover:underline truncate">
-                奇経八脈
-              </span>
-            </div>
-            <ArrowRight className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387] group-hover:translate-x-0.5 transition-transform shrink-0" />
-          </Link>
-        </div>
-      </section>
-
-      {/* 人体図セレクター ＆ 経脈・要穴フィルター（折りたたみ対応） */}
-      {showBodyMap && (
-        <section className="space-y-5 animate-in fade-in duration-200">
+      <section id="tsubo-body-filter" hidden={!showBodyMap}>
           <BodyMapSvg
             selectedBodyPart={selectedBodyPart}
             onSelectBodyPart={(part) => setSelectedBodyPart(part)}
-            pointCountsByPart={pointCountsByPart}
           />
-
-          {/* 経絡・要穴フィルターカード */}
-          <div className="bg-[#FFFFFF] dark:bg-[#15202B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 shadow-xs space-y-4 transition-colors">
+      </section>
+      <section id="tsubo-detail-filters" hidden={!showFilters} aria-label="経脈・要穴の詳細条件" className="tsubo-detail-filters">
+          <div className="space-y-5">
             
             {/* 十四経脈フィルター */}
             <div className="space-y-1.5">
@@ -497,6 +382,7 @@ export default function TsuboInteractiveClient() {
                     key={mer}
                     type="button"
                     onClick={() => setSelectedMeridian(mer)}
+                    aria-pressed={selectedMeridian === mer}
                     className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg border text-xs transition-all ${
                       selectedMeridian === mer
                         ? "bg-[#1E3D34] text-white border-[#1E3D34] dark:bg-[#2B6958] font-bold shadow-xs"
@@ -520,6 +406,7 @@ export default function TsuboInteractiveClient() {
                     key={cat}
                     type="button"
                     onClick={() => setSelectedCategory(cat)}
+                    aria-pressed={selectedCategory === cat}
                     className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg border text-xs transition-all ${
                       selectedCategory === cat
                         ? "bg-[#B86924] text-white border-[#B86924] dark:bg-[#9C5417] font-bold shadow-xs"
@@ -548,23 +435,22 @@ export default function TsuboInteractiveClient() {
 
             </div>
           </div>
-        </section>
-      )}
+      </section>
 
       {/* 経穴一覧セクション */}
       <section id="tsubo-list" className="space-y-4">
         {/* 一覧上部コントロールバー */}
-        <div className="flex flex-wrap items-center justify-between gap-3 px-1">
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-[#59615D] dark:text-[#A0B0BC]">
-              表示件数：<strong className="text-[#1E3D34] dark:text-[#74BA9E] font-bold">{totalItems}</strong> 穴
-            </span>
+        <div className="tsubo-results-toolbar">
+          <div className="min-w-0 space-y-1">
+            <p role="status" aria-live="polite" aria-atomic="true" className="tsubo-result-count">{hasSearchQuery ? `「${searchQuery.trim()}」：` : hasSelectionFilters ? '該当：' : '全'}<strong>{totalItems}</strong>穴</p>
+            {hasActiveFilters && totalItems > 0 && <div className="tsubo-reset-actions">{hasSelectionFilters && hasSearchQuery && <button type="button" onClick={resetSelectionFilters}>検索語を保って条件を解除</button>}<button type="button" onClick={resetAllFilters}><RotateCcw aria-hidden="true" className="h-4 w-4" />検索・条件をすべて解除</button></div>}
           </div>
 
           <div className="flex items-center gap-2 text-xs">
             {/* 並び順 */}
             <select
               value={sortOption}
+              aria-label="経穴の並び順"
               onChange={(e) => setSortOption(e.target.value as SortOption)}
               className="bg-white dark:bg-[#17212A] border border-[#D8CFC0] dark:border-[#2A3B4A] rounded-lg px-2.5 py-1 text-xs text-[#333835] dark:text-[#C5D2DB]"
             >
@@ -580,6 +466,7 @@ export default function TsuboInteractiveClient() {
                 onClick={() => setViewMode("grid")}
                 className={`p-1.5 ${viewMode === "grid" ? "bg-[#1E3D34] text-white" : "text-[#737C77]"}`}
                 title="グリッド表示"
+                aria-pressed={viewMode === "grid"}
               >
                 <LayoutGrid className="w-3.5 h-3.5" />
               </button>
@@ -588,6 +475,7 @@ export default function TsuboInteractiveClient() {
                 onClick={() => setViewMode("table")}
                 className={`p-1.5 ${viewMode === "table" ? "bg-[#1E3D34] text-white" : "text-[#737C77]"}`}
                 title="テーブル表示"
+                aria-pressed={viewMode === "table"}
               >
                 <List className="w-3.5 h-3.5" />
               </button>
@@ -785,6 +673,56 @@ export default function TsuboInteractiveClient() {
             </button>
           </div>
         )}
+      </section>
+
+      {/* 「2穴比較／今日の復習／奇経八脈」コンパクトナビゲーション */}
+      <section className="max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5 text-xs">
+          <Link
+            href="/tsubo/compare"
+            className="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all flex items-center justify-between group shadow-xs"
+          >
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0">
+                <GitCompare className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
+                2穴を比べる
+              </span>
+            </div>
+            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform shrink-0" />
+          </Link>
+
+          <Link
+            href="/tsubo/practice"
+            className="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all flex items-center justify-between group shadow-xs"
+          >
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-[#FCF4EB] dark:bg-[#281E15] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0">
+                <BookOpen className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387]">
+                今日の復習
+              </span>
+            </div>
+            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform shrink-0" />
+          </Link>
+
+          <Link
+            href="/kikei"
+            className="p-2.5 sm:p-3 rounded-2xl bg-gradient-to-r from-[#FCF4EB] to-[#FAF8F5] dark:from-[#261B12] dark:to-[#17212A] border border-[#F2DEB0] dark:border-[#4D361F] hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all flex items-center justify-between group shadow-xs"
+          >
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-[#B86924] dark:bg-[#D48239] text-white flex items-center justify-center shrink-0 shadow-2xs">
+                <GitCommit className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] group-hover:underline truncate">
+                奇経八脈
+              </span>
+            </div>
+            <ArrowRight className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387] group-hover:translate-x-0.5 transition-transform shrink-0" />
+          </Link>
+        </div>
       </section>
 
       {/* 保存済み経穴 */}

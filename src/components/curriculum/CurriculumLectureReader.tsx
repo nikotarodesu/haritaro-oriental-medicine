@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Lecture } from "@/data/curriculumData";
 import ChapterEmblem from "@/components/graphics/ChapterEmblem";
+import ArticleCover from "@/components/articles/ArticleCover";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
 import MarkdownBody from "@/components/MarkdownBody";
@@ -435,20 +436,22 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
 
         {articleReadingLinks.length > 0 && (
           <nav aria-label="この講義に関連する記事" className="border-t border-[#E5DEC9] dark:border-[#2A3B4A] pt-5">
-            <p className="text-base font-semibold text-[#1E3D34] dark:text-[#83BEA8]">関連する記事で読み深める</p>
+            <p className="text-base font-semibold text-[#1E3D34] dark:text-[#83BEA8]">関連する記事</p>
             <div className="mt-2 divide-y divide-[#E5DEC9] dark:divide-[#2A3B4A]">
               {articleReadingLinks.map((reading) => (
                 <Link
                   key={reading.href}
                   href={reading.href}
-                  className="group block min-h-11 rounded-lg py-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]"
+                  className="curriculum-related-link group focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]"
                 >
-                  <div className="flex items-start justify-between gap-3 text-base font-semibold leading-relaxed text-[#1E3D34] dark:text-[#83BEA8]">
+                  {/^\/articles\/[^/?#]+(?:[?#].*)?$/.test(reading.href) && <ArticleCover articleId={reading.href.split(/[?#]/)[0].slice('/articles/'.length)} className="curriculum-article-thumbnail" />}
+                  <div className="min-w-0">
+                    <div className="text-base font-semibold leading-relaxed text-[#1E3D34] dark:text-[#83BEA8]">
                     <span className="group-hover:underline underline-offset-4">{reading.title}</span>
-                    <ArrowRight aria-hidden="true" className="mt-1 h-4 w-4 shrink-0" />
+                    </div>
+                    {reading.meta && <span className="mt-1 block text-sm text-[#59615D] dark:text-[#A0B0BC]">{reading.meta}</span>}
                   </div>
-                  <p className="mt-1 text-base leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">{reading.description}</p>
-                  {reading.meta && <span className="mt-1 block text-sm text-[#59615D] dark:text-[#A0B0BC]">{reading.meta}</span>}
+                  <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
                 </Link>
               ))}
             </div>
@@ -461,11 +464,8 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E8DEC9] dark:border-[#223342] pb-2.5">
               <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                 <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-                <span>国家試験の学習で確認したい基礎（はり師・きゅう師・あはき）</span>
+                <span>国家試験の基礎確認</span>
               </div>
-              <span className="text-sm font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
-                基礎の確認
-              </span>
             </div>
             <ul className="space-y-2 text-base text-[#333835] dark:text-[#C5D2DB]">
               {lecture.nationalExamPoints.map((pt, idx) => (
@@ -522,78 +522,6 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
         )}
 
         {chapterAssessment && <ChapterAssessment assessment={chapterAssessment} />}
-
-        {/* 参考文献・学術エビデンス */}
-        <ArticleReferences references={resolvedReferences} scopeNote={lecture.evidenceScope} />
-        <section aria-label="講義の学習振り返り" className="rounded-2xl border border-[#C5DED4] bg-[#EBF3EF] p-4 sm:p-5 dark:border-[#2A5243] dark:bg-[#182823]">
-          <h2 className="text-lg font-bold text-[#184F49] dark:text-[#9CCBBC]">学んだことを、自分の言葉で残す</h2>
-          <p className="mt-2 text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">押さえた要点、まだ迷うこと、次に確認することを記録して、後から振り返れます。</p>
-          <Link href={buildLearningReflectionHref({ type: 'lecture', id: lecture.id })} onClick={() => trackEvent('context_link_click', { placement: 'lecture_reflection', lecture_id: lecture.id, item_type: 'learning_note' })} className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#184F49] px-4 py-3 text-base font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-4 dark:bg-[#285F54]"><FileText aria-hidden="true" className="h-4 w-4" />学習の振り返りを書く<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link>
-        </section>
-
-        {/* 既習の段階に合わせて、復習と症例演習を案内する。 */}
-        {!isClinicalStage ? (
-          <section aria-label="基礎を振り返る" className="rounded-2xl border border-[#C5DED4] bg-[#FAF8F5] p-4 sm:p-5 dark:border-[#2A5243] dark:bg-[#17212A]">
-            <h2 className="text-lg font-bold text-[#1E3D34] dark:text-[#74BA9E]">学んだ用語を、短い例でもう一度確かめる</h2>
-            <p className="mt-2 text-base leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">用語の意味を自分の言葉で説明し、事実と解釈を分けてみましょう。詳しい病態や治療方針は、後の章で学びます。</p>
-            <div className="mt-3 flex flex-wrap gap-3">
-              <Link href="/learn" className="inline-flex min-h-11 items-center font-semibold text-[#1E3D34] underline underline-offset-4 dark:text-[#74BA9E]">学習ガイドを見る</Link>
-              <Link href="/glossary" className="inline-flex min-h-11 items-center font-semibold text-[#1E3D34] underline underline-offset-4 dark:text-[#74BA9E]">用語辞典で振り返る</Link>
-              {courseJourney && <Link href={`/learn/courses/${courseJourney.course.slug}#course-mini-case-${courseJourney.course.seriesId}`} className="inline-flex min-h-11 items-center font-semibold text-[#1E3D34] underline underline-offset-4 dark:text-[#74BA9E]">このコースの短い例で考える</Link>}
-            </div>
-          </section>
-        ) : <div className="bg-gradient-to-r from-[#FAF8F5] to-[#EBF3EF] dark:from-[#17212A] dark:to-[#13221C] rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] p-4 sm:p-5 shadow-2xs space-y-3">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-              架空例で、情報整理と判断の根拠を練習する
-            </span>
-            <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
-              後半の学習を振り返る
-            </span>
-          </div>
-
-          <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-            講義で学んだ概念を使って、教材の所見・解釈・不足情報を分けてみましょう。追加情報によって仮説を見直す練習につなげます。
-          </p>
-
-          <div className="flex flex-wrap gap-2.5 pt-1">
-            <Link
-              href="/diagnosis"
-              className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#C5DED4] dark:border-[#2A5243] hover:border-[#1E3D34] text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs"
-            >
-              <span>気血水体質チェックで点検</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-
-            <Link
-              href="/simulator#case-training"
-              className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#F2D7B3] dark:border-[#4D331F] hover:border-[#B86924] text-sm font-bold text-[#B86924] dark:text-[#E6C387] transition-all inline-flex items-center gap-1.5 shadow-2xs"
-            >
-              <Layers className="w-3.5 h-3.5" />
-              <span>6段階の症例演習で振り返る</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-
-            <Link
-              href="/practice/haiketsu"
-              className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-sm font-bold text-[#59615D] dark:text-[#A0B0BC] transition-all inline-flex items-center gap-1.5 shadow-2xs"
-            >
-              <span>配穴設計ツール</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-
-            <button
-              type="button"
-              onClick={handleSaveToNote}
-              className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#1E3D34]/40 dark:border-[#74BA9E]/40 hover:border-[#1E3D34] text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs cursor-pointer"
-            >
-              <FileText className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>この講義を臨床ノートに記録</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>}
 
         {/* 講義受講修了フッター */}
         <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
@@ -668,6 +596,80 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
             )}
           </div>
         </div>
+
+        {/* 参考文献・学術エビデンス */}
+        <ArticleReferences references={resolvedReferences} scopeNote={lecture.evidenceScope} />
+        <Link href={buildLearningReflectionHref({ type: 'lecture', id: lecture.id })} onClick={() => trackEvent('context_link_click', { placement: 'lecture_reflection', lecture_id: lecture.id, item_type: 'learning_note' })} className="curriculum-reflection-link"><FileText aria-hidden="true" className="h-4 w-4" />学習の振り返りを書く<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link>
+
+        {/* 既習の段階に合わせて、復習と症例演習を案内する。 */}
+        <details className="curriculum-lecture-support">
+          <summary>復習・関連ツール</summary>
+          <div className="pt-3">
+        {!isClinicalStage ? (
+          <section aria-label="基礎を振り返る" className="rounded-2xl border border-[#C5DED4] bg-[#FAF8F5] p-4 sm:p-5 dark:border-[#2A5243] dark:bg-[#17212A]">
+            <h2 className="text-lg font-bold text-[#1E3D34] dark:text-[#74BA9E]">学んだ用語を、短い例でもう一度確かめる</h2>
+            <p className="mt-2 text-base leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">用語の意味を自分の言葉で説明し、事実と解釈を分けてみましょう。詳しい病態や治療方針は、後の章で学びます。</p>
+            <div className="mt-3 flex flex-wrap gap-3">
+              <Link href="/learn" className="inline-flex min-h-11 items-center font-semibold text-[#1E3D34] underline underline-offset-4 dark:text-[#74BA9E]">学習ガイドを見る</Link>
+              <Link href="/glossary" className="inline-flex min-h-11 items-center font-semibold text-[#1E3D34] underline underline-offset-4 dark:text-[#74BA9E]">用語辞典で振り返る</Link>
+              {courseJourney && <Link href={`/learn/courses/${courseJourney.course.slug}#course-mini-case-${courseJourney.course.seriesId}`} className="inline-flex min-h-11 items-center font-semibold text-[#1E3D34] underline underline-offset-4 dark:text-[#74BA9E]">このコースの短い例で考える</Link>}
+            </div>
+          </section>
+        ) : <div className="bg-gradient-to-r from-[#FAF8F5] to-[#EBF3EF] dark:from-[#17212A] dark:to-[#13221C] rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] p-4 sm:p-5 shadow-2xs space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+              架空例で、情報整理と判断の根拠を練習する
+            </span>
+            <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
+              後半の学習を振り返る
+            </span>
+          </div>
+
+          <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+            講義で学んだ概念を使って、教材の所見・解釈・不足情報を分けてみましょう。追加情報によって仮説を見直す練習につなげます。
+          </p>
+
+          <div className="flex flex-wrap gap-2.5 pt-1">
+            <Link
+              href="/diagnosis"
+              className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#C5DED4] dark:border-[#2A5243] hover:border-[#1E3D34] text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs"
+            >
+              <span>気血水体質チェックで点検</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+
+            <Link
+              href="/simulator#case-training"
+              className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#F2D7B3] dark:border-[#4D331F] hover:border-[#B86924] text-sm font-bold text-[#B86924] dark:text-[#E6C387] transition-all inline-flex items-center gap-1.5 shadow-2xs"
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>6段階の症例演習で振り返る</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+
+            <Link
+              href="/practice/haiketsu"
+              className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-sm font-bold text-[#59615D] dark:text-[#A0B0BC] transition-all inline-flex items-center gap-1.5 shadow-2xs"
+            >
+              <span>配穴設計ツール</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+
+            <button
+              type="button"
+              onClick={handleSaveToNote}
+              className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#1E3D34]/40 dark:border-[#74BA9E]/40 hover:border-[#1E3D34] text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs cursor-pointer"
+            >
+              <FileText className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
+              <span>この講義を臨床ノートに記録</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>}
+          </div>
+        </details>
+
       </article>
     </div>
   );

@@ -4,6 +4,10 @@
 @import "./curriculum-navigation.css";
 @import "./article-covers.css";
 @import "./learning-visuals.css";
+@import "./learning-density.css";
+@import "./curriculum-density.css";
+@import "./tsubo-density.css";
+@import "./reference-density.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

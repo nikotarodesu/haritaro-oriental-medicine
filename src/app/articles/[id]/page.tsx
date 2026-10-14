@@ -222,41 +222,30 @@ export default async function ArticleDetailPage({ params }: Props) {
               </p>
             )}
 
-            <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-[#59615D] dark:text-[#96A6B2] pt-2">
-              <div className="flex items-center gap-2">
-                <img
-                  src="/icon.png"
-                  alt="はり太郎"
-                  className="w-7 h-7 rounded-full object-cover border border-[#E5DEC9] dark:border-[#2A3B4A] shrink-0"
-                />
-                <div>
-                  <span className="font-semibold text-[#232826] dark:text-[#E6EFEA]">{article.author.name}</span>
-                  <span className="text-[#8A948F] dark:text-[#6A7C8B] ml-1.5">（{article.author.role}）</span>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-1.5">
-                {article.tags.map((t, idx) => (
-                  <span key={idx} className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] text-sm text-[#404743] dark:text-[#C5D2DB]">
-                    #{t}
-                  </span>
-                ))}
-              </div>
+            <div className="article-byline">
+              <span className="font-semibold">{article.author.name}</span>
+              <span>{article.updatedAt ? "更新" : "公開"} <time dateTime={article.updatedAt || article.publishedAt}>{article.updatedAt || article.publishedAt}</time></span>
             </div>
+            <details className="reference-disclosure article-information">
+              <summary>記事情報</summary>
+              <div className="reference-disclosure-body">
+                <p>{article.author.name}（{article.author.role}）</p>
+                <p>公開：<time dateTime={article.publishedAt}>{article.publishedAt}</time></p>
+                <ul className="article-information-tags" aria-label="記事のタグ">
+                  {article.tags.map(tag => <li key={tag}>#{tag}</li>)}
+                </ul>
+              </div>
+            </details>
           </header>
 
           <ArticleReadingResume articleId={article.id} revision={articleReadingRevision(article.contentMarkdown)} headings={headings.map(heading => ({ id: heading.id, text: heading.label, level: 2 }))} />
 
           <nav aria-label="この記事の読み進め方" className="page-actions">
-            <a href="#article-content" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />本文を読む</a>
-            {readingGuide?.inserts[0] && <a href={`#reading-figure-${readingGuide.inserts[0].figure.id}`} className="page-secondary-action"><Network aria-hidden="true" className="h-4 w-4" />図解を見る</a>}
+            <a href="#article-content" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />本文</a>
+            {readingGuide?.inserts[0] && <a href={`#reading-figure-${readingGuide.inserts[0].figure.id}`} className="page-secondary-action"><Network aria-hidden="true" className="h-4 w-4" />図解</a>}
             {nextArticles.length > 0 && <a href="#article-next-reading" className="page-secondary-action"><ArrowRight aria-hidden="true" className="h-4 w-4" />次に読む</a>}
-            {resolvedReferences.length > 0 && <a href="#article-references-section" className="page-secondary-action"><Bookmark aria-hidden="true" className="h-4 w-4" />出典と確認範囲</a>}
+            {resolvedReferences.length > 0 && <a href="#article-references-section" className="page-secondary-action"><Bookmark aria-hidden="true" className="h-4 w-4" />出典</a>}
           </nav>
-          <p className="text-sm text-[#59615D] dark:text-[#A0B0BC]">
-            公開：<time dateTime={article.publishedAt}>{article.publishedAt}</time>
-            {article.updatedAt && <> ／ 更新：<time dateTime={article.updatedAt}>{article.updatedAt}</time></>}
-          </p>
           <details className="page-help text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]"><summary>この記事の要点・読み方</summary><div className="space-y-3">
             <p><GlossaryRenderer text={article.summary} /></p>
             {learningGuide && <div className="border-l-2 border-[#C5DED4] dark:border-[#2A5243] pl-4 space-y-2 text-sm">
@@ -271,7 +260,7 @@ export default async function ArticleDetailPage({ params }: Props) {
             </details>
           </div></details>
           {headings.length > 0 && <details className="rounded-xl bg-[#FAF8F5] dark:bg-[#121920] px-4 py-2">
-            <summary className="flex min-h-11 items-center cursor-pointer font-bold text-[#1E3D34] dark:text-[#74BA9E]">目次：知りたいところから読む</summary>
+            <summary className="flex min-h-11 items-center cursor-pointer font-bold text-[#1E3D34] dark:text-[#74BA9E]">目次</summary>
             <nav aria-label="記事の目次" className="mt-3"><ol className="space-y-2 text-sm">
               {headings.map(heading => <li key={heading.id}><a href={"#" + heading.id} className="inline-flex min-h-11 items-center py-2 underline underline-offset-4 text-[#1E3D34] dark:text-[#74BA9E]">{heading.label}</a></li>)}
             </ol></nav>

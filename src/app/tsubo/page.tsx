@@ -40,6 +40,8 @@ export default function TsuboPage() {
       </Suspense>
 
       {/* 3. 経脈・経穴の静的索引は初期HTMLに残す */}
+      <details className="tsubo-static-index">
+      <summary>経脈別の索引・全経穴一覧</summary>
       <nav aria-label="経脈別テキスト索引" className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 shadow-xs space-y-4">
         <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
           <div className="flex items-center gap-2">
@@ -121,6 +123,7 @@ export default function TsuboPage() {
           </div>
         </details>
       </nav>
+      </details>
 
       {/* 4. 掲載範囲・資料基準・更新方針 */}
       <footer className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#EDE7D8] dark:border-[#22303D] p-4 sm:p-6 space-y-2.5 text-xs text-[#59615D] dark:text-[#A0B0BC]">

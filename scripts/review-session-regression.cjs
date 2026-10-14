@@ -80,6 +80,7 @@ const fakeReact = { ...React, useMemo: compute => compute(), useEffect() {},
   useRef(initial) { const index = cursor++; if (!(index in hooks)) hooks[index] = { current: initial }; return hooks[index]; } };
 const Link = () => null;
 const FocusReview = () => null;
+const SyncStatus = () => null;
 function client(relative) {
   const file = path.join(root, relative);
   const exports = {};
@@ -94,7 +95,8 @@ function client(relative) {
     if (name === '@/utils/analytics') return { trackEvent() {} };
     if (name === '@/data/tsubo/studyStorage') return { recordAnswerInStore() {} };
     if (name === './LearningFocusReview') return FocusReview;
-    if (name === './QuestionEvidence' || name === './LearningSyncStatus') return () => null;
+    if (name === './LearningSyncStatus') return SyncStatus;
+    if (name === './QuestionEvidence') return () => null;
     if (name.startsWith('@/')) return load('src/' + name.slice(2));
     return require(name);
   };
@@ -105,9 +107,9 @@ function client(relative) {
 const Panel = client('src/components/learning/LearningReviewPanel.tsx');
 const Card = client('src/components/learning/ReviewQuestionCard.tsx');
 let workspace, workspaceProps, tree;
-function mount() {
+function mount(props = {}) {
   hooks = []; cursor = 0;
-  const outer = Panel();
+  const outer = Panel(props);
   if (typeof outer.type !== 'function') { tree = outer; workspace = null; return; }
   workspace = outer.type; workspaceProps = outer.props; render();
 }
@@ -230,6 +232,42 @@ const savedBeforeReturn = answersSaved; mount();
 assert(text(tree).includes(acupoint.question));
 assert(text(tree).includes('正解です。'));
 assert.equal(answersSaved, savedBeforeReturn, 'acupoint restoration also never replays grading');
+
+// The compact index keeps its optional controls closed, but never hides a
+// current question, restored-session notice, or a storage/sync warning.
+session.saveReviewSession(storage, null);
+browser.location.search = '';
+progress.quizResults = { [questions[0].id]: { nextReviewDate: '2000-01-01', isCorrect: false } };
+progress.completedLectures = {};
+progress.lastVisitedLectureId = 'lecture-intro-1';
+sync = { ready: true, values: {}, status: 'local' };
+mount();
+assert(nodes(tree).some(node => node.type === Link && text(node).includes('前回の続き')), 'Normal review locations retain their resume link');
+mount({ compact: true });
+function compactDisclosure() { return nodes(tree).find(node => node.type === 'details' && node.props.className === 'curriculum-review-disclosure'); }
+function outsideDisclosure() { const inside = new Set(nodes(compactDisclosure())); return nodes(tree).filter(node => !inside.has(node)); }
+assert(compactDisclosure());
+assert(!compactDisclosure().props.open, 'Optional index review controls start collapsed');
+assert(text(nodes(compactDisclosure()).find(node => node.type === 'summary')).includes('今日の復習1問'), 'The due count is readable before opening');
+assert(!nodes(tree).some(node => node.type === Link && text(node).includes('前回の続き')), 'The compact index omits only its duplicate resume entry');
+button('今日の復習').props.onClick(); render();
+assert(outsideDisclosure().some(node => node.props?.id === 'learning-review-practice'), 'An active problem stays visible even when optional controls are closed');
+const compactSession = JSON.parse(storage.getItem(session.REVIEW_SESSION_KEY));
+browser.location.search = '?resumeReview=' + compactSession.id;
+mount({ compact: true });
+assert(outsideDisclosure().some(node => node.props?.role === 'status' && text(node).includes('中断した復習を再開しました')), 'Restored-session status is outside the disclosure');
+assert(outsideDisclosure().some(node => node.props?.id === 'learning-review-practice'), 'Restored questions are not hidden');
+sync.status = 'memory'; render();
+assert(outsideDisclosure().some(node => node.type === SyncStatus), 'Failed durable storage keeps the sync warning outside the disclosure');
+browser.sessionStorage = unavailable;
+button(questions[0].options[0]).props.onClick(); render();
+assert(outsideDisclosure().some(node => node.props?.role === 'status' && text(node).includes('途中状態を一時保存できません')), 'Temporary checkpoint failures remain visible');
+browser.sessionStorage = storage;
+session.saveReviewSession(storage, null);
+browser.location.search = '';
+storage.setItem(session.REVIEW_SESSION_KEY, 'invalid');
+mount({ compact: true });
+assert(outsideDisclosure().some(node => node.props?.role === 'status' && text(node).includes('再開できません')), 'Invalid checkpoint feedback remains visible');
 
 // Execute the actual lecture key handler, extracted with the TypeScript AST.
 const readerFile = path.join(root, 'src/components/curriculum/CurriculumLectureReader.tsx');

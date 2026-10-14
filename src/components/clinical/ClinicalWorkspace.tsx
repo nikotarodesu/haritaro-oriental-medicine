@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import PageIntro from '@/components/design/PageIntro';
-import { ShieldCheck, ClipboardList, GitCompare, MapPin, NotebookPen, RotateCcw } from 'lucide-react';
+import { ShieldCheck, ClipboardList, GitCompare, MapPin, NotebookPen, RotateCcw, CheckCircle2, CircleDashed, GitFork, Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { CLINICAL_SIGNS, CLINICAL_PATTERNS, CLINICAL_COMPLAINTS, compareClinicalPattern, type ClinicalSignId } from '@/data/clinicalWorkflow';
 import { ACUPOINTS_MASTER } from '@/data/tsubo/acupointsMaster';
@@ -13,6 +13,12 @@ import ClinicalEvidenceKey from './ClinicalEvidenceKey';
 
 const STEPS = ['主訴・安全確認', '四診所見', '候補・治法', '配穴の理由', '記録・再評価'];
 const STEP_ICONS = [ShieldCheck, ClipboardList, GitCompare, MapPin, NotebookPen];
+const COMPARISON_FIELDS = [
+  { key: 'supported', title: '支持する所見', icon: CheckCircle2 },
+  { key: 'missing', title: '支持所見：確認してなし', icon: CircleDashed },
+  { key: 'conflicting', title: '合いにくい所見', icon: GitFork },
+  { key: 'unknown', title: '追加確認する所見', icon: Search },
+] as const;
 const FIELD = 'w-full min-h-11 rounded-lg border border-[#C8D4CD] bg-white px-3 py-2 text-base text-[#232826] dark:border-[#496153] dark:bg-[#121B22] dark:text-[#FAF8F5]';
 const BUTTON = 'inline-flex min-h-11 items-center justify-center rounded-lg border border-[#B9CDC0] px-4 py-2 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#496153]';
 const PRIMARY = `${BUTTON} bg-[#1E3D34] text-white hover:bg-[#2B5A46] dark:bg-[#9CCDB8] dark:text-[#11291F]`;
@@ -104,12 +110,14 @@ export default function ClinicalWorkspace() {
         <label className="flex min-h-11 items-center gap-3 text-sm font-semibold"><input type="checkbox" className="h-5 w-5" checked={onlySelected} onChange={event => setOnlySelected(event.target.checked)} />選択した候補だけを並べて比較</label>
         {onlySelected && encounter.candidateIds.length === 0 && <p className="text-sm">比較する候補が未選択です。表示を戻して候補を選んでください。</p>}
         {encounter.safety !== 'reviewed' && <p className="font-semibold">安全確認が未完了、または医療評価を優先する状態です。配穴の検討は保留します。</p>}
-        <div className="grid gap-3 lg:grid-cols-2">{comparisons.filter(result => !onlySelected || encounter.candidateIds.includes(result.pattern.id)).map(result => <article key={result.pattern.id} className="space-y-3 rounded-xl border border-[#D6DED7] p-4 dark:border-[#34483C]">
-          <label className="flex min-h-11 items-center gap-3 font-bold"><input type="checkbox" checked={encounter.candidateIds.includes(result.pattern.id)} onChange={event => update({ candidateIds: event.target.checked ? [...encounter.candidateIds, result.pattern.id] : encounter.candidateIds.filter(id => id !== result.pattern.id) })} className="h-5 w-5" />{result.pattern.name}</label>
-          <dl className="space-y-2 text-sm leading-relaxed"><div><dt className="font-semibold">支持材料</dt><dd>{labels(result.supported)}</dd></div><div><dt className="font-semibold">この候補を支持する所見のうち、確認したが見られなかったもの</dt><dd>{labels(result.missing)}</dd></div><div><dt className="font-semibold">単純なモデルと合いにくい材料</dt><dd>{labels(result.conflicting)}</dd></div><div><dt className="font-semibold">追加確認</dt><dd>{labels(result.unknown)}</dd></div></dl>
-          <p className="text-sm leading-relaxed">{result.pattern.distinguish}</p><p className="text-sm">治法の学習例：{result.pattern.principle}</p>
-          <Link href={`/curriculum/${result.pattern.lectureId}`} className="inline-flex min-h-11 items-center text-sm underline">理論に戻る →</Link>
-        </article>)}</div>
+        <div className="clinical-comparison-board">
+          <div className="clinical-comparison-heading" aria-hidden="true"><span>候補</span>{COMPARISON_FIELDS.map(({ key, title, icon: Icon }) => <span key={key}><Icon aria-hidden="true" />{title}</span>)}</div>
+          {comparisons.filter(result => !onlySelected || encounter.candidateIds.includes(result.pattern.id)).map(result => <article key={result.pattern.id} className="clinical-comparison-row" data-selected={encounter.candidateIds.includes(result.pattern.id)}>
+            <label className="clinical-comparison-name"><input type="checkbox" checked={encounter.candidateIds.includes(result.pattern.id)} onChange={event => update({ candidateIds: event.target.checked ? [...encounter.candidateIds, result.pattern.id] : encounter.candidateIds.filter(id => id !== result.pattern.id) })} className="h-5 w-5 shrink-0" />{result.pattern.name}</label>
+            <dl className="clinical-comparison-fields">{COMPARISON_FIELDS.map(({ key, title, icon: Icon }) => <div key={key} className="clinical-comparison-cell" data-kind={key}><dt><Icon aria-hidden="true" />{title}</dt><dd>{labels(result[key])}</dd></div>)}</dl>
+            <div className="clinical-comparison-context"><p>{result.pattern.distinguish}</p><p>治法の学習例：{result.pattern.principle}</p><Link href={`/curriculum/${result.pattern.lectureId}`}>理論に戻る →</Link></div>
+          </article>)}
+        </div>
         <label className="block">候補の採用・保留理由と矛盾する所見<textarea maxLength={20000} rows={4} className={FIELD} value={encounter.rationale} onChange={event => update({ rationale: event.target.value })} /></label>
         <label className="block">検討する治法<input className={FIELD} value={encounter.principle} onChange={event => update({ principle: event.target.value })} placeholder="候補や不足所見を踏まえ、自分の言葉で記入" /></label>
       </>}

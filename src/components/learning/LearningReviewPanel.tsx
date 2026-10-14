@@ -31,17 +31,18 @@ const clinicalLectureIds = new Set(CURRICULUM_CHAPTERS_META
   .filter(chapter => chapter.stageId === 'stage-2' || chapter.stageId === 'stage-3')
   .flatMap(chapter => chapter.lectureIds));
 
-export default function LearningReviewPanel() {
+export default function LearningReviewPanel({ compact = false }: { compact?: boolean } = {}) {
   const { user, isLoading } = useAuth();
   const { isMounted } = useCurriculumProgress();
   // Mount only after the current owner's catalog is ready. Never render the previous owner's answers.
   if (isLoading || !isMounted) return <section id="learning-review" className="scroll-mt-24 p-4" role="status">学習履歴を確認しています。</section>;
-  return <ReviewWorkspace key={user?.id || 'guest'} owner={user?.id || 'guest'} />;
+  return <ReviewWorkspace key={user?.id || 'guest'} owner={user?.id || 'guest'} compact={compact} />;
 }
 
-function ReviewWorkspace({ owner }: { owner: string }) {
+function ReviewWorkspace({ owner, compact }: { owner: string; compact: boolean }) {
   const { quizResults, quizHistory, saveQuizResult, completedLectures, lastVisitedLectureId, revisedQuestionCount, isMounted } = useCurriculumProgress();
-  const { values, ready } = useLearningSync();
+  const { values, ready, status: syncStatus } = useLearningSync();
+  const showSyncAttention = compact && ['memory', 'offline', 'setup'].includes(syncStatus);
   const hasCaseHistory = useMemo(() => ready && readCaseLearningRecords(values).length > 0, [ready, values]);
   const hasClinicalStudy = Boolean(lastVisitedLectureId && clinicalLectureIds.has(lastVisitedLectureId))
     || Object.entries(completedLectures).some(([id, completed]) => completed && clinicalLectureIds.has(id))
@@ -153,14 +154,12 @@ function ReviewWorkspace({ owner }: { owner: string }) {
     replaceSession(next, next ? 'active' : 'complete');
   };
   const similar = q && LEARNING_QUESTIONS.find(other => other.id !== q.id && other.lectureId === q.lectureId);
-  return (
-    <section id="learning-review" className="scroll-mt-24 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-4 sm:p-6 space-y-4 print:hidden">
-      <h2 className="font-serif text-lg font-bold text-[#1E3D34] dark:text-[#83BEA8]">今日の学習</h2>
-      <LearningSyncStatus />
+  const reviewControls = <>
+      {!showSyncAttention && <LearningSyncStatus />}
       {isMounted && quizHistory.length > 0 && <details className="rounded-xl bg-white dark:bg-[#17212A] p-3 text-sm"><summary className="cursor-pointer min-h-11 flex items-center">最近の回答・復習履歴（保存済み {quizHistory.length}件）</summary><ol className="space-y-2">{quizHistory.slice(-10).reverse().map((record, i) => <li key={`${record.questionId}-${record.answeredAt}-${i}`} className="border-t pt-2"><Link href={record.practiceHref || `/curriculum/${record.lectureId}`} className="underline">{record.lectureTitle}</Link>：{record.isCorrect ? '正解' : '要復習'}<br/><time dateTime={record.answeredAt} className="text-xs">{new Date(record.answeredAt).toLocaleString('ja-JP')}</time></li>)}</ol><p className="text-xs mt-2">回答履歴は残し、現在の出題内容と一致する記録を復習予定に使用します。</p></details>}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+      <div className={`grid grid-cols-1 ${compact ? 'sm:grid-cols-2' : 'sm:grid-cols-3'} gap-3 text-sm`}>
         <button type="button" disabled={!isMounted} onClick={() => start(due.length ? due.slice(0, 10) : unlearned.slice(0, 3))} className="min-h-11 rounded-xl bg-[#1E3D34] text-white p-3 text-left disabled:opacity-50">今日の復習：{isMounted ? due.length : '…'}問<br /><span className="text-xs">{due.length ? '予定日が来た問題を確認' : '未回答の問題から始める'}</span></button>
-        <Link href={lastVisitedLectureId ? `/curriculum/${lastVisitedLectureId}` : '/curriculum/lecture-intro-1'} className="rounded-xl bg-white dark:bg-[#17212A] p-3 text-[#1E3D34] dark:text-[#83BEA8]">前回の続き<br /><span className="text-xs">講義を読み、理解度を確認</span></Link>
+        {!compact && <Link href={lastVisitedLectureId ? `/curriculum/${lastVisitedLectureId}` : '/curriculum/lecture-intro-1'} className="rounded-xl bg-white dark:bg-[#17212A] p-3 text-[#1E3D34] dark:text-[#83BEA8]">前回の続き<br /><span className="text-xs">講義を読み、理解度を確認</span></Link>}
         <button type="button" disabled={!isMounted || !weak.length} onClick={() => start(weak)} className="rounded-xl bg-white dark:bg-[#17212A] p-3 text-left text-[#1E3D34] dark:text-[#83BEA8] disabled:opacity-50">苦手分野：{isMounted ? weak.length : '…'}問<br /><span className="text-xs">講義・国試演習・経穴を横断</span></button>
       </div>
       <p className="text-xs leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">正解を別の日に確認できた回数に応じ、1・3・7・14・30日後に復習します。同日の再挑戦は練習として記録し、復習間隔を延ばしません。保存・同期の状態は上の表示で確認できます。</p>
@@ -169,6 +168,14 @@ function ReviewWorkspace({ owner }: { owner: string }) {
         <Link href="/simulator#case-training" className="inline-block min-h-11 content-center text-sm font-semibold underline text-[#1E3D34] dark:text-[#83BEA8]">症例で判断の根拠を練習する →</Link>
         <LearningFocusReview onStart={start} />
       </> : <Link href={shortExampleHref} className="inline-block min-h-11 content-center text-sm font-semibold underline text-[#1E3D34] dark:text-[#83BEA8]">短い例で、学んだ用語を振り返る →</Link>}
+  </>;
+  return (
+    <section id="learning-review" className={compact ? 'curriculum-review-compact scroll-mt-24 print:hidden' : 'scroll-mt-24 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-4 sm:p-6 space-y-4 print:hidden'}>
+      {compact ? <details className="curriculum-review-disclosure">
+        <summary><span>今日の復習</span><span className="curriculum-review-due">{due.length}問</span></summary>
+        <div className="space-y-4 pb-4 pt-2">{reviewControls}</div>
+      </details> : <><h2 className="font-serif text-lg font-bold text-[#1E3D34] dark:text-[#83BEA8]">今日の学習</h2>{reviewControls}</>}
+      {showSyncAttention && <LearningSyncStatus />}
       {review.status === 'restored' && session && <p role="status" className="text-sm font-semibold">中断した復習を再開しました（{index + 1} / {queue.length}問）。選択と回答結果を引き継いでいます。</p>}
       {(review.status === 'invalid' || review.status === 'different') && <p role="status" className="text-sm">中断した復習は終了・期限切れ・教材の改訂などで再開できません。上の「今日の復習」から現在の問題を始められます。保存済みの回答履歴は残っています。</p>}
       {!storageAvailable && session && <p role="status" className="text-sm">このブラウザでは復習の途中状態を一時保存できません。ページを移動すると、このセットの途中状態を引き継げない場合があります。</p>}

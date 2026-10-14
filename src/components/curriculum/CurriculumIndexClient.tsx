@@ -2,6 +2,7 @@
 
 import PageIntro from "@/components/design/PageIntro";
 import ChapterEmblem from "@/components/graphics/ChapterEmblem";
+import ArticleCover from "@/components/articles/ArticleCover";
 import LearningReviewPanel from "@/components/learning/LearningReviewPanel";
 import CourseMiniCase from "@/components/learning/CourseMiniCase";
 import LearningSyncStatus from "@/components/learning/LearningSyncStatus";
@@ -19,7 +20,6 @@ import {
   Clock,
   CheckCircle2,
   ArrowRight,
-  Sparkles,
   Lock,
   PlayCircle,
   AlertCircle,
@@ -45,7 +45,6 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
     totalCompleted,
     totalPercentage,
     totalPublished,
-    totalPlanned,
     getNextResumeLectureId,
     getIncorrectQuestions,
     resetAllProgress,
@@ -173,7 +172,6 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
               </div>
               <progress className="site-progress curriculum-overall-progress" value={isMounted ? totalPercentage : 0} max={100} aria-label="公開講義の受講進捗" />
               <div className="curriculum-progress-caption">
-                <span>全{totalPlanned || plannedCount}レッスン（公開中）</span>
                 <span>{isMounted ? totalPercentage : 0}%</span>
               </div>
             </div>
@@ -217,7 +215,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
       {showLearningMap && (
         <LearningMap chapters={catalog.chapters} onSelectChapter={handleSelectChapterFromMap} />
       )}
-      <LearningReviewPanel />
+      <LearningReviewPanel compact />
 
       {/* 間違えた問題の復習モーダル */}
       <IncorrectQuestionsModal
@@ -289,7 +287,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
                     </div>
 
                     <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
-                      {chapter.title} ― {chapter.lead}
+                      {chapter.shortTitle} ― {chapter.lead}
                     </h3>
                   </div>
                 </div>
@@ -317,8 +315,8 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
                     {chapter.description}
                   </p>
 
-                  <p className="text-base font-semibold">この段階の目標：{chapter.goal}</p>
-                  <Link href={`/learn/courses/${chapter.courseSlug}`} className="inline-flex min-h-11 items-center font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">この章の短い基礎コースへ →</Link>
+                  <p className="text-base font-semibold">目標：{chapter.goal}</p>
+                  <Link href={`/learn/courses/${chapter.courseSlug}`} className="inline-flex min-h-11 items-center font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">基礎コースへ →</Link>
                   {/* レッスン一覧グリッド */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {chapterLectures.map((lec) => {
@@ -444,20 +442,11 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
       </div>
 
       {/* 伝統医学と研究の関連解説 */}
-      <section className="bg-gradient-to-r from-[#EBF3EF]/60 via-[#FAF8F5] to-[#FCF4EB]/60 dark:from-[#172621]/60 dark:via-[#17212A] dark:to-[#221F1A]/60 rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-10 space-y-4 sm:space-y-6 shadow-xs">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-[#E8E1D1] dark:border-[#22303D] pb-5">
-          <div>
-            <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] tracking-wider mb-1">
-              <Sparkles className="w-4 h-4" />
-              <span>伝統的な分類と、研究で分かる範囲を学ぶ</span>
-            </div>
+      <section className="curriculum-related-articles space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              学びを深める：伝統医学と現代研究の解説
+              理解を深める記事
             </h2>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1 leading-relaxed max-w-2xl">
-              陰陽五行・気血津液の伝統的な考え方、鍼灸・漢方の研究、医学的な評価の違いを整理します。研究の対象・比較条件・限界を確認しながら読み進めます。
-            </p>
-          </div>
           <Link
             href="/articles"
             className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1 shrink-0"
@@ -467,28 +456,21 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="curriculum-related-grid">
           {relatedArticles.map(article => (
             <Link
               key={article.id}
               href={`/articles/${article.id}`}
-              className="bg-[#FFFFFF] dark:bg-[#1A2632] p-5 rounded-2xl border border-[#E8E1D1] dark:border-[#2D3E50] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between shadow-xs"
+              className="curriculum-related-link group"
             >
+              <ArticleCover articleId={article.id} className="curriculum-article-thumbnail" />
               <div className="space-y-2">
-                <div className="flex items-center justify-end text-xs">
-                  <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">約{article.readTime}</span>
-                </div>
                 <h3 className="font-sans text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
                   {article.title}
                 </h3>
-                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
-                  {article.summary}
-                </p>
+                <span className="text-xs text-[#737C77] dark:text-[#8899A6]">約{article.readTime}</span>
               </div>
-              <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-                <span>記事全文を読む</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-              </div>
+              <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0 text-[#1E3D34] dark:text-[#74BA9E]" />
             </Link>
           ))}
         </div>

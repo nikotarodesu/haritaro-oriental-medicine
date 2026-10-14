@@ -1,0 +1,140 @@
+/* Keep context visible while letting readers choose the level of detail. */
+.article-byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  color: var(--text-secondary);
+  font-size: .875rem;
+  line-height: 1.7;
+}
+
+.reference-disclosure {
+  color: var(--text-secondary);
+  font-size: .875rem;
+  line-height: 1.8;
+}
+
+.reference-disclosure > summary {
+  min-height: 44px;
+  padding-block: 10px;
+  color: var(--accent-readable);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.reference-disclosure > summary::marker {
+  color: var(--accent-readable);
+  font-size: .8em;
+}
+
+.reference-disclosure > summary:focus-visible {
+  outline: 2px solid var(--accent-readable);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.reference-disclosure-body {
+  display: grid;
+  gap: 12px;
+  padding-block: 4px 16px;
+  overflow-wrap: anywhere;
+}
+
+.article-information {
+  margin-top: 0;
+}
+
+.article-information-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+
+.library-paper-card {
+  min-width: 0;
+}
+
+.library-confirmation-scope {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--tokiwa-light);
+  color: var(--accent-readable);
+  font-size: .75rem;
+  font-weight: 600;
+}
+
+.library-study-outline {
+  display: grid;
+  gap: 16px;
+  padding-block: 8px;
+}
+
+.library-study-part {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.library-study-part dt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 2px;
+  color: var(--accent-readable);
+  font-size: .875rem;
+  font-weight: 600;
+  line-height: 1.8;
+}
+
+.library-study-part dt svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  stroke-width: 1.7;
+}
+
+.library-study-part dd {
+  min-width: 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+
+.library-results,
+.library-bibliography {
+  border-top: 1px solid var(--border-washi);
+}
+
+.library-results .reference-disclosure-body {
+  gap: 20px;
+  font-size: 1rem;
+}
+
+.library-results h4 {
+  margin-bottom: 8px;
+  color: var(--text-sumi);
+}
+
+.library-study-limitations {
+  display: grid;
+  gap: 8px;
+  border-left: 2px solid var(--amber-warm);
+  padding-left: 14px;
+}
+
+.library-study-limitations h4 {
+  margin-bottom: 0;
+}
+
+@media (max-width: 399px) {
+  .library-study-part {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+}

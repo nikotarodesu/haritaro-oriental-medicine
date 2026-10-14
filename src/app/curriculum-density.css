@@ -1,0 +1,129 @@
+.curriculum-review-compact {
+  color: var(--text-sumi);
+  border-block: 1px solid var(--border-washi);
+}
+
+.curriculum-review-disclosure > summary,
+.curriculum-lecture-support > summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding-block: 12px;
+  cursor: pointer;
+  color: var(--accent-readable);
+  font-weight: 600;
+  list-style: none;
+}
+
+.curriculum-review-disclosure > summary::-webkit-details-marker,
+.curriculum-lecture-support > summary::-webkit-details-marker {
+  display: none;
+}
+
+.curriculum-review-disclosure > summary::after,
+.curriculum-lecture-support > summary::after {
+  content: "+";
+  margin-left: auto;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.curriculum-review-disclosure[open] > summary::after,
+.curriculum-lecture-support[open] > summary::after {
+  content: "−";
+}
+
+.curriculum-review-disclosure > summary:focus-visible,
+.curriculum-lecture-support > summary:focus-visible,
+.curriculum-related-link:focus-visible,
+.curriculum-reflection-link:focus-visible {
+  outline: 2px solid var(--accent-readable);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.curriculum-review-due {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--tokiwa-light);
+  font-size: .8125rem;
+}
+
+.curriculum-review-compact > :not(details) {
+  margin-block: 12px;
+}
+
+.curriculum-index .curriculum-progress-caption {
+  justify-content: flex-end;
+}
+
+.curriculum-related-grid {
+  display: grid;
+  gap: 0 24px;
+}
+
+.curriculum-related-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 80px;
+  min-width: 0;
+  padding-block: 14px;
+  border-bottom: 1px solid var(--border-washi);
+}
+
+.curriculum-related-link > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.curriculum-related-link > .curriculum-article-thumbnail {
+  flex: 0 0 76px;
+  width: 76px;
+  height: 58px;
+  border-radius: 10px;
+  background: var(--bg-card);
+}
+
+.curriculum-reflection-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color: var(--accent-readable);
+  font-size: .875rem;
+  font-weight: 600;
+}
+
+.curriculum-reflection-link:hover,
+.curriculum-related-link:hover h3 {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.curriculum-lecture-support {
+  border-top: 1px solid var(--border-washi);
+}
+
+@media (min-width: 960px) {
+  .curriculum-related-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .curriculum-related-grid .curriculum-related-link {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 420px) {
+  .curriculum-related-link {
+    gap: 10px;
+  }
+
+  .curriculum-related-link > .curriculum-article-thumbnail {
+    flex-basis: 62px;
+    width: 62px;
+    height: 50px;
+  }
+}

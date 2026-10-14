@@ -39,6 +39,7 @@ import { getSymptomsForAcupoint, getCasesForAcupoint } from "@/utils/tsuboTopicC
 import { MERIDIAN_RELATIONS } from "@/utils/tsuboRelations";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import AcupointInformationScope from '@/components/tsubo/AcupointInformationScope';
+import MeridianRelationsDiagram from '@/components/tsubo/MeridianRelationsDiagram';
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -125,7 +126,8 @@ export default async function AcupointDetailPage({ params }: Props) {
   const hasSafetyWarning = isNeedleBan || isMoxaBan || isPregnancyBan || isPneumoRisk;
 
   // 表裏経・同名経の相互トピッククラスタ
-  const meridianRelations = MERIDIAN_RELATIONS[point.meridianId] || [];
+  const relationId = point.meridianId === 'governor-vessel' ? 'governor' : point.meridianId === 'conception-vessel' ? 'conception' : point.meridianId;
+  const meridianRelations = MERIDIAN_RELATIONS[relationId] || [];
 
   const pageUrl = `https://www.haritaro.jp/tsubo/${point.codeLower}`;
   const pageTitle = acupointPageTitle(point);
@@ -869,59 +871,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           </section>
         )}
 
-        {/* 6.8. 表裏経・同名経トピッククラスタ（陰陽ペア・手足同名ペア） */}
-        {meridianRelations.length > 0 && (
-          <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-4 sm:space-y-6 transition-colors">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
-              <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                <Layers className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
-                <h2>表裏の関係にある経脈・同名の経脈</h2>
-              </div>
-              <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
-                配穴・弁証の連動経絡
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {meridianRelations.map((rel, rIdx) => (
-                <div
-                  key={rIdx}
-                  className="p-4 rounded-xl border border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#10171F] space-y-3 shadow-2xs"
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="text-sm font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
-                      {rel.relationType}：{rel.pairedName}
-                    </span>
-                    <Link
-                      href={`/tsubo?meridian=${encodeURIComponent(rel.pairedShort)}`}
-                      className="text-sm text-[#B86924] dark:text-[#E6C387] font-semibold hover:underline flex items-center gap-1"
-                    >
-                      <span>一覧へ</span>
-                      <ArrowRight className="w-3 h-3" />
-                    </Link>
-                  </div>
-                  <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                    {rel.explanation}
-                  </p>
-                  <div className="pt-2 border-t border-[#EAE3D4] dark:border-[#22303D] flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-semibold text-[#59615D] dark:text-[#AFBDC8]">
-                      代表要穴：
-                    </span>
-                    {rel.keyPoints.map((kp) => (
-                      <Link
-                        key={kp.code}
-                        href={`/tsubo/${kp.code}`}
-                        className="text-sm font-semibold px-2 py-0.5 rounded-md bg-white dark:bg-[#17212A] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#1E3D34] dark:text-[#74BA9E] hover:border-[#1E3D34] transition-all"
-                      >
-                        {kp.name}（{kp.code.toUpperCase()}）
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+        <MeridianRelationsDiagram meridian={point.meridian} relations={meridianRelations} />
 
         {/* 7. 経絡流注ナビゲーション（前穴・次穴） */}
         <TsuboKeyboardNav

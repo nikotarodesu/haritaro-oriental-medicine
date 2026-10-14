@@ -15,6 +15,9 @@ import {
   Activity, 
   ArrowRight,
   MapPin,
+  Focus,
+  FlaskConical,
+  ScanText,
   X,
 } from "lucide-react";
 import { VERIFIED_PAPERS as PAPERS_DATABASE } from "@/data/references/papersData";
@@ -181,12 +184,12 @@ export default function LibraryClient() {
                     <div
                       key={paper.id}
                       id={`paper-${paper.id}`}
-                      className="scroll-mt-28 target:ring-2 target:ring-[#B86924] bg-[#FCFAF6] dark:bg-[#17212A] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-5 space-y-4 flex flex-col justify-between hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-colors"
+                      className="library-paper-card scroll-mt-28 target:ring-2 target:ring-[#B86924] bg-[#FCFAF6] dark:bg-[#17212A] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-5 space-y-4 flex flex-col justify-between hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-colors"
                     >
                       <div className="space-y-3">
                         <div className="flex flex-wrap items-center justify-between gap-2">
-                          <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                            {paper.studyDesign}
+                          <span className="library-confirmation-scope">
+                            {paper.claimsStatus !== 'source-checked' ? '要約保留' : paper.verificationScope === 'abstract' ? '抄録確認' : paper.verificationScope === 'selected_full_text' ? '本文の一部確認' : '確認範囲未記録'}
                           </span>
                           <span className="text-sm text-[#59615D] dark:text-[#A0B0BC]">
                             {paper.journal} ({paper.year})
@@ -197,46 +200,54 @@ export default function LibraryClient() {
                           <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
                             {paper.japaneseTitle}
                           </h3>
-                          <details className="mt-2 text-sm text-[#59615D] dark:text-[#A0B0BC]">
-                            <summary className="min-h-11 py-2 font-bold cursor-pointer">書誌情報</summary>
-                            <p className="break-words leading-relaxed">{paper.title}</p>
-                            <p className="mt-2 leading-relaxed">{paper.journal} ({paper.year})</p>
-                          </details>
                         </div>
 
-                        <div className="space-y-3 text-base text-[#59615D] dark:text-[#A0B0BC]">
-                          <div>
-                            <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">研究対象: </span>
-                            <span>{paper.targetCondition}</span>
+                        <dl className="library-study-outline">
+                          <div className="library-study-part">
+                            <dt><Focus aria-hidden="true" /><span>対象</span></dt>
+                            <dd>{paper.targetCondition}</dd>
                           </div>
-                          {paper.interventionProtocol && (
-                            <div>
-                              <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">研究で用いた方法: </span>
-                              <span>{paper.interventionProtocol.name}（使用ツボ: {paper.interventionProtocol.acupoints.join("、")}）</span>
-                            </div>
-                          )}
-                          <p className="break-words text-base leading-relaxed">
-                            {paper.primaryOutcomes}
-                          </p>
-                          {paper.sourceLocator && (
-                            <p className="text-sm leading-relaxed">
-                              <span className="font-bold">確認範囲: </span>
-                              {paper.verificationScope === 'abstract' ? '抄録を照合' : '本文の一部を照合'}（{paper.claimsCheckedAt}）。{paper.sourceLocator} 専門家による承認は未完了です。
-                            </p>
-                          )}
-                          {paper.keyFindings.length > 0 && (
-                            <details className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-2">
-                              <summary className="min-h-11 py-2 font-bold cursor-pointer">報告された結果</summary>
+                          <div className="library-study-part">
+                            <dt><FlaskConical aria-hidden="true" /><span>方法</span></dt>
+                            <dd>
+                              {paper.studyDesign}
+                              {paper.interventionProtocol && <p className="mt-2">{paper.interventionProtocol.name}（使用ツボ: {paper.interventionProtocol.acupoints.join("、")}）</p>}
+                            </dd>
+                          </div>
+                          <div className="library-study-part">
+                            <dt><ScanText aria-hidden="true" /><span>概要</span></dt>
+                            <dd>{paper.primaryOutcomes}</dd>
+                          </div>
+                        </dl>
+
+                        <details className="reference-disclosure library-results">
+                          <summary>結果と限界</summary>
+                          <div className="reference-disclosure-body">
+                            {paper.keyFindings.length > 0 && <div>
+                              <h4 className="font-bold">報告された結果</h4>
                               <ul className="list-disc pl-5 space-y-2 leading-relaxed">
                                 {paper.keyFindings.map(finding => <li key={finding}>{finding}</li>)}
                               </ul>
-                            </details>
-                          )}
-                          <div className="border-l-2 border-[#B86924] pl-3 space-y-2 leading-relaxed">
-                            <p className="font-bold text-[#232826] dark:text-[#FAF8F5]">限界・読み取れないこと</p>
-                            {paper.clinicalTakeaways.map(limitation => <p key={limitation}>{limitation}</p>)}
+                            </div>}
+                            <div className="library-study-limitations">
+                              <h4 className="font-bold">限界・読み取れないこと</h4>
+                              {paper.clinicalTakeaways.map(limitation => <p key={limitation}>{limitation}</p>)}
+                            </div>
                           </div>
-                        </div>
+                        </details>
+
+                        <details className="reference-disclosure library-bibliography">
+                          <summary>書誌・確認情報</summary>
+                          <div className="reference-disclosure-body">
+                            <p>{paper.title}</p>
+                            <p>{paper.journal} ({paper.year})</p>
+                            {paper.sourceLocator && <p>
+                              <strong>確認範囲: </strong>
+                              {paper.verificationScope === 'abstract' ? '抄録を照合' : '本文の一部を照合'}（{paper.claimsCheckedAt}）。{paper.sourceLocator} 専門家による承認は未完了です。
+                            </p>}
+                            {paper.sourceCheckedAt && <p>書誌確認日：<time dateTime={paper.sourceCheckedAt}>{paper.sourceCheckedAt}</time></p>}
+                          </div>
+                        </details>
                       </div>
 
                       <div className="pt-3 border-t border-[#E5DEC9]/50 dark:border-[#2A3B4A]/50 flex flex-wrap items-center justify-between gap-3">

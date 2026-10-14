@@ -7,24 +7,23 @@ import { User, RotateCcw, ArrowDown } from "lucide-react";
 interface BodyMapSvgProps {
   selectedBodyPart: string;
   onSelectBodyPart: (part: string) => void;
-  pointCountsByPart?: Record<string, number>;
 }
 
 export default function BodyMapSvg({
   selectedBodyPart,
   onSelectBodyPart,
-  pointCountsByPart = {},
 }: BodyMapSvgProps) {
   const [viewMode, setViewMode] = useState<"front" | "back">("front");
   const [noticeMessage, setNoticeMessage] = useState<string | null>(null);
+  const displayedView = selectedBodyPart === "胸・腹" ? "front" : selectedBodyPart === "背中・腰" ? "back" : viewMode;
 
-  const regions: { id: BodyPart; label: string; count?: number; side: "both" | "front" | "back" }[] = [
-    { id: "頭部・顔面", label: "頭部・顔面", count: pointCountsByPart["頭部・顔面"] || 52, side: "both" },
-    { id: "首・肩", label: "首・肩", count: pointCountsByPart["首・肩"] || 34, side: "both" },
-    { id: "胸・腹", label: "胸・腹", count: pointCountsByPart["胸・腹"] || 46, side: "front" },
-    { id: "背中・腰", label: "背中・腰", count: pointCountsByPart["背中・腰"] || 68, side: "back" },
-    { id: "手・腕", label: "手・腕", count: pointCountsByPart["手・腕"] || 73, side: "both" },
-    { id: "足・脚", label: "足・脚", count: pointCountsByPart["足・脚"] || 88, side: "both" },
+  const regions: { id: BodyPart; label: string }[] = [
+    { id: "頭部・顔面", label: "頭部・顔面" },
+    { id: "首・肩", label: "首・肩" },
+    { id: "胸・腹", label: "胸・腹" },
+    { id: "背中・腰", label: "背中・腰" },
+    { id: "手・腕", label: "手・腕" },
+    { id: "足・脚", label: "足・脚" },
   ];
 
   // 前面・背面切替時の整合性処理
@@ -43,19 +42,17 @@ export default function BodyMapSvg({
 
   // 部位選択時の前面・背面自動連動
   const handleSelectRegion = (part: string) => {
-    if (part === "胸・腹" && viewMode === "back") {
+    if (part === "胸・腹" && displayedView === "back") {
       setViewMode("front");
-    } else if (part === "背中・腰" && viewMode === "front") {
+    } else if (part === "背中・腰" && displayedView === "front") {
       setViewMode("back");
     }
     setNoticeMessage(null);
     onSelectBodyPart(part);
   };
 
-  const currentCount = selectedBodyPart !== "すべて" ? pointCountsByPart[selectedBodyPart] || 0 : 361;
-
   return (
-    <div className="bg-[#FFFFFF] dark:bg-[#15202B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-6 shadow-xs space-y-4 transition-colors">
+    <div className="tsubo-body-map bg-[#FFFFFF] dark:bg-[#15202B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-6 space-y-4">
       {/* 上部ヘッダー ＆ 前面/背面切替 */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
         <div className="flex items-center gap-2">
@@ -64,10 +61,10 @@ export default function BodyMapSvg({
           </div>
           <div>
             <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
-              身体部位から探す（人体図セレクター）
+              部位から探す
             </h3>
-            <p className="text-[10px] sm:text-[11px] text-[#737C77] dark:text-[#8899A6]">
-              図の部位またはボタンをタップして該当経穴を絞り込み
+            <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
+              図かボタンで選択
             </p>
           </div>
         </div>
@@ -78,8 +75,9 @@ export default function BodyMapSvg({
             <button
               type="button"
               onClick={() => handleSwitchView("front")}
+              aria-pressed={displayedView === "front"}
               className={`px-3 py-1 rounded-lg font-medium transition-all ${
-                viewMode === "front"
+                displayedView === "front"
                   ? "bg-[#1E3D34] text-white dark:bg-[#2B6958] shadow-xs"
                   : "text-[#59615D] dark:text-[#A0B0BC] hover:text-[#1E3D34]"
               }`}
@@ -89,8 +87,9 @@ export default function BodyMapSvg({
             <button
               type="button"
               onClick={() => handleSwitchView("back")}
+              aria-pressed={displayedView === "back"}
               className={`px-3 py-1 rounded-lg font-medium transition-all ${
-                viewMode === "back"
+                displayedView === "back"
                   ? "bg-[#1E3D34] text-white dark:bg-[#2B6958] shadow-xs"
                   : "text-[#59615D] dark:text-[#A0B0BC] hover:text-[#1E3D34]"
               }`}
@@ -114,7 +113,7 @@ export default function BodyMapSvg({
 
       {/* 通知バー（視点切替時の自動解除案内など） */}
       {noticeMessage && (
-        <div className="p-2.5 rounded-xl bg-[#FFF8E6] dark:bg-[#282210] border border-[#F2DEB0] dark:border-[#42381C] text-xs text-[#B86924] dark:text-[#E6C387] flex items-center justify-between">
+        <div role="status" className="p-2.5 rounded-xl bg-[#FFF8E6] dark:bg-[#282210] border border-[#F2DEB0] dark:border-[#42381C] text-xs text-[#B86924] dark:text-[#E6C387] flex items-center justify-between">
           <span>{noticeMessage}</span>
           <button
             type="button"
@@ -126,44 +125,14 @@ export default function BodyMapSvg({
         </div>
       )}
 
-      {/* 選択中の部位と件数リアルタイムインジケーター（直近に配置） */}
-      <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] flex flex-wrap items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-2">
-          {selectedBodyPart !== "すべて" ? (
-            <>
-              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-[#EBF3EF] dark:bg-[#182823] px-2.5 py-0.5 rounded-md border border-[#C5DED4] dark:border-[#2A5243]">
-                【{selectedBodyPart}】を選択中
-              </span>
-              <span className="text-[#333835] dark:text-[#C5D2DB] font-medium">
-                該当 <strong className="text-sm font-mono text-[#1E3D34] dark:text-[#74BA9E]">{currentCount}</strong> 穴
-              </span>
-            </>
-          ) : (
-            <span className="text-[#59615D] dark:text-[#A0B0BC]">
-              全身の <strong className="font-mono text-[#1E3D34] dark:text-[#74BA9E]">361</strong> 経穴を表示中（部位タップで即座に絞り込み）
-            </span>
-          )}
-        </div>
-
-        {selectedBodyPart !== "すべて" && (
-          <a
-            href="#tsubo-list"
-            className="px-3.5 py-1.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-white text-xs font-bold hover:bg-[#162E27] transition-all flex items-center gap-1 shadow-xs"
-          >
-            <span>該当 {currentCount} 穴を見る</span>
-            <ArrowDown className="w-3.5 h-3.5" />
-          </a>
-        )}
-      </div>
-
       {/* SVG人体図 ＆ ボタンセレクター */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
         
         {/* SVG人体図（5カラム） */}
-        <div className="md:col-span-5 flex justify-center py-1">
+        <div className="md:col-span-5 flex flex-col items-center gap-2 py-1">
           <div className="relative w-[180px] sm:w-[200px] h-[280px] sm:h-[300px] bg-[#FAF8F5] dark:bg-[#10171F] rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] p-2 flex justify-center items-center shadow-inner select-none">
             
-            <svg viewBox="0 0 160 250" className="w-full h-full">
+            <svg viewBox="0 0 160 250" className="w-full h-full" aria-hidden="true" focusable="false">
               {/* 頭部・顔面 */}
               <g
                 onClick={() => handleSelectRegion("頭部・顔面")}
@@ -197,7 +166,7 @@ export default function BodyMapSvg({
               </g>
 
               {/* 胸・腹（前面）または 背中・腰（背面） */}
-              {viewMode === "front" ? (
+              {displayedView === "front" ? (
                 <g
                   onClick={() => handleSelectRegion("胸・腹")}
                   className="cursor-pointer group"
@@ -210,9 +179,6 @@ export default function BodyMapSvg({
                         : "fill-[#E5DEC9] dark:fill-[#263542] hover:fill-[#C5DED4] dark:hover:fill-[#385348]"
                     }`}
                   />
-                  <text x="80" y="95" textAnchor="middle" className="text-[9px] fill-[#59615D] dark:fill-[#A0B0BC] pointer-events-none font-bold">
-                    胸腹部
-                  </text>
                 </g>
               ) : (
                 <g
@@ -227,9 +193,6 @@ export default function BodyMapSvg({
                         : "fill-[#E5DEC9] dark:fill-[#263542] hover:fill-[#C5DED4] dark:hover:fill-[#385348]"
                     }`}
                   />
-                  <text x="80" y="95" textAnchor="middle" className="text-[9px] fill-[#59615D] dark:fill-[#A0B0BC] pointer-events-none font-bold">
-                    背腰部
-                  </text>
                 </g>
               )}
 
@@ -292,10 +255,8 @@ export default function BodyMapSvg({
               </g>
             </svg>
 
-            <span className="absolute bottom-1 right-2 text-[9px] text-[#88928D] dark:text-[#6A7C8B] font-mono">
-              ※左右は、図の人物から見た向きです
-            </span>
           </div>
+          <p className="text-center text-xs text-[#59615D] dark:text-[#A0B0BC]">左右は、図の人物から見た向きです</p>
         </div>
 
         {/* ボタン一覧セレクター（7カラム） */}
@@ -307,6 +268,7 @@ export default function BodyMapSvg({
                 key={region.id}
                 type="button"
                 onClick={() => handleSelectRegion(isSelected ? "すべて" : region.id)}
+                aria-pressed={isSelected}
                 className={`p-2.5 sm:p-3 rounded-xl border text-left transition-all flex flex-col justify-between ${
                   isSelected
                     ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] dark:border-[#2B6958] shadow-sm scale-102"
@@ -319,15 +281,13 @@ export default function BodyMapSvg({
                     <span className="w-2 h-2 rounded-full bg-[#E6C387] shrink-0" />
                   )}
                 </div>
-                <span className={`text-[10px] mt-1.5 ${isSelected ? "text-[#E6C387]" : "text-[#737C77] dark:text-[#8899A6]"}`}>
-                  収録 {region.count} 穴
-                </span>
               </button>
             );
           })}
         </div>
 
       </div>
+      {selectedBodyPart !== "すべて" && <a href="#tsubo-list" className="tsubo-result-jump"><span>絞り込んだ経穴を見る</span><ArrowDown aria-hidden="true" className="h-4 w-4" /></a>}
     </div>
   );
 }
