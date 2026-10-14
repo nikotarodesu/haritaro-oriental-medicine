@@ -71,7 +71,7 @@ export default function MarkdownBody({
               <h2
                 key={index}
                 id={`${idPrefix}-${index}`}
-                className="font-sans text-xl sm:text-2xl font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#E8E1D1] dark:border-[#22303D] pb-2 mt-10 scroll-mt-36 leading-[1.9]"
+                className="font-sans text-xl sm:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5] mt-10 scroll-mt-36 leading-[1.6]"
               >
                 {renderText(block.content)}
               </h2>

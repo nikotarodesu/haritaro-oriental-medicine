@@ -39,13 +39,13 @@ export default function HomePage() {
               <span>迷った問題は解説から本文に戻って復習できます。</span>
             </p>
           </div>
-          <nav aria-label="目的から選ぶ" className="home-entry-grid">
-            <Link href="/learn" className="ui-button ui-button-primary"><GraduationCap aria-hidden="true" /><span>基礎から学ぶ</span></Link>
-            <Link href="/clinical" className="ui-button ui-button-outline"><Stethoscope aria-hidden="true" /><span>臨床で使う</span></Link>
-          </nav>
-          <div className="mx-auto mb-4 mt-4 max-w-[760px] space-y-1">
-            <ContentNavigationLink href={createCourseLectureHref(LEARNING_COURSES[0].slug, LEARNING_COURSES[0].steps[0].lectureId)} placement="home_first_lecture" className="inline-flex min-h-11 items-center gap-2 font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">初めての方：第1講から始める<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></ContentNavigationLink>
-            <p className="text-sm ui-muted">「東洋医学とは何か」を読み、最後のクイズで確かめます。</p>
+          <div className="home-start">
+            <ContentNavigationLink href={createCourseLectureHref(LEARNING_COURSES[0].slug, LEARNING_COURSES[0].steps[0].lectureId)} placement="home_first_lecture" className="ui-button ui-button-primary home-start-button"><GraduationCap aria-hidden="true" /><span>第1講から始める</span><ArrowRight aria-hidden="true" /></ContentNavigationLink>
+            <p className="text-sm ui-muted">初めての方へ。「東洋医学とは何か」から学べます。</p>
+            <nav aria-label="目的から選ぶ" className="home-secondary-entry">
+              <Link href="/learn" className="ui-text-link"><BookOpen aria-hidden="true" /><span>基礎から学ぶ</span></Link>
+              <Link href="/clinical" className="ui-text-link"><Stethoscope aria-hidden="true" /><span>臨床で使う</span></Link>
+            </nav>
           </div>
           <HomeHeroQuickSearch />
         </div>

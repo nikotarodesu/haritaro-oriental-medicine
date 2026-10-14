@@ -198,7 +198,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   };
 
   return (
-    <div className="reading-page min-h-screen py-6 sm:py-12 px-3 sm:px-6 lg:px-8 [overflow-wrap:anywhere]">
+    <div className="reading-page acupoint-page min-h-screen py-6 sm:py-12 px-3 sm:px-6 lg:px-8 [overflow-wrap:anywhere]">
       {/* 構造化データ埋め込み */}
       <script
         type="application/ld+json"
@@ -252,10 +252,10 @@ export default async function AcupointDetailPage({ params }: Props) {
         </nav>
 
         {/* 1. 基本情報ヘッダーカード */}
-        <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-5 transition-colors">
+        <div className="acupoint-header bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-5 transition-colors">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
             <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="acupoint-metadata flex flex-wrap items-center gap-2">
                 <span className="font-mono text-sm font-bold px-2.5 py-1 rounded-lg bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5]">
                   {point.code}
                 </span>
@@ -335,7 +335,7 @@ export default async function AcupointDetailPage({ params }: Props) {
               />
 
               {/* 副アクション群：推論・比較・テスト（スッキリ整理） */}
-              <div className="flex items-center gap-1.5 bg-[#FAF8F5] dark:bg-[#121920] p-1 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
+              <div className="acupoint-secondary-actions flex flex-wrap items-center gap-1.5">
                 <Link
                   href={simulatorUrl}
                   className="min-h-11 px-2.5 py-1.5 rounded-lg text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] transition-colors inline-flex items-center gap-1"
@@ -368,7 +368,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
           {/* 要穴分類バッジ群 */}
           {point.categories && point.categories.length > 0 && (
-            <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center gap-2">
+            <div className="acupoint-categories pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center gap-2">
               <span className="text-sm font-semibold text-[#59615D] dark:text-[#AFBDC8] mr-1">
                 要穴分類：
               </span>

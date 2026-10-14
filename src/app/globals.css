@@ -538,6 +538,42 @@ html:not(.dark) .reading-page .text-\[\#C45A4A\] { color: #A83629; }
 .quiz-option { font-size: 1rem; }
 .quiz-option > .flex-1 { min-width: 0; line-height: 1.75; overflow-wrap: anywhere; }
 .quiz-option > span:first-child, .quiz-reading-link svg { flex-shrink: 0; }
+
+/* Visual hierarchy: ink for reading, green for actions, amber for cautions. */
+.home-start { display: grid; justify-items: center; gap: 12px; margin-block: 28px; }
+.home-start-button { min-height: 56px; padding-inline: 28px; }
+.dark .home-start-button { background: #83BEA8; color: #10161C; }
+.dark .home-start-button:hover { background: #A5D1BF; }
+.home-secondary-entry { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 28px; }
+.home-secondary-entry .ui-text-link { font-size: .9375rem; }
+.home-search-submit { background: var(--bg-muted); color: var(--text-sumi); }
+.home-search-submit:hover { background: var(--tokiwa-light); }
+.home-tool { flex-direction: row; justify-content: flex-start; border: 0; border-bottom: 1px solid var(--border-washi); border-radius: 0; background: transparent; padding: 12px 4px; gap: 12px; }
+.home-tool:hover { background: var(--tokiwa-light); }
+.home-page .course-card-grid > article { border: 0; border-top: 1px solid var(--border-washi); border-radius: 0; background: transparent; padding-inline: 0; }
+.home-reading-link { border: 0; border-bottom: 1px solid var(--border-washi); border-radius: 0; background: transparent; padding: 8px 0 20px; }
+.home-operator { border: 0; border-top: 1px solid var(--border-washi); border-radius: 0; background: transparent; padding-inline: 0; padding-top: 28px; }
+.reading-page:has(> article.lecture-article) { max-width: 844px; }
+.lecture-kicker { font-size: .9375rem; line-height: 1.7; color: var(--text-secondary); }
+.lecture-title { line-height: 1.55; text-wrap: pretty; overflow-wrap: anywhere; }
+.lecture-title-phrase { display: inline-block; max-inline-size: 100%; vertical-align: top; }
+.lecture-header > div span { background: transparent; padding-inline: 0; border: 0; font-weight: 400; color: var(--text-secondary); }
+.lecture-header > div > div { gap: 8px 16px; }
+.lecture-article > details { border: 0; border-top: 1px solid var(--border-washi); border-radius: 0; padding-inline: 0; }
+.acupoint-metadata > span:not(:first-child) { background: transparent; border: 0; padding: 0; color: var(--text-secondary); font-weight: 400; }
+.reading-page.acupoint-page .acupoint-categories > span { background: transparent; border: 0; border-radius: 0; padding-inline: 0; color: var(--text-secondary); }
+.acupoint-categories { gap: 8px 16px; }
+.reading-page.acupoint-page .acupoint-secondary-actions a { color: var(--accent-readable); }
+.acupoint-page section > h2, .acupoint-page section > div > h2 { color: var(--text-sumi); }
+@media (max-width: 639px) {
+  .home-start-button { width: 100%; }
+  .home-start > p { text-align: center; }
+  .home-page .course-card-grid > article { padding-inline: 0 !important; }
+  .reading-page:has(> article.lecture-article), .reading-page.acupoint-page { padding-inline: 20px; }
+  .reading-page > article.lecture-article { padding-inline: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none; }
+  .reading-page.acupoint-page .acupoint-header { padding-inline: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none; }
+  .acupoint-page > div > section:is(#acupoint-location, #acupoint-traditional, #acupoint-research) { padding-inline: 0; background: transparent; border: 0; border-top: 1px solid var(--border-washi); border-radius: 0; box-shadow: none; padding-top: 28px; }
+}
 #lecture-content table:has(th:nth-child(2):last-child) { min-width: 0; width: 100%; }
 .quiz-question > .flex { flex-wrap: wrap; }
 .quiz-keyboard-hint { display: none; }

@@ -41,7 +41,7 @@ export default function HomeHeroQuickSearch() {
         />
         <button
           type="submit"
-          className="ui-button ui-button-primary home-search-submit"
+          className="ui-button home-search-submit"
         >
           <span>検索</span>
           <ArrowRight aria-hidden="true" />

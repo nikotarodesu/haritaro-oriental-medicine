@@ -188,6 +188,8 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
     return heading ? [{ question: item.question, id: heading.id }] : [];
   });
   const learningCourses = getLearningCoursesForLecture(lecture.id);
+  const lessonTitle = lecture.title.match(/^(.+?)\s+レッスン\d+[：:]\s*(.+)$/);
+  const displayLectureTitle = lessonTitle?.[2] || lecture.title;
   const articleReadingLinks = relatedReadingLinks.slice(0, 2);
   const relatedFigureReading: ReadingLink | undefined = articleReadingLinks[0] ?? (
     lecture.id === "lecture-yinyang-8" && nextLecture
@@ -245,9 +247,10 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
       {/* 講義テキスト本体 */}
       <article className="lecture-article bg-white dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] px-3.5 py-6 sm:p-10 shadow-xs space-y-6 transition-colors">
         {/* 講義ヘッダー */}
-        <div className="border-b border-[#F2ECE0] dark:border-[#22303D] pb-5 space-y-3">
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] leading-tight">
-            {lecture.title}
+        <div className="lecture-header border-b border-[#F2ECE0] dark:border-[#22303D] pb-5 space-y-3">
+          {lecture.seriesTitle && lecture.lessonNumber && <p className="lecture-kicker">{lecture.seriesTitle} · レッスン{lecture.lessonNumber}</p>}
+          <h1 className="lecture-title text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] leading-tight">
+            {(displayLectureTitle.match(/[^・、]+[・、]?/g) || [displayLectureTitle]).map((phrase, index) => <span key={index} className="lecture-title-phrase">{phrase}</span>)}
           </h1>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2 text-sm">
@@ -255,9 +258,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
                 {lecture.stageTitle}
               </span>
               {lecture.seriesTitle && lecture.lessonNumber ? (
-                <span className="px-2.5 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#B86924] dark:text-[#E6C387] font-bold">
-                  {lecture.seriesTitle} レッスン {lecture.lessonNumber}
-                </span>
+                null
               ) : (
                 <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
                   第 {lecture.lectureNumber} 講
