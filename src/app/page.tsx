@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { GraduationCap, Stethoscope, FileText, ArrowRight, BookOpen, SlidersHorizontal, Layers, Award, MapPin } from "lucide-react";
+import { Stethoscope, ArrowRight, BookOpen } from "lucide-react";
+import { HomeHeroArtwork, HomeToolIcon } from "@/components/home/HomeArtwork";
 import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
 import HomeHeroQuickSearch from "@/components/home/HomeHeroQuickSearch";
 import LearningCourseCards from "@/components/learning/LearningCourseCards";
@@ -11,13 +12,13 @@ import { getArticlePreviews } from "@/data/articleData";
 import { SITE_UPDATES } from "@/config/contentUpdates";
 
 const tools = [
-  { href: "/tsubo", label: "経穴辞典", Icon: MapPin },
-  { href: "/curriculum", label: "カリキュラム", Icon: GraduationCap },
-  { href: "/kokushi", label: "国試演習", Icon: Award },
-  { href: "/simulator", label: "弁証推論", Icon: Layers },
-  { href: "/practice/haiketsu", label: "配穴設計", Icon: SlidersHorizontal },
-  { href: "/notes", label: "ノート", Icon: FileText },
-];
+  { href: "/tsubo", label: "経穴辞典", icon: "acupoint" },
+  { href: "/curriculum", label: "カリキュラム", icon: "lecture" },
+  { href: "/kokushi", label: "国試演習", icon: "quiz" },
+  { href: "/simulator", label: "弁証推論", icon: "reasoning" },
+  { href: "/practice/haiketsu", label: "配穴設計", icon: "prescription" },
+  { href: "/notes", label: "ノート", icon: "notes" },
+] as const;
 
 export default function HomePage() {
   const featuredArticles = getArticlePreviews(["science-of-yinyang-gogyo", "science-of-qi-blood-fluid"]);
@@ -25,6 +26,7 @@ export default function HomePage() {
     <div className="home-page">
       <section className="home-hero washi-pattern">
         <div className="home-container">
+          <HomeHeroArtwork />
           <div className="home-intro">
             <p className="home-label ui-muted">
               <span><span className="copy-phrase">鍼灸学生・鍼灸師</span><span className="copy-phrase">のための</span></span>
@@ -40,7 +42,7 @@ export default function HomePage() {
             </p>
           </div>
           <div className="home-start">
-            <ContentNavigationLink href={createCourseLectureHref(LEARNING_COURSES[0].slug, LEARNING_COURSES[0].steps[0].lectureId)} placement="home_first_lecture" className="ui-button ui-button-primary home-start-button"><GraduationCap aria-hidden="true" /><span>第1講から始める</span><ArrowRight aria-hidden="true" /></ContentNavigationLink>
+            <ContentNavigationLink href={createCourseLectureHref(LEARNING_COURSES[0].slug, LEARNING_COURSES[0].steps[0].lectureId)} placement="home_first_lecture" className="ui-button ui-button-primary home-start-button"><HomeToolIcon name="lecture" /><span>第1講から始める</span><ArrowRight aria-hidden="true" /></ContentNavigationLink>
             <p className="text-sm ui-muted">初めての方へ。「東洋医学とは何か」から学べます。</p>
             <nav aria-label="目的から選ぶ" className="home-secondary-entry">
               <Link href="/learn" className="ui-text-link"><BookOpen aria-hidden="true" /><span>基礎から学ぶ</span></Link>
@@ -56,7 +58,7 @@ export default function HomePage() {
         <section aria-labelledby="home-tools-title" className="home-section">
           <h2 id="home-tools-title" className="home-section-title">よく使う機能</h2>
           <nav aria-label="よく使う機能" className="home-tools-grid">
-            {tools.map(({ href, label, Icon }) => <Link key={href} href={href} className="ui-card home-tool"><Icon aria-hidden="true" /><span>{label}</span></Link>)}
+            {tools.map(({ href, label, icon }) => <Link key={href} href={href} className="ui-card home-tool"><HomeToolIcon name={icon} /><span>{label}</span></Link>)}
           </nav>
         </section>
         <section aria-labelledby="home-courses-title" className="home-section">

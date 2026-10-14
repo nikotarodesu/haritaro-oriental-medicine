@@ -541,6 +541,19 @@ html:not(.dark) .reading-page .text-\[\#C45A4A\] { color: #A83629; }
 
 /* Visual hierarchy: ink for reading, green for actions, amber for cautions. */
 .home-start { display: grid; justify-items: center; gap: 12px; margin-block: 28px; }
+.home-hero { overflow: hidden; }
+.home-hero > .home-container { position: relative; isolation: isolate; }
+.home-hero-artwork { position: absolute; top: 10px; right: -180px; width: 440px; height: auto; color: var(--accent-readable); opacity: .08; pointer-events: none; z-index: -1; }
+.home-tool svg { width: 24px; height: 24px; }
+@media (min-width: 1024px) {
+  .home-hero { padding-block: 56px 40px; }
+  .home-hero-artwork { top: 0; right: -140px; width: 600px; opacity: .18; }
+  .home-intro { text-align: left; max-width: 760px; }
+  .home-headline { font-size: clamp(2rem, 3.5vw, 3rem); }
+  .home-start { justify-items: start; }
+  .home-secondary-entry { justify-content: flex-start; }
+  .home-hero .home-search { margin-inline: 0; max-width: 650px; }
+}
 .home-start-button { min-height: 56px; padding-inline: 28px; }
 .dark .home-start-button { background: #83BEA8; color: #10161C; }
 .dark .home-start-button:hover { background: #A5D1BF; }
