@@ -570,6 +570,10 @@ html:not(.dark) .reading-page .text-\[\#C45A4A\] { color: #A83629; }
 .lecture-kicker { font-size: .9375rem; line-height: 1.7; color: var(--text-secondary); }
 .lecture-title { line-height: 1.55; text-wrap: pretty; overflow-wrap: anywhere; }
 .lecture-title-phrase { display: inline-block; max-inline-size: 100%; vertical-align: top; }
+.curriculum-concept-art { --concept-art-surface: var(--bg-card); --concept-gold: var(--amber-warm); --concept-water: #416D7F; margin-block: 24px; padding: 8px 0; border: 0; background: transparent; border-radius: 0; box-shadow: none; color: var(--accent-readable); }
+.dark .curriculum-concept-art { --concept-water: #96BCD4; }
+.curriculum-concept-art svg { display: block; width: 100%; max-width: 620px; max-height: 220px; height: auto; margin-inline: auto; }
+@media (max-width: 1023px) { .curriculum-concept-art { --concept-art-surface: var(--bg-washi); } }
 .lecture-header > div span { background: transparent; padding-inline: 0; border: 0; font-weight: 400; color: var(--text-secondary); }
 .lecture-header > div > div { gap: 8px 16px; }
 .lecture-article > details { border: 0; border-top: 1px solid var(--border-washi); border-radius: 0; padding-inline: 0; }

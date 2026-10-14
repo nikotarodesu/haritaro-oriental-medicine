@@ -1,16 +1,10 @@
 import type { SVGProps } from "react";
+import TaijiSymbol from "@/components/graphics/TaijiSymbol";
 
 export function HomeHeroArtwork() {
   return (
     <svg className="home-hero-artwork" viewBox="0 0 600 500" fill="none" aria-hidden="true" focusable="false">
-      <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-        <path strokeWidth="3" d="M414 92C344 52 246 65 193 127C137 192 141 292 202 351C264 412 364 413 429 352C484 301 494 218 455 157" />
-        <path strokeWidth="1.2" d="M405 106C340 71 253 84 207 137C157 195 161 283 214 335C267 387 358 391 415 335C462 289 472 222 443 170" />
-        <path d="M99 264C179 238 223 265 279 289C343 317 417 324 525 270M72 285C167 252 222 293 276 313C345 340 427 340 549 294M57 311C154 282 213 318 275 339C344 362 430 365 564 321" />
-        <path strokeWidth="1.5" d="M111 410C141 361 151 329 154 282C158 241 153 194 137 156" />
-        <path strokeWidth="1.2" d="M153 322C127 319 108 302 99 275C125 278 146 294 153 322ZM154 285C175 278 190 259 196 234C172 242 158 262 154 285ZM153 251C131 246 117 229 111 208C133 215 148 232 153 251ZM148 218C165 210 175 194 176 174C157 184 148 199 148 218" />
-        <circle cx="455" cy="157" r="4" fill="currentColor" stroke="none" />
-      </g>
+      <g transform="translate(130 80) scale(3.4)"><TaijiSymbol /></g>
     </svg>
   );
 }

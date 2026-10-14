@@ -43,6 +43,7 @@ import { buildLearningReflectionHref } from "@/utils/learningReflection";
 import ClinicalLectureApplication from "@/components/clinical/ClinicalLectureApplication";
 import { getLectureShortcut } from "@/utils/lectureKeyboardNavigation";
 import { createGlossarySeenSnapshots } from "@/utils/glossaryOccurrences";
+import { getCurriculumConceptArt } from "@/components/curriculum/CurriculumConceptArt";
 
 interface Props {
   lecture: Lecture;
@@ -352,6 +353,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           idPrefix="curriculum-heading"
           resolvedReferences={resolvedReferences}
           readingInserts={readingInserts}
+          conceptArt={getCurriculumConceptArt(lecture.id)}
           relatedReading={relatedFigureReading}
         />
         </div>

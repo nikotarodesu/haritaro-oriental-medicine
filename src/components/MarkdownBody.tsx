@@ -21,6 +21,7 @@ interface MarkdownBodyProps {
   readingInserts?: ReadingInsert[];
   relatedReading?: ReadingLink;
   collapseAdvanced?: boolean;
+  conceptArt?: { afterHeading: string; node: React.ReactNode } | null;
 }
 
 export default function MarkdownBody({
@@ -32,8 +33,17 @@ export default function MarkdownBody({
   readingInserts,
   relatedReading,
   collapseAdvanced = false,
+  conceptArt,
 }: MarkdownBodyProps) {
   const blocks = parseMarkdownBlocks(contentMarkdown);
+  const artHeadingIndex = conceptArt ? blocks.findIndex((block) => block.type === "h2" && block.content === conceptArt.afterHeading) : -1;
+  let artPlacementIndex = artHeadingIndex;
+  if (artHeadingIndex >= 0) {
+    for (let index = artHeadingIndex + 1; index < blocks.length; index++) {
+      if (["h1", "h2"].includes(blocks[index].type)) break;
+      if (blocks[index].type === "paragraph") { artPlacementIndex = index; break; }
+    }
+  }
   const figurePlacements = resolveReadingInsertions(blocks, readingInserts ?? []);
   const lastFigureIndex = Math.max(-1, ...figurePlacements.keys());
 
@@ -220,6 +230,7 @@ export default function MarkdownBody({
   const renderedBlocks = blocks.map((block, index) => (
         <React.Fragment key={index}>
           {renderBlock(block, index)}
+          {conceptArt && index === artPlacementIndex ? conceptArt.node : null}
           {figurePlacements.get(index)?.map((figure) => <InlineConceptFigure key={figure.id} figure={figure} />)}
           {relatedReading && index === lastFigureIndex ? (
             <aside className="not-prose rounded-xl border-l-2 border-[#8CAA99] bg-[#F6F8F4] px-4 py-3 sm:px-5 dark:border-[#608C75] dark:bg-[#15261D]" aria-label="関連する読みもの">
