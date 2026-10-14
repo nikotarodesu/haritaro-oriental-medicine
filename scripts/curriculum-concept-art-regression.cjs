@@ -30,6 +30,9 @@ const { parseMarkdownBlocks } = load('src/utils/markdownParser');
 const { CURRICULUM_CONCEPT_ART, getCurriculumConceptArt } = load('src/components/curriculum/CurriculumConceptArt');
 const MarkdownBody = load('src/components/MarkdownBody').default;
 const lectures = CURRICULUM_DATA.flatMap(series => series.lectures);
+const publishedLectures = lectures.filter(lecture => lecture.isPublished);
+assert.equal(Object.keys(CURRICULUM_CONCEPT_ART).length, publishedLectures.length, 'one illustration for every published lecture');
+for (const lecture of publishedLectures) assert(CURRICULUM_CONCEPT_ART[lecture.id], lecture.id + ': wordless artwork coverage');
 const headingIds = html => Array.from(html.matchAll(/<h[1-4][^>]*id="([^"]+)"/g), match => match[1]).join('|');
 let count = 0;
 for (const [id, specification] of Object.entries(CURRICULUM_CONCEPT_ART)) {
@@ -37,12 +40,14 @@ for (const [id, specification] of Object.entries(CURRICULUM_CONCEPT_ART)) {
   assert(lecture?.isPublished, id + ': artwork belongs to a published lecture');
   const source = lecture.contentMarkdown;
   const blocks = parseMarkdownBlocks(source);
+  assert(!/📘|⚠️|🔬|出典|参考文献/.test(specification.afterHeading), id + ': main reading section, not supplementary material');
   assert.equal(blocks.filter(block => block.type === 'h2' && block.content === specification.afterHeading).length, 1, id + ': unique actual section placement');
   const conceptArt = getCurriculumConceptArt(id);
   assert(conceptArt?.node, id + ': artwork generated');
   const art = renderToStaticMarkup(conceptArt.node);
   assert(art.includes('role="img"') && /aria-label=|<title\b/.test(art), id + ': accessible image meaning');
   assert(!/<text\b|<foreignObject\b|<figcaption\b/.test(art), id + ': no visible SVG text or prose');
+  assert(!/<image\b|<script\b|<animate\b|NaN|Infinity/.test(art), id + ': static, valid vector artwork');
   assert.equal(art.replace(/<(title|desc)\b[^>]*>[\s\S]*?<\/\1>/g, '').replace(/<[^>]*>/g, '').trim(), '', id + ': no visible HTML text around the image');
   assert(!/(?:d|transform|cx|cy)="[^"]*\.\d{4,}/.test(art), id + ': derived SVG geometry avoids server/browser float serialization drift');
   const base = renderToStaticMarkup(React.createElement(MarkdownBody, { contentMarkdown: source, idPrefix: 'lecture' }));
@@ -50,6 +55,8 @@ for (const [id, specification] of Object.entries(CURRICULUM_CONCEPT_ART)) {
   assert.equal(headingIds(illustrated), headingIds(base), id + ': original heading anchors preserved');
   assert.equal((illustrated.match(/class="[^"]*curriculum-concept-art/g) || []).length, 1, id + ': exactly one reachable illustration');
   assert.equal(illustrated.replace(art, ''), base, id + ': authored body rendering unchanged apart from artwork');
+  const collapsed = renderToStaticMarkup(React.createElement(MarkdownBody, { contentMarkdown: source, idPrefix: 'lecture', conceptArt, collapseAdvanced: true }));
+  assert(collapsed.replace(/<details\b[\s\S]*?<\/details>/g, '').includes(art), id + ': illustration visible without opening supplementary sections');
   count++;
 }
 assert.equal(getCurriculumConceptArt('unknown-lecture'), null, 'unmapped lectures remain unchanged');

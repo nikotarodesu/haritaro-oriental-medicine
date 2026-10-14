@@ -574,6 +574,7 @@ html:not(.dark) .reading-page .text-\[\#C45A4A\] { color: #A83629; }
 .curriculum-concept-art { --concept-art-surface: var(--bg-card); --concept-gold: var(--amber-warm); --concept-water: #416D7F; margin-block: 24px; padding: 8px 0; border: 0; background: transparent; border-radius: 0; box-shadow: none; color: var(--accent-readable); }
 .dark .curriculum-concept-art { --concept-water: #96BCD4; }
 .curriculum-concept-art svg { display: block; width: 100%; max-width: 620px; max-height: 220px; height: auto; margin-inline: auto; }
+.curriculum-concept-art--expanded svg { max-width: 560px; max-height: 280px; }
 @media (max-width: 1023px) { .curriculum-concept-art { --concept-art-surface: var(--bg-washi); } }
 /* Clinical home: one primary action, then short, illustrated destinations. */
 .clinical-page { --clinical-art-muted: var(--text-fukagawa); --clinical-art-gold: var(--amber-warm); max-width: 1120px; margin-inline: auto; padding: 32px var(--content-gutter) 48px; color: var(--text-sumi); }

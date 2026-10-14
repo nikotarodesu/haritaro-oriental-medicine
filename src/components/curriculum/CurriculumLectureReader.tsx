@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, Suspense } from "react";
+import { useState, useEffect, useRef, Suspense, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Lecture } from "@/data/curriculumData";
@@ -47,7 +47,6 @@ import { buildLearningReflectionHref } from "@/utils/learningReflection";
 import ClinicalLectureApplication from "@/components/clinical/ClinicalLectureApplication";
 import { getLectureShortcut } from "@/utils/lectureKeyboardNavigation";
 import { createGlossarySeenSnapshots } from "@/utils/glossaryOccurrences";
-import { getCurriculumConceptArt } from "@/components/curriculum/CurriculumConceptArt";
 
 interface Props {
   lecture: Lecture;
@@ -57,9 +56,10 @@ interface Props {
   resolvedReferences: ResolvedReference[];
   reviewQuestions: LearningQuestion[];
   chapterAssessment: ChapterAssessmentData | null;
+  conceptArt?: { afterHeading: string; node: ReactNode } | null;
 }
 
-export default function CurriculumLectureReader({ lecture, lectureNavigation, relatedReadingLinks = [], quiz, resolvedReferences, reviewQuestions, chapterAssessment }: Props) {
+export default function CurriculumLectureReader({ lecture, lectureNavigation, relatedReadingLinks = [], quiz, resolvedReferences, reviewQuestions, chapterAssessment, conceptArt = null }: Props) {
   const articleTopRef = useRef<HTMLDivElement | null>(null);
   const [focusBanner, setFocusBanner] = useState<string | null>(null);
   const [resolvedCourse, setResolvedCourse] = useState<{ lectureId: string; journey: CourseJourney | null } | null>(null);
@@ -357,7 +357,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           idPrefix="curriculum-heading"
           resolvedReferences={resolvedReferences}
           readingInserts={readingInserts}
-          conceptArt={getCurriculumConceptArt(lecture.id)}
+          conceptArt={conceptArt}
           relatedReading={relatedFigureReading}
         />
         </div>

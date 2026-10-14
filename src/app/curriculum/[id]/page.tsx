@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { CURRICULUM_DATA, Lecture } from "@/data/curriculumData";
 import CurriculumLectureReader from "@/components/curriculum/CurriculumLectureReader";
+import { getCurriculumConceptArt } from "@/components/curriculum/CurriculumConceptArt";
 import { getArticlePreviews } from "@/data/articleData";
 import { createCurriculumReadingLinks, getCurriculumRelatedArticleIds } from "@/data/curriculumReadingGuides";
 
@@ -162,6 +163,7 @@ export default async function CurriculumDetailPage({ params }: Props) {
       />
       <CurriculumLectureReader
         lecture={lecture}
+        conceptArt={getCurriculumConceptArt(lecture.id)}
         quiz={CURRICULUM_QUIZZES[lecture.id]}
         resolvedReferences={resolveArticleReferences(lecture.references, lecture.contentMarkdown)}
         reviewQuestions={LEARNING_QUESTIONS.filter(question => question.lectureId === lecture.id)}
