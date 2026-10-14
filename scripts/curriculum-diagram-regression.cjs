@@ -24,7 +24,7 @@ function load(candidate) {
       return () => React.createElement('figure', { 'data-existing-diagram': target });
     };
     if (id === 'next/link') return ({ href, children, ...props }) => React.createElement('a', { href, ...props }, children);
-    if (['@/components/EastWestTermSwitch', '@/components/glossary/GlossaryPopup'].includes(id)) return () => null;
+    if (id === '@/components/EastWestTermSwitch') return () => null;
     if (id === './CitationBadge') return () => null;
     if (id.startsWith('@/')) return load('src/' + id.slice(2));
     if (id.startsWith('.')) return load(path.resolve(path.dirname(file), id));

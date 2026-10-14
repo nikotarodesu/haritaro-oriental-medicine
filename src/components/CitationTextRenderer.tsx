@@ -5,45 +5,37 @@ import Link from "next/link";
 import { ResolvedReference } from "@/types/references";
 import { tokenizeCitationInline, CitationInlineToken } from "@/utils/citationInlineTokens";
 import CitationBadge from "./CitationBadge";
-import GlossaryRenderer from "./GlossaryRenderer";
-import { createGlossarySeenSnapshots } from "@/utils/glossaryOccurrences";
+import InlineTextRenderer from "./InlineTextRenderer";
 
 interface CitationTextRendererProps {
   text: string;
   resolvedReferences?: ResolvedReference[];
-  seenTerms?: ReadonlySet<string>;
 }
 
 export default function CitationTextRenderer({
   text,
   resolvedReferences = [],
-  seenTerms,
 }: CitationTextRendererProps) {
   if (!text) return null;
 
   const tokens = tokenizeCitationInline(text);
   if (tokens.every((token) => token.type === "text")) {
-    return <GlossaryRenderer text={text} seenTerms={seenTerms} />;
+    return <InlineTextRenderer text={text} />;
   }
 
-  // Determine first occurrences before children render, independently of React's
-  // child traversal, replay, or selective hydration order.
+  // Split emphasis markers so bold text can span links and citations.
   const inlineParts: CitationInlineToken[] = tokens.flatMap<CitationInlineToken>((token) =>
     token.type === "text"
       ? token.value.split(/(\*\*)/g).filter(Boolean).map((value) => ({ type: "text" as const, value }))
       : [token]
   );
-  const seenBeforeToken = createGlossarySeenSnapshots(
-    inlineParts.map((token) => token.type === "text" && token.value !== "**" ? token.value : ""),
-    seenTerms,
-  );
 
   const renderToken = (token: CitationInlineToken, index: number): React.ReactNode => {
     if (token.type === "text") {
-      return <GlossaryRenderer key={"text-" + index} text={token.value} seenTerms={seenBeforeToken[index]} />;
+      return <InlineTextRenderer key={"text-" + index} text={token.value} />;
     }
     if (token.type === "link") {
-      const label = <GlossaryRenderer text={token.label} enablePopup={false} />;
+      const label = <InlineTextRenderer text={token.label} />;
       const className = "font-semibold text-[#1E3D34] dark:text-[#74BA9E] underline underline-offset-2 break-words focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B86924]";
       return token.external ? (
         <a key={"link-" + index} href={token.href} target="_blank" rel="noopener noreferrer" className={className}>{label}</a>
@@ -71,7 +63,7 @@ export default function CitationTextRenderer({
   };
 
   // Keep emphasis spanning links/citations. Link labels handle their own
-  // emphasis through GlossaryRenderer with glossary interaction disabled.
+  // emphasis through InlineTextRenderer.
   const markerCount = inlineParts.filter((token) => token.type === "text" && token.value === "**").length;
   const pairedMarkers = markerCount - (markerCount % 2);
   const parts: React.ReactNode[] = [];

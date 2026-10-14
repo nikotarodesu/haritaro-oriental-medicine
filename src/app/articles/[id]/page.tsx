@@ -14,7 +14,7 @@ import { PROGRESSIVE_CASES } from "@/data/progressiveCases";
 import { resolveArticleReferences } from "@/utils/referenceResolver";
 import MarkdownBody from "@/components/MarkdownBody";
 import ArticleReferences from "@/components/ArticleReferences";
-import GlossaryRenderer from "@/components/GlossaryRenderer";
+import InlineTextRenderer from "@/components/InlineTextRenderer";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ArticleReadingResume from "@/components/reading/ArticleReadingResume";
 import { articleReadingRevision } from "@/utils/articleReadingPosition";
@@ -247,7 +247,7 @@ export default async function ArticleDetailPage({ params }: Props) {
             {resolvedReferences.length > 0 && <a href="#article-references-section" className="page-secondary-action"><Bookmark aria-hidden="true" className="h-4 w-4" />出典</a>}
           </nav>
           <details className="page-help text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]"><summary>この記事の要点・読み方</summary><div className="space-y-3">
-            <p><GlossaryRenderer text={article.summary} /></p>
+            <p><InlineTextRenderer text={article.summary} /></p>
             {learningGuide && <div className="border-l-2 border-[#C5DED4] dark:border-[#2A5243] pl-4 space-y-2 text-sm">
               <p><strong>学ぶポイント：</strong>{learningGuide.focus}</p>
             </div>}
