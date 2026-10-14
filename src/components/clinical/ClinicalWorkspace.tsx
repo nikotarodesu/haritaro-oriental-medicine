@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import PageIntro from '@/components/design/PageIntro';
+import { ShieldCheck, ClipboardList, GitCompare, MapPin, NotebookPen, RotateCcw } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { CLINICAL_SIGNS, CLINICAL_PATTERNS, CLINICAL_COMPLAINTS, compareClinicalPattern, type ClinicalSignId } from '@/data/clinicalWorkflow';
 import { ACUPOINTS_MASTER } from '@/data/tsubo/acupointsMaster';
@@ -10,6 +12,7 @@ import { saveDraftPatientNote } from '@/utils/draftNote';
 import ClinicalEvidenceKey from './ClinicalEvidenceKey';
 
 const STEPS = ['主訴・安全確認', '四診所見', '候補・治法', '配穴の理由', '記録・再評価'];
+const STEP_ICONS = [ShieldCheck, ClipboardList, GitCompare, MapPin, NotebookPen];
 const FIELD = 'w-full min-h-11 rounded-lg border border-[#C8D4CD] bg-white px-3 py-2 text-base text-[#232826] dark:border-[#496153] dark:bg-[#121B22] dark:text-[#FAF8F5]';
 const BUTTON = 'inline-flex min-h-11 items-center justify-center rounded-lg border border-[#B9CDC0] px-4 py-2 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#496153]';
 const PRIMARY = `${BUTTON} bg-[#1E3D34] text-white hover:bg-[#2B5A46] dark:bg-[#9CCDB8] dark:text-[#11291F]`;
@@ -70,11 +73,15 @@ export default function ClinicalWorkspace() {
     setEncounter(emptyClinicalEncounter()); setError(null); setSaved(false); setOnlySelected(false); setPointQuery(''); setSelectedCode('');
   };
   if (!ready) return <p role="status" className="p-6">下書きを確認しています…</p>;
-  return <div className="mx-auto max-w-6xl space-y-6 px-4 py-6 text-[#232826] dark:text-[#FAF8F5] sm:py-10">
-    <div className="flex flex-wrap items-start justify-between gap-3"><div><Link href="/clinical" className="inline-flex min-h-11 items-center text-sm underline">← 臨床ホーム</Link><h1 className="font-serif text-2xl font-bold sm:text-3xl">所見から記録まで</h1><p className="mt-2 text-sm leading-relaxed">確認した事実と見立てを分け、判断の根拠を残します。氏名・連絡先など、個人を特定する情報は入力しないでください。</p></div><button className={BUTTON} onClick={reset}>新しい記録を始める</button></div>
+  return <div className="page-layout space-y-5">
+    <Link href="/clinical" className="inline-flex min-h-11 items-center text-sm underline">← 臨床ホーム</Link>
+    <PageIntro compact eyebrow="確認した事実と、見立てを分ける" title="所見から記録まで" art="notes" description="主訴・安全確認から、配穴の理由、再評価までを5つの手順で整理します。">
+      <p className="mt-3 text-sm leading-relaxed">氏名・連絡先など、個人を特定する情報は入力しないでください。</p>
+      <div className="page-actions"><button className="page-secondary-action" onClick={reset}><RotateCcw aria-hidden="true" className="h-4 w-4" />新しい記録を始める</button></div>
+    </PageIntro>
     <p role="status" className="text-sm">{saved ? 'このタブに下書き保存済み。ページを移動して戻っても続けられます。' : '入力するとこのタブに下書きを保存します。'} タブを閉じる前に臨床ノートへ保存してください。</p>
     {encounter.previousSummary && <details className={BOX}><summary className="min-h-11 cursor-pointer font-semibold">前回からの申し送り</summary><p className="mt-2 whitespace-pre-wrap text-sm">{encounter.previousSummary}</p></details>}
-    <nav aria-label="臨床記録の手順" className="grid grid-cols-2 gap-2 sm:grid-cols-5">{STEPS.map((label,index) => <button key={label} onClick={() => proceed(index)} aria-current={encounter.step === index ? 'step' : undefined} className={`${BUTTON} text-left ${encounter.step === index ? 'bg-[#1E3D34] text-white dark:bg-[#9CCDB8] dark:text-[#11291F]' : ''}`}>{index + 1}. {label}</button>)}</nav>
+    <nav aria-label="臨床記録の手順" className="grid grid-cols-2 gap-2 sm:grid-cols-5">{STEPS.map((label,index) => { const StepIcon = STEP_ICONS[index]; return <button key={label} onClick={() => proceed(index)} aria-current={encounter.step === index ? 'step' : undefined} className={`${BUTTON} gap-2 justify-start text-left ${encounter.step === index ? 'bg-[#1E3D34] text-white dark:bg-[#9CCDB8] dark:text-[#11291F]' : ''}`}><StepIcon aria-hidden="true" className="h-5 w-5 shrink-0" /><span><span className="mr-1 opacity-75">{index + 1}.</span>{label}</span></button>; })}</nav>
     {error && <p role="alert" className="rounded-lg border border-[#C06844] bg-[#FFF2EB] p-3 text-sm text-[#843C24] dark:bg-[#35221C] dark:text-[#FFD1BB]">{error}</p>}
     <section className={`${BOX} space-y-5`} aria-label={STEPS[encounter.step]}>
       <h2 className="text-xl font-bold">{STEPS[encounter.step]}</h2>

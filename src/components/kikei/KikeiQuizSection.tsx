@@ -3,19 +3,15 @@
 import React, { useState, useMemo } from "react";
 import { CheckCircle2, XCircle, Sparkles, RefreshCw, Award, ArrowRight } from "lucide-react";
 import { KikeiVessel } from "@/data/kikeiData";
+import { shuffledIndices } from "@/utils/learningReview";
 
 interface Props {
   vessel: KikeiVessel;
 }
 
-// 配列シャッフル関数（Fisher-Yates）
-function shuffleArray<T>(array: T[]): T[] {
-  const arr = [...array];
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
+// 初回はサーバー・ブラウザで同じ並びにし、再挑戦時だけ種を進める。
+function shuffleArray<T>(array: T[], seed: string): T[] {
+  return shuffledIndices(array.length, seed).map(index => array[index]);
 }
 
 export default function KikeiQuizSection({ vessel }: Props) {
@@ -37,7 +33,7 @@ export default function KikeiQuizSection({ vessel }: Props) {
           { text: `${vessel.couplePoint.name}（${vessel.couplePoint.meridian}）`, isCorrect: false },
           { text: "合谷（手陽明大腸経）", isCorrect: false },
           { text: "太衝（足厥陰肝経）", isCorrect: false },
-        ]),
+        ], `${vessel.slug}:${quizSeed}:q1`),
         explanation: `${vessel.name}の八脈交会穴（主穴）は「${vessel.masterPoint.name}（${vessel.masterPoint.code}）」です。この経穴と、対になる配穴を組み合わせて覚えましょう。`,
       },
       {
@@ -48,7 +44,7 @@ export default function KikeiQuizSection({ vessel }: Props) {
           { text: "足三里（足陽明胃経）", isCorrect: false },
           { text: "三陰交（足太陰脾経）", isCorrect: false },
           { text: "風池（足少陽胆経）", isCorrect: false },
-        ]),
+        ], `${vessel.slug}:${quizSeed}:q2`),
         explanation: `${vessel.name}の通穴「${vessel.masterPoint.name}」と対になるのは「${vessel.couplePoint.name}」です。この組み合わせを「${vessel.pairName}」と呼びます。伝統的には、${vessel.pairTargetArea}に関する病証と関連づけて説明されます。`,
       },
       {
@@ -58,7 +54,7 @@ export default function KikeiQuizSection({ vessel }: Props) {
           { text: vessel.indications[0] || "特有の主治病証", isCorrect: true },
           { text: "外感風寒による初期の一過性表寒証のみ", isCorrect: false },
           { text: "特記すべき適応病証はなく、診断用のみ", isCorrect: false },
-        ]),
+        ], `${vessel.slug}:${quizSeed}:q3`),
         explanation: `${vessel.name}は、伝統的に「${vessel.indications.slice(0, 2).join("・")}」などの病証と関連づけて説明されます。ここでは主治の分類を確認しています。個人への施術適応を判断するものではありません。`,
       },
     ];

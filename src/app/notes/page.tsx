@@ -2,6 +2,7 @@
 
 import React, { Suspense, useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
+import PageIntro from "@/components/design/PageIntro";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { 
@@ -492,24 +493,19 @@ function ClinicalNotesPage() {
   const currentSample = SAMPLE_PATIENT_NOTES[selectedSampleIndex] || SAMPLE_PATIENT_NOTES[0];
 
   return (
-    <div className="notes-page max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 text-[#232826] dark:text-[#FAF8F5]">
+    <div className="notes-page page-layout space-y-6">
       
       {/* ======================================================== */}
       {/* 1. ページヘッダー（初回 / 継続で表示を調整） */}
       {/* ======================================================== */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8E1D1] dark:border-[#22303D] pb-5">
-        <div>
-          <div className="flex items-center gap-2">
-            <Bookmark className="w-6 h-6 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-              マイノート
-            </h1>
-          </div>
-          <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1">
-            弁証・配穴・施術後の変化をまとめて、日々の臨床に生かす。
-          </p>
+      <PageIntro compact eyebrow="記録して、次の見直しへ" title="マイノート" art="notes" description="所見・配穴・施術後の変化を、ひとつの記録に。">
+        <div className="page-actions">
+          <button type="button" onClick={openNewNoteModal} disabled={isPatientNoteLimitReached} className="page-primary-action disabled:opacity-50"><Plus aria-hidden="true" className="h-4 w-4" />臨床ノートを新規作成</button>
+          <a href="#saved-notes" className="page-secondary-action"><Bookmark aria-hidden="true" className="h-4 w-4" />保存した記録を見る</a>
         </div>
-
+      </PageIntro>
+      <details className="page-help">
+        <summary>ファイルに保存・読込</summary>
         {/* 右側：補助アクション（ファイル保存・CSV出力・読込） */}
         <div className="flex flex-wrap items-center gap-2 shrink-0">
           <button
@@ -549,7 +545,7 @@ function ClinicalNotesPage() {
             className="hidden"
           />
         </div>
-      </div>
+      </details>
 
       {/* 未ログイン時のクラウド自動同期・アカウント登録案内バナー */}
       {!isAuthenticated && (
@@ -668,7 +664,7 @@ function ClinicalNotesPage() {
       )}
 
       {/* ======================================================== */}
-      <ClinicalNoteTimeline notes={patientNotes} />
+      <div id="saved-notes" className="scroll-mt-28"><ClinicalNoteTimeline notes={patientNotes} /></div>
       {draftNotice && <Link href="/clinical/workspace" className="inline-flex min-h-11 items-center rounded-lg border border-[#C8D4CD] px-4 py-2 font-semibold dark:border-[#496153]">作業中の所見・配穴の理由へ戻って修正 →</Link>}
       {/* 3. タブ切り替え（臨床ノート / 配穴集） */}
       {/* ======================================================== */}

@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import PageIntro from "@/components/design/PageIntro";
 import { Layers, Sparkles, ArrowRight, BookOpen, AlertCircle } from "lucide-react";
 import ProgressiveCaseTraining from "@/components/learning/ProgressiveCaseTraining";
 import ThreeStageSimulator from "@/components/ThreeStageSimulator";
@@ -13,73 +14,26 @@ export default function SimulatorHub({ relatedArticles }: { relatedArticles: Art
   return (
     <div className="space-y-8 sm:space-y-12">
       <ClinicalToolBridge />
-      {/* ツール見出し */}
-      <div className="text-center space-y-3 sm:space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-semibold tracking-wider">
-          <Layers className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-          <span>八綱 ➜ 気血水 ➜ 臓腑経絡 3段階連動</span>
+      <PageIntro compact eyebrow="所見から判断する練習" title="臨床弁証シミュレーター" art="practice" description="架空症例を考える、条件を選んで比べる。取り組みたい演習から始められます。">
+        <div className="page-actions">
+          <a href="#case-training" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />症例から練習する<ArrowRight aria-hidden="true" className="h-4 w-4" /></a>
+          <a href="#condition-training" className="page-secondary-action"><Layers aria-hidden="true" className="h-4 w-4" />条件を選んで考える</a>
         </div>
-
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-tight">
-          臨床弁証シミュレーター
-        </h1>
-
+      </PageIntro>
+      <details className="page-help">
+        <summary>演習で確認できること</summary>
         <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
           八綱、気血水、臓腑経絡の条件を順に選ぶと、
           選んだ条件に応じた<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「一文の証」</strong>と、
           <strong className="text-[#1E3D34] dark:text-[#74BA9E]">「配穴の学習例」</strong>を表示します。確認した所見、候補に合わない所見、足りない情報を比べる教材で、選択結果だけでは診断や施術方針は決まりません。
         </p>
 
-        {/* このツールでできること（3ステップ）＆ こんな人におすすめ */}
-        <div className="bg-white dark:bg-[#152028] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 shadow-xs space-y-4 max-w-4xl mx-auto text-left">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
-            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5 uppercase tracking-wider">
-              <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              <span>このツールでできること（3ステップ）</span>
-            </span>
-            <span className="text-xs text-[#59615D] dark:text-[#A0B0BC] bg-[#FAF8F5] dark:bg-[#10171F] px-2.5 py-1 rounded-full border border-[#E8E1D1] dark:border-[#22303D] font-medium">
-              🎯 こんな人におすすめ：鍼灸学生の国試・臨床実習対策／臨床家の配穴処方見直し
-            </span>
-          </div>
+      </details>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-            <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
-              <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
-                <span className="w-5 h-5 rounded-full bg-[#1E3D34] text-white flex items-center justify-center text-xs font-mono">1</span>
-                <span>所見・条件を選ぶ</span>
-              </div>
-              <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                八綱（表裏・寒熱・虚実）、気血水、臓腑経絡の欄で、確認した条件を選びます。
-              </p>
-            </div>
-
-            <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
-              <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
-                <span className="w-5 h-5 rounded-full bg-[#B86924] text-white flex items-center justify-center text-xs font-mono">2</span>
-                <span>条件と候補を見比べる</span>
-              </div>
-              <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                選択した組み合わせに対応する証名と治法の教材表示を読み、候補を支持する所見・矛盾・不足情報を確認します。
-              </p>
-            </div>
-
-            <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
-              <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
-                <span className="w-5 h-5 rounded-full bg-[#2B6958] text-white flex items-center justify-center text-xs font-mono">3</span>
-                <span>経穴選定の確認</span>
-              </div>
-              <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                配穴例と、採用条件・伝統理論と研究の違いを確認・学習ノートへ保存。
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <ProgressiveCaseTraining />
+      <section id="case-training" className="scroll-mt-28"><ProgressiveCaseTraining /></section>
 
       {/* 臨床弁証シミュレーター本体 */}
-      <ThreeStageSimulator />
+      <section id="condition-training" className="scroll-mt-28"><ThreeStageSimulator /></section>
 
       {/* 関連リンクフッター案内 */}
       <div className="bg-[#FAF8F5] dark:bg-[#152028] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-8 space-y-4">

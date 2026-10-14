@@ -24,6 +24,7 @@ import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { PUBLIC_ARCHIVE_CASES, ARCHIVE_CASES_NOTICE } from "@/data/cases/archiveCases";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import AuthModal from "@/components/auth/AuthModal";
+import PageIntro from "@/components/design/PageIntro";
 import PrimeStudentCard from "@/components/PrimeStudentCard";
 
 export default function LibraryClient() {
@@ -85,31 +86,10 @@ export default function LibraryClient() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F1E8] dark:bg-[#10161C] text-base leading-relaxed text-[#232826] dark:text-[#FAF8F5]">
-      {/* ヒーローヘッダー */}
-      <div className="bg-[#FCFAF6] dark:bg-[#17212A] border-b border-[#E5DEC9] dark:border-[#2A3B4A] py-8 sm:py-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]">
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>古典医典・研究資料・症例教材</span>
-            </span>
-            <span className="text-sm px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-medium border border-[#C5DED4] dark:border-[#2A5243]">
-              臨床文献ナレッジベース
-            </span>
-          </div>
-
-          <div className="space-y-2">
-            <h1 className="font-serif text-2xl sm:text-4xl font-bold tracking-tight text-[#232826] dark:text-[#FAF8F5]">
-              文献・古典・症例教材
-            </h1>
-            <p className="text-base text-[#59615D] dark:text-[#96A6B2] max-w-3xl leading-relaxed">
-              古典条文（素問・霊枢・難経）、原典と書誌情報を照合した研究資料、症例教材をまとめています。研究の種類・対象・限界を確認しながら学ぶための資料集です。
-            </p>
-          </div>
-
-          <p className="text-base leading-relaxed">書誌を照合した論文{PAPERS_DATABASE.length}件のうち、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'abstract').length}件は抄録、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'selected_full_text').length}件は本文の一部を確認しています。{PAPERS_DATABASE.filter(paper => paper.claimsStatus !== 'source-checked').length}件は結果の要約を保留中です。全件の全文照合・専門家監修は未完了です。<Link href="/editorial-policy" className="underline">出典確認・監修の進捗を見る</Link></p>
-
+    <div className="page-layout text-base leading-relaxed">
+      <PageIntro eyebrow="原典と研究を読む" title="文献・古典・症例教材" description="論文、古典、症例から選ぶ。調べたい言葉で資料を探せます。" art="reading" />
+      <div className="rounded-2xl border border-[#E5DEC9] bg-[#FCFAF6] p-4 dark:border-[#2A3B4A] dark:bg-[#17212A] sm:p-6">
+        <div className="space-y-4">
           {/* 検索バー */}
           <div className="pt-2 max-w-xl">
             <label htmlFor="library-search" className="mb-2 block text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">資料を検索</label>
@@ -132,10 +112,10 @@ export default function LibraryClient() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+      <div className="py-6 sm:py-8 space-y-6">
         
         {/* カテゴリタブ */}
-        <div role="group" aria-label="資料の分類" className="flex flex-wrap items-center gap-2 pb-4 border-b border-[#E5DEC9] dark:border-[#2A3B4A] text-sm">
+        <div role="group" aria-label="資料の分類" className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap text-sm">
           {[
             { id: "all", label: "すべて", count: totalResults },
             { id: "papers", label: "論文", count: filteredPapers.length },
@@ -149,13 +129,13 @@ export default function LibraryClient() {
               aria-pressed={activeTab === tab.id}
               style={{ minHeight: 44 }}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-3 py-2 rounded-lg border font-bold transition-colors flex items-center gap-1.5 ${
+              className={`px-4 py-3 rounded-xl border font-bold transition-colors flex items-center gap-2 ${
                 activeTab === tab.id
                   ? "bg-[#1E3D34] border-[#1E3D34] text-white dark:bg-[#2B6958] dark:border-[#2B6958]"
                   : "bg-[#FCFAF6] dark:bg-[#17212A] text-[#59615D] dark:text-[#A0B0BC] border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#E8EFEA] dark:hover:bg-[#182823]"
               }`}
             >
-              <span>{tab.label}</span>
+              {tab.id === "papers" ? <GraduationCap aria-hidden="true" className="h-5 w-5" /> : tab.id === "classics" ? <BookOpen aria-hidden="true" className="h-5 w-5" /> : tab.id === "cases" || tab.id === "archives" ? <FileText aria-hidden="true" className="h-5 w-5" /> : <Search aria-hidden="true" className="h-5 w-5" />}<span>{tab.label}</span>
               <span className="text-sm opacity-90">({tab.count})</span>
             </button>
           ))}
@@ -173,6 +153,8 @@ export default function LibraryClient() {
         </section>}
 
         {activeTab === "archives" && <div className="[&_p]:text-base [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_a]:text-sm"><MedicalSafetyNotice title="症例アーカイブの掲載は保留中です" message={ARCHIVE_CASES_NOTICE} /></div>}
+
+        <details className="page-help"><summary>資料の種類・出典の確認範囲</summary><p className="text-base leading-relaxed">古典条文（素問・霊枢・難経）、原典と書誌情報を照合した研究資料、症例教材をまとめています。研究の種類・対象・限界を確認しながら学ぶための資料集です。</p><p className="text-base leading-relaxed">書誌を照合した論文{PAPERS_DATABASE.length}件のうち、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'abstract').length}件は抄録、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'selected_full_text').length}件は本文の一部を確認しています。{PAPERS_DATABASE.filter(paper => paper.claimsStatus !== 'source-checked').length}件は結果の要約を保留中です。全件の全文照合・専門家監修は未完了です。<Link href="/editorial-policy" className="underline">出典確認・監修の進捗を見る</Link></p></details>
 
         {/* コンテンツエリア */}
         {visibleResultCount > 0 && <div className="space-y-8">

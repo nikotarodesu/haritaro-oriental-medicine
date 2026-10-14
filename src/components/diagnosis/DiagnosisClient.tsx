@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
+import PageIntro from "@/components/design/PageIntro";
 import { useRouter } from "next/navigation";
 import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { DIAGNOSIS_QUESTIONS, DIAGNOSIS_RESULTS, DIAGNOSIS_GUIDANCE_SCOPE } from "@/data/diagnosisData";
@@ -356,35 +357,41 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-16 space-y-8 sm:space-y-10">
+    <div className="page-layout space-y-6">
+      <PageIntro compact eyebrow="回答を整理して振り返る" art="care"
+        title={activeTab === "self" ? "気血水 体質セルフチェック" : activeTab === "clinical" ? "気血水 対面問診モード" : "五労チェッカー"}
+        description={activeTab === "self" ? "直近1〜2週間の状態に当てはまるものを選び、回答の傾向を確認します。" : activeTab === "clinical" ? "対面で確認した回答と、不明な所見を分けて記録します。" : "『素問』の五労を参考に、見る・座る・立つ・歩く・横になる生活動作を振り返ります。"}
+      />
       <MedicalSafetyNotice title="チェックの利用範囲" message={DIAGNOSIS_GUIDANCE_SCOPE} />
       {/* モード切り替えタブ */}
-      <div className="flex justify-center">
-        <div className="inline-flex p-1 sm:p-1.5 rounded-2xl bg-[#EFE9DD] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2D3E50] shadow-inner max-w-full overflow-x-auto gap-1">
+      <div className="w-full">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
           <button
             type="button"
             onClick={() => handleTabChange("self")}
-            className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
+            aria-pressed={activeTab === "self"}
+            className={`flex items-center gap-1.5 sm:gap-2 min-h-14 px-4 py-3 rounded-xl text-sm font-bold transition-colors text-left cursor-pointer ${
               activeTab === "self"
                 ? "bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] shadow-sm"
                 : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
             }`}
           >
             <Stethoscope className="w-4 h-4" />
-            <span>① 気血水セルフチェック</span>
+            <span>気血水セルフチェック</span>
           </button>
 
           <button
             type="button"
             onClick={() => handleTabChange("clinical")}
-            className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
+            aria-pressed={activeTab === "clinical"}
+            className={`flex items-center gap-1.5 sm:gap-2 min-h-14 px-4 py-3 rounded-xl text-sm font-bold transition-colors text-left cursor-pointer ${
               activeTab === "clinical"
                 ? "bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] shadow-sm ring-1 ring-[#1E3D34]/20 dark:ring-[#74BA9E]/30"
                 : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
             }`}
           >
             <UserCheck className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <span>② 対面問診モード（患者用）</span>
+            <span>対面問診</span>
             <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#1E3D34] text-white dark:bg-[#74BA9E] dark:text-[#121920]">
               臨床用
             </span>
@@ -393,14 +400,15 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
           <button
             type="button"
             onClick={() => handleTabChange("gorou")}
-            className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
+            aria-pressed={activeTab === "gorou"}
+            className={`flex items-center gap-1.5 sm:gap-2 min-h-14 px-4 py-3 rounded-xl text-sm font-bold transition-colors text-left cursor-pointer ${
               activeTab === "gorou"
                 ? "bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] shadow-sm"
                 : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
             }`}
           >
             <Activity className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-            <span>③ 五労チェッカー</span>
+            <span>五労チェッカー</span>
           </button>
         </div>
       </div>
@@ -410,21 +418,6 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
       {/* ============================================================== */}
       {activeTab === "self" && (
         <div className="space-y-8 sm:space-y-12 animate-fadeIn max-w-4xl mx-auto">
-          {/* ページ見出し */}
-          <div className="text-center space-y-3 sm:space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3E1CB] dark:border-[#423321] text-[#B86924] dark:text-[#E6C387] text-xs font-semibold tracking-wider">
-              <Stethoscope className="w-3.5 h-3.5" />
-              <span>東洋医学式 気・血・水 バランスチェック</span>
-            </div>
-            <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-              気血水 体質セルフチェック
-            </h1>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-xl mx-auto leading-relaxed">
-              あなたの今の心身の傾きはどこにあるでしょうか？
-              直近1〜2週間の状態に当てはまるものにチェックを入れ、「体質傾向を分析する」を押してください。
-            </p>
-          </div>
-
           {/* 免責事項バナー */}
           <div className="p-3.5 sm:p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-start gap-2.5 text-xs text-[#59615D] dark:text-[#96A6B2] shadow-2xs">
             <AlertCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] shrink-0 mt-0.5" />
@@ -776,9 +769,9 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
                   <span className="p-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
                     <UserCheck className="w-5 h-5" />
                   </span>
-                  <h1 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-                    気血水 対面問診モード
-                  </h1>
+                  <h2 className="text-lg font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                    聞き取りの記録
+                  </h2>
                 </div>
                 <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] mt-1 leading-relaxed">
                   患者さんへの対面聞き取りを記録し、気血水の偏り傾向を整理する臨床補助ツールです。
@@ -1115,20 +1108,6 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
       {/* ============================================================== */}
       {activeTab === "gorou" && (
         <div className="space-y-8 animate-fadeIn max-w-5xl mx-auto">
-          {/* 導入ヘッダー */}
-          <div className="text-center space-y-3 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] border border-[#F3E1CB] dark:border-[#423321] text-[#B86924] dark:text-[#E6C387] text-xs font-semibold tracking-wider">
-              <Activity className="w-3.5 h-3.5 text-[#B86924]" />
-              <span>『素問』の五労を参考に、生活動作の偏りを振り返る</span>
-            </div>
-            <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-              五労チェッカー（久視・久臥・久坐・久立・久行）
-            </h1>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              「久視・久坐・久立・久行・久臥」の五労を参考に、見る・座る・立つ・歩く・横になるといった生活動作の偏りを振り返り、<strong className="text-[#1E3D34] dark:text-[#74BA9E]">「生活動作の偏りを見直すための工夫」</strong>を提案します。
-            </p>
-          </div>
-
           <GorouWorkstyleChecker />
         </div>
       )}

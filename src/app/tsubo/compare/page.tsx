@@ -24,7 +24,7 @@ export default function TsuboComparePage() {
     <div className="min-h-screen">
       {/* 検索エンジン・アクセシビリティ用 静的SSRヘッダー */}
       <header className="sr-only">
-        <h1>経穴比較ツール｜ツボの場所・鑑別・臨床配合の横並び対比</h1>
+        <p>経穴比較ツール｜ツボの場所・鑑別・臨床配合の横並び対比</p>
         <p>
           合谷と太衝（四関穴）、足三里と三陰交などの経穴を2〜3穴並べて比較できます。位置、要穴の分類、伝統的な主治、注意事項の違いを確認してください。
         </p>

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { pageSocialMetadata } from '@/config/seo';
 import Link from 'next/link';
+import PageIntro from '@/components/design/PageIntro';
+import { SearchCheck, ClipboardCheck, History } from 'lucide-react';
 import summary from '@/data/medicalReviewSummary.json';
 import audit from '@/data/references/bibliographyAudit.json';
 import { PAPERS_DATABASE, VERIFIED_PAPERS } from '@/data/references/papersData';
@@ -8,11 +10,17 @@ import { CLASSICAL_TEXTS } from '@/data/classicalTextsData';
 export const metadata: Metadata = { title: '医学記述・出典の確認方針', description: '書誌の照合、研究結果の解釈、専門家による監修の状況を分けて公開します。', ...pageSocialMetadata('医学記述・出典の確認方針', '書誌の照合、研究結果の解釈、専門家による監修の状況を分けて公開します。', '/editorial-policy'), alternates: { canonical: '/editorial-policy' } };
 export default function EditorialPolicyPage() {
   const records = Object.values(audit);
-  return <div className="mx-auto max-w-3xl px-4 py-12 space-y-7 text-[#232826] dark:text-[#FAF8F5]">
-    <h1 className="font-serif text-3xl font-bold">医学記述・出典の確認方針</h1>
+  return <div className="page-layout page-layout--reading space-y-7 leading-relaxed">
+    <PageIntro eyebrow="教材の編集方針" title="医学記述・出典の確認方針" description="出典の照合、研究結果の解釈、専門家監修の範囲を確認できます。" art="reading" compact>
+      <nav aria-label="確認方針の目次" className="page-actions">
+        <a href="#current-review" className="page-secondary-action"><SearchCheck size={18} aria-hidden="true" />現在の確認状況</a>
+        <a href="#review-criteria" className="page-secondary-action"><ClipboardCheck size={18} aria-hidden="true" />確認する項目</a>
+        <a href="#review-record" className="page-secondary-action"><History size={18} aria-hidden="true" />監修の記録</a>
+      </nav>
+    </PageIntro>
     <section className="space-y-3"><h2 className="text-xl font-bold">臨床用の記録・学習モデルの確認範囲（2026年10月4日）</h2><p>主訴別の確認ガイドと臨床ワークスペースでは、伝統理論、現代医学の受診目安、理解を助ける比喩を区別します。所見の照合は本サイトが整理した7つの限定的な学習モデルで、診断確率・治療効果・医学的な原因の除外を示しません。</p><p>WHOの標準用語は用語体系の参照に用い、個別の配穴の効果や照合ルールの検証資料とは扱いません。新しい学習モデルの臨床的妥当性と専門家監修は未確認です。</p><Link className="inline-flex min-h-11 items-center underline" href="/clinical">主訴別ガイドと参照範囲を見る</Link></section>
     <p className="leading-relaxed">伝統的な分類、現代医学の研究結果、理解を助ける比喩を区別します。文献が存在することと、教材の説明がその文献で支持されることは別々に確認します。</p>
-    <section className="space-y-3"><h2 className="text-xl font-bold">現在の確認状況</h2>
+    <section id="current-review" className="scroll-mt-28 space-y-3"><h2 className="text-xl font-bold">現在の確認状況</h2>
       <p>登録論文{PAPERS_DATABASE.length}件を照合し、書誌一致を確認できたものは{records.filter(record => record.bibliographyStatus === 'matched').length}件です。撤回論文、書誌の不一致、原典を確認できない文献は研究資料一覧と検索の対象から外しています。</p>
       <p>公開論文のうち{VERIFIED_PAPERS.filter(paper => paper.claimsStatus === 'source-checked').length}件は、取得できた抄録または本文の一部で対象・比較・結果を確認し、要約と適用の限界を記載しました。確認した範囲・原典URL・確認日は各論文に表示します。全文・付録の網羅的な確認や専門家監修の完了を意味しません。原典を取得できない項目の結果・人数・施術条件は掲載を保留しています。</p>
       <p>古典{CLASSICAL_TEXTS.filter(classic => classic.verifiedQuotation).length}件には、確認した電子本文からの限定的な引用を、元の未照合掲載文と分けて表示しています。確認範囲と字句の違いを各項目で説明し、底本画像・訳や臨床解釈の専門家確認は未完了としています。</p>
@@ -27,14 +35,14 @@ export default function EditorialPolicyPage() {
       <p>合谷の位置説明を統一し、経穴ページの検索用データに残っていた「鍼灸師監修」の表示を修正しました。これは今回変更した箇所の記録であり、全教材の確認完了を示すものではありません。</p>
       <p className="text-sm">参照した資料：<a className="underline" href="https://www.who.int/publications/i/item/9789240042322">WHOの伝統医学用語集の書誌</a>、<a className="underline" href="https://www.nccih.nih.gov/health/acupuncture-effectiveness-and-safety">NCCIHの鍼治療の研究と安全性</a>。各資料が支持する範囲と未確認の範囲は、講義の参考文献と古典の注記に記載しています。</p>
     </section>
-    <section className="space-y-3"><h2 className="text-xl font-bold">記述ごとに確認すること</h2><ol className="list-decimal pl-5 space-y-2">
+    <section id="review-criteria" className="scroll-mt-28 space-y-3"><h2 className="text-xl font-bold">記述ごとに確認すること</h2><ol className="list-decimal pl-5 space-y-2">
       <li>出典の著者、題名、年、識別子が一致しているか。訂正・撤回がないか。</li>
       <li>原典のどのページ・表・段落が記述を支持するか。</li>
       <li>対象、比較、評価時点、効果量・不確実性を正しく説明しているか。</li>
       <li>動物実験からヒトへ、別疾患へ、伝統的分類へ過度に一般化していないか。</li>
       <li>紹介・受診の判断や施術上の注意を、資格を持つ監修者が確認したか。</li>
     </ol></section>
-    <section className="space-y-3"><h2 className="text-xl font-bold">監修の記録</h2><p>監修者の氏名・資格、確認した記述の版、対象範囲、確認日、修正内容を記録します。執筆者情報や自動チェックの合格だけを「専門家監修済み」と表示することはありません。</p><p>本文を変更した場合、以前の確認を新しい記述へ自動で引き継ぎません。施術の安全性や緊急の対応が関わる記述を優先して確認します。</p></section>
+    <section id="review-record" className="scroll-mt-28 space-y-3"><h2 className="text-xl font-bold">監修の記録</h2><p>監修者の氏名・資格、確認した記述の版、対象範囲、確認日、修正内容を記録します。執筆者情報や自動チェックの合格だけを「専門家監修済み」と表示することはありません。</p><p>本文を変更した場合、以前の確認を新しい記述へ自動で引き継ぎません。施術の安全性や緊急の対応が関わる記述を優先して確認します。</p></section>
     <p className="text-sm">確認台帳の作成日：{summary.generatedAt}。記述の誤りや出典の不一致は<Link href="/contact" className="underline">お問い合わせ</Link>からお知らせください。</p>
     <Link href="/library" className="inline-flex min-h-11 items-center underline">書誌を照合した研究資料を見る</Link>
   </div>;

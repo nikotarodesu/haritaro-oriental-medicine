@@ -133,6 +133,8 @@ function createHarness(queryString) {
     '@/contexts/CurriculumProgressContext': { useCurriculumProgress: () => ({ saveQuizResult() {} }) },
     '@/contexts/ClinicalMemoContext': { useClinicalMemo: () => ({ memos: [] }) },
     '@/components/learning/LearningSyncStatus': { __esModule: true, default: () => null },
+    // Keep the real heading/actions in this practice-flow harness; artwork is presentational.
+    '@/components/design/PageIntro': { __esModule: true, default: ({ title, description, children, headingLevel = 'h1' }) => React.createElement('header', null, React.createElement(headingLevel, null, title), description, children) },
   };
   const localRequire = id => Object.hasOwn(stubs, id) ? stubs[id] : id.startsWith('@/') ? load('src/' + id.slice(2)) : require(id);
   vm.runInNewContext(output, { exports, require: localRequire, crypto, Date, window: browser, localStorage,

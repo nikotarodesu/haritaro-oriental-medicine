@@ -257,32 +257,9 @@ export default function KokushiDashboard() {
       {/* ============================================================ */}
       {/* 1. ヒーローセクション ＆ 国試カウントダウン                    */}
       {/* ============================================================ */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1E3D34] via-[#162E27] to-[#0E1F1A] text-[#FAF8F5] p-6 sm:p-10 shadow-xl border border-[#2D5A4D] print:hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
-        
-        <div className="relative z-10 space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <span className="p-2 rounded-xl bg-white/10 text-[#E6C387]">
-                <GraduationCap className="w-6 h-6" />
-              </span>
-              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#E6C387]/20 text-[#E6C387] border border-[#E6C387]/30">
-                国家試験対策特設ハブ
-              </span>
-            </div>
-
-            <a href="https://ahaki.or.jp/exam/" target="_blank" rel="noopener noreferrer" className="text-xs underline text-[#E6C387]">試験日・出題基準は試験財団の公式案内で確認</a>
-          </div>
-
-          <div className="max-w-2xl space-y-2">
-            <h2 className="font-serif text-2xl sm:text-4xl font-extrabold leading-tight text-[#FAF8F5]">
-              東洋医学・経絡経穴で<br className="hidden sm:inline" />復習と症例をつなぐ学習ルート
-            </h2>
-            <p className="text-xs sm:text-sm text-[#D1E0D9] leading-relaxed">
-              「体系講義の理論 ⇄ 全361穴の辞典 ⇄ 症例の臨床推論」を自在に往復。回答日と連続正解数に基づく間隔反復で、本番まで知識を強固に定着させます。
-            </p>
-          </div>
-
+      <section aria-label="これまでの学習" className="rounded-2xl border border-[#2D5A4D] bg-[#1E3D34] p-5 text-[#FAF8F5] print:hidden">
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="flex items-center gap-2 font-semibold"><GraduationCap aria-hidden="true" className="h-5 w-5 text-[#E6C387]" />これまでの学習</h2><a href="https://ahaki.or.jp/exam/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-sm underline text-[#E6C387]">試験日・出題基準の公式案内</a></div>
           {/* 学習進捗ステータス */}
           <div className="pt-2 flex flex-wrap items-center gap-4 text-xs text-[#D1E0D9]">
             <div className="flex items-center gap-1.5">

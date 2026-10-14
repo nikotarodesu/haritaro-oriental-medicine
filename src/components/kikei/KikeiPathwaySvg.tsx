@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { KikeiVessel } from "@/data/kikeiData";
-import { Sparkles, Compass, Eye, Info, CheckCircle2, ChevronRight } from "lucide-react";
+import { Compass, Info } from "lucide-react";
 
 interface Props {
   vessel: KikeiVessel;
@@ -199,7 +199,7 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
 
       <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-6 pt-2">
         {/* SVGグラフィックエリア */}
-        <div className="relative w-64 h-96 sm:w-72 sm:h-[400px] rounded-2xl bg-[#FAF8F5] dark:bg-[#10161C] border border-[#E5DEC9] dark:border-[#2A3B4A] p-2 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
+        <div className="relative w-64 max-w-full h-96 sm:w-72 sm:h-[400px] rounded-2xl bg-[#FAF8F5] dark:bg-[#10161C] border border-[#E5DEC9] dark:border-[#2A3B4A] p-2 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
           <svg
             viewBox="0 0 220 390"
             className="w-full h-full text-[#232826] dark:text-[#FAF8F5] select-none"

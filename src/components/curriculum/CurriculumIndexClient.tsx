@@ -1,5 +1,6 @@
 "use client";
 
+import PageIntro from "@/components/design/PageIntro";
 import LearningReviewPanel from "@/components/learning/LearningReviewPanel";
 import CourseMiniCase from "@/components/learning/CourseMiniCase";
 import LearningSyncStatus from "@/components/learning/LearningSyncStatus";
@@ -108,21 +109,10 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12 space-y-8 sm:space-y-10">
-      {/* ページ見出し */}
-      <div className="border-b border-[#E8E1D1] dark:border-[#22303D] pb-6 text-center max-w-3xl mx-auto space-y-3">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-semibold tracking-wider">
-          <GraduationCap className="w-4 h-4" />
-          <span>東洋医学{catalog.chapters.length}章カリキュラム</span>
-        </div>
-        <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-          体系学習カリキュラム
-        </h1>
-        <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          概論から陰陽・気血津液・臓腑へ。関係モデル、病機、情報整理、治療方針、経過の振り返りを全{plannedCount}講で学びます。
-        </p>
-        <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">各章を詳しく学ぶ目次です。短く全体像をつかむには、<Link href="/learn/courses" className="inline-flex min-h-11 items-center font-semibold text-[#184F49] underline focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">3〜5講の基礎コース</Link>から始められます。講義の受講記録は共通です。</p>
-      </div>
+    <div className="page-layout space-y-8 sm:space-y-10">
+      <PageIntro eyebrow={`東洋医学 ${catalog.chapters.length}章・${plannedCount}講`} title="体系学習カリキュラム" description="概論から臨床の基礎まで。続きから学ぶか、読みたい章を選びましょう。" art="study">
+        <div className="page-actions"><a href="#curriculum-chapters" className="page-secondary-action"><GraduationCap aria-hidden="true" className="h-5 w-5" />章から選ぶ</a><Link href="/learn/courses" className="page-secondary-action">3〜5講の基礎コース</Link></div>
+      </PageIntro>
 
       {/* 最上部「最初のレッスンを始める / 続きから学ぶ」ダッシュボード & 全体進捗 */}
       <div className="bg-gradient-to-br from-[#1E3D34] via-[#162E27] to-[#12221D] text-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-lg relative overflow-hidden">
@@ -252,7 +242,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
       />
 
       {/* 補助操作：すべて展開 / すべて折りたたむ */}
-      <div className="flex items-center justify-between border-b border-[#E8E1D1] dark:border-[#22303D] pb-3">
+      <div id="curriculum-chapters" className="scroll-mt-28 flex flex-wrap gap-3 items-center justify-between border-b border-[#E8E1D1] dark:border-[#22303D] pb-3">
         <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
           カリキュラム目次（全{catalog.chapters.length}章）
         </h2>
@@ -313,7 +303,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
                       )}
                     </div>
 
-                    <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] truncate">
+                    <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
                       {chapter.title} ― {chapter.lead}
                     </h3>
                   </div>
@@ -401,7 +391,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
                             </div>
 
                             {/* レッスン名 */}
-                            <h4 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug line-clamp-1">
+                            <h4 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed">
                               <Link href={`/curriculum/${lec.id}`} className="focus-visible:outline-2 focus-visible:outline-offset-4">{lec.title}</Link>
                             </h4>
 

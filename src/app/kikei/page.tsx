@@ -1,17 +1,13 @@
 import React from "react";
 import Link from "next/link";
+import PageIntro from "@/components/design/PageIntro";
 import { Metadata } from "next";
 import { 
   Sparkles, 
   GitCommit, 
-  Compass, 
   Layers, 
   BookOpen, 
   ArrowRight, 
-  ExternalLink,
-  ChevronRight,
-  ShieldCheck,
-  Zap,
   Crown
 } from "lucide-react";
 import { KIKEI_VESSELS, HACHIMYAKU_PAIRS } from "@/data/kikeiData";
@@ -30,35 +26,16 @@ export const metadata: Metadata = {
 export default function KikeiIndexPage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
-      {/* ヒーローセクション */}
-      <div className="bg-white dark:bg-[#17212A] border-b border-[#E5DEC9] dark:border-[#2A3B4A] py-12 sm:py-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]">
-              <GitCommit className="w-3.5 h-3.5" />
-              <span>気血を蓄える「貯水池」のたとえ</span>
-            </span>
-            <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-medium border border-[#C5DED4] dark:border-[#2A5243]">
-              奇経8脈と八脈交会穴4対を掲載
-            </span>
-          </div>
-
-          <div className="space-y-3">
-            <h1 className="font-serif text-2xl sm:text-4xl font-bold tracking-tight text-[#232826] dark:text-[#FAF8F5]">
-              奇経八脈（きけいはちみゃく）と八脈交会穴
-            </h1>
-            <p className="text-sm sm:text-base text-[#59615D] dark:text-[#96A6B2] max-w-3xl leading-relaxed">
-              伝統的な経絡理論では、正経十二経脈を水路に、奇経八脈を湖や貯水池にたとえ、気血の偏りを調節すると説明します。気血は伝統医学の概念であり、血液量や自律神経機能の測定値とは区別します。このページでは8脈の流注と八脈交会穴4対の対応を学びます。治療効果については、下記の臨床研究の対象・比較条件・評価項目を確認してください。
-            </p>
-          </div>
-        </div>
+      <div className="page-layout page-layout--intro">
+        <PageIntro compact eyebrow="8つの脈・4つの組み合わせ" title="奇経八脈と八脈交会穴" art="points" description="学びたい脈を選び、流注図・交会穴・伝統的な説明を確認します。">
+          <div className="page-actions"><a href="#eight-vessels" className="page-primary-action"><GitCommit aria-hidden="true" className="h-4 w-4" />8脈から選ぶ<ArrowRight aria-hidden="true" className="h-4 w-4" /></a><a href="#four-pairs" className="page-secondary-action"><Layers aria-hidden="true" className="h-4 w-4" />交会穴の4対を見る</a></div>
+        </PageIntro>
+        <details className="page-help"><summary>伝統理論と臨床研究の読み分け</summary><p className="text-sm leading-relaxed">伝統的な経絡理論では、正経十二経脈を水路に、奇経八脈を湖や貯水池にたとえ、気血の偏りを調節すると説明します。気血は伝統医学の概念であり、血液量や自律神経機能の測定値とは区別します。このページでは8脈の流注と八脈交会穴4対の対応を学びます。治療効果については、下記の臨床研究の対象・比較条件・評価項目を確認してください。</p><KikeiEvidenceNote /></details>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14 space-y-12">
-        <KikeiEvidenceNote />
-        
+      <div className="page-layout page-layout--continuation space-y-12">
         {/* セクション 1: 全8脈の体系別カード */}
-        <div className="space-y-6">
+        <div id="eight-vessels" className="space-y-6 scroll-mt-28">
           <div className="flex flex-wrap items-end justify-between gap-2 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
             <div>
               <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block">
@@ -78,12 +55,12 @@ export default function KikeiIndexPage() {
               <Link
                 key={vessel.slug}
                 href={`/kikei/${vessel.slug}`}
-                className="group bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 shadow-2xs hover:border-[#B86924] hover:shadow-md transition-all flex flex-col justify-between"
+                className="group bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 hover:border-[#B86924] transition-colors flex flex-col justify-between"
               >
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5">
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
                         vessel.category === "陽奇経"
                           ? "bg-[#FCF4EB] text-[#B86924] dark:bg-[#2A1E14] dark:text-[#E6C387]"
                           : "bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E]"
@@ -91,35 +68,38 @@ export default function KikeiIndexPage() {
                         {vessel.category}
                       </span>
                       {vessel.slug === "toku" || vessel.slug === "nin" ? (
-                        <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243] flex items-center gap-0.5">
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243] flex items-center gap-0.5">
                           <Sparkles className="w-2.5 h-2.5" />
                           <span>無料体験</span>
                         </span>
                       ) : (
-                        <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#FCF4EB] text-[#B86924] dark:bg-[#2A1E14] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4D331F] flex items-center gap-0.5">
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-[#FCF4EB] text-[#B86924] dark:bg-[#2A1E14] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4D331F] flex items-center gap-0.5">
                           <Crown className="w-2.5 h-2.5" />
                           <span>プレミアム</span>
                         </span>
                       )}
                     </div>
                     {vessel.pointsCount ? (
-                      <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                      <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
                         固有穴 {vessel.pointsCount}穴
                       </span>
                     ) : (
-                      <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                      <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
                         交会穴系
                       </span>
                     )}
                   </div>
 
-                  <div>
+                  <div className="flex items-center gap-3">
+                    <span className="page-link-icon"><GitCommit aria-hidden="true" /></span>
+                    <div>
                     <h3 className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] transition-colors">
                       {vessel.name}
                     </h3>
-                    <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                    <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
                       {vessel.reading}
                     </p>
+                    </div>
                   </div>
 
                   <p className="text-xs text-[#59615D] dark:text-[#96A6B2] line-clamp-3 leading-relaxed">
@@ -127,16 +107,16 @@ export default function KikeiIndexPage() {
                   </p>
 
                   <div className="pt-2 border-t border-[#E5DEC9]/50 dark:border-[#2A3B4A]/50">
-                    <div className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                    <div className="text-xs text-[#737C77] dark:text-[#8899A6]">
                       <span>通穴: </span>
                       <strong className="text-[#232826] dark:text-[#FAF8F5]">{vessel.masterPoint.name}</strong>
-                      <span className="text-[10px] text-[#737C77] ml-1">({vessel.masterPoint.code})</span>
+                      <span className="text-xs text-[#737C77] ml-1">({vessel.masterPoint.code})</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="pt-4 flex items-center justify-between text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
-                  <span>流注SVG図・臨床演習</span>
+                  <span>流注図と演習を開く</span>
                   <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                 </div>
               </Link>
@@ -145,7 +125,7 @@ export default function KikeiIndexPage() {
         </div>
 
         {/* セクション 2: 八脈交会穴（4大黄金ペア） */}
-        <div className="space-y-6">
+        <div id="four-pairs" className="space-y-6 scroll-mt-28">
           <div className="flex flex-wrap items-end justify-between gap-2 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
             <div>
               <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider block">
@@ -171,7 +151,7 @@ export default function KikeiIndexPage() {
                     <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]">
                       伝統的な関連部位: {pair.targetArea}
                     </span>
-                    <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                    <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
                       {pair.master1.vessel} ✕ {pair.master2.vessel}
                     </span>
                   </div>
@@ -183,14 +163,14 @@ export default function KikeiIndexPage() {
                   {/* 穴位バッジ */}
                   <div className="grid grid-cols-2 gap-2 pt-1">
                     <div className="bg-[#FAF8F5] dark:bg-[#121920] p-2.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                      <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">{pair.master1.vessel}に通ず</span>
+                      <span className="text-xs text-[#737C77] dark:text-[#8899A6] block">{pair.master1.vessel}に通ず</span>
                       <span className="font-bold text-sm text-[#1E3D34] dark:text-[#74BA9E]">{pair.master1.point}</span>
-                      <span className="text-[10px] text-[#737C77] ml-1">({pair.master1.meridian})</span>
+                      <span className="text-xs text-[#737C77] ml-1">({pair.master1.meridian})</span>
                     </div>
                     <div className="bg-[#FAF8F5] dark:bg-[#121920] p-2.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                      <span className="text-[10px] text-[#737C77] dark:text-[#8899A6] block">{pair.master2.vessel}に通ず</span>
+                      <span className="text-xs text-[#737C77] dark:text-[#8899A6] block">{pair.master2.vessel}に通ず</span>
                       <span className="font-bold text-sm text-[#B86924] dark:text-[#E6C387]">{pair.master2.point}</span>
-                      <span className="text-[10px] text-[#737C77] ml-1">({pair.master2.meridian})</span>
+                      <span className="text-xs text-[#737C77] ml-1">({pair.master2.meridian})</span>
                     </div>
                   </div>
 
@@ -201,7 +181,7 @@ export default function KikeiIndexPage() {
 
                 <div className="pt-2 border-t border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 flex flex-wrap gap-1">
                   {pair.indications.map((ind, i) => (
-                    <span key={i} className="text-[11px] px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#151D25] text-[#737C77] dark:text-[#8899A6]">
+                    <span key={i} className="text-xs px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#151D25] text-[#737C77] dark:text-[#8899A6]">
                       {ind}
                     </span>
                   ))}

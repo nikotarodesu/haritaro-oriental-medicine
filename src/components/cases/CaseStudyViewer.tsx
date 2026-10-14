@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import PageIntro from "@/components/design/PageIntro";
 import { 
   Crown, 
   CheckCircle2, 
@@ -74,47 +75,19 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
 
   return (
     <div className="space-y-8 sm:space-y-10">
-      {/* 症例ヘッダー */}
-      <div className="rounded-3xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-bold text-[#737C77] dark:text-[#8899A6]">
-              症例 {clinicalCase.caseNumber < 10 ? `0${clinicalCase.caseNumber}` : clinicalCase.caseNumber}
-            </span>
-            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#EBE4D5] dark:bg-[#1E2C38] text-[#404743] dark:text-[#C5D2DB]">
-              {clinicalCase.category}
-            </span>
-            <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-green-100 text-green-800 dark:bg-green-950/50 dark:text-green-300">
-              難易度: {clinicalCase.difficulty}
-            </span>
-          </div>
-
-          {clinicalCase.isFreeTrial ? (
-            <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243] flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>無料体験症例</span>
-            </span>
-          ) : (
-            <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#FCF4EB] text-[#B86924] dark:bg-[#2A2016] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4D331F] flex items-center gap-1">
-              <Crown className="w-3.5 h-3.5" />
-              <span>プレミアム限定</span>
-            </span>
-          )}
+      <Link href="/cases" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[var(--accent-readable)] underline underline-offset-4">← 症例一覧へ</Link>
+      <PageIntro eyebrow={`症例 ${String(clinicalCase.caseNumber).padStart(2, '0')} ／ ${clinicalCase.category}`} title={clinicalCase.title} description={clinicalCase.subTitle} art="practice" compact>
+        <div className="mt-4 flex flex-wrap items-center gap-3 text-sm">
+          <span className="page-muted">難易度：{clinicalCase.difficulty}</span>
+          <span className="inline-flex items-center gap-2 font-semibold text-[var(--accent-readable)]">{clinicalCase.isFreeTrial ? <><Sparkles size={16} aria-hidden="true" />無料体験症例</> : <><Crown size={16} aria-hidden="true" />プレミアム限定</>}</span>
         </div>
-
-        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
-          {clinicalCase.title}
-        </h1>
-        <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2]">
-          {clinicalCase.subTitle}
-        </p>
-      </div>
+      </PageIntro>
 
       <MedicalSafetyNotice title="演習を始める前に" message={CLINICAL_CASE_SCOPE} />
       {CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id] && <MedicalSafetyNotice title="この症例の受診・安全上の注意" {...CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id]} />}
 
       {/* ステップ 1: 患者基本情報 ＆ 主訴・現病歴 */}
-      <div className="rounded-3xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-6 shadow-xs">
+      <div className="rounded-3xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 space-y-6 shadow-xs">
         <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
           <UserIcon className="w-4 h-4" />
           <span>ステップ 1: 患者基本情報 ＆ 主訴・現病歴</span>
@@ -148,7 +121,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
         </div>
 
         {/* 現病歴 ＆ 生活背景 */}
-        <div className="space-y-3 text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+        <div className="space-y-3 text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
           <div className="space-y-1">
             <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">現病歴:</span>
             <p>{clinicalCase.patient.historyOfPresentIllness}</p>
@@ -186,7 +159,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
               <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                 四診詳細・推論演習・学習用の配穴例と解説
               </h2>
-              <div className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed text-left bg-white dark:bg-[#10171F] p-4 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5">
+              <div className="text-sm sm:text-base text-[#59615D] dark:text-[#96A6B2] leading-relaxed text-left bg-white dark:bg-[#10171F] p-4 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5">
                 <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">
                   プレミアムプランで解放される内容：
                 </span>
@@ -230,7 +203,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
       ) : (
         <>
           {/* ステップ 2: 四診情報（望・聞・問・切） */}
-          <div className="rounded-3xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-6 shadow-xs">
+          <div className="rounded-3xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 space-y-6 shadow-xs">
             <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
               <Stethoscope className="w-4 h-4" />
               <span>ステップ 2: 四診情報（四診合参）</span>
@@ -260,7 +233,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
             </div>
 
             {/* タブコンテンツ */}
-            <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#18232D] border border-[#E8E1D1] dark:border-[#22303D] min-h-[120px] text-xs sm:text-sm">
+            <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#18232D] border border-[#E8E1D1] dark:border-[#22303D] min-h-[120px] text-sm sm:text-base">
               {activeExamTab === "inspection" && (
                 <div className="space-y-2">
                   <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">【望診所見】</span>
@@ -341,7 +314,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
           </div>
 
           {/* ステップ 3: 臨床推論ステップ（演習クイズ） */}
-          <div className="rounded-3xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-6 shadow-xs">
+          <div className="rounded-3xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 space-y-6 shadow-xs">
             <div className="flex items-center gap-2 text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider">
               <Activity className="w-4 h-4" />
               <span>ステップ 3: 臨床推論ステップ演習</span>
@@ -361,7 +334,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                       </h4>
                     </div>
 
-                    <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB]">
+                    <p className="text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB]">
                       {step.question}
                     </p>
 
@@ -373,7 +346,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                             key={opt.id}
                             type="button"
                             onClick={() => handleSelectOption(step.stepNumber, opt.id)}
-                            className={`w-full text-left p-3 rounded-xl border text-xs sm:text-sm transition-all flex items-start gap-2.5 cursor-pointer ${
+                            className={`w-full text-left p-3 rounded-xl border text-sm sm:text-base transition-all flex items-start gap-2.5 cursor-pointer ${
                               isSelected
                                 ? opt.isCorrect
                                   ? "bg-green-50 dark:bg-green-950/40 border-green-500 text-green-900 dark:text-green-200 font-bold"
@@ -420,7 +393,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
 
           {/* ステップ 4 & 5: 確定弁証・治法・処方配穴 ＆ 専門解説 */}
           {showExplanation && (
-            <div className="rounded-3xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#1E3D34] dark:border-[#74BA9E] p-6 sm:p-8 space-y-6 shadow-lg animate-fadeIn">
+            <div className="rounded-3xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#1E3D34] dark:border-[#74BA9E] p-4 sm:p-7 space-y-6 shadow-lg animate-fadeIn">
               <div className="flex items-center justify-between border-b border-[#E8E1D1] dark:border-[#22303D] pb-4">
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
@@ -460,7 +433,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
               </div>
 
               {/* 確定診断要約テーブル */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm sm:text-base">
                 <div className="p-4 rounded-2xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
                   <span className="text-[#737C77] text-xs font-semibold">八綱弁証 / 教材上の候補</span>
                   <div className="text-base font-bold text-[#1E3D34] dark:text-[#74BA9E]">
@@ -510,7 +483,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                     <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
                     <span>所見を伝統理論で整理する</span>
                   </h4>
-                  <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                  <p className="text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                     {clinicalCase.clinicalExplanation.pathomechanism}
                   </p>
                 </div>
@@ -520,7 +493,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                     <HelpCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
                     <span>候補比較（他の証との対比）</span>
                   </h4>
-                  <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                  <p className="text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                     {clinicalCase.clinicalExplanation.differentialDiagnosis}
                   </p>
                 </div>
@@ -530,7 +503,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                     <Layers className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
                     <span>経穴を選ぶ理由</span>
                   </h4>
-                  <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                  <p className="text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                     {clinicalCase.clinicalExplanation.pointRationale}
                   </p>
                 </div>
@@ -538,13 +511,13 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                 {CLINICAL_CASE_EVIDENCE[clinicalCase.id] && (
                   <section aria-label="この症状に関する臨床研究" className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-3">
                     <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">臨床研究で確認された結果</h4>
-                    <dl className="space-y-3 text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                    <dl className="space-y-3 text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                       <div><dt className="font-semibold">対象</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].population}</dd></div>
                       <div><dt className="font-semibold">比較・評価条件</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].comparison}</dd></div>
                       <div><dt className="font-semibold">結果</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].result}</dd></div>
                       <div><dt className="font-semibold">この症例への読み方</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].interpretation}</dd></div>
                     </dl>
-                    <ul className="space-y-1 text-xs sm:text-sm">
+                    <ul className="space-y-1 text-sm sm:text-base">
                       {CLINICAL_CASE_EVIDENCE[clinicalCase.id].sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-[#1E3D34] dark:text-[#74BA9E] underline">{source.title}（外部資料）</a></li>)}
                     </ul>
                   </section>
@@ -555,7 +528,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                     <AlertTriangle className="w-4 h-4 text-amber-600" />
                     <span>臨床の落とし穴・注意点</span>
                   </h4>
-                  <p className="text-xs sm:text-sm text-amber-900/90 dark:text-amber-200/90 leading-relaxed">
+                  <p className="text-sm sm:text-base text-amber-900/90 dark:text-amber-200/90 leading-relaxed">
                     {clinicalCase.clinicalExplanation.clinicalPitfall}
                   </p>
                 </div>
@@ -671,7 +644,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
       )}
 
       {/* トピッククラスター連携（関連症状ガイド・関連経穴辞典・体質診断への回遊） */}
-      <div className="rounded-3xl bg-gradient-to-br from-[#FAF8F5] to-[#F5EFE6] dark:from-[#152028] dark:to-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-6 shadow-xs">
+      <div className="rounded-3xl bg-gradient-to-br from-[#FAF8F5] to-[#F5EFE6] dark:from-[#152028] dark:to-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 space-y-6 shadow-xs">
         <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
           <Layers className="w-4 h-4" />
           <span>関連する東洋医学知識・セルフケア連携</span>

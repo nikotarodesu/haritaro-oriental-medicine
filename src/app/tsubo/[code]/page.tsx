@@ -198,7 +198,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   };
 
   return (
-    <div className="reading-page acupoint-page min-h-screen py-6 sm:py-12 px-3 sm:px-6 lg:px-8 [overflow-wrap:anywhere]">
+    <div className="reading-page acupoint-page page-layout min-h-screen [overflow-wrap:anywhere]">
       {/* 構造化データ埋め込み */}
       <script
         type="application/ld+json"
@@ -252,7 +252,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         </nav>
 
         {/* 1. 基本情報ヘッダーカード */}
-        <div className="acupoint-header bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-5 transition-colors">
+        <div className="acupoint-header space-y-5 border-b border-[#E5DEC9] pb-6 dark:border-[#2A3B4A]">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
             <div className="space-y-2">
               <div className="acupoint-metadata flex flex-wrap items-center gap-2">
@@ -277,7 +277,7 @@ export default async function AcupointDetailPage({ params }: Props) {
               </div>
 
               {/* 経穴名・読み */}
-              <div className="flex items-baseline gap-3 pt-1">
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 pt-1">
                 <h1 className="font-serif text-3xl sm:text-5xl font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
                   {point.name}
                 </h1>
@@ -292,20 +292,20 @@ export default async function AcupointDetailPage({ params }: Props) {
                 </p>
               )}
 
-              <dl className="space-y-3 pt-2 text-base leading-relaxed" aria-label={`${point.name}の位置と重要な注意`}>
+              <dl className="grid gap-4 pt-2 text-base leading-relaxed" aria-label={`${point.name}の位置と重要な注意`}>
                 <div>
-                  <dt className="text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8]">位置の目安</dt>
+                  <dt className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8]"><Compass aria-hidden="true" className="h-4 w-4" />位置の目安</dt>
                   <dd className="mt-1 text-[#232826] dark:text-[#E6EFEA]">{point.locationSimple}</dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-bold text-amber-800 dark:text-amber-300">重要な注意</dt>
+                  <dt className="flex items-center gap-2 text-sm font-bold text-amber-800 dark:text-amber-300"><ShieldCheck aria-hidden="true" className="h-4 w-4" />重要な注意</dt>
                   <dd className="mt-1 text-[#4A534F] dark:text-[#AFBDC8]">{point.caution || "位置や模式図は学習用です。個人の安全な刺入深度・経路や施術適応は判断できません。"}</dd>
                 </div>
               </dl>
             </div>
 
             {/* アクションボタン群（主アクション：配穴追加・クリップ保存、副アクション：推論・比較・復習） */}
-            <div className="flex items-center gap-2 self-start flex-wrap">
+            <div className="flex items-center gap-2 self-start flex-wrap sm:max-w-[280px]">
               {/* 主アクション：配穴処方に追加 */}
               <Link
                 href={`/practice/haiketsu?add=${encodeURIComponent(point.name)}`}
@@ -384,14 +384,14 @@ export default async function AcupointDetailPage({ params }: Props) {
           )}
         </div>
 
-        <nav aria-label="この経穴のページ内目次" className="flex flex-wrap gap-2">
-          <a href="#acupoint-location" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-3 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">位置</a>
+        <nav aria-label="この経穴のページ内目次" className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+          <a href="#acupoint-location" className="page-secondary-action"><Compass aria-hidden="true" className="h-4 w-4" />位置</a>
           {point.crossSection && point.crossSection.svgElements && point.crossSection.svgElements.length > 0 && (
-            <a href="#acupoint-diagram" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-3 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">図</a>
+            <a href="#acupoint-diagram" className="page-secondary-action"><Layers aria-hidden="true" className="h-4 w-4" />図</a>
           )}
-          <a href={hasSafetyWarning ? "#acupoint-safety-warning" : "#acupoint-cautions"} className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-3 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">注意事項</a>
-          {point.researchEvidence && <a href="#acupoint-research" className="inline-flex min-h-11 items-center rounded-lg border border-[#D5DED8] px-3 text-sm font-semibold text-[#1E3D34] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A3B4A] dark:text-[#83BEA8]">研究</a>}
-          <a href="#acupoint-sources" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-3 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">出典</a>
+          <a href={hasSafetyWarning ? "#acupoint-safety-warning" : "#acupoint-cautions"} className="page-secondary-action"><ShieldCheck aria-hidden="true" className="h-4 w-4" />注意事項</a>
+          {point.researchEvidence && <a href="#acupoint-research" className="page-secondary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />研究</a>}
+          <a href="#acupoint-sources" className="page-secondary-action"><FileText aria-hidden="true" className="h-4 w-4" />出典</a>
         </nav>
 
         {/* ⚠️ 安全上の注意（禁忌・気胸リスク・妊婦注意アラート） */}

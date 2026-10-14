@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import { pageSocialMetadata, SITE_NAME } from '@/config/seo';
 import { getLearningCourse, LEARNING_COURSES } from '@/data/learningCourses';
+import PageIntro from '@/components/design/PageIntro';
 import LearningCourseProgress from '@/components/learning/LearningCourseProgress';
 import LearningCourseJourney from '@/components/learning/LearningCourseJourney';
 import LearningCourseLink from '@/components/learning/LearningCourseLink';
@@ -46,19 +47,18 @@ export default async function LearningCoursePage({ params }: Props) {
   };
 
   return (
-    <div className="mx-auto max-w-4xl space-y-8 px-4 py-8 sm:px-6 sm:py-12">
+    <div className="page-layout page-layout--reading space-y-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
       <nav aria-label="パンくず"><Link href="/learn/courses" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]"><ArrowLeft aria-hidden="true" className="h-4 w-4" />学習コース一覧へ</Link></nav>
-      <header className="space-y-4">
-        <p className="text-sm font-semibold tracking-wider text-[#184F49] dark:text-[#9CCBBC]">{course.eyebrow} · {course.steps.length}ステップ</p>
-        <h1 className="font-serif text-3xl font-bold leading-relaxed sm:text-4xl">{course.title}</h1>
-        <p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">{course.description}</p>
-        <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">読む目安：約{readingMinutes}分（各講義の目安の合計。クイズ・演習の時間は別です）</p>
-        <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">こんな方に：{course.audience}</p>
-      </header>
-      <section aria-labelledby="course-goals-heading" className="rounded-2xl bg-[#F6F4EE] p-5 sm:p-6 dark:bg-[#1E2B36]"><h2 id="course-goals-heading" className="font-serif text-xl font-bold">このコースの到達目標</h2><ul className="mt-4 space-y-3">{course.goals.map((goal) => <li key={goal} className="flex items-start gap-3 text-base leading-relaxed"><Check aria-hidden="true" className="mt-1 h-5 w-5 shrink-0 text-[#184F49] dark:text-[#9CCBBC]" /><span>{goal}</span></li>)}</ul>{prerequisite && <p className="mt-5 text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">一つ前の段階は、<Link href={`/learn/courses/${prerequisite.slug}`} className="inline-flex min-h-11 items-center font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">{prerequisite.title}</Link>です。必要な用語を振り返ってから進めます。</p>}<Link href={`#course-mini-case-${course.seriesId}`} className="mt-3 inline-flex min-h-11 items-center font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">先に短い例で考えてみる →</Link></section>
-      <LearningCourseJourney />
+      <PageIntro compact eyebrow={`${course.eyebrow} · ${course.steps.length}ステップ`} title={course.title} description={course.description} art="study">
+        <p className="page-muted text-sm">{course.steps.length}講 · 読む目安：約{readingMinutes}分（クイズ・演習の時間は別です）</p>
+      </PageIntro>
       <LearningCourseProgress course={course} />
+      <details className="page-help"><summary>到達目標・このコースについて</summary>
+      <p className="page-muted py-3">こんな方に：{course.audience}</p>
+      <section aria-labelledby="course-goals-heading" className="rounded-2xl bg-[#F6F4EE] p-5 sm:p-6 dark:bg-[#1E2B36]"><h2 id="course-goals-heading" className="font-serif text-xl font-bold">このコースの到達目標</h2><ul className="mt-4 space-y-3">{course.goals.map((goal) => <li key={goal} className="flex items-start gap-3 text-base leading-relaxed"><Check aria-hidden="true" className="mt-1 h-5 w-5 shrink-0 text-[#184F49] dark:text-[#9CCBBC]" /><span>{goal}</span></li>)}</ul>{prerequisite && <p className="mt-5 text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">一つ前の段階は、<Link href={`/learn/courses/${prerequisite.slug}`} className="inline-flex min-h-11 items-center font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">{prerequisite.title}</Link>です。必要な用語を振り返ってから進めます。</p>}<Link href={`#course-mini-case-${course.seriesId}`} className="mt-3 inline-flex min-h-11 items-center font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">先に短い例で考えてみる →</Link></section>
+      </details>
+      <LearningCourseJourney />
       {course.seriesId === 'pathomechanism' && <PathomechanismComparison />}
       <CourseMiniCase seriesId={course.seriesId} />
       {course.reading.length > 0 && <section aria-labelledby="course-reading-heading" className="space-y-4"><h2 id="course-reading-heading" className="font-serif text-2xl font-bold">図解で振り返る</h2><div className="grid gap-3">{course.reading.map((item) => <LearningCourseLink key={item.href} href={item.href} courseId={course.slug} placement="course_reading" className="flex min-h-11 items-center justify-between gap-4 rounded-2xl border border-[#D9E3DD] bg-[#FCFAF6] p-5 hover:border-[#184F49] focus-visible:outline-2 focus-visible:outline-offset-4 dark:border-[#2A3B4A] dark:bg-[#17212A] dark:hover:border-[#9CCBBC]"><span className="min-w-0"><span className="block text-lg font-bold text-[#184F49] dark:text-[#9CCBBC]">{item.title}</span><span className="mt-2 block text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">{item.description}</span></span><ArrowRight aria-hidden="true" className="h-5 w-5 shrink-0 text-[#184F49] dark:text-[#9CCBBC]" /></LearningCourseLink>)}</div></section>}

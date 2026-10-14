@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import { ArrowRight, Bookmark, ChevronDown, Crown, Menu, Search, User as UserIcon, X } from "lucide-react";
+import { Activity, ArrowRight, BookOpen, Bookmark, ChevronDown, ClipboardPenLine, CreditCard, Crown, FileQuestion, GitCompareArrows, GraduationCap, History, Layers3, Library, Mail, Menu, NotebookPen, ScanLine, Search, User as UserIcon, X, type LucideIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import BrandLogo from "@/components/brand/BrandLogo";
 import { TOOL_CATALOG } from "@/config/toolCatalog";
@@ -19,19 +19,19 @@ type Dropdown = "learn" | "clinical" | "account";
 interface HeaderLink { href: string; label: string; description?: string; }
 
 const LEARN_LINKS: readonly HeaderLink[] = [
-  { href: "/learn", label: "学びの総合案内", description: "目的に合う学び方から始める" },
-  { href: "/learn/courses", label: "基礎コース一覧", description: "全11コースから選ぶ" },
-  { href: "/kokushi#learning-review", label: "今日の復習", description: "回答履歴と復習予定から取り組む" },
-  { href: "/curriculum", label: "東洋医学カリキュラム" },
-  { href: TOOL_CATALOG.kokushi.href, label: "国家試験対策・演習", description: TOOL_CATALOG.kokushi.short },
-  { href: "/library", label: "古典・医学論文ライブラリ" },
-  { href: "/articles", label: "コラム・文献解説" },
+  { href: "/learn", label: "学習の始め方", description: "コース・演習から選ぶ" },
+  { href: "/learn/courses", label: "基礎コース", description: "全11コース" },
+  { href: "/kokushi#learning-review", label: "今日の復習" },
+  { href: "/curriculum", label: "カリキュラム" },
+  { href: TOOL_CATALOG.kokushi.href, label: "国家試験対策・演習" },
+  { href: "/library", label: "古典・医学論文" },
+  { href: "/articles", label: "解説記事" },
 ];
 const CLINICAL_LINKS: readonly HeaderLink[] = [
-  { href: "/clinical", label: "鍼灸師の臨床ホーム", description: "主訴から確認・前回記録から再開" },
-  { href: "/clinical/workspace", label: "所見から記録まで", description: "四診・候補比較・配穴の理由・再評価" },
-  { href: TOOL_CATALOG.simulator.href, label: TOOL_CATALOG.simulator.title, description: TOOL_CATALOG.simulator.short },
-  { href: TOOL_CATALOG.haiketsu.href, label: TOOL_CATALOG.haiketsu.title, description: TOOL_CATALOG.haiketsu.short },
+  { href: "/clinical", label: "鍼灸師の臨床ホーム", description: "主訴・所見・記録の入口" },
+  { href: "/clinical/workspace", label: "所見を整理・記録する" },
+  { href: TOOL_CATALOG.simulator.href, label: "弁証候補の比較" },
+  { href: TOOL_CATALOG.haiketsu.href, label: "配穴構成の演習" },
   { href: "/cases", label: "臨床症例演習" },
   { href: "/diagnosis", label: "気血水体質チェック" },
   { href: "/tsubo/compare", label: "経穴比較" },
@@ -42,18 +42,27 @@ const ACCOUNT_LINKS: readonly HeaderLink[] = [
   { href: "/about", label: "運営者情報" },
   { href: "/contact", label: "お問い合わせ" },
 ];
+const NAV_ICONS: Record<string, LucideIcon> = {
+  "/learn": GraduationCap, "/learn/courses": BookOpen, "/kokushi#learning-review": History,
+  "/curriculum": Layers3, "/kokushi": FileQuestion, "/library": Library, "/articles": BookOpen,
+  "/clinical": ClipboardPenLine, "/clinical/workspace": NotebookPen, "/simulator": GitCompareArrows,
+  "/practice/haiketsu": ScanLine, "/cases": FileQuestion, "/diagnosis": Activity,
+  "/tsubo/compare": GitCompareArrows, "/notes": Bookmark, "/pricing": CreditCard,
+  "/about": UserIcon, "/contact": Mail,
+};
 const FOCUS_STYLE = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-ink)] dark:focus-visible:outline-white";
 const DESKTOP_LAYOUT = "header-desktop";
 const COMPACT_LAYOUT = "header-compact";
 const NAV_CONTROL = `inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D] ${FOCUS_STYLE}`;
 
 function HeaderLinks({ links, pathname, onNavigate, clipCount = 0 }: { links: readonly HeaderLink[]; pathname: string; onNavigate: () => void; clipCount?: number }) {
-  return <ul className="space-y-1">{links.map(link => <li key={link.href}>
-    <Link href={link.href} onClick={onNavigate} aria-current={pathname === link.href ? "page" : undefined} className={`flex min-h-[44px] items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm leading-relaxed hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D] ${FOCUS_STYLE} ${pathname === link.href ? "bg-[var(--brand-paper)] font-semibold dark:bg-[#22303D]" : ""}`}>
-      <span><span className="block">{link.label}</span>{link.description ? <span className="block text-sm font-normal text-[#59615D] dark:text-[#A0B0BC]">{link.description}</span> : null}</span>
+  return <ul className="space-y-1">{links.map(link => { const Icon = NAV_ICONS[link.href] ?? BookOpen; return <li key={link.href}>
+    <Link href={link.href} onClick={onNavigate} aria-current={pathname === link.href ? "page" : undefined} className={`site-nav-link flex min-h-[44px] items-center justify-between rounded-lg px-3 py-2 text-sm leading-relaxed hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D] ${FOCUS_STYLE} ${pathname === link.href ? "bg-[var(--brand-paper)] font-semibold dark:bg-[#22303D]" : ""}`}>
+      <span className="site-nav-link-icon"><Icon aria-hidden="true" /></span>
+      <span className="min-w-0 flex-1"><span className="block">{link.label}</span>{link.description ? <span className="block text-xs font-normal text-[#59615D] dark:text-[#A0B0BC]">{link.description}</span> : null}</span>
       {link.href === "/notes" && clipCount > 0 ? <span className="shrink-0 rounded-full bg-[var(--brand-paper)] px-2 text-xs dark:bg-[#22303D]">{clipCount}件</span> : <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0 opacity-50" />}
     </Link>
-  </li>)}</ul>;
+  </li>; })}</ul>;
 }
 
 function HeaderSettings({ onOpenInstall }: { onOpenInstall: () => void }) {

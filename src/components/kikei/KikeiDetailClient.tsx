@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import PageIntro from "@/components/design/PageIntro";
 import { 
   GitCommit, 
   ArrowLeft, 
@@ -72,7 +73,7 @@ export default function KikeiDetailClient({ vessel }: Props) {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <Link
             href="/kikei"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#737C77] dark:text-[#8899A6] hover:text-[#232826] dark:hover:text-[#FAF8F5] transition-colors"
+            className="inline-flex min-h-11 items-center gap-1.5 text-sm font-bold text-[#737C77] dark:text-[#8899A6] hover:text-[#232826] dark:hover:text-[#FAF8F5] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>奇経八脈一覧へ</span>
@@ -81,7 +82,7 @@ export default function KikeiDetailClient({ vessel }: Props) {
           <button
             onClick={handleSaveToMemo}
             disabled={saved}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FCF4EB] dark:bg-[#2A1E14] border border-[#F3DEC5] dark:border-[#4A321E] text-xs font-bold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBE8D3] transition-colors"
+            className="inline-flex min-h-11 items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FCF4EB] dark:bg-[#2A1E14] border border-[#F3DEC5] dark:border-[#4A321E] text-xs font-bold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBE8D3] transition-colors"
           >
             <Bookmark className={`w-3.5 h-3.5 ${saved ? "fill-current" : ""}`} />
             <span>{saved ? "学習ノートに保存済" : "学習ノートに保存"}</span>
@@ -89,34 +90,10 @@ export default function KikeiDetailClient({ vessel }: Props) {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+      <div className="page-layout page-layout--reading space-y-8">
         
-        {/* タイトルヘッダー */}
-        <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 shadow-sm space-y-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className={`text-xs font-bold px-3 py-1 rounded-full ${
-              vessel.category === "陽奇経"
-                ? "bg-[#FCF4EB] text-[#B86924] dark:bg-[#2A1E14] dark:text-[#E6C387]"
-                : "bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E]"
-            }`}>
-              {vessel.category}
-            </span>
-            {vessel.pointsCount && (
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#151D25] text-[#737C77] dark:text-[#8899A6] border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                経穴数: {vessel.pointsCount}穴
-              </span>
-            )}
-          </div>
-
-          <div className="space-y-1">
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-              {vessel.name} <span className="text-lg font-normal text-[#737C77] dark:text-[#8899A6]">（{vessel.reading}）</span>
-            </h1>
-            <p className="text-sm sm:text-base text-[#59615D] dark:text-[#96A6B2] leading-relaxed pt-2">
-              {vessel.nature}
-            </p>
-          </div>
-
+        <section className="space-y-5">
+          <PageIntro compact eyebrow={vessel.category} title={vessel.name} art="points" description={<><span className="block text-sm">{vessel.reading}{vessel.pointsCount ? ' ・ 固有穴 ' + vessel.pointsCount + '穴' : ''}</span><span className="mt-2 block">{vessel.nature}</span></>} />
           {/* 八脈交会穴ハイライトボックス */}
           <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-5 mt-4">
             <div className="flex items-center gap-2 mb-2">
@@ -127,12 +104,12 @@ export default function KikeiDetailClient({ vessel }: Props) {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="bg-white dark:bg-[#17212A] p-3 rounded-lg border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                <span className="text-[10px] text-[#737C77] block">本脈に通ずる穴（主穴）</span>
+                <span className="text-xs text-[#737C77] block">本脈に通ずる穴（主穴）</span>
                 <span className="text-base font-bold text-[#1E3D34] dark:text-[#74BA9E]">{vessel.masterPoint.name}</span>
                 <span className="text-xs text-[#737C77] ml-1">({vessel.masterPoint.meridian} / {vessel.masterPoint.code})</span>
               </div>
               <div className="bg-white dark:bg-[#17212A] p-3 rounded-lg border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                <span className="text-[10px] text-[#737C77] block">対となる交会穴（配穴）</span>
+                <span className="text-xs text-[#737C77] block">対となる交会穴（配穴）</span>
                 <span className="text-base font-bold text-[#B86924] dark:text-[#E6C387]">{vessel.couplePoint.name}</span>
                 <span className="text-xs text-[#737C77] ml-1">({vessel.couplePoint.meridian} / {vessel.couplePoint.code})</span>
               </div>
@@ -141,7 +118,7 @@ export default function KikeiDetailClient({ vessel }: Props) {
               <strong>ペア名:</strong> {vessel.pairName}（伝統的な関連部位: <strong>{vessel.pairTargetArea}</strong>）
             </p>
           </div>
-        </div>
+        </section>
 
         {/* プレミアムロック時のプレビュー遮断 */}
         {isLocked ? (

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, GraduationCap } from 'lucide-react';
+import { ArrowRight, BookOpen, RotateCcw, MapPin, BookA, Layers } from 'lucide-react';
+import PageIntro from '@/components/design/PageIntro';
 import { pageSocialMetadata, SITE_NAME } from '@/config/seo';
 import { LEARNING_COURSES } from '@/data/learningCourses';
 import { getCurriculumIndexCatalog } from '@/data/curriculumIndexCatalog';
@@ -23,22 +24,19 @@ const focusClass = 'focus-visible:outline-2 focus-visible:outline-offset-4';
 export default function LearnGuidePage() {
   const catalog = getCurriculumIndexCatalog();
   return (
-    <div className="mx-auto max-w-6xl space-y-10 px-4 py-8 sm:px-6 sm:py-12">
-      <header className="max-w-3xl space-y-4">
-        <p className="flex items-center gap-2 text-sm font-semibold text-[#184F49] dark:text-[#9CCBBC]"><GraduationCap aria-hidden="true" className="h-5 w-5" />初学者・鍼灸学生のための学習案内</p>
-        <h1 className="font-serif text-3xl font-bold leading-relaxed sm:text-4xl">東洋医学は、どの順番で学ぶ？</h1>
-        <p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">初めての方は、概論の第1講へ。用語の意味を読み、各講のクイズで確かめます。学習済みの方は、保存した続きから再開できます。</p>
-        <ContentNavigationLink href={createCourseLectureHref(LEARNING_COURSES[0].slug, FIRST_CURRICULUM_LECTURE_ID)} placement="learn_intro_start" className={`inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#184F49] px-4 py-3 font-bold text-white dark:bg-[#285F54] ${focusClass}`}>初めての方：第1講から始める<ArrowRight aria-hidden="true" className="h-4 w-4" /></ContentNavigationLink>
-      </header>
+    <div className="page-layout space-y-10">
+      <PageIntro eyebrow="初学者・鍼灸学生のための学習案内" title="東洋医学は、どの順番で学ぶ？" description="概論から、一講ずつ。読んで、クイズで確かめましょう。" art="study">
+        <div className="page-actions"><ContentNavigationLink href={createCourseLectureHref(LEARNING_COURSES[0].slug, FIRST_CURRICULUM_LECTURE_ID)} placement="learn_intro_start" className="page-primary-action"><BookOpen aria-hidden="true" className="h-5 w-5" />初めての方：第1講から始める<ArrowRight aria-hidden="true" className="h-4 w-4" /></ContentNavigationLink><Link href="/curriculum" className="page-secondary-action">全講義の目次</Link></div>
+      </PageIntro>
       <HomeLearningProgressCard />
 
       <section aria-labelledby="learn-courses-heading" className="space-y-4">
         <h2 id="learn-courses-heading" className="font-serif text-2xl font-bold">全{LEARNING_COURSES.length}コースの学習順</h2>
         <p className="leading-relaxed ui-muted">各コースは基本を扱う3〜5講と短い例の演習です。読む目安は講義の合計で、クイズ・演習の時間は含みません。</p>
-        <ol className="divide-y divide-[#D9E3DD] border-y border-[#D9E3DD] dark:divide-[#2A3B4A] dark:border-[#2A3B4A]">
+        <ol className="grid gap-3 sm:grid-cols-2">
           {LEARNING_COURSES.map((course, index) => <li key={course.slug}>
-            <ContentNavigationLink href={`/learn/courses/${course.slug}`} courseId={course.slug} placement="learn_course_select" className={`flex min-h-16 items-center gap-3 rounded-lg px-2 py-3 hover:bg-[#EBF3EF] dark:hover:bg-[#182823] ${focusClass}`}>
-              <span aria-hidden="true" className="w-7 shrink-0 text-sm tabular-nums ui-muted">{String(index + 1).padStart(2, '0')}</span>
+            <ContentNavigationLink href={`/learn/courses/${course.slug}`} courseId={course.slug} placement="learn_course_select" className="page-link-card flex h-full items-center gap-4">
+              <span aria-hidden="true" className="page-link-icon font-serif text-xl">{String(index + 1).padStart(2, '0')}</span>
               <span className="min-w-0 flex-1"><span className="block font-semibold text-[#184F49] dark:text-[#9CCBBC]">{course.title}</span><span className="mt-1 block text-sm ui-muted">{course.steps.length}講 · 読む目安：約{getCourseReadingMinutes(course, catalog.lectures)}分</span></span>
               <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
             </ContentNavigationLink>
@@ -47,9 +45,9 @@ export default function LearnGuidePage() {
         <p className="text-sm leading-relaxed ui-muted">各論まで詳しく読む方は、<Link href="/curriculum" className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>全{catalog.chapters.length}章・{catalog.lectures.length}講の目次</Link>へ。講義の受講記録は共通です。短いコースと章全体の完了は、それぞれ確認できます。</p>
       </section>
 
-      <section aria-labelledby="learn-review-scope" className="space-y-3 rounded-2xl border border-[#C5DED4] bg-[#EBF3EF] p-5 dark:border-[#2A5243] dark:bg-[#182823]"><h2 id="learn-review-scope" className="text-lg font-bold">教材の用途と確認範囲</h2><p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">伝統理論と医学的な評価を区別して学びます。全教材の医学記述の照合・専門家監修は未完了です。未確認の刺鍼深度・角度・針路などの個別手順は掲載を保留しています。Web学習の受講完了は、実際の施術能力の認定を意味しません。</p><Link href="/editorial-policy" className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>出典と確認範囲を見る →</Link></section>
+      <details className="page-help"><summary id="learn-review-scope">教材の用途と確認範囲</summary><p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">伝統理論と医学的な評価を区別して学びます。全教材の医学記述の照合・専門家監修は未完了です。未確認の刺鍼深度・角度・針路などの個別手順は掲載を保留しています。Web学習の受講完了は、実際の施術能力の認定を意味しません。</p><Link href="/editorial-policy" className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>出典と確認範囲を見る →</Link></details>
 
-      <nav aria-label="復習と用語の確認" className="flex flex-wrap gap-x-6 gap-y-1">{[{ href: '/kokushi#learning-review', label: '今日の復習' }, { href: '/tsubo/practice', label: '経穴の基本演習' }, { href: '/glossary', label: '用語集' }, { href: '/learn/courses/pathomechanism-foundations#concept-comparison', label: '病因・病機・症状・証を比べる' }].map(link => <Link key={link.href} href={link.href} className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline underline-offset-4 dark:text-[#9CCBBC] ${focusClass}`}>{link.label}</Link>)}</nav>
+      <nav aria-label="復習と用語の確認" className="page-link-grid">{[{ href: '/kokushi#learning-review', label: '今日の復習', icon: RotateCcw }, { href: '/tsubo/practice', label: '経穴の基本演習', icon: MapPin }, { href: '/glossary', label: '用語集', icon: BookA }, { href: '/learn/courses/pathomechanism-foundations#concept-comparison', label: '病因・病機・症状・証を比べる', icon: Layers }].map(({ icon: Icon, ...link }) => <Link key={link.href} href={link.href} className="page-link-card flex items-center gap-3"><span className="page-link-icon"><Icon aria-hidden="true" className="h-5 w-5" /></span><span className="flex-1 font-semibold">{link.label}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link>)}</nav>
     </div>
   );
 }

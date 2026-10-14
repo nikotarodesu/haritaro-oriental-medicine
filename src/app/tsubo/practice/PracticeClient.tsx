@@ -7,6 +7,7 @@ import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
 import { questionRevision } from "@/utils/learningReview";
 import React, { useState, useEffect, useEffectEvent, useMemo, useCallback, Suspense } from "react";
 import Link from "next/link";
+import PageIntro from "@/components/design/PageIntro";
 import { useSearchParams, useRouter } from "next/navigation";
 import { 
   getAllAcupoints, 
@@ -36,7 +37,6 @@ import {
   addDays
 } from "@/data/tsubo";
 import { 
-  BookOpen, 
   CheckCircle2, 
   XCircle, 
   HelpCircle, 
@@ -494,7 +494,7 @@ function PracticePageContent() {
       });
 
       return (
-        <div className="min-h-screen py-8 sm:py-16 px-3 sm:px-6 lg:px-8 max-w-3xl mx-auto space-y-6">
+        <div className="page-layout min-h-screen max-w-3xl mx-auto space-y-6">
           <div className="bg-white dark:bg-[#17212A] rounded-3xl border-2 border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-10 shadow-lg text-center space-y-6">
             <div className="w-16 h-16 rounded-3xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center mx-auto shadow-inner">
               <Award className="w-8 h-8" />
@@ -888,7 +888,7 @@ function PracticePageContent() {
 
   return (
     <div className="min-h-screen py-8 sm:py-16 px-3 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto space-y-8 sm:space-y-10">
+      <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
         
         {/* パンくず */}
         <nav className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6]">
@@ -903,31 +903,10 @@ function PracticePageContent() {
           <span className="text-[#232826] dark:text-[#FAF8F5] font-bold">経穴学習・復習ホーム</span>
         </nav>
 
-        {/* ヘッダー ＆ 学習設定ボタン */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#F2ECE0] dark:border-[#22303D] pb-6">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#281E15] text-[#B86924] dark:text-[#E6C387] text-xs font-bold tracking-wider">
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>Acupoint Spaced Repetition Learning</span>
-            </div>
-            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-              経穴を学ぶ・復習する
-            </h2>
-          <LearningSyncStatus />
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-xl">
-              短時間の小テストと間隔反復（1日・3日・7日・14日・30日）で、経穴の部位・要穴・経脈を繰り返し確認できます。
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setIsSettingsOpen(true)}
-            className="p-2.5 rounded-2xl border border-[#D8CFC0] dark:border-[#2A3B4A] hover:bg-[#FAF8F5] text-xs font-medium flex items-center gap-1.5 self-start sm:self-auto"
-          >
-            <Settings className="w-4 h-4 text-[#737C77]" />
-            <span>学習設定・データ管理</span>
-          </button>
-        </div>
+        <PageIntro compact headingLevel="h2" eyebrow="短い問題で、少しずつ身につける" title="経穴を学ぶ・復習する" art="study" description="経穴の部位・要穴・経脈を、小テストと間隔反復で確認します。">
+          <div className="mt-3"><LearningSyncStatus /></div>
+          <div className="page-actions"><button type="button" onClick={() => setIsSettingsOpen(true)} className="page-secondary-action"><Settings aria-hidden="true" className="h-4 w-4" />学習設定・データ管理</button></div>
+        </PageIntro>
 
         {invalidCourseRequest && (
           <p role="status" className="rounded-2xl border border-[#E5DEC9] bg-[#F6F4EE] p-4 text-sm text-[#59615D] dark:border-[#2A3B4A] dark:bg-[#17212A] dark:text-[#C5D2DB]">

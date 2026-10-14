@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import PageIntro from "@/components/design/PageIntro";
 import { Compass, Ruler, ArrowLeft, Layers, ShieldCheck, Sparkles } from "lucide-react";
 import { pageSocialMetadata } from "@/config/seo";
 
@@ -140,7 +141,7 @@ export default function BoneCunPage() {
   };
 
   return (
-    <div className="min-h-screen py-8 sm:py-16 px-3 sm:px-6 lg:px-8">
+    <div className="page-layout page-layout--reading min-h-screen">
       {/* 構造化データ埋め込み */}
       <script
         type="application/ld+json"
@@ -161,25 +162,18 @@ export default function BoneCunPage() {
           <span className="text-[#232826] dark:text-[#FAF8F5] font-bold">骨度法・取穴の基礎</span>
         </nav>
 
-        {/* ヘッダー */}
-        <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold tracking-wider">
-            <Ruler className="w-3.5 h-3.5" />
-            <span>Acupuncture Point Localization</span>
+        <PageIntro compact eyebrow="取穴の基礎" title="骨度法と同身寸" art="points" description="体表の目印を基準にする骨度法と、本人の指の幅を用いる同身寸。測り方の違いを確認します。">
+          <div className="page-actions">
+            <a href="#finger-cun" className="page-secondary-action"><Compass aria-hidden="true" className="h-4 w-4" />同身寸の目安</a>
+            <a href="#bone-cun-table" className="page-secondary-action"><Ruler aria-hidden="true" className="h-4 w-4" />骨度法の基準表</a>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-            骨度法・取穴の基礎（骨度折量寸と同身寸）
-          </h1>
-          <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-xl mx-auto">
-            体格や骨格の個人差を超えて正確に経穴を特定するための比率測定法「骨度法」と、指の幅を用いた「同身寸」の基本をまとめました。
-          </p>
-        </div>
+        </PageIntro>
 
         {/* 同身寸の解説カード */}
         <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-8 shadow-sm space-y-6">
           <div className="flex items-center gap-2 text-base font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
             <Compass className="w-5 h-5" />
-            <h2>同身寸（指寸取穴法）の種類と目安</h2>
+            <h2 id="finger-cun" className="scroll-mt-28">同身寸（指寸取穴法）の種類と目安</h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
@@ -220,7 +214,7 @@ export default function BoneCunPage() {
         <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-8 shadow-sm space-y-6">
           <div className="flex items-center gap-2 text-base font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
             <Ruler className="w-5 h-5" />
-            <h2>骨度折量寸法 基準一覧表</h2>
+            <h2 id="bone-cun-table" className="scroll-mt-28">骨度折量寸法 基準一覧表</h2>
           </div>
 
           <div className="overflow-x-auto">

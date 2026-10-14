@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { FileCheck, ArrowLeft, ShieldAlert, Mail, BookOpen } from "lucide-react";
+import PageIntro from "@/components/design/PageIntro";
+import { ArrowLeft, ShieldAlert, Mail, BookOpen, CreditCard, CircleStop, UserCheck } from "lucide-react";
 import { pageSocialMetadata } from "@/config/seo";
 
 const pageTitle = "利用規約";
@@ -14,10 +15,10 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen py-8 sm:py-16 px-3 sm:px-6 lg:px-8">
+    <div className="page-layout page-layout--reading">
       <div className="max-w-4xl mx-auto space-y-8 sm:space-y-10">
         {/* パンくず・戻るリンク */}
-        <nav className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6]">
+        <nav aria-label="パンくず" className="flex flex-wrap items-center gap-2 text-sm text-[#737C77] dark:text-[#8899A6]">
           <Link
             href="/"
             className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1"
@@ -31,25 +32,20 @@ export default function TermsPage() {
           </span>
         </nav>
 
-        {/* ヘッダー */}
-        <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold tracking-wider">
-            <FileCheck className="w-3.5 h-3.5" />
-            <span>Terms of Service</span>
-          </div>
-          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-            利用規約
-          </h1>
-          <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-xl mx-auto">
-            この利用規約（以下「本規約」）は、「はり太郎の東洋医学」（以下「当サイト」）が提供するすべてのサービス（以下「本サービス」）の利用条件を定めるものです。
-          </p>
-        </div>
+        <PageIntro eyebrow="サービスの利用条件" title="利用規約" description="この利用規約（以下「本規約」）は、「はり太郎の東洋医学」（以下「当サイト」）が提供するすべてのサービス（以下「本サービス」）の利用条件を定めるものです。" art="reading" compact />
+
+        <nav aria-label="このページの目次" className="grid gap-2 sm:grid-cols-2">
+            <a href="#policy-section-3" className="page-secondary-action"><UserCheck size={18} aria-hidden="true" />会員登録</a>
+            <a href="#policy-section-4" className="page-secondary-action"><CreditCard size={18} aria-hidden="true" />料金と支払い</a>
+            <a href="#policy-section-5" className="page-secondary-action"><CircleStop size={18} aria-hidden="true" />解約・更新停止</a>
+            <a href="#policy-section-8" className="page-secondary-action"><ShieldAlert size={18} aria-hidden="true" />医療上の免責</a>
+        </nav>
 
         {/* 本文カード */}
-        <div className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm space-y-8 text-[#333835] dark:text-[#C5D2DB] text-xs sm:text-sm leading-relaxed transition-colors">
+        <div className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm space-y-8 text-[#333835] dark:text-[#C5D2DB] text-sm sm:text-base leading-relaxed transition-colors">
           
           {/* 第1条（適用） */}
-          <section className="space-y-3">
+          <section id="policy-section-1" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
               第1条（適用）
             </h2>
@@ -60,7 +56,7 @@ export default function TermsPage() {
           </section>
 
           {/* 第2条（定義） */}
-          <section className="space-y-3">
+          <section id="policy-section-2" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
               第2条（定義）
             </h2>
@@ -72,7 +68,7 @@ export default function TermsPage() {
           </section>
 
           {/* 第3条（会員登録・アカウント管理） */}
-          <section className="space-y-3">
+          <section id="policy-section-3" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
               第3条（会員登録・アカウント管理）
             </h2>
@@ -84,7 +80,7 @@ export default function TermsPage() {
           </section>
 
           {/* 第4条（有料プランの料金および支払方法） */}
-          <section className="space-y-3">
+          <section id="policy-section-4" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
               第4条（有料プランの料金および支払方法）
             </h2>
@@ -97,7 +93,7 @@ export default function TermsPage() {
           </section>
 
           {/* 第5条（解約および更新の停止） */}
-          <section className="space-y-3">
+          <section id="policy-section-5" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
               第5条（解約および自動更新の停止）
             </h2>
@@ -108,7 +104,7 @@ export default function TermsPage() {
           </section>
 
           {/* 第6条（知的財産権および著作権） */}
-          <section className="space-y-3">
+          <section id="policy-section-6" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
               第6条（知的財産権および著作権）
             </h2>
@@ -119,7 +115,7 @@ export default function TermsPage() {
           </section>
 
           {/* 第7条（禁止事項） */}
-          <section className="space-y-3">
+          <section id="policy-section-7" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
               第7条（禁止事項）
             </h2>
@@ -136,7 +132,7 @@ export default function TermsPage() {
           </section>
 
           {/* 第8条（非医療行為の確認および法定カルテに関する免責事項） */}
-          <section className="space-y-3">
+          <section id="policy-section-8" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2 flex items-center gap-2">
               <ShieldAlert className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
               <span>第8条（非医療行為の確認および法定カルテに関する免責事項）</span>
@@ -156,7 +152,7 @@ export default function TermsPage() {
           </section>
 
           {/* 第9条（マイノートの利用規律・直接識別情報排除およびデータ保全責任） */}
-          <section className="space-y-3">
+          <section id="policy-section-9" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
               第9条（マイノートの利用規律・直接識別情報排除およびデータ保全責任）
             </h2>
@@ -177,7 +173,7 @@ export default function TermsPage() {
           </section>
 
           {/* 第10条（本サービスの変更・中断・終了） */}
-          <section className="space-y-3">
+          <section id="policy-section-10" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
               第10条（本サービスの変更・中断・終了）
             </h2>
@@ -188,7 +184,7 @@ export default function TermsPage() {
           </section>
 
           {/* 第11条（損害賠償の制限） */}
-          <section className="space-y-3">
+          <section id="policy-section-11" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
               第11条（損害賠償の制限）
             </h2>
@@ -198,7 +194,7 @@ export default function TermsPage() {
           </section>
 
           {/* 第12条（利用規約の変更） */}
-          <section className="space-y-3">
+          <section id="policy-section-12" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
               第12条（利用規約の変更）
             </h2>
@@ -208,7 +204,7 @@ export default function TermsPage() {
           </section>
 
           {/* 第13条（準拠法および管轄裁判所） */}
-          <section className="space-y-3">
+          <section id="policy-section-13" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
               第13条（準拠法および管轄裁判所）
             </h2>
@@ -220,21 +216,21 @@ export default function TermsPage() {
 
           {/* フッター情報 */}
           <section className="pt-4 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
+            <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
               制定日：2024年4月1日<br />
               最終改定日：{new Date().getFullYear()}年{new Date().getMonth() + 1}月
             </p>
             <div className="flex items-center gap-3">
               <Link
                 href="/tokushoho"
-                className="text-xs text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-medium"
+                className="text-sm text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-medium"
               >
                 特定商取引法に基づく表記
               </Link>
               <span className="text-[#C5DEC9]">|</span>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] hover:bg-[#162E27] text-[#FAF8F5] text-xs font-bold transition-all shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] hover:bg-[#162E27] text-[#FAF8F5] text-sm font-bold transition-all shadow-xs"
               >
                 <Mail className="w-3.5 h-3.5" />
                 <span>お問い合わせ</span>

@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { Scale, ArrowLeft, ShieldCheck, Mail, FileText, CheckCircle2 } from "lucide-react";
+import PageIntro from "@/components/design/PageIntro";
+import { ArrowLeft, ShieldCheck, Mail, FileText, CheckCircle2 } from "lucide-react";
 import { pageSocialMetadata } from "@/config/seo";
 
 const pageTitle = "特定商取引法に基づく表記";
@@ -14,10 +15,10 @@ export const metadata: Metadata = {
 
 export default function TokushohoPage() {
   return (
-    <div className="min-h-screen py-8 sm:py-16 px-3 sm:px-6 lg:px-8">
+    <div className="page-layout page-layout--reading">
       <div className="max-w-4xl mx-auto space-y-8 sm:space-y-10">
         {/* パンくず・戻るリンク */}
-        <nav className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6]">
+        <nav aria-label="パンくず" className="flex flex-wrap items-center gap-2 text-sm text-[#737C77] dark:text-[#8899A6]">
           <Link
             href="/"
             className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1"
@@ -31,22 +32,10 @@ export default function TokushohoPage() {
           </span>
         </nav>
 
-        {/* ヘッダー */}
-        <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold tracking-wider">
-            <Scale className="w-3.5 h-3.5" />
-            <span>Legal Notice / Specified Commercial Transactions Act</span>
-          </div>
-          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-            特定商取引法に基づく表記
-          </h1>
-          <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-xl mx-auto">
-            特定商取引に関する法律第11条に基づき、有料会員サービス等の販売条件を以下の通り表示いたします。
-          </p>
-        </div>
+        <PageIntro eyebrow="販売条件のご案内" title="特定商取引法に基づく表記" description="特定商取引に関する法律第11条に基づき、有料会員サービス等の販売条件を以下の通り表示いたします。" art="reading" compact />
 
         {/* 表記テーブルカード */}
-        <div className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm space-y-8 text-[#333835] dark:text-[#C5D2DB] text-xs sm:text-sm leading-relaxed transition-colors">
+        <div className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm space-y-8 text-[#333835] dark:text-[#C5D2DB] text-sm sm:text-base leading-relaxed transition-colors">
           
           <div className="divide-y divide-[#F2ECE0] dark:divide-[#22303D] border-y border-[#F2ECE0] dark:border-[#22303D]">
             
@@ -93,7 +82,7 @@ export default function TokushohoPage() {
                   </Link>{" "}
                   よりお願いいたします。
                 </p>
-                <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
+                <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
                   ※電話番号につきましても、開示請求があった場合は遅滞なく電子メール等にて提供いたします。
                 </p>
               </dd>
@@ -123,7 +112,7 @@ export default function TokushohoPage() {
                 <p>
                   <strong>プレミアム年額プラン：</strong>年額 9,800円（税込）
                 </p>
-                <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
+                <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
                   ※各プランの詳細は{" "}
                   <Link href="/pricing" className="text-[#1E3D34] dark:text-[#74BA9E] underline">
                     料金プラン案内ページ
@@ -163,7 +152,7 @@ export default function TokushohoPage() {
                 <p>
                   初回お申し込み時に即時決済が行われます。
                 </p>
-                <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
+                <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
                   月額プランは初回決済日から1ヶ月ごと、年額プランは1年ごとに自動更新・自動決済されます。
                 </p>
               </dd>
@@ -208,21 +197,21 @@ export default function TokushohoPage() {
 
           {/* フッター補足 */}
           <div className="pt-4 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
+            <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
               制定日：2024年4月1日<br />
               最終改定日：{new Date().getFullYear()}年{new Date().getMonth() + 1}月
             </p>
             <div className="flex items-center gap-3">
               <Link
                 href="/terms"
-                className="text-xs text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-medium"
+                className="text-sm text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-medium"
               >
                 利用規約を見る
               </Link>
               <span className="text-[#C5DEC9]">|</span>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] hover:bg-[#162E27] text-[#FAF8F5] text-xs font-bold transition-all shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] hover:bg-[#162E27] text-[#FAF8F5] text-sm font-bold transition-all shadow-xs"
               >
                 <Mail className="w-3.5 h-3.5" />
                 <span>お問い合わせ</span>

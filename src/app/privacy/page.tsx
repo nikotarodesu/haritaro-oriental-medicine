@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { ShieldCheck, Lock, Eye, AlertCircle, ArrowLeft, Mail, CreditCard, UserCheck } from "lucide-react";
+import PageIntro from "@/components/design/PageIntro";
+import { Lock, Eye, AlertCircle, ArrowLeft, Mail, CreditCard, UserCheck } from "lucide-react";
 import { pageSocialMetadata } from "@/config/seo";
 
 const pageTitle = "プライバシーポリシー・免責事項";
@@ -14,10 +15,10 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen py-8 sm:py-16 px-3 sm:px-6 lg:px-8">
+    <div className="page-layout page-layout--reading">
       <div className="max-w-4xl mx-auto space-y-8 sm:space-y-10">
         {/* パンくず・戻るリンク */}
-        <nav className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6]">
+        <nav aria-label="パンくず" className="flex flex-wrap items-center gap-2 text-sm text-[#737C77] dark:text-[#8899A6]">
           <Link href="/" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors flex items-center gap-1">
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>ホーム</span>
@@ -28,25 +29,20 @@ export default function PrivacyPage() {
           </span>
         </nav>
 
-        {/* ヘッダー */}
-        <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold tracking-wider">
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Privacy Policy & Disclaimer</span>
-          </div>
-          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-            プライバシーポリシー・免責事項
-          </h1>
-          <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-xl mx-auto">
-            当サイト（はり太郎の東洋医学）における個人情報の保護方針、会員情報および決済情報の取り扱い、免責事項、広告掲載規程についてご説明いたします。
-          </p>
-        </div>
+        <PageIntro eyebrow="情報の取り扱い" title="プライバシーポリシー・免責事項" description="個人情報・学習データ・決済情報の扱いと、サイト利用上の免責事項をご案内します。" art="reading" compact />
+
+        <nav aria-label="このページの目次" className="grid gap-2 sm:grid-cols-2">
+            <a href="#policy-section-2" className="page-secondary-action"><UserCheck size={18} aria-hidden="true" />取得する情報</a>
+            <a href="#policy-section-3" className="page-secondary-action"><CreditCard size={18} aria-hidden="true" />決済情報</a>
+            <a href="#policy-section-5" className="page-secondary-action"><Eye size={18} aria-hidden="true" />アクセス解析</a>
+            <a href="#policy-section-6" className="page-secondary-action"><AlertCircle size={18} aria-hidden="true" />免責事項</a>
+        </nav>
 
         {/* 本文カード */}
-        <div className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm space-y-8 text-[#333835] dark:text-[#C5D2DB] text-xs sm:text-sm leading-relaxed transition-colors">
+        <div className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm space-y-8 text-[#333835] dark:text-[#C5D2DB] text-sm sm:text-base leading-relaxed transition-colors">
           
           {/* 1. 基本方針 */}
-          <section className="space-y-3">
+          <section id="policy-section-1" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2 flex items-center gap-2">
               <Lock className="w-4 h-4" />
               <span>1. 基本方針</span>
@@ -57,7 +53,7 @@ export default function PrivacyPage() {
           </section>
 
           {/* 2. 個人情報の収集と利用目的 */}
-          <section className="space-y-3">
+          <section id="policy-section-2" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2 flex items-center gap-2">
               <UserCheck className="w-4 h-4" />
               <span>2. 取得する情報およびその利用目的</span>
@@ -67,37 +63,37 @@ export default function PrivacyPage() {
             </p>
             <div className="space-y-3 pl-2">
               <div>
-                <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm">
+                <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-base">
                   （1）会員登録および認証に関する情報
                 </h3>
-                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
+                <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
                   メールアドレス、表示名、認証プロバイダ（Google等）から提供される識別子等を取得します。これらは、本人認証、アカウント管理、有料機能の権限判定にのみ利用します。
                 </p>
               </div>
 
               <div>
-                <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm">
+                <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-base">
                   （2）学習履歴および利用データ
                 </h3>
-                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
+                <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
                   症例演習の解答進捗、お気に入り経穴、作成された学習ノート等のデータは、ユーザーご自身の学習管理および利便性向上のために保存・利用されます。
                 </p>
               </div>
 
               <div>
-                <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm">
+                <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-base">
                   （3）臨床ノート・マイノート機能における直接識別情報の非保持とデータ保護
                 </h3>
-                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] mt-0.5 leading-relaxed">
+                <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] mt-0.5 leading-relaxed">
                   マイノート（臨床記録機能）では、患者様のプライバシー保護を最優先とし、患者様の氏名・電話番号・住所・生年月日などの直接個人を識別できる情報はデータベースに入力項目や保存領域を設けておらず、収集・保持いたしません。カルテ番号（例: PT-001）や記号、年代、主訴、配穴、施術メモのみを記録対象とします。※利用者ご自身におかれましても、自由入力欄やメモに個人が特定されうる情報を記入しないよう管理をお願いしております。また、クラウド同期を利用する際は、データベースの行レベルセキュリティ（RLS）により、認証されたご本人のアカウントからのみアクセスできるよう制限して安全に管理します。
                 </p>
               </div>
 
               <div>
-                <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm">
+                <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-base">
                   （4）お問い合わせ情報
                 </h3>
-                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
+                <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
                   お問い合わせフォームより送信されたお名前、メールアドレス、ご相談内容は、お問い合わせへの回答・連絡およびサービス改善にのみ利用します。
                 </p>
               </div>
@@ -105,37 +101,37 @@ export default function PrivacyPage() {
           </section>
 
           {/* 3. 決済情報の取り扱い（Stripe決済委託） */}
-          <section className="space-y-3">
+          <section id="policy-section-3" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2 flex items-center gap-2">
               <CreditCard className="w-4 h-4" />
               <span>3. 決済情報の取り扱いおよび委託</span>
             </h2>
             <div className="p-3.5 sm:p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EBE4D5] dark:border-[#22303D] space-y-2">
-              <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm">
+              <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-base">
                 クレジットカード情報の非保持化と暗号化
               </h3>
               <p className="text-[#404743] dark:text-[#C5D2DB]">
                 プレミアム会員の決済処理には、グローバル基準（PCI DSS レベル1準拠）を満たす決済代行業者「Stripe, Inc.」を採用しております。
               </p>
-              <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
+              <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
                 クレジットカード情報はStripe社のセキュアなサーバーへ直接暗号化送信され、当サイトのサーバーには一切保存・保持されません。
               </p>
             </div>
           </section>
 
           {/* 4. 広告配信・アフィリエイトプログラムについて */}
-          <section className="space-y-3">
+          <section id="policy-section-4" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
               4. 広告配信・アフィリエイトプログラムについて
             </h2>
             <div className="p-3.5 sm:p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EBE4D5] dark:border-[#22303D] space-y-2">
-              <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm">
+              <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-base">
                 Amazonアソシエイト・プログラムに関する表示
               </h3>
               <p className="text-[#404743] dark:text-[#C5D2DB] font-medium">
                 当サイトはAmazonアソシエイト・プログラムの参加者であり、適格販売により収入を得ています。
               </p>
-              <p className="text-[#737C77] dark:text-[#8899A6] text-xs">
+              <p className="text-[#737C77] dark:text-[#8899A6] text-sm">
                 第三者がコンテンツおよび宣伝を提供し、訪問者から直接情報を収集し、訪問者のブラウザにクッキー（Cookie）を設定したりこれを認識したりする場合があります。
               </p>
             </div>
@@ -145,7 +141,7 @@ export default function PrivacyPage() {
           </section>
 
           {/* 5. アクセス解析ツールについて */}
-          <section className="space-y-3">
+          <section id="policy-section-5" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2 flex items-center gap-2">
               <Eye className="w-4 h-4" />
               <span>5. アクセス解析ツールについて</span>
@@ -165,7 +161,7 @@ export default function PrivacyPage() {
           </section>
 
           {/* 6. 免責事項 */}
-          <section className="space-y-3">
+          <section id="policy-section-6" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2 flex items-center gap-2">
               <AlertCircle className="w-4 h-4" />
               <span>6. 免責事項（医師法・非医療行為の明記）</span>
@@ -182,7 +178,7 @@ export default function PrivacyPage() {
           </section>
 
           {/* 7. 著作権・引用・リンクについて */}
-          <section className="space-y-3">
+          <section id="policy-section-7" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
               7. 著作権・引用・リンクについて
             </h2>
@@ -196,28 +192,28 @@ export default function PrivacyPage() {
 
           {/* 8. 法令情報・お問い合わせ */}
           <section className="pt-4 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
+            <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
               制定日：2024年4月1日<br />
               最終改定日：{new Date().getFullYear()}年{new Date().getMonth() + 1}月
             </p>
             <div className="flex items-center gap-3">
               <Link
                 href="/terms"
-                className="text-xs text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-medium"
+                className="text-sm text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-medium"
               >
                 利用規約
               </Link>
               <span className="text-[#C5DEC9]">|</span>
               <Link
                 href="/tokushoho"
-                className="text-xs text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-medium"
+                className="text-sm text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-medium"
               >
                 特定商取引法に基づく表記
               </Link>
               <span className="text-[#C5DEC9]">|</span>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] hover:bg-[#162E27] text-[#FAF8F5] text-xs font-bold transition-all shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] hover:bg-[#162E27] text-[#FAF8F5] text-sm font-bold transition-all shadow-xs"
               >
                 <Mail className="w-3.5 h-3.5" />
                 <span>お問い合わせ</span>

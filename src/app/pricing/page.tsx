@@ -2,15 +2,16 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import PageIntro from "@/components/design/PageIntro";
 import { useRouter } from "next/navigation";
-import { 
-  Check, 
-  Crown, 
-  Sparkles, 
-  ArrowRight, 
-  ShieldCheck, 
+import {
+  Check,
+  Crown,
+  Sparkles,
+  ArrowRight,
+  ShieldCheck,
   Bookmark,
-  FileText, 
+  FileText,
   CheckCircle2,
   RefreshCw,
   ChevronDown,
@@ -62,8 +63,8 @@ export default function PricingPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 sm:space-y-16 text-[#232826] dark:text-[#FAF8F5]">
-      
+    <div className="page-layout space-y-10 sm:space-y-14">
+
       {/* 決済準備中バナー（販売無効時のみ表示） */}
       {!salesEnabled && (
         <div className="p-4 sm:p-5 rounded-2xl bg-[#FCF4EB] dark:bg-[#251B12] border border-[#F3DEC5] dark:border-[#4D331F] text-center space-y-1 shadow-sm">
@@ -74,50 +75,14 @@ export default function PricingPage() {
       {/* ======================================================== */}
       {/* 1. 臨床家向けの短い見出し・価格の目安・体験ボタン */}
       {/* ======================================================== */}
-      <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-semibold">
-          <Crown className="w-3.5 h-3.5" />
-          <span>はり太郎 プレミアム</span>
+      <PageIntro eyebrow="はり太郎 プレミアム" title="臨床の記録を、次の施術に生かす。" description="弁証・配穴・施術後の変化をマイノートに。配穴集や患者さんへ渡す養生シートも作れます。" art="notes">
+        <p className="flex flex-wrap gap-x-4 gap-y-1 text-sm font-semibold text-[var(--accent-readable)]"><span>月額980円（税込）</span><span>年払い9,800円（税込・2か月分お得）</span></p>
+        <div className="page-actions">
+          <a href="#pricing-cards" className="page-primary-action">料金プランを比較する<ArrowRight size={18} aria-hidden="true" /></a>
+          <Link href="/notes" className="page-secondary-action"><Bookmark size={18} aria-hidden="true" />マイノートを無料で試す</Link>
         </div>
-
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold tracking-tight text-[#232826] dark:text-[#FAF8F5] leading-tight">
-          臨床の記録を、次の施術に生かす。
-        </h1>
-
-        <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-2xl mx-auto">
-          弁証・配穴・施術後の変化を、マイノートに。<br className="hidden sm:inline" />
-          自分の配穴集を活用し、患者さんに渡す養生シートまで作れます。
-        </p>
-
-        {/* 価格の目安 */}
-        <div className="pt-1 flex items-center justify-center gap-2 text-xs sm:text-sm font-medium text-[#737C77] dark:text-[#8899A6]">
-          <span>月額980円（税込）</span>
-          <span>／</span>
-          <span>年払い9,800円（税込・2か月分お得）</span>
-        </div>
-
-        {/* 体験ボタンと補助リンク */}
-        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-          <Link
-            href="/notes"
-            className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white text-sm font-bold shadow-md transition-all flex items-center justify-center gap-2"
-          >
-            <Bookmark className="w-4 h-4 text-[#E6C387]" />
-            <span>マイノートを無料で試す</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-          <a
-            href="#pricing-cards"
-            className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] hover:text-[#232826] dark:hover:text-white underline underline-offset-4 py-2"
-          >
-            料金と無料版との違いを見る ↓
-          </a>
-        </div>
-
-        <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
-          ※無料で臨床ノート10件・配穴30件まで保存可能。会員登録不要ですぐにお試しいただけます。
-        </p>
-      </div>
+        <p className="page-muted text-sm">無料で臨床ノート10件・配穴30件まで保存可能。会員登録不要で試せます。</p>
+      </PageIntro>
 
       {error && (
         <div className="max-w-2xl mx-auto p-4 rounded-2xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 text-red-700 dark:text-red-300 text-xs sm:text-sm font-semibold text-center">
@@ -126,9 +91,269 @@ export default function PricingPage() {
       )}
 
       {/* ======================================================== */}
+      {/* 3. 料金カード（無料 / プレミアム） */}
+      {/* ======================================================== */}
+      <div id="pricing-cards" className="scroll-mt-28 space-y-6 max-w-4xl mx-auto pt-6">
+        <div className="text-center space-y-1">
+          <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+            料金プラン
+          </h2>
+          <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#8899A6]">
+            無料でも臨床ノート{SUBSCRIPTION_CONFIG.limits.freePatientNoteMax}件、配穴メモ{SUBSCRIPTION_CONFIG.limits.freeMemoMax}件まで記録可能。日々の臨床を蓄積したい方にプレミアムを用意しています。
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
+
+          {/* 無料カード */}
+          <div className="rounded-3xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 flex flex-col justify-between space-y-6 shadow-sm">
+            <div className="space-y-4">
+              <div className="space-y-1">
+                <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] uppercase tracking-wider">
+                  無料プラン
+                </span>
+                <h3 className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  無料
+                </h3>
+                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2]">
+                  まずは、1件の記録から。使い心地を試したい方へ。
+                </p>
+              </div>
+
+              <div className="pt-2">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl sm:text-4xl font-bold text-[#232826] dark:text-[#FAF8F5]">0円</span>
+                  <span className="text-xs text-[#737C77] dark:text-[#8899A6]">（登録不要）</span>
+                </div>
+              </div>
+
+              <div className="border-t border-[#E8E1D1] dark:border-[#22303D] pt-4 space-y-3">
+                <span className="text-xs font-bold text-[#404743] dark:text-[#C5D2DB]">無料枠で利用できる内容:</span>
+                <ul className="text-sm space-y-3 text-[#59615D] dark:text-[#96A6B2]">
+                  <li className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
+                    <span>臨床ノート10件・配穴30件まで保存</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
+                    <span>作成したノートの養生シートA4印刷</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
+                    <span>基礎カリキュラムと経穴辞典を読む</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
+                    <span>3症例で臨床演習を試す</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-4">
+              <Link
+                href="/notes"
+                className="w-full py-3 px-4 rounded-xl border border-[#D8CFC0] dark:border-[#384C5E] text-center text-sm font-bold text-[#232826] dark:text-[#FAF8F5] hover:bg-[#EBE4D5] dark:hover:bg-[#1F2C37] transition-all flex items-center justify-center gap-1.5"
+              >
+                <Bookmark className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+                <span>マイノートを無料で試す</span>
+              </Link>
+              <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] text-center">
+                会員登録なしですぐにお使いいただけます
+              </p>
+            </div>
+          </div>
+
+          {/* プレミアムカード */}
+          <div className="relative rounded-3xl bg-white dark:bg-[#17222B] border-2 border-[#1E3D34] dark:border-[#74BA9E] p-6 sm:p-8 flex flex-col justify-between space-y-6 shadow-md">
+            <div className="space-y-4">
+              <div className="space-y-1">
+                <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1">
+                  <Crown className="w-3.5 h-3.5" />
+                  <span>有料プラン</span>
+                </span>
+                <h3 className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  プレミアム
+                </h3>
+                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2]">
+                  日々の臨床記録と、自分の配穴集を蓄積したい方へ。
+                </p>
+              </div>
+
+              {/* 支払いサイクル切り替え */}
+              <div className="p-1 rounded-xl bg-[#F2EDE2] dark:bg-[#111920] inline-flex items-center w-full">
+                <button
+                  type="button"
+                  onClick={() => setBillingCycle("monthly")}
+                  className={`min-h-11 flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer text-center ${
+                    billingCycle === "monthly"
+                      ? "bg-white dark:bg-[#1E2933] text-[#1E3D34] dark:text-[#74BA9E] shadow-xs"
+                      : "text-[#59615D] dark:text-[#8899A6] hover:text-[#232826]"
+                  }`}
+                >
+                  月払い
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setBillingCycle("yearly")}
+                  className={`min-h-11 flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer text-center ${
+                    billingCycle === "yearly"
+                      ? "bg-white dark:bg-[#1E2933] text-[#1E3D34] dark:text-[#74BA9E] shadow-xs"
+                      : "text-[#59615D] dark:text-[#8899A6] hover:text-[#232826]"
+                  }`}
+                >
+                  年払い（2か月分お得）
+                </button>
+              </div>
+
+              {/* 料金表示 */}
+              <div className="pt-1 space-y-1">
+                {billingCycle === "monthly" ? (
+                  <div>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-3xl sm:text-4xl font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                        月額980円
+                      </span>
+                      <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">（税込）</span>
+                    </div>
+                    <p className="text-xs text-[#737C77] dark:text-[#8899A6] mt-1">
+                      手軽に始められる月額払い。いつでも解約可能です。
+                    </p>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-3xl sm:text-4xl font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                        年額9,800円
+                      </span>
+                      <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">（税込）</span>
+                    </div>
+                    <div className="space-y-0.5 mt-1 text-xs text-[#59615D] dark:text-[#96A6B2]">
+                      <p className="font-semibold text-[#1E3D34] dark:text-[#74BA9E]">
+                        月払い12か月分より1,960円お得 / 1年分をまとめてお支払い
+                      </p>
+                      <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                        （月あたり約817円相当 ※請求は年1回の9,800円一括となります）
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* 箇条書き */}
+              <div className="border-t border-[#E8E1D1] dark:border-[#22303D] pt-4 space-y-3">
+                <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">プレミアムで利用できる内容:</span>
+                <ul className="text-sm space-y-3 text-[#232826] dark:text-[#FAF8F5]">
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
+                    <span>臨床ノート500件・配穴1,000件まで保存</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
+                    <span>保存した全ノートの養生シートA4印刷</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
+                    <span>臨床症例演習: 全20症例が利用可能</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
+                    <span>経穴比較（3穴）・配穴練習・ファイル保存を活用</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="space-y-3 pt-4">
+              {isPremium ? (
+                <div className="space-y-2">
+                  <Link
+                    href="/notes"
+                    className="w-full py-3.5 px-6 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white text-sm font-bold shadow transition-all flex items-center justify-center gap-2"
+                  >
+                    <Bookmark className="w-4 h-4 text-[#E6C387]" />
+                    <span>マイノートを開く</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <Link
+                    href="/account/subscription"
+                    className="w-full py-2 px-4 rounded-xl text-center text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center justify-center gap-1"
+                  >
+                    <Crown className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                    <span>ご加入中プランの確認・管理へ</span>
+                  </Link>
+                </div>
+              ) : salesEnabled ? (
+                <button
+                  type="button"
+                  onClick={handleSubscribe}
+                  disabled={isLoading}
+                  className="w-full py-3.5 px-6 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white text-sm font-bold shadow transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                >
+                  {isLoading ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      <span>決済画面へ移動中...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>
+                        {billingCycle === "yearly" ? "年額9,800円で申し込む" : "月額980円で申し込む"}
+                      </span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+              ) : (
+                <div className="space-y-1.5">
+                  <button
+                    type="button"
+                    disabled
+                    className="w-full py-3.5 px-6 rounded-xl bg-[#D8CFC0] dark:bg-[#2A3B4A] text-[#737C77] dark:text-[#8899A6] text-sm font-bold cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    <span>{status === "checking" ? "受付状況を確認中…" : status === "error" ? "受付状況を確認できません" : "現在お申し込み準備中"}</span>
+                  </button>
+                  {status === "error" ? <button type="button" onClick={retry} className="min-h-11 w-full rounded-lg text-sm font-semibold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2">受付状況を再確認する</button>
+                    : status === "unavailable" ? <p className="text-sm text-[#737C77] dark:text-[#8899A6] text-center">受付開始日は未定です。現在は無料機能をご利用ください。</p> : null}
+                </div>
+              )}
+
+              {/* 契約注記 */}
+              <div className="space-y-1 text-[11px] text-[#737C77] dark:text-[#8899A6] leading-relaxed">
+                <p className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
+                  <span>自動更新。マイページからいつでも次回の更新を停止できます。</span>
+                </p>
+                {billingCycle === "yearly" && (
+                  <p className="pl-5 text-[#B86924] dark:text-[#E6C387]">
+                    ※年払いは1年分の一括払いのため、契約期間中の途中解約に伴う日割り返金は行っていません（期間終了まで全機能をご利用いただけます）。
+                  </p>
+                )}
+                <p className="text-center pt-1">
+                  お申し込み前に
+                  <Link href="/terms" className="underline hover:text-[#1E3D34] dark:hover:text-[#74BA9E] mx-1">
+                    利用規約
+                  </Link>
+                  および
+                  <Link href="/tokushoho" className="underline hover:text-[#1E3D34] dark:hover:text-[#74BA9E] mx-1">
+                    特定商取引法に基づく表記
+                  </Link>
+                  をご確認ください。
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* ======================================================== */}
       {/* 2. マイノートと養生シートの完成見本 */}
       {/* ======================================================== */}
-      <div className="max-w-4xl mx-auto space-y-6 pt-2">
+      <details className="page-help max-w-4xl mx-auto">
+        <summary>マイノート・養生シートの完成見本を見る</summary>
+        <div className="space-y-6 pt-2">
         <div className="text-center space-y-1">
           <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
             <FileText className="w-4 h-4" />
@@ -147,7 +372,8 @@ export default function PricingPage() {
           <button
             type="button"
             onClick={() => setSampleViewTab("note")}
-            className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all ${
+            aria-pressed={sampleViewTab === "note"}
+            className={`min-h-11 flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all ${
               sampleViewTab === "note"
                 ? "bg-white dark:bg-[#121920] text-[#1E3D34] dark:text-[#74BA9E] shadow-xs"
                 : "text-[#59615D] dark:text-[#8899A6]"
@@ -158,7 +384,8 @@ export default function PricingPage() {
           <button
             type="button"
             onClick={() => setSampleViewTab("sheet")}
-            className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all ${
+            aria-pressed={sampleViewTab === "sheet"}
+            className={`min-h-11 flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all ${
               sampleViewTab === "sheet"
                 ? "bg-white dark:bg-[#121920] text-[#1E3D34] dark:text-[#74BA9E] shadow-xs"
                 : "text-[#59615D] dark:text-[#8899A6]"
@@ -170,7 +397,7 @@ export default function PricingPage() {
 
         {/* 2大見本カード */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-          
+
           {/* 見本A：臨床ノート */}
           <div className={`rounded-2xl border-2 border-[#D8CFC0] dark:border-[#384C5E] bg-white dark:bg-[#152028] p-5 sm:p-6 space-y-4 shadow-sm ${
             sampleViewTab === "sheet" ? "hidden md:block" : "block"
@@ -338,265 +565,8 @@ export default function PricingPage() {
         <p className="text-center text-xs text-[#737C77] dark:text-[#8899A6]">
           ※患者の実名等の直接識別情報は保持しない設計。無料ログインでPC・スマホ間の自動同期に対応しています。
         </p>
-      </div>
-
-      {/* ======================================================== */}
-      {/* 3. 料金カード（無料 / プレミアム） */}
-      {/* ======================================================== */}
-      <div id="pricing-cards" className="scroll-mt-8 space-y-6 max-w-4xl mx-auto pt-6">
-        <div className="text-center space-y-1">
-          <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-            料金プラン
-          </h2>
-          <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#8899A6]">
-            無料でも臨床ノート{SUBSCRIPTION_CONFIG.limits.freePatientNoteMax}件、配穴メモ{SUBSCRIPTION_CONFIG.limits.freeMemoMax}件まで記録可能。日々の臨床を蓄積したい方にプレミアムを用意しています。
-          </p>
         </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
-          
-          {/* 無料カード */}
-          <div className="rounded-3xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 flex flex-col justify-between space-y-6 shadow-sm">
-            <div className="space-y-4">
-              <div className="space-y-1">
-                <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] uppercase tracking-wider">
-                  無料プラン
-                </span>
-                <h3 className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  無料
-                </h3>
-                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2]">
-                  まずは、1件の記録から。使い心地を試したい方へ。
-                </p>
-              </div>
-
-              <div className="pt-2">
-                <div className="flex items-baseline gap-1">
-                  <span className="text-3xl sm:text-4xl font-bold text-[#232826] dark:text-[#FAF8F5]">0円</span>
-                  <span className="text-xs text-[#737C77] dark:text-[#8899A6]">（登録不要）</span>
-                </div>
-              </div>
-
-              <div className="border-t border-[#E8E1D1] dark:border-[#22303D] pt-4 space-y-3">
-                <span className="text-xs font-bold text-[#404743] dark:text-[#C5D2DB]">無料枠で利用できる内容:</span>
-                <ul className="text-sm space-y-3 text-[#59615D] dark:text-[#96A6B2]">
-                  <li className="flex items-start gap-2.5">
-                    <Check className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
-                    <span>臨床ノート10件・配穴30件まで保存</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
-                    <span>作成したノートの養生シートA4印刷</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
-                    <span>基礎カリキュラムと経穴辞典を読む</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
-                    <span>3症例で臨床演習を試す</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="space-y-2 pt-4">
-              <Link
-                href="/notes"
-                className="w-full py-3 px-4 rounded-xl border border-[#D8CFC0] dark:border-[#384C5E] text-center text-sm font-bold text-[#232826] dark:text-[#FAF8F5] hover:bg-[#EBE4D5] dark:hover:bg-[#1F2C37] transition-all flex items-center justify-center gap-1.5"
-              >
-                <Bookmark className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-                <span>マイノートを無料で試す</span>
-              </Link>
-              <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] text-center">
-                会員登録なしですぐにお使いいただけます
-              </p>
-            </div>
-          </div>
-
-          {/* プレミアムカード */}
-          <div className="relative rounded-3xl bg-white dark:bg-[#17222B] border-2 border-[#1E3D34] dark:border-[#74BA9E] p-6 sm:p-8 flex flex-col justify-between space-y-6 shadow-md">
-            <div className="space-y-4">
-              <div className="space-y-1">
-                <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center gap-1">
-                  <Crown className="w-3.5 h-3.5" />
-                  <span>有料プラン</span>
-                </span>
-                <h3 className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  プレミアム
-                </h3>
-                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2]">
-                  日々の臨床記録と、自分の配穴集を蓄積したい方へ。
-                </p>
-              </div>
-
-              {/* 支払いサイクル切り替え */}
-              <div className="p-1 rounded-xl bg-[#F2EDE2] dark:bg-[#111920] inline-flex items-center w-full">
-                <button
-                  type="button"
-                  onClick={() => setBillingCycle("monthly")}
-                  className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer text-center ${
-                    billingCycle === "monthly"
-                      ? "bg-white dark:bg-[#1E2933] text-[#1E3D34] dark:text-[#74BA9E] shadow-xs"
-                      : "text-[#59615D] dark:text-[#8899A6] hover:text-[#232826]"
-                  }`}
-                >
-                  月払い
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setBillingCycle("yearly")}
-                  className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer text-center ${
-                    billingCycle === "yearly"
-                      ? "bg-white dark:bg-[#1E2933] text-[#1E3D34] dark:text-[#74BA9E] shadow-xs"
-                      : "text-[#59615D] dark:text-[#8899A6] hover:text-[#232826]"
-                  }`}
-                >
-                  年払い（2か月分お得）
-                </button>
-              </div>
-
-              {/* 料金表示 */}
-              <div className="pt-1 space-y-1">
-                {billingCycle === "monthly" ? (
-                  <div>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-3xl sm:text-4xl font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                        月額980円
-                      </span>
-                      <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">（税込）</span>
-                    </div>
-                    <p className="text-xs text-[#737C77] dark:text-[#8899A6] mt-1">
-                      手軽に始められる月額払い。いつでも解約可能です。
-                    </p>
-                  </div>
-                ) : (
-                  <div>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-3xl sm:text-4xl font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                        年額9,800円
-                      </span>
-                      <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">（税込）</span>
-                    </div>
-                    <div className="space-y-0.5 mt-1 text-xs text-[#59615D] dark:text-[#96A6B2]">
-                      <p className="font-semibold text-[#1E3D34] dark:text-[#74BA9E]">
-                        月払い12か月分より1,960円お得 / 1年分をまとめてお支払い
-                      </p>
-                      <p className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                        （月あたり約817円相当 ※請求は年1回の9,800円一括となります）
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* 箇条書き */}
-              <div className="border-t border-[#E8E1D1] dark:border-[#22303D] pt-4 space-y-3">
-                <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">プレミアムで利用できる内容:</span>
-                <ul className="text-sm space-y-3 text-[#232826] dark:text-[#FAF8F5]">
-                  <li className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
-                    <span>臨床ノート500件・配穴1,000件まで保存</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
-                    <span>保存した全ノートの養生シートA4印刷</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
-                    <span>臨床症例演習: 全20症例が利用可能</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
-                    <span>経穴比較（3穴）・配穴練習・ファイル保存を活用</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="space-y-3 pt-4">
-              {isPremium ? (
-                <div className="space-y-2">
-                  <Link
-                    href="/notes"
-                    className="w-full py-3.5 px-6 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white text-sm font-bold shadow transition-all flex items-center justify-center gap-2"
-                  >
-                    <Bookmark className="w-4 h-4 text-[#E6C387]" />
-                    <span>マイノートを開く</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                  <Link
-                    href="/account/subscription"
-                    className="w-full py-2 px-4 rounded-xl text-center text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center justify-center gap-1"
-                  >
-                    <Crown className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                    <span>ご加入中プランの確認・管理へ</span>
-                  </Link>
-                </div>
-              ) : salesEnabled ? (
-                <button
-                  type="button"
-                  onClick={handleSubscribe}
-                  disabled={isLoading}
-                  className="w-full py-3.5 px-6 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white text-sm font-bold shadow transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
-                >
-                  {isLoading ? (
-                    <>
-                      <RefreshCw className="w-4 h-4 animate-spin" />
-                      <span>決済画面へ移動中...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>
-                        {billingCycle === "yearly" ? "年額9,800円で申し込む" : "月額980円で申し込む"}
-                      </span>
-                      <ArrowRight className="w-4 h-4" />
-                    </>
-                  )}
-                </button>
-              ) : (
-                <div className="space-y-1.5">
-                  <button
-                    type="button"
-                    disabled
-                    className="w-full py-3.5 px-6 rounded-xl bg-[#D8CFC0] dark:bg-[#2A3B4A] text-[#737C77] dark:text-[#8899A6] text-sm font-bold cursor-not-allowed flex items-center justify-center gap-2"
-                  >
-                    <Sparkles className="w-4 h-4" />
-                    <span>{status === "checking" ? "受付状況を確認中…" : status === "error" ? "受付状況を確認できません" : "現在お申し込み準備中"}</span>
-                  </button>
-                  {status === "error" ? <button type="button" onClick={retry} className="min-h-11 w-full rounded-lg text-sm font-semibold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2">受付状況を再確認する</button>
-                    : status === "unavailable" ? <p className="text-sm text-[#737C77] dark:text-[#8899A6] text-center">受付開始日は未定です。現在は無料機能をご利用ください。</p> : null}
-                </div>
-              )}
-
-              {/* 契約注記 */}
-              <div className="space-y-1 text-[11px] text-[#737C77] dark:text-[#8899A6] leading-relaxed">
-                <p className="flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-                  <span>自動更新。マイページからいつでも次回の更新を停止できます。</span>
-                </p>
-                {billingCycle === "yearly" && (
-                  <p className="pl-5 text-[#B86924] dark:text-[#E6C387]">
-                    ※年払いは1年分の一括払いのため、契約期間中の途中解約に伴う日割り返金は行っていません（期間終了まで全機能をご利用いただけます）。
-                  </p>
-                )}
-                <p className="text-center pt-1">
-                  お申し込み前に
-                  <Link href="/terms" className="underline hover:text-[#1E3D34] dark:hover:text-[#74BA9E] mx-1">
-                    利用規約
-                  </Link>
-                  および
-                  <Link href="/tokushoho" className="underline hover:text-[#1E3D34] dark:hover:text-[#74BA9E] mx-1">
-                    特定商取引法に基づく表記
-                  </Link>
-                  をご確認ください。
-                </p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
+      </details>
 
       {/* ======================================================== */}
       {/* 4. 無料とプレミアムの3つの主な違い */}
@@ -784,7 +754,7 @@ export default function PricingPage() {
             { title: "臨床症例演習", free: "3症例", premium: "全20症例" },
             { title: "経穴比較・配穴練習・奇経八脈", free: "各機能の無料範囲（2穴比較・任督2脈）", premium: "全機能利用可能（3穴比較・全8脈）" },
           ].map((item, idx) => (
-            <div 
+            <div
               key={idx}
               className="p-4 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#152028] space-y-2 text-xs"
             >

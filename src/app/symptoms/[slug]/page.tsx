@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import PageIntro from '@/components/design/PageIntro';
+import { ShieldCheck, Layers, MapPin, Leaf, BookOpen, ArrowRight } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import MedicalSafetyNotice from '@/components/MedicalSafetyNotice';
 import AuthorSupervisorCard from '@/components/common/AuthorSupervisorCard';
@@ -45,25 +47,22 @@ export default async function SymptomGuidePage({ params }: Props) {
   const clinicalCase = CLINICAL_CASES.find(item => item.id === resources?.caseId);
   const papers = getSymptomRelatedPapers(guide);
   const relatedGuides = SYMPTOMS.filter(item => item.id !== guide.id && item.category === guide.category);
-  const sections = [{ id: 'safety', label: '受診の目安' }, { id: 'traditional', label: '伝統医学での分類' }, { id: 'acupoints', label: '関連経穴' }, { id: 'daily-life', label: '日常の工夫' }, { id: 'sources', label: '出典・研究資料' }, { id: 'learning', label: '次に学ぶ' }];
+  const sections = [{ id: 'safety', label: '受診の目安', icon: ShieldCheck }, { id: 'traditional', label: '伝統医学での分類', icon: Layers }, { id: 'acupoints', label: '関連経穴', icon: MapPin }, { id: 'daily-life', label: '日常の工夫', icon: Leaf }, { id: 'sources', label: '出典・研究資料', icon: BookOpen }, { id: 'learning', label: '次に学ぶ', icon: ArrowRight }];
 
   return (
-    <div className="reading-page mx-auto max-w-4xl space-y-7 px-4 py-8 text-base leading-relaxed text-[#232826] dark:text-[#FAF8F5] sm:py-12">
+    <div className="reading-page page-layout page-layout--reading space-y-7 text-base leading-relaxed">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getSymptomGuideJsonLd(guide)).replace(/</g, '\\u003c') }} />
       <nav aria-label="パンくず" className="flex flex-wrap items-center gap-2 text-sm"><Link href="/" className={linkClass}>ホーム</Link><span aria-hidden="true">/</span><Link href="/symptoms" className={linkClass}>症状別ガイド</Link><span aria-hidden="true">/</span><span aria-current="page">{guide.title}</span></nav>
-      <header className="space-y-4">
-        <p className="text-sm font-semibold text-[#1E3D34] dark:text-[#9CCDB8]">{guide.category} ／ 症状別の学習ガイド</p>
-        <h1 className="font-serif text-3xl font-bold leading-snug sm:text-4xl">{guide.title}</h1>
-        <p className="text-lg leading-relaxed">{guide.summary}</p>
+      <PageIntro eyebrow={`${guide.category} ／ 症状別の学習ガイド`} title={guide.title} description={guide.summary} art="care" compact>
         <p className="text-sm text-[#59615D] dark:text-[#AFBDC8]">更新：<time dateTime={SYMPTOM_GUIDES_REVISED_AT}>{SYMPTOM_GUIDES_REVISED_AT}</time> ／ <Link href="/editorial-policy" className="underline">専門家監修は未完了</Link></p>
-        <p className="leading-relaxed">{SYMPTOM_GUIDANCE_SCOPE}</p>
-      </header>
+      </PageIntro>
+      <p className="page-muted text-sm leading-relaxed">{SYMPTOM_GUIDANCE_SCOPE}</p>
       <section id="safety" className="scroll-mt-28 space-y-3" aria-labelledby="safety-heading">
         <h2 id="safety-heading" className="font-serif text-2xl font-bold">先に確認する：受診の目安</h2>
         {safety && <MedicalSafetyNotice title="受診を優先する症状" message={safety.message} />}
         <a href="#sources" className={linkClass}>この受診案内の出典を確認する ↓</a>
       </section>
-      <nav aria-label="ガイドの目次" className="flex flex-wrap gap-x-5 gap-y-2 rounded-2xl bg-[#EBF3EF] p-4 dark:bg-[#182823]">{sections.map(section => <a key={section.id} href={`#${section.id}`} className={linkClass}>{section.label}</a>)}</nav>
+      <nav aria-label="ガイドの目次" className="grid grid-cols-2 gap-2 sm:grid-cols-3">{sections.map(({ id, label, icon: Icon }) => <a key={id} href={`#${id}`} className="page-secondary-action justify-start"><Icon size={18} aria-hidden="true" />{label}</a>)}</nav>
       <section id="traditional" className={sectionClass}>
         <h2 className="font-serif text-2xl font-bold">東洋医学では、どう整理する？</h2>
         <p>{guide.orientalMechanism}</p>

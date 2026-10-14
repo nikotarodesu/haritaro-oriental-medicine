@@ -1,7 +1,8 @@
 import React, { Suspense } from "react";
 import Link from "next/link";
 import { MERIDIANS, ALL_ACUPOINTS } from "@/data/tsubo";
-import { Compass, Layers, ShieldCheck } from "lucide-react";
+import { Layers, ShieldCheck } from "lucide-react";
+import PageIntro from "@/components/design/PageIntro";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
 
 // 主要な代表経穴（初期HTMLでクローラーおよびJS無効環境にも確実に渡すリンク）
@@ -22,20 +23,9 @@ const FLAGSHIP_ACUPOINTS = [
 
 export default function TsuboPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-8">
+    <div className="page-layout page-layout--wide space-y-8">
       {/* 1. ページヘッダー（初期HTMLに出力される主コンテンツ・H1） */}
-      <header className="text-center space-y-3 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-bold border border-[#C5DED4] dark:border-[#2A5243]">
-          <Compass className="w-3.5 h-3.5" />
-          <span>WHO標準361穴 データベース</span>
-        </div>
-        <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-          経穴辞典
-        </h1>
-        <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          経穴の名前・読み方・経脈・部位から調べられる辞典。各経穴の場所や取穴の説明を図と文章で確認できます。
-        </p>
-      </header>
+      <PageIntro compact eyebrow="WHO標準361穴" title="経穴辞典" art="points" description="名前・読み方・経脈・部位から検索。位置と目印を、図と文章で確認できます。" />
 
       {/* 2. 検索・絞り込み・カード一覧をページ見出しの直下へ */}
       <Suspense

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import PageIntro from "@/components/design/PageIntro";
 import { 
   Layers, 
   ArrowLeft, 
@@ -10,7 +11,6 @@ import {
   Lock, 
   Bookmark, 
   Sparkles, 
-  Split, 
   Check, 
   SlidersHorizontal,
   FileText,
@@ -177,30 +177,9 @@ export default function SimulatorComparePage() {
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
-      {/* ヒーローセクション */}
-      <div className="bg-white dark:bg-[#17212A] border-b border-[#E5DEC9] dark:border-[#2A3B4A] py-10 sm:py-14">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243]">
-              <Split className="w-3.5 h-3.5" />
-              <span>並行比較・鑑別エンジン</span>
-            </span>
-            <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#151D25] text-[#737C77] dark:text-[#8899A6] border border-[#E5DEC9] dark:border-[#2A3B4A]">
-              案A vs 案B の差分を可視化
-            </span>
-          </div>
-
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-2">
-              <h1 className="font-serif text-2xl sm:text-4xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                条件比較シミュレーター
-              </h1>
-              <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] max-w-2xl leading-relaxed">
-                臨床で最も判断に迷う「似て非なる2つの病態」「対立する配穴方針」を横並びで並行シミュレーション。八綱のズレや配穴意図の差異をひと目で把握できます。
-              </p>
-            </div>
-
-            <div className="flex items-center gap-2">
+      <div className="page-layout page-layout--intro print:hidden">
+        <PageIntro compact eyebrow="2つの条件を比較" title="条件比較シミュレーター" description="八綱の違いと配穴の意図を、2つの教材例で見比べます。" art="practice">
+            <div className="page-actions">
               <button
                 onClick={handleSaveToMemo}
                 disabled={saved}
@@ -210,11 +189,10 @@ export default function SimulatorComparePage() {
                 <span>{saved ? "学習ノートに保存済" : "比較結果を学習ノートに保存"}</span>
               </button>
             </div>
-          </div>
-        </div>
+        </PageIntro>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+      <div className="page-layout page-layout--continuation space-y-8">
         
         {/* プリセット選択タブ */}
         <div className="space-y-2">

@@ -1,6 +1,7 @@
 import { pageSocialMetadata } from "@/config/seo";
 import { Metadata } from "next";
 import Link from "next/link";
+import PageIntro from "@/components/design/PageIntro";
 import Image from "next/image";
 import { Sparkles, ShieldCheck, ArrowRight, Compass, BookOpen, GraduationCap, Stethoscope } from "lucide-react";
 import { getArticlePreviews } from "@/data/articleData";
@@ -20,20 +21,13 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   const [comparisonArticle] = getArticlePreviews(["east-west-integrative-unified-theory"]);
   return (
-    <div className="about-page max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-16 space-y-8 sm:space-y-12">
-      {/* ページ見出し */}
-      <div className="text-center space-y-3 sm:space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-semibold tracking-wider">
-          <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-          <span>サイトの志と運営方針</span>
+    <div className="about-page page-layout space-y-8 sm:space-y-12">
+      <PageIntro eyebrow="サイトの志と運営方針" title="「はり太郎の東洋医学」について" description="講義で学び、症例で考え、ノートで振り返る。東洋医学の学習と臨床思考を支えます。" art="about">
+        <div className="page-actions">
+          <Link href="/learn" className="page-primary-action"><BookOpen size={18} aria-hidden="true" />学び方を選ぶ<ArrowRight size={18} aria-hidden="true" /></Link>
+          <a href="#about-operator" className="page-secondary-action">運営者について</a>
         </div>
-        <h1 className="text-2xl sm:text-5xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight">
-          「はり太郎の東洋医学」について
-        </h1>
-        <p className="text-sm sm:text-lg text-[#59615D] dark:text-[#A0B0BC] max-w-2xl mx-auto leading-relaxed">
-          講義で基礎を学び、クイズと症例演習で考え、ノートで振り返る東洋医学の学習サイトです。
-        </p>
-      </div>
+      </PageIntro>
 
       <section aria-labelledby="about-review-scope" className="space-y-3 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-4 sm:p-6">
         <h2 id="about-review-scope" className="text-lg font-bold text-[#1E3D34] dark:text-[#74BA9E]">教材の用途と確認状況</h2>
@@ -51,13 +45,13 @@ export default function AboutPage() {
           <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
             サイト創設の志
           </h2>
-          <p className="text-xs sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
+          <p className="text-sm sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
             東洋医学には、陰陽・五行・気血津液など、日常では使わない言葉が多く登場します。初めて学ぶ方が、言葉の意味と使い方を一つずつ確認できるように、このサイトを作りました。
           </p>
-          <p className="text-xs sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
+          <p className="text-sm sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
             古典に書かれた説明、筆者の臨床経験、研究で確認された結果は、同じ根拠としては扱えません。記事や講義では、どの資料を参照し、何を確認できたかを示します。
           </p>
-          <p className="text-xs sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
+          <p className="text-sm sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
             講義とクイズで基礎を学び、架空の症例で所見と判断の理由を考え、ノートで読み返せる構成を目指しています。経験や伝統的な説明だけで、治療効果が確立したとは扱いません。
           </p>
         </div>
@@ -65,14 +59,14 @@ export default function AboutPage() {
         {/* 目的別：はり太郎の歩き方（はじめてガイド） */}
         <div className="space-y-4 pt-2 sm:pt-4 border-t border-[#F2ECE0] dark:border-[#22303D]">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-bold">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] text-sm font-bold">
               <Compass className="w-3.5 h-3.5" />
               <span>サイトの使い方ガイド</span>
             </div>
             <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
               目的別：はり太郎の歩き方
             </h3>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC]">
+            <p className="text-sm sm:text-sm text-[#59615D] dark:text-[#A0B0BC]">
               基礎から学ぶ方、所見を記録する鍼灸師、古典や研究を読む方へ、それぞれの始め方を案内します。
             </p>
           </div>
@@ -90,10 +84,10 @@ export default function AboutPage() {
                     <h4 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">鍼灸学生・学び直し</h4>
                   </div>
                 </div>
-                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                   陰陽五行・気血水・臓腑経絡の用語と関係を学び、確認問題で国家試験に備える方へ。
                 </p>
-                <ul className="text-xs space-y-1.5 text-[#404743] dark:text-[#C5D2DB]">
+                <ul className="text-sm space-y-1.5 text-[#404743] dark:text-[#C5D2DB]">
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#1E2D3D] dark:text-[#7BAAD8] shrink-0">1.</span>
                     <span><Link href="/curriculum" className="font-semibold underline hover:text-[#1E2D3D]">カリキュラム全講義</Link>を第1章から読み、各講のクイズで確かめる</span>
@@ -110,7 +104,7 @@ export default function AboutPage() {
               </div>
               <Link
                 href="/learn"
-                className="w-full py-2 px-3 rounded-xl bg-[#EAEFF5] hover:bg-[#D8E4F0] dark:bg-[#152331] dark:hover:bg-[#1D3247] text-[#1E2D3D] dark:text-[#7BAAD8] font-bold text-xs text-center transition-colors"
+                className="w-full py-2 px-3 rounded-xl bg-[#EAEFF5] hover:bg-[#D8E4F0] dark:bg-[#152331] dark:hover:bg-[#1D3247] text-[#1E2D3D] dark:text-[#7BAAD8] font-bold text-sm text-center transition-colors"
               >
                 学びの総合案内へ →
               </Link>
@@ -128,10 +122,10 @@ export default function AboutPage() {
                     <h4 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">鍼灸師・臨床家</h4>
                   </div>
                 </div>
-                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                   患者の所見を整理し、弁証推論から配穴処方、カルテ記録・養生シート印刷まで行う方へ。
                 </p>
-                <ul className="text-xs space-y-1.5 text-[#404743] dark:text-[#C5D2DB]">
+                <ul className="text-sm space-y-1.5 text-[#404743] dark:text-[#C5D2DB]">
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] shrink-0">1.</span>
                     <span><Link href="/diagnosis?tab=clinical" className="font-semibold underline hover:text-[#1E3D34]">対面問診ツール</Link>で愁訴・所見を整理</span>
@@ -148,7 +142,7 @@ export default function AboutPage() {
               </div>
               <Link
                 href="/clinical"
-                className="w-full py-2 px-3 rounded-xl bg-[#EBF3EF] hover:bg-[#D5E8DE] dark:bg-[#182823] dark:hover:bg-[#223D32] text-[#1E3D34] dark:text-[#74BA9E] font-bold text-xs text-center transition-colors"
+                className="w-full py-2 px-3 rounded-xl bg-[#EBF3EF] hover:bg-[#D5E8DE] dark:bg-[#182823] dark:hover:bg-[#223D32] text-[#1E3D34] dark:text-[#74BA9E] font-bold text-sm text-center transition-colors"
               >
                 臨床ツールの案内へ →
               </Link>
@@ -166,10 +160,10 @@ export default function AboutPage() {
                     <h4 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">古典条文・学術探究</h4>
                   </div>
                 </div>
-                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                   古典の記述、現代医学の研究、筆者の学習モデルを、それぞれの確認範囲とともに読みたい方へ。
                 </p>
-                <ul className="text-xs space-y-1.5 text-[#404743] dark:text-[#C5D2DB]">
+                <ul className="text-sm space-y-1.5 text-[#404743] dark:text-[#C5D2DB]">
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#B86924] dark:text-[#E6C387] shrink-0">1.</span>
                     <span><Link href="/library" className="font-semibold underline hover:text-[#B86924]">文献ライブラリ</Link>で論文と古典の引用・照合状況を確認</span>
@@ -180,13 +174,13 @@ export default function AboutPage() {
                   </li>
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#B86924] dark:text-[#E6C387] shrink-0">3.</span>
-                    <span><Link href="/cases" className="font-semibold underline hover:text-[#B86924]">架空症例教材</Link>で所見から判断の理由を練習</span>
+                    <span><Link href="/cases" className="font-semibold underline hover:text-[#B86924]">架空症例教材</Link>で所見を読み、判断の理由を説明する練習</span>
                   </li>
                 </ul>
               </div>
               <Link
                 href="/library"
-                className="w-full py-2 px-3 rounded-xl bg-[#FCF4EB] hover:bg-[#F7E7D3] dark:bg-[#281E15] dark:hover:bg-[#382B1E] text-[#B86924] dark:text-[#E6C387] font-bold text-xs text-center transition-colors"
+                className="w-full py-2 px-3 rounded-xl bg-[#FCF4EB] hover:bg-[#F7E7D3] dark:bg-[#281E15] dark:hover:bg-[#382B1E] text-[#B86924] dark:text-[#E6C387] font-bold text-sm text-center transition-colors"
               >
                 文献ライブラリへ →
               </Link>
@@ -199,7 +193,7 @@ export default function AboutPage() {
           <h3 className="text-lg sm:text-xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
             当サイトが貫く3つの基準
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 text-xs sm:text-sm">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 text-sm sm:text-sm">
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
               <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">01. 専門用語を分かりやすく</span>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
@@ -222,8 +216,8 @@ export default function AboutPage() {
         </div>
 
         {/* 医療上の免責事項 */}
-        <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-6 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-2 sm:space-y-3 text-xs text-[#59615D] dark:text-[#A0B0BC]">
-          <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm">
+        <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-6 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-2 sm:space-y-3 text-sm text-[#59615D] dark:text-[#A0B0BC]">
+          <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-sm">
             <ShieldCheck className="w-4 sm:w-5 h-4 sm:h-5 text-[#1E3D34] dark:text-[#74BA9E]" />
             <span>医療情報に関する免責事項</span>
           </div>
@@ -241,7 +235,7 @@ export default function AboutPage() {
             <span className="p-1.5 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
               <ShieldCheck className="w-4 h-4" />
             </span>
-            <h2 className="text-lg sm:text-2xl font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+            <h2 id="about-operator" className="scroll-mt-28 text-lg sm:text-2xl font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
               執筆・運営者について
             </h2>
           </div>
@@ -261,14 +255,14 @@ export default function AboutPage() {
                   <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
                     はり太郎
                   </h3>
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-xs font-bold">
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-sm font-bold">
                     鍼灸師／鍼灸院院長
                   </span>
                 </div>
-                <p className="text-xs sm:text-sm font-semibold text-[#B86924] dark:text-[#E6C387]">
+                <p className="text-sm sm:text-sm font-semibold text-[#B86924] dark:text-[#E6C387]">
                   身体ケア・臨床領域10年以上（鍼灸師約9年）｜ 2017年免許取得 ｜ 2023年開院・現役臨床
                 </p>
-                <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed pt-1">
+                <p className="text-sm sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed pt-1">
                   鍼灸師として臨床に携わりながら、東洋医学の理論・診断・治療体系を整理し、haritaro.jpで公開しています。
                   鍼灸専門学校を卒業後、鍼灸接骨院、リラクゼーション、デイサービスなど、身体や健康に関わる複数の現場を経験。現在は鍼灸院を開業し、一人院長として日々患者と向き合いながら臨床を行っています。
                 </p>
@@ -280,19 +274,19 @@ export default function AboutPage() {
               <h4 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
                 所見から考え、経過を見て確かめる
               </h4>
-              <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+              <p className="text-sm sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                 東洋医学には、陰陽・五行・気血津液・臓腑・経絡・病機・弁証など、多数の概念があります。しかし、それぞれを個別に暗記するだけでは、実際の診断や治療の中でどのようにつながっているのかが見えにくくなります。
               </p>
               <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2 sm:space-y-2.5">
-                <p className="text-xs sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                <p className="text-sm sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                   このサイトで学ぶこと：所見から候補とその理由を考え、方針を立て、経過を見て判断を見直す
                 </p>
-                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                   臨床では、単に「症状のある場所に鍼をする」「症状とツボを対応させる」という考え方ではなく、
                   <strong className="text-[#232826] dark:text-[#FAF8F5]">【観察 ➜ 仮説 ➜ 治療 ➜ 再評価】</strong>
                   という過程を重視しています。「どこが痛いか」だけでなく、以下を観察し必要に応じて治療方針を修正します。
                 </p>
-                <ul className="text-xs text-[#404743] dark:text-[#C5D2DB] space-y-1 list-disc list-inside">
+                <ul className="text-sm text-[#404743] dark:text-[#C5D2DB] space-y-1 list-disc list-inside">
                   <li>どのような条件で症状が変化するのか</li>
                   <li>身体のどこに機能的な偏りがあるのか</li>
                   <li>局所症状と全身状態にどのような関係があるのか</li>
@@ -311,12 +305,12 @@ export default function AboutPage() {
                 執筆・運営体制と編集方針
               </h4>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm sm:text-sm">
                 <div className="p-4 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2">
                   <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
                     一人運営・直接執筆の開示
                   </span>
-                  <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                  <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                     現役鍼灸師の「はり太郎」が、一人で資料の調査、記事の執筆、サイトの開発を行っています。編集部や監修委員会による制作ではなく、運営者本人が掲載内容と出典を確認しています。
                   </p>
                 </div>
@@ -325,7 +319,7 @@ export default function AboutPage() {
                   <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
                     出典・エビデンス選定基準
                   </span>
-                  <ul className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed space-y-1 list-disc list-inside">
+                  <ul className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed space-y-1 list-disc list-inside">
                     <li><strong>経穴・経絡・基礎理論：</strong>WHO標準経穴部位、はり師きゅう師養成標準教科書、主要古典（『黄帝内経』『難経』『甲乙経』等）</li>
                     <li><strong>現代医学・自然科学：</strong>PubMed収載の査読付き論文、公的機関の診療ガイドラインを基本参照</li>
                   </ul>
@@ -335,7 +329,7 @@ export default function AboutPage() {
                   <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
                     誤りの訂正方針と更新ポリシー
                   </span>
-                  <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                  <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                     医学・東洋医学の情報は継続的に確認します。読者・専門家からのご指摘について該当する出典と記述を確認し、訂正内容と確認範囲を記録します。原典を確認できない内容は、その状態を明示し、必要に応じて掲載を保留します。
                   </p>
                 </div>
@@ -345,14 +339,14 @@ export default function AboutPage() {
                     <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
                       ご意見・誤りのご指摘窓口
                     </span>
-                    <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+                    <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                       掲載内容に関するご質問、学術的なご指摘、誤字脱字の報告などは、お問い合わせフォームよりお寄せください。
                     </p>
                   </div>
                   <div className="pt-2">
                     <Link
                       href="/contact"
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-xs font-bold hover:underline"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-sm font-bold hover:underline"
                     >
                       <span>お問い合わせフォームへ</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -367,20 +361,20 @@ export default function AboutPage() {
         {/* 人体統一理論への導線 */}
         <div className="bg-[#EBF3EF] dark:bg-[#162822] p-3.5 sm:p-6 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="space-y-1 text-center sm:text-left">
-            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center justify-center sm:justify-start gap-1.5">
+            <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider flex items-center justify-center sm:justify-start gap-1.5">
               <Sparkles className="w-3.5 h-3.5" />
               筆者の学習モデルと、研究による検証を区別する
             </span>
             <h4 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
               {comparisonArticle?.title}
             </h4>
-            <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-xl">
+            <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-xl">
               {comparisonArticle?.summary}
             </p>
           </div>
           <Link
             href="/articles/east-west-integrative-unified-theory"
-            className="px-5 py-2.5 rounded-xl bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#162E27] text-white dark:text-[#121920] text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm"
+            className="px-5 py-2.5 rounded-xl bg-[#1E3D34] dark:bg-[#74BA9E] hover:bg-[#162E27] text-white dark:text-[#121920] text-sm font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm"
           >
             <span>比較と検証の考え方を読む</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -391,13 +385,13 @@ export default function AboutPage() {
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             href="/curriculum"
-            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-xs font-semibold hover:bg-[#162E27] dark:hover:bg-[#225345] text-center"
+            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] text-sm font-semibold hover:bg-[#162E27] dark:hover:bg-[#225345] text-center"
           >
             東洋医学8大体系を学ぶ
           </Link>
           <Link
             href="/tsubo"
-            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#D5CCBC] dark:border-[#2A3B4A] text-[#232826] dark:text-[#E6EFEA] text-xs font-semibold hover:bg-[#FAF8F5] dark:hover:bg-[#1E2B36] text-center"
+            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#D5CCBC] dark:border-[#2A3B4A] text-[#232826] dark:text-[#E6EFEA] text-sm font-semibold hover:bg-[#FAF8F5] dark:hover:bg-[#1E2B36] text-center"
           >
             経穴データベースを調べる
           </Link>

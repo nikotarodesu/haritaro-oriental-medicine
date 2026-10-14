@@ -2,12 +2,13 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import PageIntro from "@/components/design/PageIntro";
+import { PageSymbol } from "@/components/design/PageArtwork";
 import { 
   Crown, 
   Sparkles, 
   CheckCircle2, 
   ArrowRight, 
-  GraduationCap,
   AlertCircle
 } from "lucide-react";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
@@ -19,6 +20,7 @@ import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 const totalCaseCount = CLINICAL_CASES.length;
 const freeCaseCount = SUBSCRIPTION_CONFIG.limits.freeTrialCaseCount;
 const premiumCaseCount = totalCaseCount - freeCaseCount;
+const firstFreeCase = CLINICAL_CASES.find(clinicalCase => clinicalCase.isFreeTrial);
 
 export default function CasesIndexPage() {
   const { isPremium } = useAuth();
@@ -42,7 +44,7 @@ export default function CasesIndexPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-8 sm:space-y-12">
+    <div className="page-layout space-y-8 sm:space-y-10">
       {/* パンくずリスト */}
       <nav aria-label="パンくず" className="flex items-center gap-2 text-sm text-[#737C77] dark:text-[#8899A6]">
         <Link href="/" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">ホーム</Link>
@@ -50,39 +52,19 @@ export default function CasesIndexPage() {
         <span aria-current="page" className="text-[#232826] dark:text-[#FAF8F5] font-semibold">臨床症例演習</span>
       </nav>
 
-      {/* ヒーローヘッダー */}
-
-      <div className="space-y-3 max-w-3xl">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#F3DEC5] dark:border-[#4D331F] text-[#B86924] dark:text-[#E6C387] text-xs font-semibold tracking-wider">
-          <GraduationCap className="w-3.5 h-3.5" />
-          <span>全{totalCaseCount}症例・段階的臨床推論トレーニング</span>
+      <PageIntro eyebrow={`全${totalCaseCount}症例・所見から考える練習`} title="臨床症例演習" description="模擬症例を読み、弁証・治法・配穴の理由を考えます。解答例と比べて、判断の根拠を振り返りましょう。" art="practice">
+        <div className="page-actions">
+          {firstFreeCase && <Link href={`/cases/${firstFreeCase.id}`} className="page-primary-action">無料の症例から始める<ArrowRight size={18} aria-hidden="true" /></Link>}
+          <a href="#case-catalog" className="page-secondary-action">症例を選ぶ</a>
         </div>
-
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] tracking-tight leading-tight">
-          臨床症例演習
-        </h1>
-
-        <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          模擬症例の主訴・経過・四診情報を順に読み、
-          八綱、弁証候補、治法、配穴の理由を考えます。
-          解答例と比べて、判断の理由や確認が必要な情報を振り返ります。
+        <p className="page-muted mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+          <span className="inline-flex items-center gap-2"><CheckCircle2 size={16} aria-hidden="true" />{freeCaseCount}症例は全編無料</span>
+          <span className="inline-flex items-center gap-2"><Crown size={16} aria-hidden="true" />{premiumCaseCount}症例はプレミアム会員向け</span>
         </p>
-
-        {/* 無料体験案内バナー */}
-        <div className="pt-2 flex flex-wrap items-center gap-3 text-sm">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-bold border border-[#C5DED4] dark:border-[#2A5243]">
-            <CheckCircle2 className="w-4 h-4" />
-            <span>{freeCaseCount}症例は全編無料</span>
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] font-bold border border-[#F3DEC5] dark:border-[#4D331F]">
-            <Crown className="w-4 h-4" />
-            <span>{premiumCaseCount}症例はプレミアム会員向け</span>
-          </span>
-        </div>
-      </div>
+      </PageIntro>
 
       {/* 症例一覧グリッド */}
-      <div className="space-y-4">
+      <div id="case-catalog" className="scroll-mt-28 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#737C77] dark:text-[#8899A6] px-1">
           <h2 className="font-bold text-lg text-[#232826] dark:text-[#FAF8F5]">
             全{totalCaseCount}症例一覧
@@ -135,7 +117,7 @@ export default function CasesIndexPage() {
               key={c.id}
               href={`/cases/${c.id}`}
               onClick={(e) => handleCaseClick(e, c)}
-              className={`group rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border p-5 sm:p-6 flex flex-col justify-between space-y-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 ${
+              className={`page-link-card page-link-card--stack group justify-between ${
                 c.isFreeTrial 
                   ? "border-[#1E3D34]/40 hover:border-[#1E3D34] dark:border-[#2A5243] dark:hover:border-[#74BA9E]" 
                   : isPremium 
@@ -174,10 +156,10 @@ export default function CasesIndexPage() {
                   )}
                 </div>
 
-                {/* 領域タグ */}
-                <span className="inline-block text-xs font-semibold text-[#B86924] dark:text-[#E6C387]">
-                  {c.category}
-                </span>
+                <div className="flex items-center gap-3">
+                  <span className="page-link-icon"><PageSymbol kind="practice" /></span>
+                  <span className="text-sm font-semibold text-[#B86924] dark:text-[#E6C387]">{c.category}</span>
+                </div>
 
                 {/* タイトル */}
                 <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
@@ -185,13 +167,13 @@ export default function CasesIndexPage() {
                 </h3>
 
                 {/* 主訴プレビュー */}
-                <p className="text-xs text-[#59615D] dark:text-[#96A6B2] line-clamp-2 leading-relaxed">
+                <p className="text-sm text-[#59615D] dark:text-[#96A6B2] line-clamp-2 leading-relaxed">
                   「{c.patient.chiefComplaint}」
                 </p>
               </div>
 
               {/* フッター情報 ＆ 導線CTA */}
-              <div className="border-t border-[#E8E1D1] dark:border-[#22303D] pt-3.5 flex items-center justify-between text-xs">
+              <div className="border-t border-[#E8E1D1] dark:border-[#22303D] pt-3.5 flex flex-wrap items-center justify-between gap-2 text-sm">
                 <span className="text-[#737C77] dark:text-[#8899A6]">
                   {c.patient.age}・{c.patient.gender}
                 </span>

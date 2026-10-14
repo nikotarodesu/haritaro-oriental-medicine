@@ -2,12 +2,11 @@
 
 import React, { useState, useMemo, useEffect, useCallback, Suspense } from "react";
 import Link from "next/link";
+import PageIntro from "@/components/design/PageIntro";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 import { 
-  SlidersHorizontal, 
   Bookmark, 
-  Sparkles, 
   AlertTriangle, 
   CheckCircle2, 
   Crown, 
@@ -152,79 +151,16 @@ export default function HaiketsuPracticePage() {
     <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
       <Suspense fallback={null}><IncomingAcupoint onSelect={selectIncomingPoint} /></Suspense>
       <ClinicalToolBridge selectedCodes={selectedPointIds.map(id => ACUPOINT_ROLES[id]?.code).filter(Boolean)} editableCodes={Object.values(ACUPOINT_ROLES).map(point => point.code)} onRestore={restoreClinicalPoints} />
-      {/* ヒーローヘッダー */}
-      <div className="bg-white dark:bg-[#17212A] border-b border-[#E5DEC9] dark:border-[#2A3B4A] py-10 sm:py-14">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]">
-              <SlidersHorizontal className="w-3.5 h-3.5" />
-              <span>基本32穴 配穴構成演習</span>
-            </span>
-            <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-medium border border-[#C5DED4] dark:border-[#2A5243]">
-              本治・標治バランスと選定理由の整理
-            </span>
-          </div>
-
-          <div className="space-y-2">
-            <h1 className="font-serif text-2xl sm:text-4xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-              配穴設計・臨床演習
-            </h1>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] max-w-2xl leading-relaxed">
-              基本32穴から経穴を選び、本治・標治の内訳や、昇降・寒熱の方向を示す教材上の分類を確認します。選んだ理由を教材例と比べ、配穴集やノートに残す練習ができます。
-            </p>
-            <p className="text-xs text-[#737C77] dark:text-[#8899A6] max-w-2xl">
-              無料では4穴までの選択・構成分析・最初の2つの教材例・臨床ノートへの下書き引き継ぎを利用できます。配穴集は無料で最大{SUBSCRIPTION_CONFIG.limits.freeMemoMax}件、プレミアムで最大{SUBSCRIPTION_CONFIG.limits.premiumMemoMax.toLocaleString("ja-JP")}件です。
-            </p>
-          </div>
-
-          {/* このツールでできること（3ステップ）＆ こんな人におすすめ */}
-          <div className="bg-white dark:bg-[#152028] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 shadow-xs space-y-4 max-w-4xl text-left">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
-              <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5 uppercase tracking-wider">
-                <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>このツールでできること（3ステップ）</span>
-              </span>
-              <span className="text-xs text-[#59615D] dark:text-[#A0B0BC] bg-[#FAF8F5] dark:bg-[#10171F] px-2.5 py-1 rounded-full border border-[#E8E1D1] dark:border-[#22303D] font-medium">
-                🎯 こんな人におすすめ：鍼灸学生の国試・臨床実習対策／臨床家の配穴処方見直し
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-              <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
-                <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  <span className="w-5 h-5 rounded-full bg-[#1E3D34] text-white flex items-center justify-center text-xs font-mono">1</span>
-                  <span>目的に合わせて穴を選ぶ</span>
-                </div>
-                <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  基本32穴を本治・標治に分けて選び、組み合わせを画面で確認します。
-                </p>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
-                <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  <span className="w-5 h-5 rounded-full bg-[#B86924] text-white flex items-center justify-center text-xs font-mono">2</span>
-                  <span>教材の模範配穴と比較</span>
-                </div>
-                <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  選んだ穴の数と本治・標治の内訳を確認し、教材例の構成と比べます。
-                </p>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
-                <div className="flex items-center gap-2 font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  <span className="w-5 h-5 rounded-full bg-[#2B6958] text-white flex items-center justify-center text-xs font-mono">3</span>
-                  <span>選定根拠をノートに保存</span>
-                </div>
-                <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  選んだ穴を配穴集へ保存。プレミアムでは、選定理由を自分の言葉で記録できます。
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="page-layout page-layout--intro">
+        <PageIntro compact eyebrow="基本32穴から組み立てる" title="配穴設計・臨床演習" art="points" description="経穴を選び、構成を確かめ、選んだ理由を残す。教材例と比べながら練習できます。" />
+        <details className="page-help mt-4">
+          <summary>演習の内容・保存できる件数</summary>
+          <p>基本32穴から経穴を選び、本治・標治の内訳や、昇降・寒熱の方向を示す教材上の分類を確認します。選んだ理由を教材例と比べ、配穴集やノートに残す練習ができます。</p>
+          <p>無料では4穴までの選択・構成分析・最初の2つの教材例・臨床ノートへの下書き引き継ぎを利用できます。配穴集は無料で最大{SUBSCRIPTION_CONFIG.limits.freeMemoMax}件、プレミアムで最大{SUBSCRIPTION_CONFIG.limits.premiumMemoMax.toLocaleString("ja-JP")}件です。プレミアムでは、選定理由を自分の言葉で記録できます。</p>
+        </details>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+      <div className="page-layout page-layout--continuation space-y-8">
         
         {/* 無料体験案内バナー */}
         {!isPremium && (

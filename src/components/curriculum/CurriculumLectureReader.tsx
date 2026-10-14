@@ -22,6 +22,10 @@ import type { ReadingLink } from "@/types/reading";
 import ReviewQuestionCard from "@/components/learning/ReviewQuestionCard";
 import { InteractiveQuiz } from "@/components/InteractiveQuiz";
 import { 
+  BookOpen,
+  ListChecks,
+  Network,
+  Bookmark,
   Clock, 
   CheckCircle2, 
   ArrowLeft, 
@@ -204,7 +208,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
   );
 
   return (
-    <div ref={articleTopRef} className="reading-page max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-10 space-y-5 sm:space-y-6">
+    <div ref={articleTopRef} className="reading-page page-layout page-layout--reading space-y-5 sm:space-y-6">
       {/* 読書進捗バー */}
       <ReadingProgressBar bodySelector="#lecture-content [data-reading-body]" />
 
@@ -273,12 +277,12 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
 
         </div>
 
-        <nav aria-label="講義内の移動" className="flex flex-wrap gap-2">
-          <a href="#lecture-content" aria-label="講義本文を読む" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">本文</a>
-          {readingInserts[0] && <a href={`#reading-figure-${readingInserts[0].figure.id}`} className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] px-4 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A3B4A] dark:text-[#83BEA8] dark:hover:bg-[#182823]">図で整理</a>}
-          {quiz && <a href="#lecture-quiz" aria-label="理解度チェックのクイズへ" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">クイズ</a>}
-          {resolvedReferences.length > 0 && <a href="#article-references-section" aria-label="出典と確認範囲へ" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#83BEA8]">出典</a>}
-          {chapterAssessment && <a href="#chapter-assessment" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D5DED8] px-4 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A3B4A] dark:text-[#83BEA8] dark:hover:bg-[#182823]">章末演習</a>}
+        <nav aria-label="講義内の移動" className="page-actions">
+          <a href="#lecture-content" aria-label="講義本文を読む" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />本文</a>
+          {readingInserts[0] && <a href={`#reading-figure-${readingInserts[0].figure.id}`} className="page-secondary-action"><Network aria-hidden="true" className="h-4 w-4" />図で整理</a>}
+          {quiz && <a href="#lecture-quiz" aria-label="理解度チェックのクイズへ" className="page-secondary-action"><ListChecks aria-hidden="true" className="h-4 w-4" />クイズ</a>}
+          {resolvedReferences.length > 0 && <a href="#article-references-section" aria-label="出典と確認範囲へ" className="page-secondary-action"><Bookmark aria-hidden="true" className="h-4 w-4" />出典</a>}
+          {chapterAssessment && <a href="#chapter-assessment" className="page-secondary-action"><GraduationCap aria-hidden="true" className="h-4 w-4" />章末演習</a>}
         </nav>
 
         <details className="group rounded-xl border border-[#E5DEC9] px-4 py-2 dark:border-[#2A3B4A]">

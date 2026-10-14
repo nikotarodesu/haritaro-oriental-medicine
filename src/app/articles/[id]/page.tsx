@@ -19,6 +19,9 @@ import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ArticleReadingResume from "@/components/reading/ArticleReadingResume";
 import { articleReadingRevision } from "@/utils/articleReadingPosition";
 import { 
+  BookOpen,
+  Network,
+  Bookmark,
   Clock, 
   ArrowLeft, 
   ArrowRight, 
@@ -160,14 +163,14 @@ export default async function ArticleDetailPage({ params }: Props) {
   };
 
   return (
-    <div className="min-h-screen py-6 sm:py-16 px-3 sm:px-6 lg:px-8">
+    <div className="page-layout page-layout--reading">
       {/* 構造化データ埋め込み */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="max-w-4xl mx-auto space-y-6 sm:space-y-10">
+      <div className="space-y-6 sm:space-y-10">
         
         {/* パンくずリスト */}
         <nav aria-label="パンくず" className="flex items-center justify-between gap-3 text-sm text-[#737C77] dark:text-[#8899A6]">
@@ -244,21 +247,20 @@ export default async function ArticleDetailPage({ params }: Props) {
 
           <ArticleReadingResume articleId={article.id} revision={articleReadingRevision(article.contentMarkdown)} headings={headings.map(heading => ({ id: heading.id, text: heading.label, level: 2 }))} />
 
-          <nav aria-label="この記事の読み進め方" className="flex flex-wrap gap-2">
-            <a href="#article-content" className="inline-flex min-h-11 items-center rounded-lg bg-[#1E3D34] px-4 text-sm font-bold text-white dark:bg-[#2B6958] focus-visible:outline-2 focus-visible:outline-offset-2">本文を読む</a>
-            {readingGuide?.inserts[0] && <a href={`#reading-figure-${readingGuide.inserts[0].figure.id}`} className="inline-flex min-h-11 items-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] focus-visible:outline-2 focus-visible:outline-offset-2">図解を見る</a>}
-            {nextArticles.length > 0 && <a href="#article-next-reading" className="inline-flex min-h-11 items-center rounded-lg border border-[#D5DED8] dark:border-[#2A3B4A] px-4 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] focus-visible:outline-2 focus-visible:outline-offset-2">次に読む</a>}
-            {resolvedReferences.length > 0 && <a href="#article-references-section" className="inline-flex min-h-11 items-center rounded-lg px-4 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] underline underline-offset-4">出典と確認範囲</a>}
+          <nav aria-label="この記事の読み進め方" className="page-actions">
+            <a href="#article-content" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />本文を読む</a>
+            {readingGuide?.inserts[0] && <a href={`#reading-figure-${readingGuide.inserts[0].figure.id}`} className="page-secondary-action"><Network aria-hidden="true" className="h-4 w-4" />図解を見る</a>}
+            {nextArticles.length > 0 && <a href="#article-next-reading" className="page-secondary-action"><ArrowRight aria-hidden="true" className="h-4 w-4" />次に読む</a>}
+            {resolvedReferences.length > 0 && <a href="#article-references-section" className="page-secondary-action"><Bookmark aria-hidden="true" className="h-4 w-4" />出典と確認範囲</a>}
           </nav>
           <p className="text-sm text-[#59615D] dark:text-[#A0B0BC]">
             公開：<time dateTime={article.publishedAt}>{article.publishedAt}</time>
             {article.updatedAt && <> ／ 更新：<time dateTime={article.updatedAt}>{article.updatedAt}</time></>}
           </p>
-          <section aria-label="この記事の要点と読み方" className="space-y-3 text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
+          <details className="page-help text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]"><summary>この記事の要点・読み方</summary><div className="space-y-3">
             <p><GlossaryRenderer text={article.summary} /></p>
             {learningGuide && <div className="border-l-2 border-[#C5DED4] dark:border-[#2A5243] pl-4 space-y-2 text-sm">
               <p><strong>学ぶポイント：</strong>{learningGuide.focus}</p>
-              <p><strong>判断の限界：</strong>{learningGuide.limitation}</p>
             </div>}
             <details className="text-sm">
               <summary className="flex min-h-11 cursor-pointer items-center gap-2 font-bold text-[#1E3D34] dark:text-[#74BA9E]">この記事の読み方・説明の範囲 <ChevronRight aria-hidden="true" className="h-4 w-4" /></summary>
@@ -267,7 +269,7 @@ export default async function ArticleDetailPage({ params }: Props) {
               </p>
               {resolvedReferences.length > 0 && <a href="#article-references-section" className="inline-flex min-h-11 items-center underline text-[#1E3D34] dark:text-[#74BA9E]">原典・研究対象・方法を出典で確認する</a>}
             </details>
-          </section>
+          </div></details>
           {headings.length > 0 && <details className="rounded-xl bg-[#FAF8F5] dark:bg-[#121920] px-4 py-2">
             <summary className="flex min-h-11 items-center cursor-pointer font-bold text-[#1E3D34] dark:text-[#74BA9E]">目次：知りたいところから読む</summary>
             <nav aria-label="記事の目次" className="mt-3"><ol className="space-y-2 text-sm">
@@ -276,6 +278,7 @@ export default async function ArticleDetailPage({ params }: Props) {
           </details>}
           {/* 本文 */}
           <div id="article-content" className="scroll-mt-36">
+          {learningGuide && <p className="mb-5 text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]"><strong>判断の限界：</strong>{learningGuide.limitation}</p>}
           <MarkdownBody
             contentMarkdown={article.contentMarkdown}
             idPrefix="article-heading"
