@@ -4,6 +4,7 @@ import { Stethoscope, ArrowRight, BookOpen } from "lucide-react";
 import { HomeHeroArtwork, HomeToolIcon } from "@/components/home/HomeArtwork";
 import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
 import HomeHeroQuickSearch from "@/components/home/HomeHeroQuickSearch";
+import ArticleCover from "@/components/articles/ArticleCover";
 import LearningCourseCards from "@/components/learning/LearningCourseCards";
 import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
 import { createCourseLectureHref } from "@/utils/courseJourney";
@@ -76,9 +77,10 @@ export default function HomePage() {
           </nav>
           <div className="home-reading-grid">
             {featuredArticles.map(article => <Link key={article.id} href={"/articles/" + article.id} className="ui-card home-reading-link">
+              <div className="home-reading-cover"><ArticleCover articleId={article.id} /></div>
               <span className="ui-muted text-sm">{article.category} · 約{article.readTime}</span>
               <h3 className="text-base font-semibold">{article.title}</h3>
-              <BookOpen aria-hidden="true" className="h-5 w-5" />
+              <ArrowRight aria-hidden="true" className="h-5 w-5 home-reading-arrow" />
             </Link>)}
           </div>
         </section>

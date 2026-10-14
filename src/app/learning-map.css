@@ -1,0 +1,55 @@
+.learning-map {
+  --emblem-gold: #AE8750;
+  --emblem-water: #7195A2;
+  border: 1px solid var(--border-washi);
+  border-radius: 24px;
+  padding: clamp(18px, 3vw, 32px);
+  background: var(--bg-card);
+}
+.dark .learning-map { --emblem-gold: #C7A66E; --emblem-water: #91B8C5; }
+.learning-map__header { display: grid; gap: 12px; }
+.learning-map__header h2 { display: flex; align-items: center; gap: 10px; font-size: clamp(1.15rem, 2.5vw, 1.45rem); font-weight: 700; }
+.learning-map__header h2 svg { width: 23px; height: 23px; flex-shrink: 0; color: var(--accent-readable); }
+.learning-map__progress-label { font-size: .8125rem; color: var(--text-secondary); }
+.learning-map__progress { display: block; width: 100%; height: 5px; }
+.learning-map__journey { margin-top: 24px; }
+.learning-map__stage + .learning-map__stage { margin-top: 24px; }
+.learning-map__stage h3 { margin-bottom: 12px; font-family: var(--font-sans); font-size: .8125rem; font-weight: 700; color: var(--text-secondary); letter-spacing: .06em; }
+.learning-map__stops { margin: 0; padding: 0; list-style: none; }
+.learning-map__stops li { position: relative; min-width: 0; }
+.learning-map__stops li:not(:last-child)::after { content: ''; position: absolute; left: 30px; top: 64px; bottom: -6px; border-left: 1px solid var(--border-washi); }
+.learning-map__stop { position: relative; z-index: 1; display: flex; width: 100%; align-items: center; gap: 14px; min-height: 88px; padding: 10px 0; border-radius: 12px; text-align: left; color: var(--text-sumi); }
+.learning-map__stop:hover { background: color-mix(in srgb, var(--accent-readable) 5%, transparent); }
+.learning-map__stop:focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 4px; }
+.learning-map__mark { position: relative; display: block; width: 60px; height: 60px; flex: 0 0 60px; border-radius: 50%; background: var(--bg-card); }
+.learning-map__mark > svg { display: block; width: 100%; height: 100%; }
+.learning-map__chapter { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 3px; }
+.learning-map__number { color: var(--text-secondary); font-size: .6875rem; line-height: 1.4; }
+.learning-map__title { font-family: var(--font-serif); font-size: .9375rem; font-weight: 700; line-height: 1.6; overflow-wrap: anywhere; }
+.learning-map__status { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; color: var(--text-secondary); font-size: .6875rem; line-height: 1.6; }
+.learning-map__status strong { color: var(--accent-readable); font-weight: 700; }
+.learning-map__arrow { width: 16px; height: 16px; flex: 0 0 16px; color: var(--accent-readable); }
+.learning-map__check { position: absolute; right: -1px; bottom: -1px; display: grid; width: 19px; height: 19px; place-items: center; border: 2px solid var(--bg-card); border-radius: 50%; color: var(--bg-card); background: var(--accent-readable); }
+.learning-map__check svg { width: 12px; height: 12px; stroke-width: 3; }
+.learning-map__stops [data-state='complete'] .learning-map__mark { background: color-mix(in srgb, var(--accent-readable) 10%, var(--bg-card)); }
+.learning-map__stops [data-state='current'] .learning-map__mark { outline: 2px solid var(--accent-readable); outline-offset: 3px; }
+
+@media (min-width: 900px) {
+  .learning-map__header { grid-template-columns: 1fr auto; align-items: center; }
+  .learning-map__progress { grid-column: 1 / -1; }
+  .learning-map__stage { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 24px; align-items: start; }
+  .learning-map__stage h3 { margin: 29px 0 0; }
+  .learning-map__stops { display: grid; grid-template-columns: repeat(var(--map-stops), minmax(0, 1fr)); gap: 12px; }
+  .learning-map__stop { flex-direction: column; gap: 10px; height: 100%; padding: 10px 4px; text-align: center; }
+  .learning-map__mark { width: 64px; height: 64px; flex-basis: 64px; }
+  .learning-map__chapter { align-items: center; flex: initial; }
+  .learning-map__status { justify-content: center; }
+  .learning-map__title { font-size: .8125rem; }
+  .learning-map__stops li:not(:last-child)::after { left: calc(50% + 37px); right: calc(-50% + 25px); top: 42px; bottom: auto; border-left: 0; border-top: 1px solid var(--border-washi); }
+  .learning-map__arrow { display: none; }
+  .learning-map__stops--single .learning-map__stop { flex-direction: row; gap: 16px; text-align: left; }
+  .learning-map__stops--single .learning-map__chapter { align-items: start; }
+  .learning-map__stops--single .learning-map__title { font-size: .9375rem; }
+  .learning-map__stops--single .learning-map__status { justify-content: start; }
+  .learning-map__stops--single .learning-map__arrow { display: block; margin-left: auto; }
+}

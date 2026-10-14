@@ -1,0 +1,57 @@
+/* Quiet navigation around the curriculum's authored learning content. */
+.curriculum-index .page-intro { margin-bottom: 0; }
+.curriculum-resume { padding: 24px; border: 1px solid var(--border-washi); border-radius: 22px; background: linear-gradient(125deg, var(--tokiwa-light), var(--bg-card) 68%); }
+.curriculum-resume-main { display: grid; gap: 28px; }
+.curriculum-resume-copy { position: relative; min-width: 0; }
+.curriculum-resume-emblem { float: right; width: 72px; height: 72px; margin: 0 0 8px 16px; color: var(--accent-readable); }
+.curriculum-resume-kicker { margin-bottom: 10px; color: var(--accent-readable); font-size: .8125rem; font-weight: 600; letter-spacing: .05em; }
+.curriculum-resume-series { color: var(--text-secondary); font-size: .8125rem; line-height: 1.7; }
+.curriculum-resume-title { margin-block: 4px 8px; font-family: var(--font-serif); font-size: 1.3125rem; font-weight: 600; line-height: 1.7; overflow-wrap: anywhere; text-wrap: pretty; }
+.curriculum-resume-summary { max-width: 42em; color: var(--text-secondary); font-size: .875rem; line-height: 1.85; }
+.curriculum-resume-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; clear: both; padding-top: 20px; }
+.curriculum-resume-duration { display: inline-flex; align-items: center; gap: 6px; color: var(--text-secondary); font-size: .8125rem; line-height: 1.7; }
+.curriculum-resume-duration svg { flex-shrink: 0; }
+.curriculum-progress-summary { min-width: 0; padding-top: 24px; border-top: 1px solid var(--border-washi); }
+.curriculum-progress-label { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px; color: var(--text-secondary); font-size: .8125rem; line-height: 1.7; }
+.curriculum-progress-count { font-weight: 600; color: var(--text-sumi); font-variant-numeric: tabular-nums; }
+.curriculum-overall-progress { display: block; width: 100%; height: 7px; margin-block: 12px 9px; }
+.curriculum-progress-caption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; color: var(--text-secondary); font-size: .75rem; line-height: 1.75; font-variant-numeric: tabular-nums; }
+.curriculum-support-actions { margin-top: 16px; }
+.curriculum-support-action { display: flex; width: 100%; min-height: 44px; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px; color: var(--accent-readable); font-size: .8125rem; font-weight: 500; line-height: 1.7; text-align: left; cursor: pointer; border-radius: 4px; }
+.curriculum-support-action > span:first-child { min-width: 0; }
+.curriculum-support-action svg { flex-shrink: 0; }
+.curriculum-support-action:hover { text-decoration: underline; text-underline-offset: 4px; }
+.curriculum-review-count { flex-shrink: 0; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.curriculum-entry-links { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 28px; }
+.curriculum-entry-links a { display: inline-flex; align-items: center; min-height: 44px; gap: 8px; color: var(--accent-readable); font-size: .875rem; font-weight: 600; line-height: 1.75; }
+.curriculum-entry-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.curriculum-entry-links svg { flex-shrink: 0; }
+.curriculum-chapter { overflow: hidden; border: 1px solid var(--border-washi); border-radius: 18px; background: var(--bg-card); }
+.curriculum-chapter-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 12px; padding: 20px; color: var(--text-sumi); text-align: left; cursor: pointer; }
+.curriculum-chapter-toggle:hover { background: var(--tokiwa-light); }
+.curriculum-chapter-emblem { width: 56px; height: 56px; flex-shrink: 0; color: var(--accent-readable); }
+.curriculum-chapter-number { color: var(--accent-readable); font-size: .75rem; font-weight: 600; letter-spacing: .06em; }
+.curriculum-lecture-heading { display: flex; align-items: flex-start; gap: 14px; }
+.curriculum-lecture-heading-copy { min-width: 0; }
+.curriculum-lecture-heading .lecture-kicker { margin-bottom: 6px; }
+.curriculum-lecture-emblem { width: 44px; height: 44px; flex-shrink: 0; margin-top: 3px; color: var(--accent-readable); }
+.curriculum-adjacent-emblem { width: 26px; height: 26px; flex-shrink: 0; color: var(--accent-readable); }
+.curriculum-next-lecture { display: inline-flex; align-items: center; gap: 8px; }
+.curriculum-next-lecture--primary .curriculum-adjacent-emblem { color: #c5e2d5; --emblem-green: #c5e2d5; --emblem-gold: #e5c692; --emblem-water: #a6ccd6; --emblem-paper: #1e3d34; }
+.curriculum-next-lecture--primary:hover .curriculum-adjacent-emblem { --emblem-paper: #2b5a46; }
+@media (min-width: 900px) {
+  .curriculum-resume { padding: 30px; }
+  .curriculum-resume-main { grid-template-columns: minmax(0, 1fr) minmax(240px, .65fr); align-items: center; gap: 36px; }
+  .curriculum-progress-summary { padding-top: 0; padding-left: 30px; border-top: 0; border-left: 1px solid var(--border-washi); }
+}
+@media (max-width: 479px) {
+  .curriculum-resume { padding: 20px 16px; border-radius: 18px; }
+  .curriculum-resume-emblem { width: 56px; height: 56px; margin-left: 8px; }
+  .curriculum-resume-title { clear: both; padding-top: 4px; font-size: 1.1875rem; }
+  .curriculum-resume-actions .page-primary-action { width: 100%; padding-inline: 12px; }
+  .curriculum-chapter-toggle { padding: 16px 12px; gap: 8px; }
+  .curriculum-chapter-emblem { width: 42px; height: 42px; }
+  .curriculum-chapter-toggle > .flex:first-child { gap: 8px; }
+  .curriculum-lecture-heading { gap: 10px; }
+  .curriculum-lecture-emblem { width: 38px; height: 38px; }
+}

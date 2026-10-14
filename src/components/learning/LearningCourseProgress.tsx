@@ -35,7 +35,7 @@ export default function LearningCourseProgress({ course }: { course: LearningCou
           <h2 id="course-progress-heading" className="font-serif text-xl font-bold">{progress.finished ? 'この短いコースの講義を受講しました' : 'あなたの学習ステップ'}</h2>
           <p aria-live="polite" className="text-sm font-semibold">{isMounted ? `${progress.completedCount} / ${course.steps.length} 講義完了` : '進捗を確認中'}</p>
         </div>
-        <progress className="mt-4 h-2 w-full overflow-hidden rounded-full accent-[#184F49] dark:accent-[#9CCBBC]" value={progress.completedCount} max={course.steps.length} aria-label="このコースの受講進捗" />
+        <progress className="site-progress mt-4" value={progress.completedCount} max={course.steps.length} aria-label="このコースの受講進捗" />
         <p className="mt-3 text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">受講進捗は講義画面の「受講済みにする」と、確認クイズの受講完了記録に連動します。</p>
         <Link href={primaryHref} onClick={() => trackEvent('context_link_click', { placement: progress.finished ? 'course_review' : started ? 'course_resume' : 'course_start', course_id: course.slug, lecture_id: progress.finished && !weakSteps.length ? undefined : primaryLectureId })} className={`mt-4 flex min-h-11 items-center justify-between gap-3 rounded-xl bg-[#184F49] p-4 font-bold text-white hover:bg-[#103D37] dark:bg-[#285F54] ${focusClass}`}>
           <span className="min-w-0"><span className="block text-base">{primaryLabel}</span><span className="mt-1 block text-sm font-normal leading-relaxed">{primaryTitle}</span></span>

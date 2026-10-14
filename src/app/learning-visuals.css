@@ -1,0 +1,42 @@
+/* Course identities share the same quiet, wordless marks used in the curriculum. */
+.course-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 20px; }
+.course-card { display: flex; flex-direction: column; min-width: 0; padding: 24px; border: 1px solid var(--border-washi); border-radius: 16px; background: var(--bg-card); }
+.course-card-heading { display: grid; grid-template-columns: minmax(0, 1fr) 76px; align-items: center; gap: 16px; }
+.course-card-heading > div { min-width: 0; }
+.course-card-heading h3 { font-size: 1.125rem; font-weight: 600; }
+.course-card-eyebrow { margin-bottom: 8px; font-size: .75rem; line-height: 1.6; color: var(--text-secondary); }
+.course-card-art { display: grid; place-items: center; width: 76px; height: 92px; background: var(--tokiwa-light); border-radius: 40px 40px 16px 16px; color: var(--accent-readable); }
+.course-card-emblem { display: block; width: 62px; height: 62px; }
+.course-card > p { font-size: .875rem; }
+.course-card .page-secondary-action { border-color: transparent; background: var(--tokiwa-light); }
+.course-card .page-secondary-action:hover { border-color: var(--accent-readable); }
+.home-page .course-card-grid { grid-template-columns: minmax(0,1fr); }
+.home-reading-cover { display: grid; place-items: center; min-height: 124px; margin-bottom: 8px; overflow: hidden; border-radius: 16px; background: var(--bg-card); }
+.home-reading-cover .article-cover { display: flex; width: 100%; height: 144px; }
+.home-reading-arrow { justify-self: end; color: var(--accent-readable); }
+
+/* Native progress retains its semantics, with the same palette in each browser. */
+progress.site-progress { display: block; appearance: none; -webkit-appearance: none; width: 100%; height: 6px; overflow: hidden; border: 0; border-radius: 999px; background: var(--tokiwa-light); color: var(--accent-readable); accent-color: var(--accent-readable); }
+progress.site-progress::-webkit-progress-bar { border-radius: 999px; background: var(--tokiwa-light); }
+progress.site-progress::-webkit-progress-value { border-radius: 999px; background: var(--accent-readable); }
+progress.site-progress::-moz-progress-bar { border-radius: 999px; background: var(--accent-readable); }
+
+/* Keep foreground shapes clear on phones; fine construction lines stay light. */
+.curriculum-concept-art [stroke-width="2.3"] { stroke-width: 2.6; }
+@media (max-width: 639px) {
+  .course-card { padding: 20px; }
+  .course-card-heading { grid-template-columns: minmax(0,1fr) 64px; gap: 12px; }
+  .course-card-art { width: 64px; height: 80px; }
+  .course-card-emblem { width: 54px; height: 54px; }
+  .home-reading-cover .article-cover { height: 124px; }
+  .curriculum-concept-art :is([stroke-width="2"], [stroke-width="2.2"]) { stroke-width: 2.5; }
+}
+@media (min-width: 700px) {
+  .home-page .course-card-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+  .home-page .course-card-heading { grid-template-columns: minmax(0,1fr) 88px; gap: 20px; }
+  .home-page .course-card-art { width: 88px; height: 104px; }
+  .home-page .course-card-emblem { width: 72px; height: 72px; }
+}
+@media (forced-colors: active) {
+  progress.site-progress { appearance: auto; -webkit-appearance: auto; forced-color-adjust: auto; }
+}

@@ -1,5 +1,9 @@
 @import "tailwindcss";
 @import "./page-design.css";
+@import "./learning-map.css";
+@import "./curriculum-navigation.css";
+@import "./article-covers.css";
+@import "./learning-visuals.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -564,7 +568,6 @@ html:not(.dark) .reading-page .text-\[\#C45A4A\] { color: #A83629; }
 .home-search-submit:hover { background: var(--tokiwa-light); }
 .home-tool { flex-direction: row; justify-content: flex-start; border: 0; border-bottom: 1px solid var(--border-washi); border-radius: 0; background: transparent; padding: 12px 4px; gap: 12px; }
 .home-tool:hover { background: var(--tokiwa-light); }
-.home-page .course-card-grid > article { border: 0; border-top: 1px solid var(--border-washi); border-radius: 0; background: transparent; padding-inline: 0; }
 .home-reading-link { border: 0; border-bottom: 1px solid var(--border-washi); border-radius: 0; background: transparent; padding: 8px 0 20px; }
 .home-operator { border: 0; border-top: 1px solid var(--border-washi); border-radius: 0; background: transparent; padding-inline: 0; padding-top: 28px; }
 .reading-page:has(> article.lecture-article) { max-width: 844px; }
@@ -648,7 +651,7 @@ html:not(.dark) .reading-page .text-\[\#C45A4A\] { color: #A83629; }
   .clinical-recent-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (prefers-reduced-motion: reduce) { .clinical-complaint-card { transition: none; } .clinical-complaint-card:hover { transform: none; } }
-.lecture-header > div span { background: transparent; padding-inline: 0; border: 0; font-weight: 400; color: var(--text-secondary); }
+.lecture-header > div:not(.curriculum-lecture-heading) span { background: transparent; padding-inline: 0; border: 0; font-weight: 400; color: var(--text-secondary); }
 .lecture-header > div > div { gap: 8px 16px; }
 .lecture-article > details { border: 0; border-top: 1px solid var(--border-washi); border-radius: 0; padding-inline: 0; }
 .acupoint-metadata > span:not(:first-child) { background: transparent; border: 0; padding: 0; color: var(--text-secondary); font-weight: 400; }
@@ -659,7 +662,6 @@ html:not(.dark) .reading-page .text-\[\#C45A4A\] { color: #A83629; }
 @media (max-width: 639px) {
   .home-start-button { width: 100%; }
   .home-start > p { text-align: center; }
-  .home-page .course-card-grid > article { padding-inline: 0 !important; }
   .reading-page:has(> article.lecture-article), .reading-page.acupoint-page { padding-inline: var(--content-gutter); }
   .reading-page > article.lecture-article { padding-inline: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none; }
   .reading-page.acupoint-page .acupoint-header { padding-inline: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none; }

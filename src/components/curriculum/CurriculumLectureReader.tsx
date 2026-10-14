@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, Suspense, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Lecture } from "@/data/curriculumData";
+import ChapterEmblem from "@/components/graphics/ChapterEmblem";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
 import GlossaryRenderer from "@/components/GlossaryRenderer";
 import MarkdownBody from "@/components/MarkdownBody";
@@ -253,10 +254,15 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
       <article className="lecture-article bg-white dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] px-3.5 py-6 sm:p-10 shadow-xs space-y-6 transition-colors">
         {/* 講義ヘッダー */}
         <div className="lecture-header border-b border-[#F2ECE0] dark:border-[#22303D] pb-5 space-y-3">
-          {lecture.seriesTitle && lecture.lessonNumber && <p className="lecture-kicker">{lecture.seriesTitle} · レッスン{lecture.lessonNumber}</p>}
-          <h1 className="lecture-title text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] leading-tight">
-            {(displayLectureTitle.match(/[^・、]+[・、]?/g) || [displayLectureTitle]).map((phrase, index) => <span key={index} className="lecture-title-phrase">{phrase}</span>)}
-          </h1>
+          <div className="curriculum-lecture-heading">
+            <ChapterEmblem seriesId={lecture.seriesId} className="curriculum-lecture-emblem" />
+            <div className="curriculum-lecture-heading-copy">
+              {lecture.seriesTitle && lecture.lessonNumber && <p className="lecture-kicker">{lecture.seriesTitle} · レッスン{lecture.lessonNumber}</p>}
+              <h1 className="lecture-title text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] leading-tight">
+                {(displayLectureTitle.match(/[^・、]+[・、]?/g) || [displayLectureTitle]).map((phrase, index) => <span key={index} className="lecture-title-phrase">{phrase}</span>)}
+              </h1>
+            </div>
+          </div>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2 text-sm">
               <span className="px-2.5 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] font-bold">
@@ -623,6 +629,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
                 title="前のレッスンへ（ショートカット: [ キー）"
               >
                 <ArrowLeft className="w-4 h-4" />
+                <ChapterEmblem seriesId={prevLecture.seriesId} className="curriculum-adjacent-emblem" />
                 <span>{courseJourney ? '全講義の前のレッスン' : '前のレッスン'}</span>
                 <kbd className={`${courseJourney ? 'hidden' : 'hidden sm:inline-block'} px-1.5 py-0.5 text-sm font-mono rounded bg-[#FAF8F5] dark:bg-[#202E3C] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#AFBDC8]`}>
                   [
@@ -640,9 +647,10 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
             {nextLecture ? (
               <Link
                 href={`/curriculum/${nextLecture.id}`}
-                className={courseJourney ? "min-h-11 rounded-xl border border-[#D9E3DD] px-4 py-3 text-sm font-semibold dark:border-[#2A3B4A]" : "min-h-[44px] px-5 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"}
+                className={courseJourney ? "curriculum-next-lecture min-h-11 rounded-xl border border-[#D9E3DD] px-4 py-3 text-sm font-semibold dark:border-[#2A3B4A]" : "curriculum-next-lecture curriculum-next-lecture--primary min-h-[44px] px-5 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"}
                 title="次のレッスンへ（ショートカット: ] キー）"
               >
+                <ChapterEmblem seriesId={nextLecture.seriesId} className="curriculum-adjacent-emblem" />
                 <span>{courseJourney ? '全講義の次のレッスン' : '次のレッスン'}</span>
                 <kbd className={`${courseJourney ? 'hidden' : 'hidden sm:inline-block'} px-1.5 py-0.5 text-sm font-mono rounded bg-white/20 text-white border border-white/30`}>
                   ]

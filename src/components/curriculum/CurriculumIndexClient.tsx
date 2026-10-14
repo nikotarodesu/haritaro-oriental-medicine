@@ -1,6 +1,7 @@
 "use client";
 
 import PageIntro from "@/components/design/PageIntro";
+import ChapterEmblem from "@/components/graphics/ChapterEmblem";
 import LearningReviewPanel from "@/components/learning/LearningReviewPanel";
 import CourseMiniCase from "@/components/learning/CourseMiniCase";
 import LearningSyncStatus from "@/components/learning/LearningSyncStatus";
@@ -19,7 +20,6 @@ import {
   CheckCircle2,
   ArrowRight,
   Sparkles,
-  Award,
   Lock,
   PlayCircle,
   AlertCircle,
@@ -109,46 +109,40 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
   };
 
   return (
-    <div className="page-layout space-y-8 sm:space-y-10">
-      <PageIntro eyebrow={`東洋医学 ${catalog.chapters.length}章・${plannedCount}講`} title="体系学習カリキュラム" description="概論から臨床の基礎まで。続きから学ぶか、読みたい章を選びましょう。" art="study">
-        <div className="page-actions"><a href="#curriculum-chapters" className="page-secondary-action"><GraduationCap aria-hidden="true" className="h-5 w-5" />章から選ぶ</a><Link href="/learn/courses" className="page-secondary-action">3〜5講の基礎コース</Link></div>
-      </PageIntro>
+    <div className="curriculum-index page-layout space-y-8 sm:space-y-10">
+      <PageIntro compact eyebrow={`東洋医学 ${catalog.chapters.length}章・${plannedCount}講`} title="体系学習カリキュラム" description="概論から臨床の基礎まで。続きから学ぶか、読みたい章を選びましょう。" art="study" />
 
       {/* 最上部「最初のレッスンを始める / 続きから学ぶ」ダッシュボード & 全体進捗 */}
-      <div className="bg-gradient-to-br from-[#1E3D34] via-[#162E27] to-[#12221D] text-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-lg relative overflow-hidden">
-        <div className="relative z-10 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-6">
+      <section className="curriculum-resume" aria-label="学習を始める・再開する">
+        <div className="curriculum-resume-main">
           {/* 再開 / 開始カード */}
-          <div className="flex-1 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-emerald-200 text-xs font-bold tracking-wider">
-              <PlayCircle className="w-3.5 h-3.5 text-[#E6C387]" />
-              <span>{totalCompleted === 0 ? "受講の開始" : "学習を再開する"}</span>
-            </div>
+          <div className="curriculum-resume-copy">
+            <ChapterEmblem seriesId={resumeLecture?.seriesId} className="curriculum-resume-emblem" />
+            <p className="curriculum-resume-kicker">{totalCompleted === 0 ? "受講の開始" : "学習を再開する"}</p>
 
             {resumeLecture ? (
-              <div className="space-y-1">
-                <div className="text-xs text-emerald-200/90 font-medium">
-                  {resumeLecture.stageTitle} ➜ {resumeLecture.seriesTitle || "基幹講義"}
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold tracking-tight text-white line-clamp-1">
+              <div className="curriculum-resume-lesson">
+                <p className="curriculum-resume-series">{resumeLecture.seriesTitle || "基幹講義"}</p>
+                <h2 className="curriculum-resume-title">
                   {resumeLecture.title}
-                </h3>
-                <p className="text-xs text-emerald-100/80 line-clamp-1 max-w-2xl">
+                </h2>
+                <p className="curriculum-resume-summary">
                   {resumeLecture.whatYouWillLearn?.canDo || resumeLecture.summary}
                 </p>
               </div>
             ) : (
-              <h3 className="text-lg font-bold text-white">
+              <h2 className="curriculum-resume-title">
                 全{plannedCount}講の学習へようこそ！
-              </h3>
+              </h2>
             )}
 
-            <div className="pt-1 flex flex-wrap items-center gap-3">
+            <div className="curriculum-resume-actions">
               {resumeLecture && (
                 <Link
                   href={`/curriculum/${resumeLecture.id}`}
-                  className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#E6C387] text-[#1E3D34] font-bold text-xs sm:text-sm hover:bg-[#DFC07D] shadow-md transition-all cursor-pointer"
+                  className="page-primary-action"
                 >
-                  <PlayCircle className="w-4 h-4 text-[#1E3D34]" />
+                  <PlayCircle aria-hidden="true" className="w-5 h-5" />
                   <span>
                     {totalCompleted === 0
                       ? "最初のレッスンを始める"
@@ -160,8 +154,8 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
               )}
 
               {resumeLecture && (
-                <span className="text-xs text-emerald-200 flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5" />
+                <span className="curriculum-resume-duration">
+                  <Clock aria-hidden="true" className="w-4 h-4" />
                   <span>所要時間: 約 {resumeLecture.duration}</span>
                 </span>
               )}
@@ -169,42 +163,33 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
           </div>
 
           {/* 全体進捗バー & クイックアクション */}
-          <div className="lg:w-80 bg-black/25 backdrop-blur-md border border-white/15 rounded-xl p-4 flex flex-col justify-between gap-3">
+          <div className="curriculum-progress-summary">
             <div>
-              <div className="flex items-center justify-between text-xs font-bold mb-1.5 text-emerald-200">
-                <span>全体受講ステータス</span>
-                <span className="font-mono text-sm text-white">
+              <div className="curriculum-progress-label">
+                <span>学習の進み具合</span>
+                <span className="curriculum-progress-count">
                   {isMounted ? `${totalCompleted} / ${totalPublished || publishedCount}` : `0 / ${totalPublished || publishedCount}`} 講完了
                 </span>
               </div>
-              <div className="w-full h-2.5 rounded-full bg-emerald-950/60 overflow-hidden border border-emerald-700/40">
-                <div
-                  className="h-full bg-gradient-to-r from-teal-300 to-emerald-400 rounded-full transition-all duration-500 ease-out"
-                  style={{ width: `${isMounted ? totalPercentage : 0}%` }}
-                />
-              </div>
-              <div className="mt-1.5 flex items-center justify-between text-[11px] text-emerald-200">
+              <progress className="site-progress curriculum-overall-progress" value={isMounted ? totalPercentage : 0} max={100} aria-label="公開講義の受講進捗" />
+              <div className="curriculum-progress-caption">
                 <span>全{totalPlanned || plannedCount}レッスン（公開中）</span>
-                <span className="font-bold">公開分進捗: {isMounted ? totalPercentage : 0}%</span>
+                <span>{isMounted ? totalPercentage : 0}%</span>
               </div>
             </div>
 
             {/* アクションボタン群 */}
-            <div className="space-y-1.5 pt-2 border-t border-white/10">
+            <div className="curriculum-support-actions">
               <button
                 type="button"
                 onClick={() => setShowIncorrectModal(true)}
-                className={`min-h-[40px] w-full py-2 px-3 rounded-lg text-xs font-bold flex items-center justify-between transition-all cursor-pointer ${
-                  incorrectQuestions.length > 0
-                    ? "bg-rose-500 hover:bg-rose-400 text-white"
-                    : "bg-white/10 hover:bg-white/20 text-emerald-100 border border-white/15"
-                }`}
+                className="curriculum-support-action"
               >
                 <span className="flex items-center gap-1.5">
-                  <AlertCircle className="w-4 h-4" />
+                  <AlertCircle aria-hidden="true" className="w-4 h-4" />
                   <span>間違えた問題の復習</span>
                 </span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-white/20">
+                <span className="curriculum-review-count">
                   {incorrectQuestions.length}問
                 </span>
               </button>
@@ -212,18 +197,21 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
               <button
                 type="button"
                 onClick={() => setShowLearningMap((prev) => !prev)}
-                className="min-h-[40px] w-full py-2 px-3 rounded-lg text-xs font-semibold text-emerald-200 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors flex items-center justify-between cursor-pointer"
+                className="curriculum-support-action"
+                aria-expanded={showLearningMap}
               >
                 <span className="flex items-center gap-1.5">
-                  <Map className="w-4 h-4" />
+                  <Map aria-hidden="true" className="w-4 h-4" />
                   <span>{showLearningMap ? "学習マップを閉じる" : `全${catalog.chapters.length}章の学習マップを表示`}</span>
                 </span>
-                <span className="text-[10px]">{showLearningMap ? "▲" : "▼"}</span>
+                {showLearningMap ? <ChevronUp aria-hidden="true" className="w-4 h-4" /> : <ChevronDown aria-hidden="true" className="w-4 h-4" />}
               </button>
             </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      <nav aria-label="学ぶ場所を選ぶ" className="curriculum-entry-links"><a href="#curriculum-chapters"><GraduationCap aria-hidden="true" className="h-5 w-5" />章から選ぶ<ArrowRight aria-hidden="true" className="h-4 w-4" /></a><Link href="/learn/courses">3〜5講の基礎コース<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link></nav>
 
       {/* 章構成から導く学習マップ */}
       {showLearningMap && (
@@ -264,30 +252,27 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
           const chapterProgress = isMounted
             ? { completedCount: chapter.lectureIds.filter(id => completedLectures[id]).length, percentage: publishedCount ? Math.round(chapter.lectureIds.filter(id => completedLectures[id]).length / publishedCount * 100) : 0 }
             : { completedCount: 0, percentage: 0 };
-          const Icon = GraduationCap;
 
           return (
             <section
               key={chapter.chapterNumber}
               id={`chapter-${chapter.id}`}
-              className="scroll-mt-28 bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xs overflow-hidden transition-all"
+              className="curriculum-chapter scroll-mt-28"
             >
               {/* 章ヘッダー */}
               <button
                 type="button"
                 onClick={() => toggleChapter(chapter.chapterNumber)}
-                className="w-full text-left p-4 sm:p-5 hover:bg-[#FAF8F5] dark:hover:bg-[#141E28] transition-colors flex items-center justify-between gap-3 cursor-pointer select-none"
+                className="curriculum-chapter-toggle"
                 aria-expanded={isExpanded}
                 aria-controls={`chapter-content-${chapter.id}`}
               >
                 <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
-                  <div className="w-10 h-10 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0">
-                    <Icon className="w-5 h-5" />
-                  </div>
+                  <ChapterEmblem seriesId={chapter.seriesId} className="curriculum-chapter-emblem" />
 
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-[#1E3D34] text-white">
+                      <span className="curriculum-chapter-number">
                         第{chapter.chapterNumber}章
                       </span>
                       <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
@@ -296,8 +281,8 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
                           : `公開中 ${publishedCount} / 全${chapter.plannedLessons}レッスン予定`}
                       </span>
                       {chapterProgress.percentage === 100 && (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 rounded">
-                          <Check className="w-3 h-3" />
+                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+                          <Check aria-hidden="true" className="w-3 h-3" />
                           修了
                         </span>
                       )}
@@ -310,13 +295,6 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0">
-                  {isMounted && chapterProgress.percentage === 100 && (
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] border border-[#B86924]/30 font-bold text-xs shadow-2xs">
-                      <Award className="w-3.5 h-3.5" />
-                      <span>章修了</span>
-                    </span>
-                  )}
-
                   <div className="hidden sm:flex flex-col items-end text-xs">
                     <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">
                       {chapterProgress.completedCount} / {publishedCount} 講完了

@@ -1,0 +1,59 @@
+.article-cover {
+  --article-cover-ink: #354c42;
+  --article-cover-green: #467663;
+  --article-cover-gold: #ad8c58;
+  --article-cover-water: #688d9a;
+  --article-cover-paper: #f4f2e9;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--article-cover-paper);
+  color: var(--article-cover-ink);
+}
+
+.article-cover > svg {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  height: 100%;
+}
+
+.dark .article-cover {
+  --article-cover-ink: #c0d3c7;
+  --article-cover-green: #8ebca5;
+  --article-cover-gold: #c2a675;
+  --article-cover-water: #8db1c0;
+  --article-cover-paper: #1c2b2b;
+}
+
+.article-cover-card {
+  min-width: 0;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.article-cover-card > .article-cover {
+  width: calc(100% + 2.5rem);
+  height: 136px;
+  margin: -1.25rem -1.25rem 0;
+  border-radius: 15px 15px 0 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--article-cover-green) 13%, transparent);
+}
+
+.article-cover-card:focus-visible {
+  outline: 3px solid var(--accent-readable, #36745d);
+  outline-offset: 4px;
+}
+
+@media (max-width: 479px) {
+  .article-cover-card > .article-cover {
+    height: 120px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-cover-card {
+    transition: none;
+  }
+}
