@@ -582,7 +582,7 @@ html:not(.dark) .reading-page .text-\[\#C45A4A\] { color: #A83629; }
   .home-start-button { width: 100%; }
   .home-start > p { text-align: center; }
   .home-page .course-card-grid > article { padding-inline: 0 !important; }
-  .reading-page:has(> article.lecture-article), .reading-page.acupoint-page { padding-inline: 20px; }
+  .reading-page:has(> article.lecture-article), .reading-page.acupoint-page { padding-inline: var(--content-gutter); }
   .reading-page > article.lecture-article { padding-inline: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none; }
   .reading-page.acupoint-page .acupoint-header { padding-inline: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none; }
   .acupoint-page > div > section:is(#acupoint-location, #acupoint-traditional, #acupoint-research) { padding-inline: 0; background: transparent; border: 0; border-top: 1px solid var(--border-washi); border-radius: 0; box-shadow: none; padding-top: 28px; }
