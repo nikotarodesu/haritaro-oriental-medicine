@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 import type { User, LocalDataMigrationReport } from '@/types/auth';
-import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { loadBrowserClient, isSupabaseConfigured } from '@/lib/supabase/browser';
 import { hasPremiumAccess, safeReturnPath } from '@/utils/authPolicy';
 
 interface AuthContextType {
@@ -26,26 +26,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const isConfigured = isSupabaseConfigured();
   const refreshUser = useCallback(async () => {
     if (!isSupabaseConfigured()) { setUser(null); return; }
-    const { data, error } = await createClient().auth.getUser();
+    const client = await loadBrowserClient();
+    const { data, error } = await client.auth.getUser();
     setUser(!error && data.user ? displayUser(data.user) : null);
   }, []);
   useEffect(() => {
     let active = true; let generation = 0; let timer: ReturnType<typeof setTimeout>;
+    let listener: { unsubscribe: () => void } | undefined;
     try { localStorage.removeItem('haritaro_auth_user_v1'); } catch { /* Notes and study data remain intact. */ }
     const restore = async () => {
       const current = ++generation;
       try {
         if (!isConfigured) return;
-        const { data, error } = await createClient().auth.getUser();
+        const client = await loadBrowserClient();
+        if (!active || current !== generation) return;
+        // Subscribe as soon as the singleton is available, before verifying identity.
+        if (!listener) listener = client.auth.onAuthStateChange((_event, session) => {
+          // Keep the callback synchronous to avoid holding Supabase's auth lock.
+          if (!session) { ++generation; if (active) { setUser(null); setIsLoading(false); } }
+          else { clearTimeout(timer); timer = setTimeout(() => void restore(), 0); }
+        }).data.subscription;
+        const { data, error } = await client.auth.getUser();
         if (active && current === generation) setUser(!error && data.user ? displayUser(data.user) : null);
-      } catch { if(active && current === generation) setUser(null); } finally { if (active) setIsLoading(false); }
+      } catch { if(active && current === generation) setUser(null); } finally { if (active && current === generation) setIsLoading(false); }
     };
     void restore();
-    const listener = isConfigured ? createClient().auth.onAuthStateChange((_event, session) => {
-      // Keep the callback synchronous to avoid holding Supabase's auth lock.
-      if (!session) { ++generation; if (active) setUser(null); }
-      else { clearTimeout(timer); timer = setTimeout(() => void restore(), 0); }
-    }).data.subscription : null;
     window.addEventListener('focus', restore);
     return () => { active = false; clearTimeout(timer); listener?.unsubscribe(); window.removeEventListener('focus', restore); };
   }, [isConfigured]);
@@ -53,20 +58,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!isSupabaseConfigured()) return { success: false, error: 'ログインは現在準備中です。時間をおいてお試しください。' };
     try {
       const callback = new URL('/auth/callback', window.location.origin); callback.searchParams.set('next', safeReturnPath(redirectTo));
-      const { error } = await createClient().auth.signInWithOAuth({ provider: 'google', options: { redirectTo: callback.toString(), queryParams: { prompt: 'select_account' } } });
+      const client = await loadBrowserClient();
+      const { error } = await client.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: callback.toString(), queryParams: { prompt: 'select_account' } } });
       return error ? { success: false, error: 'Googleログインを開始できませんでした。もう一度お試しください。' } : { success: true };
     } catch { return { success: false, error: 'Googleログインを開始できませんでした。通信状態をご確認ください。' }; }
   }, []);
   const loginWithGoogleIdToken = useCallback(async (idToken: string, nonce?: string) => {
     if (!isSupabaseConfigured()) return { success: false, error: 'ログインは現在準備中です。' };
     try {
-      const { error } = await createClient().auth.signInWithIdToken({ provider: 'google', token: idToken, nonce });
+      const client = await loadBrowserClient();
+      const { error } = await client.auth.signInWithIdToken({ provider: 'google', token: idToken, nonce });
       if (error) return { success: false, error: 'Google認証を確認できませんでした。下の別の方法でお試しください。' };
       await refreshUser(); return { success: true };
     } catch { return { success: false, error: 'Google認証を確認できませんでした。もう一度お試しください。' }; }
   }, [refreshUser]);
   const logout = useCallback(async () => {
-    if (isSupabaseConfigured()) { const { error } = await createClient().auth.signOut(); if (error) throw new Error('ログアウトに失敗しました。もう一度お試しください。'); }
+    if (isSupabaseConfigured()) { const client = await loadBrowserClient(); const { error } = await client.auth.signOut(); if (error) throw new Error('ログアウトに失敗しました。もう一度お試しください。'); }
     setUser(null);
   }, []);
   // ローカルデータ移行機能

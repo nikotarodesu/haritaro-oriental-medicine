@@ -71,7 +71,9 @@ for(const lectureId of NATURAL_JAPANESE_EDITORIAL_REVISIONS) assert(lectureIds.h
 for(const lectureId of lectureIds) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/curriculum/${lectureId}`).lastModified.toISOString().slice(0,10),'2026-10-12',lectureId);
 for(const pathname of ['/tsubo/li4','/tsubo/sp6','/pricing']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-12',pathname);
 for(const pathname of ['/symptoms','/diagnosis']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-08',pathname);
-for(const pathname of ['/','/updates','/glossary','/kokushi','/simulator','/clinical','/about','/cases','/practice/haiketsu','/curriculum','/learn','/library','/learn/courses']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-12',pathname);
+for(const pathname of ['/','/updates','/learn/review']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname)?.lastModified.toISOString().slice(0,10),'2026-10-15',pathname);
+for(const pathname of ['/glossary','/simulator','/clinical','/about','/cases','/practice/haiketsu','/curriculum','/learn','/library','/learn/courses']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-12',pathname);
+assert(!sitemap.some(page => new URL(page.url).pathname === '/kokushi'), 'The retired exam landing page is no longer an indexable sitemap destination');
 for(const article of ARTICLES) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/articles/${article.id}`).lastModified.toISOString().slice(0,10),article.updatedAt);
 const { LEARNING_COURSES, getCourseProgress } = load('src/data/learningCourses');
 const { CURRICULUM_TOTAL_CHAPTERS } = load('src/data/curriculumOutline');

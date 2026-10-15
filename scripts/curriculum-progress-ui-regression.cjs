@@ -138,11 +138,11 @@ for (const lecture of lectures) {
   assert(links.some(link => link.props.href === expected), lecture.id + ': the appropriate learning stage is preserved');
   assert.equal(links.some(link => link.props.href === '/simulator#case-training'), clinical);
   assert(card.text().includes(question.question) && card.text().includes(question.explanation));
-  assert(links.some(link => link.props.href === '/kokushi#learning-review'));
+  assert(links.some(link => link.props.href === '/learn/review#learning-review'));
 }
 const validSession = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
 card.render({ lectureId: lectures[0].id }, new URLSearchParams({ review: LEARNING_QUESTIONS.find(item => item.lectureId === lectures[0].id).id, reviewSession: validSession }));
-assert(card.nodes().some(node => node.type === Link && node.props.href === `/kokushi?resumeReview=${validSession}#learning-review-practice`), 'Stage-specific practice does not discard the interrupted review return');
+assert(card.nodes().some(node => node.type === Link && node.props.href === `/learn/review?resumeReview=${validSession}#learning-review-practice`), 'Stage-specific practice does not discard the interrupted review return');
 card.render({ lectureId: lectures[1].id });
 assert.equal(card.text(), '', 'A mismatched question never offers a misleading practice destination');
 const customId = 'tsubo-unknown-meridian';

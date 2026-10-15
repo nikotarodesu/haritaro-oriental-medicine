@@ -1,7 +1,7 @@
 'use client';
 import { createContext, useContext, useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { createClient } from '@/lib/supabase/client';
+import { loadBrowserClient } from '@/lib/supabase/browser';
 import { LearningDocument, learningValues, mergeLearningDocuments, nextLearningEntry } from '@/utils/learningSync';
 import { setLearningStorageAdapter } from '@/utils/learningStorageBridge';
 export type LearningSyncStatus = 'local' | 'syncing' | 'synced' | 'offline' | 'setup' | 'memory';
@@ -61,9 +61,11 @@ export function LearningSyncProvider({ children }: { children: React.ReactNode }
     if (owner === 'guest' || isLoading || state.owner !== owner || state.running) return;
     const generation = state.generation; state.running = true; setStatus('syncing');
     try {
-      const client = createClient();
+      const client = await loadBrowserClient();
+      if (active.current.generation !== generation) return;
       // Confirm the current identity before every write; never use an old account's snapshot.
       const { data: identity, error: authError } = await client.auth.getUser();
+      if (active.current.generation !== generation) return;
       if (authError || identity.user?.id !== owner) throw new Error('auth');
       const remote: LearningDocument = {};
       for (let offset = 0; offset < 10000; offset += 1000) {

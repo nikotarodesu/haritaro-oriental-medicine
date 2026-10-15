@@ -44,9 +44,9 @@ export default function NavMoreDrawer({
       items: ["simulator", "haiketsu", "cases"],
     },
     {
-      title: "学習・国家試験対策",
+      title: "学習・復習",
       icon: GraduationCap,
-      items: ["curriculum", "review", "kokushi"],
+      items: ["curriculum", "review"],
     },
     {
       title: "総合辞典・記録・その他",
@@ -168,7 +168,7 @@ export default function NavMoreDrawer({
                       </Link>
                     );
                   })}
-                  {cat.title === "学習・国家試験対策" && (
+                  {cat.title === "学習・復習" && (
                     <Link href="/notes?tab=learning" onClick={onClose} className="rounded-xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-2.5 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                       学習ノート
                       <span className="mt-1 block text-sm font-normal leading-relaxed">講義や症例で考えたことを振り返る</span>

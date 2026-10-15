@@ -12,6 +12,8 @@ const root = path.resolve(__dirname, '..');
 const full = generateFullGuide();
 const short = fs.readFileSync(path.join(root, 'public/llms.txt'), 'utf8').replace(/\r\n/g, '\n').trimEnd();
 assert(full.startsWith(short + '\n'), 'Full guide must share exactly the canonical scope and author disclosure');
+assert(short.includes('https://www.haritaro.jp/learn/review#learning-review'), 'Canonical AI guidance keeps the lecture review destination');
+assert(!/https:\/\/www\.haritaro\.jp\/kokushi(?:[\s)#?]|$)/.test(full), 'AI guidance must not keep a public link to the retired exam landing page');
 assert(!/臑 sweat|東洋医学学術チーム|セルフ診断|斜刺浅刺指示|妊娠中刺激禁忌|undefined/.test(full), 'Stale unsupported claims or invalid generated content');
 assert.match(full, /個人運営/);
 assert.match(full, /専門家監修は未完了/);

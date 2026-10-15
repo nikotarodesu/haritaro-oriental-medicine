@@ -1,10 +1,6 @@
 import { createBrowserClient } from "@supabase/ssr";
 
-export const isSupabaseConfigured = () => {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-  return Boolean(url && key && url.startsWith("https://") && !url.includes("placeholder"));
-};
+export { isSupabaseConfigured } from "./config";
 
 export function createClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder-project.supabase.co";

@@ -1,20 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useId, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useCurriculumProgress, QuizResultRecord } from '@/contexts/CurriculumProgressContext';
-import {
-  X,
-  AlertCircle,
-  CheckCircle2,
-  HelpCircle,
-  RotateCcw,
-  Sparkles,
-  Award,
-  ExternalLink,
-  BookOpen,
-  ArrowRight,
-} from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useCurriculumProgress, type QuizResultRecord } from '@/contexts/CurriculumProgressContext';
+import { useModalDialog } from '@/hooks/useModalDialog';
+import { X, AlertCircle, CheckCircle2, RotateCcw, Sparkles, BookOpen, ArrowRight } from 'lucide-react';
 
 interface IncorrectQuestionsModalProps {
   isOpen: boolean;
@@ -22,236 +13,111 @@ interface IncorrectQuestionsModalProps {
   onNavigateToLecture?: (lectureId: string, chapterId: string) => void;
 }
 
-export const IncorrectQuestionsModal: React.FC<IncorrectQuestionsModalProps> = ({
-  isOpen,
-  onClose,
-  onNavigateToLecture,
-}) => {
-  const { getIncorrectQuestions, saveQuizResult } = useCurriculumProgress();
+export const IncorrectQuestionsModal: React.FC<IncorrectQuestionsModalProps> = ({ isOpen, ...props }) => {
+  const { user } = useAuth();
+  const { isMounted } = useCurriculumProgress();
+  // Closing or changing accounts discards only this temporary practice view.
+  if (!isOpen || !isMounted) return null;
+  return <IncorrectQuestionsWorkspace key={user?.id || 'guest'} {...props} />;
+};
+
+function IncorrectQuestionsWorkspace({ onClose, onNavigateToLecture }: Omit<IncorrectQuestionsModalProps, 'isOpen'>) {
+  const { getIncorrectQuestions, saveQuizResult, quizResults } = useCurriculumProgress();
+  // Keep this set visible after grading so a correct answer does not remove its
+  // feedback before the learner has read it. The next opening uses current results.
+  const [questions] = useState(() => getIncorrectQuestions().filter(question => question.kind !== 'exam'));
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string, number>>({});
   const [retestedResults, setRetestedResults] = useState<Record<string, boolean>>({});
-
-  if (!isOpen) return null;
-
-  const incorrectList = getIncorrectQuestions();
+  const submitted = useRef(new Set<string>());
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const headingId = useId();
+  const descriptionId = useId();
+  useModalDialog(true, dialogRef, onClose);
+  const remaining = questions.filter(question => retestedResults[question.questionId] !== true).length;
 
   const handleSelect = (questionId: string, optionIndex: number) => {
-    setSelectedAnswers((prev) => ({
-      ...prev,
-      [questionId]: optionIndex,
-    }));
+    if (submitted.current.has(questionId)) return;
+    setSelectedAnswers(previous => ({ ...previous, [questionId]: optionIndex }));
   };
-
   const handleRetestSubmit = (item: QuizResultRecord) => {
     const chosenIndex = selectedAnswers[item.questionId];
-    if (chosenIndex === undefined) return;
-
-    const isNowCorrect = chosenIndex === item.correctAnswerIndex;
-    setRetestedResults((prev) => ({
-      ...prev,
-      [item.questionId]: isNowCorrect,
-    }));
-
-    if (isNowCorrect) {
-      // 正解したらContextの記録を正解に更新（間違えたリストから克服・除外される）
-      saveQuizResult({
-        ...item,
-        userAnswerIndex: chosenIndex,
-        isCorrect: true,
-        answeredAt: new Date().toISOString(),
-      });
-    }
+    if (chosenIndex === undefined || submitted.current.has(item.questionId)) return;
+    submitted.current.add(item.questionId);
+    const isCorrect = chosenIndex === item.correctAnswerIndex;
+    setRetestedResults(previous => ({ ...previous, [item.questionId]: isCorrect }));
+    // Every attempt follows the same validation, immutable history and scheduling
+    // path. Preserve this record's source, revision and practice destination.
+    saveQuizResult({ ...item, userAnswerIndex: chosenIndex, isCorrect, answeredAt: new Date().toISOString() });
+  };
+  const retry = (questionId: string) => {
+    submitted.current.delete(questionId);
+    setSelectedAnswers(previous => Object.fromEntries(Object.entries(previous).filter(([id]) => id !== questionId)));
+    setRetestedResults(previous => Object.fromEntries(Object.entries(previous).filter(([id]) => id !== questionId)));
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div
-        className="relative w-full max-w-3xl max-h-[90vh] bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* モーダルヘッダー */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-800/50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-rose-100 dark:bg-rose-950/70 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold">
-              <AlertCircle className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">
-                間違えた問題の集中復習
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                要復習の問題をもう一度解き直して、弱点を克服しましょう（残り: {incorrectList.length}問）
-              </p>
-            </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm sm:p-6">
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby={headingId} aria-describedby={descriptionId} tabIndex={-1}
+        className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900">
+        <div className="flex items-center justify-between gap-3 border-b border-slate-200 bg-slate-50/80 px-4 py-4 dark:border-slate-800 dark:bg-slate-800/50 sm:px-6">
+          <div>
+            <h2 id={headingId} className="text-lg font-bold text-slate-900 dark:text-white">間違えた問題の集中復習</h2>
+            <p id={descriptionId} className="mt-1 text-sm text-slate-600 dark:text-slate-300">今回のセット：{questions.length}問 ／ 正解を確認する問題：{remaining}問</p>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-          >
-            <X className="w-6 h-6" />
-          </button>
+          <button type="button" onClick={onClose} aria-label="復習を閉じる" className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-xl text-slate-600 hover:bg-slate-200 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-slate-300 dark:hover:bg-slate-700"><X aria-hidden="true" className="h-6 w-6" /></button>
         </div>
 
-        {/* モーダル本体（スクロール領域） */}
-        <div className="p-6 overflow-y-auto space-y-6">
-          {incorrectList.length === 0 ? (
-            <div className="py-12 text-center">
-              <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-4">
-                <Sparkles className="w-8 h-8" />
-              </div>
-              <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
-                復習が必要な問題はありません！
-              </h4>
-              <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-                回答したすべての確認問題で正解を達成しています。新しい講義に進んで学びを深めましょう。
-              </p>
+        <div className="space-y-6 overflow-y-auto p-4 sm:p-6">
+          {questions.length === 0 ? (
+            <div className="py-8 text-center">
+              <Sparkles aria-hidden="true" className="mx-auto mb-4 h-10 w-10 text-emerald-600 dark:text-emerald-400" />
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">直近の回答が不正解だった問題はありません</h3>
+              <p className="mt-2 text-base text-slate-600 dark:text-slate-300">予定日が来た問題は「今日の復習」から確認できます。</p>
+              <Link href="/learn/review#learning-review" onClick={onClose} className="mt-4 inline-flex min-h-11 items-center gap-2 font-semibold text-[#1E3D34] underline underline-offset-4 dark:text-[#83BEA8]">今日の復習へ<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
             </div>
-          ) : (
-            incorrectList.map((item, idx) => {
-              const currentChoice = selectedAnswers[item.questionId];
-              const retested = retestedResults[item.questionId];
-
-              return (
-                <div
-                  key={item.questionId}
-                  className="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 transition-all shadow-sm"
-                >
-                  {/* 所属講義タグとジャンプ */}
-                  <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300">
-                        {item.chapterTitle}
-                      </span>
-                      <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
-                        {item.lectureTitle}
-                      </span>
-                    </div>
-                    {onNavigateToLecture && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          onClose();
-                          onNavigateToLecture(item.lectureId, item.chapterId);
-                        }}
-                        className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors"
-                      >
-                        <span>該当レッスンへ</span>
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </button>
-                    )}
-                  </div>
-
-                  {/* 問題文 */}
-                  <p className="font-bold text-slate-900 dark:text-white text-base mb-4 leading-relaxed">
-                    <span className="text-rose-500 mr-2">Q{idx + 1}.</span>
-                    {item.questionText}
-                  </p>
-
-                  {/* 選択肢 */}
-                  <div className="space-y-2 mb-4">
-                    {item.options.map((opt, optIdx) => {
-                      const isSelected = currentChoice === optIdx;
-                      return (
-                        <button
-                          key={optIdx}
-                          type="button"
-                          onClick={() => handleSelect(item.questionId, optIdx)}
-                          className={`w-full text-left p-3.5 rounded-xl border text-sm transition-all flex items-start gap-3 ${
-                            isSelected
-                              ? 'border-emerald-600 bg-emerald-50/80 dark:bg-emerald-950/60 text-emerald-950 dark:text-emerald-100 font-medium ring-2 ring-emerald-500/20'
-                              : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600'
-                          }`}
-                        >
-                          <span
-                            className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
-                              isSelected
-                                ? 'bg-emerald-600 text-white'
-                                : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
-                            }`}
-                          >
-                            {optIdx + 1}
-                          </span>
-                          <span className="leading-snug">{opt}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* 再判定アクション */}
-                  <div className="flex items-center justify-between pt-2">
-                    {retested === false ? (
-                      <span className="text-xs font-bold text-rose-600 dark:text-rose-400 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        惜しい！もう一度解説を読んで考えてみよう。
-                      </span>
-                    ) : (
-                      <span className="text-xs text-slate-500 dark:text-slate-400">
-                        正しいと思う選択肢を選んで判定してください
-                      </span>
-                    )}
-                    <button
-                      type="button"
-                      onClick={() => handleRetestSubmit(item)}
-                      disabled={currentChoice === undefined}
-                      className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-sm ${
-                        currentChoice !== undefined
-                          ? 'bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer active:scale-95'
-                          : 'bg-slate-200 dark:bg-slate-700 text-slate-400 cursor-not-allowed'
-                      }`}
-                    >
-                      回答して判定する
+          ) : questions.map((item, index) => {
+            const choice = selectedAnswers[item.questionId];
+            const result = retestedResults[item.questionId];
+            const answered = result !== undefined;
+            const readingHref = item.kind === 'acupoint' ? item.practiceHref || '/tsubo/practice'
+              : `/curriculum/${item.lectureId}?review=${encodeURIComponent(item.questionId)}#review-question-card`;
+            return (
+              <section key={item.questionId} aria-labelledby={`${headingId}-${index}`} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/60 sm:p-5">
+                <p className="text-sm font-semibold text-slate-600 dark:text-slate-300">{item.chapterTitle} ／ {item.lectureTitle}</p>
+                <h3 id={`${headingId}-${index}`} className="mt-3 whitespace-pre-line text-base font-bold leading-relaxed text-slate-900 dark:text-white">第{index + 1}問　{item.questionText}</h3>
+                <div className="mt-4 space-y-2">
+                  {item.options.map((option, optionIndex) => (
+                    <button key={optionIndex} type="button" disabled={answered} aria-pressed={choice === optionIndex}
+                      onClick={() => handleSelect(item.questionId, optionIndex)}
+                      className={`block min-h-11 w-full rounded-xl border p-3 text-left text-base leading-relaxed focus-visible:outline-2 focus-visible:outline-offset-4 ${choice === optionIndex ? 'border-emerald-600 bg-emerald-50 text-emerald-950 dark:bg-emerald-950/60 dark:text-emerald-100' : 'border-slate-300 bg-white text-slate-800 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200'}`}>
+                      {optionIndex + 1}. {option}
+                      {answered && (optionIndex === item.correctAnswerIndex || choice === optionIndex) && <strong className="mt-1 block">{optionIndex === item.correctAnswerIndex ? '正解' : '選んだ回答（不正解）'}</strong>}
                     </button>
-                  </div>
-
-                  {/* 解説アコーディオン/表示 */}
-                  <div className="mt-4 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed space-y-3">
-                    <div>
-                      <div className="font-bold text-slate-800 dark:text-slate-200 mb-1 flex items-center gap-1.5">
-                        <Award className="w-4 h-4 text-amber-500" />
-                        解説とヒント
-                      </div>
-                      <p>{item.explanation}</p>
-                    </div>
-
-                    {/* 講義の該当箇所へジャンプするボタン */}
-                    {(() => {
-                      const topic = (item.questionText || "").match(/【([^】]+)】/)?.[1] || "";
-                      return (
-                        <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex justify-end">
-                          <Link
-                            href={`/curriculum/${item.lectureId}?focus=${encodeURIComponent(topic)}`}
-                            onClick={onClose}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] hover:bg-[#D5EADF] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-bold transition-all shadow-2xs group"
-                          >
-                            <BookOpen className="w-3.5 h-3.5" />
-                            <span>「{topic || item.lectureTitle}」を講義で復習する</span>
-                            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                          </Link>
-                        </div>
-                      );
-                    })()}
-                  </div>
+                  ))}
                 </div>
-              );
-            })
-          )}
+                {!answered ? <button type="button" onClick={() => handleRetestSubmit(item)} disabled={choice === undefined}
+                  className="mt-4 inline-flex min-h-11 items-center rounded-xl bg-[#1E3D34] px-4 py-2 text-base font-bold text-white disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-4">回答して判定する</button> : (
+                  <div className="mt-4 space-y-3 rounded-xl border border-slate-200 bg-white p-4 text-base leading-relaxed text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">
+                    <p role="status" className="flex items-center gap-2 font-bold">{result ? <CheckCircle2 aria-hidden="true" className="h-5 w-5 shrink-0 text-emerald-600 dark:text-emerald-400" /> : <AlertCircle aria-hidden="true" className="h-5 w-5 shrink-0 text-rose-600 dark:text-rose-400" />}{result ? '正解です。解説で考え方を確認しましょう。' : '不正解です。解説を読み、選んだ理由を振り返りましょう。'}</p>
+                    <h4 className="quiz-explanation-title font-bold">解説</h4>
+                    <p className="quiz-explanation-body whitespace-pre-line">{item.explanation}</p>
+                    {quizResults[item.questionId]?.nextReviewDate && <p className="text-sm">次回復習：{quizResults[item.questionId].nextReviewDate}</p>}
+                    <div className="flex flex-wrap gap-x-4 gap-y-2">
+                      {!result && <button type="button" onClick={() => retry(item.questionId)} className="inline-flex min-h-11 items-center gap-2 font-semibold text-[#1E3D34] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#83BEA8]"><RotateCcw aria-hidden="true" className="h-4 w-4" />もう一度考える</button>}
+                      <Link href={readingHref} onClick={onClose} className="inline-flex min-h-11 items-center gap-2 font-semibold text-[#1E3D34] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#83BEA8]"><BookOpen aria-hidden="true" className="h-4 w-4" />{item.kind === 'acupoint' ? '経穴演習で確認する' : '講義で復習する'}</Link>
+                      {onNavigateToLecture && <button type="button" onClick={() => { onClose(); onNavigateToLecture(item.lectureId, item.chapterId); }} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">講義の冒頭へ</button>}
+                    </div>
+                  </div>
+                )}
+              </section>
+            );
+          })}
         </div>
-
-        {/* フッター */}
-        <div className="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-800/50 flex items-center justify-between">
-          <div className="text-xs text-slate-500 dark:text-slate-400">
-            全問克服すると間違えた問題リストは自動的にクリアされます
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-100 transition-colors"
-          >
-            閉じる
-          </button>
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 px-4 py-3 dark:border-slate-800 sm:px-6">
+          <p className="text-sm text-slate-600 dark:text-slate-300">正誤とも回答履歴に保存します。正解した問題も、閉じるまで解説を読めます。</p>
+          <button type="button" onClick={onClose} className="inline-flex min-h-11 items-center rounded-xl bg-slate-200 px-5 py-2 text-base font-bold text-slate-800 focus-visible:outline-2 focus-visible:outline-offset-4 dark:bg-slate-700 dark:text-slate-100">閉じる</button>
         </div>
       </div>
     </div>
   );
-};
+}

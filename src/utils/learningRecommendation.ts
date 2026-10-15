@@ -27,7 +27,7 @@ const CASES = [
 export function getLearningRecommendation(input: RecommendationInput): LearningRecommendation {
   const { lectures, completed, lastVisitedLectureId, quizResults, caseAttempts, today } = input;
   const needs = input.caseNeeds.filter(need => CASES.some(item => item.id === need.caseId)
-    && /^\/kokushi\?focus=(?:safety-check|missing-information|reasoning-evidence|comparison|reevaluation)#learning-focus-review$/.test(need.href));
+    && /^\/learn\/review\?focus=(?:safety-check|missing-information|reasoning-evidence|comparison|reevaluation)#learning-focus-review$/.test(need.href));
   const focusRecommendation = (need: CaseLearningNeed): LearningRecommendation => ({
     kind: need.safetyReviewRequired ? 'safety' : 'focus', title: need.title,
     reason: `「${need.caseTitle}」の前回の回答から選びました。${need.reason}`,
@@ -35,11 +35,13 @@ export function getLearningRecommendation(input: RecommendationInput): LearningR
   });
   const safety = needs.find(need => need.safetyReviewRequired && need.focusId === 'safety-check');
   if (safety) return focusRecommendation(safety);
-  const results = Object.values(quizResults);
+  // Retired exam attempts remain in history, but do not create a public review
+  // task that the lecture/acupoint review workspace cannot offer.
+  const results = Object.values(quizResults).filter(record => record.kind !== 'exam');
   const due = results.filter(record => typeof record.nextReviewDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(record.nextReviewDate) && record.nextReviewDate <= today);
   if (due.length) return { kind: 'due', title: '今日の間隔復習',
     reason: `復習予定日を迎えた問題が${due.length}問あります。前回の理解を短いクイズで確かめましょう。`,
-    href: '/kokushi#learning-review', action: '今日の復習を開く' };
+    href: '/learn/review#learning-review', action: '今日の復習を開く' };
   if (needs[0]) return focusRecommendation(needs[0]);
   const mistake = results.filter(record => !record.isCorrect).sort((a, b) => b.answeredAt.localeCompare(a.answeredAt))[0];
   if (mistake) {
@@ -48,7 +50,7 @@ export function getLearningRecommendation(input: RecommendationInput): LearningR
     const lectureHref = lecture && course ? createCourseLectureHref(course.slug, lecture.id) : `/curriculum/${lecture?.id}`;
     const href = lecture && mistake.kind !== 'acupoint' && /^[A-Za-z0-9_-]{1,140}$/.test(mistake.questionId)
       ? `${lectureHref}${course ? '&' : '?'}review=${encodeURIComponent(mistake.questionId)}#review-question-card`
-      : '/kokushi#learning-review';
+      : '/learn/review#learning-review';
     return { kind: 'mistake', title: lecture ? `${lecture.title}を確認する` : '前回間違えた問題を確認する',
       reason: '前回の回答で間違えた問題があります。解説を読んでから、もう一度理由を確かめましょう。', href, action: '苦手な問題を復習する' };
   }

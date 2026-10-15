@@ -24,6 +24,7 @@ function load(relative) {
     if (id === 'next/link') return ({ href, children, ...props }) => React.createElement('a', { href, ...props }, children);
     if (id === 'next/navigation') return { useRouter: () => ({ push() {} }), useSearchParams: () => new URLSearchParams() };
     if (id === '@/contexts/CurriculumProgressContext') return { useCurriculumProgress: () => progress };
+    if (id === '@/contexts/AuthContext') return { useAuth: () => ({ user: null }) };
     if (id === './LearningSyncStatus') return () => null;
     if (id === '@/components/learning/QuestionEvidence') return () => null;
     if (id.startsWith('@/')) return load('src/' + id.slice(2));
@@ -157,5 +158,5 @@ for (const item of LEARNING_DISCOVERY) {
 }
 const { ALL_NAV_ITEMS } = load('src/config/navigationItems');
 assert.equal(ALL_NAV_ITEMS.curriculum.href, '/learn');
-assert.equal(ALL_NAV_ITEMS.review.href, '/kokushi#learning-review');
+assert.equal(ALL_NAV_ITEMS.review.href, '/learn/review#learning-review');
 console.log(JSON.stringify({ passed: true, navigationCases, progressCases, overlappingCourses: 2, discoveryAnchors: LEARNING_DISCOVERY.length, mobileDestinations: 2 }));

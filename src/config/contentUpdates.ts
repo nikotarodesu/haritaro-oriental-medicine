@@ -183,13 +183,13 @@ export const NATURAL_JAPANESE_COURSE_REVISIONS = [
   'clinical-process-foundations',
 ] as const;
 export const PAGE_REVISIONS: Record<string, string> = {
-  '/learn': '2026-10-12', '/kokushi': '2026-10-12',
+  '/learn': '2026-10-12', '/learn/review': '2026-10-15',
   '/simulator': '2026-10-12',
   '/articles': '2026-10-12', '/contact': SITE_REVISED_AT,
   '/tsubo/practice': '2026-10-04', '/pricing': '2026-10-12',
   '/symptoms': '2026-10-08', '/diagnosis': '2026-10-08', '/cases': '2026-10-12',
   // 実際に改訂したページだけを更新する。全教材の確認日には用いない。
-  '/': '2026-10-12', '/updates': '2026-10-12', '/tsubo': '2026-10-03', '/about': '2026-10-12',
+  '/': '2026-10-15', '/updates': '2026-10-15', '/tsubo': '2026-10-03', '/about': '2026-10-12',
   '/clinical': '2026-10-12', '/practice/haiketsu': '2026-10-12', '/safety': '2026-10-03', '/editorial-policy': '2026-10-08',
   '/library': '2026-10-12', '/glossary': '2026-10-12', '/curriculum': '2026-10-12',
   '/curriculum/lecture-yinyang-1': '2026-10-03',
@@ -223,6 +223,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(LEARNING_COURSES.map(course => [`/learn/courses/${course.slug}`, '2026-10-12'])),
 };
 export const SITE_UPDATES = [
+  { date: "2026-10-15", label: "講義の学習と復習に集中する構成へ", href: "/learn/review", text: "国試向けの専用演習を終了し、講義の復習へ集約。解き直したときの復習予定と類題からの復帰を改善し、再訪時の入口、用語説明の操作、図の読み方を整えました。" },
   { date: '2026-10-12', label: 'ページの重複を減らし、検索と配穴メモを改善', href: '/learn', text: '講義と経穴の説明、学習案内、メニューを整理。用語検索では短い定義を先に表示し、配穴メモに無関係な属性が付く不具合を修正しました。' },
   { date: '2026-10-12', label: '学習の入口・読書時間・概念比較・配穴の評価表示を改善', href: '/learn', text: 'トップから概論の第1講へ直接進む案内を追加。全11コースに各講義の読書時間の合計を表示し、病機論の同じ架空例による概念比較をコースでも読めるように変更。配穴の独自スコアは計算方法と未検証の範囲を明示し、評価を保証するように読める表示を修正' },
   { date: '2026-10-12', label: '抽象的な表現と不自然な日本語を改善', href: '/curriculum', text: '講義の要約・目標・本文、52問の解説、12記事、13用語、コースと図の説明を再校閲。比較する対象・記録する情報・読む手順を具体化し、名詞が重なる硬い表現を自然な日本語へ変更。引用・出典・正答・既存の操作を維持' },
@@ -238,7 +239,7 @@ export const SITE_UPDATES = [
   { date: '2026-10-05', label: 'スマホの表示と操作を整理', href: '/', text: 'トップの改行・余白・情報順序と検索欄を整理。保存一覧をその他メニューへ移し、文字拡大と固定ナビに合わせた表示を整備' },
   { date: '2026-10-04', label: '所見から記録・再評価へ', href: '/clinical', text: '鍼灸師の臨床ホームと6つの主訴別ガイドを追加。四診の未確認・候補比較・配穴の理由・前回との経過比較を整備し、講義と見立て修正の演習を接続' },
   { date: '2026-10-04', label: '途中から続ける・目的から探す', href: '/articles', text: '記事の保存した節から再開する入口を追加。検索の候補選択と種類別の件数、中断した経穴演習の保存、スマホメニューの操作と表示を改善' },
-  { date: '2026-10-04', label: '考え方から復習・記録へ', href: '/kokushi#learning-focus-review', text: '症例で迷った理由から既存の解説と問題へ案内。前回と今回の考えを比べる学習ノート、今日の一歩、コースを保った次の学習と無料範囲の案内を整備' },
+  { date: '2026-10-04', label: '考え方から復習・記録へ', href: '/learn/review#learning-focus-review', text: '症例で迷った理由から既存の解説と問題へ案内。前回と今回の考えを比べる学習ノート、今日の一歩、コースを保った次の学習と無料範囲の案内を整備' },
   { date: '2026-10-03', label: '目的別の学習コース', href: '/learn/courses', text: '陰陽・五行・気血津液の3コースを追加。講義の進捗と苦手問題に応じた再開、疑問から読む入口と比較図を整備' },
   { date: '2026-10-03', label: '検索と利用案内', href: '/learn', text: '検索語を保った再検索と経穴の条件解除を整備。教材の確認範囲・公開機能の説明と、ページ別の検索用情報を見直し' },
   { date: '2026-10-03', label: '図解と記事の回遊', href: '/articles', text: '12記事と陰陽4講義の本文に20個の図解を追加。テーマから探す入口、読み進めた位置、次に学べる内容を示す関連記事を整備' },
@@ -249,6 +250,6 @@ export const SITE_UPDATES = [
   { date: SITE_REVISED_AT, label: '文献の照合', href: '/editorial-policy', text: '出典の誤りを修正し、書誌照合・内容の確認・専門家監修の状態を区別して公開' },
   { date: SITE_REVISED_AT, label: 'ログイン・契約管理', href: '/auth/login', text: 'Google認証へ一本化し、決済状態の確認・契約管理・同期表示を改善' },
   { date: SITE_REVISED_AT, label: '検索・情報表示', href: '/tsubo/li4', text: '表記ゆれ検索、文献への直接移動、経穴模式図の情報区分を改善' },
-  { date: SITE_REVISED_AT, label: '学習・復習', href: '/kokushi#learning-review', text: '問題の正確性を見直し、間隔復習と講義・症例への学習導線を改善' },
+  { date: SITE_REVISED_AT, label: '学習・復習', href: '/learn/review#learning-review', text: '問題の正確性を見直し、間隔復習と講義・症例への学習導線を改善' },
   { date: SITE_REVISED_AT, label: '症例演習', href: '/simulator#case-training', text: '判断と理由を別々に採点し、不足した根拠・不適切な根拠・安全上の見落としを解説' },
 ] as const;

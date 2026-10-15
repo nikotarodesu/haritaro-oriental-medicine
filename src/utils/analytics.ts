@@ -88,7 +88,7 @@ export function sanitizeAnalyticsParams(params: AnalyticsEventParams = {}): Reco
 
 const PUBLIC_PAGES = new Set([
   "/", "/about", "/contact", "/editorial-policy", "/clinical", "/diagnosis", "/articles",
-  "/cases", "/curriculum", "/kikei", "/glossary", "/kokushi", "/pricing", "/tsubo",
+  "/cases", "/curriculum", "/kikei", "/glossary", "/learn/review", "/pricing", "/tsubo",
   "/tsubo/practice", "/tsubo/compare", "/tsubo/basics/bone-cun", "/practice/haiketsu",
   "/library", "/learn", "/learn/courses", "/tokushoho", "/simulator", "/simulator/compare",
   "/terms", "/safety", "/symptoms", "/privacy", "/updates",

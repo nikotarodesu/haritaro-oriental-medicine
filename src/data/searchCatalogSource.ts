@@ -3,7 +3,6 @@ import { getAllAcupoints } from "@/data/tsubo/index";
 import { CURRICULUM_DATA } from "@/data/curriculumData";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { GLOSSARY_TERMS } from "@/data/glossaryData";
-import { KOKUSHI_PAST_EXAMS } from "@/data/kokushiPastExams";
 import { CLASSICAL_TEXTS } from "@/data/classicalTextsData";
 import { VERIFIED_PAPERS as PAPERS_DATABASE } from "@/data/references/papersData";
 import { ARTICLES } from "@/data/articleData";
@@ -24,9 +23,9 @@ const STATIC_TOOLS: SearchResultItem[] = [
     type: "tool",
     title: TOOL_CATALOG.kokushi.title,
     subtitle: TOOL_CATALOG.kokushi.description,
-    badge: "国試対策",
-    url: "/kokushi",
-    tags: ["国試", "国家試験", "オリジナル問題", "間隔復習", "日替わり", "問題演習"],
+    badge: "講義の復習",
+    url: "/learn/review",
+    tags: ["復習", "講義", "確認問題", "間隔復習", "回答履歴"],
   },
   {
     id: "tool-simulator",
@@ -197,25 +196,6 @@ export function buildSearchCatalog(): SearchResultItem[] {
           ...(pt.indications || []),
           ...(pt.categories || []),
           ...(pt.aliases || []),
-        ],
-      });
-    });
-
-    // 4. 国家試験 本試験実問（KOKUSHI_PAST_EXAMS）
-    KOKUSHI_PAST_EXAMS.forEach((k) => {
-      list.push({
-        id: `kokushi-${k.id}`,
-        type: "kokushi",
-        title: k.questionType === 'official_past_exam' ? `第${k.examNumber}回国試 ${k.subject}【${k.questionNumber}】` : `${k.questionNumber}｜${k.subject}`,
-        subtitle: `${k.question.slice(0, 48)}...`,
-        badge: `${k.questionType === 'official_past_exam' ? '公式過去問' : k.questionType === 'modified_past_exam' ? '改変問題' : 'オリジナル演習'}：${k.category}`,
-        url: `/kokushi?examId=${k.id}`,
-        tags: [
-          ...(k.examNumber ? [`第${k.examNumber}回`] : []),
-          k.subject,
-          k.category,
-          k.questionNumber,
-          k.question,
         ],
       });
     });

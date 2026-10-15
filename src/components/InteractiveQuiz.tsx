@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation';
 import { LessonQuizGroup, QuizQuestionItem, getQuizSectionTitle } from '@/data/curriculumQuizTypes';
 import { useCurriculumProgress } from '@/contexts/CurriculumProgressContext';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   CheckCircle2,
   XCircle,
@@ -77,17 +78,24 @@ const playCelebrationFanfare = () => {
 
 export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLecture, courseJourney }) => {
   const router = useRouter();
+  const { user } = useAuth();
   const {
     isMounted,
     quizResults,
     saveQuizResult,
-    clearQuizResult,
     setLectureCompleted,
     completedLectures,
   } = useCurriculumProgress();
 
-  // 各問題に対するユーザーの選択状態 (questionId -> optionIndex)
-  const selectedAnswers = useMemo(() => Object.fromEntries(quiz.questions.flatMap(q => quizResults[q.id] ? [[q.id, quizResults[q.id].userAnswerIndex]] : [])), [quiz.questions, quizResults]);
+  // Retrying hides answers only in this view. Durable answers, attempts and review
+  // schedules remain available until the next answer is saved through the context.
+  const questionVersions = quiz.questions.map(q => `${q.id}:${questionRevision(q.question, q.options, q.correctIndex, q.explanation)}`).join('|');
+  const quizScope = `${isMounted ? user?.id || 'guest' : 'pending'}:${quiz.lectureId}:${questionVersions}`;
+  const [retryState, setRetryState] = useState<{ scope: string; questionIds: string[] }>(() => ({ scope: quizScope, questionIds: [] }));
+  if (retryState.scope !== quizScope) setRetryState({ scope: quizScope, questionIds: [] });
+  const selectedAnswers = useMemo(() => Object.fromEntries(quiz.questions.flatMap(q =>
+    quizResults[q.id] && !(retryState.scope === quizScope && retryState.questionIds.includes(q.id))
+      ? [[q.id, quizResults[q.id].userAnswerIndex]] : [])), [quiz.questions, quizResults, retryState, quizScope]);
 
   // 選択肢シャッフル設定 & 各設問の表示インデックス配列 (questionId -> [orig0, orig1, orig2])
   const [isShuffleEnabled, setIsShuffleEnabled] = useState(true);
@@ -139,23 +147,23 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
   const practiceLabel = isClinicalStage ? '症例で確認' : activeCourseJourney ? '短い例で確認' : '用語を確認';
 
   const celebrationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const measuredAttempt = useRef({ lectureId: quiz.lectureId, started: false, answers: new Map<string, number>() });
-  const observedAnswers = useRef<{ lectureId: string; answers: Record<string, number> }>({ lectureId: quiz.lectureId, answers: {} });
+  const measuredAttempt = useRef({ scope: quizScope, started: false, answers: new Map<string, number>() });
+  const observedAnswers = useRef<{ scope: string; answers: Record<string, number> }>({ scope: quizScope, answers: {} });
   useEffect(() => () => { if (celebrationTimer.current) clearTimeout(celebrationTimer.current); }, []);
   useEffect(() => {
     const previous = observedAnswers.current;
-    if (!isMounted || measuredAttempt.current.lectureId !== quiz.lectureId) {
-      measuredAttempt.current = { lectureId: quiz.lectureId, started: false, answers: new Map() };
-    } else if (previous.lectureId === quiz.lectureId) {
-      // A reset, revision change, or retry removes stored answers. Release their
+    if (!isMounted || measuredAttempt.current.scope !== quizScope) {
+      measuredAttempt.current = { scope: quizScope, started: false, answers: new Map() };
+    } else if (previous.scope === quizScope) {
+      // A reset, revision change, or retry hides answers. Release their
       // transient duplicate guards without erasing other pending batched choices.
       const removed = Object.keys(previous.answers).filter(id => selectedAnswers[id] === undefined);
       for (const id of removed) measuredAttempt.current.answers.delete(id);
       if (removed.length) measuredAttempt.current.started = false;
     }
     if (isMounted) for (const [id, answer] of Object.entries(selectedAnswers)) measuredAttempt.current.answers.set(id, answer);
-    observedAnswers.current = { lectureId: quiz.lectureId, answers: selectedAnswers };
-  }, [isMounted, quiz.lectureId, selectedAnswers]);
+    observedAnswers.current = { scope: quizScope, answers: selectedAnswers };
+  }, [isMounted, quizScope, selectedAnswers]);
 
   const clearCelebration = useCallback(() => {
     if (celebrationTimer.current) clearTimeout(celebrationTimer.current);
@@ -168,8 +176,8 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
     (question: QuizQuestionItem, optionIndex: number) => {
       // 既に回答済みの場合は変更不可
       if (!isMounted || selectedAnswers[question.id] !== undefined || !Number.isInteger(optionIndex) || optionIndex < 0 || optionIndex >= question.options.length) return;
-      if (measuredAttempt.current.lectureId !== quiz.lectureId) {
-        measuredAttempt.current = { lectureId: quiz.lectureId, started: false, answers: new Map() };
+      if (measuredAttempt.current.scope !== quizScope) {
+        measuredAttempt.current = { scope: quizScope, started: false, answers: new Map() };
       }
       if (measuredAttempt.current.answers.has(question.id)) return;
       measuredAttempt.current.answers.set(question.id, optionIndex);
@@ -197,6 +205,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
         revision: questionRevision(question.question, question.options, question.correctIndex, question.explanation),
         kind: 'lecture',
       });
+      setRetryState(previous => ({ scope: quizScope, questionIds: previous.scope === quizScope ? previous.questionIds.filter(id => id !== question.id) : [] }));
       const nextAnswers = { ...selectedAnswers, ...Object.fromEntries(measuredAttempt.current.answers) };
       if (quiz.questions.every(q => nextAnswers[q.id] !== undefined)) {
         const score = quiz.questions.filter(q => nextAnswers[q.id] === q.correctIndex).length;
@@ -211,7 +220,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
         }
       }
     },
-    [isMounted, selectedAnswers, quiz, passingScore, saveQuizResult, setLectureCompleted, soundEnabled]
+    [isMounted, selectedAnswers, quiz, quizScope, passingScore, saveQuizResult, setLectureCompleted, soundEnabled]
   );
 
   // 選択肢シャッフルの切り替え
@@ -224,13 +233,11 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
     }
   };
 
-  // もう一度挑戦する（全問リセット）
+  // もう一度挑戦する（表示だけを未回答に戻す）
   const handleRetryAll = useCallback(() => {
     clearCelebration();
-    measuredAttempt.current = { lectureId: quiz.lectureId, started: false, answers: new Map<string, number>() };
-    quiz.questions.forEach((q) => {
-      clearQuizResult(q.id);
-    });
+    measuredAttempt.current = { scope: quizScope, started: false, answers: new Map<string, number>() };
+    setRetryState({ scope: quizScope, questionIds: quiz.questions.map(q => q.id) });
     if (isShuffleEnabled) {
       setShuffleMap(generateShuffleMap(quiz.questions));
     }
@@ -238,15 +245,13 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
     if (container) {
       container.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }, [quiz.lectureId, quiz.questions, clearQuizResult, isShuffleEnabled, clearCelebration]);
+  }, [quizScope, quiz.questions, isShuffleEnabled, clearCelebration]);
 
-  // 間違えた問題だけ再挑戦（不正解のみリセット）
+  // 間違えた問題だけ再挑戦（保存した復習予定は残す）
   const handleRetryMissed = useCallback(() => {
     clearCelebration();
-    measuredAttempt.current = { lectureId: quiz.lectureId, started: false, answers: new Map<string, number>() };
-    quiz.questions.forEach(q => {
-      if (selectedAnswers[q.id] !== undefined && selectedAnswers[q.id] !== q.correctIndex) clearQuizResult(q.id);
-    });
+    measuredAttempt.current = { scope: quizScope, started: false, answers: new Map<string, number>() };
+    setRetryState({ scope: quizScope, questionIds: quiz.questions.filter(q => selectedAnswers[q.id] !== undefined && selectedAnswers[q.id] !== q.correctIndex).map(q => q.id) });
     if (isShuffleEnabled) {
       setShuffleMap(generateShuffleMap(quiz.questions));
     }
@@ -262,7 +267,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
         }
       }
     }, 150);
-  }, [quiz.lectureId, quiz.questions, selectedAnswers, clearQuizResult, isShuffleEnabled, clearCelebration]);
+  }, [quizScope, quiz.questions, selectedAnswers, isShuffleEnabled, clearCelebration]);
 
   // 次の講義へ進む
   const handleGoToNextLecture = useCallback(() => {
@@ -660,7 +665,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                         {q.explanation}
                       </p>
                       <QuestionEvidence lectureId={quiz.lectureId} revision={questionRevision(q.question, q.options, q.correctIndex, q.explanation)} />
-                      <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">次回復習：{quizResults[q.id]?.nextReviewDate || '翌日'}。<Link className="underline" href="/kokushi#learning-review">復習と類題へ</Link> ／ <Link className="underline" href={practiceHref}>{practiceLabel}</Link></p>
+                      <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">次回復習：{quizResults[q.id]?.nextReviewDate || '翌日'}。<Link className="underline" href="/learn/review#learning-review">復習と類題へ</Link> ／ <Link className="underline" href={practiceHref}>{practiceLabel}</Link></p>
                     </div>
 
                     {/* 講義の該当箇所へスクロールして復習するボタン */}

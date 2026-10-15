@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useId, useRef } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { GlossaryTerm } from "@/data/glossaryData";
+import { useModalDialog } from "@/hooks/useModalDialog";
 import {
   X,
   BookOpen,
@@ -24,18 +25,9 @@ export default function GlossaryPopup({
   isOpen,
   onClose,
 }: GlossaryPopupProps) {
-  // ESCキーで閉じる
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-    if (isOpen) {
-      window.addEventListener("keydown", handleKeyDown);
-    }
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const titleId = useId();
+  useModalDialog(isOpen && Boolean(term), dialogRef, onClose);
 
   if (!isOpen || !term || typeof document === "undefined") return null;
 
@@ -46,10 +38,12 @@ export default function GlossaryPopup({
     >
       {/* PC: 中央カード / スマホ: ボトムシート */}
       <div
+        ref={dialogRef}
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="glossary-popup-title"
+        aria-labelledby={titleId}
         className="glossary-popup w-full sm:max-w-lg bg-[#FAF8F5] dark:bg-[#16212B] rounded-t-3xl sm:rounded-3xl border-t sm:border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xl p-5 sm:p-7 space-y-4 max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-200"
       >
         {/* スマホ用ドラッグハンドルバー */}
@@ -68,7 +62,7 @@ export default function GlossaryPopup({
                 読み：{term.reading}
               </span>
             </div>
-            <h3 id="glossary-popup-title" className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+            <h3 id={titleId} className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
               {term.term}
             </h3>
           </div>
@@ -76,8 +70,9 @@ export default function GlossaryPopup({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-xl hover:bg-[#EAE3D4] dark:hover:bg-[#202E3C] text-[#59615D] dark:text-[#96A6B2] transition-colors cursor-pointer"
+            className="min-h-11 min-w-11 inline-flex items-center justify-center p-1.5 rounded-xl hover:bg-[#EAE3D4] dark:hover:bg-[#202E3C] text-[#59615D] dark:text-[#96A6B2] transition-colors cursor-pointer"
             aria-label="閉じる"
+            data-modal-autofocus
           >
             <X className="w-5 h-5" />
           </button>

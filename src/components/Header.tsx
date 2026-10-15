@@ -21,9 +21,8 @@ interface HeaderLink { href: string; label: string; description?: string; }
 const LEARN_LINKS: readonly HeaderLink[] = [
   { href: "/learn", label: "学習の始め方", description: "コース・演習から選ぶ" },
   { href: "/learn/courses", label: "基礎コース", description: "全11コース" },
-  { href: "/kokushi#learning-review", label: "今日の復習" },
+  { href: "/learn/review#learning-review", label: "今日の復習" },
   { href: "/curriculum", label: "カリキュラム" },
-  { href: TOOL_CATALOG.kokushi.href, label: "国家試験対策・演習" },
   { href: "/library", label: "古典・医学論文" },
   { href: "/articles", label: "解説記事" },
 ];
@@ -43,8 +42,8 @@ const ACCOUNT_LINKS: readonly HeaderLink[] = [
   { href: "/contact", label: "お問い合わせ" },
 ];
 const NAV_ICONS: Record<string, LucideIcon> = {
-  "/learn": GraduationCap, "/learn/courses": BookOpen, "/kokushi#learning-review": History,
-  "/curriculum": Layers3, "/kokushi": FileQuestion, "/library": Library, "/articles": BookOpen,
+  "/learn": GraduationCap, "/learn/courses": BookOpen, "/learn/review#learning-review": History,
+  "/curriculum": Layers3, "/learn/review": FileQuestion, "/library": Library, "/articles": BookOpen,
   "/clinical": ClipboardPenLine, "/clinical/workspace": NotebookPen, "/simulator": GitCompareArrows,
   "/practice/haiketsu": ScanLine, "/cases": FileQuestion, "/diagnosis": Activity,
   "/tsubo/compare": GitCompareArrows, "/notes": Bookmark, "/pricing": CreditCard,
@@ -92,7 +91,7 @@ export default function Header() {
   const dropdownId = (dropdown: Dropdown) => `${id}-${dropdown}`;
   const accountHref = user ? "/account/subscription" : "/auth/login";
   const accountLabel = isPremium ? user?.role === "admin" ? "管理者マイページ" : "プレミアム会員 マイページ" : user ? "マイページ・プラン管理" : "会員ログイン / Google連携";
-  const learnActive = ["/learn", "/curriculum", "/kokushi", "/library", "/articles"].some(path => pathname === path || pathname.startsWith(`${path}/`));
+  const learnActive = ["/learn", "/curriculum", "/learn/review", "/library", "/articles"].some(path => pathname === path || pathname.startsWith(`${path}/`));
   const clinicalActive = ["/clinical", "/simulator", "/practice", "/cases", "/diagnosis", "/kikei"].some(path => pathname === path || pathname.startsWith(`${path}/`));
   const dictionaryActive = pathname === "/tsubo" || pathname.startsWith("/tsubo/");
   const accountActive = ["/account", "/auth", "/notes", "/pricing"].some(path => pathname === path || pathname.startsWith(`${path}/`));
@@ -136,7 +135,7 @@ export default function Header() {
   // Keep the existing keyboard shortcuts and externally requested initial query.
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.isComposing) return;
+      if (event.defaultPrevented || event.isComposing || event.repeat) return;
       // Let an open menu or record dialog keep its own keyboard interaction.
       if (!isSearchOpen && document.querySelector('[role="dialog"][aria-modal="true"]')) return;
       const target = event.target as HTMLElement | null;
@@ -144,7 +143,7 @@ export default function Header() {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         if (isSearchOpen) closeSearch(); else openSearch();
-      } else if (event.key === "/" && !isInput && !isSearchOpen) {
+      } else if (event.key === "/" && !event.metaKey && !event.ctrlKey && !event.altKey && !event.shiftKey && !isInput && !isSearchOpen) {
         event.preventDefault(); openSearch();
       }
     };

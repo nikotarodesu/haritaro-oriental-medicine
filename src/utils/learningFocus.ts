@@ -96,7 +96,7 @@ export function getCaseLearningNeeds(values: Readonly<Record<string, unknown>>):
         const reason = [...grade.missing, ...grade.errors].find(reason => CASE_REASON_FOCUS[item.id][index][reason.id] === focusId);
         needs.push({ caseId: item.id, caseTitle: item.title, focusId, title: focus.title,
           reason: reason ? `${step.domain}で確認したいこと：${reason.feedback}` : `${step.domain}で選んだ判断の根拠を、教材の解説と照らして振り返ります。`,
-          href: `/kokushi?focus=${focusId}#learning-focus-review`, safetyReviewRequired: focusId === 'safety-check', answeredAt: record.answeredAt });
+          href: `/learn/review?focus=${focusId}#learning-focus-review`, safetyReviewRequired: focusId === 'safety-check', answeredAt: record.answeredAt });
       }
     });
   }

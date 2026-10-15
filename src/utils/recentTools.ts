@@ -13,7 +13,8 @@ const knownHrefs = new Set(RECENT_TOOL_CATALOG.map(tool => tool.href));
 
 /** Keep only fixed public modes. Source IDs, patient IDs and free text never enter history. */
 export function recentToolHref(pathname: string, tab: string | null = null): string | null {
-  const base = pathname.replace(/\/$/, '');
+  const originalBase = pathname.replace(/\/$/, '');
+  const base = originalBase === '/kokushi' ? '/learn/review' : originalBase;
   const href = base === '/notes' && tab === 'learning' ? '/notes?tab=learning'
     : base === '/diagnosis' && tab === 'gorou' ? '/diagnosis?tab=gorou' : base;
   return knownHrefs.has(href) ? href : null;

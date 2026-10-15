@@ -970,7 +970,7 @@ export default async function AcupointDetailPage({ params }: Props) {
               <div className="space-y-1">
                 <span className="text-sm font-bold text-[#1E2D3D] dark:text-[#7BAAD8] flex items-center gap-1">
                   <GraduationCap className="w-3.5 h-3.5" />
-                  国試対策演習
+                  経穴の確認問題
                 </span>
                 <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                   {point.meridianShort}・要穴・取穴のオリジナル演習・間隔復習

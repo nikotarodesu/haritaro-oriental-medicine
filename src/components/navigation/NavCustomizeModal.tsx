@@ -118,7 +118,7 @@ export default function NavCustomizeModal({
     onClose();
   };
 
-  const allItemIds = Object.keys(ALL_NAV_ITEMS) as NavItemId[];
+  const allItemIds = (Object.keys(ALL_NAV_ITEMS) as NavItemId[]).filter(id => id !== "kokushi");
 
   return (
     <div
@@ -203,7 +203,7 @@ export default function NavCustomizeModal({
                   <span>学生向け</span>
                 </div>
                 <div className="text-sm text-[#59615D] dark:text-[#AFBDC8] mt-0.5 leading-relaxed">
-                  学ぶ・国試・経穴・ノート
+                  学ぶ・復習・経穴・ノート
                 </div>
               </button>
 

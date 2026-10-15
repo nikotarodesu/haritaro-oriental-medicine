@@ -17,7 +17,6 @@ export const SEARCH_CATEGORIES: ReadonlyArray<{ id: SearchCategory; label: strin
   { id: 'article', label: '解説記事' },
   { id: 'acupoint', label: '経穴' },
   { id: 'lecture', label: '講義・コース' },
-  { id: 'kokushi', label: '国試演習' },
   { id: 'glossary', label: '専門用語' },
   { id: 'symptom', label: '症状別ケア' },
   { id: 'library', label: '論文・古典' },

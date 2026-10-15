@@ -45,10 +45,21 @@ for (const [id, specification] of Object.entries(CURRICULUM_CONCEPT_ART)) {
   const conceptArt = getCurriculumConceptArt(id);
   assert(conceptArt?.node, id + ': artwork generated');
   const art = renderToStaticMarkup(conceptArt.node);
+  const svg = art.match(/<svg\b[^>]*>[\s\S]*?<\/svg>/)?.[0];
+  assert(svg, id + ': a vector illustration is rendered');
   assert(art.includes('role="img"') && /aria-label=|<title\b/.test(art), id + ': accessible image meaning');
   assert(!/<text\b|<foreignObject\b|<figcaption\b/.test(art), id + ': no visible SVG text or prose');
   assert(!/<image\b|<script\b|<animate\b|NaN|Infinity/.test(art), id + ': static, valid vector artwork');
-  assert.equal(art.replace(/<(title|desc)\b[^>]*>[\s\S]*?<\/\1>/g, '').replace(/<[^>]*>/g, '').trim(), '', id + ': no visible HTML text around the image');
+  assert.equal(svg.replace(/<(title|desc)\b[^>]*>[\s\S]*?<\/\1>/g, '').replace(/<[^>]*>/g, '').trim(), '', id + ': artwork itself remains wordless');
+  const readingGuides = art.match(/<details\b[^>]*>[\s\S]*?<\/details>/g) || [];
+  assert.equal(readingGuides.length, 1, id + ': one optional reading guide outside the SVG');
+  const guide = readingGuides[0];
+  assert(!/<details\b[^>]*\sopen(?:[\s=>])/.test(guide), id + ': the reading guide starts closed');
+  assert.match(guide, /<summary\b[^>]*>図の読み方<\/summary>/, id + ': the guide has a clear keyboard-operable summary');
+  const description = renderToStaticMarkup(React.createElement(React.Fragment, null, specification.description));
+  assert(guide.includes(description), id + ': the full authored definition is available to readers');
+  assert(!svg.includes(guide), id + ': prose is outside the image');
+  assert.equal(art.replace(svg, '').replace(guide, '').replace(/<[^>]*>/g, '').trim(), '', id + ': optional guide is the only surrounding visible prose');
   assert(!/(?:d|transform|cx|cy)="[^"]*\.\d{4,}/.test(art), id + ': derived SVG geometry avoids server/browser float serialization drift');
   const base = renderToStaticMarkup(React.createElement(MarkdownBody, { contentMarkdown: source, idPrefix: 'lecture' }));
   const illustrated = renderToStaticMarkup(React.createElement(MarkdownBody, { contentMarkdown: source, idPrefix: 'lecture', conceptArt }));
@@ -56,8 +67,10 @@ for (const [id, specification] of Object.entries(CURRICULUM_CONCEPT_ART)) {
   assert.equal((illustrated.match(/class="[^"]*curriculum-concept-art/g) || []).length, 1, id + ': exactly one reachable illustration');
   assert.equal(illustrated.replace(art, ''), base, id + ': authored body rendering unchanged apart from artwork');
   const collapsed = renderToStaticMarkup(React.createElement(MarkdownBody, { contentMarkdown: source, idPrefix: 'lecture', conceptArt, collapseAdvanced: true }));
-  assert(collapsed.replace(/<details\b[\s\S]*?<\/details>/g, '').includes(art), id + ': illustration visible without opening supplementary sections');
+  const artworkMarker = `<span data-wordless-art="${id}"></span>`;
+  assert(collapsed.includes(art), id + ': the illustration and guide remain in collapsed-body rendering');
+  assert(collapsed.replace(art, artworkMarker).replace(/<details\b[\s\S]*?<\/details>/g, '').includes(artworkMarker), id + ': illustration visible without opening supplementary sections');
   count++;
 }
 assert.equal(getCurriculumConceptArt('unknown-lecture'), null, 'unmapped lectures remain unchanged');
-console.log(`Passed: ${count} wordless illustrations in real published sections, accessible names, stable heading anchors and unchanged authored bodies.`);
+console.log(`Passed: ${count} wordless illustrations with optional authored reading guides, accessible names, stable heading anchors and unchanged authored bodies.`);

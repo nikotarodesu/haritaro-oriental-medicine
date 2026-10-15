@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLearningSync } from '@/contexts/LearningSyncContext';
-export default function LearningSyncStatus({ returnTo = '/kokushi#learning-review' }: { returnTo?: string }) {
+export default function LearningSyncStatus({ returnTo = '/learn/review#learning-review' }: { returnTo?: string }) {
   const { user } = useAuth();
   const { ready, status, lastSyncedAt, retry, canImportGuest, importGuest } = useLearningSync();
   const labels = { local: 'この端末に保存', syncing: '学習履歴を同期中', synced: '学習履歴をクラウドへ反映済み', offline: '端末に保存・クラウド同期は未完了', setup: '端末に保存・クラウド同期の設定待ち', memory: '端末への保存に失敗・この画面内で保持' };

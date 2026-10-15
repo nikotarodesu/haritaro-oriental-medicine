@@ -58,7 +58,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
     ? getNextResumeLectureId(allLectures.map((l) => l.id))
     : allLectures[0]?.id;
   const resumeLecture = allLectures.find((l) => l.id === resumeLectureId) || allLectures[0];
-  const incorrectQuestions = isMounted ? getIncorrectQuestions() : [];
+  const incorrectQuestions = isMounted ? getIncorrectQuestions().filter(question => question.kind !== "exam") : [];
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined;

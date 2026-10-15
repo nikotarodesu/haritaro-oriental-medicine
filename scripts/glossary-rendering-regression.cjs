@@ -115,6 +115,7 @@ function realPopup(document) {
   vm.runInNewContext(popupJs, { exports, document, require: id => {
     if (id === 'react-dom') return { createPortal: (children, target) => { portal = { children, target }; return null; } };
     if (id === 'next/link') return ({ href, children, ...props }) => React.createElement('a', { href, ...props }, children);
+    if (id.startsWith('@/')) return load('src/' + id.slice(2));
     return require(id);
   } }, { filename: popupSource });
   return exports.default;
@@ -130,6 +131,8 @@ assert.equal(render(BrowserPopup, openPopup), '', 'Opening a dialog leaves inlin
 assert.equal(portal.target, bodyTarget, 'Dialog contents are placed in document.body');
 const popupMarkup = renderToStaticMarkup(portal.children);
 assert(popupMarkup.includes('role="dialog"') && popupMarkup.includes('aria-modal="true"'));
-assert(popupMarkup.includes('aria-labelledby="glossary-popup-title"') && popupMarkup.includes('id="glossary-popup-title"'));
+const titleId = popupMarkup.match(/aria-labelledby="([^"]+)"/)?.[1];
+assert(titleId && popupMarkup.includes(`id="${titleId}"`), 'The generated accessible label points to this popup title');
+assert(popupMarkup.includes('tabindex="-1"') && popupMarkup.includes('data-modal-autofocus='), 'The shared modal focus handler has a focusable dialog and an initial close control');
 assert(popupMarkup.includes(GLOSSARY_TERMS['陰陽'].oneLiner), 'The real portal contains the selected term explanation');
 console.log('Passed: deterministic glossary SSR/replay, persistent popup state, first occurrences across Markdown/citations, immutable snapshots and body-only dialog portals.');

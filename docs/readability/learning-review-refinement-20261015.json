@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-15",
+  "baselineCommit": "7b0e2bf",
+  "scope": "講義と復習への集約、採用済みの学習・操作・初期読み込み改善",
+  "retirement": {
+    "oldRoute": "/kokushi",
+    "newRoute": "/learn/review",
+    "redirectStatus": 308,
+    "preservedBookmarkParameters": ["focus", "resumeReview"],
+    "dedicatedExamQuestionsRemovedFromPublicSearchAndPractice": 10,
+    "publicSearchDestinations": 621,
+    "publicSearchTypes": 9,
+    "legacySavedAnswerIdsAndHistoryRetained": true,
+    "customNavigationAndRecentToolsMigrated": true
+  },
+  "changes": [
+    "再挑戦は一時表示のみを戻し、保存済みの回答・復習予定を削除しない",
+    "類題への寄り道から、元の問題順・回答状態・選択肢順へ復帰する",
+    "苦手問題モーダルの正答と誤答を共通の保存処理へ渡す",
+    "再訪者のホーム主操作を受講中・次の講義へ切り替える",
+    "用語ダイアログの初期フォーカス、Tab循環、Escape、元の操作への復帰を共通化する",
+    "94講義の図に既存の説明文を任意に開ける『図の読み方』として表示する",
+    "認証SDKと臨床クラウド処理を動的に読み込み、初期スクリプトから分離する"
+  ],
+  "validation": {
+    "productionBuild": "npm run build -- --webpack: passed; TypeScript and 574 generated pages",
+    "suitesPassed": ["learning", "site", "reading", "seo", "sync", "billing", "content", "medical-safety"],
+    "additionalChecksPassed": ["retired-exam-route-regression", "public-client-loading-regression --build-output"],
+    "eslintErrors": 0,
+    "preExistingClinicalMemoWarnings": 2,
+    "realPaymentsOrPatientRecordsMutated": false,
+    "medicalExpertReviewCompletedByThisChange": false,
+    "productionBrowserVerification": "本番反映後の確認結果はこの変更に対応するチャットで報告"
+  },
+  "initialScriptMeasurement": {
+    "method": "ローカルの本番ビルドHTMLにあるmodern script srcの重複除外合計。gzipはローカル推定。認証SDKはhydration後に読み込むため、総通信量・実測速度・Lighthouse・SEO/GEOの効果とは区別する。",
+    "pages": [
+      { "route": "/", "beforeRawBytes": 976406, "afterRawBytes": 714769, "beforeGzipBytes": 295664, "afterGzipBytes": 228184 },
+      { "route": "/learn", "beforeRawBytes": 952837, "afterRawBytes": 691212, "beforeGzipBytes": 286581, "afterGzipBytes": 219087 },
+      { "route": "/curriculum/lecture-intro-1", "beforeRawBytes": 1215967, "afterRawBytes": 957473, "beforeGzipBytes": 368244, "afterGzipBytes": 301948 },
+      { "route": "/tsubo/li4", "beforeRawBytes": 943142, "afterRawBytes": 679020, "beforeGzipBytes": 281657, "afterGzipBytes": 213349 },
+      { "route": "/articles/science-of-yinyang-gogyo", "beforeRawBytes": 1044868, "afterRawBytes": 782530, "beforeGzipBytes": 313559, "afterGzipBytes": 245776 }
+    ]
+  }
+}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- Offline case-focus regression runner. */
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -70,7 +71,7 @@ assert(validCaseLearningRecord(unsafe));
 const needs = getCaseLearningNeeds({ 'case:back-pain-referral': unsafe, 'case:attempt-1': unsafe });
 assert.equal(needs[0].focusId, 'safety-check');
 assert(needs[0].safetyReviewRequired);
-assert.equal(needs[0].href, '/kokushi?focus=safety-check#learning-focus-review');
+assert.equal(needs[0].href, '/learn/review?focus=safety-check#learning-focus-review');
 assert.equal(readCaseLearningRecords({ 'case:back-pain-referral': unsafe, 'case:attempt-1': unsafe }).length, 1);
 const perfectLater = completed('back-pain-referral', {}, '2026-10-03T15:00:00.000Z');
 const history = { 'case:back-pain-referral': perfectLater, 'case:attempt-1': unsafe, 'case:attempt-2': perfectLater };

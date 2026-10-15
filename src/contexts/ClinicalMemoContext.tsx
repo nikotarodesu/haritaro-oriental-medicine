@@ -13,7 +13,7 @@ import {
   upsertClinicalMemoToSupabase,
   deleteClinicalMemoFromSupabase,
   syncLocalDataToSupabase
-} from "@/lib/supabase/clinicalMemosDb";
+} from "@/lib/supabase/lazyClinicalMemosDb";
 
 const STORAGE_KEY = "haritaro_clinical_memos_v1";
 const PATIENT_NOTES_STORAGE_KEY = "haritaro_patient_notes_v1";

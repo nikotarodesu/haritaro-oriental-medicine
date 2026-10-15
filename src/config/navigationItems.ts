@@ -65,15 +65,15 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
     shortLabel: "復習",
     description: "回答履歴と復習予定から取り組む知識定着演習",
     icon: RotateCcw,
-    href: "/kokushi#learning-review",
+    href: "/learn/review#learning-review",
   },
   kokushi: {
     id: "kokushi",
-    label: "国試対策ハブ",
-    shortLabel: "国試",
-    description: "鍼灸国試の精選問題・要穴骨度法特訓",
+    label: "講義の復習",
+    shortLabel: "復習",
+    description: "講義の回答履歴から復習する",
     icon: Award,
-    href: "/kokushi",
+    href: "/learn/review",
   },
   tsubo: {
     id: "tsubo",
@@ -168,8 +168,8 @@ export const NAV_PRESETS: Record<NavPresetType, { name: string; description: str
   },
   student: {
     name: "学生・学習者セット",
-    description: "学びの案内、国試、経穴、マイノートを素早く開く",
-    items: ["curriculum", "kokushi", "tsubo", "notes"],
+    description: "学びの案内、復習、経穴、マイノートを素早く開く",
+    items: ["curriculum", "review", "tsubo", "notes"],
   },
   clinician: {
     name: "臨床家セット",
@@ -213,9 +213,16 @@ export function loadNavUserConfig(): NavUserConfig {
     const unique = new Set(parsed.items);
     if (unique.size !== 4) return DEFAULT_NAV_CONFIG;
 
+    // Keep the user's other choices when the retired exam shortcut becomes review.
+    const migrated = [...new Set<NavItemId>(parsed.items.map((id: NavItemId) => id === "kokushi" ? "review" : id))];
+    for (const id of DEFAULT_NAV_CONFIG.items) {
+      if (migrated.length === 4) break;
+      if (!migrated.includes(id)) migrated.push(id);
+    }
+
     return {
       version: 1,
-      items: parsed.items as [NavItemId, NavItemId, NavItemId, NavItemId],
+      items: migrated as [NavItemId, NavItemId, NavItemId, NavItemId],
       preset: parsed.preset,
       updatedAt: parsed.updatedAt || new Date().toISOString(),
     };

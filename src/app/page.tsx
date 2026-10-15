@@ -7,7 +7,6 @@ import HomeHeroQuickSearch from "@/components/home/HomeHeroQuickSearch";
 import ArticleCover from "@/components/articles/ArticleCover";
 import LearningCourseCards from "@/components/learning/LearningCourseCards";
 import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
-import { createCourseLectureHref } from "@/utils/courseJourney";
 import { LEARNING_COURSES } from "@/data/learningCourses";
 import { getArticlePreviews } from "@/data/articleData";
 import { SITE_UPDATES } from "@/config/contentUpdates";
@@ -15,7 +14,7 @@ import { SITE_UPDATES } from "@/config/contentUpdates";
 const tools = [
   { href: "/tsubo", label: "経穴辞典", icon: "acupoint" },
   { href: "/curriculum", label: "カリキュラム", icon: "lecture" },
-  { href: "/kokushi", label: "国試演習", icon: "quiz" },
+  { href: "/learn/review", label: "講義の復習", icon: "quiz" },
   { href: "/simulator", label: "弁証推論", icon: "reasoning" },
   { href: "/practice/haiketsu", label: "配穴設計", icon: "prescription" },
   { href: "/notes", label: "ノート", icon: "notes" },
@@ -43,8 +42,7 @@ export default function HomePage() {
             </p>
           </div>
           <div className="home-start">
-            <ContentNavigationLink href={createCourseLectureHref(LEARNING_COURSES[0].slug, LEARNING_COURSES[0].steps[0].lectureId)} placement="home_first_lecture" className="ui-button ui-button-primary home-start-button"><HomeToolIcon name="lecture" /><span>第1講から始める</span><ArrowRight aria-hidden="true" /></ContentNavigationLink>
-            <p className="text-sm ui-muted">初めての方へ。「東洋医学とは何か」から学べます。</p>
+            <HomeLearningProgressCard variant="hero" />
             <nav aria-label="目的から選ぶ" className="home-secondary-entry">
               <Link href="/learn" className="ui-text-link"><BookOpen aria-hidden="true" /><span>基礎から学ぶ</span></Link>
               <Link href="/clinical" className="ui-text-link"><Stethoscope aria-hidden="true" /><span>臨床で使う</span></Link>

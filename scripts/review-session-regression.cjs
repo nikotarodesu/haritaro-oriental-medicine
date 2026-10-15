@@ -37,6 +37,48 @@ assert.equal(restored.index, 1);
 assert.equal(restored.choice, 1, 'unsubmitted selections also survive a return');
 assert.equal(JSON.stringify(shuffledIndices(4, `${restored.id}-${questions[1].id}`)), JSON.stringify(shuffledIndices(4, `${checkpoint.id}-${questions[1].id}`)), 'same answer order after restoration');
 
+// A related exercise is a single detour, not a replacement for the ten-question queue.
+const lectureQuestions = LEARNING_QUESTIONS.filter(question => question.kind !== 'exam');
+const tenQuestions = lectureQuestions.slice(0, 10);
+let originalTen = session.createReviewSession(tenQuestions, owner, id, now);
+for (let i = 0; i < 2; i++) {
+  originalTen = session.chooseReviewAnswer(originalTen, tenQuestions[i].correctIndex, lectureQuestions, now + i * 10);
+  originalTen = session.submitReviewAnswer(originalTen, lectureQuestions, now + i * 10 + 1);
+  originalTen = session.advanceReviewSession(originalTen, lectureQuestions, now + i * 10 + 2);
+}
+originalTen = session.chooseReviewAnswer(originalTen, 1, lectureQuestions, now + 25);
+const related = lectureQuestions.find(question => question.id !== tenQuestions[2].id && question.lectureId === tenQuestions[2].lectureId);
+assert(related);
+const detourId = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd';
+let detour = session.startReviewDetour(originalTen, [related], detourId, lectureQuestions, now + 30);
+assert(detour);
+assert.equal(detour.questions.length, 1);
+assert.deepEqual(JSON.parse(JSON.stringify(detour.returnTo)), JSON.parse(JSON.stringify(originalTen)));
+assert.equal(session.startReviewDetour(detour, [related], 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee', lectureQuestions, now + 31), null, 'detours cannot accumulate a nested stack');
+assert.equal(session.startReviewDetour(originalTen, [related], id, lectureQuestions, now + 31), null, 'a detour needs its own answer-order seed');
+for (const damaged of [
+  { ...detour, returnTo: { ...originalTen, owner: 'other' } },
+  { ...detour, returnTo: { ...originalTen, answers: [] } },
+  { ...detour, returnTo: { ...originalTen, returnTo: originalTen } },
+  { ...detour, returnTo: null },
+]) assert.equal(session.validateReviewSession(damaged, owner, lectureQuestions, now + 35), null, 'invalid suspended checkpoints cannot be restored');
+detour = session.chooseReviewAnswer(detour, related.correctIndex, lectureQuestions, now + 40);
+session.saveReviewSession(storage, detour);
+detour = session.restoreReviewSession(storage, owner, lectureQuestions, detourId, now + 50).session;
+assert.equal(detour.choice, related.correctIndex, 'a reload preserves an unfinished similar question');
+detour = session.submitReviewAnswer(detour, lectureQuestions, now + 60);
+assert.equal(session.submitReviewAnswer(detour, lectureQuestions, now + 61), null);
+session.saveReviewSession(storage, detour);
+detour = session.restoreReviewSession(storage, owner, lectureQuestions, detourId, now + 70).session;
+assert.equal(detour.answers[0], related.correctIndex, 'a submitted similar question also restores without grading again');
+const returnedTen = session.returnFromReviewDetour(detour, lectureQuestions, now + 80);
+assert.deepEqual(JSON.parse(JSON.stringify({ ...returnedTen, updatedAt: originalTen.updatedAt })), JSON.parse(JSON.stringify(originalTen)));
+assert.equal(JSON.stringify(shuffledIndices(tenQuestions[2].options.length, `${returnedTen.id}-${tenQuestions[2].id}`)), JSON.stringify(shuffledIndices(tenQuestions[2].options.length, `${originalTen.id}-${tenQuestions[2].id}`)), 'the original shuffled options retain their seed');
+assert.equal(returnedTen.questions.slice(returnedTen.index).map(question => question.id).join(','), tenQuestions.slice(2).map(question => question.id).join(','), 'all eight remaining original questions stay in order');
+session.saveReviewSession(storage, detour);
+assert.equal(session.restoreReviewSession(storage, owner, lectureQuestions, id, now + 90).session.id, id, 'an original lecture return link restores its original queue while a detour is suspended');
+assert.equal(JSON.parse(storage.getItem(session.REVIEW_SESSION_KEY)).id, id);
+
 for (const invalid of [null, [], {}, { ...checkpoint, version: 2 }, { ...checkpoint, owner: 'other' },
   { ...checkpoint, id: 'https://outside.example' }, { ...checkpoint, index: -1 }, { ...checkpoint, index: 3 },
   { ...checkpoint, choice: 99 }, { ...checkpoint, choice: undefined }, { ...checkpoint, answers: [null, null, null] },
@@ -66,7 +108,7 @@ assert.equal(session.restoreReviewSession(null, owner, questions).status, 'unava
 const unavailable = { getItem() { throw Error('blocked'); }, setItem() { throw Error('blocked'); }, removeItem() { throw Error('blocked'); } };
 assert.equal(session.saveReviewSession(unavailable, replacement), false);
 assert.equal(session.restoreReviewSession(unavailable, owner, questions).session, null);
-assert.equal(session.reviewSessionReturnHref('javascript:alert(1)'), '/kokushi#learning-review');
+assert.equal(session.reviewSessionReturnHref('javascript:alert(1)'), '/learn/review#learning-review');
 
 // Execute real ReviewWorkspace event handlers, then remount it as a route navigation would.
 let auth = { user: { id: owner }, isLoading: false };
@@ -233,6 +275,72 @@ assert(text(tree).includes(acupoint.question));
 assert(text(tree).includes('正解です。'));
 assert.equal(answersSaved, savedBeforeReturn, 'acupoint restoration also never replays grading');
 
+// Exercise the real detour and return handlers with a full ten-question review.
+session.saveReviewSession(storage, null);
+browser.location.search = '';
+progress.quizResults = Object.fromEntries(tenQuestions.map(question => [question.id, { nextReviewDate: '2000-01-01', isCorrect: false }]));
+progress.completedLectures = {};
+progress.lastVisitedLectureId = null;
+const answersBeforeDetour = answersSaved;
+mount();
+button('今日の復習').props.onClick(); render();
+button(tenQuestions[0].options[tenQuestions[0].correctIndex]).props.onClick(); render();
+button('回答を確定').props.onClick(); render();
+button('次の問題へ').props.onClick(); render();
+button(tenQuestions[1].options[tenQuestions[1].correctIndex]).props.onClick(); render();
+button('回答を確定').props.onClick(); render();
+const originalUi = JSON.parse(storage.getItem(session.REVIEW_SESSION_KEY));
+const originalOptions = nodes(tree).filter(node => node.type === 'button' && node.props.className?.includes('quiz-option')).map(text);
+button('同じテーマの類題で確認').props.onClick(); render();
+let detourUi = JSON.parse(storage.getItem(session.REVIEW_SESSION_KEY));
+assert.equal(detourUi.returnTo.id, originalUi.id);
+assert(text(tree).includes('元の復習（2 / 10問目）'));
+assert(!nodes(tree).some(node => node.type === 'button' && text(node).includes('同じテーマの類題')), 'a detour offers return rather than an unbounded chain of detours');
+const uiRelated = lectureQuestions.find(question => question.id === detourUi.questions[0].id);
+button(uiRelated.options[uiRelated.correctIndex]).props.onClick(); render();
+const savesBeforeReload = answersSaved;
+mount();
+assert.equal(answersSaved, savesBeforeReload);
+assert(nodes(tree).some(node => node.type === 'button' && node.props['aria-pressed'] && text(node).includes(uiRelated.options[uiRelated.correctIndex])));
+const submitDetour = button('回答を確定').props.onClick;
+submitDetour(); submitDetour(); render();
+assert.equal(answersSaved, answersBeforeDetour + 3, 'two original answers and one similar answer are each saved once');
+mount();
+assert(text(tree).includes('正解です。'));
+assert.equal(answersSaved, answersBeforeDetour + 3, 'a reload after similar-question grading never scores again');
+button('類題を終えて元の復習に戻る').props.onClick(); render();
+let returnedUi = JSON.parse(storage.getItem(session.REVIEW_SESSION_KEY));
+assert.equal(returnedUi.id, originalUi.id);
+assert.equal(returnedUi.index, 1);
+assert.equal(JSON.stringify(returnedUi.answers), JSON.stringify(originalUi.answers));
+assert.deepEqual(nodes(tree).filter(node => node.type === 'button' && node.props.className?.includes('quiz-option')).map(text), originalOptions, 'original answer order and selected/submitted labels return unchanged');
+assert(text(tree).includes('元の復習に戻りました'));
+assert.equal(answersSaved, answersBeforeDetour + 3);
+button('次の問題へ').props.onClick(); render();
+assert(text(tree).includes('3 / 10'));
+for (let i = 2; i < tenQuestions.length; i++) {
+  assert(text(tree).includes(tenQuestions[i].question), 'the remaining queue keeps its original order');
+  button(tenQuestions[i].options[tenQuestions[i].correctIndex]).props.onClick(); render();
+  button('回答を確定').props.onClick(); render();
+  button(i < tenQuestions.length - 1 ? '次の問題へ' : '復習を完了する').props.onClick(); render();
+}
+assert.equal(answersSaved, answersBeforeDetour + 11, 'all ten original questions plus one similar question produce eleven records');
+assert.equal(storage.getItem(session.REVIEW_SESSION_KEY), null);
+
+// Leaving a similar question before answering also retains the submitted original state.
+progress.quizResults = {};
+mount(); button('今日の復習').props.onClick(); render();
+button(tenQuestions[0].options[0]).props.onClick(); render();
+button('回答を確定').props.onClick(); render();
+const beforeEarlyReturn = JSON.parse(storage.getItem(session.REVIEW_SESSION_KEY));
+button('同じテーマの類題で確認').props.onClick(); render();
+const beforeEarlyReturnSaved = answersSaved;
+button('元の復習に戻る').props.onClick(); render();
+returnedUi = JSON.parse(storage.getItem(session.REVIEW_SESSION_KEY));
+assert.equal(returnedUi.id, beforeEarlyReturn.id);
+assert.equal(JSON.stringify(returnedUi.answers), JSON.stringify(beforeEarlyReturn.answers));
+assert.equal(answersSaved, beforeEarlyReturnSaved, 'returning without answering a similar question creates no extra learning record');
+
 // The compact index keeps its optional controls closed, but never hides a
 // current question, restored-session notice, or a storage/sync warning.
 session.saveReviewSession(storage, null);
@@ -292,4 +400,4 @@ assert.equal(key('[', {}, true), false);
 assert.equal(pushes.length, 0, 'browser history, composing and interactive controls are untouched');
 assert.equal(key('['), true); assert.equal(key(']'), true);
 assert.deepEqual(pushes, ['/previous-lecture','/next-lecture']);
-console.log('Passed: staged basic/case review entry, case-only history, revision-safe temporary review sessions, route return/selection/grading/answer order, duplicate-submit protection, completion/new sets/owner isolation, blocked storage, and real lecture keyboard handlers.');
+console.log('Passed: staged basic/case review entry, revision-safe temporary review sessions, ten-question queue preservation across a similar-question detour/reload/return, duplicate-submit protection, completion/new sets/owner isolation, blocked storage, and real lecture keyboard handlers.');

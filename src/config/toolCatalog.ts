@@ -1,8 +1,8 @@
 /** Public descriptions shared by navigation, search and landing pages. */
 export const TOOL_CATALOG = {
   kokushi: {
-    title: '国家試験対策・オリジナル演習', href: '/kokushi', short: 'オリジナル問題・復習',
-    description: '東洋医学のオリジナル4択演習と経穴ドリル。回答履歴に応じた間隔復習から、関連講義・症例演習へ進めます。',
+    title: '講義の復習', href: '/learn/review', short: '確認問題・間隔復習',
+    description: '講義の確認問題を、回答履歴と復習予定から解き直せます。解説から関連する本文へ戻り、迷った内容を確かめます。',
   },
   simulator: {
     title: '臨床弁証シミュレーター', href: '/simulator', short: '候補・根拠・不足所見',

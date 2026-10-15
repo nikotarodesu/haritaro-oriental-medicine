@@ -126,6 +126,7 @@ mocks.set('@/components/learning/LearningSyncStatus', () => null);
 mocks.set('@/components/learning/LearningReviewPanel', () => null);
 mocks.set('@/components/LearningMap', { LearningMap: () => null });
 mocks.set('@/components/IncorrectQuestionsModal', { IncorrectQuestionsModal: () => null });
+mocks.set('@/contexts/AuthContext', { useAuth: () => ({ user: null, isLoading: false }) });
 mocks.set('@/contexts/CurriculumProgressContext', { useCurriculumProgress: () => ({
   isMounted: true, completedLectures: { [lectures[0].id]: true }, toggleLectureCompleted() {},
   totalCompleted: 1, totalPercentage: 1, totalPublished: stats.totalPublishedLessons, totalPlanned: stats.totalPlannedLessons,

@@ -464,7 +464,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E8DEC9] dark:border-[#223342] pb-2.5">
               <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                 <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-                <span>国家試験の基礎確認</span>
+                <span>講義の確認ポイント</span>
               </div>
             </div>
             <ul className="space-y-2 text-base text-[#333835] dark:text-[#C5D2DB]">

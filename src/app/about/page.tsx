@@ -85,7 +85,7 @@ export default function AboutPage() {
                   </div>
                 </div>
                 <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  陰陽五行・気血水・臓腑経絡の用語と関係を学び、確認問題で国家試験に備える方へ。
+                  陰陽五行・気血水・臓腑経絡の用語と関係を学び、確認問題で理解を確かめたい方へ。
                 </p>
                 <ul className="text-sm space-y-1.5 text-[#404743] dark:text-[#C5D2DB]">
                   <li className="flex items-start gap-1.5">
@@ -98,7 +98,7 @@ export default function AboutPage() {
                   </li>
                   <li className="flex items-start gap-1.5">
                     <span className="font-bold text-[#1E2D3D] dark:text-[#7BAAD8] shrink-0">3.</span>
-                    <span><Link href="/kokushi" className="font-semibold underline hover:text-[#1E2D3D]">国試演習ハブ</Link>でオリジナル演習・間隔復習に挑戦</span>
+                    <span><Link href="/learn/review" className="font-semibold underline hover:text-[#1E2D3D]">講義の復習</Link>で講義の確認問題を解き直す</span>
                   </li>
                 </ul>
               </div>

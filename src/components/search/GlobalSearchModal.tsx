@@ -171,7 +171,7 @@ export default function GlobalSearchModal({
   const quickSearches: Array<{ label: string; q: string; category?: SearchCategory }> = [
     { label: "合谷 (LI4)", q: "合谷" },
     { label: "足三里 (ST36)", q: "足三里" },
-    { label: "国試演習", q: "陰陽", category: "kokushi" },
+    { label: "講義の復習", q: "復習", category: "tool" },
     { label: "気虚", q: "気虚" },
     { label: "治未病 (古典)", q: "治未病", category: "library" },
     { label: "肩こり・頭痛", q: "頭痛" },

@@ -54,7 +54,7 @@ export default function HomeLearningProgressClient({ lectures }: { lectures: Res
               <Link href={recommendation.href} onClick={() => trackEvent('context_link_click', { placement: 'learning_start', item_type: recommendation.kind })} className="ui-text-link">{recommendation.action}<ArrowRight aria-hidden="true" /></Link>
               <nav aria-label="学習の別の入口" className="flex flex-wrap gap-x-5 gap-y-1">
                 <Link href="/learn/courses" className="ui-text-link">コース一覧</Link>
-                <Link href="/kokushi#learning-review" className="ui-text-link">復習する</Link>
+                <Link href="/learn/review#learning-review" className="ui-text-link">復習する</Link>
                 <Link href="/notes?tab=learning" className="ui-text-link">学習ノート</Link>
                 <Link href="/simulator#case-training" className="ui-text-link">症例で考える</Link>
               </nav>

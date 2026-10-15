@@ -35,7 +35,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-09-29"),
     },
     {
-      url: `${baseUrl}/kokushi`,
+      url: `${baseUrl}/learn/review`,
       lastModified: new Date("2026-09-28"),
     },
     {

@@ -21,6 +21,8 @@ export interface ReviewSession {
   index: number;
   choice: number | null;
   answers: (number | null)[];
+  /** One optional detour; never another detour inside it. Keeps the original answer-order seed. */
+  returnTo?: ReviewSession;
 }
 
 type SessionStorage = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
@@ -51,6 +53,10 @@ export function validReviewSessionId(id: unknown): id is string {
 
 /** Stored text, routes, scores and correctness flags are never trusted or replayed. */
 export function validateReviewSession(value: unknown, owner: string, bank: readonly LearningQuestion[], now = Date.now()): ReviewSession | null {
+  return validateCheckpoint(value, owner, bank, now, true);
+}
+
+function validateCheckpoint(value: unknown, owner: string, bank: readonly LearningQuestion[], now: number, allowReturn: boolean): ReviewSession | null {
   if (!value || typeof value !== 'object' || Array.isArray(value) || !OWNER.test(owner)) return null;
   const session = value as Partial<ReviewSession>;
   const created = timestamp(session.createdAt);
@@ -77,10 +83,14 @@ export function validateReviewSession(value: unknown, owner: string, bank: reado
   if (session.choice !== null && (!Number.isInteger(session.choice) || session.choice! < 0 || session.choice! >= current.options.length)) return null;
   const answer = session.answers[session.index!];
   if (answer !== null && answer !== session.choice) return null;
+  const returnTo = session.returnTo === undefined ? undefined
+    : allowReturn ? validateCheckpoint(session.returnTo, owner, bank, now, false) : null;
+  if (returnTo === null || returnTo?.id === session.id) return null;
   return {
     version: 1, owner, id: session.id, createdAt: session.createdAt!, updatedAt: session.updatedAt!,
     questions: session.questions.map(({ id, revision, fingerprint }) => ({ id, revision, fingerprint })),
     index: session.index!, choice: session.choice!, answers: [...session.answers],
+    ...(returnTo ? { returnTo } : {}),
   };
 }
 
@@ -111,13 +121,27 @@ export function advanceReviewSession(session: ReviewSession, bank: readonly Lear
   return { ...session, index: session.index + 1, choice: null, updatedAt: new Date(now).toISOString() };
 }
 
+/** Start a short related exercise without replacing the original question queue. */
+export function startReviewDetour(session: ReviewSession, questions: readonly LearningQuestion[], id: string, bank: readonly LearningQuestion[], now = Date.now()): ReviewSession | null {
+  const original = validateReviewSession(session, session.owner, bank, now);
+  if (!original || original.returnTo) return null;
+  const detour = createReviewSession(questions, session.owner, id, now);
+  return detour ? validateReviewSession({ ...detour, returnTo: original }, session.owner, bank, now) : null;
+}
+
+/** Restoring a checkpoint never replays or scores any of its answers. */
+export function returnFromReviewDetour(session: ReviewSession, bank: readonly LearningQuestion[], now = Date.now()): ReviewSession | null {
+  const current = validateReviewSession(session, session.owner, bank, now);
+  return current?.returnTo ? { ...current.returnTo, updatedAt: new Date(now).toISOString() } : null;
+}
+
 export function reviewSessionScore(session: ReviewSession, bank: readonly LearningQuestion[]): number {
   const questions = new Map(bank.map(question => [question.id, question]));
   return session.answers.filter((answer, index) => answer !== null && answer === questions.get(session.questions[index].id)?.correctIndex).length;
 }
 
 export function reviewSessionReturnHref(id: unknown): string {
-  return validReviewSessionId(id) ? `/kokushi?resumeReview=${id}#learning-review-practice` : '/kokushi#learning-review';
+  return validReviewSessionId(id) ? `/learn/review?resumeReview=${id}#learning-review-practice` : '/learn/review#learning-review';
 }
 
 export function browserReviewStorage(): SessionStorage | null {
@@ -142,6 +166,11 @@ export function restoreReviewSession(storage: SessionStorage | null, owner: stri
     if (!session) {
       storage.removeItem(REVIEW_SESSION_KEY);
       return { session: null, status: 'invalid' };
+    }
+    if (requestedId && requestedId === session.returnTo?.id) {
+      const original = returnFromReviewDetour(session, bank, now)!;
+      saveReviewSession(storage, original);
+      return { session: original, status: 'restored' };
     }
     if (requestedId && (!validReviewSessionId(requestedId) || requestedId !== session.id)) return { session: null, status: 'different' };
     return { session, status: 'restored' };

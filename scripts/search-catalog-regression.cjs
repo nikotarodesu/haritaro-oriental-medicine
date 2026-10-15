@@ -30,11 +30,15 @@ for (const term of Object.values(GLOSSARY_TERMS)) {
 }
 for (const item of CLINICAL_CASES) assert.equal(byId.get(`case-${item.id}`)?.url, `/cases/${item.id}`);
 for (const item of ARTICLES) assert.equal(byId.get(item.id)?.url, `/articles/${item.id}`);
-for (const item of KOKUSHI_PAST_EXAMS) assert.equal(byId.get(`kokushi-${item.id}`)?.url, `/kokushi?examId=${item.id}`);
+assert.equal(KOKUSHI_PAST_EXAMS.length, 10, 'The legacy bank remains available to validate saved learning records');
+for (const item of KOKUSHI_PAST_EXAMS) assert(!byId.has(`kokushi-${item.id}`), `${item.id}: retired exam questions must stay out of public search`);
+assert.equal(byId.get('tool-kokushi')?.url, '/learn/review', 'The stable tool ID now opens lecture review');
+assert(SEARCH_CATALOG.every(item => item.type !== 'kokushi' && !item.url.startsWith('/kokushi')), 'No public result links to retired exam practice');
 const publicArchiveIds = new Set(PUBLIC_ARCHIVE_CASES.map(item => item.id));
 for (const item of ALL_ARCHIVE_CASES) assert.equal(byId.has(`archive-case-${item.id}`), publicArchiveIds.has(item.id), 'Unreviewed archive cases remain outside public search');
-const types = ['article', 'acupoint', 'lecture', 'case', 'tool', 'glossary', 'kokushi', 'classic', 'paper', 'symptom'];
+const types = ['article', 'acupoint', 'lecture', 'case', 'tool', 'glossary', 'classic', 'paper', 'symptom'];
 for (const type of types) assert(SEARCH_CATALOG.some(item => item.type === type), `${type}: search category retained`);
+assert.deepEqual([...new Set(SEARCH_CATALOG.map(item => item.type))].sort(), [...types].sort(), 'Exactly nine public search types remain');
 
 const allowedKeys = new Set(['id', 'type', 'title', 'subtitle', 'badge', 'url', 'tags', 'exactCode', 'exactTerms', 'searchRole', 'reviewStatus']);
 const textValues = [];
@@ -69,4 +73,4 @@ if (process.argv.includes('--build-output')) {
     console.log(`Search UI bundle: ${chunk.file} (${Buffer.byteLength(chunk.text)} bytes, uncompressed).`);
   }
 }
-console.log(`Search catalog passed: ${SEARCH_CATALOG.length} public destinations, all 10 types, published lectures, all point codes, exact term readings and no full bodies or answer records.`);
+console.log(`Search catalog passed: ${SEARCH_CATALOG.length} public destinations, all 9 types, retired exam questions excluded with legacy data retained, published lectures, all point codes, exact term readings and no full bodies or answer records.`);

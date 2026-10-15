@@ -51,8 +51,9 @@ assert.equal(searchMatchHint(fixture, prepareSearchQuery('陰陽')), null);
 assert.equal(searchMatchHint(fixture, prepareSearchQuery('陰陽 根拠')), '関連語に一致');
 assert.equal(searchMatchHint(prepareSearchItem({ title: '合谷（LI4）', exactCode: 'LI4' }), prepareSearchQuery('ＬＩ ４')), '経穴コードが一致');
 
-const types = ['article', 'acupoint', 'lecture', 'case', 'tool', 'glossary', 'kokushi', 'classic', 'paper', 'symptom'];
+const types = ['article', 'acupoint', 'lecture', 'case', 'tool', 'glossary', 'classic', 'paper', 'symptom'];
 assert.equal(new Set(SEARCH_CATEGORIES.map(category => category.id)).size, SEARCH_CATEGORIES.length);
+assert(!SEARCH_CATEGORIES.some(category => category.id === 'kokushi' || /国試|国家試験/.test(category.label)), 'Retired exam practice has no public search filter');
 for (const type of types) {
   assert(matchesSearchCategory(type, 'all'));
   const partitions = SEARCH_CATEGORIES.filter(category => category.id !== 'all' && matchesSearchCategory(type, category.id));
@@ -126,6 +127,9 @@ for (const option of options) {
   assert(option.includes('aria-setsize='));
 }
 assert(render('学習ノート').includes('href="/notes?tab=learning"'));
+const lectureReview = render('講義の復習');
+assert(lectureReview.includes('href="/learn/review"'), 'Lecture review remains searchable after exam practice is retired');
+assert(!render('国家試験').includes('href="/kokushi') && !render('国試').includes('href="/kokushi'), 'Retired exam destinations cannot reappear through an old search term');
 function optionUrls(html) { return Array.from(html.matchAll(/<a(?=[^>]*role="option")[^>]*href="([^"]+)"/g), match => match[1]); }
 for (const [canonical, aliases] of [
   ['肝気鬱結', ['肝気郁結', '肝気欝結', 'かんきうっけつ', 'カンキウッケツ']],

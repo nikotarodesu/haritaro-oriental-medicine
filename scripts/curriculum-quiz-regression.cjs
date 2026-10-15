@@ -34,7 +34,7 @@ function harness(props = { quiz }, overrides = {}) {
     if (!elements.has(id)) elements.set(id, { textContent, scrollIntoView: () => scrolls.push(id), focus: () => focused.push(id), hasAttribute: () => false, setAttribute() {}, classList: { add: () => highlights.push(id), remove() {} } });
     return elements.get(id);
   }
-  let cursor = 0, tree, timerId = 0, modalOpen = false;
+  let cursor = 0, tree, timerId = 0, modalOpen = false, owner = null;
   const context = { isMounted: true, quizResults: {}, completedLectures: {}, ...overrides,
     saveQuizResult(record) { saved.push(record); context.quizResults = { ...context.quizResults, [record.questionId]: record }; },
     clearQuizResult(id) { cleared.push(id); const next = { ...context.quizResults }; delete next[id]; context.quizResults = next; },
@@ -57,6 +57,7 @@ function harness(props = { quiz }, overrides = {}) {
     if (id === 'next/link') return Link;
     if (id === 'next/navigation') return { useRouter: () => ({ push: href => pushes.push(href) }) };
     if (id === '@/contexts/CurriculumProgressContext') return { useCurriculumProgress: () => context };
+    if (id === '@/contexts/AuthContext') return { useAuth: () => ({ user: owner ? { id: owner } : null }) };
     if (id === '@/components/learning/QuestionEvidence') return () => null;
     if (id === '@/utils/analytics') return { trackEvent: (name, data) => events.push({ name, data }) };
     if (id.startsWith('@/')) return load('src/' + id.slice(2));
@@ -65,6 +66,7 @@ function harness(props = { quiz }, overrides = {}) {
   Math: deterministicMath, Date, console, setTimeout: callback => { timers.set(++timerId, callback); return timerId; }, clearTimeout: id => timers.delete(id) }, { filename: sourceFile });
   const Component = exports.InteractiveQuiz;
   const api = { context, saved, cleared, completed, events, pushes, scrolls, focused, highlights,
+    account(id) { owner = id; api.render(); },
     modal(open) { modalOpen = open; },
     focusQuestion(id) { nodes(tree).find(node => node.props?.id === 'quiz-card-' + id).props.onFocusCapture(); api.render(); },
     addHeading(id, label) { headings.push(element(id, label)); },
@@ -118,8 +120,11 @@ check('remaining-score badge', () => {
 });
 check('missed-only and all-question retries', () => {
   const client = harness(); answerAll(client, [2]);
+  const previousWrongAnswer = client.context.quizResults[quiz.questions[2].id];
   client.button('間違えた問題（1問）だけ再挑戦').props.onClick(); client.render(); client.flushTimers();
-  assert.deepEqual(client.cleared, [quiz.questions[2].id]);
+  assert.deepEqual(client.cleared, [], 'Retrying does not clear durable answers or their review schedules');
+  assert.equal(client.context.quizResults[quiz.questions[2].id], previousWrongAnswer, 'A pending retry remains due for review until a new answer is actually submitted');
+  assert.equal(client.saved.length, 3, 'Starting a retry is not another answer');
   assert(client.options(quiz.questions[0].id).every(node => node.props.disabled));
   assert(client.options(quiz.questions[2].id).every(node => !node.props.disabled));
   assert(!text(client.tree()).includes('レッスンクリア！'));
@@ -128,11 +133,25 @@ check('missed-only and all-question retries', () => {
   assert(text(client.tree()).includes('パーフェクト（3/3）'));
   assert(nodes(client.tree()).some(node => node.props?.className === 'fixed inset-0 pointer-events-none z-50 overflow-hidden'));
   assert.equal(client.key('r'), true); client.render();
-  assert.deepEqual(client.cleared.slice(-3), [...quiz.questions].map(question => question.id));
+  assert.deepEqual(client.cleared, [], 'All-question retries also preserve durable history');
+  assert.equal(Object.keys(client.context.quizResults).length, 3);
   assert(client.options(quiz.questions[0].id).every(node => !node.props.disabled));
   assert(!nodes(client.tree()).some(node => node.props?.className === 'fixed inset-0 pointer-events-none z-50 overflow-hidden'), 'Retrying clears the previous completion animation');
   client.choose(quiz.questions[0], quiz.questions[0].correctIndex); client.render();
-  assert.equal(client.saved.length, 5, 'Cleared questions accept a new answer');
+  assert.equal(client.saved.length, 5, 'Temporarily hidden answers accept a new graded attempt');
+});
+check('temporary retry state belongs to its account and current question revision', () => {
+  const client = harness(); answerAll(client);
+  client.button('もう一度挑戦する').props.onClick(); client.render();
+  assert(client.options(quiz.questions[0].id).every(node => !node.props.disabled));
+  client.account('another-learner');
+  assert(client.options(quiz.questions[0].id).every(node => node.props.disabled), 'A previous account cannot hide the incoming account answers');
+  client.account(null);
+  assert(client.options(quiz.questions[0].id).every(node => node.props.disabled), 'Returning to an account does not restore the discarded temporary retry');
+  client.button('もう一度挑戦する').props.onClick(); client.render();
+  const revisedQuiz = { ...quiz, questions: quiz.questions.map((question, index) => index ? question : { ...question, explanation: question.explanation + ' 改訂' }) };
+  client.render({ quiz: revisedQuiz });
+  assert(client.options(quiz.questions[0].id).every(node => node.props.disabled), 'A question revision discards its temporary retry state');
 });
 check('shuffle rendering and keyboard grade the original option', () => {
   const client = harness();

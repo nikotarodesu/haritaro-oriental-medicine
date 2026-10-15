@@ -40,7 +40,7 @@ export default function PrimeStudentCard({
             </h3>
 
             <p className="text-xs sm:text-sm text-[#4A534F] dark:text-[#A8B8C4] leading-relaxed">
-              『東洋医学概論』や解剖学など高額な専門書・国試過去問も、本3冊同時購入で<strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">最大10%ポイント還元</strong>。通常30日の無料体験が学生ならなんと<strong className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold">【6ヶ月間無料】</strong>で試せます。
+              『東洋医学概論』や解剖学など専門書や参考書も、本3冊同時購入で<strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">最大10%ポイント還元</strong>。通常30日の無料体験が学生ならなんと<strong className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold">【6ヶ月間無料】</strong>で試せます。
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 text-xs">
@@ -129,7 +129,7 @@ export default function PrimeStudentCard({
 
       <div className="pt-3.5 space-y-2.5">
         <p className="text-xs sm:text-sm text-[#4A534F] dark:text-[#A8B8C4] leading-relaxed">
-          『東洋医学概論』や『経絡経穴概論』、国家試験過去問集など高額になりがちな専門書も、本3冊同時購入で<strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">最大10%還元</strong>。通常30日の無料体験が学生なら<strong className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold">6ヶ月間無料</strong>で利用できます。
+          『東洋医学概論』や『経絡経穴概論』、参考書などの専門書も、本3冊同時購入で<strong className="text-[#B86924] dark:text-[#E6C387] font-semibold">最大10%還元</strong>。通常30日の無料体験が学生なら<strong className="text-[#1E3D34] dark:text-[#74BA9E] font-semibold">6ヶ月間無料</strong>で利用できます。
         </p>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-xs">

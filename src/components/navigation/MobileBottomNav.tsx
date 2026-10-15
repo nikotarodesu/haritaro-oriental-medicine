@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { Suspense, useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { MoreHorizontal } from "lucide-react";
 import { ALL_NAV_ITEMS, loadNavUserConfig, DEFAULT_NAV_CONFIG, NavUserConfig, NavItemId } from "@/config/navigationItems";
 import { useViewportLayout } from "@/hooks/useViewportLayout";
@@ -10,7 +10,12 @@ import NavCustomizeModal from "./NavCustomizeModal";
 import NavMoreDrawer from "./NavMoreDrawer";
 
 export default function MobileBottomNav() {
+  return <Suspense fallback={null}><MobileBottomNavContent /></Suspense>;
+}
+
+function MobileBottomNavContent() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [config, setConfig] = useState<NavUserConfig>(DEFAULT_NAV_CONFIG);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
@@ -51,11 +56,11 @@ export default function MobileBottomNav() {
   const isItemActive = (id: NavItemId, href: string): boolean => {
     if (id === "home") return pathname === "/";
     if (id === "search") return false;
-    if (id === "curriculum") return pathname.startsWith("/learn") || pathname.startsWith("/curriculum");
-    if (id === "review") return pathname === "/kokushi";
+    if (id === "curriculum") return pathname !== "/learn/review" && (pathname.startsWith("/learn") || pathname.startsWith("/curriculum"));
+    if (id === "review") return pathname === "/learn/review";
     if (id === "notes") return pathname.startsWith("/notes") || pathname.startsWith("/mynote");
-    if (id === "diagnosis") return pathname === "/diagnosis";
-    if (id === "gorou") return pathname.startsWith("/diagnosis") && typeof window !== "undefined" && window.location.search.includes("gorou");
+    if (id === "diagnosis") return pathname === "/diagnosis" && searchParams.get("tab") !== "gorou";
+    if (id === "gorou") return pathname === "/diagnosis" && searchParams.get("tab") === "gorou";
     if (id === "simulator") return pathname === "/simulator";
     if (id === "simulator_compare") return pathname.startsWith("/simulator/compare");
     if (id === "haiketsu") return pathname.startsWith("/practice/haiketsu");

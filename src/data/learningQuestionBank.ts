@@ -27,7 +27,7 @@ export const LEARNING_QUESTIONS: LearningQuestion[] = [
   ...KOKUSHI_PAST_EXAMS.map(q => ({
     ...q, lectureId: q.relatedLectureId || 'lecture-treatment-8',
     lectureTitle: q.relatedLectureTitle || q.subject, chapterId: 'kokushi', chapterTitle: q.subject,
-    kind: 'exam' as const, href: `/kokushi?examId=${q.id}#exam-practice`,
+    kind: 'exam' as const, href: `/curriculum/${q.relatedLectureId || "lecture-treatment-8"}#lecture-quiz`,
     revision: questionRevision(q.question, q.options, q.correctIndex, q.explanation),
   })),
 ];
