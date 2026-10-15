@@ -12,6 +12,7 @@ const { CURRICULUM_DATA } = load('src/data/curriculumData');
 const { CURRICULUM_CHAPTERS_META } = load('src/data/curriculumOutline');
 const { LEARNING_QUESTIONS } = load('src/data/learningQuestionBank');
 const { getLearningCourseForSeries } = load('src/data/learningCourses');
+const { resolveCourseJourney, createCourseLectureHref } = load('src/utils/courseJourney');
 const lectures = CURRICULUM_DATA.flatMap(stage => stage.lectures);
 const catalog = { chapters: CURRICULUM_CHAPTERS_META, lectures, plannedLessons: {} };
 const Link = () => null;
@@ -123,6 +124,31 @@ click(completionButtons(reader)[0]);
 assert.equal(writes.at(-1).owner, 'account-b');
 assert.equal(writes.at(-1).key, 'lecture:' + lectures[1].id);
 
+// The real footer keeps course continuation separate from the full curriculum.
+// A matching lecture pathname must not erase a different course query/context.
+const footer = () => reader.nodes().find(node => node.props?.className?.includes('curriculum-lecture-completion'));
+const footerLinks = () => nodes(footer()).filter(node => node.type === Link);
+const secondaryNav = () => reader.nodes().find(node => node.type === 'nav' && node.props['aria-label'] === '全講義の移動');
+const introductoryCourse = getLearningCourseForSeries('intro');
+const courseFirst = lectures.find(lecture => lecture.id === introductoryCourse.steps[0].lectureId);
+sync = { ready: true, values: {} };
+reader.render({ lecture: courseFirst, lectureNavigation: lectures });
+reader.nodes().find(node => typeof node.props?.onResolve === 'function').props.onResolve({ lectureId: courseFirst.id, journey: resolveCourseJourney(courseFirst.id, introductoryCourse.slug) });
+reader.render();
+const courseNext = createCourseLectureHref(introductoryCourse.slug, introductoryCourse.steps[1].lectureId);
+const primaryActions = reader.nodes().find(node => node.props?.className === 'curriculum-lecture-primary-actions');
+assert(nodes(primaryActions).some(node => node.type === Link && node.props.href === courseNext), 'The primary continuation retains the course query');
+const globalNext = '/curriculum/' + lectures[lectures.findIndex(lecture => lecture.id === courseFirst.id) + 1].id;
+assert(nodes(secondaryNav()).some(node => node.type === Link && node.props.href === globalNext), 'Full-curriculum navigation remains available even when the lecture pathname matches the course continuation');
+assert.equal(new Set(footerLinks().map(node => node.props.href)).size, footerLinks().length, 'Only identical complete destinations are deduplicated');
+sync.values = Object.fromEntries(introductoryCourse.steps.map(step => ['lecture:' + step.lectureId, true]));
+reader.render();
+assert(footerLinks().some(node => node.props.href === `/learn/courses/${introductoryCourse.slug}#course-next`), 'A completed course returns to its own course reflection');
+const finalLecture = lectures.at(-1);
+reader.render({ lecture: finalLecture, lectureNavigation: lectures });
+assert.equal(footerLinks().filter(node => node.props.href === '/curriculum').length, 1, 'The final direct lecture has a single full-curriculum return action');
+assert(nodes(secondaryNav()).some(node => node.type === Link && node.props.href === '/curriculum/' + lectures.at(-2).id), 'The final lecture still offers its previous lecture');
+
 // All lecture review cards retain question/return links, while stage-0/1 use
 // that chapter's ungraded short example and stage-2/3 keep the clinical cases.
 const card = harness('src/components/learning/ReviewQuestionCard.tsx', { lectureId: lectures[0].id });
@@ -152,4 +178,4 @@ sync.values['quiz:' + customId] = { questionId: customId, lectureId: 'external-r
 card.render({ lectureId: 'external-reading' }, new URLSearchParams({ review: customId }));
 assert(card.nodes().some(node => node.type === Link && node.props.href === '/glossary'), 'Unknown lecture stages fall back to vocabulary rather than clinical judgment');
 assert(card.nodes().some(node => node.type === Link && node.props.href === '/tsubo/practice'), 'Acupoint review retains its original exercise');
-console.log(`Passed: actual reader/index completion controls, loading/provider guards, mark/unmark and owner transitions; ${lectures.length} staged review cards, session return and unknown-stage fallback.`);
+console.log(`Passed: actual reader/index completion and owner guards, course-aware primary/footer navigation with safe deduplication, ${lectures.length} staged review cards, session return and unknown-stage fallback.`);

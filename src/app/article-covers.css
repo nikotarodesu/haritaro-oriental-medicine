@@ -46,6 +46,19 @@
   outline-offset: 4px;
 }
 
+.article-learning-alternatives > summary {
+  min-height: 44px;
+  padding-block: 10px;
+  color: var(--accent-readable);
+  font-size: .875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.article-learning-alternatives > div {
+  padding-block: 12px 4px;
+}
+
 @media (max-width: 479px) {
   .article-cover-card > .article-cover {
     height: 120px;

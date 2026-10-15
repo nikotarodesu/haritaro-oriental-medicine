@@ -158,6 +158,9 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
     ? courseJourney.previousStep ? createCourseLectureHref(courseJourney.course.slug, courseJourney.previousStep.lectureId) : null
     : prevLecture ? `/curriculum/${prevLecture.id}` : null;
   const nextHref = courseNextAction?.href || (nextLecture ? `/curriculum/${nextLecture.id}` : null);
+  const allLecturesPreviousHref = prevLecture ? `/curriculum/${prevLecture.id}` : null;
+  const allLecturesNextHref = nextLecture ? `/curriculum/${nextLecture.id}` : null;
+  const continuationHref = nextHref || "/curriculum";
 
   // 講義移動は修飾キーなしの [ / ] のみ。ブラウザ履歴の操作は上書きしない。
   useEffect(() => {
@@ -522,8 +525,8 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
         {chapterAssessment && <ChapterAssessment assessment={chapterAssessment} />}
 
         {/* 講義受講修了フッター */}
-        <div className="border-t border-[#F2ECE0] dark:border-[#22303D] pt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+        <div className="curriculum-lecture-completion border-t border-[#F2ECE0] dark:border-[#22303D] pt-6">
+          <div className="curriculum-lecture-primary-actions">
             <button
               type="button"
               disabled={!isMounted}
@@ -540,45 +543,20 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
                 {!isMounted ? "進捗を確認中…" : isCompleted ? "受講完了（解除する）" : "受講済みにする"}
               </span>
             </button>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
             {courseJourney && courseNextAction && <Link href={courseNextAction.href}
               onClick={() => trackEvent("context_link_click", { placement: courseNextAction.kind === 'complete' ? 'course_complete_return' : 'course_continue', course_id: courseJourney.course.slug, lecture_id: courseNextAction.lectureId })}
               className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#184F49] px-4 py-3 text-base font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-4 dark:bg-[#285F54]">
               <span>{courseNextAction.label}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
             </Link>}
-            {prevLecture && (
-              <Link
-                href={`/curriculum/${prevLecture.id}`}
-                className="min-h-[44px] px-4 py-2 rounded-xl border border-[#E8E1D1] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#FAF8F5] dark:hover:bg-[#1A2530] text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
-                title="前のレッスンへ（ショートカット: [ キー）"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                <ChapterEmblem seriesId={prevLecture.seriesId} className="curriculum-adjacent-emblem" />
-                <span>{courseJourney ? '全講義の前のレッスン' : '前のレッスン'}</span>
-                <kbd className={`${courseJourney ? 'hidden' : 'hidden sm:inline-block'} px-1.5 py-0.5 text-sm font-mono rounded bg-[#FAF8F5] dark:bg-[#202E3C] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#AFBDC8]`}>
-                  [
-                </kbd>
-              </Link>
-            )}
-
-            <Link
-              href="/curriculum"
-              className="min-h-[44px] px-4 py-2 rounded-xl border border-[#E8E1D1] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#FAF8F5] dark:hover:bg-[#1A2530] text-sm font-semibold transition-all flex items-center cursor-pointer"
-            >
-              一覧に戻る
-            </Link>
-
-            {nextLecture ? (
+            {!courseJourney && (nextLecture ? (
               <Link
                 href={`/curriculum/${nextLecture.id}`}
-                className={courseJourney ? "curriculum-next-lecture min-h-11 rounded-xl border border-[#D9E3DD] px-4 py-3 text-sm font-semibold dark:border-[#2A3B4A]" : "curriculum-next-lecture curriculum-next-lecture--primary min-h-[44px] px-5 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"}
+                className="curriculum-next-lecture curriculum-next-lecture--primary min-h-[44px] px-5 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
                 title="次のレッスンへ（ショートカット: ] キー）"
               >
                 <ChapterEmblem seriesId={nextLecture.seriesId} className="curriculum-adjacent-emblem" />
-                <span>{courseJourney ? '全講義の次のレッスン' : '次のレッスン'}</span>
-                <kbd className={`${courseJourney ? 'hidden' : 'hidden sm:inline-block'} px-1.5 py-0.5 text-sm font-mono rounded bg-white/20 text-white border border-white/30`}>
+                <span>次のレッスン</span>
+                <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-sm font-mono rounded bg-white/20 text-white border border-white/30">
                   ]
                 </kbd>
                 <ArrowRight className="w-4 h-4" />
@@ -591,8 +569,25 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
                 <span>全講義の一覧へ</span>
                 <Sparkles className="w-4 h-4" />
               </Link>
-            )}
+            ))}
           </div>
+
+          <nav aria-label="全講義の移動" className="curriculum-lecture-secondary-nav">
+            {prevLecture && allLecturesPreviousHref && allLecturesPreviousHref !== continuationHref && <Link
+              href={allLecturesPreviousHref}
+              title={courseJourney ? undefined : "前のレッスンへ（ショートカット: [ キー）"}
+            >
+              <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+              <ChapterEmblem seriesId={prevLecture.seriesId} className="curriculum-adjacent-emblem" />
+              <span>{courseJourney ? '全講義の前のレッスン' : '前のレッスン'}</span>
+            </Link>}
+            {continuationHref !== "/curriculum" && <Link href="/curriculum">一覧に戻る</Link>}
+            {courseJourney && nextLecture && allLecturesNextHref && allLecturesNextHref !== continuationHref && <Link href={allLecturesNextHref}>
+              <span>全講義の次のレッスン</span>
+              <ChapterEmblem seriesId={nextLecture.seriesId} className="curriculum-adjacent-emblem" />
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </Link>}
+          </nav>
         </div>
 
         {/* 参考文献・学術エビデンス */}

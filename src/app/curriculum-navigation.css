@@ -39,6 +39,12 @@
 .curriculum-next-lecture { display: inline-flex; align-items: center; gap: 8px; }
 .curriculum-next-lecture--primary .curriculum-adjacent-emblem { color: #c5e2d5; --emblem-green: #c5e2d5; --emblem-gold: #e5c692; --emblem-water: #a6ccd6; --emblem-paper: #1e3d34; }
 .curriculum-next-lecture--primary:hover .curriculum-adjacent-emblem { --emblem-paper: #2b5a46; }
+.curriculum-lecture-primary-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.curriculum-lecture-secondary-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 24px; margin-top: 12px; }
+.curriculum-lecture-secondary-nav a { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; color: var(--text-secondary); font-size: .875rem; line-height: 1.75; }
+.curriculum-lecture-secondary-nav a:hover { color: var(--accent-readable); text-decoration: underline; text-underline-offset: 4px; }
+.curriculum-lecture-secondary-nav .curriculum-adjacent-emblem { width: 20px; height: 20px; }
+.curriculum-lecture-secondary-nav a:focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 4px; border-radius: 4px; }
 @media (min-width: 900px) {
   .curriculum-resume { padding: 30px; }
   .curriculum-resume-main { grid-template-columns: minmax(0, 1fr) minmax(240px, .65fr); align-items: center; gap: 36px; }

@@ -1,4 +1,9 @@
 .tsubo-search-layout > [hidden] { display: none !important; }
+.acupoint-section-nav { display: flex; flex-wrap: wrap; gap: 0 24px; padding-bottom: 8px; border-bottom: 1px solid var(--border-washi); }
+.acupoint-section-nav a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--accent-readable); font-size: .875rem; font-weight: 600; }
+.acupoint-section-nav a:hover { text-decoration: underline; text-underline-offset: 5px; }
+.acupoint-section-nav a:focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 3px; }
+.acupoint-section-nav svg { flex-shrink: 0; }
 .tsubo-filter-toggles { display: flex; flex-wrap: wrap; gap: 12px; padding-top: 4px; }
 .tsubo-filter-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 10px 14px; border: 1px solid var(--border-washi); border-radius: 12px; background: var(--bg-card); color: var(--accent-readable); font-size: .875rem; font-weight: 600; }
 .tsubo-filter-toggle[aria-expanded="true"] { background: var(--tokiwa-light); border-color: var(--accent-readable); }
@@ -50,6 +55,7 @@
 .meridian-relation-points a { display: inline-flex; align-items: center; min-height: 44px; color: var(--accent-readable); text-decoration: underline; text-underline-offset: 4px; }
 .meridian-relation-points a > span { color: var(--text-secondary); font-size: .75rem; }
 @media (max-width: 599px) {
+  .acupoint-section-nav { column-gap: 16px; }
   .tsubo-detail-filters { padding-inline: 0; }
   .tsubo-filter-toggles { gap: 8px; }
   .tsubo-filter-toggle { flex: 1 1 auto; padding-inline: 10px; gap: 6px; }

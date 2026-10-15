@@ -153,41 +153,17 @@ export default function HaiketsuPracticePage() {
       <ClinicalToolBridge selectedCodes={selectedPointIds.map(id => ACUPOINT_ROLES[id]?.code).filter(Boolean)} editableCodes={Object.values(ACUPOINT_ROLES).map(point => point.code)} onRestore={restoreClinicalPoints} />
       <div className="page-layout page-layout--intro">
         <PageIntro compact eyebrow="基本32穴から組み立てる" title="配穴設計・臨床演習" art="points" description="経穴を選び、構成を確かめ、選んだ理由を残す。教材例と比べながら練習できます。" />
+        {!isPremium && <p className="mt-4 text-sm text-[#59615D] dark:text-[#B7C5CF]">無料で4穴まで組み合わせて試せます。</p>}
         <details className="page-help mt-4">
-          <summary>演習の内容・保存できる件数</summary>
+          <summary>演習の内容・保存・プレミアム機能</summary>
           <p>基本32穴から経穴を選び、本治・標治の内訳や、昇降・寒熱の方向を示す教材上の分類を確認します。選んだ理由を教材例と比べ、配穴集やノートに残す練習ができます。</p>
-          <p>無料では4穴までの選択・構成分析・最初の2つの教材例・臨床ノートへの下書き引き継ぎを利用できます。配穴集は無料で最大{SUBSCRIPTION_CONFIG.limits.freeMemoMax}件、プレミアムで最大{SUBSCRIPTION_CONFIG.limits.premiumMemoMax.toLocaleString("ja-JP")}件です。プレミアムでは、選定理由を自分の言葉で記録できます。</p>
+          <p>無料では4穴までの選択・構成分析・最初の2つの教材例・臨床ノートへの下書き引き継ぎを利用できます。配穴集は無料で最大{SUBSCRIPTION_CONFIG.limits.freeMemoMax}件、プレミアムで最大{SUBSCRIPTION_CONFIG.limits.premiumMemoMax.toLocaleString("ja-JP")}件です。プレミアムでは、5〜8穴の選択、タイトル・選定理由の編集、3つ目以降の教材例を利用できます。</p>
+          {!isPremium && <button type="button" onClick={() => setAuthModalOpen(true)} className="min-h-11 text-sm font-semibold text-[#1E3D34] underline underline-offset-4 dark:text-[#83BEA8]">{salesEnabled ? "プレミアム機能を確認" : status === "unavailable" ? "プレミアムの準備状況" : "プレミアムの受付状況"}</button>}
         </details>
       </div>
 
       <div className="page-layout page-layout--continuation space-y-8">
         
-        {/* 無料体験案内バナー */}
-        {!isPremium && (
-          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#FAF8F5] to-[#FCF4EB] dark:from-[#17212A] dark:to-[#221810] border border-[#F3DEC5] dark:border-[#4D331F] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0">
-                <Crown className="w-5 h-5" />
-              </div>
-              <div className="space-y-0.5">
-                <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
-                  無料で4穴まで組み合わせて試せます
-                </span>
-                <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-                  穴を選び直して構成を確認し、配穴集にも保存できます。5〜8穴の選択、タイトル・理由の編集、3つ目以降の教材例はプレミアム機能です。
-                </p>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => setAuthModalOpen(true)}
-              className="px-4 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B6958] text-white text-xs font-bold shrink-0 transition-colors shadow-sm cursor-pointer min-h-[44px]"
-            >
-              {salesEnabled ? "プレミアム機能を確認" : status === "unavailable" ? "プレミアムの準備状況" : "プレミアムの受付状況"}
-            </button>
-          </div>
-        )}
-
         {/* 比較検討用ケース */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">

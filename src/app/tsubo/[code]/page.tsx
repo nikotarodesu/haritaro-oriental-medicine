@@ -267,15 +267,6 @@ export default async function AcupointDetailPage({ params }: Props) {
                 <span className="text-sm px-2 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#263542] text-[#59615D] dark:text-[#A0B0BC]">
                   {point.bodyPart}
                 </span>
-                {isDetailed ? (
-                  <span className="text-sm px-2.5 py-1 rounded-lg bg-[#EBF3EF] dark:bg-[#1A332B] border border-[#C5DED4] dark:border-[#2D5A4A] text-[#1E3D34] dark:text-[#74BA9E] font-bold">
-                    個別編集データあり
-                  </span>
-                ) : (
-                  <span className="text-sm px-2 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#2D3E50] text-[#59615D] dark:text-[#AFBDC8]">
-                    標準取穴情報
-                  </span>
-                )}
               </div>
 
               {/* 経穴名・読み */}
@@ -386,14 +377,14 @@ export default async function AcupointDetailPage({ params }: Props) {
           )}
         </div>
 
-        <nav aria-label="この経穴のページ内目次" className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-          <a href="#acupoint-location" className="page-secondary-action"><Compass aria-hidden="true" className="h-4 w-4" />位置</a>
+        <nav aria-label="この経穴のページ内目次" className="acupoint-section-nav">
+          <a href="#acupoint-location"><Compass aria-hidden="true" className="h-4 w-4" />位置</a>
           {point.crossSection && point.crossSection.svgElements && point.crossSection.svgElements.length > 0 && (
-            <a href="#acupoint-diagram" className="page-secondary-action"><Layers aria-hidden="true" className="h-4 w-4" />図</a>
+            <a href="#acupoint-diagram"><Layers aria-hidden="true" className="h-4 w-4" />図</a>
           )}
-          <a href={hasSafetyWarning ? "#acupoint-safety-warning" : "#acupoint-cautions"} className="page-secondary-action"><ShieldCheck aria-hidden="true" className="h-4 w-4" />注意事項</a>
-          {point.researchEvidence && <a href="#acupoint-research" className="page-secondary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />研究</a>}
-          <a href="#acupoint-sources" className="page-secondary-action"><FileText aria-hidden="true" className="h-4 w-4" />出典</a>
+          <a href={hasSafetyWarning ? "#acupoint-safety-warning" : "#acupoint-cautions"}><ShieldCheck aria-hidden="true" className="h-4 w-4" />注意事項</a>
+          {point.researchEvidence && <a href="#acupoint-research"><BookOpen aria-hidden="true" className="h-4 w-4" />研究</a>}
+          <a href="#acupoint-sources"><FileText aria-hidden="true" className="h-4 w-4" />出典</a>
         </nav>
 
         {/* ⚠️ 安全上の注意（禁忌・気胸リスク・妊婦注意アラート） */}
@@ -543,7 +534,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           </div>
         </section>
 
-        <AcupointInformationScope code={point.code} locationSource={point.locationSource} individualModel={individualModel} />
+        <AcupointInformationScope code={point.code} locationSource={point.locationSource} individualModel={individualModel} individuallyEdited={isDetailed} />
         {/* 3. 断面解剖モデル */}
         {point.crossSection && point.crossSection.svgElements && point.crossSection.svgElements.length > 0 && (
           <section id="acupoint-diagram" className="scroll-mt-28 space-y-6">

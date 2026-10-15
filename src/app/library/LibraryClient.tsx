@@ -91,11 +91,12 @@ export default function LibraryClient() {
   return (
     <div className="page-layout text-base leading-relaxed">
       <PageIntro eyebrow="原典と研究を読む" title="文献・古典・症例教材" description="論文、古典、症例から選ぶ。調べたい言葉で資料を探せます。" art="reading" />
-      <div className="rounded-2xl border border-[#E5DEC9] bg-[#FCFAF6] p-4 dark:border-[#2A3B4A] dark:bg-[#17212A] sm:p-6">
-        <div className="space-y-4">
-          {/* 検索バー */}
-          <div className="pt-2 max-w-xl">
-            <label htmlFor="library-search" className="mb-2 block text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">資料を検索</label>
+      <section aria-label="資料を探す" className="library-discovery rounded-2xl border border-[#E5DEC9] bg-[#FCFAF6] p-4 dark:border-[#2A3B4A] dark:bg-[#17212A] sm:p-6">
+          <div className="library-search">
+            <div className="library-search-label">
+              <label htmlFor="library-search" className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">資料を検索</label>
+              <p id="library-search-hint" className="text-sm text-[#59615D] dark:text-[#A0B0BC]">例：膝痛、足三里、素問</p>
+            </div>
             <div className="relative">
               <Search className="w-5 h-5 text-[#737C77] absolute left-3 top-1/2 -translate-y-1/2" aria-hidden="true" />
               <input
@@ -110,15 +111,8 @@ export default function LibraryClient() {
               />
               {searchQuery.length > 0 && <button type="button" aria-label="検索をクリア" onClick={() => setSearchQuery('')} className="absolute right-1 top-1/2 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-md text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#E8EFEA] dark:hover:bg-[#182823]"><X className="h-5 w-5" aria-hidden="true" /></button>}
             </div>
-            <p id="library-search-hint" className="mt-2 text-sm text-[#59615D] dark:text-[#A0B0BC]">例：膝痛、足三里、素問</p>
           </div>
-        </div>
-      </div>
-
-      <div className="py-6 sm:py-8 space-y-6">
-        
-        {/* カテゴリタブ */}
-        <div role="group" aria-label="資料の分類" className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap text-sm">
+        <div role="group" aria-label="資料の分類" className="library-category-filters text-sm">
           {[
             { id: "all", label: "すべて", count: totalResults },
             { id: "papers", label: "論文", count: filteredPapers.length },
@@ -132,7 +126,7 @@ export default function LibraryClient() {
               aria-pressed={activeTab === tab.id}
               style={{ minHeight: 44 }}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-4 py-3 rounded-xl border font-bold transition-colors flex items-center gap-2 ${
+              className={`library-category-button rounded-xl border font-bold transition-colors ${
                 activeTab === tab.id
                   ? "bg-[#1E3D34] border-[#1E3D34] text-white dark:bg-[#2B6958] dark:border-[#2B6958]"
                   : "bg-[#FCFAF6] dark:bg-[#17212A] text-[#59615D] dark:text-[#A0B0BC] border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#E8EFEA] dark:hover:bg-[#182823]"
@@ -144,7 +138,14 @@ export default function LibraryClient() {
           ))}
         </div>
 
-        <p role="status" className="text-sm text-[#59615D] dark:text-[#A0B0BC]">表示中：{visibleResultCount} 件</p>
+        <div className="library-result-summary">
+          <h2 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">検索結果</h2>
+          <p role="status" aria-atomic="true" className="text-sm text-[#59615D] dark:text-[#A0B0BC]"><span className="sr-only">表示中：</span>{visibleResultCount}件</p>
+          <details className="reference-disclosure library-source-disclosure"><summary>出典・確認範囲</summary><div className="reference-disclosure-body"><p className="text-base leading-relaxed">古典条文（素問・霊枢・難経）、原典と書誌情報を照合した研究資料、症例教材をまとめています。研究の種類・対象・限界を確認しながら学ぶための資料集です。</p><p className="text-base leading-relaxed">書誌を照合した論文{PAPERS_DATABASE.length}件のうち、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'abstract').length}件は抄録、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'selected_full_text').length}件は本文の一部を確認しています。{PAPERS_DATABASE.filter(paper => paper.claimsStatus !== 'source-checked').length}件は結果の要約を保留中です。全件の全文照合・専門家監修は未完了です。<Link href="/editorial-policy" className="underline">出典確認・監修の進捗を見る</Link></p></div></details>
+        </div>
+      </section>
+
+      <div className="py-4 sm:py-6 space-y-6">
 
         {visibleResultCount === 0 && <section aria-labelledby="library-empty-title" className="rounded-xl bg-[#FCFAF6] dark:bg-[#17212A] p-5 sm:p-6 space-y-3">
           <h2 id="library-empty-title" className="font-serif text-xl font-bold">該当する資料がありません</h2>
@@ -156,8 +157,6 @@ export default function LibraryClient() {
         </section>}
 
         {activeTab === "archives" && <div className="[&_p]:text-base [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_a]:text-sm"><MedicalSafetyNotice title="症例アーカイブの掲載は保留中です" message={ARCHIVE_CASES_NOTICE} /></div>}
-
-        <details className="page-help"><summary>資料の種類・出典の確認範囲</summary><p className="text-base leading-relaxed">古典条文（素問・霊枢・難経）、原典と書誌情報を照合した研究資料、症例教材をまとめています。研究の種類・対象・限界を確認しながら学ぶための資料集です。</p><p className="text-base leading-relaxed">書誌を照合した論文{PAPERS_DATABASE.length}件のうち、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'abstract').length}件は抄録、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'selected_full_text').length}件は本文の一部を確認しています。{PAPERS_DATABASE.filter(paper => paper.claimsStatus !== 'source-checked').length}件は結果の要約を保留中です。全件の全文照合・専門家監修は未完了です。<Link href="/editorial-policy" className="underline">出典確認・監修の進捗を見る</Link></p></details>
 
         {/* コンテンツエリア */}
         {visibleResultCount > 0 && <div className="space-y-8">

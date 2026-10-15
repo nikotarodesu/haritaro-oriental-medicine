@@ -1,3 +1,14 @@
+.learning-sync-compact { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 20px; font-size: .8125rem; line-height: 1.8; color: var(--text-secondary); }
+.learning-sync-compact > p { padding-block: 10px; }
+.learning-sync-compact[data-attention="true"] { display: block; padding: 12px 16px; border: 1px solid var(--border-washi); border-radius: 12px; background: var(--bg-card); }
+.learning-sync-compact[data-attention="true"] > p { padding-block: 0 8px; }
+.learning-sync-details { min-width: 0; }
+.learning-sync-details > summary, .review-support-detail > summary { min-height: 44px; align-content: center; cursor: pointer; }
+.learning-sync-details > summary { text-decoration: underline; text-underline-offset: 4px; }
+.learning-sync-details > div { padding-bottom: 12px; }
+.learning-sync-details > summary:focus-visible, .review-support-detail > summary:focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 3px; }
+.review-support { border-top: 1px solid var(--border-washi); padding-top: 12px; font-size: .875rem; }
+.review-support-detail { border-bottom: 1px solid var(--border-subtle); }
 .course-progress-help { margin-top: 1rem; color: var(--text-secondary); font-size: .875rem; }
 .course-progress-help summary, .course-step-focus summary { cursor: pointer; min-height: 44px; align-content: center; }
 .course-progress-help p, .course-step-focus p { padding: .25rem 0 .75rem; line-height: 1.85; }

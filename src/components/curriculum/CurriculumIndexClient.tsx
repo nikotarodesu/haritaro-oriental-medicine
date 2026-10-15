@@ -29,6 +29,10 @@ import {
   ChevronUp,
 } from "lucide-react";
 
+function lectureTopic(title: string) {
+  return title.replace(/^.+?\s+レッスン\d+[：:]\s*/, "");
+}
+
 export default function CurriculumIndexClient({ catalog, relatedArticles }: {
   catalog: CurriculumIndexCatalog;
   relatedArticles: ArticlePreview[];
@@ -123,7 +127,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
               <div className="curriculum-resume-lesson">
                 <p className="curriculum-resume-series">{resumeLecture.seriesTitle || "基幹講義"}</p>
                 <h2 className="curriculum-resume-title">
-                  {resumeLecture.title}
+                  {lectureTopic(resumeLecture.title)}
                 </h2>
                 <p className="curriculum-resume-summary">
                   {resumeLecture.whatYouWillLearn?.canDo || resumeLecture.summary}
@@ -368,7 +372,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
 
                             {/* レッスン名 */}
                             <h4 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed">
-                              <Link href={`/curriculum/${lec.id}`} className="focus-visible:outline-2 focus-visible:outline-offset-4">{lec.title}</Link>
+                              <Link href={`/curriculum/${lec.id}`} aria-label={lec.title} className="focus-visible:outline-2 focus-visible:outline-offset-4">{lectureTopic(lec.title)}</Link>
                             </h4>
 
                             {/* 概要 */}

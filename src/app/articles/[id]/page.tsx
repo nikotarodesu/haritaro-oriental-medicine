@@ -233,7 +233,7 @@ export default async function ArticleDetailPage({ params }: Props) {
           <nav aria-label="この記事の読み進め方" className="page-actions">
             <a href="#article-content" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />本文</a>
             {readingGuide?.inserts[0] && <a href={`#reading-figure-${readingGuide.inserts[0].figure.id}`} className="page-secondary-action"><Network aria-hidden="true" className="h-4 w-4" />図解</a>}
-            {nextArticles.length > 0 && <a href="#article-next-reading" className="page-secondary-action"><ArrowRight aria-hidden="true" className="h-4 w-4" />次に読む</a>}
+            {nextArticles.length > 0 && <a href="#article-next-reading" className="page-secondary-action"><ArrowRight aria-hidden="true" className="h-4 w-4" />続きを読む</a>}
             {resolvedReferences.length > 0 && <a href="#article-references-section" className="ui-text-link text-sm"><Bookmark aria-hidden="true" className="h-4 w-4" />出典</a>}
           </nav>
           <details className="page-help text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]"><summary>この記事の要点・読み方</summary><div className="space-y-3">
@@ -268,7 +268,7 @@ export default async function ArticleDetailPage({ params }: Props) {
           </div>
 
           {nextArticles.length > 0 && <section id="article-next-reading" aria-labelledby="article-next-reading-title" className="scroll-mt-36 space-y-4 border-t border-[#E8E1D1] dark:border-[#22303D] pt-6">
-            <div className="space-y-1"><h2 id="article-next-reading-title" className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">次に読む</h2><p className="text-sm text-[#59615D] dark:text-[#A0B0BC]">いま読んだ内容を、別の視点から確かめる記事です。</p></div>
+            <div className="space-y-1"><h2 id="article-next-reading-title" className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">続きを読む</h2><p className="text-sm text-[#59615D] dark:text-[#A0B0BC]">いま読んだ内容を、別の視点から確かめる記事です。</p></div>
             <div className="grid gap-3 sm:grid-cols-3">{nextArticles.map(({ article: next, reason }) => <ContentNavigationLink key={next.id} href={`/articles/${next.id}`} placement="article_next" articleId={next.id} className="flex flex-col gap-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] p-4 hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2">
               <p className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">{reason}</p>
               <h3 className="font-serif text-base font-bold leading-relaxed text-[#232826] dark:text-[#FAF8F5]">{next.title}</h3>
@@ -276,14 +276,18 @@ export default async function ArticleDetailPage({ params }: Props) {
             </ContentNavigationLink>)}</div>
           </section>}
 
-          <div className="space-y-3 border-t border-[#E8E1D1] dark:border-[#22303D] pt-5 text-sm">
-            {learningGuide && <LearningPathLinks lectureId={learningGuide.lectureId} caseId={learningGuide.caseId} lectureTitle={learningLectureTitle} caseTitle={learningCaseTitle} />}
+          {(learningGuide || relatedCourses.length > 0) && <section aria-labelledby="article-learning-next-title" className="space-y-4 border-t border-[#E8E1D1] dark:border-[#22303D] pt-6 text-sm">
+            <h2 id="article-learning-next-title" className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">順に学ぶ</h2>
             {relatedCourses.length > 0 && <div className="rounded-xl bg-[#EBF3EF] p-4 dark:bg-[#182823]">
-              <p className="font-semibold text-[#184F49] dark:text-[#83BEA8]">このテーマを順に学ぶ</p>
+              <p className="font-semibold text-[#184F49] dark:text-[#83BEA8]">このテーマの基礎コース</p>
               <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2">{relatedCourses.map(course => <ContentNavigationLink key={course.slug} href={`/learn/courses/${course.slug}`} placement="article_course" courseId={course.slug} className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#83BEA8]">{course.title}<ArrowRight aria-hidden="true" className="h-4 w-4" /></ContentNavigationLink>)}</div>
             </div>}
-            <a href="#article-top" className="inline-flex min-h-11 items-center underline underline-offset-4 text-[#1E3D34] dark:text-[#74BA9E]">記事の先頭へ</a>
-          </div>
+            {learningGuide && (relatedCourses.length > 0 ? <details className="article-learning-alternatives">
+              <summary>講義・クイズ・症例から選ぶ</summary>
+              <div><LearningPathLinks lectureId={learningGuide.lectureId} caseId={learningGuide.caseId} lectureTitle={learningLectureTitle} caseTitle={learningCaseTitle} /></div>
+            </details> : <LearningPathLinks lectureId={learningGuide.lectureId} caseId={learningGuide.caseId} lectureTitle={learningLectureTitle} caseTitle={learningCaseTitle} />)}
+          </section>}
+          <a href="#article-top" className="inline-flex min-h-11 items-center underline underline-offset-4 text-sm text-[#1E3D34] dark:text-[#74BA9E]">記事の先頭へ</a>
           {/* 参考文献・学術エビデンス（PubMed・DOI・古典原典） */}
           <ArticleReferences references={resolvedReferences} />
 

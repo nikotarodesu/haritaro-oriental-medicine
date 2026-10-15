@@ -27,7 +27,7 @@ export default function ClinicalLandingPage() {
     <div className="clinical-page">
       <ClinicalDashboard />
       <section id="tools" aria-labelledby="clinical-tools-heading" className="clinical-section">
-        <div className="clinical-section-heading"><h2 id="clinical-tools-heading">比較・チェック・配穴</h2><span>学習と記録を支えるツール</span></div>
+        <div className="clinical-section-heading"><h2 id="clinical-tools-heading">比較・チェック・配穴</h2></div>
         <ul className="clinical-tool-grid">
           {tools.map(({ icon: Icon, ...tool }) => <li key={tool.href}>
             <Link href={tool.href} className="clinical-tool-card">

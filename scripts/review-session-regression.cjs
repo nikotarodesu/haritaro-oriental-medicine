@@ -377,6 +377,29 @@ storage.setItem(session.REVIEW_SESSION_KEY, 'invalid');
 mount({ compact: true });
 assert(outsideDisclosure().some(node => node.props?.role === 'status' && text(node).includes('再開できません')), 'Invalid checkpoint feedback remains visible');
 
+// Compact sync presentation keeps failure warnings and recovery actions visible.
+const SyncStatusUI = client('src/components/learning/LearningSyncStatus.tsx');
+const retrySync = () => {};
+for (const status of ['local', 'synced', 'syncing', 'offline', 'setup', 'memory']) {
+  sync = { ready: true, status, retry: retrySync, canImportGuest: ['offline', 'setup', 'memory'].includes(status), importGuest() {} };
+  const syncTree = SyncStatusUI({ compact: true });
+  const disclosures = nodes(syncTree).filter(node => node.type === 'details');
+  const hidden = new Set(disclosures.flatMap(node => nodes(node)));
+  const visible = nodes(syncTree).filter(node => !hidden.has(node));
+  assert(visible.some(node => node.props?.role === 'status'), status + ': storage state is always visible');
+  if (['offline', 'setup', 'memory'].includes(status)) {
+    assert(visible.some(node => node.type === 'button' && node.props.onClick === retrySync), status + ': recovery never needs a disclosure');
+    assert(visible.some(node => node.type === 'button' && text(node).includes('ログイン前の履歴を引き継ぐ')), status + ': import remains available');
+    if (status === 'memory') assert(visible.some(node => node.props?.role === 'alert' && text(node).includes('記録が失われる')));
+  } else {
+    assert(disclosures.length && !disclosures[0].props.open, status + ': optional explanation starts collapsed');
+  }
+}
+sync = { ready: true, values: {}, status: 'synced', retry: retrySync, canImportGuest: true, importGuest() {} };
+assert(!nodes(SyncStatusUI({ compact: true })).some(node => node.type === 'details'), 'Pending guest import stays visible even when cloud sync succeeded');
+mount({ compact: true });
+assert(outsideDisclosure().some(node => node.type === SyncStatus), 'Pending guest import is outside the collapsed index controls');
+
 // Execute the actual lecture key handler, extracted with the TypeScript AST.
 const readerFile = path.join(root, 'src/components/curriculum/CurriculumLectureReader.tsx');
 const ast = ts.createSourceFile(readerFile, fs.readFileSync(readerFile, 'utf8'), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);

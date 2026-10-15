@@ -37,7 +37,7 @@ export default function ClinicalDashboard() {
       <Link href="/notes#clinical-timeline" className="clinical-quick-action"><History aria-hidden="true" /><span>臨床記録<small>ノート・経過</small></span><ArrowRight aria-hidden="true" className="clinical-action-arrow" /></Link>
     </nav>
     <section id="chief-complaints" className="clinical-section">
-      <div className="clinical-section-heading"><h2>主訴から調べる</h2><span>症状を選ぶ</span></div>
+      <div className="clinical-section-heading"><h2>主訴から調べる</h2></div>
       <div className="clinical-complaint-grid">{CLINICAL_COMPLAINTS.map(item => <Link key={item.slug} className="clinical-complaint-card" href={`/clinical/symptoms/${item.slug}`}><ClinicalComplaintIcon kind={item.slug} /><span>{item.title}</span><ArrowRight aria-hidden="true" className="clinical-card-arrow" /></Link>)}</div>
       <Link href="/safety" className="clinical-safety-link"><ShieldCheck aria-hidden="true" /><span>受診・安全確認</span><ArrowRight aria-hidden="true" /></Link>
     </section>

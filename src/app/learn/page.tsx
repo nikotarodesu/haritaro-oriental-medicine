@@ -1,14 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, BookOpen, RotateCcw, MapPin, BookA, Layers } from 'lucide-react';
+import { ArrowRight, RotateCcw, MapPin, BookA, Layers } from 'lucide-react';
 import PageIntro from '@/components/design/PageIntro';
 import { pageSocialMetadata, SITE_NAME } from '@/config/seo';
 import { LEARNING_COURSES } from '@/data/learningCourses';
 import { getCurriculumIndexCatalog } from '@/data/curriculumIndexCatalog';
-import { CURRICULUM_TOTAL_CHAPTERS, CURRICULUM_TOTAL_LESSONS, FIRST_CURRICULUM_LECTURE_ID } from '@/data/curriculumOutline';
-import HomeLearningProgressCard from '@/components/HomeLearningProgressCard';
+import { CURRICULUM_TOTAL_CHAPTERS, CURRICULUM_TOTAL_LESSONS } from '@/data/curriculumOutline';
+import LearningGuideStart from '@/components/learning/LearningGuideStart';
 import ContentNavigationLink from '@/components/learning/ContentNavigationLink';
-import { createCourseLectureHref } from '@/utils/courseJourney';
 import { getCourseReadingMinutes } from '@/utils/courseReadingTime';
 
 const pageTitle = '東洋医学を概論から学ぶ｜初学者・鍼灸学生';
@@ -26,9 +25,8 @@ export default function LearnGuidePage() {
   return (
     <div className="page-layout space-y-10">
       <PageIntro eyebrow="初学者・鍼灸学生のための学習案内" title="東洋医学は、どの順番で学ぶ？" description="概論から、一講ずつ。読んで、クイズで確かめましょう。" art="study">
-        <div className="page-actions"><ContentNavigationLink href={createCourseLectureHref(LEARNING_COURSES[0].slug, FIRST_CURRICULUM_LECTURE_ID)} placement="learn_intro_start" className="page-primary-action"><BookOpen aria-hidden="true" className="h-5 w-5" />初めての方：第1講から始める<ArrowRight aria-hidden="true" className="h-4 w-4" /></ContentNavigationLink><Link href="/curriculum" className="page-secondary-action">全講義の目次</Link></div>
+        <LearningGuideStart lectures={catalog.lectures.filter(lecture => lecture.isPublished !== false).map(({ id, title }) => ({ id, title }))} />
       </PageIntro>
-      <HomeLearningProgressCard />
 
       <section aria-labelledby="learn-courses-heading" className="space-y-4">
         <h2 id="learn-courses-heading" className="font-serif text-2xl font-bold">全{LEARNING_COURSES.length}コースの学習順</h2>
@@ -48,6 +46,7 @@ export default function LearnGuidePage() {
       <details className="page-help"><summary id="learn-review-scope">教材の用途と確認範囲</summary><p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">伝統理論と医学的な評価を区別して学びます。全教材の医学記述の照合・専門家監修は未完了です。未確認の刺鍼深度・角度・針路などの個別手順は掲載を保留しています。Web学習の受講完了は、実際の施術能力の認定を意味しません。</p><Link href="/editorial-policy" className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>出典と確認範囲を見る →</Link></details>
 
       <nav aria-label="復習と用語の確認" className="page-link-grid">{[{ href: '/learn/review#learning-review', label: '今日の復習', icon: RotateCcw }, { href: '/tsubo/practice', label: '経穴の基本演習', icon: MapPin }, { href: '/glossary', label: '用語集', icon: BookA }, { href: '/learn/courses/pathomechanism-foundations#concept-comparison', label: '病因・病機・症状・証を比べる', icon: Layers }].map(({ icon: Icon, ...link }) => <Link key={link.href} href={link.href} className="page-link-card flex items-center gap-3"><span className="page-link-icon"><Icon aria-hidden="true" className="h-5 w-5" /></span><span className="flex-1 font-semibold">{link.label}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link>)}</nav>
+      <nav aria-label="学習の記録と演習" className="flex flex-wrap gap-x-6 gap-y-1 text-sm"><Link href="/notes?tab=learning" className="ui-text-link">学習ノート</Link><Link href="/simulator#case-training" className="ui-text-link">症例で考える</Link></nav>
     </div>
   );
 }
