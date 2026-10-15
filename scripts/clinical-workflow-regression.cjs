@@ -103,4 +103,39 @@ assert.equal(encounters.readClinicalEncounter().encounter, null); assert(encount
 const failing = createDataLoader({ Intl, window: {}, sessionStorage: { getItem() { throw Error('blocked'); }, setItem() { throw Error('quota'); }, removeItem() { throw Error('blocked'); } }, console: { error() {} } });
 assert.equal(failing('src/utils/clinicalEncounter.ts').writeClinicalEncounter(encounter), false);
 assert.equal(failing('src/utils/draftNote.ts').saveDraftPatientNote(draft), false);
-console.log(`Clinical workflow passed: ${lectures.length} lecture guides, 6 complaint routes, unknown/absent/conflict, draft recovery, visit metrics, follow-up reset, timeline isolation and storage failures.`);
+
+// The condensed storage UI keeps failed-sync and identity warnings visible,
+// while its existing file operations remain connected behind the disclosure.
+const storageSupportFile = path.resolve(__dirname, '../src/app/notes/NotesStorageSupport.tsx');
+const storageSupportExports = {};
+vm.runInNewContext(ts.transpileModule(fs.readFileSync(storageSupportFile, 'utf8'), {
+  fileName: storageSupportFile,
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true },
+}).outputText, { exports: storageSupportExports, require: id => id === 'next/link' ? ({ href, children, ...props }) => React.createElement('a', { href, ...props }, children) : require(id) });
+const NotesStorageSupport = storageSupportExports.default;
+const storageCalls = [];
+const storageProps = { syncStatus: 'local', isAuthenticated: false, isPremium: false, patientNoteCount: 0, fileInputRef: { current: null }, onDownloadCsv: () => storageCalls.push('csv'), onDownloadBackup: () => storageCalls.push('json'), onImport: () => storageCalls.push('import'), onFileUpload: event => storageCalls.push(event) };
+function storageNodes(node, withinDetails = false, list = []) {
+  if (Array.isArray(node)) { node.forEach(child => storageNodes(child, withinDetails, list)); return list; }
+  if (!node || typeof node !== 'object') return list;
+  list.push({ node, withinDetails });
+  storageNodes(node.props?.children, withinDetails || node.type === 'details', list);
+  return list;
+}
+for (const state of ['local', 'syncing', 'synced', 'offline']) {
+  const items = storageNodes(NotesStorageSupport({ ...storageProps, syncStatus: state }));
+  assert(items.some(({ node, withinDetails }) => node.props?.role === 'status' && !withinDetails), state + ': storage state is always visible');
+  assert(items.some(({ node, withinDetails }) => node.type === 'p' && !withinDetails && renderToStaticMarkup(node).includes('本人を特定できる情報')), state + ': identity reminder stays outside optional help');
+  assert.equal(items.some(({ node, withinDetails }) => node.props?.role === 'alert' && !withinDetails), state === 'offline', 'Failed sync is an explicit visible alert');
+}
+const storageItems = storageNodes(NotesStorageSupport(storageProps));
+storageItems.filter(({ node }) => node.type === 'button').forEach(({ node }) => node.props.onClick());
+assert.equal(storageCalls.join(','), 'csv,json,import', 'All file operations still invoke their supplied existing handlers');
+const fileControl = storageItems.find(({ node }) => node.type === 'input').node;
+const uploadEvent = { target: { files: ['offline-test-fixture'] } };
+fileControl.props.onChange(uploadEvent);
+assert.equal(storageCalls.at(-1), uploadEvent, 'Import events reach the original upload handler unchanged');
+assert(renderToStaticMarkup(React.createElement(NotesStorageSupport, storageProps)).includes('href="/auth/login?returnTo=/notes"'), 'Guests retain login with the current workspace return');
+const signedInStorage = renderToStaticMarkup(React.createElement(NotesStorageSupport, { ...storageProps, isAuthenticated: true, patientNoteCount: 3 }));
+assert(signedInStorage.includes('href="/pricing"') && signedInStorage.includes('臨床ノートが3件'), 'Signed-in free users retain save-limit and backup guidance');
+console.log(`Clinical workflow passed: ${lectures.length} lecture guides, 6 complaint routes, draft recovery, timeline isolation, storage failures, visible storage/identity warnings and preserved file-operation handlers.`);

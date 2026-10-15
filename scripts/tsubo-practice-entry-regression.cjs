@@ -256,6 +256,20 @@ assert.equal(study.loadPausedSessions()[0].sessionId, old.sessionId);
 study.resetAllStudyData();
 assert.equal(study.loadPausedSessions().length, 0);
 assert.equal(study.loadActiveSession(), null);
+
+// Condensed progress and optional settings must not move ahead of the main
+// learning action, or disconnect the selected skill from the next real set.
+harness = createHarness(''); harness.render();
+const homeText = harness.text();
+assert(homeText.indexOf('十四経脈の小テストを始める') < homeText.indexOf('今日の目標'), 'A learning action precedes the supplementary statistics');
+assert(homeText.indexOf('肺経基礎から始める（6問）') < homeText.indexOf('出題：総合MIX特訓'), 'The main start action precedes optional skill controls');
+harness.click('施術前の安全確認解剖・体格・禁忌の確認原則');
+assert(harness.text().includes('出題：施術前の安全確認'), 'The current skill stays readable after changing it');
+harness.click('肺経基礎から始める（6問）');
+const selectedSkillSession = study.loadActiveSession();
+assert(selectedSkillSession?.questions.length > 0);
+assert(selectedSkillSession.questions.every(question => question.skill === 'puncture_method'), 'The actual next set uses the selected skill');
+study.resetAllStudyData();
 bridge.setLearningStorageAdapter(null);
 assert.equal(study.savePausedSession(old), false);
 assert.equal(study.loadPausedSessions().length, 0);

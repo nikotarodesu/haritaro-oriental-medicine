@@ -14,8 +14,6 @@ import {
   Copy, 
   Check, 
   Printer, 
-  Download, 
-  Upload, 
   Crown, 
   AlertCircle, 
   Sparkles, 
@@ -26,11 +24,9 @@ import {
   QrCode, 
   ChevronDown, 
   ChevronUp, 
-  ArrowRight,
   Eye,
   Info,
-  ShieldCheck,
-  Cloud
+  ShieldCheck
 } from "lucide-react";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -44,6 +40,7 @@ import GogyoBadge from "@/components/GogyoBadge";
 import { ACUPOINT_LOOKUP as TSUBOS } from "@/data/acupointLookup";
 import { resolveLearningReflectionSource } from "@/utils/learningReflection";
 import { useModalDialog } from "@/hooks/useModalDialog";
+import NotesStorageSupport from "./NotesStorageSupport";
 
 const LearningReflectionNotebook = dynamic(() => import("@/components/learning/LearningReflectionNotebook"), {
   loading: () => <p role="status" className="px-4 py-12 text-center">学習ノートを開いています…</p>,
@@ -498,154 +495,8 @@ function ClinicalNotesPage() {
       {/* ======================================================== */}
       {/* 1. ページヘッダー（初回 / 継続で表示を調整） */}
       {/* ======================================================== */}
-      <PageIntro compact eyebrow="記録して、次の見直しへ" title="マイノート" art="notes" description="所見・配穴・施術後の変化を、ひとつの記録に。">
-        <div className="page-actions">
-          <button type="button" onClick={openNewNoteModal} disabled={isPatientNoteLimitReached} className="page-primary-action disabled:opacity-50"><Plus aria-hidden="true" className="h-4 w-4" />臨床ノートを新規作成</button>
-          <a href="#saved-notes" className="page-secondary-action"><Bookmark aria-hidden="true" className="h-4 w-4" />保存した記録を見る</a>
-        </div>
-      </PageIntro>
-      <details className="page-help">
-        <summary>ファイルに保存・読込</summary>
-        {/* 右側：補助アクション（ファイル保存・CSV出力・読込） */}
-        <div className="flex flex-wrap items-center gap-2 shrink-0">
-          <button
-            type="button"
-            onClick={handleDownloadCsv}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] bg-white dark:bg-[#1A2530] hover:bg-[#F3EFE6] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
-            title="Excelや表計算ソフトで開けるCSVファイルを出力"
-          >
-            <FileText className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <span>CSV出力</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={handleDownloadBackup}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] bg-white dark:bg-[#1A2530] hover:bg-[#F3EFE6] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
-            title="手元にファイルとしてJSONバックアップ保存"
-          >
-            <Download className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <span>ファイルに保存</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold border border-[#D8CFC0] dark:border-[#384C5E] text-[#404743] dark:text-[#C5D2DB] bg-white dark:bg-[#1A2530] hover:bg-[#F3EFE6] dark:hover:bg-[#22303D] transition-colors cursor-pointer"
-            title="ファイルからバックアップを読み込む"
-          >
-            <Upload className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-            <span>読込</span>
-          </button>
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileUpload}
-            accept=".json"
-            className="hidden"
-          />
-        </div>
-      </details>
-
-      {/* 未ログイン時のクラウド自動同期・アカウント登録案内バナー */}
-      {!isAuthenticated && (
-        <div className="p-4 rounded-2xl bg-gradient-to-r from-[#FAF8F5] via-[#EBF3EF]/60 to-[#FAF8F5] dark:from-[#17212A] dark:via-[#162A24]/60 dark:to-[#17212A] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm shadow-2xs">
-          <div className="flex items-start sm:items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-white dark:bg-[#10171F] text-[#1E3D34] dark:text-[#74BA9E] shrink-0 border border-[#D5E6DE] dark:border-[#223E34]">
-              <Cloud className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-sm">
-                現在ブラウザローカル保存中（無料会員登録でPC・スマホ間の自動同期に対応）
-              </p>
-              <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
-                無料アカウントを作成すると、記録した臨床ノートや配穴集が暗号化クラウドに安全同期され、端末変更時も安心です。
-              </p>
-            </div>
-          </div>
-          <Link
-            href="/auth/login"
-            className="shrink-0 px-4 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] font-bold text-sm shadow-xs transition-colors flex items-center justify-center gap-1.5"
-          >
-            <span>無料でアカウント登録・ログイン</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-      )}
-
-      {/* データ保護・定期バックアップ案内バナー（3件以上で表示） */}
-      {patientNoteCount >= 3 && (
-        <div className="p-3.5 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm text-[#1E3D34] dark:text-[#83BEA8]">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 shrink-0 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <span>
-              <strong>データ保護のご案内：</strong>
-              臨床ノートが{patientNoteCount}件蓄積されています。ブラウザの履歴消去等に備え、定期的に「CSV出力」または「ファイルに保存」を行っておくことをお勧めします。
-            </span>
-          </div>
-          <button
-            type="button"
-            onClick={handleDownloadCsv}
-            className="shrink-0 px-3 py-1.5 bg-[#1E3D34] dark:bg-[#74BA9E] text-white dark:text-[#10161C] rounded-lg font-bold text-sm hover:opacity-90 transition-opacity cursor-pointer whitespace-nowrap"
-          >
-            CSVを保存
-          </button>
-        </div>
-      )}
-
-      {/* 保存および同期についての動的ステータス案内 */}
-      <div
-        className={`p-3.5 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm ${
-          syncStatus === "synced"
-            ? "bg-[#EBF7F2] dark:bg-[#132820] border-[#BDE3D4] dark:border-[#285746] text-[#1D5E46] dark:text-[#8EE0C0]"
-            : syncStatus === "syncing"
-            ? "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300"
-            : "bg-[#FCF4EB] dark:bg-[#221811] border-[#F3DEC5] dark:border-[#4A321E] text-[#7A4515] dark:text-[#ECC99B]"
-        }`}
-      >
-        <div className="flex items-center gap-2">
-          {syncStatus === "synced" ? (
-            <Cloud className="w-4 h-4 shrink-0 text-[#2E7D5B] dark:text-[#74BA9E]" />
-          ) : (
-            <AlertCircle className="w-4 h-4 shrink-0 text-[#B86924] dark:text-[#E6C387]" />
-          )}
-          <span>
-            {syncStatus === "synced" ? (
-              <>
-                <strong>クラウド自動同期中：</strong>PC・スマホ間で安全に自動同期されています（患者の実名は保持せず、カルテ番号で安全に保管されています）。
-              </>
-            ) : syncStatus === "syncing" ? (
-              <>クラウドと同期中...</>
-            ) : isAuthenticated ? (
-              <>
-                <strong>オフライン保持モード：</strong>現在ローカルに保存されています。通信接続時に自動でクラウドへ同期されます。
-              </>
-            ) : (
-              <>
-                <strong>端末保存中：</strong>ブラウザ内に保存されています。無料ログインすると、クラウド自動保存・PC/スマホ同期が有効になります。
-              </>
-            )}
-          </span>
-        </div>
-        <div className="flex min-w-0 flex-wrap items-center gap-3">
-          {!isAuthenticated ? (
-            <Link
-              href="/auth/login?returnTo=/notes"
-              className="min-w-0 font-bold underline text-[#B86924] dark:text-[#E6C387] hover:opacity-80"
-            >
-              ログインしてクラウド同期する →
-            </Link>
-          ) : !isPremium ? (
-            <Link
-              href="/pricing"
-              className="min-w-0 font-bold underline text-[#1D5E46] dark:text-[#8EE0C0] hover:opacity-80"
-            >
-              保存枠の料金を見る →
-            </Link>
-          ) : null}
-        </div>
-      </div>
-
+      <PageIntro compact eyebrow="記録して、次の見直しへ" title="マイノート" art="notes" description="所見・配穴・施術後の変化を、ひとつの記録に。" />
+      <NotesStorageSupport syncStatus={syncStatus} isAuthenticated={isAuthenticated} isPremium={isPremium} patientNoteCount={patientNoteCount} fileInputRef={fileInputRef} onDownloadCsv={handleDownloadCsv} onDownloadBackup={handleDownloadBackup} onImport={() => fileInputRef.current?.click()} onFileUpload={handleFileUpload} />
       {/* 無料枠上限到達時の案内 */}
       {isPatientNoteLimitReached && (
         <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-sm sm:text-sm space-y-1">
@@ -664,11 +515,10 @@ function ClinicalNotesPage() {
       )}
 
       {/* ======================================================== */}
-      <div id="saved-notes" className="scroll-mt-28"><ClinicalNoteTimeline notes={patientNotes} /></div>
       {draftNotice && <Link href="/clinical/workspace" className="inline-flex min-h-11 items-center rounded-lg border border-[#C8D4CD] px-4 py-2 font-semibold dark:border-[#496153]">作業中の所見・配穴の理由へ戻って修正 →</Link>}
       {/* 3. タブ切り替え（臨床ノート / 配穴集） */}
       {/* ======================================================== */}
-      <div className="space-y-4">
+      <div id="saved-notes" className="scroll-mt-28 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E8E1D1] dark:border-[#22303D] pb-3">
           
           <div className="notes-tabs flex min-w-0 flex-wrap items-center gap-2">
@@ -800,7 +650,7 @@ function ClinicalNotesPage() {
                     </p>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                  <div className="flex flex-col items-center justify-center gap-2 pt-2">
                     <button
                       type="button"
                       onClick={() => setIsSamplePreviewOpen(true)}
@@ -810,20 +660,11 @@ function ClinicalNotesPage() {
                       <span>完成したノートを見る（見本）</span>
                     </button>
 
-                    <button
-                      type="button"
-                      onClick={openNewNoteModal}
-                      disabled={isPatientNoteLimitReached}
-                      className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white text-sm font-bold shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-                    >
-                      <Plus className="w-4 h-4" />
-                      <span>臨床ノートを新規作成</span>
-                    </button>
+                    <p className="text-sm leading-relaxed ui-muted">上の「臨床ノートを新規作成」から、最初の記録を始められます。</p>
                   </div>
 
                   <div className="pt-3 border-t border-[#E8E1D1] dark:border-[#243340] text-sm text-[#59615D] dark:text-[#AFBDC8] space-y-1 max-w-md mx-auto">
                     <p>※ 無料枠として{SUBSCRIPTION_CONFIG.limits.freePatientNoteMax}件のノートと{SUBSCRIPTION_CONFIG.limits.freeMemoMax}件の配穴を保存可能。見本を見るだけで保存枠が減ることはありません。</p>
-                    <p className="text-[#1E3D34] dark:text-[#74BA9E] font-medium">※ 実名等の直接識別情報は保持しない設計。無料ログインでPC・スマホ間の自動同期が有効になります。</p>
                   </div>
                 </div>
               ) : (
@@ -1061,6 +902,8 @@ function ClinicalNotesPage() {
       </div>
 
       {/* ======================================================== */}
+      <ClinicalNoteTimeline notes={patientNotes} />
+
       {/* 6. 詳しい使い方・待合室案内・プライバシー保護の折りたたみ */}
       {/* ======================================================== */}
       <div className="pt-4 border-t border-[#E8E1D1] dark:border-[#22303D]">

@@ -10,8 +10,7 @@ import {
   ArrowLeft, 
   ShieldCheck, 
   HelpCircle,
-  Clock,
-  Sparkles
+  Clock
 } from "lucide-react";
 
 export default function ContactPage() {
@@ -263,16 +262,16 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={status === "submitting"}
-                  className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-3.5 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] hover:bg-[#162E27] dark:hover:bg-[#225345] text-[#FAF8F5] font-bold text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed group cursor-pointer"
+                  className="page-primary-action w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {status === "submitting" ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <div className="w-4 h-4 border-2 border-current border-r-transparent rounded-full animate-spin" />
                       <span>送信中...</span>
                     </>
                   ) : (
                     <>
-                      <Send className="w-4 h-4 text-[#E6C387]" />
+                      <Send aria-hidden="true" className="w-4 h-4" />
                       <span>お問い合わせを送信する</span>
                     </>
                   )}

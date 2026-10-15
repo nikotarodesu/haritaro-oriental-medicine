@@ -17,7 +17,6 @@ import {
   ChevronDown,
   Printer,
 } from "lucide-react";
-import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 import { useSubscriptionAvailability } from "@/hooks/useSubscriptionAvailability";
 import SubscriptionAvailabilityNotice from "@/components/subscription/SubscriptionAvailabilityNotice";
 import { useAuth } from "@/contexts/AuthContext";
@@ -73,15 +72,10 @@ export default function PricingPage() {
       )}
 
       {/* ======================================================== */}
-      {/* 1. 臨床家向けの短い見出し・価格の目安・体験ボタン */}
+      {/* 臨床記録の概要 */}
       {/* ======================================================== */}
       <PageIntro eyebrow="はり太郎 プレミアム" title="臨床の記録を、次の施術に生かす。" description="弁証・配穴・施術後の変化をマイノートに。配穴集や患者さんへ渡す養生シートも作れます。" art="notes">
-        <p className="flex flex-wrap gap-x-4 gap-y-1 text-sm font-semibold text-[var(--accent-readable)]"><span>月額980円（税込）</span><span>年払い9,800円（税込・2か月分お得）</span></p>
-        <div className="page-actions">
-          <a href="#pricing-cards" className="page-primary-action">料金プランを比較する<ArrowRight size={18} aria-hidden="true" /></a>
-          <Link href="/notes" className="page-secondary-action"><Bookmark size={18} aria-hidden="true" />マイノートを無料で試す</Link>
-        </div>
-        <p className="page-muted text-sm">無料で臨床ノート10件・配穴30件まで保存可能。会員登録不要で試せます。</p>
+        <a href="#pricing-features" className="ui-text-link mt-3 text-sm">機能の違いを見る<ArrowRight size={16} aria-hidden="true" /></a>
       </PageIntro>
 
       {error && (
@@ -91,16 +85,13 @@ export default function PricingPage() {
       )}
 
       {/* ======================================================== */}
-      {/* 3. 料金カード（無料 / プレミアム） */}
+      {/* 料金カード（無料 / プレミアム） */}
       {/* ======================================================== */}
       <div id="pricing-cards" className="scroll-mt-28 space-y-6 max-w-4xl mx-auto pt-6">
         <div className="text-center space-y-1">
           <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
             料金プラン
           </h2>
-          <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#8899A6]">
-            無料でも臨床ノート{SUBSCRIPTION_CONFIG.limits.freePatientNoteMax}件、配穴メモ{SUBSCRIPTION_CONFIG.limits.freeMemoMax}件まで記録可能。日々の臨床を蓄積したい方にプレミアムを用意しています。
-          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
@@ -109,9 +100,6 @@ export default function PricingPage() {
           <div className="rounded-3xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 flex flex-col justify-between space-y-6 shadow-sm">
             <div className="space-y-4">
               <div className="space-y-1">
-                <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] uppercase tracking-wider">
-                  無料プラン
-                </span>
                 <h3 className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
                   無料
                 </h3>
@@ -144,7 +132,7 @@ export default function PricingPage() {
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
-                    <span>3症例で臨床演習を試す</span>
+                    <Link href="/cases" className="underline underline-offset-4">無料の3症例を試す</Link>
                   </li>
                 </ul>
               </div>
@@ -153,7 +141,7 @@ export default function PricingPage() {
             <div className="space-y-2 pt-4">
               <Link
                 href="/notes"
-                className="w-full py-3 px-4 rounded-xl border border-[#D8CFC0] dark:border-[#384C5E] text-center text-sm font-bold text-[#232826] dark:text-[#FAF8F5] hover:bg-[#EBE4D5] dark:hover:bg-[#1F2C37] transition-all flex items-center justify-center gap-1.5"
+                className="page-secondary-action w-full justify-center"
               >
                 <Bookmark className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
                 <span>マイノートを無料で試す</span>
@@ -269,7 +257,7 @@ export default function PricingPage() {
                 <div className="space-y-2">
                   <Link
                     href="/notes"
-                    className="w-full py-3.5 px-6 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white text-sm font-bold shadow transition-all flex items-center justify-center gap-2"
+                    className="page-primary-action w-full justify-center"
                   >
                     <Bookmark className="w-4 h-4 text-[#E6C387]" />
                     <span>マイノートを開く</span>
@@ -288,7 +276,7 @@ export default function PricingPage() {
                   type="button"
                   onClick={handleSubscribe}
                   disabled={isLoading}
-                  className="w-full py-3.5 px-6 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white text-sm font-bold shadow transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                  className="page-primary-action w-full justify-center disabled:opacity-60"
                 >
                   {isLoading ? (
                     <>
@@ -523,131 +511,23 @@ export default function PricingPage() {
                 <Printer className="w-3.5 h-3.5 text-[#1E3D34]" />
                 <span>ワンクリックでA4印刷可能</span>
               </span>
-              <span className="text-[10px]">※手渡しで患者満足度向上</span>
             </div>
           </div>
 
         </div>
 
-        {/* 見本下の3行まとめ */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs sm:text-sm">
-          <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1">
-            <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1">
-              <Check className="w-4 h-4 shrink-0" />
-              <span>記録する</span>
-            </span>
-            <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-              弁証・配穴・施術後の変化を1つの画面に整理して記録。
-            </p>
-          </div>
-
-          <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1">
-            <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1">
-              <Check className="w-4 h-4 shrink-0" />
-              <span>振り返る</span>
-            </span>
-            <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-              過去の記録や、蓄積した自分の配穴集をすぐに参照。
-            </p>
-          </div>
-
-          <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1">
-            <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1">
-              <Check className="w-4 h-4 shrink-0" />
-              <span>渡す</span>
-            </span>
-            <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-              記録した養生指導をA4シートにして患者さんに手渡し。
-            </p>
-          </div>
-        </div>
 
         <p className="text-center text-xs text-[#737C77] dark:text-[#8899A6]">
-          ※患者の実名等の直接識別情報は保持しない設計。無料ログインでPC・スマホ間の自動同期に対応しています。
+          見本は架空の記録です。実際の記録には、患者名や連絡先など個人を特定できる情報を入力しないでください。
         </p>
         </div>
       </details>
 
-      {/* ======================================================== */}
-      {/* 4. 無料とプレミアムの3つの主な違い */}
-      {/* ======================================================== */}
-      <div className="space-y-6 max-w-4xl mx-auto pt-2">
-        <div className="text-center space-y-1">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-            <Sparkles className="w-4 h-4" />
-            <span>プランの違い</span>
-          </div>
-          <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-            無料とプレミアムの3つの主な違い
-          </h2>
-          <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#8899A6]">
-            基礎知識の学習（カリキュラム・経穴辞典・弁証シミュレーター）は無料。日々の臨床蓄積と深い実践演習をプレミアムで提供します。
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs sm:text-sm">
-          {/* 違い1: 臨床記録 */}
-          <div className="p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2.5 flex flex-col justify-between">
-            <div className="space-y-2">
-              <span className="w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center font-bold text-xs">
-                1
-              </span>
-              <h3 className="font-serif font-bold text-base text-[#232826] dark:text-[#FAF8F5]">
-                マイノートの保存枠
-              </h3>
-              <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-                無料版はノート10件・配穴30件。プレミアムなら<strong className="text-[#1E3D34] dark:text-[#74BA9E]">ノート500件・配穴1,000件</strong>まで拡張され、日々の臨床を継続して蓄積できます。
-              </p>
-            </div>
-            <div className="pt-2 border-t border-[#E8E1D1] dark:border-[#22303D] text-[11px] text-[#737C77] dark:text-[#8899A6]">
-              養生シート印刷・手元バックアップ対応
-            </div>
-          </div>
-
-          {/* 違い2: 症例演習 */}
-          <div className="p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2.5 flex flex-col justify-between">
-            <div className="space-y-2">
-              <span className="w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center font-bold text-xs">
-                2
-              </span>
-              <h3 className="font-serif font-bold text-base text-[#232826] dark:text-[#FAF8F5]">
-                臨床症例演習 全20例
-              </h3>
-              <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-                無料体験の3症例に加え、<strong className="text-[#1E3D34] dark:text-[#74BA9E]">全20症例</strong>の問診開示・弁証推論・処方配穴プロセスを実践演習できます。
-              </p>
-            </div>
-            <div className="pt-2 border-t border-[#E8E1D1] dark:border-[#22303D] text-[11px] text-[#737C77] dark:text-[#8899A6]">
-              <Link href="/cases" className="text-[#1E3D34] dark:text-[#74BA9E] underline">
-                無料3症例を試す →
-              </Link>
-            </div>
-          </div>
-
-          {/* 違い3: 発展学習ツール */}
-          <div className="p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2.5 flex flex-col justify-between">
-            <div className="space-y-2">
-              <span className="w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center font-bold text-xs">
-                3
-              </span>
-              <h3 className="font-serif font-bold text-base text-[#232826] dark:text-[#FAF8F5]">
-                発展・比較ツールの解放
-              </h3>
-              <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-                ツボの鑑別を深める<strong className="text-[#1E3D34] dark:text-[#74BA9E]">3穴同時比較</strong>や、<strong className="text-[#1E3D34] dark:text-[#74BA9E]">奇経八脈の全流注図（全8脈）</strong>、要穴特訓など思考深化ツールが使い放題になります。
-              </p>
-            </div>
-            <div className="pt-2 border-t border-[#E8E1D1] dark:border-[#22303D] text-[11px] text-[#737C77] dark:text-[#8899A6]">
-              学生・臨床家双方の学びを支援
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* ======================================================== */}
-      {/* 5. 簡潔な比較表（マイノートが上段） */}
+      {/* 機能比較 */}
       {/* ======================================================== */}
-      <div className="space-y-4 max-w-4xl mx-auto pt-4">
+      <div id="pricing-features" className="scroll-mt-28 space-y-4 max-w-4xl mx-auto pt-4">
         <div className="space-y-1">
           <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] text-center sm:text-left">
             無料とプレミアムの機能比較
@@ -777,20 +657,20 @@ export default function PricingPage() {
       </div>
 
       {/* ======================================================== */}
-      {/* 6. 保存方法とプライバシーの安心設計 */}
+      {/* 保存方法と入力時の注意 */}
       {/* ======================================================== */}
       <div className="max-w-4xl mx-auto p-5 sm:p-6 rounded-2xl bg-[#EBF7F2] dark:bg-[#14261E] border border-[#BDE3D4] dark:border-[#24523F] space-y-2">
         <div className="flex items-center gap-2 text-sm font-bold text-[#1D5E46] dark:text-[#8EE0C0]">
           <ShieldCheck className="w-4 h-4 shrink-0 text-[#2E7D5B] dark:text-[#74BA9E]" />
-          <span>クラウド自動同期と患者プライバシーの安心設計</span>
+          <span>記録の保存と患者情報について</span>
         </div>
         <p className="text-xs sm:text-sm text-[#315143] dark:text-[#A0C4B4] leading-relaxed">
-          無料ログインすると、クラウド自動保存・PCスマホ間同期が有効になります。データベースには患者様の実名・連絡先・住所・生年月日を保持しない<strong>直接識別情報非保持設計（カルテ番号管理）</strong>と、認証された本人アカウントのみアクセスを許可する<strong>行レベルセキュリティ（RLS）</strong>を採用しています。（※未ログイン時は登録不要でお使いの端末内のみに保存されます）
+          未ログイン時の記録は、この端末内に保存されます。同じGoogleアカウントでログインすると、端末間で同期できます。患者名・連絡先・住所・生年月日は入力せず、患者番号などで管理してください。自由記述にも、個人を特定できる情報を含めないでください。
         </p>
       </div>
 
       {/* ======================================================== */}
-      {/* 7. よくある質問（FAQ：指示書第11項の5問） */}
+      {/* よくある質問 */}
       {/* ======================================================== */}
       <div className="space-y-6 max-w-3xl mx-auto pt-4">
         <div className="text-center space-y-1">
@@ -803,16 +683,6 @@ export default function PricingPage() {
         </div>
 
         <div className="space-y-3">
-          {/* Q1 */}
-          <details className="group rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 [&_summary::-webkit-details-marker]:hidden">
-            <summary className="flex items-center justify-between font-bold text-sm sm:text-base cursor-pointer">
-              <span>無料と有料は、マイノートで何が変わりますか？</span>
-              <ChevronDown className="w-4 h-4 text-[#737C77] transition-transform group-open:rotate-180 shrink-0 ml-2" />
-            </summary>
-            <p className="mt-3 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed border-t border-[#E8E1D1] dark:border-[#22303D] pt-3">
-              主な違いは保存できる件数です。無料版では臨床ノート10件・配穴30件までですが、プレミアムでは臨床ノート500件・配穴1,000件まで保存枠が広がります。養生シートの印刷やクラウド自動同期、バックアップ機能は無料枠内でもお試しいただけます。
-            </p>
-          </details>
 
           {/* Q2 */}
           <details className="group rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 [&_summary::-webkit-details-marker]:hidden">
@@ -821,7 +691,7 @@ export default function PricingPage() {
               <ChevronDown className="w-4 h-4 text-[#737C77] transition-transform group-open:rotate-180 shrink-0 ml-2" />
             </summary>
             <p className="mt-3 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed border-t border-[#E8E1D1] dark:border-[#22303D] pt-3">
-              はい、無料ログイン（Googleログイン）していただくことで、クラウド自動保存・PCスマホ間同期が有効になり、PCで書いたノートを通勤中のスマホですぐに確認・編集できます。行レベルセキュリティ（RLS）によりご本人アカウント以外のアクセスを厳格に制限し、患者さんの実名も保持しない設計のため安全にご利用いただけます。また、未ログイン時でも手動バックアップ（ファイル保存・読込）によるデータ移行が可能です。
+              はい。各端末で同じGoogleアカウントにログインすると同期できます。端末を切り替える前に、マイノートの同期状態を確認してください。ログインしない場合は、ファイル保存・読込で記録を移せます。
             </p>
           </details>
 
@@ -832,7 +702,7 @@ export default function PricingPage() {
               <ChevronDown className="w-4 h-4 text-[#737C77] transition-transform group-open:rotate-180 shrink-0 ml-2" />
             </summary>
             <p className="mt-3 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed border-t border-[#E8E1D1] dark:border-[#22303D] pt-3">
-              ログインしてクラウド同期を有効にしている場合、安全なクラウドデータベースに保存されるため、ブラウザの閲覧履歴削除や端末の故障・機種変更でも記録が消えることはありません。未ログイン（端末保存のみ）の状態でブラウザ履歴やキャッシュを一括消去するとデータが消える可能性があるため、無料ログインでのクラウド保護、またはマイノート画面の「ファイルに保存」ボタンからの定期的な手元バックアップをおすすめします。
+              同期済みの記録は、同じアカウントで確認できます。未同期の記録や端末内だけに保存した記録は、端末の故障やブラウザデータの削除で失われる場合があります。マイノートの「ファイルに保存」から、定期的にバックアップを保存してください。
             </p>
           </details>
 
@@ -854,49 +724,16 @@ export default function PricingPage() {
               <ChevronDown className="w-4 h-4 text-[#737C77] transition-transform group-open:rotate-180 shrink-0 ml-2" />
             </summary>
             <p className="mt-3 text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed border-t border-[#E8E1D1] dark:border-[#22303D] pt-3">
-              はい、学生の方の学習にも最適です。臨床実習での症例記録や配穴の整理に加え、全20症例の演習問題や経穴比較ツールなど、将来の臨床を見据えた実践的なトレーニング教材として活用いただけます。
+              はい。実習の振り返りや配穴の整理に使えます。学習教材は無料で読め、症例演習は無料で3症例、プレミアムで全20症例を利用できます。
             </p>
           </details>
         </div>
       </div>
 
-      {/* ======================================================== */}
-      {/* 8. 最後の申込ボタンとマイノート体験リンク */}
-      {/* ======================================================== */}
-      <div className="max-w-2xl mx-auto p-6 sm:p-8 rounded-3xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] text-center space-y-4 shadow-sm">
-        <h3 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-          まずはマイノートの使い心地をお試しください
-        </h3>
-        <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2]">
-          会員登録なしで、今すぐ{SUBSCRIPTION_CONFIG.limits.freePatientNoteMax}件のノート作成と養生シート印刷を体験できます。
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-          <Link
-            href="/notes"
-            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white text-xs sm:text-sm font-bold shadow transition-all flex items-center justify-center gap-1.5"
-          >
-            <Bookmark className="w-4 h-4 text-[#E6C387]" />
-            <span>マイノートを無料で試す</span>
-          </Link>
-          {isPremium ? (
-            <Link
-              href="/account/subscription"
-              className="w-full sm:w-auto px-6 py-3 rounded-xl border border-[#D8CFC0] dark:border-[#384C5E] text-[#232826] dark:text-[#FAF8F5] text-xs sm:text-sm font-bold hover:bg-[#EBE4D5] dark:hover:bg-[#1F2C37] transition-all"
-            >
-              契約状況を確認する
-            </Link>
-          ) : salesEnabled ? (
-            <button
-              type="button"
-              onClick={handleSubscribe}
-              disabled={isLoading}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl border border-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E] text-xs sm:text-sm font-bold hover:bg-[#EBF3EF] transition-all cursor-pointer disabled:opacity-60"
-            >
-              {billingCycle === "yearly" ? "年額9,800円で申し込む" : "月額980円で申し込む"}
-            </button>
-          ) : null}
-        </div>
-      </div>
+      <nav aria-label="料金ページの関連リンク" className="max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-[#E5DEC9] pt-6 dark:border-[#2A3B4A]">
+        <a href="#pricing-cards" className="ui-text-link">料金プランに戻る<ArrowRight size={16} aria-hidden="true" /></a>
+        <Link href="/notes" className="ui-text-link">マイノートを試す<ArrowRight size={16} aria-hidden="true" /></Link>
+      </nav>
 
     </div>
   );

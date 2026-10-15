@@ -49,8 +49,6 @@ import {
   Bookmark,
   Shuffle,
   Target,
-  Flame,
-  Calendar,
   Check,
   ChevronRight,
   Settings,
@@ -58,12 +56,20 @@ import {
   Upload,
   AlertTriangle,
   Play,
-  Layers,
   Award,
   X
 } from "lucide-react";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { getPracticeEntryAction, getPracticeSessionTitle, readRequestedPracticeCourse, resolvePracticeCourse } from "@/data/tsubo/practiceEntry";
+
+const PRACTICE_SKILLS = [
+  { id: "mixed", label: "総合MIX特訓", desc: "全種別からランダム" },
+  { id: "location_to_name", label: "部位・取穴法", desc: "骨などの目印から経穴を選ぶ" },
+  { id: "puncture_method", label: "施術前の安全確認", desc: "解剖・体格・禁忌の確認原則" },
+  { id: "five_elements_shu", label: "五輸穴・五行", desc: "井滎輸経合・木火土金水" },
+  { id: "golden_pairs", label: "伝統名配穴", desc: "登録された配穴例" },
+  { id: "category_of_point", label: "要穴分類", desc: "原絡郄募兪穴の暗記" },
+] as const;
 
 export default function PracticeClient() {
   const { ready } = useLearningSync();
@@ -903,10 +909,7 @@ function PracticePageContent() {
           <span className="text-[#232826] dark:text-[#FAF8F5] font-bold">経穴学習・復習ホーム</span>
         </nav>
 
-        <PageIntro compact headingLevel="h2" eyebrow="短い問題で、少しずつ身につける" title="経穴を学ぶ・復習する" art="study" description="経穴の部位・要穴・経脈を、小テストと間隔反復で確認します。">
-          <div className="mt-3"><LearningSyncStatus /></div>
-          <div className="page-actions"><button type="button" onClick={() => setIsSettingsOpen(true)} className="page-secondary-action"><Settings aria-hidden="true" className="h-4 w-4" />学習設定・データ管理</button></div>
-        </PageIntro>
+        <PageIntro compact headingLevel="h2" eyebrow="短い問題で、少しずつ身につける" title="経穴を学ぶ・復習する" art="study" description="経穴の部位・要穴・経脈を、小テストと間隔反復で確認します。" />
 
         {invalidCourseRequest && (
           <p role="status" className="rounded-2xl border border-[#E5DEC9] bg-[#F6F4EE] p-4 text-sm text-[#59615D] dark:border-[#2A3B4A] dark:bg-[#17212A] dark:text-[#C5D2DB]">
@@ -956,139 +959,6 @@ function PracticePageContent() {
           </section>
         )}
 
-        {/* 7.1 最初に見せる情報：ダッシュボードカード */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          
-          {/* 今日の目標＆回答数 */}
-          <div className="p-5 rounded-3xl bg-white dark:bg-[#17212A] border-2 border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs space-y-3">
-            <div className="flex items-center justify-between text-xs text-[#737C77]">
-              <span className="font-bold flex items-center gap-1 text-[#1E3D34] dark:text-[#74BA9E]">
-                <Target className="w-4 h-4" />
-                <span>今日の目標</span>
-              </span>
-              {summary.streakDays > 0 && (
-                <span className="flex items-center gap-0.5 text-[#B86924] font-bold">
-                  <Flame className="w-3.5 h-3.5" />
-                  <span>{summary.streakDays}日連続</span>
-                </span>
-              )}
-            </div>
-
-            <div className="space-y-1">
-              <div className="flex items-baseline justify-between">
-                <span className="text-2xl sm:text-3xl font-mono font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  {summary.todayAnswered} <span className="text-xs text-[#737C77] font-normal">/ {summary.todayGoal} 問</span>
-                </span>
-                <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                  {summary.progressPercent}%
-                </span>
-              </div>
-              <div className="w-full h-2.5 rounded-full bg-[#FAF8F5] dark:bg-[#10171F] overflow-hidden border border-[#E0D8C8]">
-                <div
-                  className="h-full bg-[#1E3D34] dark:bg-[#2B6958] rounded-full transition-all duration-300"
-                  style={{ width: `${summary.progressPercent}%` }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* 今日の復習待ち件数 */}
-          <div className={`p-5 rounded-3xl border-2 shadow-xs space-y-3 ${
-            summary.dueReviewCount > 0
-              ? "bg-[#FCF4EB] dark:bg-[#281E15] border-[#B86924]/40"
-              : "bg-white dark:bg-[#17212A] border-[#E5DEC9] dark:border-[#2A3B4A]"
-          }`}>
-            <div className="flex items-center justify-between text-xs text-[#737C77]">
-              <span className="font-bold flex items-center gap-1 text-[#B86924] dark:text-[#E6C387]">
-                <Calendar className="w-4 h-4" />
-                <span>今日の復習</span>
-              </span>
-              <span className="text-[10px]">間隔反復</span>
-            </div>
-
-            <div>
-              <span className="text-2xl sm:text-3xl font-mono font-bold text-[#B86924] dark:text-[#E6C387]">
-                {summary.dueReviewCount} <span className="text-xs text-[#737C77] font-normal">件待ち</span>
-              </span>
-              <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] mt-1">
-                {summary.dueReviewCount > 0 ? "復習期日を迎えた経穴があります" : "今日の復習はすべて完了！"}
-              </p>
-            </div>
-          </div>
-
-          {/* 全体の記録 */}
-          <div className="p-5 rounded-3xl bg-white dark:bg-[#17212A] border-2 border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs space-y-3">
-            <div className="flex items-center justify-between text-xs text-[#737C77]">
-              <span className="font-bold flex items-center gap-1 text-[#1E3D34] dark:text-[#74BA9E]">
-                <Layers className="w-4 h-4" />
-                <span>全体の習得状況</span>
-              </span>
-              <span className="text-[10px]">361穴中</span>
-            </div>
-
-            <div className="space-y-1">
-              <div className="flex items-baseline justify-between text-xs">
-                <span className="text-[#59615D] dark:text-[#A0B0BC]">取り組んだ経穴：</span>
-                <strong className="font-mono text-sm">{summary.totalPracticedPoints} 穴</strong>
-              </div>
-              <div className="flex items-baseline justify-between text-xs">
-                <span className="text-[#59615D] dark:text-[#A0B0BC]">定着の目安達成：</span>
-                <strong className="font-mono text-sm text-[#1E3D34] dark:text-[#74BA9E]">{summary.totalMasteredPoints} 穴</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 出題スキル・特訓テーマ切り替えタブ */}
-        <div className="bg-white dark:bg-[#17212A] p-4 sm:p-5 rounded-3xl border-2 border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs space-y-3">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div>
-              <span className="text-[10px] font-bold text-[#B86924] uppercase tracking-wider block">
-                Practice Skill Focus
-              </span>
-              <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
-                <Target className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-                <span>出題スキル・特訓テーマの選択</span>
-              </h3>
-            </div>
-            <span className="text-[11px] text-[#737C77]">
-              選択したスキルで十四経脈コースや復習が出題されます
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-            {[
-              { id: "mixed", label: "総合MIX特訓", desc: "全種別からランダム" },
-              { id: "location_to_name", label: "部位・取穴法", desc: "骨などの目印から経穴を選ぶ" },
-              { id: "puncture_method", label: "施術前の安全確認", desc: "解剖・体格・禁忌の確認原則" },
-              { id: "five_elements_shu", label: "五輸穴・五行", desc: "井滎輸経合・木火土金水" },
-              { id: "golden_pairs", label: "伝統名配穴", desc: "登録された配穴例" },
-              { id: "category_of_point", label: "要穴分類", desc: "原絡郄募兪穴の暗記" },
-            ].map((sk) => {
-              const isSelected = selectedSkill === sk.id;
-              return (
-                <button
-                  key={sk.id}
-                  type="button"
-                  onClick={() => setSelectedSkill(sk.id as StudySkillType | "mixed")}
-                  className={`p-2.5 sm:p-3 rounded-2xl border text-left transition-all flex flex-col justify-between ${
-                    isSelected
-                      ? "bg-[#1E3D34] text-white border-[#1E3D34] shadow-sm"
-                      : "bg-[#FAF8F5] dark:bg-[#10171F] border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5] hover:border-[#1E3D34]/50"
-                  }`}
-                >
-                  <span className={`text-xs font-bold block ${isSelected ? "text-white" : "text-[#1E3D34] dark:text-[#74BA9E]"}`}>
-                    {sk.label}
-                  </span>
-                  <span className={`text-[10px] mt-0.5 line-clamp-1 ${isSelected ? "text-white/80" : "text-[#737C77]"}`}>
-                    {sk.desc}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
         {/* メインアクションCTA（優先順位：復習 ➜ 再開 ➜ 今日の10問） */}
         <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#1E3D34] to-[#162A24] text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-5">
           <div className="space-y-1">
@@ -1128,6 +998,30 @@ function PracticePageContent() {
           )}
         </div>
 
+        <dl aria-label="学習の進捗" className="practice-progress-strip">
+          <div><dt>今日の目標</dt><dd>{summary.todayAnswered} / {summary.todayGoal}問 <span>（{summary.progressPercent}%）</span>{summary.streakDays > 0 && <span> · {summary.streakDays}日連続</span>}</dd></div>
+          <div><dt>今日の復習</dt><dd>{summary.dueReviewCount}件待ち</dd></div>
+          <div><dt>全361穴の習得状況</dt><dd>取組 {summary.totalPracticedPoints}穴 · 定着の目安達成 {summary.totalMasteredPoints}穴</dd></div>
+        </dl>
+
+        <LearningSyncStatus compact returnTo="/tsubo/practice" />
+
+        <div className="practice-study-options">
+          <details className="practice-skill-picker">
+            <summary><span><Target aria-hidden="true" />出題：{PRACTICE_SKILLS.find(skill => skill.id === selectedSkill)?.label}</span><span className="practice-skill-change">変更</span></summary>
+            <p>選択したスキルで、経脈別コースや復習の問題を出します。</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {PRACTICE_SKILLS.map((sk) => {
+                const isSelected = selectedSkill === sk.id;
+                return <button key={sk.id} type="button" aria-pressed={isSelected} onClick={() => setSelectedSkill(sk.id as StudySkillType | "mixed")} className={`min-h-11 p-3 rounded-xl border text-left flex flex-col ${isSelected ? "bg-[#1E3D34] text-white border-[#1E3D34]" : "bg-[#FAF8F5] dark:bg-[#10171F] border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5]"}`}>
+                  <span className="text-sm font-semibold">{sk.label}</span>
+                  <span className={`text-xs mt-1 leading-relaxed ${isSelected ? "text-white/80" : "text-[#737C77] dark:text-[#A0B0BC]"}`}>{sk.desc}</span>
+                </button>;
+              })}
+            </div>
+          </details>
+          <button type="button" onClick={() => setIsSettingsOpen(true)} className="practice-settings-button"><Settings aria-hidden="true" />学習設定・データ管理</button>
+        </div>
         {/* 7.2 十四経脈別コース（小単位ユニット） */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
