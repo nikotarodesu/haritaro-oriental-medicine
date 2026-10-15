@@ -7,7 +7,7 @@ import type { Lecture } from "@/data/curriculumData";
 import ChapterEmblem from "@/components/graphics/ChapterEmblem";
 import ArticleCover from "@/components/articles/ArticleCover";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
-import GlossaryRenderer from "@/components/GlossaryRenderer";
+import InlineTextRenderer from "@/components/InlineTextRenderer";
 import MarkdownBody from "@/components/MarkdownBody";
 import ArticleReferences from "@/components/ArticleReferences";
 import type { ResolvedReference } from "@/types/references";
@@ -48,7 +48,6 @@ import { createCourseLectureHref, getCourseNextAction, type CourseJourney } from
 import { buildLearningReflectionHref } from "@/utils/learningReflection";
 import ClinicalLectureApplication from "@/components/clinical/ClinicalLectureApplication";
 import { getLectureShortcut } from "@/utils/lectureKeyboardNavigation";
-import { createGlossarySeenSnapshots } from "@/utils/glossaryOccurrences";
 
 interface Props {
   lecture: Lecture;
@@ -185,7 +184,6 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
   );
   const isCompleted = isMounted && !!completedLectures[lecture.id];
 
-  const keyPointsSeenTerms = createGlossarySeenSnapshots(lecture.keyPoints);
   const readingInserts = getCurriculumReadingInserts(lecture.id);
   const lectureHeadings = parseMarkdownBlocks(lecture.contentMarkdown).flatMap((block, index) =>
     block.type === "h2" ? [{ label: block.content, id: `curriculum-heading-${index}` }] : [],
@@ -341,7 +339,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
                 {lecture.keyPoints.map((point, idx) => (
                   <li key={idx} className="flex items-start gap-2">
                     <span className="text-[#1E3D34] dark:text-[#74BA9E] font-bold shrink-0 mt-0.5">✓</span>
-                    <span><GlossaryRenderer text={point} seenTerms={keyPointsSeenTerms[idx]} /></span>
+                    <span><InlineTextRenderer text={point} /></span>
                   </li>
                 ))}
               </ul>

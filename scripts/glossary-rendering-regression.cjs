@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-require-imports -- Exercise real renderers and persistent hook state offline. */
+/* eslint-disable @typescript-eslint/no-require-imports -- Exercise the real reading renderers offline. */
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -8,22 +8,6 @@ const React = require('react');
 const { renderToStaticMarkup } = require('react-dom/server');
 const root = path.resolve(__dirname, '..');
 const cache = new Map();
-let hookSlots = null, hookIndex = 0;
-const hookReact = { ...React,
-  useState(initial) {
-    if (!hookSlots) return React.useState(initial);
-    const slots = hookSlots, index = hookIndex++;
-    if (!(index in slots)) slots[index] = typeof initial === 'function' ? initial() : initial;
-    return [slots[index], next => { slots[index] = typeof next === 'function' ? next(slots[index]) : next; }];
-  },
-  useMemo(compute, deps) {
-    if (!hookSlots) return React.useMemo(compute, deps);
-    const index = hookIndex++;
-    if (!hookSlots[index] || deps.some((dep, i) => !Object.is(dep, hookSlots[index].deps[i]))) hookSlots[index] = { value: compute(), deps };
-    return hookSlots[index].value;
-  },
-};
-const Popup = () => null;
 function load(relative) {
   let file = path.resolve(root, relative);
   if (!path.extname(file)) file += fs.existsSync(file + '.tsx') ? '.tsx' : '.ts';
@@ -34,9 +18,7 @@ function load(relative) {
     fileName: file, compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true },
   });
   const localRequire = id => {
-    if (id === 'react') return hookReact;
     if (id === 'next/link') return ({ href, children, ...props }) => React.createElement('a', { href, ...props }, children);
-    if (id === '@/components/glossary/GlossaryPopup') return Popup;
     if (['@/components/CurriculumDiagram', '@/components/EastWestTermSwitch'].includes(id)) return () => null;
     if (id === './CitationBadge') return ({ targetAnchorId }) => React.createElement('sup', { 'data-reference': targetAnchorId });
     if (id.startsWith('@/')) return load('src/' + id.slice(2));
@@ -46,93 +28,39 @@ function load(relative) {
   vm.runInNewContext(result.outputText, { exports, require: localRequire, URL, console, process }, { filename: file });
   return exports;
 }
-const Glossary = load('src/components/GlossaryRenderer').default;
+const InlineText = load('src/components/InlineTextRenderer').default;
 const Citation = load('src/components/CitationTextRenderer').default;
 const Markdown = load('src/components/MarkdownBody').default;
-const { createGlossarySeenSnapshots } = load('src/utils/glossaryOccurrences');
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
-const buttons = markup => [...markup.matchAll(/<button\b[^>]*>(.*?)<\/button>/gs)].map(match => match[1]);
 function stableRender(Component, props) {
-  const before = props.seenTerms ? [...props.seenTerms] : [];
   const server = render(Component, props);
   assert.equal(render(Component, props), server, 'Rendering identical props twice matches SSR and its replay');
-  assert.deepEqual(props.seenTerms ? [...props.seenTerms] : [], before, 'Caller-owned term state is never changed');
+  assert(!/<button\b|role="(?:dialog|tooltip)"|aria-modal=|glossary-popup|の解説を見る/.test(server), 'Reading text has no glossary controls or popup markup');
   return server;
 }
-const direct = stableRender(Glossary, { text: '**陰陽**を比べる。陰陽<br>気虚。気虚', seenTerms: new Set(['既知']) });
-assert.deepEqual(buttons(direct), ['陰陽', '気虚'], 'Only the first ordinary occurrence is interactive, across emphasis and line breaks');
-assert(direct.includes('<strong') && direct.includes('<br/>'));
-assert.deepEqual(buttons(stableRender(Glossary, { text: '陰陽と気虚', seenTerms: new Set(['陰陽']) })), ['気虚'], 'An explicit seen-before snapshot suppresses only its own terms');
-assert.deepEqual(buttons(render(Glossary, { text: '陰陽 気虚', enablePopup: false })), []);
-
-const inline = stableRender(Citation, { text: '**陰陽 [^named] 陰陽** [気虚](/safety) 気虚 [^named] 気虚', seenTerms: new Set(), resolvedReferences: [{ id: 'named', index: 3, anchorId: 'ref-named' }] });
-assert.deepEqual(buttons(inline), ['陰陽', '気虚'], 'Citations and bold segments retain one first occurrence per term');
-assert.equal([...inline.matchAll(/data-reference="ref-named"/g)].length, 2);
-assert(!/<a\b[^>]*>[^<]*<button/.test(inline), 'A Markdown link does not contain a glossary button');
-assert(inline.includes('href="/safety"'));
-const content = '## 陰陽\n\n陰陽 [気虚](/safety) [^named]\n\n- 気虚 [^named] 陰陽\n- 気滞 気虚\n\n| 瘀血 | 気滞 |\n| --- | --- |\n| 瘀血 | 相生 |\n\n> 相生 瘀血';
-const body = stableRender(Markdown, { contentMarkdown: content, seenTerms: new Set(), resolvedReferences: [{ id: 'named', index: 3, anchorId: 'ref-named' }] });
-assert.deepEqual(buttons(body), ['陰陽', '気虚', '気滞', '瘀血', '相生'], 'First occurrences follow headings, paragraphs, lists, table headers/cells and quotations');
-assert.match(body, /<h2[^>]*>.*?<button[^>]*>陰陽<\/button>/s);
-assert.match(body, /<li[^>]*><button[^>]*>気虚<\/button>/s, 'A link label does not consume the later eligible occurrence');
-const snapshots = createGlossarySeenSnapshots(['陰陽', '陰陽 気虚']);
-assert.deepEqual(buttons(render(Glossary, { text: '陰陽 気虚', seenTerms: snapshots[1] })), ['気虚']);
-assert.deepEqual(buttons(render(Glossary, { text: '陰陽', seenTerms: snapshots[0] })), ['陰陽'], 'Children may render in reverse order without changing first-occurrence ownership');
-
-// Preserve the same hook slots while replaying the real component. This catches
-// the old memoized fallback Set, which ordinary repeated SSR remounts cannot.
-function nodes(node, result = []) {
-  if (Array.isArray(node)) { node.forEach(child => nodes(child, result)); return result; }
-  if (!node || typeof node !== 'object') return result;
-  result.push(node); nodes(node.props?.children, result); return result;
+const direct = stableRender(InlineText, { text: '**陰陽**を比べる。陰陽<br>気虚。気虚' });
+assert.match(direct, /<strong[^>]*>陰陽<\/strong>を比べる。陰陽<br\/>気虚。気虚/);
+for (const lineBreak of ['<br>', '<br/>', '<br />', '<BR>']) {
+  assert.equal(render(InlineText, { text: '陰陽' + lineBreak + '気滞' }), '陰陽<br/>気滞', 'Authored line breaks stay intact');
 }
-const slots = [];
-function replay(props) {
-  hookSlots = slots; hookIndex = 0;
-  try { return Glossary(props); } finally { hookSlots = null; }
-}
-const props = { text: '陰陽と陰陽、気虚。' };
-let tree = replay(props);
-const initial = renderToStaticMarkup(tree);
-assert.equal(renderToStaticMarkup(replay(props)), initial, 'A retained component can replay without losing its first buttons');
-nodes(tree).find(node => node.type === 'button').props.onClick({ preventDefault() {}, stopPropagation() {} });
-tree = replay(props);
-assert(nodes(tree).some(node => node.type === Popup && node.props.isOpen && node.props.term.term === '陰陽'), 'Clicking still opens the selected term');
-assert.deepEqual(buttons(renderToStaticMarkup(tree)), ['陰陽', '気虚'], 'Opening the popup does not consume inline glossary buttons');
-nodes(tree).find(node => node.type === Popup).props.onClose();
-assert.equal(renderToStaticMarkup(replay(props)), initial, 'Closing the popup restores the same inline markup');
-assert.deepEqual(buttons(renderToStaticMarkup(replay({ text: '気滞と気滞。' }))), ['気滞'], 'Replacing text cannot retain the prior text occurrence state');
+assert.equal(render(InlineText, { text: '' }), '');
+assert.equal(stableRender(InlineText, { text: '陰陽と陰陽、気滞と気滞。' }), '陰陽と陰陽、気滞と気滞。', 'Every term remains ordinary text');
+assert.equal(stableRender(InlineText, { text: '気虚と気虚。' }), '気虚と気虚。', 'Replacing the text retains no prior term state');
 
-// Render the actual popup with a portal boundary spy. The dialog must be sent
-// to the document body rather than emitted inside a Markdown paragraph/button.
-const { GLOSSARY_TERMS } = load('src/data/glossaryData');
-const popupSource = path.join(root, 'src/components/glossary/GlossaryPopup.tsx');
-const popupJs = ts.transpileModule(fs.readFileSync(popupSource, 'utf8'), { fileName: popupSource,
-  compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
-let portal = null;
-function realPopup(document) {
-  const exports = {};
-  vm.runInNewContext(popupJs, { exports, document, require: id => {
-    if (id === 'react-dom') return { createPortal: (children, target) => { portal = { children, target }; return null; } };
-    if (id === 'next/link') return ({ href, children, ...props }) => React.createElement('a', { href, ...props }, children);
-    if (id.startsWith('@/')) return load('src/' + id.slice(2));
-    return require(id);
-  } }, { filename: popupSource });
-  return exports.default;
-}
-const bodyTarget = {};
-const openPopup = { isOpen: true, term: GLOSSARY_TERMS['陰陽'], onClose() {} };
-assert.equal(render(realPopup(undefined), openPopup), '', 'SSR without document emits no modal markup');
-assert.equal(portal, null);
-const BrowserPopup = realPopup({ body: bodyTarget });
-assert.equal(render(BrowserPopup, { ...openPopup, isOpen: false }), '');
-assert.equal(portal, null, 'An inactive popup creates no portal');
-assert.equal(render(BrowserPopup, openPopup), '', 'Opening a dialog leaves inline server markup empty');
-assert.equal(portal.target, bodyTarget, 'Dialog contents are placed in document.body');
-const popupMarkup = renderToStaticMarkup(portal.children);
-assert(popupMarkup.includes('role="dialog"') && popupMarkup.includes('aria-modal="true"'));
-const titleId = popupMarkup.match(/aria-labelledby="([^"]+)"/)?.[1];
-assert(titleId && popupMarkup.includes(`id="${titleId}"`), 'The generated accessible label points to this popup title');
-assert(popupMarkup.includes('tabindex="-1"') && popupMarkup.includes('data-modal-autofocus='), 'The shared modal focus handler has a focusable dialog and an initial close control');
-assert(popupMarkup.includes(GLOSSARY_TERMS['陰陽'].oneLiner), 'The real portal contains the selected term explanation');
-console.log('Passed: deterministic glossary SSR/replay, persistent popup state, first occurrences across Markdown/citations, immutable snapshots and body-only dialog portals.');
+const references = [{ id: 'named', index: 3, anchorId: 'ref-named' }];
+const inline = stableRender(Citation, { text: '**陰陽 [^named] 陰陽** [**気虚**](/glossary#term-気虚) 気虚 [ref:3] 気虚 [資料](https://example.org)', resolvedReferences: references });
+assert.equal([...inline.matchAll(/data-reference="ref-named"/g)].length, 2, 'Named and numeric citations keep their reference targets');
+assert.match(inline, /<strong[^>]*>陰陽 <sup[^>]*><\/sup> 陰陽<\/strong>/, 'Emphasis spans a citation');
+assert.match(inline, /<a href="\/glossary#term-気虚"[^>]*><strong[^>]*>気虚<\/strong><\/a>/, 'A regular glossary link retains label emphasis');
+assert.match(inline, /href="https:\/\/example.org"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/, 'External link behavior is retained');
+
+const content = '## 陰陽\n\n陰陽 [気虚](/glossary#term-気虚) [^named]\n\n- 気虚 [ref:3] 陰陽\n- 気滞 気虚\n\n| 瘀血 | 気滞 |\n| --- | --- |\n| 瘀血 | 相生 |\n\n> 相生 瘀血';
+const body = stableRender(Markdown, { contentMarkdown: content, resolvedReferences: references });
+assert.match(body, /<h2[^>]*id="section-heading-0"[^>]*>陰陽<\/h2>/, 'Heading text and anchor remain intact');
+assert.match(body, /<li[^>]*>気虚 <sup[^>]*><\/sup> 陰陽<\/li>/, 'List terms remain readable beside citations');
+assert.match(body, /<th[^>]*>瘀血<\/th>/, 'Table headers remain ordinary text');
+assert.match(body, /<td[^>]*>相生<\/td>/, 'Table cells remain ordinary text');
+assert.match(body, /<blockquote[^>]*>相生 瘀血<\/blockquote>/, 'Quoted terms remain ordinary text');
+assert(body.includes('href="/glossary#term-気虚"'), 'The glossary page remains reachable through regular links');
+assert.equal([...body.matchAll(/data-reference="ref-named"/g)].length, 2, 'Markdown citations keep their reference targets');
+console.log('Passed: popup-free inline and Markdown rendering, deterministic SSR/replay, emphasis, authored line breaks, regular glossary links and citations.');

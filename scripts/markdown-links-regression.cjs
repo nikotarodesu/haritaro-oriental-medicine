@@ -20,9 +20,8 @@ function load(relative) {
   });
   assert.equal((result.diagnostics || []).filter(d => d.category === ts.DiagnosticCategory.Error).length, 0, file + ' syntax');
   const localRequire = id => {
-    // Exercise the real renderer/glossary; stub only routing and inactive overlays.
+    // Exercise the real inline renderer; stub only routing and citation controls.
     if (id === 'next/link') return ({ href, children, ...props }) => React.createElement('a', { href, ...props }, children);
-    if (id === '@/components/glossary/GlossaryPopup') return () => null;
     if (id === './CitationBadge') return ({ displayNumber, targetAnchorId }) =>
       React.createElement('sup', { 'data-number': displayNumber, 'data-reference': targetAnchorId }, displayNumber);
     if (id.startsWith('@/')) return load('src/' + id.slice(2));
@@ -48,14 +47,14 @@ for (const input of [
 }
 const Renderer = load('src/components/CitationTextRenderer').default;
 const render = text => renderToStaticMarkup(React.createElement(Renderer, {
-  text, seenTerms: new Set(),
+  text,
   resolvedReferences: [{ id: 'named', index: 3, anchorId: 'ref-named' }],
 }));
 const html = render('**前文 [気虚の説明](/safety) [^named] 後文** と気虚 [ref:3] [資料](https://example.org)');
 const internal = html.match(/<a href="\/safety"[^>]*>(.*?)<\/a>/s);
 assert(internal && internal[1].includes('気虚の説明'), 'Internal Markdown link renders');
 assert(!internal[1].includes('<button'), 'Link label has no nested glossary button');
-assert(html.includes('<button'), 'Ordinary glossary text stays interactive');
+assert(!html.includes('<button'), 'Ordinary glossary terms have no popup buttons');
 assert.match(html, /<strong[^>]*>前文 .*?<a href="\/safety".*?<\/strong>/s, 'Emphasis spans links');
 assert.equal((html.match(/data-reference="ref-named"/g) || []).length, 2, 'Named/numeric citations stay resolved');
 assert.match(html, /href="https:\/\/example.org"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/);

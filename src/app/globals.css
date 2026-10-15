@@ -537,11 +537,8 @@ html:not(.dark) .reading-page .text-\[\#C45A4A\] { color: #A83629; }
 }
 /* Reading typography is scoped: evidence and review metadata retain their styles. */
 .header-wordmark { font-family: var(--font-serif); }
-.glossary-popup svg { flex-shrink: 0; }
 .about-page p, .about-page ul { font-size: 1rem; line-height: 1.75; }
-.glossary-popup button, .glossary-popup a { min-height: 44px; max-width: 100%; }
-.glossary-popup .flex > div, .glossary-popup a > span { min-width: 0; }
-.glossary-popup a, .glossary-entry a { overflow-wrap: anywhere; }
+.glossary-entry a { overflow-wrap: anywhere; }
 .quiz-result, .quiz-explanation-title { font-size: 1.125rem; font-weight: 700; }
 .quiz-explanation-body { font-size: 1rem; line-height: 1.75; }
 .quiz-option { font-size: 1rem; }

@@ -10,11 +10,9 @@ import { parseMarkdownBlocks } from "@/utils/markdownParser";
 import { ResolvedReference } from "@/types/references";
 import type { ReadingInsert, ReadingLink } from "@/types/reading";
 import { resolveReadingInsertions } from "@/utils/readingInserts";
-import { createGlossarySeenSnapshots, getInlineGlossaryTerms } from "@/utils/glossaryOccurrences";
 
 interface MarkdownBodyProps {
   contentMarkdown: string;
-  seenTerms?: ReadonlySet<string>;
   onNextLecture?: () => void;
   idPrefix?: string;
   resolvedReferences?: ResolvedReference[];
@@ -26,7 +24,6 @@ interface MarkdownBodyProps {
 
 export default function MarkdownBody({
   contentMarkdown,
-  seenTerms,
   onNextLecture,
   idPrefix = "section-heading",
   resolvedReferences,
@@ -47,20 +44,10 @@ export default function MarkdownBody({
   const figurePlacements = resolveReadingInsertions(blocks, readingInserts ?? []);
   const lastFigureIndex = Math.max(-1, ...figurePlacements.keys());
 
-  const textParts = blocks.flatMap((block) => {
-    if (block.type === "code") return [];
-    if (block.type === "table") return [...block.headers, ...block.rows.flat()];
-    if (block.type === "list") return block.items;
-    return "content" in block ? [block.content] : [];
-  });
-  const seenBeforeText = createGlossarySeenSnapshots(textParts, seenTerms, getInlineGlossaryTerms);
-  let textIndex = 0;
-
   const renderText = (text: string) => (
     <CitationTextRenderer
       text={text}
       resolvedReferences={resolvedReferences}
-      seenTerms={seenBeforeText[textIndex++]}
     />
   );
 

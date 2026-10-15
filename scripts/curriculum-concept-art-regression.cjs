@@ -16,7 +16,7 @@ function load(relative) {
   const js = ts.transpileModule(fs.readFileSync(file, 'utf8'), { fileName: file, compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
   const localRequire = id => {
     if (id === 'next/link') return ({ href, children, ...props }) => React.createElement('a', { href, ...props }, children);
-    if (['@/components/CurriculumDiagram', '@/components/EastWestTermSwitch', '@/components/glossary/GlossaryPopup'].includes(id)) return () => null;
+    if (['@/components/CurriculumDiagram', '@/components/EastWestTermSwitch'].includes(id)) return () => null;
     if (id === './CitationBadge') return ({ displayNumber, targetAnchorId }) => React.createElement('sup', { 'data-reference': targetAnchorId }, displayNumber);
     if (id.startsWith('@/')) return load('src/' + id.slice(2));
     if (id.startsWith('.')) return load(path.resolve(path.dirname(file), id));
