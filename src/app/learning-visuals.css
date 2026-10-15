@@ -8,12 +8,33 @@
 .course-card-art { display: grid; place-items: center; width: 76px; height: 92px; background: var(--tokiwa-light); border-radius: 40px 40px 16px 16px; color: var(--accent-readable); }
 .course-card-emblem { display: block; width: 62px; height: 62px; }
 .course-card > p { font-size: .875rem; }
+.course-card-description { margin-top: 12px; font-size: 1rem; line-height: 1.7; }
+.course-card-meta { margin-top: 16px; font-size: .875rem; }
+.course-card-footer { margin-top: auto; padding-top: 20px; }
+.course-card-progress > p { margin-bottom: 8px; }
+.course-card-action { width: 100%; justify-content: space-between; margin-top: 16px; }
 .course-card .page-secondary-action { border-color: transparent; background: var(--tokiwa-light); }
 .course-card .page-secondary-action:hover { border-color: var(--accent-readable); }
+.course-card--compact { padding: 20px; }
+.course-card--compact .course-card-heading { grid-template-columns: minmax(0, 1fr) 64px; gap: 12px; }
+.course-card--compact .course-card-art { width: 64px; height: 80px; }
+.course-card--compact .course-card-emblem { width: 54px; height: 54px; }
+.course-card--compact .course-card-meta { margin-top: 12px; }
+.course-card--compact .course-card-footer { padding-top: 16px; }
+.course-card--compact .course-card-action { margin-top: 12px; }
+.course-card--compact .course-card-footer[data-has-progress="false"] .course-card-action { margin-top: 0; }
 .home-page .course-card-grid { grid-template-columns: minmax(0,1fr); }
 .home-reading-cover { display: grid; place-items: center; min-height: 124px; margin-bottom: 8px; overflow: hidden; border-radius: 16px; background: var(--bg-card); }
 .home-reading-cover .article-cover { display: flex; width: 100%; height: 144px; }
 .home-reading-arrow { justify-self: end; color: var(--accent-readable); }
+.home-learning-support { display: grid; gap: 12px; padding-bottom: 24px; border-bottom: 1px solid var(--border-washi); font-size: .875rem; line-height: 1.75; }
+.home-learning-support-summary { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 20px; }
+.home-learning-support-summary > p { min-width: 0; }
+.home-learning-support-count { color: var(--text-sumi); font-variant-numeric: tabular-nums; }
+.home-learning-support-source { display: inline-block; margin-left: 12px; color: var(--text-secondary); font-size: .75rem; }
+.home-learning-support-recovery { color: var(--text-secondary); }
+.home-learning-support-recovery > button { margin-left: 12px; }
+.home-learning-support-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0 20px; }
 
 /* Native progress retains its semantics, with the same palette in each browser. */
 progress.site-progress { display: block; appearance: none; -webkit-appearance: none; width: 100%; height: 6px; overflow: hidden; border: 0; border-radius: 999px; background: var(--tokiwa-light); color: var(--accent-readable); accent-color: var(--accent-readable); }
@@ -33,9 +54,10 @@ progress.site-progress::-moz-progress-bar { border-radius: 999px; background: va
 }
 @media (min-width: 700px) {
   .home-page .course-card-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
-  .home-page .course-card-heading { grid-template-columns: minmax(0,1fr) 88px; gap: 20px; }
-  .home-page .course-card-art { width: 88px; height: 104px; }
-  .home-page .course-card-emblem { width: 72px; height: 72px; }
+  .home-page .course-card--compact { padding: 22px; }
+  .home-page .course-card--compact .course-card-heading { grid-template-columns: minmax(0,1fr) 76px; gap: 16px; }
+  .home-page .course-card--compact .course-card-art { width: 76px; height: 92px; }
+  .home-page .course-card--compact .course-card-emblem { width: 62px; height: 62px; }
 }
 @media (forced-colors: active) {
   progress.site-progress { appearance: auto; -webkit-appearance: auto; forced-color-adjust: auto; }

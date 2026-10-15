@@ -282,8 +282,7 @@
   .home-search-input::placeholder { color: var(--text-secondary); opacity: 1; }
   .home-search-submit { flex-shrink: 0; padding: 8px 12px; }
   .home-search-submit svg { width: 16px; height: 16px; }
-  .home-search-shortcuts { display: flex; flex-wrap: wrap; gap: 8px 24px; }
-  .home-search-shortcuts a { white-space: nowrap; }
+  .home-course-note { font-size: .875rem; line-height: 1.7; }
   .home-sections { display: grid; gap: 44px; padding-top: 32px; }
   .home-section { display: grid; min-width: 0; gap: 16px; }
   .home-section-title { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 600; line-height: 1.5; }
@@ -306,6 +305,7 @@
   .home-operator > div:first-child { display: flex; align-items: start; gap: 16px; }
   .home-operator img { width: 56px; height: 56px; }
   .home-operator h2 { font-family: var(--font-sans); line-height: 1.7; }
+  .home-operator p { text-wrap: pretty; }
   .mobile-nav-items { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: stretch; max-width: 600px; margin-inline: auto; padding: 4px; }
   .mobile-nav-item { display: flex; min-width: 0; min-height: 60px; flex-direction: column; align-items: center; justify-content: center; padding: 6px 2px; border-radius: var(--radius-tag); gap: 4px; color: var(--text-secondary); font-size: .75rem; line-height: 1.4; text-align: center; }
   .mobile-nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }

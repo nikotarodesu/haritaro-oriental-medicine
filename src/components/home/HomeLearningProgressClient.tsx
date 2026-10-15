@@ -14,7 +14,7 @@ import { trackEvent } from '@/utils/analytics';
 import { useRecentTools } from '@/components/home/RecentTools';
 import { useProgressAvailability } from '@/hooks/useProgressAvailability';
 
-export default function HomeLearningProgressClient({ lectures }: { lectures: ResumeLecture[] }) {
+export default function HomeLearningProgressClient({ lectures, supportOnly = false }: { lectures: ResumeLecture[]; supportOnly?: boolean }) {
   const { isMounted, totalCompleted, completedLectures, lastVisitedLectureId, quizResults } = useCurriculumProgress();
   const { values, status } = useLearningSync();
   const { isAuthenticated } = useAuth();
@@ -27,6 +27,14 @@ export default function HomeLearningProgressClient({ lectures }: { lectures: Res
   const entry = getHomeLearningEntry(lectures, completedLectures, lastVisitedLectureId);
   const unavailable = availability === 'unavailable';
   const loading = availability === 'loading';
+  if (supportOnly) return <section aria-label="学習の進捗と最近のツール" className="home-learning-support">
+    <div className="home-learning-support-summary">
+      {loading ? <p role="status" className="ui-muted">学習履歴を確認中…</p> : unavailable ? <p role="status">学習履歴を読み込めませんでした。保存済みの履歴は削除していません。</p> : <p><span className="home-learning-support-count">{totalCompleted} / {lectures.length}講義完了</span><span className="home-learning-support-source">{isAuthenticated ? status === 'offline' || status === 'setup' ? '端末の履歴を表示中・同期は未完了' : 'ログイン中の履歴' : 'この端末の履歴'}</span></p>}
+      <Link href="/learn" className="ui-text-link">{unavailable ? '学習案内を見る' : '全体の進捗を見る'}<ArrowRight aria-hidden="true" /></Link>
+    </div>
+    {unavailable && <p className="home-learning-support-recovery">再読み込みしても改善しない場合は、ブラウザの保存設定をご確認ください。<button type="button" onClick={() => window.location.reload()} className="ui-text-link">再読み込み</button></p>}
+    {recentTools.length > 0 && <nav aria-label="最近使ったツール" className="home-learning-support-tools"><span className="ui-muted">最近使ったツール</span>{recentTools.slice(0, 3).map(tool => <Link key={tool.href} href={tool.href} className="ui-text-link">{tool.title}</Link>)}</nav>}
+  </section>;
   return (
     <section aria-label="学習の再開と最近のツール" className="ui-card space-y-4">
       <div className="home-section-header">

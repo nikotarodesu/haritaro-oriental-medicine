@@ -26,8 +26,9 @@ export default function LearningCourseCardsClient({ courses, readingMinutes, pla
     <div className="course-card-grid">
       {courses.map((course) => {
         const progress = getCourseProgress(course, isMounted ? completedLectures : {});
+        const showProgress = !compact || availability !== 'ready' || progress.completedCount > 0;
         return (
-          <article key={course.slug} className="course-card">
+          <article key={course.slug} className={`course-card${compact ? ' course-card--compact' : ''}`}>
             <div className="course-card-heading">
               <div>
                 {!compact && <p className="course-card-eyebrow">{course.eyebrow}</p>}
@@ -35,13 +36,15 @@ export default function LearningCourseCardsClient({ courses, readingMinutes, pla
               </div>
               <div className="course-card-art"><ChapterEmblem seriesId={course.seriesId} className="course-card-emblem" /></div>
             </div>
-            <p className="mt-3 text-base leading-[1.7] ui-muted">{shortDescriptions[course.slug] || course.description}</p>
-            <p className="mt-4 text-sm ui-muted">{course.steps.length}講 · 読む目安：約{readingMinutes[course.slug]}分</p>
-            <p className="mt-1 text-sm ui-muted">クイズ・演習の時間は別です</p>
-            <div className="mt-auto pt-5">
-              <p className="mb-2 text-sm ui-muted">{availability === 'ready' ? `${progress.completedCount} / ${course.steps.length} 講義完了` : availability === 'loading' ? '進捗を確認中…' : '進捗を取得できませんでした'}</p>
-              {availability === 'ready' && <progress className="site-progress" value={progress.completedCount} max={course.steps.length} aria-label={`${course.title}の受講進捗`} />}
-              <Link href={`/learn/courses/${course.slug}`} onClick={() => trackEvent('context_link_click', { placement, course_id: course.slug })} className="page-secondary-action mt-4 w-full justify-between">
+            <p className="course-card-description ui-muted">{shortDescriptions[course.slug] || course.description}</p>
+            <p className="course-card-meta ui-muted">{course.steps.length}講 · 読む目安：約{readingMinutes[course.slug]}分</p>
+            {!compact && <p className="mt-1 text-sm ui-muted">クイズ・演習の時間は別です</p>}
+            <div className="course-card-footer" data-has-progress={showProgress}>
+              {showProgress && <div className="course-card-progress">
+                <p className="text-sm ui-muted">{availability === 'ready' ? `${progress.completedCount} / ${course.steps.length} 講義完了` : availability === 'loading' ? '進捗を確認中…' : '進捗を取得できませんでした'}</p>
+                {availability === 'ready' && <progress className="site-progress" value={progress.completedCount} max={course.steps.length} aria-label={`${course.title}の受講進捗`} />}
+              </div>}
+              <Link href={`/learn/courses/${course.slug}`} onClick={() => trackEvent('context_link_click', { placement, course_id: course.slug })} className="page-secondary-action course-card-action">
                 <span>{progress.finished ? 'コースを振り返る' : progress.completedCount > 0 ? 'コースの続きを見る' : 'コースを見る'}</span>
                 <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
               </Link>

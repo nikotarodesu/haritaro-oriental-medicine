@@ -23,9 +23,7 @@ import {
   Network,
   Bookmark,
   Clock, 
-  ArrowLeft, 
   ArrowRight, 
-  ChevronRight,
 } from "lucide-react";
 
 interface Props {
@@ -188,14 +186,6 @@ export default async function ArticleDetailPage({ params }: Props) {
             </span>
           </div>
 
-          <Link
-            href="/articles"
-            aria-label="記事一覧へ戻る"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-1 text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:underline shrink-0"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">一覧へ戻る</span>
-          </Link>
         </nav>
 
         {/* 記事メインカード */}
@@ -244,20 +234,20 @@ export default async function ArticleDetailPage({ params }: Props) {
             <a href="#article-content" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />本文</a>
             {readingGuide?.inserts[0] && <a href={`#reading-figure-${readingGuide.inserts[0].figure.id}`} className="page-secondary-action"><Network aria-hidden="true" className="h-4 w-4" />図解</a>}
             {nextArticles.length > 0 && <a href="#article-next-reading" className="page-secondary-action"><ArrowRight aria-hidden="true" className="h-4 w-4" />次に読む</a>}
-            {resolvedReferences.length > 0 && <a href="#article-references-section" className="page-secondary-action"><Bookmark aria-hidden="true" className="h-4 w-4" />出典</a>}
+            {resolvedReferences.length > 0 && <a href="#article-references-section" className="ui-text-link text-sm"><Bookmark aria-hidden="true" className="h-4 w-4" />出典</a>}
           </nav>
           <details className="page-help text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]"><summary>この記事の要点・読み方</summary><div className="space-y-3">
             <p><InlineTextRenderer text={article.summary} /></p>
             {learningGuide && <div className="border-l-2 border-[#C5DED4] dark:border-[#2A5243] pl-4 space-y-2 text-sm">
               <p><strong>学ぶポイント：</strong>{learningGuide.focus}</p>
             </div>}
-            <details className="text-sm">
-              <summary className="flex min-h-11 cursor-pointer items-center gap-2 font-bold text-[#1E3D34] dark:text-[#74BA9E]">この記事の読み方・説明の範囲 <ChevronRight aria-hidden="true" className="h-4 w-4" /></summary>
+            <section className="text-sm">
+              <h2 className="font-semibold text-[#1E3D34] dark:text-[#74BA9E]">説明の範囲</h2>
               <p className="pt-2">
             伝統理論の説明、研究で得られた知見、筆者による比較・比喩を区別してお読みください。生理学との対比表や「ネットワーク」などの説明は、伝統概念との同一性や治療効果を証明するものではありません。研究結果は対象・方法・限界とともに確認してください。
               </p>
               {resolvedReferences.length > 0 && <a href="#article-references-section" className="inline-flex min-h-11 items-center underline text-[#1E3D34] dark:text-[#74BA9E]">原典・研究対象・方法を出典で確認する</a>}
-            </details>
+            </section>
           </div></details>
           {headings.length > 0 && <details className="rounded-xl bg-[#FAF8F5] dark:bg-[#121920] px-4 py-2">
             <summary className="flex min-h-11 items-center cursor-pointer font-bold text-[#1E3D34] dark:text-[#74BA9E]">目次</summary>

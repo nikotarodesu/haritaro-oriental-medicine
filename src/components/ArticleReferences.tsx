@@ -52,8 +52,8 @@ export default function ArticleReferences({
                 >
                   {title}
                 </h3>
-                <span className="shrink-0 text-sm px-2 py-0.5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] font-mono font-bold">
-                  {references.length}
+                <span className="shrink-0 text-sm tabular-nums text-[#59615D] dark:text-[#A0B0BC]">
+                  {references.length}件
                 </span>
               </div>
               <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC] mt-1">

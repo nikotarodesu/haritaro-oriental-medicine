@@ -286,7 +286,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           <a href="#lecture-content" aria-label="講義本文を読む" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />本文</a>
           {readingInserts[0] && <a href={`#reading-figure-${readingInserts[0].figure.id}`} className="page-secondary-action"><Network aria-hidden="true" className="h-4 w-4" />図で整理</a>}
           {quiz && <a href="#lecture-quiz" aria-label="理解度チェックのクイズへ" className="page-secondary-action"><ListChecks aria-hidden="true" className="h-4 w-4" />クイズ</a>}
-          {resolvedReferences.length > 0 && <a href="#article-references-section" aria-label="出典と確認範囲へ" className="page-secondary-action"><Bookmark aria-hidden="true" className="h-4 w-4" />出典</a>}
+          {resolvedReferences.length > 0 && <a href="#article-references-section" aria-label="出典と確認範囲へ" className="ui-text-link text-sm"><Bookmark aria-hidden="true" className="h-4 w-4" />出典</a>}
           {chapterAssessment && <a href="#chapter-assessment" className="page-secondary-action"><GraduationCap aria-hidden="true" className="h-4 w-4" />章末演習</a>}
         </nav>
 

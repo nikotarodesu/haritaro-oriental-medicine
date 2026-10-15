@@ -1,14 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
 import { Search, ArrowRight } from "lucide-react";
 import { trackEvent } from "@/utils/analytics";
-
-const QUICK_TAGS = [
-  { label: "合谷 (LI4)", href: "/tsubo/li4" },
-  { label: "足三里 (ST36)", href: "/tsubo/st36" },
-];
 
 export default function HomeHeroQuickSearch() {
   const [query, setQuery] = useState("");
@@ -51,18 +45,6 @@ export default function HomeHeroQuickSearch() {
         例：合谷・LI4・陰陽五行
       </p>
 
-      {/* 人気クイックタグ（枠線を控えめにして視覚ノイズを削減） */}
-      <nav aria-label="経穴へのショートカット" className="home-search-shortcuts">
-          {QUICK_TAGS.map((tag) => (
-            <Link
-              key={tag.label}
-              href={tag.href}
-              className="ui-text-link text-sm"
-            >
-              {tag.label}
-            </Link>
-          ))}
-      </nav>
     </div>
   );
 }
