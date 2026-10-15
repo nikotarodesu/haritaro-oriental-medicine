@@ -10,6 +10,7 @@ const glossary = Object.values(load('src/data/glossaryData.ts').GLOSSARY_TERMS);
 const normaliseTerm = text => text.replaceAll('相克', '相剋').replaceAll('瘀血', '血瘀');
 const lectureById = new Map(lectures.map(lecture => [lecture.id, lecture]));
 const quizzes = load('src/data/curriculumQuizzes.ts').CURRICULUM_QUIZZES;
+const { resolveArticleReferences } = load('src/utils/referenceResolver');
 const guides = load('src/data/curriculumReadingGuides.ts');
 const qiIds = Array.from({ length: 5 }, (_, index) => `lecture-qiblood-${index + 1}`);
 const onsetId = 'lecture-pathomechanism-2';
@@ -58,7 +59,7 @@ function assertQuiz(id) {
   return quiz;
 }
 function references(id) {
-  return lesson(id).references.filter(ref => typeof ref === 'object');
+  return resolveArticleReferences(lesson(id).references, lesson(id).contentMarkdown);
 }
 function isOfficialReference(ref) {
   return /^https:\/\/(?:www\.who\.int|iris\.who\.int|www\.nccih\.nih\.gov|www\.iso\.org)\//.test(ref.url ?? '');
@@ -107,7 +108,11 @@ for (const id of foundationIds) {
 // now belong to the three pathology lessons. Check the intended distinction in
 // each lesson rather than requiring identical words or sources everywhere.
 assert.match(lesson(qiIds[0]).contentMarkdown, /気をATP.*置き換えることはできません/);
-assert.match(lesson(qiIds[1]).contentMarkdown, /血の各定義.*逐語照合.*扱っていません/);
+const bloodDefinitionSource = resolveArticleReferences(lesson(qiIds[1]).references).find(ref => ref.id === 'who-tcm-terminology-2022');
+assert.equal(bloodDefinitionSource?.claimsStatus, 'source-checked', 'Blood definitions are checked against the acquired primary source');
+assert.match(bloodDefinitionSource.note, /pp\.19–22.*定義本文/);
+assert.equal(bloodDefinitionSource.sourceCheckedAt, '2026-10-15');
+assert.match(bloodDefinitionSource.note, /講義全体の監修.*検証を意味しません/, 'Verifying definitions must not certify clinical claims');
 assert.match(lesson(qiIds[2]).contentMarkdown, /細胞外液.*細胞内液.*定義ではありません/);
 assert.match(lesson(qiIds[2]).contentMarkdown, /(?:水分量|水分摂取量).*薬.*自己判断で(?:変更しません|変えないでください)/);
 assert.match(lesson(qiIds[3]).contentMarkdown, /用語・モデルの説明/);
@@ -149,8 +154,16 @@ for (const id of pathIds) {
   assert.match(body, /要確認事項/);
   assert.match(body, /解答例/);
   const sourceNote = sectionBody(id, '第6節：参考資料と研究を読む範囲');
-  assert.match(sourceNote, /検索索引/);
-  assert.match(sourceNote, /全文|全体/);
+  if (id === 'lecture-pathomechanism-4') {
+    assert.match(sourceNote, /検索索引/);
+    assert.match(sourceNote, /全文|全体/);
+  } else {
+    assert.match(sourceNote, /WHO公式PDF.*照合/);
+    const refId = id === 'lecture-pathomechanism-3' ? 'path-qi-who-terms-2022' : 'path-blood-who-terms-2022';
+    const checkedSource = references(id).find(ref => ref.id === refId);
+    assert.equal(checkedSource?.sourceCheckedAt, '2026-10-15');
+    assert.match(checkedSource.note, /定義本文.*確認範囲.*伝統用語/);
+  }
 }
 assert(!fluidPath.contentMarkdown.includes(':::diagram pathomechanism-fluid-degeneration'), 'Unrevised one-way fluid degeneration figure must not contradict the new comparison lesson');
 

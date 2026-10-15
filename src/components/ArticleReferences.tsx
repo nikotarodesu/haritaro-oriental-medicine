@@ -131,8 +131,9 @@ export default function ArticleReferences({
                       {/* タイトル */}
                       {ref.bibliographyStatus && <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">
                         {ref.bibliographyStatus === 'matched' ? '書誌情報：照合済み' : ref.bibliographyStatus === 'retracted' ? '撤回論文：治療の根拠として使用しません' : '書誌情報：照合未完了。根拠としての利用は保留'}
-                        {ref.bibliographyStatus === 'matched' && (ref.claimsStatus === 'source-checked' ? ' ／ 要約の対象・限界を照合済み（専門家監修とは別）' : ' ／ 結果の解釈は照合中')}
+                        {ref.bibliographyStatus === 'matched' && (ref.claimsStatus === 'source-checked' ? ' ／ 参照箇所を確認済み（確認した範囲は下記）' : ' ／ 内容の照合は未完了')}
                       </p>}
+                      {ref.sourceCheckedAt && <p className="text-sm text-[#59615D] dark:text-[#A0B0BC]">資料確認日：<time dateTime={ref.sourceCheckedAt}>{ref.sourceCheckedAt}</time></p>}
                       <div>
                         <h4 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
                           {ref.title}

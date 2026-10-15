@@ -48,14 +48,15 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
         afterParagraph: 1,
         figure: {
           id: "yinyang-three-axes",
-          title: "八綱を読む三つの分類軸",
+          title: "一つの分類軸から、別の軸を決められる？",
           layout: "triad",
           items: [
-            { label: "寒・熱", description: "冷えや熱感などを、伝統的な性質として整理する。", icon: "balance" },
-            { label: "表・裏", description: "伝統医学でいう病位を整理する。", icon: "compass" },
-            { label: "虚・実", description: "正気の不足や邪気の盛んさなどを整理する。", icon: "book" },
+            { label: "性質：寒・熱", description: "仮の学習例では、寒熱の観点で『寒』と整理された。", icon: "balance" },
+            { label: "病位：表・裏", description: "病位についての情報は、まだ示されていない。", icon: "compass" },
+            { label: "盛衰：虚・実", description: "正気と邪気の盛衰についても、追加の所見が必要。", icon: "book" },
           ],
           caption: "伝統モデルの分類です。検査値や病名の対応表ではなく、症状の原因・緊急性は医学的に評価します。",
+          exercise: { prompt: "『寒』と整理しただけで、『表』『虚』も決まりますか？", answer: "決まりません。寒熱は性質、表裏は病位、虚実は盛衰という異なる観点です。三つの軸をそれぞれ確認し、同じ情報から一括して埋めないことが要点です。" },
         },
       },
       {

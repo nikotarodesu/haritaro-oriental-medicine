@@ -9,7 +9,7 @@ import CurriculumDiagram from "@/components/CurriculumDiagram";
 import { parseMarkdownBlocks } from "@/utils/markdownParser";
 import { ResolvedReference } from "@/types/references";
 import type { ReadingInsert, ReadingLink } from "@/types/reading";
-import { resolveReadingInsertions } from "@/utils/readingInserts";
+import { resolveConceptArtPlacement, resolveReadingInsertions } from "@/utils/readingInserts";
 
 interface MarkdownBodyProps {
   contentMarkdown: string;
@@ -33,15 +33,8 @@ export default function MarkdownBody({
   conceptArt,
 }: MarkdownBodyProps) {
   const blocks = parseMarkdownBlocks(contentMarkdown);
-  const artHeadingIndex = conceptArt ? blocks.findIndex((block) => block.type === "h2" && block.content === conceptArt.afterHeading) : -1;
-  let artPlacementIndex = artHeadingIndex;
-  if (artHeadingIndex >= 0) {
-    for (let index = artHeadingIndex + 1; index < blocks.length; index++) {
-      if (["h1", "h2"].includes(blocks[index].type)) break;
-      if (blocks[index].type === "paragraph") { artPlacementIndex = index; break; }
-    }
-  }
   const figurePlacements = resolveReadingInsertions(blocks, readingInserts ?? []);
+  const artPlacementIndex = conceptArt ? resolveConceptArtPlacement(blocks, conceptArt.afterHeading, figurePlacements) : -1;
   const lastFigureIndex = Math.max(-1, ...figurePlacements.keys());
 
   const renderText = (text: string) => (

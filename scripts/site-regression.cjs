@@ -40,7 +40,7 @@ for(const article of ARTICLES) {
  const guide=ARTICLE_LEARNING_GUIDES[article.id]; assert(guide,article.id);
  assert(lectureIds.has(guide.lectureId),article.id+' lecture'); assert(CURRICULUM_QUIZZES[guide.lectureId],article.id+' quiz');
  assert(PROGRESSIVE_CASES.some(c=>c.id===guide.caseId),article.id+' case');
- assert.equal(article.summary,guide.summary); assert.equal(article.updatedAt,'2026-10-12');
+ assert.equal(article.summary,guide.summary); assert.equal(article.updatedAt,'2026-10-15');
 }
 const { GLOSSARY_TERMS } = load('src/data/glossaryData');
 const terms=Object.values(GLOSSARY_TERMS); assert.equal(new Set(terms.map(term=>term.term)).size,terms.length);
@@ -68,8 +68,9 @@ assert.equal(NATURAL_JAPANESE_EDITORIAL_REVISIONS.length, 93);
 assert.equal(new Set(NATURAL_JAPANESE_EDITORIAL_REVISIONS).size, 93);
 for(const lectureId of NATURAL_JAPANESE_EDITORIAL_REVISIONS) assert(lectureIds.has(lectureId), lectureId);
 // All lecture reading layouts and acupoint pages were revised; this is not a clinical-review date.
-for(const lectureId of lectureIds) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/curriculum/${lectureId}`).lastModified.toISOString().slice(0,10),'2026-10-12',lectureId);
-for(const pathname of ['/tsubo/li4','/tsubo/sp6','/pricing']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-12',pathname);
+for(const lectureId of lectureIds) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/curriculum/${lectureId}`).lastModified.toISOString().slice(0,10),'2026-10-15',lectureId);
+for(const pathname of ['/tsubo/li4','/tsubo/sp6']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-15',pathname);
+assert.equal(sitemap.find(page=>new URL(page.url).pathname==='/pricing').lastModified.toISOString().slice(0,10),'2026-10-12', 'unchanged pricing revision');
 for(const pathname of ['/symptoms','/diagnosis']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-08',pathname);
 for(const pathname of ['/','/updates','/learn/review']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname)?.lastModified.toISOString().slice(0,10),'2026-10-15',pathname);
 for(const pathname of ['/glossary','/simulator','/clinical','/about','/cases','/practice/haiketsu','/curriculum','/learn','/library','/learn/courses']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-12',pathname);

@@ -6,6 +6,7 @@ export interface ReadingFigure {
   layout: "compare" | "steps" | "triad";
   items: ReadonlyArray<{ label: string; description: string; icon: ConceptIcon }>;
   caption: string;
+  exercise?: { prompt: string; answer: string };
 }
 
 export interface ReadingInsert {

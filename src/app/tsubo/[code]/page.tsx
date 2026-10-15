@@ -40,6 +40,7 @@ import { MERIDIAN_RELATIONS } from "@/utils/tsuboRelations";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import AcupointInformationScope from '@/components/tsubo/AcupointInformationScope';
 import MeridianRelationsDiagram from '@/components/tsubo/MeridianRelationsDiagram';
+import { VERIFIED_POINT_LOCATIONS } from '@/data/sourceVerification';
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -445,7 +446,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             </div>
           </div>
 
-          <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#AFBDC8]">個別の原典照合は進行中です。圧痛や響きの有無だけで位置を判断しないでください。体表位置の説明は、個人の安全な刺入経路・深度や施術の適応を示すものではありません。</p>
+          <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#AFBDC8]">{VERIFIED_POINT_LOCATIONS[point.codeLower] ? <>標準位置の記述は原資料と照合済みです。<a href="#acupoint-sources" className="underline underline-offset-4">確認したページと範囲</a>をご覧ください。</> : '個別の原典照合は進行中です。'}圧痛や響きの有無だけで位置を判断しないでください。体表位置の説明は、個人の安全な刺入経路・深度や施術の適応を示すものではありません。</p>
 
           {/* 取穴手順ステップ */}
           {point.howToLocate && point.howToLocate.length > 0 && (
@@ -888,9 +889,6 @@ export default async function AcupointDetailPage({ params }: Props) {
                   </span>
                 </div>
               </div>
-              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-sm font-mono font-bold text-[#59615D] dark:text-[#AFBDC8] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded">
-                [
-              </kbd>
             </Link>
           ) : (
             <div className="p-4 rounded-2xl bg-[#FAF8F5]/60 dark:bg-[#121920]/60 border border-dashed border-[#E5DEC9] dark:border-[#22303D] text-sm text-[#8A948F] flex items-center">
@@ -903,9 +901,6 @@ export default async function AcupointDetailPage({ params }: Props) {
               href={`/tsubo/${nextPoint.codeLower}`}
               className="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-sm transition-all group flex flex-wrap items-center justify-between gap-2"
             >
-              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-sm font-mono font-bold text-[#59615D] dark:text-[#AFBDC8] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded">
-                ]
-              </kbd>
               <div className="flex items-center gap-3 justify-end text-right">
                 <div>
                   <span className="text-sm text-[#59615D] dark:text-[#AFBDC8] block">

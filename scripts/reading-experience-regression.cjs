@@ -30,7 +30,7 @@ function load(relative) {
   return exports;
 }
 const { parseMarkdownBlocks } = load('src/utils/markdownParser');
-const { resolveReadingInsertions } = load('src/utils/readingInserts');
+const { resolveConceptArtPlacement, resolveReadingInsertions } = load('src/utils/readingInserts');
 const { ARTICLES, getArticlePreviews } = load('src/data/articleData');
 const { ARTICLE_READING_GUIDES } = load('src/data/articleReadingGuides');
 const { CURRICULUM_DATA } = load('src/data/curriculumData');
@@ -60,6 +60,12 @@ function checkInsertions(id, content, inserts) {
     assert(illustrated.includes(`aria-labelledby="reading-figure-${figure.id}-title"`), id + ' accessible name');
     assert(illustrated.includes(figure.caption.replaceAll('&', '&amp;')), id + ' scope caption');
     for (const item of figure.items) assert(illustrated.includes(item.label.replaceAll('&', '&amp;')), id + ' HTML concept label');
+    if (figure.exercise) {
+      assert(illustrated.includes(figure.exercise.prompt), id + ' example asks the reader to compare');
+      const exercise = illustrated.match(new RegExp(`<details data-reading-exercise="${figure.id}"[^>]*>[\\s\\S]*?<\\/details>`))?.[0];
+      assert(exercise && !/<details[^>]*\sopen(?:[\s=>])/.test(exercise), id + ' answer starts hidden until the reader asks');
+      assert(exercise.includes(figure.exercise.answer), id + ' authored reasoning remains available');
+    }
     checkedFigures += 1;
   }
   assert(!/<svg[^>]*>[\s\S]*?<text\b/.test(illustrated), id + ' labels must not shrink inside SVG');
@@ -104,5 +110,11 @@ const positions = resolveReadingInsertions(sampleBlocks, [{ afterHeading: 'A', a
 assert.equal(sampleBlocks[Array.from(positions.keys())[0]].content, 'Two.');
 assert.equal(resolveReadingInsertions(sampleBlocks, [{ afterHeading: 'Missing', afterParagraph: 1, figure: marker }]).size, 0);
 assert.equal(resolveReadingInsertions(sampleBlocks, [{ afterHeading: 'B', afterParagraph: 2, figure: marker }]).size, 0);
-assert.equal(checkedFigures, 27);
+assert.equal(resolveConceptArtPlacement(sampleBlocks, 'A', new Map()), -1, 'An existing diagram takes priority over another same-section image');
+const separateSections = parseMarkdownBlocks('## A\n\nOne.\n\n## B\n\nTwo.');
+const figureInB = resolveReadingInsertions(separateSections, [{ afterHeading: 'B', afterParagraph: 1, figure: marker }]);
+assert.equal(resolveConceptArtPlacement(separateSections, 'A', figureInB), 1, 'A visual in a later section must not suppress the current explanation');
+assert.equal(resolveConceptArtPlacement(separateSections, 'B', figureInB), -1, 'A same-section figure replaces redundant artwork');
+assert.equal(resolveConceptArtPlacement(separateSections, 'Missing', new Map()), -1, 'Missing headings do not move artwork to an unrelated section');
+assert.equal(checkedFigures, 26, 'The duplicate qi/blood relationship card is replaced by the existing triangle diagram');
 console.log(`Passed: ${ARTICLES.length} articles, ${Object.keys(CURRICULUM_READING_INSERTS).length} lectures, ${checkedFigures} figure placements/renderings, stable heading anchors, 36 related destinations, and metadata-only article previews.`);

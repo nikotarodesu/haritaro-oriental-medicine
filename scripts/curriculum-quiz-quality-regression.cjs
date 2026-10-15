@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-// Structural and editorial safety guards for the audited latter 48 lessons.
+// Structural and editorial safety guards for all 94 published lessons.
 // These checks catch known regressions; they do not certify clinical validity or
 // substitute for a human review of the single best answer and distractors.
 const assert = require('node:assert/strict');
@@ -9,7 +9,6 @@ const { CURRICULUM_DATA } = load('src/data/curriculumData');
 const { CURRICULUM_QUIZZES } = load('src/data/curriculumQuizzes');
 const { questionRevision, updateReviewSchedule } = load('src/utils/learningReview');
 const lectures = CURRICULUM_DATA.flatMap(stage => stage.lectures);
-const auditedSeries = ['pathomechanism', 'diagnosis', 'treatment', 'practice'];
 const ids = new Set();
 const prohibitedClaims = [
   /根本的な治癒と再発予防.{0,8}可能/,
@@ -25,10 +24,8 @@ const prohibitedClaims = [
 // Physically impossible distractors let learners answer without understanding.
 const absurdDistractors = /不老不死|新品の身体|マッチョ|風速計|致死率100%|骨密度が瞬時に10倍/;
 
-for (const series of auditedSeries) {
-  const lessons = lectures.filter(lecture => lecture.seriesId === series);
-  assert.equal(lessons.length, 12, `${series}: all 12 lessons are covered`);
-  for (const lecture of lessons) {
+assert.equal(lectures.length, 94, 'all published lessons are covered');
+for (const lecture of lectures) {
     const quiz = CURRICULUM_QUIZZES[lecture.id];
     assert.ok(quiz, `${lecture.id}: quiz exists`);
     assert.equal(quiz.questions.length, 3, `${lecture.id}: exactly 3 questions`);
@@ -54,15 +51,19 @@ for (const series of auditedSeries) {
       assert.ok(!question.options.some(option => absurdDistractors.test(option)), `${question.id}: substantive distractors`);
       // Stable IDs must not retain mastery after a materially revised explanation.
       const revision = questionRevision(question.question, question.options, question.correctIndex, question.explanation);
+      assert.notEqual(revision, questionRevision(`${question.question}旧版`, question.options, question.correctIndex, question.explanation), `${question.id}: changed prompt invalidates old mastery`);
+      const oldOptions = [...question.options];
+      oldOptions[question.correctIndex] += '旧版';
+      assert.notEqual(revision, questionRevision(question.question, oldOptions, question.correctIndex, question.explanation), `${question.id}: changed answer invalidates old mastery`);
+      assert.notEqual(revision, questionRevision(question.question, question.options, (question.correctIndex + 1) % 3, question.explanation), `${question.id}: changed key invalidates old mastery`);
       const oldRevision = questionRevision(question.question, question.options, question.correctIndex, `${question.explanation}旧版`);
       assert.notEqual(revision, oldRevision);
       const revised = updateReviewSchedule({ revision: oldRevision, consecutiveCorrect: 5, attempts: 9, mistakes: 2 }, true, revision, '2026-10-08');
       assert.equal(revised.consecutiveCorrect, 1);
       assert.equal(revised.attempts, 1);
     }
-  }
 }
-assert.equal(ids.size, 144);
+assert.equal(ids.size, 282);
 // Protect the specific body/question mismatches found in this audit.
 for (const number of [2, 3, 4, 5, 7, 8, 9, 10, 11]) {
   const lecture = lectures.find(item => item.id === `lecture-lifedynamics-${number}`);
@@ -83,4 +84,4 @@ for (const [id, unsupported] of Object.entries(bodyGuards)) {
   assert.ok(!unsupported.test(lectures.find(lecture => lecture.id === id).contentMarkdown), `${id}: no known unsupported body claim`);
 }
 assert.ok(!CURRICULUM_QUIZZES['lecture-yinyang-5'].questions[1].options.some(option => /純金/.test(option)), 'yin/yang distractors test the taught roles');
-console.log('Passed: 48 lessons / 144 questions, stable IDs, distinct choices, source anchors, known safety regressions and revised-review reset.');
+console.log('Passed: 94 lessons / 282 questions, stable IDs, distinct choices, source anchors, known safety regressions and prompt/answer/key/explanation revision resets.');

@@ -1,5 +1,6 @@
 import { ReferenceItem, ResolvedReference } from "@/types/references";
 import { PAPERS_DATABASE } from "@/data/references/papersData";
+import { applySourceVerification } from "@/data/sourceVerification";
 import { buildAmazonAssociateSearchUrl } from "./amazonAssociate";
 
 /**
@@ -44,6 +45,7 @@ export function resolveArticleReferences(
   const refMap = new Map<string, ResolvedReference>();
 
   const addOrGet = (item: ReferenceItem): ResolvedReference => {
+    item = applySourceVerification(item);
     if (refMap.has(item.id)) {
       return refMap.get(item.id)!;
     }

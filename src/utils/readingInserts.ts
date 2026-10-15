@@ -24,3 +24,21 @@ export function resolveReadingInsertions(blocks: readonly MarkdownBlock[], inser
 
   return placements;
 }
+
+/** Use one visual explanation per section; an instructional diagram takes priority. */
+export function resolveConceptArtPlacement(
+  blocks: readonly MarkdownBlock[],
+  afterHeading: string,
+  figurePlacements: ReadonlyMap<number, readonly ReadingFigure[]>,
+): number {
+  const headingIndex = blocks.findIndex((block) => block.type === "h2" && block.content === afterHeading);
+  if (headingIndex < 0) return -1;
+  let firstParagraph = headingIndex;
+  for (let index = headingIndex + 1; index < blocks.length; index++) {
+    const block = blocks[index];
+    if (block.type === "h1" || block.type === "h2") break;
+    if (figurePlacements.has(index) || ["diagram", "eastwest", "image"].includes(block.type)) return -1;
+    if (block.type === "paragraph" && firstParagraph === headingIndex) firstParagraph = index;
+  }
+  return firstParagraph;
+}

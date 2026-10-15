@@ -3,7 +3,7 @@ import { LEARNING_COURSES } from '@/data/learningCourses';
 
 /** Significant content revisions only; never replace these with the build date. */
 export const SITE_REVISED_AT = '2026-10-02';
-export const ACUPOINT_PAGE_REVISED_AT = '2026-10-12';
+export const ACUPOINT_PAGE_REVISED_AT = '2026-10-15';
 // Includes question-only changes, but not unchanged lessons in the same chapter.
 export const CURRICULUM_EDITORIAL_REVISIONS = [
   'lecture-qiblood-1', 'lecture-qiblood-2', 'lecture-qiblood-3', 'lecture-qiblood-5',
@@ -185,7 +185,7 @@ export const NATURAL_JAPANESE_COURSE_REVISIONS = [
 export const PAGE_REVISIONS: Record<string, string> = {
   '/learn': '2026-10-12', '/learn/review': '2026-10-15',
   '/simulator': '2026-10-12',
-  '/articles': '2026-10-12', '/contact': SITE_REVISED_AT,
+  '/articles': '2026-10-15', '/contact': SITE_REVISED_AT,
   '/tsubo/practice': '2026-10-04', '/pricing': '2026-10-12',
   '/symptoms': '2026-10-08', '/diagnosis': '2026-10-08', '/cases': '2026-10-12',
   // 実際に改訂したページだけを更新する。全教材の確認日には用いない。
@@ -221,8 +221,12 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [`/curriculum/${id}`, '2026-10-12']))),
   // Reading estimates were added to the actual detail pages of all 11 courses.
   ...Object.fromEntries(LEARNING_COURSES.map(course => [`/learn/courses/${course.slug}`, '2026-10-12'])),
+  // Shared reading/source/navigation presentation changed; this is not a clinical review date.
+  ...Object.fromEntries(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [`/curriculum/${id}`, '2026-10-15']))),
+  ...Object.fromEntries(ARTICLE_EDITORIAL_REVISIONS.map(id => [`/articles/${id}`, '2026-10-15'])),
 };
 export const SITE_UPDATES = [
+  { date: '2026-10-15', label: '本文・図解・理解度チェックを改善', href: '/curriculum/lecture-qiblood-2', text: '重なる説明を整理し、概念の比較や短い例から考える問題へ見直しました。同じ節の図解と挿絵の重複を減らし、WHO原資料で確認した定義と合谷の位置には、確認範囲と日付を掲載しています。' },
   { date: "2026-10-15", label: "講義の学習と復習に集中する構成へ", href: "/learn/review", text: "国試向けの専用演習を終了し、講義の復習へ集約。解き直したときの復習予定と類題からの復帰を改善し、再訪時の入口、用語説明の操作、図の読み方を整えました。" },
   { date: '2026-10-12', label: 'ページの重複を減らし、検索と配穴メモを改善', href: '/learn', text: '講義と経穴の説明、学習案内、メニューを整理。用語検索では短い定義を先に表示し、配穴メモに無関係な属性が付く不具合を修正しました。' },
   { date: '2026-10-12', label: '学習の入口・読書時間・概念比較・配穴の評価表示を改善', href: '/learn', text: 'トップから概論の第1講へ直接進む案内を追加。全11コースに各講義の読書時間の合計を表示し、病機論の同じ架空例による概念比較をコースでも読めるように変更。配穴の独自スコアは計算方法と未検証の範囲を明示し、評価を保証するように読める表示を修正' },

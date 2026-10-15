@@ -12,6 +12,7 @@ const uniqueCorrect = [0, 0, 0];
 const uniquePasses = [0, 0, 0];
 const expectedPasses = [0, 0, 0];
 const exclusionPasses = [0, 0];
+const positionsByOrdinal = Array.from({ length: 3 }, () => [0, 0, 0]);
 let tiedCorrect = 0;
 
 assert.equal(lectures.length, 94);
@@ -35,6 +36,7 @@ for (const lecture of lectures) {
     assert.equal(question.options.length, 3, `${id}: three alternatives`);
     assert.equal(new Set(question.options.map((option) => option.trim())).size, 3, `${id}: distinct alternatives`);
     assert.ok(Number.isInteger(question.correctIndex) && question.correctIndex >= 0 && question.correctIndex < 3, `${id}: valid answer`);
+    positionsByOrdinal[index][question.correctIndex]++;
     assert.ok(question.relatedSectionTitle && headings.has(question.relatedSectionTitle), `${id}: explicit return to an actual heading`);
     assert.ok(!/の基本として/.test(question.question), `${id}: do not ask the learner to select the course objective`);
     assert.ok(!question.options.some((option) => /最初に考えた仮説に合う情報を中心に集め|一つの症状や所見だけで判断を確定し、経過や他の情報との照合を省く/.test(option)), `${id}: do not reuse the generic distractor pair`);
@@ -83,6 +85,9 @@ for (let extreme = 0; extreme < 2; extreme++) {
   assert.ok(exclusionPasses[extreme] / groups.length <= 0.35, `excluding length extreme ${extreme}: shortcut must not pass more than 35% of lessons`);
 }
 assert.equal(questionIds.size, 282);
+for (const [index, counts] of positionsByOrdinal.entries()) {
+  assert.ok(Math.max(...counts) / groups.length <= 0.45, `question ${index + 1}: ordinal must not predict the answer position when shuffle is off`);
+}
 for (let rank = 0; rank < 3; rank++) {
   assert.ok(uniquePasses[rank] / groups.length <= 0.3, `length rank ${rank}: unique-length shortcut must not pass more than 30% of lessons`);
   // A regression ceiling, not a claim that every length strategy is at chance.
@@ -105,6 +110,7 @@ assert.match(negativeFindings.explanation, /2項目.*陰性所見/, 'a recorded 
 assert.match(negativeFindings.explanation, /まだ確認していない事項/, 'retain the limits of the recorded negatives');
 
 console.log('Passed: 94 lessons / 282 questions, explicit source headings, concrete tasks, and diagnosis 7 coverage.');
+console.log(`Stored correct positions by question ordinal (A / B / C): ${positionsByOrdinal.map((counts, index) => `q${index + 1}: ${counts.join(' / ')}`).join('; ')}.`);
 console.log(`Length-only diagnostic (short / middle / long): unique correct ${uniqueCorrect.join(' / ')}, tied correct ${tiedCorrect}; unique lesson passes ${uniquePasses.join(' / ')} of ${groups.length}.`);
 console.log(`With random choices within equal lengths: expected lesson passes ${expectedPasses.map((value) => value.toFixed(2)).join(' / ')} of ${groups.length}; chance baseline ${(groups.length * 7 / 27).toFixed(2)}. These are content diagnostics, not measurements of learner performance.`);
 console.log(`Excluding a unique longest / shortest choice, then guessing: expected lesson passes ${exclusionPasses.map((value) => value.toFixed(2)).join(' / ')} of ${groups.length}.`);

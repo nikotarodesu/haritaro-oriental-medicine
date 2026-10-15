@@ -11,13 +11,14 @@ export const CURRICULUM_READING_INSERTS: Readonly<Record<string, ReadingInsert[]
       afterParagraph: 2,
       figure: {
         id: "yinyang-comparison-reference",
-        title: "同じ40℃でも、比べる相手で見方が変わる",
+        title: "「30℃の水はいつでも陽」というメモを直す",
         layout: "compare",
         items: [
-          { label: "0℃と比べる", description: "40℃は、より温かい側として陽に整理します。", icon: "balance" },
-          { label: "100℃と比べる", description: "40℃は、より冷たい側として陰に整理します。", icon: "balance" },
+          { label: "比較A：10℃と30℃", description: "温度を比べ、30℃の水について記録します。", icon: "balance" },
+          { label: "比較B：30℃と50℃", description: "同じ30℃の水を、別の相手と比較します。", icon: "balance" },
         ],
         caption: "対象は同じで、比較する基準が違う学習例です。身体の状態を測定する図ではありません。",
+        exercise: { prompt: "『いつでも陽』の代わりに、A・Bで成り立つ一文を書いてみましょう。", answer: "『30℃の水は、温度を10℃の水と比べれば陽、50℃の水と比べれば陰である』と直せます。比較相手と注目する性質を添えると、同じ対象の見方が変わる理由を説明できます。" },
       },
     },
   ],
@@ -27,13 +28,14 @@ export const CURRICULUM_READING_INSERTS: Readonly<Record<string, ReadingInsert[]
       afterParagraph: 2,
       figure: {
         id: "yinyang-amount-quality",
-        title: "量の変化を見る消長と、性質の変化を見る転化",
+        title: "二つの変化を、説明する観点で分ける",
         layout: "compare",
         items: [
-          { label: "消長", description: "増える・減るという、量の変化に注目します。", icon: "balance" },
-          { label: "転化", description: "性質が反対へ変わる、という変化に注目します。", icon: "compass" },
+          { label: "記述A：増減", description: "一方が強まり、もう一方が弱まるという量の変化。", icon: "balance" },
+          { label: "記述B：性質の切り替わり", description: "条件が変わり、反対側の性質として捉える変化。", icon: "compass" },
         ],
         caption: "伝統的な概念を区別する図です。体温や症状の変化を予測する機構図ではありません。",
+        exercise: { prompt: "消長と転化は、A・Bのどちらに当たりますか？", answer: "Aは強弱の増減を見る消長、Bは性質の切り替わりを見る転化です。「変わった」という言葉だけで選ばず、量と性質のどちらに注目した記述かを確かめます。" },
       },
     },
   ],
@@ -93,13 +95,14 @@ export const CURRICULUM_READING_INSERTS: Readonly<Record<string, ReadingInsert[]
       afterParagraph: 1,
       figure: {
         id: "wuxing-generation-restraint",
-        title: "相生と相剋は、関係の意味と順序で比べる",
+        title: "木から出る二つの矢印を読み分ける",
         layout: "compare",
         items: [
-          { label: "相生：生み、支える", description: "木→火→土→金→水→木。生み出す側を母、生み出される側を子と呼ぶ。", icon: "leaf" },
-          { label: "相剋：抑え、制約する", description: "木→土→水→火→金→木。相生とは異なる順序で、制約の関係を表す。", icon: "balance" },
+          { label: "木 → 火", description: "木が火を生み、支える向き。矢印の先が子に当たる。", icon: "leaf" },
+          { label: "木 → 土", description: "木が土を抑え、制約する向き。母子の関係とは区別する。", icon: "balance" },
         ],
         caption: "矢印は伝統的な五行モデル内の関係です。臓器間の因果関係や治療効果を示すものではありません。",
+        exercise: { prompt: "火の母は何ですか？ 木が制約する相手は何ですか？", answer: "火の母は木、木が制約する相手は土です。同じ木から出る矢印でも、相生か相剋かで相手と意味が変わります。" },
       },
     },
   ],
@@ -138,21 +141,22 @@ export const CURRICULUM_READING_INSERTS: Readonly<Record<string, ReadingInsert[]
     "afterParagraph": 1,
     "figure": {
       "id": "qiblood-blood-basic-functions",
-      "title": "滋養と滋潤を言葉で区別する",
+      "title": "二つの記述を、滋養・滋潤に分けてみる",
       "layout": "compare",
       "items": [
         {
-          "label": "滋養",
-          "description": "身体を養うという、血の伝統的な役割。",
+          "label": "記述A",
+          "description": "筋や目などを養い、その活動を支える。",
           "icon": "book"
         },
         {
-          "label": "滋潤",
-          "description": "身体を潤すという、血の伝統的な役割。",
+          "label": "記述B",
+          "description": "身体の各部へ潤いを与える。",
           "icon": "drop"
         }
       ],
-      "caption": "血の基本的な説明を整理する図です。血液検査の項目や病名を示すものではありません。"
+      "caption": "血の役割について、記述のどこに注目するかを考える練習です。",
+      "exercise": { "prompt": "A・Bは、それぞれ滋養・滋潤のどちらですか？", "answer": "Aは滋養、Bは滋潤です。Aでは『養って活動を支える』、Bでは『潤いを与える』が判断の手掛かりです。症状から分類する問題ではなく、教材の記述を読み分ける練習です。" }
     }
   }
 ],
@@ -162,45 +166,22 @@ export const CURRICULUM_READING_INSERTS: Readonly<Record<string, ReadingInsert[]
     "afterParagraph": 1,
     "figure": {
       "id": "qiblood-jin-ye",
-      "title": "津と液は、性質に注目して読む",
+      "title": "水液の性質を手掛かりに、津と液を読み分ける",
       "layout": "compare",
       "items": [
         {
-          "label": "津（しん）",
-          "description": "比較的さらさらした性質の水液として説明する。",
+          "label": "記述A：薄く流れやすい",
+          "description": "比較的さらさらした水液、と書かれた教材メモ。",
           "icon": "drop"
         },
         {
-          "label": "液（えき）",
-          "description": "比較的濃厚な性質の水液として説明する。",
+          "label": "記述B：濃く粘りがある",
+          "description": "比較的濃厚な水液、と書かれた教材メモ。",
           "icon": "drop"
         }
       ],
-      "caption": "伝統的な用語を整理する図です。現代医学の体液区分と一対一に対応する分類ではありません。"
-    }
-  }
-],
-  "lecture-qiblood-4": [
-  {
-    "afterHeading": "第1節：気と血の関係",
-    "afterParagraph": 1,
-    "figure": {
-      "id": "qiblood-normal-relations",
-      "title": "役割を知ってから、関係を読む",
-      "layout": "compare",
-      "items": [
-        {
-          "label": "気から血を見る",
-          "description": "生成・運行・保持との関わりを、伝統用語で整理する。",
-          "icon": "compass"
-        },
-        {
-          "label": "血から気を見る",
-          "description": "活動を支える滋養との関わりを、伝統用語で整理する。",
-          "icon": "book"
-        }
-      ],
-      "caption": "伝統モデル内の関係です。血管・神経などの医学的な機序や治療効果を示しません。"
+      "caption": "伝統用語の性質による比較です。現代医学の体液区分との対応は示しません。",
+      "exercise": { "prompt": "A・Bは、それぞれ津・液のどちらですか？", "answer": "Aは津、Bは液です。性質の違いを基準に対応づけます。体の水分を二つの容器に分ける図ではなく、伝統用語を比較するためのメモです。" }
     }
   }
 ],

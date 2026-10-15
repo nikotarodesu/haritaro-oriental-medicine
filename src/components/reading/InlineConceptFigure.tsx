@@ -58,6 +58,15 @@ export default function InlineConceptFigure({ figure }: { figure: ReadingFigure 
           </li>
         ))}
       </List>
+      {figure.exercise && (
+        <div className="mt-4 border-t border-[#D6E3DA] pt-4 dark:border-[#375145]">
+          <p className="text-base font-semibold leading-relaxed text-[#244B3C] dark:text-[#E1EDE5]">{figure.exercise.prompt}</p>
+          <details data-reading-exercise={figure.id} className="mt-2 text-sm leading-[1.85] text-[#4D5C53] dark:text-[#B7CFC0]">
+            <summary className="min-h-11 cursor-pointer py-2 font-semibold underline underline-offset-4">考え方を確認する</summary>
+            <p className="pb-2">{figure.exercise.answer}</p>
+          </details>
+        </div>
+      )}
       <p id={captionId} className="mt-5 border-t border-[#D6E3DA] pt-4 text-sm leading-[1.85] text-[#536458] dark:border-[#375145] dark:text-[#B7CFC0]">{figure.caption}</p>
     </figure>
   );

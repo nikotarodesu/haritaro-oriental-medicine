@@ -556,10 +556,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
               >
                 <ChapterEmblem seriesId={nextLecture.seriesId} className="curriculum-adjacent-emblem" />
                 <span>次のレッスン</span>
-                <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-sm font-mono rounded bg-white/20 text-white border border-white/30">
-                  ]
-                </kbd>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight aria-hidden="true" className="w-4 h-4" />
               </Link>
             ) : (
               <Link
