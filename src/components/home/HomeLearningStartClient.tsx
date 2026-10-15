@@ -2,6 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
+import { HomeToolIcon } from "@/components/home/HomeArtwork";
 import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
 import { getHomeLearningEntry } from "@/utils/homeLearningEntry";
 import { createCourseLectureHref } from "@/utils/courseJourney";
@@ -17,7 +18,7 @@ export default function HomeLearningStartClient({ lectures }: { lectures: Resume
   const href = resume && entry ? entry.href : createCourseLectureHref(firstCourse.slug, firstCourse.steps[0].lectureId);
   return <>
     <ContentNavigationLink href={href} placement={resume ? "home_resume_lecture" : "home_first_lecture"} className="ui-button ui-button-primary home-start-button">
-      <span>{label}</span><ArrowRight aria-hidden="true" />
+      <HomeToolIcon name="lecture" /><span>{label}</span><ArrowRight aria-hidden="true" />
     </ContentNavigationLink>
     <p className="text-sm ui-muted">{resume && entry ? entry.title : "初めての方へ。「東洋医学とは何か」から学べます。"}</p>
   </>;

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SITE_NAME } from "@/config/seo";
+import { BookOpen, Compass, NotebookPen } from "lucide-react";
 import BrandLogo from "@/components/brand/BrandLogo";
 
 const groups = [
@@ -14,10 +15,10 @@ export default function Footer() {
       <div className="site-footer-inner">
         <Link href="/" aria-label={SITE_NAME} className="site-footer-brand"><BrandLogo symbolClassName="h-8 w-8" wordmarkClassName="font-serif text-lg font-bold" /></Link>
         <div className="site-footer-groups">
-          {groups.map(group => <nav key={group.title} aria-label={group.title}>
-            <h2 className="site-footer-group-title">{group.title}</h2>
+          {groups.map((group, index) => { const Icon = [BookOpen, NotebookPen, Compass][index]; return <nav key={group.title} aria-label={group.title}>
+            <h2 className="site-footer-group-title"><Icon aria-hidden="true" />{group.title}</h2>
             <ul>{group.links.map(([href, label]) => <li key={href}><Link href={href} className="hover:underline">{label}</Link></li>)}</ul>
-          </nav>)}
+          </nav>; })}
         </div>
         <div className="site-footer-notice space-y-2">
           <p>東洋医学の学習と考え方の整理を支援する教材です。個別の診断・治療を代替しません。急な症状や悪化がある場合は医療機関へご相談ください。</p>

@@ -65,7 +65,7 @@ export default function CrossSectionViewer({
   return (
     <section 
       aria-label={`${pointName}の局所深浅・断面解剖モデル`}
-      className="acupoint-section acupoint-diagram-viewer"
+      className="bg-[#FFFFFF] dark:bg-[#15202B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 shadow-sm space-y-5 transition-colors"
     >
       {/* 1. ヘッダー部：タイトル、1文要約、資料台帳ボタン */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4">
@@ -75,11 +75,11 @@ export default function CrossSectionViewer({
               <Layers className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
               <span>局所深浅・断面解剖モデル</span>
             </div>
-            <span className="acupoint-diagram-code font-mono">
+            <span className="font-mono text-[11px] px-2 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#1C2833] border border-[#E8E1D1] dark:border-[#2B3C4E] text-[#737C77] dark:text-[#9FB1C1]">
               {pointCode}
             </span>
             {/* 一瞬で部位・側別が分かるハイライトバッジ */}
-            <span className="acupoint-diagram-view-label flex items-center gap-1">
+            <span className="font-bold text-xs px-2.5 py-0.5 rounded-lg bg-[#1E3D34] text-white dark:bg-[#2B6958] shadow-xs flex items-center gap-1">
               <span>📍</span>
               <span>{getBodyPartSideLabel()}</span>
             </span>
@@ -101,7 +101,7 @@ export default function CrossSectionViewer({
         <button
           type="button"
           onClick={() => setIsReferenceLedgerOpen(!isReferenceLedgerOpen)}
-          className="acupoint-section-link self-start sm:self-auto shrink-0"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-[#1E3D34] dark:text-[#74BA9E] hover:text-[#B86924] dark:hover:text-[#E6C387] self-start sm:self-auto py-1.5 px-3 rounded-xl bg-[#FAF8F5] dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] transition-colors shrink-0 shadow-xs"
           aria-expanded={isReferenceLedgerOpen}
         >
           <BookOpen className="w-3.5 h-3.5" />
@@ -111,7 +111,7 @@ export default function CrossSectionViewer({
 
       {/* 資料台帳アコーディオン展開部 */}
       {isReferenceLedgerOpen && (
-        <div className="acupoint-reference-ledger space-y-4">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#D6C8AF] dark:border-[#2A3B4A] space-y-4 animate-in fade-in duration-200">
           <div className="flex items-center justify-between border-b border-[#E8E1D1] dark:border-[#22303D] pb-3">
             <div className="flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
@@ -132,7 +132,7 @@ export default function CrossSectionViewer({
           <div className="space-y-3">
             {(model.referencesLedger || model.referenceLedger) ? (
               (model.referencesLedger || model.referenceLedger)!.map((item: ReferenceLedgerItem, idx: number) => (
-                <div key={idx} className="acupoint-reference-entry text-xs space-y-1.5">
+                <div key={idx} className="p-3 bg-white dark:bg-[#16222C] rounded-xl border border-[#E8DEC9] dark:border-[#263542] text-xs space-y-1.5">
                   <div className="flex flex-wrap items-center justify-between gap-1">
                     <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">
                       {item.title}
@@ -174,7 +174,7 @@ export default function CrossSectionViewer({
               </ul>
             )}
 
-            <div className="acupoint-diagram-scope text-[11px] leading-relaxed">
+            <div className="p-2.5 rounded-lg bg-[#F2EDE4] dark:bg-[#17232F] text-[11px] text-[#59615D] dark:text-[#9FB1C1] leading-relaxed">
               <strong>【資料の扱い】</strong> 台帳はモデルが参照する資料と記述の範囲を示します。参照資料の存在だけで、この経穴の全層構造や表示位置が個別に検証されたことにはなりません。WHOの位置標準、解剖資料、研究結果の適用範囲を分けて確認してください。
             </div>
           </div>
@@ -182,10 +182,10 @@ export default function CrossSectionViewer({
       )}
 
       {/* 2. メイン図エリア：SVG断面図（主役） */}
-      <p className="acupoint-diagram-scope text-xs leading-relaxed">
+      <p className="rounded-xl bg-[#EBF3EF] dark:bg-[#182823] p-3 text-xs leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
         <strong>{individualModel ? '個別に編集した教育用模式図' : '部位別の共通模式図'}</strong>：層の関係を学ぶための図です。縮尺・深度・境界は個人の画像計測値ではなく、刺鍼の安全域や経路の決定には使用できません。
       </p>
-      <div className="acupoint-diagram-canvas relative w-full p-3 sm:p-6 overflow-hidden select-none">
+      <div className="relative w-full bg-[#FAF8F5] dark:bg-[#10171F] rounded-2xl sm:rounded-3xl border border-[#E8E1D1] dark:border-[#22303D] p-3 sm:p-6 overflow-hidden shadow-inner select-none">
         
         {/* 部位・側別インジケーター（一瞬で部位・観察面が分かるバッジ） */}
         <div className="absolute top-2.5 left-2.5 sm:left-4 text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-white/95 dark:bg-[#1C2833]/95 px-3 py-1 rounded-full border border-[#D6C8AF] dark:border-[#2B3C4E] shadow-xs z-10 pointer-events-none flex items-center gap-1.5">

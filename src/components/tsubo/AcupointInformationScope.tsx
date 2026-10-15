@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { SITE_REVISED_AT } from '@/config/contentUpdates';
 
 export default function AcupointInformationScope({ code, locationSource, individualModel }: { code: string; locationSource: string; individualModel: boolean }) {
-  return <section id="acupoint-sources" aria-label="経穴情報の出典と確認範囲" className="acupoint-section acupoint-information-scope text-sm">
+  return <section id="acupoint-sources" aria-label="経穴情報の出典と確認範囲" className="scroll-mt-28 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-4 sm:p-5 space-y-3 text-sm text-[#404743] dark:text-[#C5D2DB]">
     <h2 className="font-bold text-[#1E3D34] dark:text-[#83BEA8]">情報の出典と確認範囲</h2>
     <dl className="grid gap-3 sm:grid-cols-2">
       <div><dt className="font-semibold">位置情報の参照元</dt><dd className="mt-1 text-sm leading-relaxed">{locationSource || '経穴マスターデータ。参照資料との照合が必要です。'}</dd></div>
