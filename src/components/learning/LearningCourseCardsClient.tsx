@@ -2,20 +2,11 @@
 
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import ChapterEmblem from '@/components/graphics/ChapterEmblem';
 import { useCurriculumProgress } from '@/contexts/CurriculumProgressContext';
 import { getCourseProgress, type LearningCourse } from '@/data/learningCourses';
 import { trackEvent } from '@/utils/analytics';
 import { useLearningSync } from '@/contexts/LearningSyncContext';
 import { useProgressAvailability } from '@/hooks/useProgressAvailability';
-
-const shortDescriptions: Record<string, string> = {
-  'oriental-medicine-introduction': '学ぶ目的と全体像を知り、事実と不明点を分けます。',
-  'yinyang-foundations': '比較の基準と、陰陽の関係・変化を学びます。',
-  'five-elements-relations': '五行の相生・相剋と、五臓への配当を整理します。',
-  'qi-blood-fluid': '気・血・津液の伝統的な役割と用語を見分けます。',
-  'zangfu-foundations': '五臓六腑の働きと関係を、解剖学の臓器と区別して学びます。',
-};
 
 export default function LearningCourseCardsClient({ courses, readingMinutes, placement = 'course_select', compact = false }: { courses: LearningCourse[]; readingMinutes: Record<string, number>; placement?: string; compact?: boolean }) {
   const { isMounted, completedLectures } = useCurriculumProgress();
@@ -23,32 +14,27 @@ export default function LearningCourseCardsClient({ courses, readingMinutes, pla
   const availability = useProgressAvailability(isMounted, status === 'memory');
 
   return (
-    <div className="course-card-grid">
-      {courses.map((course) => {
+    <div className="course-catalog">
+      <ol className={`course-list${compact ? ' course-list--compact' : ''}`}>
+      {courses.map((course, index) => {
         const progress = getCourseProgress(course, isMounted ? completedLectures : {});
         return (
-          <article key={course.slug} className="course-card">
-            <div className="course-card-heading">
-              <div>
-                {!compact && <p className="course-card-eyebrow">{course.eyebrow}</p>}
-                <h3 className="font-serif text-xl font-bold leading-relaxed text-[#232826] dark:text-[#E6EFEA]">{course.title}</h3>
-              </div>
-              <div className="course-card-art"><ChapterEmblem seriesId={course.seriesId} className="course-card-emblem" /></div>
-            </div>
-            <p className="mt-3 text-base leading-[1.7] ui-muted">{shortDescriptions[course.slug] || course.description}</p>
-            <p className="mt-4 text-sm ui-muted">{course.steps.length}講 · 読む目安：約{readingMinutes[course.slug]}分</p>
-            <p className="mt-1 text-sm ui-muted">クイズ・演習の時間は別です</p>
-            <div className="mt-auto pt-5">
-              <p className="mb-2 text-sm ui-muted">{availability === 'ready' ? `${progress.completedCount} / ${course.steps.length} 講義完了` : availability === 'loading' ? '進捗を確認中…' : '進捗を取得できませんでした'}</p>
-              {availability === 'ready' && <progress className="site-progress" value={progress.completedCount} max={course.steps.length} aria-label={`${course.title}の受講進捗`} />}
-              <Link href={`/learn/courses/${course.slug}`} onClick={() => trackEvent('context_link_click', { placement, course_id: course.slug })} className="page-secondary-action mt-4 w-full justify-between">
-                <span>{progress.finished ? 'コースを振り返る' : progress.completedCount > 0 ? 'コースの続きを見る' : 'コースを見る'}</span>
-                <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
-              </Link>
-            </div>
-          </article>
+          <li key={course.slug}>
+            <Link href={`/learn/courses/${course.slug}`} onClick={() => trackEvent('context_link_click', { placement, course_id: course.slug })} className="course-list-link">
+              <span aria-hidden="true" className="course-list-number">{String(index + 1).padStart(2, '0')}</span>
+              <span className="course-list-copy">
+                <span className="course-list-title">{course.title}</span>
+                <span className="course-list-meta">{course.steps.length}講 · 約{readingMinutes[course.slug]}分{availability === 'ready' && progress.completedCount > 0 ? ` · ${progress.finished ? '完了' : `${progress.completedCount}講完了`}` : ''}</span>
+                {!compact && <span className="course-list-description">{course.description}</span>}
+              </span>
+              <ArrowRight aria-hidden="true" className="course-list-arrow" />
+            </Link>
+          </li>
         );
       })}
+      </ol>
+      <p className="course-list-note">時間は講義を読む目安です。クイズ・演習の時間は含みません。</p>
+      {availability !== 'ready' && <p className="course-list-note" role="status">{availability === 'loading' ? '進捗を確認中…' : '進捗を取得できませんでした。保存済みの記録は削除していません。'}</p>}
     </div>
   );
 }

@@ -106,6 +106,76 @@
   border-top: 1px solid var(--border-washi);
 }
 
+/* Lecture supplements share the reading surface instead of nesting cards. */
+.reading-context-note {
+  margin-bottom: 24px;
+  padding-left: 16px;
+  border-left: 2px solid var(--border-washi);
+  color: var(--text-secondary);
+}
+
+.reading-course-context {
+  color: var(--accent-readable);
+}
+
+.reading-series-progress {
+  padding-block: 12px;
+}
+
+.reading-series-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 8px 10px;
+  color: var(--text-secondary);
+  font-size: .875rem;
+}
+
+.reading-series-step--current {
+  border-bottom: 2px solid var(--accent-readable);
+  color: var(--accent-readable);
+  font-weight: 600;
+}
+
+.reading-series-step--complete {
+  color: var(--accent-readable);
+}
+
+.reading-series-step:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.reading-supplement {
+  padding-block: 24px 8px;
+  border-top: 1px solid var(--border-washi);
+}
+
+.reading-point-marker {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--accent-readable);
+}
+
+.reading-support-content {
+  padding-block: 4px 16px;
+}
+
+.reading-support-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding-block: 8px;
+  color: var(--accent-readable);
+  font-size: .875rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
 @media (min-width: 960px) {
   .curriculum-related-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));

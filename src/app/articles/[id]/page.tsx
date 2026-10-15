@@ -25,7 +25,6 @@ import {
   Clock, 
   ArrowLeft, 
   ArrowRight, 
-  ChevronRight,
 } from "lucide-react";
 
 interface Props {
@@ -163,7 +162,7 @@ export default async function ArticleDetailPage({ params }: Props) {
   };
 
   return (
-    <div className="page-layout page-layout--reading">
+    <div className="article-reading-page page-layout page-layout--reading">
       {/* 構造化データ埋め込み */}
       <script
         type="application/ld+json"
@@ -198,12 +197,12 @@ export default async function ArticleDetailPage({ params }: Props) {
           </Link>
         </nav>
 
-        {/* 記事メインカード */}
-        <article id="article-top" className="scroll-mt-36 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm space-y-6 sm:space-y-8 transition-colors">
+        {/* 記事本文 */}
+        <article id="article-top" className="reading-article scroll-mt-36 space-y-6 sm:space-y-8">
           {/* ヘッダー部 */}
           <header className="space-y-3 sm:space-y-4 border-b border-[#F2ECE0] dark:border-[#22303D] pb-5 sm:pb-6">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-sm font-semibold">
+              <span className="article-category">
                 {article.category}
               </span>
               <span className="text-sm text-[#737C77] dark:text-[#8899A6] flex items-center gap-1">
@@ -226,45 +225,43 @@ export default async function ArticleDetailPage({ params }: Props) {
               <span className="font-semibold">{article.author.name}</span>
               <span>{article.updatedAt ? "更新" : "公開"} <time dateTime={article.updatedAt || article.publishedAt}>{article.updatedAt || article.publishedAt}</time></span>
             </div>
-            <details className="reference-disclosure article-information">
-              <summary>記事情報</summary>
-              <div className="reference-disclosure-body">
-                <p>{article.author.name}（{article.author.role}）</p>
-                <p>公開：<time dateTime={article.publishedAt}>{article.publishedAt}</time></p>
-                <ul className="article-information-tags" aria-label="記事のタグ">
-                  {article.tags.map(tag => <li key={tag}>#{tag}</li>)}
-                </ul>
-              </div>
-            </details>
           </header>
 
           <ArticleReadingResume articleId={article.id} revision={articleReadingRevision(article.contentMarkdown)} headings={headings.map(heading => ({ id: heading.id, text: heading.label, level: 2 }))} />
 
-          <nav aria-label="この記事の読み進め方" className="page-actions">
+          <nav aria-label="この記事の読み進め方" className="reading-jump-nav">
             <a href="#article-content" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />本文</a>
             {readingGuide?.inserts[0] && <a href={`#reading-figure-${readingGuide.inserts[0].figure.id}`} className="page-secondary-action"><Network aria-hidden="true" className="h-4 w-4" />図解</a>}
             {nextArticles.length > 0 && <a href="#article-next-reading" className="page-secondary-action"><ArrowRight aria-hidden="true" className="h-4 w-4" />次に読む</a>}
             {resolvedReferences.length > 0 && <a href="#article-references-section" className="page-secondary-action"><Bookmark aria-hidden="true" className="h-4 w-4" />出典</a>}
           </nav>
-          <details className="page-help text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]"><summary>この記事の要点・読み方</summary><div className="space-y-3">
+          <details className="reading-outline article-overview"><summary>概要・目次</summary><div className="reference-disclosure-body">
             <p><InlineTextRenderer text={article.summary} /></p>
-            {learningGuide && <div className="border-l-2 border-[#C5DED4] dark:border-[#2A5243] pl-4 space-y-2 text-sm">
+            {learningGuide && <div className="text-sm">
               <p><strong>学ぶポイント：</strong>{learningGuide.focus}</p>
             </div>}
-            <details className="text-sm">
-              <summary className="flex min-h-11 cursor-pointer items-center gap-2 font-bold text-[#1E3D34] dark:text-[#74BA9E]">この記事の読み方・説明の範囲 <ChevronRight aria-hidden="true" className="h-4 w-4" /></summary>
+            {headings.length > 0 && <nav aria-label="記事の目次" className="article-outline-links">
+              <h2>目次</h2>
+              <ol>
+                {headings.map(heading => <li key={heading.id}><a href={"#" + heading.id}>{heading.label}</a></li>)}
+              </ol>
+            </nav>}
+            <section className="article-scope">
+              <h2>説明の範囲</h2>
               <p className="pt-2">
             伝統理論の説明、研究で得られた知見、筆者による比較・比喩を区別してお読みください。生理学との対比表や「ネットワーク」などの説明は、伝統概念との同一性や治療効果を証明するものではありません。研究結果は対象・方法・限界とともに確認してください。
               </p>
               {resolvedReferences.length > 0 && <a href="#article-references-section" className="inline-flex min-h-11 items-center underline text-[#1E3D34] dark:text-[#74BA9E]">原典・研究対象・方法を出典で確認する</a>}
-            </details>
+            </section>
+            <section className="article-information">
+              <h2>記事情報</h2>
+              <p>{article.author.name}（{article.author.role}）</p>
+              <p>公開：<time dateTime={article.publishedAt}>{article.publishedAt}</time></p>
+              <ul className="article-information-tags" aria-label="記事のタグ">
+                {article.tags.map(tag => <li key={tag}>#{tag}</li>)}
+              </ul>
+            </section>
           </div></details>
-          {headings.length > 0 && <details className="rounded-xl bg-[#FAF8F5] dark:bg-[#121920] px-4 py-2">
-            <summary className="flex min-h-11 items-center cursor-pointer font-bold text-[#1E3D34] dark:text-[#74BA9E]">目次</summary>
-            <nav aria-label="記事の目次" className="mt-3"><ol className="space-y-2 text-sm">
-              {headings.map(heading => <li key={heading.id}><a href={"#" + heading.id} className="inline-flex min-h-11 items-center py-2 underline underline-offset-4 text-[#1E3D34] dark:text-[#74BA9E]">{heading.label}</a></li>)}
-            </ol></nav>
-          </details>}
           {/* 本文 */}
           <div id="article-content" className="scroll-mt-36">
           {learningGuide && <p className="mb-5 text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]"><strong>判断の限界：</strong>{learningGuide.limitation}</p>}
@@ -279,7 +276,7 @@ export default async function ArticleDetailPage({ params }: Props) {
 
           {nextArticles.length > 0 && <section id="article-next-reading" aria-labelledby="article-next-reading-title" className="scroll-mt-36 space-y-4 border-t border-[#E8E1D1] dark:border-[#22303D] pt-6">
             <div className="space-y-1"><h2 id="article-next-reading-title" className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">次に読む</h2><p className="text-sm text-[#59615D] dark:text-[#A0B0BC]">いま読んだ内容を、別の視点から確かめる記事です。</p></div>
-            <div className="grid gap-3 sm:grid-cols-3">{nextArticles.map(({ article: next, reason }) => <ContentNavigationLink key={next.id} href={`/articles/${next.id}`} placement="article_next" articleId={next.id} className="flex flex-col gap-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] p-4 hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2">
+            <div className="article-next-list">{nextArticles.map(({ article: next, reason }) => <ContentNavigationLink key={next.id} href={`/articles/${next.id}`} placement="article_next" articleId={next.id} className="article-next-link">
               <p className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">{reason}</p>
               <h3 className="font-serif text-base font-bold leading-relaxed text-[#232826] dark:text-[#FAF8F5]">{next.title}</h3>
               <span className="mt-auto inline-flex min-h-11 items-center justify-between gap-2 text-sm text-[#59615D] dark:text-[#A0B0BC]"><span>読了約 {next.readTime}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></span>
@@ -288,7 +285,7 @@ export default async function ArticleDetailPage({ params }: Props) {
 
           <div className="space-y-3 border-t border-[#E8E1D1] dark:border-[#22303D] pt-5 text-sm">
             {learningGuide && <LearningPathLinks lectureId={learningGuide.lectureId} caseId={learningGuide.caseId} lectureTitle={learningLectureTitle} caseTitle={learningCaseTitle} />}
-            {relatedCourses.length > 0 && <div className="rounded-xl bg-[#EBF3EF] p-4 dark:bg-[#182823]">
+            {relatedCourses.length > 0 && <div className="article-related-courses">
               <p className="font-semibold text-[#184F49] dark:text-[#83BEA8]">このテーマを順に学ぶ</p>
               <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2">{relatedCourses.map(course => <ContentNavigationLink key={course.slug} href={`/learn/courses/${course.slug}`} placement="article_course" courseId={course.slug} className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#83BEA8]">{course.title}<ArrowRight aria-hidden="true" className="h-4 w-4" /></ContentNavigationLink>)}</div>
             </div>}

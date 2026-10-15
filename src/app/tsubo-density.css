@@ -24,9 +24,53 @@
 .tsubo-static-index > summary { min-height: 44px; cursor: pointer; padding-block: 12px; font-size: .875rem; font-weight: 600; color: var(--accent-readable); }
 .tsubo-static-index nav { margin-top: 12px; }
 .tsubo-static-index a { display: inline-flex; align-items: center; min-height: 44px; }
-.meridian-relations { padding: 24px; border-top: 1px solid var(--border-washi); color: var(--text-sumi); }
+/* Acupoint reading uses one surface; colour panels are reserved for safety and anatomy. */
+.acupoint-content { display: grid; gap: 32px; max-width: 980px; margin-inline: auto; }
+.acupoint-metadata, .acupoint-categories { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; }
+.acupoint-code { color: var(--accent-readable); font-family: monospace; font-size: .9375rem; font-weight: 600; }
+.acupoint-meridian-label { color: var(--text-sumi); font-size: .875rem; }
+.acupoint-meta-label { color: var(--text-secondary); font-size: .8125rem; }
+.acupoint-categories { border-top: 1px solid var(--border-subtle); padding-top: 16px; gap: 6px 10px; }
+.acupoint-category { color: var(--text-secondary); font-size: .875rem; }
+.acupoint-category:not(:last-child)::after { content: "・"; margin-left: 10px; color: var(--text-secondary); }
+.acupoint-page-navigation { display: flex; flex-wrap: wrap; gap: 0 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border-washi); }
+.acupoint-section-link, .acupoint-sequence-shortcut { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--accent-readable); font-size: .875rem; font-weight: 500; }
+.acupoint-section-link:hover, .acupoint-sequence-shortcut:hover { text-decoration: underline; text-underline-offset: 4px; }
+.acupoint-section-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+.acupoint-sequence-shortcut { padding-inline: 4px; color: var(--text-secondary); }
+.acupoint-section { display: grid; min-width: 0; gap: 20px; padding-top: 28px; border-top: 1px solid var(--border-washi); scroll-margin-top: calc(var(--site-header-height) + 20px); }
+.acupoint-section-heading { display: flex; align-items: center; gap: 10px; color: var(--text-sumi); font-family: var(--font-serif); font-size: 1.25rem; font-weight: 600; }
+.acupoint-section-heading > svg { width: 20px; height: 20px; color: var(--text-secondary); flex-shrink: 0; }
+.acupoint-location-reference, .acupoint-study-note { border-left: 2px solid var(--border-washi); padding-left: 16px; }
+.acupoint-landmarks { padding-block: 8px; }
+.acupoint-location-caution, .acupoint-safety-warning { border-radius: 8px; }
+.acupoint-nearby { padding-block: 16px; border-top: 1px solid var(--border-subtle); }
+.acupoint-nearby-link { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 6px; min-height: 44px; font-size: .875rem; color: var(--text-sumi); }
+.acupoint-nearby-link:hover { color: var(--accent-readable); text-decoration: underline; text-underline-offset: 4px; }
+.acupoint-indication { padding-block: 3px; color: var(--text-sumi); font-size: .875rem; }
+.acupoint-indication:not(:last-child)::after { content: "・"; margin-left: 8px; color: var(--text-secondary); }
+.acupoint-pair-list { padding-top: 8px; }
+.acupoint-pair { min-width: 0; padding-block: 14px; border-bottom: 1px solid var(--border-subtle); }
+.acupoint-classical-reference { border-left: 2px solid var(--border-washi); padding: 8px 0 8px 16px; }
+.acupoint-study-link { padding-block: 20px; border-block: 1px solid var(--border-subtle); }
+.acupoint-related-link { min-width: 0; min-height: 44px; padding-block: 16px; border-bottom: 1px solid var(--border-washi); }
+.acupoint-related-link:hover { border-color: var(--accent-readable); }
+.acupoint-related-category { color: var(--text-secondary); font-size: .8125rem; font-weight: 500; }
+.acupoint-related-action { display: inline-flex; align-items: center; gap: 6px; color: var(--accent-readable); font-size: .875rem; font-weight: 500; }
+.acupoint-related-link:hover .acupoint-related-action { text-decoration: underline; text-underline-offset: 4px; }
+.acupoint-sequence-link, .acupoint-sequence-end { min-height: 80px; padding-block: 16px; border-block: 1px solid var(--border-washi); }
+.acupoint-sequence-end { color: var(--text-secondary); }
+.acupoint-sequence-link:hover { border-color: var(--accent-readable); }
+.acupoint-editorial-note { padding-top: 24px; border-top: 1px solid var(--border-washi); color: var(--text-secondary); }
+.acupoint-information-scope { color: var(--text-secondary); }
+.acupoint-diagram-code, .acupoint-diagram-view-label { color: var(--text-secondary); font-size: .8125rem; }
+.acupoint-reference-ledger { padding-block: 20px; border-bottom: 1px solid var(--border-washi); }
+.acupoint-reference-entry { padding-block: 12px; border-bottom: 1px solid var(--border-subtle); }
+.acupoint-diagram-scope { padding-left: 14px; border-left: 2px solid var(--border-washi); color: var(--text-secondary); }
+.acupoint-diagram-canvas { border: 1px solid var(--border-washi); border-radius: 8px; background: var(--bg-card); }
+.meridian-relations { padding-top: 28px; border-top: 1px solid var(--border-washi); color: var(--text-sumi); }
 .meridian-relations-note { margin-top: 6px; color: var(--text-secondary); font-size: .875rem; }
-.meridian-relations-current { display: flex; flex-direction: column; align-items: center; gap: 8px; width: fit-content; max-width: 100%; margin: 24px auto 0; padding: 16px 24px; border: 1px solid var(--accent-readable); border-radius: 16px; background: var(--tokiwa-light); text-align: center; }
+.meridian-relations-current { display: flex; flex-direction: column; align-items: center; gap: 8px; width: fit-content; max-width: 100%; margin: 24px auto 0; padding: 12px 24px; border-bottom: 1px solid var(--accent-readable); text-align: center; }
 .meridian-relations-current > span { font-size: .75rem; color: var(--text-secondary); }
 .meridian-relations-current > strong { font-family: var(--font-noto-serif), serif; font-weight: 600; color: var(--accent-readable); }
 .meridian-relations-branches { display: block; width: 100%; height: 64px; overflow: visible; }
@@ -34,7 +78,7 @@
 .meridian-branch-same { color: var(--amber-warm); }
 .meridian-relations-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .meridian-relations-grid--single { grid-template-columns: minmax(0, 1fr); max-width: 440px; margin-inline: auto; }
-.meridian-relation-card { min-width: 0; padding: 20px; border: 1px solid var(--border-washi); border-radius: 16px; background: var(--bg-card); }
+.meridian-relation-card { min-width: 0; padding: 20px 0; border-top: 1px solid var(--border-washi); }
 .meridian-relation-kind { display: flex; align-items: center; gap: 10px; font-size: .875rem; color: var(--accent-readable); }
 .meridian-relation-kind > span { width: 24px; border-top: 2px solid currentColor; }
 .meridian-relation-card--same .meridian-relation-kind { color: var(--amber-warm); }
@@ -58,7 +102,7 @@
   .meridian-relations-branches { display: none; }
   .meridian-relations-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-left: 16px; padding: 20px 0 0 20px; border-left: 1px solid var(--border-washi); }
   .meridian-relations-grid--single { max-width: none; margin-right: 0; }
-  .meridian-relation-card { position: relative; padding: 16px; }
+  .meridian-relation-card { position: relative; padding: 16px 0; }
   .meridian-relation-card::before { position: absolute; content: ''; left: -21px; top: 24px; width: 20px; border-top: 2px solid var(--accent-readable); }
   .meridian-relation-card--same::before { border-top-style: dashed; border-color: var(--amber-warm); }
 }

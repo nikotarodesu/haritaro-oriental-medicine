@@ -207,7 +207,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="max-w-5xl mx-auto space-y-5 sm:space-y-8">
+      <div className="acupoint-content">
         {/* パンくずリスト ＆ 前後経穴クイックナビ */}
         <nav className="flex flex-wrap items-center justify-between gap-2 text-sm text-[#59615D] dark:text-[#AFBDC8] gap-3 flex-wrap">
           <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
@@ -233,7 +233,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             {prevPoint && (
               <Link
                 href={`/tsubo/${prevPoint.codeLower}`}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-sm font-semibold text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-all"
+                className="acupoint-sequence-shortcut"
                 title={`前の経穴: ${prevPoint.name}（${prevPoint.code}）`}
               >
                 <ArrowLeft className="w-3 h-3" />
@@ -243,7 +243,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             {nextPoint && (
               <Link
                 href={`/tsubo/${nextPoint.codeLower}`}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/80 dark:bg-[#17212A]/80 border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-sm font-semibold text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-all"
+                className="acupoint-sequence-shortcut"
                 title={`次の経穴: ${nextPoint.name}（${nextPoint.code}）`}
               >
                 <span>{nextPoint.code} {nextPoint.name}</span>
@@ -257,22 +257,22 @@ export default async function AcupointDetailPage({ params }: Props) {
         <div className="acupoint-header space-y-5 border-b border-[#E5DEC9] pb-6 dark:border-[#2A3B4A]">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
             <div className="space-y-2">
-              <div className="acupoint-metadata flex flex-wrap items-center gap-2">
-                <span className="font-mono text-sm font-bold px-2.5 py-1 rounded-lg bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5]">
+              <div className="acupoint-metadata">
+                <span className="acupoint-code">
                   {point.code}
                 </span>
-                <span className="text-sm px-2.5 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#2D3E50] text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+                <span className="acupoint-meridian-label">
                   {point.meridian}
                 </span>
-                <span className="text-sm px-2 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#263542] text-[#59615D] dark:text-[#A0B0BC]">
+                <span className="acupoint-meta-label">
                   {point.bodyPart}
                 </span>
                 {isDetailed ? (
-                  <span className="text-sm px-2.5 py-1 rounded-lg bg-[#EBF3EF] dark:bg-[#1A332B] border border-[#C5DED4] dark:border-[#2D5A4A] text-[#1E3D34] dark:text-[#74BA9E] font-bold">
+                  <span className="acupoint-meta-label">
                     個別編集データあり
                   </span>
                 ) : (
-                  <span className="text-sm px-2 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#2D3E50] text-[#59615D] dark:text-[#AFBDC8]">
+                  <span className="acupoint-meta-label">
                     標準取穴情報
                   </span>
                 )}
@@ -358,7 +358,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
                 <Link
                   href={`/tsubo/practice?course=meridian_${point.meridianId.toLowerCase()}`}
-                  className="min-h-11 px-2.5 py-1.5 rounded-lg text-sm font-semibold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2016] transition-colors inline-flex items-center gap-1"
+                  className="min-h-11 px-2.5 py-1.5 rounded-lg text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] transition-colors inline-flex items-center gap-1"
                   title="この経脈をクイズで学習"
                 >
                   <BookOpen className="w-3.5 h-3.5" />
@@ -370,14 +370,14 @@ export default async function AcupointDetailPage({ params }: Props) {
 
           {/* 要穴分類バッジ群 */}
           {point.categories && point.categories.length > 0 && (
-            <div className="acupoint-categories pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center gap-2">
+            <div className="acupoint-categories">
               <span className="text-sm font-semibold text-[#59615D] dark:text-[#AFBDC8] mr-1">
                 要穴分類：
               </span>
               {point.categories.map((cat, idx) => (
                 <span
                   key={idx}
-                  className="text-sm px-2.5 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#281E15] border border-[#F3DEC5] dark:border-[#423321] text-[#B86924] dark:text-[#E6C387] font-semibold"
+                  className="acupoint-category"
                 >
                   {cat}
                 </span>
@@ -386,19 +386,19 @@ export default async function AcupointDetailPage({ params }: Props) {
           )}
         </div>
 
-        <nav aria-label="この経穴のページ内目次" className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-          <a href="#acupoint-location" className="page-secondary-action"><Compass aria-hidden="true" className="h-4 w-4" />位置</a>
+        <nav aria-label="この経穴のページ内目次" className="acupoint-page-navigation">
+          <a href="#acupoint-location" className="acupoint-section-link"><Compass aria-hidden="true" className="h-4 w-4" />位置</a>
           {point.crossSection && point.crossSection.svgElements && point.crossSection.svgElements.length > 0 && (
-            <a href="#acupoint-diagram" className="page-secondary-action"><Layers aria-hidden="true" className="h-4 w-4" />図</a>
+            <a href="#acupoint-diagram" className="acupoint-section-link"><Layers aria-hidden="true" className="h-4 w-4" />図</a>
           )}
-          <a href={hasSafetyWarning ? "#acupoint-safety-warning" : "#acupoint-cautions"} className="page-secondary-action"><ShieldCheck aria-hidden="true" className="h-4 w-4" />注意事項</a>
-          {point.researchEvidence && <a href="#acupoint-research" className="page-secondary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />研究</a>}
-          <a href="#acupoint-sources" className="page-secondary-action"><FileText aria-hidden="true" className="h-4 w-4" />出典</a>
+          <a href={hasSafetyWarning ? "#acupoint-safety-warning" : "#acupoint-cautions"} className="acupoint-section-link"><ShieldCheck aria-hidden="true" className="h-4 w-4" />注意事項</a>
+          {point.researchEvidence && <a href="#acupoint-research" className="acupoint-section-link"><BookOpen aria-hidden="true" className="h-4 w-4" />研究</a>}
+          <a href="#acupoint-sources" className="acupoint-section-link"><FileText aria-hidden="true" className="h-4 w-4" />出典</a>
         </nav>
 
         {/* ⚠️ 安全上の注意（禁忌・気胸リスク・妊婦注意アラート） */}
         {hasSafetyWarning && (
-          <div id="acupoint-safety-warning" className="scroll-mt-28 rounded-2xl border-2 border-amber-500/40 dark:border-amber-500/50 bg-[#FFFBEB] dark:bg-[#251D12] p-4 sm:p-5 shadow-xs space-y-2.5 transition-colors">
+          <div id="acupoint-safety-warning" className="acupoint-safety-warning scroll-mt-28 border border-amber-500/40 dark:border-amber-500/50 bg-[#FFFBEB] dark:bg-[#251D12] p-4 sm:p-5 space-y-2.5">
             <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300 font-bold text-sm">
               <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
               <span>先に確認する安全上の注意</span>
@@ -433,15 +433,15 @@ export default async function AcupointDetailPage({ params }: Props) {
         )}
 
         {/* 2. 取穴・位置セクション（一般向け vs WHO標準） */}
-        <section id="acupoint-location" className="scroll-mt-28 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
-          <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
+        <section id="acupoint-location" className="acupoint-section">
+          <div className="acupoint-section-heading">
             <Compass className="w-5 h-5" />
             <h2>標準の位置と目印</h2>
           </div>
 
           <div>
             {/* WHO標準部位 */}
-            <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5">
+            <div className="acupoint-location-reference space-y-1.5">
               <span className="text-sm font-bold text-[#1E2D3D] dark:text-[#7BAAD8] block">
                 標準部位の記載
               </span>
@@ -478,7 +478,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           {/* 触診ランドマーク ＆ 混同防止 */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 text-sm">
             {point.palpationLandmarks && (
-              <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5">
+              <div className="acupoint-landmarks space-y-1.5">
                 <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
                   触知する骨・腱目印：
                 </span>
@@ -491,7 +491,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             )}
 
             {point.pitfalls && (
-              <div className="p-3.5 rounded-xl bg-[#FDEDEC]/70 dark:bg-[#281816]/70 border border-[#FADBD8] dark:border-[#3E2220] space-y-2">
+              <div className="acupoint-location-caution p-3.5 bg-[#FDEDEC]/70 dark:bg-[#281816]/70 border-l-2 border-[#A83629] dark:border-[#E07A70] space-y-2">
                 <div className="flex flex-wrap items-center justify-between gap-1.5">
                   <span className="font-bold text-[#A83629] dark:text-[#E07A70] flex items-center gap-1">
                     <AlertTriangle className="w-3.5 h-3.5" />
@@ -556,7 +556,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
             {/* 近隣経穴リンク（シンプルチップ） */}
             {point.nearbyPoints && point.nearbyPoints.length > 0 && (
-              <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
+              <div className="acupoint-nearby space-y-2">
                 <span className="text-sm font-semibold text-[#59615D] dark:text-[#A0B0BC] block">
                   同部位・近隣の経穴：
                 </span>
@@ -565,7 +565,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                     <Link
                       key={np.code}
                       href={`/tsubo/${np.code.toLowerCase()}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white dark:bg-[#16222C] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:text-[#1E3D34] transition-all"
+                      className="acupoint-nearby-link"
                     >
                       <span className="font-mono font-bold text-[#1E3D34] dark:text-[#74BA9E]">{np.code}</span>
                       <span>{np.name}</span>
@@ -580,8 +580,8 @@ export default async function AcupointDetailPage({ params }: Props) {
         )}
 
         {/* 伝統的な主治・配穴例・古典 */}
-        <section id="acupoint-traditional" className="scroll-mt-28 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
-          <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
+        <section id="acupoint-traditional" className="acupoint-section">
+          <div className="acupoint-section-heading">
             <Sparkles className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
             <h2>伝統的な主治</h2>
           </div>
@@ -595,7 +595,7 @@ export default async function AcupointDetailPage({ params }: Props) {
               {point.indications.map((ind, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] text-sm font-medium text-[#232826] dark:text-[#E6EFEA]"
+                  className="acupoint-indication"
                 >
                   {ind}
                 </span>
@@ -604,7 +604,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           </div>
 
           {/* 臨床応用・取穴のポイント */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-[#EBF3EF] dark:bg-[#162A24] border border-[#C5DED4] dark:border-[#2A5243] space-y-2">
+          <div className="acupoint-study-note space-y-2">
             <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
               <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
               <span>学習上の補足</span>
@@ -623,7 +623,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
           {/* 臨床ゴールデンペア（名配穴・相乗効果） */}
           {point.goldenPairs && point.goldenPairs.length > 0 && (
-            <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#FAF8F5] to-[#F3EFE6] dark:from-[#152028] dark:to-[#17222B] border border-[#DED6C5] dark:border-[#2D3E50] space-y-3">
+            <div className="acupoint-pair-list space-y-3">
               <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                 <GitCompare className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
                 <span>伝統的な配穴例（組み合わせの学習）</span>
@@ -632,7 +632,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                 {point.goldenPairs.map((pair, idx) => (
                   <div
                     key={idx}
-                    className="p-3.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5 flex flex-col justify-between"
+                    className="acupoint-pair space-y-1.5 flex flex-col justify-between"
                   >
                     <div>
                       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -667,7 +667,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                 {point.classicalReferences.map((cr, idx) => (
                   <div
                     key={idx}
-                    className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] text-sm space-y-1"
+                    className="acupoint-classical-reference text-sm space-y-1"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2 text-[#1E3D34] dark:text-[#74BA9E] font-bold">
                       <span>{cr.book}</span>
@@ -685,7 +685,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           )}
 
           {/* 弁証シミュレーターへの逆引き推論カード */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#FAF8F5] via-[#EBF3EF]/40 to-[#FAF8F5] dark:from-[#152028] dark:via-[#182823]/40 dark:to-[#152028] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="acupoint-study-link flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="space-y-1.5">
               <div className="flex items-center gap-1.5 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                 <Layers className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
@@ -719,11 +719,11 @@ export default async function AcupointDetailPage({ params }: Props) {
                   <Link
                     key={sym.id}
                   href={`/symptoms/${sym.id}`}
-                    className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group flex flex-col justify-between"
+                    className="acupoint-related-link group flex flex-col justify-between"
                   >
                     <div className="space-y-1">
                       <div className="flex flex-wrap items-center justify-between gap-2">
-                        <span className="text-sm font-bold px-2 py-0.5 rounded-md bg-[#FCF4EB] text-[#B86924] dark:bg-[#231A12] dark:text-[#E6C387]">
+                        <span className="acupoint-related-category">
                           症状ガイド：{sym.category}
                         </span>
                         <ArrowRight className="w-3.5 h-3.5 text-[#59615D] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] group-hover:translate-x-0.5 transition-all" />
@@ -735,7 +735,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                         {sym.summary}
                       </p>
                     </div>
-                    <span className="text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] mt-2 block">
+                    <span className="acupoint-related-action mt-2">
                       食養生・生活習慣アドバイスを見る →
                     </span>
                   </Link>
@@ -746,11 +746,11 @@ export default async function AcupointDetailPage({ params }: Props) {
                   <Link
                     key={cs.id}
                     href={`/cases/${cs.id}`}
-                    className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#2C5282] dark:hover:border-[#90CDF4] transition-all group flex flex-col justify-between"
+                    className="acupoint-related-link group flex flex-col justify-between"
                   >
                     <div className="space-y-1">
                       <div className="flex flex-wrap items-center justify-between gap-2">
-                        <span className="text-sm font-bold px-2 py-0.5 rounded-md bg-[#EEF2F6] text-[#2C5282] dark:bg-[#1E2C3B] dark:text-[#90CDF4]">
+                        <span className="acupoint-related-category">
                           臨床症例：{cs.pattern}
                         </span>
                         <ArrowRight className="w-3.5 h-3.5 text-[#59615D] group-hover:text-[#2C5282] dark:group-hover:text-[#90CDF4] group-hover:translate-x-0.5 transition-all" />
@@ -762,7 +762,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                         {cs.explanation}
                       </p>
                     </div>
-                    <span className="text-sm font-semibold text-[#2C5282] dark:text-[#90CDF4] mt-2 block">
+                    <span className="acupoint-related-action mt-2">
                       症例カルテ・弁証論治を読む →
                     </span>
                   </Link>
@@ -775,7 +775,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
         {/* 伝統的な主治とは分けて、研究対象・結果・限界を示す。 */}
           {point.researchEvidence && (
-            <section id="acupoint-research" aria-labelledby="acupoint-research-title" className="scroll-mt-28 rounded-2xl border border-[#E8E1D1] bg-white p-4 sm:p-8 dark:border-[#22303D] dark:bg-[#17212A] space-y-3">
+            <section id="acupoint-research" aria-labelledby="acupoint-research-title" className="acupoint-section acupoint-research">
               <div className="flex items-center gap-2 text-sm font-bold text-[#1E2D3D] dark:text-[#7BAAD8]">
                 <BookOpen className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
                 <h2 id="acupoint-research-title" className="font-serif text-lg">研究で確認された範囲</h2>
@@ -818,7 +818,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
         {/* 6. この経穴が登場する講義教材（カリキュラム連動） */}
         {relatedLectures.length > 0 && (
-          <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-4 sm:space-y-6 transition-colors">
+          <section className="acupoint-section acupoint-lectures">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
               <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                 <GraduationCap className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
@@ -838,11 +838,11 @@ export default async function AcupointDetailPage({ params }: Props) {
                 <Link
                   key={lec.id}
                   href={lec.url}
-                  className="p-4 rounded-xl border border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#10171F] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group flex flex-col justify-between space-y-2 shadow-2xs"
+                  className="acupoint-related-link group flex flex-col justify-between space-y-2"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
+                      <span className="acupoint-related-category">
                         {lec.stageTitle}
                       </span>
                       {lec.seriesTitle && (
@@ -882,10 +882,10 @@ export default async function AcupointDetailPage({ params }: Props) {
           {prevPoint ? (
             <Link
               href={`/tsubo/${prevPoint.codeLower}`}
-              className="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-sm transition-all group flex flex-wrap items-center justify-between gap-2"
+              className="acupoint-sequence-link group flex flex-wrap items-center justify-between gap-2"
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#FAF8F5] dark:bg-[#10171F] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 group-hover:-translate-x-1 transition-transform">
+                <div className="w-8 h-8 text-[var(--accent-readable)] flex items-center justify-center shrink-0">
                   <ArrowLeft className="w-4 h-4" />
                 </div>
                 <div>
@@ -902,7 +902,7 @@ export default async function AcupointDetailPage({ params }: Props) {
               </kbd>
             </Link>
           ) : (
-            <div className="p-4 rounded-2xl bg-[#FAF8F5]/60 dark:bg-[#121920]/60 border border-dashed border-[#E5DEC9] dark:border-[#22303D] text-sm text-[#8A948F] flex items-center">
+            <div className="acupoint-sequence-end text-sm flex items-center">
               <span>経絡の始点です</span>
             </div>
           )}
@@ -910,7 +910,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           {nextPoint ? (
             <Link
               href={`/tsubo/${nextPoint.codeLower}`}
-              className="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-sm transition-all group flex flex-wrap items-center justify-between gap-2"
+              className="acupoint-sequence-link group flex flex-wrap items-center justify-between gap-2"
             >
               <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-sm font-mono font-bold text-[#59615D] dark:text-[#AFBDC8] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded">
                 ]
@@ -924,20 +924,20 @@ export default async function AcupointDetailPage({ params }: Props) {
                     {nextPoint.name}（{nextPoint.code}）
                   </span>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-[#FAF8F5] dark:bg-[#10171F] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center shrink-0 group-hover:translate-x-1 transition-transform">
+                <div className="w-8 h-8 text-[var(--accent-readable)] flex items-center justify-center shrink-0">
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
             </Link>
           ) : (
-            <div className="p-4 rounded-2xl bg-[#FAF8F5]/60 dark:bg-[#121920]/60 border border-dashed border-[#E5DEC9] dark:border-[#22303D] text-sm text-[#8A948F] flex items-center justify-end">
+            <div className="acupoint-sequence-end text-sm flex items-center justify-end">
               <span>経絡の終点です</span>
             </div>
           )}
         </div>
 
         {/* 6. 次のアクション：この経穴を臨床・学習で深める */}
-        <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#FAF8F5] via-[#EBF3EF]/40 to-[#FAF8F5] dark:from-[#17212A] dark:via-[#162922]/30 dark:to-[#17212A] border border-[#C5DED4] dark:border-[#2A5243] space-y-4">
+        <div className="acupoint-section acupoint-next-steps">
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
             <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
@@ -947,10 +947,10 @@ export default async function AcupointDetailPage({ params }: Props) {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Link
               href={`/practice/haiketsu?acupoint=${encodeURIComponent(point.name)}`}
-              className="p-3.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-xs transition-all group flex flex-col justify-between space-y-2"
+              className="acupoint-related-link group flex flex-col justify-between space-y-2"
             >
               <div className="space-y-1">
-                <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1">
+                <span className="acupoint-related-action">
                   <SlidersHorizontal className="w-3.5 h-3.5" />
                   配穴設計ツール
                 </span>
@@ -958,17 +958,17 @@ export default async function AcupointDetailPage({ params }: Props) {
                   本治・標治のツボ組み合わせを設計し、バランスを点検
                 </p>
               </div>
-              <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] group-hover:underline inline-flex items-center gap-0.5">
+              <span className="acupoint-related-action">
                 配穴を試す →
               </span>
             </Link>
 
             <Link
               href={`/tsubo/practice?course=meridian_${point.meridianId.toLowerCase()}`}
-              className="p-3.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E2D3D] dark:hover:border-[#7BAAD8] hover:shadow-xs transition-all group flex flex-col justify-between space-y-2"
+              className="acupoint-related-link group flex flex-col justify-between space-y-2"
             >
               <div className="space-y-1">
-                <span className="text-sm font-bold text-[#1E2D3D] dark:text-[#7BAAD8] flex items-center gap-1">
+                <span className="acupoint-related-action">
                   <GraduationCap className="w-3.5 h-3.5" />
                   経穴の確認問題
                 </span>
@@ -976,17 +976,17 @@ export default async function AcupointDetailPage({ params }: Props) {
                   {point.meridianShort}・要穴・取穴のオリジナル演習・間隔復習
                 </p>
               </div>
-              <span className="text-sm font-bold text-[#1E2D3D] dark:text-[#7BAAD8] group-hover:underline inline-flex items-center gap-0.5">
+              <span className="acupoint-related-action">
                 問題を解く →
               </span>
             </Link>
 
             <Link
               href="/notes"
-              className="p-3.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] dark:hover:border-[#E6C387] hover:shadow-xs transition-all group flex flex-col justify-between space-y-2"
+              className="acupoint-related-link group flex flex-col justify-between space-y-2"
             >
               <div className="space-y-1">
-                <span className="text-sm font-bold text-[#B86924] dark:text-[#E6C387] flex items-center gap-1">
+                <span className="acupoint-related-action">
                   <FileText className="w-3.5 h-3.5" />
                   マイノート
                 </span>
@@ -994,7 +994,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                   このツボを自分の臨床ノートや配穴メモに保存・蓄積
                 </p>
               </div>
-              <span className="text-sm font-bold text-[#B86924] dark:text-[#E6C387] group-hover:underline inline-flex items-center gap-0.5">
+              <span className="acupoint-related-action">
                 ノートを見る →
               </span>
             </Link>
@@ -1007,7 +1007,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         <AuthorSupervisorCard topic={`${point.name}（${point.code}）の経穴解説・取穴・臨床応用`} />
 
         {/* 8. 免責・出典・更新情報 */}
-        <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] text-sm text-[#59615D] dark:text-[#AFBDC8] space-y-1.5">
+        <div className="acupoint-editorial-note text-sm space-y-1.5">
           <div className="flex items-center gap-1.5 font-bold text-[#59615D] dark:text-[#A0B0BC]">
             <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
             <span>出典・確認状況</span>

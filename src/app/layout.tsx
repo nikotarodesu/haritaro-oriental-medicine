@@ -159,7 +159,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body data-clarity-mask="true" className="site-shell min-h-full flex flex-col font-sans bg-[#F5F1E8] dark:bg-[#10161C] text-[#232826] dark:text-[#E6EFEA] selection:bg-[#E2D5C3] dark:selection:bg-[#2A4B3E] selection:text-[#1E3D34] dark:selection:text-[#E6EFEA]">
+      <body data-clarity-mask="true" className="site-shell min-h-full flex flex-col font-sans bg-[var(--bg-washi)] text-[var(--text-sumi)] selection:bg-[#E2D5C3] dark:selection:bg-[#2A4B3E] selection:text-[#1E3D34] dark:selection:text-[#E6EFEA]">
         <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[200] focus:rounded-lg focus:bg-[#184F49] focus:px-4 focus:py-3 focus:text-white focus:outline-2 focus:outline-offset-2">本文へ移動</a>
         <ThemeProvider>
           <FontSizeProvider>

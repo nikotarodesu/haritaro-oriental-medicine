@@ -14,7 +14,7 @@ import { trackEvent } from '@/utils/analytics';
 import { useRecentTools } from '@/components/home/RecentTools';
 import { useProgressAvailability } from '@/hooks/useProgressAvailability';
 
-export default function HomeLearningProgressClient({ lectures }: { lectures: ResumeLecture[] }) {
+export default function HomeLearningProgressClient({ lectures, supportOnly = false }: { lectures: ResumeLecture[]; supportOnly?: boolean }) {
   const { isMounted, totalCompleted, completedLectures, lastVisitedLectureId, quizResults } = useCurriculumProgress();
   const { values, status } = useLearningSync();
   const { isAuthenticated } = useAuth();
@@ -27,6 +27,18 @@ export default function HomeLearningProgressClient({ lectures }: { lectures: Res
   const entry = getHomeLearningEntry(lectures, completedLectures, lastVisitedLectureId);
   const unavailable = availability === 'unavailable';
   const loading = availability === 'loading';
+  const syncAttention = isAuthenticated && (status === 'offline' || status === 'setup');
+  if (supportOnly) {
+    if (loading || (!unavailable && !syncAttention && !entry.started && !recentTools.length)) return null;
+    return <section aria-label="学習の補助情報と最近のツール" className="home-learning-support">
+      {unavailable ? <p role="status">履歴を読み込めませんでした。<button type="button" onClick={() => window.location.reload()} className="ui-text-link">再読み込み</button></p> : entry.started ? <details>
+        <summary>学習の記録 <span className="ui-muted">{totalCompleted} / {lectures.length}講義完了</span></summary>
+        <div className="home-learning-suggestion"><p>{recommendation.title}</p><p className="ui-muted">{recommendation.reason}</p><Link href={recommendation.href} onClick={() => trackEvent('context_link_click', { placement: 'learning_start', item_type: recommendation.kind })} className="ui-text-link">{recommendation.action}<ArrowRight aria-hidden="true" /></Link></div>
+      </details> : null}
+      {syncAttention && !unavailable && <p role="status">端末の履歴を表示しています。<Link href="/learn/review#learning-review" className="ui-text-link">同期状態を確認する</Link></p>}
+      {recentTools.length > 0 && <nav aria-label="最近使ったツール"><span className="ui-muted">最近使ったツール</span>{recentTools.slice(0, 3).map(tool => <Link key={tool.href} href={tool.href} className="ui-text-link">{tool.title}</Link>)}</nav>}
+    </section>;
+  }
   return (
     <section aria-label="学習の再開と最近のツール" className="ui-card space-y-4">
       <div className="home-section-header">

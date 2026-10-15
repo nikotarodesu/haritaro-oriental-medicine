@@ -27,10 +27,10 @@ export default function ArticleReferences({
   return (
     <section
       id="article-references-section"
-      className="scroll-mt-28 mt-12 pt-8 border-t-2 border-[#E5DEC9] dark:border-[#263542] transition-colors"
+      className="article-references scroll-mt-28"
       aria-labelledby="references-heading"
     >
-      <div className="bg-[#FFFFFF] dark:bg-[#151D25] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] overflow-hidden">
+      <div>
         {/* ヘッダー */}
         <div
           role="button"
@@ -38,12 +38,9 @@ export default function ArticleReferences({
           aria-expanded={isExpanded}
           onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setIsExpanded(!isExpanded); } }}
           onClick={() => setIsExpanded(!isExpanded)}
-          className="p-3.5 sm:p-5 flex items-center justify-between cursor-pointer select-none bg-[#FAF8F5] dark:bg-[#19242E] hover:bg-[#F2ECE0] dark:hover:bg-[#1E2B38] transition-colors"
+          className="article-reference-toggle"
         >
-          <div className="min-w-0 flex items-center gap-2 sm:gap-2.5">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0">
-              <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            </div>
+          <div className="min-w-0">
             <div className="min-w-0">
               <div className="flex items-center gap-2">
                 <h3
@@ -52,8 +49,8 @@ export default function ArticleReferences({
                 >
                   {title}
                 </h3>
-                <span className="shrink-0 text-sm px-2 py-0.5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] font-mono font-bold">
-                  {references.length}
+                <span className="article-reference-count">
+                  {references.length}件
                 </span>
               </div>
               <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC] mt-1">
@@ -62,8 +59,7 @@ export default function ArticleReferences({
             </div>
           </div>
 
-          <div className="shrink-0 flex items-center gap-2 text-sm font-semibold text-[#59615D] dark:text-[#A0B0BC]">
-            <span className="hidden sm:inline">{isExpanded ? "閉じる" : "一覧を表示"}</span>
+          <div className="article-reference-chevron">
             {isExpanded ? (
               <ChevronUp className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
             ) : (
@@ -74,7 +70,7 @@ export default function ArticleReferences({
 
         {/* 参考文献カード一覧 */}
         {isExpanded && (
-          <div className="p-3 sm:p-6 space-y-3 sm:space-y-4 divide-y divide-[#EBE4D5] dark:divide-[#22303D]">
+          <div className="article-reference-list">
             {scopeNote && <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]" data-reference-scope>{scopeNote}</p>}
             {references.map((ref) => {
               const authorsText = Array.isArray(ref.authors)
@@ -87,12 +83,12 @@ export default function ArticleReferences({
                 <article
                   key={ref.id}
                   id={ref.anchorId}
-                  className="pt-4 sm:pt-5 first:pt-0 scroll-mt-28"
+                  className="article-reference-item scroll-mt-28"
                 >
                   <div className="flex items-start gap-3">
                     {/* 番号バッジ */}
                     <div className="shrink-0 mt-0.5">
-                      <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] font-mono font-bold text-sm">
+                      <span className="article-reference-number">
                         {ref.index}
                       </span>
                     </div>
@@ -100,9 +96,9 @@ export default function ArticleReferences({
                     {/* 文献詳細情報 */}
                     <div className="min-w-0 flex-1 space-y-3 text-sm [overflow-wrap:anywhere]">
                       {/* タグと種別 */}
-                      <div className="flex flex-wrap items-center gap-2">
+                      <div className="article-reference-metadata">
                         {ref.type && (
-                          <span className="text-sm px-2.5 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#10161C] text-[#59615D] dark:text-[#A0B0BC] font-medium">
+                          <span>
                             {ref.type === "paper"
                               ? "研究論文"
                               : ref.type === "classic"
@@ -116,7 +112,7 @@ export default function ArticleReferences({
                         )}
 
                         {ref.studyDesign && (
-                          <span className="text-sm px-2.5 py-1 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] font-medium">
+                          <span className="article-reference-study-design">
                             {ref.studyDesign}
                           </span>
                         )}
@@ -180,12 +176,12 @@ export default function ArticleReferences({
                       )}
 
                       {/* 外部リンク・古典ライブラリ・Amazonアソシエイトボタン */}
-                      <div className="pt-1 flex flex-wrap items-center gap-2">
+                      <div className="article-reference-links">
                         {ref.libraryUrl && (
                           <Link
                             href={ref.libraryUrl}
                             style={{ minHeight: 44 }}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#DCECE5] dark:hover:bg-[#1E362D] text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 group"
+                            className="article-reference-link group"
                             title="古典ライブラリで掲載条文・解説と確認状況を読む"
                           >
                             <BookOpen className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
@@ -200,7 +196,7 @@ export default function ArticleReferences({
                             style={{ minHeight: 44 }}
                             target="_blank"
                             rel="noopener noreferrer nofollow sponsored"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#F3DEC5] dark:border-[#4D331F] hover:border-[#B86924] dark:hover:border-[#E6C387] text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBE8D6] dark:hover:bg-[#382618] text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 group"
+                            className="article-reference-link article-reference-link--book group"
                             title="Amazonで探す・在庫と詳細を確認（リンク切れ防止・アソシエイトリンク）"
                           >
                             <ShoppingBag className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
@@ -219,7 +215,7 @@ export default function ArticleReferences({
                             style={{ minHeight: 44 }}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FAF8F5] dark:bg-[#1C2834] border border-[#D8CFC0] dark:border-[#2E4254] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#15232F] text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 group"
+                            className="article-reference-link group"
                           >
                             <FileText className="w-3.5 h-3.5" />
                             <span>

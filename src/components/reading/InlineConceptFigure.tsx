@@ -40,17 +40,16 @@ export default function InlineConceptFigure({ figure }: { figure: ReadingFigure 
   const grid = figure.items.length === 2 || figure.items.length > 3 ? "sm:grid-cols-2" : "sm:grid-cols-3";
 
   return (
-    <figure id={`reading-figure-${figure.id}`} aria-labelledby={titleId} aria-describedby={captionId} data-reading-figure={figure.id} className="not-prose my-8 scroll-mt-40 overflow-hidden rounded-2xl border border-[#D6E3DA] bg-linear-to-br from-[#F1F6F1] via-[#F8FAF6] to-[#FAF8F2] p-4 sm:my-10 sm:p-7 dark:border-[#304A3E] dark:from-[#162920] dark:via-[#182A24] dark:to-[#1C2A27]">
-      <figcaption className="mb-4">
-        <span className="mb-2 block text-sm font-medium tracking-[.12em] text-[#557465] dark:text-[#A2C8B4]">図で整理</span>
-        <strong id={titleId} className="block text-lg font-bold leading-relaxed text-[#1E3D34] sm:text-xl dark:text-[#D9EDE0]">{figure.title}</strong>
+    <figure id={`reading-figure-${figure.id}`} aria-labelledby={titleId} aria-describedby={captionId} data-reading-figure={figure.id} className="not-prose reading-concept-figure scroll-mt-40">
+      <figcaption className="mb-5">
+        <strong id={titleId} className="reading-concept-title">{figure.title}</strong>
       </figcaption>
       <List className={`grid gap-x-8 sm:gap-y-3 ${grid}`}>
         {figure.items.map((item, index) => (
           <li key={item.label} className="relative min-w-0">
-            <div className="rounded-xl border border-[#DCE6DD] bg-white/80 p-3 sm:h-full sm:p-4 dark:border-[#375145] dark:bg-[#10221B]/55">
+            <div className="reading-concept-item sm:h-full">
               <div className="flex items-center gap-3">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#E9F1E8] text-[#3B6B52] dark:bg-[#2E4D3C] dark:text-[#B9D8C3]"><ConceptGlyph icon={item.icon} /></span>
+                <span className="reading-concept-glyph"><ConceptGlyph icon={item.icon} /></span>
                 <strong className="min-w-0 text-base font-bold leading-relaxed text-[#244B3C] dark:text-[#E1EDE5]">{figure.layout === "steps" ? <span className="mr-2 text-sm font-semibold tabular-nums text-[#6A766C] dark:text-[#A8BCAF]">0{index + 1}</span> : null}{item.label}</strong>
               </div>
               <p className="mt-2 text-sm leading-[1.85] text-[#4D5C53] dark:text-[#B7CFC0]">{item.description}</p>
@@ -59,7 +58,7 @@ export default function InlineConceptFigure({ figure }: { figure: ReadingFigure 
           </li>
         ))}
       </List>
-      <p id={captionId} className="mt-5 border-t border-[#D6E3DA] pt-4 text-sm leading-[1.85] text-[#536458] dark:border-[#375145] dark:text-[#B7CFC0]">{figure.caption}</p>
+      <p id={captionId} className="reading-concept-caption">{figure.caption}</p>
     </figure>
   );
 }
