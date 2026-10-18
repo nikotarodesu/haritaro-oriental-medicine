@@ -116,7 +116,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
   } }, { filename: providerSource.file });
   const document = { getElementById(id) {
     const input = nodes(tree).find(node => node.props?.id === id);
-    assert(input, 'Requested input must exist after returning to the observations step: ' + id);
+    assert(input, 'Requested focus target must exist in the rendered workspace: ' + id);
     return { focus: () => focused.push(id), scrollIntoView: () => scrolled.push(id), closest(selector) {
       assert.equal(selector, 'details');
       const group = nodes(tree).find(node => node.type === 'details' && nodes(node).includes(input));
@@ -148,8 +148,10 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     change(label, value) { api.field(label).props.onChange({ target: { value } }); api.render(); },
     candidatePicker() { const picker = nodes(tree).find(node => node.type === CandidatePicker); assert(picker, 'Real workspace supplies a candidate picker'); return picker; },
     chooseCandidates(ids) { api.candidatePicker().props.onChange(ids); api.render(); },
-    principleButton(label, sectionClass = 'clinical-principle-suggestions') { const section = nodes(tree).find(node => node.props?.className === sectionClass); assert(section, 'Treatment section ' + sectionClass); const button = nodes(section).find(node => node.type === 'button' && text(node) === label + '＋'); assert(button, 'Treatment button ' + label); return button; },
+    principleButton(label, sectionClass = 'clinical-principle-suggestions') { const section = nodes(tree).find(node => node.props?.className === sectionClass); assert(section, 'Treatment section ' + sectionClass); const button = nodes(section).find(node => node.type === 'button' && ['＋', '追加済み', '上限'].some(state => text(node) === label + state)); assert(button, 'Treatment button ' + label); return button; },
     addPrinciple(label, sectionClass) { const button = api.principleButton(label, sectionClass); assert(!button.props.disabled, 'Treatment can be added: ' + label); button.props.onClick(); api.render(); },
+    additionFeedback() { return nodes(tree).find(node => node.props?.role === 'status' && text(node).includes('入力欄へ「')); },
+    hasUndo() { return nodes(tree).some(node => node.type === 'button' && text(node) === '直前の追加を戻す'); },
     review() { api.click('入力内容を確認'); },
     cloudResult(value) { cloudOk = value; },
     setAuth(owner, loading = false) { auth.user = owner ? { id: owner } : null; auth.isConfigured = Boolean(owner); auth.isLoading = loading; api.render(); },
@@ -274,11 +276,13 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     const client = harness({ initialEncounter: sampleEncounter({ observations: {}, step: 1 }) });
     assert.equal(nodes(client.tree()).filter(node => node.type === 'details' && node.props.className === 'clinical-observation-group').length, 4);
     client.change('疲労・気力低下', 'absent'); assert.equal(client.encounter().observations.fatigue, 'absent');
-    client.click('3.候補・治法');
+    client.click('3.候補・治法'); client.flushFrames();
+    const priorFocus = client.focused.length;
     const unknownButton = nodes(client.tree()).find(node => node.type === 'button' && node.props.className === 'clinical-missing-sign');
     assert(unknownButton, 'Selected candidate exposes a concrete missing observation');
     unknownButton.props.onClick(); client.render(); client.flushFrames();
-    assert.equal(client.focused.length, 1); assert.equal(client.scrolled[0], client.focused[0]);
+    assert.equal(client.focused.length, priorFocus + 1); assert.equal(client.scrolled.at(-1), client.focused.at(-1));
+    assert(client.focused.at(-1).startsWith('clinical-sign-'), 'Observation navigation does not leave focus on the step heading');
     assert([...client.groups.values()].some(group => group.open));
     assert.equal(client.encounter().observations.fatigue, 'absent', 'Returning for another observation never resets a confirmed negative');
     assert(CLINICAL_PATTERNS.length > 7, 'Expanded candidates retain observation focus behavior');
@@ -385,6 +389,141 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.equal(client.encounter().principle, edited);
     client.addPrinciple('補気');
     assert.equal(client.encounter().principle, edited + '\n補気');
+  });
+  await check('treatment addition announces its exact action and undo restores every byte of the handwritten prefix', () => {
+    const manual = '  追加所見を確認する。\n本人と相談する。  ';
+    const client = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: ['qi'], principle: manual }) });
+    assert.equal(client.additionFeedback(), undefined); assert(!client.hasUndo());
+    client.addPrinciple('補気');
+    assert(text(client.additionFeedback()).includes('入力欄へ「補気」を追加しました。'));
+    assert(client.hasUndo()); assert(text(client.principleButton('補気')).includes('追加済み'));
+    assert.equal(client.field('今回検討する治法').props.value, manual + '\n補気');
+    client.click('直前の追加を戻す');
+    assert.equal(client.field('今回検討する治法').props.value, manual);
+    assert.equal(client.encounter().principle, manual);
+    assert(!client.hasUndo()); assert(!client.principleButton('補気').props.disabled);
+    const undone = nodes(client.tree()).find(node => node.props?.className === 'clinical-principle-feedback');
+    assert.equal(undone.props.role, 'status'); assert.equal(undone.props['aria-live'], 'polite');
+    assert(text(undone).includes('「補気」の追加を戻しました。'));
+  });
+  await check('undo reverses only the most recent addition and candidate changes preserve editable treatment', () => {
+    const manual = '先に観察条件を確認する。';
+    const client = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: ['liver-heat'], principle: manual }) });
+    client.addPrinciple('疏肝理気');
+    const afterFirst = manual + '\n疏肝理気';
+    client.addPrinciple('清熱');
+    assert.equal(client.encounter().principle, afterFirst + '\n清熱');
+    client.chooseCandidates(['qi']);
+    assert.equal(client.field('今回検討する治法').props.value, afterFirst + '\n清熱');
+    assert(client.hasUndo());
+    client.click('直前の追加を戻す');
+    assert.equal(client.field('今回検討する治法').props.value, afterFirst);
+    assert(!client.hasUndo(), 'The UI exposes a single-step undo rather than a hidden history');
+    client.addPrinciple('補気');
+    const edited = '  本人と相談して手書きで修正。\n現時点では保留。 ';
+    client.change('今回検討する治法', edited);
+    assert.equal(client.field('今回検討する治法').props.value, edited);
+    assert(!client.hasUndo(), 'Manual changes cannot be overwritten by the old undo snapshot');
+    assert.equal(client.additionFeedback(), undefined, 'Old addition feedback clears when the clinician edits the text');
+    client.chooseCandidates(['lung-qi']);
+    assert.equal(client.field('今回検討する治法').props.value, edited);
+  });
+  await check('blocked treatment additions do not claim success or create an undo snapshot', () => {
+    const duplicate = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: ['qi'], principle: '既存の方針\n補気' }) });
+    assert(duplicate.principleButton('補気').props.disabled);
+    duplicate.principleButton('補気').props.onClick(); duplicate.render();
+    assert.equal(duplicate.additionFeedback(), undefined); assert(!duplicate.hasUndo());
+    assert.equal(duplicate.encounter().principle, '既存の方針\n補気');
+    const full = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: ['qi'], principle: '記'.repeat(20000) }) });
+    assert(full.principleButton('補気').props.disabled);
+    assert(text(full.principleButton('補気')).includes('上限'));
+    full.principleButton('補気').props.onClick(); full.render();
+    assert.equal(full.additionFeedback(), undefined); assert(!full.hasUndo());
+    assert.equal(full.field('今回検討する治法').props.value.length, 20000);
+  });
+  await check('treatment feedback describes an input change even when draft storage fails and undo keeps the error visible', () => {
+    const manual = '  再評価してから判断。  ';
+    const client = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: ['qi'], principle: manual }) });
+    client.flags.failSession = true;
+    client.addPrinciple('補気');
+    assert.equal(client.field('今回検討する治法').props.value, manual + '\n補気');
+    assert.equal(client.encounter().principle, manual, 'A failed write leaves the recoverable snapshot unchanged');
+    assert(text(client.additionFeedback()).includes('入力欄へ「補気」を追加しました。'));
+    assert(nodes(client.tree()).some(node => node.props?.role === 'alert' && text(node).includes('下書きを保存できませんでした')));
+    client.click('直前の追加を戻す');
+    assert.equal(client.field('今回検討する治法').props.value, manual);
+    assert(nodes(client.tree()).some(node => node.props?.role === 'alert' && text(node).includes('下書きを保存できませんでした')));
+    assert(!client.hasUndo());
+  });
+  await check('treatment undo is cleared on account changes and a fresh record without leaking private feedback', async () => {
+    const manual = 'Guest専用の方針';
+    const client = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: ['qi'], principle: manual }) });
+    client.addPrinciple('補気'); assert(client.hasUndo());
+    const staleUndo = client.button('直前の追加を戻す').props.onClick;
+    const staleAdd = client.principleButton('清熱', 'clinical-principle-catalog').props.onClick;
+    client.seedDraft('account-A', sampleEncounter({ step: 2, candidateIds: ['qi'], principle: 'A専用の方針' }));
+    client.setAuth('account-A'); assert(!client.hasUndo());
+    staleUndo(); staleAdd(); client.render();
+    assert.equal(JSON.parse(client.sessionValues.get(encounters.CLINICAL_ENCOUNTER_KEY)).principle, manual + '\n補気', 'Disposed guest callbacks cannot rewrite the retained guest draft');
+    await client.settle();
+    staleUndo(); staleAdd(); client.render();
+    assert.equal(client.field('今回検討する治法').props.value, 'A専用の方針');
+    assert.equal(client.encounter().principle, 'A専用の方針', 'Disposed guest callbacks cannot write into the active account draft');
+    assert(!client.hasUndo()); assert.equal(client.additionFeedback(), undefined);
+    client.setAuth(null); await client.settle();
+    assert.equal(client.field('今回検討する治法').props.value, manual + '\n補気');
+    assert(!client.hasUndo(), 'A restored draft does not inherit an old UI-only undo action');
+    client.addPrinciple('清熱', 'clinical-principle-catalog'); assert(client.hasUndo());
+    client.click('新しい記録を始める');
+    assert(!client.hasUndo()); assert.equal(client.additionFeedback(), undefined);
+    assert.equal(client.encounter(), null, 'Starting fresh removes the prior tab draft');
+    client.click('3.候補・治法');
+    assert.equal(client.field('今回検討する治法').props.value, '');
+  });
+  await check('step and review navigation move keyboard focus to the new heading while preserving safety gates', () => {
+    const client = harness();
+    client.click('3.候補・治法'); client.flushFrames();
+    assert.equal(client.focused.at(-1), 'clinical-workspace-step-heading');
+    assert.equal(client.scrolled.at(-1), 'clinical-workspace-step-heading');
+    const step = nodes(client.tree()).find(node => node.props?.id === 'clinical-workspace-step-heading');
+    assert.equal(step.type, 'h2'); assert.equal(step.props.tabIndex, -1); assert.equal(text(step), '候補・治法');
+    client.review(); client.flushFrames();
+    assert.equal(client.focused.at(-1), 'clinical-workspace-review-heading');
+    const review = nodes(client.tree()).find(node => node.props?.id === 'clinical-workspace-review-heading');
+    assert.equal(review.props.tabIndex, -1);
+    client.click('入力に戻る'); client.flushFrames();
+    assert.equal(client.focused.at(-1), 'clinical-workspace-step-heading', 'Returning from review restores a live keyboard target');
+    assert.equal(client.scrolled.at(-1), 'clinical-workspace-step-heading');
+    assert.equal(nodes(client.tree()).find(node => node.props?.id === 'clinical-workspace-step-heading').props.tabIndex, -1);
+    const blocked = harness({ initialEncounter: sampleEncounter({ safety: 'unknown' }) });
+    blocked.click('4.配穴の理由'); blocked.flushFrames();
+    assert.equal(blocked.encounter().step, 0, 'A rejected transition preserves the current step');
+    assert.equal(blocked.writes.length, 0, 'Rejected navigation does not persist a partial transition');
+    assert.equal(blocked.focused.length, 0, 'A blocked step cannot move focus into an unavailable section');
+    assert.match(text(blocked.tree()), /配穴の検討前に安全確認を記録/);
+  });
+  await check('selected comparisons use native disclosure controls and local jump targets are keyboard-addressable', () => {
+    const client = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: ['liver-heat', 'spleen-qi'] }) });
+    const rows = nodes(client.tree()).filter(node => node.type === 'article' && node.props.className === 'clinical-comparison-row');
+    const details = rows.map(row => nodes(row).find(node => node.type === 'details'));
+    assert(details.every(Boolean));
+    assert.equal(details[0].props.open, true, 'The first selected comparison is initially readable');
+    assert(!details[1].props.open, 'Other comparisons remain compact until requested');
+    for (const item of details) {
+      const summary = nodes(item).find(node => node.type === 'summary');
+      assert(summary); assert.equal(nodes(summary).filter(node => node.type === 'button').length, 0, 'Disclosure summaries avoid nested buttons');
+    }
+    for (const id of ['clinical-compare-heading', 'clinical-principle-heading']) {
+      const heading = nodes(client.tree()).find(node => node.props?.id === id);
+      assert.equal(heading.type, 'h3'); assert.equal(heading.props.tabIndex, -1);
+    }
+    const anchors = nodes(client.tree()).filter(node => node.type === 'a').map(node => node.props.href);
+    assert(anchors.includes('#clinical-compare-heading'));
+    assert(anchors.includes('#clinical-principle-heading'));
+    client.chooseCandidates([]);
+    const emptyAnchors = nodes(client.tree()).filter(node => node.type === 'a').map(node => node.props.href);
+    assert(!emptyAnchors.includes('#clinical-compare-heading'));
+    assert(emptyAnchors.includes('#clinical-principle-heading'), 'A custom-only hypothesis retains direct access to the treatment editor');
   });
   await check('custom-only hypotheses remain available to review and save without forcing a catalogue selection', () => {
     const client = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: [], customCandidates: '' }) });

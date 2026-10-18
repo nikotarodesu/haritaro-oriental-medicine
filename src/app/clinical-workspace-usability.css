@@ -1,0 +1,20 @@
+/* Keep comparison details and short actions easy to scan in the working form. */
+.clinical-workspace .clinical-comparison-row { padding: 0; border-radius: 0; box-shadow: none; }
+.clinical-comparison-summary { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 4px 16px; align-items: center; min-height: 64px; padding: 14px 0; list-style: none; cursor: pointer; }
+.clinical-comparison-summary::-webkit-details-marker { display: none; }
+.clinical-comparison-summary::after { content: '+'; grid-column: 2; grid-row: 1 / 3; color: var(--accent-readable); font-size: 1.25rem; }
+.clinical-comparison-disclosure[open] > .clinical-comparison-summary::after { content: '−'; }
+.clinical-comparison-summary > .clinical-candidate-comparison-title { grid-column: 1; min-width: 0; overflow-wrap: anywhere; }
+.clinical-comparison-overview { grid-column: 1; color: var(--text-secondary); font-size: .8125rem; line-height: 1.8; }
+.clinical-comparison-body { padding-bottom: 20px; }
+.clinical-comparison-summary:focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 4px; border-radius: 4px; }
+.clinical-workspace :is(#clinical-workspace-step-heading, #clinical-compare-heading, #clinical-principle-heading, #clinical-workspace-review-heading) { scroll-margin-top: calc(var(--site-header-height, 64px) + 24px); }
+.clinical-workspace :is(#clinical-workspace-step-heading, #clinical-compare-heading, #clinical-principle-heading, #clinical-workspace-review-heading):focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 6px; border-radius: 2px; }
+.clinical-candidate-jumps { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-top: 12px; }
+.clinical-candidate-jumps > a { display: inline-flex; align-items: center; min-height: 44px; padding-block: 8px; color: var(--accent-readable); font-size: .875rem; text-decoration: underline; text-underline-offset: 4px; }
+.clinical-principle-feedback { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; padding: 10px 12px; background: var(--tokiwa-light); border-radius: 8px; font-size: .875rem; line-height: 1.8; }
+.clinical-principle-feedback:empty { padding: 0; background: transparent; }
+.clinical-principle-feedback > p { flex: 1 1 240px; margin: 0; overflow-wrap: anywhere; }
+.clinical-principle-feedback > button { min-height: 44px; padding-block: 8px; color: var(--accent-readable); text-decoration: underline; text-underline-offset: 4px; }
+@media (hover:hover) { .clinical-comparison-summary:hover { background: var(--tokiwa-light); } }
+.clinical-workspace .clinical-comparison-summary .clinical-comparison-name { cursor: inherit; }
