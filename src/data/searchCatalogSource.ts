@@ -15,8 +15,9 @@ import { CLINICAL_COMPLAINTS } from "@/data/clinicalWorkflow";
 import type { SearchResultItem } from "@/types/searchCatalog";
 
 const STATIC_TOOLS: SearchResultItem[] = [
+  { id: 'tool-clinical-interview', type: 'tool', title: '対面問診メモ', subtitle: '聞き取った回答やメモを、気血水の伝統的分類に沿って整理する記録補助', badge: '問診', url: '/diagnosis?tab=clinical', tags: ['対面問診','問診','気血水','臨床','記録'] },
   { id: 'clinical-home', type: 'tool', title: '鍼灸師の臨床ホーム', subtitle: '主訴・所見・前回記録から始める', badge: '臨床', url: '/clinical', tags: ['主訴','問診','臨床','鍼灸師'] },
-  { id: 'clinical-workspace', type: 'tool', title: '所見から記録まで', subtitle: '四診・候補比較・配穴の理由・再評価', badge: '臨床記録', url: '/clinical/workspace', tags: ['四診','所見','弁証','配穴','再評価'] },
+  { id: 'clinical-workspace', type: 'tool', title: '臨床記録', subtitle: '四診・候補比較・配穴の理由・再評価', badge: '臨床記録', url: '/clinical/workspace', tags: ['四診','所見','弁証','配穴','再評価'] },
   ...CLINICAL_COMPLAINTS.map(item => ({ id: `clinical-${item.slug}`, type: 'tool' as const, searchRole: 'professional-guide' as const, title: `${item.title}｜鍼灸師の確認ガイド`, subtitle: item.summary, badge: '主訴別・専門家', url: `/clinical/symptoms/${item.slug}`, tags: [item.title,'主訴','問診','四診','再評価'] })),
   {
     id: "tool-kokushi",
@@ -32,17 +33,17 @@ const STATIC_TOOLS: SearchResultItem[] = [
     type: "tool",
     title: TOOL_CATALOG.simulator.title,
     subtitle: TOOL_CATALOG.simulator.description,
-    badge: "臨床ツール",
+    badge: "演習",
     url: "/simulator",
     tags: ["シミュレーター", "弁証", "配穴", "八綱", "気血水", "臓腑", "鑑別"],
   },
   {
     id: "tool-simulator-compare",
     type: "tool",
-    title: "2案並列 鑑別シミュレーター",
-    subtitle: "迷いやすい2つの証（例：気虚 vs 気滞、肝火上炎 vs 肝陽上亢）を並べて配穴比較",
+    title: "鑑別例を見比べる",
+    subtitle: "固定3組の教材例で、所見・伝統的な分類・配穴意図の違いを見比べる",
     badge: "臨床鑑別",
-    url: "/simulator/compare",
+    url: "/simulator#comparison-examples",
     tags: ["鑑別", "比較", "シミュレーター", "並列", "2案", "証の比較"],
   },
   {
@@ -68,7 +69,7 @@ const STATIC_TOOLS: SearchResultItem[] = [
     type: "tool",
     title: TOOL_CATALOG.haiketsu.title,
     subtitle: TOOL_CATALOG.haiketsu.description,
-    badge: "臨床ツール",
+    badge: "演習",
     url: "/practice/haiketsu",
     tags: ["配穴", "処方", "原穴", "絡穴", "四関", "四総穴", "組み合わせ"],
   },

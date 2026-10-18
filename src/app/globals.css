@@ -16,6 +16,9 @@
 @import "./dictionary-refinement.css";
 @import "./saved-quickview.css";
 @import "./unified-navigation.css";
+@import "./clinical-home-refinement.css";
+@import "./exercises-refinement.css";
+@import "./clinical-menu-refinement.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

@@ -55,10 +55,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-09-28"),
     },
     {
-      url: `${baseUrl}/simulator/compare`,
-      lastModified: new Date("2026-09-28"),
-    },
-    {
       url: `${baseUrl}/practice/haiketsu`,
       lastModified: new Date("2026-09-28"),
     },

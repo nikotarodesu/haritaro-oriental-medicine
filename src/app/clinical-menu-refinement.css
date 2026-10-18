@@ -1,0 +1,20 @@
+/* A quiet, single-column clinical menu shared across screen sizes. */
+.clinical-header-menu { width: min(22rem, calc(100vw - 2rem)); padding: .75rem; background: var(--bg-card); border-color: var(--border-washi); border-radius: 1rem; box-shadow: 0 12px 32px #10291f14; }
+.clinical-nav-menu { padding: .125rem; }
+.clinical-menu-home { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 44px; margin-bottom: .375rem; padding: .625rem .75rem; color: var(--text-secondary); font-size: .8125rem; line-height: 1.6; }
+.clinical-menu-home svg { width: 1rem; height: 1rem; opacity: .6; }
+.clinical-menu-home:hover { color: var(--accent-readable); text-decoration: underline; text-underline-offset: 4px; }
+.clinical-nav-menu .clinical-menu-row { min-height: 48px; padding: .75rem; border-radius: .5rem; color: var(--text-sumi); font-size: .9375rem; line-height: 1.6; font-weight: 500; }
+.clinical-nav-menu .clinical-menu-row > svg { width: .9375rem; height: .9375rem; color: var(--text-secondary); }
+.clinical-nav-menu .clinical-menu-row:hover { background: var(--bg-washi); }
+.clinical-nav-menu .clinical-menu-row[aria-current="page"] { background: var(--tokiwa-light); color: var(--accent-readable); font-weight: 600; box-shadow: inset 2px 0 var(--accent-readable); }
+.clinical-menu-practice { margin-top: .75rem; padding-top: .5rem; border-top: 1px solid var(--border-washi); }
+.clinical-menu-practice > summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 48px; padding: .75rem; border-radius: .5rem; color: var(--text-secondary); cursor: pointer; list-style: none; font-size: .875rem; line-height: 1.6; }
+.clinical-menu-practice > summary::-webkit-details-marker { display: none; }
+.clinical-menu-practice > summary svg { width: 1rem; height: 1rem; }
+.clinical-menu-practice[open] > summary svg { transform: rotate(180deg); }
+.clinical-menu-practice > summary:hover { background: var(--bg-washi); color: var(--accent-readable); }
+.clinical-menu-practice[data-active="true"] > summary { color: var(--accent-readable); font-weight: 600; }
+.clinical-menu-practice > ul { padding-bottom: .25rem; }
+.site-menu .clinical-nav-menu { padding-inline: .75rem; padding-bottom: .5rem; }
+@media (max-width: 639px) { .site-menu .clinical-nav-menu { padding-inline: .25rem; } }

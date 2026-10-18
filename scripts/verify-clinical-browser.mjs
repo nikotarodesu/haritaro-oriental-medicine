@@ -116,7 +116,7 @@ try {
   await page.screenshot({ path: path.join(output, 'workspace-mobile-320.png') });
   await page.emulateMedia({ colorScheme: 'dark' });
   await page.screenshot({ path: path.join(output, 'workspace-mobile-dark.png') });
-  await goto('/cases#revision-training');
+  await goto('/simulator#revision-training');
   await page.getByLabel('演習を選ぶ').selectOption('2');
   await page.getByRole('radio', { name: '施術を保留し、緊急の医療評価を優先して、症状と発症時刻を記録する', exact: true }).check();
   await page.getByText('確認したい考え方です。', { exact: true }).waitFor();

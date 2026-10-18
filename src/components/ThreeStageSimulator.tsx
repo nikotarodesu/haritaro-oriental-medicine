@@ -1166,15 +1166,16 @@ export default function ThreeStageSimulator() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2.5">
-              <Link
-                href="/simulator/compare"
+              <a
+                href="#comparison-examples"
+                onClick={() => document.querySelector<HTMLDetailsElement>("#comparison-examples")?.setAttribute("open", "")}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#1E3D34] dark:text-[#74BA9E] hover:border-[#1E3D34] text-sm font-bold transition-all"
-                title="似た証や鑑別候補を横並びで比較する"
+                title="3つの教材例で鑑別の視点を確認する"
               >
                 <Scale className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                <span>2案の比較鑑別へ</span>
+                <span>鑑別例を見比べる</span>
                 <ArrowRight className="w-3 h-3 text-[#59615D] dark:text-[#8899A6]" />
-              </Link>
+              </a>
               <a
                 href="#simulator-conditions"
                 className="text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"

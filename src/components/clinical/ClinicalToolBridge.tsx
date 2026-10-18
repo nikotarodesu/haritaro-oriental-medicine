@@ -19,7 +19,7 @@ export default function ClinicalToolBridge({ selectedCodes, editableCodes, onRes
     return () => clearTimeout(timer);
   }, [onRestore, clinicalStorageOwner]);
   const importPoints = () => {
-    if (!encounter || !selectedCodes) return;
+    if (!clinicalStorageOwner || loadedOwner !== clinicalStorageOwner || !encounter || !selectedCodes) return;
     const stored = readClinicalEncounter().encounter;
     if (!stored) { setMessage('下書きが見つかりません。作業画面で確認してください。'); return; }
     if (stored.safety !== 'reviewed') { setMessage('安全確認が未完了、または医療評価を優先するため、配穴の転記を保留します。'); return; }
@@ -30,18 +30,18 @@ export default function ClinicalToolBridge({ selectedCodes, editableCodes, onRes
     if (!writeClinicalEncounter({ ...stored, points, step: 3 })) { setMessage('転記を保存できませんでした。'); return; }
     router.push('/clinical/workspace');
   };
-  if (!clinicalStorageOwner || loadedOwner !== clinicalStorageOwner) return <p role="status">作業中の記録を確認しています…</p>;
+  if (!clinicalStorageOwner || loadedOwner !== clinicalStorageOwner || !encounter) return null;
   return <aside className="clinical-tool-bridge" aria-label="作業中の記録">
     <div className="clinical-tool-bridge__context">
       <NotebookPen aria-hidden="true" className="h-5 w-5 shrink-0" />
-      <div><p className="clinical-tool-bridge__label">{encounter ? '作業中の記録' : '所見から記録を始める'}</p>
-        <p>{encounter ? (encounter.patientIdentifier || '匿名ID未入力') + ' · ' + (encounter.chiefComplaint || '主訴未入力') : '所見・見立て・配穴を一つの記録にまとめます。'}</p>
+      <div><p className="clinical-tool-bridge__label">作業中の記録</p>
+        <p>{(encounter.patientIdentifier || '匿名ID未入力') + ' · ' + (encounter.chiefComplaint || '主訴未入力')}</p>
       </div>
     </div>
     <div className="clinical-tool-bridge__actions">
-      {encounter && selectedCodes ? <button type="button" className="page-primary-action" onClick={importPoints}>この構成を反映して記録へ戻る<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></button> :
-        <Link href="/clinical/workspace" className="page-secondary-action">{encounter ? '記録を再開する' : '記録を始める'}<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link>}
-      {encounter && selectedCodes && <Link href="/clinical/workspace" className="clinical-tool-bridge__back">反映せずに戻る</Link>}
+      {selectedCodes ? <button type="button" className="page-primary-action" onClick={importPoints}>この構成を反映して記録へ戻る<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></button> :
+        <Link href="/clinical/workspace" className="page-secondary-action">記録へ戻る<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link>}
+      {selectedCodes && <Link href="/clinical/workspace" className="clinical-tool-bridge__back">反映せずに戻る</Link>}
     </div>
     {message && <p role="status" className="clinical-tool-bridge__message">{message}</p>}
   </aside>;

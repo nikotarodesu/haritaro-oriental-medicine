@@ -155,7 +155,7 @@ export default function HaiketsuPracticePage() {
       <Suspense fallback={null}><IncomingAcupoint onSelect={selectIncomingPoint} /></Suspense>
       <ClinicalToolBridge selectedCodes={selectedPointIds.map(id => ACUPOINT_ROLES[id]?.code).filter(Boolean)} editableCodes={Object.values(ACUPOINT_ROLES).map(point => point.code)} onRestore={restoreClinicalPoints} />
       <div className="page-layout page-layout--intro">
-        <PageIntro compact eyebrow="基本32穴の配穴演習" title="配穴を組み立てる" art="points" description="経穴を選び、構成を確かめ、選んだ理由を残す。教材例と比べながら練習できます。" />
+        <PageIntro compact eyebrow="基本32穴の配穴演習" title="配穴の練習" art="points" description="経穴を選び、構成を確かめ、選んだ理由を残す。教材例と比べながら練習できます。" />
         {!isPremium && <p className="mt-4 text-sm text-[#59615D] dark:text-[#B7C5CF]">無料で4穴まで組み合わせて試せます。</p>}
         <details className="page-help mt-4">
           <summary>演習の内容・保存・プレミアム機能</summary>

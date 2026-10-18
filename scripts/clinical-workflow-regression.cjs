@@ -49,7 +49,7 @@ for (const lecture of lectures) {
   const markup = renderToStaticMarkup(React.createElement(Application, { lectureId: lecture.id, takeaway: lecture.summary }));
   assert(markup.includes('aria-label="この講義を実践につなぐ"'), lecture.id + ' rendered application');
   for (const value of [guide.situation, guide.check, guide.pitfall]) assert(markup.includes(value), lecture.id + ' guide content');
-  for (const href of [`/clinical/symptoms/${guide.complaintSlug}`, '/cases#revision-training', '/clinical/workspace']) assert(markup.includes(`href="${href}"`), lecture.id + ' rendered destination');
+  for (const href of [`/clinical/symptoms/${guide.complaintSlug}`, '/simulator#revision-training', '/clinical/workspace']) assert(markup.includes(`href="${href}"`), lecture.id + ' rendered destination');
 }
 assert.equal(renderToStaticMarkup(React.createElement(Application, { lectureId: 'unknown', takeaway: '' })), '');
 assert.equal(lectures.filter(lecture => /^lecture-(intro|zangfu|meridians)-/.test(lecture.id)).length, 13);

@@ -8,6 +8,7 @@ import ProgressiveCaseTraining from "@/components/learning/ProgressiveCaseTraini
 import ThreeStageSimulator from "@/components/ThreeStageSimulator";
 import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
 import ClinicalRevisionTraining from "@/components/clinical/ClinicalRevisionTraining";
+import ClinicalComparisonExamples from "@/components/learning/ClinicalComparisonExamples";
 import type { ArticlePreview } from "@/data/articleData";
 
 const TRAINING_TABS = [
@@ -20,25 +21,36 @@ type TrainingTab = typeof TRAINING_TABS[number]["id"];
 export default function SimulatorHub({ relatedArticles }: { relatedArticles: ArticlePreview[] }) {
   const [activeTraining, setActiveTraining] = useState<TrainingTab>("case-training");
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const comparisonRef = useRef<HTMLDetailsElement | null>(null);
+  const scrollFrame = useRef(0);
 
   useEffect(() => {
-    let frame = 0;
     const restoreHash = () => {
+      window.cancelAnimationFrame(scrollFrame.current);
+      scrollFrame.current = 0;
       const target = window.location.hash.slice(1);
       const tab = TRAINING_TABS.find(item => item.id === target);
       const params = new URLSearchParams(window.location.search);
-      if (tab) setActiveTraining(tab.id);
+      if (target === "comparison-examples") {
+        setActiveTraining("condition-training");
+        if (comparisonRef.current) comparisonRef.current.open = true;
+      } else if (tab) setActiveTraining(tab.id);
       else if (target === "simulator-result" || target === "simulator-conditions" || ["fromTsubo", "fromCase", "fromDiagnosis"].some(key => params.has(key))) setActiveTraining("condition-training");
-      if (tab || target === "simulator-result" || target === "simulator-conditions") {
-        frame = window.requestAnimationFrame(() => document.getElementById(target)?.scrollIntoView({ block: "start" }));
+      if (tab || target === "simulator-result" || target === "simulator-conditions" || target === "comparison-examples") {
+        scrollFrame.current = window.requestAnimationFrame(() => {
+          scrollFrame.current = 0;
+          document.getElementById(target)?.scrollIntoView({ block: "start" });
+        });
       }
     };
     const timer = window.setTimeout(restoreHash, 0);
     window.addEventListener("hashchange", restoreHash);
-    return () => { window.clearTimeout(timer); window.cancelAnimationFrame(frame); window.removeEventListener("hashchange", restoreHash); };
+    return () => { window.clearTimeout(timer); window.cancelAnimationFrame(scrollFrame.current); window.removeEventListener("hashchange", restoreHash); };
   }, []);
 
   const selectTraining = (index: number, focus = false) => {
+    window.cancelAnimationFrame(scrollFrame.current);
+    scrollFrame.current = 0;
     const tab = TRAINING_TABS[index];
     setActiveTraining(tab.id);
     window.history.replaceState(null, "", '#' + tab.id);
@@ -48,7 +60,7 @@ export default function SimulatorHub({ relatedArticles }: { relatedArticles: Art
   return (
     <div className="clinical-exercises space-y-8 sm:space-y-10">
       <ClinicalToolBridge />
-      <PageIntro compact eyebrow="所見から判断する練習" title="弁証候補を比較" art="practice" description="架空症例を考える、条件を選んで比べる。取り組みたい演習から始められます。" />
+      <PageIntro compact eyebrow="所見から判断する練習" title="弁証の練習" art="practice" description="架空症例を考える、条件を選んで比べる。取り組みたい演習から始められます。" />
       <details className="page-help">
         <summary>演習で確認できること</summary>
         <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
@@ -82,6 +94,10 @@ export default function SimulatorHub({ relatedArticles }: { relatedArticles: Art
       </section>
       <section id="condition-training-panel" role="tabpanel" aria-labelledby="condition-training-tab" hidden={activeTraining !== "condition-training"} tabIndex={0} className="clinical-training-panel">
         <div id="condition-training" className="scroll-mt-28"><ThreeStageSimulator /></div>
+        <details ref={comparisonRef} id="comparison-examples" className="clinical-comparison-disclosure">
+          <summary>鑑別例を見比べる<span>似た候補の違いを確認する</span></summary>
+          <ClinicalComparisonExamples />
+        </details>
       </section>
       <section id="revision-training-panel" role="tabpanel" aria-labelledby="revision-training-tab" hidden={activeTraining !== "revision-training"} tabIndex={0} className="clinical-training-panel">
         <ClinicalRevisionTraining />

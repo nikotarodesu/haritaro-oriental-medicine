@@ -28,6 +28,7 @@ export type NavItemId =
   | "tsubo"
   | "search"
   | "diagnosis"
+  | "clinical_interview"
   | "gorou"
   | "simulator"
   | "simulator_compare"
@@ -51,13 +52,13 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
     id: "clinical", label: "臨床ホーム", shortLabel: "臨床", description: "新しい記録・下書き・主訴別ガイドの入口", icon: Home, href: "/clinical",
   },
   workspace: {
-    id: "workspace", label: "所見から記録まで", shortLabel: "所見・記録", description: "安全確認から所見・配穴の理由・再評価を記録", icon: FileText, href: "/clinical/workspace",
+    id: "workspace", label: "臨床記録", shortLabel: "記録", description: "安全確認から所見・配穴の理由・再評価を記録", icon: FileText, href: "/clinical/workspace",
   },
   clinical_guides: {
     id: "clinical_guides", label: "主訴別ガイド", shortLabel: "主訴", description: "主訴ごとに確認したい項目を調べる", icon: BookOpen, href: "/clinical#chief-complaints",
   },
   tsubo_compare: {
-    id: "tsubo_compare", label: "経穴を比較", shortLabel: "経穴比較", description: "経穴の位置・特徴・注意事項を並べる", icon: GitCompare, href: "/tsubo/compare",
+    id: "tsubo_compare", label: "経穴比較", shortLabel: "経穴比較", description: "経穴の位置・特徴・注意事項を並べる", icon: GitCompare, href: "/tsubo/compare",
   },
   home: {
     id: "home",
@@ -116,6 +117,14 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
     icon: Sparkles,
     href: "/diagnosis",
   },
+  clinical_interview: {
+    id: "clinical_interview",
+    label: "対面問診",
+    shortLabel: "問診",
+    description: "気血水の所見を対面で聞き取り、記録に整理する",
+    icon: Activity,
+    href: "/diagnosis?tab=clinical",
+  },
   gorou: {
     id: "gorou",
     label: "五労チェック",
@@ -126,7 +135,7 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
   simulator: {
     id: "simulator",
-    label: "弁証候補を比較",
+    label: "弁証の練習",
     shortLabel: "弁証",
     description: "八綱・気血水・臓腑の鑑別推論",
     icon: Layers,
@@ -134,15 +143,15 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
   simulator_compare: {
     id: "simulator_compare",
-    label: "2案比較",
-    shortLabel: "2案比較",
-    description: "弁証の2つの仮説を横並びで比較鑑別",
+    label: "鑑別例を見比べる",
+    shortLabel: "鑑別例",
+    description: "弁証の練習で2つの鑑別例を見比べる",
     icon: GitCompare,
-    href: "/simulator/compare",
+    href: "/simulator#comparison-examples",
   },
   haiketsu: {
     id: "haiketsu",
-    label: "配穴を組み立てる",
+    label: "配穴の練習",
     shortLabel: "配穴",
     description: "本治・標治バランスと処方構成の演習",
     icon: SlidersHorizontal,
@@ -150,7 +159,7 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
   cases: {
     id: "cases",
-    label: "臨床症例演習",
+    label: "症例を選ぶ",
     shortLabel: "症例",
     description: "四診合参から導く臨床ケーススタディ",
     icon: BookOpen,
@@ -174,11 +183,27 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
 };
 
-/** One set of names and purposes for the header, mobile menu and clinical home. */
+/** The five everyday destinations shared by the header and clinical home. */
+export const CLINICAL_PRIMARY_ITEMS = [
+  ALL_NAV_ITEMS.workspace,
+  { ...ALL_NAV_ITEMS.notes, label: "記録一覧" },
+  ALL_NAV_ITEMS.clinical_guides,
+  ALL_NAV_ITEMS.clinical_interview,
+  ALL_NAV_ITEMS.tsubo_compare,
+] as const satisfies readonly NavItemDefinition[];
+
+/** Practice is a separate, optional step from working on a record. */
+export const CLINICAL_PRACTICE_ITEMS = [
+  ALL_NAV_ITEMS.simulator,
+  ALL_NAV_ITEMS.haiketsu,
+  ALL_NAV_ITEMS.cases,
+] as const satisfies readonly NavItemDefinition[];
+
+/** Retained for existing consumers; public menus use the concise lists above. */
 export const CLINICAL_NAV_GROUPS = [
   { id: "record", label: "記録する", items: ["workspace", "notes"] },
-  { id: "lookup", label: "調べる", items: ["clinical_guides", "tsubo", "tsubo_compare"] },
-  { id: "practice", label: "練習する", items: ["simulator", "haiketsu", "cases", "diagnosis"] },
+  { id: "lookup", label: "調べる", items: ["clinical_guides", "clinical_interview", "tsubo_compare"] },
+  { id: "practice", label: "練習する", items: ["simulator", "haiketsu", "cases"] },
 ] as const satisfies readonly { id: string; label: string; items: readonly NavItemId[] }[];
 
 export function getNavigationSection(pathname: string): "learn" | "clinical" | "dictionary" | "account" | null {
@@ -199,7 +224,8 @@ export function isNavigationItemActive(id: NavItemId, pathname: string, searchPa
   if (id === "curriculum") return pathname !== "/learn/review" && (pathname.startsWith("/learn") || pathname.startsWith("/curriculum"));
   if (id === "review" || id === "kokushi") return pathname === "/learn/review";
   if (id === "notes") return pathname.startsWith("/notes") || pathname.startsWith("/mynote");
-  if (id === "diagnosis") return pathname === "/diagnosis" && searchParams?.get("tab") !== "gorou";
+  if (id === "diagnosis") return pathname === "/diagnosis" && !["gorou", "clinical"].includes(searchParams?.get("tab") ?? "");
+  if (id === "clinical_interview") return pathname === "/diagnosis" && searchParams?.get("tab") === "clinical";
   if (id === "gorou") return pathname === "/diagnosis" && searchParams?.get("tab") === "gorou";
   if (id === "simulator") return pathname === "/simulator";
   if (id === "simulator_compare") return pathname.startsWith("/simulator/compare");
@@ -223,7 +249,7 @@ export const NAV_PRESETS: Record<NavPresetType, { name: string; description: str
   },
   clinician: {
     name: "臨床家セット",
-    description: "所見と記録、配穴、経穴辞典、マイノートを素早く開く",
+    description: "臨床記録、配穴の練習、経穴辞典、マイノートを素早く開く",
     items: ["workspace", "haiketsu", "tsubo", "notes"],
   },
 };

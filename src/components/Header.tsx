@@ -6,7 +6,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Activity, ArrowRight, BookOpen, Bookmark, ChevronDown, ClipboardPenLine, CreditCard, Crown, FileQuestion, GitCompareArrows, GraduationCap, History, Layers3, Library, Mail, Menu, NotebookPen, ScanLine, Search, User as UserIcon, X, type LucideIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import BrandLogo from "@/components/brand/BrandLogo";
-import { ALL_NAV_ITEMS, CLINICAL_NAV_GROUPS, getNavigationSection, isNavigationItemActive, type NavItemId } from "@/config/navigationItems";
+import { ALL_NAV_ITEMS, CLINICAL_PRIMARY_ITEMS, CLINICAL_PRACTICE_ITEMS, getNavigationSection, isNavigationItemActive, type NavItemId } from "@/config/navigationItems";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { useAuth } from "@/contexts/AuthContext";
 import RecentToolTracker from "./home/RecentTools";
@@ -32,7 +32,7 @@ const OTHER_LINKS: readonly HeaderLink[] = [
   { href: "/glossary", label: "東洋医学の用語集" },
   { href: "/tsubo/practice", label: "経穴の復習" },
   { href: "/kikei", label: "奇経八脈" },
-  ALL_NAV_ITEMS.simulator_compare,
+  ALL_NAV_ITEMS.diagnosis,
   ALL_NAV_ITEMS.gorou,
   { href: "/symptoms", label: "症状別ガイド・日常の工夫" },
   { href: "/safety", label: "安全性と受診の目安" },
@@ -56,7 +56,7 @@ const DESKTOP_LAYOUT = "header-desktop";
 const COMPACT_LAYOUT = "header-compact";
 const NAV_CONTROL = `inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D] ${FOCUS_STYLE}`;
 
-function HeaderLinks({ links, pathname, onNavigate, clipCount = 0 }: { links: readonly HeaderLink[]; pathname: string; onNavigate: () => void; clipCount?: number }) {
+function HeaderLinks({ links, pathname, onNavigate, clipCount = 0, plain = false }: { links: readonly HeaderLink[]; pathname: string; onNavigate: () => void; clipCount?: number; plain?: boolean }) {
   const searchParams = typeof window === "undefined" ? undefined : new URLSearchParams(window.location.search);
   return <ul className="space-y-1">{links.map(link => {
     const Icon = link.icon ?? NAV_ICONS[link.href] ?? BookOpen;
@@ -64,9 +64,9 @@ function HeaderLinks({ links, pathname, onNavigate, clipCount = 0 }: { links: re
     const active = link.id ? isNavigationItemActive(link.id, pathname, searchParams)
       : pathname === linkPath.split("#")[0] && Array.from(new URLSearchParams(query)).every(([key, value]) => searchParams?.get(key) === value);
     return <li key={link.href}>
-      <Link href={link.href} onClick={onNavigate} aria-current={active ? "page" : undefined} className={['site-nav-link flex min-h-[44px] items-center justify-between rounded-lg px-3 py-2 text-sm leading-relaxed hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D]', FOCUS_STYLE, active ? 'bg-[var(--brand-paper)] font-semibold dark:bg-[#22303D]' : ''].join(' ')}>
-        <span className="site-nav-link-icon"><Icon aria-hidden="true" /></span>
-        <span className="min-w-0 flex-1"><span className="block">{link.label}</span>{link.description ? <span className="block text-xs font-normal text-[#59615D] dark:text-[#A0B0BC]">{link.description}</span> : null}</span>
+      <Link href={link.href} onClick={onNavigate} aria-current={active ? "page" : undefined} className={[`site-nav-link ${plain ? 'clinical-menu-row' : ''} flex min-h-[44px] items-center justify-between rounded-lg px-3 py-2 text-sm leading-relaxed hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D]`, FOCUS_STYLE, active ? 'bg-[var(--brand-paper)] font-semibold dark:bg-[#22303D]' : ''].join(' ')}>
+        {plain ? null : <span className="site-nav-link-icon"><Icon aria-hidden="true" /></span>}
+        <span className="min-w-0 flex-1"><span className="block">{link.label}</span>{link.description && !plain ? <span className="block text-xs font-normal text-[#59615D] dark:text-[#A0B0BC]">{link.description}</span> : null}</span>
         {link.href === "/notes" && clipCount > 0 ? <span className="shrink-0 rounded-full bg-[var(--brand-paper)] px-2 text-xs dark:bg-[#22303D]">{clipCount}件</span> : <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0 opacity-50" />}
       </Link>
     </li>;
@@ -74,12 +74,16 @@ function HeaderLinks({ links, pathname, onNavigate, clipCount = 0 }: { links: re
 }
 
 function ClinicalMenu({ pathname, onNavigate }: { pathname: string; onNavigate: () => void }) {
+  const practiceActive = CLINICAL_PRACTICE_ITEMS.some(item => pathname === item.href || pathname.startsWith(item.href + "/"));
   return <div className="clinical-nav-menu">
-    <HeaderLinks links={[ALL_NAV_ITEMS.clinical]} pathname={pathname} onNavigate={onNavigate} />
-    <div className="clinical-nav-groups">{CLINICAL_NAV_GROUPS.map(group => <section key={group.id} className="clinical-nav-group" aria-label={group.label}>
-      <h3 className="clinical-nav-group-title">{group.label}</h3>
-      <HeaderLinks links={group.items.map(id => ALL_NAV_ITEMS[id])} pathname={pathname} onNavigate={onNavigate} />
-    </section>)}</div>
+    <Link href="/clinical" onClick={onNavigate} aria-current={pathname === "/clinical" ? "page" : undefined} className={`clinical-menu-home ${FOCUS_STYLE}`}>
+      <span>臨床ホーム</span><ArrowRight aria-hidden="true" />
+    </Link>
+    <HeaderLinks links={CLINICAL_PRIMARY_ITEMS} pathname={pathname} onNavigate={onNavigate} plain />
+    <details className="clinical-menu-practice" data-active={practiceActive || undefined}>
+      <summary className={FOCUS_STYLE}><span>練習する</span><ChevronDown aria-hidden="true" /></summary>
+      <HeaderLinks links={CLINICAL_PRACTICE_ITEMS} pathname={pathname} onNavigate={onNavigate} plain />
+    </details>
   </div>;
 }
 

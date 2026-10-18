@@ -1,0 +1,43 @@
+/* Comparison examples share one reading surface with the clinical exercises. */
+.clinical-comparison-disclosure { margin-top: 2rem; border-top: 1px solid var(--exercise-line); scroll-margin-top: 7rem; }
+.clinical-comparison-disclosure > summary { min-height: 4.5rem; padding: 1.125rem 0; color: var(--exercise-ink); font-size: 1rem; font-weight: 700; cursor: pointer; }
+.clinical-comparison-disclosure > summary span { margin-left: 1rem; color: var(--exercise-muted); font-size: .875rem; font-weight: 400; }
+.clinical-comparison-disclosure > summary:focus-visible,
+.clinical-comparison-picker button:focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 4px; }
+.clinical-comparison-examples { padding: .25rem 0 1.5rem; color: var(--exercise-ink); font-size: .9375rem; line-height: 1.8; }
+.clinical-comparison-intro { max-width: 48rem; margin-bottom: 1rem; color: var(--exercise-muted); }
+.clinical-comparison-picker { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.25rem 0 1.5rem; }
+.clinical-comparison-picker button { min-height: 2.75rem; padding: .5rem 1rem; border-bottom: 2px solid transparent; color: var(--exercise-muted); cursor: pointer; }
+.clinical-comparison-picker button[aria-pressed="true"] { color: var(--exercise-ink); border-color: var(--accent-readable); font-weight: 700; }
+.clinical-comparison-summary { padding: 1.25rem 1.5rem; background: var(--exercise-tint); border-radius: .5rem; }
+.clinical-comparison-summary h3 { margin-bottom: .5rem; font-size: 1rem; font-weight: 700; }
+.clinical-comparison-plans { display: grid; gap: 1.75rem; margin: 1.75rem 0; }
+.clinical-comparison-plan { min-width: 0; }
+.clinical-comparison-plan h4 { margin-bottom: 1rem; font-family: var(--font-serif), serif; font-size: 1.125rem; font-weight: 700; }
+.clinical-comparison-traits { display: flex; gap: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--exercise-line); }
+.clinical-comparison-traits div { display: flex; gap: .5rem; }
+.clinical-comparison-traits dt { color: var(--exercise-muted); }
+.clinical-comparison-traits dd { font-weight: 600; }
+.clinical-comparison-description > div { margin-top: 1.25rem; }
+.clinical-comparison-description dt { margin-bottom: .375rem; font-weight: 600; }
+.clinical-comparison-description dd { color: var(--exercise-muted); }
+.clinical-comparison-description dd strong,
+.clinical-comparison-description dd span { display: block; font-weight: 400; }
+.clinical-comparison-description dd strong { color: var(--exercise-ink); }
+.clinical-comparison-caution { margin-top: 1.5rem; padding-left: 1rem; border-left: 2px solid #b88a43; color: var(--exercise-muted); }
+.clinical-comparison-caution p:first-child { display: flex; align-items: center; gap: .5rem; margin-bottom: .25rem; color: var(--exercise-ink); }
+.clinical-comparison-save { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; padding-top: 1rem; border-top: 1px solid var(--exercise-line); }
+.clinical-comparison-save span { color: var(--exercise-muted); font-size: .875rem; }
+.clinical-comparison-save [role="alert"] { flex-basis: 100%; color: #9b3b2b; }
+.dark .clinical-comparison-save [role="alert"] { color: #f1b6a6; }
+.clinical-case-revision-link { padding-top: 1.25rem; border-top: 1px solid var(--border-washi); color: var(--text-secondary); }
+.clinical-case-revision-link a { color: var(--accent-readable); }
+@media (min-width: 900px) {
+  .clinical-comparison-plans { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
+  .clinical-comparison-plan + .clinical-comparison-plan { padding-left: 2rem; border-left: 1px solid var(--exercise-line); }
+}
+@media (max-width: 479px) {
+  .clinical-comparison-disclosure > summary span { display: block; margin: .125rem 0 0 1rem; }
+  .clinical-comparison-summary { padding: 1rem; }
+  .clinical-comparison-traits { gap: 1rem; }
+}

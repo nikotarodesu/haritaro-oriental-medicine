@@ -16,7 +16,7 @@ function text(node) {
 }
 function client(relative, overrides = {}, location = { hash: '', search: '' }) {
   const slots = [], effects = [], timers = new Map(), frames = new Map(), listeners = new Map();
-  const pushes = [], focused = [], scrolled = [];
+  const pushes = [], focused = [], scrolled = [], elements = new Map();
   let cursor = 0, nextTimer = 0, tree;
   const changed = (before, after) => !before || !after || before.length !== after.length || before.some((item, index) => item !== after[index]);
   const react = {
@@ -43,8 +43,12 @@ function client(relative, overrides = {}, location = { hash: '', search: '' }) {
       return require(id);
     } }, { filename: file });
   const api = {
-    pushes, focused, scrolled, location,
-    render(props = {}) { cursor = 0; tree = exported.default(props); for (const node of nodes(tree)) if (node.props?.ref) node.props.ref({ focus: () => focused.push(node.props.id) }); while (effects.length) effects.shift()(); return tree; },
+    pushes, focused, scrolled, location, elements,
+    render(props = {}) { cursor = 0; tree = exported.default(props); for (const node of nodes(tree)) if (node.props?.ref) {
+      const element = elements.get(node.props.id) || { open: false, focus: () => focused.push(node.props.id) };
+      elements.set(node.props.id, element);
+      if (typeof node.props.ref === 'function') node.props.ref(element); else node.props.ref.current = element;
+    } while (effects.length) effects.shift()(); return tree; },
     tree: () => tree,
     flush() { const pending = [...timers.values()]; timers.clear(); pending.forEach(callback => callback()); },
     flushFrames() { const pending = [...frames.values()]; frames.clear(); pending.forEach(callback => callback()); },
@@ -79,17 +83,103 @@ simulator.tabs()[2].props.onKeyDown({ key: 'Home', preventDefault() {} }); simul
 assert.equal(simulator.panels()[0].props.hidden, false);
 simulator.location.hash = '#condition-training'; simulator.event('hashchange'); simulator.render({ relatedArticles: [] }); simulator.flushFrames();
 assert.equal(simulator.panels()[1].props.hidden, false); assert.equal(simulator.scrolled.at(-1), 'condition-training');
+simulator.location.hash = '#comparison-examples'; simulator.event('hashchange'); simulator.render({ relatedArticles: [] }); simulator.flushFrames();
+assert.equal(simulator.panels()[1].props.hidden, false);
+assert.equal(simulator.elements.get('comparison-examples').open, true);
+assert.equal(simulator.scrolled.at(-1), 'comparison-examples');
 simulator.unmount(); assert.equal(simulator.listenerCount('hashchange'), 0);
-for (const target of ['#condition-training', '#revision-training', '#simulator-result']) {
+for (const target of ['#condition-training', '#revision-training', '#simulator-result', '#simulator-conditions', '#comparison-examples']) {
   const deep = client('src/components/SimulatorHub.tsx', {}, { hash: target, search: '' });
   deep.render({ relatedArticles: [] }); deep.flush(); deep.render({ relatedArticles: [] }); deep.flushFrames();
   assert.equal(deep.panels()[target === '#revision-training' ? 2 : 1].props.hidden, false);
+  if (target === '#comparison-examples') {
+    assert.equal(deep.elements.get('comparison-examples').open, true, 'Comparison deep links open the native disclosure');
+    assert.equal(deep.scrolled.at(-1), 'comparison-examples');
+  }
 }
 for (const query of ['fromCase', 'fromDiagnosis', 'fromTsubo']) {
   const deep = client('src/components/SimulatorHub.tsx', {}, { hash: '', search: '?' + query + '=1' });
   deep.render({ relatedArticles: [] }); deep.flush(); deep.render({ relatedArticles: [] });
   assert.equal(deep.panels()[1].props.hidden, false, query + ' incoming link opens the conditions');
 }
+
+
+// The extracted comparison keeps all original examples available and obeys memo save outcomes.
+let comparisonReady = true, comparisonOwner = 'guest', comparisonCanSave = false;
+const comparisonWrites = [];
+const examples = client('src/components/learning/ClinicalComparisonExamples.tsx', {
+  '@/contexts/ClinicalMemoContext': { useClinicalMemo: () => ({
+    isReady: comparisonReady, clinicalStorageOwner: comparisonOwner,
+    addMemo: item => { if (comparisonCanSave) comparisonWrites.push(item); return comparisonCanSave; },
+  }) },
+});
+examples.render();
+assert.equal(nodes(examples.tree()).filter(node => node.type === 'button' && 'aria-pressed' in node.props).length, 3);
+assert(!nodes(examples.tree()).some(node => node.type === 'h1'), 'Embedded examples have no duplicate page heading');
+examples.button('比較例を保存').props.onClick(); examples.render();
+assert(text(examples.tree()).includes('保存できませんでした'));
+assert.equal(examples.button('比較例を保存').props.disabled, false, 'Rejected memo writes can be retried');
+comparisonCanSave = true;
+examples.button('比較例を保存').props.onClick(); examples.render();
+assert(examples.button('保存済み').props.disabled);
+assert.equal(comparisonWrites.length, 1);
+assert.equal(comparisonWrites[0].type, 'pair');
+assert(comparisonWrites[0].mechanism.includes('【案A】') && comparisonWrites[0].mechanism.includes('【案B】'));
+assert.equal(comparisonWrites[0].points.join('・'), '太衝・期門・行間・侠渓');
+comparisonOwner = 'account:second'; examples.render();
+assert.equal(examples.button('比較例を保存').props.disabled, false, 'Saved display never leaks to a different actor');
+comparisonReady = false; examples.render();
+assert(examples.button('比較例を保存').props.disabled);
+examples.button('比較例を保存').props.onClick(); examples.render();
+assert.equal(comparisonWrites.length, 1, 'Unready actors cannot invoke memo writes');
+comparisonReady = true;
+for (const [label, pattern] of [['肝の鑑別', '肝気鬱結証'], ['脾胃の鑑別', '中気下陥証'], ['腎の鑑別', '腎陰虚証']]) {
+  examples.button(label).props.onClick(); examples.render();
+  const profiles = nodes(examples.tree()).filter(node => node.props?.profile).map(node => node.props.profile);
+  assert.equal(profiles.length, 2);
+  assert.equal(profiles[0].pattern, pattern);
+  assert(profiles.every(profile => profile.contraindications && profile.needleMethod && profile.primaryPoints.length > 0), 'Every example preserves safety and point content');
+  const started = Date.now(), dateBefore = new Date().toLocaleDateString('ja-JP');
+  const previousWrites = comparisonWrites.length;
+  examples.button('比較例を保存').props.onClick(); examples.render();
+  const finished = Date.now(), memo = comparisonWrites.at(-1), dateAfter = new Date().toLocaleDateString('ja-JP');
+  assert.equal(comparisonWrites.length, previousWrites + 1, label + ' saves once');
+  assert.equal(JSON.stringify(memo.elements), '[]', label + ' invents no five-element attributes');
+  assert.equal(memo.indications.join('・'), profiles.map(profile => profile.pattern).join('・'));
+  assert.equal(memo.points.join('・'), profiles.flatMap(profile => profile.primaryPoints).join('・'));
+  const savedAt = Number(memo.id.replace('compare-', ''));
+  assert(savedAt >= started && savedAt <= finished, label + ' uses the actual comparison save time');
+  assert([dateBefore, dateAfter].some(date => memo.personalNotes === '比較検討日: ' + date));
+  assert(examples.button('保存済み').props.disabled);
+  examples.button('保存済み').props.onClick(); examples.render();
+  assert.equal(comparisonWrites.length, previousWrites + 1, label + ' cannot re-save a saved selection');
+}
+let redirected = '';
+const aliasPath = path.resolve(__dirname, '../src/app/simulator/compare/page.tsx');
+const aliasExports = {};
+const aliasCode = ts.transpileModule(fs.readFileSync(aliasPath, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
+vm.runInNewContext(aliasCode, { exports: aliasExports, require: id => {
+  assert.equal(id, 'next/navigation');
+  return { permanentRedirect: href => { redirected = href; } };
+} });
+aliasExports.default();
+assert.equal(redirected, '/simulator#comparison-examples', 'Old comparison URLs permanently reach their new disclosure');
+assert(!fs.readFileSync(path.resolve(__dirname, '../src/app/cases/page.tsx'), 'utf8').includes('<ClinicalRevisionTraining'), 'The case catalog does not duplicate revision exercises');
+
+// A rapid hash switch must not scroll to a now-hidden panel or survive unmount.
+const rapid = client('src/components/SimulatorHub.tsx');
+rapid.render({ relatedArticles: [] }); rapid.flush(); rapid.render({ relatedArticles: [] });
+rapid.location.hash = '#comparison-examples'; rapid.event('hashchange');
+rapid.location.hash = '#revision-training'; rapid.event('hashchange');
+rapid.render({ relatedArticles: [] }); rapid.flushFrames();
+assert.equal(rapid.scrolled.join(','), 'revision-training', 'Only the latest hash can scroll');
+rapid.location.hash = '#comparison-examples'; rapid.event('hashchange'); rapid.render({ relatedArticles: [] });
+rapid.button('症例演習').props.onClick(); rapid.render({ relatedArticles: [] }); rapid.flushFrames();
+assert.equal(rapid.scrolled.join(','), 'revision-training', 'Selecting a tab cancels a pending disclosure scroll');
+rapid.location.hash = '#comparison-examples'; rapid.event('hashchange');
+rapid.location.hash = '#revision-training'; rapid.event('hashchange');
+rapid.unmount(); rapid.flushFrames();
+assert.equal(rapid.scrolled.join(','), 'revision-training', 'Unmount cancels pending scrolling after rapid hash changes');
 
 const point = code => ({ code, role: 'other', reason: '保持する理由', alternative: '保持する代替案' });
 let encounter = { patientIdentifier: 'TEST', chiefComplaint: '検証用の主訴', safety: 'reviewed', points: [point('LI4'), point('ST44')] };
@@ -132,7 +222,7 @@ const isolated = client('src/components/clinical/ClinicalToolBridge.tsx', {
 });
 const isolatedProps = { ...props, onRestore: codes => restored.push([...codes]) };
 isolated.render(isolatedProps);
-assert.equal(nodes(isolated.tree()).some(node => node.props?.role === 'status'), true);
+assert.equal(isolated.tree(), null, 'Do not show a bridge before the current actor draft is resolved');
 assert(!text(isolated.tree()).includes('OWNER-A-PRIVATE'));
 isolated.flush(); isolated.render(isolatedProps);
 assert(text(isolated.tree()).includes('OWNER-A-PRIVATE'));
@@ -156,12 +246,12 @@ storageOwner = 'account:D'; ownerDraft = null; isolated.render(isolatedProps);
 isolated.flush(); isolated.render(isolatedProps);
 assert.equal(readCount, 3, 'A superseded account read is cancelled before it can restore points');
 assert(!text(isolated.tree()).includes('OWNER-A-PRIVATE') && !text(isolated.tree()).includes('OWNER-B-PRIVATE'));
-assert(text(isolated.tree()).includes('所見から記録を始める'));
+assert.equal(isolated.tree(), null, 'A missing draft has no bridge or create-record promotion');
 assert.equal(restored.length, 2, 'A missing new-account draft cannot restore the former account points');
 const legacyMock = client('src/components/clinical/ClinicalToolBridge.tsx', {
   '@/contexts/ClinicalMemoContext': { useClinicalMemo: () => ({}) },
   '@/utils/clinicalEncounter': { readClinicalEncounter: () => ({ encounter: null }) },
 });
 legacyMock.render(); legacyMock.flush(); legacyMock.render();
-assert(text(legacyMock.tree()).includes('所見から記録を始める'), 'Legacy mocks without an owner use the guest namespace');
-console.log('Clinical exercises passed: persistent three-tab panels, keyboard/hash/query routes, saved point transfer, safety/storage/12-point guards out-of-palette preservation and actor-switch display isolation.');
+assert.equal(legacyMock.tree(), null, 'Legacy mocks without an owner keep an empty guest namespace unobtrusive');
+console.log('Clinical exercises passed: embedded comparisons, legacy alias, memo save/retry guards, persistent three-tab panels, keyboard/hash/query routes, saved point transfer, safety/storage/12-point guards out-of-palette preservation and actor-switch display isolation.');

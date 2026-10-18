@@ -3,18 +3,18 @@ import type { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "条件比較シミュレーター｜証と配穴の相違点・鑑別比較教材",
+  title: "鑑別例を見比べる｜弁証の練習",
   description:
     "似た主訴・症状における異なる病態条件を比較し、八綱・気血水・臓腑の鑑別ポイントと選定配穴の違いを深く学ぶ鑑別比較ツール。",
   alternates: {
-    canonical: "/simulator/compare",
+    canonical: "/simulator",
   },
   openGraph: {
       images: SHARED_OG_IMAGES,
       siteName: SITE_NAME,
-    title: "条件比較シミュレーター｜証と配穴の相違点・鑑別比較教材",
+    title: "鑑別例を見比べる｜弁証の練習",
     description: "異なる病態条件から証名と配穴の使い分けを学ぶ鑑別比較教材。",
-    url: "https://www.haritaro.jp/simulator/compare",
+    url: "https://www.haritaro.jp/simulator",
   },
 };
 

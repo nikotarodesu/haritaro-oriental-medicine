@@ -14,7 +14,6 @@ import {
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { useAuth } from "@/contexts/AuthContext";
 import AuthModal from "@/components/auth/AuthModal";
-import ClinicalRevisionTraining from "@/components/clinical/ClinicalRevisionTraining";
 import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 
 const totalCaseCount = CLINICAL_CASES.length;
@@ -44,15 +43,15 @@ export default function CasesIndexPage() {
   };
 
   return (
-    <div className="page-layout space-y-8 sm:space-y-10">
+    <div className="page-layout clinical-case-catalog space-y-8 sm:space-y-10">
       {/* パンくずリスト */}
       <nav aria-label="パンくず" className="flex items-center gap-2 text-sm text-[#737C77] dark:text-[#8899A6]">
         <Link href="/" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">ホーム</Link>
         <span aria-hidden="true">/</span>
-        <span aria-current="page" className="text-[#232826] dark:text-[#FAF8F5] font-semibold">臨床症例演習</span>
+        <span aria-current="page" className="text-[#232826] dark:text-[#FAF8F5] font-semibold">症例を選ぶ</span>
       </nav>
 
-      <PageIntro eyebrow={`全${totalCaseCount}症例・所見から考える練習`} title="臨床症例演習" description="模擬症例を読み、弁証・治法・配穴の理由を考えます。解答例と比べて、判断の根拠を振り返りましょう。" art="practice">
+      <PageIntro eyebrow={`全${totalCaseCount}症例・所見から考える練習`} title="症例を選ぶ" description="模擬症例を読み、弁証・治法・配穴の理由を考えます。解答例と比べて、判断の根拠を振り返りましょう。" art="practice">
         <div className="page-actions">
           {firstFreeCase && <Link href={`/cases/${firstFreeCase.id}`} className="page-primary-action">無料の症例から始める<ArrowRight size={18} aria-hidden="true" /></Link>}
           <a href="#case-catalog" className="page-secondary-action">症例を選ぶ</a>
@@ -214,13 +213,13 @@ export default function CasesIndexPage() {
         </div>
       </div>
 
-      <details className="rounded-xl border border-[#D9E3DD] px-4 dark:border-[#2A3B4A]">
-        <summary className="min-h-11 cursor-pointer py-3 font-semibold focus-visible:outline-2 focus-visible:outline-offset-4">追加情報で判断が変わる過程を練習する</summary>
-        <div className="pb-5"><ClinicalRevisionTraining /></div>
-      </details>
+      <div id="revision-training" className="clinical-case-revision-link">
+        <p>追加情報で判断を見直す練習もできます。</p>
+        <Link href="/simulator#revision-training" className="inline-flex min-h-11 items-center gap-2 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">見立て修正の演習へ<ArrowRight size={16} aria-hidden="true" /></Link>
+      </div>
       <nav aria-label="関連する演習" className="flex flex-wrap gap-x-6 gap-y-1">
-        <Link href="/simulator" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">所見から弁証候補を比較する</Link>
-        <Link href="/practice/haiketsu" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">配穴の構成を考える</Link>
+        <Link href="/simulator" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">弁証の練習へ</Link>
+        <Link href="/practice/haiketsu" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">配穴の練習へ</Link>
       </nav>
       {/* プレミアム誘導モーダル */}
       <AuthModal

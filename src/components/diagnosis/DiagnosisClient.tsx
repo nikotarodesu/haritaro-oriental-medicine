@@ -359,7 +359,7 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
   return (
     <div className="page-layout space-y-6">
       <PageIntro compact eyebrow="回答を整理して振り返る" art="care"
-        title={activeTab === "self" ? "気血水 体質セルフチェック" : activeTab === "clinical" ? "気血水 対面問診モード" : "五労チェッカー"}
+        title={activeTab === "self" ? "気血水 体質セルフチェック" : activeTab === "clinical" ? "対面問診メモ" : "五労チェッカー"}
         description={activeTab === "self" ? "直近1〜2週間の状態に当てはまるものを選び、回答の傾向を確認します。" : activeTab === "clinical" ? "対面で確認した回答と、不明な所見を分けて記録します。" : "『素問』の五労を参考に、見る・座る・立つ・歩く・横になる生活動作を振り返ります。"}
       />
       <MedicalSafetyNotice title="チェックの利用範囲" message={DIAGNOSIS_GUIDANCE_SCOPE} />

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, GraduationCap, Heart } from 'lucide-react';
-import { ALL_NAV_ITEMS, type NavItemDefinition } from '@/config/navigationItems';
+import { ArrowRight, ChevronDown, GraduationCap, Heart } from 'lucide-react';
+import { CLINICAL_PRACTICE_ITEMS, type NavItemDefinition } from '@/config/navigationItems';
 import { pageSocialMetadata, SITE_NAME } from '@/config/seo';
 import { SUBSCRIPTION_CONFIG } from '@/config/subscription';
 import ClinicalDashboard from '@/components/clinical/ClinicalDashboard';
@@ -14,8 +14,6 @@ export const metadata: Metadata = {
   ...pageSocialMetadata(`${title} | ${SITE_NAME}`, description, '/clinical'),
 };
 
-const tools = (['simulator', 'haiketsu', 'cases'] as const).map(id => ALL_NAV_ITEMS[id]);
-const checks = (['diagnosis', 'gorou'] as const).map(id => ALL_NAV_ITEMS[id]);
 function ToolLinks({ items }: { items: readonly NavItemDefinition[] }) {
   return <ul className="clinical-tool-grid">{items.map(({ icon: Icon, ...tool }) => <li key={tool.href}>
     <Link href={tool.href} className="clinical-tool-card">
@@ -30,24 +28,22 @@ const focusClass = 'focus-visible:outline-2 focus-visible:outline-offset-4';
 export default function ClinicalLandingPage() {
   const { limits } = SUBSCRIPTION_CONFIG;
   return (
-    <div className="clinical-page">
+    <div className="clinical-page clinical-page--focused">
       <ClinicalDashboard />
-      <section id="tools" aria-labelledby="clinical-tools-heading" className="clinical-section">
-        <div className="clinical-section-heading"><h2 id="clinical-tools-heading">練習する</h2></div>
-        <ToolLinks items={tools} />
-        <details className="clinical-check-disclosure">
-          <summary>気血水・五労のチェック</summary>
-          <ToolLinks items={checks} />
-        </details>
-        <p className="clinical-tool-note">学習・記録のためのツールです。結果だけで診断・施術方針を決めることはできません。</p>
-      </section>
+      <details id="tools" className="clinical-practice-disclosure">
+        <summary><span><strong>練習する</strong><small>架空症例・弁証・配穴の教材</small></span><ChevronDown aria-hidden="true" /></summary>
+        <div className="clinical-practice-content">
+          <ToolLinks items={CLINICAL_PRACTICE_ITEMS} />
+          <p className="clinical-tool-note">架空症例と教材例で考え方を確かめる演習です。結果だけで診断・施術方針は決まりません。</p>
+        </div>
+      </details>
       <section aria-labelledby="clinical-help-heading" className="clinical-help">
         <h2 id="clinical-help-heading">利用・保存について</h2>
         <details className="rounded-xl border border-[#D9E3DD] px-4 dark:border-[#2A3B4A]">
           <summary className={`min-h-11 cursor-pointer py-3 font-semibold ${focusClass}`}>登録なしで使える範囲と、記録の保存先</summary>
           <div className="space-y-3 pb-4 text-sm leading-relaxed ui-muted">
-            <p>主訴別ガイド、臨床ワークスペース、各チェック、弁証シミュレーター、4穴までの配穴構成演習は登録不要です。臨床ノートは無料{limits.freePatientNoteMax}件、配穴集は無料{limits.freeMemoMax}件まで保存できます。</p>
-            <p>未ログイン時の記録は、このブラウザに保存されます。ログインすると自分のアカウントへの同期に対応します。氏名・電話番号・住所は入力せず、患者番号などの記号を使ってください。自由記述にも本人を特定できる情報を含めないでください。</p>
+            <p>主訴別ガイド、臨床記録、対面問診、弁証の練習、4穴までの配穴の練習は登録不要です。臨床ノートは無料{limits.freePatientNoteMax}件、配穴集は無料{limits.freeMemoMax}件まで保存できます。</p>
+            <p>未ログイン時の記録は、このブラウザに保存されます。ログイン中の記録は、自分のアカウントと同期します。未ログイン時の記録を移す場合は、マイノートのバックアップ・取り込みを使ってください。氏名・電話番号・住所は入力せず、患者番号などの記号を使ってください。自由記述にも本人を特定できる情報を含めないでください。</p>
             <Link href="/privacy" className={`inline-flex min-h-11 items-center underline ${focusClass}`}>記録と個人情報の取り扱い</Link>
           </div>
         </details>

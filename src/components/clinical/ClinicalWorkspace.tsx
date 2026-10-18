@@ -104,7 +104,7 @@ export default function ClinicalWorkspace() {
   if (!ready || loadedOwner !== clinicalStorageOwner) return <p role="status" className="p-6">下書きを確認しています…</p>;
   return <div className="page-layout clinical-workspace space-y-5">
     <Link href="/clinical" className="inline-flex min-h-11 items-center text-sm underline">← 臨床ホーム</Link>
-    <PageIntro compact eyebrow="確認した事実と、見立てを分ける" title="所見から記録まで" description="主訴・安全確認から、配穴の理由、再評価までを5つの手順で整理します。">
+    <PageIntro compact eyebrow="確認した事実と、見立てを分ける" title="臨床記録" description="主訴・安全確認から、配穴の理由、再評価までを5つの手順で整理します。">
       <p className="mt-3 text-sm leading-relaxed">氏名・連絡先など、個人を特定する情報は入力しないでください。</p>
       <div className="page-actions"><button className="page-secondary-action" onClick={reset}><RotateCcw aria-hidden="true" className="h-4 w-4" />新しい記録を始める</button></div>
     </PageIntro>
