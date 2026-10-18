@@ -126,7 +126,8 @@ vm.runInNewContext(navCode, { exports: navExports, require: id => {
   if (id === 'next/navigation') return { usePathname: () => pathname, useSearchParams: () => { queryReads++; return searchParams; } };
   if (id === '@/config/navigationItems') return { ...navigationData, DEFAULT_NAV_CONFIG: { ...DEFAULT_NAV_CONFIG, items: ['diagnosis', 'gorou', 'review', 'curriculum'] } };
   if (id === '@/hooks/useViewportLayout') return { useViewportLayout() {} };
-  if (id === './NavCustomizeModal' || id === './NavMoreDrawer') return { __esModule: true, default: () => null };
+  if (id === '@/utils/siteMenu') return load('src/utils/siteMenu');
+  if (id === './NavCustomizeModal') return { __esModule: true, default: () => null };
   return require(id);
 } });
 const boundary = navExports.default();

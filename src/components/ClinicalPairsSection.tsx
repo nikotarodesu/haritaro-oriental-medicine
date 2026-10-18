@@ -1,200 +1,68 @@
 "use client";
 
-import React, { useState } from "react";
-import { Sparkles, ChevronDown, ChevronUp } from "lucide-react";
+import { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { CLASSIC_CLINICAL_PAIRS } from "@/types/clinicalMemo";
 import ClipButton from "@/components/ClipButton";
-import GogyoBadge from "@/components/GogyoBadge";
 
 export default function ClinicalPairsSection() {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedElement, setSelectedElement] = useState<string>("すべて");
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedElement, setSelectedElement] = useState("すべて");
   const elements = ["すべて", "木", "火", "土", "金", "水"] as const;
-
-  const filteredPairs = CLASSIC_CLINICAL_PAIRS.filter(pair => {
-    if (selectedElement === "すべて") return true;
-    return pair.elements.some(element => element === selectedElement);
-  });
+  const filteredPairs = CLASSIC_CLINICAL_PAIRS.filter(pair => selectedElement === "すべて" || pair.elements.some(element => element === selectedElement));
 
   return (
-    <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 sm:p-6 shadow-xs transition-all">
-      {/* ヘッダー・開閉トグル領域 */}
-      <div
-        className="select-none group flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4"
-      >
-        <div className="flex-1">
-          <div className="flex items-center gap-2 text-xs font-bold text-[#B86924] dark:text-[#E6C387] tracking-wider uppercase mb-1">
-            <Sparkles className="w-4 h-4" />
-            <span>Classic Acupoint Combinations</span>
-            <span className="ml-1 text-[11px] font-normal px-2 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#121920] text-[#59615D] dark:text-[#96A6B2] border border-[#E5DEC9] dark:border-[#2A3B4A]">
-              全{CLASSIC_CLINICAL_PAIRS.length}組
-            </span>
-          </div>
-          <h2 className="text-lg sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors">
-            伝統的な配穴の学習例
-          </h2>
-          <p className="mt-1 text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-2xl leading-relaxed">
-            太衝＋陽陵泉、開四関などの構成と伝統的な配穴意図を比較できます。組み合わせによる治療効果や相乗効果は、この分類だけでは判断できません。学習ノートへ保存して復習に使えます。
-          </p>
-        </div>
-
-        {/* 開閉ボタン */}
-        <div className="flex items-center self-start sm:self-center gap-2">
-          <button
-            type="button"
-            onClick={() => setIsOpen(open => !open)}
-            className="min-h-11 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] text-[#232826] dark:text-[#FAF8F5] border border-[#E5DEC9] dark:border-[#2A3B4A] transition-colors shadow-2xs"
-            aria-expanded={isOpen}
-            aria-controls="traditional-pairs"
-          >
-            {isOpen ? (
-              <>
-                <span>閉じる</span>
-                <ChevronUp className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              </>
-            ) : (
-              <>
-                <span>配穴一覧を表示</span>
-                <ChevronDown className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              </>
-            )}
-          </button>
-        </div>
+    <section className="dictionary-pairs" aria-labelledby="traditional-pairs-title">
+      <div className="dictionary-section-heading">
+        <h2 id="traditional-pairs-title">伝統的な配穴の学習例<span>全{CLASSIC_CLINICAL_PAIRS.length}組</span></h2>
+        <button type="button" onClick={() => setIsOpen(open => !open)} aria-expanded={isOpen} aria-controls="traditional-pairs">
+          {isOpen ? "閉じる" : "一覧を開く"}
+          {isOpen ? <ChevronUp aria-hidden="true" className="h-4 w-4" /> : <ChevronDown aria-hidden="true" className="h-4 w-4" />}
+        </button>
       </div>
-
-      {/* 開閉コンテンツ */}
-      {isOpen && (
-        <div id="traditional-pairs" className="pt-5 mt-5 border-t border-[#E8E1D1] dark:border-[#22303D] space-y-6">
-          {/* 五行フィルター */}
-          <div className="flex items-center justify-between gap-3 flex-wrap bg-[#FAF8F5] dark:bg-[#121920] p-3 rounded-xl border border-[#EDE7DB] dark:border-[#22303D]">
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-xs font-semibold text-[#737C77] dark:text-[#8899A6] mr-1">五行絞込:</span>
-              {elements.map(el => (
-                <button
-                  key={el}
-                  type="button"
-                  aria-pressed={selectedElement === el}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedElement(el);
-                  }}
-                  className={`min-h-11 min-w-11 px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
-                    selectedElement === el
-                      ? "bg-[#232826] text-white dark:bg-white dark:text-[#10161C] shadow-xs"
-                      : "bg-[#FFFFFF] dark:bg-[#17212A] text-[#59615D] dark:text-[#96A6B2] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#EBF3EF]"
-                  }`}
-                >
-                  {el}
-                </button>
+      <p className="dictionary-pairs-intro">太衝＋陽陵泉、開四関などの構成と伝統的な配穴意図を比較できます。組み合わせによる治療効果や相乗効果は、この分類だけでは判断できません。</p>
+      <div id="traditional-pairs" hidden={!isOpen}>
+        {isOpen && (
+          <>
+            <div className="dictionary-pairs-filter" aria-label="配穴例を五行で絞り込む">
+              <span>五行</span>
+              {elements.map(element => (
+                <button key={element} type="button" aria-pressed={selectedElement === element} onClick={() => setSelectedElement(element)}>{element}</button>
+              ))}
+              <span role="status" aria-live="polite">{filteredPairs.length}組</span>
+            </div>
+            <div className="dictionary-pair-list">
+              {filteredPairs.map(pair => (
+                <article key={pair.id} className="dictionary-pair">
+                  <div className="dictionary-pair-heading">
+                    <div>
+                      <h3>{pair.title}</h3>
+                      {pair.subTitle && <p>{pair.subTitle}</p>}
+                    </div>
+                    <ClipButton item={pair} variant="icon" size="sm" className="min-h-11 min-w-11" />
+                  </div>
+                  <dl className="dictionary-pair-facts">
+                    <div><dt>構成</dt><dd>{pair.points.join("・")}</dd></div>
+                    <div><dt>五行</dt><dd>{pair.elements.join("・")}</dd></div>
+                    <div><dt>伝統的に関連づける症状・分類</dt><dd>{pair.indications.join("、")}</dd></div>
+                  </dl>
+                  <p>{pair.summary}</p>
+                  {pair.mechanism && (
+                    <details className="dictionary-pair-research">
+                      <summary>伝統的な配穴意図と関連研究</summary>
+                      <p>{pair.mechanism}</p>
+                      {pair.id === "pair-naikan-kouson" && (
+                        <a href="https://pubmed.ncbi.nlm.nih.gov/40938065/" target="_blank" rel="noopener noreferrer">術後の悪心・嘔吐に対するPC6刺激の研究（Cochrane、2025）</a>
+                      )}
+                    </details>
+                  )}
+                  {pair.caution && <p className="dictionary-pair-caution">{pair.caution}</p>}
+                </article>
               ))}
             </div>
-            <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
-              該当: {filteredPairs.length} 件
-            </span>
-          </div>
-
-          {/* 配穴グリッド */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-5">
-        {filteredPairs.map(pair => (
-          <div
-            key={pair.id}
-            className="bg-[#FAF8F5] dark:bg-[#121920] rounded-xl border border-[#EDE7DB] dark:border-[#22303D] p-3.5 sm:p-5 hover:border-[#B86924] dark:hover:border-[#E6C387] hover:shadow-sm transition-all flex flex-col justify-between space-y-3 sm:space-y-4 group"
-          >
-            <div className="space-y-3">
-              {/* カード上部：五行バッジ・タイトル・クリップボタン */}
-              <div className="flex items-start justify-between gap-2">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    {pair.elements.map(el => (
-                      <GogyoBadge key={el} target={el} size="sm" />
-                    ))}
-                  </div>
-                  <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387] transition-colors">
-                    {pair.title}
-                  </h3>
-                  {pair.subTitle && (
-                    <p className="text-xs text-[#737C77] dark:text-[#8899A6] font-medium">
-                      {pair.subTitle}
-                    </p>
-                  )}
-                </div>
-
-                <ClipButton item={pair} variant="icon" size="sm" className="min-h-11 min-w-11" />
-              </div>
-
-              {/* 構成ツボ */}
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                {pair.points.map((pt, idx) => (
-                  <span
-                    key={idx}
-                    className="text-xs px-2.5 py-1 rounded-lg bg-white dark:bg-[#1A2530] text-[#1E3D34] dark:text-[#74BA9E] font-bold border border-[#D5CCBC] dark:border-[#2D3E50] shadow-2xs"
-                  >
-                    {pt}
-                  </span>
-                ))}
-              </div>
-
-              {/* 主治・適応症 */}
-              <div className="space-y-1">
-                <span className="text-[11px] font-semibold text-[#737C77] dark:text-[#8899A6] block">伝統的に関連づける症状・分類:</span>
-                <div className="flex flex-wrap gap-1">
-                  {pair.indications.map((ind, idx) => (
-                    <span
-                      key={idx}
-                      className="text-[11px] px-2 py-0.5 rounded bg-white dark:bg-[#1A2530] text-[#404743] dark:text-[#C5D2DB] border border-[#E5DEC9]/80 dark:border-[#2A3B4A]"
-                    >
-                      {ind}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* 臨床要点・作用機序 */}
-              <p className="text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-                {pair.summary}
-              </p>
-
-              {pair.mechanism && (
-                <div className="bg-white dark:bg-[#17212A] p-3 rounded-lg border border-[#E5DEC9] dark:border-[#2A3B4A] text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-                  <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
-                    伝統的な配穴意図と関連研究
-                  </span>
-                  {pair.mechanism}
-                  {pair.id === "pair-naikan-kouson" && (
-                    <a href="https://pubmed.ncbi.nlm.nih.gov/40938065/" target="_blank" rel="noopener noreferrer" className="mt-2 block underline underline-offset-2">
-                      術後の悪心・嘔吐に対するPC6刺激の研究（Cochrane、2025）
-                    </a>
-                  )}
-                </div>
-              )}
-              {pair.caution && <p className="text-xs leading-relaxed text-[#A83629] dark:text-[#F2A99F]">{pair.caution}</p>}
-            </div>
-
-            {/* クリップアクションバー */}
-            <div className="pt-2 border-t border-[#E5DEC9] dark:border-[#2A3B4A] flex items-center justify-between">
-              <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                組み合わせを学習ノートに記録
-              </span>
-              <ClipButton item={pair} variant="button" size="sm" className="min-h-11" />
-            </div>
-          </div>
-        ))}
+          </>
+        )}
       </div>
-
-          {/* 下部折りたたみボタン */}
-          <div className="flex justify-center pt-2">
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="min-h-11 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#EBF3EF] dark:hover:bg-[#1B2936] text-[#59615D] dark:text-[#A0B0BC] border border-[#E5DEC9] dark:border-[#2A3B4A] transition-colors"
-            >
-              <span>配穴一覧を折りたたむ</span>
-              <ChevronUp className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
     </section>
   );
 }

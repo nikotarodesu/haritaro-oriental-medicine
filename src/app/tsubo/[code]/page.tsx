@@ -29,7 +29,6 @@ import {
   FileText,
   ShieldCheck,
   GitCompare,
-  GraduationCap,
   SlidersHorizontal
 } from "lucide-react";
 import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
@@ -118,6 +117,11 @@ export default async function AcupointDetailPage({ params }: Props) {
   // トピッククラスタ連動（症状ガイド ＆ 臨床症例）
   const relatedSymptoms = getSymptomsForAcupoint(point.codeLower, point.name);
   const relatedCases = getCasesForAcupoint(point.codeLower);
+  const symptomLinks = relatedSymptoms.map((symptom) => ({ href: `/symptoms/${symptom.id}`, title: symptom.title, kind: "症状ガイド" }));
+  const caseLinks = relatedCases.map((clinicalCase) => ({ href: `/cases/${clinicalCase.id}`, title: clinicalCase.title, kind: "症例" }));
+  const relatedReading = symptomLinks.length > 0 && caseLinks.length > 0
+    ? [symptomLinks[0], caseLinks[0]]
+    : [...symptomLinks, ...caseLinks].slice(0, 2);
 
   // 安全・禁忌判定
   const isNeedleBan = isContraindicatedNeedle(point.codeLower);
@@ -299,11 +303,11 @@ export default async function AcupointDetailPage({ params }: Props) {
             </div>
 
             {/* アクションボタン群（主アクション：配穴追加・クリップ保存、副アクション：推論・比較・復習） */}
-            <div className="flex items-center gap-2 self-start flex-wrap sm:max-w-[280px]">
+            <div className="acupoint-actions">
               {/* 主アクション：配穴処方に追加 */}
               <Link
                 href={`/practice/haiketsu?add=${encodeURIComponent(point.name)}`}
-                className="min-h-11 px-3.5 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] text-sm font-bold transition-all inline-flex items-center gap-1.5 shadow-2xs cursor-pointer"
+                className="acupoint-add-action"
                 title="この経穴を配穴設計の処方に組み込む"
               >
                 <SlidersHorizontal className="w-4 h-4 text-[#E6C387]" />
@@ -325,37 +329,22 @@ export default async function AcupointDetailPage({ params }: Props) {
                 }}
                 variant="button"
                 size="md"
-                className="min-h-11"
+                className="acupoint-save-action min-h-11"
               />
 
-              {/* 副アクション群：推論・比較・テスト（スッキリ整理） */}
-              <div className="acupoint-secondary-actions flex flex-wrap items-center gap-1.5">
-                <Link
-                  href={simulatorUrl}
-                  className="min-h-11 px-2.5 py-1.5 rounded-lg text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] transition-colors inline-flex items-center gap-1"
-                  title={`「${point.name}」を参照しながら弁証の学習条件を選ぶ`}
-                >
-                  <Layers className="w-3.5 h-3.5" />
-                  <span>弁証推論</span>
+              <div className="acupoint-utility-actions">
+                <Link href={`/tsubo/compare?a=${point.codeLower}`} className="acupoint-compare-action">
+                  <GitCompare aria-hidden="true" className="h-4 w-4" />比較
                 </Link>
-
-                <Link
-                  href={`/tsubo/compare?a=${point.codeLower}`}
-                  className="min-h-11 px-2.5 py-1.5 rounded-lg text-sm font-semibold text-[#59615D] dark:text-[#A0B0BC] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] hover:bg-white dark:hover:bg-[#1A2530] transition-colors inline-flex items-center gap-1"
-                  title="この経穴を2穴比較ツールで開く"
-                >
-                  <GitCompare className="w-3.5 h-3.5" />
-                  <span>比較</span>
-                </Link>
-
-                <Link
-                  href={`/tsubo/practice?course=meridian_${point.meridianId.toLowerCase()}`}
-                  className="min-h-11 px-2.5 py-1.5 rounded-lg text-sm font-semibold text-[#B86924] dark:text-[#E6C387] hover:bg-[#FCF4EB] dark:hover:bg-[#2A2016] transition-colors inline-flex items-center gap-1"
-                  title="この経脈をクイズで学習"
-                >
-                  <BookOpen className="w-3.5 h-3.5" />
-                  <span>復習</span>
-                </Link>
+                <details className="acupoint-learning-actions">
+                  <summary><BookOpen aria-hidden="true" className="h-4 w-4" />学習に使う</summary>
+                  <div>
+                    <Link href={simulatorUrl}>所見から弁証候補を比較<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+                    <p>経穴名だけで証は決められません。所見に応じて学習条件を選び、教材内の候補を比較します。</p>
+                    <Link href={`/tsubo/practice?course=meridian_${point.meridianId.toLowerCase()}`}>{point.meridianShort}の確認問題<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+                    <Link href="/notes">マイノートを開く<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+                  </div>
+                </details>
               </div>
             </div>
           </div>
@@ -587,7 +576,7 @@ export default async function AcupointDetailPage({ params }: Props) {
               {point.indications.map((ind, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] text-sm font-medium text-[#232826] dark:text-[#E6EFEA]"
+                  className="dictionary-indication"
                 >
                   {ind}
                 </span>
@@ -615,7 +604,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
           {/* 臨床ゴールデンペア（名配穴・相乗効果） */}
           {point.goldenPairs && point.goldenPairs.length > 0 && (
-            <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#FAF8F5] to-[#F3EFE6] dark:from-[#152028] dark:to-[#17222B] border border-[#DED6C5] dark:border-[#2D3E50] space-y-3">
+            <div className="dictionary-golden-pairs space-y-3">
               <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                 <GitCompare className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
                 <span>伝統的な配穴例（組み合わせの学習）</span>
@@ -624,7 +613,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                 {point.goldenPairs.map((pair, idx) => (
                   <div
                     key={idx}
-                    className="p-3.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5 flex flex-col justify-between"
+                    className="dictionary-golden-pair space-y-1.5 flex flex-col justify-between"
                   >
                     <div>
                       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -676,91 +665,21 @@ export default async function AcupointDetailPage({ params }: Props) {
             </div>
           )}
 
-          {/* 弁証シミュレーターへの逆引き推論カード */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#FAF8F5] via-[#EBF3EF]/40 to-[#FAF8F5] dark:from-[#152028] dark:via-[#182823]/40 dark:to-[#152028] border border-[#C5DED4] dark:border-[#2A5243] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-1.5 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                <Layers className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>経穴から弁証の学習へ</span>
-              </div>
-              <h4 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
-                「{point.name}」を参照しながら条件を比較する
-              </h4>
-              <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                経穴名だけで八綱・気血水・臓腑の証を決めることはできません。所見に応じて学習条件を選び、教材内の配穴候補がどう変わるか比較できます。
-              </p>
-            </div>
-            <Link
-              href={simulatorUrl}
-              className="shrink-0 px-4 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-[#FAF8F5] text-sm font-bold shadow-xs inline-flex items-center gap-1.5 transition-all"
-            >
-              <span>学習条件を選ぶ</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          {/* お悩み・症状別ガイド ＆ 臨床症例 トピッククラスタ連動 */}
-          {(relatedSymptoms.length > 0 || relatedCases.length > 0) && (
-            <div className="space-y-3 pt-2">
-              <span className="text-sm font-semibold text-[#59615D] dark:text-[#AFBDC8] block">
-                関連する症状ガイド・臨床症例：
-              </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {/* 症状ガイドリンク */}
-                {relatedSymptoms.map((sym) => (
-                  <Link
-                    key={sym.id}
-                  href={`/symptoms/${sym.id}`}
-                    className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group flex flex-col justify-between"
-                  >
-                    <div className="space-y-1">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <span className="text-sm font-bold px-2 py-0.5 rounded-md bg-[#FCF4EB] text-[#B86924] dark:bg-[#231A12] dark:text-[#E6C387]">
-                          症状ガイド：{sym.category}
-                        </span>
-                        <ArrowRight className="w-3.5 h-3.5 text-[#59615D] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] group-hover:translate-x-0.5 transition-all" />
-                      </div>
-                      <h5 className="font-serif font-bold text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors">
-                        {sym.title}
-                      </h5>
-                      <p className="text-base text-[#59615D] dark:text-[#AFBDC8] line-clamp-2">
-                        {sym.summary}
-                      </p>
-                    </div>
-                    <span className="text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] mt-2 block">
-                      食養生・生活習慣アドバイスを見る →
-                    </span>
-                  </Link>
+          {relatedReading.length > 0 && (
+            <nav className="dictionary-related-reading" aria-label="関連する症状ガイド・症例">
+              <h3>関連して読む</h3>
+              <ul>
+                {relatedReading.map((item) => (
+                  <li key={item.href}>
+                    <Link href={item.href}><span>{item.kind}</span><strong>{item.title}</strong><ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+                  </li>
                 ))}
-
-                {/* 臨床症例リンク */}
-                {relatedCases.map((cs) => (
-                  <Link
-                    key={cs.id}
-                    href={`/cases/${cs.id}`}
-                    className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#2C5282] dark:hover:border-[#90CDF4] transition-all group flex flex-col justify-between"
-                  >
-                    <div className="space-y-1">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <span className="text-sm font-bold px-2 py-0.5 rounded-md bg-[#EEF2F6] text-[#2C5282] dark:bg-[#1E2C3B] dark:text-[#90CDF4]">
-                          臨床症例：{cs.pattern}
-                        </span>
-                        <ArrowRight className="w-3.5 h-3.5 text-[#59615D] group-hover:text-[#2C5282] dark:group-hover:text-[#90CDF4] group-hover:translate-x-0.5 transition-all" />
-                      </div>
-                      <h5 className="font-serif font-bold text-sm text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#2C5282] dark:group-hover:text-[#90CDF4] transition-colors">
-                        {cs.title}
-                      </h5>
-                      <p className="text-base text-[#59615D] dark:text-[#AFBDC8] line-clamp-2">
-                        {cs.explanation}
-                      </p>
-                    </div>
-                    <span className="text-sm font-semibold text-[#2C5282] dark:text-[#90CDF4] mt-2 block">
-                      症例カルテ・弁証論治を読む →
-                    </span>
-                  </Link>
-                ))}
+              </ul>
+              <div className="dictionary-more-links">
+                {relatedSymptoms.length > 0 && <Link href="/symptoms">症状ガイド一覧</Link>}
+                {relatedCases.length > 0 && <Link href="/cases">症例一覧</Link>}
               </div>
-            </div>
+            </nav>
           )}
 
         </section>
@@ -808,58 +727,19 @@ export default async function AcupointDetailPage({ params }: Props) {
           )}
 
 
-        {/* 6. この経穴が登場する講義教材（カリキュラム連動） */}
         {relatedLectures.length > 0 && (
-          <section className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-4 sm:space-y-6 transition-colors">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
-              <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                <GraduationCap className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
-                <h2>この経穴が登場する講義教材（体系学習カリキュラム）</h2>
-              </div>
-              <Link
-                href="/curriculum"
-                className="text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
-              >
-                <span>全講義一覧へ</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+          <section className="dictionary-related-lectures" aria-labelledby="related-lectures-title">
+            <div className="dictionary-section-heading">
+              <h2 id="related-lectures-title">この経穴を扱う講義</h2>
+              <Link href="/curriculum">全講義一覧<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              {relatedLectures.map((lec) => (
-                <Link
-                  key={lec.id}
-                  href={lec.url}
-                  className="p-4 rounded-xl border border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#10171F] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all group flex flex-col justify-between space-y-2 shadow-2xs"
-                >
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                        {lec.stageTitle}
-                      </span>
-                      {lec.seriesTitle && (
-                        <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">
-                          {lec.seriesTitle}
-                        </span>
-                      )}
-                      <span className="text-sm text-[#59615D] dark:text-[#AFBDC8] ml-auto">
-                        約{lec.duration}
-                      </span>
-                    </div>
-                    <h3 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
-                      {lec.title}
-                    </h3>
-                    <p className="text-base text-[#59615D] dark:text-[#A0B0BC] line-clamp-2 leading-relaxed">
-                      {lec.excerpt}
-                    </p>
-                  </div>
-                  <div className="pt-2 border-t border-[#EAE3D4] dark:border-[#22303D] flex flex-wrap items-center justify-between gap-2 text-sm text-[#1E3D34] dark:text-[#74BA9E] font-medium">
-                    <span>講義を読んで理論を深掘りする</span>
-                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </Link>
+            <ul>
+              {relatedLectures.slice(0, 2).map((lecture) => (
+                <li key={lecture.id}>
+                  <Link href={lecture.url}><span>{lecture.stageTitle}</span><strong>{lecture.title}</strong><ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </section>
         )}
 
@@ -922,72 +802,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           )}
         </div>
 
-        {/* 6. 次のアクション：この経穴を臨床・学習で深める */}
-        <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#FAF8F5] via-[#EBF3EF]/40 to-[#FAF8F5] dark:from-[#17212A] dark:via-[#162922]/30 dark:to-[#17212A] border border-[#C5DED4] dark:border-[#2A5243] space-y-4">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-            <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
-              「{point.name}」を臨床・学習でさらに活用する
-            </h3>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <Link
-              href={`/practice/haiketsu?acupoint=${encodeURIComponent(point.name)}`}
-              className="p-3.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-xs transition-all group flex flex-col justify-between space-y-2"
-            >
-              <div className="space-y-1">
-                <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1">
-                  <SlidersHorizontal className="w-3.5 h-3.5" />
-                  配穴設計ツール
-                </span>
-                <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  本治・標治のツボ組み合わせを設計し、バランスを点検
-                </p>
-              </div>
-              <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] group-hover:underline inline-flex items-center gap-0.5">
-                配穴を試す →
-              </span>
-            </Link>
-
-            <Link
-              href={`/tsubo/practice?course=meridian_${point.meridianId.toLowerCase()}`}
-              className="p-3.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E2D3D] dark:hover:border-[#7BAAD8] hover:shadow-xs transition-all group flex flex-col justify-between space-y-2"
-            >
-              <div className="space-y-1">
-                <span className="text-sm font-bold text-[#1E2D3D] dark:text-[#7BAAD8] flex items-center gap-1">
-                  <GraduationCap className="w-3.5 h-3.5" />
-                  経穴の確認問題
-                </span>
-                <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  {point.meridianShort}・要穴・取穴のオリジナル演習・間隔復習
-                </p>
-              </div>
-              <span className="text-sm font-bold text-[#1E2D3D] dark:text-[#7BAAD8] group-hover:underline inline-flex items-center gap-0.5">
-                問題を解く →
-              </span>
-            </Link>
-
-            <Link
-              href="/notes"
-              className="p-3.5 rounded-xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] dark:hover:border-[#E6C387] hover:shadow-xs transition-all group flex flex-col justify-between space-y-2"
-            >
-              <div className="space-y-1">
-                <span className="text-sm font-bold text-[#B86924] dark:text-[#E6C387] flex items-center gap-1">
-                  <FileText className="w-3.5 h-3.5" />
-                  マイノート
-                </span>
-                <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  このツボを自分の臨床ノートや配穴メモに保存・蓄積
-                </p>
-              </div>
-              <span className="text-sm font-bold text-[#B86924] dark:text-[#E6C387] group-hover:underline inline-flex items-center gap-0.5">
-                ノートを見る →
-              </span>
-            </Link>
-          </div>
-        </div>
-
-        {/* 7. E-E-A-T 専門家監修情報カード */}
+        {/* 作成中の臨床記録がある場合の文脈を保つ */}
         <ClinicalToolBridge />
 
         <AuthorSupervisorCard topic={`${point.name}（${point.code}）の経穴解説・取穴・臨床応用`} />

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SITE_NAME } from "@/config/seo";
-import { BookOpen, Compass, NotebookPen } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import BrandLogo from "@/components/brand/BrandLogo";
 
 const groups = [
@@ -14,11 +14,14 @@ export default function Footer() {
     <footer className="site-footer mt-auto print:hidden">
       <div className="site-footer-inner">
         <Link href="/" aria-label={SITE_NAME} className="site-footer-brand"><BrandLogo symbolClassName="h-8 w-8" wordmarkClassName="font-serif text-lg font-bold" /></Link>
-        <div className="site-footer-groups">
-          {groups.map((group, index) => { const Icon = [BookOpen, NotebookPen, Compass][index]; return <nav key={group.title} aria-label={group.title}>
-            <h2 className="site-footer-group-title"><Icon aria-hidden="true" />{group.title}</h2>
-            <ul>{group.links.map(([href, label]) => <li key={href}><Link href={href} className="hover:underline">{label}</Link></li>)}</ul>
-          </nav>; })}
+        <nav aria-label="主な入口" className="site-footer-primary">
+          <Link href="/learn">学ぶ</Link><Link href="/clinical">臨床</Link><Link href="/tsubo">経穴辞典</Link>
+        </nav>
+        <div className="site-footer-groups site-footer-groups--compact">
+          {groups.map(group => <details key={group.title} className="site-footer-disclosure">
+            <summary><span>{group.title}</span><ChevronDown aria-hidden="true" /></summary>
+            <nav aria-label={group.title}><ul>{group.links.map(([href, label]) => <li key={href}><Link href={href}>{label}</Link></li>)}</ul></nav>
+          </details>)}
         </div>
         <div className="site-footer-notice space-y-2">
           <p>東洋医学の学習と考え方の整理を支援する教材です。個別の診断・治療を代替しません。急な症状や悪化がある場合は医療機関へご相談ください。</p>

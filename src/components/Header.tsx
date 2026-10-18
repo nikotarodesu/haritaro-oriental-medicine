@@ -12,6 +12,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import RecentToolTracker from "./home/RecentTools";
 import YinYangSwitch from "./YinYangSwitch";
 import FontSizeControl from "./FontSizeControl";
+import { SITE_MENU_ID, SITE_MENU_STATE_EVENT, SITE_MENU_TOGGLE_EVENT, NAV_CUSTOMIZE_EVENT, type SiteMenuToggleDetail } from "@/utils/siteMenu";
 
 const GlobalSearchModal = dynamic(() => import("./search/GlobalSearchModal"), { ssr: false });
 
@@ -22,9 +23,19 @@ const LEARN_LINKS: readonly HeaderLink[] = [
   { href: "/learn", label: "学習の始め方", description: "コース・演習から選ぶ" },
   { href: "/learn/courses", label: "基礎コース", description: "全11コース" },
   { href: "/learn/review#learning-review", label: "今日の復習" },
+  { href: "/notes?tab=learning", label: "学習ノート", icon: NotebookPen },
   { href: "/curriculum", label: "カリキュラム" },
   { href: "/library", label: "古典・医学論文" },
   { href: "/articles", label: "解説記事" },
+];
+const OTHER_LINKS: readonly HeaderLink[] = [
+  { href: "/glossary", label: "東洋医学の用語集" },
+  { href: "/tsubo/practice", label: "経穴の復習" },
+  { href: "/kikei", label: "奇経八脈" },
+  ALL_NAV_ITEMS.simulator_compare,
+  ALL_NAV_ITEMS.gorou,
+  { href: "/symptoms", label: "症状別ガイド・日常の工夫" },
+  { href: "/safety", label: "安全性と受診の目安" },
 ];
 const ACCOUNT_LINKS: readonly HeaderLink[] = [
 
@@ -46,9 +57,12 @@ const COMPACT_LAYOUT = "header-compact";
 const NAV_CONTROL = `inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D] ${FOCUS_STYLE}`;
 
 function HeaderLinks({ links, pathname, onNavigate, clipCount = 0 }: { links: readonly HeaderLink[]; pathname: string; onNavigate: () => void; clipCount?: number }) {
+  const searchParams = typeof window === "undefined" ? undefined : new URLSearchParams(window.location.search);
   return <ul className="space-y-1">{links.map(link => {
     const Icon = link.icon ?? NAV_ICONS[link.href] ?? BookOpen;
-    const active = link.id ? isNavigationItemActive(link.id, pathname) : pathname === link.href;
+    const [linkPath, query = ""] = link.href.split("?");
+    const active = link.id ? isNavigationItemActive(link.id, pathname, searchParams)
+      : pathname === linkPath.split("#")[0] && Array.from(new URLSearchParams(query)).every(([key, value]) => searchParams?.get(key) === value);
     return <li key={link.href}>
       <Link href={link.href} onClick={onNavigate} aria-current={active ? "page" : undefined} className={['site-nav-link flex min-h-[44px] items-center justify-between rounded-lg px-3 py-2 text-sm leading-relaxed hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D]', FOCUS_STYLE, active ? 'bg-[var(--brand-paper)] font-semibold dark:bg-[#22303D]' : ''].join(' ')}>
         <span className="site-nav-link-icon"><Icon aria-hidden="true" /></span>
@@ -91,8 +105,8 @@ export default function Header() {
   const desktopSearchRef = useRef<HTMLButtonElement>(null);
   const dropdownButtons = useRef<Record<Dropdown, HTMLButtonElement | null>>({ learn: null, clinical: null, account: null });
   const searchReturnFocus = useRef<HTMLElement | null>(null);
+  const menuReturnFocus = useRef<HTMLElement | null>(null);
   const id = useId();
-  const mobileMenuId = `${id}-navigation`;
   const dropdownId = (dropdown: Dropdown) => `${id}-${dropdown}`;
   const accountHref = user ? "/account/subscription" : "/auth/login";
   const accountLabel = isPremium ? user?.role === "admin" ? "管理者マイページ" : "プレミアム会員 マイページ" : user ? "マイページ・プラン管理" : "会員ログイン / Google連携";
@@ -103,14 +117,37 @@ export default function Header() {
   const accountActive = navigationSection === "account";
 
   const closeNavigation = useCallback(() => { setMobileMenuOpen(false); setOpenDropdown(null); }, []);
-  const openInstallGuide = useCallback(() => {
-    // The settings link disappears with its menu; return to a persistent trigger.
+  const focusNavigationTrigger = useCallback(() => {
+    const previous = menuReturnFocus.current;
     const accountTrigger = dropdownButtons.current.account;
-    const trigger = accountTrigger?.getClientRects().length ? accountTrigger : menuButtonRef.current;
+    const trigger = accountTrigger?.getClientRects().length ? accountTrigger
+      : previous?.isConnected && previous.getClientRects().length ? previous : menuButtonRef.current;
     trigger?.focus({ preventScroll: true });
+  }, []);
+  const openInstallGuide = useCallback(() => {
+    focusNavigationTrigger();
     closeNavigation();
     window.dispatchEvent(new Event("haritaro:install-app"));
-  }, [closeNavigation]);
+  }, [closeNavigation, focusNavigationTrigger]);
+  const toggleMobileMenu = useCallback((trigger: HTMLElement | null) => {
+    menuReturnFocus.current = trigger ?? menuButtonRef.current;
+    setOpenDropdown(null);
+    setMobileMenuOpen(current => !current);
+  }, []);
+  useEffect(() => {
+    const handleToggle = (event: Event) => {
+      const triggerId = (event as CustomEvent<SiteMenuToggleDetail>).detail?.triggerId;
+      toggleMobileMenu(triggerId ? document.getElementById(triggerId) : menuButtonRef.current);
+    };
+    window.addEventListener(SITE_MENU_TOGGLE_EVENT, handleToggle);
+    return () => window.removeEventListener(SITE_MENU_TOGGLE_EVENT, handleToggle);
+  }, [toggleMobileMenu]);
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent(SITE_MENU_STATE_EVENT, { detail: { open: mobileMenuOpen } }));
+    if (!mobileMenuOpen) return;
+    const frame = requestAnimationFrame(() => document.getElementById(SITE_MENU_ID)?.querySelector<HTMLElement>("button,a,summary")?.focus());
+    return () => cancelAnimationFrame(frame);
+  }, [mobileMenuOpen]);
   useEffect(() => {
     const header = headerRef.current;
     if (!header) return;
@@ -122,7 +159,7 @@ export default function Header() {
   }, []);
   const openSearch = useCallback((query = "") => {
     const focused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    searchReturnFocus.current = focused;
+    searchReturnFocus.current = focused && document.getElementById(SITE_MENU_ID)?.contains(focused) ? menuReturnFocus.current : focused;
     setSearchInitialQuery(query);
     setMobileMenuOpen(false);
     setOpenDropdown(null);
@@ -171,27 +208,30 @@ export default function Header() {
         const popup = document.getElementById(`${id}-${openDropdown}`);
         const trigger = dropdownButtons.current[openDropdown];
         if (!popup?.contains(event.target) && !trigger?.contains(event.target)) closeNavigation();
-      } else if (!headerRef.current?.contains(event.target)) closeNavigation();
+      } else if (!headerRef.current?.contains(event.target) && !document.getElementById("mobile-more-trigger")?.contains(event.target)) closeNavigation();
     };
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key !== "Escape" || isSearchOpen) return;
       event.preventDefault();
-      const trigger = openDropdown ? dropdownButtons.current[openDropdown] : menuButtonRef.current;
+      const trigger = openDropdown ? dropdownButtons.current[openDropdown] : null;
       closeNavigation();
-      trigger?.focus();
+      if (trigger) trigger.focus(); else focusNavigationTrigger();
     };
     document.addEventListener("pointerdown", handleOutside);
     document.addEventListener("focusin", handleOutside);
     document.addEventListener("keydown", handleEscape);
     return () => { document.removeEventListener("pointerdown", handleOutside); document.removeEventListener("focusin", handleOutside); document.removeEventListener("keydown", handleEscape); };
-  }, [mobileMenuOpen, openDropdown, isSearchOpen, closeNavigation, id]);
+  }, [mobileMenuOpen, openDropdown, isSearchOpen, closeNavigation, focusNavigationTrigger, id]);
 
   useEffect(() => {
     let frame = 0;
     const checkLayout = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
-        if (!menuButtonRef.current?.getClientRects().length) setMobileMenuOpen(false);
+        if (!menuButtonRef.current?.getClientRects().length) {
+          if (document.getElementById(SITE_MENU_ID)?.contains(document.activeElement)) focusNavigationTrigger();
+          setMobileMenuOpen(false);
+        }
         if (!desktopSearchRef.current?.getClientRects().length) setOpenDropdown(null);
       });
     };
@@ -199,7 +239,7 @@ export default function Header() {
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-font-size"] });
     window.addEventListener("resize", checkLayout);
     return () => { cancelAnimationFrame(frame); observer.disconnect(); window.removeEventListener("resize", checkLayout); };
-  }, []);
+  }, [focusNavigationTrigger]);
 
   const toggleDropdown = (dropdown: Dropdown, focusFirst = false) => {
     setMobileMenuOpen(false);
@@ -212,7 +252,7 @@ export default function Header() {
   const accountInformation = <div className="space-y-2" aria-busy={isLoading}>
     <p className="min-w-0 whitespace-normal text-sm [overflow-wrap:anywhere] text-[#59615D] dark:text-[#A0B0BC]">{isLoading ? "アカウントを確認しています" : user ? `${user.name || "会員"} さん` : "学習の記録やプランを管理する"}</p>
     {!isLoading ? <Link href={accountHref} onClick={closeNavigation} aria-current={pathname === accountHref ? "page" : undefined} className={`flex min-h-[44px] items-center justify-between gap-3 rounded-lg bg-[var(--brand-paper)] px-3 py-2 text-sm font-semibold dark:bg-[#22303D] ${FOCUS_STYLE}`}><span>{accountLabel}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link> : null}
-    <button type="button" onClick={() => { closeNavigation(); openDrawer(); }} aria-haspopup="dialog" className={`flex min-h-[44px] w-full flex-wrap items-center gap-3 rounded-lg px-3 py-2 text-left text-sm ${FOCUS_STYLE}`}><Bookmark aria-hidden="true" className="h-5 w-5 shrink-0" /><span>保存一覧</span><span className="ui-count">{clipCount + patientNoteCount}件</span></button>
+    <button type="button" onClick={() => { focusNavigationTrigger(); closeNavigation(); openDrawer(); }} aria-haspopup="dialog" className={`flex min-h-[44px] w-full flex-wrap items-center gap-3 rounded-lg px-3 py-2 text-left text-sm ${FOCUS_STYLE}`}><Bookmark aria-hidden="true" className="h-5 w-5 shrink-0" /><span>保存一覧</span><span className="ui-count">{clipCount + patientNoteCount}件</span></button>
   </div>;
 
   return <>
@@ -240,18 +280,20 @@ export default function Header() {
           </nav>
           <div className={`${COMPACT_LAYOUT} ml-auto shrink-0 items-center gap-1.5`}>
             <button ref={compactSearchRef} type="button" onClick={() => openSearch()} aria-label="サイト内検索を開く" aria-haspopup="dialog" title="サイト内検索" className={`inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D] ${FOCUS_STYLE}`}><Search aria-hidden="true" className="h-5 w-5" /></button>
-            <button ref={menuButtonRef} type="button" onClick={() => { setOpenDropdown(null); setMobileMenuOpen(current => !current); }} aria-expanded={mobileMenuOpen} aria-controls={mobileMenuId} aria-label={mobileMenuOpen ? "メニューを閉じる" : "メニューを開く"} className={`inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D] ${FOCUS_STYLE}`}>{mobileMenuOpen ? <X aria-hidden="true" className="h-5 w-5" /> : <Menu aria-hidden="true" className="h-5 w-5" />}</button>
+            <button ref={menuButtonRef} type="button" onClick={event => toggleMobileMenu(event.currentTarget)} aria-expanded={mobileMenuOpen} aria-controls={SITE_MENU_ID} aria-label={mobileMenuOpen ? "メニューを閉じる" : "メニューを開く"} className={`inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D] ${FOCUS_STYLE}`}>{mobileMenuOpen ? <X aria-hidden="true" className="h-5 w-5" /> : <Menu aria-hidden="true" className="h-5 w-5" />}</button>
           </div>
         </div>
       </div>
-      {mobileMenuOpen ? <nav id={mobileMenuId} aria-label="サイトメニュー" className={`${COMPACT_LAYOUT} site-menu absolute left-0 right-0 top-full flex-col overflow-y-auto border-b border-[#E5E8E5] bg-[#fff] px-4 py-4 shadow-lg dark:border-[#2A3B4A] dark:bg-[#17212A] sm:px-6`}>
+      {mobileMenuOpen ? <nav id={SITE_MENU_ID} aria-label="サイトメニュー" className={`${COMPACT_LAYOUT} site-menu absolute left-0 right-0 top-full flex-col overflow-y-auto border-b border-[#E5E8E5] bg-[#fff] px-4 py-4 shadow-lg dark:border-[#2A3B4A] dark:bg-[#17212A] sm:px-6`}>
         <div className="mx-auto w-full max-w-3xl space-y-3">
-          <div className="flex items-center justify-between gap-3"><h2 className="text-base font-semibold">メニュー</h2><button type="button" onClick={() => { closeNavigation(); menuButtonRef.current?.focus(); }} aria-label="メニューを閉じる" className={`inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg ${FOCUS_STYLE}`}><X aria-hidden="true" className="h-5 w-5" /></button></div>
+          <div className="flex items-center justify-between gap-3"><h2 className="text-base font-semibold">メニュー</h2><button type="button" onClick={() => { closeNavigation(); focusNavigationTrigger(); }} aria-label="メニューを閉じる" className={`inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg ${FOCUS_STYLE}`}><X aria-hidden="true" className="h-5 w-5" /></button></div>
+          <button type="button" onClick={() => openSearch()} aria-haspopup="dialog" className={`site-menu-search ${FOCUS_STYLE}`}><Search aria-hidden="true" className="h-5 w-5" /><span>サイト内検索</span></button>
           <details className="border-b border-[#E5E8E5] pb-2 dark:border-[#2A3B4A]"><summary className={`min-h-[44px] cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE}`}>学ぶ{learnActive ? <span className="ml-2 text-sm font-normal">（現在のカテゴリ）</span> : null}</summary><HeaderLinks links={LEARN_LINKS} pathname={pathname} onNavigate={closeNavigation} /></details>
           <details className="border-b border-[#E5E8E5] pb-2 dark:border-[#2A3B4A]"><summary className={`min-h-[44px] cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE}`}>臨床{clinicalActive ? <span className="ml-2 text-sm font-normal">（現在のカテゴリ）</span> : null}</summary><ClinicalMenu pathname={pathname} onNavigate={closeNavigation} /></details>
           <Link href="/tsubo" onClick={closeNavigation} aria-current={dictionaryActive ? pathname === "/tsubo" ? "page" : "true" : undefined} className={`flex min-h-[44px] items-center justify-between rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE} ${dictionaryActive ? "bg-[var(--brand-paper)] dark:bg-[#22303D]" : ""}`}>経穴辞典<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link>
+          <details className="border-b border-[#E5E8E5] pb-2 dark:border-[#2A3B4A]"><summary className={`min-h-[44px] cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE}`}>その他の教材・ガイド</summary><HeaderLinks links={OTHER_LINKS} pathname={pathname} onNavigate={closeNavigation} /></details>
           <section aria-label="アカウント" className="space-y-3 border-t border-[#E5E8E5] pt-4 dark:border-[#2A3B4A]"><h3 className="px-3 text-base font-semibold">アカウント</h3>{accountInformation}<HeaderLinks links={ACCOUNT_LINKS} pathname={pathname} onNavigate={closeNavigation} clipCount={clipCount} /></section>
-          <details className="border-t border-[#E5E8E5] pt-2 dark:border-[#2A3B4A]"><summary className={`min-h-[44px] cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE}`}>表示設定</summary><div className="px-3 pb-3"><HeaderSettings onOpenInstall={openInstallGuide} /></div></details>
+          <details className="border-t border-[#E5E8E5] pt-2 dark:border-[#2A3B4A]"><summary className={`min-h-[44px] cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE}`}>メニュー・表示設定</summary><div className="px-3 pb-3"><button type="button" onClick={() => { focusNavigationTrigger(); closeNavigation(); window.dispatchEvent(new Event(NAV_CUSTOMIZE_EVENT)); }} className={`site-menu-customize ${FOCUS_STYLE}`}>下部メニューを編集</button><HeaderSettings onOpenInstall={openInstallGuide} /></div></details>
         </div>
       </nav> : null}
       <RecentToolTracker />

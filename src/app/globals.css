@@ -12,6 +12,10 @@
 @import "./clinical-notes.css";
 @import "./clinical-exercises.css";
 @import "./clinical-workspace.css";
+@import "./site-simplification.css";
+@import "./dictionary-refinement.css";
+@import "./saved-quickview.css";
+@import "./unified-navigation.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

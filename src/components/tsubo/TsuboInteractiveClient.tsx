@@ -20,7 +20,6 @@ import {
   RotateCcw, 
   BookOpen, 
   GitCompare, 
-  GitCommit, 
   LayoutGrid, 
   List, 
   ChevronLeft, 
@@ -86,7 +85,7 @@ export default function TsuboInteractiveClient() {
   const [showFilters, setShowFilters] = useState(initialMeridian !== "すべて" || initialCategory !== "すべて" || initialPublished);
 
   const { memos } = useClinicalMemo();
-  const savedTsuboMemos = useMemo(() => memos.filter((m) => m.type === "tsubo"), [memos]);
+  const savedTsuboMemos = useMemo(() => memos.filter((m) => m.type === "tsubo").sort((a, b) => b.createdAt - a.createdAt), [memos]);
 
   // 初回マウントフラグ（初回ロード時のページ番号リセットを防止）
   const isFirstRender = useRef(true);
@@ -503,7 +502,7 @@ export default function TsuboInteractiveClient() {
                 <div
                   key={point.id}
                   id={`tsubo-card-${point.codeLower}`}
-                  className={`bg-white dark:bg-[#17212A] rounded-2xl border transition-all p-4 flex flex-col justify-between group shadow-2xs hover:shadow-md ${
+                  className={`dictionary-result-card bg-white dark:bg-[#17212A] rounded-xl border transition-colors p-4 flex flex-col justify-between group ${
                     selectedTsubo?.id === point.id
                       ? "border-[#1E3D34] dark:border-[#74BA9E] ring-2 ring-[#1E3D34]/20"
                       : "border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E]"
@@ -513,10 +512,10 @@ export default function TsuboInteractiveClient() {
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
+                          <span className="dictionary-result-code">
                             {point.code}
                           </span>
-                          <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                          <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
                             {point.meridian}
                           </span>
                         </div>
@@ -542,19 +541,19 @@ export default function TsuboInteractiveClient() {
                       />
                     </div>
 
-                    <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] line-clamp-2 leading-relaxed">
+                    <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] line-clamp-2 leading-relaxed">
                       {point.locationSimple}
                     </p>
 
                     {matchReason && (
-                      <div className="inline-flex items-center gap-1 text-[10px] font-bold text-[#B86924] dark:text-[#E6C387] bg-[#FCF4EB] dark:bg-[#2A1E14] px-1.5 py-0.5 rounded">
+                      <div className="text-sm text-[#59615D] dark:text-[#A0B0BC]">
                         <span>一致: {matchReason}</span>
                       </div>
                     )}
                   </div>
 
                   <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs">
-                    <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                    <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
                       {point.bodyPart}
                     </span>
                     <Link
@@ -675,92 +674,25 @@ export default function TsuboInteractiveClient() {
         )}
       </section>
 
-      {/* 「2穴比較／今日の復習／奇経八脈」コンパクトナビゲーション */}
-      <section className="max-w-4xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5 text-xs">
-          <Link
-            href="/tsubo/compare"
-            className="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-all flex items-center justify-between group shadow-xs"
-          >
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="w-7 h-7 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] flex items-center justify-center shrink-0">
-                <GitCompare className="w-3.5 h-3.5" />
-              </div>
-              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E]">
-                2穴を比べる
-              </span>
-            </div>
-            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform shrink-0" />
-          </Link>
+      <nav className="dictionary-tools" aria-label="経穴の学習ツール">
+        <Link href="/tsubo/compare"><GitCompare aria-hidden="true" className="h-4 w-4" />経穴を比べる<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+        <Link href="/tsubo/practice"><BookOpen aria-hidden="true" className="h-4 w-4" />今日の復習<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+        <Link href="/kikei">奇経八脈<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+      </nav>
 
-          <Link
-            href="/tsubo/practice"
-            className="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all flex items-center justify-between group shadow-xs"
-          >
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="w-7 h-7 rounded-lg bg-[#FCF4EB] dark:bg-[#281E15] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center shrink-0">
-                <BookOpen className="w-3.5 h-3.5" />
-              </div>
-              <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] dark:group-hover:text-[#E6C387]">
-                今日の復習
-              </span>
-            </div>
-            <ArrowRight className="w-3.5 h-3.5 text-[#737C77] group-hover:translate-x-0.5 transition-transform shrink-0" />
-          </Link>
-
-          <Link
-            href="/kikei"
-            className="p-2.5 sm:p-3 rounded-2xl bg-gradient-to-r from-[#FCF4EB] to-[#FAF8F5] dark:from-[#261B12] dark:to-[#17212A] border border-[#F2DEB0] dark:border-[#4D361F] hover:border-[#B86924] dark:hover:border-[#E6C387] transition-all flex items-center justify-between group shadow-xs"
-          >
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="w-7 h-7 rounded-lg bg-[#B86924] dark:bg-[#D48239] text-white flex items-center justify-center shrink-0 shadow-2xs">
-                <GitCommit className="w-3.5 h-3.5" />
-              </div>
-              <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] group-hover:underline truncate">
-                奇経八脈
-              </span>
-            </div>
-            <ArrowRight className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387] group-hover:translate-x-0.5 transition-transform shrink-0" />
-          </Link>
-        </div>
-      </section>
-
-      {/* 保存済み経穴 */}
       {savedTsuboMemos.length > 0 && (
-        <section className="bg-[#FAF8F5] dark:bg-[#15202B] rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-7 space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Bookmark className="w-4 h-4 text-[#B86924]" />
-              <h2 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
-                学習ノートに保存した経穴（{savedTsuboMemos.length}件）
-              </h2>
-            </div>
-            <Link href="/curriculum" className="text-xs text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-bold">
-              学習ノートを開く ➜
-            </Link>
+        <section className="dictionary-saved-points" aria-labelledby="saved-points-title">
+          <div className="dictionary-section-heading">
+            <h2 id="saved-points-title"><Bookmark aria-hidden="true" className="h-4 w-4" />最近保存した経穴</h2>
+            <Link href="/notes">マイノートを開く<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-            {savedTsuboMemos.map((memo) => (
-              <div
-                key={memo.id}
-                className="p-3.5 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#263542] flex items-center justify-between"
-              >
-                <div className="min-w-0 pr-2">
-                  <strong className="text-xs font-serif text-[#232826] dark:text-[#FAF8F5] block truncate">
-                    {memo.title}
-                  </strong>
-                  <span className="text-xs text-[#737C77] line-clamp-1">{memo.summary}</span>
-                </div>
-                <Link
-                  href={`/tsubo/${memo.id.replace(/^tsubo-/, "")}`}
-                  className="text-xs text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-bold shrink-0 ml-2 px-2.5 py-1 rounded-lg border border-[#C5DED4] hover:bg-[#EBF3EF]"
-                >
-                  確認
-                </Link>
-              </div>
+          <ul>
+            {savedTsuboMemos.slice(0, 3).map((memo) => (
+              <li key={memo.id}>
+                <Link href={`/tsubo/${memo.id.replace(/^tsubo-/, "")}`}><strong>{memo.title}</strong><ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
       )}
 

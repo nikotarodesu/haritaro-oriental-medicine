@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Stethoscope, ArrowRight, BookOpen } from "lucide-react";
-import { HomeHeroArtwork, HomeToolIcon } from "@/components/home/HomeArtwork";
+import { HomeHeroArtwork } from "@/components/home/HomeArtwork";
 import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
 import HomeHeroQuickSearch from "@/components/home/HomeHeroQuickSearch";
 import ArticleCover from "@/components/articles/ArticleCover";
@@ -10,15 +10,6 @@ import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
 import { LEARNING_COURSES } from "@/data/learningCourses";
 import { getArticlePreviews } from "@/data/articleData";
 import { SITE_UPDATES } from "@/config/contentUpdates";
-
-const tools = [
-  { href: "/tsubo", label: "経穴辞典", icon: "acupoint" },
-  { href: "/curriculum", label: "カリキュラム", icon: "lecture" },
-  { href: "/learn/review", label: "講義の復習", icon: "quiz" },
-  { href: "/simulator", label: "弁証推論", icon: "reasoning" },
-  { href: "/practice/haiketsu", label: "配穴設計", icon: "prescription" },
-  { href: "/notes", label: "ノート", icon: "notes" },
-] as const;
 
 export default function HomePage() {
   const featuredArticles = getArticlePreviews(["science-of-yinyang-gogyo", "science-of-qi-blood-fluid"]);
@@ -54,12 +45,6 @@ export default function HomePage() {
 
       <div className="home-container home-sections">
         <HomeLearningProgressCard variant="support" />
-        <section aria-labelledby="home-tools-title" className="home-section">
-          <h2 id="home-tools-title" className="home-section-title">よく使う機能</h2>
-          <nav aria-label="よく使う機能" className="home-tools-grid">
-            {tools.map(({ href, label, icon }) => <Link key={href} href={href} className="ui-card home-tool"><HomeToolIcon name={icon} /><span>{label}</span></Link>)}
-          </nav>
-        </section>
         <section aria-labelledby="home-courses-title" className="home-section">
           <div className="home-section-header">
             <h2 id="home-courses-title" className="home-section-title">最初の4コース</h2>

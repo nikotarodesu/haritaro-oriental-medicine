@@ -1,0 +1,4 @@
+.site-menu { overscroll-behavior: contain; }
+.site-menu-search { display: flex; align-items: center; gap: 12px; min-height: 48px; width: 100%; padding: 8px 12px; border-radius: 8px; color: var(--text-secondary); background: var(--bg-washi); text-align: left; font-size: 1rem; }
+.site-menu-customize { display: block; min-height: 44px; padding-block: 8px; margin-bottom: 12px; font-size: .875rem; text-decoration: underline; text-underline-offset: 4px; }
+.site-menu :is(a, button, summary) { scroll-margin-block: 12px; }
