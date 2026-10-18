@@ -3,7 +3,7 @@ import { LEARNING_COURSES } from '@/data/learningCourses';
 
 /** Significant content revisions only; never replace these with the build date. */
 export const SITE_REVISED_AT = '2026-10-02';
-export const ACUPOINT_PAGE_REVISED_AT = '2026-10-15';
+export const ACUPOINT_PAGE_REVISED_AT = '2026-10-18';
 // Includes question-only changes, but not unchanged lessons in the same chapter.
 export const CURRICULUM_EDITORIAL_REVISIONS = [
   'lecture-qiblood-1', 'lecture-qiblood-2', 'lecture-qiblood-3', 'lecture-qiblood-5',
@@ -183,15 +183,15 @@ export const NATURAL_JAPANESE_COURSE_REVISIONS = [
   'clinical-process-foundations',
 ] as const;
 export const PAGE_REVISIONS: Record<string, string> = {
-  '/learn': '2026-10-12', '/learn/review': '2026-10-15',
+  '/learn': '2026-10-18', '/learn/review': '2026-10-15',
   '/simulator': '2026-10-12',
-  '/articles': '2026-10-15', '/contact': SITE_REVISED_AT,
+  '/articles': '2026-10-18', '/contact': SITE_REVISED_AT,
   '/tsubo/practice': '2026-10-04', '/pricing': '2026-10-12',
-  '/symptoms': '2026-10-08', '/diagnosis': '2026-10-08', '/cases': '2026-10-18',
+  '/symptoms': '2026-10-08', '/diagnosis': '2026-10-18', '/cases': '2026-10-18',
   // 実際に改訂したページだけを更新する。全教材の確認日には用いない。
   '/': '2026-10-18', '/updates': '2026-10-18', '/tsubo': '2026-10-18', '/about': '2026-10-12',
   '/clinical': '2026-10-12', '/practice/haiketsu': '2026-10-12', '/safety': '2026-10-03', '/editorial-policy': '2026-10-08',
-  '/library': '2026-10-12', '/glossary': '2026-10-12', '/curriculum': '2026-10-12',
+  '/library': '2026-10-12', '/glossary': '2026-10-12', '/curriculum': '2026-10-18',
   '/curriculum/lecture-yinyang-1': '2026-10-03',
   '/curriculum/lecture-yinyang-2': '2026-10-03',
   '/curriculum/lecture-yinyang-3': '2026-10-03',
@@ -225,8 +225,13 @@ export const PAGE_REVISIONS: Record<string, string> = {
   // Shared reading/source/navigation presentation changed; this is not a clinical review date.
   ...Object.fromEntries(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [`/curriculum/${id}`, '2026-10-15']))),
   ...Object.fromEntries(ARTICLE_EDITORIAL_REVISIONS.map(id => [`/articles/${id}`, '2026-10-15'])),
+  // Shared reader flow and course navigation changed; this is not a medical source review date.
+  ...Object.fromEntries(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [`/curriculum/${id}`, '2026-10-18']))),
+  ...Object.fromEntries(LEARNING_COURSES.map(course => [`/learn/courses/${course.slug}`, '2026-10-18'])),
+  '/notes': '2026-10-18', '/tsubo/compare': '2026-10-18',
 };
 export const SITE_UPDATES = [
+  { date: '2026-10-18', label: 'PC・iPadの操作と記録・学習の流れを改善', href: '/learn', text: 'iPad幅のメニュー、経穴検索の表記ゆれ、比較表と図の操作を改善。学習案内とコースを統合し、講義を本文・クイズ・次への順に整理。問診からの引き継ぎと記録の下書き保護、保存状態の表示も整えました。' },
   { date: '2026-10-18', label: '臨床記録の移動・比較・治法入力を改善', href: '/clinical/workspace', text: '手順変更時に入力見出しへ移動し、候補の比較を開閉式へ変更。比較・治法へ直接移動でき、治法の追加結果と追加済みの表示、直前の追加を戻す操作を整えました。' },
   { date: '2026-10-18', label: '臨床記録の候補・治法を拡充', href: '/clinical/workspace', text: '候補を6分類・26種類へ拡充し、検索・分類から選んだ候補を比較する画面に変更。24の治法を追加・編集でき、一覧にない候補も記録と臨床ノートへ保存できます。' },
   { date: '2026-10-18', label: '臨床メニューと演習の入口を再整理', href: '/clinical', text: '臨床記録・記録一覧・主訴別ガイド・対面問診・経穴比較の5項目へ整理。対面問診を直接開き、演習名と教材の掲載先を統一しました。臨床ホームの余白と一覧を整え、作業中の記録がある場合だけ戻るバーを表示します。' },

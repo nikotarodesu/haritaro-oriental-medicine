@@ -25,20 +25,19 @@ function MobileBottomNavContent() {
   useEffect(() => {
     const nav = navRef.current;
     if (!nav) return;
-    const update = () => document.documentElement.style.setProperty("--mobile-nav-height", window.matchMedia("(min-width: 1024px)").matches ? "0px" : nav.getBoundingClientRect().height + "px");
-    const observer = new ResizeObserver(update);
-    observer.observe(nav);
-    update();
-    window.addEventListener("resize", update);
-    return () => { observer.disconnect(); window.removeEventListener("resize", update); };
-  }, []);
-  useEffect(() => {
-    const desktop = window.matchMedia("(min-width: 1024px)");
-    const closeHiddenMenus = () => {
-      if (desktop.matches) setIsCustomizeOpen(false);
+    const root = document.documentElement;
+    const measure = () => root.style.setProperty("--mobile-nav-height", root.dataset.navigationLayout === "wide" ? "0px" : nav.getBoundingClientRect().height + "px");
+    const update = () => {
+      measure();
+      if (root.dataset.navigationLayout === "wide") setIsCustomizeOpen(false);
     };
-    desktop.addEventListener("change", closeHiddenMenus);
-    return () => desktop.removeEventListener("change", closeHiddenMenus);
+    const sizeObserver = new ResizeObserver(measure);
+    const layoutObserver = new MutationObserver(update);
+    sizeObserver.observe(nav);
+    layoutObserver.observe(root, { attributes: true, attributeFilter: ["data-navigation-layout"] });
+    measure();
+    window.addEventListener("resize", update);
+    return () => { sizeObserver.disconnect(); layoutObserver.disconnect(); window.removeEventListener("resize", update); };
   }, []);
   useEffect(() => {
     const handleState = (event: Event) => setIsMenuOpen((event as CustomEvent<{ open: boolean }>).detail?.open === true);

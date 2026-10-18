@@ -38,7 +38,6 @@ export default function LearningCourseCardsClient({ courses, readingMinutes, pla
             </div>
             <p className="course-card-description ui-muted">{shortDescriptions[course.slug] || course.description}</p>
             <p className="course-card-meta ui-muted">{course.steps.length}講 · 読む目安：約{readingMinutes[course.slug]}分</p>
-            {!compact && <p className="mt-1 text-sm ui-muted">クイズ・演習の時間は別です</p>}
             <div className="course-card-footer" data-has-progress={showProgress}>
               {showProgress && <div className="course-card-progress">
                 <p className="text-sm ui-muted">{availability === 'ready' ? `${progress.completedCount} / ${course.steps.length} 講義完了` : availability === 'loading' ? '進捗を確認中…' : '進捗を取得できませんでした'}</p>

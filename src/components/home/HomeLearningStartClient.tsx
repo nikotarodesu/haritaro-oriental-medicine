@@ -5,7 +5,7 @@ import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
 import { HomeToolIcon } from "@/components/home/HomeArtwork";
 import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
 import { getHomeLearningEntry } from "@/utils/homeLearningEntry";
-import { createCourseLectureHref } from "@/utils/courseJourney";
+import { createCourseLectureHref, LEARNING_COURSES_HREF } from "@/utils/courseJourney";
 import { LEARNING_COURSES } from "@/data/learningCourses";
 import type { ResumeLecture } from "@/types/learningProgressCatalog";
 
@@ -13,7 +13,7 @@ export default function HomeLearningStartClient({ lectures }: { lectures: Resume
   const { isMounted, completedLectures, lastVisitedLectureId } = useCurriculumProgress();
   const entry = isMounted ? getHomeLearningEntry(lectures, completedLectures, lastVisitedLectureId) : null;
   const resume = Boolean(entry?.started);
-  const label = resume ? entry?.href === "/learn/courses" ? "復習するコースを選ぶ" : "続きから学ぶ" : "第1講から始める";
+  const label = resume ? entry?.href === LEARNING_COURSES_HREF ? "復習するコースを選ぶ" : "続きから学ぶ" : "第1講から始める";
   const firstCourse = LEARNING_COURSES[0];
   const href = resume && entry ? entry.href : createCourseLectureHref(firstCourse.slug, firstCourse.steps[0].lectureId);
   return <>

@@ -31,6 +31,8 @@ import ClipButton from "@/components/ClipButton";
 import ClinicalPairsSection from "@/components/ClinicalPairsSection";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
+import { normalizeSearchText } from "@/utils/search";
+import { prepareAcupointSearch, getAcupointMatchReason } from "@/utils/acupointSearch";
 
 const MERIDIAN_ELEMENT_MAP: Record<string, "木" | "火" | "土" | "金" | "水"> = {
   lung: "金",
@@ -52,6 +54,7 @@ type SortOption = "meridian" | "kana" | "detailed";
 export default function TsuboInteractiveClient() {
   const allPoints = useMemo(() => getAllAcupoints(), []);
   const publishedCount = useMemo(() => getPublishedAcupoints().length, []);
+  const searchIndex = useMemo(() => new Map(allPoints.map(point => [point.code, prepareAcupointSearch(point)])), [allPoints]);
   const searchParams = useSearchParams();
 
   // URLクエリから初期値を復元
@@ -194,35 +197,15 @@ export default function TsuboInteractiveClient() {
     return ["すべて", "原穴", "絡穴", "郄穴", "募穴", "背部兪穴", "合穴", "四総穴", "八脈交会穴", "八会穴"];
   }, []);
 
-  // 全角英数を半角英数へ正規化
-  const normalizeQuery = (text: string) => {
-    return text
-      .replace(/[Ａ-Ｚａ-ｚ０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xfee0))
-      .trim()
-      .toLowerCase();
-  };
-
-  // 検索クエリと経穴の一致理由を判定
-  const getMatchReason = useCallback((tsubo: AcupointMaster, rawQuery: string): string | null => {
-    if (!rawQuery) return null;
-    const q = normalizeQuery(rawQuery);
-    if (!q) return null;
-
-    if (tsubo.codeLower === q || tsubo.code.toLowerCase() === q) return "コード完全一致";
-    if (tsubo.name === rawQuery.trim()) return "経穴名完全一致";
-    if (tsubo.codeLower.startsWith(q)) return "コード前方一致";
-    if (tsubo.name.includes(rawQuery.trim())) return "経穴名に含む";
-    if (tsubo.kana.includes(rawQuery.trim()) || tsubo.romaji.toLowerCase().includes(q)) return "読み一致";
-    if (tsubo.aliases?.some((a) => a.includes(rawQuery.trim()))) return "別名一致";
-    if (tsubo.indications.some((ind) => ind.toLowerCase().includes(q) || ind.includes(rawQuery.trim()))) return "主治・適応症一致";
-    if (tsubo.locationSimple.includes(rawQuery.trim()) || tsubo.locationDetail.includes(rawQuery.trim())) return "取穴部位一致";
-    if (tsubo.clinicalNote.includes(rawQuery.trim())) return "解説・臨床ノート一致";
-    return "関連語一致";
-  }, []);
+  // Global search and the dictionary accept the same kana, width and code spellings.
+  const getMatchReason = useCallback((point: AcupointMaster, rawQuery: string): string | null => {
+    const indexed = searchIndex.get(point.code);
+    return indexed ? getAcupointMatchReason(indexed, normalizeSearchText(rawQuery)) : null;
+  }, [searchIndex]);
 
   // 検索・フィルタリング・並び替え処理
   const filteredTsubos = useMemo(() => {
-    const q = normalizeQuery(searchQuery);
+    const q = normalizeSearchText(searchQuery);
 
     return allPoints
       .filter((t) => {
@@ -237,20 +220,8 @@ export default function TsuboInteractiveClient() {
 
         if (!q) return true;
 
-        // コード完全一致または前方一致
-        if (t.codeLower === q || t.code.toLowerCase() === q) return true;
-        if (t.codeLower.startsWith(q)) return true;
-
-        // 名称・読み・別名
-        if (t.name.includes(q) || t.kana.includes(q) || t.romaji.toLowerCase().includes(q)) return true;
-        if (t.aliases?.some((a) => a.includes(q))) return true;
-
-        // 主治・部位・臨床ノート
-        if (t.indications.some((ind) => ind.toLowerCase().includes(q))) return true;
-        if (t.locationSimple.includes(q) || t.locationDetail.includes(q)) return true;
-        if (t.clinicalNote.includes(q)) return true;
-
-        return false;
+        const indexed = searchIndex.get(t.code);
+        return indexed ? getAcupointMatchReason(indexed, q) !== null : false;
       })
       .sort((a, b) => {
         if (sortOption === "kana") {
@@ -266,15 +237,17 @@ export default function TsuboInteractiveClient() {
 
         // デフォルト：経絡順（検索語がある場合は完全一致優先）
         if (q) {
-          const aExact = a.name === q || a.codeLower === q;
-          const bExact = b.name === q || b.codeLower === q;
+          const aIndexed = searchIndex.get(a.code)!;
+          const bIndexed = searchIndex.get(b.code)!;
+          const aExact = aIndexed.name === q || aIndexed.code === q;
+          const bExact = bIndexed.name === q || bIndexed.code === q;
           if (aExact && !bExact) return -1;
           if (!aExact && bExact) return 1;
         }
 
         return compareAcupointsByMeridianOrder(a, b);
       });
-  }, [allPoints, searchQuery, selectedBodyPart, selectedMeridian, selectedCategory, onlyPublished, sortOption]);
+  }, [allPoints, searchIndex, searchQuery, selectedBodyPart, selectedMeridian, selectedCategory, onlyPublished, sortOption]);
 
   // ページネーション計算
   const totalItems = filteredTsubos.length;
@@ -326,7 +299,7 @@ export default function TsuboInteractiveClient() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="経穴名・コード"
+            placeholder="経穴名・読み・コード"
             className="w-full pl-12 pr-16 py-3.5 rounded-2xl border-2 border-[#D8CFC0] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A] text-base text-[#232826] dark:text-[#FAF8F5] focus:outline-hidden focus:border-[#1E3D34] dark:focus:border-[#74BA9E] transition-all shadow-xs min-h-[56px]"
           />
           {searchQuery && (

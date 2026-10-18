@@ -1,5 +1,7 @@
 import { getLearningCourse, type LearningCourse, type LearningCourseStep } from '@/data/learningCourses';
 
+export const LEARNING_COURSES_HREF = '/learn#learn-courses-heading';
+
 export interface CourseJourney {
   course: LearningCourse;
   lectureId: string;

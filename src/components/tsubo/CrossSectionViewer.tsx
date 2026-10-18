@@ -38,12 +38,17 @@ export default function CrossSectionViewer({
   const selectedAdjacent = model.adjacentStructures?.find((a) => a.id === selectedStructureId);
 
   const activeStructure = selectedLayer || selectedBoundary || selectedAdjacent;
+  const publicElements = getPublicCrossSectionElements(model);
+  const visibleIds = new Set(publicElements.map(element => element.layerId));
+  const structures = [...model.layers, ...(model.boundaries || []), ...(model.adjacentStructures || [])];
+  const selectableStructures = structures.filter((structure, index) => visibleIds.has(structure.id) && structures.findIndex(item => item.id === structure.id) === index);
+  const selectStructure = (id: string) => setSelectedStructureId(current => current === id ? null : id);
 
   // キーボード操作ハンドラー
   const handleKeyDown = (e: React.KeyboardEvent, id: string) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      setSelectedStructureId(selectedStructureId === id ? null : id);
+      selectStructure(id);
     } else if (e.key === "Escape") {
       setSelectedStructureId(null);
     }
@@ -65,7 +70,7 @@ export default function CrossSectionViewer({
   return (
     <section 
       aria-label={`${pointName}の局所深浅・断面解剖モデル`}
-      className="bg-[#FFFFFF] dark:bg-[#15202B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 shadow-sm space-y-5 transition-colors"
+      className="anatomy-viewer bg-[#FFFFFF] dark:bg-[#15202B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 shadow-sm space-y-5 transition-colors"
     >
       {/* 1. ヘッダー部：タイトル、1文要約、資料台帳ボタン */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4">
@@ -216,7 +221,7 @@ export default function CrossSectionViewer({
           aria-label={`${pointName}の横断面解剖図`}
         >
           {/* 断面要素描画 */}
-          {getPublicCrossSectionElements(model).map((el) => {
+          {publicElements.map((el) => {
             const isSelected = selectedStructureId === el.layerId;
             const opacity = selectedStructureId && !isSelected ? 0.35 : 1;
             const stroke = isSelected ? "#B86924" : el.stroke || "none";
@@ -231,10 +236,11 @@ export default function CrossSectionViewer({
               tabIndex: el.layerId !== "needle-indicator" ? 0 : -1,
               role: el.layerId !== "needle-indicator" ? "button" : undefined,
               "aria-label": el.label,
+              "aria-pressed": el.layerId !== "needle-indicator" ? isSelected : undefined,
               className: "transition-all duration-200 cursor-pointer outline-none focus:stroke-[#B86924] focus:stroke-[3.5] hover:opacity-90",
               onClick: () => {
                 if (el.layerId !== "needle-indicator") {
-                  setSelectedStructureId(isSelected ? null : el.layerId);
+                  selectStructure(el.layerId);
                 }
               },
               onKeyDown: (e: React.KeyboardEvent) => {
@@ -289,6 +295,11 @@ export default function CrossSectionViewer({
           <span className="font-mono hidden sm:inline">※教材用模式図</span>
         </div>
       </div>
+
+      {selectableStructures.length > 0 && <div className="anatomy-structure-picker" role="group" aria-label="断面図の構造を名前から選ぶ" onKeyDown={event => { if (event.key === 'Escape') setSelectedStructureId(null); }}>
+        <p>構造名から選ぶ</p>
+        <div>{selectableStructures.map(structure => <button type="button" key={structure.id} aria-pressed={selectedStructureId === structure.id} onClick={() => selectStructure(structure.id)}>{structure.name}</button>)}</div>
+      </div>}
 
       {/* 3. タップされた組織のインスペクターカード（選択時に図の直下にスマートに表示） */}
       {activeStructure && (

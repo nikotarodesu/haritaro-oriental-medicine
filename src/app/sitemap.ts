@@ -153,7 +153,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...SYMPTOMS.map(guide => ({ url: `${baseUrl}${symptomGuidePath(guide)}`, lastModified: new Date(SYMPTOM_GUIDES_REVISED_AT) })),
     ...CLINICAL_COMPLAINTS.map(item => ({ url: `${baseUrl}/clinical/symptoms/${item.slug}`, lastModified: new Date('2026-10-04') })),
     { url: `${baseUrl}/glossary`, lastModified: new Date(SITE_REVISED_AT) },
-    { url: `${baseUrl}/learn/courses`, lastModified: new Date("2026-10-03") },
     ...LEARNING_COURSES.map(course => ({ url: `${baseUrl}/learn/courses/${course.slug}`, lastModified: new Date("2026-10-03") })),
     ...staticPages,
     ...curriculumLessonPages,

@@ -34,7 +34,7 @@ class Element {
 function flatten(element) { return element.children.flatMap(child => [child, ...flatten(child)]); }
 const document = {
   activeElement: null,
-  documentElement: { style: { setProperty() {} } },
+  documentElement: { dataset: {}, style: { setProperty() {} } },
   getElementById(id) { return [...instances.values()].find(element => element.isConnected && element.props.id === id) ?? null; },
   querySelector() { return null; },
   addEventListener(name, callback) { add(documentEvents, name, callback); },
@@ -138,6 +138,7 @@ function topTrigger() { return nodes(owners[0].tree).find(node => node.type === 
 function clickBottom() { document.getElementById('mobile-more-trigger').focus(); byId('mobile-more-trigger').props.onClick(); render(); flushFrames(); }
 function openFromTop() { const top = topTrigger(); top.props.ref.current.focus(); top.props.onClick({ currentTarget: top.props.ref.current }); render(); flushFrames(); }
 render();
+assert.equal(document.documentElement.dataset.navigationLayout, "compact", "Bottom shortcuts follow the visible compact header, including tablet widths");
 assert.equal(topTrigger().props['aria-controls'], byId('mobile-more-trigger').props['aria-controls'], 'Both controls reference the same panel');
 assert.equal(byId(menu.SITE_MENU_ID), undefined);
 clickBottom();
@@ -222,8 +223,32 @@ emit(documentEvents, { type: 'pointerdown', target: new Element() }); render();
 assert.equal(byId(menu.SITE_MENU_ID), undefined, 'An outside pointer closes the disclosure');
 clickBottom();
 desktop = true; window.dispatchEvent(new BrowserEvent('resize')); flushFrames();
+assert.equal(document.documentElement.dataset.navigationLayout, 'wide', 'The header publishes its actual CSS layout on resize');
 assert.equal(byId(menu.SITE_MENU_ID), undefined, 'The compact menu closes when its upper control becomes hidden');
 assert.equal(byId('mobile-more-trigger').props['aria-expanded'], false);
 assert(document.activeElement.getClientRects().length, 'Resize moves focus out of hidden menu contents to a visible desktop control');
 assert(document.activeElement.props['aria-controls']?.endsWith('-account'));
+desktop = false; window.dispatchEvent(new BrowserEvent('resize')); flushFrames();
+assert.equal(document.documentElement.dataset.navigationLayout, 'compact', 'Returning to a compact layout restores tablet shortcuts without replacing the saved configuration');
+assert.deepEqual(nodes(owners[1].tree).filter(node => node.type === Link).map(node => node.props.href), ['/clinical/workspace', '/practice/haiketsu', '/tsubo', '/library']);
+openFromTop();
+const learningMenu = nodes(owners[0].tree).find(node => node.type?.name === 'HeaderLinks' && node.props.links.some(item => item.href === '/learn'));
+assert(learningMenu, 'The learning menu remains discoverable');
+assert.equal(learningMenu.props.links.filter(item => item.href === '/learn').length, 1);
+assert(!learningMenu.props.links.some(item => item.href === '/learn/courses'), 'Learning home and courses share one menu destination');
+// At the rem breakpoint, the header can change layout at the end of the root
+// font transition without changing its fixed min-height or firing a resize.
+desktop = true;
+emit(documentEvents, { type: 'transitionend', target: document.documentElement, propertyName: 'opacity' }); flushFrames();
+assert.equal(document.documentElement.dataset.navigationLayout, 'compact', 'Unrelated transitions do not drive navigation layout');
+emit(documentEvents, { type: 'transitionend', target: document.documentElement, propertyName: 'font-size' }); flushFrames();
+assert.equal(document.documentElement.dataset.navigationLayout, 'wide', 'Completed root font transitions synchronize the actual header layout without a resize');
+assert.equal(byId(menu.SITE_MENU_ID), undefined, 'A menu whose compact trigger disappeared closes after the font transition');
+desktop = false;
+emit(documentEvents, { type: 'transitionend', target: new Element(), propertyName: 'font-size' }); flushFrames();
+assert.equal(document.documentElement.dataset.navigationLayout, 'wide', 'Descendant font transitions are ignored');
+emit(documentEvents, { type: 'transitionend', target: document.documentElement, propertyName: 'font-size' }); flushFrames();
+assert.equal(document.documentElement.dataset.navigationLayout, 'compact', 'Larger-text compact layouts restore their lower-navigation decision after transition');
+for (const owner of owners) for (const slot of owner.state) slot?.cleanup?.();
+assert.equal(documentEvents.get('transitionend')?.size || 0, 0, 'Unmount removes the font-transition listener');
 console.log('Unified navigation regression passed: five concise clinical destinations, collapsed practice, separate self/interview modes, retained custom comparison shortcut, one panel for both controls, expanded state, toggle/Escape/outside/resize closure, initiating focus return, search/install/saved handoff, and preserved four-slot customization.');

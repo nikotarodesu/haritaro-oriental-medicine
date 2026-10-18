@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { getGogyoColor, GOGYO_COLORS } from "@/utils/gogyoColor";
 import { saveDraftPatientNote } from "@/utils/draftNote";
+import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 
 // 五労の定義型
 export type GorouId = "kyushi" | "kyuza" | "kyuritsu" | "kyukou" | "kyuga";
@@ -232,6 +233,7 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
 
 export default function GorouWorkstyleChecker() {
   const router = useRouter();
+  const { clinicalStorageOwner = 'guest' } = useClinicalMemo();
   const [selectedGorou, setSelectedGorou] = useState<GorouId[]>([]);
   const [activeTab, setActiveTab] = useState<"radar" | "action" | "tsubo">("radar");
 
@@ -355,13 +357,14 @@ export default function GorouWorkstyleChecker() {
   }, [organScores]);
 
   const handleSaveToNoteDraft = () => {
-    saveDraftPatientNote({
+    const retained = clinicalStorageOwner && saveDraftPatientNote({
       sourceTool: "五労チェッカー",
       constitution: `五労の学習分類：${mostFatiguedOrgan.name}（${mostFatiguedOrgan.element}行）`,
       chiefComplaint: `選択した生活習慣（${selectedGorou.map((id) => GOROU_DEFS[id].classicName).join("・")}）※症状や原因を確認した記録ではありません`,
       selectedPointsInput: selectedGorou.map((id) => GOROU_DEFS[id].quickTsubo.name).join(", "),
       treatmentPlan: `【五労チェック結果】\n教材内で最も点数が高い分類: ${mostFatiguedOrgan.name}（${mostFatiguedOrgan.harmTissue} / 学習用点数${mostFatiguedOrgan.score}/100）\n選択パターン: ${selectedGorou.map((id) => `${GOROU_DEFS[id].classicName}（${GOROU_DEFS[id].modernTitle}）`).join("、")}\n休憩・動作の例:\n${selectedGorou.map((id) => `・${GOROU_DEFS[id].classicName}: ${GOROU_DEFS[id].chuyoAction}`).join("\n")}\n※固定値の平均を換算した教材の点数です。臓器負荷・疲労度・疾患リスクを測定した記録ではありません。経穴は学習例で、施術を決めた記録ではありません。症状や医学的な評価は別に確認してください。`,
-    });
+    }, clinicalStorageOwner);
+    if (!retained) { window.alert('下書きを引き継げませんでした。入力は保持しています。保存先とブラウザの保存設定を確認してください。'); return; }
     router.push("/notes");
   };
 

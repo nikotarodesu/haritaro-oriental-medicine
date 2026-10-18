@@ -1,0 +1,27 @@
+/* The same visible header layout controls lower shortcuts at every window width. */
+@media screen {
+  html[data-navigation-layout="compact"] .mobile-bottom-nav { display: block; }
+  html[data-navigation-layout="wide"] .mobile-bottom-nav { display: none; }
+  html[data-navigation-layout="compact"] .site-shell { padding-bottom: calc(var(--mobile-nav-height, 68px) + 16px); }
+  html[data-navigation-layout="compact"] .clinical-workspace-actions { bottom: var(--mobile-nav-height, 68px); }
+  html[data-navigation-layout="wide"] .site-shell { padding-bottom: 0; }
+}
+.tsubo-compare-scroll-hint { color: var(--text-secondary); font-size: .875rem; line-height: 1.8; }
+.tsubo-compare-scroll { max-height: min(72dvh, 48rem); overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.tsubo-compare-scroll:focus-visible { outline: 2px solid var(--accent-readable); outline-offset: -3px; }
+.tsubo-compare-table { border-collapse: separate; border-spacing: 0; }
+.tsubo-compare-table thead th { position: sticky; top: 0; z-index: 3; background: var(--bg-card); border-bottom: 1px solid var(--border-washi); }
+.tsubo-compare-table tr > :first-child { position: sticky; left: 0; z-index: 2; min-width: 8rem; background: var(--bg-card); border-right: 1px solid var(--border-washi); }
+.tsubo-compare-table thead tr > :first-child { z-index: 4; }
+.tsubo-compare-page :is(button, input), .anatomy-viewer :is(button, a) { min-height: 44px; }
+.tsubo-compare-page button:has(> svg:only-child), .anatomy-viewer button:has(> svg:only-child) { min-width: 44px; display: inline-flex; align-items: center; justify-content: center; }
+.anatomy-viewer :is(button, a):focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 3px; }
+.anatomy-structure-picker > p { margin-bottom: 10px; font-size: .875rem; font-weight: 600; }
+.anatomy-structure-picker > div { display: flex; flex-wrap: wrap; gap: 8px; }
+.anatomy-structure-picker button { padding: 8px 12px; border: 1px solid var(--border-washi); border-radius: 8px; color: var(--text-secondary); background: var(--bg-card); font-size: .875rem; text-align: left; overflow-wrap: anywhere; }
+.anatomy-structure-picker button[aria-pressed="true"] { border-color: var(--accent-readable); color: var(--accent-readable); background: var(--tokiwa-light); font-weight: 600; }
+@media print {
+  .tsubo-compare-scroll { max-height: none; overflow: visible; }
+  .tsubo-compare-table thead th, .tsubo-compare-table tr > :first-child { position: static; }
+  .tsubo-compare-scroll-hint, .anatomy-structure-picker { display: none; }
+}

@@ -14,6 +14,7 @@ import { getCourseReadingMinutes } from '@/utils/courseReadingTime';
 import PathomechanismComparison from '@/components/learning/PathomechanismComparison';
 import CourseMiniCase from '@/components/learning/CourseMiniCase';
 import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
+import { LEARNING_COURSES_HREF } from '@/utils/courseJourney';
 
 interface Props { params: Promise<{ slug: string }> }
 
@@ -43,14 +44,14 @@ export default async function LearningCoursePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': ['WebPage', 'LearningResource'], '@id': `${pageUrl}#webpage`, url: pageUrl, name: course.title, description: course.description, inLanguage: 'ja', learningResourceType: 'Learning path', teaches: course.goals, hasPart: course.steps.map((step) => ({ '@type': 'LearningResource', name: step.title, url: `https://www.haritaro.jp/curriculum/${step.lectureId}` })) },
-      { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'ホーム', item: 'https://www.haritaro.jp/' }, { '@type': 'ListItem', position: 2, name: '学ぶ', item: 'https://www.haritaro.jp/learn' }, { '@type': 'ListItem', position: 3, name: '学習コース', item: 'https://www.haritaro.jp/learn/courses' }, { '@type': 'ListItem', position: 4, name: course.title, item: pageUrl }] },
+      { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'ホーム', item: 'https://www.haritaro.jp/' }, { '@type': 'ListItem', position: 2, name: '学ぶ', item: 'https://www.haritaro.jp/learn' }, { '@type': 'ListItem', position: 3, name: course.title, item: pageUrl }] },
     ],
   };
 
   return (
     <div className="page-layout page-layout--reading space-y-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
-      <nav aria-label="パンくず"><Link href="/learn/courses" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]"><ArrowLeft aria-hidden="true" className="h-4 w-4" />学習コース一覧へ</Link></nav>
+      <nav aria-label="パンくず"><Link href={LEARNING_COURSES_HREF} className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]"><ArrowLeft aria-hidden="true" className="h-4 w-4" />学習コース一覧へ</Link></nav>
       <PageIntro compact eyebrow={`${course.eyebrow} · ${course.steps.length}ステップ`} title={course.title} description={course.description} art="study">
         <p className="page-muted text-sm">{course.steps.length}講 · 読む目安：約{readingMinutes}分（クイズ・演習の時間は別です）</p>
       </PageIntro>
@@ -64,7 +65,7 @@ export default async function LearningCoursePage({ params }: Props) {
       <CourseMiniCase seriesId={course.seriesId} />
       {course.reading.length > 0 && <section aria-labelledby="course-reading-heading" className="space-y-4"><h2 id="course-reading-heading" className="font-serif text-2xl font-bold">図解で振り返る</h2><div className="grid gap-3">{course.reading.map((item) => <LearningCourseLink key={item.href} href={item.href} courseId={course.slug} placement="course_reading" className="course-related-reading">{item.href.startsWith('/articles/') && <ArticleCover articleId={item.href.slice('/articles/'.length).split(/[?#]/)[0]} />}<span>{item.title}</span><ArrowRight aria-hidden="true" className="h-5 w-5" /></LearningCourseLink>)}</div></section>}
       {chapter && <aside className="space-y-3 rounded-2xl border border-[#D9E3DD] p-5 dark:border-[#2A3B4A]"><h2 className="text-lg font-bold">{course.steps.length === chapter.plannedLessons ? 'この章を振り返る' : 'この章を詳しく学ぶ'}</h2><p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">{course.steps.length === chapter.plannedLessons ? `このコースは章の全${chapter.plannedLessons}講を扱います。章の目次から各講義を振り返れます。` : `このコースは全${chapter.plannedLessons}講のうち${course.steps.length}講です。詳しい各論や総合演習は章の順番で続けて学べます。`}受講記録は共通で、コースと章の進捗はそれぞれ表示します。</p><Link href={`/curriculum#chapter-${chapter.id}`} className="inline-flex min-h-11 items-center font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">{chapter.title}の全講義を見る →</Link></aside>}
-      <nav aria-label="次に学ぶテーマ" className="flex flex-wrap items-center gap-3 border-t border-[#D9E3DD] pt-6 dark:border-[#2A3B4A]">{nextCourse && <LearningCourseLink href={`/learn/courses/${nextCourse.slug}`} courseId={course.slug} placement="course_next" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#184F49] px-4 py-3 text-base font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-4 dark:bg-[#285F54]">次のテーマ：{nextCourse.title}<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></LearningCourseLink>}<Link href="/learn/courses" className="inline-flex min-h-11 items-center px-3 text-base font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">ほかのコースを見る</Link></nav>
+      <nav aria-label="次に学ぶテーマ" className="flex flex-wrap items-center gap-3 border-t border-[#D9E3DD] pt-6 dark:border-[#2A3B4A]">{nextCourse && <LearningCourseLink href={`/learn/courses/${nextCourse.slug}`} courseId={course.slug} placement="course_next" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#184F49] px-4 py-3 text-base font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-4 dark:bg-[#285F54]">次のテーマ：{nextCourse.title}<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></LearningCourseLink>}<Link href={LEARNING_COURSES_HREF} className="inline-flex min-h-11 items-center px-3 text-base font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">ほかのコースを見る</Link></nav>
     </div>
   );
 }

@@ -32,7 +32,8 @@ import {
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { ClinicalMemoItem, PatientNoteItem, SAMPLE_PATIENT_NOTES } from "@/types/clinicalMemo";
-import { loadAndClearDraftPatientNote } from "@/utils/draftNote";
+import { loadDraftPatientNote, clearDraftPatientNote, draftPatientNoteToken, type DraftPatientNote } from "@/utils/draftNote";
+import { emptyClinicalNoteEditor, createClinicalNoteEditorId, clinicalNoteEditorFromHandoff, readClinicalNoteEditor, writeClinicalNoteEditor, clearClinicalNoteEditor, type ClinicalNoteEditorDraft, type ClinicalNoteEditorFields } from "@/utils/clinicalNoteEditor";
 import ClinicalNoteTimeline from "@/components/clinical/ClinicalNoteTimeline";
 import { clinicalToday } from "@/utils/clinicalEncounter";
 import { trackEvent } from "@/utils/analytics";
@@ -102,6 +103,12 @@ function ClinicalNotesPage() {
   } = useClinicalMemo();
 
   const [viewOwner, setViewOwner] = useState(clinicalStorageOwner);
+  const currentOwner = useRef(clinicalStorageOwner);
+  useEffect(() => { currentOwner.current = clinicalStorageOwner; }, [clinicalStorageOwner]);
+  const [editorSession, setEditorSession] = useState<ClinicalNoteEditorDraft | null>(null);
+  const editorRef = useRef<ClinicalNoteEditorDraft | null>(null);
+  const [pendingHandoff, setPendingHandoff] = useState<DraftPatientNote | null>(null);
+  const [editorError, setEditorError] = useState<string | null>(null);
 
   // タブ状態: "notes" (臨床ノート) | "stock" (配穴集)
   const [activeTab, setActiveTab] = useState<"notes" | "stock">("notes");
@@ -123,7 +130,7 @@ function ClinicalNotesPage() {
   const [patientIdentifier, setPatientIdentifier] = useState("");
   const [gender, setGender] = useState<"男性" | "女性" | "その他" | "未回答" | "">("");
   const [ageGroup, setAgeGroup] = useState("");
-  const [visitDate, setVisitDate] = useState(() => new Date().toISOString().split("T")[0]);
+  const [visitDate, setVisitDate] = useState(() => clinicalToday());
   const [chiefComplaint, setChiefComplaint] = useState("");
   const [constitution, setConstitution] = useState("");
   const [syndrome, setSyndrome] = useState("");
@@ -180,80 +187,81 @@ function ClinicalNotesPage() {
   // ファイルインポート用ref
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const restoreEditor = (draft: ClinicalNoteEditorDraft) => {
+    const fields = draft.fields;
+    setPatientIdentifier(fields.patientIdentifier); setGender(fields.gender); setAgeGroup(fields.ageGroup); setVisitDate(fields.visitDate);
+    setChiefComplaint(fields.chiefComplaint); setConstitution(fields.constitution); setSyndrome(fields.syndrome);
+    setSelectedPointsInput(fields.selectedPointsInput); setSelfCarePointsInput(fields.selfCarePointsInput);
+    setTreatmentPlan(fields.treatmentPlan); setPatientReaction(fields.patientReaction); setNextAction(fields.nextAction);
+    setEditingNoteId(draft.editingNoteId || null); setFormError(null);
+    setDraftNotice(draft.sourceTool ? `【${draft.sourceTool}】の下書きを保持しています。内容を確認して臨床ノートへ保存してください。` : null);
+    editorRef.current = draft; setEditorSession(draft); setIsNoteModalOpen(true); setActiveTab('notes');
+  };
+  const beginEditor = (fields: ClinicalNoteEditorFields, editingId?: string, handoff?: DraftPatientNote, replacing = true) => {
+    const owner = clinicalStorageOwner;
+    if (!owner || currentOwner.current !== owner || viewOwner !== owner) return false;
+    const previous = editorRef.current;
+    if (replacing && previous && !window.confirm('入力途中の臨床ノートを置き換えますか？現在の下書きは破棄します。保存済みの記録は残ります。')) return false;
+    const draft: ClinicalNoteEditorDraft = { version: 1, id: createClinicalNoteEditorId(), owner, fields, editingNoteId: editingId, handoffToken: handoff ? draftPatientNoteToken(handoff) : undefined, sourceTool: handoff?.sourceTool };
+    if (!writeClinicalNoteEditor(draft, owner)) { setEditorError('下書きを保持できませんでした。ブラウザの保存設定を確認してください。'); return false; }
+    if (previous?.handoffToken && previous.handoffToken !== draft.handoffToken) clearDraftPatientNote(previous.handoffToken, owner);
+    setEditorError(null); restoreEditor(draft); return true;
+  };
+  const retainEditor = (patch: Partial<ClinicalNoteEditorFields>) => {
+    const draft = editorRef.current;
+    if (!draft || !clinicalStorageOwner || currentOwner.current !== clinicalStorageOwner || draft.owner !== clinicalStorageOwner) return;
+    const next = { ...draft, fields: { ...draft.fields, ...patch } };
+    editorRef.current = next; setEditorSession(next);
+    setEditorError(writeClinicalNoteEditor(next, draft.owner) ? null : '下書きを保存できませんでした。この画面で入力を保持しています。ページを離れる前に保存設定を確認してください。');
+  };
+  const changeEditorField = <K extends keyof ClinicalNoteEditorFields>(key: K, value: ClinicalNoteEditorFields[K], setter: (value: ClinicalNoteEditorFields[K]) => void) => {
+    if (!clinicalStorageOwner || currentOwner.current !== clinicalStorageOwner || editorRef.current?.owner !== clinicalStorageOwner) return;
+    setter(value); retainEditor({ [key]: value });
+  };
+  const discardEditor = () => {
+    const draft = editorRef.current;
+    if (!draft || !clinicalStorageOwner || currentOwner.current !== clinicalStorageOwner || draft.owner !== clinicalStorageOwner) return;
+    if (!window.confirm('入力途中の下書きを破棄しますか？保存済みの臨床ノートは残ります。')) return;
+    if (draft.handoffToken && !clearDraftPatientNote(draft.handoffToken, draft.owner) || !clearClinicalNoteEditor(draft.id, draft.owner)) { setEditorError('下書きを破棄できませんでした。保存設定を確認してください。'); return; }
+    editorRef.current = null; setEditorSession(null); setIsNoteModalOpen(false); setDraftNotice(null); setEditorError(null);
+  };
+  const openPendingHandoff = () => {
+    if (!pendingHandoff) return;
+    if (beginEditor(clinicalNoteEditorFromHandoff(pendingHandoff, `PT-${String(patientNotes.length + 1).padStart(3, '0')}`), undefined, pendingHandoff)) setPendingHandoff(null);
+  };
+
   useEffect(() => {
+    if (!clinicalStorageOwner) return;
+    const owner = clinicalStorageOwner;
     const timer = setTimeout(() => {
+      if (currentOwner.current !== owner) return;
       setIsNoteModalOpen(false); setIsPointPickerOpen(false); setIsCustomStockModalOpen(false);
-      setIsSamplePreviewOpen(false); setPrintNote(null); setEditingNoteId(null); setDraftNotice(null);
-      setViewOwner(clinicalStorageOwner);
+      setIsSamplePreviewOpen(false); setPrintNote(null); setEditingNoteId(null); setDraftNotice(null); setEditorError(null);
+      editorRef.current = null; setEditorSession(null); setPendingHandoff(null); setViewOwner(owner);
+      const editor = readClinicalNoteEditor(owner);
+      const incoming = loadDraftPatientNote(owner);
+      if (editor) {
+        restoreEditor(editor);
+        if (incoming && draftPatientNoteToken(incoming) !== editor.handoffToken) setPendingHandoff(incoming);
+        return;
+      }
+      if (incoming) {
+        const draft: ClinicalNoteEditorDraft = { version: 1, id: createClinicalNoteEditorId(), owner, fields: clinicalNoteEditorFromHandoff(incoming, `PT-${String(patientNotes.length + 1).padStart(3, '0')}`), handoffToken: draftPatientNoteToken(incoming), sourceTool: incoming.sourceTool };
+        if (!writeClinicalNoteEditor(draft, owner)) setEditorError('引き継ぎは保持していますが、編集中の下書きを保存できません。保存設定を確認してください。');
+        restoreEditor(draft); return;
+      }
+      const query = new URLSearchParams(window.location.search);
+      if (query.get('view') === 'sample' || query.get('sample') === '1') { setIsSamplePreviewOpen(true); window.history.replaceState({}, document.title, window.location.pathname); return; }
+      if (query.get('new') === '1' || query.get('new') === 'true') {
+        const draft: ClinicalNoteEditorDraft = { version: 1, id: createClinicalNoteEditorId(), owner, fields: { ...emptyClinicalNoteEditor(), patientIdentifier: `PT-${String(patientNotes.length + 1).padStart(3, '0')}`, constitution: query.get('constitution') || '', selectedPointsInput: (query.get('points') || '').replace(/,/g, '、 '), chiefComplaint: query.get('complaint') || '', syndrome: query.get('syndrome') || '' } };
+        if (!writeClinicalNoteEditor(draft, owner)) setEditorError('下書きを保存できません。保存設定を確認してください。');
+        restoreEditor(draft); window.history.replaceState({}, document.title, window.location.pathname);
+      }
     }, 0);
     return () => clearTimeout(timer);
+    // The owner controls restoration; note-count updates must never replace active typing.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clinicalStorageOwner]);
-
-  // 診断結果等からのURLクエリパラメータ引き継ぎ ＆ 見本パラメータ検知
-  useEffect(() => {
-    if (typeof window === "undefined" || !clinicalStorageOwner) return;
-    const restoreDraftTimer = setTimeout(() => {
-    // ツールからの安全な下書き引き渡しをチェック
-    const draft = loadAndClearDraftPatientNote();
-    if (draft) {
-      setEditingNoteId(null);
-      setPatientIdentifier(draft.patientIdentifier || `PT-${String(patientNotes.length + 1).padStart(3, "0")}`);
-      setGender("");
-      setAgeGroup("");
-      setVisitDate(draft.visitDate || clinicalToday());
-      setChiefComplaint(draft.chiefComplaint || "");
-      setConstitution(draft.constitution || "");
-      setSyndrome(draft.syndrome || "");
-      setSelectedPointsInput(draft.selectedPointsInput || "");
-      setSelfCarePointsInput("");
-      setTreatmentPlan(draft.treatmentPlan || "");
-      setPatientReaction(draft.patientReaction || "");
-      setNextAction(draft.nextAction || "");
-      setFormError(null);
-      setIsNoteModalOpen(true);
-      setActiveTab("notes");
-      setDraftNotice(`【${draft.sourceTool}】からの下書きを取り込みました。内容を確認・編集して保存してください。`);
-      return;
-    }
-
-    const params = new URLSearchParams(window.location.search);
-
-    // 見本表示パラメータ
-    if (params.get("view") === "sample" || params.get("sample") === "1") {
-      setIsSamplePreviewOpen(true);
-      window.history.replaceState({}, document.title, window.location.pathname);
-      return;
-    }
-
-    // 新規作成パラメータ（体質診断からの引き継ぎ）
-    const shouldCreate = params.get("new");
-    if (shouldCreate === "1" || shouldCreate === "true") {
-      const initConstitution = params.get("constitution") || "";
-      const initPoints = params.get("points") || "";
-      const initComplaint = params.get("complaint") || "";
-      const initSyndrome = params.get("syndrome") || "";
-
-      setEditingNoteId(null);
-      setPatientIdentifier(`PT-${String(patientNotes.length + 1).padStart(3, "0")}`);
-      setGender("");
-      setAgeGroup("");
-      setVisitDate(new Date().toISOString().split("T")[0]);
-      setChiefComplaint(initComplaint);
-      setConstitution(initConstitution);
-      setSyndrome(initSyndrome);
-      setSelectedPointsInput(initPoints.replace(/,/g, "、 "));
-      setTreatmentPlan("");
-      setPatientReaction("");
-      setNextAction("");
-      setFormError(null);
-      setIsNoteModalOpen(true);
-      setActiveTab("notes");
-
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-    }, 0);
-    return () => clearTimeout(restoreDraftTimer);
-  }, [patientNotes.length, clinicalStorageOwner]);
 
   // 臨床ノートの検索フィルタリング
   const filteredNotes = useMemo(() => {
@@ -284,78 +292,32 @@ function ClinicalNotesPage() {
     });
   }, [memos, selectedTag, searchQuery]);
 
-  // モーダルを開く（新規）
+  // All entry points create a recoverable editor before opening it.
   const openNewNoteModal = () => {
-    if (isPatientNoteLimitReached) {
-      alert(`保存上限（${maxPatientNoteLimit}件）に達しています。不要な記録を整理するか、プレミアムプランをご検討ください。`);
-      return;
-    }
-    setEditingNoteId(null);
-    setPatientIdentifier(`PT-${String(patientNotes.length + 1).padStart(3, "0")}`);
-    setGender("");
-    setAgeGroup("");
-    setVisitDate(new Date().toISOString().split("T")[0]);
-    setChiefComplaint("");
-    setConstitution("");
-    setSyndrome("");
-    setSelectedPointsInput("");
-    setSelfCarePointsInput("");
-    setTreatmentPlan("");
-    setPatientReaction("");
-    setNextAction("");
-    setFormError(null);
-    setIsNoteModalOpen(true);
+    if (isPatientNoteLimitReached) { alert(`保存上限（${maxPatientNoteLimit}件）に達しています。`); return; }
+    beginEditor({ ...emptyClinicalNoteEditor(), patientIdentifier: `PT-${String(patientNotes.length + 1).padStart(3, '0')}` });
   };
-
-  // モーダルを開く（見本から新規作成へ）
   const openCreateFromSample = (sample: PatientNoteItem) => {
-    if (isPatientNoteLimitReached) {
-      alert(`保存上限（${maxPatientNoteLimit}件）に達しています。`);
-      return;
-    }
-    setIsSamplePreviewOpen(false);
-    setEditingNoteId(null);
-    setPatientIdentifier(`PT-${String(patientNotes.length + 1).padStart(3, "0")}`);
-    setGender(sample.gender || "");
-    setAgeGroup(sample.ageGroup || "");
-    setVisitDate(new Date().toISOString().split("T")[0]);
-    setChiefComplaint(sample.chiefComplaint);
-    setConstitution(sample.constitution || "");
-    setSyndrome(sample.syndrome || "");
-    setSelectedPointsInput(sample.selectedPoints.join("、 "));
-    setSelfCarePointsInput(sample.selfCarePoints && sample.selfCarePoints.length > 0 ? sample.selfCarePoints.join("、 ") : "");
-    setTreatmentPlan(sample.treatmentPlan || "");
-    setPatientReaction("");
-    setNextAction(sample.nextAction || "");
-    setFormError(null);
-    setIsNoteModalOpen(true);
+    if (isPatientNoteLimitReached) { alert(`保存上限（${maxPatientNoteLimit}件）に達しています。`); return; }
+    if (beginEditor({ ...emptyClinicalNoteEditor(), patientIdentifier: `PT-${String(patientNotes.length + 1).padStart(3, '0')}`, gender: sample.gender || '', ageGroup: sample.ageGroup || '', chiefComplaint: sample.chiefComplaint, constitution: sample.constitution || '', syndrome: sample.syndrome || '', selectedPointsInput: sample.selectedPoints.join('、 '), selfCarePointsInput: sample.selfCarePoints?.join('、 ') || '', treatmentPlan: sample.treatmentPlan || '', nextAction: sample.nextAction || '' })) setIsSamplePreviewOpen(false);
+  };
+  const openEditNoteModal = (note: PatientNoteItem) => {
+    trackEvent('note_reopen', { destination_type: 'note' });
+    beginEditor({ patientIdentifier: note.patientIdentifier, gender: note.gender || '', ageGroup: note.ageGroup || '', visitDate: note.visitDate, chiefComplaint: note.chiefComplaint, constitution: note.constitution || '', syndrome: note.syndrome || '', selectedPointsInput: note.selectedPoints.join('、 '), selfCarePointsInput: note.selfCarePoints?.join('、 ') || '', treatmentPlan: note.treatmentPlan || '', patientReaction: note.patientReaction || '', nextAction: note.nextAction || '' }, note.id);
   };
 
-  // モーダルを開く（編集）
-  const openEditNoteModal = (note: PatientNoteItem) => {
-    trackEvent("note_reopen", { destination_type: "note" });
-    setEditingNoteId(note.id);
-    setPatientIdentifier(note.patientIdentifier);
-    setGender(note.gender || "");
-    setAgeGroup(note.ageGroup || "");
-    setVisitDate(note.visitDate);
-    setChiefComplaint(note.chiefComplaint);
-    setConstitution(note.constitution || "");
-    setSyndrome(note.syndrome || "");
-    setSelectedPointsInput(note.selectedPoints.join("、 "));
-    setSelfCarePointsInput(note.selfCarePoints && note.selfCarePoints.length > 0 ? note.selfCarePoints.join("、 ") : "");
-    setTreatmentPlan(note.treatmentPlan || "");
-    setPatientReaction(note.patientReaction || "");
-    setNextAction(note.nextAction || "");
-    setFormError(null);
-    setIsNoteModalOpen(true);
-  };
+  const editorNoteMissing = Boolean(isReady && editingNoteId && !patientNotes.some(note => note.id === editingNoteId));
 
   // 臨床ノート保存
-  const handleSaveNote = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSaveNote = (e?: React.SyntheticEvent, asNew = false) => {
+    e?.preventDefault();
     if (isSavingNote) return;
+    const session = editorRef.current;
+    if (!session || !clinicalStorageOwner || currentOwner.current !== clinicalStorageOwner || session.owner !== clinicalStorageOwner) { setFormError('保存先が切り替わりました。このアカウントの下書きを開き直してください。'); return; }
     if (!isReady) { setFormError("保存先の確認・同期が完了していません。同期状態を確認してから保存してください。"); return; }
+
+    if (editorNoteMissing && !asNew) { setFormError('元の保存済み記録が見つかりません。入力を保持したまま、新しい臨床ノートとして保存できます。'); return; }
+    if (asNew && (!editorNoteMissing || !window.confirm('元の保存済み記録が見つかりません。この入力内容を新しい臨床ノートとして保存しますか？削除済みの記録は復元しません。'))) return;
 
     if (!patientIdentifier.trim()) {
       setFormError("患者識別（IDまたはイニシャル）を入力してください");
@@ -394,10 +356,19 @@ function ClinicalNotesPage() {
         nextAction: nextAction.trim(),
       };
 
-      const result = saveWorkspaceNote(notePayload, editingNoteId || undefined);
+      const result = saveWorkspaceNote(notePayload, asNew ? undefined : editingNoteId || undefined);
       if (!result.ok) { setFormError(result.error); return; }
       if (!editingNoteId) trackEvent('note_save_success', { destination_type: 'note' });
 
+      const completed = { ...session, editingNoteId: result.id };
+      writeClinicalNoteEditor(completed, session.owner);
+      const handoffCleared = !session.handoffToken || clearDraftPatientNote(session.handoffToken, session.owner);
+      if (handoffCleared && clearClinicalNoteEditor(session.id, session.owner)) {
+        editorRef.current = null; setEditorSession(null); setDraftNotice(null); setEditorError(null);
+      } else {
+        editorRef.current = completed; setEditorSession(completed); setEditingNoteId(result.id);
+        setEditorError('臨床ノートは保存しました。下書きの整理に失敗したため、保存済み記録を確認してください。');
+      }
       setIsNoteModalOpen(false);
     } finally {
       setIsSavingNote(false);
@@ -439,7 +410,7 @@ function ClinicalNotesPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `haritaro_mynote_backup_${new Date().toISOString().split("T")[0]}.json`;
+    a.download = `haritaro_mynote_backup_${clinicalToday()}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -451,7 +422,7 @@ function ClinicalNotesPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `haritaro_patient_notes_${new Date().toISOString().split("T")[0]}.csv`;
+    a.download = `haritaro_patient_notes_${clinicalToday()}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -484,11 +455,11 @@ function ClinicalNotesPage() {
   const handlePickPoint = (pointName: string) => {
     const current = selectedPointsInput.trim();
     if (!current) {
-      setSelectedPointsInput(pointName);
+      changeEditorField("selectedPointsInput", pointName, setSelectedPointsInput);
     } else {
       const points = current.split(/[,、\s]+/).map(p => p.trim()).filter(Boolean);
       if (!points.includes(pointName)) {
-        setSelectedPointsInput(`${current}、 ${pointName}`);
+        changeEditorField("selectedPointsInput", `${current}、 ${pointName}`, setSelectedPointsInput);
       }
     }
   };
@@ -522,7 +493,9 @@ function ClinicalNotesPage() {
       )}
 
       {/* ======================================================== */}
-      {draftNotice && <Link href="/clinical/workspace" className="inline-flex min-h-11 items-center rounded-lg border border-[#C8D4CD] px-4 py-2 font-semibold dark:border-[#496153]">作業中の所見・配穴の理由へ戻って修正 →</Link>}
+      {editorError && <p role="alert" className="rounded-lg border border-[#C06844] p-3 text-sm">{editorError}</p>}
+      {editorSession && !isNoteModalOpen && <div className="rounded-lg border border-[#C8D4CD] p-4"><p>入力途中の臨床ノートをこのタブに保持しています。</p><div className="mt-2 flex flex-wrap gap-3"><button type="button" className="page-primary-action" onClick={() => setIsNoteModalOpen(true)}>下書きを再開する</button><button type="button" className="page-secondary-action" onClick={discardEditor}>この下書きを破棄</button></div></div>}
+      {pendingHandoff && <div role="status" className="rounded-lg border border-[#C8D4CD] p-4"><p>【{pendingHandoff.sourceTool}】から別の引き継ぎが届いています。現在の下書きは保持しています。</p><button type="button" className="page-secondary-action mt-2" onClick={openPendingHandoff}>新しい引き継ぎを開く</button></div>}
       {/* 3. タブ切り替え（臨床ノート / 配穴集） */}
       {/* ======================================================== */}
       <div id="saved-notes" className="scroll-mt-28 space-y-4">
@@ -1055,6 +1028,8 @@ function ClinicalNotesPage() {
               </button>
             </div>
 
+            {editorError && <p role="alert" className="rounded-lg border border-[#C06844] p-3 text-sm">{editorError}</p>}
+            {editorNoteMissing && <p role="alert" className="rounded-lg border border-[#C06844] p-3 text-sm">元の保存済み記録が見つかりません。入力は保持しています。確認後、新しい臨床ノートとして保存できます。</p>}
             {formError && (
               <div className="p-3 rounded-xl bg-red-50 text-red-700 text-sm font-bold border border-red-200">
                 {formError}
@@ -1094,8 +1069,8 @@ function ClinicalNotesPage() {
                       type="text"
                       aria-label="患者識別（番号・イニシャル）"
                       required
-                      value={patientIdentifier}
-                      onChange={(e) => setPatientIdentifier(e.target.value)}
+                      name="patientIdentifier" value={patientIdentifier}
+                      onChange={(e) => changeEditorField("patientIdentifier", e.target.value, setPatientIdentifier)}
                       placeholder="例: PT-001, K.S様"
                       className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-base text-[#232826] dark:text-[#FAF8F5]"
                     />
@@ -1109,8 +1084,8 @@ function ClinicalNotesPage() {
                       type="date"
                       aria-label="来院日"
                       required
-                      value={visitDate}
-                      onChange={(e) => setVisitDate(e.target.value)}
+                      name="visitDate" value={visitDate}
+                      onChange={(e) => changeEditorField("visitDate", e.target.value, setVisitDate)}
                       className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-base text-[#232826] dark:text-[#FAF8F5]"
                     />
                   </div>
@@ -1123,8 +1098,8 @@ function ClinicalNotesPage() {
                   <input
                     type="text"
                     required
-                    value={chiefComplaint}
-                    onChange={(e) => setChiefComplaint(e.target.value)}
+                    name="chiefComplaint" value={chiefComplaint}
+                    onChange={(e) => changeEditorField("chiefComplaint", e.target.value, setChiefComplaint)}
                     placeholder="例: デスクワークによる後頭部痛と目の奥の重さ"
                     className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-base text-[#232826] dark:text-[#FAF8F5]"
                   />
@@ -1135,8 +1110,8 @@ function ClinicalNotesPage() {
                   <div className="space-y-1">
                     <label className="block text-sm font-medium text-[#59615D]">性別（任意）</label>
                     <select
-                      value={gender}
-                      onChange={(e) => setGender(e.target.value as typeof gender)}
+                      name="gender" value={gender}
+                      onChange={(e) => changeEditorField("gender", e.target.value as typeof gender, setGender)}
                       className="w-full p-2 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-sm text-[#232826] dark:text-[#FAF8F5]"
                     >
                       <option value="">未選択</option>
@@ -1149,8 +1124,8 @@ function ClinicalNotesPage() {
                   <div className="space-y-1">
                     <label className="block text-sm font-medium text-[#59615D]">年代（任意）</label>
                     <select
-                      value={ageGroup}
-                      onChange={(e) => setAgeGroup(e.target.value)}
+                      name="ageGroup" value={ageGroup}
+                      onChange={(e) => changeEditorField("ageGroup", e.target.value, setAgeGroup)}
                       className="w-full p-2 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-sm text-[#232826] dark:text-[#FAF8F5]"
                     >
                       <option value="">未選択</option>
@@ -1178,8 +1153,8 @@ function ClinicalNotesPage() {
                   </label>
                   <input
                     type="text"
-                    value={constitution}
-                    onChange={(e) => setConstitution(e.target.value)}
+                    name="constitution" value={constitution}
+                    onChange={(e) => changeEditorField("constitution", e.target.value, setConstitution)}
                     placeholder="例: 気滞・肝鬱化火"
                     className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-base text-[#232826] dark:text-[#FAF8F5]"
                   />
@@ -1191,7 +1166,7 @@ function ClinicalNotesPage() {
                         type="button"
                         onClick={() => {
                           const base = tag.split("（")[0];
-                          setConstitution(constitution ? `${constitution}、${base}` : base);
+                          changeEditorField("constitution", constitution ? `${constitution}、${base}` : base, setConstitution);
                         }}
                         className="text-sm px-2 py-1 rounded bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#EBF3EF]"
                       >
@@ -1207,8 +1182,8 @@ function ClinicalNotesPage() {
                   </label>
                   <input
                     type="text"
-                    value={syndrome}
-                    onChange={(e) => setSyndrome(e.target.value)}
+                    name="syndrome" value={syndrome}
+                    onChange={(e) => changeEditorField("syndrome", e.target.value, setSyndrome)}
                     placeholder="例: 肝陽上亢・肝胆経気機不暢"
                     className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-base text-[#232826] dark:text-[#FAF8F5]"
                   />
@@ -1230,8 +1205,8 @@ function ClinicalNotesPage() {
                   </div>
                   <input
                     type="text"
-                    value={selectedPointsInput}
-                    onChange={(e) => setSelectedPointsInput(e.target.value)}
+                    name="selectedPointsInput" value={selectedPointsInput}
+                    onChange={(e) => changeEditorField("selectedPointsInput", e.target.value, setSelectedPointsInput)}
                     placeholder="経穴を入力（例: 太衝、陽陵泉、風池）"
                     className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-base text-[#232826] dark:text-[#FAF8F5]"
                   />
@@ -1251,7 +1226,7 @@ function ClinicalNotesPage() {
                         type="button"
                         onClick={() => {
                           const pts = selectedPointsInput.split(/[,、\s]+/).filter(Boolean).slice(0, 3);
-                          setSelfCarePointsInput(pts.join("、 "));
+                          changeEditorField("selfCarePointsInput", pts.join("、 "), setSelfCarePointsInput);
                         }}
                         className="text-sm font-bold text-[#B86924] dark:text-[#E6C387] hover:underline"
                       >
@@ -1261,8 +1236,8 @@ function ClinicalNotesPage() {
                   </div>
                   <input
                     type="text"
-                    value={selfCarePointsInput}
-                    onChange={(e) => setSelfCarePointsInput(e.target.value)}
+                    name="selfCarePointsInput" value={selfCarePointsInput}
+                    onChange={(e) => changeEditorField("selfCarePointsInput", e.target.value, setSelfCarePointsInput)}
                     placeholder="例: 太衝、百会（空欄の場合はツボ欄のない養生シートになります）"
                     className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-base text-[#232826] dark:text-[#FAF8F5]"
                   />
@@ -1277,8 +1252,8 @@ function ClinicalNotesPage() {
                   </label>
                   <textarea
                     rows={2}
-                    value={treatmentPlan}
-                    onChange={(e) => setTreatmentPlan(e.target.value)}
+                    name="treatmentPlan" value={treatmentPlan}
+                    onChange={(e) => changeEditorField("treatmentPlan", e.target.value, setTreatmentPlan)}
                     placeholder="例: 太衝・風池に瀉法。置針15分。百会に軽微な雀啄。"
                     className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-base text-[#232826] dark:text-[#FAF8F5]"
                   />
@@ -1300,8 +1275,8 @@ function ClinicalNotesPage() {
                   </label>
                   <input
                     type="text"
-                    value={patientReaction}
-                    onChange={(e) => setPatientReaction(e.target.value)}
+                    name="patientReaction" value={patientReaction}
+                    onChange={(e) => changeEditorField("patientReaction", e.target.value, setPatientReaction)}
                     placeholder="例: 頭部の熱感と締め付け感が消失。目の開けやすさを自覚。"
                     className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-base text-[#232826] dark:text-[#FAF8F5]"
                   />
@@ -1313,8 +1288,8 @@ function ClinicalNotesPage() {
                   </label>
                   <textarea
                     rows={3}
-                    value={nextAction}
-                    onChange={(e) => setNextAction(e.target.value)}
+                    name="nextAction" value={nextAction}
+                    onChange={(e) => changeEditorField("nextAction", e.target.value, setNextAction)}
                     placeholder="例: 就寝前のスマホ制限とホットアイマスク指導。足元の冷え対策としてぬるめの足湯を推奨。次回は1週間後。"
                     className="w-full p-2.5 rounded-lg bg-white dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-base text-[#232826] dark:text-[#FAF8F5]"
                   />
@@ -1331,15 +1306,16 @@ function ClinicalNotesPage() {
                   onClick={() => setIsNoteModalOpen(false)}
                   className="px-4 py-2.5 rounded-xl text-sm font-bold text-[#59615D] hover:bg-gray-100 dark:hover:bg-[#1F2C37]"
                 >
-                  キャンセル
+                  閉じて後で続ける
                 </button>
-                <button
+                <button type="button" onClick={discardEditor} className="page-secondary-action">この下書きを破棄</button>
+                {editorNoteMissing ? <button type="button" disabled={isSavingNote || !isReady} onClick={() => handleSaveNote(undefined, true)} className="page-primary-action">新しい臨床ノートとして保存</button> : <button
                   type="submit"
                   disabled={isSavingNote || !isReady}
                   className="px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-[#1E3D34] hover:bg-[#162D26] shadow-md transition-all"
                 >
                   {editingNoteId ? "変更を保存する" : "臨床ノートを保存"}
-                </button>
+                </button>}
               </div>
 
                           {/* 保存先とプライバシーの注記 */}

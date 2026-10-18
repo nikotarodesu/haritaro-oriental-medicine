@@ -48,7 +48,7 @@ export default function HomePage() {
         <section aria-labelledby="home-courses-title" className="home-section">
           <div className="home-section-header">
             <h2 id="home-courses-title" className="home-section-title">最初の4コース</h2>
-            <ContentNavigationLink href="/learn/courses" placement="home_courses" className="ui-text-link">全{LEARNING_COURSES.length}コース<ArrowRight aria-hidden="true" /></ContentNavigationLink>
+            <ContentNavigationLink href="/learn#learn-courses-heading" placement="home_courses" className="ui-text-link">全{LEARNING_COURSES.length}コース<ArrowRight aria-hidden="true" /></ContentNavigationLink>
           </div>
           <LearningCourseCards courses={LEARNING_COURSES.slice(0, 4)} placement="home_course_select" compact />
           <p className="home-course-note ui-muted">読む目安は講義本文の合計です。クイズ・演習の時間は含みません。</p>

@@ -22,6 +22,7 @@
 @import "./clinical-workspace-usability.css";
 @import "./exercises-refinement.css";
 @import "./clinical-menu-refinement.css";
+@import "./tablet-usability.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

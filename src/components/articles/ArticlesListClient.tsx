@@ -100,7 +100,7 @@ export default function ArticlesListClient({ articles }: ArticlesListClientProps
           <div className="mt-auto space-y-2 border-t border-[#F2ECE0] pt-3 dark:border-[#22303D]"><span className="flex min-h-11 items-center justify-between gap-2 text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E]"><span>{article.hasFigures ? "図解と本文を読む" : "記事を読む"}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></span></div>
         </Link>)}</div>}
       </section>
-      <Link href="/learn/courses" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">順番に学びたい方：基礎コースへ<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+      <Link href="/learn#learn-courses-heading" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#9CCBBC]">順番に学びたい方：基礎コースへ<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
     </div>
   );
 }

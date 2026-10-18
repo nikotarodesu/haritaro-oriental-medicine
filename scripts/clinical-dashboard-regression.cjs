@@ -64,10 +64,21 @@ function harness({ initialDraft = null, notes = [], confirm = true, readFail = f
 }
 const original = sampleEncounter();
 let view = harness({ initialDraft: original });
-const resume = nodes(view.tree()).find(node => node.props?.href === '/clinical/workspace' && text(node).includes('下書きを再開'));
+const resume = nodes(view.tree()).find(node => node.props?.href === '/clinical/workspace' && text(node).includes('保持中の下書きを確認'));
 assert(resume && resume.props['data-primary'] === 'true', 'Existing drafts get the primary resume link');
 assert.equal(view.button('新しい記録').props['data-primary'], false);
 assert.equal(view.writes.length, 0, 'Displaying or resuming a draft never replaces it');
+
+const saved = { ...original, savedFingerprint: base.clinicalEncounterFingerprint(original), savedAt: 12345 };
+view = harness({ initialDraft: saved, notes: [sampleNote('pn_existing')] });
+assert(nodes(view.tree()).some(node => node.props?.href === '/clinical/workspace' && text(node).includes('保存済み記録を開く')));
+view.button('新しい記録').props.onClick();
+assert.equal(view.prompts.length, 0, 'A verified saved record does not need a destructive-draft prompt');
+view = harness({ initialDraft: saved, confirm: false });
+assert(nodes(view.tree()).some(node => node.props?.href === '/clinical/workspace' && text(node).includes('保持中の下書きを確認')));
+view.button('新しい記録').props.onClick();
+assert.equal(view.prompts.length, 1, 'A missing saved destination still protects the retained draft');
+assert.equal(view.writes.length, 0);
 
 view = harness();
 assert.equal(view.button('新しい記録').props.disabled, false, 'New-record action becomes available after the draft check');

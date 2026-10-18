@@ -10,6 +10,7 @@ import { localStudyDate } from '@/utils/learningReview';
 import { getCaseLearningNeeds, readCaseLearningRecords } from '@/utils/learningFocus';
 import { getLearningRecommendation } from '@/utils/learningRecommendation';
 import { getHomeLearningEntry } from '@/utils/homeLearningEntry';
+import { LEARNING_COURSES_HREF } from '@/utils/courseJourney';
 import { trackEvent } from '@/utils/analytics';
 import { useRecentTools } from '@/components/home/RecentTools';
 import { useProgressAvailability } from '@/hooks/useProgressAvailability';
@@ -36,7 +37,7 @@ export default function HomeLearningProgressClient({ lectures, supportOnly = fal
   if (supportOnly) return <section aria-label="学習の進捗とツール" className="home-learning-support">
     <div className="home-learning-support-summary">
       {loading ? <p role="status" className="ui-muted">学習履歴を確認中…</p> : unavailable ? <p role="status">学習履歴を読み込めませんでした。保存済みの履歴は削除していません。</p> : <p><span className="home-learning-support-count">{totalCompleted} / {lectures.length}講義完了</span><span className="home-learning-support-source">{isAuthenticated ? status === 'offline' || status === 'setup' ? '端末の履歴を表示中・同期は未完了' : 'ログイン中の履歴' : 'この端末の履歴'}</span></p>}
-      <Link href="/learn" className="ui-text-link">{unavailable ? '学習案内を見る' : '全体の進捗を見る'}<ArrowRight aria-hidden="true" /></Link>
+      <Link href={unavailable ? "/learn" : "/learn#learning-progress"} className="ui-text-link">{unavailable ? '学習案内を見る' : '全体の進捗を見る'}<ArrowRight aria-hidden="true" /></Link>
     </div>
     {unavailable && <p className="home-learning-support-recovery">再読み込みしても改善しない場合は、ブラウザの保存設定をご確認ください。<button type="button" onClick={() => window.location.reload()} className="ui-text-link">再読み込み</button></p>}
     <section aria-labelledby="home-tools-title" className="home-shortcuts">
@@ -72,7 +73,7 @@ export default function HomeLearningProgressClient({ lectures, supportOnly = fal
               <p className="ui-muted">{recommendation.reason}</p>
               <Link href={recommendation.href} onClick={() => trackEvent('context_link_click', { placement: 'learning_start', item_type: recommendation.kind })} className="ui-text-link">{recommendation.action}<ArrowRight aria-hidden="true" /></Link>
               <nav aria-label="学習の別の入口" className="flex flex-wrap gap-x-5 gap-y-1">
-                <Link href="/learn/courses" className="ui-text-link">コース一覧</Link>
+                <Link href={LEARNING_COURSES_HREF} className="ui-text-link">コース一覧</Link>
                 <Link href="/learn/review#learning-review" className="ui-text-link">復習する</Link>
                 <Link href="/notes?tab=learning" className="ui-text-link">学習ノート</Link>
                 <Link href="/simulator#case-training" className="ui-text-link">症例で考える</Link>

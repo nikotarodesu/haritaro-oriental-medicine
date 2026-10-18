@@ -28,7 +28,7 @@ assert.equal(entry(lectures, {}, 'lecture-diagnosis-1').href, `/curriculum/lectu
 assert.equal(entry([...lectures, { id: 'lecture-yinyang-5', title: '各論' }], {}, 'lecture-yinyang-5').href, '/curriculum/lecture-yinyang-5');
 assert(!entry(lectures, {}, 'https://invalid.example').href.includes('invalid'));
 const complete = Object.fromEntries(lectures.map(lecture => [lecture.id, true]));
-assert.equal(entry(lectures, complete, 'lecture-yinyang-4').href, '/learn/courses');
+assert.equal(entry(lectures, complete, 'lecture-yinyang-4').href, '/learn#learn-courses-heading');
 
 // Render the actual primary home action against hydrated and loading progress.
 let progress = { isMounted: false, completedLectures: {}, lastVisitedLectureId: null };
@@ -74,7 +74,7 @@ progress.completedLectures = { 'lecture-yinyang-1': true, 'lecture-yinyang-2': t
 assert(renderStart().includes('href="/curriculum/lecture-yinyang-3?course=yinyang-foundations"'), 'Finishing a lecture advances the primary action within its course');
 progress = { isMounted: true, completedLectures: complete, lastVisitedLectureId: 'lecture-yinyang-4' };
 startMarkup = renderStart();
-assert(startMarkup.includes('復習するコースを選ぶ') && startMarkup.includes('href="/learn/courses"'), 'A learner who completed all lectures chooses a course to review instead of seeing a misleading next-lecture prompt');
+assert(startMarkup.includes('復習するコースを選ぶ') && startMarkup.includes('href="/learn#learn-courses-heading"'), 'A learner who completed all lectures chooses a course to review instead of seeing a misleading next-lecture prompt');
 assert(!startMarkup.includes('続きから学ぶ') && !startMarkup.includes('第1講から始める'));
 progress = { isMounted: false, completedLectures: complete, lastVisitedLectureId: 'lecture-yinyang-2' };
 assert(!renderStart().includes('続きから学ぶ'), 'Unready owner data cannot expose a previous learner resume action');
@@ -109,7 +109,7 @@ assert(renderGuide().includes('クラウドへの同期は未完了'), 'Offline 
 guideSyncStatus = 'local';
 progress = { isMounted: true, completedLectures: complete, lastVisitedLectureId: 'lecture-yinyang-4', totalCompleted: Object.keys(complete).length };
 guideMarkup = renderGuide();
-assert(guideMarkup.includes('復習するコースを選ぶ') && guideMarkup.includes('href="/learn/courses"') && !guideMarkup.includes('続きから学ぶ'), 'All-complete history offers review rather than a nonexistent next lecture');
+assert(guideMarkup.includes('復習するコースを選ぶ') && guideMarkup.includes('href="/learn#learn-courses-heading"') && !guideMarkup.includes('続きから学ぶ'), 'All-complete history offers review rather than a nonexistent next lecture');
 const { SITE_UPDATES } = load('src/config/contentUpdates');
 assert(SITE_UPDATES.length > 3, 'Full update archive remains available');
 console.log('Home and learning-guide entries passed: one primary action, actual first/resume/next/review destinations, loading-owner isolation, unavailable recovery, offline feedback and preserved home hero.');

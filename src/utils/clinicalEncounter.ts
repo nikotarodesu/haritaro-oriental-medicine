@@ -4,7 +4,7 @@ import type { DraftPatientNote } from './draftNote';
 
 export interface ClinicalPointPlan { code: string; role: 'root' | 'branch' | 'other'; reason: string; alternative: string; }
 export interface ClinicalEncounter {
-  savedNoteId?: string;
+  savedNoteId?: string; savedFingerprint?: string; savedAt?: number; interviewMemo?: string;
   version: 1; step: number; patientIdentifier: string; chiefComplaint: string; complaintSlug: string; visitDate: string;
   observations: ClinicalObservations; examinationMemo: string;
   safety: 'unknown' | 'reviewed' | 'refer'; safetyMemo: string;
@@ -28,6 +28,9 @@ export function parseClinicalEncounter(raw: unknown): ClinicalEncounter | null {
   if (!raw || typeof raw !== 'object') return null;
   const value = raw as Record<string, unknown>;
   if (value.savedNoteId !== undefined && (typeof value.savedNoteId !== 'string' || value.savedNoteId.length > 160)) return null;
+  if (value.savedFingerprint !== undefined && (typeof value.savedFingerprint !== 'string' || !/^v1:\d+:[a-f0-9]{16}$/.test(value.savedFingerprint))) return null;
+  if (value.savedAt !== undefined && (typeof value.savedAt !== 'number' || !Number.isFinite(value.savedAt) || value.savedAt < 0)) return null;
+  if (value.interviewMemo !== undefined && (typeof value.interviewMemo !== 'string' || value.interviewMemo.length > 20000)) return null;
   if (value.customCandidates !== undefined && (typeof value.customCandidates !== 'string' || value.customCandidates.length > 2000)) return null;
   if (value.version !== 1 || !Number.isInteger(value.step) || Number(value.step) < 0 || Number(value.step) > 4) return null;
   if (!textFields.every(key => typeof value[key] === 'string' && (value[key] as string).length <= 20000)) return null;
@@ -54,6 +57,19 @@ export function writeClinicalEncounter(encounter: ClinicalEncounter): boolean {
 export function clearClinicalEncounter(): boolean {
   try { sessionStorage.removeItem(encounterStorageKey()); return true; } catch { return false; }
 }
+/** Compact display marker, not an authentication or integrity check. */
+export function clinicalEncounterFingerprint(encounter: ClinicalEncounter): string {
+  const value = { ...encounter, step: 0, savedNoteId: undefined, savedFingerprint: undefined, savedAt: undefined };
+  const text = JSON.stringify(value);
+  let first = 2166136261, second = 5381;
+  for (let index = 0; index < text.length; index++) { const code = text.charCodeAt(index); first = Math.imul(first ^ code, 16777619); second = Math.imul(second, 33) ^ code; }
+  return `v1:${text.length}:${(first >>> 0).toString(16).padStart(8, '0')}${(second >>> 0).toString(16).padStart(8, '0')}`;
+}
+export function clinicalEncounterSaveState(encounter: ClinicalEncounter): 'new' | 'saved' | 'changed' | 'unverified' {
+  if (!encounter.savedNoteId) return 'new';
+  if (!encounter.savedFingerprint) return 'unverified';
+  return encounter.savedFingerprint === clinicalEncounterFingerprint(encounter) ? 'saved' : 'changed';
+}
 /** Read both catalogue choices and an optional free-form hypothesis without changing old drafts. */
 export function clinicalCandidateNames(encounter: Pick<ClinicalEncounter, 'candidateIds' | 'customCandidates'>): string[] {
   const names = encounter.candidateIds.map(id => CLINICAL_PATTERNS.find(pattern => pattern.id === id)?.name).filter((name): name is string => Boolean(name));
@@ -69,7 +85,7 @@ export function clinicalEncounterDraft(encounter: ClinicalEncounter, pointNames:
     sourceTool: '臨床ワークスペース', patientIdentifier: encounter.patientIdentifier, chiefComplaint: encounter.chiefComplaint, visitDate: encounter.visitDate,
     syndrome: clinicalCandidateNames(encounter).join('／'),
     selectedPointsInput: pointNames.join('、'),
-    treatmentPlan: `【安全確認】\n${encounter.safety === 'refer' ? '施術を保留・医療評価を優先' : encounter.safety === 'reviewed' ? '確認した範囲で該当兆候なし（疾患の除外ではない）' : '未確認'}\n${encounter.safetyMemo}\n\n【四診所見】\n${signs}\n補足：${encounter.examinationMemo || '未記入'}\n\n【候補の判断根拠】\n${encounter.rationale || '未記入'}\n治法：${encounter.principle || '保留'}\n\n【配穴の採用理由】\n${pointText || '保留'}\n\n【評価指標】\n指標：${encounter.metric.replaceAll('\n', ' ')}\n施術前（0〜10）：${encounter.before}\n施術直後（0〜10）：${encounter.after}\n生活動作：${encounter.functionMemo}\n\n【施術計画】\n${encounter.plan}\n\n【見立ての修正】\n${encounter.revision || '未記入'}${encounter.previousSummary ? `\n\n【前回からの申し送り】\n${encounter.previousSummary}` : ''}`,
+    treatmentPlan: `【安全確認】\n${encounter.safety === 'refer' ? '施術を保留・医療評価を優先' : encounter.safety === 'reviewed' ? '確認した範囲で該当兆候なし（疾患の除外ではない）' : '未確認'}\n${encounter.safetyMemo}\n\n【四診所見】\n${signs}\n補足：${encounter.examinationMemo || '未記入'}${encounter.interviewMemo ? `\n\n【対面問診メモ】\n${encounter.interviewMemo}` : ''}\n\n【候補の判断根拠】\n${encounter.rationale || '未記入'}\n治法：${encounter.principle || '保留'}\n\n【配穴の採用理由】\n${pointText || '保留'}\n\n【評価指標】\n指標：${encounter.metric.replaceAll('\n', ' ')}\n施術前（0〜10）：${encounter.before}\n施術直後（0〜10）：${encounter.after}\n生活動作：${encounter.functionMemo}\n\n【施術計画】\n${encounter.plan}\n\n【見立ての修正】\n${encounter.revision || '未記入'}${encounter.previousSummary ? `\n\n【前回からの申し送り】\n${encounter.previousSummary}` : ''}`,
     patientReaction: encounter.reaction, nextAction: encounter.nextAction,
   };
 }

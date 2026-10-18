@@ -68,20 +68,21 @@ assert.equal(NATURAL_JAPANESE_EDITORIAL_REVISIONS.length, 93);
 assert.equal(new Set(NATURAL_JAPANESE_EDITORIAL_REVISIONS).size, 93);
 for(const lectureId of NATURAL_JAPANESE_EDITORIAL_REVISIONS) assert(lectureIds.has(lectureId), lectureId);
 // All lecture reading layouts and acupoint pages were revised; this is not a clinical-review date.
-for(const lectureId of lectureIds) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/curriculum/${lectureId}`).lastModified.toISOString().slice(0,10),'2026-10-15',lectureId);
-for(const pathname of ['/tsubo/li4','/tsubo/sp6']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-15',pathname);
+for(const lectureId of lectureIds) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/curriculum/${lectureId}`).lastModified.toISOString().slice(0,10),'2026-10-18',lectureId);
+for(const pathname of ['/tsubo/li4','/tsubo/sp6']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-18',pathname);
 assert.equal(sitemap.find(page=>new URL(page.url).pathname==='/pricing').lastModified.toISOString().slice(0,10),'2026-10-12', 'unchanged pricing revision');
-for(const pathname of ['/symptoms','/diagnosis']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-08',pathname);
+for(const pathname of ['/symptoms']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-08',pathname);
 for(const pathname of ['/learn/review']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname)?.lastModified.toISOString().slice(0,10),'2026-10-15',pathname);
-for(const pathname of ['/glossary','/about','/curriculum','/learn','/library','/learn/courses']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-12',pathname);
-for(const pathname of ['/','/updates','/tsubo','/simulator','/clinical','/practice/haiketsu','/cases']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-18',pathname);
+for(const pathname of ['/glossary','/about','/library']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-12',pathname);
+for(const pathname of ['/','/updates','/tsubo','/simulator','/clinical','/practice/haiketsu','/cases','/learn','/curriculum','/diagnosis','/tsubo/compare']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname).lastModified.toISOString().slice(0,10),'2026-10-18',pathname);
+assert(!sitemap.some(page => new URL(page.url).pathname === '/learn/courses'), 'The merged course index redirects to the learning home instead of appearing in the sitemap');
 assert(!sitemap.some(page => new URL(page.url).pathname === '/kokushi'), 'The retired exam landing page is no longer an indexable sitemap destination');
 for(const article of ARTICLES) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/articles/${article.id}`).lastModified.toISOString().slice(0,10),article.updatedAt);
 const { LEARNING_COURSES, getCourseProgress } = load('src/data/learningCourses');
 const { CURRICULUM_TOTAL_CHAPTERS } = load('src/data/curriculumOutline');
 assert.equal(new Set(LEARNING_COURSES.map(course=>course.slug)).size, CURRICULUM_TOTAL_CHAPTERS);
 for (const course of LEARNING_COURSES) {
- assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/learn/courses/${course.slug}`).lastModified.toISOString().slice(0,10), '2026-10-12', course.slug + ' actual revision date');
+ assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/learn/courses/${course.slug}`).lastModified.toISOString().slice(0,10), '2026-10-18', course.slug + ' actual revision date');
  assert(sitemap.some(page=>page.url===`https://www.haritaro.jp/learn/courses/${course.slug}`),course.slug+' sitemap');
  assert(course.steps.every(step=>lectureIds.has(step.lectureId) && CURRICULUM_QUIZZES[step.lectureId]),course.slug+' live lesson and quiz');
  const complete=Object.fromEntries(course.steps.map(step=>[step.lectureId,'2026-10-03']));

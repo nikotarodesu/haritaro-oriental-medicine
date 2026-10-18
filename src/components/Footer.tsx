@@ -4,7 +4,7 @@ import { ChevronDown } from "lucide-react";
 import BrandLogo from "@/components/brand/BrandLogo";
 
 const groups = [
-  { title: "学ぶ", links: [["/learn", "学習の始め方"], ["/learn/courses", "基礎コース"], ["/learn/review", "講義の復習"], ["/articles", "解説記事"], ["/library", "古典・論文"]] },
+  { title: "学ぶ", links: [["/learn", "学習ホーム"], ["/curriculum", "全講義の目次"], ["/learn/review", "講義の復習"], ["/articles", "解説記事"], ["/library", "古典・論文"]] },
   { title: "調べる・記録する", links: [["/tsubo", "経穴辞典"], ["/glossary", "用語集"], ["/clinical", "臨床ツール"], ["/notes", "マイノート"], ["/symptoms", "セルフケア"]] },
   { title: "運営・出典", links: [["/about", "運営者について"], ["/editorial-policy", "出典・専門確認の状況"], ["/safety", "受診の目安・安全性"], ["/updates", "更新情報"], ["/contact", "お問い合わせ"]] },
 ];

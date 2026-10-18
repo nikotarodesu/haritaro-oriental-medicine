@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
 import { useRouter } from "next/navigation";
@@ -34,6 +34,9 @@ import {
 } from "lucide-react";
 import GorouWorkstyleChecker from "@/components/GorouWorkstyleChecker";
 import { saveDraftPatientNote } from "@/utils/draftNote";
+import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
+import { readClinicalEncounter, writeClinicalEncounter, type ClinicalEncounter } from "@/utils/clinicalEncounter";
+import { readClinicalInterview, writeClinicalInterview, clearClinicalInterview, type ClinicalInterviewDraft } from "@/utils/clinicalInterview";
 import { trackEvent } from "@/utils/analytics";
 
 const TYPE_LECTURE_MAP: Record<string, { lectureId: string; lectureTitle: string; conceptName: string }> = {
@@ -98,6 +101,12 @@ interface Props {
 
 export default function DiagnosisClient({ initialTab = "self", relatedArticles }: Props) {
   const router = useRouter();
+  const { clinicalStorageOwner = 'guest' } = useClinicalMemo();
+  const currentOwner = useRef(clinicalStorageOwner);
+  useEffect(() => { currentOwner.current = clinicalStorageOwner; }, [clinicalStorageOwner]);
+  const [loadedOwner, setLoadedOwner] = useState<string | null>(null);
+  const [activeEncounter, setActiveEncounter] = useState<ClinicalEncounter | null>(null);
+  const [handoffError, setHandoffError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"self" | "clinical" | "gorou">(initialTab);
 
   // セルフチェック用State
@@ -118,6 +127,24 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
     applicableSymptoms: string[];
   } | null>(null);
 
+  const interviewRef = useRef<ClinicalInterviewDraft>({ patientIdentifier: '', statuses: {}, notes: {} });
+  useEffect(() => {
+    if (!clinicalStorageOwner) return;
+    const owner = clinicalStorageOwner;
+    const timer = setTimeout(() => {
+      if (currentOwner.current !== owner) return;
+      const encounter = readClinicalEncounter();
+      const draft = readClinicalInterview(owner) || { patientIdentifier: encounter.encounter?.patientIdentifier || '', statuses: {}, notes: {} };
+      interviewRef.current = draft; setPatientIdentifier(draft.patientIdentifier); setQuestionStatuses(draft.statuses); setQuestionNotes(draft.notes);
+      setClinicalResult(null); setIsPatientModalOpen(false); setPatientModalData(null); setActiveEncounter(encounter.encounter); setHandoffError(encounter.error); setLoadedOwner(owner);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [clinicalStorageOwner]);
+  const retainInterview = (patch: Partial<ClinicalInterviewDraft>) => {
+    if (!clinicalStorageOwner || currentOwner.current !== clinicalStorageOwner || loadedOwner !== clinicalStorageOwner) return;
+    const next = { ...interviewRef.current, ...patch }; interviewRef.current = next;
+    setHandoffError(writeClinicalInterview(next, clinicalStorageOwner) ? null : '問診の下書きを保存できませんでした。入力はこの画面で保持しています。保存設定を確認してください。');
+  };
   const resultRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToResult = () => {
@@ -213,11 +240,15 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
 
   // --- 対面問診ハンドラー ---
   const handleSetQuestionStatus = (id: number, status: QuestionStatus) => {
-    setQuestionStatuses((prev) => ({ ...prev, [id]: status }));
+    if (!clinicalStorageOwner || currentOwner.current !== clinicalStorageOwner || loadedOwner !== clinicalStorageOwner) return;
+    const statuses = { ...interviewRef.current.statuses, [id]: status };
+    setQuestionStatuses(statuses); setClinicalResult(null); retainInterview({ statuses });
   };
 
   const handleSetQuestionNote = (id: number, note: string) => {
-    setQuestionNotes((prev) => ({ ...prev, [id]: note }));
+    if (!clinicalStorageOwner || currentOwner.current !== clinicalStorageOwner || loadedOwner !== clinicalStorageOwner) return;
+    const notes = { ...interviewRef.current.notes, [id]: note };
+    setQuestionNotes(notes); retainInterview({ notes });
   };
 
   // 進捗集計
@@ -280,6 +311,8 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
       if (!ok) return;
     }
 
+    if (!clinicalStorageOwner || currentOwner.current !== clinicalStorageOwner || loadedOwner !== clinicalStorageOwner || !clearClinicalInterview(clinicalStorageOwner)) { setHandoffError('問診の下書きを破棄できませんでした。保存設定を確認してください。'); return; }
+    interviewRef.current = { patientIdentifier: '', statuses: {}, notes: {} };
     setPatientIdentifier("");
     setQuestionStatuses({});
     setQuestionNotes({});
@@ -291,6 +324,7 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
   const handleSaveToNoteDraft = (isFromClinicalMode = false) => {
     const curResult = isFromClinicalMode ? clinicalResult : selfResult;
     if (!curResult) return;
+    if (!clinicalStorageOwner || currentOwner.current !== clinicalStorageOwner || loadedOwner !== clinicalStorageOwner) { setHandoffError('保存先の確認が完了していません。確認してからもう一度お試しください。'); return; }
 
     let complaints = curResult.symptoms.slice(0, 3).join("、");
     if (isFromClinicalMode && applicableQuestions.length > 0) {
@@ -308,14 +342,30 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
           .join("\n")
       : "";
 
-    saveDraftPatientNote({
-      sourceTool: "気血水体質チェック",
+    if (isFromClinicalMode && activeEncounter) {
+      const stored = readClinicalEncounter();
+      if (stored.error || !stored.encounter) { setHandoffError(stored.error || '作業中の記録が見つかりません。臨床ホームで記録を確認してください。'); return; }
+      const target = stored.encounter;
+      if (target.patientIdentifier && target.patientIdentifier.trim() !== patientIdentifier.trim()) { setHandoffError('作業中の記録と問診の匿名IDが異なります。別の記録へ反映しないよう、匿名IDを確認してください。'); return; }
+      const statusLabels = { unconfirmed: '未確認', applicable: '該当あり', not_applicable: '確認して該当なし', unknown: '不明' };
+      const interviewMemo = `匿名ID：${patientIdentifier.trim() || '未入力'}
+${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questionStatuses[question.id] || 'unconfirmed']}${questionNotes[question.id]?.trim() ? '\n補足：' + questionNotes[question.id] : ''}`).join('\n\n')}
+
+回答上の分類：${curResult.name}
+※質問票の回答傾向です。所見と医学的評価を合わせて確認してください。`;
+      if (interviewMemo.length > 20000) { setHandoffError('問診メモが長いため反映できません。メモを整理してから、もう一度お試しください。'); return; }
+      if (!writeClinicalEncounter({ ...target, patientIdentifier: target.patientIdentifier || patientIdentifier.trim(), chiefComplaint: target.chiefComplaint || complaints, interviewMemo, step: 1 })) { setHandoffError('作業中の記録へ反映できませんでした。問診入力は保持しています。保存設定を確認してください。'); return; }
+      router.push('/clinical/workspace'); return;
+    }
+    const retained = saveDraftPatientNote({
+      sourceTool: isFromClinicalMode ? "対面問診メモ" : "気血水体質チェック",
       patientIdentifier: isFromClinicalMode && patientIdentifier.trim() ? patientIdentifier.trim() : undefined,
       constitution: curResult.name,
       chiefComplaint: complaints,
       selectedPointsInput: curResult.advice.tsubo.join(", "),
       treatmentPlan: `【気血水${isFromClinicalMode ? "対面問診" : "体質チェック"}結果】\n体質傾向: ${curResult.name}（${curResult.reading}）\n状態のまとめ: ${curResult.summary}\n${notesSummary ? `\n【問診時の臨床メモ】\n${notesSummary}\n` : ""}\n推奨生活養生: ${curResult.advice.lifestyle}\n推奨食材: ${curResult.advice.food.join("、")}\n※本内容は回答傾向から整理した臨床下書き情報です。診察・判断に基づき加筆修正してください。`,
-    });
+    }, clinicalStorageOwner);
+    if (!retained) { setHandoffError("引き継ぎを保存できませんでした。入力は保持しています。保存設定を確認して、もう一度お試しください。"); return; }
     router.push("/notes");
   };
 
@@ -355,6 +405,8 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
     });
     setIsPatientModalOpen(true);
   };
+
+  if (activeTab === "clinical" && (!clinicalStorageOwner || loadedOwner !== clinicalStorageOwner)) return <p role="status" className="page-layout">このアカウントの問診下書きを確認しています…</p>;
 
   return (
     <div className="page-layout space-y-6">
@@ -759,6 +811,7 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
       {/* ============================================================== */}
       {/* 2. 対面問診モード（臨床家・患者用） */}
       {/* ============================================================== */}
+      {handoffError && <p role="alert" className="rounded-lg border border-[#C06844] p-3 text-sm">{handoffError}</p>}
       {activeTab === "clinical" && (
         <div className="space-y-6 sm:space-y-8 animate-fadeIn max-w-4xl mx-auto">
           {/* ヘッダー・導入 */}
@@ -789,6 +842,8 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
               </button>
             </div>
 
+            {activeEncounter && <div className="rounded-lg border border-[#C8D4CD] p-3 text-sm"><strong>作業中の記録：{activeEncounter.patientIdentifier || '匿名ID未入力'}</strong><p>{activeEncounter.chiefComplaint || '主訴未入力'}</p><p>集計後、この記録の四診所見へ問診メモを反映して戻れます。候補・治法・配穴は保持します。</p><Link className="inline-flex min-h-11 items-center underline" href="/clinical/workspace">反映せず記録へ戻る</Link></div>}
+            <p role="status" className="text-sm">問診の入力はこのタブに下書き保存します。タブを閉じる前に記録へ反映または臨床ノートへ保存してください。</p>
             {/* 患者識別情報入力欄（任意・カルテ番号等） */}
             <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center pt-1">
               <div className="sm:col-span-4">
@@ -797,8 +852,9 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
                 </label>
                 <input
                   type="text"
-                  value={patientIdentifier}
-                  onChange={(e) => setPatientIdentifier(e.target.value)}
+                  name="patientIdentifier" value={patientIdentifier}
+                  maxLength={80}
+                  onChange={(e) => { if (currentOwner.current !== clinicalStorageOwner || loadedOwner !== clinicalStorageOwner) return; setPatientIdentifier(e.target.value); retainInterview({ patientIdentifier: e.target.value }); }}
                   placeholder="例: #1042 / A様"
                   className="w-full px-3 py-2 rounded-xl text-xs bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] focus:outline-none focus:ring-1 focus:ring-[#1E3D34] dark:focus:ring-[#74BA9E] text-[#232826] dark:text-[#FAF8F5]"
                 />
@@ -925,6 +981,7 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
                       type="text"
                       value={note}
                       onChange={(e) => handleSetQuestionNote(q.id, e.target.value)}
+                      maxLength={1000}
                       placeholder="臨床メモ（いつから、悪化要因、患者の訴えなど）"
                       className="w-full text-[11px] bg-transparent border-b border-transparent hover:border-[#D5CCBC] focus:border-[#1E3D34] dark:focus:border-[#74BA9E] focus:outline-none text-[#232826] dark:text-[#FAF8F5] placeholder-[#9CA3AF] py-0.5"
                     />
@@ -1062,10 +1119,10 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
                       </div>
                       <div>
                         <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                          この問診内容を臨床ノートに記録する
+                          {activeEncounter ? '問診メモを作業中の記録へ反映する' : 'この問診内容を臨床ノートに記録する'}
                         </span>
                         <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] block mt-0.5">
-                          患者識別記号・回答結果・臨床メモを下書きとして臨床ノートへ安全に引き継ぎます。
+                          {activeEncounter ? '四診所見へ問診メモを追加します。記録画面で内容を確認して保存してください。' : '患者識別記号・回答結果・臨床メモを下書きとして臨床ノートへ引き継ぎます。'}
                         </span>
                       </div>
                     </div>
@@ -1075,7 +1132,7 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
                       className="px-4 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm whitespace-nowrap cursor-pointer"
                     >
                       <FileText className="w-3.5 h-3.5" />
-                      <span>臨床ノートに残す</span>
+                      <span>{activeEncounter ? 'この記録へ反映して戻る' : '臨床ノートに残す'}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>

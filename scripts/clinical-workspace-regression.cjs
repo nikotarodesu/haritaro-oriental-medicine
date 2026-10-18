@@ -60,7 +60,7 @@ function hookHost() {
 function harness({ initialEncounter = sampleEncounter(), initialNotes = [], failLocal = false, failSession = false, mount = true, localEntries = [], initialLoading = false } = {}) {
   const localValues = new Map([[key, JSON.stringify(initialNotes)], ...localEntries]);
   const sessionValues = new Map(initialEncounter ? [[encounters.CLINICAL_ENCOUNTER_KEY, JSON.stringify(initialEncounter)]] : []);
-  const flags = { failLocal, failSession };
+  const flags = { failLocal, failSession, confirm: true };
   const writes = [], cloudWrites = [], bulkWrites = [], cloudAccounts = new Map(), pendingDownloads = new Map(), pendingUpserts = new Map(), frames = [], focused = [], scrolled = [], groups = new Map(), timers = new Map();
   const auth = { user: null, isPremium: false, isConfigured: false, isLoading: initialLoading };
   let timerId = 0, context, tree, cloudOk = true;
@@ -70,7 +70,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     removeItem(id) { if (flags[kind === 'local' ? 'failLocal' : 'failSession']) throw Error('storage unavailable'); values.delete(id); },
   }; }
   const localStorage = storage(localValues, 'local'), sessionStorage = storage(sessionValues, 'session');
-  const browser = { location: { search: '' }, confirm: () => true };
+  const browser = { location: { search: '' }, confirm: () => flags.confirm };
   const localLoad = createDataLoader({ Intl, sessionStorage, localStorage, window: browser });
   const providerHost = hookHost(), workspaceHost = hookHost();
   const providerExports = {}, workspaceExports = {};
@@ -220,8 +220,25 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.equal(client.context().patientNotes.length, 1); assert.equal(client.note().id, id); assert.equal(client.note().createdAt, createdAt);
     assert.equal(client.note().chiefComplaint, '修正後の首の痛み'); assert.equal(JSON.parse(client.localValues.get(key))[0].chiefComplaint, '修正後の首の痛み');
     const reopened = harness({ initialEncounter: client.encounter(), initialNotes: plain(client.context().patientNotes) });
-    reopened.review(); reopened.click('この記録を更新する');
-    assert.equal(reopened.context().patientNotes.length, 1); assert.equal(reopened.note().id, id, 'Reloaded saved drafts update rather than add');
+    reopened.review(); assert(reopened.button('保存済み').props.disabled, 'An unchanged saved draft remains saved after reload');
+    reopened.click('主訴・安全確認を修正'); reopened.change('主訴', '再読込後に更新した主訴'); reopened.review(); reopened.click('この記録を更新する');
+    assert.equal(reopened.context().patientNotes.length, 1); assert.equal(reopened.note().id, id, 'Reloaded edited drafts update rather than add');
+  });
+  await check('a deleted saved note is never shown as saved or recreated without explicit recovery confirmation', () => {
+    const client = harness(); client.review(); client.click('臨床ノートに保存する');
+    const deletedId = client.note().id;
+    client.context().removePatientNote(deletedId); client.render();
+    assert.equal(client.context().patientNotes.length, 0);
+    assert(text(client.tree()).includes('元の保存済み記録が見つかりません'));
+    assert(!nodes(client.tree()).some(node => node.type === 'button' && text(node) === '保存済み'));
+    const retained = plain(client.encounter());
+    const reopened = harness({ initialEncounter: retained, initialNotes: [] }); reopened.review();
+    reopened.flags.confirm = false; reopened.click('新しい臨床ノートとして保存');
+    assert.equal(reopened.context().patientNotes.length, 0); assert.deepEqual(plain(reopened.encounter()), retained);
+    reopened.flags.confirm = true; reopened.click('新しい臨床ノートとして保存');
+    assert.equal(reopened.context().patientNotes.length, 1); assert.notEqual(reopened.note().id, deletedId);
+    assert.equal(reopened.note().chiefComplaint, retained.chiefComplaint); assert.equal(reopened.encounter().points[0].reason, retained.points[0].reason);
+    assert(reopened.button('保存済み').props.disabled);
   });
   await check('rapid repeated save events cannot create duplicate records', () => {
     const client = harness(); client.review();
@@ -361,7 +378,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.deepEqual(plain(reopened.candidatePicker().props.selectedIds), ['kidney-yin']);
     assert.equal(reopened.field('その他の候補・併存して考える見立て').props.value, '再評価した併存仮説');
     assert.equal(reopened.field('今回検討する治法').props.value, manual);
-    reopened.review(); reopened.click('この記録を更新する');
+    reopened.review(); assert(reopened.button('保存済み').props.disabled, 'Navigation does not invalidate the saved marker');
     assert.equal(reopened.context().patientNotes.length, 1); assert.equal(reopened.note().id, id);
     assert(reopened.note().treatmentPlan.includes(manual));
     const backup = JSON.parse(reopened.context().exportAllDataAsJson());

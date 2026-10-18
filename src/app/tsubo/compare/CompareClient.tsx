@@ -5,15 +5,11 @@ import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
 import { useSearchParams } from "next/navigation";
 import { 
-  ArrowLeft, 
   Search, 
   X, 
   Bookmark, 
-  Check, 
-  Sparkles, 
   Plus, 
   AlertTriangle,
-  BookOpen,
   Printer,
   Crown
 } from "lucide-react";
@@ -106,7 +102,8 @@ function TsuboCompareContent() {
     if (resolved.length > 0) {
       // 無料会員は最大2穴までに切り詰め
       const limited = !isPremium && resolved.length > 2 ? resolved.slice(0, 2) : resolved;
-      setSelectedCodes(limited);
+      const frame = requestAnimationFrame(() => setSelectedCodes(current => current.length === limited.length && current.every((code, index) => code === limited[index]) ? current : limited));
+      return () => cancelAnimationFrame(frame);
     }
   }, [searchParams, isPremium]);
 
@@ -199,7 +196,7 @@ function TsuboCompareContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
+    <div className="tsubo-compare-page min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
       <div className="page-layout page-layout--intro print:hidden">
         <PageIntro compact eyebrow="位置・分類を並べて確認" title="経穴を比べる" description="収録した32穴から2〜3穴を選び、位置・要穴・伝統的な主治を比較します。" art="points">
             <div className="page-actions">
@@ -326,6 +323,7 @@ function TsuboCompareContent() {
           )}
         </div>
 
+        <p id="tsubo-compare-scroll-hint" className="tsubo-compare-scroll-hint">表は上下左右にスクロールできます。経穴名と比較項目を固定して表示します。</p>
         {/* 横並び比較マトリクステーブル */}
         <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] overflow-hidden shadow-sm">
           {selectedTsubos.length === 0 ? (
@@ -333,15 +331,16 @@ function TsuboCompareContent() {
               比較するツボが選択されていません。上部のプリセットまたは検索から追加してください。
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs sm:text-sm">
+            <div className="tsubo-compare-scroll" tabIndex={0} role="region" aria-label="選択した経穴の比較表。上下左右にスクロールできます" aria-describedby="tsubo-compare-scroll-hint">
+              <table className="tsubo-compare-table w-full text-left border-collapse text-xs sm:text-sm">
+                <caption className="sr-only">選択した経穴を所属経絡・要穴・位置・学習上の補足・注意事項で比較</caption>
                 <thead>
                   <tr className="bg-[#FAF8F5] dark:bg-[#131B22] border-b border-[#E5DEC9] dark:border-[#2A3B4A]">
-                    <th className="p-4 w-32 sm:w-44 font-bold text-[#737C77] dark:text-[#8899A6]">
+                    <th scope="col" className="p-4 w-32 sm:w-44 font-bold text-[#737C77] dark:text-[#8899A6]">
                       比較項目
                     </th>
                     {selectedTsubos.map((t, idx) => (
-                      <th key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] min-w-[260px]">
+                      <th scope="col" key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] min-w-[260px]">
                         <div className="space-y-3">
                           <div className="flex items-start justify-between">
                             <div>
@@ -406,9 +405,9 @@ function TsuboCompareContent() {
                   
                   {/* 所属経絡 */}
                   <tr>
-                    <td className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
+                    <th scope="row" className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
                       所属経絡
-                    </td>
+                    </th>
                     {selectedTsubos.map(t => (
                       <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A]">
                         <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">{t.meridian}</span>
@@ -419,9 +418,9 @@ function TsuboCompareContent() {
 
                   {/* 要穴区分 */}
                   <tr>
-                    <td className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
+                    <th scope="row" className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
                       要穴・特異性
-                    </td>
+                    </th>
                     {selectedTsubos.map(t => (
                       <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A]">
                         {t.category && t.category.length > 0 ? (
@@ -441,9 +440,9 @@ function TsuboCompareContent() {
 
                   {/* 取穴法（骨度法・解剖） */}
                   <tr>
-                    <td className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
+                    <th scope="row" className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
                       取穴法（場所）
-                    </td>
+                    </th>
                     {selectedTsubos.map(t => (
                       <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1">
                         <p className="text-xs text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
@@ -458,9 +457,9 @@ function TsuboCompareContent() {
 
                   {/* 主治・適応症 */}
                   <tr>
-                    <td className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
+                    <th scope="row" className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
                       伝統的な主治
-                    </td>
+                    </th>
                     {selectedTsubos.map(t => (
                       <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A]">
                         <div className="flex flex-wrap gap-1">
@@ -476,9 +475,9 @@ function TsuboCompareContent() {
 
                   {/* 臨床知見（ワンポイント） */}
                   <tr>
-                    <td className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
+                    <th scope="row" className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
                       学習上の補足
-                    </td>
+                    </th>
                     {selectedTsubos.map(t => (
                       <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                         {t.clinicalNote}
@@ -488,9 +487,9 @@ function TsuboCompareContent() {
 
                   {/* 注意・禁忌 */}
                   <tr>
-                    <td className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
+                    <th scope="row" className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
                       禁忌・注意事項
-                    </td>
+                    </th>
                     {selectedTsubos.map(t => (
                       <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] text-xs">
                         {t.caution ? (

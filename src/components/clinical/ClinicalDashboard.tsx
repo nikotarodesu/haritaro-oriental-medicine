@@ -6,12 +6,12 @@ import { useEffect, useState } from 'react';
 import { ArrowRight, ClipboardPenLine, FileClock, GitCompareArrows, History, Plus, ScanLine, ShieldCheck } from 'lucide-react';
 import { CLINICAL_COMPLAINTS } from '@/data/clinicalWorkflow';
 import { useClinicalMemo } from '@/contexts/ClinicalMemoContext';
-import { clinicalFollowup, emptyClinicalEncounter, readClinicalEncounter, writeClinicalEncounter, type ClinicalEncounter } from '@/utils/clinicalEncounter';
+import { clinicalFollowup, clinicalEncounterSaveState, emptyClinicalEncounter, readClinicalEncounter, writeClinicalEncounter, type ClinicalEncounter } from '@/utils/clinicalEncounter';
 import type { PatientNoteItem } from '@/types/clinicalMemo';
 import { ClinicalComplaintIcon, ClinicalHeroArtwork } from './ClinicalArtwork';
 
 export default function ClinicalDashboard() {
-  const { patientNotes, clinicalStorageOwner = 'guest' } = useClinicalMemo();
+  const { patientNotes, isReady = true, clinicalStorageOwner = 'guest' } = useClinicalMemo();
   const [loadedOwner, setLoadedOwner] = useState<string | null>(null);
   const router = useRouter();
   const [draft, setDraft] = useState<ClinicalEncounter | null>(null);
@@ -49,7 +49,8 @@ export default function ClinicalDashboard() {
   const startNew = () => {
     const stored = readClinicalEncounter();
     if (stored.error) { setError(stored.error + ' 下書きを確認してから新しい記録を始めてください。'); return; }
-    if (stored.encounter && !window.confirm('作業中の下書きを置き換えて、新しい記録を始めますか？保存済みの臨床ノートは残ります。')) return;
+    const fullySaved = stored.encounter && isReady && patientNotes.some(note => note.id === stored.encounter?.savedNoteId) && clinicalEncounterSaveState(stored.encounter) === 'saved';
+    if (stored.encounter && !fullySaved && !window.confirm('作業中の下書きを置き換えて、新しい記録を始めますか？保存済みの臨床ノートは残ります。')) return;
     if (!writeClinicalEncounter(emptyClinicalEncounter())) { setError('新しい下書きを保存できませんでした。現在の記録はそのままです。'); return; }
     router.push('/clinical/workspace');
   };
@@ -62,6 +63,8 @@ export default function ClinicalDashboard() {
     router.push('/clinical/workspace');
   };
 
+  const savedNoteMissing = Boolean(isReady && draft?.savedNoteId && !patientNotes.some(note => note.id === draft.savedNoteId));
+  const draftState = draft?.savedNoteId && !isReady ? 'checking' : savedNoteMissing ? 'missing' : draft ? clinicalEncounterSaveState(draft) : 'new';
   const ownerMatches = Boolean(clinicalStorageOwner && loadedOwner === clinicalStorageOwner);
   return <section className="clinical-dashboard" aria-label="鍼灸師の臨床ホーム">
     <div className="clinical-hero">
@@ -77,7 +80,7 @@ export default function ClinicalDashboard() {
       <div className="clinical-section-heading"><h2 id="clinical-record-heading">臨床記録</h2></div>
       <nav aria-label="記録を始める・再開する" className="clinical-record-actions">
         {ownerMatches && draft && <Link href="/clinical/workspace" className="clinical-record-action" data-primary="true">
-          <FileClock aria-hidden="true" /><span><strong>下書きを再開する</strong><small>{draft.patientIdentifier || '匿名ID未入力'} · {draft.chiefComplaint || '主訴未入力'}</small></span><ArrowRight aria-hidden="true" />
+          <FileClock aria-hidden="true" /><span><strong>{draftState === 'checking' ? '保存先を確認中の記録を開く' : draftState === 'missing' ? '保持中の下書きを確認する' : draftState === 'saved' ? '保存済み記録を開く' : draftState === 'changed' ? '変更途中の記録を再開する' : draftState === 'unverified' ? '保存済み記録を再編集する' : '下書きを再開する'}</strong><small>{draft.patientIdentifier || '匿名ID未入力'} · {draft.chiefComplaint || '主訴未入力'}{draft.savedAt && draftState === 'saved' ? ' · ' + new Date(draft.savedAt).toLocaleString('ja-JP') + ' 保存' : ''}</small></span><ArrowRight aria-hidden="true" />
         </Link>}
         <button type="button" onClick={startNew} disabled={!draftChecked || !ownerMatches} className="clinical-record-action" data-primary={!draft || !ownerMatches}>
           <Plus aria-hidden="true" /><span><strong>新しい記録を始める</strong><small>{draftChecked && ownerMatches ? '主訴・安全確認から入力する' : '下書きを確認しています…'}</small></span><ArrowRight aria-hidden="true" />

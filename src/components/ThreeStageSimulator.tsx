@@ -48,6 +48,7 @@ import {
   ComprehensiveDiagnosis
 } from "@/data/simulatorData";
 import { saveDraftPatientNote } from "@/utils/draftNote";
+import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import type { SafetyReview } from "@/data/simulatorReasoning";
 import { ACUPOINT_LOOKUP as TSUBOS } from "@/data/acupointLookup";
 import { Tsubo } from "@/types/oriental";
@@ -185,6 +186,7 @@ function getRelatedLectures(
 
 export default function ThreeStageSimulator() {
   const router = useRouter();
+  const { clinicalStorageOwner = 'guest' } = useClinicalMemo();
   // ステップ1: 八綱
   const [depth, setDepth] = useState<DepthType>("interior");
   const [temp, setTemp] = useState<TemperatureType>("heat");
@@ -263,14 +265,15 @@ export default function ThreeStageSimulator() {
       ? `${diagnosis.syndromeName}（兼 ${secConfig.label}）` 
       : diagnosis.syndromeName;
 
-    saveDraftPatientNote({
+    const retained = clinicalStorageOwner && saveDraftPatientNote({
       sourceTool: "臨床弁証シミュレーター",
       syndrome: fullSyndrome,
       constitution: `一文の証: ${diagnosis.oneSentenceFormula}${secConfig ? ` ＋ 随証（${secConfig.label}）` : ""}`,
       chiefComplaint: `八綱・気血水・臓腑経絡の推論（${diagnosis.summary}）`,
       selectedPointsInput: pointsStr,
       treatmentPlan: `【臨床弁証シミュレーター推論】\n証名候補: ${fullSyndrome}\n治則: ${diagnosis.treatmentPrinciple.rule}\n介入戦略: ${diagnosis.treatmentPrinciple.strategy}${primaryOpt ? `\n【主病態への配穴候補】: ${primaryOpt.pairName}（${primaryOpt.intendedEffect}）` : ""}${secConfig ? `\n【補助的な病態への配穴候補】: ${secConfig.pairName}（${secConfig.primary}・${secConfig.secondary} / ${secConfig.desc}）` : ""}\n※本内容はシミュレーターによる推論候補・下書きです。確定診断としてではなく、臨床家の所見に基づき編集してご活用ください。`,
-    });
+    }, clinicalStorageOwner);
+    if (!retained) { window.alert('下書きを引き継げませんでした。入力は保持しています。保存先とブラウザの保存設定を確認してください。'); return; }
 
     trackEvent("tool_complete", {
       tool_id: "simulator",

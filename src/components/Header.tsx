@@ -20,8 +20,7 @@ type Dropdown = "learn" | "clinical" | "account";
 interface HeaderLink { id?: NavItemId; href: string; label: string; description?: string; icon?: LucideIcon; }
 
 const LEARN_LINKS: readonly HeaderLink[] = [
-  { href: "/learn", label: "学習の始め方", description: "コース・演習から選ぶ" },
-  { href: "/learn/courses", label: "基礎コース", description: "全11コース" },
+  { href: "/learn", label: "学習ホーム", description: "続き・進捗・11コース" },
   { href: "/learn/review#learning-review", label: "今日の復習" },
   { href: "/notes?tab=learning", label: "学習ノート", icon: NotebookPen },
   { href: "/curriculum", label: "カリキュラム" },
@@ -44,7 +43,7 @@ const ACCOUNT_LINKS: readonly HeaderLink[] = [
   { href: "/contact", label: "お問い合わせ" },
 ];
 const NAV_ICONS: Record<string, LucideIcon> = {
-  "/learn": GraduationCap, "/learn/courses": BookOpen, "/learn/review#learning-review": History,
+  "/learn": GraduationCap, "/learn/review#learning-review": History,
   "/curriculum": Layers3, "/learn/review": FileQuestion, "/library": Library, "/articles": BookOpen,
   "/clinical": ClipboardPenLine, "/clinical/workspace": NotebookPen, "/simulator": GitCompareArrows,
   "/practice/haiketsu": ScanLine, "/cases": FileQuestion, "/diagnosis": Activity,
@@ -120,6 +119,10 @@ export default function Header() {
   const dictionaryActive = navigationSection === "dictionary";
   const accountActive = navigationSection === "account";
 
+  const syncNavigationLayout = useCallback(() => {
+    // The header CSS decides the layout; the lower shortcuts follow the visible control.
+    document.documentElement.dataset.navigationLayout = menuButtonRef.current?.getClientRects().length ? "compact" : "wide";
+  }, []);
   const closeNavigation = useCallback(() => { setMobileMenuOpen(false); setOpenDropdown(null); }, []);
   const focusNavigationTrigger = useCallback(() => {
     const previous = menuReturnFocus.current;
@@ -155,12 +158,15 @@ export default function Header() {
   useEffect(() => {
     const header = headerRef.current;
     if (!header) return;
-    const update = () => document.documentElement.style.setProperty("--site-header-height", `${header.getBoundingClientRect().height}px`);
+    const update = () => {
+      document.documentElement.style.setProperty("--site-header-height", `${header.getBoundingClientRect().height}px`);
+      syncNavigationLayout();
+    };
     update();
     const observer = new ResizeObserver(update);
     observer.observe(header);
-    return () => observer.disconnect();
-  }, []);
+    return () => { observer.disconnect(); delete document.documentElement.dataset.navigationLayout; };
+  }, [syncNavigationLayout]);
   const openSearch = useCallback((query = "") => {
     const focused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     searchReturnFocus.current = focused && document.getElementById(SITE_MENU_ID)?.contains(focused) ? menuReturnFocus.current : focused;
@@ -232,6 +238,7 @@ export default function Header() {
     const checkLayout = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
+        syncNavigationLayout();
         if (!menuButtonRef.current?.getClientRects().length) {
           if (document.getElementById(SITE_MENU_ID)?.contains(document.activeElement)) focusNavigationTrigger();
           setMobileMenuOpen(false);
@@ -239,11 +246,17 @@ export default function Header() {
         if (!desktopSearchRef.current?.getClientRects().length) setOpenDropdown(null);
       });
     };
+    const onFontTransitionEnd = (event: TransitionEvent) => {
+      // A rem-based container query can switch after the root font transition,
+      // while the header's fixed minimum height stays unchanged.
+      if (event.target === document.documentElement && event.propertyName === "font-size") checkLayout();
+    };
     const observer = new MutationObserver(checkLayout);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-font-size"] });
     window.addEventListener("resize", checkLayout);
-    return () => { cancelAnimationFrame(frame); observer.disconnect(); window.removeEventListener("resize", checkLayout); };
-  }, [focusNavigationTrigger]);
+    document.addEventListener("transitionend", onFontTransitionEnd);
+    return () => { cancelAnimationFrame(frame); observer.disconnect(); window.removeEventListener("resize", checkLayout); document.removeEventListener("transitionend", onFontTransitionEnd); };
+  }, [focusNavigationTrigger, syncNavigationLayout]);
 
   const toggleDropdown = (dropdown: Dropdown, focusFirst = false) => {
     setMobileMenuOpen(false);

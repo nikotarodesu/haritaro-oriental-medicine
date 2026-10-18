@@ -48,6 +48,12 @@ import { createCourseLectureHref, getCourseNextAction, type CourseJourney } from
 import { buildLearningReflectionHref } from "@/utils/learningReflection";
 import ClinicalLectureApplication from "@/components/clinical/ClinicalLectureApplication";
 import { getLectureShortcut } from "@/utils/lectureKeyboardNavigation";
+import { revealLectureSection } from "@/utils/lectureAnchors";
+
+function lectureFragmentTarget(fragment: string): HTMLElement | null {
+  try { return fragment ? document.getElementById(decodeURIComponent(fragment.replace(/^#/, ''))) : null; }
+  catch { return null; }
+}
 
 interface Props {
   lecture: Lecture;
@@ -63,6 +69,7 @@ interface Props {
 export default function CurriculumLectureReader({ lecture, lectureNavigation, relatedReadingLinks = [], quiz, resolvedReferences, reviewQuestions, chapterAssessment, conceptArt = null }: Props) {
   const articleTopRef = useRef<HTMLDivElement | null>(null);
   const [focusBanner, setFocusBanner] = useState<string | null>(null);
+  const [noteSaveError, setNoteSaveError] = useState<{ lectureId: string; message: string } | null>(null);
   const [resolvedCourse, setResolvedCourse] = useState<{ lectureId: string; journey: CourseJourney | null } | null>(null);
   const courseJourney = resolvedCourse?.lectureId === lecture.id ? resolvedCourse.journey : null;
   const isClinicalStage = lecture.stageId === "stage-2" || lecture.stageId === "stage-3";
@@ -78,14 +85,19 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
   const allLectures = lectureNavigation;
 
   const handleSaveToNote = () => {
-    trackEvent("curriculum_save_to_note", { lecture_id: lecture.id });
     const sectionName = lecture.seriesTitle || lecture.stageTitle;
-    saveDraftPatientNote({
+    const saved = saveDraftPatientNote({
       sourceTool: "カリキュラム講義",
       chiefComplaint: `講義記録: ${lecture.title}`,
       constitution: sectionName,
       treatmentPlan: `【受講講義】${lecture.title}（${sectionName}）\n\n【講義要約】\n${lecture.summary}\n\n【臨床への応用メモ・臨床所見】\n`,
     });
+    if (!saved) {
+      setNoteSaveError({ lectureId: lecture.id, message: '臨床ノートへの引き継ぎを保存できませんでした。この画面を保持しています。ブラウザの保存設定を確認して、もう一度お試しください。' });
+      return;
+    }
+    setNoteSaveError(null);
+    trackEvent("curriculum_save_to_note", { lecture_id: lecture.id });
     router.push("/notes");
   };
 
@@ -117,6 +129,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           const elements = Array.from(articleTopRef.current?.querySelectorAll("#lecture-content h2, #lecture-content h3, #lecture-content h4, #lecture-content p, #lecture-content strong") || []);
           const target = elements.find((el) => el.textContent?.includes(focusParam));
           if (target) {
+            revealLectureSection(target as HTMLElement);
             target.scrollIntoView({ behavior: "smooth", block: "center" });
             target.classList.add("ring-4", "ring-amber-400", "bg-amber-100/90", "dark:bg-amber-950/90", "rounded-xl", "p-2", "transition-all");
             setTimeout(() => {
@@ -129,9 +142,9 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
         return () => clearTimeout(timer);
       } else {
         const fragment = window.location.hash.slice(1);
-        let target: HTMLElement | null = null;
-        try { target = fragment ? document.getElementById(decodeURIComponent(fragment)) : null; } catch { /* Invalid fragments fall back to the lecture top. */ }
+        const target = lectureFragmentTarget(fragment);
         if (target && articleTopRef.current?.contains(target)) {
+          revealLectureSection(target);
           target.scrollIntoView({ behavior: "instant", block: "start" });
           return;
         }
@@ -144,6 +157,17 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
       }
     }
   }, [lecture?.id]);
+
+  useEffect(() => {
+    const revealHashTarget = () => {
+      const target = lectureFragmentTarget(window.location.hash);
+      if (!target || !articleTopRef.current?.contains(target)) return;
+      revealLectureSection(target);
+      target.scrollIntoView({ behavior: 'instant', block: 'start' });
+    };
+    window.addEventListener('hashchange', revealHashTarget);
+    return () => window.removeEventListener('hashchange', revealHashTarget);
+  }, []);
 
   const router = useRouter();
 
@@ -253,7 +277,11 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
       <Suspense fallback={null}><CourseJourneyResolver lectureId={lecture.id} onResolve={setResolvedCourse} /></Suspense>
 
       {/* 講義テキスト本体 */}
-      <article className="lecture-article bg-white dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] px-3.5 py-6 sm:p-10 shadow-xs space-y-6 transition-colors">
+      <article className="lecture-article bg-white dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] px-3.5 py-6 sm:p-10 shadow-xs space-y-6 transition-colors" onClickCapture={event => {
+        const href = (event.target as HTMLElement).closest?.('a[href^="#"]')?.getAttribute('href');
+        const target = href ? lectureFragmentTarget(href) : null;
+        if (target && articleTopRef.current?.contains(target)) revealLectureSection(target);
+      }}>
         {/* 講義ヘッダー */}
         <div className="lecture-header border-b border-[#F2ECE0] dark:border-[#22303D] pb-5 space-y-3">
           <div className="curriculum-lecture-heading">
@@ -370,11 +398,97 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
         />
         </div>
 
+        {/* レッスン理解度チェック（クイズ演習） */}
+        {quiz && (
+          <section id="lecture-quiz" aria-label="理解度チェック" className="scroll-mt-28">
+          <InteractiveQuiz
+            quiz={quiz}
+            courseJourney={courseJourney}
+            nextLecture={
+              nextLecture
+                ? {
+                    id: nextLecture.id,
+                    title: nextLecture.title,
+                  }
+                : null
+            }
+          />
+          </section>
+        )}
+
+        {/* 講義受講修了フッター */}
+        <div className="curriculum-lecture-completion border-t border-[#F2ECE0] dark:border-[#22303D] pt-6">
+          <div className="curriculum-lecture-primary-actions">
+            <button
+              type="button"
+              disabled={!isMounted}
+              aria-pressed={isCompleted}
+              onClick={() => { if (isMounted) toggleLectureCompleted(lecture.id); }}
+              className={`min-h-[44px] px-4 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 cursor-pointer disabled:cursor-wait disabled:opacity-60 shadow-xs ${
+                isCompleted
+                  ? "bg-emerald-600 hover:bg-emerald-500 text-white"
+                  : "bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700"
+              }`}
+            >
+              <CheckCircle2 className={`w-4 h-4 ${isCompleted ? "text-white" : "text-slate-400"}`} />
+              <span>
+                {!isMounted ? "進捗を確認中…" : isCompleted ? "受講完了（解除する）" : "受講済みにする"}
+              </span>
+            </button>
+            {courseJourney && courseNextAction && <Link href={courseNextAction.href}
+              onClick={() => trackEvent("context_link_click", { placement: courseNextAction.kind === 'complete' ? 'course_complete_return' : 'course_continue', course_id: courseJourney.course.slug, lecture_id: courseNextAction.lectureId })}
+              className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#184F49] px-4 py-3 text-base font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-4 dark:bg-[#285F54]">
+              <span>{courseNextAction.label}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+            </Link>}
+            {!courseJourney && (nextLecture ? (
+              <Link
+                href={`/curriculum/${nextLecture.id}`}
+                className="curriculum-next-lecture curriculum-next-lecture--primary min-h-[44px] px-5 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+                title="次のレッスンへ（ショートカット: ] キー）"
+              >
+                <ChapterEmblem seriesId={nextLecture.seriesId} className="curriculum-adjacent-emblem" />
+                <span>次のレッスン</span>
+                <ArrowRight aria-hidden="true" className="w-4 h-4" />
+              </Link>
+            ) : (
+              <Link
+                href="/curriculum"
+                className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#B86924] hover:bg-[#9E571B] text-white text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+              >
+                <span>全講義の一覧へ</span>
+                <Sparkles className="w-4 h-4" />
+              </Link>
+            ))}
+          </div>
+
+          <nav aria-label="全講義の移動" className="curriculum-lecture-secondary-nav">
+            {prevLecture && allLecturesPreviousHref && allLecturesPreviousHref !== continuationHref && <Link
+              href={allLecturesPreviousHref}
+              title={courseJourney ? undefined : "前のレッスンへ（ショートカット: [ キー）"}
+            >
+              <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+              <ChapterEmblem seriesId={prevLecture.seriesId} className="curriculum-adjacent-emblem" />
+              <span>{courseJourney ? '全講義の前のレッスン' : '前のレッスン'}</span>
+            </Link>}
+            {continuationHref !== "/curriculum" && <Link href="/curriculum">一覧に戻る</Link>}
+            {courseJourney && nextLecture && allLecturesNextHref && allLecturesNextHref !== continuationHref && <Link href={allLecturesNextHref}>
+              <span>全講義の次のレッスン</span>
+              <ChapterEmblem seriesId={nextLecture.seriesId} className="curriculum-adjacent-emblem" />
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </Link>}
+          </nav>
+        </div>
+
+        <details id="lecture-supplements" className="curriculum-lecture-support">
+          <summary>補足・関連資料・学習の進捗</summary>
+          <div className="space-y-6 py-4">
+        {chapterAssessment && <ChapterAssessment assessment={chapterAssessment} />}
+
         {(isClinicalStage || ['intro', 'zangfu', 'meridians'].includes(lecture.seriesId ?? '')) && <ClinicalLectureApplication lectureId={lecture.id} takeaway={lecture.whatYouWillLearn.canDo} foundation={!isClinicalStage} />}
 
-        <details className="rounded-xl border border-[#E5DEC9] px-4 py-2 dark:border-[#2A3B4A]">
-          <summary className="flex min-h-11 cursor-pointer items-center text-base font-bold text-[#1E3D34] dark:text-[#83BEA8]">この章の講義・コースの進捗</summary>
-          <div className="space-y-4 pb-3 pt-2">
+        <section aria-labelledby="lecture-course-progress-heading" className="space-y-4">
+          <h2 id="lecture-course-progress-heading" className="text-lg font-bold">この章の講義・コースの進捗</h2>
+          <div className="space-y-4">
       {courseJourney && <section aria-label="学習中のコース" className="rounded-2xl border border-[#C5DED4] bg-[#EBF3EF] p-4 text-[#184F49] dark:border-[#2A5243] dark:bg-[#182823] dark:text-[#9CCBBC]">
         <p className="text-sm font-semibold">{courseJourney.course.title} · ステップ {courseJourney.stepIndex + 1} / {courseJourney.course.steps.length}</p>
         <Link href={`/learn/courses/${courseJourney.course.slug}#course-next`} className="mt-2 inline-flex min-h-11 items-center gap-2 text-base font-bold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4"><ArrowLeft aria-hidden="true" className="h-4 w-4" />コースの進捗・到達目標へ</Link>
@@ -433,7 +547,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
       )}
 
           </div>
-        </details>
+        </section>
 
         {articleReadingLinks.length > 0 && (
           <nav aria-label="この講義に関連する記事" className="border-t border-[#E5DEC9] dark:border-[#2A3B4A] pt-5">
@@ -504,88 +618,8 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
           </div>
         )}
 
-        {/* レッスン理解度チェック（クイズ演習） */}
-        {quiz && (
-          <section id="lecture-quiz" aria-label="理解度チェック" className="scroll-mt-28">
-          <InteractiveQuiz
-            quiz={quiz}
-            courseJourney={courseJourney}
-            nextLecture={
-              nextLecture
-                ? {
-                    id: nextLecture.id,
-                    title: nextLecture.title,
-                  }
-                : null
-            }
-          />
-          </section>
-        )}
-
-        {chapterAssessment && <ChapterAssessment assessment={chapterAssessment} />}
-
-        {/* 講義受講修了フッター */}
-        <div className="curriculum-lecture-completion border-t border-[#F2ECE0] dark:border-[#22303D] pt-6">
-          <div className="curriculum-lecture-primary-actions">
-            <button
-              type="button"
-              disabled={!isMounted}
-              aria-pressed={isCompleted}
-              onClick={() => { if (isMounted) toggleLectureCompleted(lecture.id); }}
-              className={`min-h-[44px] px-4 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 cursor-pointer disabled:cursor-wait disabled:opacity-60 shadow-xs ${
-                isCompleted
-                  ? "bg-emerald-600 hover:bg-emerald-500 text-white"
-                  : "bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700"
-              }`}
-            >
-              <CheckCircle2 className={`w-4 h-4 ${isCompleted ? "text-white" : "text-slate-400"}`} />
-              <span>
-                {!isMounted ? "進捗を確認中…" : isCompleted ? "受講完了（解除する）" : "受講済みにする"}
-              </span>
-            </button>
-            {courseJourney && courseNextAction && <Link href={courseNextAction.href}
-              onClick={() => trackEvent("context_link_click", { placement: courseNextAction.kind === 'complete' ? 'course_complete_return' : 'course_continue', course_id: courseJourney.course.slug, lecture_id: courseNextAction.lectureId })}
-              className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#184F49] px-4 py-3 text-base font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-4 dark:bg-[#285F54]">
-              <span>{courseNextAction.label}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
-            </Link>}
-            {!courseJourney && (nextLecture ? (
-              <Link
-                href={`/curriculum/${nextLecture.id}`}
-                className="curriculum-next-lecture curriculum-next-lecture--primary min-h-[44px] px-5 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
-                title="次のレッスンへ（ショートカット: ] キー）"
-              >
-                <ChapterEmblem seriesId={nextLecture.seriesId} className="curriculum-adjacent-emblem" />
-                <span>次のレッスン</span>
-                <ArrowRight aria-hidden="true" className="w-4 h-4" />
-              </Link>
-            ) : (
-              <Link
-                href="/curriculum"
-                className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#B86924] hover:bg-[#9E571B] text-white text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
-              >
-                <span>全講義の一覧へ</span>
-                <Sparkles className="w-4 h-4" />
-              </Link>
-            ))}
           </div>
-
-          <nav aria-label="全講義の移動" className="curriculum-lecture-secondary-nav">
-            {prevLecture && allLecturesPreviousHref && allLecturesPreviousHref !== continuationHref && <Link
-              href={allLecturesPreviousHref}
-              title={courseJourney ? undefined : "前のレッスンへ（ショートカット: [ キー）"}
-            >
-              <ArrowLeft aria-hidden="true" className="h-4 w-4" />
-              <ChapterEmblem seriesId={prevLecture.seriesId} className="curriculum-adjacent-emblem" />
-              <span>{courseJourney ? '全講義の前のレッスン' : '前のレッスン'}</span>
-            </Link>}
-            {continuationHref !== "/curriculum" && <Link href="/curriculum">一覧に戻る</Link>}
-            {courseJourney && nextLecture && allLecturesNextHref && allLecturesNextHref !== continuationHref && <Link href={allLecturesNextHref}>
-              <span>全講義の次のレッスン</span>
-              <ChapterEmblem seriesId={nextLecture.seriesId} className="curriculum-adjacent-emblem" />
-              <ArrowRight aria-hidden="true" className="h-4 w-4" />
-            </Link>}
-          </nav>
-        </div>
+        </details>
 
         {/* 参考文献・学術エビデンス */}
         <ArticleReferences references={resolvedReferences} scopeNote={lecture.evidenceScope} />
@@ -655,6 +689,7 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
               <span>この講義を臨床ノートに記録</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
+            {noteSaveError?.lectureId === lecture.id && <p role="alert" className="w-full text-sm leading-relaxed">{noteSaveError.message}</p>}
           </div>
         </div>}
           </div>
