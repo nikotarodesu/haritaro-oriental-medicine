@@ -11,6 +11,7 @@ const load = createDataLoader({ Intl });
 const encounters = load('src/utils/clinicalEncounter');
 const { persistClinicalNote } = load('src/utils/clinicalNoteSave');
 const { CLINICAL_PATTERNS } = load('src/data/clinicalWorkflow');
+const CandidatePicker = () => null;
 const { SUBSCRIPTION_CONFIG } = load('src/config/subscription');
 const storageScopes = load('src/utils/clinicalStorage');
 const key = storageScopes.clinicalStorageKeys('guest').notes;
@@ -128,6 +129,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     if (id === 'react') return workspaceHost.hooks;
     if (id === 'next/link' || id === '@/components/design/PageIntro' || id === './ClinicalEvidenceKey') return () => null;
     if (id === '@/contexts/ClinicalMemoContext') return { useClinicalMemo: () => context };
+    if (id === './ClinicalCandidatePicker') return CandidatePicker;
     if (id.startsWith('@/')) return localLoad('src/' + id.slice(2));
     return require(id);
   } }, { filename: workspaceSource.file });
@@ -144,6 +146,10 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     click(label) { const button = api.button(label); assert(!button.props.disabled, 'Enabled button: ' + label); button.props.onClick(); api.render(); },
     field(label) { const parent = nodes(tree).find(node => node.type === 'label' && text(node).startsWith(label)); assert(parent, 'Field label ' + label); const input = nodes(parent).find(node => ['input', 'select', 'textarea'].includes(node.type)); assert(input); return input; },
     change(label, value) { api.field(label).props.onChange({ target: { value } }); api.render(); },
+    candidatePicker() { const picker = nodes(tree).find(node => node.type === CandidatePicker); assert(picker, 'Real workspace supplies a candidate picker'); return picker; },
+    chooseCandidates(ids) { api.candidatePicker().props.onChange(ids); api.render(); },
+    principleButton(label, sectionClass = 'clinical-principle-suggestions') { const section = nodes(tree).find(node => node.props?.className === sectionClass); assert(section, 'Treatment section ' + sectionClass); const button = nodes(section).find(node => node.type === 'button' && text(node) === label + '＋'); assert(button, 'Treatment button ' + label); return button; },
+    addPrinciple(label, sectionClass) { const button = api.principleButton(label, sectionClass); assert(!button.props.disabled, 'Treatment can be added: ' + label); button.props.onClick(); api.render(); },
     review() { api.click('入力内容を確認'); },
     cloudResult(value) { cloudOk = value; },
     setAuth(owner, loading = false) { auth.user = owner ? { id: owner } : null; auth.isConfigured = Boolean(owner); auth.isLoading = loading; api.render(); },
@@ -275,7 +281,131 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.equal(client.focused.length, 1); assert.equal(client.scrolled[0], client.focused[0]);
     assert([...client.groups.values()].some(group => group.open));
     assert.equal(client.encounter().observations.fatigue, 'absent', 'Returning for another observation never resets a confirmed negative');
-    assert.equal(CLINICAL_PATTERNS.length, 7);
+    assert(CLINICAL_PATTERNS.length > 7, 'Expanded candidates retain observation focus behavior');
+  });
+  await check('expanded candidate choices update the draft and compare only the selected mixed categories', () => {
+    const manual = '  本人の希望と追加所見を確認してから治法を考える。  ';
+    const client = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: [], principle: manual }) });
+    const options = client.candidatePicker().props.patterns;
+    assert(options.length > 7, 'The workspace exposes the expanded catalogue');
+    assert.equal(new Set(options.map(option => option.id)).size, options.length);
+    assert.deepEqual(plain([...new Set(options.map(option => option.category))]), ['気血津液', '肝胆', '心', '脾胃', '肺', '腎'], 'The workspace groups the catalogue in the intended logical order');
+    assert(options.some(option => option.id === 'lung-qi' && option.category === '肺'));
+    assert(options.some(option => option.id === 'heart-blood' && option.category === '心'));
+    assert(options.some(option => option.id === 'kidney-yin' && option.category === '腎'));
+    client.chooseCandidates(['lung-qi', 'heart-blood']);
+    assert.deepEqual(plain(client.encounter().candidateIds), ['lung-qi', 'heart-blood']);
+    const rows = nodes(client.tree()).filter(node => node.type === 'article' && node.props.className === 'clinical-comparison-row');
+    assert.equal(rows.length, 2);
+    assert.deepEqual(rows.map(row => String(row.key)).sort(), ['heart-blood', 'lung-qi']);
+    assert.equal(client.field('今回検討する治法').props.value, manual, 'Choosing candidates never replaces handwritten treatment');
+    client.change('その他の候補・併存して考える見立て', ' 別の原因も併存して検討する。 ');
+    const summary = nodes(client.tree()).find(node => node.type === 'aside' && node.props['aria-label'] === '作業中の記録の要約');
+    assert(text(summary).includes('肺気虚') && text(summary).includes('心血虚'));
+    assert(text(summary).includes('別の原因も併存して検討する。'));
+    client.chooseCandidates([]);
+    assert.equal(nodes(client.tree()).filter(node => node.type === 'article' && node.props.className === 'clinical-comparison-row').length, 0);
+    assert.equal(client.field('今回検討する治法').props.value, manual);
+    assert.equal(client.encounter().customCandidates, ' 別の原因も併存して検討する。 ');
+  });
+  await check('unconfigured candidate comparisons state their limits instead of presenting four empty cells or zero counts', () => {
+    const client = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: ['qi-counterflow', 'liver-qi'], observations: {} }) });
+    const options = client.candidatePicker().props.patterns;
+    const counterflow = options.find(option => option.id === 'qi-counterflow');
+    assert(counterflow, 'The candidate is still available without a numeric matching model');
+    for (const count of ['supportCount', 'unknownCount', 'conflictCount']) assert.equal(counterflow[count], undefined, count + ' must not imply a measured zero');
+    const rows = nodes(client.tree()).filter(node => node.type === 'article' && node.props.className === 'clinical-comparison-row');
+    assert.deepEqual(rows.map(row => String(row.key)), ['qi-counterflow', 'liver-qi'], 'Comparison order follows the clinician selection');
+    const unsupported = rows[0];
+    assert.equal(nodes(unsupported).filter(node => node.props?.className === 'clinical-comparison-fields').length, 0);
+    assert.equal(nodes(unsupported).filter(node => node.props?.className === 'clinical-comparison-cell').length, 0);
+    assert(text(unsupported).includes('現在の入力項目では照合できません'));
+    assert(nodes(unsupported).some(node => node.props?.className === 'clinical-additional-checks'), 'Additional observations remain available');
+    const liver = rows[1];
+    const conflict = nodes(liver).find(node => node.props?.['data-kind'] === 'conflicting');
+    assert.equal(text(nodes(conflict).find(node => node.type === 'dd')), 'この候補には照合項目を設定していません');
+    assert.equal(options.find(option => option.id === 'liver-qi').conflictCount, undefined);
+    assert.equal(nodes(liver).filter(node => node.props?.className === 'clinical-comparison-cell').length, 4, 'Configured support observations retain their comparison controls');
+    client.chooseCandidates(['spleen-qi']);
+    const checked = client.candidatePicker().props.patterns.find(option => option.id === 'spleen-qi');
+    assert.equal(checked.conflictCount, 0, 'A configured conflict set can honestly report no entered matching conflict');
+  });
+  await check('new candidates and custom hypotheses survive review, reload and same-ID updates with exact manual treatment', () => {
+    const manual = '  症状の経過を先に確認する。\n治法は本人と相談して見直す。  ';
+    const client = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: [], principle: '' }) });
+    client.chooseCandidates(['lung-qi', 'heart-blood']);
+    client.change('その他の候補・併存して考える見立て', '独自の併存仮説\n現時点では保留');
+    client.change('今回検討する治法', manual);
+    client.review();
+    const review = nodes(client.tree()).find(node => node.props?.className === 'clinical-review-section' && text(node).startsWith('候補・治法'));
+    assert(text(review).includes('肺気虚／心血虚／独自の併存仮説\n現時点では保留'));
+    assert(text(review).includes(manual.trimEnd()), 'The preview retains handwritten wording');
+    client.click('臨床ノートに保存する');
+    const id = client.note().id, createdAt = client.note().createdAt;
+    assert.equal(client.note().syndrome, '肺気虚／心血虚／独自の併存仮説\n現時点では保留');
+    assert(client.note().treatmentPlan.includes('治法：' + manual + '\n\n'));
+    client.click('候補・治法を修正');
+    client.chooseCandidates(['kidney-yin']);
+    client.change('その他の候補・併存して考える見立て', '再評価した併存仮説');
+    assert.equal(client.field('今回検討する治法').props.value, manual);
+    client.review(); client.click('この記録を更新する');
+    assert.equal(client.context().patientNotes.length, 1);
+    assert.equal(client.note().id, id); assert.equal(client.note().createdAt, createdAt);
+    assert.equal(client.note().syndrome, '腎陰虚／再評価した併存仮説');
+    const reopened = harness({ initialEncounter: client.encounter(), initialNotes: plain(client.context().patientNotes) });
+    reopened.click('3.候補・治法');
+    assert.deepEqual(plain(reopened.candidatePicker().props.selectedIds), ['kidney-yin']);
+    assert.equal(reopened.field('その他の候補・併存して考える見立て').props.value, '再評価した併存仮説');
+    assert.equal(reopened.field('今回検討する治法').props.value, manual);
+    reopened.review(); reopened.click('この記録を更新する');
+    assert.equal(reopened.context().patientNotes.length, 1); assert.equal(reopened.note().id, id);
+    assert(reopened.note().treatmentPlan.includes(manual));
+    const backup = JSON.parse(reopened.context().exportAllDataAsJson());
+    assert.equal(backup.patientNotes[0].syndrome, reopened.note().syndrome);
+    assert.equal(backup.patientNotes[0].treatmentPlan, reopened.note().treatmentPlan);
+    const csv = reopened.context().exportAllDataAsCsv();
+    assert(csv.includes('腎陰虚／再評価した併存仮説') && csv.includes(manual));
+  });
+  await check('candidate suggestions add atomic treatment terms once and retain subsequent manual edits', () => {
+    const manual = '  疏肝理気の適否を再確認する。  ';
+    const client = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: ['liver-heat'], principle: manual }) });
+    const suggestions = nodes(client.tree()).find(node => node.props?.className === 'clinical-principle-suggestions');
+    assert.deepEqual(nodes(suggestions).filter(node => node.type === 'button').map(text).sort(), ['清熱＋', '疏肝理気＋'].sort(), 'Compound reference treatments can be chosen individually');
+    client.addPrinciple('疏肝理気');
+    assert.equal(client.field('今回検討する治法').props.value, manual + '\n疏肝理気');
+    assert(client.principleButton('疏肝理気').props.disabled);
+    assert(client.principleButton('疏肝理気', 'clinical-principle-catalog').props.disabled);
+    client.addPrinciple('清熱', 'clinical-principle-catalog');
+    assert.equal(client.encounter().principle, manual + '\n疏肝理気\n清熱');
+    assert(client.principleButton('清熱').props.disabled && client.principleButton('清熱', 'clinical-principle-catalog').props.disabled);
+    const edited = '  手書きで再整理した方針。\n保留する点を本人と共有。  ';
+    client.change('今回検討する治法', edited);
+    assert(!client.principleButton('清熱').props.disabled, 'Removing a term manually makes it available again');
+    client.chooseCandidates(['qi']);
+    assert.equal(client.encounter().principle, edited);
+    client.addPrinciple('補気');
+    assert.equal(client.encounter().principle, edited + '\n補気');
+  });
+  await check('custom-only hypotheses remain available to review and save without forcing a catalogue selection', () => {
+    const client = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: [], customCandidates: '' }) });
+    assert.equal(client.field('その他の候補・併存して考える見立て').props.maxLength, 2000);
+    client.change('その他の候補・併存して考える見立て', '一覧以外の仮説を保留して記録');
+    client.review(); client.click('臨床ノートに保存する');
+    assert.equal(client.note().syndrome, '一覧以外の仮説を保留して記録');
+    assert.equal(client.encounter().candidateIds.length, 0);
+  });
+  await check('treatment additions stop at the draft limit and leave full manual text intact', () => {
+    const current = '記'.repeat(19998);
+    const client = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: ['qi'], principle: current }) });
+    assert(client.principleButton('補気').props.disabled);
+    assert(client.principleButton('補気', 'clinical-principle-catalog').props.disabled);
+    assert.equal(client.field('今回検討する治法').props.value, current);
+    client.change('今回検討する治法', '記'.repeat(19997));
+    assert(!client.principleButton('補気').props.disabled);
+    client.addPrinciple('補気');
+    assert.equal(client.encounter().principle.length, 20000);
+    assert(encounters.parseClinicalEncounter(client.encounter()), 'A full treatment remains reloadable');
+    assert(client.principleButton('清熱', 'clinical-principle-catalog').props.disabled);
   });
   await check('search adds a point in one action and prevents duplicate or over-limit additions', () => {
     const client = harness({ initialEncounter: sampleEncounter({ step: 3, points: [] }) });
@@ -389,5 +519,5 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     client.setAuth('account-A'); await client.settle(); assert.equal(client.field('主訴').props.value, 'Aの修正下書き');
   });
   if (failures.length) { console.error(failures.join('\n\n')); process.exitCode = 1; }
-  else console.log(`Clinical workspace passed: ${checks} real save/input flows, failed physical writes, count limits, same-ID updates, reload/retry, referral point exclusion, cloud handoff, auth/loading fences, account changes, stale async results, legacy retention, owner-scoped drafts, observation focus and one-action point selection.`);
+  else console.log(`Clinical workspace passed: ${checks} real save/input flows, failed physical writes, count limits, same-ID updates, reload/retry, referral point exclusion, cloud handoff, auth/loading fences, account changes, stale async results, legacy retention, owner-scoped drafts, observation focus, selected candidate comparisons, comparison limits, manual treatment and one-action point selection.`);
 })();

@@ -8,7 +8,7 @@ export interface ClinicalEncounter {
   version: 1; step: number; patientIdentifier: string; chiefComplaint: string; complaintSlug: string; visitDate: string;
   observations: ClinicalObservations; examinationMemo: string;
   safety: 'unknown' | 'reviewed' | 'refer'; safetyMemo: string;
-  candidateIds: string[]; rationale: string; principle: string; points: ClinicalPointPlan[];
+  candidateIds: string[]; customCandidates?: string; rationale: string; principle: string; points: ClinicalPointPlan[];
   plan: string; metric: string; before: string; after: string; functionMemo: string;
   reaction: string; nextAction: string; revision: string; previousSummary: string;
 }
@@ -21,13 +21,14 @@ function encounterStorageKey(): string {
 
 export function clinicalToday(): string { return new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()); }
 export function emptyClinicalEncounter(): ClinicalEncounter {
-  return { version: 1, step: 0, patientIdentifier: '', chiefComplaint: '', complaintSlug: '', visitDate: clinicalToday(), observations: {}, examinationMemo: '', safety: 'unknown', safetyMemo: '', candidateIds: [], rationale: '', principle: '', points: [], plan: '', metric: '', before: '', after: '', functionMemo: '', reaction: '', nextAction: '', revision: '', previousSummary: '' };
+  return { version: 1, step: 0, patientIdentifier: '', chiefComplaint: '', complaintSlug: '', visitDate: clinicalToday(), observations: {}, examinationMemo: '', safety: 'unknown', safetyMemo: '', candidateIds: [], customCandidates: '', rationale: '', principle: '', points: [], plan: '', metric: '', before: '', after: '', functionMemo: '', reaction: '', nextAction: '', revision: '', previousSummary: '' };
 }
 const textFields = ['patientIdentifier','chiefComplaint','complaintSlug','visitDate','examinationMemo','safetyMemo','rationale','principle','plan','metric','before','after','functionMemo','reaction','nextAction','revision','previousSummary'] as const;
 export function parseClinicalEncounter(raw: unknown): ClinicalEncounter | null {
   if (!raw || typeof raw !== 'object') return null;
   const value = raw as Record<string, unknown>;
   if (value.savedNoteId !== undefined && (typeof value.savedNoteId !== 'string' || value.savedNoteId.length > 160)) return null;
+  if (value.customCandidates !== undefined && (typeof value.customCandidates !== 'string' || value.customCandidates.length > 2000)) return null;
   if (value.version !== 1 || !Number.isInteger(value.step) || Number(value.step) < 0 || Number(value.step) > 4) return null;
   if (!textFields.every(key => typeof value[key] === 'string' && (value[key] as string).length <= 20000)) return null;
   if (value.visitDate !== '' && !/^\d{4}-\d{2}-\d{2}$/.test(String(value.visitDate))) return null;
@@ -53,13 +54,20 @@ export function writeClinicalEncounter(encounter: ClinicalEncounter): boolean {
 export function clearClinicalEncounter(): boolean {
   try { sessionStorage.removeItem(encounterStorageKey()); return true; } catch { return false; }
 }
+/** Read both catalogue choices and an optional free-form hypothesis without changing old drafts. */
+export function clinicalCandidateNames(encounter: Pick<ClinicalEncounter, 'candidateIds' | 'customCandidates'>): string[] {
+  const names = encounter.candidateIds.map(id => CLINICAL_PATTERNS.find(pattern => pattern.id === id)?.name).filter((name): name is string => Boolean(name));
+  const custom = encounter.customCandidates?.trim();
+  if (custom) names.push(custom);
+  return [...new Set(names)];
+}
 export function clinicalEncounterDraft(encounter: ClinicalEncounter, pointNames: string[]): Omit<DraftPatientNote, 'createdAt'> {
   if (encounter.safety !== 'reviewed') { encounter = { ...encounter, points: [] }; pointNames = []; }
   const signs = CLINICAL_SIGNS.map(sign => `${sign.label}：${OBSERVATION_LABELS[encounter.observations[sign.id] || 'unknown']}`).join('\n');
   const pointText = encounter.points.map((point, index) => `${pointNames[index] || point.code}（${point.code}／${point.role === 'root' ? '本治として検討' : point.role === 'branch' ? '標治として検討' : '役割を保留'}）\n採用理由：${point.reason || '未記入'}\n代替案・変更条件：${point.alternative || '未記入'}`).join('\n\n');
   return {
     sourceTool: '臨床ワークスペース', patientIdentifier: encounter.patientIdentifier, chiefComplaint: encounter.chiefComplaint, visitDate: encounter.visitDate,
-    syndrome: encounter.candidateIds.map(id => CLINICAL_PATTERNS.find(pattern => pattern.id === id)?.name).filter(Boolean).join('／'),
+    syndrome: clinicalCandidateNames(encounter).join('／'),
     selectedPointsInput: pointNames.join('、'),
     treatmentPlan: `【安全確認】\n${encounter.safety === 'refer' ? '施術を保留・医療評価を優先' : encounter.safety === 'reviewed' ? '確認した範囲で該当兆候なし（疾患の除外ではない）' : '未確認'}\n${encounter.safetyMemo}\n\n【四診所見】\n${signs}\n補足：${encounter.examinationMemo || '未記入'}\n\n【候補の判断根拠】\n${encounter.rationale || '未記入'}\n治法：${encounter.principle || '保留'}\n\n【配穴の採用理由】\n${pointText || '保留'}\n\n【評価指標】\n指標：${encounter.metric.replaceAll('\n', ' ')}\n施術前（0〜10）：${encounter.before}\n施術直後（0〜10）：${encounter.after}\n生活動作：${encounter.functionMemo}\n\n【施術計画】\n${encounter.plan}\n\n【見立ての修正】\n${encounter.revision || '未記入'}${encounter.previousSummary ? `\n\n【前回からの申し送り】\n${encounter.previousSummary}` : ''}`,
     patientReaction: encounter.reaction, nextAction: encounter.nextAction,
