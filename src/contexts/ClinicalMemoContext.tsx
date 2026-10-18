@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from "react";
 import { ClinicalMemoItem, CLASSIC_CLINICAL_PAIRS, PatientNoteItem, SAMPLE_PATIENT_NOTES } from "@/types/clinicalMemo";
 import { useAuth } from "@/contexts/AuthContext";
 import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
@@ -15,8 +15,9 @@ import {
   syncLocalDataToSupabase
 } from "@/lib/supabase/lazyClinicalMemosDb";
 
-const STORAGE_KEY = "haritaro_clinical_memos_v1";
-const PATIENT_NOTES_STORAGE_KEY = "haritaro_patient_notes_v1";
+import { persistClinicalNote, type ClinicalNoteFields, type ClinicalNoteSaveResult } from '@/utils/clinicalNoteSave';
+
+import { clinicalStorageKeys, readClinicalStorage, CLINICAL_ACTIVE_OWNER_KEY } from '@/utils/clinicalStorage';
 
 export type SyncStatus = "local" | "syncing" | "synced" | "offline";
 
@@ -41,9 +42,14 @@ interface ClinicalMemoContextType {
   isPatientNoteLimitReached: boolean;
   addPatientNote: (note: Omit<PatientNoteItem, "id" | "createdAt" | "updatedAt">) => boolean;
   updatePatientNote: (id: string, note: Partial<Omit<PatientNoteItem, "id" | "createdAt">>) => void;
+  saveWorkspaceNote: (note: ClinicalNoteFields, existingId?: string) => ClinicalNoteSaveResult;
   removePatientNote: (id: string) => void;
   clearAllPatientNotes: () => void;
   loadSamplePatientNotes: () => void;
+
+  // Identity-scoped readiness also protects draft tools during account changes.
+  isReady: boolean;
+  clinicalStorageOwner: string | null;
 
   // クラウド同期ステータス
   syncStatus: SyncStatus;
@@ -68,130 +74,108 @@ interface ClinicalMemoContextType {
 const ClinicalMemoContext = createContext<ClinicalMemoContextType | undefined>(undefined);
 
 export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
-  const { user, isPremium, isConfigured } = useAuth();
+  const { user, isPremium, isConfigured, isLoading: authLoading = false } = useAuth();
   const userId = user?.id;
+  const owner = userId || 'guest';
+  const storageKeys = clinicalStorageKeys(owner);
   const [memos, setMemos] = useState<ClinicalMemoItem[]>([]);
   const [patientNotes, setPatientNotes] = useState<PatientNoteItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [syncStatus, setSyncStatus] = useState<SyncStatus>("local");
+  const [loadedOwner, setLoadedOwner] = useState('');
+  const [loadedGeneration, setLoadedGeneration] = useState(0);
+  const [syncComplete, setSyncComplete] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>('local');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [lastToast, setLastToast] = useState<{ message: string; type: "added" | "removed" | "warning" } | null>(null);
+  const [lastToast, setLastToast] = useState<{ message: string; type: 'added' | 'removed' | 'warning' } | null>(null);
+  const [storageError, setStorageError] = useState<{ owner: string; message: string } | null>(null);
+  const active = useRef({ owner: '', generation: 0, loaded: false, synced: false, running: false });
+  const workspaceSavePending = useRef(false);
+  useEffect(() => { workspaceSavePending.current = false; }, [patientNotes, owner]);
+
+  const scopeReady = !authLoading && isLoaded && loadedOwner === owner;
+  const canRead = useCallback(() => !authLoading && loadedOwner === owner && isLoaded && active.current.owner === owner && active.current.generation === loadedGeneration, [authLoading, loadedOwner, owner, isLoaded, loadedGeneration]);
+  const canMutate = useCallback(() => canRead() && active.current.synced && !active.current.running, [canRead]);
+  const blockedMessage = '保存先とアカウントの記録を確認しています。同期が完了してから保存してください。';
 
   // 配穴・ツボ上限
-  const maxLimit = isPremium
-    ? SUBSCRIPTION_CONFIG.limits.premiumMemoMax
-    : SUBSCRIPTION_CONFIG.limits.freeMemoMax;
+  const maxLimit = isPremium ? SUBSCRIPTION_CONFIG.limits.premiumMemoMax : SUBSCRIPTION_CONFIG.limits.freeMemoMax;
   const isLimitReached = memos.length >= maxLimit;
-
-  // 臨床ノート上限
-  const maxPatientNoteLimit = isPremium
-    ? SUBSCRIPTION_CONFIG.limits.premiumPatientNoteMax
-    : SUBSCRIPTION_CONFIG.limits.freePatientNoteMax;
+  const maxPatientNoteLimit = isPremium ? SUBSCRIPTION_CONFIG.limits.premiumPatientNoteMax : SUBSCRIPTION_CONFIG.limits.freePatientNoteMax;
   const isPatientNoteLimitReached = patientNotes.length >= maxPatientNoteLimit;
 
-  // 1. 初回マウント時：LocalStorageから即座にロード（高速表示）
-  useEffect(() => {
-    const timer = setTimeout(() => {
-    try {
-      // 1. 配穴・ツボストック
-      const storedMemos = localStorage.getItem(STORAGE_KEY);
-      if (storedMemos) {
-        const parsed = JSON.parse(storedMemos);
-        if (Array.isArray(parsed)) {
-          setMemos(parsed);
-        }
-      }
-
-      // 2. 臨床ノート
-      const storedNotes = localStorage.getItem(PATIENT_NOTES_STORAGE_KEY);
-      if (storedNotes) {
-        const parsedNotes = JSON.parse(storedNotes);
-        if (Array.isArray(parsedNotes)) {
-          setPatientNotes(parsedNotes);
-        }
-      } else {
-        setPatientNotes([]);
-      }
-    } catch (e) {
-      console.error("Failed to load clinical notes from localStorage", e);
-    } finally {
-      setIsLoaded(true);
-    }
-
-    }, 0);
-    return () => clearTimeout(timer);
-  }, []);
-
   const observeCloudWrite = useCallback((operation: Promise<boolean>) => {
-    void operation.then(ok => { if (!ok) setSyncStatus('offline'); }).catch(() => setSyncStatus('offline'));
-  }, []);
+    const state = active.current, generation = state.generation;
+    const current = () => active.current === state && state.owner === owner && state.generation === generation;
+    void operation.then(ok => { if (current() && !ok) setSyncStatus('offline'); }).catch(() => { if (current()) setSyncStatus('offline'); });
+  }, [owner]);
 
-  // 2. Supabaseとの同期処理（ログイン時に自動実行）
   const triggerSync = useCallback(async () => {
-    if (!userId || !isConfigured) {
-      setSyncStatus("local");
-      return;
-    }
-
-    setSyncStatus("syncing");
+    const state = active.current;
+    if (authLoading || !state.loaded || state.owner !== owner || state.running) return;
+    if (!userId || !isConfigured) { state.synced = true; setSyncComplete(true); setSyncStatus('local'); return; }
+    const generation = state.generation;
+    const current = () => active.current === state && state.owner === owner && state.generation === generation;
+    state.running = true; state.synced = false; setSyncComplete(false); setSyncStatus('syncing');
     try {
-      // 未ログイン時に作成されたローカルデータの救済（Supabaseへアップロード）
-      const localMemosStr = localStorage.getItem(STORAGE_KEY);
-      const localNotesStr = localStorage.getItem(PATIENT_NOTES_STORAGE_KEY);
-      const localMemos: ClinicalMemoItem[] = localMemosStr ? JSON.parse(localMemosStr) : [];
-      const localNotes: PatientNoteItem[] = localNotesStr ? JSON.parse(localNotesStr) : [];
-
-      if (localNotes.length > 0 || localMemos.length > 0) {
-        const uploaded = await syncLocalDataToSupabase(userId, localNotes, localMemos);
-        if (uploaded.notesSynced !== localNotes.length || uploaded.memosSynced !== localMemos.length) throw new Error('Cloud upload incomplete');
+      // Only this verified account's own namespace is eligible for upload.
+      // Guest and legacy snapshots stay in the browser until explicitly imported.
+      const local = readClinicalStorage(localStorage, owner);
+      if (local.notes.length || local.memos.length) {
+        const uploaded = await syncLocalDataToSupabase(userId, local.notes, local.memos);
+        if (!current()) return;
+        if (uploaded.notesSynced !== local.notes.length || uploaded.memosSynced !== local.memos.length) throw new Error('Cloud upload incomplete');
       }
-
-      // Supabaseからログインユーザーの最新データを全件取得
-      const [remoteNotes, remoteMemos] = await Promise.all([
-        fetchPatientNotesFromSupabase(),
-        fetchClinicalMemosFromSupabase(),
-      ]);
-
+      const [remoteNotes, remoteMemos] = await Promise.all([fetchPatientNotesFromSupabase(), fetchClinicalMemosFromSupabase()]);
+      if (!current()) return;
       if (remoteNotes === null || remoteMemos === null) throw new Error('Cloud download incomplete');
-      if (remoteNotes !== null) {
-        setPatientNotes(remoteNotes);
-        localStorage.setItem(PATIENT_NOTES_STORAGE_KEY, JSON.stringify(remoteNotes));
-      }
-      if (remoteMemos !== null) {
-        setMemos(remoteMemos);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(remoteMemos));
-      }
+      localStorage.setItem(storageKeys.notes, JSON.stringify(remoteNotes));
+      localStorage.setItem(storageKeys.memos, JSON.stringify(remoteMemos));
+      setPatientNotes(remoteNotes); setMemos(remoteMemos);
+      state.synced = true; setSyncComplete(true); setSyncStatus('synced');
+    } catch (error) {
+      if (!current()) return;
+      console.warn('Clinical sync failed; the owner-scoped browser snapshot is retained:', error);
+      setSyncStatus('offline');
+    } finally { if (current()) state.running = false; }
+  }, [owner, userId, isConfigured, authLoading, storageKeys.notes, storageKeys.memos]);
 
-      setSyncStatus("synced");
-    } catch (e) {
-      console.warn("Supabase sync failed, using local cache:", e);
-      setSyncStatus("offline");
-    }
-  }, [userId, isConfigured]);
-
-  // ログイン状態の変化を検知して同期
   useEffect(() => {
+    const generation = active.current.generation + 1;
     const timer = setTimeout(() => {
-    if (isLoaded && userId && isConfigured) {
-      triggerSync();
-    } else if (isLoaded && !user) {
-      setSyncStatus("local");
-    }
-
+      workspaceSavePending.current = false;
+      setLastToast(null); setStorageError(null);
+      if (authLoading) {
+        active.current = { owner: '', generation, loaded: false, synced: false, running: false };
+        setIsLoaded(false); setSyncComplete(false); return;
+      }
+      try {
+        const cached = readClinicalStorage(localStorage, owner);
+        // Draft readers use the same owner. A blocked session store must not
+        // leave a previous account's draft available to a new save operation.
+        sessionStorage.setItem(CLINICAL_ACTIVE_OWNER_KEY, owner);
+        active.current = { owner, generation, loaded: true, synced: !userId || !isConfigured, running: false };
+        setMemos(cached.memos); setPatientNotes(cached.notes);
+        setLoadedOwner(owner); setLoadedGeneration(generation); setIsLoaded(true);
+        setSyncComplete(!userId || !isConfigured); setSyncStatus(userId && isConfigured ? 'syncing' : 'local');
+        void triggerSync();
+      } catch (error) {
+        active.current = { owner, generation, loaded: false, synced: false, running: false };
+        setIsLoaded(false); setSyncComplete(false);
+        setStorageError({ owner, message: '記録の保存先を確認できませんでした。入力と既存データは消さずに保持しています。ブラウザの保存設定を確認して再読み込みしてください。' });
+        console.error('Unable to load the owner-scoped clinical store:', error);
+      }
     }, 0);
-    return () => clearTimeout(timer);
-  }, [isLoaded, userId, isConfigured, triggerSync]);
+    return () => { clearTimeout(timer); active.current.generation++; active.current.loaded = false; };
+  }, [owner, authLoading, isConfigured, userId, triggerSync]);
 
-  // 3. ローカルストレージへのキャッシュ同期保存
+  // Keep old v1 keys intact. Cache only after the matching owner has loaded.
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!canRead()) return;
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(memos));
-      localStorage.setItem(PATIENT_NOTES_STORAGE_KEY, JSON.stringify(patientNotes));
-    } catch (e) {
-      console.error("Failed to save clinical notes to localStorage", e);
-    }
-  }, [memos, patientNotes, isLoaded]);
+      localStorage.setItem(storageKeys.memos, JSON.stringify(memos));
+      localStorage.setItem(storageKeys.notes, JSON.stringify(patientNotes));
+    } catch (error) { console.error('Failed to cache owner-scoped clinical notes:', error); }
+  }, [memos, patientNotes, canRead, storageKeys.memos, storageKeys.notes]);
 
   // トーストの自動消去（3.5秒）
   useEffect(() => {
@@ -211,11 +195,13 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
   const toggleDrawer = useCallback(() => setIsDrawerOpen(prev => !prev), []);
 
   const isClipped = useCallback((id: string) => {
+    if (!canRead()) return false;
     return memos.some(m => m.id === id);
-  }, [memos]);
+  }, [memos, canRead]);
 
   // 自作・配穴の追加
   const addMemo = useCallback((item: Omit<ClinicalMemoItem, "createdAt" | "updatedAt">): boolean => {
+    if (!canMutate()) return false;
     let success = false;
     let savedItem: ClinicalMemoItem | null = null;
     setMemos(prev => {
@@ -250,10 +236,11 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
     }
 
     return success;
-  }, [maxLimit, isPremium, userId, isConfigured, observeCloudWrite]);
+  }, [maxLimit, isPremium, userId, isConfigured, observeCloudWrite, canMutate]);
 
   // 自作・配穴の削除
   const removeMemo = useCallback((id: string) => {
+    if (!canMutate()) return;
     setMemos(prev => {
       const target = prev.find(m => m.id === id);
       if (target) {
@@ -269,9 +256,10 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
     if (userId && isConfigured) {
       observeCloudWrite(deleteClinicalMemoFromSupabase(id));
     }
-  }, [userId, isConfigured, observeCloudWrite]);
+  }, [userId, isConfigured, observeCloudWrite, canMutate]);
 
   const toggleClip = useCallback((item: Omit<ClinicalMemoItem, "createdAt" | "updatedAt">): boolean => {
+    if (!canMutate()) return false;
     let newlyAdded = false;
     let targetItem: ClinicalMemoItem | null = null;
     setMemos(prev => {
@@ -317,9 +305,10 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
     }
 
     return newlyAdded;
-  }, [maxLimit, isPremium, userId, isConfigured, observeCloudWrite]);
+  }, [maxLimit, isPremium, userId, isConfigured, observeCloudWrite, canMutate]);
 
   const updatePersonalNote = useCallback((id: string, note: string) => {
+    if (!canMutate()) return;
     let updatedItem: ClinicalMemoItem | null = null;
     setMemos(prev =>
       prev.map(item => {
@@ -335,9 +324,10 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
     if (updatedItem && userId && isConfigured) {
       observeCloudWrite(upsertClinicalMemoToSupabase(userId, updatedItem));
     }
-  }, [userId, isConfigured, observeCloudWrite]);
+  }, [userId, isConfigured, observeCloudWrite, canMutate]);
 
   const clearAllMemos = useCallback(() => {
+    if (!canMutate()) return;
     if (window.confirm("マイノートにストックした配穴・ツボをすべて消去しますか？")) {
       memos.forEach(m => {
         if (userId && isConfigured) observeCloudWrite(deleteClinicalMemoFromSupabase(m.id));
@@ -348,10 +338,11 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
         type: "removed",
       });
     }
-  }, [memos, userId, isConfigured, observeCloudWrite]);
+  }, [memos, userId, isConfigured, observeCloudWrite, canMutate]);
 
   // おすすめ名配穴プリセット読み込み
   const loadRecommendedPresets = useCallback(() => {
+    if (!canMutate()) return;
     const now = Date.now();
     setMemos(prev => {
       const existingIds = new Set(prev.map(p => p.id));
@@ -369,12 +360,13 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
       message: `重要名配穴（太衝＋陽陵泉など${CLASSIC_CLINICAL_PAIRS.length}件）を読み込みました`,
       type: "added",
     });
-  }, [userId, isConfigured, observeCloudWrite]);
+  }, [userId, isConfigured, observeCloudWrite, canMutate]);
 
   // ----------------------------------------------------
   // 臨床ノート（患者症例記録）の操作
   // ----------------------------------------------------
   const addPatientNote = useCallback((noteData: Omit<PatientNoteItem, "id" | "createdAt" | "updatedAt">): boolean => {
+    if (!canMutate()) return false;
     let success = false;
     let savedNote: PatientNoteItem | null = null;
     setPatientNotes(prev => {
@@ -409,9 +401,28 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
     }
 
     return success;
-  }, [maxPatientNoteLimit, isPremium, userId, isConfigured, observeCloudWrite]);
+  }, [maxPatientNoteLimit, isPremium, userId, isConfigured, observeCloudWrite, canMutate]);
+
+  const saveWorkspaceNote = useCallback((fields: ClinicalNoteFields, existingId?: string): ClinicalNoteSaveResult => {
+    if (!canMutate() || workspaceSavePending.current) return { ok: false, error: blockedMessage };
+    workspaceSavePending.current = true;
+    const saved = persistClinicalNote(patientNotes, fields, existingId, maxPatientNoteLimit, next => localStorage.setItem(storageKeys.notes, JSON.stringify(next)));
+    if (!saved.result.ok || !saved.notes || !saved.note) { workspaceSavePending.current = false; return saved.result; }
+    setPatientNotes(saved.notes);
+    setLastToast({ message: '臨床ノート「' + saved.note.patientIdentifier + '」を保存しました', type: 'added' });
+    if (userId && isConfigured) {
+      const state = active.current, generation = state.generation;
+      const current = () => active.current === state && state.owner === owner && state.generation === generation;
+      state.running = true; setSyncStatus('syncing');
+      void upsertPatientNoteToSupabase(userId, saved.note).then(ok => {
+        if (current()) { state.running = false; setSyncStatus(ok ? 'synced' : 'offline'); }
+      }).catch(() => { if (current()) { state.running = false; setSyncStatus('offline'); } });
+    }
+    return saved.result;
+  }, [canMutate, patientNotes, maxPatientNoteLimit, storageKeys.notes, userId, isConfigured, owner]);
 
   const updatePatientNote = useCallback((id: string, noteData: Partial<Omit<PatientNoteItem, "id" | "createdAt">>) => {
+    if (!canMutate()) return;
     let updatedNote: PatientNoteItem | null = null;
     setPatientNotes(prev =>
       prev.map(note => {
@@ -432,9 +443,10 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
       message: "臨床ノートを更新しました",
       type: "added",
     });
-  }, [userId, isConfigured, observeCloudWrite]);
+  }, [userId, isConfigured, observeCloudWrite, canMutate]);
 
   const removePatientNote = useCallback((id: string) => {
+    if (!canMutate()) return;
     setPatientNotes(prev => {
       const target = prev.find(n => n.id === id);
       if (target) {
@@ -449,9 +461,10 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
     if (userId && isConfigured) {
       observeCloudWrite(deletePatientNoteFromSupabase(id));
     }
-  }, [userId, isConfigured, observeCloudWrite]);
+  }, [userId, isConfigured, observeCloudWrite, canMutate]);
 
   const clearAllPatientNotes = useCallback(() => {
+    if (!canMutate()) return;
     if (window.confirm("すべての臨床ノート（患者症例記録）を消去しますか？（取り消せません）")) {
       patientNotes.forEach(n => {
         if (userId && isConfigured) observeCloudWrite(deletePatientNoteFromSupabase(n.id));
@@ -462,15 +475,16 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
         type: "removed",
       });
     }
-  }, [patientNotes, userId, isConfigured, observeCloudWrite]);
+  }, [patientNotes, userId, isConfigured, observeCloudWrite, canMutate]);
 
   const loadSamplePatientNotes = useCallback(() => {
+    if (!canMutate()) return;
     setPatientNotes(SAMPLE_PATIENT_NOTES);
     setLastToast({
       message: "サンプル臨床ノート（2件）を復元しました",
       type: "added",
     });
-  }, []);
+  }, [canMutate]);
 
   // ----------------------------------------------------
   // バックアップ・データ管理（JSONエクスポート／インポート）
@@ -480,11 +494,11 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
       version: 1,
       appName: "haritaro_oriental_medicine_mynote",
       exportedAt: new Date().toISOString(),
-      memos,
-      patientNotes,
+      memos: canRead() ? memos : [],
+      patientNotes: canRead() ? patientNotes : [],
     };
     return JSON.stringify(backupData, null, 2);
-  }, [memos, patientNotes]);
+  }, [memos, patientNotes, canRead]);
 
   const exportAllDataAsCsv = useCallback((): string => {
     const headers = [
@@ -509,7 +523,7 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
       return `"${clean}"`;
     };
 
-    const rows = patientNotes.map((note) => {
+    const rows = (canRead() ? patientNotes : []).map((note) => {
       const dateStr = note.updatedAt 
         ? new Date(note.updatedAt).toISOString()
         : note.createdAt 
@@ -534,9 +548,10 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
 
     // Excel対応のためBOM (\uFEFF) を付与
     return "\uFEFF" + [headers.map((h) => `"${h}"`).join(","), ...rows].join("\r\n");
-  }, [patientNotes]);
+  }, [patientNotes, canRead]);
 
   const importDataFromJson = useCallback((jsonStr: string): { success: boolean; message: string } => {
+    if (!canMutate()) return { success: false, message: blockedMessage };
     try {
       const parsed = JSON.parse(jsonStr);
       let addedMemos = 0;
@@ -560,16 +575,16 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
     } catch (e) {
       return { success: false, message: "JSONファイルの形式が正しくありません" };
     }
-  }, []);
+  }, [canMutate]);
 
   return (
     <ClinicalMemoContext.Provider
       value={{
         // 配穴ストック
-        memos,
-        clipCount: memos.length,
+        memos: scopeReady ? memos : [],
+        clipCount: scopeReady ? memos.length : 0,
         maxLimit,
-        isLimitReached,
+        isLimitReached: scopeReady && isLimitReached,
         isClipped,
         toggleClip,
         addMemo,
@@ -579,18 +594,21 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
         loadRecommendedPresets,
 
         // 臨床ノート
-        patientNotes,
-        patientNoteCount: patientNotes.length,
+        patientNotes: scopeReady ? patientNotes : [],
+        patientNoteCount: scopeReady ? patientNotes.length : 0,
         maxPatientNoteLimit,
-        isPatientNoteLimitReached,
+        isPatientNoteLimitReached: scopeReady && isPatientNoteLimitReached,
         addPatientNote,
         updatePatientNote,
+        saveWorkspaceNote,
         removePatientNote,
         clearAllPatientNotes,
         loadSamplePatientNotes,
 
         // クラウド同期ステータス
-        syncStatus,
+        isReady: scopeReady && syncComplete && syncStatus !== 'syncing',
+        clinicalStorageOwner: scopeReady ? owner : null,
+        syncStatus: storageError?.owner === owner ? 'offline' : scopeReady ? syncStatus : 'syncing',
         triggerSync,
 
         // バックアップ
@@ -605,7 +623,7 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
         toggleDrawer,
 
         // トースト
-        lastToast,
+        lastToast: storageError?.owner === owner ? { message: storageError.message, type: 'warning' } : scopeReady ? lastToast : null,
         dismissToast,
       }}
     >

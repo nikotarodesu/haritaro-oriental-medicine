@@ -4,6 +4,7 @@ import type { DraftPatientNote } from './draftNote';
 
 export interface ClinicalPointPlan { code: string; role: 'root' | 'branch' | 'other'; reason: string; alternative: string; }
 export interface ClinicalEncounter {
+  savedNoteId?: string;
   version: 1; step: number; patientIdentifier: string; chiefComplaint: string; complaintSlug: string; visitDate: string;
   observations: ClinicalObservations; examinationMemo: string;
   safety: 'unknown' | 'reviewed' | 'refer'; safetyMemo: string;
@@ -12,6 +13,12 @@ export interface ClinicalEncounter {
   reaction: string; nextAction: string; revision: string; previousSummary: string;
 }
 export const CLINICAL_ENCOUNTER_KEY = 'haritaro_clinical_encounter_v1';
+export const CLINICAL_ACTIVE_OWNER_KEY = 'haritaro_clinical_active_owner_v1';
+function encounterStorageKey(): string {
+  const owner = sessionStorage.getItem(CLINICAL_ACTIVE_OWNER_KEY);
+  return owner && owner !== 'guest' ? CLINICAL_ENCOUNTER_KEY + ':' + encodeURIComponent(owner) : CLINICAL_ENCOUNTER_KEY;
+}
+
 export function clinicalToday(): string { return new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()); }
 export function emptyClinicalEncounter(): ClinicalEncounter {
   return { version: 1, step: 0, patientIdentifier: '', chiefComplaint: '', complaintSlug: '', visitDate: clinicalToday(), observations: {}, examinationMemo: '', safety: 'unknown', safetyMemo: '', candidateIds: [], rationale: '', principle: '', points: [], plan: '', metric: '', before: '', after: '', functionMemo: '', reaction: '', nextAction: '', revision: '', previousSummary: '' };
@@ -20,6 +27,7 @@ const textFields = ['patientIdentifier','chiefComplaint','complaintSlug','visitD
 export function parseClinicalEncounter(raw: unknown): ClinicalEncounter | null {
   if (!raw || typeof raw !== 'object') return null;
   const value = raw as Record<string, unknown>;
+  if (value.savedNoteId !== undefined && (typeof value.savedNoteId !== 'string' || value.savedNoteId.length > 160)) return null;
   if (value.version !== 1 || !Number.isInteger(value.step) || Number(value.step) < 0 || Number(value.step) > 4) return null;
   if (!textFields.every(key => typeof value[key] === 'string' && (value[key] as string).length <= 20000)) return null;
   if (value.visitDate !== '' && !/^\d{4}-\d{2}-\d{2}$/.test(String(value.visitDate))) return null;
@@ -33,17 +41,17 @@ export function parseClinicalEncounter(raw: unknown): ClinicalEncounter | null {
 }
 export function readClinicalEncounter(): { encounter: ClinicalEncounter | null; error: string | null } {
   try {
-    const raw = sessionStorage.getItem(CLINICAL_ENCOUNTER_KEY);
+    const raw = sessionStorage.getItem(encounterStorageKey());
     if (!raw) return { encounter: null, error: null };
     const encounter = parseClinicalEncounter(JSON.parse(raw));
     return { encounter, error: encounter ? null : '下書きの形式を読み込めませんでした。保存済みノートから再開できます。' };
   } catch { return { encounter: null, error: '下書きを読み込めません。ブラウザの保存設定を確認してください。' }; }
 }
 export function writeClinicalEncounter(encounter: ClinicalEncounter): boolean {
-  try { sessionStorage.setItem(CLINICAL_ENCOUNTER_KEY, JSON.stringify(encounter)); return true; } catch { return false; }
+  try { sessionStorage.setItem(encounterStorageKey(), JSON.stringify(encounter)); return true; } catch { return false; }
 }
 export function clearClinicalEncounter(): boolean {
-  try { sessionStorage.removeItem(CLINICAL_ENCOUNTER_KEY); return true; } catch { return false; }
+  try { sessionStorage.removeItem(encounterStorageKey()); return true; } catch { return false; }
 }
 export function clinicalEncounterDraft(encounter: ClinicalEncounter, pointNames: string[]): Omit<DraftPatientNote, 'createdAt'> {
   if (encounter.safety !== 'reviewed') { encounter = { ...encounter, points: [] }; pointNames = []; }
@@ -56,6 +64,12 @@ export function clinicalEncounterDraft(encounter: ClinicalEncounter, pointNames:
     treatmentPlan: `【安全確認】\n${encounter.safety === 'refer' ? '施術を保留・医療評価を優先' : encounter.safety === 'reviewed' ? '確認した範囲で該当兆候なし（疾患の除外ではない）' : '未確認'}\n${encounter.safetyMemo}\n\n【四診所見】\n${signs}\n補足：${encounter.examinationMemo || '未記入'}\n\n【候補の判断根拠】\n${encounter.rationale || '未記入'}\n治法：${encounter.principle || '保留'}\n\n【配穴の採用理由】\n${pointText || '保留'}\n\n【評価指標】\n指標：${encounter.metric.replaceAll('\n', ' ')}\n施術前（0〜10）：${encounter.before}\n施術直後（0〜10）：${encounter.after}\n生活動作：${encounter.functionMemo}\n\n【施術計画】\n${encounter.plan}\n\n【見立ての修正】\n${encounter.revision || '未記入'}${encounter.previousSummary ? `\n\n【前回からの申し送り】\n${encounter.previousSummary}` : ''}`,
     patientReaction: encounter.reaction, nextAction: encounter.nextAction,
   };
+}
+/** Preserve compatibility with existing clinical notes and their cloud schema. */
+export function clinicalEncounterNote(encounter: ClinicalEncounter, pointNames: string[]): Omit<PatientNoteItem, 'id' | 'createdAt' | 'updatedAt'> {
+  const safe = encounter.safety === 'refer' ? { ...encounter, points: [], principle: '施術を保留し医療評価を優先', plan: `施術は保留。${encounter.plan}` } : encounter;
+  const draft = clinicalEncounterDraft(safe, pointNames);
+  return { patientIdentifier: safe.patientIdentifier.trim(), chiefComplaint: safe.chiefComplaint.trim(), visitDate: safe.visitDate, syndrome: draft.syndrome, selectedPoints: safe.safety === 'reviewed' ? pointNames : [], treatmentPlan: draft.treatmentPlan, patientReaction: safe.reaction, nextAction: safe.nextAction };
 }
 export function readClinicalMetric(note: Pick<PatientNoteItem, 'treatmentPlan'>) {
   const text = note.treatmentPlan || '';

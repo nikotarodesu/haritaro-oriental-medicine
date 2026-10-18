@@ -8,6 +8,10 @@
 @import "./curriculum-density.css";
 @import "./tsubo-density.css";
 @import "./reference-density.css";
+@import "./clinical-navigation.css";
+@import "./clinical-notes.css";
+@import "./clinical-exercises.css";
+@import "./clinical-workspace.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

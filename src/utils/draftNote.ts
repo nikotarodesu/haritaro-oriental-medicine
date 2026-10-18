@@ -18,6 +18,11 @@ export interface DraftPatientNote {
 }
 
 const STORAGE_KEY = "haritaro_draft_patient_note";
+function draftStorageKey() {
+  const owner = sessionStorage.getItem('haritaro_clinical_active_owner_v1');
+  return owner && owner !== 'guest' ? STORAGE_KEY + ':' + encodeURIComponent(owner) : STORAGE_KEY;
+}
+
 
 export function saveDraftPatientNote(draft: Omit<DraftPatientNote, "createdAt">): boolean {
   if (typeof window === "undefined") return false;
@@ -26,7 +31,7 @@ export function saveDraftPatientNote(draft: Omit<DraftPatientNote, "createdAt">)
       ...draft,
       createdAt: new Date().toISOString(),
     };
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(fullDraft));
+    sessionStorage.setItem(draftStorageKey(), JSON.stringify(fullDraft));
     return true;
   } catch (e) {
     console.error("Failed to save draft patient note", e);
@@ -37,9 +42,9 @@ export function saveDraftPatientNote(draft: Omit<DraftPatientNote, "createdAt">)
 export function loadAndClearDraftPatientNote(): DraftPatientNote | null {
   if (typeof window === "undefined") return null;
   try {
-    const saved = sessionStorage.getItem(STORAGE_KEY);
+    const saved = sessionStorage.getItem(draftStorageKey());
     if (!saved) return null;
-    sessionStorage.removeItem(STORAGE_KEY);
+    sessionStorage.removeItem(draftStorageKey());
     return JSON.parse(saved) as DraftPatientNote;
   } catch (e) {
     console.error("Failed to load draft patient note", e);

@@ -1,17 +1,23 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useClinicalMemo } from '@/contexts/ClinicalMemoContext';
 import { NotebookPen, ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { readClinicalEncounter, writeClinicalEncounter, type ClinicalEncounter, type ClinicalPointPlan } from '@/utils/clinicalEncounter';
 
 export default function ClinicalToolBridge({ selectedCodes, editableCodes, onRestore }: { selectedCodes?: string[]; editableCodes?: string[]; onRestore?: (codes: string[]) => void }) {
+  const router = useRouter();
+  const { clinicalStorageOwner = 'guest' } = useClinicalMemo();
+  const [loadedOwner, setLoadedOwner] = useState<string | null>(null);
   const [encounter, setEncounter] = useState<ClinicalEncounter | null>(null);
   const [message, setMessage] = useState('');
   useEffect(() => {
-    const timer = setTimeout(() => { const stored = readClinicalEncounter(); setEncounter(stored.encounter); if (stored.encounter && onRestore) onRestore(stored.encounter.points.map(point => point.code)); }, 0);
+    if (!clinicalStorageOwner) return;
+    const timer = setTimeout(() => { const stored = readClinicalEncounter(); setEncounter(stored.encounter); setLoadedOwner(clinicalStorageOwner); setMessage(''); if (stored.encounter && onRestore) onRestore(stored.encounter.points.map(point => point.code)); }, 0);
     return () => clearTimeout(timer);
-  }, [onRestore]);
+  }, [onRestore, clinicalStorageOwner]);
   const importPoints = () => {
     if (!encounter || !selectedCodes) return;
     const stored = readClinicalEncounter().encounter;
@@ -22,11 +28,21 @@ export default function ClinicalToolBridge({ selectedCodes, editableCodes, onRes
     if (editableCodes) points.push(...stored.points.filter(point => !editableCodes.includes(point.code)));
     if (points.length > 12) { setMessage('作業画面の経穴は12穴までです。作業画面で構成を確認してください。'); return; }
     if (!writeClinicalEncounter({ ...stored, points, step: 3 })) { setMessage('転記を保存できませんでした。'); return; }
-    setMessage('作業中の下書きに配穴を転記しました。作業画面で採用理由を確認してください。');
+    router.push('/clinical/workspace');
   };
-  return <aside className="mx-auto max-w-4xl text-sm text-[#232826] dark:text-[#FAF8F5]" aria-label="臨床記録への移動">
-    {encounter && <p className="leading-relaxed">作業中：{encounter.patientIdentifier || '匿名ID未入力'} · {encounter.chiefComplaint || '主訴未入力'}。所見と見立ては作業画面に保持されています。</p>}
-    <div className="flex flex-wrap items-center gap-x-5 gap-y-2">{encounter && selectedCodes && <button className="min-h-11 rounded-lg border border-[#B9CDC0] px-3 py-2 font-semibold dark:border-[#496153]" onClick={importPoints}>選択中の配穴を作業中の記録に転記</button>}<Link href="/clinical/workspace" className="inline-flex min-h-11 items-center gap-2 font-semibold text-[var(--accent-readable)] underline underline-offset-4"><NotebookPen aria-hidden="true" className="h-4 w-4 shrink-0" />{encounter ? '所見・記録の作業画面へ戻る' : '所見から記録までを始める'}<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link></div>
-    {message && <p role="status">{message}</p>}
+  if (!clinicalStorageOwner || loadedOwner !== clinicalStorageOwner) return <p role="status">作業中の記録を確認しています…</p>;
+  return <aside className="clinical-tool-bridge" aria-label="作業中の記録">
+    <div className="clinical-tool-bridge__context">
+      <NotebookPen aria-hidden="true" className="h-5 w-5 shrink-0" />
+      <div><p className="clinical-tool-bridge__label">{encounter ? '作業中の記録' : '所見から記録を始める'}</p>
+        <p>{encounter ? (encounter.patientIdentifier || '匿名ID未入力') + ' · ' + (encounter.chiefComplaint || '主訴未入力') : '所見・見立て・配穴を一つの記録にまとめます。'}</p>
+      </div>
+    </div>
+    <div className="clinical-tool-bridge__actions">
+      {encounter && selectedCodes ? <button type="button" className="page-primary-action" onClick={importPoints}>この構成を反映して記録へ戻る<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></button> :
+        <Link href="/clinical/workspace" className="page-secondary-action">{encounter ? '記録を再開する' : '記録を始める'}<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link>}
+      {encounter && selectedCodes && <Link href="/clinical/workspace" className="clinical-tool-bridge__back">反映せずに戻る</Link>}
+    </div>
+    {message && <p role="status" className="clinical-tool-bridge__message">{message}</p>}
   </aside>;
 }

@@ -1,0 +1,120 @@
+/* Clinical exercise surfaces share the clinical workspace palette. */
+.clinical-exercises {
+  --exercise-ink: var(--text-sumi);
+  --exercise-muted: var(--text-secondary);
+  --exercise-line: var(--border-washi);
+  --exercise-paper: var(--bg-card);
+  --exercise-tint: var(--tokiwa-light);
+}
+.dark .clinical-exercises {
+  --exercise-ink: var(--text-sumi);
+  --exercise-muted: var(--text-secondary);
+  --exercise-line: var(--border-washi);
+  --exercise-paper: var(--bg-card);
+  --exercise-tint: var(--tokiwa-light);
+}
+.clinical-training-switcher {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .375rem;
+  padding: .375rem;
+  border: 1px solid var(--exercise-line);
+  border-radius: 1rem;
+  background: var(--exercise-tint);
+}
+.clinical-training-switcher button {
+  min-height: 4.5rem;
+  border: 1px solid transparent;
+  border-radius: .65rem;
+  padding: .75rem .5rem;
+  color: var(--exercise-muted);
+  text-align: center;
+  cursor: pointer;
+}
+.clinical-training-switcher button[aria-selected="true"] {
+  border-color: var(--exercise-line);
+  background: var(--exercise-paper);
+  color: var(--exercise-ink);
+}
+.clinical-training-switcher span {
+  display: block;
+  font-weight: 700;
+}
+.clinical-training-switcher small {
+  display: block;
+  margin-top: .25rem;
+  font-size: .875rem;
+  line-height: 1.5;
+}
+.clinical-training-switcher button:focus-visible,
+.clinical-training-panel:focus-visible {
+  outline: 2px solid #54816b;
+  outline-offset: 3px;
+}
+.clinical-training-panel[hidden] { display: none; }
+.clinical-training-panel { scroll-margin-top: 6rem; }
+.clinical-exercise-surface {
+  border: 1px solid var(--exercise-line);
+  border-radius: 1rem;
+  background: var(--exercise-paper);
+  padding: 1.25rem;
+}
+.clinical-exercise-fieldgroup {
+  min-width: 0;
+  border-top: 1px solid var(--exercise-line);
+  padding-top: 1rem;
+}
+.clinical-exercise-pair {
+  border-top: 1px solid var(--exercise-line);
+  padding-top: 1.5rem;
+}
+.clinical-exercise-point,
+.clinical-exercise-detail {
+  min-width: 0;
+  border-top: 1px solid var(--exercise-line);
+  padding: 1rem 0;
+}
+.clinical-exercise-point p,
+.clinical-exercise-detail p { line-height: 1.8; }
+.clinical-exercise-simulator button,
+.clinical-exercise-simulator a { min-height: 2.75rem; }
+.clinical-exercise-simulator a { align-content: center; }
+.clinical-haiketsu-selected-list { border-bottom: 1px solid var(--exercise-line); }
+.clinical-haiketsu-selected { border-top: 1px solid var(--exercise-line); padding: 1rem 0; }
+.clinical-haiketsu-point { line-height: 1.6; }
+.clinical-haiketsu-palette { scroll-margin-top: 6rem; }
+.clinical-haiketsu .clinical-tool-bridge { margin-top: 1rem; }
+.clinical-tool-bridge {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  width: min(calc(100% - 2rem), 76rem);
+  margin-inline: auto;
+  padding: 1rem 0;
+  border-bottom: 1px solid #dce3da;
+  color: #233e34;
+  font-size: .875rem;
+  line-height: 1.7;
+}
+.clinical-exercises > .clinical-tool-bridge { width: 100%; }
+.clinical-tool-bridge__context { display: flex; min-width: 0; align-items: flex-start; gap: .75rem; }
+.clinical-tool-bridge__context > div { min-width: 0; overflow-wrap: anywhere; }
+.clinical-tool-bridge__label { margin-bottom: .125rem; color: #5e6b63; font-size: .875rem; }
+.clinical-tool-bridge__actions { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; }
+.clinical-tool-bridge__back { display: inline-flex; min-height: 2.75rem; align-items: center; text-decoration: underline; text-underline-offset: .2em; }
+.clinical-tool-bridge__message { flex-basis: 100%; color: #9b3b2b; }
+.dark .clinical-tool-bridge { border-color: #34483e; color: #dfece5; }
+.dark .clinical-tool-bridge__label { color: #b7c5bf; }
+.dark .clinical-tool-bridge__message { color: #f1b6a6; }
+@media (min-width: 640px) {
+  .clinical-exercise-surface { padding: 1.75rem; }
+}
+@media (max-width: 479px) {
+  .clinical-training-switcher { gap: .125rem; padding: .25rem; }
+  .clinical-training-switcher button { min-height: 4rem; padding: .625rem .25rem; }
+  .clinical-training-switcher small { display: none; }
+  .clinical-tool-bridge__actions { width: 100%; }
+  .clinical-tool-bridge__actions .page-primary-action { width: 100%; justify-content: center; }
+}

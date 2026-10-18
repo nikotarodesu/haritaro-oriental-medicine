@@ -1,0 +1,56 @@
+/* Shared clinical working surface: clear steps, one main action, and a quiet summary. */
+.clinical-workspace { --clinical-line: var(--border-washi); }
+.clinical-workspace .page-intro { margin-bottom: 8px; }
+.clinical-workspace .page-intro-description { max-width: 48em; }
+.clinical-step-nav { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--clinical-line); padding-bottom: 8px; scroll-padding-inline: 8px; }
+.clinical-step-nav > button { flex: 1 0 132px; border: 0; border-radius: 8px; padding: 12px; }
+.clinical-step-nav > button:not([aria-current]) { color: var(--text-secondary); }
+.clinical-step-nav > button[aria-current] { background: var(--accent-readable); color: var(--bg-card); }
+.clinical-workspace-layout { display: grid; gap: 24px; align-items: start; }
+.clinical-workspace-main { min-width: 0; border: 0; padding: 20px 0; background: transparent; }
+.clinical-workspace-main > h2 { font-size: 1.375rem; font-weight: 600; margin-bottom: 24px; }
+.clinical-workspace-main label:not(.clinical-comparison-name) { line-height: 1.8; }
+.clinical-workspace-main :is(input, textarea, select) { margin-top: 6px; border-color: var(--clinical-line); background: var(--bg-card); color: var(--text-sumi); }
+.clinical-workspace-main input[type=checkbox] { accent-color: var(--accent-readable); }
+.clinical-observation-group { border: 0; border-bottom: 1px solid var(--clinical-line); border-radius: 0; padding: 0; }
+.clinical-observation-group > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; cursor: pointer; font-weight: 600; }
+.clinical-observation-group > summary > span:last-child { font-size: .875rem; font-weight: 400; color: var(--text-secondary); }
+.clinical-observation-group > summary::before { content: '+'; color: var(--accent-readable); }
+.clinical-observation-group[open] > summary::before { content: '−'; }
+.clinical-observation-group > fieldset { padding-bottom: 20px; }
+.clinical-observation-group label { border: 0; background: transparent; padding: 12px 0; }
+.clinical-candidate-picker { display: grid; gap: 8px; }
+.clinical-candidate-picker > label { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--clinical-line); border-radius: 10px; cursor: pointer; }
+.clinical-candidate-picker > label[data-selected=true] { border-color: var(--accent-readable); background: var(--tokiwa-light); }
+.clinical-candidate-picker input { width: 20px; height: 20px; flex-shrink: 0; }
+.clinical-candidate-picker strong { font-size: 1rem; font-weight: 600; }
+.clinical-candidate-picker small { display: block; margin-top: 3px; color: var(--text-secondary); font-size: .875rem; }
+.clinical-workspace .clinical-comparison-board { border: 0; }
+.clinical-workspace .clinical-comparison-heading { display: none; }
+.clinical-workspace .clinical-comparison-row { display: block; border: 0; border-top: 1px solid var(--clinical-line); padding: 20px 0; background: transparent; }
+.clinical-workspace .clinical-comparison-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); margin-top: 12px; }
+.clinical-workspace .clinical-comparison-cell { border: 0; padding: 8px 12px 8px 0; }
+.clinical-workspace .clinical-comparison-context { border: 0; padding: 12px 0 0; }
+.clinical-missing-sign { display: block; min-height: 44px; padding: 8px 0; color: var(--accent-readable); text-align: left; text-decoration: underline; text-underline-offset: 4px; }
+.clinical-point-search { border-block: 1px solid var(--clinical-line); padding-block: 18px; }
+.clinical-point-results { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.clinical-point-results button:disabled { opacity: .6; }
+.clinical-workspace-actions { position: sticky; bottom: var(--mobile-nav-height, 68px); z-index: 8; background: var(--bg-washi); padding-block: 14px; }
+.clinical-workspace-summary { display: none; }
+.clinical-review-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.clinical-review-section { border-bottom: 1px solid var(--clinical-line); padding-block: 16px; }
+.clinical-review-section > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.clinical-review-section h3 { font-size: 1rem; font-weight: 600; }
+.clinical-review-section p { color: var(--text-secondary); }
+.clinical-save-feedback { padding: 16px; background: var(--tokiwa-light); border-radius: 10px; line-height: 1.8; }
+@media(min-width:640px) { .clinical-candidate-picker { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(min-width:1024px) {
+ .clinical-workspace-layout { grid-template-columns: minmax(0,1fr) 260px; gap: 44px; }
+ .clinical-workspace-summary { display: block; position: sticky; top: calc(var(--site-header-height,68px) + 24px); padding: 20px 0 20px 24px; border-left: 1px solid var(--clinical-line); overflow-wrap: anywhere; }
+ .clinical-workspace-summary > h2 { font-size: 1.125rem; font-weight: 600; }
+ .clinical-workspace-summary > p { margin-block: 8px 16px; }
+ .clinical-workspace-summary dl { display: grid; gap: 16px; margin-bottom: 20px; line-height: 1.7; font-size: .875rem; }
+ .clinical-workspace-summary dt { color: var(--text-secondary); margin-bottom: 3px; }
+ .clinical-workspace-actions { bottom: 0; }
+}
+@media(max-width:480px) { .clinical-workspace .clinical-comparison-fields { grid-template-columns: 1fr; } .clinical-review-section > div { align-items: start; flex-direction: column; gap: 4px; } }

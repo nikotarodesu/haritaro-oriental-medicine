@@ -18,6 +18,10 @@ import {
 
 export type NavItemId =
   | "home"
+  | "clinical"
+  | "workspace"
+  | "clinical_guides"
+  | "tsubo_compare"
   | "curriculum"
   | "review"
   | "kokushi"
@@ -43,6 +47,18 @@ export interface NavItemDefinition {
 }
 
 export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
+  clinical: {
+    id: "clinical", label: "臨床ホーム", shortLabel: "臨床", description: "新しい記録・下書き・主訴別ガイドの入口", icon: Home, href: "/clinical",
+  },
+  workspace: {
+    id: "workspace", label: "所見から記録まで", shortLabel: "所見・記録", description: "安全確認から所見・配穴の理由・再評価を記録", icon: FileText, href: "/clinical/workspace",
+  },
+  clinical_guides: {
+    id: "clinical_guides", label: "主訴別ガイド", shortLabel: "主訴", description: "主訴ごとに確認したい項目を調べる", icon: BookOpen, href: "/clinical#chief-complaints",
+  },
+  tsubo_compare: {
+    id: "tsubo_compare", label: "経穴を比較", shortLabel: "経穴比較", description: "経穴の位置・特徴・注意事項を並べる", icon: GitCompare, href: "/tsubo/compare",
+  },
   home: {
     id: "home",
     label: "ホーム",
@@ -102,7 +118,7 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
   gorou: {
     id: "gorou",
-    label: "五労チェッカー",
+    label: "五労チェック",
     shortLabel: "五労",
     description: "日常動作（久坐・久立等）と五臓の負担点検",
     icon: Activity,
@@ -110,7 +126,7 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
   simulator: {
     id: "simulator",
-    label: "弁証シミュレーター",
+    label: "弁証候補を比較",
     shortLabel: "弁証",
     description: "八綱・気血水・臓腑の鑑別推論",
     icon: Layers,
@@ -126,7 +142,7 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
   haiketsu: {
     id: "haiketsu",
-    label: "配穴設計",
+    label: "配穴を組み立てる",
     shortLabel: "配穴",
     description: "本治・標治バランスと処方構成の演習",
     icon: SlidersHorizontal,
@@ -158,6 +174,40 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
 };
 
+/** One set of names and purposes for the header, mobile menu and clinical home. */
+export const CLINICAL_NAV_GROUPS = [
+  { id: "record", label: "記録する", items: ["workspace", "notes"] },
+  { id: "lookup", label: "調べる", items: ["clinical_guides", "tsubo", "tsubo_compare"] },
+  { id: "practice", label: "練習する", items: ["simulator", "haiketsu", "cases", "diagnosis"] },
+] as const satisfies readonly { id: string; label: string; items: readonly NavItemId[] }[];
+
+export function getNavigationSection(pathname: string): "learn" | "clinical" | "dictionary" | "account" | null {
+  const within = (path: string) => pathname === path || pathname.startsWith(path + "/");
+  if (["/clinical", "/simulator", "/practice", "/cases", "/diagnosis", "/kikei", "/notes", "/mynote"].some(within) || within("/tsubo/compare")) return "clinical";
+  if (within("/tsubo")) return "dictionary";
+  if (["/learn", "/curriculum", "/library", "/articles"].some(within)) return "learn";
+  if (["/account", "/auth", "/pricing"].some(within)) return "account";
+  return null;
+}
+
+export function isNavigationItemActive(id: NavItemId, pathname: string, searchParams?: Pick<URLSearchParams, "get">): boolean {
+  if (id === "home") return pathname === "/";
+  if (id === "search") return false;
+  if (id === "clinical") return pathname === "/clinical";
+  if (id === "clinical_guides") return pathname.startsWith("/clinical/symptoms/");
+  if (id === "workspace") return pathname === "/clinical/workspace";
+  if (id === "curriculum") return pathname !== "/learn/review" && (pathname.startsWith("/learn") || pathname.startsWith("/curriculum"));
+  if (id === "review" || id === "kokushi") return pathname === "/learn/review";
+  if (id === "notes") return pathname.startsWith("/notes") || pathname.startsWith("/mynote");
+  if (id === "diagnosis") return pathname === "/diagnosis" && searchParams?.get("tab") !== "gorou";
+  if (id === "gorou") return pathname === "/diagnosis" && searchParams?.get("tab") === "gorou";
+  if (id === "simulator") return pathname === "/simulator";
+  if (id === "simulator_compare") return pathname.startsWith("/simulator/compare");
+  if (id === "tsubo_compare") return pathname.startsWith("/tsubo/compare");
+  if (id === "tsubo") return (pathname === "/tsubo" || pathname.startsWith("/tsubo/")) && !pathname.startsWith("/tsubo/compare");
+  return pathname.startsWith(ALL_NAV_ITEMS[id].href.split(/[?#]/)[0]);
+}
+
 export type NavPresetType = "standard" | "student" | "clinician";
 
 export const NAV_PRESETS: Record<NavPresetType, { name: string; description: string; items: [NavItemId, NavItemId, NavItemId, NavItemId] }> = {
@@ -173,8 +223,8 @@ export const NAV_PRESETS: Record<NavPresetType, { name: string; description: str
   },
   clinician: {
     name: "臨床家セット",
-    description: "弁証推論、配穴設計、経穴辞典、マイノートに特化",
-    items: ["simulator", "haiketsu", "tsubo", "notes"],
+    description: "所見と記録、配穴、経穴辞典、マイノートを素早く開く",
+    items: ["workspace", "haiketsu", "tsubo", "notes"],
   },
 };
 
@@ -213,8 +263,12 @@ export function loadNavUserConfig(): NavUserConfig {
     const unique = new Set(parsed.items);
     if (unique.size !== 4) return DEFAULT_NAV_CONFIG;
 
+    // Migrate only the unchanged old clinician preset; custom arrangements stay intact.
+    const legacyClinician = ["simulator", "haiketsu", "tsubo", "notes"];
+    const sourceItems = parsed.preset === "clinician" && parsed.items.every((id: string, index: number) => id === legacyClinician[index])
+      ? NAV_PRESETS.clinician.items : parsed.items;
     // Keep the user's other choices when the retired exam shortcut becomes review.
-    const migrated = [...new Set<NavItemId>(parsed.items.map((id: NavItemId) => id === "kokushi" ? "review" : id))];
+    const migrated = [...new Set<NavItemId>(sourceItems.map((id: NavItemId) => id === "kokushi" ? "review" : id))];
     for (const id of DEFAULT_NAV_CONFIG.items) {
       if (migrated.length === 4) break;
       if (!migrated.includes(id)) migrated.push(id);

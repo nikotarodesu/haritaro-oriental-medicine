@@ -4,7 +4,7 @@ import { Suspense, useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { MoreHorizontal } from "lucide-react";
-import { ALL_NAV_ITEMS, loadNavUserConfig, DEFAULT_NAV_CONFIG, NavUserConfig, NavItemId } from "@/config/navigationItems";
+import { ALL_NAV_ITEMS, loadNavUserConfig, DEFAULT_NAV_CONFIG, NavUserConfig, isNavigationItemActive } from "@/config/navigationItems";
 import { useViewportLayout } from "@/hooks/useViewportLayout";
 import NavCustomizeModal from "./NavCustomizeModal";
 import NavMoreDrawer from "./NavMoreDrawer";
@@ -53,20 +53,6 @@ function MobileBottomNavContent() {
   }, [refreshConfig]);
 
   const handleOpenSearch = () => window.dispatchEvent(new CustomEvent("haritaro:open-search"));
-  const isItemActive = (id: NavItemId, href: string): boolean => {
-    if (id === "home") return pathname === "/";
-    if (id === "search") return false;
-    if (id === "curriculum") return pathname !== "/learn/review" && (pathname.startsWith("/learn") || pathname.startsWith("/curriculum"));
-    if (id === "review") return pathname === "/learn/review";
-    if (id === "notes") return pathname.startsWith("/notes") || pathname.startsWith("/mynote");
-    if (id === "diagnosis") return pathname === "/diagnosis" && searchParams.get("tab") !== "gorou";
-    if (id === "gorou") return pathname === "/diagnosis" && searchParams.get("tab") === "gorou";
-    if (id === "simulator") return pathname === "/simulator";
-    if (id === "simulator_compare") return pathname.startsWith("/simulator/compare");
-    if (id === "haiketsu") return pathname.startsWith("/practice/haiketsu");
-    return pathname.startsWith(href.split(/[?#]/)[0]);
-  };
-
   return <>
     <nav ref={navRef} aria-label="モバイル下部ナビゲーション"
       className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-40 bg-[#FAF8F5]/95 dark:bg-[#10161C]/95 backdrop-blur-md border-t border-[#E8E1D1] dark:border-[#22303D] lg:hidden print:hidden"
@@ -75,7 +61,7 @@ function MobileBottomNavContent() {
         {config.items.map((itemId, index) => {
           const item = ALL_NAV_ITEMS[itemId] || ALL_NAV_ITEMS.home;
           const Icon = item.icon;
-          const active = isItemActive(item.id, item.href);
+          const active = isNavigationItemActive(item.id, pathname, searchParams);
           return item.isAction
             ? <button key={item.id + index} type="button" onClick={handleOpenSearch} className="mobile-nav-item" aria-label={item.label} aria-haspopup="dialog"><Icon aria-hidden="true" /><span>{item.shortLabel}</span></button>
             : <Link key={item.id + index} href={item.href} className="mobile-nav-item" aria-label={item.label} aria-current={active ? "page" : undefined}><Icon aria-hidden="true" className={active ? "stroke-[2.5]" : "stroke-2"} /><span>{item.shortLabel}</span></Link>;

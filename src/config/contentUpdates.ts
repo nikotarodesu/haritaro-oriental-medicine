@@ -219,6 +219,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(NATURAL_JAPANESE_COURSE_REVISIONS.map(slug => [`/learn/courses/${slug}`, '2026-10-12'])),
   // 2026-10-12: all lesson page titles and reading layouts revised; not a clinical review date.
   ...Object.fromEntries(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [`/curriculum/${id}`, '2026-10-12']))),
+  ...Object.fromEntries(['/clinical', '/clinical/workspace', '/notes', '/simulator', '/practice/haiketsu', ...['shoulder','back','headache','sleep','digestion','fatigue'].map(slug => '/clinical/symptoms/' + slug)].map(route => [route, '2026-10-18'])),
   // Reading estimates were added to the actual detail pages of all 11 courses.
   ...Object.fromEntries(LEARNING_COURSES.map(course => [`/learn/courses/${course.slug}`, '2026-10-12'])),
   // Shared reading/source/navigation presentation changed; this is not a clinical review date.
@@ -226,6 +227,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(ARTICLE_EDITORIAL_REVISIONS.map(id => [`/articles/${id}`, '2026-10-15'])),
 };
 export const SITE_UPDATES = [
+  { date: '2026-10-18', label: '臨床メニュー・記録・演習を整理', href: '/clinical', text: '記録する・調べる・練習するの入口を整理。下書き再開、所見と候補の比較、作業画面内での確認・保存を改善しました。演習を切り替え式にし、重なる説明・枠・補助操作を減らしています。' },
   { date: '2026-10-15', label: '本文・図解・理解度チェックを改善', href: '/curriculum/lecture-qiblood-2', text: '重なる説明を整理し、概念の比較や短い例から考える問題へ見直しました。同じ節の図解と挿絵の重複を減らし、WHO原資料で確認した定義と合谷の位置には、確認範囲と日付を掲載しています。' },
   { date: "2026-10-15", label: "講義の学習と復習に集中する構成へ", href: "/learn/review", text: "国試向けの専用演習を終了し、講義の復習へ集約。解き直したときの復習予定と類題からの復帰を改善し、再訪時の入口、用語説明の操作、図の読み方を整えました。" },
   { date: '2026-10-12', label: 'ページの重複を減らし、検索と配穴メモを改善', href: '/learn', text: '講義と経穴の説明、学習案内、メニューを整理。用語検索では短い定義を先に表示し、配穴メモに無関係な属性が付く不具合を修正しました。' },

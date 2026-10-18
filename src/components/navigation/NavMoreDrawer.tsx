@@ -2,6 +2,7 @@
 
 import React, { useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { 
   X, 
   SlidersHorizontal, 
@@ -10,7 +11,7 @@ import {
   BookOpenCheck,
   Bookmark
 } from "lucide-react";
-import { ALL_NAV_ITEMS, NavItemId } from "@/config/navigationItems";
+import { ALL_NAV_ITEMS, CLINICAL_NAV_GROUPS, isNavigationItemActive, NavItemId } from "@/config/navigationItems";
 import { useModalDialog } from "@/hooks/useModalDialog";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 
@@ -28,6 +29,7 @@ export default function NavMoreDrawer({
   onOpenSearch,
 }: NavMoreDrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
   const { clipCount, patientNoteCount, openDrawer } = useClinicalMemo();
   useModalDialog(isOpen, drawerRef, onClose);
 
@@ -36,23 +38,10 @@ export default function NavMoreDrawer({
   const categories: {
     title: string;
     icon: React.ComponentType<{ className?: string }>;
-    items: NavItemId[];
+    items: readonly NavItemId[];
   }[] = [
-    {
-      title: "臨床・推論ツール",
-      icon: Stethoscope,
-      items: ["simulator", "haiketsu", "cases"],
-    },
-    {
-      title: "学習・復習",
-      icon: GraduationCap,
-      items: ["curriculum", "review"],
-    },
-    {
-      title: "総合辞典・記録・その他",
-      icon: BookOpenCheck,
-      items: ["tsubo", "search", "library"],
-    },
+    ...CLINICAL_NAV_GROUPS.map(group => ({ title: group.label, icon: group.id === "record" ? Bookmark : group.id === "lookup" ? BookOpenCheck : Stethoscope, items: group.items })),
+    { title: "学習・復習", icon: GraduationCap, items: ["curriculum", "review", "library", "search"] },
   ];
 
   const handleItemClick = (item: (typeof ALL_NAV_ITEMS)[NavItemId]) => {
@@ -104,13 +93,14 @@ export default function NavMoreDrawer({
 
         {/* メニューリスト（スクロール領域） */}
         <div className="nav-more-scroll p-4 space-y-4 overflow-y-auto overscroll-contain">
+          <Link href="/clinical" onClick={onClose} className="clinical-drawer-home"><Stethoscope aria-hidden="true" className="h-5 w-5" /><span>臨床ホーム<span className="mt-1 block text-sm font-normal ui-muted">新しい記録・下書き・主訴別ガイド</span></span></Link>
           <button type="button" onClick={() => { onClose(); openDrawer(); }} className="w-full flex min-h-11 flex-wrap items-center gap-3 ui-card text-left focus-visible:outline-2 focus-visible:outline-offset-4">
             <Bookmark aria-hidden="true" className="w-5 h-5 shrink-0 text-[var(--accent-readable)]" />
             <span className="text-base font-semibold">保存一覧</span>
             <span className="ui-count" aria-label={`保存済み ${clipCount + patientNoteCount}件`}>{clipCount + patientNoteCount}件</span>
             <span className="basis-full text-sm ui-muted">経穴・記事の保存と臨床ノートを開く</span>
           </button>
-          <Link href="/clinical" onClick={onClose} className="inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-4">臨床ツールの一覧を見る</Link>
+
           {categories.map((cat) => {
             const CatIcon = cat.icon;
             return (
@@ -152,6 +142,7 @@ export default function NavMoreDrawer({
                         key={item.id}
                         href={item.href}
                         onClick={onClose}
+                        aria-current={isNavigationItemActive(item.id, pathname) ? "page" : undefined}
                         className="flex items-start gap-2.5 min-h-11 p-2.5 hover:bg-white dark:hover:bg-[#10161C] rounded-lg text-left transition-all cursor-pointer"
                       >
                         <div className="p-1.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5">

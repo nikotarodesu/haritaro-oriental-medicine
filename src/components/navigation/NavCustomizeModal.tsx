@@ -222,7 +222,7 @@ export default function NavCustomizeModal({
                   <span>臨床家向け</span>
                 </div>
                 <div className="text-sm text-[#59615D] dark:text-[#AFBDC8] mt-0.5 leading-relaxed">
-                  弁証・配穴・経穴・ノート
+                  所見・記録・配穴・経穴・ノート
                 </div>
               </button>
             </div>

@@ -128,6 +128,9 @@ for (const state of ['local', 'syncing', 'synced', 'offline']) {
   assert(items.some(({ node, withinDetails }) => node.type === 'p' && !withinDetails && renderToStaticMarkup(node).includes('本人を特定できる情報')), state + ': identity reminder stays outside optional help');
   assert.equal(items.some(({ node, withinDetails }) => node.props?.role === 'alert' && !withinDetails), state === 'offline', 'Failed sync is an explicit visible alert');
 }
+let retried = 0;
+const retryButton = storageNodes(NotesStorageSupport({ ...storageProps, isAuthenticated: true, syncStatus: 'offline', onRetry: () => retried++ })).find(({ node }) => node.type === 'button' && renderToStaticMarkup(node).includes('同期を再試行'));
+assert(retryButton, 'Failed cloud sync exposes a recovery action'); retryButton.node.props.onClick(); assert.equal(retried, 1);
 const storageItems = storageNodes(NotesStorageSupport(storageProps));
 storageItems.filter(({ node }) => node.type === 'button').forEach(({ node }) => node.props.onClick());
 assert.equal(storageCalls.join(','), 'csv,json,import', 'All file operations still invoke their supplied existing handlers');

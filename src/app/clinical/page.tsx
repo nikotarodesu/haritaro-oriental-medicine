@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Activity, ArrowRight, Footprints, GitCompareArrows, GraduationCap, Heart, Layers3 } from 'lucide-react';
+import { ArrowRight, GraduationCap, Heart } from 'lucide-react';
+import { ALL_NAV_ITEMS, type NavItemDefinition } from '@/config/navigationItems';
 import { pageSocialMetadata, SITE_NAME } from '@/config/seo';
 import { SUBSCRIPTION_CONFIG } from '@/config/subscription';
 import ClinicalDashboard from '@/components/clinical/ClinicalDashboard';
@@ -13,12 +14,17 @@ export const metadata: Metadata = {
   ...pageSocialMetadata(`${title} | ${SITE_NAME}`, description, '/clinical'),
 };
 
-const tools = [
-  { href: '/diagnosis', title: '気血水チェック', description: '伝統分類の傾向を振り返る', icon: Activity },
-  { href: '/diagnosis?tab=gorou', title: '五労チェック', description: '日常の活動の偏りを振り返る', icon: Footprints },
-  { href: '/simulator', title: '弁証候補の比較', description: '支持・矛盾する所見を比べる', icon: GitCompareArrows },
-  { href: '/practice/haiketsu', title: '配穴構成の演習', description: '経穴を選び、理由を記録する', icon: Layers3 },
-];
+const tools = (['simulator', 'haiketsu', 'cases'] as const).map(id => ALL_NAV_ITEMS[id]);
+const checks = (['diagnosis', 'gorou'] as const).map(id => ALL_NAV_ITEMS[id]);
+function ToolLinks({ items }: { items: readonly NavItemDefinition[] }) {
+  return <ul className="clinical-tool-grid">{items.map(({ icon: Icon, ...tool }) => <li key={tool.href}>
+    <Link href={tool.href} className="clinical-tool-card">
+      <span className="clinical-tool-icon"><Icon aria-hidden="true" /></span>
+      <span className="min-w-0 flex-1"><span className="block font-semibold">{tool.label}</span><span className="mt-1 block text-sm ui-muted">{tool.description}</span></span>
+      <ArrowRight aria-hidden="true" className="clinical-card-arrow" />
+    </Link>
+  </li>)}</ul>;
+}
 const focusClass = 'focus-visible:outline-2 focus-visible:outline-offset-4';
 
 export default function ClinicalLandingPage() {
@@ -27,16 +33,12 @@ export default function ClinicalLandingPage() {
     <div className="clinical-page">
       <ClinicalDashboard />
       <section id="tools" aria-labelledby="clinical-tools-heading" className="clinical-section">
-        <div className="clinical-section-heading"><h2 id="clinical-tools-heading">比較・チェック・配穴</h2></div>
-        <ul className="clinical-tool-grid">
-          {tools.map(({ icon: Icon, ...tool }) => <li key={tool.href}>
-            <Link href={tool.href} className="clinical-tool-card">
-              <span className="clinical-tool-icon"><Icon aria-hidden="true" /></span>
-              <span className="min-w-0 flex-1"><span className="block font-semibold">{tool.title}</span><span className="mt-1 block text-sm ui-muted">{tool.description}</span></span>
-              <ArrowRight aria-hidden="true" className="clinical-card-arrow" />
-            </Link>
-          </li>)}
-        </ul>
+        <div className="clinical-section-heading"><h2 id="clinical-tools-heading">練習する</h2></div>
+        <ToolLinks items={tools} />
+        <details className="clinical-check-disclosure">
+          <summary>気血水・五労のチェック</summary>
+          <ToolLinks items={checks} />
+        </details>
         <p className="clinical-tool-note">学習・記録のためのツールです。結果だけで診断・施術方針を決めることはできません。</p>
       </section>
       <section aria-labelledby="clinical-help-heading" className="clinical-help">

@@ -26,7 +26,8 @@ import {
   ChevronUp, 
   Eye,
   Info,
-  ShieldCheck
+  ShieldCheck,
+  MoreHorizontal
 } from "lucide-react";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -34,7 +35,6 @@ import { ClinicalMemoItem, PatientNoteItem, SAMPLE_PATIENT_NOTES } from "@/types
 import { loadAndClearDraftPatientNote } from "@/utils/draftNote";
 import ClinicalNoteTimeline from "@/components/clinical/ClinicalNoteTimeline";
 import { clinicalToday } from "@/utils/clinicalEncounter";
-import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
 import { trackEvent } from "@/utils/analytics";
 import GogyoBadge from "@/components/GogyoBadge";
 import { ACUPOINT_LOOKUP as TSUBOS } from "@/data/acupointLookup";
@@ -89,15 +89,19 @@ function ClinicalNotesPage() {
     patientNoteCount,
     maxPatientNoteLimit,
     isPatientNoteLimitReached,
-    addPatientNote,
-    updatePatientNote,
+    saveWorkspaceNote,
+    isReady = true,
+    clinicalStorageOwner = 'guest',
     removePatientNote,
     exportAllDataAsJson,
     exportAllDataAsCsv,
     importDataFromJson,
     addMemo,
     syncStatus,
+    triggerSync,
   } = useClinicalMemo();
+
+  const [viewOwner, setViewOwner] = useState(clinicalStorageOwner);
 
   // タブ状態: "notes" (臨床ノート) | "stock" (配穴集)
   const [activeTab, setActiveTab] = useState<"notes" | "stock">("notes");
@@ -176,9 +180,18 @@ function ClinicalNotesPage() {
   // ファイルインポート用ref
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsNoteModalOpen(false); setIsPointPickerOpen(false); setIsCustomStockModalOpen(false);
+      setIsSamplePreviewOpen(false); setPrintNote(null); setEditingNoteId(null); setDraftNotice(null);
+      setViewOwner(clinicalStorageOwner);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [clinicalStorageOwner]);
+
   // 診断結果等からのURLクエリパラメータ引き継ぎ ＆ 見本パラメータ検知
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || !clinicalStorageOwner) return;
     const restoreDraftTimer = setTimeout(() => {
     // ツールからの安全な下書き引き渡しをチェック
     const draft = loadAndClearDraftPatientNote();
@@ -240,7 +253,7 @@ function ClinicalNotesPage() {
     }
     }, 0);
     return () => clearTimeout(restoreDraftTimer);
-  }, [patientNotes.length]);
+  }, [patientNotes.length, clinicalStorageOwner]);
 
   // 臨床ノートの検索フィルタリング
   const filteredNotes = useMemo(() => {
@@ -342,6 +355,7 @@ function ClinicalNotesPage() {
   const handleSaveNote = (e: React.FormEvent) => {
     e.preventDefault();
     if (isSavingNote) return;
+    if (!isReady) { setFormError("保存先の確認・同期が完了していません。同期状態を確認してから保存してください。"); return; }
 
     if (!patientIdentifier.trim()) {
       setFormError("患者識別（IDまたはイニシャル）を入力してください");
@@ -380,17 +394,9 @@ function ClinicalNotesPage() {
         nextAction: nextAction.trim(),
       };
 
-      if (editingNoteId) {
-        updatePatientNote(editingNoteId, notePayload);
-      } else {
-        const success = addPatientNote(notePayload);
-        if (!success) {
-          setFormError(`無料会員の保存上限（${maxPatientNoteLimit}件）に達しています。不要なノートを整理するか、プレミアム会員（上限500件）へのアップグレードをご検討ください。`);
-          setIsSavingNote(false);
-          return;
-        }
-        trackEvent("note_save_success", { destination_type: "note" });
-      }
+      const result = saveWorkspaceNote(notePayload, editingNoteId || undefined);
+      if (!result.ok) { setFormError(result.error); return; }
+      if (!editingNoteId) trackEvent('note_save_success', { destination_type: 'note' });
 
       setIsNoteModalOpen(false);
     } finally {
@@ -488,6 +494,7 @@ function ClinicalNotesPage() {
   };
 
   const currentSample = SAMPLE_PATIENT_NOTES[selectedSampleIndex] || SAMPLE_PATIENT_NOTES[0];
+  if (!clinicalStorageOwner || viewOwner !== clinicalStorageOwner) return <p role={syncStatus === 'offline' ? 'alert' : 'status'} className="page-layout">{syncStatus === 'offline' ? '記録の保存先を確認できませんでした。ブラウザの保存設定を確認してください。' : 'このアカウントの記録を確認しています…'}</p>;
 
   return (
     <div className="notes-page page-layout space-y-6">
@@ -496,7 +503,7 @@ function ClinicalNotesPage() {
       {/* 1. ページヘッダー（初回 / 継続で表示を調整） */}
       {/* ======================================================== */}
       <PageIntro compact eyebrow="記録して、次の見直しへ" title="マイノート" art="notes" description="所見・配穴・施術後の変化を、ひとつの記録に。" />
-      <NotesStorageSupport syncStatus={syncStatus} isAuthenticated={isAuthenticated} isPremium={isPremium} patientNoteCount={patientNoteCount} fileInputRef={fileInputRef} onDownloadCsv={handleDownloadCsv} onDownloadBackup={handleDownloadBackup} onImport={() => fileInputRef.current?.click()} onFileUpload={handleFileUpload} />
+      <NotesStorageSupport syncStatus={syncStatus} isAuthenticated={isAuthenticated} isPremium={isPremium} patientNoteCount={patientNoteCount} fileInputRef={fileInputRef} onDownloadCsv={handleDownloadCsv} onDownloadBackup={handleDownloadBackup} onImport={() => fileInputRef.current?.click()} onFileUpload={handleFileUpload} onRetry={() => { void triggerSync(); }} />
       {/* 無料枠上限到達時の案内 */}
       {isPatientNoteLimitReached && (
         <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-sm sm:text-sm space-y-1">
@@ -565,7 +572,7 @@ function ClinicalNotesPage() {
               <button
                 type="button"
                 onClick={openNewNoteModal}
-                disabled={isPatientNoteLimitReached}
+                disabled={!isReady || isPatientNoteLimitReached}
                 className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm sm:text-sm font-bold text-white bg-[#1E3D34] hover:bg-[#162D26] shadow-xs transition-all disabled:opacity-50"
               >
                 <Plus className="w-4 h-4" />
@@ -636,36 +643,11 @@ function ClinicalNotesPage() {
           <div className="space-y-4">
             {filteredNotes.length === 0 ? (
               patientNotes.length === 0 ? (
-                /* 初回0件時のわかりやすい案内カード（ボタンを1組に集約） */
-                <div className="p-8 sm:p-12 text-center rounded-2xl border-2 border-[#1E3D34]/25 dark:border-[#74BA9E]/30 bg-gradient-to-br from-[#FAF8F5] to-[#F5EFE6] dark:from-[#17212A] dark:to-[#121920] space-y-5">
-                  <div className="w-12 h-12 rounded-2xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] flex items-center justify-center mx-auto shadow-xs">
-                    <FileText className="w-6 h-6" />
-                  </div>
-                  <div className="space-y-1.5 max-w-md mx-auto">
-                    <h3 className="text-lg sm:text-xl font-bold font-serif text-[#232826] dark:text-[#FAF8F5]">
-                      初めてマイノートをご利用の方へ
-                    </h3>
-                    <p className="text-sm sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                      臨床での弁証・配穴・施術の反応をすばやく記録。患者さんへ手渡す「養生シート」もワンクリックで作成できます。
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col items-center justify-center gap-2 pt-2">
-                    <button
-                      type="button"
-                      onClick={() => setIsSamplePreviewOpen(true)}
-                      className="w-full sm:w-auto px-5 py-3 rounded-xl bg-white dark:bg-[#1A2530] border-2 border-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E] text-sm font-bold shadow-xs hover:bg-[#EBF3EF] transition-all flex items-center justify-center gap-2"
-                    >
-                      <Eye className="w-4 h-4" />
-                      <span>完成したノートを見る（見本）</span>
-                    </button>
-
-                    <p className="text-sm leading-relaxed ui-muted">上の「臨床ノートを新規作成」から、最初の記録を始められます。</p>
-                  </div>
-
-                  <div className="pt-3 border-t border-[#E8E1D1] dark:border-[#243340] text-sm text-[#59615D] dark:text-[#AFBDC8] space-y-1 max-w-md mx-auto">
-                    <p>※ 無料枠として{SUBSCRIPTION_CONFIG.limits.freePatientNoteMax}件のノートと{SUBSCRIPTION_CONFIG.limits.freeMemoMax}件の配穴を保存可能。見本を見るだけで保存枠が減ることはありません。</p>
-                  </div>
+                <div className="notes-empty-state">
+                  <FileText aria-hidden="true" />
+                  <h3>まだ臨床ノートがありません</h3>
+                  <p>上の「臨床ノートを新規作成」から記録を始められます。</p>
+                  <button type="button" onClick={() => setIsSamplePreviewOpen(true)}><Eye aria-hidden="true" /><span>記録の見本を見る</span></button>
                 </div>
               ) : (
                 /* 検索で見つからない場合 */
@@ -708,53 +690,29 @@ function ClinicalNotesPage() {
                         </span>
                       </div>
 
-                      <div className="notes-card-actions flex flex-wrap items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleCopyNoteText(note)}
-                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-sm font-semibold bg-[#FAF8F5] dark:bg-[#1A2530] border border-[#D8CFC0] dark:border-[#384C5E] text-[#59615D] dark:text-[#A0B0BC] hover:border-[#1E3D34] hover:text-[#1E3D34] transition-all cursor-pointer"
-                          title="電子カルテや外部アプリ転記用に整形テキストをコピー"
-                        >
-                          {copiedNoteId === note.id ? (
-                            <>
-                              <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                              <span className="text-emerald-600 dark:text-emerald-400 font-bold">コピー完了！</span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="w-3.5 h-3.5" />
-                              <span>カルテ転記</span>
-                            </>
-                          )}
+                      <div className="notes-card-actions">
+                        <button type="button" onClick={() => openEditNoteModal(note)} className="notes-open-record">
+                          <Edit3 aria-hidden="true" />
+                          <span>記録を開く・編集</span>
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => setPrintNote(note)}
-                          className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-bold bg-[#FAF8F5] dark:bg-[#1F2C37] border border-[#D8CFC0] dark:border-[#384C5E] text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF]"
-                        >
-                          <Printer className="w-3.5 h-3.5" />
-                          <span>養生シートを見る</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => openEditNoteModal(note)}
-                          className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-bold bg-[#1E3D34] text-white hover:bg-[#162D26]"
-                        >
-                          <Edit3 className="w-3.5 h-3.5" />
-                          <span>記録を開く</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (window.confirm("この臨床ノートを削除しますか？")) {
-                              removePatientNote(note.id);
-                            }
-                          }}
-                          className="p-1.5 rounded-lg text-[#59615D] hover:text-red-600 transition-colors"
-                          title="削除"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                        <details className="notes-more-actions" onKeyDown={event => {
+                          if (event.key === 'Escape') {
+                            event.currentTarget.open = false;
+                            event.currentTarget.querySelector('summary')?.focus();
+                          }
+                        }}>
+                          <summary aria-label={`${note.patientIdentifier}・${note.visitDate}のその他の操作`}><MoreHorizontal aria-hidden="true" /><span>その他の操作</span></summary>
+                          <div className="notes-more-actions-panel" role="group" aria-label="記録の出力と管理">
+                            <button type="button" onClick={() => handleCopyNoteText(note)} title="電子カルテや外部アプリ転記用に整形テキストをコピー">
+                              {copiedNoteId === note.id ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
+                              <span>{copiedNoteId === note.id ? 'コピー完了！' : 'カルテ転記用にコピー'}</span>
+                            </button>
+                            <button type="button" onClick={() => setPrintNote(note)}><Printer aria-hidden="true" /><span>養生シートを見る・印刷</span></button>
+                            <button type="button" className="notes-delete-record" onClick={() => {
+                              if (window.confirm("この臨床ノートを削除しますか？")) removePatientNote(note.id);
+                            }}><Trash2 aria-hidden="true" /><span>この記録を削除</span></button>
+                          </div>
+                        </details>
                       </div>
                     </div>
 
@@ -902,7 +860,7 @@ function ClinicalNotesPage() {
       </div>
 
       {/* ======================================================== */}
-      <ClinicalNoteTimeline notes={patientNotes} />
+      {activeTab === "notes" && patientNotes.length > 0 && <ClinicalNoteTimeline notes={patientNotes} />}
 
       {/* 6. 詳しい使い方・待合室案内・プライバシー保護の折りたたみ */}
       {/* ======================================================== */}
@@ -911,30 +869,13 @@ function ClinicalNotesPage() {
           <summary className="flex items-center justify-between font-bold text-sm sm:text-sm text-[#59615D] dark:text-[#A0B0BC] cursor-pointer hover:text-[#232826] dark:hover:text-[#FAF8F5]">
             <span className="flex items-center gap-2">
               <Info className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>臨床での使い方とプライバシー保護について</span>
+              <span>ノート・養生シートの使い方</span>
             </span>
             <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180 shrink-0 ml-2" />
           </summary>
 
           <div className="mt-4 space-y-4 text-sm sm:text-sm text-[#59615D] dark:text-[#96A6B2] border-t border-[#E8E1D1] dark:border-[#22303D] pt-4 leading-relaxed">
-            <div className="space-y-2">
-              <h4 className="font-bold text-[#232826] dark:text-[#FAF8F5]">【匿名設計とプライバシー保護について】</h4>
-              <p>
-                本機能は臨床推論や配穴検討、患者さん向け養生シート作成を支援するための個人ノートです。
-                あはき法等の法定カルテの代わりではありません。
-              </p>
-              <ul className="list-disc pl-5 space-y-1 mt-2 text-sm text-[#59615D] dark:text-[#96A6B2]">
-                <li>
-                  <strong>直接識別情報の非保持:</strong> 患者さんの氏名・電話番号・住所・生年月日などの直接個人を特定できる情報はデータベースにカラムを設けておらず、保持しません。カルテ番号（例: PT-001）や記号での管理を前提としています。※自由入力欄やメモに個人が特定されうる情報を記入しないようご留意ください。
-                </li>
-                <li>
-                  <strong>行レベルセキュリティ（RLS）によるアクセス制御:</strong> ログイン時のクラウド同期では、データベースの行レベルセキュリティ（RLS）により、認証されたご本人のアカウントからのみノートを閲覧・操作できるよう制御されています。
-                </li>
-                <li>
-                  <strong>未ログイン時のお試し利用とバックアップ:</strong> 未ログイン時はお使いの端末（ブラウザのローカルストレージ）内のみに保存されます。無料会員登録またはログインを行えば、作成したノートをクラウドへ引き継ぎ、PCとスマホで安全に自動同期できます。端末移行用の手動バックアップ（ファイル書き出し・読み込み）にも対応しています。
-                </li>
-              </ul>
-            </div>
+            <p>臨床推論や配穴検討、養生シート作成のための個人ノートです。法定カルテの代わりではありません。保存先・同期・バックアップは、ページ上部の「保存・同期・バックアップ」で確認できます。</p>
 
             <div className="space-y-2 pt-2 border-t border-[#E8E1D1] dark:border-[#22303D]">
               <div className="flex items-center justify-between">
@@ -1394,6 +1335,7 @@ function ClinicalNotesPage() {
                 </button>
                 <button
                   type="submit"
+                  disabled={isSavingNote || !isReady}
                   className="px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-[#1E3D34] hover:bg-[#162D26] shadow-md transition-all"
                 >
                   {editingNoteId ? "変更を保存する" : "臨床ノートを保存"}
@@ -1403,7 +1345,7 @@ function ClinicalNotesPage() {
                           {/* 保存先とプライバシーの注記 */}
               <div className="flex items-center gap-1.5 text-sm text-[#59615D] dark:text-[#AFBDC8] pt-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-                <span>※お使いの端末（ブラウザ）に保存。無料ログインで自動同期にも対応。直接の個人識別情報は保持しない設計です。</span>
+                <span>自由記述にも氏名・連絡先など、本人を特定できる情報は入力しないでください。</span>
               </div>
 
             </form>

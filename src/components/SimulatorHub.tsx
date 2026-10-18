@@ -1,25 +1,54 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
-import { Layers, ArrowRight, BookOpen, AlertCircle } from "lucide-react";
+import { ArrowRight, BookOpen, AlertCircle } from "lucide-react";
 import ProgressiveCaseTraining from "@/components/learning/ProgressiveCaseTraining";
 import ThreeStageSimulator from "@/components/ThreeStageSimulator";
 import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
 import ClinicalRevisionTraining from "@/components/clinical/ClinicalRevisionTraining";
 import type { ArticlePreview } from "@/data/articleData";
 
+const TRAINING_TABS = [
+  { id: "case-training", label: "症例演習", description: "症例から順に考える" },
+  { id: "condition-training", label: "条件選択", description: "条件を変えて比べる" },
+  { id: "revision-training", label: "見立て修正", description: "合わない所見を見直す" },
+] as const;
+type TrainingTab = typeof TRAINING_TABS[number]["id"];
+
 export default function SimulatorHub({ relatedArticles }: { relatedArticles: ArticlePreview[] }) {
+  const [activeTraining, setActiveTraining] = useState<TrainingTab>("case-training");
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  useEffect(() => {
+    let frame = 0;
+    const restoreHash = () => {
+      const target = window.location.hash.slice(1);
+      const tab = TRAINING_TABS.find(item => item.id === target);
+      const params = new URLSearchParams(window.location.search);
+      if (tab) setActiveTraining(tab.id);
+      else if (target === "simulator-result" || target === "simulator-conditions" || ["fromTsubo", "fromCase", "fromDiagnosis"].some(key => params.has(key))) setActiveTraining("condition-training");
+      if (tab || target === "simulator-result" || target === "simulator-conditions") {
+        frame = window.requestAnimationFrame(() => document.getElementById(target)?.scrollIntoView({ block: "start" }));
+      }
+    };
+    const timer = window.setTimeout(restoreHash, 0);
+    window.addEventListener("hashchange", restoreHash);
+    return () => { window.clearTimeout(timer); window.cancelAnimationFrame(frame); window.removeEventListener("hashchange", restoreHash); };
+  }, []);
+
+  const selectTraining = (index: number, focus = false) => {
+    const tab = TRAINING_TABS[index];
+    setActiveTraining(tab.id);
+    window.history.replaceState(null, "", '#' + tab.id);
+    if (focus) tabRefs.current[index]?.focus();
+  };
+
   return (
-    <div className="space-y-8 sm:space-y-12">
+    <div className="clinical-exercises space-y-8 sm:space-y-10">
       <ClinicalToolBridge />
-      <PageIntro compact eyebrow="所見から判断する練習" title="臨床弁証シミュレーター" art="practice" description="架空症例を考える、条件を選んで比べる。取り組みたい演習から始められます。">
-        <div className="page-actions">
-          <a href="#case-training" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />症例から練習する<ArrowRight aria-hidden="true" className="h-4 w-4" /></a>
-          <a href="#condition-training" className="page-secondary-action"><Layers aria-hidden="true" className="h-4 w-4" />条件を選んで考える</a>
-        </div>
-      </PageIntro>
+      <PageIntro compact eyebrow="所見から判断する練習" title="弁証候補を比較" art="practice" description="架空症例を考える、条件を選んで比べる。取り組みたい演習から始められます。" />
       <details className="page-help">
         <summary>演習で確認できること</summary>
         <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
@@ -30,10 +59,33 @@ export default function SimulatorHub({ relatedArticles }: { relatedArticles: Art
 
       </details>
 
-      <section id="case-training" className="scroll-mt-28"><ProgressiveCaseTraining /></section>
-
-      {/* 臨床弁証シミュレーター本体 */}
-      <section id="condition-training" className="scroll-mt-28"><ThreeStageSimulator /></section>
+      <div className="clinical-training-switcher" role="tablist" aria-label="演習の種類">
+        {TRAINING_TABS.map((tab, index) => (
+          <button key={tab.id} ref={element => { tabRefs.current[index] = element; }} type="button"
+            id={tab.id + "-tab"} role="tab" aria-selected={activeTraining === tab.id}
+            aria-controls={tab.id + "-panel"} tabIndex={activeTraining === tab.id ? 0 : -1}
+            onClick={() => selectTraining(index)}
+            onKeyDown={event => {
+              const next = event.key === "ArrowRight" ? (index + 1) % TRAINING_TABS.length
+                : event.key === "ArrowLeft" ? (index + TRAINING_TABS.length - 1) % TRAINING_TABS.length
+                : event.key === "Home" ? 0 : event.key === "End" ? TRAINING_TABS.length - 1 : null;
+              if (next === null) return;
+              event.preventDefault();
+              selectTraining(next, true);
+            }}>
+            <span>{tab.label}</span><small>{tab.description}</small>
+          </button>
+        ))}
+      </div>
+      <section id="case-training-panel" role="tabpanel" aria-labelledby="case-training-tab" hidden={activeTraining !== "case-training"} tabIndex={0} className="clinical-training-panel">
+        <ProgressiveCaseTraining />
+      </section>
+      <section id="condition-training-panel" role="tabpanel" aria-labelledby="condition-training-tab" hidden={activeTraining !== "condition-training"} tabIndex={0} className="clinical-training-panel">
+        <div id="condition-training" className="scroll-mt-28"><ThreeStageSimulator /></div>
+      </section>
+      <section id="revision-training-panel" role="tabpanel" aria-labelledby="revision-training-tab" hidden={activeTraining !== "revision-training"} tabIndex={0} className="clinical-training-panel">
+        <ClinicalRevisionTraining />
+      </section>
 
       <section aria-labelledby="simulator-research-heading" className="border-t border-[var(--border-washi)] pt-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -62,7 +114,6 @@ export default function SimulatorHub({ relatedArticles }: { relatedArticles: Art
         </div>
       </section>
 
-      <ClinicalRevisionTraining />
       {/* 臨床学習・医師法に関する免責事項 */}
       <aside aria-labelledby="simulator-scope-heading" className="border-t border-[var(--border-washi)] pt-5 flex items-start gap-3 text-sm text-[#59615D] dark:text-[#96A6B2]">
         <AlertCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] shrink-0 mt-0.5" />

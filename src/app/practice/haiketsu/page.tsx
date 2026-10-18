@@ -30,8 +30,7 @@ import { saveDraftPatientNote } from "@/utils/draftNote";
 import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
 import PrescriptionScoringGuide from "@/components/learning/PrescriptionScoringGuide";
 import { getPrescriptionCountLabel } from "@/utils/prescriptionScorePresentation";
-import { clinicalEncounterDraft, readClinicalEncounter, writeClinicalEncounter, type ClinicalPointPlan } from "@/utils/clinicalEncounter";
-import { ACUPOINTS_MASTER } from "@/data/tsubo/acupointsMaster";
+import { readClinicalEncounter, writeClinicalEncounter, type ClinicalPointPlan } from "@/utils/clinicalEncounter";
 
 export default function HaiketsuPracticePage() {
   const router = useRouter();
@@ -44,6 +43,11 @@ export default function HaiketsuPracticePage() {
   const [prescriptionTitle, setPrescriptionTitle] = useState("合谷と太衝の配穴例");
   const [rationaleText, setRationaleText] = useState("合谷と太衝を組み合わせた教材例です。伝統的な分類と、各穴を選ぶ理由を確認します。");
   const [saved, setSaved] = useState(false);
+  const [hasClinicalEncounter, setHasClinicalEncounter] = useState(false);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setHasClinicalEncounter(Boolean(readClinicalEncounter().encounter)), 0);
+    return () => window.clearTimeout(timer);
+  }, []);
   const restoreClinicalPoints = useCallback((codes: string[]) => {
     const roles = Object.values(ACUPOINT_ROLES).filter(point => codes.includes(point.code));
     setSelectedPointIds(roles.map(point => point.id));
@@ -117,10 +121,9 @@ export default function HaiketsuPracticePage() {
       const points: ClinicalPointPlan[] = codes.map(code => encounter.points.find(point => point.code === code) || { code, role: 'other', reason: '', alternative: '' });
       points.push(...encounter.points.filter(point => !editableCodes.includes(point.code)));
       if (points.length > 12) { alert('作業画面で経穴の構成を確認してください。12穴まで引き継げます。'); return; }
-      const next = { ...encounter, points };
-      const names = points.map(point => ACUPOINTS_MASTER.find(item => item.code === point.code)?.name || point.code);
-      if (!writeClinicalEncounter(next) || !saveDraftPatientNote(clinicalEncounterDraft(next, names))) { alert('下書きを保存できませんでした。この画面で選択を保持しています。'); return; }
-      router.push('/notes');
+      const next = { ...encounter, points, step: 3 as const };
+      if (!writeClinicalEncounter(next)) { alert('下書きを保存できませんでした。この画面で選択を保持しています。'); return; }
+      router.push('/clinical/workspace');
       return;
     }
     const stored = saveDraftPatientNote({
@@ -148,11 +151,11 @@ export default function HaiketsuPracticePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
+    <div className="clinical-exercises clinical-haiketsu min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
       <Suspense fallback={null}><IncomingAcupoint onSelect={selectIncomingPoint} /></Suspense>
       <ClinicalToolBridge selectedCodes={selectedPointIds.map(id => ACUPOINT_ROLES[id]?.code).filter(Boolean)} editableCodes={Object.values(ACUPOINT_ROLES).map(point => point.code)} onRestore={restoreClinicalPoints} />
       <div className="page-layout page-layout--intro">
-        <PageIntro compact eyebrow="基本32穴から組み立てる" title="配穴設計・臨床演習" art="points" description="経穴を選び、構成を確かめ、選んだ理由を残す。教材例と比べながら練習できます。" />
+        <PageIntro compact eyebrow="基本32穴の配穴演習" title="配穴を組み立てる" art="points" description="経穴を選び、構成を確かめ、選んだ理由を残す。教材例と比べながら練習できます。" />
         {!isPremium && <p className="mt-4 text-sm text-[#59615D] dark:text-[#B7C5CF]">無料で4穴まで組み合わせて試せます。</p>}
         <details className="page-help mt-4">
           <summary>演習の内容・保存・プレミアム機能</summary>
@@ -167,11 +170,11 @@ export default function HaiketsuPracticePage() {
         {/* 比較検討用ケース */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] block">
+            <span className="text-sm font-bold text-[#737C77] dark:text-[#8899A6] block">
               比較検討用ケース（多穴構成・複合所見の整理例）:
             </span>
             {!isPremium && (
-              <span className="text-[10px] text-[#B86924] dark:text-[#E6C387] font-semibold flex items-center gap-1">
+              <span className="text-sm text-[#B86924] dark:text-[#E6C387] font-semibold flex items-center gap-1">
                 <Crown className="w-3 h-3" />
                 <span>最初の2例は無料</span>
               </span>
@@ -182,10 +185,10 @@ export default function HaiketsuPracticePage() {
               <button
                 key={preset.id}
                 onClick={() => handleLoadPreset(preset.id)}
-                className="min-h-11 text-xs px-3 py-1.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] text-[#59615D] dark:text-[#96A6B2] transition-colors flex items-center gap-1.5"
+                className="min-h-11 text-sm px-3 py-1.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] text-[#59615D] dark:text-[#96A6B2] transition-colors flex items-center gap-1.5"
               >
                 {!isPremium && index >= 2 && <Lock aria-label="プレミアム機能" className="w-3 h-3 text-[#B86924] dark:text-[#E6C387]" />}
-                <span>📋 {preset.name}</span>
+                <span>{preset.name}</span>
               </button>
             ))}
           </div>
@@ -198,7 +201,7 @@ export default function HaiketsuPracticePage() {
           <div className="lg:col-span-7 space-y-6">
             
             {/* スコア・ステータスカード（点数による断定を排し、構成バランスの可視化へ） */}
-            <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-6 shadow-sm space-y-5">
+            <div className="clinical-exercise-surface space-y-5">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
                   <span className="text-sm text-[#737C77] dark:text-[#8899A6] block font-medium">
@@ -222,15 +225,15 @@ export default function HaiketsuPracticePage() {
 
                 <div className="shrink-0 text-left text-sm text-[#737C77] dark:text-[#8899A6] sm:text-right">
                   <p>選択中: <strong className="text-[#232826] dark:text-[#FAF8F5] text-base">{selectedPointIds.length}</strong> 穴</p>
-                  <p className="text-[11px] mt-0.5">（基本32穴パレット）</p>
-                  <p className="mt-1 text-xs">{getPrescriptionCountLabel(selectedPointIds.length)}</p>
+                  <p className="text-sm mt-0.5">（基本32穴パレット）</p>
+                  <p className="mt-1 text-sm">{getPrescriptionCountLabel(selectedPointIds.length)}</p>
                 </div>
               </div>
 
               <PrescriptionScoringGuide />
               {/* 本治 vs 標治 比率バー */}
               <div className="space-y-1.5 pt-2 border-t border-[#E5DEC9] dark:border-[#2A3B4A]">
-                <div className="flex justify-between text-xs">
+                <div className="flex justify-between text-sm">
                   <span className="text-[#1E3D34] dark:text-[#74BA9E] font-bold">
                     本治（伝統理論上の全身・背景の病態を検討）: {analysis.rootCount}穴
                   </span>
@@ -256,7 +259,7 @@ export default function HaiketsuPracticePage() {
                   {analysis.alerts.map(alert => (
                     <div 
                       key={alert.id}
-                      className={`p-3.5 rounded-xl border text-xs space-y-1 ${
+                      className={`p-3.5 rounded-xl border text-sm space-y-1 ${
                         alert.severity === "high"
                           ? "bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-900 text-red-900 dark:text-red-200"
                           : "bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-900 text-amber-900 dark:text-amber-200"
@@ -275,42 +278,38 @@ export default function HaiketsuPracticePage() {
 
             {/* 選択されたツボのカードリスト */}
             <div className="space-y-3">
-              <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] block">
-                現在処方に組み込まれている経穴:
+              <span className="text-sm font-bold text-[#737C77] dark:text-[#8899A6] block">
+                選択中の経穴
               </span>
+              <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">本治・標治は教材上の分類です。今回の治法と所見に照らして検討してください。</p>
               {selectedPointIds.length === 0 ? (
-                <div className="p-8 text-center bg-white dark:bg-[#17212A] rounded-2xl border border-dashed border-[#E5DEC9] dark:border-[#2A3B4A] text-xs text-[#737C77]">
+                <div className="p-8 text-center bg-white dark:bg-[#17212A] rounded-2xl border border-dashed border-[#E5DEC9] dark:border-[#2A3B4A] text-sm text-[#737C77]">
                   右側のパレットからツボをクリックして配穴を構成してください
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="clinical-haiketsu-selected-list">
                   {selectedPointIds.map(id => {
                     const role = ACUPOINT_ROLES[id];
                     if (!role) return null;
                     return (
                       <div
                         key={id}
-                        className="bg-white dark:bg-[#17212A] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-3.5 shadow-2xs flex items-start justify-between gap-2"
+                        className="clinical-haiketsu-selected flex items-start justify-between gap-2"
                       >
                         <div className="space-y-1">
-                          <div className="flex items-center gap-1.5">
+                          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                             <span className="font-serif font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
                               {role.name}
                             </span>
-                            <span className="text-[10px] text-[#737C77] dark:text-[#8899A6]">
+                            <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
                               {role.code}
                             </span>
-                            <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
-                              role.tier === "root"
-                                ? "bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E]"
-                                : "bg-[#FCF4EB] text-[#B86924] dark:bg-[#2A1E14] dark:text-[#E6C387]"
-                            }`}>
+                            <span className="text-sm text-[#59615D] dark:text-[#B7C5CF]">
                               {role.tierLabel}
                             </span>
                           </div>
-                          <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">伝統的な役割の学習例：{role.energyLabel}。本治・標治の役割は、今回の治法と所見を踏まえて検討してください。</p>
-                          <div className="flex items-center gap-2 pt-0.5">
-                            <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2] leading-tight">
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-0.5">
+                            <p className="text-sm text-[#59615D] dark:text-[#96A6B2] leading-tight">
                               {role.specificRole} / {role.energyLabel}
                             </p>
                             <Link
@@ -324,7 +323,7 @@ export default function HaiketsuPracticePage() {
                                   placement: "haiketsu_card",
                                 });
                               }}
-                              className="text-[10px] text-[#1E3D34] dark:text-[#74BA9E] hover:underline inline-flex items-center gap-0.5 font-semibold shrink-0"
+                              className="text-sm text-[#1E3D34] dark:text-[#74BA9E] hover:underline inline-flex items-center gap-0.5 font-semibold shrink-0"
                               title={`${role.name}（${role.code}）の取穴と解剖安全を別タブで確認`}
                             >
                               <span>取穴詳細</span>
@@ -349,43 +348,43 @@ export default function HaiketsuPracticePage() {
             </div>
 
             {/* 処方名 ＆ 選定理由入力フォーム */}
-            <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-6 shadow-sm space-y-4">
+            <div className="clinical-exercise-surface clinical-haiketsu-save space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#F2ECE0] dark:border-[#22303D]">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <FileText className="w-4 h-4 text-[#B86924]" />
                     <h3 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
-                      臨床選定理由の言語化
+                      理由を残す
                     </h3>
                   </div>
-                  <p className="text-[11px] text-[#59615D] dark:text-[#96A6B2]">
-                    配穴集に保存するか、臨床ノートの下書きへ引き継ぎます。無料では教材例のタイトルと理由を表示します。
+                  <p className="text-sm text-[#59615D] dark:text-[#96A6B2]">
+                    {hasClinicalEncounter ? '作業中の記録への反映は、画面上部のボタンから行えます。' : '臨床ノートの下書き、または繰り返し使う配穴集に保存できます。'}
                   </p>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2 shrink-0">
-                  <button
+                  {!hasClinicalEncounter && <button
                     type="button"
                     onClick={handleSaveToNoteDraft}
                     disabled={selectedPointIds.length === 0}
-                    className="min-h-11 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs font-bold shadow-sm transition-all cursor-pointer disabled:opacity-50"
+                    className="min-h-11 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-sm font-bold transition-all cursor-pointer disabled:opacity-50"
                   >
                     <FileText className="w-3.5 h-3.5" />
-                    <span>この内容を臨床ノートに残す</span>
-                  </button>
+                    <span>臨床ノートの下書きにする</span>
+                  </button>}
                   <button
                     type="button"
                     onClick={handleSaveToMemo}
                     disabled={saved || selectedPointIds.length === 0}
-                    className="min-h-11 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#B86924] hover:bg-[#9B551B] text-white text-xs font-bold shadow-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="page-secondary-action disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <Bookmark className={`w-3.5 h-3.5 ${saved ? "fill-current" : ""}`} />
-                    <span>{saved ? "配穴集に保存済" : "配穴集に保存"}</span>
+                    <span>{saved ? "配穴集に保存済み" : "配穴集に保存"}</span>
                   </button>
                 </div>
               </div>
 
-              <div className="space-y-3 text-xs">
+              <div className="space-y-3 text-sm">
                 <div>
                   <label htmlFor="haiketsu-title" className="font-bold text-[#737C77] dark:text-[#8899A6] block mb-1">
                     処方名・タイトル
@@ -429,7 +428,7 @@ export default function HaiketsuPracticePage() {
                     }`}
                   />
                   {!isPremium && (
-                    <p className="text-[10px] text-[#B86924] dark:text-[#E6C387] mt-1 flex items-center gap-1">
+                    <p className="text-sm text-[#B86924] dark:text-[#E6C387] mt-1 flex items-center gap-1">
                       <Crown className="w-3 h-3" />
                       <span>表示中は教材例です。タイトル・選定理由の編集はプレミアム機能です。</span>
                     </p>
@@ -442,12 +441,12 @@ export default function HaiketsuPracticePage() {
 
           {/* 右カラム：ツボ選択パレット（5カラム） */}
           <div className="lg:col-span-5 space-y-4">
-            <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 shadow-sm space-y-4 sticky top-16">
+            <div className="clinical-exercise-surface clinical-haiketsu-palette space-y-4 lg:sticky lg:top-20">
               <div className="flex items-center justify-between">
                 <span className="font-serif font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
-                  臨床重要要穴パレット
+                  経穴を選ぶ
                 </span>
-                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
+                <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
                   {isPremium ? "8穴まで追加・解除" : "4穴まで追加・解除"}
                 </span>
               </div>
@@ -461,29 +460,29 @@ export default function HaiketsuPracticePage() {
                       key={point.id}
                       aria-pressed={isSelected}
                       onClick={() => togglePoint(point.id)}
-                      className={`min-h-11 w-full text-left p-2.5 rounded-xl border text-xs transition-all flex items-center justify-between gap-2 ${
+                      className={`clinical-haiketsu-point min-h-11 w-full text-left p-3 rounded-lg border text-sm transition-colors flex flex-wrap items-center justify-between gap-x-3 gap-y-2 ${
                         isSelected
-                          ? "bg-[#FCF4EB] dark:bg-[#2A1E14] border-[#B86924] text-[#B86924] dark:text-[#E6C387] font-bold shadow-2xs"
-                          : "bg-[#FAF8F5] dark:bg-[#131B22] border-[#E5DEC9] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#96A6B2] hover:border-[#B86924]"
+                          ? "bg-[#EBF3EF] dark:bg-[#182823] border-[#709B87] text-[#1E3D34] dark:text-[#83BEA8] font-bold"
+                          : "bg-transparent border-transparent text-[#59615D] dark:text-[#B7C5CF] hover:bg-[#F2F5EF] dark:hover:bg-[#182823]"
                       }`}
                     >
                       <div className="flex items-center gap-2">
                         <span className="font-serif font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
                           {point.name}
                         </span>
-                        <span className="text-[10px] text-[#737C77]">
+                        <span className="text-sm text-[#737C77]">
                           {point.code}
                         </span>
-                        <span className="text-[10px] text-[#737C77]">
+                        <span className="text-sm text-[#737C77]">
                           {point.meridianShort}
                         </span>
                       </div>
 
                       <div className="flex items-center gap-1">
-                        <span className="text-[10px] px-1.5 py-0.2 rounded bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A]">
+                        <span className="text-sm text-[#59615D] dark:text-[#B7C5CF]">
                           {point.energyLabel}
                         </span>
-                        {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-[#B86924]" />}
+                        {isSelected && <CheckCircle2 aria-hidden="true" className="h-4 w-4 text-[#1E3D34] dark:text-[#83BEA8]" />}
                       </div>
                     </button>
                   );
