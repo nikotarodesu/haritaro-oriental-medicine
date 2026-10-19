@@ -18,3 +18,16 @@
 .clinical-principle-feedback > button { min-height: 44px; padding-block: 8px; color: var(--accent-readable); text-decoration: underline; text-underline-offset: 4px; }
 @media (hover:hover) { .clinical-comparison-summary:hover { background: var(--tokiwa-light); } }
 .clinical-workspace .clinical-comparison-summary .clinical-comparison-name { cursor: inherit; }
+.clinical-examination-jumps { display: flex; flex-wrap: wrap; gap: 8px; }
+.clinical-observation-group { scroll-margin-top: calc(var(--site-header-height, 64px) + 24px); }
+.clinical-observation-group > summary { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; padding-block: 12px; }
+.clinical-observation-group > summary > span:nth-of-type(2) { font-size: .8125rem; font-weight: 400; color: var(--text-secondary); }
+.clinical-observation-group > summary .clinical-examination-preview { grid-column: 2 / -1; min-width: 0; font-size: .8125rem; font-weight: 400; line-height: 1.8; color: var(--text-secondary); overflow-wrap: anywhere; }
+.clinical-examination-field { display: block; min-width: 0; padding: 12px; border-radius: 8px; background: var(--tokiwa-light); font-size: .875rem; }
+.clinical-examination-fields { margin-bottom: 16px; }
+.clinical-examination-text { display: block; margin-block: 16px; font-size: .875rem; }
+.clinical-examination-hint { margin-bottom: 16px; color: var(--text-secondary); font-size: .875rem; line-height: 1.8; }
+.clinical-examination-subheading { padding-top: 12px; font-size: .9375rem; font-weight: 600; border-top: 1px solid var(--clinical-line); }
+.clinical-safety-disclosure > summary { list-style-position: inside; }
+.clinical-safety-disclosure[open] > summary > span { display: none; }
+.clinical-workspace :is(.clinical-safety-disclosure, .clinical-observation-group) > summary:focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 4px; border-radius: 4px; }

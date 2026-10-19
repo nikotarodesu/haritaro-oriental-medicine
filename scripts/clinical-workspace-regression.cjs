@@ -304,6 +304,48 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.equal(client.encounter().observations.fatigue, 'absent', 'Returning for another observation never resets a confirmed negative');
     assert(CLINICAL_PATTERNS.length > 7, 'Expanded candidates retain observation focus behavior');
   });
+  await check('structured four examinations retain pulse dimensions, comparison semantics and note content', () => {
+    const client = harness({ initialEncounter: sampleEncounter({ observations: {}, step: 1 }) });
+    client.change('脈の速さ', '速い（数）');
+    client.change('脈の強さ', '弱い・無力');
+    client.change('脈の深さ', '深いところで触れる（沈）');
+    client.change('実測脈拍（回/分）', '88');
+    client.change('触診した部位・左右・圧の深さ', '右肩・浅部');
+    client.change('圧痛', 'あり');
+    client.change('舌苔の色', '黄');
+    client.change('声の性状', 'かすれる');
+    client.change('問診の補足・その他の所見', '夜間に変動する架空の記録');
+    assert.equal(client.encounter().observations.rapidPulse, 'present');
+    assert.equal(client.encounter().observations.weakPulse, 'present');
+    client.change('実測脈拍（回/分）', '60');
+    assert.equal(client.encounter().observations.rapidPulse, 'present', 'A measured rate never diagnoses a traditional pulse quality');
+    const restored = harness({ initialEncounter: client.encounter() });
+    assert.equal(restored.field('脈の深さ').props.value, '深いところで触れる（沈）');
+    restored.click('5.記録・再評価'); restored.review();
+    assert(text(restored.tree()).includes('触診した部位・左右・圧の深さ：右肩・浅部'));
+    restored.click('臨床ノートに保存する');
+    for (const fact of ['脈の深さ：深いところで触れる（沈）', '実測脈拍（回/分）：60', '圧痛：あり', '舌苔の色：黄', '声の性状：かすれる', '夜間に変動する架空の記録']) assert(restored.note().treatmentPlan.includes(fact), fact);
+    assert.equal(encounters.clinicalFollowup(restored.note()).examination, undefined, 'New visits must not inherit old examination results');
+    client.change('脈の速さ', '判断困難');
+    client.change('脈の強さ', '中等度');
+    assert.equal(client.encounter().observations.rapidPulse, 'unknown');
+    assert.equal(client.encounter().observations.weakPulse, 'absent');
+    client.change('脈の強さ', '');
+    assert.equal(client.encounter().observations.weakPulse, 'unknown');
+  });
+  await check('old pulse drafts preserve confirmed negatives and structured drafts reject invalid fields', () => {
+    const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: { rapidPulse: 'absent', weakPulse: 'present' } }) });
+    assert.equal(client.field('脈の速さ').props.value, '速くない（通常・遅い未区分）');
+    assert.equal(client.field('脈の強さ').props.value, '弱い・無力');
+    for (const examination of [{ pulseDepth: 'invented' }, { pulseRate: '-1' }, { pulseRate: '80.5' }, { pulseRate: '0' }, { pulseRate: '1200' }, { unexpected: 'data' }, { pulseConditions: 'x'.repeat(2001) }, []]) assert.equal(encounters.parseClinicalEncounter(sampleEncounter({ examination })), null);
+    assert(encounters.parseClinicalEncounter(sampleEncounter({ examination: { pulseRate: '', pulseDepth: '判断困難' } })));
+    const safety = harness({ initialEncounter: sampleEncounter({ step: 0, safety: 'unknown' }) });
+    const disclosure = nodes(safety.tree()).find(node => node.type === 'details' && node.props.className?.includes('clinical-safety-disclosure'));
+    assert(disclosure && !disclosure.props.open, 'Safety explanation starts collapsed');
+    assert(safety.field('安全確認の状態'), 'Per-visit safety control stays visible');
+    safety.click('4.配穴の理由');
+    assert.equal(safety.encounter().step, 0, 'Collapsing explanation never bypasses safety');
+  });
   await check('expanded candidate choices update the draft and compare only the selected mixed categories', () => {
     const manual = '  本人の希望と追加所見を確認してから治法を考える。  ';
     const client = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: [], principle: manual }) });
