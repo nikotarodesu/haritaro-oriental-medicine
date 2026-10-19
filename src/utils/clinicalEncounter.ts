@@ -1,7 +1,7 @@
 import { CLINICAL_SIGNS, CLINICAL_PATTERNS, OBSERVATION_LABELS, type ClinicalObservations } from '@/data/clinicalWorkflow';
 import type { PatientNoteItem } from '@/types/clinicalMemo';
 import type { DraftPatientNote } from './draftNote';
-import { examinationSummary, validClinicalExamination, type ClinicalExamination } from '@/data/clinicalExamination';
+import { examinationSummary, resolvedExaminationObservations, validClinicalExamination, type ClinicalExamination } from '@/data/clinicalExamination';
 
 export interface ClinicalPointPlan { code: string; role: 'root' | 'branch' | 'other'; reason: string; alternative: string; }
 export interface ClinicalEncounter {
@@ -81,7 +81,8 @@ export function clinicalCandidateNames(encounter: Pick<ClinicalEncounter, 'candi
 }
 export function clinicalEncounterDraft(encounter: ClinicalEncounter, pointNames: string[]): Omit<DraftPatientNote, 'createdAt'> {
   if (encounter.safety !== 'reviewed') { encounter = { ...encounter, points: [] }; pointNames = []; }
-  const signs = CLINICAL_SIGNS.map(sign => `${sign.label}：${OBSERVATION_LABELS[encounter.observations[sign.id] || 'unknown']}`).join('\n');
+  const observations = resolvedExaminationObservations(encounter.observations, encounter.examination);
+  const signs = CLINICAL_SIGNS.map(sign => `${sign.label}：${OBSERVATION_LABELS[observations[sign.id] || 'unknown']}`).join('\n');
   const examination = examinationSummary(encounter.examination, encounter.observations);
   const pointText = encounter.points.map((point, index) => `${pointNames[index] || point.code}（${point.code}／${point.role === 'root' ? '本治として検討' : point.role === 'branch' ? '標治として検討' : '役割を保留'}）\n採用理由：${point.reason || '未記入'}\n代替案・変更条件：${point.alternative || '未記入'}`).join('\n\n');
   return {

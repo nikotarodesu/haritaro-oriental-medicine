@@ -371,19 +371,20 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.equal(client.field('今回検討する治法').props.value, manual);
     assert.equal(client.encounter().customCandidates, ' 別の原因も併存して検討する。 ');
   });
-  await check('unconfigured candidate comparisons state their limits instead of presenting four empty cells or zero counts', () => {
+  await check('new structured comparisons cover cough while unconfigured conflicts remain explicit', () => {
     const client = harness({ initialEncounter: sampleEncounter({ step: 2, candidateIds: ['qi-counterflow', 'liver-qi'], observations: {} }) });
     const options = client.candidatePicker().props.patterns;
     const counterflow = options.find(option => option.id === 'qi-counterflow');
-    assert(counterflow, 'The candidate is still available without a numeric matching model');
-    for (const count of ['supportCount', 'unknownCount', 'conflictCount']) assert.equal(counterflow[count], undefined, count + ' must not imply a measured zero');
+    assert(counterflow);
+    assert.equal(counterflow.supportCount, 0);
+    assert.equal(counterflow.unknownCount, 1, 'Unexamined cough is an unknown, never a negative finding');
+    assert.equal(counterflow.conflictCount, undefined);
     const rows = nodes(client.tree()).filter(node => node.type === 'article' && node.props.className === 'clinical-comparison-row');
     assert.deepEqual(rows.map(row => String(row.key)), ['qi-counterflow', 'liver-qi'], 'Comparison order follows the clinician selection');
-    const unsupported = rows[0];
-    assert.equal(nodes(unsupported).filter(node => node.props?.className === 'clinical-comparison-fields').length, 0);
-    assert.equal(nodes(unsupported).filter(node => node.props?.className === 'clinical-comparison-cell').length, 0);
-    assert(text(unsupported).includes('現在の入力項目では照合できません'));
-    assert(nodes(unsupported).some(node => node.props?.className === 'clinical-additional-checks'), 'Additional observations remain available');
+    const cough = rows[0];
+    assert.equal(nodes(cough).filter(node => node.props?.className === 'clinical-comparison-cell').length, 4);
+    assert(text(cough).includes('咳を認めるを確認'));
+    assert(nodes(cough).some(node => node.props?.className === 'clinical-additional-checks'), 'Additional observations remain available');
     const liver = rows[1];
     const conflict = nodes(liver).find(node => node.props?.['data-kind'] === 'conflicting');
     assert.equal(text(nodes(conflict).find(node => node.type === 'dd')), 'この候補には照合項目を設定していません');
@@ -392,6 +393,23 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     client.chooseCandidates(['spleen-qi']);
     const checked = client.candidatePicker().props.patterns.find(option => option.id === 'spleen-qi');
     assert.equal(checked.conflictCount, 0, 'A configured conflict set can honestly report no entered matching conflict');
+  });
+  await check('detailed tongue and other examination inputs update the rendered candidate comparison and exact input navigation', () => {
+    const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, candidateIds: [] }) });
+    for (const [label, value] of [['舌体の色', '紅'], ['舌体の乾湿', '乾燥している'], ['舌苔の厚さ', '少ない'], ['脈の太さ', '細い'], ['声の性状', 'かすれる'], ['咳・痰', '乾いた咳'], ['圧痛', 'あり']]) client.change(label, value);
+    client.click('3.候補・治法'); client.chooseCandidates(['yin', 'spleen-qi', 'lung-yin', 'liver-heat']);
+    const rows = nodes(client.tree()).filter(node => node.type === 'article' && node.props.className === 'clinical-comparison-row');
+    const yin = text(nodes(rows[0]).find(node => node.props?.['data-kind'] === 'supported'));
+    for (const finding of ['紅舌', '少苔・無苔', '舌体の乾燥', '細い脈']) assert(yin.includes(finding), finding);
+    assert(text(nodes(rows[1]).find(node => node.props?.['data-kind'] === 'conflicting')).includes('紅舌'));
+    assert(text(nodes(rows[2]).find(node => node.props?.['data-kind'] === 'supported')).includes('乾いた咳'));
+    assert(text(rows[0]).includes('圧痛：あり'), 'Local findings remain available for additional assessment');
+    const yellow = nodes(rows[3]).find(node => node.type === 'button' && text(node) === '黄苔を確認');
+    assert(yellow); yellow.props.onClick(); client.render(); client.flushFrames();
+    assert.equal(client.focused.at(-1), 'clinical-exam-coatColor');
+    client.change('舌苔の色', '黄'); client.click('3.候補・治法');
+    const changed = nodes(client.tree()).filter(node => node.type === 'article' && node.props.className === 'clinical-comparison-row').at(-1);
+    assert(text(nodes(changed).find(node => node.props?.['data-kind'] === 'supported')).includes('黄苔'));
   });
   await check('new candidates and custom hypotheses survive review, reload and same-ID updates with exact manual treatment', () => {
     const manual = '  症状の経過を先に確認する。\n治法は本人と相談して見直す。  ';

@@ -11,7 +11,8 @@ import { clearClinicalEncounter, clinicalCandidateNames, clinicalEncounterFinger
 import ClinicalEvidenceKey from './ClinicalEvidenceKey';
 import ClinicalCandidatePicker from './ClinicalCandidatePicker';
 import { appendClinicalPrinciple, hasClinicalPrinciple } from '@/utils/clinicalTreatment';
-import { EXAMINATION_GROUPS, EXAMINATION_FIELDS, EXAMINATION_TEXT_FIELDS, examinationValue, examinationSummary, examinationObservationPatch } from '@/data/clinicalExamination';
+import { EXAMINATION_GROUPS, EXAMINATION_FIELDS, EXAMINATION_TEXT_FIELDS, examinationValue, examinationSummary, examinationIssues, resolvedExaminationObservations, updateExaminationValue } from '@/data/clinicalExamination';
+import { EXAMINATION_ASSOCIATIONS, examinationFinding, comparisonContext, type ComparisonFindingId } from '@/data/clinicalExaminationComparison';
 
 type PrincipleChange = { owner: string; before: string; after: string; term: string; undone?: boolean };
 
@@ -27,7 +28,8 @@ const FIELD = 'w-full min-h-11 rounded-lg border border-[#C8D4CD] bg-white px-3 
 const BUTTON = 'inline-flex min-h-11 items-center justify-center rounded-lg border border-[#B9CDC0] px-4 py-2 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#496153]';
 const PRIMARY = `${BUTTON} bg-[#1E3D34] text-white hover:bg-[#2B5A46] dark:bg-[#9CCDB8] dark:text-[#11291F]`;
 const BOX = 'rounded-xl border border-[#D6DED7] bg-white p-4 sm:p-5 dark:border-[#34483C] dark:bg-[#17212A]';
-function labels(ids: ClinicalSignId[]) { return ids.map(id => CLINICAL_SIGNS.find(sign => sign.id === id)?.label).join('、') || '該当なし'; }
+function labels(ids: ComparisonFindingId[]) { return ids.map(id => examinationFinding(id)?.label || CLINICAL_SIGNS.find(sign => sign.id === id)?.label).join('、') || '該当なし'; }
+const STRUCTURED_SIGNS: readonly ClinicalSignId[] = ['weakPulse', 'rapidPulse', 'paleTongue', 'redTongue', 'greasyCoat', 'fixedPain'];
 
 export default function ClinicalWorkspace() {
   const { patientNotes = [], saveWorkspaceNote, syncStatus, triggerSync, isReady = true, clinicalStorageOwner = 'guest' } = useClinicalMemo();
@@ -66,25 +68,26 @@ export default function ClinicalWorkspace() {
     setError(ok ? null : '下書きを保存できませんでした。この画面を離れる前にブラウザの保存設定を確認してください。');
   };
   const complaint = CLINICAL_COMPLAINTS.find(item => item.slug === encounter.complaintSlug);
-  const updateExamination = (id: string, value: string) => update({
-    examination: { ...encounter.examination, [id]: value },
-    observations: { ...encounter.observations, ...examinationObservationPatch(id, value) },
-  });
+  const observations = useMemo(() => resolvedExaminationObservations(encounter.observations, encounter.examination), [encounter.observations, encounter.examination]);
+  const updateExamination = (id: string, value: string) => {
+    const examination = updateExaminationValue(encounter.examination, id, value);
+    update({ examination, observations: resolvedExaminationObservations(encounter.observations, examination) });
+  };
   const candidateNames = clinicalCandidateNames(encounter);
-  const comparisonSigns = CLINICAL_SIGNS.filter(sign => sign.id !== 'weakPulse' && sign.id !== 'rapidPulse');
+  const comparisonSigns = CLINICAL_SIGNS.filter(sign => !STRUCTURED_SIGNS.includes(sign.id));
   const observationTotal = comparisonSigns.length + EXAMINATION_FIELDS.length;
-  const observationConfirmed = comparisonSigns.filter(sign => encounter.observations[sign.id] && encounter.observations[sign.id] !== 'unknown').length + EXAMINATION_FIELDS.filter(field => {
-    const value = examinationValue(field.id, encounter.examination, encounter.observations);
+  const observationConfirmed = comparisonSigns.filter(sign => observations[sign.id] && observations[sign.id] !== 'unknown').length + EXAMINATION_FIELDS.filter(field => {
+    const value = examinationValue(field.id, encounter.examination, observations);
     return value && value !== '判断困難';
   }).length;
   const savedNoteMissing = Boolean(isReady && encounter.savedNoteId && !patientNotes.some(note => note.id === encounter.savedNoteId));
   const saveState = encounter.savedNoteId && !isReady ? 'checking' : savedNoteMissing ? 'missing' : clinicalEncounterSaveState(encounter);
   const unchangedSaved = !savedNoteMissing && saveState !== 'checking' && lastSaved === snapshot(encounter);
-  const comparisons = useMemo(() => CLINICAL_PATTERNS.map(pattern => ({ pattern, ...compareClinicalPattern(pattern, encounter.observations) })), [encounter.observations]);
-  const candidateOptions = CLINICAL_PATTERN_CATEGORIES.flatMap(category => comparisons.filter(result => result.pattern.category === category)).map(({ pattern, supported, unknown, conflicting }) => ({
+  const comparisons = useMemo(() => CLINICAL_PATTERNS.map(pattern => ({ pattern, ...compareClinicalPattern(pattern, encounter.observations, encounter.examination || {}) })), [encounter.observations, encounter.examination]);
+  const candidateOptions = CLINICAL_PATTERN_CATEGORIES.flatMap(category => comparisons.filter(result => result.pattern.category === category)).map(({ pattern, supported, missing, unknown, conflicting }) => ({
     id: pattern.id, name: pattern.name, category: pattern.category, summary: pattern.summary, aliases: pattern.aliases,
-    ...(pattern.supports.length ? { supportCount: supported.length, unknownCount: unknown.length } : {}),
-    ...(pattern.conflicts.length ? { conflictCount: conflicting.length } : {}),
+    ...(supported.length + missing.length + unknown.length ? { supportCount: supported.length, unknownCount: unknown.length } : {}),
+    ...(pattern.conflicts.length || EXAMINATION_ASSOCIATIONS[pattern.id]?.conflicts?.length ? { conflictCount: conflicting.length } : {}),
   }));
   const selectedComparisons = encounter.candidateIds.flatMap(id => comparisons.filter(result => result.pattern.id === id));
   const selectedPrinciples = [...new Set(selectedComparisons.flatMap(({ pattern }) => pattern.principle.split('・')))];
@@ -149,10 +152,13 @@ export default function ClinicalWorkspace() {
     if (encounter.points.length >= 12 || encounter.points.some(point => point.code === code)) return;
     update({ points: [...encounter.points, { code, role: 'other', reason: '', alternative: '' }] });
   };
-  const revisitSign = (id: ClinicalSignId) => {
+  const revisitSign = (id: ComparisonFindingId) => {
     proceed(1, false);
     requestAnimationFrame(() => {
-      const input = document.getElementById('clinical-sign-' + id);
+      const finding = examinationFinding(id);
+      const field = finding?.requires && examinationValue(finding.field, encounter.examination, observations) && !examinationValue(finding.requires.field, encounter.examination, observations) ? finding.requires.field : finding?.field;
+      const tongueField = id === 'fixedPain' ? (!examinationValue('painLocation', encounter.examination, observations) ? 'painLocation' : 'painQuality') : id === 'paleTongue' || id === 'redTongue' ? 'tongueColor' : id === 'greasyCoat' ? 'coatTexture' : undefined;
+      const input = document.getElementById(field || tongueField ? 'clinical-exam-' + (field || tongueField) : 'clinical-sign-' + id);
       const group = input?.closest('details');
       if (group) group.open = true;
       input?.focus(); input?.scrollIntoView({ block: 'center', behavior: 'auto' });
@@ -181,7 +187,7 @@ export default function ClinicalWorkspace() {
         <div className="clinical-review-heading"><div><p className="clinical-kicker">保存前の確認</p><h2 id="clinical-workspace-review-heading" tabIndex={-1} className="text-xl font-bold">記録を確認して保存</h2></div><button className={BUTTON} onClick={() => proceed(encounter.step)}>入力に戻る</button></div>
         {([
           { step: 0, title: '主訴・安全確認', text: `${encounter.patientIdentifier || '匿名ID未入力'} · ${encounter.visitDate}\n${encounter.chiefComplaint || '主訴未入力'}\n${encounter.safety === 'reviewed' ? '確認した範囲で該当兆候なし' : encounter.safety === 'refer' ? '医療評価を優先・配穴保留' : '安全確認は未確認'}\n${encounter.safetyMemo}` },
-          { step: 1, title: '四診所見', text: CLINICAL_SIGNS.filter(sign => encounter.observations[sign.id] && encounter.observations[sign.id] !== 'unknown').map(sign => sign.label + '：' + (encounter.observations[sign.id] === 'present' ? 'あり' : 'なし')).join('、') + '\n' + examinationSummary(encounter.examination, encounter.observations) + '\n' + encounter.examinationMemo + (encounter.interviewMemo ? '\n対面問診：\n' + encounter.interviewMemo : '') },
+          { step: 1, title: '四診所見', text: CLINICAL_SIGNS.filter(sign => observations[sign.id] && observations[sign.id] !== 'unknown').map(sign => sign.label + '：' + (observations[sign.id] === 'present' ? 'あり' : 'なし')).join('、') + '\n' + examinationSummary(encounter.examination, observations) + '\n' + encounter.examinationMemo + (encounter.interviewMemo ? '\n対面問診：\n' + encounter.interviewMemo : '') },
           { step: 2, title: '候補・治法', text: candidateNames.join('／') + '\n' + encounter.rationale + '\n治法：' + encounter.principle },
           { step: 3, title: '配穴の理由', text: encounter.safety === 'reviewed' ? encounter.points.map(point => (ACUPOINTS_MASTER.find(item => item.code === point.code)?.name || point.code) + '：' + (point.reason || '理由未記入') + '\n変更条件：' + (point.alternative || '未記入')).join('\n\n') : '配穴は保留して保存します。' },
           { step: 4, title: '記録・再評価', text: [encounter.metric && '指標：' + encounter.metric, '施術前：' + (encounter.before || '未評価') + '／直後：' + (encounter.after || '未評価'), encounter.functionMemo, encounter.plan, encounter.reaction, encounter.revision, encounter.nextAction].filter(Boolean).join('\n') },
@@ -206,21 +212,23 @@ export default function ClinicalWorkspace() {
       </>}
       {encounter.step === 1 && <>
         <p className="text-sm">「なし」は確認して認めなかった場合に選びます。観察していない項目は「未確認」のまま残します。</p>
+        {examinationIssues(encounter.examination).map(issue => <p role="alert" className="clinical-examination-hint" key={issue}>{issue}</p>)}
         <nav className="clinical-examination-jumps" aria-label="四診の入力箇所へ移動">{EXAMINATION_GROUPS.map(group => <button type="button" className={BUTTON} key={group} onClick={() => {
           const section = document.getElementById(`clinical-examination-${group}`) as HTMLDetailsElement | null;
           if (section) { section.open = true; section.querySelector('summary')?.focus(); section.scrollIntoView({ block: 'start', behavior: 'auto' }); }
         }}>{group}へ</button>)}</nav>
         {EXAMINATION_GROUPS.map(group => {
-          const signs = CLINICAL_SIGNS.filter(sign => sign.group === group && sign.id !== 'weakPulse' && sign.id !== 'rapidPulse');
+          const signs = comparisonSigns.filter(sign => sign.group === group);
           const fields = EXAMINATION_FIELDS.filter(field => field.group === group);
-          const filled = fields.filter(field => { const value = examinationValue(field.id, encounter.examination, encounter.observations); return value && value !== '判断困難'; }).length + signs.filter(sign => encounter.observations[sign.id] && encounter.observations[sign.id] !== 'unknown').length;
-          const summary = [...fields.flatMap(field => { const value = examinationValue(field.id, encounter.examination, encounter.observations); return value ? [`${field.label}：${value}`] : []; }), ...signs.flatMap(sign => { const status = encounter.observations[sign.id]; return status && status !== 'unknown' ? [`${sign.label}：${status === 'present' ? 'あり' : 'なし'}`] : []; }), ...EXAMINATION_TEXT_FIELDS.filter(field => field.group === group).flatMap(field => encounter.examination?.[field.id]?.trim() ? [`${field.label}：入力あり`] : [])];
+          const filled = fields.filter(field => { const value = examinationValue(field.id, encounter.examination, observations); return value && value !== '判断困難'; }).length + signs.filter(sign => observations[sign.id] && observations[sign.id] !== 'unknown').length;
+          const summary = [...fields.flatMap(field => { const value = examinationValue(field.id, encounter.examination, observations); return value ? [`${field.label}：${value}`] : []; }), ...signs.flatMap(sign => { const status = observations[sign.id]; return status && status !== 'unknown' ? [`${sign.label}：${status === 'present' ? 'あり' : 'なし'}`] : []; }), ...EXAMINATION_TEXT_FIELDS.filter(field => field.group === group).flatMap(field => encounter.examination?.[field.id]?.trim() ? [`${field.label}：入力あり`] : [])];
           return <details key={group} id={`clinical-examination-${group}`} className="clinical-observation-group" open={group === '問診' ? true : undefined}>
             <summary><span>{group}</span><span>{filled} / {fields.length + signs.length}項目確認</span><small className="clinical-examination-preview">{summary.length ? summary.slice(0, 3).join(' ／ ') + (summary.length > 3 ? ` ／ ほか${summary.length - 3}項目` : '') : '未確認・未入力'}</small></summary>
             <fieldset><legend className="sr-only">{group}の所見</legend>
-              {group === '切診' && <p className="clinical-examination-hint">速さ・強さ・深さは別々に選びます。速さと強さは「数脈」「弱い脈」の候補比較にも反映します。脈拍数から脈状や見立てを自動判定しません。</p>}
-              <div className="clinical-examination-fields grid gap-3 sm:grid-cols-2">{fields.map(field => <Fragment key={field.id}>{(field.id === 'pulseSpeed' || field.id === 'tenderness') && <h3 className="clinical-examination-subheading sm:col-span-2">{field.id === 'pulseSpeed' ? '脈診' : '腹診・筋・皮膚などの触診'}</h3>}<label className="clinical-examination-field"><span className="font-semibold">{field.label}</span>
-                <select id={field.id === 'pulseSpeed' ? 'clinical-sign-rapidPulse' : field.id === 'pulseStrength' ? 'clinical-sign-weakPulse' : `clinical-exam-${field.id}`} aria-label={field.label} className={`${FIELD} mt-2`} value={examinationValue(field.id, encounter.examination, encounter.observations)} onChange={event => updateExamination(field.id, event.target.value)}><option value="">未確認</option>{field.options.map(option => <option key={option} value={option}>{option}</option>)}</select>
+              {group === '望診' && <p className="clinical-examination-hint">舌体と舌苔を分け、歯痕・裂紋などは個別に選べます。照明、直前の飲食、舌磨きの有無を補足に記録してください。「苔を認めない」を選ぶと苔の他の項目もそろいます。</p>}
+              {group === '切診' && <p className="clinical-examination-hint">速さ・強さ・深さは別々に選びます。選択した所見は候補比較にも反映します。脈拍数から脈状や見立てを自動判定しません。</p>}
+              <div className="clinical-examination-fields grid gap-3 sm:grid-cols-2">{fields.map(field => <Fragment key={field.id}>{(['tongueColor', 'coatColor', 'pulseSpeed', 'tenderness'].includes(field.id)) && <h3 className="clinical-examination-subheading sm:col-span-2">{field.id === 'tongueColor' ? '舌体の観察' : field.id === 'coatColor' ? '舌苔の観察' : field.id === 'pulseSpeed' ? '脈診' : '腹診・筋・皮膚などの触診'}</h3>}<label className="clinical-examination-field"><span className="font-semibold">{field.label}</span>
+                <select id={field.id === 'pulseSpeed' ? 'clinical-sign-rapidPulse' : field.id === 'pulseStrength' ? 'clinical-sign-weakPulse' : `clinical-exam-${field.id}`} aria-label={field.label} className={`${FIELD} mt-2`} value={examinationValue(field.id, encounter.examination, observations)} onChange={event => updateExamination(field.id, event.target.value)}><option value="">未確認</option>{field.options.map(option => <option key={option} value={option}>{option}</option>)}</select>
               </label></Fragment>)}</div>
               {EXAMINATION_TEXT_FIELDS.filter(field => field.group === group).map(field => <label className="clinical-examination-text" key={field.id}>{field.label}{field.id === 'pulseRate'
                 ? <input className={`${FIELD} mt-2`} maxLength={3} inputMode="numeric" value={encounter.examination?.[field.id] || ''} onChange={event => {
@@ -228,7 +236,7 @@ export default function ClinicalWorkspace() {
                   if (value === '' || /^[1-9]\d{0,2}$/.test(value)) updateExamination(field.id, value);
                 }} placeholder="測定していなければ空欄" />
                 : <textarea className={`${FIELD} mt-2`} rows={2} maxLength={field.maxLength} value={encounter.examination?.[field.id] || ''} onChange={event => updateExamination(field.id, event.target.value)} placeholder={field.id === 'pulseConditions' ? '例：安静座位・右橈骨動脈・60秒計測。運動、服薬、発熱など' : field.id === 'palpationSite' ? '例：右僧帽筋上部・浅部の圧で本人の痛みが再現' : '選択肢にない所見、複数の所見、確認した条件など'} />}</label>)}
-              <div className="grid gap-3 sm:grid-cols-2">{signs.map(sign => <label className="clinical-examination-field" key={sign.id}><span className="font-semibold">{sign.label}</span><select id={`clinical-sign-${sign.id}`} aria-label={`${sign.label}の確認状態`} className={`${FIELD} mt-2`} value={encounter.observations[sign.id] || 'unknown'} onChange={event => update({ observations: { ...encounter.observations, [sign.id]: event.target.value } })}><option value="unknown">未確認</option><option value="present">あり</option><option value="absent">なし</option></select><span className="mt-2 block leading-relaxed">{sign.question}</span></label>)}</div>
+              <div className="grid gap-3 sm:grid-cols-2">{signs.map(sign => <label className="clinical-examination-field" key={sign.id}><span className="font-semibold">{sign.label}</span><select id={`clinical-sign-${sign.id}`} aria-label={`${sign.label}の確認状態`} className={`${FIELD} mt-2`} value={observations[sign.id] || 'unknown'} onChange={event => update({ observations: { ...encounter.observations, [sign.id]: event.target.value } })}><option value="unknown">未確認</option><option value="present">あり</option><option value="absent">なし</option></select><span className="mt-2 block leading-relaxed">{sign.question}</span></label>)}</div>
             </fieldset>
           </details>;
         })}
@@ -237,6 +245,7 @@ export default function ClinicalWorkspace() {
       </>}
       {encounter.step === 2 && <>
         <p className="clinical-candidate-intro">候補を探して選び、所見を比較し、検討する治法を記録します。所見の照合は入力項目に限られ、件数は診断の順位を示しません。</p>
+        <details className="clinical-comparison-inputs"><summary>今回の四診入力・比較に反映する内容を確認</summary><p className="whitespace-pre-wrap">{examinationSummary(encounter.examination, observations) || '詳細所見は未確認です。'}</p><p>関連づけを設定した所見は支持・合いにくい所見に反映し、ほかの入力は各候補の追加評価欄に表示します。未確認・判断困難・自由記述から支持を推測しません。</p></details>
         <section className="clinical-candidate-stage" aria-labelledby="clinical-catalog-heading">
           <div className="clinical-candidate-section-heading"><h3 id="clinical-catalog-heading">1. 候補を選ぶ</h3><span>{CLINICAL_PATTERNS.length}候補</span></div>
           <ClinicalCandidatePicker patterns={candidateOptions} selectedIds={encounter.candidateIds} onChange={candidateIds => update({ candidateIds })} />
@@ -259,10 +268,10 @@ export default function ClinicalWorkspace() {
           <div className="clinical-comparison-board">
             {selectedComparisons.map((result, index) => <article key={result.pattern.id} className="clinical-comparison-row" data-selected="true">
               <details className="clinical-comparison-disclosure" open={index === 0 ? true : undefined}>
-              <summary className="clinical-comparison-summary"><span className="clinical-candidate-comparison-title"><span>{result.pattern.category}</span><strong className="clinical-comparison-name">{result.pattern.name}</strong></span><span className="clinical-comparison-overview">{result.pattern.supports.length > 0 ? `支持 ${result.supported.length}件 · 未確認 ${result.unknown.length}件${result.conflicting.length ? ` · 合いにくい ${result.conflicting.length}件` : ''}` : '現在の項目では照合不可'}</span></summary>
+              <summary className="clinical-comparison-summary"><span className="clinical-candidate-comparison-title"><span>{result.pattern.category}</span><strong className="clinical-comparison-name">{result.pattern.name}</strong></span><span className="clinical-comparison-overview">{result.supported.length + result.missing.length + result.unknown.length > 0 ? `支持 ${result.supported.length}件 · 未確認 ${result.unknown.length}件${result.conflicting.length ? ` · 合いにくい ${result.conflicting.length}件` : ''}` : '現在の項目では照合不可'}</span></summary>
               <div className="clinical-comparison-body">
-              {result.pattern.supports.length + result.pattern.conflicts.length > 0 ? <dl className="clinical-comparison-fields">{COMPARISON_FIELDS.map(({ key, title, icon: Icon }) => <div key={key} className="clinical-comparison-cell" data-kind={key}><dt><Icon aria-hidden="true" />{title}</dt><dd>{key === 'conflicting' && !result.pattern.conflicts.length ? 'この候補には照合項目を設定していません' : key === 'unknown' && result.unknown.length ? result.unknown.map(id => <button type="button" key={id} className="clinical-missing-sign" onClick={() => revisitSign(id)}>{labels([id])}を確認</button>) : labels(result[key])}</dd></div>)}</dl> : <p className="clinical-candidate-empty">この候補は現在の入力項目では照合できません。下の追加確認をもとに、所見や検討理由を記録してください。</p>}
-              <div className="clinical-comparison-context"><p>{result.pattern.distinguish}</p>{result.pattern.additionalChecks?.length ? <div className="clinical-additional-checks"><p>入力項目のほかに確認したいこと</p><ul>{result.pattern.additionalChecks.map(item => <li key={item}>{item}</li>)}</ul></div> : null}<p>治法の参考：{result.pattern.principle}</p><Link href={`/curriculum/${result.pattern.lectureId}`}>関連する理論を読む →</Link></div>
+              {result.supported.length + result.missing.length + result.unknown.length + result.conflicting.length > 0 ? <dl className="clinical-comparison-fields">{COMPARISON_FIELDS.map(({ key, title, icon: Icon }) => <div key={key} className="clinical-comparison-cell" data-kind={key}><dt><Icon aria-hidden="true" />{title}</dt><dd>{key === 'conflicting' && !result.pattern.conflicts.length && !EXAMINATION_ASSOCIATIONS[result.pattern.id]?.conflicts?.length ? 'この候補には照合項目を設定していません' : key === 'unknown' && result.unknown.length ? result.unknown.map(id => <button type="button" key={id} className="clinical-missing-sign" onClick={() => revisitSign(id)}>{labels([id])}を確認</button>) : labels(result[key])}</dd></div>)}</dl> : <p className="clinical-candidate-empty">この候補は現在の入力項目では照合できません。下の追加確認をもとに、所見や検討理由を記録してください。</p>}
+              <div className="clinical-comparison-context"><p>{result.pattern.distinguish}</p>{comparisonContext(result.pattern, encounter.examination, observations).length > 0 && <details className="clinical-neutral-findings"><summary>追加評価に使う入力済み所見（自動で支持・否定しない）</summary><ul>{comparisonContext(result.pattern, encounter.examination, observations).map(item => <li key={item}>{item}</li>)}</ul></details>}{result.pattern.additionalChecks?.length ? <div className="clinical-additional-checks"><p>入力項目のほかに確認したいこと</p><ul>{result.pattern.additionalChecks.map(item => <li key={item}>{item}</li>)}</ul></div> : null}<p>治法の参考：{result.pattern.principle}</p><Link href={`/curriculum/${result.pattern.lectureId}`}>関連する理論を読む →</Link></div>
               </div>
               </details>
             </article>)}
@@ -305,6 +314,6 @@ export default function ClinicalWorkspace() {
     </section>
     <aside className="clinical-workspace-summary" aria-label="作業中の記録の要約"><p className="clinical-kicker">作業中の記録</p><h2>{encounter.patientIdentifier || '匿名ID未入力'}</h2><p>{encounter.chiefComplaint || '主訴未入力'}</p><dl><div><dt>現在の手順</dt><dd>{STEPS[encounter.step]}</dd></div><div><dt>所見の確認</dt><dd>{observationConfirmed} / {observationTotal}項目</dd></div><div><dt>比較する候補</dt><dd>{candidateNames.join('／') || '未選択'}</dd></div><div><dt>配穴</dt><dd>{encounter.safety === 'reviewed' ? encounter.points.map(point => ACUPOINTS_MASTER.find(item => item.code === point.code)?.name || point.code).join('・') || '未選定' : '安全確認・医療評価を優先'}</dd></div><div><dt>記録の状態</dt><dd>{saveState === 'checking' ? '保存先を確認中' : saveState === 'missing' ? '元の記録なし・下書き保持' : saveState === 'saved' ? '臨床ノートに保存済み' : saveState === 'changed' ? '保存後の変更あり' : saveState === 'unverified' ? '保存済み記録を再編集中' : '臨床ノートへ未保存'}</dd></div><div><dt>保存先</dt><dd>{syncStatus === 'offline' ? 'このブラウザに保存／同期は未完了' : syncStatus === 'syncing' ? 'アカウントの記録を同期中' : syncStatus === 'synced' ? 'このブラウザと自分のアカウント' : 'このブラウザ'}</dd></div></dl><button className={BUTTON} onClick={showReview}>入力内容を確認</button></aside>
     </div>
-    <ClinicalEvidenceKey sourceKeys={['terminology','classification','headache','back']} revisedAt="2026-10-18" />
+    <ClinicalEvidenceKey sourceKeys={['terminology','classification','tongue','deficiency','headache','back']} revisedAt="2026-10-19" />
   </div>;
 }

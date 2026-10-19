@@ -28,6 +28,11 @@
 .clinical-examination-text { display: block; margin-block: 16px; font-size: .875rem; }
 .clinical-examination-hint { margin-bottom: 16px; color: var(--text-secondary); font-size: .875rem; line-height: 1.8; }
 .clinical-examination-subheading { padding-top: 12px; font-size: .9375rem; font-weight: 600; border-top: 1px solid var(--clinical-line); }
+.clinical-comparison-inputs { padding: 12px 16px; border: 1px solid var(--clinical-line); border-radius: 8px; font-size: .875rem; line-height: 1.8; }
+.clinical-comparison-inputs > summary, .clinical-neutral-findings > summary { min-height: 44px; padding-block: 10px; cursor: pointer; font-weight: 600; }
+.clinical-comparison-inputs p { margin-block: 12px; overflow-wrap: anywhere; }
+.clinical-neutral-findings { margin-block: 12px; }
+.clinical-neutral-findings ul { display: grid; gap: 8px; padding-left: 20px; list-style: disc; overflow-wrap: anywhere; }
 .clinical-safety-disclosure > summary { list-style-position: inside; }
 .clinical-safety-disclosure[open] > summary > span { display: none; }
 .clinical-workspace :is(.clinical-safety-disclosure, .clinical-observation-group) > summary:focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 4px; border-radius: 4px; }

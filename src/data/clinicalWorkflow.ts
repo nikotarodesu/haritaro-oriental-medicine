@@ -1,4 +1,6 @@
 /** Traditional teaching models, not validated diagnostic rules or efficacy evidence. */
+import { resolvedExaminationObservations, type ClinicalExamination } from './clinicalExamination';
+import { compareExaminationFindings, type ComparisonFindingId } from './clinicalExaminationComparison';
 export const CLINICAL_SIGNS = [
   { id: 'fatigue', group: '問診', label: '疲労・気力低下', question: '発症時期、日内変動、休息と活動での変化は？' },
   { id: 'appetite', group: '問診', label: '食欲低下・食後の張り', question: '食事量、食後症状、体重の推移は？' },
@@ -44,7 +46,7 @@ export const CLINICAL_PATTERNS: ClinicalPattern[] = [
   { id: 'damp', name: '湿・痰湿の候補', category: "気血津液", summary: "重さ・苔と水湿の停滞", aliases: ["湿", "痰湿", "水滞", "しつ", "たんしつ"], additionalChecks: ["浮腫・痰などの部位、量と変動", "舌苔の色・厚さ、食事や便通との関連"], supports: ['heavy','greasyCoat','appetite'], conflicts: ['dry'], principle: '化湿・健脾', distinguish: '重だるさ、苔、消化器症状を照合し、気虚との併存も検討する。', lectureId: 'lecture-pathomechanism-4', points: [{ code: 'SP9', purpose: '湿を考える検討例', condition: '湿の所見を複数確認' }, { code: 'ST40', purpose: '痰湿の比較例', condition: '痰湿を支持する追加所見を確認' }] },
   {"id": "qi", "name": "気虚", "category": "気血津液", "summary": "気の働きの不足を広く整理", "aliases": ["気虚証", "ききょ"], "additionalChecks": ["活動時の息切れ・自汗などの有無", "主訴の経過と、臓腑を考える追加所見"], "supports": ["fatigue", "weakVoice", "weakPulse"], "conflicts": [], "principle": "補気", "distinguish": "局在を決める前の広い候補。脾・肺・心などの所見を分けて確認する。", "lectureId": "lecture-pathomechanism-3", "points": []},
   {"id": "qi-stagnation", "name": "気滞", "category": "気血津液", "summary": "張りと症状の変動を整理", "aliases": ["気鬱", "気滞証", "きたい"], "additionalChecks": ["胸・腹・喉など、張りやつかえの部位", "ため息・げっぷなどの有無と増悪条件"], "supports": ["stress", "distension"], "conflicts": [], "principle": "理気", "distinguish": "張りの部位・変動を確認。情志との関連だけで肝の証と決めない。", "lectureId": "lecture-pathomechanism-3", "points": []},
-  {"id": "qi-counterflow", "name": "気逆", "category": "気血津液", "summary": "咳・悪心など上逆の説明を比較", "aliases": ["気逆証", "きぎゃく"], "additionalChecks": ["咳・悪心・嘔吐・げっぷの有無と経過", "肺・胃など、上逆を考えた部位と根拠"], "supports": [], "conflicts": [], "principle": "降気", "distinguish": "現在の選択所見だけでは気逆を照合できない。咳・悪心などの訴えと経過を補足する。", "lectureId": "lecture-pathomechanism-3", "points": []},
+  {"id": "qi-counterflow", "name": "気逆", "category": "気血津液", "summary": "咳・悪心など上逆の説明を比較", "aliases": ["気逆証", "きぎゃく"], "additionalChecks": ["咳・悪心・嘔吐・げっぷの有無と経過", "肺・胃など、上逆を考えた部位と根拠"], "supports": [], "conflicts": [], "principle": "降気", "distinguish": "咳は上逆を考える限られた材料。悪心・嘔吐・げっぷ、部位と経過を補足し、咳だけで気逆と確定しない。", "lectureId": "lecture-pathomechanism-3", "points": []},
   {"id": "blood", "name": "血虚", "category": "気血津液", "summary": "養い・潤す働きの不足", "aliases": ["血虚証", "けっきょ"], "additionalChecks": ["顔色・口唇、めまい、目や皮膚の乾き", "月経の量・経過など、血の不足を考えた根拠"], "supports": ["paleTongue"], "conflicts": [], "principle": "養血", "distinguish": "淡白舌だけで血虚と決めず、気虚・陰虚や別の原因と比較する。貧血の診断とは分ける。", "lectureId": "lecture-pathomechanism-5", "points": []},
   {"id": "yang", "name": "陽虚", "category": "気血津液", "summary": "温め動かす働きの不足", "aliases": ["陽虚証", "ようきょ"], "additionalChecks": ["冷えの部位・持続時間、活動や温めによる変化", "脾・腎など、臓腑を考える追加所見"], "supports": ["cold", "fatigue", "weakPulse"], "conflicts": [], "principle": "温陽", "distinguish": "冷えだけで全体を陽虚としない。寒の部位・経過と不足の根拠を分ける。", "lectureId": "lecture-pathomechanism-6", "points": []},
   {"id": "liver-blood", "name": "肝血虚", "category": "肝胆", "summary": "血虚と目・筋・月経の所見", "aliases": ["肝血不足", "肝血虚証", "かんけっきょ"], "additionalChecks": ["目のかすみ・乾き、筋のひきつりなどの経過", "月経の量・経過、ほかの血虚の所見"], "supports": ["paleTongue"], "conflicts": [], "principle": "養血・補肝", "distinguish": "一般的な血虚の所見に加え、目・筋・月経などの情報を合わせる。目の乾きだけで決めない。", "lectureId": "lecture-diagnosis-9", "points": []},
@@ -91,16 +93,20 @@ export const CLINICAL_PRINCIPLES: readonly { id: string; label: string; group: s
   {"id": "connect-heart-kidney", "label": "交通心腎", "group": "神を安んじる"},
 ];
 
-export function compareClinicalPattern(pattern: ClinicalPattern, observations: ClinicalObservations) {
+export function compareClinicalPattern(pattern: ClinicalPattern, observations: ClinicalObservations, examination?: ClinicalExamination): Record<'supported' | 'missing' | 'unknown' | 'conflicting', ComparisonFindingId[]> {
+  observations = resolvedExaminationObservations(observations, examination);
+  const details = examination === undefined ? { supported: [], missing: [], unknown: [], conflicting: [] } : compareExaminationFindings(pattern.id, examination, observations);
   return {
-    supported: pattern.supports.filter(id => observations[id] === 'present'),
-    missing: pattern.supports.filter(id => observations[id] === 'absent'),
-    unknown: pattern.supports.filter(id => !observations[id] || observations[id] === 'unknown'),
-    conflicting: pattern.conflicts.filter(id => observations[id] === 'present'),
+    supported: [...pattern.supports.filter(id => observations[id] === 'present'), ...details.supported],
+    missing: [...pattern.supports.filter(id => observations[id] === 'absent'), ...details.missing],
+    unknown: [...pattern.supports.filter(id => !observations[id] || observations[id] === 'unknown'), ...details.unknown],
+    conflicting: [...pattern.conflicts.filter(id => observations[id] === 'present'), ...details.conflicting],
   };
 }
 
 export const CLINICAL_SOURCES = {
+  tongue: { title: '香港中文大学中医学院：舌体・舌苔の観察', url: 'https://www.scm.cuhk.edu.hk/zh-tw/news-and-literature/articles/articles-skypost-list/1244-2018-11-15/', scope: '舌色、舌体の大きさ、歯痕、苔の厚さ・色・性状と観察条件の伝統的な説明を参照。個々のルールの診断性能を検証する資料ではありません。' },
+  deficiency: { title: '香港衞生署：気虚・血虚・陰虚・陽虚の伝統的所見', url: 'https://www.cmro.gov.hk/html/b5/useful_information/public_health/feature_articles/Health_Maintenance_in_Winter.html', scope: '「辨證施補」の所見の記載を参照。食事・生薬・施術の推奨を本ツールの自動指示には使いません。' },
   terminology: { title: 'WHO：中医学の標準用語（2022）', url: 'https://www.who.int/publications/i/item/9789240042322', scope: '用語体系の参照。個別の配穴効果や本サイトの照合ルールを検証する資料ではありません。' },
   classification: { title: '厚生労働省：ICD-11の分類用語（2023年1月版）', url: 'https://www.mhlw.go.jp/content/10701000/001501598.pdf', scope: '伝統医学の証名と日本語表記の参照。名称の掲載は診断の妥当性や治療効果を示すものではありません。' },
   headache: { title: 'NHS：頭痛の受診目安', url: 'https://www.nhs.uk/symptoms/headaches/', scope: '受診・救急評価の目安。東洋医学の弁証や配穴効果の根拠ではありません。' },
