@@ -9,6 +9,32 @@ export interface ClinicalFindingEdit {
   items: { label: string; before: string; after: string; linked: boolean }[];
 }
 
+/** Draft history is bounded and contains only catalogue choices, never arbitrary field keys. */
+export function validClinicalFindingHistory(value: unknown): value is ClinicalFindingEdit[] {
+  if (!Array.isArray(value) || value.length > 20) return false;
+  let previousId = 0;
+  const choices = new Map<string, readonly string[]>([
+    ...EXAMINATION_FIELDS.map(field => [field.label, ['未確認', ...field.options]] as const),
+    ...CLINICAL_SIGNS.map(sign => [sign.label, Object.values(OBSERVATION_LABELS)] as const),
+  ]);
+  return value.every(edit => {
+    if (!edit || typeof edit !== 'object' || !Number.isSafeInteger(edit.id) || edit.id <= previousId || edit.id >= Number.MAX_SAFE_INTEGER - 1 || !choices.has(edit.label) || typeof edit.examinationWasDefined !== 'boolean' || edit.undone !== undefined && typeof edit.undone !== 'boolean') return false;
+    previousId = edit.id;
+    if (!Array.isArray(edit.deltas) || !edit.deltas.length || edit.deltas.length > EXAMINATION_FIELDS.length + CLINICAL_SIGNS.length || !Array.isArray(edit.items) || !edit.items.length || edit.items.length > edit.deltas.length) return false;
+    const keys = new Set<string>(), labels = new Set<string>();
+    return edit.deltas.every((delta: FindingDelta) => {
+      if (!delta || typeof delta !== 'object') return false;
+      const options = delta.kind === 'examination' ? EXAMINATION_FIELDS.find(field => field.id === delta.id)?.options : delta.kind === 'observation' && CLINICAL_SIGNS.some(sign => sign.id === delta.id) ? ['unknown', 'present', 'absent'] : undefined;
+      const key = `${delta.kind}:${delta.id}`;
+      if (!options || keys.has(key) || ![delta.before, delta.after].every(choice => choice === undefined || typeof choice === 'string' && (choice === '' && delta.kind === 'examination' || options.includes(choice)))) return false;
+      keys.add(key); return true;
+    }) && edit.items.every((item: ClinicalFindingEdit['items'][number]) => {
+      if (!item || typeof item !== 'object' || labels.has(item.label) || typeof item.linked !== 'boolean' || !choices.get(item.label)?.includes(item.before) || !choices.get(item.label)?.includes(item.after)) return false;
+      labels.add(item.label); return true;
+    });
+  });
+}
+
 /** Use the same descriptive choices and legacy composite meaning in both examination and comparison. */
 export function clinicalExaminationPatch(current: ClinicalFindingState, id: string, value: string): ClinicalFindingState {
   const previous = (id === 'painQuality' || id === 'painLocation') && current.observations.fixedPain === 'present' ? {

@@ -50,7 +50,6 @@ export default function ClinicalWorkspace() {
   const [pointQuery, setPointQuery] = useState('');
   const [principleChange, setPrincipleChange] = useState<PrincipleChange | null>(null);
   const [comparisonFocus, setComparisonFocus] = useState<string[] | null>(null);
-  const [findingHistory, setFindingHistory] = useState<{ owner: string; entries: ClinicalFindingEdit[] } | null>(null);
   const [findingSession, setFindingSession] = useState(0);
   const findingSessionGuard = useRef(0);
   const findingChangeSerial = useRef(0);
@@ -65,7 +64,8 @@ export default function ClinicalWorkspace() {
       // A guide never replaces an encounter already in progress.
       if (complaint && !initial.patientIdentifier && !initial.chiefComplaint && Object.keys(initial.observations).length === 0) { initial.complaintSlug = complaint.slug; initial.chiefComplaint = complaint.title; }
       encounterRef.current = initial;
-      setEncounter(initial); setError(stored.error); setSaved(Boolean(stored.encounter)); setReady(true); setLoadedOwner(clinicalStorageOwner); setReviewing(false); setLastSaved(initial.savedFingerprint || ''); setPrincipleChange(null); setComparisonFocus(null); setFindingHistory(null);
+      setEncounter(initial); setError(stored.error); setSaved(Boolean(stored.encounter)); setReady(true); setLoadedOwner(clinicalStorageOwner); setReviewing(false); setLastSaved(initial.savedFingerprint || ''); setPrincipleChange(null); setComparisonFocus(null);
+      findingChangeSerial.current = initial.findingHistory?.at(-1)?.id || 0;
       findingSessionGuard.current++; setFindingSession(findingSessionGuard.current);
     }, 0);
     return () => clearTimeout(timer);
@@ -84,7 +84,7 @@ export default function ClinicalWorkspace() {
   const updateExamination = (id: string, value: string) => {
     update(clinicalExaminationPatch(encounterRef.current, id, value));
   };
-  const findingEdits = findingHistory?.owner === clinicalStorageOwner && loadedOwner === clinicalStorageOwner ? findingHistory.entries : [];
+  const findingEdits = loadedOwner === clinicalStorageOwner ? encounter.findingHistory || [] : [];
   const latestFindingEdit = findingEdits.at(-1);
   const undoFindingAvailable = Boolean(latestFindingEdit && canUndoClinicalFindingEdit(encounter, latestFindingEdit));
   const recordFindingEdit = (target: { kind: 'observation' | 'examination'; id: string }, after: ClinicalFindingState) => {
@@ -92,16 +92,14 @@ export default function ClinicalWorkspace() {
     const edit = clinicalFindingEdit(encounterRef.current, after, target, findingChangeSerial.current + 1);
     if (!edit) return;
     findingChangeSerial.current = edit.id;
-    setFindingHistory(previous => ({ owner: clinicalStorageOwner, entries: [...(previous?.owner === clinicalStorageOwner ? previous.entries : []), edit].slice(-20) }));
-    update(after);
+    update({ ...after, findingHistory: [...(encounterRef.current.findingHistory || []), edit].slice(-20) });
   };
   const undoFindingEdit = () => {
     if (!latestFindingEdit || clinicalStorageOwner !== ownerGuard.current || loadedOwner !== clinicalStorageOwner || findingSessionGuard.current !== findingSession || findingChangeSerial.current !== latestFindingEdit.id) return;
     const restored = undoClinicalFindingEdit(encounterRef.current, latestFindingEdit);
     if (!restored) return;
     findingChangeSerial.current++;
-    setFindingHistory(previous => previous && { ...previous, entries: previous.entries.map(edit => edit.id === latestFindingEdit.id ? { ...edit, undone: true } : edit) });
-    update(restored);
+    update({ ...restored, findingHistory: encounterRef.current.findingHistory?.map(edit => edit.id === latestFindingEdit.id ? { ...edit, undone: true } : edit) });
   };
   const findingEditRow = (edit: ClinicalFindingEdit) => <li key={edit.id} className="clinical-finding-change-entry">
     <p><strong>{edit.label}</strong>{edit.undone && <span>取り消し済み</span>}</p>
@@ -207,7 +205,8 @@ export default function ClinicalWorkspace() {
     if (!window.confirm('このタブの作業中の下書きを消して、新しい記録を始めますか？保存済みノートは残ります。')) return;
     if (!clearClinicalEncounter()) { setError('下書きを消去できませんでした。'); return; }
     const fresh = emptyClinicalEncounter(); encounterRef.current = fresh;
-    setEncounter(fresh); setError(null); setSaved(false); setPointQuery(''); setReviewing(false); setLastSaved(''); setPrincipleChange(null); setComparisonFocus(null); setFindingHistory(null);
+    setEncounter(fresh); setError(null); setSaved(false); setPointQuery(''); setReviewing(false); setLastSaved(''); setPrincipleChange(null); setComparisonFocus(null);
+    findingChangeSerial.current = 0;
     findingSessionGuard.current++; setFindingSession(findingSessionGuard.current);
   };
   if (!ready || loadedOwner !== clinicalStorageOwner) return <p role="status" className="p-6">下書きを確認しています…</p>;
@@ -308,7 +307,7 @@ export default function ClinicalWorkspace() {
           <section className="clinical-finding-change-history" aria-labelledby="clinical-finding-changes-heading">
             <h4 id="clinical-finding-changes-heading" tabIndex={-1}>比較画面で変更した所見</h4>
             {findingEdits.length === 0 ? <p>所見を修正すると、変更前と変更後をここに表示します。</p> : <>
-              <p>この画面を開いてからの変更を直近20件表示します。戻せるのは直前の修正1件です。履歴は再読み込みでリセットされますが、所見は下書きに残ります。</p>
+              <p>この下書きの変更を直近20件表示します。履歴も下書きと一緒にこのタブへ保存され、再読み込み後も直前の修正1件を戻せます。</p>
               <div className="clinical-finding-change-latest"><p role="status">{latestFindingEdit?.undone ? '直前の修正を戻しました。' : `直前の修正：${latestFindingEdit?.label}`}</p>{latestFindingEdit && !latestFindingEdit.undone && <button type="button" className={BUTTON} disabled={!undoFindingAvailable} onClick={undoFindingEdit}>直前の修正を戻す</button>}</div>
               {latestFindingEdit && !latestFindingEdit.undone && !undoFindingAvailable && <p>対象の所見がその後に変更されたため、この修正は戻せません。</p>}
               <ol>{findingEdits.slice(-3).reverse().map(findingEditRow)}</ol>

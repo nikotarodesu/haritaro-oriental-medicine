@@ -2,7 +2,7 @@
 const assert = require('node:assert/strict');
 const { createDataLoader } = require('./data-loader.cjs');
 const load = createDataLoader();
-const { clinicalExaminationPatch, clinicalFindingEdit, canUndoClinicalFindingEdit, undoClinicalFindingEdit } = load('src/utils/clinicalFindingChanges');
+const { clinicalExaminationPatch, clinicalFindingEdit, canUndoClinicalFindingEdit, undoClinicalFindingEdit, validClinicalFindingHistory } = load('src/utils/clinicalFindingChanges');
 const plain = value => JSON.parse(JSON.stringify(value));
 
 const before = { observations: { fatigue: 'present', greasyCoat: 'present' }, examination: { coatColor: '黄', coatThickness: '厚い', coatTexture: '膩苔（きめ細かく粘る）', coatMoisture: '潤っている' } };
@@ -49,4 +49,20 @@ const restoredTongue = undoClinicalFindingEdit(laterPulse, tongueEdit);
 assert.equal(restoredTongue.examination.tongueColor, '淡白');
 assert.equal(restoredTongue.examination.pulseStrength, '強い・有力');
 assert.equal(restoredTongue.observations.weakPulse, 'absent', 'Undo cannot restore a normalized but unrelated pulse flag');
+const { parseClinicalEncounter, emptyClinicalEncounter, clinicalEncounterFingerprint, clinicalEncounterSaveState } = load('src/utils/clinicalEncounter');
+const persisted = plain([edit, legacyEdit, signEdit, tongueEdit]);
+assert(validClinicalFindingHistory(persisted));
+const draft = { ...emptyClinicalEncounter(), ...after, findingHistory: plain([edit]) };
+const reloadedDraft = parseClinicalEncounter(plain(draft));
+assert.deepEqual(plain(undoClinicalFindingEdit(reloadedDraft, reloadedDraft.findingHistory[0])), before);
+assert.equal(clinicalEncounterFingerprint(draft), clinicalEncounterFingerprint({ ...draft, findingHistory: undefined }), 'History is draft metadata, not a change to saved note contents');
+const saved = { ...draft, savedNoteId: 'test-note', savedFingerprint: clinicalEncounterFingerprint(draft) };
+assert.equal(clinicalEncounterSaveState({ ...saved, findingHistory: plain([{ ...edit, undone: true }]) }), 'saved');
+assert(parseClinicalEncounter(plain(emptyClinicalEncounter())), 'Existing drafts without history stay readable');
+for (const invalid of [null, {}, Array(21).fill(edit), [edit, edit], [{ ...edit, id: -1 }], [{ ...edit, id: Number.MAX_SAFE_INTEGER }], [{ ...edit, undone: 'true' }], [{ ...edit, deltas: [] }], [{ ...edit, items: [{ label: '任意のラベル', before: '', after: '', linked: false }] }], [{ ...edit, deltas: [{ kind: 'examination', id: '__proto__', before: '', after: '' }] }], [{ ...edit, deltas: [{ kind: 'examination', id: 'coatColor', after: '不正な選択肢' }] }], [{ ...edit, deltas: [{ kind: 'observation', id: 'fatigue', after: 'yes' }] }]]) {
+  assert(!validClinicalFindingHistory(invalid));
+  const recovered = parseClinicalEncounter({ ...draft, findingHistory: invalid });
+  assert(recovered && recovered.findingHistory === undefined);
+  assert.deepEqual(plain(recovered.examination), plain(draft.examination), 'A damaged history cannot discard the current findings');
+}
 console.log('Clinical finding changes: exact before/after history, linked coating changes, derived-field deduplication, legacy composites, one-operation restoration, unrelated-field retention and stale-edit protection passed.');

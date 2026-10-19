@@ -606,19 +606,52 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     staleUndo(); client.render();
     assert.deepEqual(plain(client.encounter()), before); assert.equal(client.writes.length, writes);
   });
-  await check('finding history is bounded to the current page session and keeps storage errors visible after undo', () => {
+  await check('finding history and undo survive reload, stay bounded and keep storage errors visible after undo', () => {
     const client = harness({ initialEncounter: sampleEncounter({ step: 2 }) });
     for (let index = 0; index < 22; index++) { client.candidateDifferential().props.onObservationChange('fatigue', index % 2 ? 'present' : 'absent'); client.render(); }
     assert.equal(nodes(client.findingHistory()).filter(node => node.props?.className === 'clinical-finding-change-entry').length, 20);
     assert(nodes(client.findingHistory()).filter(node => node.type === 'details').every(node => !node.props.open));
     const reloaded = harness({ initialEncounter: client.encounter() });
-    assert.equal(nodes(reloaded.findingHistory()).filter(node => node.props?.className === 'clinical-finding-change-entry').length, 0);
+    assert.equal(nodes(reloaded.findingHistory()).filter(node => node.props?.className === 'clinical-finding-change-entry').length, 20);
+    assert(!reloaded.button('直前の修正を戻す').props.disabled);
+    reloaded.click('直前の修正を戻す');
+    assert.equal(reloaded.encounter().observations.fatigue, 'absent');
+    const undone = harness({ initialEncounter: reloaded.encounter() });
+    assert(text(undone.findingHistory()).includes('取り消し済み'));
+    assert(!nodes(undone.findingHistory()).some(node => node.type === 'button' && text(node) === '直前の修正を戻す'));
+    const previousId = undone.encounter().findingHistory.at(-1).id;
+    undone.candidateDifferential().props.onObservationChange('fatigue', 'present'); undone.render();
+    assert(undone.encounter().findingHistory.at(-1).id > previousId);
+    assert.equal(undone.encounter().findingHistory.length, 20);
     client.flags.failSession = true;
     client.candidateDifferential().props.onObservationChange('fatigue', 'absent'); client.render();
     assert.equal(client.candidateDifferential().props.observations.fatigue, 'absent');
     client.click('直前の修正を戻す');
     assert.equal(client.candidateDifferential().props.observations.fatigue, 'present');
     assert(nodes(client.tree()).some(node => node.props?.role === 'alert' && text(node).includes('下書きを保存できませんでした')));
+  });
+  await check('reload preserves linked restoration and refuses an undo invalidated by later examination changes', () => {
+    const initial = sampleEncounter({ step: 2, candidateIds: ['yin', 'damp'], examination: { coatColor: '黄', coatThickness: '厚い', coatTexture: '膩苔（きめ細かく粘る）', coatMoisture: '潤っている' } });
+    const client = harness({ initialEncounter: initial });
+    client.candidateDifferential().props.onExaminationChange('coatThickness', '苔を認めない'); client.render();
+    client.change('今回検討する治法', '再読み込み後も保持する方針');
+    const reloaded = harness({ initialEncounter: client.encounter() });
+    reloaded.click('直前の修正を戻す');
+    assert.deepEqual(plain(reloaded.encounter().examination), initial.examination);
+    assert.deepEqual(plain(reloaded.encounter().observations), initial.observations);
+    assert.deepEqual(plain(reloaded.encounter().candidateIds), initial.candidateIds);
+    assert.equal(reloaded.encounter().principle, '再読み込み後も保持する方針');
+    client.click('2.四診所見'); client.change('舌苔の厚さ', '薄い'); client.click('3.候補・治法');
+    const conflicting = harness({ initialEncounter: client.encounter() });
+    assert(conflicting.button('直前の修正を戻す').props.disabled);
+  });
+  await check('invalid optional history preserves the draft and reports that old undo is unavailable', () => {
+    const initial = sampleEncounter({ step: 2, findingHistory: [{ id: 1, deltas: [{ kind: 'examination', id: '__proto__' }] }] });
+    const client = harness({ initialEncounter: initial });
+    assert.equal(client.encounter().chiefComplaint, initial.chiefComplaint);
+    assert.equal(client.candidateDifferential().props.observations.fatigue, 'present');
+    assert(!text(client.findingHistory()).includes('直前の修正：'));
+    assert(nodes(client.tree()).some(node => node.props?.role === 'alert' && text(node).includes('所見の変更履歴を読み込めませんでした')));
   });
   await check('finding history and stale edit callbacks cannot cross account or fresh-record boundaries', async () => {
     const client = harness({ initialEncounter: sampleEncounter({ step: 2 }) });
@@ -630,6 +663,11 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     guestUndo(); guestEdit('cold', 'present'); client.render();
     assert.deepEqual(plain(client.encounter()), accountBefore);
     assert(!text(client.findingHistory()).includes('直前の修正：'));
+    client.setAuth(null); await client.settle();
+    assert(text(client.findingHistory()).includes('直前の修正：'));
+    client.click('直前の修正を戻す');
+    assert.equal(client.encounter().observations.fatigue, 'present', 'Returning to the guest restores only the guest draft history');
+    client.setAuth('history-account'); await client.settle();
     client.candidateDifferential().props.onObservationChange('fatigue', 'absent'); client.render();
     const oldUndo = client.button('直前の修正を戻す').props.onClick, oldEdit = client.candidateDifferential().props.onObservationChange;
     client.click('新しい記録を始める');

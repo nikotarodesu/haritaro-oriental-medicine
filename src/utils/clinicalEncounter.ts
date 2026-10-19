@@ -2,12 +2,14 @@ import { CLINICAL_SIGNS, CLINICAL_PATTERNS, OBSERVATION_LABELS, type ClinicalObs
 import type { PatientNoteItem } from '@/types/clinicalMemo';
 import type { DraftPatientNote } from './draftNote';
 import { examinationSummary, resolvedExaminationObservations, validClinicalExamination, type ClinicalExamination } from '@/data/clinicalExamination';
+import { validClinicalFindingHistory, type ClinicalFindingEdit } from './clinicalFindingChanges';
 
 export interface ClinicalPointPlan { code: string; role: 'root' | 'branch' | 'other'; reason: string; alternative: string; }
 export interface ClinicalEncounter {
   savedNoteId?: string; savedFingerprint?: string; savedAt?: number; interviewMemo?: string;
   version: 1; step: number; patientIdentifier: string; chiefComplaint: string; complaintSlug: string; visitDate: string;
   observations: ClinicalObservations; examinationMemo: string; examination?: ClinicalExamination;
+  findingHistory?: ClinicalFindingEdit[];
   safety: 'unknown' | 'reviewed' | 'refer'; safetyMemo: string;
   candidateIds: string[]; customCandidates?: string; rationale: string; principle: string; points: ClinicalPointPlan[];
   plan: string; metric: string; before: string; after: string; functionMemo: string;
@@ -43,14 +45,20 @@ export function parseClinicalEncounter(raw: unknown): ClinicalEncounter | null {
   if (!Object.entries(value.observations).every(([id, status]) => CLINICAL_SIGNS.some(sign => sign.id === id) && ['unknown','present','absent'].includes(String(status)))) return null;
   if (!Array.isArray(value.candidateIds) || !value.candidateIds.every(id => CLINICAL_PATTERNS.some(pattern => pattern.id === id))) return null;
   if (!Array.isArray(value.points) || value.points.length > 12 || !value.points.every(point => point && typeof point === 'object' && typeof point.code === 'string' && /^[A-Z]{2}\d{1,2}$/.test(point.code) && ['root','branch','other'].includes(point.role) && typeof point.reason === 'string' && point.reason.length <= 20000 && typeof point.alternative === 'string' && point.alternative.length <= 20000)) return null;
+  // A damaged optional history must not discard the clinical draft itself.
+  if (value.findingHistory !== undefined && !validClinicalFindingHistory(value.findingHistory)) {
+    const restored = { ...value }; delete restored.findingHistory;
+    return restored as unknown as ClinicalEncounter;
+  }
   return value as unknown as ClinicalEncounter;
 }
 export function readClinicalEncounter(): { encounter: ClinicalEncounter | null; error: string | null } {
   try {
     const raw = sessionStorage.getItem(encounterStorageKey());
     if (!raw) return { encounter: null, error: null };
-    const encounter = parseClinicalEncounter(JSON.parse(raw));
-    return { encounter, error: encounter ? null : '下書きの形式を読み込めませんでした。保存済みノートから再開できます。' };
+    const value = JSON.parse(raw);
+    const encounter = parseClinicalEncounter(value);
+    return { encounter, error: encounter ? value.findingHistory !== undefined && encounter.findingHistory === undefined ? '所見の変更履歴を読み込めませんでした。下書きの所見は復元しましたが、以前の修正は取り消せません。' : null : '下書きの形式を読み込めませんでした。保存済みノートから再開できます。' };
   } catch { return { encounter: null, error: '下書きを読み込めません。ブラウザの保存設定を確認してください。' }; }
 }
 export function writeClinicalEncounter(encounter: ClinicalEncounter): boolean {
@@ -62,6 +70,7 @@ export function clearClinicalEncounter(): boolean {
 /** Compact display marker, not an authentication or integrity check. */
 export function clinicalEncounterFingerprint(encounter: ClinicalEncounter): string {
   const value = { ...encounter, step: 0, savedNoteId: undefined, savedFingerprint: undefined, savedAt: undefined };
+  delete value.findingHistory; // Draft-only history is not part of the saved clinical note.
   const text = JSON.stringify(value);
   let first = 2166136261, second = 5381;
   for (let index = 0; index < text.length; index++) { const code = text.charCodeAt(index); first = Math.imul(first ^ code, 16777619); second = Math.imul(second, 33) ^ code; }
