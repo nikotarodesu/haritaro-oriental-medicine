@@ -333,10 +333,6 @@ export function getCurriculumConceptArt(lectureId: string): { afterHeading: stri
         <desc id={descriptionId}>{definition.description}</desc>
         {expanded ? definition.artwork : <Artwork variant={definition.variant} />}
       </svg>
-      <details className="mt-2 text-sm leading-relaxed text-[var(--text-secondary)]">
-        <summary className="min-h-11 cursor-pointer py-2 underline underline-offset-4">図の読み方</summary>
-        <p className="mt-1 text-base leading-[1.75]">{definition.description}</p>
-      </details>
     </figure>,
   };
 }

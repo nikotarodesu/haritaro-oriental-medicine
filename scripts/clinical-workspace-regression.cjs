@@ -12,6 +12,7 @@ const encounters = load('src/utils/clinicalEncounter');
 const { persistClinicalNote } = load('src/utils/clinicalNoteSave');
 const { CLINICAL_PATTERNS } = load('src/data/clinicalWorkflow');
 const CandidatePicker = () => null;
+const CandidateDifferential = () => null;
 const { SUBSCRIPTION_CONFIG } = load('src/config/subscription');
 const storageScopes = load('src/utils/clinicalStorage');
 const key = storageScopes.clinicalStorageKeys('guest').notes;
@@ -130,6 +131,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     if (id === 'next/link' || id === '@/components/design/PageIntro' || id === './ClinicalEvidenceKey') return () => null;
     if (id === '@/contexts/ClinicalMemoContext') return { useClinicalMemo: () => context };
     if (id === './ClinicalCandidatePicker') return CandidatePicker;
+    if (id === './ClinicalCandidateDifferential') return CandidateDifferential;
     if (id.startsWith('@/')) return localLoad('src/' + id.slice(2));
     return require(id);
   } }, { filename: workspaceSource.file });
@@ -147,6 +149,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     field(label) { const parent = nodes(tree).find(node => node.type === 'label' && text(node).startsWith(label)); assert(parent, 'Field label ' + label); const input = nodes(parent).find(node => ['input', 'select', 'textarea'].includes(node.type)); assert(input); return input; },
     change(label, value) { api.field(label).props.onChange({ target: { value } }); api.render(); },
     candidatePicker() { const picker = nodes(tree).find(node => node.type === CandidatePicker); assert(picker, 'Real workspace supplies a candidate picker'); return picker; },
+    candidateDifferential() { const differential = nodes(tree).find(node => node.type === CandidateDifferential); assert(differential, 'Real workspace supplies the selected-candidate differential'); return differential; },
     chooseCandidates(ids) { api.candidatePicker().props.onChange(ids); api.render(); },
     principleButton(label, sectionClass = 'clinical-principle-suggestions') { const section = nodes(tree).find(node => node.props?.className === sectionClass); assert(section, 'Treatment section ' + sectionClass); const button = nodes(section).find(node => node.type === 'button' && ['＋', '追加済み', '上限'].some(state => text(node) === label + state)); assert(button, 'Treatment button ' + label); return button; },
     addPrinciple(label, sectionClass) { const button = api.principleButton(label, sectionClass); assert(!button.props.disabled, 'Treatment can be added: ' + label); button.props.onClick(); api.render(); },
@@ -410,6 +413,52 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     client.change('舌苔の色', '黄'); client.click('3.候補・治法');
     const changed = nodes(client.tree()).filter(node => node.type === 'article' && node.props.className === 'clinical-comparison-row').at(-1);
     assert(text(nodes(changed).find(node => node.props?.['data-kind'] === 'supported')).includes('黄苔'));
+  });
+  await check('selected-candidate differential receives real inputs and focus changes never alter the clinical draft', () => {
+    const initial = sampleEncounter({ step: 2, candidateIds: ['spleen-qi', 'liver-heat', 'stasis', 'damp', 'lung-yin'],
+      observations: { fatigue: 'present', cold: 'absent' }, examination: { tongueColor: '淡白', painQuality: '刺すような痛み' },
+      principle: '  手入力の治法\n追加確認してから見直す。  ' });
+    const client = harness({ initialEncounter: initial });
+    const differential = client.candidateDifferential();
+    assert.deepEqual(plain(differential.props.patterns.map(pattern => pattern.id)), initial.candidateIds, 'Only selected patterns are supplied, in clinician selection order');
+    assert.deepEqual(plain(differential.props.observations), initial.observations);
+    assert.deepEqual(plain(differential.props.examination), initial.examination);
+    assert.equal(differential.props.focusIds, null);
+    const before = plain(client.encounter()), writes = client.writes.length;
+    differential.props.onFocusChange(['stasis', 'liver-heat']); client.render();
+    assert.deepEqual(plain(client.candidateDifferential().props.focusIds), ['stasis', 'liver-heat']);
+    assert.deepEqual(plain(client.encounter()), before, 'Comparison focus is UI state; it cannot change candidate IDs, observations, points or handwritten treatment');
+    assert.equal(client.writes.length, writes, 'Changing comparison focus does not rewrite the clinical draft');
+  });
+  await check('differential next-check callbacks return to exact real four-examination inputs and preserve selected candidates and treatment', () => {
+    const initial = sampleEncounter({ step: 2, candidateIds: ['spleen-qi', 'liver-heat', 'stasis', 'lung-yin'],
+      observations: { fatigue: 'present', cold: 'absent' }, examination: { tongueColor: '淡白', painQuality: '刺すような痛み' },
+      principle: '  比較しても手入力の治法を保持\n局在は追加確認する。  ' });
+    const client = harness({ initialEncounter: initial });
+    const before = plain(client.encounter());
+    const targets = [
+      ['cold', 'clinical-sign-cold'], ['paleTongue', 'clinical-exam-tongueColor'], ['redTongue', 'clinical-exam-tongueColor'],
+      ['greasyCoat', 'clinical-exam-coatTexture'], ['weakPulse', 'clinical-sign-weakPulse'], ['rapidPulse', 'clinical-sign-rapidPulse'],
+      ['exam:yellow', 'clinical-exam-coatColor'], ['exam:fine', 'clinical-exam-pulseWidth'], ['exam:dryCough', 'clinical-exam-cough'],
+      ['fixedPain', 'clinical-exam-painLocation'],
+    ];
+    for (const [findingId, inputId] of targets) {
+      client.candidateDifferential().props.onCheck(findingId); client.render(); client.flushFrames();
+      assert.equal(client.encounter().step, 1, findingId + ': returns to the four-examination form');
+      assert.equal(client.focused.at(-1), inputId, findingId + ': exact real input receives keyboard focus');
+      assert.equal(client.scrolled.at(-1), inputId);
+      assert(nodes(client.tree()).some(node => ['select', 'textarea', 'input'].includes(node.type) && node.props.id === inputId), 'The focus target is a rendered editable input');
+      assert([...client.groups.values()].some(group => group.open), 'The target examination disclosure is opened');
+      assert.deepEqual(plain({ ...client.encounter(), step: before.step }), before, 'Returning for a finding preserves every clinical field');
+      client.click('3.候補・治法'); client.flushFrames();
+    }
+    client.candidateDifferential().props.onRecordDetails(); client.render(); client.flushFrames();
+    assert.equal(client.encounter().step, 1);
+    assert.equal(client.focused.at(-1), 'clinical-examination-memo');
+    assert.equal(client.scrolled.at(-1), 'clinical-examination-memo');
+    const memo = nodes(client.tree()).find(node => node.type === 'textarea' && node.props.id === 'clinical-examination-memo');
+    assert(memo, 'Supplementary context returns to the live four-examination memo');
+    assert.deepEqual(plain({ ...client.encounter(), step: before.step }), before, 'Recording navigation cannot replace selected candidates or handwritten treatment');
   });
   await check('new candidates and custom hypotheses survive review, reload and same-ID updates with exact manual treatment', () => {
     const manual = '  症状の経過を先に確認する。\n治法は本人と相談して見直す。  ';

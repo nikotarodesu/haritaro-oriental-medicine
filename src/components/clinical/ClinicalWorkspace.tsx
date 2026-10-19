@@ -10,6 +10,7 @@ import { ACUPOINTS_MASTER } from '@/data/tsubo/acupointsMaster';
 import { clearClinicalEncounter, clinicalCandidateNames, clinicalEncounterFingerprint, clinicalEncounterSaveState, clinicalEncounterNote, emptyClinicalEncounter, readClinicalEncounter, writeClinicalEncounter, type ClinicalEncounter } from '@/utils/clinicalEncounter';
 import ClinicalEvidenceKey from './ClinicalEvidenceKey';
 import ClinicalCandidatePicker from './ClinicalCandidatePicker';
+import ClinicalCandidateDifferential from './ClinicalCandidateDifferential';
 import { appendClinicalPrinciple, hasClinicalPrinciple } from '@/utils/clinicalTreatment';
 import { EXAMINATION_GROUPS, EXAMINATION_FIELDS, EXAMINATION_TEXT_FIELDS, examinationValue, examinationSummary, examinationIssues, resolvedExaminationObservations, updateExaminationValue } from '@/data/clinicalExamination';
 import { EXAMINATION_ASSOCIATIONS, examinationFinding, comparisonContext, type ComparisonFindingId } from '@/data/clinicalExaminationComparison';
@@ -46,6 +47,7 @@ export default function ClinicalWorkspace() {
   const [saved, setSaved] = useState(false);
   const [pointQuery, setPointQuery] = useState('');
   const [principleChange, setPrincipleChange] = useState<PrincipleChange | null>(null);
+  const [comparisonFocus, setComparisonFocus] = useState<string[] | null>(null);
   const ownerGuard = useRef(clinicalStorageOwner);
   useEffect(() => { ownerGuard.current = clinicalStorageOwner; }, [clinicalStorageOwner]);
   useEffect(() => {
@@ -56,7 +58,7 @@ export default function ClinicalWorkspace() {
       const complaint = CLINICAL_COMPLAINTS.find(item => item.slug === new URLSearchParams(window.location.search).get('complaint'));
       // A guide never replaces an encounter already in progress.
       if (complaint && !initial.patientIdentifier && !initial.chiefComplaint && Object.keys(initial.observations).length === 0) { initial.complaintSlug = complaint.slug; initial.chiefComplaint = complaint.title; }
-      setEncounter(initial); setError(stored.error); setSaved(Boolean(stored.encounter)); setReady(true); setLoadedOwner(clinicalStorageOwner); setReviewing(false); setLastSaved(initial.savedFingerprint || ''); setPrincipleChange(null);
+      setEncounter(initial); setError(stored.error); setSaved(Boolean(stored.encounter)); setReady(true); setLoadedOwner(clinicalStorageOwner); setReviewing(false); setLastSaved(initial.savedFingerprint || ''); setPrincipleChange(null); setComparisonFocus(null);
     }, 0);
     return () => clearTimeout(timer);
   }, [clinicalStorageOwner]);
@@ -166,10 +168,14 @@ export default function ClinicalWorkspace() {
       input?.focus(); input?.scrollIntoView({ block: 'center', behavior: 'auto' });
     });
   };
+  const revisitExaminationDetails = () => {
+    proceed(1, false);
+    focusHeading('clinical-examination-memo');
+  };
   const reset = () => {
     if (!window.confirm('このタブの作業中の下書きを消して、新しい記録を始めますか？保存済みノートは残ります。')) return;
     if (!clearClinicalEncounter()) { setError('下書きを消去できませんでした。'); return; }
-    setEncounter(emptyClinicalEncounter()); setError(null); setSaved(false); setPointQuery(''); setReviewing(false); setLastSaved(''); setPrincipleChange(null);
+    setEncounter(emptyClinicalEncounter()); setError(null); setSaved(false); setPointQuery(''); setReviewing(false); setLastSaved(''); setPrincipleChange(null); setComparisonFocus(null);
   };
   if (!ready || loadedOwner !== clinicalStorageOwner) return <p role="status" className="p-6">下書きを確認しています…</p>;
   return <div className="page-layout clinical-workspace space-y-5">
@@ -243,7 +249,7 @@ export default function ClinicalWorkspace() {
           </details>;
         })}
         {encounter.interviewMemo && <label className="block">対面問診から引き継いだ記録<textarea maxLength={20000} className={FIELD} rows={5} value={encounter.interviewMemo} onChange={event => update({ interviewMemo: event.target.value })} /></label>}
-        <label className="block">腹部・経穴反応・舌脈の補足、その他の所見<textarea maxLength={20000} className={FIELD} rows={4} value={encounter.examinationMemo} onChange={event => update({ examinationMemo: event.target.value })} placeholder="観察条件、本人の訴え、観察した事実を記録" /></label>
+        <label className="block">腹部・経穴反応・舌脈の補足、その他の所見<textarea id="clinical-examination-memo" maxLength={20000} className={FIELD} rows={4} value={encounter.examinationMemo} onChange={event => update({ examinationMemo: event.target.value })} placeholder="観察条件、本人の訴え、観察した事実を記録" /></label>
       </>}
       {encounter.step === 2 && <>
         <p className="clinical-candidate-intro">候補を探して選び、所見を比較し、検討する治法を記録します。所見の照合は入力項目に限られ、件数は診断の順位を示しません。</p>
@@ -257,6 +263,7 @@ export default function ClinicalWorkspace() {
             <p>自由入力した候補も、確認画面と臨床ノートに残ります。</p>
           </details>
           <nav className="clinical-candidate-jumps" aria-label="候補・治法の入力箇所へ移動">
+            {encounter.candidateIds.length >= 2 && <a href="#clinical-differential-heading">候補同士の違い・追加確認を見る ↓</a>}
             {encounter.candidateIds.length > 0 && <a href="#clinical-compare-heading">選んだ候補を比較（{encounter.candidateIds.length}件） ↓</a>}
             <a href="#clinical-principle-heading">治法の入力へ ↓</a>
           </nav>
@@ -267,6 +274,7 @@ export default function ClinicalWorkspace() {
           {encounter.candidateIds.length > 0 && <p className="clinical-candidate-intro">候補名を押すと所見と追加確認を開けます。複数の候補を同時に開いて比較できます。</p>}
           {encounter.candidateIds.length === 0 && <p className="clinical-candidate-empty">候補を選ぶと、支持する所見・合いにくい所見・未確認の所見を並べて確認できます。</p>}
           {encounter.safety !== 'reviewed' && <p className="clinical-candidate-safety">安全確認が未完了、または医療評価を優先する状態です。配穴の検討は保留します。</p>}
+          <ClinicalCandidateDifferential patterns={selectedComparisons.map(result => result.pattern)} observations={encounter.observations} examination={encounter.examination} focusIds={comparisonFocus} onFocusChange={setComparisonFocus} onCheck={revisitSign} onRecordDetails={revisitExaminationDetails} />
           <div className="clinical-comparison-board">
             {selectedComparisons.map((result, index) => <article key={result.pattern.id} className="clinical-comparison-row" data-selected="true">
               <details className="clinical-comparison-disclosure" open={index === 0 ? true : undefined}>

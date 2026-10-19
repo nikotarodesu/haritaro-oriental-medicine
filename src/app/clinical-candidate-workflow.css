@@ -32,3 +32,46 @@
 .clinical-workspace .clinical-candidate-comparison-title .clinical-comparison-name { min-height: 0; padding: 0; cursor: default; }
 .clinical-custom-candidate > summary::after, .clinical-principle-catalog > summary::after { content: '+'; margin-left: auto; color: var(--accent-readable); }
 .clinical-custom-candidate[open] > summary::after, .clinical-principle-catalog[open] > summary::after { content: '−'; }
+
+.clinical-differential { margin-block: 20px 28px; padding: 18px; border: 1px solid var(--clinical-line); border-radius: 12px; background: var(--bg-card); overflow-wrap: anywhere; }
+.clinical-differential > h4 { font-family: var(--font-serif); font-size: 1.0625rem; font-weight: 600; }
+.clinical-differential-help { margin-top: 6px; color: var(--text-secondary); font-size: .8125rem; line-height: 1.85; }
+.clinical-differential-focus { margin-block: 18px; }
+.clinical-differential-focus legend { font-size: .875rem; font-weight: 600; }
+.clinical-differential-focus > div { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.clinical-differential-focus label { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 12px; border: 1px solid var(--clinical-line); border-radius: 8px; font-size: .875rem; }
+.clinical-differential-focus input { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent-readable); }
+.clinical-differential-focus label:has(input:checked) { background: var(--tokiwa-light); border-color: var(--accent-readable); }
+.clinical-differential-focus label:has(input:disabled) { opacity: .6; }
+.clinical-differential-focus > p { margin-top: 8px; color: var(--text-secondary); font-size: .8125rem; }
+.clinical-differential-section { margin-top: 20px; }
+.clinical-differential h5 { font-size: .9375rem; font-weight: 600; }
+.clinical-differential h5 > span { margin-left: 8px; font-size: .8125rem; font-weight: 400; color: var(--text-secondary); }
+.clinical-differential-shared { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin-top: 10px; list-style: none; }
+.clinical-differential-shared li { padding: 6px 10px; border-radius: 6px; background: var(--tokiwa-light); font-size: .875rem; }
+.clinical-differential-shared li > span { margin-right: 8px; color: var(--text-secondary); font-size: .75rem; }
+.clinical-differential-list { padding: 0; margin-top: 10px; list-style: none; }
+.clinical-differential-finding, .clinical-differential-question { padding-block: 14px; border-top: 1px solid var(--clinical-line); }
+.clinical-differential-finding-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 14px; }
+.clinical-differential-finding-heading > p { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; font-size: .875rem; }
+.clinical-differential-finding-heading span { font-size: .75rem; color: var(--text-secondary); }
+.clinical-differential-finding-heading small { font-size: .8125rem; color: var(--text-secondary); }
+.clinical-differential button, .clinical-differential a { min-height: 44px; color: var(--accent-readable); font-size: .8125rem; text-align: left; text-decoration: underline; text-underline-offset: 4px; }
+.clinical-differential button { padding-block: 8px; cursor: pointer; }
+.clinical-differential :is(button, input, summary, a):focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 4px; }
+.clinical-differential-relations { display: grid; gap: 6px; margin-top: 6px; }
+.clinical-differential-relations > div { min-width: 0; padding: 8px 10px; border-left: 2px solid var(--clinical-line); background: var(--bg-muted); }
+.clinical-differential-relations > div[data-relation="support"] { border-color: var(--accent-readable); }
+.clinical-differential-relations > div[data-relation="conflict"] { border-color: #B86936; }
+.clinical-differential-relations dt { font-size: .8125rem; font-weight: 600; }
+.clinical-differential-relations dd { margin-top: 3px; font-size: .8125rem; color: var(--text-secondary); }
+.clinical-differential-question-finding { margin-top: 12px; }
+.clinical-differential-question-finding > p { font-size: .875rem; }
+.clinical-differential-more { margin-top: 12px; border-top: 1px solid var(--clinical-line); }
+.clinical-differential-more > summary { min-height: 48px; padding-block: 12px; color: var(--accent-readable); font-size: .875rem; cursor: pointer; }
+.clinical-differential-limit { border-left: 2px solid #B86936; padding: 8px 12px; background: var(--bg-muted); font-size: .875rem; line-height: 1.85; }
+.clinical-differential-context article { padding-block: 12px; font-size: .875rem; line-height: 1.85; }
+.clinical-differential-context article > p { margin-top: 6px; color: var(--text-secondary); }
+.clinical-differential-context article ul { margin-top: 6px; padding-left: 1.25rem; list-style: disc; }
+@media (min-width: 640px) { .clinical-differential-relations { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 380px) { .clinical-differential { padding: 12px; } }

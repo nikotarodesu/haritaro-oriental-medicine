@@ -52,15 +52,11 @@ for (const [id, specification] of Object.entries(CURRICULUM_CONCEPT_ART)) {
   assert(!/<text\b|<foreignObject\b|<figcaption\b/.test(art), id + ': no visible SVG text or prose');
   assert(!/<image\b|<script\b|<animate\b|NaN|Infinity/.test(art), id + ': static, valid vector artwork');
   assert.equal(svg.replace(/<(title|desc)\b[^>]*>[\s\S]*?<\/\1>/g, '').replace(/<[^>]*>/g, '').trim(), '', id + ': artwork itself remains wordless');
-  const readingGuides = art.match(/<details\b[^>]*>[\s\S]*?<\/details>/g) || [];
-  assert.equal(readingGuides.length, 1, id + ': one optional reading guide outside the SVG');
-  const guide = readingGuides[0];
-  assert(!/<details\b[^>]*\sopen(?:[\s=>])/.test(guide), id + ': the reading guide starts closed');
-  assert.match(guide, /<summary\b[^>]*>図の読み方<\/summary>/, id + ': the guide has a clear keyboard-operable summary');
+  assert(!/<details\b|<summary\b/.test(art), id + ': the illustration has no reading-guide control');
+  assert(!art.includes('図の読み方'), id + ': reading-guide copy is removed for every lecture');
   const description = renderToStaticMarkup(React.createElement(React.Fragment, null, specification.description));
-  assert(guide.includes(description), id + ': the full authored definition is available to readers');
-  assert(!svg.includes(guide), id + ': prose is outside the image');
-  assert.equal(art.replace(svg, '').replace(guide, '').replace(/<[^>]*>/g, '').trim(), '', id + ': optional guide is the only surrounding visible prose');
+  assert(svg.includes(description), id + ': the accessible SVG description is preserved');
+  assert.equal(art.replace(svg, '').replace(/<[^>]*>/g, '').trim(), '', id + ': the SVG has no surrounding explanation');
   assert(!/(?:d|transform|cx|cy)="[^"]*\.\d{4,}/.test(art), id + ': derived SVG geometry avoids server/browser float serialization drift');
   const base = renderToStaticMarkup(React.createElement(MarkdownBody, { contentMarkdown: source, idPrefix: 'lecture' }));
   const illustrated = renderToStaticMarkup(React.createElement(MarkdownBody, { contentMarkdown: source, idPrefix: 'lecture', conceptArt }));
@@ -80,4 +76,4 @@ const bloodWithFigures = renderToStaticMarkup(React.createElement(MarkdownBody, 
 assert.equal((bloodWithFigures.match(/data-reading-figure=/g) || []).length, 1, 'Blood lesson retains its instructional comparison');
 assert(!bloodWithFigures.includes('curriculum-concept-art'), 'Same-section artwork does not repeat the blood comparison');
 assert(bloodWithFigures.includes('data-reading-exercise='), 'The retained figure has an optional worked answer');
-console.log(`Passed: ${count} artwork definitions with accessible names and stable anchors; redundant same-section visuals are omitted and the blood comparison keeps a hidden worked answer.`);
+console.log(`Passed: ${count} illustrations retain their accessible SVGs and stable anchors without reading-guide controls or surrounding explanation; instructional comparisons stay intact.`);
