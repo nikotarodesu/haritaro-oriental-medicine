@@ -90,6 +90,10 @@ function harness(ids, observations = {}, examination = {}, focusIds = null, appl
     review(label) { const button = nodes(api.finding(label)).find(node => node.type === 'button' && node.props['aria-expanded'] !== undefined); assert(button); button.props.onClick(); api.render(); },
     editor(label) { const editor = nodes(api.finding(label)).find(node => node.props?.className === 'clinical-differential-editor'); assert(editor && !editor.props.hidden, 'Open inline editor: ' + label); return editor; },
     reviewChange(label, field, value) { const input = nodes(api.editor(label)).find(node => node.type === 'select' && node.props['aria-label'] === field); assert(input, 'Review input: ' + field); input.props.onChange({ target: { value } }); api.render(); },
+    sharedFinding(label) { const list = nodes(tree).find(node => node.props?.className === 'clinical-differential-shared'); assert(list); const row = nodes(list).find(node => node.type === 'li' && nodes(node).some(child => child.type === 'strong' && text(child) === label)); assert(row, 'Shared finding: ' + label); return row; },
+    sharedReview(label) { nodes(api.sharedFinding(label)).find(node => node.type === 'button').props.onClick(); api.render(); },
+    sharedEditor(label) { const editor = nodes(api.sharedFinding(label)).find(node => node.props?.className === 'clinical-differential-editor'); assert(editor && !editor.props.hidden); return editor; },
+    sharedChange(label, field, value) { const input = nodes(api.sharedEditor(label)).find(node => node.type === 'select' && node.props['aria-label'] === field); assert(input, 'Shared review input: ' + field); input.props.onChange({ target: { value } }); api.render(); },
     unchanged() { assert.equal(JSON.stringify(inputs), before, 'Comparison controls cannot mutate candidate IDs, findings, treatment or points'); },
   };
   api.render(); return api;
@@ -279,5 +283,50 @@ equivalent.button('確認した部位・経過などを四診の補足に記録�
 assert.equal(equivalent.detailsCalls(), 1, 'Supplementary recording uses its dedicated callback');
 assert.equal(equivalent.focusChanges.length, 0);
 equivalent.unchanged(); shared.unchanged();
+
+const sharedLive = harness(['spleen-qi', 'lung-qi'], { fatigue: 'present' }, { tongueColor: '淡白', pulseStrength: '弱い・無力' }, null, true);
+sharedLive.sharedReview('疲労・気力低下');
+const sharedButton = nodes(sharedLive.sharedFinding('疲労・気力低下')).find(node => node.type === 'button');
+assert.equal(sharedButton.props['aria-expanded'], true);
+assert.equal(sharedButton.props['aria-controls'], sharedLive.sharedEditor('疲労・気力低下').props.id);
+sharedLive.sharedChange('疲労・気力低下', '疲労・気力低下', 'absent');
+assert.equal(sharedLive.observations().fatigue, 'absent');
+assert.equal(sharedLive.sharedFinding('疲労・気力低下').props['data-status'], 'absent');
+assert(text(sharedLive.sharedFinding('疲労・気力低下')).includes('確認してなし'));
+sharedLive.sharedChange('疲労・気力低下', '疲労・気力低下', 'unknown');
+assert.equal(sharedLive.sharedFinding('疲労・気力低下').props['data-status'], 'unknown');
+assert(nodes(sharedLive.sharedEditor('疲労・気力低下')).some(node => node.type === 'select' && node.props.value === 'unknown'), 'Shared editors stay mounted when their positive evidence is removed');
+sharedLive.sharedChange('疲労・気力低下', '疲労・気力低下', 'present');
+assert.equal(sharedLive.sharedFinding('疲労・気力低下').props['data-status'], 'present');
+sharedLive.sharedReview('淡白舌');
+assert(!nodes(sharedLive.sharedFinding('疲労・気力低下')).some(node => node.type === 'select'));
+sharedLive.sharedChange('淡白舌', '舌体の色', '紅');
+assert.equal(sharedLive.sharedFinding('淡白舌').props['data-status'], 'absent');
+assert.deepEqual(relations(sharedLive, '紅舌'), ['合いにくい', '照合設定なし'], 'Changing a common input immediately recomputes distinguishing findings too');
+sharedLive.sharedChange('淡白舌', '舌体の色', '');
+assert.equal(sharedLive.sharedFinding('淡白舌').props['data-status'], 'unknown');
+assert(nodes(sharedLive.sharedEditor('淡白舌')).some(node => node.type === 'select' && node.props.value === ''));
+sharedLive.sharedChange('淡白舌', '舌体の色', '淡白');
+sharedLive.sharedReview('淡白舌');
+sharedLive.sharedReview('淡白舌');
+assert(nodes(sharedLive.sharedEditor('淡白舌')).some(node => node.type === 'select' && node.props.value === '淡白'), 'Shared recording can be closed and reopened without changing the value');
+sharedLive.sharedReview('弱い脈');
+sharedLive.sharedChange('弱い脈', '脈の強さ', '強い・有力');
+assert.equal(sharedLive.observations().weakPulse, 'absent');
+assert.equal(sharedLive.sharedFinding('弱い脈').props['data-status'], 'absent');
+sharedLive.render(['spleen-qi', 'stasis']);
+assert(!nodes(sharedLive.tree()).some(node => node.props?.className === 'clinical-differential-editor' && !node.props.hidden), 'A changed focus scope cannot retain an unrelated shared editor');
+assert.equal(sharedLive.checks.length, 0); assert.equal(sharedLive.focusChanges.length, 0); sharedLive.unchanged();
+
+const sharedCoat = harness(['yin', 'heart-yin'], {}, { coatThickness: '少ない', coatMoisture: '乾燥している' }, null, true);
+sharedCoat.sharedReview('舌苔の乾燥');
+sharedCoat.sharedChange('舌苔の乾燥', '舌苔の乾湿', '苔を認めない');
+assert.equal(sharedCoat.sharedFinding('舌苔の乾燥').props['data-status'], 'unknown', 'A missing coat does not become a confirmed dry coat');
+for (const key of ['coatColor', 'coatThickness', 'coatTexture', 'coatMoisture']) assert.equal(sharedCoat.examination()[key], '苔を認めない');
+assert(nodes(sharedCoat.sharedEditor('舌苔の乾燥')).some(node => node.type === 'select' && node.props.value === '苔を認めない'));
+sharedCoat.sharedChange('舌苔の乾燥', '舌苔の乾湿', '潤っている');
+assert.equal(sharedCoat.sharedFinding('舌苔の乾燥').props['data-status'], 'absent');
+assert.equal(sharedCoat.examination().coatThickness, '');
+assert.equal(sharedCoat.checks.length, 0); sharedCoat.unchanged();
 
 console.log('Clinical candidate differential UI: controlled focus, inline original-field callbacks, live differences, retained answers and stable overflow, coating reconciliation, compound pain, scoped retention, identical-model limits and immutable clinical inputs passed.');

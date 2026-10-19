@@ -527,6 +527,34 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.deepEqual(plain(client.encounter().candidateIds), stored.candidateIds);
     assert.equal(client.field('今回検討する治法').props.value, stored.principle);
   });
+  await check('shared finding edits update support groups, actual common status and candidate differences in the same saved comparison', () => {
+    const initial = sampleEncounter({ step: 2, candidateIds: ['spleen-qi', 'lung-qi'], observations: { fatigue: 'present' }, examination: { tongueColor: '淡白' } });
+    const client = harness({ initialEncounter: initial });
+    const option = id => client.candidatePicker().props.patterns.find(pattern => pattern.id === id);
+    const result = () => load('src/utils/clinicalCandidateDifferential').clinicalCandidateDifferential(client.candidateDifferential().props.patterns, client.candidateDifferential().props.observations, client.candidateDifferential().props.examination);
+    assert(result().shared.some(finding => finding.id === 'paleTongue'));
+    for (const id of initial.candidateIds) assert.deepEqual(plain(option(id).supportGroups), ['問診', '望診']);
+    client.candidateDifferential().props.onExaminationChange('tongueColor', '紅');
+    assert.equal(client.encounter().examination.tongueColor, '紅', 'The edit is physically saved in the input event');
+    client.render();
+    assert.equal(result().sharedFindings.find(finding => finding.id === 'paleTongue').status, 'absent');
+    assert(!result().shared.some(finding => finding.id === 'paleTongue'));
+    assert(result().differences.some(finding => finding.id === 'redTongue' && finding.status === 'present'));
+    for (const id of initial.candidateIds) assert.deepEqual(plain(option(id).supportGroups), ['問診']);
+    client.candidateDifferential().props.onObservationChange('fatigue', 'absent'); client.render();
+    for (const id of initial.candidateIds) assert.equal(option(id).supportCount, 0);
+    client.candidateDifferential().props.onObservationChange('fatigue', 'unknown'); client.render();
+    assert.equal(result().sharedFindings.find(finding => finding.id === 'fatigue').status, 'unknown');
+    assert.equal(client.encounter().step, 2);
+    assert.equal(client.focused.length, 0);
+    assert.deepEqual(plain(client.encounter().candidateIds), initial.candidateIds);
+    assert.equal(client.encounter().principle, initial.principle);
+    assert.deepEqual(plain(client.encounter().points), initial.points);
+    const restored = harness({ initialEncounter: client.encounter() });
+    assert.equal(restored.candidateDifferential().props.observations.fatigue, 'unknown');
+    assert.equal(restored.candidateDifferential().props.examination.tongueColor, '紅');
+    assert.equal(restored.encounter().step, 2);
+  });
   await check('reviewing either part of a legacy fixed-pain finding retains the other displayed part', () => {
     for (const [id, value, retainedId, retainedValue] of [
       ['painLocation', '移動する', 'painQuality', '刺すような痛み'],

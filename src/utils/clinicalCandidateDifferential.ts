@@ -12,6 +12,7 @@ export interface DifferentialFinding {
 
 export interface ClinicalCandidateDifferential {
   shared: DifferentialFinding[];
+  sharedFindings: DifferentialFinding[];
   differences: DifferentialFinding[];
   nextChecks: { key: string; label: string; group: string; findings: DifferentialFinding[] }[];
   equivalentPairs: { ids: string[]; names: string[] }[];
@@ -29,7 +30,7 @@ export function clinicalCandidateDifferential(
   examination: ClinicalExamination = {},
 ): ClinicalCandidateDifferential {
   const focused = patterns.filter((pattern, index) => patterns.findIndex(item => item.id === pattern.id) === index);
-  const result: ClinicalCandidateDifferential = { shared: [], differences: [], nextChecks: [], equivalentPairs: [] };
+  const result: ClinicalCandidateDifferential = { shared: [], sharedFindings: [], differences: [], nextChecks: [], equivalentPairs: [] };
   if (focused.length < 2) return result;
 
   const resolved = resolvedExaminationObservations(observations, examination);
@@ -64,7 +65,11 @@ export function clinicalCandidateDifferential(
     .filter(({ finding }) => finding.relations.some(item => item.relation !== 'unmapped'));
 
   for (const { key, finding } of relevant) {
-    if (finding.status === 'present' && finding.relations.every(item => item.relation === 'support')) result.shared.push(finding);
+    if (finding.relations.every(item => item.relation === 'support')) {
+      // Preserve the current state for an open shared-finding editor without counting absent/unknown as support.
+      result.sharedFindings.push(finding);
+      if (finding.status === 'present') result.shared.push(finding);
+    }
     if (finding.relations.every(item => item.relation === finding.relations[0].relation)) continue;
     if (finding.status !== 'unknown') { result.differences.push(finding); continue; }
     let check = result.nextChecks.find(item => item.key === key);

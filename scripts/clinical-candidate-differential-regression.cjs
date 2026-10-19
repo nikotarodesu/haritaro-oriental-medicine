@@ -9,7 +9,7 @@ const patterns = ids => ids.map(id => CLINICAL_PATTERNS.find(pattern => pattern.
 const compare = (ids, observations = {}, examination = {}) => clinicalCandidateDifferential(patterns(ids), observations, examination);
 const flattenedChecks = result => result.nextChecks.flatMap(check => check.findings);
 const relation = (finding, id) => finding.relations.find(item => item.patternId === id)?.relation;
-const empty = { shared: [], differences: [], nextChecks: [], equivalentPairs: [] };
+const empty = { shared: [], sharedFindings: [], differences: [], nextChecks: [], equivalentPairs: [] };
 
 assert.deepEqual(plain(compare([])), empty);
 assert.deepEqual(plain(compare(['qi'], { fatigue: 'present' })), empty);
@@ -24,6 +24,9 @@ assert.equal(relation(cold, 'spleen-yang'), 'support');
 assert(!result.shared.some(finding => finding.id === 'cold'));
 result = compare(['spleen-qi', 'spleen-yang'], { fatigue: 'absent', cold: 'absent' });
 assert(!result.shared.length, 'Confirmed absence cannot become a shared supporting finding');
+assert.equal(result.sharedFindings.find(finding => finding.id === 'fatigue')?.status, 'absent', 'Retained shared editors read actual absence without treating it as positive support');
+assert(result.sharedFindings.every(finding => finding.relations.every(item => item.relation === 'support')));
+assert.equal(compare(['spleen-qi', 'spleen-yang']).sharedFindings.find(finding => finding.id === 'fatigue')?.status, 'unknown');
 cold = result.differences.find(finding => finding.id === 'cold');
 assert(cold && cold.status === 'absent' && relation(cold, 'spleen-yang') === 'support', 'Observation state stays separate from catalogue relation');
 assert(!flattenedChecks(result).some(finding => finding.id === 'cold'), 'Known absence is not another unanswered question');
