@@ -9,6 +9,7 @@ const { createDataLoader } = require('./data-loader.cjs');
 
 const load = createDataLoader();
 const { CLINICAL_PATTERNS } = load('src/data/clinicalWorkflow');
+const { updateExaminationValue, resolvedExaminationObservations } = load('src/data/clinicalExamination');
 const plain = value => JSON.parse(JSON.stringify(value));
 function freeze(value) {
   if (value && typeof value === 'object') { Object.values(value).forEach(freeze); Object.freeze(value); }
@@ -18,6 +19,11 @@ const patternList = ids => freeze(ids.map(id => plain(CLINICAL_PATTERNS.find(pat
 const filename = path.resolve(__dirname, '../src/components/clinical/ClinicalCandidateDifferential.tsx');
 const output = ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
   fileName: filename,
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true },
+}).outputText;
+const inputFilename = path.resolve(__dirname, '../src/components/clinical/ClinicalFindingInput.tsx');
+const inputOutput = ts.transpileModule(fs.readFileSync(inputFilename, 'utf8'), {
+  fileName: inputFilename,
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true },
 }).outputText;
 
@@ -50,24 +56,34 @@ function text(node) {
   if (typeof node === 'string' || typeof node === 'number') return String(node);
   return node && typeof node === 'object' ? text(node.props?.children) : '';
 }
-function harness(ids, observations = {}, examination = {}, focusIds = null) {
-  const host = hookHost(), exported = {}, checks = [], focusChanges = [];
+function harness(ids, observations = {}, examination = {}, focusIds = null, applyInline = false) {
+  const host = hookHost(), exported = {}, inputExports = {}, checks = [], focusChanges = [], observationChanges = [], examinationChanges = [];
   let detailsCalls = 0, tree;
   const inputs = freeze({ candidateIds: [...ids], principle: '  手入力の治法を保持\n追加確認を優先する。  ', points: [{ code: 'LI4', reason: '架空の比較理由' }],
     patterns: patternList(ids), observations: plain(observations), examination: plain(examination) });
   const before = JSON.stringify(inputs);
   let controlledFocus = focusIds;
-  vm.runInNewContext(output, { exports: exported, require: id => id === 'react' ? host.hooks : id.startsWith('@/') ? load('src/' + id.slice(2)) : require(id) }, { filename });
+  let currentObservations = inputs.observations, currentExamination = inputs.examination;
+  const localRequire = id => id === 'react' ? host.hooks : id === './ClinicalFindingInput' ? inputExports : id.startsWith('@/') ? load('src/' + id.slice(2)) : require(id);
+  vm.runInNewContext(inputOutput, { exports: inputExports, require: localRequire }, { filename: inputFilename });
+  vm.runInNewContext(output, { exports: exported, require: localRequire }, { filename });
   const api = {
     render(nextFocus = controlledFocus) { controlledFocus = nextFocus; tree = resolve(host.render(exported.default, {
-      patterns: inputs.patterns, observations: inputs.observations, examination: inputs.examination, focusIds: controlledFocus,
+      patterns: inputs.patterns, observations: currentObservations, examination: currentExamination, focusIds: controlledFocus,
       onFocusChange: next => focusChanges.push(plain(next)), onCheck: id => checks.push(id), onRecordDetails: () => { detailsCalls++; },
+      onObservationChange: (id, status) => { observationChanges.push([id, status]); if (applyInline) currentObservations = freeze({ ...currentObservations, [id]: status }); },
+      onExaminationChange: (id, value) => { examinationChanges.push([id, value]); if (applyInline) { currentExamination = freeze(plain(updateExaminationValue(currentExamination, id, value))); currentObservations = freeze(plain(resolvedExaminationObservations(currentObservations, currentExamination))); } },
     })); return tree; },
-    tree: () => tree, checks, focusChanges,
+    tree: () => tree, checks, focusChanges, observationChanges, examinationChanges,
+    observations: () => currentObservations, examination: () => currentExamination,
     detailsCalls: () => detailsCalls,
     boxes: () => nodes(tree).filter(node => node.type === 'input' && node.props.type === 'checkbox'),
     checkedNames: () => api.boxes().filter(node => node.props.checked).map(box => text(nodes(tree).find(node => node.type === 'label' && nodes(node).includes(box)))),
     button(label) { const button = nodes(tree).find(node => node.type === 'button' && text(node) === label); assert(button, 'Button: ' + label); return button; },
+    select(label) { const input = nodes(tree).find(node => node.type === 'select' && node.props['aria-label'] === label); assert(input, 'Inline select: ' + label); return input; },
+    change(label, value) { api.select(label).props.onChange({ target: { value } }); api.render(); },
+    questionKeys: () => nodes(tree).filter(node => node.props?.className === 'clinical-differential-question').map(node => String(node.key)),
+    questionPlacement(key) { const row = nodes(tree).find(node => node.props?.className === 'clinical-differential-question' && String(node.key) === key); assert(row, 'Retained question: ' + key); return nodes(tree).some(node => node.type === 'details' && nodes(node).includes(row)) ? 'more' : 'primary'; },
     finding(label) { const row = nodes(tree).find(node => node.type === 'li' && nodes(node).some(child => child.type === 'strong' && text(child) === label)); assert(row, 'Finding: ' + label); return row; },
     unchanged() { assert.equal(JSON.stringify(inputs), before, 'Comparison controls cannot mutate candidate IDs, findings, treatment or points'); },
   };
@@ -118,19 +134,75 @@ assert.equal(compared.checks.at(-1), 'redTongue', 'Review buttons pass the exact
 compared.unchanged();
 
 const questions = harness(['spleen-qi', 'liver-heat', 'stasis']);
-questions.button('舌体の色を確認する →').props.onClick();
-assert.equal(questions.checks.at(-1), 'paleTongue', 'A grouped tongue question navigates using its first real mapped finding');
-questions.button('脈の強さを確認する →').props.onClick();
-assert.equal(questions.checks.at(-1), 'weakPulse');
-questions.button('脈の速さを確認する →').props.onClick();
-assert.equal(questions.checks.at(-1), 'rapidPulse');
+questions.change('舌体の色', '紅');
+assert.deepEqual(questions.examinationChanges.at(-1), ['tongueColor', '紅'], 'A grouped tongue question edits its actual field directly');
+questions.change('脈の強さ', '弱い・無力');
+assert.deepEqual(questions.examinationChanges.at(-1), ['pulseStrength', '弱い・無力']);
+questions.change('脈の速さ', '速い（数）');
+assert.deepEqual(questions.examinationChanges.at(-1), ['pulseSpeed', '速い（数）']);
+questions.change('疲労・気力低下', 'present');
+assert.deepEqual(questions.observationChanges.at(-1), ['fatigue', 'present']);
+assert.equal(questions.checks.length, 0, 'Inline answers never invoke navigation back to the four-examination screen');
 assert.deepEqual(relations(questions, '舌体の色'), ['ありなら支持', 'ありなら合いにくい', '照合設定なし', 'ありなら合いにくい', 'ありなら支持', '照合設定なし', '照合設定なし', '照合設定なし', 'ありなら支持'],
   'Grouped unknown findings preserve support, conflict and unmapped relations without inventing absence');
 questions.unchanged();
 const cough = harness(['qi-counterflow', 'liver-qi']);
-cough.button('咳・痰を確認する →').props.onClick();
-assert.equal(cough.checks.at(-1), 'exam:cough', 'Detailed-only questions retain their structured finding IDs');
+cough.change('咳・痰', '乾いた咳');
+assert.deepEqual(cough.examinationChanges.at(-1), ['cough', '乾いた咳'], 'Detailed-only questions edit the original structured field');
 cough.unchanged();
+
+const live = harness(['spleen-qi', 'liver-heat', 'stasis', 'damp'], {}, {}, null, true);
+const initialQuestionKeys = live.questionKeys();
+const initialPlacement = Object.fromEntries(initialQuestionKeys.map(key => [key, live.questionPlacement(key)]));
+live.change('疲労・気力低下', 'present');
+assert.deepEqual(live.questionKeys(), initialQuestionKeys, 'Answered questions stay mounted and in their original order');
+assert.equal(live.select('疲労・気力低下').props.value, 'present');
+assert(text(live.finding('疲労・気力低下')).includes('支持する'), 'Inline answers immediately update the displayed differences');
+live.change('舌体の色', '紅');
+assert.equal(live.select('舌体の色').props.value, '紅');
+assert.deepEqual(relations(live, '紅舌'), ['合いにくい', '支持する', '照合設定なし', '照合設定なし']);
+assert(text(live.tree()).includes('この画面で確認済み'));
+live.change('舌体の色', '');
+assert.equal(live.select('舌体の色').props.value, '', 'An answered field remains editable after resetting to unconfirmed');
+assert.deepEqual(live.questionKeys(), initialQuestionKeys);
+for (const [key, placement] of Object.entries(initialPlacement)) assert.equal(live.questionPlacement(key), placement, key + ': editing never reparents a control across the first-six boundary');
+live.change('痛みの性質（主なもの）', '刺すような痛み');
+assert.equal(live.observations().fixedPain, 'unknown', 'The first part of compound pain remains unconfirmed');
+assert.equal(live.select('痛む場所の変化').props.value, '');
+live.change('痛む場所の変化', '固定している');
+assert.equal(live.observations().fixedPain, 'present');
+assert(text(live.finding('固定した刺すような痛み')).includes('支持する'));
+live.change('痛む場所の変化', '');
+assert.equal(live.observations().fixedPain, 'unknown');
+live.change('舌体の色', '紅');
+live.render(['stasis', 'damp']);
+assert(!live.questionKeys().includes('tongueColor'), 'Answered retained inputs from an earlier focus scope do not leak into a changed comparison');
+assert.equal(live.focusChanges.length, 0, 'Answering fields never changes focused or selected candidates');
+assert.equal(live.checks.length, 0);
+live.unchanged();
+
+const inconsistentCoat = harness(['yin', 'damp'], {}, { coatColor: '苔を認めない', coatThickness: '厚い', coatTexture: '膩苔（きめ細かく粘る）' });
+assert(nodes(inconsistentCoat.tree()).some(node => node.props?.role === 'alert' && text(node).includes('再確認するまで苔の詳細は比較根拠に使いません')), 'Old contradictory coating values explain why their comparison evidence is withheld');
+inconsistentCoat.unchanged();
+const coat = harness(['yin', 'damp', 'stasis'], { nightSweat: 'absent', heavy: 'absent' }, {
+  tongueColor: '淡紅', tongueSpots: 'なし', tongueMoisture: '潤っている', cough: '咳・痰を認めない',
+  pulseWidth: '中等度', pulseFlow: '滑らか（滑）', edema: '認めない',
+}, null, true);
+assert.equal(coat.questionPlacement('coatThickness'), 'primary');
+assert.equal(coat.questionPlacement('coatTexture'), 'more');
+const coatQuestionKeys = coat.questionKeys();
+coat.change('舌苔の厚さ', '苔を認めない');
+for (const key of ['coatColor', 'coatThickness', 'coatTexture', 'coatMoisture']) assert.equal(coat.examination()[key], '苔を認めない');
+assert.equal(coat.select('舌苔の性状').props.value, '苔を認めない');
+assert.equal(coat.questionPlacement('coatThickness'), 'primary');
+assert.equal(coat.questionPlacement('coatTexture'), 'more', 'Synchronized coating values cannot move an active overflow editor into the primary list');
+assert.deepEqual(coat.questionKeys(), coatQuestionKeys);
+coat.change('舌苔の性状', '膩苔（きめ細かく粘る）');
+assert.equal(coat.examination().coatThickness, '');
+assert.equal(coat.select('舌苔の厚さ').props.value, '', 'Choosing visible coating again restores linked fields to unconfirmed');
+assert.equal(coat.questionPlacement('coatTexture'), 'more');
+assert.deepEqual(coat.questionKeys(), coatQuestionKeys, 'Reopened linked coating checks keep the same keys and order');
+coat.unchanged();
 
 const shared = harness(['spleen-qi', 'spleen-yang'], { fatigue: 'present' });
 const sharedList = nodes(shared.tree()).find(node => node.props?.className === 'clinical-differential-shared');
@@ -147,4 +219,4 @@ assert.equal(equivalent.detailsCalls(), 1, 'Supplementary recording uses its ded
 assert.equal(equivalent.focusChanges.length, 0);
 equivalent.unchanged(); shared.unchanged();
 
-console.log('Clinical candidate differential UI: controlled four-target focus, empty states, present/absent/conflict/unmapped relations, grouped next-check callbacks, identical-model limits, additional recording and immutable clinical inputs passed.');
+console.log('Clinical candidate differential UI: controlled focus, inline original-field callbacks, live differences, retained answers and stable overflow, coating reconciliation, compound pain, scoped retention, identical-model limits and immutable clinical inputs passed.');

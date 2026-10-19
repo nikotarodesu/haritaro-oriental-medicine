@@ -274,7 +274,7 @@ export default function ClinicalWorkspace() {
           {encounter.candidateIds.length > 0 && <p className="clinical-candidate-intro">候補名を押すと所見と追加確認を開けます。複数の候補を同時に開いて比較できます。</p>}
           {encounter.candidateIds.length === 0 && <p className="clinical-candidate-empty">候補を選ぶと、支持する所見・合いにくい所見・未確認の所見を並べて確認できます。</p>}
           {encounter.safety !== 'reviewed' && <p className="clinical-candidate-safety">安全確認が未完了、または医療評価を優先する状態です。配穴の検討は保留します。</p>}
-          <ClinicalCandidateDifferential patterns={selectedComparisons.map(result => result.pattern)} observations={encounter.observations} examination={encounter.examination} focusIds={comparisonFocus} onFocusChange={setComparisonFocus} onCheck={revisitSign} onRecordDetails={revisitExaminationDetails} />
+          <ClinicalCandidateDifferential patterns={selectedComparisons.map(result => result.pattern)} observations={encounter.observations} examination={encounter.examination} focusIds={comparisonFocus} onFocusChange={setComparisonFocus} onCheck={revisitSign} onRecordDetails={revisitExaminationDetails} onObservationChange={(id, status) => update({ observations: { ...encounter.observations, [id]: status } })} onExaminationChange={updateExamination} />
           <div className="clinical-comparison-board">
             {selectedComparisons.map((result, index) => <article key={result.pattern.id} className="clinical-comparison-row" data-selected="true">
               <details className="clinical-comparison-disclosure" open={index === 0 ? true : undefined}>

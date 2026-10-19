@@ -1,9 +1,11 @@
 'use client';
 
-import type { ClinicalObservations, ClinicalPattern } from '@/data/clinicalWorkflow';
-import type { ClinicalExamination } from '@/data/clinicalExamination';
+import { useState } from 'react';
+import type { ClinicalObservations, ClinicalPattern, ClinicalSignId, ObservationStatus } from '@/data/clinicalWorkflow';
+import { examinationIssues, type ClinicalExamination } from '@/data/clinicalExamination';
 import type { ComparisonFindingId } from '@/data/clinicalExaminationComparison';
 import { clinicalCandidateDifferential, type ClinicalCandidateDifferential as DifferentialResult, type DifferentialFinding } from '@/utils/clinicalCandidateDifferential';
+import ClinicalFindingInput from './ClinicalFindingInput';
 
 interface Props {
   patterns: readonly ClinicalPattern[];
@@ -13,6 +15,8 @@ interface Props {
   onFocusChange: (ids: string[]) => void;
   onCheck: (id: ComparisonFindingId) => void;
   onRecordDetails: () => void;
+  onObservationChange: (id: ClinicalSignId, status: ObservationStatus) => void;
+  onExaminationChange: (id: string, value: string) => void;
 }
 
 function FindingRelations({ finding, patterns }: { finding: DifferentialFinding; patterns: readonly ClinicalPattern[] }) {
@@ -33,16 +37,35 @@ function DifferenceRows({ findings, patterns, onCheck }: { findings: readonly Di
   </li>);
 }
 
-function NextCheckRows({ checks, patterns, onCheck }: { checks: DifferentialResult['nextChecks']; patterns: readonly ClinicalPattern[]; onCheck: Props['onCheck'] }) {
+type InlineInputProps = Pick<Props, 'observations' | 'examination' | 'onObservationChange' | 'onExaminationChange'>;
+function NextCheckRows({ checks, patterns, onEdit, ...inputProps }: InlineInputProps & { checks: DifferentialResult['nextChecks']; patterns: readonly ClinicalPattern[]; onEdit: () => void }) {
   return checks.map(check => <li className="clinical-differential-question" key={check.key}>
-    <div className="clinical-differential-finding-heading"><p><span>{check.group}</span><strong>{check.label}</strong></p><button type="button" onClick={() => onCheck(check.findings[0].id)}>{check.label}を確認する →</button></div>
-    {check.findings.map(finding => <div className="clinical-differential-question-finding" key={finding.id}><p>{finding.label}を認めるか</p><FindingRelations finding={finding} patterns={patterns} /></div>)}
+    <div className="clinical-differential-finding-heading"><p><span>{check.group}</span><strong>{check.label}</strong></p><span className="clinical-inline-finding-status">{check.findings.some(finding => finding.status === 'unknown') ? '要確認' : '入力済み'}</span></div>
+    <ClinicalFindingInput findingIds={check.findings.map(finding => finding.id)} {...inputProps} onObservationChange={(id, status) => { onEdit(); inputProps.onObservationChange(id, status); }} onExaminationChange={(id, value) => { onEdit(); inputProps.onExaminationChange(id, value); }} />
+    {check.findings.map(finding => <div className="clinical-differential-question-finding" key={finding.id}><p>{finding.label}<span className="clinical-inline-finding-observed">{finding.status === 'present' ? 'あり' : finding.status === 'absent' ? '確認してなし' : '未確認・判断困難等'}</span></p><FindingRelations finding={finding} patterns={patterns} /></div>)}
   </li>);
 }
 
-export default function ClinicalCandidateDifferential({ patterns, observations, examination, focusIds, onFocusChange, onCheck, onRecordDetails }: Props) {
+export default function ClinicalCandidateDifferential({ patterns, observations, examination, focusIds, onFocusChange, onCheck, onRecordDetails, onObservationChange, onExaminationChange }: Props) {
+  const [inputSession, setInputSession] = useState<{ scope: string; retained: string[]; primary: string[] } | null>(null);
   const focused = patterns.filter(pattern => (focusIds || patterns.slice(0, 4).map(item => item.id)).includes(pattern.id)).slice(0, 4);
   const result = clinicalCandidateDifferential(focused, observations, examination);
+  const scope = focused.map(pattern => pattern.id).join('|');
+  const session = inputSession?.scope === scope ? inputSession : null;
+  const pendingKeys = result.nextChecks.map(check => check.key);
+  const currentFindings = new Map([...result.differences, ...result.nextChecks.flatMap(check => check.findings)].map(finding => [finding.id, finding]));
+  const inlineChecks = clinicalCandidateDifferential(focused, {}, {}).nextChecks
+    .filter(check => pendingKeys.includes(check.key) || session?.retained.includes(check.key))
+    .map(check => ({ ...check, findings: check.findings.map(finding => currentFindings.get(finding.id) || finding) }));
+  const primaryKeys = session?.primary || inlineChecks.slice(0, 6).map(check => check.key);
+  const primaryChecks = inlineChecks.filter(check => primaryKeys.includes(check.key));
+  const moreChecks = inlineChecks.filter(check => !primaryKeys.includes(check.key));
+  const rememberInputs = () => {
+    // Keep the form and its first-six boundary mounted while a selection changes other findings.
+    setInputSession({ scope, retained: [...new Set([...(session?.retained || []), ...inlineChecks.map(check => check.key)])], primary: primaryKeys });
+  };
+  const inputProps = { observations, examination, onObservationChange, onExaminationChange, onEdit: rememberInputs };
+  const confirmedInline = inlineChecks.filter(check => check.findings.every(finding => finding.status !== 'unknown')).length;
   const toggleFocus = (id: string, checked: boolean) => {
     const ids = focused.map(pattern => pattern.id);
     if (checked && ids.length < 4) onFocusChange([...ids, id]);
@@ -60,8 +83,9 @@ export default function ClinicalCandidateDifferential({ patterns, observations, 
       <div className="clinical-differential-section"><h5>入力済み所見で比べる違い <span>{result.differences.length}所見</span></h5><p className="clinical-differential-help">同じ所見に対する候補ごとの関連づけです。「確認してなし」も表示します。</p>
         {result.differences.length > 0 ? <><ul className="clinical-differential-list"><DifferenceRows findings={result.differences.slice(0, 6)} patterns={focused} onCheck={onCheck} /></ul>{result.differences.length > 6 && <details className="clinical-differential-more"><summary>ほかの違いを見る（{result.differences.length - 6}所見）</summary><ul className="clinical-differential-list"><DifferenceRows findings={result.differences.slice(6)} patterns={focused} onCheck={onCheck} /></ul></details>}</> : <p className="clinical-differential-help">現在の入力済み所見では違いが出ていません。</p>}
       </div>
-      <div className="clinical-differential-section"><h5>さらに見分けるために確認する四診 <span>{result.nextChecks.length}項目</span></h5><p className="clinical-differential-help">候補によって関連づけが異なる、未確認・判断困難の項目です。確認順は診断の優先度を示しません。</p>
-        {result.nextChecks.length > 0 ? <><ul className="clinical-differential-list"><NextCheckRows checks={result.nextChecks.slice(0, 6)} patterns={focused} onCheck={onCheck} /></ul>{result.nextChecks.length > 6 && <details className="clinical-differential-more"><summary>ほかの追加確認を見る（{result.nextChecks.length - 6}項目）</summary><ul className="clinical-differential-list"><NextCheckRows checks={result.nextChecks.slice(6)} patterns={focused} onCheck={onCheck} /></ul></details>}</> : <p className="clinical-differential-help">現在の照合項目には、違いを見るための未確認項目が残っていません。部位・経過など、下の追加確認も使って検討してください。</p>}
+      <div className="clinical-differential-section" aria-labelledby="clinical-inline-checks-heading"><h5 id="clinical-inline-checks-heading">さらに見分けるために確認する四診 <span>未確認等 {result.nextChecks.length}項目{confirmedInline > 0 ? ` · この画面で確認済み ${confirmedInline}項目` : ''}</span></h5><p className="clinical-differential-help">ここで入力すると四診の下書きに保存され、上の候補一覧・絞り込み・違いにすぐ反映されます。入力した欄はそのまま修正できます。確認順は診断の優先度を示しません。</p>
+        {examinationIssues(examination).map(issue => <p role="alert" className="clinical-candidate-safety" key={issue}>{issue}</p>)}
+        {inlineChecks.length > 0 ? <><ul className="clinical-differential-list"><NextCheckRows checks={primaryChecks} patterns={focused} {...inputProps} /></ul>{moreChecks.length > 0 && <details className="clinical-differential-more"><summary>ほかの追加確認を見る（{moreChecks.length}項目）</summary><ul className="clinical-differential-list"><NextCheckRows checks={moreChecks} patterns={focused} {...inputProps} /></ul></details>}</> : <p className="clinical-differential-help">現在の照合項目には、違いを見るための未確認項目が残っていません。部位・経過など、下の追加確認も使って検討してください。</p>}
       </div>
       <details className="clinical-differential-more clinical-differential-context" open={result.equivalentPairs.length > 0 ? true : undefined}><summary>候補ごとの見分け方・追加確認</summary><div>{focused.map(pattern => <article key={pattern.id}><h5>{pattern.name}</h5><p>{pattern.distinguish}</p>{pattern.additionalChecks?.length ? <ul>{pattern.additionalChecks.map(item => <li key={item}>{item}</li>)}</ul> : null}</article>)}<button type="button" onClick={onRecordDetails}>確認した部位・経過などを四診の補足に記録する →</button></div></details>
     </>}

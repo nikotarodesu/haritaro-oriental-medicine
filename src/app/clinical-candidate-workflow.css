@@ -73,5 +73,13 @@
 .clinical-differential-context article { padding-block: 12px; font-size: .875rem; line-height: 1.85; }
 .clinical-differential-context article > p { margin-top: 6px; color: var(--text-secondary); }
 .clinical-differential-context article ul { margin-top: 6px; padding-left: 1.25rem; list-style: disc; }
+.clinical-inline-finding-fields { display: grid; gap: 12px; margin-block: 10px; }
+.clinical-inline-finding-field { display: block; min-width: 0; font-size: .875rem; }
+.clinical-inline-finding-field > label { display: block; margin-bottom: 6px; font-weight: 600; }
+.clinical-inline-finding-field select { display: block; width: 100%; min-width: 0; min-height: 44px; border: 1px solid var(--clinical-line); border-radius: 8px; padding: 10px; background: var(--bg-card); color: var(--text-sumi); font-size: 1rem; }
+.clinical-inline-finding-field select:focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 3px; }
+.clinical-inline-finding-field > p { margin-top: 6px; color: var(--text-secondary); font-size: .8125rem; line-height: 1.8; }
+.clinical-inline-finding-status { color: var(--text-secondary); font-size: .75rem; }
+.clinical-inline-finding-observed { display: inline-block; margin-left: 10px; color: var(--text-secondary); font-size: .8125rem; }
 @media (min-width: 640px) { .clinical-differential-relations { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 380px) { .clinical-differential { padding: 12px; } }
