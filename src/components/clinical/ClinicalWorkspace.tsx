@@ -13,6 +13,7 @@ import ClinicalCandidatePicker from './ClinicalCandidatePicker';
 import { appendClinicalPrinciple, hasClinicalPrinciple } from '@/utils/clinicalTreatment';
 import { EXAMINATION_GROUPS, EXAMINATION_FIELDS, EXAMINATION_TEXT_FIELDS, examinationValue, examinationSummary, examinationIssues, resolvedExaminationObservations, updateExaminationValue } from '@/data/clinicalExamination';
 import { EXAMINATION_ASSOCIATIONS, examinationFinding, comparisonContext, type ComparisonFindingId } from '@/data/clinicalExaminationComparison';
+import { clinicalCandidateEvidence } from '@/utils/clinicalCandidateNarrowing';
 
 type PrincipleChange = { owner: string; before: string; after: string; term: string; undone?: boolean };
 
@@ -86,6 +87,7 @@ export default function ClinicalWorkspace() {
   const comparisons = useMemo(() => CLINICAL_PATTERNS.map(pattern => ({ pattern, ...compareClinicalPattern(pattern, encounter.observations, encounter.examination || {}) })), [encounter.observations, encounter.examination]);
   const candidateOptions = CLINICAL_PATTERN_CATEGORIES.flatMap(category => comparisons.filter(result => result.pattern.category === category)).map(({ pattern, supported, missing, unknown, conflicting }) => ({
     id: pattern.id, name: pattern.name, category: pattern.category, summary: pattern.summary, aliases: pattern.aliases,
+    ...clinicalCandidateEvidence({ supported, missing, unknown, conflicting }),
     ...(supported.length + missing.length + unknown.length ? { supportCount: supported.length, unknownCount: unknown.length } : {}),
     ...(pattern.conflicts.length || EXAMINATION_ASSOCIATIONS[pattern.id]?.conflicts?.length ? { conflictCount: conflicting.length } : {}),
   }));
@@ -248,7 +250,7 @@ export default function ClinicalWorkspace() {
         <details className="clinical-comparison-inputs"><summary>今回の四診入力・比較に反映する内容を確認</summary><p className="whitespace-pre-wrap">{examinationSummary(encounter.examination, observations) || '詳細所見は未確認です。'}</p><p>関連づけを設定した所見は支持・合いにくい所見に反映し、ほかの入力は各候補の追加評価欄に表示します。未確認・判断困難・自由記述から支持を推測しません。</p></details>
         <section className="clinical-candidate-stage" aria-labelledby="clinical-catalog-heading">
           <div className="clinical-candidate-section-heading"><h3 id="clinical-catalog-heading">1. 候補を選ぶ</h3><span>{CLINICAL_PATTERNS.length}候補</span></div>
-          <ClinicalCandidatePicker patterns={candidateOptions} selectedIds={encounter.candidateIds} onChange={candidateIds => update({ candidateIds })} />
+          <ClinicalCandidatePicker patterns={candidateOptions} selectedIds={encounter.candidateIds} onChange={candidateIds => update({ candidateIds })} evidenceFiltering evidenceBlockedReason={encounter.safety === 'reviewed' ? undefined : encounter.safety === 'refer' ? '医療評価を優先する記録です。所見による絞り込みは保留し、安全確認と受診状況を先に確認してください。' : '所見による絞り込みの前に、この来院の安全確認を記録してください。'} onReviewSafety={() => proceed(0)} />
           <details className="clinical-custom-candidate">
             <summary>一覧にない候補を記録{encounter.customCandidates?.trim() && <span>入力あり</span>}</summary>
             <label>その他の候補・併存して考える見立て<textarea className={FIELD} rows={3} maxLength={2000} value={encounter.customCandidates || ''} onChange={event => update({ customCandidates: event.target.value })} placeholder="一覧にない候補や、併存を検討する見立てを記録" /></label>

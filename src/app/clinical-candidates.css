@@ -30,6 +30,17 @@
 .clinical-catalog-option-summary, .clinical-catalog-option-counts { display: block; margin-top: 3px; color: var(--text-secondary); font-size: .8125rem; }
 .clinical-catalog-expand { display: block; width: 100%; min-height: 48px; margin-top: 8px; padding: 10px 14px; border: 1px solid var(--catalog-line); border-radius: 8px; color: var(--accent-readable); font-size: .875rem; font-weight: 600; text-align: center; }
 .clinical-catalog-empty { border-top: 1px solid var(--catalog-line); padding: 14px 0; }
+.clinical-catalog-evidence { margin-bottom: 20px; padding: 16px; border: 1px solid var(--catalog-line); border-radius: 10px; background: var(--bg-card); }
+.clinical-catalog-evidence-title { font-weight: 600; }
+.clinical-catalog-evidence-coverage { margin-top: 12px; color: var(--accent-readable); font-size: .875rem; line-height: 1.8; }
+.clinical-catalog-evidence-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.clinical-catalog-evidence-filters button { min-height: 44px; max-width: 100%; padding: 10px 12px; border: 1px solid var(--catalog-line); border-radius: 8px; color: var(--accent-readable); font-size: .875rem; line-height: 1.6; text-align: left; }
+.clinical-catalog-evidence-filters button[aria-pressed=true] { background: var(--accent-readable); border-color: var(--accent-readable); color: var(--bg-card); font-weight: 600; }
+.clinical-catalog-evidence-filters button:disabled { opacity: .55; cursor: default; }
+.clinical-catalog-safety { margin-top: 12px; padding-left: 12px; border-left: 2px solid #B86924; color: var(--text-secondary); font-size: .875rem; line-height: 1.8; }
+.clinical-catalog-evidence-groups, .clinical-catalog-evidence-reasons, .clinical-catalog-evidence-conflicts { display: block; margin-top: 6px; font-size: .8125rem; overflow-wrap: anywhere; }
+.clinical-catalog-evidence-groups { color: var(--accent-readable); font-weight: 600; }
+.clinical-catalog-evidence-conflicts { color: var(--text-sumi); padding-left: 8px; border-left: 2px solid #B86924; }
 @media (hover:hover) { .clinical-catalog-option:hover, .clinical-catalog-filters button:hover { background: var(--tokiwa-light); } }
 @media (min-width:640px) { .clinical-catalog-options { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media (max-width:380px) { .clinical-catalog-option-category { display: block; margin-left: 0; } }
