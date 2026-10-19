@@ -12,9 +12,10 @@ import ClinicalEvidenceKey from './ClinicalEvidenceKey';
 import ClinicalCandidatePicker from './ClinicalCandidatePicker';
 import ClinicalCandidateDifferential from './ClinicalCandidateDifferential';
 import { appendClinicalPrinciple, hasClinicalPrinciple } from '@/utils/clinicalTreatment';
-import { EXAMINATION_GROUPS, EXAMINATION_FIELDS, EXAMINATION_TEXT_FIELDS, examinationValue, examinationSummary, examinationIssues, resolvedExaminationObservations, updateExaminationValue } from '@/data/clinicalExamination';
+import { EXAMINATION_GROUPS, EXAMINATION_FIELDS, EXAMINATION_TEXT_FIELDS, examinationValue, examinationSummary, examinationIssues, resolvedExaminationObservations } from '@/data/clinicalExamination';
 import { EXAMINATION_ASSOCIATIONS, examinationFinding, comparisonContext, type ComparisonFindingId } from '@/data/clinicalExaminationComparison';
 import { clinicalCandidateEvidence } from '@/utils/clinicalCandidateNarrowing';
+import { clinicalExaminationPatch, clinicalFindingEdit, canUndoClinicalFindingEdit, undoClinicalFindingEdit, type ClinicalFindingEdit, type ClinicalFindingState } from '@/utils/clinicalFindingChanges';
 
 type PrincipleChange = { owner: string; before: string; after: string; term: string; undone?: boolean };
 
@@ -42,12 +43,17 @@ export default function ClinicalWorkspace() {
   useEffect(() => { saveBusy.current = false; }, [lastSaved]);
   const snapshot = clinicalEncounterFingerprint;
   const [encounter, setEncounter] = useState<ClinicalEncounter>(emptyClinicalEncounter);
+  const encounterRef = useRef(encounter);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [pointQuery, setPointQuery] = useState('');
   const [principleChange, setPrincipleChange] = useState<PrincipleChange | null>(null);
   const [comparisonFocus, setComparisonFocus] = useState<string[] | null>(null);
+  const [findingHistory, setFindingHistory] = useState<{ owner: string; entries: ClinicalFindingEdit[] } | null>(null);
+  const [findingSession, setFindingSession] = useState(0);
+  const findingSessionGuard = useRef(0);
+  const findingChangeSerial = useRef(0);
   const ownerGuard = useRef(clinicalStorageOwner);
   useEffect(() => { ownerGuard.current = clinicalStorageOwner; }, [clinicalStorageOwner]);
   useEffect(() => {
@@ -58,13 +64,16 @@ export default function ClinicalWorkspace() {
       const complaint = CLINICAL_COMPLAINTS.find(item => item.slug === new URLSearchParams(window.location.search).get('complaint'));
       // A guide never replaces an encounter already in progress.
       if (complaint && !initial.patientIdentifier && !initial.chiefComplaint && Object.keys(initial.observations).length === 0) { initial.complaintSlug = complaint.slug; initial.chiefComplaint = complaint.title; }
-      setEncounter(initial); setError(stored.error); setSaved(Boolean(stored.encounter)); setReady(true); setLoadedOwner(clinicalStorageOwner); setReviewing(false); setLastSaved(initial.savedFingerprint || ''); setPrincipleChange(null); setComparisonFocus(null);
+      encounterRef.current = initial;
+      setEncounter(initial); setError(stored.error); setSaved(Boolean(stored.encounter)); setReady(true); setLoadedOwner(clinicalStorageOwner); setReviewing(false); setLastSaved(initial.savedFingerprint || ''); setPrincipleChange(null); setComparisonFocus(null); setFindingHistory(null);
+      findingSessionGuard.current++; setFindingSession(findingSessionGuard.current);
     }, 0);
     return () => clearTimeout(timer);
   }, [clinicalStorageOwner]);
   // Persist in the input event, before a link click or reload can unmount the form.
   const update = (patch: Partial<ClinicalEncounter>) => {
-    const next = { ...encounter, ...patch };
+    const next = { ...encounterRef.current, ...patch };
+    encounterRef.current = next;
     setEncounter(next);
     const ok = writeClinicalEncounter(next);
     setSaved(ok);
@@ -73,15 +82,31 @@ export default function ClinicalWorkspace() {
   const complaint = CLINICAL_COMPLAINTS.find(item => item.slug === encounter.complaintSlug);
   const observations = useMemo(() => resolvedExaminationObservations(encounter.observations, encounter.examination), [encounter.observations, encounter.examination]);
   const updateExamination = (id: string, value: string) => {
-    // Retain both parts displayed from a legacy positive fixed-pain observation before editing one.
-    const previous = (id === 'painQuality' || id === 'painLocation') && encounter.observations.fixedPain === 'present' ? {
-      ...encounter.examination,
-      painQuality: examinationValue('painQuality', encounter.examination, encounter.observations),
-      painLocation: examinationValue('painLocation', encounter.examination, encounter.observations),
-    } : encounter.examination;
-    const examination = updateExaminationValue(previous, id, value);
-    update({ examination, observations: resolvedExaminationObservations(encounter.observations, examination) });
+    update(clinicalExaminationPatch(encounterRef.current, id, value));
   };
+  const findingEdits = findingHistory?.owner === clinicalStorageOwner && loadedOwner === clinicalStorageOwner ? findingHistory.entries : [];
+  const latestFindingEdit = findingEdits.at(-1);
+  const undoFindingAvailable = Boolean(latestFindingEdit && canUndoClinicalFindingEdit(encounter, latestFindingEdit));
+  const recordFindingEdit = (target: { kind: 'observation' | 'examination'; id: string }, after: ClinicalFindingState) => {
+    if (!clinicalStorageOwner || loadedOwner !== clinicalStorageOwner || ownerGuard.current !== clinicalStorageOwner || findingSessionGuard.current !== findingSession) return;
+    const edit = clinicalFindingEdit(encounterRef.current, after, target, findingChangeSerial.current + 1);
+    if (!edit) return;
+    findingChangeSerial.current = edit.id;
+    setFindingHistory(previous => ({ owner: clinicalStorageOwner, entries: [...(previous?.owner === clinicalStorageOwner ? previous.entries : []), edit].slice(-20) }));
+    update(after);
+  };
+  const undoFindingEdit = () => {
+    if (!latestFindingEdit || clinicalStorageOwner !== ownerGuard.current || loadedOwner !== clinicalStorageOwner || findingSessionGuard.current !== findingSession || findingChangeSerial.current !== latestFindingEdit.id) return;
+    const restored = undoClinicalFindingEdit(encounterRef.current, latestFindingEdit);
+    if (!restored) return;
+    findingChangeSerial.current++;
+    setFindingHistory(previous => previous && { ...previous, entries: previous.entries.map(edit => edit.id === latestFindingEdit.id ? { ...edit, undone: true } : edit) });
+    update(restored);
+  };
+  const findingEditRow = (edit: ClinicalFindingEdit) => <li key={edit.id} className="clinical-finding-change-entry">
+    <p><strong>{edit.label}</strong>{edit.undone && <span>取り消し済み</span>}</p>
+    <dl>{edit.items.map(item => <div key={item.label}><dt>{item.label}{item.linked && <small>連動</small>}</dt><dd><span>{item.before}</span><span aria-label="から">→</span><strong>{item.after}</strong></dd></div>)}</dl>
+  </li>;
   const candidateNames = clinicalCandidateNames(encounter);
   const comparisonSigns = CLINICAL_SIGNS.filter(sign => !STRUCTURED_SIGNS.includes(sign.id));
   const observationTotal = comparisonSigns.length + EXAMINATION_FIELDS.length;
@@ -155,7 +180,7 @@ export default function ClinicalWorkspace() {
     const result = saveWorkspaceNote(clinicalEncounterNote(encounter, names), asNew ? undefined : encounter.savedNoteId);
     if (!result.ok) { setError(result.error); saveBusy.current = false; return; }
     const next = { ...encounter, savedNoteId: result.id, savedFingerprint: snapshot(encounter), savedAt: Date.now() };
-    setEncounter(next); setLastSaved(snapshot(next)); setError(null);
+    encounterRef.current = next; setEncounter(next); setLastSaved(snapshot(next)); setError(null);
     if (!writeClinicalEncounter(next)) setError('記録は保存しましたが、下書きの更新に失敗しました。保存済みの臨床ノートを確認してください。');
   };
   const addPoint = (code: string) => {
@@ -181,7 +206,9 @@ export default function ClinicalWorkspace() {
   const reset = () => {
     if (!window.confirm('このタブの作業中の下書きを消して、新しい記録を始めますか？保存済みノートは残ります。')) return;
     if (!clearClinicalEncounter()) { setError('下書きを消去できませんでした。'); return; }
-    setEncounter(emptyClinicalEncounter()); setError(null); setSaved(false); setPointQuery(''); setReviewing(false); setLastSaved(''); setPrincipleChange(null); setComparisonFocus(null);
+    const fresh = emptyClinicalEncounter(); encounterRef.current = fresh;
+    setEncounter(fresh); setError(null); setSaved(false); setPointQuery(''); setReviewing(false); setLastSaved(''); setPrincipleChange(null); setComparisonFocus(null); setFindingHistory(null);
+    findingSessionGuard.current++; setFindingSession(findingSessionGuard.current);
   };
   if (!ready || loadedOwner !== clinicalStorageOwner) return <p role="status" className="p-6">下書きを確認しています…</p>;
   return <div className="page-layout clinical-workspace space-y-5">
@@ -227,16 +254,12 @@ export default function ClinicalWorkspace() {
       {encounter.step === 1 && <>
         <p className="text-sm">「なし」は確認して認めなかった場合に選びます。観察していない項目は「未確認」のまま残します。</p>
         {examinationIssues(encounter.examination).map(issue => <p role="alert" className="clinical-examination-hint" key={issue}>{issue}</p>)}
-        <nav className="clinical-examination-jumps" aria-label="四診の入力箇所へ移動">{EXAMINATION_GROUPS.map(group => <button type="button" className={BUTTON} key={group} onClick={() => {
-          const section = document.getElementById(`clinical-examination-${group}`) as HTMLDetailsElement | null;
-          if (section) { section.open = true; section.querySelector('summary')?.focus(); section.scrollIntoView({ block: 'start', behavior: 'auto' }); }
-        }}>{group}へ</button>)}</nav>
         {EXAMINATION_GROUPS.map(group => {
           const signs = comparisonSigns.filter(sign => sign.group === group);
           const fields = EXAMINATION_FIELDS.filter(field => field.group === group);
           const filled = fields.filter(field => { const value = examinationValue(field.id, encounter.examination, observations); return value && value !== '判断困難'; }).length + signs.filter(sign => observations[sign.id] && observations[sign.id] !== 'unknown').length;
           const summary = [...fields.flatMap(field => { const value = examinationValue(field.id, encounter.examination, observations); return value ? [`${field.label}：${value}`] : []; }), ...signs.flatMap(sign => { const status = observations[sign.id]; return status && status !== 'unknown' ? [`${sign.label}：${status === 'present' ? 'あり' : 'なし'}`] : []; }), ...EXAMINATION_TEXT_FIELDS.filter(field => field.group === group).flatMap(field => encounter.examination?.[field.id]?.trim() ? [`${field.label}：入力あり`] : [])];
-          return <details key={group} id={`clinical-examination-${group}`} className="clinical-observation-group" open={group === '問診' ? true : undefined}>
+          return <details key={group} id={`clinical-examination-${group}`} className="clinical-observation-group">
             <summary><span>{group}</span><span>{filled} / {fields.length + signs.length}項目確認</span><small className="clinical-examination-preview">{summary.length ? summary.slice(0, 3).join(' ／ ') + (summary.length > 3 ? ` ／ ほか${summary.length - 3}項目` : '') : '未確認・未入力'}</small></summary>
             <fieldset><legend className="sr-only">{group}の所見</legend>
               {group === '望診' && <p className="clinical-examination-hint">舌体と舌苔を分け、歯痕・裂紋などは個別に選べます。照明、直前の飲食、舌磨きの有無を補足に記録してください。「苔を認めない」を選ぶと苔の他の項目もそろいます。</p>}
@@ -271,6 +294,7 @@ export default function ClinicalWorkspace() {
           <nav className="clinical-candidate-jumps" aria-label="候補・治法の入力箇所へ移動">
             {encounter.candidateIds.length >= 2 && <a href="#clinical-differential-heading">候補同士の違い・追加確認を見る ↓</a>}
             {encounter.candidateIds.length > 0 && <a href="#clinical-compare-heading">選んだ候補を比較（{encounter.candidateIds.length}件） ↓</a>}
+            <a href="#clinical-finding-changes-heading">所見の修正履歴へ ↓</a>
             <a href="#clinical-principle-heading">治法の入力へ ↓</a>
           </nav>
         </section>
@@ -280,10 +304,20 @@ export default function ClinicalWorkspace() {
           {encounter.candidateIds.length > 0 && <p className="clinical-candidate-intro">候補名を押すと所見と追加確認を開けます。複数の候補を同時に開いて比較できます。</p>}
           {encounter.candidateIds.length === 0 && <p className="clinical-candidate-empty">候補を選ぶと、支持する所見・合いにくい所見・未確認の所見を並べて確認できます。</p>}
           {encounter.safety !== 'reviewed' && <p className="clinical-candidate-safety">安全確認が未完了、または医療評価を優先する状態です。配穴の検討は保留します。</p>}
-          <ClinicalCandidateDifferential patterns={selectedComparisons.map(result => result.pattern)} observations={encounter.observations} examination={encounter.examination} focusIds={comparisonFocus} onFocusChange={setComparisonFocus} onRecordDetails={revisitExaminationDetails} onObservationChange={(id, status) => update({ observations: { ...encounter.observations, [id]: status } })} onExaminationChange={updateExamination} />
+          <ClinicalCandidateDifferential patterns={selectedComparisons.map(result => result.pattern)} observations={encounter.observations} examination={encounter.examination} focusIds={comparisonFocus} onFocusChange={setComparisonFocus} onRecordDetails={revisitExaminationDetails} onObservationChange={(id, status) => recordFindingEdit({ kind: 'observation', id }, { observations: { ...encounterRef.current.observations, [id]: status }, examination: encounterRef.current.examination })} onExaminationChange={(id, value) => recordFindingEdit({ kind: 'examination', id }, clinicalExaminationPatch(encounterRef.current, id, value))} />
+          <section className="clinical-finding-change-history" aria-labelledby="clinical-finding-changes-heading">
+            <h4 id="clinical-finding-changes-heading" tabIndex={-1}>比較画面で変更した所見</h4>
+            {findingEdits.length === 0 ? <p>所見を修正すると、変更前と変更後をここに表示します。</p> : <>
+              <p>この画面を開いてからの変更を直近20件表示します。戻せるのは直前の修正1件です。履歴は再読み込みでリセットされますが、所見は下書きに残ります。</p>
+              <div className="clinical-finding-change-latest"><p role="status">{latestFindingEdit?.undone ? '直前の修正を戻しました。' : `直前の修正：${latestFindingEdit?.label}`}</p>{latestFindingEdit && !latestFindingEdit.undone && <button type="button" className={BUTTON} disabled={!undoFindingAvailable} onClick={undoFindingEdit}>直前の修正を戻す</button>}</div>
+              {latestFindingEdit && !latestFindingEdit.undone && !undoFindingAvailable && <p>対象の所見がその後に変更されたため、この修正は戻せません。</p>}
+              <ol>{findingEdits.slice(-3).reverse().map(findingEditRow)}</ol>
+              {findingEdits.length > 3 && <details><summary>それ以前の修正を見る（{findingEdits.length - 3}件）</summary><ol>{findingEdits.slice(0, -3).reverse().map(findingEditRow)}</ol></details>}
+            </>}
+          </section>
           <div className="clinical-comparison-board">
-            {selectedComparisons.map((result, index) => <article key={result.pattern.id} className="clinical-comparison-row" data-selected="true">
-              <details className="clinical-comparison-disclosure" open={index === 0 ? true : undefined}>
+            {selectedComparisons.map(result => <article key={result.pattern.id} className="clinical-comparison-row" data-selected="true">
+              <details className="clinical-comparison-disclosure">
               <summary className="clinical-comparison-summary"><span className="clinical-candidate-comparison-title"><span>{result.pattern.category}</span><strong className="clinical-comparison-name">{result.pattern.name}</strong></span><span className="clinical-comparison-overview">{result.supported.length + result.missing.length + result.unknown.length > 0 ? `支持 ${result.supported.length}件 · 未確認 ${result.unknown.length}件${result.conflicting.length ? ` · 合いにくい ${result.conflicting.length}件` : ''}` : '現在の項目では照合不可'}</span></summary>
               <div className="clinical-comparison-body">
               {result.supported.length + result.missing.length + result.unknown.length + result.conflicting.length > 0 ? <dl className="clinical-comparison-fields">{COMPARISON_FIELDS.map(({ key, title, icon: Icon }) => <div key={key} className="clinical-comparison-cell" data-kind={key}><dt><Icon aria-hidden="true" />{title}</dt><dd>{key === 'conflicting' && !result.pattern.conflicts.length && !EXAMINATION_ASSOCIATIONS[result.pattern.id]?.conflicts?.length ? 'この候補には照合項目を設定していません' : key === 'unknown' && result.unknown.length ? result.unknown.map(id => <button type="button" key={id} className="clinical-missing-sign" onClick={() => revisitSign(id)}>{labels([id])}を確認</button>) : labels(result[key])}</dd></div>)}</dl> : <p className="clinical-candidate-empty">この候補は現在の入力項目では照合できません。下の追加確認をもとに、所見や検討理由を記録してください。</p>}

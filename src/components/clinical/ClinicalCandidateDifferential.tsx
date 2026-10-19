@@ -124,7 +124,7 @@ export default function ClinicalCandidateDifferential({ patterns, observations, 
         {examinationIssues(examination).map(issue => <p role="alert" className="clinical-candidate-safety" key={issue}>{issue}</p>)}
         {inlineChecks.length > 0 ? <><ul className="clinical-differential-list"><NextCheckRows checks={primaryChecks} patterns={focused} {...inputProps} /></ul>{moreChecks.length > 0 && <details className="clinical-differential-more"><summary>ほかの追加確認を見る（{moreChecks.length}項目）</summary><ul className="clinical-differential-list"><NextCheckRows checks={moreChecks} patterns={focused} {...inputProps} /></ul></details>}</> : <p className="clinical-differential-help">現在の照合項目には、違いを見るための未確認項目が残っていません。部位・経過など、下の追加確認も使って検討してください。</p>}
       </div>
-      <details className="clinical-differential-more clinical-differential-context" open={result.equivalentPairs.length > 0 ? true : undefined}><summary>候補ごとの見分け方・追加確認</summary><div>{focused.map(pattern => <article key={pattern.id}><h5>{pattern.name}</h5><p>{pattern.distinguish}</p>{pattern.additionalChecks?.length ? <ul>{pattern.additionalChecks.map(item => <li key={item}>{item}</li>)}</ul> : null}</article>)}<button type="button" onClick={onRecordDetails}>確認した部位・経過などを四診の補足に記録する →</button></div></details>
+      <details className="clinical-differential-more clinical-differential-context"><summary>候補ごとの見分け方・追加確認</summary><div>{focused.map(pattern => <article key={pattern.id}><h5>{pattern.name}</h5><p>{pattern.distinguish}</p>{pattern.additionalChecks?.length ? <ul>{pattern.additionalChecks.map(item => <li key={item}>{item}</li>)}</ul> : null}</article>)}<button type="button" onClick={onRecordDetails}>確認した部位・経過などを四診の補足に記録する →</button></div></details>
     </>}
   </section>;
 }

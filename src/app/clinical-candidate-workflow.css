@@ -86,5 +86,19 @@
 .clinical-inline-finding-status { color: var(--text-secondary); font-size: .75rem; }
 .clinical-inline-finding-observed { display: inline-block; margin-left: 10px; color: var(--text-secondary); font-size: .8125rem; }
 .clinical-differential-editor { margin-block: 8px 12px; padding: 12px; border: 1px solid var(--clinical-line); border-radius: 8px; background: var(--bg-muted); }
+.clinical-finding-change-history { margin-block: 24px; padding: 16px; border: 1px solid var(--clinical-line); border-radius: 12px; overflow-wrap: anywhere; }
+.clinical-finding-change-history h4 { font-size: 1rem; font-weight: 600; }
+.clinical-finding-change-history > p { margin-top: 8px; color: var(--text-secondary); font-size: .8125rem; line-height: 1.85; }
+.clinical-finding-change-latest { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; margin-block: 14px; font-size: .875rem; }
+.clinical-finding-change-history button:disabled { opacity: .55; cursor: default; }
+.clinical-finding-change-history ol { display: grid; gap: 10px; margin-top: 12px; padding: 0; list-style: none; }
+.clinical-finding-change-entry { min-width: 0; padding: 12px; border-radius: 8px; background: var(--bg-muted); font-size: .875rem; }
+.clinical-finding-change-entry > p { display: flex; flex-wrap: wrap; gap: 8px 12px; }
+.clinical-finding-change-entry > p > span, .clinical-finding-change-entry small { color: var(--text-secondary); font-size: .75rem; }
+.clinical-finding-change-entry dl > div { margin-top: 10px; }
+.clinical-finding-change-entry dt { color: var(--text-secondary); font-size: .8125rem; }
+.clinical-finding-change-entry dt small { margin-left: 8px; }
+.clinical-finding-change-entry dd { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 4px; }
+.clinical-finding-change-history summary { min-height: 44px; padding-block: 12px; color: var(--accent-readable); font-size: .875rem; cursor: pointer; }
 @media (min-width: 640px) { .clinical-differential-relations { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 380px) { .clinical-differential { padding: 12px; } }

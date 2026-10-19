@@ -275,7 +275,7 @@ assert(text(sharedList).includes('疲労・気力低下'));
 const equivalent = harness(['qi', 'heart-qi'], { fatigue: 'present' });
 assert(text(equivalent.tree()).includes('気虚と心気虚は、現在の入力項目では見分けられません。'));
 const context = nodes(equivalent.tree()).find(node => node.type === 'details' && node.props.className?.includes('clinical-differential-context'));
-assert.equal(context.props.open, true, 'Identical models open their additional clinical checks');
+assert(!context.props.open, 'Additional clinical checks also start collapsed, including equivalent models');
 assert(text(context).includes('動悸の性状・時間帯、活動時の息切れ'));
 assert(text(context).includes('主訴の経過と、臓腑を考える追加所見'));
 assert(text(equivalent.tree()).includes('現在の照合項目には、違いを見るための未確認項目が残っていません。'));

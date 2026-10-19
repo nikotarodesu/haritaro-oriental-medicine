@@ -151,6 +151,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     change(label, value) { api.field(label).props.onChange({ target: { value } }); api.render(); },
     candidatePicker() { const picker = nodes(tree).find(node => node.type === CandidatePicker); assert(picker, 'Real workspace supplies a candidate picker'); return picker; },
     candidateDifferential() { const differential = nodes(tree).find(node => node.type === CandidateDifferential); assert(differential, 'Real workspace supplies the selected-candidate differential'); return differential; },
+    findingHistory() { return nodes(tree).find(node => node.props?.className === 'clinical-finding-change-history'); },
     chooseCandidates(ids) { api.candidatePicker().props.onChange(ids); api.render(); },
     principleButton(label, sectionClass = 'clinical-principle-suggestions') { const section = nodes(tree).find(node => node.props?.className === sectionClass); assert(section, 'Treatment section ' + sectionClass); const button = nodes(section).find(node => node.type === 'button' && ['＋', '追加済み', '上限'].some(state => text(node) === label + state)); assert(button, 'Treatment button ' + label); return button; },
     addPrinciple(label, sectionClass) { const button = api.principleButton(label, sectionClass); assert(!button.props.disabled, 'Treatment can be added: ' + label); button.props.onClick(); api.render(); },
@@ -296,6 +297,8 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
   await check('native observation groups preserve unknown status and candidate buttons return focus to the exact input', () => {
     const client = harness({ initialEncounter: sampleEncounter({ observations: {}, step: 1 }) });
     assert.equal(nodes(client.tree()).filter(node => node.type === 'details' && node.props.className === 'clinical-observation-group').length, 4);
+    assert(nodes(client.tree()).filter(node => node.type === 'details').every(node => !node.props.open), 'All examination accordions start closed');
+    for (const label of ['問診へ', '望診へ', '聞診へ', '切診へ']) assert(!nodes(client.tree()).some(node => node.type === 'button' && text(node) === label), 'Redundant examination jump is removed: ' + label);
     client.change('疲労・気力低下', 'absent'); assert.equal(client.encounter().observations.fatigue, 'absent');
     client.click('3.候補・治法'); client.flushFrames();
     const priorFocus = client.focused.length;
@@ -555,6 +558,87 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.equal(restored.candidateDifferential().props.examination.tongueColor, '紅');
     assert.equal(restored.encounter().step, 2);
   });
+  await check('comparison history shows exact changes and undoes only the latest operation while retaining later unrelated input', () => {
+    const initial = sampleEncounter({ step: 2, candidateIds: ['spleen-qi', 'lung-qi'], observations: { fatigue: 'present' }, examination: { tongueColor: '淡白' } });
+    const client = harness({ initialEncounter: initial });
+    client.candidateDifferential().props.onExaminationChange('tongueColor', '紅'); client.render();
+    assert(text(client.findingHistory()).includes('淡白') && text(client.findingHistory()).includes('紅'));
+    assert.equal(nodes(client.findingHistory()).filter(node => node.props?.className === 'clinical-finding-change-entry').length, 1);
+    assert(!client.button('直前の修正を戻す').props.disabled);
+    const staleUndo = client.button('直前の修正を戻す').props.onClick;
+    const writes = client.writes.length;
+    client.candidateDifferential().props.onExaminationChange('tongueColor', '紅'); client.render();
+    assert.equal(client.writes.length, writes, 'Selecting an unchanged value adds neither a history entry nor a physical write');
+    client.change('今回検討する治法', '所見の修正後に入力した方針');
+    client.chooseCandidates(['spleen-qi', 'stasis']);
+    client.click('直前の修正を戻す');
+    assert.deepEqual(plain(client.encounter().examination), initial.examination);
+    assert.deepEqual(plain(client.encounter().observations), initial.observations);
+    assert.equal(client.encounter().principle, '所見の修正後に入力した方針');
+    assert.deepEqual(plain(client.encounter().candidateIds), ['spleen-qi', 'stasis']);
+    assert.equal(client.encounter().step, 2);
+    assert(text(client.findingHistory()).includes('取り消し済み'));
+    const afterUndo = plain(client.encounter()), afterWrites = client.writes.length;
+    staleUndo(); client.render();
+    assert.deepEqual(plain(client.encounter()), afterUndo); assert.equal(client.writes.length, afterWrites, 'A stale undo cannot apply a second time');
+    assert(!nodes(client.findingHistory()).some(node => node.type === 'button' && text(node) === '直前の修正を戻す'));
+    client.candidateDifferential().props.onObservationChange('fatigue', 'absent'); client.render();
+    client.click('直前の修正を戻す');
+    assert.equal(client.encounter().observations.fatigue, 'present');
+  });
+  await check('undo restores linked coating fields together, retains unrelated examination input and refuses later conflicting edits', () => {
+    const initial = sampleEncounter({ step: 2, candidateIds: ['yin', 'damp'], examination: { coatColor: '黄', coatThickness: '厚い', coatTexture: '膩苔（きめ細かく粘る）', coatMoisture: '潤っている' } });
+    const client = harness({ initialEncounter: initial });
+    client.candidateDifferential().props.onExaminationChange('coatColor', '苔を認めない'); client.render();
+    const entries = nodes(client.findingHistory()).filter(node => node.props?.className === 'clinical-finding-change-entry');
+    assert.equal(entries.length, 1); assert.equal(nodes(entries[0]).filter(node => node.type === 'dt').length, 4);
+    assert(text(entries[0]).includes('連動'));
+    client.click('2.四診所見'); client.change('脈の深さ', '中間で触れる'); client.click('3.候補・治法');
+    client.click('直前の修正を戻す');
+    for (const [id, value] of Object.entries(initial.examination)) assert.equal(client.encounter().examination[id], value);
+    assert.equal(client.encounter().examination.pulseDepth, '中間で触れる');
+    client.candidateDifferential().props.onExaminationChange('coatColor', '苔を認めない'); client.render();
+    const staleUndo = client.button('直前の修正を戻す').props.onClick;
+    client.click('2.四診所見'); client.change('舌苔の厚さ', '薄い'); client.click('3.候補・治法');
+    assert(client.button('直前の修正を戻す').props.disabled);
+    assert(text(client.findingHistory()).includes('対象の所見がその後に変更された'));
+    const before = plain(client.encounter()), writes = client.writes.length;
+    staleUndo(); client.render();
+    assert.deepEqual(plain(client.encounter()), before); assert.equal(client.writes.length, writes);
+  });
+  await check('finding history is bounded to the current page session and keeps storage errors visible after undo', () => {
+    const client = harness({ initialEncounter: sampleEncounter({ step: 2 }) });
+    for (let index = 0; index < 22; index++) { client.candidateDifferential().props.onObservationChange('fatigue', index % 2 ? 'present' : 'absent'); client.render(); }
+    assert.equal(nodes(client.findingHistory()).filter(node => node.props?.className === 'clinical-finding-change-entry').length, 20);
+    assert(nodes(client.findingHistory()).filter(node => node.type === 'details').every(node => !node.props.open));
+    const reloaded = harness({ initialEncounter: client.encounter() });
+    assert.equal(nodes(reloaded.findingHistory()).filter(node => node.props?.className === 'clinical-finding-change-entry').length, 0);
+    client.flags.failSession = true;
+    client.candidateDifferential().props.onObservationChange('fatigue', 'absent'); client.render();
+    assert.equal(client.candidateDifferential().props.observations.fatigue, 'absent');
+    client.click('直前の修正を戻す');
+    assert.equal(client.candidateDifferential().props.observations.fatigue, 'present');
+    assert(nodes(client.tree()).some(node => node.props?.role === 'alert' && text(node).includes('下書きを保存できませんでした')));
+  });
+  await check('finding history and stale edit callbacks cannot cross account or fresh-record boundaries', async () => {
+    const client = harness({ initialEncounter: sampleEncounter({ step: 2 }) });
+    client.candidateDifferential().props.onObservationChange('fatigue', 'absent'); client.render();
+    const guestUndo = client.button('直前の修正を戻す').props.onClick, guestEdit = client.candidateDifferential().props.onObservationChange;
+    client.seedDraft('history-account', sampleEncounter({ step: 2, principle: '別のアカウントの方針' }));
+    client.setAuth('history-account'); await client.settle();
+    const accountBefore = plain(client.encounter());
+    guestUndo(); guestEdit('cold', 'present'); client.render();
+    assert.deepEqual(plain(client.encounter()), accountBefore);
+    assert(!text(client.findingHistory()).includes('直前の修正：'));
+    client.candidateDifferential().props.onObservationChange('fatigue', 'absent'); client.render();
+    const oldUndo = client.button('直前の修正を戻す').props.onClick, oldEdit = client.candidateDifferential().props.onObservationChange;
+    client.click('新しい記録を始める');
+    oldUndo(); oldEdit('cold', 'present'); client.render();
+    assert.equal(client.encounter(), null, 'Old callbacks do not recreate a discarded draft');
+    client.click('3.候補・治法');
+    assert(!text(client.findingHistory()).includes('直前の修正：'));
+    assert.equal(client.encounter().principle, '');
+  });
   await check('reviewing either part of a legacy fixed-pain finding retains the other displayed part', () => {
     for (const [id, value, retainedId, retainedValue] of [
       ['painLocation', '移動する', 'painQuality', '刺すような痛み'],
@@ -761,7 +845,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     const rows = nodes(client.tree()).filter(node => node.type === 'article' && node.props.className === 'clinical-comparison-row');
     const details = rows.map(row => nodes(row).find(node => node.type === 'details'));
     assert(details.every(Boolean));
-    assert.equal(details[0].props.open, true, 'The first selected comparison is initially readable');
+    assert(!details[0].props.open, 'The first selected comparison also starts closed');
     assert(!details[1].props.open, 'Other comparisons remain compact until requested');
     for (const item of details) {
       const summary = nodes(item).find(node => node.type === 'summary');
