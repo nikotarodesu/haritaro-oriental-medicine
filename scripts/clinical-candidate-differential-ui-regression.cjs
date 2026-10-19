@@ -83,8 +83,13 @@ function harness(ids, observations = {}, examination = {}, focusIds = null, appl
     select(label) { const input = nodes(tree).find(node => node.type === 'select' && node.props['aria-label'] === label); assert(input, 'Inline select: ' + label); return input; },
     change(label, value) { api.select(label).props.onChange({ target: { value } }); api.render(); },
     questionKeys: () => nodes(tree).filter(node => node.props?.className === 'clinical-differential-question').map(node => String(node.key)),
+    differenceKeys: () => nodes(tree).filter(node => node.props?.className === 'clinical-differential-finding').map(node => String(node.key)),
+    differencePlacement(key) { const row = nodes(tree).find(node => node.props?.className === 'clinical-differential-finding' && String(node.key) === key); assert(row); return nodes(tree).some(node => node.type === 'details' && nodes(node).includes(row)) ? 'more' : 'primary'; },
     questionPlacement(key) { const row = nodes(tree).find(node => node.props?.className === 'clinical-differential-question' && String(node.key) === key); assert(row, 'Retained question: ' + key); return nodes(tree).some(node => node.type === 'details' && nodes(node).includes(row)) ? 'more' : 'primary'; },
     finding(label) { const row = nodes(tree).find(node => node.type === 'li' && nodes(node).some(child => child.type === 'strong' && text(child) === label)); assert(row, 'Finding: ' + label); return row; },
+    review(label) { const button = nodes(api.finding(label)).find(node => node.type === 'button' && node.props['aria-expanded'] !== undefined); assert(button); button.props.onClick(); api.render(); },
+    editor(label) { const editor = nodes(api.finding(label)).find(node => node.props?.className === 'clinical-differential-editor'); assert(editor && !editor.props.hidden, 'Open inline editor: ' + label); return editor; },
+    reviewChange(label, field, value) { const input = nodes(api.editor(label)).find(node => node.type === 'select' && node.props['aria-label'] === field); assert(input, 'Review input: ' + field); input.props.onChange({ target: { value } }); api.render(); },
     unchanged() { assert.equal(JSON.stringify(inputs), before, 'Comparison controls cannot mutate candidate IDs, findings, treatment or points'); },
   };
   api.render(); return api;
@@ -130,8 +135,64 @@ assert.deepEqual(relations(compared, '冷え・温めると軽減'), ['照合設
 assert.deepEqual(relations(compared, '疲労・気力低下'), ['支持する', '照合設定なし', '照合設定なし']);
 const redReview = nodes(compared.finding('紅舌')).find(node => node.type === 'button' && text(node) === '入力を見直す');
 redReview.props.onClick();
-assert.equal(compared.checks.at(-1), 'redTongue', 'Review buttons pass the exact finding ID to the parent');
+compared.render();
+assert.equal(compared.checks.length, 0, 'Review buttons never navigate to the four-examination screen');
+assert(nodes(compared.editor('紅舌')).some(node => node.type === 'select' && node.props['aria-label'] === '舌体の色' && node.props.value === '紅'));
+const openRedButton = nodes(compared.finding('紅舌')).find(node => node.type === 'button');
+assert.equal(openRedButton.props['aria-expanded'], true);
+assert.equal(openRedButton.props['aria-controls'], compared.editor('紅舌').props.id, 'Expanded button identifies its accessible editor');
 compared.unchanged();
+
+const review = harness(['spleen-qi', 'liver-heat', 'stasis'], { fatigue: 'present', heat: 'present' }, { tongueColor: '紅' }, null, true);
+review.review('熱感・ほてり');
+review.reviewChange('熱感・ほてり', '熱感・ほてり', 'absent');
+assert.deepEqual(relations(review, '熱感・ほてり'), ['合いにくい所見を認めない', '支持所見を認めない', '照合設定なし']);
+review.reviewChange('熱感・ほてり', '熱感・ほてり', 'unknown');
+assert.equal(review.observations().heat, 'unknown');
+assert(text(review.finding('熱感・ほてり')).includes('未確認・判断困難等'));
+assert(nodes(review.editor('熱感・ほてり')).some(node => node.type === 'select' && node.props.value === 'unknown'), 'Resetting a known finding retains the same active editor');
+assert(text(review.tree()).includes('未確認に戻した所見 1件'));
+review.reviewChange('熱感・ほてり', '熱感・ほてり', 'present');
+assert(text(review.finding('熱感・ほてり')).includes('支持する'));
+review.review('紅舌');
+assert(!nodes(review.finding('熱感・ほてり')).some(node => node.type === 'select'), 'Only the newly requested review editor stays open');
+review.reviewChange('紅舌', '舌体の色', '淡白');
+assert.deepEqual(relations(review, '紅舌'), ['合いにくい所見を認めない', '支持所見を認めない', '照合設定なし']);
+assert.deepEqual(relations(review, '淡白舌'), ['支持する', '合いにくい', '照合設定なし']);
+review.reviewChange('紅舌', '舌体の色', '');
+assert.equal(review.examination().tongueColor, '');
+assert(nodes(review.editor('紅舌')).some(node => node.type === 'select' && node.props.value === ''));
+review.review('紅舌');
+assert(nodes(review.finding('紅舌')).some(node => node.props?.className === 'clinical-differential-editor' && node.props.hidden));
+review.review('紅舌');
+assert(nodes(review.editor('紅舌')).some(node => node.type === 'select'));
+review.render(['spleen-qi', 'stasis']);
+assert(!nodes(review.tree()).some(node => node.props?.className === 'clinical-differential-editor' && !node.props.hidden), 'A different focus scope cannot retain an old active review editor');
+assert.equal(review.checks.length, 0); assert.equal(review.focusChanges.length, 0); review.unchanged();
+
+const reviewPain = harness(['stasis', 'liver-qi'], {}, { painQuality: '刺すような痛み', painLocation: '固定している' }, null, true);
+reviewPain.review('固定した刺すような痛み');
+assert.deepEqual(nodes(reviewPain.editor('固定した刺すような痛み')).filter(node => node.type === 'select').map(node => node.props['aria-label']), ['痛みの性質（主なもの）', '痛む場所の変化']);
+reviewPain.reviewChange('固定した刺すような痛み', '痛む場所の変化', '');
+assert.equal(reviewPain.observations().fixedPain, 'unknown');
+assert.equal(nodes(reviewPain.editor('固定した刺すような痛み')).filter(node => node.type === 'select').length, 2, 'Both parts remain editable after the compound finding becomes unknown');
+reviewPain.reviewChange('固定した刺すような痛み', '痛む場所の変化', '固定している');
+assert.equal(reviewPain.observations().fixedPain, 'present');
+assert.equal(reviewPain.checks.length, 0); reviewPain.unchanged();
+
+const reviewCoat = harness(['spleen-qi', 'liver-heat', 'stasis', 'damp'], {
+  fatigue: 'present', appetite: 'present', loose: 'present', cold: 'present', stress: 'present', heat: 'present', dry: 'present', heavy: 'present',
+}, { tongueColor: '紅', tongueSize: '腫大・胖大', tongueTeeth: '明瞭', coatColor: '黄', coatThickness: '厚い', coatTexture: '膩苔（きめ細かく粘る）', coatMoisture: '乾燥している' }, null, true);
+const reviewPlacements = Object.fromEntries(reviewCoat.differenceKeys().map(id => [id, reviewCoat.differencePlacement(id)]));
+assert.equal(reviewCoat.differencePlacement('greasyCoat'), 'more');
+reviewCoat.review('膩苔');
+reviewCoat.reviewChange('膩苔', '舌苔の性状', '苔を認めない');
+assert(nodes(reviewCoat.editor('膩苔')).some(node => node.type === 'select' && node.props.value === '苔を認めない'));
+for (const [id, placement] of Object.entries(reviewPlacements)) assert.equal(reviewCoat.differencePlacement(id), placement, 'Linked coating changes cannot reparent a review row: ' + id);
+reviewCoat.reviewChange('膩苔', '舌苔の性状', '');
+assert.equal(reviewCoat.differencePlacement('greasyCoat'), 'more');
+assert(nodes(reviewCoat.editor('膩苔')).some(node => node.type === 'select' && node.props.value === ''));
+assert.equal(reviewCoat.checks.length, 0); reviewCoat.unchanged();
 
 const questions = harness(['spleen-qi', 'liver-heat', 'stasis']);
 questions.change('舌体の色', '紅');

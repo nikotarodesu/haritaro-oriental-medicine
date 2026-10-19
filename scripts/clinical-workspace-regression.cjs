@@ -527,28 +527,31 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.deepEqual(plain(client.encounter().candidateIds), stored.candidateIds);
     assert.equal(client.field('今回検討する治法').props.value, stored.principle);
   });
-  await check('differential next-check callbacks return to exact real four-examination inputs and preserve selected candidates and treatment', () => {
+  await check('reviewing either part of a legacy fixed-pain finding retains the other displayed part', () => {
+    for (const [id, value, retainedId, retainedValue] of [
+      ['painLocation', '移動する', 'painQuality', '刺すような痛み'],
+      ['painQuality', '鈍い痛み', 'painLocation', '固定している'],
+    ]) {
+      const initial = sampleEncounter({ step: 2, candidateIds: ['stasis', 'liver-qi'], observations: { fixedPain: 'present' }, examination: {} });
+      const client = harness({ initialEncounter: initial });
+      client.candidateDifferential().props.onExaminationChange(id, value); client.render();
+      assert.equal(client.encounter().examination[id], value);
+      assert.equal(client.encounter().examination[retainedId], retainedValue, 'Editing a legacy composite cannot erase the other displayed part');
+      assert.equal(client.encounter().observations.fixedPain, 'absent');
+      assert.equal(client.encounter().step, 2);
+      assert.deepEqual(plain(client.encounter().candidateIds), initial.candidateIds);
+      assert.equal(client.encounter().principle, initial.principle);
+    }
+  });
+  await check('differential finding edits stay inline while supplementary context retains its separate memo navigation', () => {
     const initial = sampleEncounter({ step: 2, candidateIds: ['spleen-qi', 'liver-heat', 'stasis', 'lung-yin'],
       observations: { fatigue: 'present', cold: 'absent' }, examination: { tongueColor: '淡白', painQuality: '刺すような痛み' },
       principle: '  比較しても手入力の治法を保持\n局在は追加確認する。  ' });
     const client = harness({ initialEncounter: initial });
     const before = plain(client.encounter());
-    const targets = [
-      ['cold', 'clinical-sign-cold'], ['paleTongue', 'clinical-exam-tongueColor'], ['redTongue', 'clinical-exam-tongueColor'],
-      ['greasyCoat', 'clinical-exam-coatTexture'], ['weakPulse', 'clinical-sign-weakPulse'], ['rapidPulse', 'clinical-sign-rapidPulse'],
-      ['exam:yellow', 'clinical-exam-coatColor'], ['exam:fine', 'clinical-exam-pulseWidth'], ['exam:dryCough', 'clinical-exam-cough'],
-      ['fixedPain', 'clinical-exam-painLocation'],
-    ];
-    for (const [findingId, inputId] of targets) {
-      client.candidateDifferential().props.onCheck(findingId); client.render(); client.flushFrames();
-      assert.equal(client.encounter().step, 1, findingId + ': returns to the four-examination form');
-      assert.equal(client.focused.at(-1), inputId, findingId + ': exact real input receives keyboard focus');
-      assert.equal(client.scrolled.at(-1), inputId);
-      assert(nodes(client.tree()).some(node => ['select', 'textarea', 'input'].includes(node.type) && node.props.id === inputId), 'The focus target is a rendered editable input');
-      assert([...client.groups.values()].some(group => group.open), 'The target examination disclosure is opened');
-      assert.deepEqual(plain({ ...client.encounter(), step: before.step }), before, 'Returning for a finding preserves every clinical field');
-      client.click('3.候補・治法'); client.flushFrames();
-    }
+    assert.equal(client.candidateDifferential().props.onCheck, undefined, 'Known-finding review has no callback that navigates to another step');
+    assert.equal(client.encounter().step, 2);
+    assert.deepEqual(plain(client.encounter()), before);
     client.candidateDifferential().props.onRecordDetails(); client.render(); client.flushFrames();
     assert.equal(client.encounter().step, 1);
     assert.equal(client.focused.at(-1), 'clinical-examination-memo');
