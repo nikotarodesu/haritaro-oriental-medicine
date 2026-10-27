@@ -24,7 +24,7 @@
     "test:billing": "node scripts/billing-regression.cjs",
     "check:billing": "node scripts/billing-readiness.cjs",
     "check:analytics": "node scripts/growth-report.mjs --dry-run",
-    "test:analytics": "node scripts/analytics-regression.cjs && node scripts/analytics-guides-regression.cjs",
+    "test:analytics": "node scripts/analytics-regression.cjs && node scripts/analytics-guides-regression.cjs && node scripts/subscription-relay-regression.cjs",
     "report:analytics": "node scripts/growth-report.mjs"
   },
   "dependencies": {

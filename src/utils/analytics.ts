@@ -154,8 +154,51 @@ export function isPurchaseReceipt(value: unknown): value is PurchaseReceipt {
 function subscriptionItem(plan: BillingPlan, price: number): CommerceItem {
   return { item_id: 'haritaro_premium_' + plan, item_name: 'Haritaro Premium ' + plan, price, quantity: 1 };
 }
+type LoginStep = 'upgrade_click' | 'checkout_login_required';
+type RelayMessage = { type: 'haritaro:subscription-step:v1'; id: number; name: LoginStep; plan: BillingPlan };
+let loginRelay: HTMLIFrameElement | undefined;
+let relayReady = false;
+let nextRelayId = 0;
+const relayQueue: RelayMessage[] = [];
+const relayCallbacks = new Map<number, () => void>();
+
+function relayLoginStep(name: LoginStep, plan: BillingPlan): Promise<void> {
+  return new Promise(resolve => {
+    const id = ++nextRelayId;
+    const timer = setTimeout(() => { relayCallbacks.delete(id); resolve(); }, 1200);
+    relayCallbacks.set(id, () => { clearTimeout(timer); relayCallbacks.delete(id); resolve(); });
+    try {
+      if (!loginRelay) {
+        const frame = document.createElement('iframe');
+        frame.hidden = true;
+        frame.title = 'Anonymous subscription analytics';
+        frame.setAttribute('aria-hidden', 'true');
+        frame.tabIndex = -1;
+        frame.referrerPolicy = 'no-referrer';
+        frame.src = '/api/analytics/subscription-frame';
+        loginRelay = frame;
+        window.addEventListener('message', event => {
+          if (event.origin !== window.location.origin || event.source !== frame.contentWindow) return;
+          if (event.data?.type === 'haritaro:subscription-ready:v1') {
+            relayReady = true;
+            relayQueue.splice(0).forEach(message => frame.contentWindow?.postMessage(message, window.location.origin));
+          } else if (event.data?.type === 'haritaro:subscription-ack:v1' && Number.isInteger(event.data.id)) {
+            relayCallbacks.get(event.data.id)?.();
+          }
+        });
+        document.body.appendChild(frame);
+      }
+      const message: RelayMessage = { type: 'haritaro:subscription-step:v1', id, name, plan };
+      if (relayReady) loginRelay.contentWindow?.postMessage(message, window.location.origin);
+      else { if (relayQueue.length === MAX_PENDING) relayQueue.shift(); relayQueue.push(message); }
+    } catch { relayCallbacks.get(id)?.(); }
+  });
+}
 export function trackSubscriptionStep(name: 'upgrade_click' | 'checkout_login_required' | 'begin_checkout' | 'checkout_error', plan: BillingPlan, failure?: 'request_failed' | 'network_error'): Promise<void> {
   if (typeof window === 'undefined' || publicAnalyticsPath(window.location.pathname) !== '/pricing' || !['monthly', 'yearly'].includes(plan)) return Promise.resolve();
+  // The relay's fixed URL and document survive login's private-route opt-out.
+  // Its schema accepts only two public action names and the selected plan.
+  if (name === 'upgrade_click' || name === 'checkout_login_required') return relayLoginStep(name, plan);
   const amount = SUBSCRIPTION_CONFIG.pricing[plan].amount;
   return new Promise(resolve => {
     // Give navigation events a bounded chance to leave the page. Blocked analytics

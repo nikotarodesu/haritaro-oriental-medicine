@@ -30,7 +30,7 @@ Purchase receipts contain plan, actual gross JPY total and a SHA-256-derived tra
 
 `npm run test:billing` covers deleted-customer recovery, save failures, idempotency, lookup failures, unexpectedly active contracts, ownership, old terminal notifications and paid receipt eligibility. `npm run test:analytics` covers stream targeting, payload minimization, queueing, receipt deduplication, excluded routes and navigation fallback. ESLint and `npm run build -- --webpack` pass with 575 pages. A local browser fixture verifies confirmation rendering, one purchase command across reload and removal of raw session/query values. Those fixture purchase commands are not sent to Google and create no charges.
 
-The stream ID is confirmed; production event ingestion remains unverified in the Data API realtime report. No real customer or payment has been created to test re-enrollment.
+The stream ID is confirmed. The owner verified a normal-browser pricing view in GA4 Realtime, and a subsequent Data API realtime read of property 553537039 returned one `page_view`. No real customer or payment has been created to test re-enrollment.
 
 ## Linked Google tag destination
 
@@ -39,3 +39,17 @@ A production anonymous pricing → login check exposed an automatic `page_view` 
 The site now sets `window['ga-disable-G-GE4JNB164V'] = true` before loading the external tag. Loading waits for the inline initialization to complete, so the linked destination cannot start before the privacy control. The confirmed stream retains its public-route measurements and existing private-route opt-out. This is an on-site control; no Google property or Cloud configuration is changed. The per-property opt-out is documented at https://developers.google.com/tag-platform/security/guides/privacy
 
 After the change, analytics regression tests, ESLint and the 575-page Webpack build passed. A fresh local browser loaded the real external Google library with collection intercepted: the privacy flag was present at every tag load, pricing click/login-required events targeted only the confirmed stream, both destinations were disabled on the login route, and no private URL, query or synthetic Checkout ID reached the intercepted collection requests. No test purchase or customer was created.
+
+## Anonymous click batching across login
+
+With the login route precompiled, a fast SPA navigation exposed a further issue: Google acknowledged event processing before transmitting its batch. Disabling the main document's tag on the private route then lost its pending public clicks. The callback was observed within milliseconds, while the collected batch arrived around five seconds later. Increasing the callback timeout did not solve that ordering.
+
+`upgrade_click` and `checkout_login_required` now use a small same-origin frame at `/api/analytics/subscription-frame`, created only after a pricing action. Its document survives SPA navigation and has a fixed pricing URL for analytics. Main-document analytics remain disabled on private routes. Checkout start/error and verified purchases retain their existing paths.
+
+Both sides validate message origin and source. The receiver accepts only the two event names, a bounded integer message ID and monthly/yearly plan, and constructs all Google parameters itself. No user ID, arbitrary URL, query, transaction, text or caller-supplied parameters enter that schema. Its incoming referrer is suppressed; CSP allows same-origin embedding and Google analytics transport only. Direct top-level access initializes no Google tag. It emits no automatic frame page view and continues to disable the unwanted linked destination.
+
+The queue is bounded, and missing/blocked relay loading cannot delay login beyond the existing 1.2-second fallback. Public clicks queued before login can still be sent after the frame becomes ready. Browser blocking and leaving the site entirely can still prevent client telemetry; these events are not a billing ledger.
+
+New regression coverage checks forged origins/sources, unsupported event names, extra private fields, queue delivery after private navigation, response headers and blocked-relay fallback. Real-library browser checks intercept Google collection: both pricing events survive a fast login navigation with private parent analytics disabled, including an additional 1.8-second delay of relay loading. No private/login URL or query reaches collection, and no purchase is submitted.
+
+The expanded analytics suite, ESLint, TypeScript and the 576-page Webpack build pass after this change.
