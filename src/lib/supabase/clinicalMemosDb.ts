@@ -13,6 +13,7 @@ interface PatientNoteRow {
   constitution: string | null;
   syndrome: string | null;
   selected_points: string[];
+  self_care_points?: string[] | null;
   treatment_plan: string | null;
   patient_reaction: string | null;
   next_action: string | null;
@@ -49,6 +50,7 @@ export function rowToPatientNote(row: PatientNoteRow): PatientNoteItem {
     constitution: row.constitution || undefined,
     syndrome: row.syndrome || undefined,
     selectedPoints: row.selected_points || [],
+    selfCarePoints: row.self_care_points ?? undefined,
     treatmentPlan: row.treatment_plan || undefined,
     patientReaction: row.patient_reaction || undefined,
     nextAction: row.next_action || undefined,
@@ -70,6 +72,8 @@ export function patientNoteToRow(userId: string, note: PatientNoteItem): Patient
     constitution: note.constitution || null,
     syndrome: note.syndrome || null,
     selected_points: note.selectedPoints || [],
+    // null means this older/local record has no value; [] explicitly clears it.
+    self_care_points: note.selfCarePoints ?? null,
     treatment_plan: note.treatmentPlan || null,
     patient_reaction: note.patientReaction || null,
     next_action: note.nextAction || null,
