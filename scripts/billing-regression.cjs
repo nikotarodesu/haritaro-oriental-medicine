@@ -25,7 +25,7 @@ class FakeStripe {
     this.customers = {create:async()=>({id:'cus_fixture'}),retrieve:async()=>({id:'cus_fixture',metadata:{userId:state.customerOwner||uid}})};
     this.webhooks = new Stripe('sk_test_fixture').webhooks;
     this.prices = {retrieve:async()=>({active:true,currency:'jpy',unit_amount:state.invalidPrice?1:980,recurring:{interval:'month',interval_count:1}})};
-    this.subscriptions = {retrieve:async()=>state.subscription,list:async()=>({data:state.duplicate?[{status:'active'}]:[]})};
+    this.subscriptions = {retrieve:async(id)=>{if(state.failSubscription===id)throw new Error('fixture retrieval failed');return state.subscriptions?.[id]||state.subscription;},list:async()=>({data:state.duplicate?[{status:'active'}]:[]})};
     this.checkout = {sessions:{
       create:async(body,options)=>{state.checkouts.push({body,options});return {url:'https://checkout.stripe.com/fixture'};},
       list:async(params)=>({data:params.customer?(state.sessions||[]):(state.unrelated?[]:[{metadata:{userId:uid}}])}),
@@ -113,6 +113,28 @@ const req=(route,body,origin='https://www.haritaro.jp')=>new Request('https://ww
   const signed=(type,livemode=true)=>{const payload=JSON.stringify({id:'evt_fixture',livemode,type,data:{object:{id:'sub_fixture',parent:{subscription_details:{subscription:'sub_fixture'}}}}});const signature=new Stripe('sk_test_fixture').webhooks.generateTestHeaderString({payload,secret:'whsec_fixture'});return new Request('https://www.haritaro.jp/api/webhook/stripe',{method:'POST',headers:{'stripe-signature':signature},body:payload});};
   assert.equal((await webhook(signed('invoice.paid',false))).status,400);
   delete process.env.STRIPE_SECRET_KEY;assert.equal((await webhook(signed('invoice.paid'))).status,503);process.env.STRIPE_SECRET_KEY='sk_live_fixture';
+  // A legacy paid contract can belong to another customer of the same member.
+  // Both invoice and renewal deliveries must succeed without replacing access.
+  const current={...fixture(),id:'sub_current',customer:'cus_current'};
+  state.user={...freeUser,app_metadata:{role:'premium',billing_customer_id:'cus_current',subscription:{stripeCustomerId:'cus_current',stripeSubscriptionId:'sub_current'}}};
+  state.subscription={...fixture(),metadata:{}}; // ownership falls back to the old Checkout session
+  state.subscriptions={sub_current:current};
+  const beforeLegacy=state.writes.length;
+  const currentUser=state.user;
+  assert.equal((await webhook(signed('customer.subscription.updated'))).status,200);
+  assert.equal((await webhook(signed('invoice.paid'))).status,200);
+  assert.equal(state.writes.length,beforeLegacy);assert.equal(state.user,currentUser);
+  current.status='canceled';state.user={...currentUser,app_metadata:{...currentUser.app_metadata,role:'free'}};
+  assert.equal((await webhook(signed('invoice.paid'))).status,200);
+  assert.equal(state.user.app_metadata.role,'free','a paid legacy contract must not restore access after the current contract ends');
+  assert.equal(state.writes.length,beforeLegacy);
+  current.metadata.userId=other;
+  await assert.rejects(syncSubscription(new FakeStripe(),'sub_fixture'),/関連付けが一致/);
+  current.metadata.userId=uid;current.customer='cus_wrong';
+  await assert.rejects(syncSubscription(new FakeStripe(),'sub_fixture'),/関連付けが一致/);
+  current.customer='cus_current';state.failSubscription='sub_current';
+  assert.equal((await webhook(signed('invoice.paid'))).status,503,'unavailable ownership verification must remain retryable');
+  delete state.failSubscription;delete state.subscriptions;state.user=verifiedUser;state.subscription=fixture();
   state.unrelated=true;state.subscription={...fixture(),metadata:{}};const writesBeforeUnrelated=state.writes.length;
   assert.equal((await webhook(signed('customer.subscription.updated'))).status,200);assert.equal(state.writes.length,writesBeforeUnrelated);state.unrelated=false;state.subscription=fixture();
   state.failSave=true;assert.equal((await webhook(signed('customer.subscription.updated'))).status,503);state.failSave=false;

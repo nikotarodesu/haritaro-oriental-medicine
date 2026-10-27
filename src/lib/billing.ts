@@ -54,14 +54,18 @@ export function subscriptionState(subscription: Stripe.Subscription): UserSubscr
     stripeSubscriptionId: subscription.id,
   };
 }
-export async function syncSubscription(stripe: Stripe, subscriptionId: string, expectedUserId?: string) {
-  // Retrieve current state for every delivery; delayed events never restore stale access.
-  const subscription = await stripe.subscriptions.retrieve(subscriptionId, { expand: ['latest_invoice'] });
+async function subscriptionUserId(stripe: Stripe, subscription: Stripe.Subscription) {
   let userId = subscription.metadata.userId;
   if (!userId) {
     const sessions = await stripe.checkout.sessions.list({ subscription: subscription.id, limit: 1 });
     userId = sessions.data[0]?.metadata?.userId || '';
   }
+  return userId;
+}
+export async function syncSubscription(stripe: Stripe, subscriptionId: string, expectedUserId?: string) {
+  // Retrieve current state for every delivery; delayed events never restore stale access.
+  const subscription = await stripe.subscriptions.retrieve(subscriptionId, { expand: ['latest_invoice'] });
+  const userId = await subscriptionUserId(stripe, subscription);
   // Account-wide webhooks may include other applications' subscriptions.
   if (!userId && !expectedUserId) return null;
   if (!userId || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) throw new BillingError('契約と会員の関連付けを確認できません。', 409);
@@ -71,8 +75,21 @@ export async function syncSubscription(stripe: Stripe, subscriptionId: string, e
   if (getError || !user) throw new BillingError('会員情報の取得に失敗しました。');
   const state = subscriptionState(subscription);
   const customerId = user.app_metadata.billing_customer_id || user.app_metadata.subscription?.stripeCustomerId;
-  if (customerId && customerId !== state.stripeCustomerId) throw new BillingError('決済と会員の関連付けが一致しません。', 409);
   const existingId = user.app_metadata.subscription?.stripeSubscriptionId;
+  if (customerId && customerId !== state.stripeCustomerId) {
+    // Legacy Checkout could create another customer for the same member. Acknowledge
+    // its deliveries only after verifying the authoritative contract's ownership;
+    // never replace that binding or grant access from the other customer.
+    if (existingId && existingId !== subscriptionId) {
+      const existing = await stripe.subscriptions.retrieve(existingId, { expand: ['latest_invoice'] });
+      const existingCustomer = typeof existing.customer === 'string' ? existing.customer : existing.customer.id;
+      if (existingCustomer === customerId && await subscriptionUserId(stripe, existing) === userId) {
+        console.warn('Stripe non-current customer subscription ignored', { subscriptionId, currentSubscriptionId: existingId });
+        return user;
+      }
+    }
+    throw new BillingError('決済と会員の関連付けが一致しません。', 409);
+  }
   // An older contract must never overwrite the current contract, even on renewals.
   if (existingId && existingId !== subscriptionId) {
     const existing = await stripe.subscriptions.retrieve(existingId, { expand: ['latest_invoice'] });
