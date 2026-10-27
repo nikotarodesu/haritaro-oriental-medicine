@@ -18,6 +18,7 @@ import {
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import ClipButton from "@/components/ClipButton";
 import TsuboKeyboardNav from "@/components/tsubo/TsuboKeyboardNav";
+import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
 import { 
   Compass, 
   Layers, 
@@ -341,13 +342,14 @@ export default async function AcupointDetailPage({ params }: Props) {
                   <div>
                     <Link href={simulatorUrl}>所見から弁証候補を比較<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
                     <p>経穴名だけで証は決められません。所見に応じて学習条件を選び、教材内の候補を比較します。</p>
-                    <Link href={`/tsubo/practice?course=meridian_${point.meridianId.toLowerCase()}`}>{point.meridianShort}の確認問題<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
                     <Link href="/notes">マイノートを開く<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
                   </div>
                 </details>
               </div>
             </div>
           </div>
+
+          <TsuboReviewEntry placement="detail" meridianId={point.meridianId} meridianName={point.meridianShort} />
 
           {/* 要穴分類バッジ群 */}
           {point.categories && point.categories.length > 0 && (

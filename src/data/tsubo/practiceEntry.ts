@@ -38,7 +38,7 @@ export function getPracticeEntryAction(
   requested: RequestedPracticeCourse | null,
 ): 'home' | 'resume' | 'choose' | 'start' {
   if (!saved?.questions?.length) return requested ? 'start' : 'home';
-  if (!requested) return 'resume';
+  if (!requested) return saved.isCompleted ? 'home' : 'resume';
   if (saved.isCompleted) return 'start';
   const savedCourseId = resolvePracticeCourse(saved.courseId)?.id || saved.courseId;
   return savedCourseId === requested.id ? 'resume' : 'choose';

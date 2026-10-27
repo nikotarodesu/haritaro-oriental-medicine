@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import LearningSyncStatus from "@/components/learning/LearningSyncStatus";
 import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
 import { questionRevision } from "@/utils/learningReview";
-import React, { useState, useEffect, useEffectEvent, useMemo, useCallback, Suspense } from "react";
+import React, { useState, useEffect, useEffectEvent, useMemo, useCallback, useRef, Suspense } from "react";
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -61,6 +61,8 @@ import {
 } from "lucide-react";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { getPracticeEntryAction, getPracticeSessionTitle, readRequestedPracticeCourse, resolvePracticeCourse } from "@/data/tsubo/practiceEntry";
+import { getPracticeContinuation, practiceDateLabel } from '@/data/tsubo/continuation';
+import { trackEvent } from '@/utils/analytics';
 
 const PRACTICE_SKILLS = [
   { id: "mixed", label: "総合MIX特訓", desc: "全種別からランダム" },
@@ -90,7 +92,13 @@ function PracticePageContent() {
   const allPoints = useMemo(() => getAllAcupoints(), []);
   const { memos } = useClinicalMemo();
   const { saveQuizResult } = useCurriculumProgress();
-  const { values } = useLearningSync();
+  const { values, status: learningStatus } = useLearningSync();
+  const resumed = useRef(new Set<string>());
+  const trackResume = (session: StudySession) => {
+    if (resumed.current.has(session.sessionId)) return;
+    resumed.current.add(session.sessionId);
+    trackEvent('tsubo_practice_resume', { placement: 'tsubo_practice', total: session.questions.length });
+  };
   const saveSharedAnswer = (q: QuizQuestion, selectedId: string) => {
     const options = [...q.options].sort((a,b) => a.id.localeCompare(b.id));
     const correctIndex = options.findIndex(o => o.id === q.correctOptionId);
@@ -133,6 +141,7 @@ function PracticePageContent() {
     const action = getPracticeEntryAction(saved, requested);
     setResumeSession(action === 'choose' ? saved : null);
     setActiveSession(action === 'resume' ? saved : null);
+    if (action === 'resume' && saved) trackResume(saved);
     if (action === 'start' && requested) startCourseSession(requested.id);
     setSessionRestored(true);
   });
@@ -215,6 +224,7 @@ function PracticePageContent() {
       return;
     }
     setActiveSession(session);
+    trackEvent('tsubo_practice_start', { placement: 'tsubo_practice', total: questions.length });
     setResumeSession(null);
     setPausedSessions(loadPausedSessions());
     setTempSelectedOption(null);
@@ -317,6 +327,7 @@ function PracticePageContent() {
       };
       setActiveSession(completedSession);
       saveActiveSession(completedSession);
+      trackEvent('tsubo_practice_complete', { placement: 'tsubo_practice', total: completedSession.questions.length });
     } else {
       setActiveSession({
         ...activeSession,
@@ -403,6 +414,7 @@ function PracticePageContent() {
 
     setActiveSession(completedSession);
     saveActiveSession(completedSession);
+    trackEvent('tsubo_practice_complete', { placement: 'tsubo_practice', total: completedSession.questions.length });
     refreshSummary();
   };
 
@@ -430,6 +442,7 @@ function PracticePageContent() {
       };
       setActiveSession(completedSession);
       saveActiveSession(completedSession);
+      trackEvent('tsubo_practice_complete', { placement: 'tsubo_practice', total: completedSession.questions.length });
     } else {
       const nextSession: StudySession = {
         ...activeSession,
@@ -454,6 +467,7 @@ function PracticePageContent() {
       return;
     }
     removePausedSession(session.sessionId);
+    trackResume(session);
     setActiveSession(session);
     setResumeSession(null);
     setPausedSessions(loadPausedSessions());
@@ -477,6 +491,7 @@ function PracticePageContent() {
     setResumeSession(null);
     setPausedSessions(loadPausedSessions());
     refreshSummary();
+    router.replace('/tsubo/practice', { scroll: false });
   };
 
   // ==================== レンダリング：アクティブセッション中 ====================
@@ -492,6 +507,7 @@ function PracticePageContent() {
 
     // 終了画面
     if (activeSession.isCompleted) {
+      const continuation = getPracticeContinuation(loadStudyData(), activeSession, pausedSessions, todayStr);
       const correctAnswers = Object.values(activeSession.answers).filter((a) => a.isCorrect).length;
       const scorePercent = totalQ > 0 ? Math.round((correctAnswers / totalQ) * 100) : 0;
       const missedQuestions = activeSession.questions.filter((q) => {
@@ -530,9 +546,9 @@ function PracticePageContent() {
                 </strong>
               </div>
               <div>
-                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block">定着予定</span>
+                <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block">次の復習予定</span>
                 <strong className="text-xs sm:text-sm font-sans text-[#232826] dark:text-[#FAF8F5] font-bold block pt-1">
-                  1〜3日後
+                  {continuation.nextDate ? practiceDateLabel(continuation.nextDate) : '復習ホームで確認'}
                 </strong>
               </div>
             </div>
@@ -577,6 +593,12 @@ function PracticePageContent() {
             )}
 
             {/* アクション */}
+            <div className="rounded-2xl border border-[#E5DEC9] p-4 text-left space-y-2 dark:border-[#2A3B4A]">
+              <h3 className="text-sm font-bold">次回は、今日の復習から</h3>
+              <p className="text-sm text-[#59615D] dark:text-[#AFBDC8]">{learningStatus === 'memory' ? '保存を確認できません。画面を閉じる前にブラウザーの保存設定をご確認ください。' : continuation.nextDate ? `${practiceDateLabel(continuation.nextDate)}の復習予定を、経穴辞典やホームから確認できます。` : '復習ホームで、途中の学習や次に取り組む問題を選べます。'}</p>
+              <p className="text-xs text-[#737C77] dark:text-[#A0B0BC]">復習ホームをブラウザーにブックマークしておくと、次回も開きやすくなります。途中の問題は同じ端末で再開できます。</p>
+              <button type="button" onClick={handleExitSession} className="ui-text-link min-h-11 text-sm">次回用の復習ホームを開く<ArrowRight aria-hidden="true" className="h-4 w-4" /></button>
+            </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
               <button
                 type="button"
@@ -585,6 +607,7 @@ function PracticePageContent() {
               >
                 学習ホームに戻る
               </button>
+              <Link href="/tsubo" className="ui-text-link min-h-11">経穴辞典に戻る<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
             </div>
           </div>
         </div>
@@ -596,7 +619,7 @@ function PracticePageContent() {
       return (
         <div className="min-h-screen py-6 sm:py-12 px-3 sm:px-6 lg:px-8 max-w-4xl mx-auto space-y-6">
           {/* セッションヘッダー */}
-          <div className="bg-white dark:bg-[#17212A] p-4 sm:p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs flex flex-wrap items-center justify-between gap-3 sticky top-4 z-20 backdrop-blur-md bg-white/90">
+          <div className="bg-white dark:bg-[#17212A] p-4 sm:p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-xs flex flex-wrap items-center justify-between gap-3 sticky top-[calc(var(--site-header-height)+12px)] z-20 backdrop-blur-md bg-white/90">
             <div className="min-w-0">
               <span className="text-[10px] text-[#B86924] font-bold block uppercase tracking-wider">
                 まとめ表示モード
@@ -891,6 +914,7 @@ function PracticePageContent() {
 
   const resumableSessions = [...(resumeSession ? [resumeSession] : []), ...pausedSessions]
     .filter((session, index, sessions) => sessions.findIndex(item => item.sessionId === session.sessionId) === index);
+  const returnPlan = getPracticeContinuation(loadStudyData(), null, pausedSessions, todayStr);
 
   return (
     <div className="min-h-screen py-8 sm:py-16 px-3 sm:px-6 lg:px-8">
@@ -910,6 +934,14 @@ function PracticePageContent() {
         </nav>
 
         <PageIntro compact headingLevel="h2" eyebrow="短い問題で、少しずつ身につける" title="経穴を学ぶ・復習する" art="study" description="経穴の部位・要穴・経脈を、小テストと間隔反復で確認します。" />
+
+        {learningStatus !== 'memory' && returnPlan.hasHistory && returnPlan.dueCount === 0 && returnPlan.nextDate && (
+          <aside aria-label="次の経穴復習" className="ui-card space-y-2">
+            <p className="font-semibold">次の復習予定：{practiceDateLabel(returnPlan.nextDate)}</p>
+            <p className="text-sm ui-muted">予定日になったら、このページの「今日の復習」から取り組めます。予定日前も、下の小テストから学べます。</p>
+            <p className="text-xs ui-muted">この復習ホームをブックマークすると、次回も開きやすくなります。</p>
+          </aside>
+        )}
 
         {invalidCourseRequest && (
           <p role="status" className="rounded-2xl border border-[#E5DEC9] bg-[#F6F4EE] p-4 text-sm text-[#59615D] dark:border-[#2A3B4A] dark:bg-[#17212A] dark:text-[#C5D2DB]">
@@ -984,7 +1016,7 @@ function PracticePageContent() {
               className="px-7 py-3.5 rounded-2xl bg-[#E6C387] text-[#1E3D34] font-bold text-sm hover:bg-[#F2DEB0] transition-all shadow-md shrink-0 flex items-center justify-center gap-2"
             >
               <Play className="w-4 h-4 fill-current" />
-              <span>復習を始める（10問）</span>
+              <span>今日の復習を始める</span>
             </button>
           ) : (
             <button

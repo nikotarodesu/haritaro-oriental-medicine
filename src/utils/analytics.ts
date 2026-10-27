@@ -36,6 +36,7 @@ export type AnalyticsEventName =
   | "quiz_answer"
   | "quiz_start"
   | "quiz_complete"
+  | "tsubo_practice_start" | "tsubo_practice_resume" | "tsubo_practice_complete"
   | "diagnosis_complete"
   | "share"
   | "curriculum_save_to_note"
@@ -265,6 +266,7 @@ function recordLearningActivity(activity: string, pathname: string): void {
 }
 
 const LEARNING_ACTIONS = new Set<AnalyticsEventName>([
+  "tsubo_practice_start", "tsubo_practice_resume", "tsubo_practice_complete",
   "quiz_start", "quiz_answer", "quiz_complete", "review_start", "review_complete", "case_training_start",
   "case_stage_complete", "case_training_complete",
 ]);

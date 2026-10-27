@@ -10,6 +10,7 @@ import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
 import { LEARNING_COURSES } from "@/data/learningCourses";
 import { getArticlePreviews } from "@/data/articleData";
 import { SITE_UPDATES } from "@/config/contentUpdates";
+import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
 
 export default function HomePage() {
   const featuredArticles = getArticlePreviews(["science-of-yinyang-gogyo", "science-of-qi-blood-fluid"]);
@@ -44,6 +45,7 @@ export default function HomePage() {
       </section>
 
       <div className="home-container home-sections">
+        <TsuboReviewEntry placement="home" onlyReturning />
         <HomeLearningProgressCard variant="support" />
         <section aria-labelledby="home-courses-title" className="home-section">
           <div className="home-section-header">

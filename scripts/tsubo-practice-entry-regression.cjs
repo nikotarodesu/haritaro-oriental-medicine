@@ -19,6 +19,7 @@ const load = createDataLoader({ window: browser, localStorage, crypto, structure
 const bridge = load('src/utils/learningStorageBridge');
 const study = load('src/data/tsubo/studyStorage');
 const entry = load('src/data/tsubo/practiceEntry');
+const { getPracticeContinuation, practiceDateLabel } = load('src/data/tsubo/continuation');
 const { isValidStudySession } = load('src/data/tsubo/studySessionValidation');
 const { MERIDIANS, getAllAcupoints, generateQuestionsForPoints } = load('src/data/tsubo/index');
 const points = getAllAcupoints();
@@ -92,7 +93,20 @@ assert.equal(entry.getPracticeEntryAction(null, requested), 'start');
 assert.equal(entry.getPracticeEntryAction({ ...old, isCompleted: true }, requested), 'start');
 assert.equal(entry.getPracticeEntryAction(old, null), 'resume');
 assert.equal(entry.getPracticeEntryAction(null, null), 'home');
+assert.equal(entry.getPracticeEntryAction({ ...old, isCompleted: true }, null), 'home', 'A return visit opens review home instead of the previous result');
 assert(entry.getPracticeSessionTitle(old).includes('手の太陰肺経（3問）'));
+
+const emptyStudy = { ...study.INITIAL_STUDY_DATA, records: {}, history: [] };
+assert.equal(getPracticeContinuation(emptyStudy, null, [], '2026-10-27').hasHistory, false);
+const scheduledStudy = { ...emptyStudy, records: { LI4_location_to_name: study.computeNextReview(undefined, 'LI4', 'location_to_name', true, '2026-10-27') } };
+let continuation = getPracticeContinuation(scheduledStudy, old, [], '2026-10-27');
+assert.equal(continuation.answered, 1); assert.equal(continuation.total, 3); assert(continuation.resumeTitle.includes('肺経'));
+assert.equal(continuation.nextDate, '2026-10-28'); assert.equal(continuation.dueCount, 0);
+assert.equal(practiceDateLabel(continuation.nextDate), '10月28日');
+continuation = getPracticeContinuation(scheduledStudy, { ...old, isCompleted: true }, [old], '2026-10-28');
+assert.equal(continuation.resumeTitle, null); assert.equal(continuation.pausedCount, 1); assert.equal(continuation.dueCount, 1); assert.equal(continuation.nextDate, '2026-10-28');
+const invalidSchedule = { ...scheduledStudy, records: { bad: { ...scheduledStudy.records.LI4_location_to_name, nextReviewDate: '2026-02-30' } } };
+assert.equal(getPracticeContinuation(invalidSchedule, null, [], '2026-10-27').nextDate, null);
 
 // Execute the real component with controlled hooks and storage, then use its actual buttons.
 function createHarness(queryString) {
@@ -105,9 +119,11 @@ function createHarness(queryString) {
   let params = new URLSearchParams(queryString);
   let timers = [];
   const alerts = [];
+  const analytics = [];
   const values = {};
   const mockReact = { ...React,
     useState(initial) { const index = stateIndex++; if (!(index in states)) states[index] = typeof initial === 'function' ? initial() : initial; return [states[index], value => { states[index] = typeof value === 'function' ? value(states[index]) : value; }]; },
+    useRef(initial) { const index = stateIndex++; if (!(index in states)) states[index] = { current: initial }; return states[index]; },
     useMemo: fn => fn(),
     useCallback: fn => fn,
     useEffectEvent: fn => fn,
@@ -132,6 +148,7 @@ function createHarness(queryString) {
     '@/contexts/AuthContext': { useAuth: () => ({ user: null }) },
     '@/contexts/CurriculumProgressContext': { useCurriculumProgress: () => ({ saveQuizResult() {} }) },
     '@/contexts/ClinicalMemoContext': { useClinicalMemo: () => ({ memos: [] }) },
+    '@/utils/analytics': { trackEvent: (name, params) => analytics.push({ name, params }) },
     '@/components/learning/LearningSyncStatus': { __esModule: true, default: () => null },
     // Keep the real heading/actions in this practice-flow harness; artwork is presentational.
     '@/components/design/PageIntro': { __esModule: true, default: ({ title, description, children, headingLevel = 'h1' }) => React.createElement('header', null, React.createElement(headingLevel, null, title), description, children) },
@@ -161,7 +178,7 @@ function createHarness(queryString) {
     return tree;
   }
   return {
-    render, alerts,
+    render, alerts, analytics,
     text: () => textOf(tree),
     click(label, courseTitle) {
       let found;
@@ -235,6 +252,9 @@ for (const query of ['course=meridian_intestine', 'course=meridian_lung&course=m
   assert.equal(harness.alerts.length, 0);
 }
 study.saveActiveSession(session('complete', 'meridian_lung', true));
+harness = createHarness(''); harness.render();
+assert(harness.text().includes('十四経脈の小テストを始める'));
+assert(!harness.text().includes('レッスン完了！'), 'The next visit does not get stuck on a stale result');
 harness = createHarness('course=meridian_stomach'); harness.render();
 assert.equal(study.loadActiveSession().courseId, 'meridian_stomach');
 assert.equal(study.loadPausedSessions().length, 0, 'Completed work is not queued as interrupted');
@@ -269,6 +289,21 @@ harness.click('肺経基礎から始める（6問）');
 const selectedSkillSession = study.loadActiveSession();
 assert(selectedSkillSession?.questions.length > 0);
 assert(selectedSkillSession.questions.every(question => question.skill === 'puncture_method'), 'The actual next set uses the selected skill');
+assert.equal(harness.analytics.filter(event => event.name === 'tsubo_practice_start').length, 1);
+assert(harness.analytics.every(event => Object.keys(event.params).every(key => ['placement', 'total'].includes(key))), 'Practice analytics contain no question, answer, point, session or account identifiers');
+study.resetAllStudyData();
+const finishable = session('finish-and-return', 'meridian_lung');
+finishable.answers = Object.fromEntries(finishable.questions.map(question => [question.id, { selectedOptionId: question.correctOptionId, isCorrect: true, confirmedAt: 1 }]));
+study.saveActiveSession(finishable);
+harness = createHarness('course=meridian_lung'); harness.render();
+harness.click('採点して終了');
+assert(harness.text().includes('レッスン完了！'));
+assert(harness.text().includes('次の復習予定'));
+assert.equal(harness.analytics.filter(event => event.name === 'tsubo_practice_complete').length, 1);
+harness.click('次回用の復習ホームを開く');
+assert(harness.text().includes('十四経脈の小テストを始める'));
+assert(!harness.text().includes('レッスン完了！'));
+assert.equal(study.loadActiveSession(), null);
 study.resetAllStudyData();
 bridge.setLearningStorageAdapter(null);
 assert.equal(study.savePausedSession(old), false);

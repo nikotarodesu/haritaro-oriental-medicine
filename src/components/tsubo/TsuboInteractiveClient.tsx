@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import BodyMapSvg from "@/components/tsubo/BodyMapSvg";
 import ClipButton from "@/components/ClipButton";
+import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
 import ClinicalPairsSection from "@/components/ClinicalPairsSection";
 import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
@@ -410,6 +411,7 @@ export default function TsuboInteractiveClient() {
       </section>
 
       {/* 経穴一覧セクション */}
+      <TsuboReviewEntry placement="dictionary" />
       <section id="tsubo-list" className="space-y-4">
         {/* 一覧上部コントロールバー */}
         <div className="tsubo-results-toolbar">
