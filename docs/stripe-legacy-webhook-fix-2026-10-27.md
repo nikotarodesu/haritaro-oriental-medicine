@@ -19,3 +19,9 @@ Unverified ownership conflicts still fail. Stripe/Supabase lookup failures remai
 Changed files pass ESLint. The local default Turbopack build encountered a Windows CSS worker startup failure, including outside the sandbox. `npm run build -- --webpack` passed TypeScript and generated all 574 pages. Production uses its configured Vercel build and must be checked separately.
 
 Actual cancellation/refund decisions require operator confirmation of which contract to retain. Keep the existing membership binding while reviewing the historical contract. After production deployment, verify the next Stripe delivery or resend the two failed events from Workbench. The connected Stripe API exposes no event-resend operation, so successful fixture tests alone do not establish that a real pending delivery has completed.
+
+## Timestamp cancellation follow-up
+
+Stripe may set `cancel_at` while `cancel_at_period_end` remains false. Treat a timestamp ending within the current paid period as a scheduled cancellation and bound access by the earlier of that timestamp and the paid period end. A timestamp beyond the current period must not extend paid access or falsely indicate that the next renewal is stopped. This also makes the existing account page's cancellation label accurate after synchronization.
+
+Regression coverage includes cancellation at the period end with a false boolean, an earlier end, a later end, clearing the timestamp, and access immediately before/at expiry. `npm run test:billing`, ESLint, and `npm run build -- --webpack` pass with 574 pages. Reading or displaying a cancellation does not change the Stripe contract itself.

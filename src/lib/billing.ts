@@ -42,14 +42,18 @@ export function subscriptionState(subscription: Stripe.Subscription): UserSubscr
   }
   const invoice = subscription.latest_invoice;
   const paid = typeof invoice === 'object' && invoice !== null && invoice.status === 'paid';
+  const periodEnd = item.current_period_end || 0;
+  const cancelAt = subscription.cancel_at && subscription.cancel_at > 0 ? subscription.cancel_at : null;
+  // A timestamp cancellation can end this period even when the boolean is false.
+  const cancelAtPeriodEnd = subscription.cancel_at_period_end || Boolean(cancelAt && cancelAt <= periodEnd);
   const status = subscription.status === 'active' && paid
-    ? (subscription.cancel_at_period_end ? 'canceled' : 'active')
+    ? (cancelAtPeriodEnd ? 'canceled' : 'active')
     : subscription.status === 'past_due' ? 'past_due' : ['incomplete', 'trialing'].includes(subscription.status) || (subscription.status === 'active' && !paid) ? 'incomplete' : 'none';
   return {
     plan: interval === 'year' ? 'yearly' : 'monthly', status,
     currentPeriodStart: (item.current_period_start || 0) * 1000,
-    currentPeriodEnd: (item.current_period_end || 0) * 1000,
-    cancelAtPeriodEnd: subscription.cancel_at_period_end,
+    currentPeriodEnd: Math.min(periodEnd, cancelAt ?? periodEnd) * 1000,
+    cancelAtPeriodEnd,
     stripeCustomerId: typeof subscription.customer === 'string' ? subscription.customer : subscription.customer.id,
     stripeSubscriptionId: subscription.id,
   };
