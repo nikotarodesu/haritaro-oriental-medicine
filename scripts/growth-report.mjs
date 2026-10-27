@@ -3,8 +3,10 @@ import { google } from 'googleapis';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import nextEnv from '@next/env';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+nextEnv.loadEnvConfig(root);
 const args = process.argv.slice(2);
 const propertyId = process.env.GA4_PROPERTY_ID || args.find(value => /^\d+$/.test(value));
 const credentialPath = process.env.GOOGLE_APPLICATION_CREDENTIALS || path.join(root, 'credentials/ga4-key.json');
@@ -24,6 +26,7 @@ const publicFilter = { andGroup: { expressions: [hostFilter, { notExpression: {
 const eventNames = [
   'article_view', 'lecture_view', 'quiz_start', 'quiz_answer', 'quiz_complete', 'review_start', 'review_complete',
   'case_training_start', 'case_training_complete', 'context_link_click', 'learning_activity', 'learning_return_7d',
+  'upgrade_click', 'checkout_login_required', 'begin_checkout', 'checkout_error', 'purchase',
   ...['lcp', 'inp', 'cls'].flatMap(name => ['good', 'needs_improvement', 'poor'].map(rating => `web_vital_${name}_${rating}`)),
 ];
 

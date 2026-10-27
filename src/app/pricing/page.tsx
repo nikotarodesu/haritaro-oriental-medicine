@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
 import { useRouter } from "next/navigation";
@@ -20,10 +20,20 @@ import {
 import { useSubscriptionAvailability } from "@/hooks/useSubscriptionAvailability";
 import SubscriptionAvailabilityNotice from "@/components/subscription/SubscriptionAvailabilityNotice";
 import { useAuth } from "@/contexts/AuthContext";
+import { trackSubscriptionStep } from '@/utils/analytics';
+
+const subscribeToPlan = (notify: () => void) => {
+  window.addEventListener('popstate', notify);
+  return () => window.removeEventListener('popstate', notify);
+};
+const requestedPlan = (): 'monthly' | 'yearly' => new URLSearchParams(window.location.search).get('plan') === 'yearly' ? 'yearly' : 'monthly';
+const serverPlan = (): 'monthly' | 'yearly' => 'monthly';
 
 export default function PricingPage() {
   const router = useRouter();
-  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
+  const urlPlan = useSyncExternalStore(subscribeToPlan, requestedPlan, serverPlan);
+  const [selectedPlan, setBillingCycle] = useState<"monthly" | "yearly" | null>(null);
+  const billingCycle = selectedPlan ?? urlPlan;
   const [sampleViewTab, setSampleViewTab] = useState<"note" | "sheet">("note");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +44,8 @@ export default function PricingPage() {
 
   const handleSubscribe = async () => {
     if (!salesEnabled) return;
-    if (!user) { router.push('/auth/login?returnTo=%2Fpricing%23pricing-cards'); return; }
+    void trackSubscriptionStep('upgrade_click', billingCycle);
+    if (!user) { await trackSubscriptionStep('checkout_login_required', billingCycle); router.push('/auth/login?returnTo=' + encodeURIComponent('/pricing?plan=' + billingCycle + '#pricing-cards')); return; }
     setIsLoading(true);
     setError(null);
     try {
@@ -49,11 +60,14 @@ export default function PricingPage() {
       const data = await res.json();
 
       if (res.ok && data.url) {
+        await trackSubscriptionStep('begin_checkout', billingCycle);
         window.location.href = data.url;
       } else {
+        void trackSubscriptionStep('checkout_error', billingCycle, 'request_failed');
         setError(data.error || "決済画面の起動に失敗しました。時間をおいてお試しください。");
       }
     } catch (e: unknown) {
+      void trackSubscriptionStep('checkout_error', billingCycle, 'network_error');
       console.error("Checkout error:", e);
       setError("通信エラーが発生しました。ネットワーク状況をご確認ください。");
     } finally {

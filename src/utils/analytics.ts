@@ -1,5 +1,6 @@
 import { PUBLIC_CLINICAL_GUIDE_PATHS, PUBLIC_SYMPTOM_PATHS } from '@/config/publicGuideRoutes';
 import { LEARNING_COURSES } from '@/data/learningCourses';
+import { SUBSCRIPTION_CONFIG } from '@/config/subscription';
 
 const PUBLIC_COURSE_SLUGS = new Set(LEARNING_COURSES.map(course => course.slug));
 const PUBLIC_COURSE_PATHS = new Set(LEARNING_COURSES.map(course => `/learn/courses/${course.slug}`));
@@ -29,6 +30,7 @@ export type AnalyticsEventName =
   | "context_link_click"
   | "nav_customize_save"
   | "upgrade_click"
+  | "checkout_login_required" | "begin_checkout" | "checkout_error" | "purchase"
   | "clip_item"
   | "simulator_diagnose"
   | "quiz_answer"
@@ -92,6 +94,7 @@ const PUBLIC_PAGES = new Set([
   "/tsubo/practice", "/tsubo/compare", "/tsubo/basics/bone-cun", "/practice/haiketsu",
   "/library", "/learn", "/learn/courses", "/tokushoho", "/simulator", "/simulator/compare",
   "/terms", "/safety", "/symptoms", "/privacy", "/updates",
+  "/checkout/complete",
   ...PUBLIC_SYMPTOM_PATHS, ...PUBLIC_CLINICAL_GUIDE_PATHS,
 ]);
 const PUBLIC_DETAIL = /^\/(?:articles|cases|curriculum|kikei|tsubo)\/[a-z0-9-]{1,80}$/i;
@@ -114,24 +117,74 @@ export function analyticsReferrer(value: string, origin: string): string {
   } catch { return ""; }
 }
 
-type SafeEvent = { name: AnalyticsEventName; params: Record<string, string | number | boolean>; pathname: string };
+type CommerceItem = { item_id: string; item_name: string; price: number; quantity: number };
+type SafeEvent = { name: AnalyticsEventName; params: Record<string, string | number | boolean | CommerceItem[]>; pathname: string; onEmit?: () => void; onDrop?: () => void; onComplete?: () => void };
 const pending: SafeEvent[] = [];
 const MAX_PENDING = 40;
 
 function emit(event: SafeEvent): void {
   if (!window.gtag) {
-    if (pending.length === MAX_PENDING) pending.shift();
+    if (pending.length === MAX_PENDING) pending.shift()?.onDrop?.();
     pending.push(event);
     return;
   }
   try {
+    const measurementId = process.env.NEXT_PUBLIC_GA_ID;
     window.gtag("event", event.name, {
       ...event.params,
+      ...((measurementId && /^G-[A-Z0-9]+$/.test(measurementId) && measurementId !== 'G-XXXXXXXXXX') ? { send_to: measurementId } : {}),
       page_location: window.location.origin + event.pathname,
       page_path: event.pathname,
       page_referrer: analyticsReferrer(document.referrer, window.location.origin),
+      ...(event.onComplete ? { event_callback: event.onComplete, event_timeout: 800 } : {}),
     });
+    event.onEmit?.();
   } catch { /* Measurements must not interrupt learning. */ }
+}
+
+type BillingPlan = 'monthly' | 'yearly';
+export interface PurchaseReceipt { transactionId: string; plan: BillingPlan; value: number; currency: 'JPY' }
+export function isPurchaseReceipt(value: unknown): value is PurchaseReceipt {
+  if (!value || typeof value !== 'object') return false;
+  const receipt = value as Partial<PurchaseReceipt>;
+  return typeof receipt.transactionId === 'string' && /^ht_[a-f0-9]{64}$/.test(receipt.transactionId)
+    && (receipt.plan === 'monthly' || receipt.plan === 'yearly') && receipt.currency === 'JPY'
+    && typeof receipt.value === 'number' && Number.isInteger(receipt.value) && receipt.value >= 0 && receipt.value <= 1000000;
+}
+function subscriptionItem(plan: BillingPlan, price: number): CommerceItem {
+  return { item_id: 'haritaro_premium_' + plan, item_name: 'Haritaro Premium ' + plan, price, quantity: 1 };
+}
+export function trackSubscriptionStep(name: 'upgrade_click' | 'checkout_login_required' | 'begin_checkout' | 'checkout_error', plan: BillingPlan, failure?: 'request_failed' | 'network_error'): Promise<void> {
+  if (typeof window === 'undefined' || publicAnalyticsPath(window.location.pathname) !== '/pricing' || !['monthly', 'yearly'].includes(plan)) return Promise.resolve();
+  const amount = SUBSCRIPTION_CONFIG.pricing[plan].amount;
+  return new Promise(resolve => {
+    // Give navigation events a bounded chance to leave the page. Blocked analytics
+    // must never prevent login or payment, and callbacks cannot initiate navigation.
+    const timer = setTimeout(resolve, 1200);
+    const done = () => { clearTimeout(timer); resolve(); };
+    emit({ name, pathname: '/pricing', onComplete: done, onDrop: done, params: { plan, placement: 'pricing',
+      ...(name === 'begin_checkout' ? { currency: 'JPY', value: amount, items: [subscriptionItem(plan, amount)] } : {}),
+      ...(name === 'checkout_error' && failure ? { method: failure } : {}),
+    } });
+  });
+}
+const queuedPurchases = new Set<string>();
+const emittedPurchases = new Set<string>();
+const PURCHASE_KEY = 'haritaro:analytics:purchase-receipts:v1';
+export function trackSubscriptionPurchase(receipt: unknown): boolean {
+  if (typeof window === 'undefined' || publicAnalyticsPath(window.location.pathname) !== '/checkout/complete' || !isPurchaseReceipt(receipt)) return false;
+  let stored: string[] = [];
+  try { const value = JSON.parse(window.sessionStorage.getItem(PURCHASE_KEY) || '[]'); if (Array.isArray(value)) stored = value.filter(id => typeof id === 'string' && /^ht_[a-f0-9]{64}$/.test(id)); } catch { /* In-memory deduplication remains available. */ }
+  if (queuedPurchases.has(receipt.transactionId) || emittedPurchases.has(receipt.transactionId) || stored.includes(receipt.transactionId)) return false;
+  queuedPurchases.add(receipt.transactionId);
+  emit({ name: 'purchase', pathname: '/checkout/complete', params: {
+    transaction_id: receipt.transactionId, plan: receipt.plan, currency: receipt.currency, value: receipt.value,
+    items: [subscriptionItem(receipt.plan, receipt.value)],
+  }, onDrop: () => queuedPurchases.delete(receipt.transactionId), onEmit: () => {
+    queuedPurchases.delete(receipt.transactionId); emittedPurchases.add(receipt.transactionId);
+    try { window.sessionStorage.setItem(PURCHASE_KEY, JSON.stringify([...new Set([...stored, receipt.transactionId])].slice(-20))); } catch { /* Measurement must not block membership. */ }
+  } });
+  return true;
 }
 
 export function flushAnalyticsEvents(): void {

@@ -1,20 +1,22 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- CommonJS analytics regression harness. */
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const ts = require('typescript');
 const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
+process.env.NEXT_PUBLIC_GA_ID='G-HARITARO123';
 const events = [];
 const storage = new Map();
 const windowStub = {
   location: { origin: 'https://www.haritaro.jp', pathname: '/curriculum/lecture-yinyang-1', search: '?query=private', hash: '#patient' },
   localStorage: { getItem: key => storage.get(key) || null, setItem: (key, value) => storage.set(key, value) },
+  sessionStorage: { getItem: key => storage.get(key) || null, setItem: (key, value) => storage.set(key, value) },
 };
-const exportsStub = {};
-const code = ts.transpileModule(fs.readFileSync(path.join(root, 'src/utils/analytics.ts'), 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
-vm.runInNewContext(code, { exports: exportsStub, window: windowStub, document: { referrer: 'https://www.haritaro.jp/notes?patient=private#private' }, URL, console, Date });
-const { publicAnalyticsPath, analyticsReferrer, sanitizeAnalyticsParams, learningReturnGap, trackEvent, flushAnalyticsEvents, trackLearningPageView, trackWebVital } = exportsStub;
+const { createDataLoader } = require('./data-loader.cjs');
+const load = createDataLoader({ window: windowStub, document: { referrer: 'https://www.haritaro.jp/notes?patient=private#private' }, URL, console, Date, setTimeout, clearTimeout });
+const { publicAnalyticsPath, analyticsReferrer, sanitizeAnalyticsParams, learningReturnGap, trackEvent, flushAnalyticsEvents, trackLearningPageView, trackWebVital, trackSubscriptionStep, trackSubscriptionPurchase } = load('src/utils/analytics');
 
+(async()=>{
 assert.equal(publicAnalyticsPath('/notes?patient=private'), null);
 assert.equal(publicAnalyticsPath('/auth/login#secret'), null);
 assert.equal(publicAnalyticsPath('/account/subscription'), null);
@@ -39,6 +41,7 @@ assert.equal(events[0].name, 'search_submit');
 assert.equal(events[0].params.query, undefined);
 assert.equal(events[0].params.page_location, 'https://www.haritaro.jp/curriculum/lecture-yinyang-1');
 assert.equal(events[0].params.page_referrer, '');
+assert.equal(events[0].params.send_to,'G-HARITARO123');
 const previous = new Date(); previous.setDate(previous.getDate() - 1);
 storage.set('haritaro:analytics:learning-day:v1', `${previous.getFullYear()}-${String(previous.getMonth() + 1).padStart(2, '0')}-${String(previous.getDate()).padStart(2, '0')}`);
 trackEvent('quiz_start', { lecture_id: 'lecture-yinyang-1' });
@@ -60,6 +63,33 @@ trackWebVital({ name: 'INP', value: 100, rating: 'good', navigationType: 'naviga
 assert.equal(events.length, count);
 assert(!JSON.stringify(events).includes('private'));
 
+windowStub.location.pathname='/pricing';
+trackSubscriptionStep('upgrade_click','monthly');trackSubscriptionStep('checkout_login_required','monthly');trackSubscriptionStep('begin_checkout','yearly');
+const checkoutEvent=events.at(-1);assert.equal(checkoutEvent.name,'begin_checkout');assert.equal(checkoutEvent.params.currency,'JPY');assert.equal(checkoutEvent.params.value,9800);assert.equal(checkoutEvent.params.items[0].item_id,'haritaro_premium_yearly');
+trackSubscriptionStep('checkout_error','monthly','network_error');assert.equal(events.at(-1).params.method,'network_error');
+windowStub.location.pathname='/checkout/complete';
+const purchase={transactionId:'ht_'+'a'.repeat(64),plan:'monthly',value:980,currency:'JPY'};
+assert.equal(trackSubscriptionPurchase(purchase),true);assert.equal(trackSubscriptionPurchase(purchase),false);
+assert.equal(events.at(-1).name,'purchase');assert.equal(events.at(-1).params.items[0].price,980);assert.equal(events.at(-1).params.page_location,'https://www.haritaro.jp/checkout/complete');
+assert(!JSON.stringify(events).includes('private'));
+const beforeInvalid=events.length;
+assert.equal(trackSubscriptionPurchase({...purchase,transactionId:'cs_live_secret'}),false);assert.equal(trackSubscriptionPurchase({...purchase,value:Infinity}),false);
+assert.equal(events.length,beforeInvalid);
+delete windowStub.gtag;
+const queuedPurchase={...purchase,transactionId:'ht_'+'b'.repeat(64)};
+assert.equal(trackSubscriptionPurchase(queuedPurchase),true);assert.equal(trackSubscriptionPurchase(queuedPurchase),false);
+windowStub.gtag=(command,name,params)=>events.push({command,name,params});flushAnalyticsEvents();
+assert.equal(events.filter(e=>e.name==='purchase'&&e.params.transaction_id===queuedPurchase.transactionId).length,1);
+windowStub.location.pathname='/account/subscription';
+assert.equal(trackSubscriptionPurchase({...purchase,transactionId:'ht_'+'c'.repeat(64)}),false);
+const beforePrivateBilling=events.length;trackSubscriptionStep('begin_checkout','monthly');assert.equal(events.length,beforePrivateBilling);
+windowStub.location.pathname='/pricing';
+let navigationDeadline;
+await Promise.race([
+  trackSubscriptionStep('begin_checkout','monthly'),
+  new Promise((_,reject)=>{navigationDeadline=setTimeout(()=>reject(new Error('Blocked analytics must not stall payment navigation')),5000);}),
+]).finally(()=>clearTimeout(navigationDeadline));
+
 const ga = fs.readFileSync(path.join(root, 'src/components/GoogleAnalytics.tsx'), 'utf8');
 assert(ga.includes('ga-disable-'));
 assert(ga.includes('allow_google_signals: false'));
@@ -71,3 +101,4 @@ for (const [gaId, expected] of [['G-GC398NZKVE', true], ['G-GE4JNB164V', true], 
 }
 assert(fs.readFileSync(path.join(root, 'src/components/WebVitalsReporter.tsx'), 'utf8').includes('next/web-vitals'));
 console.log('Passed: public-route privacy, safe event queue, daily activity, 1–7-day return boundaries, and official Web Vitals values.');
+})().catch(error=>{console.error(error);process.exitCode=1;});

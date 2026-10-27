@@ -20,16 +20,32 @@ export async function POST(request: Request) {
     const price = await stripe.prices.retrieve(priceId);
     if (!price.active || price.currency !== 'jpy' || price.unit_amount !== config.amount || price.recurring?.interval !== config.billingInterval || price.recurring?.interval_count !== 1) throw new BillingError('料金の設定を確認中です。');
     let customerId: string | undefined = account.app_metadata.billing_customer_id || account.app_metadata.subscription?.stripeCustomerId;
-    if (!customerId) {
+    const storedCustomer = customerId ? await stripe.customers.retrieve(customerId) : null;
+    const deletedCustomerId = storedCustomer?.deleted ? storedCustomer.id : null;
+    if (deletedCustomerId) {
+      const previousId = account.app_metadata.subscription?.stripeSubscriptionId;
+      if (previousId) {
+        const previous = await stripe.subscriptions.retrieve(previousId);
+        const previousCustomer = typeof previous.customer === 'string' ? previous.customer : previous.customer.id;
+        if (previousCustomer !== deletedCustomerId || !['canceled', 'incomplete_expired'].includes(previous.status)) throw new BillingError('以前の契約を確認できません。時間をおいて契約状態を再確認してください。', 409);
+      }
+    }
+    if (!storedCustomer || deletedCustomerId) {
       // Persist ownership before creating any payable session. A save failure stops sales.
+      // Include the deleted ID so a recent customer's idempotency cache cannot revive it.
       const customer = await stripe.customers.create({ metadata: { userId: user.id, application: 'haritaro' } }, {
-        idempotencyKey: 'haritaro_customer_' + createHash('sha256').update(user.id).digest('hex'),
+        idempotencyKey: 'haritaro_customer_' + createHash('sha256').update(user.id + (deletedCustomerId ? ':' + deletedCustomerId : '')).digest('hex'),
       });
       customerId = customer.id;
-      const { error } = await admin.auth.admin.updateUserById(user.id, { app_metadata: { ...account.app_metadata, billing_customer_id: customerId } });
+      const retired = Array.isArray(account.app_metadata.billing_retired_customer_ids) ? account.app_metadata.billing_retired_customer_ids.filter((id: unknown): id is string => typeof id === 'string' && /^cus_[A-Za-z0-9]+$/.test(id)) : [];
+      const { error } = await admin.auth.admin.updateUserById(user.id, { app_metadata: {
+        ...account.app_metadata, billing_customer_id: customerId,
+        ...(deletedCustomerId ? { billing_retired_customer_ids: [...new Set([...retired, deletedCustomerId])].slice(-10), subscription: null, role: account.app_metadata.role === 'admin' ? 'admin' : 'free' } : {}),
+      } });
       if (error) throw new BillingError('会員情報の保存を確認中です。お申し込みはまだ確定していません。');
     }
-    const customer = await stripe.customers.retrieve(customerId);
+    if (!customerId) throw new BillingError('決済用アカウントを確認できません。');
+    const customer = storedCustomer && !deletedCustomerId ? storedCustomer : await stripe.customers.retrieve(customerId);
     if (customer.deleted || (customer.metadata.userId && customer.metadata.userId !== user.id)) throw new BillingError('決済と会員の関連付けを確認できません。', 409);
     const current = await stripe.subscriptions.list({ customer: customerId, status: 'all', limit: 100 });
     if (current.has_more || current.data.some(sub => ['active','trialing','past_due','incomplete','unpaid','paused'].includes(sub.status))) throw new BillingError('既存の契約があります。マイページの決済管理から変更してください。', 409);
@@ -51,15 +67,15 @@ export async function POST(request: Request) {
     }
     // Advance only after Stripe records the preceding attempt, never on a clock bucket.
     // Concurrent plan selections share a key: Stripe rejects different parameters.
-    const attempt = createHash('sha256').update(user.id + ':' + (previous?.id || 'first')).digest('hex');
+    const attempt = createHash('sha256').update(user.id + ':' + customerId + ':' + (previous?.id || 'first')).digest('hex');
     const origin = new URL(request.url).origin;
     const suffix = attempt.slice(0,8).replace(/[0-9]/g, char => String.fromCharCode(97 + Number(char)));
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription', line_items: [{ price: priceId, quantity: 1 }],
       customer: customerId,
-      client_reference_id: user.id, metadata: { userId: user.id, plan }, subscription_data: { metadata: { userId: user.id, plan } },
+      client_reference_id: user.id, metadata: { userId: user.id, plan, analyticsVersion: '1' }, subscription_data: { metadata: { userId: user.id, plan } },
       integration_identifier: 'haritaro_' + suffix,
-      success_url: origin + '/account/subscription?session_id={CHECKOUT_SESSION_ID}', cancel_url: origin + '/pricing?canceled=true',
+      success_url: origin + '/checkout/complete?session_id={CHECKOUT_SESSION_ID}', cancel_url: origin + '/pricing?canceled=true',
     }, { idempotencyKey: 'haritaro_checkout_' + attempt });
     if (!session.url) throw new BillingError('決済画面を確認できませんでした。');
     return Response.json({ url: session.url }, { headers: { 'Cache-Control': 'no-store' } });

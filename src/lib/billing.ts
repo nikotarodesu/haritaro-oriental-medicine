@@ -81,6 +81,12 @@ export async function syncSubscription(stripe: Stripe, subscriptionId: string, e
   const customerId = user.app_metadata.billing_customer_id || user.app_metadata.subscription?.stripeCustomerId;
   const existingId = user.app_metadata.subscription?.stripeSubscriptionId;
   if (customerId && customerId !== state.stripeCustomerId) {
+    // A deleted customer was retired only after its ended contract was verified.
+    // Delayed terminal deliveries must not restore that binding during re-enrollment.
+    if (state.status === 'none' && Array.isArray(user.app_metadata.billing_retired_customer_ids) && user.app_metadata.billing_retired_customer_ids.includes(state.stripeCustomerId)) {
+      console.warn('Stripe retired customer subscription ignored', { subscriptionId });
+      return user;
+    }
     // Legacy Checkout could create another customer for the same member. Acknowledge
     // its deliveries only after verifying the authoritative contract's ownership;
     // never replace that binding or grant access from the other customer.

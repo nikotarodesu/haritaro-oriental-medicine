@@ -22,14 +22,14 @@ const admin = { auth:{admin:{
 }}};
 class FakeStripe {
   constructor() {
-    this.customers = {create:async()=>({id:'cus_fixture'}),retrieve:async()=>({id:'cus_fixture',metadata:{userId:state.customerOwner||uid}})};
+    this.customers = {create:async(body,options)=>{(state.customerCreates||=[]).push({body,options});return {id:state.nextCustomer||'cus_fixture'};},retrieve:async(id)=>{if(state.customerReadFails)throw new Error('fixture lookup failure');return id===state.deletedCustomer?{id,deleted:true}:{id,metadata:{userId:state.customerOwner||uid}};}};
     this.webhooks = new Stripe('sk_test_fixture').webhooks;
     this.prices = {retrieve:async()=>({active:true,currency:'jpy',unit_amount:state.invalidPrice?1:980,recurring:{interval:'month',interval_count:1}})};
     this.subscriptions = {retrieve:async(id)=>{if(state.failSubscription===id)throw new Error('fixture retrieval failed');return state.subscriptions?.[id]||state.subscription;},list:async()=>({data:state.duplicate?[{status:'active'}]:[]})};
     this.checkout = {sessions:{
       create:async(body,options)=>{state.checkouts.push({body,options});return {url:'https://checkout.stripe.com/fixture'};},
       list:async(params)=>({data:params.customer?(state.sessions||[]):(state.unrelated?[]:[{metadata:{userId:uid}}])}),
-      retrieve:async()=>({metadata:{userId:state.sessionOwner},client_reference_id:state.sessionOwner,status:'complete',payment_status:state.paymentStatus,subscription:'sub_fixture'})
+      retrieve:async()=>({id:'cs_fixture',created:state.sessionCreated??Math.floor(Date.now()/1000),amount_total:state.amountTotal??980,currency:'jpy',metadata:{userId:state.sessionOwner,...(!state.legacyCheckout?{analyticsVersion:'1'}:{})},client_reference_id:state.sessionOwner,status:'complete',payment_status:state.paymentStatus,subscription:'sub_fixture'})
     }};
     this.billingPortal = {sessions:{create:async(body)=>{state.portals.push(body);return {url:'https://billing.stripe.com/fixture'};}}};
   }
@@ -97,6 +97,17 @@ const req=(route,body,origin='https://www.haritaro.jp')=>new Request('https://ww
   await assert.rejects(syncSubscription(new FakeStripe(),'sub_fixture',other));
   await syncSubscription(new FakeStripe(),'sub_fixture',uid);assert.equal(state.user.app_metadata.role,'premium');
   const verifiedUser=state.user;
+  const receiptResponse=await status(new Request('https://www.haritaro.jp/api/stripe/status?session_id=cs_fixture'));
+  const receipt=(await receiptResponse.json()).purchase;
+  assert.match(receipt.transactionId,/^ht_[a-f0-9]{64}$/);assert.equal(receipt.plan,'monthly');assert.equal(receipt.value,980);assert.equal(receipt.currency,'JPY');
+  assert(!JSON.stringify(receipt).includes('cs_fixture'));assert(!JSON.stringify(receipt).includes('cus_fixture'));assert(!JSON.stringify(receipt).includes(uid));
+  assert.equal((await (await status(new Request('https://www.haritaro.jp/api/stripe/status?session_id=cs_fixture'))).json()).purchase.transactionId,receipt.transactionId);
+  state.legacyCheckout=true;assert.equal((await (await status(new Request('https://www.haritaro.jp/api/stripe/status?session_id=cs_fixture'))).json()).purchase,null);delete state.legacyCheckout;
+  state.sessionCreated=Math.floor(Date.now()/1000)-2*86400;
+  assert((await (await status(new Request('https://www.haritaro.jp/api/stripe/status?session_id=cs_fixture'))).json()).purchase,'delayed payment can still be measured');
+  state.sessionCreated=Math.floor(Date.now()/1000)-8*86400;
+  assert.equal((await (await status(new Request('https://www.haritaro.jp/api/stripe/status?session_id=cs_fixture'))).json()).purchase,null,'old sessions must not become new purchases');delete state.sessionCreated;
+  assert.equal((await (await status(new Request('https://www.haritaro.jp/api/stripe/status'))).json()).purchase,null,'opening account management is not a purchase');
   state.user={...verifiedUser,app_metadata:{...verifiedUser.app_metadata,billing_customer_id:'cus_other'}};
   await assert.rejects(syncSubscription(new FakeStripe(),'sub_fixture',uid));
   state.user={...verifiedUser,app_metadata:{...verifiedUser.app_metadata,subscription:{...verifiedUser.app_metadata.subscription,stripeSubscriptionId:'sub_new'}}};
@@ -125,7 +136,7 @@ const req=(route,body,origin='https://www.haritaro.jp')=>new Request('https://ww
   state.subscription.status='canceled';assert.equal(subscriptionState(state.subscription).status,'none');
   assert.equal((await webhook(req('/api/webhook/stripe',{}))).status,400);
   assert.equal((await webhook(new Request('https://www.haritaro.jp/api/webhook/stripe',{method:'POST',headers:{'stripe-signature':'invalid'},body:'{}'}))).status,400);
-  const signed=(type,livemode=true)=>{const payload=JSON.stringify({id:'evt_fixture',livemode,type,data:{object:{id:'sub_fixture',parent:{subscription_details:{subscription:'sub_fixture'}}}}});const signature=new Stripe('sk_test_fixture').webhooks.generateTestHeaderString({payload,secret:'whsec_fixture'});return new Request('https://www.haritaro.jp/api/webhook/stripe',{method:'POST',headers:{'stripe-signature':signature},body:payload});};
+  const signed=(type,livemode=true,subscription='sub_fixture')=>{const payload=JSON.stringify({id:'evt_fixture',livemode,type,data:{object:{id:subscription,parent:{subscription_details:{subscription}}}}});const signature=new Stripe('sk_test_fixture').webhooks.generateTestHeaderString({payload,secret:'whsec_fixture'});return new Request('https://www.haritaro.jp/api/webhook/stripe',{method:'POST',headers:{'stripe-signature':signature},body:payload});};
   assert.equal((await webhook(signed('invoice.paid',false))).status,400);
   delete process.env.STRIPE_SECRET_KEY;assert.equal((await webhook(signed('invoice.paid'))).status,503);process.env.STRIPE_SECRET_KEY='sk_live_fixture';
   // A legacy paid contract can belong to another customer of the same member.
@@ -156,6 +167,40 @@ const req=(route,body,origin='https://www.haritaro.jp')=>new Request('https://ww
   state.subscription=fixture();await webhook(signed('invoice.paid'));assert.equal(state.user.app_metadata.role,'premium');
   state.subscription.status='canceled';await webhook(signed('customer.subscription.deleted'));assert.equal(state.user.app_metadata.role,'free');
   await webhook(signed('customer.subscription.updated'));assert.equal(state.user.app_metadata.role,'free','late event must retrieve current canceled state');
+  // Re-enrollment after a dashboard customer deletion creates one replacement,
+  // persists it first, rotates both idempotency keys and ignores old terminal events.
+  const deletedUser={...freeUser,app_metadata:{role:'free',billing_customer_id:'cus_deleted',subscription:{stripeCustomerId:'cus_deleted',stripeSubscriptionId:'sub_deleted',status:'none'}}};
+  const deletedSub={...fixture(),id:'sub_deleted',customer:'cus_deleted',status:'canceled'};
+  state.user=deletedUser;state.deletedCustomer='cus_deleted';state.nextCustomer='cus_recreated';state.subscriptions={sub_deleted:deletedSub};state.sessions=[];
+  const createsBefore=state.customerCreates.length;
+  assert.equal((await portal(req('/api/stripe/portal',{}))).status,409);
+  assert.equal((await checkout(req('/api/stripe/checkout',{plan:'monthly'}))).status,200);
+  assert.equal(state.customerCreates.length,createsBefore+1);
+  const replacementKey=state.customerCreates.at(-1).options.idempotencyKey;
+  assert.notEqual(replacementKey,state.customerCreates[0].options.idempotencyKey);
+  assert.equal(state.checkouts.at(-1).body.customer,'cus_recreated');
+  assert.notEqual(state.checkouts.at(-1).options.idempotencyKey,firstKey);
+  const replacementCheckoutKey=state.checkouts.at(-1).options.idempotencyKey;
+  assert.equal(state.user.app_metadata.billing_customer_id,'cus_recreated');assert.equal(state.user.app_metadata.subscription,null);
+  assert.equal(state.user.app_metadata.role,'free');assert.deepEqual(Array.from(state.user.app_metadata.billing_retired_customer_ids),['cus_deleted']);
+  await checkout(req('/api/stripe/checkout',{plan:'monthly'}));
+  assert.equal(state.customerCreates.length,createsBefore+1);assert.equal(state.checkouts.at(-1).options.idempotencyKey,replacementCheckoutKey);
+  const retiredWrites=state.writes.length;
+  assert.equal((await webhook(signed('customer.subscription.deleted',true,'sub_deleted'))).status,200);
+  assert.equal(state.writes.length,retiredWrites);assert.equal(state.user.app_metadata.billing_customer_id,'cus_recreated');
+  deletedSub.status='active';await assert.rejects(syncSubscription(new FakeStripe(),'sub_deleted'),/関連付けが一致/);deletedSub.status='canceled';
+  state.subscriptions.sub_recreated={...fixture(),id:'sub_recreated',customer:'cus_recreated'};
+  await syncSubscription(new FakeStripe(),'sub_recreated',uid);assert.equal(state.user.app_metadata.role,'premium');
+  const writesAfterNewPayment=state.writes.length;
+  assert.equal((await webhook(signed('customer.subscription.deleted',true,'sub_deleted'))).status,200);
+  assert.equal(state.writes.length,writesAfterNewPayment);assert.equal(state.user.app_metadata.role,'premium');assert.equal(state.user.app_metadata.subscription.stripeSubscriptionId,'sub_recreated');
+  state.user=deletedUser;state.failSave=true;const beforeFailedReplacement=state.checkouts.length;
+  assert.equal((await checkout(req('/api/stripe/checkout',{plan:'monthly'}))).status,503);
+  assert.equal(state.checkouts.length,beforeFailedReplacement);assert.equal(state.user.app_metadata.billing_customer_id,'cus_deleted');
+  assert.equal(state.customerCreates.at(-1).options.idempotencyKey,replacementKey);state.failSave=false;
+  deletedSub.status='active';const beforeUnexpectedActive=state.customerCreates.length;
+  assert.equal((await checkout(req('/api/stripe/checkout',{plan:'monthly'}))).status,409);assert.equal(state.customerCreates.length,beforeUnexpectedActive);deletedSub.status='canceled';
+  state.customerReadFails=true;assert.equal((await checkout(req('/api/stripe/checkout',{plan:'monthly'}))).status,503);assert.equal(state.customerCreates.length,beforeUnexpectedActive);state.customerReadFails=false;
   const auth=fs.readFileSync('src/contexts/AuthContext.tsx','utf8');assert(!/user_metadata\??\.role|setDemoRole|upgradeToPremium|localStorage\.getItem\(AUTH/.test(auth));
   const account=fs.readFileSync('src/app/account/subscription/page.tsx','utf8');assert(!/demo_upgraded|setDemoRole|upgradeToPremium/.test(account));
   console.log('Passed: authenticated billing, ownership, trusted roles, payment/expiry/cancellation, duplicate checkout, signature verification and webhook failure/retry. No external requests or charges.');
