@@ -610,7 +610,9 @@ export default async function AcupointDetailPage({ params }: Props) {
                 <span>伝統的な配穴例（組み合わせの学習）</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                {point.goldenPairs.map((pair, idx) => (
+                {point.goldenPairs.map((pair, idx) => {
+                  const partner = getAcupointByCode(pair.partnerCode);
+                  return (
                   <div
                     key={idx}
                     className="dictionary-golden-pair space-y-1.5 flex flex-col justify-between"
@@ -620,20 +622,23 @@ export default async function AcupointDetailPage({ params }: Props) {
                         <span className="text-sm font-bold text-[#B86924] dark:text-[#E6C387]">
                           【{pair.prescriptionName}】
                         </span>
-                        <Link
-                          href={`/tsubo/${pair.partnerCode.toLowerCase()}`}
+                        {partner ? <Link
+                          href={`/tsubo/${partner.codeLower}`}
                           className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline inline-flex items-center gap-1"
                         >
                           <span>＋ {pair.partnerName}（{pair.partnerCode}）</span>
                           <ArrowRight className="w-3 h-3" />
-                        </Link>
+                        </Link> : <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                          ＋ {pair.partnerName}（{pair.partnerCode}）
+                        </span>}
                       </div>
                       <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed mt-1">
                         {pair.effect}
                       </p>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
