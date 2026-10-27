@@ -4,7 +4,7 @@
 
 The local reporting workflow loads `.env.local` through `@next/env`. Set `GA4_PROPERTY_ID`, `GSC_SITE_URL` and `GOOGLE_APPLICATION_CREDENTIALS` there; the file is ignored by Git. Keep the Google credential file outside the repository. `npm run check:analytics` checks configuration without sending requests, and `npm run report:analytics -- --output=<path>` retrieves read-only, host-filtered GA4 and Search Console aggregates. Billing funnel event names are included in the aggregate event report.
 
-The configured service account can read the intended GA4 property and the canonical HTTPS Search Console property. Analytics Admin API is disabled in its Cloud project; enabling it was not performed. Confirm the intended web stream's measurement ID in the GA4 UI before claiming production event delivery is verified. The existing Google tag configuration contains two destination IDs, so merely seeing a tag script or an HTTP 204 does not establish that the intended property recorded the event.
+The configured service account can read the intended GA4 property and the canonical HTTPS Search Console property. Analytics Admin API is disabled in its Cloud project; enabling it was not performed. The owner confirmed the web stream's measurement ID as `G-GC398NZKVE` on October 27. The existing Google tag configuration contains two destination IDs, so merely seeing a tag script or an HTTP 204 does not establish that the intended property recorded the event.
 
 ## Re-enrollment after customer deletion
 
@@ -30,4 +30,12 @@ Purchase receipts contain plan, actual gross JPY total and a SHA-256-derived tra
 
 `npm run test:billing` covers deleted-customer recovery, save failures, idempotency, lookup failures, unexpectedly active contracts, ownership, old terminal notifications and paid receipt eligibility. `npm run test:analytics` covers stream targeting, payload minimization, queueing, receipt deduplication, excluded routes and navigation fallback. ESLint and `npm run build -- --webpack` pass with 575 pages. A local browser fixture verifies confirmation rendering, one purchase command across reload and removal of raw session/query values. Those fixture purchase commands are not sent to Google and create no charges.
 
-Production event ingestion and final stream selection remain pending confirmation of the GA4 UI measurement ID. No real customer or payment has been created to test re-enrollment.
+The stream ID is confirmed; production event ingestion remains unverified in the Data API realtime report. No real customer or payment has been created to test re-enrollment.
+
+## Linked Google tag destination
+
+A production anonymous pricing → login check exposed an automatic `page_view` to the linked `G-GE4JNB164V` destination, including the login URL and its query. The explicit application events targeted the correct stream and used sanitized URLs. Google documents that enhanced history measurement can emit page views independently of `send_page_view: false`: https://developers.google.com/analytics/devguides/collection/ga4/views?technology=websites
+
+The site now sets `window['ga-disable-G-GE4JNB164V'] = true` before loading the external tag. Loading waits for the inline initialization to complete, so the linked destination cannot start before the privacy control. The confirmed stream retains its public-route measurements and existing private-route opt-out. This is an on-site control; no Google property or Cloud configuration is changed. The per-property opt-out is documented at https://developers.google.com/tag-platform/security/guides/privacy
+
+After the change, analytics regression tests, ESLint and the 575-page Webpack build passed. A fresh local browser loaded the real external Google library with collection intercepted: the privacy flag was present at every tag load, pricing click/login-required events targeted only the confirmed stream, both destinations were disabled on the login route, and no private URL, query or synthetic Checkout ID reached the intercepted collection requests. No test purchase or customer was created.

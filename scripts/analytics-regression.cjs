@@ -92,6 +92,13 @@ await Promise.race([
 
 const ga = fs.readFileSync(path.join(root, 'src/components/GoogleAnalytics.tsx'), 'utf8');
 assert(ga.includes('ga-disable-'));
+assert(ga.includes('safePath && ready && <Script'));
+const init = ga.match(/dangerouslySetInnerHTML=\{\{ __html: `([\s\S]*?)` \}\}/)[1]
+  .replace(/\$\{gaId\}/g, 'G-GC398NZKVE').replace(/\$\{JSON.stringify\(safePath\)\}/g, '"/pricing"');
+const bootWindow = { location: { origin: 'https://www.haritaro.jp' } };
+vm.runInNewContext(init, { window: bootWindow, dataLayer: [], Date });
+assert.equal(bootWindow['ga-disable-G-GE4JNB164V'], true);
+assert.equal(bootWindow['ga-disable-G-GC398NZKVE'], undefined);
 assert(ga.includes('allow_google_signals: false'));
 assert(ga.includes('G-XXXXXXXXXX'));
 // Evaluate the actual ID guard: the owner's confirmed stream must remain valid.

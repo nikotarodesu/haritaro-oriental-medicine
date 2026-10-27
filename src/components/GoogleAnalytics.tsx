@@ -45,9 +45,13 @@ export default function GoogleAnalytics() {
   if (!validId) return null;
 
   return <>
-    {safePath && <Script strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />}
+    {/* Initialize privacy controls before loading the externally configured tag. */}
+    {safePath && ready && <Script strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />}
     {safePath && <Script id="google-analytics-init" strategy="afterInteractive" onReady={() => setReady(true)}
       dangerouslySetInnerHTML={{ __html: `
+        // This linked destination emitted automatic, unsanitized private-route URLs.
+        // Only the owner's confirmed stream is used by this site.
+        window['ga-disable-G-GE4JNB164V'] = true;
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         window.gtag = gtag;
