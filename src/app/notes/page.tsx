@@ -156,6 +156,9 @@ function ClinicalNotesPage() {
   const [customStockElement, setCustomStockElement] = useState<"木" | "火" | "土" | "金" | "水">("木");
   const [customStockSummary, setCustomStockSummary] = useState("");
   const [customStockNote, setCustomStockNote] = useState("");
+  const [customStockError, setCustomStockError] = useState<string | null>(null);
+  const customStockDialogRef = useRef<HTMLDivElement>(null);
+  useModalDialog(isCustomStockModalOpen, customStockDialogRef, () => setIsCustomStockModalOpen(false));
 
   // 患者向け養生シート印刷モーダル
   const [printNote, setPrintNote] = useState<PatientNoteItem | null>(null);
@@ -236,6 +239,7 @@ function ClinicalNotesPage() {
     const timer = setTimeout(() => {
       if (currentOwner.current !== owner) return;
       setIsNoteModalOpen(false); setIsPointPickerOpen(false); setIsCustomStockModalOpen(false);
+      setCustomStockTitle(''); setCustomStockPoints(''); setCustomStockSummary(''); setCustomStockNote(''); setCustomStockError(null);
       setIsSamplePreviewOpen(false); setPrintNote(null); setEditingNoteId(null); setDraftNotice(null); setEditorError(null);
       editorRef.current = null; setEditorSession(null); setPendingHandoff(null); setViewOwner(owner);
       const editor = readClinicalNoteEditor(owner);
@@ -384,7 +388,7 @@ function ClinicalNotesPage() {
     }
 
     const pointsArr = customStockPoints.split(/[,、\s]+/).map(p => p.trim()).filter(Boolean);
-    addMemo({
+    const saved = addMemo({
       id: `custom-${Date.now()}`,
       type: "custom",
       title: customStockTitle.trim(),
@@ -395,6 +399,9 @@ function ClinicalNotesPage() {
       summary: customStockSummary.trim() || "独自に考案・保存した臨床配穴処方です。",
       personalNotes: customStockNote.trim() || undefined,
     });
+
+    if (!saved) { setCustomStockError('保存できませんでした。入力は保持しています。同期状態・保存上限・ブラウザの保存設定を確認して再度お試しください。'); return; }
+    setCustomStockError(null);
 
     setCustomStockTitle("");
     setCustomStockPoints("");
@@ -432,13 +439,15 @@ function ClinicalNotesPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!window.confirm("バックアップファイルを読み込みますか？既存のデータがファイルの内容に更新されます。")) {
+    if (!window.confirm("バックアップの記録を追加しますか？現在の記録は削除しません。同じIDの記録は現在の内容を保持します。")) {
       e.target.value = "";
       return;
     }
 
+    const importOwner = clinicalStorageOwner;
     const reader = new FileReader();
     reader.onload = (event) => {
+      if (!importOwner || currentOwner.current !== importOwner) { alert('アカウントが切り替わったため取り込みを中止しました。保存先を確認してファイルを選び直してください。'); return; }
       const content = event.target?.result as string;
       if (content) {
         const result = importDataFromJson(content);
@@ -447,6 +456,7 @@ function ClinicalNotesPage() {
         }
       }
     };
+    reader.onerror = () => alert('ファイルを読み込めませんでした。ファイルを選び直してください。');
     reader.readAsText(file);
     e.target.value = "";
   };
@@ -1397,7 +1407,7 @@ function ClinicalNotesPage() {
       {/* 4. 自作配穴追加モーダル */}
       {isCustomStockModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn overflow-y-auto">
-          <div className="bg-white dark:bg-[#17212A] w-full max-w-md rounded-2xl border-2 border-[#B86924] shadow-2xl p-6 my-8 space-y-4">
+          <div ref={customStockDialogRef} role="dialog" aria-modal="true" aria-label="自作の配穴処方を保存" tabIndex={-1} className="bg-white dark:bg-[#17212A] w-full max-w-md rounded-2xl border-2 border-[#B86924] shadow-2xl p-6 my-8 space-y-4">
             <div className="flex items-center justify-between border-b pb-3">
               <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
                 自作の配穴処方を保存
@@ -1405,6 +1415,7 @@ function ClinicalNotesPage() {
               <button
                 type="button"
                 onClick={() => setIsCustomStockModalOpen(false)}
+                aria-label="配穴の入力を閉じる"
                 className="text-gray-400 hover:text-gray-600"
               >
                 <X className="w-5 h-5" />
@@ -1412,9 +1423,12 @@ function ClinicalNotesPage() {
             </div>
 
             <form onSubmit={handleSaveCustomStock} className="space-y-4 text-sm sm:text-sm">
+              {customStockError && <p role="alert" className="text-red-700 dark:text-red-300">{customStockError}</p>}
               <div className="space-y-1">
-                <label className="block text-sm font-bold">配穴・処方名<span className="text-red-500">*</span></label>
+                <label htmlFor="custom-stock-title" className="block text-sm font-bold">配穴・処方名<span className="text-red-500">*</span></label>
                 <input
+                  id="custom-stock-title"
+                  name="customStockTitle"
                   type="text"
                   required
                   value={customStockTitle}
@@ -1425,8 +1439,10 @@ function ClinicalNotesPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="block text-sm font-bold">構成ツボ（例: 太衝、陽陵泉）<span className="text-red-500">*</span></label>
+                <label htmlFor="custom-stock-points" className="block text-sm font-bold">構成ツボ（例: 太衝、陽陵泉）<span className="text-red-500">*</span></label>
                 <input
+                  id="custom-stock-points"
+                  name="customStockPoints"
                   type="text"
                   required
                   value={customStockPoints}
@@ -1457,8 +1473,10 @@ function ClinicalNotesPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="block text-sm font-bold">作用・臨床メモ</label>
+                <label htmlFor="custom-stock-summary" className="block text-sm font-bold">作用・臨床メモ</label>
                 <textarea
+                  id="custom-stock-summary"
+                  name="customStockSummary"
                   rows={2}
                   value={customStockSummary}
                   onChange={(e) => setCustomStockSummary(e.target.value)}

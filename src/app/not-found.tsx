@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { ArrowRight, Home, Search } from 'lucide-react';
 import PageIntro from '@/components/design/PageIntro';
@@ -15,7 +17,7 @@ export default function NotFound() {
     <div className="page-layout page-layout--reading space-y-8">
       <PageIntro eyebrow="404 ／ ページが見つかりません" title="お探しのページが見つかりませんでした" description="URLが変更されたか、現在利用できない可能性があります。検索や下の入口からお探しください。" art="reading" compact>
         <div className="page-actions">
-          <Link href="/search" className="page-primary-action"><Search size={18} aria-hidden="true" />サイト内を検索</Link>
+          <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('haritaro:open-search'))} aria-haspopup="dialog" className="page-primary-action"><Search size={18} aria-hidden="true" />サイト内を検索</button>
           <Link href="/" className="page-secondary-action"><Home size={18} aria-hidden="true" />ホームへ戻る</Link>
         </div>
       </PageIntro>

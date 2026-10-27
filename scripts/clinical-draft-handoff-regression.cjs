@@ -14,7 +14,7 @@ function nodes(node, list = []) { if (Array.isArray(node)) node.forEach(child =>
 function text(node) { if (Array.isArray(node)) return node.map(text).join(''); if (typeof node === 'string' || typeof node === 'number') return String(node); return node && typeof node === 'object' ? text(node.props?.children) : ''; }
 function environment() {
   const values = new Map([['haritaro_clinical_active_owner_v1', 'guest']]);
-  const shared = { values, notes: [], owner: 'guest', failSession: false, failLocal: false, confirms: true, saved: [], alerts: [] };
+  const shared = { values, notes: [], owner: 'guest', failSession: false, failLocal: false, failMemo: false, confirms: true, saved: [], alerts: [], fileReads: [], imports: [] };
   const sessionStorage = { getItem: key => values.get(key) ?? null, setItem(key, value) { if (shared.failSession) throw Error('blocked'); values.set(key, value); }, removeItem(key) { if (shared.failSession) throw Error('blocked'); values.delete(key); } };
   const browser = { location: { search: '', pathname: '/notes', hash: '' }, history: { replaceState() {}, pushState() {} }, confirm: () => shared.confirms, alert: value => shared.alerts.push(value), scrollTo() {}, pageYOffset: 0 };
   const load = createDataLoader({ Intl, sessionStorage, window: browser });
@@ -37,7 +37,7 @@ function client(kind, env) {
   const { shared, sessionStorage, browser, load } = env;
   const timers = new Map(), pushes = []; let timerId = 0, tree;
   const host = hookHost(), exports = {};
-  const context = { memos: [], clipCount: 0, maxLimit: 100, patientNotes: shared.notes, patientNoteCount: shared.notes.length, maxPatientNoteLimit: 100, isPatientNoteLimitReached: false, isReady: true, clinicalStorageOwner: shared.owner, syncStatus: 'local', removeMemo() {}, updatePersonalNote() {}, loadRecommendedPresets() {}, removePatientNote() {}, addMemo: () => true, importDataFromJson: () => ({ success: true }), exportAllDataAsJson: () => '{}', exportAllDataAsCsv: () => '', triggerSync: async () => {},
+  const context = { memos: [], clipCount: 0, maxLimit: 100, patientNotes: shared.notes, patientNoteCount: shared.notes.length, maxPatientNoteLimit: 100, isPatientNoteLimitReached: false, isReady: true, clinicalStorageOwner: shared.owner, syncStatus: 'local', removeMemo() {}, updatePersonalNote() {}, loadRecommendedPresets() {}, removePatientNote() {}, addMemo: () => !shared.failMemo, importDataFromJson: value => { shared.imports.push(value); return { success: true }; }, exportAllDataAsJson: () => '{}', exportAllDataAsCsv: () => '', triggerSync: async () => {},
     saveWorkspaceNote(fields, id) {
       const result = load('src/utils/clinicalNoteSave').persistClinicalNote(shared.notes, fields, id, 100, notes => { if (shared.failLocal) throw Error('quota'); shared.notes = plain(notes); shared.saved.push(plain(notes)); });
       return result.result;
@@ -50,6 +50,7 @@ function client(kind, env) {
   const Empty = () => null;
   vm.runInNewContext(code, { exports, Intl, Date, Math, URLSearchParams, window: browser, sessionStorage, document: { title: '', getElementById: () => null }, navigator: { clipboard: { writeText: async () => {} } }, alert: browser.alert,
     setTimeout(callback, delay = 0) { timers.set(++timerId, { callback, delay }); return timerId; }, clearTimeout(id) { timers.delete(id); },
+    FileReader: class { readAsText() { shared.fileReads.push(this); } },
     require: id => {
       if (id === 'react') return host.hooks;
       if (id === 'next/navigation') return { useRouter: () => ({ push: href => pushes.push(href) }), useSearchParams: () => new URLSearchParams() };
@@ -77,6 +78,29 @@ function client(kind, env) {
   };
   api.render(); api.flush(); return api;
 }
+check('failed custom prescription saves retain input and the open form until successful retry', () => {
+  const env = environment(), notes = client('notes', env);
+  const tab = nodes(notes.tree()).find(node => node.type === 'button' && text(node).startsWith('配穴集'));
+  assert(tab); tab.props.onClick(); notes.render(); notes.click('自作の配穴を追加');
+  notes.change('customStockTitle', '検証用配穴'); notes.change('customStockPoints', '合谷、太衝'); notes.change('customStockSummary', '保持する入力');
+  const submit = () => { const form = nodes(notes.tree()).find(node => node.type === 'form'); assert(form); form.props.onSubmit({ preventDefault() {} }); notes.render(); };
+  env.shared.failMemo = true; submit();
+  assert.equal(notes.field('customStockTitle').props.value, '検証用配穴');
+  assert.equal(notes.field('customStockSummary').props.value, '保持する入力');
+  assert(nodes(notes.tree()).some(node => node.props?.role === 'alert' && text(node).includes('保存できませんでした')));
+  env.shared.failMemo = false; submit();
+  assert(!nodes(notes.tree()).some(node => node.props?.name === 'customStockTitle'), 'Success closes the saved form');
+});
+check('a file selected under a previous owner is not imported after an account switch', () => {
+  const env = environment(), notes = client('notes', env);
+  const support = nodes(notes.tree()).find(node => typeof node.props?.onFileUpload === 'function'); assert(support);
+  support.props.onFileUpload({ target: { files: [{}], value: 'backup.json' } });
+  assert.equal(env.shared.fileReads.length, 1);
+  notes.setOwner('account-B');
+  env.shared.fileReads[0].onload({ target: { result: '{}' } });
+  assert.equal(env.shared.imports.length, 0);
+  assert(env.shared.alerts.some(message => message.includes('アカウントが切り替わった')));
+});
 check('handoffs are non-destructive, owner-scoped and an older token cannot consume a newer handoff', () => {
   const env = environment(), drafts = env.load('src/utils/draftNote');
   assert(drafts.saveDraftPatientNote(handoff(), 'guest'));
