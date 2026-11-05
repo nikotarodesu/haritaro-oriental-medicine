@@ -19,12 +19,21 @@ import { clinicalExaminationPatch, clinicalFindingEdit, canUndoClinicalFindingEd
 
 type PrincipleChange = { owner: string; before: string; after: string; term: string; undone?: boolean };
 type ExaminationGroup = typeof EXAMINATION_GROUPS[number];
-const EXAMINATION_SECTIONS = { '望診': ['舌体', '舌苔'], '切診': ['脈診', '触診'] } as const;
+const EXAMINATION_SECTIONS = { '問診': ['症状・痛み', '冷え・汗', '食事・便通', '睡眠・気分'], '望診': ['舌体', '舌苔'], '切診': ['脈診', '触診'] } as const;
 type SplitExamination = keyof typeof EXAMINATION_SECTIONS;
 type ExaminationSection = typeof EXAMINATION_SECTIONS[SplitExamination][number];
-const INITIAL_SECTIONS: Record<SplitExamination, ExaminationSection> = { '望診': '舌体', '切診': '脈診' };
+const INITIAL_SECTIONS: Record<SplitExamination, ExaminationSection> = { '問診': '症状・痛み', '望診': '舌体', '切診': '脈診' };
+function hasExaminationSections(group: ExaminationGroup): group is SplitExamination {
+  return group in EXAMINATION_SECTIONS;
+}
 function examinationSection(group: ExaminationGroup, id: string): ExaminationSection | null {
-  if (id === 'inspectionDetails' || id === 'palpationDetails') return null;
+  if (['interviewDetails', 'inspectionDetails', 'palpationDetails'].includes(id)) return null;
+  if (group === '問診') {
+    if (['cold', 'heat', 'sweating', 'nightSweat'].includes(id)) return '冷え・汗';
+    if (['thirst', 'dry', 'appetite', 'loose'].includes(id)) return '食事・便通';
+    if (['sleep', 'stress'].includes(id)) return '睡眠・気分';
+    return '症状・痛み';
+  }
   if (group === '望診') return id.startsWith('coat') ? '舌苔' : '舌体';
   if (group === '切診') return id.startsWith('pulse') || ['rapidPulse', 'weakPulse', 'wiryPulse'].includes(id) ? '脈診' : '触診';
   return null;
@@ -125,7 +134,7 @@ export default function ClinicalWorkspace() {
     const fields = EXAMINATION_FIELDS.filter(field => field.group === group);
     const signs = comparisonSigns.filter(sign => sign.group === group);
     const confirmed = fields.filter(field => { const value = examinationValue(field.id, encounter.examination, observations); return value && value !== '判断困難'; }).length + signs.filter(sign => observations[sign.id] && observations[sign.id] !== 'unknown').length;
-    const sections: readonly (ExaminationSection | null)[] = group === '望診' || group === '切診' ? EXAMINATION_SECTIONS[group] : [null];
+    const sections: readonly (ExaminationSection | null)[] = hasExaminationSections(group) ? EXAMINATION_SECTIONS[group] : [null];
     return { group, fields, signs, confirmed, total: fields.length + signs.length, sections };
   });
   const observationTotal = comparisonSigns.length + EXAMINATION_FIELDS.length;
@@ -235,7 +244,7 @@ export default function ClinicalWorkspace() {
     const targetField = field || tongueField;
     const group = EXAMINATION_FIELDS.find(item => item.id === targetField)?.group || CLINICAL_SIGNS.find(sign => sign.id === id)?.group;
     if (group) setActiveExamination(group);
-    if (group === '望診' || group === '切診') {
+    if (group && hasExaminationSections(group)) {
       const section = examinationSection(group, targetField || id);
       if (section) setActiveSections(current => ({ ...current, [group]: section }));
     }
@@ -307,7 +316,7 @@ export default function ClinicalWorkspace() {
         <label className="block">安全確認の状態<select aria-label="安全確認の状態" className={FIELD} value={encounter.safety} onChange={event => update({ safety: event.target.value as ClinicalEncounter['safety'] })}><option value="unknown">未確認</option><option value="reviewed">確認した範囲で該当兆候なし（疾患の除外ではない）</option><option value="refer">該当・疑いあり：施術を保留し医療評価を優先</option></select></label>
         <label className="block">確認した項目・受診状況<textarea maxLength={20000} className={FIELD} rows={3} value={encounter.safetyMemo} onChange={event => update({ safetyMemo: event.target.value })} /></label>
       </>}
-      {encounter.step === 1 && <div id="clinical-examinations" className="clinical-examinations" data-split={activeExamination === '望診' || activeExamination === '切診' || undefined}>
+      {encounter.step === 1 && <div id="clinical-examinations" className="clinical-examinations" data-split={hasExaminationSections(activeExamination) || undefined}>
         <div className="clinical-examination-navigation">
         <div className="clinical-examination-tabs" role="tablist" aria-label="四診の分類">
           {examinationGroups.map(({ group, confirmed, total }, index) => <button type="button" key={group} role="tab"
@@ -322,7 +331,7 @@ export default function ClinicalWorkspace() {
             <span id={`clinical-examination-progress-${group}`}>{confirmed} / {total} 確認</span>
           </button>)}
         </div>
-        {(activeExamination === '望診' || activeExamination === '切診') && <div role="tablist" className="clinical-examination-subtabs" aria-label={`${activeExamination}の入力分類`}>
+        {hasExaminationSections(activeExamination) && <div role="tablist" className="clinical-examination-subtabs" data-sections={EXAMINATION_SECTIONS[activeExamination].length} aria-label={`${activeExamination}の入力分類`}>
           {EXAMINATION_SECTIONS[activeExamination].map((section, index, sections) => {
             const fields = EXAMINATION_FIELDS.filter(field => examinationSection(field.group, field.id) === section);
             const signs = comparisonSigns.filter(sign => examinationSection(sign.group, sign.id) === section);
@@ -338,15 +347,21 @@ export default function ClinicalWorkspace() {
           })}
         </div>}
         </div>
-        <p className="clinical-examination-help">分類を切り替えても入力は残ります。各項目は1つ選択。「未確認」で戻せます。「なし」は確認して認めなかった場合に選びます。</p>
+        <div className="clinical-examination-help">
+          <p>分類を切り替えても入力は残ります。</p>
+          <details className="clinical-examination-tips">
+            <summary>入力のヒント</summary>
+            <p>各項目は1つ選択。「未確認」で戻せます。「なし」は確認して認めなかった場合に選びます。分類ごとの補足欄には、複数の所見や確認した条件を記録できます。</p>
+            {activeExamination === '望診' && <p>舌体と舌苔を分け、歯痕・裂紋などは個別に選べます。照明、直前の飲食、舌磨きの有無を補足に記録してください。「苔を認めない」を選ぶと苔の他の項目もそろいます。</p>}
+            {activeExamination === '切診' && activeSections['切診'] === '脈診' && <p>速さ・強さ・深さは別々に選びます。選択した所見は候補比較にも反映します。脈拍数から脈状や見立てを自動判定しません。</p>}
+          </details>
+        </div>
         {examinationIssues(encounter.examination).map(issue => <p role="alert" className="clinical-examination-hint" key={issue}>{issue}</p>)}
         {examinationGroups.map(({ group, signs, fields, sections }) => <div key={group} id={`clinical-examination-${group}`} className="clinical-examination-panel" role="tabpanel" aria-labelledby={`clinical-examination-tab-${group}`} hidden={activeExamination !== group}>
             <fieldset><legend className="sr-only">{group}の所見</legend>
-              {group === '望診' && <p className="clinical-examination-hint">舌体と舌苔を分け、歯痕・裂紋などは個別に選べます。照明、直前の飲食、舌磨きの有無を補足に記録してください。「苔を認めない」を選ぶと苔の他の項目もそろいます。</p>}
-              {group === '切診' && activeSections['切診'] === '脈診' && <p className="clinical-examination-hint">速さ・強さ・深さは別々に選びます。選択した所見は候補比較にも反映します。脈拍数から脈状や見立てを自動判定しません。</p>}
               {sections.map(section => <div key={section || group} className="clinical-examination-section" id={section ? `clinical-examination-section-${section}` : undefined}
                 role={section ? 'tabpanel' : undefined} aria-labelledby={section ? `clinical-examination-subtab-${section}` : undefined}
-                hidden={Boolean(section && (group === '望診' || group === '切診') && activeSections[group] !== section)}>
+                hidden={Boolean(section && hasExaminationSections(group) && activeSections[group] !== section)}>
               <div className="clinical-examination-fields grid gap-3">{fields.filter(field => examinationSection(group, field.id) === section).map(field =>
                 <ClinicalChoiceButtons key={field.id} id={field.id === 'pulseSpeed' ? 'clinical-sign-rapidPulse' : field.id === 'pulseStrength' ? 'clinical-sign-weakPulse' : `clinical-exam-${field.id}`} label={field.label}
                   value={examinationValue(field.id, encounter.examination, observations)}
@@ -364,7 +379,7 @@ export default function ClinicalWorkspace() {
                 options={[{ value: 'unknown', label: '未確認' }, { value: 'present', label: 'あり' }, { value: 'absent', label: 'なし' }]}
                 onChange={value => update({ observations: { ...encounter.observations, [sign.id]: value } })} />)}</div>
               </div>)}
-              {(group === '望診' || group === '切診') && EXAMINATION_TEXT_FIELDS.filter(field => field.group === group && examinationSection(group, field.id) === null).map(field => <label className="clinical-examination-text" key={field.id}>{field.label}<textarea className={FIELD} rows={2} maxLength={field.maxLength} value={encounter.examination?.[field.id] || ''} onChange={event => updateExamination(field.id, event.target.value)} placeholder="両方の分類に共通する補足・観察条件など" /></label>)}
+              {hasExaminationSections(group) && EXAMINATION_TEXT_FIELDS.filter(field => field.group === group && examinationSection(group, field.id) === null).map(field => <label className="clinical-examination-text" key={field.id}>{field.label}<textarea className={FIELD} rows={2} maxLength={field.maxLength} value={encounter.examination?.[field.id] || ''} onChange={event => updateExamination(field.id, event.target.value)} placeholder="各分類に共通する補足・観察条件など" /></label>)}
             </fieldset>
           </div>)}
         {encounter.interviewMemo && <label className="block">対面問診から引き継いだ記録<textarea maxLength={20000} className={FIELD} rows={5} value={encounter.interviewMemo} onChange={event => update({ interviewMemo: event.target.value })} /></label>}

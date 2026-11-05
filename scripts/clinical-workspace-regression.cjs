@@ -327,7 +327,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
   await check('examination tabs expose one panel and candidate links select the correct panel before focusing', () => {
     const client = harness({ initialEncounter: sampleEncounter({ observations: {}, step: 1 }) });
     assert.equal(client.activePanel().props.id, 'clinical-examination-問診');
-    const tabs = nodes(client.tree()).filter(node => node.props?.role === 'tab');
+    const tabs = nodes(nodes(client.tree()).find(node => node.props?.className === 'clinical-examination-tabs')).filter(node => node.props?.role === 'tab');
     assert.equal(tabs.length, 4);
     for (const tab of tabs) {
       const panel = nodes(client.tree()).find(node => node.props?.id === tab.props['aria-controls']);
@@ -365,6 +365,75 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     }
     client.tab('問診').props.onKeyDown({ key: 'Tab', preventDefault() { assert.fail('Tab must retain native focus navigation'); } });
     assert.deepEqual(plain(client.encounter()), before);
+  });
+  await check('interview tabs expose all sixteen fields exactly once and support four-way keyboard navigation', () => {
+    const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, examination: {} }) });
+    const seen = [];
+    const sections = [['症状・痛み', 6], ['冷え・汗', 4], ['食事・便通', 4], ['睡眠・気分', 2]];
+    assert.equal(client.activeSection().props.id, 'clinical-examination-section-症状・痛み');
+    for (const [section, count] of sections) {
+      client.selectTab(section);
+      const panel = client.activeSection();
+      assert.equal(panel.props.id, client.tab(section).props['aria-controls']);
+      assert.equal(panel.props['aria-labelledby'], client.tab(section).props.id);
+      const fields = visibleNodes(panel).filter(node => node.props?.className === 'clinical-choice-field');
+      assert.equal(fields.length, count); seen.push(...fields.map(node => node.props.id));
+      assert(text(client.tab(section)).includes('0 / ' + count));
+      assert(visibleNodes(client.tree()).includes(client.field('問診の補足・その他の所見')), 'The shared interview note remains available in every subsection');
+      assert.equal(client.scrolled.at(-1), 'clinical-examinations');
+    }
+    const allFields = nodes(client.activePanel()).filter(node => node.props?.className === 'clinical-choice-field').map(node => node.props.id);
+    assert.equal(new Set(seen).size, 16); assert.deepEqual(seen.sort(), allFields.sort());
+    for (const [from, key, to] of [['睡眠・気分', 'ArrowRight', '症状・痛み'], ['症状・痛み', 'ArrowRight', '冷え・汗'], ['冷え・汗', 'ArrowRight', '食事・便通'], ['食事・便通', 'End', '睡眠・気分'], ['睡眠・気分', 'Home', '症状・痛み'], ['症状・痛み', 'ArrowLeft', '睡眠・気分']]) {
+      let prevented = false;
+      client.tab(from).props.onKeyDown({ key, preventDefault() { prevented = true; } }); client.render(); client.flushFrames();
+      assert(prevented); assert.equal(client.activeSection().props.id, 'clinical-examination-section-' + to);
+      assert.equal(client.focused.at(-1), 'clinical-examination-subtab-' + to);
+      assert.equal(sections.filter(([name]) => client.tab(name).props.tabIndex === 0).length, 1);
+    }
+    client.tab('睡眠・気分').props.onKeyDown({ key: 'Tab', preventDefault() { assert.fail('Native Tab navigation remains available'); } });
+    assert.deepEqual(plain(client.encounter().observations), {}); assert.deepEqual(plain(client.encounter().examination), {});
+  });
+  await check('interview sections retain values, shared notes, progress and saved data across navigation and reload', () => {
+    const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, examination: {} }) });
+    client.change('症状の経過', '判断困難'); assert(text(client.tab('症状・痛み')).includes('0 / 6'));
+    client.change('症状の経過', '改善傾向'); client.change('問診の補足・その他の所見', '仕事と休息による変化を確認');
+    client.change('冷え・温めると軽減', 'absent');
+    client.change('口渇・飲水', '口渇なし'); client.change('食欲低下・食後の張り', 'present');
+    client.change('入眠困難・中途覚醒', 'present');
+    const before = plain(client.encounter());
+    for (const [section, progress] of [['症状・痛み', '1 / 6'], ['冷え・汗', '1 / 4'], ['食事・便通', '2 / 4'], ['睡眠・気分', '1 / 2']]) {
+      client.selectTab(section); assert(text(client.tab(section)).includes(progress));
+      assert.equal(client.field('問診の補足・その他の所見').props.value, '仕事と休息による変化を確認');
+    }
+    assert(text(client.tab('問診')).includes('5 / 16'));
+    client.selectTab('望診'); client.selectTab('問診'); assert.equal(client.activeSection().props.id, 'clinical-examination-section-睡眠・気分');
+    assert.deepEqual(plain(client.encounter()), before, 'Changing categories cannot alter recorded findings');
+    client.click('候補・治法'); client.click('四診所見'); assert.equal(client.activeSection().props.id, 'clinical-examination-section-睡眠・気分');
+    const restored = harness({ initialEncounter: client.encounter() });
+    assert.equal(restored.field('口渇・飲水').props.value, '口渇なし'); assert.equal(restored.encounter().observations.cold, 'absent');
+    restored.review(); restored.click('臨床ノートに保存する');
+    for (const value of ['改善傾向', '仕事と休息による変化を確認', '口渇なし', '入眠困難・中途覚醒', '食欲低下・食後の張り']) assert(restored.note().treatmentPlan.includes(value));
+    client.click('新しい記録を始める'); client.click('四診所見'); assert.equal(client.activeSection().props.id, 'clinical-examination-section-症状・痛み');
+    assert(text(client.tab('問診')).includes('0 / 16'));
+  });
+  await check('candidate links open the matching interview subsection for both legacy and structured findings', () => {
+    for (const [candidate, label, section, inputId] of [
+      ['qi', '疲労・気力低下を確認', '症状・痛み', 'clinical-sign-fatigue'],
+      ['spleen-yang', '冷え・温めると軽減を確認', '冷え・汗', 'clinical-sign-cold'],
+      ['spleen-qi', '食欲低下・食後の張りを確認', '食事・便通', 'clinical-sign-appetite'],
+      ['liver-qi', '情志変動と症状の関連を確認', '睡眠・気分', 'clinical-sign-stress'],
+      ['liver-heat', '口渇があり飲水を好むを確認', '食事・便通', 'clinical-exam-thirst'],
+      ['stasis', '固定した刺すような痛みを確認', '症状・痛み', 'clinical-exam-painLocation'],
+    ]) {
+      const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, examination: {}, candidateIds: [candidate] }) });
+      client.selectTab(section === '睡眠・気分' ? '食事・便通' : '睡眠・気分');
+      client.click('候補・治法'); client.flushFrames(); client.click(label); client.flushFrames();
+      assert.equal(client.activePanel().props.id, 'clinical-examination-問診');
+      assert.equal(client.activeSection().props.id, 'clinical-examination-section-' + section);
+      assert.equal(client.focused.at(-1), inputId); assert.equal(client.scrolled.at(-1), inputId);
+      assert.deepEqual(plain(client.encounter().observations), {}); assert.deepEqual(plain(client.encounter().examination), {});
+    }
   });
   await check('inspection and palpation show only their chosen subsection with accessible keyboard navigation', () => {
     const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, examination: {} }) });
