@@ -29,22 +29,35 @@ const fatigue = clinicalFindingInputs(['fatigue'])[0];
 assert.equal(fatigue.kind, 'observation');
 assert.equal(fatigue.question, CLINICAL_SIGNS.find(sign => sign.id === 'fatigue').question);
 
-const filename = path.resolve(__dirname, '../src/components/clinical/ClinicalFindingInput.tsx');
-const output = ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
-  fileName: filename,
-  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX },
-}).outputText;
-const exported = {};
 let scope = 0;
-vm.runInNewContext(output, { exports: exported, require: id => id === 'react' ? { useId: () => `inline-${++scope}` } : id.startsWith('@/') ? load('src/' + id.slice(2)) : require(id) }, { filename });
-const Component = exported.default;
+const components = new Map();
+function component(name) {
+  if (components.has(name)) return components.get(name);
+  const filename = path.resolve(__dirname, `../src/components/clinical/${name}.tsx`);
+  const output = ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
+    fileName: filename,
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX },
+  }).outputText;
+  const exported = {};
+  components.set(name, exported);
+  vm.runInNewContext(output, { exports: exported, require: id => {
+    if (id === 'react') return { useId: () => `inline-${++scope}` };
+    if (id === './ClinicalChoiceButtons' || id === '@/components/clinical/ClinicalChoiceButtons') return component('ClinicalChoiceButtons');
+    return id.startsWith('@/') ? load('src/' + id.slice(2)) : require(id);
+  } }, { filename });
+  return exported;
+}
+const ChoiceButtons = component('ClinicalChoiceButtons').default;
+const Component = component('ClinicalFindingInput').default;
 function nodes(node) {
   if (Array.isArray(node)) return node.flatMap(nodes);
+  if (node?.type === ChoiceButtons) return nodes(ChoiceButtons(node.props));
   return node && typeof node === 'object' ? [node, ...[].concat(node.props?.children || []).flatMap(nodes)] : [];
 }
 function text(node) {
   if (Array.isArray(node)) return node.map(text).join('');
   if (typeof node === 'string' || typeof node === 'number') return String(node);
+  if (node?.type === ChoiceButtons) return text(ChoiceButtons(node.props));
   return node && typeof node === 'object' ? [].concat(node.props?.children || []).map(text).join('') : '';
 }
 let findingIds = [], observations = {}, examination = {}, tree;
@@ -61,49 +74,64 @@ function render() {
   });
   return tree;
 }
-const selects = () => nodes(tree).filter(node => node.type === 'select');
-const select = label => {
-  const result = selects().find(node => node.props['aria-label'] === label);
-  assert(result, `Native select is available: ${label}`);
+const fields = () => nodes(tree).filter(node => node.type === 'fieldset' && node.props.className === 'clinical-choice-field');
+const field = label => {
+  const result = fields().find(node => node.props['aria-label'] === label);
+  assert(result, `Native tap-button group is available: ${label}`);
   return result;
 };
-const options = node => nodes(node).filter(item => item.type === 'option').map(option => option.props.value);
-const change = (label, value) => { select(label).props.onChange({ target: { value } }); render(); };
+const buttons = node => nodes(node).filter(item => item.type === 'button');
+const options = node => buttons(node).map(option => option.props.value);
+const selectedValue = node => {
+  const selected = buttons(node).filter(button => button.props['aria-pressed']);
+  assert.equal(selected.length, 1, 'Each single-choice group has exactly one selected answer, including unconfirmed');
+  return selected[0].props.value;
+};
+const change = (label, value) => {
+  const button = buttons(field(label)).find(option => option.props.value === value);
+  assert(button, `Tap target exists for ${label}: ${value}`);
+  assert.equal(button.props.type, 'button', 'Selecting a finding never submits a form');
+  button.props.onClick(); render();
+};
 render(); assert.equal(tree, null);
 findingIds = ['paleTongue', 'redTongue', 'exam:purple']; render();
-assert.equal(selects().length, 1);
-let tongue = select('舌体の色');
+assert.equal(fields().length, 1);
+assert.equal(nodes(tree).filter(node => node.type === 'select').length, 0, 'Inline findings no longer require opening dropdown menus');
+let tongue = field('舌体の色');
 assert.deepEqual(plain(options(tongue)), ['', ...EXAMINATION_FIELDS.find(field => field.id === 'tongueColor').options], 'Structured choices exactly match the original form');
-assert.equal(tongue.props.value, '');
+assert.equal(selectedValue(tongue), '');
 assert.equal(changes.length, 0, 'Rendering never writes observations');
 const firstId = tongue.props.id;
-assert(nodes(tree).some(node => node.type === 'label' && node.props.htmlFor === firstId && text(node) === '舌体の色'));
+assert(nodes(tongue).some(node => node.type === 'legend' && text(node) === '舌体の色'));
+assert.equal(tongue.props.tabIndex, -1, 'The finding remains a programmatic focus target for comparison navigation');
 const secondTree = Component({ findingIds, observations, examination, onObservationChange() {}, onExaminationChange() {} });
-assert(nodes(secondTree).find(node => node.type === 'select').props.id !== firstId, 'Separate inline panels have separately scoped label IDs');
+assert(nodes(secondTree).find(node => node.type === 'fieldset').props.id !== firstId, 'Separate inline panels have separately scoped label IDs');
 change('舌体の色', '紅');
 assert.deepEqual(changes.at(-1), ['examination', 'tongueColor', '紅']);
-assert.equal(select('舌体の色').props.value, '紅');
+assert.equal(selectedValue(field('舌体の色')), '紅');
 assert(compareClinicalPattern(CLINICAL_PATTERNS.find(pattern => pattern.id === 'liver-heat'), observations, examination).supported.includes('redTongue'), 'Callback output immediately feeds the existing comparison');
+change('舌体の色', '紅');
+assert.equal(selectedValue(field('舌体の色')), '紅', 'Tapping the selected answer again never silently clears it');
 change('舌体の色', '判断困難');
 assert.deepEqual(changes.at(-1), ['examination', 'tongueColor', '判断困難']);
-assert.equal(select('舌体の色').props.value, '判断困難');
+assert.equal(selectedValue(field('舌体の色')), '判断困難');
 assert(!compareClinicalPattern(CLINICAL_PATTERNS.find(pattern => pattern.id === 'liver-heat'), observations, examination).supported.includes('redTongue'));
 change('舌体の色', '');
 assert.deepEqual(changes.at(-1), ['examination', 'tongueColor', '']);
-assert.equal(select('舌体の色').props.value, '');
+assert.equal(selectedValue(field('舌体の色')), '');
 
 findingIds = ['rapidPulse', 'weakPulse']; observations = { rapidPulse: 'absent', weakPulse: 'present' }; examination = {}; render();
-assert.equal(select('脈の速さ').props.value, '速くない（通常・遅い未区分）', 'Legacy absent rapid pulse is not converted to normal speed');
-assert.equal(select('脈の強さ').props.value, '弱い・無力');
-for (const node of selects()) assert(options(node).includes(node.props.value), 'Legacy values remain selectable native choices');
+assert.equal(selectedValue(field('脈の速さ')), '速くない（通常・遅い未区分）', 'Legacy absent rapid pulse is not converted to normal speed');
+assert.equal(selectedValue(field('脈の強さ')), '弱い・無力');
+for (const node of fields()) assert(options(node).includes(selectedValue(node)), 'Legacy values remain available as native tap choices');
 change('脈の速さ', '遅い（遅）');
 assert.deepEqual(changes.at(-1), ['examination', 'pulseSpeed', '遅い（遅）']);
-assert.equal(select('脈の速さ').props.value, '遅い（遅）');
+assert.equal(selectedValue(field('脈の速さ')), '遅い（遅）');
 
 findingIds = ['fixedPain']; observations = { fixedPain: 'present' }; examination = {}; render();
-assert.equal(selects().length, 2);
-assert.equal(select('痛みの性質（主なもの）').props.value, '刺すような痛み');
-assert.equal(select('痛む場所の変化').props.value, '固定している');
+assert.equal(fields().length, 2);
+assert.equal(selectedValue(field('痛みの性質（主なもの）')), '刺すような痛み');
+assert.equal(selectedValue(field('痛む場所の変化')), '固定している');
 change('痛む場所の変化', '');
 assert.deepEqual(changes.at(-1), ['examination', 'painLocation', '']);
 assert.equal(observations.fixedPain, 'unknown', 'Clearing either compound input removes fixed-pain support');
@@ -113,17 +141,23 @@ change('痛む場所の変化', '固定している');
 assert.equal(observations.fixedPain, 'present');
 
 findingIds = ['fatigue', 'cold', 'exam:dryCough', 'exam:phlegm']; observations = {}; examination = {}; render();
-assert.equal(selects().length, 3);
-assert.deepEqual(plain(options(select('疲労・気力低下'))), ['unknown', 'present', 'absent']);
-assert.equal(select('疲労・気力低下').props.value, 'unknown');
-for (const node of selects()) {
-  assert(nodes(tree).some(item => item.type === 'label' && item.props.htmlFor === node.props.id), 'Every select has an explicit matching label');
+assert.equal(fields().length, 3);
+assert.deepEqual(plain(options(field('疲労・気力低下'))), ['unknown', 'present', 'absent']);
+assert.equal(selectedValue(field('疲労・気力低下')), 'unknown');
+for (const node of fields()) {
+  assert(nodes(node).some(item => item.type === 'legend' && text(item) === node.props['aria-label']), 'Every answer group has a matching visible legend');
+  assert.equal(node.props.tabIndex, -1, 'Every inline group can receive comparison-navigation focus');
+  for (const button of buttons(node)) {
+    assert.equal(button.props.type, 'button');
+    assert.equal(typeof button.props['aria-pressed'], 'boolean', 'Selected and unselected answer states are exposed to assistive technology');
+    assert(text(button), 'Every tap target has a visible answer label');
+  }
   if (node.props['aria-describedby']) assert(nodes(tree).some(item => item.props?.id === node.props['aria-describedby'] && text(item)), 'Observation guidance has a working accessible description');
 }
 for (const value of ['present', 'absent', 'unknown']) {
   change('疲労・気力低下', value);
   assert.deepEqual(changes.at(-1), ['observation', 'fatigue', value]);
-  assert.equal(select('疲労・気力低下').props.value, value);
+  assert.equal(selectedValue(field('疲労・気力低下')), value);
 }
 change('冷え・温めると軽減', 'present');
 assert.deepEqual(changes.at(-1), ['observation', 'cold', 'present']);
@@ -133,15 +167,15 @@ change('咳・痰', '乾いた咳');
 assert.deepEqual(changes.at(-1), ['examination', 'cough', '乾いた咳']);
 
 findingIds = ['redTongue', 'rapidPulse']; observations = {}; examination = { inspectionDetails: '紅舌', pulseRate: '120' }; render();
-assert.equal(select('舌体の色').props.value, '');
-assert.equal(select('脈の速さ').props.value, '', 'Neither text nor numbers infer a recorded finding');
+assert.equal(selectedValue(field('舌体の色')), '');
+assert.equal(selectedValue(field('脈の速さ')), '', 'Neither text nor numbers infer a recorded finding');
 assert.equal(examinationValue('pulseSpeed', examination, observations), '');
 findingIds = ['greasyCoat', 'exam:thick', 'exam:dryCoat']; examination = {}; render();
 change('舌苔の性状', '苔を認めない');
 for (const id of ['coatColor', 'coatThickness', 'coatTexture', 'coatMoisture']) assert.equal(examination[id], '苔を認めない', 'Callbacks preserve the existing coating-consistency handler');
-assert.equal(select('舌苔の厚さ').props.value, '苔を認めない');
-assert.equal(select('舌苔の乾湿').props.value, '苔を認めない');
+assert.equal(selectedValue(field('舌苔の厚さ')), '苔を認めない');
+assert.equal(selectedValue(field('舌苔の乾湿')), '苔を認めない');
 assert(nodes(tree).some(node => node.props?.className === 'clinical-inline-finding-fields'));
-assert.equal(nodes(tree).filter(node => node.props?.className === 'clinical-inline-finding-field').length, selects().length);
+assert.equal(nodes(tree).filter(node => node.props?.className === 'clinical-inline-finding-field').length, fields().length);
 
-console.log('Clinical inline finding inputs: exact native choices, shared-field deduplication, compound pain, legacy pulse values, controlled updates, original-sign questions, scoped labels, comparison callbacks, clear/unknown states and no text or numeric inference passed.');
+console.log('Clinical inline finding inputs: real tap buttons, exact choices, single selected state, repeat taps, shared-field deduplication, compound pain, legacy pulse values, scoped legends/descriptions, comparison callbacks, clear/unknown states, coating linkage and no text or numeric inference passed.');

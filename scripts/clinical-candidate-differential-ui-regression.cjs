@@ -26,6 +26,13 @@ const inputOutput = ts.transpileModule(fs.readFileSync(inputFilename, 'utf8'), {
   fileName: inputFilename,
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true },
 }).outputText;
+const choiceFilename = path.resolve(__dirname, '../src/components/clinical/ClinicalChoiceButtons.tsx');
+const choiceOutput = ts.transpileModule(fs.readFileSync(choiceFilename, 'utf8'), {
+  fileName: choiceFilename,
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true },
+}).outputText;
+const choiceExports = {};
+vm.runInNewContext(choiceOutput, { exports: choiceExports, require }, { filename: choiceFilename });
 
 function hookHost() {
   const slots = [], effects = [];
@@ -51,6 +58,18 @@ function nodes(node) {
   if (Array.isArray(node)) return node.flatMap(nodes);
   return node && typeof node === 'object' ? [node, ...nodes(node.props?.children)] : [];
 }
+const isChoice = node => node.type === 'fieldset' && node.props?.className === 'clinical-choice-field';
+function selectedValue(choice) {
+  const selected = nodes(choice).filter(node => node.type === 'button' && node.props['aria-pressed']);
+  assert.equal(selected.length, 1, 'Each inline choice has exactly one selected native button');
+  return selected[0].props.value;
+}
+function tapChoice(choice, value) {
+  const button = nodes(choice).find(node => node.type === 'button' && node.props.value === value);
+  assert(button, 'Available inline choice: ' + choice.props['aria-label'] + ' / ' + value);
+  assert.equal(button.props.type, 'button', 'Choosing a finding does not submit a surrounding form');
+  button.props.onClick();
+}
 function text(node) {
   if (Array.isArray(node)) return node.map(text).join('');
   if (typeof node === 'string' || typeof node === 'number') return String(node);
@@ -64,7 +83,7 @@ function harness(ids, observations = {}, examination = {}, focusIds = null, appl
   const before = JSON.stringify(inputs);
   let controlledFocus = focusIds;
   let currentObservations = inputs.observations, currentExamination = inputs.examination;
-  const localRequire = id => id === 'react' ? host.hooks : id === './ClinicalFindingInput' ? inputExports : id.startsWith('@/') ? load('src/' + id.slice(2)) : require(id);
+  const localRequire = id => id === 'react' ? host.hooks : id === './ClinicalFindingInput' ? inputExports : id === './ClinicalChoiceButtons' ? choiceExports : id.startsWith('@/') ? load('src/' + id.slice(2)) : require(id);
   vm.runInNewContext(inputOutput, { exports: inputExports, require: localRequire }, { filename: inputFilename });
   vm.runInNewContext(output, { exports: exported, require: localRequire }, { filename });
   const api = {
@@ -80,8 +99,9 @@ function harness(ids, observations = {}, examination = {}, focusIds = null, appl
     boxes: () => nodes(tree).filter(node => node.type === 'input' && node.props.type === 'checkbox'),
     checkedNames: () => api.boxes().filter(node => node.props.checked).map(box => text(nodes(tree).find(node => node.type === 'label' && nodes(node).includes(box)))),
     button(label) { const button = nodes(tree).find(node => node.type === 'button' && text(node) === label); assert(button, 'Button: ' + label); return button; },
-    select(label) { const input = nodes(tree).find(node => node.type === 'select' && node.props['aria-label'] === label); assert(input, 'Inline select: ' + label); return input; },
-    change(label, value) { api.select(label).props.onChange({ target: { value } }); api.render(); },
+    choice(label) { const input = nodes(tree).find(node => isChoice(node) && node.props['aria-label'] === label); assert(input, 'Inline choice: ' + label); return input; },
+    value(label) { return selectedValue(api.choice(label)); },
+    change(label, value) { tapChoice(api.choice(label), value); api.render(); },
     questionKeys: () => nodes(tree).filter(node => node.props?.className === 'clinical-differential-question').map(node => String(node.key)),
     differenceKeys: () => nodes(tree).filter(node => node.props?.className === 'clinical-differential-finding').map(node => String(node.key)),
     differencePlacement(key) { const row = nodes(tree).find(node => node.props?.className === 'clinical-differential-finding' && String(node.key) === key); assert(row); return nodes(tree).some(node => node.type === 'details' && nodes(node).includes(row)) ? 'more' : 'primary'; },
@@ -89,11 +109,11 @@ function harness(ids, observations = {}, examination = {}, focusIds = null, appl
     finding(label) { const row = nodes(tree).find(node => node.type === 'li' && nodes(node).some(child => child.type === 'strong' && text(child) === label)); assert(row, 'Finding: ' + label); return row; },
     review(label) { const button = nodes(api.finding(label)).find(node => node.type === 'button' && node.props['aria-expanded'] !== undefined); assert(button); button.props.onClick(); api.render(); },
     editor(label) { const editor = nodes(api.finding(label)).find(node => node.props?.className === 'clinical-differential-editor'); assert(editor && !editor.props.hidden, 'Open inline editor: ' + label); return editor; },
-    reviewChange(label, field, value) { const input = nodes(api.editor(label)).find(node => node.type === 'select' && node.props['aria-label'] === field); assert(input, 'Review input: ' + field); input.props.onChange({ target: { value } }); api.render(); },
+    reviewChange(label, field, value) { const input = nodes(api.editor(label)).find(node => isChoice(node) && node.props['aria-label'] === field); assert(input, 'Review input: ' + field); tapChoice(input, value); api.render(); },
     sharedFinding(label) { const list = nodes(tree).find(node => node.props?.className === 'clinical-differential-shared'); assert(list); const row = nodes(list).find(node => node.type === 'li' && nodes(node).some(child => child.type === 'strong' && text(child) === label)); assert(row, 'Shared finding: ' + label); return row; },
     sharedReview(label) { nodes(api.sharedFinding(label)).find(node => node.type === 'button').props.onClick(); api.render(); },
     sharedEditor(label) { const editor = nodes(api.sharedFinding(label)).find(node => node.props?.className === 'clinical-differential-editor'); assert(editor && !editor.props.hidden); return editor; },
-    sharedChange(label, field, value) { const input = nodes(api.sharedEditor(label)).find(node => node.type === 'select' && node.props['aria-label'] === field); assert(input, 'Shared review input: ' + field); input.props.onChange({ target: { value } }); api.render(); },
+    sharedChange(label, field, value) { const input = nodes(api.sharedEditor(label)).find(node => isChoice(node) && node.props['aria-label'] === field); assert(input, 'Shared review input: ' + field); tapChoice(input, value); api.render(); },
     unchanged() { assert.equal(JSON.stringify(inputs), before, 'Comparison controls cannot mutate candidate IDs, findings, treatment or points'); },
   };
   api.render(); return api;
@@ -141,7 +161,7 @@ const redReview = nodes(compared.finding('紅舌')).find(node => node.type === '
 redReview.props.onClick();
 compared.render();
 assert.equal(compared.checks.length, 0, 'Review buttons never navigate to the four-examination screen');
-assert(nodes(compared.editor('紅舌')).some(node => node.type === 'select' && node.props['aria-label'] === '舌体の色' && node.props.value === '紅'));
+assert(nodes(compared.editor('紅舌')).some(node => isChoice(node) && node.props['aria-label'] === '舌体の色' && selectedValue(node) === '紅'));
 const openRedButton = nodes(compared.finding('紅舌')).find(node => node.type === 'button');
 assert.equal(openRedButton.props['aria-expanded'], true);
 assert.equal(openRedButton.props['aria-controls'], compared.editor('紅舌').props.id, 'Expanded button identifies its accessible editor');
@@ -154,32 +174,32 @@ assert.deepEqual(relations(review, '熱感・ほてり'), ['合いにくい所�
 review.reviewChange('熱感・ほてり', '熱感・ほてり', 'unknown');
 assert.equal(review.observations().heat, 'unknown');
 assert(text(review.finding('熱感・ほてり')).includes('未確認・判断困難等'));
-assert(nodes(review.editor('熱感・ほてり')).some(node => node.type === 'select' && node.props.value === 'unknown'), 'Resetting a known finding retains the same active editor');
+assert(nodes(review.editor('熱感・ほてり')).some(node => isChoice(node) && selectedValue(node) === 'unknown'), 'Resetting a known finding retains the same active editor');
 assert(text(review.tree()).includes('未確認に戻した所見 1件'));
 review.reviewChange('熱感・ほてり', '熱感・ほてり', 'present');
 assert(text(review.finding('熱感・ほてり')).includes('支持する'));
 review.review('紅舌');
-assert(!nodes(review.finding('熱感・ほてり')).some(node => node.type === 'select'), 'Only the newly requested review editor stays open');
+assert(!nodes(review.finding('熱感・ほてり')).some(node => isChoice(node)), 'Only the newly requested review editor stays open');
 review.reviewChange('紅舌', '舌体の色', '淡白');
 assert.deepEqual(relations(review, '紅舌'), ['合いにくい所見を認めない', '支持所見を認めない', '照合設定なし']);
 assert.deepEqual(relations(review, '淡白舌'), ['支持する', '合いにくい', '照合設定なし']);
 review.reviewChange('紅舌', '舌体の色', '');
 assert.equal(review.examination().tongueColor, '');
-assert(nodes(review.editor('紅舌')).some(node => node.type === 'select' && node.props.value === ''));
+assert(nodes(review.editor('紅舌')).some(node => isChoice(node) && selectedValue(node) === ''));
 review.review('紅舌');
 assert(nodes(review.finding('紅舌')).some(node => node.props?.className === 'clinical-differential-editor' && node.props.hidden));
 review.review('紅舌');
-assert(nodes(review.editor('紅舌')).some(node => node.type === 'select'));
+assert(nodes(review.editor('紅舌')).some(node => isChoice(node)));
 review.render(['spleen-qi', 'stasis']);
 assert(!nodes(review.tree()).some(node => node.props?.className === 'clinical-differential-editor' && !node.props.hidden), 'A different focus scope cannot retain an old active review editor');
 assert.equal(review.checks.length, 0); assert.equal(review.focusChanges.length, 0); review.unchanged();
 
 const reviewPain = harness(['stasis', 'liver-qi'], {}, { painQuality: '刺すような痛み', painLocation: '固定している' }, null, true);
 reviewPain.review('固定した刺すような痛み');
-assert.deepEqual(nodes(reviewPain.editor('固定した刺すような痛み')).filter(node => node.type === 'select').map(node => node.props['aria-label']), ['痛みの性質（主なもの）', '痛む場所の変化']);
+assert.deepEqual(nodes(reviewPain.editor('固定した刺すような痛み')).filter(node => isChoice(node)).map(node => node.props['aria-label']), ['痛みの性質（主なもの）', '痛む場所の変化']);
 reviewPain.reviewChange('固定した刺すような痛み', '痛む場所の変化', '');
 assert.equal(reviewPain.observations().fixedPain, 'unknown');
-assert.equal(nodes(reviewPain.editor('固定した刺すような痛み')).filter(node => node.type === 'select').length, 2, 'Both parts remain editable after the compound finding becomes unknown');
+assert.equal(nodes(reviewPain.editor('固定した刺すような痛み')).filter(node => isChoice(node)).length, 2, 'Both parts remain editable after the compound finding becomes unknown');
 reviewPain.reviewChange('固定した刺すような痛み', '痛む場所の変化', '固定している');
 assert.equal(reviewPain.observations().fixedPain, 'present');
 assert.equal(reviewPain.checks.length, 0); reviewPain.unchanged();
@@ -191,11 +211,11 @@ const reviewPlacements = Object.fromEntries(reviewCoat.differenceKeys().map(id =
 assert.equal(reviewCoat.differencePlacement('greasyCoat'), 'more');
 reviewCoat.review('膩苔');
 reviewCoat.reviewChange('膩苔', '舌苔の性状', '苔を認めない');
-assert(nodes(reviewCoat.editor('膩苔')).some(node => node.type === 'select' && node.props.value === '苔を認めない'));
+assert(nodes(reviewCoat.editor('膩苔')).some(node => isChoice(node) && selectedValue(node) === '苔を認めない'));
 for (const [id, placement] of Object.entries(reviewPlacements)) assert.equal(reviewCoat.differencePlacement(id), placement, 'Linked coating changes cannot reparent a review row: ' + id);
 reviewCoat.reviewChange('膩苔', '舌苔の性状', '');
 assert.equal(reviewCoat.differencePlacement('greasyCoat'), 'more');
-assert(nodes(reviewCoat.editor('膩苔')).some(node => node.type === 'select' && node.props.value === ''));
+assert(nodes(reviewCoat.editor('膩苔')).some(node => isChoice(node) && selectedValue(node) === ''));
 assert.equal(reviewCoat.checks.length, 0); reviewCoat.unchanged();
 
 const questions = harness(['spleen-qi', 'liver-heat', 'stasis']);
@@ -221,19 +241,19 @@ const initialQuestionKeys = live.questionKeys();
 const initialPlacement = Object.fromEntries(initialQuestionKeys.map(key => [key, live.questionPlacement(key)]));
 live.change('疲労・気力低下', 'present');
 assert.deepEqual(live.questionKeys(), initialQuestionKeys, 'Answered questions stay mounted and in their original order');
-assert.equal(live.select('疲労・気力低下').props.value, 'present');
+assert.equal(live.value('疲労・気力低下'), 'present');
 assert(text(live.finding('疲労・気力低下')).includes('支持する'), 'Inline answers immediately update the displayed differences');
 live.change('舌体の色', '紅');
-assert.equal(live.select('舌体の色').props.value, '紅');
+assert.equal(live.value('舌体の色'), '紅');
 assert.deepEqual(relations(live, '紅舌'), ['合いにくい', '支持する', '照合設定なし', '照合設定なし']);
 assert(text(live.tree()).includes('この画面で確認済み'));
 live.change('舌体の色', '');
-assert.equal(live.select('舌体の色').props.value, '', 'An answered field remains editable after resetting to unconfirmed');
+assert.equal(live.value('舌体の色'), '', 'An answered field remains editable after resetting to unconfirmed');
 assert.deepEqual(live.questionKeys(), initialQuestionKeys);
 for (const [key, placement] of Object.entries(initialPlacement)) assert.equal(live.questionPlacement(key), placement, key + ': editing never reparents a control across the first-six boundary');
 live.change('痛みの性質（主なもの）', '刺すような痛み');
 assert.equal(live.observations().fixedPain, 'unknown', 'The first part of compound pain remains unconfirmed');
-assert.equal(live.select('痛む場所の変化').props.value, '');
+assert.equal(live.value('痛む場所の変化'), '');
 live.change('痛む場所の変化', '固定している');
 assert.equal(live.observations().fixedPain, 'present');
 assert(text(live.finding('固定した刺すような痛み')).includes('支持する'));
@@ -258,13 +278,13 @@ assert.equal(coat.questionPlacement('coatTexture'), 'more');
 const coatQuestionKeys = coat.questionKeys();
 coat.change('舌苔の厚さ', '苔を認めない');
 for (const key of ['coatColor', 'coatThickness', 'coatTexture', 'coatMoisture']) assert.equal(coat.examination()[key], '苔を認めない');
-assert.equal(coat.select('舌苔の性状').props.value, '苔を認めない');
+assert.equal(coat.value('舌苔の性状'), '苔を認めない');
 assert.equal(coat.questionPlacement('coatThickness'), 'primary');
 assert.equal(coat.questionPlacement('coatTexture'), 'more', 'Synchronized coating values cannot move an active overflow editor into the primary list');
 assert.deepEqual(coat.questionKeys(), coatQuestionKeys);
 coat.change('舌苔の性状', '膩苔（きめ細かく粘る）');
 assert.equal(coat.examination().coatThickness, '');
-assert.equal(coat.select('舌苔の厚さ').props.value, '', 'Choosing visible coating again restores linked fields to unconfirmed');
+assert.equal(coat.value('舌苔の厚さ'), '', 'Choosing visible coating again restores linked fields to unconfirmed');
 assert.equal(coat.questionPlacement('coatTexture'), 'more');
 assert.deepEqual(coat.questionKeys(), coatQuestionKeys, 'Reopened linked coating checks keep the same keys and order');
 coat.unchanged();
@@ -295,21 +315,21 @@ assert.equal(sharedLive.sharedFinding('疲労・気力低下').props['data-statu
 assert(text(sharedLive.sharedFinding('疲労・気力低下')).includes('確認してなし'));
 sharedLive.sharedChange('疲労・気力低下', '疲労・気力低下', 'unknown');
 assert.equal(sharedLive.sharedFinding('疲労・気力低下').props['data-status'], 'unknown');
-assert(nodes(sharedLive.sharedEditor('疲労・気力低下')).some(node => node.type === 'select' && node.props.value === 'unknown'), 'Shared editors stay mounted when their positive evidence is removed');
+assert(nodes(sharedLive.sharedEditor('疲労・気力低下')).some(node => isChoice(node) && selectedValue(node) === 'unknown'), 'Shared editors stay mounted when their positive evidence is removed');
 sharedLive.sharedChange('疲労・気力低下', '疲労・気力低下', 'present');
 assert.equal(sharedLive.sharedFinding('疲労・気力低下').props['data-status'], 'present');
 sharedLive.sharedReview('淡白舌');
-assert(!nodes(sharedLive.sharedFinding('疲労・気力低下')).some(node => node.type === 'select'));
+assert(!nodes(sharedLive.sharedFinding('疲労・気力低下')).some(node => isChoice(node)));
 sharedLive.sharedChange('淡白舌', '舌体の色', '紅');
 assert.equal(sharedLive.sharedFinding('淡白舌').props['data-status'], 'absent');
 assert.deepEqual(relations(sharedLive, '紅舌'), ['合いにくい', '照合設定なし'], 'Changing a common input immediately recomputes distinguishing findings too');
 sharedLive.sharedChange('淡白舌', '舌体の色', '');
 assert.equal(sharedLive.sharedFinding('淡白舌').props['data-status'], 'unknown');
-assert(nodes(sharedLive.sharedEditor('淡白舌')).some(node => node.type === 'select' && node.props.value === ''));
+assert(nodes(sharedLive.sharedEditor('淡白舌')).some(node => isChoice(node) && selectedValue(node) === ''));
 sharedLive.sharedChange('淡白舌', '舌体の色', '淡白');
 sharedLive.sharedReview('淡白舌');
 sharedLive.sharedReview('淡白舌');
-assert(nodes(sharedLive.sharedEditor('淡白舌')).some(node => node.type === 'select' && node.props.value === '淡白'), 'Shared recording can be closed and reopened without changing the value');
+assert(nodes(sharedLive.sharedEditor('淡白舌')).some(node => isChoice(node) && selectedValue(node) === '淡白'), 'Shared recording can be closed and reopened without changing the value');
 sharedLive.sharedReview('弱い脈');
 sharedLive.sharedChange('弱い脈', '脈の強さ', '強い・有力');
 assert.equal(sharedLive.observations().weakPulse, 'absent');
@@ -323,7 +343,7 @@ sharedCoat.sharedReview('舌苔の乾燥');
 sharedCoat.sharedChange('舌苔の乾燥', '舌苔の乾湿', '苔を認めない');
 assert.equal(sharedCoat.sharedFinding('舌苔の乾燥').props['data-status'], 'unknown', 'A missing coat does not become a confirmed dry coat');
 for (const key of ['coatColor', 'coatThickness', 'coatTexture', 'coatMoisture']) assert.equal(sharedCoat.examination()[key], '苔を認めない');
-assert(nodes(sharedCoat.sharedEditor('舌苔の乾燥')).some(node => node.type === 'select' && node.props.value === '苔を認めない'));
+assert(nodes(sharedCoat.sharedEditor('舌苔の乾燥')).some(node => isChoice(node) && selectedValue(node) === '苔を認めない'));
 sharedCoat.sharedChange('舌苔の乾燥', '舌苔の乾湿', '潤っている');
 assert.equal(sharedCoat.sharedFinding('舌苔の乾燥').props['data-status'], 'absent');
 assert.equal(sharedCoat.examination().coatThickness, '');

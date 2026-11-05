@@ -46,6 +46,15 @@ function compile(relative) {
 }
 const providerSource = compile('src/contexts/ClinicalMemoContext.tsx');
 const workspaceSource = compile('src/components/clinical/ClinicalWorkspace.tsx');
+const choiceSource = compile('src/components/clinical/ClinicalChoiceButtons.tsx');
+const choiceExports = {};
+vm.runInNewContext(choiceSource.code, { exports: choiceExports, require }, { filename: choiceSource.file });
+function resolveChoices(node) {
+  if (Array.isArray(node)) return node.map(resolveChoices);
+  if (!node || typeof node !== 'object') return node;
+  if (node.type === choiceExports.default) return resolveChoices(node.type(node.props));
+  return { ...node, props: { ...node.props, children: resolveChoices(node.props?.children) } };
+}
 function hookHost() {
   const slots = [], effects = [];
   let cursor = 0;
@@ -133,12 +142,13 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     if (id === '@/contexts/ClinicalMemoContext') return { useClinicalMemo: () => context };
     if (id === './ClinicalCandidatePicker') return CandidatePicker;
     if (id === './ClinicalCandidateDifferential') return CandidateDifferential;
+    if (id === './ClinicalChoiceButtons') return choiceExports;
     if (id.startsWith('@/')) return localLoad('src/' + id.slice(2));
     return require(id);
   } }, { filename: workspaceSource.file });
   const api = { flags, writes, cloudWrites, bulkWrites, cloudAccounts, focused, scrolled, groups, localValues, sessionValues,
     providerRender() { context = providerHost.render(providerExports.ClinicalMemoProvider, { children: null }).props.value; return context; },
-    render() { api.providerRender(); tree = workspaceHost.render(workspaceExports.default); return tree; },
+    render() { api.providerRender(); tree = resolveChoices(workspaceHost.render(workspaceExports.default)); return tree; },
     flushTimers() { const pending = [...timers].filter(([, item]) => item.delay === 0); for (const [id, item] of pending) { timers.delete(id); item.callback(); } },
     flushFrames() { while (frames.length) frames.shift()(); },
     context: () => context,
@@ -147,8 +157,19 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     encounter: () => localLoad('src/utils/clinicalEncounter').readClinicalEncounter().encounter,
     button(label) { const found = nodes(tree).find(node => node.type === 'button' && (node.props['aria-label'] === label || text(node) === label)); assert(found, 'Button ' + label); return found; },
     click(label) { const button = api.button(label); assert(!button.props.disabled, 'Enabled button: ' + label); button.props.onClick(); api.render(); },
-    field(label) { const parent = nodes(tree).find(node => node.type === 'label' && text(node).startsWith(label)); assert(parent, 'Field label ' + label); const input = nodes(parent).find(node => ['input', 'select', 'textarea'].includes(node.type)); assert(input); return input; },
-    change(label, value) { api.field(label).props.onChange({ target: { value } }); api.render(); },
+    choice(label) { return nodes(tree).find(node => node.type === 'fieldset' && node.props.className === 'clinical-choice-field' && [label, `${label}の確認状態`].includes(node.props['aria-label'])); },
+    field(label) {
+      const choice = api.choice(label);
+      if (choice) { const selected = nodes(choice).filter(node => node.type === 'button' && node.props['aria-pressed']); assert.equal(selected.length, 1, 'Exactly one visible choice is selected: ' + label); return selected[0]; }
+      const parent = nodes(tree).find(node => node.type === 'label' && text(node).startsWith(label)); assert(parent, 'Field label ' + label);
+      const input = nodes(parent).find(node => ['input', 'select', 'textarea'].includes(node.type)); assert(input); return input;
+    },
+    change(label, value) {
+      const choice = api.choice(label);
+      if (choice) { const button = nodes(choice).find(node => node.type === 'button' && node.props.value === value); assert(button, 'Available tap choice: ' + label + ' / ' + value); assert.equal(button.props.type, 'button'); button.props.onClick(); }
+      else api.field(label).props.onChange({ target: { value } });
+      api.render();
+    },
     candidatePicker() { const picker = nodes(tree).find(node => node.type === CandidatePicker); assert(picker, 'Real workspace supplies a candidate picker'); return picker; },
     candidateDifferential() { const differential = nodes(tree).find(node => node.type === CandidateDifferential); assert(differential, 'Real workspace supplies the selected-candidate differential'); return differential; },
     findingHistory() { return nodes(tree).find(node => node.props?.className === 'clinical-finding-change-history'); },
@@ -316,6 +337,30 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert([...client.groups.values()].some(group => group.open));
     assert.equal(client.encounter().observations.fatigue, 'absent', 'Returning for another observation never resets a confirmed negative');
     assert(CLINICAL_PATTERNS.length > 7, 'Expanded candidates retain observation focus behavior');
+  });
+  await check('candidate pulse links focus the real tap controls and preserve manual notes when recording', () => {
+    for (const [candidateId, linkLabel, fieldLabel, controlId, value, observationId] of [
+      ['liver-heat', '数脈を確認', '脈の速さ', 'clinical-sign-rapidPulse', '速い（数）', 'rapidPulse'],
+      ['qi', '弱い脈を確認', '脈の強さ', 'clinical-sign-weakPulse', '弱い・無力', 'weakPulse'],
+    ]) {
+      const initial = sampleEncounter({ step: 2, observations: {}, examination: {}, candidateIds: [candidateId] });
+      const client = harness({ initialEncounter: initial });
+      client.click(linkLabel); client.flushFrames();
+      assert.equal(client.focused.at(-1), controlId, 'The comparison link focuses the rendered pulse fieldset');
+      assert.equal(client.scrolled.at(-1), controlId);
+      const control = client.choice(fieldLabel);
+      assert.equal(control.props.id, controlId); assert.equal(control.props.tabIndex, -1);
+      assert(nodes(control).some(node => node.type === 'legend' && text(node) === fieldLabel));
+      assert.equal(client.field(fieldLabel).props.value, '', 'Opening an unconfirmed pulse does not answer it');
+      client.change(fieldLabel, value);
+      assert.equal(client.field(fieldLabel).props.value, value);
+      assert.equal(client.encounter().observations[observationId], 'present');
+      assert.equal(client.encounter().step, 1, 'Tapping a value stays in the current examination');
+      assert.equal(client.encounter().principle, initial.principle);
+      assert.equal(client.encounter().plan, initial.plan);
+      client.click('候補・治法'); client.flushFrames();
+      assert(!nodes(client.tree()).some(node => node.type === 'button' && text(node) === linkLabel), 'The confirmed pulse no longer appears as an unanswered link');
+    }
   });
   await check('structured four examinations retain pulse dimensions, comparison semantics and note content', () => {
     const client = harness({ initialEncounter: sampleEncounter({ observations: {}, step: 1 }) });

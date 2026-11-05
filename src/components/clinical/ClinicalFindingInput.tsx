@@ -5,6 +5,7 @@ import { OBSERVATION_LABELS, type ClinicalObservations, type ClinicalSignId, typ
 import { examinationValue, type ClinicalExamination } from '@/data/clinicalExamination';
 import type { ComparisonFindingId } from '@/data/clinicalExaminationComparison';
 import { clinicalFindingInputs } from '@/utils/clinicalFindingInput';
+import ClinicalChoiceButtons from './ClinicalChoiceButtons';
 
 interface ClinicalFindingInputProps {
   findingIds: readonly ComparisonFindingId[];
@@ -21,15 +22,15 @@ export default function ClinicalFindingInput({ findingIds, observations, examina
   return <div className="clinical-inline-finding-fields">{inputs.map(input => {
     const id = `${scopeId}-${input.kind}-${input.id}`;
     return <div key={`${input.kind}-${input.id}`} className="clinical-inline-finding-field">
-      <label htmlFor={id}>{input.label}</label>
-      {input.kind === 'examination' ? <select id={id} aria-label={input.label} value={examinationValue(input.id, examination, observations)} onChange={event => onExaminationChange(input.id, event.target.value)}>
-        <option value="">未確認</option>{input.options.map(option => <option key={option} value={option}>{option}</option>)}
-      </select> : <>
-        <select id={id} aria-label={input.label} aria-describedby={`${id}-question`} value={observations[input.id] || 'unknown'} onChange={event => onObservationChange(input.id, event.target.value as ObservationStatus)}>
-          {(['unknown', 'present', 'absent'] as const).map(status => <option key={status} value={status}>{OBSERVATION_LABELS[status]}</option>)}
-        </select>
-        <p id={`${id}-question`}>{input.question}</p>
-      </>}
+      {input.kind === 'examination' ? <ClinicalChoiceButtons id={id} label={input.label}
+        value={examinationValue(input.id, examination, observations)}
+        options={[{ value: '', label: '未確認' }, ...input.options.map(option => ({ value: option, label: option }))]}
+        onChange={value => onExaminationChange(input.id, value)}
+      /> : <ClinicalChoiceButtons id={id} label={input.label} description={input.question}
+        value={observations[input.id] || 'unknown'}
+        options={(['unknown', 'present', 'absent'] as const).map(status => ({ value: status, label: OBSERVATION_LABELS[status] }))}
+        onChange={value => onObservationChange(input.id, value as ObservationStatus)}
+      />}
     </div>;
   })}</div>;
 }

@@ -24,6 +24,7 @@
 @import "./clinical-menu-refinement.css";
 @import "./tablet-usability.css";
 @import "./clinical-record-board.css";
+@import "./clinical-choice-buttons.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

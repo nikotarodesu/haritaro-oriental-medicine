@@ -10,6 +10,7 @@ import { clearClinicalEncounter, clinicalCandidateNames, clinicalEncounterFinger
 import ClinicalEvidenceKey from './ClinicalEvidenceKey';
 import ClinicalCandidatePicker from './ClinicalCandidatePicker';
 import ClinicalCandidateDifferential from './ClinicalCandidateDifferential';
+import ClinicalChoiceButtons from './ClinicalChoiceButtons';
 import { appendClinicalPrinciple, hasClinicalPrinciple } from '@/utils/clinicalTreatment';
 import { EXAMINATION_GROUPS, EXAMINATION_FIELDS, EXAMINATION_TEXT_FIELDS, examinationValue, examinationSummary, examinationIssues, resolvedExaminationObservations } from '@/data/clinicalExamination';
 import { EXAMINATION_ASSOCIATIONS, examinationFinding, comparisonContext, type ComparisonFindingId } from '@/data/clinicalExaminationComparison';
@@ -205,7 +206,9 @@ export default function ClinicalWorkspace() {
       const finding = examinationFinding(id);
       const field = finding?.requires && examinationValue(finding.field, encounter.examination, observations) && !examinationValue(finding.requires.field, encounter.examination, observations) ? finding.requires.field : finding?.field;
       const tongueField = id === 'fixedPain' ? (!examinationValue('painLocation', encounter.examination, observations) ? 'painLocation' : 'painQuality') : id === 'paleTongue' || id === 'redTongue' ? 'tongueColor' : id === 'greasyCoat' ? 'coatTexture' : undefined;
-      const input = document.getElementById(field || tongueField ? 'clinical-exam-' + (field || tongueField) : 'clinical-sign-' + id);
+      const targetField = field || tongueField;
+      const inputId = targetField === 'pulseSpeed' ? 'clinical-sign-rapidPulse' : targetField === 'pulseStrength' ? 'clinical-sign-weakPulse' : targetField ? 'clinical-exam-' + targetField : 'clinical-sign-' + id;
+      const input = document.getElementById(inputId);
       const group = input?.closest('details');
       if (group) group.open = true;
       input?.focus(); input?.scrollIntoView({ block: 'center', behavior: 'auto' });
@@ -273,7 +276,7 @@ export default function ClinicalWorkspace() {
       </>}
       {encounter.step === 1 && <>
         <nav className="clinical-examination-jumps" aria-label="四診の入力箇所"><span>確認する項目へ</span>{EXAMINATION_GROUPS.map(group => <button type="button" key={group} onClick={() => openExamination(group)}>{group}<small>{group === '問診' ? '症状・生活' : group === '望診' ? '舌・外観' : group === '聞診' ? '声・呼吸' : '脈・触診'}</small></button>)}</nav>
-        <p className="text-sm">「なし」は確認して認めなかった場合に選びます。観察していない項目は「未確認」のまま残します。</p>
+        <p className="text-sm">各項目のボタンを1つタップして選択します。「未確認」で選択を戻せます。「なし」は確認して認めなかった場合に選びます。</p>
         {examinationIssues(encounter.examination).map(issue => <p role="alert" className="clinical-examination-hint" key={issue}>{issue}</p>)}
         {EXAMINATION_GROUPS.map(group => {
           const signs = comparisonSigns.filter(sign => sign.group === group);
@@ -285,16 +288,22 @@ export default function ClinicalWorkspace() {
             <fieldset><legend className="sr-only">{group}の所見</legend>
               {group === '望診' && <p className="clinical-examination-hint">舌体と舌苔を分け、歯痕・裂紋などは個別に選べます。照明、直前の飲食、舌磨きの有無を補足に記録してください。「苔を認めない」を選ぶと苔の他の項目もそろいます。</p>}
               {group === '切診' && <p className="clinical-examination-hint">速さ・強さ・深さは別々に選びます。選択した所見は候補比較にも反映します。脈拍数から脈状や見立てを自動判定しません。</p>}
-              <div className="clinical-examination-fields grid gap-3 sm:grid-cols-2">{fields.map(field => <Fragment key={field.id}>{(['tongueColor', 'coatColor', 'pulseSpeed', 'tenderness'].includes(field.id)) && <h3 className="clinical-examination-subheading sm:col-span-2">{field.id === 'tongueColor' ? '舌体の観察' : field.id === 'coatColor' ? '舌苔の観察' : field.id === 'pulseSpeed' ? '脈診' : '腹診・筋・皮膚などの触診'}</h3>}<label className="clinical-examination-field"><span className="font-semibold">{field.label}</span>
-                <select id={field.id === 'pulseSpeed' ? 'clinical-sign-rapidPulse' : field.id === 'pulseStrength' ? 'clinical-sign-weakPulse' : `clinical-exam-${field.id}`} aria-label={field.label} className={`${FIELD} mt-2`} value={examinationValue(field.id, encounter.examination, observations)} onChange={event => updateExamination(field.id, event.target.value)}><option value="">未確認</option>{field.options.map(option => <option key={option} value={option}>{option}</option>)}</select>
-              </label></Fragment>)}</div>
+              <div className="clinical-examination-fields grid gap-3">{fields.map(field => <Fragment key={field.id}>{(['tongueColor', 'coatColor', 'pulseSpeed', 'tenderness'].includes(field.id)) && <h3 className="clinical-examination-subheading">{field.id === 'tongueColor' ? '舌体の観察' : field.id === 'coatColor' ? '舌苔の観察' : field.id === 'pulseSpeed' ? '脈診' : '腹診・筋・皮膚などの触診'}</h3>}
+                <ClinicalChoiceButtons id={field.id === 'pulseSpeed' ? 'clinical-sign-rapidPulse' : field.id === 'pulseStrength' ? 'clinical-sign-weakPulse' : `clinical-exam-${field.id}`} label={field.label}
+                  value={examinationValue(field.id, encounter.examination, observations)}
+                  options={[{ value: '', label: '未確認' }, ...field.options.map(option => ({ value: option, label: option }))]}
+                  onChange={value => updateExamination(field.id, value)} />
+              </Fragment>)}</div>
               {EXAMINATION_TEXT_FIELDS.filter(field => field.group === group).map(field => <label className="clinical-examination-text" key={field.id}>{field.label}{field.id === 'pulseRate'
                 ? <input className={`${FIELD} mt-2`} maxLength={3} inputMode="numeric" value={encounter.examination?.[field.id] || ''} onChange={event => {
                   const value = event.target.value;
                   if (value === '' || /^[1-9]\d{0,2}$/.test(value)) updateExamination(field.id, value);
                 }} placeholder="測定していなければ空欄" />
                 : <textarea className={`${FIELD} mt-2`} rows={2} maxLength={field.maxLength} value={encounter.examination?.[field.id] || ''} onChange={event => updateExamination(field.id, event.target.value)} placeholder={field.id === 'pulseConditions' ? '例：安静座位・右橈骨動脈・60秒計測。運動、服薬、発熱など' : field.id === 'palpationSite' ? '例：右僧帽筋上部・浅部の圧で本人の痛みが再現' : '選択肢にない所見、複数の所見、確認した条件など'} />}</label>)}
-              <div className="grid gap-3 sm:grid-cols-2">{signs.map(sign => <label className="clinical-examination-field" key={sign.id}><span className="font-semibold">{sign.label}</span><select id={`clinical-sign-${sign.id}`} aria-label={`${sign.label}の確認状態`} className={`${FIELD} mt-2`} value={observations[sign.id] || 'unknown'} onChange={event => update({ observations: { ...encounter.observations, [sign.id]: event.target.value } })}><option value="unknown">未確認</option><option value="present">あり</option><option value="absent">なし</option></select><span className="mt-2 block leading-relaxed">{sign.question}</span></label>)}</div>
+              <div className="grid gap-3">{signs.map(sign => <ClinicalChoiceButtons key={sign.id} id={`clinical-sign-${sign.id}`} label={`${sign.label}の確認状態`} description={sign.question}
+                value={observations[sign.id] || 'unknown'}
+                options={[{ value: 'unknown', label: '未確認' }, { value: 'present', label: 'あり' }, { value: 'absent', label: 'なし' }]}
+                onChange={value => update({ observations: { ...encounter.observations, [sign.id]: value } })} />)}</div>
             </fieldset>
           </details>;
         })}
