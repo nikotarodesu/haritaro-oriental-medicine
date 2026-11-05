@@ -24,6 +24,11 @@ type TongueSection = typeof TONGUE_SECTIONS[number];
 function tongueSection(id: string): TongueSection {
   return ['tongueColor', 'tongueMoisture', 'paleTongue', 'redTongue'].includes(id) ? TONGUE_SECTIONS[0] : TONGUE_SECTIONS[1];
 }
+const COAT_SECTIONS = ['色・厚さ', '性状・乾湿'] as const;
+type CoatSection = typeof COAT_SECTIONS[number];
+function coatSection(id: string): CoatSection {
+  return ['coatColor', 'coatThickness'].includes(id) ? COAT_SECTIONS[0] : COAT_SECTIONS[1];
+}
 const PULSE_SECTIONS = ['速さ・強さ・深さ', 'その他の脈の所見'] as const;
 type PulseSection = typeof PULSE_SECTIONS[number];
 function pulseSection(id: string): PulseSection {
@@ -84,6 +89,7 @@ export default function ClinicalWorkspace() {
   const [activeSections, setActiveSections] = useState(INITIAL_SECTIONS);
   const [activePulseSection, setActivePulseSection] = useState<PulseSection>(PULSE_SECTIONS[0]);
   const [activeTongueSection, setActiveTongueSection] = useState<TongueSection>(TONGUE_SECTIONS[0]);
+  const [activeCoatSection, setActiveCoatSection] = useState<CoatSection>(COAT_SECTIONS[0]);
   const [findingSession, setFindingSession] = useState(0);
   const findingSessionGuard = useRef(0);
   const findingChangeSerial = useRef(0);
@@ -103,6 +109,7 @@ export default function ClinicalWorkspace() {
       setActiveSections(INITIAL_SECTIONS);
       setActivePulseSection(PULSE_SECTIONS[0]);
       setActiveTongueSection(TONGUE_SECTIONS[0]);
+    setActiveCoatSection(COAT_SECTIONS[0]);
       findingSessionGuard.current++; setFindingSession(findingSessionGuard.current);
     }, 0);
     return () => clearTimeout(timer);
@@ -175,6 +182,8 @@ export default function ClinicalWorkspace() {
   const focusHeading = (id: string) => {
     requestAnimationFrame(() => {
       const heading = document.getElementById(id);
+      let parent = heading?.parentElement;
+      while (parent) { if (parent.tagName === 'DETAILS') parent.setAttribute('open', ''); parent = parent.parentElement; }
       heading?.focus({ preventScroll: true });
       heading?.scrollIntoView({ block: 'start', behavior: 'auto' });
     });
@@ -216,6 +225,13 @@ export default function ClinicalWorkspace() {
     setActiveTongueSection(section);
     requestAnimationFrame(() => {
       document.getElementById(`clinical-tongue-tab-${section}`)?.focus({ preventScroll: true });
+      document.getElementById('clinical-examinations')?.scrollIntoView({ block: 'start', behavior: 'auto' });
+    });
+  };
+  const openCoatSection = (section: CoatSection) => {
+    setActiveCoatSection(section);
+    requestAnimationFrame(() => {
+      document.getElementById(`clinical-coat-tab-${section}`)?.focus({ preventScroll: true });
       document.getElementById('clinical-examinations')?.scrollIntoView({ block: 'start', behavior: 'auto' });
     });
   };
@@ -277,6 +293,7 @@ export default function ClinicalWorkspace() {
       if (section) setActiveSections(current => ({ ...current, [group]: section }));
       if (section === '脈診') setActivePulseSection(pulseSection(targetField || id));
       if (section === '舌体') setActiveTongueSection(tongueSection(targetField || id));
+      if (section === '舌苔') setActiveCoatSection(coatSection(targetField || id));
     }
     proceed(1, false);
     requestAnimationFrame(() => {
@@ -298,6 +315,7 @@ export default function ClinicalWorkspace() {
     setActiveSections(INITIAL_SECTIONS);
     setActivePulseSection(PULSE_SECTIONS[0]);
     setActiveTongueSection(TONGUE_SECTIONS[0]);
+    setActiveCoatSection(COAT_SECTIONS[0]);
     findingSessionGuard.current++; setFindingSession(findingSessionGuard.current);
   };
   if (!ready || loadedOwner !== clinicalStorageOwner) return <p role="status" className="p-6">下書きを確認しています…</p>;
@@ -329,7 +347,7 @@ export default function ClinicalWorkspace() {
           { step: 2, title: '候補・治法', text: candidateNames.join('／') + '\n' + encounter.rationale + '\n治法：' + encounter.principle },
           { step: 3, title: '配穴の理由', text: encounter.safety === 'reviewed' ? encounter.points.map(point => (ACUPOINTS_MASTER.find(item => item.code === point.code)?.name || point.code) + '：' + (point.reason || '理由未記入') + '\n変更条件：' + (point.alternative || '未記入')).join('\n\n') : '配穴は保留して保存します。' },
           { step: 4, title: '記録・再評価', text: [encounter.metric && '指標：' + encounter.metric, '施術前：' + (encounter.before || '未評価') + '／直後：' + (encounter.after || '未評価'), encounter.functionMemo, encounter.plan, encounter.reaction, encounter.revision, encounter.nextAction].filter(Boolean).join('\n') },
-        ]).map(item => <section className="clinical-review-section" key={item.step}><div><h3>{item.title}</h3><button onClick={() => proceed(item.step)} className={BUTTON}>{item.title}を修正</button></div><p className="whitespace-pre-wrap leading-relaxed">{item.text.trim() || '未記入・保留'}</p></section>)}
+        ]).map(item => <section className="clinical-review-section" key={item.step}><div><h3>{item.title}</h3><button onClick={() => proceed(item.step)} className={BUTTON}>{item.title}を修正</button></div><details className="clinical-compact-section" open={item.step === 0}><summary>記録内容を表示</summary><p className="whitespace-pre-wrap leading-relaxed">{item.text.trim() || '未記入・保留'}</p></details></section>)}
         <p className="text-sm">{savedNoteMissing ? '元の保存済み記録が見つかりません。入力内容を確認して、新しい記録として保存できます。' : encounter.savedNoteId ? 'この作業から保存した記録を更新します。' : '臨床ノートに新しい記録として保存します。'}</p>
         {savedNoteMissing ? <button className={PRIMARY} disabled={!isReady || syncStatus === 'syncing'} onClick={() => handoff(true)}>新しい臨床ノートとして保存</button> : <button className={PRIMARY} disabled={!isReady || unchangedSaved || syncStatus === 'syncing'} onClick={() => handoff()}>{unchangedSaved ? '保存済み' : encounter.savedNoteId ? 'この記録を更新する' : '臨床ノートに保存する'}</button>}
         {lastSaved && !savedNoteMissing && <div role="status" className="clinical-save-feedback"><p>{unchangedSaved ? 'このブラウザに記録を保存しました。' : '保存後に変更があります。確認して更新してください。'}{syncStatus === 'syncing' ? 'アカウントへの同期中です。' : syncStatus === 'offline' ? 'アカウントへの同期は完了していません。' : syncStatus === 'synced' ? 'アカウントへの同期も完了しています。' : ''}</p><Link href="/notes#clinical-timeline" className={BUTTON}>保存済みの臨床ノートを開く</Link></div>}
@@ -389,6 +407,17 @@ export default function ClinicalWorkspace() {
             }}><strong>{section}</strong><span id={`clinical-tongue-progress-${section}`}>{confirmed} / {fields.length} 確認</span></button>;
           })}
         </div>}
+        {activeExamination === '望診' && activeSections['望診'] === '舌苔' && <div role="tablist" className="clinical-examination-subtabs clinical-coat-tabs" aria-label="舌苔の入力分類">
+          {COAT_SECTIONS.map((section, index) => {
+            const fields = EXAMINATION_FIELDS.filter(field => field.group === '望診' && examinationSection(field.group, field.id) === '舌苔' && coatSection(field.id) === section);
+            const confirmed = fields.filter(field => { const value = examinationValue(field.id, encounter.examination, observations); return value && value !== '判断困難'; }).length;
+            return <button key={section} type="button" role="tab" id={`clinical-coat-tab-${section}`} aria-label={section} aria-selected={activeCoatSection === section} tabIndex={activeCoatSection === section ? 0 : -1} aria-controls={`clinical-coat-panel-${section}`} aria-describedby={`clinical-coat-progress-${section}`} onClick={() => openCoatSection(section)} onKeyDown={event => {
+              const target = event.key === 'ArrowRight' || event.key === 'ArrowLeft' ? 1 - index : event.key === 'Home' ? 0 : event.key === 'End' ? 1 : null;
+              if (target === null) return;
+              event.preventDefault(); openCoatSection(COAT_SECTIONS[target]);
+            }}><strong>{section}</strong><span id={`clinical-coat-progress-${section}`}>{confirmed} / {fields.length} 確認</span></button>;
+          })}
+        </div>}
         {activeExamination === '切診' && activeSections['切診'] === '脈診' && <div role="tablist" className="clinical-examination-subtabs clinical-pulse-tabs" aria-label="脈診の入力分類">
           {PULSE_SECTIONS.map((section, index) => {
             const fields = EXAMINATION_FIELDS.filter(field => field.group === '切診' && examinationSection(field.group, field.id) === '脈診' && pulseSection(field.id) === section);
@@ -417,20 +446,20 @@ export default function ClinicalWorkspace() {
               {sections.map(section => <div key={section || group} className="clinical-examination-section" id={section ? `clinical-examination-section-${section}` : undefined}
                 role={section ? 'tabpanel' : undefined} aria-labelledby={section ? `clinical-examination-subtab-${section}` : undefined}
                 hidden={Boolean(section && hasExaminationSections(group) && activeSections[group] !== section)}>
-              {(section === '脈診' ? PULSE_SECTIONS : section === '舌体' ? TONGUE_SECTIONS : [null]).map(detail => <div key={detail || 'fields'} className={section === '舌体' ? 'clinical-tongue-panel' : 'clinical-pulse-panel'} role={detail ? 'tabpanel' : undefined} id={detail ? `clinical-${section === '舌体' ? 'tongue' : 'pulse'}-panel-${detail}` : undefined} aria-labelledby={detail ? `clinical-${section === '舌体' ? 'tongue' : 'pulse'}-tab-${detail}` : undefined} hidden={Boolean(detail && detail !== (section === '舌体' ? activeTongueSection : activePulseSection))}>
-              <div className="clinical-examination-fields grid gap-3">{fields.filter(field => examinationSection(group, field.id) === section && (!detail || (section === '舌体' ? tongueSection(field.id) : pulseSection(field.id)) === detail)).map(field =>
+              {(section === '脈診' ? PULSE_SECTIONS : section === '舌体' ? TONGUE_SECTIONS : section === '舌苔' ? COAT_SECTIONS : [null]).map(detail => <div key={detail || 'fields'} className={section === '舌体' ? 'clinical-tongue-panel' : section === '舌苔' ? 'clinical-coat-panel' : 'clinical-pulse-panel'} role={detail ? 'tabpanel' : undefined} id={detail ? `clinical-${section === '舌体' ? 'tongue' : section === '舌苔' ? 'coat' : 'pulse'}-panel-${detail}` : undefined} aria-labelledby={detail ? `clinical-${section === '舌体' ? 'tongue' : section === '舌苔' ? 'coat' : 'pulse'}-tab-${detail}` : undefined} hidden={Boolean(detail && detail !== (section === '舌体' ? activeTongueSection : section === '舌苔' ? activeCoatSection : activePulseSection))}>
+              <div className="clinical-examination-fields grid gap-3">{fields.filter(field => examinationSection(group, field.id) === section && (!detail || (section === '舌体' ? tongueSection(field.id) : section === '舌苔' ? coatSection(field.id) : pulseSection(field.id)) === detail)).map(field =>
                 <ClinicalChoiceButtons key={field.id} id={field.id === 'pulseSpeed' ? 'clinical-sign-rapidPulse' : field.id === 'pulseStrength' ? 'clinical-sign-weakPulse' : `clinical-exam-${field.id}`} label={field.label}
                   value={examinationValue(field.id, encounter.examination, observations)}
                   options={[{ value: '', label: '未確認' }, ...field.options.map(option => ({ value: option, label: option }))]}
                   onChange={value => updateExamination(field.id, value)} />
               )}</div>
-              {EXAMINATION_TEXT_FIELDS.filter(field => field.group === group && examinationSection(group, field.id) === section && (!detail || (section === '舌体' ? tongueSection(field.id) : pulseSection(field.id)) === detail)).map(field => <label className="clinical-examination-text" key={field.id}>{field.label}{field.id === 'pulseRate'
+              {EXAMINATION_TEXT_FIELDS.filter(field => field.group === group && examinationSection(group, field.id) === section && (!detail || (section === '舌体' ? tongueSection(field.id) : section === '舌苔' ? coatSection(field.id) : pulseSection(field.id)) === detail)).map(field => <label className="clinical-examination-text" key={field.id}>{field.label}{field.id === 'pulseRate'
                 ? <input className={`${FIELD} mt-2`} maxLength={3} inputMode="numeric" value={encounter.examination?.[field.id] || ''} onChange={event => {
                   const value = event.target.value;
                   if (value === '' || /^[1-9]\d{0,2}$/.test(value)) updateExamination(field.id, value);
                 }} placeholder="測定していなければ空欄" />
                 : <textarea className={`${FIELD} mt-2`} rows={2} maxLength={field.maxLength} value={encounter.examination?.[field.id] || ''} onChange={event => updateExamination(field.id, event.target.value)} placeholder={field.id === 'pulseConditions' ? '例：安静座位・右橈骨動脈・60秒計測。運動、服薬、発熱など' : field.id === 'palpationSite' ? '例：右僧帽筋上部・浅部の圧で本人の痛みが再現' : '選択肢にない所見、複数の所見、確認した条件など'} />}</label>)}
-              <div className="grid gap-3">{signs.filter(sign => examinationSection(group, sign.id) === section && (!detail || (section === '舌体' ? tongueSection(sign.id) : pulseSection(sign.id)) === detail)).map(sign => <ClinicalChoiceButtons key={sign.id} id={`clinical-sign-${sign.id}`} label={`${sign.label}の確認状態`} description={sign.question}
+              <div className="grid gap-3">{signs.filter(sign => examinationSection(group, sign.id) === section && (!detail || (section === '舌体' ? tongueSection(sign.id) : section === '舌苔' ? coatSection(sign.id) : pulseSection(sign.id)) === detail)).map(sign => <ClinicalChoiceButtons key={sign.id} id={`clinical-sign-${sign.id}`} label={`${sign.label}の確認状態`} description={sign.question}
                 value={observations[sign.id] || 'unknown'}
                 options={[{ value: 'unknown', label: '未確認' }, { value: 'present', label: 'あり' }, { value: 'absent', label: 'なし' }]}
                 onChange={value => update({ observations: { ...encounter.observations, [sign.id]: value } })} />)}</div>
@@ -439,14 +468,14 @@ export default function ClinicalWorkspace() {
               {hasExaminationSections(group) && EXAMINATION_TEXT_FIELDS.filter(field => field.group === group && examinationSection(group, field.id) === null).map(field => <label className="clinical-examination-text" key={field.id}>{field.label}<textarea className={FIELD} rows={2} maxLength={field.maxLength} value={encounter.examination?.[field.id] || ''} onChange={event => updateExamination(field.id, event.target.value)} placeholder="各分類に共通する補足・観察条件など" /></label>)}
             </fieldset>
           </div>)}
-        {encounter.interviewMemo && <label className="block">対面問診から引き継いだ記録<textarea maxLength={20000} className={FIELD} rows={5} value={encounter.interviewMemo} onChange={event => update({ interviewMemo: event.target.value })} /></label>}
-        <label className="block">腹部・経穴反応・舌脈の補足、その他の所見<textarea id="clinical-examination-memo" maxLength={20000} className={FIELD} rows={4} value={encounter.examinationMemo} onChange={event => update({ examinationMemo: event.target.value })} placeholder="観察条件、本人の訴え、観察した事実を記録" /></label>
+        {encounter.interviewMemo && <details className="clinical-compact-section"><summary>対面問診から引き継いだ記録<span>入力あり</span></summary><label className="block">対面問診から引き継いだ記録<textarea maxLength={20000} className={FIELD} rows={5} value={encounter.interviewMemo} onChange={event => update({ interviewMemo: event.target.value })} /></label></details>}
+        <details className="clinical-compact-section"><summary>四診全体の補足メモ<span>{encounter.examinationMemo.trim() ? "入力あり" : "任意"}</span></summary><label className="block">腹部・経穴反応・舌脈の補足、その他の所見<textarea id="clinical-examination-memo" maxLength={20000} className={FIELD} rows={4} value={encounter.examinationMemo} onChange={event => update({ examinationMemo: event.target.value })} placeholder="観察条件、本人の訴え、観察した事実を記録" /></label></details>
       </div>}
       {encounter.step === 2 && <>
         <p className="clinical-candidate-intro">候補を探して選び、所見を比較し、検討する治法を記録します。所見の照合は入力項目に限られ、件数は診断の順位を示しません。</p>
         <details className="clinical-comparison-inputs"><summary>今回の四診入力・比較に反映する内容を確認</summary><p className="whitespace-pre-wrap">{examinationSummary(encounter.examination, observations) || '詳細所見は未確認です。'}</p><p>関連づけを設定した所見は支持・合いにくい所見に反映し、ほかの入力は各候補の追加評価欄に表示します。未確認・判断困難・自由記述から支持を推測しません。</p></details>
-        <section className="clinical-candidate-stage" aria-labelledby="clinical-catalog-heading">
-          <div className="clinical-candidate-section-heading"><h3 id="clinical-catalog-heading">1. 候補を選ぶ</h3><span>{CLINICAL_PATTERNS.length}候補</span></div>
+        <details className="clinical-candidate-stage clinical-compact-section" open>
+          <summary><h3 id="clinical-catalog-heading">候補を選ぶ</h3><span>{encounter.candidateIds.length}件選択</span></summary>
           <ClinicalCandidatePicker patterns={candidateOptions} selectedIds={encounter.candidateIds} onChange={candidateIds => update({ candidateIds })} evidenceFiltering evidenceBlockedReason={encounter.safety === 'reviewed' ? undefined : encounter.safety === 'refer' ? '医療評価を優先する記録です。所見による絞り込みは保留し、安全確認と受診状況を先に確認してください。' : '所見による絞り込みの前に、この来院の安全確認を記録してください。'} onReviewSafety={() => proceed(0)} />
           <details className="clinical-custom-candidate">
             <summary>一覧にない候補を記録{encounter.customCandidates?.trim() && <span>入力あり</span>}</summary>
@@ -454,15 +483,15 @@ export default function ClinicalWorkspace() {
             <p>自由入力した候補も、確認画面と臨床ノートに残ります。</p>
           </details>
           <nav className="clinical-candidate-jumps" aria-label="候補・治法の入力箇所へ移動">
-            {encounter.candidateIds.length >= 2 && <a href="#clinical-differential-heading">候補同士の違い・追加確認を見る ↓</a>}
-            {encounter.candidateIds.length > 0 && <a href="#clinical-compare-heading">選んだ候補を比較（{encounter.candidateIds.length}件） ↓</a>}
-            <a href="#clinical-finding-changes-heading">所見の修正履歴へ ↓</a>
-            <a href="#clinical-principle-heading">治法の入力へ ↓</a>
+            {encounter.candidateIds.length >= 2 && <a href="#clinical-differential-heading" onClick={event => { event.preventDefault(); focusHeading('clinical-differential-heading'); }}>候補同士の違い・追加確認を見る ↓</a>}
+            {encounter.candidateIds.length > 0 && <a href="#clinical-compare-heading" onClick={event => { event.preventDefault(); focusHeading('clinical-compare-heading'); }}>選んだ候補を比較（{encounter.candidateIds.length}件） ↓</a>}
+            <a href="#clinical-finding-changes-heading" onClick={event => { event.preventDefault(); focusHeading('clinical-finding-changes-heading'); }}>所見の修正履歴へ ↓</a>
+            <a href="#clinical-principle-heading" onClick={event => { event.preventDefault(); focusHeading('clinical-principle-heading'); }}>治法の入力へ ↓</a>
           </nav>
-        </section>
+        </details>
 
-        <section className="clinical-candidate-stage" aria-labelledby="clinical-compare-heading">
-          <div className="clinical-candidate-section-heading"><h3 id="clinical-compare-heading" tabIndex={-1}>2. 選んだ候補を比較する</h3><span>{encounter.candidateIds.length}件選択</span></div>
+        <details className="clinical-candidate-stage clinical-compact-section">
+          <summary><h3 id="clinical-compare-heading" tabIndex={-1}>選んだ候補を比較する</h3><span>{encounter.candidateIds.length}件選択</span></summary>
           {encounter.candidateIds.length > 0 && <p className="clinical-candidate-intro">候補名を押すと所見と追加確認を開けます。複数の候補を同時に開いて比較できます。</p>}
           {encounter.candidateIds.length === 0 && <p className="clinical-candidate-empty">候補を選ぶと、支持する所見・合いにくい所見・未確認の所見を並べて確認できます。</p>}
           {encounter.safety !== 'reviewed' && <p className="clinical-candidate-safety">安全確認が未完了、または医療評価を優先する状態です。配穴の検討は保留します。</p>}
@@ -489,37 +518,37 @@ export default function ClinicalWorkspace() {
             </article>)}
           </div>
           <label className="block clinical-rationale-label">候補の採用・保留理由と矛盾する所見<textarea maxLength={20000} rows={4} className={FIELD} value={encounter.rationale} onChange={event => update({ rationale: event.target.value })} placeholder="採用する理由、決めきれない点、次に確かめることを記録" /></label>
-        </section>
+        </details>
 
-        <section className="clinical-candidate-stage clinical-principle-stage" aria-labelledby="clinical-principle-heading">
-          <div className="clinical-candidate-section-heading"><h3 id="clinical-principle-heading" tabIndex={-1}>3. 治法を組み立てる</h3></div>
+        <details className="clinical-candidate-stage clinical-principle-stage clinical-compact-section">
+          <summary><h3 id="clinical-principle-heading" tabIndex={-1}>治法を組み立てる</h3><span>{encounter.principle.trim() ? "入力あり" : "未入力"}</span></summary>
           <p className="clinical-principle-help">ボタンで入力欄へ追加できます。追加した語句は、自分の言葉で編集できます。候補を変更しても、入力した治法は保持します。</p>
           <label className="block">今回検討する治法<textarea className={FIELD} rows={4} maxLength={20000} value={encounter.principle} onChange={event => { setPrincipleChange(null); update({ principle: event.target.value }); }} placeholder="候補や不足所見を踏まえ、検討する治法を記録" /></label>
           <div className="clinical-principle-feedback" role="status" aria-live="polite" aria-atomic="true">{activePrincipleChange && <><p>{activePrincipleChange.undone ? `「${activePrincipleChange.term}」の追加を戻しました。` : `入力欄へ「${activePrincipleChange.term}」を追加しました。`}</p>{!activePrincipleChange.undone && <button type="button" onClick={undoPrinciple}>直前の追加を戻す</button>}</>}</div>
           {encounter.candidateIds.length > 0 && <div className="clinical-principle-suggestions"><p>選んだ候補の参考から追加</p><div>{selectedPrinciples.map(principle => principleButton(principle))}</div></div>}
           <details className="clinical-principle-catalog"><summary>基本の治法から追加<span>{CLINICAL_PRINCIPLES.length}項目</span></summary><div>{[...new Set(CLINICAL_PRINCIPLES.map(item => item.group))].map(group => <fieldset key={group}><legend>{group}</legend><div>{CLINICAL_PRINCIPLES.filter(item => item.group === group).map(item => principleButton(item.label, item.id))}</div></fieldset>)}</div></details>
 
-        </section>
+        </details>
       </>}
       {encounter.step === 3 && (encounter.safety !== 'reviewed' ? <p>配穴を保留しています。主訴・安全確認に戻るか、記録・再評価へ進んでください。</p> : <>
         <p className="text-sm">穴数や役割だけでは処方の適否を判断できません。各穴を採用する理由と変更条件を残します。取穴・注意事項は経穴辞典で確認してください。</p>
-        {CLINICAL_PATTERNS.filter(pattern => encounter.candidateIds.includes(pattern.id) && pattern.points.length > 0).map(pattern => <div key={pattern.id} className="rounded-lg bg-[#F6F8F3] p-3 dark:bg-[#182823]"><h3 className="font-bold">{pattern.name}：配穴の学習例</h3><ul className="mt-2 space-y-2 text-sm">{pattern.points.map(point => <li key={point.code}><Link className="inline-flex min-h-11 items-center font-semibold underline" href={`/tsubo/${point.code.toLowerCase()}`}>{ACUPOINTS_MASTER.find(item => item.code === point.code)?.name || point.code}（{point.code}）の位置・注意</Link><p>{point.purpose}。採用条件：{point.condition}</p></li>)}</ul></div>)}
+        {CLINICAL_PATTERNS.filter(pattern => encounter.candidateIds.includes(pattern.id) && pattern.points.length > 0).map(pattern => <details key={pattern.id} className="clinical-compact-section rounded-lg bg-[#F6F8F3] p-3 dark:bg-[#182823]"><summary>{pattern.name}：配穴の学習例</summary><ul className="mt-2 space-y-2 text-sm">{pattern.points.map(point => <li key={point.code}><Link className="inline-flex min-h-11 items-center font-semibold underline" href={`/tsubo/${point.code.toLowerCase()}`}>{ACUPOINTS_MASTER.find(item => item.code === point.code)?.name || point.code}（{point.code}）の位置・注意</Link><p>{point.purpose}。採用条件：{point.condition}</p></li>)}</ul></details>)}
         <div className="clinical-point-search"><label className="block">経穴名・コードで探して追加<input className={FIELD} value={pointQuery} onChange={event => setPointQuery(event.target.value)} placeholder="例：足三里、ST36" /></label><p className="text-sm">選択中 {encounter.points.length} / 12穴</p><ul className="clinical-point-results">{pointQuery.trim() ? pointResults.slice(0, 12).map(point => <li key={point.code}><button type="button" className={BUTTON} disabled={encounter.points.some(item => item.code === point.code) || encounter.points.length >= 12} onClick={() => addPoint(point.code)}>{point.name}（{point.code}）{encounter.points.some(item => item.code === point.code) ? '追加済み' : '＋追加'}</button></li>) : <li className="text-sm ui-muted">名前やコードを入力すると候補が表示されます。</li>}</ul>{pointQuery.trim() && pointResults.length === 0 && <p role="status">該当する経穴がありません。</p>}</div>
         {encounter.points.length === 0 && <p className="text-sm">配穴は未選定です。必要なら保留のまま記録できます。</p>}
-        {encounter.points.map((point,index) => <div className="space-y-3 rounded-xl border border-[#D6DED7] p-4 dark:border-[#34483C]" key={point.code}><div className="flex flex-wrap items-center justify-between gap-2"><h3 className="font-bold">{ACUPOINTS_MASTER.find(item => item.code === point.code)?.name || point.code}（{point.code}）</h3><button className={BUTTON} onClick={() => update({ points: encounter.points.filter(item => item.code !== point.code) })}>外す</button></div><label className="block">今回の役割<select aria-label="今回の役割" className={FIELD} value={point.role} onChange={event => update({ points: encounter.points.map((item,i) => i === index ? { ...item, role: event.target.value as typeof point.role } : item) })}><option value="other">保留・その他</option><option value="root">本治として検討</option><option value="branch">標治として検討</option></select></label><label className="block">この経穴を選ぶ理由<textarea maxLength={20000} className={FIELD} rows={2} value={point.reason} onChange={event => update({ points: encounter.points.map((item,i) => i === index ? { ...item, reason: event.target.value } : item) })} /></label><label className="block">代替案・変更する条件<input className={FIELD} value={point.alternative} onChange={event => update({ points: encounter.points.map((item,i) => i === index ? { ...item, alternative: event.target.value } : item) })} /></label><Link href={`/tsubo/${point.code.toLowerCase()}`} className={BUTTON}>位置・注意事項を確認</Link></div>)}
+        {encounter.points.map((point,index) => <details className="clinical-compact-section space-y-3 rounded-xl border border-[#D6DED7] p-4 dark:border-[#34483C]" key={point.code}><summary><strong>{ACUPOINTS_MASTER.find(item => item.code === point.code)?.name || point.code}（{point.code}）</strong><span>{point.reason.trim() ? "理由入力あり" : "理由未入力"}</span></summary><div className="flex flex-wrap items-center justify-between gap-2"><h3 className="font-bold">{ACUPOINTS_MASTER.find(item => item.code === point.code)?.name || point.code}（{point.code}）</h3><button className={BUTTON} onClick={() => update({ points: encounter.points.filter(item => item.code !== point.code) })}>外す</button></div><label className="block">今回の役割<select aria-label="今回の役割" className={FIELD} value={point.role} onChange={event => update({ points: encounter.points.map((item,i) => i === index ? { ...item, role: event.target.value as typeof point.role } : item) })}><option value="other">保留・その他</option><option value="root">本治として検討</option><option value="branch">標治として検討</option></select></label><label className="block">この経穴を選ぶ理由<textarea maxLength={20000} className={FIELD} rows={2} value={point.reason} onChange={event => update({ points: encounter.points.map((item,i) => i === index ? { ...item, reason: event.target.value } : item) })} /></label><label className="block">代替案・変更する条件<input className={FIELD} value={point.alternative} onChange={event => update({ points: encounter.points.map((item,i) => i === index ? { ...item, alternative: event.target.value } : item) })} /></label><Link href={`/tsubo/${point.code.toLowerCase()}`} className={BUTTON}>位置・注意事項を確認</Link></details>)}
         <Link href="/practice/haiketsu" className={BUTTON}>既存の配穴構成ツールでも確認する →</Link>
       </>)}
       {encounter.step === 4 && <>
         <p className="text-sm">主訴の程度と生活動作を、次回来院時も同じ指標で確認します。直後の変化だけで効果を確定せず、有害な反応や受診結果も残します。</p>
-        <label className="block">比較する指標<input className={FIELD} maxLength={120} value={encounter.metric} onChange={event => update({ metric: event.target.value })} placeholder="例：首の右回旋時の痛みNRS（0＝痛みなし、10＝想像できる最大の痛み）" /></label>
+        <details className="clinical-compact-section" open><summary><strong>指標・施術前後の変化</strong><span>{encounter.metric ? "入力あり" : "未入力"}</span></summary><label className="block">比較する指標<input className={FIELD} maxLength={120} value={encounter.metric} onChange={event => update({ metric: event.target.value })} placeholder="例：首の右回旋時の痛みNRS（0＝痛みなし、10＝想像できる最大の痛み）" /></label>
         <p className="text-sm leading-relaxed">痛みを0〜10で記録する場合は、0を「痛みなし」、10を「想像できる最大の痛み」と定義し、同じ動作・測定条件で比較します。仕事や睡眠への支障は、下の生活動作・機能の欄に分けて記録してください。<a href="https://pubmed.ncbi.nlm.nih.gov/21760827/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center underline">痛みNRSの使用例（原論文）</a></p>
         <div className="grid gap-3 sm:grid-cols-2"><label>施術前の程度（0〜10。同じ指標・両端の定義で比較）<input type="number" min="0" max="10" step="1" className={FIELD} value={encounter.before} onChange={event => { if (event.target.value === '' || (/^\d+$/.test(event.target.value) && Number(event.target.value) <= 10)) update({ before: event.target.value }); }} /></label><label>施術直後の程度（未評価なら空欄）<input type="number" min="0" max="10" step="1" className={FIELD} value={encounter.after} onChange={event => { if (event.target.value === '' || (/^\d+$/.test(event.target.value) && Number(event.target.value) <= 10)) update({ after: event.target.value }); }} /></label></div>
         <label className="block">生活動作・機能の指標<textarea maxLength={20000} className={FIELD} rows={2} value={encounter.functionMemo} onChange={event => update({ functionMemo: event.target.value })} placeholder="例：振り向く動作、睡眠、仕事への影響" /></label>
-        <label className="block">施術計画・実施した内容<textarea maxLength={20000} className={FIELD} rows={3} value={encounter.plan} onChange={event => update({ plan: event.target.value })} /></label>
+        </details><details className="clinical-compact-section"><summary><strong>施術内容・反応</strong><span>{encounter.plan || encounter.reaction ? "入力あり" : "未入力"}</span></summary><label className="block">施術計画・実施した内容<textarea maxLength={20000} className={FIELD} rows={3} value={encounter.plan} onChange={event => update({ plan: event.target.value })} /></label>
         <label className="block">施術直後の反応・有害な反応<textarea maxLength={20000} className={FIELD} rows={3} value={encounter.reaction} onChange={event => update({ reaction: event.target.value })} /></label>
-        <label className="block">見立ての修正・改善が乏しい場合の検討<textarea maxLength={20000} className={FIELD} rows={3} value={encounter.revision} onChange={event => update({ revision: event.target.value })} /></label>
+        </details><details className="clinical-compact-section"><summary><strong>再評価・次回の確認</strong><span>{encounter.revision || encounter.nextAction ? "入力あり" : "未入力"}</span></summary><label className="block">見立ての修正・改善が乏しい場合の検討<textarea maxLength={20000} className={FIELD} rows={3} value={encounter.revision} onChange={event => update({ revision: event.target.value })} /></label>
         <label className="block">次回確認すること・生活の助言・受診結果<textarea maxLength={20000} className={FIELD} rows={3} value={encounter.nextAction} onChange={event => update({ nextAction: event.target.value })} /></label>
-        <button className={PRIMARY} onClick={showReview}>記録を確認して保存へ →</button>
+        </details><button className={PRIMARY} onClick={showReview}>記録を確認して保存へ →</button>
       </>}
       <div className="clinical-workspace-actions flex flex-wrap justify-between gap-3 border-t border-[#D6DED7] pt-4 dark:border-[#34483C]"><button className={BUTTON} onClick={() => focusHeading('clinical-record-menu')}>項目一覧へ</button><button className={PRIMARY} onClick={showReview}>記録を確認・保存</button></div>
       </>}

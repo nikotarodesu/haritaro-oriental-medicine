@@ -171,7 +171,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
       const field = api.choice(label) || api.field(label);
       const panel = nodes(tree).find(node => node.props?.className === 'clinical-examination-panel' && nodes(node).includes(field));
       const section = nodes(tree).find(node => node.props?.className === 'clinical-examination-section' && node.props.role === 'tabpanel' && nodes(node).includes(field));
-      const pulse = nodes(tree).find(node => ['clinical-pulse-panel', 'clinical-tongue-panel'].includes(node.props?.className) && node.props.role === 'tabpanel' && nodes(node).includes(field));
+      const pulse = nodes(tree).find(node => ['clinical-pulse-panel', 'clinical-tongue-panel', 'clinical-coat-panel'].includes(node.props?.className) && node.props.role === 'tabpanel' && nodes(node).includes(field));
       if (panel?.props.hidden) api.selectTab(String(panel.key));
       if (section?.props.hidden) api.selectTab(String(section.key));
       if (pulse?.props.hidden) api.selectTab(String(pulse.key));
@@ -439,7 +439,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
   });
   await check('inspection and palpation show only their chosen subsection with accessible keyboard navigation', () => {
     const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, examination: {} }) });
-    for (const [group, first, second, firstCount, secondCount] of [['望診', '舌体', '舌苔', 2, 4], ['切診', '脈診', '触診', 3, 4]]) {
+    for (const [group, first, second, firstCount, secondCount] of [['望診', '舌体', '舌苔', 2, 2], ['切診', '脈診', '触診', 3, 4]]) {
       client.selectTab(group);
       for (const [section, count] of [[first, firstCount], [second, secondCount]]) {
         client.selectTab(section);
@@ -447,7 +447,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
         assert.equal(panel.props.id, client.tab(section).props['aria-controls']);
         assert.equal(panel.props['aria-labelledby'], client.tab(section).props.id);
         assert.equal(visibleNodes(panel).filter(node => node.props?.className === 'clinical-choice-field').length, count);
-        assert(text(client.tab(section)).includes('0 / ' + (section === '脈診' ? 8 : section === '舌体' ? 6 : count)));
+        assert(text(client.tab(section)).includes('0 / ' + (section === '脈診' ? 8 : section === '舌体' ? 6 : section === '舌苔' ? 4 : count)));
         assert.equal(client.scrolled.at(-1), 'clinical-examinations');
         assert.equal(client.focused.at(-1), 'clinical-examination-subtab-' + section);
       }
@@ -490,12 +490,36 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     client.selectTab('望診'); assert.equal(client.activeSection().props.id, 'clinical-examination-section-舌体');
     client.selectTab('切診'); assert.equal(client.activeSection().props.id, 'clinical-examination-section-脈診');
   });
+  await check('coat detail tabs retain linked absence, uncertain values, notes and saved data', () => {
+    const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, examination: {} }) });
+    client.selectTab('望診'); client.selectTab('舌苔');
+    assert(client.tab('色・厚さ').props['aria-selected']);
+    client.change('舌苔の色', '判断困難'); assert(text(client.tab('色・厚さ')).includes('0 / 2'));
+    client.change('舌苔の色', '黄'); client.change('舌苔の厚さ', '厚い');
+    client.selectTab('性状・乾湿');
+    assert.equal(visibleNodes(client.activeSection()).filter(node => node.props?.className === 'clinical-choice-field').length, 2);
+    client.change('舌苔の性状', '苔を認めない');
+    assert(text(client.tab('性状・乾湿')).includes('2 / 2')); assert(text(client.tab('色・厚さ')).includes('2 / 2'));
+    client.change('望診の補足・観察条件', '食事前に確認');
+    for (const [from, key, to] of [['性状・乾湿', 'ArrowRight', '色・厚さ'], ['色・厚さ', 'ArrowLeft', '性状・乾湿'], ['性状・乾湿', 'Home', '色・厚さ'], ['色・厚さ', 'End', '性状・乾湿']]) {
+      client.tab(from).props.onKeyDown({ key, preventDefault() {} }); client.render(); client.flushFrames();
+      assert.equal(client.focused.at(-1), 'clinical-coat-tab-' + to);
+      const panel = visibleNodes(client.tree()).find(node => node.props?.id === client.tab(to).props['aria-controls']);
+      assert(panel); assert.equal(panel.props['aria-labelledby'], client.tab(to).props.id);
+    }
+    client.selectTab('舌体'); client.selectTab('舌苔'); assert(client.tab('性状・乾湿').props['aria-selected']);
+    const restored = harness({ initialEncounter: client.encounter() });
+    for (const label of ['舌苔の色', '舌苔の厚さ', '舌苔の性状', '舌苔の乾湿']) assert.equal(restored.field(label).props.value, '苔を認めない');
+    restored.review(); restored.click('臨床ノートに保存する'); assert(restored.note().treatmentPlan.includes('食事前に確認'));
+    client.click('新しい記録を始める'); client.click('四診所見'); client.selectTab('望診'); client.selectTab('舌苔'); assert(client.tab('色・厚さ').props['aria-selected']);
+  });
   await check('candidate coat links open the hidden coat subsection before focusing', () => {
     const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, examination: {}, candidateIds: ['damp'] }) });
     client.selectTab('望診'); client.selectTab('舌体'); client.click('候補・治法'); client.flushFrames();
     client.click('膩苔を確認'); client.flushFrames();
     assert.equal(client.activePanel().props.id, 'clinical-examination-望診');
     assert.equal(client.activeSection().props.id, 'clinical-examination-section-舌苔');
+    assert(client.tab('性状・乾湿').props['aria-selected']);
     assert.equal(client.focused.at(-1), 'clinical-exam-coatTexture');
     assert.equal(client.field('舌苔の性状').props.value, '', 'Opening a subsection does not record a finding');
   });

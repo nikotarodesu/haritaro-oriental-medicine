@@ -32,10 +32,17 @@
 .clinical-examination-subtabs[data-sections="4"] { grid-template-columns: repeat(4,minmax(0,1fr)); }
 .clinical-examination-subtabs[data-sections="4"] > button { flex-direction: column; gap: 2px; min-height: 64px; padding: 6px 4px; font-size: .875rem; line-height: 1.5; }
 .clinical-examination-section[hidden] { display: none; }
-.clinical-pulse-panel[hidden], .clinical-tongue-panel[hidden] { display: none; }
-:is(.clinical-pulse-tabs, .clinical-tongue-tabs) > button { flex-direction: column; gap: 2px; font-size: .875rem; }
-.clinical-examinations:has(.clinical-pulse-tabs, .clinical-tongue-tabs) :is(.clinical-choice-field, input, textarea) { scroll-margin-top: 260px; }
-@media print { .clinical-pulse-panel[hidden], .clinical-tongue-panel[hidden] { display: block; } }
+.clinical-pulse-panel[hidden], .clinical-tongue-panel[hidden], .clinical-coat-panel[hidden] { display: none; }
+:is(.clinical-pulse-tabs, .clinical-tongue-tabs, .clinical-coat-tabs) > button { flex-direction: column; gap: 2px; font-size: .875rem; }
+.clinical-examinations:has(.clinical-pulse-tabs, .clinical-tongue-tabs, .clinical-coat-tabs) :is(.clinical-choice-field, input, textarea) { scroll-margin-top: 260px; }
+@media print { .clinical-pulse-panel[hidden], .clinical-tongue-panel[hidden], .clinical-coat-panel[hidden] { display: block; } }
+.clinical-compact-section { margin-block: 12px; padding: 12px; border: 1px solid var(--clinical-line); border-radius: 10px; }
+.clinical-compact-section > summary { min-height: 48px; padding-block: 12px; cursor: pointer; color: var(--accent-readable); touch-action: manipulation; }
+.clinical-compact-section > summary > span { margin-left: 12px; font-size: .75rem; font-weight: 400; color: var(--text-secondary); }
+.clinical-compact-section > summary > h3 { display: inline; font-size: 1rem; font-weight: 600; }
+.clinical-compact-section[open] > summary { margin-bottom: 12px; border-bottom: 1px solid var(--clinical-line); }
+.clinical-compact-section > label { display: block; margin-block: 16px; }
+.clinical-compact-section :is(h3,h4) { scroll-margin-top: calc(var(--site-header-height,64px) + 24px); }
 .clinical-examinations[data-split] :is(.clinical-choice-field, input, textarea) { scroll-margin-top: 192px; }
 .clinical-examination-tabs > button { min-width: 0; min-height: 80px; padding: 6px 4px; border: 1px solid var(--clinical-line); border-radius: 10px; background: var(--bg-card); color: var(--text-secondary); line-height: 1.5; touch-action: manipulation; cursor: pointer; }
 .clinical-examination-tabs strong { display: block; font-size: 1rem; }

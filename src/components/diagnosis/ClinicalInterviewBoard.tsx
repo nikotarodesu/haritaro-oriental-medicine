@@ -18,6 +18,12 @@ const QUESTION_TITLES: Record<number, string> = {
   11: "足のむくみ",
   12: "寒がり・夜間のトイレ",
 };
+const TOPICS = [
+  { title: '全身・痛み', ids: [1, 4, 5] },
+  { title: '食事・気分', ids: [2, 7, 8] },
+  { title: '肌・眠り・月経', ids: [3, 9, 10] },
+  { title: '冷え・むくみ', ids: [6, 11, 12] },
+];
 
 const ANSWERS = [
   { value: "applicable", label: "当てはまる", description: "該当あり", Icon: Check },
@@ -44,6 +50,7 @@ interface Props {
 export default function ClinicalInterviewBoard({ patientIdentifier, statuses, notes, onStatusChange, onNoteChange }: Props) {
   const [selectedId, setSelectedId] = useState(DIAGNOSIS_QUESTIONS[0].id);
   const [onlyUnconfirmed, setOnlyUnconfirmed] = useState(false);
+  const [topicIndex, setTopicIndex] = useState(0);
   const detailHeadingRef = useRef<HTMLHeadingElement>(null);
   const overviewHeadingRef = useRef<HTMLHeadingElement>(null);
   const selectedQuestion = DIAGNOSIS_QUESTIONS.find(question => question.id === selectedId) || DIAGNOSIS_QUESTIONS[0];
@@ -51,13 +58,16 @@ export default function ClinicalInterviewBoard({ patientIdentifier, statuses, no
   const selectedNote = notes[selectedQuestion.id] || "";
   const unconfirmedQuestions = DIAGNOSIS_QUESTIONS.filter(question => !statuses[question.id] || statuses[question.id] === "unconfirmed");
   const unknownCount = DIAGNOSIS_QUESTIONS.filter(question => statuses[question.id] === "unknown").length;
-  const visibleQuestions = onlyUnconfirmed ? unconfirmedQuestions : DIAGNOSIS_QUESTIONS;
+  const topicQuestions = DIAGNOSIS_QUESTIONS.filter(question => TOPICS[topicIndex].ids.includes(question.id));
+  const topicUnconfirmed = topicQuestions.filter(question => !statuses[question.id] || statuses[question.id] === 'unconfirmed');
+  const visibleQuestions = onlyUnconfirmed ? topicUnconfirmed : topicQuestions;
   const selectedIndex = DIAGNOSIS_QUESTIONS.findIndex(question => question.id === selectedQuestion.id);
   const nextUnconfirmed = [...DIAGNOSIS_QUESTIONS.slice(selectedIndex + 1), ...DIAGNOSIS_QUESTIONS.slice(0, selectedIndex)]
     .find(question => !statuses[question.id] || statuses[question.id] === "unconfirmed");
 
   const selectQuestion = (id: number) => {
     setSelectedId(id);
+    setTopicIndex(TOPICS.findIndex(topic => topic.ids.includes(id)));
     detailHeadingRef.current?.focus({ preventScroll: true });
     if (window.matchMedia("(max-width: 759px)").matches) {
       detailHeadingRef.current?.scrollIntoView({ block: "start", behavior: "instant" });
@@ -68,8 +78,8 @@ export default function ClinicalInterviewBoard({ patientIdentifier, statuses, no
 
   const showUnconfirmed = () => {
     setOnlyUnconfirmed(true);
-    if (selectedStatus !== "unconfirmed" && unconfirmedQuestions.length > 0) {
-      setSelectedId(unconfirmedQuestions[0].id);
+    if (selectedStatus !== "unconfirmed" && topicUnconfirmed.length > 0) {
+      setSelectedId(topicUnconfirmed[0].id);
     }
   };
 
@@ -84,11 +94,21 @@ export default function ClinicalInterviewBoard({ patientIdentifier, statuses, no
           </div>
           <span className={styles.remaining}>未確認 <strong>{unconfirmedQuestions.length}</strong></span>
         </div>
-        <div className={styles.filters} role="group" aria-label="問診項目の表示">
-          <button type="button" aria-pressed={!onlyUnconfirmed} onClick={() => setOnlyUnconfirmed(false)}>すべて <span>{DIAGNOSIS_QUESTIONS.length}</span></button>
-          <button type="button" aria-pressed={onlyUnconfirmed} onClick={showUnconfirmed}>未確認のみ <span>{unconfirmedQuestions.length}</span></button>
+        <div className={styles.topics} role="tablist" aria-label="問診の話題">
+          {TOPICS.map((topic, index) => <button key={topic.title} type="button" role="tab" id={`interview-topic-${index}`} aria-selected={topicIndex === index} tabIndex={topicIndex === index ? 0 : -1} aria-controls="interview-topic-questions" onClick={() => {
+            selectQuestion((onlyUnconfirmed ? topic.ids.find(id => !statuses[id] || statuses[id] === 'unconfirmed') : undefined) || topic.ids[0]);
+          }} onKeyDown={event => {
+            const target = event.key === 'ArrowRight' ? (index + 1) % TOPICS.length : event.key === 'ArrowLeft' ? (index + TOPICS.length - 1) % TOPICS.length : event.key === 'Home' ? 0 : event.key === 'End' ? TOPICS.length - 1 : null;
+            if (target === null) return;
+            event.preventDefault(); setTopicIndex(target); setSelectedId((onlyUnconfirmed ? TOPICS[target].ids.find(id => !statuses[id] || statuses[id] === 'unconfirmed') : undefined) || TOPICS[target].ids[0]);
+            document.getElementById(`interview-topic-${target}`)?.focus({ preventScroll: true });
+          }}>{topic.title}<small>{topic.ids.filter(id => statuses[id] && statuses[id] !== 'unconfirmed').length} / {topic.ids.length} 回答</small></button>)}
         </div>
-        <div className={styles.questionGrid} aria-label="問診項目一覧">
+        <div className={styles.filters} role="group" aria-label="問診項目の表示">
+          <button type="button" aria-label="この話題のすべて" aria-pressed={!onlyUnconfirmed} onClick={() => setOnlyUnconfirmed(false)}>すべて <span>{topicQuestions.length}</span></button>
+          <button type="button" aria-pressed={onlyUnconfirmed} onClick={showUnconfirmed}>未確認のみ <span>{topicUnconfirmed.length}</span></button>
+        </div>
+        <div id="interview-topic-questions" role="tabpanel" aria-labelledby={`interview-topic-${topicIndex}`} className={styles.questionGrid}>
           {visibleQuestions.map(question => {
             const status = statuses[question.id] || "unconfirmed";
             const hasNote = Boolean(notes[question.id]?.trim());
@@ -111,12 +131,12 @@ export default function ClinicalInterviewBoard({ patientIdentifier, statuses, no
             );
           })}
         </div>
-        {onlyUnconfirmed && unconfirmedQuestions.length === 0 && (
+        {onlyUnconfirmed && topicUnconfirmed.length === 0 && (
           <div className={styles.emptyState} role="status">
             <Check size={22} aria-hidden="true" />
-            <p>未確認の項目はありません。</p>
+            <p>この話題に未確認の項目はありません。</p>
             {unknownCount > 0 && <p>「不明」の回答は {unknownCount} 件あります。</p>}
-            <button type="button" onClick={() => setOnlyUnconfirmed(false)}>すべての回答を見直す</button>
+            <button type="button" onClick={() => setOnlyUnconfirmed(false)}>この話題の回答を見直す</button>
           </div>
         )}
         <p className={styles.overviewHint}>回答済み {DIAGNOSIS_QUESTIONS.length - unconfirmedQuestions.length} / {DIAGNOSIS_QUESTIONS.length} 項目{unknownCount > 0 ? `（うち不明 ${unknownCount}）` : ""}</p>

@@ -246,7 +246,14 @@ check('topic navigation retains answers and notes while filtering never advances
   const interview = client('interview', env);
   const topic = id => nodes(interview.tree()).find(node => node.type === 'button' && node.key === String(id) && node.props['aria-controls']);
   const selectedHeading = () => text(nodes(interview.tree()).find(node => node.props?.id === 'clinical-interview-heading'));
-  const select = id => { const button = topic(id); assert(button); button.props.onClick(); interview.render(); };
+  const groups = [[1, 4, 5], [2, 7, 8], [3, 9, 10], [6, 11, 12]];
+  const openGroup = index => { const tab = nodes(interview.tree()).find(node => node.props?.id === `interview-topic-${index}`); assert(tab); tab.props.onClick(); interview.render(); };
+  const select = id => { openGroup(groups.findIndex(ids => ids.includes(id))); const button = topic(id); assert(button); button.props.onClick(); interview.render(); };
+  for (const [index, ids] of groups.entries()) {
+    openGroup(index);
+    assert.deepEqual(nodes(interview.tree()).filter(node => node.type === 'button' && node.props['aria-controls'] === 'clinical-interview-detail').map(node => Number(node.key)), ids);
+    assert.equal(nodes(interview.tree()).find(node => node.props?.id === `interview-topic-${index}`).props['aria-selected'], true);
+  }
   const note = () => nodes(interview.tree()).find(node => node.props?.id === 'clinical-interview-note');
   select(12); assert.equal(env.shared.scrolls.at(-1).block, 'nearest', 'Wide screens reveal an offscreen detail heading without unnecessary full alignment'); interview.click('該当なし');
   note().props.onChange({ target: { value: '最後の項目へ先に記録したメモ' } }); interview.render();
@@ -257,12 +264,15 @@ check('topic navigation retains answers and notes while filtering never advances
   assert.equal(note().props.value, '最後の項目へ先に記録したメモ');
   assert(interview.button('該当なし').props['aria-pressed']);
   const filter = nodes(interview.tree()).find(node => node.type === 'button' && text(node).startsWith('未確認のみ'));
-  filter.props.onClick(); interview.render(); assert.equal(selectedHeading(), 'ため息・つかえ感');
+  filter.props.onClick(); interview.render(); assert.equal(selectedHeading(), '手足・腰の冷え');
+  assert.equal(topic(12), undefined, 'Answered questions are hidden only in the active topic');
+  openGroup(1); assert.equal(selectedHeading(), 'ため息・つかえ感');
   interview.click('不明');
   assert.equal(selectedHeading(), 'ため息・つかえ感', 'Answering a filtered item does not discard its open detail');
   assert.equal(topic(2), undefined);
   interview.click('未確認'); assert(topic(2), 'An explicitly unconfirmed answer returns to the filter');
   interview.click('次の未確認へ'); assert.equal(selectedHeading(), '肌・髪・爪');
+  assert.equal(nodes(interview.tree()).find(node => node.props?.id === 'interview-topic-2').props['aria-selected'], true, 'Next unconfirmed opens the matching topic');
   const retained = drafts.readClinicalInterview('guest');
   assert.equal(retained.statuses[12], 'not_applicable'); assert.equal(retained.statuses[1], 'applicable'); assert.equal(retained.statuses[2], 'unconfirmed');
   assert.equal(retained.notes[12], '最後の項目へ先に記録したメモ');

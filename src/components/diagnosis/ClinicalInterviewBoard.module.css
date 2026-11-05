@@ -5,6 +5,10 @@
   color: var(--text-sumi);
   scroll-margin-top: calc(var(--site-header-height, 64px) + 16px);
 }
+.topics { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 6px; margin-bottom: 12px; }
+.topics > button { padding: 8px; border: 1px solid var(--border-washi); border-radius: 8px; font-size: .8125rem; background: var(--bg-card); }
+.topics > button[aria-selected="true"] { border-color: var(--accent-readable); background: var(--tokiwa-light); color: var(--accent-readable); }
+.topics small { display: block; margin-top: 3px; font-size: .6875rem; color: var(--text-secondary); }
 
 .encounterContext {
   grid-column: 1 / -1;
