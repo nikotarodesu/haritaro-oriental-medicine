@@ -145,7 +145,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     tree: () => tree,
     note: () => context.patientNotes[0],
     encounter: () => localLoad('src/utils/clinicalEncounter').readClinicalEncounter().encounter,
-    button(label) { const found = nodes(tree).find(node => node.type === 'button' && text(node) === label); assert(found, 'Button ' + label); return found; },
+    button(label) { const found = nodes(tree).find(node => node.type === 'button' && (node.props['aria-label'] === label || text(node) === label)); assert(found, 'Button ' + label); return found; },
     click(label) { const button = api.button(label); assert(!button.props.disabled, 'Enabled button: ' + label); button.props.onClick(); api.render(); },
     field(label) { const parent = nodes(tree).find(node => node.type === 'label' && text(node).startsWith(label)); assert(parent, 'Field label ' + label); const input = nodes(parent).find(node => ['input', 'select', 'textarea'].includes(node.type)); assert(input); return input; },
     change(label, value) { api.field(label).props.onChange({ target: { value } }); api.render(); },
@@ -296,11 +296,17 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
   });
   await check('native observation groups preserve unknown status and candidate buttons return focus to the exact input', () => {
     const client = harness({ initialEncounter: sampleEncounter({ observations: {}, step: 1 }) });
-    assert.equal(nodes(client.tree()).filter(node => node.type === 'details' && node.props.className === 'clinical-observation-group').length, 4);
-    assert(nodes(client.tree()).filter(node => node.type === 'details').every(node => !node.props.open), 'All examination accordions start closed');
-    for (const label of ['問診へ', '望診へ', '聞診へ', '切診へ']) assert(!nodes(client.tree()).some(node => node.type === 'button' && text(node) === label), 'Redundant examination jump is removed: ' + label);
+    const examinationGroups = () => nodes(client.tree()).filter(node => node.type === 'details' && node.props.className === 'clinical-observation-group');
+    assert.equal(examinationGroups().length, 4);
+    assert.deepEqual(examinationGroups().filter(node => node.props.open).map(node => node.props.id), ['clinical-examination-問診'], 'The interview opens immediately while other examination groups remain available');
+    const jumps = nodes(client.tree()).find(node => node.props?.className === 'clinical-examination-jumps');
+    assert.equal(nodes(jumps).filter(node => node.type === 'button').length, 4, 'Each examination group has a direct touch target');
+    const palpation = nodes(jumps).find(node => node.type === 'button' && text(node).startsWith('切診'));
+    palpation.props.onClick(); client.render(); client.flushFrames();
+    assert.equal(client.focused.at(-1), 'clinical-examination-切診-heading');
+    assert(examinationGroups().find(node => node.props.id === 'clinical-examination-切診').props.open, 'A direct jump opens its target before moving focus');
     client.change('疲労・気力低下', 'absent'); assert.equal(client.encounter().observations.fatigue, 'absent');
-    client.click('3.候補・治法'); client.flushFrames();
+    client.click('候補・治法'); client.flushFrames();
     const priorFocus = client.focused.length;
     const unknownButton = nodes(client.tree()).find(node => node.type === 'button' && node.props.className === 'clinical-missing-sign');
     assert(unknownButton, 'Selected candidate exposes a concrete missing observation');
@@ -328,7 +334,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.equal(client.encounter().observations.rapidPulse, 'present', 'A measured rate never diagnoses a traditional pulse quality');
     const restored = harness({ initialEncounter: client.encounter() });
     assert.equal(restored.field('脈の深さ').props.value, '深いところで触れる（沈）');
-    restored.click('5.記録・再評価'); restored.review();
+    restored.click('記録・再評価'); restored.review();
     assert(text(restored.tree()).includes('触診した部位・左右・圧の深さ：右肩・浅部'));
     restored.click('臨床ノートに保存する');
     for (const fact of ['脈の深さ：深いところで触れる（沈）', '実測脈拍（回/分）：60', '圧痛：あり', '舌苔の色：黄', '声の性状：かすれる', '夜間に変動する架空の記録']) assert(restored.note().treatmentPlan.includes(fact), fact);
@@ -350,7 +356,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     const disclosure = nodes(safety.tree()).find(node => node.type === 'details' && node.props.className?.includes('clinical-safety-disclosure'));
     assert(disclosure && !disclosure.props.open, 'Safety explanation starts collapsed');
     assert(safety.field('安全確認の状態'), 'Per-visit safety control stays visible');
-    safety.click('4.配穴の理由');
+    safety.click('配穴の理由');
     assert.equal(safety.encounter().step, 0, 'Collapsing explanation never bypasses safety');
   });
   await check('expanded candidate choices update the draft and compare only the selected mixed categories', () => {
@@ -370,7 +376,8 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.deepEqual(rows.map(row => String(row.key)).sort(), ['heart-blood', 'lung-qi']);
     assert.equal(client.field('今回検討する治法').props.value, manual, 'Choosing candidates never replaces handwritten treatment');
     client.change('その他の候補・併存して考える見立て', ' 別の原因も併存して検討する。 ');
-    const summary = nodes(client.tree()).find(node => node.type === 'aside' && node.props['aria-label'] === '作業中の記録の要約');
+    const summary = nodes(client.tree()).find(node => node.type === 'aside' && node.props.className === 'clinical-workspace-menu');
+    assert(summary, 'The visible section index retains the current candidate summary');
     assert(text(summary).includes('肺気虚') && text(summary).includes('心血虚'));
     assert(text(summary).includes('別の原因も併存して検討する。'));
     client.chooseCandidates([]);
@@ -404,7 +411,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
   await check('detailed tongue and other examination inputs update the rendered candidate comparison and exact input navigation', () => {
     const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, candidateIds: [] }) });
     for (const [label, value] of [['舌体の色', '紅'], ['舌体の乾湿', '乾燥している'], ['舌苔の厚さ', '少ない'], ['脈の太さ', '細い'], ['声の性状', 'かすれる'], ['咳・痰', '乾いた咳'], ['圧痛', 'あり']]) client.change(label, value);
-    client.click('3.候補・治法'); client.chooseCandidates(['yin', 'spleen-qi', 'lung-yin', 'liver-heat']);
+    client.click('候補・治法'); client.chooseCandidates(['yin', 'spleen-qi', 'lung-yin', 'liver-heat']);
     const rows = nodes(client.tree()).filter(node => node.type === 'article' && node.props.className === 'clinical-comparison-row');
     const yin = text(nodes(rows[0]).find(node => node.props?.['data-kind'] === 'supported'));
     for (const finding of ['紅舌', '少苔・無苔', '舌体の乾燥', '細い脈']) assert(yin.includes(finding), finding);
@@ -414,7 +421,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     const yellow = nodes(rows[3]).find(node => node.type === 'button' && text(node) === '黄苔を確認');
     assert(yellow); yellow.props.onClick(); client.render(); client.flushFrames();
     assert.equal(client.focused.at(-1), 'clinical-exam-coatColor');
-    client.change('舌苔の色', '黄'); client.click('3.候補・治法');
+    client.change('舌苔の色', '黄'); client.click('候補・治法');
     const changed = nodes(client.tree()).filter(node => node.type === 'article' && node.props.className === 'clinical-comparison-row').at(-1);
     assert(text(nodes(changed).find(node => node.props?.['data-kind'] === 'supported')).includes('黄苔'));
   });
@@ -519,12 +526,12 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.deepEqual(plain(client.encounter().candidateIds), initial.candidateIds);
     assert.equal(client.encounter().principle, initial.principle);
     const stored = plain(client.encounter());
-    client.click('2.四診所見');
+    client.click('四診所見');
     assert.equal(client.field('痛みの性質（主なもの）').props.value, '刺すような痛み');
     assert.equal(client.field('痛む場所の変化').props.value, '固定している');
     assert.equal(client.field('舌苔の性状').props.value, '膩苔（きめ細かく粘る）');
     assert.equal(client.field('舌苔の厚さ').props.value, '');
-    client.change('舌苔の厚さ', '厚い'); client.click('3.候補・治法');
+    client.change('舌苔の厚さ', '厚い'); client.click('候補・治法');
     assert.equal(client.candidateDifferential().props.examination.coatThickness, '厚い', 'Changes in the original four-examination form also update inline comparison props');
     assert(option('damp').supportReasons.includes('厚い舌苔'));
     assert.deepEqual(plain(client.encounter().candidateIds), stored.candidateIds);
@@ -593,13 +600,13 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     const entries = nodes(client.findingHistory()).filter(node => node.props?.className === 'clinical-finding-change-entry');
     assert.equal(entries.length, 1); assert.equal(nodes(entries[0]).filter(node => node.type === 'dt').length, 4);
     assert(text(entries[0]).includes('連動'));
-    client.click('2.四診所見'); client.change('脈の深さ', '中間で触れる'); client.click('3.候補・治法');
+    client.click('四診所見'); client.change('脈の深さ', '中間で触れる'); client.click('候補・治法');
     client.click('直前の修正を戻す');
     for (const [id, value] of Object.entries(initial.examination)) assert.equal(client.encounter().examination[id], value);
     assert.equal(client.encounter().examination.pulseDepth, '中間で触れる');
     client.candidateDifferential().props.onExaminationChange('coatColor', '苔を認めない'); client.render();
     const staleUndo = client.button('直前の修正を戻す').props.onClick;
-    client.click('2.四診所見'); client.change('舌苔の厚さ', '薄い'); client.click('3.候補・治法');
+    client.click('四診所見'); client.change('舌苔の厚さ', '薄い'); client.click('候補・治法');
     assert(client.button('直前の修正を戻す').props.disabled);
     assert(text(client.findingHistory()).includes('対象の所見がその後に変更された'));
     const before = plain(client.encounter()), writes = client.writes.length;
@@ -641,7 +648,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.deepEqual(plain(reloaded.encounter().observations), initial.observations);
     assert.deepEqual(plain(reloaded.encounter().candidateIds), initial.candidateIds);
     assert.equal(reloaded.encounter().principle, '再読み込み後も保持する方針');
-    client.click('2.四診所見'); client.change('舌苔の厚さ', '薄い'); client.click('3.候補・治法');
+    client.click('四診所見'); client.change('舌苔の厚さ', '薄い'); client.click('候補・治法');
     const conflicting = harness({ initialEncounter: client.encounter() });
     assert(conflicting.button('直前の修正を戻す').props.disabled);
   });
@@ -673,7 +680,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     client.click('新しい記録を始める');
     oldUndo(); oldEdit('cold', 'present'); client.render();
     assert.equal(client.encounter(), null, 'Old callbacks do not recreate a discarded draft');
-    client.click('3.候補・治法');
+    client.click('候補・治法');
     assert(!text(client.findingHistory()).includes('直前の修正：'));
     assert.equal(client.encounter().principle, '');
   });
@@ -733,7 +740,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.equal(client.note().id, id); assert.equal(client.note().createdAt, createdAt);
     assert.equal(client.note().syndrome, '腎陰虚／再評価した併存仮説');
     const reopened = harness({ initialEncounter: client.encounter(), initialNotes: plain(client.context().patientNotes) });
-    reopened.click('3.候補・治法');
+    reopened.click('候補・治法');
     assert.deepEqual(plain(reopened.candidatePicker().props.selectedIds), ['kidney-yin']);
     assert.equal(reopened.field('その他の候補・併存して考える見立て').props.value, '再評価した併存仮説');
     assert.equal(reopened.field('今回検討する治法').props.value, manual);
@@ -853,12 +860,35 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     client.click('新しい記録を始める');
     assert(!client.hasUndo()); assert.equal(client.additionFeedback(), undefined);
     assert.equal(client.encounter(), null, 'Starting fresh removes the prior tab draft');
-    client.click('3.候補・治法');
+    client.click('候補・治法');
     assert.equal(client.field('今回検討する治法').props.value, '');
+  });
+  await check('the section index permits non-linear entry and preserves unfinished input across navigation and review', () => {
+    const client = harness({ initialEncounter: null });
+    client.click('記録・再評価'); client.flushFrames();
+    assert.equal(client.encounter().step, 4, 'An empty record can open reevaluation without completing earlier sections');
+    assert.equal(client.encounter().safety, 'unknown', 'Free navigation cannot mark the safety review as complete');
+    client.change('施術計画・実施した内容', '会話の途中で記録した内容');
+    client.click('主訴・安全確認'); client.flushFrames();
+    client.change('主訴', '聞き取った主訴');
+    client.click('四診所見'); client.flushFrames();
+    client.change('症状の経過', '変動する');
+    client.click('記録・再評価'); client.flushFrames();
+    assert.equal(client.field('施術計画・実施した内容').props.value, '会話の途中で記録した内容');
+    assert.equal(client.encounter().chiefComplaint, '聞き取った主訴');
+    assert.equal(client.encounter().examination.course, '変動する');
+    client.review(); client.flushFrames();
+    assert.match(text(client.tree()), /会話の途中で記録した内容/);
+    client.click('四診所見を修正'); client.flushFrames();
+    assert.equal(client.field('症状の経過').props.value, '変動する', 'Review returns directly to the chosen unfinished section');
+    client.click('配穴の理由'); client.flushFrames();
+    assert.equal(client.encounter().step, 1, 'Free entry still preserves the safety gate for point selection');
+    assert.equal(client.encounter().plan, '会話の途中で記録した内容');
+    assert.match(text(client.tree()), /配穴の検討前に安全確認を記録/);
   });
   await check('step and review navigation move keyboard focus to the new heading while preserving safety gates', () => {
     const client = harness();
-    client.click('3.候補・治法'); client.flushFrames();
+    client.click('候補・治法'); client.flushFrames();
     assert.equal(client.focused.at(-1), 'clinical-workspace-step-heading');
     assert.equal(client.scrolled.at(-1), 'clinical-workspace-step-heading');
     const step = nodes(client.tree()).find(node => node.props?.id === 'clinical-workspace-step-heading');
@@ -872,10 +902,12 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.equal(client.scrolled.at(-1), 'clinical-workspace-step-heading');
     assert.equal(nodes(client.tree()).find(node => node.props?.id === 'clinical-workspace-step-heading').props.tabIndex, -1);
     const blocked = harness({ initialEncounter: sampleEncounter({ safety: 'unknown' }) });
-    blocked.click('4.配穴の理由'); blocked.flushFrames();
+    blocked.click('配穴の理由'); blocked.flushFrames();
     assert.equal(blocked.encounter().step, 0, 'A rejected transition preserves the current step');
     assert.equal(blocked.writes.length, 0, 'Rejected navigation does not persist a partial transition');
-    assert.equal(blocked.focused.length, 0, 'A blocked step cannot move focus into an unavailable section');
+    assert.deepEqual(blocked.focused, ['clinical-workspace-error'], 'Rejected navigation focuses the explanation instead of an unavailable section');
+    assert.equal(blocked.scrolled.at(-1), 'clinical-workspace-error', 'The safety explanation becomes visible even when using the sticky index down the page');
+    assert.equal(text(nodes(blocked.tree()).find(node => node.props?.id === 'clinical-workspace-step-heading')), '主訴・安全確認', 'The rejected point-selection section is not opened');
     assert.match(text(blocked.tree()), /配穴の検討前に安全確認を記録/);
   });
   await check('selected comparisons use native disclosure controls and local jump targets are keyboard-addressable', () => {

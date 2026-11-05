@@ -14,9 +14,9 @@ function nodes(node, list = []) { if (Array.isArray(node)) node.forEach(child =>
 function text(node) { if (Array.isArray(node)) return node.map(text).join(''); if (typeof node === 'string' || typeof node === 'number') return String(node); return node && typeof node === 'object' ? text(node.props?.children) : ''; }
 function environment() {
   const values = new Map([['haritaro_clinical_active_owner_v1', 'guest']]);
-  const shared = { values, notes: [], owner: 'guest', failSession: false, failLocal: false, failMemo: false, confirms: true, saved: [], alerts: [], fileReads: [], imports: [] };
+  const shared = { values, notes: [], owner: 'guest', failSession: false, failLocal: false, failMemo: false, confirms: true, saved: [], alerts: [], fileReads: [], imports: [], scrolls: [] };
   const sessionStorage = { getItem: key => values.get(key) ?? null, setItem(key, value) { if (shared.failSession) throw Error('blocked'); values.set(key, value); }, removeItem(key) { if (shared.failSession) throw Error('blocked'); values.delete(key); } };
-  const browser = { location: { search: '', pathname: '/notes', hash: '' }, history: { replaceState() {}, pushState() {} }, confirm: () => shared.confirms, alert: value => shared.alerts.push(value), scrollTo() {}, pageYOffset: 0 };
+  const browser = { location: { search: '', pathname: '/notes', hash: '' }, history: { replaceState() {}, pushState() {} }, confirm: () => shared.confirms, alert: value => shared.alerts.push(value), scrollTo() {}, matchMedia: () => ({ matches: false }), pageYOffset: 0 };
   const load = createDataLoader({ Intl, sessionStorage, window: browser });
   return { ...shared, shared, sessionStorage, browser, load };
 }
@@ -48,6 +48,24 @@ function client(kind, env) {
   let code = ts.transpileModule(fs.readFileSync(file, 'utf8'), { fileName: file, compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
   if (kind === 'notes') code += '\nexports.TestClinicalNotesPage = ClinicalNotesPage;';
   const Empty = () => null;
+  const boardHost = hookHost(), boardExports = {};
+  if (kind === 'interview') {
+    const boardFile = path.join(root, 'src/components/diagnosis/ClinicalInterviewBoard.tsx');
+    const boardCode = ts.transpileModule(fs.readFileSync(boardFile, 'utf8'), { fileName: boardFile, compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
+    vm.runInNewContext(boardCode, { exports: boardExports, window: browser, require: id => {
+      if (id === 'react') return boardHost.hooks;
+      if (id.endsWith('.module.css')) return { __esModule: true, default: new Proxy({}, { get: (_, name) => name }) };
+      if (id.startsWith('@/')) return load('src/' + id.slice(2));
+      return require(id);
+    } }, { filename: boardFile });
+  }
+  const InterviewBoard = props => boardHost.render(boardExports.default, props);
+  function expandInterviewBoard(node) {
+    if (Array.isArray(node)) return node.map(expandInterviewBoard);
+    if (!node || typeof node !== 'object') return node;
+    if (node.type === InterviewBoard) return InterviewBoard(node.props);
+    return { ...node, props: { ...node.props, children: expandInterviewBoard(node.props?.children) } };
+  }
   vm.runInNewContext(code, { exports, Intl, Date, Math, URLSearchParams, window: browser, sessionStorage, document: { title: '', getElementById: () => null }, navigator: { clipboard: { writeText: async () => {} } }, alert: browser.alert,
     setTimeout(callback, delay = 0) { timers.set(++timerId, { callback, delay }); return timerId; }, clearTimeout(id) { timers.delete(id); },
     FileReader: class { readAsText() { shared.fileReads.push(this); } },
@@ -59,16 +77,23 @@ function client(kind, env) {
       if (id === '@/hooks/useModalDialog') return { useModalDialog() {} };
       if (id === '@/utils/analytics') return { trackEvent() {} };
       if (id === 'next/dynamic') return () => Empty;
+      if (id === './ClinicalInterviewBoard') return { __esModule: true, default: InterviewBoard };
       if (id === 'next/link' || id.startsWith('@/components/') || id === './NotesStorageSupport') return Empty;
       if (id.startsWith('@/')) return load('src/' + id.slice(2));
       return require(id);
     },
   }, { filename: file });
   const api = { pushes,
-    render() { context.patientNotes = shared.notes; context.patientNoteCount = shared.notes.length; context.clinicalStorageOwner = shared.owner; tree = host.render(kind === 'notes' ? exports.TestClinicalNotesPage : exports.default, { initialTab: 'clinical', relatedArticles: [] }); return tree; },
+    render() {
+      context.patientNotes = shared.notes; context.patientNoteCount = shared.notes.length; context.clinicalStorageOwner = shared.owner;
+      tree = expandInterviewBoard(host.render(kind === 'notes' ? exports.TestClinicalNotesPage : exports.default, { initialTab: 'clinical', relatedArticles: [] }));
+      const heading = nodes(tree).find(node => node.props?.id === 'clinical-interview-heading');
+      if (heading?.props.ref) heading.props.ref.current = { focus() {}, scrollIntoView(options) { shared.scrolls.push(options); } };
+      return tree;
+    },
     flush() { const pending = [...timers]; for (const [id, item] of pending) { timers.delete(id); item.callback(); } api.render(); },
     tree: () => tree,
-    button(label) { const found = nodes(tree).find(node => node.type === 'button' && text(node) === label); assert(found, 'Button: ' + label); return found; },
+    button(label) { const found = nodes(tree).find(node => node.type === 'button' && (text(node) === label || node.props['aria-label'] === label)); assert(found, 'Button: ' + label); return found; },
     click(label) { const button = api.button(label); assert(!button.props.disabled); button.props.onClick(); api.render(); },
     field(name) { const field = nodes(tree).find(node => ['input', 'textarea', 'select'].includes(node.type) && node.props.name === name); assert(field, 'Field: ' + name); return field; },
     change(name, value) { api.field(name).props.onChange({ target: { value } }); api.render(); },
@@ -205,9 +230,9 @@ check('interview answers reload and reflect only their memo into the matching ac
   assert(encounters.writeClinicalEncounter(original));
   let interview = client('interview', env); assert.equal(interview.field('patientIdentifier').props.value, 'TEST-301');
   interview.click('当てはまる');
-  let note = nodes(interview.tree()).find(node => node.type === 'input' && node.props.placeholder?.startsWith('臨床メモ')); assert(note); note.props.onChange({ target: { value: '  発症時期を確認した。  ' } }); interview.render();
+  let note = nodes(interview.tree()).find(node => node.type === 'textarea' && node.props.id === 'clinical-interview-note'); assert(note); note.props.onChange({ target: { value: '  発症時期を確認した。  ' } }); interview.render();
   interview = client('interview', env);
-  note = nodes(interview.tree()).find(node => node.type === 'input' && node.props.placeholder?.startsWith('臨床メモ')); assert.equal(note.props.value, '  発症時期を確認した。  ');
+  note = nodes(interview.tree()).find(node => node.type === 'textarea' && node.props.id === 'clinical-interview-note'); assert.equal(note.props.value, '  発症時期を確認した。  ');
   interview.click('問診結果をまとめる'); interview.flush(); interview.click('この記録へ反映して戻る');
   assert.equal(interview.pushes.at(-1), '/clinical/workspace');
   const result = encounters.readClinicalEncounter().encounter;
@@ -215,6 +240,55 @@ check('interview answers reload and reflect only their memo into the matching ac
   assert.equal(result.savedNoteId, original.savedNoteId); assert.equal(result.principle, original.principle); assert.deepEqual(plain(result.points), original.points); assert.deepEqual(plain(result.candidateIds), original.candidateIds);
   assert(result.interviewMemo.includes('発症時期を確認した。') && result.interviewMemo.includes('確認して該当なし') === false);
   assert.equal(result.step, 1); assert(encounters.clinicalEncounterNote(result, []).treatmentPlan.includes('【対面問診メモ】'));
+});
+check('topic navigation retains answers and notes while filtering never advances after an answer', () => {
+  const env = environment(), drafts = env.load('src/utils/clinicalInterview');
+  const interview = client('interview', env);
+  const topic = id => nodes(interview.tree()).find(node => node.type === 'button' && node.key === String(id) && node.props['aria-controls']);
+  const selectedHeading = () => text(nodes(interview.tree()).find(node => node.props?.id === 'clinical-interview-heading'));
+  const select = id => { const button = topic(id); assert(button); button.props.onClick(); interview.render(); };
+  const note = () => nodes(interview.tree()).find(node => node.props?.id === 'clinical-interview-note');
+  select(12); assert.equal(env.shared.scrolls.at(-1).block, 'nearest', 'Wide screens reveal an offscreen detail heading without unnecessary full alignment'); interview.click('該当なし');
+  note().props.onChange({ target: { value: '最後の項目へ先に記録したメモ' } }); interview.render();
+  env.browser.matchMedia = () => ({ matches: true });
+  select(1); assert.equal(env.shared.scrolls.at(-1).block, 'start', 'Stacked screens move directly from the topic grid to the selected detail');
+  env.browser.matchMedia = () => ({ matches: false });
+  interview.click('当てはまる'); select(12);
+  assert.equal(note().props.value, '最後の項目へ先に記録したメモ');
+  assert(interview.button('該当なし').props['aria-pressed']);
+  const filter = nodes(interview.tree()).find(node => node.type === 'button' && text(node).startsWith('未確認のみ'));
+  filter.props.onClick(); interview.render(); assert.equal(selectedHeading(), 'ため息・つかえ感');
+  interview.click('不明');
+  assert.equal(selectedHeading(), 'ため息・つかえ感', 'Answering a filtered item does not discard its open detail');
+  assert.equal(topic(2), undefined);
+  interview.click('未確認'); assert(topic(2), 'An explicitly unconfirmed answer returns to the filter');
+  interview.click('次の未確認へ'); assert.equal(selectedHeading(), '肌・髪・爪');
+  const retained = drafts.readClinicalInterview('guest');
+  assert.equal(retained.statuses[12], 'not_applicable'); assert.equal(retained.statuses[1], 'applicable'); assert.equal(retained.statuses[2], 'unconfirmed');
+  assert.equal(retained.notes[12], '最後の項目へ先に記録したメモ');
+});
+check('stale interview answer and note callbacks cannot write into another account', () => {
+  const env = environment(), drafts = env.load('src/utils/clinicalInterview');
+  const interview = client('interview', env);
+  interview.click('当てはまる');
+  const staleAnswer = interview.button('該当なし').props.onClick;
+  const staleNote = nodes(interview.tree()).find(node => node.props?.id === 'clinical-interview-note').props.onChange;
+  interview.setOwner('account-B'); interview.change('patientIdentifier', 'B-ONLY'); interview.click('不明');
+  const before = plain(drafts.readClinicalInterview('account-B'));
+  staleAnswer(); staleNote({ target: { value: '以前のアカウントの入力' } }); interview.render();
+  assert.deepEqual(plain(drafts.readClinicalInterview('account-B')), before);
+  assert.equal(interview.field('patientIdentifier').props.value, 'B-ONLY'); assert(interview.button('不明').props['aria-pressed']);
+  interview.setOwner('guest'); assert(interview.button('当てはまる').props['aria-pressed']);
+});
+check('a note-only interview cannot be cleared without the existing discard confirmation', () => {
+  const env = environment(), drafts = env.load('src/utils/clinicalInterview');
+  const interview = client('interview', env);
+  const note = nodes(interview.tree()).find(node => node.props?.id === 'clinical-interview-note');
+  note.props.onChange({ target: { value: '回答前に聞き取ったメモ' } }); interview.render();
+  env.shared.confirms = false; interview.click('問診を終了・新しい問診を開始');
+  assert.equal(drafts.readClinicalInterview('guest').notes[1], '回答前に聞き取ったメモ');
+  env.shared.confirms = true; interview.click('問診を終了・新しい問診を開始');
+  assert.equal(drafts.readClinicalInterview('guest'), null);
 });
 check('interview transfer blocks a different ID or failed write and never navigates on failure', () => {
   const env = environment(), encounters = env.load('src/utils/clinicalEncounter');

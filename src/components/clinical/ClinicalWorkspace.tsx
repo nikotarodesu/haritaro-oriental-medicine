@@ -2,7 +2,6 @@
 
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import PageIntro from '@/components/design/PageIntro';
 import { ShieldCheck, ClipboardList, GitCompare, MapPin, NotebookPen, RotateCcw, CheckCircle2, CircleDashed, GitFork, Search } from 'lucide-react';
 import { useClinicalMemo } from '@/contexts/ClinicalMemoContext';
 import { CLINICAL_SIGNS, CLINICAL_PATTERNS, CLINICAL_PATTERN_CATEGORIES, CLINICAL_PRINCIPLES, CLINICAL_COMPLAINTS, compareClinicalPattern, type ClinicalSignId } from '@/data/clinicalWorkflow';
@@ -50,6 +49,7 @@ export default function ClinicalWorkspace() {
   const [pointQuery, setPointQuery] = useState('');
   const [principleChange, setPrincipleChange] = useState<PrincipleChange | null>(null);
   const [comparisonFocus, setComparisonFocus] = useState<string[] | null>(null);
+  const [openExaminations, setOpenExaminations] = useState<string[]>(['問診']);
   const [findingSession, setFindingSession] = useState(0);
   const findingSessionGuard = useRef(0);
   const findingChangeSerial = useRef(0);
@@ -64,7 +64,7 @@ export default function ClinicalWorkspace() {
       // A guide never replaces an encounter already in progress.
       if (complaint && !initial.patientIdentifier && !initial.chiefComplaint && Object.keys(initial.observations).length === 0) { initial.complaintSlug = complaint.slug; initial.chiefComplaint = complaint.title; }
       encounterRef.current = initial;
-      setEncounter(initial); setError(stored.error); setSaved(Boolean(stored.encounter)); setReady(true); setLoadedOwner(clinicalStorageOwner); setReviewing(false); setLastSaved(initial.savedFingerprint || ''); setPrincipleChange(null); setComparisonFocus(null);
+      setEncounter(initial); setError(stored.error); setSaved(Boolean(stored.encounter)); setReady(true); setLoadedOwner(clinicalStorageOwner); setReviewing(false); setLastSaved(initial.savedFingerprint || ''); setPrincipleChange(null); setComparisonFocus(null); setOpenExaminations(['問診']);
       findingChangeSerial.current = initial.findingHistory?.at(-1)?.id || 0;
       findingSessionGuard.current++; setFindingSession(findingSessionGuard.current);
     }, 0);
@@ -136,7 +136,7 @@ export default function ClinicalWorkspace() {
     });
   };
   const proceed = (step: number, focus = true) => {
-    if (step === 3 && encounter.safety !== 'reviewed') { setError('配穴の検討前に安全確認を記録してください。医療評価を優先する場合は、記録・再評価へ進めます。'); return; }
+    if (step === 3 && encounter.safety !== 'reviewed') { setError('配穴の検討前に安全確認を記録してください。医療評価を優先する場合は、記録・再評価へ進めます。'); focusHeading('clinical-workspace-error'); return; }
     setReviewing(false);
     update({ step });
     if (focus) focusHeading('clinical-workspace-step-heading');
@@ -146,6 +146,18 @@ export default function ClinicalWorkspace() {
     setReviewing(true);
     focusHeading('clinical-workspace-review-heading');
   };
+  const openExamination = (group: string) => {
+    setOpenExaminations(current => current.includes(group) ? current : [...current, group]);
+    proceed(1, false);
+    focusHeading(`clinical-examination-${group}-heading`);
+  };
+  const sectionSummaries = [
+    encounter.safety === 'unknown' ? '安全確認が未確認' : encounter.safety === 'refer' ? '医療評価を優先' : encounter.chiefComplaint || '主訴が未入力',
+    `${observationConfirmed} / ${observationTotal}項目確認`,
+    candidateNames.join('／') || '候補は未選択',
+    encounter.safety !== 'reviewed' ? '安全確認後に検討' : encounter.points.length ? `${encounter.points.length}穴を検討中` : '配穴は未選定',
+    encounter.after !== '' ? `施術前 ${encounter.before || '未評価'} → 直後 ${encounter.after}` : encounter.plan || '施術内容・変化を記録',
+  ];
   const activePrincipleChange = principleChange && principleChange.owner === clinicalStorageOwner &&
     encounter.principle === (principleChange.undone ? principleChange.before : principleChange.after) ? principleChange : null;
   const addPrinciple = (term: string) => {
@@ -186,6 +198,8 @@ export default function ClinicalWorkspace() {
     update({ points: [...encounter.points, { code, role: 'other', reason: '', alternative: '' }] });
   };
   const revisitSign = (id: ComparisonFindingId) => {
+    // Preserve the opened group when navigating away and back to the examination.
+    setOpenExaminations([...EXAMINATION_GROUPS]);
     proceed(1, false);
     requestAnimationFrame(() => {
       const finding = examinationFinding(id);
@@ -205,23 +219,30 @@ export default function ClinicalWorkspace() {
     if (!window.confirm('このタブの作業中の下書きを消して、新しい記録を始めますか？保存済みノートは残ります。')) return;
     if (!clearClinicalEncounter()) { setError('下書きを消去できませんでした。'); return; }
     const fresh = emptyClinicalEncounter(); encounterRef.current = fresh;
-    setEncounter(fresh); setError(null); setSaved(false); setPointQuery(''); setReviewing(false); setLastSaved(''); setPrincipleChange(null); setComparisonFocus(null);
+    setEncounter(fresh); setError(null); setSaved(false); setPointQuery(''); setReviewing(false); setLastSaved(''); setPrincipleChange(null); setComparisonFocus(null); setOpenExaminations(['問診']);
     findingChangeSerial.current = 0;
     findingSessionGuard.current++; setFindingSession(findingSessionGuard.current);
   };
   if (!ready || loadedOwner !== clinicalStorageOwner) return <p role="status" className="p-6">下書きを確認しています…</p>;
   return <div className="page-layout clinical-workspace space-y-5">
     <Link href="/clinical" className="inline-flex min-h-11 items-center text-sm underline">← 臨床ホーム</Link>
-    <PageIntro compact eyebrow="確認した事実と、見立てを分ける" title="臨床記録" description="主訴・安全確認から、配穴の理由、再評価までを5つの手順で整理します。">
-      <p className="mt-3 text-sm leading-relaxed">氏名・連絡先など、個人を特定する情報は入力しないでください。</p>
-      <div className="page-actions"><button className="page-secondary-action" onClick={reset}><RotateCcw aria-hidden="true" className="h-4 w-4" />新しい記録を始める</button></div>
-    </PageIntro>
+    <header className="clinical-record-intro">
+      <div><p className="clinical-kicker">会話と施術の流れに合わせて記録</p><h1>臨床記録</h1></div>
+      <button className={BUTTON} onClick={reset}><RotateCcw aria-hidden="true" className="mr-2 h-4 w-4" />新しい記録を始める</button>
+      <p>聞けたこと・確認できたことから入力。項目はいつでも自由に行き来できます。<small>氏名・連絡先など、個人を特定する情報は入力しないでください。</small></p>
+    </header>
     <p role="status" className="text-sm">{saveState === 'checking' ? '保存先の記録を確認しています。入力はこのタブに保持しています。' : saveState === 'missing' ? '元の保存済み記録が見つかりません。入力はこのタブに保持しています。' : saveState === 'saved' ? `臨床ノートに保存済み${encounter.savedAt ? '（' + new Date(encounter.savedAt).toLocaleString('ja-JP') + '）' : ''}。` : saveState === 'changed' ? '保存後に変更があります。変更はまだ臨床ノートへ保存していません。' : saveState === 'unverified' ? '保存済み記録を再編集中です。内容を確認して更新してください。' : saved ? 'このタブに下書き保存済み。タブを閉じる前に臨床ノートへ保存してください。' : '入力するとこのタブに下書きを保存します。'}</p>
     {encounter.previousSummary && <details className={BOX}><summary className="min-h-11 cursor-pointer font-semibold">前回からの申し送り</summary><p className="mt-2 whitespace-pre-wrap text-sm">{encounter.previousSummary}</p></details>}
-    <nav aria-label="臨床記録の手順" className="clinical-step-nav">{STEPS.map((label,index) => { const StepIcon = STEP_ICONS[index]; return <button key={label} onClick={() => proceed(index)} aria-current={encounter.step === index ? 'step' : undefined} className={`${BUTTON} gap-2 justify-start text-left ${encounter.step === index ? 'bg-[#1E3D34] text-white dark:bg-[#9CCDB8] dark:text-[#11291F]' : ''}`}><StepIcon aria-hidden="true" className="h-5 w-5 shrink-0" /><span><span className="mr-1 opacity-75">{index + 1}.</span>{label}</span></button>; })}</nav>
-    {error && <p role="alert" className="rounded-lg border border-[#C06844] bg-[#FFF2EB] p-3 text-sm text-[#843C24] dark:bg-[#35221C] dark:text-[#FFD1BB]">{error}</p>}
+    {error && <p id="clinical-workspace-error" tabIndex={-1} role="alert" className="rounded-lg border border-[#C06844] bg-[#FFF2EB] p-3 text-sm text-[#843C24] dark:bg-[#35221C] dark:text-[#FFD1BB]">{error}</p>}
     {syncStatus === 'offline' && <div className="text-sm"><p role="alert">アカウントへの同期は完了していません。入力とこのブラウザの記録は保持しています。</p><button type="button" className={BUTTON} onClick={() => { void triggerSync(); }}>同期を再試行する</button></div>}
     <div className="clinical-workspace-layout">
+    <aside className="clinical-workspace-menu" aria-label="記録の項目一覧">
+      <div className="clinical-workspace-patient"><span>作業中の記録</span><strong>{encounter.patientIdentifier || '匿名ID未入力'}</strong><p>{encounter.chiefComplaint || '主訴未入力'}</p></div>
+      <h2 id="clinical-record-menu" tabIndex={-1} className="clinical-menu-hint">必要な項目を選んで入力</h2>
+      <nav aria-label="臨床記録の項目" className="clinical-step-nav">{STEPS.map((label,index) => { const StepIcon = STEP_ICONS[index]; return <button type="button" key={label} aria-label={label} aria-describedby={`clinical-section-summary-${index}`} onClick={() => proceed(index)} aria-current={!reviewing && encounter.step === index ? 'true' : undefined} className={`${BUTTON} gap-2 justify-start text-left`}><StepIcon aria-hidden="true" className="h-5 w-5 shrink-0" /><span><strong>{label}</strong><small id={`clinical-section-summary-${index}`}>{sectionSummaries[index]}</small></span></button>; })}</nav>
+      <button type="button" className={`${PRIMARY} clinical-menu-review`} aria-current={reviewing ? 'true' : undefined} onClick={showReview}>入力内容を確認</button>
+      <p className="clinical-menu-save" role="status">{saved ? 'このタブに下書き保存済み' : '下書きは未保存'}<br /><span>タブを閉じる前にノートへ保存</span></p>
+    </aside>
     <section className={`${BOX} clinical-workspace-main space-y-5`} aria-label={reviewing ? '記録の最終確認' : STEPS[encounter.step]}>
       {reviewing ? <>
         <div className="clinical-review-heading"><div><p className="clinical-kicker">保存前の確認</p><h2 id="clinical-workspace-review-heading" tabIndex={-1} className="text-xl font-bold">記録を確認して保存</h2></div><button className={BUTTON} onClick={() => proceed(encounter.step)}>入力に戻る</button></div>
@@ -251,6 +272,7 @@ export default function ClinicalWorkspace() {
         <label className="block">確認した項目・受診状況<textarea maxLength={20000} className={FIELD} rows={3} value={encounter.safetyMemo} onChange={event => update({ safetyMemo: event.target.value })} /></label>
       </>}
       {encounter.step === 1 && <>
+        <nav className="clinical-examination-jumps" aria-label="四診の入力箇所"><span>確認する項目へ</span>{EXAMINATION_GROUPS.map(group => <button type="button" key={group} onClick={() => openExamination(group)}>{group}<small>{group === '問診' ? '症状・生活' : group === '望診' ? '舌・外観' : group === '聞診' ? '声・呼吸' : '脈・触診'}</small></button>)}</nav>
         <p className="text-sm">「なし」は確認して認めなかった場合に選びます。観察していない項目は「未確認」のまま残します。</p>
         {examinationIssues(encounter.examination).map(issue => <p role="alert" className="clinical-examination-hint" key={issue}>{issue}</p>)}
         {EXAMINATION_GROUPS.map(group => {
@@ -258,8 +280,8 @@ export default function ClinicalWorkspace() {
           const fields = EXAMINATION_FIELDS.filter(field => field.group === group);
           const filled = fields.filter(field => { const value = examinationValue(field.id, encounter.examination, observations); return value && value !== '判断困難'; }).length + signs.filter(sign => observations[sign.id] && observations[sign.id] !== 'unknown').length;
           const summary = [...fields.flatMap(field => { const value = examinationValue(field.id, encounter.examination, observations); return value ? [`${field.label}：${value}`] : []; }), ...signs.flatMap(sign => { const status = observations[sign.id]; return status && status !== 'unknown' ? [`${sign.label}：${status === 'present' ? 'あり' : 'なし'}`] : []; }), ...EXAMINATION_TEXT_FIELDS.filter(field => field.group === group).flatMap(field => encounter.examination?.[field.id]?.trim() ? [`${field.label}：入力あり`] : [])];
-          return <details key={group} id={`clinical-examination-${group}`} className="clinical-observation-group">
-            <summary><span>{group}</span><span>{filled} / {fields.length + signs.length}項目確認</span><small className="clinical-examination-preview">{summary.length ? summary.slice(0, 3).join(' ／ ') + (summary.length > 3 ? ` ／ ほか${summary.length - 3}項目` : '') : '未確認・未入力'}</small></summary>
+          return <details key={group} id={`clinical-examination-${group}`} className="clinical-observation-group" open={openExaminations.includes(group)} onToggle={event => { const isOpen = event.currentTarget.open; setOpenExaminations(current => isOpen ? current.includes(group) ? current : [...current, group] : current.includes(group) ? current.filter(item => item !== group) : current); }}>
+            <summary id={`clinical-examination-${group}-heading`}><span>{group}</span><span>{filled} / {fields.length + signs.length}項目確認</span><small className="clinical-examination-preview">{summary.length ? summary.slice(0, 3).join(' ／ ') + (summary.length > 3 ? ` ／ ほか${summary.length - 3}項目` : '') : '未確認・未入力'}</small></summary>
             <fieldset><legend className="sr-only">{group}の所見</legend>
               {group === '望診' && <p className="clinical-examination-hint">舌体と舌苔を分け、歯痕・裂紋などは個別に選べます。照明、直前の飲食、舌磨きの有無を補足に記録してください。「苔を認めない」を選ぶと苔の他の項目もそろいます。</p>}
               {group === '切診' && <p className="clinical-examination-hint">速さ・強さ・深さは別々に選びます。選択した所見は候補比較にも反映します。脈拍数から脈状や見立てを自動判定しません。</p>}
@@ -358,10 +380,9 @@ export default function ClinicalWorkspace() {
         <label className="block">次回確認すること・生活の助言・受診結果<textarea maxLength={20000} className={FIELD} rows={3} value={encounter.nextAction} onChange={event => update({ nextAction: event.target.value })} /></label>
         <button className={PRIMARY} onClick={showReview}>記録を確認して保存へ →</button>
       </>}
-      <div className="clinical-workspace-actions flex flex-wrap justify-between gap-3 border-t border-[#D6DED7] pt-4 dark:border-[#34483C]">{encounter.step > 0 ? <button className={BUTTON} onClick={() => proceed(encounter.step - 1)}>← 前に戻る</button> : <span />}{encounter.step < 4 && <button className={PRIMARY} onClick={() => proceed(encounter.step === 2 && encounter.safety !== 'reviewed' ? 4 : encounter.step + 1)}>次へ →</button>}</div>
+      <div className="clinical-workspace-actions flex flex-wrap justify-between gap-3 border-t border-[#D6DED7] pt-4 dark:border-[#34483C]"><button className={BUTTON} onClick={() => focusHeading('clinical-record-menu')}>項目一覧へ</button><button className={PRIMARY} onClick={showReview}>記録を確認・保存</button></div>
       </>}
     </section>
-    <aside className="clinical-workspace-summary" aria-label="作業中の記録の要約"><p className="clinical-kicker">作業中の記録</p><h2>{encounter.patientIdentifier || '匿名ID未入力'}</h2><p>{encounter.chiefComplaint || '主訴未入力'}</p><dl><div><dt>現在の手順</dt><dd>{STEPS[encounter.step]}</dd></div><div><dt>所見の確認</dt><dd>{observationConfirmed} / {observationTotal}項目</dd></div><div><dt>比較する候補</dt><dd>{candidateNames.join('／') || '未選択'}</dd></div><div><dt>配穴</dt><dd>{encounter.safety === 'reviewed' ? encounter.points.map(point => ACUPOINTS_MASTER.find(item => item.code === point.code)?.name || point.code).join('・') || '未選定' : '安全確認・医療評価を優先'}</dd></div><div><dt>記録の状態</dt><dd>{saveState === 'checking' ? '保存先を確認中' : saveState === 'missing' ? '元の記録なし・下書き保持' : saveState === 'saved' ? '臨床ノートに保存済み' : saveState === 'changed' ? '保存後の変更あり' : saveState === 'unverified' ? '保存済み記録を再編集中' : '臨床ノートへ未保存'}</dd></div><div><dt>保存先</dt><dd>{syncStatus === 'offline' ? 'このブラウザに保存／同期は未完了' : syncStatus === 'syncing' ? 'アカウントの記録を同期中' : syncStatus === 'synced' ? 'このブラウザと自分のアカウント' : 'このブラウザ'}</dd></div></dl><button className={BUTTON} onClick={showReview}>入力内容を確認</button></aside>
     </div>
     <ClinicalEvidenceKey sourceKeys={['terminology','classification','tongue','deficiency','headache','back']} revisedAt="2026-10-19" />
   </div>;

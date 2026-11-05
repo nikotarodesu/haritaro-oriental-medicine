@@ -23,6 +23,7 @@
 @import "./exercises-refinement.css";
 @import "./clinical-menu-refinement.css";
 @import "./tablet-usability.css";
+@import "./clinical-record-board.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

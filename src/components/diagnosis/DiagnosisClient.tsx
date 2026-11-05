@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
+import ClinicalInterviewBoard from "./ClinicalInterviewBoard";
 import { useRouter } from "next/navigation";
 import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { DIAGNOSIS_QUESTIONS, DIAGNOSIS_RESULTS, DIAGNOSIS_GUIDANCE_SCOPE } from "@/data/diagnosisData";
@@ -24,10 +25,7 @@ import {
   Layers,
   Eye,
   X,
-  HelpCircle,
   Check,
-  Minus,
-  MessageSquare,
   UserCheck,
   Share2,
   Copy,
@@ -302,6 +300,7 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
     const hasData =
       patientIdentifier.trim() !== "" ||
       confirmedCount > 0 ||
+      Object.values(questionNotes).some(note => note.trim().length > 0) ||
       clinicalResult !== null;
 
     if (hasData) {
@@ -412,8 +411,10 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
     <div className="page-layout space-y-6">
       <PageIntro compact eyebrow="回答を整理して振り返る" art="care"
         title={activeTab === "self" ? "気血水 体質セルフチェック" : activeTab === "clinical" ? "対面問診メモ" : "五労チェッカー"}
-        description={activeTab === "self" ? "直近1〜2週間の状態に当てはまるものを選び、回答の傾向を確認します。" : activeTab === "clinical" ? "対面で確認した回答と、不明な所見を分けて記録します。" : "『素問』の五労を参考に、見る・座る・立つ・歩く・横になる生活動作を振り返ります。"}
-      />
+        description={activeTab === "self" ? "直近1〜2週間の状態に当てはまるものを選び、回答の傾向を確認します。" : activeTab === "clinical" ? "会話に出た話題から、自由な順番で。回答とメモを手元に残し、聞き漏れを確認できます。" : "『素問』の五労を参考に、見る・座る・立つ・歩く・横になる生活動作を振り返ります。"}
+      >
+        {activeTab === "clinical" && <a href="#clinical-interview-board" className="mt-3 inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#1E3D34] px-5 py-3 text-sm font-bold text-white dark:bg-[#74BA9E] dark:text-[#121920]">問診票へ<ArrowRight className="h-4 w-4" aria-hidden="true" /></a>}
+      </PageIntro>
       <MedicalSafetyNotice title="チェックの利用範囲" message={DIAGNOSIS_GUIDANCE_SCOPE} />
       {/* モード切り替えタブ */}
       <div className="w-full">
@@ -813,7 +814,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
       {/* ============================================================== */}
       {handoffError && <p role="alert" className="rounded-lg border border-[#C06844] p-3 text-sm">{handoffError}</p>}
       {activeTab === "clinical" && (
-        <div className="space-y-6 sm:space-y-8 animate-fadeIn max-w-4xl mx-auto">
+        <div className="space-y-6 sm:space-y-8 animate-fadeIn max-w-6xl mx-auto">
           {/* ヘッダー・導入 */}
           <div className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 shadow-sm space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 pb-4">
@@ -835,7 +836,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
               <button
                 type="button"
                 onClick={handleResetClinical}
-                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl border border-[#D5CCBC] dark:border-[#2D3E50] text-xs font-bold text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#FEF2F2] dark:hover:bg-[#2A1515] hover:text-[#DC2626] dark:hover:text-[#F87171] transition-all cursor-pointer shrink-0"
+                className="inline-flex min-h-12 items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl border border-[#D5CCBC] dark:border-[#2D3E50] text-xs font-bold text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#FEF2F2] dark:hover:bg-[#2A1515] hover:text-[#DC2626] dark:hover:text-[#F87171] transition-all cursor-pointer shrink-0"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>問診を終了・新しい問診を開始</span>
@@ -847,23 +848,24 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
             {/* 患者識別情報入力欄（任意・カルテ番号等） */}
             <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center pt-1">
               <div className="sm:col-span-4">
-                <label className="block text-xs font-bold text-[#232826] dark:text-[#FAF8F5] mb-1">
+                <label htmlFor="clinical-patient-identifier" className="block text-xs font-bold text-[#232826] dark:text-[#FAF8F5] mb-1">
                   患者識別記号・カルテ番号（任意）
                 </label>
                 <input
                   type="text"
+                  id="clinical-patient-identifier"
                   name="patientIdentifier" value={patientIdentifier}
                   maxLength={80}
                   onChange={(e) => { if (currentOwner.current !== clinicalStorageOwner || loadedOwner !== clinicalStorageOwner) return; setPatientIdentifier(e.target.value); retainInterview({ patientIdentifier: e.target.value }); }}
                   placeholder="例: #1042 / A様"
-                  className="w-full px-3 py-2 rounded-xl text-xs bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] focus:outline-none focus:ring-1 focus:ring-[#1E3D34] dark:focus:ring-[#74BA9E] text-[#232826] dark:text-[#FAF8F5]"
+                  className="w-full min-h-12 px-3 py-2 rounded-xl text-base bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] focus:outline-none focus:ring-1 focus:ring-[#1E3D34] dark:focus:ring-[#74BA9E] text-[#232826] dark:text-[#FAF8F5]"
                 />
               </div>
 
               <div className="sm:col-span-8 flex flex-col justify-end">
                 <div className="flex items-center justify-between text-xs mb-1">
                   <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                    問診進捗: 確認済み {confirmedCount} / {DIAGNOSIS_QUESTIONS.length} 問
+                    回答を記録: {confirmedCount} / {DIAGNOSIS_QUESTIONS.length} 項目
                   </span>
                   <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
                     該当: {applicableQuestions.length}件
@@ -885,111 +887,14 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
             </div>
           </div>
 
-          {/* 12問の問診カード一覧 */}
-          <div className="space-y-3 sm:space-y-4">
-            {DIAGNOSIS_QUESTIONS.map((q, idx) => {
-              const currentStatus = questionStatuses[q.id] || "unconfirmed";
-              const note = questionNotes[q.id] || "";
-
-              return (
-                <div
-                  key={q.id}
-                  className={`p-3.5 sm:p-4 rounded-xl border transition-all ${
-                    currentStatus === "applicable"
-                      ? "bg-[#FAF8F5] dark:bg-[#1A2632] border-[#1E3D34] dark:border-[#4E8C76] shadow-xs ring-1 ring-[#1E3D34]/30"
-                      : currentStatus === "not_applicable"
-                      ? "bg-white dark:bg-[#141C24] border-[#E8E1D1]/60 dark:border-[#243342] opacity-75"
-                      : currentStatus === "unknown"
-                      ? "bg-[#FEFCE8] dark:bg-[#1E2319] border-[#FEF08A] dark:border-[#474D1C]"
-                      : "bg-white dark:bg-[#17212A] border-[#E5DEC9] dark:border-[#2A3B4A]"
-                  }`}
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                    <div className="flex items-start gap-2.5 flex-1">
-                      <span className="w-6 h-6 rounded-md bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-xs font-mono font-bold flex items-center justify-center shrink-0 text-[#1E3D34] dark:text-[#74BA9E] mt-0.5">
-                        {idx + 1}
-                      </span>
-                      <div className="space-y-1">
-                        <p
-                          className={`text-xs sm:text-sm font-medium leading-relaxed ${
-                            currentStatus === "not_applicable"
-                              ? "line-through text-[#737C77] dark:text-[#6A7B8C]"
-                              : "text-[#232826] dark:text-[#FAF8F5]"
-                          }`}
-                        >
-                          {q.text}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* 4択ステータスボタングループ */}
-                    <div className="inline-flex rounded-lg border border-[#E5DEC9] dark:border-[#2A3B4A] p-0.5 bg-[#FAF8F5] dark:bg-[#121920] shrink-0 self-start sm:self-center">
-                      <button
-                        type="button"
-                        onClick={() => handleSetQuestionStatus(q.id, "unconfirmed")}
-                        className={`px-2 py-1 rounded text-[11px] font-bold transition-all cursor-pointer ${
-                          currentStatus === "unconfirmed"
-                            ? "bg-white dark:bg-[#22303D] text-[#59615D] dark:text-[#A0B0BC] shadow-xs"
-                            : "text-[#737C77] dark:text-[#8899A6] hover:text-[#232826]"
-                        }`}
-                      >
-                        未確認
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleSetQuestionStatus(q.id, "applicable")}
-                        className={`px-2.5 py-1 rounded text-[11px] font-bold transition-all flex items-center gap-1 cursor-pointer ${
-                          currentStatus === "applicable"
-                            ? "bg-[#1E3D34] dark:bg-[#74BA9E] text-white dark:text-[#121920] shadow-xs"
-                            : "text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#1A2A24]"
-                        }`}
-                      >
-                        <Check className="w-3 h-3" />
-                        <span>当てはまる</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleSetQuestionStatus(q.id, "not_applicable")}
-                        className={`px-2 py-1 rounded text-[11px] font-bold transition-all flex items-center gap-1 cursor-pointer ${
-                          currentStatus === "not_applicable"
-                            ? "bg-[#E5DEC9] dark:bg-[#2D3E50] text-[#232826] dark:text-[#FAF8F5] shadow-xs"
-                            : "text-[#737C77] dark:text-[#8899A6] hover:bg-[#EFE9DD] dark:hover:bg-[#1A2530]"
-                        }`}
-                      >
-                        <Minus className="w-3 h-3" />
-                        <span>該当なし</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleSetQuestionStatus(q.id, "unknown")}
-                        className={`px-2 py-1 rounded text-[11px] font-bold transition-all flex items-center gap-1 cursor-pointer ${
-                          currentStatus === "unknown"
-                            ? "bg-[#FEF08A] text-[#854D0E] shadow-xs"
-                            : "text-[#737C77] dark:text-[#8899A6] hover:bg-[#FEFCE8] dark:hover:bg-[#202517]"
-                        }`}
-                      >
-                        <HelpCircle className="w-3 h-3" />
-                        <span>不明</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* 臨床メモ入力欄（任意） */}
-                  <div className="mt-2.5 pt-2 border-t border-[#E5DEC9]/40 dark:border-[#2A3B4A]/40 flex items-center gap-2">
-                    <MessageSquare className="w-3.5 h-3.5 text-[#737C77] shrink-0" />
-                    <input
-                      type="text"
-                      value={note}
-                      onChange={(e) => handleSetQuestionNote(q.id, e.target.value)}
-                      maxLength={1000}
-                      placeholder="臨床メモ（いつから、悪化要因、患者の訴えなど）"
-                      className="w-full text-[11px] bg-transparent border-b border-transparent hover:border-[#D5CCBC] focus:border-[#1E3D34] dark:focus:border-[#74BA9E] focus:outline-none text-[#232826] dark:text-[#FAF8F5] placeholder-[#9CA3AF] py-0.5"
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <ClinicalInterviewBoard
+            key={loadedOwner}
+            patientIdentifier={patientIdentifier}
+            statuses={questionStatuses}
+            notes={questionNotes}
+            onStatusChange={handleSetQuestionStatus}
+            onNoteChange={handleSetQuestionNote}
+          />
 
           {/* 問診集計ボタン */}
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
