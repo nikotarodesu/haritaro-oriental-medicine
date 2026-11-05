@@ -21,12 +21,21 @@
 .clinical-menu-save { margin-top: 12px; }
 .clinical-menu-save span { font-size: .75rem; }
 .clinical-workspace .clinical-workspace-main { padding-top: 8px; }
-.clinical-examination-jumps { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; padding-bottom: 16px; border-bottom: 1px solid var(--clinical-line); }
-.clinical-examination-jumps > span { grid-column: 1 / -1; color: var(--text-secondary); font-size: .8125rem; }
-.clinical-examination-jumps button { min-height: 64px; padding: 8px 4px; border: 1px solid var(--clinical-line); border-radius: 10px; background: var(--bg-card); color: var(--accent-readable); font-weight: 600; }
-.clinical-examination-jumps small { display: block; margin-top: 3px; font-weight: 400; font-size: .75rem; }
+/* The page already reserves header space with scroll-padding-top. */
+.clinical-examinations { scroll-margin-top: 8px; }
+.clinical-examination-tabs { position: sticky; top: var(--site-header-height,64px); z-index: 9; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; padding-block: 8px; border-bottom: 1px solid var(--clinical-line); background: var(--bg-washi); }
+.clinical-examination-tabs > button { min-width: 0; min-height: 80px; padding: 6px 4px; border: 1px solid var(--clinical-line); border-radius: 10px; background: var(--bg-card); color: var(--text-secondary); line-height: 1.5; touch-action: manipulation; cursor: pointer; }
+.clinical-examination-tabs strong { display: block; font-size: 1rem; }
+.clinical-examination-tabs small, .clinical-examination-tabs span { display: block; font-size: .75rem; }
+.clinical-examination-tabs > button[aria-selected="true"] { border-color: var(--accent-readable); background: var(--accent-readable); color: var(--bg-card); box-shadow: inset 0 -3px 0 currentColor; }
+.clinical-examination-help { margin-block: 12px 20px; font-size: .8125rem; line-height: 1.8; color: var(--text-secondary); }
+.clinical-examination-panel[hidden] { display: none; }
+.clinical-examination-panel > fieldset { min-width: 0; padding-bottom: 20px; }
+.clinical-examination-panel label { border: 0; background: transparent; padding: 12px 0; }
+.clinical-examinations > label { margin-block: 20px; }
+.clinical-examinations :is(.clinical-choice-field, input, textarea) { scroll-margin-top: 128px; }
 .clinical-workspace :is(button, select, input:not([type=checkbox])) { min-height: 48px; }
-.clinical-workspace :is(#clinical-record-menu, #clinical-workspace-error, .clinical-observation-group > summary) { scroll-margin-top: calc(var(--site-header-height,64px) + 20px); }
+.clinical-workspace :is(#clinical-record-menu, #clinical-workspace-error) { scroll-margin-top: calc(var(--site-header-height,64px) + 20px); }
 .clinical-workspace :is(button, summary, #clinical-record-menu):focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 3px; }
 .clinical-workspace textarea { scroll-margin-block: 100px; }
 @media(min-width:760px) {
@@ -38,6 +47,6 @@
 @media(min-width:760px) and (max-width:1000px) { .clinical-workspace-main .clinical-examination-fields { grid-template-columns: minmax(0,1fr); } .clinical-examination-subheading { grid-column: 1; } }
 @media(max-width:759px) { .clinical-workspace-patient { display: none; } .clinical-menu-hint { margin-top: 0; } .clinical-menu-save { margin-bottom: 0; } }
 @media(max-width:480px) { .clinical-record-intro { grid-template-columns: minmax(0,1fr); } .clinical-record-intro > button { justify-self: start; } }
-@media(max-height:540px) { .clinical-workspace-menu { position: static; max-height: none; } .clinical-workspace .clinical-workspace-actions { position: static; } }
-@media(hover:hover) { .clinical-examination-jumps button:hover, .clinical-step-nav > button:not([aria-current]):hover { background: var(--tokiwa-light); } }
-@media print { .clinical-workspace-menu, .clinical-examination-jumps, .clinical-workspace-actions { display: none; } .clinical-workspace-layout { display: block; } }
+@media(max-height:540px) { .clinical-workspace-menu { position: static; max-height: none; } .clinical-workspace .clinical-workspace-actions, .clinical-examination-tabs { position: static; } }
+@media(hover:hover) { .clinical-examination-tabs > button:not([aria-selected="true"]):hover, .clinical-step-nav > button:not([aria-current]):hover { background: var(--tokiwa-light); } }
+@media print { .clinical-workspace-menu, .clinical-examination-tabs, .clinical-workspace-actions { display: none; } .clinical-workspace-layout { display: block; } .clinical-examination-panel[hidden] { display: block; } }

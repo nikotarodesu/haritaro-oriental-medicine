@@ -33,6 +33,11 @@ function nodes(node, list = []) {
   else if (node && typeof node === 'object') { list.push(node); nodes(node.props?.children, list); }
   return list;
 }
+function visibleNodes(node) {
+  if (Array.isArray(node)) return node.flatMap(visibleNodes);
+  if (!node || typeof node !== 'object' || node.props?.hidden) return [];
+  return [node, ...visibleNodes(node.props?.children)];
+}
 function text(node) {
   if (Array.isArray(node)) return node.map(text).join('');
   if (typeof node === 'string' || typeof node === 'number') return String(node);
@@ -72,7 +77,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
   const localValues = new Map([[key, JSON.stringify(initialNotes)], ...localEntries]);
   const sessionValues = new Map(initialEncounter ? [[encounters.CLINICAL_ENCOUNTER_KEY, JSON.stringify(initialEncounter)]] : []);
   const flags = { failLocal, failSession, confirm: true };
-  const writes = [], cloudWrites = [], bulkWrites = [], cloudAccounts = new Map(), pendingDownloads = new Map(), pendingUpserts = new Map(), frames = [], focused = [], scrolled = [], groups = new Map(), timers = new Map();
+  const writes = [], cloudWrites = [], bulkWrites = [], cloudAccounts = new Map(), pendingDownloads = new Map(), pendingUpserts = new Map(), frames = [], focused = [], scrolled = [], timers = new Map();
   const auth = { user: null, isPremium: false, isConfigured: false, isLoading: initialLoading };
   let timerId = 0, context, tree, cloudOk = true;
   function storage(values, kind) { return {
@@ -126,15 +131,9 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     return require(id);
   } }, { filename: providerSource.file });
   const document = { getElementById(id) {
-    const input = nodes(tree).find(node => node.props?.id === id);
-    assert(input, 'Requested focus target must exist in the rendered workspace: ' + id);
-    return { focus: () => focused.push(id), scrollIntoView: () => scrolled.push(id), closest(selector) {
-      assert.equal(selector, 'details');
-      const group = nodes(tree).find(node => node.type === 'details' && nodes(node).includes(input));
-      assert(group, 'The requested observation stays in its native disclosure');
-      if (!groups.has(group.key)) groups.set(group.key, { open: Boolean(group.props.open) });
-      return groups.get(group.key);
-    } };
+    const input = visibleNodes(tree).find(node => node.props?.id === id);
+    assert(input, 'Requested focus/scroll target must exist in the visible workspace: ' + id);
+    return { focus: () => focused.push(id), scrollIntoView: () => scrolled.push(id) };
   } };
   vm.runInNewContext(workspaceSource.code, { ...shared, document, requestAnimationFrame: callback => { frames.push(callback); return frames.length; }, exports: workspaceExports, require: id => {
     if (id === 'react') return workspaceHost.hooks;
@@ -146,7 +145,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     if (id.startsWith('@/')) return localLoad('src/' + id.slice(2));
     return require(id);
   } }, { filename: workspaceSource.file });
-  const api = { flags, writes, cloudWrites, bulkWrites, cloudAccounts, focused, scrolled, groups, localValues, sessionValues,
+  const api = { flags, writes, cloudWrites, bulkWrites, cloudAccounts, focused, scrolled, localValues, sessionValues,
     providerRender() { context = providerHost.render(providerExports.ClinicalMemoProvider, { children: null }).props.value; return context; },
     render() { api.providerRender(); tree = resolveChoices(workspaceHost.render(workspaceExports.default)); return tree; },
     flushTimers() { const pending = [...timers].filter(([, item]) => item.delay === 0); for (const [id, item] of pending) { timers.delete(id); item.callback(); } },
@@ -157,6 +156,9 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     encounter: () => localLoad('src/utils/clinicalEncounter').readClinicalEncounter().encounter,
     button(label) { const found = nodes(tree).find(node => node.type === 'button' && (node.props['aria-label'] === label || text(node) === label)); assert(found, 'Button ' + label); return found; },
     click(label) { const button = api.button(label); assert(!button.props.disabled, 'Enabled button: ' + label); button.props.onClick(); api.render(); },
+    tab(label) { const tab = nodes(tree).find(node => node.props?.role === 'tab' && node.props['aria-label'] === label); assert(tab, 'Examination tab: ' + label); return tab; },
+    selectTab(label) { api.tab(label).props.onClick(); api.render(); api.flushFrames(); },
+    activePanel() { const panels = visibleNodes(tree).filter(node => node.props?.role === 'tabpanel'); assert.equal(panels.length, 1, 'Exactly one examination panel is visible'); return panels[0]; },
     choice(label) { return nodes(tree).find(node => node.type === 'fieldset' && node.props.className === 'clinical-choice-field' && [label, `${label}の確認状態`].includes(node.props['aria-label'])); },
     field(label) {
       const choice = api.choice(label);
@@ -165,6 +167,9 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
       const input = nodes(parent).find(node => ['input', 'select', 'textarea'].includes(node.type)); assert(input); return input;
     },
     change(label, value) {
+      const field = api.choice(label) || api.field(label);
+      const panel = nodes(tree).find(node => node.props?.role === 'tabpanel' && nodes(node).includes(field));
+      if (panel?.props.hidden) api.selectTab(String(panel.key));
       const choice = api.choice(label);
       if (choice) { const button = nodes(choice).find(node => node.type === 'button' && node.props.value === value); assert(button, 'Available tap choice: ' + label + ' / ' + value); assert.equal(button.props.type, 'button'); button.props.onClick(); }
       else api.field(label).props.onChange({ target: { value } });
@@ -315,17 +320,22 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     await successful.settle();
     assert.equal(successful.context().syncStatus, "synced", "A completed cloud write marks the record synced");
   });
-  await check('native observation groups preserve unknown status and candidate buttons return focus to the exact input', () => {
+  await check('examination tabs expose one panel and candidate links select the correct panel before focusing', () => {
     const client = harness({ initialEncounter: sampleEncounter({ observations: {}, step: 1 }) });
-    const examinationGroups = () => nodes(client.tree()).filter(node => node.type === 'details' && node.props.className === 'clinical-observation-group');
-    assert.equal(examinationGroups().length, 4);
-    assert.deepEqual(examinationGroups().filter(node => node.props.open).map(node => node.props.id), ['clinical-examination-問診'], 'The interview opens immediately while other examination groups remain available');
-    const jumps = nodes(client.tree()).find(node => node.props?.className === 'clinical-examination-jumps');
-    assert.equal(nodes(jumps).filter(node => node.type === 'button').length, 4, 'Each examination group has a direct touch target');
-    const palpation = nodes(jumps).find(node => node.type === 'button' && text(node).startsWith('切診'));
-    palpation.props.onClick(); client.render(); client.flushFrames();
-    assert.equal(client.focused.at(-1), 'clinical-examination-切診-heading');
-    assert(examinationGroups().find(node => node.props.id === 'clinical-examination-切診').props.open, 'A direct jump opens its target before moving focus');
+    assert.equal(client.activePanel().props.id, 'clinical-examination-問診');
+    const tabs = nodes(client.tree()).filter(node => node.props?.role === 'tab');
+    assert.equal(tabs.length, 4);
+    for (const tab of tabs) {
+      const panel = nodes(client.tree()).find(node => node.props?.id === tab.props['aria-controls']);
+      assert.equal(panel.props.role, 'tabpanel'); assert.equal(panel.props['aria-labelledby'], tab.props.id);
+      assert.equal(tab.props.tabIndex, tab.props['aria-selected'] ? 0 : -1);
+      assert.equal(panel.props.hidden, !tab.props['aria-selected']);
+    }
+    client.selectTab('切診');
+    assert.equal(client.focused.at(-1), 'clinical-examination-tab-切診');
+    assert.equal(client.scrolled.at(-1), 'clinical-examinations', 'Switching from a long panel returns to the new panel start');
+    assert.equal(client.activePanel().props.id, 'clinical-examination-切診');
+    assert.deepEqual(plain(client.encounter().observations), {}, 'Switching tabs never confirms any finding');
     client.change('疲労・気力低下', 'absent'); assert.equal(client.encounter().observations.fatigue, 'absent');
     client.click('候補・治法'); client.flushFrames();
     const priorFocus = client.focused.length;
@@ -334,9 +344,48 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     unknownButton.props.onClick(); client.render(); client.flushFrames();
     assert.equal(client.focused.length, priorFocus + 1); assert.equal(client.scrolled.at(-1), client.focused.at(-1));
     assert(client.focused.at(-1).startsWith('clinical-sign-'), 'Observation navigation does not leave focus on the step heading');
-    assert([...client.groups.values()].some(group => group.open));
+    assert(visibleNodes(client.activePanel()).some(node => node.props?.id === client.focused.at(-1)), 'The focused input is inside the selected panel');
     assert.equal(client.encounter().observations.fatigue, 'absent', 'Returning for another observation never resets a confirmed negative');
     assert(CLINICAL_PATTERNS.length > 7, 'Expanded candidates retain observation focus behavior');
+  });
+  await check('examination tabs support arrow keys, wraparound, Home and End without changing recorded data', () => {
+    const client = harness({ initialEncounter: sampleEncounter({ step: 1 }) });
+    const before = plain(client.encounter());
+    for (const [from, key, to] of [['問診', 'ArrowRight', '望診'], ['望診', 'End', '切診'], ['切診', 'ArrowRight', '問診'], ['問診', 'ArrowLeft', '切診'], ['切診', 'Home', '問診']]) {
+      let prevented = false;
+      client.tab(from).props.onKeyDown({ key, preventDefault() { prevented = true; } }); client.render(); client.flushFrames();
+      assert(prevented); assert.equal(client.activePanel().props.id, 'clinical-examination-' + to);
+      assert.equal(client.focused.at(-1), 'clinical-examination-tab-' + to);
+      assert.equal(nodes(client.tree()).filter(node => node.props?.role === 'tab' && node.props.tabIndex === 0).length, 1);
+    }
+    client.tab('問診').props.onKeyDown({ key: 'Tab', preventDefault() { assert.fail('Tab must retain native focus navigation'); } });
+    assert.deepEqual(plain(client.encounter()), before);
+  });
+  await check('tab changes preserve choices, notes, progress counts and all groups in the saved record', () => {
+    const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, examination: {} }) });
+    client.change('症状の経過', '改善傾向'); client.change('問診の補足・その他の所見', 'タブ切替の確認用メモ');
+    client.selectTab('望診'); client.change('舌体の色', '判断困難');
+    assert(text(client.tab('望診')).includes('0 / 10'), 'An uncertain choice does not count as confirmed');
+    client.change('舌体の色', '淡紅');
+    client.selectTab('聞診'); client.change('声の性状', 'かすれる');
+    client.selectTab('切診'); client.change('脈の速さ', '速い（数）'); client.change('実測脈拍（回/分）', '88');
+    const before = plain(client.encounter());
+    client.selectTab('問診'); assert.equal(client.field('問診の補足・その他の所見').props.value, 'タブ切替の確認用メモ');
+    for (const [group, total] of [['問診', 16], ['望診', 10], ['聞診', 4], ['切診', 12]]) {
+      client.selectTab(group); assert(text(client.tab(group)).includes('1 / ' + total));
+      assert.equal(client.activePanel().props.id, 'clinical-examination-' + group);
+    }
+    assert.deepEqual(plain(client.encounter()), before, 'Navigation never rewrites clinical data');
+    client.click('候補・治法'); client.click('四診所見');
+    assert.equal(client.activePanel().props.id, 'clinical-examination-切診', 'Returning to the section keeps the last tab');
+    const restored = harness({ initialEncounter: client.encounter() });
+    restored.selectTab('切診'); assert.equal(restored.field('実測脈拍（回/分）').props.value, '88');
+    restored.selectTab('望診'); assert.equal(restored.field('舌体の色').props.value, '淡紅');
+    restored.review(); restored.click('臨床ノートに保存する');
+    for (const value of ['改善傾向', 'タブ切替の確認用メモ', '淡紅', 'かすれる', '速い（数）', '88']) assert(restored.note().treatmentPlan.includes(value));
+    client.click('新しい記録を始める'); client.click('四診所見');
+    assert.equal(client.activePanel().props.id, 'clinical-examination-問診');
+    assert(text(client.tab('望診')).includes('0 / 10'));
   });
   await check('candidate pulse links focus the real tap controls and preserve manual notes when recording', () => {
     for (const [candidateId, linkLabel, fieldLabel, controlId, value, observationId] of [
