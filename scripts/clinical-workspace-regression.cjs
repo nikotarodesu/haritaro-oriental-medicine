@@ -171,8 +171,10 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
       const field = api.choice(label) || api.field(label);
       const panel = nodes(tree).find(node => node.props?.className === 'clinical-examination-panel' && nodes(node).includes(field));
       const section = nodes(tree).find(node => node.props?.className === 'clinical-examination-section' && node.props.role === 'tabpanel' && nodes(node).includes(field));
+      const pulse = nodes(tree).find(node => node.props?.className === 'clinical-pulse-panel' && node.props.role === 'tabpanel' && nodes(node).includes(field));
       if (panel?.props.hidden) api.selectTab(String(panel.key));
       if (section?.props.hidden) api.selectTab(String(section.key));
+      if (pulse?.props.hidden) api.selectTab(String(pulse.key));
       assert(visibleNodes(tree).includes(api.choice(label) || api.field(label)), 'Edited input is visible: ' + label);
       const choice = api.choice(label);
       if (choice) { const button = nodes(choice).find(node => node.type === 'button' && node.props.value === value); assert(button, 'Available tap choice: ' + label + ' / ' + value); assert.equal(button.props.type, 'button'); button.props.onClick(); }
@@ -437,7 +439,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
   });
   await check('inspection and palpation show only their chosen subsection with accessible keyboard navigation', () => {
     const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, examination: {} }) });
-    for (const [group, first, second, firstCount, secondCount] of [['望診', '舌体', '舌苔', 6, 4], ['切診', '脈診', '触診', 8, 4]]) {
+    for (const [group, first, second, firstCount, secondCount] of [['望診', '舌体', '舌苔', 6, 4], ['切診', '脈診', '触診', 3, 4]]) {
       client.selectTab(group);
       for (const [section, count] of [[first, firstCount], [second, secondCount]]) {
         client.selectTab(section);
@@ -445,7 +447,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
         assert.equal(panel.props.id, client.tab(section).props['aria-controls']);
         assert.equal(panel.props['aria-labelledby'], client.tab(section).props.id);
         assert.equal(visibleNodes(panel).filter(node => node.props?.className === 'clinical-choice-field').length, count);
-        assert(text(client.tab(section)).includes('0 / ' + count));
+        assert(text(client.tab(section)).includes('0 / ' + (section === '脈診' ? 8 : count)));
         assert.equal(client.scrolled.at(-1), 'clinical-examinations');
         assert.equal(client.focused.at(-1), 'clinical-examination-subtab-' + section);
       }
@@ -523,6 +525,35 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     assert.equal(client.activePanel().props.id, 'clinical-examination-問診');
     assert(text(client.tab('望診')).includes('0 / 10'));
   });
+  await check('pulse detail tabs preserve all findings, measurements and shared notes through navigation and saving', () => {
+    const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, examination: {} }) });
+    client.selectTab('切診');
+    client.change('脈の速さ', '速い（数）'); client.change('実測脈拍（回/分）', '88');
+    client.change('切診の補足・その他の所見', '安静時に再確認');
+    client.selectTab('その他の脈の所見');
+    assert.equal(visibleNodes(client.activeSection()).filter(node => node.props?.className === 'clinical-choice-field').length, 5);
+    assert(!visibleNodes(client.tree()).includes(client.field('実測脈拍（回/分）')));
+    client.change('弦脈', 'absent'); client.change('脈のリズム', '整');
+    assert(text(client.tab('その他の脈の所見')).includes('2 / 5'));
+    assert(text(client.tab('速さ・強さ・深さ')).includes('1 / 3'));
+    assert.equal(client.field('切診の補足・その他の所見').props.value, '安静時に再確認');
+    for (const [from, key, to] of [['その他の脈の所見', 'ArrowRight', '速さ・強さ・深さ'], ['速さ・強さ・深さ', 'ArrowLeft', 'その他の脈の所見'], ['その他の脈の所見', 'Home', '速さ・強さ・深さ'], ['速さ・強さ・深さ', 'End', 'その他の脈の所見']]) {
+      client.tab(from).props.onKeyDown({ key, preventDefault() {} }); client.render(); client.flushFrames();
+      assert.equal(client.focused.at(-1), 'clinical-pulse-tab-' + to);
+      const panel = visibleNodes(client.tree()).find(node => node.props?.id === client.tab(to).props['aria-controls']);
+      assert(panel); assert.equal(panel.props['aria-labelledby'], client.tab(to).props.id);
+    }
+    client.selectTab('触診'); client.selectTab('脈診'); assert(client.tab('その他の脈の所見').props['aria-selected']);
+    client.selectTab('速さ・強さ・深さ'); assert.equal(client.field('実測脈拍（回/分）').props.value, '88');
+    const restored = harness({ initialEncounter: client.encounter() }); restored.review(); restored.click('臨床ノートに保存する');
+    for (const value of ['速い（数）', '88', '安静時に再確認', '弦脈', '整']) assert(restored.note().treatmentPlan.includes(value));
+    client.click('新しい記録を始める'); client.click('四診所見'); client.selectTab('切診'); assert(client.tab('速さ・強さ・深さ').props['aria-selected']);
+  });
+  await check('candidate wiry pulse link opens the other pulse findings before focusing', () => {
+    const client = harness({ initialEncounter: sampleEncounter({ step: 2, observations: {}, examination: {}, candidateIds: ['liver-qi'] }) });
+    client.click('弦脈を確認'); client.flushFrames();
+    assert(client.tab('その他の脈の所見').props['aria-selected']); assert.equal(client.focused.at(-1), 'clinical-sign-wiryPulse');
+  });
   await check('candidate pulse links focus the real tap controls and preserve manual notes when recording', () => {
     for (const [candidateId, linkLabel, fieldLabel, controlId, value, observationId] of [
       ['liver-heat', '数脈を確認', '脈の速さ', 'clinical-sign-rapidPulse', '速い（数）', 'rapidPulse'],
@@ -530,7 +561,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     ]) {
       const initial = sampleEncounter({ step: 2, observations: {}, examination: {}, candidateIds: [candidateId] });
       const client = harness({ initialEncounter: initial });
-      client.click('四診所見'); client.selectTab('切診'); client.selectTab('触診'); client.click('候補・治法'); client.flushFrames();
+      client.click('四診所見'); client.selectTab('切診'); client.selectTab('その他の脈の所見'); client.selectTab('触診'); client.click('候補・治法'); client.flushFrames();
       client.click(linkLabel); client.flushFrames();
       assert.equal(client.activeSection().props.id, 'clinical-examination-section-脈診');
       assert.equal(client.focused.at(-1), controlId, 'The comparison link focuses the rendered pulse fieldset');
