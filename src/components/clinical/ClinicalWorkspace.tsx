@@ -19,6 +19,11 @@ import { clinicalExaminationPatch, clinicalFindingEdit, canUndoClinicalFindingEd
 
 type PrincipleChange = { owner: string; before: string; after: string; term: string; undone?: boolean };
 type ExaminationGroup = typeof EXAMINATION_GROUPS[number];
+const TONGUE_SECTIONS = ['色・乾湿', '形・歯痕・裂紋など'] as const;
+type TongueSection = typeof TONGUE_SECTIONS[number];
+function tongueSection(id: string): TongueSection {
+  return ['tongueColor', 'tongueMoisture', 'paleTongue', 'redTongue'].includes(id) ? TONGUE_SECTIONS[0] : TONGUE_SECTIONS[1];
+}
 const PULSE_SECTIONS = ['速さ・強さ・深さ', 'その他の脈の所見'] as const;
 type PulseSection = typeof PULSE_SECTIONS[number];
 function pulseSection(id: string): PulseSection {
@@ -78,6 +83,7 @@ export default function ClinicalWorkspace() {
   const [activeExamination, setActiveExamination] = useState<ExaminationGroup>('問診');
   const [activeSections, setActiveSections] = useState(INITIAL_SECTIONS);
   const [activePulseSection, setActivePulseSection] = useState<PulseSection>(PULSE_SECTIONS[0]);
+  const [activeTongueSection, setActiveTongueSection] = useState<TongueSection>(TONGUE_SECTIONS[0]);
   const [findingSession, setFindingSession] = useState(0);
   const findingSessionGuard = useRef(0);
   const findingChangeSerial = useRef(0);
@@ -96,6 +102,7 @@ export default function ClinicalWorkspace() {
       findingChangeSerial.current = initial.findingHistory?.at(-1)?.id || 0;
       setActiveSections(INITIAL_SECTIONS);
       setActivePulseSection(PULSE_SECTIONS[0]);
+      setActiveTongueSection(TONGUE_SECTIONS[0]);
       findingSessionGuard.current++; setFindingSession(findingSessionGuard.current);
     }, 0);
     return () => clearTimeout(timer);
@@ -205,6 +212,13 @@ export default function ClinicalWorkspace() {
       document.getElementById('clinical-examinations')?.scrollIntoView({ block: 'start', behavior: 'auto' });
     });
   };
+  const openTongueSection = (section: TongueSection) => {
+    setActiveTongueSection(section);
+    requestAnimationFrame(() => {
+      document.getElementById(`clinical-tongue-tab-${section}`)?.focus({ preventScroll: true });
+      document.getElementById('clinical-examinations')?.scrollIntoView({ block: 'start', behavior: 'auto' });
+    });
+  };
   const sectionSummaries = [
     encounter.safety === 'unknown' ? '安全確認が未確認' : encounter.safety === 'refer' ? '医療評価を優先' : encounter.chiefComplaint || '主訴が未入力',
     `${observationConfirmed} / ${observationTotal}項目確認`,
@@ -262,6 +276,7 @@ export default function ClinicalWorkspace() {
       const section = examinationSection(group, targetField || id);
       if (section) setActiveSections(current => ({ ...current, [group]: section }));
       if (section === '脈診') setActivePulseSection(pulseSection(targetField || id));
+      if (section === '舌体') setActiveTongueSection(tongueSection(targetField || id));
     }
     proceed(1, false);
     requestAnimationFrame(() => {
@@ -282,6 +297,7 @@ export default function ClinicalWorkspace() {
     findingChangeSerial.current = 0;
     setActiveSections(INITIAL_SECTIONS);
     setActivePulseSection(PULSE_SECTIONS[0]);
+    setActiveTongueSection(TONGUE_SECTIONS[0]);
     findingSessionGuard.current++; setFindingSession(findingSessionGuard.current);
   };
   if (!ready || loadedOwner !== clinicalStorageOwner) return <p role="status" className="p-6">下書きを確認しています…</p>;
@@ -362,6 +378,17 @@ export default function ClinicalWorkspace() {
               }}><strong>{section}</strong><span id={`clinical-examination-progress-${section}`}>{confirmed} / {fields.length + signs.length} 確認</span></button>;
           })}
         </div>}
+        {activeExamination === '望診' && activeSections['望診'] === '舌体' && <div role="tablist" className="clinical-examination-subtabs clinical-tongue-tabs" aria-label="舌体の入力分類">
+          {TONGUE_SECTIONS.map((section, index) => {
+            const fields = EXAMINATION_FIELDS.filter(field => field.group === '望診' && examinationSection(field.group, field.id) === '舌体' && tongueSection(field.id) === section);
+            const confirmed = fields.filter(field => { const value = examinationValue(field.id, encounter.examination, observations); return value && value !== '判断困難'; }).length;
+            return <button key={section} type="button" role="tab" id={`clinical-tongue-tab-${section}`} aria-label={section} aria-selected={activeTongueSection === section} tabIndex={activeTongueSection === section ? 0 : -1} aria-controls={`clinical-tongue-panel-${section}`} aria-describedby={`clinical-tongue-progress-${section}`} onClick={() => openTongueSection(section)} onKeyDown={event => {
+              const target = event.key === 'ArrowRight' || event.key === 'ArrowLeft' ? 1 - index : event.key === 'Home' ? 0 : event.key === 'End' ? 1 : null;
+              if (target === null) return;
+              event.preventDefault(); openTongueSection(TONGUE_SECTIONS[target]);
+            }}><strong>{section}</strong><span id={`clinical-tongue-progress-${section}`}>{confirmed} / {fields.length} 確認</span></button>;
+          })}
+        </div>}
         {activeExamination === '切診' && activeSections['切診'] === '脈診' && <div role="tablist" className="clinical-examination-subtabs clinical-pulse-tabs" aria-label="脈診の入力分類">
           {PULSE_SECTIONS.map((section, index) => {
             const fields = EXAMINATION_FIELDS.filter(field => field.group === '切診' && examinationSection(field.group, field.id) === '脈診' && pulseSection(field.id) === section);
@@ -390,20 +417,20 @@ export default function ClinicalWorkspace() {
               {sections.map(section => <div key={section || group} className="clinical-examination-section" id={section ? `clinical-examination-section-${section}` : undefined}
                 role={section ? 'tabpanel' : undefined} aria-labelledby={section ? `clinical-examination-subtab-${section}` : undefined}
                 hidden={Boolean(section && hasExaminationSections(group) && activeSections[group] !== section)}>
-              {(section === '脈診' ? PULSE_SECTIONS : [null]).map(pulse => <div key={pulse || 'fields'} className="clinical-pulse-panel" role={pulse ? 'tabpanel' : undefined} id={pulse ? `clinical-pulse-panel-${pulse}` : undefined} aria-labelledby={pulse ? `clinical-pulse-tab-${pulse}` : undefined} hidden={Boolean(pulse && pulse !== activePulseSection)}>
-              <div className="clinical-examination-fields grid gap-3">{fields.filter(field => examinationSection(group, field.id) === section && (!pulse || pulseSection(field.id) === pulse)).map(field =>
+              {(section === '脈診' ? PULSE_SECTIONS : section === '舌体' ? TONGUE_SECTIONS : [null]).map(detail => <div key={detail || 'fields'} className={section === '舌体' ? 'clinical-tongue-panel' : 'clinical-pulse-panel'} role={detail ? 'tabpanel' : undefined} id={detail ? `clinical-${section === '舌体' ? 'tongue' : 'pulse'}-panel-${detail}` : undefined} aria-labelledby={detail ? `clinical-${section === '舌体' ? 'tongue' : 'pulse'}-tab-${detail}` : undefined} hidden={Boolean(detail && detail !== (section === '舌体' ? activeTongueSection : activePulseSection))}>
+              <div className="clinical-examination-fields grid gap-3">{fields.filter(field => examinationSection(group, field.id) === section && (!detail || (section === '舌体' ? tongueSection(field.id) : pulseSection(field.id)) === detail)).map(field =>
                 <ClinicalChoiceButtons key={field.id} id={field.id === 'pulseSpeed' ? 'clinical-sign-rapidPulse' : field.id === 'pulseStrength' ? 'clinical-sign-weakPulse' : `clinical-exam-${field.id}`} label={field.label}
                   value={examinationValue(field.id, encounter.examination, observations)}
                   options={[{ value: '', label: '未確認' }, ...field.options.map(option => ({ value: option, label: option }))]}
                   onChange={value => updateExamination(field.id, value)} />
               )}</div>
-              {EXAMINATION_TEXT_FIELDS.filter(field => field.group === group && examinationSection(group, field.id) === section && (!pulse || pulseSection(field.id) === pulse)).map(field => <label className="clinical-examination-text" key={field.id}>{field.label}{field.id === 'pulseRate'
+              {EXAMINATION_TEXT_FIELDS.filter(field => field.group === group && examinationSection(group, field.id) === section && (!detail || (section === '舌体' ? tongueSection(field.id) : pulseSection(field.id)) === detail)).map(field => <label className="clinical-examination-text" key={field.id}>{field.label}{field.id === 'pulseRate'
                 ? <input className={`${FIELD} mt-2`} maxLength={3} inputMode="numeric" value={encounter.examination?.[field.id] || ''} onChange={event => {
                   const value = event.target.value;
                   if (value === '' || /^[1-9]\d{0,2}$/.test(value)) updateExamination(field.id, value);
                 }} placeholder="測定していなければ空欄" />
                 : <textarea className={`${FIELD} mt-2`} rows={2} maxLength={field.maxLength} value={encounter.examination?.[field.id] || ''} onChange={event => updateExamination(field.id, event.target.value)} placeholder={field.id === 'pulseConditions' ? '例：安静座位・右橈骨動脈・60秒計測。運動、服薬、発熱など' : field.id === 'palpationSite' ? '例：右僧帽筋上部・浅部の圧で本人の痛みが再現' : '選択肢にない所見、複数の所見、確認した条件など'} />}</label>)}
-              <div className="grid gap-3">{signs.filter(sign => examinationSection(group, sign.id) === section && (!pulse || pulseSection(sign.id) === pulse)).map(sign => <ClinicalChoiceButtons key={sign.id} id={`clinical-sign-${sign.id}`} label={`${sign.label}の確認状態`} description={sign.question}
+              <div className="grid gap-3">{signs.filter(sign => examinationSection(group, sign.id) === section && (!detail || (section === '舌体' ? tongueSection(sign.id) : pulseSection(sign.id)) === detail)).map(sign => <ClinicalChoiceButtons key={sign.id} id={`clinical-sign-${sign.id}`} label={`${sign.label}の確認状態`} description={sign.question}
                 value={observations[sign.id] || 'unknown'}
                 options={[{ value: 'unknown', label: '未確認' }, { value: 'present', label: 'あり' }, { value: 'absent', label: 'なし' }]}
                 onChange={value => update({ observations: { ...encounter.observations, [sign.id]: value } })} />)}</div>

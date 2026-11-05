@@ -171,7 +171,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
       const field = api.choice(label) || api.field(label);
       const panel = nodes(tree).find(node => node.props?.className === 'clinical-examination-panel' && nodes(node).includes(field));
       const section = nodes(tree).find(node => node.props?.className === 'clinical-examination-section' && node.props.role === 'tabpanel' && nodes(node).includes(field));
-      const pulse = nodes(tree).find(node => node.props?.className === 'clinical-pulse-panel' && node.props.role === 'tabpanel' && nodes(node).includes(field));
+      const pulse = nodes(tree).find(node => ['clinical-pulse-panel', 'clinical-tongue-panel'].includes(node.props?.className) && node.props.role === 'tabpanel' && nodes(node).includes(field));
       if (panel?.props.hidden) api.selectTab(String(panel.key));
       if (section?.props.hidden) api.selectTab(String(section.key));
       if (pulse?.props.hidden) api.selectTab(String(pulse.key));
@@ -439,7 +439,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
   });
   await check('inspection and palpation show only their chosen subsection with accessible keyboard navigation', () => {
     const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, examination: {} }) });
-    for (const [group, first, second, firstCount, secondCount] of [['望診', '舌体', '舌苔', 6, 4], ['切診', '脈診', '触診', 3, 4]]) {
+    for (const [group, first, second, firstCount, secondCount] of [['望診', '舌体', '舌苔', 2, 4], ['切診', '脈診', '触診', 3, 4]]) {
       client.selectTab(group);
       for (const [section, count] of [[first, firstCount], [second, secondCount]]) {
         client.selectTab(section);
@@ -447,7 +447,7 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
         assert.equal(panel.props.id, client.tab(section).props['aria-controls']);
         assert.equal(panel.props['aria-labelledby'], client.tab(section).props.id);
         assert.equal(visibleNodes(panel).filter(node => node.props?.className === 'clinical-choice-field').length, count);
-        assert(text(client.tab(section)).includes('0 / ' + (section === '脈診' ? 8 : count)));
+        assert(text(client.tab(section)).includes('0 / ' + (section === '脈診' ? 8 : section === '舌体' ? 6 : count)));
         assert.equal(client.scrolled.at(-1), 'clinical-examinations');
         assert.equal(client.focused.at(-1), 'clinical-examination-subtab-' + section);
       }
@@ -524,6 +524,41 @@ function harness({ initialEncounter = sampleEncounter(), initialNotes = [], fail
     client.click('新しい記録を始める'); client.click('四診所見');
     assert.equal(client.activePanel().props.id, 'clinical-examination-問診');
     assert(text(client.tab('望診')).includes('0 / 10'));
+  });
+  await check('tongue detail tabs preserve all six findings, shared notes and saved content with keyboard navigation', () => {
+    const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, examination: {} }) });
+    client.selectTab('望診');
+    assert.equal(visibleNodes(client.activeSection()).filter(node => node.props?.className === 'clinical-choice-field').length, 2);
+    client.change('舌体の色', '判断困難'); assert(text(client.tab('色・乾湿')).includes('0 / 2'));
+    client.change('舌体の色', '淡紅'); client.change('舌体の乾湿', '潤っている');
+    client.change('望診の補足・観察条件', '照明をそろえて観察');
+    client.selectTab('形・歯痕・裂紋など');
+    assert.equal(visibleNodes(client.activeSection()).filter(node => node.props?.className === 'clinical-choice-field').length, 4);
+    for (const [label, value] of [['舌体の大きさ・厚み', '腫大・胖大'], ['舌の歯痕', '軽度'], ['舌の裂紋', '浅い裂紋'], ['舌の瘀点・瘀斑', 'なし']]) client.change(label, value);
+    assert(text(client.tab('形・歯痕・裂紋など')).includes('4 / 4')); assert(text(client.tab('色・乾湿')).includes('2 / 2'));
+    assert(text(client.tab('舌体')).includes('6 / 6')); assert.equal(client.field('望診の補足・観察条件').props.value, '照明をそろえて観察');
+    const before = plain(client.encounter());
+    for (const [from, key, to] of [['形・歯痕・裂紋など', 'ArrowRight', '色・乾湿'], ['色・乾湿', 'ArrowLeft', '形・歯痕・裂紋など'], ['形・歯痕・裂紋など', 'Home', '色・乾湿'], ['色・乾湿', 'End', '形・歯痕・裂紋など']]) {
+      client.tab(from).props.onKeyDown({ key, preventDefault() {} }); client.render(); client.flushFrames();
+      assert.equal(client.focused.at(-1), 'clinical-tongue-tab-' + to);
+      const panel = visibleNodes(client.tree()).find(node => node.props?.id === client.tab(to).props['aria-controls']);
+      assert(panel); assert.equal(panel.props['aria-labelledby'], client.tab(to).props.id);
+    }
+    client.selectTab('舌苔'); client.selectTab('舌体'); assert(client.tab('形・歯痕・裂紋など').props['aria-selected']);
+    client.selectTab('切診'); client.selectTab('望診'); assert(client.tab('形・歯痕・裂紋など').props['aria-selected']);
+    assert.deepEqual(plain(client.encounter()), before);
+    const restored = harness({ initialEncounter: client.encounter() }); restored.review(); restored.click('臨床ノートに保存する');
+    for (const value of ['淡紅', '潤っている', '照明をそろえて観察', '腫大・胖大', '軽度', '浅い裂紋']) assert(restored.note().treatmentPlan.includes(value));
+    client.click('新しい記録を始める'); client.click('四診所見'); client.selectTab('望診'); assert(client.tab('色・乾湿').props['aria-selected']);
+  });
+  await check('candidate tongue color links leave the shape panel and focus the visible color input', () => {
+    for (const [candidate, link] of [['spleen-qi', '淡白舌を確認'], ['liver-heat', '紅舌を確認']]) {
+      const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, examination: {}, candidateIds: [candidate] }) });
+      client.selectTab('望診'); client.selectTab('形・歯痕・裂紋など'); client.click('候補・治法'); client.flushFrames();
+      client.click(link); client.flushFrames();
+      assert(client.tab('色・乾湿').props['aria-selected']); assert.equal(client.focused.at(-1), 'clinical-exam-tongueColor');
+      assert.equal(client.field('舌体の色').props.value, '');
+    }
   });
   await check('pulse detail tabs preserve all findings, measurements and shared notes through navigation and saving', () => {
     const client = harness({ initialEncounter: sampleEncounter({ step: 1, observations: {}, examination: {} }) });
