@@ -65,4 +65,4 @@ npm run check:billing -- --remote --production
 
 ## 公開
 
-既存のGitHubリポジトリ `nikotarodesu/haritaro-oriental-medicine` の `main` にVercelが接続済みです。`AGENTS.md` に従い、ビルド・必要な検証が通った変更をcommit・pushし、対象コミットのデプロイがREADYになったことと本番URLの動作を確認します。新しいリポジトリやVercelプロジェクトを作り直す必要はありません。
+既存のGitHubリポジトリ `nikotarodesu/haritaro-oriental-medicine` の `main` と、同名のVercelプロジェクトを使います。`AGENTS.md` に従い、ビルド・必要な検証が通った変更をcommit・pushし、対象コミットのデプロイがREADYになったことと本番URLの動作を確認します。push後にデプロイが始まらない場合は、既存プロジェクトで検証済みのコミットSHAを指定して公開します。新しいリポジトリやVercelプロジェクトを作り直す必要はありません。

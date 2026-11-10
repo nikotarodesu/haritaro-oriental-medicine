@@ -37,6 +37,9 @@ async function check({ overrides = {}, enabled = true, health = true, fails = fa
   assert.equal(ready.calls[0].options.headers.apikey, 'public_fixture');
   assert.equal(ready.calls[0].options.signal, 'bounded-signal');
   assert.equal(ready.calls[0].options.cache, 'no-store');
+  const publishable = await check({ overrides: { NEXT_PUBLIC_SUPABASE_ANON_KEY: '', NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_fixture' } });
+  assert.equal(publishable.body.available, true, 'Production publishable keys must work like legacy anon keys');
+  assert.equal(publishable.calls[0].options.headers.apikey, 'sb_publishable_fixture');
   for (const scenario of [{ enabled: false }, ...Object.keys(env).map(key => ({ overrides: { [key]: '' } })), { overrides: { STRIPE_SECRET_KEY: 'sk_test_fixture' } }]) {
     const result = await check(scenario);
     assert.equal(result.body.available, false);
