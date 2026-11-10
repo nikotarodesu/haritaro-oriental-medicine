@@ -32,7 +32,7 @@ export default function TsuboPage() {
         fallback={
           <div className="min-h-[400px] py-16 text-center space-y-3">
             <div className="inline-block w-6 h-6 border-2 border-[#1E3D34] border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-[#737C77]">経穴検索ツールを準備中...</p>
+            <p className="text-sm text-[#737C77]">経穴検索を読み込んでいます。下の「経脈別の索引・全経穴一覧」からも経穴を開けます。</p>
           </div>
         }
       >

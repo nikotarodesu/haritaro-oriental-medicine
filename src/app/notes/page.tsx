@@ -486,7 +486,7 @@ function ClinicalNotesPage() {
       <PageIntro compact eyebrow="記録して、次の見直しへ" title="マイノート" art="notes" description="所見・配穴・施術後の変化を、ひとつの記録に。" />
       <NotesStorageSupport syncStatus={syncStatus} isAuthenticated={isAuthenticated} isPremium={isPremium} patientNoteCount={patientNoteCount} fileInputRef={fileInputRef} onDownloadCsv={handleDownloadCsv} onDownloadBackup={handleDownloadBackup} onImport={() => fileInputRef.current?.click()} onFileUpload={handleFileUpload} onRetry={() => { void triggerSync(); }} />
       {/* 無料枠上限到達時の案内 */}
-      {isPatientNoteLimitReached && (
+      {isPatientNoteLimitReached && !isPremium && (
         <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-sm sm:text-sm space-y-1">
           <p className="font-bold flex items-center gap-1.5">
             <AlertCircle className="w-4 h-4 text-amber-700 dark:text-amber-400 shrink-0" />

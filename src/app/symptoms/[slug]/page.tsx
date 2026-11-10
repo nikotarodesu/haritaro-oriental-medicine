@@ -62,6 +62,7 @@ export default async function SymptomGuidePage({ params }: Props) {
         {safety && <MedicalSafetyNotice title="受診を優先する症状" message={safety.message} />}
         <a href="#sources" className={linkClass}>この受診案内の出典を確認する ↓</a>
       </section>
+      <p className="rounded-xl border border-[#D6DED7] p-4 dark:border-[#34483C]">次の一歩：<a href="#safety" className="underline">受診の目安</a>を先に確認し、学習を続ける方は<a href="#learning" className="underline">関連講義を1つ選んで読む</a>ところから始めましょう。</p>
       <nav aria-label="ガイドの目次" className="grid grid-cols-2 gap-2 sm:grid-cols-3">{sections.map(({ id, label, icon: Icon }) => <a key={id} href={`#${id}`} className="page-secondary-action justify-start"><Icon size={18} aria-hidden="true" />{label}</a>)}</nav>
       <section id="traditional" className={sectionClass}>
         <h2 className="font-serif text-2xl font-bold">東洋医学では、どう整理する？</h2>

@@ -195,7 +195,7 @@ export function ClinicalMemoProvider({ children }: { children: ReactNode }) {
 
   // トーストの自動消去（3.5秒）
   useEffect(() => {
-    if (!lastToast) return;
+    if (!lastToast || lastToast.type === 'warning') return;
     const timer = setTimeout(() => {
       setLastToast(null);
     }, 3500);

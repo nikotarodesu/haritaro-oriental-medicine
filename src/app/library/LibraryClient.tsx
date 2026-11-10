@@ -74,7 +74,7 @@ export default function LibraryClient() {
 
   // マイカルテへ保存
   const handleSaveItem = (item: { id: string; title: string; summary: string; points?: string[] }) => {
-    addMemo({
+    const saved = addMemo({
       id: `lib-${item.id}`,
       type: "diagnosis",
       title: item.title,
@@ -85,12 +85,13 @@ export default function LibraryClient() {
       summary: item.summary,
       personalNotes: `資料集よりクリップ保存 (${new Date().toLocaleDateString("ja-JP")})`
     });
-    setSavedIds(prev => [...prev, item.id]);
+    if (saved) setSavedIds(prev => [...prev, item.id]);
   };
 
   return (
     <div className="page-layout text-base leading-relaxed">
       <PageIntro eyebrow="原典と研究を読む" title="文献・古典・症例教材" description="論文、古典、症例から選ぶ。調べたい言葉で資料を探せます。" art="reading" />
+      <p className="text-sm leading-relaxed ui-muted">掲載資料の内訳：論文{PAPERS_DATABASE.length}件＋古典条文{CLASSICAL_TEXTS.length}件＋症例教材{CLINICAL_CASES.length}件{PUBLIC_ARCHIVE_CASES.length > 0 ? `＋臨床アーカイブ${PUBLIC_ARCHIVE_CASES.length}件` : ''}。合計はこれらの資料数で、記事数や講義数とは異なります。下の検索結果件数は、キーワードと分類で絞り込んだ件数です。</p>
       <section aria-label="資料を探す" className="library-discovery rounded-2xl border border-[#E5DEC9] bg-[#FCFAF6] p-4 dark:border-[#2A3B4A] dark:bg-[#17212A] sm:p-6">
           <div className="library-search">
             <div className="library-search-label">

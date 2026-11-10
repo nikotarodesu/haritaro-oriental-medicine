@@ -50,6 +50,7 @@ export default function PricingPage() {
     setError(null);
     try {
       const res = await fetch("/api/stripe/checkout", {
+        signal: AbortSignal.timeout(15000),
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -314,7 +315,7 @@ export default function PricingPage() {
                     className="w-full py-3.5 px-6 rounded-xl bg-[#D8CFC0] dark:bg-[#2A3B4A] text-[#737C77] dark:text-[#8899A6] text-sm font-bold cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     <Sparkles className="w-4 h-4" />
-                    <span>{status === "checking" ? "受付状況を確認中…" : status === "error" ? "受付状況を確認できません" : "現在お申し込み準備中"}</span>
+                    <span>{status === "checking" ? "受付状況を確認中…" : status === "error" ? "受付状況を確認できません" : "現在お申し込み受付停止中"}</span>
                   </button>
                   {status === "error" ? <button type="button" onClick={retry} className="min-h-11 w-full rounded-lg text-sm font-semibold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2">受付状況を再確認する</button>
                     : status === "unavailable" ? <p className="text-sm text-[#737C77] dark:text-[#8899A6] text-center">受付開始日は未定です。現在は無料機能をご利用ください。</p> : null}

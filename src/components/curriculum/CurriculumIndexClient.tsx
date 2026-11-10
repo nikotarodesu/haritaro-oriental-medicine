@@ -113,7 +113,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
 
   return (
     <div className="curriculum-index page-layout space-y-8 sm:space-y-10">
-      <PageIntro compact eyebrow={`東洋医学 ${catalog.chapters.length}章・${plannedCount}講`} title="体系学習カリキュラム" description="概論から臨床の基礎まで。続きから学ぶか、読みたい章を選びましょう。" art="study" />
+      <PageIntro compact eyebrow={`東洋医学 ${catalog.chapters.length}章・${plannedCount}講`} title="全講義の目次" description="学習ホームと同じ教材を、章・講義から探すための目次です。受講記録は共通です。" art="study"><Link href="/learn" className="page-primary-action">初めての方は学習ホームへ →</Link></PageIntro>
 
       {/* 最上部「最初のレッスンを始める / 続きから学ぶ」ダッシュボード & 全体進捗 */}
       <section className="curriculum-resume" aria-label="学習を始める・再開する">

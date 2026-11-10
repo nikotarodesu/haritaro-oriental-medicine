@@ -1,4 +1,5 @@
 import { pageSocialMetadata } from "@/config/seo";
+import { AUTHOR_OPENED_AT } from "@/config/author";
 import { Metadata } from "next";
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
@@ -72,7 +73,7 @@ export default function AboutPage() {
                   </span>
                 </div>
                 <p className="text-sm sm:text-sm font-semibold text-[#B86924] dark:text-[#E6C387]">
-                  身体ケア・臨床領域10年以上（鍼灸師約9年）｜ 2017年免許取得 ｜ 2023年開院・現役臨床
+                  身体ケア・臨床領域10年以上（鍼灸師約9年）｜ 2017年免許取得 ｜ {AUTHOR_OPENED_AT}開業・現役臨床
                 </p>
                 <p className="text-sm sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed pt-1">
                   鍼灸師として臨床に携わりながら、東洋医学の理論・診断・治療体系を整理し、haritaro.jpで公開しています。

@@ -75,7 +75,7 @@ export default function HomePage() {
             <h2 id="home-updates-title" className="home-section-title">更新情報</h2>
             <Link href="/updates" className="ui-text-link">全件を見る<ArrowRight aria-hidden="true" /></Link>
           </div>
-          <ul className="home-updates">{SITE_UPDATES.slice(0, 1).map(update => <li key={update.label}><Link href={update.href}>
+          <ul className="home-updates">{SITE_UPDATES.slice(0, 3).map(update => <li key={update.label}><Link href={update.href}>
             <time dateTime={update.date} className="ui-muted text-sm">{update.date.replaceAll("-", ".")}</time>
             <h3 className="text-base font-semibold">{update.label}</h3>
           </Link></li>)}</ul>

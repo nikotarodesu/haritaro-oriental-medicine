@@ -48,8 +48,8 @@ export const SUBSCRIPTION_CONFIG = {
 
   // 受付状態メッセージの定義
   statusMessages: {
-    comingSoonTitle: "プレミアム会員のお申し込みは現在準備中です",
-    comingSoonSubtitle: "受付開始日は未定です。現在は無料の範囲をご利用いただけます。",
+    comingSoonTitle: "プレミアム会員のお申し込みは現在受付を停止しています",
+    comingSoonSubtitle: "ログイン・決済・会員機能を提供できる状態が整うまで、新規受付を休止しています。現在は無料の範囲をご利用いただけます。",
     comingSoonBadge: "有料プラン準備中",
   },
 

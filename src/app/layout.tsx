@@ -11,6 +11,7 @@ import { CurriculumProgressProvider } from "@/contexts/CurriculumProgressContext
 import { LearningSyncProvider } from "@/contexts/LearningSyncContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import DeferredClinicalDrawer from "@/components/DeferredClinicalDrawer";
+import ClinicalSaveNotice from "@/components/ClinicalSaveNotice";
 import MobileBottomNav from "@/components/navigation/MobileBottomNav";
 import PwaRegister from "@/components/pwa/PwaRegister";
 import PwaInstallPrompt from "@/components/pwa/PwaInstallPrompt";
@@ -174,6 +175,7 @@ export default function RootLayout({
                     <Footer />
                     <div data-clarity-sensitive className="contents">
                       <DeferredClinicalDrawer />
+                      <ClinicalSaveNotice />
                       <MobileBottomNav />
                     </div>
                     <PwaInstallPrompt />

@@ -1,4 +1,5 @@
 import React from "react";
+import { AUTHOR_OPENED_AT } from "@/config/author";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -29,7 +30,7 @@ export default function AuthorSupervisorCard({ className = "", topic }: Props) {
             <p className="text-sm text-[#59615D] dark:text-[#AFBDC8] mt-0.5">
               鍼灸院院長 ／ 東洋医学臨床・教育研究家
             </p>
-            <p className="text-sm text-[#59615D] dark:text-[#AFBDC8] mt-0.5">2017年免許取得・2023年開院</p>
+            <p className="text-sm text-[#59615D] dark:text-[#AFBDC8] mt-0.5">2017年免許取得・{AUTHOR_OPENED_AT}開業</p>
           </div>
         </div>
 

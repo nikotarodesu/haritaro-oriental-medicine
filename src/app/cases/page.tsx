@@ -112,11 +112,11 @@ export default function CasesIndexPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCases.map((c) => (
+            <div key={c.id} className="flex flex-col gap-2">
             <Link
-              key={c.id}
               href={`/cases/${c.id}`}
               onClick={(e) => handleCaseClick(e, c)}
-              className={`page-link-card page-link-card--stack group justify-between ${
+              className={`page-link-card page-link-card--stack group flex-1 justify-between ${
                 c.isFreeTrial 
                   ? "border-[#1E3D34]/40 hover:border-[#1E3D34] dark:border-[#2A5243] dark:hover:border-[#74BA9E]" 
                   : isPremium 
@@ -196,6 +196,8 @@ export default function CasesIndexPage() {
                 )}
               </div>
             </Link>
+            {!c.isFreeTrial && !isPremium && <Link href="/pricing" className="ui-text-link px-2">症例{String(c.caseNumber).padStart(2, '0')}を利用できる料金プラン →</Link>}
+            </div>
           ))}
         </div>
 

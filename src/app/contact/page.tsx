@@ -24,7 +24,17 @@ export default function ContactPage() {
   });
 
   useEffect(() => {
-    const source = new URLSearchParams(window.location.search).get('source');
+    const params = new URLSearchParams(window.location.search);
+    const topic = params.get('topic');
+    if (topic === 'premium-reopening' || topic === 'premium-support') {
+      const timer = setTimeout(() => setFormData(previous => ({ ...previous,
+        category: 'プレミアムのお申し込みについて',
+        subject: topic === 'premium-reopening' ? 'プレミアム受付再開の連絡希望' : 'プレミアム申込みについて',
+        message: topic === 'premium-reopening' ? 'プレミアムの受付が再開したら、入力したメールアドレスへの連絡を希望します。' : '',
+      })), 0);
+      return () => clearTimeout(timer);
+    }
+    const source = params.get('source');
     if (!source || !/^\/(tsubo|articles)\/[a-z0-9-]+$/.test(source)) return;
     const timer = setTimeout(() => setFormData(previous => ({ ...previous,
       subject: previous.subject || '掲載内容・出典の確認：' + source,
@@ -212,6 +222,7 @@ export default function ContactPage() {
                   <option value="ご意見・ご要望・誤字等のご指摘">ご意見・ご要望・誤字等のご指摘</option>
                   <option value="取材・執筆・ビジネスのご相談">取材・執筆・ビジネスのご相談</option>
                   <option value="その他">その他</option>
+                  <option value="プレミアムのお申し込みについて">プレミアムのお申し込みについて</option>
                 </select>
               </div>
 

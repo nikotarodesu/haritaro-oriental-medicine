@@ -9,7 +9,12 @@ let pending: Promise<Exclude<SubscriptionAvailability, "checking">> | null = nul
 /** Share only an in-flight public request; recheck on the next visit. */
 function checkAvailability() {
   if (!pending) {
-    pending = fetch("/api/stripe/availability", { cache: "no-store" })
+    const controller = new AbortController();
+    let timer: ReturnType<typeof setTimeout>;
+    const timeout = new Promise<never>((_, reject) => {
+      timer = setTimeout(() => { controller.abort(); reject(new Error('Availability timed out')); }, 8000);
+    });
+    pending = Promise.race([fetch("/api/stripe/availability", { cache: "no-store", signal: controller.signal })
       .then(response => {
         if (!response.ok) throw new Error("Availability request failed");
         return response.json();
@@ -18,9 +23,9 @@ function checkAvailability() {
         if (data?.available === true) return "available";
         if (data?.available === false) return "unavailable";
         return "error";
-      })
+      }), timeout])
       .catch(() => "error" as const)
-      .finally(() => { pending = null; });
+      .finally(() => { clearTimeout(timer); pending = null; });
   }
   return pending;
 }

@@ -26,18 +26,19 @@ const page = fs.readFileSync('src/app/practice/haiketsu/page.tsx', 'utf8');
 assert.match(page, /addMemo\(buildPrescriptionMemo\(/, 'The real save handler must use the tested record builder');
 
 // All public sales prompts must use the same endpoint and fail closed.
-async function availabilityScenario({ enabled = true, response, reject = false, unmount = false, active = true }) {
+async function availabilityScenario({ enabled = true, response, reject = false, unmount = false, active = true, timeout = false }) {
   const updates = [];
   let effect, fetchCount = 0, resolve;
   const request = new Promise(done => { resolve = done; });
   const exports = {};
   const js = ts.transpileModule(fs.readFileSync('src/hooks/useSubscriptionAvailability.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
-  vm.runInNewContext(js, { exports, fetch: (url, options) => { assert.equal(url, '/api/stripe/availability'); assert.equal(options.cache, 'no-store'); fetchCount++; return request.then(() => { if (reject) throw new Error('offline'); return response; }); }, require: id => id === 'react' ? { useState: value => [value, next => updates.push(next)], useCallback: cb => cb, useEffect: cb => { effect = cb; } } : { isSubscriptionSalesEnabled: () => enabled } });
+  let onTimeout;
+  vm.runInNewContext(js, { exports, AbortController, setTimeout: callback => { onTimeout = callback; return 1; }, clearTimeout() {}, fetch: (url, options) => { assert.equal(url, '/api/stripe/availability'); assert.equal(options.cache, 'no-store'); fetchCount++; return request.then(() => { if (reject) throw new Error('offline'); return response; }); }, require: id => id === 'react' ? { useState: value => [value, next => updates.push(next)], useCallback: cb => cb, useEffect: cb => { effect = cb; } } : { isSubscriptionSalesEnabled: () => enabled } });
   const initial = exports.useSubscriptionAvailability(active);
   assert.equal(initial.salesEnabled, false);
   const cleanup = effect();
   if (unmount) cleanup?.();
-  resolve();
+  if (timeout) { await Promise.resolve(); onTimeout(); } else resolve();
   await new Promise(done => setImmediate(done));
   return { updates, fetchCount };
 }
@@ -56,7 +57,7 @@ async function retryAvailabilityScenario() {
     useCallback: callback => callback,
     useEffect: callback => { effect = callback; },
   };
-  vm.runInNewContext(js, { exports, fetch: async () => {
+  vm.runInNewContext(js, { exports, AbortController, setTimeout, clearTimeout, fetch: async () => {
     fetchCount++;
     if (fetchCount === 1) throw new Error('offline');
     return { ok: true, json: async () => ({ available: true }) };
@@ -89,7 +90,22 @@ function renderAvailabilityNotice(status) {
   vm.runInNewContext(js, { exports, require: id => id.startsWith('@/') ? load('src/' + id.slice(2)) : require(id) });
   return renderToStaticMarkup(React.createElement(exports.default, { status, onRetry() {} }));
 }
+function renderSaveNotice(lastToast, isPremium = false) {
+  const React = require('react');
+  const { renderToStaticMarkup } = require('react-dom/server');
+  const exports = {};
+  const js = ts.transpileModule(fs.readFileSync('src/components/ClinicalSaveNotice.tsx', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX } }).outputText;
+  vm.runInNewContext(js, { exports, require: id => id.endsWith('/ClinicalMemoContext') ? { useClinicalMemo: () => ({ lastToast, dismissToast() {} }) } : id.endsWith('/AuthContext') ? { useAuth: () => ({ isPremium }) } : require(id) });
+  return renderToStaticMarkup(React.createElement(exports.default));
+}
 (async () => {
+  const limit = { type: 'warning', message: '無料会員の保存上限に達しました。' };
+  assert(renderSaveNotice(limit).includes('href="/pricing"'));
+  assert(renderSaveNotice(limit).includes('href="/notes"'));
+  assert(!renderSaveNotice(limit, true).includes('href="/pricing"'), 'Premium users must not be asked to upgrade again');
+  assert(!renderSaveNotice({ type: 'warning', message: '保存に失敗しました。' }).includes('href="/pricing"'), 'Storage failures are not sales opportunities');
+  assert.equal(renderSaveNotice(null), '');
+  assert.equal(renderSaveNotice({ type: 'success', message: '保存しました。' }), '');
   for (const [response, expected] of [
     [{ ok: true, json: async () => ({ available: true }) }, 'available'],
     [{ ok: true, json: async () => ({ available: false }) }, 'unavailable'],
@@ -98,6 +114,7 @@ function renderAvailabilityNotice(status) {
     [{ ok: false }, 'error'],
   ]) assert.deepEqual((await availabilityScenario({ response })).updates, ['checking', expected]);
   assert.deepEqual((await availabilityScenario({ reject: true })).updates, ['checking', 'error']);
+  assert.deepEqual((await availabilityScenario({ timeout: true })).updates, ['checking', 'error'], 'A hanging request must leave the checking state');
   assert.equal((await availabilityScenario({ enabled: false })).fetchCount, 0);
   assert.equal((await availabilityScenario({ active: false })).fetchCount, 0);
   assert.deepEqual((await availabilityScenario({ response: { ok: true, json: async () => ({ available: true }) }, unmount: true })).updates, []);
@@ -108,7 +125,8 @@ function renderAvailabilityNotice(status) {
     assert(html.includes('role="status"'));
   }
   assert(renderAvailabilityNotice('error').includes('受付状況を再確認する'));
-  assert(renderAvailabilityNotice('unavailable').includes('準備中'));
+  assert(renderAvailabilityNotice('unavailable').includes('受付を停止'));
+  assert(renderAvailabilityNotice('unavailable').includes('/contact?topic=premium-reopening'));
   for (const file of ['src/app/pricing/page.tsx', 'src/components/auth/AuthModal.tsx', 'src/components/cases/CaseStudyViewer.tsx', 'src/app/practice/haiketsu/page.tsx']) assert.match(fs.readFileSync(file, 'utf8'), /useSubscriptionAvailability/);
   const modal = fs.readFileSync('src/components/auth/AuthModal.tsx', 'utf8');
   assert.match(modal, /useModalDialog\(isOpen/);

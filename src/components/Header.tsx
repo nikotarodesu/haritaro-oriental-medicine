@@ -23,7 +23,6 @@ const LEARN_LINKS: readonly HeaderLink[] = [
   { href: "/learn", label: "学習ホーム", description: "続き・進捗・11コース" },
   { href: "/learn/review#learning-review", label: "今日の復習" },
   { href: "/notes?tab=learning", label: "学習ノート", icon: NotebookPen },
-  { href: "/curriculum", label: "カリキュラム" },
   { href: "/library", label: "古典・医学論文" },
   { href: "/articles", label: "解説記事" },
 ];
@@ -289,6 +288,7 @@ export default function Header() {
               {openDropdown === "clinical" ? <div id={dropdownId("clinical")} className="clinical-header-menu absolute left-0 top-full mt-2 max-h-[75vh] overflow-y-auto whitespace-normal rounded-xl border border-[#E5E8E5] bg-[#fff] p-2 shadow-lg dark:border-[#2A3B4A] dark:bg-[#17212A]"><ClinicalMenu pathname={pathname} onNavigate={closeNavigation} /></div> : null}
             </div>
             <Link href="/tsubo" onClick={closeNavigation} aria-current={dictionaryActive ? pathname === "/tsubo" ? "page" : "true" : undefined} className={`${NAV_CONTROL} ${dictionaryActive ? "bg-[var(--brand-paper)] dark:bg-[#22303D]" : ""}`}>経穴辞典</Link>
+            <Link href="/pricing" onClick={closeNavigation} aria-current={pathname === '/pricing' ? 'page' : undefined} className={NAV_CONTROL}>料金プラン</Link>
             <button ref={desktopSearchRef} type="button" onClick={() => openSearch()} aria-label="サイト内検索を開く" aria-haspopup="dialog" title="サイト内検索（Ctrl+K / ⌘K）" className={NAV_CONTROL}><Search aria-hidden="true" className="h-5 w-5 shrink-0" /><span>検索</span></button>
             <div className="relative">
               {dropdownButton("account", "アカウント", accountActive)}
@@ -296,6 +296,7 @@ export default function Header() {
             </div>
           </nav>
           <div className={`${COMPACT_LAYOUT} ml-auto shrink-0 items-center gap-1.5`}>
+            <Link href="/pricing" onClick={closeNavigation} aria-current={pathname === '/pricing' ? 'page' : undefined} className={`inline-flex min-h-11 items-center rounded-lg px-2 text-xs font-semibold ${FOCUS_STYLE}`}>料金プラン</Link>
             <button ref={compactSearchRef} type="button" onClick={() => openSearch()} aria-label="サイト内検索を開く" aria-haspopup="dialog" title="サイト内検索" className={`inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D] ${FOCUS_STYLE}`}><Search aria-hidden="true" className="h-5 w-5" /></button>
             <button ref={menuButtonRef} type="button" onClick={event => toggleMobileMenu(event.currentTarget)} aria-expanded={mobileMenuOpen} aria-controls={SITE_MENU_ID} aria-label={mobileMenuOpen ? "メニューを閉じる" : "メニューを開く"} className={`inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg hover:bg-[var(--brand-paper)] dark:hover:bg-[#22303D] ${FOCUS_STYLE}`}>{mobileMenuOpen ? <X aria-hidden="true" className="h-5 w-5" /> : <Menu aria-hidden="true" className="h-5 w-5" />}</button>
           </div>
