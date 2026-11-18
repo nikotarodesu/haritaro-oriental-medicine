@@ -2,19 +2,20 @@ import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
 import React from "react";
 
+const title = "全361経穴を名前・場所・症状から探す｜はり太郎のツボ図鑑";
+const description = "合谷や足三里など、全361のツボを名前・部位・経絡から探せます。場所を見つける目印や注意点を知りたい方へ。気になる症状から読める12のガイドもあります。";
+
 export const metadata: Metadata = {
-  title: "ツボ図鑑（全361経穴）｜経穴の名前・場所・症状から探す",
-  description:
-    "WHO標準経穴部位を参照した361穴の経穴辞典。名前、部位、経絡、要穴の分類から検索できます。各経穴の位置、伝統的な主治、注意事項を学べます。個別の記載は確認・更新中です。",
+  title: { absolute: title },
+  description,
   alternates: {
     canonical: "/tsubo",
   },
   openGraph: {
-      images: SHARED_OG_IMAGES,
+    images: SHARED_OG_IMAGES,
     siteName: SITE_NAME,
-    title: `ツボ図鑑（全361経穴）｜経穴の名前・場所・症状から探す | ${SITE_NAME}`,
-    description:
-      "WHO標準経穴部位を参照した361穴の経穴辞典。名前、部位、経絡、要穴の分類から検索できます。各経穴の位置、伝統的な主治、注意事項を学べます。個別の記載は確認・更新中です。",
+    title,
+    description,
     url: "https://www.haritaro.jp/tsubo",
   },
 };

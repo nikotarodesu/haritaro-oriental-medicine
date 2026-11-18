@@ -1,7 +1,7 @@
 import { SHARED_OG_IMAGES, acupointPageTitle, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
 import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import Link from "next/link";
 import { 
   ACUPOINTS_MASTER, 
@@ -17,7 +17,7 @@ import {
 } from "@/data/tsubo";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import AcupointAtlasArticle from "@/components/tsubo/AcupointAtlasArticle";
-import HeguAtlasPreview, { heguAtlasDescription, heguAtlasTitle } from "@/components/tsubo/HeguAtlasPreview";
+import HeguAtlasPreview, { heguAtlasDescription, heguAtlasTitle, heguSources } from "@/components/tsubo/HeguAtlasPreview";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { POINT_ILLUSTRATIONS } from "@/data/tsubo/atlas/illustrations";
@@ -77,10 +77,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isHeguAtlas = point.codeLower === "li4";
   const atlasArticle = ATLAS_ARTICLES[point.codeLower];
   const title = isHeguAtlas ? heguAtlasTitle : atlasArticle ? atlasPageTitle(point) : acupointPageTitle(point);
-  const description = isHeguAtlas ? heguAtlasDescription : atlasArticle?.description ?? `${point.name}（${point.code} / ${point.meridian}）。${point.locationSimple} 位置情報の参照元、伝統的な主治、教育用断面模式図とその適用範囲、注意事項を分けて学べます。`;
+  const description = isHeguAtlas ? heguAtlasDescription : atlasArticle?.description ?? `${point.name}（${point.code}）の場所と目印。${point.locationSimple} ${point.meridian}の中での位置、近くのツボ、注意点を紹介します。`;
 
   return {
-    title: isHeguAtlas || atlasArticle ? { absolute: title } : title,
+    title: { absolute: title },
     description,
     alternates: {
       canonical: `/tsubo/${point.codeLower}`,
@@ -102,6 +102,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   if (!point) {
     notFound();
   }
+  if (code !== point.codeLower) permanentRedirect(`/tsubo/${point.codeLower}`);
 
   const isDetailed = isDetailedAcupoint(point.codeLower);
   const individualModel = Boolean(DETAILED_ACUPOINTS[point.codeLower]?.crossSection);
@@ -144,6 +145,10 @@ export default async function AcupointDetailPage({ params }: Props) {
   const atlasMarker = ATLAS_POINT_MARKERS[point.codeLower];
   const illustration = POINT_ILLUSTRATIONS[point.codeLower];
   const pageTitle = isHeguAtlas ? heguAtlasTitle : atlasArticle ? atlasPageTitle(point) : acupointPageTitle(point);
+  const verifiedLocation = VERIFIED_POINT_LOCATIONS[point.codeLower];
+  const sources = isHeguAtlas ? heguSources : atlasArticle?.sources ?? (verifiedLocation
+    ? [{ name: `${verifiedLocation.sourceTitle} ${verifiedLocation.sourcePage}`, url: verifiedLocation.sourceUrl }]
+    : []);
 
   // 表示内容に対応するページ・用語・パンくずの構造化データ。
   const jsonLd = {
@@ -154,6 +159,10 @@ export default async function AcupointDetailPage({ params }: Props) {
         "@id": `${pageUrl}#webpage`,
         "url": pageUrl,
         "name": pageTitle,
+        "inLanguage": "ja",
+        "publisher": { "@id": "https://www.haritaro.jp/#organization" },
+        "editor": { "@type": "Person", "name": "はり太郎", "url": "https://www.haritaro.jp/about" },
+        ...(sources.length > 0 && { citation: sources.map(({ name, url }) => ({ "@type": "CreativeWork", name, url })) }),
         "description": isHeguAtlas ? heguAtlasDescription : atlasArticle?.description ?? (point.locationDetail || point.locationSimple),
         "about": [
           {
@@ -192,7 +201,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           {
             "@type": "ListItem",
             "position": 2,
-            "name": isHeguAtlas || atlasArticle ? "はり太郎のツボ図鑑" : "経穴辞典",
+            "name": "はり太郎のツボ図鑑",
             "item": "https://www.haritaro.jp/tsubo",
           },
           {
@@ -212,10 +221,12 @@ export default async function AcupointDetailPage({ params }: Props) {
     ],
   };
 
+  const structuredData = <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />;
+
   if (isHeguAtlas) {
     return (
       <>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        {structuredData}
         <HeguAtlasPreview point={point} />
       </>
     );
@@ -224,7 +235,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   if (atlasArticle && atlasMarker) {
     return (
       <>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
+        {structuredData}
         <AcupointAtlasArticle point={point} article={atlasArticle} marker={atlasMarker} meridianPoints={meridianPoints} individualModel={individualModel} />
       </>
     );
@@ -233,10 +244,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   return (
     <div className="reading-page acupoint-page page-layout min-h-screen [overflow-wrap:anywhere]">
       {/* 構造化データ埋め込み */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      {structuredData}
 
       <div className="max-w-5xl mx-auto space-y-5 sm:space-y-8">
         {/* パンくずリスト ＆ 前後経穴クイックナビ */}
@@ -247,7 +255,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             </Link>
             <span>/</span>
             <Link href="/tsubo" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-              経穴辞典
+              はり太郎のツボ図鑑
             </Link>
             <span>/</span>
             <Link href={`/tsubo?meridian=${point.meridianShort}`} className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">

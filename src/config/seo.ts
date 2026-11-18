@@ -4,8 +4,8 @@ export { SITE_NAME } from "./brand";
 export const SITE_TITLE = `${SITE_NAME}｜ツボ図鑑・症状ガイド・東洋医学・臨床演習`;
 export const SHARED_OG_IMAGES = [{ url: "https://www.haritaro.jp/og-image.png", width: 1200, height: 630, alt: SITE_NAME }];
 
-export function acupointPageTitle(point: { name: string; code: string }) {
-  return `${point.name}（${point.code}）の位置・伝統的な主治・注意事項｜鍼灸学習`;
+export function acupointPageTitle(point: { name: string; kana: string; code: string }) {
+  return `${point.name}（${point.kana}・${point.code}）の場所と注意点｜はり太郎のツボ図鑑`;
 }
 
 export function pageSocialMetadata(title: string, description: string, path: string) {

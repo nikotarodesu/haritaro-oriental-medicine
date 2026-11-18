@@ -6,6 +6,11 @@ import PageIntro from "@/components/design/PageIntro";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
 import { SERIES, TSUBO_TAGLINE } from "@/config/series";
+import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
+
+const illustratedExamples = ALL_ACUPOINTS.filter(({ code }) =>
+  code === "LI4" || ATLAS_POINT_MARKERS[code.toLowerCase()]
+).slice(0, 12);
 
 // 主要な代表経穴（初期HTMLでクローラーおよびJS無効環境にも確実に渡すリンク）
 const FLAGSHIP_ACUPOINTS = [
@@ -33,6 +38,17 @@ export default function TsuboPage() {
           <a href="#tsubo-index" className="page-secondary-action">ツボの一覧を見る</a>
         </div>
       </PageIntro>
+
+      <section aria-labelledby="illustrated-points" className="space-y-3">
+        <h2 id="illustrated-points" className="font-serif text-xl font-bold">図でツボの場所を見る</h2>
+        <ul className="flex flex-wrap gap-2">
+          {illustratedExamples.map(({ name, code }) => (
+            <li key={code}><Link href={`/tsubo/${code.toLowerCase()}`} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#CDD9CA] px-3 font-semibold hover:underline">
+              {name}<span className="text-sm font-normal ui-muted">{code}</span>
+            </Link></li>
+          ))}
+        </ul>
+      </section>
 
       {/* 2. 検索・絞り込み・カード一覧をページ見出しの直下へ */}
       <Suspense
@@ -81,7 +97,7 @@ export default function TsuboPage() {
         {/* 主要代表経穴リンク */}
         <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] space-y-2">
           <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] block">
-            よく調べられる主要経穴：
+            代表的なツボ
           </span>
           <div className="flex flex-wrap gap-2 text-xs">
             {FLAGSHIP_ACUPOINTS.map((pt) => (
@@ -122,7 +138,6 @@ export default function TsuboPage() {
                         key={pt.code}
                         href={`/tsubo/${pt.code.toLowerCase()}`}
                         className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#10171F] border border-[#EAE3D2] dark:border-[#263748] text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] hover:border-[#1E3D34] transition-colors"
-                        title={`${pt.name} (${pt.code}) - ${pt.indications.slice(0, 2).join('・')}`}
                       >
                         <span className="font-medium">{pt.name}</span>
                         <span className="font-mono text-xs text-[#737C77] dark:text-[#8899A6] ml-0.5">{pt.code}</span>

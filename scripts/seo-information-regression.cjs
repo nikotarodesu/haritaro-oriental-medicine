@@ -37,4 +37,19 @@ for (const point of ACUPOINTS_MASTER) {
 assert(!/回復させる/.test(getAcupointDetail('gv4').clinicalNote), 'GV4 must not promise recovery from an unverified moxibustion protocol');
 assert(!/即座に消失/.test(getAcupointDetail('gb20').clinicalNote), 'GB20 must not promise immediate disappearance of symptoms');
 assert(!/覚醒救急に著効/.test(getAcupointDetail('ki1').clinicalNote), 'KI1 must not claim efficacy in emergency awakening');
+const { ATLAS_ARTICLES } = load('src/data/tsubo/atlas/articles');
+const { POINT_ILLUSTRATIONS } = load('src/data/tsubo/atlas/illustrations');
+const { ATLAS_POINT_MARKERS, shinEndpoints } = load('src/data/tsubo/atlas/markers');
+assert.deepEqual(Object.keys(ATLAS_POINT_MARKERS).sort(), [...Object.keys(ATLAS_ARTICLES), ...Object.keys(POINT_ILLUSTRATIONS)].sort(),
+  'Every illustrated index link must have one complete diagram set');
+for (const [code, distance, page] of [['st37', 6, 64], ['st38', 8, 65], ['st39', 9, 65]]) {
+  const article = ATLAS_ARTICLES[code];
+  const marker = ATLAS_POINT_MARKERS[code];
+  const { knee, ankle } = shinEndpoints;
+  assert.equal(marker.boneCun, distance, code);
+  for (const axis of ['x', 'y']) assert.equal((marker[axis] - knee[axis]) / (ankle[axis] - knee[axis]), distance / 16, code);
+  assert(article.sources.some(source => source.url.endsWith('#page=' + (page + 9)) && source.name.includes('p.' + page)), code);
+  assert(article.expert.join('').includes(distance + '寸'), code);
+  assert(article.illustration.meridianStart <= Number(code.slice(2)) && Number(code.slice(2)) <= article.illustration.meridianEnd, code);
+}
 console.log('Passed: canonical AI guidance, 361 public acupoint URLs, symptom URLs, consistent public learning notes and location FAQ safety.');

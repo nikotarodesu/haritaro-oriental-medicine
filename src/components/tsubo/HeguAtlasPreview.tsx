@@ -12,7 +12,7 @@ export const heguAtlasDescription = "合谷（LI4）の位置を、手の甲の�
 const headingClass = "mb-3 font-serif text-xl font-bold text-[#244238] dark:text-[#A9D6C3] sm:text-2xl";
 const linkClass = "font-semibold underline underline-offset-4";
 
-const sources = [
+export const heguSources = [
   { name: "WHO標準経穴部位（2008年、2009年改訂再版、p.35ほか）", url: "https://iris.who.int/bitstream/handle/10665/353407/9789290613831-eng.pdf", scope: "標準部位と経絡上の順序" },
   { name: "Memorial Sloan Kettering Cancer Center の患者向け合谷ガイド", url: "https://www.mskcc.org/cancer-care/patient-education/acupressure-pain-and-headaches", scope: "指で押す方法と妊娠・皮膚の異常時の注意" },
   { name: "全日本鍼灸学会 鍼灸安全対策ガイドライン2025年版", url: "https://safety.jsam.jp/img/file1.pdf", scope: "鍼灸施術時の妊娠に関する注意" },
@@ -106,7 +106,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         <h2 className={headingClass}>出典</h2>
         <p className="mb-3 text-sm">頭や顔の不調との伝統的な関連は『針灸大成』四総穴歌と現行の経穴資料に基づきます。</p>
         <ul className="list-disc space-y-2 pl-5 text-sm leading-6">
-          {sources.map(({ name, url, scope }) => (
+          {heguSources.map(({ name, url, scope }) => (
             <li key={url}>{scope}。 <a href={url} className={linkClass}>{name}</a></li>
           ))}
         </ul>

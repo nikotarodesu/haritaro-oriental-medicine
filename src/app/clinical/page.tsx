@@ -2,16 +2,16 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, GraduationCap, Heart } from 'lucide-react';
 import { ALL_NAV_ITEMS, type NavItemDefinition } from '@/config/navigationItems';
-import { pageSocialMetadata, SITE_NAME } from '@/config/seo';
+import { pageSocialMetadata } from '@/config/seo';
 import ClinicalDashboard from '@/components/clinical/ClinicalDashboard';
 import PublicLectureIndex from '@/components/curriculum/PublicLectureIndex';
 
 const title = '鍼灸の症例演習・配穴演習・見立ての練習｜はり太郎の臨床演習';
-const description = '架空の症例で、所見の整理やツボの組み合わせ、判断の見直しを練習。主訴別ガイド、対面問診、臨床記録にも進めます。';
+const description = '架空の症例を読み、何を尋ねるか、どのツボを選ぶか、その理由を考える鍼灸の演習です。症例演習・配穴演習・主訴別ガイドから選べます。';
 export const metadata: Metadata = {
-  title, description,
+  title: { absolute: title }, description,
   alternates: { canonical: 'https://www.haritaro.jp/clinical' },
-  ...pageSocialMetadata(`${title} | ${SITE_NAME}`, description, '/clinical'),
+  ...pageSocialMetadata(title, description, '/clinical'),
 };
 
 function ToolLinks({ items }: { items: readonly NavItemDefinition[] }) {

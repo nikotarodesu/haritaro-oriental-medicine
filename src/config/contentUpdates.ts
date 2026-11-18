@@ -232,6 +232,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries([
     '/', '/about', '/clinical', '/curriculum', '/diagnosis', '/learn', '/library', '/symptoms', '/tsubo',
     '/tsubo/li4', '/tsubo/pc5', '/tsubo/pc6', '/tsubo/pc7', '/tsubo/st36', '/tsubo/lr3',
+    '/tsubo/st37', '/tsubo/st38', '/tsubo/st39',
     ...CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => `/curriculum/${id}`)),
   ].map(route => [route, '2026-11-18'])),
 };

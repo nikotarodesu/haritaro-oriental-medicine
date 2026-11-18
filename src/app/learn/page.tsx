@@ -3,18 +3,18 @@ import Link from "next/link";
 import { ArrowDown, ArrowRight, BookOpen } from "lucide-react";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import PageIntro from "@/components/design/PageIntro";
-import { pageSocialMetadata, SITE_NAME } from "@/config/seo";
+import { pageSocialMetadata } from "@/config/seo";
 import { SERIES } from "@/config/series";
 import { getArticlePreviews } from "@/data/articleData";
 
-const title = "東洋医学の読み物｜陰陽・気血水・経絡・体質チェック";
+const title = "陰陽・気血水・経絡の読み物と体質チェック｜はり太郎の東洋医学";
 const description = "東洋医学の基本を読む。陰陽五行や気血水、経絡の考え方を図と例から学び、気血水体質チェックにも進めます。";
 
 export const metadata: Metadata = {
-  title,
+  title: { absolute: title },
   description,
   alternates: { canonical: "/learn" },
-  ...pageSocialMetadata(`${title} | ${SITE_NAME}`, description, "/learn"),
+  ...pageSocialMetadata(title, description, "/learn"),
 };
 
 const FEATURED_ARTICLES = [

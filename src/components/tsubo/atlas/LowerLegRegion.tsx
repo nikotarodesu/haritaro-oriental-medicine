@@ -1,7 +1,8 @@
 import type { AtlasCloseUpProps } from "@/data/tsubo/atlas/types";
 
-const kneeLandmark = { x: 116, y: 88 };
-const ankleLandmark = { x: 124, y: 248 };
+import { shinEndpoints } from "@/data/tsubo/atlas/markers";
+
+const { knee: kneeLandmark, ankle: ankleLandmark } = shinEndpoints;
 
 export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
   return (
@@ -80,7 +81,7 @@ export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
         <path d="M85 72 H98 L113 86 M128 248 H196 L205 248" stroke="#877E72" />
         <path d="M146 65 H192 L205 54 M149 144 H186 L203 134" stroke="#9E4B20" />
         <path d="M134 173 H196 M119 203 H196 L204 197" stroke="#877E72" />
-        <path d={`M${marker.x} ${marker.y}L168 103h31`} stroke="#7F3520" />
+        <path d={`M${marker.x} ${marker.y}l-24 20H85`} stroke="#7F3520" />
         {marker.boneCun != null && (
           <path
             d={`M92 ${kneeLandmark.y} H98 V${marker.y} H92 M98 ${marker.y} H${marker.x - 9}`}
@@ -118,9 +119,9 @@ export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
         <text x="208" y="72" fontSize="11" fontWeight="400">ひざのお皿</text>
         <text x="207" y="137">② 脛骨</text>
         <text x="207" y="152" fontSize="11" fontWeight="400">すねの骨</text>
-        <text x="207" y="108" fontSize="14">{label}</text>
+        <text x="82" y={marker.y + 25} textAnchor="end" fontSize="13">{label}</text>
         {marker.boneCun != null && (
-          <text x="89" y="107" textAnchor="end">{marker.boneCun}寸（骨度法）</text>
+          <text x="91" y={(kneeLandmark.y + marker.y) / 2 + 4} textAnchor="end">{marker.boneCun}寸（骨度法）</text>
         )}
       </g>
     </>
