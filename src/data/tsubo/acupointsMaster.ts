@@ -350,14 +350,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 11,
     "bodyPart": "手・腕",
     "bodyRegionDetail": "手・腕・肺経部",
-    "locationSimple": "少商（LU11）は、手母指末節骨橈側、爪甲角の近位外方0.1寸。",
+    "locationSimple": "手の親指の爪の根元、人差し指と反対側の角のきわ。",
     "locationDetail": "手母指末節骨橈側、爪甲角の近位外方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "急性扁桃炎・咽頭浮腫・咽痛",
-      "高熱・中暑・昏睡に関する伝統資料の記載。意識障害の救急評価・蘇生を経穴刺激で代替するものではありません。",
-      "小児の疳の虫・ひきつけ",
-      "鼻出血"
+      "のどや鼻の不調に関する伝統的な記載（個別の原資料は照合中）"
     ],
     "categories": [
       "井木穴"
@@ -383,14 +380,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 1,
     "bodyPart": "手・腕",
     "bodyRegionDetail": "手・腕・大腸経部",
-    "locationSimple": "商陽（LI1）は、手示指末節骨橈側、爪甲角の近位外方0.1寸。",
+    "locationSimple": "人差し指の爪の根元、親指側の角のきわ。",
     "locationDetail": "手示指末節骨橈側、爪甲角の近位外方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "急性歯痛・歯肉炎",
-      "咽喉腫痛・扁桃炎",
-      "高熱・昏睡救急",
-      "示指麻痺・指関節痛"
+      "歯・歯ぐき、のど、指の不調に関する伝統的な記載（個別の原資料は照合中）"
     ],
     "categories": [
       "井金穴"
@@ -2442,14 +2436,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 45,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・胃経部",
-    "locationSimple": "厲兌（ST45）は、足第2指末節骨外側、爪甲角の近位外方0.1寸。",
+    "locationSimple": "足の親指の隣の指の爪の根元。親指から遠い側の角のきわ。",
     "locationDetail": "足第2指末節骨外側、爪甲角の近位外方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "急性胃痛・消化管出血・悪心",
-      "高熱・中暑・悪夢・不眠",
-      "顔面浮腫・三叉神経痛",
-      "足指麻痺"
+      "胃の不調、睡眠、足指の不調に関する伝統的な記載（個別の原資料は照合中）"
     ],
     "categories": [
       "井金穴"
@@ -2475,14 +2466,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 1,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・脾経部",
-    "locationSimple": "隠白（SP1）は、足母指末節骨内側、爪甲角の近位内方0.1寸。",
+    "locationSimple": "足の親指の爪の根元、隣の指から遠い側の角のきわ。",
     "locationDetail": "足母指末節骨内側、爪甲角の近位内方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "機能性子宮出血・月経過多",
-      "血便・血尿・急性出血証",
-      "腹部膨満・急な下痢",
-      "悪夢・不眠・精神不安"
+      "月経やおなかの不調を扱った伝統的な記載（個別の原資料は照合中）"
     ],
     "categories": [
       "井木穴"
@@ -3428,14 +3416,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 9,
     "bodyPart": "手・腕",
     "bodyRegionDetail": "手・腕・心経部",
-    "locationSimple": "少衝（HT9）は、手小指末節骨橈側、爪甲角の近位外方0.1寸。",
+    "locationSimple": "小指の爪の根元、薬指側の角のきわ。",
     "locationDetail": "手小指末節骨橈側、爪甲角の近位外方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心臓発作救急・狭心痛",
-      "高熱・脳卒中前駆症状・昏迷",
-      "胸脇部痛・喉の詰まり感",
-      "小指痛"
+      "小指の痛みに関する伝統的な記載（個別の原資料は照合中）"
     ],
     "categories": [
       "井木穴"
@@ -3461,14 +3446,12 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 1,
     "bodyPart": "手・腕",
     "bodyRegionDetail": "手・腕・小腸経部",
-    "locationSimple": "少沢（SI1）は、手小指末節骨尺側、爪甲角の近位内方0.1寸。",
+    "locationSimple": "小指の爪の根元、薬指から遠い側の角のきわ。",
     "locationDetail": "手小指末節骨尺側、爪甲角の近位内方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "母乳分泌不足（乳汁不通）",
-      "急性乳腺炎・乳房痛",
-      "高熱・昏迷救急",
-      "頭痛・結膜炎・耳鳴"
+      "授乳に伴う乳房の不調を扱った伝統的な記載",
+      "頭痛などに関する伝統的な記載（個別の原資料は照合中）"
     ],
     "categories": [
       "井金穴"
@@ -6180,14 +6163,12 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 67,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・膀胱経部",
-    "locationSimple": "至陰（BL67）は、足第5指末節骨外側、爪甲角の近位外方0.1寸。",
+    "locationSimple": "足の小指の爪の根元、隣の指から遠い側の角のきわ。",
     "locationDetail": "足第5指末節骨外側、爪甲角の近位外方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胎位異常（逆子の特効穴）",
-      "難産・陣痛微弱",
-      "頭痛・頭頂部熱感",
-      "鼻閉・眼病"
+      "骨盤位（逆子）とお灸に関する研究。妊娠中は産科に相談",
+      "頭の不調に関する伝統的な記載（個別の原資料は照合中）"
     ],
     "categories": [
       "井金穴"
@@ -7193,14 +7174,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 4,
     "bodyPart": "手・腕",
     "bodyRegionDetail": "手・腕・心包経部",
-    "locationSimple": "郄門（PC4）は、前腕前面、長掌筋腱と橈側手根屈筋腱の間、手関節掌側横紋の上方5寸。",
+    "locationSimple": "手のひら側の腕の中央から少し手首寄り。手首とひじを結ぶ長さの12分の5を手首から測った、二本のすじの間。",
     "locationDetail": "前腕前面、長掌筋腱と橈側手根屈筋腱の間、手関節掌側横紋の上方5寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "急性狭心痛・心筋梗塞前駆症状",
-      "動悸・不整脈・胸悶",
-      "喀血・吐血・鼻出血",
-      "情緒不安定・パニック"
+      "胸の不快感を扱った伝統的な記載。胸痛・動悸・不整脈感には医療機関への相談を優先"
     ],
     "categories": [
       "郄穴"
@@ -7377,14 +7355,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 9,
     "bodyPart": "手・腕",
     "bodyRegionDetail": "手・腕・心包経部",
-    "locationSimple": "中衝（PC9）は、手中指末節骨先端中央。",
+    "locationSimple": "手の中指の先端の中央。爪の先ではなく、指そのものの先端が目印です。",
     "locationDetail": "手中指末節骨先端中央。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "心臓発作救急・失神・熱中症",
-      "高熱・昏睡・小児ひきつけ",
-      "舌強直・言語障害",
-      "手の指の腫脹・冷感"
+      "指の腫れ・冷感に関する伝統的な記載（個別の原資料は照合中）"
     ],
     "categories": [
       "井木穴"
@@ -7410,14 +7385,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 1,
     "bodyPart": "手・腕",
     "bodyRegionDetail": "手・腕・三焦経部",
-    "locationSimple": "関衝（TE1）は、手薬指末節骨尺側、爪甲角の近位内方0.1寸。",
+    "locationSimple": "薬指の爪の根元、小指側の角のきわ。",
     "locationDetail": "手薬指末節骨尺側、爪甲角の近位内方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "急性咽頭炎・扁桃腫痛",
-      "頭痛・発熱・耳鳴・難聴",
-      "結膜炎・かすみ目",
-      "薬指麻痺・指関節痛"
+      "のど、頭痛、耳鳴りなどを扱った伝統的な記載（個別の原資料は照合中）"
     ],
     "categories": [
       "井金穴"
@@ -9554,14 +9526,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 44,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・胆経部",
-    "locationSimple": "足竅陰（GB44）は、足第4指末節骨外側、爪甲角の近位外方0.1寸。",
+    "locationSimple": "足の小指の隣の指の爪の根元、小指側の角のきわ。",
     "locationDetail": "足第4指末節骨外側、爪甲角の近位外方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "偏頭痛・頭頂部熱感",
-      "耳鳴・難聴・中耳炎",
-      "目赤・眼痛",
-      "不眠・多夢・悪夢"
+      "頭痛、耳鳴り、眠りに関する伝統的な記載（個別の原資料は照合中）"
     ],
     "categories": [
       "井金穴"
@@ -9587,15 +9556,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 1,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・肝経部",
-    "locationSimple": "大敦（LR1）は、足母指末節骨外側、爪甲角の近位外方0.1寸。",
+    "locationSimple": "足の親指の爪の根元、隣の指に向いた角のきわ。",
     "locationDetail": "足母指末節骨外側、爪甲角の近位外方0.1寸。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "機能性子宮出血・過多月経",
-      "月経困難症・不正出血",
-      "排尿痛・閉尿・遺尿",
-      "ヘルニア・精巣炎・陰部痛",
-      "失神救急・小児ひきつけ"
+      "月経や排尿に関連する伝統的な記載（個別の原資料は照合中）"
     ],
     "categories": [
       "井木穴"

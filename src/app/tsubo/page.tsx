@@ -8,9 +8,10 @@ import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
 import { SERIES, TSUBO_TAGLINE } from "@/config/series";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 
-const illustratedExamples = ALL_ACUPOINTS.filter(({ code }) =>
-  code === "LI4" || ATLAS_POINT_MARKERS[code.toLowerCase()]
-).slice(0, 12);
+const illustratedPoints = ALL_ACUPOINTS.filter(({ codeLower }) => codeLower === "li4" || ATLAS_POINT_MARKERS[codeLower]);
+const illustratedRegions = [...new Set(illustratedPoints.map(point => point.bodyPart))].map(region => ({
+  region, points: illustratedPoints.filter(point => point.bodyPart === region),
+}));
 
 // 主要な代表経穴（初期HTMLでクローラーおよびJS無効環境にも確実に渡すリンク）
 const FLAGSHIP_ACUPOINTS = [
@@ -41,13 +42,20 @@ export default function TsuboPage() {
 
       <section aria-labelledby="illustrated-points" className="space-y-3">
         <h2 id="illustrated-points" className="font-serif text-xl font-bold">図でツボの場所を見る</h2>
-        <ul className="flex flex-wrap gap-2">
-          {illustratedExamples.map(({ name, code }) => (
-            <li key={code}><Link href={`/tsubo/${code.toLowerCase()}`} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#CDD9CA] px-3 font-semibold hover:underline">
-              {name}<span className="text-sm font-normal ui-muted">{code}</span>
-            </Link></li>
+        <div className="grid items-start gap-3 sm:grid-cols-2">
+          {illustratedRegions.map(({ region, points }) => (
+            <details key={region} className="rounded-xl border border-[#CDD9CA] px-4">
+              <summary className="cursor-pointer py-3 font-semibold">{region}のツボ（{points.length}穴）</summary>
+              <ul className="flex flex-wrap gap-2 pb-3">
+                {points.map(({ name, code, codeLower }) => (
+                  <li key={code}><Link href={`/tsubo/${codeLower}`} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#CDD9CA] px-3 font-semibold hover:underline">
+                    {name}<span className="text-sm font-normal ui-muted">{code}</span>
+                  </Link></li>
+                ))}
+              </ul>
+            </details>
           ))}
-        </ul>
+        </div>
       </section>
 
       {/* 2. 検索・絞り込み・カード一覧をページ見出しの直下へ */}

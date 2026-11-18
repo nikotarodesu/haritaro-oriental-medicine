@@ -40,8 +40,42 @@ assert(!/覚醒救急に著効/.test(getAcupointDetail('ki1').clinicalNote), 'KI
 const { ATLAS_ARTICLES } = load('src/data/tsubo/atlas/articles');
 const { POINT_ILLUSTRATIONS } = load('src/data/tsubo/atlas/illustrations');
 const { ATLAS_POINT_MARKERS, shinEndpoints } = load('src/data/tsubo/atlas/markers');
-assert.deepEqual(Object.keys(ATLAS_POINT_MARKERS).sort(), [...Object.keys(ATLAS_ARTICLES), ...Object.keys(POINT_ILLUSTRATIONS)].sort(),
+const { digitLandmarks, digitGeometry } = load('src/data/tsubo/atlas/digits');
+assert.deepEqual(Object.keys(ATLAS_POINT_MARKERS).sort(), [...new Set([...Object.keys(ATLAS_ARTICLES), ...Object.keys(POINT_ILLUSTRATIONS)])].sort(),
   'Every illustrated index link must have one complete diagram set');
+// An inverted diagram still fits the viewBox. Compare each side to the WHO record.
+const digitLocations = [
+  ['lu11', 'hand', 1, 'firstSide', 40], ['li1', 'hand', 2, 'firstSide', 43],
+  ['ht9', 'hand', 5, 'firstSide', 95], ['si1', 'hand', 5, 'fifthSide', 97],
+  ['pc9', 'hand', 3, 'tip', 165], ['te1', 'hand', 4, 'fifthSide', 167],
+  ['st45', 'foot', 2, 'fifthSide', 77], ['sp1', 'foot', 1, 'firstSide', 79],
+  ['lr1', 'foot', 1, 'fifthSide', 205], ['gb44', 'foot', 4, 'fifthSide', 202],
+  ['bl67', 'foot', 5, 'fifthSide', 142],
+];
+assert.match(ATLAS_ARTICLES.bl67.titleTopic, /妊娠中の注意/);
+assert.match(ATLAS_ARTICLES.bl67.safetyWarning, /産科/);
+for (const [code, distance, pdfPage] of [['pc4', 5, 162], ['pc5', 3, 163], ['pc7', 0, 164]]) {
+  const marker = ATLAS_POINT_MARKERS[code];
+  const article = ATLAS_ARTICLES[code];
+  assert.equal((224 - marker.y) / 16, distance, code);
+  assert.equal(article.illustration, POINT_ILLUSTRATIONS[code], code);
+  assert(article.sources.some(source => source.url.endsWith('#page=' + pdfPage)), code);
+  assert.match(article.safetyWarning, /119/);
+}
+for (const [code, part, number, position, pdfPage] of digitLocations) {
+  const digit = digitLandmarks[code];
+  assert.deepEqual({ ...digit }, { part, number, position, pdfPage }, code);
+  const marker = ATLAS_POINT_MARKERS[code];
+  const geometry = digitGeometry(digit);
+  const article = ATLAS_ARTICLES[code];
+  assert.equal(marker.x, position === 'tip' ? geometry.centre : position === 'firstSide' ? geometry.left : geometry.right, code);
+  assert.equal(marker.y, position === 'tip' ? geometry.tipY : geometry.nailBase, code);
+  assert(article.sources.some(source => source.url.endsWith('#page=' + pdfPage)), code);
+  assert.equal(article.illustration.region, part === 'hand' ? 'finger' : 'toe', code);
+  for (const related of article.relatedPoints) assert(getAcupointByCode(related.code), code);
+  const body = [article.lead, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, ...article.expert, ...article.relatedPoints.map(p => p.text)].join('');
+  assert(body.length >= 700 && body.length <= 900, code + ' article length');
+}
 for (const [code, distance, page] of [['st37', 6, 64], ['st38', 8, 65], ['st39', 9, 65]]) {
   const article = ATLAS_ARTICLES[code];
   const marker = ATLAS_POINT_MARKERS[code];

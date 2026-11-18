@@ -75,14 +75,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "少商",
     "code": "LU11",
     "meridianShort": "肺経",
-    "locationSimple": "少商（LU11）は、手母指末節骨橈側、爪甲角の近位外方0.1寸。"
+    "locationSimple": "手の親指の爪の根元、人差し指と反対側の角のきわ。"
   },
   {
     "id": "li1",
     "name": "商陽",
     "code": "LI1",
     "meridianShort": "大腸経",
-    "locationSimple": "商陽（LI1）は、手示指末節骨橈側、爪甲角の近位外方0.1寸。"
+    "locationSimple": "人差し指の爪の根元、親指側の角のきわ。"
   },
   {
     "id": "li2",
@@ -530,14 +530,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "厲兌",
     "code": "ST45",
     "meridianShort": "胃経",
-    "locationSimple": "厲兌（ST45）は、足第2指末節骨外側、爪甲角の近位外方0.1寸。"
+    "locationSimple": "足の親指の隣の指の爪の根元。親指から遠い側の角のきわ。"
   },
   {
     "id": "sp1",
     "name": "隠白",
     "code": "SP1",
     "meridianShort": "脾経",
-    "locationSimple": "隠白（SP1）は、足母指末節骨内側、爪甲角の近位内方0.1寸。"
+    "locationSimple": "足の親指の爪の根元、隣の指から遠い側の角のきわ。"
   },
   {
     "id": "sp2",
@@ -740,14 +740,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "少衝",
     "code": "HT9",
     "meridianShort": "心経",
-    "locationSimple": "少衝（HT9）は、手小指末節骨橈側、爪甲角の近位外方0.1寸。"
+    "locationSimple": "小指の爪の根元、薬指側の角のきわ。"
   },
   {
     "id": "si1",
     "name": "少沢",
     "code": "SI1",
     "meridianShort": "小腸経",
-    "locationSimple": "少沢（SI1）は、手小指末節骨尺側、爪甲角の近位内方0.1寸。"
+    "locationSimple": "小指の爪の根元、薬指から遠い側の角のきわ。"
   },
   {
     "id": "si2",
@@ -1342,7 +1342,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "至陰",
     "code": "BL67",
     "meridianShort": "膀胱経",
-    "locationSimple": "至陰（BL67）は、足第5指末節骨外側、爪甲角の近位外方0.1寸。"
+    "locationSimple": "足の小指の爪の根元、隣の指から遠い側の角のきわ。"
   },
   {
     "id": "yusen",
@@ -1559,7 +1559,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "郄門",
     "code": "PC4",
     "meridianShort": "心包経",
-    "locationSimple": "郄門（PC4）は、前腕前面、長掌筋腱と橈側手根屈筋腱の間、手関節掌側横紋の上方5寸。"
+    "locationSimple": "手のひら側の腕の中央から少し手首寄り。手首とひじを結ぶ長さの12分の5を手首から測った、二本のすじの間。"
   },
   {
     "id": "pc5",
@@ -1594,14 +1594,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "中衝",
     "code": "PC9",
     "meridianShort": "心包経",
-    "locationSimple": "中衝（PC9）は、手中指末節骨先端中央。"
+    "locationSimple": "手の中指の先端の中央。爪の先ではなく、指そのものの先端が目印です。"
   },
   {
     "id": "te1",
     "name": "関衝",
     "code": "TE1",
     "meridianShort": "三焦経",
-    "locationSimple": "関衝（TE1）は、手薬指末節骨尺側、爪甲角の近位内方0.1寸。"
+    "locationSimple": "薬指の爪の根元、小指側の角のきわ。"
   },
   {
     "id": "te2",
@@ -2063,14 +2063,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "足竅陰",
     "code": "GB44",
     "meridianShort": "胆経",
-    "locationSimple": "足竅陰（GB44）は、足第4指末節骨外側、爪甲角の近位外方0.1寸。"
+    "locationSimple": "足の小指の隣の指の爪の根元、小指側の角のきわ。"
   },
   {
     "id": "lr1",
     "name": "大敦",
     "code": "LR1",
     "meridianShort": "肝経",
-    "locationSimple": "大敦（LR1）は、足母指末節骨外側、爪甲角の近位外方0.1寸。"
+    "locationSimple": "足の親指の爪の根元、隣の指に向いた角のきわ。"
   },
   {
     "id": "koukan",

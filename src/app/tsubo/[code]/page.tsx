@@ -53,8 +53,8 @@ interface Props {
   params: Promise<{ code: string }>;
 }
 
-function atlasPageTitle(point: AcupointMaster) {
-  return `${point.name}（${point.kana}）の場所と押し方・注意点｜はり太郎のツボ図鑑`;
+function atlasPageTitle(point: AcupointMaster, topic = "場所と押し方・注意点") {
+  return `${point.name}（${point.kana}）の${topic}｜はり太郎のツボ図鑑`;
 }
 
 export async function generateStaticParams() {
@@ -76,7 +76,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const isHeguAtlas = point.codeLower === "li4";
   const atlasArticle = ATLAS_ARTICLES[point.codeLower];
-  const title = isHeguAtlas ? heguAtlasTitle : atlasArticle ? atlasPageTitle(point) : acupointPageTitle(point);
+  const title = isHeguAtlas ? heguAtlasTitle : atlasArticle ? atlasPageTitle(point, atlasArticle.titleTopic) : acupointPageTitle(point);
   const description = isHeguAtlas ? heguAtlasDescription : atlasArticle?.description ?? `${point.name}（${point.code}）の場所と目印。${point.locationSimple} ${point.meridian}の中での位置、近くのツボ、注意点を紹介します。`;
 
   return {
@@ -144,7 +144,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   const atlasArticle = ATLAS_ARTICLES[point.codeLower];
   const atlasMarker = ATLAS_POINT_MARKERS[point.codeLower];
   const illustration = POINT_ILLUSTRATIONS[point.codeLower];
-  const pageTitle = isHeguAtlas ? heguAtlasTitle : atlasArticle ? atlasPageTitle(point) : acupointPageTitle(point);
+  const pageTitle = isHeguAtlas ? heguAtlasTitle : atlasArticle ? atlasPageTitle(point, atlasArticle.titleTopic) : acupointPageTitle(point);
   const verifiedLocation = VERIFIED_POINT_LOCATIONS[point.codeLower];
   const sources = isHeguAtlas ? heguSources : atlasArticle?.sources ?? (verifiedLocation
     ? [{ name: `${verifiedLocation.sourceTitle} ${verifiedLocation.sourcePage}`, url: verifiedLocation.sourceUrl }]

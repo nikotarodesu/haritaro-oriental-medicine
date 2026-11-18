@@ -1,6 +1,9 @@
-export type AtlasRegion = "volarForearm" | "volarWrist" | "anterolateralLowerLeg" | "footDorsum";
+import type { DigitLandmark } from "./digits";
+
+export type AtlasRegion = "volarForearm" | "volarWrist" | "anterolateralLowerLeg" | "footDorsum" | "finger" | "toe";
 
 export interface AcupointAtlasArticle {
+  titleTopic?: string;
   description: string;
   meridianReading: string;
   regionLabel: string;
@@ -29,6 +32,7 @@ export interface AtlasMarker {
   x: number;
   y: number;
   boneCun?: number;
+  digit?: DigitLandmark;
 }
 
 export interface AtlasCloseUpProps {
