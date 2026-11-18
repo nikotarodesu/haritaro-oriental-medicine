@@ -37,7 +37,6 @@ function client(relative, overrides = {}, location = { hash: '', search: '' }) {
     setTimeout: browser.setTimeout, clearTimeout: browser.clearTimeout, require: id => {
       if (id in overrides) return overrides[id];
       if (id === 'react') return react;
-      if (id === '@/contexts/ClinicalMemoContext') return { useClinicalMemo: () => ({ clinicalStorageOwner: 'guest' }) };
       if (id === 'next/navigation') return { useRouter: () => ({ push: href => pushes.push(href) }) };
       if (id === 'next/link' || id.startsWith('@/components/')) return Empty;
       return require(id);
@@ -104,55 +103,18 @@ for (const query of ['fromCase', 'fromDiagnosis', 'fromTsubo']) {
 }
 
 
-// The extracted comparison keeps all original examples available and obeys memo save outcomes.
-let comparisonReady = true, comparisonOwner = 'guest', comparisonCanSave = false;
-const comparisonWrites = [];
-const examples = client('src/components/learning/ClinicalComparisonExamples.tsx', {
-  '@/contexts/ClinicalMemoContext': { useClinicalMemo: () => ({
-    isReady: comparisonReady, clinicalStorageOwner: comparisonOwner,
-    addMemo: item => { if (comparisonCanSave) comparisonWrites.push(item); return comparisonCanSave; },
-  }) },
-});
+// The embedded comparison preserves the three exercises after note retirement.
+const examples = client('src/components/learning/ClinicalComparisonExamples.tsx');
 examples.render();
 assert.equal(nodes(examples.tree()).filter(node => node.type === 'button' && 'aria-pressed' in node.props).length, 3);
 assert(!nodes(examples.tree()).some(node => node.type === 'h1'), 'Embedded examples have no duplicate page heading');
-examples.button('比較例を保存').props.onClick(); examples.render();
-assert(text(examples.tree()).includes('保存できませんでした'));
-assert.equal(examples.button('比較例を保存').props.disabled, false, 'Rejected memo writes can be retried');
-comparisonCanSave = true;
-examples.button('比較例を保存').props.onClick(); examples.render();
-assert(examples.button('保存済み').props.disabled);
-assert.equal(comparisonWrites.length, 1);
-assert.equal(comparisonWrites[0].type, 'pair');
-assert(comparisonWrites[0].mechanism.includes('【案A】') && comparisonWrites[0].mechanism.includes('【案B】'));
-assert.equal(comparisonWrites[0].points.join('・'), '太衝・期門・行間・侠渓');
-comparisonOwner = 'account:second'; examples.render();
-assert.equal(examples.button('比較例を保存').props.disabled, false, 'Saved display never leaks to a different actor');
-comparisonReady = false; examples.render();
-assert(examples.button('比較例を保存').props.disabled);
-examples.button('比較例を保存').props.onClick(); examples.render();
-assert.equal(comparisonWrites.length, 1, 'Unready actors cannot invoke memo writes');
-comparisonReady = true;
+assert(!nodes(examples.tree()).some(node => node.type === 'button' && text(node).includes('保存')));
 for (const [label, pattern] of [['肝の鑑別', '肝気鬱結証'], ['脾胃の鑑別', '中気下陥証'], ['腎の鑑別', '腎陰虚証']]) {
   examples.button(label).props.onClick(); examples.render();
   const profiles = nodes(examples.tree()).filter(node => node.props?.profile).map(node => node.props.profile);
   assert.equal(profiles.length, 2);
   assert.equal(profiles[0].pattern, pattern);
   assert(profiles.every(profile => profile.contraindications && profile.needleMethod && profile.primaryPoints.length > 0), 'Every example preserves safety and point content');
-  const started = Date.now(), dateBefore = new Date().toLocaleDateString('ja-JP');
-  const previousWrites = comparisonWrites.length;
-  examples.button('比較例を保存').props.onClick(); examples.render();
-  const finished = Date.now(), memo = comparisonWrites.at(-1), dateAfter = new Date().toLocaleDateString('ja-JP');
-  assert.equal(comparisonWrites.length, previousWrites + 1, label + ' saves once');
-  assert.equal(JSON.stringify(memo.elements), '[]', label + ' invents no five-element attributes');
-  assert.equal(memo.indications.join('・'), profiles.map(profile => profile.pattern).join('・'));
-  assert.equal(memo.points.join('・'), profiles.flatMap(profile => profile.primaryPoints).join('・'));
-  const savedAt = Number(memo.id.replace('compare-', ''));
-  assert(savedAt >= started && savedAt <= finished, label + ' uses the actual comparison save time');
-  assert([dateBefore, dateAfter].some(date => memo.personalNotes === '比較検討日: ' + date));
-  assert(examples.button('保存済み').props.disabled);
-  examples.button('保存済み').props.onClick(); examples.render();
-  assert.equal(comparisonWrites.length, previousWrites + 1, label + ' cannot re-save a saved selection');
 }
 let redirected = '';
 const aliasPath = path.resolve(__dirname, '../src/app/simulator/compare/page.tsx');
@@ -186,72 +148,44 @@ let encounter = { patientIdentifier: 'TEST', chiefComplaint: '検証用の主訴
 let canWrite = true, written = null;
 const writes = [];
 const bridge = client('src/components/clinical/ClinicalToolBridge.tsx', { '@/utils/clinicalEncounter': {
-  readClinicalEncounter: () => ({ encounter }),
-  writeClinicalEncounter: next => { if (!canWrite) return false; written = next; writes.push(next); return true; },
+  readClinicalEncounter: owner => { assert.equal(owner, 'guest'); return { encounter }; },
+  writeClinicalEncounter: (next, owner) => { assert.equal(owner, 'guest'); if (!canWrite) return false; written = next; writes.push(next); return true; },
 } });
 const props = { selectedCodes: ['LI4', 'LR3'], editableCodes: ['LI4', 'LR3'] };
 bridge.render(props); bridge.flush(); bridge.render(props);
-bridge.button('この構成を反映して記録へ戻る').props.onClick();
+bridge.button('この構成を反映して作業画面へ戻る').props.onClick();
 assert.equal(bridge.pushes.at(-1), '/clinical/workspace'); assert.equal(written.step, 3);
 assert.equal(JSON.stringify(written.points.map(item => item.code)), '["LI4","LR3","ST44"]', 'Dictionary points outside the 32-point palette survive');
 assert.equal(written.points[0].reason, '保持する理由');
 const count = bridge.pushes.length;
-canWrite = false; bridge.button('この構成を反映して記録へ戻る').props.onClick(); bridge.render(props);
-assert.equal(bridge.pushes.length, count); assert(text(bridge.tree()).includes('転記を保存できません'));
+canWrite = false; bridge.button('この構成を反映して作業画面へ戻る').props.onClick(); bridge.render(props);
+assert.equal(bridge.pushes.length, count); assert(text(bridge.tree()).includes('下書きに反映できませんでした'));
 canWrite = true; encounter = { ...encounter, safety: 'unknown' };
-bridge.button('この構成を反映して記録へ戻る').props.onClick(); bridge.render(props);
+bridge.button('この構成を反映して作業画面へ戻る').props.onClick(); bridge.render(props);
 assert.equal(bridge.pushes.length, count); assert(text(bridge.tree()).includes('安全確認が未完了'));
 encounter = { ...encounter, safety: 'refer' };
-bridge.button('この構成を反映して記録へ戻る').props.onClick(); bridge.render(props); assert.equal(bridge.pushes.length, count);
+bridge.button('この構成を反映して作業画面へ戻る').props.onClick(); bridge.render(props); assert.equal(bridge.pushes.length, count);
 encounter = { ...encounter, safety: 'reviewed', points: Array.from({ length: 12 }, (_, index) => point('ST' + (index + 1))) };
-bridge.button('この構成を反映して記録へ戻る').props.onClick(); bridge.render(props);
+bridge.button('この構成を反映して作業画面へ戻る').props.onClick(); bridge.render(props);
 assert.equal(bridge.pushes.length, count); assert(text(bridge.tree()).includes('12穴まで'));
-encounter = null; bridge.button('この構成を反映して記録へ戻る').props.onClick(); bridge.render(props);
+encounter = null; bridge.button('この構成を反映して作業画面へ戻る').props.onClick(); bridge.render(props);
 assert.equal(bridge.pushes.length, count); assert(text(bridge.tree()).includes('下書きが見つかりません'));
 assert.equal(writes.length, 1, 'Only a successful safe transfer writes and navigates');
-let storageOwner = 'account:A';
-let ownerDraft = { patientIdentifier: 'OWNER-A-PRIVATE', chiefComplaint: 'Aの主訴', safety: 'reviewed', points: [point('LI4')] };
-let readCount = 0;
 const restored = [];
-const isolated = client('src/components/clinical/ClinicalToolBridge.tsx', {
-  '@/contexts/ClinicalMemoContext': { useClinicalMemo: () => ({ clinicalStorageOwner: storageOwner }) },
+const cleanDraft = client('src/components/clinical/ClinicalToolBridge.tsx', {
   '@/utils/clinicalEncounter': {
-    readClinicalEncounter: () => { readCount++; return { encounter: ownerDraft }; },
-    writeClinicalEncounter: () => true,
+    readClinicalEncounter: owner => { assert.equal(owner, 'guest'); return { encounter: { ...props, patientIdentifier: 'TEST-GUEST', points: [point('ST36')] } }; },
   },
 });
-const isolatedProps = { ...props, onRestore: codes => restored.push([...codes]) };
-isolated.render(isolatedProps);
-assert.equal(isolated.tree(), null, 'Do not show a bridge before the current actor draft is resolved');
-assert(!text(isolated.tree()).includes('OWNER-A-PRIVATE'));
-isolated.flush(); isolated.render(isolatedProps);
-assert(text(isolated.tree()).includes('OWNER-A-PRIVATE'));
-assert.equal(readCount, 1);
-storageOwner = null;
-isolated.render(isolatedProps); isolated.flush();
-assert(!text(isolated.tree()).includes('OWNER-A-PRIVATE'), 'An unresolved actor never renders the previous account draft');
-assert.equal(readCount, 1, 'Do not read a namespace before actor resolution');
-storageOwner = 'account:B';
-ownerDraft = { patientIdentifier: 'OWNER-B-PRIVATE', chiefComplaint: 'Bの主訴', safety: 'reviewed', points: [point('ST36')] };
-isolated.render(isolatedProps);
-assert(!text(isolated.tree()).includes('OWNER-A-PRIVATE'));
-assert(!text(isolated.tree()).includes('OWNER-B-PRIVATE'), 'The new actor waits for a fresh draft read');
-isolated.flush(); isolated.render(isolatedProps);
-assert(text(isolated.tree()).includes('OWNER-B-PRIVATE'));
-assert(!text(isolated.tree()).includes('OWNER-A-PRIVATE'));
-assert.equal(readCount, 2);
-assert.equal(JSON.stringify(restored), '[["LI4"],["ST36"]]');
-storageOwner = 'account:C'; isolated.render(isolatedProps);
-storageOwner = 'account:D'; ownerDraft = null; isolated.render(isolatedProps);
-isolated.flush(); isolated.render(isolatedProps);
-assert.equal(readCount, 3, 'A superseded account read is cancelled before it can restore points');
-assert(!text(isolated.tree()).includes('OWNER-A-PRIVATE') && !text(isolated.tree()).includes('OWNER-B-PRIVATE'));
-assert.equal(isolated.tree(), null, 'A missing draft has no bridge or create-record promotion');
-assert.equal(restored.length, 2, 'A missing new-account draft cannot restore the former account points');
-const legacyMock = client('src/components/clinical/ClinicalToolBridge.tsx', {
-  '@/contexts/ClinicalMemoContext': { useClinicalMemo: () => ({}) },
+const cleanProps = { ...props, onRestore: codes => restored.push([...codes]) };
+cleanDraft.render(cleanProps);
+assert.equal(cleanDraft.tree(), null, 'Do not show a bridge until the session draft is read');
+cleanDraft.flush(); cleanDraft.render(cleanProps);
+assert(text(cleanDraft.tree()).includes('TEST-GUEST'));
+assert.equal(JSON.stringify(restored), '[["ST36"]]');
+const unavailable = client('src/components/clinical/ClinicalToolBridge.tsx', {
   '@/utils/clinicalEncounter': { readClinicalEncounter: () => ({ encounter: null }) },
 });
-legacyMock.render(); legacyMock.flush(); legacyMock.render();
-assert.equal(legacyMock.tree(), null, 'Legacy mocks without an owner keep an empty guest namespace unobtrusive');
-console.log('Clinical exercises passed: embedded comparisons, legacy alias, memo save/retry guards, persistent three-tab panels, keyboard/hash/query routes, saved point transfer, safety/storage/12-point guards out-of-palette preservation and actor-switch display isolation.');
+unavailable.render(); unavailable.flush(); unavailable.render();
+assert.equal(unavailable.tree(), null, 'A missing session draft has no bridge or create-record promotion');
+console.log('Clinical exercises passed: three public comparison sets, legacy links, persistent exercise tabs, guest draft transfer, and safety/storage/12-point guards.');

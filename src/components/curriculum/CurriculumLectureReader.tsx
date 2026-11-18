@@ -36,16 +36,13 @@ import {
   Layers, 
   Check,
   X,
-  FileText,
   GraduationCap,
   Activity,
 } from "lucide-react";
-import { saveDraftPatientNote } from "@/utils/draftNote";
 import { trackEvent } from "@/utils/analytics";
 import FontSizeControl from "@/components/FontSizeControl";
 import { CourseJourneyResolver } from "@/components/learning/LearningCourseLink";
 import { createCourseLectureHref, getCourseNextAction, type CourseJourney } from "@/utils/courseJourney";
-import { buildLearningReflectionHref } from "@/utils/learningReflection";
 import ClinicalLectureApplication from "@/components/clinical/ClinicalLectureApplication";
 import { getLectureShortcut } from "@/utils/lectureKeyboardNavigation";
 import { revealLectureSection } from "@/utils/lectureAnchors";
@@ -69,7 +66,6 @@ interface Props {
 export default function CurriculumLectureReader({ lecture, lectureNavigation, relatedReadingLinks = [], quiz, resolvedReferences, reviewQuestions, chapterAssessment, conceptArt = null }: Props) {
   const articleTopRef = useRef<HTMLDivElement | null>(null);
   const [focusBanner, setFocusBanner] = useState<string | null>(null);
-  const [noteSaveError, setNoteSaveError] = useState<{ lectureId: string; message: string } | null>(null);
   const [resolvedCourse, setResolvedCourse] = useState<{ lectureId: string; journey: CourseJourney | null } | null>(null);
   const courseJourney = resolvedCourse?.lectureId === lecture.id ? resolvedCourse.journey : null;
   const isClinicalStage = lecture.stageId === "stage-2" || lecture.stageId === "stage-3";
@@ -83,23 +79,6 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
   const courseNextAction = courseJourney ? getCourseNextAction(courseJourney, completedLectures) : null;
 
   const allLectures = lectureNavigation;
-
-  const handleSaveToNote = () => {
-    const sectionName = lecture.seriesTitle || lecture.stageTitle;
-    const saved = saveDraftPatientNote({
-      sourceTool: "カリキュラム講義",
-      chiefComplaint: `講義記録: ${lecture.title}`,
-      constitution: sectionName,
-      treatmentPlan: `【受講講義】${lecture.title}（${sectionName}）\n\n【講義要約】\n${lecture.summary}\n\n【臨床への応用メモ・臨床所見】\n`,
-    });
-    if (!saved) {
-      setNoteSaveError({ lectureId: lecture.id, message: '臨床ノートへの引き継ぎを保存できませんでした。この画面を保持しています。ブラウザの保存設定を確認して、もう一度お試しください。' });
-      return;
-    }
-    setNoteSaveError(null);
-    trackEvent("curriculum_save_to_note", { lecture_id: lecture.id });
-    router.push("/notes");
-  };
 
   // 閲覧履歴を記録
   useEffect(() => {
@@ -623,7 +602,6 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
 
         {/* 参考文献・学術エビデンス */}
         <ArticleReferences references={resolvedReferences} scopeNote={lecture.evidenceScope} />
-        <Link href={buildLearningReflectionHref({ type: 'lecture', id: lecture.id })} onClick={() => trackEvent('context_link_click', { placement: 'lecture_reflection', lecture_id: lecture.id, item_type: 'learning_note' })} className="curriculum-reflection-link"><FileText aria-hidden="true" className="h-4 w-4" />学習の振り返りを書く<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link>
 
         {/* 既習の段階に合わせて、復習と症例演習を案内する。 */}
         <details className="curriculum-lecture-support">
@@ -680,16 +658,6 @@ export default function CurriculumLectureReader({ lecture, lectureNavigation, re
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
 
-            <button
-              type="button"
-              onClick={handleSaveToNote}
-              className="min-h-11 px-3.5 py-2 rounded-xl bg-white dark:bg-[#121920] border border-[#1E3D34]/40 dark:border-[#74BA9E]/40 hover:border-[#1E3D34] text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] transition-all inline-flex items-center gap-1.5 shadow-2xs cursor-pointer"
-            >
-              <FileText className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>この講義を臨床ノートに記録</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-            {noteSaveError?.lectureId === lecture.id && <p role="alert" className="w-full text-sm leading-relaxed">{noteSaveError.message}</p>}
           </div>
         </div>}
           </div>

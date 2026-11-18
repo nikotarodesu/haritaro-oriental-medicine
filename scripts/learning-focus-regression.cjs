@@ -89,6 +89,7 @@ assert(review.includes('LEARNING_QUESTION_MAP'));
 assert(review.includes('Suspense'));
 const caseUi = fs.readFileSync(path.join(root, 'src/components/learning/ProgressiveCaseTraining.tsx'), 'utf8');
 assert(caseUi.includes('教材からたどる考え方'));
-assert(caseUi.includes('buildLearningReflectionHref'));
+assert(caseUi.includes('/learn/review#learning-review'), 'Completed exercises still link to public review');
+assert.doesNotMatch(caseUi, /buildLearningReflectionHref|\/notes/, 'Retired notebook affordances stay out of the exercise');
 assert(caseUi.includes('setBaseline(latestRecord)'));
 console.log('Passed: explicit case focus mappings, existing headings/questions, complete revision-validated case history, deduplication, safety priority, and latest-attempt review needs.');

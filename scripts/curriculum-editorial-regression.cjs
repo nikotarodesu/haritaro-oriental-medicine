@@ -5,8 +5,24 @@ const load = createDataLoader();
 const { CURRICULUM_DATA, CURRICULUM_CHAPTERS_META } = load('src/data/curriculumData');
 const { CURRICULUM_QUIZZES } = load('src/data/curriculumQuizzes');
 const { parseMarkdownBlocks } = load('src/utils/markdownParser');
+const { getPublicLectureArticle, getPublicLectureGroups, publicLectureText } = load('src/data/publicLectures/index');
 const lectures = CURRICULUM_DATA.flatMap(stage => stage.lectures);
 const byId = new Map(lectures.map(lecture => [lecture.id, lecture]));
+const publicIds = getPublicLectureGroups().flatMap(group => group.entries.map(article => article.id));
+assert.deepEqual([...publicIds].sort(), Array.from(lectures.filter(lecture => lecture.isPublished), lecture => lecture.id).sort());
+assert.equal(getPublicLectureGroups('reading').reduce((count, group) => count + group.entries.length, 0), 72);
+assert.equal(getPublicLectureGroups('dictionary').reduce((count, group) => count + group.entries.length, 0), 2);
+assert.equal(getPublicLectureGroups('practice').reduce((count, group) => count + group.entries.length, 0), 20);
+const distinctTitles = new Set();
+for (const id of publicIds) {
+  const article = getPublicLectureArticle(id);
+  assert(article.title && article.description && article.lead, `${id}: searchable attributes`);
+  assert(!distinctTitles.has(article.title), `${id}: distinct article title`);
+  distinctTitles.add(article.title);
+  assert(article.sections.length >= 2 && article.sections.every(section => section.heading && section.paragraphs.every(Boolean)), `${id}: authored sections`);
+  assert(publicLectureText(article).length >= 330, `${id}: substantive reading`);
+  assert(byId.get(id).references?.length, `${id}: original references retained`);
+}
 const chapters = new Map(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [id, chapter.chapterNumber])));
 let links = 0;
 for (const lecture of lectures) {

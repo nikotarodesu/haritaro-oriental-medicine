@@ -5,7 +5,7 @@ import React from "react";
 export const metadata: Metadata = {
   title: "お問い合わせ",
   description:
-    "はり太郎の東洋医学に関するご質問、学術内容・取穴解説に関するご指摘・ご感想、取材や執筆のご依頼はこちらからお問い合わせください。",
+    "はり太郎の掲載内容・経穴の解説・出典に関するご指摘や、取材・執筆のご依頼の窓口です。",
   alternates: {
     canonical: "/contact",
   },
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       images: SHARED_OG_IMAGES,
       siteName: SITE_NAME,
     title: "お問い合わせ",
-    description: "はり太郎の東洋医学に関するご質問、学術内容のご指摘、執筆・取材のご依頼窓口。",
+    description: "はり太郎の掲載内容・出典に関するご指摘や、取材・執筆のご依頼の窓口です。",
     url: "https://www.haritaro.jp/contact",
   },
 };

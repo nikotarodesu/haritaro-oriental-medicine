@@ -1,5 +1,5 @@
-export const SITE_NAME = "はり太郎の東洋医学";
-export const BRAND_WORDMARK = "はり太郎";
+export const SITE_NAME = "はり太郎";
+export const BRAND_WORDMARK = SITE_NAME;
 export const BRAND_INK = "#184F49";
 export const BRAND_PAPER = "#F6F4EE";
 

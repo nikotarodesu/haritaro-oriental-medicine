@@ -31,11 +31,10 @@ import {
   Copy,
 } from "lucide-react";
 import GorouWorkstyleChecker from "@/components/GorouWorkstyleChecker";
-import { saveDraftPatientNote } from "@/utils/draftNote";
-import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { readClinicalEncounter, writeClinicalEncounter, type ClinicalEncounter } from "@/utils/clinicalEncounter";
 import { readClinicalInterview, writeClinicalInterview, clearClinicalInterview, type ClinicalInterviewDraft } from "@/utils/clinicalInterview";
 import { trackEvent } from "@/utils/analytics";
+import type { DiagnosisStudyLinks } from "@/utils/diagnosisStudyLinks";
 
 const TYPE_LECTURE_MAP: Record<string, { lectureId: string; lectureTitle: string; conceptName: string }> = {
   qi_deficiency: {
@@ -95,14 +94,45 @@ type QuestionStatus = "unconfirmed" | "applicable" | "not_applicable" | "unknown
 interface Props {
   initialTab?: "self" | "clinical" | "gorou";
   relatedArticles: ArticlePreview[];
+  studyLinks: Record<string, DiagnosisStudyLinks>;
 }
 
-export default function DiagnosisClient({ initialTab = "self", relatedArticles }: Props) {
+function SelfCheckStudyLinks({ links }: { links: DiagnosisStudyLinks }) {
+  return (
+    <section aria-labelledby="self-check-study-links" className="space-y-4 rounded-xl border border-[var(--border-washi)] bg-[var(--tokiwa-light)] p-4 sm:p-5">
+      <h3 id="self-check-study-links" className="font-bold">学習用の関連ツボ</h3>
+      <ul className="flex flex-wrap gap-2">
+        {links.points.map(point => (
+          <li key={point.href}>
+            <Link href={point.href} className="ui-text-link inline-flex min-h-11 items-center rounded-lg border border-[var(--border-washi)] px-3 text-sm">
+              {point.title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+      {links.guides.length > 0 && (
+        <div className="space-y-2 border-t border-[var(--border-washi)] pt-4">
+          <h4 className="font-semibold">同じツボが登場する症状ガイド</h4>
+          <p className="text-sm ui-muted">学習例のツボが共通するページです。気になる症状があるときは、各ガイドで受診の目安を確認できます。</p>
+          <ul className="grid gap-1 sm:grid-cols-2">
+            {links.guides.map(guide => (
+              <li key={guide.href}>
+                <Link href={guide.href} prefetch={false} className="ui-text-link flex min-h-11 items-center gap-2 py-2 text-sm">
+                  <ArrowRight aria-hidden="true" className="size-4 shrink-0" />
+                  <span>{guide.title}<span className="block text-xs ui-muted">共通のツボ {guide.sharedPoints.join("・")}</span></span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
+  );
+}
+
+export default function DiagnosisClient({ initialTab = "self", relatedArticles, studyLinks }: Props) {
   const router = useRouter();
-  const { clinicalStorageOwner = 'guest' } = useClinicalMemo();
-  const currentOwner = useRef(clinicalStorageOwner);
-  useEffect(() => { currentOwner.current = clinicalStorageOwner; }, [clinicalStorageOwner]);
-  const [loadedOwner, setLoadedOwner] = useState<string | null>(null);
+  const [interviewReady, setInterviewReady] = useState(false);
   const [activeEncounter, setActiveEncounter] = useState<ClinicalEncounter | null>(null);
   const [handoffError, setHandoffError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"self" | "clinical" | "gorou">(initialTab);
@@ -110,6 +140,7 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
   // セルフチェック用State
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const [selfResult, setSelfResult] = useState<DiagnosisResultType | null>(null);
+  const selfStudyLinks = selfResult && selfResult.type !== "neutral" ? studyLinks[selfResult.type] : undefined;
   const [copiedShare, setCopiedShare] = useState(false);
 
   // 対面問診モード用State
@@ -127,21 +158,18 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
 
   const interviewRef = useRef<ClinicalInterviewDraft>({ patientIdentifier: '', statuses: {}, notes: {} });
   useEffect(() => {
-    if (!clinicalStorageOwner) return;
-    const owner = clinicalStorageOwner;
     const timer = setTimeout(() => {
-      if (currentOwner.current !== owner) return;
-      const encounter = readClinicalEncounter();
-      const draft = readClinicalInterview(owner) || { patientIdentifier: encounter.encounter?.patientIdentifier || '', statuses: {}, notes: {} };
+      const encounter = readClinicalEncounter('guest');
+      const draft = readClinicalInterview('guest') || { patientIdentifier: encounter.encounter?.patientIdentifier || '', statuses: {}, notes: {} };
       interviewRef.current = draft; setPatientIdentifier(draft.patientIdentifier); setQuestionStatuses(draft.statuses); setQuestionNotes(draft.notes);
-      setClinicalResult(null); setIsPatientModalOpen(false); setPatientModalData(null); setActiveEncounter(encounter.encounter); setHandoffError(encounter.error); setLoadedOwner(owner);
+      setClinicalResult(null); setIsPatientModalOpen(false); setPatientModalData(null); setActiveEncounter(encounter.encounter); setHandoffError(encounter.error); setInterviewReady(true);
     }, 0);
     return () => clearTimeout(timer);
-  }, [clinicalStorageOwner]);
+  }, []);
   const retainInterview = (patch: Partial<ClinicalInterviewDraft>) => {
-    if (!clinicalStorageOwner || currentOwner.current !== clinicalStorageOwner || loadedOwner !== clinicalStorageOwner) return;
+    if (!interviewReady) return;
     const next = { ...interviewRef.current, ...patch }; interviewRef.current = next;
-    setHandoffError(writeClinicalInterview(next, clinicalStorageOwner) ? null : '問診の下書きを保存できませんでした。入力はこの画面で保持しています。保存設定を確認してください。');
+    setHandoffError(writeClinicalInterview(next, 'guest') ? null : '問診の下書きを保存できませんでした。入力はこの画面で保持しています。保存設定を確認してください。');
   };
   const resultRef = useRef<HTMLDivElement | null>(null);
 
@@ -238,13 +266,13 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
 
   // --- 対面問診ハンドラー ---
   const handleSetQuestionStatus = (id: number, status: QuestionStatus) => {
-    if (!clinicalStorageOwner || currentOwner.current !== clinicalStorageOwner || loadedOwner !== clinicalStorageOwner) return;
+    if (!interviewReady) return;
     const statuses = { ...interviewRef.current.statuses, [id]: status };
     setQuestionStatuses(statuses); setClinicalResult(null); retainInterview({ statuses });
   };
 
   const handleSetQuestionNote = (id: number, note: string) => {
-    if (!clinicalStorageOwner || currentOwner.current !== clinicalStorageOwner || loadedOwner !== clinicalStorageOwner) return;
+    if (!interviewReady) return;
     const notes = { ...interviewRef.current.notes, [id]: note };
     setQuestionNotes(notes); retainInterview({ notes });
   };
@@ -310,7 +338,7 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
       if (!ok) return;
     }
 
-    if (!clinicalStorageOwner || currentOwner.current !== clinicalStorageOwner || loadedOwner !== clinicalStorageOwner || !clearClinicalInterview(clinicalStorageOwner)) { setHandoffError('問診の下書きを破棄できませんでした。保存設定を確認してください。'); return; }
+    if (!interviewReady || !clearClinicalInterview('guest')) { setHandoffError('問診の下書きを破棄できませんでした。保存設定を確認してください。'); return; }
     interviewRef.current = { patientIdentifier: '', statuses: {}, notes: {} };
     setPatientIdentifier("");
     setQuestionStatuses({});
@@ -319,53 +347,22 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // 臨床ノートへの下書き保存
-  const handleSaveToNoteDraft = (isFromClinicalMode = false) => {
-    const curResult = isFromClinicalMode ? clinicalResult : selfResult;
-    if (!curResult) return;
-    if (!clinicalStorageOwner || currentOwner.current !== clinicalStorageOwner || loadedOwner !== clinicalStorageOwner) { setHandoffError('保存先の確認が完了していません。確認してからもう一度お試しください。'); return; }
-
-    let complaints = curResult.symptoms.slice(0, 3).join("、");
-    if (isFromClinicalMode && applicableQuestions.length > 0) {
-      complaints = applicableQuestions.map((q) => q.text).slice(0, 3).join(" / ");
-    }
-
-    // 各設問の臨床メモ
-    const notesSummary = isFromClinicalMode
-      ? Object.entries(questionNotes)
-          .filter(([, note]) => note && note.trim().length > 0)
-          .map(([qId, note]) => {
-            const q = DIAGNOSIS_QUESTIONS.find((item) => item.id === Number(qId));
-            return `・${q ? q.text : `問${qId}`}: ${note}`;
-          })
-          .join("\n")
-      : "";
-
-    if (isFromClinicalMode && activeEncounter) {
-      const stored = readClinicalEncounter();
-      if (stored.error || !stored.encounter) { setHandoffError(stored.error || '作業中の記録が見つかりません。臨床ホームで記録を確認してください。'); return; }
-      const target = stored.encounter;
-      if (target.patientIdentifier && target.patientIdentifier.trim() !== patientIdentifier.trim()) { setHandoffError('作業中の記録と問診の匿名IDが異なります。別の記録へ反映しないよう、匿名IDを確認してください。'); return; }
-      const statusLabels = { unconfirmed: '未確認', applicable: '該当あり', not_applicable: '確認して該当なし', unknown: '不明' };
-      const interviewMemo = `匿名ID：${patientIdentifier.trim() || '未入力'}
+  const applyInterviewToWorkspace = () => {
+    if (!clinicalResult || !interviewReady || !activeEncounter) return;
+    const complaints = (applicableQuestions.length ? applicableQuestions.map(question => question.text) : clinicalResult.symptoms).slice(0, 3).join('、');
+    const stored = readClinicalEncounter('guest');
+    if (stored.error || !stored.encounter) { setHandoffError(stored.error || '作業中の記録が見つかりません。臨床ホームで記録を確認してください。'); return; }
+    const target = stored.encounter;
+    if (target.patientIdentifier && target.patientIdentifier.trim() !== patientIdentifier.trim()) { setHandoffError('作業中の記録と問診の匿名IDが異なります。別の記録へ反映しないよう、匿名IDを確認してください。'); return; }
+    const statusLabels = { unconfirmed: '未確認', applicable: '該当あり', not_applicable: '確認して該当なし', unknown: '不明' };
+    const interviewMemo = `匿名ID：${patientIdentifier.trim() || '未入力'}
 ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questionStatuses[question.id] || 'unconfirmed']}${questionNotes[question.id]?.trim() ? '\n補足：' + questionNotes[question.id] : ''}`).join('\n\n')}
 
-回答上の分類：${curResult.name}
+回答上の分類：${clinicalResult.name}
 ※質問票の回答傾向です。所見と医学的評価を合わせて確認してください。`;
-      if (interviewMemo.length > 20000) { setHandoffError('問診メモが長いため反映できません。メモを整理してから、もう一度お試しください。'); return; }
-      if (!writeClinicalEncounter({ ...target, patientIdentifier: target.patientIdentifier || patientIdentifier.trim(), chiefComplaint: target.chiefComplaint || complaints, interviewMemo, step: 1 })) { setHandoffError('作業中の記録へ反映できませんでした。問診入力は保持しています。保存設定を確認してください。'); return; }
-      router.push('/clinical/workspace'); return;
-    }
-    const retained = saveDraftPatientNote({
-      sourceTool: isFromClinicalMode ? "対面問診メモ" : "気血水体質チェック",
-      patientIdentifier: isFromClinicalMode && patientIdentifier.trim() ? patientIdentifier.trim() : undefined,
-      constitution: curResult.name,
-      chiefComplaint: complaints,
-      selectedPointsInput: curResult.advice.tsubo.join(", "),
-      treatmentPlan: `【気血水${isFromClinicalMode ? "対面問診" : "体質チェック"}結果】\n体質傾向: ${curResult.name}（${curResult.reading}）\n状態のまとめ: ${curResult.summary}\n${notesSummary ? `\n【問診時の臨床メモ】\n${notesSummary}\n` : ""}\n推奨生活養生: ${curResult.advice.lifestyle}\n推奨食材: ${curResult.advice.food.join("、")}\n※本内容は回答傾向から整理した臨床下書き情報です。診察・判断に基づき加筆修正してください。`,
-    }, clinicalStorageOwner);
-    if (!retained) { setHandoffError("引き継ぎを保存できませんでした。入力は保持しています。保存設定を確認して、もう一度お試しください。"); return; }
-    router.push("/notes");
+    if (interviewMemo.length > 20000) { setHandoffError('問診メモが長いため反映できません。メモを整理してから、もう一度お試しください。'); return; }
+    if (!writeClinicalEncounter({ ...target, patientIdentifier: target.patientIdentifier || patientIdentifier.trim(), chiefComplaint: target.chiefComplaint || complaints, interviewMemo, step: 1 }, 'guest')) { setHandoffError('作業中の記録へ反映できませんでした。問診入力は保持しています。保存設定を確認してください。'); return; }
+    router.push('/clinical/workspace');
   };
 
   // シミュレーター連携
@@ -405,7 +402,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
     setIsPatientModalOpen(true);
   };
 
-  if (activeTab === "clinical" && (!clinicalStorageOwner || loadedOwner !== clinicalStorageOwner)) return <p role="status" className="page-layout">このアカウントの問診下書きを確認しています…</p>;
+  if (activeTab === "clinical" && !interviewReady) return <p role="status" className="page-layout">このタブの問診下書きを確認しています…</p>;
 
   return (
     <div className="page-layout space-y-6">
@@ -590,6 +587,8 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                   </div>
                 </div>
 
+                {selfStudyLinks && selfStudyLinks.points.length > 0 && <SelfCheckStudyLinks links={selfStudyLinks} />}
+
                 {/* 患者さんに説明する（対面説明クリーンビュー展開） */}
                 <div className="p-4 rounded-xl bg-white dark:bg-[#1A2632] border-2 border-[#1E3D34]/30 dark:border-[#74BA9E]/40 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
                   <div className="flex items-center gap-3">
@@ -695,37 +694,6 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                     </button>
                   </div>
                 )}
-
-                {/* 臨床ノート連携バナー */}
-                <div className="bg-[#FAF8F5] dark:bg-[#152028] p-4 rounded-xl border border-[#1E3D34]/30 dark:border-[#74BA9E]/30 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-[#1E3D34] text-white flex items-center justify-center shrink-0">
-                      <FileText className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                          このチェック結果から臨床ノートの下書きを作成
-                        </span>
-                        <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#1E3D34] text-white">
-                          下書き連携
-                        </span>
-                      </div>
-                      <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-tight block mt-0.5">
-                        体質見立て「{selfResult.name}」と学習用の関連経穴を下書きとして引き継ぎます。
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleSaveToNoteDraft(false)}
-                    className="px-4 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm whitespace-nowrap cursor-pointer"
-                  >
-                    <FileText className="w-3.5 h-3.5" />
-                    <span>この内容を臨床ノートに残す</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
 
                 {/* SNSシェア・結果共有 */}
                 <div className="p-4 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E8E1D1] dark:border-[#2A3B4A] shadow-xs space-y-3">
@@ -844,20 +812,20 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
             </div>
 
             {activeEncounter && <div className="rounded-lg border border-[#C8D4CD] p-3 text-sm"><strong>作業中の記録：{activeEncounter.patientIdentifier || '匿名ID未入力'}</strong><p>{activeEncounter.chiefComplaint || '主訴未入力'}</p><p>集計後、この記録の四診所見へ問診メモを反映して戻れます。候補・治法・配穴は保持します。</p><Link className="inline-flex min-h-11 items-center underline" href="/clinical/workspace">反映せず記録へ戻る</Link></div>}
-            <p role="status" className="text-sm">問診の入力はこのタブに下書き保存します。タブを閉じる前に記録へ反映または臨床ノートへ保存してください。</p>
+            <p role="status" className="text-sm">問診の入力はこのタブに保持します。架空の症例で試し、氏名や連絡先などは入力しないでください。</p>
             {/* 患者識別情報入力欄（任意・カルテ番号等） */}
             <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center pt-1">
               <div className="sm:col-span-4">
                 <label htmlFor="clinical-patient-identifier" className="block text-xs font-bold text-[#232826] dark:text-[#FAF8F5] mb-1">
-                  患者識別記号・カルテ番号（任意）
+                  演習の匿名ID（任意）
                 </label>
                 <input
                   type="text"
                   id="clinical-patient-identifier"
                   name="patientIdentifier" value={patientIdentifier}
                   maxLength={80}
-                  onChange={(e) => { if (currentOwner.current !== clinicalStorageOwner || loadedOwner !== clinicalStorageOwner) return; setPatientIdentifier(e.target.value); retainInterview({ patientIdentifier: e.target.value }); }}
-                  placeholder="例: #1042 / A様"
+                  onChange={(e) => { if (!interviewReady) return; setPatientIdentifier(e.target.value); retainInterview({ patientIdentifier: e.target.value }); }}
+                  placeholder="例：PT-042"
                   className="w-full min-h-12 px-3 py-2 rounded-xl text-base bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] focus:outline-none focus:ring-1 focus:ring-[#1E3D34] dark:focus:ring-[#74BA9E] text-[#232826] dark:text-[#FAF8F5]"
                 />
               </div>
@@ -888,7 +856,6 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
           </div>
 
           <ClinicalInterviewBoard
-            key={loadedOwner}
             patientIdentifier={patientIdentifier}
             statuses={questionStatuses}
             notes={questionNotes}
@@ -1016,33 +983,32 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                     </button>
                   </div>
 
-                  {/* アクション2: 臨床ノートへ残す */}
-                  <div className="p-4 rounded-xl bg-white dark:bg-[#17212A] border border-[#1E3D34]/30 dark:border-[#74BA9E]/40 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+                  {activeEncounter && <div className="p-4 rounded-xl bg-white dark:bg-[#17212A] border border-[#1E3D34]/30 dark:border-[#74BA9E]/40 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-lg bg-[#1E3D34] text-white flex items-center justify-center shrink-0">
                         <FileText className="w-4 h-4" />
                       </div>
                       <div>
                         <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                          {activeEncounter ? '問診メモを作業中の記録へ反映する' : 'この問診内容を臨床ノートに記録する'}
+                          問診メモを作業中の下書きへ反映する
                         </span>
                         <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] block mt-0.5">
-                          {activeEncounter ? '四診所見へ問診メモを追加します。記録画面で内容を確認して保存してください。' : '患者識別記号・回答結果・臨床メモを下書きとして臨床ノートへ引き継ぎます。'}
+                          このタブの下書きに問診メモを追加します。
                         </span>
                       </div>
                     </div>
                     <button
                       type="button"
-                      onClick={() => handleSaveToNoteDraft(true)}
+                      onClick={applyInterviewToWorkspace}
                       className="px-4 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm whitespace-nowrap cursor-pointer"
                     >
                       <FileText className="w-3.5 h-3.5" />
-                      <span>{activeEncounter ? 'この記録へ反映して戻る' : '臨床ノートに残す'}</span>
+                      <span>反映して作業画面へ戻る</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
-                  </div>
+                  </div>}
 
-                  {/* アクション3: シミュレーター連携 */}
+                  {/* シミュレーター連携 */}
                   {clinicalResult.type !== "neutral" && (
                     <div className="p-3.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] flex flex-col sm:flex-row items-center justify-between gap-2.5">
                       <span className="text-xs text-[#59615D] dark:text-[#A0B0BC]">

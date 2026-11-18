@@ -6,17 +6,14 @@ import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { FontSizeProvider } from "@/contexts/FontSizeContext";
 import { SeasonalThemeProvider } from "@/contexts/SeasonalThemeContext";
-import { ClinicalMemoProvider } from "@/contexts/ClinicalMemoContext";
 import { CurriculumProgressProvider } from "@/contexts/CurriculumProgressContext";
 import { LearningSyncProvider } from "@/contexts/LearningSyncContext";
-import { AuthProvider } from "@/contexts/AuthContext";
-import DeferredClinicalDrawer from "@/components/DeferredClinicalDrawer";
-import ClinicalSaveNotice from "@/components/ClinicalSaveNotice";
 import MobileBottomNav from "@/components/navigation/MobileBottomNav";
 import PwaRegister from "@/components/pwa/PwaRegister";
 import PwaInstallPrompt from "@/components/pwa/PwaInstallPrompt";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { SHARED_OG_IMAGES, SITE_NAME, SITE_TITLE } from "@/config/seo";
+import { PLATFORM_DESCRIPTION } from "@/config/series";
 import { getLearningProgressCatalog } from "@/data/learningProgressCatalog";
 
 const notoSerifJP = Noto_Serif_JP({
@@ -40,7 +37,7 @@ export const metadata: Metadata = {
     default: SITE_TITLE,
     template: `%s | ${SITE_NAME}【東洋医学・鍼灸】`,
   },
-  description: "鍼灸学生・鍼灸師のための東洋医学学習サイト。講義で基本用語を学び、クイズと解説で復習できます。全361経穴の位置・注意事項、症例演習、学習ノートも利用できます。",
+  description: PLATFORM_DESCRIPTION,
   verification: {
     google: "EQTaU5bcfwSgFprso13sFiyF35uZ5IHhaGz56GXqXbo",
   },
@@ -50,7 +47,7 @@ export const metadata: Metadata = {
     url: "https://www.haritaro.jp",
     siteName: SITE_NAME,
     title: SITE_TITLE,
-    description: "鍼灸学生・鍼灸師のための東洋医学学習サイト。講義で基本用語を学び、クイズと解説で復習できます。全361経穴の位置・注意事項、症例演習、学習ノートも利用できます。",
+    description: PLATFORM_DESCRIPTION,
     images: SHARED_OG_IMAGES,
   },
   twitter: {
@@ -132,13 +129,13 @@ export default function RootLayout({
                   "@id": "https://www.haritaro.jp/#website",
                   "url": "https://www.haritaro.jp",
                   "name": SITE_NAME,
-                  "description": "陰陽・五行から弁証・配穴まで、東洋医学を体系的に学ぶ。経穴辞典、体質チェック、臨床演習、マイノートで、学習と日々の臨床の振り返りを支えます。",
+                  "description": PLATFORM_DESCRIPTION,
                   "publisher": {
                     "@id": "https://www.haritaro.jp/#organization",
                   },
                   "potentialAction": {
                     "@type": "SearchAction",
-                    "target": "https://www.haritaro.jp/tsubo?q={search_term_string}",
+                    "target": "https://www.haritaro.jp/search?q={search_term_string}",
                     "query-input": "required name=search_term_string",
                   },
                 },
@@ -148,7 +145,7 @@ export default function RootLayout({
                   "name": SITE_NAME,
                   "url": "https://www.haritaro.jp",
                   "logo": "https://www.haritaro.jp/icon-512.png",
-                  "description": "講義・クイズ・経穴辞典・症例演習・ノートで東洋医学を学ぶサイト。",
+                  "description": PLATFORM_DESCRIPTION,
                   "founder": {
                     "@type": "Person",
                     "name": "はり太郎",
@@ -165,24 +162,18 @@ export default function RootLayout({
         <ThemeProvider>
           <FontSizeProvider>
             <SeasonalThemeProvider>
-              <AuthProvider>
-                <ClinicalMemoProvider>
-                  <LearningSyncProvider><CurriculumProgressProvider catalog={getLearningProgressCatalog()}>
-                    <div data-clarity-sensitive className="contents"><Header /></div>
-                    <main id="main-content" tabIndex={-1} className="flex-1 min-w-0">
-                      {children}
-                    </main>
-                    <Footer />
-                    <div data-clarity-sensitive className="contents">
-                      <DeferredClinicalDrawer />
-                      <ClinicalSaveNotice />
-                      <MobileBottomNav />
-                    </div>
-                    <PwaInstallPrompt />
-                    <PwaRegister />
-                  </CurriculumProgressProvider></LearningSyncProvider>
-                </ClinicalMemoProvider>
-              </AuthProvider>
+              <LearningSyncProvider>
+                <CurriculumProgressProvider catalog={getLearningProgressCatalog()}>
+                  <div data-clarity-sensitive className="contents"><Header /></div>
+                  <main id="main-content" tabIndex={-1} className="flex-1 min-w-0">
+                    {children}
+                  </main>
+                  <Footer />
+                  <div data-clarity-sensitive className="contents"><MobileBottomNav /></div>
+                  <PwaInstallPrompt />
+                  <PwaRegister />
+                </CurriculumProgressProvider>
+              </LearningSyncProvider>
             </SeasonalThemeProvider>
           </FontSizeProvider>
         </ThemeProvider>

@@ -20,8 +20,8 @@ function load(relative) {
 const { RECENT_TOOL_CATALOG, RECENT_TOOLS_STORAGE_KEY, recentToolHref, readRecentToolPaths, updateRecentToolPaths } = load('src/utils/recentTools');
 assert.equal(RECENT_TOOLS_STORAGE_KEY, 'haritaro_recent_tools', 'old storage is retained');
 assert.equal(new Set(RECENT_TOOL_CATALOG.map(tool => tool.href)).size, RECENT_TOOL_CATALOG.length);
-assert.equal(recentToolHref('/notes', 'learning'), '/notes?tab=learning');
-assert.equal(recentToolHref('/notes'), '/notes');
+assert.equal(recentToolHref('/notes', 'learning'), null);
+assert.equal(recentToolHref('/notes'), null);
 assert.equal(recentToolHref('/diagnosis', 'gorou'), '/diagnosis?tab=gorou');
 assert.equal(recentToolHref('/diagnosis'), '/diagnosis');
 assert.equal(recentToolHref('/diagnosis', 'clinical'), '/diagnosis?tab=clinical', 'The direct interview mode remains distinct in public recent history');
@@ -29,61 +29,57 @@ assert.equal(JSON.stringify(readRecentToolPaths(JSON.stringify(['/diagnosis?tab=
 assert.equal(recentToolHref('/kokushi'), '/learn/review', 'Visiting a retired bookmark records the current lecture-review destination');
 assert.equal(recentToolHref('/kokushi/', 'private-text'), '/learn/review');
 for (const tab of ['patient-1', 'learning&text=secret', 'gorou&name=secret', 'unknown']) {
-  assert.equal(recentToolHref('/notes', tab), '/notes');
+  assert.equal(recentToolHref('/notes', tab), null);
   assert.equal(recentToolHref('/diagnosis', tab), '/diagnosis');
 }
 assert.equal(recentToolHref('/notes/patient-id', 'learning'), null);
 assert.equal(recentToolHref('/diagnosis-patient', 'gorou'), null);
 assert.equal(readRecentToolPaths('bad json').length, 0);
 assert.equal(readRecentToolPaths('{"patientId":"private"}').length, 0);
-assert.equal(JSON.stringify(updateRecentToolPaths('bad json', '/notes', 'learning')), '["/notes?tab=learning"]', 'bad storage repairs on the next known visit');
+assert.equal(JSON.stringify(updateRecentToolPaths('bad json', '/diagnosis', 'gorou')), '["/diagnosis?tab=gorou"]', 'bad storage repairs on the next known visit');
 const migrated = readRecentToolPaths(JSON.stringify([
   '/notes?tab=learning&sourceType=case&sourceId=fatigue-reasoning&reason=free-text#private',
   '/diagnosis?tab=gorou&patientId=secret&complaint=private',
   '/notes?patientId=secret', '/notes', '/library', '/tsubo',
 ]));
-assert.equal(JSON.stringify(migrated), '["/notes?tab=learning","/diagnosis?tab=gorou","/notes","/library"]');
+assert.equal(JSON.stringify(migrated), '["/diagnosis?tab=gorou","/library","/tsubo"]');
 for (const href of migrated) assert(!/patient|source|reason|complaint|#/.test(href));
 const old = JSON.stringify(['/notes', '/diagnosis', '/library', '/tsubo']);
-assert.equal(JSON.stringify(readRecentToolPaths(old)), old, 'legacy clinical/base histories keep their destinations');
-let history = updateRecentToolPaths(old, '/notes', 'learning');
-assert.equal(history[0], '/notes?tab=learning');
-history = updateRecentToolPaths(JSON.stringify(history), '/notes', null);
-assert.equal(history[0], '/notes', 'query-only same-route changes update recency');
-assert.equal(history[1], '/notes?tab=learning', 'clinical and learning note destinations remain distinct');
+assert.equal(JSON.stringify(readRecentToolPaths(old)), '["/diagnosis","/library","/tsubo"]', 'Retired entries are removed without affecting other history');
+let history = updateRecentToolPaths(old, '/diagnosis', 'clinical');
+assert.equal(history[0], '/diagnosis?tab=clinical');
 history = updateRecentToolPaths(JSON.stringify(history), '/diagnosis', 'gorou');
-assert.equal(history[0], '/diagnosis?tab=gorou');
-assert.equal(history.length, 4);
+assert.deepEqual(Array.from(history), ['/diagnosis?tab=gorou', '/diagnosis?tab=clinical', '/diagnosis', '/library']);
 const bad = JSON.stringify(['https://evil.example/notes?tab=learning', '//evil.example/notes', '/notes/patient-id', 4, {}, null, '/missing']);
 assert.equal(readRecentToolPaths(bad).length, 0);
-assert.equal(JSON.stringify(updateRecentToolPaths(old, '/notes/patient-id', 'learning')), old, 'unlisted routes cannot add patient-specific paths');
-assert.equal(RECENT_TOOL_CATALOG.find(tool => tool.href === '/notes?tab=learning').title, '学習ノート');
-assert.equal(RECENT_TOOL_CATALOG.find(tool => tool.href === '/notes').title, '臨床ノート・配穴ストック');
+assert.equal(JSON.stringify(updateRecentToolPaths(old, '/notes/patient-id', 'learning')), '["/diagnosis","/library","/tsubo"]', 'unlisted routes cannot add patient-specific paths');
+assert(!RECENT_TOOL_CATALOG.some(tool => tool.href.startsWith('/notes')));
 const migratedExamHistory = readRecentToolPaths(JSON.stringify([
   '/kokushi?examId=kokushi-33-toyo-71&answer=private#old-question',
   '/learn/review?resumeReview=private#learning-review', '/tsubo', '/notes', '/library',
 ]));
-assert.equal(JSON.stringify(migratedExamHistory), '["/learn/review","/tsubo","/notes","/library"]', 'Old and current review history merge without losing other public destinations or retaining question IDs');
-assert.equal(JSON.stringify(updateRecentToolPaths(JSON.stringify(['/library', '/kokushi', '/notes', '/tsubo']), '/learn/review')), '["/learn/review","/library","/notes","/tsubo"]', 'A new review visit moves the migrated history item instead of creating a duplicate');
+assert.equal(JSON.stringify(migratedExamHistory), '["/learn/review","/tsubo","/library"]', 'Old and current review history merge without losing other public destinations or retaining question IDs');
+assert.equal(JSON.stringify(updateRecentToolPaths(JSON.stringify(['/library', '/kokushi', '/notes', '/tsubo']), '/learn/review')), '["/learn/review","/library","/tsubo"]', 'A new review visit moves the migrated history item instead of creating a duplicate');
 
 const { NAV_STORAGE_KEY, DEFAULT_NAV_CONFIG, loadNavUserConfig, NAV_PRESETS, getNavigationSection, isNavigationItemActive } = load('src/config/navigationItems');
 function configuredNav(items, preset = 'student') {
   savedValues.set(NAV_STORAGE_KEY, JSON.stringify({ version: 1, items, updatedAt: '2026-10-03', preset }));
   return loadNavUserConfig();
 }
-assert.equal(JSON.stringify(configuredNav(['kokushi', 'haiketsu', 'notes', 'library']).items), '["review","haiketsu","notes","library"]', 'A single legacy exam shortcut migrates in place and preserves the other three choices');
-assert.equal(JSON.stringify(configuredNav(['kokushi', 'review', 'haiketsu', 'cases']).items), '["review","haiketsu","cases","curriculum"]', 'Alias collision removes only the duplicate and fills the missing fourth slot from defaults');
-assert.equal(JSON.stringify(configuredNav(['review', 'kokushi', 'library', 'notes']).items), '["review","library","notes","curriculum"]', 'Either alias order keeps other user choices and yields four unique shortcuts');
+assert.equal(JSON.stringify(configuredNav(['kokushi', 'haiketsu', 'notes', 'library']).items), '["review","haiketsu","symptoms","library"]', 'A single legacy exam shortcut migrates in place and preserves the other three choices');
+assert.equal(JSON.stringify(configuredNav(['kokushi', 'review', 'haiketsu', 'cases']).items), '["review","haiketsu","cases","tsubo"]', 'Alias collision removes only the duplicate and fills the missing fourth slot from defaults');
+assert.equal(JSON.stringify(configuredNav(['review', 'kokushi', 'library', 'notes']).items), '["review","library","symptoms","tsubo"]', 'Either alias order keeps other user choices and yields four unique shortcuts');
 const unchanged = configuredNav(['simulator', 'haiketsu', 'tsubo', 'notes']);
-assert.equal(JSON.stringify(unchanged.items), '["simulator","haiketsu","tsubo","notes"]', 'Existing non-exam custom navigation stays unchanged');
+assert.equal(JSON.stringify(unchanged.items), '["simulator","haiketsu","tsubo","symptoms"]', 'Existing non-exam custom navigation stays unchanged');
 assert.equal(unchanged.updatedAt, '2026-10-03', 'Migration does not invent a recent user edit date');
 
 assert.equal(NAV_PRESETS.clinician.items[0], 'workspace', 'Clinician shortcuts begin with the complete record workspace');
 const oldClinician = configuredNav(['simulator', 'haiketsu', 'tsubo', 'notes'], 'clinician');
-assert.equal(JSON.stringify(oldClinician.items), '["workspace","haiketsu","tsubo","notes"]', 'Only an unchanged legacy clinician preset gains the workspace shortcut');
+assert.equal(JSON.stringify(oldClinician.items), '["workspace","haiketsu","tsubo","cases"]', 'Only an unchanged legacy clinician preset gains the workspace shortcut');
 assert.equal(oldClinician.updatedAt, '2026-10-03');
-assert.equal(JSON.stringify(configuredNav(['notes', 'haiketsu', 'tsubo', 'simulator'], 'clinician').items), '["notes","haiketsu","tsubo","simulator"]', 'A custom clinician arrangement is never silently replaced');
-for (const route of ['/clinical', '/clinical/workspace', '/clinical/symptoms/neck-shoulder', '/notes', '/notes/record', '/simulator/compare', '/practice/haiketsu', '/tsubo/compare']) assert.equal(getNavigationSection(route), 'clinical', route + ' belongs to the clinical category');
+assert.equal(JSON.stringify(configuredNav(['notes', 'haiketsu', 'tsubo', 'simulator'], 'clinician').items), '["symptoms","haiketsu","tsubo","simulator"]', 'A custom clinician arrangement is never silently replaced');
+for (const route of ['/clinical', '/clinical/workspace', '/clinical/symptoms/neck-shoulder', '/simulator/compare', '/practice/haiketsu', '/tsubo/compare']) assert.equal(getNavigationSection(route), 'clinical', route + ' belongs to the clinical category');
+assert.equal(getNavigationSection('/notes'), null, 'The retired notebook is outside public navigation');
 assert.equal(getNavigationSection('/tsubo/LI4'), 'dictionary');
 assert.equal(getNavigationSection('/curriculum/lecture-intro-1'), 'learn');
 assert.equal(getNavigationSection('/clinical-not-a-route'), null, 'Category matching respects route boundaries');

@@ -7,8 +7,8 @@ import Image from "next/image";
 import { Sparkles, ShieldCheck, ArrowRight, BookOpen, GraduationCap, Stethoscope } from "lucide-react";
 import { getArticlePreviews } from "@/data/articleData";
 
-const pageTitle = "サイトの志と運営方針";
-const pageDescription = "東洋医学の学習と臨床思考を支える「はり太郎の東洋医学」の運営者、編集方針、教材の確認状況をご案内します。";
+const pageTitle = "はり太郎の運営者・資格・編集方針";
+const pageDescription = "ツボ図鑑・東洋医学・臨床演習を運営する鍼灸師の資格と、出典や教材の確認状況をご案内します。";
 
 export const metadata: Metadata = {
   title: pageTitle,
@@ -23,7 +23,7 @@ export default function AboutPage() {
   const [comparisonArticle] = getArticlePreviews(["east-west-integrative-unified-theory"]);
   return (
     <div className="about-page page-layout space-y-8 sm:space-y-12">
-      <PageIntro eyebrow="サイトの志と運営方針" title="「はり太郎の東洋医学」について" description="講義で学び、症例で考え、ノートで振り返る。東洋医学の学習と臨床思考を支えます。" art="about">
+      <PageIntro title="はり太郎について" description="ツボ図鑑・東洋医学・臨床演習の運営者と編集方針をご紹介します。" art="about">
         <div className="page-actions">
           <Link href="/learn" className="page-primary-action"><BookOpen size={18} aria-hidden="true" />学び方を選ぶ<ArrowRight size={18} aria-hidden="true" /></Link>
           <a href="#about-operator" className="page-secondary-action">運営者について</a>

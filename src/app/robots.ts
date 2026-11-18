@@ -6,11 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: [
-          "/api/",
-          "/auth/",
-          "/account/",
-        ],
+        disallow: ["/api/"],
       },
       // 検索用・学習用クローラーの既存の公開範囲を維持。用途は同一ではない。
       // OAI-SearchBot（検索）は上の * で許可。GPTBot はモデル学習用。
@@ -25,7 +21,7 @@ export default function robots(): MetadataRoute.Robots {
           "cohere-ai",
         ],
         allow: "/",
-        disallow: ["/api/", "/auth/", "/account/"],
+        disallow: ["/api/"],
       },
     ],
     sitemap: "https://www.haritaro.jp/sitemap.xml",

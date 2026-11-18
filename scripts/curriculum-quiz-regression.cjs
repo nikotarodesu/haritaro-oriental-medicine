@@ -140,15 +140,10 @@ check('missed-only and all-question retries', () => {
   client.choose(quiz.questions[0], quiz.questions[0].correctIndex); client.render();
   assert.equal(client.saved.length, 5, 'Temporarily hidden answers accept a new graded attempt');
 });
-check('temporary retry state belongs to its account and current question revision', () => {
+check('temporary retry state belongs to the current question revision', () => {
   const client = harness(); answerAll(client);
   client.button('もう一度挑戦する').props.onClick(); client.render();
   assert(client.options(quiz.questions[0].id).every(node => !node.props.disabled));
-  client.account('another-learner');
-  assert(client.options(quiz.questions[0].id).every(node => node.props.disabled), 'A previous account cannot hide the incoming account answers');
-  client.account(null);
-  assert(client.options(quiz.questions[0].id).every(node => node.props.disabled), 'Returning to an account does not restore the discarded temporary retry');
-  client.button('もう一度挑戦する').props.onClick(); client.render();
   const revisedQuiz = { ...quiz, questions: quiz.questions.map((question, index) => index ? question : { ...question, explanation: question.explanation + ' 改訂' }) };
   client.render({ quiz: revisedQuiz });
   assert(client.options(quiz.questions[0].id).every(node => node.props.disabled), 'A question revision discards its temporary retry state');

@@ -482,7 +482,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
 
       {/* 受講履歴・進捗データ管理 */}
       <div className="pt-4 pb-2 text-center text-xs text-slate-400 dark:text-slate-600 flex flex-wrap items-center justify-center gap-3">
-        <LearningSyncStatus returnTo="/curriculum" />
+        <LearningSyncStatus />
         <button
           type="button"
           onClick={resetAllProgress}

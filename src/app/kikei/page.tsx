@@ -3,12 +3,10 @@ import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
 import { Metadata } from "next";
 import { 
-  Sparkles, 
   GitCommit, 
   Layers, 
   BookOpen, 
   ArrowRight, 
-  Crown
 } from "lucide-react";
 import { KIKEI_VESSELS, HACHIMYAKU_PAIRS } from "@/data/kikeiData";
 import { pageSocialMetadata } from "@/config/seo";
@@ -67,17 +65,6 @@ export default function KikeiIndexPage() {
                       }`}>
                         {vessel.category}
                       </span>
-                      {vessel.slug === "toku" || vessel.slug === "nin" ? (
-                        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243] flex items-center gap-0.5">
-                          <Sparkles className="w-2.5 h-2.5" />
-                          <span>無料体験</span>
-                        </span>
-                      ) : (
-                        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-[#FCF4EB] text-[#B86924] dark:bg-[#2A1E14] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4D331F] flex items-center gap-0.5">
-                          <Crown className="w-2.5 h-2.5" />
-                          <span>プレミアム</span>
-                        </span>
-                      )}
                     </div>
                     {vessel.pointsCount ? (
                       <span className="text-xs text-[#737C77] dark:text-[#8899A6]">

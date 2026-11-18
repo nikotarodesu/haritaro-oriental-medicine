@@ -3,7 +3,9 @@ import Link from "next/link";
 import { MERIDIANS, ALL_ACUPOINTS } from "@/data/tsubo";
 import { Layers, ShieldCheck } from "lucide-react";
 import PageIntro from "@/components/design/PageIntro";
+import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
+import { SERIES, TSUBO_TAGLINE } from "@/config/series";
 
 // 主要な代表経穴（初期HTMLでクローラーおよびJS無効環境にも確実に渡すリンク）
 const FLAGSHIP_ACUPOINTS = [
@@ -25,23 +27,33 @@ export default function TsuboPage() {
   return (
     <div className="page-layout page-layout--wide space-y-8">
       {/* 1. ページヘッダー（初期HTMLに出力される主コンテンツ・H1） */}
-      <PageIntro compact eyebrow="WHO標準361穴" title="経穴辞典" art="points" description="名前・読み方・経脈・部位から検索。位置と目印を、図と文章で確認できます。" />
+      <PageIntro compact eyebrow="全361のツボ" title={SERIES.dictionary.name} art="points" description={TSUBO_TAGLINE}>
+        <div className="page-actions">
+          <Link href="/symptoms" className="page-primary-action">症状から探す</Link>
+          <a href="#tsubo-index" className="page-secondary-action">ツボの一覧を見る</a>
+        </div>
+      </PageIntro>
 
       {/* 2. 検索・絞り込み・カード一覧をページ見出しの直下へ */}
       <Suspense
         fallback={
           <div className="min-h-[400px] py-16 text-center space-y-3">
             <div className="inline-block w-6 h-6 border-2 border-[#1E3D34] border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-[#737C77]">経穴検索を読み込んでいます。下の「経脈別の索引・全経穴一覧」からも経穴を開けます。</p>
+            <p className="text-sm text-[#737C77]">ツボの検索を読み込んでいます。下の一覧からもツボを選べます。</p>
           </div>
         }
       >
         <TsuboInteractiveClient />
       </Suspense>
 
+      <section aria-labelledby="dictionary-reading" className="space-y-4">
+        <h2 id="dictionary-reading" className="font-serif text-xl font-bold">経絡とツボの索引を使う</h2>
+        <PublicLectureIndex series="dictionary" />
+      </section>
+
       {/* 3. 経脈・経穴の静的索引は初期HTMLに残す */}
-      <details className="tsubo-static-index">
-      <summary>経脈別の索引・全経穴一覧</summary>
+      <details id="tsubo-index" className="tsubo-static-index scroll-mt-28">
+      <summary>体を通る道筋（経絡）ごとにツボを見る</summary>
       <nav aria-label="経脈別テキスト索引" className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 shadow-xs space-y-4">
         <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
           <div className="flex items-center gap-2">

@@ -1,155 +1,90 @@
-import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
-import { CURRICULUM_DATA, Lecture } from "@/data/curriculumData";
-import CurriculumLectureReader from "@/components/curriculum/CurriculumLectureReader";
-import { getCurriculumConceptArt } from "@/components/curriculum/CurriculumConceptArt";
-import { getArticlePreviews } from "@/data/articleData";
-import { createCurriculumReadingLinks, getCurriculumRelatedArticleIds } from "@/data/curriculumReadingGuides";
-
-import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
-import { resolveArticleReferences } from "@/utils/referenceResolver";
-import { LEARNING_QUESTIONS } from "@/data/learningQuestionBank";
-import { getChapterAssessment } from "@/data/curriculumAssessments";
+import PublicLectureReader from "@/components/curriculum/PublicLectureReader";
 import { PAGE_REVISIONS } from "@/config/contentUpdates";
+import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
+import { SERIES } from "@/config/series";
+import { getArticlePreviews } from "@/data/articleData";
+import { CURRICULUM_DATA } from "@/data/curriculumData";
+import { createCurriculumReadingLinks, getCurriculumRelatedArticleIds } from "@/data/curriculumReadingGuides";
+import { getPublicLectureArticle, getPublicLectureSeries } from "@/data/publicLectures";
+import { approvedIntroId, approvedIntroReferences } from "@/data/publicLectures/approvedIntro";
+import { resolveLegacyLectureId } from "@/utils/curriculumLegacyPaths";
+import { resolveArticleReferences } from "@/utils/referenceResolver";
 
-const allLectures: Lecture[] = CURRICULUM_DATA.flatMap((s) => s.lectures);
-
-// 旧形式IDのマッピング
-const OLD_ID_MAP: Record<string, string> = {
-  "lecture-1": "lecture-yinyang-1",
-  "lecture-1-yinyang": "lecture-yinyang-1",
-  "lecture-2": "lecture-wuxing-1",
-  "lecture-2-wuxing": "lecture-wuxing-1",
-  "lecture-3": "lecture-qiblood-1",
-  "lecture-3-qiblood": "lecture-qiblood-1",
-  "lecture-4": "lecture-lifedynamics-1",
-  "lecture-4-lifedynamics": "lecture-lifedynamics-1",
-  "lecture-5": "lecture-pathomechanism-1",
-  "lecture-5-pathomechanism": "lecture-pathomechanism-1",
-  "lecture-6": "lecture-diagnosis-1",
-  "lecture-6-diagnosis": "lecture-diagnosis-1",
-  "lecture-7": "lecture-treatment-1",
-  "lecture-7-treatment": "lecture-treatment-1",
-  "lecture-8": "lecture-practice-1",
-  "lecture-8-practice": "lecture-practice-1",
-};
-
-function resolveLectureId(rawId: string): string {
-  return OLD_ID_MAP[rawId] || rawId;
-}
+const published = new Map(CURRICULUM_DATA.flatMap(stage => stage.lectures)
+  .filter(lecture => lecture.isPublished)
+  .map(lecture => [lecture.id, lecture]));
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
-export async function generateStaticParams() {
-  return allLectures.map((lecture) => ({
-    id: lecture.id,
-  }));
+function findLecture(rawId: string) {
+  const id = resolveLegacyLectureId(rawId);
+  const original = published.get(id);
+  const article = getPublicLectureArticle(id);
+  if (!original || !article) notFound();
+  return { id, original, article, series: getPublicLectureSeries(id) };
+}
+
+export function generateStaticParams() {
+  return [...published.keys()].map(id => ({ id }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id: rawId } = await params;
-  const lectureId = resolveLectureId(rawId);
-  const lecture = allLectures.find((l) => l.id === lectureId);
-
-  if (!lecture) {
-    return {
-      title: "講義が見つかりません",
-      description: "指定された講義は存在しないか、準備中です。",
-    };
-  }
-
-  const lessonTitle = lecture.title.replace(/^.*?レッスン\s*\d+\s*[：:]\s*/, "");
-  const title = `${lessonTitle}${lecture.seriesTitle && lecture.lessonNumber ? `｜${lecture.seriesTitle} 第${lecture.lessonNumber}講` : ""}｜はり太郎`;
-  const description =
-    lecture.summary ||
-    lecture.whatYouWillLearn?.canDo ||
-    `${lecture.title}の解説講義。東洋医学の基礎から実践まで体系的に学びます。`;
+  const { id, article, series } = findLecture((await params).id);
+  const title = `${article.title}｜${SERIES[series].name}`;
+  const { description } = article;
+  const url = `https://www.haritaro.jp/curriculum/${id}`;
 
   return {
     title: { absolute: title },
     description,
-    alternates: {
-      canonical: `https://www.haritaro.jp/curriculum/${lecture.id}`,
-    },
-    openGraph: {
-      images: SHARED_OG_IMAGES,
-      siteName: SITE_NAME,
-      title,
-      description,
-      url: `https://www.haritaro.jp/curriculum/${lecture.id}`,
-      type: "article",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: SHARED_OG_IMAGES.map(image => image.url),
-    },
+    alternates: { canonical: url },
+    openGraph: { images: SHARED_OG_IMAGES, siteName: SITE_NAME, title, description, url, type: "article" },
+    twitter: { card: "summary_large_image", title, description, images: SHARED_OG_IMAGES.map(image => image.url) },
   };
 }
 
 export default async function CurriculumDetailPage({ params }: Props) {
   const { id: rawId } = await params;
-  const lectureId = resolveLectureId(rawId);
+  const { id, original, article, series } = findLecture(rawId);
+  if (rawId !== id) permanentRedirect(`/curriculum/${id}`);
 
-  if (rawId !== lectureId) {
-    permanentRedirect(`/curriculum/${lectureId}`);
-  }
-
-  const lecture = allLectures.find((l) => l.id === lectureId);
-  if (!lecture) {
-    notFound();
-  }
-
-  const pageUrl = `https://www.haritaro.jp/curriculum/${lecture.id}`;
-
-  const lectureJsonLd = {
+  const section = SERIES[series];
+  const origin = "https://www.haritaro.jp";
+  const path = `/curriculum/${id}`;
+  const url = origin + path;
+  const references = resolveArticleReferences(original.references, original.contentMarkdown)
+    .map(reference => ({ ...reference, note: reference.claimsStatus === "source-checked" ? reference.note : undefined }));
+  const citations = id === approvedIntroId
+    ? approvedIntroReferences
+    : references.filter(reference => reference.claimsStatus !== "do-not-use" && reference.bibliographyStatus !== "retracted")
+      .map(reference => ({ name: reference.title, url: reference.url }));
+  const related = createCurriculumReadingLinks(id, getArticlePreviews(getCurriculumRelatedArticleIds(id)))
+    .map(link => ({ href: link.href, label: link.title }));
+  const schema = {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": ["WebPage", "LearningResource"],
-        "@id": `${pageUrl}#webpage`,
-        url: pageUrl,
-        name: `${lecture.title} | はり太郎の東洋医学`,
-        description:
-          lecture.summary ||
-          `${lecture.title}の解説講義。東洋医学の基礎から実践まで体系的に学びます。`,
-        learningResourceType: "Lesson",
-        educationalLevel: "Beginner / Student",
-        author: { "@type": "Person", name: "はり太郎", url: "https://www.haritaro.jp/about" },
-        dateModified: PAGE_REVISIONS[`/curriculum/${lecture.id}`],
-        citation: resolveArticleReferences(lecture.references, lecture.contentMarkdown).flatMap(reference => reference.url ? [{ "@type": "CreativeWork", name: reference.title, url: reference.url }] : []),
+        "@type": "Article",
+        "@id": `${url}#article`,
+        mainEntityOfPage: url,
+        headline: article.title,
+        description: article.description,
+        dateModified: PAGE_REVISIONS[path],
+        articleSection: section.shortName,
+        author: { "@type": "Person", name: "はり太郎", url: origin + "/about" },
+        citation: citations.map(({ name, url }) => ({ "@type": "CreativeWork", name, url })),
         inLanguage: "ja",
-        provider: {
-          "@type": "Organization",
-          name: "はり太郎",
-          url: "https://www.haritaro.jp",
-        },
       },
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: "ホーム",
-            item: "https://www.haritaro.jp",
-          },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: "カリキュラム",
-            item: "https://www.haritaro.jp/curriculum",
-          },
-          {
-            "@type": "ListItem",
-            position: 3,
-            name: lecture.title,
-            item: pageUrl,
-          },
+          { "@type": "ListItem", position: 1, name: "ホーム", item: origin },
+          { "@type": "ListItem", position: 2, name: section.name, item: origin + section.href },
+          { "@type": "ListItem", position: 3, name: article.title, item: url },
         ],
       },
     ],
@@ -157,20 +92,8 @@ export default async function CurriculumDetailPage({ params }: Props) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(lectureJsonLd) }}
-      />
-      <CurriculumLectureReader
-        lecture={lecture}
-        conceptArt={getCurriculumConceptArt(lecture.id)}
-        quiz={CURRICULUM_QUIZZES[lecture.id]}
-        resolvedReferences={resolveArticleReferences(lecture.references, lecture.contentMarkdown)}
-        reviewQuestions={LEARNING_QUESTIONS.filter(question => question.lectureId === lecture.id)}
-        chapterAssessment={getChapterAssessment(lecture.id)}
-        lectureNavigation={allLectures.map(({ id, title, seriesId, lessonNumber, lectureNumber, duration, isPublished }) => ({ id, title, seriesId, lessonNumber, lectureNumber, duration, isPublished }))}
-        relatedReadingLinks={createCurriculumReadingLinks(lecture.id, getArticlePreviews(getCurriculumRelatedArticleIds(lecture.id)))}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
+      <PublicLectureReader id={id} article={article} series={series} references={references} related={related} />
     </>
   );
 }

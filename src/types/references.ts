@@ -11,8 +11,6 @@ export interface ReferenceItem {
   pmid?: string;
   asin?: string; // Amazon ASINコード (例: "488574000X")
   isbn?: string; // ISBN
-  amazonUrl?: string; // Amazon URL
-  amazonSearchUrl?: string; // リンク切れ防止の安全なAmazon検索URL
   libraryUrl?: string; // サイト内古典ライブラリへの直通URL（例: "/library?q=素問"）
   studyDesign?: string;
   sampleSize?: number;

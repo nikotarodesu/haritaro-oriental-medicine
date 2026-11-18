@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation';
 import { LessonQuizGroup, QuizQuestionItem, getQuizSectionTitle } from '@/data/curriculumQuizTypes';
 import { useCurriculumProgress } from '@/contexts/CurriculumProgressContext';
-import { useAuth } from '@/contexts/AuthContext';
 import {
   CheckCircle2,
   XCircle,
@@ -78,7 +77,6 @@ const playCelebrationFanfare = () => {
 
 export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLecture, courseJourney }) => {
   const router = useRouter();
-  const { user } = useAuth();
   const {
     isMounted,
     quizResults,
@@ -90,7 +88,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
   // Retrying hides answers only in this view. Durable answers, attempts and review
   // schedules remain available until the next answer is saved through the context.
   const questionVersions = quiz.questions.map(q => `${q.id}:${questionRevision(q.question, q.options, q.correctIndex, q.explanation)}`).join('|');
-  const quizScope = `${isMounted ? user?.id || 'guest' : 'pending'}:${quiz.lectureId}:${questionVersions}`;
+  const quizScope = `${isMounted ? 'guest' : 'pending'}:${quiz.lectureId}:${questionVersions}`;
   const [retryState, setRetryState] = useState<{ scope: string; questionIds: string[] }>(() => ({ scope: quizScope, questionIds: [] }));
   if (retryState.scope !== quizScope) setRetryState({ scope: quizScope, questionIds: [] });
   const selectedAnswers = useMemo(() => Object.fromEntries(quiz.questions.flatMap(q =>

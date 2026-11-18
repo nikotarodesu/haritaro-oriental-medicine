@@ -1,5 +1,6 @@
 import { SYMPTOMS, SYMPTOM_SAFETY_GUIDANCE } from '@/data/symptomData';
 import { MEDICAL_SAFETY_SOURCES } from '@/data/medicalSafety';
+import { PUBLIC_SYMPTOM_CONTENT } from '@/data/publicSymptoms';
 import { VERIFIED_PAPERS } from '@/data/references/papersData';
 import type { SymptomGuide } from '@/types/oriental';
 import { SYMPTOM_GUIDES_REVISED_AT, symptomGuidePath } from './symptomGuidePaths';
@@ -40,13 +41,26 @@ export function symptomGuideTitle(guide: SymptomGuide) {
   return `${guide.title}｜受診の目安・日常の工夫・伝統医学の学習`;
 }
 
+export function symptomGuideSummary(guide: SymptomGuide) {
+  return PUBLIC_SYMPTOM_CONTENT[guide.id]?.summary ?? guide.summary;
+}
+
 export function symptomGuideDescription(guide: SymptomGuide) {
-  return `${guide.summary} 受診の目安と日常の工夫、伝統的な経穴例を学ぶガイド。原因や病名の診断は行いません。`;
+  return `${symptomGuideSummary(guide)} 受診の目安、日常の工夫、関連するツボの位置を紹介します。`;
 }
 
 export function getSymptomGuideSources(guide: SymptomGuide) {
+  const safetySources = SYMPTOM_SAFETY_GUIDANCE[guide.id]?.sources ?? [];
+  const dailyLifeSources = PUBLIC_SYMPTOM_CONTENT[guide.id]?.dailyLifeSources ?? [];
+
   return [
-    ...(SYMPTOM_SAFETY_GUIDANCE[guide.id]?.sources || []).map(source => ({ ...source, scope: '受診の目安' })),
+    ...safetySources.map(source => {
+      const dailyLife = dailyLifeSources.find(candidate => candidate.url === source.url);
+      return dailyLife
+        ? { ...source, section: `${source.section} / ${dailyLife.section}`, scope: '受診の目安・日常の工夫' }
+        : { ...source, scope: '受診の目安' };
+    }),
+    ...dailyLifeSources.map(source => ({ ...source, scope: '日常の工夫' })),
     { ...MEDICAL_SAFETY_SOURCES.jsam, scope: '鍼灸の安全性' },
     { ...MEDICAL_SAFETY_SOURCES.nccih, scope: '鍼灸研究の読み方・安全性' },
   ].filter((source, index, sources) => sources.findIndex(candidate => candidate.url === source.url) === index);

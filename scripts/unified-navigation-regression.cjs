@@ -66,7 +66,7 @@ const hooks = {
   },
 };
 const Link = () => null, Customize = () => null, SearchModal = () => null;
-let savedDrawerOpened = 0, installRequested = 0;
+let installRequested = 0;
 add(events, 'haritaro:install-app', () => installRequested++);
 function component(relative) {
   const filename = path.join(root, relative), exports = {};
@@ -85,9 +85,8 @@ function component(relative) {
       if (id === 'next/dynamic') return { __esModule: true, default: () => SearchModal };
       if (id === 'next/navigation') return { usePathname: () => pathname, useSearchParams: () => new URLSearchParams() };
       if (id === '@/config/navigationItems') return nav;
+      if (id === '@/config/series') return load('src/config/series');
       if (id === '@/utils/siteMenu') return menu;
-      if (id === '@/contexts/ClinicalMemoContext') return { useClinicalMemo: () => ({ clipCount: 2, patientNoteCount: 1, openDrawer() { savedDrawerOpened++; } }) };
-      if (id === '@/contexts/AuthContext') return { useAuth: () => ({ user: { name: '確認用' }, isPremium: false, isLoading: false }) };
       if (id === '@/hooks/useViewportLayout') return { useViewportLayout() {} };
       if (id === './NavCustomizeModal') return { __esModule: true, default: Customize };
       if (id.startsWith('./') || id === '@/components/brand/BrandLogo') return { __esModule: true, default: () => null };
@@ -155,20 +154,20 @@ function expandedLinks(node, result = []) {
   return result;
 }
 const menuDestinations = expandedLinks(byId(menu.SITE_MENU_ID)).map(node => node.props.href);
-for (const href of ['/glossary', '/tsubo/practice', '/kikei', '/diagnosis', '/diagnosis?tab=gorou', '/diagnosis?tab=clinical', '/symptoms', '/safety', '/notes?tab=learning']) assert(menuDestinations.includes(href), 'Existing secondary destination remains discoverable: ' + href);
+for (const href of ['/glossary', '/tsubo/practice', '/kikei', '/diagnosis', '/diagnosis?tab=gorou', '/diagnosis?tab=clinical', '/symptoms', '/safety']) assert(menuDestinations.includes(href), 'Existing secondary destination remains discoverable: ' + href);
 assert(!menuDestinations.includes('/simulator/compare') && !menuDestinations.includes('/simulator#comparison-examples'), 'Fixed comparison examples have no competing standalone menu entry');
 const clinicalMenuNode = nodes(byId(menu.SITE_MENU_ID)).find(node => node.type?.name === 'ClinicalMenu');
 assert(clinicalMenuNode);
 const clinicalTree = clinicalMenuNode.type(clinicalMenuNode.props);
 const primary = nodes(clinicalTree).filter(node => node.type?.name === 'HeaderLinks')[0];
-assert.equal(JSON.stringify(primary.props.links.map(item => item.label)), '["臨床記録","記録一覧","主訴別ガイド","対面問診","経穴比較"]');
-assert.equal(JSON.stringify(primary.props.links.map(item => item.href)), '["/clinical/workspace","/notes","/clinical#chief-complaints","/diagnosis?tab=clinical","/tsubo/compare"]');
-assert.equal(nav.ALL_NAV_ITEMS.notes.label, 'マイノート', 'Only the clinical menu uses the record-list label');
+assert.equal(JSON.stringify(primary.props.links.map(item => item.label)), '["臨床記録","主訴別ガイド","対面問診","経穴比較"]');
+assert.equal(JSON.stringify(primary.props.links.map(item => item.href)), '["/clinical/workspace","/clinical#chief-complaints","/diagnosis?tab=clinical","/tsubo/compare"]');
+assert(!menuDestinations.some(href => ['/notes', '/pricing', '/auth/login'].some(path => href.startsWith(path))), 'Retired features stay out of the menu');
 const primaryRows = nodes(primary.type(primary.props)).filter(node => node.type === Link);
-assert.equal(primaryRows.length, 5);
+assert.equal(primaryRows.length, 4);
 assert(primaryRows.every(node => node.props.className.includes('clinical-menu-row')));
 assert(!nodes(primary.type(primary.props)).some(node => node.props?.className === 'site-nav-link-icon'), 'The clinical menu does not repeat decorative icon tiles');
-assert(primaryRows.every(node => !text(node).includes(nav.ALL_NAV_ITEMS[node.props.href === '/notes' ? 'notes' : primary.props.links.find(item => item.href === node.props.href).id].description)), 'Rows remain concise without repeated explanations');
+assert(primaryRows.every(node => !text(node).includes(nav.ALL_NAV_ITEMS[primary.props.links.find(item => item.href === node.props.href).id].description)), 'Rows remain concise without repeated explanations');
 const practice = nodes(clinicalTree).find(node => node.type === 'details');
 assert.equal(practice.props.open, undefined, 'Practice stays collapsed until requested');
 assert.equal(text(nodes(practice).find(node => node.type === 'summary')), '練習する');
@@ -216,9 +215,7 @@ const settings = nodes(owners[0].tree).filter(node => node.type?.name === 'Heade
 assert.equal(installRequested, 1);
 assert.equal(document.activeElement.props.id, 'mobile-more-trigger', 'Install guidance returns to a persistent control');
 clickBottom();
-button('保存一覧3件').props.onClick(); render();
-assert.equal(savedDrawerOpened, 1, 'Saved items remain reachable');
-clickBottom();
+assert(!nodes(owners[0].tree).some(node => node.type === 'button' && /保存一覧/.test(text(node))), 'Retired drawer has no trigger');
 emit(documentEvents, { type: 'pointerdown', target: new Element() }); render();
 assert.equal(byId(menu.SITE_MENU_ID), undefined, 'An outside pointer closes the disclosure');
 clickBottom();
@@ -227,7 +224,7 @@ assert.equal(document.documentElement.dataset.navigationLayout, 'wide', 'The hea
 assert.equal(byId(menu.SITE_MENU_ID), undefined, 'The compact menu closes when its upper control becomes hidden');
 assert.equal(byId('mobile-more-trigger').props['aria-expanded'], false);
 assert(document.activeElement.getClientRects().length, 'Resize moves focus out of hidden menu contents to a visible desktop control');
-assert(document.activeElement.props['aria-controls']?.endsWith('-account'));
+assert(document.activeElement.props['aria-controls']?.endsWith('-settings'));
 desktop = false; window.dispatchEvent(new BrowserEvent('resize')); flushFrames();
 assert.equal(document.documentElement.dataset.navigationLayout, 'compact', 'Returning to a compact layout restores tablet shortcuts without replacing the saved configuration');
 assert.deepEqual(nodes(owners[1].tree).filter(node => node.type === Link).map(node => node.props.href), ['/clinical/workspace', '/practice/haiketsu', '/tsubo', '/library']);
@@ -251,4 +248,4 @@ emit(documentEvents, { type: 'transitionend', target: document.documentElement, 
 assert.equal(document.documentElement.dataset.navigationLayout, 'compact', 'Larger-text compact layouts restore their lower-navigation decision after transition');
 for (const owner of owners) for (const slot of owner.state) slot?.cleanup?.();
 assert.equal(documentEvents.get('transitionend')?.size || 0, 0, 'Unmount removes the font-transition listener');
-console.log('Unified navigation regression passed: five concise clinical destinations, collapsed practice, separate self/interview modes, retained custom comparison shortcut, one panel for both controls, expanded state, toggle/Escape/outside/resize closure, initiating focus return, search/install/saved handoff, and preserved four-slot customization.');
+console.log('Unified navigation regression passed: four concise clinical destinations, collapsed practice, separate self/interview modes, retained custom comparison shortcut, one panel for both controls, expanded state, toggle/Escape/outside/resize closure, initiating focus return, search/install handoff, and preserved four-slot customization.');

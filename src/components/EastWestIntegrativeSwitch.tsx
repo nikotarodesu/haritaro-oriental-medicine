@@ -18,7 +18,6 @@ import {
   Compass
 } from "lucide-react";
 import Link from "next/link";
-import ClipButton from "@/components/ClipButton";
 import { TSUBOS } from "@/data/tsuboData";
 import { Tsubo } from "@/types/oriental";
 
@@ -877,21 +876,6 @@ export default function EastWestIntegrativeSwitch({
                   )}
                 </div>
 
-                <ClipButton
-                  item={{
-                    id: `tsubo-${selectedTsuboDetail.id}`,
-                    type: "tsubo",
-                    title: `${selectedTsuboDetail.name}（${selectedTsuboDetail.code}）`,
-                    subTitle: `${selectedTsuboDetail.meridian} | ${selectedTsuboDetail.bodyPart}`,
-                    points: [selectedTsuboDetail.name],
-                    elements: getMeridianElement(selectedTsuboDetail.meridian),
-                    indications: selectedTsuboDetail.indications,
-                    summary: selectedTsuboDetail.clinicalNote,
-                    caution: selectedTsuboDetail.caution,
-                  }}
-                  variant="icon"
-                  size="sm"
-                />
               </div>
             </div>
 

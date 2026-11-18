@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { 
   Sparkles, 
   ArrowRight, 
@@ -20,7 +19,6 @@ import {
   GraduationCap,
   ArrowUp,
   SlidersHorizontal,
-  FileText,
   FlaskConical
 } from "lucide-react";
 import { trackEvent } from "@/utils/analytics";
@@ -47,8 +45,6 @@ import {
   synthesizeComprehensiveDiagnosis,
   ComprehensiveDiagnosis
 } from "@/data/simulatorData";
-import { saveDraftPatientNote } from "@/utils/draftNote";
-import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import type { SafetyReview } from "@/data/simulatorReasoning";
 import { ACUPOINT_LOOKUP as TSUBOS } from "@/data/acupointLookup";
 import { Tsubo } from "@/types/oriental";
@@ -185,8 +181,6 @@ function getRelatedLectures(
 }
 
 export default function ThreeStageSimulator() {
-  const router = useRouter();
-  const { clinicalStorageOwner = 'guest' } = useClinicalMemo();
   // ステップ1: 八綱
   const [depth, setDepth] = useState<DepthType>("interior");
   const [temp, setTemp] = useState<TemperatureType>("heat");
@@ -247,41 +241,6 @@ export default function ThreeStageSimulator() {
   const [fromDiagnosisInfo, setFromDiagnosisInfo] = useState<{ diagName: string } | null>(null);
   // 経穴詳細からの連動情報（逆引き推論）
   const [fromTsuboInfo, setFromTsuboInfo] = useState<{ code: string; name: string } | null>(null);
-
-  // 診断推論の算出
-  
-  // 臨床ノートへの下書き引き渡し
-  const handleSaveToNoteDraft = () => {
-    const primaryOpt = diagnosis.acupointOptions[0];
-    const secConfig = diagnosis.acupointOptions.length && secondaryQixueshui !== "none" ? SECONDARY_POINT_MAP[secondaryQixueshui] : null;
-    const basePointsStr = primaryOpt 
-      ? `${primaryOpt.primaryAcupoint.name}, ${primaryOpt.secondaryAcupoint.name}`
-      : "";
-    const pointsStr = secConfig 
-      ? (basePointsStr ? `${basePointsStr}、 ${secConfig.primary}、 ${secConfig.secondary}` : `${secConfig.primary}、 ${secConfig.secondary}`)
-      : basePointsStr;
-
-    const fullSyndrome = secConfig 
-      ? `${diagnosis.syndromeName}（兼 ${secConfig.label}）` 
-      : diagnosis.syndromeName;
-
-    const retained = clinicalStorageOwner && saveDraftPatientNote({
-      sourceTool: "臨床弁証シミュレーター",
-      syndrome: fullSyndrome,
-      constitution: `一文の証: ${diagnosis.oneSentenceFormula}${secConfig ? ` ＋ 随証（${secConfig.label}）` : ""}`,
-      chiefComplaint: `八綱・気血水・臓腑経絡の推論（${diagnosis.summary}）`,
-      selectedPointsInput: pointsStr,
-      treatmentPlan: `【臨床弁証シミュレーター推論】\n証名候補: ${fullSyndrome}\n治則: ${diagnosis.treatmentPrinciple.rule}\n介入戦略: ${diagnosis.treatmentPrinciple.strategy}${primaryOpt ? `\n【主病態への配穴候補】: ${primaryOpt.pairName}（${primaryOpt.intendedEffect}）` : ""}${secConfig ? `\n【補助的な病態への配穴候補】: ${secConfig.pairName}（${secConfig.primary}・${secConfig.secondary} / ${secConfig.desc}）` : ""}\n※本内容はシミュレーターによる推論候補・下書きです。確定診断としてではなく、臨床家の所見に基づき編集してご活用ください。`,
-    }, clinicalStorageOwner);
-    if (!retained) { window.alert('下書きを引き継げませんでした。入力は保持しています。保存先とブラウザの保存設定を確認してください。'); return; }
-
-    trackEvent("tool_complete", {
-      tool_id: "simulator",
-      destination_type: "note",
-    });
-
-    router.push("/notes");
-  };
 
   const diagnosis: ComprehensiveDiagnosis = synthesizeComprehensiveDiagnosis(depth, temp, state, qixueshui, zangfu, complexState, fourExams, safetyReview);
 
@@ -1441,19 +1400,10 @@ export default function ThreeStageSimulator() {
                       <span>配穴設計・臨床演習で実践する</span>
                     </div>
                     <p className="text-sm text-[#525B56] dark:text-[#9AA8A1] mt-0.5 leading-relaxed">
-                      この配穴例を参考に、経穴の組み合わせと選んだ理由を考え、学習ノートに記録できます。
+                      この配穴例を参考に、経穴の組み合わせと選んだ理由を考えます。
                     </p>
                   </div>
                   <div className="flex min-w-0 w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
-                    <button
-                      type="button"
-                      onClick={handleSaveToNoteDraft}
-                      aria-label="この内容を臨床ノートに残す"
-                      className="inline-flex min-h-11 min-w-0 w-full max-w-full items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-sm text-center font-bold transition-all sm:w-auto cursor-pointer"
-                    >
-                      <FileText className="w-3.5 h-3.5 shrink-0" />
-                      <span className="min-w-0 whitespace-normal leading-relaxed">臨床ノートへ</span>
-                    </button>
                     <Link
                       href="/practice/haiketsu"
                       aria-label="配穴練習を始める"

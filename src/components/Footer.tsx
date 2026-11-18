@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { SITE_NAME } from "@/config/seo";
+import { SERIES } from "@/config/series";
 import { ChevronDown } from "lucide-react";
 import BrandLogo from "@/components/brand/BrandLogo";
 
 const groups = [
-  { title: "学ぶ", links: [["/learn", "学習ホーム"], ["/curriculum", "全講義の目次"], ["/learn/review", "講義の復習"], ["/articles", "解説記事"], ["/library", "古典・論文"]] },
-  { title: "調べる・記録する", links: [["/tsubo", "経穴辞典"], ["/glossary", "用語集"], ["/clinical", "臨床ツール"], ["/notes", "マイノート"], ["/symptoms", "セルフケア"]] },
+  { title: "調べる", links: [["/tsubo", "ツボから探す"], ["/symptoms", "症状から探す"]] },
+  { title: "学ぶ", links: [["/articles", "解説記事"], ["/diagnosis", "気血水 体質チェック"], ["/glossary", "用語集"], ["/library", "古典・論文"]] },
+  { title: "演習", links: [["/cases", "症例演習"], ["/practice/haiketsu", "配穴演習"]] },
   { title: "運営・出典", links: [["/about", "運営者について"], ["/editorial-policy", "出典・専門確認の状況"], ["/safety", "受診の目安・安全性"], ["/updates", "更新情報"], ["/contact", "お問い合わせ"]] },
 ];
 
@@ -15,7 +17,8 @@ export default function Footer() {
       <div className="site-footer-inner">
         <Link href="/" aria-label={SITE_NAME} className="site-footer-brand"><BrandLogo symbolClassName="h-8 w-8" wordmarkClassName="font-serif text-lg font-bold" /></Link>
         <nav aria-label="主な入口" className="site-footer-primary">
-          <Link href="/learn">学ぶ</Link><Link href="/clinical">臨床</Link><Link href="/tsubo">経穴辞典</Link><Link href="/pricing">料金プラン</Link><Link href="/contact">お問い合わせ</Link>
+          {Object.values(SERIES).map(series => <Link key={series.href} href={series.href}>{series.shortName}</Link>)}
+          <Link href="/contact">お問い合わせ</Link>
         </nav>
         <div className="site-footer-groups site-footer-groups--compact">
           {groups.map(group => <details key={group.title} className="site-footer-disclosure">
@@ -25,7 +28,6 @@ export default function Footer() {
         </div>
         <div className="site-footer-notice space-y-2">
           <p>東洋医学の学習と考え方の整理を支援する教材です。個別の診断・治療を代替しません。急な症状や悪化がある場合は医療機関へご相談ください。</p>
-          <p>Amazonアソシエイトとして、適格販売により収入を得ています。</p>
           <a href="https://note.com/hari_taro" target="_blank" rel="noopener noreferrer" className="ui-text-link">はり太郎のnote（外部サイト）</a>
         </div>
         <div className="site-footer-legal">

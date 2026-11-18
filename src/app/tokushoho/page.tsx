@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
-import { ArrowLeft, ShieldCheck, Mail, FileText, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Mail } from "lucide-react";
 import { pageSocialMetadata } from "@/config/seo";
 
-const pageTitle = "特定商取引法に基づく表記";
-const pageDescription = "「はり太郎の東洋医学」における特定商取引法（通信販売）に基づく法定記載事項をご案内します。";
+const pageTitle = "旧プレミアムプランの特定商取引法に基づく表記";
+const pageDescription = "販売を終了した旧プレミアムプランの販売条件と、過去の取引に関するお問い合わせ先をご案内します。";
 
 export const metadata: Metadata = {
   title: pageTitle,
@@ -28,16 +28,17 @@ export default function TokushohoPage() {
           </Link>
           <span>/</span>
           <span className="text-[#232826] dark:text-[#FAF8F5] font-semibold">
-            特定商取引法に基づく表記
+            旧プレミアムプランの販売条件
           </span>
         </nav>
 
-        <PageIntro eyebrow="販売条件のご案内" title="特定商取引法に基づく表記" description="特定商取引に関する法律第11条に基づき、有料会員サービス等の販売条件を以下の通り表示いたします。" art="reading" compact />
+        <PageIntro title={pageTitle} description="プレミアムプランの販売・自動更新は終了しました。現在の「はり太郎」は無料で利用できます。" art="reading" compact />
 
         {/* 表記テーブルカード */}
         <div className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm space-y-8 text-[#333835] dark:text-[#C5D2DB] text-sm sm:text-base leading-relaxed transition-colors">
           
-          <div className="divide-y divide-[#F2ECE0] dark:divide-[#22303D] border-y border-[#F2ECE0] dark:border-[#22303D]">
+          <h2 className="font-serif text-xl font-bold">販売していたときの条件</h2>
+          <dl className="divide-y divide-[#F2ECE0] dark:divide-[#22303D] border-y border-[#F2ECE0] dark:border-[#22303D]">
             
             {/* 販売事業者名 */}
             <div className="py-4 sm:py-5 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 items-start">
@@ -55,7 +56,7 @@ export default function TokushohoPage() {
                 運営統括責任者
               </dt>
               <dd className="sm:col-span-2 text-[#404743] dark:text-[#C5D2DB]">
-                代表者：はり太郎（消費者庁の規定に基づき、ご請求があった場合は遅滞なく開示いたします）
+                代表者：はり太郎（ご請求があった場合は遅滞なく開示いたします）
               </dd>
             </div>
 
@@ -112,13 +113,6 @@ export default function TokushohoPage() {
                 <p>
                   <strong>プレミアム年額プラン：</strong>年額 9,800円（税込）
                 </p>
-                <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
-                  ※各プランの詳細は{" "}
-                  <Link href="/pricing" className="text-[#1E3D34] dark:text-[#74BA9E] underline">
-                    料金プラン案内ページ
-                  </Link>{" "}
-                  をご確認ください。
-                </p>
               </dd>
             </div>
 
@@ -128,7 +122,7 @@ export default function TokushohoPage() {
                 商品代金以外の必要料金
               </dt>
               <dd className="sm:col-span-2 text-[#404743] dark:text-[#C5D2DB]">
-                当サービスを利用するためのインターネット接続料金、パケット通信料等は利用者のご負担となります。
+                サービス利用に伴うインターネット接続料金、パケット通信料等は利用者の負担でした。
               </dd>
             </div>
 
@@ -139,7 +133,7 @@ export default function TokushohoPage() {
               </dt>
               <dd className="sm:col-span-2 text-[#404743] dark:text-[#C5D2DB]">
                 クレジットカード決済（Visa, Mastercard, American Express, JCB等）<br />
-                ※決済代行会社「Stripe, Inc.」の安全な暗号化決済システムを採用しています。当サイト運営者がクレジットカード番号等の機密情報を保持することはありません。
+                決済はStripe, Inc.が処理し、当サイト運営者はクレジットカード番号を保持しませんでした。
               </dd>
             </div>
 
@@ -150,10 +144,10 @@ export default function TokushohoPage() {
               </dt>
               <dd className="sm:col-span-2 text-[#404743] dark:text-[#C5D2DB] space-y-1">
                 <p>
-                  初回お申し込み時に即時決済が行われます。
+                  初回のお申し込み時に決済されていました。
                 </p>
                 <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
-                  月額プランは初回決済日から1ヶ月ごと、年額プランは1年ごとに自動更新・自動決済されます。
+                  販売期間中の条件では、月額プランは初回決済日から1か月ごと、年額プランは1年ごとに自動更新・自動決済でした。
                 </p>
               </dd>
             </div>
@@ -164,7 +158,7 @@ export default function TokushohoPage() {
                 役務の提供時期
               </dt>
               <dd className="sm:col-span-2 text-[#404743] dark:text-[#C5D2DB]">
-                決済完了後、即時にプレミアム会員機能（全20症例の閲覧・演習、シミュレーター拡張機能、1,000件保存枠等）が解放され、ご利用いただけます。
+                決済完了後、プレミアム会員機能（全20症例の閲覧・演習、シミュレーター拡張機能、1,000件保存枠等）をすぐに利用できる条件でした。
               </dd>
             </div>
 
@@ -175,10 +169,10 @@ export default function TokushohoPage() {
               </dt>
               <dd className="sm:col-span-2 text-[#404743] dark:text-[#C5D2DB] space-y-2">
                 <p>
-                  <strong>解約方法：</strong>次回更新日の前日までに、当サイトのマイページまたはStripe顧客ポータルからいつでも解約手続きを行うことができます。解約手続き完了後も、すでに支払われた有効期限の満了日まではプレミアム機能をご利用いただけます。
+                  <strong>販売期間中の解約方法</strong>　次回更新日の前日までに、マイページまたはStripe顧客ポータルから解約でき、支払い済みの有効期限までプレミアム機能を利用できる条件でした。
                 </p>
                 <p>
-                  <strong>返金・キャンセル：</strong>デジタルコンテンツおよびオンラインサービスの性質上、決済完了後の返金・キャンセル・日割り計算による返金には原則として応じられません。あらかじめご了承の上お申し込みください。
+                  <strong>販売期間中の返金・キャンセル条件</strong>　当時は、決済完了後の返金・キャンセル・日割り返金を原則として受け付けない旨を表示していました。過去のお支払いに関するご質問は、現在の<Link href="/contact" className="underline underline-offset-4">お問い合わせ窓口</Link>へご連絡ください。
                 </p>
               </dd>
             </div>
@@ -193,13 +187,12 @@ export default function TokushohoPage() {
               </dd>
             </div>
 
-          </div>
+          </dl>
 
           {/* フッター補足 */}
           <div className="pt-4 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
-              制定日：2024年4月1日<br />
-              最終改定日：{new Date().getFullYear()}年{new Date().getMonth() + 1}月
+              旧表記の制定日：2024年4月1日
             </p>
             <div className="flex items-center gap-3">
               <Link

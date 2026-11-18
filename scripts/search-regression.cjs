@@ -126,7 +126,7 @@ for (const option of options) {
   assert(option.includes('aria-posinset='));
   assert(option.includes('aria-setsize='));
 }
-assert(render('学習ノート').includes('href="/notes?tab=learning"'));
+assert(!render('学習ノート').includes('href="/notes'), 'Retired notebook destinations stay out of public search results');
 const lectureReview = render('講義の復習');
 assert(lectureReview.includes('href="/learn/review"'), 'Lecture review remains searchable after exam practice is retired');
 assert(!render('国家試験').includes('href="/kokushi') && !render('国試').includes('href="/kokushi'), 'Retired exam destinations cannot reappear through an old search term');
@@ -157,6 +157,7 @@ const firstPoint = shoulderUrls.findIndex(url => url.startsWith('/tsubo/'));
 const firstPaper = shoulderUrls.findIndex(url => url.startsWith('/library#paper-'));
 assert(firstPoint >= 0 && (firstPaper === -1 || firstPoint < firstPaper), 'Points appear before specialized papers for a symptom query');
 assert.equal(optionUrls(render('合谷'))[0], '/tsubo/li4', 'The whole catalog retains exact point-name lookup');
+assert.equal(optionUrls(render('虎口'))[0], '/tsubo/li4', 'An exact alternate point name resolves to its canonical point first');
 assert.equal(optionUrls(render('合谷とは'))[0], '/tsubo/li4', 'A definition question about a point retains direct lookup');
 for (const query of ['陰陽', '陰陽とは', '陰陽 意味', 'いんよう']) {
   const urls = optionUrls(render(query));

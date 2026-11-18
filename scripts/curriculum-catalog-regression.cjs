@@ -211,7 +211,8 @@ for (const chapter of catalog.chapters) {
   if (clinicalStage) {
     assert(markup.includes('aria-label="この講義を実践につなぐ"'), chapter.id + ': later lectures keep the real clinical application guide');
     assert(markup.includes('href="/simulator#case-training"') && markup.includes('6段階の症例演習で振り返る'));
-    assert(markup.includes('配穴設計ツール') && markup.includes('この講義を臨床ノートに記録'));
+    assert(markup.includes('配穴設計ツール'));
+    assert(!markup.includes('この講義を臨床ノートに記録') && !markup.includes('href="/notes"'));
   } else {
     assert(!markup.includes('aria-label="この講義を実践につなぐ"'), chapter.id + ': early lectures do not render clinical application prompts');
     assert.equal(markup.includes('aria-label="この講義で練習すること"'), ['intro', 'zangfu', 'meridians'].includes(lecture.seriesId), chapter.id + ': new foundation guides render as learning exercises');

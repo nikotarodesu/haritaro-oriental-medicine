@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-require-imports -- Offline async-provider and bundle-boundary regression. */
+/* eslint-disable @typescript-eslint/no-require-imports -- Offline guest-provider and public bundle-boundary regression. */
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -10,9 +10,6 @@ const React = require('react');
 const { createDataLoader } = require('./data-loader.cjs');
 const root = path.resolve(__dirname, '..');
 const load = createDataLoader();
-const userA = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
-const userB = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
-const deferred = () => { let resolve, reject; const promise = new Promise((yes, no) => { resolve = yes; reject = no; }); return { promise, resolve, reject }; };
 const settle = () => new Promise(resolve => setTimeout(resolve, 5));
 
 function providerHarness(file, component, overrides, storage = new Map()) {
@@ -36,131 +33,79 @@ function providerHarness(file, component, overrides, storage = new Map()) {
   }, { filename: source });
   return {
     render() { cursor = 0; const tree = exports[component]({ children: null }); while (scheduled.length) scheduled.shift()(); return tree.props.value; },
-    event(name) { for (const listener of listeners.get(name) || []) listener({}); },
+    event(name, data) { for (const listener of listeners.get(name) || []) listener(data); },
     unmount() { for (const slot of slots) slot?.cleanup?.(); },
   };
 }
 
-async function authLoading() {
-  const sdk = deferred(), identity = deferred();
-  let callback, subscriptions = 0, unsubscribed = 0, loadCount = 0;
-  let getUser = () => identity.promise;
-  const client = { auth: { getUser: () => getUser(), onAuthStateChange(handler) { callback = handler; subscriptions++; return { data: { subscription: { unsubscribe() { unsubscribed++; } } } }; }, signOut: async () => ({ error: null }) } };
-  const app = providerHarness('src/contexts/AuthContext.tsx', 'AuthProvider', { '@/lib/supabase/browser': { isSupabaseConfigured: () => true, loadBrowserClient: () => { loadCount++; return sdk.promise; } } });
-  try {
-    assert.equal(app.render().isLoading, true);
-    assert.equal(loadCount, 1, 'Identity restoration starts immediately without an idle delay');
-    await settle();
-    assert.equal(app.render().isLoading, true, 'Loading the SDK must not expose guest state as ready');
-    sdk.resolve(client); await settle();
-    assert.equal(subscriptions, 1, 'Subscribe immediately once the existing singleton is available');
-    assert.equal(app.render().isLoading, true, 'Loading stays pending through server identity verification');
-    identity.resolve({ data: { user: { id: userA, app_metadata: { role: 'premium', subscription: { status: 'active', currentPeriodEnd: Date.now() + 60000 } }, user_metadata: { role: 'admin' }, created_at: '2026-10-01' } }, error: null });
-    await settle();
-    let state = app.render();
-    assert.equal(state.user.id, userA);
-    assert.equal(state.user.role, 'premium', 'Only server-owned role metadata controls access');
-    assert.equal(state.isPremium, true);
-    assert.equal(state.isLoading, false);
-    callback('SIGNED_OUT', null);
-    assert.equal(app.render().user, null, 'Sign-out still clears the active identity');
-    getUser = async () => ({ data: { user: { id: userB, app_metadata: { role: 'free' }, user_metadata: {}, created_at: '2026-10-01' } }, error: null });
-    callback('SIGNED_IN', { user: { id: userB } }); await settle();
-    state = app.render();
-    assert.equal(state.user.id, userB, 'An account switch still verifies the new identity');
-    assert.equal(state.isPremium, false);
-    assert.equal(subscriptions, 1, 'Restoration and account switches reuse the subscription');
-  } finally { app.unmount(); }
-  assert.equal(unsubscribed, 1);
-
-  const pending = deferred(); let lateSubscriptions = 0;
-  const unmounted = providerHarness('src/contexts/AuthContext.tsx', 'AuthProvider', { '@/lib/supabase/browser': { isSupabaseConfigured: () => true, loadBrowserClient: () => pending.promise } });
-  unmounted.render(); unmounted.unmount();
-  pending.resolve({ auth: { onAuthStateChange() { lateSubscriptions++; }, getUser: async () => ({ data: { user: null } }) } }); await settle();
-  assert.equal(lateSubscriptions, 0, 'A late SDK load cannot subscribe after unmount');
-
-  let attempts = 0, recoveredSubscriptions = 0;
-  const retry = providerHarness('src/contexts/AuthContext.tsx', 'AuthProvider', { '@/lib/supabase/browser': { isSupabaseConfigured: () => true, loadBrowserClient: async () => { if (++attempts === 1) throw new Error('chunk unavailable'); return { auth: { getUser: async () => ({ data: { user: null }, error: null }), onAuthStateChange() { recoveredSubscriptions++; return { data: { subscription: { unsubscribe() {} } } }; } } }; } } });
-  try {
-    retry.render(); await settle(); assert.equal(retry.render().isLoading, false);
-    retry.event('focus'); await settle();
-    assert.equal(recoveredSubscriptions, 1, 'A later focus can recover both loading and the auth subscription');
-  } finally { retry.unmount(); }
-
-  const unconfigured = providerHarness('src/contexts/AuthContext.tsx', 'AuthProvider', { '@/lib/supabase/browser': { isSupabaseConfigured: () => false, loadBrowserClient() { throw new Error('Unconfigured pages must not load the SDK'); } } });
-  try { unconfigured.render(); await settle(); assert.equal(unconfigured.render().isLoading, false); } finally { unconfigured.unmount(); }
-}
-
-async function learningLoading(switchAccount) {
-  const sdk = deferred(), storage = new Map(), writes = [], reads = [];
-  let auth = { user: { id: userA }, isLoading: false }, identityCalls = 0;
+async function guestLearning() {
+  const guestKey = 'haritaro-learning-v2:guest';
+  const legacyKey = 'haritaro-learning-progress-v1';
+  const legacy = JSON.stringify({ completedLectures: { 'old-progress': true } });
+  const oldAccountKey = 'haritaro-learning-v2:former-account';
+  const oldAccountData = JSON.stringify({ 'lecture:private': { value: true } });
+  const storage = new Map([[legacyKey, legacy], [oldAccountKey, oldAccountData]]);
+  let adapter;
   const app = providerHarness('src/contexts/LearningSyncContext.tsx', 'LearningSyncProvider', {
-    '@/contexts/AuthContext': { useAuth: () => auth },
-    '@/lib/supabase/browser': { loadBrowserClient: () => sdk.promise },
-    '@/utils/learningStorageBridge': { setLearningStorageAdapter() {} },
+    '@/utils/learningStorageBridge': { setLearningStorageAdapter(value) { adapter = value; } },
   }, storage);
-  const client = { auth: { getUser: async () => { identityCalls++; return { data: { user: auth.user }, error: null }; } },
-    from(name) { assert.equal(name, 'learning_entries'); return { select() { return this; }, eq(column, owner) { assert.equal(column, 'user_id'); reads.push(owner); return this; }, order() { return this; }, range: async () => ({ data: [], error: null }) }; },
-    rpc: async (name, params) => { assert.equal(name, 'sync_learning_entries'); writes.push(...params.entries.map(entry => ({ owner: auth.user.id, ...entry }))); return { data: params.entries, error: null }; },
-  };
   try {
-    app.render(); await settle();
-    let current = app.render(); assert.equal(current.ready, true, 'Account-local history is ready while the cloud SDK loads');
-    current.setEntry('lecture:before-load', true);
-    assert.equal(app.render().values['lecture:before-load'], true, 'Local progress saves immediately without waiting for SDK loading');
-    if (switchAccount) {
-      auth = { user: { id: userB }, isLoading: false };
-      assert.equal(app.render().ready, false, 'Prior account data is not shown during a switch');
-      await settle(); current = app.render();
-      assert.equal(current.values['lecture:before-load'], undefined);
-      current.setEntry('lecture:account-b', true);
-    }
-    sdk.resolve(client); await settle(); app.render();
-    if (switchAccount) {
-      assert.equal(identityCalls, 1, 'Stale account work stops before identity verification or remote access');
-      assert.deepEqual(reads, [userB]);
-      assert(writes.every(item => item.owner === userB && item.entry_key !== 'lecture:before-load'));
-      assert.equal(JSON.parse(storage.get('haritaro-learning-v2:' + userA))['lecture:before-load'].value, true);
-    } else {
-      assert(writes.some(item => item.owner === userA && item.entry_key === 'lecture:before-load' && item.value === true), 'An update made while loading is included in the initial cloud merge');
-    }
+    assert.equal(app.render().ready, false);
+    await settle();
+    const ready = app.render();
+    assert.equal(ready.ready, true);
+    assert.equal(ready.status, 'local');
+    assert.equal(ready.values['lecture:old-progress'], true);
+    assert.equal(ready.values['lecture:private'], undefined);
+    assert.equal(adapter.owner, 'guest');
+    ready.setEntry('lecture:new-progress', true);
+    assert.equal(app.render().values['lecture:new-progress'], true);
+    assert.equal(JSON.parse(storage.get(guestKey))['lecture:new-progress'].value, true);
+    assert.equal(storage.get(oldAccountKey), oldAccountData);
+    assert.equal(storage.get(legacyKey), legacy);
   } finally { app.unmount(); }
-}
-
-async function lazyClinicalOperations() {
-  const calls = [], exports = {};
-  const source = 'src/lib/supabase/lazyClinicalMemosDb.ts';
-  const js = ts.transpileModule(fs.readFileSync(source, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
-  const db = { upsertPatientNoteToSupabase(...args) { calls.push({ method: 'upsertPatientNoteToSupabase', args }); return Promise.resolve(true); } };
-  vm.runInNewContext(js, { exports, require: id => { assert.equal(id, './clinicalMemosDb'); return db; } });
-  const note = { id: 'note' };
-  const operation = exports.upsertPatientNoteToSupabase(userA, note);
-  assert.equal(calls.length, 0, 'Cloud code is not evaluated synchronously in the local save handler');
-  assert.equal(await operation, true);
-  assert.equal(calls[0].args[0], userA);
-  assert.equal(calls[0].args[1], note, 'The saved record is passed unchanged');
+  assert.equal(adapter, null);
 }
 
 function staticBoundaries() {
   const seen = new Set();
-  function visit(file) {
-    file = path.resolve(root, file);
-    if (!path.extname(file)) file += fs.existsSync(file + '.tsx') ? '.tsx' : '.ts';
-    if (seen.has(file) || file.endsWith('.json')) return;
+  const appRoot = path.join(root, 'src', 'app');
+  function visit(candidate) {
+    if (/\.(?:css|json|svg|woff2?|png|jpe?g|webp|avif)$/.test(candidate)) return;
+    const file = [candidate, ...['.ts', '.tsx', '.js', '.jsx'].map(ext => candidate + ext), ...['index.ts', 'index.tsx'].map(name => path.join(candidate, name))]
+      .find(option => /\.[jt]sx?$/.test(option) && fs.existsSync(option) && fs.statSync(option).isFile());
+    assert(file, 'Unresolved local dependency: ' + candidate);
+    if (seen.has(file)) return;
     seen.add(file);
-    assert(!file.endsWith(path.normalize('supabase/client.ts')) && !file.endsWith(path.normalize('supabase/clinicalMemosDb.ts')), 'Provider static dependencies exclude the cloud runtime: ' + file);
+    const relative = path.relative(root, file).replaceAll(path.sep, '/');
+    assert(!/(?:^|\/)lib\/supabase\//.test(relative), 'Public routes exclude the Supabase runtime: ' + relative);
+    assert(!/(?:AuthContext|ClinicalMemoContext|GoogleAuthForm|\/lib\/billing)\./.test(relative), 'Public routes exclude retired account modules: ' + relative);
     const ast = ts.createSourceFile(file, fs.readFileSync(file, 'utf8'), ts.ScriptTarget.Latest, true);
-    for (const node of ast.statements) {
-      if (!(ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) || !node.moduleSpecifier || node.isTypeOnly || node.importClause?.isTypeOnly) continue;
-      const bindings = node.importClause?.namedBindings;
-      if (bindings && ts.isNamedImports(bindings) && !node.importClause.name && bindings.elements.every(item => item.isTypeOnly)) continue;
-      const id = node.moduleSpecifier.text;
-      assert(!id.startsWith('@supabase/'), 'SDK import belongs behind a dynamic boundary: ' + file);
-      if (id.startsWith('@/')) visit('src/' + id.slice(2));
-      else if (id.startsWith('.')) visit(path.resolve(path.dirname(file), id));
+    function dependency(id) {
+      assert(!id.startsWith('@supabase/') && id !== 'stripe', 'Public routes exclude auth and payment SDKs: ' + relative);
+      if (id.startsWith('@/')) visit(path.join(root, 'src', id.slice(2)));
+      if (id.startsWith('.')) visit(path.resolve(path.dirname(file), id));
     }
+    function inspect(node) {
+      if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) {
+        if (node.moduleSpecifier && ts.isStringLiteralLike(node.moduleSpecifier) && !node.isTypeOnly && !node.importClause?.isTypeOnly) {
+          const bindings = node.importClause?.namedBindings;
+          if (!(bindings && ts.isNamedImports(bindings) && !node.importClause.name && bindings.elements.every(item => item.isTypeOnly))) {
+            dependency(node.moduleSpecifier.text);
+          }
+        }
+      } else if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || ts.isIdentifier(node.expression) && node.expression.text === 'require')) {
+        if (node.arguments.length && ts.isStringLiteralLike(node.arguments[0])) dependency(node.arguments[0].text);
+      }
+      ts.forEachChild(node, inspect);
+    }
+    inspect(ast);
   }
-  for (const source of ['src/contexts/AuthContext.tsx', 'src/contexts/LearningSyncContext.tsx', 'src/contexts/ClinicalMemoContext.tsx']) visit(source);
+  for (const entry of fs.readdirSync(appRoot, { recursive: true, withFileTypes: true })) {
+    if (entry.isFile() && /^(?:page|layout)\.tsx$/.test(entry.name)) visit(path.join(entry.parentPath, entry.name));
+  }
+  assert(seen.size > 100, 'The public route graph must include actual route dependencies');
+  return seen.size;
 }
 
 function buildMeasurements() {
@@ -171,7 +116,7 @@ function buildMeasurements() {
     let rawBytes = 0, gzipBytes = 0;
     for (const script of scripts) {
       const bytes = fs.readFileSync(path.join(root, '.next', decodeURIComponent(script)));
-      assert(!bytes.includes('AuthApiError') && !bytes.includes('auth/v1'), route + ': initial scripts exclude the dynamically loaded authentication SDK');
+      assert(!bytes.includes('AuthApiError') && !bytes.includes('auth/v1') && !bytes.includes('sync_learning_entries'), route + ': initial scripts exclude authentication and cloud synchronization');
       rawBytes += bytes.length; gzipBytes += zlib.gzipSync(bytes).length;
     }
     measurements.push({ route, scriptCount: scripts.length, rawBytes, gzipBytes });
@@ -179,13 +124,9 @@ function buildMeasurements() {
   console.log(JSON.stringify({ note: 'Modern initial script tags in the local build; gzip estimates, not total post-hydration downloads or speed scores.', measurements }, null, 2));
 }
 
-const deadline = setTimeout(() => { console.error('Provider loading regression timed out while awaiting an unresolved async operation.'); process.exit(1); }, 15000);
 (async () => {
-  staticBoundaries();
-  await authLoading();
-  await learningLoading(false);
-  await learningLoading(true);
-  await lazyClinicalOperations();
+  const modules = staticBoundaries();
+  await guestLearning();
   if (process.argv.includes('--build-output')) buildMeasurements();
-  console.log('PASS: deferred SDK boundary, verified auth readiness/subscription/recovery, late-load cleanup, immediate local saves and account-safe initial synchronization.');
-})().catch(error => { console.error(error); process.exitCode = 1; }).finally(() => clearTimeout(deadline));
+  console.log('PASS: ' + modules + ' public route modules exclude auth, cloud and Stripe; guest progress saves locally and preserves former account data.');
+})().catch(error => { console.error(error); process.exitCode = 1; });

@@ -152,9 +152,10 @@ assert.equal(writes.filter(write => write.key.startsWith('attempt:')).length, 2)
 assert(modalText(tree).includes('正解です。解説で考え方を確認'));
 assert(modalText(tree).includes(wrong.explanation), 'A correct result remains visible until closing');
 assert(!modalNodes(tree).some(node => node.type === 'button' && modalText(node).includes('回答して判定する')));
-owner = 'learner-b'; values = {}; renderModal();
-assert(!modalText(tree).includes(wrong.questionText), 'An identity change cannot retain the previous learner practice set');
-owner = 'learner-a'; values = { ['quiz:' + latest.questionId]: latest }; renderModal();
+open = false; renderModal();
+assert.equal(tree, null);
+values = { ['quiz:' + latest.questionId]: latest };
+open = true; renderModal();
 assert(!modalText(tree).includes(wrong.questionText), 'Reopening uses current weak questions rather than the completed temporary set');
 const retiredQuestion = LEARNING_QUESTIONS.find(item => item.kind === 'exam');
 const retiredRecord = { ...wrong, questionId: retiredQuestion.id, lectureId: retiredQuestion.lectureId,
@@ -172,4 +173,4 @@ values = { ...values, ['quiz:' + wrong.questionId]: wrong };
 open = false; renderModal(); open = true; renderModal();
 assert(modalText(tree).includes(wrong.questionText), 'Current lecture mistakes remain available alongside preserved exam history');
 assert(!modalText(tree).includes(retiredRecord.questionText));
-console.log('Passed: actual provider validation, immutable history, retry schedules, explicit clear semantics, correct/incorrect modal practice, account isolation and retired-exam history without new public practice.');
+console.log('Passed: actual provider validation, immutable history, retry schedules, explicit clear semantics, correct/incorrect modal practice, reopen behavior and retired-exam history without new public practice.');

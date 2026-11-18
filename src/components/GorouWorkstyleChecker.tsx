@@ -1,11 +1,9 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { useRouter } from "next/navigation";
 import {
   Activity,
   Sparkles,
-  ArrowRight,
   RotateCcw,
   CheckCircle2,
   AlertTriangle,
@@ -17,11 +15,8 @@ import {
   ChevronRight,
   ShieldCheck,
   Stethoscope,
-  FileText,
 } from "lucide-react";
 import { getGogyoColor, GOGYO_COLORS } from "@/utils/gogyoColor";
-import { saveDraftPatientNote } from "@/utils/draftNote";
-import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 
 // 五労の定義型
 export type GorouId = "kyushi" | "kyuza" | "kyuritsu" | "kyukou" | "kyuga";
@@ -232,8 +227,6 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
 };
 
 export default function GorouWorkstyleChecker() {
-  const router = useRouter();
-  const { clinicalStorageOwner = 'guest' } = useClinicalMemo();
   const [selectedGorou, setSelectedGorou] = useState<GorouId[]>([]);
   const [activeTab, setActiveTab] = useState<"radar" | "action" | "tsubo">("radar");
 
@@ -355,18 +348,6 @@ export default function GorouWorkstyleChecker() {
 
     return { name, element, kanji, harmTissue, score: max };
   }, [organScores]);
-
-  const handleSaveToNoteDraft = () => {
-    const retained = clinicalStorageOwner && saveDraftPatientNote({
-      sourceTool: "五労チェッカー",
-      constitution: `五労の学習分類：${mostFatiguedOrgan.name}（${mostFatiguedOrgan.element}行）`,
-      chiefComplaint: `選択した生活習慣（${selectedGorou.map((id) => GOROU_DEFS[id].classicName).join("・")}）※症状や原因を確認した記録ではありません`,
-      selectedPointsInput: selectedGorou.map((id) => GOROU_DEFS[id].quickTsubo.name).join(", "),
-      treatmentPlan: `【五労チェック結果】\n教材内で最も点数が高い分類: ${mostFatiguedOrgan.name}（${mostFatiguedOrgan.harmTissue} / 学習用点数${mostFatiguedOrgan.score}/100）\n選択パターン: ${selectedGorou.map((id) => `${GOROU_DEFS[id].classicName}（${GOROU_DEFS[id].modernTitle}）`).join("、")}\n休憩・動作の例:\n${selectedGorou.map((id) => `・${GOROU_DEFS[id].classicName}: ${GOROU_DEFS[id].chuyoAction}`).join("\n")}\n※固定値の平均を換算した教材の点数です。臓器負荷・疲労度・疾患リスクを測定した記録ではありません。経穴は学習例で、施術を決めた記録ではありません。症状や医学的な評価は別に確認してください。`,
-    }, clinicalStorageOwner);
-    if (!retained) { window.alert('下書きを引き継げませんでした。入力は保持しています。保存先とブラウザの保存設定を確認してください。'); return; }
-    router.push("/notes");
-  };
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -609,22 +590,6 @@ export default function GorouWorkstyleChecker() {
               </p>
             </div>
 
-            {/* 臨床ノートへの連携導線 */}
-            <div className="mt-3 pt-3 border-t border-[#E5DEC9] dark:border-[#2A3B4A] flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-              <div className="flex items-center gap-1.5 text-xs text-[#59615D] dark:text-[#A0B0BC]">
-                <FileText className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-                <span>選んだ生活習慣、学習用の点数、休憩の例を臨床ノートの下書きに引き継ぎます</span>
-              </div>
-              <button
-                type="button"
-                onClick={handleSaveToNoteDraft}
-                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs font-bold shadow-xs transition-all shrink-0 cursor-pointer"
-              >
-                <FileText className="w-3.5 h-3.5" />
-                <span>この内容を臨床ノートに残す</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
           </div>
 
           {/* 選択された五労の中庸アクションカード */}

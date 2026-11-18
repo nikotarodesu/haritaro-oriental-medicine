@@ -206,6 +206,7 @@ vm.runInNewContext(pageJs, {
     if (id === '@/config/seo') return load('src/config/seo');
     if (id === '@/data/articleData') return { getArticlePreviews: () => [] };
     if (id === '@/components/diagnosis/DiagnosisClient') return { default: 'DiagnosisClient' };
+    if (id === '@/utils/diagnosisStudyLinks') return load('src/utils/diagnosisStudyLinks');
     throw Error(`Unexpected page dependency ${id}`);
   },
 }, { filename: 'src/app/diagnosis/page.tsx' });

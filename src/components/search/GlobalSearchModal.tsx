@@ -30,7 +30,7 @@ import { SEARCH_CATALOG } from "@/data/searchCatalog";
 import type { SearchResultItem } from "@/types/searchCatalog";
 
 const SEARCH_INDEX = SEARCH_CATALOG.map(prepareSearchItem);
-const SEARCH_SHORTCUTS = SEARCH_CATALOG.filter(item => ["clinical-home", "tool-kokushi", "tool-library", "tool-learning-notes", "tool-basics-cun", "tool-diagnosis-self"].includes(item.id));
+const SEARCH_SHORTCUTS = SEARCH_CATALOG.filter(item => ["clinical-home", "tool-kokushi", "tool-library", "tool-basics-cun", "tool-diagnosis-self"].includes(item.id));
 
 const RECENT_SEARCHES_KEY = "haritaro_recent_searches";
 

@@ -2,6 +2,7 @@ import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
 import DiagnosisClient from "@/components/diagnosis/DiagnosisClient";
 import { getArticlePreviews } from "@/data/articleData";
+import { getDiagnosisStudyLinks } from "@/utils/diagnosisStudyLinks";
 
 const RELATED_ARTICLE_IDS = ["science-of-pulse-diagnosis", "science-of-abdominal-diagnosis", "science-of-tongue-diagnosis"];
 
@@ -127,7 +128,11 @@ export default async function DiagnosisPage({ searchParams }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <DiagnosisClient initialTab={initialTab} relatedArticles={getArticlePreviews(RELATED_ARTICLE_IDS)} />
+      <DiagnosisClient
+        initialTab={initialTab}
+        relatedArticles={getArticlePreviews(RELATED_ARTICLE_IDS)}
+        studyLinks={getDiagnosisStudyLinks()}
+      />
     </>
   );
 }

@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
-import { Lock, Eye, AlertCircle, ArrowLeft, Mail, CreditCard, UserCheck } from "lucide-react";
+import { Lock, Eye, AlertCircle, ArrowLeft, Mail, UserCheck } from "lucide-react";
 import { pageSocialMetadata } from "@/config/seo";
 
 const pageTitle = "プライバシーポリシー・免責事項";
-const pageDescription = "「はり太郎の東洋医学」のプライバシーポリシー、免責事項、会員情報・決済情報の保護、アフィリエイトプログラム、著作権方針についてご案内します。";
+const pageDescription = "「はり太郎」の個人情報の取り扱い、広告配信、アクセス解析、免責事項、著作権方針をご案内します。";
 
 export const metadata: Metadata = {
   title: pageTitle,
@@ -29,11 +29,11 @@ export default function PrivacyPage() {
           </span>
         </nav>
 
-        <PageIntro eyebrow="情報の取り扱い" title="プライバシーポリシー・免責事項" description="個人情報・学習データ・決済情報の扱いと、サイト利用上の免責事項をご案内します。" art="reading" compact />
+        <PageIntro eyebrow="情報の取り扱い" title="プライバシーポリシー・免責事項" description="取得する情報、広告やアクセス解析での外部送信、サイト利用上の免責事項をご案内します。" art="reading" compact />
 
         <nav aria-label="このページの目次" className="grid gap-2 sm:grid-cols-2">
             <a href="#policy-section-2" className="page-secondary-action"><UserCheck size={18} aria-hidden="true" />取得する情報</a>
-            <a href="#policy-section-3" className="page-secondary-action"><CreditCard size={18} aria-hidden="true" />決済情報</a>
+            <a href="#policy-section-4" className="page-secondary-action"><Eye size={18} aria-hidden="true" />広告配信</a>
             <a href="#policy-section-5" className="page-secondary-action"><Eye size={18} aria-hidden="true" />アクセス解析</a>
             <a href="#policy-section-6" className="page-secondary-action"><AlertCircle size={18} aria-hidden="true" />免責事項</a>
         </nav>
@@ -48,7 +48,7 @@ export default function PrivacyPage() {
               <span>1. 基本方針</span>
             </h2>
             <p>
-              「はり太郎の東洋医学」（以下「当サイト」）は、ご利用者様のプライバシーを尊重し、個人情報の保護に関する法律（個人情報保護法）その他の関係法令およびガイドラインを遵守するとともに、個人情報の適正な収集・利用および安全管理に万全を期して努めます。
+              「はり太郎」（以下「当サイト」）は、個人情報の保護に関する法律（個人情報保護法）その他の関係法令およびガイドラインに従い、収集した情報を利用目的の範囲で取り扱い、安全管理に努めます。
             </p>
           </section>
 
@@ -64,79 +64,54 @@ export default function PrivacyPage() {
             <div className="space-y-3 pl-2">
               <div>
                 <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-base">
-                  （1）会員登録および認証に関する情報
+                  （1）お問い合わせ情報
                 </h3>
                 <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
-                  メールアドレス、表示名、認証プロバイダ（Google等）から提供される識別子等を取得します。これらは、本人認証、アカウント管理、有料機能の権限判定にのみ利用します。
+                  お問い合わせ時にいただいた氏名、メールアドレス、内容を、回答・連絡およびサイトの改善に利用します。
                 </p>
               </div>
 
               <div>
                 <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-base">
-                  （2）学習履歴および利用データ
+                  （2）ブラウザに保存する情報
                 </h3>
                 <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
-                  症例演習の解答進捗、お気に入り経穴、作成された学習ノート等のデータは、ユーザーご自身の学習管理および利便性向上のために保存・利用されます。
-                </p>
-              </div>
-
-              <div>
-                <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-base">
-                  （3）臨床ノート・マイノート機能における直接識別情報の非保持とデータ保護
-                </h3>
-                <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] mt-0.5 leading-relaxed">
-                  マイノート（臨床記録機能）では、患者様のプライバシー保護を最優先とし、患者様の氏名・電話番号・住所・生年月日などの直接個人を識別できる情報はデータベースに入力項目や保存領域を設けておらず、収集・保持いたしません。カルテ番号（例: PT-001）や記号、年代、主訴、配穴、施術メモのみを記録対象とします。※利用者ご自身におかれましても、自由入力欄やメモに個人が特定されうる情報を記入しないよう管理をお願いしております。また、クラウド同期を利用する際は、データベースの行レベルセキュリティ（RLS）により、認証されたご本人のアカウントからのみアクセスできるよう制限して安全に管理します。
-                </p>
-              </div>
-
-              <div>
-                <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-base">
-                  （4）お問い合わせ情報
-                </h3>
-                <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
-                  お問い合わせフォームより送信されたお名前、メールアドレス、ご相談内容は、お問い合わせへの回答・連絡およびサービス改善にのみ利用します。
+                  表示の設定や記事を読んだ位置、演習の進捗などを、同じブラウザで利用できるように端末内に保存することがあります。ブラウザの設定からサイトデータを削除できます。
                 </p>
               </div>
             </div>
           </section>
 
-          {/* 3. 決済情報の取り扱い（Stripe決済委託） */}
+          {/* 3. 終了した会員サービスの情報 */}
           <section id="policy-section-3" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2 flex items-center gap-2">
-              <CreditCard className="w-4 h-4" />
-              <span>3. 決済情報の取り扱いおよび委託</span>
+              <Lock className="w-4 h-4" />
+              <span>3. 終了した会員サービスの情報</span>
             </h2>
-            <div className="p-3.5 sm:p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EBE4D5] dark:border-[#22303D] space-y-2">
-              <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-base">
-                クレジットカード情報の非保持化と暗号化
-              </h3>
-              <p className="text-[#404743] dark:text-[#C5D2DB]">
-                プレミアム会員の決済処理には、グローバル基準（PCI DSS レベル1準拠）を満たす決済代行業者「Stripe, Inc.」を採用しております。
-              </p>
-              <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
-                クレジットカード情報はStripe社のセキュアなサーバーへ直接暗号化送信され、当サイトのサーバーには一切保存・保持されません。
-              </p>
-            </div>
+            <p>
+              会員登録、ログイン、月額・年額の有料プラン、マイノートは終了しました。これらの機能に伴うアカウント情報、決済情報、ノートの新規収集は終了しています。
+            </p>
+            <p>
+              旧サービスで取得した登録情報やクラウド保存されたデータが残っている場合は、安全管理のもと、お問い合わせへの対応や法令上必要な記録管理に取り扱いを限ります。過去の決済はStripeが処理し、カード番号は当サイトのサーバーに保存していません。
+            </p>
+            <p>
+              旧データについての開示、訂正、削除等のご相談は、<Link href="/contact" className="underline underline-offset-4">お問い合わせ</Link>からご連絡ください。
+            </p>
           </section>
 
-          {/* 4. 広告配信・アフィリエイトプログラムについて */}
+          {/* 4. 広告配信 */}
           <section id="policy-section-4" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
-              4. 広告配信・アフィリエイトプログラムについて
+              4. Google AdSenseによる広告配信
             </h2>
-            <div className="p-3.5 sm:p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EBE4D5] dark:border-[#22303D] space-y-2">
-              <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-base">
-                Amazonアソシエイト・プログラムに関する表示
-              </h3>
-              <p className="text-[#404743] dark:text-[#C5D2DB] font-medium">
-                当サイトはAmazonアソシエイト・プログラムの参加者であり、適格販売により収入を得ています。
-              </p>
-              <p className="text-[#737C77] dark:text-[#8899A6] text-sm">
-                第三者がコンテンツおよび宣伝を提供し、訪問者から直接情報を収集し、訪問者のブラウザにクッキー（Cookie）を設定したりこれを認識したりする場合があります。
-              </p>
-            </div>
             <p>
-              当サイトで紹介している書籍・文献リンクには、Amazonアソシエイト等のアフィリエイトリンクが含まれる場合があります。リンク先の商品は当サイトが販売・管理しているものではなく、リンク先販売元の利用規約・プライバシーポリシーが適用されます。商品の購入や詳細については、リンク先の各販売店にお問い合わせください。
+              広告を掲載するページでは、Googleおよび第三者の広告配信事業者が、広告の表示・効果測定や不正利用の検出のため、Cookieの保存・読み取りを行い、ページへのアクセスを記録するタグ（ウェブビーコン）、IPアドレス、端末やブラウザに関する識別子、ページの閲覧情報を取得することがあります。これらの情報はGoogleや該当する広告配信事業者に送信されます。
+            </p>
+            <p>
+              広告のパーソナライズが有効な場合、Googleや配信事業者は当サイトや他のサイトでの閲覧情報等を広告の選択に利用することがあります。設定は<a href="https://myadcenter.google.com/" className="underline underline-offset-4">Google マイ アド センター</a>で確認・変更できます。同意の確認が必要な地域では、サイト上の同意画面で設定を選べます。
+            </p>
+            <p>
+              詳しくは<a href="https://policies.google.com/technologies/partner-sites?hl=ja" className="underline underline-offset-4">Googleのサービスを使用するサイトやアプリの情報の取り扱い</a>をご確認ください。
             </p>
           </section>
 
@@ -147,16 +122,13 @@ export default function PrivacyPage() {
               <span>5. アクセス解析ツールについて</span>
             </h2>
             <p>
-              当サイトでは、アクセス動向の把握やサイト品質向上のためにCookie（クッキー）を使用するアクセス解析ツールを利用することがあります。Cookieによりブラウザが識別されますが、個人を特定する情報は含まれません。ブラウザの設定によりCookieを無効化することも可能です。
+              当サイトは、アクセス動向の把握やサイトの改善のために、次のアクセス解析を利用することがあります。ブラウザの設定でCookieを無効にできます。
             </p>
             <p>
-              Google Analytics 4では、公開ページの閲覧や学習操作の集計を行います。検索語、ノート本文、問診内容、アカウントIDは送信しません。
+              Google Analytics 4では、公開ページの閲覧や学習操作を集計するために、対象ページ、参照元、操作情報やCookie等の識別子がGoogleに送信されます。検索語、ノート本文、問診内容、アカウントIDは送信しません。送信を停止したい場合は<a href="https://tools.google.com/dlpage/gaoptout?hl=ja" className="underline underline-offset-4">Google Analytics オプトアウト アドオン</a>をご利用ください。
             </p>
             <p>
-              有料プランについては、申し込みボタンの操作、決済画面への移動、支払確認済みの申し込み完了を集計します。プラン・金額・通貨と、二重集計を抑えるための変換済み取引識別子を使用します。氏名・メールアドレス、Stripeの顧客ID・契約ID・決済ID、決済URLの検索条件は送信しません。
-            </p>
-            <p>
-              Microsoft Clarityでは、トップページ、学習案内、コース一覧、記事一覧、運営者紹介の表示と操作を分析します。画面内の文字と画像をマスクし、Clarityの解析用Cookieを有効にせず利用します。検索入力、アカウントや保存メニューの操作、ページ移動が始まると記録を停止し、ノート・問診・診断・会員・決済ページは記録対象にしません。URLや参照元に検索条件などが含まれる場合も記録を開始しません。
+              Microsoft Clarityでは、トップページなど一部の案内・一覧ページの表示や操作を分析するため、マスクした画面の情報や操作情報がMicrosoftに送信されます。解析用Cookieは無効にしています。ノート・問診・診断・会員・決済ページは記録の対象外です。検索条件等を含むURLや参照元の場合も記録を開始しません。
             </p>
             <p>
               詳しくは<Link href="https://privacy.microsoft.com/ja-jp/privacystatement" className="underline underline-offset-4">Microsoftのプライバシー声明</Link>をご確認ください。
@@ -176,7 +148,7 @@ export default function PrivacyPage() {
               激しい痛み、急激な体調変化、妊娠中の重篤な症状などがある場合は、自己判断によるツボ刺激等を行わず、速やかに専門の医療機関を受診してください。
             </p>
             <p>
-              当サイトの掲載内容については可能な限り正確を期しておりますが、その正確性・完全性・安全性を保証するものではありません。当サイトの情報を利用したことにより生じたいかなる損害・不利益についても、当サイトおよび運営者は一切の責任を負いかねます。
+              当サイトは掲載情報の正確性と最新性に努めます。情報の完全性、個別の状況での安全性、効果は保証しません。運営者の責任は適用される法令に従います。
             </p>
           </section>
 
@@ -197,7 +169,7 @@ export default function PrivacyPage() {
           <section className="pt-4 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
               制定日：2024年4月1日<br />
-              最終改定日：{new Date().getFullYear()}年{new Date().getMonth() + 1}月
+              最終改定日：2026年11月18日
             </p>
             <div className="flex items-center gap-3">
               <Link
@@ -205,13 +177,6 @@ export default function PrivacyPage() {
                 className="text-sm text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-medium"
               >
                 利用規約
-              </Link>
-              <span className="text-[#C5DEC9]">|</span>
-              <Link
-                href="/tokushoho"
-                className="text-sm text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-medium"
-              >
-                特定商取引法に基づく表記
               </Link>
               <span className="text-[#C5DEC9]">|</span>
               <Link

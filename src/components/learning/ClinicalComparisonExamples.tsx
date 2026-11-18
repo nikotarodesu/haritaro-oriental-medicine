@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Bookmark, AlertTriangle } from "lucide-react";
-import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
+import { AlertTriangle } from "lucide-react";
 
 const PRESET_COMPARISONS = [
   {
@@ -126,37 +125,15 @@ function ComparisonProfile({ profile }: { profile: ComparisonProfile }) {
 
 /** The former /simulator/compare examples now share the condition exercise surface. */
 export default function ClinicalComparisonExamples() {
-  const { addMemo, isReady, clinicalStorageOwner } = useClinicalMemo();
   const [selectedPresetIdx, setSelectedPresetIdx] = useState(0);
-  const [savedPreset, setSavedPreset] = useState<{ index: number; owner: string | null } | null>(null);
-  const [saveError, setSaveError] = useState(false);
   const currentPreset = PRESET_COMPARISONS[selectedPresetIdx];
-  const saved = savedPreset?.index === selectedPresetIdx && savedPreset.owner === clinicalStorageOwner;
-
-  const handleSaveToMemo = () => {
-    if (!isReady || saved) return;
-    const success = addMemo({
-      id: `compare-${Date.now()}`,
-      type: "pair",
-      title: `【条件比較】${currentPreset.planA.pattern} vs ${currentPreset.planB.pattern}`,
-      subTitle: "臨床条件比較シミュレーション結果",
-      points: [...currentPreset.planA.primaryPoints, ...currentPreset.planB.primaryPoints],
-      elements: [],
-      indications: [currentPreset.planA.pattern, currentPreset.planB.pattern],
-      summary: currentPreset.differentialSummary,
-      mechanism: `【案A】${currentPreset.planA.coreMechanism}\n【案B】${currentPreset.planB.coreMechanism}`,
-      personalNotes: `比較検討日: ${new Date().toLocaleDateString("ja-JP")}`,
-    });
-    setSaveError(!success);
-    if (success) setSavedPreset({ index: selectedPresetIdx, owner: clinicalStorageOwner });
-  };
 
   return <div className="clinical-comparison-examples">
     <p className="clinical-comparison-intro">似た候補の違いを、3つの教材例で確認します。条件を自由に変える演習とは別に、鑑別の視点を振り返れます。</p>
     <div className="clinical-comparison-picker" role="group" aria-label="鑑別の教材例を選ぶ">
       {PRESET_COMPARISONS.map((preset, index) => <button key={preset.title} type="button"
         aria-pressed={selectedPresetIdx === index}
-        onClick={() => { setSelectedPresetIdx(index); setSavedPreset(null); setSaveError(false); }}>
+        onClick={() => setSelectedPresetIdx(index)}>
         {PRESET_LABELS[index]}
       </button>)}
     </div>
@@ -167,14 +144,6 @@ export default function ClinicalComparisonExamples() {
     <div className="clinical-comparison-plans">
       <ComparisonProfile profile={currentPreset.planA} />
       <ComparisonProfile profile={currentPreset.planB} />
-    </div>
-    <div className="clinical-comparison-save">
-      <button type="button" onClick={handleSaveToMemo} disabled={saved || !isReady} className="page-secondary-action">
-        <Bookmark size={16} aria-hidden="true" fill={saved ? "currentColor" : "none"} />
-        {saved ? "保存済み" : "比較例を保存"}
-      </button>
-      <span role="status">{!isReady ? "保存先を確認しています。" : saved ? "保存一覧から確認できます。" : "保存先：配穴ストック"}</span>
-      {saveError && <p role="alert">保存できませんでした。保存上限や同期状況を確認して、もう一度お試しください。</p>}
     </div>
   </div>;
 }

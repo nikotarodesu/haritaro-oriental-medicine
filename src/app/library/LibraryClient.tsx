@@ -7,8 +7,6 @@ import {
   BookOpen, 
   ExternalLink, 
   Search, 
-  Bookmark, 
-  Check, 
   GraduationCap, 
   FileText, 
   ChevronRight, 
@@ -25,18 +23,12 @@ import { CLASSICAL_TEXTS } from "@/data/classicalTextsData";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { PUBLIC_ARCHIVE_CASES, ARCHIVE_CASES_NOTICE } from "@/data/cases/archiveCases";
-import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
-import AuthModal from "@/components/auth/AuthModal";
 import PageIntro from "@/components/design/PageIntro";
-import PrimeStudentCard from "@/components/PrimeStudentCard";
 
 export default function LibraryClient() {
-  const { addMemo } = useClinicalMemo();
 
-  const [authModalOpen, setAuthModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"all" | "papers" | "classics" | "cases" | "archives">("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [savedIds, setSavedIds] = useState<string[]>([]);
 
   useEffect(() => {
     let frame = 0;
@@ -71,22 +63,6 @@ export default function LibraryClient() {
     cases: filteredCases.length,
     archives: filteredArchives.length,
   }[activeTab];
-
-  // マイカルテへ保存
-  const handleSaveItem = (item: { id: string; title: string; summary: string; points?: string[] }) => {
-    const saved = addMemo({
-      id: `lib-${item.id}`,
-      type: "diagnosis",
-      title: item.title,
-      subTitle: "資料集・エビデンス文献",
-      points: item.points || [],
-      elements: ["木"],
-      indications: [],
-      summary: item.summary,
-      personalNotes: `資料集よりクリップ保存 (${new Date().toLocaleDateString("ja-JP")})`
-    });
-    if (saved) setSavedIds(prev => [...prev, item.id]);
-  };
 
   return (
     <div className="page-layout text-base leading-relaxed">
@@ -179,7 +155,6 @@ export default function LibraryClient() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {filteredPapers.map(paper => {
-                  const isSaved = savedIds.includes(paper.id);
                   return (
                     <div
                       key={paper.id}
@@ -251,23 +226,6 @@ export default function LibraryClient() {
                       </div>
 
                       <div className="pt-3 border-t border-[#E5DEC9]/50 dark:border-[#2A3B4A]/50 flex flex-wrap items-center justify-between gap-3">
-                        <button
-                          type="button"
-                          onClick={() => handleSaveItem({
-                            id: paper.id,
-                            title: paper.japaneseTitle,
-                            summary: paper.primaryOutcomes,
-                            points: paper.interventionProtocol?.acupoints
-                          })}
-                          className={`min-h-11 text-sm font-bold flex items-center gap-1.5 px-3 py-2 rounded-lg border transition-colors cursor-pointer ${
-                            isSaved
-                              ? "bg-emerald-50 dark:bg-[#142820] text-emerald-700 dark:text-emerald-300 border-emerald-300"
-                              : "bg-[#FAF8F5] dark:bg-[#1A2632] text-[#59615D] dark:text-[#96A6B2] border-[#E5DEC9] dark:border-[#2A3B4A] hover:text-[#1E3D34]"
-                          }`}
-                        >
-                          {isSaved ? <Check className="w-3.5 h-3.5" /> : <Bookmark className="w-3.5 h-3.5" />}
-                          <span>{isSaved ? "学習メモに保存済" : "学習メモに保存"}</span>
-                        </button>
 
                         {(paper.sourceUrl || paper.pmid || paper.doi) && (
                           <a
@@ -306,7 +264,6 @@ export default function LibraryClient() {
               <p className="text-base leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">古典の考え方を学ぶ資料です。{CLASSICAL_TEXTS.filter(classic => classic.verifiedQuotation).length}件に電子本文からの引用と確認範囲を表示しています。底本画像との照合・専門家による確認は未完了です。伝統的な配穴意図と、現代の疾患に対する治療効果は分けて読みます。</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {filteredClassics.map(classic => {
-                  const isSaved = savedIds.includes(classic.id);
                   return (
                     <div
                       key={classic.id}
@@ -394,22 +351,6 @@ export default function LibraryClient() {
                       </div>
 
                       <div className="pt-3 border-t border-[#E5DEC9]/50 dark:border-[#2A3B4A]/50 flex flex-wrap items-center justify-between gap-3">
-                        <button
-                          type="button"
-                          onClick={() => handleSaveItem({
-                            id: classic.id,
-                            title: `『${classic.book}』${classic.theme}`,
-                            summary: classic.clinicalApplication
-                          })}
-                          className={`min-h-11 text-sm font-bold flex items-center gap-1.5 px-3 py-2 rounded-lg border transition-colors cursor-pointer ${
-                            isSaved
-                              ? "bg-emerald-50 dark:bg-[#142820] text-emerald-700 dark:text-emerald-300 border-emerald-300"
-                              : "bg-[#FAF8F5] dark:bg-[#1A2632] text-[#59615D] dark:text-[#96A6B2] border-[#E5DEC9] dark:border-[#2A3B4A] hover:text-[#1E3D34]"
-                          }`}
-                        >
-                          {isSaved ? <Check className="w-3.5 h-3.5" /> : <Bookmark className="w-3.5 h-3.5" />}
-                          <span>{isSaved ? "カルテ保存済" : "配穴ストック"}</span>
-                        </button>
 
                         <div className="flex flex-wrap gap-1">
                           {classic.tags.slice(0, 2).map(tag => (
@@ -504,7 +445,6 @@ export default function LibraryClient() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {filteredArchives.map(ac => {
-                  const isSaved = savedIds.includes(ac.id);
                   return (
                     <div
                       key={ac.id}
@@ -555,23 +495,6 @@ export default function LibraryClient() {
                       </div>
 
                       <div className="pt-3 border-t border-[#E5DEC9]/50 dark:border-[#2A3B4A]/50 flex flex-wrap items-center justify-between gap-3">
-                        <button
-                          type="button"
-                          onClick={() => handleSaveItem({
-                            id: ac.id,
-                            title: ac.title,
-                            summary: ac.summary,
-                            points: ac.usedAcupoints
-                          })}
-                          className={`min-h-11 text-sm font-bold flex items-center gap-1.5 px-3 py-2 rounded-lg border transition-colors cursor-pointer ${
-                            isSaved
-                              ? "bg-emerald-50 dark:bg-[#142820] text-emerald-700 dark:text-emerald-300 border-emerald-300"
-                              : "bg-[#FAF8F5] dark:bg-[#1A2632] text-[#59615D] dark:text-[#96A6B2] border-[#E5DEC9] dark:border-[#2A3B4A] hover:text-[#1E3D34]"
-                          }`}
-                        >
-                          {isSaved ? <Check className="w-3.5 h-3.5" /> : <Bookmark className="w-3.5 h-3.5" />}
-                          <span>{isSaved ? "カルテ保存済" : "配穴ストック"}</span>
-                        </button>
 
                         <div className="flex flex-wrap gap-1">
                           {ac.tags.slice(0, 2).map(tag => (
@@ -592,17 +515,9 @@ export default function LibraryClient() {
 
         {activeTab === "all" && <div className="[&_p]:text-base [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_a]:text-sm"><MedicalSafetyNotice title="症例アーカイブの掲載は保留中です" message={ARCHIVE_CASES_NOTICE} /></div>}
 
-        {/* 学生向け専門書・教科書サポート（Prime Student） */}
-        <PrimeStudentCard variant="banner" className="mt-12" />
 
       </div>
 
-      <AuthModal
-        isOpen={authModalOpen}
-        onClose={() => setAuthModalOpen(false)}
-        title="臨床文献・古典アーカイブ"
-        description="最新のRCT論文詳細や古典医典の全文解説はプレミアム会員限定です。"
-      />
     </div>
   );
 }

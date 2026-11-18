@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { BookOpen, ExternalLink, ChevronDown, ChevronUp, FileText, ShoppingBag } from "lucide-react";
+import { BookOpen, ExternalLink, ChevronDown, ChevronUp, FileText } from "lucide-react";
 import { ResolvedReference } from "@/types/references";
 
 interface ArticleReferencesProps {
@@ -180,7 +180,7 @@ export default function ArticleReferences({
                         </div>
                       )}
 
-                      {/* 外部リンク・古典ライブラリ・Amazonアソシエイトボタン */}
+                      {/* 出典への外部リンクと古典ライブラリ */}
                       <div className="pt-1 flex flex-wrap items-center gap-2">
                         {ref.libraryUrl && (
                           <Link
@@ -193,25 +193,6 @@ export default function ArticleReferences({
                             <span>古典の掲載文・確認状況を見る</span>
                             <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                           </Link>
-                        )}
-
-                        {ref.amazonUrl && (
-                          <a
-                            href={ref.amazonUrl}
-                            style={{ minHeight: 44 }}
-                            target="_blank"
-                            rel="noopener noreferrer nofollow sponsored"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2016] border border-[#F3DEC5] dark:border-[#4D331F] hover:border-[#B86924] dark:hover:border-[#E6C387] text-[#B86924] dark:text-[#E6C387] hover:bg-[#FBE8D6] dark:hover:bg-[#382618] text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 group"
-                            title="Amazonで探す・在庫と詳細を確認（リンク切れ防止・アソシエイトリンク）"
-                          >
-                            <ShoppingBag className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                            <span>
-                              {ref.type === "classic"
-                                ? "Amazonで解説書・訳注書を探す"
-                                : "Amazonで探す（在庫・詳細）"}
-                            </span>
-                            <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-                          </a>
                         )}
 
                         {ref.url && (

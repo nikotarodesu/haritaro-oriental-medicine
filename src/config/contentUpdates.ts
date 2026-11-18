@@ -229,11 +229,14 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [`/curriculum/${id}`, '2026-10-18']))),
   ...Object.fromEntries(LEARNING_COURSES.map(course => [`/learn/courses/${course.slug}`, '2026-10-18'])),
   '/notes': '2026-10-18', '/tsubo/compare': '2026-10-18',
-  '/tsubo/pc6': '2026-11-18',
-  '/tsubo/st36': '2026-11-18',
-  '/tsubo/lr3': '2026-11-18',
+  ...Object.fromEntries([
+    '/', '/about', '/clinical', '/curriculum', '/diagnosis', '/learn', '/library', '/symptoms', '/tsubo',
+    '/tsubo/li4', '/tsubo/pc6', '/tsubo/st36', '/tsubo/lr3',
+    ...CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => `/curriculum/${id}`)),
+  ].map(route => [route, '2026-11-18'])),
 };
 export const SITE_UPDATES = [
+  { date: '2026-11-18', label: 'ツボ図鑑・東洋医学・臨床演習を公開', href: '/', text: 'ツボや症状を名前で探せるようになりました。読み物、体質チェック、症例演習も会員登録なしで利用できます。' },
   { date: '2026-11-10', label: '料金・問い合わせ・学習の入口を改善', href: '/pricing', text: '料金プランをヘッダー、問い合わせをフッターの主要ナビに追加。申込みの稼働確認と時間切れ表示、保存上限からの案内、資料件数の内訳を整えました。経歴の開業年月を2023年7月に統一しました。' },
   { date: '2026-11-05', label: 'iPadでの四診入力と対面問診を短い画面に整理', href: '/clinical/workspace', text: '問診・望診・聞診・切診と内容別のタブを追加。舌体・舌苔・脈診をさらに分割し、記録・再評価を開閉できる形にしました。' },
   { date: '2026-10-18', label: 'PC・iPadの操作と記録・学習の流れを改善', href: '/learn', text: 'iPad幅のメニュー、経穴検索の表記ゆれ、比較表と図の操作を改善。学習案内とコースを統合し、講義を本文・クイズ・次への順に整理。問診からの引き継ぎと記録の下書き保護、保存状態の表示も整えました。' },

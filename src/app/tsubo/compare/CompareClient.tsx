@@ -7,17 +7,12 @@ import { useSearchParams } from "next/navigation";
 import { 
   Search, 
   X, 
-  Bookmark, 
   Plus, 
   AlertTriangle,
   Printer,
-  Crown
 } from "lucide-react";
 import { TSUBOS } from "@/data/tsuboData";
 import { Tsubo } from "@/types/oriental";
-import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
-import { useAuth } from "@/contexts/AuthContext";
-import AuthModal from "@/components/auth/AuthModal";
 
 // おすすめ比較プリセット
 const PRESET_TSUBO_COMPARISONS = [
@@ -45,10 +40,7 @@ const PRESET_TSUBO_COMPARISONS = [
 
 function TsuboCompareContent() {
   const searchParams = useSearchParams();
-  const { addMemo } = useClinicalMemo();
-  const { isPremium } = useAuth();
 
-  const [authModalOpen, setAuthModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [pendingSwapTsubo, setPendingSwapTsubo] = useState<Tsubo | null>(null);
   const [targetReplaceIndex, setTargetReplaceIndex] = useState<number | null>(null);
@@ -77,7 +69,6 @@ function TsuboCompareContent() {
     // デフォルトで合谷(LI4)と太衝(LR3)
     return ["LI4", "LR3"];
   });
-  const [saved, setSaved] = useState(false);
 
   // URLパラメータが動的に変化した際にも追従
   useEffect(() => {
@@ -100,12 +91,10 @@ function TsuboCompareContent() {
     });
 
     if (resolved.length > 0) {
-      // 無料会員は最大2穴までに切り詰め
-      const limited = !isPremium && resolved.length > 2 ? resolved.slice(0, 2) : resolved;
-      const frame = requestAnimationFrame(() => setSelectedCodes(current => current.length === limited.length && current.every((code, index) => code === limited[index]) ? current : limited));
+      const frame = requestAnimationFrame(() => setSelectedCodes(current => current.length === resolved.length && current.every((code, index) => code === resolved[index]) ? current : resolved));
       return () => cancelAnimationFrame(frame);
     }
-  }, [searchParams, isPremium]);
+  }, [searchParams]);
 
   // 選択されているツボの配列
   const selectedTsubos: Tsubo[] = useMemo(() => {
@@ -137,18 +126,10 @@ function TsuboCompareContent() {
       setSelectedCodes(updated);
       setTargetReplaceIndex(null);
       setSearchQuery("");
-      setSaved(false);
       return;
     }
 
-    // 無料枠で既に2穴選ばれている場合：入れ替え選択ダイアログを表示
-    if (!isPremium && selectedCodes.length >= 2) {
-      setPendingSwapTsubo(tsubo);
-      return;
-    }
-
-    // プレミアム会員で既に3穴選ばれている場合：入れ替え選択ダイアログを表示
-    if (isPremium && selectedCodes.length >= 3) {
+    if (selectedCodes.length >= 3) {
       setPendingSwapTsubo(tsubo);
       return;
     }
@@ -156,43 +137,18 @@ function TsuboCompareContent() {
     // 空き枠がある場合はそのまま追加
     setSelectedCodes([...selectedCodes, tsubo.code]);
     setSearchQuery("");
-    setSaved(false);
   };
 
   // ツボの削除
   const handleRemoveTsubo = (code: string) => {
     setSelectedCodes(selectedCodes.filter(c => c !== code));
     setTargetReplaceIndex(null);
-    setSaved(false);
   };
 
   // プリセット適用
   const handleApplyPreset = (codes: string[]) => {
     setSelectedCodes(codes);
     setTargetReplaceIndex(null);
-    setSaved(false);
-  };
-
-  // カルテに保存（プレミアム限定）
-  const handleSaveToMemo = () => {
-    if (!isPremium) {
-      setAuthModalOpen(true);
-      return;
-    }
-    const names = selectedTsubos.map(t => t.name).join(" vs ");
-    addMemo({
-      id: `tsubo-compare-${Date.now()}`,
-      type: "pair",
-      title: `【経穴比較】${names}`,
-      subTitle: selectedTsubos.map(t => `${t.name}(${t.code})`).join("、 "),
-      points: selectedTsubos.map(t => t.name),
-      elements: ["木", "金"],
-      indications: Array.from(new Set(selectedTsubos.flatMap(t => t.indications))).slice(0, 5),
-      summary: selectedTsubos.map(t => `【${t.name}】${t.clinicalNote}`).join("\n"),
-      mechanism: selectedTsubos.map(t => `【${t.name}】${t.meridian}（要穴: ${t.category?.join("・") || "特記なし"}）`).join(" / "),
-      personalNotes: `経穴比較ツールにて対比 (${new Date().toLocaleDateString("ja-JP")})`
-    });
-    setSaved(true);
   };
 
   return (
@@ -206,14 +162,6 @@ function TsuboCompareContent() {
               >
                 <Printer className="w-4 h-4 text-blue-600" />
                 <span>比較表を印刷</span>
-              </button>
-              <button
-                onClick={handleSaveToMemo}
-                disabled={saved || selectedTsubos.length === 0}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#B86924] hover:bg-[#9B551B] text-white text-xs font-bold shadow-sm transition-colors cursor-pointer"
-              >
-                <Bookmark className={`w-4 h-4 ${saved ? "fill-current" : ""}`} />
-                <span>{saved ? "学習ノートに保存済" : "比較結果を学習ノート保存"}</span>
               </button>
             </div>
         </PageIntro>
@@ -250,17 +198,8 @@ function TsuboCompareContent() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold text-[#232826] dark:text-[#FAF8F5]">
-                比較するツボ（現在: {selectedTsubos.length} / {isPremium ? "最大3穴" : "2穴・無料枠"}）
+                比較するツボ（現在: {selectedTsubos.length} / 最大3穴）
               </span>
-              {!isPremium && selectedTsubos.length >= 2 && (
-                <button
-                  onClick={() => setAuthModalOpen(true)}
-                  className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E] hover:opacity-90 transition-opacity"
-                >
-                  <Crown className="w-3.5 h-3.5" />
-                  <span>3穴同時比較はプレミアム</span>
-                </button>
-              )}
             </div>
             <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
               ツボ名（太衝、足三里など）やコード（LR3, ST36）で検索
@@ -544,7 +483,6 @@ function TsuboCompareContent() {
                     setSelectedCodes(updated);
                     setPendingSwapTsubo(null);
                     setSearchQuery("");
-                    setSaved(false);
                   }}
                   className="w-full p-3.5 rounded-2xl border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:bg-[#FAF8F5] dark:hover:bg-[#1f2c38] text-left flex items-center justify-between transition-all group"
                 >
@@ -562,31 +500,6 @@ function TsuboCompareContent() {
                 </button>
               ))}
 
-              {!isPremium && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setPendingSwapTsubo(null);
-                    setAuthModalOpen(true);
-                  }}
-                  className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-[#FCF4EB] to-[#F7E8D8] dark:from-[#2A1E14] dark:to-[#382618] border border-[#F2DEB0] dark:border-[#4A321E] text-left flex items-center justify-between transition-all hover:opacity-95"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <Crown className="w-5 h-5 text-[#B86924] dark:text-[#E6C387] shrink-0" />
-                    <div>
-                      <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
-                        3穴を同時に横並び比較する
-                      </span>
-                      <span className="text-xs text-[#737C77] dark:text-[#A0B0BC]">
-                        プレミアムプランで最大3穴まで同時比較可能
-                      </span>
-                    </div>
-                  </div>
-                  <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] shrink-0">
-                    案内 ➜
-                  </span>
-                </button>
-              )}
             </div>
 
             <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex justify-end">
@@ -602,12 +515,6 @@ function TsuboCompareContent() {
         </div>
       )}
 
-      <AuthModal
-        isOpen={authModalOpen}
-        onClose={() => setAuthModalOpen(false)}
-        title="3穴同時精密比較 ＆ 学習ノート保存"
-        description="全361穴からの3穴同時横並び精密比較、および比較結果の学習ノート保存はプレミアム会員限定機能です。"
-      />
     </div>
   );
 }

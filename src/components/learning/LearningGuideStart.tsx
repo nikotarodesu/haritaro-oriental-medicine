@@ -34,6 +34,5 @@ export default function LearningGuideStart({ lectures }: { lectures: ResumeLectu
       </div>
     </> : <p role="status" className="text-sm leading-relaxed ui-muted">{availability === "loading" ? "学習履歴を確認中です。第1講から学べます。" : "学習履歴を読み込めませんでした。保存済みの記録は削除していません。"}</p>}
     {availability === "unavailable" && <button type="button" onClick={() => window.location.reload()} className="min-h-11 text-sm underline underline-offset-4">再読み込み</button>}
-    {availability === "ready" && (status === "offline" || status === "setup") && <p role="status" className="text-sm leading-relaxed ui-muted">この端末の履歴を表示しています。クラウドへの同期は未完了です。</p>}
   </div>;
 }

@@ -1,9 +1,9 @@
-// はり太郎の東洋医学 Service Worker
-const CACHE_NAME = "haritaro-cache-v3-brand";
+// はり太郎 Service Worker
+const CACHE_NAME = "haritaro-cache-v4-platform";
 const OFFLINE_URLS = [
   "/",
   "/tsubo",
-  "/notes",
+  "/symptoms",
   "/kokushi",
   "/curriculum",
   "/diagnosis",
@@ -48,12 +48,13 @@ self.addEventListener("activate", (event) => {
 
 // フェッチ制御: ネットワークファースト ➜ 失敗時にキャッシュフォールバック
 self.addEventListener("fetch", (event) => {
-  // GETリクエスト以外やAPI/Stripe/Supabase通信はスルー
+  const url = new URL(event.request.url);
+  // 検索語、旧会員導線、広告認証の結果はキャッシュしない。
   if (
     event.request.method !== "GET" ||
-    event.request.url.includes("/api/") ||
-    event.request.url.includes("supabase.co") ||
-    event.request.url.includes("stripe.com")
+    url.origin !== self.location.origin ||
+    /^\/(?:api|search|auth|login|account|checkout|pricing|notes|mynote)(?:\/|$)/.test(url.pathname) ||
+    url.pathname === "/ads.txt"
   ) {
     return;
   }

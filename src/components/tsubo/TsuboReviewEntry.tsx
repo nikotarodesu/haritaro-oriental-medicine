@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useEffect, useEffectEvent, useState } from 'react';
 import { ArrowRight, BookOpen } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
 import { useLearningSync } from '@/contexts/LearningSyncContext';
 import { getLearningStorageAdapter } from '@/utils/learningStorageBridge';
 import { getPracticeContinuation, practiceDateLabel } from '@/data/tsubo/continuation';
@@ -15,9 +14,8 @@ interface Props { placement: 'dictionary' | 'detail' | 'home'; meridianId?: stri
 type Continuation = ReturnType<typeof getPracticeContinuation>;
 
 export default function TsuboReviewEntry(props: Props) {
-  const { user } = useAuth();
   const { ready } = useLearningSync();
-  return ready ? <ReadyEntry key={user?.id || 'guest'} {...props} owner={user?.id || 'guest'} /> : props.onlyReturning ? null : <EntryView {...props} state={null} memory={false} />;
+  return ready ? <ReadyEntry {...props} owner={'guest'} /> : props.onlyReturning ? null : <EntryView {...props} state={null} memory={false} />;
 }
 
 function ReadyEntry(props: Props & { owner: string }) {

@@ -18,6 +18,8 @@ import InlineTextRenderer from "@/components/InlineTextRenderer";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ArticleReadingResume from "@/components/reading/ArticleReadingResume";
 import { articleReadingRevision } from "@/utils/articleReadingPosition";
+import AdSenseSlot from "@/components/ads/AdSenseSlot";
+import { getArticleAdSenseConfig } from "@/components/ads/config";
 import { 
   BookOpen,
   Network,
@@ -104,6 +106,7 @@ export default async function ArticleDetailPage({ params }: Props) {
   const learningCaseTitle = learningGuide ? PROGRESSIVE_CASES.find(item => item.id === learningGuide.caseId)?.title : undefined;
 
   const resolvedReferences = resolveArticleReferences(article.references || [], article.contentMarkdown);
+  const ad = getArticleAdSenseConfig();
 
   // 構造化データ（Article ＆ BreadcrumbList）
   const jsonLd = {
@@ -296,6 +299,7 @@ export default async function ArticleDetailPage({ params }: Props) {
 
         {/* E-E-A-T 専門家監修情報カード */}
         <AuthorSupervisorCard topic={`${article.title}（${article.category}）`} />
+        {ad && <AdSenseSlot key={article.id} {...ad} />}
 
       </div>
     </div>

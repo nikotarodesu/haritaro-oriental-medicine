@@ -1,47 +1,12 @@
-"use client";
-
-import React, { useState } from "react";
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
 import { PageSymbol } from "@/components/design/PageArtwork";
-import { 
-  Crown, 
-  Sparkles, 
-  CheckCircle2, 
-  ArrowRight, 
-  AlertCircle
-} from "lucide-react";
+import { AlertCircle, ArrowRight } from "lucide-react";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
-import { useAuth } from "@/contexts/AuthContext";
-import AuthModal from "@/components/auth/AuthModal";
-import { SUBSCRIPTION_CONFIG } from "@/config/subscription";
-
-const totalCaseCount = CLINICAL_CASES.length;
-const freeCaseCount = SUBSCRIPTION_CONFIG.limits.freeTrialCaseCount;
-const premiumCaseCount = totalCaseCount - freeCaseCount;
-const firstFreeCase = CLINICAL_CASES.find(clinicalCase => clinicalCase.isFreeTrial);
 
 export default function CasesIndexPage() {
-  const { isPremium } = useAuth();
-  const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [selectedCaseTitle, setSelectedCaseTitle] = useState("");
-
-  const [caseFilter, setCaseFilter] = useState<"all" | "free" | "premium">("all");
-
-  const filteredCases = CLINICAL_CASES.filter((c) => {
-    if (caseFilter === "free") return c.isFreeTrial;
-    if (caseFilter === "premium") return !c.isFreeTrial;
-    return true;
-  });
-
-  const handleCaseClick = (e: React.MouseEvent, c: typeof CLINICAL_CASES[0]) => {
-    if (!c.isFreeTrial && !isPremium) {
-      e.preventDefault();
-      setSelectedCaseTitle(c.title);
-      setAuthModalOpen(true);
-    }
-  };
-
+  const totalCaseCount = CLINICAL_CASES.length;
+  const firstCase = CLINICAL_CASES[0];
   return (
     <div className="page-layout clinical-case-catalog space-y-8 sm:space-y-10">
       {/* パンくずリスト */}
@@ -53,13 +18,9 @@ export default function CasesIndexPage() {
 
       <PageIntro eyebrow={`全${totalCaseCount}症例・所見から考える練習`} title="症例を選ぶ" description="模擬症例を読み、弁証・治法・配穴の理由を考えます。解答例と比べて、判断の根拠を振り返りましょう。" art="practice">
         <div className="page-actions">
-          {firstFreeCase && <Link href={`/cases/${firstFreeCase.id}`} className="page-primary-action">無料の症例から始める<ArrowRight size={18} aria-hidden="true" /></Link>}
+          {firstCase && <Link href={`/cases/${firstCase.id}`} className="page-primary-action">最初の症例から始める<ArrowRight size={18} aria-hidden="true" /></Link>}
           <a href="#case-catalog" className="page-secondary-action">症例を選ぶ</a>
         </div>
-        <p className="page-muted mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
-          <span className="inline-flex items-center gap-2"><CheckCircle2 size={16} aria-hidden="true" />{freeCaseCount}症例は全編無料</span>
-          <span className="inline-flex items-center gap-2"><Crown size={16} aria-hidden="true" />{premiumCaseCount}症例はプレミアム会員向け</span>
-        </p>
       </PageIntro>
 
       {/* 症例一覧グリッド */}
@@ -68,61 +29,14 @@ export default function CasesIndexPage() {
           <h2 className="font-bold text-lg text-[#232826] dark:text-[#FAF8F5]">
             全{totalCaseCount}症例一覧
           </h2>
-
-          {/* 絞り込みタブ */}
-          <div role="group" aria-label="症例の利用範囲で絞り込む" className="flex flex-wrap gap-1 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] p-1 border border-[#E8E1D1] dark:border-[#22303D]">
-            <button
-              type="button"
-              onClick={() => setCaseFilter("all")}
-              aria-pressed={caseFilter === "all"}
-              className={`min-h-11 px-3 py-1.5 rounded-lg text-sm font-bold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 ${
-                caseFilter === "all"
-                  ? "bg-white dark:bg-[#1A2530] text-[#1E3D34] dark:text-[#74BA9E] shadow-xs"
-                  : "text-[#59615D] dark:text-[#8899A6] hover:text-[#232826]"
-              }`}
-            >
-              すべて（{totalCaseCount}例）
-            </button>
-            <button
-              type="button"
-              onClick={() => setCaseFilter("free")}
-              aria-pressed={caseFilter === "free"}
-              className={`min-h-11 px-3 py-1.5 rounded-lg text-sm font-bold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 ${
-                caseFilter === "free"
-                  ? "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] shadow-xs"
-                  : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34]"
-              }`}
-            >
-              無料公開中（{freeCaseCount}例）
-            </button>
-            <button
-              type="button"
-              onClick={() => setCaseFilter("premium")}
-              aria-pressed={caseFilter === "premium"}
-              className={`min-h-11 px-3 py-1.5 rounded-lg text-sm font-bold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 ${
-                caseFilter === "premium"
-                  ? "bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] shadow-xs"
-                  : "text-[#59615D] dark:text-[#8899A6] hover:text-[#B86924]"
-              }`}
-            >
-              プレミアム限定（{premiumCaseCount}例）
-            </button>
-          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCases.map((c) => (
-            <div key={c.id} className="flex flex-col gap-2">
+          {CLINICAL_CASES.map((c) => (
             <Link
+              key={c.id}
+              className="page-link-card page-link-card--stack group justify-between"
               href={`/cases/${c.id}`}
-              onClick={(e) => handleCaseClick(e, c)}
-              className={`page-link-card page-link-card--stack group flex-1 justify-between ${
-                c.isFreeTrial 
-                  ? "border-[#1E3D34]/40 hover:border-[#1E3D34] dark:border-[#2A5243] dark:hover:border-[#74BA9E]" 
-                  : isPremium 
-                    ? "border-[#B86924]/40 hover:border-[#B86924] dark:border-[#4D331F] dark:hover:border-[#E6C387]"
-                    : "border-[#E5DEC9] dark:border-[#2A3B4A] opacity-90 hover:opacity-100 hover:border-[#B86924]"
-              }`}
             >
               <div className="space-y-3">
                 {/* ヘッダーバッジ */}
@@ -142,17 +56,6 @@ export default function CasesIndexPage() {
                     </span>
                   </div>
 
-                  {c.isFreeTrial ? (
-                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243] flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>無料公開</span>
-                    </span>
-                  ) : (
-                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#FCF4EB] text-[#B86924] dark:bg-[#2A2016] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4D331F] flex items-center gap-1">
-                      <Crown className="w-3.5 h-3.5" />
-                      <span>プレミアム</span>
-                    </span>
-                  )}
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -177,27 +80,11 @@ export default function CasesIndexPage() {
                   {c.patient.age}・{c.patient.gender}
                 </span>
                 
-                {c.isFreeTrial ? (
-                  <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                    <span>演習を始める</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </span>
-                ) : isPremium ? (
-                  <span className="font-bold text-[#B86924] dark:text-[#E6C387] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                    <span>演習を始める</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </span>
-                ) : (
-                  <span className="font-bold text-[#B86924] dark:text-[#E6C387] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                    <Crown className="w-3.5 h-3.5" />
-                    <span>演習する</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </span>
-                )}
+                <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                  演習を始める <ArrowRight aria-hidden="true" className="w-3.5 h-3.5" />
+                </span>
               </div>
             </Link>
-            {!c.isFreeTrial && !isPremium && <Link href="/pricing" className="ui-text-link px-2">症例{String(c.caseNumber).padStart(2, '0')}を利用できる料金プラン →</Link>}
-            </div>
           ))}
         </div>
 
@@ -223,14 +110,6 @@ export default function CasesIndexPage() {
         <Link href="/simulator" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">弁証の練習へ</Link>
         <Link href="/practice/haiketsu" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">配穴の練習へ</Link>
       </nav>
-      {/* プレミアム誘導モーダル */}
-      <AuthModal
-        featureKey="clinical_cases"
-        isOpen={authModalOpen}
-        onClose={() => setAuthModalOpen(false)}
-        title="この症例はプレミアム会員限定です"
-        description={`「${selectedCaseTitle}」を含む${premiumCaseCount}症例の演習と解説はプレミアム会員向けです。無料の${freeCaseCount}症例は全編を読めます。`}
-      />
     </div>
   );
 }

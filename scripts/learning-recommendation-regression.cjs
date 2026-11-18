@@ -50,7 +50,5 @@ const allComplete = Object.fromEntries(lectures.map(lecture=>[lecture.id,true]))
 assert.equal(recommend({...base, lectures: [...lectures, { id: 'lecture-yinyang-5', title: '各論' }], completed: allComplete}).href, '/curriculum/lecture-yinyang-5', 'Complete the deeper lectures before recommending final integrated cases');
 assert.equal(recommend({...base,completed:allComplete,caseAttempts:[{caseId:'fatigue-reasoning'},{caseId:'back-pain-referral'}]}).href,'/simulator?case=mixed-temperature#case-training');
 assert.equal(recommend({...base,completed:allComplete,caseAttempts:[{caseId:'unknown'}]}).href,'/simulator?case=fatigue-reasoning#case-training');
-const ui = fs.readFileSync(path.join(root,'src/components/home/HomeLearningProgressClient.tsx'),'utf8');
-assert(!ui.includes('learningReflection'));
-assert(ui.includes("placement: 'learning_start', item_type: recommendation.kind"));
-console.log('Learning recommendations passed: safety/due/focus/mistake priority, course context, completion, safe routes, no notebook text in analytics.');
+for (const input of [base, { ...base, completed: allComplete }]) assert(!recommend(input).href.startsWith('/notes'));
+console.log('Learning recommendations passed: safety/due/focus/mistake priority, course context, completion, safe routes, no retired notebook recommendation.');

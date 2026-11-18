@@ -3,10 +3,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ShieldCheck, ClipboardList, GitCompare, MapPin, NotebookPen, RotateCcw, CheckCircle2, CircleDashed, GitFork, Search } from 'lucide-react';
-import { useClinicalMemo } from '@/contexts/ClinicalMemoContext';
 import { CLINICAL_SIGNS, CLINICAL_PATTERNS, CLINICAL_PATTERN_CATEGORIES, CLINICAL_PRINCIPLES, CLINICAL_COMPLAINTS, compareClinicalPattern, type ClinicalSignId } from '@/data/clinicalWorkflow';
 import { ACUPOINTS_MASTER } from '@/data/tsubo/acupointsMaster';
-import { clearClinicalEncounter, clinicalCandidateNames, clinicalEncounterFingerprint, clinicalEncounterSaveState, clinicalEncounterNote, emptyClinicalEncounter, readClinicalEncounter, writeClinicalEncounter, type ClinicalEncounter } from '@/utils/clinicalEncounter';
+import { clearClinicalEncounter, clinicalCandidateNames, emptyClinicalEncounter, readClinicalEncounter, writeClinicalEncounter, type ClinicalEncounter } from '@/utils/clinicalEncounter';
 import ClinicalEvidenceKey from './ClinicalEvidenceKey';
 import ClinicalCandidatePicker from './ClinicalCandidatePicker';
 import ClinicalCandidateDifferential from './ClinicalCandidateDifferential';
@@ -17,7 +16,7 @@ import { EXAMINATION_ASSOCIATIONS, examinationFinding, comparisonContext, type C
 import { clinicalCandidateEvidence } from '@/utils/clinicalCandidateNarrowing';
 import { clinicalExaminationPatch, clinicalFindingEdit, canUndoClinicalFindingEdit, undoClinicalFindingEdit, type ClinicalFindingEdit, type ClinicalFindingState } from '@/utils/clinicalFindingChanges';
 
-type PrincipleChange = { owner: string; before: string; after: string; term: string; undone?: boolean };
+type PrincipleChange = { before: string; after: string; term: string; undone?: boolean };
 type ExaminationGroup = typeof EXAMINATION_GROUPS[number];
 const TONGUE_SECTIONS = ['色・乾湿', '形・歯痕・裂紋など'] as const;
 type TongueSection = typeof TONGUE_SECTIONS[number];
@@ -70,13 +69,7 @@ function labels(ids: ComparisonFindingId[]) { return ids.map(id => examinationFi
 const STRUCTURED_SIGNS: readonly ClinicalSignId[] = ['weakPulse', 'rapidPulse', 'paleTongue', 'redTongue', 'greasyCoat', 'fixedPain'];
 
 export default function ClinicalWorkspace() {
-  const { patientNotes = [], saveWorkspaceNote, syncStatus, triggerSync, isReady = true, clinicalStorageOwner = 'guest' } = useClinicalMemo();
-  const [loadedOwner, setLoadedOwner] = useState<string | null>(null);
   const [reviewing, setReviewing] = useState(false);
-  const [lastSaved, setLastSaved] = useState('');
-  const saveBusy = useRef(false);
-  useEffect(() => { saveBusy.current = false; }, [lastSaved]);
-  const snapshot = clinicalEncounterFingerprint;
   const [encounter, setEncounter] = useState<ClinicalEncounter>(emptyClinicalEncounter);
   const encounterRef = useRef(encounter);
   const [ready, setReady] = useState(false);
@@ -93,33 +86,30 @@ export default function ClinicalWorkspace() {
   const [findingSession, setFindingSession] = useState(0);
   const findingSessionGuard = useRef(0);
   const findingChangeSerial = useRef(0);
-  const ownerGuard = useRef(clinicalStorageOwner);
-  useEffect(() => { ownerGuard.current = clinicalStorageOwner; }, [clinicalStorageOwner]);
   useEffect(() => {
-    if (!clinicalStorageOwner) return;
     const timer = setTimeout(() => {
-      const stored = readClinicalEncounter();
+      const stored = readClinicalEncounter('guest');
       const initial = stored.encounter || emptyClinicalEncounter();
       const complaint = CLINICAL_COMPLAINTS.find(item => item.slug === new URLSearchParams(window.location.search).get('complaint'));
       // A guide never replaces an encounter already in progress.
       if (complaint && !initial.patientIdentifier && !initial.chiefComplaint && Object.keys(initial.observations).length === 0) { initial.complaintSlug = complaint.slug; initial.chiefComplaint = complaint.title; }
       encounterRef.current = initial;
-      setEncounter(initial); setError(stored.error); setSaved(Boolean(stored.encounter)); setReady(true); setLoadedOwner(clinicalStorageOwner); setReviewing(false); setLastSaved(initial.savedFingerprint || ''); setPrincipleChange(null); setComparisonFocus(null); setActiveExamination('問診');
+      setEncounter(initial); setError(stored.error); setSaved(Boolean(stored.encounter)); setReady(true); setPrincipleChange(null); setComparisonFocus(null); setActiveExamination('問診');
       findingChangeSerial.current = initial.findingHistory?.at(-1)?.id || 0;
       setActiveSections(INITIAL_SECTIONS);
       setActivePulseSection(PULSE_SECTIONS[0]);
       setActiveTongueSection(TONGUE_SECTIONS[0]);
-    setActiveCoatSection(COAT_SECTIONS[0]);
+      setActiveCoatSection(COAT_SECTIONS[0]);
       findingSessionGuard.current++; setFindingSession(findingSessionGuard.current);
     }, 0);
     return () => clearTimeout(timer);
-  }, [clinicalStorageOwner]);
+  }, []);
   // Persist in the input event, before a link click or reload can unmount the form.
   const update = (patch: Partial<ClinicalEncounter>) => {
     const next = { ...encounterRef.current, ...patch };
     encounterRef.current = next;
     setEncounter(next);
-    const ok = writeClinicalEncounter(next);
+    const ok = writeClinicalEncounter(next, 'guest');
     setSaved(ok);
     setError(ok ? null : '下書きを保存できませんでした。この画面を離れる前にブラウザの保存設定を確認してください。');
   };
@@ -128,18 +118,18 @@ export default function ClinicalWorkspace() {
   const updateExamination = (id: string, value: string) => {
     update(clinicalExaminationPatch(encounterRef.current, id, value));
   };
-  const findingEdits = loadedOwner === clinicalStorageOwner ? encounter.findingHistory || [] : [];
+  const findingEdits = encounter.findingHistory || [];
   const latestFindingEdit = findingEdits.at(-1);
   const undoFindingAvailable = Boolean(latestFindingEdit && canUndoClinicalFindingEdit(encounter, latestFindingEdit));
   const recordFindingEdit = (target: { kind: 'observation' | 'examination'; id: string }, after: ClinicalFindingState) => {
-    if (!clinicalStorageOwner || loadedOwner !== clinicalStorageOwner || ownerGuard.current !== clinicalStorageOwner || findingSessionGuard.current !== findingSession) return;
+    if (findingSessionGuard.current !== findingSession) return;
     const edit = clinicalFindingEdit(encounterRef.current, after, target, findingChangeSerial.current + 1);
     if (!edit) return;
     findingChangeSerial.current = edit.id;
     update({ ...after, findingHistory: [...(encounterRef.current.findingHistory || []), edit].slice(-20) });
   };
   const undoFindingEdit = () => {
-    if (!latestFindingEdit || clinicalStorageOwner !== ownerGuard.current || loadedOwner !== clinicalStorageOwner || findingSessionGuard.current !== findingSession || findingChangeSerial.current !== latestFindingEdit.id) return;
+    if (!latestFindingEdit || findingSessionGuard.current !== findingSession || findingChangeSerial.current !== latestFindingEdit.id) return;
     const restored = undoClinicalFindingEdit(encounterRef.current, latestFindingEdit);
     if (!restored) return;
     findingChangeSerial.current++;
@@ -163,9 +153,6 @@ export default function ClinicalWorkspace() {
     const value = examinationValue(field.id, encounter.examination, observations);
     return value && value !== '判断困難';
   }).length;
-  const savedNoteMissing = Boolean(isReady && encounter.savedNoteId && !patientNotes.some(note => note.id === encounter.savedNoteId));
-  const saveState = encounter.savedNoteId && !isReady ? 'checking' : savedNoteMissing ? 'missing' : clinicalEncounterSaveState(encounter);
-  const unchangedSaved = !savedNoteMissing && saveState !== 'checking' && lastSaved === snapshot(encounter);
   const comparisons = useMemo(() => CLINICAL_PATTERNS.map(pattern => ({ pattern, ...compareClinicalPattern(pattern, encounter.observations, encounter.examination || {}) })), [encounter.observations, encounter.examination]);
   const candidateOptions = CLINICAL_PATTERN_CATEGORIES.flatMap(category => comparisons.filter(result => result.pattern.category === category)).map(({ pattern, supported, missing, unknown, conflicting }) => ({
     id: pattern.id, name: pattern.name, category: pattern.category, summary: pattern.summary, aliases: pattern.aliases,
@@ -242,17 +229,16 @@ export default function ClinicalWorkspace() {
     encounter.safety !== 'reviewed' ? '安全確認後に検討' : encounter.points.length ? `${encounter.points.length}穴を検討中` : '配穴は未選定',
     encounter.after !== '' ? `施術前 ${encounter.before || '未評価'} → 直後 ${encounter.after}` : encounter.plan || '施術内容・変化を記録',
   ];
-  const activePrincipleChange = principleChange && principleChange.owner === clinicalStorageOwner &&
+  const activePrincipleChange = principleChange &&
     encounter.principle === (principleChange.undone ? principleChange.before : principleChange.after) ? principleChange : null;
   const addPrinciple = (term: string) => {
-    if (!clinicalStorageOwner || ownerGuard.current !== clinicalStorageOwner || loadedOwner !== clinicalStorageOwner) return;
     const next = appendClinicalPrinciple(encounter.principle, term);
     if (next === encounter.principle) return;
-    setPrincipleChange({ owner: clinicalStorageOwner, before: encounter.principle, after: next, term });
+    setPrincipleChange({ before: encounter.principle, after: next, term });
     update({ principle: next });
   };
   const undoPrinciple = () => {
-    if (!activePrincipleChange || activePrincipleChange.undone || ownerGuard.current !== activePrincipleChange.owner) return;
+    if (!activePrincipleChange || activePrincipleChange.undone) return;
     update({ principle: activePrincipleChange.before });
     setPrincipleChange({ ...activePrincipleChange, undone: true });
   };
@@ -260,22 +246,6 @@ export default function ClinicalWorkspace() {
     const added = hasClinicalPrinciple(encounter.principle, term);
     const limitReached = !added && appendClinicalPrinciple(encounter.principle, term) === encounter.principle;
     return <button type="button" key={key} disabled={added || limitReached} aria-label={added ? `${term}：追加済み` : limitReached ? `${term}：文字数上限のため追加できません` : `${term}を治法に追加`} onClick={() => addPrinciple(term)}>{term}<span aria-hidden={added || limitReached ? undefined : true}>{added ? '追加済み' : limitReached ? '上限' : '＋'}</span></button>;
-  };
-  const handoff = (asNew = false) => {
-    if (saveBusy.current || !asNew && unchangedSaved) return;
-    if (savedNoteMissing && !asNew) { setError('元の保存済み記録が見つかりません。入力を保持したまま、新しい臨床ノートとして保存できます。'); return; }
-    if (asNew && (!savedNoteMissing || !window.confirm('元の保存済み記録が見つかりません。この入力内容を新しい臨床ノートとして保存しますか？削除済みの記録は復元しません。'))) return;
-    if (!encounter.patientIdentifier.trim() || !encounter.chiefComplaint.trim()) { setError('匿名IDと主訴を入力してください。'); return; }
-    if (!encounter.visitDate) { setError('記録日を入力してください。'); return; }
-    if (encounter.safety === 'unknown') { setError('安全確認の状態を記録してください。未確認なら、確認してから保存してください。'); return; }
-    if (!writeClinicalEncounter(encounter)) { setError('下書きを保存できないため、この画面で入力を保持しています。'); return; }
-    saveBusy.current = true;
-    const names = encounter.points.map(point => ACUPOINTS_MASTER.find(item => item.code === point.code)?.name || point.code);
-    const result = saveWorkspaceNote(clinicalEncounterNote(encounter, names), asNew ? undefined : encounter.savedNoteId);
-    if (!result.ok) { setError(result.error); saveBusy.current = false; return; }
-    const next = { ...encounter, savedNoteId: result.id, savedFingerprint: snapshot(encounter), savedAt: Date.now() };
-    encounterRef.current = next; setEncounter(next); setLastSaved(snapshot(next)); setError(null);
-    if (!writeClinicalEncounter(next)) setError('記録は保存しましたが、下書きの更新に失敗しました。保存済みの臨床ノートを確認してください。');
   };
   const addPoint = (code: string) => {
     if (encounter.points.length >= 12 || encounter.points.some(point => point.code === code)) return;
@@ -307,10 +277,10 @@ export default function ClinicalWorkspace() {
     focusHeading('clinical-examination-memo');
   };
   const reset = () => {
-    if (!window.confirm('このタブの作業中の下書きを消して、新しい記録を始めますか？保存済みノートは残ります。')) return;
-    if (!clearClinicalEncounter()) { setError('下書きを消去できませんでした。'); return; }
+    if (!window.confirm('このタブの下書きを消して、新しい演習を始めますか？')) return;
+    if (!clearClinicalEncounter('guest')) { setError('下書きを消去できませんでした。'); return; }
     const fresh = emptyClinicalEncounter(); encounterRef.current = fresh;
-    setEncounter(fresh); setError(null); setSaved(false); setPointQuery(''); setReviewing(false); setLastSaved(''); setPrincipleChange(null); setComparisonFocus(null); setActiveExamination('問診');
+    setEncounter(fresh); setError(null); setSaved(false); setPointQuery(''); setReviewing(false); setPrincipleChange(null); setComparisonFocus(null); setActiveExamination('問診');
     findingChangeSerial.current = 0;
     setActiveSections(INITIAL_SECTIONS);
     setActivePulseSection(PULSE_SECTIONS[0]);
@@ -318,39 +288,34 @@ export default function ClinicalWorkspace() {
     setActiveCoatSection(COAT_SECTIONS[0]);
     findingSessionGuard.current++; setFindingSession(findingSessionGuard.current);
   };
-  if (!ready || loadedOwner !== clinicalStorageOwner) return <p role="status" className="p-6">下書きを確認しています…</p>;
+  if (!ready) return <p role="status" className="p-6">下書きを確認しています…</p>;
   return <div className="page-layout clinical-workspace space-y-5">
     <Link href="/clinical" className="inline-flex min-h-11 items-center text-sm underline">← 臨床ホーム</Link>
     <header className="clinical-record-intro">
-      <div><p className="clinical-kicker">会話と施術の流れに合わせて記録</p><h1>臨床記録</h1></div>
-      <button className={BUTTON} onClick={reset}><RotateCcw aria-hidden="true" className="mr-2 h-4 w-4" />新しい記録を始める</button>
-      <p>聞けたこと・確認できたことから入力。項目はいつでも自由に行き来できます。<small>氏名・連絡先など、個人を特定する情報は入力しないでください。</small></p>
+      <div><p className="clinical-kicker">臨床演習</p><h1>臨床推論ワークスペース</h1></div>
+      <button className={BUTTON} onClick={reset}><RotateCcw aria-hidden="true" className="mr-2 h-4 w-4" />新しい演習を始める</button>
+      <p>架空の症例について、確認できた項目から入力します。<small>氏名・連絡先など、個人を特定する情報は入力しないでください。</small></p>
     </header>
-    <p role="status" className="text-sm">{saveState === 'checking' ? '保存先の記録を確認しています。入力はこのタブに保持しています。' : saveState === 'missing' ? '元の保存済み記録が見つかりません。入力はこのタブに保持しています。' : saveState === 'saved' ? `臨床ノートに保存済み${encounter.savedAt ? '（' + new Date(encounter.savedAt).toLocaleString('ja-JP') + '）' : ''}。` : saveState === 'changed' ? '保存後に変更があります。変更はまだ臨床ノートへ保存していません。' : saveState === 'unverified' ? '保存済み記録を再編集中です。内容を確認して更新してください。' : saved ? 'このタブに下書き保存済み。タブを閉じる前に臨床ノートへ保存してください。' : '入力するとこのタブに下書きを保存します。'}</p>
+    <p role="status" className="text-sm">{saved ? '演習の下書きをこのタブに保持しています。' : '入力すると演習の下書きをこのタブに保持します。'}</p>
     {encounter.previousSummary && <details className={BOX}><summary className="min-h-11 cursor-pointer font-semibold">前回からの申し送り</summary><p className="mt-2 whitespace-pre-wrap text-sm">{encounter.previousSummary}</p></details>}
     {error && <p id="clinical-workspace-error" tabIndex={-1} role="alert" className="rounded-lg border border-[#C06844] bg-[#FFF2EB] p-3 text-sm text-[#843C24] dark:bg-[#35221C] dark:text-[#FFD1BB]">{error}</p>}
-    {syncStatus === 'offline' && <div className="text-sm"><p role="alert">アカウントへの同期は完了していません。入力とこのブラウザの記録は保持しています。</p><button type="button" className={BUTTON} onClick={() => { void triggerSync(); }}>同期を再試行する</button></div>}
     <div className="clinical-workspace-layout">
     <aside className="clinical-workspace-menu" aria-label="記録の項目一覧">
       <div className="clinical-workspace-patient"><span>作業中の記録</span><strong>{encounter.patientIdentifier || '匿名ID未入力'}</strong><p>{encounter.chiefComplaint || '主訴未入力'}</p></div>
       <h2 id="clinical-record-menu" tabIndex={-1} className="clinical-menu-hint">必要な項目を選んで入力</h2>
       <nav aria-label="臨床記録の項目" className="clinical-step-nav">{STEPS.map((label,index) => { const StepIcon = STEP_ICONS[index]; return <button type="button" key={label} aria-label={label} aria-describedby={`clinical-section-summary-${index}`} onClick={() => proceed(index)} aria-current={!reviewing && encounter.step === index ? 'true' : undefined} className={`${BUTTON} gap-2 justify-start text-left`}><StepIcon aria-hidden="true" className="h-5 w-5 shrink-0" /><span><strong>{label}</strong><small id={`clinical-section-summary-${index}`}>{sectionSummaries[index]}</small></span></button>; })}</nav>
       <button type="button" className={`${PRIMARY} clinical-menu-review`} aria-current={reviewing ? 'true' : undefined} onClick={showReview}>入力内容を確認</button>
-      <p className="clinical-menu-save" role="status">{saved ? 'このタブに下書き保存済み' : '下書きは未保存'}<br /><span>タブを閉じる前にノートへ保存</span></p>
     </aside>
     <section className={`${BOX} clinical-workspace-main space-y-5`} aria-label={reviewing ? '記録の最終確認' : STEPS[encounter.step]}>
       {reviewing ? <>
-        <div className="clinical-review-heading"><div><p className="clinical-kicker">保存前の確認</p><h2 id="clinical-workspace-review-heading" tabIndex={-1} className="text-xl font-bold">記録を確認して保存</h2></div><button className={BUTTON} onClick={() => proceed(encounter.step)}>入力に戻る</button></div>
+        <div className="clinical-review-heading"><div><p className="clinical-kicker">演習の振り返り</p><h2 id="clinical-workspace-review-heading" tabIndex={-1} className="text-xl font-bold">入力内容の確認</h2></div><button className={BUTTON} onClick={() => proceed(encounter.step)}>入力に戻る</button></div>
         {([
           { step: 0, title: '主訴・安全確認', text: `${encounter.patientIdentifier || '匿名ID未入力'} · ${encounter.visitDate}\n${encounter.chiefComplaint || '主訴未入力'}\n${encounter.safety === 'reviewed' ? '確認した範囲で該当兆候なし' : encounter.safety === 'refer' ? '医療評価を優先・配穴保留' : '安全確認は未確認'}\n${encounter.safetyMemo}` },
           { step: 1, title: '四診所見', text: CLINICAL_SIGNS.filter(sign => observations[sign.id] && observations[sign.id] !== 'unknown').map(sign => sign.label + '：' + (observations[sign.id] === 'present' ? 'あり' : 'なし')).join('、') + '\n' + examinationSummary(encounter.examination, observations) + '\n' + encounter.examinationMemo + (encounter.interviewMemo ? '\n対面問診：\n' + encounter.interviewMemo : '') },
           { step: 2, title: '候補・治法', text: candidateNames.join('／') + '\n' + encounter.rationale + '\n治法：' + encounter.principle },
-          { step: 3, title: '配穴の理由', text: encounter.safety === 'reviewed' ? encounter.points.map(point => (ACUPOINTS_MASTER.find(item => item.code === point.code)?.name || point.code) + '：' + (point.reason || '理由未記入') + '\n変更条件：' + (point.alternative || '未記入')).join('\n\n') : '配穴は保留して保存します。' },
+          { step: 3, title: '配穴の理由', text: encounter.safety === 'reviewed' ? encounter.points.map(point => (ACUPOINTS_MASTER.find(item => item.code === point.code)?.name || point.code) + '：' + (point.reason || '理由未記入') + '\n変更条件：' + (point.alternative || '未記入')).join('\n\n') : '配穴は保留です。' },
           { step: 4, title: '記録・再評価', text: [encounter.metric && '指標：' + encounter.metric, '施術前：' + (encounter.before || '未評価') + '／直後：' + (encounter.after || '未評価'), encounter.functionMemo, encounter.plan, encounter.reaction, encounter.revision, encounter.nextAction].filter(Boolean).join('\n') },
         ]).map(item => <section className="clinical-review-section" key={item.step}><div><h3>{item.title}</h3><button onClick={() => proceed(item.step)} className={BUTTON}>{item.title}を修正</button></div><details className="clinical-compact-section" open={item.step === 0}><summary>記録内容を表示</summary><p className="whitespace-pre-wrap leading-relaxed">{item.text.trim() || '未記入・保留'}</p></details></section>)}
-        <p className="text-sm">{savedNoteMissing ? '元の保存済み記録が見つかりません。入力内容を確認して、新しい記録として保存できます。' : encounter.savedNoteId ? 'この作業から保存した記録を更新します。' : '臨床ノートに新しい記録として保存します。'}</p>
-        {savedNoteMissing ? <button className={PRIMARY} disabled={!isReady || syncStatus === 'syncing'} onClick={() => handoff(true)}>新しい臨床ノートとして保存</button> : <button className={PRIMARY} disabled={!isReady || unchangedSaved || syncStatus === 'syncing'} onClick={() => handoff()}>{unchangedSaved ? '保存済み' : encounter.savedNoteId ? 'この記録を更新する' : '臨床ノートに保存する'}</button>}
-        {lastSaved && !savedNoteMissing && <div role="status" className="clinical-save-feedback"><p>{unchangedSaved ? 'このブラウザに記録を保存しました。' : '保存後に変更があります。確認して更新してください。'}{syncStatus === 'syncing' ? 'アカウントへの同期中です。' : syncStatus === 'offline' ? 'アカウントへの同期は完了していません。' : syncStatus === 'synced' ? 'アカウントへの同期も完了しています。' : ''}</p><Link href="/notes#clinical-timeline" className={BUTTON}>保存済みの臨床ノートを開く</Link></div>}
       </> : <>
 
       <h2 id="clinical-workspace-step-heading" tabIndex={-1} className="text-xl font-bold">{STEPS[encounter.step]}</h2>
@@ -480,7 +445,7 @@ export default function ClinicalWorkspace() {
           <details className="clinical-custom-candidate">
             <summary>一覧にない候補を記録{encounter.customCandidates?.trim() && <span>入力あり</span>}</summary>
             <label>その他の候補・併存して考える見立て<textarea className={FIELD} rows={3} maxLength={2000} value={encounter.customCandidates || ''} onChange={event => update({ customCandidates: event.target.value })} placeholder="一覧にない候補や、併存を検討する見立てを記録" /></label>
-            <p>自由入力した候補も、確認画面と臨床ノートに残ります。</p>
+            <p>自由入力した候補も、確認画面に表示します。</p>
           </details>
           <nav className="clinical-candidate-jumps" aria-label="候補・治法の入力箇所へ移動">
             {encounter.candidateIds.length >= 2 && <a href="#clinical-differential-heading" onClick={event => { event.preventDefault(); focusHeading('clinical-differential-heading'); }}>候補同士の違い・追加確認を見る ↓</a>}
@@ -548,9 +513,9 @@ export default function ClinicalWorkspace() {
         <label className="block">施術直後の反応・有害な反応<textarea maxLength={20000} className={FIELD} rows={3} value={encounter.reaction} onChange={event => update({ reaction: event.target.value })} /></label>
         </details><details className="clinical-compact-section"><summary><strong>再評価・次回の確認</strong><span>{encounter.revision || encounter.nextAction ? "入力あり" : "未入力"}</span></summary><label className="block">見立ての修正・改善が乏しい場合の検討<textarea maxLength={20000} className={FIELD} rows={3} value={encounter.revision} onChange={event => update({ revision: event.target.value })} /></label>
         <label className="block">次回確認すること・生活の助言・受診結果<textarea maxLength={20000} className={FIELD} rows={3} value={encounter.nextAction} onChange={event => update({ nextAction: event.target.value })} /></label>
-        </details><button className={PRIMARY} onClick={showReview}>記録を確認して保存へ →</button>
+        </details><button className={PRIMARY} onClick={showReview}>入力内容を確認する →</button>
       </>}
-      <div className="clinical-workspace-actions flex flex-wrap justify-between gap-3 border-t border-[#D6DED7] pt-4 dark:border-[#34483C]"><button className={BUTTON} onClick={() => focusHeading('clinical-record-menu')}>項目一覧へ</button><button className={PRIMARY} onClick={showReview}>記録を確認・保存</button></div>
+      <div className="clinical-workspace-actions flex flex-wrap justify-between gap-3 border-t border-[#D6DED7] pt-4 dark:border-[#34483C]"><button className={BUTTON} onClick={() => focusHeading('clinical-record-menu')}>項目一覧へ</button><button className={PRIMARY} onClick={showReview}>入力内容を確認</button></div>
       </>}
     </section>
     </div>

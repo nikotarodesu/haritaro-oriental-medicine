@@ -35,7 +35,15 @@ export * from "./safetyAndLandmarks";
 export * from "./friendlyLocations";
 export * from "./crossSectionEngine";
 export { ACUPOINTS_MASTER } from "./acupointsMaster";
-export const ALL_ACUPOINTS: AcupointMaster[] = ACUPOINTS_MASTER.map(point => ({ ...point, clinicalNote: getPublicClinicalNote(point), procedureReviewStatus: "pending_expert_review" }));
+export const ALL_ACUPOINTS: AcupointMaster[] = ACUPOINTS_MASTER.map(point => {
+  const detailedAliases = DETAILED_ACUPOINTS[point.codeLower]?.aliases;
+  return {
+    ...point,
+    aliases: detailedAliases ? [...new Set([...(point.aliases ?? []), ...detailedAliases])] : point.aliases,
+    clinicalNote: getPublicClinicalNote(point),
+    procedureReviewStatus: "pending_expert_review",
+  };
+});
 export { DETAILED_ACUPOINTS } from "./detailedPoints";
 export { MERIDIANS } from "./meridiansData";
 export { ACUPOINT_CATEGORIES } from "./categoriesData";

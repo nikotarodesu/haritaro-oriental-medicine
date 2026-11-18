@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-require-imports -- Run real notes/interview handlers with isolated owner-scoped storage. */
+/* eslint-disable @typescript-eslint/no-require-imports -- Run real interview handlers with isolated session storage. */
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -14,11 +14,11 @@ function nodes(node, list = []) { if (Array.isArray(node)) node.forEach(child =>
 function text(node) { if (Array.isArray(node)) return node.map(text).join(''); if (typeof node === 'string' || typeof node === 'number') return String(node); return node && typeof node === 'object' ? text(node.props?.children) : ''; }
 function environment() {
   const values = new Map([['haritaro_clinical_active_owner_v1', 'guest']]);
-  const shared = { values, notes: [], owner: 'guest', failSession: false, failLocal: false, failMemo: false, confirms: true, saved: [], alerts: [], fileReads: [], imports: [], scrolls: [] };
+  const shared = { failSession: false, confirms: true, scrolls: [] };
   const sessionStorage = { getItem: key => values.get(key) ?? null, setItem(key, value) { if (shared.failSession) throw Error('blocked'); values.set(key, value); }, removeItem(key) { if (shared.failSession) throw Error('blocked'); values.delete(key); } };
-  const browser = { location: { search: '', pathname: '/notes', hash: '' }, history: { replaceState() {}, pushState() {} }, confirm: () => shared.confirms, alert: value => shared.alerts.push(value), scrollTo() {}, matchMedia: () => ({ matches: false }), pageYOffset: 0 };
+  const browser = { location: { search: '', pathname: '/diagnosis', hash: '' }, history: { replaceState() {}, pushState() {} }, confirm: () => shared.confirms, scrollTo() {}, matchMedia: () => ({ matches: false }), pageYOffset: 0 };
   const load = createDataLoader({ Intl, sessionStorage, window: browser });
-  return { ...shared, shared, sessionStorage, browser, load };
+  return { shared, sessionStorage, browser, load };
 }
 const handoff = (patch = {}) => ({ sourceTool: '対面問診メモ', patientIdentifier: 'TEST-301', visitDate: '2026-10-18', chiefComplaint: '動作で変わる痛み', treatmentPlan: '  問診から引き継いだ本文。\n再確認する。  ', ...patch });
 function hookHost() {
@@ -33,23 +33,16 @@ function hookHost() {
   };
   return { hooks, render(component, props) { cursor = 0; const result = component(props); while (effects.length) effects.shift()(); return result; } };
 }
-function client(kind, env) {
+function client(env) {
   const { shared, sessionStorage, browser, load } = env;
   const timers = new Map(), pushes = []; let timerId = 0, tree;
   const host = hookHost(), exports = {};
-  const context = { memos: [], clipCount: 0, maxLimit: 100, patientNotes: shared.notes, patientNoteCount: shared.notes.length, maxPatientNoteLimit: 100, isPatientNoteLimitReached: false, isReady: true, clinicalStorageOwner: shared.owner, syncStatus: 'local', removeMemo() {}, updatePersonalNote() {}, loadRecommendedPresets() {}, removePatientNote() {}, addMemo: () => !shared.failMemo, importDataFromJson: value => { shared.imports.push(value); return { success: true }; }, exportAllDataAsJson: () => '{}', exportAllDataAsCsv: () => '', triggerSync: async () => {},
-    saveWorkspaceNote(fields, id) {
-      const result = load('src/utils/clinicalNoteSave').persistClinicalNote(shared.notes, fields, id, 100, notes => { if (shared.failLocal) throw Error('quota'); shared.notes = plain(notes); shared.saved.push(plain(notes)); });
-      return result.result;
-    },
-  };
-  const filename = kind === 'notes' ? 'src/app/notes/page.tsx' : 'src/components/diagnosis/DiagnosisClient.tsx';
+  const filename = 'src/components/diagnosis/DiagnosisClient.tsx';
   const file = path.join(root, filename);
-  let code = ts.transpileModule(fs.readFileSync(file, 'utf8'), { fileName: file, compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
-  if (kind === 'notes') code += '\nexports.TestClinicalNotesPage = ClinicalNotesPage;';
+  const code = ts.transpileModule(fs.readFileSync(file, 'utf8'), { fileName: file, compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
   const Empty = () => null;
   const boardHost = hookHost(), boardExports = {};
-  if (kind === 'interview') {
+  {
     const boardFile = path.join(root, 'src/components/diagnosis/ClinicalInterviewBoard.tsx');
     const boardCode = ts.transpileModule(fs.readFileSync(boardFile, 'utf8'), { fileName: boardFile, compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
     vm.runInNewContext(boardCode, { exports: boardExports, window: browser, require: id => {
@@ -66,27 +59,23 @@ function client(kind, env) {
     if (node.type === InterviewBoard) return InterviewBoard(node.props);
     return { ...node, props: { ...node.props, children: expandInterviewBoard(node.props?.children) } };
   }
-  vm.runInNewContext(code, { exports, Intl, Date, Math, URLSearchParams, window: browser, sessionStorage, document: { title: '', getElementById: () => null }, navigator: { clipboard: { writeText: async () => {} } }, alert: browser.alert,
+  vm.runInNewContext(code, { exports, Intl, Date, Math, URLSearchParams, window: browser, sessionStorage, document: { title: '', getElementById: () => null }, navigator: { clipboard: { writeText: async () => {} } },
     setTimeout(callback, delay = 0) { timers.set(++timerId, { callback, delay }); return timerId; }, clearTimeout(id) { timers.delete(id); },
-    FileReader: class { readAsText() { shared.fileReads.push(this); } },
     require: id => {
       if (id === 'react') return host.hooks;
       if (id === 'next/navigation') return { useRouter: () => ({ push: href => pushes.push(href) }), useSearchParams: () => new URLSearchParams() };
-      if (id === '@/contexts/ClinicalMemoContext') return { useClinicalMemo: () => context };
-      if (id === '@/contexts/AuthContext') return { useAuth: () => ({ isPremium: false, isAuthenticated: shared.owner !== 'guest' }) };
       if (id === '@/hooks/useModalDialog') return { useModalDialog() {} };
       if (id === '@/utils/analytics') return { trackEvent() {} };
       if (id === 'next/dynamic') return () => Empty;
       if (id === './ClinicalInterviewBoard') return { __esModule: true, default: InterviewBoard };
-      if (id === 'next/link' || id.startsWith('@/components/') || id === './NotesStorageSupport') return Empty;
+      if (id === 'next/link' || id.startsWith('@/components/')) return Empty;
       if (id.startsWith('@/')) return load('src/' + id.slice(2));
       return require(id);
     },
   }, { filename: file });
   const api = { pushes,
     render() {
-      context.patientNotes = shared.notes; context.patientNoteCount = shared.notes.length; context.clinicalStorageOwner = shared.owner;
-      tree = expandInterviewBoard(host.render(kind === 'notes' ? exports.TestClinicalNotesPage : exports.default, { initialTab: 'clinical', relatedArticles: [] }));
+      tree = expandInterviewBoard(host.render(exports.default, { initialTab: 'clinical', relatedArticles: [], studyLinks: {} }));
       const heading = nodes(tree).find(node => node.props?.id === 'clinical-interview-heading');
       if (heading?.props.ref) heading.props.ref.current = { focus() {}, scrollIntoView(options) { shared.scrolls.push(options); } };
       return tree;
@@ -97,35 +86,9 @@ function client(kind, env) {
     click(label) { const button = api.button(label); assert(!button.props.disabled); button.props.onClick(); api.render(); },
     field(name) { const field = nodes(tree).find(node => ['input', 'textarea', 'select'].includes(node.type) && node.props.name === name); assert(field, 'Field: ' + name); return field; },
     change(name, value) { api.field(name).props.onChange({ target: { value } }); api.render(); },
-    save() { const form = nodes(tree).find(node => node.type === 'form' && node.props.onSubmit); assert(form); form.props.onSubmit({ preventDefault() {} }); api.render(); },
-    setOwner(owner) { shared.owner = owner; sessionStorage.setItem('haritaro_clinical_active_owner_v1', owner); api.render(); api.flush(); },
-    note: () => shared.notes[0],
   };
   api.render(); api.flush(); return api;
 }
-check('failed custom prescription saves retain input and the open form until successful retry', () => {
-  const env = environment(), notes = client('notes', env);
-  const tab = nodes(notes.tree()).find(node => node.type === 'button' && text(node).startsWith('配穴集'));
-  assert(tab); tab.props.onClick(); notes.render(); notes.click('自作の配穴を追加');
-  notes.change('customStockTitle', '検証用配穴'); notes.change('customStockPoints', '合谷、太衝'); notes.change('customStockSummary', '保持する入力');
-  const submit = () => { const form = nodes(notes.tree()).find(node => node.type === 'form'); assert(form); form.props.onSubmit({ preventDefault() {} }); notes.render(); };
-  env.shared.failMemo = true; submit();
-  assert.equal(notes.field('customStockTitle').props.value, '検証用配穴');
-  assert.equal(notes.field('customStockSummary').props.value, '保持する入力');
-  assert(nodes(notes.tree()).some(node => node.props?.role === 'alert' && text(node).includes('保存できませんでした')));
-  env.shared.failMemo = false; submit();
-  assert(!nodes(notes.tree()).some(node => node.props?.name === 'customStockTitle'), 'Success closes the saved form');
-});
-check('a file selected under a previous owner is not imported after an account switch', () => {
-  const env = environment(), notes = client('notes', env);
-  const support = nodes(notes.tree()).find(node => typeof node.props?.onFileUpload === 'function'); assert(support);
-  support.props.onFileUpload({ target: { files: [{}], value: 'backup.json' } });
-  assert.equal(env.shared.fileReads.length, 1);
-  notes.setOwner('account-B');
-  env.shared.fileReads[0].onload({ target: { result: '{}' } });
-  assert.equal(env.shared.imports.length, 0);
-  assert(env.shared.alerts.some(message => message.includes('アカウントが切り替わった')));
-});
 check('handoffs are non-destructive, owner-scoped and an older token cannot consume a newer handoff', () => {
   const env = environment(), drafts = env.load('src/utils/draftNote');
   assert(drafts.saveDraftPatientNote(handoff(), 'guest'));
@@ -155,85 +118,16 @@ check('cleanup never deletes a newer editor or reports success when a storage re
   assert.equal(editors.readClinicalNoteEditor('guest').id, 'newer-editor'); assert(drafts.loadDraftPatientNote('guest'));
   assert.equal(editors.clearClinicalNoteEditor('older-editor', 'guest'), false);
 });
-check('notes retain edited imports across a reload, a close/reopen and failed saves until durable success', () => {
-  const env = environment(), drafts = env.load('src/utils/draftNote'), editors = env.load('src/utils/clinicalNoteEditor');
-  drafts.saveDraftPatientNote(handoff(), 'guest');
-  let notes = client('notes', env);
-  const edited = '  編集した引き継ぎ本文。\n条件を追加で確認。  ';
-  notes.change('treatmentPlan', edited); notes.change('chiefComplaint', '修正した主訴');
-  assert.equal(editors.readClinicalNoteEditor('guest').fields.treatmentPlan, edited);
-  assert(drafts.loadDraftPatientNote('guest'), 'Receiving did not delete the incoming handoff');
-  notes = client('notes', env);
-  assert.equal(notes.field('treatmentPlan').props.value, edited); assert.equal(notes.field('chiefComplaint').props.value, '修正した主訴');
-  notes.click('閉じて後で続ける'); assert(notes.button('下書きを再開する')); notes.click('下書きを再開する');
-  env.shared.failLocal = true; notes.save();
-  assert.equal(env.shared.notes.length, 0); assert(drafts.loadDraftPatientNote('guest')); assert(editors.readClinicalNoteEditor('guest'));
-  assert.equal(notes.field('treatmentPlan').props.value, edited);
-  env.shared.failLocal = false; notes.save();
-  assert.equal(env.shared.notes.length, 1); assert.equal(notes.note().treatmentPlan, edited.trim());
-  assert.equal(drafts.loadDraftPatientNote('guest'), null); assert.equal(editors.readClinicalNoteEditor('guest'), null);
-});
-check('saving an older active editor leaves a newly arrived handoff available to open separately', () => {
-  const env = environment(), drafts = env.load('src/utils/draftNote');
-  drafts.saveDraftPatientNote(handoff(), 'guest'); let notes = client('notes', env);
-  notes.change('chiefComplaint', '古い下書きへの編集');
-  drafts.saveDraftPatientNote(handoff({ chiefComplaint: '後から届いた主訴' }), 'guest');
-  notes = client('notes', env);
-  assert.equal(notes.field('chiefComplaint').props.value, '古い下書きへの編集');
-  notes.save(); assert.equal(notes.note().chiefComplaint, '古い下書きへの編集');
-  assert.equal(drafts.loadDraftPatientNote('guest').chiefComplaint, '後から届いた主訴');
-  notes.click('新しい引き継ぎを開く');
-  assert.equal(notes.field('chiefComplaint').props.value, '後から届いた主訴');
-  notes.click('この下書きを破棄');
-  assert.equal(drafts.loadDraftPatientNote('guest'), null);
-});
-check('stale editor input/save/discard handlers cannot cross an account change', () => {
-  const env = environment(), drafts = env.load('src/utils/draftNote'), editors = env.load('src/utils/clinicalNoteEditor');
-  drafts.saveDraftPatientNote(handoff(), 'guest'); const notes = client('notes', env);
-  const staleInput = notes.field('chiefComplaint').props.onChange;
-  const staleSave = nodes(notes.tree()).find(node => node.type === 'form').props.onSubmit;
-  const staleDiscard = notes.button('この下書きを破棄').props.onClick;
-  notes.setOwner('A');
-  drafts.saveDraftPatientNote(handoff({ patientIdentifier: 'A-only', chiefComplaint: 'A専用の記録' }), 'A');
-  const accountNotes = client('notes', env); const before = plain(editors.readClinicalNoteEditor('A'));
-  staleInput({ target: { value: 'Guest old callback' } }); staleSave({ preventDefault() {} }); staleDiscard(); notes.render();
-  assert.deepEqual(plain(editors.readClinicalNoteEditor('A')), before); assert.equal(env.shared.notes.length, 0);
-  assert.equal(accountNotes.field('chiefComplaint').props.value, 'A専用の記録');
-  notes.setOwner('guest'); assert.equal(notes.field('chiefComplaint').props.value, '動作で変わる痛み');
-});
-check('direct note creation and editing are recoverable and keep the original note ID after reload', () => {
-  const env = environment(); let notes = client('notes', env);
-  notes.click('臨床ノートを新規作成'); notes.change('patientIdentifier', 'DIRECT-01'); notes.change('chiefComplaint', '直接入力した主訴');
-  notes = client('notes', env); assert.equal(notes.field('chiefComplaint').props.value, '直接入力した主訴'); notes.save();
-  const id = notes.note().id;
-  const open = nodes(notes.tree()).find(node => node.type === 'button' && node.props.className === 'notes-open-record'); assert(open); open.props.onClick(); notes.render();
-  notes.change('chiefComplaint', '既存記録の再編集'); notes = client('notes', env); notes.save();
-  assert.equal(env.shared.notes.length, 1); assert.equal(notes.note().id, id); assert.equal(notes.note().chiefComplaint, '既存記録の再編集');
-});
-check('an editor whose original note was deleted requires confirmation to preserve it as a new record', () => {
-  const env = environment(); let notes = client('notes', env);
-  notes.click('臨床ノートを新規作成'); notes.change('patientIdentifier', 'RECOVER-01'); notes.change('chiefComplaint', '削除後も保持する主訴'); notes.save();
-  const deletedId = notes.note().id;
-  const open = nodes(notes.tree()).find(node => node.type === 'button' && node.props.className === 'notes-open-record'); open.props.onClick(); notes.render();
-  notes.change('treatmentPlan', '  破棄しない編集本文。  '); notes.click('閉じて後で続ける');
-  env.shared.notes = []; notes = client('notes', env);
-  assert.equal(notes.field('treatmentPlan').props.value, '  破棄しない編集本文。  ');
-  assert(text(notes.tree()).includes('元の保存済み記録が見つかりません'));
-  env.shared.confirms = false; notes.click('新しい臨床ノートとして保存');
-  assert.equal(env.shared.notes.length, 0); assert.equal(notes.field('treatmentPlan').props.value, '  破棄しない編集本文。  ');
-  env.shared.confirms = true; notes.click('新しい臨床ノートとして保存');
-  assert.equal(env.shared.notes.length, 1); assert.notEqual(notes.note().id, deletedId); assert.equal(notes.note().chiefComplaint, '削除後も保持する主訴');
-});
 check('interview answers reload and reflect only their memo into the matching active encounter', () => {
   const env = environment(), encounters = env.load('src/utils/clinicalEncounter');
   const original = { ...encounters.emptyClinicalEncounter(), savedNoteId: 'pn_keep', patientIdentifier: 'TEST-301', chiefComplaint: '既存の主訴', candidateIds: ['liver-qi'], principle: '手書きの治法', points: [{ code: 'LI4', role: 'branch', reason: '保持する理由', alternative: '保持する条件' }] };
   assert(encounters.writeClinicalEncounter(original));
-  let interview = client('interview', env); assert.equal(interview.field('patientIdentifier').props.value, 'TEST-301');
+  let interview = client(env); assert.equal(interview.field('patientIdentifier').props.value, 'TEST-301');
   interview.click('当てはまる');
   let note = nodes(interview.tree()).find(node => node.type === 'textarea' && node.props.id === 'clinical-interview-note'); assert(note); note.props.onChange({ target: { value: '  発症時期を確認した。  ' } }); interview.render();
-  interview = client('interview', env);
+  interview = client(env);
   note = nodes(interview.tree()).find(node => node.type === 'textarea' && node.props.id === 'clinical-interview-note'); assert.equal(note.props.value, '  発症時期を確認した。  ');
-  interview.click('問診結果をまとめる'); interview.flush(); interview.click('この記録へ反映して戻る');
+  interview.click('問診結果をまとめる'); interview.flush(); interview.click('反映して作業画面へ戻る');
   assert.equal(interview.pushes.at(-1), '/clinical/workspace');
   const result = encounters.readClinicalEncounter().encounter;
   assert.equal(result.patientIdentifier, original.patientIdentifier); assert.equal(result.chiefComplaint, original.chiefComplaint);
@@ -243,7 +137,7 @@ check('interview answers reload and reflect only their memo into the matching ac
 });
 check('topic navigation retains answers and notes while filtering never advances after an answer', () => {
   const env = environment(), drafts = env.load('src/utils/clinicalInterview');
-  const interview = client('interview', env);
+  const interview = client(env);
   const topic = id => nodes(interview.tree()).find(node => node.type === 'button' && node.key === String(id) && node.props['aria-controls']);
   const selectedHeading = () => text(nodes(interview.tree()).find(node => node.props?.id === 'clinical-interview-heading'));
   const groups = [[1, 4, 5], [2, 7, 8], [3, 9, 10], [6, 11, 12]];
@@ -277,22 +171,23 @@ check('topic navigation retains answers and notes while filtering never advances
   assert.equal(retained.statuses[12], 'not_applicable'); assert.equal(retained.statuses[1], 'applicable'); assert.equal(retained.statuses[2], 'unconfirmed');
   assert.equal(retained.notes[12], '最後の項目へ先に記録したメモ');
 });
-check('stale interview answer and note callbacks cannot write into another account', () => {
+check('interview uses the guest key even when an old tab has a former account owner', () => {
   const env = environment(), drafts = env.load('src/utils/clinicalInterview');
-  const interview = client('interview', env);
-  interview.click('当てはまる');
-  const staleAnswer = interview.button('該当なし').props.onClick;
-  const staleNote = nodes(interview.tree()).find(node => node.props?.id === 'clinical-interview-note').props.onChange;
-  interview.setOwner('account-B'); interview.change('patientIdentifier', 'B-ONLY'); interview.click('不明');
-  const before = plain(drafts.readClinicalInterview('account-B'));
-  staleAnswer(); staleNote({ target: { value: '以前のアカウントの入力' } }); interview.render();
-  assert.deepEqual(plain(drafts.readClinicalInterview('account-B')), before);
-  assert.equal(interview.field('patientIdentifier').props.value, 'B-ONLY'); assert(interview.button('不明').props['aria-pressed']);
-  interview.setOwner('guest'); assert(interview.button('当てはまる').props['aria-pressed']);
+  env.sessionStorage.setItem('haritaro_clinical_active_owner_v1', 'former');
+  assert(drafts.writeClinicalInterview({ patientIdentifier: 'FORMER-ONLY', statuses: {}, notes: {} }, 'former'));
+  const interview = client(env);
+  assert.equal(interview.field('patientIdentifier').props.value, '');
+  interview.change('patientIdentifier', 'GUEST-ONLY');
+  interview.click('不明');
+  assert.equal(drafts.readClinicalInterview('guest').patientIdentifier, 'GUEST-ONLY');
+  assert.equal(drafts.readClinicalInterview('former').patientIdentifier, 'FORMER-ONLY');
+  interview.click('問診を終了・新しい問診を開始');
+  assert.equal(drafts.readClinicalInterview('guest'), null);
+  assert.equal(drafts.readClinicalInterview('former').patientIdentifier, 'FORMER-ONLY');
 });
 check('a note-only interview cannot be cleared without the existing discard confirmation', () => {
   const env = environment(), drafts = env.load('src/utils/clinicalInterview');
-  const interview = client('interview', env);
+  const interview = client(env);
   const note = nodes(interview.tree()).find(node => node.props?.id === 'clinical-interview-note');
   note.props.onChange({ target: { value: '回答前に聞き取ったメモ' } }); interview.render();
   env.shared.confirms = false; interview.click('問診を終了・新しい問診を開始');
@@ -303,17 +198,21 @@ check('a note-only interview cannot be cleared without the existing discard conf
 check('interview transfer blocks a different ID or failed write and never navigates on failure', () => {
   const env = environment(), encounters = env.load('src/utils/clinicalEncounter');
   encounters.writeClinicalEncounter({ ...encounters.emptyClinicalEncounter(), patientIdentifier: 'TARGET', chiefComplaint: '保持する主訴' });
-  const interview = client('interview', env); interview.change('patientIdentifier', 'OTHER'); interview.click('当てはまる'); interview.click('問診結果をまとめる'); interview.flush();
-  interview.click('この記録へ反映して戻る'); assert.equal(interview.pushes.length, 0); assert(text(interview.tree()).includes('匿名IDが異なります'));
-  interview.change('patientIdentifier', 'TARGET'); env.shared.failSession = true; interview.click('この記録へ反映して戻る');
+  const interview = client(env); interview.change('patientIdentifier', 'OTHER'); interview.click('当てはまる'); interview.click('問診結果をまとめる'); interview.flush();
+  interview.click('反映して作業画面へ戻る'); assert.equal(interview.pushes.length, 0); assert(text(interview.tree()).includes('匿名IDが異なります'));
+  interview.change('patientIdentifier', 'TARGET'); env.shared.failSession = true; interview.click('反映して作業画面へ戻る');
   assert.equal(interview.pushes.length, 0); assert.equal(encounters.readClinicalEncounter().encounter.interviewMemo, undefined);
   assert(text(interview.tree()).includes('問診入力は保持しています'));
 });
-check('standalone interview handoff navigates only after a retained draft write succeeds', () => {
-  const env = environment(), drafts = env.load('src/utils/draftNote'); const interview = client('interview', env);
-  interview.change('patientIdentifier', 'STANDALONE'); interview.click('当てはまる'); interview.click('問診結果をまとめる'); interview.flush();
-  env.shared.failSession = true; interview.click('臨床ノートに残す'); assert.equal(interview.pushes.length, 0);
-  env.shared.failSession = false; interview.click('臨床ノートに残す'); assert.equal(interview.pushes.at(-1), '/notes'); assert.equal(drafts.loadDraftPatientNote('guest').patientIdentifier, 'STANDALONE');
+check('a standalone interview has no note creation action or navigation', () => {
+  const env = environment(), drafts = env.load('src/utils/draftNote');
+  const interview = client(env);
+  interview.change('patientIdentifier', 'STANDALONE');
+  interview.click('当てはまる'); interview.click('問診結果をまとめる'); interview.flush();
+  assert.equal(interview.pushes.length, 0);
+  assert(!text(interview.tree()).includes('臨床ノートに残す'));
+  assert(!text(interview.tree()).includes('反映して作業画面へ戻る'));
+  assert.equal(drafts.loadDraftPatientNote('guest'), null);
 });
 check('saved display markers survive navigation and reload while edits and legacy records remain distinguishable', () => {
   const env = environment(), encounters = env.load('src/utils/clinicalEncounter');
@@ -326,4 +225,4 @@ check('saved display markers survive navigation and reload while edits and legac
   assert.equal(encounters.clinicalEncounterSaveState({ ...encounter, interviewMemo: '新しい問診メモ' }), 'changed');
   assert.equal(encounters.clinicalEncounterSaveState({ ...encounter, chiefComplaint: '修正' }), 'changed');
 });
-console.log(`Clinical draft handoff passed: ${checks} flows for non-consuming imports, edited reload recovery, same-ID updates, exact-token cleanup, account fences, retained interview input, matching encounter reflection and saved-state markers.`);
+console.log(`Clinical draft handoff passed: ${checks} flows for legacy draft isolation, retained interview input, matching encounter reflection, retired note creation and saved-state marker compatibility.`);

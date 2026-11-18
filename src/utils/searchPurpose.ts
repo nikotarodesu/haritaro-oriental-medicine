@@ -66,9 +66,9 @@ export function rankPurposeSearchResults<T extends PurposeSearchItem>(
       if (item.type === "classic") return context.researchFocus === "classic" ? 95 : context.researchFocus === "paper" ? 70 : 85;
       return 60;
     }
+    if (isSymptomQuery && item.type === "symptom") return 99;
     if (item.type === "glossary" && index.exactTerms.includes(context.query.normalized)) return 98;
     if (isSymptomQuery) {
-      if (item.type === "symptom") return 95;
       if (item.searchRole === "professional-guide") return 90;
       if (item.type === "acupoint") return 80;
     }

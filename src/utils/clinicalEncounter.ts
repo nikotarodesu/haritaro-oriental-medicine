@@ -17,8 +17,7 @@ export interface ClinicalEncounter {
 }
 export const CLINICAL_ENCOUNTER_KEY = 'haritaro_clinical_encounter_v1';
 export const CLINICAL_ACTIVE_OWNER_KEY = 'haritaro_clinical_active_owner_v1';
-function encounterStorageKey(): string {
-  const owner = sessionStorage.getItem(CLINICAL_ACTIVE_OWNER_KEY);
+function encounterStorageKey(owner = sessionStorage.getItem(CLINICAL_ACTIVE_OWNER_KEY)): string {
   return owner && owner !== 'guest' ? CLINICAL_ENCOUNTER_KEY + ':' + encodeURIComponent(owner) : CLINICAL_ENCOUNTER_KEY;
 }
 
@@ -52,20 +51,20 @@ export function parseClinicalEncounter(raw: unknown): ClinicalEncounter | null {
   }
   return value as unknown as ClinicalEncounter;
 }
-export function readClinicalEncounter(): { encounter: ClinicalEncounter | null; error: string | null } {
+export function readClinicalEncounter(owner?: string): { encounter: ClinicalEncounter | null; error: string | null } {
   try {
-    const raw = sessionStorage.getItem(encounterStorageKey());
+    const raw = sessionStorage.getItem(encounterStorageKey(owner));
     if (!raw) return { encounter: null, error: null };
     const value = JSON.parse(raw);
     const encounter = parseClinicalEncounter(value);
-    return { encounter, error: encounter ? value.findingHistory !== undefined && encounter.findingHistory === undefined ? '所見の変更履歴を読み込めませんでした。下書きの所見は復元しましたが、以前の修正は取り消せません。' : null : '下書きの形式を読み込めませんでした。保存済みノートから再開できます。' };
+    return { encounter, error: encounter ? value.findingHistory !== undefined && encounter.findingHistory === undefined ? '所見の変更履歴を読み込めませんでした。下書きの所見は復元しましたが、以前の修正は取り消せません。' : null : '下書きの形式を読み込めませんでした。新しい下書きを始めてください。' };
   } catch { return { encounter: null, error: '下書きを読み込めません。ブラウザの保存設定を確認してください。' }; }
 }
-export function writeClinicalEncounter(encounter: ClinicalEncounter): boolean {
-  try { sessionStorage.setItem(encounterStorageKey(), JSON.stringify(encounter)); return true; } catch { return false; }
+export function writeClinicalEncounter(encounter: ClinicalEncounter, owner?: string): boolean {
+  try { sessionStorage.setItem(encounterStorageKey(owner), JSON.stringify(encounter)); return true; } catch { return false; }
 }
-export function clearClinicalEncounter(): boolean {
-  try { sessionStorage.removeItem(encounterStorageKey()); return true; } catch { return false; }
+export function clearClinicalEncounter(owner?: string): boolean {
+  try { sessionStorage.removeItem(encounterStorageKey(owner)); return true; } catch { return false; }
 }
 /** Compact display marker, not an authentication or integrity check. */
 export function clinicalEncounterFingerprint(encounter: ClinicalEncounter): string {

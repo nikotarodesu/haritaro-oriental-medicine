@@ -15,7 +15,6 @@ import {
   Snowflake 
 } from "lucide-react";
 import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
-import ClipButton from "@/components/ClipButton";
 
 export default function SeasonalBanner() {
   const { 
@@ -161,7 +160,7 @@ export default function SeasonalBanner() {
             </span>
           </div>
 
-          {/* ③ 季節の特効ツボ（マイカルテ保存ボタン付き） */}
+          {/* 季節の経穴案内 */}
           <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2 flex flex-col justify-between">
             <div className="space-y-1.5">
               <div className="flex items-center justify-between gap-2">
@@ -172,20 +171,6 @@ export default function SeasonalBanner() {
                   <span>季節の養生ツボ：<strong>{todayTerm.tsuboName}</strong></span>
                 </div>
 
-                <ClipButton
-                  item={{
-                    id: `seasonal-tsubo-${todayTerm.tsuboId || todayTerm.tsuboName}`,
-                    type: "tsubo",
-                    title: `【${currentSeason.name}の養生ツボ】${todayTerm.tsuboName}`,
-                    subTitle: `二十四節気「${todayTerm.name}」| ${currentSeason.fiveSeason}`,
-                    points: [todayTerm.tsuboName],
-                    elements: [currentSeason.element as any],
-                    indications: ["季節の養生", "自律神経調整", "免疫維持"],
-                    summary: todayTerm.tsuboTip,
-                  }}
-                  variant="badge"
-                  size="sm"
-                />
               </div>
               <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
                 {todayTerm.tsuboTip}

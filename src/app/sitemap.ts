@@ -83,10 +83,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-09-15"),
     },
     {
-      url: `${baseUrl}/pricing`,
-      lastModified: new Date("2026-09-26"),
-    },
-    {
       url: `${baseUrl}/kikei`,
       lastModified: new Date("2026-09-20"),
     },

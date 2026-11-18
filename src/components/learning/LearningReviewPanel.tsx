@@ -3,7 +3,6 @@
 import { trackEvent } from '@/utils/analytics';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/AuthContext';
 import { useCurriculumProgress } from '@/contexts/CurriculumProgressContext';
 import { useLearningSync } from '@/contexts/LearningSyncContext';
 import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
@@ -35,17 +34,16 @@ const clinicalLectureIds = new Set(CURRICULUM_CHAPTERS_META
   .flatMap(chapter => chapter.lectureIds));
 
 export default function LearningReviewPanel({ compact = false }: { compact?: boolean } = {}) {
-  const { user, isLoading } = useAuth();
   const { isMounted } = useCurriculumProgress();
   // Mount only after the current owner's catalog is ready. Never render the previous owner's answers.
-  if (isLoading || !isMounted) return <section id="learning-review" className="scroll-mt-24 p-4" role="status">学習履歴を確認しています。</section>;
-  return <ReviewWorkspace key={user?.id || 'guest'} owner={user?.id || 'guest'} compact={compact} />;
+  if (!isMounted) return <section id="learning-review" className="scroll-mt-24 p-4" role="status">学習履歴を確認しています。</section>;
+  return <ReviewWorkspace owner={'guest'} compact={compact} />;
 }
 
 function ReviewWorkspace({ owner, compact }: { owner: string; compact: boolean }) {
   const { quizResults, quizHistory, saveQuizResult, completedLectures, lastVisitedLectureId, revisedQuestionCount, isMounted } = useCurriculumProgress();
-  const { values, ready, status: syncStatus, canImportGuest } = useLearningSync();
-  const showSyncAttention = compact && (canImportGuest || ['memory', 'offline', 'setup'].includes(syncStatus));
+  const { values, ready, status: syncStatus } = useLearningSync();
+  const showSyncAttention = compact && syncStatus === 'memory';
   const hasCaseHistory = useMemo(() => ready && readCaseLearningRecords(values).length > 0, [ready, values]);
   const hasClinicalStudy = Boolean(lastVisitedLectureId && clinicalLectureIds.has(lastVisitedLectureId))
     || Object.entries(completedLectures).some(([id, completed]) => completed && clinicalLectureIds.has(id))

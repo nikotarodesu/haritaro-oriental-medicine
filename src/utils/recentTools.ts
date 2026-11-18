@@ -7,8 +7,6 @@ export const RECENT_TOOL_CATALOG: ReadonlyArray<{ href: string; title: string }>
   { href: '/diagnosis?tab=gorou', title: '五労チェッカー' },
   { href: '/diagnosis?tab=clinical', title: '対面問診' },
   { href: '/library', title: '文献ライブラリ' },
-  { href: '/notes?tab=learning', title: '学習ノート' },
-  { href: '/notes', title: '臨床ノート・配穴ストック' },
 ];
 const knownHrefs = new Set(RECENT_TOOL_CATALOG.map(tool => tool.href));
 
@@ -16,8 +14,7 @@ const knownHrefs = new Set(RECENT_TOOL_CATALOG.map(tool => tool.href));
 export function recentToolHref(pathname: string, tab: string | null = null): string | null {
   const originalBase = pathname.replace(/\/$/, '');
   const base = originalBase === '/kokushi' ? '/learn/review' : originalBase;
-  const href = base === '/notes' && tab === 'learning' ? '/notes?tab=learning'
-    : base === '/diagnosis' && tab === 'gorou' ? '/diagnosis?tab=gorou'
+  const href = base === '/diagnosis' && tab === 'gorou' ? '/diagnosis?tab=gorou'
     : base === '/diagnosis' && tab === 'clinical' ? '/diagnosis?tab=clinical' : base;
   return knownHrefs.has(href) ? href : null;
 }

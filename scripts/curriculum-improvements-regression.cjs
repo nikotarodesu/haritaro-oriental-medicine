@@ -92,8 +92,8 @@ const capstone = lectureMap.get('lecture-practice-12').contentMarkdown;
 assert(capstone.includes('119') && capstone.includes('症状がいったん治まっていても'));
 assert(!capstone.includes('可能性が極めて高い'));
 
-// Exercise real radio, grade, retry and notebook-save handlers.
-const slots = []; let cursor = 0; let ready = false; const writes = [];
+// Exercise real radio, grade, retry and writing handlers.
+const slots = []; let cursor = 0;
 const react = { ...React, useState(initial) {
   const index = cursor++; if (!(index in slots)) slots[index] = initial;
   return [slots[index], value => { slots[index] = typeof value === 'function' ? value(slots[index]) : value; }];
@@ -105,8 +105,6 @@ vm.runInNewContext(code, { exports: exportsObject, crypto: { randomUUID: () => '
   require(name) {
     if (name === 'react') return react;
     if (name === 'next/link') return 'a';
-    if (name === '@/contexts/AuthContext') return { useAuth: () => ({ user: null }) };
-    if (name === '@/contexts/LearningSyncContext') return { useLearningSync: () => ({ ready, status: 'local', setEntry: (key, value) => writes.push({ key, value }) }) };
     return name.startsWith('@/') ? load('src/' + name.slice(2)) : require(name);
   },
 });
@@ -129,31 +127,11 @@ button('採点と解説を表示').props.onClick(); render();
 assert(text(tree).includes('9問中8問正解'));
 assert.equal(nodes(tree).filter(node => node.type === 'input' && node.props.disabled).length, 27);
 nodes(tree).find(node => node.type === 'textarea').props.onChange({ target: { value: '用語説明と研究の結果を分けて判断し、比較条件を追加確認する。' } }); render();
-assert(button('振り返りノートに保存').props.disabled);
-ready = true; render(); button('振り返りノートに保存').props.onClick(); render();
-assert.equal(writes.length, 1);
-assert.equal(writes[0].value.source.id, 'lecture-intro-4');
-assert(writes[0].value.reasoning.includes('比較条件'));
-assert(button('振り返りノートに保存').props.disabled);
+assert(nodes(tree).find(node => node.type === 'textarea').props.value.includes('比較条件'));
+assert(text(tree).includes('このページを開いている間だけ表示'));
+assert(!nodes(tree).some(node => node.props?.href?.startsWith('/notes')));
 button('選択問題をもう一度解く').props.onClick(); render();
 assert(button('採点と解説を表示').props.disabled);
 assert(text(tree).includes('自動採点・専門家による評価は行いません'));
 
-// Closing an already loaded drawer must preserve the existing form instance.
-let drawerOpened = false;
-let drawerLoaded = false;
-const drawerExports = {};
-const drawerCode = ts.transpileModule(fs.readFileSync(path.resolve(__dirname, '../src/components/DeferredClinicalDrawer.tsx'), 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
-const drawerType = () => null;
-vm.runInNewContext(drawerCode, { exports: drawerExports, require(name) {
-  if (name === 'next/dynamic') return () => drawerType;
-  if (name === 'react') return { ...React, useState: () => [drawerLoaded, value => { drawerLoaded = value; }] };
-  if (name === '@/contexts/ClinicalMemoContext') return { useClinicalMemo: () => ({ isDrawerOpen: drawerOpened }) };
-  return require(name);
-} });
-assert.equal(drawerExports.default(), null);
-drawerOpened = true; drawerExports.default();
-assert.equal(drawerExports.default().type, drawerType);
-drawerOpened = false;
-assert.equal(drawerExports.default().type, drawerType);
-console.log('Passed: 11 chapter assessments / 99 independent questions / 11 worked writing examples, exact source links, wrapping content, prerequisites, procedure safety, real grading/retry, notebook-save readiness and persistent lazy drawer.');
+console.log('Passed: 11 chapter assessments / 99 independent questions / 11 worked writing examples, exact source links, wrapping content, prerequisites, procedure safety, real grading/retry, page-local written reasoning.');

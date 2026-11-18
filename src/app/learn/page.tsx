@@ -1,54 +1,71 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { ArrowRight, RotateCcw, MapPin, BookA, Layers } from 'lucide-react';
-import PageIntro from '@/components/design/PageIntro';
-import { pageSocialMetadata, SITE_NAME } from '@/config/seo';
-import { LEARNING_COURSES } from '@/data/learningCourses';
-import { getCurriculumIndexCatalog } from '@/data/curriculumIndexCatalog';
-import { CURRICULUM_TOTAL_CHAPTERS, CURRICULUM_TOTAL_LESSONS } from '@/data/curriculumOutline';
-import LearningGuideStart from '@/components/learning/LearningGuideStart';
-import LearningCourseCards from '@/components/learning/LearningCourseCards';
-import LearningCourseJourney from '@/components/learning/LearningCourseJourney';
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowDown, ArrowRight, BookOpen } from "lucide-react";
+import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
+import PageIntro from "@/components/design/PageIntro";
+import { pageSocialMetadata, SITE_NAME } from "@/config/seo";
+import { SERIES } from "@/config/series";
+import { getArticlePreviews } from "@/data/articleData";
 
-const pageTitle = '東洋医学を概論から学ぶ｜初学者・鍼灸学生';
-const pageDescription = `概論から陰陽・気血津液・臓腑・経絡へ。全${CURRICULUM_TOTAL_CHAPTERS}章${CURRICULUM_TOTAL_LESSONS}講と${LEARNING_COURSES.length}の短い基礎コースで、用語の意味を学び、クイズや架空の相談記録で、所見と判断の理由を確かめます。`;
+const title = "東洋医学の読み物｜陰陽・気血水・経絡・体質チェック";
+const description = "東洋医学の基本を読む。陰陽五行や気血水、経絡の考え方を図と例から学び、気血水体質チェックにも進めます。";
+
 export const metadata: Metadata = {
-  title: pageTitle, description: pageDescription,
-  alternates: { canonical: 'https://www.haritaro.jp/learn' },
-  ...pageSocialMetadata(`${pageTitle} | ${SITE_NAME}`, pageDescription, '/learn'),
+  title,
+  description,
+  alternates: { canonical: "/learn" },
+  ...pageSocialMetadata(`${title} | ${SITE_NAME}`, description, "/learn"),
 };
 
-const focusClass = 'focus-visible:outline-2 focus-visible:outline-offset-4';
+const FEATURED_ARTICLES = [
+  "science-of-yinyang-gogyo",
+  "science-of-qi-blood-fluid",
+  "science-of-meridians-network",
+];
 
 export default function LearnGuidePage() {
-  const catalog = getCurriculumIndexCatalog();
-  const pageUrl = 'https://www.haritaro.jp/learn';
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      { '@type': 'CollectionPage', '@id': pageUrl + '#webpage', url: pageUrl, name: pageTitle, description: pageDescription, inLanguage: 'ja', mainEntity: { '@type': 'ItemList', itemListElement: LEARNING_COURSES.map((course, index) => ({ '@type': 'ListItem', position: index + 1, name: course.title, url: pageUrl + '/courses/' + course.slug })) } },
-      { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'ホーム', item: 'https://www.haritaro.jp/' }, { '@type': 'ListItem', position: 2, name: '学ぶ', item: pageUrl }] },
-    ],
-  };
+  const articles = getArticlePreviews(FEATURED_ARTICLES);
+
   return (
-    <div className="page-layout space-y-10">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
-      <PageIntro eyebrow="初学者・鍼灸学生のための学習案内" title="東洋医学は、どの順番で学ぶ？" description="概論から、一講ずつ。読んで、クイズで確かめましょう。" art="study">
-        <LearningGuideStart lectures={catalog.lectures.filter(lecture => lecture.isPublished !== false).map(({ id, title }) => ({ id, title }))} />
+    <div className="page-layout space-y-8">
+      <PageIntro title={SERIES.reading.name} description="冷えやすい、眠りにくい。身近な体の変化を、東洋医学ではどう捉えるのでしょう。気になるテーマから読んでみてください。" art="study">
+        <div className="page-actions">
+          <a href="#oriental-reading" className="page-primary-action">読み物を探す<ArrowDown aria-hidden="true" size={18} /></a>
+          <Link href="/diagnosis" className="page-secondary-action">気血水 体質チェック</Link>
+        </div>
       </PageIntro>
 
-      <section aria-labelledby="learn-courses-heading" className="space-y-4">
-        <h2 id="learn-courses-heading" className="scroll-mt-28 font-serif text-2xl font-bold">全{LEARNING_COURSES.length}コースの学習順</h2>
-        <p className="leading-relaxed ui-muted">各コースは基本を扱う3〜5講と短い例の演習です。読む目安は講義の合計で、クイズ・演習の時間は含みません。</p>
-        <LearningCourseCards courses={LEARNING_COURSES} placement="learn_course_select" />
-        <p className="text-sm leading-relaxed ui-muted">各論まで詳しく読む方は、<Link href="/curriculum" className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>全{catalog.chapters.length}章・{catalog.lectures.length}講の目次</Link>へ。講義の受講記録は共通です。短いコースと章全体の完了は、それぞれ確認できます。</p>
+      <section aria-labelledby="oriental-reading" className="space-y-4">
+        <h2 id="oriental-reading" className="scroll-mt-28 font-serif text-2xl font-bold">東洋医学の基本を読む</h2>
+        <Link href="/curriculum/lecture-intro-1" className="page-link-card flex items-center gap-3">
+          <span className="page-link-icon"><BookOpen className="h-5 w-5" aria-hidden="true" /></span>
+          <span className="flex-1"><strong className="block">東洋医学とは何か</strong><span className="ui-muted">鍼灸・漢方・養生と、東洋医学の考え方</span></span>
+          <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+        </Link>
+        <ul className="page-link-grid">
+          {articles.map(article => (
+            <li key={article.id}>
+              <Link href={`/articles/${article.id}`} className="page-link-card flex h-full items-center gap-3">
+                <strong className="flex-1">{article.title}</strong><ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <Link href="/articles" className="ui-text-link">図解記事の一覧<ArrowRight aria-hidden="true" /></Link>
       </section>
 
-      <details className="page-help"><summary>コースの進め方</summary><LearningCourseJourney /></details>
-      <details className="page-help"><summary id="learn-review-scope">教材の用途と確認範囲</summary><p className="text-base leading-relaxed text-[#59615D] dark:text-[#B7C5CF]">伝統理論と医学的な評価を区別して学びます。全教材の医学記述の照合・専門家監修は未完了です。未確認の刺鍼深度・角度・針路などの個別手順は掲載を保留しています。Web学習の受講完了は、実際の施術能力の認定を意味しません。</p><Link href="/editorial-policy" className={`inline-flex min-h-11 items-center font-semibold text-[#184F49] underline dark:text-[#9CCBBC] ${focusClass}`}>出典と確認範囲を見る →</Link></details>
+      <section id="learn-courses-heading" aria-labelledby="reading-topics" className="scroll-mt-28 space-y-4">
+        <h2 id="reading-topics" className="font-serif text-2xl font-bold">読み物をテーマから探す</h2>
+        <PublicLectureIndex series="reading" />
+      </section>
 
-      <nav aria-label="復習と用語の確認" className="page-link-grid">{[{ href: '/learn/review#learning-review', label: '今日の復習', icon: RotateCcw }, { href: '/tsubo/practice', label: '経穴の基本演習', icon: MapPin }, { href: '/glossary', label: '用語集', icon: BookA }, { href: '/learn/courses/pathomechanism-foundations#concept-comparison', label: '病因・病機・症状・証を比べる', icon: Layers }].map(({ icon: Icon, ...link }) => <Link key={link.href} href={link.href} className="page-link-card flex items-center gap-3"><span className="page-link-icon"><Icon aria-hidden="true" className="h-5 w-5" /></span><span className="flex-1 font-semibold">{link.label}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link>)}</nav>
-      <nav aria-label="学習の記録と演習" className="flex flex-wrap gap-x-6 gap-y-1 text-sm"><Link href="/notes?tab=learning" className="ui-text-link">学習ノート</Link><Link href="/simulator#case-training" className="ui-text-link">症例で考える</Link></nav>
+      <nav aria-label="東洋医学を詳しく調べる" className="flex flex-wrap gap-x-6 gap-y-2">
+        <Link href="/glossary" className="ui-text-link">用語集</Link>
+        <Link href="/library" className="ui-text-link">古典・論文</Link>
+        <Link href="/editorial-policy" className="ui-text-link">出典と確認範囲</Link>
+      </nav>
+
+      <Link href="/curriculum" className="ui-text-link">3シリーズの読み物・演習の全目次<ArrowRight aria-hidden="true" /></Link>
     </div>
   );
 }

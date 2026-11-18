@@ -980,12 +980,6 @@ export default function KokushiDashboard() {
                 </p>
               </div>
             </div>
-            <Link
-              href="/notes"
-              className="text-xs font-bold text-rose-700 dark:text-rose-300 hover:underline flex items-center gap-1"
-            >
-              <span>マイノートで全体管理 ➜</span>
-            </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">

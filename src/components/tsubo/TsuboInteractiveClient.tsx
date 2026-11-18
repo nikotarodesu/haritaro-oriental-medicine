@@ -27,10 +27,8 @@ import {
   X 
 } from "lucide-react";
 import BodyMapSvg from "@/components/tsubo/BodyMapSvg";
-import ClipButton from "@/components/ClipButton";
 import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
 import ClinicalPairsSection from "@/components/ClinicalPairsSection";
-import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
 import { normalizeSearchText } from "@/utils/search";
 import { prepareAcupointSearch, getAcupointMatchReason } from "@/utils/acupointSearch";
@@ -88,8 +86,6 @@ export default function TsuboInteractiveClient() {
   const [showBodyMap, setShowBodyMap] = useState<boolean>(!initialQ);
   const [showFilters, setShowFilters] = useState(initialMeridian !== "すべて" || initialCategory !== "すべて" || initialPublished);
 
-  const { memos } = useClinicalMemo();
-  const savedTsuboMemos = useMemo(() => memos.filter((m) => m.type === "tsubo").sort((a, b) => b.createdAt - a.createdAt), [memos]);
 
   // 初回マウントフラグ（初回ロード時のページ番号リセットを防止）
   const isFirstRender = useRef(true);
@@ -503,17 +499,6 @@ export default function TsuboInteractiveClient() {
                           </span>
                         </h3>
                       </div>
-                      <ClipButton
-                        item={{
-                          id: `tsubo-${point.codeLower}`,
-                          type: "tsubo",
-                          title: `${point.name}（${point.code}）`,
-                          points: [point.name],
-                          elements: MERIDIAN_ELEMENT_MAP[point.meridianId] ? [MERIDIAN_ELEMENT_MAP[point.meridianId]] : [],
-                          indications: point.indications || [],
-                          summary: `${point.meridian}・${point.locationSimple}`,
-                        }}
-                      />
                     </div>
 
                     <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] line-clamp-2 leading-relaxed">
@@ -655,21 +640,6 @@ export default function TsuboInteractiveClient() {
         <Link href="/kikei">奇経八脈<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
       </nav>
 
-      {savedTsuboMemos.length > 0 && (
-        <section className="dictionary-saved-points" aria-labelledby="saved-points-title">
-          <div className="dictionary-section-heading">
-            <h2 id="saved-points-title"><Bookmark aria-hidden="true" className="h-4 w-4" />最近保存した経穴</h2>
-            <Link href="/notes">マイノートを開く<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
-          </div>
-          <ul>
-            {savedTsuboMemos.slice(0, 3).map((memo) => (
-              <li key={memo.id}>
-                <Link href={`/tsubo/${memo.id.replace(/^tsubo-/, "")}`}><strong>{memo.title}</strong><ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
 
       {/* 関連する基礎解説・配穴案内 */}
       <section className="space-y-4 pt-4 border-t border-[#F2ECE0] dark:border-[#22303D]">

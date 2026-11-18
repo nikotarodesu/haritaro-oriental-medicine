@@ -13,6 +13,7 @@ import {
   BookOpen, 
   Library, 
   FileText,
+  HeartPulse,
   LucideIcon
 } from "lucide-react";
 
@@ -35,7 +36,7 @@ export type NavItemId =
   | "haiketsu"
   | "cases"
   | "library"
-  | "notes";
+  | "symptoms";
 
 export interface NavItemDefinition {
   id: NavItemId;
@@ -173,20 +174,19 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
     icon: Library,
     href: "/library",
   },
-  notes: {
-    id: "notes",
-    label: "マイノート",
-    shortLabel: "ノート",
-    description: "臨床記録と配穴ストック・印刷シート",
-    icon: FileText,
-    href: "/notes",
+  symptoms: {
+    id: "symptoms",
+    label: "症状から探す",
+    shortLabel: "症状",
+    description: "症状ガイドと受診の目安",
+    icon: HeartPulse,
+    href: "/symptoms",
   },
 };
 
 /** The five everyday destinations shared by the header and clinical home. */
 export const CLINICAL_PRIMARY_ITEMS = [
   ALL_NAV_ITEMS.workspace,
-  { ...ALL_NAV_ITEMS.notes, label: "記録一覧" },
   ALL_NAV_ITEMS.clinical_guides,
   ALL_NAV_ITEMS.clinical_interview,
   ALL_NAV_ITEMS.tsubo_compare,
@@ -201,17 +201,16 @@ export const CLINICAL_PRACTICE_ITEMS = [
 
 /** Retained for existing consumers; public menus use the concise lists above. */
 export const CLINICAL_NAV_GROUPS = [
-  { id: "record", label: "記録する", items: ["workspace", "notes"] },
+  { id: "record", label: "記録する", items: ["workspace"] },
   { id: "lookup", label: "調べる", items: ["clinical_guides", "clinical_interview", "tsubo_compare"] },
   { id: "practice", label: "練習する", items: ["simulator", "haiketsu", "cases"] },
 ] as const satisfies readonly { id: string; label: string; items: readonly NavItemId[] }[];
 
-export function getNavigationSection(pathname: string): "learn" | "clinical" | "dictionary" | "account" | null {
+export function getNavigationSection(pathname: string): "learn" | "clinical" | "dictionary" | null {
   const within = (path: string) => pathname === path || pathname.startsWith(path + "/");
-  if (["/clinical", "/simulator", "/practice", "/cases", "/diagnosis", "/kikei", "/notes", "/mynote"].some(within) || within("/tsubo/compare")) return "clinical";
-  if (within("/tsubo")) return "dictionary";
-  if (["/learn", "/curriculum", "/library", "/articles"].some(within)) return "learn";
-  if (["/account", "/auth", "/pricing"].some(within)) return "account";
+  if (["/clinical", "/simulator", "/practice", "/cases", "/kikei"].some(within) || within("/tsubo/compare")) return "clinical";
+  if (within("/tsubo") || within("/symptoms")) return "dictionary";
+  if (["/learn", "/curriculum", "/library", "/articles", "/diagnosis"].some(within)) return "learn";
   return null;
 }
 
@@ -223,7 +222,6 @@ export function isNavigationItemActive(id: NavItemId, pathname: string, searchPa
   if (id === "workspace") return pathname === "/clinical/workspace";
   if (id === "curriculum") return pathname !== "/learn/review" && (pathname.startsWith("/learn") || pathname.startsWith("/curriculum"));
   if (id === "review" || id === "kokushi") return pathname === "/learn/review";
-  if (id === "notes") return pathname.startsWith("/notes") || pathname.startsWith("/mynote");
   if (id === "diagnosis") return pathname === "/diagnosis" && !["gorou", "clinical"].includes(searchParams?.get("tab") ?? "");
   if (id === "clinical_interview") return pathname === "/diagnosis" && searchParams?.get("tab") === "clinical";
   if (id === "gorou") return pathname === "/diagnosis" && searchParams?.get("tab") === "gorou";
@@ -239,18 +237,18 @@ export type NavPresetType = "standard" | "student" | "clinician";
 export const NAV_PRESETS: Record<NavPresetType, { name: string; description: string; items: [NavItemId, NavItemId, NavItemId, NavItemId] }> = {
   standard: {
     name: "標準セット",
-    description: "学ぶ、経穴、検索、マイノートの基本構成",
-    items: ["curriculum", "tsubo", "search", "notes"],
+    description: "ツボ図鑑、症状、東洋医学と横断検索",
+    items: ["tsubo", "symptoms", "curriculum", "search"],
   },
   student: {
     name: "学生・学習者セット",
-    description: "学びの案内、復習、経穴、マイノートを素早く開く",
-    items: ["curriculum", "review", "tsubo", "notes"],
+    description: "東洋医学、復習、経穴、症状を素早く開く",
+    items: ["curriculum", "review", "tsubo", "symptoms"],
   },
   clinician: {
     name: "臨床家セット",
-    description: "臨床記録、配穴の練習、経穴辞典、マイノートを素早く開く",
-    items: ["workspace", "haiketsu", "tsubo", "notes"],
+    description: "臨床記録、配穴演習、ツボ図鑑、症例演習",
+    items: ["workspace", "haiketsu", "tsubo", "cases"],
   },
 };
 
@@ -265,7 +263,7 @@ export interface NavUserConfig {
 
 export const DEFAULT_NAV_CONFIG: NavUserConfig = {
   version: 1,
-  items: ["curriculum", "tsubo", "search", "notes"],
+  items: NAV_PRESETS.standard.items,
   preset: "standard",
   updatedAt: "2026-10-03",
 };
@@ -283,7 +281,7 @@ export function loadNavUserConfig(): NavUserConfig {
       return DEFAULT_NAV_CONFIG;
     }
     // 全アイテムIDが有効か検証
-    const valid = parsed.items.every((id: string) => Boolean(ALL_NAV_ITEMS[id as NavItemId]));
+    const valid = parsed.items.every((id: string) => typeof id === "string" && (id === "notes" || Object.hasOwn(ALL_NAV_ITEMS, id)));
     if (!valid) return DEFAULT_NAV_CONFIG;
     // 重複がないか検証
     const unique = new Set(parsed.items);
@@ -294,7 +292,7 @@ export function loadNavUserConfig(): NavUserConfig {
     const sourceItems = parsed.preset === "clinician" && parsed.items.every((id: string, index: number) => id === legacyClinician[index])
       ? NAV_PRESETS.clinician.items : parsed.items;
     // Keep the user's other choices when the retired exam shortcut becomes review.
-    const migrated = [...new Set<NavItemId>(sourceItems.map((id: NavItemId) => id === "kokushi" ? "review" : id))];
+    const migrated = [...new Set<NavItemId>(sourceItems.map((id: NavItemId | "notes") => id === "kokushi" ? "review" : id === "notes" ? "symptoms" : id))];
     for (const id of DEFAULT_NAV_CONFIG.items) {
       if (migrated.length === 4) break;
       if (!migrated.includes(id)) migrated.push(id);

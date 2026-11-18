@@ -13,6 +13,8 @@ import {
   Clock
 } from "lucide-react";
 
+const LEGACY_SERVICES_CATEGORY = '終了したサービスについて';
+
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
@@ -26,16 +28,15 @@ export default function ContactPage() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const topic = params.get('topic');
-    if (topic === 'premium-reopening' || topic === 'premium-support') {
+    if (topic === 'legacy-services' || topic === 'premium-reopening' || topic === 'premium-support') {
       const timer = setTimeout(() => setFormData(previous => ({ ...previous,
-        category: 'プレミアムのお申し込みについて',
-        subject: topic === 'premium-reopening' ? 'プレミアム受付再開の連絡希望' : 'プレミアム申込みについて',
-        message: topic === 'premium-reopening' ? 'プレミアムの受付が再開したら、入力したメールアドレスへの連絡を希望します。' : '',
+        category: LEGACY_SERVICES_CATEGORY,
+        subject: previous.subject || '終了したサービスに関する問い合わせ',
       })), 0);
       return () => clearTimeout(timer);
     }
     const source = params.get('source');
-    if (!source || !/^\/(tsubo|articles)\/[a-z0-9-]+$/.test(source)) return;
+    if (!source || (source !== '/symptoms' && !/^\/(tsubo|articles|symptoms)\/[a-z0-9-]+$/.test(source))) return;
     const timer = setTimeout(() => setFormData(previous => ({ ...previous,
       subject: previous.subject || '掲載内容・出典の確認：' + source,
       message: previous.message || '対象ページ：https://www.haritaro.jp' + source + '\n\n確認・訂正をお願いしたい箇所：\n\n参照資料（分かる場合）：\n',
@@ -69,9 +70,9 @@ export default function ContactPage() {
           access_key: "530b5503-9c8a-440f-a96d-affe827029ba",
           name: formData.name,
           email: formData.email,
-          subject: `【はり太郎の東洋医学】[${formData.category}] ${formData.subject}`,
+          subject: `【はり太郎】[${formData.category}] ${formData.subject}`,
           message: `【お問い合わせ種別】: ${formData.category}\n【お名前】: ${formData.name}\n【返信先メールアドレス】: ${formData.email}\n【件名】: ${formData.subject}\n\n【本文】:\n${formData.message}`,
-          from_name: "はり太郎の東洋医学 お問い合わせフォーム",
+          from_name: "はり太郎 お問い合わせフォーム",
           botcheck: formData.botCheck,
         }),
       });
@@ -222,7 +223,7 @@ export default function ContactPage() {
                   <option value="ご意見・ご要望・誤字等のご指摘">ご意見・ご要望・誤字等のご指摘</option>
                   <option value="取材・執筆・ビジネスのご相談">取材・執筆・ビジネスのご相談</option>
                   <option value="その他">その他</option>
-                  <option value="プレミアムのお申し込みについて">プレミアムのお申し込みについて</option>
+                  <option value={LEGACY_SERVICES_CATEGORY}>{LEGACY_SERVICES_CATEGORY}</option>
                 </select>
               </div>
 

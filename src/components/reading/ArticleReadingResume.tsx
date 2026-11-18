@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Bookmark, ArrowRight } from 'lucide-react';
 import ReadingProgressBar from '@/components/ReadingProgressBar';
 import type { ReadingHeading } from '@/components/ReadingProgressBar';
-import { useAuth } from '@/contexts/AuthContext';
 import { useLearningSync } from '@/contexts/LearningSyncContext';
 import { articleReadingKey, createArticleReadingPosition, readArticleReadingPosition } from '@/utils/articleReadingPosition';
 import type { ArticleReadingPosition } from '@/utils/articleReadingPosition';
@@ -15,10 +14,9 @@ interface Props { articleId: string; revision: string; headings: readonly Readin
 const BODY_SELECTOR = '#article-content [data-reading-body]';
 
 export default function ArticleReadingResume(props: Props) {
-  const { user, isLoading } = useAuth();
   const { ready } = useLearningSync();
-  if (isLoading || !ready) return <ReadingProgressBar bodySelector={BODY_SELECTOR} headings={props.headings} />;
-  return <ArticleReadingWorkspace key={`${user?.id ?? 'guest'}:${props.articleId}:${props.revision}`} {...props} />;
+  if (!ready) return <ReadingProgressBar bodySelector={BODY_SELECTOR} headings={props.headings} />;
+  return <ArticleReadingWorkspace key={`${props.articleId}:${props.revision}`} {...props} />;
 }
 
 function ArticleReadingWorkspace({ articleId, revision, headings }: Props) {

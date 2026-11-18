@@ -2,7 +2,6 @@
 
 import React, { useId, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/AuthContext';
 import { useCurriculumProgress, type QuizResultRecord } from '@/contexts/CurriculumProgressContext';
 import { useModalDialog } from '@/hooks/useModalDialog';
 import { X, AlertCircle, CheckCircle2, RotateCcw, Sparkles, BookOpen, ArrowRight } from 'lucide-react';
@@ -14,11 +13,10 @@ interface IncorrectQuestionsModalProps {
 }
 
 export const IncorrectQuestionsModal: React.FC<IncorrectQuestionsModalProps> = ({ isOpen, ...props }) => {
-  const { user } = useAuth();
   const { isMounted } = useCurriculumProgress();
   // Closing or changing accounts discards only this temporary practice view.
   if (!isOpen || !isMounted) return null;
-  return <IncorrectQuestionsWorkspace key={user?.id || 'guest'} {...props} />;
+  return <IncorrectQuestionsWorkspace {...props} />;
 };
 
 function IncorrectQuestionsWorkspace({ onClose, onNavigateToLecture }: Omit<IncorrectQuestionsModalProps, 'isOpen'>) {

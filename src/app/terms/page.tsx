@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
-import { ArrowLeft, ShieldAlert, Mail, BookOpen, CreditCard, CircleStop, UserCheck } from "lucide-react";
+import { ArrowLeft, ShieldAlert, Mail, BookOpen, CircleStop, UserCheck } from "lucide-react";
 import { pageSocialMetadata } from "@/config/seo";
 
 const pageTitle = "利用規約";
-const pageDescription = "「はり太郎の東洋医学」のサービス利用規約です。当サイトのご利用にあたっての条件、有料プラン、知的財産権、免責事項等について定めています。";
+const pageDescription = "「はり太郎」の利用規約です。無料で利用できるコンテンツ、知的財産権、医療情報の範囲などについて定めています。";
 
 export const metadata: Metadata = {
   title: pageTitle,
@@ -32,12 +32,12 @@ export default function TermsPage() {
           </span>
         </nav>
 
-        <PageIntro eyebrow="サービスの利用条件" title="利用規約" description="この利用規約（以下「本規約」）は、「はり太郎の東洋医学」（以下「当サイト」）が提供するすべてのサービス（以下「本サービス」）の利用条件を定めるものです。" art="reading" compact />
+        <PageIntro eyebrow="サービスの利用条件" title="利用規約" description="この利用規約は、「はり太郎」（以下「当サイト」）が提供するコンテンツと機能の利用条件を定めています。" art="reading" compact />
 
         <nav aria-label="このページの目次" className="grid gap-2 sm:grid-cols-2">
-            <a href="#policy-section-3" className="page-secondary-action"><UserCheck size={18} aria-hidden="true" />会員登録</a>
-            <a href="#policy-section-4" className="page-secondary-action"><CreditCard size={18} aria-hidden="true" />料金と支払い</a>
-            <a href="#policy-section-5" className="page-secondary-action"><CircleStop size={18} aria-hidden="true" />解約・更新停止</a>
+            <a href="#policy-section-3" className="page-secondary-action"><UserCheck size={18} aria-hidden="true" />無料で使える範囲</a>
+            <a href="#policy-section-6" className="page-secondary-action"><BookOpen size={18} aria-hidden="true" />著作権</a>
+            <a href="#policy-section-5" className="page-secondary-action"><CircleStop size={18} aria-hidden="true" />旧サービスのお問い合わせ</a>
             <a href="#policy-section-8" className="page-secondary-action"><ShieldAlert size={18} aria-hidden="true" />医療上の免責</a>
         </nav>
 
@@ -50,8 +50,7 @@ export default function TermsPage() {
               第1条（適用）
             </h2>
             <ol className="list-decimal list-inside pl-2 space-y-1.5">
-              <li>本規約は、当サイトの閲覧者、会員登録者および有料サービス契約者を含むすべての利用者（以下「ユーザー」）と当サイト運営者との間の利用に関わる一切の関係に適用されます。</li>
-              <li>ユーザーは、本サービスを利用することにより、本規約のすべての条項に同意したものとみなされます。</li>
+              <li>本規約は、当サイトのすべての利用者（以下「ユーザー」）と当サイト運営者との間の本サービスの利用に適用されます。</li>
             </ol>
           </section>
 
@@ -60,47 +59,34 @@ export default function TermsPage() {
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
               第2条（定義）
             </h2>
-            <ul className="list-disc list-inside pl-2 space-y-1.5">
-              <li><strong>「本サービス」：</strong>当サイト上で提供される東洋医学・経絡経穴データベース、症例演習、診断シミュレーター、学習ノート管理、学術記事その他のウェブコンテンツ。</li>
-              <li><strong>「無料会員」：</strong>当サイト所定の方法により会員登録を行い、無料枠のコンテンツを利用するユーザー。</li>
-              <li><strong>「プレミアム会員」：</strong>所定の利用料金を支払い、全20症例や全機能が解放された有料プランを利用するユーザー。</li>
-            </ul>
+            <p>「本サービス」とは、当サイトで提供するツボ図鑑、症状ガイド、東洋医学の記事、体質チェック、症例・配穴などの臨床演習およびその他のウェブコンテンツを指します。</p>
           </section>
 
-          {/* 第3条（会員登録・アカウント管理） */}
+          {/* 第3条（利用方法と料金） */}
           <section id="policy-section-3" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
-              第3条（会員登録・アカウント管理）
+              第3条（利用方法と料金）
             </h2>
             <ol className="list-decimal list-inside pl-2 space-y-1.5">
-              <li>本サービスの利用を希望する者は、真実、正確かつ最新の情報を登録するものとします。</li>
-              <li>ユーザーは、自己の責任においてアカウントおよび認証情報（メールアドレス・パスワード・OAuth連携等）を適切に管理・保管するものとし、これを第三者に譲渡、貸与、売買、共有等してはなりません。</li>
-              <li>アカウントの盗用や不正使用により生じた損害について、当サイト運営者は一切の責任を負いません。</li>
+              <li>本サービスは会員登録・ログインなしで無料で利用できます。</li>
+              <li>インターネット接続にかかる通信料等はユーザーが負担します。</li>
             </ol>
           </section>
 
-          {/* 第4条（有料プランの料金および支払方法） */}
+          {/* 第4条（広告と個人情報） */}
           <section id="policy-section-4" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
-              第4条（有料プランの料金および支払方法）
+              第4条（広告と個人情報）
             </h2>
-            <ol className="list-decimal list-inside pl-2 space-y-1.5">
-              <li>プレミアム会員の利用料金は、当サイトの「料金プラン」ページに提示された金額（税込）とします。</li>
-              <li>お支払いは、当サイト指定のオンライン決済システム（Stripe, Inc.）を介したクレジットカード決済等により行うものとします。</li>
-              <li>有料プランは、解約手続きが行われない限り、選択された契約期間（1ヶ月または1年間）ごとに自動更新され、登録されたクレジットカードに対して利用料金が請求されます。</li>
-              <li>デジタルコンテンツおよび役務の性質上、一度決済が完了した利用料金の返金、キャンセル、ならびに日割り計算での返還は行いません。</li>
-            </ol>
+            <p>本サービスの一部には広告を掲載する場合があります。広告配信や個人情報の取り扱いは<Link href="/privacy" className="underline underline-offset-4">プライバシーポリシー</Link>をご覧ください。</p>
           </section>
 
-          {/* 第5条（解約および更新の停止） */}
+          {/* 第5条（終了した会員サービス） */}
           <section id="policy-section-5" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
-              第5条（解約および自動更新の停止）
+              第5条（終了した会員サービス）
             </h2>
-            <ol className="list-decimal list-inside pl-2 space-y-1.5">
-              <li>プレミアム会員は、次回契約更新日の前日までにマイページまたはStripeポータルよりいつでも解約手続きを行うことができます。</li>
-              <li>解約手続きを行った場合でも、すでに支払済みの有効期間の満了日まではプレミアム会員向けコンテンツを継続してご利用いただけます。</li>
-            </ol>
+            <p>旧プレミアムプランとマイノートの提供は終了しました。旧サービスのご利用や過去のお支払いに関するご質問は<Link href="/contact" className="underline underline-offset-4">お問い合わせ</Link>からご連絡ください。</p>
           </section>
 
           {/* 第6条（知的財産権および著作権） */}
@@ -124,52 +110,37 @@ export default function TermsPage() {
               <li>法令または公序良俗に反する行為</li>
               <li>当サイトのサーバーやネットワークに過度な負荷をかける行為、または運営を妨害する行為</li>
               <li>スクレイピング、クローリング、ボット等の自動化手段による当サイトコンテンツの大量取得・収集行為</li>
-              <li>有料会員アカウントを複数人で共有・回し使いする行為</li>
               <li>他のユーザー、第三者、または当サイト運営者の著作権、プライバシー権、名誉等の権利を侵害する行為</li>
               <li>リバースエンジニアリング、逆アセンブル等による解析行為</li>
               <li>その他、当サイト運営者が不適切と合理的に判断する行為</li>
             </ul>
           </section>
 
-          {/* 第8条（非医療行為の確認および法定カルテに関する免責事項） */}
+          {/* 第8条（医療情報の範囲） */}
           <section id="policy-section-8" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2 flex items-center gap-2">
               <ShieldAlert className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              <span>第8条（非医療行為の確認および法定カルテに関する免責事項）</span>
+              <span>第8条（医療情報の範囲）</span>
             </h2>
             <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EBE4D5] dark:border-[#22303D] space-y-2">
               <p className="font-semibold text-[#232826] dark:text-[#FAF8F5]">
-                重要なお知らせ（医師法・あはき法等に関する免責事項）
+                健康に関する情報のご利用にあたって
               </p>
               <ol className="list-decimal list-inside space-y-1.5 text-[#404743] dark:text-[#C5D2DB]">
-                <li>当サイトで提供される「体質セルフ診断」「臨床弁証シミュレーター」「症例検討演習」および各種記事・解説は、東洋医学・鍼灸理論の学術的理解や自学自習、日常のセルフケアを支援するための教育・参考情報の提供を目的としています。</li>
+                <li>体質チェック、臨床弁証シミュレーター、症例演習および各種記事・解説は、東洋医学・鍼灸の理解や学習、日常のセルフケアに役立つ参考情報です。</li>
                 <li>当サイトのコンテンツは、医師法第17条に規定される「医行為」（個別の疾患に対する確定診断、治療、投薬・処方等の医療行為）を提供するものではなく、医師や鍼灸師等の専門医療従事者による診断・治療に代わるものではありません。</li>
-                <li>当サイトの「マイノート機能（臨床ノートおよび配穴ストック）」は、施術者の個人的な臨床推論・学術メモおよび患者向け養生指導シートの作成支援を目的とするものであり、あん摩マツサージ指圧師、はり師、きゆう師等に関する法律第8条に規定される「施術録（法定カルテ）」の作成・保存義務に代わるものではありません。利用者は、自らの責任において法定施術録を別途適正に作成・保管するものとします。</li>
                 <li>急激な体調の悪化、激しい疼痛、重篤な疾患の兆候がある場合は、自己判断による処置を行わず、直ちに医師等の専門医療機関を受診してください。</li>
-                <li>当サイト運営者は、本サービスの情報の正確性、最新性、有用性、特定目的への適合性について最大限の努力を払いますが、明示・黙示を問わずいかなる保証も行うものではありません。当サイトの情報を利用したことにより生じた心身の不調やいかなる損害についても、運営者は一切の責任を負いません。</li>
+                <li>当サイト運営者は、掲載情報の正確性と最新性に努めます。掲載情報による効果や個別の状況での安全性は保証しません。</li>
               </ol>
             </div>
           </section>
 
-          {/* 第9条（マイノートの利用規律・直接識別情報排除およびデータ保全責任） */}
+          {/* 第9条（端末に保存する設定） */}
           <section id="policy-section-9" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
-              第9条（マイノートの利用規律・直接識別情報排除およびデータ保全責任）
+              第9条（端末に保存する設定）
             </h2>
-            <ol className="list-decimal list-inside pl-2 space-y-2">
-              <li>
-                <strong>患者実名等の入力禁止（直接識別情報排除の原則）：</strong>
-                利用者は、マイノート機能の利用にあたり、患者のプライバシーおよび個人情報保護を遵守するものとします。入力欄（主訴、メモ、配穴等）に、患者の氏名、電話番号、住所、生年月日、勤務先その他の「特定の個人を直接識別できる情報」を入力・保存してはならず、カルテ番号（例: PT-001）や記号・イニシャル等により個人を特定できない形で管理するものとします。利用者が本項に違反して個人識別情報を入力したことにより生じた紛争や損害について、当サイト運営者は一切の責任を負いません。
-              </li>
-              <li>
-                <strong>データの保全とバックアップ責任：</strong>
-                当サイトは、ログイン利用時におけるクラウド自動同期および端末保存機能を提供しますが、天災地変、通信回線の障害、クラウド基盤のシステム障害、第三者のサイバー攻撃、利用者の端末故障またはブラウザのキャッシュ消去等により、保存されたデータの一部または全部が消失、破損、または同期遅延を生じないことを保証するものではありません。利用者は、自らの責任において、マイノート機能の手元保存（JSONファイル等によるエクスポート）を定期的に行い、バックアップを確保するものとします。
-              </li>
-              <li>
-                <strong>データ消失に関する免責：</strong>
-                事由の如何を問わず、本サービスの利用または利用不能により保存データが消失、破損、漏洩（利用者が端末を紛失した場合等を含む）したことによって利用者に生じた損害について、当サイト運営者に故意または重大な過失がある場合を除き、運営者は一切の賠償責任を負わないものとします。
-              </li>
-            </ol>
+            <p>表示設定や演習の進捗などを利用中のブラウザに保存することがあります。ブラウザや端末を変更した場合、またはサイトデータを削除した場合は、その設定や進捗を引き継げないことがあります。</p>
           </section>
 
           {/* 第10条（本サービスの変更・中断・終了） */}
@@ -183,13 +154,13 @@ export default function TermsPage() {
             </ol>
           </section>
 
-          {/* 第11条（損害賠償の制限） */}
+          {/* 第11条（責任の範囲） */}
           <section id="policy-section-11" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
-              第11条（損害賠償の制限）
+              第11条（責任の範囲）
             </h2>
             <p>
-              消費者契約法の適用その他の理由により、当サイト運営者がユーザーに対して損害賠償責任を負う場合であっても、運営者の過失（重過失を除く）による責任は、直接かつ現実に生じた通常損害に限定され、特別損害、間接損害、逸失利益については責任を負いません。また、その賠償額は、当該事由が生じた過去1年間に当該ユーザーが当サイトに支払った利用料金の総額を上限とします。
+              当サイト運営者の責任は、適用される法令に従います。
             </p>
           </section>
 
@@ -199,7 +170,7 @@ export default function TermsPage() {
               第12条（利用規約の変更）
             </h2>
             <p>
-              当サイト運営者は、民法第548条の4の規定に基づき、本規約を随時変更することができます。規約を変更する場合、変更内容および効力発生時期を当サイト上への掲示その他の適切な方法によりあらかじめ周知します。変更後の効力発生日以降にユーザーが本サービスを利用した場合、変更に同意したものとみなされます。
+              本規約を変更する場合は、適用される法令に従い、変更内容および効力発生時期を当サイト上への掲示その他の適切な方法でお知らせします。
             </p>
           </section>
 
@@ -218,14 +189,14 @@ export default function TermsPage() {
           <section className="pt-4 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
               制定日：2024年4月1日<br />
-              最終改定日：{new Date().getFullYear()}年{new Date().getMonth() + 1}月
+              最終改定日：2026年11月18日
             </p>
             <div className="flex items-center gap-3">
               <Link
                 href="/tokushoho"
                 className="text-sm text-[#1E3D34] dark:text-[#74BA9E] hover:underline font-medium"
               >
-                特定商取引法に基づく表記
+                旧プレミアムプランの販売条件
               </Link>
               <span className="text-[#C5DEC9]">|</span>
               <Link

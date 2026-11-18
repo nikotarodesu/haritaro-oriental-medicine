@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { CLASSIC_CLINICAL_PAIRS } from "@/types/clinicalMemo";
-import ClipButton from "@/components/ClipButton";
 
 export default function ClinicalPairsSection() {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +38,6 @@ export default function ClinicalPairsSection() {
                       <h3>{pair.title}</h3>
                       {pair.subTitle && <p>{pair.subTitle}</p>}
                     </div>
-                    <ClipButton item={pair} variant="icon" size="sm" className="min-h-11 min-w-11" />
                   </div>
                   <dl className="dictionary-pair-facts">
                     <div><dt>構成</dt><dd>{pair.points.join("・")}</dd></div>

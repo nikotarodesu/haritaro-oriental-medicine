@@ -20,7 +20,6 @@ import {
   isChestBackPneumothoraxRisk, 
   isPregnancyContraindicated 
 } from "@/data/tsubo";
-import ClipButton from "@/components/ClipButton";
 
 interface AcupointQuickModalProps {
   acupointIdentifier: string | null; // 名前 (例: "合谷") または コード (例: "LI4", "li4")
@@ -99,20 +98,6 @@ export default function AcupointQuickModal({
           </div>
 
           <div className="flex items-center gap-2">
-            <ClipButton
-              item={{
-                id: `tsubo-${point.id}`,
-                type: "tsubo",
-                title: `${point.name}（${point.code}）`,
-                subTitle: `${point.meridian} | ${point.bodyPart}`,
-                points: [point.name],
-                elements: getMeridianElement(point.meridian),
-                indications: point.indications,
-                summary: point.locationSimple,
-                caution: point.caution,
-              }}
-              size="sm"
-            />
             <button
               onClick={onClose}
               aria-label="閉じる"

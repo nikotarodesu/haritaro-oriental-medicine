@@ -3,137 +3,76 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const ts = require('typescript');
+const React = require('react');
+const { renderToStaticMarkup } = require('react-dom/server');
 const { createDataLoader } = require('./data-loader.cjs');
+
 const load = createDataLoader();
-const { buildPrescriptionMemo } = load('src/utils/prescriptionMemo');
-const { ACUPOINT_ROLES } = load('src/data/haiketsuData');
-for (const id of Object.keys(ACUPOINT_ROLES)) {
-  const memo = buildPrescriptionMemo({ selectedPointIds: [id], title: '', rationale: '', isPremium: false, timestamp: 1 });
-  assert.deepEqual(Array.from(memo.points), [ACUPOINT_ROLES[id].name]);
-  assert.equal(memo.title, `${ACUPOINT_ROLES[id].name}の配穴メモ`, `${id}: the free saved title must name the currently selected point`);
-  assert.equal(memo.elements.length, 0, `${id}: selecting a point must not invent a five-element label`);
-  assert.equal(memo.indications.length, 0, `${id}: selecting a point must not invent clinical indications`);
-  assert.match(memo.summary, /現在の配穴の選定理由ではありません/);
-  assert.match(memo.mechanism, /治療効果や安全性の確認結果ではありません/);
-}
-const saved = buildPrescriptionMemo({ selectedPointIds: ['gokoku', 'ashisanri', 'gokoku', 'missing'], title: '比較した配穴', rationale: '学習で比較した理由', isPremium: true, timestamp: 2 });
-assert.deepEqual(Array.from(saved.points), ['合谷', '足三里']);
-assert.equal(saved.title, '比較した配穴');
-assert.equal(saved.summary, '選定理由: 学習で比較した理由');
-assert.match(saved.subTitle, /計2穴/);
-assert.throws(() => buildPrescriptionMemo({ selectedPointIds: ['missing'], title: '', rationale: '', isPremium: false }), /経穴を選んで/);
-const page = fs.readFileSync('src/app/practice/haiketsu/page.tsx', 'utf8');
-assert.match(page, /addMemo\(buildPrescriptionMemo\(/, 'The real save handler must use the tested record builder');
+const { CLINICAL_CASES } = load('src/data/clinicalCasesData');
+const { KIKEI_VESSELS } = load('src/data/kikeiData');
+const { OVERDOSE_PRESETS } = load('src/data/haiketsuData');
 
-// All public sales prompts must use the same endpoint and fail closed.
-async function availabilityScenario({ enabled = true, response, reject = false, unmount = false, active = true, timeout = false }) {
-  const updates = [];
-  let effect, fetchCount = 0, resolve;
-  const request = new Promise(done => { resolve = done; });
-  const exports = {};
-  const js = ts.transpileModule(fs.readFileSync('src/hooks/useSubscriptionAvailability.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
-  let onTimeout;
-  vm.runInNewContext(js, { exports, AbortController, setTimeout: callback => { onTimeout = callback; return 1; }, clearTimeout() {}, fetch: (url, options) => { assert.equal(url, '/api/stripe/availability'); assert.equal(options.cache, 'no-store'); fetchCount++; return request.then(() => { if (reject) throw new Error('offline'); return response; }); }, require: id => id === 'react' ? { useState: value => [value, next => updates.push(next)], useCallback: cb => cb, useEffect: cb => { effect = cb; } } : { isSubscriptionSalesEnabled: () => enabled } });
-  const initial = exports.useSubscriptionAvailability(active);
-  assert.equal(initial.salesEnabled, false);
-  const cleanup = effect();
-  if (unmount) cleanup?.();
-  if (timeout) { await Promise.resolve(); onTimeout(); } else resolve();
-  await new Promise(done => setImmediate(done));
-  return { updates, fetchCount };
-}
-
-async function retryAvailabilityScenario() {
-  const states = [];
-  let cursor = 0, effect, cleanup, fetchCount = 0;
-  const exports = {};
-  const js = ts.transpileModule(fs.readFileSync('src/hooks/useSubscriptionAvailability.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
-  const react = {
-    useState(initial) {
-      const slot = cursor++;
-      if (!(slot in states)) states[slot] = initial;
-      return [states[slot], next => { states[slot] = typeof next === 'function' ? next(states[slot]) : next; }];
+function component(file) {
+  const source = fs.readFileSync(file, 'utf8');
+  assert.doesNotMatch(source, /useAuth|AuthModal|useSubscriptionAvailability|\/notes|\/pricing|プレミアム/);
+  const js = ts.transpileModule(source, {
+    compilerOptions: {
+      module: ts.ModuleKind.CommonJS,
+      target: ts.ScriptTarget.ES2022,
+      jsx: ts.JsxEmit.ReactJSX,
+      esModuleInterop: true,
     },
-    useCallback: callback => callback,
-    useEffect: callback => { effect = callback; },
+  }).outputText;
+  const exports = {};
+  const mockComponents = {
+    'next/link': ({ href, children }) => React.createElement('a', { href }, children),
+    '@/components/design/PageIntro': ({ title, children }) => React.createElement('header', null, title, children),
+    '@/components/design/PageArtwork': () => null,
+    '@/components/MedicalSafetyNotice': () => null,
+    '@/components/clinical/ClinicalToolBridge': () => null,
+    '@/components/learning/PrescriptionScoringGuide': () => null,
+    '@/components/kikei/KikeiPathwaySvg': () => React.createElement('svg', { 'data-test': 'pathway' }),
+    '@/components/kikei/KikeiQuizSection': () => React.createElement('div', { 'data-test': 'quiz' }),
+    '@/components/kikei/KikeiEvidenceNote': () => null,
   };
-  vm.runInNewContext(js, { exports, AbortController, setTimeout, clearTimeout, fetch: async () => {
-    fetchCount++;
-    if (fetchCount === 1) throw new Error('offline');
-    return { ok: true, json: async () => ({ available: true }) };
-  }, require: id => id === 'react' ? react : { isSubscriptionSalesEnabled: () => true } });
-  const render = () => { cursor = 0; return exports.useSubscriptionAvailability(); };
-  render();
-  cleanup = effect();
-  await new Promise(done => setImmediate(done));
-  let current = render();
-  assert.equal(current.status, 'error');
-  assert.equal(current.salesEnabled, false, 'Unknown availability cannot enable checkout');
-  current.retry();
-  assert.equal(states[0], 'checking', 'Retry immediately replaces the failure with progress');
-  cleanup();
-  current = render();
-  cleanup = effect();
-  await new Promise(done => setImmediate(done));
-  current = render();
-  assert.equal(fetchCount, 2, 'Retry makes a new request after a failed check');
-  assert.equal(current.status, 'available');
-  assert.equal(current.salesEnabled, true, 'A successful retry restores the sales entry');
-  cleanup();
+  vm.runInNewContext(js, {
+    exports,
+    require(id) {
+      if (id === '@/components/design/PageArtwork') return { PageSymbol: mockComponents[id] };
+      if (id === 'next/navigation') return { useSearchParams: () => new URLSearchParams() };
+      if (id === '@/utils/analytics') return { trackEvent() {} };
+      if (mockComponents[id]) return { __esModule: true, default: mockComponents[id] };
+      if (id.startsWith('@/')) return load('src/' + id.slice(2));
+      return require(id);
+    },
+  }, { filename: file });
+  return exports.default;
 }
 
-function renderAvailabilityNotice(status) {
-  const React = require('react');
-  const { renderToStaticMarkup } = require('react-dom/server');
-  const exports = {};
-  const js = ts.transpileModule(fs.readFileSync('src/components/subscription/SubscriptionAvailabilityNotice.tsx', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX } }).outputText;
-  vm.runInNewContext(js, { exports, require: id => id.startsWith('@/') ? load('src/' + id.slice(2)) : require(id) });
-  return renderToStaticMarkup(React.createElement(exports.default, { status, onRetry() {} }));
+const casesIndex = renderToStaticMarkup(React.createElement(component('src/app/cases/page.tsx')));
+const CaseViewer = component('src/components/cases/CaseStudyViewer.tsx');
+assert.equal(CLINICAL_CASES.length, 20);
+for (const clinicalCase of CLINICAL_CASES) {
+  assert(casesIndex.includes('href="/cases/' + clinicalCase.id + '"'), clinicalCase.id);
+  const html = renderToStaticMarkup(React.createElement(CaseViewer, { clinicalCase }));
+  assert(html.includes('ステップ 2: 四診情報'), clinicalCase.id);
+  assert(html.includes('ステップ 3: 臨床推論ステップ演習'), clinicalCase.id);
 }
-function renderSaveNotice(lastToast, isPremium = false) {
-  const React = require('react');
-  const { renderToStaticMarkup } = require('react-dom/server');
-  const exports = {};
-  const js = ts.transpileModule(fs.readFileSync('src/components/ClinicalSaveNotice.tsx', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX } }).outputText;
-  vm.runInNewContext(js, { exports, require: id => id.endsWith('/ClinicalMemoContext') ? { useClinicalMemo: () => ({ lastToast, dismissToast() {} }) } : id.endsWith('/AuthContext') ? { useAuth: () => ({ isPremium }) } : require(id) });
-  return renderToStaticMarkup(React.createElement(exports.default));
+
+const Vessel = component('src/components/kikei/KikeiDetailClient.tsx');
+assert.equal(KIKEI_VESSELS.length, 8);
+for (const vessel of KIKEI_VESSELS) {
+  const html = renderToStaticMarkup(React.createElement(Vessel, { vessel }));
+  assert(html.includes('data-test="pathway"') && html.includes('data-test="quiz"'), vessel.slug);
 }
-(async () => {
-  const limit = { type: 'warning', message: '無料会員の保存上限に達しました。' };
-  assert(renderSaveNotice(limit).includes('href="/pricing"'));
-  assert(renderSaveNotice(limit).includes('href="/notes"'));
-  assert(!renderSaveNotice(limit, true).includes('href="/pricing"'), 'Premium users must not be asked to upgrade again');
-  assert(!renderSaveNotice({ type: 'warning', message: '保存に失敗しました。' }).includes('href="/pricing"'), 'Storage failures are not sales opportunities');
-  assert.equal(renderSaveNotice(null), '');
-  assert.equal(renderSaveNotice({ type: 'success', message: '保存しました。' }), '');
-  for (const [response, expected] of [
-    [{ ok: true, json: async () => ({ available: true }) }, 'available'],
-    [{ ok: true, json: async () => ({ available: false }) }, 'unavailable'],
-    [{ ok: true, json: async () => ({ available: 'true' }) }, 'error'],
-    [{ ok: true, json: async () => { throw new Error('invalid JSON'); } }, 'error'],
-    [{ ok: false }, 'error'],
-  ]) assert.deepEqual((await availabilityScenario({ response })).updates, ['checking', expected]);
-  assert.deepEqual((await availabilityScenario({ reject: true })).updates, ['checking', 'error']);
-  assert.deepEqual((await availabilityScenario({ timeout: true })).updates, ['checking', 'error'], 'A hanging request must leave the checking state');
-  assert.equal((await availabilityScenario({ enabled: false })).fetchCount, 0);
-  assert.equal((await availabilityScenario({ active: false })).fetchCount, 0);
-  assert.deepEqual((await availabilityScenario({ response: { ok: true, json: async () => ({ available: true }) }, unmount: true })).updates, []);
-  await retryAvailabilityScenario();
-  for (const status of ['checking', 'error']) {
-    const html = renderAvailabilityNotice(status);
-    assert(!html.includes('準備中') && !html.includes('受付開始日は未定'), 'A loading or failed request must not claim that sales are stopped');
-    assert(html.includes('role="status"'));
-  }
-  assert(renderAvailabilityNotice('error').includes('受付状況を再確認する'));
-  assert(renderAvailabilityNotice('unavailable').includes('受付を停止'));
-  assert(renderAvailabilityNotice('unavailable').includes('/contact?topic=premium-reopening'));
-  for (const file of ['src/app/pricing/page.tsx', 'src/components/auth/AuthModal.tsx', 'src/components/cases/CaseStudyViewer.tsx', 'src/app/practice/haiketsu/page.tsx']) assert.match(fs.readFileSync(file, 'utf8'), /useSubscriptionAvailability/);
-  const modal = fs.readFileSync('src/components/auth/AuthModal.tsx', 'utf8');
-  assert.match(modal, /useModalDialog\(isOpen/);
-  assert.match(modal, /role="dialog" aria-modal="true"/);
-  assert(!modal.includes('学習ノート保存上限 1,000'));
-  const install = fs.readFileSync('src/components/pwa/PwaInstallPrompt.tsx', 'utf8');
-  assert(!install.includes('setTimeout('), 'Installation must not interrupt an initial visit');
-  assert.match(install, /addEventListener\("haritaro:install-app"/);
-  console.log(`Passed: ${Object.keys(ACUPOINT_ROLES).length} single-point records, combinations, honest metadata, sales readiness/error/unmount handling, common modal and user-requested install guidance.`);
-})().catch(error => { console.error(error); process.exitCode = 1; });
+
+const prescription = renderToStaticMarkup(React.createElement(component('src/app/practice/haiketsu/page.tsx')));
+assert(prescription.includes('8穴まで追加・解除'));
+assert(!prescription.includes('readOnly'), 'Both writing controls accept input');
+assert(prescription.includes('id="haiketsu-title"') && prescription.includes('id="haiketsu-rationale"'));
+for (const preset of OVERDOSE_PRESETS) assert(prescription.includes(preset.name), preset.id);
+
+const install = fs.readFileSync('src/components/pwa/PwaInstallPrompt.tsx', 'utf8');
+assert(!install.includes('setTimeout('), 'Installation must not interrupt an initial visit');
+assert.match(install, /addEventListener\("haritaro:install-app"/);
+console.log('Passed: 20 public case exercises, all eight Kikei diagrams and quizzes, all prescription exercises, and user-requested install guidance.');

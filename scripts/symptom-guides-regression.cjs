@@ -31,8 +31,10 @@ function load(candidate) {
 
 async function main() {
   const { SYMPTOMS, SYMPTOM_SAFETY_GUIDANCE } = load('src/data/symptomData');
+  const { PUBLIC_SYMPTOM_CONTENT } = load('src/data/publicSymptoms');
   const { ARTICLES } = load('src/data/articleData');
   const { CURRICULUM_DATA } = load('src/data/curriculumData');
+  const { getPublicLectureArticle } = load('src/data/publicLectures');
   const { CLINICAL_CASES } = load('src/data/clinicalCasesData');
   const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
   const { VERIFIED_PAPERS } = load('src/data/references/papersData');
@@ -43,6 +45,8 @@ async function main() {
   const sitemap = load('src/app/sitemap').default();
   const lectureIds = new Set(CURRICULUM_DATA.flatMap(stage => stage.lectures).map(lecture => lecture.id));
   assert.equal(SYMPTOMS.length, 12);
+  assert.deepEqual(Object.keys(PUBLIC_SYMPTOM_CONTENT).sort(), Array.from(SYMPTOMS, guide => guide.id).sort(), 'Every existing guide has one rewrite');
+  assert.equal(new Set(Object.values(PUBLIC_SYMPTOM_CONTENT).map(guide => guide.summary)).size, 12, 'All rewritten summaries are distinct');
   assert.equal(route.dynamicParams, false, 'Unknown slugs do not produce extra guide URLs');
   assert.equal(JSON.stringify(route.generateStaticParams()), JSON.stringify(SYMPTOMS.map(guide => ({ slug: guide.id }))), 'Every guide has a build-time route');
   const indexHtml = renderToStaticMarkup(index.default());
@@ -50,6 +54,7 @@ async function main() {
   assert.equal(indexSchema['@graph'][1].itemListElement.length, SYMPTOMS.length, 'Index schema lists every guide');
 
   for (const guide of SYMPTOMS) {
+    const content = PUBLIC_SYMPTOM_CONTENT[guide.id];
     const pathname = helpers.symptomGuidePath(guide);
     const params = Promise.resolve({ slug: guide.id });
     const metadata = await route.generateMetadata({ params });
@@ -61,16 +66,26 @@ async function main() {
     assert.equal(metadata.alternates.canonical, pathname, `${guide.id}: self canonical`);
     assert.equal(metadata.openGraph.url, `https://www.haritaro.jp${pathname}`, `${guide.id}: share URL`);
     assert.equal(metadata.title, schema['@graph'][0].name, `${guide.id}: metadata agrees with schema`);
+    assert.equal(metadata.description, schema['@graph'][0].description, `${guide.id}: description agrees with schema`);
+    assert(metadata.description.includes(content.summary), `${guide.id}: metadata reflects the rewritten summary`);
     assert.equal(schema['@graph'][1].itemListElement[2].item, metadata.openGraph.url, `${guide.id}: breadcrumb URL`);
     assert(!JSON.stringify(schema).match(/possibleTreatment|MedicalCondition|MedicalTherapy|鍼灸師監修/), `${guide.id}: no treatment or completed review claim`);
     assert(!html.match(/セルフ診断で原因|原因タイプを調べる/), `${guide.id}: no diagnostic CTA`);
-    assert(html.includes(guide.summary) && html.includes(guide.orientalMechanism), `${guide.id}: shared summary and traditional theory appear in initial HTML`);
-    assert(html.includes(guide.lifestyleAdvice.diet) && html.includes(guide.lifestyleAdvice.habit), `${guide.id}: daily advice appears in initial HTML`);
+    assert(html.includes(content.summary) && indexHtml.includes(content.summary), `${guide.id}: the revised summary appears on both the detail and index pages`);
+    assert(content.traditional.length > 0 && content.traditional.every(paragraph => html.includes(paragraph)), `${guide.id}: revised traditional concepts appear in initial HTML`);
+    assert(content.dailyLife.length >= 2 && content.dailyLife.every(({ title, body }) => html.includes(title) && html.includes(body)), `${guide.id}: daily advice appears in initial HTML`);
+    assert(content.observations.length >= 3 && content.observations.every(item => html.includes(item)), `${guide.id}: practical details for the visit appear in initial HTML`);
     assert(safety && html.includes(safety.message), `${guide.id}: safety message appears before any interaction`);
+    assert(html.indexOf(safety.message) < html.indexOf('id="daily-life"') && html.indexOf('id="daily-life"') < html.indexOf('id="traditional"'), `${guide.id}: triage precedes daily advice and traditional theory`);
     assert.equal(new Set(sources.map(source => source.url)).size, sources.length, `${guide.id}: unique sources`);
-    for (const source of safety.sources) assert(sources.some(candidate => candidate.url === source.url) && html.includes(source.url), `${guide.id}: cited safety source is visible`);
+    for (const source of safety.sources) assert(sources.some(candidate => candidate.url === source.url && candidate.scope.includes('受診の目安') && candidate.section.includes(source.section)) && html.includes(source.url), `${guide.id}: cited safety source is visible`);
+    for (const source of content.dailyLifeSources || []) assert(sources.some(candidate => candidate.url === source.url && candidate.scope.includes('日常の工夫') && candidate.section.includes(source.section)) && html.includes(source.url), `${guide.id}: the daily advice scope and section are cited`);
     for (const code of guide.recommendedTsuboIds) assert(ACUPOINTS_MASTER.some(point => point.codeLower === code) && html.includes(`href="/tsubo/${code}"`), `${guide.id}: live acupoint link ${code}`);
     assert(lectureIds.has(resources.lectureId), `${guide.id}: existing related lesson`);
+    assert(html.includes(`href="/curriculum/${resources.lectureId}"`), `${guide.id}: related lesson remains linked`);
+    const lecture = getPublicLectureArticle(resources.lectureId);
+    assert(lecture && html.includes(renderToStaticMarkup(React.createElement(React.Fragment, null, lecture.title))), `${guide.id}: link title matches the revised article`);
+    assert(html.includes('href="/diagnosis"'), `${guide.id}: constitution check remains linked`);
     if (resources.articleId) assert(ARTICLES.some(article => article.id === resources.articleId), `${guide.id}: existing related article ${resources.articleId}`);
     if (resources.caseId) assert(CLINICAL_CASES.some(item => item.id === resources.caseId), `${guide.id}: existing fictional case`);
     for (const id of resources.paperIds || []) {
@@ -88,7 +103,8 @@ async function main() {
     assert(indexHtml.includes(`id="${guide.id}"`), `${guide.id}: old fragment URL still resolves`);
     assert(indexHtml.includes(`href="${pathname}"`), `${guide.id}: detail URL is discoverable without JavaScript`);
     assert.equal(sitemap.filter(page => new URL(page.url).pathname === pathname).length, 1, `${guide.id}: one sitemap entry`);
-    assert.equal(sitemap.find(page => new URL(page.url).pathname === pathname).lastModified.toISOString().slice(0, 10), '2026-10-08', `${guide.id}: substantive page update date`);
+    assert.equal(sitemap.find(page => new URL(page.url).pathname === pathname).lastModified.toISOString().slice(0, 10), '2026-11-18', `${guide.id}: substantive page update date`);
+    assert.equal(schema['@graph'][0].dateModified, '2026-11-18', `${guide.id}: structured data reflects the revision date`);
   }
   const invalidParams = Promise.resolve({ slug: 'missing-guide' });
   await assert.rejects(route.default({ params: invalidParams }), /404/, 'Unknown page returns a 404');

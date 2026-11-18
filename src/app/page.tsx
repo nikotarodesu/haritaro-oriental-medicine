@@ -1,100 +1,63 @@
 import Link from "next/link";
-import Image from "next/image";
-import { Stethoscope, ArrowRight, BookOpen } from "lucide-react";
-import { HomeHeroArtwork } from "@/components/home/HomeArtwork";
-import HomeLearningProgressCard from "@/components/HomeLearningProgressCard";
-import HomeHeroQuickSearch from "@/components/home/HomeHeroQuickSearch";
-import ArticleCover from "@/components/articles/ArticleCover";
-import LearningCourseCards from "@/components/learning/LearningCourseCards";
-import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
-import { LEARNING_COURSES } from "@/data/learningCourses";
-import { getArticlePreviews } from "@/data/articleData";
-import { SITE_UPDATES } from "@/config/contentUpdates";
-import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
+import { ArrowRight, Compass, MapPin } from "lucide-react";
+import PlatformSearchForm from "@/components/search/PlatformSearchForm";
+import { BRAND_WORDMARK } from "@/config/brand";
+import { PLATFORM_INTRO, SERIES, TSUBO_TAGLINE } from "@/config/series";
+import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
+
+const POINTS = [
+  { code: "st36", label: "足三里", location: "ひざの下" },
+  { code: "pc6", label: "内関", location: "手首の近く" },
+  { code: "lr3", label: "太衝", location: "足の甲" },
+];
 
 export default function HomePage() {
-  const featuredArticles = getArticlePreviews(["science-of-yinyang-gogyo", "science-of-qi-blood-fluid"]);
   return (
-    <div className="home-page">
-      <section className="home-hero washi-pattern">
-        <div className="home-container">
-          <HomeHeroArtwork />
-          <div className="home-intro">
-            <p className="home-label ui-muted">
-              <span><span className="copy-phrase">鍼灸学生・鍼灸師</span><span className="copy-phrase">のための</span></span>
-              <span>東洋医学 <span className="copy-phrase">学習・実践サイト</span></span>
-            </p>
-            <h1 className="home-headline font-serif">
-              <span className="home-copy-line"><span className="copy-phrase">東洋医学の</span><span className="copy-phrase">「わか<span className="copy-ending">る」を、</span></span></span>
-              <span className="home-copy-line home-copy-accent"><span className="copy-phrase">臨床の</span><span className="copy-phrase">「考えら<span className="copy-ending">れる」へ。</span></span></span>
-            </h1>
-            <p className="home-description ui-muted">
-              <span>講義で用語の意味を学び、クイズで確かめる。</span>
-              <span>迷った問題は解説から本文に戻って復習できます。</span>
-            </p>
-          </div>
-          <div className="home-start">
-            <HomeLearningProgressCard variant="hero" />
-            <nav aria-label="目的から選ぶ" className="home-secondary-entry">
-              <Link href="/learn" className="ui-text-link"><BookOpen aria-hidden="true" /><span>基礎から学ぶ</span></Link>
-              <Link href="/clinical" className="ui-text-link"><Stethoscope aria-hidden="true" /><span>臨床で使う</span></Link>
+    <div className="platform-home">
+      <section className="platform-intro" aria-labelledby="platform-title">
+        <div className="platform-container platform-hero-grid">
+          <div>
+            <h1 id="platform-title" className="platform-title font-serif">{BRAND_WORDMARK}</h1>
+            <p className="platform-intro-text">{PLATFORM_INTRO}</p>
+            <PlatformSearchForm />
+            <nav className="platform-shortcuts" aria-label="ツボ図鑑の入口">
+              <Link href={SERIES.dictionary.href}><MapPin aria-hidden="true" />ツボから探す<ArrowRight aria-hidden="true" /></Link>
+              <Link href="/symptoms"><Compass aria-hidden="true" />症状から探す<ArrowRight aria-hidden="true" /></Link>
             </nav>
           </div>
-          <HomeHeroQuickSearch />
+          <aside className="platform-index" aria-labelledby="platform-index-title">
+            <h2 id="platform-index-title" className="font-serif">図で見る、身近なツボ</h2>
+            <Link href="/tsubo/li4" className="platform-feature">
+              <HeguHandDiagram thumbnail />
+              <span><small>手の甲のツボ</small><strong className="font-serif">合谷<span>ごうこく</span></strong>
+              <span className="platform-feature-link">場所と押し方を見る <ArrowRight aria-hidden="true" /></span></span>
+            </Link>
+            <ul>
+              {POINTS.map(point => (
+                <li key={point.code}>
+                  <Link href={`/tsubo/${point.code}`}>
+                    <strong>{point.label}</strong><span className="ui-muted">{point.location}</span>
+                    <ArrowRight aria-hidden="true" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </aside>
         </div>
       </section>
 
-      <div className="home-container home-sections">
-        <TsuboReviewEntry placement="home" onlyReturning />
-        <HomeLearningProgressCard variant="support" />
-        <section aria-labelledby="home-courses-title" className="home-section">
-          <div className="home-section-header">
-            <h2 id="home-courses-title" className="home-section-title">最初の4コース</h2>
-            <ContentNavigationLink href="/learn#learn-courses-heading" placement="home_courses" className="ui-text-link">全{LEARNING_COURSES.length}コース<ArrowRight aria-hidden="true" /></ContentNavigationLink>
-          </div>
-          <LearningCourseCards courses={LEARNING_COURSES.slice(0, 4)} placement="home_course_select" compact />
-          <p className="home-course-note ui-muted">読む目安は講義本文の合計です。クイズ・演習の時間は含みません。</p>
-        </section>
-        <section aria-labelledby="home-reading-title" className="home-section">
-          <h2 id="home-reading-title" className="home-section-title">読みもの・文献</h2>
-          <nav aria-label="読みものと文献の一覧" className="flex flex-wrap gap-x-6 gap-y-2">
-            <Link href="/articles" className="ui-text-link">記事一覧<ArrowRight aria-hidden="true" /></Link>
-            <Link href="/library" className="ui-text-link">古典・論文<ArrowRight aria-hidden="true" /></Link>
-          </nav>
-          <div className="home-reading-grid">
-            {featuredArticles.map(article => <Link key={article.id} href={"/articles/" + article.id} className="ui-card home-reading-link">
-              <div className="home-reading-cover"><ArticleCover articleId={article.id} /></div>
-              <span className="ui-muted text-sm">{article.category} · 約{article.readTime}</span>
-              <h3 className="text-base font-semibold">{article.title}</h3>
-              <ArrowRight aria-hidden="true" className="h-5 w-5 home-reading-arrow" />
-            </Link>)}
-          </div>
-        </section>
-        <section aria-labelledby="home-updates-title" className="home-section">
-          <div className="home-section-header">
-            <h2 id="home-updates-title" className="home-section-title">更新情報</h2>
-            <Link href="/updates" className="ui-text-link">全件を見る<ArrowRight aria-hidden="true" /></Link>
-          </div>
-          <ul className="home-updates">{SITE_UPDATES.slice(0, 3).map(update => <li key={update.label}><Link href={update.href}>
-            <time dateTime={update.date} className="ui-muted text-sm">{update.date.replaceAll("-", ".")}</time>
-            <h3 className="text-base font-semibold">{update.label}</h3>
-          </Link></li>)}</ul>
-        </section>
-        <section aria-label="運営者と出典方針" className="ui-card home-operator">
-          <div>
-            <Image src="/icon.png" alt="運営者 はり太郎" width={56} height={56} className="rounded-xl shrink-0" />
-            <div className="min-w-0 space-y-2">
-              <h2 className="text-lg font-semibold">運営者：はり太郎</h2>
-              <p className="ui-muted">鍼灸師・鍼灸院院長。東洋医学の学習教材を制作しています。</p>
-              <Link href="/about" className="ui-text-link">運営者・制作理念<ArrowRight aria-hidden="true" /></Link>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">出典と確認状況</h2>
-            <p className="ui-muted">WHO標準経穴部位・教科書・学術論文を参照。出典と専門確認の状況を公開しています。</p>
-            <div className="flex flex-wrap gap-x-5 gap-y-1"><Link href="/editorial-policy" className="ui-text-link">出典・確認状況</Link><Link href="/safety" className="ui-text-link">受診の目安・安全性</Link></div>
-          </div>
-        </section>
+      <div className="platform-container platform-series" aria-label="はり太郎の3シリーズ">
+        {Object.values(SERIES).map(({ icon: Icon, ...series }) => (
+          <section key={series.href} className="platform-series-card">
+            <div className="platform-series-icon"><Icon aria-hidden="true" /></div>
+            <h2 className="font-serif"><Link href={series.href}>{series.name}</Link></h2>
+            {series.href === SERIES.dictionary.href && <p className="platform-tsubo-tagline">{TSUBO_TAGLINE}</p>}
+            <p className="ui-muted">{series.description}</p>
+            <ul>{series.links.map(({ href, label }) => (
+              <li key={href}><Link href={href} className="ui-text-link">{label}<ArrowRight aria-hidden="true" /></Link></li>
+            ))}</ul>
+          </section>
+        ))}
       </div>
     </div>
   );

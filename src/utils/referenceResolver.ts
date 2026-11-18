@@ -1,7 +1,6 @@
 import { ReferenceItem, ResolvedReference } from "@/types/references";
 import { PAPERS_DATABASE } from "@/data/references/papersData";
 import { applySourceVerification } from "@/data/sourceVerification";
-import { buildAmazonAssociateSearchUrl } from "./amazonAssociate";
 
 /**
  * IDに基づいて論文データベース（PAPERS_DATABASE）から論文情報を取得し、
@@ -51,51 +50,18 @@ export function resolveArticleReferences(
     }
     const index = resolvedList.length + 1;
 
-    // 著者名の文字列化
-    const authorStr = Array.isArray(item.authors)
-      ? item.authors.join(" ")
-      : item.authors;
-
-    // AmazonアソシエイトURLおよび古典ライブラリURLの自動生成・正規化（404リンク切れ完全防止）
-    let amazonUrl = item.amazonUrl;
-    let amazonSearchUrl: string | undefined;
     let libraryUrl = item.libraryUrl;
 
     if (item.type === "classic") {
       // 古典文献の場合：サイト内古典ライブラリへの直通リンク
       const cleanKeyword = item.title.replace(/[『』【】「」]/g, "").trim();
       libraryUrl = `/library?q=${encodeURIComponent(cleanKeyword.slice(0, 4))}`;
-
-      // 古典の解説書・訳注書を探す安全な検索URL
-      amazonSearchUrl = buildAmazonAssociateSearchUrl({
-        title: item.title,
-        author: authorStr,
-      });
-      amazonUrl = item.bibliographyStatus === "matched" ? amazonSearchUrl : undefined;
-      if (item.bibliographyStatus !== "matched") amazonSearchUrl = undefined;
-    } else if (
-      item.type === "book" ||
-      item.asin ||
-      item.isbn ||
-      (item.url && (item.url.includes("amazon") || item.url.includes("amzn")))
-    ) {
-      // 404が絶対に起きない書籍検索URL（在庫・新版・電子書籍すべて対応）
-      amazonSearchUrl = buildAmazonAssociateSearchUrl({
-        title: item.title,
-        author: authorStr,
-      });
-
-      // リンク切れ防止のため、常に安全な和書検索URLを優先
-      amazonUrl = item.bibliographyStatus === "matched" ? amazonSearchUrl : undefined;
-      if (item.bibliographyStatus !== "matched") amazonSearchUrl = undefined;
     }
 
     const resolved: ResolvedReference = {
       ...item,
       bibliographyStatus: item.bibliographyStatus ?? 'unverified',
       claimsStatus: item.claimsStatus ?? 'needs-review',
-      amazonUrl,
-      amazonSearchUrl,
       libraryUrl,
       index,
       anchorId: `ref-${index}`,

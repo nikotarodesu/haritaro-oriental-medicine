@@ -4,13 +4,11 @@ import React, { useState } from "react";
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
 import { 
-  Crown, 
   CheckCircle2, 
   XCircle, 
   ArrowRight, 
   ChevronRight, 
   Sparkles, 
-  Bookmark, 
   BookOpen, 
   AlertTriangle, 
   HelpCircle, 
@@ -18,28 +16,17 @@ import {
   Activity, 
   User as UserIcon,
   Layers,
-  Lock,
   RotateCcw
 } from "lucide-react";
 import { ClinicalCase } from "@/types/clinicalCase";
 import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { CLINICAL_CASES, CLINICAL_CASE_SCOPE, CLINICAL_CASE_SAFETY_GUIDANCE } from "@/data/clinicalCasesData";
 import { CLINICAL_CASE_EVIDENCE } from "@/data/clinicalCaseEvidence";
-import { useSubscriptionAvailability } from "@/hooks/useSubscriptionAvailability";
-import SubscriptionAvailabilityNotice from "@/components/subscription/SubscriptionAvailabilityNotice";
-import { useAuth } from "@/contexts/AuthContext";
-import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
-import AuthModal from "@/components/auth/AuthModal";
 import { getCaseSimulatorPreset, buildSimulatorUrlFromCase } from "@/data/cases/caseSimulatorMapping";
 import { SlidersHorizontal, FlaskConical } from "lucide-react";
 
 export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: ClinicalCase }) {
-  const { isPremium } = useAuth();
-  const { status, salesEnabled, retry } = useSubscriptionAvailability();
-  const { addMemo, isClipped } = useClinicalMemo();
 
-  const isLocked = !clinicalCase.isFreeTrial && !isPremium;
-  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   // 四診タブ選択
   const [activeExamTab, setActiveExamTab] = useState<"inspection" | "tongue" | "inquiry" | "palpation">("inspection");
@@ -48,7 +35,6 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
   const [showExplanation, setShowExplanation] = useState(false);
 
-  const isAlreadySaved = isClipped(`case-${clinicalCase.id}`);
 
   const handleSelectOption = (stepNumber: number, optionId: string) => {
     setSelectedAnswers((prev) => ({
@@ -57,29 +43,12 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
     }));
   };
 
-  const handleSaveToMemo = () => {
-    addMemo({
-      id: `case-${clinicalCase.id}`,
-      type: "diagnosis",
-      title: `${clinicalCase.title}（症例 ${clinicalCase.caseNumber}）`,
-      subTitle: `証: ${clinicalCase.correctDiagnosis.pattern} / 治法: ${clinicalCase.correctDiagnosis.treatmentPrinciple}`,
-      points: [...clinicalCase.correctDiagnosis.primaryPoints, ...clinicalCase.correctDiagnosis.secondaryPoints],
-      elements: ["木", "火", "土", "金", "水"],
-      indications: [clinicalCase.patient.chiefComplaint],
-      summary: clinicalCase.clinicalExplanation.pathomechanism,
-      mechanism: clinicalCase.clinicalExplanation.pointRationale,
-      caution: clinicalCase.clinicalExplanation.clinicalPitfall,
-      personalNotes: `【主穴】${clinicalCase.correctDiagnosis.primaryPoints.join("、 ")}\n【参考方剤】${clinicalCase.correctDiagnosis.formulaEquivalent || "なし"}`,
-    });
-  };
-
   return (
     <div className="space-y-8 sm:space-y-10">
       <Link href="/cases" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[var(--accent-readable)] underline underline-offset-4">← 症例一覧へ</Link>
       <PageIntro eyebrow={`症例 ${String(clinicalCase.caseNumber).padStart(2, '0')} ／ ${clinicalCase.category}`} title={clinicalCase.title} description={clinicalCase.subTitle} art="practice" compact>
         <div className="mt-4 flex flex-wrap items-center gap-3 text-sm">
           <span className="page-muted">難易度：{clinicalCase.difficulty}</span>
-          <span className="inline-flex items-center gap-2 font-semibold text-[var(--accent-readable)]">{clinicalCase.isFreeTrial ? <><Sparkles size={16} aria-hidden="true" />無料体験症例</> : <><Crown size={16} aria-hidden="true" />プレミアム限定</>}</span>
         </div>
       </PageIntro>
 
@@ -133,514 +102,393 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
         </div>
       </div>
 
-      {/* プレミアムロック時の境界線明示 ＆ 案内カード */}
-      {isLocked ? (
-        <div className="space-y-4">
-          {/* 無料思考ステップ完了と境界線の表示 */}
-          <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-xs">
-            <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>ステップ1「患者基本情報・主訴・現病歴」の閲覧完了</span>
-            </span>
-            <span className="text-[#59615D] dark:text-[#A0B0BC] hidden sm:inline">
-              ここから先はプレミアム限定エリアです
-            </span>
-          </div>
-
-          <div className="relative rounded-3xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#B86924] dark:border-[#E6C387] p-8 sm:p-12 text-center space-y-6 shadow-xl overflow-hidden">
-            <div className="w-16 h-16 rounded-3xl bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] flex items-center justify-center mx-auto shadow-inner">
-              <Lock className="w-8 h-8" />
-            </div>
-
-            <div className="space-y-3 max-w-lg mx-auto">
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] text-xs font-bold border border-[#F3DEC5] dark:border-[#4D331F]">
-                <span>プレミアム限定エリア（ステップ2〜5）</span>
-              </div>
-              <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-                四診詳細・推論演習・学習用の配穴例と解説
-              </h2>
-              <div className="text-sm sm:text-base text-[#59615D] dark:text-[#96A6B2] leading-relaxed text-left bg-white dark:bg-[#10171F] p-4 rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5">
-                <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">
-                  プレミアムプランで解放される内容：
-                </span>
-                <ul className="space-y-1 text-xs list-disc list-inside">
-                  <li><strong>ステップ 2: 四診情報</strong>（望診・舌診・問診一問一答・脈診・腹証）</li>
-                  <li><strong>ステップ 3: 臨床推論演習</strong>（病理・治法を導く選択問題）</li>
-                  <li><strong>ステップ 4: 教材上の証と配穴例</strong>（主穴・配穴・参考方剤）</li>
-                  <li><strong>ステップ 5: 教材解説</strong>（候補比較・配穴理由・参照する伝統理論）</li>
-                  <li><strong>学習ノート保存</strong>（ワンクリックで復習帳へ記録）</li>
-                </ul>
-              </div>
-            </div>
-
-            {!salesEnabled ? <SubscriptionAvailabilityNotice status={status} onRetry={retry} /> : null}
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-              {salesEnabled ? (
-                <Link
-                  href="/pricing"
-                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white font-bold text-sm shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2 min-h-[44px]"
-                >
-                  <span>料金と利用できる症例を確認する</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              ) : (
-                <Link
-                  href="/cases/case-01-headache-liver-fire"
-                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#1E3D34] to-[#2B6958] text-white font-bold text-sm shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2 min-h-[44px]"
-                >
-                  <span>無料公開中：症例01を全編解く ➜</span>
-                </Link>
-              )}
-              <Link
-                href="/cases"
-                className="w-full sm:w-auto px-5 py-3 rounded-xl border border-[#D8CFC0] dark:border-[#384C5E] text-xs font-bold text-[#404743] dark:text-[#C5D2DB] hover:bg-[#F2EDE2] min-h-[44px] flex items-center justify-center"
-              >
-                症例一覧に戻る
-              </Link>
-            </div>
-          </div>
+      {/* ステップ 2: 四診情報（望・聞・問・切） */}
+      <div className="rounded-3xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 space-y-6 shadow-xs">
+        <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
+          <Stethoscope className="w-4 h-4" />
+          <span>ステップ 2: 四診情報（四診合参）</span>
         </div>
-      ) : (
-        <>
-          {/* ステップ 2: 四診情報（望・聞・問・切） */}
-          <div className="rounded-3xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 space-y-6 shadow-xs">
-            <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider">
-              <Stethoscope className="w-4 h-4" />
-              <span>ステップ 2: 四診情報（四診合参）</span>
+
+        {/* 四診タブナビゲーション */}
+        <div className="flex items-center gap-2 border-b border-[#E8E1D1] dark:border-[#263542] pb-2 overflow-x-auto">
+          {[
+            { id: "inspection", label: "望診（顔面・姿勢）" },
+            { id: "tongue", label: "舌診（舌質・舌苔・舌下）" },
+            { id: "inquiry", label: "問診（自覚症状詳細）" },
+            { id: "palpation", label: "切診（脈診・腹診・穴反応）" },
+          ].map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setActiveExamTab(t.id as typeof activeExamTab)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+                activeExamTab === t.id
+                  ? "bg-[#1E3D34] text-white"
+                  : "text-[#59615D] dark:text-[#8899A6] hover:bg-[#FAF8F5] dark:hover:bg-[#1A2530]"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {/* タブコンテンツ */}
+        <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#18232D] border border-[#E8E1D1] dark:border-[#22303D] min-h-[120px] text-sm sm:text-base">
+          {activeExamTab === "inspection" && (
+            <div className="space-y-2">
+              <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">【望診所見】</span>
+              <p className="text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                {clinicalCase.examinations.inspection}
+              </p>
+              <div className="pt-2">
+                <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">【聞診所見（声・呼吸音）】</span>
+                <p className="text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                  {clinicalCase.examinations.auscultationAndOlfaction}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {activeExamTab === "tongue" && (
+            <div className="space-y-3">
+              <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">【舌診所見】</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="p-2.5 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D]">
+                  <span className="text-[#737C77] text-xs block">舌質（色調）</span>
+                  <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">{clinicalCase.examinations.tongueDiagnosis.body}</span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D]">
+                  <span className="text-[#737C77] text-xs block">舌苔（厚さ・色・潤燥）</span>
+                  <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">{clinicalCase.examinations.tongueDiagnosis.coating}</span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D]">
+                  <span className="text-[#737C77] text-xs block">舌形（形態・歯痕・点刺）</span>
+                  <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">{clinicalCase.examinations.tongueDiagnosis.shape}</span>
+                </div>
+                {clinicalCase.examinations.tongueDiagnosis.sublingualVeins && (
+                  <div className="p-2.5 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D]">
+                    <span className="text-[#737C77] text-xs block">舌下静脈（瘀血判定）</span>
+                    <span className="font-bold text-[#B86924] dark:text-[#E6C387]">{clinicalCase.examinations.tongueDiagnosis.sublingualVeins}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeExamTab === "inquiry" && (
+            <div className="space-y-3">
+              <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">【問診詳細（一問一答）】</span>
+              <div className="space-y-2">
+                {clinicalCase.examinations.inquiry.map((inq, idx) => (
+                  <div key={idx} className="p-3 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
+                    <div className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">Q. {inq.question}</div>
+                    <div className="text-[#404743] dark:text-[#C5D2DB]">A. {inq.answer}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeExamTab === "palpation" && (
+            <div className="space-y-3">
+              <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">【切診所見（脈・腹・経穴）】</span>
+              <div className="space-y-2">
+                <div className="p-3 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D]">
+                  <div className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">脈診: {clinicalCase.examinations.palpation.pulse}</div>
+                  {clinicalCase.examinations.palpation.pulseDetail && (
+                    <div className="text-[#737C77] text-xs mt-0.5">{clinicalCase.examinations.palpation.pulseDetail}</div>
+                  )}
+                </div>
+                <div className="p-3 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D]">
+                  <div className="font-bold text-[#232826] dark:text-[#FAF8F5]">腹証: {clinicalCase.examinations.palpation.abdomen}</div>
+                </div>
+                {clinicalCase.examinations.palpation.acupointReaction && (
+                  <div className="p-3 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D]">
+                    <div className="font-bold text-[#B86924] dark:text-[#E6C387]">経穴反応: {clinicalCase.examinations.palpation.acupointReaction}</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ステップ 3: 臨床推論ステップ（演習クイズ） */}
+      <div className="rounded-3xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 space-y-6 shadow-xs">
+        <div className="flex items-center gap-2 text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider">
+          <Activity className="w-4 h-4" />
+          <span>ステップ 3: 臨床推論ステップ演習</span>
+        </div>
+
+        <div className="space-y-6">
+          {clinicalCase.reasoningSteps.map((step) => {
+            const selected = selectedAnswers[step.stepNumber];
+            return (
+              <div key={step.stepNumber} className="p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#18232D] border border-[#E8E1D1] dark:border-[#22303D] space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-[#B86924] text-white text-xs font-bold flex items-center justify-center">
+                    {step.stepNumber}
+                  </span>
+                  <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
+                    {step.stepTitle}
+                  </h4>
+                </div>
+
+                <p className="text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB]">
+                  {step.question}
+                </p>
+
+                <div className="space-y-2 pt-1">
+                  {step.options.map((opt) => {
+                    const isSelected = selected === opt.id;
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => handleSelectOption(step.stepNumber, opt.id)}
+                        className={`w-full text-left p-3 rounded-xl border text-sm sm:text-base transition-all flex items-start gap-2.5 cursor-pointer ${
+                          isSelected
+                            ? opt.isCorrect
+                              ? "bg-green-50 dark:bg-green-950/40 border-green-500 text-green-900 dark:text-green-200 font-bold"
+                              : "bg-red-50 dark:bg-red-950/40 border-red-500 text-red-900 dark:text-red-200"
+                            : "bg-white dark:bg-[#10171F] border-[#D8CFC0] dark:border-[#384C5E] hover:border-[#1E3D34] text-[#232826] dark:text-[#FAF8F5]"
+                        }`}
+                      >
+                        <span className="shrink-0 mt-0.5">
+                          {isSelected ? (
+                            opt.isCorrect ? <CheckCircle2 className="w-4 h-4 text-green-600" /> : <XCircle className="w-4 h-4 text-red-600" />
+                          ) : (
+                            <span className="w-4 h-4 rounded-full border border-gray-400 inline-block" />
+                          )}
+                        </span>
+                        <div className="space-y-1">
+                          <span>{opt.label}</span>
+                          {isSelected && (
+                            <p className="text-xs font-normal opacity-90 block">
+                              {opt.feedback}
+                            </p>
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* 解答と完全解説の表示トグル */}
+        <div className="pt-2">
+          <button
+            type="button"
+            onClick={() => setShowExplanation(!showExplanation)}
+            className="w-full py-3.5 px-4 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <BookOpen className="w-4 h-4 text-[#F3DEC5]" />
+            <span>{showExplanation ? "解説を閉じる" : "教材の解答・治法・配穴例と解説を開く"}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* ステップ 4 & 5: 確定弁証・治法・処方配穴 ＆ 専門解説 */}
+      {showExplanation && (
+        <div className="rounded-3xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#1E3D34] dark:border-[#74BA9E] p-4 sm:p-7 space-y-6 shadow-lg animate-fadeIn">
+          <div className="flex items-center justify-between border-b border-[#E8E1D1] dark:border-[#22303D] pb-4">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
+              <h3 className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+                教材上の証と配穴例
+              </h3>
             </div>
 
-            {/* 四診タブナビゲーション */}
-            <div className="flex items-center gap-2 border-b border-[#E8E1D1] dark:border-[#263542] pb-2 overflow-x-auto">
-              {[
-                { id: "inspection", label: "望診（顔面・姿勢）" },
-                { id: "tongue", label: "舌診（舌質・舌苔・舌下）" },
-                { id: "inquiry", label: "問診（自覚症状詳細）" },
-                { id: "palpation", label: "切診（脈診・腹診・穴反応）" },
-              ].map((t) => (
-                <button
-                  key={t.id}
-                  type="button"
-                  onClick={() => setActiveExamTab(t.id as typeof activeExamTab)}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
-                    activeExamTab === t.id
-                      ? "bg-[#1E3D34] text-white"
-                      : "text-[#59615D] dark:text-[#8899A6] hover:bg-[#FAF8F5] dark:hover:bg-[#1A2530]"
-                  }`}
+            {/* シミュレーターで動的検証ボタン */}
+            {(() => {
+              const simPreset = getCaseSimulatorPreset(clinicalCase.id);
+              if (!simPreset) return null;
+              return (
+                <Link
+                  href={buildSimulatorUrlFromCase(simPreset)}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#EBF3EF] dark:bg-[#182823] hover:bg-[#D4EAE0] dark:hover:bg-[#203930] text-[#1E3D34] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243] transition-all shadow-xs group"
                 >
-                  {t.label}
-                </button>
+                  <FlaskConical className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                  <span>シミュレーターで検証 ➜</span>
+                </Link>
+              );
+            })()}
+          </div>
+
+          {/* 確定診断要約テーブル */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm sm:text-base">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
+              <span className="text-[#737C77] text-xs font-semibold">八綱弁証 / 教材上の候補</span>
+              <div className="text-base font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                {clinicalCase.correctDiagnosis.pattern}
+              </div>
+              <div className="text-xs text-[#59615D]">
+                （八綱: {clinicalCase.correctDiagnosis.hachiko}）
+              </div>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
+              <span className="text-[#737C77] text-xs font-semibold">治法（治療原則）</span>
+              <div className="text-base font-bold text-[#B86924] dark:text-[#E6C387]">
+                {clinicalCase.correctDiagnosis.treatmentPrinciple}
+              </div>
+              {clinicalCase.correctDiagnosis.formulaEquivalent && (
+                <div className="text-xs text-[#59615D]">
+                  （参考方剤: {clinicalCase.correctDiagnosis.formulaEquivalent}）
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* 処方配穴 */}
+          <div className="p-5 rounded-2xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-3">
+            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block">
+              処方配穴（主穴 ＋ 配穴）
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {clinicalCase.correctDiagnosis.primaryPoints.map((pt) => (
+                <span key={pt} className="px-3 py-1.5 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-bold text-xs border border-[#C5DED4] dark:border-[#2A5243]">
+                  ★主穴: {pt}
+                </span>
+              ))}
+              {clinicalCase.correctDiagnosis.secondaryPoints.map((pt) => (
+                <span key={pt} className="px-3 py-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#1A2530] text-[#404743] dark:text-[#C5D2DB] font-semibold text-xs border border-[#E8E1D1] dark:border-[#384C5E]">
+                  配穴: {pt}
+                </span>
               ))}
             </div>
-
-            {/* タブコンテンツ */}
-            <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#18232D] border border-[#E8E1D1] dark:border-[#22303D] min-h-[120px] text-sm sm:text-base">
-              {activeExamTab === "inspection" && (
-                <div className="space-y-2">
-                  <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">【望診所見】</span>
-                  <p className="text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-                    {clinicalCase.examinations.inspection}
-                  </p>
-                  <div className="pt-2">
-                    <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">【聞診所見（声・呼吸音）】</span>
-                    <p className="text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-                      {clinicalCase.examinations.auscultationAndOlfaction}
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {activeExamTab === "tongue" && (
-                <div className="space-y-3">
-                  <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">【舌診所見】</span>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    <div className="p-2.5 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D]">
-                      <span className="text-[#737C77] text-xs block">舌質（色調）</span>
-                      <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">{clinicalCase.examinations.tongueDiagnosis.body}</span>
-                    </div>
-                    <div className="p-2.5 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D]">
-                      <span className="text-[#737C77] text-xs block">舌苔（厚さ・色・潤燥）</span>
-                      <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">{clinicalCase.examinations.tongueDiagnosis.coating}</span>
-                    </div>
-                    <div className="p-2.5 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D]">
-                      <span className="text-[#737C77] text-xs block">舌形（形態・歯痕・点刺）</span>
-                      <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">{clinicalCase.examinations.tongueDiagnosis.shape}</span>
-                    </div>
-                    {clinicalCase.examinations.tongueDiagnosis.sublingualVeins && (
-                      <div className="p-2.5 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D]">
-                        <span className="text-[#737C77] text-xs block">舌下静脈（瘀血判定）</span>
-                        <span className="font-bold text-[#B86924] dark:text-[#E6C387]">{clinicalCase.examinations.tongueDiagnosis.sublingualVeins}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {activeExamTab === "inquiry" && (
-                <div className="space-y-3">
-                  <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">【問診詳細（一問一答）】</span>
-                  <div className="space-y-2">
-                    {clinicalCase.examinations.inquiry.map((inq, idx) => (
-                      <div key={idx} className="p-3 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
-                        <div className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">Q. {inq.question}</div>
-                        <div className="text-[#404743] dark:text-[#C5D2DB]">A. {inq.answer}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {activeExamTab === "palpation" && (
-                <div className="space-y-3">
-                  <span className="font-bold text-[#232826] dark:text-[#FAF8F5] block">【切診所見（脈・腹・経穴）】</span>
-                  <div className="space-y-2">
-                    <div className="p-3 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D]">
-                      <div className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">脈診: {clinicalCase.examinations.palpation.pulse}</div>
-                      {clinicalCase.examinations.palpation.pulseDetail && (
-                        <div className="text-[#737C77] text-xs mt-0.5">{clinicalCase.examinations.palpation.pulseDetail}</div>
-                      )}
-                    </div>
-                    <div className="p-3 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D]">
-                      <div className="font-bold text-[#232826] dark:text-[#FAF8F5]">腹証: {clinicalCase.examinations.palpation.abdomen}</div>
-                    </div>
-                    {clinicalCase.examinations.palpation.acupointReaction && (
-                      <div className="p-3 rounded-xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D]">
-                        <div className="font-bold text-[#B86924] dark:text-[#E6C387]">経穴反応: {clinicalCase.examinations.palpation.acupointReaction}</div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
           </div>
 
-          {/* ステップ 3: 臨床推論ステップ（演習クイズ） */}
-          <div className="rounded-3xl bg-white dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 space-y-6 shadow-xs">
-            <div className="flex items-center gap-2 text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider">
-              <Activity className="w-4 h-4" />
-              <span>ステップ 3: 臨床推論ステップ演習</span>
+          {/* 詳細解説ブロック */}
+          <div className="space-y-4 pt-2">
+            <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
+              <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+                <span>所見を伝統理論で整理する</span>
+              </h4>
+              <p className="text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                {clinicalCase.clinicalExplanation.pathomechanism}
+              </p>
             </div>
 
-            <div className="space-y-6">
-              {clinicalCase.reasoningSteps.map((step) => {
-                const selected = selectedAnswers[step.stepNumber];
-                return (
-                  <div key={step.stepNumber} className="p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#18232D] border border-[#E8E1D1] dark:border-[#22303D] space-y-3">
-                    <div className="flex items-center gap-2">
-                      <span className="w-6 h-6 rounded-full bg-[#B86924] text-white text-xs font-bold flex items-center justify-center">
-                        {step.stepNumber}
-                      </span>
-                      <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
-                        {step.stepTitle}
-                      </h4>
-                    </div>
-
-                    <p className="text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB]">
-                      {step.question}
-                    </p>
-
-                    <div className="space-y-2 pt-1">
-                      {step.options.map((opt) => {
-                        const isSelected = selected === opt.id;
-                        return (
-                          <button
-                            key={opt.id}
-                            type="button"
-                            onClick={() => handleSelectOption(step.stepNumber, opt.id)}
-                            className={`w-full text-left p-3 rounded-xl border text-sm sm:text-base transition-all flex items-start gap-2.5 cursor-pointer ${
-                              isSelected
-                                ? opt.isCorrect
-                                  ? "bg-green-50 dark:bg-green-950/40 border-green-500 text-green-900 dark:text-green-200 font-bold"
-                                  : "bg-red-50 dark:bg-red-950/40 border-red-500 text-red-900 dark:text-red-200"
-                                : "bg-white dark:bg-[#10171F] border-[#D8CFC0] dark:border-[#384C5E] hover:border-[#1E3D34] text-[#232826] dark:text-[#FAF8F5]"
-                            }`}
-                          >
-                            <span className="shrink-0 mt-0.5">
-                              {isSelected ? (
-                                opt.isCorrect ? <CheckCircle2 className="w-4 h-4 text-green-600" /> : <XCircle className="w-4 h-4 text-red-600" />
-                              ) : (
-                                <span className="w-4 h-4 rounded-full border border-gray-400 inline-block" />
-                              )}
-                            </span>
-                            <div className="space-y-1">
-                              <span>{opt.label}</span>
-                              {isSelected && (
-                                <p className="text-xs font-normal opacity-90 block">
-                                  {opt.feedback}
-                                </p>
-                              )}
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
+              <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
+                <HelpCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <span>候補比較（他の証との対比）</span>
+              </h4>
+              <p className="text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                {clinicalCase.clinicalExplanation.differentialDiagnosis}
+              </p>
             </div>
 
-            {/* 解答と完全解説の表示トグル */}
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={() => setShowExplanation(!showExplanation)}
-                className="w-full py-3.5 px-4 rounded-xl bg-[#1E3D34] hover:bg-[#162D26] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <BookOpen className="w-4 h-4 text-[#F3DEC5]" />
-                <span>{showExplanation ? "解説を閉じる" : "教材の解答・治法・配穴例と解説を開く"}</span>
-              </button>
+            <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
+              <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
+                <Layers className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+                <span>経穴を選ぶ理由</span>
+              </h4>
+              <p className="text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                {clinicalCase.clinicalExplanation.pointRationale}
+              </p>
             </div>
-          </div>
 
-          {/* ステップ 4 & 5: 確定弁証・治法・処方配穴 ＆ 専門解説 */}
-          {showExplanation && (
-            <div className="rounded-3xl bg-[#FAF8F5] dark:bg-[#152028] border-2 border-[#1E3D34] dark:border-[#74BA9E] p-4 sm:p-7 space-y-6 shadow-lg animate-fadeIn">
-              <div className="flex items-center justify-between border-b border-[#E8E1D1] dark:border-[#22303D] pb-4">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
-                  <h3 className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                    教材上の証と配穴例
-                  </h3>
-                </div>
+            {CLINICAL_CASE_EVIDENCE[clinicalCase.id] && (
+              <section aria-label="この症状に関する臨床研究" className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-3">
+                <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">臨床研究で確認された結果</h4>
+                <dl className="space-y-3 text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
+                  <div><dt className="font-semibold">対象</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].population}</dd></div>
+                  <div><dt className="font-semibold">比較・評価条件</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].comparison}</dd></div>
+                  <div><dt className="font-semibold">結果</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].result}</dd></div>
+                  <div><dt className="font-semibold">この症例への読み方</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].interpretation}</dd></div>
+                </dl>
+                <ul className="space-y-1 text-sm sm:text-base">
+                  {CLINICAL_CASE_EVIDENCE[clinicalCase.id].sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-[#1E3D34] dark:text-[#74BA9E] underline">{source.title}（外部資料）</a></li>)}
+                </ul>
+              </section>
+            )}
 
-                {/* 学習ノート登録ボタン */}
-                <button
-                  type="button"
-                  onClick={handleSaveToMemo}
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer ${
-                    isAlreadySaved
-                      ? "bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E]"
-                      : "bg-[#B86924] text-white hover:opacity-90"
-                  }`}
-                >
-                  <Bookmark className="w-3.5 h-3.5 fill-current" />
-                  <span>{isAlreadySaved ? "学習ノート保存済み" : "学習ノートに登録"}</span>
-                </button>
+            <div className="p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 space-y-2">
+              <h4 className="font-bold text-sm text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
+                <AlertTriangle className="w-4 h-4 text-amber-600" />
+                <span>臨床の落とし穴・注意点</span>
+              </h4>
+              <p className="text-sm sm:text-base text-amber-900/90 dark:text-amber-200/90 leading-relaxed">
+                {clinicalCase.clinicalExplanation.clinicalPitfall}
+              </p>
+            </div>
 
-                {/* シミュレーターで動的検証ボタン */}
+            {clinicalCase.clinicalExplanation.classicCitation && (
+              <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#121A22] border border-[#E8E1D1] dark:border-[#22303D] text-xs space-y-1">
+                <span className="font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">古典根拠:</span>
+                <p className="font-serif italic text-[#59615D] dark:text-[#96A6B2]">
+                  {clinicalCase.clinicalExplanation.classicCitation}
+                </p>
+              </div>
+            )}
+
+            {/* 次の学習へのステップ（導線改善） */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#FAF8F5] to-[#F3EDE2] dark:from-[#17212A] dark:to-[#121920] border-2 border-[#1E3D34]/20 dark:border-[#2A3B4A] space-y-4">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
+                  この症例の学びを次につなぐ
+                </h4>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {(() => {
                   const simPreset = getCaseSimulatorPreset(clinicalCase.id);
                   if (!simPreset) return null;
                   return (
                     <Link
                       href={buildSimulatorUrlFromCase(simPreset)}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#EBF3EF] dark:bg-[#182823] hover:bg-[#D4EAE0] dark:hover:bg-[#203930] text-[#1E3D34] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243] transition-all shadow-xs group"
+                      className="p-3.5 rounded-xl bg-gradient-to-br from-[#EBF3EF] to-[#FAF8F5] dark:from-[#182823] dark:to-[#17212A] border-2 border-[#1E3D34]/30 dark:border-[#2A5243] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-left space-y-1 group transition-all block shadow-xs"
                     >
-                      <FlaskConical className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                      <span>シミュレーターで検証 ➜</span>
+                      <div className="flex items-center justify-between text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                        <span className="flex items-center gap-1">
+                          <FlaskConical className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                          <span>シミュレーターで実験</span>
+                        </span>
+                        <SlidersHorizontal className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                      </div>
+                      <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
+                        八綱や臓腑を動かして配穴の変化を検証
+                      </p>
                     </Link>
                   );
                 })()}
-              </div>
 
-              {/* 確定診断要約テーブル */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm sm:text-base">
-                <div className="p-4 rounded-2xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
-                  <span className="text-[#737C77] text-xs font-semibold">八綱弁証 / 教材上の候補</span>
-                  <div className="text-base font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                    {clinicalCase.correctDiagnosis.pattern}
+                <Link
+                  href="/cases"
+                  className="p-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-left space-y-1 group transition-all block"
+                >
+                  <div className="flex items-center justify-between text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                    <span>他の症例に挑戦する</span>
+                    <RotateCcw className="w-3.5 h-3.5 group-hover:rotate-45 transition-transform" />
                   </div>
-                  <div className="text-xs text-[#59615D]">
-                    （八綱: {clinicalCase.correctDiagnosis.hachiko}）
-                  </div>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-1">
-                  <span className="text-[#737C77] text-xs font-semibold">治法（治療原則）</span>
-                  <div className="text-base font-bold text-[#B86924] dark:text-[#E6C387]">
-                    {clinicalCase.correctDiagnosis.treatmentPrinciple}
-                  </div>
-                  {clinicalCase.correctDiagnosis.formulaEquivalent && (
-                    <div className="text-xs text-[#59615D]">
-                      （参考方剤: {clinicalCase.correctDiagnosis.formulaEquivalent}）
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* 処方配穴 */}
-              <div className="p-5 rounded-2xl bg-white dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-3">
-                <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block">
-                  処方配穴（主穴 ＋ 配穴）
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {clinicalCase.correctDiagnosis.primaryPoints.map((pt) => (
-                    <span key={pt} className="px-3 py-1.5 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-bold text-xs border border-[#C5DED4] dark:border-[#2A5243]">
-                      ★主穴: {pt}
-                    </span>
-                  ))}
-                  {clinicalCase.correctDiagnosis.secondaryPoints.map((pt) => (
-                    <span key={pt} className="px-3 py-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#1A2530] text-[#404743] dark:text-[#C5D2DB] font-semibold text-xs border border-[#E8E1D1] dark:border-[#384C5E]">
-                      配穴: {pt}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* 詳細解説ブロック */}
-              <div className="space-y-4 pt-2">
-                <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
-                  <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-                    <span>所見を伝統理論で整理する</span>
-                  </h4>
-                  <p className="text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-                    {clinicalCase.clinicalExplanation.pathomechanism}
+                  <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
+                    全20の臨床症例一覧へ
                   </p>
-                </div>
+                </Link>
 
-                <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
-                  <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
-                    <HelpCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                    <span>候補比較（他の証との対比）</span>
-                  </h4>
-                  <p className="text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-                    {clinicalCase.clinicalExplanation.differentialDiagnosis}
-                  </p>
-                </div>
-
-                <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
-                  <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5] flex items-center gap-1.5">
-                    <Layers className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-                    <span>経穴を選ぶ理由</span>
-                  </h4>
-                  <p className="text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-                    {clinicalCase.clinicalExplanation.pointRationale}
-                  </p>
-                </div>
-
-                {CLINICAL_CASE_EVIDENCE[clinicalCase.id] && (
-                  <section aria-label="この症状に関する臨床研究" className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-3">
-                    <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">臨床研究で確認された結果</h4>
-                    <dl className="space-y-3 text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-                      <div><dt className="font-semibold">対象</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].population}</dd></div>
-                      <div><dt className="font-semibold">比較・評価条件</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].comparison}</dd></div>
-                      <div><dt className="font-semibold">結果</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].result}</dd></div>
-                      <div><dt className="font-semibold">この症例への読み方</dt><dd>{CLINICAL_CASE_EVIDENCE[clinicalCase.id].interpretation}</dd></div>
-                    </dl>
-                    <ul className="space-y-1 text-sm sm:text-base">
-                      {CLINICAL_CASE_EVIDENCE[clinicalCase.id].sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-[#1E3D34] dark:text-[#74BA9E] underline">{source.title}（外部資料）</a></li>)}
-                    </ul>
-                  </section>
-                )}
-
-                <div className="p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 space-y-2">
-                  <h4 className="font-bold text-sm text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
-                    <AlertTriangle className="w-4 h-4 text-amber-600" />
-                    <span>臨床の落とし穴・注意点</span>
-                  </h4>
-                  <p className="text-sm sm:text-base text-amber-900/90 dark:text-amber-200/90 leading-relaxed">
-                    {clinicalCase.clinicalExplanation.clinicalPitfall}
-                  </p>
-                </div>
-
-                {clinicalCase.clinicalExplanation.classicCitation && (
-                  <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#121A22] border border-[#E8E1D1] dark:border-[#22303D] text-xs space-y-1">
-                    <span className="font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">古典根拠:</span>
-                    <p className="font-serif italic text-[#59615D] dark:text-[#96A6B2]">
-                      {clinicalCase.clinicalExplanation.classicCitation}
-                    </p>
+                <Link
+                  href="/curriculum"
+                  className="p-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-left space-y-1 group transition-all block"
+                >
+                  <div className="flex items-center justify-between text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                    <span>関連理論を学ぶ</span>
+                    <BookOpen className="w-3.5 h-3.5" />
                   </div>
-                )}
+                  <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
+                    8体系カリキュラムで病因病機を深掘り
+                  </p>
+                </Link>
 
-                {/* 次の学習へのステップ（導線改善） */}
-                <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#FAF8F5] to-[#F3EDE2] dark:from-[#17212A] dark:to-[#121920] border-2 border-[#1E3D34]/20 dark:border-[#2A3B4A] space-y-4">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                    <h4 className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
-                      この症例の学びを次につなぐ
-                    </h4>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                    {(() => {
-                      const simPreset = getCaseSimulatorPreset(clinicalCase.id);
-                      if (!simPreset) return null;
-                      return (
-                        <Link
-                          href={buildSimulatorUrlFromCase(simPreset)}
-                          className="p-3.5 rounded-xl bg-gradient-to-br from-[#EBF3EF] to-[#FAF8F5] dark:from-[#182823] dark:to-[#17212A] border-2 border-[#1E3D34]/30 dark:border-[#2A5243] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-left space-y-1 group transition-all block shadow-xs"
-                        >
-                          <div className="flex items-center justify-between text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                            <span className="flex items-center gap-1">
-                              <FlaskConical className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                              <span>シミュレーターで実験</span>
-                            </span>
-                            <SlidersHorizontal className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
-                          </div>
-                          <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-                            八綱や臓腑を動かして配穴の変化を検証
-                          </p>
-                        </Link>
-                      );
-                    })()}
-
-                    <button
-                      type="button"
-                      onClick={handleSaveToMemo}
-                      disabled={isAlreadySaved}
-                      className="p-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#B86924] text-left space-y-1 group transition-all"
-                    >
-                      <div className="flex items-center justify-between text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
-                        <span>要点を保存</span>
-                        <Bookmark className={`w-3.5 h-3.5 ${isAlreadySaved ? "fill-current" : ""}`} />
-                      </div>
-                      <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-                        {isAlreadySaved ? "学習ノートに保存済み" : "この症例の弁証・配穴をノートへ"}
-                      </p>
-                    </button>
-
-                    <Link
-                      href="/cases"
-                      className="p-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-left space-y-1 group transition-all block"
-                    >
-                      <div className="flex items-center justify-between text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                        <span>他の症例に挑戦する</span>
-                        <RotateCcw className="w-3.5 h-3.5 group-hover:rotate-45 transition-transform" />
-                      </div>
-                      <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-                        全20の臨床症例一覧へ
-                      </p>
-                    </Link>
-
-                    <Link
-                      href="/curriculum"
-                      className="p-3.5 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-left space-y-1 group transition-all block"
-                    >
-                      <div className="flex items-center justify-between text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                        <span>関連理論を学ぶ</span>
-                        <BookOpen className="w-3.5 h-3.5" />
-                      </div>
-                      <p className="text-xs text-[#59615D] dark:text-[#96A6B2]">
-                        8体系カリキュラムで病因病機を深掘り
-                      </p>
-                    </Link>
-
-                    {/* 非プレミアムユーザー向け：全20症例アンロック案内 */}
-                    {!isPremium && (
-                      <div className="col-span-full p-4 rounded-xl bg-gradient-to-r from-[#FCF4EB] to-[#FAF8F5] dark:from-[#251B12] dark:to-[#17212A] border border-[#F3DEC5] dark:border-[#4D331F] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-1.5 text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
-                            <Crown className="w-3.5 h-3.5" />
-                            <span>全20症例の臨床演習に挑戦しませんか？</span>
-                          </div>
-                          <p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">
-                            プレミアム会員なら、腰痛・不眠・自律神経失調・難治性頭痛など残り17症例の臨床推論プロセスをすべて解放できます。
-                          </p>
-                        </div>
-                        <Link
-                          href="/pricing"
-                          className="px-4 py-2 rounded-lg bg-[#B86924] hover:bg-[#A35B1D] text-white text-xs font-bold transition-all shadow-xs shrink-0 flex items-center gap-1"
-                        >
-                          <span>全症例を解放する</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </Link>
-                      </div>
-                    )}
-                  </div>
-                </div>
               </div>
             </div>
-          )}
-        </>
+          </div>
+        </div>
       )}
 
       {/* トピッククラスター連携（関連症状ガイド・関連経穴辞典・体質診断への回遊） */}
@@ -731,14 +579,6 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
         })()}
       </div>
 
-      {/* プレミアム誘導モーダル */}
-      <AuthModal
-        isOpen={authModalOpen}
-        onClose={() => setAuthModalOpen(false)}
-        featureKey="clinical_cases"
-        title="プレミアム会員限定コンテンツです"
-        description="この症例の完全な四診開示、推論ステップ、解説・古典根拠はプレミアム会員限定です。"
-      />
     </div>
   );
 }

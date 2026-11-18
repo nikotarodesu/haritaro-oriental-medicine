@@ -237,11 +237,14 @@ mount();
 assert(!text(tree).includes(questions[2].question), 'completed sets cannot resurrect');
 browser.location.search = ''; mount();
 button('今日の復習').props.onClick(); render();
-auth = { ...auth, user: { id: 'other-owner' } }; mount();
+const legacySession = JSON.parse(storage.getItem(session.REVIEW_SESSION_KEY));
+storage.setItem(session.REVIEW_SESSION_KEY, JSON.stringify({ ...legacySession, owner: 'former-account' }));
+mount();
 assert.equal(storage.getItem(session.REVIEW_SESSION_KEY), null);
-assert(!nodes(tree).some(node => node.props?.id === 'learning-review-practice'), 'account switch hides all previous selections');
-auth = { ...auth, isLoading: true }; mount();
+assert(!nodes(tree).some(node => node.props?.id === 'learning-review-practice'), 'A former account session is discarded for guest review');
+progress.isMounted = false; mount();
 assert(text(tree).includes('学習履歴を確認しています'));
+progress.isMounted = true;
 
 // A real generated acupoint question follows the same route return without a textbook-map entry.
 const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
@@ -377,29 +380,20 @@ storage.setItem(session.REVIEW_SESSION_KEY, 'invalid');
 mount({ compact: true });
 assert(outsideDisclosure().some(node => node.props?.role === 'status' && text(node).includes('再開できません')), 'Invalid checkpoint feedback remains visible');
 
-// Compact sync presentation keeps failure warnings and recovery actions visible.
+// Compact storage presentation makes the browser-local state and failures visible.
 const SyncStatusUI = client('src/components/learning/LearningSyncStatus.tsx');
-const retrySync = () => {};
-for (const status of ['local', 'synced', 'syncing', 'offline', 'setup', 'memory']) {
-  sync = { ready: true, status, retry: retrySync, canImportGuest: ['offline', 'setup', 'memory'].includes(status), importGuest() {} };
+for (const [status, ready, message] of [
+  ['local', true, 'このブラウザーに保存されます'],
+  ['local', false, '学習履歴を確認中'],
+  ['memory', true, '端末に保存できません'],
+]) {
+  sync = { ready, status };
   const syncTree = SyncStatusUI({ compact: true });
-  const disclosures = nodes(syncTree).filter(node => node.type === 'details');
-  const hidden = new Set(disclosures.flatMap(node => nodes(node)));
-  const visible = nodes(syncTree).filter(node => !hidden.has(node));
-  assert(visible.some(node => node.props?.role === 'status'), status + ': storage state is always visible');
-  if (['offline', 'setup', 'memory'].includes(status)) {
-    assert(visible.some(node => node.type === 'button' && node.props.onClick === retrySync), status + ': recovery never needs a disclosure');
-    assert(visible.some(node => node.type === 'button' && text(node).includes('ログイン前の履歴を引き継ぐ')), status + ': import remains available');
-    if (status === 'memory') assert(visible.some(node => node.props?.role === 'alert' && text(node).includes('記録が失われる')));
-  } else {
-    assert(disclosures.length && !disclosures[0].props.open, status + ': optional explanation starts collapsed');
-  }
+  const visibleStatus = nodes(syncTree).find(node => node.props?.role === 'status');
+  assert(text(visibleStatus).includes(message));
+  assert(!nodes(syncTree).some(node => node.type === 'details' || node.type === 'button'));
+  if (status === 'memory') assert(text(syncTree).includes('この画面を閉じると入力内容が消えます'));
 }
-sync = { ready: true, values: {}, status: 'synced', retry: retrySync, canImportGuest: true, importGuest() {} };
-assert(!nodes(SyncStatusUI({ compact: true })).some(node => node.type === 'details'), 'Pending guest import stays visible even when cloud sync succeeded');
-mount({ compact: true });
-assert(outsideDisclosure().some(node => node.type === SyncStatus), 'Pending guest import is outside the collapsed index controls');
-
 // Execute the actual lecture key handler, extracted with the TypeScript AST.
 const readerFile = path.join(root, 'src/components/curriculum/CurriculumLectureReader.tsx');
 const ast = ts.createSourceFile(readerFile, fs.readFileSync(readerFile, 'utf8'), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);

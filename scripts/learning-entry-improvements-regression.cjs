@@ -31,7 +31,8 @@ for (const [count, expected] of [[0, '未選択'], [1, '穴数による減点な
 if (process.argv.includes('--build-output')) {
   const html = route => fs.readFileSync(path.join(root, '.next/server/app', `${route}.html`), 'utf8').replace(/<!--[\s\S]*?-->/g, '');
   for (const [slug, minutes] of Object.entries(totals)) assert(html(`learn/courses/${slug}`).includes(`読む目安：約${minutes}分`), `${slug} served estimate matches selected steps`);
-  for (const route of ['index', 'learn']) assert(html(route).includes('href="/curriculum/lecture-intro-1?course=oriental-medicine-introduction"'), `${route} links directly to the first course lecture`);
+  assert(html('index').includes('action="/search"'), 'The homepage provides cross-series search');
+  assert(html('learn').includes('href="/curriculum/lecture-intro-1"'), 'The reading home links directly to the canonical introduction');
   assert(html('learn/courses/pathomechanism-foundations').includes('id="concept-comparison"'));
   const score = html('practice/haiketsu');
   assert(score.includes('配穴の構成バランス') && score.includes('構成表示の判定条件を見る'));

@@ -1,0 +1,22 @@
+const OLD_ID_MAP: Readonly<Record<string, string>> = {
+  "lecture-1": "lecture-yinyang-1",
+  "lecture-1-yinyang": "lecture-yinyang-1",
+  "lecture-2": "lecture-wuxing-1",
+  "lecture-2-wuxing": "lecture-wuxing-1",
+  "lecture-3": "lecture-qiblood-1",
+  "lecture-3-qiblood": "lecture-qiblood-1",
+  "lecture-4": "lecture-lifedynamics-1",
+  "lecture-4-lifedynamics": "lecture-lifedynamics-1",
+  "lecture-5": "lecture-pathomechanism-1",
+  "lecture-5-pathomechanism": "lecture-pathomechanism-1",
+  "lecture-6": "lecture-diagnosis-1",
+  "lecture-6-diagnosis": "lecture-diagnosis-1",
+  "lecture-7": "lecture-treatment-1",
+  "lecture-7-treatment": "lecture-treatment-1",
+  "lecture-8": "lecture-practice-1",
+  "lecture-8-practice": "lecture-practice-1",
+};
+
+export function resolveLegacyLectureId(rawId: string): string {
+  return Object.hasOwn(OLD_ID_MAP, rawId) ? OLD_ID_MAP[rawId] : rawId;
+}

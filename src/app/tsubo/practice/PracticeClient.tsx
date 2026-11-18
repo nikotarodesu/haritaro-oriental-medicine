@@ -1,7 +1,6 @@
 "use client";
 
 import { useLearningSync } from "@/contexts/LearningSyncContext";
-import { useAuth } from "@/contexts/AuthContext";
 import LearningSyncStatus from "@/components/learning/LearningSyncStatus";
 import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
 import { questionRevision } from "@/utils/learningReview";
@@ -59,7 +58,6 @@ import {
   Award,
   X
 } from "lucide-react";
-import { useClinicalMemo } from "@/contexts/ClinicalMemoContext";
 import { getPracticeEntryAction, getPracticeSessionTitle, readRequestedPracticeCourse, resolvePracticeCourse } from "@/data/tsubo/practiceEntry";
 import { getPracticeContinuation, practiceDateLabel } from '@/data/tsubo/continuation';
 import { trackEvent } from '@/utils/analytics';
@@ -75,10 +73,9 @@ const PRACTICE_SKILLS = [
 
 export default function PracticeClient() {
   const { ready } = useLearningSync();
-  const { user } = useAuth();
   return (
     <Suspense fallback={<div className="min-h-screen py-16 text-center text-xs text-[#737C77]">学習システムを読み込み中...</div>}>
-      {ready ? <PracticePageContent key={user?.id || "guest"} /> : <p role="status" className="p-8 text-center">学習履歴を確認中...</p>}
+      {ready ? <PracticePageContent /> : <p role="status" className="p-8 text-center">学習履歴を確認中...</p>}
     </Suspense>
   );
 }
@@ -90,7 +87,6 @@ function PracticePageContent() {
   const requestedCourseId = requestedCourse?.id || null;
   const invalidCourseRequest = searchParams.has('course') && !requestedCourse;
   const allPoints = useMemo(() => getAllAcupoints(), []);
-  const { memos } = useClinicalMemo();
   const { saveQuizResult } = useCurriculumProgress();
   const { values, status: learningStatus } = useLearningSync();
   const resumed = useRef(new Set<string>());
@@ -261,11 +257,6 @@ function PracticePageContent() {
       const targetPoints = allPoints.filter((p) => p.meridianId === course.meridianId);
       const questions = generateQuestionsForPoints(targetPoints, selectedSkill, 10, `mer_${course.id}_${Date.now()}`);
       startNewSession(course.id, `${course.title}（${questions.length}問）`, questions, "batch");
-    } else if (courseId === "saved") {
-      const savedCodes = memos.filter((m) => m.type === "tsubo").map((m) => m.id.replace("tsubo-", "").toUpperCase());
-      const targetPoints = allPoints.filter((p) => savedCodes.includes(p.code));
-      const questions = generateQuestionsForPoints(targetPoints, selectedSkill, undefined, `saved_${Date.now()}`);
-      startNewSession("saved", `保存したマイカルテ経穴（${questions.length}問）`, questions, "batch");
     } else if (courseId === "five_shu") {
       const targetPoints = allPoints.filter((p) => p.categories.some((c) => c.includes("穴") && (c.includes("井") || c.includes("滎") || c.includes("輸") || c.includes("経") || c.includes("合"))));
       const questions = generateQuestionsForPoints(targetPoints, "five_elements_shu", 10, `five_shu_${Date.now()}`);
@@ -1036,7 +1027,7 @@ function PracticePageContent() {
           <div><dt>全361穴の習得状況</dt><dd>取組 {summary.totalPracticedPoints}穴 · 定着の目安達成 {summary.totalMasteredPoints}穴</dd></div>
         </dl>
 
-        <LearningSyncStatus compact returnTo="/tsubo/practice" />
+        <LearningSyncStatus compact />
 
         <div className="practice-study-options">
           <details className="practice-skill-picker">
@@ -1140,14 +1131,6 @@ function PracticePageContent() {
               <p className="text-[11px] text-[#737C77]">四関などの伝統的な配穴例</p>
             </button>
 
-            <button
-              type="button"
-              onClick={() => startCourseSession("saved")}
-              className="p-4 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-left transition-all space-y-1"
-            >
-              <strong className="text-xs font-bold text-[#1E3D34] block">マイカルテ保存穴</strong>
-              <p className="text-[11px] text-[#737C77]">保存中の経穴のみを集中テスト</p>
-            </button>
 
             <button
               type="button"
@@ -1266,7 +1249,7 @@ function PracticePageContent() {
               <button
                 type="button"
                 onClick={() => {
-                  if (confirm("学習記録をすべて消去しますか？（マイカルテ保存は消去されません）")) {
+                  if (confirm("この端末の経穴学習記録をすべて消去しますか？")) {
                     resetAllStudyData();
                     refreshSummary();
                     setActiveSession(null);

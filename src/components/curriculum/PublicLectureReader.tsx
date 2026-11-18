@@ -1,0 +1,103 @@
+import Link from "next/link";
+import { Suspense } from "react";
+import ArticleReferences from "@/components/ArticleReferences";
+import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
+import { InteractiveQuiz } from "@/components/InteractiveQuiz";
+import ReviewQuestionCard from "@/components/learning/ReviewQuestionCard";
+import InlineConceptFigure from "@/components/reading/InlineConceptFigure";
+import ChapterAssessment from "./ChapterAssessment";
+import PublicLecturePosition from "./PublicLecturePosition";
+import { SERIES } from "@/config/series";
+import { getChapterAssessment } from "@/data/curriculumAssessments";
+import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
+import { getCurriculumReadingInserts } from "@/data/curriculumReadingGuides";
+import { LEARNING_QUESTIONS } from "@/data/learningQuestionBank";
+import { approvedIntroId, approvedIntroReferences } from "@/data/publicLectures/approvedIntro";
+import type { PublicLectureSeries } from "@/data/publicLectures";
+import type { PublicLectureArticle, PublicLectureLink } from "@/data/publicLectures/types";
+import type { ResolvedReference } from "@/types/references";
+
+const headingClass = "font-serif text-xl font-bold text-[#244238] dark:text-[#A9D6C3] sm:text-2xl";
+const linkClass = "font-semibold underline underline-offset-4";
+
+function ReadingLinks({ links }: { links: readonly PublicLectureLink[] }) {
+  return (
+    <ul className="space-y-1">
+      {links.map(({ href, label }) => <li key={href}><Link href={href} className={linkClass}>{label}</Link></li>)}
+    </ul>
+  );
+}
+
+export default function PublicLectureReader({ id, article, series, references, related }: {
+  id: string;
+  article: PublicLectureArticle;
+  series: PublicLectureSeries;
+  references: ResolvedReference[];
+  related: PublicLectureLink[];
+}) {
+  const shelf = SERIES[series];
+  const quiz = CURRICULUM_QUIZZES[id];
+  const assessment = getChapterAssessment(id);
+  const figures = getCurriculumReadingInserts(id).map(insert => insert.figure);
+  const authoredLinks = article.links ?? [];
+  const links = [...authoredLinks, ...related.filter(link => !authoredLinks.some(authored => authored.href === link.href))];
+
+  return (
+    <article data-public-lecture={id} data-lecture-series={series} className="mx-auto w-full max-w-3xl space-y-9 px-4 py-8 text-base leading-8 sm:px-6 sm:py-12">
+      <PublicLecturePosition lectureId={id} />
+      <header className="space-y-4">
+        <Link href={shelf.href} className="text-sm font-semibold underline underline-offset-4 ui-muted">{shelf.name}</Link>
+        <h1 className="font-serif text-3xl font-bold leading-snug sm:text-4xl">{article.title}</h1>
+        <p>{article.lead}</p>
+      </header>
+      <Suspense fallback={null}>
+        <ReviewQuestionCard lectureId={id} questions={LEARNING_QUESTIONS.filter(question => question.lectureId === id)} />
+      </Suspense>
+      <div id="lecture-content" className="scroll-mt-28 space-y-8">
+        {article.sections.map((section, index) => (
+          <section key={section.heading} data-lecture-section={index} className="scroll-mt-28 space-y-3">
+            <h2 className={headingClass}>{section.heading}</h2>
+            {section.paragraphs.map((paragraph, paragraphIndex) => <p key={paragraphIndex}>{paragraph}</p>)}
+            {section.links?.length ? <ReadingLinks links={section.links} /> : null}
+          </section>
+        ))}
+      </div>
+      {figures.length > 0 && (
+        <details className="page-help">
+          <summary>図で整理する</summary>
+          {figures.map(figure => <InlineConceptFigure key={figure.id} figure={figure} />)}
+        </details>
+      )}
+      {links.length > 0 && (
+        <nav aria-labelledby="lecture-related" className="space-y-2">
+          <h2 id="lecture-related" className={headingClass}>あわせて読む</h2>
+          <ReadingLinks links={links} />
+        </nav>
+      )}
+      {id === approvedIntroId ? (
+        <section id="article-references-section" className="scroll-mt-28 space-y-3">
+          <h2 id="sources" className={headingClass}>参考文献</h2>
+          <ul className="list-disc space-y-2 pl-5 text-sm leading-6">
+            {approvedIntroReferences.map(({ name, url, scope }) => (
+              <li key={url}>{scope}。 <a href={url} className={linkClass}>{name}</a></li>
+            ))}
+          </ul>
+        </section>
+      ) : (
+        <ArticleReferences
+          references={references}
+          scopeNote="用語の定義、学習例の背景、研究結果は、資料ごとの参照範囲を確認してください。"
+        />
+      )}
+      <AuthorSupervisorCard topic={article.title} />
+      {(quiz || assessment) && (
+        <details id="lecture-supplements" className="page-help scroll-mt-28">
+          <summary>確認問題・復習</summary>
+          {quiz && <div id="lecture-quiz" className="scroll-mt-28"><InteractiveQuiz quiz={quiz} /></div>}
+          {assessment && <ChapterAssessment assessment={assessment} />}
+          <Link className="ui-text-link" href="/learn/review">復習問題の一覧</Link>
+        </details>
+      )}
+    </article>
+  );
+}

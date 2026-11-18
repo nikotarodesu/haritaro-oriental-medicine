@@ -7,6 +7,8 @@ import { CLASSICAL_TEXTS } from "@/data/classicalTextsData";
 import { VERIFIED_PAPERS as PAPERS_DATABASE } from "@/data/references/papersData";
 import { ARTICLES } from "@/data/articleData";
 import { SYMPTOMS } from "@/data/symptomData";
+import { PUBLIC_SYMPTOM_CONTENT } from "@/data/publicSymptoms";
+import { getPublicLectureArticle, getPublicLectureSeries } from "@/data/publicLectures/index";
 import { PUBLIC_ARCHIVE_CASES } from "@/data/cases/archiveCases";
 import { TOOL_CATALOG } from "@/config/toolCatalog";
 import { LEARNING_COURSES } from "@/data/learningCourses";
@@ -83,24 +85,6 @@ const STATIC_TOOLS: SearchResultItem[] = [
     tags: ["比較", "鑑別", "経穴", "ツボ比較"],
   },
   {
-    id: "tool-learning-notes",
-    type: "tool",
-    title: "学習ノート・振り返り",
-    subtitle: "講義や症例の要点・迷った理由・次に確かめることを記録し、以前の考え方と比較",
-    badge: "学習記録",
-    url: "/notes?tab=learning",
-    tags: ["学習ノート", "振り返り", "学習記録", "考え方", "復習"],
-  },
-  {
-    id: "tool-notes",
-    type: "tool",
-    title: "臨床カルテ・配穴ストックノート",
-    subtitle: "患者カルテ、配穴ストック、A4患者養生処方せん・待合室POP印刷対応",
-    badge: "臨床管理",
-    url: "/notes",
-    tags: ["ノート", "カルテ", "記録", "配穴ストック", "患者管理", "印刷", "A4"],
-  },
-  {
     id: "tool-basics-cun",
     type: "tool",
     title: "骨度法・寸の割り出しガイド",
@@ -152,21 +136,23 @@ export function buildSearchCatalog(): SearchResultItem[] {
       tags: ["症例", "段階式", "症例演習", "判断根拠", "安全確認", "再評価"],
     })));
 
-    // 2. 講義カリキュラム（全講義）
+    // 2. 既存の講義URLに掲載する読み物と演習
     CURRICULUM_DATA.forEach((chapter) => {
       chapter.lectures.filter(lecture => lecture.isPublished).forEach((lec) => {
+        const article = getPublicLectureArticle(lec.id);
+        if (!article) return;
+        const series = getPublicLectureSeries(lec.id);
         list.push({
           id: `lecture-${lec.id}`,
           type: "lecture",
-          title: lec.title,
-          subtitle: `${lec.stageTitle} ➜ ${lec.seriesTitle || "講義"}（約${lec.duration}）`,
-          badge: "講義教材",
+          title: article.title,
+          subtitle: article.description,
+          badge: series === "practice" ? "臨床演習" : series === "dictionary" ? "ツボ図鑑" : "東洋医学の読み物",
           url: `/curriculum/${lec.id}`,
           tags: [
             lec.title,
             lec.subtitle || "",
-            lec.summary || "",
-            lec.whatYouWillLearn?.canDo || "",
+            ...article.sections.map(section => section.heading),
             chapter.title,
             chapter.subtitle || "",
           ],
@@ -182,18 +168,20 @@ export function buildSearchCatalog(): SearchResultItem[] {
         type: "acupoint",
         title: `${pt.name}（${pt.code}）`,
         subtitle: `${pt.meridian}｜${pt.bodyPart}・${pt.locationSimple}`,
-        badge: "経穴辞典",
+        badge: "ツボ図鑑",
         url: `/tsubo/${pt.codeLower}`,
         exactCode: pt.code.toLowerCase(),
-        exactTerms: [pt.name, pt.kana, ...(pt.aliases || [])],
+        exactTerms: [pt.name, pt.kana, pt.romaji, pt.legacyId, ...(pt.aliases || [])],
         tags: [
           pt.name,
           pt.kana,
           pt.code,
           pt.codeLower,
           pt.romaji,
+          pt.legacyId,
           pt.meridian,
           pt.meridianShort,
+          pt.bodyPart,
           ...(pt.indications || []),
           ...(pt.categories || []),
           ...(pt.aliases || []),
@@ -244,17 +232,18 @@ export function buildSearchCatalog(): SearchResultItem[] {
 
     // 7. お悩み・症状別ガイド（SYMPTOMS）
     SYMPTOMS.forEach((s) => {
+      const summary = PUBLIC_SYMPTOM_CONTENT[s.id]?.summary ?? s.summary;
       list.push({
         id: `symptom-${s.id}`,
         type: "symptom",
         title: s.title,
-        subtitle: `${s.category}｜${s.summary.slice(0, 48)}...`,
+        subtitle: summary,
         badge: "症状別ガイド",
         url: `/symptoms/${s.id}`,
         tags: [
           s.title,
           s.category,
-          s.summary,
+          summary,
         ],
       });
     });

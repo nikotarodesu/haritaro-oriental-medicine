@@ -17,10 +17,10 @@ import {
 } from "@/data/tsubo";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import AcupointAtlasArticle from "@/components/tsubo/AcupointAtlasArticle";
+import HeguAtlasPreview, { heguAtlasDescription, heguAtlasTitle } from "@/components/tsubo/HeguAtlasPreview";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import type { AcupointMaster } from "@/data/tsubo/types";
-import ClipButton from "@/components/ClipButton";
 import TsuboKeyboardNav from "@/components/tsubo/TsuboKeyboardNav";
 import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
 import { 
@@ -39,6 +39,7 @@ import {
 import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { PROCEDURE_PUBLICATION_NOTICE, getPublicCrossSectionModel } from "@/data/medicalSafety";
 import { getLecturesForAcupoint } from "@/utils/acupointCurriculumMatcher";
+import { SERIES } from "@/config/series";
 import { getSymptomsForAcupoint, getCasesForAcupoint } from "@/utils/tsuboTopicClusterMatcher";
 import { MERIDIAN_RELATIONS } from "@/utils/tsuboRelations";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
@@ -71,12 +72,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const isHeguAtlas = point.codeLower === "li4";
   const atlasArticle = ATLAS_ARTICLES[point.codeLower];
-  const title = atlasArticle ? atlasPageTitle(point) : acupointPageTitle(point);
-  const description = atlasArticle?.description ?? `${point.name}（${point.code} / ${point.meridian}）。${point.locationSimple} 位置情報の参照元、伝統的な主治、教育用断面模式図とその適用範囲、注意事項を分けて学べます。`;
+  const title = isHeguAtlas ? heguAtlasTitle : atlasArticle ? atlasPageTitle(point) : acupointPageTitle(point);
+  const description = isHeguAtlas ? heguAtlasDescription : atlasArticle?.description ?? `${point.name}（${point.code} / ${point.meridian}）。${point.locationSimple} 位置情報の参照元、伝統的な主治、教育用断面模式図とその適用範囲、注意事項を分けて学べます。`;
 
   return {
-    title: atlasArticle ? { absolute: title } : title,
+    title: isHeguAtlas || atlasArticle ? { absolute: title } : title,
     description,
     alternates: {
       canonical: `/tsubo/${point.codeLower}`,
@@ -108,16 +110,6 @@ export default async function AcupointDetailPage({ params }: Props) {
   const prevPoint = currentIndex > 0 ? meridianPoints[currentIndex - 1] : null;
   const nextPoint = currentIndex < meridianPoints.length - 1 ? meridianPoints[currentIndex + 1] : null;
 
-  // 五行判定
-  const getMeridianElement = (meridian: string): ("木" | "火" | "土" | "金" | "水")[] => {
-    if (meridian.includes("肝") || meridian.includes("胆")) return ["木"];
-    if (meridian.includes("心") || meridian.includes("小腸") || meridian.includes("三焦")) return ["火"];
-    if (meridian.includes("脾") || meridian.includes("胃")) return ["土"];
-    if (meridian.includes("肺") || meridian.includes("大腸")) return ["金"];
-    if (meridian.includes("腎") || meridian.includes("膀胱")) return ["水"];
-    return [];
-  };
-
   // この経穴が登場する講義（カリキュラム）
   const relatedLectures = getLecturesForAcupoint(point.name, point.code);
 
@@ -145,9 +137,10 @@ export default async function AcupointDetailPage({ params }: Props) {
   const meridianRelations = MERIDIAN_RELATIONS[relationId] || [];
 
   const pageUrl = `https://www.haritaro.jp/tsubo/${point.codeLower}`;
+  const isHeguAtlas = point.codeLower === "li4";
   const atlasArticle = ATLAS_ARTICLES[point.codeLower];
   const atlasMarker = ATLAS_POINT_MARKERS[point.codeLower];
-  const pageTitle = atlasArticle ? atlasPageTitle(point) : acupointPageTitle(point);
+  const pageTitle = isHeguAtlas ? heguAtlasTitle : atlasArticle ? atlasPageTitle(point) : acupointPageTitle(point);
 
   // 表示内容に対応するページ・用語・パンくずの構造化データ。
   const jsonLd = {
@@ -158,7 +151,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         "@id": `${pageUrl}#webpage`,
         "url": pageUrl,
         "name": pageTitle,
-        "description": atlasArticle?.description ?? (point.locationDetail || point.locationSimple),
+        "description": isHeguAtlas ? heguAtlasDescription : atlasArticle?.description ?? (point.locationDetail || point.locationSimple),
         "about": [
           {
             "@type": "MedicalEntity",
@@ -196,7 +189,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           {
             "@type": "ListItem",
             "position": 2,
-            "name": atlasArticle ? "はり太郎のツボ図鑑" : "経穴辞典",
+            "name": isHeguAtlas || atlasArticle ? "はり太郎のツボ図鑑" : "経穴辞典",
             "item": "https://www.haritaro.jp/tsubo",
           },
           {
@@ -215,6 +208,15 @@ export default async function AcupointDetailPage({ params }: Props) {
       },
     ],
   };
+
+  if (isHeguAtlas) {
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <HeguAtlasPreview point={point} />
+      </>
+    );
+  }
 
   if (atlasArticle && atlasMarker) {
     return (
@@ -335,23 +337,6 @@ export default async function AcupointDetailPage({ params }: Props) {
                 <span>配穴に追加</span>
               </Link>
 
-              {/* 主アクション：マイノート保存 */}
-              <ClipButton
-                item={{
-                  id: `tsubo-${point.id}`,
-                  type: "tsubo",
-                  title: `${point.name}（${point.code}）`,
-                  subTitle: `${point.meridian} | ${point.bodyPart}`,
-                  points: [point.name],
-                  elements: getMeridianElement(point.meridian),
-                  indications: point.indications,
-                  summary: point.clinicalNote,
-                  caution: point.caution,
-                }}
-                variant="button"
-                size="md"
-                className="acupoint-save-action min-h-11"
-              />
 
               <div className="acupoint-utility-actions">
                 <Link href={`/tsubo/compare?a=${point.codeLower}`} className="acupoint-compare-action">
@@ -362,7 +347,6 @@ export default async function AcupointDetailPage({ params }: Props) {
                   <div>
                     <Link href={simulatorUrl}>所見から弁証候補を比較<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
                     <p>経穴名だけで証は決められません。所見に応じて学習条件を選び、教材内の候補を比較します。</p>
-                    <Link href="/notes">マイノートを開く<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
                   </div>
                 </details>
               </div>
@@ -757,13 +741,13 @@ export default async function AcupointDetailPage({ params }: Props) {
         {relatedLectures.length > 0 && (
           <section className="dictionary-related-lectures" aria-labelledby="related-lectures-title">
             <div className="dictionary-section-heading">
-              <h2 id="related-lectures-title">この経穴を扱う講義</h2>
-              <Link href="/curriculum">全講義一覧<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+              <h2 id="related-lectures-title">このツボが登場する読み物</h2>
+              <Link href="/curriculum">読み物・演習の目次<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
             </div>
             <ul>
               {relatedLectures.slice(0, 2).map((lecture) => (
                 <li key={lecture.id}>
-                  <Link href={lecture.url}><span>{lecture.stageTitle}</span><strong>{lecture.title}</strong><ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+                  <Link href={`/curriculum/${lecture.id}`}><span>{SERIES[lecture.series].shortName}</span><strong>{lecture.title}</strong><ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
                 </li>
               ))}
             </ul>
