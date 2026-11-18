@@ -20,6 +20,8 @@ import AcupointAtlasArticle from "@/components/tsubo/AcupointAtlasArticle";
 import HeguAtlasPreview, { heguAtlasDescription, heguAtlasTitle } from "@/components/tsubo/HeguAtlasPreview";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
+import { POINT_ILLUSTRATIONS } from "@/data/tsubo/atlas/illustrations";
+import PointAtlasDiagrams from "@/components/tsubo/atlas/PointAtlasDiagrams";
 import type { AcupointMaster } from "@/data/tsubo/types";
 import TsuboKeyboardNav from "@/components/tsubo/TsuboKeyboardNav";
 import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
@@ -140,6 +142,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   const isHeguAtlas = point.codeLower === "li4";
   const atlasArticle = ATLAS_ARTICLES[point.codeLower];
   const atlasMarker = ATLAS_POINT_MARKERS[point.codeLower];
+  const illustration = POINT_ILLUSTRATIONS[point.codeLower];
   const pageTitle = isHeguAtlas ? heguAtlasTitle : atlasArticle ? atlasPageTitle(point) : acupointPageTitle(point);
 
   // 表示内容に対応するページ・用語・パンくずの構造化データ。
@@ -375,7 +378,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
         <nav aria-label="この経穴のページ内目次" className="acupoint-section-nav">
           <a href="#acupoint-location"><Compass aria-hidden="true" className="h-4 w-4" />位置</a>
-          {point.crossSection && point.crossSection.svgElements && point.crossSection.svgElements.length > 0 && (
+          {(illustration || !!point.crossSection?.svgElements?.length) && (
             <a href="#acupoint-diagram"><Layers aria-hidden="true" className="h-4 w-4" />図</a>
           )}
           <a href={hasSafetyWarning ? "#acupoint-safety-warning" : "#acupoint-cautions"}><ShieldCheck aria-hidden="true" className="h-4 w-4" />注意事項</a>
@@ -444,6 +447,9 @@ export default async function AcupointDetailPage({ params }: Props) {
           <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#AFBDC8]">{VERIFIED_POINT_LOCATIONS[point.codeLower] ? <>標準位置の記述は原資料と照合済みです。<a href="#acupoint-sources" className="underline underline-offset-4">確認したページと範囲</a>をご覧ください。</> : '個別の原典照合は進行中です。'}圧痛や響きの有無だけで位置を判断しないでください。体表位置の説明は、個人の安全な刺入経路・深度や施術の適応を示すものではありません。</p>
 
           {/* 取穴手順ステップ */}
+          {illustration && atlasMarker && (
+            <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={illustration} marker={atlasMarker} />
+          )}
           {point.howToLocate && point.howToLocate.length > 0 && (
             <div className="space-y-3 pt-2">
               <h3 className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
@@ -533,7 +539,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         <AcupointInformationScope code={point.code} locationSource={point.locationSource} individualModel={individualModel} individuallyEdited={isDetailed} />
         {/* 3. 断面解剖モデル */}
         {point.crossSection && point.crossSection.svgElements && point.crossSection.svgElements.length > 0 && (
-          <section id="acupoint-diagram" className="scroll-mt-28 space-y-6">
+          <section id={illustration ? "acupoint-cross-section" : "acupoint-diagram"} className="scroll-mt-28 space-y-6">
             <CrossSectionViewer
               model={getPublicCrossSectionModel(point.crossSection)}
               pointName={point.name}

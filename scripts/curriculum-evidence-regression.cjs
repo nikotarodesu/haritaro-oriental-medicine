@@ -46,7 +46,7 @@ for (const id of checkedReferenceIds) {
 }
 const uncheckedReference = { id: 'unreviewed-book', title: '未照合', source: '旧教材', url: 'https://example.org/unreviewed', claimsStatus: 'needs-review', sourceCheckedAt: '2026-10-01', note: '未照合の範囲を保持' };
 assert.equal(applySourceVerification(uncheckedReference), uncheckedReference, 'unknown source identity and metadata are unchanged');
-assert.deepEqual(Object.keys(VERIFIED_POINT_LOCATIONS), ['li4'], 'location verification does not spread to unreviewed points');
+assert.deepEqual(Object.keys(VERIFIED_POINT_LOCATIONS).sort(), ['li4', 'pc5', 'pc7'], 'location verification does not spread to unreviewed points');
 const verifiedLi4 = VERIFIED_POINT_LOCATIONS.li4;
 assert.equal(verifiedLi4.sourceCheckedAt, '2026-10-15');
 assert.equal(verifiedLi4.sourcePage, 'p.35（PDF 44ページ目）');

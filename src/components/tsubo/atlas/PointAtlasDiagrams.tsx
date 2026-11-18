@@ -10,6 +10,7 @@ const captionClass = "mt-2 text-center text-sm font-semibold leading-6";
 
 const regions = {
   volarForearm: { BodyHighlight: <path d="M43 119L32 145m125-26 11 26" />, CloseUp: VolarForearmRegion },
+  volarWrist: { BodyHighlight: <path d="M34 148l6 3m120 0 6-3" />, CloseUp: VolarForearmRegion },
   anterolateralLowerLeg: { BodyHighlight: <path d="M81 202l1 15m37-15-1 15" />, CloseUp: LowerLegRegion },
   footDorsum: { BodyHighlight: <path d="M90 253l1 6m19-6-1 6" />, CloseUp: FootDorsumRegion },
 } satisfies Record<AtlasRegion, { BodyHighlight: ReactNode; CloseUp: typeof VolarForearmRegion }>;

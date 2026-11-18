@@ -1,4 +1,4 @@
-export type AtlasRegion = "volarForearm" | "anterolateralLowerLeg" | "footDorsum";
+export type AtlasRegion = "volarForearm" | "volarWrist" | "anterolateralLowerLeg" | "footDorsum";
 
 export interface AcupointAtlasArticle {
   description: string;

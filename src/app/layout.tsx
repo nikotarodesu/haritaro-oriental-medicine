@@ -14,6 +14,7 @@ import PwaInstallPrompt from "@/components/pwa/PwaInstallPrompt";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { SHARED_OG_IMAGES, SITE_NAME, SITE_TITLE } from "@/config/seo";
 import { PLATFORM_DESCRIPTION } from "@/config/series";
+import { getAdSensePublisherId } from "@/components/ads/config";
 import { getLearningProgressCatalog } from "@/data/learningProgressCatalog";
 
 const notoSerifJP = Noto_Serif_JP({
@@ -30,6 +31,7 @@ const notoSansJP = Noto_Sans_JP({
   display: "swap",
 });
 
+const publisherId = getAdSensePublisherId();
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.haritaro.jp"),
   applicationName: SITE_NAME,
@@ -38,6 +40,7 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}【東洋医学・鍼灸】`,
   },
   description: PLATFORM_DESCRIPTION,
+  other: publisherId ? { "google-adsense-account": publisherId } : undefined,
   verification: {
     google: "EQTaU5bcfwSgFprso13sFiyF35uZ5IHhaGz56GXqXbo",
   },

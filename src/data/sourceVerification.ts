@@ -17,6 +17,20 @@ export interface VerifiedPointLocation {
 
 /** Body-surface location checks do not verify the anatomy model or a procedure. */
 export const VERIFIED_POINT_LOCATIONS: Readonly<Record<string, VerifiedPointLocation>> = {
+  pc5: {
+    sourceTitle: 'WHO Standard Acupuncture Point Locations in the Western Pacific Region',
+    sourceUrl: `${POINT_LOCATIONS_PDF_URL}#page=163`,
+    sourceCheckedAt: '2026-11-18', sourcePage: 'p.154（PDF 163ページ目）',
+    standardLocation: '前腕前面、長掌筋腱と橈側手根屈筋腱の間で、手関節掌側横紋の上方3寸。',
+    note: '手首のしわからの距離と、目印になる2本の腱をWHO標準の記載に照合しました。',
+  },
+  pc7: {
+    sourceTitle: 'WHO Standard Acupuncture Point Locations in the Western Pacific Region',
+    sourceUrl: `${POINT_LOCATIONS_PDF_URL}#page=164`,
+    sourceCheckedAt: '2026-11-18', sourcePage: 'p.155（PDF 164ページ目）',
+    standardLocation: '手関節前面、手関節掌側横紋の中央、長掌筋腱と橈側手根屈筋腱の間。',
+    note: '手首のしわと2本の腱の位置関係をWHO標準の記載に照合しました。',
+  },
   li4: {
     sourceTitle: 'WHO Standard Acupuncture Point Locations in the Western Pacific Region',
     sourceUrl: `${POINT_LOCATIONS_PDF_URL}#page=44`,
