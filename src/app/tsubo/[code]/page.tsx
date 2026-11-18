@@ -16,6 +16,10 @@ import {
   isChestBackPneumothoraxRisk
 } from "@/data/tsubo";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
+import AcupointAtlasArticle from "@/components/tsubo/AcupointAtlasArticle";
+import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
+import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
+import type { AcupointMaster } from "@/data/tsubo/types";
 import ClipButton from "@/components/ClipButton";
 import TsuboKeyboardNav from "@/components/tsubo/TsuboKeyboardNav";
 import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
@@ -46,6 +50,10 @@ interface Props {
   params: Promise<{ code: string }>;
 }
 
+function atlasPageTitle(point: AcupointMaster) {
+  return `${point.name}（${point.kana}）の場所と押し方・注意点｜はり太郎のツボ図鑑`;
+}
+
 export async function generateStaticParams() {
   return ACUPOINTS_MASTER.map((point) => ({
     code: point.codeLower,
@@ -63,11 +71,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const title = acupointPageTitle(point);
-  const description = `${point.name}（${point.code} / ${point.meridian}）。${point.locationSimple} 位置情報の参照元、伝統的な主治、教育用断面模式図とその適用範囲、注意事項を分けて学べます。`;
+  const atlasArticle = ATLAS_ARTICLES[point.codeLower];
+  const title = atlasArticle ? atlasPageTitle(point) : acupointPageTitle(point);
+  const description = atlasArticle?.description ?? `${point.name}（${point.code} / ${point.meridian}）。${point.locationSimple} 位置情報の参照元、伝統的な主治、教育用断面模式図とその適用範囲、注意事項を分けて学べます。`;
 
   return {
-    title,
+    title: atlasArticle ? { absolute: title } : title,
     description,
     alternates: {
       canonical: `/tsubo/${point.codeLower}`,
@@ -136,7 +145,9 @@ export default async function AcupointDetailPage({ params }: Props) {
   const meridianRelations = MERIDIAN_RELATIONS[relationId] || [];
 
   const pageUrl = `https://www.haritaro.jp/tsubo/${point.codeLower}`;
-  const pageTitle = acupointPageTitle(point);
+  const atlasArticle = ATLAS_ARTICLES[point.codeLower];
+  const atlasMarker = ATLAS_POINT_MARKERS[point.codeLower];
+  const pageTitle = atlasArticle ? atlasPageTitle(point) : acupointPageTitle(point);
 
   // 表示内容に対応するページ・用語・パンくずの構造化データ。
   const jsonLd = {
@@ -147,7 +158,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         "@id": `${pageUrl}#webpage`,
         "url": pageUrl,
         "name": pageTitle,
-        "description": point.locationDetail || point.locationSimple,
+        "description": atlasArticle?.description ?? (point.locationDetail || point.locationSimple),
         "about": [
           {
             "@type": "MedicalEntity",
@@ -185,7 +196,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "経穴辞典",
+            "name": atlasArticle ? "はり太郎のツボ図鑑" : "経穴辞典",
             "item": "https://www.haritaro.jp/tsubo",
           },
           {
@@ -204,6 +215,15 @@ export default async function AcupointDetailPage({ params }: Props) {
       },
     ],
   };
+
+  if (atlasArticle && atlasMarker) {
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
+        <AcupointAtlasArticle point={point} article={atlasArticle} marker={atlasMarker} meridianPoints={meridianPoints} individualModel={individualModel} />
+      </>
+    );
+  }
 
   return (
     <div className="reading-page acupoint-page page-layout min-h-screen [overflow-wrap:anywhere]">

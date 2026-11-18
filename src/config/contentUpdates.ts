@@ -229,6 +229,9 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [`/curriculum/${id}`, '2026-10-18']))),
   ...Object.fromEntries(LEARNING_COURSES.map(course => [`/learn/courses/${course.slug}`, '2026-10-18'])),
   '/notes': '2026-10-18', '/tsubo/compare': '2026-10-18',
+  '/tsubo/pc6': '2026-11-18',
+  '/tsubo/st36': '2026-11-18',
+  '/tsubo/lr3': '2026-11-18',
 };
 export const SITE_UPDATES = [
   { date: '2026-11-10', label: '料金・問い合わせ・学習の入口を改善', href: '/pricing', text: '料金プランをヘッダー、問い合わせをフッターの主要ナビに追加。申込みの稼働確認と時間切れ表示、保存上限からの案内、資料件数の内訳を整えました。経歴の開業年月を2023年7月に統一しました。' },
