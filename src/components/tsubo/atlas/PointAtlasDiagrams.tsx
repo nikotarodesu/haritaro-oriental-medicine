@@ -29,8 +29,9 @@ const regions = {
   expanded: { BodyHighlight: null, CloseUp: ExpandedLandmarkRegion },
 } satisfies Record<AtlasRegion, { BodyHighlight: ReactNode; CloseUp: (props: AtlasCloseUpProps) => ReactNode }>;
 
-const bodyAreas: Record<BodyArea, string> = {
+const bodyAreas: Record<BodyArea | "occiput", string> = {
   head: "M92 29q8-10 16 0m-16 7q8 9 16 0",
+  occiput: "M93 42h14",
   neck: "M94 52h12",
   shoulder: "M65 72l9-4m52 0 9 4",
   upperArm: "M62 80l-9 28m85-28 9 28",
@@ -46,6 +47,8 @@ const bodyAreas: Record<BodyArea, string> = {
   thigh: "M85 150l2 33m28-33-2 33",
 };
 
+const occipitalPoints = new Set(["bl9", "gb19", "gv17"]);
+
 export default function PointAtlasDiagrams({ point, meridianPoints, illustration, marker }: {
   point: AcupointMaster;
   meridianPoints: readonly AcupointMaster[];
@@ -54,6 +57,9 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
 }) {
   const { BodyHighlight, CloseUp } = regions[illustration.region];
   const expandedView = marker.expanded && expandedViews[marker.expanded.view];
+  const isOccipital = occipitalPoints.has(point.codeLower);
+  const bodyArea = isOccipital ? "occiput" : expandedView?.area;
+  const bodyLabel = isOccipital ? "後頭部" : illustration.bodyLabel;
   const back = expandedView?.direction === "back" || Boolean(marker.legCode && legLandmarks[marker.legCode].view === "posterior");
   const bodyDirection = back ? "背面" : "正面";
   const landmarkNames = marker.expanded?.landmarks.map((id) => expandedView?.features[id].name.replace("／", "")).join("、");
@@ -67,7 +73,7 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
   return (
     <div id="acupoint-diagram" className="grid scroll-mt-28 gap-4 md:grid-cols-[1fr_1.55fr]">
       <figure className={figureClass}>
-        <svg viewBox="0 0 200 272" role="img" aria-label={`全身${bodyDirection}のシルエット。${illustration.bodyLabel}をオレンジで示しています。`} className="mx-auto block max-h-64 w-full">
+        <svg viewBox="0 0 200 272" role="img" aria-label={`全身${bodyDirection}のシルエット。${bodyLabel}をオレンジで示しています。`} className="mx-auto block max-h-64 w-full">
           <circle cx="100" cy="32" r="19" fill="#D8D5C9" />
           <g fill="#D8D5C9" stroke="#857E70" strokeWidth="1.5" strokeLinejoin="round">
             <path d="M85 53h30l27 16 11 39 17 40-16 8-23-38-8-21 3 49-3 50-5 57h-16l-2-97-5 97H79l-5-57-3-50 4-49-8 21-23 38-16-8 17-40 11-39z" />
@@ -75,10 +81,10 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
           </g>
           {back && <path d="M100 58v83m-19-66 9 11m29-11-9 11" fill="none" stroke="#857E70" strokeWidth="1.5" />}
           <g fill="none" stroke="#9E4B20" strokeWidth="8" strokeLinecap="round">
-            {expandedView ? <path d={bodyAreas[expandedView.area]} /> : BodyHighlight}
+            {bodyArea ? <path d={bodyAreas[bodyArea]} /> : BodyHighlight}
           </g>
         </svg>
-        <figcaption className={captionClass}>全身で見る · {illustration.bodyLabel}</figcaption>
+        <figcaption className={captionClass}>全身で見る · {bodyLabel}</figcaption>
       </figure>
 
       <figure className={figureClass}>

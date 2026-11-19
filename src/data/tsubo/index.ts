@@ -12,10 +12,8 @@ import {
   generatePalpationLandmarks,
 } from "./safetyAndLandmarks";
 import {
-  getExpandedLocationSimple,
+  getAtlasLocationSimple,
   getFriendlyLocationSimple,
-  simplifyLocationText,
-  FRIENDLY_LOCATIONS_MAP,
 } from "./friendlyLocations";
 import {
   generateCrossSectionModel,
@@ -41,7 +39,7 @@ export const ALL_ACUPOINTS: AcupointMaster[] = ACUPOINTS_MASTER.map(point => {
   return {
     ...point,
     aliases: detailedAliases ? [...new Set([...(point.aliases ?? []), ...detailedAliases])] : point.aliases,
-    locationSimple: getExpandedLocationSimple(point.codeLower) ?? point.locationSimple,
+    locationSimple: getAtlasLocationSimple(point.codeLower) ?? point.locationSimple,
     clinicalNote: getPublicClinicalNote(point),
     procedureReviewStatus: "pending_expert_review",
   };
@@ -263,7 +261,7 @@ export function searchAcupoints(
 /**
  * 既存の学習ツールが参照する互換性エクスポート
  */
-export const TSUBOS: Tsubo[] = ACUPOINTS_MASTER.filter((p) => p.status === "published").map((p) => ({
+export const TSUBOS: Tsubo[] = ALL_ACUPOINTS.filter((p) => p.status === "published").map((p) => ({
   id: p.legacyId,
   name: p.name,
   kana: p.kana,
@@ -276,6 +274,6 @@ export const TSUBOS: Tsubo[] = ACUPOINTS_MASTER.filter((p) => p.status === "publ
   locationDetail: p.locationDetail,
   indications: p.indications,
   category: p.categories,
-  clinicalNote: getPublicClinicalNote(p),
+  clinicalNote: p.clinicalNote,
   caution: p.caution,
 }));

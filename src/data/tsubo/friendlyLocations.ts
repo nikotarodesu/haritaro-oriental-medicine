@@ -3,15 +3,13 @@
  */
 
 import { ACUPOINT_LOOKUP } from "@/data/acupointLookup";
-import { whoAtlasPages } from "./atlas/whoAtlasPages";
 
 const atlasLocations = new Map(
-  ACUPOINT_LOOKUP.filter(({ code }) => Object.hasOwn(whoAtlasPages, code.toLowerCase()))
-    .map(({ code, locationSimple }) => [code.toLowerCase(), locationSimple]),
+  ACUPOINT_LOOKUP.map(({ code, locationSimple }) => [code.toLowerCase(), locationSimple]),
 );
 
-export function getExpandedLocationSimple(code: string): string | undefined {
-  return atlasLocations.get(code);
+export function getAtlasLocationSimple(code: string): string | undefined {
+  return atlasLocations.get(code.toLowerCase());
 }
 
 // 主要な経穴の日常語ガイドマップ
@@ -226,7 +224,7 @@ export function getFriendlyLocationSimple(point: {
 }): string {
   const code = point.codeLower.toLowerCase().replace(/^tsubo-/, "");
 
-  const atlasLocation = getExpandedLocationSimple(code);
+  const atlasLocation = getAtlasLocationSimple(code);
   if (atlasLocation) return atlasLocation;
 
   // 1. ハンドクラフトされた日常語マップにあればそれを最優先

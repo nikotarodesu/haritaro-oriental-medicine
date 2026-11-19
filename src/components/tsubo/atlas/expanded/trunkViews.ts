@@ -1,14 +1,18 @@
-import { groinLandmarks } from "@/data/tsubo/atlas/expanded/trunk";
+import { chestRibLandmarks, flankLandmarks, groinLandmarks } from "@/data/tsubo/atlas/expanded/trunk";
 import { feature as f, type View } from "./views";
 
 const { pubicBorderY, inguinalCreaseX } = groinLandmarks;
+const { firstGapY, ribSpacing } = chestRibLandmarks;
+const { midaxillaryX, fourthGapY, sixthGapY, ribElevenTip, lastRibTip, navelY } = flankLandmarks;
 
 const chestOutline = "M88 22H124Q124 39 145 36L179 35Q199 36 204 59L203 127Q191 163 200 213L197 234Q156 254 106 254Q55 254 16 234L12 213Q20 163 9 127L8 59Q13 36 33 35L67 36Q88 39 88 22Z";
 const abdomenOutline = "M22 29Q41 21 58 22Q89 43 106 36Q123 43 154 22Q171 21 190 29Q197 62 187 98Q183 137 191 176Q200 227 178 255Q146 269 106 268Q65 269 34 255Q12 227 21 176Q30 137 25 98Q15 62 22 29Z";
 const chestRibs = Array.from({ length: 8 }, (_, index) => {
-  const y = 63 + 24 * index;
-  return `M116 ${y}Q146 ${y - 17} 195 ${y + 3}M96 ${y}Q66 ${y - 17} 17 ${y + 3}`;
+  const y = firstGapY + (index - 0.5) * ribSpacing;
+  return `M116 ${y}Q146 ${y - 4} 195 ${y + 3}M96 ${y}Q66 ${y - 4} 17 ${y + 3}`;
 }).join(" ");
+const sideRibs = [fourthGapY - 10, fourthGapY + 10, sixthGapY - 10, sixthGapY + 10]
+  .map(y => `M75 ${y + 1}Q${midaxillaryX} ${y - 2} 174 ${y + 1}`).join(" ");
 const thighTendon = "M108 48Q78 98 91 156Q98 185 104 213Q114 201 116 170Q125 90 108 48Z";
 const thighBand = "M132 42Q143 85 136 135Q127 199 134 241";
 
@@ -43,11 +47,11 @@ export const trunkViews = {
     outline: "M72 41Q80 22 119 29L167 37Q192 43 192 82Q196 113 181 139Q184 166 192 187Q209 221 195 251L170 271L82 266Q58 238 66 203Q76 179 72 153Q54 103 61 60Z",
     details: ["M71 51Q101 49 122 46Q141 49 150 40", "M82 202Q136 198 167 216", "M165 215Q177 228 198 230"],
     features: {
-      axillaLine: f("わきの中央からの線", 112, 54, "M122 47V132", "guide"),
-      sideRibs: f("わき腹の第4〜7肋骨", 165, 103, "M75 71Q122 60 174 74M72 92Q123 78 178 96M72 109Q123 96 178 117M75 126Q123 113 173 135"),
-      ribEleven: f("第11肋骨の先端", 163, 142, "M79 126Q96 141 145 147"),
-      lastRib: f("第12肋骨の先端", 93, 154, "M77 145Q87 161 110 168"),
-      levelNavel: f("おへそと同じ高さ", 185, 181, "M128 181H188", "guide"),
+      axillaLine: f("わきの中央からの線", 112, 54, `M${midaxillaryX} 47V132`, "guide"),
+      sideRibs: f("わき腹の第4〜7肋骨", 165, 103, sideRibs),
+      ribEleven: f("第11肋骨の先端", 163, 142, `M79 134Q96 136 ${ribElevenTip.x} ${ribElevenTip.y}`),
+      lastRib: f("第12肋骨の先端", 93, 154, `M77 148Q87 156 ${lastRibTip.x} ${lastRibTip.y}`),
+      levelNavel: f("おへそと同じ高さ", 185, 181, `M128 ${navelY}H188`, "guide"),
       flankHip: f("骨盤の前の出っ張り", 139, 207, "M79 211Q113 195 143 204Q156 209 159 218L148 229"),
     },
   },

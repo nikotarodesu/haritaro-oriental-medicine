@@ -42,7 +42,7 @@ const { POINT_ILLUSTRATIONS } = load('src/data/tsubo/atlas/illustrations');
 const { ATLAS_POINT_MARKERS, shinEndpoints } = load('src/data/tsubo/atlas/markers');
 const { digitLandmarks, digitGeometry } = load('src/data/tsubo/atlas/digits');
 const { footLandmarks, medialFootLandmarks } = load('src/data/tsubo/atlas/footLandmarks');
-const { legLandmarks, soleEndpoints, poplitealY, medialAnkleY, posteriorKnee } = load('src/data/tsubo/atlas/legLandmarks');
+const { legLandmarks, soleEndpoints, poplitealY, medialAnkleY, posteriorKnee, outerShinAnkle, tiaokouReference } = load('src/data/tsubo/atlas/legLandmarks');
 const { expandedPoints } = load('src/data/tsubo/atlas/expanded/profiles');
 const { posteriorThigh, sacralLandmarks } = load('src/data/tsubo/atlas/expanded/back');
 const { posteriorShoulder } = load('src/data/tsubo/atlas/expanded/arms');
@@ -127,6 +127,49 @@ for (const code of ['gb27', 'gb28']) {
   assert.equal(expandedPoints[code].view, 'abdomen', code + ' must show direction relative to the midline');
   assert(expandedPoints[code].landmarks.includes('anteriorIliac'), code);
 }
+// Sample the visible rib paths so a marker cannot pass a coordinate check while touching a rib.
+function assertIntercostalMarkers(view, feature, pathsPerRib, firstRibNumber, cases) {
+  const ribPaths = [...expandedViews[view].features[feature].path.matchAll(/M(\d+(?:\.\d+)?) (\d+(?:\.\d+)?)Q(\d+(?:\.\d+)?) (\d+(?:\.\d+)?) (\d+(?:\.\d+)?) (\d+(?:\.\d+)?)/g)]
+    .map((match) => match.slice(1).map(Number));
+  assert(ribPaths.length > 0, view + ' must expose visible rib paths');
+  for (const [code, intercostal] of cases) {
+    const point = expandedPoints[code];
+    for (const [ribIndex, abovePoint] of [[intercostal, true], [intercostal + 1, false]]) {
+      const [startX, startY, controlX, controlY, endX, endY] = ribPaths[(ribIndex - firstRibNumber) * pathsPerRib];
+      assert(point.x >= startX && point.x <= endX, code + ': ribs must extend through the marker column');
+      let closestColumn = { xDistance: Infinity, y: 0 };
+      let closestDistance = Infinity;
+      for (let i = 0; i <= 128; i += 1) {
+        const t = i / 128;
+        const u = 1 - t;
+        const x = u * u * startX + 2 * u * t * controlX + t * t * endX;
+        const y = u * u * startY + 2 * u * t * controlY + t * t * endY;
+        const xDistance = Math.abs(x - point.x);
+        if (xDistance < closestColumn.xDistance) closestColumn = { xDistance, y };
+        closestDistance = Math.min(closestDistance, Math.hypot(x - point.x, y - point.y));
+      }
+      assert.equal(closestColumn.y < point.y, abovePoint, code + ': marker is between the correct numbered ribs');
+      assert(closestDistance >= 9, code + ': marker must clear the visible rib stroke');
+    }
+  }
+}
+assertIntercostalMarkers('chest', 'ribs', 2, 1, [
+  ['lu1', 1], ['st14', 1], ['st15', 2], ['st16', 3], ['st18', 5],
+  ['sp17', 5], ['sp18', 4], ['sp19', 3], ['sp20', 2],
+  ['ki22', 5], ['ki23', 4], ['ki24', 3], ['ki25', 2], ['ki26', 1],
+  ['pc1', 4], ['gb24', 7], ['lr14', 6],
+]);
+assertIntercostalMarkers('flank', 'sideRibs', 1, 4, [['gb22', 4], ['gb23', 4], ['sp21', 6]]);
+for (const [code, feature] of [['lr13', 'ribEleven'], ['gb25', 'lastRib']]) {
+  const [, tipX, tipY] = expandedViews.flank.features[feature].path.match(/(\d+) (\d+)$/);
+  assert.equal(expandedPoints[code].x, Number(tipX), code + ': marker aligns with the free end of the rib');
+  assert(expandedPoints[code].y - Number(tipY) >= 9, code + ': marker is below the rib end and leaves it visible');
+}
+assert.equal(expandedPoints.gb26.x, expandedPoints.lr13.x, 'GB26 is below the same free end of the 11th rib as LR13');
+assert.match(expandedViews.flank.features.levelNavel.path, new RegExp(` ${expandedPoints.gb26.y}H`), 'GB26 aligns with the drawn navel level');
+for (const [midline, lateral] of [['cv17', 'pc1'], ['cv18', 'st16'], ['cv19', 'st15'], ['cv20', 'st14']]) {
+  assert.equal(expandedPoints[midline].y, expandedPoints[lateral].y, midline + ': midline level matches the corresponding intercostal space');
+}
 assert.equal(expandedPoints.st9.y, expandedPoints.li18.y);
 assert.equal(expandedPoints.st9.y, expandedPoints.si16.y);
 assert(expandedPoints.st9.x < expandedPoints.li18.x && expandedPoints.li18.x < expandedPoints.si16.x,
@@ -178,6 +221,12 @@ assert.equal(legLandmarks.bl40.x, (posteriorKnee.medialEnd + posteriorKnee.later
 assert.equal(medialAnkleY - legLandmarks.sp9.y, 13 * 12);
 assert.equal(legLandmarks.sp8.y - legLandmarks.sp9.y, 3 * 12);
 assert(legLandmarks.sp6.x < 109, 'SP6 lies behind the medial border drawn in the leg template');
+assert.equal(ATLAS_ARTICLES.st40.illustration.region, 'anterolateralLowerLeg', 'ST40 needs a front view to show lateral displacement');
+assert.equal(legLandmarks.st40.y, ATLAS_POINT_MARKERS.st38.y);
+assert.equal(tiaokouReference.x, ATLAS_POINT_MARKERS.st38.x);
+assert.equal(tiaokouReference.y, ATLAS_POINT_MARKERS.st38.y);
+assert(legLandmarks.st40.x < tiaokouReference.x, 'The viewer’s left is lateral in the right-shin front view');
+assert.equal(outerShinAnkle.y - legLandmarks.st40.y, (shinEndpoints.ankle.y - shinEndpoints.knee.y) / 2, 'ST40 is 8 of 16 proportional units above the outer malleolus');
 assert(legLandmarks.lr5.x > 110 && legLandmarks.lr5.x < 124, 'LR5 lies on the middle of the tibial surface');
 // An inverted diagram still fits the viewBox. Compare each side to the WHO record.
 const digitLocations = [

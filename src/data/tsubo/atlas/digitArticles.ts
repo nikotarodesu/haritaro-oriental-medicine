@@ -59,6 +59,7 @@ function digitArticle(code: DigitCode, copy: DigitCopy): AcupointAtlasArticle {
   return {
     titleTopic: copy.titleTopic ?? (tip ? "指先での場所と注意点" : "爪を目印にした探し方と注意点"),
     description: copy.lead,
+    locationSummary: tip ? `${side}。` : `${side}にある、爪の根元の角のきわ。`,
     meridianReading: copy.meridianReading,
     regionLabel: side,
     lead: copy.lead,

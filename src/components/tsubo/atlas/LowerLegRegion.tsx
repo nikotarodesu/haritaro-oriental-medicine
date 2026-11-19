@@ -1,10 +1,13 @@
 import type { AtlasCloseUpProps } from "@/data/tsubo/atlas/types";
 
-import { shinEndpoints } from "@/data/tsubo/atlas/markers";
+import { legLandmarks, outerShinAnkle, shinEndpoints, tiaokouReference } from "@/data/tsubo/atlas/legLandmarks";
 
 const { knee: kneeLandmark, ankle: ankleLandmark } = shinEndpoints;
+const outerMuscleEdge = legLandmarks.st40;
 
 export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
+  const showOuterEdge = marker.legCode === "st40";
+
   return (
     <>
       <path
@@ -33,9 +36,9 @@ export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
         strokeWidth="1.5"
       />
       <path
-        d="M119 93 C110 110 107 131 112 154 C116 177 119 196 123 218
-           Q126 233 123 247 L128 246 Q133 232 130 213 C127 186 123 163 125 139
-           C126 119 128 103 124 98 Z"
+        d={`M119 93C106 116 104 141 ${outerMuscleEdge.x} ${outerMuscleEdge.y}
+           Q108 198 120 238L123 247L128 246Q133 232 130 213
+           C127 186 123 163 125 139C126 119 128 103 124 98Z`}
         fill="#DDE4CF"
         stroke="#A6AA8E"
         strokeWidth="1.5"
@@ -80,7 +83,9 @@ export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
         />
         <path d="M85 72 H98 L113 86 M128 248 H196 L205 248" stroke="#877E72" />
         <path d="M146 65 H192 L205 54 M149 144 H186 L203 134" stroke="#9E4B20" />
-        <path d="M134 173 H196 M119 203 H196 L204 197" stroke="#877E72" />
+        <path d={showOuterEdge
+          ? `M134 173H196M117 203H196L204 197M${tiaokouReference.x} ${tiaokouReference.y}H157L173 119H205`
+          : "M134 173 H196 M119 203 H196 L204 197"} stroke="#877E72" />
         <path d={`M${marker.x} ${marker.y}l-24 20H85`} stroke="#7F3520" />
         {marker.boneCun != null && (
           <path
@@ -88,11 +93,19 @@ export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
             stroke="#9E4B20"
           />
         )}
+        {showOuterEdge && (
+          <path d={`M${marker.x} ${marker.y}H${tiaokouReference.x}M${outerShinAnkle.x} ${outerShinAnkle.y}H13V${marker.y}H${marker.x - 7}`}
+            stroke="#9E4B20" strokeDasharray="3 3" />
+        )}
       </g>
 
       <g fill="#FAF6EE" stroke="#686D60" strokeWidth="1.5">
         <circle cx={kneeLandmark.x} cy={kneeLandmark.y} r="3" />
         <circle cx={ankleLandmark.x} cy={ankleLandmark.y} r="3" />
+        {showOuterEdge && <>
+          <circle cx={outerShinAnkle.x} cy={outerShinAnkle.y} r="3" />
+          <circle cx={tiaokouReference.x} cy={tiaokouReference.y} r="3" />
+        </>}
       </g>
       <g fill="#9E4B20">
         <circle cx="133" cy="65" r="8" />
@@ -113,6 +126,11 @@ export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
         <text x="206" y="216">つま先を上げる筋肉</text>
         <text x="209" y="251">足首の前（ST41）</text>
         <text x="206" y="275">右脚を正面から見た図</text>
+        {showOuterEdge && <>
+          <text x="207" y="123">条口（ST38）</text>
+          <text x="82" y="265" textAnchor="end">外くるぶし</text>
+          <text x="20" y="214">8寸</text>
+        </>}
       </g>
       <g fill="#7F3520" fontSize="12" fontWeight="700">
         <text x="208" y="57">① 膝蓋骨</text>

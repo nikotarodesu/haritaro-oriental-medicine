@@ -136,8 +136,12 @@ anatomy.button('選択解除').props.onClick(); anatomy.render(anatomyProps);
 assert(!nodes(picker()).filter(node => node.type === 'button').some(node => node.props['aria-pressed']));
 
 // Compare markup keeps row/column semantics and all original selection behavior.
-const tsubo = (code, name) => ({ id: code.toLowerCase(), code, name, kana: name, meridian: '検証経絡', bodyPart: '検証部位', category: [], indications: [], clinicalNote: '公開済みの補足', caution: '公開済みの注意', location: '公開済みの位置' });
-const TSUBOS = [tsubo('LI4','合谷'), tsubo('LR3','太衝'), tsubo('ST36','足三里')];
+const tsubo = (code, name) => ({ id: code.toLowerCase(), code, name, kana: name, romaji: name, meridian: '検証経絡', bodyPart: '検証部位', category: [], indications: [], clinicalNote: '公開済みの補足', caution: '公開済みの注意', locationSimple: '公開済みの位置' });
+const TSUBOS = [
+  tsubo('LI4','合谷'),
+  tsubo('LR3','太衝'),
+  { ...tsubo('ST36','足三里'), kana: 'あしさんり', romaji: 'Zusanli', locationDetail: '旧版の部位説明' },
+];
 const atlasLocations = load('src/data/tsubo/friendlyLocations');
 let queryParams = new URLSearchParams(), frameId = 0;
 const comparisonFrames = new Map();
@@ -147,6 +151,7 @@ const compare = client('src/app/tsubo/compare/CompareClient.tsx', {
   '@/components/design/PageIntro': { __esModule: true, default: () => null },
   '@/data/tsuboData': { TSUBOS },
   '@/data/tsubo/friendlyLocations': atlasLocations,
+  '@/utils/search': load('src/utils/search'),
 }, { window: { print() {} }, document: { getElementById: () => ({ focus() {}, scrollIntoView() {} }) },
   requestAnimationFrame(callback) { comparisonFrames.set(++frameId, callback); return frameId; }, cancelAnimationFrame(id) { comparisonFrames.delete(id); },
 });
@@ -158,11 +163,23 @@ assert.equal(scroll().props['aria-describedby'], nodes(compare.tree()).find(node
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 3);
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'row').length, 6);
 assert(nodes(scroll()).some(node => node.type === 'caption'));
+for (const code of ['li4', 'lr3']) {
+  assert(nodes(scroll()).some(node => node.type === Link && node.props.href === '/tsubo/' + code + '#acupoint-location'), 'Default comparison links directly to every diagram');
+}
+const compareInput = () => nodes(compare.tree()).find(node => node.type === 'input' && node.props.id === 'compare-search-input');
+assert.equal(compareInput().props['aria-label'], '比較するツボを検索');
+for (const query of ['ＳＴ３６', 'アシサンリ', 'Zusanli']) {
+  compareInput().props.onChange({ target: { value: query } }); compare.render();
+  assert(nodes(compare.tree()).some(node => node.type === 'button' && text(node).startsWith('足三里ST36')), query + ' finds the existing compare option');
+}
+compareInput().props.onChange({ target: { value: 'LU1' } }); compare.render();
+assert(nodes(compare.tree()).some(node => node.type === Link && node.props.href === '/tsubo?q=LU1'), 'Unsupported points can be looked up in the complete atlas');
+compareInput().props.onChange({ target: { value: '' } }); compare.render();
 compare.button('合谷を比較から外す').props.onClick(); compare.render();
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 2, 'Existing removal still updates the comparison columns');
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'row').length, 6);
 
-queryParams = new URLSearchParams('a=LI4&b=LR3&c=ST36'); compare.render();
+queryParams = new URLSearchParams({ a: 'LI4', b: 'LR3', c: 'ＳＴ３６' }); compare.render();
 for (const callback of comparisonFrames.values()) callback(); comparisonFrames.clear(); compare.render();
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 4, 'URL synchronization displays all three points without an account');
 queryParams = new URLSearchParams('a=ST36&b=LI4'); compare.render();
@@ -174,9 +191,11 @@ assert(text(comparisonHeaders[1]).includes('太衝') && text(comparisonHeaders[2
 TSUBOS.push({ ...tsubo('GV20', '百会'), locationDetail: '旧版の部位説明' });
 queryParams = new URLSearchParams('a=GV20&b=ST36'); compare.render();
 for (const callback of comparisonFrames.values()) callback(); comparisonFrames.clear(); compare.render();
-assert(text(scroll()).includes(atlasLocations.getExpandedLocationSimple('gv20')), 'Comparison shows the same verified location as the atlas');
+assert(text(scroll()).includes(atlasLocations.getAtlasLocationSimple('gv20')), 'Comparison shows the same verified location as the atlas');
+assert(text(scroll()).includes(atlasLocations.getAtlasLocationSimple('st36')), 'Comparison uses the same canonical location for specialized figure entries');
 assert(!text(scroll()).includes('旧版の部位説明'));
 assert(nodes(scroll()).some(node => node.type === Link && node.props.href === '/tsubo/gv20#acupoint-location'));
+assert(nodes(scroll()).some(node => node.type === Link && node.props.href === '/tsubo/st36#acupoint-location'));
 
 // Parse the actual style artifact and check the two fixed axes plus print recovery.
 const sheet = postcss.parse(fs.readFileSync(path.join(root, 'src/app/tablet-usability.css'), 'utf8'));

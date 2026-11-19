@@ -5,6 +5,8 @@ const { createDataLoader } = require('./data-loader.cjs');
 const load = createDataLoader();
 const points = load('src/data/tsubo/index');
 const friendly = load('src/data/tsubo/friendlyLocations');
+const { ATLAS_ARTICLES } = load('src/data/tsubo/atlas/articles');
+const { formatPublicAtlasLocation } = load('src/data/tsubo/atlas/expanded/profiles');
 const dimensions = text => Array.from(text.matchAll(/\d+(?:\.\d+)?寸/g), match => match[0]);
 
 assert.equal(points.ALL_ACUPOINTS.length, 361);
@@ -15,11 +17,36 @@ for (const point of points.ALL_ACUPOINTS) {
   assert(!/乳頭のライン|胸と肩の境目近く|腕（またはすね）|約半分強|\d\.指/.test(generated), `${point.code}: no unit-derived anatomical substitution`);
   const detail = points.getAcupointDetail(point.code);
   assert(detail?.locationSimple, `${point.code}: final detail consumer returns location text`);
+  const summary = formatPublicAtlasLocation(point.codeLower) ?? ATLAS_ARTICLES[point.codeLower]?.locationSummary;
+  if (point.code !== 'LI4') assert(summary, `${point.code}: authored public atlas location`);
+  const publicLocation = friendly.getAtlasLocationSimple(point.code);
+  assert.equal(publicLocation, summary ?? point.locationSimple);
+  assert.equal(detail.locationSimple, publicLocation);
+  assert.equal(points.getAcupointByCode(point.code).locationSimple, publicLocation);
+  assert.equal(point.locationSimple, publicLocation, `${point.code}: dictionary view uses the same atlas location`);
   assert.equal(detail.procedureReviewStatus, 'pending_expert_review');
 }
+assert.match(friendly.getAtlasLocationSimple('li4'), /人差し指につながる骨の長さの中央から少し親指側/);
+assert.match(friendly.getAtlasLocationSimple('pc6'), /手首のしわ.*ひじまでの長さの6分の1/);
+assert.match(friendly.getAtlasLocationSimple('st36'), /結ぶ線上で、ひざ側から3寸/);
+assert.match(friendly.getAtlasLocationSimple('st37'), /結ぶ線上で、ひざ側から6寸/);
+assert.match(friendly.getAtlasLocationSimple('sp6'), /内くるぶしから上へ3寸/);
+assert.match(friendly.getAtlasLocationSimple('lr3'), /足首側で近づくところより少し指先側/);
+assert.doesNotMatch(friendly.getAtlasLocationSimple('lr3'), /脈|拍動/);
+assert.match(ATLAS_ARTICLES.pc6.location.join(' '), /12等分.*手首からひじへ二つ分/);
+assert.match(ATLAS_ARTICLES.st36.location.join(' '), /16等分.*膝のくぼみから足首側へ三つ分/);
+assert.match(ATLAS_ARTICLES.sp6.location.join(' '), /13等分.*内くるぶしから上へ3つ分/);
+for (const code of ['pc6', 'st36', 'st37', 'sp6']) {
+  const article = ATLAS_ARTICLES[code];
+  assert.doesNotMatch([friendly.getAtlasLocationSimple(code), ...article.location, article.illustration.closeUpCaption].join(' '),
+    /[34]本(?:分|の幅|をそろ)/, `${code}: proportional units must not become a fixed finger count`);
+}
+assert.equal(friendly.getFriendlyLocationSimple({
+  codeLower: 'unlisted', locationDetail: '手背、中指へ向かう骨の中央。',
+}), '手の甲、中指へ向かう骨の中央。');
 assert.match(points.getAcupointDetail('li8').locationSimple, /ひじのしわ.*4寸.*寸は体の区間/);
 assert.match(points.getAcupointDetail('sp13').locationSimple, /おへその中心から下へ4\.3寸.*横へ4寸/);
-assert.match(points.getAcupointDetail('sp8').locationSimple, /陰陵泉.*下方3(?:骨度分)?寸/);
+assert.match(points.getAcupointDetail('sp8').locationSimple, /陰陵泉.*下へ3寸/);
 assert.match(points.getAcupointDetail('gb30').locationSimple, /外側から3分の1.*代替位置/);
 assert.match(points.getAcupointDetail('gv26').locationSimple, /溝の中央.*代替位置/);
 assert.match(friendly.simplifyLocationText('頭部、百会の後方1.5寸、後正中線上。'), /頭の正中線上/);

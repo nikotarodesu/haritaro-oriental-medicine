@@ -12,7 +12,8 @@ import {
   Printer,
 } from "lucide-react";
 import { TSUBOS } from "@/data/tsuboData";
-import { getExpandedLocationSimple } from "@/data/tsubo/friendlyLocations";
+import { getAtlasLocationSimple } from "@/data/tsubo/friendlyLocations";
+import { normalizeSearchText } from "@/utils/search";
 import { Tsubo } from "@/types/oriental";
 
 // おすすめ比較プリセット
@@ -20,24 +21,36 @@ const PRESET_TSUBO_COMPARISONS = [
   {
     name: "四関穴の対比（合谷 vs 太衝）",
     tsuboCodes: ["LI4", "LR3"],
-    desc: "手陽明大腸経（気・昇）と足厥陰肝経（血・降）の原穴対比。全身の気血巡行を司る2大原穴。"
+    desc: "手陽明大腸経と足厥陰肝経の原穴。手の甲と足の甲で、骨の目印を比べます。"
   },
   {
-    name: "下肢の2大補益穴（足三里 vs 三陰交）",
+    name: "すねの外側と内側（足三里・三陰交）",
     tsuboCodes: ["ST36", "SP6"],
-    desc: "胃の合穴（後天の本・気虚改善）と足三陰の交会穴（血虚・婦人科疾患）の使い分け。"
+    desc: "足三里と三陰交。ひざと内くるぶしを目印に、すねの外側と内側を見比べます。"
   },
   {
-    name: "心胸・自律神経の要穴（内関 vs 神門）",
+    name: "手首の近くの2穴（内関・神門）",
     tsuboCodes: ["PC6", "HT7"],
-    desc: "心包経の絡穴（胸肋・胃腸・動悸の降気）と心経の原穴（心神安寧・不眠・健忘の鎮静）。"
+    desc: "心包経の絡穴と心経の原穴。手首のしわからの距離と、どのすじを目印にするかを比べます。"
   },
   {
-    name: "腰背部痛の2大要穴（委中 vs 腎兪）",
+    name: "腰とひざ裏の2穴（委中・腎兪）",
     tsuboCodes: ["BL40", "BL23"],
-    desc: "四総穴「腰背は委中に留む」（急性・瘀血・合穴）と腎の背部兪穴（慢性・腎虚腰痛）の比較。"
+    desc: "同じ膀胱経に属する委中と腎兪。ひざ裏のしわと腰の骨という、異なる目印を比べます。"
   }
 ];
+
+function getRequestedComparisonCodes(params: Pick<URLSearchParams, "get">): string[] {
+  const requested = [params.get("a") || params.get("code"), params.get("b"), params.get("c")];
+  const resolved = new Set<string>();
+  for (const value of requested) {
+    if (!value) continue;
+    const query = normalizeSearchText(value);
+    const point = TSUBOS.find(t => normalizeSearchText(t.code) === query || normalizeSearchText(t.id) === query);
+    if (point) resolved.add(point.code);
+  }
+  return [...resolved];
+}
 
 function TsuboCompareContent() {
   const searchParams = useSearchParams();
@@ -48,49 +61,13 @@ function TsuboCompareContent() {
 
   // 初期値：URLクエリパラメータ（?a=lu1&b=li4 など）を優先
   const [selectedCodes, setSelectedCodes] = useState<string[]>(() => {
-    const aParam = searchParams.get("a") || searchParams.get("code");
-    const bParam = searchParams.get("b");
-    const cParam = searchParams.get("c");
-
-    const resolved: string[] = [];
-    [aParam, bParam, cParam].forEach(param => {
-      if (!param) return;
-      const clean = param.trim().toLowerCase();
-      const match = TSUBOS.find(
-        t => t.code.toLowerCase() === clean || t.id.toLowerCase() === clean
-      );
-      if (match && !resolved.includes(match.code)) {
-        resolved.push(match.code);
-      }
-    });
-
-    if (resolved.length > 0) {
-      return resolved;
-    }
-    // デフォルトで合谷(LI4)と太衝(LR3)
-    return ["LI4", "LR3"];
+    const requested = getRequestedComparisonCodes(searchParams);
+    return requested.length ? requested : ["LI4", "LR3"];
   });
 
   // URLパラメータが動的に変化した際にも追従
   useEffect(() => {
-    const aParam = searchParams.get("a") || searchParams.get("code");
-    const bParam = searchParams.get("b");
-    const cParam = searchParams.get("c");
-
-    if (!aParam && !bParam && !cParam) return;
-
-    const resolved: string[] = [];
-    [aParam, bParam, cParam].forEach(param => {
-      if (!param) return;
-      const clean = param.trim().toLowerCase();
-      const match = TSUBOS.find(
-        t => t.code.toLowerCase() === clean || t.id.toLowerCase() === clean
-      );
-      if (match && !resolved.includes(match.code)) {
-        resolved.push(match.code);
-      }
-    });
-
+    const resolved = getRequestedComparisonCodes(searchParams);
     if (resolved.length > 0) {
       const frame = requestAnimationFrame(() => setSelectedCodes(current => current.length === resolved.length && current.every((code, index) => code === resolved[index]) ? current : resolved));
       return () => cancelAnimationFrame(frame);
@@ -106,13 +83,10 @@ function TsuboCompareContent() {
 
   // 検索ヒットツボ一覧
   const searchResults = useMemo(() => {
-    if (!searchQuery.trim()) return [];
-    const q = searchQuery.toLowerCase().trim();
-    return TSUBOS.filter(t => 
-      t.name.includes(q) || 
-      t.kana.includes(q) || 
-      t.code.toLowerCase().includes(q) ||
-      t.meridian.includes(q)
+    const query = normalizeSearchText(searchQuery);
+    if (!query) return [];
+    return TSUBOS.filter(t =>
+      [t.name, t.kana, t.romaji, t.code, t.meridian].some(field => normalizeSearchText(field).includes(query)),
     ).slice(0, 10);
   }, [searchQuery]);
 
@@ -224,16 +198,25 @@ function TsuboCompareContent() {
           )}
 
           <div className="relative">
-            <Search className="w-4 h-4 text-[#8A948F] absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search aria-hidden="true" className="w-4 h-4 text-[#8A948F] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               id="compare-search-input"
               type="text"
+              aria-label="比較するツボを検索"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="ツボ名、読みがな、経穴コードで検索して追加・入れ替え..."
               className="w-full pl-9 pr-4 py-2.5 rounded-xl text-xs sm:text-sm bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A948F] focus:outline-none focus:border-[#B86924]"
             />
           </div>
+          {searchQuery.trim() && searchResults.length === 0 && (
+            <div className="text-sm">
+              <p role="status">比較対象の経穴に見つかりませんでした。</p>
+              <Link href={`/tsubo?q=${encodeURIComponent(searchQuery.trim())}`} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+                全361穴の図鑑で探す
+              </Link>
+            </div>
+          )}
 
           {/* 検索候補ドロップダウン */}
           {searchResults.length > 0 && (
@@ -378,28 +361,22 @@ function TsuboCompareContent() {
                     ))}
                   </tr>
 
-                  {/* 取穴法（骨度法・解剖） */}
+                  {/* 場所と目印 */}
                   <tr>
                     <th scope="row" className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
-                      取穴法（場所）
+                      場所と目印
                     </th>
                     {selectedTsubos.map(t => {
                       const code = t.code.toLowerCase();
-                      const atlasLocation = getExpandedLocationSimple(code);
+                      const atlasLocation = getAtlasLocationSimple(code);
                       return (
                         <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1">
                           <p className="text-xs text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
                             {atlasLocation ?? t.locationSimple}
                           </p>
-                          {atlasLocation ? (
-                            <Link href={`/tsubo/${code}#acupoint-location`} className="text-xs font-semibold underline">
-                              図で場所を確認
-                            </Link>
-                          ) : (
-                            <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] leading-relaxed pt-1 border-t border-[#E5DEC9]/40">
-                              {t.locationDetail}
-                            </p>
-                          )}
+                          <Link href={`/tsubo/${code}#acupoint-location`} className="inline-flex min-h-11 items-center text-xs font-semibold underline underline-offset-4 print:hidden">
+                            図で場所を確認
+                          </Link>
                         </td>
                       );
                     })}

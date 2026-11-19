@@ -56,6 +56,7 @@ function article(code: FootCode, copy: Copy): AcupointAtlasArticle {
   return {
     titleTopic: "場所・見つけ方と注意点",
     description: `${copy.name}（${code.toUpperCase()}）の位置を、${copy.region}を目印に図解。近くのツボとの違い、WHO標準部位と自分で触れる際の注意点を紹介します。`,
+    locationSummary: `${copy.region}。`,
     meridianReading: readings[family],
     regionLabel: copy.region,
     lead: copy.lead,

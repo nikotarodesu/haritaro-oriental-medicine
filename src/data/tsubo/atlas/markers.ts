@@ -2,10 +2,9 @@ import type { AtlasMarker } from "./types";
 import { digitGeometry, digitLandmarks } from "./digits";
 import { expandedPoints } from "./expanded/profiles";
 import { footLandmarks, type FootCode } from "./footLandmarks";
-import { legLandmarks, type LegCode } from "./legLandmarks";
+import { legLandmarks, shinEndpoints, type LegCode } from "./legLandmarks";
 
-// ST35 and ST41 anchor the 16 proportional units on the shin template.
-export const shinEndpoints = { knee: { x: 116, y: 88 }, ankle: { x: 124, y: 248 } };
+export { shinEndpoints } from "./legLandmarks";
 
 // Coordinates use the 340×300 viewBox of the corresponding regional template.
 export const ATLAS_POINT_MARKERS: Readonly<Partial<Record<string, AtlasMarker>>> = {

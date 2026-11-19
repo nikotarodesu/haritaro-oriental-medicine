@@ -1,4 +1,4 @@
-export type LegView = "knee" | "medial" | "lateral" | "posterior" | "sole";
+export type LegView = "knee" | "shinFront" | "medial" | "lateral" | "posterior" | "sole";
 type Landmarks = { view: LegView; x: number; y: number; pdfPage: number; cun?: number };
 
 // WHO's medial span uses 13 units from SP9 to the medial malleolus.
@@ -7,6 +7,14 @@ export const lateralAnkleY = 239;
 export const poplitealY = 55;
 export const posteriorAnkleY = 235;
 export const posteriorKnee = { medialEnd: 78, lateralEnd: 164, lateralTendon: 154 } as const;
+// ST35–ST41 defines 16 B-cun on the front shin schematic.
+export const shinEndpoints = { knee: { x: 116, y: 88 }, ankle: { x: 124, y: 248 } };
+export const outerShinAnkle = { x: 103, y: shinEndpoints.ankle.y };
+const shinCun = (shinEndpoints.ankle.y - shinEndpoints.knee.y) / 16;
+export const tiaokouReference = {
+  x: (shinEndpoints.knee.x + shinEndpoints.ankle.x) / 2,
+  y: shinEndpoints.knee.y + 8 * shinCun,
+};
 const kneeMidpoint = (posteriorKnee.medialEnd + posteriorKnee.lateralEnd) / 2;
 const medial = (x: number, cun: number, pdfPage: number) =>
   ({ view: "medial", x, y: medialAnkleY - cun * 12, cun, pdfPage }) as const;
@@ -23,7 +31,7 @@ export const soleEndpoints = { web: { x: 128, y: 69 }, heel: { x: 129, y: 260 } 
 export const legLandmarks = {
   st34: { view: "knee", x: 126, y: 85, pdfPage: 72, cun: 2 },
   st35: { view: "knee", x: 119, y: 166, pdfPage: 72 },
-  st40: lateral(146, 8, 75),
+  st40: { view: "shinFront", x: 107, y: outerShinAnkle.y - 8 * shinCun, pdfPage: 75, cun: 8 },
   sp6: medial(102, 3, 81),
   sp7: medial(105, 6, 82),
   sp8: { ...medial(102, 10, 82), cun: 3 },

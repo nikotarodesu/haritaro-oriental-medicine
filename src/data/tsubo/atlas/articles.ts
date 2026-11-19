@@ -46,6 +46,10 @@ const touchCare = {
   scope: "指が痛むほど押さないこと、傷や発疹のある皮膚を避けることを参照。",
 };
 
+function shinSummary(cun: number) {
+  return `ひざのお皿の下の外側のくぼみと足首の前の中央を結ぶ線上で、ひざ側から${cun}寸。寸は体の区間を等分した位置の目安です。`;
+}
+
 function forearmSource(pdfPage: number) {
   return {
     name: `WHO西太平洋地域事務局『WHO標準経穴部位』p.${pdfPage - 9}（PDF）`,
@@ -61,6 +65,7 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
   ...legArticles,
   pc4: {
     description: "郄門（げきもん・PC4）は、手のひら側の腕の真ん中から少し手首へ戻ったところ。ひじと手首のしわ、2本のすじを目印に位置を図解します。",
+    locationSummary: "手のひら側の手首のしわから、ひじまでの長さの12分の5だけ進んだ、二本のすじの間。",
     meridianReading: "てのけついんしんぽうけい", regionLabel: "手のひら側の前腕、中間より手首寄り",
     lead: "郄門は、手首とひじの間にあるツボです。腕の内側を上に向け、手首からひじまでをひと続きの長さとして見ます。郄門の高さは、ちょうど真ん中よりも少し手首寄り。まずは腕の両端を見つけると、細かいすじが見えなくても全体の位置をつかめます。",
     safetyWarning: "胸痛・動悸・脈の乱れを感じるときは、ツボを押す前に医療機関へ相談してください。突然の激しい胸痛や急な息苦しさがあるときは119番へ。",
@@ -76,6 +81,7 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
   },
   pc5: {
     description: "間使（かんし・PC5）は、手首からひじまでの4分の1の高さにあるツボです。内関との位置の違い、二本の腱を見分ける目印と注意点を図で紹介します。",
+    locationSummary: "手のひら側の手首のしわから、ひじまでの長さの4分の1だけ進んだ、二本のすじの間。",
     meridianReading: "てのけついんしんぽうけい", regionLabel: "手のひら側の前腕、手首からひじまでの4分の1",
     lead: "間使は、手のひら側の腕を縦に走る二本のすじの間にあるツボです。同じすじの間には内関もあります。二つを探し分ける目印は、手首の横じわからどれだけひじへ向かうか。間使の方が少しひじに近くなります。",
     safetyWarning: "胸の痛みや動悸、脈の乱れがある場合は医療機関への相談を優先してください。急な激しい胸痛や息苦しさがあるときは119番へ。",
@@ -91,8 +97,9 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
   },
   pc7: {
     description: "大陵（だいりょう・PC7）は、手のひら側の手首のしわの中央にあるツボです。しわを境に手のひらと腕を見分け、二本のすじの間を図で確かめられます。",
+    locationSummary: "手のひら側の手首のしわの中央で、二本のすじの間。",
     meridianReading: "てのけついんしんぽうけい", regionLabel: "手のひら側の手首のしわの中央",
-    lead: "大陵の目印は、手のひらから腕に移る境目にある横じわです。手首のしわから何本分か測る内関や間使と違い、大陵はしわそのものの上にあります。腕を楽に置いたまま、縦のすじと横じわが交わる場所を見てみましょう。",
+    lead: "大陵の目印は、手のひらから腕に移る境目にある横じわです。大陵はしわそのものの上にあり、内関と間使はしわからひじ側にあります。腕を楽に置いたまま、縦のすじと横じわが交わる場所を見てみましょう。",
     safetyWarning: "胸の痛み・動悸・脈の乱れがあるときは医療機関に相談し、急な強い胸痛や呼吸困難では119番に連絡してください。",
     location: ["手のひらを上に向け、反対の手で手首を軽く支えます。手を少し手前に曲げると、手首を横切るしわが分かります。手のひらの中央に走る線まで上がらず、手首が曲がる境目の中央を見つけます。",
       "手を軽く握ると、このしわを縦にまたぐように、腱（けん、筋肉の力を伝えるすじ）が見えることがあります。図の①と②の間で、横じわの上に示した点が大陵です。手首を反らして強くすじを張ったり、しわを指で掘り起こしたりする必要はありません。"],
@@ -106,12 +113,13 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
   },
   pc6: {
     description: "内関（PC6）の場所を、手首のしわと2本の腱を目印に図解。指で押すときの注意、胸の症状で受診を優先する目安、WHO標準の位置を紹介します。",
+    locationSummary: "手のひら側の手首のしわから、ひじまでの長さの6分の1だけ進んだ、二本のすじの間。",
     meridianReading: "てのけついんしんぽうけい",
     regionLabel: "手のひら側の前腕、手首のしわから少し肘寄り",
     lead: "内関は、手のひら側の腕にあるツボです。手首のしわと、筋肉の力を伝える2本のすじ（腱）が目印です。左右の腕で同じように探せます。",
     safetyWarning: "胸の痛み、動悸、脈が乱れる感じがあるときは、ツボ押しより先に医療機関に相談してください。急な激しい胸の痛みや息苦しさがあるとき、動悸に胸痛や気が遠くなる感じを伴うときは、すぐに119番へ。",
     location: [
-      "手のひらを上に向け、手首にできる横じわを見つけます。反対の手の人差し指・中指・薬指をそろえ、薬指の縁をしわに合わせます。人差し指の肘側の縁までが、手首からの距離のおおよその目安です。",
+      "手のひらを上に向け、手首とひじの横じわを見つけます。この二つのしわの間を12等分し、手首からひじへ二つ分進みます。図では前腕全体の6分の1の高さです。",
       "握りこぶしを軽く作ると、拡大図の①長掌筋の腱と②橈側手根屈筋の腱が浮き出ることがあります。肘寄りに測ったところで、その2本の間を見ます。腱がはっきり分からなければ、強く押して探す必要はありません。",
     ],
     traditional: [
@@ -141,7 +149,7 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
       {
         name: "Memorial Sloan Kettering Cancer Center の患者向け内関ガイド",
         url: "https://www.mskcc.org/cancer-care/patient-education/acupressure-nausea-and-vomiting",
-        scope: "吐き気との関連が紹介される文脈、指幅による探し方、指で押すときの注意を参照。",
+        scope: "吐き気に関する患者向け資料で内関が紹介される文脈と、指で押すときの注意を参照。",
       },
       emergency,
       {
@@ -155,7 +163,7 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
       region: "volarForearm",
       bodyLabel: "左右の手のひら側の前腕（手首寄り）",
       closeUpAlt: "手のひら側の手首と前腕。手首のしわから肘寄りに測り、①長掌筋の腱と②橈側手根屈筋の腱の間に内関（PC6）を示す。",
-      closeUpCaption: "手首のしわから肘側へ進み、①と②の腱の間にある印を見ます。指3本の幅は距離のおおよその目安です。",
+      closeUpCaption: "手首とひじのしわの間を12等分し、手首からひじへ二つ分進んだ高さ。①と②の腱の間にある丸印を見ます。",
       meridianStart: 4,
       meridianEnd: 9,
       meridianCaption: "前腕から中指にかけての心包経（PC4〜PC9）。内関（PC6）は間使（PC5）と大陵（PC7）の間です。",
@@ -163,12 +171,13 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
   },
   st36: {
     description: "足三里（ST36）の場所を、膝のお皿とすねの骨を目印に図解。自宅で押すときの注意、胃もたれの症状ガイド、WHO標準の位置を紹介します。",
+    locationSummary: shinSummary(3),
     meridianReading: "あしのようめいいけい",
     regionLabel: "膝の下、すねの骨の前縁より外側",
     lead: "足三里は、膝の下にあるツボです。膝のお皿の下のくぼみと、すねの前に触れる硬い骨の縁が目印です。左右の脚で同じように探せます。",
     location: [
       "椅子に座って膝を曲げ、足の裏を床につけます。①膝蓋骨（しつがいこつ、膝のお皿）のすぐ下で、外側にある小さなくぼみを見つけます。左右の脚とも、体の中心から離れる側が外側です。",
-      "くぼみから足首へ向かい、自分の人差し指から小指まで4本をそろえた幅を、おおよその目安に下がります。その高さで、②脛骨（けいこつ、すねの骨）の前の縁より少し外側にある筋肉の上が足三里です。つま先を少し持ち上げると、その筋肉の位置を確かめやすくなります。",
+      "くぼみから足首の前の中央までを、すねに沿って16等分します。膝のくぼみから足首側へ三つ分進んだ高さで、②脛骨（けいこつ、すねの骨）の前の縁の外側にある筋肉の上が足三里です。",
     ],
     traditional: [
       "足三里は胃もたれや食欲の低下など、胃腸の不調と伝統的に関連づけられてきました。食欲が戻らない、症状が繰り返す場合は医療機関へ。突然の激しい腹痛があるときは、すぐに119番へ連絡してください。",
@@ -194,11 +203,6 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
         url: "https://www.rehab.go.jp/rehanews/japanese/No276/10_story.html",
         scope: "足三里が胃腸の調子と関連づけられてきた文脈を参照。",
       },
-      {
-        name: "松江市立病院「ツボ刺激・足湯」",
-        url: "https://www.matsue-cityhospital.jp/nurse/osan/osannonagare.data/leaflet2025.pdf",
-        scope: "おおよその距離を指4本分で測る案内を参照。",
-      },
       pressure,
       emergency,
       warming,
@@ -207,13 +211,14 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
       region: "anterolateralLowerLeg",
       bodyLabel: "左右の膝の下、すねの前外側",
       closeUpAlt: "膝からすねの前面。①膝蓋骨の下の外側のくぼみを起点に足首側へ測り、②脛骨の前縁より外側の前脛骨筋に足三里（ST36）を示す。",
-      closeUpCaption: "①膝のお皿のすぐ下にある外側のくぼみから足首側へ。足三里は②すねの骨のすぐ外側で、つま先を持ち上げる筋肉の上です。",
+      closeUpCaption: "ひざ下の外側のくぼみから足首の前の中央までを16等分し、ひざ側から三つ分進んだ高さに丸印があります。",
       meridianStart: 34,
       meridianEnd: 39,
       meridianCaption: "膝の周りからすねにかけての胃経（ST34〜ST39）。足三里（ST36）は犢鼻（ST35）と上巨虚（ST37）の間です。",
     },
   },
   st37: {
+    locationSummary: shinSummary(6),
     description: "上巨虚（じょうこきょ・ST37）は、ひざ下と足首を結ぶ線の、真ん中よりひざ寄りにあるツボです。足三里や条口との違いを図で確認できます。",
     meridianReading: "あしのようめいいけい",
     regionLabel: "すねの前側、ひざ下と足首の中間よりやや上",
@@ -237,6 +242,7 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
     },
   },
   st38: {
+    locationSummary: shinSummary(8),
     description: "条口（じょうこう・ST38）は、ひざ下と足首の中間にあるツボです。すねのどちら側を探すか、図と骨の目印で確認できます。",
     meridianReading: "あしのようめいいけい",
     regionLabel: "すねの前側、ひざ下と足首のほぼ中間",
@@ -260,6 +266,7 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
     },
   },
   st39: {
+    locationSummary: shinSummary(9),
     description: "下巨虚（げこきょ・ST39）は、すねの真ん中より少し足首側にあるツボです。条口や上巨虚との位置の違いと注意点を図解します。",
     meridianReading: "あしのようめいいけい",
     regionLabel: "すねの前側、ひざ下と足首の中間より少し下",
@@ -283,6 +290,7 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
     },
   },
   lr3: {
+    locationSummary: "足の甲で親指とその隣の指につながる骨の間。二本の骨が足首側で近づくところより少し指先側のくぼみ。",
     description: "太衝（LR3）の場所を、足の親指と第2趾につながる骨を目印に図解。自宅で押すときの注意、関連するツボ、WHO標準の位置を紹介します。",
     meridianReading: "あしのけついんかんけい",
     regionLabel: "足の甲、親指とその隣の指につながる骨の間",

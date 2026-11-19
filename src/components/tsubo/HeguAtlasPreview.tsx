@@ -27,7 +27,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
     ["経穴コード", point.code],
     ["別名・表記", `${point.aliases?.join("、")}、${point.romaji}（中国語のローマ字表記）`],
     ["所属経絡", `${point.meridian}（てのようめいだいちょうけい）。経絡は、伝統医学でツボをつなぐ道筋です。`],
-    ["部位", "手の甲、人差し指につながる骨の中央付近の親指側"],
+    ["部位", point.locationSimple],
   ];
 
   return (

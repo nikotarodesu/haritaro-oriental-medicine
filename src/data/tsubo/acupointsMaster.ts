@@ -477,8 +477,8 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 4,
     "bodyPart": "手・腕",
     "bodyRegionDetail": "手・腕・大腸経部",
-    "locationSimple": "手の甲側で、人差し指につながる骨の長さの中央付近、その親指側にあります。",
-    "locationDetail": "第2中手骨中点の橈側（親指側）の陥凹部。第1・第2中手骨底の交点から前方に取穴する。",
+    "locationSimple": "手の甲で、人差し指につながる骨の長さの中央から少し親指側。",
+    "locationDetail": "手背、第2中手骨中点の橈側（親指側）。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
       "頭痛・片頭痛・緊張型頭痛",
@@ -2121,8 +2121,8 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 36,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・胃経部",
-    "locationSimple": "膝のお皿のすぐ下、外側のくぼみから指4本分下がった、すねの骨の外側。",
-    "locationDetail": "犢鼻（膝蓋靭帯外側の陥凹部）の下3寸、前脛骨筋上。脛骨前縁の外側約1横指（中指幅）。",
+    "locationSimple": "ひざのお皿の下の外側のくぼみと足首の前の中央を結ぶ線上で、ひざ側から3寸。",
+    "locationDetail": "下腿前面、犢鼻（ST35）と解渓（ST41）を結ぶ線上で、犢鼻の下方3寸、前脛骨筋上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
       "急性・慢性胃炎・胃痛・胃もたれ",
@@ -6199,7 +6199,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・腎経部",
     "locationSimple": "足の内側で、舟状骨の出っ張りの下にあります。",
-    "locationDetail": "足内側、舟状骨粗面の前下方、赤白肉際。",
+    "locationDetail": "足内側、舟状骨粗面の下方、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
       "足の内側の位置・腎経の経路"
@@ -7195,7 +7195,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 6,
     "bodyPart": "手・腕",
     "bodyRegionDetail": "手・腕・心包経部",
-    "locationSimple": "手首の内側のしわから、肘に向かって指3本分上がったところ（2本の腱の間）。",
+    "locationSimple": "手のひら側の手首のしわから、ひじまでの長さの6分の1だけ進んだ、二本のすじの間。",
     "locationDetail": "手関節掌側横紋の上2寸、橈側手根屈筋腱と長掌筋腱の間。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
@@ -9570,7 +9570,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・肝経部",
     "locationSimple": "足の甲で、親指と人差し指の骨の間を足首に向かってなぞり、指が止まるくぼみ。",
-    "locationDetail": "第1・第2中足骨底結合部の前方の陥凹部。足背動脈の拍動を触れるところ。",
+    "locationDetail": "足背、第1・第2中足骨底結合部の指先側、二本の骨の間のくぼみで、足背動脈の上。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
       "高血圧・めまい・緊張型頭痛",

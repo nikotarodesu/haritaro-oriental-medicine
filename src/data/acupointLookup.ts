@@ -75,14 +75,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "少商",
     "code": "LU11",
     "meridianShort": "肺経",
-    "locationSimple": "手の親指の爪の根元、人差し指と反対側の角のきわ。"
+    "locationSimple": "手の親指の、人差し指と反対の側にある、爪の根元の角のきわ。"
   },
   {
     "id": "li1",
     "name": "商陽",
     "code": "LI1",
     "meridianShort": "大腸経",
-    "locationSimple": "人差し指の爪の根元、親指側の角のきわ。"
+    "locationSimple": "手の人差し指の、親指に向いた側にある、爪の根元の角のきわ。"
   },
   {
     "id": "li2",
@@ -103,7 +103,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "合谷",
     "code": "LI4",
     "meridianShort": "大腸経",
-    "locationSimple": "手の甲側で、人差し指につながる骨の長さの中央付近、その親指側にあります。"
+    "locationSimple": "手の甲で、人差し指につながる骨の長さの中央から少し親指側。"
   },
   {
     "id": "li5",
@@ -453,7 +453,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "梁丘",
     "code": "ST34",
     "meridianShort": "胃経",
-    "locationSimple": "ひざのお皿の外側から太ももへ上がったところ。"
+    "locationSimple": "ひざのお皿の上縁から上へ2寸で、太ももの前を通る太いすじの外側。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st35",
@@ -467,126 +467,126 @@ export const ACUPOINT_LOOKUP = [
     "name": "足三里",
     "code": "ST36",
     "meridianShort": "胃経",
-    "locationSimple": "膝のお皿のすぐ下、外側のくぼみから指4本分下がった、すねの骨の外側。"
+    "locationSimple": "ひざのお皿の下の外側のくぼみと足首の前の中央を結ぶ線上で、ひざ側から3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st37",
     "name": "上巨虚",
     "code": "ST37",
     "meridianShort": "胃経",
-    "locationSimple": "上巨虚（ST37）は、下腿前外側、犢鼻と解渓を結ぶ線上、犢鼻の下方6寸。"
+    "locationSimple": "ひざのお皿の下の外側のくぼみと足首の前の中央を結ぶ線上で、ひざ側から6寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st38",
     "name": "条口",
     "code": "ST38",
     "meridianShort": "胃経",
-    "locationSimple": "条口（ST38）は、下腿前外側、犢鼻と解渓を結ぶ線上、犢鼻の下方8寸。"
+    "locationSimple": "ひざのお皿の下の外側のくぼみと足首の前の中央を結ぶ線上で、ひざ側から8寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st39",
     "name": "下巨虚",
     "code": "ST39",
     "meridianShort": "胃経",
-    "locationSimple": "下巨虚（ST39）は、下腿前外側、犢鼻と解渓を結ぶ線上、犢鼻の下方9寸。"
+    "locationSimple": "ひざのお皿の下の外側のくぼみと足首の前の中央を結ぶ線上で、ひざ側から9寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "houryu",
     "name": "豊隆",
     "code": "ST40",
     "meridianShort": "胃経",
-    "locationSimple": "外くるぶしから上へ8寸で、すねの前の筋肉の外縁。"
+    "locationSimple": "外くるぶしから上へ8寸で、すねの前の筋肉の外縁。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st41",
     "name": "解渓",
     "code": "ST41",
     "meridianShort": "胃経",
-    "locationSimple": "足首の曲がり目の前の中央にあります。"
+    "locationSimple": "足首の曲がり目の前の中央。"
   },
   {
     "id": "st42",
     "name": "衝陽",
     "code": "ST42",
     "meridianShort": "胃経",
-    "locationSimple": "足の甲の第2趾につながる骨の足首寄りの継ぎ目にあります。"
+    "locationSimple": "足の甲の第2趾につながる骨の足首寄りの継ぎ目。"
   },
   {
     "id": "st43",
     "name": "陥谷",
     "code": "ST43",
     "meridianShort": "胃経",
-    "locationSimple": "第2・第3趾につながる骨の間で、第2趾の付け根より足首側にあります。"
+    "locationSimple": "第2・第3趾につながる骨の間で、第2趾の付け根より足首側。"
   },
   {
     "id": "st44",
     "name": "内庭",
     "code": "ST44",
     "meridianShort": "胃経",
-    "locationSimple": "第2・第3趾のまたのすぐ足首側にあります。"
+    "locationSimple": "第2・第3趾のまたのすぐ足首側。"
   },
   {
     "id": "st45",
     "name": "厲兌",
     "code": "ST45",
     "meridianShort": "胃経",
-    "locationSimple": "足の親指の隣の指の爪の根元。親指から遠い側の角のきわ。"
+    "locationSimple": "足の第2趾の、第3趾に向いた側にある、爪の根元の角のきわ。"
   },
   {
     "id": "sp1",
     "name": "隠白",
     "code": "SP1",
     "meridianShort": "脾経",
-    "locationSimple": "足の親指の爪の根元、隣の指から遠い側の角のきわ。"
+    "locationSimple": "足の親指の、第2趾から遠い側にある、爪の根元の角のきわ。"
   },
   {
     "id": "sp2",
     "name": "大都",
     "code": "SP2",
     "meridianShort": "脾経",
-    "locationSimple": "足の親指の内側で、付け根の関節より指先寄りにあります。"
+    "locationSimple": "足の親指の内側で、付け根の関節より指先寄り。"
   },
   {
     "id": "taihaku",
     "name": "太白",
     "code": "SP3",
     "meridianShort": "脾経",
-    "locationSimple": "足の内側で、親指の付け根の関節よりかかと寄りにあります。"
+    "locationSimple": "足の内側で、親指の付け根の関節よりかかと寄り。"
   },
   {
     "id": "sp4",
     "name": "公孫",
     "code": "SP4",
     "meridianShort": "脾経",
-    "locationSimple": "親指につながる骨の足首側の端より、少し指先・足裏寄りにあります。"
+    "locationSimple": "親指につながる骨の足首側の端より、少し指先・足裏寄り。"
   },
   {
     "id": "sp5",
     "name": "商丘",
     "code": "SP5",
     "meridianShort": "脾経",
-    "locationSimple": "内くるぶしと、土踏まず寄りの舟状骨の出っ張りの中間にあります。"
+    "locationSimple": "内くるぶしと、土踏まず寄りの舟状骨の出っ張りの中間。"
   },
   {
     "id": "sanyinkou",
     "name": "三陰交",
     "code": "SP6",
     "meridianShort": "脾経",
-    "locationSimple": "内くるぶしから上へ3寸で、すねの骨の後ろの縁。"
+    "locationSimple": "内くるぶしから上へ3寸で、すねの骨の後ろの縁。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "sp7",
     "name": "漏谷",
     "code": "SP7",
     "meridianShort": "脾経",
-    "locationSimple": "内くるぶしから上へ6寸で、すねの骨の後ろの縁。"
+    "locationSimple": "内くるぶしから上へ6寸で、すねの骨の後ろの縁。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "sp8",
     "name": "地機",
     "code": "SP8",
     "meridianShort": "脾経",
-    "locationSimple": "陰陵泉から下へ3寸で、すねの骨の後ろの縁。"
+    "locationSimple": "陰陵泉から下へ3寸で、すねの骨の後ろの縁。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "inryousen",
@@ -600,7 +600,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "血海",
     "code": "SP10",
     "meridianShort": "脾経",
-    "locationSimple": "ひざのお皿の内側から上がった太ももの筋肉のふくらみ。"
+    "locationSimple": "ひざのお皿の上縁の内側端から上へ2寸、太ももの筋肉のふくらみ。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "sp11",
@@ -740,14 +740,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "少衝",
     "code": "HT9",
     "meridianShort": "心経",
-    "locationSimple": "小指の爪の根元、薬指側の角のきわ。"
+    "locationSimple": "手の小指の、薬指に向いた側にある、爪の根元の角のきわ。"
   },
   {
     "id": "si1",
     "name": "少沢",
     "code": "SI1",
     "meridianShort": "小腸経",
-    "locationSimple": "小指の爪の根元、薬指から遠い側の角のきわ。"
+    "locationSimple": "手の小指の、薬指から遠い側にある、爪の根元の角のきわ。"
   },
   {
     "id": "si2",
@@ -1258,14 +1258,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "合陽",
     "code": "BL55",
     "meridianShort": "膀胱経",
-    "locationSimple": "ひざ裏のしわから下へ2寸、ふくらはぎの二つの筋肉の間。"
+    "locationSimple": "ひざ裏のしわから下へ2寸、ふくらはぎの二つの筋肉の間。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl56",
     "name": "承筋",
     "code": "BL56",
     "meridianShort": "膀胱経",
-    "locationSimple": "ひざ裏のしわから下へ5寸、ふくらはぎの二つの筋肉の間。"
+    "locationSimple": "ひざ裏のしわから下へ5寸、ふくらはぎの二つの筋肉の間。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl57",
@@ -1279,28 +1279,28 @@ export const ACUPOINT_LOOKUP = [
     "name": "飛揚",
     "code": "BL58",
     "meridianShort": "膀胱経",
-    "locationSimple": "崑崙から上へ7寸で、ふくらはぎ外側の筋肉とアキレス腱の間。"
+    "locationSimple": "崑崙から上へ7寸で、ふくらはぎ外側の筋肉とアキレス腱の間。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl59",
     "name": "跗陽",
     "code": "BL59",
     "meridianShort": "膀胱経",
-    "locationSimple": "崑崙から上へ3寸で、外側の細い骨とアキレス腱の間。"
+    "locationSimple": "崑崙から上へ3寸で、外側の細い骨とアキレス腱の間。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl60",
     "name": "崑崙",
     "code": "BL60",
     "meridianShort": "膀胱経",
-    "locationSimple": "外くるぶしの出っ張りとアキレス腱の間にあります。"
+    "locationSimple": "外くるぶしの出っ張りとアキレス腱の間。"
   },
   {
     "id": "bl61",
     "name": "僕参",
     "code": "BL61",
     "meridianShort": "膀胱経",
-    "locationSimple": "崑崙より下で、かかとの骨の外側の縁にあります。"
+    "locationSimple": "崑崙より下で、かかとの骨の外側の縁。"
   },
   {
     "id": "bl62",
@@ -1314,14 +1314,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "金門",
     "code": "BL63",
     "meridianShort": "膀胱経",
-    "locationSimple": "足の外側寄りで、小指につながる骨の出っ張りよりかかと側にあります。"
+    "locationSimple": "足の外側寄りで、小指につながる骨の出っ張りよりかかと側。"
   },
   {
     "id": "bl64",
     "name": "京骨",
     "code": "BL64",
     "meridianShort": "膀胱経",
-    "locationSimple": "小指につながる骨の足首側の出っ張りより少し指先寄りにあります。"
+    "locationSimple": "小指につながる骨の足首側の出っ張りより少し指先寄り。"
   },
   {
     "id": "bl65",
@@ -1342,7 +1342,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "至陰",
     "code": "BL67",
     "meridianShort": "膀胱経",
-    "locationSimple": "足の小指の爪の根元、隣の指から遠い側の角のきわ。"
+    "locationSimple": "足の小指の、第4趾から遠い側にある、爪の根元の角のきわ。"
   },
   {
     "id": "yusen",
@@ -1356,7 +1356,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "然谷",
     "code": "KI2",
     "meridianShort": "腎経",
-    "locationSimple": "足の内側で、舟状骨の出っ張りの下にあります。"
+    "locationSimple": "足の内側で、舟状骨の出っ張りの下。"
   },
   {
     "id": "taikei",
@@ -1370,14 +1370,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "大鍾",
     "code": "KI4",
     "meridianShort": "腎経",
-    "locationSimple": "内くるぶしの後ろ下で、アキレス腱がかかとにつく場所の前にあります。"
+    "locationSimple": "内くるぶしの後ろ下で、アキレス腱がかかとにつく場所の前。"
   },
   {
     "id": "ki5",
     "name": "水泉",
     "code": "KI5",
     "meridianShort": "腎経",
-    "locationSimple": "太谿の直下で、かかとの骨のふくらみの前にあります。"
+    "locationSimple": "太谿の直下で、かかとの骨のふくらみの前。"
   },
   {
     "id": "shoukai",
@@ -1391,28 +1391,28 @@ export const ACUPOINT_LOOKUP = [
     "name": "復溜",
     "code": "KI7",
     "meridianShort": "腎経",
-    "locationSimple": "内くるぶしから上へ2寸で、アキレス腱のすぐ前。"
+    "locationSimple": "内くるぶしから上へ2寸で、アキレス腱のすぐ前。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki8",
     "name": "交信",
     "code": "KI8",
     "meridianShort": "腎経",
-    "locationSimple": "内くるぶしから上へ2寸で、すねの骨の内側の縁より後ろ。"
+    "locationSimple": "内くるぶしから上へ2寸で、すねの骨の内側の縁より後ろ。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki9",
     "name": "築賓",
     "code": "KI9",
     "meridianShort": "腎経",
-    "locationSimple": "内くるぶしから上へ5寸で、ふくらはぎの筋肉からアキレス腱に向かう境。"
+    "locationSimple": "内くるぶしから上へ5寸で、ふくらはぎの筋肉からアキレス腱に向かう境。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki10",
     "name": "陰谷",
     "code": "KI10",
     "meridianShort": "腎経",
-    "locationSimple": "ひざ裏の内側で、内側の目立つ腱よりしわの中央寄り。"
+    "locationSimple": "ひざ裏のしわの内側で、半腱様筋の腱のすぐ外側。"
   },
   {
     "id": "ki11",
@@ -1559,28 +1559,28 @@ export const ACUPOINT_LOOKUP = [
     "name": "郄門",
     "code": "PC4",
     "meridianShort": "心包経",
-    "locationSimple": "手のひら側の腕の中央から少し手首寄り。手首とひじを結ぶ長さの12分の5を手首から測った、二本のすじの間。"
+    "locationSimple": "手のひら側の手首のしわから、ひじまでの長さの12分の5だけ進んだ、二本のすじの間。"
   },
   {
     "id": "pc5",
     "name": "間使",
     "code": "PC5",
     "meridianShort": "心包経",
-    "locationSimple": "間使（PC5）は、前腕前面、長掌筋腱と橈側手根屈筋腱の間、手関節掌側横紋の上方3寸。"
+    "locationSimple": "手のひら側の手首のしわから、ひじまでの長さの4分の1だけ進んだ、二本のすじの間。"
   },
   {
     "id": "naikan",
     "name": "内関",
     "code": "PC6",
     "meridianShort": "心包経",
-    "locationSimple": "手首の内側のしわから、肘に向かって指3本分上がったところ（2本の腱の間）。"
+    "locationSimple": "手のひら側の手首のしわから、ひじまでの長さの6分の1だけ進んだ、二本のすじの間。"
   },
   {
     "id": "pc7",
     "name": "大陵",
     "code": "PC7",
     "meridianShort": "心包経",
-    "locationSimple": "大陵（PC7）は、手関節前面、長掌筋腱と橈側手根屈筋腱の間、手関節掌側横紋上。"
+    "locationSimple": "手のひら側の手首のしわの中央で、二本のすじの間。"
   },
   {
     "id": "pc8",
@@ -1594,14 +1594,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "中衝",
     "code": "PC9",
     "meridianShort": "心包経",
-    "locationSimple": "手の中指の先端の中央。爪の先ではなく、指そのものの先端が目印です。"
+    "locationSimple": "手の中指の先端中央。"
   },
   {
     "id": "te1",
     "name": "関衝",
     "code": "TE1",
     "meridianShort": "三焦経",
-    "locationSimple": "薬指の爪の根元、小指側の角のきわ。"
+    "locationSimple": "手の薬指の、小指に向いた側にある、爪の根元の角のきわ。"
   },
   {
     "id": "te2",
@@ -2000,112 +2000,112 @@ export const ACUPOINT_LOOKUP = [
     "name": "陽交",
     "code": "GB35",
     "meridianShort": "胆経",
-    "locationSimple": "外くるぶしから上へ7寸で、細い骨の後ろの縁。"
+    "locationSimple": "外くるぶしから上へ7寸で、細い骨の後ろの縁。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb36",
     "name": "外丘",
     "code": "GB36",
     "meridianShort": "胆経",
-    "locationSimple": "外くるぶしから上へ7寸で、細い骨の前の縁。"
+    "locationSimple": "外くるぶしから上へ7寸で、細い骨の前の縁。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb37",
     "name": "光明",
     "code": "GB37",
     "meridianShort": "胆経",
-    "locationSimple": "外くるぶしから上へ5寸で、細い骨の前の縁。"
+    "locationSimple": "外くるぶしから上へ5寸で、細い骨の前の縁。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb38",
     "name": "陽輔",
     "code": "GB38",
     "meridianShort": "胆経",
-    "locationSimple": "外くるぶしから上へ4寸で、細い骨の前の縁。"
+    "locationSimple": "外くるぶしから上へ4寸で、細い骨の前の縁。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb39",
     "name": "懸鐘",
     "code": "GB39",
     "meridianShort": "胆経",
-    "locationSimple": "外くるぶしから上へ3寸で、細い骨の前の縁。"
+    "locationSimple": "外くるぶしから上へ3寸で、細い骨の前の縁。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb40",
     "name": "丘墟",
     "code": "GB40",
     "meridianShort": "胆経",
-    "locationSimple": "外くるぶしの斜め前下で、足指を上げる腱の小指側にあります。"
+    "locationSimple": "外くるぶしの斜め前下で、足指を上げる腱の小指側。"
   },
   {
     "id": "gb41",
     "name": "足臨泣",
     "code": "GB41",
     "meridianShort": "胆経",
-    "locationSimple": "第4・第5中足骨が近づく場所の指先側で、小指へ伸びる腱の外側にあります。"
+    "locationSimple": "第4・第5中足骨が近づく場所の指先側で、小指へ伸びる腱の外側。"
   },
   {
     "id": "gb42",
     "name": "地五会",
     "code": "GB42",
     "meridianShort": "胆経",
-    "locationSimple": "第4・第5趾につながる骨の間で、第4趾の付け根より足首側にあります。"
+    "locationSimple": "第4・第5趾につながる骨の間で、第4趾の付け根より足首側。"
   },
   {
     "id": "gb43",
     "name": "侠渓",
     "code": "GB43",
     "meridianShort": "胆経",
-    "locationSimple": "足の小指と第4趾のまたのすぐ足首側にあります。"
+    "locationSimple": "足の小指と第4趾のまたのすぐ足首側。"
   },
   {
     "id": "gb44",
     "name": "足竅陰",
     "code": "GB44",
     "meridianShort": "胆経",
-    "locationSimple": "足の小指の隣の指の爪の根元、小指側の角のきわ。"
+    "locationSimple": "足の第4趾の、小指に向いた側にある、爪の根元の角のきわ。"
   },
   {
     "id": "lr1",
     "name": "大敦",
     "code": "LR1",
     "meridianShort": "肝経",
-    "locationSimple": "足の親指の爪の根元、隣の指に向いた角のきわ。"
+    "locationSimple": "足の親指の、第2趾に向いた側にある、爪の根元の角のきわ。"
   },
   {
     "id": "koukan",
     "name": "行間",
     "code": "LR2",
     "meridianShort": "肝経",
-    "locationSimple": "足の親指と第2趾のまたのすぐ足首側にあります。"
+    "locationSimple": "足の親指と第2趾のまたのすぐ足首側。"
   },
   {
     "id": "taishou",
     "name": "太衝",
     "code": "LR3",
     "meridianShort": "肝経",
-    "locationSimple": "足の甲で、親指と人差し指の骨の間を足首に向かってなぞり、指が止まるくぼみ。"
+    "locationSimple": "足の甲で親指とその隣の指につながる骨の間。二本の骨が足首側で近づくところより少し指先側のくぼみ。"
   },
   {
     "id": "lr4",
     "name": "中封",
     "code": "LR4",
     "meridianShort": "肝経",
-    "locationSimple": "内くるぶしの前で、足首を起こす腱の親指側にあります。"
+    "locationSimple": "内くるぶしの前で、足首を起こす腱の親指側。"
   },
   {
     "id": "lr5",
     "name": "蠡溝",
     "code": "LR5",
     "meridianShort": "肝経",
-    "locationSimple": "内くるぶしから上へ5寸で、すねの骨の内側の平らな面。"
+    "locationSimple": "内くるぶしから上へ5寸で、すねの骨の内側の平らな面。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "lr6",
     "name": "中都",
     "code": "LR6",
     "meridianShort": "肝経",
-    "locationSimple": "内くるぶしから上へ7寸で、すねの骨の内側の平らな面。"
+    "locationSimple": "内くるぶしから上へ7寸で、すねの骨の内側の平らな面。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "lr7",

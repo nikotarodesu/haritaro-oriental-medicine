@@ -2,8 +2,18 @@ import { onView } from "./types";
 
 export const groinLandmarks = { pubicBorderY: 142, inguinalCreaseX: 153 } as const;
 
-// The chest columns are measured from the sternum. Ribs are registered to the spaces between them.
-const ribGaps = [0, 77, 101, 125, 149, 173, 197, 221];
+// Use the same vertical landmarks in the drawing and the point profiles.
+export const chestRibLandmarks = { firstGapY: 77, ribSpacing: 24 } as const;
+export const flankLandmarks = {
+  midaxillaryX: 122,
+  fourthGapY: 82,
+  sixthGapY: 116,
+  ribElevenTip: { x: 145, y: 141 },
+  lastRibTip: { x: 110, y: 162 },
+  navelY: 181,
+} as const;
+const { midaxillaryX, fourthGapY, sixthGapY, ribElevenTip, lastRibTip, navelY } = flankLandmarks;
+
 const chestRows = [
   ["lu1", 6, 1], ["st14", 4, 1], ["st15", 4, 2], ["st16", 4, 3], ["st18", 4, 5],
   ["sp17", 6, 5], ["sp18", 6, 4], ["sp19", 6, 3], ["sp20", 6, 2],
@@ -21,7 +31,7 @@ function onChest() {
     const guide = outward
       ? `胸骨を中央の基準として、正面の図で肋骨の高さを先に見ます。その高さを保ち、横に${outward}寸の列へ視線を移します。${code === "lu1" ? "鎖骨の下のくぼみより外側に寄り、鎖骨のすぐ下にある雲門より下です。" : "骨の上ではなく、二本の肋骨の間にある位置を図で確認します。隣の肋間に移ると高さの違うツボになります。"}`
       : `胸の前の中央にある胸骨を先に確認します。肋骨の間は胸の横にありますが、見る位置はその間を真横へたどって胸骨に合うところです。第${space}肋間の高さを図で確かめ、胸骨の左右の縁には移動しません。`;
-    return [code, 106 + outward * 14, ribGaps[space], "sternum ribs", label, guide];
+    return [code, 106 + outward * 14, chestRibLandmarks.firstGapY + (space - 1) * chestRibLandmarks.ribSpacing, "sternum ribs", label, guide];
   }));
 }
 
@@ -72,12 +82,12 @@ export const trunkPoints = {
     ["gb28", 168, 211, "anteriorIliac abdomenMid", "骨盤の前の出っ張りから0.5寸、体の中央へ斜め下", "正面の図で腰骨の先端に注目します。その先端から、へそを通る中央線の方へ少し寄りながら脚の方へ下がると丸印があります。"],
   ]),
   ...onView("flank", [
-    ["sp21", 122, 116, "axillaLine sideRibs", "わきの中央から真下に下りた線で、第6肋間", "腕の付け根のわきの中央を図で確認し、横腹へ下りる縦線をたどります。第4肋間の淵腋より下で、背中側へは寄りません。"],
-    ["gb22", 122, 82, "axillaLine sideRibs", "わきの中央から真下に下りた線で、第4肋間", "体の横からわきの中央に縦線を置き、上から数えた第4肋骨と第5肋骨の間の高さを見ます。輒筋より背中寄りです。"],
-    ["gb23", 141, 82, "axillaLine sideRibs", "第4肋間の高さで、わきの中央を通る縦線より1寸前", "淵腋と同じ肋骨の間を見ます。そこから高さを変えず、腹側へわずかに進みます。わきの真下にある淵腋との違いは横方向です。"],
-    ["gb25", 110, 171, "lastRib flankHip", "体の横で、一番下の第12肋骨の先端のすぐ下", "肋骨の下端が前で一続きに見えるところではなく、横から後ろに回った短い肋骨の終わりを図で見ます。そのすぐ下で、骨盤の上より高い位置です。"],
-    ["gb26", 147, 181, "ribEleven levelNavel", "体の横で、第11肋骨の先端より下、おへそと同じ高さ", "体の前のおへそから横へ同じ高さを保つ線を図で見ます。第11肋骨の先端の直下にある章門より下がった、おへそにそろう高さの点です。"],
-    ["lr13", 145, 150, "ribEleven lastRib", "体の横で、第11肋骨の自由に終わる先端のすぐ下", "一番下の短い第12肋骨と、その一つ上の第11肋骨を図で見比べます。章門は第11肋骨の自由端のすぐ下です。第12肋骨が目印の京門とは別の骨です。"],
+    ["sp21", midaxillaryX, sixthGapY, "axillaLine sideRibs", "わきの中央から真下に下りた線で、第6肋間", "腕の付け根のわきの中央を図で確認し、横腹へ下りる縦線をたどります。第4肋間の淵腋より下で、背中側へは寄りません。"],
+    ["gb22", midaxillaryX, fourthGapY, "axillaLine sideRibs", "わきの中央から真下に下りた線で、第4肋間", "体の横からわきの中央に縦線を置き、上から数えた第4肋骨と第5肋骨の間の高さを見ます。輒筋より背中寄りです。"],
+    ["gb23", midaxillaryX + 19, fourthGapY, "axillaLine sideRibs", "第4肋間の高さで、わきの中央を通る縦線より1寸前", "淵腋と同じ肋骨の間を見ます。そこから高さを変えず、腹側へわずかに進みます。わきの真下にある淵腋との違いは横方向です。"],
+    ["gb25", lastRibTip.x, lastRibTip.y + 9, "lastRib flankHip", "体の横で、一番下の第12肋骨の先端のすぐ下", "肋骨の下端が前で一続きに見えるところではなく、横から後ろに回った短い肋骨の終わりを図で見ます。そのすぐ下で、骨盤の上より高い位置です。"],
+    ["gb26", ribElevenTip.x, navelY, "ribEleven levelNavel", "体の横で、第11肋骨の先端より下、おへそと同じ高さ", "体の前のおへそから横へ同じ高さを保つ線を図で見ます。第11肋骨の先端の直下にある章門より下がった、おへそにそろう高さの点です。"],
+    ["lr13", ribElevenTip.x, ribElevenTip.y + 9, "ribEleven lastRib", "体の横で、第11肋骨の自由に終わる先端のすぐ下", "一番下の短い第12肋骨と、その一つ上の第11肋骨を図で見比べます。章門は第11肋骨の自由端のすぐ下です。第12肋骨が目印の京門とは別の骨です。"],
   ]),
   ...onView("hip", [
     ["gb29", 148, 120, "hipFrontPoint hipTrochanter", "骨盤の前の出っ張りと太ももの外の骨の出っ張りの中間", "横から見た図で、前の腰骨の尖りと、股関節の外側で大きく触れる太ももの骨を確認します。二つの中点にあり、股関節の後ろにある環跳より前です。"],

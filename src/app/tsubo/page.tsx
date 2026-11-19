@@ -36,12 +36,12 @@ export default function TsuboPage() {
       <PageIntro compact eyebrow="全361のツボ" title={SERIES.dictionary.name} art="points" description={TSUBO_TAGLINE}>
         <div className="page-actions">
           <Link href="/symptoms" className="page-primary-action">症状から探す</Link>
-          <a href="#tsubo-index" className="page-secondary-action">ツボの一覧を見る</a>
+          <a href="#illustrated-points" className="page-secondary-action">部位から探す</a>
         </div>
       </PageIntro>
 
       <section aria-labelledby="illustrated-points" className="space-y-3">
-        <h2 id="illustrated-points" className="font-serif text-xl font-bold">全361穴を部位から探す</h2>
+        <h2 id="illustrated-points" className="scroll-mt-28 font-serif text-xl font-bold">全361穴を部位から探す</h2>
         <p className="text-sm ui-muted">各ツボのページで、全身図・部位の拡大図・経絡に沿った並びを確認できます。</p>
         <div className="grid items-start gap-3 sm:grid-cols-2">
           {illustratedRegions.map(({ region, points }) => (

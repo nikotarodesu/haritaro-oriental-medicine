@@ -8,6 +8,7 @@ export type AtlasRegion = "volarForearm" | "volarWrist" | "anterolateralLowerLeg
 export interface AcupointAtlasArticle {
   titleTopic?: string;
   description: string;
+  locationSummary?: string;
   meridianReading: string;
   regionLabel: string;
   lead: string;

@@ -97,13 +97,13 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     meridianOrder: 6,
     bodyPart: "手・腕",
     bodyRegionDetail: "前腕掌側遠位部・手関節上2寸",
-    locationSimple: "手首の内側のしわから、肘に向かって指3本分上がったところ（2本の腱の間）。",
+    locationSimple: "手のひら側の手首のしわから、ひじまでの長さの6分の1だけ進んだ、二本のすじの間。",
     locationDetail: "前腕前側、長掌筋腱と橈側手根屈筋腱の間、手関節掌側横紋の上方2寸。",
     locationSource: "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     howToLocate: [
       "患者に手掌を上（仰臥位・座位）にして手関節を軽く屈曲させ、握りこぶしを作らせる。",
       "手関節の掌側中央に浮き出る「長掌筋腱（内側）」と「橈側手根屈筋腱（外側）」を触知する（※長掌筋腱が先天的に欠如している場合は、橈側手根屈筋腱の内縁をとる）。",
-      "手関節掌側横紋（手首の最遠位のしわ）から、肘に向かって患者自身の同身寸で2寸（指3本分の幅）を計測する。",
+      "手関節掌側横紋から肘の横じわまでを12等分し、手首側から2骨度分寸の高さを確認する。",
       "2本の腱の間の中央、陥凹部にとる。",
     ],
     palpationLandmarks: [
@@ -179,14 +179,14 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     meridianOrder: 36,
     bodyPart: "足・脚",
     bodyRegionDetail: "下腿前外側部・犢鼻下3寸",
-    locationSimple: "膝のお皿のすぐ下、外側のくぼみから指4本分下がった、すねの骨の外側。",
-    locationDetail: "下腿前外側、犢鼻（膝蓋靭帯外側の陥凹部）の下方3寸、前脛骨筋上。脛骨前縁の外側約1横指（中指幅）。",
+    locationSimple: "ひざのお皿の下の外側のくぼみと足首の前の中央を結ぶ線上で、ひざ側から3寸。",
+    locationDetail: "下腿前面、犢鼻（ST35）と解渓（ST41）を結ぶ線上で、犢鼻の下方3寸、前脛骨筋上。",
     locationSource: "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     howToLocate: [
       "患者に膝を直角に曲げた座位、または膝の下に枕を入れた仰臥位をとらせる。",
       "膝蓋骨の下縁、膝蓋靭帯の外側のくぼみ（犢鼻穴）を確認する。",
-      "犢鼻から下方に患者の同身寸で3寸（指4本分の幅）を測る。",
-      "脛骨の前縁（すねの鋭い骨の稜線）から、外方へ親指または中指の幅1本分（約1寸）スライドさせ、前脛骨筋の筋腹上で指が自然に落ち着く陥凹部にとる。",
+      "犢鼻と足首の前の中央（解渓）を結ぶ線を16等分し、犢鼻から足首側へ3骨度分寸の高さを確認する。",
+      "脛骨の前縁の外側にある前脛骨筋の上で、図の位置を確認する。",
     ],
     palpationLandmarks: [
       "犢鼻（外側膝蓋眼：膝蓋靭帯外側の深い窪み）",
@@ -267,14 +267,14 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     meridianOrder: 3,
     bodyPart: "足・脚",
     bodyRegionDetail: "足背・第1第2中足骨間",
-    locationSimple: "足の甲で、親指と人差し指の骨が合わさる付け根の手前にあるくぼみ（脈が触れるところ）。",
-    locationDetail: "足背、第1・第2中足骨底接合部の遠位陥凹部、足背動脈拍動部。",
+    locationSimple: "足の甲で親指とその隣の指につながる骨の間。二本の骨が足首側で近づくところより少し指先側のくぼみ。",
+    locationDetail: "足背、第1・第2中足骨底接合部の指先側、二本の骨の間のくぼみで、足背動脈の上。",
     locationSource: "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     howToLocate: [
       "患者に仰臥位または座位をとらせ、足背をリラックスさせる。",
       "母指と第2指の指間から足首に向かって骨間隙を指でなぞり上げる。",
       "第1・第2中足骨の底（合流部）に指が突き当たって止まる直前の陥凹部を触知する。",
-      "拍動する足背動脈の外側、特有の重だるい響きがあるところにとる。"
+      "標準位置では足背動脈の上にあたる。拍動や押したときの感覚は位置を決める基準にしない。"
     ],
     palpationLandmarks: [
       "第1・第2中足骨底の骨結合部（指が止まる骨の角）",
@@ -329,14 +329,14 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     meridianOrder: 6,
     bodyPart: "足・脚",
     bodyRegionDetail: "下腿内側・内果上3寸",
-    locationSimple: "足の内くるぶしの最も高いところから、指4本分上がったすねの骨（脛骨）の後ろのキワ。",
+    locationSimple: "内くるぶしの出っ張りから上へ3寸で、すねの骨の内側の縁より後ろ。",
     locationDetail: "下腿内側、脛骨内側面後縁、内果尖の上方3寸。",
     locationSource: "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     howToLocate: [
       "患者に仰臥位をとらせ、下肢をリラックスさせる。",
       "内くるぶしの最も突出した頂点（内果尖）を確認する。",
-      "内果尖から上方に患者自身の指幅4本分（同身寸3寸）を測る。",
-      "脛骨（すねの骨）の内側縁の骨際、指を押し込むと特有の圧痛・酸脹感がある陥凹部にとる。"
+      "内果尖から上方へ3骨度分寸の高さを確認する。",
+      "その高さで脛骨（すねの骨）の内側縁より後ろの位置を確認する。"
     ],
     palpationLandmarks: [
       "内果尖（内くるぶしの頂点）",
