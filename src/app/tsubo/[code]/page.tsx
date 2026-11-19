@@ -48,6 +48,7 @@ import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import AcupointInformationScope from '@/components/tsubo/AcupointInformationScope';
 import MeridianRelationsDiagram from '@/components/tsubo/MeridianRelationsDiagram';
 import { VERIFIED_POINT_LOCATIONS } from '@/data/sourceVerification';
+import { PAGE_REVISIONS } from "@/config/contentUpdates";
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -160,6 +161,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         "url": pageUrl,
         "name": pageTitle,
         "inLanguage": "ja",
+        ...(PAGE_REVISIONS[`/tsubo/${point.codeLower}`] && { "dateModified": PAGE_REVISIONS[`/tsubo/${point.codeLower}`] }),
         "publisher": { "@id": "https://www.haritaro.jp/#organization" },
         "editor": { "@type": "Person", "name": "はり太郎", "url": "https://www.haritaro.jp/about" },
         ...(sources.length > 0 && { citation: sources.map(({ name, url }) => ({ "@type": "CreativeWork", name, url })) }),

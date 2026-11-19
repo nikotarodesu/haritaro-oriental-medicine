@@ -7,7 +7,7 @@ const { generateFullGuide } = require('./generate-llms.cjs');
 const load = createDataLoader();
 const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
 const { SYMPTOMS } = load('src/data/symptomData');
-const { getAcupointByCode, getAcupointDetail, ALL_ACUPOINTS, TSUBOS, generateFaqLocationAnswer } = load('src/data/tsubo/index');
+const { getAcupointByCode, getAcupointDetail, getMeridianPoints, ALL_ACUPOINTS, TSUBOS, generateFaqLocationAnswer } = load('src/data/tsubo/index');
 const root = path.resolve(__dirname, '..');
 const full = generateFullGuide();
 const short = fs.readFileSync(path.join(root, 'public/llms.txt'), 'utf8').replace(/\r\n/g, '\n').trimEnd();
@@ -43,8 +43,45 @@ const { ATLAS_POINT_MARKERS, shinEndpoints } = load('src/data/tsubo/atlas/marker
 const { digitLandmarks, digitGeometry } = load('src/data/tsubo/atlas/digits');
 const { footLandmarks } = load('src/data/tsubo/atlas/footLandmarks');
 const { legLandmarks, soleEndpoints, poplitealY, medialAnkleY } = load('src/data/tsubo/atlas/legLandmarks');
+const { expandedPoints } = load('src/data/tsubo/atlas/expanded/profiles');
+const { whoAtlasPages } = load('src/data/tsubo/atlas/whoAtlasPages');
+const expandedViews = Object.assign({}, ...['head', 'arm', 'trunk', 'back'].map(group =>
+  load(`src/components/tsubo/atlas/expanded/${group}Views`)[`${group}Views`]
+));
 assert.deepEqual(Object.keys(ATLAS_POINT_MARKERS).sort(), [...new Set([...Object.keys(ATLAS_ARTICLES), ...Object.keys(POINT_ILLUSTRATIONS)])].sort(),
   'Every illustrated index link must have one complete diagram set');
+assert.deepEqual(['li4', ...Object.keys(ATLAS_ARTICLES)].sort(), Array.from(ACUPOINTS_MASTER, point => point.codeLower).sort(),
+  'Every standard point has a full atlas article, including the dedicated LI4 page');
+assert.deepEqual(Object.keys(expandedPoints).sort(), Object.keys(whoAtlasPages).sort(),
+  'Every added point links directly to its page in the WHO manual');
+assert.equal(Object.keys(expandedPoints).length, 284);
+for (const [code, point] of Object.entries(expandedPoints)) {
+  const master = getAcupointByCode(code);
+  const article = ATLAS_ARTICLES[code];
+  const illustration = article.illustration;
+  const marker = ATLAS_POINT_MARKERS[code];
+  assert(illustration.region === 'expanded' && marker.expanded === point, code);
+  for (const id of point.landmarks) {
+    const feature = expandedViews[point.view].features[id];
+    assert(feature, code + ' landmark ' + id);
+    const [x, y] = feature.position;
+    assert(Math.hypot(x - marker.x, y - marker.y) >= 14, code + ' landmark number must not obscure the point');
+  }
+  assert.equal(new Set(point.landmarks).size, point.landmarks.length, code);
+  assert(article.sources[0].url.endsWith('#page=' + whoAtlasPages[code]), code);
+  assert(illustration.meridianStart <= master.meridianOrder && master.meridianOrder <= illustration.meridianEnd, code);
+  assert(getMeridianPoints(getAcupointDetail(code).meridianId).some(other => other.codeLower === code), code + ' renders its position in the meridian');
+  assert(!article.relatedPoints.some(other => other.code === code || !getAcupointByCode(other.code)), code);
+  assert(article.symptomLinks.every(({ href }) => href === '/symptoms' || SYMPTOMS.some(guide => href === '/symptoms/' + guide.id)), code);
+  assert(master.locationSimple.startsWith(point.location), code + ' search and title data agree with the article');
+  const body = [article.lead, article.safetyWarning, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, ...article.expert, ...article.relatedPoints.map(other => other.text)].join('');
+  assert(body.length >= 700 && body.length <= 900, code + ' article length ' + body.length);
+}
+for (const code of ['bl1', 'st9', 'lu1', 'lu8', 'ht1', 'si8', 'sp11', 'cv8', 'cv1', 'gv1', 'gb21']) {
+  assert(ATLAS_ARTICLES[code].visualOnly, code + ' must use the visual orientation instructions');
+}
+assert.match(ATLAS_ARTICLES.cv17.safetyWarning, /胸痛.*動悸.*119/);
+assert.match(ATLAS_ARTICLES.gb21.safetyWarning, /妊娠中.*産科/);
 for (const [code, foot] of Object.entries(footLandmarks)) {
   const article = ATLAS_ARTICLES[code];
   const marker = ATLAS_POINT_MARKERS[code];

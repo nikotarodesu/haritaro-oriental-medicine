@@ -1,8 +1,9 @@
 import type { DigitLandmark } from "./digits";
+import type { ExpandedPoint } from "./expanded/types";
 import type { FootCode } from "./footLandmarks";
 import type { LegCode } from "./legLandmarks";
 
-export type AtlasRegion = "volarForearm" | "volarWrist" | "anterolateralLowerLeg" | "footDorsum" | "finger" | "toe" | "dorsalFoot" | "ankle" | "knee" | "calf" | "sole";
+export type AtlasRegion = "volarForearm" | "volarWrist" | "anterolateralLowerLeg" | "footDorsum" | "finger" | "toe" | "dorsalFoot" | "ankle" | "knee" | "calf" | "sole" | "expanded";
 
 export interface AcupointAtlasArticle {
   titleTopic?: string;
@@ -16,6 +17,7 @@ export interface AcupointAtlasArticle {
   selfCare: readonly string[];
   cautions: readonly string[];
   expert: readonly string[];
+  visualOnly?: boolean;
   symptomLinks?: readonly { href: string; label: string }[];
   relatedPoints: readonly { code: string; text: string }[];
   sources: readonly { name: string; url: string; scope: string }[];
@@ -37,6 +39,7 @@ export interface AtlasMarker {
   digit?: DigitLandmark;
   footCode?: FootCode;
   legCode?: LegCode;
+  expanded?: ExpandedPoint;
 }
 
 export interface AtlasCloseUpProps {

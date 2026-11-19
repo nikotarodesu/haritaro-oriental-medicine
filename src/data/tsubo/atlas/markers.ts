@@ -1,5 +1,6 @@
 import type { AtlasMarker } from "./types";
 import { digitGeometry, digitLandmarks } from "./digits";
+import { expandedPoints } from "./expanded/profiles";
 import { footLandmarks, type FootCode } from "./footLandmarks";
 import { legLandmarks, type LegCode } from "./legLandmarks";
 
@@ -8,6 +9,9 @@ export const shinEndpoints = { knee: { x: 116, y: 88 }, ankle: { x: 124, y: 248 
 
 // Coordinates use the 340×300 viewBox of the corresponding regional template.
 export const ATLAS_POINT_MARKERS: Readonly<Partial<Record<string, AtlasMarker>>> = {
+  ...Object.fromEntries(Object.entries(expandedPoints).map(([code, expanded]) => [
+    code, { x: expanded.x, y: expanded.y, expanded },
+  ])),
   ...Object.fromEntries((Object.keys(legLandmarks) as LegCode[]).map(legCode => {
     const { x, y } = legLandmarks[legCode];
     return [legCode, { x, y, legCode }];

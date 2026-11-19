@@ -17,11 +17,11 @@ for (const point of points.ALL_ACUPOINTS) {
   assert(detail?.locationSimple, `${point.code}: final detail consumer returns location text`);
   assert.equal(detail.procedureReviewStatus, 'pending_expert_review');
 }
-assert.match(points.getAcupointDetail('li8').locationSimple, /肘.*4骨度分寸/);
-assert.match(points.getAcupointDetail('sp13').locationSimple, /4\.3骨度分寸.*4骨度分寸/);
-assert.match(points.getAcupointDetail('sp8').locationSimple, /陰陵泉.*下方3骨度分寸/);
+assert.match(points.getAcupointDetail('li8').locationSimple, /ひじのしわ.*4寸.*寸は体の区間/);
+assert.match(points.getAcupointDetail('sp13').locationSimple, /おへその中心から下へ4\.3寸.*横へ4寸/);
+assert.match(points.getAcupointDetail('sp8').locationSimple, /陰陵泉.*下方3(?:骨度分)?寸/);
 assert.match(points.getAcupointDetail('gb30').locationSimple, /外側から3分の1.*代替位置/);
-assert.match(points.getAcupointDetail('gv26').locationSimple, /中点.*代替位置/);
+assert.match(points.getAcupointDetail('gv26').locationSimple, /溝の中央.*代替位置/);
 assert.match(friendly.simplifyLocationText('頭部、百会の後方1.5寸、後正中線上。'), /頭の正中線上/);
 assert(!friendly.simplifyLocationText('頭部、百会の後方1.5寸、後正中線上。').includes('背骨'));
 assert.match(friendly.simplifyLocationText('前頸部、小鎖骨上窩、胸鎖乳突筋の両頭間。'), /小鎖骨上窩（/);

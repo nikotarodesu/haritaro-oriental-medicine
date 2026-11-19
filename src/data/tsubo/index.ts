@@ -12,6 +12,7 @@ import {
   generatePalpationLandmarks,
 } from "./safetyAndLandmarks";
 import {
+  getExpandedLocationSimple,
   getFriendlyLocationSimple,
   simplifyLocationText,
   FRIENDLY_LOCATIONS_MAP,
@@ -40,6 +41,7 @@ export const ALL_ACUPOINTS: AcupointMaster[] = ACUPOINTS_MASTER.map(point => {
   return {
     ...point,
     aliases: detailedAliases ? [...new Set([...(point.aliases ?? []), ...detailedAliases])] : point.aliases,
+    locationSimple: getExpandedLocationSimple(point.codeLower) ?? point.locationSimple,
     clinicalNote: getPublicClinicalNote(point),
     procedureReviewStatus: "pending_expert_review",
   };
@@ -192,7 +194,8 @@ export function compareAcupointsByMeridianOrder(a: AcupointMaster, b: AcupointMa
  * 経絡別の経穴一覧
  */
 export function getMeridianPoints(meridianId: string): AcupointMaster[] {
-  return ACUPOINTS_MASTER.filter((p) => p.meridianId === meridianId).sort(
+  const masterId = meridianId === "governor" || meridianId === "conception" ? `${meridianId}-vessel` : meridianId;
+  return ACUPOINTS_MASTER.filter((p) => p.meridianId === masterId).sort(
     (a, b) => a.meridianOrder - b.meridianOrder
   );
 }

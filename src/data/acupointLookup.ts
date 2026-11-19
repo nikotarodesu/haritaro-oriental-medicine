@@ -5,70 +5,70 @@ export const ACUPOINT_LOOKUP = [
     "name": "中府",
     "code": "LU1",
     "meridianShort": "肺経",
-    "locationSimple": "中府（LU1）は、前胸部、第1肋間と同じ高さ、鎖骨下窩の外側、前正中線の外方6寸。"
+    "locationSimple": "胸の中央線から横へ6寸で、上から数えて第1肋間（第1肋骨と第2肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "lu2",
     "name": "雲門",
     "code": "LU2",
     "meridianShort": "肺経",
-    "locationSimple": "雲門（LU2）は、前胸部、鎖骨下窩の陥凹部、烏口突起の内側、前正中線の外方6寸。"
+    "locationSimple": "胸の中央線から横へ6寸で、鎖骨の下のくぼみ。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "lu3",
     "name": "天府",
     "code": "LU3",
     "meridianShort": "肺経",
-    "locationSimple": "天府（LU3）は、上腕前外側、上腕二頭筋外側縁、腋窩横紋前端の下方3寸。"
+    "locationSimple": "わきの前のしわから腕側へ3寸で、力こぶの外側の縁。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "lu4",
     "name": "侠白",
     "code": "LU4",
     "meridianShort": "肺経",
-    "locationSimple": "侠白（LU4）は、上腕前外側、上腕二頭筋外側縁、腋窩横紋前端の下方4寸。"
+    "locationSimple": "わきの前のしわから腕側へ4寸で、力こぶの外側の縁。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "shakutaku",
     "name": "尺沢",
     "code": "LU5",
     "meridianShort": "肺経",
-    "locationSimple": "肘の内側の横ジワ上で、力こぶの硬いスジ（上腕二頭筋腱）の親指側のくぼみ。"
+    "locationSimple": "ひじの前のしわの上で、力こぶから続くすじの親指側のくぼみ。"
   },
   {
     "id": "lu6",
     "name": "孔最",
     "code": "LU6",
     "meridianShort": "肺経",
-    "locationSimple": "孔最（LU6）は、前腕前外側、尺沢と太淵を結ぶ線上、手関節掌側横紋の上方7寸。"
+    "locationSimple": "手首のしわからひじ側へ7寸、尺沢と太淵を結ぶ線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "rekketsu",
     "name": "列缺",
     "code": "LU7",
     "meridianShort": "肺経",
-    "locationSimple": "左右の親指と人差し指のまたを交差させ、人差し指の先が橈骨の先端に当たる骨のくぼみ。"
+    "locationSimple": "手首の手のひら側のしわから1.5寸ひじ寄りで、親指につながる腱の溝。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "lu8",
     "name": "経渠",
     "code": "LU8",
     "meridianShort": "肺経",
-    "locationSimple": "経渠（LU8）は、前腕前外側、橈骨茎状突起の内側で橈骨動脈の拍動部、手関節掌側横紋の上方1寸。"
+    "locationSimple": "手首のしわから1寸ひじ寄りで、親指側の骨の突起と動脈の間。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "lu9",
     "name": "太淵",
     "code": "LU9",
     "meridianShort": "肺経",
-    "locationSimple": "太淵（LU9）は、手関節前外側、橈骨茎状突起と舟状骨の間の陥凹部、長母指外転筋腱の尺側、手関節掌側横紋上。"
+    "locationSimple": "手首の手のひら側の親指寄りで、前腕の骨と手首の小さな骨の間。"
   },
   {
     "id": "lu10",
     "name": "魚際",
     "code": "LU10",
     "meridianShort": "肺経",
-    "locationSimple": "魚際（LU10）は、手掌、第1中手骨中点の橈側、赤白肉際。"
+    "locationSimple": "親指につながる手のひらの骨の中ほどで、親指側の縁。"
   },
   {
     "id": "lu11",
@@ -89,14 +89,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "二間",
     "code": "LI2",
     "meridianShort": "大腸経",
-    "locationSimple": "二間（LI2）は、示指橈側、第2中手指節関節の遠位陥凹部、赤白肉際。"
+    "locationSimple": "人差し指の付け根の関節より指先側で、親指側の縁。"
   },
   {
     "id": "li3",
     "name": "三間",
     "code": "LI3",
     "meridianShort": "大腸経",
-    "locationSimple": "三間（LI3）は、示指橈側、第2中手指節関節の近位陥凹部、赤白肉際。"
+    "locationSimple": "人差し指の付け根の関節より手首側で、親指側のくぼみ。"
   },
   {
     "id": "gokoku",
@@ -110,343 +110,343 @@ export const ACUPOINT_LOOKUP = [
     "name": "陽渓",
     "code": "LI5",
     "meridianShort": "大腸経",
-    "locationSimple": "陽渓（LI5）は、手関節後外側、解剖学的嗅ぎタバコ入れ（スナッフボックス）の陥凹部。"
+    "locationSimple": "手の甲側の手首のしわの親指寄りで、親指へ続くすじの間のくぼみ。"
   },
   {
     "id": "li6",
     "name": "偏歴",
     "code": "LI6",
     "meridianShort": "大腸経",
-    "locationSimple": "偏歴（LI6）は、前腕後外側、陽渓と曲池を結ぶ線上、手関節背側横紋の上方3寸。"
+    "locationSimple": "手の甲側の手首のしわからひじへ3寸、陽渓と曲池を結ぶ線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "li7",
     "name": "温溜",
     "code": "LI7",
     "meridianShort": "大腸経",
-    "locationSimple": "温溜（LI7）は、前腕後外側、陽渓と曲池を結ぶ線上、手関節背側横紋の上方5寸。"
+    "locationSimple": "手の甲側の手首のしわからひじへ5寸、陽渓と曲池を結ぶ線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "li8",
     "name": "下廉",
     "code": "LI8",
     "meridianShort": "大腸経",
-    "locationSimple": "下廉（LI8）は、前腕後外側、陽渓と曲池を結ぶ線上、肘窩横紋の下方4寸。"
+    "locationSimple": "ひじのしわから手首へ4寸、曲池と陽渓を結ぶ線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "li9",
     "name": "上廉",
     "code": "LI9",
     "meridianShort": "大腸経",
-    "locationSimple": "上廉（LI9）は、前腕後外側、陽渓と曲池を結ぶ線上、肘窩横紋の下方3寸。"
+    "locationSimple": "ひじのしわから手首へ3寸、曲池と陽渓を結ぶ線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "tesanri",
     "name": "手三里",
     "code": "LI10",
     "meridianShort": "大腸経",
-    "locationSimple": "肘の曲がり角の外側（曲池）から、手首に向かって指3本分下がったところ。"
+    "locationSimple": "ひじのしわから手首へ2寸、曲池と陽渓を結ぶ線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "kyokuchi",
     "name": "曲池",
     "code": "LI11",
     "meridianShort": "大腸経",
-    "locationSimple": "肘を深く曲げたときにできる外側のしわの先端のくぼみ。"
+    "locationSimple": "ひじの外側で、尺沢と外側に出る骨との中間。"
   },
   {
     "id": "li12",
     "name": "肘髎",
     "code": "LI12",
     "meridianShort": "大腸経",
-    "locationSimple": "肘髎（LI12）は、肘後外側、上腕骨外側上顆の上縁、上腕骨外側顆上稜の前縁。"
+    "locationSimple": "ひじ外側の骨の出っ張りより肩側で、骨の稜のすぐ前。"
   },
   {
     "id": "li13",
     "name": "手五里",
     "code": "LI13",
     "meridianShort": "大腸経",
-    "locationSimple": "手五里（LI13）は、上腕外側、曲池と肩髃を結ぶ線上、肘窩横紋の上方3寸。"
+    "locationSimple": "ひじのしわから肩へ3寸、曲池と肩髃を結ぶ腕の外側の線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "li14",
     "name": "臂臑",
     "code": "LI14",
     "meridianShort": "大腸経",
-    "locationSimple": "臂臑（LI14）は、上腕外側、三角筋の前縁、曲池の上方7寸。"
+    "locationSimple": "曲池から肩へ7寸で、肩から二の腕へ広がる筋肉の前の縁。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "li15",
     "name": "肩髃",
     "code": "LI15",
     "meridianShort": "大腸経",
-    "locationSimple": "肩髃（LI15）は、肩周囲部、肩峰外縁の前端と大結節の間の陥凹部。"
+    "locationSimple": "肩の外の骨の前端と、腕の骨の上のふくらみの間。"
   },
   {
     "id": "li16",
     "name": "巨骨",
     "code": "LI16",
     "meridianShort": "大腸経",
-    "locationSimple": "巨骨（LI16）は、肩周囲部、鎖骨肩峰端と肩甲棘の間の陥凹部。"
+    "locationSimple": "鎖骨の肩側の端と肩甲骨の横に走る骨の間。"
   },
   {
     "id": "li17",
     "name": "天鼎",
     "code": "LI17",
     "meridianShort": "大腸経",
-    "locationSimple": "天鼎（LI17）は、前頸部、輪状軟骨と同じ高さ、胸鎖乳突筋の後縁。"
+    "locationSimple": "のどぼとけの下の輪状の軟骨の高さで、首の斜めの筋肉の後ろの縁。"
   },
   {
     "id": "li18",
     "name": "扶突",
     "code": "LI18",
     "meridianShort": "大腸経",
-    "locationSimple": "扶突（LI18）は、前頸部、甲状軟骨上縁と同じ高さ、胸鎖乳突筋の前縁と後縁の間の中点。"
+    "locationSimple": "のどぼとけの上縁と同じ高さで、首の斜めの筋肉の幅の中。"
   },
   {
     "id": "li19",
     "name": "口禾髎",
     "code": "LI19",
     "meridianShort": "大腸経",
-    "locationSimple": "口禾髎（LI19）は、顔面部、人中溝の中点と同じ高さ、鼻孔外縁の直下。"
+    "locationSimple": "鼻の穴の外縁の真下で、人中の中ほどと同じ高さ。"
   },
   {
     "id": "li20",
     "name": "迎香",
     "code": "LI20",
     "meridianShort": "大腸経",
-    "locationSimple": "迎香（LI20）は、顔面部、鼻翼外縁の中点と同じ高さ、鼻唇溝中。"
+    "locationSimple": "小鼻の外のふくらみの中ほどと同じ高さで、頬へ続く溝。"
   },
   {
     "id": "st1",
     "name": "承泣",
     "code": "ST1",
     "meridianShort": "胃経",
-    "locationSimple": "承泣（ST1）は、頭部、眼球と眼窩下縁の間、瞳孔の直下。"
+    "locationSimple": "黒目の中心の真下で、目と目のまわりの骨の下縁の間。"
   },
   {
     "id": "st2",
     "name": "四白",
     "code": "ST2",
     "meridianShort": "胃経",
-    "locationSimple": "四白（ST2）は、顔面部、眼窩下孔部、瞳孔の直下。"
+    "locationSimple": "黒目の真下の頬で、目のまわりの骨の縁より少し下。"
   },
   {
     "id": "st3",
     "name": "巨髎",
     "code": "ST3",
     "meridianShort": "胃経",
-    "locationSimple": "巨髎（ST3）は、顔面部、瞳孔の直下、鼻翼下縁と同じ高さ。"
+    "locationSimple": "瞳の中心の真下で、小鼻の下端と同じ高さ。"
   },
   {
     "id": "st4",
     "name": "地倉",
     "code": "ST4",
     "meridianShort": "胃経",
-    "locationSimple": "地倉（ST4）は、顔面部、口角の外方0.4寸。"
+    "locationSimple": "口角から頬の方へわずかにずれた位置。"
   },
   {
     "id": "st5",
     "name": "大迎",
     "code": "ST5",
     "meridianShort": "胃経",
-    "locationSimple": "大迎（ST5）は、頭部、下顎角の前方、咬筋付着部の前方陥凹部、顔面動脈の拍動部。"
+    "locationSimple": "下あごの角の少し前で、かむ筋肉が骨につく位置の前のくぼみ。"
   },
   {
     "id": "st6",
     "name": "頬車",
     "code": "ST6",
     "meridianShort": "胃経",
-    "locationSimple": "頬車（ST6）は、頭部、下顎角の前上方1横指（中指）。噛みしめると咬筋が隆起するところ。"
+    "locationSimple": "下あごの角から斜め前上へ中指の幅ほど進んだところ。"
   },
   {
     "id": "st7",
     "name": "下関",
     "code": "ST7",
     "meridianShort": "胃経",
-    "locationSimple": "下関（ST7）は、頭部、頬骨弓の下縁中央と下顎切痕の間の陥凹部。"
+    "locationSimple": "耳の少し前で、頬骨の弓の下にあるくぼみ。"
   },
   {
     "id": "st8",
     "name": "頭維",
     "code": "ST8",
     "meridianShort": "胃経",
-    "locationSimple": "頭維（ST8）は、頭部、額角髪際の上方0.5寸、前神庭の外方4.5寸。"
+    "locationSimple": "額の横の生え際の角より0.5寸上、頭の中央線から横へ4.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st9",
     "name": "人迎",
     "code": "ST9",
     "meridianShort": "胃経",
-    "locationSimple": "人迎（ST9）は、前頸部、甲状軟骨上縁と同じ高さ、胸鎖乳突筋の前縁、総頸動脈の拍動部。"
+    "locationSimple": "のどぼとけの上縁の高さで、首の斜めの筋肉の前縁。"
   },
   {
     "id": "st10",
     "name": "水突",
     "code": "ST10",
     "meridianShort": "胃経",
-    "locationSimple": "水突（ST10）は、前頸部、輪状軟骨と同じ高さ、胸鎖乳突筋の前縁。"
+    "locationSimple": "のどぼとけより下の輪状の軟骨の高さで、首の斜めの筋肉の前縁。"
   },
   {
     "id": "st11",
     "name": "気舎",
     "code": "ST11",
     "meridianShort": "胃経",
-    "locationSimple": "気舎（ST11）は、前頸部、小鎖骨上窩、鎖骨胸骨端の上方、胸鎖乳突筋の胸骨頭と鎖骨頭の間の陥凹部。"
+    "locationSimple": "胸の中央に近い鎖骨の上で、首の斜めの筋肉が二手に分かれる間。"
   },
   {
     "id": "st12",
     "name": "缺盆",
     "code": "ST12",
     "meridianShort": "胃経",
-    "locationSimple": "缺盆（ST12）は、前頸部、大鎖骨上窩、鎖骨上方の陥凹部、前正中線の外方4寸。"
+    "locationSimple": "首の中央から横へ4寸で、鎖骨の上のくぼみ。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st13",
     "name": "気戸",
     "code": "ST13",
     "meridianShort": "胃経",
-    "locationSimple": "気戸（ST13）は、前胸部、鎖骨下縁、前正中線の外方4寸。"
+    "locationSimple": "胸の中央線から横へ4寸で、鎖骨のすぐ下。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st14",
     "name": "庫房",
     "code": "ST14",
     "meridianShort": "胃経",
-    "locationSimple": "庫房（ST14）は、前胸部、第1肋間、前正中線の外方4寸。"
+    "locationSimple": "胸の中央線から横へ4寸で、上から数えて第1肋間（第1肋骨と第2肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st15",
     "name": "屋翳",
     "code": "ST15",
     "meridianShort": "胃経",
-    "locationSimple": "屋翳（ST15）は、前胸部、第2肋間、前正中線の外方4寸。"
+    "locationSimple": "胸の中央線から横へ4寸で、上から数えて第2肋間（第2肋骨と第3肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st16",
     "name": "膺窓",
     "code": "ST16",
     "meridianShort": "胃経",
-    "locationSimple": "膺窓（ST16）は、前胸部、第3肋間、前正中線の外方4寸。"
+    "locationSimple": "胸の中央線から横へ4寸で、上から数えて第3肋間（第3肋骨と第4肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st17",
     "name": "乳中",
     "code": "ST17",
     "meridianShort": "胃経",
-    "locationSimple": "乳中（ST17）は、前胸部、第4肋間、乳頭中央。"
+    "locationSimple": "乳頭の中央。"
   },
   {
     "id": "st18",
     "name": "乳根",
     "code": "ST18",
     "meridianShort": "胃経",
-    "locationSimple": "乳根（ST18）は、前胸部、第5肋間、前正中線の外方4寸。"
+    "locationSimple": "胸の中央線から横へ4寸で、上から数えて第5肋間（第5肋骨と第6肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st19",
     "name": "不容",
     "code": "ST19",
     "meridianShort": "胃経",
-    "locationSimple": "不容（ST19）は、上腹部、臍中央の上方6寸、前正中線の外方2寸。"
+    "locationSimple": "おへその中心から上へ6寸で、そこからおなかの中央線の横へ2寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st20",
     "name": "承満",
     "code": "ST20",
     "meridianShort": "胃経",
-    "locationSimple": "承満（ST20）は、上腹部、臍中央の上方5寸、前正中線の外方2寸。"
+    "locationSimple": "おへその中心から上へ5寸で、そこからおなかの中央線の横へ2寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st21",
     "name": "梁門",
     "code": "ST21",
     "meridianShort": "胃経",
-    "locationSimple": "梁門（ST21）は、上腹部、臍中央の上方4寸、前正中線の外方2寸。"
+    "locationSimple": "おへその中心から上へ4寸で、そこからおなかの中央線の横へ2寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st22",
     "name": "関門",
     "code": "ST22",
     "meridianShort": "胃経",
-    "locationSimple": "関門（ST22）は、上腹部、臍中央の上方3寸、前正中線の外方2寸。"
+    "locationSimple": "おへその中心から上へ3寸で、そこからおなかの中央線の横へ2寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st23",
     "name": "太乙",
     "code": "ST23",
     "meridianShort": "胃経",
-    "locationSimple": "太乙（ST23）は、上腹部、臍中央の上方2寸、前正中線の外方2寸。"
+    "locationSimple": "おへその中心から上へ2寸で、そこからおなかの中央線の横へ2寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st24",
     "name": "滑肉門",
     "code": "ST24",
     "meridianShort": "胃経",
-    "locationSimple": "滑肉門（ST24）は、上腹部、臍中央の上方1寸、前正中線の外方2寸。"
+    "locationSimple": "おへその中心から上へ1寸で、そこからおなかの中央線の横へ2寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "tensu",
     "name": "天枢",
     "code": "ST25",
     "meridianShort": "胃経",
-    "locationSimple": "おへそから指3本分（2寸）外側にあるツボ。"
+    "locationSimple": "おへその中心と同じ高さで、そこからおなかの中央線の横へ2寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st26",
     "name": "外陵",
     "code": "ST26",
     "meridianShort": "胃経",
-    "locationSimple": "外陵（ST26）は、下腹部、臍中央の下方1寸、前正中線の外方2寸。"
+    "locationSimple": "おへその中心から下へ1寸で、そこからおなかの中央線の横へ2寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st27",
     "name": "大巨",
     "code": "ST27",
     "meridianShort": "胃経",
-    "locationSimple": "大巨（ST27）は、下腹部、臍中央の下方2寸、前正中線の外方2寸。"
+    "locationSimple": "おへその中心から下へ2寸で、そこからおなかの中央線の横へ2寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st28",
     "name": "水道",
     "code": "ST28",
     "meridianShort": "胃経",
-    "locationSimple": "水道（ST28）は、下腹部、臍中央の下方3寸、前正中線の外方2寸。"
+    "locationSimple": "おへその中心から下へ3寸で、そこからおなかの中央線の横へ2寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st29",
     "name": "帰来",
     "code": "ST29",
     "meridianShort": "胃経",
-    "locationSimple": "帰来（ST29）は、下腹部、臍中央の下方4寸、前正中線の外方2寸。"
+    "locationSimple": "おへその中心から下へ4寸で、そこからおなかの中央線の横へ2寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st30",
     "name": "気衝",
     "code": "ST30",
     "meridianShort": "胃経",
-    "locationSimple": "気衝（ST30）は、鼠径部、恥骨結合上縁と同じ高さ、前正中線の外方2寸、大腿動脈拍動部。"
+    "locationSimple": "恥骨の上端と同じ高さで、下腹部の中央線の横へ2寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st31",
     "name": "髀関",
     "code": "ST31",
     "meridianShort": "胃経",
-    "locationSimple": "髀関（ST31）は、大腿前面、上前腸骨棘と膝蓋骨底外端を結ぶ線上、殿溝と同じ高さの陥凹部。"
+    "locationSimple": "太ももの前の上部で、三つの筋肉が集まるくぼみ。"
   },
   {
     "id": "st32",
     "name": "伏兎",
     "code": "ST32",
     "meridianShort": "胃経",
-    "locationSimple": "伏兎（ST32）は、大腿前外側、上前腸骨棘と膝蓋骨外端を結ぶ線上、膝蓋骨底の上方6寸。"
+    "locationSimple": "ひざのお皿の上外側と骨盤の前端を結ぶ線で、お皿の上縁から上へ6寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st33",
     "name": "陰市",
     "code": "ST33",
     "meridianShort": "胃経",
-    "locationSimple": "陰市（ST33）は、大腿前外側、大腿直筋腱の外側、膝蓋骨底の上方3寸。"
+    "locationSimple": "ひざのお皿の上縁から上へ3寸で、太ももの前の腱の外側。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st34",
@@ -607,133 +607,133 @@ export const ACUPOINT_LOOKUP = [
     "name": "箕門",
     "code": "SP11",
     "meridianShort": "脾経",
-    "locationSimple": "箕門（SP11）は、大腿内側、縫工筋と薄筋の間、大腿動脈拍動部、膝蓋骨底内端の上方8寸。"
+    "locationSimple": "太ももの内側で、衝門からひざのお皿の内上端へ向かう線の上から3分の1。"
   },
   {
     "id": "sp12",
     "name": "衝門",
     "code": "SP12",
     "meridianShort": "脾経",
-    "locationSimple": "衝門（SP12）は、鼠径部、恥骨結合上縁と同じ高さ、前正中線の外方3.5寸、大腿動脈の拍動部の外側。"
+    "locationSimple": "脚の付け根のしわにあり、太ももへ向かう動脈より外側。"
   },
   {
     "id": "sp13",
     "name": "府舎",
     "code": "SP13",
     "meridianShort": "脾経",
-    "locationSimple": "府舎（SP13）は、下腹部、臍中央の下方4.3寸、前正中線の外方4寸。"
+    "locationSimple": "おへその中心から下へ4.3寸で、そこからおなかの中央線の横へ4寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "sp14",
     "name": "腹結",
     "code": "SP14",
     "meridianShort": "脾経",
-    "locationSimple": "腹結（SP14）は、下腹部、臍中央の下方1.3寸、前正中線の外方4寸。"
+    "locationSimple": "おへその中心から下へ1.3寸で、そこからおなかの中央線の横へ4寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "sp15",
     "name": "大横",
     "code": "SP15",
     "meridianShort": "脾経",
-    "locationSimple": "大横（SP15）は、上腹部、臍中央の外方4寸。"
+    "locationSimple": "おへその中心と同じ高さで、そこからおなかの中央線の横へ4寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "sp16",
     "name": "腹哀",
     "code": "SP16",
     "meridianShort": "脾経",
-    "locationSimple": "腹哀（SP16）は、上腹部、臍中央の上方3寸、前正中線の外方4寸。"
+    "locationSimple": "おへその中心から上へ3寸で、そこからおなかの中央線の横へ4寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "sp17",
     "name": "食竇",
     "code": "SP17",
     "meridianShort": "脾経",
-    "locationSimple": "食竇（SP17）は、前胸部、第5肋間、前正中線の外方6寸。"
+    "locationSimple": "胸の中央線から横へ6寸で、上から数えて第5肋間（第5肋骨と第6肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "sp18",
     "name": "天渓",
     "code": "SP18",
     "meridianShort": "脾経",
-    "locationSimple": "天渓（SP18）は、前胸部、第4肋間、前正中線の外方6寸。"
+    "locationSimple": "胸の中央線から横へ6寸で、上から数えて第4肋間（第4肋骨と第5肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "sp19",
     "name": "胸郷",
     "code": "SP19",
     "meridianShort": "脾経",
-    "locationSimple": "胸郷（SP19）は、前胸部、第3肋間、前正中線の外方6寸。"
+    "locationSimple": "胸の中央線から横へ6寸で、上から数えて第3肋間（第3肋骨と第4肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "sp20",
     "name": "周栄",
     "code": "SP20",
     "meridianShort": "脾経",
-    "locationSimple": "周栄（SP20）は、前胸部、第2肋間、前正中線の外方6寸。"
+    "locationSimple": "胸の中央線から横へ6寸で、上から数えて第2肋間（第2肋骨と第3肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "sp21",
     "name": "大包",
     "code": "SP21",
     "meridianShort": "脾経",
-    "locationSimple": "大包（SP21）は、側胸部、第6肋間、中腋窩線上。"
+    "locationSimple": "わきの中央から真下に下りた線で、第6肋間。"
   },
   {
     "id": "ht1",
     "name": "極泉",
     "code": "HT1",
     "meridianShort": "心経",
-    "locationSimple": "極泉（HT1）は、腋窩中央、腋窩動脈拍動部。"
+    "locationSimple": "わきのくぼみの中央。"
   },
   {
     "id": "ht2",
     "name": "青霊",
     "code": "HT2",
     "meridianShort": "心経",
-    "locationSimple": "青霊（HT2）は、上腕内側、上腕二頭筋内側縁、肘窩横紋の上方3寸。"
+    "locationSimple": "ひじの内側のしわから3寸肩寄りで、力こぶの内側の縁。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ht3",
     "name": "少海",
     "code": "HT3",
     "meridianShort": "心経",
-    "locationSimple": "少海（HT3）は、肘前内側、上腕骨内側上顆の前下方、肘窩横紋と同じ高さ。"
+    "locationSimple": "ひじの前のしわと同じ高さで、内側に出ている骨のすぐ前。"
   },
   {
     "id": "ht4",
     "name": "霊道",
     "code": "HT4",
     "meridianShort": "心経",
-    "locationSimple": "霊道（HT4）は、前腕前内側、尺側手根屈筋腱の橈側縁、手関節掌側横紋の上方1.5寸。"
+    "locationSimple": "手首のしわからひじへ1.5寸で、小指側のすじの親指寄り。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ht5",
     "name": "通里",
     "code": "HT5",
     "meridianShort": "心経",
-    "locationSimple": "通里（HT5）は、前腕前内側、尺側手根屈筋腱の橈側縁、手関節掌側横紋の上方1寸。"
+    "locationSimple": "手首のしわからひじへ1寸で、小指側のすじの親指寄り。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ht6",
     "name": "陰郄",
     "code": "HT6",
     "meridianShort": "心経",
-    "locationSimple": "陰郄（HT6）は、前腕前内側、尺側手根屈筋腱の橈側縁、手関節掌側横紋の上方0.5寸。"
+    "locationSimple": "手首のしわからひじへ0.5寸で、小指側のすじの親指寄り。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "shinmon",
     "name": "神門",
     "code": "HT7",
     "meridianShort": "心経",
-    "locationSimple": "手のひら側、手首の小指側の腱の内側にあるくぼみ。"
+    "locationSimple": "手のひら側の手首のしわの上で、小指側のすじの親指寄り。"
   },
   {
     "id": "ht8",
     "name": "少府",
     "code": "HT8",
     "meridianShort": "心経",
-    "locationSimple": "少府（HT8）は、手掌、第4・第5中手骨間、第4・第5中手指節関節の近位陥凹部。"
+    "locationSimple": "薬指と小指につながる骨の間で、小指の付け根より手首側。"
   },
   {
     "id": "ht9",
@@ -754,392 +754,392 @@ export const ACUPOINT_LOOKUP = [
     "name": "前谷",
     "code": "SI2",
     "meridianShort": "小腸経",
-    "locationSimple": "前谷（SI2）は、小指尺側、第5中手指節関節の遠位陥凹部、赤白肉際。"
+    "locationSimple": "小指の付け根の関節より指先側で、手の外縁。"
   },
   {
     "id": "koukei",
     "name": "後渓",
     "code": "SI3",
     "meridianShort": "小腸経",
-    "locationSimple": "手を軽く握ったとき、小指の付け根の外側にできる横ジワの端の盛り上がり。"
+    "locationSimple": "小指の付け根の関節より手首側で、手の外縁のくぼみ。"
   },
   {
     "id": "si4",
     "name": "腕骨",
     "code": "SI4",
     "meridianShort": "小腸経",
-    "locationSimple": "腕骨（SI4）は、手関節後内側、第5中手骨底と三角骨の間の陥凹部、赤白肉際。"
+    "locationSimple": "手の甲の小指側で、小指につながる骨の手首側の端と手首の小さな骨の間。"
   },
   {
     "id": "si5",
     "name": "陽谷",
     "code": "SI5",
     "meridianShort": "小腸経",
-    "locationSimple": "陽谷（SI5）は、手関節後内側、尺骨茎状突起と三角骨の間の陥凹部。"
+    "locationSimple": "手首の甲側の小指寄りで、腕の骨の突起と手首の小さな骨の間。"
   },
   {
     "id": "si6",
     "name": "養老",
     "code": "SI6",
     "meridianShort": "小腸経",
-    "locationSimple": "養老（SI6）は、前腕後内側、尺骨頭の橈側の陥凹部、手関節背側横紋の上方1寸。"
+    "locationSimple": "手の甲側の手首のしわから1寸ひじ寄りで、小指側の丸い骨の親指側。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "si7",
     "name": "支正",
     "code": "SI7",
     "meridianShort": "小腸経",
-    "locationSimple": "支正（SI7）は、前腕後内側、尺骨内縁と尺側手根屈筋の間、手関節背側横紋の上方5寸。"
+    "locationSimple": "手の甲側の手首のしわから5寸ひじ寄りで、小指側の骨と筋肉の境。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "si8",
     "name": "小海",
     "code": "SI8",
     "meridianShort": "小腸経",
-    "locationSimple": "小海（SI8）は、肘後内側、肘頭と上腕骨内側上顆の間の陥凹部（尺骨神経溝）。"
+    "locationSimple": "ひじの内側で、ひじの尖った骨と内側の骨の出っ張りの間。"
   },
   {
     "id": "si9",
     "name": "肩貞",
     "code": "SI9",
     "meridianShort": "小腸経",
-    "locationSimple": "肩貞（SI9）は、肩周囲部、腋窩横紋後端の上方1寸。"
+    "locationSimple": "肩関節の後ろ下で、わきの後ろのしわから1寸上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "si10",
     "name": "臑兪",
     "code": "SI10",
     "meridianShort": "小腸経",
-    "locationSimple": "臑兪（SI10）は、肩周囲部、肩甲棘下縁と肩甲骨関節窩の間の陥凹部。"
+    "locationSimple": "わきの後ろのしわの上で、肩甲骨を横切る隆起より下のくぼみ。"
   },
   {
     "id": "si11",
     "name": "天宗",
     "code": "SI11",
     "meridianShort": "小腸経",
-    "locationSimple": "天宗（SI11）は、肩甲部、肩甲棘中点と肩甲骨下角を結ぶ線の上から1/3の陥凹部。"
+    "locationSimple": "肩甲骨の横の隆起の中央から、下の角へ向かう線の上から3分の1。"
   },
   {
     "id": "si12",
     "name": "秉風",
     "code": "SI12",
     "meridianShort": "小腸経",
-    "locationSimple": "秉風（SI12）は、肩甲部、棘上窩、肩甲棘の中点の上方。"
+    "locationSimple": "肩甲骨を横切る骨の中央より上のくぼみ。"
   },
   {
     "id": "si13",
     "name": "曲垣",
     "code": "SI13",
     "meridianShort": "小腸経",
-    "locationSimple": "曲垣（SI13）は、肩甲部、肩甲棘の内端の上方陥凹部。"
+    "locationSimple": "肩甲骨を横切る隆起の、背骨寄りの端の上のくぼみ。"
   },
   {
     "id": "si14",
     "name": "肩外兪",
     "code": "SI14",
     "meridianShort": "小腸経",
-    "locationSimple": "肩外兪（SI14）は、上背部、第1胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。"
+    "locationSimple": "第1胸椎の突起の下端と同じ高さで、背骨の中央から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "si15",
     "name": "肩中兪",
     "code": "SI15",
     "meridianShort": "小腸経",
-    "locationSimple": "肩中兪（SI15）は、上背部、第7頸椎棘突起下縁と同じ高さ、後正中線の外方2寸。"
+    "locationSimple": "第7頸椎の突起の下端と同じ高さで、背骨の中央から横へ2寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "si16",
     "name": "天窓",
     "code": "SI16",
     "meridianShort": "小腸経",
-    "locationSimple": "天窓（SI16）は、前頸部、胸鎖乳突筋の後縁、甲状軟骨上縁と同じ高さ。"
+    "locationSimple": "のどぼとけの上縁と同じ高さで、首の斜めの筋肉の後ろ。"
   },
   {
     "id": "si17",
     "name": "天容",
     "code": "SI17",
     "meridianShort": "小腸経",
-    "locationSimple": "天容（SI17）は、前頸部、下顎角の後方、胸鎖乳突筋の前縁陥凹部。"
+    "locationSimple": "下あごの角の後ろで、首の斜めの筋肉の前のくぼみ。"
   },
   {
     "id": "si18",
     "name": "顴髎",
     "code": "SI18",
     "meridianShort": "小腸経",
-    "locationSimple": "顴髎（SI18）は、顔面部、頬骨下縁の陥凹部、外眼角の直下。"
+    "locationSimple": "目尻の真下で、頬骨のすぐ下にあるくぼみ。"
   },
   {
     "id": "si19",
     "name": "聴宮",
     "code": "SI19",
     "meridianShort": "小腸経",
-    "locationSimple": "聴宮（SI19）は、頭部、耳珠中央の前方、下顎骨関節突起の後方の陥凹部。"
+    "locationSimple": "耳の穴の前にある突起の中央と、下あごの関節の間。"
   },
   {
     "id": "bl1",
     "name": "睛明",
     "code": "BL1",
     "meridianShort": "膀胱経",
-    "locationSimple": "睛明（BL1）は、頭部、内眼角の内上方0.1寸、眼窩内側壁の間。"
+    "locationSimple": "目頭のすぐ斜め上の鼻寄りで、目と骨の間の浅いくぼみ。"
   },
   {
     "id": "bl2",
     "name": "攅竹",
     "code": "BL2",
     "meridianShort": "膀胱経",
-    "locationSimple": "攅竹（BL2）は、頭部、眉弓の内端、前頭切痕の陥凹部。"
+    "locationSimple": "眉の内側の端にあるくぼみ。"
   },
   {
     "id": "bl3",
     "name": "眉衝",
     "code": "BL3",
     "meridianShort": "膀胱経",
-    "locationSimple": "眉衝（BL3）は、頭部、前髪際の上方0.5寸、前正中線の外方0.75寸。"
+    "locationSimple": "眉の内端の上方で、額の生え際から0.5寸入った頭皮。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl4",
     "name": "曲差",
     "code": "BL4",
     "meridianShort": "膀胱経",
-    "locationSimple": "曲差（BL4）は、頭部、前髪際の上方0.5寸、前正中線の外方1.5寸。"
+    "locationSimple": "額の生え際から0.5寸内側で、頭の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl5",
     "name": "五処",
     "code": "BL5",
     "meridianShort": "膀胱経",
-    "locationSimple": "五処（BL5）は、頭部、前髪際の上方1寸、前正中線の外方1.5寸。"
+    "locationSimple": "額の生え際から頭頂側へ1寸、中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl6",
     "name": "承光",
     "code": "BL6",
     "meridianShort": "膀胱経",
-    "locationSimple": "承光（BL6）は、頭部、前髪際の上方2.5寸、前正中線の外方1.5寸。"
+    "locationSimple": "額の生え際から頭頂側へ2.5寸、中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl7",
     "name": "通天",
     "code": "BL7",
     "meridianShort": "膀胱経",
-    "locationSimple": "通天（BL7）は、頭部、前髪際の上方4寸、前正中線の外方1.5寸。"
+    "locationSimple": "額の生え際から頭頂側へ4寸、中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl8",
     "name": "絡却",
     "code": "BL8",
     "meridianShort": "膀胱経",
-    "locationSimple": "絡却（BL8）は、頭部、前髪際の上方5.5寸、前正中線の外方1.5寸。"
+    "locationSimple": "額の生え際から頭頂を越す方向へ5.5寸、中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl9",
     "name": "玉枕",
     "code": "BL9",
     "meridianShort": "膀胱経",
-    "locationSimple": "玉枕（BL9）は、頭部、外後頭隆起上縁と同じ高さ、後正中線の外方1.3寸。"
+    "locationSimple": "後頭部の骨の出っ張りの上縁と同じ高さで、中央線から横へ1.3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl10",
     "name": "天柱",
     "code": "BL10",
     "meridianShort": "膀胱経",
-    "locationSimple": "天柱（BL10）は、後頸部、第2頸椎棘突起上縁と同じ高さ、僧帽筋外縁の陥凹部。"
+    "locationSimple": "うなじで、首の第2の骨の高さにある首筋の外のくぼみ。"
   },
   {
     "id": "bl11",
     "name": "大杼",
     "code": "BL11",
     "meridianShort": "膀胱経",
-    "locationSimple": "大杼（BL11）は、上背部、第1胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。"
+    "locationSimple": "第1胸椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl12",
     "name": "風門",
     "code": "BL12",
     "meridianShort": "膀胱経",
-    "locationSimple": "風門（BL12）は、上背部、第2胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。"
+    "locationSimple": "第2胸椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl13",
     "name": "肺兪",
     "code": "BL13",
     "meridianShort": "膀胱経",
-    "locationSimple": "肺兪（BL13）は、上背部、第3胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。"
+    "locationSimple": "第3胸椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl14",
     "name": "厥陰兪",
     "code": "BL14",
     "meridianShort": "膀胱経",
-    "locationSimple": "厥陰兪（BL14）は、上背部、第4胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。"
+    "locationSimple": "第4胸椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl15",
     "name": "心兪",
     "code": "BL15",
     "meridianShort": "膀胱経",
-    "locationSimple": "心兪（BL15）は、上背部、第5胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。"
+    "locationSimple": "第5胸椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl16",
     "name": "督兪",
     "code": "BL16",
     "meridianShort": "膀胱経",
-    "locationSimple": "督兪（BL16）は、上背部、第6胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。"
+    "locationSimple": "第6胸椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "kakuyu",
     "name": "膈兪",
     "code": "BL17",
     "meridianShort": "膀胱経",
-    "locationSimple": "肩甲骨の下の角（下角）を結んだ背骨の高さから、左右へ指2本分外側。"
+    "locationSimple": "第7胸椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "kanyu",
     "name": "肝兪",
     "code": "BL18",
     "meridianShort": "膀胱経",
-    "locationSimple": "背中の第9胸椎（肩甲骨の下端のやや下）の突起から、指2本分（1.5寸）外側。"
+    "locationSimple": "第9胸椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl19",
     "name": "胆兪",
     "code": "BL19",
     "meridianShort": "膀胱経",
-    "locationSimple": "胆兪（BL19）は、中背部、第10胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。"
+    "locationSimple": "第10胸椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "hiyu",
     "name": "脾兪",
     "code": "BL20",
     "meridianShort": "膀胱経",
-    "locationSimple": "背中の第11胸椎（みぞおちの真裏あたり）の突起から、指2本分（1.5寸）外側。"
+    "locationSimple": "第11胸椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl21",
     "name": "胃兪",
     "code": "BL21",
     "meridianShort": "膀胱経",
-    "locationSimple": "胃兪（BL21）は、中背部、第12胸椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。"
+    "locationSimple": "第12胸椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl22",
     "name": "三焦兪",
     "code": "BL22",
     "meridianShort": "膀胱経",
-    "locationSimple": "三焦兪（BL22）は、腰部、第1腰椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。"
+    "locationSimple": "第1腰椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "jinyu",
     "name": "腎兪",
     "code": "BL23",
     "meridianShort": "膀胱経",
-    "locationSimple": "おへその真裏の背骨から、左右それぞれ指2本分外側にある筋肉の盛り上がり。"
+    "locationSimple": "第2腰椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl24",
     "name": "気海兪",
     "code": "BL24",
     "meridianShort": "膀胱経",
-    "locationSimple": "気海兪（BL24）は、腰部、第3腰椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。"
+    "locationSimple": "第3腰椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl25",
     "name": "大腸兪",
     "code": "BL25",
     "meridianShort": "膀胱経",
-    "locationSimple": "大腸兪（BL25）は、腰部、第4腰椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。"
+    "locationSimple": "第4腰椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl26",
     "name": "関元兪",
     "code": "BL26",
     "meridianShort": "膀胱経",
-    "locationSimple": "関元兪（BL26）は、腰部、第5腰椎棘突起下縁と同じ高さ、後正中線の外方1.5寸。"
+    "locationSimple": "第5腰椎の突起の下端と同じ高さで、背骨の中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl27",
     "name": "小腸兪",
     "code": "BL27",
     "meridianShort": "膀胱経",
-    "locationSimple": "小腸兪（BL27）は、仙骨部、第1仙骨孔と同じ高さ、正中仙骨稜の外方1.5寸。"
+    "locationSimple": "仙骨の上から1番目の孔と同じ高さで、仙骨の中央から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl28",
     "name": "膀胱兪",
     "code": "BL28",
     "meridianShort": "膀胱経",
-    "locationSimple": "膀胱兪（BL28）は、仙骨部、第2仙骨孔と同じ高さ、正中仙骨稜の外方1.5寸。"
+    "locationSimple": "仙骨の上から2番目の孔と同じ高さで、仙骨の中央から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl29",
     "name": "中膂兪",
     "code": "BL29",
     "meridianShort": "膀胱経",
-    "locationSimple": "中膂兪（BL29）は、仙骨部、第3仙骨孔と同じ高さ、正中仙骨稜の外方1.5寸。"
+    "locationSimple": "仙骨の上から3番目の孔と同じ高さで、仙骨の中央から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl30",
     "name": "白環兪",
     "code": "BL30",
     "meridianShort": "膀胱経",
-    "locationSimple": "白環兪（BL30）は、仙骨部、第4仙骨孔と同じ高さ、正中仙骨稜の外方1.5寸。"
+    "locationSimple": "仙骨の上から4番目の孔と同じ高さで、仙骨の中央から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl31",
     "name": "上髎",
     "code": "BL31",
     "meridianShort": "膀胱経",
-    "locationSimple": "上髎（BL31）は、仙骨部、第1後仙骨孔。"
+    "locationSimple": "腰の下の仙骨にある、上から1番目の左右一対の孔の位置。"
   },
   {
     "id": "bl32",
     "name": "次髎",
     "code": "BL32",
     "meridianShort": "膀胱経",
-    "locationSimple": "次髎（BL32）は、仙骨部、第2後仙骨孔。"
+    "locationSimple": "腰の下の仙骨にある、上から2番目の左右一対の孔の位置。"
   },
   {
     "id": "bl33",
     "name": "中髎",
     "code": "BL33",
     "meridianShort": "膀胱経",
-    "locationSimple": "中髎（BL33）は、仙骨部、第3後仙骨孔。"
+    "locationSimple": "腰の下の仙骨にある、上から3番目の左右一対の孔の位置。"
   },
   {
     "id": "bl34",
     "name": "下髎",
     "code": "BL34",
     "meridianShort": "膀胱経",
-    "locationSimple": "下髎（BL34）は、仙骨部、第4後仙骨孔。"
+    "locationSimple": "腰の下の仙骨にある、上から4番目の左右一対の孔の位置。"
   },
   {
     "id": "bl35",
     "name": "会陽",
     "code": "BL35",
     "meridianShort": "膀胱経",
-    "locationSimple": "会陽（BL35）は、臀部、尾骨下端の外方0.5寸。"
+    "locationSimple": "背骨のいちばん下の尾骨の先端と同じ高さで、中央から横へ0.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl36",
     "name": "承扶",
     "code": "BL36",
     "meridianShort": "膀胱経",
-    "locationSimple": "承扶（BL36）は、臀部、殿溝の中点。"
+    "locationSimple": "お尻と太ももの裏がつながる横じわの真ん中。"
   },
   {
     "id": "bl37",
     "name": "殷門",
     "code": "BL37",
     "meridianShort": "膀胱経",
-    "locationSimple": "殷門（BL37）は、大腿後面、大腿二頭筋と半腱様筋の間、殿溝の下方6寸。"
+    "locationSimple": "お尻の下のしわから6寸下で、太ももの裏の二つの筋肉の間。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl38",
     "name": "浮郄",
     "code": "BL38",
     "meridianShort": "膀胱経",
-    "locationSimple": "浮郄（BL38）は、膝後面、大腿二頭筋腱の内縁、膝窩横紋の上方1寸。"
+    "locationSimple": "ひざ裏のしわより1寸上で、外側のすじの少し中央寄り。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl39",
@@ -1160,98 +1160,98 @@ export const ACUPOINT_LOOKUP = [
     "name": "附分",
     "code": "BL41",
     "meridianShort": "膀胱経",
-    "locationSimple": "附分（BL41）は、上背部、第2胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。"
+    "locationSimple": "第2胸椎の突起の下端と同じ高さで、背骨の中央線から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl42",
     "name": "魄戸",
     "code": "BL42",
     "meridianShort": "膀胱経",
-    "locationSimple": "魄戸（BL42）は、上背部、第3胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。"
+    "locationSimple": "第3胸椎の突起の下端と同じ高さで、背骨の中央線から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl43",
     "name": "膏肓",
     "code": "BL43",
     "meridianShort": "膀胱経",
-    "locationSimple": "膏肓（BL43）は、上背部、第4胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。"
+    "locationSimple": "第4胸椎の突起の下端と同じ高さで、背骨の中央線から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl44",
     "name": "神堂",
     "code": "BL44",
     "meridianShort": "膀胱経",
-    "locationSimple": "神堂（BL44）は、上背部、第5胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。"
+    "locationSimple": "第5胸椎の突起の下端と同じ高さで、背骨の中央線から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl45",
     "name": "譩譆",
     "code": "BL45",
     "meridianShort": "膀胱経",
-    "locationSimple": "譩譆（BL45）は、上背部、第6胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。"
+    "locationSimple": "第6胸椎の突起の下端と同じ高さで、背骨の中央線から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl46",
     "name": "膈関",
     "code": "BL46",
     "meridianShort": "膀胱経",
-    "locationSimple": "膈関（BL46）は、上背部、第7胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。"
+    "locationSimple": "第7胸椎の突起の下端と同じ高さで、背骨の中央線から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl47",
     "name": "魂門",
     "code": "BL47",
     "meridianShort": "膀胱経",
-    "locationSimple": "魂門（BL47）は、中背部、第9胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。"
+    "locationSimple": "第9胸椎の突起の下端と同じ高さで、背骨の中央線から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl48",
     "name": "陽綱",
     "code": "BL48",
     "meridianShort": "膀胱経",
-    "locationSimple": "陽綱（BL48）は、中背部、第10胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。"
+    "locationSimple": "第10胸椎の突起の下端と同じ高さで、背骨の中央線から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl49",
     "name": "意舎",
     "code": "BL49",
     "meridianShort": "膀胱経",
-    "locationSimple": "意舎（BL49）は、中背部、第11胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。"
+    "locationSimple": "第11胸椎の突起の下端と同じ高さで、背骨の中央線から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl50",
     "name": "胃倉",
     "code": "BL50",
     "meridianShort": "膀胱経",
-    "locationSimple": "胃倉（BL50）は、中背部、第12胸椎棘突起下縁と同じ高さ、後正中線の外方3寸。"
+    "locationSimple": "第12胸椎の突起の下端と同じ高さで、背骨の中央線から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl51",
     "name": "肓門",
     "code": "BL51",
     "meridianShort": "膀胱経",
-    "locationSimple": "肓門（BL51）は、腰部、第1腰椎棘突起下縁と同じ高さ、後正中線の外方3寸。"
+    "locationSimple": "第1腰椎の突起の下端と同じ高さで、背骨の中央線から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl52",
     "name": "志室",
     "code": "BL52",
     "meridianShort": "膀胱経",
-    "locationSimple": "志室（BL52）は、腰部、第2腰椎棘突起下縁と同じ高さ、後正中線の外方3寸。"
+    "locationSimple": "第2腰椎の突起の下端と同じ高さで、背骨の中央線から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl53",
     "name": "胞肓",
     "code": "BL53",
     "meridianShort": "膀胱経",
-    "locationSimple": "胞肓（BL53）は、臀部、第2後仙骨孔と同じ高さ、正中仙骨稜の外方3寸。"
+    "locationSimple": "仙骨の上から2番目の孔と同じ高さで、仙骨の中央から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl54",
     "name": "秩辺",
     "code": "BL54",
     "meridianShort": "膀胱経",
-    "locationSimple": "秩辺（BL54）は、臀部、第4後仙骨孔と同じ高さ、正中仙骨稜の外方3寸。"
+    "locationSimple": "仙骨の上から4番目の孔と同じ高さで、仙骨の中央から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl55",
@@ -1419,140 +1419,140 @@ export const ACUPOINT_LOOKUP = [
     "name": "横骨",
     "code": "KI11",
     "meridianShort": "腎経",
-    "locationSimple": "横骨（KI11）は、下腹部、恥骨結合上縁と同じ高さ、前正中線の外方0.5寸。"
+    "locationSimple": "おへその中心から下へ5寸で、そこからおなかの中央線の横へ0.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki12",
     "name": "大赫",
     "code": "KI12",
     "meridianShort": "腎経",
-    "locationSimple": "大赫（KI12）は、下腹部、臍中央の下方4寸、前正中線の外方0.5寸。"
+    "locationSimple": "おへその中心から下へ4寸で、そこからおなかの中央線の横へ0.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki13",
     "name": "気穴",
     "code": "KI13",
     "meridianShort": "腎経",
-    "locationSimple": "気穴（KI13）は、下腹部、臍中央の下方3寸、前正中線の外方0.5寸。"
+    "locationSimple": "おへその中心から下へ3寸で、そこからおなかの中央線の横へ0.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki14",
     "name": "四満",
     "code": "KI14",
     "meridianShort": "腎経",
-    "locationSimple": "四満（KI14）は、下腹部、臍中央の下方2寸、前正中線の外方0.5寸。"
+    "locationSimple": "おへその中心から下へ2寸で、そこからおなかの中央線の横へ0.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki15",
     "name": "中注",
     "code": "KI15",
     "meridianShort": "腎経",
-    "locationSimple": "中注（KI15）は、下腹部、臍中央の下方1寸、前正中線の外方0.5寸。"
+    "locationSimple": "おへその中心から下へ1寸で、そこからおなかの中央線の横へ0.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki16",
     "name": "肓兪",
     "code": "KI16",
     "meridianShort": "腎経",
-    "locationSimple": "肓兪（KI16）は、上腹部、臍中央の外方0.5寸。"
+    "locationSimple": "おへその中心と同じ高さで、そこからおなかの中央線の横へ0.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki17",
     "name": "商曲",
     "code": "KI17",
     "meridianShort": "腎経",
-    "locationSimple": "商曲（KI17）は、上腹部、臍中央の上方2寸、前正中線の外方0.5寸。"
+    "locationSimple": "おへその中心から上へ2寸で、そこからおなかの中央線の横へ0.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki18",
     "name": "石関",
     "code": "KI18",
     "meridianShort": "腎経",
-    "locationSimple": "石関（KI18）は、上腹部、臍中央の上方3寸、前正中線の外方0.5寸。"
+    "locationSimple": "おへその中心から上へ3寸で、そこからおなかの中央線の横へ0.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki19",
     "name": "陰都",
     "code": "KI19",
     "meridianShort": "腎経",
-    "locationSimple": "陰都（KI19）は、上腹部、臍中央の上方4寸、前正中線の外方0.5寸。"
+    "locationSimple": "おへその中心から上へ4寸で、そこからおなかの中央線の横へ0.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki20",
     "name": "腹通谷",
     "code": "KI20",
     "meridianShort": "腎経",
-    "locationSimple": "腹通谷（KI20）は、上腹部、臍中央の上方5寸、前正中線の外方0.5寸。"
+    "locationSimple": "おへその中心から上へ5寸で、そこからおなかの中央線の横へ0.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki21",
     "name": "幽門",
     "code": "KI21",
     "meridianShort": "腎経",
-    "locationSimple": "幽門（KI21）は、上腹部、臍中央の上方6寸、前正中線の外方0.5寸。"
+    "locationSimple": "おへその中心から上へ6寸で、そこからおなかの中央線の横へ0.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki22",
     "name": "歩廊",
     "code": "KI22",
     "meridianShort": "腎経",
-    "locationSimple": "歩廊（KI22）は、前胸部、第5肋間、前正中線の外方2寸。"
+    "locationSimple": "胸の中央線から横へ2寸で、上から数えて第5肋間（第5肋骨と第6肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki23",
     "name": "神封",
     "code": "KI23",
     "meridianShort": "腎経",
-    "locationSimple": "神封（KI23）は、前胸部、第4肋間、前正中線の外方2寸。"
+    "locationSimple": "胸の中央線から横へ2寸で、上から数えて第4肋間（第4肋骨と第5肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki24",
     "name": "霊墟",
     "code": "KI24",
     "meridianShort": "腎経",
-    "locationSimple": "霊墟（KI24）は、前胸部、第3肋間、前正中線の外方2寸。"
+    "locationSimple": "胸の中央線から横へ2寸で、上から数えて第3肋間（第3肋骨と第4肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki25",
     "name": "神蔵",
     "code": "KI25",
     "meridianShort": "腎経",
-    "locationSimple": "神蔵（KI25）は、前胸部、第2肋間、前正中線の外方2寸。"
+    "locationSimple": "胸の中央線から横へ2寸で、上から数えて第2肋間（第2肋骨と第3肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki26",
     "name": "彧中",
     "code": "KI26",
     "meridianShort": "腎経",
-    "locationSimple": "彧中（KI26）は、前胸部、第1肋間、前正中線の外方2寸。"
+    "locationSimple": "胸の中央線から横へ2寸で、上から数えて第1肋間（第1肋骨と第2肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "ki27",
     "name": "兪府",
     "code": "KI27",
     "meridianShort": "腎経",
-    "locationSimple": "兪府（KI27）は、前胸部、鎖骨下縁、前正中線の外方2寸。"
+    "locationSimple": "胸の中央線から横へ2寸で、鎖骨のすぐ下。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "pc1",
     "name": "天池",
     "code": "PC1",
     "meridianShort": "心包経",
-    "locationSimple": "天池（PC1）は、前胸部、第4肋間、乳頭外方1寸。"
+    "locationSimple": "胸の中央線から横へ5寸で、上から数えて第4肋間（第4肋骨と第5肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "pc2",
     "name": "天泉",
     "code": "PC2",
     "meridianShort": "心包経",
-    "locationSimple": "天泉（PC2）は、上腕前面、上腕二頭筋長頭と短頭の間、腋窩横紋前端の下方2寸。"
+    "locationSimple": "わきの前のしわからひじへ2寸で、力こぶをつくる二つの筋の間。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "pc3",
     "name": "曲沢",
     "code": "PC3",
     "meridianShort": "心包経",
-    "locationSimple": "曲沢（PC3）は、肘前面、肘窩横紋上、上腕二頭筋腱の尺側縁。"
+    "locationSimple": "ひじの前のしわの上で、力こぶから続くすじの小指側のくぼみ。"
   },
   {
     "id": "pc4",
@@ -1587,7 +1587,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "労宮",
     "code": "PC8",
     "meridianShort": "心包経",
-    "locationSimple": "労宮（PC8）は、手掌、第2・第3中手骨間、中手指節関節の近位、拳を握ったとき中指の先端が当たるところ。"
+    "locationSimple": "人差し指と中指につながる骨の間で、指の付け根より手首側。"
   },
   {
     "id": "pc9",
@@ -1608,385 +1608,385 @@ export const ACUPOINT_LOOKUP = [
     "name": "液門",
     "code": "TE2",
     "meridianShort": "三焦経",
-    "locationSimple": "液門（TE2）は、手背、薬指と小指の間、みずかきの近位縁、赤白肉際。"
+    "locationSimple": "薬指と小指のまたのすぐ手首側。"
   },
   {
     "id": "te3",
     "name": "中渚",
     "code": "TE3",
     "meridianShort": "三焦経",
-    "locationSimple": "中渚（TE3）は、手背、第4・第5中手骨間、第4中手指節関節の近位陥凹部。"
+    "locationSimple": "薬指と小指につながる骨の間で、薬指の付け根より手首側。"
   },
   {
     "id": "te4",
     "name": "陽池",
     "code": "TE4",
     "meridianShort": "三焦経",
-    "locationSimple": "陽池（TE4）は、手関節後側、総指伸筋腱の尺側陥凹部、手関節背側横紋上。"
+    "locationSimple": "手の甲側の手首のしわで、指を伸ばすすじの小指側。"
   },
   {
     "id": "te5",
     "name": "外関",
     "code": "TE5",
     "meridianShort": "三焦経",
-    "locationSimple": "外関（TE5）は、前腕後面、橈骨と尺骨の骨間の中点、手関節背側横紋の上方2寸。"
+    "locationSimple": "手の甲側の手首のしわからひじへ2寸、前腕の2本の骨の間。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "te6",
     "name": "支溝",
     "code": "TE6",
     "meridianShort": "三焦経",
-    "locationSimple": "支溝（TE6）は、前腕後面、橈骨と尺骨の骨間の中点、手関節背側横紋の上方3寸。"
+    "locationSimple": "手の甲側の手首のしわからひじへ3寸、2本の骨の間の中央。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "te7",
     "name": "会宗",
     "code": "TE7",
     "meridianShort": "三焦経",
-    "locationSimple": "会宗（TE7）は、前腕後面、尺骨の橈側縁、手関節背側横紋の上方3寸。"
+    "locationSimple": "手の甲側の手首のしわからひじへ3寸、小指側の骨のすぐ親指側。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "te8",
     "name": "三陽絡",
     "code": "TE8",
     "meridianShort": "三焦経",
-    "locationSimple": "三陽絡（TE8）は、前腕後面、橈骨と尺骨の骨間の中点、手関節背側横紋の上方4寸。"
+    "locationSimple": "手の甲側の手首のしわからひじへ4寸、2本の骨の間。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "te9",
     "name": "四瀆",
     "code": "TE9",
     "meridianShort": "三焦経",
-    "locationSimple": "四瀆（TE9）は、前腕後面、橈骨と尺骨の骨間の中点、肘頭の下方5寸。"
+    "locationSimple": "ひじの裏の尖った骨から手首へ5寸、前腕の2本の骨の間。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "te10",
     "name": "天井",
     "code": "TE10",
     "meridianShort": "三焦経",
-    "locationSimple": "天井（TE10）は、肘後面、肘頭の上方1寸の陥凹部。"
+    "locationSimple": "ひじの後ろの出っ張りより肩へ1寸のくぼみ。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "te11",
     "name": "清冷淵",
     "code": "TE11",
     "meridianShort": "三焦経",
-    "locationSimple": "清冷淵（TE11）は、上腕後面、肘頭と肩峰角を結ぶ線上、肘頭の上方2寸。"
+    "locationSimple": "ひじの後ろの出っ張りより肩へ2寸、肩の外端と結ぶ線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "te12",
     "name": "消濼",
     "code": "TE12",
     "meridianShort": "三焦経",
-    "locationSimple": "消濼（TE12）は、上腕後面、肘頭と肩峰角を結ぶ線上、肘頭の上方5寸。"
+    "locationSimple": "ひじの後ろの出っ張りより肩へ5寸、肩の外端と結ぶ線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "te13",
     "name": "臑会",
     "code": "TE13",
     "meridianShort": "三焦経",
-    "locationSimple": "臑会（TE13）は、上腕後面、三角筋の後縁、肩峰角の下方3寸。"
+    "locationSimple": "肩の外端から下へ3寸で、肩の丸い筋肉の後ろ下の縁。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "te14",
     "name": "肩髎",
     "code": "TE14",
     "meridianShort": "三焦経",
-    "locationSimple": "肩髎（TE14）は、肩周囲部、肩峰角と上腕骨大結節の間の陥凹部。"
+    "locationSimple": "肩の外の骨の角と、上腕の骨の上のふくらみの間の後ろ寄り。"
   },
   {
     "id": "te15",
     "name": "天髎",
     "code": "TE15",
     "meridianShort": "三焦経",
-    "locationSimple": "天髎（TE15）は、肩甲部、肩甲骨上角の上方陥凹部、曲垣と肩井を結ぶ線の中点。"
+    "locationSimple": "肩甲骨の上内側の角のすぐ上のくぼみ。"
   },
   {
     "id": "te16",
     "name": "天牖",
     "code": "TE16",
     "meridianShort": "三焦経",
-    "locationSimple": "天牖（TE16）は、前頸部、下顎角と同じ高さ、胸鎖乳突筋の後縁。"
+    "locationSimple": "下あごの角と同じ高さで、首の斜めの筋肉の後ろのくぼみ。"
   },
   {
     "id": "te17",
     "name": "翳風",
     "code": "TE17",
     "meridianShort": "三焦経",
-    "locationSimple": "翳風（TE17）は、前頸部、耳垂後方、乳様突起下端前方の陥凹部。"
+    "locationSimple": "耳たぶの後ろで、耳の後ろの骨の下端より前のくぼみ。"
   },
   {
     "id": "te18",
     "name": "瘈脈",
     "code": "TE18",
     "meridianShort": "三焦経",
-    "locationSimple": "瘈脈（TE18）は、頭部、乳様突起の中央、翳風と角孫を結ぶ線上の下から1/3。"
+    "locationSimple": "耳の後ろの骨の中央付近で、耳たぶ側から角孫へ進む弧の下3分の1。"
   },
   {
     "id": "te19",
     "name": "顱息",
     "code": "TE19",
     "meridianShort": "三焦経",
-    "locationSimple": "顱息（TE19）は、頭部、翳風と角孫を結ぶ線上の上から1/3。"
+    "locationSimple": "耳の後ろを回る弧の、角孫から耳たぶ側へ3分の1。"
   },
   {
     "id": "te20",
     "name": "角孫",
     "code": "TE20",
     "meridianShort": "三焦経",
-    "locationSimple": "角孫（TE20）は、頭部、耳尖の直上、髪際。"
+    "locationSimple": "耳の一番高いところのすぐ上。"
   },
   {
     "id": "te21",
     "name": "耳門",
     "code": "TE21",
     "meridianShort": "三焦経",
-    "locationSimple": "耳門（TE21）は、頭部、耳珠の上切痕の前方、下顎骨関節突起の後方の陥凹部。"
+    "locationSimple": "耳の穴の前の突起より少し上の切れ込みと、下あごの関節の間。"
   },
   {
     "id": "te22",
     "name": "和髎",
     "code": "TE22",
     "meridianShort": "三焦経",
-    "locationSimple": "和髎（TE22）は、頭部、耳介の付け根の前方、浅側頭動脈の後縁。"
+    "locationSimple": "こめかみの生え際の後ろで、耳の付け根の前。"
   },
   {
     "id": "te23",
     "name": "糸竹空",
     "code": "TE23",
     "meridianShort": "三焦経",
-    "locationSimple": "糸竹空（TE23）は、頭部、眉毛の外端の陥凹部。"
+    "locationSimple": "眉の外側の端にあるくぼみ。"
   },
   {
     "id": "gb1",
     "name": "瞳子髎",
     "code": "GB1",
     "meridianShort": "胆経",
-    "locationSimple": "瞳子髎（GB1）は、頭部、外眼角の外方0.5寸の陥凹部。"
+    "locationSimple": "目尻からこめかみの方へ0.5寸、骨のきわのくぼみ。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb2",
     "name": "聴会",
     "code": "GB2",
     "meridianShort": "胆経",
-    "locationSimple": "聴会（GB2）は、頭部、耳珠間切痕の前方、下顎骨関節突起の後方の陥凹部。"
+    "locationSimple": "耳の穴の前下方の切れ込みと、下あごの関節の間。"
   },
   {
     "id": "gb3",
     "name": "上関",
     "code": "GB3",
     "meridianShort": "胆経",
-    "locationSimple": "上関（GB3）は、頭部、頬骨弓中央の上縁の陥凹部。"
+    "locationSimple": "耳の前で、頬骨の弓の中ほどより上のくぼみ。"
   },
   {
     "id": "gb4",
     "name": "頷厭",
     "code": "GB4",
     "meridianShort": "胆経",
-    "locationSimple": "頷厭（GB4）は、頭部、頭維と曲鬢を結ぶ線上、頭維から1/4の点。"
+    "locationSimple": "頭維から曲鬢へこめかみを曲がる線の、頭維から4分の1。"
   },
   {
     "id": "gb5",
     "name": "懸顱",
     "code": "GB5",
     "meridianShort": "胆経",
-    "locationSimple": "懸顱（GB5）は、頭部、頭維と曲鬢を結ぶ線の中点。"
+    "locationSimple": "頭維と曲鬢をこめかみ側で結ぶ弧の中間。"
   },
   {
     "id": "gb6",
     "name": "懸厘",
     "code": "GB6",
     "meridianShort": "胆経",
-    "locationSimple": "懸厘（GB6）は、頭部、頭維と曲鬢を結ぶ線上、頭維から3/4の点。"
+    "locationSimple": "頭維から曲鬢へ向かう弧の、曲鬢寄りの4分の1の位置。"
   },
   {
     "id": "gb7",
     "name": "曲鬢",
     "code": "GB7",
     "meridianShort": "胆経",
-    "locationSimple": "曲鬢（GB7）は、頭部、耳尖を通る水平線と側頭部髪際後縁の垂線が交わる点。"
+    "locationSimple": "こめかみの生え際の後ろ端と、耳の頂点の高さが交わる位置。"
   },
   {
     "id": "gb8",
     "name": "率谷",
     "code": "GB8",
     "meridianShort": "胆経",
-    "locationSimple": "率谷（GB8）は、頭部、耳尖の直上、髪際の上方1.5寸。"
+    "locationSimple": "耳の頂点の真上で、横の生え際より1.5寸頭頂側。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb9",
     "name": "天衝",
     "code": "GB9",
     "meridianShort": "胆経",
-    "locationSimple": "天衝（GB9）は、頭部、耳介根後端の直上、髪際の上方2寸、率谷の後方0.5寸。"
+    "locationSimple": "耳の付け根の後ろの縁の真上で、生え際から2寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb10",
     "name": "浮白",
     "code": "GB10",
     "meridianShort": "胆経",
-    "locationSimple": "浮白（GB10）は、頭部、乳様突起の後上方、天衝と完骨を結ぶ線上。"
+    "locationSimple": "天衝から完骨へ耳の後ろを回る弧の、天衝から3分の1。"
   },
   {
     "id": "gb11",
     "name": "頭竅陰",
     "code": "GB11",
     "meridianShort": "胆経",
-    "locationSimple": "頭竅陰（GB11）は、頭部、乳様突起の上方、浮白と完骨を結ぶ線の中点。"
+    "locationSimple": "天衝から完骨へ向かう弧の、天衝から3分の2。"
   },
   {
     "id": "gb12",
     "name": "完骨",
     "code": "GB12",
     "meridianShort": "胆経",
-    "locationSimple": "完骨（GB12）は、頭部、乳様突起の後下方陥凹部。"
+    "locationSimple": "耳の後ろの硬い骨の、後ろ下にあるくぼみ。"
   },
   {
     "id": "gb13",
     "name": "本神",
     "code": "GB13",
     "meridianShort": "胆経",
-    "locationSimple": "本神（GB13）は、頭部、前髪際の上方0.5寸、神庭と頭維を結ぶ線上の外から1/3。"
+    "locationSimple": "額の生え際から0.5寸入ったところで、中央線から横へ3寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb14",
     "name": "陽白",
     "code": "GB14",
     "meridianShort": "胆経",
-    "locationSimple": "陽白（GB14）は、頭部、眉弓の中央の上方1寸、瞳孔の直上。"
+    "locationSimple": "瞳の真上で、眉から1寸上の額。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb15",
     "name": "頭臨泣",
     "code": "GB15",
     "meridianShort": "胆経",
-    "locationSimple": "頭臨泣（GB15）は、頭部、前髪際の上方0.5寸、瞳孔の直上。"
+    "locationSimple": "正面を向いた瞳の真上で、額の生え際から0.5寸入ったところ。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb16",
     "name": "目窓",
     "code": "GB16",
     "meridianShort": "胆経",
-    "locationSimple": "目窓（GB16）は、頭部、前髪際の上方1.5寸、瞳孔の直上。"
+    "locationSimple": "瞳の上の列で、前の生え際から頭頂側へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb17",
     "name": "正営",
     "code": "GB17",
     "meridianShort": "胆経",
-    "locationSimple": "正営（GB17）は、頭部、前髪際の上方2.5寸、瞳孔の直上。"
+    "locationSimple": "瞳の上の列で、前の生え際から頭頂側へ2.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb18",
     "name": "承霊",
     "code": "GB18",
     "meridianShort": "胆経",
-    "locationSimple": "承霊（GB18）は、頭部、前髪際の上方4寸、瞳孔の直上。"
+    "locationSimple": "瞳の上の列で、前の生え際から頭頂側へ4寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb19",
     "name": "脳空",
     "code": "GB19",
     "meridianShort": "胆経",
-    "locationSimple": "脳空（GB19）は、頭部、外後頭隆起上縁と同じ高さ、後正中線の外方2.25寸。"
+    "locationSimple": "後頭部の骨の出っ張りの上縁と同じ高さで、風池の真上。"
   },
   {
     "id": "fuuchi",
     "name": "風池",
     "code": "GB20",
     "meridianShort": "胆経",
-    "locationSimple": "後頭部の首の付け根、僧帽筋と胸鎖乳突筋の間の深いくぼみ。"
+    "locationSimple": "後頭部の骨の下で、うなじの二つの筋肉の間。"
   },
   {
     "id": "gb21",
     "name": "肩井",
     "code": "GB21",
     "meridianShort": "胆経",
-    "locationSimple": "肩井（GB21）は、肩甲部、第7頸椎棘突起と肩峰外端を結ぶ線の中点。"
+    "locationSimple": "首のつけ根の中央の骨と、肩の外の骨の中間。"
   },
   {
     "id": "gb22",
     "name": "淵腋",
     "code": "GB22",
     "meridianShort": "胆経",
-    "locationSimple": "淵腋（GB22）は、側胸部、第4肋間、中腋窩線上。"
+    "locationSimple": "わきの中央から真下に下りた線で、第4肋間。"
   },
   {
     "id": "gb23",
     "name": "輒筋",
     "code": "GB23",
     "meridianShort": "胆経",
-    "locationSimple": "輒筋（GB23）は、側胸部、第4肋間、淵腋の前方1寸。"
+    "locationSimple": "第4肋間の高さで、わきの中央を通る縦線より1寸前。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb24",
     "name": "日月",
     "code": "GB24",
     "meridianShort": "胆経",
-    "locationSimple": "日月（GB24）は、前胸部、第7肋間、前正中線の外方4寸。"
+    "locationSimple": "胸の中央線から横へ4寸で、上から数えて第7肋間（第7肋骨と第8肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb25",
     "name": "京門",
     "code": "GB25",
     "meridianShort": "胆経",
-    "locationSimple": "京門（GB25）は、側腹部、第12肋骨遊離端の下縁。"
+    "locationSimple": "体の横で、一番下の第12肋骨の先端のすぐ下。"
   },
   {
     "id": "gb26",
     "name": "帯脈",
     "code": "GB26",
     "meridianShort": "胆経",
-    "locationSimple": "帯脈（GB26）は、側腹部、第11肋骨遊離端の直下、臍と同じ高さ。"
+    "locationSimple": "体の横で、第11肋骨の先端より下、おへそと同じ高さ。"
   },
   {
     "id": "gb27",
     "name": "五枢",
     "code": "GB27",
     "meridianShort": "胆経",
-    "locationSimple": "五枢（GB27）は、側腹部、上前腸骨棘の内側、臍中央の下方3寸と同じ高さ。"
+    "locationSimple": "おへそより3寸下で、骨盤の前の出っ張りより体の中央寄り。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb28",
     "name": "維道",
     "code": "GB28",
     "meridianShort": "胆経",
-    "locationSimple": "維道（GB28）は、下腹部、上前腸骨棘の前下方0.5寸。"
+    "locationSimple": "骨盤の前の出っ張りより0.5寸、内側かつ下。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb29",
     "name": "居髎",
     "code": "GB29",
     "meridianShort": "胆経",
-    "locationSimple": "居髎（GB29）は、臀部、上前腸骨棘と大転子頂点を結ぶ線の中点。"
+    "locationSimple": "骨盤の前の出っ張りと太ももの外の骨の出っ張りの中間。"
   },
   {
     "id": "gb30",
     "name": "環跳",
     "code": "GB30",
     "meridianShort": "胆経",
-    "locationSimple": "環跳（GB30）は、臀部、大転子頂点と仙骨裂孔を結ぶ線上、外側から1/3の点。"
+    "locationSimple": "太ももの外側の骨と仙骨下部の中央を結ぶ線で、外側から3分の1。WHOの代替位置は、太ももの外の骨の突起と骨盤の前端を結ぶ線の、太ももの骨から3分の1です。"
   },
   {
     "id": "gb31",
     "name": "風市",
     "code": "GB31",
     "meridianShort": "胆経",
-    "locationSimple": "風市（GB31）は、大腿外側、腸脛靭帯の後縁、膝窩横紋の上方7寸。直立し手を下垂したとき中指先端が当たる点。"
+    "locationSimple": "直立して腕を下げたときの中指先の高さで、太ももの外側のすじの後ろ。"
   },
   {
     "id": "gb32",
     "name": "中涜",
     "code": "GB32",
     "meridianShort": "胆経",
-    "locationSimple": "中涜（GB32）は、大腿外側、腸脛靭帯の後縁、膝窩横紋の上方5寸。"
+    "locationSimple": "ひざ裏のしわより7寸上で、太ももの外を通る帯状のすじの後ろ。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb33",
     "name": "膝陽関",
     "code": "GB33",
     "meridianShort": "胆経",
-    "locationSimple": "膝陽関（GB33）は、膝外側、大腿二頭筋腱と腸脛靭帯の間、大腿骨外側上顆の後上方の陥凹部。"
+    "locationSimple": "ひざ外側の骨の出っ張りの後ろ上で、太ももの外のすじと後ろの腱の間。"
   },
   {
     "id": "youryouzen",
@@ -2126,405 +2126,405 @@ export const ACUPOINT_LOOKUP = [
     "name": "陰包",
     "code": "LR9",
     "meridianShort": "肝経",
-    "locationSimple": "陰包（LR9）は、大腿内側、縫工筋と薄筋の間、大腿骨内側上顆の上方4寸。"
+    "locationSimple": "ひざのお皿の上縁から4寸上で、太ももの内側の二つの筋肉の間。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "lr10",
     "name": "足五里",
     "code": "LR10",
     "meridianShort": "肝経",
-    "locationSimple": "足五里（LR10）は、大腿内側、長内転筋の外側、恥骨結合上縁の下方3寸。"
+    "locationSimple": "気衝からひざへ3寸、太ももの内側の上部。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "lr11",
     "name": "陰廉",
     "code": "LR11",
     "meridianShort": "肝経",
-    "locationSimple": "陰廉（LR11）は、大腿内側、長内転筋の外側、恥骨結合上縁の下方2寸。"
+    "locationSimple": "気衝からひざへ2寸、太ももの内側の付け根寄り。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "lr12",
     "name": "急脈",
     "code": "LR12",
     "meridianShort": "肝経",
-    "locationSimple": "急脈（LR12）は、鼠径部、恥骨結合上縁と同じ高さ、前正中線の外方2.5寸。"
+    "locationSimple": "恥骨の上端と同じ高さで、下腹部の中央線の横へ2.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "lr13",
     "name": "章門",
     "code": "LR13",
     "meridianShort": "肝経",
-    "locationSimple": "章門（LR13）は、側腹部、第11肋骨遊離端の下端。"
+    "locationSimple": "体の横で、第11肋骨の自由に終わる先端のすぐ下。"
   },
   {
     "id": "lr14",
     "name": "期門",
     "code": "LR14",
     "meridianShort": "肝経",
-    "locationSimple": "期門（LR14）は、前胸部、第6肋間、前正中線の外方4寸。"
+    "locationSimple": "胸の中央線から横へ4寸で、上から数えて第6肋間（第6肋骨と第7肋骨の間）。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gv1",
     "name": "長強",
     "code": "GV1",
     "meridianShort": "督脈",
-    "locationSimple": "長強（GV1）は、会陰部、尾骨尖端と肛門の中点。"
+    "locationSimple": "尾骨の先端と肛門との間の中点。"
   },
   {
     "id": "gv2",
     "name": "腰兪",
     "code": "GV2",
     "meridianShort": "督脈",
-    "locationSimple": "腰兪（GV2）は、仙骨部、仙骨裂孔部、後正中線上。"
+    "locationSimple": "腰の下にある仙骨の下部の開きの位置で、背中の中央線上。"
   },
   {
     "id": "gv3",
     "name": "腰陽関",
     "code": "GV3",
     "meridianShort": "督脈",
-    "locationSimple": "腰陽関（GV3）は、腰部、第4腰椎棘突起下の陥凹部、後正中線上。"
+    "locationSimple": "背骨の中央線で、第4腰椎の突起の下のくぼみ。"
   },
   {
     "id": "meimon",
     "name": "命門",
     "code": "GV4",
     "meridianShort": "督脈",
-    "locationSimple": "おへその真裏、背骨（第2腰椎）の突起のすぐ下のくぼみ。"
+    "locationSimple": "背骨の中央線で、第2腰椎の突起の下のくぼみ。"
   },
   {
     "id": "gv5",
     "name": "懸枢",
     "code": "GV5",
     "meridianShort": "督脈",
-    "locationSimple": "懸枢（GV5）は、腰部、第1腰椎棘突起下の陥凹部、後正中線上。"
+    "locationSimple": "背骨の中央線で、第1腰椎の突起の下のくぼみ。"
   },
   {
     "id": "gv6",
     "name": "脊中",
     "code": "GV6",
     "meridianShort": "督脈",
-    "locationSimple": "脊中（GV6）は、中背部、第11胸椎棘突起下の陥凹部、後正中線上。"
+    "locationSimple": "背骨の中央線で、第11胸椎の突起の下のくぼみ。"
   },
   {
     "id": "gv7",
     "name": "中枢",
     "code": "GV7",
     "meridianShort": "督脈",
-    "locationSimple": "中枢（GV7）は、中背部、第10胸椎棘突起下の陥凹部、後正中線上。"
+    "locationSimple": "背骨の中央線で、第10胸椎の突起の下のくぼみ。"
   },
   {
     "id": "gv8",
     "name": "筋縮",
     "code": "GV8",
     "meridianShort": "督脈",
-    "locationSimple": "筋縮（GV8）は、中背部、第9胸椎棘突起下の陥凹部、後正中線上。"
+    "locationSimple": "背骨の中央線で、第9胸椎の突起の下のくぼみ。"
   },
   {
     "id": "gv9",
     "name": "至陽",
     "code": "GV9",
     "meridianShort": "督脈",
-    "locationSimple": "至陽（GV9）は、中背部、第7胸椎棘突起下の陥凹部、後正中線上。"
+    "locationSimple": "背骨の中央線で、第7胸椎の突起の下のくぼみ。"
   },
   {
     "id": "gv10",
     "name": "霊台",
     "code": "GV10",
     "meridianShort": "督脈",
-    "locationSimple": "霊台（GV10）は、上背部、第6胸椎棘突起下の陥凹部、後正中線上。"
+    "locationSimple": "背骨の中央線で、第6胸椎の突起の下のくぼみ。"
   },
   {
     "id": "gv11",
     "name": "神道",
     "code": "GV11",
     "meridianShort": "督脈",
-    "locationSimple": "神道（GV11）は、上背部、第5胸椎棘突起下の陥凹部、後正中線上。"
+    "locationSimple": "背骨の中央線で、第5胸椎の突起の下のくぼみ。"
   },
   {
     "id": "gv12",
     "name": "身柱",
     "code": "GV12",
     "meridianShort": "督脈",
-    "locationSimple": "身柱（GV12）は、上背部、第3胸椎棘突起下の陥凹部、後正中線上。"
+    "locationSimple": "背骨の中央線で、第3胸椎の突起の下のくぼみ。"
   },
   {
     "id": "gv13",
     "name": "陶道",
     "code": "GV13",
     "meridianShort": "督脈",
-    "locationSimple": "陶道（GV13）は、上背部、第1胸椎棘突起下の陥凹部、後正中線上。"
+    "locationSimple": "背骨の中央線で、第1胸椎の突起の下のくぼみ。"
   },
   {
     "id": "gv14",
     "name": "大椎",
     "code": "GV14",
     "meridianShort": "督脈",
-    "locationSimple": "大椎（GV14）は、後頸部、第7頸椎棘突起下の陥凹部、後正中線上。"
+    "locationSimple": "首の一番下の第7頸椎の突起のすぐ下、背中の中央線上。"
   },
   {
     "id": "gv15",
     "name": "瘂門",
     "code": "GV15",
     "meridianShort": "督脈",
-    "locationSimple": "瘂門（GV15）は、後頭部、第2頸椎棘突起上縁の陥凹部、後髪際の上方0.5寸、後正中線上。"
+    "locationSimple": "うなじの中央で、首の第2の骨の突起より上のくぼみ。"
   },
   {
     "id": "gv16",
     "name": "風府",
     "code": "GV16",
     "meridianShort": "督脈",
-    "locationSimple": "風府（GV16）は、後頭部、外後頭隆起の直下、僧帽筋間の陥凹部、後髪際の上方1寸。"
+    "locationSimple": "後頭部の中央の骨の出っ張りのすぐ下。"
   },
   {
     "id": "gv17",
     "name": "脳戸",
     "code": "GV17",
     "meridianShort": "督脈",
-    "locationSimple": "脳戸（GV17）は、頭部、外後頭隆起上縁の陥凹部、後正中線上。"
+    "locationSimple": "後頭部の中央で、骨の出っ張りより上のくぼみ。"
   },
   {
     "id": "gv18",
     "name": "強間",
     "code": "GV18",
     "meridianShort": "督脈",
-    "locationSimple": "強間（GV18）は、頭部、後髪際の上方4寸、後正中線上。"
+    "locationSimple": "後ろの生え際から頭頂側へ4寸の中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gv19",
     "name": "後頂",
     "code": "GV19",
     "meridianShort": "督脈",
-    "locationSimple": "後頂（GV19）は、頭部、百会の後方1.5寸、後正中線上。"
+    "locationSimple": "後ろの生え際から頭頂側へ5.5寸の中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "hyakue",
     "name": "百会",
     "code": "GV20",
     "meridianShort": "督脈",
-    "locationSimple": "左右の耳の穴を結んだ線と、顔の真ん中の縦線が頭頂部で交わる、わずかなくぼみ。"
+    "locationSimple": "前の生え際の中央から5寸、頭頂の中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gv21",
     "name": "前頂",
     "code": "GV21",
     "meridianShort": "督脈",
-    "locationSimple": "前頂（GV21）は、頭部、百会の前方1.5寸、後正中線上。"
+    "locationSimple": "前の生え際から頭頂側へ3.5寸の中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gv22",
     "name": "顖会",
     "code": "GV22",
     "meridianShort": "督脈",
-    "locationSimple": "顖会（GV22）は、頭部、前髪際の上方2寸、後正中線上。"
+    "locationSimple": "前の生え際から頭頂側へ2寸の中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gv23",
     "name": "上星",
     "code": "GV23",
     "meridianShort": "督脈",
-    "locationSimple": "上星（GV23）は、頭部、前髪際の上方1寸、後正中線上。"
+    "locationSimple": "前の生え際から頭頂側へ1寸の中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gv24",
     "name": "神庭",
     "code": "GV24",
     "meridianShort": "督脈",
-    "locationSimple": "神庭（GV24）は、頭部、前髪際の上方0.5寸、後正中線上。"
+    "locationSimple": "前の生え際の中央から頭皮へ0.5寸入ったところ。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gv25",
     "name": "素髎",
     "code": "GV25",
     "meridianShort": "督脈",
-    "locationSimple": "素髎（GV25）は、顔面部、鼻尖の中央。"
+    "locationSimple": "鼻先の最も前へ出ているところ。"
   },
   {
     "id": "gv26",
     "name": "水溝",
     "code": "GV26",
     "meridianShort": "督脈",
-    "locationSimple": "水溝（GV26）は、顔面部、人中溝の中点、前正中線上。"
+    "locationSimple": "鼻と上唇をつなぐ縦の溝の中央。WHOの代替位置は、同じ縦の溝を上から3等分した最初の境目です。"
   },
   {
     "id": "gv27",
     "name": "兌端",
     "code": "GV27",
     "meridianShort": "督脈",
-    "locationSimple": "兌端（GV27）は、顔面部、上唇結節の中央、皮膚と口唇粘膜の境目。"
+    "locationSimple": "上唇の中央の小さなふくらみ。"
   },
   {
     "id": "gv28",
     "name": "齦交",
     "code": "GV28",
     "meridianShort": "督脈",
-    "locationSimple": "齦交（GV28）は、顔面部、上唇小帯の接合部、歯肉上。"
+    "locationSimple": "上唇の裏の中央のひだと、上の歯ぐきがつながる位置。"
   },
   {
     "id": "cv1",
     "name": "会陰",
     "code": "CV1",
     "meridianShort": "任脈",
-    "locationSimple": "会陰（CV1）は、会陰部、男性は陰嚢根部と肛門の中点、女性は後陰唇交連と肛門の中点。"
+    "locationSimple": "会陰の中央で、外性器の後ろ側と肛門の間の中点。"
   },
   {
     "id": "cv2",
     "name": "曲骨",
     "code": "CV2",
     "meridianShort": "任脈",
-    "locationSimple": "曲骨（CV2）は、下腹部、恥骨結合上縁中央、前正中線上。"
+    "locationSimple": "下腹部の中央線で、恥骨のつなぎ目のすぐ上。"
   },
   {
     "id": "cv3",
     "name": "中極",
     "code": "CV3",
     "meridianShort": "任脈",
-    "locationSimple": "中極（CV3）は、下腹部、臍中央の下方4寸、前正中線上。"
+    "locationSimple": "おへその中心から下へ4寸で、おなかの中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "kangen",
     "name": "関元",
     "code": "CV4",
     "meridianShort": "任脈",
-    "locationSimple": "おへそから指4本分まっすぐ下にある下腹部の中心。"
+    "locationSimple": "おへその中心から下へ3寸で、おなかの中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "cv5",
     "name": "石門",
     "code": "CV5",
     "meridianShort": "任脈",
-    "locationSimple": "石門（CV5）は、下腹部、臍中央の下方2寸、前正中線上。"
+    "locationSimple": "おへその中心から下へ2寸で、おなかの中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "cv6",
     "name": "気海",
     "code": "CV6",
     "meridianShort": "任脈",
-    "locationSimple": "気海（CV6）は、下腹部、臍中央の下方1.5寸、前正中線上。"
+    "locationSimple": "おへその中心から下へ1.5寸で、おなかの中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "cv7",
     "name": "陰交",
     "code": "CV7",
     "meridianShort": "任脈",
-    "locationSimple": "陰交（CV7）は、下腹部、臍中央の下方1寸、前正中線上。"
+    "locationSimple": "おへその中心から下へ1寸で、おなかの中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "cv8",
     "name": "神闕",
     "code": "CV8",
     "meridianShort": "任脈",
-    "locationSimple": "神闕（CV8）は、上腹部、臍の中央。"
+    "locationSimple": "おへその中央。"
   },
   {
     "id": "cv9",
     "name": "水分",
     "code": "CV9",
     "meridianShort": "任脈",
-    "locationSimple": "水分（CV9）は、上腹部、臍中央の上方1寸、前正中線上。"
+    "locationSimple": "おへその中心から上へ1寸で、おなかの中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "cv10",
     "name": "下脘",
     "code": "CV10",
     "meridianShort": "任脈",
-    "locationSimple": "下脘（CV10）は、上腹部、臍中央の上方2寸、前正中線上。"
+    "locationSimple": "おへその中心から上へ2寸で、おなかの中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "cv11",
     "name": "建里",
     "code": "CV11",
     "meridianShort": "任脈",
-    "locationSimple": "建里（CV11）は、上腹部、臍中央の上方3寸、前正中線上。"
+    "locationSimple": "おへその中心から上へ3寸で、おなかの中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "chukan",
     "name": "中脘",
     "code": "CV12",
     "meridianShort": "任脈",
-    "locationSimple": "みぞおちとおへそを結んだ直線の中間点。"
+    "locationSimple": "おへその中心から上へ4寸で、おなかの中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "cv13",
     "name": "上脘",
     "code": "CV13",
     "meridianShort": "任脈",
-    "locationSimple": "上脘（CV13）は、上腹部、臍中央の上方5寸、前正中線上。"
+    "locationSimple": "おへその中心から上へ5寸で、おなかの中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "cv14",
     "name": "巨闕",
     "code": "CV14",
     "meridianShort": "任脈",
-    "locationSimple": "巨闕（CV14）は、上腹部、臍中央の上方6寸、前正中線上。"
+    "locationSimple": "おへその中心から上へ6寸で、おなかの中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "cv15",
     "name": "鳩尾",
     "code": "CV15",
     "meridianShort": "任脈",
-    "locationSimple": "鳩尾（CV15）は、上腹部、胸骨体下端の下方1寸、臍中央の上方7寸、前正中線上。"
+    "locationSimple": "胸骨の本体と下の細い骨のつなぎ目より1寸下、中央線上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "cv16",
     "name": "中庭",
     "code": "CV16",
     "meridianShort": "任脈",
-    "locationSimple": "中庭（CV16）は、前胸部、胸骨体と剣状突起の結合部、前正中線上。"
+    "locationSimple": "胸の中央で、胸骨とその下の細い骨とのつなぎ目。"
   },
   {
     "id": "danchuu",
     "name": "膻中",
     "code": "CV17",
     "meridianShort": "任脈",
-    "locationSimple": "胸の真ん中、左右の乳頭を結んだ線と胸骨が交差するところ。"
+    "locationSimple": "胸の中央線で、左右の上から数えて第4肋間（第4肋骨と第5肋骨の間）を結ぶ高さ。"
   },
   {
     "id": "cv18",
     "name": "玉堂",
     "code": "CV18",
     "meridianShort": "任脈",
-    "locationSimple": "玉堂（CV18）は、前胸部、第3肋間と同じ高さ、前正中線上。"
+    "locationSimple": "胸の中央線で、左右の上から数えて第3肋間（第3肋骨と第4肋骨の間）を結ぶ高さ。"
   },
   {
     "id": "cv19",
     "name": "紫宮",
     "code": "CV19",
     "meridianShort": "任脈",
-    "locationSimple": "紫宮（CV19）は、前胸部、第2肋間と同じ高さ、前正中線上。"
+    "locationSimple": "胸の中央線で、左右の上から数えて第2肋間（第2肋骨と第3肋骨の間）を結ぶ高さ。"
   },
   {
     "id": "cv20",
     "name": "華蓋",
     "code": "CV20",
     "meridianShort": "任脈",
-    "locationSimple": "華蓋（CV20）は、前胸部、第1肋間と同じ高さ、前正中線上。"
+    "locationSimple": "胸の中央線で、左右の上から数えて第1肋間（第1肋骨と第2肋骨の間）を結ぶ高さ。"
   },
   {
     "id": "cv21",
     "name": "璇璣",
     "code": "CV21",
     "meridianShort": "任脈",
-    "locationSimple": "璇璣（CV21）は、前胸部、胸骨角の中央、天突の下方1寸、前正中線上。"
+    "locationSimple": "胸の中央線で、鎖骨の間のくぼみから1寸下。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "cv22",
     "name": "天突",
     "code": "CV22",
     "meridianShort": "任脈",
-    "locationSimple": "天突（CV22）は、前頸部、頸切痕の中央、前正中線上。"
+    "locationSimple": "左右の鎖骨の内端の間で、首と胸の境の中央にあるくぼみ。"
   },
   {
     "id": "cv23",
     "name": "廉泉",
     "code": "CV23",
     "meridianShort": "任脈",
-    "locationSimple": "廉泉（CV23）は、前頸部、舌骨体の上方、舌骨上窩の陥凹部、前正中線上。"
+    "locationSimple": "のどの中央で、のどぼとけより上、舌を支える骨の上のくぼみ。"
   },
   {
     "id": "cv24",
     "name": "承漿",
     "code": "CV24",
     "meridianShort": "任脈",
-    "locationSimple": "承漿（CV24）は、顔面部、オトガイ唇溝の中央、前正中線上。"
+    "locationSimple": "下唇のすぐ下、あごとの間にある溝の中央。"
   }
 ] as const;

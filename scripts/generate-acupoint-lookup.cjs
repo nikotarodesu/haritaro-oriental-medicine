@@ -3,8 +3,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { createDataLoader } = require('./data-loader.cjs');
 const root = path.resolve(__dirname, '..');
-const { ACUPOINTS_MASTER } = createDataLoader()('src/data/tsubo/acupointsMaster');
-const rows = ACUPOINTS_MASTER.map(({ legacyId, name, code, meridianShort, locationSimple }) => ({ id: legacyId, name, code, meridianShort, locationSimple }));
+const load = createDataLoader();
+const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
+const { formatPublicAtlasLocation } = load('src/data/tsubo/atlas/expanded/profiles');
+const rows = ACUPOINTS_MASTER.map(({ legacyId, name, code, codeLower, meridianShort, locationSimple }) => ({
+  id: legacyId, name, code, meridianShort,
+  locationSimple: formatPublicAtlasLocation(codeLower) ?? locationSimple,
+}));
 const content = '// Generated from the public acupoint catalog. Run generate-acupoint-lookup.cjs after changes.\nexport const ACUPOINT_LOOKUP = ' + JSON.stringify(rows, null, 2) + ' as const;\n';
 const file = path.join(root, 'src/data/acupointLookup.ts');
 if (process.argv.includes('--check')) {

@@ -79,7 +79,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
       </section>
 
       <section>
-        <h2 className={headingClass}>自分で押してみる</h2>
+        <h2 className={headingClass}>{article.visualOnly ? "図で場所を確かめる" : "自分で押してみる"}</h2>
         <Paragraphs paragraphs={article.selfCare} />
       </section>
 

@@ -41,7 +41,8 @@ export default function TsuboPage() {
       </PageIntro>
 
       <section aria-labelledby="illustrated-points" className="space-y-3">
-        <h2 id="illustrated-points" className="font-serif text-xl font-bold">図でツボの場所を見る</h2>
+        <h2 id="illustrated-points" className="font-serif text-xl font-bold">全361穴を部位から探す</h2>
+        <p className="text-sm ui-muted">各ツボのページで、全身図・部位の拡大図・経絡に沿った並びを確認できます。</p>
         <div className="grid items-start gap-3 sm:grid-cols-2">
           {illustratedRegions.map(({ region, points }) => (
             <details key={region} className="rounded-xl border border-[#CDD9CA] px-4">

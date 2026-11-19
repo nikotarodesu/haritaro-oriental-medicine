@@ -2,6 +2,7 @@ import type { AcupointAtlasArticle } from "./types";
 import { digitArticles } from "./digitArticles";
 import { footArticles } from "./footArticles";
 import { legArticles } from "./legArticles";
+import { expandedArticles } from "./expandedArticles";
 import { forearmIllustrations } from "./illustrations";
 
 const WHO_URL = "https://iris.who.int/bitstream/handle/10665/353407/9789290613831-eng.pdf?sequence=1";
@@ -54,6 +55,7 @@ function forearmSource(pdfPage: number) {
 }
 
 export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
+  ...expandedArticles,
   ...digitArticles,
   ...footArticles,
   ...legArticles,
