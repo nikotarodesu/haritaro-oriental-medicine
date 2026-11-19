@@ -139,7 +139,7 @@ assert(!nodes(picker()).filter(node => node.type === 'button').some(node => node
 const atlasLocations = load('src/data/tsubo/friendlyLocations');
 const tsubo = (code, name) => ({ id: code.toLowerCase(), code, name, kana: name, romaji: name, meridian: '検証経絡', meridianShort: '検証経絡', bodyPart: '検証部位', category: [], indications: ['旧版の疾患タグ'], traditional: '公開済みの伝統的な背景', clinicalNote: '公開済みの補足', caution: '公開済みの注意', locationSimple: atlasLocations.getAtlasLocationSimple(code.toLowerCase()) });
 const TSUBOS = [
-  tsubo('LI4','合谷'),
+  { ...tsubo('LI4','合谷'), hasResearch: true },
   tsubo('LR3','太衝'),
   { ...tsubo('ST36','足三里'), kana: 'あしさんり', romaji: 'Zusanli', locationDetail: '旧版の部位説明' },
 ];
@@ -168,6 +168,8 @@ for (const code of ['li4', 'lr3']) {
 assert(text(scroll()).includes('公開済みの注意'));
 assert(text(scroll()).includes('公開済みの伝統的な背景'));
 assert(!text(scroll()).includes('旧版の疾患タグ'));
+assert(nodes(scroll()).some(node => node.type === Link && node.props.href === '/tsubo/li4#acupoint-research'), 'Comparison learning notes link to published research and sources');
+assert(!nodes(scroll()).some(node => node.type === Link && node.props.href === '/tsubo/lr3#acupoint-research'), 'Comparison skips the research link when the point has no research section');
 const compareInput = () => nodes(compare.tree()).find(node => node.type === 'input' && node.props.id === 'compare-search-input');
 assert.equal(compareInput().props['aria-label'], '比較するツボを検索');
 for (const query of ['ＳＴ３６', 'アシサンリ', 'Zusanli']) {

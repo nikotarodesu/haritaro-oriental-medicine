@@ -17,6 +17,7 @@ import type { Tsubo } from "@/types/oriental";
 export type ComparisonPoint = Pick<Tsubo, "id" | "code" | "name" | "kana" | "romaji" | "meridian" | "meridianShort" | "bodyPart" | "category" | "locationSimple" | "clinicalNote"> & {
   traditional: string;
   caution: string;
+  hasResearch: boolean;
 };
 
 type CompareProps = { points: readonly ComparisonPoint[] };
@@ -420,7 +421,12 @@ function TsuboCompareContent({ points }: CompareProps) {
                     </th>
                     {selectedTsubos.map(t => (
                       <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] text-xs text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-                        {t.clinicalNote}
+                        <p>{t.clinicalNote}</p>
+                        {t.hasResearch && (
+                          <Link href={`/tsubo/${t.code.toLowerCase()}#acupoint-research`} className="inline-flex min-h-11 items-center text-xs font-semibold underline underline-offset-4 print:hidden">
+                            研究の範囲と出典
+                          </Link>
+                        )}
                       </td>
                     ))}
                   </tr>
