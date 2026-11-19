@@ -5,12 +5,16 @@ import FootDorsumRegion from "./FootDorsumRegion";
 import FootLandmarkRegion from "./FootLandmarkRegion";
 import DigitRegion from "./DigitRegion";
 import LowerLegRegion from "./LowerLegRegion";
+import LegLandmarkRegion from "./LegLandmarkRegion";
 import VolarForearmRegion from "./VolarForearmRegion";
 
 const figureClass = "rounded-2xl border border-[#E5DEC9] bg-[#F9F5ED] p-4 text-[#332D25]";
 const captionClass = "mt-2 text-center text-sm font-semibold leading-6";
 
 const regions = {
+  knee: { BodyHighlight: <path d="M82 194v10m36-10v10" />, CloseUp: LegLandmarkRegion },
+  calf: { BodyHighlight: <path d="M81 207l4 33m34-33-4 33" />, CloseUp: LegLandmarkRegion },
+  sole: { BodyHighlight: <path d="M73 261h16m22 0h16" />, CloseUp: LegLandmarkRegion },
   dorsalFoot: { BodyHighlight: <path d="M83 252l5 5m29-5-5 5" />, CloseUp: FootLandmarkRegion },
   ankle: { BodyHighlight: <path d="M82 245h10m16 0h10" />, CloseUp: FootLandmarkRegion },
   finger: { BodyHighlight: <path d="M27 164l6 6 5-5m124 0 5 5 6-6" />, CloseUp: DigitRegion },

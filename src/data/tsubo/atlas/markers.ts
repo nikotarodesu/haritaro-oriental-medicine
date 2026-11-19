@@ -1,12 +1,17 @@
 import type { AtlasMarker } from "./types";
 import { digitGeometry, digitLandmarks } from "./digits";
 import { footLandmarks, type FootCode } from "./footLandmarks";
+import { legLandmarks, type LegCode } from "./legLandmarks";
 
 // ST35 and ST41 anchor the 16 proportional units on the shin template.
 export const shinEndpoints = { knee: { x: 116, y: 88 }, ankle: { x: 124, y: 248 } };
 
 // Coordinates use the 340×300 viewBox of the corresponding regional template.
 export const ATLAS_POINT_MARKERS: Readonly<Partial<Record<string, AtlasMarker>>> = {
+  ...Object.fromEntries((Object.keys(legLandmarks) as LegCode[]).map(legCode => {
+    const { x, y } = legLandmarks[legCode];
+    return [legCode, { x, y, legCode }];
+  })),
   ...Object.fromEntries((Object.keys(footLandmarks) as FootCode[]).map(footCode => {
     const { x, y } = footLandmarks[footCode];
     return [footCode, { x, y, footCode }];

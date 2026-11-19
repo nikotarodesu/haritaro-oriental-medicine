@@ -453,14 +453,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "梁丘",
     "code": "ST34",
     "meridianShort": "胃経",
-    "locationSimple": "梁丘（ST34）は、大腿前外側、外側広筋と大腿直筋腱外縁の間、膝蓋骨底の上方2寸。"
+    "locationSimple": "ひざのお皿の外側から太ももへ上がったところ。"
   },
   {
     "id": "st35",
     "name": "犢鼻",
     "code": "ST35",
     "meridianShort": "胃経",
-    "locationSimple": "犢鼻（ST35）は、膝前面、膝蓋靭帯外側の陥凹部。"
+    "locationSimple": "ひざのお皿のすぐ下で、中央のすじより外側のくぼみ。"
   },
   {
     "id": "ashisanri",
@@ -495,7 +495,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "豊隆",
     "code": "ST40",
     "meridianShort": "胃経",
-    "locationSimple": "すねの外側、外くるぶしと膝のお皿の外側の中間点で、すねの骨から指2本分外側。"
+    "locationSimple": "外くるぶしから上へ8寸で、すねの前の筋肉の外縁。"
   },
   {
     "id": "st41",
@@ -572,35 +572,35 @@ export const ACUPOINT_LOOKUP = [
     "name": "三陰交",
     "code": "SP6",
     "meridianShort": "脾経",
-    "locationSimple": "足首の内側、内くるぶしの最も高いところから指4本分上がった、すねの骨のキワ。"
+    "locationSimple": "内くるぶしから上へ3寸で、すねの骨の後ろの縁。"
   },
   {
     "id": "sp7",
     "name": "漏谷",
     "code": "SP7",
     "meridianShort": "脾経",
-    "locationSimple": "漏谷（SP7）は、下腿内側、脛骨内側面後縁、内果尖の上方6寸。"
+    "locationSimple": "内くるぶしから上へ6寸で、すねの骨の後ろの縁。"
   },
   {
     "id": "sp8",
     "name": "地機",
     "code": "SP8",
     "meridianShort": "脾経",
-    "locationSimple": "地機（SP8）は、下腿内側、脛骨内側面後縁、陰陵泉の下方3寸。"
+    "locationSimple": "陰陵泉から下へ3寸で、すねの骨の後ろの縁。"
   },
   {
     "id": "inryousen",
     "name": "陰陵泉",
     "code": "SP9",
     "meridianShort": "脾経",
-    "locationSimple": "すねの内側、骨のきわを下からなぞり上がって膝下の骨のカーブで指が止まるくぼみ。"
+    "locationSimple": "内ひざの下で、すねの骨が広がる角の下のくぼみ。"
   },
   {
     "id": "sp10",
     "name": "血海",
     "code": "SP10",
     "meridianShort": "脾経",
-    "locationSimple": "血海（SP10）は、大腿前内側、内側広筋隆起部、膝蓋骨底内端の上方2寸。"
+    "locationSimple": "ひざのお皿の内側から上がった太ももの筋肉のふくらみ。"
   },
   {
     "id": "sp11",
@@ -1146,14 +1146,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "委陽",
     "code": "BL39",
     "meridianShort": "膀胱経",
-    "locationSimple": "委陽（BL39）は、膝後面、膝窩横紋上、大腿二頭筋腱の内縁。"
+    "locationSimple": "ひざ裏のしわの外側で、外の腱よりわずかに中央寄り。"
   },
   {
     "id": "ichuu",
     "name": "委中",
     "code": "BL40",
     "meridianShort": "膀胱経",
-    "locationSimple": "膝の真裏のシワの真ん中にあるツボ。"
+    "locationSimple": "ひざ裏の横じわの真ん中。"
   },
   {
     "id": "bl41",
@@ -1258,35 +1258,35 @@ export const ACUPOINT_LOOKUP = [
     "name": "合陽",
     "code": "BL55",
     "meridianShort": "膀胱経",
-    "locationSimple": "合陽（BL55）は、下腿後面、委中と承山を結ぶ線上、委中の下方2寸。"
+    "locationSimple": "ひざ裏のしわから下へ2寸、ふくらはぎの二つの筋肉の間。"
   },
   {
     "id": "bl56",
     "name": "承筋",
     "code": "BL56",
     "meridianShort": "膀胱経",
-    "locationSimple": "承筋（BL56）は、下腿後面、腓腹筋の2つの筋腹の間、委中の下方5寸。"
+    "locationSimple": "ひざ裏のしわから下へ5寸、ふくらはぎの二つの筋肉の間。"
   },
   {
     "id": "bl57",
     "name": "承山",
     "code": "BL57",
     "meridianShort": "膀胱経",
-    "locationSimple": "承山（BL57）は、下腿後面、腓腹筋の筋腹と腱の移行部の陥凹部。"
+    "locationSimple": "ふくらはぎの二つの筋肉がアキレス腱に移るくぼみ。"
   },
   {
     "id": "bl58",
     "name": "飛揚",
     "code": "BL58",
     "meridianShort": "膀胱経",
-    "locationSimple": "飛揚（BL58）は、下腿後外側、腓腹筋外側頭下縁、崑崙の上方7寸。"
+    "locationSimple": "崑崙から上へ7寸で、ふくらはぎ外側の筋肉とアキレス腱の間。"
   },
   {
     "id": "bl59",
     "name": "跗陽",
     "code": "BL59",
     "meridianShort": "膀胱経",
-    "locationSimple": "跗陽（BL59）は、下腿後外側、腓骨後縁、崑崙の上方3寸。"
+    "locationSimple": "崑崙から上へ3寸で、外側の細い骨とアキレス腱の間。"
   },
   {
     "id": "bl60",
@@ -1349,7 +1349,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "湧泉",
     "code": "KI1",
     "meridianShort": "腎経",
-    "locationSimple": "足の裏の中央よりやや前方、足の指を内側に曲げた時にできる最も深いくぼみ。"
+    "locationSimple": "足指を曲げたときにできる、足裏の前寄りの深いくぼみ。"
   },
   {
     "id": "ki2",
@@ -1391,28 +1391,28 @@ export const ACUPOINT_LOOKUP = [
     "name": "復溜",
     "code": "KI7",
     "meridianShort": "腎経",
-    "locationSimple": "内くるぶしの最も高いところから指2本分上、アキレス腱の前側。"
+    "locationSimple": "内くるぶしから上へ2寸で、アキレス腱のすぐ前。"
   },
   {
     "id": "ki8",
     "name": "交信",
     "code": "KI8",
     "meridianShort": "腎経",
-    "locationSimple": "交信（KI8）は、下腿内側、脛骨内側面後縁の陥凹部、内果尖の上方2寸。"
+    "locationSimple": "内くるぶしから上へ2寸で、すねの骨の内側の縁より後ろ。"
   },
   {
     "id": "ki9",
     "name": "築賓",
     "code": "KI9",
     "meridianShort": "腎経",
-    "locationSimple": "築賓（KI9）は、下腿後内側、ヒラメ筋とアキレス腱の間、内果尖の上方5寸。"
+    "locationSimple": "内くるぶしから上へ5寸で、ふくらはぎの筋肉からアキレス腱に向かう境。"
   },
   {
     "id": "ki10",
     "name": "陰谷",
     "code": "KI10",
     "meridianShort": "腎経",
-    "locationSimple": "陰谷（KI10）は、膝後内側、半腱様筋腱と半膜様筋腱の間、膝窩横紋上。"
+    "locationSimple": "ひざ裏の内側で、内側の目立つ腱よりしわの中央寄り。"
   },
   {
     "id": "ki11",
@@ -1993,42 +1993,42 @@ export const ACUPOINT_LOOKUP = [
     "name": "陽陵泉",
     "code": "GB34",
     "meridianShort": "胆経",
-    "locationSimple": "膝の外側、すねの骨（腓骨）の頭のすぐ前下方にあるくぼみ。"
+    "locationSimple": "ひざの外側の小さな骨の出っ張りの前下方。"
   },
   {
     "id": "gb35",
     "name": "陽交",
     "code": "GB35",
     "meridianShort": "胆経",
-    "locationSimple": "陽交（GB35）は、下腿外側、腓骨後縁、外果尖の上方7寸。"
+    "locationSimple": "外くるぶしから上へ7寸で、細い骨の後ろの縁。"
   },
   {
     "id": "gb36",
     "name": "外丘",
     "code": "GB36",
     "meridianShort": "胆経",
-    "locationSimple": "外丘（GB36）は、下腿外側、腓骨前縁、外果尖の上方7寸。"
+    "locationSimple": "外くるぶしから上へ7寸で、細い骨の前の縁。"
   },
   {
     "id": "gb37",
     "name": "光明",
     "code": "GB37",
     "meridianShort": "胆経",
-    "locationSimple": "光明（GB37）は、下腿外側、腓骨前縁、外果尖の上方5寸。"
+    "locationSimple": "外くるぶしから上へ5寸で、細い骨の前の縁。"
   },
   {
     "id": "gb38",
     "name": "陽輔",
     "code": "GB38",
     "meridianShort": "胆経",
-    "locationSimple": "陽輔（GB38）は、下腿外側、腓骨前縁、外果尖の上方4寸。"
+    "locationSimple": "外くるぶしから上へ4寸で、細い骨の前の縁。"
   },
   {
     "id": "gb39",
     "name": "懸鐘",
     "code": "GB39",
     "meridianShort": "胆経",
-    "locationSimple": "懸鐘（GB39）は、下腿外側、腓骨前縁、外果尖の上方3寸。"
+    "locationSimple": "外くるぶしから上へ3寸で、細い骨の前の縁。"
   },
   {
     "id": "gb40",
@@ -2098,28 +2098,28 @@ export const ACUPOINT_LOOKUP = [
     "name": "蠡溝",
     "code": "LR5",
     "meridianShort": "肝経",
-    "locationSimple": "蠡溝（LR5）は、下腿前内側、脛骨内側面の中央、内果尖の上方5寸。"
+    "locationSimple": "内くるぶしから上へ5寸で、すねの骨の内側の平らな面。"
   },
   {
     "id": "lr6",
     "name": "中都",
     "code": "LR6",
     "meridianShort": "肝経",
-    "locationSimple": "中都（LR6）は、下腿前内側、脛骨内側面の中央、内果尖の上方7寸。"
+    "locationSimple": "内くるぶしから上へ7寸で、すねの骨の内側の平らな面。"
   },
   {
     "id": "lr7",
     "name": "膝関",
     "code": "LR7",
     "meridianShort": "肝経",
-    "locationSimple": "膝関（LR7）は、下腿内側、脛骨内側顆の下後方、陰陵泉の後方1寸。"
+    "locationSimple": "陰陵泉からかかとに向かって1寸ずらした骨の下。"
   },
   {
     "id": "lr8",
     "name": "曲泉",
     "code": "LR8",
     "meridianShort": "肝経",
-    "locationSimple": "曲泉（LR8）は、膝内側、半腱・半膜様筋腱付着部前方の陥凹部、膝窩横紋内側端。"
+    "locationSimple": "ひざ裏のしわの内側の端で、目立つ腱より体の中心側。"
   },
   {
     "id": "lr9",

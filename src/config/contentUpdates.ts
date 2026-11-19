@@ -1,6 +1,7 @@
 import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
 import { LEARNING_COURSES } from '@/data/learningCourses';
 import { footLandmarks } from '@/data/tsubo/atlas/footLandmarks';
+import { legLandmarks } from '@/data/tsubo/atlas/legLandmarks';
 
 /** Significant content revisions only; never replace these with the build date. */
 export const SITE_REVISED_AT = '2026-10-02';
@@ -241,8 +242,10 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ].map(route => [route, '2026-11-18'])),
   '/tsubo': '2026-11-19',
   ...Object.fromEntries(Object.keys(footLandmarks).map(code => [`/tsubo/${code}`, '2026-11-19'])),
+  ...Object.fromEntries(Object.keys(legLandmarks).map(code => [`/tsubo/${code}`, '2026-11-19'])),
 };
 export const SITE_UPDATES = [
+  { date: '2026-11-19', label: '足裏・ひざ・すね・ふくらはぎの30穴を図解', href: '/tsubo#illustrated-points', text: 'くるぶしやひざ裏を起点にした距離と骨の前後を見分けられるように、30穴に本文と3種類の図を追加しました。' },
   { date: '2026-11-19', label: '足の甲・足首・足の縁の26穴を図解', href: '/tsubo#illustrated-points', text: 'くるぶしの前・下・後ろや、足の指の付け根と指のまたを見分けられるように、26穴に本文と3種類の図を追加しました。' },
   { date: '2026-11-18', label: 'ツボ図鑑・東洋医学・臨床演習を公開', href: '/', text: 'ツボや症状を名前で探せるようになりました。読み物、体質チェック、症例演習も会員登録なしで利用できます。' },
   { date: '2026-11-10', label: '料金・問い合わせ・学習の入口を改善', href: '/pricing', text: '料金プランをヘッダー、問い合わせをフッターの主要ナビに追加。申込みの稼働確認と時間切れ表示、保存上限からの案内、資料件数の内訳を整えました。経歴の開業年月を2023年7月に統一しました。' },

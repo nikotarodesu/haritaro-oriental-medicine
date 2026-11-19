@@ -1,6 +1,7 @@
 import type { AcupointAtlasArticle } from "./types";
 import { digitArticles } from "./digitArticles";
 import { footArticles } from "./footArticles";
+import { legArticles } from "./legArticles";
 import { forearmIllustrations } from "./illustrations";
 
 const WHO_URL = "https://iris.who.int/bitstream/handle/10665/353407/9789290613831-eng.pdf?sequence=1";
@@ -55,6 +56,7 @@ function forearmSource(pdfPage: number) {
 export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
   ...digitArticles,
   ...footArticles,
+  ...legArticles,
   pc4: {
     description: "郄門（げきもん・PC4）は、手のひら側の腕の真ん中から少し手首へ戻ったところ。ひじと手首のしわ、2本のすじを目印に位置を図解します。",
     meridianReading: "てのけついんしんぽうけい", regionLabel: "手のひら側の前腕、中間より手首寄り",

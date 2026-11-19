@@ -42,6 +42,7 @@ const { POINT_ILLUSTRATIONS } = load('src/data/tsubo/atlas/illustrations');
 const { ATLAS_POINT_MARKERS, shinEndpoints } = load('src/data/tsubo/atlas/markers');
 const { digitLandmarks, digitGeometry } = load('src/data/tsubo/atlas/digits');
 const { footLandmarks } = load('src/data/tsubo/atlas/footLandmarks');
+const { legLandmarks, soleEndpoints, poplitealY, medialAnkleY } = load('src/data/tsubo/atlas/legLandmarks');
 assert.deepEqual(Object.keys(ATLAS_POINT_MARKERS).sort(), [...new Set([...Object.keys(ATLAS_ARTICLES), ...Object.keys(POINT_ILLUSTRATIONS)])].sort(),
   'Every illustrated index link must have one complete diagram set');
 for (const [code, foot] of Object.entries(footLandmarks)) {
@@ -57,6 +58,23 @@ assert(footLandmarks.sp2.x > 240 && footLandmarks.sp3.x < 240, 'SP2 and SP3 sit 
 assert(footLandmarks.bl66.x > 240 && footLandmarks.bl65.x < 240, 'BL65 and BL66 sit on opposite sides of the little toe joint');
 assert(footLandmarks.bl63.x < 158 && footLandmarks.bl64.x > 158, 'BL63 and BL64 sit on opposite sides of the fifth metatarsal tuberosity');
 assert(footLandmarks.bl60.x < footLandmarks.bl62.x && footLandmarks.bl62.x < footLandmarks.gb40.x, 'Lateral ankle points progress from behind the malleolus to below and in front');
+for (const [code, point] of Object.entries(legLandmarks)) {
+  const article = ATLAS_ARTICLES[code];
+  const marker = ATLAS_POINT_MARKERS[code];
+  assert.equal(marker.legCode, code);
+  assert.equal(marker.x, point.x, code);
+  assert.equal(marker.y, point.y, code);
+  assert(article.sources[0].url.endsWith('#page=' + point.pdfPage), code);
+  assert(article.relatedPoints.every(point => getAcupointByCode(point.code)), code);
+  const body = [article.lead, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, ...article.expert, ...article.relatedPoints.map(point => point.text)].join('');
+  assert(body.length >= 700 && body.length <= 900, code + ' article length');
+}
+assert.equal(legLandmarks.ki1.y, (soleEndpoints.heel.y - soleEndpoints.web.y) / 3 + soleEndpoints.web.y);
+assert(legLandmarks.gb35.y === legLandmarks.gb36.y && legLandmarks.gb35.x < legLandmarks.gb36.x);
+assert(legLandmarks.ki7.y === legLandmarks.ki8.y && legLandmarks.ki7.x < legLandmarks.ki8.x);
+assert(legLandmarks.lr8.y === poplitealY && legLandmarks.lr8.x < legLandmarks.ki10.x);
+assert.equal(medialAnkleY - legLandmarks.sp9.y, 13 * 12);
+assert.equal(legLandmarks.sp8.y - legLandmarks.sp9.y, 3 * 12);
 // An inverted diagram still fits the viewBox. Compare each side to the WHO record.
 const digitLocations = [
   ['lu11', 'hand', 1, 'firstSide', 40], ['li1', 'hand', 2, 'firstSide', 43],

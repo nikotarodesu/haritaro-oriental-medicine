@@ -70,7 +70,8 @@ for(const lectureId of NATURAL_JAPANESE_EDITORIAL_REVISIONS) assert(lectureIds.h
 // All lecture reading layouts and acupoint pages were revised; this is not a clinical-review date.
 for(const lectureId of lectureIds) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/curriculum/${lectureId}`).lastModified.toISOString().slice(0,10),'2026-11-18',lectureId);
 const dateAt = pathname => sitemap.find(page=>new URL(page.url).pathname===pathname)?.lastModified.toISOString().slice(0,10);
-assert.equal(dateAt('/tsubo/sp6'),'2026-10-18');
+assert.equal(dateAt('/tsubo/sp11'),'2026-10-18', 'Unrevised points retain the atlas baseline date');
+assert.equal(dateAt('/tsubo/sp6'),'2026-11-19', 'Revised points show the release date');
 for(const pathname of ['/','/about','/clinical','/curriculum','/diagnosis','/learn','/library','/symptoms','/tsubo/li4']) assert.equal(dateAt(pathname),'2026-11-18',pathname);
 assert.equal(dateAt('/tsubo'), '2026-11-19', 'The illustrated atlas index reflects the November 19 release');
 assert(!sitemap.some(page => ['/pricing','/notes','/auth/login','/account/subscription'].includes(new URL(page.url).pathname)), 'Retired services are no longer indexable sitemap destinations');
