@@ -5,7 +5,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "中府",
     "code": "LU1",
     "meridianShort": "肺経",
-    "locationSimple": "胸の中央線から横へ6寸で、上から数えて第1肋間（第1肋骨と第2肋骨の間）。寸は体の区間を等分した位置の目安です。"
+    "locationSimple": "胸の中央から横へ6寸、鎖骨下のくぼみより外側で、上から数えて第1肋間（第1肋骨と第2肋骨の間）と同じ高さ。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "lu2",
@@ -194,7 +194,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "天鼎",
     "code": "LI17",
     "meridianShort": "大腸経",
-    "locationSimple": "のどぼとけの下の輪状の軟骨の高さで、首の斜めの筋肉の後ろの縁。"
+    "locationSimple": "のどぼとけの下の輪状の軟骨と同じ高さで、首の斜めの筋肉のすぐ後ろ。"
   },
   {
     "id": "li18",
@@ -229,7 +229,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "四白",
     "code": "ST2",
     "meridianShort": "胃経",
-    "locationSimple": "黒目の真下の頬で、目のまわりの骨の縁より少し下。"
+    "locationSimple": "黒目の真下の頬で、目を囲む骨の下にある小さな孔の位置。"
   },
   {
     "id": "st3",
@@ -278,14 +278,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "人迎",
     "code": "ST9",
     "meridianShort": "胃経",
-    "locationSimple": "のどぼとけの上縁の高さで、首の斜めの筋肉の前縁。"
+    "locationSimple": "のどぼとけの上縁の高さで、首の斜めの筋肉のすぐ前。"
   },
   {
     "id": "st10",
     "name": "水突",
     "code": "ST10",
     "meridianShort": "胃経",
-    "locationSimple": "のどぼとけより下の輪状の軟骨の高さで、首の斜めの筋肉の前縁。"
+    "locationSimple": "のどぼとけより下の輪状の軟骨の高さで、首の斜めの筋肉のすぐ前。"
   },
   {
     "id": "st11",
@@ -425,7 +425,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "気衝",
     "code": "ST30",
     "meridianShort": "胃経",
-    "locationSimple": "恥骨の上端と同じ高さで、下腹部の中央線の横へ2寸。寸は体の区間を等分した位置の目安です。"
+    "locationSimple": "恥骨の上端と同じ高さで、下腹部の中央線の横へ2寸、太ももに続く動脈の上。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "st31",
@@ -684,7 +684,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "極泉",
     "code": "HT1",
     "meridianShort": "心経",
-    "locationSimple": "わきのくぼみの中央。"
+    "locationSimple": "わきのくぼみの中央で、わきを通る動脈の上。"
   },
   {
     "id": "ht2",
@@ -943,7 +943,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "天柱",
     "code": "BL10",
     "meridianShort": "膀胱経",
-    "locationSimple": "うなじで、首の第2の骨の高さにある首筋の外のくぼみ。"
+    "locationSimple": "首の第2頸椎の突起の上縁と同じ高さで、背中から首に続く筋の外のくぼみ。"
   },
   {
     "id": "bl11",
@@ -1629,7 +1629,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "外関",
     "code": "TE5",
     "meridianShort": "三焦経",
-    "locationSimple": "手の甲側の手首のしわからひじへ2寸、前腕の2本の骨の間。寸は体の区間を等分した位置の目安です。"
+    "locationSimple": "手の甲側の手首のしわからひじへ2寸、前腕の2本の骨の間の中央。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "te6",
@@ -1650,14 +1650,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "三陽絡",
     "code": "TE8",
     "meridianShort": "三焦経",
-    "locationSimple": "手の甲側の手首のしわからひじへ4寸、2本の骨の間。寸は体の区間を等分した位置の目安です。"
+    "locationSimple": "手の甲側の手首のしわからひじへ4寸、2本の骨の間の中央。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "te9",
     "name": "四瀆",
     "code": "TE9",
     "meridianShort": "三焦経",
-    "locationSimple": "ひじの裏の尖った骨から手首へ5寸、前腕の2本の骨の間。寸は体の区間を等分した位置の目安です。"
+    "locationSimple": "ひじの裏の尖った骨から手首へ5寸、前腕の2本の骨の間の中央。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "te10",
@@ -1748,7 +1748,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "和髎",
     "code": "TE22",
     "meridianShort": "三焦経",
-    "locationSimple": "こめかみの生え際の後ろで、耳の付け根の前。"
+    "locationSimple": "こめかみの生え際と動脈より後ろで、耳の付け根の前。"
   },
   {
     "id": "te23",
@@ -1951,7 +1951,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "維道",
     "code": "GB28",
     "meridianShort": "胆経",
-    "locationSimple": "骨盤の前の出っ張りより0.5寸、内側かつ下。寸は体の区間を等分した位置の目安です。"
+    "locationSimple": "骨盤の前の出っ張りから0.5寸、体の中央へ斜め下。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "gb29",

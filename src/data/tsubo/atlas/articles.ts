@@ -5,10 +5,10 @@ import { legArticles } from "./legArticles";
 import { expandedArticles } from "./expandedArticles";
 import { forearmIllustrations } from "./illustrations";
 
-const WHO_URL = "https://iris.who.int/bitstream/handle/10665/353407/9789290613831-eng.pdf?sequence=1";
-const whoLocation = (scope: string) => ({
+const WHO_URL = "https://iris.who.int/server/api/core/bitstreams/d98c1c98-3fbf-4e4e-8c9a-1bbe72ccd00e/content";
+const whoLocation = (pdfPage: number, scope: string) => ({
   name: "WHO西太平洋地域事務局『WHO標準経穴部位』2008年、2009年改訂再版（PDF）",
-  url: WHO_URL,
+  url: `${WHO_URL}#page=${pdfPage}`,
   scope,
 });
 
@@ -32,7 +32,7 @@ const pressure = {
 
 const shinLocation = (page: number) => ({
   name: `WHO西太平洋地域事務局『WHO標準経穴部位』p.${page}（PDF）`,
-  url: `https://www.medbox.org/index.php/dl/627a4de115110145a1723f64#page=${page + 9}`,
+  url: `${WHO_URL}#page=${page + 9}`,
   scope: "すねの表面にあるツボの位置、距離の測り方、目印となる筋肉を参照。",
 });
 const lingshu = {
@@ -49,7 +49,7 @@ const touchCare = {
 function forearmSource(pdfPage: number) {
   return {
     name: `WHO西太平洋地域事務局『WHO標準経穴部位』p.${pdfPage - 9}（PDF）`,
-    url: `https://www.medbox.org/index.php/dl/627a4de115110145a1723f64#page=${pdfPage}`,
+    url: `${WHO_URL}#page=${pdfPage}`,
     scope: "2026年11月18日、手首のしわと腱を基準にした標準部位を照合。",
   };
 }
@@ -132,7 +132,7 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
       { code: "PC5", text: "同じ経絡で、内関より少し肘寄りにあります。" },
     ],
     sources: [
-      whoLocation("内関の位置と、周辺の経絡上の順序を参照（pp.153–156、内関は p.154）。"),
+      whoLocation(163, "内関の位置と、周辺の経絡上の順序を参照（pp.153–156、内関は p.154）。"),
       {
         name: "『黄帝内経 霊枢』経脈篇（原文）",
         url: "https://www.cntcm.org/shu/101-3-10.html",
@@ -188,7 +188,7 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
       { code: "ST37", text: "同じ経絡で、足三里より足首寄りにあります。" },
     ],
     sources: [
-      whoLocation("足三里の位置と経絡上の順序、解渓の位置を参照（pp.63–66、足三里は p.64）。"),
+      whoLocation(73, "足三里の位置と経絡上の順序、解渓との位置関係を参照（足三里は p.64、解渓は p.66）。"),
       {
         name: "国立障害者リハビリテーションセンター「東洋の経験と知恵を活かして健やかな毎日を」",
         url: "https://www.rehab.go.jp/rehanews/japanese/No276/10_story.html",
@@ -310,7 +310,7 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
       { code: "LI4", text: "手の甲にあり、太衝との組み合わせは伝統的に「四関（しかん）」と呼ばれます。" },
     ],
     sources: [
-      whoLocation("太衝の位置と周辺の経絡上の順序を参照（pp.196–198、太衝は p.197）。"),
+      whoLocation(206, "太衝の位置と周辺の経絡上の順序を参照（pp.196–198、太衝は p.197）。"),
       {
         name: "東京女子医科大学附属東洋医学研究所「東洋医学研究所便り Vol.2」（PDF）",
         url: "https://www.twmu.ac.jp/hospital/IOM/wp-content/uploads/2023/04/tayori02.pdf",

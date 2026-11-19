@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle, AtlasCloseUpProps, AtlasMarker, AtlasRegion } from "@/data/tsubo/atlas/types";
+import { legLandmarks } from "@/data/tsubo/atlas/legLandmarks";
 import FootDorsumRegion from "./FootDorsumRegion";
 import FootLandmarkRegion from "./FootLandmarkRegion";
 import DigitRegion from "./DigitRegion";
@@ -53,7 +54,7 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
 }) {
   const { BodyHighlight, CloseUp } = regions[illustration.region];
   const expandedView = marker.expanded && expandedViews[marker.expanded.view];
-  const back = expandedView?.direction === "back";
+  const back = expandedView?.direction === "back" || Boolean(marker.legCode && legLandmarks[marker.legCode].view === "posterior");
   const bodyDirection = back ? "背面" : "正面";
   const landmarkNames = marker.expanded?.landmarks.map((id) => expandedView?.features[id].name.replace("／", "")).join("、");
   const closeUpAlt = landmarkNames ? `${illustration.closeUpAlt} 目印は${landmarkNames}です。` : illustration.closeUpAlt;

@@ -1,8 +1,8 @@
 export type ExpandedView =
-  | "face" | "profile" | "scalp" | "nape" | "neck" | "mouth"
+  | "face" | "profile" | "scalp" | "nape" | "neck" | "neckSide" | "mouth"
   | "chest" | "abdomen" | "flank" | "groin" | "pelvis" | "hip"
   | "back" | "sacrum" | "shoulderBack" | "shoulderSide"
-  | "upperArm" | "armBack" | "elbowSide" | "forearmPalm" | "forearmBack" | "palm" | "handBack"
+  | "upperArm" | "armBack" | "elbowSide" | "elbowInside" | "forearmPalm" | "forearmBack" | "palm" | "handBack"
   | "thighFront" | "thighSide" | "thighBack";
 
 export interface ExpandedPoint {

@@ -12,6 +12,7 @@ import {
   Printer,
 } from "lucide-react";
 import { TSUBOS } from "@/data/tsuboData";
+import { getExpandedLocationSimple } from "@/data/tsubo/friendlyLocations";
 import { Tsubo } from "@/types/oriental";
 
 // おすすめ比較プリセット
@@ -382,16 +383,26 @@ function TsuboCompareContent() {
                     <th scope="row" className="p-4 font-bold text-[#737C77] dark:text-[#8899A6] bg-[#FAF8F5]/40 dark:bg-[#131B22]/40">
                       取穴法（場所）
                     </th>
-                    {selectedTsubos.map(t => (
-                      <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1">
-                        <p className="text-xs text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
-                          {t.locationSimple}
-                        </p>
-                        <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] leading-relaxed pt-1 border-t border-[#E5DEC9]/40">
-                          {t.locationDetail}
-                        </p>
-                      </td>
-                    ))}
+                    {selectedTsubos.map(t => {
+                      const code = t.code.toLowerCase();
+                      const atlasLocation = getExpandedLocationSimple(code);
+                      return (
+                        <td key={t.id} className="p-4 border-l border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1">
+                          <p className="text-xs text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
+                            {atlasLocation ?? t.locationSimple}
+                          </p>
+                          {atlasLocation ? (
+                            <Link href={`/tsubo/${code}#acupoint-location`} className="text-xs font-semibold underline">
+                              図で場所を確認
+                            </Link>
+                          ) : (
+                            <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] leading-relaxed pt-1 border-t border-[#E5DEC9]/40">
+                              {t.locationDetail}
+                            </p>
+                          )}
+                        </td>
+                      );
+                    })}
                   </tr>
 
                   {/* 主治・適応症 */}

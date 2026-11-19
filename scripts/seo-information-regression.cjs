@@ -82,6 +82,20 @@ for (const code of ['bl1', 'st9', 'lu1', 'lu8', 'ht1', 'si8', 'sp11', 'cv8', 'cv
 }
 assert.match(ATLAS_ARTICLES.cv17.safetyWarning, /胸痛.*動悸.*119/);
 assert.match(ATLAS_ARTICLES.gb21.safetyWarning, /妊娠中.*産科/);
+assert(Object.values(ATLAS_ARTICLES).every(article =>
+  article.sources.some(({ url }) => /^https:\/\/iris\.who\.int\/.*#page=\d+$/.test(url))
+), 'Every atlas article links to the specific page in the WHO publication');
+assert.equal(expandedPoints.st30.y, expandedPoints.lr12.y, 'Both groin points align with the upper end of the pubic symphysis');
+assert(expandedPoints.st30.x < expandedPoints.lr12.x && expandedPoints.st30.landmarks.includes('femoral'));
+for (const code of ['gb27', 'gb28']) {
+  assert.equal(expandedPoints[code].view, 'abdomen', code + ' must show direction relative to the midline');
+  assert(expandedPoints[code].landmarks.includes('anteriorIliac'), code);
+}
+assert.equal(expandedPoints.st9.y, expandedPoints.li18.y);
+assert.equal(expandedPoints.st9.y, expandedPoints.si16.y);
+assert(expandedPoints.st9.x < expandedPoints.li18.x && expandedPoints.li18.x < expandedPoints.si16.x,
+  'Points at the same thyroid cartilage level lie before, within, and behind the sternocleidomastoid');
+assert.equal(expandedPoints.si8.view, 'elbowInside');
 for (const [code, foot] of Object.entries(footLandmarks)) {
   const article = ATLAS_ARTICLES[code];
   const marker = ATLAS_POINT_MARKERS[code];
@@ -112,6 +126,8 @@ assert(legLandmarks.ki7.y === legLandmarks.ki8.y && legLandmarks.ki7.x < legLand
 assert(legLandmarks.lr8.y === poplitealY && legLandmarks.lr8.x < legLandmarks.ki10.x);
 assert.equal(medialAnkleY - legLandmarks.sp9.y, 13 * 12);
 assert.equal(legLandmarks.sp8.y - legLandmarks.sp9.y, 3 * 12);
+assert(legLandmarks.sp6.x < 109, 'SP6 lies behind the medial border drawn in the leg template');
+assert(legLandmarks.lr5.x > 110 && legLandmarks.lr5.x < 124, 'LR5 lies on the middle of the tibial surface');
 // An inverted diagram still fits the viewBox. Compare each side to the WHO record.
 const digitLocations = [
   ['lu11', 'hand', 1, 'firstSide', 40], ['li1', 'hand', 2, 'firstSide', 43],

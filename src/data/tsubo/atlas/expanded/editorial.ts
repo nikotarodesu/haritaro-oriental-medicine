@@ -40,6 +40,11 @@ export const viewCopy: Record<ExpandedView, ViewCopy> = {
     read: "鎖骨からあごまでの間で、高さを先に見ます。のどの中央、耳の下から鎖骨へ向かう筋肉のふち、首の後ろは、図で位置を比べてください。",
     care: "neck", symptom: headSymptoms,
   },
+  neckSide: {
+    label: "首の横", context: "首のツボをあごやのどの高さから見分けたいとき",
+    read: "横から見た図で、左はのど側、右はうなじ側です。耳の下から鎖骨に向かう斜めの筋肉を目印に、丸印が筋肉の前・中央・後ろのどこにあるかを確認します。",
+    care: "neck", symptom: headSymptoms,
+  },
   mouth: {
     label: "上唇の内側", context: "口の内外にある点の名前と位置を区別したいとき",
     read: "拡大図では、上唇の裏と歯ぐきをつなぐ中央のひだを描いています。鼻と唇の間にある人中と、唇の裏の歯ぐきに近い位置を見分けます。",
@@ -56,8 +61,13 @@ export const viewCopy: Record<ExpandedView, ViewCopy> = {
     care: "touch",
   },
   elbowSide: {
-    label: "ひじの横", context: "ひじの内側・外側で目印にする骨を見分けたいとき",
+    label: "ひじの外側", context: "ひじの外側で目印にする骨を見分けたいとき",
     read: "ひじを曲げた図では、ひじ先の骨と関節の横に出る骨が別の目印になります。角度によってくぼみの見え方が変わるので、丸印がどの骨のそばかを先に見ます。",
+    care: "touch",
+  },
+  elbowInside: {
+    label: "ひじの内側と後ろの境", context: "ひじの内側に見える骨と、後ろの尖った骨を区別したいとき",
+    read: "ひじの内側を向いた図で、腕を曲げたときに尖る骨と、体に近い側の骨の出っ張りを見ます。その間の溝は、ひじを強く曲げなくても図で確認できます。",
     care: "touch",
   },
   forearmPalm: {
@@ -92,7 +102,7 @@ export const viewCopy: Record<ExpandedView, ViewCopy> = {
   },
   chest: {
     label: "胸の前", context: "資料で出てきた胸のツボが、鎖骨と肋骨のどの高さにあるかを読むとき",
-    read: "胸骨は胸の中央にある縦長の骨で、鎖骨は左右の肩へ続く骨です。拡大図では肋骨が弧を描きます。丸印がどの高さにあり、胸の中央からどれだけ離れるかを順に追います。",
+    read: "胸骨は胸の中央の縦長の骨で、鎖骨は肩へ続く骨です。弧を描く肋骨を目印に、丸印の高さと胸の中央からの距離を見ます。",
     care: "chest",
   },
   abdomen: {

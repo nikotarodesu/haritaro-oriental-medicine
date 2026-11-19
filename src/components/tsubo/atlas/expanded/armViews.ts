@@ -2,6 +2,9 @@ import { feature as f, type View } from "./views";
 
 const forearm = "M66 27Q110 15 158 27Q164 58 151 91Q155 123 149 168L145 230Q143 246 151 272L76 272Q87 246 79 224L69 178Q63 132 70 96Q50 58 66 27Z";
 const upperArm = "M93 28Q108 13 140 27Q163 44 162 74Q162 91 147 104Q150 141 143 171Q146 204 152 237Q151 252 138 274H82Q72 254 75 236Q81 201 77 174Q72 139 77 107Q70 77 75 51Q79 36 93 28Z";
+const biceps = "M122 82Q144 134 136 176Q132 202 116 226Q99 198 106 159Q103 110 122 82Z";
+const bentElbow = "M78 25Q106 17 143 31Q141 57 145 91Q156 120 166 145Q174 171 152 193L97 251L61 214Q91 176 100 156Q107 137 93 118Q72 89 78 25Z";
+const olecranon = "M109 171Q135 146 156 145Q166 153 150 170L114 193";
 const hand = "M75 271Q78 235 61 201Q54 184 42 172L20 146Q10 128 22 119Q31 113 43 127L55 141L57 54Q57 40 68 38Q81 37 81 55L82 102L88 27Q89 13 101 13Q113 13 115 29L116 102L122 43Q125 29 135 31Q149 32 147 48L143 111L154 80Q158 66 170 70Q181 74 178 88L177 146Q183 176 167 206Q150 232 144 271Z";
 const rays = {
   thumbRay: f("親指につながる骨", 34, 170, "M77 224Q64 187 52 170 M43 158L34 147 M30 140L24 131"),
@@ -22,7 +25,9 @@ export const armViews = {
     details: ["M79 75Q110 64 142 91", "M85 235Q112 247 145 235", "M113 91L119 217"],
     features: {
       axillary: f("わきの前のしわ", 154, 75, "M134 78Q149 78 148 101", "guide"),
-      biceps: f("力こぶの筋肉", 123, 158, "M122 82Q144 134 136 176Q132 202 116 226Q99 198 106 159Q103 110 122 82Z", "soft"),
+      biceps: f("力こぶの筋肉", 123, 158, biceps, "soft"),
+      bicepsHeads: f("力こぶを作る／2つの筋の境", 109, 140, `${biceps} M122 84Q127 117 122 150L116 183`, "soft"),
+      axillaryArtery: f("わきを通る動脈", 156, 118, "M152 66Q155 82 149 93Q141 109 138 132", "soft"),
       upperBone: f("上腕の骨", 94, 71, "M109 54Q116 44 129 53L120 215Q128 226 127 237H101Q99 227 107 214Z"),
       elbow: f("ひじのしわ", 130, 251, "M81 237Q111 247 145 237", "guide"),
       deltoid: f("肩を覆う筋肉", 98, 95, "M86 43Q122 22 149 56Q143 89 110 120Q90 117 86 43Z", "soft"),
@@ -39,12 +44,20 @@ export const armViews = {
     },
   },
   elbowSide: {
-    name: "ひじの横・肩は上", direction: "side", area: "elbow", outline: "M78 25Q106 17 143 31Q141 57 145 91Q156 120 166 145Q174 171 152 193L97 251L61 214Q91 176 100 156Q107 137 93 118Q72 89 78 25Z",
+    name: "ひじの外側・肩は上", direction: "side", area: "elbow", outline: bentElbow,
     details: ["M91 111Q120 111 145 97", "M113 166Q137 180 155 157"],
     features: {
-      elbowBump: f("ひじの横の骨", 131, 122, "M112 104Q137 98 142 125Q139 143 124 135Z"),
+      elbowBump: f("ひじの外側の骨", 131, 122, "M112 104Q137 98 142 125Q139 143 124 135Z"),
       humerusRidge: f("上腕の骨の稜", 101, 78, "M106 34Q113 67 127 113"),
-      elbowTip: f("ひじの尖った骨", 156, 154, "M109 171Q135 146 156 145Q166 153 150 170L114 193"),
+      elbowTip: f("ひじの尖った骨", 156, 154, olecranon),
+    },
+  },
+  elbowInside: {
+    name: "ひじの内側・肩は上", direction: "back", area: "elbow", outline: bentElbow,
+    details: ["M101 42Q113 76 121 107", "M112 183L85 224"],
+    features: {
+      medialEpicondyle: f("ひじの内側の骨", 120, 119, "M107 119Q117 111 132 116Q146 127 138 139Q127 141 112 133Z"),
+      elbowTip: f("ひじの後ろの尖った骨", 156, 156, olecranon),
     },
   },
   forearmPalm: {
@@ -69,6 +82,8 @@ export const armViews = {
       ...forearmBones,
       wristBack: f("甲側の手首のしわ", 116, 255, "M77 238Q111 241 148 238", "guide"),
       elbowBack: f("ひじの高さ", 117, 43, "M65 58H153", "guide"),
+      forearmBones: f("前腕の2本の骨／橈骨と尺骨", 161, 151, `${forearmBones.radius.path} ${forearmBones.ulna.path}`),
+      olecranonBack: f("ひじの後ろの尖った骨", 101, 42, "M97 71Q99 59 112 58Q124 57 129 68Q131 75 124 79L109 77Z"),
     },
   },
   shoulderSide: {

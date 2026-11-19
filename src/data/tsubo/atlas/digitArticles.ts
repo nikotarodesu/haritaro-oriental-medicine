@@ -72,7 +72,7 @@ function digitArticle(code: DigitCode, copy: DigitCopy): AcupointAtlasArticle {
     symptomLinks: [copy.symptomLink ?? symptomIndex],
     sources: [
       { name: `WHO西太平洋地域事務局『WHO標準経穴部位』p.${pdfPage - 9}（PDF）`,
-        url: `https://www.medbox.org/index.php/dl/627a4de115110145a1723f64#page=${pdfPage}`,
+        url: `https://iris.who.int/server/api/core/bitstreams/d98c1c98-3fbf-4e4e-8c9a-1bbe72ccd00e/content#page=${pdfPage}`,
         scope: `${copy.name}（${code.toUpperCase()}）の標準位置と図の向き・目印を照合。` },
       classicalTable, ...copy.sources,
     ],

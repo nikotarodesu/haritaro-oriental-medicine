@@ -138,6 +138,7 @@ assert(!nodes(picker()).filter(node => node.type === 'button').some(node => node
 // Compare markup keeps row/column semantics and all original selection behavior.
 const tsubo = (code, name) => ({ id: code.toLowerCase(), code, name, kana: name, meridian: '検証経絡', bodyPart: '検証部位', category: [], indications: [], clinicalNote: '公開済みの補足', caution: '公開済みの注意', location: '公開済みの位置' });
 const TSUBOS = [tsubo('LI4','合谷'), tsubo('LR3','太衝'), tsubo('ST36','足三里')];
+const atlasLocations = load('src/data/tsubo/friendlyLocations');
 let queryParams = new URLSearchParams(), frameId = 0;
 const comparisonFrames = new Map();
 const compare = client('src/app/tsubo/compare/CompareClient.tsx', {
@@ -145,6 +146,7 @@ const compare = client('src/app/tsubo/compare/CompareClient.tsx', {
   'next/navigation': { useSearchParams: () => queryParams },
   '@/components/design/PageIntro': { __esModule: true, default: () => null },
   '@/data/tsuboData': { TSUBOS },
+  '@/data/tsubo/friendlyLocations': atlasLocations,
 }, { window: { print() {} }, document: { getElementById: () => ({ focus() {}, scrollIntoView() {} }) },
   requestAnimationFrame(callback) { comparisonFrames.set(++frameId, callback); return frameId; }, cancelAnimationFrame(id) { comparisonFrames.delete(id); },
 });
@@ -169,6 +171,12 @@ assert.equal(comparisonFrames.size, 1, 'A newer route cancels a pending older ro
 for (const callback of comparisonFrames.values()) callback(); comparisonFrames.clear(); compare.render();
 const comparisonHeaders = nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col');
 assert(text(comparisonHeaders[1]).includes('太衝') && text(comparisonHeaders[2]).includes('足三里'), 'Only the latest route supplies the visible columns');
+TSUBOS.push({ ...tsubo('GV20', '百会'), locationDetail: '旧版の部位説明' });
+queryParams = new URLSearchParams('a=GV20&b=ST36'); compare.render();
+for (const callback of comparisonFrames.values()) callback(); comparisonFrames.clear(); compare.render();
+assert(text(scroll()).includes(atlasLocations.getExpandedLocationSimple('gv20')), 'Comparison shows the same verified location as the atlas');
+assert(!text(scroll()).includes('旧版の部位説明'));
+assert(nodes(scroll()).some(node => node.type === Link && node.props.href === '/tsubo/gv20#acupoint-location'));
 
 // Parse the actual style artifact and check the two fixed axes plus print recovery.
 const sheet = postcss.parse(fs.readFileSync(path.join(root, 'src/app/tablet-usability.css'), 'utf8'));
