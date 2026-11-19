@@ -1,8 +1,11 @@
+import { profileLandmarks } from "@/data/tsubo/atlas/expanded/head";
 import { feature as f, type View } from "./views";
 
+const { earApex, posteriorEarRootX, mastoidCentre, mastoidTip, templeEdge } = profileLandmarks;
 const faceOutline = "M105 22Q177 22 183 88Q187 108 183 130Q187 169 165 204Q143 233 106 249Q67 235 42 208Q21 179 24 134Q21 96 30 65Q50 24 105 22Z";
 const profileOutline = "M152 37Q184 55 187 92Q192 130 177 152Q164 171 170 227L115 232Q112 220 102 206Q93 214 75 218Q58 215 58 201L57 190Q48 187 54 176L48 172Q47 166 57 159L45 154Q39 149 45 143L64 116Q64 79 90 51Q114 22 152 37Z";
-const earOutline = "M128 112Q148 103 155 117Q161 134 147 153Q143 169 133 170Q123 169 124 159L121 151Q117 147 123 144L124 130Q120 120 128 112Z";
+const upperEar = `M128 112Q135 108 ${earApex.join(" ")}Q151 108 155 117`;
+const earOutline = `${upperEar}Q161 134 147 153Q143 169 133 170Q123 169 124 159L121 151Q117 147 123 144L124 130Q120 120 128 112Z`;
 const scalpOutline = "M106 25C155 25 187 64 192 125Q198 174 168 222Q145 255 106 265Q66 255 44 222Q15 174 20 125C23 64 57 25 106 25Z";
 const trapezius = "M128 124Q126 180 172 235M83 125Q80 178 42 233";
 const sideNeckOutline = "M130 28Q152 22 171 44Q182 61 182 81Q177 109 176 131Q175 173 186 204L199 225Q202 242 193 259H33Q23 252 30 236Q51 217 64 196Q72 176 72 161L63 135Q55 115 57 102L50 89Q43 85 47 75L55 63Q56 46 71 38Q92 23 130 28Z";
@@ -38,13 +41,13 @@ export const headViews = {
       jawSide: f("下あごの骨・関節", 91, 229, "M117 142Q124 164 116 190Q100 209 72 208"),
       masseter: f("かむ筋肉の縁", 114, 184, "M100 148Q127 158 116 196L92 203", "soft"),
       arch: f("頬骨の弓", 81, 120, "M81 129Q102 132 122 128"),
-      templeHair: f("額・こめかみの／生え際", 73, 76, "M82 64Q78 82 97 91L108 111", "guide"),
+      templeHair: f("額・こめかみの／生え際", 72, 76, `M82 64Q78 82 97 91L${templeEdge.join(" ")}`, "guide"),
       ear: f("耳の輪郭", 145, 137, earOutline, "soft"),
       tragus: f("耳の入口の突起", 96, 155, "M124 139Q115 148 124 153", "soft"),
-      mastoid: f("耳の後ろの骨", 183, 156, "M153 135Q168 144 148 179"),
-      earTop: f("耳の頂点", 152, 94, "M123 111Q134 105 145 109", "soft"),
-      earRoot: f("耳の付け根の後縁", 167, 112, "M152 110Q160 133 148 161", "soft"),
-      temporalLine: f("頭の横の生え際", 158, 85, "M107 109Q146 80 177 101", "guide"),
+      mastoid: f("耳の後ろの骨", 192, 172, `M153 135Q166 144 ${mastoidCentre.join(" ")}Q156 167 ${mastoidTip.join(" ")}`),
+      earTop: f("耳の頂点", 159, 94, upperEar, "soft"),
+      earRoot: f("耳の付け根の後縁", 167, 112, `M${posteriorEarRootX} 109Q155 132 143 159`, "soft"),
+      temporalLine: f("頭の横の生え際", 173, 87, `M${templeEdge.join(" ")}Q135 86 ${posteriorEarRootX} 101Q167 114 172 127Q172 155 162 175L167 203`, "guide"),
       temporalArtery: f("こめかみを通る動脈", 94, 99, "M104 123Q109 110 105 100Q104 89 111 80", "soft"),
     },
   },

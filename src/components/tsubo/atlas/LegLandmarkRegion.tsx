@@ -1,4 +1,4 @@
-import { legLandmarks, lateralAnkleY, medialAnkleY, poplitealY, posteriorAnkleY, soleEndpoints, type LegCode } from "@/data/tsubo/atlas/legLandmarks";
+import { legLandmarks, lateralAnkleY, medialAnkleY, poplitealY, posteriorAnkleY, posteriorKnee, soleEndpoints, type LegCode } from "@/data/tsubo/atlas/legLandmarks";
 import type { AtlasCloseUpProps } from "@/data/tsubo/atlas/types";
 
 function Badge({ x, y, number }: { x: number; y: number; number: number }) {
@@ -62,10 +62,11 @@ function Posterior({ code }: { code: LegCode }) {
   const point = legLandmarks[code];
   const upper = code === "bl55" || code === "bl56";
   const cun = "cun" in point ? point.cun : undefined;
+  const { medialEnd, lateralEnd, lateralTendon } = posteriorKnee;
   return <>
-    <path d="M78 20Q76 38 78 55Q63 104 86 159Q96 187 98 218Q94 246 106 262Q122 271 141 260Q151 249 146 225Q146 201 158 173Q180 112 161 55Q166 38 163 20Z" fill="#F4E8D8" stroke="#9B8D7D" strokeWidth="2" />
-    <path d="M78 55Q121 58 161 55" fill="none" stroke="#787F71" strokeDasharray="4 4" strokeWidth="1.8" />
-    <path d="M86 43L91 66M154 43L153 66" stroke="#77927B" strokeWidth="4" strokeLinecap="round" />
+    <path d={`M78 20Q76 38 ${medialEnd} ${poplitealY}Q63 104 86 159Q96 187 98 218Q94 246 106 262Q122 271 141 260Q151 249 146 225Q146 201 158 173Q180 112 ${lateralEnd} ${poplitealY}Q166 38 163 20Z`} fill="#F4E8D8" stroke="#9B8D7D" strokeWidth="2" />
+    <path d={`M${medialEnd} ${poplitealY}H${lateralEnd}`} fill="none" stroke="#787F71" strokeDasharray="4 4" strokeWidth="1.8" />
+    <path d={`M86 43L90 ${poplitealY}L92 66M100 43L104 ${poplitealY}L106 66M156 43L${lateralTendon} ${poplitealY}L153 66`} fill="none" stroke="#77927B" strokeWidth="3" strokeLinecap="round" />
     <path d="M87 67Q108 62 121 88Q135 62 151 67Q164 118 143 144Q132 154 121 145Q111 160 95 143Q75 117 87 67Z" fill="#E4AFA0" stroke="#B2735C" strokeWidth="1.7" />
     <path d="M121 79V145M112 149Q120 162 117 242M130 150Q124 183 126 245" fill="none" stroke="#9D755C" strokeWidth="2" />
     <path d="M114 241Q127 235 139 244Q143 255 132 259Q123 263 110 254Z" fill="#E8BE9D" stroke="#B97049" strokeWidth="1.5" />
@@ -74,7 +75,7 @@ function Posterior({ code }: { code: LegCode }) {
     <Badge x={129} y={249} number={1} />
     <text x="202" y="25">右脚を後ろから</text>
     <text x="202" y="52">ひざ裏のしわ</text>
-    <text x="202" y="76">{code === "bl39" ? "緑は外側の腱" : code === "lr8" || code === "ki10" ? "緑は内側の腱" : "ふくらはぎの2つの筋肉"}</text>
+    <text x="202" y="76">{code === "bl39" ? "右の緑は外側の腱" : code === "lr8" || code === "ki10" ? "緑の2本は内側の腱" : "ふくらはぎの2つの筋肉"}</text>
     <text x="202" y="231">① かかとの骨</text>
     <text x="27" y="287">← 内側</text><text x="211" y="287">外側 →</text>
   </>;

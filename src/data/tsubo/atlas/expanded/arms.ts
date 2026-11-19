@@ -1,5 +1,20 @@
 import { onView } from "./types";
 
+export const posteriorShoulder = {
+  axillaryFold: { x: 174, y: 183 },
+  scapulaRidge: { inner: { x: 125, y: 120 }, outer: { x: 180, y: 105 } },
+  scapulaTip: { x: 149, y: 211 },
+  neckBase: { x: 105, y: 56 },
+  acromion: { x: 189, y: 81 },
+} as const;
+
+const { axillaryFold, scapulaRidge, scapulaTip, neckBase, acromion } = posteriorShoulder;
+const ridgeMidpoint = {
+  x: (scapulaRidge.inner.x + scapulaRidge.outer.x) / 2,
+  y: (scapulaRidge.inner.y + scapulaRidge.outer.y) / 2,
+};
+const shoulderCun = 17;
+
 export const armPoints = {
   ...onView("upperArm", [
     ["lu3", 103, 135, "axillary biceps", "わきの前のしわから腕側へ3寸で、力こぶの外側の縁", "手のひらを前に向けると、二の腕の前の筋肉の輪郭を見やすくなります。天泉より少しひじに近く、筋肉の中央より外寄りです。"],
@@ -56,15 +71,20 @@ export const armPoints = {
     ["te14", 151, 132, "acromionSide upperHead", "肩の外の骨の角と、上腕の骨の上のふくらみの間の後ろ寄り", "肩の外から見て、骨の下にできるくぼみのうち背中寄りを確認します。肩髃は同じ肩の前寄り、臑会は二の腕へ下がった位置です。"],
   ]),
   ...onView("shoulderBack", [
-    ["si9", 175, 189, "axillaryBack shoulderBlade", "肩関節の後ろ下で、わきの後ろのしわから1寸上", "腕と背中がつながる後ろのわきのしわを見ます。そのすぐ肩側にある位置です。肩甲骨の横の隆起に近い臑兪より下です。"],
-    ["si10", 174, 134, "shoulderSpine axillaryBack", "わきの後ろのしわの上で、肩甲骨を横切る隆起より下のくぼみ", "後ろのわきのしわから視線を上げ、肩甲骨に横に伸びる骨の高まりの下を見ます。肩貞から肩へ上がった位置です。"],
-    ["si11", 154, 150, "shoulderSpine shoulderBlade", "肩甲骨の横の隆起の中央から、下の角へ向かう線の上から3分の1", "肩甲骨の外周と中央を横切る骨を図で見ます。骨から下の角に向かって約3分の1下り、肩甲骨の面にあるくぼみを確かめます。"],
-    ["si12", 154, 101, "shoulderSpine shoulderBlade", "肩甲骨を横切る骨の中央より上のくぼみ", "肩甲骨の面を上下に分ける横の隆起を先に確認します。その中央の上側が秉風で、下側にある天宗とは隆起をはさんだ違いがあります。"],
+    ["si9", axillaryFold.x, axillaryFold.y - shoulderCun, "axillaryBack posteriorDeltoid", "肩関節の後ろ下で、わきの後ろのしわから1寸上", "腕と背中がつながる後ろのわきのしわを見ます。そのすぐ肩側にある位置です。肩甲骨の横の隆起に近い臑兪より下です。",
+      `M${axillaryFold.x} ${axillaryFold.y}v${-shoulderCun}`],
+    ["si10", axillaryFold.x, 134, "shoulderSpine axillaryBack", "わきの後ろのしわの上で、肩甲骨を横切る隆起より下のくぼみ", "後ろのわきのしわから視線を上げ、肩甲骨に横に伸びる骨の高まりの下を見ます。肩貞から肩へ上がった位置です。"],
+    ["si11", ridgeMidpoint.x + (scapulaTip.x - ridgeMidpoint.x) / 3, ridgeMidpoint.y + (scapulaTip.y - ridgeMidpoint.y) / 3,
+      "shoulderSpine shoulderBlade", "肩甲骨の横の隆起の中央から、下の角へ向かう線の上から3分の1", "肩甲骨の外周と中央を横切る骨を図で見ます。骨から下の角に向かって約3分の1下り、肩甲骨の面にあるくぼみを確かめます。",
+      `M${ridgeMidpoint.x} ${ridgeMidpoint.y}L${scapulaTip.x} ${scapulaTip.y}`],
+    ["si12", ridgeMidpoint.x, 101, "shoulderSpine shoulderBlade", "肩甲骨を横切る骨の中央より上のくぼみ", "肩甲骨の面を上下に分ける横の隆起を先に確認します。その中央の上側が秉風で、下側にある天宗とは隆起をはさんだ違いがあります。"],
     ["si13", 129, 111, "shoulderSpine shoulderBlade", "肩甲骨を横切る隆起の、背骨寄りの端の上のくぼみ", "肩甲骨の横の骨を肩から背骨へたどり、肩甲骨の内側端に近づいたところを図で見ます。隆起の中央に近い秉風より背骨寄りです。"],
     ["si14", 157, 75, "shoulderBlade upperSpine", "第1胸椎の突起の下端と同じ高さで、背骨の中央から横へ3寸", "首から背中に移る最初の胸椎の高さを図で見ます。そこから横に肩甲骨側です。首の一番下を基準にする肩中兪より下外側です。"],
     ["si15", 140, 56, "upperSpine shoulderBlade", "第7頸椎の突起の下端と同じ高さで、背骨の中央から横へ2寸", "首と背中の境の骨を図で見つけ、同じ高さで肩甲骨側へ少し移ります。肩外兪は、もう一段下でさらに横へ離れます。"],
     ["te15", 151, 79, "shoulderBlade upperSpine", "肩甲骨の上内側の角のすぐ上のくぼみ", "肩甲骨を背中側から見て、いちばん上で背骨側の角を確かめます。その真上が天髎です。肩先や腕の付け根とは離れています。"],
-    ["gb21", 147, 68, "upperSpine acromionBack", "首のつけ根の中央の骨と、肩の外の骨の中間", "首の根元にある第7頸椎の突起と、肩先の硬い肩峰を図で結びます。中間にある点です。首の横を押し込んだり、強く刺激したりしません。"],
+    ["gb21", (neckBase.x + acromion.x) / 2, (neckBase.y + acromion.y) / 2,
+      "upperSpine acromionBack", "首のつけ根の中央の骨と、肩の外の骨の中間", "首の根元にある第7頸椎の突起と、肩先の硬い肩峰を図で結びます。中間にある点です。首の横を押し込んだり、強く刺激したりしません。",
+      `M${neckBase.x} ${neckBase.y}L${acromion.x} ${acromion.y}`],
   ]),
   ...onView("palm", [
     ["lu10", 61, 197, "thumbRay palmEdge", "親指につながる手のひらの骨の中ほどで、親指側の縁", "親指の付け根から手首へ続く骨の長さを見ます。その中間で、手のひらの皮膚が外側へ切り替わる縁です。手首の太淵より指側です。"],

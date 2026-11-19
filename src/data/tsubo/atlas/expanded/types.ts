@@ -12,6 +12,7 @@ export interface ExpandedPoint {
   landmarks: readonly string[];
   location: string;
   guide: string;
+  measurement?: string;
 }
 
 type PointRow = [
@@ -21,10 +22,11 @@ type PointRow = [
   landmarkIds: string,
   location: string,
   guide: string,
+  measurement?: string,
 ];
 
 export function onView(view: ExpandedView, rows: readonly PointRow[]): Record<string, ExpandedPoint> {
-  return Object.fromEntries(rows.map(([code, x, y, landmarkIds, location, guide]) =>
-    [code, { view, x, y, landmarks: landmarkIds.split(" "), location, guide }],
+  return Object.fromEntries(rows.map(([code, x, y, landmarkIds, location, guide, measurement]) =>
+    [code, { view, x, y, landmarks: landmarkIds.split(" "), location, guide, measurement }],
   ));
 }

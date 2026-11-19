@@ -1,4 +1,7 @@
+import { groinLandmarks } from "@/data/tsubo/atlas/expanded/trunk";
 import { feature as f, type View } from "./views";
+
+const { pubicBorderY, inguinalCreaseX } = groinLandmarks;
 
 const chestOutline = "M88 22H124Q124 39 145 36L179 35Q199 36 204 59L203 127Q191 163 200 213L197 234Q156 254 106 254Q55 254 16 234L12 213Q20 163 9 127L8 59Q13 36 33 35L67 36Q88 39 88 22Z";
 const abdomenOutline = "M22 29Q41 21 58 22Q89 43 106 36Q123 43 154 22Q171 21 190 29Q197 62 187 98Q183 137 191 176Q200 227 178 255Q146 269 106 268Q65 269 34 255Q12 227 21 176Q30 137 25 98Q15 62 22 29Z";
@@ -62,9 +65,9 @@ export const trunkViews = {
     outline: "M26 44Q52 32 106 38Q160 32 187 44Q181 78 190 113Q204 152 193 192L185 251H128L106 184L84 251H27L19 192Q8 152 22 113Q31 78 26 44Z",
     details: ["M100 63Q105 68 112 63", "M106 144V184"],
     features: {
-      pubisGroin: f("下腹部の骨の上の縁", 101, 153, "M75 148Q85 142 106 142Q127 142 137 148"),
-      groinFold: f("脚の付け根のしわ", 174, 114, "M28 96Q42 118 59 133Q83 153 106 173Q129 153 153 133Q170 118 184 96", "guide"),
-      femoral: f("太ももへ向かう動脈", 153, 188, "M141 107Q138 123 134 142Q130 164 139 215", "soft"),
+      pubisGroin: f("下腹部の骨の上の縁", 101, 153, `M75 148Q85 ${pubicBorderY} 106 ${pubicBorderY}Q127 ${pubicBorderY} 137 148`),
+      groinFold: f("脚の付け根のしわ", 174, 114, `M28 96Q42 118 ${212 - inguinalCreaseX} ${pubicBorderY}Q83 161 106 173Q129 161 ${inguinalCreaseX} ${pubicBorderY}Q170 118 184 96`, "guide"),
+      femoral: f("太ももへ向かう動脈", 153, 188, `M141 107Q138 123 134 ${pubicBorderY}Q130 164 139 215`, "soft"),
     },
   },
   pelvis: {

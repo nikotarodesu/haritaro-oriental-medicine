@@ -6,6 +6,8 @@ export const medialAnkleY = 237;
 export const lateralAnkleY = 239;
 export const poplitealY = 55;
 export const posteriorAnkleY = 235;
+export const posteriorKnee = { medialEnd: 78, lateralEnd: 164, lateralTendon: 154 } as const;
+const kneeMidpoint = (posteriorKnee.medialEnd + posteriorKnee.lateralEnd) / 2;
 const medial = (x: number, cun: number, pdfPage: number) =>
   ({ view: "medial", x, y: medialAnkleY - cun * 12, cun, pdfPage }) as const;
 const lateral = (x: number, cun: number, pdfPage: number) =>
@@ -30,7 +32,7 @@ export const legLandmarks = {
   lr5: medial(117, 5, 207),
   lr6: medial(118, 7, 207),
   lr7: { view: "medial", x: 93, y: 81, pdfPage: 208 },
-  lr8: { view: "posterior", x: 78, y: poplitealY, pdfPage: 208 },
+  lr8: { view: "posterior", x: posteriorKnee.medialEnd, y: poplitealY, pdfPage: 208 },
   ki1: { view: "sole", x: soleEndpoints.web.x + (soleEndpoints.heel.x - soleEndpoints.web.x) / 3,
     y: soleEndpoints.web.y + (soleEndpoints.heel.y - soleEndpoints.web.y) / 3, pdfPage: 145 },
   ki7: medial(94, 2, 148),
@@ -43,11 +45,11 @@ export const legLandmarks = {
   gb37: lateral(137, 5, 199),
   gb38: lateral(136, 4, 199),
   gb39: lateral(134, 3, 200),
-  bl39: { view: "posterior", x: 148, y: poplitealY, pdfPage: 128 },
-  bl40: { view: "posterior", x: 121, y: poplitealY, pdfPage: 128 },
-  bl55: calf(121, 2, 136),
-  bl56: calf(121, 5, 136),
-  bl57: { view: "posterior", x: 121, y: poplitealY + 8 * calfStep, pdfPage: 137 },
+  bl39: { view: "posterior", x: posteriorKnee.lateralTendon - 6, y: poplitealY, pdfPage: 128 },
+  bl40: { view: "posterior", x: kneeMidpoint, y: poplitealY, pdfPage: 128 },
+  bl55: calf(kneeMidpoint, 2, 136),
+  bl56: calf(kneeMidpoint, 5, 136),
+  bl57: { view: "posterior", x: kneeMidpoint, y: poplitealY + 8 * calfStep, pdfPage: 137 },
   bl58: aboveKunlun(135, 7, 137),
   bl59: aboveKunlun(136, 3, 138),
 } as const satisfies Record<string, Landmarks>;

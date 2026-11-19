@@ -1,5 +1,7 @@
 import { onView } from "./types";
 
+export const groinLandmarks = { pubicBorderY: 142, inguinalCreaseX: 153 } as const;
+
 // The chest columns are measured from the sternum. Ribs are registered to the spaces between them.
 const ribGaps = [0, 77, 101, 125, 149, 173, 197, 221];
 const chestRows = [
@@ -81,9 +83,9 @@ export const trunkPoints = {
     ["gb29", 148, 120, "hipFrontPoint hipTrochanter", "骨盤の前の出っ張りと太ももの外の骨の出っ張りの中間", "横から見た図で、前の腰骨の尖りと、股関節の外側で大きく触れる太ももの骨を確認します。二つの中点にあり、股関節の後ろにある環跳より前です。"],
   ]),
   ...onView("groin", [
-    ["st30", 134, 142, "pubisGroin femoral", "恥骨の上端と同じ高さで、下腹部の中央線の横へ2寸、太ももに続く動脈の上", "下腹部の底の骨を起点に、同じ高さのまま横へ視線を移します。図では動脈の線に丸印が重なります。脈を探さず、図で位置を確認します。"],
-    ["sp12", 153, 133, "groinFold femoral", "脚の付け根のしわにあり、太ももへ向かう動脈より外側", "下腹部と太ももが折れ曲がるしわを図で見ます。脈を探さず、動脈が図示された位置より腰骨側にある点として確認します。"],
-    ["lr12", 141, 142, "pubisGroin groinFold", "恥骨の上端と同じ高さで、下腹部の中央線の横へ2.5寸", "下腹部の正中から、恥骨の上縁と同じ高さを横にたどります。気衝より半寸外側です。付け根の内側へ指を入れて探しません。"],
+    ["st30", 134, groinLandmarks.pubicBorderY, "pubisGroin femoral", "恥骨の上端と同じ高さで、下腹部の中央線の横へ2寸、太ももに続く動脈の上", "下腹部の底の骨を起点に、同じ高さのまま横へ視線を移します。図では動脈の線に丸印が重なります。脈を探さず、図で位置を確認します。"],
+    ["sp12", groinLandmarks.inguinalCreaseX, groinLandmarks.pubicBorderY, "groinFold femoral", "脚の付け根のしわにあり、太ももへ向かう動脈より外側", "下腹部と太ももが折れ曲がるしわを図で見ます。恥骨の上端と同じ高さで、図の動脈より腰骨側にある点です。脈を探す必要はありません。"],
+    ["lr12", 141, groinLandmarks.pubicBorderY, "pubisGroin groinFold", "恥骨の上端と同じ高さで、下腹部の中央線の横へ2.5寸", "下腹部の正中から、恥骨の上縁と同じ高さを横にたどります。気衝より半寸外側です。付け根の内側へ指を入れて探しません。"],
   ]),
   ...onView("pelvis", [
     ["cv1", 106, 149, "perineumFront perineumBack", "会陰の中央で、外性器の後ろ側と肛門の間の中点", "前後の位置関係を図で確認します。男性では陰嚢の後ろの縁、女性では外陰部の後ろで左右が合わさる位置を前の目印とし、肛門との中間です。自分で押したり器具を使ったりしません。"],

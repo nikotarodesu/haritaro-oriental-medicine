@@ -9,6 +9,14 @@ type FootLandmark = {
   pdfPage: number;
 };
 
+export const medialFootLandmarks = {
+  malleolus: { x: 99, y: 107 },
+  navicular: { x: 141, y: 147 },
+} as const;
+
+const { malleolus, navicular } = medialFootLandmarks;
+const shangqiu = { x: (malleolus.x + navicular.x) / 2, y: (malleolus.y + navicular.y) / 2 };
+
 // Coordinates are surface marks on the schematic, aligned to the bones and tendons in FootLandmarkRegion.
 export const footLandmarks = {
   st41: { view: "dorsal", x: 129, y: 240, bones: ["malleolus"], pdfPage: 75 },
@@ -23,7 +31,7 @@ export const footLandmarks = {
   sp2: { view: "medial", x: 256, y: 191, bones: ["ray1"], pdfPage: 79 },
   sp3: { view: "medial", x: 224, y: 186, bones: ["ray1"], pdfPage: 80 },
   sp4: { view: "medial", x: 167, y: 168, bones: ["ray1"], pdfPage: 80 },
-  sp5: { view: "medial", x: 119, y: 137, bones: ["malleolus", "navicular"], pdfPage: 81 },
+  sp5: { view: "medial", ...shangqiu, bones: ["malleolus", "navicular"], pdfPage: 81 },
   ki2: { view: "medial", x: 141, y: 163, bones: ["navicular"], pdfPage: 145 },
   ki3: { view: "medial", x: 80, y: 116, bones: ["malleolus", "heel"], pdfPage: 146 },
   ki4: { view: "medial", x: 74, y: 149, bones: ["malleolus", "heel"], pdfPage: 146 },

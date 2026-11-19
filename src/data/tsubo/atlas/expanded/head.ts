@@ -1,5 +1,54 @@
 import { onView } from "./types";
 
+type Position = readonly [number, number];
+
+// The WHO fractions follow the arc itself, so spacing by height would move the point.
+function divideArc(start: Position, first: Position, second: Position, end: Position, parts: number) {
+  const steps = 64;
+  const samples = [{ x: start[0], y: start[1], distance: 0 }];
+  for (let step = 1; step <= steps; step += 1) {
+    const t = step / steps;
+    const u = 1 - t;
+    const x = u ** 3 * start[0] + 3 * u ** 2 * t * first[0] + 3 * u * t ** 2 * second[0] + t ** 3 * end[0];
+    const y = u ** 3 * start[1] + 3 * u ** 2 * t * first[1] + 3 * u * t ** 2 * second[1] + t ** 3 * end[1];
+    const previous = samples[step - 1];
+    samples.push({ x, y, distance: previous.distance + Math.hypot(x - previous.x, y - previous.y) });
+  }
+  const length = samples[steps].distance;
+  const points = Array.from({ length: parts - 1 }, (_, index): Position => {
+    const distance = length * (index + 1) / parts;
+    const after = samples.findIndex(sample => sample.distance >= distance);
+    const a = samples[after - 1];
+    const b = samples[after];
+    const fraction = (distance - a.distance) / (b.distance - a.distance);
+    return [
+      Number((a.x + (b.x - a.x) * fraction).toFixed(2)),
+      Number((a.y + (b.y - a.y) * fraction).toFixed(2)),
+    ];
+  });
+  return { path: `M${start.join(" ")}C${first.join(" ")} ${second.join(" ")} ${end.join(" ")}`, points };
+}
+
+const earApex: Position = [141, 108];
+const posteriorEarRootX = 148;
+const mastoidTip: Position = [148, 179];
+const st8Position: Position = [92, 58];
+const gb7Position: Position = [110, earApex[1]];
+const te20Position: Position = [earApex[0], 96];
+const te17Position: Position = [139, 178];
+const gb8Position: Position = [earApex[0], 76];
+const gb9Position: Position = [posteriorEarRootX, gb8Position[1]];
+const gb12Position: Position = [159, 182];
+
+const templeArc = divideArc(st8Position, [82, 72], [96, 97], gb7Position, 4);
+const [gb4Position, gb5Position, gb6Position] = templeArc.points;
+const earArc = divideArc(te20Position, [167, 108], [171, 150], te17Position, 3);
+const [te19Position, te18Position] = earArc.points;
+const mastoidArc = divideArc(gb9Position, [184, 102], [184, 154], gb12Position, 3);
+const [gb10Position, gb11Position] = mastoidArc.points;
+
+export const profileLandmarks = { earApex, posteriorEarRootX, mastoidTip, mastoidCentre: te18Position, templeEdge: gb7Position };
+
 export const headPoints = {
   ...onView("face", [
     ["st1", 138, 113, "orbit pupil", "黒目の中心の真下で、目と目のまわりの骨の下縁の間", "正面を向いたときの黒目の中心を基準にし、図で下まぶた側と骨の縁との間を見ます。四白はそこからさらに下の頬にあります。"],
@@ -23,25 +72,25 @@ export const headPoints = {
   ...onView("profile", [
     ["st5", 93, 209, "jawSide masseter", "下あごの角の少し前で、かむ筋肉が骨につく位置の前のくぼみ", "耳の下から下あごの下縁を前へたどります。角より少し前、かむ筋肉の縁の前にあるくぼみを図で見ます。付近に動脈が通るため、押して脈を探しません。"],
     ["st7", 103, 141, "arch jawSide", "耳の少し前で、頬骨の弓の下にあるくぼみ", "耳の前から頬へ続く骨の弓の中ほどを見ます。その下で下あごとの間にあるくぼみです。骨の弓より上の上関と見比べられます。"],
-    ["st8", 92, 58, "templeHair ear", "額の横の生え際の角より0.5寸上、頭の中央線から横へ4.5寸", "額の中央から横へ髪の生え際をたどり、こめかみへ折れ曲がる角を見ます。そのすぐ頭頂側です。耳の上へ向かう胆経の曲線の起点にもなります。"],
+    ["st8", ...st8Position, "templeHair ear", "額の横の生え際の角より0.5寸上、頭の中央線から横へ4.5寸", "額の中央から横へ髪の生え際をたどり、こめかみへ折れ曲がる角を見ます。そのすぐ頭頂側です。耳の上へ向かう胆経の曲線の起点にもなります。"],
     ["si19", 118, 147, "tragus jawSide", "耳の穴の前にある突起の中央と、下あごの関節の間", "耳の入口の前の小さな軟骨（耳珠）を見ます。口をわずかに開くと、その前のくぼみを図と比べやすくなります。耳門より下、聴会より上にあります。"],
-    ["te17", 139, 178, "ear mastoid", "耳たぶの後ろで、耳の後ろの骨の下端より前のくぼみ", "耳たぶと、その後ろに出ている骨の間に視線を移します。耳の穴の前にある聴宮とは反対側です。首の奥まで触れて探しません。"],
-    ["te18", 153, 155, "ear mastoid", "耳の後ろの骨の中央付近で、耳たぶ側から角孫へ進む弧の下3分の1", "耳たぶの後ろの翳風と耳の上の角孫を、耳の後ろを回る線で結びます。翳風から約3分の1の高さを図で見ます。"],
-    ["te19", 159, 123, "ear mastoid", "耳の後ろを回る弧の、角孫から耳たぶ側へ3分の1", "耳の頂点の上にある角孫から、耳の後ろを通って翳風へ向かいます。耳の輪郭に沿った上寄りで、瘈脈よりも角孫に近い位置です。"],
-    ["te20", 132, 95, "ear earTop", "耳の一番高いところのすぐ上", "横から耳の輪郭を見て、耳の頂点を目印にします。その真上です。頭皮へさらに上がると率谷の方へ近づきます。"],
+    ["te17", ...te17Position, "ear mastoid", "耳たぶの後ろで、耳の後ろの骨の下端より前のくぼみ", "耳たぶと、その後ろに出ている骨の間に視線を移します。耳の穴の前にある聴宮とは反対側です。首の奥まで触れて探しません。"],
+    ["te18", ...te18Position, "ear mastoid", "耳の後ろの骨の中央付近で、耳たぶ側から角孫へ進む弧の下3分の1", "耳たぶの後ろの翳風と耳の上の角孫を、耳の後ろを回る線で結びます。翳風から弧に沿って3分の1進んだ位置を図で見ます。", earArc.path],
+    ["te19", ...te19Position, "ear mastoid", "耳の後ろを回る弧の、角孫から耳たぶ側へ3分の1", "耳の頂点の上にある角孫から、耳の後ろを通って翳風へ向かいます。耳の輪郭に沿った上寄りで、瘈脈よりも角孫に近い位置です。", earArc.path],
+    ["te20", ...te20Position, "ear earTop", "耳の一番高いところのすぐ上", "横から耳の輪郭を見て、耳の頂点を目印にします。その真上です。頭皮へさらに上がると率谷の方へ近づきます。"],
     ["te21", 117, 134, "tragus ear", "耳の穴の前の突起より少し上の切れ込みと、下あごの関節の間", "耳の入口の前で、耳珠の上にできる小さな切れ込みと同じ高さを見ます。そのすぐ前が耳門で、聴宮より上です。"],
     ["te22", 115, 106, "templeHair temporalArtery", "こめかみの生え際と動脈より後ろで、耳の付け根の前", "横の図で、こめかみの生え際と耳の付け根の間を見ます。皮膚の浅いところを通る動脈の線より耳に寄ります。脈は探さず図で確認します。"],
     ["gb2", 118, 160, "tragus jawSide", "耳の穴の前下方の切れ込みと、下あごの関節の間", "耳の入口の前の突起より少し下にある切れ込みの前を見ます。聴宮より下、耳たぶの後ろの翳風とは前後が違います。"],
     ["gb3", 103, 122, "arch ear", "耳の前で、頬骨の弓の中ほどより上のくぼみ", "横から耳の前に続く硬い骨の弓を図で確かめます。弓の中ほどをはさんで、上関は上、下関は下です。"],
-    ["gb4", 88, 69, "templeHair earTop", "頭維から曲鬢へこめかみを曲がる線の、頭維から4分の1", "額の生え際の角の頭維と、耳の上端と同じ高さの曲鬢を結ぶ弧を見ます。頭維に近い上寄りの位置です。"],
-    ["gb5", 94, 83, "templeHair earTop", "頭維と曲鬢をこめかみ側で結ぶ弧の中間", "こめかみの生え際を横から見て、頭維と曲鬢を結ぶ曲線の中ほどを確認します。頷厭と懸厘の間です。"],
-    ["gb6", 101, 98, "templeHair earTop", "頭維から曲鬢へ向かう弧の、曲鬢寄りの4分の1の位置", "耳の上端と同じ高さの曲鬢を先に取り、そこから額の角の方へ曲線を4分の1ほど戻ります。中間の懸顱より耳側です。"],
-    ["gb7", 110, 109, "templeHair earTop", "こめかみの生え際の後ろ端と、耳の頂点の高さが交わる位置", "耳の一番高いところから横線を描き、こめかみの生え際の後ろの縁と交わる場所を図で見ます。角孫よりこめかみ側です。"],
-    ["gb8", 132, 76, "earTop temporalLine", "耳の頂点の真上で、横の生え際より1.5寸頭頂側", "横から耳の頂点を確かめ、そこから真上へたどります。耳のすぐ上にある角孫より、頭の横の生え際からさらに内側です。"],
-    ["gb9", 152, 67, "earRoot temporalLine", "耳の付け根の後ろの縁の真上で、生え際から2寸", "耳の付け根を前と後ろで見分け、後ろの縁から頭頂へ向かう線を見ます。耳の頂点から上がる率谷より後ろに寄ります。"],
-    ["gb10", 166, 91, "ear mastoid", "天衝から完骨へ耳の後ろを回る弧の、天衝から3分の1", "天衝と耳の後ろの完骨を図で結び、その曲がった線を天衝側から3分の1進みます。頭竅陰より頭頂側です。"],
-    ["gb11", 173, 120, "ear mastoid", "天衝から完骨へ向かう弧の、天衝から3分の2", "耳の後ろの骨の上を回る弧を見ます。浮白より下、骨の後ろ下にある完骨より上を見分けます。"],
-    ["gb12", 160, 168, "mastoid ear", "耳の後ろの硬い骨の、後ろ下にあるくぼみ", "耳たぶの後方にある骨の出っ張りを図で見つけます。その輪郭の後ろ下のくぼみです。耳たぶの真後ろで骨の前にある翳風とは骨をはさんで違います。"],
+    ["gb4", ...gb4Position, "templeHair earTop", "頭維から曲鬢へこめかみを曲がる線の、頭維から4分の1", "額の生え際の角の頭維と、耳の上端と同じ高さの曲鬢を結ぶ弧を見ます。頭維に近い上寄りの位置です。", templeArc.path],
+    ["gb5", ...gb5Position, "templeHair earTop", "頭維と曲鬢をこめかみ側で結ぶ弧の中間", "こめかみの生え際を横から見て、頭維と曲鬢を結ぶ曲線の中ほどを確認します。頷厭と懸厘の間です。", templeArc.path],
+    ["gb6", ...gb6Position, "templeHair earTop", "頭維から曲鬢へ向かう弧の、曲鬢寄りの4分の1の位置", "耳の上端と同じ高さの曲鬢を先に取り、そこから額の角の方へ曲線を4分の1ほど戻ります。中間の懸顱より耳側です。", templeArc.path],
+    ["gb7", ...gb7Position, "templeHair earTop", "こめかみの生え際の後ろ端と、耳の頂点の高さが交わる位置", "耳の一番高いところから横線を描き、こめかみの生え際の後ろの縁と交わる場所を図で見ます。角孫よりこめかみ側です。"],
+    ["gb8", ...gb8Position, "earTop temporalLine", "耳の頂点の真上で、横の生え際より1.5寸頭頂側", "横から耳の頂点を確かめ、そこから真上へたどります。耳のすぐ上にある角孫より、頭の横の生え際からさらに内側です。"],
+    ["gb9", ...gb9Position, "earRoot temporalLine", "耳の付け根の後ろの縁の真上で、生え際から2寸", "耳の付け根を前と後ろで見分け、後ろの縁から頭頂へ向かう線を見ます。WHOの補足では率谷から後ろへ0.5寸です。"],
+    ["gb10", ...gb10Position, "ear mastoid", "天衝から完骨へ耳の後ろを回る弧の、天衝から3分の1", "天衝と耳の後ろの完骨を図で結び、その曲がった線を天衝側から3分の1進みます。頭竅陰より頭頂側です。", mastoidArc.path],
+    ["gb11", ...gb11Position, "ear mastoid", "天衝から完骨へ向かう弧の、天衝から3分の2", "耳の後ろの骨の上を回る弧を見ます。浮白より下、骨の後ろ下にある完骨より上を見分けます。", mastoidArc.path],
+    ["gb12", ...gb12Position, "mastoid ear", "耳の後ろの硬い骨の、後ろ下にあるくぼみ", "耳たぶの後方にある骨の出っ張りを図で見つけます。その輪郭の後ろ下のくぼみです。耳たぶの真後ろで骨の前にある翳風とは骨をはさんで違います。"],
   ]),
   ...onView("scalp", [
     ["bl3", 124, 71, "frontHair forehead", "眉の内端の上方で、額の生え際から0.5寸入った頭皮", "眉の内端の上にある額の骨の目印を参考に、生え際を頭頂側へわずかに越えます。頭の中央線の神庭より外寄りです。"],

@@ -41,9 +41,12 @@ const { ATLAS_ARTICLES } = load('src/data/tsubo/atlas/articles');
 const { POINT_ILLUSTRATIONS } = load('src/data/tsubo/atlas/illustrations');
 const { ATLAS_POINT_MARKERS, shinEndpoints } = load('src/data/tsubo/atlas/markers');
 const { digitLandmarks, digitGeometry } = load('src/data/tsubo/atlas/digits');
-const { footLandmarks } = load('src/data/tsubo/atlas/footLandmarks');
-const { legLandmarks, soleEndpoints, poplitealY, medialAnkleY } = load('src/data/tsubo/atlas/legLandmarks');
+const { footLandmarks, medialFootLandmarks } = load('src/data/tsubo/atlas/footLandmarks');
+const { legLandmarks, soleEndpoints, poplitealY, medialAnkleY, posteriorKnee } = load('src/data/tsubo/atlas/legLandmarks');
 const { expandedPoints } = load('src/data/tsubo/atlas/expanded/profiles');
+const { posteriorThigh, sacralLandmarks } = load('src/data/tsubo/atlas/expanded/back');
+const { posteriorShoulder } = load('src/data/tsubo/atlas/expanded/arms');
+const { profileLandmarks } = load('src/data/tsubo/atlas/expanded/head');
 const { whoAtlasPages } = load('src/data/tsubo/atlas/whoAtlasPages');
 const expandedViews = Object.assign({}, ...['head', 'arm', 'trunk', 'back'].map(group =>
   load(`src/components/tsubo/atlas/expanded/${group}Views`)[`${group}Views`]
@@ -87,6 +90,31 @@ assert(Object.values(ATLAS_ARTICLES).every(article =>
 ), 'Every atlas article links to the specific page in the WHO publication');
 assert.equal(expandedPoints.st30.y, expandedPoints.lr12.y, 'Both groin points align with the upper end of the pubic symphysis');
 assert(expandedPoints.st30.x < expandedPoints.lr12.x && expandedPoints.st30.landmarks.includes('femoral'));
+assert.equal(expandedPoints.sp12.y, expandedPoints.st30.y, 'SP12 aligns with the superior border of the pubic symphysis');
+assert(expandedPoints.sp12.x > expandedPoints.st30.x, 'SP12 sits lateral to the femoral artery');
+assert.equal(expandedPoints.gv2.y, expandedPoints.bl34.y, 'The hiatus lines up with the fourth posterior sacral foramen');
+const { hiatus, trochanter } = sacralLandmarks;
+for (const axis of ['x', 'y']) {
+  assert(Math.abs(3 * (expandedPoints.gb30[axis] - trochanter[axis]) - (hiatus[axis] - trochanter[axis])) < 0.01,
+    'GB30 lies one third of the way from the greater trochanter to the hiatus');
+}
+const thighCun = (posteriorThigh.poplitealCreaseY - expandedPoints.bl36.y) / 14;
+assert.equal(expandedPoints.bl37.y - expandedPoints.bl36.y, 6 * thighCun);
+assert.equal(posteriorThigh.poplitealCreaseY - expandedPoints.bl38.y, thighCun);
+assert(expandedPoints.bl38.x < posteriorThigh.lateralTendonX);
+assert.equal(expandedPoints.si9.x, posteriorShoulder.axillaryFold.x);
+assert.equal(posteriorShoulder.axillaryFold.y - expandedPoints.si9.y, 17);
+const { inner, outer } = posteriorShoulder.scapulaRidge;
+for (const axis of ['x', 'y']) {
+  const midpoint = (inner[axis] + outer[axis]) / 2;
+  assert(Math.abs(3 * (expandedPoints.si11[axis] - midpoint) - (posteriorShoulder.scapulaTip[axis] - midpoint)) < 0.01,
+    'SI11 lies one third of the way from the scapular ridge midpoint to the inferior angle');
+}
+assert.equal(expandedPoints.te20.x, profileLandmarks.earApex[0]);
+assert.equal(expandedPoints.gb7.y, profileLandmarks.earApex[1]);
+assert.equal(expandedPoints.gb8.y, expandedPoints.gb9.y);
+assert(expandedPoints.gb9.x > expandedPoints.gb8.x);
+assert(expandedPoints.gb12.x > profileLandmarks.mastoidTip[0] && expandedPoints.gb12.y > profileLandmarks.mastoidTip[1]);
 for (const code of ['gb27', 'gb28']) {
   assert.equal(expandedPoints[code].view, 'abdomen', code + ' must show direction relative to the midline');
   assert(expandedPoints[code].landmarks.includes('anteriorIliac'), code);
@@ -109,6 +137,11 @@ assert(footLandmarks.sp2.x > 240 && footLandmarks.sp3.x < 240, 'SP2 and SP3 sit 
 assert(footLandmarks.bl66.x > 240 && footLandmarks.bl65.x < 240, 'BL65 and BL66 sit on opposite sides of the little toe joint');
 assert(footLandmarks.bl63.x < 158 && footLandmarks.bl64.x > 158, 'BL63 and BL64 sit on opposite sides of the fifth metatarsal tuberosity');
 assert(footLandmarks.bl60.x < footLandmarks.bl62.x && footLandmarks.bl62.x < footLandmarks.gb40.x, 'Lateral ankle points progress from behind the malleolus to below and in front');
+assert.deepEqual(
+  [footLandmarks.sp5.x, footLandmarks.sp5.y],
+  ['x', 'y'].map(axis => (medialFootLandmarks.malleolus[axis] + medialFootLandmarks.navicular[axis]) / 2),
+  'SP5 is midway between the two drawn bony landmarks',
+);
 for (const [code, point] of Object.entries(legLandmarks)) {
   const article = ATLAS_ARTICLES[code];
   const marker = ATLAS_POINT_MARKERS[code];
@@ -124,6 +157,7 @@ assert.equal(legLandmarks.ki1.y, (soleEndpoints.heel.y - soleEndpoints.web.y) / 
 assert(legLandmarks.gb35.y === legLandmarks.gb36.y && legLandmarks.gb35.x < legLandmarks.gb36.x);
 assert(legLandmarks.ki7.y === legLandmarks.ki8.y && legLandmarks.ki7.x < legLandmarks.ki8.x);
 assert(legLandmarks.lr8.y === poplitealY && legLandmarks.lr8.x < legLandmarks.ki10.x);
+assert.equal(legLandmarks.bl40.x, (posteriorKnee.medialEnd + posteriorKnee.lateralEnd) / 2);
 assert.equal(medialAnkleY - legLandmarks.sp9.y, 13 * 12);
 assert.equal(legLandmarks.sp8.y - legLandmarks.sp9.y, 3 * 12);
 assert(legLandmarks.sp6.x < 109, 'SP6 lies behind the medial border drawn in the leg template');

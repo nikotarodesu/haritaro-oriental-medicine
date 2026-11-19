@@ -51,6 +51,9 @@ export default function ExpandedLandmarkRegion({ marker, label }: AtlasCloseUpPr
           <FeaturePath key={id} feature={feature} />
         ))}
         {picked.map((feature) => <FeaturePath key={feature.name} feature={feature} active />)}
+        {point.measurement && (
+          <path d={point.measurement} stroke="#8D6654" strokeWidth="1.4" strokeDasharray="3 3" />
+        )}
         {hasMeasure && (
           <path d={`M106 ${marker.y - 4}v8M106 ${marker.y}H${marker.x}`}
             stroke="#8D6654" strokeWidth="1.3" strokeDasharray="3 3" />

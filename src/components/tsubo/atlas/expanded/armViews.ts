@@ -1,5 +1,7 @@
+import { posteriorShoulder } from "@/data/tsubo/atlas/expanded/arms";
 import { feature as f, type View } from "./views";
 
+const { axillaryFold, scapulaRidge, scapulaTip, neckBase, acromion } = posteriorShoulder;
 const forearm = "M66 27Q110 15 158 27Q164 58 151 91Q155 123 149 168L145 230Q143 246 151 272L76 272Q87 246 79 224L69 178Q63 132 70 96Q50 58 66 27Z";
 const upperArm = "M93 28Q108 13 140 27Q163 44 162 74Q162 91 147 104Q150 141 143 171Q146 204 152 237Q151 252 138 274H82Q72 254 75 236Q81 201 77 174Q72 139 77 107Q70 77 75 51Q79 36 93 28Z";
 const biceps = "M122 82Q144 134 136 176Q132 202 116 226Q99 198 106 159Q103 110 122 82Z";
@@ -100,11 +102,12 @@ export const armViews = {
     name: "右肩を背中側から", direction: "back", area: "shoulder", outline: "M30 20Q65 24 89 24Q108 52 135 50Q155 46 180 64Q202 83 197 131Q189 174 184 202L187 257H143Q141 227 130 212Q107 232 27 229L19 69Z",
     details: ["M32 57Q65 68 99 57", "M35 202Q78 203 110 182"],
     features: {
-      axillaryBack: f("わきの後ろのしわ", 178, 208, "M170 168Q159 191 165 212", "guide"),
-      shoulderBlade: f("肩甲骨", 135, 181, "M146 85Q158 89 182 102Q176 139 169 167Q153 192 149 211L124 169L126 109Z"),
-      shoulderSpine: f("肩甲骨の横の隆起", 171, 117, "M125 120L153 116L180 105"),
-      upperSpine: f("首のつけ根の背骨", 98, 82, "M105 48v148M98 56h15m-15 19h15m-15 20h15m-15 20h15", "guide"),
-      acromionBack: f("肩の外端（肩峰）", 184, 76, "M166 66Q183 68 190 83L174 95"),
+      axillaryBack: f("わきの後ろのしわ", 140, 211, `M${axillaryFold.x} ${axillaryFold.y}Q148 190 134 212`, "guide"),
+      posteriorDeltoid: f("肩を覆う／三角筋の後縁", 193, 112, "M183 83Q174 106 181 147Q177 172 183 203", "soft"),
+      shoulderBlade: f("肩甲骨", 135, 181, `M146 85Q158 89 182 102Q176 139 169 167Q153 192 ${scapulaTip.x} ${scapulaTip.y}L124 169L126 109Z`),
+      shoulderSpine: f("肩甲骨の横の隆起", 171, 117, `M${scapulaRidge.inner.x} ${scapulaRidge.inner.y}L${scapulaRidge.outer.x} ${scapulaRidge.outer.y}`),
+      upperSpine: f("首のつけ根の背骨", 98, 82, `M${neckBase.x} 48v148M${neckBase.x - 7} ${neckBase.y}h15m-15 19h15m-15 20h15m-15 20h15`, "guide"),
+      acromionBack: f("肩の外端（肩峰）", 184, 76, `M166 66Q183 68 ${acromion.x} ${acromion.y}L174 95`),
     },
   },
   palm: {

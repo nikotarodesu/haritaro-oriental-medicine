@@ -1,4 +1,4 @@
-import { footLandmarks, type FootBone, type FootPoint } from "@/data/tsubo/atlas/footLandmarks";
+import { footLandmarks, medialFootLandmarks, type FootBone, type FootPoint } from "@/data/tsubo/atlas/footLandmarks";
 import type { AtlasCloseUpProps } from "@/data/tsubo/atlas/types";
 
 type Bone = { path: string; badge: [number, number]; label: string };
@@ -14,10 +14,11 @@ const dorsalBones: Partial<Record<FootBone, Bone>> = {
 };
 
 function sideBones(medial: boolean): Partial<Record<FootBone, Bone>> {
+  const { malleolus, navicular } = medialFootLandmarks;
   return {
-    malleolus: { path: "M97 63Q98 85 99 98L99 115", badge: [99, 107], label: medial ? "内くるぶし" : "外くるぶし" },
+    malleolus: { path: `M97 63Q98 85 ${malleolus.x} ${malleolus.y}V115`, badge: [99, medial ? 90 : 107], label: medial ? "内くるぶし" : "外くるぶし" },
     heel: { path: "M76 169Q72 183 82 191Q96 197 114 177", badge: [91, 181], label: "かかとの骨" },
-    navicular: { path: "M136 142L146 151", badge: [141, 147], label: "舟状骨" },
+    navicular: { path: `M136 142L${navicular.x} ${navicular.y}L146 151`, badge: [152, 140], label: "舟状骨" },
     cuboid: { path: "M130 146L145 151L152 148", badge: [139, 148], label: "立方骨" },
     [medial ? "ray1" : "ray5"]: {
       path: medial ? "M155 155Q195 167 240 179 M248 184L262 188 M272 190L288 193" : "M158 165Q196 171 240 181 M249 185L259 188 M267 189L273 191 M282 193L291 194",
@@ -55,6 +56,7 @@ export default function FootLandmarkRegion({ marker, label }: AtlasCloseUpProps)
   const dorsal = point.view === "dorsal";
   const medial = point.view === "medial";
   const bones = dorsal ? dorsalBones : sideBones(medial);
+  const { malleolus, navicular } = medialFootLandmarks;
 
   return dorsal ? (
     <>
@@ -87,6 +89,13 @@ export default function FootLandmarkRegion({ marker, label }: AtlasCloseUpProps)
       {code === "ki3" && <path d="M81 89Q79 109 81 123L110 159" fill="none" stroke="#B26362" strokeWidth="2" strokeDasharray="2 4" />}
       {(code === "ki5" || code === "ki6") && <path d={code === "ki5" ? "M51 116h23M51 116v45h23" : "M37 107h52M37 107v45h56"} fill="none" stroke="#8D897B" strokeDasharray="4 4" />}
       <Skeleton bones={bones} selected={point.bones} />
+      {code === "sp5" && (
+        <g fill="#755D48">
+          <path d={`M${malleolus.x} ${malleolus.y}L${navicular.x} ${navicular.y}`} fill="none" stroke="#755D48" strokeWidth="1.5" strokeDasharray="3 3" />
+          <circle cx={malleolus.x} cy={malleolus.y} r="2.5" />
+          <circle cx={navicular.x} cy={navicular.y} r="2.5" />
+        </g>
+      )}
       <path d={`M${marker.x} ${marker.y}L${marker.x} 229l${marker.x > 174 ? -14 : 14} 10`} fill="none" stroke="#7F3520" strokeWidth="1.5" />
       <text x={marker.x > 174 ? marker.x - 17 : marker.x + 17} textAnchor={marker.x > 174 ? "end" : "start"} y="245" fill="#7F3520" fontSize="14" fontWeight="bold">{label}</text>
       <g fill="#5B493B" fontSize="12">
