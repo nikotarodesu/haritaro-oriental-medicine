@@ -9,9 +9,10 @@ import LowerLegRegion from "./LowerLegRegion";
 import LegLandmarkRegion from "./LegLandmarkRegion";
 import VolarForearmRegion from "./VolarForearmRegion";
 import ExpandedLandmarkRegion, { expandedViews } from "./expanded/ExpandedLandmarkRegion";
+import ZoomableAtlasDiagram from "./ZoomableAtlasDiagram";
 import type { BodyArea } from "./expanded/views";
 
-const figureClass = "rounded-2xl border border-[#E5DEC9] bg-[#F9F5ED] p-4 text-[#332D25]";
+const figureClass = "min-w-0 rounded-2xl border border-[#E5DEC9] bg-[#F9F5ED] p-4 text-[#332D25]";
 const captionClass = "mt-2 text-center text-sm font-semibold leading-6";
 
 const regions = {
@@ -29,10 +30,11 @@ const regions = {
   expanded: { BodyHighlight: null, CloseUp: ExpandedLandmarkRegion },
 } satisfies Record<AtlasRegion, { BodyHighlight: ReactNode; CloseUp: (props: AtlasCloseUpProps) => ReactNode }>;
 
-const bodyAreas: Record<BodyArea | "occiput", string> = {
+const bodyAreas: Record<BodyArea | "occiput" | "neckBase", string> = {
   head: "M92 29q8-10 16 0m-16 7q8 9 16 0",
   occiput: "M93 42h14",
   neck: "M94 52h12",
+  neckBase: "M96 55h8",
   shoulder: "M65 72l9-4m52 0 9 4",
   upperArm: "M62 80l-9 28m85-28 9 28",
   elbow: "M50 114l-3 5m103-5 3 5",
@@ -48,6 +50,10 @@ const bodyAreas: Record<BodyArea | "occiput", string> = {
 };
 
 const occipitalPoints = new Set(["bl9", "gb19", "gv17"]);
+const bodyMapOverrides = {
+  occiput: { area: "occiput", label: "後頭部" },
+  neckBase: { area: "neckBase", label: "首の付け根" },
+} as const;
 
 export default function PointAtlasDiagrams({ point, meridianPoints, illustration, marker }: {
   point: AcupointMaster;
@@ -57,13 +63,16 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
 }) {
   const { BodyHighlight, CloseUp } = regions[illustration.region];
   const expandedView = marker.expanded && expandedViews[marker.expanded.view];
-  const isOccipital = occipitalPoints.has(point.codeLower);
-  const bodyArea = isOccipital ? "occiput" : expandedView?.area;
-  const bodyLabel = isOccipital ? "後頭部" : illustration.bodyLabel;
+  const bodyMap = point.codeLower === "gv14" ? bodyMapOverrides.neckBase
+    : occipitalPoints.has(point.codeLower) ? bodyMapOverrides.occiput : undefined;
+  const bodyArea = bodyMap?.area ?? expandedView?.area;
+  const bodyLabel = bodyMap?.label ?? illustration.bodyLabel;
   const back = expandedView?.direction === "back" || Boolean(marker.legCode && legLandmarks[marker.legCode].view === "posterior");
   const bodyDirection = back ? "背面" : "正面";
   const landmarkNames = marker.expanded?.landmarks.map((id) => expandedView?.features[id].name.replace("／", "")).join("、");
-  const closeUpAlt = landmarkNames ? `${illustration.closeUpAlt} 目印は${landmarkNames}です。` : illustration.closeUpAlt;
+  const closeUpAlt = expandedView
+    ? `${expandedView.name}。 ${illustration.closeUpAlt} 目印は${landmarkNames}です。`
+    : illustration.closeUpAlt;
   const nearby = meridianPoints.filter(({ meridianOrder }) =>
     meridianOrder >= illustration.meridianStart && meridianOrder <= illustration.meridianEnd
   );
@@ -84,31 +93,38 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
             {bodyArea ? <path d={bodyAreas[bodyArea]} /> : BodyHighlight}
           </g>
         </svg>
-        <figcaption className={captionClass}>全身で見る · {bodyLabel}</figcaption>
+        <figcaption className={captionClass}>全身{bodyDirection} · {bodyLabel}</figcaption>
       </figure>
 
       <figure className={figureClass}>
-        <svg viewBox="0 0 340 300" role="img" aria-label={closeUpAlt} className="mx-auto block w-full max-w-[340px]">
-          <CloseUp marker={marker} label={`${point.name} ${point.code}`} />
-          <circle data-point-marker="" cx={marker.x} cy={marker.y} r="6" fill="#7F3520" stroke="#FFF9F0" strokeWidth="2" />
-        </svg>
-        <figcaption className={captionClass}>{illustration.closeUpCaption}</figcaption>
+        <ZoomableAtlasDiagram label={`${point.name}の場所と目印`}>
+          <svg viewBox="0 0 340 300" role="img" aria-label={closeUpAlt} className="mx-auto block w-full max-w-[340px]">
+            <CloseUp marker={marker} label={`${point.name} ${point.code}`} />
+            <circle data-point-marker="" cx={marker.x} cy={marker.y} r="6" fill="#7F3520" stroke="#FFF9F0" strokeWidth="2" />
+          </svg>
+        </ZoomableAtlasDiagram>
+        <figcaption className={captionClass}>
+          {expandedView && <span className="block text-sm font-normal">{expandedView.name}</span>}
+          {illustration.closeUpCaption}
+        </figcaption>
       </figure>
 
       <figure className={`${figureClass} md:col-span-2`}>
-        <svg viewBox="0 0 360 108" role="img" aria-label={`${point.meridian}。 ${nearby.map((entry) => `${entry.code} ${entry.name}`).join("、")}の順で、${point.name}を強調しています。`} className="mx-auto block w-full max-w-md">
-          <path d="M30 44H330" stroke="#A69B87" strokeWidth="2" />
-          {nearby.map((entry, index) => {
-            const isCurrent = entry.code === point.code;
-            return (
-              <g key={entry.code} transform={`translate(${30 + step * index} 44)`}>
-                <circle r={isCurrent ? 10 : 5} fill={isCurrent ? "#9E4B20" : "#F9F5ED"} stroke={isCurrent ? "#7F3520" : "#82725B"} strokeWidth="2" />
-                <text textAnchor="middle" y="30" fontSize="13" fill="#332D25" fontWeight={isCurrent ? "bold" : "normal"}>{entry.name}</text>
-                <text textAnchor="middle" y="48" fontSize="11" fill="#524637">{entry.code}</text>
-              </g>
-            );
-          })}
-        </svg>
+        <ZoomableAtlasDiagram label={`${point.meridian}の並び順`}>
+          <svg viewBox="0 0 360 108" role="img" aria-label={`${point.meridian}。 ${nearby.map((entry) => `${entry.code} ${entry.name}`).join("、")}の順で、${point.name}を強調しています。`} className="mx-auto block w-full max-w-md">
+            <path d="M30 44H330" stroke="#A69B87" strokeWidth="2" />
+            {nearby.map((entry, index) => {
+              const isCurrent = entry.code === point.code;
+              return (
+                <g key={entry.code} transform={`translate(${30 + step * index} 44)`}>
+                  <circle r={isCurrent ? 10 : 5} fill={isCurrent ? "#9E4B20" : "#F9F5ED"} stroke={isCurrent ? "#7F3520" : "#82725B"} strokeWidth="2" />
+                  <text textAnchor="middle" y="30" fontSize="13" fill="#332D25" fontWeight={isCurrent ? "bold" : "normal"}>{entry.name}</text>
+                  <text textAnchor="middle" y="48" fontSize="11" fill="#524637">{entry.code}</text>
+                </g>
+              );
+            })}
+          </svg>
+        </ZoomableAtlasDiagram>
         <figcaption className={`text-center text-sm font-semibold leading-6`}>
           {point.meridian}の順序 · {illustration.meridianCaption}
         </figcaption>

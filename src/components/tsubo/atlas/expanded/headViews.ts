@@ -48,7 +48,7 @@ export const headViews = {
       mastoid: f("耳の後ろの骨", 192, 172, `M153 135Q166 144 ${mastoidCentre.join(" ")}Q156 167 ${mastoidTip.join(" ")}`),
       earTop: f("耳の頂点", 159, 94, upperEar, "soft"),
       earRoot: f("耳の付け根の後縁", 167, 112, `M${posteriorEarRootX} 109Q155 132 143 159`, "soft"),
-      temporalLine: f("頭の横の生え際", 173, 87, `M${templeEdge.join(" ")}Q135 86 ${posteriorEarRootX} 101Q167 114 172 127Q172 155 162 175L167 203`, "guide"),
+      temporalLine: f("頭の横の生え際", 178, 86, `M${templeEdge.join(" ")}Q135 86 ${posteriorEarRootX} 101Q167 114 172 127Q172 155 162 175L167 203`, "guide"),
       temporalArtery: f("こめかみを通る動脈", 94, 99, "M104 123Q109 110 105 100Q104 89 111 80", "soft"),
     },
   },

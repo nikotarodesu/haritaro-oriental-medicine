@@ -351,7 +351,7 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
     illustration: {
       region: "footDorsum",
       bodyLabel: "左右の足の甲（親指寄り）",
-      closeUpAlt: "足の甲。①親指につながる第1中足骨と②隣の指につながる第2中足骨が近づく場所のすぐ指先側、2本の骨の間に太衝（LR3）を示す。",
+      closeUpAlt: "足の甲。①親指につながる第1中足骨と②隣の指につながる第2中足骨が近づく場所のすぐ指先側、2本の骨の間に太衝（LR3）を示す。赤い点線は足の甲の動脈。",
       closeUpCaption: "①親指につながる骨と②隣の指につながる骨を足首に向けてたどり、2本が近づくところのすぐ指先側のくぼみを見ます。",
       meridianStart: 1,
       meridianEnd: 6,

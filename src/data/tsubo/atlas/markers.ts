@@ -31,7 +31,7 @@ export const ATLAS_POINT_MARKERS: Readonly<Partial<Record<string, AtlasMarker>>>
   st37: lowerLegMarker(6),
   st38: lowerLegMarker(8),
   st39: lowerLegMarker(9),
-  lr3: { x: 119, y: 175 }, // Toward the toes from the junction of the first two metatarsal bases.
+  lr3: { x: 120, y: 175 }, // Toward the toes from the junction of the first two metatarsal bases.
 };
 
 function forearmMarker(boneCun: number): AtlasMarker {

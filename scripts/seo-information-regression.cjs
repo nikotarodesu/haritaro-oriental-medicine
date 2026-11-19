@@ -66,11 +66,15 @@ for (const [code, point] of Object.entries(expandedPoints)) {
   const illustration = article.illustration;
   const marker = ATLAS_POINT_MARKERS[code];
   assert(illustration.region === 'expanded' && marker.expanded === point, code);
-  for (const id of point.landmarks) {
+  for (const [index, id] of point.landmarks.entries()) {
     const feature = expandedViews[point.view].features[id];
     assert(feature, code + ' landmark ' + id);
     const [x, y] = feature.position;
     assert(Math.hypot(x - marker.x, y - marker.y) >= 14, code + ' landmark number must not obscure the point');
+    for (const other of point.landmarks.slice(index + 1)) {
+      const [otherX, otherY] = expandedViews[point.view].features[other].position;
+      assert(Math.hypot(x - otherX, y - otherY) >= 16.2, code + ' landmark numbers must not overlap');
+    }
   }
   assert.equal(new Set(point.landmarks).size, point.landmarks.length, code);
   assert(article.sources[0].url.endsWith('#page=' + whoAtlasPages[code]), code);
@@ -130,6 +134,7 @@ for (const axis of ['x', 'y']) {
 assert.equal(expandedPoints.te20.x, profileLandmarks.earApex[0]);
 assert.equal(expandedPoints.gb7.y, profileLandmarks.earApex[1]);
 assert.equal(expandedPoints.gb8.y, expandedPoints.gb9.y);
+assert.equal(expandedPoints.gb8.measurement, `M${profileLandmarks.earApex.join(' ')}V${expandedPoints.gb8.y}`);
 assert(expandedPoints.gb9.x > expandedPoints.gb8.x);
 assert(expandedPoints.gb12.x > profileLandmarks.mastoidTip[0] && expandedPoints.gb12.y > profileLandmarks.mastoidTip[1]);
 const { anteriorMandible, masseterAttachment } = profileLandmarks;
@@ -150,6 +155,7 @@ assert.deepEqual([expandedPoints.te23.x, expandedPoints.te23.y], Array.from(oute
 assert(brow.path.includes(`M${innerBrow.join(' ')}Q`) && brow.path.endsWith(` ${outerBrow.join(' ')}`));
 assert.equal(expandedPoints.si18.x, outerCanthus[0], 'SI18 is directly below the visible outer canthus');
 assert(expandedPoints.si18.y > outerCanthus[1]);
+assert.equal(expandedPoints.si18.measurement, `M${outerCanthus.join(' ')}V${expandedPoints.si18.y}`);
 assert.equal(expandedPoints.st4.y, mouthCorner[1], 'ST4 is level with the corner of the mouth');
 assert(expandedPoints.st4.x - mouthCorner[0] >= 10, 'ST4 is lateral to the visible corner without covering it');
 assert(expandedViews.face.features.mouth.path.includes(` ${mouthCorner.join(' ')}Q`), 'ST4 measures from the actual mouth corner');
