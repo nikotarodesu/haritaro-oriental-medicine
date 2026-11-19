@@ -42,11 +42,12 @@ const { POINT_ILLUSTRATIONS } = load('src/data/tsubo/atlas/illustrations');
 const { ATLAS_POINT_MARKERS, shinEndpoints } = load('src/data/tsubo/atlas/markers');
 const { digitLandmarks, digitGeometry } = load('src/data/tsubo/atlas/digits');
 const { dorsalFootLandmarks, footLandmarks, medialFootLandmarks } = load('src/data/tsubo/atlas/footLandmarks');
-const { legLandmarks, soleEndpoints, poplitealY, medialAnkleY, posteriorKnee, outerShinAnkle, tiaokouReference } = load('src/data/tsubo/atlas/legLandmarks');
+const { legLandmarks, soleEndpoints, poplitealY, medialAnkleY, medialCalf, posteriorKnee, outerShinAnkle, tiaokouReference } = load('src/data/tsubo/atlas/legLandmarks');
 const { expandedPoints } = load('src/data/tsubo/atlas/expanded/profiles');
-const { posteriorThigh, sacralLandmarks } = load('src/data/tsubo/atlas/expanded/back');
-const { dorsalWrist, posteriorShoulder } = load('src/data/tsubo/atlas/expanded/arms');
+const { posteriorThigh, sacralLandmarks, spinalLevels } = load('src/data/tsubo/atlas/expanded/back');
+const { dorsalUlnarWrist, dorsalWrist, forearmWristCreaseY, lateralElbow, palmarRadialWrist, posteriorShoulder } = load('src/data/tsubo/atlas/expanded/arms');
 const { faceLandmarks, profileLandmarks } = load('src/data/tsubo/atlas/expanded/head');
+const { subclavicularLandmarks } = load('src/data/tsubo/atlas/expanded/trunk');
 const { getAcupointGuideLinks } = load('src/utils/symptomGuides');
 const { whoAtlasPages } = load('src/data/tsubo/atlas/whoAtlasPages');
 const expandedViews = Object.assign({}, ...['head', 'arm', 'trunk', 'back'].map(group =>
@@ -95,6 +96,14 @@ assert.equal(expandedPoints.sp12.y, expandedPoints.st30.y, 'SP12 aligns with the
 assert(expandedPoints.sp12.x > expandedPoints.st30.x, 'SP12 sits lateral to the femoral artery');
 assert.equal(expandedPoints.gv2.y, expandedPoints.bl34.y, 'The hiatus lines up with the fourth posterior sacral foramen');
 const { foramina, hiatus, midlineX, posteriorIliacSpine, trochanter } = sacralLandmarks;
+for (const code of ['gv3', 'gv4', 'gv5', 'gv6', 'gv7', 'gv8', 'gv9', 'gv10', 'gv11', 'gv12', 'gv13', 'gv14']) {
+  const { view, x, y, landmarks } = expandedPoints[code];
+  const path = expandedViews[view].features[landmarks[1]].path;
+  const tipY = y - spinalLevels.depressionOffset;
+  assert.equal(x, midlineX, code + ' lies on the posterior median line');
+  assert(spinalLevels.depressionOffset > 0 && path.includes(`L${midlineX} ${tipY}L`),
+    code + ' lies below the visible spinous process tip');
+}
 for (const [row, opening, index] of [['bl27', 'bl31', 0], ['bl28', 'bl32', 1], ['bl29', 'bl33', 2], ['bl30', 'bl34', 3]]) {
   assert.equal(expandedPoints[row].y, expandedPoints[opening].y, row + ' shares the height of the foramen');
   assert.equal(expandedPoints[opening].x, foramina[index].x);
@@ -123,13 +132,37 @@ assert.equal(expandedPoints.gb7.y, profileLandmarks.earApex[1]);
 assert.equal(expandedPoints.gb8.y, expandedPoints.gb9.y);
 assert(expandedPoints.gb9.x > expandedPoints.gb8.x);
 assert(expandedPoints.gb12.x > profileLandmarks.mastoidTip[0] && expandedPoints.gb12.y > profileLandmarks.mastoidTip[1]);
-const { mouthCorner, upperGumJunction } = faceLandmarks;
+const { anteriorMandible, masseterAttachment } = profileLandmarks;
+assert.deepEqual([expandedPoints.st5.x, expandedPoints.st5.y], Array.from(anteriorMandible));
+assert(expandedPoints.st5.x <= masseterAttachment[0] - 9, 'ST5 is anterior to the masseter attachment on the left-facing profile');
+assert(expandedViews.profile.features.jawSide.path.includes(` ${anteriorMandible.join(' ')}L`));
+assert(expandedViews.profile.features.masseter.path.endsWith(`L${masseterAttachment.join(' ')}`));
+const { mouthCorner, upperGumJunction, innerCanthus, outerCanthus, medialOrbitalWall, medialOrbitalRoof, innerBrow, outerBrow } = faceLandmarks;
+const { innerEye, orbit, brow } = expandedViews.face.features;
+assert(innerEye.path.startsWith(`M${innerCanthus.join(' ')}Q`) && innerEye.path.includes(` ${outerCanthus.join(' ')}Q`));
+assert(orbit.path.startsWith(`M${medialOrbitalRoof.join(' ')}Q`) && orbit.path.endsWith(` ${medialOrbitalWall.join(' ')}Z`));
+const wallX = medialOrbitalWall[0] + (medialOrbitalWall[1] - expandedPoints.bl1.y) / (medialOrbitalWall[1] - medialOrbitalRoof[1]) *
+  (medialOrbitalRoof[0] - medialOrbitalWall[0]);
+assert(expandedPoints.bl1.y < innerCanthus[1] && expandedPoints.bl1.x > wallX &&
+  expandedPoints.bl1.x < innerCanthus[0], 'BL1 lies superomedial to the inner canthus and inside the medial orbital rim');
+assert.deepEqual([expandedPoints.bl2.x, expandedPoints.bl2.y], Array.from(innerBrow));
+assert.deepEqual([expandedPoints.te23.x, expandedPoints.te23.y], Array.from(outerBrow));
+assert(brow.path.includes(`M${innerBrow.join(' ')}Q`) && brow.path.endsWith(` ${outerBrow.join(' ')}`));
+assert.equal(expandedPoints.si18.x, outerCanthus[0], 'SI18 is directly below the visible outer canthus');
+assert(expandedPoints.si18.y > outerCanthus[1]);
 assert.equal(expandedPoints.st4.y, mouthCorner[1], 'ST4 is level with the corner of the mouth');
 assert(expandedPoints.st4.x - mouthCorner[0] >= 10, 'ST4 is lateral to the visible corner without covering it');
 assert(expandedViews.face.features.mouth.path.includes(` ${mouthCorner.join(' ')}Q`), 'ST4 measures from the actual mouth corner');
 assert.deepEqual([expandedPoints.gv28.x, expandedPoints.gv28.y], Array.from(upperGumJunction));
 assert(expandedViews.mouth.features.lipFold.path.endsWith(` ${upperGumJunction.join(' ')}`), 'GV28 is at the end of the lip frenulum');
 assert(expandedViews.mouth.features.gum.path.includes(` ${upperGumJunction.join(' ')}Q`), 'The upper gum meets the frenulum at GV28');
+const { coracoidMedialX } = subclavicularLandmarks;
+assert(expandedViews.chest.features.coracoid.path.includes(` ${coracoidMedialX} 53L`));
+assert(expandedPoints.lu2.x <= coracoidMedialX - 9, 'LU2 is medial to the coracoid, clear of the drawn bone');
+for (const [upper, lower] of [['lu2', 'lu1'], ['st13', 'st14'], ['ki27', 'ki26']]) {
+  assert.equal(expandedPoints[upper].x, expandedPoints[lower].x);
+  assert(expandedPoints[upper].y > 48 && expandedPoints[upper].y < expandedPoints[lower].y, upper + ' lies below the clavicle and above intercostal space one');
+}
 for (const code of ['gb27', 'gb28']) {
   assert.equal(expandedPoints[code].view, 'abdomen', code + ' must show direction relative to the midline');
   assert(expandedPoints[code].landmarks.includes('anteriorIliac'), code);
@@ -246,6 +279,15 @@ assert(radialTendonX + 8 < expandedPoints.li5.x && expandedPoints.li5.x < ulnarT
 const handBackFeatures = expandedViews.handBack.features;
 assert(handBackFeatures.thumbTendonsBack.path.includes(`L${radialTendonX} ${creaseY}Q`));
 assert(handBackFeatures.thumbTendonsBack.path.includes(`L${ulnarTendonX} ${creaseY}Q`));
+const { metacarpalBase, triquetrum, styloid, forearmHead } = dorsalUlnarWrist;
+assert.equal(expandedPoints.si4.y, (metacarpalBase.y + triquetrum.y) / 2, 'SI4 lies between the fifth metacarpal base and triquetrum');
+assert.equal(expandedPoints.si5.y, (triquetrum.y + styloid.y) / 2, 'SI5 lies between the triquetrum and ulnar styloid');
+assert(expandedPoints.si6.x < forearmHead.x, 'SI6 is radial to the ulnar head');
+assert.equal(forearmWristCreaseY - expandedPoints.si6.y, 15, 'SI6 is one proportional unit proximal to the dorsal wrist crease');
+assert(palmarRadialWrist.styloidX < expandedPoints.lu8.x && expandedPoints.lu8.x < palmarRadialWrist.arteryX, 'LU8 lies between radial styloid and radial artery');
+assert.equal(expandedPoints.lu9.y - expandedPoints.lu8.y, 15, 'LU8 is one proportional unit above LU9');
+assert.equal(expandedPoints.lu9.y, forearmWristCreaseY, 'LU9 is on the palmar wrist crease');
+assert(expandedPoints.li12.x < lateralElbow.ridgeAtLi12.x && expandedPoints.li12.y < lateralElbow.epicondyle.y, 'LI12 is anterior to the humeral ridge and proximal to the epicondyle');
 for (const [code, point] of Object.entries(legLandmarks)) {
   const article = ATLAS_ARTICLES[code];
   const marker = ATLAS_POINT_MARKERS[code];
@@ -259,7 +301,12 @@ for (const [code, point] of Object.entries(legLandmarks)) {
 }
 assert.equal(legLandmarks.ki1.y, (soleEndpoints.heel.y - soleEndpoints.web.y) / 3 + soleEndpoints.web.y);
 assert(legLandmarks.gb35.y === legLandmarks.gb36.y && legLandmarks.gb35.x < legLandmarks.gb36.x);
-assert(legLandmarks.ki7.y === legLandmarks.ki8.y && legLandmarks.ki7.x < legLandmarks.ki8.x);
+assert.equal(legLandmarks.ki7.y, medialCalf.achillesAtTwoCun.y, 'KI7 is at the same level as the drawn Achilles tendon reference');
+assert(legLandmarks.ki7.x > medialCalf.achillesAtTwoCun.x, 'KI7 is anterior to the Achilles tendon');
+assert.equal(legLandmarks.ki8.y, legLandmarks.ki7.y, 'KI7 and KI8 are level');
+assert.equal(legLandmarks.ki8.x - legLandmarks.ki7.x, 6, 'KI8 is half a proportional unit anterior to KI7');
+assert.equal(legLandmarks.ki9.y, legLandmarks.lr5.y, 'KI9 and LR5 are level');
+assert(medialCalf.achillesAtFiveCun.x < legLandmarks.ki9.x && legLandmarks.ki9.x < medialCalf.soleusAtFiveCun.x, 'KI9 lies between Achilles tendon and soleus');
 assert(legLandmarks.lr8.y === poplitealY && legLandmarks.lr8.x < legLandmarks.ki10.x);
 assert.equal(legLandmarks.bl40.x, (posteriorKnee.medialEnd + posteriorKnee.lateralEnd) / 2);
 assert.equal(medialAnkleY - legLandmarks.sp9.y, 13 * 12);

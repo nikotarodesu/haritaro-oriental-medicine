@@ -34,6 +34,11 @@ const touchSource = {
   url: "https://www.mskcc.org/cancer-care/patient-education/acupressure-pain-and-headaches",
   scope: "傷・発疹・赤く腫れた皮膚を刺激しないという注意点を参照。",
 };
+const gv27JapaneseCorrection = {
+  name: "医道の日本社『WHO/WPRO標準経穴部位 日本語公式版』第2刷正誤表",
+  url: "https://www.idononippon.com/book/errata/3419/",
+  scope: "英語版で「上唇結節の中点」と記す位置を、日本語公式版の訂正に従って「上唇結節上縁の中点」と表記。",
+};
 
 const heartWarning = "胸痛、動悸、脈の乱れを感じるときは医療機関に相談してください。急な強い胸の痛みや息苦しさがあるときは119番です。";
 
@@ -126,6 +131,7 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
         url: `${whoPdf}#page=${whoPage}`,
         scope: `${point.code}の場所と体表の目印。`,
       },
+      ...(point.codeLower === "gv27" ? [gv27JapaneseCorrection] : []),
       ...(view.care === "touch" ? [touchSource] : []),
       ...(care.emergency || hasHeartCaution ? [emergencySource] : []),
     ],

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { 
   HeartPulse, 
   ShieldAlert, 
@@ -8,7 +8,6 @@ import {
   Stethoscope, 
   Check, 
   AlertTriangle, 
-  ArrowRight, 
   Layers, 
   HelpCircle,
   Pill,
@@ -18,8 +17,7 @@ import {
   Compass
 } from "lucide-react";
 import Link from "next/link";
-import { TSUBOS } from "@/data/tsuboData";
-import { Tsubo } from "@/types/oriental";
+import { ACUPOINT_LOOKUP } from "@/data/acupointLookup";
 
 export interface IntegrativeCase {
   id: string;
@@ -45,7 +43,7 @@ export interface IntegrativeCase {
     }[];
     tsubos: {
       name: string;
-      code: string;
+      code?: string;
       meridian: string;
       pointRole: string;
     }[];
@@ -374,9 +372,8 @@ export const INTEGRATIVE_CASES: IntegrativeCase[] = [
         },
         {
           "name": "安眠",
-          "code": "EX-HN16",
           "meridian": "奇穴",
-          "pointRole": "耳の後ろにある奇穴として紹介します。睡眠中枢への直接作用や不眠治療の効果を、この位置説明から保証しません。"
+          "pointRole": "不眠を題材とする配穴の学習例です。"
         }
       ],
       "lifestyle": "起床時刻や睡眠・日中の活動を記録し、就寝直前のカフェイン、飲酒、強い光などとの関係を確認します。慢性不眠ではこれらの工夫だけで十分とは限らず、CBT-Iなどの治療を相談します。足湯や呼吸法で治癒・減薬できるとは保証しません。"
@@ -426,19 +423,15 @@ export const INTEGRATIVE_CASES: IntegrativeCase[] = [
         "title": "NIH NCCIH：睡眠障害と補完療法",
         "url": "https://www.nccih.nih.gov/health/sleep-disorders-and-complementary-health-approaches",
         "scope": "不眠の鍼治療は研究間の違い・質に限界がある。特定配穴の治癒や減薬を保証しない。"
+      },
+      {
+        "title": "Zhangら：不眠を対象とする鍼の比較試験（2023）",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9889562/",
+        "scope": "安眠を含む配穴例の出典。安眠単独の効果を調べた試験ではありません。"
       }
     ]
   }
 ];
-
-const getMeridianElement = (meridian: string): ("木" | "火" | "土" | "金" | "水")[] => {
-  if (meridian.includes("肝") || meridian.includes("胆")) return ["木"];
-  if (meridian.includes("心") || meridian.includes("小腸") || meridian.includes("三焦")) return ["火"];
-  if (meridian.includes("脾") || meridian.includes("胃")) return ["土"];
-  if (meridian.includes("肺") || meridian.includes("大腸")) return ["金"];
-  if (meridian.includes("腎") || meridian.includes("膀胱")) return ["水"];
-  return [];
-};
 
 interface Props {
   initialCaseId?: string;
@@ -451,15 +444,12 @@ export default function EastWestIntegrativeSwitch({
   defaultViewMode = "oriental",
   className = ""
 }: Props) {
-  const [selectedCaseId, setSelectedCaseId] = useState<string>(initialCaseId);
   const [viewMode, setViewMode] = useState<"western" | "oriental" | "matrix">(defaultViewMode);
-  const [selectedTsuboDetail, setSelectedTsuboDetail] = useState<Tsubo | null>(null);
+  const [selectedTsuboDetail, setSelectedTsuboDetail] = useState<IntegrativeCase["oriental"]["tsubos"][number] | null>(null);
+  const atlasPoint = selectedTsuboDetail && ACUPOINT_LOOKUP.find(point => point.code === selectedTsuboDetail.code);
+  const atlasHref = atlasPoint && `/tsubo/${atlasPoint.code.toLowerCase()}`;
 
-  React.useEffect(() => {
-    setSelectedCaseId(initialCaseId);
-  }, [initialCaseId]);
-
-  const currentCase = INTEGRATIVE_CASES.find((c) => c.id === selectedCaseId) || INTEGRATIVE_CASES[1] || INTEGRATIVE_CASES[0];
+  const currentCase = INTEGRATIVE_CASES.find(c => c.id === initialCaseId) ?? INTEGRATIVE_CASES[1];
 
   return (
     <div className={`bg-white dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm overflow-hidden transition-all duration-300 ${className}`}>
@@ -657,37 +647,15 @@ export default function EastWestIntegrativeSwitch({
                 </span>
                 <span className="text-[11px] text-[#8A948F] dark:text-[#6A7C8B] flex items-center gap-1">
                   <BookOpen className="w-3 h-3 text-[#1E3D34] dark:text-[#74BA9E]" />
-                  タップで事典詳細を表示
+                  タップで詳細を表示
                 </span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
-                {currentCase.oriental.tsubos.map((tsubo, idx) => (
+                {currentCase.oriental.tsubos.map(tsubo => (
                   <button
-                    key={idx}
+                    key={tsubo.name}
                     type="button"
-                    onClick={() => {
-                      const matched = TSUBOS.find(
-                        (t) => t.name === tsubo.name || t.code === tsubo.code
-                      );
-                      if (matched) {
-                        setSelectedTsuboDetail(matched);
-                      } else {
-                        setSelectedTsuboDetail({
-                          id: tsubo.code.toLowerCase(),
-                          name: tsubo.name,
-                          kana: "",
-                          romaji: "",
-                          code: tsubo.code,
-                          meridian: tsubo.meridian,
-                          meridianShort: tsubo.meridian.replace(/^(手の|足の)/, "").replace(/経$/, ""),
-                          bodyPart: "頭部・顔面",
-                          locationSimple: tsubo.pointRole,
-                          locationDetail: tsubo.pointRole,
-                          indications: [currentCase.title],
-                          clinicalNote: tsubo.pointRole,
-                        });
-                      }
-                    }}
+                    onClick={() => setSelectedTsuboDetail(tsubo)}
                     className="p-3 sm:p-4 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:shadow-md transition-all duration-200 text-left group cursor-pointer space-y-1.5 flex flex-col justify-between"
                   >
                     <div className="w-full space-y-1.5">
@@ -696,7 +664,7 @@ export default function EastWestIntegrativeSwitch({
                           {tsubo.name}
                         </span>
                         <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
-                          {tsubo.code}
+                          {tsubo.code ?? "図鑑対象外"}
                         </span>
                       </div>
                       <span className="text-[10px] text-[#8A948F] dark:text-[#6A7C8B] block">
@@ -708,7 +676,7 @@ export default function EastWestIntegrativeSwitch({
                     </div>
 
                     <div className="pt-2 flex items-center justify-end text-[11px] font-medium text-[#1E3D34] dark:text-[#74BA9E] opacity-75 group-hover:opacity-100 group-hover:underline transition-opacity">
-                      <span>事典を見る →</span>
+                      <span>詳細を見る →</span>
                     </div>
                   </button>
                 ))}
@@ -834,6 +802,8 @@ export default function EastWestIntegrativeSwitch({
         >
           <div
             className="bg-white dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] max-w-lg w-full p-4 sm:p-7 shadow-2xl space-y-4 sm:space-y-5 transform transition-all duration-300 animate-in fade-in zoom-in-95 relative max-h-[90vh] overflow-y-auto"
+            role="dialog"
+            aria-labelledby="perspective-acupoint-title"
             onClick={(e) => e.stopPropagation()}
           >
             {/* クローズボタン */}
@@ -845,129 +815,48 @@ export default function EastWestIntegrativeSwitch({
               <X className="w-4 h-4" />
             </button>
 
-            {/* ヘッダー情報 */}
             <div className="space-y-2 pr-8">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8]">
-                  {selectedTsuboDetail.code}
-                </span>
-                <span className="text-xs px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] text-[#59615D] dark:text-[#96A6B2]">
-                  {selectedTsuboDetail.bodyPart}
-                </span>
-                <span className="text-xs font-medium text-[#1E2D3D] dark:text-[#7BAAD8]">
-                  {selectedTsuboDetail.meridian}
-                </span>
+              <div className="flex items-center gap-2 flex-wrap text-xs font-medium text-[#1E2D3D] dark:text-[#7BAAD8]">
+                {atlasPoint ? <span className="font-mono font-bold">{atlasPoint.code}</span> : null}
+                <span>{atlasPoint ? selectedTsuboDetail.meridian : "奇穴（全361穴の範囲外）"}</span>
               </div>
-
-              <div className="flex items-baseline justify-between gap-2 pt-1">
-                <div className="flex items-baseline gap-2">
-                  <span className="font-serif text-2xl sm:text-3xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                    {selectedTsuboDetail.name}
-                  </span>
-                  {selectedTsuboDetail.kana && (
-                    <span className="text-sm text-[#59615D] dark:text-[#A0B0BC]">
-                      {selectedTsuboDetail.kana}
-                    </span>
-                  )}
-                  {selectedTsuboDetail.romaji && (
-                    <span className="text-xs font-mono text-[#8A948F] dark:text-[#6A7C8B]">
-                      ({selectedTsuboDetail.romaji})
-                    </span>
-                  )}
-                </div>
-
-              </div>
+              <h4 id="perspective-acupoint-title" className="font-serif text-2xl sm:text-3xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+                {atlasPoint?.name ?? selectedTsuboDetail.name}
+              </h4>
             </div>
 
-            {/* 要穴カテゴリ */}
-            {selectedTsuboDetail.category && selectedTsuboDetail.category.length > 0 && (
-              <div className="flex flex-wrap gap-1.5">
-                {selectedTsuboDetail.category.map((cat, idx) => (
-                  <span
-                    key={idx}
-                    className="text-xs px-2.5 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] font-medium border border-[#F3E1CB] dark:border-[#423321]"
-                  >
-                    {cat}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            {/* 取穴法（場所の目安） */}
-            <div className="space-y-3">
+            {atlasPoint && (
               <div className="bg-[#FAF8F5] dark:bg-[#121920] p-4 rounded-xl border border-[#EDE7DB] dark:border-[#22303D] space-y-1">
                 <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
                   <Compass className="w-3.5 h-3.5" />
-                  【一般向け】わかりやすい取穴法
+                  位置の目安
                 </span>
                 <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-                  {selectedTsuboDetail.locationSimple}
+                  {atlasPoint.locationSimple}
                 </p>
               </div>
+            )}
 
-              {selectedTsuboDetail.locationDetail && (
-                <div className="bg-[#FAF8F5] dark:bg-[#121920] p-4 rounded-xl border border-[#EDE7DB] dark:border-[#22303D] space-y-1">
-                  <span className="text-xs font-bold text-[#1E2D3D] dark:text-[#7BAAD8] flex items-center gap-1.5">
-                    <Compass className="w-3.5 h-3.5" />
-                    【専門家向け】解剖学・骨度法取穴
-                  </span>
-                  <p className="text-xs sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed font-mono">
-                    {selectedTsuboDetail.locationDetail}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* 臨床知見 */}
             <div className="bg-[#EBF3EF] dark:bg-[#162A24] p-4 sm:p-5 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] space-y-1.5">
-              <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                はり太郎の臨床知見・配穴の真髄
+              <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                この教材で取り上げる理由
               </span>
               <p className="text-xs sm:text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
-                {selectedTsuboDetail.clinicalNote}
+                {selectedTsuboDetail.pointRole}
               </p>
             </div>
 
-            {/* 主治・適応症 */}
-            {selectedTsuboDetail.indications && selectedTsuboDetail.indications.length > 0 && (
-              <div className="space-y-1.5">
-                <span className="text-xs font-bold text-[#59615D] dark:text-[#96A6B2] block">
-                  主治・適応症：
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {selectedTsuboDetail.indications.map((ind, idx) => (
-                    <span
-                      key={idx}
-                      className="text-xs px-2.5 py-0.5 rounded-lg bg-[#FAF8F5] dark:bg-[#1A2530] text-[#232826] dark:text-[#E6EFEA] border border-[#E5DEC9] dark:border-[#2A3B4A]"
-                    >
-                      {ind}
-                    </span>
-                  ))}
+            <div className="pt-2 flex flex-wrap items-center justify-end gap-3 border-t border-[#EDE7DB] dark:border-[#22303D]">
+              {atlasHref && (
+                <div className="mr-auto flex flex-wrap gap-3 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E]">
+                  <Link href={atlasHref + "#acupoint-location"} className="underline">
+                    図鑑で図と位置を見る
+                  </Link>
+                  <Link href={atlasHref + "#acupoint-cautions"} className="underline">
+                    安全上の注意を読む
+                  </Link>
                 </div>
-              </div>
-            )}
-
-            {/* 注意事項 */}
-            {selectedTsuboDetail.caution && (
-              <div className="bg-[#FDEDEC] dark:bg-[#231816] p-3.5 rounded-xl border border-[#FADBD8] dark:border-[#3D2220] text-[#A83629] dark:text-[#C47A72] text-xs leading-relaxed flex items-start gap-2">
-                <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold">臨床上の禁忌・注意：</span>
-                  <p className="mt-0.5">{selectedTsuboDetail.caution}</p>
-                </div>
-              </div>
-            )}
-
-            {/* フッターボタン */}
-            <div className="pt-2 flex items-center justify-between gap-3 border-t border-[#EDE7DB] dark:border-[#22303D]">
-              <Link
-                href="/tsubo"
-                className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
-              >
-                <BookOpen className="w-3.5 h-3.5" />
-                ツボ事典で全361穴を検索
-              </Link>
+              )}
               <button
                 type="button"
                 onClick={() => setSelectedTsuboDetail(null)}

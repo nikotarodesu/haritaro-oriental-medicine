@@ -4,6 +4,7 @@ export const groinLandmarks = { pubicBorderY: 142, inguinalCreaseX: 153 } as con
 
 // Use the same vertical landmarks in the drawing and the point profiles.
 export const chestRibLandmarks = { firstGapY: 77, ribSpacing: 24 } as const;
+export const subclavicularLandmarks = { pointY: 52, coracoidMedialX: 200 } as const;
 export const flankLandmarks = {
   midaxillaryX: 122,
   fourthGapY: 82,
@@ -68,10 +69,10 @@ export const trunkPoints = {
   ...onChest(),
   ...onAbdomen(),
   ...onView("chest", [
-    ["lu2", 190, 48, "collar coracoid", "胸の中央線から横へ6寸で、鎖骨の下のくぼみ", "鎖骨を肩の方へ図でたどります。その下で、肩甲骨から前に張り出す骨の少し内側です。第1肋間と同じ高さの中府より上です。"],
-    ["st13", 162, 50, "collar sternum", "胸の中央線から横へ4寸で、鎖骨のすぐ下", "胸骨の中央から横へ目を移し、鎖骨の下の縁のすぐ下を見ます。同じ列で第1肋間の庫房より上です。"],
+    ["lu2", 190, subclavicularLandmarks.pointY, "collar coracoid", "胸の中央線から横へ6寸、鎖骨の下で肩甲骨の前の突起より内側のくぼみ", "鎖骨を肩の方へたどり、肩甲骨から前に張り出す突起より胸の中央に近いくぼみを図で見ます。中府より上です。"],
+    ["st13", 162, subclavicularLandmarks.pointY, "collar sternum", "胸の中央線から横へ4寸で、鎖骨のすぐ下", "胸骨の中央から横へ目を移し、鎖骨の下の縁のすぐ下を見ます。同じ列で第1肋間の庫房より上です。"],
     ["st17", 162, 149, "nipples", "乳頭の中央", "図の丸印は乳頭の中心です。肋骨や胸骨から測って決める点ではありません。乳根の位置は別ページで、乳頭の位置にかかわらず、胸の中央線と第5肋間を基準に確認します。"],
-    ["ki27", 134, 49, "collar sternum", "胸の中央線から横へ2寸で、鎖骨のすぐ下", "鎖骨の内端から少し外へたどり、その直下の位置を見ます。同じ高さでも胃経の気戸より胸の中央に近い列です。"],
+    ["ki27", 134, subclavicularLandmarks.pointY, "collar sternum", "胸の中央線から横へ2寸で、鎖骨のすぐ下", "鎖骨の内端から少し外へたどり、その直下の位置を見ます。同じ高さでも胃経の気戸より胸の中央に近い列です。"],
     ["cv16", 106, 213, "sternum chestJoint", "胸の中央で、胸骨とその下の細い骨とのつなぎ目", "胸骨の中央線を下へたどり、下端に続く小さな骨とつながる境を図で見ます。同じ線でも、胸骨の下にある鳩尾より上です。"],
     ["cv21", 106, 54, "sternum neckNotch", "胸の中央線で、鎖骨の間のくぼみから1寸下", "左右の鎖骨の間にできるくぼみの中央を目印にします。下へ少し進み、胸骨の上部の正面を見ます。くぼみの中にある天突と高さが違います。"],
   ]),

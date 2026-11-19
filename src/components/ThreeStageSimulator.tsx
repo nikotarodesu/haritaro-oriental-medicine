@@ -47,7 +47,6 @@ import {
 } from "@/data/simulatorData";
 import type { SafetyReview } from "@/data/simulatorReasoning";
 import { ACUPOINT_LOOKUP as TSUBOS } from "@/data/acupointLookup";
-import { Tsubo } from "@/types/oriental";
 
 const STORAGE_KEY = "haritaro_simulator_state_v1";
 
@@ -213,17 +212,7 @@ export default function ThreeStageSimulator() {
   const [activePresetId, setActivePresetId] = useState<string | null>("preset-ganki");
 
   // 詳細ツボモーダル用
-  const [modalTsubo, setModalTsubo] = useState<Tsubo | null>(null);
-  const openAcupoint = async (id: string) => {
-    setChangeNotice('経穴の詳しい情報を読み込んでいます。');
-    try {
-      const { TSUBOS: completePoints } = await import('@/data/tsuboData');
-      const point = completePoints.find(item => item.id === id);
-      if (!point) throw new Error('missing point');
-      setModalTsubo(point);
-      setChangeNotice(null);
-    } catch { setChangeNotice('経穴情報を読み込めませんでした。経穴の詳細ページから確認してください。'); }
-  };
+  const [modalTsubo, setModalTsubo] = useState<(typeof TSUBOS)[number] | null>(null);
 
   // 結果エリアの4大折りたたみアコーディオン（デフォルト閉）
   const [isReasonOpen, setIsReasonOpen] = useState<boolean>(true);
@@ -255,17 +244,17 @@ export default function ThreeStageSimulator() {
     const restoreTimer = setTimeout(() => {
     // 1. URL searchParams の優先チェック（症例・体質診断等からの連携）
     const searchParams = new URLSearchParams(window.location.search);
-    const fromTsubo = searchParams.get("fromTsubo");
-    const tsuboName = searchParams.get("tsuboName");
+    const fromTsubo = searchParams.get("fromTsubo")?.trim().toLowerCase();
+    const referencePoint = fromTsubo && TSUBOS.find(point => point.code.toLowerCase() === fromTsubo || point.id === fromTsubo);
 
-    if (fromTsubo) {
+    if (referencePoint) {
       // 古い経穴リンクの自動推論条件も採用しない。経穴から証は確定できない。
       setFromTsuboInfo({
-        code: fromTsubo,
-        name: tsuboName || fromTsubo,
+        code: referencePoint.code,
+        name: referencePoint.name,
       });
       setActivePresetId(null);
-      setChangeNotice(`参照元の経穴は「${tsuboName || fromTsubo}」です。初期条件はこの経穴の適応病態を示しません。所見に応じて学習条件を選び直してください。`);
+      setChangeNotice(`参照元の経穴は「${referencePoint.name}」です。初期条件はこの経穴の適応病態を示しません。所見に応じて学習条件を選び直してください。`);
       setIsMounted(true);
       return;
     }
@@ -1285,11 +1274,11 @@ export default function ThreeStageSimulator() {
                     {pTsubo && (
                       <div className="flex items-center gap-3 pt-1">
                         <button
-                          onClick={() => void openAcupoint(pTsubo.id)}
+                          onClick={() => setModalTsubo(pTsubo)}
                           className="text-sm text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1 font-semibold cursor-pointer"
                         >
                           <BookOpen className="w-3.5 h-3.5" />
-                          <span>解剖・取穴法を見る</span>
+                          <span>位置の目安を見る</span>
                         </button>
                         <Link
                           href={`/tsubo/${pTsubo.code.toLowerCase()}`}
@@ -1327,11 +1316,11 @@ export default function ThreeStageSimulator() {
                     {sTsubo && (
                       <div className="flex items-center gap-3 pt-1">
                         <button
-                          onClick={() => void openAcupoint(sTsubo.id)}
+                          onClick={() => setModalTsubo(sTsubo)}
                           className="text-sm text-[#B86924] dark:text-[#E6C387] hover:underline flex items-center gap-1 font-semibold cursor-pointer"
                         >
                           <BookOpen className="w-3.5 h-3.5" />
-                          <span>解剖・取穴法を見る</span>
+                          <span>位置の目安を見る</span>
                         </button>
                         <Link
                           href={`/tsubo/${sTsubo.code.toLowerCase()}`}
@@ -1677,11 +1666,11 @@ export default function ThreeStageSimulator() {
                             {pTsubo && (
                               <div className="flex items-center gap-3 pt-1">
                                 <button
-                                  onClick={() => void openAcupoint(pTsubo.id)}
+                                  onClick={() => setModalTsubo(pTsubo)}
                                   className="text-sm text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1 font-semibold cursor-pointer"
                                 >
                                   <BookOpen className="w-3.5 h-3.5" />
-                                  <span>解剖・取穴法を見る</span>
+                                  <span>位置の目安を見る</span>
                                 </button>
                                 <Link
                                   href={`/tsubo/${pTsubo.code.toLowerCase()}`}
@@ -1719,11 +1708,11 @@ export default function ThreeStageSimulator() {
                             {sTsubo && (
                               <div className="flex items-center gap-3 pt-1">
                                 <button
-                                  onClick={() => void openAcupoint(sTsubo.id)}
+                                  onClick={() => setModalTsubo(sTsubo)}
                                   className="text-sm text-[#B86924] dark:text-[#E6C387] hover:underline flex items-center gap-1 font-semibold cursor-pointer"
                                 >
                                   <BookOpen className="w-3.5 h-3.5" />
-                                  <span>解剖・取穴法を見る</span>
+                                  <span>位置の目安を見る</span>
                                 </button>
                                 <Link
                                   href={`/tsubo/${sTsubo.code.toLowerCase()}`}
@@ -1923,14 +1912,13 @@ export default function ThreeStageSimulator() {
                     {modalTsubo.code}
                   </span>
                   <span className="text-sm text-[#59615D] dark:text-[#96A6B2]">
-                    {modalTsubo.meridian}
+                    {modalTsubo.meridianShort}
                   </span>
                 </div>
                 <div className="flex items-baseline gap-2 mt-1">
                   <h3 className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
                     {modalTsubo.name}
                   </h3>
-                  <span className="text-sm text-[#59615D] dark:text-[#96A6B2]">（{modalTsubo.kana}）</span>
                 </div>
               </div>
               <button
@@ -1944,48 +1932,26 @@ export default function ThreeStageSimulator() {
 
             {/* パネルコンテンツ（スクロール可能） */}
             <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-5">
-              {/* 取穴法（一般 ＆ 骨度法） */}
-              <div className="space-y-3">
-                <div className="bg-white dark:bg-[#121920] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#263542]">
-                  <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block mb-1">
-                    【一般向け】わかりやすい取穴法
-                  </span>
-                  <p className="text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
-                    {modalTsubo.locationSimple}
-                  </p>
-                </div>
-
-                <div className="bg-white dark:bg-[#121920] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#263542]">
-                  <span className="text-sm font-bold text-[#1E2D3D] dark:text-[#7BAAD8] uppercase tracking-wider block mb-1">
-                    【専門家向け】解剖学・骨度法取穴（WHO標準）
-                  </span>
-                  <p className="text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed font-mono">
-                    {modalTsubo.locationDetail}
-                  </p>
-                </div>
-              </div>
-
-              {/* 臨床知見 */}
-              <div className="bg-[#EBF3EF] dark:bg-[#162A24] p-4 rounded-xl border border-[#C5DED4] dark:border-[#2A5243]">
-                <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block mb-1.5 flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                  <span>臨床知見・配穴の極意</span>
+              <div className="bg-white dark:bg-[#121920] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#263542]">
+                <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
+                  位置の目安
                 </span>
                 <p className="text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
-                  {modalTsubo.clinicalNote}
+                  {modalTsubo.locationSimple}
                 </p>
               </div>
             </div>
 
             {/* パネルフッター */}
             <div className="p-4 sm:p-5 border-t border-[#E8E1D1] dark:border-[#22303D] bg-[#F2EDE4]/60 dark:bg-[#141C24]/60 flex items-center justify-between gap-3">
-              <Link
-                href={`/tsubo/${modalTsubo.code.toLowerCase()}`}
-                onClick={() => setModalTsubo(null)}
-                className="text-sm sm:text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
-              >
-                <span>十四経脈辞典で詳しく見る ➜</span>
-              </Link>
+              <div className="flex flex-wrap gap-3 text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E]">
+                <Link href={`/tsubo/${modalTsubo.code.toLowerCase()}#acupoint-location`} onClick={() => setModalTsubo(null)} className="underline">
+                  図鑑で図と位置を見る
+                </Link>
+                <Link href={`/tsubo/${modalTsubo.code.toLowerCase()}#acupoint-cautions`} onClick={() => setModalTsubo(null)} className="underline">
+                  安全上の注意を読む
+                </Link>
+              </div>
 
               <button
                 onClick={() => setModalTsubo(null)}

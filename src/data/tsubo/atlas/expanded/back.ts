@@ -1,5 +1,12 @@
 import { onView } from "./types";
 
+export const spinalLevels = {
+  c7: 37,
+  thoracic: { first: 53, spacing: 16 },
+  lumbar: { first: 43, spacing: 19 },
+  depressionOffset: 5,
+} as const;
+
 const thoracic = [
   ["bl11", 1, 1.5], ["bl12", 2, 1.5], ["bl13", 3, 1.5], ["bl14", 4, 1.5],
   ["bl15", 5, 1.5], ["bl16", 6, 1.5], ["bl17", 7, 1.5], ["bl18", 9, 1.5],
@@ -51,11 +58,13 @@ function vertebraLocation(level: number, offset: number, part: "胸椎" | "腰�
 export const backPoints = {
   ...onView("back", thoracic.map(([code, level, offset]) => {
     const { levelText, guide } = vertebraLocation(level, offset, "胸椎");
-    return [code, 106 + offset * 19, 37 + level * 16, `backMid thoracic${level}`, levelText, guide];
+    const tipY = spinalLevels.thoracic.first + (level - 1) * spinalLevels.thoracic.spacing;
+    return [code, midlineX + offset * 19, tipY + (offset ? 0 : spinalLevels.depressionOffset), `backMid thoracic${level}`, levelText, guide];
   })),
   ...onView("sacrum", lumbar.map(([code, level, offset]) => {
     const { levelText, guide } = vertebraLocation(level, offset, "腰椎");
-    return [code, 106 + offset * 19, 24 + level * 19, `pelvicMid lumbar${level}`, levelText, guide];
+    const tipY = spinalLevels.lumbar.first + (level - 1) * spinalLevels.lumbar.spacing;
+    return [code, midlineX + offset * 19, tipY + (offset ? 0 : spinalLevels.depressionOffset), `pelvicMid lumbar${level}`, levelText, guide];
   })),
   ...onView("sacrum", sacralRows.map(([code, level, offset]) => [
     code, midlineX + offset * 19, sacralForamina[level - 1].y, `pelvicMid hole${level}`,
@@ -74,7 +83,7 @@ export const backPoints = {
     ];
   })),
   ...onView("back", [
-    ["gv14", 106, 37, "backMid cervico", "首の一番下の第7頸椎の突起のすぐ下、背中の中央線上", "首の後ろから背中へ移る境の出っ張りを図で確認します。中央線上でその下を見ます。第1胸椎の下にある陶道より一段上です。"],
+    ["gv14", midlineX, spinalLevels.c7 + spinalLevels.depressionOffset, "backMid cervico", "首の一番下の第7頸椎の突起のすぐ下、背中の中央線上", "首の後ろから背中へ移る境の出っ張りを図で確認します。中央線上でその下を見ます。第1胸椎の下にある陶道より一段上です。"],
   ]),
   ...onView("sacrum", [
     ["bl35", 116, 235, "coccyx pelvicMid", "背骨のいちばん下の尾骨の先端と同じ高さで、中央から横へ0.5寸", "仙骨の下に続く小さな骨を図で確認します。骨の先端から少し横です。仙骨に並ぶ孔を目印にする点よりも下で、中央線の点でもありません。"],

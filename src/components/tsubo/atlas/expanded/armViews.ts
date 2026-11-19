@@ -1,10 +1,14 @@
-import { dorsalWrist, posteriorShoulder } from "@/data/tsubo/atlas/expanded/arms";
+import { dorsalUlnarWrist, dorsalWrist, forearmWristCreaseY, lateralElbow, palmarRadialWrist, posteriorShoulder } from "@/data/tsubo/atlas/expanded/arms";
 import { feature as f, type View } from "./views";
 
 const { axillaryFold, scapulaRidge, scapulaTip, neckBase, acromion } = posteriorShoulder;
 const { creaseY, radialTendonX, ulnarTendonX } = dorsalWrist;
+const { metacarpalBase, triquetrum, styloid, forearmHead } = dorsalUlnarWrist;
+const { styloidX, arteryX, arteryY } = palmarRadialWrist;
+const { epicondyle, ridgeAtLi12 } = lateralElbow;
 const dorsalWristCrease = `M${radialTendonX} ${creaseY}H${ulnarTendonX}Q112 249 149 246`;
-const forearm = "M66 27Q110 15 158 27Q164 58 151 91Q155 123 149 168L145 230Q143 246 151 272L76 272Q87 246 79 224L69 178Q63 132 70 96Q50 58 66 27Z";
+const forearmWristCrease = `M77 ${forearmWristCreaseY}Q111 ${forearmWristCreaseY + 3} 148 ${forearmWristCreaseY}`;
+const forearm = "M66 27Q110 15 158 27Q164 58 151 91Q155 123 149 168L145 230Q143 246 151 272L76 272Q81 246 71 224L65 178Q63 132 70 96Q50 58 66 27Z";
 const upperArm = "M93 28Q108 13 140 27Q163 44 162 74Q162 91 147 104Q150 141 143 171Q146 204 152 237Q151 252 138 274H82Q72 254 75 236Q81 201 77 174Q72 139 77 107Q70 77 75 51Q79 36 93 28Z";
 const biceps = "M122 82Q144 134 136 176Q132 202 116 226Q99 198 106 159Q103 110 122 82Z";
 const bentElbow = "M78 25Q106 17 143 31Q141 57 145 91Q156 120 166 145Q174 171 152 193L97 251L61 214Q91 176 100 156Q107 137 93 118Q72 89 78 25Z";
@@ -15,7 +19,7 @@ const rays = {
   indexRay: f("人差し指につながる骨", 72, 181, "M91 223Q75 175 69 137 M68 124L68 95 M68 86V72 M68 63V50"),
   middleRay: f("中指につながる骨", 109, 201, "M104 226L103 129 M103 115V80 M102 71V54 M101 44V23"),
   ringRay: f("薬指につながる骨", 129, 184, "M117 227L129 132 M131 120L134 93 M135 84L136 66 M136 56L137 43"),
-  littleRay: f("小指につながる骨", 155, 191, "M131 227Q155 189 165 151 M166 141L166 122 M167 113L168 101 M168 94L169 82"),
+  littleRay: f("小指につながる骨", 155, 191, `M${metacarpalBase.x} ${metacarpalBase.y}Q155 189 165 151 M166 141L166 122 M167 113L168 101 M168 94L169 82`),
 };
 
 const forearmBones = {
@@ -48,11 +52,11 @@ export const armViews = {
     },
   },
   elbowSide: {
-    name: "ひじの外側・肩は上", direction: "side", area: "elbow", outline: bentElbow,
+    name: "ひじの外側・前は左", direction: "side", area: "elbow", outline: bentElbow,
     details: ["M91 111Q120 111 145 97", "M113 166Q137 180 155 157"],
     features: {
-      elbowBump: f("ひじの外側の骨", 131, 122, "M112 104Q137 98 142 125Q139 143 124 135Z"),
-      humerusRidge: f("上腕の骨の稜", 101, 78, "M106 34Q113 67 127 113"),
+      elbowBump: f("ひじの外側の骨", epicondyle.x + 1, epicondyle.y, `M${epicondyle.x - 18} ${epicondyle.y - 18}q25-6 30 21q-3 18-18 10Z`),
+      humerusRidge: f("上腕の骨の稜", 101, 78, `M106 34Q112 66 ${ridgeAtLi12.x} ${ridgeAtLi12.y}Q125 108 127 113`),
       elbowTip: f("ひじの尖った骨", 156, 154, olecranon),
     },
   },
@@ -69,11 +73,14 @@ export const armViews = {
     details: ["M64 58Q111 66 151 58", "M82 238Q113 246 144 238"],
     features: {
       ...forearmBones,
+      radius: f("親指側の骨（橈骨）", 87, 178, "M81 70Q79 112 84 154Q85 187 79 211"),
       elbowCrease: f("ひじのしわ", 115, 42, "M62 58Q108 62 155 58", "guide"),
       bicepsTendon: f("力こぶからの腱", 107, 85, "M102 26Q110 55 103 97", "soft"),
-      wristCrease: f("手首のしわ", 112, 254, "M77 238Q111 241 148 238", "guide"),
+      wristCrease: f("手首のしわ", 112, 254, forearmWristCrease, "guide"),
       thumbTendons: f("親指につながる腱", 73, 202, "M89 159Q84 205 73 231M98 163Q96 214 84 243", "soft"),
-      carpus: f("親指側の手首の骨", 100, 263, "M84 241L95 244L99 255L89 257Z"),
+      radialStyloid: f("親指側の骨の突起", 63, 228, `M79 211Q76 216 ${styloidX} 224Q71 229 75 233Q77 224 80 220`),
+      radialArtery: f("親指側を通る動脈", 105, 207, `M98 180Q97 201 ${arteryX} ${arteryY}Q92 232 85 ${forearmWristCreaseY}L82 250`, "soft"),
+      carpus: f("手首の舟状骨", 105, 263, "M86 246L95 246L99 253L92 258L84 254Z"),
       innerElbow: f("ひじの内側の骨", 149, 77, "M144 42Q154 42 159 63Q155 72 145 66Z"),
       ulnarTendon: f("小指側を走る腱", 155, 206, "M145 102Q150 185 149 250", "soft"),
       outerElbow: f("ひじの外側の骨", 61, 78, "M62 52Q68 45 74 53L73 64Q64 72 62 52Z"),
@@ -84,7 +91,8 @@ export const armViews = {
     details: ["M65 58Q111 62 151 58", "M77 238Q113 244 145 238", "M108 108Q105 179 109 254M119 111Q116 178 120 254"],
     features: {
       ...forearmBones,
-      wristBack: f("甲側の手首のしわ", 116, 255, "M77 238Q111 241 148 238", "guide"),
+      ulnarHead: f("尺骨の手首側の端", 155, 221, `M${forearmHead.x - 2} ${forearmHead.y - 6}Q145 215 147 223Q149 229 145 233H138Q134 230 ${forearmHead.x - 2} ${forearmHead.y - 6}Z`),
+      wristBack: f("甲側の手首のしわ", 116, 255, forearmWristCrease, "guide"),
       elbowBack: f("ひじの高さ", 117, 43, "M65 58H153", "guide"),
       forearmBones: f("前腕の2本の骨／橈骨と尺骨", 161, 151, `${forearmBones.radius.path} ${forearmBones.ulna.path}`),
       olecranonBack: f("ひじの後ろの尖った骨", 101, 42, "M97 71Q99 59 112 58Q124 57 129 68Q131 75 124 79L109 77Z"),
@@ -126,7 +134,8 @@ export const armViews = {
       littleJoint: f("小指の付け根の関節", 157, 151, "M151 155Q163 142 175 153"),
       thumbTendonsBack: f("親指につながる腱", 65, 210, `M79 251L${radialTendonX} ${creaseY}Q62 187 36 151M96 251L${ulnarTendonX} ${creaseY}Q78 191 49 152`, "soft"),
       radialWrist: f("親指側の手首の骨", 93, 263, "M78 254Q84 250 92 252L97 258L86 267Z"),
-      ulnarWrist: f("小指側の手首の骨", 161, 252, "M137 239L150 236L151 252L140 260Z"),
+      triquetrum: f("小指側の手首の骨／三角骨", 166, 229, `M${triquetrum.x - 7} ${triquetrum.y - 5}l6-2 6 4-2 6-6 1-4-4Z`),
+      ulnarStyloid: f("小指側の腕の骨の突起", 164, 260, `M${styloid.x - 10} ${styloid.y - 1}l7-2 5-3 2 6-5 7-11 1Z`),
       wristBack: f("手首の横じわ", 112, 263, dorsalWristCrease, "guide"),
       handTendons: f("指を伸ばす腱", 109, 219, "M107 264L103 134M114 261L130 140", "soft"),
     },

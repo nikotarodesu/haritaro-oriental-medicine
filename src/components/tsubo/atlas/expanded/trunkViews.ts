@@ -1,11 +1,12 @@
-import { chestRibLandmarks, flankLandmarks, groinLandmarks } from "@/data/tsubo/atlas/expanded/trunk";
+import { chestRibLandmarks, flankLandmarks, groinLandmarks, subclavicularLandmarks } from "@/data/tsubo/atlas/expanded/trunk";
 import { feature as f, type View } from "./views";
 
 const { pubicBorderY, inguinalCreaseX } = groinLandmarks;
 const { firstGapY, ribSpacing } = chestRibLandmarks;
+const { coracoidMedialX } = subclavicularLandmarks;
 const { midaxillaryX, fourthGapY, sixthGapY, ribElevenTip, lastRibTip, navelY } = flankLandmarks;
 
-const chestOutline = "M88 22H124Q124 39 145 36L179 35Q199 36 204 59L203 127Q191 163 200 213L197 234Q156 254 106 254Q55 254 16 234L12 213Q20 163 9 127L8 59Q13 36 33 35L67 36Q88 39 88 22Z";
+const chestOutline = "M88 22H124Q124 39 145 36L179 35Q203 36 208 59L203 127Q191 163 200 213L197 234Q156 254 106 254Q55 254 16 234L12 213Q20 163 9 127L4 59Q9 36 33 35L67 36Q88 39 88 22Z";
 const abdomenOutline = "M22 29Q41 21 58 22Q89 43 106 36Q123 43 154 22Q171 21 190 29Q197 62 187 98Q183 137 191 176Q200 227 178 255Q146 269 106 268Q65 269 34 255Q12 227 21 176Q30 137 25 98Q15 62 22 29Z";
 const chestRibs = Array.from({ length: 8 }, (_, index) => {
   const y = firstGapY + (index - 0.5) * ribSpacing;
@@ -26,7 +27,7 @@ export const trunkViews = {
       ribs: f("肋骨（間の溝が肋間）", 178, 197, chestRibs),
       nipples: f("乳頭の中央", 182, 137, "M46 149a4 4 0 1 0 8 0a4 4 0 1 0-8 0M158 149a4 4 0 1 0 8 0a4 4 0 1 0-8 0", "soft"),
       collar: f("鎖骨", 53, 38, "M97 48Q78 37 55 41L26 42M115 48Q134 37 157 41L186 42"),
-      coracoid: f("肩甲骨の前の突起", 189, 64, "M198 45Q190 44 186 54L193 57"),
+      coracoid: f("肩甲骨の前の突起", 189, 69, `M${coracoidMedialX + 2} 49Q${coracoidMedialX + 1} 49 ${coracoidMedialX} 53L${coracoidMedialX + 2} 57`),
       chestJoint: f("胸骨の下のつなぎ目", 94, 225, "M97 213H115"),
       neckNotch: f("鎖骨の間のくぼみ", 106, 28, "M93 38Q106 48 119 38", "soft"),
     },

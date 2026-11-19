@@ -1,8 +1,8 @@
 import { faceLandmarks, profileLandmarks } from "@/data/tsubo/atlas/expanded/head";
 import { feature as f, type View } from "./views";
 
-const { earApex, posteriorEarRootX, mastoidCentre, mastoidTip, templeEdge } = profileLandmarks;
-const { mouthCorner, upperGumJunction } = faceLandmarks;
+const { earApex, posteriorEarRootX, mastoidCentre, mastoidTip, templeEdge, masseterAttachment, anteriorMandible } = profileLandmarks;
+const { mouthCorner, upperGumJunction, innerCanthus, outerCanthus, medialOrbitalWall, medialOrbitalRoof, innerBrow, outerBrow } = faceLandmarks;
 const faceOutline = "M105 22Q177 22 183 88Q187 108 183 130Q187 169 165 204Q143 233 106 249Q67 235 42 208Q21 179 24 134Q21 96 30 65Q50 24 105 22Z";
 const profileOutline = "M152 37Q184 55 187 92Q192 130 177 152Q164 171 170 227L115 232Q112 220 102 206Q93 214 75 218Q58 215 58 201L57 190Q48 187 54 176L48 172Q47 166 57 159L45 154Q39 149 45 143L64 116Q64 79 90 51Q114 22 152 37Z";
 const upperEar = `M128 112Q135 108 ${earApex.join(" ")}Q151 108 155 117`;
@@ -16,19 +16,20 @@ export const headViews = {
     name: "顔の正面", direction: "front", area: "head", outline: faceOutline,
     details: [
       "M32 86Q39 49 66 42Q101 57 143 41Q164 47 178 78",
-      "M59 100q16-12 30 0q-14 7-30 0M115 100q18-12 37 0q-20 8-37 0",
+      "M59 100q16-12 30 0q-14 7-30 0",
       "M103 113Q101 134 95 148Q104 155 119 150M94 169Q104 161 116 169",
       "M91 204Q106 211 120 204",
     ],
     features: {
-      orbit: f("目を囲む骨", 170, 119, "M115 90Q137 80 155 91Q163 103 151 119Q135 125 118 115Z"),
+      orbit: f("目を囲む骨", 170, 119, `M${medialOrbitalRoof.join(" ")}Q137 75 155 91Q163 103 151 119Q135 125 118 115Q109 108 ${medialOrbitalWall.join(" ")}Z`),
+      innerEye: f("目頭（目の内側の端）", 138, 112, `M${innerCanthus.join(" ")}Q138 88 ${outerCanthus.join(" ")}Q138 108 ${innerCanthus.join(" ")}`, "soft"),
       pupil: f("瞳の中心の線", 148, 48, "M138 63V165", "guide"),
       cheek: f("頬骨", 173, 149, "M144 120Q157 118 166 129L154 139"),
       infraorbitalForamen: f("目を囲む骨の下の孔", 165, 147, "M138 127a6 6 0 1 0 0 12a6 6 0 1 0 0 -12"),
       nose: f("小鼻と鼻先", 82, 150, "M93 142Q87 151 96 156M117 142Q130 150 121 156M95 150Q105 145 118 151", "soft"),
       mouth: f("口元", 68, 188, `M78 185Q94 179 105 185Q119 179 ${mouthCorner.join(" ")}Q111 200 78 185`, "soft"),
       jaw: f("下あごの骨", 152, 223, "M159 171L166 200Q147 227 105 238Q64 226 44 200L50 173"),
-      brow: f("眉", 82, 70, "M59 83Q76 74 91 82M115 83Q135 75 160 83", "soft"),
+      brow: f("眉", 82, 70, `M59 83Q76 74 91 82M${innerBrow.join(" ")}Q135 75 ${outerBrow.join(" ")}`, "soft"),
       temple: f("こめかみ", 172, 79, "M164 89Q174 101 171 114", "soft"),
       fold: f("小鼻から口元の溝", 148, 173, "M129 153Q141 168 137 188", "guide"),
       faceMid: f("顔の中央線", 105, 50, "M105 57V228", "guide"),
@@ -38,8 +39,8 @@ export const headViews = {
     name: "頭の横・正面は左", direction: "side", area: "head", outline: profileOutline,
     details: ["M68 119Q86 109 101 115", "M66 172Q77 173 84 175", earOutline],
     features: {
-      jawSide: f("下あごの骨・関節", 91, 229, "M117 142Q124 164 116 190Q100 209 72 208"),
-      masseter: f("かむ筋肉の縁", 114, 184, "M100 148Q127 158 116 196L92 203", "soft"),
+      jawSide: f("下あごの骨・関節", 91, 229, `M117 142Q124 164 116 190Q101 210 ${anteriorMandible.join(" ")}L72 208`),
+      masseter: f("かむ筋肉の縁", 114, 184, `M100 148Q127 158 116 196L${masseterAttachment.join(" ")}`, "soft"),
       arch: f("頬骨の弓", 81, 120, "M81 129Q102 132 122 128"),
       templeHair: f("額・こめかみの／生え際", 72, 76, `M82 64Q78 82 97 91L${templeEdge.join(" ")}`, "guide"),
       ear: f("耳の輪郭", 145, 137, earOutline, "soft"),

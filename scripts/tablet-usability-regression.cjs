@@ -224,6 +224,75 @@ for (const code of ['ST36', 'KI1', 'BL57', 'CV17']) {
 assert.match(text(gorou.tree()), /太陽（たいよう）.*奇穴/);
 assert.doesNotMatch(text(gorou.tree()), /指4本分|ぐっと押し込む|ゴルフボール|乳頭を結んだ線|トントンと優しくタッピング/);
 
+const perspectiveOverrides = {
+  'next/link': { __esModule: true, default: Link },
+  '@/data/acupointLookup': publicAtlas,
+};
+for (const [initialCaseId, codes] of [
+  ['gerd-gastric', ['CV12', 'PC6', 'ST36', 'LR3']],
+  ['headache-migraine', ['GB20', 'LI4', 'LR3', 'GV20']],
+  ['insomnia-autonomic', ['HT7', 'KI1', 'PC6']],
+]) {
+  const perspective = client('src/components/EastWestIntegrativeSwitch.tsx', perspectiveOverrides);
+  perspective.render({ initialCaseId });
+  for (const code of codes) {
+    const point = publicAtlas.ACUPOINT_LOOKUP.find(entry => entry.code === code);
+    const card = nodes(perspective.tree()).find(node => node.type === 'button' && text(node).includes(point.name + code));
+    assert(card, `${initialCaseId}: correct name and code on the ${code} card`);
+    card.props.onClick();
+    perspective.render({ initialCaseId });
+    const dialog = nodes(perspective.tree()).find(node => node.props?.role === 'dialog');
+    assert(dialog, `${initialCaseId}: ${code} detail opens`);
+    assert(text(dialog).includes(point.locationSimple), `${code} uses the atlas location`);
+    for (const anchor of ['acupoint-location', 'acupoint-cautions']) {
+      assert(nodes(dialog).some(node => node.type === Link && node.props.href === `/tsubo/${code.toLowerCase()}#${anchor}`), `${code} links to ${anchor}`);
+    }
+    assert.doesNotMatch(text(dialog), /主治・適応症|取穴法|配穴の真髄/);
+    perspective.button('閉じる').props.onClick();
+    perspective.render({ initialCaseId });
+  }
+  if (initialCaseId === 'insomnia-autonomic') {
+    const extra = nodes(perspective.tree()).find(node => node.type === 'button' && text(node).includes('安眠図鑑対象外'));
+    assert(extra, 'The 安眠 card distinguishes the extra point');
+    extra.props.onClick();
+    perspective.render({ initialCaseId });
+    const dialog = nodes(perspective.tree()).find(node => node.props?.role === 'dialog');
+    assert.match(text(dialog), /奇穴（全361穴の範囲外）/);
+    assert.doesNotMatch(text(dialog), /EX-HN16|位置の目安|頭部・顔面/);
+    assert(!nodes(dialog).some(node => node.type === Link), 'An extra point must not link to a standard atlas page');
+  }
+}
+
+const simulatorTimers = [];
+const simulator = client('src/components/ThreeStageSimulator.tsx', {
+  ...perspectiveOverrides,
+  '@/data/simulatorData': load('src/data/simulatorData'),
+  '@/utils/analytics': { trackEvent() {} },
+}, {
+  window: {
+    location: { search: '?fromTsubo=li4&tsuboName=' + encodeURIComponent('足三里') },
+    addEventListener() {},
+    removeEventListener() {},
+  },
+  setTimeout(callback) { simulatorTimers.push(callback); },
+  clearTimeout() {},
+});
+simulator.render();
+simulatorTimers.splice(0).forEach(callback => callback());
+simulator.render();
+assert.match(text(simulator.tree()), /参照元：合谷（LI4）/);
+assert.doesNotMatch(text(simulator.tree()), /参照元：足三里（LI4）/);
+simulator.button('位置の目安を見る').props.onClick();
+simulator.render();
+const simulatorPoint = publicAtlas.ACUPOINT_LOOKUP.find(entry => entry.code === 'LR3');
+const simulatorDialog = nodes(simulator.tree()).find(node => node.props?.role === 'dialog');
+assert.equal(simulatorDialog.props['aria-label'], '太衝の詳細情報');
+assert(text(simulatorDialog).includes(simulatorPoint.locationSimple));
+assert.doesNotMatch(text(simulatorDialog), /解剖学・骨度法取穴|配穴の極意/);
+for (const anchor of ['acupoint-location', 'acupoint-cautions']) {
+  assert(nodes(simulatorDialog).some(node => node.type === Link && node.props.href === `/tsubo/lr3#${anchor}`));
+}
+
 // Parse the actual style artifact and check the two fixed axes plus print recovery.
 const sheet = postcss.parse(fs.readFileSync(path.join(root, 'src/app/tablet-usability.css'), 'utf8'));
 const rules = [];

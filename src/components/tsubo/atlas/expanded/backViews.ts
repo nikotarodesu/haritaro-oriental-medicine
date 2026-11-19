@@ -1,22 +1,23 @@
-import { posteriorThigh, sacralLandmarks } from "@/data/tsubo/atlas/expanded/back";
+import { posteriorThigh, sacralLandmarks, spinalLevels } from "@/data/tsubo/atlas/expanded/back";
 import { feature as f, type View } from "./views";
 
 const upperBack = "M88 18H124Q127 32 145 33L181 36Q198 39 203 60Q204 86 194 108Q182 138 187 169L186 221Q188 237 177 257Q145 269 106 266Q67 269 35 257Q24 237 26 221L25 169Q30 138 18 108Q8 86 9 60Q14 39 31 36L67 33Q85 32 88 18Z";
 const lowerBack = "M31 23Q63 34 106 30Q149 34 181 23Q182 67 190 104L201 154Q210 187 196 222Q178 257 163 276H124L106 254L88 276H49Q34 257 16 222Q2 187 11 154L22 104Q30 67 31 23Z";
 const { glutealMidpoint, poplitealCreaseY, lateralTendonX } = posteriorThigh;
 const { midlineX, foramina, hiatus, posteriorIliacSpine, trochanter } = sacralLandmarks;
+const { c7 } = spinalLevels;
 
 const thoracicLevels = Array.from({ length: 12 }, (_, index) => {
   const number = index + 1;
-  const y = 37 + number * 16;
+  const y = spinalLevels.thoracic.first + index * spinalLevels.thoracic.spacing;
   return [`thoracic${number}`, f(`第${number}胸椎の突起／その下端`, 119, y - 8,
-    `M99 ${y - 12}Q106 ${y - 17} 113 ${y - 12}L109 ${y - 4}L106 ${y}L103 ${y - 4}Z`)] as const;
+    `M99 ${y - 7}Q106 ${y - 9} 113 ${y - 7}L109 ${y - 3}L106 ${y}L103 ${y - 3}Z`)] as const;
 });
 const lumbarLevels = Array.from({ length: 5 }, (_, index) => {
   const number = index + 1;
-  const y = 24 + number * 19;
+  const y = spinalLevels.lumbar.first + index * spinalLevels.lumbar.spacing;
   return [`lumbar${number}`, f(`第${number}腰椎の突起の下端`, 120, y - 8,
-    `M97 ${y - 14}Q106 ${y - 18} 115 ${y - 14}L111 ${y - 6}L106 ${y}L101 ${y - 6}Z`)] as const;
+    `M97 ${y - 8}Q106 ${y - 10} 115 ${y - 8}L111 ${y - 3}L106 ${y}L101 ${y - 3}Z`)] as const;
 });
 const sacralOpenings = foramina.map(({ x, y }, index) => {
   const hole = (center: number) =>
@@ -33,7 +34,7 @@ export const backViews = {
       "M31 80Q56 71 78 79M181 80Q156 71 134 79", "M76 176Q88 202 82 244M136 176Q124 202 130 244"],
     features: {
       backMid: f("背骨の中央線", 88, 48, "M106 23V251", "guide"),
-      cervico: f("第7頸椎の突起の下端", 120, 24, "M98 27Q106 19 114 27L109 33L106 37L103 33Z"),
+      cervico: f("第7頸椎の突起の下端", 120, 24, `M98 ${c7 - 8}Q106 ${c7 - 10} 114 ${c7 - 8}L109 ${c7 - 3}L106 ${c7}L103 ${c7 - 3}Z`),
       ...Object.fromEntries(thoracicLevels),
     },
   },

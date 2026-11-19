@@ -49,6 +49,28 @@ assert.match(points.getAcupointDetail('sp13').locationSimple, /おへその中�
 assert.match(points.getAcupointDetail('sp8').locationSimple, /陰陵泉.*下へ3寸/);
 assert.match(points.getAcupointDetail('gb30').locationSimple, /外側から3分の1.*代替位置/);
 assert.match(points.getAcupointDetail('gv26').locationSimple, /溝の中央.*代替位置/);
+assert.match(points.getAcupointDetail('lu2').locationSimple, /横へ6寸.*肩甲骨の前の突起より内側/);
+assert.match(points.getAcupointDetail('si4').locationSimple, /甲と手のひらの境の小指側.*骨の根元と手首の小さな骨の間/);
+assert.match(points.getAcupointDetail('gv15').locationSimple, /第2頸椎.*突起より上/);
+assert.match(points.getAcupointDetail('gv27').locationSimple, /上唇の中央.*ふくらみの上縁/);
+assert(ATLAS_ARTICLES.gv27.sources.some(({ url }) => url === 'https://www.idononippon.com/book/errata/3419/'));
+for (const [code, standard, alternative] of [
+  ['li19', /人中の中ほど/, /代替位置.*上から3等分した最初の境目/],
+  ['li20', /小鼻の外のふくらみの中ほど/, /代替位置.*小鼻の下端/],
+  ['pc8', /人差し指と中指/, /代替位置.*中指と薬指/],
+]) {
+  assert.match(friendly.getAtlasLocationSimple(code), standard);
+  assert.match(ATLAS_ARTICLES[code].expert.join(' '), alternative);
+  assert.match(ATLAS_ARTICLES[code].illustration.closeUpAlt, standard);
+  assert.doesNotMatch(ATLAS_ARTICLES[code].illustration.closeUpAlt, /代替位置/);
+}
+for (const [code, romaji] of Object.entries({
+  ST15: 'Wuyi', ST19: 'Burong', BL2: 'Cuanzhu', BL18: 'Ganshu', BL20: 'Pishu', BL30: 'Baihuanshu',
+  BL61: 'Pucan', TE11: 'Qinglengyuan', TE18: 'Chimai', TE22: 'Erheliao', GB16: 'Muchuang', GB18: 'Chengling',
+})) assert.equal(points.getAcupointByCode(code).romaji, romaji);
+assert(points.getAcupointByCode('bl61').aliases.includes('Pushen'));
+assert(points.getAcupointByCode('te18').aliases.includes('Qimai'));
+assert(points.getAcupointByCode('te22').aliases.includes('耳和髎'));
 assert.match(friendly.simplifyLocationText('頭部、百会の後方1.5寸、後正中線上。'), /頭の正中線上/);
 assert(!friendly.simplifyLocationText('頭部、百会の後方1.5寸、後正中線上。').includes('背骨'));
 assert.match(friendly.simplifyLocationText('前頸部、小鎖骨上窩、胸鎖乳突筋の両頭間。'), /小鎖骨上窩（/);

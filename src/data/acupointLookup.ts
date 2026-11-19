@@ -12,7 +12,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "雲門",
     "code": "LU2",
     "meridianShort": "肺経",
-    "locationSimple": "胸の中央線から横へ6寸で、鎖骨の下のくぼみ。寸は体の区間を等分した位置の目安です。"
+    "locationSimple": "胸の中央線から横へ6寸、鎖骨の下で肩甲骨の前の突起より内側のくぼみ。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "lu3",
@@ -208,14 +208,14 @@ export const ACUPOINT_LOOKUP = [
     "name": "口禾髎",
     "code": "LI19",
     "meridianShort": "大腸経",
-    "locationSimple": "鼻の穴の外縁の真下で、人中の中ほどと同じ高さ。"
+    "locationSimple": "鼻の穴の外縁の真下で、人中の中ほどと同じ高さ。WHOの代替位置は、鼻の穴の外縁の真下で、人中を上から3等分した最初の境目と同じ高さです。"
   },
   {
     "id": "li20",
     "name": "迎香",
     "code": "LI20",
     "meridianShort": "大腸経",
-    "locationSimple": "小鼻の外のふくらみの中ほどと同じ高さで、頬へ続く溝。"
+    "locationSimple": "小鼻の外のふくらみの中ほどと同じ高さで、頬へ続く溝。WHOの代替位置は、同じ溝の中で、小鼻の下端と同じ高さです。"
   },
   {
     "id": "st1",
@@ -768,7 +768,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "腕骨",
     "code": "SI4",
     "meridianShort": "小腸経",
-    "locationSimple": "手の甲の小指側で、小指につながる骨の手首側の端と手首の小さな骨の間。"
+    "locationSimple": "甲と手のひらの境の小指側で、小指につながる骨の根元と手首の小さな骨の間。"
   },
   {
     "id": "si5",
@@ -1587,7 +1587,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "労宮",
     "code": "PC8",
     "meridianShort": "心包経",
-    "locationSimple": "人差し指と中指につながる骨の間で、指の付け根より手首側。"
+    "locationSimple": "人差し指と中指につながる骨の間で、指の付け根より手首側。WHOの代替位置は、中指と薬指につながる骨の間で、指の付け根より手首側のくぼみです。"
   },
   {
     "id": "pc9",
@@ -2266,7 +2266,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "瘂門",
     "code": "GV15",
     "meridianShort": "督脈",
-    "locationSimple": "うなじの中央で、首の第2の骨の突起より上のくぼみ。"
+    "locationSimple": "うなじの中央で、首の上から2番目の背骨（第2頸椎）の突起より上のくぼみ。"
   },
   {
     "id": "gv16",
@@ -2350,7 +2350,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "兌端",
     "code": "GV27",
     "meridianShort": "督脈",
-    "locationSimple": "上唇の中央の小さなふくらみ。"
+    "locationSimple": "上唇の中央の小さなふくらみの上縁。"
   },
   {
     "id": "gv28",

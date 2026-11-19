@@ -83,6 +83,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
 
       <section id="acupoint-cautions" className="scroll-mt-28">
         <h2 className={headingClass}>注意したいこと</h2>
+        {article.safetyWarning && <p className="mb-3 font-semibold">{article.safetyWarning}</p>}
         <Paragraphs paragraphs={article.cautions} />
       </section>
 

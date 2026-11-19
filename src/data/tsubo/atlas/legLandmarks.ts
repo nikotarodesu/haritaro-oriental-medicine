@@ -3,6 +3,14 @@ type Landmarks = { view: LegView; x: number; y: number; pdfPage: number; cun?: n
 
 // WHO's medial span uses 13 units from SP9 to the medial malleolus.
 export const medialAnkleY = 237;
+const medialLegCun = 12;
+export const medialCalf = {
+  achillesAtTwoCun: { x: 89, y: medialAnkleY - 2 * medialLegCun },
+  achillesAtFiveCun: { x: 87, y: medialAnkleY - 5 * medialLegCun },
+  soleusAtFiveCun: { x: 107, y: medialAnkleY - 5 * medialLegCun },
+  kidney7X: 97,
+  kidney8X: 97 + medialLegCun / 2,
+} as const;
 export const lateralAnkleY = 239;
 export const poplitealY = 55;
 export const posteriorAnkleY = 235;
@@ -17,7 +25,7 @@ export const tiaokouReference = {
 };
 const kneeMidpoint = (posteriorKnee.medialEnd + posteriorKnee.lateralEnd) / 2;
 const medial = (x: number, cun: number, pdfPage: number) =>
-  ({ view: "medial", x, y: medialAnkleY - cun * 12, cun, pdfPage }) as const;
+  ({ view: "medial", x, y: medialAnkleY - cun * medialLegCun, cun, pdfPage }) as const;
 const lateral = (x: number, cun: number, pdfPage: number) =>
   ({ view: "lateral", x, y: lateralAnkleY - cun * 12, cun, pdfPage }) as const;
 const calfStep = (posteriorAnkleY - poplitealY) / 16;
@@ -43,9 +51,9 @@ export const legLandmarks = {
   lr8: { view: "posterior", x: posteriorKnee.medialEnd, y: poplitealY, pdfPage: 208 },
   ki1: { view: "sole", x: soleEndpoints.web.x + (soleEndpoints.heel.x - soleEndpoints.web.x) / 3,
     y: soleEndpoints.web.y + (soleEndpoints.heel.y - soleEndpoints.web.y) / 3, pdfPage: 145 },
-  ki7: medial(94, 2, 148),
-  ki8: medial(106, 2, 148),
-  ki9: medial(94, 5, 149),
+  ki7: medial(medialCalf.kidney7X, 2, 148),
+  ki8: medial(medialCalf.kidney8X, 2, 148),
+  ki9: medial((medialCalf.achillesAtFiveCun.x + medialCalf.soleusAtFiveCun.x) / 2, 5, 149),
   ki10: { view: "posterior", x: 98, y: poplitealY, pdfPage: 149 },
   gb34: { view: "lateral", x: 139, y: 71, pdfPage: 197 },
   gb35: lateral(111, 7, 198),

@@ -1,4 +1,4 @@
-import { legLandmarks, lateralAnkleY, medialAnkleY, poplitealY, posteriorAnkleY, posteriorKnee, soleEndpoints, type LegCode } from "@/data/tsubo/atlas/legLandmarks";
+import { legLandmarks, lateralAnkleY, medialAnkleY, medialCalf, poplitealY, posteriorAnkleY, posteriorKnee, soleEndpoints, type LegCode } from "@/data/tsubo/atlas/legLandmarks";
 import type { AtlasCloseUpProps } from "@/data/tsubo/atlas/types";
 
 function Badge({ x, y, number }: { x: number; y: number; number: number }) {
@@ -34,12 +34,17 @@ function SideLeg({ code, medial }: { code: LegCode; medial: boolean }) {
   const point = legLandmarks[code];
   const ankleY = medial ? medialAnkleY : lateralAnkleY;
   const cun = "cun" in point ? point.cun : undefined;
+  const { achillesAtTwoCun, achillesAtFiveCun, soleusAtFiveCun } = medialCalf;
   return <>
     <path d="M92 24Q85 60 93 86Q69 135 88 182L91 224Q78 249 92 262Q109 277 142 269L182 266Q202 255 187 249L145 239Q134 230 139 211L147 82Q163 48 149 24Z"
       fill="#F4E8D8" stroke="#9B8D7D" strokeWidth="2" />
     <path d="M96 68Q116 49 136 67Q145 74 133 87L121 226Q124 236 115 244Q107 244 109 234L110 90Z" fill={medial ? "#E8BE9D" : "#E7D7C7"} stroke={medial ? "#B97049" : "#BCA891"} strokeWidth="1.6" />
     {!medial && <path d="M116 57Q128 52 133 61L126 229Q131 240 124 246Q116 247 116 239L119 73Z" fill="#E8BE9D" stroke="#B97049" strokeWidth="1.8" />}
-    <path d="M94 83Q72 122 86 157Q100 191 95 224L91 246" fill="none" stroke="#718F7E" strokeWidth="5" strokeLinecap="round" />
+    {code === "ki9" && <path d={`M105 93Q88 122 101 154Q105 163 ${soleusAtFiveCun.x} ${soleusAtFiveCun.y}Q105 196 91 213Q106 207 113 183Q120 159 113 123Q109 105 115 95Z`}
+      fill="#E4AFA0" stroke="#B2735C" strokeWidth="1.5" />}
+    <path d={medial
+      ? `M84 153Q83 164 ${achillesAtFiveCun.x} ${achillesAtFiveCun.y}Q89 196 ${achillesAtTwoCun.x} ${achillesAtTwoCun.y}Q88 228 91 246`
+      : "M94 83Q72 122 86 157Q100 191 95 224L91 246"} fill="none" stroke="#718F7E" strokeWidth="5" strokeLinecap="round" />
     {cun != null && <Measure x={62} start={code === "sp8" ? 81 : ankleY} end={point.y} label={`${cun}寸`} />}
     <Badge x={medial ? 123 : 121} y={101} number={1} />
     <Badge x={medial ? 116 : 123} y={ankleY} number={2} />
@@ -47,6 +52,7 @@ function SideLeg({ code, medial }: { code: LegCode; medial: boolean }) {
     <text x="203" y="81">① {medial ? "脛骨（すねの骨）" : "腓骨（外側の骨）"}</text>
     <text x="203" y="106">② {medial ? "内くるぶし" : "外くるぶし"}</text>
     <text x="203" y="198">緑はアキレス腱側</text>
+    {code === "ki9" && <text x="203" y="220">赤はヒラメ筋</text>}
     <text x="22" y="286">← かかと側</text><text x="210" y="286">つま先側 →</text>
   </>;
 }
