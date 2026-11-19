@@ -14,18 +14,31 @@ export const medialFootLandmarks = {
   navicular: { x: 141, y: 147 },
 } as const;
 
+export const dorsalFootLandmarks = {
+  secondMetatarsalBase: [133, 201],
+  intermediateCuneiformFront: [132, 209],
+  fourthMetatarsal: { base: [155, 210], control: [173, 170], head: [185, 123] },
+  fifthMetatarsal: { base: [164, 217], control: [203, 184], head: [208, 146] },
+  fifthExtensor: { middle: [160, 194], tip: [228, 108] },
+} as const;
+
 const { malleolus, navicular } = medialFootLandmarks;
 const shangqiu = { x: (malleolus.x + navicular.x) / 2, y: (malleolus.y + navicular.y) / 2 };
+const { secondMetatarsalBase, intermediateCuneiformFront } = dorsalFootLandmarks;
+const secondTarsometatarsalJoint = {
+  x: (secondMetatarsalBase[0] + intermediateCuneiformFront[0]) / 2,
+  y: (secondMetatarsalBase[1] + intermediateCuneiformFront[1]) / 2,
+};
 
 // Coordinates are surface marks on the schematic, aligned to the bones and tendons in FootLandmarkRegion.
 export const footLandmarks = {
   st41: { view: "dorsal", x: 129, y: 240, bones: ["malleolus"], pdfPage: 75 },
-  st42: { view: "dorsal", x: 133, y: 201, bones: ["ray2", "midfoot"], pdfPage: 76 },
+  st42: { view: "dorsal", ...secondTarsometatarsalJoint, bones: ["ray2", "midfoot"], pdfPage: 76 },
   st43: { view: "dorsal", x: 140, y: 126, bones: ["ray2", "ray3"], pdfPage: 76 },
   st44: { view: "dorsal", x: 140, y: 104, bones: ["ray2", "ray3"], pdfPage: 77 },
   lr2: { view: "dorsal", x: 99, y: 106, bones: ["ray1", "ray2"], pdfPage: 205 },
-  gb41: { view: "dorsal", x: 169, y: 189, bones: ["ray4", "ray5"], pdfPage: 201 },
-  gb42: { view: "dorsal", x: 181, y: 149, bones: ["ray4", "ray5"], pdfPage: 201 },
+  gb41: { view: "dorsal", x: 176, y: 189, bones: ["ray4", "ray5"], pdfPage: 201 },
+  gb42: { view: "dorsal", x: 193, y: 149, bones: ["ray4", "ray5"], pdfPage: 201 },
   gb43: { view: "dorsal", x: 195, y: 137, bones: ["ray4", "ray5"], pdfPage: 202 },
   lr4: { view: "medial", x: 116, y: 111, bones: ["malleolus"], pdfPage: 206 },
   sp2: { view: "medial", x: 256, y: 191, bones: ["ray1"], pdfPage: 79 },

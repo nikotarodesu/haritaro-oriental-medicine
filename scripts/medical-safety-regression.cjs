@@ -8,6 +8,12 @@ const li4 = points.getAcupointDetail('li4');
 assert.match(li4.locationSimple, /中央/);
 assert.match(points.getAcupointByCode('li4').locationSimple, /中央/);
 assert.match(li4.locationDetail, /第2中手骨中点/);
+assert.equal(
+  points.ALL_ACUPOINTS.filter(point => point.categories.some(category => category.startsWith('四総穴'))).map(point => point.code).sort().join(','),
+  'BL40,LI4,LU7,ST36',
+  'Only the four points in 四総穴歌 are classified as 四総穴',
+);
+assert(!points.getAcupointDetail('pc6').categories.some(category => category.startsWith('四総穴')));
 assert(!/効果が減弱|指を潜り込ませ|治癒に導く/.test(JSON.stringify(li4)), 'LI4 must not promise a cure or instruct deep pressure');
 const seo = load('src/config/seo');
 assert(!/監修|効果・押し方/.test(seo.acupointPageTitle(li4)), 'Unreviewed pages must not claim completed supervision');

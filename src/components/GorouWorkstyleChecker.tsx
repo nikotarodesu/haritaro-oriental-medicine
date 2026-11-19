@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import Link from "next/link";
 import {
   Activity,
   Sparkles,
@@ -17,6 +18,7 @@ import {
   Stethoscope,
 } from "lucide-react";
 import { getGogyoColor, GOGYO_COLORS } from "@/utils/gogyoColor";
+import { ACUPOINT_LOOKUP } from "@/data/acupointLookup";
 
 // 五労の定義型
 export type GorouId = "kyushi" | "kyuza" | "kyuritsu" | "kyukou" | "kyuga";
@@ -39,13 +41,7 @@ export interface GorouDef {
   mechanism: string;
   chuyoAction: string; // 中庸アクション（逆の動作）
   chuyoDescription: string;
-  quickTsubo: {
-    name: string;
-    reading: string;
-    organ: string;
-    location: string;
-    technique: string;
-  };
+  quickTsubo: { code: (typeof ACUPOINT_LOOKUP)[number]["code"] } | { extraPoint: string };
   officeTip: string;
 }
 
@@ -75,13 +71,7 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
     chuyoAction: "【遠望法】20分に1回、6メートル先を20秒見つめる",
     chuyoDescription:
       "米国眼科学会は、画面作業中にまばたきと休憩を意識し、20分ごとに約6メートル先を20秒見る方法などを紹介しています。休憩の目安であり、肝経の気を解放したり血流を急速に回復したりする機序の証明ではありません。",
-    quickTsubo: {
-      name: "太陽（たいよう）",
-      reading: "たいよう",
-      organ: "奇穴（肝・胆経連動）",
-      location: "眉尻と目尻の中点から、親指1本分後ろの窪み",
-      technique: "人差し指の腹で小さな円を描くように、心地よい強さで10秒間プッシュ。",
-    },
+    quickTsubo: { extraPoint: "太陽（たいよう）" },
     officeTip: "画面の輝度を周囲の明るさに合わせ、ブルーライトカットや文字サイズ拡大で目の焦点合わせ負荷を下げましょう。",
   },
 
@@ -110,13 +100,7 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
     chuyoAction: "【座り続けたときの休憩例】立つ・歩く・無理のない範囲で足首を動かす",
     chuyoDescription:
       "長い座位の合間に姿勢や作業を変える例です。米国OSHAは短い休憩や歩行などを紹介しています。回数や間隔は体調・作業条件に合わせ、むくみや脚の痛みがあれば原因と安全性を別に評価します。",
-    quickTsubo: {
-      name: "足三里（あしさんり）",
-      reading: "あしさんり",
-      organ: "足の陽明胃経（合土穴）",
-      location: "膝蓋骨の外側の窪みから指4本分下、すねの骨の外側",
-      technique: "親指を当てて骨に向かってぐっと押し込むように5秒キープ×3回。",
-    },
+    quickTsubo: { code: "ST36" },
     officeTip: "スタンディングデスクの導入や、水分補給・トイレでこまめに立つ動線を作りましょう。",
   },
 
@@ -145,13 +129,7 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
     chuyoAction: "【立ち仕事の休憩例】姿勢を変え、休憩時に座る",
     chuyoDescription:
       "同じ立位を続けず、座れる機会や姿勢を変える機会を作る例です。体調と作業条件に合わせて調整します。座ることで骨への荷重がゼロになるという説明はせず、症状が続く場合は医療者へ相談します。",
-    quickTsubo: {
-      name: "湧泉（ゆうせん）",
-      reading: "ゆうせん",
-      organ: "足の少陰腎経（井木穴）",
-      location: "足裏の前方中央、足の指を曲げた時にできる人の字型の窪み",
-      technique: "ゴルフボールや青竹踏みで踏み込むか、親指で体重を乗せて指圧。",
-    },
+    quickTsubo: { code: "KI1" },
     officeTip: "クッション性の高いインソールを靴に入れ、硬い床面からの衝撃反力を骨から逃がしましょう。",
   },
 
@@ -180,13 +158,7 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
     chuyoAction: "【歩行後の休憩例】歩行量・荷物・靴と症状の関係を振り返る",
     chuyoDescription:
       "痛みがある場合は負荷の調整を考え、持続する症状は医療者に相談します。アキレス腱などの痛みには個別の評価と段階的な運動計画が必要です。酸味のある飲料が「酸入肝」によって筋をほぐすという効果は、この教材の根拠として示していません。",
-    quickTsubo: {
-      name: "承山（しょうざん）",
-      reading: "しょうざん",
-      organ: "足の太陽膀胱経",
-      location: "ふくらはぎの筋肉（腓腹筋）がアキレス腱へと移行するV字型の窪み",
-      technique: "両手でふくらはぎを包み、親指を重ねて深呼吸しながらゆっくり押し込む。",
-    },
+    quickTsubo: { code: "BL57" },
     officeTip: "歩行速度を少し落とし、靴紐を適切に締めて足底アーチを正しくサポートさせましょう。",
   },
 
@@ -215,13 +187,7 @@ export const GOROU_DEFS: Record<GorouId, GorouDef> = {
     chuyoAction: "【活動の振り返り】睡眠と日中の状態を記録し、体調に合う活動を考える",
     chuyoDescription:
       "病気や医療者の指示で休息が必要な場合は、その方針を優先します。休息を一律に有害とせず、無理のない活動や睡眠の問題を相談します。朝の光や呼吸法で肺気・陽気を回復できるとは保証しません。",
-    quickTsubo: {
-      name: "壇中（だんちゅう）",
-      reading: "だんちゅう",
-      organ: "任脈（気会）",
-      location: "胸の真ん中、左右の乳頭を結んだ線の中央の骨の上",
-      technique: "指先でトントンと優しくタッピングするか、手のひらで温めながら深呼吸。",
-    },
+    quickTsubo: { code: "CV17" },
     officeTip: "起床時刻、日中の眠気、生活への支障を記録します。眠気や息切れが続く場合は医療者に相談し、この分類だけで睡眠時間や飲水量を決めません。",
   },
 };
@@ -601,6 +567,10 @@ export default function GorouWorkstyleChecker() {
 
             {selectedGorou.map((id) => {
               const def = GOROU_DEFS[id];
+              const relatedPoint = def.quickTsubo;
+              const atlasPoint = "code" in relatedPoint
+                ? ACUPOINT_LOOKUP.find(({ code }) => code === relatedPoint.code)
+                : undefined;
               return (
                 <div
                   key={id}
@@ -630,18 +600,27 @@ export default function GorouWorkstyleChecker() {
                     </p>
                   </div>
 
-                  {/* ツボ */}
-                  <div className="pt-2 border-t border-[#E5DEC9]/40 dark:border-[#2A3B4A]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 text-[11px]">
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-bold text-[#B86924]">この項目で紹介する経穴：</span>
-                      <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">
-                        {def.quickTsubo.name}（{def.quickTsubo.reading}）
-                      </span>
-                      <span className="text-[#737C77]">― {def.quickTsubo.location}</span>
-                    </div>
-                    <span className="text-[10px] text-[#59615D] dark:text-[#A0B0BC]">
-                      {def.quickTsubo.technique}
-                    </span>
+                  <div className="space-y-1 border-t border-[#E5DEC9]/40 pt-2 text-xs dark:border-[#2A3B4A]/40">
+                    {atlasPoint ? (
+                      <>
+                        <p className="font-bold text-[#232826] dark:text-[#FAF8F5]">
+                          {atlasPoint.name}（{atlasPoint.code}）
+                        </p>
+                        <p className="leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">{atlasPoint.locationSimple}</p>
+                        <div className="flex flex-wrap gap-x-4">
+                          <Link href={`/tsubo/${atlasPoint.code.toLowerCase()}#acupoint-location`} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+                            図で場所を確認
+                          </Link>
+                          <Link href={`/tsubo/${atlasPoint.code.toLowerCase()}#acupoint-cautions`} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+                            注意点
+                          </Link>
+                        </div>
+                      </>
+                    ) : "extraPoint" in relatedPoint && (
+                      <p className="leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">
+                        {relatedPoint.extraPoint}は、経絡の361穴とは別に扱われる奇穴です。
+                      </p>
+                    )}
                   </div>
                 </div>
               );

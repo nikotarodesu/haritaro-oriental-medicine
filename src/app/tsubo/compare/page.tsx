@@ -1,35 +1,51 @@
 import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
-import { Metadata } from "next";
-import CompareClient from "./CompareClient";
+import { heguAtlasReading } from "@/components/tsubo/HeguAtlasPreview";
+import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
+import { TSUBOS } from "@/data/tsuboData";
+import type { Metadata } from "next";
+import CompareClient, { type ComparisonPoint } from "./CompareClient";
+
+const title = "経穴比較ツール｜ツボの位置・経絡・注意点";
+const description = "経穴を2〜3穴並べて、位置、所属経絡、要穴の分類、安全上の注意、伝統での位置づけを比較できます。";
 
 export const metadata: Metadata = {
-  title: "経穴比較ツール｜ツボの場所・鑑別・臨床配合の横並び対比",
-  description:
-    "経穴を2〜3穴並べて、位置、所属する経絡、要穴の分類、伝統的な主治、学習上の補足、注意事項を比較できます。",
+  title,
+  description,
   alternates: {
     canonical: "/tsubo/compare",
   },
   openGraph: {
-      images: SHARED_OG_IMAGES,
-      siteName: SITE_NAME,
-    title: "経穴比較ツール｜ツボの場所・鑑別・臨床配合の横並び対比 | はり太郎の東洋医学",
-    description:
-      "混同しやすい経穴やペア要穴を横並びで精密対比。部位・解剖・主治の鑑別ツール。",
+    images: SHARED_OG_IMAGES,
+    siteName: SITE_NAME,
+    title,
+    description,
     url: "https://www.haritaro.jp/tsubo/compare",
   },
 };
+
+const comparisonPoints = TSUBOS.map((point): ComparisonPoint => {
+  const { id, code, name, kana, romaji, meridian, meridianShort, bodyPart, locationSimple, clinicalNote } = point;
+  const article = ATLAS_ARTICLES[code.toLowerCase()];
+  const reading = code === "LI4" ? heguAtlasReading : {
+    traditional: article.traditional[0],
+    caution: article.safetyWarning ?? article.cautions[0],
+  };
+  return {
+    id, code, name, kana, romaji, meridian, meridianShort, bodyPart, locationSimple, clinicalNote,
+    category: [...new Set(point.category)],
+    ...reading,
+  };
+});
 
 export default function TsuboComparePage() {
   return (
     <div className="min-h-screen">
       {/* 検索エンジン・アクセシビリティ用 静的SSRヘッダー */}
       <header className="sr-only">
-        <p>経穴比較ツール｜ツボの場所・鑑別・臨床配合の横並び対比</p>
-        <p>
-          合谷と太衝（四関穴）、足三里と三陰交などの経穴を2〜3穴並べて比較できます。位置、要穴の分類、伝統的な主治、注意事項の違いを確認してください。
-        </p>
+        <p>{title}</p>
+        <p>{description}</p>
       </header>
-      <CompareClient />
+      <CompareClient points={comparisonPoints} />
     </div>
   );
 }

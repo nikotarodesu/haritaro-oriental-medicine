@@ -1,16 +1,18 @@
-import { footLandmarks, medialFootLandmarks, type FootBone, type FootPoint } from "@/data/tsubo/atlas/footLandmarks";
+import { dorsalFootLandmarks, footLandmarks, medialFootLandmarks, type FootBone, type FootPoint } from "@/data/tsubo/atlas/footLandmarks";
 import type { AtlasCloseUpProps } from "@/data/tsubo/atlas/types";
 
 type Bone = { path: string; badge: [number, number]; label: string };
 
+const { secondMetatarsalBase, intermediateCuneiformFront, fourthMetatarsal, fifthMetatarsal, fifthExtensor } = dorsalFootLandmarks;
+
 const dorsalBones: Partial<Record<FootBone, Bone>> = {
   ray1: { path: "M120 198Q105 145 78 109 M73 94L66 69 M64 55L63 35", badge: [96, 144], label: "親指につながる骨" },
-  ray2: { path: "M133 201Q128 156 120 107 M120 93L120 74 M121 62L122 53 M122 41L123 22", badge: [126, 149], label: "第2趾につながる骨" },
+  ray2: { path: `M${secondMetatarsalBase.join(" ")}Q128 156 120 107 M120 93L120 74 M121 62L122 53 M122 41L123 22`, badge: [126, 149], label: "第2趾につながる骨" },
   ray3: { path: "M146 204Q160 151 158 110 M159 98L161 81 M163 70L164 60 M165 49L166 39", badge: [157, 158], label: "第3趾につながる骨" },
-  ray4: { path: "M155 210Q179 170 185 123 M187 112L192 97 M195 87L198 79 M200 69L203 62", badge: [178, 162], label: "第4趾につながる骨" },
-  ray5: { path: "M164 217Q197 184 208 146 M213 135L218 126 M222 118L226 111 M231 103L234 96", badge: [198, 179], label: "小指につながる骨" },
+  ray4: { path: `M${fourthMetatarsal.base.join(" ")}Q${fourthMetatarsal.control.join(" ")} ${fourthMetatarsal.head.join(" ")} M187 112L192 97 M195 87L198 79 M200 69L203 62`, badge: [178, 162], label: "第4趾につながる骨" },
+  ray5: { path: `M${fifthMetatarsal.base.join(" ")}Q${fifthMetatarsal.control.join(" ")} ${fifthMetatarsal.head.join(" ")} M213 135L218 126 M222 118L226 111 M231 103L234 96`, badge: [198, 179], label: "小指につながる骨" },
   malleolus: { path: "M105 219Q101 232 104 241 M158 220Q164 231 160 241", badge: [159, 238], label: "内・外くるぶし" },
-  midfoot: { path: "M132 209L134 223", badge: [143, 222], label: "中間楔状骨" },
+  midfoot: { path: `M${intermediateCuneiformFront.join(" ")}L134 223`, badge: [143, 222], label: "中間楔状骨" },
 };
 
 function sideBones(medial: boolean): Partial<Record<FootBone, Bone>> {
@@ -65,13 +67,15 @@ export default function FootLandmarkRegion({ marker, label }: AtlasCloseUpProps)
         <path d="M117 286Q117 245 121 224T104 165L63 34M140 286Q140 241 137 224L123 36" />
         <path d="M102 240H159" strokeDasharray="3 4" />
       </g>}
-      {code === "st42" && <path d="M125 281Q137 243 133 201T137 165" fill="none" stroke="#B26362" strokeDasharray="2 4" strokeWidth="2.5" />}
-      {code === "gb41" && <path d="M148 267Q151 223 165 194L228 108" fill="none" stroke="#719184" strokeWidth="3" />}
       <Skeleton bones={bones} selected={point.bones} />
+      {code === "st42" && <path d={`M125 281Q137 243 ${marker.x} ${marker.y}T137 165`} fill="none" stroke="#B26362" strokeDasharray="2 4" strokeWidth="2.5" />}
+      {code === "gb41" && <path d={`M148 267Q151 223 ${fifthExtensor.middle.join(" ")}L${fifthExtensor.tip.join(" ")}`} fill="none" stroke="#719184" strokeWidth="3" />}
       <path d={`M${marker.x} ${marker.y}L218 222H229`} fill="none" stroke="#7F3520" strokeWidth="1.5" />
       <g fill="#5B493B" fontSize="11">
         <text x="232" y="54">右足を甲の側から</text>
         {point.bones.map((key, index) => <text key={key} x="232" y={115 + 23 * index}>{index === 0 ? "①" : "②"} {bones[key]?.label}</text>)}
+        {code === "st42" && <text x="232" y="164">点線は足の甲の動脈</text>}
+        {code === "gb41" && <text x="232" y="164">緑線は小指の腱</text>}
         <text x="232" y="228" fill="#7F3520" fontWeight="bold" fontSize="13">{label}</text>
         <text x="233" y="266">足首側 ↓</text>
       </g>

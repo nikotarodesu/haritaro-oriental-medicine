@@ -8,6 +8,8 @@ export const posteriorShoulder = {
   acromion: { x: 189, y: 81 },
 } as const;
 
+export const dorsalWrist = { creaseY: 241, radialTendonX: 74, ulnarTendonX: 94 } as const;
+
 const { axillaryFold, scapulaRidge, scapulaTip, neckBase, acromion } = posteriorShoulder;
 const ridgeMidpoint = {
   x: (scapulaRidge.inner.x + scapulaRidge.outer.x) / 2,
@@ -94,7 +96,7 @@ export const armPoints = {
   ...onView("handBack", [
     ["li2", 58, 116, "indexRay indexJoint", "人差し指の付け根の関節より指先側で、親指側の縁", "人差し指を曲げると動く付け根の関節を見つけます。その親指側で少し爪に向かい、皮膚が手のひら側に変わる縁を見ます。三間は同じ関節より手首側です。"],
     ["li3", 61, 146, "indexRay indexJoint", "人差し指の付け根の関節より手首側で、親指側のくぼみ", "付け根の関節を先に確認し、親指に向いた側のまま少し手首へ戻ります。二間は関節の先、合谷はそこから離れて手の甲側です。"],
-    ["li5", 76, 239, "thumbTendonsBack radialWrist", "手の甲側の手首のしわの親指寄りで、親指へ続くすじの間のくぼみ", "親指を軽く起こすと、手首の親指側で二つのすじに挟まれたくぼみが見えます。骨の出っ張りより指先側です。"],
+    ["li5", (dorsalWrist.radialTendonX + dorsalWrist.ulnarTendonX) / 2, dorsalWrist.creaseY, "thumbTendonsBack radialWrist", "手の甲側の手首のしわの親指寄りで、親指へ続くすじの間のくぼみ", "親指を軽く起こすと、手首の親指側で二つのすじに挟まれたくぼみが見えます。骨の出っ張りより指先側です。"],
     ["si2", 174, 141, "littleRay littleJoint", "小指の付け根の関節より指先側で、手の外縁", "小指から手の甲へたどり、曲がる付け根を確かめます。関節より爪に寄った外縁が前谷です。後渓は同じ関節を越えて手首側です。"],
     ["si3", 170, 169, "littleRay littleJoint", "小指の付け根の関節より手首側で、手の外縁のくぼみ", "手の甲の小指側の輪郭を見ます。関節より手首に少し戻ったところで、手のひら側の皮膚へ切り替わる縁を確認します。"],
     ["si4", 150, 225, "littleRay ulnarWrist", "手の甲の小指側で、小指につながる骨の手首側の端と手首の小さな骨の間", "小指の付け根から骨を手首方向へたどり、甲の長い骨が終わる外側のくぼみを見ます。陽谷はそこからさらに手首寄りです。"],

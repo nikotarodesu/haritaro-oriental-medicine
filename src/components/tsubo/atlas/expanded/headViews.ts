@@ -1,7 +1,8 @@
-import { profileLandmarks } from "@/data/tsubo/atlas/expanded/head";
+import { faceLandmarks, profileLandmarks } from "@/data/tsubo/atlas/expanded/head";
 import { feature as f, type View } from "./views";
 
 const { earApex, posteriorEarRootX, mastoidCentre, mastoidTip, templeEdge } = profileLandmarks;
+const { mouthCorner, upperGumJunction } = faceLandmarks;
 const faceOutline = "M105 22Q177 22 183 88Q187 108 183 130Q187 169 165 204Q143 233 106 249Q67 235 42 208Q21 179 24 134Q21 96 30 65Q50 24 105 22Z";
 const profileOutline = "M152 37Q184 55 187 92Q192 130 177 152Q164 171 170 227L115 232Q112 220 102 206Q93 214 75 218Q58 215 58 201L57 190Q48 187 54 176L48 172Q47 166 57 159L45 154Q39 149 45 143L64 116Q64 79 90 51Q114 22 152 37Z";
 const upperEar = `M128 112Q135 108 ${earApex.join(" ")}Q151 108 155 117`;
@@ -17,7 +18,6 @@ export const headViews = {
       "M32 86Q39 49 66 42Q101 57 143 41Q164 47 178 78",
       "M59 100q16-12 30 0q-14 7-30 0M115 100q18-12 37 0q-20 8-37 0",
       "M103 113Q101 134 95 148Q104 155 119 150M94 169Q104 161 116 169",
-      "M80 186Q94 177 106 184Q121 176 132 186Q108 200 80 186",
       "M91 204Q106 211 120 204",
     ],
     features: {
@@ -26,7 +26,7 @@ export const headViews = {
       cheek: f("頬骨", 173, 149, "M144 120Q157 118 166 129L154 139"),
       infraorbitalForamen: f("目を囲む骨の下の孔", 165, 147, "M138 127a6 6 0 1 0 0 12a6 6 0 1 0 0 -12"),
       nose: f("小鼻と鼻先", 82, 150, "M93 142Q87 151 96 156M117 142Q130 150 121 156M95 150Q105 145 118 151", "soft"),
-      mouth: f("口元", 68, 188, "M78 185Q94 179 105 185Q119 179 135 188Q111 200 78 185", "soft"),
+      mouth: f("口元", 68, 188, `M78 185Q94 179 105 185Q119 179 ${mouthCorner.join(" ")}Q111 200 78 185`, "soft"),
       jaw: f("下あごの骨", 152, 223, "M159 171L166 200Q147 227 105 238Q64 226 44 200L50 173"),
       brow: f("眉", 82, 70, "M59 83Q76 74 91 82M115 83Q135 75 160 83", "soft"),
       temple: f("こめかみ", 172, 79, "M164 89Q174 101 171 114", "soft"),
@@ -100,8 +100,8 @@ export const headViews = {
     name: "上唇の内側の模式図", direction: "front", area: "head", outline: "M36 105Q57 66 106 60Q154 64 178 105Q187 136 170 170Q139 208 106 211Q72 207 42 171Q22 139 36 105Z",
     details: ["M48 121Q106 96 167 120M44 154Q105 177 171 154"],
     features: {
-      lipFold: f("上唇の裏のひだ", 86, 94, "M106 78Q100 99 106 121", "soft"),
-      gum: f("上の歯ぐき", 141, 139, "M52 142Q106 114 162 142", "soft"),
+      lipFold: f("上唇の裏のひだ", 86, 94, `M106 78Q100 99 ${upperGumJunction.join(" ")}`, "soft"),
+      gum: f("上の歯ぐき", 141, 139, `M52 142Q80 ${upperGumJunction[1]} ${upperGumJunction.join(" ")}Q132 ${upperGumJunction[1]} 160 142`, "soft"),
     },
   },
 } satisfies Record<string, View>;

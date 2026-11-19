@@ -1,7 +1,9 @@
-import { posteriorShoulder } from "@/data/tsubo/atlas/expanded/arms";
+import { dorsalWrist, posteriorShoulder } from "@/data/tsubo/atlas/expanded/arms";
 import { feature as f, type View } from "./views";
 
 const { axillaryFold, scapulaRidge, scapulaTip, neckBase, acromion } = posteriorShoulder;
+const { creaseY, radialTendonX, ulnarTendonX } = dorsalWrist;
+const dorsalWristCrease = `M${radialTendonX} ${creaseY}H${ulnarTendonX}Q112 249 149 246`;
 const forearm = "M66 27Q110 15 158 27Q164 58 151 91Q155 123 149 168L145 230Q143 246 151 272L76 272Q87 246 79 224L69 178Q63 132 70 96Q50 58 66 27Z";
 const upperArm = "M93 28Q108 13 140 27Q163 44 162 74Q162 91 147 104Q150 141 143 171Q146 204 152 237Q151 252 138 274H82Q72 254 75 236Q81 201 77 174Q72 139 77 107Q70 77 75 51Q79 36 93 28Z";
 const biceps = "M122 82Q144 134 136 176Q132 202 116 226Q99 198 106 159Q103 110 122 82Z";
@@ -117,15 +119,15 @@ export const armViews = {
   },
   handBack: {
     name: "右手の甲", direction: "back", area: "hand", outline: hand,
-    details: ["M76 247Q112 251 149 246", "M61 128Q80 135 92 129M145 151Q165 147 176 150"],
+    details: ["M61 128Q80 135 92 129M145 151Q165 147 176 150"],
     features: {
       ...rays,
       indexJoint: f("人差し指の関節", 81, 127, "M61 130Q69 121 80 129"),
       littleJoint: f("小指の付け根の関節", 157, 151, "M151 155Q163 142 175 153"),
-      thumbTendonsBack: f("親指につながる腱", 65, 210, "M64 226Q51 184 36 151M84 224Q77 182 49 152", "soft"),
-      radialWrist: f("親指側の手首の骨", 85, 253, "M76 245L91 244L96 255L83 262Z"),
+      thumbTendonsBack: f("親指につながる腱", 65, 210, `M79 251L${radialTendonX} ${creaseY}Q62 187 36 151M96 251L${ulnarTendonX} ${creaseY}Q78 191 49 152`, "soft"),
+      radialWrist: f("親指側の手首の骨", 93, 263, "M78 254Q84 250 92 252L97 258L86 267Z"),
       ulnarWrist: f("小指側の手首の骨", 161, 252, "M137 239L150 236L151 252L140 260Z"),
-      wristBack: f("手首の横じわ", 112, 263, "M77 246Q110 250 149 246", "guide"),
+      wristBack: f("手首の横じわ", 112, 263, dorsalWristCrease, "guide"),
       handTendons: f("指を伸ばす腱", 109, 219, "M107 264L103 134M114 261L130 140", "soft"),
     },
   },

@@ -41,12 +41,12 @@ const { ATLAS_ARTICLES } = load('src/data/tsubo/atlas/articles');
 const { POINT_ILLUSTRATIONS } = load('src/data/tsubo/atlas/illustrations');
 const { ATLAS_POINT_MARKERS, shinEndpoints } = load('src/data/tsubo/atlas/markers');
 const { digitLandmarks, digitGeometry } = load('src/data/tsubo/atlas/digits');
-const { footLandmarks, medialFootLandmarks } = load('src/data/tsubo/atlas/footLandmarks');
+const { dorsalFootLandmarks, footLandmarks, medialFootLandmarks } = load('src/data/tsubo/atlas/footLandmarks');
 const { legLandmarks, soleEndpoints, poplitealY, medialAnkleY, posteriorKnee, outerShinAnkle, tiaokouReference } = load('src/data/tsubo/atlas/legLandmarks');
 const { expandedPoints } = load('src/data/tsubo/atlas/expanded/profiles');
 const { posteriorThigh, sacralLandmarks } = load('src/data/tsubo/atlas/expanded/back');
-const { posteriorShoulder } = load('src/data/tsubo/atlas/expanded/arms');
-const { profileLandmarks } = load('src/data/tsubo/atlas/expanded/head');
+const { dorsalWrist, posteriorShoulder } = load('src/data/tsubo/atlas/expanded/arms');
+const { faceLandmarks, profileLandmarks } = load('src/data/tsubo/atlas/expanded/head');
 const { getAcupointGuideLinks } = load('src/utils/symptomGuides');
 const { whoAtlasPages } = load('src/data/tsubo/atlas/whoAtlasPages');
 const expandedViews = Object.assign({}, ...['head', 'arm', 'trunk', 'back'].map(group =>
@@ -123,6 +123,13 @@ assert.equal(expandedPoints.gb7.y, profileLandmarks.earApex[1]);
 assert.equal(expandedPoints.gb8.y, expandedPoints.gb9.y);
 assert(expandedPoints.gb9.x > expandedPoints.gb8.x);
 assert(expandedPoints.gb12.x > profileLandmarks.mastoidTip[0] && expandedPoints.gb12.y > profileLandmarks.mastoidTip[1]);
+const { mouthCorner, upperGumJunction } = faceLandmarks;
+assert.equal(expandedPoints.st4.y, mouthCorner[1], 'ST4 is level with the corner of the mouth');
+assert(expandedPoints.st4.x - mouthCorner[0] >= 10, 'ST4 is lateral to the visible corner without covering it');
+assert(expandedViews.face.features.mouth.path.includes(` ${mouthCorner.join(' ')}Q`), 'ST4 measures from the actual mouth corner');
+assert.deepEqual([expandedPoints.gv28.x, expandedPoints.gv28.y], Array.from(upperGumJunction));
+assert(expandedViews.mouth.features.lipFold.path.endsWith(` ${upperGumJunction.join(' ')}`), 'GV28 is at the end of the lip frenulum');
+assert(expandedViews.mouth.features.gum.path.includes(` ${upperGumJunction.join(' ')}Q`), 'The upper gum meets the frenulum at GV28');
 for (const code of ['gb27', 'gb28']) {
   assert.equal(expandedPoints[code].view, 'abdomen', code + ' must show direction relative to the midline');
   assert(expandedPoints[code].landmarks.includes('anteriorIliac'), code);
@@ -202,6 +209,43 @@ assert.deepEqual(
   ['x', 'y'].map(axis => (medialFootLandmarks.malleolus[axis] + medialFootLandmarks.navicular[axis]) / 2),
   'SP5 is midway between the two drawn bony landmarks',
 );
+const { secondMetatarsalBase, intermediateCuneiformFront, fourthMetatarsal, fifthMetatarsal, fifthExtensor } = dorsalFootLandmarks;
+assert.deepEqual(
+  [footLandmarks.st42.x, footLandmarks.st42.y],
+  [0, 1].map(axis => (secondMetatarsalBase[axis] + intermediateCuneiformFront[axis]) / 2),
+  'ST42 is on the illustrated second tarsometatarsal joint',
+);
+for (const code of ['gb41', 'gb42']) {
+  const marker = footLandmarks[code];
+  for (const [ray, medial] of [[fourthMetatarsal, true], [fifthMetatarsal, false]]) {
+    let closestLevel = Infinity;
+    let xAtMarkerLevel;
+    let closestDistance = Infinity;
+    for (let index = 0; index <= 256; index += 1) {
+      const t = index / 256;
+      const u = 1 - t;
+      const [x, y] = ray.base.map((value, axis) => u * u * value + 2 * u * t * ray.control[axis] + t * t * ray.head[axis]);
+      const levelDifference = Math.abs(y - marker.y);
+      if (levelDifference < closestLevel) {
+        closestLevel = levelDifference;
+        xAtMarkerLevel = x;
+      }
+      closestDistance = Math.min(closestDistance, Math.hypot(x - marker.x, y - marker.y));
+    }
+    assert.equal(xAtMarkerLevel < marker.x, medial, code + ' sits between the fourth and fifth metatarsals');
+    assert(closestDistance > 10.5, code + ' marker clears the illustrated bone strokes');
+  }
+}
+const [extensorX, extensorY] = fifthExtensor.middle;
+const [extensorTipX, extensorTipY] = fifthExtensor.tip;
+const extensorLevelX = extensorX + (extensorTipX - extensorX) * (footLandmarks.gb41.y - extensorY) / (extensorTipY - extensorY);
+assert(footLandmarks.gb41.x >= extensorLevelX + 11, 'GB41 sits lateral to the fifth extensor with a visible gap');
+const { radialTendonX, ulnarTendonX, creaseY } = dorsalWrist;
+assert.equal(expandedPoints.li5.y, creaseY, 'LI5 is at dorsal wrist crease level');
+assert(radialTendonX + 8 < expandedPoints.li5.x && expandedPoints.li5.x < ulnarTendonX - 8, 'LI5 sits between the drawn thumb tendons');
+const handBackFeatures = expandedViews.handBack.features;
+assert(handBackFeatures.thumbTendonsBack.path.includes(`L${radialTendonX} ${creaseY}Q`));
+assert(handBackFeatures.thumbTendonsBack.path.includes(`L${ulnarTendonX} ${creaseY}Q`));
 for (const [code, point] of Object.entries(legLandmarks)) {
   const article = ATLAS_ARTICLES[code];
   const marker = ATLAS_POINT_MARKERS[code];

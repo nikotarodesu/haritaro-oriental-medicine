@@ -22,7 +22,7 @@ function text(node) {
 }
 function client(relative, overrides = {}, globals = {}) {
   const state = [], effects = [];
-  let cursor = 0, tree, Component;
+  let cursor = 0, tree, Component, boundaryProps = {};
   const react = { ...React,
     useState(initial) { const index = cursor++; if (!(index in state)) state[index] = typeof initial === 'function' ? initial() : initial; return [state[index], next => { state[index] = typeof next === 'function' ? next(state[index]) : next; }]; },
     useMemo(callback) { return callback(); },
@@ -40,8 +40,8 @@ function client(relative, overrides = {}, globals = {}) {
   } }, { filename });
   Component = exported.default;
   return {
-    boundaryChild() { Component = Component().props.children.type; },
-    render(props) { cursor = 0; tree = Component(props || {}); for (const node of nodes(tree)) if (node.props?.ref) { const element = globals.elementFor?.(node) || {}; if (typeof node.props.ref === 'function') node.props.ref(element); else node.props.ref.current = element; } while (effects.length) effects.shift()(); return tree; },
+    boundaryChild(props) { const child = Component(props).props.children; Component = child.type; boundaryProps = child.props; },
+    render(props) { cursor = 0; tree = Component(props ?? boundaryProps); for (const node of nodes(tree)) if (node.props?.ref) { const element = globals.elementFor?.(node) || {}; if (typeof node.props.ref === 'function') node.props.ref(element); else node.props.ref.current = element; } while (effects.length) effects.shift()(); return tree; },
     tree: () => tree,
     button(label) { const button = nodes(tree).find(node => node.type === 'button' && (text(node) === label || node.props['aria-label'] === label)); assert(button, `Available button: ${label}`); return button; },
     unmount() { for (const slot of state) slot?.cleanup?.(); },
@@ -136,26 +136,24 @@ anatomy.button('選択解除').props.onClick(); anatomy.render(anatomyProps);
 assert(!nodes(picker()).filter(node => node.type === 'button').some(node => node.props['aria-pressed']));
 
 // Compare markup keeps row/column semantics and all original selection behavior.
-const tsubo = (code, name) => ({ id: code.toLowerCase(), code, name, kana: name, romaji: name, meridian: '検証経絡', bodyPart: '検証部位', category: [], indications: [], clinicalNote: '公開済みの補足', caution: '公開済みの注意', locationSimple: '公開済みの位置' });
+const atlasLocations = load('src/data/tsubo/friendlyLocations');
+const tsubo = (code, name) => ({ id: code.toLowerCase(), code, name, kana: name, romaji: name, meridian: '検証経絡', meridianShort: '検証経絡', bodyPart: '検証部位', category: [], indications: ['旧版の疾患タグ'], traditional: '公開済みの伝統的な背景', clinicalNote: '公開済みの補足', caution: '公開済みの注意', locationSimple: atlasLocations.getAtlasLocationSimple(code.toLowerCase()) });
 const TSUBOS = [
   tsubo('LI4','合谷'),
   tsubo('LR3','太衝'),
   { ...tsubo('ST36','足三里'), kana: 'あしさんり', romaji: 'Zusanli', locationDetail: '旧版の部位説明' },
 ];
-const atlasLocations = load('src/data/tsubo/friendlyLocations');
 let queryParams = new URLSearchParams(), frameId = 0;
 const comparisonFrames = new Map();
 const compare = client('src/app/tsubo/compare/CompareClient.tsx', {
   'next/link': { __esModule: true, default: Link },
   'next/navigation': { useSearchParams: () => queryParams },
   '@/components/design/PageIntro': { __esModule: true, default: () => null },
-  '@/data/tsuboData': { TSUBOS },
-  '@/data/tsubo/friendlyLocations': atlasLocations,
   '@/utils/search': load('src/utils/search'),
 }, { window: { print() {} }, document: { getElementById: () => ({ focus() {}, scrollIntoView() {} }) },
   requestAnimationFrame(callback) { comparisonFrames.set(++frameId, callback); return frameId; }, cancelAnimationFrame(id) { comparisonFrames.delete(id); },
 });
-compare.boundaryChild(); compare.render();
+compare.boundaryChild({ points: TSUBOS }); compare.render();
 const scroll = () => nodes(compare.tree()).find(node => node.props?.className === 'tsubo-compare-scroll');
 assert.equal(scroll().props.tabIndex, 0, 'The two-direction scrolling region is reachable by keyboard');
 assert.equal(scroll().props.role, 'region');
@@ -165,7 +163,11 @@ assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.sco
 assert(nodes(scroll()).some(node => node.type === 'caption'));
 for (const code of ['li4', 'lr3']) {
   assert(nodes(scroll()).some(node => node.type === Link && node.props.href === '/tsubo/' + code + '#acupoint-location'), 'Default comparison links directly to every diagram');
+  assert(nodes(scroll()).some(node => node.type === Link && node.props.href === '/tsubo/' + code + '#acupoint-cautions'), 'Default comparison links directly to every caution');
 }
+assert(text(scroll()).includes('公開済みの注意'));
+assert(text(scroll()).includes('公開済みの伝統的な背景'));
+assert(!text(scroll()).includes('旧版の疾患タグ'));
 const compareInput = () => nodes(compare.tree()).find(node => node.type === 'input' && node.props.id === 'compare-search-input');
 assert.equal(compareInput().props['aria-label'], '比較するツボを検索');
 for (const query of ['ＳＴ３６', 'アシサンリ', 'Zusanli']) {
@@ -196,6 +198,29 @@ assert(text(scroll()).includes(atlasLocations.getAtlasLocationSimple('st36')), '
 assert(!text(scroll()).includes('旧版の部位説明'));
 assert(nodes(scroll()).some(node => node.type === Link && node.props.href === '/tsubo/gv20#acupoint-location'));
 assert(nodes(scroll()).some(node => node.type === Link && node.props.href === '/tsubo/st36#acupoint-location'));
+
+const publicAtlas = load('src/data/acupointLookup');
+const gorou = client('src/components/GorouWorkstyleChecker.tsx', {
+  'next/link': { __esModule: true, default: Link },
+  '@/data/acupointLookup': publicAtlas,
+  '@/utils/gogyoColor': load('src/utils/gogyoColor'),
+});
+gorou.render();
+for (const label of ['久視（きゅうし）', '久坐（きゅうざ）', '久立（きゅうりつ）', '久行（きゅうこう）', '久臥（きゅうが）']) {
+  const choice = nodes(gorou.tree()).find(node => node.type === 'button' && text(node).includes(label));
+  assert(choice, label);
+  choice.props.onClick();
+  gorou.render();
+}
+for (const code of ['ST36', 'KI1', 'BL57', 'CV17']) {
+  const point = publicAtlas.ACUPOINT_LOOKUP.find(entry => entry.code === code);
+  assert(text(gorou.tree()).includes(point.locationSimple), code + ' uses the same location as the atlas');
+  for (const anchor of ['acupoint-location', 'acupoint-cautions']) {
+    assert(nodes(gorou.tree()).some(node => node.type === Link && node.props.href === '/tsubo/' + code.toLowerCase() + '#' + anchor), code + ' links to ' + anchor);
+  }
+}
+assert.match(text(gorou.tree()), /太陽（たいよう）.*奇穴/);
+assert.doesNotMatch(text(gorou.tree()), /指4本分|ぐっと押し込む|ゴルフボール|乳頭を結んだ線|トントンと優しくタッピング/);
 
 // Parse the actual style artifact and check the two fixed axes plus print recovery.
 const sheet = postcss.parse(fs.readFileSync(path.join(root, 'src/app/tablet-usability.css'), 'utf8'));
