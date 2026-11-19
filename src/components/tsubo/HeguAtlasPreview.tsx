@@ -1,5 +1,6 @@
 import Link from "next/link";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
+import { AcupointReadingLinks, AcupointSectionLinks } from "@/components/tsubo/AcupointArticleLinks";
 import AcupointAtlasDiagrams from "@/components/tsubo/AcupointAtlasDiagrams";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import { getPublicCrossSectionModel } from "@/data/medicalSafety";
@@ -38,6 +39,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         <h1 className="font-serif text-4xl font-bold sm:text-5xl">{point.name}<span className="ml-2 text-2xl">（{point.kana}）</span></h1>
         <p>合谷は、手の甲にあるツボです。親指と人差し指の間で、人差し指につながる骨が目印になります。左右とも同じように探せます。</p>
         <p id="acupoint-safety-warning" className="scroll-mt-28 rounded-xl border border-[#E3C9A9] bg-[#FAEFDD] px-4 py-2 text-sm text-[#593820]">妊娠中は合谷の指圧を控え、産科の担当者にご相談ください。</p>
+        <AcupointSectionLinks />
         <table className="w-full table-fixed text-left text-sm leading-6">
           <thead className="sr-only"><tr><th scope="col">項目</th><th scope="col">基本情報</th></tr></thead>
           <tbody>
@@ -60,7 +62,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
       <section>
         <h2 className={headingClass}>どんなときに調べる人が多い？</h2>
         <p>合谷は、頭痛や歯の痛みなど、頭や顔の不調と伝統的に関連づけられてきました。頭痛が続く、繰り返すときは医療機関に相談してください。<strong>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</strong></p>
-        <Link href="/symptoms/headache-stiff-neck" className={linkClass}>頭痛・首肩こりの症状ガイド</Link>
+        <AcupointReadingLinks code={point.codeLower} editorialLinks={[{ href: "/symptoms/headache-stiff-neck", label: "頭痛・首肩こりの症状ガイド" }]} />
       </section>
 
       <section>

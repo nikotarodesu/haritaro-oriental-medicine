@@ -47,6 +47,7 @@ const { expandedPoints } = load('src/data/tsubo/atlas/expanded/profiles');
 const { posteriorThigh, sacralLandmarks } = load('src/data/tsubo/atlas/expanded/back');
 const { posteriorShoulder } = load('src/data/tsubo/atlas/expanded/arms');
 const { profileLandmarks } = load('src/data/tsubo/atlas/expanded/head');
+const { getAcupointGuideLinks } = load('src/utils/symptomGuides');
 const { whoAtlasPages } = load('src/data/tsubo/atlas/whoAtlasPages');
 const expandedViews = Object.assign({}, ...['head', 'arm', 'trunk', 'back'].map(group =>
   load(`src/components/tsubo/atlas/expanded/${group}Views`)[`${group}Views`]
@@ -93,7 +94,14 @@ assert(expandedPoints.st30.x < expandedPoints.lr12.x && expandedPoints.st30.land
 assert.equal(expandedPoints.sp12.y, expandedPoints.st30.y, 'SP12 aligns with the superior border of the pubic symphysis');
 assert(expandedPoints.sp12.x > expandedPoints.st30.x, 'SP12 sits lateral to the femoral artery');
 assert.equal(expandedPoints.gv2.y, expandedPoints.bl34.y, 'The hiatus lines up with the fourth posterior sacral foramen');
-const { hiatus, trochanter } = sacralLandmarks;
+const { foramina, hiatus, midlineX, posteriorIliacSpine, trochanter } = sacralLandmarks;
+for (const [row, opening, index] of [['bl27', 'bl31', 0], ['bl28', 'bl32', 1], ['bl29', 'bl33', 2], ['bl30', 'bl34', 3]]) {
+  assert.equal(expandedPoints[row].y, expandedPoints[opening].y, row + ' shares the height of the foramen');
+  assert.equal(expandedPoints[opening].x, foramina[index].x);
+  assert(expandedPoints[row].x - expandedPoints[opening].x >= 12, row + ' marker must not overlap the drawn foramen');
+}
+assert.equal(expandedPoints.bl32.x, (midlineX + posteriorIliacSpine.x) / 2);
+assert(expandedPoints.gb30.y - expandedPoints.bl54.y > 12, 'GB30 and BL54 must be distinguishable in the posterior diagram');
 for (const axis of ['x', 'y']) {
   assert(Math.abs(3 * (expandedPoints.gb30[axis] - trochanter[axis]) - (hiatus[axis] - trochanter[axis])) < 0.01,
     'GB30 lies one third of the way from the greater trochanter to the hiatus');
@@ -124,6 +132,15 @@ assert.equal(expandedPoints.st9.y, expandedPoints.si16.y);
 assert(expandedPoints.st9.x < expandedPoints.li18.x && expandedPoints.li18.x < expandedPoints.si16.x,
   'Points at the same thyroid cartilage level lie before, within, and behind the sternocleidomastoid');
 assert.equal(expandedPoints.si8.view, 'elbowInside');
+for (const guide of SYMPTOMS) {
+  for (const code of guide.recommendedTsuboIds) {
+    const links = getAcupointGuideLinks(code, ATLAS_ARTICLES[code]?.symptomLinks);
+    assert(links.some(link => link.href === '/symptoms/' + guide.id), code + ' links back to ' + guide.id);
+    assert.equal(new Set(links.map(link => link.href)).size, links.length, code + ' guide links are unique');
+  }
+}
+assert.deepEqual(getAcupointGuideLinks('pc4', ATLAS_ARTICLES.pc4.symptomLinks)[0], ATLAS_ARTICLES.pc4.symptomLinks[0],
+  'A curated safety link retains priority');
 for (const [code, foot] of Object.entries(footLandmarks)) {
   const article = ATLAS_ARTICLES[code];
   const marker = ATLAS_POINT_MARKERS[code];

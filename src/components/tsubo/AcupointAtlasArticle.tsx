@@ -1,5 +1,6 @@
 import Link from "next/link";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
+import { AcupointReadingLinks, AcupointSectionLinks } from "./AcupointArticleLinks";
 import CrossSectionViewer from "./CrossSectionViewer";
 import PointAtlasDiagrams from "./atlas/PointAtlasDiagrams";
 import { getPublicCrossSectionModel } from "@/data/medicalSafety";
@@ -47,6 +48,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
             {article.safetyWarning}
           </p>
         )}
+        <AcupointSectionLinks />
         <table className="w-full table-fixed text-left text-sm leading-6">
           <thead className="sr-only"><tr><th scope="col">項目</th><th scope="col">基本情報</th></tr></thead>
           <tbody>
@@ -71,11 +73,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
       <section>
         <h2 className={headingClass}>どんなときに調べる人が多い？</h2>
         <Paragraphs paragraphs={article.traditional} />
-        {article.symptomLinks?.length ? (
-          <ul className="mt-2 space-y-1">
-            {article.symptomLinks.map(({ href, label }) => <li key={href}><Link href={href} className={linkClass}>{label}</Link></li>)}
-          </ul>
-        ) : null}
+        <AcupointReadingLinks code={point.codeLower} editorialLinks={article.symptomLinks} />
       </section>
 
       <section>

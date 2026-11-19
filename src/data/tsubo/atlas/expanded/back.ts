@@ -17,12 +17,17 @@ const sacralRows = [
   ["bl27", 1, 1.5], ["bl28", 2, 1.5], ["bl29", 3, 1.5], ["bl30", 4, 1.5], ["bl53", 2, 3], ["bl54", 4, 3],
 ] as const;
 const sacralHoles = [["bl31", 1], ["bl32", 2], ["bl33", 3], ["bl34", 4]] as const;
-const sacralHoleY = (level: number) => 128 + level * 18;
+const sacralForamina = [
+  { x: 122, y: 146 }, { x: 120, y: 164 }, { x: 117, y: 182 }, { x: 114, y: 200 },
+] as const;
 export const sacralLandmarks = {
-  hiatus: { x: 106, y: sacralHoleY(4) },
-  trochanter: { x: 194, y: 206 },
+  midlineX: 106,
+  foramina: sacralForamina,
+  hiatus: { x: 106, y: sacralForamina[3].y },
+  posteriorIliacSpine: { x: 134, y: sacralForamina[1].y },
+  trochanter: { x: 188, y: 226 },
 } as const;
-const { hiatus, trochanter } = sacralLandmarks;
+const { midlineX, hiatus, posteriorIliacSpine, trochanter } = sacralLandmarks;
 
 export const posteriorThigh = {
   glutealMidpoint: { x: 110, y: 62 },
@@ -53,15 +58,21 @@ export const backPoints = {
     return [code, 106 + offset * 19, 24 + level * 19, `pelvicMid lumbar${level}`, levelText, guide];
   })),
   ...onView("sacrum", sacralRows.map(([code, level, offset]) => [
-    code, 106 + offset * 19, sacralHoleY(level), `pelvicMid hole${level}`,
+    code, midlineX + offset * 19, sacralForamina[level - 1].y, `pelvicMid hole${level}`,
     `仙骨の上から${level}番目の孔と同じ高さで、仙骨の中央から横へ${offset}寸`,
     `腰の下にある三角形の骨を仙骨といいます。図で左右一対の孔を上から数え、${level}番目と同じ高さに合わせます。丸印は孔そのものから横へ離れた位置です。孔を探して皮膚を押し込まないでください。`,
   ])),
-  ...onView("sacrum", sacralHoles.map(([code, level]) => [
-    code, 132 - (level - 1) * 4, sacralHoleY(level), `hole${level} pelvicMid`,
-    `腰の下の仙骨にある、上から${level}番目の左右一対の孔の位置`,
-    `図で腰のすぐ下にある仙骨の外形を先に見ます。中央線の両側に並ぶ四つの孔のうち、上から${level}番目が目印です。孔の高さでさらに横へ離れた膀胱経の点と見分けます。外から孔を押して確かめる必要はありません。`,
-  ])),
+  ...onView("sacrum", sacralHoles.map(([code, level]) => {
+    const { x, y } = sacralForamina[level - 1];
+    return [
+      code, x, y, `hole${level} ${level === 2 ? "posteriorIliacSpine" : "pelvicMid"}`,
+      `腰の下の仙骨にある、上から${level}番目の左右一対の孔の位置`,
+      level === 2
+        ? "腰の下の仙骨で、左右に並ぶ孔の上から2番目を見ます。図の破線は、腰骨の後ろの出っ張りと、その高さの仙骨の中央を結んでいます。その中間が次髎です。孔を押し込んで探す必要はありません。"
+        : `図で腰のすぐ下にある仙骨の外形を先に見ます。中央線の両側に並ぶ四つの孔のうち、上から${level}番目が目印です。孔の高さでさらに横へ離れた膀胱経の点と見分けます。外から孔を押して確かめる必要はありません。`,
+      level === 2 ? `M${midlineX} ${y}H${posteriorIliacSpine.x}` : undefined,
+    ];
+  })),
   ...onView("back", [
     ["gv14", 106, 37, "backMid cervico", "首の一番下の第7頸椎の突起のすぐ下、背中の中央線上", "首の後ろから背中へ移る境の出っ張りを図で確認します。中央線上でその下を見ます。第1胸椎の下にある陶道より一段上です。"],
   ]),

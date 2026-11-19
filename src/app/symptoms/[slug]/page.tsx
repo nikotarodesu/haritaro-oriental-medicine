@@ -9,7 +9,7 @@ import SymptomPerspective from '@/components/symptoms/SymptomPerspective';
 import SymptomResearchReferences from '@/components/symptoms/SymptomResearchReferences';
 import { PUBLIC_SYMPTOM_CONTENT } from '@/data/publicSymptoms';
 import { SYMPTOMS, SYMPTOM_GUIDANCE_SCOPE, SYMPTOM_SAFETY_GUIDANCE } from '@/data/symptomData';
-import { ACUPOINTS_MASTER } from '@/data/tsubo/acupointsMaster';
+import { getAcupointByCode } from '@/data/tsubo';
 import { ARTICLES } from '@/data/articleData';
 import { CLINICAL_CASES } from '@/data/clinicalCasesData';
 import { getPublicLectureArticle } from '@/data/publicLectures';
@@ -41,7 +41,7 @@ export default async function SymptomGuidePage({ params }: Props) {
   const safety = SYMPTOM_SAFETY_GUIDANCE[guide.id];
   const sources = getSymptomGuideSources(guide);
   const acupoints = guide.recommendedTsuboIds.flatMap(code => {
-    const point = ACUPOINTS_MASTER.find(candidate => candidate.codeLower === code);
+    const point = getAcupointByCode(code);
     return point ? [point] : [];
   });
   const resources = SYMPTOM_LEARNING_RESOURCES[guide.id];

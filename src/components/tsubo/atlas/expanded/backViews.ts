@@ -4,7 +4,7 @@ import { feature as f, type View } from "./views";
 const upperBack = "M88 18H124Q127 32 145 33L181 36Q198 39 203 60Q204 86 194 108Q182 138 187 169L186 221Q188 237 177 257Q145 269 106 266Q67 269 35 257Q24 237 26 221L25 169Q30 138 18 108Q8 86 9 60Q14 39 31 36L67 33Q85 32 88 18Z";
 const lowerBack = "M31 23Q63 34 106 30Q149 34 181 23Q182 67 190 104L201 154Q210 187 196 222Q178 257 163 276H124L106 254L88 276H49Q34 257 16 222Q2 187 11 154L22 104Q30 67 31 23Z";
 const { glutealMidpoint, poplitealCreaseY, lateralTendonX } = posteriorThigh;
-const { hiatus, trochanter } = sacralLandmarks;
+const { midlineX, foramina, hiatus, posteriorIliacSpine, trochanter } = sacralLandmarks;
 
 const thoracicLevels = Array.from({ length: 12 }, (_, index) => {
   const number = index + 1;
@@ -18,13 +18,12 @@ const lumbarLevels = Array.from({ length: 5 }, (_, index) => {
   return [`lumbar${number}`, f(`第${number}腰椎の突起の下端`, 120, y - 8,
     `M97 ${y - 14}Q106 ${y - 18} 115 ${y - 14}L111 ${y - 6}L106 ${y}L101 ${y - 6}Z`)] as const;
 });
-const sacralOpenings = Array.from({ length: 4 }, (_, index) => {
-  const x = 132 - index * 4;
-  const y = hiatus.y - (3 - index) * 18;
+const sacralOpenings = foramina.map(({ x, y }, index) => {
   const hole = (center: number) =>
     `M${center} ${y - 4}a3 4 0 1 0 0 8a3 4 0 1 0 0 -8Z`;
-  return [`hole${index + 1}`, f(`仙骨の孔／上から${index + 1}番目`, 200 - x, y,
-    `${hole(x)} ${hole(212 - x)}`)] as const;
+  const opposite = 2 * midlineX - x;
+  return [`hole${index + 1}`, f(`仙骨の孔／上から${index + 1}番目`, opposite - 16, y,
+    `${hole(x)} ${hole(opposite)}`)] as const;
 });
 
 export const backViews = {
@@ -47,7 +46,9 @@ export const backViews = {
       pelvicMid: f("背骨の中央線", 87, 46, "M106 29V244", "guide"),
       coccyx: f("尾骨の先端", 94, 238, "M101 217L106 235L111 220"),
       sacralNotch: f("仙骨の下部の開き", 92, 191, `M98 ${hiatus.y - 6}L${hiatus.x} ${hiatus.y}L114 ${hiatus.y - 6}`),
-      trochanterBack: f("太ももの外の骨の突起", 181, 193, `M172 258L179 225L${trochanter.x} ${trochanter.y}Q193 195 184 195L167 210L158 258`),
+      posteriorIliacSpine: f("腰骨の後ろの／骨の出っ張り", 149, 148,
+        `M145 151Q142 160 ${posteriorIliacSpine.x} ${posteriorIliacSpine.y}L137 172`),
+      trochanterBack: f("太ももの外の骨の突起", 180, 213, `M172 258L178 239L${trochanter.x} ${trochanter.y}Q188 216 179 216L168 228L158 258`),
       ...Object.fromEntries(lumbarLevels),
       ...Object.fromEntries(sacralOpenings),
     },

@@ -31,7 +31,7 @@ export default function AdSenseSlot({
   if (unavailable) return null;
 
   return (
-    <aside aria-label="広告" className="my-10 pt-8 border-t border-[#E8E1D1] dark:border-[#22303D]">
+    <aside aria-label="広告" className="my-10 border-t border-[#E8E1D1] pt-8 has-[>ins[data-ad-status=unfilled]]:hidden dark:border-[#22303D]">
       <p className="mb-2 text-center text-xs text-[#59615D] dark:text-[#A0B0BC]">広告</p>
       <ins
         ref={ad}

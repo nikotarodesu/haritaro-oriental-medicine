@@ -37,6 +37,18 @@ export function getSymptomGuide(slug: string) {
   return SYMPTOMS.find(guide => guide.id === slug);
 }
 
+export function getAcupointGuideLinks(code: string, editorialLinks: readonly { href: string; label: string }[] = []) {
+  const codeLower = code.toLowerCase();
+  const links = new Map(editorialLinks.map(link => [link.href, link]));
+  for (const guide of SYMPTOMS) {
+    if (!guide.recommendedTsuboIds.includes(codeLower)) continue;
+    const href = symptomGuidePath(guide);
+    if (!links.has(href)) links.set(href, { href, label: `${guide.title}の症状ガイド` });
+  }
+  if ([...links.keys()].some(href => href.startsWith('/symptoms/'))) links.delete('/symptoms');
+  return [...links.values()];
+}
+
 export function symptomGuideTitle(guide: SymptomGuide) {
   return `${guide.title}｜受診の目安・日常の工夫・伝統医学の学習`;
 }
