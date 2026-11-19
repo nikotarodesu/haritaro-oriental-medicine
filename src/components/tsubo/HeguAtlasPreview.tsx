@@ -1,6 +1,8 @@
 import Link from "next/link";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
-import { AcupointReadingLinks, AcupointSectionLinks } from "@/components/tsubo/AcupointArticleLinks";
+import { AcupointReadingLinks } from "@/components/tsubo/AcupointArticleLinks";
+import AcupointArticleHeader from "@/components/tsubo/AcupointArticleHeader";
+import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import AcupointAtlasDiagrams from "@/components/tsubo/AcupointAtlasDiagrams";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import { getPublicCrossSectionModel } from "@/data/medicalSafety";
@@ -14,7 +16,7 @@ export const heguAtlasReading = {
   caution: "妊娠中は合谷の指圧を控え、産科の担当者にご相談ください。",
 };
 
-const headingClass = "mb-3 font-serif text-xl font-bold text-[#244238] dark:text-[#A9D6C3] sm:text-2xl";
+const headingClass = "atlas-section-title";
 const linkClass = "font-semibold underline underline-offset-4";
 
 export const heguSources = [
@@ -26,45 +28,20 @@ export const heguSources = [
 ];
 
 export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
-  const details = [
-    ["読み", `${point.kana}（Gōkoku）`],
-    ["経穴コード", point.code],
-    ["別名・表記", `${point.aliases?.join("、")}、${point.romaji}（中国語のローマ字表記）`],
-    ["所属経絡", `${point.meridian}（てのようめいだいちょうけい）。経絡は、伝統医学でツボをつなぐ道筋です。`],
-    ["部位", point.locationSimple],
-  ];
-
   return (
-    <article className="mx-auto w-full max-w-3xl space-y-9 px-4 py-8 text-base leading-8 sm:px-6 sm:py-12">
-      <header className="space-y-4">
-        <p className="text-sm font-medium text-[#59615D] dark:text-[#AFBDC8]">
-          <Link href="/tsubo" className={linkClass}>はり太郎のツボ図鑑</Link>
-        </p>
-        <h1 className="font-serif text-4xl font-bold sm:text-5xl">{point.name}<span className="ml-2 text-2xl">（{point.kana}）</span></h1>
-        <p>合谷は、手の甲にあるツボです。親指と人差し指の間で、人差し指につながる骨が目印になります。左右とも同じように探せます。</p>
-        <p id="acupoint-safety-warning" className="scroll-mt-28 rounded-xl border border-[#E3C9A9] bg-[#FAEFDD] px-4 py-2 text-sm text-[#593820]">{heguAtlasReading.caution}</p>
-        <AcupointSectionLinks />
-        <table className="w-full table-fixed text-left text-sm leading-6">
-          <thead className="sr-only"><tr><th scope="col">項目</th><th scope="col">基本情報</th></tr></thead>
-          <tbody>
-            {details.map(([label, value]) => (
-              <tr key={label} className="border-b border-[#E5DEC9] dark:border-[#384D43]">
-                <th scope="row" className="w-24 py-3 align-top font-semibold sm:w-36">{label}</th>
-                <td className="py-3">{value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </header>
+    <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
+      <AcupointArticleHeader point={point} lead="合谷は、手の甲にあるツボです。親指と人差し指の間で、人差し指につながる骨が目印になります。左右とも同じように探せます。" warning={heguAtlasReading.caution} meridianReading="てのようめいだいちょうけい" />
 
-      <section id="acupoint-location" className="scroll-mt-28">
-        <h2 className={headingClass}>どこにある？</h2>
+      <section id="acupoint-location" className="atlas-target">
+        <h2 className={headingClass}>場所と見つけ方</h2>
         <p className="mb-5">手を楽にして甲を上に向けます。人差し指の付け根から手首へ向かって、反対の手の指で骨をたどります。骨の長さの真ん中から、少し親指側にずらしたところが合谷です。拡大図でも、①の骨の中央から②の骨の方へ目を移すと位置を確かめられます。</p>
         <AcupointAtlasDiagrams point={point} meridianPoints={getMeridianPoints(point.meridianId)} />
       </section>
 
-      <section>
-        <h2 className={headingClass}>どんなときに調べる人が多い？</h2>
+      <AcupointResearch point={point} />
+
+      <section id="acupoint-traditional" className="atlas-target">
+        <h2 className={headingClass}>伝統的な使われ方</h2>
         <p>{heguAtlasReading.traditional}<strong>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</strong></p>
         <AcupointReadingLinks code={point.codeLower} editorialLinks={[{ href: "/symptoms/headache-stiff-neck", label: "頭痛・首肩こりの症状ガイド" }]} />
       </section>
@@ -74,41 +51,29 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         <p>反対の手の親指の腹を当て、痛みを感じない強さでゆっくり押し、力を抜きます。痛みやしびれが出たら手を離してください。手が冷えるときは手袋などで保温を。カイロの肌への直当てや、同じ場所を長時間温めることは避けましょう。</p>
       </section>
 
-      <section id="acupoint-cautions" className="scroll-mt-28">
+      <section id="acupoint-cautions" className="atlas-target">
         <h2 className={headingClass}>注意したいこと</h2>
         <p>妊娠中は合谷の指圧を控え、産科の担当者にご相談ください。傷や赤い腫れがあるところも押すのを控えます。症状がつらいときは受診を優先してください。</p>
       </section>
 
-      <details className="rounded-2xl border border-[#E5DEC9] p-4 dark:border-[#384D43]">
-        <summary className="cursor-pointer font-serif text-xl font-bold">もっと知りたい人へ</summary>
+      <details className="atlas-disclosure atlas-reading-details">
+        <summary>詳しい解剖と位置の資料</summary>
         <p className="my-4">WHO標準の位置は、手背（しゅはい、手の甲）、第2中手骨（だいにちゅうしゅこつ、人差し指につながる骨）の中点の橈側（とうそく、親指側）です。周囲の組織との位置関係は、専門家向けの断面模式図で確認できます。</p>
         <p className="mb-4 text-sm">刺鍼（はりを刺す施術）や施灸（お灸をする施術）の手順は確認待ちです。模式図から個人の安全な刺入経路や深さを判断することはできません。</p>
         {point.crossSection && (
           <CrossSectionViewer model={getPublicCrossSectionModel(point.crossSection)} pointName={point.name} pointCode={point.code} individualModel />
         )}
-        {point.researchEvidence && (
-          <section id="acupoint-research" className="mt-6 scroll-mt-28 space-y-2 text-sm">
-            <h3 className="text-base font-bold">既存研究で確認された範囲</h3>
-            <p>{point.researchEvidence.findings}</p>
-            <p>{point.researchEvidence.limitations}</p>
-            <ul className="list-disc space-y-2 pl-5">
-              {point.researchEvidence.sources.map(({ title, year, pmid }) => (
-                <li key={title}>{pmid ? <a href={`https://pubmed.ncbi.nlm.nih.gov/${pmid}/`} className={linkClass}>{title}（{year}）</a> : `${title}（${year}）`}</li>
-              ))}
-            </ul>
-          </section>
-        )}
       </details>
 
       <section>
-        <h2 className={headingClass}>関連するツボ</h2>
+        <h2 className={headingClass}>位置を見比べるツボ</h2>
         <ul className="list-disc space-y-2 pl-5">
           <li>同じ経絡で、人差し指の付け根に近いツボです。 <Link href="/tsubo/li3" className={linkClass}>三間（さんかん・LI3）</Link></li>
-          <li>足の甲にあり、伝統的に合谷との組み合わせが知られています。 <Link href="/tsubo/lr3" className={linkClass}>太衝（たいしょう・LR3）</Link></li>
+          <li>足の甲にあるツボです。手と足で目印になる骨を見比べられます。 <Link href="/tsubo/lr3" className={linkClass}>太衝（たいしょう・LR3）</Link></li>
         </ul>
       </section>
 
-      <section id="acupoint-sources" className="scroll-mt-28">
+      <section id="acupoint-sources" className="atlas-target">
         <h2 className={headingClass}>出典</h2>
         <p className="mb-3 text-sm">頭や顔の不調との伝統的な関連は『針灸大成』四総穴歌と現行の経穴資料に基づきます。</p>
         <ul className="list-disc space-y-2 pl-5 text-sm leading-6">

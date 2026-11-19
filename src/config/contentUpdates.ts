@@ -1,14 +1,11 @@
 import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
 import { LEARNING_COURSES } from '@/data/learningCourses';
-import { footLandmarks } from '@/data/tsubo/atlas/footLandmarks';
-import { legLandmarks } from '@/data/tsubo/atlas/legLandmarks';
-import { whoAtlasPages } from '@/data/tsubo/atlas/whoAtlasPages';
 
 export const EXPANDED_ATLAS_REVISED_AT = '2026-11-19';
 
 /** Significant content revisions only; never replace these with the build date. */
 export const SITE_REVISED_AT = '2026-10-02';
-export const ACUPOINT_PAGE_REVISED_AT = '2026-10-18';
+export const ACUPOINT_PAGE_REVISED_AT = '2026-11-19';
 // Includes question-only changes, but not unchanged lessons in the same chapter.
 export const CURRICULUM_EDITORIAL_REVISIONS = [
   'lecture-qiblood-1', 'lecture-qiblood-2', 'lecture-qiblood-3', 'lecture-qiblood-5',
@@ -192,7 +189,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/simulator': '2026-10-12',
   '/articles': '2026-10-18', '/contact': SITE_REVISED_AT,
   '/tsubo/practice': '2026-10-04', '/pricing': '2026-10-12',
-  '/symptoms': '2026-10-08', '/diagnosis': '2026-10-18', '/cases': '2026-10-18',
+  '/diagnosis': '2026-10-18', '/cases': '2026-10-18',
   // 実際に改訂したページだけを更新する。全教材の確認日には用いない。
   '/': '2026-10-18', '/updates': '2026-10-18', '/about': '2026-10-12',
   '/clinical': '2026-10-12', '/practice/haiketsu': '2026-10-12', '/safety': '2026-10-03', '/editorial-policy': '2026-10-08',
@@ -235,20 +232,14 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(LEARNING_COURSES.map(course => [`/learn/courses/${course.slug}`, '2026-10-18'])),
   '/notes': '2026-10-18', '/tsubo/compare': '2026-10-18',
   ...Object.fromEntries([
-    '/', '/about', '/clinical', '/curriculum', '/diagnosis', '/learn', '/library', '/symptoms',
-    '/tsubo/li4', '/tsubo/pc5', '/tsubo/pc6', '/tsubo/pc7', '/tsubo/st36', '/tsubo/lr3',
-    '/tsubo/st37', '/tsubo/st38', '/tsubo/st39',
-    '/tsubo/pc4',
-    '/tsubo/lu11', '/tsubo/li1', '/tsubo/ht9', '/tsubo/si1', '/tsubo/pc9', '/tsubo/te1',
-    '/tsubo/st45', '/tsubo/sp1', '/tsubo/lr1', '/tsubo/gb44', '/tsubo/bl67',
+    '/', '/about', '/clinical', '/curriculum', '/diagnosis', '/learn', '/library',
     ...CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => `/curriculum/${id}`)),
   ].map(route => [route, '2026-11-18'])),
   '/tsubo': '2026-11-19',
-  ...Object.fromEntries(Object.keys(footLandmarks).map(code => [`/tsubo/${code}`, '2026-11-19'])),
-  ...Object.fromEntries(Object.keys(legLandmarks).map(code => [`/tsubo/${code}`, '2026-11-19'])),
-  ...Object.fromEntries(Object.keys(whoAtlasPages).map(code => [`/tsubo/${code}`, EXPANDED_ATLAS_REVISED_AT])),
+  '/symptoms': '2026-11-19',
 };
 export const SITE_UPDATES = [
+  { date: '2026-11-19', label: 'ツボ図鑑の図解と症状ガイドを読みやすく', href: '/tsubo', text: '症状別ガイドの上部から関連するツボを開けるようにしました。全361穴に「効果と組み合わせ」の欄を設け、確認した論文や古典の該当箇所を掲載しています。' },
   { date: EXPANDED_ATLAS_REVISED_AT, label: '全361穴に場所の解説と3種類の図', href: '/tsubo#illustrated-points', text: '残り284穴に、全身での位置・骨や筋などを目印にした拡大図・経絡の順序を示す図を掲載しました。各ページで場所の見つけ方、注意点、WHO資料の該当ページを確認できます。' },
   { date: '2026-11-19', label: '足裏・ひざ・すね・ふくらはぎの30穴を図解', href: '/tsubo#illustrated-points', text: 'くるぶしやひざ裏を起点にした距離と骨の前後を見分けられるように、30穴に本文と3種類の図を追加しました。' },
   { date: '2026-11-19', label: '足の甲・足首・足の縁の26穴を図解', href: '/tsubo#illustrated-points', text: 'くるぶしの前・下・後ろや、足の指の付け根と指のまたを見分けられるように、26穴に本文と3種類の図を追加しました。' },

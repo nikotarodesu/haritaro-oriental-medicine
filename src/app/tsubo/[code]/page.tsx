@@ -17,10 +17,12 @@ import {
 } from "@/data/tsubo";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import AcupointAtlasArticle from "@/components/tsubo/AcupointAtlasArticle";
+import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import HeguAtlasPreview, { heguAtlasDescription, heguAtlasTitle, heguSources } from "@/components/tsubo/HeguAtlasPreview";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { POINT_ILLUSTRATIONS } from "@/data/tsubo/atlas/illustrations";
+import { getAcupointStudies, getClassicalCombinations } from "@/data/tsubo/atlas/evidence";
 import PointAtlasDiagrams from "@/components/tsubo/atlas/PointAtlasDiagrams";
 import type { AcupointMaster } from "@/data/tsubo/types";
 import TsuboKeyboardNav from "@/components/tsubo/TsuboKeyboardNav";
@@ -48,7 +50,7 @@ import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import AcupointInformationScope from '@/components/tsubo/AcupointInformationScope';
 import MeridianRelationsDiagram from '@/components/tsubo/MeridianRelationsDiagram';
 import { VERIFIED_POINT_LOCATIONS } from '@/data/sourceVerification';
-import { PAGE_REVISIONS } from "@/config/contentUpdates";
+import { ACUPOINT_PAGE_REVISED_AT } from "@/config/contentUpdates";
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -147,9 +149,14 @@ export default async function AcupointDetailPage({ params }: Props) {
   const illustration = POINT_ILLUSTRATIONS[point.codeLower];
   const pageTitle = isHeguAtlas ? heguAtlasTitle : atlasArticle ? atlasPageTitle(point, atlasArticle.titleTopic) : acupointPageTitle(point);
   const verifiedLocation = VERIFIED_POINT_LOCATIONS[point.codeLower];
-  const sources = isHeguAtlas ? heguSources : atlasArticle?.sources ?? (verifiedLocation
+  const locationSources = isHeguAtlas ? heguSources : atlasArticle?.sources ?? (verifiedLocation
     ? [{ name: `${verifiedLocation.sourceTitle} ${verifiedLocation.sourcePage}`, url: verifiedLocation.sourceUrl }]
     : []);
+  const researchSources = [
+    ...getAcupointStudies(point.codeLower).flatMap(study => study.sources),
+    ...getClassicalCombinations(point.codeLower).map(combination => combination.source),
+  ];
+  const sources = [...new Map([...locationSources, ...researchSources.map(({ label, url }) => ({ name: label, url }))].map(source => [source.url, source])).values()];
 
   // 表示内容に対応するページ・用語・パンくずの構造化データ。
   const jsonLd = {
@@ -161,7 +168,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         "url": pageUrl,
         "name": pageTitle,
         "inLanguage": "ja",
-        ...(PAGE_REVISIONS[`/tsubo/${point.codeLower}`] && { "dateModified": PAGE_REVISIONS[`/tsubo/${point.codeLower}`] }),
+        "dateModified": ACUPOINT_PAGE_REVISED_AT,
         "publisher": { "@id": "https://www.haritaro.jp/#organization" },
         "editor": { "@type": "Person", "name": "はり太郎", "url": "https://www.haritaro.jp/about" },
         ...(sources.length > 0 && { citation: sources.map(({ name, url }) => ({ "@type": "CreativeWork", name, url })) }),
@@ -244,7 +251,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   }
 
   return (
-    <div className="reading-page acupoint-page page-layout min-h-screen [overflow-wrap:anywhere]">
+    <div className="reading-page acupoint-page page-layout atlas-page min-h-screen [overflow-wrap:anywhere]">
       {/* 構造化データ埋め込み */}
       {structuredData}
 
@@ -392,7 +399,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             <a href="#acupoint-diagram"><Layers aria-hidden="true" className="h-4 w-4" />図</a>
           )}
           <a href={hasSafetyWarning ? "#acupoint-safety-warning" : "#acupoint-cautions"}><ShieldCheck aria-hidden="true" className="h-4 w-4" />注意事項</a>
-          {point.researchEvidence && <a href="#acupoint-research"><BookOpen aria-hidden="true" className="h-4 w-4" />研究</a>}
+          <a href="#acupoint-research"><BookOpen aria-hidden="true" className="h-4 w-4" />効果と組み合わせ</a>
           <a href="#acupoint-sources"><FileText aria-hidden="true" className="h-4 w-4" />出典</a>
         </nav>
 
@@ -586,7 +593,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         <section id="acupoint-traditional" className="scroll-mt-28 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
           <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
             <Sparkles className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
-            <h2>伝統的な主治</h2>
+            <h2>伝統的な使われ方</h2>
           </div>
 
           {/* 主治症タグ一覧 */}
@@ -711,47 +718,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
         </section>
 
-        {/* 伝統的な主治とは分けて、研究対象・結果・限界を示す。 */}
-          {point.researchEvidence && (
-            <section id="acupoint-research" aria-labelledby="acupoint-research-title" className="scroll-mt-28 rounded-2xl border border-[#E8E1D1] bg-white p-4 sm:p-8 dark:border-[#22303D] dark:bg-[#17212A] space-y-3">
-              <div className="flex items-center gap-2 text-sm font-bold text-[#1E2D3D] dark:text-[#7BAAD8]">
-                <BookOpen className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <h2 id="acupoint-research-title" className="font-serif text-lg">研究で確認された範囲</h2>
-              </div>
-              <p className="text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
-                {point.researchEvidence.findings}
-              </p>
-              <div className="space-y-1 pt-1">
-                <span className="text-sm font-bold text-[#59615D] dark:text-[#A0B0BC] block">
-                  研究で扱った観察・条件：
-                </span>
-                <ul className="list-disc list-inside space-y-0.5 text-base text-[#59615D] dark:text-[#A0B0BC]">
-                  {point.researchEvidence.mechanisms.map((m, i) => (
-                    <li key={i}>{m}</li>
-                  ))}
-                </ul>
-              </div>
-              <p className="text-sm text-[#59615D] dark:text-[#AFBDC8] border-t border-[#E8DEC9] dark:border-[#22303D] pt-2">
-                限界と注意：{point.researchEvidence.limitations}
-              </p>
-              <ul className="space-y-2 text-sm text-[#1E3D34] dark:text-[#83BEA8]" aria-label="研究の出典">
-                {point.researchEvidence.sources.map((source) => (
-                  <li key={`${source.title}-${source.year}`}>
-                    {source.pmid || source.doi ? (
-                      <a
-                        href={source.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${source.pmid}/` : `https://doi.org/${source.doi}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline underline-offset-4"
-                      >
-                        {source.title}（{source.year}）
-                      </a>
-                    ) : `${source.title}（${source.year}）`}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
+        <AcupointResearch point={point} />
 
 
         {relatedLectures.length > 0 && (

@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import type { SymptomGuide } from '@/types/oriental';
-import { ArrowRight } from 'lucide-react';
 import SymptomIcon from './SymptomIcon';
 
 type GuidePreview = Pick<SymptomGuide, 'id' | 'title' | 'summary' | 'category'>;
@@ -32,22 +31,23 @@ export default function SymptomsIndexClient({ guides }: { guides: GuidePreview[]
   }, [hashTarget, selectedCategory]);
 
   return (
-    <section id="symptom-guides" className="scroll-mt-28 space-y-5" aria-label="症状別ガイドの一覧">
-      <div role="group" className="flex flex-wrap gap-2" aria-label="部位・分野で絞り込む">
-        {categories.map(category => <button key={category} type="button" aria-pressed={selectedCategory === category} onClick={() => { setHashTarget(''); setSelectedCategory(category); }} className={`min-h-11 rounded-xl border px-4 py-2 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#9CCDB8] ${selectedCategory === category ? 'border-[#1E3D34] bg-[#1E3D34] text-white dark:border-[#9CCDB8] dark:bg-[#9CCDB8] dark:text-[#11291F]' : 'border-[#D6DED7] bg-white text-[#404743] dark:border-[#34483C] dark:bg-[#17212A] dark:text-[#D1DED8]'}`}>{category}</button>)}
+    <section id="symptom-guides" className="atlas-target atlas-guide-list" aria-label="症状別ガイドの一覧">
+      <div role="group" className="atlas-filter-list" aria-label="部位・分野で絞り込む">
+        {categories.map(category => <button key={category} type="button" aria-pressed={selectedCategory === category} onClick={() => { setHashTarget(''); setSelectedCategory(category); }}>{category}</button>)}
       </div>
-      <p role="status" aria-live="polite" className="text-sm text-[#59615D] dark:text-[#AFBDC8]">{selectedCategory}：{visibleGuides.length}件のガイド</p>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <p role="status" aria-live="polite" className="atlas-muted atlas-guide-count">{visibleGuides.length}件のガイド</p>
+      <div className="atlas-guide-grid">
         {visibleGuides.map(guide => (
-          <article key={guide.id} id={guide.id} className="scroll-mt-28 h-full">
-            <Link href={`/symptoms/${guide.id}`} aria-label={`${guide.title}の受診の目安・日常の工夫・関連経穴を読む`} className="page-link-card page-link-card--stack group h-full">
-              <div className="flex items-center justify-between gap-3">
-                <span className="page-link-icon page-link-icon--large"><SymptomIcon id={guide.id} /></span>
-                <span className="page-muted text-sm">{guide.category}</span>
+          <article key={guide.id} id={guide.id} className="atlas-target">
+            <Link href={`/symptoms/${guide.id}`} aria-label={`${guide.title}のガイドを読む`} className="atlas-guide-card">
+              <div className="atlas-guide-card-heading">
+                <span className="atlas-guide-icon"><SymptomIcon id={guide.id} className="h-7 w-7" /></span>
+                <div>
+                  <p className="atlas-guide-category">{guide.category}</p>
+                  <h2>{guide.title}</h2>
+                </div>
               </div>
-              <h2 className="font-serif text-xl font-bold leading-snug">{guide.title}</h2>
-              <p className="page-muted text-sm leading-relaxed">{guide.summary}</p>
-              <span className="mt-auto flex items-center justify-between gap-3 pt-2 font-semibold text-[var(--accent-readable)]">ガイドを読む<ArrowRight className="h-5 w-5 shrink-0" aria-hidden="true" /></span>
+              <p className="atlas-guide-summary">{guide.summary}</p>
             </Link>
           </article>
         ))}

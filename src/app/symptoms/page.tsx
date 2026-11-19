@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import MedicalSafetyNotice from '@/components/MedicalSafetyNotice';
 import SymptomsIndexClient from '@/components/symptoms/SymptomsIndexClient';
-import PageIntro from '@/components/design/PageIntro';
-import { ArrowDown, MapPin } from 'lucide-react';
+import AtlasOverviewArt from '@/components/tsubo/AtlasOverviewArt';
+import { MapPin } from 'lucide-react';
 import { SYMPTOMS, SYMPTOM_GUIDANCE_SCOPE } from '@/data/symptomData';
 import { pageSocialMetadata } from '@/config/seo';
 import { getSymptomsIndexJsonLd, symptomGuideSummary } from '@/utils/symptomGuides';
@@ -26,16 +25,22 @@ export default function SymptomsPage() {
     category: guide.category,
   }));
   return (
-    <div className="reading-page page-layout space-y-7">
+    <div className="page-layout atlas-page atlas-directory">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getSymptomsIndexJsonLd(title, description)).replace(/</g, '\\u003c') }} />
-      <PageIntro eyebrow="はり太郎のツボ図鑑" title="症状から探す" description="12の症状ガイドで、受診の目安と日常生活で確認することを調べます。" art="care">
-        <div className="page-actions">
-          <a href="#symptom-guides" className="page-primary-action">症状から選ぶ<ArrowDown size={18} aria-hidden="true" /></a>
-          <Link href="/tsubo" className="page-secondary-action"><MapPin size={18} aria-hidden="true" />ツボから探す</Link>
+      <header className="atlas-directory-header">
+        <div>
+          <nav aria-label="パンくず" className="atlas-breadcrumb"><Link href="/tsubo">はり太郎のツボ図鑑</Link><span aria-hidden="true">/</span><span aria-current="page">症状別ガイド</span></nav>
+          <h1>症状から探す</h1>
+          <p>気になる症状から、関連するツボ、受診の目安、日常の工夫を調べられます。</p>
+          <Link href="/tsubo" className="atlas-text-action"><MapPin size={17} aria-hidden="true" />ツボの名前から探す</Link>
         </div>
-      </PageIntro>
-      <MedicalSafetyNotice title="このガイドで確認できること" message={SYMPTOM_GUIDANCE_SCOPE} />
+        <AtlasOverviewArt />
+      </header>
       <SymptomsIndexClient guides={guides} />
+      <details className="atlas-disclosure atlas-guide-scope">
+        <summary>このガイドで確認できること</summary>
+        <p>{SYMPTOM_GUIDANCE_SCOPE}</p>
+      </details>
     </div>
   );
 }

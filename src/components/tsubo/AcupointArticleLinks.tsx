@@ -5,6 +5,7 @@ import type { AcupointAtlasArticle } from "@/data/tsubo/atlas/types";
 
 const sectionLinks = [
   { href: "#acupoint-location", label: "場所と図版" },
+  { href: "#acupoint-research", label: "効果と組み合わせ" },
   { href: "#acupoint-cautions", label: "注意点" },
   { href: "#acupoint-sources", label: "出典" },
 ];
@@ -15,7 +16,7 @@ const diagnosisPointPaths = new Set(
 
 export function AcupointSectionLinks() {
   return (
-    <nav aria-label="このツボのページ内を移動" className="flex flex-wrap gap-x-5 text-sm">
+    <nav aria-label="このツボのページ内を移動" className="atlas-section-nav">
       {sectionLinks.map(({ href, label }) => <a key={href} href={href} className={linkClass}>{label}</a>)}
     </nav>
   );

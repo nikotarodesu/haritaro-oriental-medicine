@@ -26,6 +26,7 @@
 @import "./clinical-record-board.css";
 @import "./clinical-choice-buttons.css";
 @import "./platform.css";
+@import "./atlas-design.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

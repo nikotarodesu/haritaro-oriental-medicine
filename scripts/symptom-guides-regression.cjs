@@ -19,7 +19,7 @@ function load(candidate) {
   cache.set(file, exports);
   const js = ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
   const localRequire = id => {
-    if (id === 'next/link') return { __esModule: true, default: ({ href, children, ...props }) => React.createElement('a', { href, ...props }, children) };
+    if (id === 'next/link') return { __esModule: true, default: ({ href, children, prefetch, ...props }) => React.createElement('a', { href, ...props }, children) };
     if (id === 'next/navigation') return { notFound: () => { throw new Error('NEXT_HTTP_ERROR_FALLBACK;404'); } };
     if (id.startsWith('@/')) return load('src/' + id.slice(2));
     if (id.startsWith('.')) return load(path.resolve(path.dirname(file), id));
@@ -37,6 +37,7 @@ async function main() {
   const { getPublicLectureArticle } = load('src/data/publicLectures');
   const { CLINICAL_CASES } = load('src/data/clinicalCasesData');
   const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
+  const { ATLAS_STUDIES, getAcupointStudies, getSymptomStudies } = load('src/data/tsubo/atlas/evidence');
   const { VERIFIED_PAPERS } = load('src/data/references/papersData');
   const ResearchReferences = load('src/components/symptoms/SymptomResearchReferences').default;
   const helpers = load('src/utils/symptomGuides');
@@ -52,6 +53,15 @@ async function main() {
   const indexHtml = renderToStaticMarkup(index.default());
   const indexSchema = helpers.getSymptomsIndexJsonLd(index.metadata.title, index.metadata.description);
   assert.equal(indexSchema['@graph'][1].itemListElement.length, SYMPTOMS.length, 'Index schema lists every guide');
+  assert(indexHtml.indexOf('id="symptom-guides"') < indexHtml.indexOf('このガイドで確認できること'), 'Usage scope follows the index');
+  const pointCodes = new Set(ACUPOINTS_MASTER.map(point => point.codeLower));
+  assert.equal(new Set(ATLAS_STUDIES.map(study => study.id)).size, ATLAS_STUDIES.length, 'Evidence index uses distinct anchors');
+  for (const study of ATLAS_STUDIES) {
+    assert.equal(study.kind === 'point', study.points.length === 1, `${study.id}: point and combination studies are labelled separately`);
+    assert(study.points.every(code => pointCodes.has(code) && getAcupointStudies(code).includes(study)), `${study.id}: every studied point has a detail route`);
+    assert((study.comparisonPoints || []).every(code => pointCodes.has(code) && !study.points.includes(code)), `${study.id}: comparator points have their own role`);
+    assert(!study.guide || SYMPTOMS.some(guide => guide.id === study.guide), `${study.id}: related guide exists`);
+  }
 
   for (const guide of SYMPTOMS) {
     const content = PUBLIC_SYMPTOM_CONTENT[guide.id];
@@ -76,7 +86,11 @@ async function main() {
     assert(content.dailyLife.length >= 2 && content.dailyLife.every(({ title, body }) => html.includes(title) && html.includes(body)), `${guide.id}: daily advice appears in initial HTML`);
     assert(content.observations.length >= 3 && content.observations.every(item => html.includes(item)), `${guide.id}: practical details for the visit appear in initial HTML`);
     assert(safety && html.includes(safety.message), `${guide.id}: safety message appears before any interaction`);
-    assert(html.indexOf(safety.message) < html.indexOf('id="daily-life"') && html.indexOf('id="daily-life"') < html.indexOf('id="traditional"'), `${guide.id}: triage precedes daily advice and traditional theory`);
+    assert(html.indexOf(safety.message) < html.indexOf('id="acupoints"') && html.indexOf('id="acupoints"') < html.indexOf('id="daily-life"') && html.indexOf('id="daily-life"') < html.indexOf('id="traditional"'), `${guide.id}: triage and point links precede the guide's longer sections`);
+    for (const study of getSymptomStudies(guide.id)) {
+      assert(html.includes(study.result) && html.includes(study.limits), `${guide.id}: evidence appears alongside its limits`);
+      assert(study.sources.every(source => schema['@graph'][0].citation.includes(source.url)), `${guide.id}: cited clinical studies are in the page schema`);
+    }
     assert.equal(new Set(sources.map(source => source.url)).size, sources.length, `${guide.id}: unique sources`);
     for (const source of safety.sources) assert(sources.some(candidate => candidate.url === source.url && candidate.scope.includes('受診の目安') && candidate.section.includes(source.section)) && html.includes(source.url), `${guide.id}: cited safety source is visible`);
     for (const source of content.dailyLifeSources || []) assert(sources.some(candidate => candidate.url === source.url && candidate.scope.includes('日常の工夫') && candidate.section.includes(source.section)) && html.includes(source.url), `${guide.id}: the daily advice scope and section are cited`);
@@ -103,8 +117,8 @@ async function main() {
     assert(indexHtml.includes(`id="${guide.id}"`), `${guide.id}: old fragment URL still resolves`);
     assert(indexHtml.includes(`href="${pathname}"`), `${guide.id}: detail URL is discoverable without JavaScript`);
     assert.equal(sitemap.filter(page => new URL(page.url).pathname === pathname).length, 1, `${guide.id}: one sitemap entry`);
-    assert.equal(sitemap.find(page => new URL(page.url).pathname === pathname).lastModified.toISOString().slice(0, 10), '2026-11-18', `${guide.id}: substantive page update date`);
-    assert.equal(schema['@graph'][0].dateModified, '2026-11-18', `${guide.id}: structured data reflects the revision date`);
+    assert.equal(sitemap.find(page => new URL(page.url).pathname === pathname).lastModified.toISOString().slice(0, 10), helpers.SYMPTOM_GUIDES_REVISED_AT, `${guide.id}: substantive page update date`);
+    assert.equal(schema['@graph'][0].dateModified, helpers.SYMPTOM_GUIDES_REVISED_AT, `${guide.id}: structured data reflects the revision date`);
   }
   const invalidParams = Promise.resolve({ slug: 'missing-guide' });
   await assert.rejects(route.default({ params: invalidParams }), /404/, 'Unknown page returns a 404');

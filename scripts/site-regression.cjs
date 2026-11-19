@@ -72,8 +72,8 @@ for(const lectureId of lectureIds) assert.equal(sitemap.find(page=>new URL(page.
 const dateAt = pathname => sitemap.find(page=>new URL(page.url).pathname===pathname)?.lastModified.toISOString().slice(0,10);
 assert.equal(dateAt('/tsubo/sp11'),'2026-11-19', 'New atlas entries show the release date');
 assert.equal(dateAt('/tsubo/sp6'),'2026-11-19', 'Revised points show the release date');
-for(const pathname of ['/','/about','/clinical','/curriculum','/diagnosis','/learn','/library','/symptoms','/tsubo/li4']) assert.equal(dateAt(pathname),'2026-11-18',pathname);
-assert.equal(dateAt('/tsubo'), '2026-11-19', 'The illustrated atlas index reflects the November 19 release');
+for(const pathname of ['/','/about','/clinical','/curriculum','/diagnosis','/learn','/library']) assert.equal(dateAt(pathname),'2026-11-18',pathname);
+for(const pathname of ['/tsubo','/tsubo/li4','/symptoms']) assert.equal(dateAt(pathname),'2026-11-19',pathname);
 assert(!sitemap.some(page => ['/pricing','/notes','/auth/login','/account/subscription'].includes(new URL(page.url).pathname)), 'Retired services are no longer indexable sitemap destinations');
 for(const pathname of ['/learn/review']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname)?.lastModified.toISOString().slice(0,10),'2026-10-15',pathname);
 assert.equal(dateAt('/glossary'),'2026-10-12');

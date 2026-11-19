@@ -83,7 +83,7 @@ export default function TsuboInteractiveClient() {
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
 
   // 部位の図と詳細条件は、それぞれ開閉できる。
-  const [showBodyMap, setShowBodyMap] = useState<boolean>(!initialQ);
+  const [showBodyMap, setShowBodyMap] = useState(initialBodyPart !== "すべて" && !initialQ);
   const [showFilters, setShowFilters] = useState(initialMeridian !== "すべて" || initialCategory !== "すべて" || initialPublished);
 
 
@@ -91,17 +91,13 @@ export default function TsuboInteractiveClient() {
   const isFirstRender = useRef(true);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
-  // 検索クエリが入力されたら人体図を自動で折りたたむ（空に戻ったら自動展開）
+  // 名前での検索を始めたら、結果をすぐ確認できるように人体図を閉じる。
   const prevQueryRef = useRef(initialQ);
   useEffect(() => {
-    if (prevQueryRef.current !== searchQuery) {
-      if (searchQuery.trim().length > 0 && prevQueryRef.current === "") {
-        setShowBodyMap(false);
-      } else if (searchQuery.trim().length === 0 && prevQueryRef.current !== "") {
-        setShowBodyMap(true);
-      }
-      prevQueryRef.current = searchQuery;
+    if (!prevQueryRef.current.trim() && searchQuery.trim()) {
+      setShowBodyMap(false);
     }
+    prevQueryRef.current = searchQuery;
   }, [searchQuery]);
 
   // URLクエリ変更の検知（ブラウザバック・フォワード・リンク遷移時の同期）
@@ -280,12 +276,12 @@ export default function TsuboInteractiveClient() {
   const hasActiveFilters = hasSearchQuery || hasSelectionFilters;
 
   return (
-    <div className="tsubo-search-layout space-y-8">
+    <div className="tsubo-search-layout atlas-search-layout">
       <ClinicalToolBridge />
       {/* 大型検索バー（最優先配置） */}
-      <section className="max-w-4xl mx-auto space-y-3">
-        <label htmlFor="tsubo-search" className="block text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
-          経穴を検索
+      <section className="atlas-search-panel">
+        <label htmlFor="tsubo-search" className="atlas-search-label">
+          ツボを検索
         </label>
         <div className="relative">
           <Search className="w-5 h-5 text-[#737C77] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -297,7 +293,7 @@ export default function TsuboInteractiveClient() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="経穴名・読み・コード"
-            className="w-full pl-12 pr-16 py-3.5 rounded-2xl border-2 border-[#D8CFC0] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A] text-base text-[#232826] dark:text-[#FAF8F5] focus:outline-hidden focus:border-[#1E3D34] dark:focus:border-[#74BA9E] transition-all shadow-xs min-h-[56px]"
+            className="atlas-search-input"
           />
           {searchQuery && (
             <button
@@ -327,6 +323,7 @@ export default function TsuboInteractiveClient() {
             <span>部位から探す</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" />
           </button>
           <button type="button" onClick={() => setShowFilters(!showFilters)} aria-expanded={showFilters} aria-controls="tsubo-detail-filters" className="tsubo-filter-toggle"><SlidersHorizontal aria-hidden="true" className="h-4 w-4" /><span>詳細条件</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" /></button>
+          <a href="#illustrated-points" className="atlas-search-index-link">部位別の索引</a>
         </div>
         {hasSelectionFilters && <p className="tsubo-active-filters">選択中：{[selectedBodyPart !== 'すべて' && selectedBodyPart, selectedMeridian !== 'すべて' && selectedMeridian, selectedCategory !== 'すべて' && selectedCategory, onlyPublished && '主要経穴のみ'].filter(Boolean).join('・')}</p>}
       </section>
@@ -407,8 +404,7 @@ export default function TsuboInteractiveClient() {
       </section>
 
       {/* 経穴一覧セクション */}
-      <TsuboReviewEntry placement="dictionary" />
-      <section id="tsubo-list" className="space-y-4">
+      <section id="tsubo-list" className="atlas-target space-y-4">
         {/* 一覧上部コントロールバー */}
         <div className="tsubo-results-toolbar">
           <div className="min-w-0 space-y-1">
@@ -466,72 +462,32 @@ export default function TsuboInteractiveClient() {
             </div>
           </div>
         ) : viewMode === "grid" ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          <div className="atlas-result-grid">
             {paginatedTsubos.map((point) => {
               const matchReason = searchQuery ? getMatchReason(point, searchQuery) : null;
               return (
-                <div
+                <Link
                   key={point.id}
+                  href={`/tsubo/${point.codeLower}`}
                   id={`tsubo-card-${point.codeLower}`}
-                  className={`dictionary-result-card bg-white dark:bg-[#17212A] rounded-xl border transition-colors p-4 flex flex-col justify-between group ${
-                    selectedTsubo?.id === point.id
-                      ? "border-[#1E3D34] dark:border-[#74BA9E] ring-2 ring-[#1E3D34]/20"
-                      : "border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E]"
-                  }`}
+                  className="dictionary-result-card atlas-result-card"
+                  data-selected={selectedTsubo?.id === point.id ? true : undefined}
                 >
-                  <div className="space-y-2">
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="dictionary-result-code">
-                            {point.code}
-                          </span>
-                          <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
-                            {point.meridian}
-                          </span>
-                        </div>
-                        <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] pt-1 group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors">
-                          <Link href={`/tsubo/${point.codeLower}`} className="hover:underline">
-                            {point.name}
-                          </Link>
-                          <span className="text-xs font-normal text-[#737C77] ml-1.5 font-sans">
-                            {point.kana}
-                          </span>
-                        </h3>
-                      </div>
-                    </div>
-
-                    <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] line-clamp-2 leading-relaxed">
-                      {point.locationSimple}
-                    </p>
-
-                    {matchReason && (
-                      <div className="text-sm text-[#59615D] dark:text-[#A0B0BC]">
-                        <span>一致: {matchReason}</span>
-                      </div>
-                    )}
+                  <div className="atlas-result-title">
+                    <h3>{point.name} <span>{point.kana}</span></h3>
+                    <span className="atlas-code">{point.code}</span>
                   </div>
-
-                  <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs">
-                    <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
-                      {point.bodyPart}
-                    </span>
-                    <Link
-                      href={`/tsubo/${point.codeLower}`}
-                      className="font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline inline-flex items-center gap-0.5"
-                    >
-                      <span>詳細を見る</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </div>
-                </div>
+                  <p className="atlas-result-location">{point.locationSimple}</p>
+                  <p className="atlas-result-meta">{point.bodyPart} <span aria-hidden="true">·</span> {point.meridian}</p>
+                  {matchReason && <p className="atlas-result-meta">一致 {matchReason}</p>}
+                </Link>
               );
             })}
           </div>
         ) : (
           /* テーブル表示 */
           <div className="overflow-x-auto rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] bg-white dark:bg-[#17212A]">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-sm">
               <thead className="bg-[#FAF8F5] dark:bg-[#121920] border-b border-[#E5DEC9] dark:border-[#2A3B4A] text-[#737C77]">
                 <tr>
                   <th className="p-3">コード</th>
@@ -548,11 +504,11 @@ export default function TsuboInteractiveClient() {
                     <td className="p-3 font-mono font-bold text-[#1E3D34] dark:text-[#74BA9E]">
                       {point.code}
                     </td>
-                    <td className="p-3 font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                    <td className="p-3 font-semibold text-[#232826] dark:text-[#FAF8F5]">
                       <Link href={`/tsubo/${point.codeLower}`} className="hover:underline">
                         {point.name}
                       </Link>
-                      <span className="text-[11px] font-normal text-[#737C77] ml-1">({point.kana})</span>
+                      <span className="text-sm font-normal text-[var(--text-secondary)] ml-1">({point.kana})</span>
                     </td>
                     <td className="p-3 text-[#59615D] dark:text-[#A0B0BC]">{point.meridian}</td>
                     <td className="p-3 text-[#59615D] dark:text-[#A0B0BC]">{point.bodyPart}</td>
@@ -577,6 +533,7 @@ export default function TsuboInteractiveClient() {
           <div className="flex items-center justify-center gap-1.5 pt-4">
             <button
               type="button"
+              aria-label="前のページ"
               disabled={currentPage <= 1}
               onClick={() => {
                 setCurrentPage((p) => Math.max(1, p - 1));
@@ -598,6 +555,8 @@ export default function TsuboInteractiveClient() {
                     <button
                       key={pageNum}
                       type="button"
+                      aria-label={`${pageNum}ページ目`}
+                      aria-current={currentPage === pageNum ? "page" : undefined}
                       onClick={() => {
                         setCurrentPage(pageNum);
                         document.getElementById("tsubo-list")?.scrollIntoView({ behavior: "smooth" });
@@ -621,6 +580,7 @@ export default function TsuboInteractiveClient() {
 
             <button
               type="button"
+              aria-label="次のページ"
               disabled={currentPage >= totalPages}
               onClick={() => {
                 setCurrentPage((p) => Math.min(totalPages, p + 1));
@@ -634,6 +594,7 @@ export default function TsuboInteractiveClient() {
         )}
       </section>
 
+      <TsuboReviewEntry placement="dictionary" />
       <nav className="dictionary-tools" aria-label="経穴の学習ツール">
         <Link href="/tsubo/compare"><GitCompare aria-hidden="true" className="h-4 w-4" />経穴を比べる<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
         <Link href="/tsubo/practice"><BookOpen aria-hidden="true" className="h-4 w-4" />今日の復習<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>

@@ -1,12 +1,13 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import Link from "next/link";
 import { MERIDIANS, ALL_ACUPOINTS } from "@/data/tsubo";
-import { Layers, ShieldCheck } from "lucide-react";
-import PageIntro from "@/components/design/PageIntro";
+import { FlaskConical, Layers, MapPin, ShieldCheck } from "lucide-react";
+import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
-import { SERIES, TSUBO_TAGLINE } from "@/config/series";
+import { SERIES } from "@/config/series";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
+import { ATLAS_STUDIES } from "@/data/tsubo/atlas/evidence";
 
 const illustratedPoints = ALL_ACUPOINTS.filter(({ codeLower }) => codeLower === "li4" || ATLAS_POINT_MARKERS[codeLower]);
 const illustratedRegions = [...new Set(illustratedPoints.map(point => point.bodyPart))].map(region => ({
@@ -31,48 +32,53 @@ const FLAGSHIP_ACUPOINTS = [
 
 export default function TsuboPage() {
   return (
-    <div className="page-layout page-layout--wide space-y-8">
-      {/* 1. ページヘッダー（初期HTMLに出力される主コンテンツ・H1） */}
-      <PageIntro compact eyebrow="全361のツボ" title={SERIES.dictionary.name} art="points" description={TSUBO_TAGLINE}>
-        <div className="page-actions">
-          <Link href="/symptoms" className="page-primary-action">症状から探す</Link>
-          <a href="#illustrated-points" className="page-secondary-action">部位から探す</a>
+    <div className="page-layout atlas-page atlas-directory">
+      <header className="atlas-directory-header">
+        <div>
+          <h1>{SERIES.dictionary.name}</h1>
+          <p>全361のツボを名前・部位・経絡から探せます。場所の図解や、研究で分かったことを読めます。</p>
+          <div className="atlas-directory-actions">
+            <Link href="/symptoms" className="atlas-text-action"><MapPin size={17} aria-hidden="true" />症状から探す</Link>
+            <a href="#atlas-research-index" className="atlas-text-action"><FlaskConical size={17} aria-hidden="true" />研究から探す</a>
+          </div>
         </div>
-      </PageIntro>
+        <AtlasOverviewArt />
+      </header>
 
-      <section aria-labelledby="illustrated-points" className="space-y-3">
-        <h2 id="illustrated-points" className="scroll-mt-28 font-serif text-xl font-bold">全361穴を部位から探す</h2>
-        <p className="text-sm ui-muted">各ツボのページで、全身図・部位の拡大図・経絡に沿った並びを確認できます。</p>
-        <div className="grid items-start gap-3 sm:grid-cols-2">
-          {illustratedRegions.map(({ region, points }) => (
-            <details key={region} className="rounded-xl border border-[#CDD9CA] px-4">
-              <summary className="cursor-pointer py-3 font-semibold">{region}のツボ（{points.length}穴）</summary>
-              <ul className="flex flex-wrap gap-2 pb-3">
-                {points.map(({ name, code, codeLower }) => (
-                  <li key={code}><Link href={`/tsubo/${codeLower}`} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#CDD9CA] px-3 font-semibold hover:underline">
-                    {name}<span className="text-sm font-normal ui-muted">{code}</span>
-                  </Link></li>
-                ))}
-              </ul>
-            </details>
-          ))}
-        </div>
-      </section>
-
-      {/* 2. 検索・絞り込み・カード一覧をページ見出しの直下へ */}
       <Suspense
         fallback={
-          <div className="min-h-[400px] py-16 text-center space-y-3">
-            <div className="inline-block w-6 h-6 border-2 border-[#1E3D34] border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-[#737C77]">ツボの検索を読み込んでいます。下の一覧からもツボを選べます。</p>
+          <div className="atlas-loading" role="status">
+            <p>ツボの検索を読み込んでいます。</p>
+            <a href="#illustrated-points" className="atlas-source-link">部位別の索引を開く</a>
           </div>
         }
       >
         <TsuboInteractiveClient />
       </Suspense>
 
+      <section id="atlas-research-index" className="atlas-target" aria-labelledby="atlas-research-index-title">
+        <h2 id="atlas-research-index-title" className="atlas-section-title">研究から探す</h2>
+        <ul className="atlas-research-index">
+          {ATLAS_STUDIES.map(study => <li key={study.id}><Link href={`/tsubo/${study.points[0]}#${study.id}`} prefetch={false}>{study.topic}</Link></li>)}
+        </ul>
+      </section>
+
+      <section aria-labelledby="illustrated-points" className="space-y-3">
+        <h2 id="illustrated-points" className="atlas-section-title atlas-target">部位別の索引</h2>
+        <div className="grid items-start gap-3 sm:grid-cols-2">
+          {illustratedRegions.map(({ region, points }) => (
+            <details key={region} className="atlas-disclosure atlas-region-index">
+              <summary>{region}のツボ（{points.length}穴）</summary>
+              <ul className="flex flex-wrap gap-2 pb-3">
+                {points.map(({ name, code, codeLower }) => <li key={code}><Link href={`/tsubo/${codeLower}`} prefetch={false} className="atlas-index-point">{name}<span>{code}</span></Link></li>)}
+              </ul>
+            </details>
+          ))}
+        </div>
+      </section>
+
       <section aria-labelledby="dictionary-reading" className="space-y-4">
-        <h2 id="dictionary-reading" className="font-serif text-xl font-bold">経絡とツボの索引を使う</h2>
+        <h2 id="dictionary-reading" className="atlas-section-title">経絡とツボの索引を使う</h2>
         <PublicLectureIndex series="dictionary" />
       </section>
 

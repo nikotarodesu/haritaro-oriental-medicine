@@ -4,6 +4,7 @@ import { PUBLIC_SYMPTOM_CONTENT } from '@/data/publicSymptoms';
 import { VERIFIED_PAPERS } from '@/data/references/papersData';
 import type { SymptomGuide } from '@/types/oriental';
 import { SYMPTOM_GUIDES_REVISED_AT, symptomGuidePath } from './symptomGuidePaths';
+import { getSymptomStudies } from '@/data/tsubo/atlas/evidence';
 
 export { SYMPTOM_GUIDES_REVISED_AT, symptomGuidePath } from './symptomGuidePaths';
 const BASE_URL = 'https://www.haritaro.jp';
@@ -110,7 +111,7 @@ export function getSymptomGuideJsonLd(guide: SymptomGuide) {
   return {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': ['WebPage', 'LearningResource'], '@id': `${url}#webpage`, url, name: symptomGuideTitle(guide), description: symptomGuideDescription(guide), inLanguage: 'ja', learningResourceType: '症状別学習ガイド', dateModified: SYMPTOM_GUIDES_REVISED_AT, isPartOf: { '@id': `${BASE_URL}/symptoms#webpage` }, citation: getSymptomGuideSources(guide).map(source => source.url) },
+      { '@type': ['WebPage', 'LearningResource'], '@id': `${url}#webpage`, url, name: symptomGuideTitle(guide), description: symptomGuideDescription(guide), inLanguage: 'ja', learningResourceType: '症状別学習ガイド', dateModified: SYMPTOM_GUIDES_REVISED_AT, isPartOf: { '@id': `${BASE_URL}/symptoms#webpage` }, citation: [...new Set([...getSymptomGuideSources(guide), ...getSymptomStudies(guide.id).flatMap(study => study.sources)].map(source => source.url))] },
       breadcrumbs(guide),
     ],
   };

@@ -12,8 +12,7 @@ import ExpandedLandmarkRegion, { expandedViews } from "./expanded/ExpandedLandma
 import ZoomableAtlasDiagram from "./ZoomableAtlasDiagram";
 import type { BodyArea } from "./expanded/views";
 
-const figureClass = "min-w-0 rounded-2xl border border-[#E5DEC9] bg-[#F9F5ED] p-4 text-[#332D25]";
-const captionClass = "mt-2 text-center text-sm font-semibold leading-6";
+const figureClass = "atlas-figure";
 
 const regions = {
   knee: { BodyHighlight: <path d="M82 194v10m36-10v10" />, CloseUp: LegLandmarkRegion },
@@ -80,8 +79,21 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
   const step = lineLength / Math.max(nearby.length - 1, 1);
 
   return (
-    <div id="acupoint-diagram" className="grid scroll-mt-28 gap-4 md:grid-cols-[1fr_1.55fr]">
+    <div id="acupoint-diagram" className="atlas-diagrams atlas-target">
       <figure className={figureClass}>
+        <ZoomableAtlasDiagram label={`${point.name}の場所と目印`}>
+          <svg viewBox="0 0 340 300" role="img" aria-label={closeUpAlt} className="mx-auto block w-full max-w-[340px]">
+            <CloseUp marker={marker} label={`${point.name} ${point.code}`} />
+            <circle data-point-marker="" cx={marker.x} cy={marker.y} r="6" fill="#7F3520" stroke="#FFF9F0" strokeWidth="2" />
+          </svg>
+        </ZoomableAtlasDiagram>
+        <figcaption>
+          {expandedView && <span className="block text-sm font-semibold">{expandedView.name}</span>}
+          {illustration.closeUpCaption}
+        </figcaption>
+      </figure>
+
+      <figure className={`${figureClass} atlas-figure--overview`}>
         <svg viewBox="0 0 200 272" role="img" aria-label={`全身${bodyDirection}のシルエット。${bodyLabel}をオレンジで示しています。`} className="mx-auto block max-h-64 w-full">
           <circle cx="100" cy="32" r="19" fill="#D8D5C9" />
           <g fill="#D8D5C9" stroke="#857E70" strokeWidth="1.5" strokeLinejoin="round">
@@ -93,23 +105,10 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
             {bodyArea ? <path d={bodyAreas[bodyArea]} /> : BodyHighlight}
           </g>
         </svg>
-        <figcaption className={captionClass}>全身{bodyDirection} · {bodyLabel}</figcaption>
+        <figcaption>全身{bodyDirection} · {bodyLabel}</figcaption>
       </figure>
 
-      <figure className={figureClass}>
-        <ZoomableAtlasDiagram label={`${point.name}の場所と目印`}>
-          <svg viewBox="0 0 340 300" role="img" aria-label={closeUpAlt} className="mx-auto block w-full max-w-[340px]">
-            <CloseUp marker={marker} label={`${point.name} ${point.code}`} />
-            <circle data-point-marker="" cx={marker.x} cy={marker.y} r="6" fill="#7F3520" stroke="#FFF9F0" strokeWidth="2" />
-          </svg>
-        </ZoomableAtlasDiagram>
-        <figcaption className={captionClass}>
-          {expandedView && <span className="block text-sm font-normal">{expandedView.name}</span>}
-          {illustration.closeUpCaption}
-        </figcaption>
-      </figure>
-
-      <figure className={`${figureClass} md:col-span-2`}>
+      <figure className={`${figureClass} atlas-figure--meridian`}>
         <ZoomableAtlasDiagram label={`${point.meridian}の並び順`}>
           <svg viewBox="0 0 360 108" role="img" aria-label={`${point.meridian}。 ${nearby.map((entry) => `${entry.code} ${entry.name}`).join("、")}の順で、${point.name}を強調しています。`} className="mx-auto block w-full max-w-md">
             <path d="M30 44H330" stroke="#A69B87" strokeWidth="2" />
@@ -125,7 +124,7 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
             })}
           </svg>
         </ZoomableAtlasDiagram>
-        <figcaption className={`text-center text-sm font-semibold leading-6`}>
+        <figcaption>
           {point.meridian}の順序 · {illustration.meridianCaption}
         </figcaption>
       </figure>
