@@ -1,5 +1,6 @@
 import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
 import { LEARNING_COURSES } from '@/data/learningCourses';
+import { footLandmarks } from '@/data/tsubo/atlas/footLandmarks';
 
 /** Significant content revisions only; never replace these with the build date. */
 export const SITE_REVISED_AT = '2026-10-02';
@@ -189,7 +190,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/tsubo/practice': '2026-10-04', '/pricing': '2026-10-12',
   '/symptoms': '2026-10-08', '/diagnosis': '2026-10-18', '/cases': '2026-10-18',
   // 実際に改訂したページだけを更新する。全教材の確認日には用いない。
-  '/': '2026-10-18', '/updates': '2026-10-18', '/tsubo': '2026-10-18', '/about': '2026-10-12',
+  '/': '2026-10-18', '/updates': '2026-10-18', '/about': '2026-10-12',
   '/clinical': '2026-10-12', '/practice/haiketsu': '2026-10-12', '/safety': '2026-10-03', '/editorial-policy': '2026-10-08',
   '/library': '2026-10-12', '/glossary': '2026-10-12', '/curriculum': '2026-10-18',
   '/curriculum/lecture-yinyang-1': '2026-10-03',
@@ -230,7 +231,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(LEARNING_COURSES.map(course => [`/learn/courses/${course.slug}`, '2026-10-18'])),
   '/notes': '2026-10-18', '/tsubo/compare': '2026-10-18',
   ...Object.fromEntries([
-    '/', '/about', '/clinical', '/curriculum', '/diagnosis', '/learn', '/library', '/symptoms', '/tsubo',
+    '/', '/about', '/clinical', '/curriculum', '/diagnosis', '/learn', '/library', '/symptoms',
     '/tsubo/li4', '/tsubo/pc5', '/tsubo/pc6', '/tsubo/pc7', '/tsubo/st36', '/tsubo/lr3',
     '/tsubo/st37', '/tsubo/st38', '/tsubo/st39',
     '/tsubo/pc4',
@@ -238,8 +239,11 @@ export const PAGE_REVISIONS: Record<string, string> = {
     '/tsubo/st45', '/tsubo/sp1', '/tsubo/lr1', '/tsubo/gb44', '/tsubo/bl67',
     ...CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => `/curriculum/${id}`)),
   ].map(route => [route, '2026-11-18'])),
+  '/tsubo': '2026-11-19',
+  ...Object.fromEntries(Object.keys(footLandmarks).map(code => [`/tsubo/${code}`, '2026-11-19'])),
 };
 export const SITE_UPDATES = [
+  { date: '2026-11-19', label: '足の甲・足首・足の縁の26穴を図解', href: '/tsubo#illustrated-points', text: 'くるぶしの前・下・後ろや、足の指の付け根と指のまたを見分けられるように、26穴に本文と3種類の図を追加しました。' },
   { date: '2026-11-18', label: 'ツボ図鑑・東洋医学・臨床演習を公開', href: '/', text: 'ツボや症状を名前で探せるようになりました。読み物、体質チェック、症例演習も会員登録なしで利用できます。' },
   { date: '2026-11-10', label: '料金・問い合わせ・学習の入口を改善', href: '/pricing', text: '料金プランをヘッダー、問い合わせをフッターの主要ナビに追加。申込みの稼働確認と時間切れ表示、保存上限からの案内、資料件数の内訳を整えました。経歴の開業年月を2023年7月に統一しました。' },
   { date: '2026-11-05', label: 'iPadでの四診入力と対面問診を短い画面に整理', href: '/clinical/workspace', text: '問診・望診・聞診・切診と内容別のタブを追加。舌体・舌苔・脈診をさらに分割し、記録・再評価を開閉できる形にしました。' },

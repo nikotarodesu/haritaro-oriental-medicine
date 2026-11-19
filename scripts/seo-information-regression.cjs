@@ -41,8 +41,22 @@ const { ATLAS_ARTICLES } = load('src/data/tsubo/atlas/articles');
 const { POINT_ILLUSTRATIONS } = load('src/data/tsubo/atlas/illustrations');
 const { ATLAS_POINT_MARKERS, shinEndpoints } = load('src/data/tsubo/atlas/markers');
 const { digitLandmarks, digitGeometry } = load('src/data/tsubo/atlas/digits');
+const { footLandmarks } = load('src/data/tsubo/atlas/footLandmarks');
 assert.deepEqual(Object.keys(ATLAS_POINT_MARKERS).sort(), [...new Set([...Object.keys(ATLAS_ARTICLES), ...Object.keys(POINT_ILLUSTRATIONS)])].sort(),
   'Every illustrated index link must have one complete diagram set');
+for (const [code, foot] of Object.entries(footLandmarks)) {
+  const article = ATLAS_ARTICLES[code];
+  const marker = ATLAS_POINT_MARKERS[code];
+  assert.equal(marker.footCode, code);
+  assert(article.sources[0].url.endsWith('#page=' + foot.pdfPage), code);
+  assert(article.relatedPoints.every(point => getAcupointByCode(point.code)), code);
+  const body = [article.lead, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, ...article.expert, ...article.relatedPoints.map(point => point.text)].join('');
+  assert(body.length >= 700 && body.length <= 900, code + ' article length');
+}
+assert(footLandmarks.sp2.x > 240 && footLandmarks.sp3.x < 240, 'SP2 and SP3 sit on opposite sides of the great toe joint');
+assert(footLandmarks.bl66.x > 240 && footLandmarks.bl65.x < 240, 'BL65 and BL66 sit on opposite sides of the little toe joint');
+assert(footLandmarks.bl63.x < 158 && footLandmarks.bl64.x > 158, 'BL63 and BL64 sit on opposite sides of the fifth metatarsal tuberosity');
+assert(footLandmarks.bl60.x < footLandmarks.bl62.x && footLandmarks.bl62.x < footLandmarks.gb40.x, 'Lateral ankle points progress from behind the malleolus to below and in front');
 // An inverted diagram still fits the viewBox. Compare each side to the WHO record.
 const digitLocations = [
   ['lu11', 'hand', 1, 'firstSide', 40], ['li1', 'hand', 2, 'firstSide', 43],

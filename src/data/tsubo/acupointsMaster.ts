@@ -2301,7 +2301,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 41,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・胃経部",
-    "locationSimple": "解渓（ST41）は、足関節前面中央の陥凹部、長母指伸筋腱と長趾伸筋腱の間。",
+    "locationSimple": "足首の曲がり目の前の中央にあります。",
     "locationDetail": "足関節前面中央の陥凹部、長母指伸筋腱と長趾伸筋腱の間。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
@@ -2334,15 +2334,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 42,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・胃経部",
-    "locationSimple": "衝陽（ST42）は、足背、第2中足骨底と中間楔状骨の間、足背動脈の拍動部。",
+    "locationSimple": "足の甲の第2趾につながる骨の足首寄りの継ぎ目にあります。",
     "locationDetail": "足背、第2中足骨底と中間楔状骨の間、足背動脈の拍動部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
-      "胃痛・胃もたれ・急性胃炎",
-      "食欲不振・消化不良",
-      "腹部膨満・腹痛・便秘",
-      "頭痛・顔面痛・三叉神経痛"
+      "足の甲の位置・胃経の経路"
     ],
     "categories": [
       "原穴"
@@ -2368,15 +2364,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 43,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・胃経部",
-    "locationSimple": "陥谷（ST43）は、足背、第2・第3中足骨間、第2中足指節関節の近位陥凹部。",
+    "locationSimple": "第2・第3趾につながる骨の間で、第2趾の付け根より足首側にあります。",
     "locationDetail": "足背、第2・第3中足骨間、第2中足指節関節の近位陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "胃経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
-      "胃痛・胃もたれ・急性胃炎",
-      "食欲不振・消化不良",
-      "腹部膨満・腹痛・便秘",
-      "頭痛・顔面痛・三叉神経痛"
+      "足の甲の位置・胃経の経路"
     ],
     "categories": [
       "兪木穴",
@@ -2403,7 +2395,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 44,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・胃経部",
-    "locationSimple": "内庭（ST44）は、足背、第2・第3足指間、みずかきの近位縁、赤白肉際。",
+    "locationSimple": "第2・第3趾のまたのすぐ足首側にあります。",
     "locationDetail": "足背、第2・第3足指間、みずかきの近位縁、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
@@ -2496,7 +2488,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 2,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・脾経部",
-    "locationSimple": "大都（SP2）は、足母指内側、第1中足指節関節の遠位陥凹部、赤白肉際。",
+    "locationSimple": "足の親指の内側で、付け根の関節より指先寄りにあります。",
     "locationDetail": "足母指内側、第1中足指節関節の遠位陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
@@ -2529,15 +2521,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 3,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・脾経部",
-    "locationSimple": "足の親指の付け根の大きな骨の出っ張り（第1中足指節関節）の後ろ側、足の内側のくぼみ。",
+    "locationSimple": "足の内側で、親指の付け根の関節よりかかと寄りにあります。",
     "locationDetail": "足内側、第1中足指節関節の近位陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "食欲不振・腹部膨満・胃下垂",
-      "慢性下痢・軟便・消化不良",
-      "全身倦怠感・筋肉無力症",
-      "糖尿病・体重減少",
-      "足底痛・内反小足"
+      "おなかの不調や足の痛みに関する伝統資料の記載（個別の原資料は照合中）"
     ],
     "categories": [
       "兪土穴・原穴",
@@ -2565,15 +2553,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 4,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・脾経部",
-    "locationSimple": "公孫（SP4）は、足内側、第1中足骨底の前下方、赤白肉際。",
+    "locationSimple": "親指につながる骨の足首側の端より、少し指先・足裏寄りにあります。",
     "locationDetail": "足内側、第1中足骨底の前下方、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "急性・慢性胃痛・悪心嘔吐",
-      "逆流性食道炎・胃痙攣",
-      "下痢・赤痢様腹痛",
-      "月経痛・月経不順",
-      "心胸痛・胸の圧迫感"
+      "おなかの不調や月経に関連する伝統資料の記載（個別の原資料は照合中）"
     ],
     "categories": [
       "絡穴",
@@ -2600,15 +2584,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 5,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・脾経部",
-    "locationSimple": "商丘（SP5）は、足内側、内果前下方の陥凹部、舟状骨粗面と内果尖を結ぶ線の中点。",
+    "locationSimple": "内くるぶしと、土踏まず寄りの舟状骨の出っ張りの中間にあります。",
     "locationDetail": "足内側、内果前下方の陥凹部、舟状骨粗面と内果尖を結ぶ線の中点。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "脾経の走行部に関する疼痛・腫脹・運動制限（共通の学習分類。経穴固有の主治は原資料未照合）",
-      "食欲不振・腹部膨満・泥状便",
-      "全身倦怠感・四肢無力",
-      "月経不順・機能性子宮出血",
-      "浮腫・水湿停滞"
+      "足首の内側の位置・脾経の経路"
     ],
     "categories": [
       "経金穴"
@@ -5930,14 +5910,12 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 60,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・膀胱経部",
-    "locationSimple": "崑崙（BL60）は、足関節後外側、外果尖とアキレス腱の間の陥凹部。",
+    "locationSimple": "外くるぶしの出っ張りとアキレス腱の間にあります。",
     "locationDetail": "足関節後外側、外果尖とアキレス腱の間の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "頭痛・項部硬直・寝違え",
-      "急性・慢性腰痛・坐骨神経痛",
-      "アキレス腱炎・踵骨部痛",
-      "難産・胎盤娩出に関する伝統資料の記載（出典の版・条文は未照合。陣痛促進や胎盤遺残への治療効果を示すものではありません）"
+      "腰や足首の不調に関する伝統資料の記載（個別の原資料は照合中）",
+      "妊娠中の鍼灸では安全指針に注意"
     ],
     "categories": [
       "経火穴"
@@ -5963,7 +5941,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 61,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・膀胱経部",
-    "locationSimple": "僕参（BL61）は、足外側、踵骨外側、崑崙の直下、赤白肉際。",
+    "locationSimple": "崑崙より下で、かかとの骨の外側の縁にあります。",
     "locationDetail": "足外側、踵骨外側、崑崙の直下、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
@@ -5994,14 +5972,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 62,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・膀胱経部",
-    "locationSimple": "申脈（BL62）は、足外側、外果尖の直下、外果下縁の陥凹部。",
+    "locationSimple": "外くるぶしの出っ張りの真下にあるくぼみ。",
     "locationDetail": "足外側、外果尖の直下、外果下縁の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "不眠症・過眠症（睡眠覚醒障害）",
-      "てんかん・日中発作",
-      "後頭部痛・項背痛",
-      "足関節外側痛・捻挫後遺症"
+      "眠りや足首の不調に関する伝統資料の記載（個別の原資料は照合中）"
     ],
     "categories": [
       "八脈交会穴（陽蹻脈）",
@@ -6027,7 +6002,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 63,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・膀胱経部",
-    "locationSimple": "金門（BL63）は、足背、外果前下方の陥凹部、立方骨粗面の後方。",
+    "locationSimple": "足の外側寄りで、小指につながる骨の出っ張りよりかかと側にあります。",
     "locationDetail": "足背、外果前下方の陥凹部、立方骨粗面の後方。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
@@ -6060,7 +6035,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 64,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・膀胱経部",
-    "locationSimple": "京骨（BL64）は、足外側、第5中足骨粗面の遠位前方の陥凹部、赤白肉際。",
+    "locationSimple": "小指につながる骨の足首側の出っ張りより少し指先寄りにあります。",
     "locationDetail": "足外側、第5中足骨粗面の遠位前方の陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
@@ -6094,7 +6069,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 65,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・膀胱経部",
-    "locationSimple": "束骨（BL65）は、足外側、第5中足指節関節の近位陥凹部、赤白肉際。",
+    "locationSimple": "小指の付け根の関節より、かかと側の外縁。",
     "locationDetail": "足外側、第5中足指節関節の近位陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
@@ -6129,7 +6104,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 66,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・膀胱経部",
-    "locationSimple": "足通谷（BL66）は、足第5指外側、第5中足指節関節の遠位陥凹部、赤白肉際。",
+    "locationSimple": "足の小指の付け根の関節より、指先側の外縁。",
     "locationDetail": "足第5指外側、第5中足指節関節の遠位陥凹部、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
@@ -6228,14 +6203,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 2,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・腎経部",
-    "locationSimple": "然谷（KI2）は、足内側、舟状骨粗面の前下方、赤白肉際。",
+    "locationSimple": "足の内側で、舟状骨の出っ張りの下にあります。",
     "locationDetail": "足内側、舟状骨粗面の前下方、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足底痛・内果下部痛",
-      "月経不順・帯下・陰部掻痒",
-      "骨蒸潮熱・盗汗・口渇",
-      "糖尿病・咽頭乾燥"
+      "足の内側の位置・腎経の経路"
     ],
     "categories": [
       "滎火穴"
@@ -6261,15 +6233,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 3,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・腎経部",
-    "locationSimple": "内くるぶしの最も高い頂点と、アキレス腱の間にある深いくぼみ。",
+    "locationSimple": "内くるぶしの出っ張りとアキレス腱の間のくぼみ。",
     "locationDetail": "足関節後内側、内果尖とアキレス腱の間の陥凹部。後脛骨動脈の拍動部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "慢性腰痛・膝関節脱力・足腰の冷え",
-      "耳鳴・難聴・めまい",
-      "慢性腎炎・頻尿・夜間多尿",
-      "不眠・健忘・更年期障害",
-      "アキレス腱炎・踵骨部痛"
+      "足首の内側の位置・腎経の経路"
     ],
     "categories": [
       "兪土穴・原穴",
@@ -6297,7 +6265,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 4,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・腎経部",
-    "locationSimple": "大鍾（KI4）は、足内側、内果後下方、踵骨上縁、アキレス腱付着部内側前方の陥凹部。",
+    "locationSimple": "内くるぶしの後ろ下で、アキレス腱がかかとにつく場所の前にあります。",
     "locationDetail": "足内側、内果後下方、踵骨上縁、アキレス腱付着部内側前方の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
@@ -6330,7 +6298,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 5,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・腎経部",
-    "locationSimple": "水泉（KI5）は、足内側、太谿の直下1寸、踵骨隆起前方の陥凹部。",
+    "locationSimple": "太谿の直下で、かかとの骨のふくらみの前にあります。",
     "locationDetail": "足内側、太谿の直下1寸、踵骨隆起前方の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
@@ -6363,14 +6331,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 6,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・腎経部",
-    "locationSimple": "内くるぶしの真下にある小さなくぼみ。",
+    "locationSimple": "内くるぶしの出っ張りの真下にあるくぼみ。",
     "locationDetail": "足内側、内果尖の下方1寸、内果下結節の下方陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "咽喉乾燥・声枯れ・慢性咽頭炎",
-      "不眠症・夜間頻尿",
-      "月経不順・子宮脱・不妊症",
-      "下肢冷感・内果痛"
+      "のどや眠りに関連する伝統資料の記載（個別の原資料は照合中）"
     ],
     "categories": [
       "八脈交会穴（陰蹻脈に通ず）"
@@ -9392,14 +9357,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 40,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・胆経部",
-    "locationSimple": "丘墟（GB40）は、足関節前外側、長趾伸筋腱外側、外果前下方の陥凹部。",
+    "locationSimple": "外くるぶしの斜め前下で、足指を上げる腱の小指側にあります。",
     "locationDetail": "足関節前外側、長趾伸筋腱外側、外果前下方の陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足関節捻挫・外果部腫脹痛",
-      "胸脇部痛・肋間痛",
-      "胆嚢疾患・胆石による疝痛",
-      "下肢外側麻痺"
+      "足首の外側の位置・胆経の経路"
     ],
     "categories": [
       "原穴"
@@ -9425,7 +9387,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 41,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・胆経部",
-    "locationSimple": "足臨泣（GB41）は、足背、第4・第5中足骨底結合部の前方の陥凹部、小指伸筋腱外側。",
+    "locationSimple": "第4・第5中足骨が近づく場所の指先側で、小指へ伸びる腱の外側にあります。",
     "locationDetail": "足背、第4・第5中足骨底結合部の前方の陥凹部、小指伸筋腱外側。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
@@ -9461,7 +9423,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 42,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・胆経部",
-    "locationSimple": "地五会（GB42）は、足背、第4・第5中足骨間、第4中足指節関節の近位陥凹部。",
+    "locationSimple": "第4・第5趾につながる骨の間で、第4趾の付け根より足首側にあります。",
     "locationDetail": "足背、第4・第5中足骨間、第4中足指節関節の近位陥凹部。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
@@ -9492,7 +9454,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 43,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・胆経部",
-    "locationSimple": "侠渓（GB43）は、足背、第4・第5足指間、みずかきの近位縁、赤白肉際。",
+    "locationSimple": "足の小指と第4趾のまたのすぐ足首側にあります。",
     "locationDetail": "足背、第4・第5足指間、みずかきの近位縁、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
@@ -9586,15 +9548,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 2,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・肝経部",
-    "locationSimple": "足の甲で、親指と人差し指の付け根のまたの間のくぼみ。",
+    "locationSimple": "足の親指と第2趾のまたのすぐ足首側にあります。",
     "locationDetail": "足背、第1・第2指間、みずかきの後縁、赤白肉際。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "激しい頭痛・めまい・目の充血",
-      "イライラ・怒り・不眠症",
-      "口渇・口苦・高血圧",
-      "月経困難症・機能性出血",
-      "排尿痛・足背痛"
+      "足の指の間の位置・肝経の経路"
     ],
     "categories": [
       "滎火穴",
@@ -9673,13 +9631,11 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 4,
     "bodyPart": "足・脚",
     "bodyRegionDetail": "足・脚・肝経部",
-    "locationSimple": "中封（LR4）は、足関節前内側、前脛骨筋腱の内側、内果尖の前方。",
+    "locationSimple": "内くるぶしの前で、足首を起こす腱の親指側にあります。",
     "locationDetail": "足関節前内側、前脛骨筋腱の内側、内果尖の前方。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [
-      "足関節内側痛・内果部痛",
-      "排尿困難・尿閉・膀胱炎",
-      "下腹部痛・ヘルニア・精巣痛"
+      "足首の内側の位置・肝経の経路"
     ],
     "categories": [
       "経金穴"

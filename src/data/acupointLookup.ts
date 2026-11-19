@@ -502,28 +502,28 @@ export const ACUPOINT_LOOKUP = [
     "name": "解渓",
     "code": "ST41",
     "meridianShort": "胃経",
-    "locationSimple": "解渓（ST41）は、足関節前面中央の陥凹部、長母指伸筋腱と長趾伸筋腱の間。"
+    "locationSimple": "足首の曲がり目の前の中央にあります。"
   },
   {
     "id": "st42",
     "name": "衝陽",
     "code": "ST42",
     "meridianShort": "胃経",
-    "locationSimple": "衝陽（ST42）は、足背、第2中足骨底と中間楔状骨の間、足背動脈の拍動部。"
+    "locationSimple": "足の甲の第2趾につながる骨の足首寄りの継ぎ目にあります。"
   },
   {
     "id": "st43",
     "name": "陥谷",
     "code": "ST43",
     "meridianShort": "胃経",
-    "locationSimple": "陥谷（ST43）は、足背、第2・第3中足骨間、第2中足指節関節の近位陥凹部。"
+    "locationSimple": "第2・第3趾につながる骨の間で、第2趾の付け根より足首側にあります。"
   },
   {
     "id": "st44",
     "name": "内庭",
     "code": "ST44",
     "meridianShort": "胃経",
-    "locationSimple": "内庭（ST44）は、足背、第2・第3足指間、みずかきの近位縁、赤白肉際。"
+    "locationSimple": "第2・第3趾のまたのすぐ足首側にあります。"
   },
   {
     "id": "st45",
@@ -544,28 +544,28 @@ export const ACUPOINT_LOOKUP = [
     "name": "大都",
     "code": "SP2",
     "meridianShort": "脾経",
-    "locationSimple": "大都（SP2）は、足母指内側、第1中足指節関節の遠位陥凹部、赤白肉際。"
+    "locationSimple": "足の親指の内側で、付け根の関節より指先寄りにあります。"
   },
   {
     "id": "taihaku",
     "name": "太白",
     "code": "SP3",
     "meridianShort": "脾経",
-    "locationSimple": "足の親指の付け根の大きな骨の出っ張り（第1中足指節関節）の後ろ側、足の内側のくぼみ。"
+    "locationSimple": "足の内側で、親指の付け根の関節よりかかと寄りにあります。"
   },
   {
     "id": "sp4",
     "name": "公孫",
     "code": "SP4",
     "meridianShort": "脾経",
-    "locationSimple": "公孫（SP4）は、足内側、第1中足骨底の前下方、赤白肉際。"
+    "locationSimple": "親指につながる骨の足首側の端より、少し指先・足裏寄りにあります。"
   },
   {
     "id": "sp5",
     "name": "商丘",
     "code": "SP5",
     "meridianShort": "脾経",
-    "locationSimple": "商丘（SP5）は、足内側、内果前下方の陥凹部、舟状骨粗面と内果尖を結ぶ線の中点。"
+    "locationSimple": "内くるぶしと、土踏まず寄りの舟状骨の出っ張りの中間にあります。"
   },
   {
     "id": "sanyinkou",
@@ -1293,49 +1293,49 @@ export const ACUPOINT_LOOKUP = [
     "name": "崑崙",
     "code": "BL60",
     "meridianShort": "膀胱経",
-    "locationSimple": "崑崙（BL60）は、足関節後外側、外果尖とアキレス腱の間の陥凹部。"
+    "locationSimple": "外くるぶしの出っ張りとアキレス腱の間にあります。"
   },
   {
     "id": "bl61",
     "name": "僕参",
     "code": "BL61",
     "meridianShort": "膀胱経",
-    "locationSimple": "僕参（BL61）は、足外側、踵骨外側、崑崙の直下、赤白肉際。"
+    "locationSimple": "崑崙より下で、かかとの骨の外側の縁にあります。"
   },
   {
     "id": "bl62",
     "name": "申脈",
     "code": "BL62",
     "meridianShort": "膀胱経",
-    "locationSimple": "申脈（BL62）は、足外側、外果尖の直下、外果下縁の陥凹部。"
+    "locationSimple": "外くるぶしの出っ張りの真下にあるくぼみ。"
   },
   {
     "id": "bl63",
     "name": "金門",
     "code": "BL63",
     "meridianShort": "膀胱経",
-    "locationSimple": "金門（BL63）は、足背、外果前下方の陥凹部、立方骨粗面の後方。"
+    "locationSimple": "足の外側寄りで、小指につながる骨の出っ張りよりかかと側にあります。"
   },
   {
     "id": "bl64",
     "name": "京骨",
     "code": "BL64",
     "meridianShort": "膀胱経",
-    "locationSimple": "京骨（BL64）は、足外側、第5中足骨粗面の遠位前方の陥凹部、赤白肉際。"
+    "locationSimple": "小指につながる骨の足首側の出っ張りより少し指先寄りにあります。"
   },
   {
     "id": "bl65",
     "name": "束骨",
     "code": "BL65",
     "meridianShort": "膀胱経",
-    "locationSimple": "束骨（BL65）は、足外側、第5中足指節関節の近位陥凹部、赤白肉際。"
+    "locationSimple": "小指の付け根の関節より、かかと側の外縁。"
   },
   {
     "id": "bl66",
     "name": "足通谷",
     "code": "BL66",
     "meridianShort": "膀胱経",
-    "locationSimple": "足通谷（BL66）は、足第5指外側、第5中足指節関節の遠位陥凹部、赤白肉際。"
+    "locationSimple": "足の小指の付け根の関節より、指先側の外縁。"
   },
   {
     "id": "bl67",
@@ -1356,35 +1356,35 @@ export const ACUPOINT_LOOKUP = [
     "name": "然谷",
     "code": "KI2",
     "meridianShort": "腎経",
-    "locationSimple": "然谷（KI2）は、足内側、舟状骨粗面の前下方、赤白肉際。"
+    "locationSimple": "足の内側で、舟状骨の出っ張りの下にあります。"
   },
   {
     "id": "taikei",
     "name": "太谿",
     "code": "KI3",
     "meridianShort": "腎経",
-    "locationSimple": "内くるぶしの最も高い頂点と、アキレス腱の間にある深いくぼみ。"
+    "locationSimple": "内くるぶしの出っ張りとアキレス腱の間のくぼみ。"
   },
   {
     "id": "ki4",
     "name": "大鍾",
     "code": "KI4",
     "meridianShort": "腎経",
-    "locationSimple": "大鍾（KI4）は、足内側、内果後下方、踵骨上縁、アキレス腱付着部内側前方の陥凹部。"
+    "locationSimple": "内くるぶしの後ろ下で、アキレス腱がかかとにつく場所の前にあります。"
   },
   {
     "id": "ki5",
     "name": "水泉",
     "code": "KI5",
     "meridianShort": "腎経",
-    "locationSimple": "水泉（KI5）は、足内側、太谿の直下1寸、踵骨隆起前方の陥凹部。"
+    "locationSimple": "太谿の直下で、かかとの骨のふくらみの前にあります。"
   },
   {
     "id": "shoukai",
     "name": "照海",
     "code": "KI6",
     "meridianShort": "腎経",
-    "locationSimple": "内くるぶしの真下にある小さなくぼみ。"
+    "locationSimple": "内くるぶしの出っ張りの真下にあるくぼみ。"
   },
   {
     "id": "fukuryuu",
@@ -2035,28 +2035,28 @@ export const ACUPOINT_LOOKUP = [
     "name": "丘墟",
     "code": "GB40",
     "meridianShort": "胆経",
-    "locationSimple": "丘墟（GB40）は、足関節前外側、長趾伸筋腱外側、外果前下方の陥凹部。"
+    "locationSimple": "外くるぶしの斜め前下で、足指を上げる腱の小指側にあります。"
   },
   {
     "id": "gb41",
     "name": "足臨泣",
     "code": "GB41",
     "meridianShort": "胆経",
-    "locationSimple": "足臨泣（GB41）は、足背、第4・第5中足骨底結合部の前方の陥凹部、小指伸筋腱外側。"
+    "locationSimple": "第4・第5中足骨が近づく場所の指先側で、小指へ伸びる腱の外側にあります。"
   },
   {
     "id": "gb42",
     "name": "地五会",
     "code": "GB42",
     "meridianShort": "胆経",
-    "locationSimple": "地五会（GB42）は、足背、第4・第5中足骨間、第4中足指節関節の近位陥凹部。"
+    "locationSimple": "第4・第5趾につながる骨の間で、第4趾の付け根より足首側にあります。"
   },
   {
     "id": "gb43",
     "name": "侠渓",
     "code": "GB43",
     "meridianShort": "胆経",
-    "locationSimple": "侠渓（GB43）は、足背、第4・第5足指間、みずかきの近位縁、赤白肉際。"
+    "locationSimple": "足の小指と第4趾のまたのすぐ足首側にあります。"
   },
   {
     "id": "gb44",
@@ -2077,7 +2077,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "行間",
     "code": "LR2",
     "meridianShort": "肝経",
-    "locationSimple": "足の甲で、親指と人差し指の付け根のまたの間のくぼみ。"
+    "locationSimple": "足の親指と第2趾のまたのすぐ足首側にあります。"
   },
   {
     "id": "taishou",
@@ -2091,7 +2091,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "中封",
     "code": "LR4",
     "meridianShort": "肝経",
-    "locationSimple": "中封（LR4）は、足関節前内側、前脛骨筋腱の内側、内果尖の前方。"
+    "locationSimple": "内くるぶしの前で、足首を起こす腱の親指側にあります。"
   },
   {
     "id": "lr5",

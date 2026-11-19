@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle, AtlasMarker, AtlasRegion } from "@/data/tsubo/atlas/types";
 import FootDorsumRegion from "./FootDorsumRegion";
+import FootLandmarkRegion from "./FootLandmarkRegion";
 import DigitRegion from "./DigitRegion";
 import LowerLegRegion from "./LowerLegRegion";
 import VolarForearmRegion from "./VolarForearmRegion";
@@ -10,6 +11,8 @@ const figureClass = "rounded-2xl border border-[#E5DEC9] bg-[#F9F5ED] p-4 text-[
 const captionClass = "mt-2 text-center text-sm font-semibold leading-6";
 
 const regions = {
+  dorsalFoot: { BodyHighlight: <path d="M83 252l5 5m29-5-5 5" />, CloseUp: FootLandmarkRegion },
+  ankle: { BodyHighlight: <path d="M82 245h10m16 0h10" />, CloseUp: FootLandmarkRegion },
   finger: { BodyHighlight: <path d="M27 164l6 6 5-5m124 0 5 5 6-6" />, CloseUp: DigitRegion },
   toe: { BodyHighlight: <path d="M74 260h14m24 0h14" />, CloseUp: DigitRegion },
   volarForearm: { BodyHighlight: <path d="M43 119L32 145m125-26 11 26" />, CloseUp: VolarForearmRegion },
