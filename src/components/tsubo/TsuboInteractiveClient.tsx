@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback, type ReactNode } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { 
@@ -50,7 +50,7 @@ const MERIDIAN_ELEMENT_MAP: Record<string, "木" | "火" | "土" | "金" | "水"
 
 type SortOption = "meridian" | "kana" | "detailed";
 
-export default function TsuboInteractiveClient() {
+export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuides?: ReactNode } = {}) {
   const allPoints = useMemo(() => getAllAcupoints(), []);
   const publishedCount = useMemo(() => getPublishedAcupoints().length, []);
   const searchIndex = useMemo(() => new Map(allPoints.map(point => [point.code, prepareAcupointSearch(point)])), [allPoints]);
@@ -404,6 +404,8 @@ export default function TsuboInteractiveClient() {
             </div>
           </div>
       </section>
+
+      {relatedGuides}
 
       {/* 経穴一覧セクション */}
       <section id="tsubo-list" className="atlas-target space-y-4">

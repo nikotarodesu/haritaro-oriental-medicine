@@ -39,6 +39,11 @@ export default function LearnGuidePage() {
       <div className="learning-guide-intro">
         <PageIntro title={heading} description={introduction} art="study" />
         <nav aria-label="学び方を選ぶ" className="learning-options">
+          <Link href={ACUPUNCTURE_GUIDE.href} className="learning-option">
+            <span className="learning-option-icon"><LibraryBig size={21} aria-hidden="true" /></span>
+            <span className="learning-option-label"><strong>{ACUPUNCTURE_GUIDE.label}</strong><span>はり・お灸の道具と施術の流れ</span></span>
+            <ArrowRight size={18} aria-hidden="true" />
+          </Link>
           <Link href={readingUnits[0].href} className="learning-option">
             <span className="learning-option-icon"><BookOpen size={21} aria-hidden="true" /></span>
             <span className="learning-option-label"><strong>基本から順に学ぶ</strong><span>全{readingUnits.length}講の第1講を開く</span></span>
@@ -47,11 +52,6 @@ export default function LearnGuidePage() {
           <Link href="/learn/essentials" className="learning-option">
             <span className="learning-option-icon"><List size={21} aria-hidden="true" /></span>
             <span className="learning-option-label"><strong>用語の要点を読む</strong><span>陰陽や気血水の意味を図で確認する</span></span>
-            <ArrowRight size={18} aria-hidden="true" />
-          </Link>
-          <Link href={ACUPUNCTURE_GUIDE.href} className="learning-option">
-            <span className="learning-option-icon"><LibraryBig size={21} aria-hidden="true" /></span>
-            <span className="learning-option-label"><strong>はじめての鍼灸</strong><span>はり・お灸・ツボ押しの違いを図で見る</span></span>
             <ArrowRight size={18} aria-hidden="true" />
           </Link>
         </nav>

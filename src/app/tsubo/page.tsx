@@ -41,6 +41,14 @@ const FLAGSHIP_ACUPOINTS = [
 const DESCRIPTION = "全361経穴を名前・部位・経絡から探し、場所の図と注意点を確認できます。";
 
 export default function TsuboPage() {
+  const guideLinks = (
+    <nav aria-label="ツボ図鑑の資料とガイド" className="atlas-directory-actions atlas-directory-guides">
+      <Link href="/symptoms" className="atlas-text-action"><MapPin size={17} aria-hidden="true" />症状から探す</Link>
+      <Link href="/tsubo/basics/bone-cun" className="atlas-text-action"><Ruler size={17} aria-hidden="true" />寸の測り方</Link>
+      <Link href={ACUPUNCTURE_GUIDE.href} className="atlas-text-action"><BookOpen size={17} aria-hidden="true" />{ACUPUNCTURE_GUIDE.label}</Link>
+    </nav>
+  );
+
   return (
     <div className="page-layout atlas-page atlas-directory">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: collectionPageJsonLd(
@@ -64,17 +72,12 @@ export default function TsuboPage() {
               <a href="#tsubo-index" className="atlas-text-action">全361経穴の索引</a>
               <a href="#atlas-research-index" className="atlas-text-action">研究から探す</a>
             </nav>
+            {guideLinks}
           </div>
         }
       >
-        <TsuboInteractiveClient />
+        <TsuboInteractiveClient relatedGuides={guideLinks} />
       </Suspense>
-
-      <nav aria-label="ツボ図鑑の資料とガイド" className="atlas-directory-actions atlas-directory-guides">
-        <Link href="/symptoms" className="atlas-text-action"><MapPin size={17} aria-hidden="true" />症状から探す</Link>
-        <Link href="/tsubo/basics/bone-cun" className="atlas-text-action"><Ruler size={17} aria-hidden="true" />寸の測り方</Link>
-        <Link href={ACUPUNCTURE_GUIDE.href} className="atlas-text-action"><BookOpen size={17} aria-hidden="true" />はり・お灸・ツボ押しの違い</Link>
-      </nav>
 
       <section id="atlas-research-index" className="atlas-target space-y-3" aria-labelledby="atlas-research-index-title">
         <h2 id="atlas-research-index-title" className="atlas-section-title flex items-center gap-2"><FlaskConical size={20} aria-hidden="true" />研究から探す</h2>

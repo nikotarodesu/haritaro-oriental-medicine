@@ -1,5 +1,6 @@
 export const ACUPUNCTURE_GUIDE = {
   href: "/learn/acupuncture",
+  label: "鍼灸入門",
   title: "鍼灸とは？ はり・お灸・ツボ押しの違い",
   description: "はり・お灸・ツボ押しを一枚の図で比較。ツボの探し方、施術の流れ、鍼への体の反応、単独と組み合わせの効果を調べた研究の読み方まで学べる鍼灸入門です。",
   revisedAt: "2026-11-20",

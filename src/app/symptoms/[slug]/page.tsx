@@ -97,7 +97,7 @@ export default async function SymptomGuidePage({ params }: Props) {
         ))}</ul>
         <div className="atlas-directory-actions">
           {pointStudies.length > 0 && <a href="#guide-studies" className="atlas-text-action"><FlaskConical size={16} aria-hidden="true" />関連する研究を読む</a>}
-          <Link href={ACUPUNCTURE_GUIDE.href} className="atlas-text-action"><BookOpen size={16} aria-hidden="true" />はり・お灸・ツボ押しの違い</Link>
+          <Link href={ACUPUNCTURE_GUIDE.href} className="atlas-text-action"><BookOpen size={16} aria-hidden="true" />{ACUPUNCTURE_GUIDE.label}</Link>
         </div>
       </section>
       <nav aria-label="ガイドの目次" className="atlas-section-nav">{sections.map(({ id, label }) => <a key={id} href={`#${id}`}>{label}</a>)}</nav>

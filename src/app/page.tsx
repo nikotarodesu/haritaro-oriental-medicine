@@ -30,7 +30,7 @@ export default function HomePage() {
             <PlatformSearchForm />
             <nav className="platform-shortcuts" aria-label="学ぶ・調べる">
               <Link href={SERIES.reading.href}><BookOpen aria-hidden="true" />東洋医学を学ぶ</Link>
-              <Link href={ACUPUNCTURE_GUIDE.href}><LibraryBig aria-hidden="true" />鍼灸入門</Link>
+              <Link href={ACUPUNCTURE_GUIDE.href}><LibraryBig aria-hidden="true" />{ACUPUNCTURE_GUIDE.label}</Link>
               <Link href="/symptoms"><Compass aria-hidden="true" />症状ガイド</Link>
             </nav>
           </div>

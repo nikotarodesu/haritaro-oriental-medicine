@@ -60,11 +60,10 @@
 
 .atlas-directory-actions { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
 .atlas-directory-guides {
-  padding: .35rem .9rem;
-  border: 1px solid var(--atlas-line);
-  border-radius: var(--radius-control);
-  background: var(--atlas-paper);
+  column-gap: .9rem;
+  border-block: 1px solid var(--atlas-line);
 }
+.atlas-directory-guides .atlas-text-action { gap: .35rem; }
 .atlas-section-title { margin-bottom: .625rem; font-size: clamp(1.25rem, 3vw, 1.6rem); font-weight: 700; line-height: 1.45; }
 .atlas-who-location { margin-top: 1.125rem; padding: .75rem 1rem .25rem; border: 1px solid var(--atlas-line); border-radius: .65rem; background: var(--atlas-paper); }
 .atlas-who-location h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: .125rem .65rem; margin-bottom: .35rem; font-weight: 700; }
