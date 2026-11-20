@@ -14,6 +14,7 @@ import { PROGRESSIVE_CASES } from "@/data/progressiveCases";
 import { resolveArticleReferences } from "@/utils/referenceResolver";
 import MarkdownBody from "@/components/MarkdownBody";
 import ReadingContents from "@/components/reading/ReadingContents";
+import ReadingSequence from "@/components/reading/ReadingSequence";
 import ArticleReferences from "@/components/ArticleReferences";
 import InlineTextRenderer from "@/components/InlineTextRenderer";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
@@ -82,6 +83,8 @@ export default async function ArticleDetailPage({ params }: Props) {
   }
 
   const article = ARTICLES[articleIndex];
+  const previousArticle = ARTICLES[articleIndex - 1];
+  const nextArticle = ARTICLES[articleIndex + 1];
   const relatedCourses = LEARNING_COURSES.filter(course =>
     course.reading.some(item => item.href === `/articles/${article.id}`) ||
     course.steps.some(step => step.lectureId === ARTICLE_LEARNING_GUIDES[article.id]?.lectureId));
@@ -93,7 +96,8 @@ export default async function ArticleDetailPage({ params }: Props) {
     nextArticleIds.add(next.id);
     return [{ article: next, reason: item.reason }];
   }).slice(0, 3);
-  const firstRelated = nextArticles[0];
+  const relatedArticles = nextArticles.filter(({ article: related }) => related !== previousArticle && related !== nextArticle);
+  const firstRelated = relatedArticles[0] ?? nextArticles[0];
   const relatedReading = firstRelated ? {
     href: `/articles/${firstRelated.article.id}`,
     title: firstRelated.article.title,
@@ -245,9 +249,17 @@ export default async function ArticleDetailPage({ params }: Props) {
           />
           </div>
 
-          {nextArticles.length > 0 && <section id="article-next-reading" aria-labelledby="article-next-reading-title" className="space-y-4 border-t border-divider pt-6">
-            <div className="space-y-1"><h2 id="article-next-reading-title" className="reader-section-title">続きを読む</h2><p className="text-sm text-muted">いま読んだ内容を、別の視点から確かめる記事です。</p></div>
-            <div className="grid gap-3 md:grid-cols-3">{nextArticles.map(({ article: next, reason }) => <ContentNavigationLink key={next.id} href={`/articles/${next.id}`} placement="article_next" articleId={next.id} className="flex min-w-0 flex-col gap-2 rounded-xl border border-frame bg-page p-4 hover:bg-panel-selected">
+          <ReadingSequence
+            id="article-next-reading"
+            label="記事"
+            previous={previousArticle && { href: `/articles/${previousArticle.id}`, title: previousArticle.title }}
+            next={nextArticle && { href: `/articles/${nextArticle.id}`, title: nextArticle.title }}
+            index={{ href: "/articles", title: "図解記事の一覧" }}
+          />
+
+          {relatedArticles.length > 0 && <section aria-labelledby="article-related-title" className="space-y-4 border-t border-divider pt-6">
+            <h2 id="article-related-title" className="reader-section-title">あわせて読む</h2>
+            <div className="grid gap-3 md:grid-cols-3">{relatedArticles.map(({ article: next, reason }) => <ContentNavigationLink key={next.id} href={`/articles/${next.id}`} placement="article_next" articleId={next.id} className="flex min-w-0 flex-col gap-2 rounded-xl border border-frame bg-page p-4 hover:bg-panel-selected">
               <p className="text-sm font-semibold text-accent">{reason}</p>
               <h3 className="font-serif text-base font-semibold leading-relaxed">{next.title}</h3>
               <span className="mt-auto inline-flex items-center justify-between gap-2 text-sm text-muted"><span>読了約 {next.readTime}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></span>

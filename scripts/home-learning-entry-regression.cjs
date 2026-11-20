@@ -57,11 +57,35 @@ assert(!home.includes('学習履歴を確認中') && !home.includes('href="/pric
 
 const reading = renderToStaticMarkup(React.createElement(load('src/app/learn/page').default));
 for (const href of ['/curriculum/lecture-intro-1', '/diagnosis', '/articles', '/curriculum']) assert(reading.includes('href="' + href + '"'), href);
-const { getPublicLectureGroups } = load('src/data/publicLectures');
-const readingIds = new Set(getPublicLectureGroups('reading').flatMap(group => group.entries.map(article => article.id)));
+const { getPublicLectureGroups, getPublicLectureReadingPosition } = load('src/data/publicLectures');
+const readingChapters = getPublicLectureGroups('reading');
+const readingOrder = readingChapters.flatMap(group => group.entries.map(article => article.id));
+const readingIds = new Set(readingOrder);
 assert(readingIds.size > 1);
 for (const { id } of getPublicLectureGroups().flatMap(group => group.entries)) {
   assert.equal(reading.includes(`href="/curriculum/${id}"`), readingIds.has(id), id);
+  if (!readingIds.has(id)) assert.equal(getPublicLectureReadingPosition(id), null, id);
+}
+for (const chapter of readingChapters) {
+  chapter.entries.forEach(({ id }, index) => {
+    const position = getPublicLectureReadingPosition(id);
+    const ordinal = readingOrder.indexOf(id);
+    assert.equal(position.chapter, chapter.label, id);
+    assert.equal(position.number, index + 1, id);
+    assert.equal(position.total, chapter.entries.length, id);
+    assert.equal(position.previous?.id, readingOrder[ordinal - 1], id);
+    assert.equal(position.next?.id, readingOrder[ordinal + 1], id);
+  });
+}
+const learningMap = reading.match(/<nav[^>]*aria-labelledby="learning-path-title"[^>]*>(.*?)<\/nav>/)?.[1];
+assert(learningMap, 'The ordered study map renders on the public reading hub');
+const mapLinks = Array.from(learningMap.matchAll(/href="\/curriculum\/([^"]+)"/g), match => match[1]);
+assert.equal(mapLinks.length, 5);
+let lastMapStop = -1;
+for (const id of mapLinks) {
+  const stop = readingChapters.findIndex(chapter => chapter.entries[0].id === id);
+  assert(stop > lastMapStop, id + ' starts a reading chapter in the index order');
+  lastMapStop = stop;
 }
 assert(!reading.includes('学習履歴を確認中') && !reading.includes('href="/notes"'));
-console.log('Passed: homepage search and three series, the reading index, and legacy learning URL selection.');
+console.log(`Passed: homepage search and three series, public study map, ${readingOrder.length} adjacent lectures in index order, and legacy learning URL selection.`);

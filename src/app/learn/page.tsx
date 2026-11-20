@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowDown, ArrowRight, BookOpen } from "lucide-react";
+import PublicLearningPath from "@/components/curriculum/PublicLearningPath";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import PageIntro from "@/components/design/PageIntro";
 import { pageSocialMetadata } from "@/config/seo";
@@ -27,22 +28,19 @@ export default function LearnGuidePage() {
   const articles = getArticlePreviews(FEATURED_ARTICLES);
 
   return (
-    <div className="page-layout space-y-8">
-      <PageIntro title={SERIES.reading.name} description="冷えやすい、眠りにくい。身近な体の変化を、東洋医学ではどう捉えるのでしょう。気になるテーマから読んでみてください。" art="study">
-        <div className="reader-navigation mt-4">
-          <Link href="/curriculum/lecture-intro-1" className="page-primary-action"><BookOpen aria-hidden="true" />最初の講義へ</Link>
-          <a href="#learn-courses-heading" className="page-secondary-action">講義の目次<ArrowDown aria-hidden="true" size={18} /></a>
-          <Link href="/articles" className="page-secondary-action">図解記事</Link>
-        </div>
-      </PageIntro>
+    <div className="page-layout learning-guide space-y-8">
+      <div className="learning-guide-intro">
+        <PageIntro title={SERIES.reading.name} description="陰陽、気・血・津液、経絡。東洋医学の考え方を、図と身近な例で一つずつ学べます。">
+          <div className="reader-navigation mt-4">
+            <Link href="/curriculum/lecture-intro-1" className="page-primary-action"><BookOpen aria-hidden="true" />最初の講義へ</Link>
+            <a href="#learn-courses-heading" className="page-secondary-action">講義の目次<ArrowDown aria-hidden="true" size={18} /></a>
+          </div>
+        </PageIntro>
+        <PublicLearningPath />
+      </div>
 
       <section aria-labelledby="oriental-reading" className="space-y-4">
-        <h2 id="oriental-reading" className="scroll-mt-28 font-serif text-2xl font-bold">東洋医学の基本を読む</h2>
-        <Link href="/curriculum/lecture-intro-1" className="page-link-card flex items-center gap-3">
-          <span className="page-link-icon"><BookOpen className="h-5 w-5" aria-hidden="true" /></span>
-          <span className="flex-1"><strong className="block">東洋医学とは何か</strong><span className="ui-muted">鍼灸・漢方・養生と、東洋医学の考え方</span></span>
-          <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
-        </Link>
+        <h2 id="oriental-reading" className="reader-section-title">図解記事</h2>
         <ul className="page-link-grid">
           {articles.map(article => (
             <li key={article.id}>
@@ -55,8 +53,8 @@ export default function LearnGuidePage() {
         <Link href="/articles" className="ui-text-link">図解記事の一覧<ArrowRight aria-hidden="true" /></Link>
       </section>
 
-      <section id="learn-courses-heading" aria-labelledby="reading-topics" className="scroll-mt-28 space-y-4">
-        <h2 id="reading-topics" className="font-serif text-2xl font-bold">読み物をテーマから探す</h2>
+      <section id="learn-courses-heading" aria-labelledby="reading-topics" className="space-y-4 scroll-mt-3">
+        <h2 id="reading-topics" className="reader-section-title">講義の目次</h2>
         <PublicLectureIndex series="reading" />
       </section>
 

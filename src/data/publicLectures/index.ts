@@ -62,3 +62,19 @@ export function getPublicLectureGroups(series?: PublicLectureSeries) {
     return entries.length ? [{ id: chapter.id, label: chapterLabels[chapter.id] ?? chapter.shortTitle, entries }] : [];
   });
 }
+
+export function getPublicLectureReadingPosition(id: string) {
+  const chapters = getPublicLectureGroups("reading");
+  const chapterIndex = chapters.findIndex(chapter => chapter.entries.some(entry => entry.id === id));
+  if (chapterIndex === -1) return null;
+
+  const chapter = chapters[chapterIndex];
+  const entryIndex = chapter.entries.findIndex(entry => entry.id === id);
+  return {
+    chapter: chapter.label,
+    number: entryIndex + 1,
+    total: chapter.entries.length,
+    previous: chapter.entries[entryIndex - 1] ?? chapters[chapterIndex - 1]?.entries.at(-1),
+    next: chapter.entries[entryIndex + 1] ?? chapters[chapterIndex + 1]?.entries[0],
+  };
+}

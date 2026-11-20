@@ -148,6 +148,223 @@
   margin-top: .75em;
 }
 
+.lecture-reading-position {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .15rem .75rem;
+  color: var(--text-secondary);
+  font-size: .875rem;
+  line-height: 1.65;
+}
+
+.lecture-reading-position span:first-child {
+  color: var(--warm-readable);
+  font-weight: 600;
+}
+
+.lecture-diagram {
+  margin-block: clamp(1rem, 3vw, 1.5rem);
+  scroll-margin-block-start: .5rem;
+}
+
+.lecture-diagram > figure {
+  margin-block: 0;
+}
+
+.lecture-diagram > .curriculum-concept-art {
+  --concept-art-surface: var(--bg-washi);
+  padding: .75rem;
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-control);
+  background: var(--bg-washi);
+}
+
+.reading-sequence {
+  display: grid;
+  gap: .35rem;
+  scroll-margin-block-start: .5rem;
+}
+
+.reading-sequence-primary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .75rem;
+  min-height: 56px;
+  padding: clamp(.85rem, 3.5vw, 1.25rem);
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-control);
+  background: var(--action-soft);
+  color: var(--text-sumi);
+  overflow-wrap: anywhere;
+}
+
+.reading-sequence-primary:hover {
+  border-color: var(--warm-readable);
+}
+
+.reading-sequence-primary > svg {
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: .55rem;
+  border-radius: 50%;
+  background: var(--action-bg);
+  color: var(--action-text);
+}
+
+.reading-sequence-copy {
+  display: grid;
+  gap: .25rem;
+}
+
+.reading-sequence-copy span {
+  color: var(--warm-readable);
+  font-size: .875rem;
+  font-weight: 600;
+}
+
+.reading-sequence-copy strong {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.reading-sequence-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0 .75rem;
+}
+
+.reading-sequence-links:empty {
+  display: none;
+}
+
+.learning-guide-intro {
+  padding: clamp(.9rem, 3.5vw, 2.2rem);
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-card);
+  background: var(--bg-card);
+}
+
+.learning-guide-intro .page-intro {
+  margin-bottom: clamp(1rem, 3.2vw, 1.85rem);
+}
+
+.learning-path {
+  padding-top: clamp(.85rem, 2.5vw, 1.4rem);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.learning-path-stops {
+  position: relative;
+  display: grid;
+  gap: .2rem;
+  margin-top: .5rem;
+}
+
+.learning-path-stops::before {
+  position: absolute;
+  inset-block: 2rem;
+  inset-inline-start: 1.9rem;
+  border-inline-start: 1px solid var(--border-washi);
+  content: "";
+}
+
+.learning-path-stop {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "art label arrow";
+  align-items: center;
+  gap: .65rem;
+  height: 100%;
+  padding: .35rem .45rem;
+  border-radius: var(--radius-control);
+  color: var(--text-sumi);
+}
+
+.learning-path-stop:hover {
+  background: var(--accent-soft);
+}
+
+.learning-path-art {
+  grid-area: art;
+  display: grid;
+  place-items: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  border: 1px solid var(--border-washi);
+  border-radius: 50%;
+  background: var(--bg-washi);
+  color: var(--accent-readable);
+}
+
+.learning-path-art svg {
+  width: 100%;
+  height: auto;
+}
+
+.learning-path-label {
+  grid-area: label;
+  display: grid;
+  gap: .14rem;
+  min-width: 0;
+  line-height: 1.55;
+}
+
+.learning-path-label strong {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.learning-path-label > span {
+  color: var(--text-secondary);
+  font-size: .875rem;
+}
+
+.learning-path-arrow {
+  grid-area: arrow;
+  color: var(--accent-readable);
+}
+
+@media (min-width: 58rem) {
+  .learning-path-stops {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: .4rem;
+    margin-top: .75rem;
+  }
+
+  .learning-path-stops::before {
+    inset: 2.65rem 10% auto;
+    border-inline-start: 0;
+    border-top: 1px solid var(--border-washi);
+  }
+
+  .learning-path-stop {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "art art" "label arrow";
+    align-items: start;
+    gap: .65rem .3rem;
+    padding: .55rem;
+  }
+
+  .learning-path-art {
+    justify-self: center;
+    width: 4.2rem;
+    height: 4.2rem;
+  }
+
+  .learning-path-arrow {
+    margin-top: .2rem;
+  }
+}
+
 .reader-section-title {
   color: var(--text-sumi);
   font-family: var(--font-serif);
