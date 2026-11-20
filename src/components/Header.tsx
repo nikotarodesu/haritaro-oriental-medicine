@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import { Activity, ArrowRight, BookOpen, ChevronDown, ClipboardPenLine, FileQuestion, GitCompareArrows, GraduationCap, History, Layers3, Library, Mail, Menu, NotebookPen, ScanLine, Search, Settings, User as UserIcon, X, type LucideIcon } from "lucide-react";
+import { Activity, ArrowRight, BookOpen, ChevronDown, ClipboardPenLine, FileQuestion, GitCompareArrows, GraduationCap, History, Layers3, Library, Mail, Menu, ScanLine, Search, Settings, User as UserIcon, X, type LucideIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import BrandLogo from "@/components/brand/BrandLogo";
 import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
@@ -45,7 +45,7 @@ const SITE_LINKS: readonly HeaderLink[] = [
 const NAV_ICONS: Record<string, LucideIcon> = {
   "/learn": GraduationCap, "/learn/review#learning-review": History,
   "/curriculum": Layers3, "/learn/review": FileQuestion, "/library": Library, "/articles": BookOpen,
-  "/clinical": ClipboardPenLine, "/clinical/workspace": NotebookPen, "/simulator": GitCompareArrows,
+  "/clinical": ClipboardPenLine, "/simulator": GitCompareArrows,
   "/practice/haiketsu": ScanLine, "/cases": FileQuestion, "/diagnosis": Activity,
   "/tsubo/compare": GitCompareArrows,
   "/about": UserIcon, "/contact": Mail,

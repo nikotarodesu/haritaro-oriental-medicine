@@ -7,7 +7,6 @@ import summary from '@/data/medicalReviewSummary.json';
 import audit from '@/data/references/bibliographyAudit.json';
 import { PAPERS_DATABASE, VERIFIED_PAPERS } from '@/data/references/papersData';
 import { CLASSICAL_TEXTS } from '@/data/classicalTextsData';
-import { CLINICAL_PATTERNS } from '@/data/clinicalWorkflow';
 export const metadata: Metadata = { title: '医学記述・出典の確認方針', description: '書誌の照合、研究結果の解釈、専門家による監修の状況を分けて公開します。', ...pageSocialMetadata('医学記述・出典の確認方針', '書誌の照合、研究結果の解釈、専門家による監修の状況を分けて公開します。', '/editorial-policy'), alternates: { canonical: '/editorial-policy' } };
 export default function EditorialPolicyPage() {
   const records = Object.values(audit);
@@ -37,7 +36,6 @@ export default function EditorialPolicyPage() {
       <li>紹介・受診の判断や施術上の注意を、資格を持つ監修者が確認したか。</li>
     </ol></section>
     <section id="review-record" className="scroll-mt-28 space-y-3"><h2 className="text-xl font-bold">監修の記録</h2><p>監修者の氏名・資格、確認した記述の版、対象範囲、確認日、修正内容を記録します。執筆者情報や自動チェックの合格だけを「専門家監修済み」と表示することはありません。</p><p>本文を変更した場合、以前の確認を新しい記述へ自動で引き継ぎません。施術の安全性や緊急の対応が関わる記述を優先して確認します。</p></section>
-    <section className="space-y-3"><h2 className="text-xl font-bold">臨床記録の練習で参照した資料</h2><p>臨床記録の練習では、入力した所見を教材に載せた{CLINICAL_PATTERNS.length}種類の証の説明と照らし合わせます。候補の表示から、病気の有無や施術の効果は判断できません。</p><p>証の名前や用語の意味を調べるために、WHOの標準用語を参照しています。所見を照合する方法については、診断の精度の検証と専門家による監修が完了していません。</p><Link className="inline-flex min-h-11 items-center underline" href="/clinical">主訴別ガイドと参照範囲を見る</Link></section>
     <section id="revision-history" className="scroll-mt-28 space-y-6 border-t border-[#E5DEC9] pt-6 dark:border-[#2A3B4A]">
       <h2 className="font-serif text-xl font-bold">教材改訂の履歴</h2>
       <section className="space-y-3">

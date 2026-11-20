@@ -223,7 +223,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(NATURAL_JAPANESE_COURSE_REVISIONS.map(slug => [`/learn/courses/${slug}`, '2026-10-12'])),
   // 2026-10-12: all lesson page titles and reading layouts revised; not a clinical review date.
   ...Object.fromEntries(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [`/curriculum/${id}`, '2026-10-12']))),
-  ...Object.fromEntries(['/clinical', '/clinical/workspace', '/notes', '/simulator', '/practice/haiketsu', ...['shoulder','back','headache','sleep','digestion','fatigue'].map(slug => '/clinical/symptoms/' + slug)].map(route => [route, '2026-10-18'])),
+  ...Object.fromEntries(['/clinical', '/notes', '/simulator', '/practice/haiketsu', ...['shoulder','back','headache','sleep','digestion','fatigue'].map(slug => '/clinical/symptoms/' + slug)].map(route => [route, '2026-10-18'])),
   // Reading estimates were added to the actual detail pages of all 11 courses.
   ...Object.fromEntries(LEARNING_COURSES.map(course => [`/learn/courses/${course.slug}`, '2026-10-12'])),
   // Shared reading/source/navigation presentation changed; this is not a clinical review date.
@@ -245,7 +245,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/symptoms': SYMPTOM_GUIDES_REVISED_AT,
   ...Object.fromEntries([
     '/about', '/articles', '/contact', '/editorial-policy', '/glossary', '/kikei', '/library',
-    '/learn/review', '/clinical/workspace', '/practice/haiketsu', '/privacy', '/tsubo/compare',
+    '/learn/review', '/practice/haiketsu', '/privacy', '/tsubo/compare',
     ...ARTICLE_EDITORIAL_REVISIONS.map(id => `/articles/${id}`),
     ...LEARNING_COURSES.map(course => `/learn/courses/${course.slug}`),
     ...['shoulder', 'back', 'headache', 'sleep', 'digestion', 'fatigue'].map(slug => `/clinical/symptoms/${slug}`),
@@ -264,13 +264,9 @@ export const SITE_UPDATES = [
   { date: '2026-11-19', label: '足の甲・足首・足の縁の26穴を図解', href: '/tsubo#illustrated-points', text: 'くるぶしの前・下・後ろや、足の指の付け根と指のまたを見分けられるように、26穴に本文と3種類の図を追加しました。' },
   { date: '2026-11-18', label: 'ツボ図鑑・東洋医学・臨床演習を公開', href: '/', text: 'ツボや症状を名前で探せるようになりました。読み物、体質チェック、症例演習も会員登録なしで利用できます。' },
   { date: '2026-11-10', label: '料金・問い合わせ・学習の入口を改善', href: '/pricing', text: '料金プランをヘッダー、問い合わせをフッターの主要ナビに追加。申込みの稼働確認と時間切れ表示、保存上限からの案内、資料件数の内訳を整えました。経歴の開業年月を2023年7月に統一しました。' },
-  { date: '2026-11-05', label: 'iPadでの四診入力と対面問診を短い画面に整理', href: '/clinical/workspace', text: '問診・望診・聞診・切診と内容別のタブを追加。舌体・舌苔・脈診をさらに分割し、記録・再評価を開閉できる形にしました。' },
   { date: '2026-10-18', label: 'PC・iPadの操作と記録・学習の流れを改善', href: '/learn', text: 'iPad幅のメニュー、経穴検索の表記ゆれ、比較表と図の操作を改善。学習案内とコースを統合し、講義を本文・クイズ・次への順に整理。問診からの引き継ぎと記録の下書き保護、保存状態の表示も整えました。' },
-  { date: '2026-10-18', label: '臨床記録の移動・比較・治法入力を改善', href: '/clinical/workspace', text: '手順変更時に入力見出しへ移動し、候補の比較を開閉式へ変更。比較・治法へ直接移動でき、治法の追加結果と追加済みの表示、直前の追加を戻す操作を整えました。' },
-  { date: '2026-10-18', label: '臨床記録の候補・治法を拡充', href: '/clinical/workspace', text: '候補を6分類・26種類へ拡充し、検索・分類から選んだ候補を比較する画面に変更。24の治法を追加・編集でき、一覧にない候補も記録と臨床ノートへ保存できます。' },
-  { date: '2026-10-18', label: '臨床メニューと演習の入口を再整理', href: '/clinical', text: '臨床記録・記録一覧・主訴別ガイド・対面問診・経穴比較の5項目へ整理。対面問診を直接開き、演習名と教材の掲載先を統一しました。臨床ホームの余白と一覧を整え、作業中の記録がある場合だけ戻るバーを表示します。' },
-  { date: '2026-10-18', label: '保存一覧・スマホメニュー・経穴辞典を整理', href: '/tsubo', text: '保存一覧を最近の5件へ絞り、記録管理をマイノートへ集約。スマホのメニューを統一し、トップの機能入口、経穴ページの重複ボタン・関連記事・装飾、フッターを簡潔にしました。' },
-  { date: '2026-10-18', label: '臨床メニュー・記録・演習を整理', href: '/clinical', text: '記録する・調べる・練習するの入口を整理。下書き再開、所見と候補の比較、作業画面内での確認・保存を改善しました。演習を切り替え式にし、重なる説明・枠・補助操作を減らしています。' },
+  { date: '2026-10-18', label: '臨床メニューと演習の入口を再整理', href: '/clinical', text: '主訴別ガイドや経穴比較を開きやすくしました。演習の名前をそろえ、臨床演習の一覧と余白を整えました。' },
+  { date: '2026-10-18', label: '保存一覧・スマホメニュー・経穴辞典を整理', href: '/tsubo', text: '保存一覧を最近の5件に絞り、スマホのメニューを統一しました。経穴ページの重複するボタンを減らし、関連記事やフッターの表示も整理しました。' },
   { date: '2026-10-15', label: '本文・図解・理解度チェックを改善', href: '/curriculum/lecture-qiblood-2', text: '重なる説明を整理し、概念の比較や短い例から考える問題へ見直しました。同じ節の図解と挿絵の重複を減らし、WHO原資料で確認した定義と合谷の位置には、確認範囲と日付を掲載しています。' },
   { date: "2026-10-15", label: "講義の学習と復習に集中する構成へ", href: "/learn/review", text: "国試向けの専用演習を終了し、講義の復習へ集約。解き直したときの復習予定と類題からの復帰を改善し、再訪時の入口、用語説明の操作、図の読み方を整えました。" },
   { date: '2026-10-12', label: 'ページの重複を減らし、検索と配穴メモを改善', href: '/learn', text: '講義と経穴の説明、学習案内、メニューを整理。用語検索では短い定義を先に表示し、配穴メモに無関係な属性が付く不具合を修正しました。' },

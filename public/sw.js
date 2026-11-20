@@ -1,5 +1,5 @@
 // はり太郎 Service Worker
-const CACHE_NAME = "haritaro-cache-v4-platform";
+const CACHE_NAME = "haritaro-cache-v5-platform";
 const OFFLINE_URLS = [
   "/",
   "/tsubo",
@@ -49,11 +49,12 @@ self.addEventListener("activate", (event) => {
 // フェッチ制御: ネットワークファースト ➜ 失敗時にキャッシュフォールバック
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
-  // 検索語、旧会員導線、広告認証の結果はキャッシュしない。
+  // 検索、旧会員導線、臨床記録、広告認証はキャッシュ対象外。
   if (
     event.request.method !== "GET" ||
     url.origin !== self.location.origin ||
     /^\/(?:api|search|auth|login|account|checkout|pricing|notes|mynote)(?:\/|$)/.test(url.pathname) ||
+    /^\/clinical\/workspace(?:\/|$)/.test(url.pathname) ||
     url.pathname === "/ads.txt"
   ) {
     return;

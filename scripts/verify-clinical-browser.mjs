@@ -1,136 +1,122 @@
 import assert from 'node:assert/strict';
-import fs from 'node:fs/promises';
-import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.HARITARO_PLAYWRIGHT_MODULE || 'playwright');
-const origin = process.argv[2] || 'http://127.0.0.1:3038';
-const output = path.resolve(process.argv[3] || '../audits/2026-10-04/clinical');
-await fs.mkdir(output, { recursive: true });
-const browser = await chromium.launch({ channel: process.platform === 'win32' ? 'msedge' : undefined, headless: true });
-const context = await browser.newContext({ viewport: { width: 1280, height: 850 }, locale: 'ja-JP', timezoneId: 'Asia/Tokyo' });
-const page = await context.newPage();
+const { createDataLoader } = require('./data-loader.cjs');
+const load = createDataLoader({ Intl });
+const { emptyClinicalEncounter, CLINICAL_ENCOUNTER_KEY } = load('src/utils/clinicalEncounter');
+const { clinicalStorageKeys, LEGACY_PATIENT_NOTES_KEY } = load('src/utils/clinicalStorage');
+const { CLINICAL_COMPLAINTS } = load('src/data/clinicalWorkflow');
+const origin = new URL(process.argv[2] || 'http://127.0.0.1:3038');
+const sample = 'TEST-CLINICAL-PAUSE';
+const workspace = '/clinical/workspace?complaint=shoulder&example=private';
+const clinicalLinks = ['/cases', '/simulator', '/practice/haiketsu', '/diagnosis', '/diagnosis?tab=gorou'];
+const draftStorage = {
+  [CLINICAL_ENCOUNTER_KEY]: JSON.stringify({ ...emptyClinicalEncounter(), patientIdentifier: sample }),
+  [CLINICAL_ENCOUNTER_KEY + ':former-account']: JSON.stringify({ ...emptyClinicalEncounter(), patientIdentifier: sample + '-account' }),
+};
+const savedStorage = {
+  [LEGACY_PATIENT_NOTES_KEY]: JSON.stringify([{ id: sample + '-legacy' }]),
+  [clinicalStorageKeys().notes]: JSON.stringify([{ id: sample + '-guest' }]),
+  [clinicalStorageKeys('former-account').memos]: JSON.stringify([{ id: sample + '-account' }]),
+};
+const browser = await chromium.launch({
+  ...(process.env.HARITARO_CHROMIUM_PATH ? { executablePath: process.env.HARITARO_CHROMIUM_PATH } : { channel: process.platform === 'win32' ? 'msedge' : undefined }),
+  headless: true,
+});
 const errors = [];
-const checks = [];
-page.on('pageerror', error => errors.push(error.message));
-page.on('dialog', dialog => dialog.accept());
-async function goto(route) {
-  const response = await page.goto(origin + route);
-  assert.equal(response.status(), 200, route);
+
+async function trackedPage(width, colorScheme) {
+  const context = await browser.newContext({
+    viewport: { width, height: 850 }, locale: 'ja-JP', colorScheme,
+    isMobile: width < 500, hasTouch: width < 500, reducedMotion: 'reduce', serviceWorkers: 'block',
+  });
+  await context.route(/^https?:/, route => new URL(route.request().url()).origin === origin.origin ? route.continue() : route.abort());
+  const page = await context.newPage();
+  page.setDefaultTimeout(10000);
+  page.on('pageerror', error => errors.push(error.message));
+  return page;
 }
-async function noOverflow(label) {
-  const size = await page.evaluate(() => ({ client: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth }));
-  assert(size.scroll <= size.client + 1, `${label}: ${JSON.stringify(size)}`);
-  checks.push({ label, ...size });
+
+async function open(page, route) {
+  const response = await page.goto(new URL(route, origin).href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  assert.equal(response?.status(), 200, route);
+  await page.locator('main h1').first().waitFor();
 }
+
+async function noRetiredEntry(page) {
+  const retiredLinks = page.locator('a[href*="/clinical/workspace"], a[href*="#pattern-exercise"], a[href="/notes"]');
+  assert.equal(await retiredLinks.count(), 0, page.url());
+  assert.doesNotMatch(await page.locator('body').innerText(), /ミニ症例で見立てを練習|下書きを再開する|この主訴で記録を練習する|TEST-CLINICAL-PAUSE/);
+}
+
+async function checkClinical(page) {
+  await page.getByRole('heading', { name: 'はり太郎の臨床演習', exact: true, level: 1 }).waitFor();
+  await page.getByRole('heading', { name: '主訴別ガイド', exact: true }).waitFor();
+  assert.equal(await page.locator('#chief-complaints a[href^="/clinical/symptoms/"]').count(), CLINICAL_COMPLAINTS.length);
+  for (const href of clinicalLinks) assert.equal(await page.locator('main a[href="' + href + '"]').count(), 1, href);
+  await noRetiredEntry(page);
+  const fits = await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1);
+  assert(fits, 'Clinical landing page overflows at ' + page.viewportSize().width + 'px');
+}
+
 try {
-  await goto('/clinical');
-  await page.getByRole('heading', { name: '主訴から調べる', exact: true }).waitFor();
-  await noOverflow('clinical desktop');
-  await page.screenshot({ path: path.join(output, 'clinical-desktop.png') });
-  for (const slug of ['shoulder','back','headache','sleep','digestion','fatigue']) {
-    await goto('/clinical/symptoms/' + slug);
-    await page.getByRole('link', { name: 'この主訴から所見を整理する →' }).waitFor();
-    assert.equal(await page.locator('h1').count(), 1);
-    checks.push({ guide: slug, status: 'passed' });
+  const desktop = await trackedPage(1440, 'light');
+  await open(desktop, '/clinical');
+  await checkClinical(desktop);
+  for (const method of ['GET', 'HEAD']) {
+    const redirect = await desktop.request.fetch(new URL(workspace, origin).href, { method, maxRedirects: 0 });
+    assert.equal(redirect.status(), 307);
+    assert.equal(new URL(redirect.headers().location, origin).href, new URL('/clinical', origin).href);
+    assert.match(redirect.headers()['cache-control'], /\bno-store\b/);
   }
-  await page.setViewportSize({ width: 390, height: 844 });
-  await goto('/clinical');
-  await noOverflow('clinical mobile 390');
-  await page.screenshot({ path: path.join(output, 'clinical-mobile.png') });
-  await goto('/clinical/workspace?complaint=shoulder');
-  await page.getByLabel('匿名ID', { exact: true }).fill('TEST-CLINICAL-001');
-  await page.getByLabel('主訴', { exact: true }).fill('右回旋時の首痛');
-  await page.getByLabel('記録日', { exact: true }).fill('2026-10-04');
-  await page.getByLabel('安全確認の状態', { exact: true }).selectOption('reviewed');
-  await page.getByLabel('確認した項目・受診状況', { exact: true }).fill('経過と神経症状を確認した架空の検証記録');
-  await noOverflow('workspace mobile 390');
-  await page.getByRole('button', { name: '2. 四診所見', exact: true }).click();
-  await page.getByLabel('疲労・気力低下の確認状態').selectOption('present');
-  await page.getByLabel('冷え・温めると軽減の確認状態').selectOption('absent');
-  await page.getByLabel('腹部・経穴反応・舌脈の補足、その他の所見').fill('舌脈は未確認。右回旋時の痛みを確認。');
-  await page.getByRole('button', { name: '3. 候補・治法', exact: true }).click();
-  await page.getByRole('checkbox', { name: '脾気虚', exact: true }).check();
-  await page.getByRole('checkbox', { name: '選択した候補だけを並べて比較' }).check();
-  assert.equal(await page.locator('section[aria-label="候補・治法"] article').count(), 1);
-  await page.getByLabel('候補の採用・保留理由と矛盾する所見').fill('疲労は支持材料。消化器所見は未確認のため保留。');
-  await page.getByLabel('検討する治法').fill('不足所見を確認してから検討');
-  await page.getByRole('heading', { name: '候補・治法', exact: true }).scrollIntoViewIfNeeded();
-  await page.screenshot({ path: path.join(output, 'candidate-comparison-mobile.png') });
-  await page.getByRole('button', { name: '4. 配穴の理由', exact: true }).click();
-  await page.getByLabel('経穴名・コードで絞る').fill('LI4');
-  await page.getByLabel('経穴を選ぶ', { exact: true }).selectOption('LI4');
-  await page.getByRole('button', { name: '選んだ経穴を追加' }).click();
-  await page.getByLabel('今回の役割').selectOption('branch');
-  await page.getByLabel('この経穴を選ぶ理由').fill('主訴と所見を踏まえた検討理由');
-  await page.getByLabel('代替案・変更する条件').fill('生活への影響と経過を再評価');
-  await page.getByLabel('経穴名・コードで絞る').fill('LU2');
-  await page.getByLabel('経穴を選ぶ', { exact: true }).selectOption('LU2');
-  await page.getByRole('button', { name: '選んだ経穴を追加' }).click();
-  await page.getByRole('link', { name: '位置・注意事項を確認', exact: true }).first().click();
-  await page.waitForURL('**/tsubo/li4');
-  await page.getByRole('link', { name: '所見・記録の作業画面へ戻る →', exact: true }).click();
-  await page.waitForURL('**/clinical/workspace');
-  assert.equal(await page.getByLabel('この経穴を選ぶ理由').first().inputValue(), '主訴と所見を踏まえた検討理由');
-  await page.getByRole('link', { name: '既存の配穴構成ツールでも確認する →', exact: true }).click();
-  await page.waitForURL('**/practice/haiketsu');
-  await page.getByRole('button', { name: '選択中の配穴を作業中の記録に転記', exact: true }).click();
-  await page.getByRole('link', { name: '所見・記録の作業画面へ戻る →', exact: true }).click();
-  await page.waitForURL('**/clinical/workspace');
-  assert.equal(await page.getByLabel('この経穴を選ぶ理由').count(), 2, '32-point tool must preserve a point outside its palette');
-  assert.equal(await page.getByLabel('この経穴を選ぶ理由').first().inputValue(), '主訴と所見を踏まえた検討理由');
-  await page.getByRole('button', { name: '5. 記録・再評価', exact: true }).click();
-  await page.getByLabel('比較する指標').fill('右回旋時の痛み');
-  await page.getByLabel('施術前の程度（0：支障なし〜10：最も強い）').fill('6');
-  await page.getByLabel('施術直後の程度（未評価なら空欄）').fill('3');
-  await page.getByLabel('生活動作・機能の指標').fill('振り向く動作を同じ条件で確認');
-  await page.getByLabel('見立ての修正・改善が乏しい場合の検討').fill('次回、持続する変化を確認して再検討');
-  await page.getByLabel('施術直後の反応・有害な反応').fill('検証用：直後の変化と有害な反応を別々に記録');
-  await page.getByLabel('次回確認すること・生活の助言・受診結果').fill('次回来院時も同じ動作を確認');
-  await page.reload();
-  assert.equal(await page.getByLabel('比較する指標').inputValue(), '右回旋時の痛み');
-  await page.getByRole('button', { name: '臨床ノートへ転記して確認・保存 →' }).click();
-  await page.waitForURL('**/notes');
-  await page.getByRole('button', { name: '臨床ノートを保存', exact: true }).waitFor();
-  assert.equal(await page.getByPlaceholder('例: PT-001, K.S様').inputValue(), 'TEST-CLINICAL-001');
-  assert.match(await page.getByPlaceholder('例: 太衝・風池に瀉法。置針15分。百会に軽微な雀啄。').inputValue(), /冷え・温めると軽減：なし/);
-  assert.equal(await page.getByPlaceholder('例: 太衝、百会（空欄の場合はツボ欄のない養生シートになります）').inputValue(), '');
-  await page.getByRole('button', { name: '臨床ノートを保存', exact: true }).click();
-  await page.locator('#clinical-timeline tbody').waitFor();
-  assert.match(await page.locator('#clinical-timeline tbody').innerText(), /右回旋時の痛み/);
-  await noOverflow('notes mobile 390');
-  await page.locator('#clinical-timeline').scrollIntoViewIfNeeded();
-  await page.screenshot({ path: path.join(output, 'notes-timeline-mobile.png') });
-  await page.getByRole('button', { name: '前回から新しい来院記録へ →' }).click();
-  await page.waitForURL('**/clinical/workspace');
-  assert.equal(await page.getByLabel('匿名ID', { exact: true }).inputValue(), 'TEST-CLINICAL-001');
-  assert.equal(await page.getByLabel('安全確認の状態').inputValue(), 'unknown');
-  await page.getByRole('button', { name: '4. 配穴の理由', exact: true }).click();
-  await page.getByRole('alert').filter({ hasText: '配穴の検討前に安全確認' }).waitFor();
-  await page.getByRole('button', { name: '5. 記録・再評価', exact: true }).click();
-  assert.equal(await page.getByLabel('施術前の程度（0：支障なし〜10：最も強い）').inputValue(), '');
-  assert.equal(await page.getByLabel('比較する指標').inputValue(), '右回旋時の痛み');
-  await page.setViewportSize({ width: 320, height: 780 });
-  await noOverflow('workspace mobile 320');
-  await page.screenshot({ path: path.join(output, 'workspace-mobile-320.png') });
-  await page.emulateMedia({ colorScheme: 'dark' });
-  await page.screenshot({ path: path.join(output, 'workspace-mobile-dark.png') });
-  await goto('/simulator#revision-training');
-  await page.getByLabel('演習を選ぶ').selectOption('2');
-  await page.getByRole('radio', { name: '施術を保留し、緊急の医療評価を優先して、症状と発症時刻を記録する', exact: true }).check();
-  await page.getByText('確認したい考え方です。', { exact: true }).waitFor();
-  await noOverflow('revision exercise mobile 320');
-  await goto('/curriculum/lecture-yinyang-1');
-  await page.getByRole('heading', { name: 'この講義を実践につなぐ' }).waitFor();
-  checks.push({ flow: 'observations→points→dictionary→reload→note→followup→safety reset', status: 'passed' });
+  await desktop.context().close();
+
+  const mobile = await trackedPage(390, 'dark');
+  await open(mobile, '/clinical');
+  await mobile.evaluate(({ draftStorage, savedStorage }) => {
+    for (const [key, value] of Object.entries(draftStorage)) sessionStorage.setItem(key, value);
+    for (const [key, value] of Object.entries(savedStorage)) localStorage.setItem(key, value);
+    localStorage.setItem('haritaro_nav_config_v1', JSON.stringify({
+      version: 1, items: ['workspace', 'haiketsu', 'tsubo', 'library'], preset: 'clinician', updatedAt: '2026-11-20',
+    }));
+  }, { draftStorage, savedStorage });
+  await open(mobile, workspace);
+  assert.equal(new URL(mobile.url()).pathname + new URL(mobile.url()).search, '/clinical');
+  await checkClinical(mobile);
+
+  const bottomNav = mobile.getByRole('navigation', { name: 'モバイル下部ナビゲーション' });
+  await bottomNav.getByRole('link', { name: '臨床演習' }).waitFor();
+  assert.deepEqual(await bottomNav.locator('a').evaluateAll(links => links.map(link => link.getAttribute('href'))),
+    ['/clinical', '/practice/haiketsu', '/tsubo', '/library']);
+  await bottomNav.getByRole('button', { name: 'その他メニューを開く' }).click();
+  await mobile.getByRole('navigation', { name: 'サイトメニュー' }).waitFor();
+  await noRetiredEntry(mobile);
+
+  const destinations = [
+    ...CLINICAL_COMPLAINTS.map(item => '/clinical/symptoms/' + item.slug),
+    ...clinicalLinks, '/tsubo', '/tsubo/li4', '/curriculum/lecture-diagnosis-11', '/updates', '/editorial-policy',
+    '/search?q=' + encodeURIComponent('臨床記録'),
+  ];
+  for (const route of destinations) {
+    await open(mobile, route);
+    await noRetiredEntry(mobile);
+  }
+
+  const remaining = await mobile.evaluate(({ sessions, saved }) => ({
+    draftStorage: Object.fromEntries(sessions.map(key => [key, sessionStorage.getItem(key)])),
+    savedStorage: Object.fromEntries(saved.map(key => [key, localStorage.getItem(key)])),
+  }), { sessions: Object.keys(draftStorage), saved: Object.keys(savedStorage) });
+  assert.deepEqual(remaining, { draftStorage, savedStorage });
+
+  for (const file of ['/llms.txt', '/llms-full.txt', '/sitemap.xml']) {
+    const response = await mobile.request.get(new URL(file, origin).href);
+    assert.equal(response.status(), 200);
+    assert.doesNotMatch(await response.text(), /\/clinical\/workspace\b|#pattern-exercise\b/);
+  }
   assert.deepEqual(errors, []);
-  await fs.writeFile(path.join(output, 'browser-results.json'), JSON.stringify({ checkedAt: new Date().toISOString(), origin, checks, pageErrors: errors }, null, 2));
-  console.log(JSON.stringify({ passed: true, checks: checks.length, screenshots: output, pageErrors: errors }));
-} catch (error) {
-  await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {});
-  console.error(error);
-  console.error('URL:', page.url());
-  console.error('Visible controls:', await page.locator('button,input,select,textarea').evaluateAll(elements => elements.map(element => ({ tag: element.tagName, text: element.textContent?.slice(0,100), placeholder: element.getAttribute('placeholder'), aria: element.getAttribute('aria-label') }))).catch(() => []));
-  process.exitCode = 1;
-} finally { await browser.close(); }
+  console.log('Clinical browser checks passed: desktop and mobile landing, temporary bookmark redirect, updated navigation and search, six guides, available exercises, and byte-for-byte retention of synthetic drafts and saved records.');
+} finally {
+  await browser.close();
+}

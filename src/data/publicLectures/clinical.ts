@@ -222,7 +222,6 @@ export const clinicalArticles: Record<string, PublicLectureArticle> = {
       {
         heading: "評価を見直す条件まで計画に入れる",
         paragraphs: ["Pは計画です。たとえば「頭痛が出る時間と、胃もたれがある日の食事の前後を確かめる」と書きます。新しい症状や医学的な評価が加わったら、いつ、何を見直すかも残します。原因や施術方法を、この架空の短い記録だけで決める必要はありません。"],
-        links: [{ href: "/clinical/workspace", label: "模擬症例の所見を記録する" }],
       },
     ],
   },

@@ -184,7 +184,7 @@ export default function NavCustomizeModal({
                   <span>標準</span>
                 </div>
                 <div className="text-sm text-[#59615D] dark:text-[#AFBDC8] mt-0.5 leading-relaxed">
-                  学ぶ・経穴・検索・ノート
+                  ツボ図鑑・症状・東洋医学・検索
                 </div>
               </button>
 
@@ -203,7 +203,7 @@ export default function NavCustomizeModal({
                   <span>学生向け</span>
                 </div>
                 <div className="text-sm text-[#59615D] dark:text-[#AFBDC8] mt-0.5 leading-relaxed">
-                  学ぶ・復習・経穴・ノート
+                  東洋医学・復習・経穴・症状
                 </div>
               </button>
 
@@ -222,7 +222,7 @@ export default function NavCustomizeModal({
                   <span>臨床家向け</span>
                 </div>
                 <div className="text-sm text-[#59615D] dark:text-[#AFBDC8] mt-0.5 leading-relaxed">
-                  臨床記録・配穴の練習・経穴・ノート
+                  臨床演習・配穴の練習・経穴・症例
                 </div>
               </button>
             </div>

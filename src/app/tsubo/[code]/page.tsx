@@ -1,6 +1,5 @@
 import { SHARED_OG_IMAGES, acupointPageTitle, SITE_NAME } from "@/config/seo";
 import { Metadata } from "next";
-import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
 import { notFound, permanentRedirect } from "next/navigation";
 import Link from "next/link";
 import { 
@@ -769,9 +768,6 @@ export default async function AcupointDetailPage({ params }: Props) {
             </div>
           )}
         </div>
-
-        {/* 作成中の臨床記録がある場合の文脈を保つ */}
-        <ClinicalToolBridge />
 
         <AuthorSupervisorCard />
 

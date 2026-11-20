@@ -18,7 +18,6 @@ import {
   analyzePrescription, 
   OVERDOSE_PRESETS,
 } from "@/data/haiketsuData";
-import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
 import PrescriptionScoringGuide from "@/components/learning/PrescriptionScoringGuide";
 import { getPrescriptionCountLabel } from "@/utils/prescriptionScorePresentation";
 
@@ -27,13 +26,6 @@ export default function HaiketsuPracticePage() {
   const [selectedPointIds, setSelectedPointIds] = useState<string[]>(["taishou", "gokoku"]); // 初期: 四関穴
   const [prescriptionTitle, setPrescriptionTitle] = useState("合谷と太衝の配穴例");
   const [rationaleText, setRationaleText] = useState("合谷と太衝を組み合わせた教材例です。伝統的な分類と、各穴を選ぶ理由を確認します。");
-  const restoreClinicalPoints = useCallback((codes: string[]) => {
-    const roles = Object.values(ACUPOINT_ROLES).filter(point => codes.includes(point.code));
-    setSelectedPointIds(roles.map(point => point.id));
-    setPrescriptionTitle("作業中の配穴を検討");
-    setRationaleText("ツボを選んだ理由は、「臨床記録の練習」で確認・編集できます。");
-  }, []);
-
   const selectIncomingPoint = useCallback((id: string) => {
     const point = ACUPOINT_ROLES[id];
     if (!point) return;
@@ -78,7 +70,6 @@ export default function HaiketsuPracticePage() {
   return (
     <div className="clinical-exercises clinical-haiketsu min-h-screen">
       <Suspense fallback={null}><IncomingAcupoint onSelect={selectIncomingPoint} /></Suspense>
-      <ClinicalToolBridge selectedCodes={selectedPointIds.map(id => ACUPOINT_ROLES[id]?.code).filter(Boolean)} editableCodes={Object.values(ACUPOINT_ROLES).map(point => point.code)} onRestore={restoreClinicalPoints} />
       <div className="page-layout page-layout--intro">
         <PageIntro compact eyebrow="基本32穴の配穴演習" title="配穴の練習" art="points" description="経穴を選び、組み合わせと選んだ理由を確かめます。教材例からも始められます。">
           <nav className="reader-navigation mt-4" aria-label="配穴演習の進め方">

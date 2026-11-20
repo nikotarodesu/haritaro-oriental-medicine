@@ -61,11 +61,11 @@ const browser = {
   matchMedia() { throw Error('The bottom navigation must use the actual shared header layout'); },
 };
 const Link = () => null, Customize = () => null;
-const customConfig = { ...navigation.DEFAULT_NAV_CONFIG, items: ['workspace', 'haiketsu', 'tsubo', 'library'] };
+const customConfig = { ...navigation.DEFAULT_NAV_CONFIG, items: ['clinical', 'haiketsu', 'tsubo', 'library'] };
 let navHeight = 72;
 const bottom = client('src/components/navigation/MobileBottomNav.tsx', {
   'next/link': { __esModule: true, default: Link },
-  'next/navigation': { usePathname: () => '/clinical/workspace', useSearchParams: () => new URLSearchParams() },
+  'next/navigation': { usePathname: () => '/clinical', useSearchParams: () => new URLSearchParams() },
   '@/config/navigationItems': { ...navigation, loadNavUserConfig: () => customConfig },
   '@/utils/siteMenu': menuEvents,
   '@/hooks/useViewportLayout': { useViewportLayout() {} },
@@ -81,7 +81,7 @@ const bottom = client('src/components/navigation/MobileBottomNav.tsx', {
 bottom.boundaryChild(); bottom.render(); timers.splice(0).forEach(callback => callback()); bottom.render();
 assert.equal(styles.get('--mobile-nav-height'), '72px', '1180px compact layouts preserve the lower navigation gutter');
 const customLinks = () => nodes(bottom.tree()).filter(node => node.type === Link).map(node => node.props.href).join(',');
-assert.equal(customLinks(), '/clinical/workspace,/practice/haiketsu,/tsubo,/library');
+assert.equal(customLinks(), '/clinical,/practice/haiketsu,/tsubo,/library');
 for (const width of [768, 820, 1024, 1100, 1180, 1200]) {
   browser.innerWidth = width; browser.dispatchEvent({ type: 'resize' }); bottom.render();
   assert.equal(styles.get('--mobile-nav-height'), '72px', `The compact header retains its lower gutter at ${width}px, including enlarged-text layouts`);
@@ -95,7 +95,7 @@ documentElement.dataset.navigationLayout = 'compact'; browser.innerWidth = 1024;
 assert.equal(styles.get('--mobile-nav-height'), '72px');
 navHeight = 84; sizeObservers.forEach(observer => observer.callback());
 assert.equal(styles.get('--mobile-nav-height'), '84px', 'Larger labels update the measured lower gutter');
-assert.equal(customLinks(), '/clinical/workspace,/practice/haiketsu,/tsubo,/library', 'Rotation and font changes preserve all four custom slots');
+assert.equal(customLinks(), '/clinical,/practice/haiketsu,/tsubo,/library', 'Rotation and font changes preserve all four custom slots');
 bottom.unmount();
 
 // Reuse exactly the published anatomy filter; an undrawn layer and the withheld needle

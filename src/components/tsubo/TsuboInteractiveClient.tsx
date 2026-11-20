@@ -29,7 +29,6 @@ import {
 import BodyMapSvg from "@/components/tsubo/BodyMapSvg";
 import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
 import ClinicalPairsSection from "@/components/ClinicalPairsSection";
-import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
 import { normalizeSearchText } from "@/utils/search";
 import { prepareAcupointSearch, getAcupointMatchReason } from "@/utils/acupointSearch";
 
@@ -277,7 +276,6 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
 
   return (
     <div className="tsubo-search-layout atlas-search-layout">
-      <ClinicalToolBridge />
       {/* 大型検索バー（最優先配置） */}
       <section role="search" aria-label="ツボ図鑑内の検索" className="atlas-search-panel">
         <label htmlFor="tsubo-search" className="atlas-search-label">

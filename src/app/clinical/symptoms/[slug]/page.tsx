@@ -19,10 +19,7 @@ export default async function Page({ params }: Props) {
   if (!item) notFound();
   return <article className="page-layout page-layout--reading space-y-7">
     <Link className="inline-flex min-h-11 items-center gap-2 text-sm page-muted" href="/clinical"><ArrowLeft aria-hidden="true" className="h-4 w-4" />臨床演習に戻る</Link>
-    <PageIntro compact art="care" eyebrow="主訴別確認ガイド" title={item.title} description={item.summary}>
-      <div className="page-actions"><Link className="page-primary-action" href={`/clinical/workspace?complaint=${item.slug}`}><NotebookPen aria-hidden="true" />この主訴で記録を練習する<ArrowRight aria-hidden="true" /></Link></div>
-      <details className="page-help"><summary>下書きがあるとき</summary><p className="text-sm leading-relaxed">作業中の下書きが先に開きます。別の症例を書き始めるときは「新しい演習を始める」を選んでください。</p></details>
-    </PageIntro>
+    <PageIntro compact art="care" eyebrow="主訴別確認ガイド" title={item.title} description={item.summary} />
     <nav aria-label="ガイドの項目" className="grid grid-cols-2 gap-3 sm:grid-cols-4">
       {([{ href: '#questions', label: '問診の項目', Icon: ClipboardList }, { href: '#patterns', label: '候補を比べる', Icon: GitCompareArrows }, { href: '#record', label: '配穴の理由', Icon: NotebookPen }, { href: '#review', label: '次回の確認', Icon: RefreshCw }]).map(({ href, label, Icon }, index) => <a href={href} key={href} className="page-link-card page-link-card--stack !gap-2 !p-4"><Icon aria-hidden="true" /><span className="text-sm font-semibold"><span className="mr-2 page-muted">0{index + 1}</span>{label}</span></a>)}
     </nav>

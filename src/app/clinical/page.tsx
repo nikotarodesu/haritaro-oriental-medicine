@@ -6,7 +6,6 @@ import { ALL_NAV_ITEMS } from '@/config/navigationItems';
 import { pageSocialMetadata, SITE_ORIGIN } from '@/config/seo';
 import { ClinicalCheckArtwork, ClinicalHeroArtwork } from '@/components/clinical/ClinicalArtwork';
 import ClinicalDashboard from '@/components/clinical/ClinicalDashboard';
-import ClinicalPatternExercise from '@/components/clinical/ClinicalPatternExercise';
 import styles from '@/components/clinical/ClinicalPractice.module.css';
 import LearningCredits from '@/components/common/LearningCredits';
 import PublicLectureIndex from '@/components/curriculum/PublicLectureIndex';
@@ -110,22 +109,14 @@ export default function ClinicalLandingPage() {
         </ul>
       </section>
 
-      <ClinicalPatternExercise />
+      <ClinicalDashboard />
 
       <section className={styles.reading} aria-labelledby="practice-reading">
         <h2 id="practice-reading" className={styles.sectionTitle}>問診・四診・配穴の講義</h2>
         <PublicLectureIndex series="practice" />
       </section>
-      <ClinicalDashboard />
       <section aria-labelledby="clinical-help-heading" className="clinical-help">
-        <h2 id="clinical-help-heading">利用・保存について</h2>
-        <details className="rounded-xl border border-frame bg-panel px-4">
-          <summary className={`min-h-11 cursor-pointer py-3 font-semibold ${focusClass}`}>下書きの保存先と入力できる情報</summary>
-          <div className="space-y-3 pb-4 text-sm leading-relaxed ui-muted">
-            <p>作業中の下書きは、このブラウザのタブに一時保存されます。氏名・電話番号・住所は入力せず、患者番号などの記号を使ってください。自由記述にも本人を特定できる情報を含めないでください。</p>
-            <Link href="/privacy" className={`inline-flex min-h-11 items-center underline ${focusClass}`}>記録と個人情報の取り扱い</Link>
-          </div>
-        </details>
+        <h2 id="clinical-help-heading">教材について</h2>
         <details className="rounded-xl border border-frame bg-panel px-4">
           <summary className={`min-h-11 cursor-pointer py-3 font-semibold ${focusClass}`}>教材の出典・確認範囲</summary>
           <p className="pb-4 text-sm leading-relaxed ui-muted">教材は新版東洋医学概論・経絡経穴概論、WHO標準経穴部位、中医基礎理論などを参照しています。全件の医学記述の照合・専門家監修は未完了です。伝統理論の分類と医学的な評価を区別して利用してください。</p>

@@ -53,7 +53,7 @@ assert.deepEqual(Array.from(history), ['/diagnosis?tab=gorou', '/diagnosis', '/l
 const bad = JSON.stringify(['https://evil.example/notes?tab=learning', '//evil.example/notes', '/notes/patient-id', 4, {}, null, '/missing']);
 assert.equal(readRecentToolPaths(bad).length, 0);
 assert.equal(JSON.stringify(updateRecentToolPaths(old, '/notes/patient-id', 'learning')), '["/diagnosis","/library","/tsubo"]', 'unlisted routes cannot add patient-specific paths');
-assert(!RECENT_TOOL_CATALOG.some(tool => tool.href.startsWith('/notes')));
+assert(!RECENT_TOOL_CATALOG.some(tool => /^\/(?:notes|clinical\/workspace)\b/.test(tool.href)));
 const migratedExamHistory = readRecentToolPaths(JSON.stringify([
   '/kokushi?examId=kokushi-33-toyo-71&answer=private#old-question',
   '/learn/review?resumeReview=private#learning-review', '/tsubo', '/notes', '/library',
@@ -73,20 +73,20 @@ const unchanged = configuredNav(['simulator', 'haiketsu', 'tsubo', 'notes']);
 assert.equal(JSON.stringify(unchanged.items), '["simulator","haiketsu","tsubo","symptoms"]', 'Existing non-exam custom navigation stays unchanged');
 assert.equal(unchanged.updatedAt, '2026-10-03', 'Migration does not invent a recent user edit date');
 
-assert.equal(NAV_PRESETS.clinician.items[0], 'workspace', 'Clinician shortcuts begin with the complete record workspace');
+assert.equal(NAV_PRESETS.clinician.items[0], 'clinical', 'Clinician shortcuts begin with the public clinical home');
 const oldClinician = configuredNav(['simulator', 'haiketsu', 'tsubo', 'notes'], 'clinician');
-assert.equal(JSON.stringify(oldClinician.items), '["workspace","haiketsu","tsubo","cases"]', 'Only an unchanged legacy clinician preset gains the workspace shortcut');
+assert.equal(JSON.stringify(oldClinician.items), '["clinical","haiketsu","tsubo","cases"]', 'The unchanged legacy clinician preset opens the clinical home');
 assert.equal(oldClinician.updatedAt, '2026-10-03');
 assert.equal(JSON.stringify(configuredNav(['notes', 'haiketsu', 'tsubo', 'simulator'], 'clinician').items), '["symptoms","haiketsu","tsubo","simulator"]', 'A custom clinician arrangement is never silently replaced');
+assert.equal(JSON.stringify(configuredNav(['haiketsu', 'workspace', 'tsubo', 'library']).items), '["haiketsu","clinical","tsubo","library"]', 'A workspace shortcut opens the clinical home and keeps the other choices');
+assert.equal(JSON.stringify(configuredNav(['clinical', 'workspace', 'tsubo', 'library']).items), '["clinical","tsubo","library","symptoms"]', 'An existing clinical home shortcut stays unique');
 for (const route of ['/clinical', '/clinical/workspace', '/clinical/symptoms/neck-shoulder', '/simulator/compare', '/practice/haiketsu', '/tsubo/compare']) assert.equal(getNavigationSection(route), 'clinical', route + ' belongs to the clinical category');
 assert.equal(getNavigationSection('/notes'), null, 'The retired notebook is outside public navigation');
 assert.equal(getNavigationSection('/tsubo/LI4'), 'dictionary');
 assert.equal(getNavigationSection('/curriculum/lecture-intro-1'), 'learn');
 assert.equal(getNavigationSection('/clinical-not-a-route'), null, 'Category matching respects route boundaries');
-assert(isNavigationItemActive('workspace', '/clinical/workspace'));
 assert(!isNavigationItemActive('clinical', '/clinical/workspace'));
 assert(isNavigationItemActive('clinical', '/clinical'));
-assert(!isNavigationItemActive('workspace', '/clinical'));
 assert(isNavigationItemActive('tsubo_compare', '/tsubo/compare'));
 assert(!isNavigationItemActive('tsubo', '/tsubo/compare'), 'The comparison page does not select the point dictionary at the same time');
 assert(isNavigationItemActive('clinical_guides', '/clinical/symptoms/neck-shoulder'));

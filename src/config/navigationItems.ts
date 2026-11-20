@@ -12,7 +12,6 @@ import {
   SlidersHorizontal, 
   BookOpen, 
   Library, 
-  FileText,
   HeartPulse,
   LucideIcon
 } from "lucide-react";
@@ -20,7 +19,6 @@ import {
 export type NavItemId =
   | "home"
   | "clinical"
-  | "workspace"
   | "clinical_guides"
   | "tsubo_compare"
   | "curriculum"
@@ -49,10 +47,7 @@ export interface NavItemDefinition {
 
 export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   clinical: {
-    id: "clinical", label: "臨床ホーム", shortLabel: "臨床", description: "新しい記録・下書き・主訴別ガイドの入口", icon: Home, href: "/clinical",
-  },
-  workspace: {
-    id: "workspace", label: "臨床記録", shortLabel: "記録", description: "安全確認から所見・配穴の理由・再評価を記録", icon: FileText, href: "/clinical/workspace",
+    id: "clinical", label: "臨床演習", shortLabel: "臨床", description: "症例・配穴の演習と主訴別ガイド", icon: Home, href: "/clinical",
   },
   clinical_guides: {
     id: "clinical_guides", label: "主訴別ガイド", shortLabel: "主訴", description: "主訴ごとに確認したい項目を調べる", icon: BookOpen, href: "/clinical#chief-complaints",
@@ -177,12 +172,11 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
 
 /** Everyday destinations shared by the header and clinical home. */
 export const CLINICAL_PRIMARY_ITEMS = [
-  ALL_NAV_ITEMS.workspace,
   ALL_NAV_ITEMS.clinical_guides,
   ALL_NAV_ITEMS.tsubo_compare,
 ] as const satisfies readonly NavItemDefinition[];
 
-/** Practice is a separate, optional step from working on a record. */
+/** Exercises shown under the optional practice menu. */
 export const CLINICAL_PRACTICE_ITEMS = [
   ALL_NAV_ITEMS.simulator,
   ALL_NAV_ITEMS.haiketsu,
@@ -191,7 +185,6 @@ export const CLINICAL_PRACTICE_ITEMS = [
 
 /** Retained for existing consumers; public menus use the concise lists above. */
 export const CLINICAL_NAV_GROUPS = [
-  { id: "record", label: "記録する", items: ["workspace"] },
   { id: "lookup", label: "調べる", items: ["clinical_guides", "tsubo_compare"] },
   { id: "practice", label: "練習する", items: ["simulator", "haiketsu", "cases"] },
 ] as const satisfies readonly { id: string; label: string; items: readonly NavItemId[] }[];
@@ -209,7 +202,6 @@ export function isNavigationItemActive(id: NavItemId, pathname: string, searchPa
   if (id === "search") return false;
   if (id === "clinical") return pathname === "/clinical";
   if (id === "clinical_guides") return pathname.startsWith("/clinical/symptoms/");
-  if (id === "workspace") return pathname === "/clinical/workspace";
   if (id === "curriculum") return pathname !== "/learn/review" && (pathname.startsWith("/learn") || pathname.startsWith("/curriculum"));
   if (id === "review" || id === "kokushi") return pathname === "/learn/review";
   if (id === "diagnosis") return pathname === "/diagnosis" && searchParams?.get("tab") !== "gorou";
@@ -236,8 +228,8 @@ export const NAV_PRESETS: Record<NavPresetType, { name: string; description: str
   },
   clinician: {
     name: "臨床家セット",
-    description: "臨床記録、配穴演習、ツボ図鑑、症例演習",
-    items: ["workspace", "haiketsu", "tsubo", "cases"],
+    description: "臨床演習、配穴演習、ツボ図鑑、症例演習",
+    items: ["clinical", "haiketsu", "tsubo", "cases"],
   },
 };
 
@@ -271,7 +263,7 @@ export function loadNavUserConfig(): NavUserConfig {
     }
     // 全アイテムIDが有効か検証
     const valid = parsed.items.every((id: unknown) => typeof id === "string" && (
-      id === "notes" || id === "clinical_interview" || Object.hasOwn(ALL_NAV_ITEMS, id)
+      id === "notes" || id === "clinical_interview" || id === "workspace" || Object.hasOwn(ALL_NAV_ITEMS, id)
     ));
     if (!valid) return DEFAULT_NAV_CONFIG;
     // 重複がないか検証
@@ -283,10 +275,11 @@ export function loadNavUserConfig(): NavUserConfig {
     const sourceItems = parsed.preset === "clinician" && parsed.items.every((id: string, index: number) => id === legacyClinician[index])
       ? NAV_PRESETS.clinician.items : parsed.items;
     // Keep the user's other choices when a legacy shortcut changes.
-    const migrated = [...new Set<NavItemId>(sourceItems.map((id: NavItemId | "notes" | "clinical_interview") => {
+    const migrated = [...new Set<NavItemId>(sourceItems.map((id: NavItemId | "notes" | "clinical_interview" | "workspace") => {
       if (id === "kokushi") return "review";
       if (id === "notes") return "symptoms";
       if (id === "clinical_interview") return "diagnosis";
+      if (id === "workspace") return "clinical";
       return id;
     }))];
     for (const id of DEFAULT_NAV_CONFIG.items) {

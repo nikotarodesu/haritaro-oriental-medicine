@@ -49,7 +49,8 @@ for (const lecture of lectures) {
   const markup = renderToStaticMarkup(React.createElement(Application, { lectureId: lecture.id, takeaway: lecture.summary }));
   assert(markup.includes('aria-label="この講義を実践につなぐ"'), lecture.id + ' rendered application');
   for (const value of [guide.situation, guide.check, guide.pitfall]) assert(markup.includes(value), lecture.id + ' guide content');
-  for (const href of [`/clinical/symptoms/${guide.complaintSlug}`, '/simulator#revision-training', '/clinical/workspace']) assert(markup.includes(`href="${href}"`), lecture.id + ' rendered destination');
+  for (const href of [`/clinical/symptoms/${guide.complaintSlug}`, '/simulator#revision-training']) assert(markup.includes(`href="${href}"`), lecture.id + ' rendered destination');
+  assert(!markup.includes('/clinical/workspace'), lecture.id + ' has no link to the paused workspace');
 }
 assert.equal(renderToStaticMarkup(React.createElement(Application, { lectureId: 'unknown', takeaway: '' })), '');
 assert.equal(lectures.filter(lecture => /^lecture-(intro|zangfu|meridians)-/.test(lecture.id)).length, 13);
@@ -105,7 +106,8 @@ assert.equal(failing('src/utils/clinicalEncounter.ts').writeClinicalEncounter(en
 assert.equal(failing('src/utils/draftNote.ts').saveDraftPatientNote(draft), false);
 
 const clinicalLanding = fs.readFileSync(path.resolve(__dirname, '../src/app/clinical/page.tsx'), 'utf8');
-assert.match(clinicalLanding, /氏名・電話番号・住所は入力せず/, 'The clinical entry still explains how to omit identifying details');
-assert.match(clinicalLanding, /タブに一時保存/, 'The clinical entry describes draft-only storage');
-assert.doesNotMatch(clinicalLanding, /\/notes|\/pricing|クラウド/);
-console.log('Clinical workflow passed: 94 lecture guides, 6 complaint routes, draft recovery, storage failures and draft handling guidance.');
+assert.doesNotMatch(clinicalLanding, /\/clinical\/workspace|\/notes|\/pricing|下書き|ClinicalPatternExercise/);
+const workspaceComponent = fs.readFileSync(path.resolve(__dirname, '../src/components/clinical/ClinicalWorkspace.tsx'), 'utf8');
+assert.match(workspaceComponent, /個人を特定する情報は入力しないでください/, 'The archived editor preserves privacy guidance for a future restoration');
+assert.match(workspaceComponent, /このタブに下書き/, 'The archived editor documents the original tab-scoped storage');
+console.log('Clinical workflow passed: 94 lecture guides, 6 complaint routes, draft recovery, storage failure handling and paused record entry.');

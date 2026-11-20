@@ -6,7 +6,6 @@ import PageIntro from "@/components/design/PageIntro";
 import { ArrowRight, BookOpen, AlertCircle } from "lucide-react";
 import ProgressiveCaseTraining from "@/components/learning/ProgressiveCaseTraining";
 import ThreeStageSimulator from "@/components/ThreeStageSimulator";
-import ClinicalToolBridge from "@/components/clinical/ClinicalToolBridge";
 import ClinicalRevisionTraining from "@/components/clinical/ClinicalRevisionTraining";
 import ClinicalComparisonExamples from "@/components/learning/ClinicalComparisonExamples";
 import type { ArticlePreview } from "@/data/articleData";
@@ -59,7 +58,6 @@ export default function SimulatorHub({ relatedArticles }: { relatedArticles: Art
 
   return (
     <div className="clinical-exercises space-y-8 sm:space-y-10">
-      <ClinicalToolBridge />
       <PageIntro compact eyebrow="所見から判断する練習" title="弁証の練習" art="practice" description="架空症例を考える、条件を選んで比べる。取り組みたい演習から始められます。" />
       <details className="page-help">
         <summary>演習で確認できること</summary>
