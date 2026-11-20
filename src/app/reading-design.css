@@ -62,7 +62,8 @@
 }
 
 .reader-back svg,
-.reader-contents svg {
+.reader-contents svg,
+.lecture-check > summary > svg {
   width: 1rem;
   height: 1rem;
   flex: none;
@@ -74,27 +75,30 @@
   background: var(--bg-washi);
 }
 
-.reader-contents summary {
+:is(.reader-contents, .lecture-check) > summary {
   display: flex;
-  min-height: 48px;
   align-items: center;
-  gap: .6rem;
-  padding: .55rem .8rem;
-  color: var(--accent-readable);
-  font-weight: 600;
   list-style: none;
   cursor: pointer;
 }
 
-.reader-contents summary::-webkit-details-marker {
+.reader-contents > summary {
+  min-height: 48px;
+  gap: .6rem;
+  padding: .55rem .8rem;
+  color: var(--accent-readable);
+  font-weight: 600;
+}
+
+:is(.reader-contents, .lecture-check) > summary::-webkit-details-marker {
   display: none;
 }
 
-.reader-contents summary > svg:last-child {
+:is(.reader-contents, .lecture-check) > summary > svg:last-child {
   margin-inline-start: auto;
 }
 
-.reader-contents[open] summary > svg:last-child {
+:is(.reader-contents, .lecture-check)[open] > summary > svg:last-child {
   transform: rotate(180deg);
 }
 
@@ -148,6 +152,14 @@
   margin-top: .75em;
 }
 
+.lecture-unit-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 .75rem;
+}
+
 .lecture-reading-position {
   display: flex;
   flex-wrap: wrap;
@@ -189,10 +201,10 @@
   border-top: 1px solid var(--border-washi);
 }
 
-.lecture-unit-subtitle {
-  font-size: 1.0625rem;
-  font-weight: 600;
-  line-height: 1.65;
+.lecture-unit-end {
+  display: grid;
+  min-width: 0;
+  gap: .65rem;
 }
 
 .lecture-unit-review {
@@ -202,6 +214,17 @@
   border-radius: var(--radius-control);
   background: var(--bg-washi);
   scroll-margin-block-start: .55rem;
+}
+
+@media (max-width: 359px) {
+  .reader-article--lecture[data-reading-unit] {
+    width: calc(100% - 1rem);
+    padding-inline: .625rem;
+  }
+
+  .lecture-unit-review {
+    padding-inline: .625rem;
+  }
 }
 
 .lecture-takeaways {
@@ -218,11 +241,28 @@
 }
 
 .lecture-check {
-  display: grid;
-  gap: .65rem;
-  margin-top: 1rem;
-  padding-top: .85rem;
+  margin-top: .65rem;
   border-top: 1px solid var(--border-subtle);
+  scroll-margin-block-start: .55rem;
+}
+
+.lecture-check > summary {
+  min-height: 44px;
+  gap: .5rem;
+  padding-block: .35rem;
+  color: var(--accent-readable);
+  font-size: .875rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.lecture-check-count {
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.lecture-check[open] > summary {
+  margin-bottom: .55rem;
 }
 
 .lecture-check-questions,

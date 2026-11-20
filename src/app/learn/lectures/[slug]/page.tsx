@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronDown } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import PublicLecturePosition from "@/components/curriculum/PublicLecturePosition";
 import PublicLectureSections, { PublicLectureLinks } from "@/components/curriculum/PublicLectureSections";
@@ -62,18 +62,20 @@ export default async function ReadingLecturePage({ params }: Props) {
     <article className="reader-article reader-article--lecture" data-reading-unit={unit.slug}>
       <PublicLecturePosition lectureId={firstPart.lectureId} trackPart />
       <header className="reader-header">
-        <Link href="/learn#learn-courses-heading" className="reader-back"><ArrowLeft aria-hidden="true" />講義一覧</Link>
-        <p className="lecture-reading-position">
-          <span>{chapter?.label}</span>
-          <span>第{index + 1}講 ／ 全{readingUnits.length}講</span>
-        </p>
+        <div className="lecture-unit-meta">
+          <Link href="/learn#learn-courses-heading" className="reader-back"><ArrowLeft aria-hidden="true" />講義一覧</Link>
+          <p className="lecture-reading-position">
+            <span>{chapter?.label}</span>
+            <span>第{index + 1}講 ／ 全{readingUnits.length}講</span>
+          </p>
+        </div>
         <h1 className="reader-title">{unit.title}</h1>
         <p className="reader-lead">{unit.description}</p>
       </header>
 
       <ReadingContents label="講義の目次" headings={[
         ...unit.parts.map(part => ({ id: part.anchor, label: part.label })),
-        { id: "lecture-review", label: "要点まとめと確認問題" },
+        { id: "lecture-review", label: "要点まとめ" },
       ]} />
 
       <div id="lecture-content" tabIndex={-1} className="reader-content">
@@ -96,23 +98,29 @@ export default async function ReadingLecturePage({ params }: Props) {
         })}
       </div>
 
-      <section id="lecture-review" tabIndex={-1} className="lecture-unit-review" aria-labelledby="lecture-takeaways">
-        <h2 id="lecture-takeaways" className="reader-section-title">要点まとめ</h2>
-        <ul className="lecture-takeaways">
-          {revision.takeaways.map(takeaway => <li key={takeaway}>{takeaway}</li>)}
-        </ul>
-        <div className="lecture-check">
-          <h3 className="lecture-unit-subtitle">確認問題</h3>
-          <ReadingUnitCheck key={unit.slug} unitId={unit.slug} questions={revision.questions} />
-        </div>
-      </section>
+      <div className="lecture-unit-end">
+        <section id="lecture-review" tabIndex={-1} className="lecture-unit-review" aria-labelledby="lecture-takeaways">
+          <h2 id="lecture-takeaways" className="reader-section-title">要点まとめ</h2>
+          <ul className="lecture-takeaways">
+            {revision.takeaways.map(takeaway => <li key={takeaway}>{takeaway}</li>)}
+          </ul>
+          <details id="lecture-check" className="lecture-check">
+            <summary>
+              <span>確認問題</span>
+              <span className="lecture-check-count">{revision.questions.length}問</span>
+              <ChevronDown aria-hidden="true" />
+            </summary>
+            <ReadingUnitCheck key={unit.slug} unitId={unit.slug} questions={revision.questions} />
+          </details>
+        </section>
 
-      <ReadingSequence
-        label="講義"
-        previous={readingUnits[index - 1]}
-        next={readingUnits[index + 1]}
-        index={{ href: "/learn#learn-courses-heading", title: "講義の目次" }}
-      />
+        <ReadingSequence
+          label="講義"
+          previous={readingUnits[index - 1]}
+          next={readingUnits[index + 1]}
+          index={{ href: "/learn#learn-courses-heading", title: "講義一覧" }}
+        />
+      </div>
 
       {resources.length > 0 && (
         <details id="lecture-resources" className="page-help">
