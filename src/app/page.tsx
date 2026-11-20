@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, Compass } from "lucide-react";
+import { ArrowRight, BookOpen, Compass, LibraryBig } from "lucide-react";
 import PlatformSearchForm from "@/components/search/PlatformSearchForm";
 import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
 import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
@@ -7,7 +7,7 @@ import { collectionPageJsonLd } from "@/config/seo";
 import { SERIES } from "@/config/series";
 
 const SERIES_ENTRIES = Object.values(SERIES);
-const TITLE = "ツボと東洋医学を、図で学ぶ。";
+const TITLE = "ツボと東洋医学";
 const INTRO = "全361経穴の図解、東洋医学の講義、架空症例で学ぶ鍼灸の臨床演習。";
 const POINTS = [
   { code: "li4", label: "合谷", location: "手の甲" },
@@ -24,13 +24,17 @@ export default function HomePage() {
         <div className="platform-hero-grid">
           <div className="platform-hero-copy">
             <div className="platform-hero-heading">
-              <h1 id="platform-title" className="platform-title">ツボと東洋医学を、<span>図で学ぶ。</span></h1>
-              <p className="platform-intro-text">{INTRO}</p>
+              <span className="platform-mark" aria-hidden="true">知</span>
+              <div>
+                <h1 id="platform-title" className="platform-title">{TITLE}</h1>
+                <p className="platform-intro-text">{INTRO}</p>
+              </div>
             </div>
             <PlatformSearchForm />
-            <nav className="platform-shortcuts" aria-label="症状ガイドと鍼灸入門">
-              <Link href="/symptoms"><Compass aria-hidden="true" />症状から探す<ArrowRight aria-hidden="true" /></Link>
-              <Link href={ACUPUNCTURE_GUIDE.href}><BookOpen aria-hidden="true" />はじめての鍼灸<ArrowRight aria-hidden="true" /></Link>
+            <nav className="platform-shortcuts" aria-label="学ぶ・調べる">
+              <Link href={SERIES.reading.href}><BookOpen aria-hidden="true" />東洋医学を学ぶ</Link>
+              <Link href={ACUPUNCTURE_GUIDE.href}><LibraryBig aria-hidden="true" />鍼灸入門</Link>
+              <Link href="/symptoms"><Compass aria-hidden="true" />症状ガイド</Link>
             </nav>
           </div>
           <Link href="/tsubo/li4" className="platform-feature" aria-labelledby="platform-feature-name platform-feature-action">

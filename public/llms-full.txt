@@ -54,7 +54,7 @@
 ### テーマ別の読み物と演習
 
 #### 東洋医学の入り口
-- [東洋医学の入り口](https://www.haritaro.jp/learn/lectures/getting-started)
+- [東洋医学とは？](https://www.haritaro.jp/learn/lectures/getting-started)
 - [用語・研究・体調の記録を読み分ける](https://www.haritaro.jp/learn/lectures/reading-evidence)
 
 #### 陰陽

@@ -2,7 +2,7 @@ import { SITE_NAME } from "./brand";
 
 export { SITE_NAME } from "./brand";
 export const SITE_ORIGIN = "https://www.haritaro.jp";
-export const SITE_TITLE = `${SITE_NAME}｜ツボ図鑑・症状ガイド・東洋医学・臨床演習`;
+export const SITE_TITLE = `ツボ図鑑・東洋医学の図解講義｜${SITE_NAME}`;
 export const SHARED_OG_IMAGES = [{ url: SITE_ORIGIN + "/og-image.png", width: 1200, height: 630, alt: SITE_NAME }];
 
 export function acupointPageTitle(point: { name: string; kana: string; code: string }) {

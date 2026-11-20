@@ -70,12 +70,12 @@ assert.equal(new Set(NATURAL_JAPANESE_EDITORIAL_REVISIONS).size, 93);
 for(const lectureId of NATURAL_JAPANESE_EDITORIAL_REVISIONS) assert(lectureIds.has(lectureId), lectureId);
 const dateAt = pathname => sitemap.find(page=>new URL(page.url).pathname===pathname)?.lastModified.toISOString().slice(0,10);
 const { getPublicLectureSeries } = load('src/data/publicLectures/index');
-const { readingUnits } = load('src/data/publicLectures/readingUnits');
+const { READING_LECTURES_REVISED_AT, readingUnits } = load('src/data/publicLectures/readingUnits');
 for (const lectureId of lectureIds) {
   const date = dateAt(`/curriculum/${lectureId}`);
   assert.equal(date, getPublicLectureSeries(lectureId) === 'reading' ? undefined : '2026-11-20', lectureId);
 }
-for (const unit of readingUnits) assert.equal(dateAt(unit.href), dateAt('/learn'), unit.href);
+for (const unit of readingUnits) assert.equal(dateAt(unit.href), READING_LECTURES_REVISED_AT, unit.href);
 for (const pathname of ['/tsubo','/tsubo/sp11','/tsubo/sp6','/tsubo/li4','/tsubo/pc7','/tsubo/bl57']) {
   assert.equal(dateAt(pathname), ACUPOINT_PAGE_REVISED_AT, pathname + ' shows the shared acupoint release date');
 }

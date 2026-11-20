@@ -7,7 +7,7 @@ interface TrailItem {
   name: string;
 }
 
-export default function PageBreadcrumb({ items }: { items: readonly TrailItem[] }) {
+export default function PageBreadcrumb({ items, hideCurrent = false }: { items: readonly TrailItem[]; hideCurrent?: boolean }) {
   const trail = [{ href: "/", name: "ホーム" }, ...items];
   const jsonLd = {
     "@context": "https://schema.org",
@@ -25,7 +25,7 @@ export default function PageBreadcrumb({ items }: { items: readonly TrailItem[] 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <ol role="list">
         {trail.map(({ href, name }, index) => (
-          <li key={href}>
+          <li key={href} className={hideCurrent && index === trail.length - 1 ? "sr-only" : undefined}>
             {index > 0 && <ChevronRight size={14} aria-hidden="true" />}
             {index === trail.length - 1 ? <span aria-current="page">{name}</span> : <Link href={href}>{name}</Link>}
           </li>

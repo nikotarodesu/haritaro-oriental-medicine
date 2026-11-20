@@ -7,9 +7,10 @@ interface Props {
   className?: string;
   topic?: string;
   pointLocationChecked?: boolean;
+  revisedAt?: string;
 }
 
-export default function AuthorSupervisorCard({ className = "", topic, pointLocationChecked }: Props) {
+export default function AuthorSupervisorCard({ className = "", topic, pointLocationChecked, revisedAt }: Props) {
   return (
     <div
       className={`p-5 sm:p-6 rounded-2xl bg-panel border border-frame space-y-4 ${className}`}
@@ -32,6 +33,7 @@ export default function AuthorSupervisorCard({ className = "", topic, pointLocat
               鍼灸院院長 ／ 東洋医学臨床・教育研究家
             </p>
             <p className="text-sm text-muted mt-0.5">2017年免許取得・{AUTHOR_OPENED_AT}開業</p>
+            {revisedAt && <p className="text-sm text-muted mt-0.5">講義更新 <time dateTime={revisedAt}>{revisedAt}</time></p>}
           </div>
         </div>
 

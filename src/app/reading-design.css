@@ -160,6 +160,10 @@
   gap: 0 .75rem;
 }
 
+.lecture-unit-meta .page-breadcrumb {
+  margin-bottom: 0;
+}
+
 .lecture-reading-position {
   display: flex;
   flex-wrap: wrap;
@@ -174,20 +178,14 @@
   font-weight: 600;
 }
 
-.lecture-unit-example {
-  margin-bottom: 1rem;
-  padding: .55rem .75rem;
-  border-inline-start: 3px solid var(--notice-line);
-  border-radius: var(--radius-tag);
-  background: var(--action-soft);
-  color: var(--text-secondary);
-  font-size: .9375rem;
-  line-height: 1.75;
-}
-
-.lecture-unit-example strong {
-  margin-inline-end: .3rem;
-  color: var(--warm-readable);
+.lecture-unit-opening {
+  display: grid;
+  max-width: 39em;
+  gap: .65em;
+  color: var(--text-sumi);
+  font-size: 1.0625rem;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
 }
 
 .lecture-unit-part {
@@ -199,6 +197,14 @@
   margin-top: 2.2rem;
   padding-top: 1.35rem;
   border-top: 1px solid var(--border-washi);
+}
+
+.lecture-unit-subtitle {
+  color: var(--text-sumi);
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+  font-weight: 600;
+  line-height: 1.6;
 }
 
 .lecture-unit-end {
@@ -346,6 +352,36 @@
 .lecture-unit-resources > li {
   padding-top: .55rem;
   border-top: 1px solid var(--border-subtle);
+}
+
+.lecture-resources-heading {
+  margin-block: .75rem .4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.lecture-citations {
+  margin-bottom: 1.05rem;
+  overflow-wrap: anywhere;
+}
+
+.lecture-citation-link {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  padding-block: .25rem;
+  color: var(--accent-readable);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
+.lecture-citations li > p {
+  margin-top: .25rem;
+  color: var(--text-secondary);
+  font-size: .875rem;
+  line-height: 1.7;
 }
 
 .lecture-resource-links {

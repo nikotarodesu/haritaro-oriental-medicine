@@ -3,6 +3,7 @@ import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
 
 export const approvedIntroId = "lecture-intro-1";
 export const approvedIntroReferences = [
+  { name: "日本東洋医学会「養生について」「漢方の歴史」", url: "https://www.jsom.or.jp/kampo/about/note02.html", scope: "大陸から伝わった医学の日本での展開と、漢方・鍼灸・養生の位置づけ" },
   { name: "WHO International Standard Terminologies on Traditional Chinese Medicine（2022年）", url: "https://www.who.int/publications/b/55892", scope: "伝統医学の用語と定義の範囲" },
   { name: "米国国立補完統合衛生センター Traditional Chinese Medicine", url: "https://www.nccih.nih.gov/health/traditional-chinese-medicine-what-you-need-to-know", scope: "伝統中国医学の範囲と医療機関への相談" },
   { name: "WHO Benchmarks for the Training of Acupuncture（2021年）", url: "https://www.who.int/publications/i/item/9789240017962", scope: "鍼灸の学習・研修の背景" },
