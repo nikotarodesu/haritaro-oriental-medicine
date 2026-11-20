@@ -2,7 +2,7 @@ import { PAGE_REVISIONS, SITE_REVISED_AT, ACUPOINT_PAGE_REVISED_AT } from "@/con
 import type { MetadataRoute } from "next";
 import { ALL_ACUPOINTS } from "@/data/tsubo";
 import { ARTICLES } from "@/data/articleData";
-import { CURRICULUM_DATA } from "@/data/curriculumData";
+import { getLectureIndexGroups } from "@/data/publicLectures/readingUnits";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { KIKEI_VESSELS } from "@/data/kikeiData";
 import { LEARNING_COURSES } from "@/data/learningCourses";
@@ -113,13 +113,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // カリキュラム全講義（個別教材の正規URL・SSG静的ページ）
-  const allLectures = CURRICULUM_DATA.flatMap((stage) => stage.lectures).filter(
-    (l) => l.isPublished !== false
-  );
-  const curriculumLessonPages: MetadataRoute.Sitemap = allLectures.map((lecture) => ({
-    url: `${baseUrl}/curriculum/${lecture.id}`,
-    lastModified: new Date(SITE_REVISED_AT),
+  const curriculumLessonPages: MetadataRoute.Sitemap = getLectureIndexGroups().flatMap(group => group.entries).map(lecture => ({
+    url: baseUrl + lecture.href,
+    lastModified: new Date(lecture.href.startsWith("/learn/") ? PAGE_REVISIONS["/learn"] : SITE_REVISED_AT),
   }));
 
   // 全361経穴詳細ページ

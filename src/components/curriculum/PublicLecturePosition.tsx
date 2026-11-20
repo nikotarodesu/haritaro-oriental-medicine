@@ -4,12 +4,25 @@ import { useEffect, useEffectEvent } from "react";
 import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
 import { revealLectureSection } from "@/utils/lectureAnchors";
 
-export default function PublicLecturePosition({ lectureId }: { lectureId: string }) {
+export default function PublicLecturePosition({ lectureId, trackPart = false }: { lectureId: string; trackPart?: boolean }) {
   const { isMounted, recordVisitedLecture } = useCurriculumProgress();
   const recordVisit = useEffectEvent((id: string) => recordVisitedLecture(id));
   useEffect(() => {
-    if (isMounted) recordVisit(lectureId);
-  }, [isMounted, lectureId]);
+    if (!isMounted) return;
+    if (!trackPart) {
+      recordVisit(lectureId);
+      return;
+    }
+    const linkedPart = () => document.getElementById(window.location.hash.slice(1))
+      ?.closest<HTMLElement>("[data-lecture-part]")?.dataset.lecturePart;
+    const recordCurrent = () => {
+      const partId = linkedPart();
+      if (partId) recordVisit(partId);
+    };
+    recordVisit(linkedPart() ?? lectureId);
+    window.addEventListener("hashchange", recordCurrent);
+    return () => window.removeEventListener("hashchange", recordCurrent);
+  }, [isMounted, lectureId, trackPart]);
 
   useEffect(() => {
     const scrollToPosition = () => {

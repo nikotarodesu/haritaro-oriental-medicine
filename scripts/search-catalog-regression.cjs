@@ -8,6 +8,8 @@ const root = path.resolve(__dirname, '..');
 const load = createDataLoader();
 const { SEARCH_CATALOG } = load('src/data/searchCatalog');
 const { CURRICULUM_DATA } = load('src/data/curriculumData');
+const { getPublicLectureSeries } = load('src/data/publicLectures/index');
+const { readingUnits } = load('src/data/publicLectures/readingUnits');
 const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
 const { GLOSSARY_TERMS } = load('src/data/glossaryData');
 const { CLINICAL_CASES } = load('src/data/clinicalCasesData');
@@ -20,8 +22,15 @@ assert.equal(new Set(SEARCH_CATALOG.map(item => item.id)).size, SEARCH_CATALOG.l
 const byId = new Map(SEARCH_CATALOG.map(item => [item.id, item]));
 for (const point of ACUPOINTS_MASTER) assert.equal(byId.get(`tsubo-${point.code.toLowerCase()}`)?.url, `/tsubo/${point.code.toLowerCase()}`);
 for (const lecture of CURRICULUM_DATA.flatMap(stage => stage.lectures)) {
-  assert.equal(byId.has(`lecture-${lecture.id}`), lecture.isPublished, 'Only published lectures are search destinations');
-  if (lecture.isPublished) assert.equal(byId.get(`lecture-${lecture.id}`).url, `/curriculum/${lecture.id}`);
+  const isIndependent = lecture.isPublished && getPublicLectureSeries(lecture.id) !== 'reading';
+  assert.equal(byId.has(`lecture-${lecture.id}`), isIndependent, 'The search lists individual exercises and dictionary lessons');
+  if (isIndependent) assert.equal(byId.get(`lecture-${lecture.id}`).url, `/curriculum/${lecture.id}`);
+}
+assert.equal(SEARCH_CATALOG.filter(item => item.url.startsWith('/learn/lectures/')).length, readingUnits.length);
+for (const unit of readingUnits) {
+  const result = byId.get(`reading-lecture-${unit.slug}`);
+  assert.equal(result?.url, unit.href);
+  assert(unit.parts.every(part => result.tags.includes(part.label)), unit.slug + ' is searchable by section');
 }
 for (const term of Object.values(GLOSSARY_TERMS)) {
   const item = byId.get(`glossary-${term.term}`);

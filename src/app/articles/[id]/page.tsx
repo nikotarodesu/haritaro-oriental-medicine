@@ -15,6 +15,7 @@ import { resolveArticleReferences } from "@/utils/referenceResolver";
 import MarkdownBody from "@/components/MarkdownBody";
 import ReadingContents from "@/components/reading/ReadingContents";
 import ReadingSequence from "@/components/reading/ReadingSequence";
+import { readingPartHref } from "@/data/publicLectures/readingUnits";
 import ArticleReferences from "@/components/ArticleReferences";
 import InlineTextRenderer from "@/components/InlineTextRenderer";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
@@ -274,8 +275,8 @@ export default async function ArticleDetailPage({ params }: Props) {
             </div>}
             {learningGuide && (relatedCourses.length > 0 ? <details className="article-learning-alternatives">
               <summary>講義・クイズ・症例から選ぶ</summary>
-              <div><LearningPathLinks lectureId={learningGuide.lectureId} caseId={learningGuide.caseId} lectureTitle={learningLectureTitle} caseTitle={learningCaseTitle} /></div>
-            </details> : <LearningPathLinks lectureId={learningGuide.lectureId} caseId={learningGuide.caseId} lectureTitle={learningLectureTitle} caseTitle={learningCaseTitle} />)}
+              <div><LearningPathLinks lectureId={learningGuide.lectureId} lectureHref={readingPartHref(learningGuide.lectureId)} caseId={learningGuide.caseId} lectureTitle={learningLectureTitle} caseTitle={learningCaseTitle} /></div>
+            </details> : <LearningPathLinks lectureId={learningGuide.lectureId} lectureHref={readingPartHref(learningGuide.lectureId)} caseId={learningGuide.caseId} lectureTitle={learningLectureTitle} caseTitle={learningCaseTitle} />)}
           </section>}
           {/* 参考文献・学術エビデンス（PubMed・DOI・古典原典） */}
           <ArticleReferences references={resolvedReferences} />

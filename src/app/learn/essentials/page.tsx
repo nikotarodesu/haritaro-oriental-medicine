@@ -4,7 +4,8 @@ import { ArrowDown, ArrowLeft, ArrowRight, BookOpen, ChevronDown } from "lucide-
 import PageIntro from "@/components/design/PageIntro";
 import StudyDiagram from "@/components/reading/StudyDiagram";
 import { pageSocialMetadata } from "@/config/seo";
-import { getPublicLectureDiagram } from "@/data/publicLectures/diagrams";
+import type { LectureDiagram } from "@/data/publicLectures/diagrams/types";
+import { readingPartHref, readingUnits } from "@/data/publicLectures/readingUnits";
 
 const path = "/learn/essentials";
 const title = "東洋医学の要点";
@@ -21,8 +22,9 @@ interface Topic {
   term: string;
   question: string;
   answer: string;
+  example: string;
   lectureId: string;
-  showDiagram?: boolean;
+  diagram: LectureDiagram;
 }
 
 const groups: readonly { id: string; title: string; topics: readonly Topic[] }[] = [
@@ -33,21 +35,39 @@ const groups: readonly { id: string; title: string; topics: readonly Topic[] }[]
       {
         term: "東洋医学",
         question: "東洋医学とは？",
-        answer: "鍼灸や漢方、養生などで受け継がれてきた知識や考え方を広く指します。ここでは、日本の鍼灸で用いる伝統的な考え方を学びます。",
+        answer: "鍼灸・漢方・養生などに伝わる知識や考え方です。",
+        example: "「夕方に疲れる」を「夕食の支度中、脚がだるくなり、座ると楽になる」と書くと、変化が伝わります。",
         lectureId: "lecture-intro-1",
+        diagram: {
+          title: "体調の変化を言葉にする",
+          layout: "flow",
+          items: [["気づく", "夕方に脚がだるい。"], ["場面を添える", "夕食の支度中に気づいた。"], ["その後を書く", "座るとどう変わったか。"]],
+        },
       },
       {
         term: "陰陽",
         question: "陰陽とは？",
-        answer: "対になる性質や変化を比べる見方です。昼休みに座っている場面なら、明るさで見れば昼は陽、動きで見れば休む側は陰です。",
+        answer: "明るい・暗いなど、対になる性質を比べる見方です。",
+        example: "昼休みに日差しのある部屋で座っていると、明るさでは陽、動きでは休む側の陰と説明できます。",
         lectureId: "lecture-yinyang-1",
-        showDiagram: true,
+        diagram: {
+          title: "昼休みの同じ場面を、二つの基準で見る",
+          layout: "compare",
+          items: [["明るさ", "昼の明るさは陽。"], ["動き", "座って休む側は陰。"]],
+        },
       },
       {
         term: "五行",
         question: "五行とは？",
-        answer: "木・火・土・金・水を手がかりに、性質と関係を整理する考え方です。例えば「木が伸びる」は木の性質、「木が火を支える」は行どうしの関係です。",
+        answer: "木・火・土・金・水の五つで、性質とつながりを整理する考え方です。",
+        example: "「枝が伸びる」は木の性質を表し、「木が火を支える」は木と火の関係を表します。",
         lectureId: "lecture-wuxing-1",
+        diagram: {
+          title: "五行の例で、性質と関係を読む",
+          layout: "relations",
+          directional: true,
+          items: [["木", "伸びる", "性質"], ["木", "火", "支える関係"]],
+        },
       },
     ],
   },
@@ -58,21 +78,38 @@ const groups: readonly { id: string; title: string; topics: readonly Topic[] }[]
       {
         term: "気・血・津液",
         question: "気・血・津液は何を表す？",
-        answer: "伝統医学では、体を動かすなどの働きを「気」、体を養うものを「血」、体を潤す水分を「津液」と呼び分けます。",
+        answer: "伝統理論で、体の働き・養い・潤いを呼び分ける言葉です。",
+        example: "散歩で体を動かすこと、食べて体を養うこと、口が潤うことを思い浮かべると、三つの違いをたどれます。",
         lectureId: "lecture-qiblood-1",
+        diagram: {
+          title: "働き・養い・潤いの三つの見方",
+          layout: "compare",
+          items: [["気", "体を動かすなどの働き。"], ["血", "体の各部を養う役割。"], ["津液", "体を潤す水分。"]],
+        },
       },
       {
         term: "五臓と六腑",
         question: "五臓と六腑はどう違う？",
-        answer: "伝統理論では、蓄えて体の働きを支える役割を五臓、受け入れて通す役割を六腑として整理します。例えば、飲食の説明では脾と胃が一組で登場します。",
+        answer: "伝統理論では、蓄えて働きを支える役割を五臓、受け入れて通す役割を六腑と呼びます。",
+        example: "朝食の場面では、胃が飲食を受け、脾が得られたものを変えて運ぶと考えます。",
         lectureId: "lecture-zangfu-1",
+        diagram: {
+          title: "飲食の説明に出てくる一組",
+          layout: "compare",
+          items: [["胃・六腑", "飲食物を受け入れる。"], ["脾・五臓", "得られたものを変えて運ぶ。"]],
+        },
       },
       {
         term: "三焦",
         question: "三焦で何を見ている？",
-        answer: "体の働きを上・中・下の三つの範囲に分ける見方です。上では呼吸と分配、中では飲食、下では水分を分けて出す働きに着目します。",
+        answer: "体の働きを、上・中・下の三つの範囲で整理する見方です。",
+        example: "食事の話でも、呼吸や分配、飲食、水分を出す働きのどれを指すかを分けて読むと整理できます。",
         lectureId: "lecture-lifedynamics-5",
-        showDiagram: true,
+        diagram: {
+          title: "上・中・下で見ている働き",
+          layout: "compare",
+          items: [["上焦", "呼吸し、行き渡らせる。"], ["中焦", "飲食物を受け、変える。"], ["下焦", "水分を分け、不要なものを出す。"]],
+        },
       },
     ],
   },
@@ -83,21 +120,38 @@ const groups: readonly { id: string; title: string; topics: readonly Topic[] }[]
       {
         term: "経絡と経穴",
         question: "経絡とツボはどう違う？",
-        answer: "経絡は、体のつながりを道筋として表す伝統的な考え方です。主な道筋は経脈、位置と名前が決まっている一つひとつの点は経穴（ツボ）と呼びます。",
+        answer: "経絡は体のつながりを道筋で表す考え方で、経穴（ツボ）は名前のある一つひとつの点です。",
+        example: "路線図で路線と駅を見分けるように、経絡図では道筋と、その図に記された個々の点を見分けます。",
         lectureId: "lecture-meridians-1",
-        showDiagram: true,
+        diagram: {
+          title: "経絡図を全体から点へたどる",
+          layout: "flow",
+          items: [["経絡", "体のつながりの全体像。"], ["経脈", "主な道筋。"], ["経穴", "名前の付いた点。"]],
+        },
       },
       {
         term: "病因と病機",
         question: "病因と病機はどう違う？",
-        answer: "病因は「何が関わったと考えるか」、病機は「どんな過程で不調が起きたと説明するか」です。本人が感じた症状を書いてから、考えた説明を分けて整理します。",
+        answer: "病因は何が関わったと考えるか、病機は不調に至る過程をどう説明するかです。",
+        example: "「夜更かしした」「翌朝にだるかった」を先に記録し、何が関わったかと、どう不調に至ったかを分けて考えます。",
         lectureId: "lecture-pathomechanism-1",
+        diagram: {
+          title: "記録と、その後に考える問い",
+          layout: "compare",
+          items: [["事実", "夜更かしと翌朝のだるさ。"], ["病因の問い", "何が関係したのか。"], ["病機の問い", "どんな過程で不調に至ったのか。"]],
+        },
       },
       {
         term: "寒熱と虚実",
         question: "寒熱と虚実は何を比べる？",
-        answer: "寒熱は冷えや熱の側面、虚実は働きの不足や過剰・停滞を見る言葉です。一つの訴えでも、どの面に注目するかで考える問いが変わります。",
+        answer: "寒熱は冷えや熱の側面、虚実は働きの不足や過剰・停滞を見る言葉です。",
+        example: "「足が冷える」と「階段を上ると疲れる」を別々に書くと、冷えの場所と、疲れる場面を確かめられます。",
         lectureId: "lecture-pathomechanism-6",
+        diagram: {
+          title: "寒熱と虚実は、見るところが違う",
+          layout: "compare",
+          items: [["寒熱", "冷え・熱の側面を読む。"], ["虚実", "不足・過剰・停滞の側面を読む。"]],
+        },
       },
     ],
   },
@@ -108,21 +162,38 @@ const groups: readonly { id: string; title: string; topics: readonly Topic[] }[]
       {
         term: "四診",
         question: "四診では何を確かめる？",
-        answer: "望診は見る、聞診は音やにおいを観察する、問診は本人に聞く、切診は同意を得て触れて確かめることです。方法ごとに、何を確認したかを残します。",
-        lectureId: "lecture-yinyang-7",
+        answer: "情報を、見る・音やにおいを確かめる・本人に聞く・触れて確かめる方法で集めます。",
+        example: "歩き方を見た記録と、「いつから歩きづらいか」を本人に聞いた記録は分けて残せます。",
+        lectureId: "lecture-diagnosis-4",
+        diagram: {
+          title: "一つの相談を四つの方法から見る",
+          layout: "compare",
+          items: [["望診", "歩く姿などを目で見る。"], ["聞診", "声などの音やにおいを観察する。"], ["問診", "本人に時期や困りごとを聞く。"], ["切診", "同意を得て触れ、分かったことを記す。"]],
+        },
       },
       {
         term: "証と弁証",
         question: "証と弁証はどう違う？",
-        answer: "証は、集めた情報をもとに伝統理論で整理した状態の特徴です。弁証は、候補を比べ、追加の情報で見直しながら特徴を考えていく過程を指します。",
+        answer: "証は伝統理論でまとめた状態の特徴です。弁証は、情報を集めて候補を比べる過程です。",
+        example: "「夕方に疲れる」と聞いたら、休日も同じかを確かめ、集まった情報から候補を見直します。",
         lectureId: "lecture-diagnosis-1",
-        showDiagram: true,
+        diagram: {
+          title: "弁証で考えを更新する流れ",
+          layout: "flow",
+          items: [["情報を集める", "疲れる時刻と場面を聞く。"], ["候補を比べる", "合う点と合わない点を並べる。"], ["見直す", "休日の様子などを聞いて考え直す。"]],
+        },
       },
       {
         term: "治則と治法",
         question: "治則と治法は何を決める？",
-        answer: "治則は「何を優先するか」という方針、治法は「その方針をどんな考え方で進めるか」です。講義では、選んだ理由や見直す条件も一緒に考えます。",
+        answer: "治則は何を優先するかという方針で、治法はその方針を進める考え方です。",
+        example: "「夕方の作業を続けたい」という目標があれば、何を優先し、どんな変化で振り返るかを考えられます。",
         lectureId: "lecture-treatment-2",
+        diagram: {
+          title: "生活の目標から、方針と方法へ",
+          layout: "flow",
+          items: [["本人の目標", "どんな活動に戻りたいか。"], ["治則", "何を優先する方針か。"], ["治法", "どんな考え方で進めるか。"]],
+        },
       },
     ],
   },
@@ -145,30 +216,28 @@ export default function EssentialsPage() {
         <section key={group.id} id={group.id} className="essentials-group" aria-labelledby={`${group.id}-title`}>
           <h2 id={`${group.id}-title`} className="reader-section-title">{group.title}</h2>
           <div className="essentials-topics">
-            {group.topics.map(topic => {
-              const diagram = topic.showDiagram ? getPublicLectureDiagram(topic.lectureId) : undefined;
-              return (
-                <article key={topic.lectureId} className="essentials-topic">
-                  <h3>{topic.question}</h3>
-                  <p>{topic.answer}</p>
-                  {diagram && (
-                    <details className="essentials-diagram">
-                      <summary>図で確かめる<ChevronDown aria-hidden="true" size={16} /></summary>
-                      <StudyDiagram id={`essential-${topic.lectureId}`} diagram={diagram} />
-                    </details>
-                  )}
-                  <Link href={`/curriculum/${topic.lectureId}`} prefetch={false} className="ui-text-link" aria-label={`${topic.term}の講義を読む`}>
+            {group.topics.map(topic => (
+              <article key={topic.lectureId} className="essentials-topic">
+                <h3>{topic.question}</h3>
+                <p>{topic.answer}</p>
+                <p className="essentials-example"><strong>身近な例</strong> {topic.example}</p>
+                <div className="essentials-actions">
+                  <details className="essentials-diagram">
+                    <summary aria-label={`${topic.term}の図を見る`}>図を見る<ChevronDown aria-hidden="true" size={16} /></summary>
+                    <StudyDiagram id={`essential-${topic.lectureId}`} diagram={topic.diagram} />
+                  </details>
+                  <Link href={readingPartHref(topic.lectureId)} prefetch={false} className="ui-text-link" aria-label={`${topic.term}の講義を読む`}>
                     講義を読む<ArrowRight aria-hidden="true" />
                   </Link>
-                </article>
-              );
-            })}
+                </div>
+              </article>
+            ))}
           </div>
         </section>
       ))}
 
       <nav aria-label="講義で学ぶ" className="reader-navigation">
-        <Link href="/curriculum/lecture-intro-1" className="page-primary-action"><BookOpen aria-hidden="true" />最初の講義から学ぶ</Link>
+        <Link href={readingUnits[0].href} className="page-primary-action"><BookOpen aria-hidden="true" />最初の講義から学ぶ</Link>
         <Link href="/learn#learn-courses-heading" className="page-secondary-action">講義の目次</Link>
       </nav>
     </div>

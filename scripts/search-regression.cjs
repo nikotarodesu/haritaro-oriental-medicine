@@ -162,7 +162,7 @@ assert.equal(optionUrls(render('合谷とは'))[0], '/tsubo/li4', 'A definition 
 for (const query of ['陰陽', '陰陽とは', '陰陽 意味', 'いんよう']) {
   const urls = optionUrls(render(query));
   assert.equal(urls[0], '/glossary#term-%E9%99%B0%E9%99%BD', query + ': the public definition is first');
-  const lecturePosition = urls.findIndex(url => url.startsWith('/curriculum/'));
+  const lecturePosition = urls.findIndex(url => url.startsWith('/learn/lectures/'));
   const articlePosition = urls.findIndex(url => url.startsWith('/articles/'));
   assert(lecturePosition >= 0 && (articlePosition < 0 || lecturePosition < articlePosition), query + ': a focused lecture precedes an article');
 }

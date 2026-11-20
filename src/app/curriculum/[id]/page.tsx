@@ -5,16 +5,12 @@ import { PAGE_REVISIONS } from "@/config/contentUpdates";
 import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
 import { SERIES } from "@/config/series";
 import { getArticlePreviews } from "@/data/articleData";
-import { CURRICULUM_DATA } from "@/data/curriculumData";
 import { createCurriculumReadingLinks, getCurriculumRelatedArticleIds } from "@/data/curriculumReadingGuides";
 import { getPublicLectureArticle, getPublicLectureSeries } from "@/data/publicLectures";
 import { approvedIntroId, approvedIntroReferences } from "@/data/publicLectures/approvedIntro";
+import { getReadingUnitForLecture } from "@/data/publicLectures/readingUnits";
+import { getPublicLectureReferences, publishedLectureRecords } from "@/data/publicLectures/resources";
 import { resolveLegacyLectureId } from "@/utils/curriculumLegacyPaths";
-import { resolveArticleReferences } from "@/utils/referenceResolver";
-
-const published = new Map(CURRICULUM_DATA.flatMap(stage => stage.lectures)
-  .filter(lecture => lecture.isPublished)
-  .map(lecture => [lecture.id, lecture]));
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -22,14 +18,14 @@ interface Props {
 
 function findLecture(rawId: string) {
   const id = resolveLegacyLectureId(rawId);
-  const original = published.get(id);
+  const original = publishedLectureRecords.get(id);
   const article = getPublicLectureArticle(id);
   if (!original || !article) notFound();
   return { id, original, article, series: getPublicLectureSeries(id) };
 }
 
 export function generateStaticParams() {
-  return [...published.keys()].map(id => ({ id }));
+  return [...publishedLectureRecords.keys()].map(id => ({ id }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -37,11 +33,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${article.title}｜${SERIES[series].name}`;
   const { description } = article;
   const url = `https://www.haritaro.jp/curriculum/${id}`;
+  const unit = getReadingUnitForLecture(id);
 
   return {
     title: { absolute: title },
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: unit?.href ?? url },
     openGraph: { images: SHARED_OG_IMAGES, siteName: SITE_NAME, title, description, url, type: "article" },
     twitter: { card: "summary_large_image", title, description, images: SHARED_OG_IMAGES.map(image => image.url) },
   };
@@ -56,8 +53,7 @@ export default async function CurriculumDetailPage({ params }: Props) {
   const origin = "https://www.haritaro.jp";
   const path = `/curriculum/${id}`;
   const url = origin + path;
-  const references = resolveArticleReferences(original.references, original.contentMarkdown)
-    .map(reference => ({ ...reference, note: reference.claimsStatus === "source-checked" ? reference.note : undefined }));
+  const references = getPublicLectureReferences(original);
   const citations = id === approvedIntroId
     ? approvedIntroReferences
     : references.filter(reference => reference.claimsStatus !== "do-not-use" && reference.bibliographyStatus !== "retracted")

@@ -16,8 +16,8 @@
 
 ## はり太郎の東洋医学
 - [読み物・演習の全目次](https://www.haritaro.jp/curriculum): 東洋医学・ツボ図鑑・臨床演習に分かれる94本のテーマ別索引です。各記事で出典と関連ページを確認できます。
-- [はり太郎の東洋医学](https://www.haritaro.jp/learn): 東洋医学の基礎をテーマから探せます。体質セルフチェックと解説記事への入口があります。
-- [東洋医学の要点](https://www.haritaro.jp/learn/essentials): 陰陽、気・血・津液、経絡などの考え方を、一問ずつ確認できるページです。各項目から関連する講義へ進めます。
+- [はり太郎の東洋医学](https://www.haritaro.jp/learn): 東洋医学をテーマ別の講義で順に学べます。体質セルフチェックと図解記事への入口があります。
+- [東洋医学の要点](https://www.haritaro.jp/learn/essentials): 陰陽、気・血・津液、経絡などの基本12項目を、身近な例と図で確認できます。各項目から関連する講義の節へ進めます。
 - [気血水の体質セルフチェック](https://www.haritaro.jp/diagnosis): 回答から伝統医学上の分類を学ぶ12問の教材。結果から学習用のツボと、同じツボが登場する症状ガイドに進めます。
 - [講義の復習](https://www.haritaro.jp/learn/review#learning-review): 内容の版と回答履歴を照合し、復習予定を表示します。同日の繰り返しで復習間隔を延ばしません。国試向けの専用演習は終了しています。
 - [用語集](https://www.haritaro.jp/glossary)
@@ -52,104 +52,56 @@
 ### テーマ別の読み物と演習
 
 #### 東洋医学の入り口
-- [東洋医学とは？ 鍼灸の考え方を「夕方の疲れ」から知る](https://www.haritaro.jp/curriculum/lecture-intro-1)
-- [鍼灸の相談では何を聞く？ 困りごとの確認から振り返りまで](https://www.haritaro.jp/curriculum/lecture-intro-2)
-- [鍼灸の研究と東洋医学の用語集をどう読む？](https://www.haritaro.jp/curriculum/lecture-intro-3)
-- [体調の記録を読み解く。事実・解釈・不明点の分け方](https://www.haritaro.jp/curriculum/lecture-intro-4)
+- [東洋医学の入り口](https://www.haritaro.jp/learn/lectures/getting-started)
+- [用語・研究・体調の記録を読み分ける](https://www.haritaro.jp/learn/lectures/reading-evidence)
 
 #### 陰陽
-- [陰陽とは？ 動く・休む、明るい・暗いを比べる考え方](https://www.haritaro.jp/curriculum/lecture-yinyang-1)
-- [陰陽の相対性とは？ 同じ40℃が陰にも陽にもなる理由](https://www.haritaro.jp/curriculum/lecture-yinyang-2)
-- [陰陽の対立・制約・互根とは？ 三つの関係の違い](https://www.haritaro.jp/curriculum/lecture-yinyang-3)
-- [陰陽の消長と転化とは？ 増減と切り替わりの違い](https://www.haritaro.jp/curriculum/lecture-yinyang-4)
-- [東洋医学で体を陰陽に分けるときの三つの視点](https://www.haritaro.jp/curriculum/lecture-yinyang-5)
-- [陽虚・陰虚・陽盛・陰盛とは？ 陰陽の偏りを読む](https://www.haritaro.jp/curriculum/lecture-yinyang-6)
-- [四診とは？ 体調の訴えを一つずつ組み合わせて読む](https://www.haritaro.jp/curriculum/lecture-yinyang-7)
-- [陰陽の読み方をおさらい。顔のほてりと足の冷えの架空例](https://www.haritaro.jp/curriculum/lecture-yinyang-8)
+- [陰陽の基本と、比べ方の違い](https://www.haritaro.jp/learn/lectures/yin-yang-basics)
+- [陰陽の変化と偏り](https://www.haritaro.jp/learn/lectures/yin-yang-changes)
+- [陰陽と四診から情報を整理する](https://www.haritaro.jp/learn/lectures/yin-yang-observation)
 
 #### 気・血・津液
-- [気・血・津液とは？ 東洋医学の「気」が表す五つの働き](https://www.haritaro.jp/curriculum/lecture-qiblood-1)
-- [東洋医学の「血（けつ）」とは？ 体を養い、潤すという意味](https://www.haritaro.jp/curriculum/lecture-qiblood-2)
-- [津液（しんえき）とは？ 津と液の違いと潤いの考え方](https://www.haritaro.jp/curriculum/lecture-qiblood-3)
-- [気と血はどう関係する？ 津血同源と二つの矢印](https://www.haritaro.jp/curriculum/lecture-qiblood-4)
-- [気血水の読み方をおさらい。散歩のひと言から分かること](https://www.haritaro.jp/curriculum/lecture-qiblood-5)
+- [気・血・津液の基本](https://www.haritaro.jp/learn/lectures/qi-blood-fluids)
+- [気・血・津液のつながり](https://www.haritaro.jp/learn/lectures/qi-blood-connections)
 
 #### 五臓・六腑
-- [臓腑・五臓六腑とは？ 東洋医学での臓器の名前の読み方](https://www.haritaro.jp/curriculum/lecture-zangfu-1)
-- [東洋医学の「肺」と「心」とは？ 呼吸・血脈・神の読み方](https://www.haritaro.jp/curriculum/lecture-zangfu-2)
-- [東洋医学の「脾胃」とは？ 食事を受ける・変える・配る働き](https://www.haritaro.jp/curriculum/lecture-zangfu-3)
-- [東洋医学の「肝」と「腎」では何を説明する？ 疏泄・蔵血・蔵精](https://www.haritaro.jp/curriculum/lecture-zangfu-4)
-- [六腑と臓腑の表裏関係とは？ 六つの組と三焦の意味](https://www.haritaro.jp/curriculum/lecture-zangfu-5)
+- [五臓と六腑の基本](https://www.haritaro.jp/learn/lectures/zangfu-basics)
+- [肝・腎の働きと臓腑の表裏](https://www.haritaro.jp/learn/lectures/zangfu-relations)
 
 #### 体の働きとつながり
-- [東洋医学で体の働きをつなげて読む](https://www.haritaro.jp/curriculum/lecture-lifedynamics-1)
-- [精・気・血・津液・神の意味を知る](https://www.haritaro.jp/curriculum/lecture-lifedynamics-2)
-- [飲食と呼吸を結びつける宗気とは](https://www.haritaro.jp/curriculum/lecture-lifedynamics-3)
-- [営気と衛気の違い｜内を養う・外を守る](https://www.haritaro.jp/curriculum/lecture-lifedynamics-4)
-- [三焦とは？ 体の働きを上・中・下で捉える](https://www.haritaro.jp/curriculum/lecture-lifedynamics-5)
-- [臓腑の表裏とは？ 六つの組を読む](https://www.haritaro.jp/curriculum/lecture-lifedynamics-6)
-- [昇降出入とは？ 気の動きを四つの方向で読む](https://www.haritaro.jp/curriculum/lecture-lifedynamics-7)
-- [活動と休息を東洋医学ではどう捉えた？](https://www.haritaro.jp/curriculum/lecture-lifedynamics-8)
-- [季節と体調｜春夏秋冬を東洋医学で読む](https://www.haritaro.jp/curriculum/lecture-lifedynamics-9)
-- [いつもの変化と続く不調｜東洋医学の虚実の入口](https://www.haritaro.jp/curriculum/lecture-lifedynamics-10)
-- [津液の働きで読む肺・脾・腎・三焦の関係](https://www.haritaro.jp/curriculum/lecture-lifedynamics-11)
-- [気血津液と臓腑のつながりを短い例で振り返る](https://www.haritaro.jp/curriculum/lecture-lifedynamics-12)
+- [体を養う働きと宗気・営衛](https://www.haritaro.jp/learn/lectures/body-functions)
+- [三焦・昇降出入と津液のつながり](https://www.haritaro.jp/learn/lectures/triple-burner-and-movement)
+- [昼夜と季節、体調の変化](https://www.haritaro.jp/learn/lectures/daily-and-seasonal-changes)
 
 #### 五行
-- [五行とは？ 木・火・土・金・水の五つに分けて考える](https://www.haritaro.jp/curriculum/lecture-wuxing-1)
-- [五行の性質とは？ 曲直・炎上・稼穡・従革・潤下の意味](https://www.haritaro.jp/curriculum/lecture-wuxing-2)
-- [五行の相生・相剋とは？ 相乗・相侮まで矢印で読む](https://www.haritaro.jp/curriculum/lecture-wuxing-3)
-- [五行と五臓の対応を読む。肝は木、心は火、脾は土](https://www.haritaro.jp/curriculum/lecture-wuxing-4)
-- [五官・五体・五華とは？ 目・筋・爪を五行の表で読む](https://www.haritaro.jp/curriculum/lecture-wuxing-5)
-- [五神と五志とは？ 東洋医学で精神活動と感情をどう分けるか](https://www.haritaro.jp/curriculum/lecture-wuxing-6)
-- [五行と季節・気候・五味の関係。春の風、秋の乾燥から読む](https://www.haritaro.jp/curriculum/lecture-wuxing-7)
-- [五行の読み方をおさらい。相生の母と子はどう見分ける？](https://www.haritaro.jp/curriculum/lecture-wuxing-8)
+- [五行の性質と相生・相剋](https://www.haritaro.jp/learn/lectures/five-elements)
+- [五行の表を読む](https://www.haritaro.jp/learn/lectures/five-elements-table)
 
 #### 経絡とツボ
-- [経絡・経脈・経穴の違い｜ツボの図を読む前に](https://www.haritaro.jp/curriculum/lecture-meridians-1)
+- [経絡・経脈・経穴とツボの読み方](https://www.haritaro.jp/learn/lectures/meridians-and-points)
 - [十二経脈の名前と略号｜手と足の経絡索引](https://www.haritaro.jp/curriculum/lecture-meridians-2)
 - [ツボの場所の読み方｜経穴コード・体の目印・骨度法](https://www.haritaro.jp/curriculum/lecture-meridians-3)
 - [架空の手の違和感で練習する経絡図の読み方](https://www.haritaro.jp/curriculum/lecture-meridians-4)
 
 #### 不調の経過をどう考えるか
-- [病機とは？ 病因・症状・証との違い](https://www.haritaro.jp/curriculum/lecture-pathomechanism-1)
-- [不調が始まる条件｜正気・邪気と暮らしの記録](https://www.haritaro.jp/curriculum/lecture-pathomechanism-2)
-- [気虚・気滞・気逆・気陥の違いを知る](https://www.haritaro.jp/curriculum/lecture-pathomechanism-3)
-- [津液不足と水滞の違い｜乾きとむくみをどう記録する？](https://www.haritaro.jp/curriculum/lecture-pathomechanism-4)
-- [血虚と瘀血の違い｜養いの不足と巡りの滞り](https://www.haritaro.jp/curriculum/lecture-pathomechanism-5)
-- [寒熱と虚実はどう違う？ 冷えや熱っぽさを読む](https://www.haritaro.jp/curriculum/lecture-pathomechanism-6)
-- [六淫とは？ 風・寒・暑・湿・燥・火の読み方](https://www.haritaro.jp/curriculum/lecture-pathomechanism-7)
-- [感情・食事・活動と休息を分けて振り返る](https://www.haritaro.jp/curriculum/lecture-pathomechanism-8)
-- [五行の関係図で読む相乗・相侮と不調の広がり](https://www.haritaro.jp/curriculum/lecture-pathomechanism-9)
-- [長引く不調を整理する｜始まりと続く条件を分ける](https://www.haritaro.jp/curriculum/lecture-pathomechanism-10)
-- [重だるさをどう読む？ 気虚と湿熱の仮説を比べる](https://www.haritaro.jp/curriculum/lecture-pathomechanism-11)
-- [不調の経過を三つの視点で読む｜発生・波及・維持](https://www.haritaro.jp/curriculum/lecture-pathomechanism-12)
+- [病因・病機と暮らしの記録](https://www.haritaro.jp/learn/lectures/pathomechanism-basics)
+- [気・血・津液の失調と寒熱・虚実](https://www.haritaro.jp/learn/lectures/qi-blood-and-patterns)
+- [不調の広がりと続く条件](https://www.haritaro.jp/learn/lectures/how-patterns-change)
+- [不調の説明を比べ、次に聞くことを決める](https://www.haritaro.jp/learn/lectures/comparing-explanations)
 
 #### 所見の集め方と見立て
-- [東洋医学の弁証とは？ 「証」にたどり着くまでの考え方](https://www.haritaro.jp/curriculum/lecture-diagnosis-1)
-- [鍼灸の相談より受診を優先するのはどんなとき？](https://www.haritaro.jp/curriculum/lecture-diagnosis-2)
-- [主訴とは？ いちばん困っていることと症状の経過の伝え方](https://www.haritaro.jp/curriculum/lecture-diagnosis-3)
-- [問診とは？ 体調を聞く質問はどう進む？](https://www.haritaro.jp/curriculum/lecture-diagnosis-4)
-- [望診・聞診とは？ 舌の色や声から観察するときの考え方](https://www.haritaro.jp/curriculum/lecture-diagnosis-5)
-- [切診とは？ 脈診や腹診で触れたことをどう記録する？](https://www.haritaro.jp/curriculum/lecture-diagnosis-6)
-- [八綱とは？ 表裏・寒熱・虚実・陰陽を比べる](https://www.haritaro.jp/curriculum/lecture-diagnosis-7)
-- [気虚・気滞・血虚・瘀血とは？ 気血津液の見立てを読む](https://www.haritaro.jp/curriculum/lecture-diagnosis-8)
-- [臓腑・経絡の見立ては、症状の場所をどう読む？](https://www.haritaro.jp/curriculum/lecture-diagnosis-9)
+- [弁証の入り口と、先に確かめること](https://www.haritaro.jp/learn/lectures/assessment-basics)
+- [四診で確かめる情報](https://www.haritaro.jp/learn/lectures/four-examinations)
+- [八綱・気血津液・臓腑で所見を読む](https://www.haritaro.jp/learn/lectures/assessment-frameworks)
 - [弁証の演習｜最初の仮説と合わない所見が出たら？](https://www.haritaro.jp/curriculum/lecture-diagnosis-10)
 - [弁証とSOAP｜頭痛と胃もたれの架空例を四つに分けて書く](https://www.haritaro.jp/curriculum/lecture-diagnosis-11)
 - [弁証の総合演習｜めまい・頭痛に追加情報が出たときの判断](https://www.haritaro.jp/curriculum/lecture-diagnosis-12)
 
 #### 施術方針と振り返りの考え方
-- [鍼灸の相談で決める治療目標｜痛みと生活のしやすさ](https://www.haritaro.jp/curriculum/lecture-treatment-1)
-- [治則・治法・配穴とは？ 証から方針を組み立てる順序](https://www.haritaro.jp/curriculum/lecture-treatment-2)
-- [補瀉（ほしゃ）とは？ 補法・瀉法と寒熱の考え方](https://www.haritaro.jp/curriculum/lecture-treatment-3)
-- [本治と標治の違い｜背景といまの困りごと、どちらを考える？](https://www.haritaro.jp/curriculum/lecture-treatment-4)
-- [補気・理気・降気とは？ 気に関する五つの治法の意味](https://www.haritaro.jp/curriculum/lecture-treatment-5)
-- [養血・活血・利水とは？ 血や津液の治法の意味を読む](https://www.haritaro.jp/curriculum/lecture-treatment-6)
-- [疎肝健脾・培土生金とは？ 五臓の関係と治法の名前](https://www.haritaro.jp/curriculum/lecture-treatment-7)
+- [施術を考える枠組みと振り返り](https://www.haritaro.jp/learn/lectures/principles-and-goals)
+- [補瀉と気・血・津液の治法を読む](https://www.haritaro.jp/learn/lectures/treatment-terms)
 - [配穴の演習｜近いツボ・離れたツボを選ぶ理由を比べる](https://www.haritaro.jp/curriculum/lecture-treatment-8)
 - [鍼灸の安全性を考える演習｜方法や刺激量を決める前に](https://www.haritaro.jp/curriculum/lecture-treatment-9)
-- [症状と生活背景をどう聞く？ 仕事・睡眠・服薬の振り返り](https://www.haritaro.jp/curriculum/lecture-treatment-10)
 - [施術後の評価を考える演習｜痛み・仕事・負担をどう比べる？](https://www.haritaro.jp/curriculum/lecture-treatment-11)
 - [頭痛の架空例で計画を立てる｜施術方法を保留する理由](https://www.haritaro.jp/curriculum/lecture-treatment-12)
 

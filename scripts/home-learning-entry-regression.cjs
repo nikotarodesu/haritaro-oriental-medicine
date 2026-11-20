@@ -56,35 +56,35 @@ assert.match(home, /<h1[^>]*>知<\/h1>/);
 assert(!home.includes('学習履歴を確認中') && !home.includes('href="/pricing"') && !home.includes('href="/notes"'));
 
 const reading = renderToStaticMarkup(React.createElement(load('src/app/learn/page').default));
-for (const href of ['/curriculum/lecture-intro-1', '/learn/essentials', '/diagnosis', '/articles', '/curriculum']) assert(reading.includes('href="' + href + '"'), href);
-const { getPublicLectureGroups, getPublicLectureReadingPosition } = load('src/data/publicLectures');
-const readingChapters = getPublicLectureGroups('reading');
-const readingOrder = readingChapters.flatMap(group => group.entries.map(article => article.id));
-const readingIds = new Set(readingOrder);
-assert(readingIds.size > 1);
-for (const { id } of getPublicLectureGroups().flatMap(group => group.entries)) {
-  assert.equal(reading.includes(`href="/curriculum/${id}"`), readingIds.has(id), id);
-  if (!readingIds.has(id)) assert.equal(getPublicLectureReadingPosition(id), null, id);
+const { getPublicLectureGroups } = load('src/data/publicLectures');
+const { readingUnits, getLectureIndexGroups, readingPartHref, readingLinkHref } = load('src/data/publicLectures/readingUnits');
+for (const href of [readingUnits[0].href, '/learn/essentials', '/diagnosis', '/articles', '/curriculum']) assert(reading.includes('href="' + href + '"'), href);
+const readingChapters = getLectureIndexGroups('reading');
+const sourceChapters = getPublicLectureGroups('reading');
+const readingOrder = readingChapters.flatMap(group => group.entries.map(entry => entry.href));
+assert.equal(readingUnits.length, 24);
+assert.equal(readingOrder.join('|'), readingUnits.map(unit => unit.href).join('|'));
+assert.equal(new Set(readingOrder).size, readingOrder.length);
+for (const href of readingOrder) assert(reading.includes(`href="${href}"`), href);
+assert(!reading.includes('href="/curriculum/lecture-'));
+for (const chapter of sourceChapters) {
+  const contained = readingUnits.filter(unit => unit.chapter === chapter.id).flatMap(unit => unit.parts.map(part => part.lectureId));
+  assert.equal([...contained].sort().join('|'), chapter.entries.map(entry => entry.id).sort().join('|'), chapter.id + ' contains each original part once');
 }
-for (const chapter of readingChapters) {
-  chapter.entries.forEach(({ id }, index) => {
-    const position = getPublicLectureReadingPosition(id);
-    const ordinal = readingOrder.indexOf(id);
-    assert.equal(position.chapter, chapter.label, id);
-    assert.equal(position.number, index + 1, id);
-    assert.equal(position.total, chapter.entries.length, id);
-    assert.equal(position.previous?.id, readingOrder[ordinal - 1], id);
-    assert.equal(position.next?.id, readingOrder[ordinal + 1], id);
-  });
+for (const unit of readingUnits) {
+  for (const part of unit.parts) {
+    assert.equal(readingPartHref(part.lectureId), unit.href + '#' + part.anchor);
+    assert.equal(readingLinkHref('/curriculum/' + part.lectureId, unit.href), '#' + part.anchor);
+  }
 }
 const learningMap = reading.match(/<nav[^>]*aria-labelledby="learning-path-title"[^>]*>(.*?)<\/nav>/)?.[1];
 assert(learningMap, 'The ordered study map renders on the public reading hub');
-const mapLinks = Array.from(learningMap.matchAll(/href="\/curriculum\/([^"]+)"/g), match => match[1]);
+const mapLinks = Array.from(learningMap.matchAll(/href="(\/learn\/lectures\/[^"]+)"/g), match => match[1]);
 assert.equal(mapLinks.length, 5);
 let lastMapStop = -1;
-for (const id of mapLinks) {
-  const stop = readingChapters.findIndex(chapter => chapter.entries[0].id === id);
-  assert(stop > lastMapStop, id + ' starts a reading chapter in the index order');
+for (const href of mapLinks) {
+  const stop = readingChapters.findIndex(chapter => chapter.entries[0].href === href);
+  assert(stop > lastMapStop, href + ' starts a reading chapter in the index order');
   lastMapStop = stop;
 }
 assert(!reading.includes('学習履歴を確認中') && !reading.includes('href="/notes"'));
@@ -94,8 +94,11 @@ assert.equal(essentialTopics.length, 12);
 for (const [, anchor] of essentials.matchAll(/href="#([^"]+)"/g)) {
   assert(essentials.includes(`id="${anchor}"`), anchor + ' is a live topic group');
 }
-for (const [, id] of essentials.matchAll(/href="\/curriculum\/([^"]+)"/g)) {
-  assert(readingIds.has(id), id + ' is a public reading lecture');
-}
-assert(essentials.includes('data-study-diagram="compare"') && essentials.includes('data-study-diagram="flow"'));
-console.log(`Passed: three public series, study map, one-page essentials, ${readingOrder.length} adjacent lectures in index order, and legacy learning URL selection.`);
+const deepLinks = [...essentials.matchAll(/href="(\/learn\/lectures\/[^"]+#[^"]+)"/g)];
+assert.equal(deepLinks.length, 12);
+const partHrefs = new Set(readingUnits.flatMap(unit => unit.parts.map(part => readingPartHref(part.lectureId))));
+for (const [, href] of deepLinks) assert(partHrefs.has(href), href + ' is a real section in a consolidated lecture');
+assert.equal((essentials.match(/class="essentials-example"/g) || []).length, 12);
+assert.equal((essentials.match(/<details class="essentials-diagram">/g) || []).length, 12);
+assert.equal((essentials.match(/data-study-diagram="/g) || []).length, 12);
+console.log(`Passed: three public series, study map, 12 examples, diagrams and section links, and ${readingOrder.length} consolidated lectures in index order.`);

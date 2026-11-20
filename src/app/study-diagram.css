@@ -285,23 +285,42 @@
 }
 
 .essentials-topic > p {
-  flex: 1;
   color: var(--text-secondary);
   line-height: 1.8;
 }
 
-.essentials-topic > a {
-  margin-top: .1rem;
+.essentials-example strong {
+  margin-inline-end: .15rem;
+  color: var(--warm-readable);
+  font-size: .875rem;
+}
+
+.essentials-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  margin-top: auto;
+}
+
+.essentials-actions > a {
+  z-index: 1;
+  grid-area: 1 / 2;
+  align-self: start;
+  justify-self: end;
+  min-width: 0;
 }
 
 .essentials-diagram {
-  width: 100%;
+  grid-area: 1 / 1 / 2 / 3;
+  min-width: 0;
 }
 
 .essentials-diagram > summary {
   display: flex;
   align-items: center;
   gap: .3rem;
+  width: fit-content;
+  max-width: 50%;
   min-height: 44px;
   padding-block: .35rem;
   color: var(--warm-readable);
@@ -309,6 +328,14 @@
   font-weight: 600;
   cursor: pointer;
   list-style: none;
+}
+
+.essentials-diagram > summary svg {
+  flex-shrink: 0;
+}
+
+.essentials-diagram > .study-diagram {
+  margin-block-start: .25rem;
 }
 
 .essentials-diagram > summary::-webkit-details-marker {

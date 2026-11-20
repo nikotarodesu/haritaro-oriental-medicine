@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import TaijiSymbol from "@/components/graphics/TaijiSymbol";
-import { getPublicLectureGroups } from "@/data/publicLectures";
+import { getLectureIndexGroups } from "@/data/publicLectures/readingUnits";
 
 const STOPS = [
   { chapter: "intro", title: "東洋医学の入り口", topics: "鍼灸・漢方・養生" },
@@ -49,7 +49,7 @@ function TopicIllustration({ chapter }: { chapter: (typeof STOPS)[number]["chapt
 }
 
 export default function PublicLearningPath() {
-  const chapters = getPublicLectureGroups("reading");
+  const chapters = getLectureIndexGroups("reading");
 
   return (
     <nav className="learning-path" aria-labelledby="learning-path-title">
@@ -64,7 +64,7 @@ export default function PublicLearningPath() {
 
           return (
             <li key={stop.chapter}>
-              <Link href={`/curriculum/${entry.id}`} className="learning-path-stop" prefetch={false}>
+              <Link href={entry.href} className="learning-path-stop" prefetch={false}>
                 <span className="learning-path-art"><TopicIllustration chapter={stop.chapter} /></span>
                 <span className="learning-path-label">
                   <strong>{stop.title}</strong>

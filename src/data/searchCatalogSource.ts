@@ -9,6 +9,7 @@ import { ARTICLES } from "@/data/articleData";
 import { SYMPTOMS } from "@/data/symptomData";
 import { PUBLIC_SYMPTOM_CONTENT } from "@/data/publicSymptoms";
 import { getPublicLectureArticle, getPublicLectureSeries } from "@/data/publicLectures/index";
+import { readingUnits } from "@/data/publicLectures/readingUnits";
 import { PUBLIC_ARCHIVE_CASES } from "@/data/cases/archiveCases";
 import { TOOL_CATALOG } from "@/config/toolCatalog";
 import { LEARNING_COURSES } from "@/data/learningCourses";
@@ -137,18 +138,33 @@ export function buildSearchCatalog(): SearchResultItem[] {
       tags: ["症例", "段階式", "症例演習", "判断根拠", "安全確認", "再評価"],
     })));
 
-    // 2. 既存の講義URLに掲載する読み物と演習
+    // 2. 東洋医学の講義と、図鑑・演習の個別教材
+    for (const unit of readingUnits) {
+      list.push({
+        id: `reading-lecture-${unit.slug}`,
+        type: "lecture",
+        title: unit.title,
+        subtitle: unit.description,
+        badge: "東洋医学の講義",
+        url: unit.href,
+        tags: unit.parts.flatMap(part => {
+          const article = getPublicLectureArticle(part.lectureId);
+          return [part.label, article?.title ?? "", ...(article?.sections.map(section => section.heading) ?? [])];
+        }),
+      });
+    }
     CURRICULUM_DATA.forEach((chapter) => {
       chapter.lectures.filter(lecture => lecture.isPublished).forEach((lec) => {
         const article = getPublicLectureArticle(lec.id);
         if (!article) return;
         const series = getPublicLectureSeries(lec.id);
+        if (series === "reading") return;
         list.push({
           id: `lecture-${lec.id}`,
           type: "lecture",
           title: article.title,
           subtitle: article.description,
-          badge: series === "practice" ? "臨床演習" : series === "dictionary" ? "ツボ図鑑" : "東洋医学の読み物",
+          badge: series === "practice" ? "臨床演習" : "ツボ図鑑",
           url: `/curriculum/${lec.id}`,
           tags: [
             lec.title,

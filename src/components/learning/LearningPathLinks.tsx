@@ -2,9 +2,9 @@
 import Link from 'next/link';
 import { trackEvent } from '@/utils/analytics';
 
-export default function LearningPathLinks({ lectureId, caseId, lectureTitle, caseTitle }: { lectureId: string; caseId: string; lectureTitle?: string; caseTitle?: string }) {
+export default function LearningPathLinks({ lectureId, lectureHref, caseId, lectureTitle, caseTitle }: { lectureId: string; lectureHref: string; caseId: string; lectureTitle?: string; caseTitle?: string }) {
   const links = [
-    { href: `/curriculum/${lectureId}`, label: '1. 講義で確認する', description: lectureTitle, destination: 'lecture' },
+    { href: lectureHref, label: '1. 講義で確認する', description: lectureTitle, destination: 'lecture' },
     { href: `/curriculum/${lectureId}#interactive-quiz-container`, label: '2. 確認クイズを解く', description: 'この講義の理解を問題で確かめる', destination: 'quiz' },
     { href: `/simulator?case=${caseId}#case-training`, label: '3. 症例で理由を考える', description: caseTitle, destination: 'case' },
   ];

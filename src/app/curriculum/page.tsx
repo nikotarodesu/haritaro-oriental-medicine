@@ -3,12 +3,13 @@ import { notFound, permanentRedirect } from "next/navigation";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import PageIntro from "@/components/design/PageIntro";
 import { pageSocialMetadata } from "@/config/seo";
-import { CURRICULUM_TOTAL_LESSONS } from "@/data/curriculumOutline";
-import { getPublicLectureArticle, getPublicLectureGroups } from "@/data/publicLectures";
+import { getPublicLectureArticle } from "@/data/publicLectures";
+import { getLectureIndexGroups } from "@/data/publicLectures/readingUnits";
 import { resolveLegacyLectureId } from "@/utils/curriculumLegacyPaths";
 
 const origin = "https://www.haritaro.jp";
-const title = `東洋医学・経絡・鍼灸演習の全${CURRICULUM_TOTAL_LESSONS}本の目次`;
+const items = getLectureIndexGroups().flatMap(group => group.entries);
+const title = `東洋医学・経絡・鍼灸演習の全${items.length}本の目次`;
 const description = "陰陽・気血水・経絡、症状の経過や所見の整理、架空症例の演習をテーマから選べます。";
 
 export const metadata: Metadata = {
@@ -27,7 +28,6 @@ export default async function CurriculumPage({ searchParams }: { searchParams: P
     permanentRedirect(`/curriculum/${id}${query}`);
   }
 
-  const items = getPublicLectureGroups().flatMap(group => group.entries);
   const schema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -39,7 +39,7 @@ export default async function CurriculumPage({ searchParams }: { searchParams: P
       "@type": "ItemList",
       numberOfItems: items.length,
       itemListElement: items.map((item, index) => ({
-        "@type": "ListItem", position: index + 1, name: item.title, url: `${origin}/curriculum/${item.id}`,
+        "@type": "ListItem", position: index + 1, name: item.title, url: origin + item.href,
       })),
     },
   };

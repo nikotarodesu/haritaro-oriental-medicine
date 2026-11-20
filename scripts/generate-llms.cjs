@@ -9,14 +9,14 @@ function generateFullGuide() {
   const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
   const { SYMPTOMS } = load('src/data/symptomData');
   const { PUBLIC_SYMPTOM_CONTENT } = load('src/data/publicSymptoms');
-  const { getPublicLectureGroups } = load('src/data/publicLectures/index');
+  const { getLectureIndexGroups } = load('src/data/publicLectures/readingUnits');
   const shortGuide = fs.readFileSync(path.join(root, 'public/llms.txt'), 'utf8').replace(/\r\n/g, '\n').trimEnd();
   const lines = [shortGuide, '', '## 公開ページの追加索引', '',
     '以下は上記の案内とサイトの公開データから生成した索引です。経穴名や症状との関連は治療効果・個人への適応を示すものではありません。確認範囲と出典はリンク先で確認してください。', '',
     '### テーマ別の読み物と演習'];
-  for (const group of getPublicLectureGroups()) {
+  for (const group of getLectureIndexGroups()) {
     lines.push('', `#### ${group.label}`);
-    for (const article of group.entries) lines.push(`- [${article.title}](https://www.haritaro.jp/curriculum/${article.id})`);
+    for (const lecture of group.entries) lines.push(`- [${lecture.title}](https://www.haritaro.jp${lecture.href})`);
   }
   lines.push('', '### 症状別の学習ガイド');
   for (const symptom of SYMPTOMS) lines.push(`- [${symptom.title}](https://www.haritaro.jp/symptoms/${symptom.id}): ${PUBLIC_SYMPTOM_CONTENT[symptom.id]?.summary ?? symptom.summary}`);
