@@ -13,6 +13,7 @@ import { getCurriculumIndexCatalog } from "@/data/curriculumIndexCatalog";
 import { PROGRESSIVE_CASES } from "@/data/progressiveCases";
 import { resolveArticleReferences } from "@/utils/referenceResolver";
 import MarkdownBody from "@/components/MarkdownBody";
+import ReadingContents from "@/components/reading/ReadingContents";
 import ArticleReferences from "@/components/ArticleReferences";
 import InlineTextRenderer from "@/components/InlineTextRenderer";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
@@ -171,46 +172,26 @@ export default async function ArticleDetailPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="space-y-6 sm:space-y-10">
-        
-        {/* パンくずリスト */}
-        <nav aria-label="パンくず" className="flex items-center justify-between gap-3 text-sm text-[#737C77] dark:text-[#8899A6]">
-          <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-            <Link href="/" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-              ホーム
-            </Link>
-            <span>/</span>
-            <Link href="/articles" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-              コラム・文献アーカイブ
-            </Link>
-            <span>/</span>
-            <span className="text-[#232826] dark:text-[#FAF8F5] font-bold line-clamp-1 max-w-[200px] sm:max-w-md">
-              {article.title}
-            </span>
-          </div>
-
-        </nav>
-
-        {/* 記事メインカード */}
-        <article id="article-top" className="scroll-mt-36 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm space-y-6 sm:space-y-8 transition-colors">
-          {/* ヘッダー部 */}
-          <header className="space-y-3 sm:space-y-4 border-b border-[#F2ECE0] dark:border-[#22303D] pb-5 sm:pb-6">
+      <div className="space-y-5 sm:space-y-8">
+        <article id="article-top" tabIndex={-1} className="reader-article">
+          <header className="reader-header">
+            <Link href="/articles" className="reader-back"><span aria-hidden="true">←</span>記事一覧</Link>
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] text-sm font-semibold">
+              <span className="rounded-md bg-panel-selected px-2.5 py-1 text-sm font-semibold text-accent">
                 {article.category}
               </span>
-              <span className="text-sm text-[#737C77] dark:text-[#8899A6] flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" />
+              <span className="flex items-center gap-1 text-sm text-muted">
+                <Clock aria-hidden="true" className="h-3.5 w-3.5" />
                 <span>読了約 {article.readTime}</span>
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug tracking-tight">
+            <h1 className="reader-title">
               {article.title}
             </h1>
 
             {article.subtitle && (
-              <p className="text-sm sm:text-base text-[#59615D] dark:text-[#A0B0BC] font-medium leading-relaxed">
+              <p className="reader-lead">
                 {article.subtitle}
               </p>
             )}
@@ -233,34 +214,28 @@ export default async function ArticleDetailPage({ params }: Props) {
 
           <ArticleReadingResume articleId={article.id} revision={articleReadingRevision(article.contentMarkdown)} headings={headings.map(heading => ({ id: heading.id, text: heading.label, level: 2 }))} />
 
-          <nav aria-label="この記事の読み進め方" className="page-actions">
-            <a href="#article-content" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />本文</a>
+          <nav aria-label="この記事の読み進め方" className="reader-navigation">
+            <a href="#article-content" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />本文へ</a>
             {readingGuide?.inserts[0] && <a href={`#reading-figure-${readingGuide.inserts[0].figure.id}`} className="page-secondary-action"><Network aria-hidden="true" className="h-4 w-4" />図解</a>}
-            {nextArticles.length > 0 && <a href="#article-next-reading" className="page-secondary-action"><ArrowRight aria-hidden="true" className="h-4 w-4" />続きを読む</a>}
-            {resolvedReferences.length > 0 && <a href="#article-references-section" className="ui-text-link text-sm"><Bookmark aria-hidden="true" className="h-4 w-4" />出典</a>}
+            {resolvedReferences.length > 0 && <a href="#article-references-section" className="page-secondary-action"><Bookmark aria-hidden="true" className="h-4 w-4" />出典</a>}
           </nav>
-          <details className="page-help text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]"><summary>この記事の要点・読み方</summary><div className="space-y-3">
+          <ReadingContents label="記事の目次" headings={headings} />
+          <details className="page-help text-base leading-relaxed text-muted"><summary>この記事の要点・読み方</summary><div className="space-y-3">
             <p><InlineTextRenderer text={article.summary} /></p>
-            {learningGuide && <div className="border-l-2 border-[#C5DED4] dark:border-[#2A5243] pl-4 space-y-2 text-sm">
+            {learningGuide && <div className="space-y-2 border-s-2 border-frame ps-4 text-sm">
               <p><strong>学ぶポイント：</strong>{learningGuide.focus}</p>
             </div>}
             <section className="text-sm">
-              <h2 className="font-semibold text-[#1E3D34] dark:text-[#74BA9E]">説明の範囲</h2>
+              <h2 className="font-semibold text-accent">説明の範囲</h2>
               <p className="pt-2">
             伝統理論の説明、研究で得られた知見、筆者による比較・比喩を区別してお読みください。生理学との対比表や「ネットワーク」などの説明は、伝統概念との同一性や治療効果を証明するものではありません。研究結果は対象・方法・限界とともに確認してください。
               </p>
-              {resolvedReferences.length > 0 && <a href="#article-references-section" className="inline-flex min-h-11 items-center underline text-[#1E3D34] dark:text-[#74BA9E]">原典・研究対象・方法を出典で確認する</a>}
+              {resolvedReferences.length > 0 && <a href="#article-references-section" className="ui-text-link">原典・研究対象・方法を出典で確認する</a>}
             </section>
           </div></details>
-          {headings.length > 0 && <details className="rounded-xl bg-[#FAF8F5] dark:bg-[#121920] px-4 py-2">
-            <summary className="flex min-h-11 items-center cursor-pointer font-bold text-[#1E3D34] dark:text-[#74BA9E]">目次</summary>
-            <nav aria-label="記事の目次" className="mt-3"><ol className="space-y-2 text-sm">
-              {headings.map(heading => <li key={heading.id}><a href={"#" + heading.id} className="inline-flex min-h-11 items-center py-2 underline underline-offset-4 text-[#1E3D34] dark:text-[#74BA9E]">{heading.label}</a></li>)}
-            </ol></nav>
-          </details>}
           {/* 本文 */}
-          <div id="article-content" className="scroll-mt-36">
-          {learningGuide && <p className="mb-5 text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]"><strong>判断の限界：</strong>{learningGuide.limitation}</p>}
+          <div id="article-content" tabIndex={-1} className="reader-content">
+          {learningGuide && <p className="mb-5 text-sm leading-relaxed text-muted"><strong>判断の限界：</strong>{learningGuide.limitation}</p>}
           <MarkdownBody
             contentMarkdown={article.contentMarkdown}
             idPrefix="article-heading"
@@ -270,31 +245,33 @@ export default async function ArticleDetailPage({ params }: Props) {
           />
           </div>
 
-          {nextArticles.length > 0 && <section id="article-next-reading" aria-labelledby="article-next-reading-title" className="scroll-mt-36 space-y-4 border-t border-[#E8E1D1] dark:border-[#22303D] pt-6">
-            <div className="space-y-1"><h2 id="article-next-reading-title" className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">続きを読む</h2><p className="text-sm text-[#59615D] dark:text-[#A0B0BC]">いま読んだ内容を、別の視点から確かめる記事です。</p></div>
-            <div className="grid gap-3 sm:grid-cols-3">{nextArticles.map(({ article: next, reason }) => <ContentNavigationLink key={next.id} href={`/articles/${next.id}`} placement="article_next" articleId={next.id} className="flex flex-col gap-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] p-4 hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2">
-              <p className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">{reason}</p>
-              <h3 className="font-serif text-base font-bold leading-relaxed text-[#232826] dark:text-[#FAF8F5]">{next.title}</h3>
-              <span className="mt-auto inline-flex min-h-11 items-center justify-between gap-2 text-sm text-[#59615D] dark:text-[#A0B0BC]"><span>読了約 {next.readTime}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></span>
+          {nextArticles.length > 0 && <section id="article-next-reading" aria-labelledby="article-next-reading-title" className="space-y-4 border-t border-divider pt-6">
+            <div className="space-y-1"><h2 id="article-next-reading-title" className="reader-section-title">続きを読む</h2><p className="text-sm text-muted">いま読んだ内容を、別の視点から確かめる記事です。</p></div>
+            <div className="grid gap-3 md:grid-cols-3">{nextArticles.map(({ article: next, reason }) => <ContentNavigationLink key={next.id} href={`/articles/${next.id}`} placement="article_next" articleId={next.id} className="flex min-w-0 flex-col gap-2 rounded-xl border border-frame bg-page p-4 hover:bg-panel-selected">
+              <p className="text-sm font-semibold text-accent">{reason}</p>
+              <h3 className="font-serif text-base font-semibold leading-relaxed">{next.title}</h3>
+              <span className="mt-auto inline-flex items-center justify-between gap-2 text-sm text-muted"><span>読了約 {next.readTime}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></span>
             </ContentNavigationLink>)}</div>
           </section>}
 
-          {(learningGuide || relatedCourses.length > 0) && <section aria-labelledby="article-learning-next-title" className="space-y-4 border-t border-[#E8E1D1] dark:border-[#22303D] pt-6 text-sm">
-            <h2 id="article-learning-next-title" className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">順に学ぶ</h2>
-            {relatedCourses.length > 0 && <div className="rounded-xl bg-[#EBF3EF] p-4 dark:bg-[#182823]">
-              <p className="font-semibold text-[#184F49] dark:text-[#83BEA8]">このテーマの基礎コース</p>
-              <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2">{relatedCourses.map(course => <ContentNavigationLink key={course.slug} href={`/learn/courses/${course.slug}`} placement="article_course" courseId={course.slug} className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#184F49] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#83BEA8]">{course.title}<ArrowRight aria-hidden="true" className="h-4 w-4" /></ContentNavigationLink>)}</div>
+          {(learningGuide || relatedCourses.length > 0) && <section aria-labelledby="article-learning-next-title" className="space-y-4 border-t border-divider pt-6">
+            <h2 id="article-learning-next-title" className="reader-section-title">順に学ぶ</h2>
+            {relatedCourses.length > 0 && <div className="rounded-xl bg-panel-selected p-4">
+              <p className="font-semibold text-accent">このテーマの基礎コース</p>
+              <div className="mt-2 flex flex-wrap gap-x-5">{relatedCourses.map(course => <ContentNavigationLink key={course.slug} href={`/learn/courses/${course.slug}`} placement="article_course" courseId={course.slug} className="ui-text-link">{course.title}<ArrowRight aria-hidden="true" className="h-4 w-4" /></ContentNavigationLink>)}</div>
             </div>}
             {learningGuide && (relatedCourses.length > 0 ? <details className="article-learning-alternatives">
               <summary>講義・クイズ・症例から選ぶ</summary>
               <div><LearningPathLinks lectureId={learningGuide.lectureId} caseId={learningGuide.caseId} lectureTitle={learningLectureTitle} caseTitle={learningCaseTitle} /></div>
             </details> : <LearningPathLinks lectureId={learningGuide.lectureId} caseId={learningGuide.caseId} lectureTitle={learningLectureTitle} caseTitle={learningCaseTitle} />)}
           </section>}
-          <a href="#article-top" className="inline-flex min-h-11 items-center underline underline-offset-4 text-sm text-[#1E3D34] dark:text-[#74BA9E]">記事の先頭へ</a>
           {/* 参考文献・学術エビデンス（PubMed・DOI・古典原典） */}
           <ArticleReferences references={resolvedReferences} />
 
-          <Link href={"/contact?source=" + encodeURIComponent("/articles/" + article.id)} className="inline-flex min-h-11 items-center text-sm underline text-[#1E3D34] dark:text-[#83BEA8]">この記事の訂正・出典について連絡する</Link>
+          <div className="reader-navigation border-t border-divider pt-3">
+            <Link href={"/contact?source=" + encodeURIComponent("/articles/" + article.id)} className="ui-text-link text-sm">この記事の訂正・出典について連絡する</Link>
+            <a href="#article-top" className="ui-text-link text-sm">記事の先頭へ</a>
+          </div>
         </article>
 
         {/* E-E-A-T 専門家監修情報カード */}

@@ -33,10 +33,10 @@ const exercises: readonly NavItemDefinition[] = [
 export default function ClinicalLandingPage() {
   return (
     <div className="clinical-page clinical-page--focused">
-      <section id="tools" aria-labelledby="clinical-series-heading" className="mb-10 space-y-5 border-b border-[var(--border-washi)] pb-8 sm:mb-12">
+      <section id="tools" aria-labelledby="clinical-series-heading" className="clinical-practice-entry mb-8 space-y-4 rounded-2xl border border-frame bg-panel p-4 sm:mb-10 sm:p-7">
         <header className="space-y-3">
-          <h1 id="clinical-series-heading" className="font-serif text-3xl font-bold leading-snug sm:text-4xl">はり太郎の臨床演習</h1>
-          <p className="max-w-prose leading-relaxed ui-muted">「いつから痛みますか？」。架空の相談を読んで、次に何を尋ねるか考えてみましょう。鍼灸を学ぶ方のための、症例とツボの組み合わせの練習です。</p>
+          <h1 id="clinical-series-heading" className="reader-title">はり太郎の臨床演習</h1>
+          <p className="reader-lead">架空の相談を読み、何を尋ねるか、どのツボを選ぶかを考える鍼灸の演習です。</p>
         </header>
         <ToolLinks items={exercises} />
         <p className="clinical-tool-note">演習の結果だけで、実際の診断・施術方針は決まりません。</p>
@@ -48,14 +48,14 @@ export default function ClinicalLandingPage() {
       <ClinicalDashboard />
       <section aria-labelledby="clinical-help-heading" className="clinical-help">
         <h2 id="clinical-help-heading">利用・保存について</h2>
-        <details className="rounded-xl border border-[#D9E3DD] px-4 dark:border-[#2A3B4A]">
+        <details className="rounded-xl border border-frame bg-panel px-4">
           <summary className={`min-h-11 cursor-pointer py-3 font-semibold ${focusClass}`}>作業中の下書きの取り扱い</summary>
           <div className="space-y-3 pb-4 text-sm leading-relaxed ui-muted">
             <p>作業中の下書きは、このブラウザのタブに一時保存されます。氏名・電話番号・住所は入力せず、患者番号などの記号を使ってください。自由記述にも本人を特定できる情報を含めないでください。</p>
             <Link href="/privacy" className={`inline-flex min-h-11 items-center underline ${focusClass}`}>記録と個人情報の取り扱い</Link>
           </div>
         </details>
-        <details className="rounded-xl border border-[#D9E3DD] px-4 dark:border-[#2A3B4A]">
+        <details className="rounded-xl border border-frame bg-panel px-4">
           <summary className={`min-h-11 cursor-pointer py-3 font-semibold ${focusClass}`}>教材の出典・確認範囲</summary>
           <p className="pb-4 text-sm leading-relaxed ui-muted">教材は新版東洋医学概論・経絡経穴概論、WHO標準経穴部位、中医基礎理論などを参照しています。全件の医学記述の照合・専門家監修は未完了です。伝統理論の分類と医学的な評価を区別して利用してください。</p>
           <Link href="/editorial-policy" className={`mb-3 inline-flex min-h-11 items-center underline ${focusClass}`}>出典と確認範囲</Link>

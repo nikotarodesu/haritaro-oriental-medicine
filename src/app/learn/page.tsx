@@ -29,9 +29,10 @@ export default function LearnGuidePage() {
   return (
     <div className="page-layout space-y-8">
       <PageIntro title={SERIES.reading.name} description="冷えやすい、眠りにくい。身近な体の変化を、東洋医学ではどう捉えるのでしょう。気になるテーマから読んでみてください。" art="study">
-        <div className="page-actions">
-          <a href="#oriental-reading" className="page-primary-action">読み物を探す<ArrowDown aria-hidden="true" size={18} /></a>
-          <Link href="/diagnosis" className="page-secondary-action">気血水 体質チェック</Link>
+        <div className="reader-navigation mt-4">
+          <Link href="/curriculum/lecture-intro-1" className="page-primary-action"><BookOpen aria-hidden="true" />最初の講義へ</Link>
+          <a href="#learn-courses-heading" className="page-secondary-action">講義の目次<ArrowDown aria-hidden="true" size={18} /></a>
+          <Link href="/articles" className="page-secondary-action">図解記事</Link>
         </div>
       </PageIntro>
 
@@ -60,6 +61,7 @@ export default function LearnGuidePage() {
       </section>
 
       <nav aria-label="東洋医学を詳しく調べる" className="flex flex-wrap gap-x-6 gap-y-2">
+        <Link href="/diagnosis" className="ui-text-link">気血水 体質チェック</Link>
         <Link href="/glossary" className="ui-text-link">用語集</Link>
         <Link href="/library" className="ui-text-link">古典・論文</Link>
         <Link href="/editorial-policy" className="ui-text-link">出典と確認範囲</Link>

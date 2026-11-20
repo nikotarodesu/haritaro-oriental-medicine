@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useSyncExternalStore } from "react";
 
 type Theme = "yang" | "yin"; // yang: 陽（ライト）, yin: 陰（ダーク）
 
@@ -12,44 +12,35 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("yang");
-  const [mounted, setMounted] = useState(false);
+function subscribeToTheme(onChange: () => void) {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  return () => observer.disconnect();
+}
 
-  useEffect(() => {
-    setMounted(true);
-    const savedTheme = localStorage.getItem("haritaro-theme") as Theme | null;
-    if (savedTheme === "yin" || savedTheme === "yang") {
-      setThemeState(savedTheme);
-      applyTheme(savedTheme);
-    } else {
-      // OSの設定を確認
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const initialTheme: Theme = prefersDark ? "yin" : "yang";
-      setThemeState(initialTheme);
-      applyTheme(initialTheme);
-    }
-  }, []);
+function currentTheme(): Theme {
+  return document.documentElement.classList.contains("dark") ? "yin" : "yang";
+}
 
-  const applyTheme = (t: Theme) => {
-    const root = document.documentElement;
-    if (t === "yin") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-  };
+function serverTheme(): Theme {
+  return "yang";
+}
 
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
+function setTheme(newTheme: Theme) {
+  document.documentElement.classList.toggle("dark", newTheme === "yin");
+  try {
     localStorage.setItem("haritaro-theme", newTheme);
-    applyTheme(newTheme);
-  };
+  } catch {
+    // The theme still applies when browser storage is unavailable.
+  }
+}
 
-  const toggleTheme = () => {
-    const nextTheme: Theme = theme === "yang" ? "yin" : "yang";
-    setTheme(nextTheme);
-  };
+function toggleTheme() {
+  setTheme(currentTheme() === "yang" ? "yin" : "yang");
+}
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const theme = useSyncExternalStore(subscribeToTheme, currentTheme, serverTheme);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>

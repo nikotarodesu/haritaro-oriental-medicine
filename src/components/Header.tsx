@@ -9,7 +9,7 @@ import BrandLogo from "@/components/brand/BrandLogo";
 import { SERIES } from "@/config/series";
 import { ALL_NAV_ITEMS, CLINICAL_PRIMARY_ITEMS, CLINICAL_PRACTICE_ITEMS, getNavigationSection, isNavigationItemActive, type NavItemId } from "@/config/navigationItems";
 import RecentToolTracker from "./home/RecentTools";
-import YinYangSwitch from "./YinYangSwitch";
+import ThemeSwitch from "./YinYangSwitch";
 import FontSizeControl from "./FontSizeControl";
 import { SITE_MENU_ID, SITE_MENU_STATE_EVENT, SITE_MENU_TOGGLE_EVENT, NAV_CUSTOMIZE_EVENT, type SiteMenuToggleDetail } from "@/utils/siteMenu";
 
@@ -88,7 +88,6 @@ function HeaderSettings({ onOpenInstall }: { onOpenInstall: () => void }) {
   return <section aria-label="文字サイズと外観の設定" className="space-y-3 border-t border-[#E5E8E5] pt-3 dark:border-[#2A3B4A]">
     <button type="button" onClick={onOpenInstall} aria-haspopup="dialog" className="min-h-11 rounded-lg text-sm underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2">ホーム画面に追加</button>
     <div className="space-y-2"><p className="text-sm font-semibold">文字サイズ</p><FontSizeControl variant="segmented" /></div>
-    <div className="flex flex-wrap items-center justify-between gap-3"><p className="text-sm font-semibold">外観（陽・陰）</p><div className="[&_button]:min-h-[44px] [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2"><YinYangSwitch /></div></div>
   </section>;
 }
 
@@ -277,6 +276,7 @@ export default function Header() {
               {openDropdown === "clinical" ? <div id={dropdownId("clinical")} className={`clinical-header-menu absolute left-0 top-full mt-2 max-h-[75vh] overflow-y-auto whitespace-normal rounded-xl border p-2 shadow-lg ${HEADER_PANEL}`}><ClinicalMenu pathname={pathname} onNavigate={closeNavigation} /></div> : null}
             </div>
             <button ref={desktopSearchRef} type="button" onClick={() => openSearch()} aria-label="サイト内検索を開く" aria-haspopup="dialog" title="サイト内検索（Ctrl+K / ⌘K）" className={`${NAV_CONTROL} border border-[var(--border-washi)]`}><Search aria-hidden="true" className="h-[18px] w-[18px] shrink-0" /><span>検索</span></button>
+            <ThemeSwitch />
             <div className="relative">
               {dropdownButton("settings", "サイト設定", false)}
               {openDropdown === "settings" ? <div id={dropdownId("settings")} className={`absolute right-0 top-full mt-2 max-h-[75vh] w-88 space-y-3 overflow-y-auto whitespace-normal rounded-xl border p-3 shadow-lg ${HEADER_PANEL}`}><HeaderLinks links={SITE_LINKS} pathname={pathname} onNavigate={closeNavigation} /><HeaderSettings onOpenInstall={openInstallGuide} /></div> : null}
@@ -284,6 +284,7 @@ export default function Header() {
           </nav>
           <div className={`${COMPACT_LAYOUT} ml-auto shrink-0 items-center gap-1.5`}>
             <button ref={compactSearchRef} type="button" onClick={() => openSearch()} aria-label="サイト内検索を開く" aria-haspopup="dialog" title="サイト内検索" className={`inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg hover:bg-[var(--accent-soft)] ${FOCUS_STYLE}`}><Search aria-hidden="true" className="h-5 w-5" /></button>
+            <ThemeSwitch compact />
             <button ref={menuButtonRef} type="button" onClick={event => toggleMobileMenu(event.currentTarget)} aria-expanded={mobileMenuOpen} aria-controls={SITE_MENU_ID} aria-label={mobileMenuOpen ? "メニューを閉じる" : "メニューを開く"} className={`inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg hover:bg-[var(--accent-soft)] ${FOCUS_STYLE}`}>{mobileMenuOpen ? <X aria-hidden="true" className="h-5 w-5" /> : <Menu aria-hidden="true" className="h-5 w-5" />}</button>
           </div>
         </div>

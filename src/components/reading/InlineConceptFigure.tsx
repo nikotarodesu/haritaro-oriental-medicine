@@ -23,7 +23,7 @@ function ConceptGlyph({ icon }: { icon: ConceptIcon }) {
 
 function ReadingConnector({ directional }: { directional: boolean }) {
   return (
-    <span className="flex justify-center py-2 text-[#8CA99B] dark:text-[#6C9683] sm:absolute sm:-right-5 sm:top-9 sm:z-10 sm:p-0" aria-hidden="true">
+    <span className="flex justify-center py-2 text-accent sm:absolute sm:-right-5 sm:top-9 sm:z-10 sm:p-0" aria-hidden="true">
       <svg className="h-6 w-6 rotate-90 sm:rotate-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" focusable="false">
         <path d="M3 12h18" strokeDasharray={directional ? undefined : "2 3"} />
         {directional ? <path d="m16 7 5 5-5 5" /> : <><circle cx="3" cy="12" r="1.5" fill="currentColor" /><circle cx="21" cy="12" r="1.5" fill="currentColor" /></>}
@@ -40,34 +40,34 @@ export default function InlineConceptFigure({ figure }: { figure: ReadingFigure 
   const grid = figure.items.length === 2 || figure.items.length > 3 ? "sm:grid-cols-2" : "sm:grid-cols-3";
 
   return (
-    <figure id={`reading-figure-${figure.id}`} aria-labelledby={titleId} aria-describedby={captionId} data-reading-figure={figure.id} className="not-prose my-8 scroll-mt-40 overflow-hidden rounded-2xl border border-[#D6E3DA] bg-linear-to-br from-[#F1F6F1] via-[#F8FAF6] to-[#FAF8F2] p-4 sm:my-10 sm:p-7 dark:border-[#304A3E] dark:from-[#162920] dark:via-[#182A24] dark:to-[#1C2A27]">
+    <figure id={`reading-figure-${figure.id}`} aria-labelledby={titleId} aria-describedby={captionId} data-reading-figure={figure.id} className="not-prose my-8 scroll-mt-32 overflow-hidden rounded-xl border border-frame bg-page p-4 sm:p-6">
       <figcaption className="mb-4">
-        <strong id={titleId} className="block text-lg font-bold leading-relaxed text-[#1E3D34] sm:text-xl dark:text-[#D9EDE0]">{figure.title}</strong>
+        <strong id={titleId} className="block font-serif text-lg leading-relaxed font-semibold text-ink sm:text-xl">{figure.title}</strong>
       </figcaption>
       <List className={`grid gap-x-8 sm:gap-y-3 ${grid}`}>
         {figure.items.map((item, index) => (
           <li key={item.label} className="relative min-w-0">
-            <div className="rounded-xl border border-[#DCE6DD] bg-white/80 p-3 sm:h-full sm:p-4 dark:border-[#375145] dark:bg-[#10221B]/55">
+            <div className="rounded-lg border border-frame bg-panel p-3 sm:h-full sm:p-4">
               <div className="flex items-center gap-3">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#E9F1E8] text-[#3B6B52] dark:bg-[#2E4D3C] dark:text-[#B9D8C3]"><ConceptGlyph icon={item.icon} /></span>
-                <strong className="min-w-0 text-base font-bold leading-relaxed text-[#244B3C] dark:text-[#E1EDE5]">{figure.layout === "steps" ? <span className="mr-2 text-sm font-semibold tabular-nums text-[#6A766C] dark:text-[#A8BCAF]">0{index + 1}</span> : null}{item.label}</strong>
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-panel-selected text-accent"><ConceptGlyph icon={item.icon} /></span>
+                <strong className="min-w-0 text-base leading-relaxed font-semibold">{figure.layout === "steps" ? <span className="mr-2 text-sm font-semibold text-muted tabular-nums">{index + 1}.</span> : null}{item.label}</strong>
               </div>
-              <p className="mt-2 text-sm leading-[1.85] text-[#4D5C53] dark:text-[#B7CFC0]">{item.description}</p>
+              <p className="mt-2 text-sm leading-[1.85] text-muted">{item.description}</p>
             </div>
             {index < figure.items.length - 1 ? figure.layout === "compare" ? <span className="block h-3 sm:hidden" aria-hidden="true" /> : <ReadingConnector directional={figure.layout === "steps"} /> : null}
           </li>
         ))}
       </List>
       {figure.exercise && (
-        <div className="mt-4 border-t border-[#D6E3DA] pt-4 dark:border-[#375145]">
-          <p className="text-base font-semibold leading-relaxed text-[#244B3C] dark:text-[#E1EDE5]">{figure.exercise.prompt}</p>
-          <details data-reading-exercise={figure.id} className="mt-2 text-sm leading-[1.85] text-[#4D5C53] dark:text-[#B7CFC0]">
+        <div className="mt-4 border-t border-frame pt-4">
+          <p className="text-base leading-relaxed font-semibold">{figure.exercise.prompt}</p>
+          <details data-reading-exercise={figure.id} className="mt-2 text-sm leading-[1.85] text-muted">
             <summary className="min-h-11 cursor-pointer py-2 font-semibold underline underline-offset-4">考え方を確認する</summary>
             <p className="pb-2">{figure.exercise.answer}</p>
           </details>
         </div>
       )}
-      <p id={captionId} className="mt-5 border-t border-[#D6E3DA] pt-4 text-sm leading-[1.85] text-[#536458] dark:border-[#375145] dark:text-[#B7CFC0]">{figure.caption}</p>
+      <p id={captionId} className="mt-5 border-t border-frame pt-4 text-sm leading-[1.85] text-muted">{figure.caption}</p>
     </figure>
   );
 }

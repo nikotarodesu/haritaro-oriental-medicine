@@ -1,9 +1,9 @@
 .article-cover {
-  --article-cover-ink: #354c42;
-  --article-cover-green: #467663;
-  --article-cover-gold: #ad8c58;
-  --article-cover-water: #688d9a;
-  --article-cover-paper: #f4f2e9;
+  --article-cover-ink: var(--accent-readable);
+  --article-cover-green: #516e77;
+  --article-cover-gold: var(--warm-readable);
+  --article-cover-water: #688392;
+  --article-cover-paper: var(--bg-muted);
   display: flex;
   flex: 0 0 auto;
   align-items: center;
@@ -21,11 +21,8 @@
 }
 
 .dark .article-cover {
-  --article-cover-ink: #c0d3c7;
-  --article-cover-green: #8ebca5;
-  --article-cover-gold: #c2a675;
+  --article-cover-green: #96b2c0;
   --article-cover-water: #8db1c0;
-  --article-cover-paper: #1c2b2b;
 }
 
 .article-cover-card {

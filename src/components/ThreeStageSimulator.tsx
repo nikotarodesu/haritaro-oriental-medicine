@@ -489,36 +489,36 @@ export default function ThreeStageSimulator() {
 
   return (
     <div className="clinical-exercise-simulator space-y-6 sm:space-y-8">
-<section className="rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 space-y-3 text-sm">
-        <h3 className="font-bold text-[#232826] dark:text-[#FAF8F5]">安全判断の学習設定</h3>
-        <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">急な胸痛・呼吸困難・意識障害、腰痛に伴う新しい排尿障害や会陰部の感覚変化など、医療評価を優先する兆候を確認します。この選択だけで疾患を除外することはできません。</p>
-        <div className="flex flex-wrap gap-2">{([{ value: "unconfirmed", label: "危険兆候：未確認" }, { value: "no_flags", label: "確認した範囲では認めない" }, { value: "red_flags", label: "危険兆候がある設定" }] as const).map(option => <button key={option.value} type="button" aria-pressed={safetyReview === option.value} onClick={() => setSafetyReview(option.value)} className={`rounded-lg border p-2 text-sm ${safetyReview === option.value ? "bg-[#1E3D34] border-[#1E3D34] text-white" : "border-[#E5DEC9] dark:border-[#2A3B4A] text-[#59615D] dark:text-[#A0B0BC]"}`}>{option.label}</button>)}</div>
+<section className="rounded-2xl border border-frame p-4 space-y-3 text-sm">
+        <h3 className="font-bold text-ink">安全判断の学習設定</h3>
+        <p className="text-sm leading-relaxed text-muted">急な胸痛・呼吸困難・意識障害、腰痛に伴う新しい排尿障害や会陰部の感覚変化など、医療評価を優先する兆候を確認します。この選択だけで疾患を除外することはできません。</p>
+        <div className="flex flex-wrap gap-2">{([{ value: "unconfirmed", label: "危険兆候：未確認" }, { value: "no_flags", label: "確認した範囲では認めない" }, { value: "red_flags", label: "危険兆候がある設定" }] as const).map(option => <button key={option.value} type="button" aria-pressed={safetyReview === option.value} onClick={() => setSafetyReview(option.value)} className={`rounded-lg border p-2 text-sm ${safetyReview === option.value ? "border-accent bg-panel-selected text-accent" : "border-frame text-muted"}`}>{option.label}</button>)}</div>
       </section>
 
       {/* 症例連携通知バナー */}
       {fromCaseInfo && (
-        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#EBF3EF] to-[#FAF8F5] dark:from-[#182823] dark:to-[#17212A] border-2 border-[#1E3D34] dark:border-[#74BA9E] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fadeIn">
+        <div className="p-4 sm:p-5 rounded-2xl border border-accent bg-panel-selected flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fadeIn">
           <div className="flex items-center gap-3">
-            <span className="p-2.5 rounded-xl bg-[#1E3D34] text-white shrink-0">
+            <span className="p-2.5 rounded-xl bg-panel-selected text-accent shrink-0">
               <FlaskConical className="w-5 h-5 text-[#E6C387]" />
             </span>
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="font-mono text-sm font-bold px-2 py-0.5 rounded bg-[#1E3D34] text-white">
+                <span className="font-mono text-sm font-bold px-2 py-0.5 rounded bg-panel-selected text-accent">
                   症例 {fromCaseInfo.number} 連動中
                 </span>
-                <span className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
+                <span className="font-bold text-sm text-ink">
                   {fromCaseInfo.title}
                 </span>
               </div>
-              <p className="text-sm text-[#59615D] dark:text-[#96A6B2] mt-0.5 leading-relaxed">
+              <p className="text-sm text-muted mt-0.5 leading-relaxed">
                 症例の八綱・気血水・臓腑が反映されています。条件を変更して、もし寒熱や臓腑が異なっていた場合の配穴変化を観察できます。
               </p>
             </div>
           </div>
           <button
             onClick={() => setFromCaseInfo(null)}
-            className="text-sm font-semibold text-[#59615D] dark:text-[#96A6B2] hover:text-[#1E3D34] underline cursor-pointer shrink-0"
+            className="text-sm font-semibold text-muted hover:text-[#1E3D34] underline cursor-pointer shrink-0"
           >
             連動を解除
           </button>
@@ -527,7 +527,7 @@ export default function ThreeStageSimulator() {
 
       {/* 体質診断連携通知バナー */}
       {fromDiagnosisInfo && (
-        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#FCF4EB] to-[#FAF8F5] dark:from-[#2A2016] dark:to-[#17212A] border-2 border-[#B86924] dark:border-[#E6C387] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fadeIn">
+        <div className="p-4 sm:p-5 rounded-2xl border border-[var(--notice-line)] bg-[var(--notice-bg)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fadeIn">
           <div className="flex items-center gap-3">
             <span className="p-2.5 rounded-xl bg-[#B86924] text-white shrink-0">
               <FlaskConical className="w-5 h-5 text-[#FAF8F5]" />
@@ -537,18 +537,18 @@ export default function ThreeStageSimulator() {
                 <span className="font-mono text-sm font-bold px-2 py-0.5 rounded bg-[#B86924] text-white">
                   体質診断 連動中
                 </span>
-                <span className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
+                <span className="font-bold text-sm text-ink">
                   {fromDiagnosisInfo.diagName}
                 </span>
               </div>
-              <p className="text-sm text-[#59615D] dark:text-[#96A6B2] mt-0.5 leading-relaxed">
+              <p className="text-sm text-muted mt-0.5 leading-relaxed">
                 セルフチェックの回答から整理した分類を引き継いでいます。八綱や臓腑の条件を変え、表示される配穴例の違いを比べられます。
               </p>
             </div>
           </div>
           <button
             onClick={() => setFromDiagnosisInfo(null)}
-            className="text-sm font-semibold text-[#59615D] dark:text-[#96A6B2] hover:text-[#B86924] underline cursor-pointer shrink-0"
+            className="text-sm font-semibold text-muted hover:text-[#B86924] underline cursor-pointer shrink-0"
           >
             連動を解除
           </button>
@@ -557,25 +557,25 @@ export default function ThreeStageSimulator() {
 
       {/* 経穴詳細からの逆引き推論バナー */}
       {fromTsuboInfo && (
-        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#EBF3EF] to-[#FAF8F5] dark:from-[#182823] dark:to-[#17212A] border-2 border-[#1E3D34] dark:border-[#74BA9E] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fadeIn">
+        <div className="p-4 sm:p-5 rounded-2xl border border-accent bg-panel-selected flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fadeIn">
           <div className="flex items-center gap-3">
-            <span className="p-2.5 rounded-xl bg-[#1E3D34] text-white shrink-0">
+            <span className="p-2.5 rounded-xl bg-panel-selected text-accent shrink-0">
               <Compass className="w-5 h-5 text-[#E6C387]" />
             </span>
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="font-mono text-sm font-bold px-2 py-0.5 rounded bg-[#1E3D34] text-white">
+                <span className="font-mono text-sm font-bold px-2 py-0.5 rounded bg-panel-selected text-accent">
                   参照元：{fromTsuboInfo.name}（{fromTsuboInfo.code}）
                 </span>
               </div>
-              <p className="text-sm text-[#59615D] dark:text-[#96A6B2] mt-0.5 leading-relaxed">
+              <p className="text-sm text-muted mt-0.5 leading-relaxed">
                 「{fromTsuboInfo.name}」を参照しています。初期条件はこの経穴の適応病態を示しません。経穴名から証を決めず、所見に応じて条件を選び直してください。候補の一致だけで個人への適応は判断できません。
               </p>
             </div>
           </div>
           <button
             onClick={() => setFromTsuboInfo(null)}
-            className="text-sm font-semibold text-[#59615D] dark:text-[#96A6B2] hover:text-[#1E3D34] underline cursor-pointer shrink-0"
+            className="text-sm font-semibold text-muted hover:text-[#1E3D34] underline cursor-pointer shrink-0"
           >
             連動を解除
           </button>
@@ -594,18 +594,18 @@ export default function ThreeStageSimulator() {
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-[#1E3D34] dark:bg-[#74BA9E]" />
-              <h2 className="text-lg sm:text-xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+              <h2 className="text-lg sm:text-xl font-serif font-bold text-ink">
                 条件を選ぶ（八綱・気血水・臓腑）
               </h2>
             </div>
 
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] text-sm font-bold border border-[#C5DED4] dark:border-[#2A5243]">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-panel-selected text-accent text-sm font-bold border border-frame">
               <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
               <span>3つの分類から条件を選ぶ</span>
             </span>
           </div>
 
-          <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
+          <p className="text-sm text-muted leading-relaxed">
             八綱・気血水・臓腑の条件を選ぶと、候補を支持する所見、不足している情報、学習用の配穴例が表示されます。条件を変えると、表示内容も変わります。
           </p>
         </div>
@@ -616,16 +616,16 @@ export default function ThreeStageSimulator() {
           <div className="space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-white text-sm font-bold flex items-center justify-center">
+                <span className="w-6 h-6 rounded-full bg-panel-selected text-accent text-sm font-bold flex items-center justify-center">
                   1
                 </span>
-                <h3 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
+                <h3 className="font-serif font-bold text-base sm:text-lg text-ink">
                   八綱弁証（深浅・冷熱・邪正の勢い）
                 </h3>
               </div>
               <Link
                 href="/curriculum/lecture-pathomechanism-1"
-                className="text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
+                className="text-sm font-semibold text-accent hover:underline flex items-center gap-1"
                 title="病因・病機：病機とは何か（八綱・病理の整理）"
               >
                 <span>八綱・病機の解説講義を読む</span>
@@ -646,7 +646,7 @@ export default function ThreeStageSimulator() {
                       onClick={() => handleUpdate({ depth: opt.value })}
                       className={`p-3 sm:p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
                         depth === opt.value
-                          ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] dark:border-[#2B6958] font-bold"
+                          ? "bg-panel-selected text-accent border-[#1E3D34] dark:border-[#2B6958] font-bold"
                           : "bg-[#FFFFFF] dark:bg-[#17212A] text-[#333835] dark:text-[#C5D2DB] border-[#D5CCBC] dark:border-[#2D3E50] hover:bg-[#F2EDE4] dark:hover:bg-[#1E2B36]"
                       }`}
                     >
@@ -673,7 +673,7 @@ export default function ThreeStageSimulator() {
                       onClick={() => handleUpdate({ temp: opt.value })}
                       className={`p-3 sm:p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
                         temp === opt.value
-                          ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] dark:border-[#2B6958] font-bold"
+                          ? "bg-panel-selected text-accent border-[#1E3D34] dark:border-[#2B6958] font-bold"
                           : "bg-[#FFFFFF] dark:bg-[#17212A] text-[#333835] dark:text-[#C5D2DB] border-[#D5CCBC] dark:border-[#2D3E50] hover:bg-[#F2EDE4] dark:hover:bg-[#1E2B36]"
                       }`}
                     >
@@ -700,7 +700,7 @@ export default function ThreeStageSimulator() {
                       onClick={() => handleUpdate({ state: opt.value })}
                       className={`p-3 sm:p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
                         state === opt.value
-                          ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] dark:border-[#2B6958] font-bold"
+                          ? "bg-panel-selected text-accent border-[#1E3D34] dark:border-[#2B6958] font-bold"
                           : "bg-[#FFFFFF] dark:bg-[#17212A] text-[#333835] dark:text-[#C5D2DB] border-[#D5CCBC] dark:border-[#2D3E50] hover:bg-[#F2EDE4] dark:hover:bg-[#1E2B36]"
                       }`}
                     >
@@ -721,16 +721,16 @@ export default function ThreeStageSimulator() {
           <div className="space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-white text-sm font-bold flex items-center justify-center">
+                <span className="w-6 h-6 rounded-full bg-panel-selected text-accent text-sm font-bold flex items-center justify-center">
                   2
                 </span>
-                <h3 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
+                <h3 className="font-serif font-bold text-base sm:text-lg text-ink">
                   気血水弁証（気・血・水の伝統的な分類）
                 </h3>
               </div>
               <Link
                 href="/curriculum/lecture-qiblood-1"
-                className="text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
+                className="text-sm font-semibold text-accent hover:underline flex items-center gap-1"
                 title="気血津液論：基本用語と役割"
               >
                 <span>気血津液の基礎を学ぶ</span>
@@ -745,8 +745,8 @@ export default function ThreeStageSimulator() {
                   onClick={() => handleUpdate({ qixueshui: opt.value })}
                   className={`p-3 sm:p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
                     qixueshui === opt.value
-                      ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] dark:border-[#2B6958] font-bold"
-                      : "bg-[#FAF8F5] dark:bg-[#121920] text-[#333835] dark:text-[#C5D2DB] border-[#E8E1D1] dark:border-[#263542] hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631]"
+                      ? "bg-panel-selected text-accent border-[#1E3D34] dark:border-[#2B6958] font-bold"
+                      : "bg-page text-[#333835] dark:text-[#C5D2DB] border-[#E8E1D1] dark:border-[#263542] hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631]"
                   }`}
                 >
                   <div className="text-sm sm:text-base font-bold">{opt.label}</div>
@@ -760,7 +760,7 @@ export default function ThreeStageSimulator() {
             </div>
 
             {/* 兼証（挟雑病態の併存・任意選択） */}
-            <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#263542] space-y-2.5">
+            <div className="bg-page p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#263542] space-y-2.5">
               <div className="flex flex-wrap items-center justify-between gap-1.5">
                 <span className="text-sm sm:text-sm font-bold text-[#404743] dark:text-[#C5D2DB] flex items-center gap-1.5">
                   <span className="text-[#B86924] dark:text-[#E6C387]">＋</span>
@@ -784,8 +784,8 @@ export default function ThreeStageSimulator() {
                   onClick={() => setSecondaryQixueshui("none")}
                   className={`px-2.5 py-1.5 rounded-lg text-sm font-bold border transition-all cursor-pointer ${
                     secondaryQixueshui === "none"
-                      ? "bg-[#1E3D34] text-white border-[#1E3D34] dark:bg-[#2B6958]"
-                      : "bg-white dark:bg-[#17212A] text-[#59615D] dark:text-[#A0B0BC] border-[#D5CCBC] dark:border-[#2D3E50] hover:bg-[#F2EDE4]"
+                      ? "border-accent bg-panel-selected text-accent dark:bg-[#2B6958]"
+                      : "bg-panel text-muted border-[#D5CCBC] dark:border-[#2D3E50] hover:bg-[#F2EDE4]"
                   }`}
                 >
                   兼証なし（単一主証）
@@ -798,7 +798,7 @@ export default function ThreeStageSimulator() {
                     className={`px-2.5 py-1.5 rounded-lg text-sm font-bold border transition-all cursor-pointer ${
                       secondaryQixueshui === opt.value
                         ? "bg-[#B86924] text-white border-[#B86924] dark:bg-[#D48B47]"
-                        : "bg-white dark:bg-[#17212A] text-[#59615D] dark:text-[#A0B0BC] border-[#D5CCBC] dark:border-[#2D3E50] hover:border-[#B86924]/60"
+                        : "bg-panel text-muted border-[#D5CCBC] dark:border-[#2D3E50] hover:border-[#B86924]/60"
                     }`}
                   >
                     ＋ {opt.label}
@@ -812,10 +812,10 @@ export default function ThreeStageSimulator() {
           <div className="space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-white text-sm font-bold flex items-center justify-center">
+                <span className="w-6 h-6 rounded-full bg-panel-selected text-accent text-sm font-bold flex items-center justify-center">
                   3
                 </span>
-                <h3 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
+                <h3 className="font-serif font-bold text-base sm:text-lg text-ink">
                   臓腑経絡弁証（局在・病位）
                 </h3>
               </div>
@@ -831,8 +831,8 @@ export default function ThreeStageSimulator() {
                   onClick={() => handleUpdate({ zangfu: opt.value })}
                   className={`p-3 sm:p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
                     zangfu === opt.value
-                      ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] dark:border-[#2B6958] font-bold"
-                      : "bg-[#FAF8F5] dark:bg-[#121920] text-[#333835] dark:text-[#C5D2DB] border-[#E8E1D1] dark:border-[#263542] hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631]"
+                      ? "bg-panel-selected text-accent border-[#1E3D34] dark:border-[#2B6958] font-bold"
+                      : "bg-page text-[#333835] dark:text-[#C5D2DB] border-[#E8E1D1] dark:border-[#263542] hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631]"
                   }`}
                 >
                   <div className="text-sm sm:text-base font-bold">{opt.label}</div>
@@ -853,15 +853,15 @@ export default function ThreeStageSimulator() {
                 onClick={() => setIsComplexAccordionOpen(!isComplexAccordionOpen)}
                 aria-expanded={isComplexAccordionOpen}
                 aria-controls="complex-conditions-panel"
-                className="w-full flex items-center justify-between p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] hover:bg-[#F2EDE4] dark:hover:bg-[#1A2530] transition-colors text-left cursor-pointer"
+                className="w-full flex items-center justify-between p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-page border border-[#E8E1D1] dark:border-[#263542] hover:bg-[#F2EDE4] dark:hover:bg-[#1A2530] transition-colors text-left cursor-pointer"
               >
                 <div className="flex items-center gap-3">
-                  <span className="p-2 rounded-xl bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
+                  <span className="p-2 rounded-xl bg-panel-selected text-accent">
                     <Scale className="w-5 h-5" />
                   </span>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
+                      <span className="font-serif font-bold text-sm sm:text-base text-ink">
                         💡 複雑な状態も試す（寒熱錯雑・虚実夾雑・四診の判断材料）
                       </span>
                       {complexState !== "none" && (
@@ -882,11 +882,11 @@ export default function ThreeStageSimulator() {
 
               {/* アコーディオン展開部 */}
               {isComplexAccordionOpen && (
-                <div id="complex-conditions-panel" className="mt-3 p-4 sm:p-6 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] space-y-5 animate-fadeIn">
+                <div id="complex-conditions-panel" className="mt-3 p-4 sm:p-6 rounded-2xl bg-page border border-[#E8E1D1] dark:border-[#263542] space-y-5 animate-fadeIn">
                   {/* 併存病態の選択 */}
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+                      <span className="text-sm sm:text-sm font-bold text-accent flex items-center gap-1.5">
                         <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
                         <span>併存病態（八綱の二択を超えた臨床像）:</span>
                       </span>
@@ -907,14 +907,14 @@ export default function ThreeStageSimulator() {
                           onClick={() => handleUpdate({ complexState: cOpt.value })}
                           className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                             complexState === cOpt.value
-                              ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white border-[#1E3D34] font-bold"
-                              : "bg-white dark:bg-[#17212A] text-[#333835] dark:text-[#C5D2DB] border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#F2EDE4] dark:hover:bg-[#1E2B36]"
+                              ? "bg-panel-selected text-accent border-[#1E3D34] font-bold"
+                              : "bg-panel text-[#333835] dark:text-[#C5D2DB] border-frame hover:bg-[#F2EDE4] dark:hover:bg-[#1E2B36]"
                           }`}
                         >
                           <div className="flex items-center justify-between">
                             <span className="text-sm font-bold">{cOpt.label}</span>
                             <span className={`text-sm px-2 py-0.5 rounded ${
-                              complexState === cOpt.value ? "bg-white/20 text-white" : "bg-[#FAF8F5] dark:bg-[#121920] text-[#737C77] dark:text-[#8899A6]"
+                              complexState === cOpt.value ? "bg-white/20 text-white" : "bg-page text-[#737C77] dark:text-[#8899A6]"
                             }`}>
                               {cOpt.category}
                             </span>
@@ -932,7 +932,7 @@ export default function ThreeStageSimulator() {
                   {/* 四診の重要キーサイン */}
                   <div className="space-y-3 pt-3 border-t border-[#E8E1D1] dark:border-[#263542]">
                     <div>
-                      <span className="text-sm sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+                      <span className="text-sm sm:text-sm font-bold text-accent flex items-center gap-1.5">
                         <Stethoscope className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
                         <span>四診の判断材料（症例サンプルの設定・キーサイン）:</span>
                       </span>
@@ -943,7 +943,7 @@ export default function ThreeStageSimulator() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
                       {/* 按診 */}
-                      <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
+                      <div className="bg-panel p-3 rounded-xl border border-frame space-y-1.5">
                         <span className="text-sm font-bold text-[#404743] dark:text-[#C5D2DB] block">
                           ① 押圧反応（按診）
                         </span>
@@ -954,7 +954,7 @@ export default function ThreeStageSimulator() {
                               onClick={() => handleFourExamChange("palpation", p.value)}
                               className={`w-full text-left px-2.5 py-1.5 rounded-lg text-sm transition-all cursor-pointer ${
                                 fourExams.palpation === p.value
-                                  ? "bg-[#1E3D34] text-white font-bold"
+                                  ? "bg-panel-selected text-accent font-bold"
                                   : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
                               }`}
                             >
@@ -965,7 +965,7 @@ export default function ThreeStageSimulator() {
                       </div>
 
                       {/* 温冷 */}
-                      <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
+                      <div className="bg-panel p-3 rounded-xl border border-frame space-y-1.5">
                         <span className="text-sm font-bold text-[#404743] dark:text-[#C5D2DB] block">
                           ② 温冷反応（問診）
                         </span>
@@ -976,7 +976,7 @@ export default function ThreeStageSimulator() {
                               onClick={() => handleFourExamChange("tempReaction", t.value)}
                               className={`w-full text-left px-2.5 py-1.5 rounded-lg text-sm transition-all cursor-pointer ${
                                 fourExams.tempReaction === t.value
-                                  ? "bg-[#1E3D34] text-white font-bold"
+                                  ? "bg-panel-selected text-accent font-bold"
                                   : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
                               }`}
                             >
@@ -987,7 +987,7 @@ export default function ThreeStageSimulator() {
                       </div>
 
                       {/* 飲水 */}
-                      <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
+                      <div className="bg-panel p-3 rounded-xl border border-frame space-y-1.5">
                         <span className="text-sm font-bold text-[#404743] dark:text-[#C5D2DB] block">
                           ③ 飲水傾向（問診）
                         </span>
@@ -998,7 +998,7 @@ export default function ThreeStageSimulator() {
                               onClick={() => handleFourExamChange("drinking", d.value)}
                               className={`w-full text-left px-2.5 py-1.5 rounded-lg text-sm transition-all cursor-pointer ${
                                 fourExams.drinking === d.value
-                                  ? "bg-[#1E3D34] text-white font-bold"
+                                  ? "bg-panel-selected text-accent font-bold"
                                   : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
                               }`}
                             >
@@ -1009,7 +1009,7 @@ export default function ThreeStageSimulator() {
                       </div>
 
                       {/* 舌診 */}
-                      <div className="bg-white dark:bg-[#17212A] p-3 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
+                      <div className="bg-panel p-3 rounded-xl border border-frame space-y-1.5">
                         <span className="text-sm font-bold text-[#404743] dark:text-[#C5D2DB] block">
                           ④ 舌色・舌苔（望診）
                         </span>
@@ -1020,7 +1020,7 @@ export default function ThreeStageSimulator() {
                               onClick={() => handleFourExamChange("tongue", tg.value)}
                               className={`w-full text-left px-2.5 py-1.5 rounded-lg text-sm transition-all cursor-pointer ${
                                 fourExams.tongue === tg.value
-                                  ? "bg-[#1E3D34] text-white font-bold"
+                                  ? "bg-panel-selected text-accent font-bold"
                                   : "hover:bg-[#FAF8F5] dark:hover:bg-[#121920] text-[#404743] dark:text-[#C5D2DB]"
                               }`}
                             >
@@ -1039,16 +1039,16 @@ export default function ThreeStageSimulator() {
         {/* 選択状態パンくずバー ＆ 結果ジャンプボタン */}
         <div className="bg-[#EBF3EF] dark:bg-[#14231E] p-3 sm:p-4 rounded-xl border border-[#C5DED4] dark:border-[#234237] flex flex-wrap items-center justify-between gap-3 text-sm sm:text-sm">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">選択中:</span>
-            <span className="px-2 py-0.5 rounded bg-white dark:bg-[#17212A] border border-[#C5DED4] dark:border-[#2A3B4A] font-medium">
+            <span className="font-bold text-accent">選択中:</span>
+            <span className="px-2 py-0.5 rounded bg-panel border border-[#C5DED4] dark:border-[#2A3B4A] font-medium">
               八綱：{depth === "interior" ? "裏" : "表"}・{temp === "heat" ? "熱" : "寒"}・{state === "excess" ? "実" : "虚"}
             </span>
             <span className="text-[#8899A6]">➜</span>
-            <span className="px-2 py-0.5 rounded bg-white dark:bg-[#17212A] border border-[#C5DED4] dark:border-[#2A3B4A] font-medium">
+            <span className="px-2 py-0.5 rounded bg-panel border border-[#C5DED4] dark:border-[#2A3B4A] font-medium">
               気血水：{QIXUESHUI_OPTIONS.find((q) => q.value === qixueshui)?.label.split("（")[0]}
             </span>
             <span className="text-[#8899A6]">➜</span>
-            <span className="px-2 py-0.5 rounded bg-white dark:bg-[#17212A] border border-[#C5DED4] dark:border-[#2A3B4A] font-medium">
+            <span className="px-2 py-0.5 rounded bg-panel border border-[#C5DED4] dark:border-[#2A3B4A] font-medium">
               臓腑：{ZANGFU_OPTIONS.find((z) => z.value === zangfu)?.label.split("（")[0]}
             </span>
           </div>
@@ -1056,14 +1056,14 @@ export default function ThreeStageSimulator() {
           <div className="flex items-center gap-3 ml-auto">
             <a
               href="#simulator-result"
-              className="inline-flex items-center gap-1 font-bold text-white bg-[#1E3D34] dark:bg-[#2B6958] hover:opacity-90 px-3 py-1.5 rounded-lg transition-all text-sm"
+              className="inline-flex items-center gap-1 min-h-11 font-semibold bg-primary text-on-primary hover:bg-primary-hover px-3 py-1.5 rounded-lg transition-all text-sm"
             >
               <span>▼ 結果を見る</span>
             </a>
 
             <button
               onClick={handleReset}
-              className="text-sm text-[#59615D] dark:text-[#96A6B2] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] flex items-center gap-1 cursor-pointer transition-colors"
+              className="text-sm text-muted hover:text-[#1E3D34] dark:hover:text-[#74BA9E] flex items-center gap-1 cursor-pointer transition-colors"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>リセット</span>
@@ -1110,7 +1110,7 @@ export default function ThreeStageSimulator() {
                   ? "bg-[#FDEDEC] dark:bg-[#2A1615] text-[#A83629] dark:text-[#E07971] border border-[#F5C6CB] dark:border-[#52211F]"
                   : diagnosis.status === "suspected"
                   ? "bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387] border border-[#F2D7B3] dark:border-[#4D331F]"
-                  : "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] border border-[#C5DED4] dark:border-[#2A5243]"
+                  : "bg-panel-selected text-accent border border-frame"
               }`}>
                 {diagnosis.statusBadge.label}
               </span>
@@ -1120,7 +1120,7 @@ export default function ThreeStageSimulator() {
               <a
                 href="#comparison-examples"
                 onClick={() => document.querySelector<HTMLDetailsElement>("#comparison-examples")?.setAttribute("open", "")}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#D5CCBC] dark:border-[#2D3E50] text-[#1E3D34] dark:text-[#74BA9E] hover:border-[#1E3D34] text-sm font-bold transition-all"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#D5CCBC] dark:border-[#2D3E50] text-accent hover:border-[#1E3D34] text-sm font-bold transition-all"
                 title="3つの教材例で鑑別の視点を確認する"
               >
                 <Scale className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
@@ -1129,7 +1129,7 @@ export default function ThreeStageSimulator() {
               </a>
               <a
                 href="#simulator-conditions"
-                className="text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
+                className="text-sm font-semibold text-accent hover:underline flex items-center gap-1"
               >
                 <ArrowUp className="w-3.5 h-3.5" />
                 <span>条件を変える</span>
@@ -1138,20 +1138,20 @@ export default function ThreeStageSimulator() {
           </div>
 
           <div>
-            <span className="text-sm sm:text-sm text-[#59615D] dark:text-[#96A6B2]">{diagnosis.syndromeReading}</span>
-            <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+            <span className="text-sm sm:text-sm text-muted">{diagnosis.syndromeReading}</span>
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-ink">
               {diagnosis.syndromeName}
             </h3>
           </div>
 
           {/* 病因病機講義への相互リンク */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] text-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-page border border-[#E8E1D1] dark:border-[#263542] text-sm">
             <div className="flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-              <span className="text-[#59615D] dark:text-[#A0B0BC]">
+              <BookOpen className="w-4 h-4 text-accent shrink-0" />
+              <span className="text-muted">
                 この証の病因・病理機序を講義で確認：
               </span>
-              <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">
+              <span className="font-bold text-ink">
                 {relatedLectures.pathomechanism.chapter}「{relatedLectures.pathomechanism.title}」
               </span>
             </div>
@@ -1164,7 +1164,7 @@ export default function ThreeStageSimulator() {
                   placement: "simulator_result",
                 });
               }}
-              className="text-[#1E3D34] dark:text-[#74BA9E] font-bold hover:underline inline-flex items-center gap-1 shrink-0"
+              className="text-accent font-bold hover:underline inline-flex items-center gap-1 shrink-0"
             >
               <span>病機解説講義を読む</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -1177,12 +1177,12 @@ export default function ThreeStageSimulator() {
               ? "bg-[#FFF8F7] dark:bg-[#221616] border-[#A83629] dark:border-[#C47A72]"
               : diagnosis.status === "suspected"
               ? "bg-[#FFFAF5] dark:bg-[#221B16] border-[#B86924] dark:border-[#E6C387]"
-              : "bg-[#FAF8F5] dark:bg-[#121920] border-[#1E3D34] dark:border-[#4E8C76]"
+              : "bg-page border-[#1E3D34] dark:border-[#4E8C76]"
           }`}>
-            <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block">
+            <span className="text-sm font-bold text-accent uppercase tracking-wider block">
               一文の証
             </span>
-            <p className="font-serif text-base sm:text-lg md:text-xl font-bold text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
+            <p className="font-serif text-base sm:text-lg md:text-xl font-bold text-ink leading-relaxed">
               「{diagnosis.oneSentenceFormula}」
             </p>
           </div>
@@ -1195,14 +1195,14 @@ export default function ThreeStageSimulator() {
           <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-[#EBF3EF] dark:bg-[#14231E] border border-[#C5DED4] dark:border-[#234237] space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Compass className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-                <h4 className="font-serif font-bold text-sm sm:text-base text-[#1E3D34] dark:text-[#74BA9E]">
+                <Compass className="w-4 h-4 text-accent" />
+                <h4 className="font-serif font-bold text-sm sm:text-base text-accent">
                   治則・治法
                 </h4>
               </div>
               <Link
                 href="/curriculum/lecture-treatment-1"
-                className="text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1"
+                className="text-sm font-semibold text-accent hover:underline flex items-center gap-1"
                 title="治法論：証から治則・治法・配穴設計へ"
               >
                 <span>治法論で学ぶ</span>
@@ -1212,11 +1212,11 @@ export default function ThreeStageSimulator() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm sm:text-sm">
               <div className="clinical-exercise-detail">
                 <span className="font-bold text-[#737C77] dark:text-[#8899A6] block text-sm">治則:</span>
-                <span className="font-bold text-[#232826] dark:text-[#FAF8F5] text-sm sm:text-base mt-0.5 block">
+                <span className="font-bold text-ink text-sm sm:text-base mt-0.5 block">
                   {diagnosis.treatmentPrinciple.rule}
                 </span>
               </div>
-              <div className="bg-white dark:bg-[#17212A] p-3 rounded-lg border border-[#C5DED4] dark:border-[#2A3B4A]">
+              <div className="bg-panel p-3 rounded-lg border border-[#C5DED4] dark:border-[#2A3B4A]">
                 <span className="font-bold text-[#737C77] dark:text-[#8899A6] block text-sm">介入戦略:</span>
                 <span className="text-[#404743] dark:text-[#C5D2DB] text-sm sm:text-sm mt-0.5 block leading-relaxed">
                   {diagnosis.treatmentPrinciple.strategy}
@@ -1233,12 +1233,12 @@ export default function ThreeStageSimulator() {
 
             return (
               <div className="clinical-exercise-pair space-y-3">
-                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E8E1D1] dark:border-[#22303D] pb-2.5">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-divider pb-2.5">
                   <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full text-sm font-bold bg-[#1E3D34] text-white">
+                    <span className="px-2.5 py-0.5 rounded-full text-sm font-bold bg-panel-selected text-accent">
                       代表配穴
                     </span>
-                    <h5 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
+                    <h5 className="font-serif font-bold text-sm sm:text-base text-ink">
                       {primaryOpt.pairName}
                     </h5>
                   </div>
@@ -1251,17 +1251,17 @@ export default function ThreeStageSimulator() {
                   {/* 主穴 */}
                   <div className="clinical-exercise-point space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-semibold text-[#59615D] dark:text-[#B7C5CF]">
+                      <span className="text-sm font-semibold text-muted">
                         主穴
                       </span>
                       {pTsubo && (
-                        <span className="font-mono text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8]">
+                        <span className="font-mono text-sm font-bold text-accent">
                           {pTsubo.code}
                         </span>
                       )}
                     </div>
                     <div className="flex items-baseline justify-between">
-                      <span className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+                      <span className="font-serif text-lg font-bold text-ink">
                         {primaryOpt.primaryAcupoint.name}
                       </span>
                       <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
@@ -1275,7 +1275,7 @@ export default function ThreeStageSimulator() {
                       <div className="flex items-center gap-3 pt-1">
                         <button
                           onClick={() => setModalTsubo(pTsubo)}
-                          className="text-sm text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1 font-semibold cursor-pointer"
+                          className="text-sm text-accent hover:underline flex items-center gap-1 font-semibold cursor-pointer"
                         >
                           <BookOpen className="w-3.5 h-3.5" />
                           <span>位置の目安を見る</span>
@@ -1293,17 +1293,17 @@ export default function ThreeStageSimulator() {
                   {/* 配穴 */}
                   <div className="clinical-exercise-point space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-semibold text-[#59615D] dark:text-[#B7C5CF]">
+                      <span className="text-sm font-semibold text-muted">
                         配穴
                       </span>
                       {sTsubo && (
-                        <span className="font-mono text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8]">
+                        <span className="font-mono text-sm font-bold text-accent">
                           {sTsubo.code}
                         </span>
                       )}
                     </div>
                     <div className="flex items-baseline justify-between">
-                      <span className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+                      <span className="font-serif text-lg font-bold text-ink">
                         {primaryOpt.secondaryAcupoint.name}
                       </span>
                       <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
@@ -1333,8 +1333,8 @@ export default function ThreeStageSimulator() {
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] text-sm sm:text-sm">
-                  <strong className="text-[#1E3D34] dark:text-[#74BA9E] mr-1.5 font-bold">🎯 この配穴で狙うこと:</strong>
+                <div className="p-3 rounded-xl bg-panel border border-frame text-sm sm:text-sm">
+                  <strong className="text-accent mr-1.5 font-bold">🎯 この配穴で狙うこと:</strong>
                   <span className="text-[#404743] dark:text-[#C5D2DB] leading-relaxed">{primaryOpt.intendedEffect}</span>
                 </div>
 
@@ -1344,7 +1344,7 @@ export default function ThreeStageSimulator() {
                   if (!secConfig) return null;
 
                   return (
-                    <div className="pt-3 border-t border-[#E8E1D1] dark:border-[#22303D] space-y-2.5">
+                    <div className="pt-3 border-t border-divider space-y-2.5">
                       <div className="flex flex-wrap items-center justify-between gap-1.5">
                         <div className="flex items-center gap-2">
                           <span className="px-2 py-0.5 rounded text-sm font-bold bg-[#B86924] text-white">
@@ -1359,17 +1359,17 @@ export default function ThreeStageSimulator() {
                         </span>
                       </div>
 
-                      <div className="p-3.5 rounded-xl bg-white dark:bg-[#17212A] border border-[#F2ECE0] dark:border-[#2A3B4A] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+                      <div className="p-3.5 rounded-xl bg-panel border border-[#F2ECE0] dark:border-[#2A3B4A] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
-                            <span className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
+                            <span className="font-serif font-bold text-sm sm:text-base text-ink">
                               {secConfig.pairName}（{secConfig.primary} ＋ {secConfig.secondary}）
                             </span>
                             <span className="text-sm px-1.5 py-0.2 rounded bg-[#FCF4EB] dark:bg-[#2A2016] text-[#B86924] dark:text-[#E6C387] font-mono font-bold">
                               {secConfig.role}
                             </span>
                           </div>
-                          <p className="text-sm text-[#59615D] dark:text-[#A0B0BC]">
+                          <p className="text-sm text-muted">
                             {secConfig.desc}
                           </p>
                         </div>
@@ -1382,9 +1382,9 @@ export default function ThreeStageSimulator() {
                 })()}
 
                 {/* 配穴設計・臨床演習への導線 */}
-                <div className="mt-3 min-w-0 p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-[#F0F7F4] to-[#FAF8F5] dark:from-[#162720] dark:to-[#17212A] border border-[#74BA9E]/40 dark:border-[#2D5A46] flex flex-col sm:flex-row sm:flex-wrap sm:items-center justify-between gap-3">
+                <div className="mt-3 min-w-0 p-3.5 sm:p-4 rounded-xl border border-frame bg-panel-selected flex flex-col sm:flex-row sm:flex-wrap sm:items-center justify-between gap-3">
                   <div className="min-w-0 flex-1">
-                    <div className="text-sm sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
+                    <div className="text-sm sm:text-sm font-bold text-accent flex items-center gap-1.5">
                       <SlidersHorizontal className="w-4 h-4 text-[#2D5A46] dark:text-[#74BA9E] shrink-0" />
                       <span>配穴設計・臨床演習で実践する</span>
                     </div>
@@ -1396,7 +1396,7 @@ export default function ThreeStageSimulator() {
                     <Link
                       href="/practice/haiketsu"
                       aria-label="配穴練習を始める"
-                      className="inline-flex min-h-11 min-w-0 w-full max-w-full items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#2D5A46] hover:bg-[#1E3D34] text-white text-sm text-center font-bold transition-all sm:w-auto cursor-pointer"
+                      className="inline-flex min-h-11 min-w-0 w-full max-w-full items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-hover text-sm text-center font-bold transition-all sm:w-auto cursor-pointer"
                     >
                       <span className="min-w-0 whitespace-normal leading-relaxed">配穴を試す</span>
                       <span aria-hidden="true" className="shrink-0">➜</span>
@@ -1413,7 +1413,7 @@ export default function ThreeStageSimulator() {
         {/* ------------------------------------------------------------ */}
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-2">
-            <h4 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
+            <h4 className="font-serif font-bold text-base sm:text-lg text-ink">
               候補の根拠と不足情報を読む
             </h4>
             <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
@@ -1422,20 +1422,20 @@ export default function ThreeStageSimulator() {
           </div>
 
           {/* ① なぜこの候補と考えたか（支持所見 vs 矛盾所見） */}
-          <div className="border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-2xl overflow-hidden">
+          <div className="border border-frame rounded-2xl overflow-hidden">
             <button
               type="button"
               onClick={() => setIsReasonOpen(!isReasonOpen)}
               aria-expanded={isReasonOpen}
               aria-controls="panel-reason"
-              className="w-full flex items-center justify-between p-4 bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631] transition-colors text-left cursor-pointer"
+              className="w-full flex items-center justify-between p-4 bg-page hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631] transition-colors text-left cursor-pointer"
             >
               <div className="flex items-center gap-2.5">
-                <span className="p-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
+                <span className="p-1.5 rounded-lg bg-panel-selected text-accent">
                   <Layers className="w-4 h-4" />
                 </span>
                 <div>
-                  <h5 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
+                  <h5 className="font-serif font-bold text-sm sm:text-base text-ink">
                     ① なぜこの候補と考えたか
                   </h5>
                   <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
@@ -1449,18 +1449,18 @@ export default function ThreeStageSimulator() {
             </button>
 
             {isReasonOpen && (
-              <div id="panel-reason" className="p-4 sm:p-6 bg-white dark:bg-[#17212A] border-t border-[#E5DEC9] dark:border-[#2A3B4A] space-y-4 animate-fadeIn">
+              <div id="panel-reason" className="p-4 sm:p-6 bg-panel border-t border-frame space-y-4 animate-fadeIn">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* 支持する所見 */}
-                  <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#263542] space-y-2">
-                    <div className="flex items-center gap-2 text-sm sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                  <div className="p-4 rounded-xl bg-page border border-[#E5DEC9] dark:border-[#263542] space-y-2">
+                    <div className="flex items-center gap-2 text-sm sm:text-sm font-bold text-accent">
                       <CheckCircle2 className="w-4 h-4" />
                       <span>この証で見られる典型的な所見</span>
                     </div>
                     <ul className="space-y-2 text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB]">
                       {diagnosis.supportingFindings.map((finding, i) => (
                         <li key={i} className="flex items-start gap-2 leading-relaxed">
-                          <span className="text-[#1E3D34] dark:text-[#74BA9E] font-bold shrink-0 mt-0.5">✔</span>
+                          <span className="text-accent font-bold shrink-0 mt-0.5">✔</span>
                           <span>{finding}</span>
                         </li>
                       ))}
@@ -1471,7 +1471,7 @@ export default function ThreeStageSimulator() {
                   <div className={`p-4 rounded-xl border space-y-2 ${
                     diagnosis.status === "conflict"
                       ? "bg-[#FFF8F7] dark:bg-[#201515] border-[#F5C6CB] dark:border-[#52211F]"
-                      : "bg-[#FAF8F5] dark:bg-[#121920] border-[#E5DEC9] dark:border-[#263542]"
+                      : "bg-page border-[#E5DEC9] dark:border-[#263542]"
                   }`}>
                     <div className="flex items-center gap-2 text-sm sm:text-sm font-bold text-[#A83629] dark:text-[#E07971]">
                       <AlertCircle className="w-4 h-4" />
@@ -1492,20 +1492,20 @@ export default function ThreeStageSimulator() {
           </div>
 
           {/* ② ほかの候補・追加で確認したい所見 */}
-          <div className="border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-2xl overflow-hidden">
+          <div className="border border-frame rounded-2xl overflow-hidden">
             <button
               type="button"
               onClick={() => setIsDifferentialOpen(!isDifferentialOpen)}
               aria-expanded={isDifferentialOpen}
               aria-controls="panel-differential"
-              className="w-full flex items-center justify-between p-4 bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631] transition-colors text-left cursor-pointer"
+              className="w-full flex items-center justify-between p-4 bg-page hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631] transition-colors text-left cursor-pointer"
             >
               <div className="flex items-center gap-2.5">
                 <span className="p-1.5 rounded-lg bg-[#FCF4EB] dark:bg-[#2A2117] text-[#B86924] dark:text-[#E6C387]">
                   <Stethoscope className="w-4 h-4" />
                 </span>
                 <div>
-                  <h5 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
+                  <h5 className="font-serif font-bold text-sm sm:text-base text-ink">
                     ② ほかの候補・追加で確認したい所見
                   </h5>
                   <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
@@ -1519,7 +1519,7 @@ export default function ThreeStageSimulator() {
             </button>
 
             {isDifferentialOpen && (
-              <div id="panel-differential" className="p-4 sm:p-6 bg-white dark:bg-[#17212A] border-t border-[#E5DEC9] dark:border-[#2A3B4A] space-y-5 animate-fadeIn">
+              <div id="panel-differential" className="p-4 sm:p-6 bg-panel border-t border-frame space-y-5 animate-fadeIn">
                 {/* 鑑別・考慮すべき候補 */}
                 {diagnosis.differentialCandidates.length > 0 && (
                   <div className="space-y-2">
@@ -1528,7 +1528,7 @@ export default function ThreeStageSimulator() {
                     </span>
                     <div className="flex flex-wrap gap-2">
                       {diagnosis.differentialCandidates.map((cand, i) => (
-                        <span key={i} className="px-3 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] text-[#404743] dark:text-[#C5D2DB] text-sm sm:text-sm font-medium">
+                        <span key={i} className="px-3 py-1 rounded-lg bg-page border border-[#E8E1D1] dark:border-[#263542] text-[#404743] dark:text-[#C5D2DB] text-sm sm:text-sm font-medium">
                           {cand}
                         </span>
                       ))}
@@ -1543,7 +1543,7 @@ export default function ThreeStageSimulator() {
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {diagnosis.missingInformation.map((info, i) => (
-                      <span key={i} className="text-sm sm:text-sm px-3 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#404743] dark:text-[#C5D2DB]">
+                      <span key={i} className="text-sm sm:text-sm px-3 py-1 rounded-lg bg-page border border-frame text-[#404743] dark:text-[#C5D2DB]">
                         ？ {info}
                       </span>
                     ))}
@@ -1552,16 +1552,16 @@ export default function ThreeStageSimulator() {
 
                 {/* 次に確認する臨床質問 */}
                 <div className="space-y-3 pt-2 border-t border-[#F2ECE0] dark:border-[#22303D]">
-                  <span className="text-sm sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
+                  <span className="text-sm sm:text-sm font-bold text-accent block">
                     患者に確認すべき問診・臨床所見：
                   </span>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     {diagnosis.nextActionQuestions.map((item, i) => (
-                      <div key={i} className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-1.5">
-                        <span className="px-2 py-0.5 rounded text-sm font-bold bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#83BEA8] inline-block">
+                      <div key={i} className="bg-page p-3.5 rounded-xl border border-frame space-y-1.5">
+                        <span className="px-2 py-0.5 rounded text-sm font-bold bg-panel-selected text-accent inline-block">
                           {item.target}
                         </span>
-                        <p className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
+                        <p className="text-sm font-bold text-ink leading-snug">
                           {item.question}
                         </p>
                         <p className="text-sm text-[#737C77] dark:text-[#8899A6] leading-relaxed">
@@ -1576,20 +1576,20 @@ export default function ThreeStageSimulator() {
           </div>
 
           {/* ③ 配穴を詳しく見る（主穴・配穴の理由、手技、代替案） */}
-          <div className="border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-2xl overflow-hidden">
+          <div className="border border-frame rounded-2xl overflow-hidden">
             <button
               type="button"
               onClick={() => setIsAcupointOpen(!isAcupointOpen)}
               aria-expanded={isAcupointOpen}
               aria-controls="panel-acupoints"
-              className="w-full flex items-center justify-between p-4 bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631] transition-colors text-left cursor-pointer"
+              className="w-full flex items-center justify-between p-4 bg-page hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631] transition-colors text-left cursor-pointer"
             >
               <div className="flex items-center gap-2.5">
-                <span className="p-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
+                <span className="p-1.5 rounded-lg bg-panel-selected text-accent">
                   <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
                 </span>
                 <div>
-                  <h5 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
+                  <h5 className="font-serif font-bold text-sm sm:text-base text-ink">
                     ③ 配穴を詳しく見る
                   </h5>
                   <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
@@ -1603,7 +1603,7 @@ export default function ThreeStageSimulator() {
             </button>
 
             {isAcupointOpen && (
-              <div id="panel-acupoints" className="p-4 sm:p-6 bg-white dark:bg-[#17212A] border-t border-[#E5DEC9] dark:border-[#2A3B4A] space-y-6 animate-fadeIn">
+              <div id="panel-acupoints" className="p-4 sm:p-6 bg-panel border-t border-frame space-y-6 animate-fadeIn">
                 <div className="space-y-4">
                   {diagnosis.acupointOptions.map((opt, idx) => {
                     const pTsubo = TSUBOS.find((t) => t.id === opt.primaryAcupoint.id || t.code.toLowerCase() === opt.primaryAcupoint.id.toLowerCase());
@@ -1612,23 +1612,23 @@ export default function ThreeStageSimulator() {
                     return (
                       <div
                         key={idx}
-                        className={`bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border p-4 sm:p-6 space-y-4 ${
+                        className={`bg-page rounded-2xl border p-4 sm:p-6 space-y-4 ${
                           opt.isPrimary
                             ? "border-[#1E3D34] dark:border-[#4E8C76]"
-                            : "border-[#E5DEC9] dark:border-[#2A3B4A]"
+                            : "border-frame"
                         }`}
                       >
                         {/* ペアヘッダー */}
-                        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E8E1D1] dark:border-[#22303D] pb-3">
+                        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-divider pb-3">
                           <div className="flex items-center gap-2">
                             <span className={`px-2.5 py-0.5 rounded-full text-sm font-bold ${
                               opt.isPrimary
-                                ? "bg-[#1E3D34] text-white"
+                                ? "bg-panel-selected text-accent"
                                 : "bg-[#FAF8F5] dark:bg-[#17212A] text-[#B86924] dark:text-[#E6C387] border border-[#B86924]/30"
                             }`}>
                               {opt.isPrimary ? "主配穴" : "代替候補"}
                             </span>
-                            <h5 className="font-serif font-bold text-base sm:text-lg text-[#232826] dark:text-[#FAF8F5]">
+                            <h5 className="font-serif font-bold text-base sm:text-lg text-ink">
                               {opt.pairName}
                             </h5>
                           </div>
@@ -1643,17 +1643,17 @@ export default function ThreeStageSimulator() {
                           {/* 主穴 */}
                           <div className="clinical-exercise-point space-y-2">
                             <div className="flex items-center justify-between">
-                              <span className="text-sm font-semibold text-[#59615D] dark:text-[#B7C5CF]">
+                              <span className="text-sm font-semibold text-muted">
                                 主穴
                               </span>
                               {pTsubo && (
-                                <span className="font-mono text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8]">
+                                <span className="font-mono text-sm font-bold text-accent">
                                   {pTsubo.code}
                                 </span>
                               )}
                             </div>
                             <div className="flex items-baseline justify-between">
-                              <span className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+                              <span className="font-serif text-lg font-bold text-ink">
                                 {opt.primaryAcupoint.name}
                               </span>
                               <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
@@ -1667,7 +1667,7 @@ export default function ThreeStageSimulator() {
                               <div className="flex items-center gap-3 pt-1">
                                 <button
                                   onClick={() => setModalTsubo(pTsubo)}
-                                  className="text-sm text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1 font-semibold cursor-pointer"
+                                  className="text-sm text-accent hover:underline flex items-center gap-1 font-semibold cursor-pointer"
                                 >
                                   <BookOpen className="w-3.5 h-3.5" />
                                   <span>位置の目安を見る</span>
@@ -1685,17 +1685,17 @@ export default function ThreeStageSimulator() {
                           {/* 配穴 */}
                           <div className="clinical-exercise-point space-y-2">
                             <div className="flex items-center justify-between">
-                              <span className="text-sm font-semibold text-[#59615D] dark:text-[#B7C5CF]">
+                              <span className="text-sm font-semibold text-muted">
                                 配穴
                               </span>
                               {sTsubo && (
-                                <span className="font-mono text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8]">
+                                <span className="font-mono text-sm font-bold text-accent">
                                   {sTsubo.code}
                                 </span>
                               )}
                             </div>
                             <div className="flex items-baseline justify-between">
-                              <span className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+                              <span className="font-serif text-lg font-bold text-ink">
                                 {opt.secondaryAcupoint.name}
                               </span>
                               <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
@@ -1728,7 +1728,7 @@ export default function ThreeStageSimulator() {
                         {/* 比較検討の項目 */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm sm:text-sm">
                           <div className="clinical-exercise-detail space-y-1">
-                            <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm">
+                            <span className="font-bold text-accent block text-sm">
                               🎯 この配穴で狙うこと:
                             </span>
                             <p className="text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
@@ -1760,11 +1760,11 @@ export default function ThreeStageSimulator() {
                 </div>
 
                 {/* 配穴設計理論への立ち戻りリンク */}
-                <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#263542] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
+                <div className="p-3.5 rounded-xl bg-page border border-[#E8E1D1] dark:border-[#263542] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
                   <div className="flex items-center gap-2">
-                    <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
-                    <span className="text-[#59615D] dark:text-[#A0B0BC]">配穴の論理的根拠を深める：</span>
-                    <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">
+                    <GraduationCap className="w-4 h-4 text-accent shrink-0" />
+                    <span className="text-muted">配穴の論理的根拠を深める：</span>
+                    <span className="font-bold text-ink">
                       治法論 レッスン8「経絡・経穴を選択する（局所遠隔・要穴の配穴設計）」
                     </span>
                   </div>
@@ -1777,7 +1777,7 @@ export default function ThreeStageSimulator() {
                         placement: "acupoint_panel",
                       });
                     }}
-                    className="text-[#1E3D34] dark:text-[#74BA9E] font-bold hover:underline inline-flex items-center gap-1 shrink-0"
+                    className="text-accent font-bold hover:underline inline-flex items-center gap-1 shrink-0"
                   >
                     <span>配穴理論講義へ</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -1788,20 +1788,20 @@ export default function ThreeStageSimulator() {
           </div>
 
           {/* ④ 出典・研究の説明 */}
-          <div className="border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-2xl overflow-hidden">
+          <div className="border border-frame rounded-2xl overflow-hidden">
             <button
               type="button"
               onClick={() => setIsEvidenceOpen(!isEvidenceOpen)}
               aria-expanded={isEvidenceOpen}
               aria-controls="panel-evidence"
-              className="w-full flex items-center justify-between p-4 bg-[#FAF8F5] dark:bg-[#121920] hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631] transition-colors text-left cursor-pointer"
+              className="w-full flex items-center justify-between p-4 bg-page hover:bg-[#F2EDE4] dark:hover:bg-[#1B2631] transition-colors text-left cursor-pointer"
             >
               <div className="flex items-center gap-2.5">
-                <span className="p-1.5 rounded-lg bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
-                  <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
+                <span className="p-1.5 rounded-lg bg-panel-selected text-accent">
+                  <GraduationCap className="w-4 h-4 text-accent" />
                 </span>
                 <div>
-                  <h5 className="font-serif font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5]">
+                  <h5 className="font-serif font-bold text-sm sm:text-base text-ink">
                     ④ 出典・研究の説明
                   </h5>
                   <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
@@ -1815,16 +1815,16 @@ export default function ThreeStageSimulator() {
             </button>
 
             {isEvidenceOpen && (
-              <div id="panel-evidence" className="p-4 sm:p-6 bg-white dark:bg-[#17212A] border-t border-[#E5DEC9] dark:border-[#2A3B4A] space-y-4 animate-fadeIn">
+              <div id="panel-evidence" className="p-4 sm:p-6 bg-panel border-t border-frame space-y-4 animate-fadeIn">
                 {/* エビデンス多層区分 */}
                 {diagnosis.acupointOptions[0] && (
-                  <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-2 text-sm sm:text-sm">
+                  <div className="p-4 rounded-xl bg-page border border-divider space-y-2 text-sm sm:text-sm">
                     <span className="font-bold text-[#737C77] dark:text-[#8899A6] block uppercase tracking-wider text-sm">
                       根拠の多層区分:
                     </span>
                     <div className="space-y-2 text-[#404743] dark:text-[#C5D2DB]">
                       <p className="leading-relaxed">
-                        <strong className="text-[#1E3D34] dark:text-[#83BEA8]">🏛️ 古典・伝統理論</strong>：{diagnosis.acupointOptions[0].evidenceLevel.classical}
+                        <strong className="text-accent">🏛️ 古典・伝統理論</strong>：{diagnosis.acupointOptions[0].evidenceLevel.classical}
                       </p>
                       <p className="leading-relaxed">
                         <strong className="text-[#1E2D3D] dark:text-[#7BAAD8]">🔬 現代研究との区別・限界</strong>：{diagnosis.acupointOptions[0].evidenceLevel.modernResearch}
@@ -1837,14 +1837,14 @@ export default function ThreeStageSimulator() {
                 )}
 
                 {/* 学術リファレンス ＆ 用語標準化基準 */}
-                <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#22303D] space-y-2 text-sm sm:text-sm">
+                <div className="p-4 rounded-xl bg-page border border-[#E5DEC9] dark:border-[#22303D] space-y-2 text-sm sm:text-sm">
                   <div className="flex items-center gap-2">
-                    <GraduationCap className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-                    <h6 className="font-serif font-bold text-sm text-[#232826] dark:text-[#FAF8F5]">
+                    <GraduationCap className="w-4 h-4 text-accent" />
+                    <h6 className="font-serif font-bold text-sm text-ink">
                       {ACADEMIC_STANDARDS.title}
                     </h6>
                   </div>
-                  <p className="text-[#59615D] dark:text-[#96A6B2] text-sm leading-relaxed">
+                  <p className="text-muted text-sm leading-relaxed">
                     {ACADEMIC_STANDARDS.description}
                   </p>
                   <p className="text-sm leading-relaxed"><a className="underline" href="https://www.who.int/publications/i/item/9290611057" target="_blank" rel="noopener noreferrer">WHO：経穴名称</a> ／ <a className="underline" href="https://www.nccih.nih.gov/health/acupuncture-effectiveness-and-safety" target="_blank" rel="noopener noreferrer">NCCIH：鍼の研究と限界</a></p>
@@ -1883,7 +1883,7 @@ export default function ThreeStageSimulator() {
           */}
           <aside
             onClick={(e) => e.stopPropagation()}
-            className="fixed bottom-0 inset-x-0 max-h-[85vh] lg:top-16 lg:bottom-0 lg:left-auto lg:right-0 lg:w-[440px] lg:max-w-[45vw] lg:max-h-full bg-[#FAF8F5] dark:bg-[#17212A] shadow-2xl border-t lg:border-t-0 lg:border-l border-[#E5DEC9] dark:border-[#2A3B4A] rounded-t-3xl lg:rounded-none z-50 flex flex-col pointer-events-auto transition-transform duration-300 ease-out"
+            className="fixed bottom-0 inset-x-0 max-h-[85vh] lg:top-16 lg:bottom-0 lg:left-auto lg:right-0 lg:w-[440px] lg:max-w-[45vw] lg:max-h-full bg-[#FAF8F5] dark:bg-[#17212A] shadow-2xl border-t lg:border-t-0 lg:border-l border-frame rounded-t-3xl lg:rounded-none z-50 flex flex-col pointer-events-auto transition-transform duration-300 ease-out"
             role="dialog"
             aria-modal="false"
             aria-label={`${modalTsubo.name}の詳細情報`}
@@ -1894,36 +1894,36 @@ export default function ThreeStageSimulator() {
             </div>
 
             {/* パネル上部ステータスバナー（PC専用：Split View案内） */}
-            <div className="hidden lg:flex items-center justify-between px-6 py-2.5 bg-[#EBF3EF] dark:bg-[#162A24] border-b border-[#C5DED4] dark:border-[#24473A] text-sm text-[#1E3D34] dark:text-[#83BEA8]">
+            <div className="hidden lg:flex items-center justify-between px-6 py-2.5 bg-[#EBF3EF] dark:bg-[#162A24] border-b border-[#C5DED4] dark:border-[#24473A] text-sm text-accent">
               <span className="font-semibold flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-[#1E3D34] dark:bg-[#74BA9E] animate-pulse" />
                 <span>経穴の詳細</span>
               </span>
-              <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#1C2C26] border border-[#C5DED4] dark:border-[#2A5243] text-sm font-mono">
+              <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#1C2C26] border border-frame text-sm font-mono">
                 ESC で閉じる
               </kbd>
             </div>
 
             {/* パネルヘッダー */}
-            <div className="p-5 sm:p-6 border-b border-[#E8E1D1] dark:border-[#22303D] flex items-start justify-between">
+            <div className="p-5 sm:p-6 border-b border-divider flex items-start justify-between">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-sm font-bold px-2 py-0.5 rounded bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]">
+                  <span className="font-mono text-sm font-bold px-2 py-0.5 rounded bg-panel-selected text-accent">
                     {modalTsubo.code}
                   </span>
-                  <span className="text-sm text-[#59615D] dark:text-[#96A6B2]">
+                  <span className="text-sm text-muted">
                     {modalTsubo.meridianShort}
                   </span>
                 </div>
                 <div className="flex items-baseline gap-2 mt-1">
-                  <h3 className="font-serif text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  <h3 className="font-serif text-2xl font-bold text-ink">
                     {modalTsubo.name}
                   </h3>
                 </div>
               </div>
               <button
                 onClick={() => setModalTsubo(null)}
-                className="p-1.5 rounded-lg hover:bg-[#EAE3D4] dark:hover:bg-[#22303D] text-[#59615D] dark:text-[#96A6B2] transition-colors cursor-pointer"
+                className="p-1.5 rounded-lg hover:bg-[#EAE3D4] dark:hover:bg-[#22303D] text-muted transition-colors cursor-pointer"
                 title="閉じる (Esc)"
               >
                 <X className="w-5 h-5" />
@@ -1933,7 +1933,7 @@ export default function ThreeStageSimulator() {
             {/* パネルコンテンツ（スクロール可能） */}
             <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-5">
               <div className="bg-white dark:bg-[#121920] p-4 rounded-xl border border-[#E5DEC9] dark:border-[#263542]">
-                <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] block mb-1">
+                <span className="text-sm font-bold text-accent block mb-1">
                   位置の目安
                 </span>
                 <p className="text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
@@ -1943,8 +1943,8 @@ export default function ThreeStageSimulator() {
             </div>
 
             {/* パネルフッター */}
-            <div className="p-4 sm:p-5 border-t border-[#E8E1D1] dark:border-[#22303D] bg-[#F2EDE4]/60 dark:bg-[#141C24]/60 flex items-center justify-between gap-3">
-              <div className="flex flex-wrap gap-3 text-sm font-semibold text-[#1E3D34] dark:text-[#74BA9E]">
+            <div className="p-4 sm:p-5 border-t border-divider bg-[#F2EDE4]/60 dark:bg-[#141C24]/60 flex items-center justify-between gap-3">
+              <div className="flex flex-wrap gap-3 text-sm font-semibold text-accent">
                 <Link href={`/tsubo/${modalTsubo.code.toLowerCase()}#acupoint-location`} onClick={() => setModalTsubo(null)} className="underline">
                   図鑑で図と位置を見る
                 </Link>

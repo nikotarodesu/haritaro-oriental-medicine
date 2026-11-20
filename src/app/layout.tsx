@@ -92,14 +92,12 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
+                var saved;
                 try {
-                  const saved = localStorage.getItem('haritaro-theme');
-                  if (saved === 'yin' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                    document.documentElement.classList.add('dark');
-                  } else {
-                    document.documentElement.classList.remove('dark');
-                  }
+                  saved = localStorage.getItem('haritaro-theme');
                 } catch (e) {}
+                const useDark = saved === 'yin' || (saved !== 'yang' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                document.documentElement.classList.toggle('dark', useDark);
               })();
             `,
           }}

@@ -5,19 +5,11 @@
   --atlas-soft: var(--accent-soft);
   --atlas-paper: var(--bg-card);
   --atlas-line: var(--border-washi);
-  --atlas-caution-bg: #faf0e1;
-  --atlas-caution-ink: #5b4029;
-  --atlas-caution-line: #b57846;
   color: var(--atlas-ink);
   font-family: var(--font-sans);
   line-height: 1.8;
 }
 
-.dark .atlas-page {
-  --atlas-caution-bg: #2d231c;
-  --atlas-caution-ink: #f0d5b5;
-  --atlas-caution-line: #bd8d5c;
-}
 
 .atlas-page :is(a, button, summary, input, select):focus-visible {
   outline: 2px solid var(--atlas-accent);
@@ -167,10 +159,10 @@
   display: grid;
   gap: .375rem;
   padding: .65rem 1rem;
-  border-inline-start: 3px solid var(--atlas-caution-line);
+  border-inline-start: 3px solid var(--notice-line);
   border-radius: .25rem .55rem .55rem .25rem;
-  background: var(--atlas-caution-bg);
-  color: var(--atlas-caution-ink);
+  background: var(--notice-bg);
+  color: var(--notice-ink);
   font-size: .9375rem;
   line-height: 1.7;
 }
@@ -230,15 +222,43 @@
   flex-direction: column;
   justify-content: center;
   padding: .75rem;
-  border: 1px solid #ded7c7;
+  border: 1px solid var(--atlas-line);
   border-radius: .8rem;
-  background: #fcf8ef;
-  color: #413b30;
+  background: var(--atlas-paper);
+  color: var(--atlas-ink);
 }
 
-.atlas-figure > figcaption { margin-top: .4rem; color: #51483b; font-size: .875rem; line-height: 1.6; text-align: center; }
+.atlas-figure > figcaption { margin-top: .4rem; color: var(--atlas-muted); font-size: .875rem; line-height: 1.6; text-align: center; }
 .atlas-figure--overview > svg { max-height: 12rem; }
-.atlas-figure--meridian { background: #f7f2e8; }
+.atlas-figure--meridian { background: var(--bg-muted); }
+
+/* The anatomical labels sit outside the drawing. Marker circles keep their original contrast. */
+.dark .atlas-figure svg :is(text, g):is(
+  [fill="#3B3229"], [fill="#483B31"], [fill="#51463B"], [fill="#524637"],
+  [fill="#5B493B"], [fill="#685745"], [fill="#755D48"], [fill="#332D25"]
+) {
+  fill: var(--text-sumi);
+}
+
+.dark .atlas-figure svg :is(text, g):is([fill="#7F3520"], [fill="#74391F"], [fill="#365B4D"]) {
+  fill: var(--warm-readable);
+}
+
+.dark .atlas-figure svg path:is([stroke="#7F3520"], [stroke="#9E4B20"]) {
+  stroke: var(--warm-readable);
+}
+
+.dark :is(.atlas-figure svg, .platform-hand) [fill="#F4E8D8"] {
+  fill: #a48d7a;
+}
+
+.dark :is(.atlas-figure svg, .platform-hand) [stroke="#9B8D7D"] {
+  stroke: #c3ae99;
+}
+
+.dark .atlas-figure svg [fill="#D8D5C9"] {
+  fill: #889198;
+}
 
 .atlas-evidence { padding-top: 1rem; border-top: 1px solid var(--atlas-line); }
 .atlas-study-list { display: grid; gap: .75rem; }

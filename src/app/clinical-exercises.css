@@ -1,17 +1,10 @@
-/* Clinical exercise surfaces share the clinical workspace palette. */
+/* Clinical exercises use the site's reading and control colors. */
 .clinical-exercises {
   --exercise-ink: var(--text-sumi);
   --exercise-muted: var(--text-secondary);
   --exercise-line: var(--border-washi);
   --exercise-paper: var(--bg-card);
-  --exercise-tint: var(--tokiwa-light);
-}
-.dark .clinical-exercises {
-  --exercise-ink: var(--text-sumi);
-  --exercise-muted: var(--text-secondary);
-  --exercise-line: var(--border-washi);
-  --exercise-paper: var(--bg-card);
-  --exercise-tint: var(--tokiwa-light);
+  --exercise-tint: var(--accent-soft);
 }
 .clinical-training-switcher {
   display: grid;
@@ -32,7 +25,7 @@
   cursor: pointer;
 }
 .clinical-training-switcher button[aria-selected="true"] {
-  border-color: var(--exercise-line);
+  border-color: var(--accent-readable);
   background: var(--exercise-paper);
   color: var(--exercise-ink);
 }
@@ -48,11 +41,15 @@
 }
 .clinical-training-switcher button:focus-visible,
 .clinical-training-panel:focus-visible {
-  outline: 2px solid #54816b;
+  outline: 2px solid var(--accent-readable);
   outline-offset: 3px;
 }
 .clinical-training-panel[hidden] { display: none; }
 .clinical-training-panel { scroll-margin-top: 6rem; }
+.clinical-training-panel :is(button, a, input, select, summary):focus-visible {
+  outline: 2px solid var(--accent-readable);
+  outline-offset: 3px;
+}
 .clinical-exercise-surface {
   border: 1px solid var(--exercise-line);
   border-radius: 1rem;
@@ -81,8 +78,59 @@
 .clinical-exercise-simulator a { align-content: center; }
 .clinical-haiketsu-selected-list { border-bottom: 1px solid var(--exercise-line); }
 .clinical-haiketsu-selected { border-top: 1px solid var(--exercise-line); padding: 1rem 0; }
+.clinical-haiketsu-grid { display: grid; gap: 1rem; align-items: start; }
 .clinical-haiketsu-point { line-height: 1.6; }
-.clinical-haiketsu-palette { scroll-margin-top: 6rem; }
+.clinical-haiketsu :is(#haiketsu-palette, #haiketsu-review) { scroll-margin-block-start: .5rem; }
+.clinical-haiketsu-point-list {
+  max-height: clamp(14rem, 44dvh, 30rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+.clinical-haiketsu :is(a, button, input, textarea, summary, .clinical-haiketsu-point-list):focus-visible,
+.case-practice :is(a, button, summary):focus-visible {
+  outline: 2px solid var(--accent-readable);
+  outline-offset: 3px;
+}
+
+.case-section {
+  display: grid;
+  min-width: 0;
+  gap: clamp(.85rem, 2vw, 1.4rem);
+  padding: clamp(1rem, 3.6vw, 1.7rem);
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-card);
+  background: var(--bg-card);
+  scroll-margin-block-start: .5rem;
+  overflow-wrap: anywhere;
+}
+
+.case-question + .case-question {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.case-examination-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .4rem;
+}
+
+.case-examination-options button {
+  min-height: 44px;
+  padding: .45rem;
+  border: 1px solid var(--border-control);
+  border-radius: var(--radius-tag);
+  color: var(--accent-readable);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.case-examination-options button[aria-pressed="true"] {
+  border-color: var(--accent-readable);
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--accent-readable);
+}
+
 .clinical-haiketsu .clinical-tool-bridge { margin-top: 1rem; }
 .clinical-tool-bridge {
   display: flex;
@@ -93,23 +141,25 @@
   width: min(calc(100% - 2rem), 76rem);
   margin-inline: auto;
   padding: 1rem 0;
-  border-bottom: 1px solid #dce3da;
-  color: #233e34;
+  border-bottom: 1px solid var(--border-washi);
+  color: var(--text-sumi);
   font-size: .875rem;
   line-height: 1.7;
 }
 .clinical-exercises > .clinical-tool-bridge { width: 100%; }
 .clinical-tool-bridge__context { display: flex; min-width: 0; align-items: flex-start; gap: .75rem; }
 .clinical-tool-bridge__context > div { min-width: 0; overflow-wrap: anywhere; }
-.clinical-tool-bridge__label { margin-bottom: .125rem; color: #5e6b63; font-size: .875rem; }
+.clinical-tool-bridge__label { margin-bottom: .125rem; color: var(--text-secondary); font-size: .875rem; }
 .clinical-tool-bridge__actions { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; }
 .clinical-tool-bridge__back { display: inline-flex; min-height: 2.75rem; align-items: center; text-decoration: underline; text-underline-offset: .2em; }
-.clinical-tool-bridge__message { flex-basis: 100%; color: #9b3b2b; }
-.dark .clinical-tool-bridge { border-color: #34483e; color: #dfece5; }
-.dark .clinical-tool-bridge__label { color: #b7c5bf; }
-.dark .clinical-tool-bridge__message { color: #f1b6a6; }
+.clinical-tool-bridge__message { flex-basis: 100%; color: var(--warm-readable); }
 @media (min-width: 640px) {
+  .case-examination-options { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .clinical-exercise-surface { padding: 1.75rem; }
+}
+@media (min-width: 64rem) {
+  .clinical-haiketsu-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 1.5rem; }
+  .clinical-haiketsu-palette { position: sticky; top: calc(var(--site-header-height) + 1rem); }
 }
 @media (max-width: 479px) {
   .clinical-training-switcher { gap: .125rem; padding: .25rem; }

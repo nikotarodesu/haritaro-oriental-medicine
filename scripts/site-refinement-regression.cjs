@@ -55,8 +55,9 @@ assert.equal(CLINICAL_CASES.length, 20);
 for (const clinicalCase of CLINICAL_CASES) {
   assert(casesIndex.includes('href="/cases/' + clinicalCase.id + '"'), clinicalCase.id);
   const html = renderToStaticMarkup(React.createElement(CaseViewer, { clinicalCase }));
-  assert(html.includes('ステップ 2: 四診情報'), clinicalCase.id);
-  assert(html.includes('ステップ 3: 臨床推論ステップ演習'), clinicalCase.id);
+  assert(html.includes('href="#case-examination"') && html.includes('id="case-examination"'), clinicalCase.id);
+  assert(html.includes('href="#case-reasoning"') && html.includes('id="case-reasoning"'), clinicalCase.id);
+  assert(html.includes('aria-label="表示する所見"') && html.includes('aria-pressed="true"'), clinicalCase.id);
 }
 
 const Vessel = component('src/components/kikei/KikeiDetailClient.tsx');
@@ -67,7 +68,8 @@ for (const vessel of KIKEI_VESSELS) {
 }
 
 const prescription = renderToStaticMarkup(React.createElement(component('src/app/practice/haiketsu/page.tsx')));
-assert(prescription.includes('8穴まで追加・解除'));
+assert(prescription.includes('id="haiketsu-palette"') && prescription.includes('8穴'));
+assert(prescription.includes('href="#haiketsu-review"') && prescription.includes('id="haiketsu-review"'));
 assert(!prescription.includes('readOnly'), 'Both writing controls accept input');
 assert(prescription.includes('id="haiketsu-title"') && prescription.includes('id="haiketsu-rationale"'));
 for (const preset of OVERDOSE_PRESETS) assert(prescription.includes(preset.name), preset.id);

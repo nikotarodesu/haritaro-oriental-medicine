@@ -52,7 +52,7 @@ assert.match(home, /<input(?=[^>]*type="search")(?=[^>]*name="q")[^>]*>/);
 const destinationPairs = [['/tsubo','はり太郎のツボ図鑑'], ['/learn','はり太郎の東洋医学'], ['/clinical','はり太郎の臨床演習']];
 for (const [href, name] of destinationPairs) assert(home.includes('href="' + href + '">' + name + '</a>'), name);
 assert(home.includes('href="/symptoms"'));
-assert(home.includes('ツボのぜんぶが、ここにある。'));
+assert.match(home, /<h1[^>]*>知<\/h1>/);
 assert(!home.includes('学習履歴を確認中') && !home.includes('href="/pricing"') && !home.includes('href="/notes"'));
 
 const reading = renderToStaticMarkup(React.createElement(load('src/app/learn/page').default));

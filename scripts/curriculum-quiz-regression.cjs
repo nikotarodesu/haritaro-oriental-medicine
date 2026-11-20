@@ -25,7 +25,7 @@ function text(node) {
   if (Array.isArray(node)) return node.map(text).join('');
   return typeof node === 'string' || typeof node === 'number' ? String(node) : node && typeof node === 'object' ? text(node.props?.children) : '';
 }
-const optionText = button => text(nodes(button).find(node => node.props?.className === 'flex-1 leading-snug'));
+const optionText = button => text(nodes(button).find(node => node.props?.['data-quiz-option-label']));
 function harness(props = { quiz }, overrides = {}) {
   const slots = [], scheduled = [], listeners = new Set(), timers = new Map();
   const saved = [], cleared = [], completed = [], events = [], pushes = [], scrolls = [], focused = [], highlights = [], headings = [];

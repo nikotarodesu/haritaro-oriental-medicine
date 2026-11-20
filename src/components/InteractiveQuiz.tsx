@@ -420,17 +420,17 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
       )}
 
       <div
-        className={`quiz-shell bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20 dark:from-slate-900/90 dark:via-emerald-950/20 dark:to-slate-900 border rounded-3xl p-6 sm:p-8 shadow-sm space-y-6 transition-all ${
+        className={`quiz-shell space-y-5 rounded-xl border bg-page p-4 sm:p-6 ${
           isPerfect
             ? 'border-amber-300 dark:border-amber-700/60 ring-2 ring-amber-400/20'
-            : 'border-emerald-100 dark:border-emerald-900/50'
+            : 'border-frame'
         }`}
       >
         {/* ヘッダー */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-emerald-100/80 dark:border-slate-800">
+        <div className="flex flex-col justify-between gap-3 border-b border-divider pb-4 sm:flex-row sm:items-center">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-1">
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/70 dark:text-emerald-200">
+              <span className="inline-flex items-center gap-1 rounded-md bg-panel-selected px-2.5 py-0.5 text-sm font-semibold text-accent">
                 <HelpCircle className="w-3.5 h-3.5" />
                 理解度チェック（全{totalQuestions}問・3択）
               </span>
@@ -438,7 +438,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                 合格基準: {passingScore}問以上正解でクリア
               </span>
             </div>
-            <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <h3 className="flex items-center gap-2 font-serif text-lg font-semibold sm:text-xl">
               <span>レッスン理解度チェック</span>
               {isPerfect && (
                 <span className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300 animate-pulse">
@@ -458,10 +458,10 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
               onClick={toggleShuffle}
               title={isShuffleEnabled ? 'シャッフル解除（元の順序へ）' : '選択肢をシャッフル出題（位置暗記を防止）'}
               aria-pressed={isShuffleEnabled}
-              className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer border ${
+              className={`inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-accent ${
                 isShuffleEnabled
-                  ? 'bg-emerald-600 text-white border-emerald-700 shadow-2xs'
-                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
+                  ? 'border-accent bg-panel-selected text-accent'
+                  : 'border-field bg-panel text-muted hover:bg-panel-selected'
               }`}
             >
               <Shuffle className={`w-3.5 h-3.5 ${isShuffleEnabled ? 'animate-spin-once' : ''}`} />
@@ -473,13 +473,13 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
               type="button"
               onClick={() => setSoundEnabled(!soundEnabled)}
               title={soundEnabled ? '祝賀サウンドをミュート' : '祝賀サウンドを有効化'}
-              className="p-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors cursor-pointer"
+              className="inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-lg border border-field bg-panel text-accent hover:bg-panel-selected focus-visible:outline-2 focus-visible:outline-accent"
               aria-label={soundEnabled ? 'サウンドON' : 'サウンドOFF'}
             >
               {soundEnabled ? (
-                <Volume2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <Volume2 aria-hidden="true" className="h-4 w-4" />
               ) : (
-                <VolumeX className="w-3.5 h-3.5 text-slate-400" />
+                <VolumeX aria-hidden="true" className="h-4 w-4" />
               )}
             </button>
 
@@ -543,7 +543,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                 id={`quiz-card-${q.id}`}
                 onPointerDown={() => setFocusedQuestionId(q.id)}
                 onFocusCapture={() => setFocusedQuestionId(q.id)}
-                className={`quiz-question bg-white/80 dark:bg-slate-800/70 border rounded-2xl p-5 sm:p-6 transition-all ${
+                className={`quiz-question rounded-xl border bg-panel p-4 sm:p-6 ${
                   isActive
                     ? 'ring-2 ring-emerald-500/40 border-emerald-300 dark:border-emerald-700 shadow-sm'
                     : 'border-slate-200/80 dark:border-slate-700/60'
@@ -601,7 +601,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                     const isOptionCorrectAnswer = q.correctIndex === origIndex;
 
                     let btnStyles =
-                      'border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40 hover:border-emerald-400 hover:bg-emerald-50/30 text-slate-800 dark:text-slate-200';
+                      'border-field bg-page text-ink hover:border-accent hover:bg-panel-selected';
 
                     if (isAnswered) {
                       if (isOptionCorrectAnswer) {
@@ -612,7 +612,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                           'border-rose-400 bg-rose-50/80 dark:bg-rose-950/40 text-rose-900 dark:text-rose-200';
                       } else {
                         btnStyles =
-                          'border-slate-200/50 dark:border-slate-800 bg-slate-100/40 dark:bg-slate-900/20 text-slate-700 dark:text-slate-300';
+                          'border-divider bg-page text-muted';
                       }
                     }
 
@@ -623,7 +623,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                         onClick={() => handleSelectOption(q, origIndex)}
                         disabled={!isMounted || isAnswered}
                         aria-pressed={isOptionChosen}
-                        className={`quiz-option min-h-11 focus-visible:outline-2 focus-visible:outline-offset-4 w-full text-left p-3.5 sm:p-4 rounded-xl border transition-all flex items-start gap-3.5 text-sm sm:text-base ${btnStyles} ${
+                        className={`quiz-option flex min-h-11 w-full items-start gap-3 rounded-lg border p-3 text-left text-base focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent sm:p-4 ${btnStyles} ${
                           !isAnswered ? 'cursor-pointer hover:shadow-xs' : 'cursor-default'
                         }`}
                       >
@@ -636,14 +636,14 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                               ? 'bg-rose-500 text-white'
                               : isOptionChosen
                               ? 'bg-emerald-600 text-white'
-                              : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
+                              : 'bg-panel-muted text-accent'
                           }`}
                         >
                           {String.fromCharCode(65 + displayIdx)}
                         </span>
 
                         {/* 本文 */}
-                        <span className="flex-1 leading-snug">{optionText}{isAnswered && (isOptionCorrectAnswer || isOptionChosen) && <span className="mt-1 block font-bold">{isOptionCorrectAnswer ? "正解" : "選んだ回答（不正解）"}</span>}</span>
+                        <span data-quiz-option-label className="min-w-0 flex-1 leading-[1.7]">{optionText}{isAnswered && (isOptionCorrectAnswer || isOptionChosen) && <span className="mt-1 block font-bold">{isOptionCorrectAnswer ? "正解" : "選んだ回答（不正解）"}</span>}</span>
 
 
                       </button>

@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import { ArrowLeft, BookOpen } from "lucide-react";
 import ArticleReferences from "@/components/ArticleReferences";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import { InteractiveQuiz } from "@/components/InteractiveQuiz";
 import ReviewQuestionCard from "@/components/learning/ReviewQuestionCard";
 import InlineConceptFigure from "@/components/reading/InlineConceptFigure";
+import ReadingContents from "@/components/reading/ReadingContents";
 import ChapterAssessment from "./ChapterAssessment";
 import PublicLecturePosition from "./PublicLecturePosition";
 import { SERIES } from "@/config/series";
@@ -17,8 +19,8 @@ import type { PublicLectureSeries } from "@/data/publicLectures";
 import type { PublicLectureArticle, PublicLectureLink } from "@/data/publicLectures/types";
 import type { ResolvedReference } from "@/types/references";
 
-const headingClass = "font-serif text-xl font-bold text-[#244238] dark:text-[#A9D6C3] sm:text-2xl";
-const linkClass = "font-semibold underline underline-offset-4";
+const headingClass = "reader-section-title";
+const linkClass = "ui-text-link";
 
 function ReadingLinks({ links }: { links: readonly PublicLectureLink[] }) {
   return (
@@ -39,23 +41,31 @@ export default function PublicLectureReader({ id, article, series, references, r
   const quiz = CURRICULUM_QUIZZES[id];
   const assessment = getChapterAssessment(id);
   const figures = getCurriculumReadingInserts(id).map(insert => insert.figure);
+  const hasExercises = Boolean(quiz || assessment);
+  const contents = article.sections.map((section, index) => ({ id: `lecture-section-${index + 1}`, label: section.heading }));
   const authoredLinks = article.links ?? [];
   const links = [...authoredLinks, ...related.filter(link => !authoredLinks.some(authored => authored.href === link.href))];
 
   return (
-    <article data-public-lecture={id} data-lecture-series={series} className="mx-auto w-full max-w-3xl space-y-9 px-4 py-8 text-base leading-8 sm:px-6 sm:py-12">
+    <article data-public-lecture={id} data-lecture-series={series} className="reader-article reader-article--lecture">
       <PublicLecturePosition lectureId={id} />
-      <header className="space-y-4">
-        <Link href={shelf.href} className="text-sm font-semibold underline underline-offset-4 ui-muted">{shelf.name}</Link>
-        <h1 className="font-serif text-3xl font-bold leading-snug sm:text-4xl">{article.title}</h1>
-        <p>{article.lead}</p>
+      <header className="reader-header">
+        <Link href={shelf.href} className="reader-back"><ArrowLeft aria-hidden="true" />{shelf.name}</Link>
+        <h1 className="reader-title">{article.title}</h1>
+        <p className="reader-lead">{article.lead}</p>
       </header>
+      <nav className="reader-navigation" aria-label="講義内を移動">
+        <a href="#lecture-content" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />本文へ</a>
+        {hasExercises && <a href="#lecture-supplements" className="page-secondary-action">確認問題へ</a>}
+        {(id === approvedIntroId || references.length > 0) && <a href="#article-references-section" className="page-secondary-action">出典へ</a>}
+      </nav>
+      <ReadingContents label="講義の目次" headings={contents} />
       <Suspense fallback={null}>
         <ReviewQuestionCard lectureId={id} questions={LEARNING_QUESTIONS.filter(question => question.lectureId === id)} />
       </Suspense>
-      <div id="lecture-content" className="scroll-mt-28 space-y-8">
+      <div id="lecture-content" tabIndex={-1} className="reader-content">
         {article.sections.map((section, index) => (
-          <section key={section.heading} data-lecture-section={index} className="scroll-mt-28 space-y-3">
+          <section key={section.heading} id={contents[index].id} tabIndex={-1} data-lecture-section={index} className="lecture-section">
             <h2 className={headingClass}>{section.heading}</h2>
             {section.paragraphs.map((paragraph, paragraphIndex) => <p key={paragraphIndex}>{paragraph}</p>)}
             {section.links?.length ? <ReadingLinks links={section.links} /> : null}
@@ -66,6 +76,14 @@ export default function PublicLectureReader({ id, article, series, references, r
         <details className="page-help">
           <summary>図で整理する</summary>
           {figures.map(figure => <InlineConceptFigure key={figure.id} figure={figure} />)}
+        </details>
+      )}
+      {hasExercises && (
+        <details id="lecture-supplements" className="page-help">
+          <summary>確認問題・復習</summary>
+          {quiz && <div id="lecture-quiz" className="scroll-mt-28"><InteractiveQuiz quiz={quiz} /></div>}
+          {assessment && <ChapterAssessment assessment={assessment} />}
+          <Link className="ui-text-link" href="/learn/review">復習問題の一覧</Link>
         </details>
       )}
       {links.length > 0 && (
@@ -90,14 +108,6 @@ export default function PublicLectureReader({ id, article, series, references, r
         />
       )}
       <AuthorSupervisorCard topic={article.title} />
-      {(quiz || assessment) && (
-        <details id="lecture-supplements" className="page-help scroll-mt-28">
-          <summary>確認問題・復習</summary>
-          {quiz && <div id="lecture-quiz" className="scroll-mt-28"><InteractiveQuiz quiz={quiz} /></div>}
-          {assessment && <ChapterAssessment assessment={assessment} />}
-          <Link className="ui-text-link" href="/learn/review">復習問題の一覧</Link>
-        </details>
-      )}
     </article>
   );
 }

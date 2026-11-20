@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Compass, MapPin } from "lucide-react";
 import PlatformSearchForm from "@/components/search/PlatformSearchForm";
-import { PLATFORM_INTRO, SERIES, TSUBO_TAGLINE } from "@/config/series";
+import { PLATFORM_INTRO, SERIES } from "@/config/series";
 import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
 
 const POINTS = [
@@ -13,13 +13,13 @@ const POINTS = [
 export default function HomePage() {
   return (
     <div className="platform-home">
-      <section className="platform-intro" aria-labelledby="platform-title">
-        <div className="platform-container platform-hero-grid">
+      <section className="platform-container platform-intro" aria-labelledby="platform-title">
+        <div className="platform-hero-grid">
           <div className="platform-hero-copy">
-            <h1 id="platform-title" className="platform-title">
-              ツボと東洋医学を、<br />図でひもとく。
-            </h1>
-            <p className="platform-intro-text">{PLATFORM_INTRO}</p>
+            <div className="platform-hero-heading">
+              <h1 id="platform-title" className="platform-title" aria-label="知。ツボと東洋医学">知</h1>
+              <p className="platform-intro-text">{PLATFORM_INTRO}</p>
+            </div>
             <PlatformSearchForm />
             <nav className="platform-shortcuts" aria-label="ツボ・症状から調べる">
               <Link href={SERIES.dictionary.href}><MapPin aria-hidden="true" />ツボから探す<ArrowRight aria-hidden="true" /></Link>
@@ -60,10 +60,7 @@ export default function HomePage() {
                 <Link href={series.href}>{series.name}</Link>
                 <ArrowRight aria-hidden="true" />
               </h3>
-              <p>
-                {series.href === SERIES.dictionary.href && <strong>{TSUBO_TAGLINE}</strong>}
-                {series.description}
-              </p>
+              <p>{series.description}</p>
               <ul>{series.links.filter(({ href }) => href !== series.href).map(({ href, label }) => (
                 <li key={href}><Link href={href} className="ui-text-link">{label}</Link></li>
               ))}</ul>

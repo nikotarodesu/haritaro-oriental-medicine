@@ -139,24 +139,23 @@ export default function ReadingProgressBar({ bodySelector, headings: suppliedHea
   return (
     <>
       <div aria-hidden="true" className="fixed top-0 left-0 w-full h-[3px] z-[100] pointer-events-none">
-        <div className="h-full bg-[#1E3D34] dark:bg-[#74BA9E] transition-[width] duration-150 motion-reduce:transition-none" style={{ width: `${progress}%` }} />
+        <div className="h-full bg-primary transition-[width] duration-150 motion-reduce:transition-none" style={{ width: `${progress}%` }} />
       </div>
-      <div ref={barRef} data-reading-toolbar aria-hidden={!visible} inert={!visible} style={{ top: headerHeight === null ? "5rem" : headerHeight }} className={`fixed left-0 right-0 z-40 bg-[#FAF8F5]/95 dark:bg-[#10161C]/95 backdrop-blur-md border-b border-[#E8E1D1] dark:border-[#22303D] transition-all duration-200 motion-reduce:transition-none ${visible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"}`}>
+      <div ref={barRef} data-reading-toolbar aria-hidden={!visible} inert={!visible} style={{ top: headerHeight === null ? "5rem" : headerHeight }} className={`fixed right-0 left-0 z-40 border-b border-frame bg-panel transition-all duration-200 motion-reduce:transition-none ${visible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"}`}>
         <div className="reading-toolbar-row max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 min-h-11 flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0 flex-1">
-            <Compass aria-hidden="true" className="w-4 h-4 shrink-0 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <span title={activeHeading?.text || "はじめに"} className="font-bold text-sm text-[#232826] dark:text-[#FAF8F5] truncate">{activeHeading?.text || "はじめに"}</span>
+            <Compass aria-hidden="true" className="h-4 w-4 shrink-0 text-accent" />
+            <span title={activeHeading?.text || "はじめに"} className="truncate text-sm font-semibold">{activeHeading?.text || "はじめに"}</span>
           </div>
-          <span className="hidden sm:inline text-xs font-mono text-[#59615D] dark:text-[#A0B0BC]" aria-label={`閲覧位置 ${Math.round(progress)}パーセント`}>{Math.round(progress)}%</span>
+          <span className="hidden font-mono text-xs text-muted sm:inline" aria-label={`閲覧位置 ${Math.round(progress)}パーセント`}>{Math.round(progress)}%</span>
           <div ref={menuRef} className="relative shrink-0">
-            <button ref={menuButtonRef} type="button" aria-expanded={dropdownOpen} aria-controls={menuId} onClick={() => setDropdownOpen(previous => !previous)} className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 rounded-lg px-3 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] focus-visible:outline-2 focus-visible:outline-offset-2">
+            <button ref={menuButtonRef} type="button" aria-expanded={dropdownOpen} aria-controls={menuId} onClick={() => setDropdownOpen(previous => !previous)} className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 rounded-lg px-3 text-sm font-semibold text-accent hover:bg-panel-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
               <ListOrdered aria-hidden="true" className="w-4 h-4" /><span>目次</span><ChevronDown aria-hidden="true" className={`w-3 h-3 transition-transform motion-reduce:transition-none ${dropdownOpen ? "rotate-180" : ""}`} />
             </button>
-            {dropdownOpen && <nav id={menuId} aria-label="本文の目次" className="absolute top-full right-0 mt-1 w-[min(22rem,calc(100vw-1.5rem))] max-h-[65vh] overflow-y-auto rounded-xl border border-[#D5DED8] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#17212A] p-2 shadow-lg">
-              <p className="px-3 py-2 text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">知りたいところから読む</p>
+            {dropdownOpen && <nav id={menuId} aria-label="本文の目次" className="absolute top-full right-0 mt-1 max-h-[min(65dvh,calc(100dvh-var(--site-header-height)-var(--mobile-nav-height)-3rem))] w-[min(22rem,calc(100vw-1.5rem))] overflow-y-auto rounded-xl border border-frame bg-panel p-2 shadow-lg">
               <ol>{headings.map((item, index) => <li key={item.id}>
-                <a href={`#${item.id}`} onClick={event => goToHeading(item.id, event)} aria-current={index === activeHeadingIndex ? "location" : undefined} className={`flex min-h-[44px] items-start gap-2 rounded-lg px-3 py-3 text-sm leading-relaxed focus-visible:outline-2 focus-visible:outline-offset-2 ${index === activeHeadingIndex ? "bg-[#EBF3EF] dark:bg-[#182823] font-bold text-[#1E3D34] dark:text-[#74BA9E]" : "text-[#404743] dark:text-[#C5D2DB] hover:bg-white dark:hover:bg-[#121920]"} ${item.level === 3 ? "pl-6" : ""}`}>
-                  <span aria-hidden="true" className="shrink-0 tabular-nums">{index + 1}.</span><span className="min-w-0 [overflow-wrap:anywhere]">{item.text}</span>
+                <a href={`#${item.id}`} onClick={event => goToHeading(item.id, event)} aria-current={index === activeHeadingIndex ? "location" : undefined} className={`flex min-h-[44px] items-start gap-2 rounded-lg px-3 py-3 text-sm leading-relaxed focus-visible:outline-2 focus-visible:outline-offset-2 ${index === activeHeadingIndex ? "bg-panel-selected font-semibold text-accent" : "text-ink hover:bg-page"} ${item.level === 3 ? "pl-6" : ""}`}>
+                  <span className="min-w-0 [overflow-wrap:anywhere]">{item.text}</span>
                 </a>
               </li>)}</ol>
             </nav>}

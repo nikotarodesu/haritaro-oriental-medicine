@@ -66,15 +66,15 @@ function ArticleReadingWorkspace({ articleId, revision, headings }: Props) {
 
   return <>
     <ReadingProgressBar bodySelector={BODY_SELECTOR} headings={headings} onPositionChange={handlePosition} />
-    {saved && resume && heading && <aside aria-label="保存した記事の閲覧位置" className="flex flex-col gap-3 rounded-xl border border-[#C5DED4] bg-[#EBF3EF] p-4 text-sm sm:flex-row sm:items-center sm:justify-between dark:border-[#2A5243] dark:bg-[#182823]">
-      <div className="min-w-0 space-y-1"><p className="flex items-center gap-2 font-bold text-[#1E3D34] dark:text-[#83BEA8]"><Bookmark aria-hidden="true" className="h-4 w-4 shrink-0" />保存した位置から読む</p><p className="leading-relaxed text-[#404743] dark:text-[#C5D2DB] [overflow-wrap:anywhere]">{heading.text}</p><p className="text-xs text-[#59615D] dark:text-[#A0B0BC]">閲覧位置 {resume.progress}% · この位置までスクロールした記録です。</p></div>
+    {saved && resume && heading && <aside aria-label="保存した記事の閲覧位置" className="flex flex-col gap-3 rounded-xl border border-frame bg-panel-selected p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
+      <div className="min-w-0 space-y-1"><p className="flex items-center gap-2 font-semibold text-accent"><Bookmark aria-hidden="true" className="h-4 w-4 shrink-0" />保存した位置から読む</p><p className="leading-relaxed [overflow-wrap:anywhere]">{heading.text}</p><p className="text-sm text-muted">閲覧位置 {resume.progress}% · この位置までスクロールした記録です。</p></div>
       <a href={`#${resume.headingId}`} onClick={event => {
         if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
         trackEvent('context_link_click', { placement: 'article_resume', article_id: articleId });
         const position = jumpToReadingHeading(resume.headingId, BODY_SELECTOR);
         if (!position) return;
         event.preventDefault(); handlePosition({ ...position, immediate: true });
-      }} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#1E3D34] px-4 py-2 font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 dark:bg-[#2B6958]">保存した節を開く<ArrowRight aria-hidden="true" className="h-4 w-4" /></a>
+      }} className="page-primary-action shrink-0">保存した節を開く<ArrowRight aria-hidden="true" className="h-4 w-4" /></a>
     </aside>}
   </>;
 }

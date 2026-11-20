@@ -10,10 +10,10 @@ export default function CasesIndexPage() {
   return (
     <div className="page-layout clinical-case-catalog space-y-8 sm:space-y-10">
       {/* パンくずリスト */}
-      <nav aria-label="パンくず" className="flex items-center gap-2 text-sm text-[#737C77] dark:text-[#8899A6]">
+      <nav aria-label="パンくず" className="flex items-center gap-2 text-sm text-muted">
         <Link href="/" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">ホーム</Link>
         <span aria-hidden="true">/</span>
-        <span aria-current="page" className="text-[#232826] dark:text-[#FAF8F5] font-semibold">症例を選ぶ</span>
+        <span aria-current="page" className="text-ink font-semibold">症例を選ぶ</span>
       </nav>
 
       <PageIntro eyebrow={`全${totalCaseCount}症例・所見から考える練習`} title="症例を選ぶ" description="模擬症例を読み、弁証・治法・配穴の理由を考えます。解答例と比べて、判断の根拠を振り返りましょう。" art="practice">
@@ -25,8 +25,8 @@ export default function CasesIndexPage() {
 
       {/* 症例一覧グリッド */}
       <div id="case-catalog" className="scroll-mt-28 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#737C77] dark:text-[#8899A6] px-1">
-          <h2 className="font-bold text-lg text-[#232826] dark:text-[#FAF8F5]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-muted px-1">
+          <h2 className="font-bold text-lg text-ink">
             全{totalCaseCount}症例一覧
           </h2>
         </div>
@@ -42,7 +42,7 @@ export default function CasesIndexPage() {
                 {/* ヘッダーバッジ */}
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold text-[#737C77] dark:text-[#8899A6]">
+                    <span className="font-mono text-xs font-bold text-muted">
                       症例 {c.caseNumber < 10 ? `0${c.caseNumber}` : c.caseNumber}
                     </span>
                     <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
@@ -60,27 +60,27 @@ export default function CasesIndexPage() {
 
                 <div className="flex items-center gap-3">
                   <span className="page-link-icon"><PageSymbol kind="practice" /></span>
-                  <span className="text-sm font-semibold text-[#B86924] dark:text-[#E6C387]">{c.category}</span>
+                  <span className="text-sm font-semibold text-warm">{c.category}</span>
                 </div>
 
                 {/* タイトル */}
-                <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                <h3 className="font-serif text-lg font-bold text-ink group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
                   {c.title}
                 </h3>
 
                 {/* 主訴プレビュー */}
-                <p className="text-sm text-[#59615D] dark:text-[#96A6B2] line-clamp-2 leading-relaxed">
+                <p className="text-sm text-muted line-clamp-2 leading-relaxed">
                   「{c.patient.chiefComplaint}」
                 </p>
               </div>
 
               {/* フッター情報 ＆ 導線CTA */}
-              <div className="border-t border-[#E8E1D1] dark:border-[#22303D] pt-3.5 flex flex-wrap items-center justify-between gap-2 text-sm">
-                <span className="text-[#737C77] dark:text-[#8899A6]">
+              <div className="border-t border-divider pt-3.5 flex flex-wrap items-center justify-between gap-2 text-sm">
+                <span className="text-muted">
                   {c.patient.age}・{c.patient.gender}
                 </span>
                 
-                <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                <span className="font-bold text-accent flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                   演習を始める <ArrowRight aria-hidden="true" className="w-3.5 h-3.5" />
                 </span>
               </div>
@@ -89,10 +89,10 @@ export default function CasesIndexPage() {
         </div>
 
         {/* 症例演習に関する留意事項・免責 */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-start gap-3 text-xs text-[#59615D] dark:text-[#96A6B2]">
-          <AlertCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] shrink-0 mt-0.5" />
+        <div className="p-4 sm:p-5 rounded-2xl bg-panel border border-frame flex items-start gap-3 text-xs text-muted">
+          <AlertCircle className="w-4 h-4 text-warm shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <p className="font-bold text-[#232826] dark:text-[#FAF8F5]">
+            <p className="font-bold text-ink">
               【症例演習に関する留意事項・免責】
             </p>
             <p className="leading-relaxed">

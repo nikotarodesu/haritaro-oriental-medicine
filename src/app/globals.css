@@ -27,6 +27,7 @@
 @import "./clinical-choice-buttons.css";
 @import "./platform.css";
 @import "./atlas-design.css";
+@import "./reading-design.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -42,10 +43,25 @@
 @theme inline {
   --font-sans: var(--font-noto-sans), "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
   --font-serif: var(--font-noto-serif), "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --color-page: var(--bg-washi);
+  --color-panel: var(--bg-card);
+  --color-panel-muted: var(--bg-muted);
+  --color-panel-selected: var(--accent-soft);
+  --color-ink: var(--text-sumi);
+  --color-muted: var(--text-secondary);
+  --color-accent: var(--accent-readable);
+  --color-frame: var(--border-washi);
+  --color-divider: var(--border-subtle);
+  --color-field: var(--border-control);
+  --color-primary: var(--action-bg);
+  --color-primary-hover: var(--action-hover);
+  --color-on-primary: var(--action-text);
+  --color-warm: var(--warm-readable);
 }
 
 @layer base {
   :root {
+    color-scheme: light;
     --brand-ink: #273947;
     --brand-paper: #F6F2E9;
     --bg-washi: var(--brand-paper);
@@ -68,6 +84,10 @@
     --action-hover: #71372E;
     --action-text: #FFFAF4;
     --action-soft: #F2E6DC;
+    --warm-readable: #784B39;
+    --notice-bg: #F7EDE1;
+    --notice-line: #B78967;
+    --notice-ink: #603E29;
     --text-secondary: #5C6267;
     --site-header-height: 4rem;
     --mobile-nav-height: calc(4.25rem + env(safe-area-inset-bottom, 0px));
@@ -98,18 +118,23 @@
   }
 
   .dark {
+    color-scheme: dark;
     --accent-readable: #BDD1DE;
-    --accent-soft: #2A3844;
+    --accent-soft: #283643;
     --action-bg: #E8B1A4;
     --action-hover: #F3C4B9;
     --action-text: #261B1B;
-    --action-soft: #382D2B;
+    --action-soft: #302B2B;
+    --warm-readable: #E3BBA7;
+    --notice-bg: #2D2825;
+    --notice-line: #806350;
+    --notice-ink: #EAD0BB;
     --text-secondary: #B9C1C8;
     --bg-washi: #151D24;
     --bg-card: #202A33;
-    --bg-muted: #293641;
-    --border-washi: #40505C;
-    --border-subtle: #32414D;
+    --bg-muted: #27313B;
+    --border-washi: #3C4A56;
+    --border-subtle: #303D48;
     --border-control: #748492;
     --text-sumi: #F0EDE7;
     --text-fukagawa: #AAB7C1;
@@ -177,7 +202,6 @@
     font-family: var(--font-noto-sans), -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
     font-feature-settings: "palt" 1;
     -webkit-font-smoothing: antialiased;
-    transition: background-color 0.3s ease, color 0.3s ease;
     line-height: 1.7;
   }
 
@@ -409,15 +433,15 @@
   }
 
   :where(html:not(.dark)) .bg-\[\#FFFFFF\]\/95 {
-    background-color: rgba(252, 250, 246, 0.95);
+    background-color: color-mix(in srgb, var(--bg-card) 95%, transparent);
   }
 
   :where(html:not(.dark)) .bg-\[\#FFFFFF\]\/90 {
-    background-color: rgba(252, 250, 246, 0.90);
+    background-color: color-mix(in srgb, var(--bg-card) 90%, transparent);
   }
 
   :where(html:not(.dark)) .bg-\[\#FFFFFF\]\/80 {
-    background-color: rgba(252, 250, 246, 0.80);
+    background-color: color-mix(in srgb, var(--bg-card) 80%, transparent);
   }
 
   :where(html:not(.dark)) .focus\:bg-\[\#FFFFFF\]:focus {
@@ -429,20 +453,49 @@
   }
 
   :where(html:not(.dark)) .bg-\[\#FAF8F5\]\/95 {
-    background-color: rgba(245, 241, 232, 0.95);
+    background-color: color-mix(in srgb, var(--bg-washi) 95%, transparent);
   }
 
   :where(html:not(.dark)) .bg-\[\#FAF8F5\]\/60 {
-    background-color: rgba(245, 241, 232, 0.60);
+    background-color: color-mix(in srgb, var(--bg-washi) 60%, transparent);
   }
 
   :where(html:not(.dark)) .hover\:bg-\[\#FAF8F5\]:hover {
-    background-color: #EFE9DE;
+    background-color: var(--bg-muted);
   }
 
   :where(html:not(.dark)) .hover\:bg-\[\#FFFFFF\]:hover,
   :where(html:not(.dark)) .hover\:bg-white:hover {
     background-color: var(--bg-card);
+  }
+
+  /* Keep the older page and card utilities on the same dark surfaces. */
+  :where(.dark) :is(.dark\:bg-\[\#10161C\], .dark\:bg-\[\#10171F\], .dark\:bg-\[\#121920\], .dark\:bg-\[\#131B22\], .dark\:bg-\[\#151D25\]) {
+    background-color: var(--bg-washi);
+  }
+
+  :where(.dark) :is(.dark\:bg-\[\#17212A\], .dark\:bg-\[\#152028\], .dark\:bg-\[\#15202B\], .dark\:bg-\[\#16212B\], .dark\:bg-\[\#1A2530\], .dark\:bg-\[\#1A2632\], .dark\:bg-\[\#1C2833\]) {
+    background-color: var(--bg-card);
+  }
+
+  :where(.dark) :is(.dark\:bg-\[\#18232D\], .dark\:bg-\[\#1E2B36\], .dark\:bg-\[\#22303D\]) {
+    background-color: var(--bg-muted);
+  }
+
+  :where(.dark) :is(.dark\:bg-\[\#182823\], .dark\:bg-\[\#162A24\]) {
+    background-color: var(--accent-soft);
+  }
+
+  :where(.dark) :is(.dark\:border-\[\#2A3B4A\], .dark\:border-\[\#2A5243\]) {
+    border-color: var(--border-washi);
+  }
+
+  :where(.dark) .dark\:border-\[\#22303D\] {
+    border-color: var(--border-subtle);
+  }
+
+  :where(.dark) :is(.dark\:text-\[\#74BA9E\], .dark\:text-\[\#83BEA8\]) {
+    color: var(--accent-readable);
   }
 }
 
@@ -654,7 +707,7 @@ html:not(.dark) .reading-page .text-\[\#C45A4A\] { color: #A83629; }
 .clinical-page > .clinical-section { margin-top: 40px; }
 .clinical-tool-grid { display: grid; gap: 0 28px; }
 .clinical-tool-card { display: flex; align-items: center; gap: 14px; min-height: 94px; padding: 16px 4px; border-bottom: 1px solid var(--border-washi); }
-.clinical-tool-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--tokiwa-light); color: var(--accent-readable); flex-shrink: 0; }
+.clinical-tool-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--accent-soft); color: var(--accent-readable); flex-shrink: 0; }
 .clinical-tool-icon svg { width: 23px; height: 23px; }
 .clinical-tool-card > span:nth-child(2) { line-height: 1.65; }
 .clinical-tool-note { margin-top: 16px; font-size: .8125rem; line-height: 1.8; color: var(--text-secondary); }
@@ -666,7 +719,7 @@ html:not(.dark) .reading-page .text-\[\#C45A4A\] { color: #A83629; }
 .clinical-related-links a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--text-secondary); font-size: .8125rem; }
 .clinical-related-links svg { width: 18px; height: 18px; }
 .clinical-page :is(a, button, summary):focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 4px; }
-.clinical-quick-action:hover, .clinical-tool-card:hover, .clinical-recent-card:hover { background: var(--tokiwa-light); }
+.clinical-quick-action:hover, .clinical-tool-card:hover, .clinical-recent-card:hover { background: var(--accent-soft); }
 .clinical-safety-link:hover, .clinical-related-links a:hover { color: var(--accent-readable); text-decoration: underline; }
 @media (max-width: 639px) { .clinical-primary-action { width: 100%; padding-inline: 12px; } }
 @media (min-width: 640px) {

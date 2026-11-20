@@ -1,0 +1,192 @@
+.reader-article {
+  display: grid;
+  gap: clamp(1rem, 2.8vw, 1.75rem);
+  min-width: 0;
+  padding: clamp(1rem, 4vw, 2.5rem);
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-card);
+  background: var(--bg-card);
+}
+
+.reader-article--lecture {
+  width: min(calc(100% - 2 * var(--content-gutter)), 47rem);
+  margin: clamp(1rem, 3.5vw, 2.5rem) auto clamp(2rem, 6vw, 4rem);
+}
+
+.reader-header {
+  display: grid;
+  gap: .7rem;
+  padding-bottom: clamp(.9rem, 2.5vw, 1.35rem);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.reader-title {
+  font-size: clamp(1.65rem, 3.8vw, 2.55rem);
+  font-weight: 600;
+  line-height: 1.45;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.reader-lead {
+  max-width: 38em;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.85;
+}
+
+.reader-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  align-items: center;
+}
+
+.reader-navigation :is(.page-primary-action, .page-secondary-action) {
+  min-height: 44px;
+  padding: .55rem .85rem;
+  border-radius: var(--radius-tag);
+}
+
+.reader-back {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 44px;
+  align-items: center;
+  gap: .4rem;
+  color: var(--accent-readable);
+  font-size: .875rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
+.reader-back svg,
+.reader-contents svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+
+.reader-contents {
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-control);
+  background: var(--bg-washi);
+}
+
+.reader-contents summary {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: .6rem;
+  padding: .55rem .8rem;
+  color: var(--accent-readable);
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+}
+
+.reader-contents summary::-webkit-details-marker {
+  display: none;
+}
+
+.reader-contents summary > svg:last-child {
+  margin-inline-start: auto;
+}
+
+.reader-contents[open] summary > svg:last-child {
+  transform: rotate(180deg);
+}
+
+.reader-contents nav {
+  padding: 0 .8rem .6rem;
+}
+
+.reader-contents li > a {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  padding-block: .5rem;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--accent-readable);
+  font-size: .9375rem;
+  line-height: 1.55;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+  overflow-wrap: anywhere;
+}
+
+.reader-article > .page-help {
+  margin-top: 0;
+}
+
+.reader-article :is(a, summary):focus-visible {
+  outline: 2px solid var(--accent-readable);
+  outline-offset: 3px;
+}
+
+.reader-content {
+  min-width: 0;
+  font-size: 1.0625rem;
+  line-height: 1.95;
+  overflow-wrap: anywhere;
+}
+
+.reader-content,
+.lecture-section,
+.reader-article--lecture > details {
+  scroll-margin-block-start: .625rem;
+}
+
+.lecture-section + .lecture-section {
+  margin-top: clamp(1.4rem, 3.5vw, 2rem);
+  padding-top: clamp(1rem, 2.7vw, 1.6rem);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.lecture-section > p {
+  margin-top: .75em;
+}
+
+.reader-section-title {
+  color: var(--text-sumi);
+  font-family: var(--font-serif);
+  font-size: clamp(1.2rem, 2.75vw, 1.55rem);
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.reader-content > [data-reading-body] > :is(p, ul, ol, blockquote) {
+  font-size: 1em;
+  line-height: inherit;
+}
+
+.reader-content > [data-reading-body] {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.reader-content .reading-table {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.reader-content .reading-table:focus-visible {
+  outline: 2px solid var(--accent-readable);
+  outline-offset: 2px;
+}
+
+.reader-content .reading-table :is(td, th) {
+  padding: .55rem .65rem;
+  overflow-wrap: anywhere;
+}
+
+.reader-content .reading-table th {
+  font-size: inherit;
+}
+
+.reader-content > [data-reading-body] > :is(h2, h3) {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.55;
+}

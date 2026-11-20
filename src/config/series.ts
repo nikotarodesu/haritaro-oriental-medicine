@@ -1,8 +1,7 @@
 import { BookOpen, ClipboardList, MapPin } from "lucide-react";
 
 export const PLATFORM_DESCRIPTION = "ツボや症状を調べ、東洋医学の考え方を読み、架空の症例で学べる鍼灸の情報サイト。全361経穴を名前・部位・経絡から探せます。";
-export const TSUBO_TAGLINE = "ツボのぜんぶが、ここにある。";
-export const PLATFORM_INTRO = "ツボの場所や、気になる体のこと。鍼灸師のはり太郎が、図と身近な言葉で紹介します。";
+export const PLATFORM_INTRO = "ツボの場所と東洋医学の考え方を、図と身近な言葉で紹介します。";
 
 export const SERIES = {
   dictionary: {

@@ -3,39 +3,55 @@
   margin-inline: auto;
 }
 
-.platform-intro {
-  background: var(--bg-washi);
-  border-bottom: 1px solid var(--border-washi);
+.platform-home {
+  display: grid;
+  gap: clamp(1rem, 3vw, 2rem);
+  padding-block: clamp(1rem, 3.6vw, 2.75rem) clamp(2rem, 5vw, 4rem);
+}
+
+.platform-intro,
+.platform-series {
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-card);
+  background: var(--bg-card);
 }
 
 .platform-hero-grid {
   display: grid;
-  align-items: center;
-  gap: clamp(1.75rem, 5.5vw, 5rem);
-  padding-block: clamp(2rem, 5vw, 4.5rem);
+}
+
+.platform-hero-copy,
+.platform-index {
+  min-width: 0;
+  padding: clamp(1rem, 3.2vw, 2.65rem);
 }
 
 .platform-hero-copy {
-  min-width: 0;
+  align-self: center;
+}
+
+.platform-hero-heading {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(.65rem, 2.5vw, 1.65rem);
+  margin-bottom: 1.15rem;
 }
 
 .platform-title {
-  color: var(--text-sumi);
+  color: var(--warm-readable);
   font-family: var(--font-serif);
-  font-size: clamp(1.875rem, 4.5vw, 3.45rem);
+  font-size: clamp(3.4rem, 8vw, 6rem);
   font-weight: 600;
-  line-height: 1.4;
-  letter-spacing: .025em;
-  text-wrap: balance;
+  line-height: 1.1;
 }
 
 .platform-intro-text {
-  max-width: 28em;
-  margin-block: .85rem clamp(1.15rem, 3vw, 1.9rem);
+  max-width: 18em;
   color: var(--text-secondary);
-  font-size: clamp(1rem, 1.55vw, 1.1rem);
-  line-height: 1.9;
-  text-wrap: balance;
+  font-size: clamp(.9375rem, 1.55vw, 1.1rem);
+  line-height: 1.85;
+  text-wrap: pretty;
 }
 
 .platform-search {
@@ -149,12 +165,7 @@
 }
 
 .platform-index {
-  min-width: 0;
-  padding: clamp(.875rem, 2.45vw, 1.55rem);
-  border: 1px solid var(--border-washi);
-  border-radius: var(--radius-card);
-  background: var(--bg-card);
-  box-shadow: 0 14px 34px #24170e0c;
+  border-block-start: 1px solid var(--border-washi);
 }
 
 .platform-index h2 {
@@ -186,7 +197,7 @@
   aspect-ratio: 1;
   border: 1px solid var(--border-washi);
   border-radius: 50%;
-  background: var(--bg-card);
+  background: color-mix(in srgb, var(--bg-card) 90%, var(--warm-readable));
   content: "";
 }
 
@@ -270,7 +281,7 @@
 }
 
 .platform-series {
-  padding-block: clamp(2rem, 4.2vw, 3.5rem) clamp(2.5rem, 6vw, 4.5rem);
+  padding: clamp(1rem, 2.7vw, 2rem);
 }
 
 .platform-series h2 {
@@ -281,18 +292,15 @@
 
 .platform-series-grid {
   display: grid;
-  gap: .9rem;
 }
 
 .platform-series-card {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  gap: .65rem;
-  padding: clamp(1rem, 2.5vw, 1.4rem);
-  border: 1px solid var(--border-washi);
-  border-radius: var(--radius-card);
-  background: var(--bg-card);
+  gap: .45rem;
+  padding-block: .7rem;
+  border-top: 1px solid var(--border-washi);
 }
 
 .platform-series-card h3 {
@@ -325,8 +333,8 @@
 .platform-series-icon {
   display: grid;
   place-items: center;
-  width: 2.55rem;
-  height: 2.55rem;
+  width: 2.25rem;
+  height: 2.25rem;
   border-radius: var(--radius-tag);
   background: var(--accent-soft);
   color: var(--accent-readable);
@@ -347,18 +355,11 @@
   line-height: 1.85;
 }
 
-.platform-series-card p strong {
-  display: block;
-  color: var(--text-sumi);
-  font-weight: 600;
-}
-
 .platform-series-card ul {
   display: flex;
   flex-wrap: wrap;
   gap: 0 .85rem;
   margin-top: auto;
-  border-top: 1px solid var(--border-subtle);
 }
 
 .platform-series-card li a {
@@ -380,12 +381,34 @@
 
 @media (min-width: 54rem) {
   .platform-hero-grid {
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  }
+
+  .platform-index {
+    border-block-start: 0;
+    border-inline-start: 1px solid var(--border-washi);
   }
 }
 
 @media (min-width: 60rem) {
   .platform-series-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .platform-series-card {
+    padding: .35rem 1.25rem 0;
+    border-top: 0;
+  }
+
+  .platform-series-card:first-child {
+    padding-inline-start: 0;
+  }
+
+  .platform-series-card:last-child {
+    padding-inline-end: 0;
+  }
+
+  .platform-series-card + .platform-series-card {
+    border-inline-start: 1px solid var(--border-washi);
   }
 }
