@@ -29,6 +29,7 @@
 @import "./atlas-design.css";
 @import "./reading-design.css";
 @import "./study-diagram.css";
+@import "./acupuncture-guide.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

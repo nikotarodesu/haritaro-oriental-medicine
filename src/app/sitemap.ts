@@ -1,4 +1,5 @@
 import { PAGE_REVISIONS, SITE_REVISED_AT, ACUPOINT_PAGE_REVISED_AT } from "@/config/contentUpdates";
+import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
 import type { MetadataRoute } from "next";
 import { ALL_ACUPOINTS } from "@/data/tsubo";
 import { ARTICLES } from "@/data/articleData";
@@ -31,6 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(PAGE_REVISIONS["/learn"]),
     },
     { url: `${baseUrl}/learn/essentials`, lastModified: new Date(PAGE_REVISIONS["/learn/essentials"]) },
+    { url: `${baseUrl}${ACUPUNCTURE_GUIDE.href}`, lastModified: new Date(ACUPUNCTURE_GUIDE.revisedAt) },
     {
       url: `${baseUrl}/clinical`,
       lastModified: new Date("2026-09-29"),

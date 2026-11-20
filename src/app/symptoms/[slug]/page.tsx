@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { FlaskConical, MapPin, ShieldCheck } from 'lucide-react';
+import { BookOpen, FlaskConical, MapPin, ShieldCheck } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import AuthorSupervisorCard from '@/components/common/AuthorSupervisorCard';
 import SymptomPerspective from '@/components/symptoms/SymptomPerspective';
@@ -15,6 +15,7 @@ import { ARTICLES } from '@/data/articleData';
 import { CLINICAL_CASES } from '@/data/clinicalCasesData';
 import { getPublicLectureArticle } from '@/data/publicLectures';
 import { pageSocialMetadata } from '@/config/seo';
+import { ACUPUNCTURE_GUIDE } from '@/config/acupunctureLearning';
 import { getSymptomGuide, getSymptomGuideJsonLd, getSymptomGuideRevision, getSymptomGuideSources, getSymptomRelatedPapers, SYMPTOM_LEARNING_RESOURCES, symptomGuideDescription, symptomGuidePath, symptomGuideTitle } from '@/utils/symptomGuides';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -94,7 +95,10 @@ export default async function SymptomGuidePage({ params }: Props) {
             </Link>
           </li>
         ))}</ul>
-        {pointStudies.length > 0 && <a href="#guide-studies" className="atlas-text-action"><FlaskConical size={16} aria-hidden="true" />関連する研究を読む</a>}
+        <div className="atlas-directory-actions">
+          {pointStudies.length > 0 && <a href="#guide-studies" className="atlas-text-action"><FlaskConical size={16} aria-hidden="true" />関連する研究を読む</a>}
+          <Link href={ACUPUNCTURE_GUIDE.href} className="atlas-text-action"><BookOpen size={16} aria-hidden="true" />はり・お灸・ツボ押しの違い</Link>
+        </div>
       </section>
       <nav aria-label="ガイドの目次" className="atlas-section-nav">{sections.map(({ id, label }) => <a key={id} href={`#${id}`}>{label}</a>)}</nav>
       <section id="daily-life" className={sectionClass}>

@@ -19,7 +19,7 @@ interface MarkdownBodyProps {
   readingInserts?: ReadingInsert[];
   relatedReading?: ReadingLink;
   collapseAdvanced?: boolean;
-  conceptArt?: { afterHeading: string; node: React.ReactNode } | null;
+  conceptArt?: ({ afterHeading: string } | { afterBlock: number }) & { node: React.ReactNode } | null;
 }
 
 export default function MarkdownBody({
@@ -34,7 +34,8 @@ export default function MarkdownBody({
 }: MarkdownBodyProps) {
   const blocks = parseMarkdownBlocks(contentMarkdown);
   const figurePlacements = resolveReadingInsertions(blocks, readingInserts ?? []);
-  const artPlacementIndex = conceptArt ? resolveConceptArtPlacement(blocks, conceptArt.afterHeading, figurePlacements) : -1;
+  const artPlacementIndex = !conceptArt ? -1 : "afterBlock" in conceptArt ? conceptArt.afterBlock
+    : resolveConceptArtPlacement(blocks, conceptArt.afterHeading, figurePlacements);
   const lastFigureIndex = Math.max(-1, ...figurePlacements.keys());
 
   const renderText = (text: string) => (

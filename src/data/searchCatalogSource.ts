@@ -16,6 +16,11 @@ import { LEARNING_COURSES } from "@/data/learningCourses";
 import { REFLECTION_CASES } from "@/data/learningReflectionCatalog";
 import { CLINICAL_COMPLAINTS } from "@/data/clinicalWorkflow";
 import type { SearchResultItem } from "@/types/searchCatalog";
+import { ACUPUNCTURE_GUIDE, NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
+
+const guideLookupTerms = ["鍼灸", "鍼灸入門", "はじめての鍼灸", "はり", "鍼", "灸", "お灸", "はりとお灸", "はり・お灸・ツボ押しの違い", "ツボ押しとの違い"];
+const nineNeedlesLookupTerms = ["九鍼", "古代九鍼", "古代の九鍼", "九鍼十二原", "九鍼十二原篇"];
+const historyLookupTerms = ["鍼灸の歴史", "日本の鍼灸の歴史", "管鍼法"];
 
 const STATIC_TOOLS: SearchResultItem[] = [
   { id: "tool-learning-essentials", type: "tool", title: "東洋医学の要点", subtitle: "陰陽・気血津液・経絡などの基本を一問ずつ確認する", badge: "学習ガイド", url: "/learn/essentials", tags: ["東洋医学", "要点", "まとめ", "基礎", "陰陽", "気血津液", "経絡"] },
@@ -130,6 +135,16 @@ export function buildSearchCatalog(): SearchResultItem[] {
 
     // 1. ツール群
     list.push(...STATIC_TOOLS);
+    list.push({
+      id: "article-acupuncture-introduction", type: "article", title: ACUPUNCTURE_GUIDE.title,
+      subtitle: ACUPUNCTURE_GUIDE.description, badge: "鍼灸入門", url: ACUPUNCTURE_GUIDE.href,
+      exactTerms: guideLookupTerms, tags: [...guideLookupTerms, "鍼灸の基礎", "施術の流れ", "お灸の道具"],
+    }, {
+      id: "article-ancient-nine-needles", type: "article", title: NINE_NEEDLES_GUIDE.title,
+      subtitle: "『霊枢』に記された九種類の鍼具の形・名前・読み方・寸法を図で見比べる。",
+      badge: "歴史と道具", url: NINE_NEEDLES_GUIDE.href,
+      exactTerms: nineNeedlesLookupTerms, tags: [...nineNeedlesLookupTerms, "霊枢", "鑱鍼", "員鍼", "鍉鍼", "鋒鍼", "鈹鍼", "員利鍼", "毫鍼", "長鍼", "大鍼"],
+    });
     list.push(...LEARNING_COURSES.map((course): SearchResultItem => ({
       id: `course-${course.slug}`, type: "lecture", title: course.title,
       subtitle: `${course.steps.length}ステップ｜${course.description}`, badge: "目的別コース",
@@ -138,7 +153,9 @@ export function buildSearchCatalog(): SearchResultItem[] {
     list.push(...ARTICLES.map((article): SearchResultItem => ({
       id: article.id, type: "article", title: article.title,
       subtitle: article.summary, badge: "解説記事",
-      url: '/articles/' + article.id, tags: article.tags,
+      url: '/articles/' + article.id,
+      tags: article.id === NINE_NEEDLES_GUIDE.articleId ? [...article.tags, ...historyLookupTerms] : article.tags,
+      exactTerms: article.id === NINE_NEEDLES_GUIDE.articleId ? historyLookupTerms : undefined,
     })));
     list.push(...REFLECTION_CASES.map((caseItem): SearchResultItem => ({
       id: `progressive-case-${caseItem.id}`, type: "case", title: caseItem.title,

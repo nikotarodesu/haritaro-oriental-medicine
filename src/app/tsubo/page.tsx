@@ -1,11 +1,12 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { MERIDIANS, ALL_ACUPOINTS } from "@/data/tsubo";
-import { FlaskConical, Layers, MapPin, Ruler, ShieldCheck } from "lucide-react";
+import { BookOpen, FlaskConical, Layers, MapPin, Ruler, ShieldCheck } from "lucide-react";
 import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
 import { SERIES } from "@/config/series";
+import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { ATLAS_STUDIES } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
@@ -46,6 +47,7 @@ export default function TsuboPage() {
             <Link href="/symptoms" className="atlas-text-action"><MapPin size={17} aria-hidden="true" />症状から探す</Link>
             <a href="#atlas-research-index" className="atlas-text-action"><FlaskConical size={17} aria-hidden="true" />研究から探す</a>
             <Link href="/tsubo/basics/bone-cun" className="atlas-text-action"><Ruler size={17} aria-hidden="true" />寸の測り方</Link>
+            <Link href={ACUPUNCTURE_GUIDE.href} className="atlas-text-action"><BookOpen size={17} aria-hidden="true" />はり・お灸・ツボ押しの違い</Link>
           </div>
         </div>
         <AtlasOverviewArt />

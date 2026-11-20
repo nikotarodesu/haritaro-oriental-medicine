@@ -1,0 +1,71 @@
+import { WHO_ATLAS_PDF } from "./tsubo/atlas/whoAtlasPages";
+
+export const ACUPUNCTURE_GUIDE_SOURCES = [
+  {
+    id: "japan",
+    title: "厚生労働省の審議会資料『あん摩マッサージ指圧師・はり師・きゅう師について』",
+    href: "https://www.mhlw.go.jp/content/11601000/000858705.pdf#page=2",
+    scope: "p.2–5。免許の名称、はりの接触・刺入による刺激、きゅうの温熱刺激を確認。",
+  },
+  {
+    id: "who-practice",
+    title: "WHO benchmarks for the practice of acupuncture（2021年）",
+    href: "https://www.who.int/publications/i/item/978-92-4-001688-0",
+    scope: "施術前の評価、説明・同意、衛生管理、安全に施術を行うための基準。",
+  },
+  {
+    id: "safety",
+    title: "全日本鍼灸学会『鍼灸安全対策ガイドライン』2025年版",
+    href: "https://safety.jsam.jp/img/file1.pdf",
+    scope: "改訂第2版。感染対策、鍼や灸の有害事象、施術前後の確認事項。",
+  },
+  {
+    id: "who-points",
+    title: "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
+    href: WHO_ATLAS_PDF,
+    scope: "経穴の位置と名称、体の目印や寸を使った表記。",
+  },
+  {
+    id: "insurance",
+    title: "厚生労働省 東海北陸厚生局「あはき療養費について」",
+    href: "https://kouseikyoku.mhlw.go.jp/tokaihokuriku/newpage_00084.html",
+    scope: "対象となる疾患の考え方と、保険医の同意書。",
+  },
+] as const;
+
+export const ACUPUNCTURE_STUDY_EXAMPLES = [
+  {
+    id: "chronic-pain",
+    title: "一部の慢性痛に対するはり",
+    method: "鍼",
+    context: "慢性の筋骨格系の痛み、変形性関節症、慢性頭痛、肩の痛みを含む39試験、20,827人のデータをまとめた研究です。",
+    result: "痛み・機能の群間の平均差は、偽鍼との比較で約0.2標準偏差、鍼を行わない群との比較で約0.5標準偏差でした。比較する相手によって差の大きさが変わります。",
+    limit: "標準偏差は、試験ごとに異なる評価尺度をそろえて比べる単位です。複数疾患を含む平均値なので、個人の変化は痛みや日常動作を測って確かめます。",
+    source: "Vickersらの個人データ統合解析（2018年）",
+    href: "https://pubmed.ncbi.nlm.nih.gov/29198932/",
+  },
+  {
+    id: "pc6",
+    title: "内関（PC6）への刺激と術後の吐き気",
+    method: "鍼・圧など",
+    context: "手術後の吐き気・嘔吐の予防を調べた77試験、9,847人のレビューです。手首の内関を使った鍼や、圧迫バンドなどの方法を含みます。",
+    result: "吐き気止めと併用した場合、鍼など皮膚に入る方法と、圧迫バンドなど皮膚に入らない方法の両方で、疑似刺激などを用いた対照より術後の吐き気・嘔吐が減る可能性が報告されました。",
+    limit: "手術の種類や刺激方法がさまざまな試験をまとめており、研究結果への確信は全般に低いと評価されています。",
+    source: "Cochraneレビュー CD003281（2025年）",
+    href: "https://www.cochrane.org/evidence/CD003281_what-are-benefits-and-risks-different-wrist-pc6-acupoint-stimulation-techniques-preventing-nausea",
+    pointHref: "/tsubo/pc6#acupoint-research",
+    pointLabel: "図鑑で内関の研究を読む",
+  },
+  {
+    id: "moxa-breech",
+    title: "骨盤位（逆子）に関するお灸の研究",
+    method: "灸",
+    context: "骨盤位の妊婦2,181人を含む13試験のレビューです。通常の妊婦管理に至陰（BL67）への灸を加えた場合などを比べています。",
+    result: "通常の管理に灸を加えると、出生時に頭位以外である割合がおそらく下がりました。帝王切開の割合はほとんど変わらないと考えられ、有害事象の増減はかなり不確かです。",
+    limit: "胎位と安全性は産科で評価します。妊娠中に施術を検討する場合は、研究の条件と自分の状況を担当の産科に相談してください。",
+    source: "Cochraneレビュー CD003928（2023年）",
+    href: "https://pubmed.ncbi.nlm.nih.gov/37158339/",
+    pointHref: "/tsubo/bl67#acupoint-research",
+    pointLabel: "図鑑で至陰の研究を読む",
+  },
+] as const;

@@ -1,5 +1,7 @@
 /** Curated spellings/readings of the same term, never diseases or inferred diagnoses. */
 const SEARCH_ALIASES: ReadonlyArray<readonly [canonical: string, aliases: readonly string[]]> = [
+  ['鍼灸', ['針灸', 'しんきゅう', 'はりきゅう', 'はり・きゅう']],
+  ['九鍼', ['九針', 'きゅうしん']],
   ['肝気鬱結', ['肝気郁結', '肝気欝結', 'かんきうっけつ']],
   ['瘀血', ['お血', 'おけつ']],
   ['肩こり', ['肩凝り', 'かたこり']],

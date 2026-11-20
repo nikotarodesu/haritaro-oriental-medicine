@@ -24,6 +24,7 @@ import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { PUBLIC_ARCHIVE_CASES, ARCHIVE_CASES_NOTICE } from "@/data/cases/archiveCases";
 import PageIntro from "@/components/design/PageIntro";
+import { NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
 
 export default function LibraryClient() {
 
@@ -279,6 +280,8 @@ export default function LibraryClient() {
                             {classic.theme}
                           </h3>
                         </div>
+
+                        {classic.id === 'classic-reisu-01' && <Link href={NINE_NEEDLES_GUIDE.href} className="ui-text-link">古代の九鍼を図で見る <ArrowRight size={16} aria-hidden="true" /></Link>}
 
                         <div className="space-y-4">
                           <div>

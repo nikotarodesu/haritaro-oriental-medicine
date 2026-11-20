@@ -23,6 +23,8 @@ import ArticleReadingResume from "@/components/reading/ArticleReadingResume";
 import { articleReadingRevision } from "@/utils/articleReadingPosition";
 import AdSenseSlot from "@/components/ads/AdSenseSlot";
 import { getArticleAdSenseConfig } from "@/components/ads/config";
+import { NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
+import AncientNineNeedles from "@/components/learning/AncientNineNeedles";
 import { 
   BookOpen,
   Network,
@@ -105,8 +107,11 @@ export default async function ArticleDetailPage({ params }: Props) {
     description: firstRelated.reason,
     meta: `読了約 ${firstRelated.article.readTime}`,
   } : undefined;
-  const headings = parseMarkdownBlocks(article.contentMarkdown).flatMap((block, index) =>
+  const blocks = parseMarkdownBlocks(article.contentMarkdown);
+  const headings = blocks.flatMap((block, index) =>
     block.type === "h2" ? [{ label: block.content.replaceAll("**", ""), id: "article-heading-" + index }] : []);
+  const nineNeedlesAfter = article.id === NINE_NEEDLES_GUIDE.articleId ? blocks.findIndex(block =>
+    block.type === "list" && block.items.some(item => item.startsWith("**『霊枢（れいすう）』**"))) : -1;
   const learningGuide = ARTICLE_LEARNING_GUIDES[article.id];
   const learningLectureTitle = learningGuide ? getCurriculumIndexCatalog().lectures.find(lecture => lecture.id === learningGuide.lectureId)?.title : undefined;
   const learningCaseTitle = learningGuide ? PROGRESSIVE_CASES.find(item => item.id === learningGuide.caseId)?.title : undefined;
@@ -222,6 +227,7 @@ export default async function ArticleDetailPage({ params }: Props) {
           <nav aria-label="この記事の読み進め方" className="reader-navigation">
             <a href="#article-content" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />本文へ</a>
             {readingGuide?.inserts[0] && <a href={`#reading-figure-${readingGuide.inserts[0].figure.id}`} className="page-secondary-action"><Network aria-hidden="true" className="h-4 w-4" />図解</a>}
+            {nineNeedlesAfter >= 0 && <a href={`#${NINE_NEEDLES_GUIDE.anchor}`} className="page-secondary-action">古代の九鍼</a>}
             {resolvedReferences.length > 0 && <a href="#article-references-section" className="page-secondary-action"><Bookmark aria-hidden="true" className="h-4 w-4" />出典</a>}
           </nav>
           <ReadingContents label="記事の目次" headings={headings} />
@@ -247,6 +253,7 @@ export default async function ArticleDetailPage({ params }: Props) {
             resolvedReferences={resolvedReferences}
             readingInserts={readingGuide?.inserts}
             relatedReading={relatedReading}
+            conceptArt={nineNeedlesAfter >= 0 ? { afterBlock: nineNeedlesAfter, node: <AncientNineNeedles /> } : undefined}
           />
           </div>
 

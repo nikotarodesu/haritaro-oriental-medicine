@@ -77,7 +77,18 @@ function assertReferenceScope(id) {
 
 // A valid URL alone is insufficient: the linked lesson must cover the term and
 // the label must describe that lesson's current published content.
+const { ACUPUNCTURE_GUIDE, NINE_NEEDLES_GUIDE } = load('src/config/acupunctureLearning');
+const guideTerms = {
+  鍼灸: ACUPUNCTURE_GUIDE.href,
+  灸: ACUPUNCTURE_GUIDE.href + '#methods',
+  九鍼: NINE_NEEDLES_GUIDE.href,
+};
 for (const term of glossary) {
+  if (Object.hasOwn(guideTerms, term.term)) {
+    assert.equal(term.readingLink?.href, guideTerms[term.term], `${term.term}: link to its illustration`);
+    assert(term.readingLink.label, `${term.term}: the reading link has a label`);
+    continue;
+  }
   const lecture = lesson(term.relatedLectureId);
   assert.equal(term.relatedLectureTitle, lecture.title, `${term.term}: stale lesson title`);
   assert(normaliseTerm(lecture.contentMarkdown).includes(normaliseTerm(term.term)), `${term.term}: related lesson does not explain this term`);

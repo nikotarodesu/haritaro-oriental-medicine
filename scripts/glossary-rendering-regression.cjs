@@ -56,6 +56,24 @@ assert.match(inline, /href="https:\/\/example.org"[^>]*target="_blank"[^>]*rel="
 
 const content = '## 陰陽\n\n陰陽 [気虚](/glossary#term-気虚) [^named]\n\n- 気虚 [ref:3] 陰陽\n- 気滞 気虚\n\n| 瘀血 | 気滞 |\n| --- | --- |\n| 瘀血 | 相生 |\n\n> 相生 瘀血';
 const body = stableRender(Markdown, { contentMarkdown: content, resolvedReferences: references });
+const AncientNineNeedles = load('src/components/learning/AncientNineNeedles').default;
+const { ANCIENT_NINE_NEEDLES } = load('src/data/ancientNineNeedles');
+const { HISTORY_ARTICLE } = load('src/data/articles/historyArticle');
+const { parseMarkdownBlocks } = load('src/utils/markdownParser');
+const historyBlocks = parseMarkdownBlocks(HISTORY_ARTICLE.contentMarkdown);
+const lingshuBlock = historyBlocks.findIndex(block => block.type === 'list' && block.items.some(item => item.startsWith('**『霊枢（れいすう）』**')));
+assert(lingshuBlock >= 0, 'The history article retains its introduction to the Lingshu');
+const historyHtml = stableRender(Markdown, {
+  contentMarkdown: HISTORY_ARTICLE.contentMarkdown,
+  idPrefix: 'article-heading',
+  conceptArt: { afterBlock: lingshuBlock, node: React.createElement(AncientNineNeedles) },
+});
+const needlesStart = historyHtml.indexOf('id="ancient-nine-needles"');
+assert(needlesStart > historyHtml.indexOf('経絡・経穴・刺鍼法・治療技術を詳述する臨床治療編'));
+assert(needlesStart < historyHtml.indexOf('現代の教科書に例えると'), 'Put the figure immediately after the Lingshu introduction');
+assert.deepEqual(Array.from(historyHtml.matchAll(/data-ancient-needle="([^"]+)"/g), row => row[1]),
+  ['鑱鍼', '員鍼', '鍉鍼', '鋒鍼', '鈹鍼', '員利鍼', '毫鍼', '長鍼', '大鍼']);
+assert.equal(ANCIENT_NINE_NEEDLES.find(needle => needle.name === '毫鍼').length, '3寸6分', 'Match the cited passage');
 assert.match(body, /<h2[^>]*id="section-heading-0"[^>]*>陰陽<\/h2>/, 'Heading text and anchor remain intact');
 assert.match(body, /<li[^>]*>気虚 <sup[^>]*><\/sup> 陰陽<\/li>/, 'List terms remain readable beside citations');
 assert.match(body, /<th[^>]*>瘀血<\/th>/, 'Table headers remain ordinary text');

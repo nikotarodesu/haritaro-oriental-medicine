@@ -23,7 +23,7 @@ const RESEARCH_MODIFIERS = new Set([
 const LEARNING_MODIFIERS = new Set(["とは", "意味", "定義", "学ぶ", "学習", "入門"]);
 
 export function preparePurposeSearchQuery(query: string, requestedPurpose: SearchPurpose = "auto") {
-  const originalQuery = prepareSearchQuery(query);
+  const originalQuery = prepareSearchQuery(query.replace(/[?？]+\s*$/, ""));
   // Support a short definition question without treating "とは" as part of the term.
   const lookupQuery = originalQuery.normalized.endsWith("とは") && originalQuery.normalized.length > 2
     ? prepareSearchQuery(originalQuery.normalized.slice(0, -2)) : originalQuery;
@@ -66,6 +66,7 @@ export function rankPurposeSearchResults<T extends PurposeSearchItem>(
       if (item.type === "classic") return context.researchFocus === "classic" ? 95 : context.researchFocus === "paper" ? 70 : 85;
       return 60;
     }
+    if (item.type === "article" && index.exactTerms.includes(context.query.normalized)) return 99;
     if (isSymptomQuery && item.type === "symptom") return 99;
     if (item.type === "glossary" && index.exactTerms.includes(context.query.normalized)) return 98;
     if (isSymptomQuery) {

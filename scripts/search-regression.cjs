@@ -131,6 +131,14 @@ const lectureReview = render('講義の復習');
 assert(lectureReview.includes('href="/learn/review"'), 'Lecture review remains searchable after exam practice is retired');
 assert(!render('国家試験').includes('href="/kokushi') && !render('国試').includes('href="/kokushi'), 'Retired exam destinations cannot reappear through an old search term');
 function optionUrls(html) { return Array.from(html.matchAll(/<a(?=[^>]*role="option")[^>]*href="([^"]+)"/g), match => match[1]); }
+const { ACUPUNCTURE_GUIDE, NINE_NEEDLES_GUIDE } = load('src/config/acupunctureLearning');
+for (const query of ['鍼灸とは', '鍼灸とは？', 'はりとは', 'お灸とは', 'はりきゅう', '鍼灸入門']) {
+  assert.equal(optionUrls(render(query))[0], ACUPUNCTURE_GUIDE.href, `${query}: the beginner guide is the first result`);
+}
+for (const query of ['九鍼', '九針', 'きゅうしん', '古代きゅうしん', '九鍼十二原']) {
+  assert.equal(optionUrls(render(query))[0], NINE_NEEDLES_GUIDE.href, `${query}: open the nine-needle figure directly`);
+}
+assert.equal(optionUrls(render('鍼灸の歴史'))[0], '/articles/' + NINE_NEEDLES_GUIDE.articleId);
 for (const [canonical, aliases] of [
   ['肝気鬱結', ['肝気郁結', '肝気欝結', 'かんきうっけつ', 'カンキウッケツ']],
   ['瘀血', ['お血', 'おけつ', 'オケツ']],

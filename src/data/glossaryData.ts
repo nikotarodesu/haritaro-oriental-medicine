@@ -1,9 +1,10 @@
 import { REFLECTION_LECTURES } from '@/data/learningReflectionCatalog';
+import { ACUPUNCTURE_GUIDE, NINE_NEEDLES_GUIDE } from '@/config/acupunctureLearning';
 
 export interface GlossaryTerm {
   term: string;
   reading: string;
-  category: "気血水・病態" | "経絡・経穴" | "陰陽五行・理論" | "神経生理・科学" | "診断・診察";
+  category: "鍼灸の基本" | "気血水・病態" | "経絡・経穴" | "陰陽五行・理論" | "神経生理・科学" | "診断・診察";
   oneLiner: string; // 一言での意味（中学生でもわかる平易な説明）
   analogy?: string; // 身近な例・アナロジー
   summary: string; // 詳細解説
@@ -11,9 +12,28 @@ export interface GlossaryTerm {
   relatedLectureTitle?: string;
   relatedToolUrl?: string; // 関連ツールURL
   relatedToolTitle?: string;
+  readingLink?: { href: string; label: string };
 }
 
 const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
+  鍼灸: {
+    term: "鍼灸", reading: "しんきゅう", category: "鍼灸の基本",
+    oneLiner: "鍼やお灸で体に刺激を加える施術の呼び名。はりきゅうとも読みます。",
+    summary: "はりは鍼具を使った刺激、灸は主にもぐさによる温熱刺激です。ツボ（経穴）は施術に使う部位を説明する手がかりになります。",
+    readingLink: { href: ACUPUNCTURE_GUIDE.href, label: "はり・お灸・ツボ押しを図で見比べる" },
+  },
+  灸: {
+    term: "灸", reading: "きゅう", category: "鍼灸の基本",
+    oneLiner: "お灸のこと。主にもぐさを使って温熱の刺激を加えます。",
+    summary: "主な材料のもぐさは、ヨモギの葉の繊維を加工したものです。皮膚の上にもぐさを置く直接灸や、台座などを挟む間接灸で、熱の伝わり方や配慮する点が変わります。",
+    readingLink: { href: `${ACUPUNCTURE_GUIDE.href}#methods`, label: "お灸の道具と温熱刺激を読む" },
+  },
+  九鍼: {
+    term: "九鍼", reading: "きゅうしん", category: "鍼灸の基本",
+    oneLiner: "『霊枢』に記された、形や役割の異なる九種類の鍼具。九針とも表記します。",
+    summary: "「九鍼十二原」には名前・形・寸法が載っています。先が丸い員鍼、細い毫鍼、剣のような鈹鍼などがあり、古典での道具の捉え方を図で比べられます。",
+    readingLink: { href: NINE_NEEDLES_GUIDE.href, label: "古代の九鍼を図で見比べる" },
+  },
   疏泄: {
     term: "疏泄",
     reading: "そせつ",

@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, Compass, MapPin } from "lucide-react";
+import { ArrowRight, BookOpen, Compass, MapPin } from "lucide-react";
 import PlatformSearchForm from "@/components/search/PlatformSearchForm";
 import { PLATFORM_INTRO, SERIES } from "@/config/series";
 import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
+import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
 
 const POINTS = [
   { code: "st36", label: "足三里", location: "ひざの下" },
@@ -25,6 +26,7 @@ export default function HomePage() {
               <Link href={SERIES.dictionary.href}><MapPin aria-hidden="true" />ツボから探す<ArrowRight aria-hidden="true" /></Link>
               <Link href="/symptoms"><Compass aria-hidden="true" />症状から探す<ArrowRight aria-hidden="true" /></Link>
             </nav>
+            <Link href={ACUPUNCTURE_GUIDE.href} className="ui-text-link platform-acupuncture-entry"><BookOpen size={17} aria-hidden="true" />はじめての鍼灸<ArrowRight size={16} aria-hidden="true" /></Link>
           </div>
           <section className="platform-index" aria-labelledby="platform-index-title">
             <h2 id="platform-index-title">図で見る、身近なツボ</h2>

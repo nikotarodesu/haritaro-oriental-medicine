@@ -8,6 +8,7 @@ import { pageSocialMetadata } from "@/config/seo";
 import { SERIES } from "@/config/series";
 import { getArticlePreviews } from "@/data/articleData";
 import { readingUnits } from "@/data/publicLectures/readingUnits";
+import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
 
 const title = "陰陽・気血水・経絡の読み物と体質チェック｜はり太郎の東洋医学";
 const description = "東洋医学の基本を読む。陰陽五行や気血水、経絡の考え方を図と例から学び、気血水体質チェックにも進めます。";
@@ -32,6 +33,11 @@ export default function LearnGuidePage() {
     <div className="page-layout learning-guide space-y-8">
       <div className="learning-guide-intro">
         <PageIntro title={SERIES.reading.name} description="陰陽、気・血・津液、経絡。東洋医学の考え方を、図と身近な例で学べます。" />
+        <Link href={ACUPUNCTURE_GUIDE.href} className="acupuncture-learning-entry">
+          <BookOpen size={23} strokeWidth={1.65} aria-hidden="true" />
+          <span><strong>はじめての鍼灸</strong><small>はり・お灸・ツボ押しの違いを図で見る</small></span>
+          <ArrowRight size={18} aria-hidden="true" />
+        </Link>
         <nav aria-label="学び方を選ぶ" className="learning-options">
           <Link href={readingUnits[0].href} className="learning-option">
             <span className="learning-option-icon"><BookOpen size={21} aria-hidden="true" /></span>

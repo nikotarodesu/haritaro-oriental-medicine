@@ -1,4 +1,5 @@
 import type { PublicLectureArticle } from "./types";
+import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
 
 export const approvedIntroId = "lecture-intro-1";
 export const approvedIntroReferences = [
@@ -18,7 +19,8 @@ export const approvedIntro: PublicLectureArticle = {
       "paragraphs": [
         "「東洋医学」という言葉は、鍼灸（はりやお灸を用いる方法）、漢方、養生（暮らしの中で体調を整える工夫）など、さまざまな話題で使われます。地域、時代、流派によって内容にも違いがあります。ここでは、日本の鍼灸の学習で扱う伝統的な考え方を紹介します。",
         "たとえば「陰陽（いんよう）」は、動くと休むなど、対になる性質の関係や変化を見る考え方です。「気・血・津液（き・けつ・しんえき）」はそれぞれ、体の働き、体を養うもの、体を潤す水分について語る伝統的な言葉です。「経絡（けいらく）」は、ツボの位置や体との関係を説明するときの道筋を指します。どの本や教材で出会った言葉なのかも一緒に押さえておくと、説明をたどりやすくなります。"
-      ]
+      ],
+      "links": [{ "href": ACUPUNCTURE_GUIDE.href, "label": "はり・お灸・ツボ押しの違いを図で見る" }]
     },
     {
       "heading": "「疲れる」を、自分の言葉でもう少し詳しく",
