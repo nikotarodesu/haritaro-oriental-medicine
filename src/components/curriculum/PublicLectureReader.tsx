@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { ArrowLeft, ArrowRight, BookOpen, Network } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import ArticleReferences from "@/components/ArticleReferences";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import { InteractiveQuiz } from "@/components/InteractiveQuiz";
@@ -49,13 +49,12 @@ export default function PublicLectureReader({ id, article, series, references, r
         <p className="reader-lead">{article.lead}</p>
         {unit && <Link href={readingPartHref(id)} className="ui-text-link">この節を含む講義を読む<ArrowRight aria-hidden="true" /></Link>}
       </header>
-      <nav className="reader-navigation" aria-label="講義内を移動">
-        <a href="#lecture-content" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />本文へ</a>
-        {diagram && <a href="#lecture-diagram" className="page-secondary-action"><Network aria-hidden="true" />図解へ</a>}
-        {hasExercises && <a href="#lecture-supplements" className="page-secondary-action">確認問題へ</a>}
-        {(id === approvedIntroId || references.length > 0) && <a href="#article-references-section" className="page-secondary-action">出典へ</a>}
-      </nav>
-      <ReadingContents label="講義の目次" headings={contents} />
+      <ReadingContents label="講義の目次" headings={[
+        ...contents,
+        ...(diagram ? [{ id: "lecture-diagram", label: "図解" }] : []),
+        ...(hasExercises ? [{ id: "lecture-supplements", label: "確認問題" }] : []),
+        ...(id === approvedIntroId || references.length > 0 ? [{ id: "article-references-section", label: "出典" }] : []),
+      ]} />
       <Suspense fallback={null}>
         <ReviewQuestionCard lectureId={id} questions={LEARNING_QUESTIONS.filter(question => question.lectureId === id)} />
       </Suspense>

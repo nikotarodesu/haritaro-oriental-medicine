@@ -6,18 +6,12 @@ import { readingLinkHref } from "@/data/publicLectures/readingUnits";
 import type { PublicLectureArticle, PublicLectureLink } from "@/data/publicLectures/types";
 
 export function PublicLectureLinks({ links, unitHref }: { links: readonly PublicLectureLink[]; unitHref?: string }) {
+  const destinations = links.map(link => ({ ...link, href: unitHref ? readingLinkHref(link.href, unitHref) : link.href }))
+    .filter(link => !unitHref || !link.href.startsWith("#"));
+  if (destinations.length === 0) return null;
   return (
     <ul className="space-y-1">
-      {links.map(({ href, label }) => {
-        const destination = unitHref ? readingLinkHref(href, unitHref) : href;
-        return (
-          <li key={href}>
-            {destination.startsWith("#")
-              ? <a href={destination} className="ui-text-link">{label}</a>
-              : <Link href={destination} className="ui-text-link">{label}</Link>}
-          </li>
-        );
-      })}
+      {destinations.map(({ href, label }) => <li key={href}><Link href={href} className="ui-text-link">{label}</Link></li>)}
     </ul>
   );
 }
@@ -36,7 +30,9 @@ export default function PublicLectureSections({ lectureId, sections, partAnchor,
 
   return sections.map((section, index) => (
     <section key={section.heading} id={`${prefix}-section-${index + 1}`} tabIndex={-1} data-lecture-section={index} className="lecture-section">
-      <Heading className={partAnchor ? "lecture-unit-subtitle" : "reader-section-title"}>{section.heading}</Heading>
+      {(!partAnchor || index > 0) && (
+        <Heading className={partAnchor ? "lecture-unit-subtitle" : "reader-section-title"}>{section.heading}</Heading>
+      )}
       {section.paragraphs.map((paragraph, paragraphIndex) => <p key={paragraphIndex}>{paragraph}</p>)}
       {diagram && index === diagramIndex && (
         <div id={`${prefix}-diagram`} className="lecture-diagram" tabIndex={-1}>
@@ -44,7 +40,7 @@ export default function PublicLectureSections({ lectureId, sections, partAnchor,
             <span key={figure.id} id={`reading-figure-${figure.id}`} className="lecture-diagram-alias" aria-hidden="true" />
           ))}
           <StudyDiagram id={`reading-figure-${diagram.anchor ?? lectureId}`} diagram={diagram} />
-          {readingInserts.map(({ figure }) => figure.exercise ? (
+          {!partAnchor && readingInserts.map(({ figure }) => figure.exercise ? (
             <div key={figure.id} className="study-diagram-exercise">
               <p>{figure.exercise.prompt}</p>
               <details data-reading-exercise={figure.id}>

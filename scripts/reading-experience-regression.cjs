@@ -39,6 +39,9 @@ const MarkdownBody = load('src/components/MarkdownBody').default;
 const StudyDiagram = load('src/components/reading/StudyDiagram').default;
 const { getPublicLectureGroups, getPublicLectureArticle } = load('src/data/publicLectures/index');
 const { getPublicLectureDiagram, publicLectureDiagrams } = load('src/data/publicLectures/diagrams/index');
+const { readingUnits } = load('src/data/publicLectures/readingUnits');
+const { readingUnitRevisions } = load('src/data/publicLectures/revisions/index');
+const { reviseLectureSections } = load('src/data/publicLectures/revisions/types');
 const articleIds = new Set(ARTICLES.map(article => article.id));
 const figureIds = new Set();
 let checkedFigures = 0;
@@ -58,6 +61,33 @@ for (const lectureId of publicLectures) {
   if (diagram.layout === 'relations') assert.equal((html.match(/<svg/g) || []).length, diagram.items.length, lectureId);
 }
 console.log(`Passed: ${publicLectures.length} public lectures have restrained, accessible SVG diagrams placed beside the explanation.`);
+
+assert.equal(Object.keys(readingUnitRevisions).length, readingUnits.length, 'Every published unit has tailored copy and a recap');
+for (const unit of readingUnits) {
+  const revision = readingUnitRevisions[unit.slug];
+  assert(revision, unit.slug);
+  assert.equal(Object.keys(revision.copy).length, unit.parts.length, unit.slug);
+  let before = 0;
+  let after = 0;
+  for (const { lectureId } of unit.parts) {
+    const original = getPublicLectureArticle(lectureId);
+    const copy = revision.copy[lectureId];
+    assert.equal(copy?.length, original.sections.length, lectureId + ' keeps every existing section and figure position');
+    const edited = reviseLectureSections(original.sections, copy);
+    assert(edited.every(section => section.paragraphs.length && section.paragraphs.every(text => text.trim())), lectureId);
+    assert.equal(JSON.stringify(edited.map(section => [section.heading, section.links])), JSON.stringify(original.sections.map(section => [section.heading, section.links])), lectureId);
+    before += original.lead.length + original.sections.flatMap(section => section.paragraphs).join('').length;
+    after += edited.flatMap(section => section.paragraphs).join('').length;
+  }
+  assert(after < before, unit.slug + ' removes repeated introductory prose');
+  assert.equal(new Set(revision.takeaways).size, 3, unit.slug);
+  assert.equal(revision.questions.length, 2, unit.slug);
+  for (const item of revision.questions) {
+    assert.equal(new Set(item.choices).size, 3, unit.slug + ' has three distinct choices');
+    assert(item.question.trim() && item.choices[item.answer]?.trim() && item.explanation.trim(), unit.slug);
+  }
+}
+console.log(`Passed: ${readingUnits.length} edited units preserve section anchors and source links, each with three takeaways and two explained questions.`);
 
 function checkInsertions(id, content, inserts) {
   const blocks = parseMarkdownBlocks(content);
