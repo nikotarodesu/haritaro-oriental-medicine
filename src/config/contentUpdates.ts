@@ -241,6 +241,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/symptoms': '2026-11-19',
 };
 export const SITE_UPDATES = [
+  { date: ATLAS_EVIDENCE_REVISED_AT, label: '研究を載せていなかった262穴の文献を調査', href: '/tsubo#atlas-research-index', text: 'PubMedとPubMed Centralで一穴ずつ検索し、人を対象とした比較試験で使われた経穴と結果を確認できたものを追加しました。図鑑で原典と試験の限界を読めます。' },
   { date: ATLAS_EVIDENCE_REVISED_AT, label: 'ツボ図鑑に出典付きの臨床研究を追加', href: '/tsubo#atlas-research-index', text: '一つのツボに着目した試験や、複数のツボを使った試験を追加しました。試験でのツボの役割、比較した相手、結果と限界を論文とともに読めます。' },
   { date: '2026-11-19', label: 'ツボ図鑑の図解と症状ガイドを読みやすく', href: '/tsubo', text: '症状別ガイドの上部から関連するツボを開けるようにしました。全361穴に「効果と組み合わせ」の欄を設け、確認した論文や古典の該当箇所を掲載しています。' },
   { date: EXPANDED_ATLAS_REVISED_AT, label: '全361穴に場所の解説と3種類の図', href: '/tsubo#illustrated-points', text: '残り284穴に、全身での位置・骨や筋などを目印にした拡大図・経絡の順序を示す図を掲載しました。各ページで場所の見つけ方、注意点、WHO資料の該当ページを確認できます。' },

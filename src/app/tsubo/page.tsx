@@ -8,6 +8,7 @@ import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
 import { SERIES } from "@/config/series";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { ATLAS_STUDIES } from "@/data/tsubo/atlas/evidence";
+import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
 
 const illustratedPoints = ALL_ACUPOINTS.filter(({ codeLower }) => codeLower === "li4" || ATLAS_POINT_MARKERS[codeLower]);
 const illustratedRegions = [...new Set(illustratedPoints.map(point => point.bodyPart))].map(region => ({
@@ -70,6 +71,17 @@ export default function TsuboPage() {
             </ul>
           </details>
         ))}
+        <details id="atlas-research-search" className="atlas-disclosure atlas-target">
+          <summary>文献の調べ方</summary>
+          <div className="atlas-study-details">
+            <p><time dateTime={ATLAS_LITERATURE_SEARCH_DATE}>{ATLAS_LITERATURE_SEARCH_DATE}</time> に、当時まだ研究を載せていなかった{Object.keys(ATLAS_LITERATURE_SEARCH_COUNTS).length}穴を検索しました。</p>
+            <p>経穴名とコードで、PubMedの題名・抄録などと、PubMed Centralの本文の方法欄を検索しました。人を対象とした比較試験のうち、実際に使われた経穴と結果を原典で確認できたものを紹介しています。</p>
+            <ul className="atlas-source-links" aria-label="文献検索で使用したデータベース">
+              <li><a href="https://pubmed.ncbi.nlm.nih.gov/help/">PubMedの検索方法</a></li>
+              <li><a href="https://pmc.ncbi.nlm.nih.gov/about/userguide/">PubMed Centralの検索方法</a></li>
+            </ul>
+          </div>
+        </details>
       </section>
 
       <section aria-labelledby="illustrated-points" className="space-y-3">

@@ -1,4 +1,5 @@
 import { CLINICAL_STUDY_ADDITIONS } from "./clinicalStudies";
+import { SUPPLEMENTAL_ATLAS_STUDIES } from "./supplementalClinicalStudies";
 import type { AtlasStudy, StudySource } from "./types";
 
 // Codes list the points reported in the intervention, including comparator codes only when labelled as such.
@@ -173,17 +174,18 @@ const existingStudies: readonly AtlasStudy[] = [
   },
 ];
 
-export const ATLAS_STUDIES: readonly AtlasStudy[] = [...existingStudies, ...CLINICAL_STUDY_ADDITIONS];
+const revisedStudies = [...CLINICAL_STUDY_ADDITIONS, ...SUPPLEMENTAL_ATLAS_STUDIES];
+export const ATLAS_STUDIES: readonly AtlasStudy[] = [...existingStudies, ...revisedStudies];
 export const ATLAS_EVIDENCE_REVISED_AT = "2026-11-20";
 
-const revisedPointCodes = new Set(CLINICAL_STUDY_ADDITIONS.flatMap(study => [
+const revisedPointCodes = new Set(revisedStudies.flatMap(study => [
   ...study.points,
   ...(study.comparisonPoints ?? []),
   ...(study.additionalPointGroups ?? []).flatMap(group => group.points),
 ]));
 export const REVISED_ATLAS_RESEARCH_ROUTES = [
   ...Array.from(revisedPointCodes, code => `/tsubo/${code}`),
-  ...new Set(CLINICAL_STUDY_ADDITIONS.flatMap(study => study.guide ? [`/symptoms/${study.guide}`] : [])),
+  ...new Set(revisedStudies.flatMap(study => study.guide ? [`/symptoms/${study.guide}`] : [])),
 ];
 
 interface ClassicalCombination {

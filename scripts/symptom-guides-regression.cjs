@@ -38,6 +38,8 @@ async function main() {
   const { CLINICAL_CASES } = load('src/data/clinicalCasesData');
   const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
   const { ATLAS_STUDIES, getAcupointStudies, getStudyPointRole, getSymptomStudies } = load('src/data/tsubo/atlas/evidence');
+  const { SUPPLEMENTAL_ATLAS_STUDIES } = load('src/data/tsubo/atlas/supplementalClinicalStudies');
+  const { ATLAS_LITERATURE_SEARCH_COUNTS } = load('src/data/tsubo/atlas/literatureSearch');
   const { AtlasStudyCard } = load('src/components/tsubo/AcupointResearch');
   const { VERIFIED_PAPERS } = load('src/data/references/papersData');
   const ResearchReferences = load('src/components/symptoms/SymptomResearchReferences').default;
@@ -56,9 +58,15 @@ async function main() {
   assert.equal(indexSchema['@graph'][1].itemListElement.length, SYMPTOMS.length, 'Index schema lists every guide');
   assert(indexHtml.indexOf('id="symptom-guides"') < indexHtml.indexOf('このガイドで確認できること'), 'Usage scope follows the index');
   const pointCodes = new Set(ACUPOINTS_MASTER.map(point => point.codeLower));
+  const previousStudies = ATLAS_STUDIES.filter(study => !SUPPLEMENTAL_ATLAS_STUDIES.includes(study));
+  const pendingBeforeSearch = [...pointCodes].filter(code => !previousStudies.some(study => getStudyPointRole(study, code)));
+  assert.equal(pendingBeforeSearch.length, 262);
+  assert.deepEqual(Object.keys(ATLAS_LITERATURE_SEARCH_COUNTS).sort(), pendingBeforeSearch.sort(), 'Each previously unlisted point was searched');
+  assert(Object.values(ATLAS_LITERATURE_SEARCH_COUNTS).every(counts => counts.length === 2 && counts.every(count => Number.isInteger(count) && count >= 0)), 'Both databases provided search counts');
+  assert(SUPPLEMENTAL_ATLAS_STUDIES.every(study => pendingBeforeSearch.some(code => getStudyPointRole(study, code))), 'Each addition covers a previously unlisted point');
   assert.equal(new Set(ATLAS_STUDIES.map(study => study.id)).size, ATLAS_STUDIES.length, 'Evidence index uses distinct anchors');
   for (const study of ATLAS_STUDIES) {
-    assert.equal(study.kind === 'point', study.points.length === 1, `${study.id}: point and combination studies are labelled separately`);
+    assert(study.kind === 'point' ? study.points.length === 1 : study.points.length > 1 || study.otherPoints || study.additionalPointGroups?.length, `${study.id}: point and combination studies are labelled separately`);
     const pointGroups = [
       { points: study.points, role: 'main' },
       { points: study.comparisonPoints || [], role: 'comparison' },

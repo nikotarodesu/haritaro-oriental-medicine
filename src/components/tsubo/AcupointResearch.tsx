@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BookOpen, FlaskConical, GitMerge } from "lucide-react";
 import { getAcupointByCode } from "@/data/tsubo";
 import { getAcupointStudies, getClassicalCombinations, getStudyPointRole } from "@/data/tsubo/atlas/evidence";
+import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
 import type { AtlasStudy } from "@/data/tsubo/atlas/types";
 import type { AcupointDetail } from "@/data/tsubo/types";
 
@@ -61,6 +62,7 @@ export default function AcupointResearch({ point }: { point: AcupointDetail }) {
   const studies = getAcupointStudies(point.codeLower);
   const combinations = getClassicalCombinations(point.codeLower);
   const background = point.codeLower === "li4" || point.codeLower === "st36" ? point.researchEvidence : undefined;
+  const searched = Object.hasOwn(ATLAS_LITERATURE_SEARCH_COUNTS, point.codeLower);
 
   return (
     <section id="acupoint-research" className="atlas-evidence atlas-target" aria-labelledby="acupoint-research-title">
@@ -68,7 +70,12 @@ export default function AcupointResearch({ point }: { point: AcupointDetail }) {
       {studies.length ? (
         <div className="atlas-study-list">{studies.map(study => <AtlasStudyCard key={study.id} study={study} currentCode={point.codeLower} />)}</div>
       ) : (
-        <p className="atlas-evidence-empty">研究で使われたツボを原典で確認できたものから掲載しています。<a href="#acupoint-traditional" className="atlas-source-link">伝統的な使われ方</a>を読めます。</p>
+        <p className="atlas-evidence-empty">今回の文献検索では、使用経穴と結果を原典で確認して紹介できる比較試験は見つかっていません。<a href="#acupoint-traditional" className="atlas-source-link">伝統的な使われ方</a>を読めます。</p>
+      )}
+      {searched && (
+        <p className="atlas-evidence-empty">
+          <time dateTime={ATLAS_LITERATURE_SEARCH_DATE}>{ATLAS_LITERATURE_SEARCH_DATE}</time> 文献検索 · <Link href="/tsubo#atlas-research-search" className="atlas-source-link">検索の対象と方法</Link>
+        </p>
       )}
       {combinations.length > 0 && (
         <div className="atlas-classical-combinations">
