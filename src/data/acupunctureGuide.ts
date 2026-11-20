@@ -8,6 +8,24 @@ export const ACUPUNCTURE_GUIDE_SOURCES = [
     scope: "p.2–5。免許の名称、はりの接触・刺入による刺激、きゅうの温熱刺激を確認。",
   },
   {
+    id: "seirin-insert",
+    title: "PMDA掲載「セイリン鍼」電子添文（2026年5月・第13版）",
+    href: "https://www.pmda.go.jp/PmdaSearch/kikiDetail/ResultDataSetPDF/380043_15500BZZ00805000_1_01_13",
+    scope: "各部の名称、ステンレス鋼の鍼体、3番の線径0.20 mm、滅菌済み単回使用。",
+  },
+  {
+    id: "seirin-j-type",
+    title: "セイリン公式「J-Type」製品資料（英語）",
+    href: "https://www.global.seirin.jp/english/j_type.html",
+    scope: "線径0.20 mmに対応する青い鍼柄、鍼体の長さ30・40・50・60 mm、鍼管付きの個包装。",
+  },
+  {
+    id: "seirin-sun",
+    title: "セイリン公式のJタイプ国内規格表記",
+    href: "https://www.seirin.jp/news/s-0kokmll",
+    scope: "掲載されたJタイプの規格名で、40 mmを「寸3」と表記。",
+  },
+  {
     id: "who-practice",
     title: "WHO benchmarks for the practice of acupuncture（2021年）",
     href: "https://www.who.int/publications/i/item/978-92-4-001688-0",

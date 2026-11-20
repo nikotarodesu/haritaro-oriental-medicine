@@ -49,6 +49,8 @@
 .acupuncture-guide-hero > p { max-width: 50ch; }
 .acupuncture-method-figure { min-width: 0; padding: .5rem .32rem .55rem; border: 1px solid var(--border-washi); border-radius: .7rem; background: var(--bg-card); }
 .acupuncture-method-figure figcaption { margin: .45rem .3rem 0; padding-top: .4rem; border-top: 1px solid var(--border-subtle); color: var(--text-secondary); font-size: .79rem; line-height: 1.55; }
+.acupuncture-method-example-link { display: inline-flex; align-items: center; gap: .35rem; min-height: 2.75rem; color: var(--guide-green); font-weight: 700; text-decoration: underline; text-underline-offset: .2em; }
+.acupuncture-method-example-link svg { flex: none; }
 .acupuncture-guide-nav, .acupuncture-inline-links, .acupuncture-section-sources, .acupuncture-source-links { display: flex; flex-wrap: wrap; column-gap: 1rem; }
 .acupuncture-guide-contents { justify-self: start; min-width: min(100%, 8rem); }
 .acupuncture-guide-nav { gap: .4rem; padding: 0 .65rem .65rem; }
@@ -105,6 +107,46 @@
 .acupuncture-method-notes { display: grid; gap: .6rem; }
 .acupuncture-method-notes > div { display: grid; grid-template-columns: minmax(4.4rem, 18%) minmax(0, 1fr); align-items: baseline; gap: .65rem; padding-bottom: .55rem; border-bottom: 1px solid var(--border-subtle); }
 .acupuncture-method-notes dt { color: var(--guide-green); }
+
+.acupuncture-needle-example {
+  display: grid;
+  gap: .9rem;
+  min-width: 0;
+  padding: clamp(.8rem, 2.7vw, 1.35rem);
+  border: 1px solid var(--border-washi);
+  border-radius: .85rem;
+  background: var(--bg-card);
+}
+.acupuncture-needle-example header { display: grid; gap: .3rem; }
+.acupuncture-needle-example header h3 { color: var(--guide-green); font-family: var(--font-serif); font-size: clamp(1.18rem, 3vw, 1.6rem); }
+.acupuncture-needle-example header h3 span { display: block; color: var(--text-sumi); }
+.acupuncture-needle-example > p { max-width: 68ch; }
+.acupuncture-needle-measurements { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; }
+.acupuncture-needle-measurements > div { padding: .55rem .65rem; border-radius: .55rem; background: var(--guide-green-soft); }
+.acupuncture-needle-measurements dt { color: var(--guide-green); font-size: .84rem; }
+.acupuncture-needle-measurements dd { font-size: clamp(1.3rem, 3.2vw, 1.9rem); line-height: 1.45; font-weight: 700; font-variant-numeric: tabular-nums; }
+.acupuncture-needle-measurements dd span { font-size: .66em; }
+.acupuncture-needle-layout { display: grid; align-items: start; gap: .75rem; }
+.acupuncture-needle-layout figure { min-width: 0; border: 1px solid var(--border-subtle); border-radius: .65rem; background: var(--bg-muted); }
+.acupuncture-needle-diagram { display: block; width: 100%; }
+.acupuncture-needle-layout figcaption { padding: 0 .65rem .65rem; color: var(--text-secondary); font-size: .82rem; line-height: 1.55; }
+.acupuncture-needle-parts { display: grid; gap: .45rem; }
+.acupuncture-needle-parts > div { display: grid; grid-template-columns: minmax(5.65rem, 31%) minmax(0, 1fr); align-items: baseline; gap: .45rem; padding-bottom: .4rem; border-bottom: 1px solid var(--border-subtle); font-size: .9rem; line-height: 1.6; }
+.acupuncture-needle-parts dt { color: var(--guide-green); }
+.acupuncture-needle-example .acupuncture-section-sources { row-gap: .35rem; }
+.needle-diagram-labels, .needle-diagram-dimension { fill: var(--text-sumi); font-size: 16px; font-weight: 700; text-anchor: middle; }
+.needle-diagram-dimension { fill: var(--guide-green); font-variant-numeric: tabular-nums; }
+.needle-diagram-leaders, .needle-diagram-measure, .needle-diagram-divider, .needle-diagram-tube-inner, .needle-diagram-handle-detail { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.needle-diagram-leaders { stroke: var(--text-secondary); stroke-width: 1.1; stroke-dasharray: 2 3; }
+.needle-diagram-measure { stroke: var(--guide-green); stroke-width: 1.5; }
+.needle-diagram-divider { stroke: var(--border-washi); }
+.needle-diagram-handle { fill: #7FB9D5; stroke: #2C607D; stroke-width: 1.35; }
+.needle-diagram-handle-detail { stroke: #D9EFF8; stroke-width: 1.2; }
+.needle-diagram-steel { fill: var(--text-sumi); }
+.needle-diagram-tube { fill: var(--guide-green-soft); stroke: var(--guide-green); stroke-width: 1.2; }
+.needle-diagram-tube-inner { stroke: var(--guide-green); stroke-width: 1; opacity: .48; }
+.needle-diagram-tube-rim { fill: var(--bg-card); stroke: var(--guide-green); stroke-width: 1.2; }
+.needle-diagram-cross-section { fill: var(--bg-card); stroke: var(--guide-green); stroke-width: 1.2; }
 
 .acupuncture-detail { min-width: 0; border: 1px solid var(--border-washi); border-radius: .7rem; background: var(--bg-card); }
 .acupuncture-detail summary { display: flex; align-items: center; justify-content: space-between; gap: .7rem; min-height: 2.9rem; padding: .55rem .9rem; cursor: pointer; font-weight: 650; color: var(--guide-green); list-style: none; }
@@ -220,6 +262,8 @@
 .acupuncture-source-links a { display: inline-flex; align-items: center; min-height: 2.75rem; }
 
 @media (min-width: 640px) {
+  .acupuncture-needle-layout { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+  .acupuncture-needle-parts > div { grid-template-columns: 1fr; gap: .12rem; }
   .acupuncture-mechanisms { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .acupuncture-mechanisms > div { grid-template-columns: minmax(0, 1fr); gap: .45rem; }
   .acupuncture-mechanisms > div + div { border-block-start: 0; border-inline-start: 1px solid var(--border-subtle); }

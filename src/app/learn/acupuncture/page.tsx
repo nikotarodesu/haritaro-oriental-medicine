@@ -4,6 +4,7 @@ import { ArrowRight, BookOpen, Brain, ChartLine, ClipboardList, Layers3, Message
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import AcupunctureMethodArt, { type AcupunctureMethod } from "@/components/learning/AcupunctureMethodArt";
 import AcupunctureTrialComparison from "@/components/learning/AcupunctureTrialComparison";
+import SeirinNeedleDiagram from "@/components/learning/SeirinNeedleDiagram";
 import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
 import { ACUPUNCTURE_GUIDE, NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
 import { pageSocialMetadata } from "@/config/seo";
@@ -11,6 +12,7 @@ import { ACUPUNCTURE_GUIDE_SOURCES, ACUPUNCTURE_STUDY_EXAMPLES } from "@/data/ac
 
 const { href, title, description, revisedAt } = ACUPUNCTURE_GUIDE;
 const pageTitle = `${title}｜はり太郎の東洋医学`;
+const needleExample = "seirin-no3";
 
 export const metadata: Metadata = {
   title: { absolute: pageTitle },
@@ -20,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const topics = [
-  ["methods-details", "はり・灸・ツボ押し"], ["points", "ツボと配穴"], ["visit", "施術の流れ"],
+  ["methods-details", "はり・灸・ツボ押し"], [needleExample, "セイリンの3番鍼"], ["points", "ツボと配穴"], ["visit", "施術の流れ"],
   ["mechanisms", "鍼への体の反応"], ["evidence", "研究の読み方"], ["combinations", "ツボの組み合わせ"],
   ["safety", "安全性"], ["questions", "よくある疑問"], ["history", "鍼の歴史"],
 ] as const;
@@ -68,7 +70,10 @@ export default function AcupunctureGuidePage() {
               </li>
             ))}
           </ul>
-          <figcaption>各図を横切る実線が皮膚の表面です。鍼を入れる、台座で間接的に温める、指で押す例を並べています。</figcaption>
+          <figcaption>
+            <p>各図を横切る実線が皮膚の表面です。鍼を入れる、台座で間接的に温める、指で押す例を並べています。</p>
+            <a href={`#${needleExample}`} className="acupuncture-method-example-link">セイリンの3番鍼を図で見る <ArrowRight size={15} aria-hidden="true" /></a>
+          </figcaption>
         </figure>
         <details className="acupuncture-detail acupuncture-guide-contents">
           <summary>目次</summary>
@@ -85,10 +90,42 @@ export default function AcupunctureGuidePage() {
             <div key={id}><dt>{name}</dt><dd>{summary}</dd></div>
           ))}
         </dl>
+        <section id={needleExample} className="acupuncture-needle-example" aria-labelledby="seirin-no3-title">
+          <header>
+            <h3 id="seirin-no3-title">現代の鍼を図で見る <span>セイリン Jタイプの3番</span></h3>
+            <p>鍼管付きで鍼体が40 mmの「寸3」を例に、製品の表記と各部の名前を見てみます。</p>
+          </header>
+          <dl className="acupuncture-needle-measurements">
+            <div><dt>太さ（線径）・3番</dt><dd>0.20 <span>mm</span></dd></div>
+            <div><dt>鍼体の長さ・寸3</dt><dd>40 <span>mm</span></dd></div>
+          </dl>
+          <div className="acupuncture-needle-layout">
+            <figure>
+              <SeirinNeedleDiagram />
+              <figcaption>鍼と鍼管を分けて描いた模式図です。鍼体の太さと右下の断面は拡大しています。</figcaption>
+            </figure>
+            <dl className="acupuncture-needle-parts">
+              <div><dt>鍼柄（しんぺい）</dt><dd>プラスチックの持ち手です。この3番は青い鍼柄で見分けられます。</dd></div>
+              <div><dt>鍼体（しんたい）</dt><dd>持ち手から伸びるステンレス鋼の部分です。線径は、その断面の直径です。</dd></div>
+              <div><dt>鍼尖（しんせん）</dt><dd>鍼体の先端です。</dd></div>
+              <div><dt>鍼管（しんかん）</dt><dd>施術者が細い鍼を支えるために使う筒です。</dd></div>
+            </dl>
+          </div>
+          <p>Jタイプの3番には、40 mmのほかにも鍼体が30・50・60 mmのものがあります。鍼灸師は施術する部位や目的に応じて、太さと長さを選びます。</p>
+          <p>滅菌済みの単回使用品で、鍼と鍼管が1本ずつ組になって包装されています。</p>
+          <div className="acupuncture-inline-links">
+            <Link href="/tsubo/basics/bone-cun" className="ui-text-link">体の位置を示す「寸」の図解へ <ArrowRight size={16} aria-hidden="true" /></Link>
+          </div>
+          <p className="acupuncture-section-sources">
+            <SourceLink id="seirin-insert">PMDAの電子添文</SourceLink>
+            <SourceLink id="seirin-j-type">セイリンの製品資料</SourceLink>
+            <SourceLink id="seirin-sun">「寸3」の表記資料</SourceLink>
+          </p>
+        </section>
         <div className="acupuncture-detail-grid">
           <details className="acupuncture-detail">
-            <summary>鍼管・接触鍼・電気鍼</summary>
-            <p>鍼管（しんかん）は細い鍼を支える筒です。皮膚に触れる接触鍼や、鍼を介して電気刺激を加える電気鍼もあります。研究では、同じ「鍼」でも何を使いどんな刺激を比べたかを確認します。</p>
+            <summary>接触鍼・電気鍼</summary>
+            <p>皮膚に触れる接触鍼や、鍼を介して電気刺激を加える電気鍼もあります。研究では、同じ「鍼」でも何を使いどんな刺激を比べたかを確認します。</p>
           </details>
           <details className="acupuncture-detail">
             <summary>直接灸・間接灸・有痕灸・無痕灸</summary>
