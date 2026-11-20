@@ -1,48 +1,99 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, GraduationCap, Heart } from 'lucide-react';
-import { ALL_NAV_ITEMS, type NavItemDefinition } from '@/config/navigationItems';
+import { GraduationCap, Heart } from 'lucide-react';
+import { ALL_NAV_ITEMS } from '@/config/navigationItems';
 import { pageSocialMetadata } from '@/config/seo';
+import { ClinicalCheckArtwork, ClinicalHeroArtwork } from '@/components/clinical/ClinicalArtwork';
 import ClinicalDashboard from '@/components/clinical/ClinicalDashboard';
+import ClinicalPatternExercise from '@/components/clinical/ClinicalPatternExercise';
+import styles from '@/components/clinical/ClinicalPractice.module.css';
 import PublicLectureIndex from '@/components/curriculum/PublicLectureIndex';
 
 const title = '鍼灸の症例演習・配穴演習・見立ての練習｜はり太郎の臨床演習';
-const description = '架空の症例を読み、何を尋ねるか、どのツボを選ぶか、その理由を考える鍼灸の演習です。症例演習・配穴演習・主訴別ガイドから選べます。';
+const description = '五労チェッカーと気血水の12問チェックで生活や体調の傾向を振り返り、架空症例で問診・見立て・配穴を練習できます。';
 export const metadata: Metadata = {
   title: { absolute: title }, description,
   alternates: { canonical: 'https://www.haritaro.jp/clinical' },
   ...pageSocialMetadata(title, description, '/clinical'),
 };
 
-function ToolLinks({ items }: { items: readonly NavItemDefinition[] }) {
-  return <ul className="clinical-tool-grid">{items.map(({ icon: Icon, ...tool }) => <li key={tool.href}>
-    <Link href={tool.href} className="clinical-tool-card">
-      <span className="clinical-tool-icon"><Icon aria-hidden="true" /></span>
-      <span className="min-w-0 flex-1"><span className="block font-semibold">{tool.label}</span><span className="mt-1 block text-sm ui-muted">{tool.description}</span></span>
-      <ArrowRight aria-hidden="true" className="clinical-card-arrow" />
-    </Link>
-  </li>)}</ul>;
-}
 const focusClass = 'focus-visible:outline-2 focus-visible:outline-offset-4';
-const exercises: readonly NavItemDefinition[] = [
+const checks = [
+  {
+    kind: 'gorou',
+    href: ALL_NAV_ITEMS.gorou.href,
+    label: '五労チェッカー',
+    description: '見る、横になる、座る、立つ、歩く。長く続く生活動作を振り返ります。',
+  },
+  {
+    kind: 'constitution',
+    href: ALL_NAV_ITEMS.diagnosis.href,
+    label: '気血水 体質セルフチェック',
+    description: '12問に答え、気虚・気滞・血虚などの伝統的な分類に照らして傾向を見ます。',
+  },
+] as const;
+
+const exercises = [
   { ...ALL_NAV_ITEMS.cases, label: '症例演習', description: '架空の症例を読み、何を先に確認するか考える' },
-  { ...ALL_NAV_ITEMS.haiketsu, label: '配穴演習', description: 'ツボの組み合わせと選ぶ理由を考える' },
   { ...ALL_NAV_ITEMS.simulator, label: '見立ての練習', description: '所見から複数の伝統的な見方を比べる' },
+  { ...ALL_NAV_ITEMS.haiketsu, label: '配穴演習', description: 'ツボの組み合わせと選ぶ理由を考える' },
 ];
 
 export default function ClinicalLandingPage() {
   return (
     <div className="clinical-page clinical-page--focused">
-      <section id="tools" aria-labelledby="clinical-series-heading" className="clinical-practice-entry mb-8 space-y-4 rounded-2xl border border-frame bg-panel p-4 sm:mb-10 sm:p-7">
-        <header className="space-y-3">
-          <h1 id="clinical-series-heading" className="reader-title">はり太郎の臨床演習</h1>
-          <p className="reader-lead">架空の相談を読み、何を尋ねるか、どのツボを選ぶかを考える鍼灸の演習です。</p>
-        </header>
-        <ToolLinks items={exercises} />
-        <p className="clinical-tool-note">演習の結果だけで、実際の診断・施術方針は決まりません。</p>
+      <header className={styles.hero}>
+        <div>
+          <h1 id="clinical-series-heading">はり太郎の臨床演習</h1>
+          <p>生活や体調を振り返り、架空の症例で問診・見立て・配穴を練習できます。</p>
+          <nav className={styles.heroNav} aria-label="臨床演習内の移動">
+            <a className={styles.heroPrimary} href="#quick-checks">チェックを選ぶ</a>
+            <a href="#tools">演習を選ぶ</a>
+            <a href="#clinical-record-heading">臨床記録</a>
+          </nav>
+        </div>
+        <ClinicalHeroArtwork className={styles.heroArtwork} />
+      </header>
+
+      <section id="quick-checks" tabIndex={-1} className={styles.section} aria-labelledby="clinical-checks-heading">
+        <h2 id="clinical-checks-heading" className={styles.sectionTitle}>生活・体調のチェック</h2>
+        <ul className={styles.checkGrid}>
+          {checks.map(check => (
+            <li key={check.kind}>
+              <Link href={check.href} className={styles.checkCard} data-kind={check.kind}>
+                <div className={styles.cardCopy}>
+                  <h3>{check.label}</h3>
+                  <p>{check.description}</p>
+                </div>
+                <ClinicalCheckArtwork kind={check.kind} className={styles.checkArtwork} />
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <p className={styles.checkNote}>チェック結果は東洋医学を学ぶための目安です。実際の診断や施術の判断には使えません。</p>
       </section>
-      <section aria-labelledby="practice-reading" className="mb-8 space-y-4">
-        <h2 id="practice-reading" className="font-serif text-2xl font-bold">架空の相談・症例を読んで考える</h2>
+
+      <section id="tools" tabIndex={-1} className={styles.section} aria-labelledby="clinical-practice-heading">
+        <h2 id="clinical-practice-heading" className={styles.sectionTitle}>症例・配穴の演習</h2>
+        <ul className={styles.exerciseGrid}>
+          {exercises.map(({ icon: Icon, ...tool }) => (
+            <li key={tool.href}>
+              <Link href={tool.href} className={styles.exerciseCard}>
+                <span className={styles.exerciseIcon}><Icon aria-hidden="true" /></span>
+                <div className={styles.cardCopy}>
+                  <h3>{tool.label}</h3>
+                  <p>{tool.description}</p>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <ClinicalPatternExercise />
+
+      <section className={styles.reading} aria-labelledby="practice-reading">
+        <h2 id="practice-reading" className={styles.sectionTitle}>架空の相談・症例を読んで考える</h2>
         <PublicLectureIndex series="practice" />
       </section>
       <ClinicalDashboard />

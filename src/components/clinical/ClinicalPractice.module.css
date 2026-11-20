@@ -1,0 +1,303 @@
+.hero {
+  display: grid;
+  align-items: center;
+  gap: clamp(1.25rem, 4vw, 2.5rem);
+  padding: clamp(1.125rem, 3vw, 2rem);
+  border: 1px solid var(--border-washi);
+  border-radius: 1.5rem;
+  background: var(--bg-card);
+}
+
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.55rem, 4vw, 2.55rem);
+  font-weight: 700;
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
+.hero p {
+  max-width: 26em;
+  margin-top: .75rem;
+  color: var(--text-secondary);
+  line-height: 1.85;
+  text-wrap: balance;
+}
+
+.heroArtwork {
+  display: block;
+  width: 100%;
+  max-width: 27rem;
+  height: auto;
+  margin-inline: auto;
+  border-radius: 1rem;
+}
+
+.heroNav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 1rem;
+  row-gap: .25rem;
+  margin-top: 1rem;
+}
+
+.heroNav a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  color: var(--accent-readable);
+  font-size: .9375rem;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: .25em;
+}
+
+.heroNav .heroPrimary {
+  padding-inline: 1rem;
+  border-radius: .625rem;
+  background: var(--accent-readable);
+  color: var(--bg-card);
+  text-decoration: none;
+}
+
+.heroNav .heroPrimary:hover {
+  background: var(--text-sumi);
+}
+
+.section, .mini, .reading {
+  margin-top: clamp(1.875rem, 4vw, 2.75rem);
+  scroll-margin-top: 6rem;
+}
+
+.sectionTitle {
+  margin-bottom: .875rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 2.8vw, 1.625rem);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.checkGrid, .exerciseGrid {
+  display: grid;
+  gap: .75rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.checkCard, .exerciseCard {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  gap: .75rem;
+  padding: 1rem;
+  border: 1px solid var(--border-washi);
+  border-radius: 1rem;
+  color: var(--text-sumi);
+  background: var(--bg-card);
+}
+
+.checkCard {
+  justify-content: space-between;
+  min-height: 8.5rem;
+  background: color-mix(in srgb, var(--bg-card) 72%, var(--accent-soft));
+}
+
+.checkCard[data-kind="gorou"] {
+  background: color-mix(in srgb, var(--bg-card) 93%, var(--amber-warm));
+}
+
+:is(.checkCard, .exerciseCard):hover {
+  border-color: var(--accent-readable);
+}
+
+.cardCopy {
+  min-width: 0;
+}
+
+.cardCopy h3 {
+  color: var(--accent-readable);
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  font-weight: 700;
+  line-height: 1.5;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .22em;
+}
+
+.cardCopy p {
+  margin-top: .25rem;
+  color: var(--text-secondary);
+  font-size: .9375rem;
+  line-height: 1.65;
+}
+
+.checkArtwork {
+  width: clamp(3.5rem, 13vw, 6rem);
+  height: auto;
+  flex-shrink: 0;
+  color: var(--accent-readable);
+}
+
+.checkNote {
+  margin-top: .75rem;
+  color: var(--text-secondary);
+  font-size: .875rem;
+  line-height: 1.7;
+}
+
+.exerciseIcon {
+  display: grid;
+  width: 2.625rem;
+  height: 2.625rem;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: .625rem;
+  background: var(--accent-soft);
+  color: var(--accent-readable);
+}
+
+.exerciseIcon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.mini {
+  padding: clamp(1rem, 3vw, 1.75rem);
+  border: 1px solid var(--border-washi);
+  border-radius: 1rem;
+  background: var(--bg-card);
+}
+
+.miniHeading h2 {
+  margin-bottom: .35rem;
+}
+
+.miniHeading p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.exampleSelector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-block: 1rem;
+}
+
+.exampleSelector button {
+  min-height: 2.75rem;
+  padding: .4rem .75rem;
+  border: 1px solid var(--border-washi);
+  border-radius: .625rem;
+  font-size: .9375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.exampleSelector button:is(:hover, [aria-pressed="true"]) {
+  border-color: var(--accent-readable);
+  background: var(--accent-soft);
+  color: var(--text-sumi);
+}
+
+.exampleBody {
+  display: grid;
+  gap: 1rem;
+}
+
+.presentation {
+  padding: .875rem 1rem;
+  border-inline-start: 3px solid var(--accent-readable);
+  border-radius: 0 .625rem .625rem 0;
+  background: var(--bg-muted);
+  line-height: 1.8;
+}
+
+.choices {
+  display: grid;
+  min-width: 0;
+  gap: .5rem;
+}
+
+.choices legend {
+  margin-bottom: .5rem;
+  font-weight: 700;
+}
+
+.choices label {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: .65rem;
+  padding: .5rem .75rem;
+  border: 1px solid var(--border-washi);
+  border-radius: .625rem;
+  cursor: pointer;
+}
+
+.choices label:is(:hover, :has(input:checked)) {
+  border-color: var(--accent-readable);
+  background: var(--accent-soft);
+}
+
+.choices label:has(input:focus-visible) {
+  outline: 2px solid var(--accent-readable);
+  outline-offset: 2px;
+}
+
+.choices input {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+  accent-color: var(--accent-readable);
+}
+
+.explanation {
+  margin-top: 1rem;
+  padding: .875rem 1rem .375rem;
+  border-radius: .625rem;
+  background: var(--accent-soft);
+  line-height: 1.75;
+}
+
+.explanation p {
+  margin-top: .35rem;
+}
+
+.explanation b {
+  display: block;
+}
+
+.explanation a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  color: var(--accent-readable);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: .25em;
+}
+
+@media (min-width: 40rem) {
+  .checkGrid, .exampleBody {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .exerciseGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .checkCard {
+    padding: 1rem 1.25rem;
+  }
+
+  .exampleBody {
+    align-items: start;
+  }
+}
+
+@media (min-width: 48rem) {
+  .hero {
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+  }
+}

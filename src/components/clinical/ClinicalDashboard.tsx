@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { ArrowRight, ClipboardPenLine, FileClock, GitCompareArrows, Plus, ScanLine, ShieldCheck } from 'lucide-react';
 import { CLINICAL_COMPLAINTS } from '@/data/clinicalWorkflow';
 import { emptyClinicalEncounter, readClinicalEncounter, writeClinicalEncounter, type ClinicalEncounter } from '@/utils/clinicalEncounter';
-import { ClinicalComplaintIcon, ClinicalHeroArtwork } from './ClinicalArtwork';
+import { ClinicalComplaintIcon } from './ClinicalArtwork';
 
 export default function ClinicalDashboard() {
   const router = useRouter();
@@ -38,16 +38,11 @@ export default function ClinicalDashboard() {
     router.push('/clinical/workspace');
   };
   return <section className="clinical-dashboard" aria-label="臨床記録と主訴別ガイド">
-    <div className="clinical-hero">
-      <div className="clinical-hero-copy">
-        <h2 className="font-serif text-2xl font-semibold leading-relaxed sm:text-3xl">所見を整理し、考えた理由を残す</h2>
-        <p className="clinical-hero-description">確認した所見と判断の理由を、作業中の下書きにまとめます。</p>
-      </div>
-      <ClinicalHeroArtwork />
-    </div>
-
     <section className="clinical-record-start" aria-labelledby="clinical-record-heading">
-      <div className="clinical-section-heading"><h2 id="clinical-record-heading">臨床記録</h2></div>
+      <div className="clinical-section-heading">
+        <h2 id="clinical-record-heading" tabIndex={-1} className="scroll-mt-28">臨床記録</h2>
+        <span>確認した所見と判断の理由を下書きにまとめる</span>
+      </div>
       <nav aria-label="記録を始める・再開する" className="clinical-record-actions">
         {draft && <Link href="/clinical/workspace" className="clinical-record-action" data-primary="true">
           <FileClock aria-hidden="true" /><span><strong>下書きを再開する</strong><small>{draft.patientIdentifier || '匿名ID未入力'} · {draft.chiefComplaint || '主訴未入力'}</small></span><ArrowRight aria-hidden="true" />

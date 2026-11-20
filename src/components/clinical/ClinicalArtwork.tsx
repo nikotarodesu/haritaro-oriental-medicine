@@ -1,65 +1,72 @@
-/** Decorative learning illustrations. The surrounding links provide their labels. */
-export function ClinicalHeroArtwork() {
+export function ClinicalHeroArtwork({ className }: { className: string }) {
   return (
-    <svg
-      className="clinical-hero-artwork"
-      viewBox="0 0 440 280"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <circle cx="96" cy="142" r="80" stroke="var(--clinical-art-muted)" strokeOpacity=".24" />
-      <circle cx="96" cy="142" r="61" fill="var(--clinical-art-muted)" fillOpacity=".08" stroke="none" />
-      <circle cx="350" cy="139" r="77" fill="var(--clinical-art-gold)" fillOpacity=".08" stroke="none" />
-
-      <g stroke="var(--clinical-art-muted)" strokeOpacity=".55">
-        <path d="M148 142H162V94H179M162 142V194H179" />
-        <path d="M255 94H276V142H310M255 194H276V142" />
-        <circle cx="162" cy="142" r="3" fill="var(--clinical-art-muted)" stroke="none" />
-        <circle cx="276" cy="142" r="3" fill="var(--clinical-art-muted)" stroke="none" />
+    <svg className={className} viewBox="0 0 440 248" fill="none" aria-hidden="true" focusable="false">
+      <path fill="#233948" d="M0 0H440V248H0Z" />
+      <g stroke="#adc5d4" strokeOpacity=".16">
+        <path d="M0 40H440M0 82H440M0 124H440M0 166H440M0 208H440M52 0V248M94 0V248M136 0V248M178 0V248M220 0V248M262 0V248M304 0V248M346 0V248M388 0V248" />
+        <circle cx="223" cy="124" r="99" />
+        <circle cx="223" cy="124" r="115" />
       </g>
-
-      <g>
-        <circle cx="88" cy="121" r="16" />
-        <path d="M56 176V166C56 149 120 149 120 166V176" />
-        <path d="M77 150L88 158L99 150" stroke="var(--clinical-art-muted)" />
-        <circle cx="120" cy="103" r="15" fill="var(--clinical-art-gold)" fillOpacity=".13" />
-        <circle cx="120" cy="103" r="5" stroke="var(--clinical-art-gold)" />
-        <path d="M130 114L139 124" />
+      <path d="M81 113V159H155M285 80H351V125" stroke="#adc5d4" strokeWidth="1.5" strokeDasharray="3 5" />
+      <g fill="#eabd88">
+        <circle cx="81" cy="159" r="4" />
+        <circle cx="351" cy="80" r="4" />
+        <circle cx="113" cy="199" r="2.5" />
+        <circle cx="316" cy="47" r="2.5" />
       </g>
-
-      <g>
-        <rect x="184" y="53" width="66" height="80" rx="9" />
-        <path d="M201 73H233" stroke="var(--clinical-art-muted)" />
-        <circle cx="202" cy="91" r="4" fill="var(--clinical-art-gold)" fillOpacity=".25" stroke="var(--clinical-art-gold)" />
-        <path d="M214 91H233M198 110H220M226 110H233" />
-        <rect x="184" y="154" width="66" height="80" rx="9" />
-        <path d="M201 174H233" stroke="var(--clinical-art-muted)" />
-        <path d="M198 192L202 188L206 192L202 196Z" fill="var(--clinical-art-gold)" fillOpacity=".25" stroke="var(--clinical-art-gold)" />
-        <path d="M214 192H233M198 211H220M226 211H233" />
+      <rect x="163" y="44" width="126" height="167" rx="14" transform="rotate(8 226 127)" fill="#4a6371" stroke="#adc5d4" strokeOpacity=".55" />
+      <rect x="153" y="38" width="126" height="164" rx="14" fill="#f3ebdd" stroke="#fff8ed" strokeWidth="2" />
+      <rect x="187" y="29" width="58" height="22" rx="7" fill="#b4c9d3" stroke="#233948" strokeWidth="2" />
+      <g stroke="#526d7b" strokeWidth="2.5" strokeLinecap="round">
+        <path d="M175 71H240M175 80H219" />
+        <path d="M199 106H254M199 128H237M199 150H248M199 172H230" strokeOpacity=".66" />
       </g>
-
-      <g>
-        <path d="M327 88H371L391 108V194H319V96A8 8 0 0 1 327 88Z" />
-        <path d="M371 88V108H391" stroke="var(--clinical-art-muted)" />
-        <path d="M335 125H374" stroke="var(--clinical-art-muted)" />
-        <circle cx="336" cy="144" r="3" fill="var(--clinical-art-gold)" stroke="none" />
-        <path d="M348 144H374" />
-        <rect x="333" y="158" width="7" height="7" rx="1.5" stroke="var(--clinical-art-gold)" />
-        <path d="M348 162H367" />
-        <path d="M348 178L354 184L366 172" stroke="var(--clinical-art-gold)" />
+      <g stroke="#80552f" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M175 106L179 110L186 102M175 128L179 132L186 124M175 150L179 154L186 146" />
+        <rect x="175" y="167" width="10" height="10" rx="2" strokeOpacity=".65" />
       </g>
-
-      <g stroke="none" fill="var(--clinical-art-gold)">
-        <circle cx="48" cy="63" r="3" opacity=".6" />
-        <circle cx="147" cy="227" r="4" opacity=".35" />
-        <circle cx="300" cy="50" r="3" opacity=".6" />
-        <circle cx="407" cy="222" r="2" opacity=".45" />
+      <path d="M45 58H110A13 13 0 0 1 123 71V100A13 13 0 0 1 110 113H75L60 126V113H45A13 13 0 0 1 32 100V71A13 13 0 0 1 45 58Z" fill="#344f61" stroke="#adc5d4" strokeWidth="1.5" />
+      <g fill="#f3ebdd">
+        <circle cx="59" cy="86" r="3.5" />
+        <circle cx="78" cy="86" r="3.5" />
+        <circle cx="97" cy="86" r="3.5" />
       </g>
+      <rect x="253" y="118" width="141" height="77" rx="13" fill="#344f61" stroke="#adc5d4" strokeWidth="1.5" />
+      <path d="M273 157H294M294 157V139H313M294 157V175H313" stroke="#adc5d4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="274" cy="157" r="4" fill="#eabd88" />
+      <g stroke="#adc5d4" strokeWidth="1.5">
+        <rect x="312" y="130" width="62" height="18" rx="4" />
+        <rect x="312" y="166" width="62" height="18" rx="4" />
+      </g>
+      <g stroke="#f3ebdd" strokeWidth="1.5" strokeLinecap="round">
+        <path d="M324 139H356M324 175H351" />
+      </g>
+      <path d="M398 77V93M390 85H406M45 184V198M38 191H52" stroke="#eabd88" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function ClinicalCheckArtwork({ kind, className }: { kind: 'gorou' | 'constitution'; className: string }) {
+  return (
+    <svg className={className} viewBox="0 0 112 96" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+      <circle cx="56" cy="48" r="41" strokeOpacity=".28" />
+      {kind === 'gorou' ? (
+        <>
+          <path d="M21 77H92M24 47L28 61H49M37 61V75" strokeOpacity=".6" />
+          <circle cx="41" cy="27" r="8" />
+          <path d="M38 35C33 36 30 43 31 51C32 56 35 57 40 57H51L55 73H63M43 41L51 48H62M61 51H91M81 52V76" />
+          <path d="M67 32H89L85 50H62L67 32Z" fill="var(--bg-card)" />
+          <path d="M52 23L57 20M53 28H60" stroke="var(--clinical-art-gold)" />
+        </>
+      ) : (
+        <>
+          <rect x="26" y="24" width="53" height="54" rx="7" transform="rotate(-9 52 51)" strokeOpacity=".58" />
+          <rect x="38" y="16" width="45" height="58" rx="7" fill="var(--bg-card)" />
+          <path d="M49 30H72M55 43H72M55 53H72M55 63H68" />
+          <path d="M48 43H49M48 53H49M48 63H49" stroke="var(--clinical-art-gold)" strokeWidth="3" />
+          <path d="M91 48V60M85 54H97" stroke="var(--clinical-art-gold)" />
+        </>
+      )}
     </svg>
   );
 }

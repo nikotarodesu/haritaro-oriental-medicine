@@ -1040,6 +1040,14 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
         </div>
       )}
 
+      {activeTab !== "clinical" && (
+        <div className="mx-auto max-w-4xl border-t border-frame pt-2">
+          <Link href="/clinical#pattern-exercise" className="inline-flex min-h-11 items-center font-semibold text-accent underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">
+            ミニ症例で見立てを練習
+          </Link>
+        </div>
+      )}
+
       {/* ============================================================== */}
       {/* 4. 「患者さんに説明する」クリーン対面説明モーダル */}
       {/* ============================================================== */}
