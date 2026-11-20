@@ -55,53 +55,53 @@
 
 #### 東洋医学の入り口
 - [東洋医学とは？](https://www.haritaro.jp/learn/lectures/getting-started)
-- [用語・研究・体調の記録を読み分ける](https://www.haritaro.jp/learn/lectures/reading-evidence)
+- [用語集・研究・体調メモの読み方](https://www.haritaro.jp/learn/lectures/reading-evidence)
 
 #### 陰陽
-- [陰陽の基本と、比べ方の違い](https://www.haritaro.jp/learn/lectures/yin-yang-basics)
-- [陰陽の変化と偏り](https://www.haritaro.jp/learn/lectures/yin-yang-changes)
-- [陰陽と四診から情報を整理する](https://www.haritaro.jp/learn/lectures/yin-yang-observation)
+- [陰陽とは？ 何を比べるか](https://www.haritaro.jp/learn/lectures/yin-yang-basics)
+- [陰陽の増減と切り替わり](https://www.haritaro.jp/learn/lectures/yin-yang-changes)
+- [陰陽と四診で見る、ほてりと冷え](https://www.haritaro.jp/learn/lectures/yin-yang-observation)
 
 #### 気・血・津液
-- [気・血・津液の基本](https://www.haritaro.jp/learn/lectures/qi-blood-fluids)
-- [気・血・津液のつながり](https://www.haritaro.jp/learn/lectures/qi-blood-connections)
+- [気・血・津液とは？](https://www.haritaro.jp/learn/lectures/qi-blood-fluids)
+- [気・血・津液はどうつながる？](https://www.haritaro.jp/learn/lectures/qi-blood-connections)
 
 #### 五臓・六腑
-- [五臓と六腑の基本](https://www.haritaro.jp/learn/lectures/zangfu-basics)
-- [肝・腎の働きと臓腑の表裏](https://www.haritaro.jp/learn/lectures/zangfu-relations)
+- [五臓と六腑は何をする？](https://www.haritaro.jp/learn/lectures/zangfu-basics)
+- [肝と腎の働き、臓腑の組み合わせ](https://www.haritaro.jp/learn/lectures/zangfu-relations)
 
 #### 体の働きとつながり
-- [体を養う働きと宗気・営衛](https://www.haritaro.jp/learn/lectures/body-functions)
-- [三焦・昇降出入と津液のつながり](https://www.haritaro.jp/learn/lectures/triple-burner-and-movement)
-- [昼夜と季節、体調の変化](https://www.haritaro.jp/learn/lectures/daily-and-seasonal-changes)
+- [宗気・営気・衛気の違い](https://www.haritaro.jp/learn/lectures/body-functions)
+- [三焦と、体の中を巡る津液](https://www.haritaro.jp/learn/lectures/triple-burner-and-movement)
+- [昼と夜、季節と体調](https://www.haritaro.jp/learn/lectures/daily-and-seasonal-changes)
 
 #### 五行
-- [五行の性質と相生・相剋](https://www.haritaro.jp/learn/lectures/five-elements)
-- [五行の表を読む](https://www.haritaro.jp/learn/lectures/five-elements-table)
+- [五行とは？ 相生と相剋](https://www.haritaro.jp/learn/lectures/five-elements)
+- [五行表はどこから読む？](https://www.haritaro.jp/learn/lectures/five-elements-table)
 
 #### 経絡とツボ
-- [経絡・経脈・経穴とツボの読み方](https://www.haritaro.jp/learn/lectures/meridians-and-points)
+- [経絡・経脈・経穴の違い](https://www.haritaro.jp/learn/lectures/meridians-and-points)
 - [十二経脈の名前と略号｜手と足の経絡索引](https://www.haritaro.jp/curriculum/lecture-meridians-2)
 - [ツボの場所の読み方｜経穴コード・体の目印・骨度法](https://www.haritaro.jp/curriculum/lecture-meridians-3)
 - [架空の手の違和感で練習する経絡図の読み方](https://www.haritaro.jp/curriculum/lecture-meridians-4)
 
 #### 不調の経過をどう考えるか
-- [病因・病機と暮らしの記録](https://www.haritaro.jp/learn/lectures/pathomechanism-basics)
-- [気・血・津液の失調と寒熱・虚実](https://www.haritaro.jp/learn/lectures/qi-blood-and-patterns)
-- [不調の広がりと続く条件](https://www.haritaro.jp/learn/lectures/how-patterns-change)
-- [不調の説明を比べ、次に聞くことを決める](https://www.haritaro.jp/learn/lectures/comparing-explanations)
+- [病因と病機はどう違う？](https://www.haritaro.jp/learn/lectures/pathomechanism-basics)
+- [気・血・津液の不足と滞り](https://www.haritaro.jp/learn/lectures/qi-blood-and-patterns)
+- [不調の始まりと、今も続く条件](https://www.haritaro.jp/learn/lectures/how-patterns-change)
+- [見立てに迷ったとき、何を聞く？](https://www.haritaro.jp/learn/lectures/comparing-explanations)
 
 #### 所見の集め方と見立て
-- [弁証の入り口と、先に確かめること](https://www.haritaro.jp/learn/lectures/assessment-basics)
-- [四診で確かめる情報](https://www.haritaro.jp/learn/lectures/four-examinations)
-- [八綱・気血津液・臓腑で所見を読む](https://www.haritaro.jp/learn/lectures/assessment-frameworks)
+- [証と弁証の基本](https://www.haritaro.jp/learn/lectures/assessment-basics)
+- [四診で何を確かめる？](https://www.haritaro.jp/learn/lectures/four-examinations)
+- [八綱で体の状態をどう読む？](https://www.haritaro.jp/learn/lectures/assessment-frameworks)
 - [弁証の演習｜最初の仮説と合わない所見が出たら？](https://www.haritaro.jp/curriculum/lecture-diagnosis-10)
 - [弁証とSOAP｜頭痛と胃もたれの架空例を四つに分けて書く](https://www.haritaro.jp/curriculum/lecture-diagnosis-11)
 - [弁証の総合演習｜めまい・頭痛に追加情報が出たときの判断](https://www.haritaro.jp/curriculum/lecture-diagnosis-12)
 
 #### 施術方針と振り返りの考え方
-- [施術を考える枠組みと振り返り](https://www.haritaro.jp/learn/lectures/principles-and-goals)
-- [補瀉と気・血・津液の治法を読む](https://www.haritaro.jp/learn/lectures/treatment-terms)
+- [施術の目標と振り返り](https://www.haritaro.jp/learn/lectures/principles-and-goals)
+- [補瀉とは？ 治法の名前を読む](https://www.haritaro.jp/learn/lectures/treatment-terms)
 - [配穴の演習｜近いツボ・離れたツボを選ぶ理由を比べる](https://www.haritaro.jp/curriculum/lecture-treatment-8)
 - [鍼灸の安全性を考える演習｜方法や刺激量を決める前に](https://www.haritaro.jp/curriculum/lecture-treatment-9)
 - [施術後の評価を考える演習｜痛み・仕事・負担をどう比べる？](https://www.haritaro.jp/curriculum/lecture-treatment-11)

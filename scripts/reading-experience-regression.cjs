@@ -73,6 +73,7 @@ for (const unit of readingUnits) {
     const original = getPublicLectureArticle(lectureId);
     const copy = revision.copy[lectureId];
     assert.equal(copy?.length, original.sections.length, lectureId + ' keeps every existing section and figure position');
+    assert(copy.every(text => text != null), lectureId + ' uses edited prose in every section');
     const edited = reviseLectureSections(original.sections, copy);
     assert(edited.every(section => section.paragraphs.length && section.paragraphs.every(text => text.trim())), lectureId);
     assert.equal(JSON.stringify(edited.map(section => [section.heading, section.links])), JSON.stringify(original.sections.map(section => [section.heading, section.links])), lectureId);

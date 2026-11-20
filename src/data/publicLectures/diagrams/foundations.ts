@@ -5,6 +5,7 @@ export const foundationDiagrams = {
     title: "鍼灸の学習で出会う三つの言葉",
     layout: "compare",
     anchor: "intro-three-concepts",
+    afterSection: 2,
     items: [
       ["陰陽", "動く・休むなど、対になる性質を比べる。"],
       ["気・血・津液", "体が働く、養われる、潤うという見方。"],
