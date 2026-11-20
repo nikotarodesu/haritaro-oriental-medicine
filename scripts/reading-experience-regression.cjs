@@ -40,6 +40,7 @@ const StudyDiagram = load('src/components/reading/StudyDiagram').default;
 const { getPublicLectureGroups, getPublicLectureArticle } = load('src/data/publicLectures/index');
 const { getPublicLectureDiagram, publicLectureDiagrams } = load('src/data/publicLectures/diagrams/index');
 const { readingUnits } = load('src/data/publicLectures/readingUnits');
+const { readingLectureMerges } = load('src/data/publicLectures/readingLectureMerges');
 const { readingUnitRevisions } = load('src/data/publicLectures/revisions/index');
 const { reviseLectureSections } = load('src/data/publicLectures/revisions/types');
 const articleIds = new Set(ARTICLES.map(article => article.id));
@@ -58,7 +59,8 @@ for (const lectureId of publicLectures) {
   assert(html.includes('<svg') && !html.includes('<text'), lectureId + ' has SVG connections and scalable HTML text');
   const paths = Array.from(html.matchAll(/<svg[^>]*class="study-diagram-flow-arrow"/g)).length;
   assert.equal(paths, diagram.layout === 'flow' ? diagram.items.length - 1 : 0, lectureId + ' flow connections');
-  if (diagram.layout === 'relations') assert.equal((html.match(/<svg/g) || []).length, diagram.items.length, lectureId);
+  if (diagram.layout === 'relations') assert.equal((html.match(/class="study-diagram-relation-connector"/g) || []).length, diagram.items.length, lectureId);
+  if (diagram.illustration) assert(html.includes('data-study-illustration="' + diagram.illustration + '"'), lectureId);
 }
 console.log(`Passed: ${publicLectures.length} public lectures have restrained, accessible SVG diagrams placed beside the explanation.`);
 
@@ -82,13 +84,17 @@ for (const unit of readingUnits) {
   }
   assert(after < before, unit.slug + ' removes repeated introductory prose');
   assert.equal(new Set(revision.takeaways).size, 3, unit.slug);
-  assert.equal(revision.questions.length, 2, unit.slug);
+  const mergedCount = readingLectureMerges.filter(([, target]) => target === unit.slug).length;
+  assert.equal(revision.questions.length, 2 * (mergedCount + 1), unit.slug + ' retains every optional question');
+  for (const featured of unit.featuredDiagrams ?? []) {
+    assert(unit.parts.some(part => part.lectureId === featured) && getPublicLectureDiagram(featured), featured);
+  }
   for (const item of revision.questions) {
     assert.equal(new Set(item.choices).size, 3, unit.slug + ' has three distinct choices');
     assert(item.question.trim() && item.choices[item.answer]?.trim() && item.explanation.trim(), unit.slug);
   }
 }
-console.log(`Passed: ${readingUnits.length} edited units preserve section anchors and source links, each with three takeaways and two explained questions.`);
+console.log(`Passed: ${readingUnits.length} consolidated lectures preserve section anchors, source links, a three-point recap, and all optional questions.`);
 
 function checkInsertions(id, content, inserts) {
   const blocks = parseMarkdownBlocks(content);

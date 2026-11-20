@@ -154,6 +154,7 @@ export default async function ReadingLecturePage({ params }: Props) {
                 sections={reviseLectureSections(article.sections, revision.copy[part.lectureId])}
                 partAnchor={part.anchor}
                 unitHref={unit.href}
+                collapseDiagram={unit.featuredDiagrams && !unit.featuredDiagrams.includes(part.lectureId)}
               />
               {article.links?.length ? <PublicLectureLinks links={article.links} unitHref={unit.href} /> : null}
             </section>

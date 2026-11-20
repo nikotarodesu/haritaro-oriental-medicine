@@ -12,7 +12,7 @@ type SectionCopy = string | readonly string[] | null;
 export interface ReadingUnitRevision {
   copy: Readonly<Record<string, readonly SectionCopy[]>>;
   takeaways: readonly [string, string, string];
-  questions: readonly [ReadingCheckQuestion, ReadingCheckQuestion];
+  questions: readonly ReadingCheckQuestion[];
 }
 
 export function reviseLectureSections(sections: PublicLectureArticle["sections"], copy: readonly SectionCopy[] = []) {

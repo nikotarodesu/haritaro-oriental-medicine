@@ -60,6 +60,12 @@
   grid-column: 2;
 }
 
+.study-diagram-point > .study-diagram-point-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  color: var(--accent-readable);
+}
+
 [data-study-diagram="flow"] .study-diagram-points > li {
   display: flex;
   flex-direction: column;
@@ -72,6 +78,17 @@
   border: 1px solid var(--border-washi);
   border-radius: var(--radius-tag);
   background: var(--bg-card);
+}
+
+[data-study-diagram="flow"] .study-diagram-point:has(> .study-diagram-point-icon) {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  column-gap: .45rem;
+}
+
+[data-study-diagram="flow"] .study-diagram-point-icon {
+  grid-row: span 2;
+  margin-block-start: .15rem;
 }
 
 .study-diagram-flow-arrow {
@@ -114,6 +131,132 @@
   margin-top: .65rem;
   padding-top: .55rem;
   border-top: 1px solid var(--border-subtle);
+}
+
+.study-artwork {
+  width: min(100%, 27rem);
+  margin: 0 auto .9rem;
+}
+
+.study-artwork svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.study-artwork-accent {
+  stroke: var(--accent-readable);
+}
+
+.study-artwork-warm {
+  stroke: var(--warm-readable);
+}
+
+.study-artwork-paper {
+  fill: var(--bg-card);
+}
+
+.study-artwork-highlight {
+  fill: var(--action-soft);
+}
+
+.study-artwork-guide {
+  stroke: var(--border-control);
+}
+
+.study-artwork-dashed {
+  stroke-dasharray: 4 5;
+}
+
+.study-artwork-scale {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .35rem;
+  color: var(--text-secondary);
+  font-size: .875rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.study-artwork-scale strong {
+  color: var(--warm-readable);
+  font-weight: 600;
+}
+
+.study-artwork-plot {
+  position: relative;
+}
+
+.study-artwork-node-label,
+.study-artwork-arc-label,
+.study-artwork-stop,
+.study-artwork-water-caption {
+  position: absolute;
+  color: var(--text-sumi);
+  font-size: .9rem;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+}
+
+.study-artwork-arc-label,
+.study-artwork-stop,
+.study-artwork-water-caption {
+  inset-inline-start: 50%;
+}
+
+.study-artwork-arc-label--top { inset-block-start: 13%; }
+.study-artwork-arc-label--bottom { inset-block-start: 90%; }
+
+.study-artwork-arc-label {
+  padding-inline: .25rem;
+  background: var(--bg-washi);
+}
+
+.study-artwork-stop {
+  inset-block-start: 16%;
+  color: var(--warm-readable);
+}
+
+.study-artwork-water-caption {
+  inset-block-start: 91%;
+  padding-inline: .3rem;
+  background: var(--bg-washi);
+  color: var(--accent-readable);
+}
+
+.study-artwork-key,
+.study-artwork-line-caption {
+  color: var(--text-secondary);
+  font-size: .875rem;
+  line-height: 1.5;
+}
+
+.study-artwork-key {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .3rem 1.25rem;
+}
+
+.study-artwork-key li {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.study-artwork-key [data-edge] {
+  width: 1.1rem;
+  border-top: 2px solid var(--accent-readable);
+}
+
+.study-artwork-key [data-edge="restrain"] {
+  border-top: 2px dashed var(--warm-readable);
+}
+
+.study-artwork-line-caption {
+  text-align: center;
 }
 
 .lecture-diagram-alias {

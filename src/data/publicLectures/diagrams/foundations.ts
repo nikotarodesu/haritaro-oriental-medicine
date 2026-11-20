@@ -32,14 +32,15 @@ export const foundationDiagrams = {
   "lecture-yinyang-1": {
     title: "何を比べるかで、陰陽の見方が変わる",
     layout: "compare",
-    items: [["明るさ", "昼は陽、夜は陰。"], ["動き", "歩く側は陽、座って休む側は陰。"]],
+    items: [["明るさ", "昼は陽、夜は陰。", "sun"], ["動き", "歩く側は陽、座って休む側は陰。", "footprints"]],
     note: "昼に座って休んでいる人なら、明るさと動きの両方から、その場面を説明できます。",
   },
   "lecture-yinyang-2": {
     title: "同じ40℃を、二つの相手と比べる",
     layout: "compare",
+    illustration: "temperature",
     items: [["氷水と比べる", "40℃の湯は温かい側なので陽。"], ["沸いた湯と比べる", "40℃の湯は温度が低い側なので陰。"]],
-    note: "変わったのは比べる相手です。40℃という温度は同じです。",
+    note: "真ん中のお湯はどちらの場合も40℃。相手を替えると、陽と陰が入れ替わります。",
   },
   "lecture-yinyang-3": {
     title: "対立・制約・互根は、関係のどこに注目するか",
@@ -49,6 +50,7 @@ export const foundationDiagrams = {
   "lecture-yinyang-4": {
     title: "夜明けを、増減と切り替わりで読む",
     layout: "compare",
+    illustration: "dawn",
     items: [["消長", "暗い空が少しずつ明るくなる過程。"], ["転化", "夜から昼へ、状態の説明が切り替わること。"]],
   },
   "lecture-yinyang-5": {
@@ -66,7 +68,12 @@ export const foundationDiagrams = {
   "lecture-yinyang-7": {
     title: "四診で集める四種類の情報",
     layout: "compare",
-    items: [["望診", "姿勢や動きなどを目で見る。"], ["聞診", "音や声を聞き、においも観察する。"], ["問診", "本人の言葉で経過を聞く。"], ["切診", "同意を確かめ、触れて観察する。"]],
+    items: [
+      ["問診", "本人から体調や経過を聞く。", "speech"],
+      ["望診", "姿勢や動き、顔色などを見る。", "eye"],
+      ["聞診", "声や音を聞き、においも確かめる。", "ear"],
+      ["切診", "同意を得て、触れて確かめる。", "hand"],
+    ],
   },
   "lecture-yinyang-8": {
     title: "顔のほてりと足の冷えをどう読み分けるか",
@@ -92,6 +99,7 @@ export const foundationDiagrams = {
   "lecture-qiblood-4": {
     title: "気と血は、どちらが何をするかで読む",
     layout: "relations",
+    illustration: "qi-blood",
     directional: true,
     items: [["気", "血", "巡りを導く"], ["血", "気", "養い支える"]],
     note: "津血同源は、血と津液がどちらも飲食に由来するという伝統的な考え方です。",
@@ -188,7 +196,9 @@ export const foundationDiagrams = {
   "lecture-lifedynamics-11": {
     title: "津液の説明に関わる四つの役割",
     layout: "compare",
+    illustration: "water",
     items: [["脾", "飲食から得られたものを変化させて運ぶ。"], ["肺", "全体に行き渡らせる。"], ["腎", "水分の扱いや排泄を調整する。"], ["三焦", "複数の領域にまたがる通り道を表す。"]],
+    note: "津液について、伝統医学でそれぞれが担う働きを並べた図です。",
   },
   "lecture-lifedynamics-12": {
     title: "伝統理論で、飲食から分配までをたどる",
@@ -206,10 +216,12 @@ export const foundationDiagrams = {
     items: [["木の曲直", "枝が曲がり、伸びる。"], ["火の炎上", "炎が上へ向かう。"], ["土の稼穡", "種をまき、育て、収穫する。"], ["金の従革", "形が変わる。"], ["水の潤下", "潤しながら下へ向かう。"]],
   },
   "lecture-wuxing-3": {
-    title: "「木」を例に、五行の矢印を見比べる",
+    title: "五行の相生は外側、相剋は内側の矢印",
     layout: "relations",
+    illustration: "five-elements",
     directional: true,
     items: [["木", "火", "相生・支える"], ["木", "土", "相剋・抑える"], ["木", "土", "相乗・強く抑える"], ["土", "木", "相侮・逆向き"]],
+    note: "相生は木→火→土→金→水→木。相剋は木→土→水→火→金→木。相剋の抑えが強まると相乗、逆を向くと相侮です。",
   },
   "lecture-wuxing-4": {
     title: "伝統的な五行表で、五臓をどこに置くか",
@@ -241,7 +253,9 @@ export const foundationDiagrams = {
   "lecture-meridians-1": {
     title: "経絡図を、全体から個別の点へ読む",
     layout: "flow",
+    illustration: "meridian",
     items: [["経絡", "体のつながりを伝統理論で表す全体像。"], ["経脈", "その中で主な道筋を表す。"], ["経穴", "名前や番号が付いた一つの点。"]],
+    note: "路線図にたとえると、線の名前が経脈、駅に当たる点が経穴です。合谷の「LI4」は、大腸経の4番を表します。",
   },
   "lecture-meridians-2": {
     title: "十二経脈の略号を四つの組から引く",

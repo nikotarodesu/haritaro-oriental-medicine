@@ -8,6 +8,7 @@ interface UnitDefinition {
   description: string;
   opening: readonly [string, ...string[]];
   parts: readonly (readonly [lectureId: string, label: string])[];
+  featuredDiagrams?: readonly string[];
 }
 
 const units: readonly UnitDefinition[] = [
@@ -26,60 +27,52 @@ const units: readonly UnitDefinition[] = [
     parts: [["lecture-intro-3", "用語集を開くとき、論文を開くとき"], ["lecture-intro-4", "体調メモに何を書く？"]],
   },
   {
-    slug: "yin-yang-basics", chapter: "yin-yang", title: "陰陽とは？ 何を比べるか",
-    description: "明るさや動き、40℃のお湯の例から、陰と陽が何を表すのかを考えます。対立・制約・互根も身近な例で説明します。",
+    slug: "yin-yang-basics", chapter: "yin-yang", title: "陰陽とは？ 比べ方と変わり方",
+    description: "40℃のお湯、夜明けの空、顔のほてりと足の冷えを例に、陰陽の比べ方と変化を図でたどります。",
     opening: [
       "昼休み、日が差す窓辺でひと休み。明るさに注目すれば、部屋の奥より窓辺が陽です。動きに注目すれば、歩いていたときに比べ、座って休む時間が陰です。同じ窓辺の話でも、何を見たかで陰陽が変わります。",
     ],
-    parts: [["lecture-yinyang-1", "明るさで比べるか、動きで比べるか"], ["lecture-yinyang-2", "同じお湯が陽にも陰にもなる"], ["lecture-yinyang-3", "対立・制約・互根の違い"]],
-  },
-  {
-    slug: "yin-yang-changes", chapter: "yin-yang", title: "陰陽の増減と切り替わり",
-    description: "空がだんだん明るくなる「消長」と、状態が切り替わる「転化」。体の場所や働きの違い、陽虚と陰虚も取り上げます。",
-    opening: [
-      "歩いているうちに足取りがゆっくりになり、やがてベンチに腰を下ろす。速さの変化を追うなら、座る前から話が始まります。活動から休息へ切り替わったと見るなら、座ったところに目が留まります。",
+    parts: [
+      ["lecture-yinyang-1", "明るさで比べるか、動きで比べるか"],
+      ["lecture-yinyang-2", "同じお湯が陽にも陰にもなる"],
+      ["lecture-yinyang-3", "対立・制約・互根の違い"],
+      ["lecture-yinyang-4", "少しずつ変わる、途中で切り替わる"],
+      ["lecture-yinyang-5", "どの場所、どの働きを比べる？"],
+      ["lecture-yinyang-6", "何が多く、何が足りない？"],
+      ["lecture-yinyang-7", "本人の話と診察で見たこと"],
+      ["lecture-yinyang-8", "ほてりと冷えは同じ時刻か"],
     ],
-    parts: [["lecture-yinyang-4", "少しずつ変わる、途中で切り替わる"], ["lecture-yinyang-5", "どの場所、どの働きを比べる？"], ["lecture-yinyang-6", "何が多く、何が足りない？"]],
-  },
-  {
-    slug: "yin-yang-observation", chapter: "yin-yang", title: "陰陽と四診で見る、ほてりと冷え",
-    description: "「顔がほてる。足も冷える」という話をもとに、四診で何を確かめ、陰陽の言葉をどう使うかを考えます。",
-    opening: [
-      "「夕方になると顔がほてります。足も冷えます」。この一言で、顔のほてりが出る時刻は分かりました。足が冷えるのは同じ夕方か、寝る前か。メモを読み直すと、次に聞きたいことが一つ見つかります。",
-    ],
-    parts: [["lecture-yinyang-7", "本人の話と診察で見たこと"], ["lecture-yinyang-8", "ほてりと冷えは同じ時刻か"]],
+    featuredDiagrams: ["lecture-yinyang-1", "lecture-yinyang-2", "lecture-yinyang-4", "lecture-yinyang-7"],
   },
   {
     slug: "qi-blood-fluids", chapter: "qi-blood-water", title: "気・血・津液とは？",
-    description: "体を動かす、養う、潤す。東洋医学でいう気・血・津液を、日常の言葉に置き換えて説明します。",
+    description: "体を動かす、養う、潤す。気・血・津液の働きと、互いにどう関わると考えられてきたかを図で読みます。",
     opening: [
       "気・血・津液（き・けつ・しんえき）は、初めてだと名前だけでは覚えにくい言葉です。本で「何を動かすのか」「どこを養うのか」「どう潤すのか」と動詞の方から読むと、それぞれの話を追いやすくなります。",
     ],
-    parts: [["lecture-qiblood-1", "気は何をする？"], ["lecture-qiblood-2", "血が養うもの、潤すもの"], ["lecture-qiblood-3", "「津」と「液」はどう違う？"]],
-  },
-  {
-    slug: "qi-blood-connections", chapter: "qi-blood-water", title: "気・血・津液はどうつながる？",
-    description: "気から血へ、血から気へ。二本の矢印が表す働きと、血と津液を同じ由来から考える「津血同源」を読みます。",
-    opening: [
-      "図に「気→血」と「血→気」という矢印が並んでいます。片方には「巡らせる」、もう片方には「養う」と書いてみます。どちらからどちらへ、何をするという話なのかが見えてきます。",
+    parts: [
+      ["lecture-qiblood-1", "気は何をする？"],
+      ["lecture-qiblood-2", "血が養うもの、潤すもの"],
+      ["lecture-qiblood-3", "「津」と「液」はどう違う？"],
+      ["lecture-qiblood-4", "気と血の矢印、血と津液のもと"],
+      ["lecture-qiblood-5", "散歩のあとに感じた温かさ"],
     ],
-    parts: [["lecture-qiblood-4", "気と血の矢印、血と津液のもと"], ["lecture-qiblood-5", "散歩のあとに感じた温かさ"]],
+    featuredDiagrams: ["lecture-qiblood-1", "lecture-qiblood-3", "lecture-qiblood-4"],
   },
   {
     slug: "zangfu-basics", chapter: "zangfu", title: "五臓と六腑は何をする？",
-    description: "東洋医学でいう五臓と六腑を、呼吸や朝ごはんの例から説明します。肺・心・脾・胃がどんな働きを表すかが分かります。",
+    description: "呼吸や朝ごはんを例に五臓・六腑の働きを読み、肺と大腸、肝と胆などを結ぶ表裏の六つの組を図で確かめます。",
     opening: [
       "朝ごはんを食べると、古典には「胃が受ける」「脾が運ぶ」といった説明が出てきます。臓腑（ぞうふ）の名前には、東洋医学で体がどんな仕事をすると考えたかが詰まっています。",
     ],
-    parts: [["lecture-zangfu-1", "五臓と六腑の名前"], ["lecture-zangfu-2", "肺と心は何をする？"], ["lecture-zangfu-3", "朝ごはんを受け取る胃、変えて配る脾"]],
-  },
-  {
-    slug: "zangfu-relations", chapter: "zangfu", title: "肝と腎の働き、臓腑の組み合わせ",
-    description: "肝が気を巡らせ、腎が精を蓄えるという説明を読みます。肺と大腸など、臓と腑を結ぶ六つの組も確かめます。",
-    opening: [
-      "臓腑の表では、肺と大腸が一組になっています。「せきが出るし、便の回数も変わった」と人から聞いたときは、どちらがいつからかを尋ねます。表に載っている組み合わせと、その人が経験したこと。二つを並べると、表で分かることが見えてきます。",
+    parts: [
+      ["lecture-zangfu-1", "五臓と六腑の名前"],
+      ["lecture-zangfu-2", "肺と心は何をする？"],
+      ["lecture-zangfu-3", "朝ごはんを受け取る胃、変えて配る脾"],
+      ["lecture-zangfu-4", "肝が流すもの、腎が蓄えるもの"],
+      ["lecture-zangfu-5", "臓と腑を組にする「表裏」"],
     ],
-    parts: [["lecture-zangfu-4", "肝が流すもの、腎が蓄えるもの"], ["lecture-zangfu-5", "臓と腑を組にする「表裏」"]],
+    featuredDiagrams: ["lecture-zangfu-3", "lecture-zangfu-5"],
   },
   {
     slug: "body-functions", chapter: "vital-function", title: "宗気・営気・衛気の違い",
@@ -96,6 +89,7 @@ const units: readonly UnitDefinition[] = [
       "朝、温かい汁物を一杯飲みます。口に入ったものを受け取るところから、体に行き渡り、余った分が外に出るまで。古典には、その途中を上・中・下に分けて説明する「三焦（さんしょう）」という言葉があります。",
     ],
     parts: [["lecture-lifedynamics-5", "三焦の上・中・下"], ["lecture-lifedynamics-6", "脾と胃で分けて考える"], ["lecture-lifedynamics-7", "上へ、下へ、外へ、内へ"], ["lecture-lifedynamics-11", "水分を変える、配る、調整する"], ["lecture-lifedynamics-12", "朝の一杯に戻って考える"]],
+    featuredDiagrams: ["lecture-lifedynamics-5", "lecture-lifedynamics-11"],
   },
   {
     slug: "daily-and-seasonal-changes", chapter: "vital-function", title: "昼と夜、季節と体調",
@@ -106,20 +100,22 @@ const units: readonly UnitDefinition[] = [
     parts: [["lecture-lifedynamics-8", "昼に動き、夜に休む"], ["lecture-lifedynamics-9", "季節の名前と、その日の気温"], ["lecture-lifedynamics-10", "普段の買い物でも疲れる？"]],
   },
   {
-    slug: "five-elements", chapter: "five-elements", title: "五行とは？ 相生と相剋",
-    description: "伸びる木、上る火、潤す水。五行の性質と、支える相生、抑える相剋を、矢印をたどって説明します。",
+    slug: "five-elements", chapter: "five-elements", title: "五行とは？ 矢印と表の読み方",
+    description: "木・火・土・金・水。相生と相剋の矢印をたどり、五行表で五臓や体の特徴、季節をどう読むかまでつなげます。",
     opening: [
       "たき火に薪を足すと火が続きます。五行の図では、こうして相手を支える関係を「相生」と呼びます。もう一本、相手の勢いを抑える矢印もあります。木から出る二本をたどってみましょう。",
     ],
-    parts: [["lecture-wuxing-1", "五つの名前で何を表す？"], ["lecture-wuxing-2", "木は伸び、火は上る"], ["lecture-wuxing-3", "相生は支え、相剋は抑える"], ["lecture-wuxing-8", "同じ水でも母にも子にもなる"]],
-  },
-  {
-    slug: "five-elements-table", chapter: "five-elements", title: "五行表はどこから読む？",
-    description: "口と唇はなぜ同じ行にあるのか。五行表の行と列を見ながら、五臓、体の特徴、気持ち、季節と味の読み方を説明します。",
-    opening: [
-      "五行表で「土」の行を横に見ていくと、口、肉、唇と並んでいます。一見似た言葉も、列の名前に目を戻すと、体のどんな特徴を並べているかが分かります。",
+    parts: [
+      ["lecture-wuxing-1", "五つの名前で何を表す？"],
+      ["lecture-wuxing-2", "木は伸び、火は上る"],
+      ["lecture-wuxing-3", "相生は支え、相剋は抑える"],
+      ["lecture-wuxing-8", "同じ水でも母にも子にもなる"],
+      ["lecture-wuxing-4", "五臓はまず縦に探す"],
+      ["lecture-wuxing-5", "口と唇は同じ行、違う列"],
+      ["lecture-wuxing-6", "五神は心の働き、五志は感情"],
+      ["lecture-wuxing-7", "季節と味を横に読む"],
     ],
-    parts: [["lecture-wuxing-4", "五臓はまず縦に探す"], ["lecture-wuxing-5", "口と唇は同じ行、違う列"], ["lecture-wuxing-6", "五神は心の働き、五志は感情"], ["lecture-wuxing-7", "季節と味を横に読む"]],
+    featuredDiagrams: ["lecture-wuxing-3", "lecture-wuxing-5"],
   },
   {
     slug: "meridians-and-points", chapter: "meridians", title: "経絡・経脈・経穴の違い",
@@ -146,36 +142,34 @@ const units: readonly UnitDefinition[] = [
     parts: [["lecture-pathomechanism-3", "気の不足・滞り・逆向き・支え"], ["lecture-pathomechanism-4", "口の乾きと水分の滞り"], ["lecture-pathomechanism-5", "血虚と瘀血はどう違う？"], ["lecture-pathomechanism-6", "冷えや熱と、不足や過剰"]],
   },
   {
-    slug: "how-patterns-change", chapter: "pathology", title: "不調の始まりと、今も続く条件",
-    description: "食欲が落ちたあとに眠りづらくなった例で、始まった時期と今も続く条件を分けます。五行の矢印や本虚標実も説明します。",
+    slug: "how-patterns-change", chapter: "pathology", title: "不調の経過から、次に何を聞く？",
+    description: "不調が始まった日と、今も続く条件を分けます。食欲や眠り、重だるさの例から、見立てを考え直す質問までつなげます。",
     opening: [
       "食欲が落ちた数日後から、寝つきも悪くなったそうです。「食べられるようになった日の夜は、それでも眠りづらかったですか」。そう聞くと、どちらが先に始まったかに加えて、片方が戻ったあとの話も聞けます。",
     ],
-    parts: [["lecture-pathomechanism-9", "五行の矢印はどちら向き？"], ["lecture-pathomechanism-10", "始まったときと、今どう過ごしているか"]],
-  },
-  {
-    slug: "comparing-explanations", chapter: "pathology", title: "見立てに迷ったとき、何を聞く？",
-    description: "架空の重だるさを例に、気虚と湿熱を考えるときの質問を作ります。答えが予想と違ったときにも、経過から見立てを考え直せます。",
-    opening: [
-      "「休めば少しは楽になりますか」と聞くと、「休んでも重だるさは同じでした」と返ってきました。最初に考えた説明を考え直すきっかけです。まだ聞いていないことを一つ選ぶなら、何を聞きますか。",
+    parts: [
+      ["lecture-pathomechanism-9", "五行の矢印はどちら向き？"],
+      ["lecture-pathomechanism-10", "始まったときと、今どう過ごしているか"],
+      ["lecture-pathomechanism-11", "二つの見立てを並べる"],
+      ["lecture-pathomechanism-12", "いつ始まり、どんな日に続く？"],
     ],
-    parts: [["lecture-pathomechanism-11", "二つの見立てを並べる"], ["lecture-pathomechanism-12", "いつ始まり、どんな日に続く？"]],
+    featuredDiagrams: ["lecture-pathomechanism-9", "lecture-pathomechanism-12"],
   },
   {
-    slug: "assessment-basics", chapter: "diagnosis", title: "証と弁証の基本",
-    description: "東洋医学の見立てを表す「証」と、それを考える「弁証」。先に受診が必要な場合や、本人がいちばん相談したいことの聞き方も説明します。",
+    slug: "assessment-basics", chapter: "diagnosis", title: "四診と弁証、何を確かめる？",
+    description: "本人の話、目で見たこと、声やにおい、触れて分かったこと。四診で集めた情報から、どう見立てを考えるかを学びます。",
     opening: [
       "頭痛を相談しに来た人が、「夕方になると画面を見ていられなくなる」と話しました。何に困っているかが伝わる一方、いつからか、今までの頭痛とどう違うかも聞きたくなります。東洋医学の見立てを考える前に、そこから話を始めます。",
     ],
-    parts: [["lecture-diagnosis-1", "見立てが「証」、考える過程が「弁証」"], ["lecture-diagnosis-2", "急いで受診した方がよいとき"], ["lecture-diagnosis-3", "一番困ることをどう伝える？"]],
-  },
-  {
-    slug: "four-examinations", chapter: "diagnosis", title: "四診で何を確かめる？",
-    description: "問診・望診・聞診・切診で何を尋ね、見聞きし、触れて確かめるか。場面を例に、情報の出どころが分かる書き方を紹介します。",
-    opening: [
-      "「歩きづらい」と本人が話しました。見ていた人は「右足を出すところで立ち止まった」と書きました。同じ場面でも、感じていたことと、そばから見えた動きには、それぞれ伝えられることがあります。",
+    parts: [
+      ["lecture-diagnosis-1", "見立てが「証」、考える過程が「弁証」"],
+      ["lecture-diagnosis-2", "急いで受診した方がよいとき"],
+      ["lecture-diagnosis-3", "一番困ることをどう伝える？"],
+      ["lecture-diagnosis-4", "問診は本人の話から"],
+      ["lecture-diagnosis-5", "目、耳、鼻で確かめる"],
+      ["lecture-diagnosis-6", "触れる前に説明し、同意を得る"],
     ],
-    parts: [["lecture-diagnosis-4", "問診は本人の話から"], ["lecture-diagnosis-5", "目、耳、鼻で確かめる"], ["lecture-diagnosis-6", "触れる前に説明し、同意を得る"]],
+    featuredDiagrams: ["lecture-diagnosis-1", "lecture-diagnosis-2", "lecture-diagnosis-4"],
   },
   {
     slug: "assessment-frameworks", chapter: "diagnosis", title: "八綱で体の状態をどう読む？",
@@ -186,20 +180,22 @@ const units: readonly UnitDefinition[] = [
     parts: [["lecture-diagnosis-7", "表裏・寒熱・虚実・陰陽の四つの対"], ["lecture-diagnosis-8", "何が足りず、何が滞る？"], ["lecture-diagnosis-9", "臓腑の働きと、経絡の道筋"]],
   },
   {
-    slug: "principles-and-goals", chapter: "treatment", title: "施術の目標と振り返り",
-    description: "「洗濯物を干したい」「夕方の作業を続けたい」。本人が望む変化から、治則・治法・配穴と、その後の振り返りを考えます。",
+    slug: "principles-and-goals", chapter: "treatment", title: "施術の目標と、治法の読み方",
+    description: "生活での困りごとから施術の目標と振り返りを考え、補瀉や気・血・津液の治法名がどんな方針を表すのかを読みます。",
     opening: [
       "「肩は前より楽です。でも洗濯物を干すときは、まだ途中で休みます」。同じ肩の話でも、痛みの強さと、やりたい動作ができるかは別々に聞けます。本人は何ができるようになりたいか。そこから考え始めます。",
     ],
-    parts: [["lecture-treatment-1", "できるようになりたいことを聞く"], ["lecture-treatment-2", "治則・治法・配穴は何を表す？"], ["lecture-treatment-4", "背景と、今つらいこと"], ["lecture-treatment-10", "次は何を振り返る？"]],
-  },
-  {
-    slug: "treatment-terms", chapter: "treatment", title: "補瀉とは？ 治法の名前を読む",
-    description: "補う補法、減らす瀉法から、補気・理気・養血・活血、臓腑どうしを結ぶ治法まで、名前をふだんの言葉で読みます。",
-    opening: [
-      "「補気」と「理気」は、どちらも「気」の話です。「補う」と「巡りを考える」と言い換えると、何をしようとしている名前なのかが分かります。字が多い治法名も、まず動詞を探してみます。",
+    parts: [
+      ["lecture-treatment-1", "できるようになりたいことを聞く"],
+      ["lecture-treatment-2", "治則・治法・配穴は何を表す？"],
+      ["lecture-treatment-4", "背景と、今つらいこと"],
+      ["lecture-treatment-10", "次は何を振り返る？"],
+      ["lecture-treatment-3", "足りない働きを補い、行き過ぎを抑える"],
+      ["lecture-treatment-5", "気を補う、巡りを整える"],
+      ["lecture-treatment-6", "血を養う、津液を巡らせる"],
+      ["lecture-treatment-7", "二つの臓が入る治法名"],
     ],
-    parts: [["lecture-treatment-3", "足りない働きを補い、行き過ぎを抑える"], ["lecture-treatment-5", "気を補う、巡りを整える"], ["lecture-treatment-6", "血を養う、津液を巡らせる"], ["lecture-treatment-7", "二つの臓が入る治法名"]],
+    featuredDiagrams: ["lecture-treatment-1", "lecture-treatment-2", "lecture-treatment-3"],
   },
 ];
 

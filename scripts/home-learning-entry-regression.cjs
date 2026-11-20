@@ -63,11 +63,16 @@ assert(!home.includes('学習履歴を確認中') && !home.includes('href="/pric
 const reading = renderToStaticMarkup(React.createElement(load('src/app/learn/page').default));
 const { getPublicLectureGroups } = load('src/data/publicLectures');
 const { readingUnits, getLectureIndexGroups, readingPartHref, readingLinkHref } = load('src/data/publicLectures/readingUnits');
+const { readingLectureMerges } = load('src/data/publicLectures/readingLectureMerges');
 for (const href of [readingUnits[0].href, '/learn/essentials', '/diagnosis', '/articles', '/curriculum']) assert(reading.includes('href="' + href + '"'), href);
 const readingChapters = getLectureIndexGroups('reading');
 const sourceChapters = getPublicLectureGroups('reading');
 const readingOrder = readingChapters.flatMap(group => group.entries.map(entry => entry.href));
-assert.equal(readingUnits.length, 24);
+assert.equal(readingUnits.length + readingLectureMerges.length, 24, 'The previous 24 addresses remain accounted for');
+for (const [former, current] of readingLectureMerges) {
+  assert(!readingUnits.some(unit => unit.slug === former), former + ' is no longer a separate lecture');
+  assert(readingUnits.some(unit => unit.slug === current), current + ' is a current lecture');
+}
 assert.equal(readingOrder.join('|'), readingUnits.map(unit => unit.href).join('|'));
 assert.equal(new Set(readingOrder).size, readingOrder.length);
 for (const href of readingOrder) assert(reading.includes(`href="${href}"`), href);

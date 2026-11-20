@@ -58,17 +58,13 @@
 - [用語集・研究・体調メモの読み方](https://www.haritaro.jp/learn/lectures/reading-evidence)
 
 #### 陰陽
-- [陰陽とは？ 何を比べるか](https://www.haritaro.jp/learn/lectures/yin-yang-basics)
-- [陰陽の増減と切り替わり](https://www.haritaro.jp/learn/lectures/yin-yang-changes)
-- [陰陽と四診で見る、ほてりと冷え](https://www.haritaro.jp/learn/lectures/yin-yang-observation)
+- [陰陽とは？ 比べ方と変わり方](https://www.haritaro.jp/learn/lectures/yin-yang-basics)
 
 #### 気・血・津液
 - [気・血・津液とは？](https://www.haritaro.jp/learn/lectures/qi-blood-fluids)
-- [気・血・津液はどうつながる？](https://www.haritaro.jp/learn/lectures/qi-blood-connections)
 
 #### 五臓・六腑
 - [五臓と六腑は何をする？](https://www.haritaro.jp/learn/lectures/zangfu-basics)
-- [肝と腎の働き、臓腑の組み合わせ](https://www.haritaro.jp/learn/lectures/zangfu-relations)
 
 #### 体の働きとつながり
 - [宗気・営気・衛気の違い](https://www.haritaro.jp/learn/lectures/body-functions)
@@ -76,8 +72,7 @@
 - [昼と夜、季節と体調](https://www.haritaro.jp/learn/lectures/daily-and-seasonal-changes)
 
 #### 五行
-- [五行とは？ 相生と相剋](https://www.haritaro.jp/learn/lectures/five-elements)
-- [五行表はどこから読む？](https://www.haritaro.jp/learn/lectures/five-elements-table)
+- [五行とは？ 矢印と表の読み方](https://www.haritaro.jp/learn/lectures/five-elements)
 
 #### 経絡とツボ
 - [経絡・経脈・経穴の違い](https://www.haritaro.jp/learn/lectures/meridians-and-points)
@@ -88,20 +83,17 @@
 #### 不調の経過をどう考えるか
 - [病因と病機はどう違う？](https://www.haritaro.jp/learn/lectures/pathomechanism-basics)
 - [気・血・津液の不足と滞り](https://www.haritaro.jp/learn/lectures/qi-blood-and-patterns)
-- [不調の始まりと、今も続く条件](https://www.haritaro.jp/learn/lectures/how-patterns-change)
-- [見立てに迷ったとき、何を聞く？](https://www.haritaro.jp/learn/lectures/comparing-explanations)
+- [不調の経過から、次に何を聞く？](https://www.haritaro.jp/learn/lectures/how-patterns-change)
 
 #### 所見の集め方と見立て
-- [証と弁証の基本](https://www.haritaro.jp/learn/lectures/assessment-basics)
-- [四診で何を確かめる？](https://www.haritaro.jp/learn/lectures/four-examinations)
+- [四診と弁証、何を確かめる？](https://www.haritaro.jp/learn/lectures/assessment-basics)
 - [八綱で体の状態をどう読む？](https://www.haritaro.jp/learn/lectures/assessment-frameworks)
 - [弁証の演習｜最初の仮説と合わない所見が出たら？](https://www.haritaro.jp/curriculum/lecture-diagnosis-10)
 - [弁証とSOAP｜頭痛と胃もたれの架空例を四つに分けて書く](https://www.haritaro.jp/curriculum/lecture-diagnosis-11)
 - [弁証の総合演習｜めまい・頭痛に追加情報が出たときの判断](https://www.haritaro.jp/curriculum/lecture-diagnosis-12)
 
 #### 施術方針と振り返りの考え方
-- [施術の目標と振り返り](https://www.haritaro.jp/learn/lectures/principles-and-goals)
-- [補瀉とは？ 治法の名前を読む](https://www.haritaro.jp/learn/lectures/treatment-terms)
+- [施術の目標と、治法の読み方](https://www.haritaro.jp/learn/lectures/principles-and-goals)
 - [配穴の演習｜近いツボ・離れたツボを選ぶ理由を比べる](https://www.haritaro.jp/curriculum/lecture-treatment-8)
 - [鍼灸の安全性を考える演習｜方法や刺激量を決める前に](https://www.haritaro.jp/curriculum/lecture-treatment-9)
 - [施術後の評価を考える演習｜痛み・仕事・負担をどう比べる？](https://www.haritaro.jp/curriculum/lecture-treatment-11)

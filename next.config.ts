@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { readingLectureMerges } from "./src/data/publicLectures/readingLectureMerges";
 
 const nextConfig: NextConfig = {
   // セキュリティ向上と不要なHTTPレスポンスヘッダーの削減
@@ -24,6 +25,11 @@ const nextConfig: NextConfig = {
         destination: "/kokushi",
         permanent: true,
       },
+      ...readingLectureMerges.map(([formerSlug, slug]) => ({
+        source: `/learn/lectures/${formerSlug}`,
+        destination: `/learn/lectures/${slug}`,
+        permanent: true,
+      })),
     ];
   },
 };
