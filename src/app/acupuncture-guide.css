@@ -193,39 +193,34 @@
 .reader-content .ancient-needles p { font-size: inherit; }
 .ancient-needles-header { display: grid; gap: .5rem; }
 .ancient-needles-header h3 { font-size: clamp(1.35rem, 3vw, 1.9rem); }
-.ancient-needles-index ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .35rem; }
-.reader-content .ancient-needles-index a { display: grid; place-items: center; gap: .05rem; min-width: 0; min-height: 3.85rem; padding: .3rem .14rem; border: 1px solid var(--border-washi); border-radius: .45rem; background: var(--bg-card); color: var(--guide-ochre); text-decoration: none; line-height: 1.25; }
-.reader-content .ancient-needles-index a:hover { background: var(--guide-ochre-soft); border-color: var(--guide-ochre); }
-.ancient-needles-index svg { width: 100%; max-width: 5.5rem; fill: var(--guide-ochre); height: auto; }
-.ancient-needles-index ruby { font-family: var(--font-serif); font-weight: 700; font-size: 1rem; }
-.ancient-needles-index rt { color: var(--text-secondary); font-size: .55em; font-family: var(--font-sans); }
 .ancient-needles-figure { min-width: 0; }
 .ancient-needles-figure figcaption { margin-top: .7rem; color: var(--text-secondary); font-size: .82rem; line-height: 1.65; }
-.ancient-needles-grid { display: grid; gap: .65rem; }
+.ancient-needles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12.5rem), 1fr)); gap: .7rem; }
 .ancient-needle { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; min-width: 0; border: 1px solid var(--border-washi); border-radius: .7rem; background: var(--bg-card); }
 .ancient-needle:target { border-color: var(--guide-ochre); box-shadow: 0 0 0 2px var(--guide-ochre); }
 .ancient-needle-shape { display: block; width: 100%; max-width: 14rem; justify-self: center; }
 .ancient-needle-mat { fill: var(--guide-ochre-soft); }
 .ancient-needle-rule { stroke: var(--guide-ochre); stroke-width: 1; opacity: .3; stroke-dasharray: 2 3; }
-.ancient-needle-copy { display: grid; grid-template-rows: auto auto 1fr auto; gap: .3rem; padding: .05rem .7rem .7rem; font-size: .875rem; line-height: 1.65; }
+.ancient-needle-copy { display: grid; grid-template-rows: auto auto 1fr auto; gap: .35rem; padding: .05rem .8rem .65rem; font-size: .9rem; line-height: 1.6; }
 .ancient-needle-copy h4 { font-family: var(--font-serif); font-size: 1.2rem; line-height: 1.5; font-weight: 700; }
 .ancient-needle-copy rt { color: var(--text-secondary); font-family: var(--font-sans); font-size: .55em; }
 .ancient-needle-trait { font-weight: 650; color: var(--guide-ochre); }
+.ancient-needle-uses { display: grid; align-content: start; gap: .45rem; }
+.ancient-needle-uses dt { color: var(--text-secondary); font-size: .8rem; font-weight: 700; }
+.ancient-needle-uses dd { margin: .1rem 0 0; }
+.ancient-needle-foot { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0 .55rem; padding-top: .25rem; border-top: 1px solid var(--border-subtle); font-size: .8rem; }
 .ancient-needle-length { display: flex; flex-wrap: wrap; gap: 0 .35rem; color: var(--text-secondary); }
 .ancient-needle-length strong { color: var(--text-sumi); white-space: nowrap; }
+.ancient-needle-citations { display: flex; flex-wrap: wrap; gap: 0 .55rem; }
+.reader-content .ancient-needle-citations a { display: inline-flex; align-items: center; min-height: 1.8rem; color: var(--guide-green); text-decoration: underline; text-underline-offset: .16em; }
 .ancient-needles-today { display: grid; gap: .35rem; padding: .8rem; border-radius: .65rem; background: var(--guide-green-soft); }
 .ancient-needles-today h4 { font-size: 1.05rem; font-weight: 700; }
-.ancient-needles-today .ui-text-link { justify-self: start; }
 .reader-content .ancient-needles .ancient-needles-notes > p { font-size: .925rem; }
 .acupuncture-source-links { row-gap: .25rem; font-size: .875rem; line-height: 1.6; }
 .acupuncture-source-links a { display: inline-flex; align-items: center; min-height: 2.75rem; }
 
-@media (min-width: 360px) {
-  .ancient-needles-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
 @media (min-width: 640px) {
-  .ancient-needles-grid, .acupuncture-mechanisms { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .acupuncture-mechanisms { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .acupuncture-mechanisms > div { grid-template-columns: minmax(0, 1fr); gap: .45rem; }
   .acupuncture-mechanisms > div + div { border-block-start: 0; border-inline-start: 1px solid var(--border-subtle); }
   .acupuncture-mechanisms :is(p, a) { grid-column: auto; }
@@ -246,7 +241,6 @@
 @media (min-width: 900px) {
   .acupuncture-research-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .acupuncture-study { grid-template-rows: auto auto auto 1fr auto; }
-  .ancient-needles-index ol { grid-template-columns: repeat(9, minmax(0, 1fr)); }
   .acupuncture-evidence-questions, .acupuncture-visit-flow { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .acupuncture-visit-flow li { grid-template-columns: minmax(0, 1fr); gap: .45rem; }
   .acupuncture-visit-flow p { grid-column: auto; }
