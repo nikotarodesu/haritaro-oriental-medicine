@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { SITE_NAME } from "@/config/seo";
 import { SERIES } from "@/config/series";
+import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
 import { ChevronDown } from "lucide-react";
 import BrandLogo from "@/components/brand/BrandLogo";
 
 const groups = [
   { title: "調べる", links: [["/tsubo", "ツボから探す"], ["/symptoms", "症状から探す"]] },
-  { title: "学ぶ", links: [["/articles", "解説記事"], ["/diagnosis", "気血水 体質チェック"], ["/glossary", "用語集"], ["/library", "古典・論文"]] },
-  { title: "演習", links: [["/cases", "症例演習"], ["/practice/haiketsu", "配穴演習"]] },
+  { title: "学ぶ", links: [[ACUPUNCTURE_GUIDE.href, "はじめての鍼灸"], ["/articles", "解説記事"], ["/learn/review", "講義の復習"], ["/glossary", "用語集"], ["/library", "古典・論文"]] },
+  { title: "演習", links: [["/diagnosis", "気血水 体質チェック"], ["/diagnosis?tab=gorou", "五労チェック"], ["/cases", "症例演習"], ["/simulator", "弁証演習"], ["/practice/haiketsu", "配穴演習"]] },
   { title: "運営・出典", links: [["/about", "運営者について"], ["/editorial-policy", "出典・専門確認の状況"], ["/safety", "受診の目安・安全性"], ["/updates", "更新情報"], ["/contact", "お問い合わせ"]] },
 ];
 

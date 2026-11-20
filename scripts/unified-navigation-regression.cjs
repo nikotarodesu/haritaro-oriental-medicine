@@ -85,6 +85,7 @@ function component(relative) {
       if (id === 'next/dynamic') return { __esModule: true, default: () => SearchModal };
       if (id === 'next/navigation') return { usePathname: () => pathname, useSearchParams: () => new URLSearchParams() };
       if (id === '@/config/navigationItems') return nav;
+      if (id === '@/config/acupunctureLearning') return load('src/config/acupunctureLearning');
       if (id === '@/config/series') return load('src/config/series');
       if (id === '@/utils/siteMenu') return menu;
       if (id === '@/hooks/useViewportLayout') return { useViewportLayout() {} };

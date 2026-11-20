@@ -15,3 +15,32 @@ export function pageSocialMetadata(title: string, description: string, path: str
     twitter: { card: 'summary_large_image' as const, title, description, images: SHARED_OG_IMAGES.map(image => image.url) },
   };
 }
+
+export function collectionPageJsonLd(
+  path: string,
+  name: string,
+  description: string,
+  listName: string,
+  entries: readonly { href: string; name: string }[],
+) {
+  const url = new URL(path, SITE_ORIGIN).href;
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": url,
+    url,
+    name,
+    description,
+    inLanguage: "ja",
+    mainEntity: {
+      "@type": "ItemList",
+      name: listName,
+      itemListElement: entries.map((entry, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: entry.name,
+        url: new URL(entry.href, SITE_ORIGIN).href,
+      })),
+    },
+  }).replace(/</g, "\\u003c");
+}

@@ -2,11 +2,13 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { MERIDIANS, ALL_ACUPOINTS } from "@/data/tsubo";
 import { BookOpen, FlaskConical, Layers, MapPin, Ruler, ShieldCheck } from "lucide-react";
+import PlatformSearchForm from "@/components/search/PlatformSearchForm";
 import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
 import { SERIES } from "@/config/series";
 import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
+import { collectionPageJsonLd } from "@/config/seo";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { ATLAS_STUDIES } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
@@ -36,36 +38,46 @@ const FLAGSHIP_ACUPOINTS = [
   { code: "HT7", name: "神門", meridian: "手の少陰心経", part: "手首" },
 ];
 
+const DESCRIPTION = "全361経穴を名前・部位・経絡から探し、場所の図と注意点を確認できます。";
+
 export default function TsuboPage() {
   return (
     <div className="page-layout atlas-page atlas-directory">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: collectionPageJsonLd(
+        "/tsubo", SERIES.dictionary.name, DESCRIPTION, "代表的なツボ",
+        FLAGSHIP_ACUPOINTS.map(({ code, name }) => ({ name, href: `/tsubo/${code.toLowerCase()}` })),
+      ) }} />
       <header className="atlas-directory-header">
         <div>
           <h1>{SERIES.dictionary.name}</h1>
-          <p>全361のツボを名前・部位・経絡から探せます。場所の図解や、研究で分かったことを読めます。</p>
-          <div className="atlas-directory-actions">
-            <Link href="/symptoms" className="atlas-text-action"><MapPin size={17} aria-hidden="true" />症状から探す</Link>
-            <a href="#atlas-research-index" className="atlas-text-action"><FlaskConical size={17} aria-hidden="true" />研究から探す</a>
-            <Link href="/tsubo/basics/bone-cun" className="atlas-text-action"><Ruler size={17} aria-hidden="true" />寸の測り方</Link>
-            <Link href={ACUPUNCTURE_GUIDE.href} className="atlas-text-action"><BookOpen size={17} aria-hidden="true" />はり・お灸・ツボ押しの違い</Link>
-          </div>
+          <p>{DESCRIPTION}</p>
         </div>
         <AtlasOverviewArt />
       </header>
 
       <Suspense
         fallback={
-          <div className="atlas-loading" role="status">
-            <p>ツボの検索を読み込んでいます。</p>
-            <a href="#illustrated-points" className="atlas-source-link">部位別の索引を開く</a>
+          <div className="atlas-search-panel atlas-search-fallback">
+            <PlatformSearchForm id="atlas-search-query" label="ツボを検索" placeholder="合谷、ごうこく、LI4" />
+            <nav aria-label="ツボの索引" className="atlas-directory-actions">
+              <a href="#illustrated-points" className="atlas-text-action">部位別の索引</a>
+              <a href="#tsubo-index" className="atlas-text-action">全361経穴の索引</a>
+              <a href="#atlas-research-index" className="atlas-text-action">研究から探す</a>
+            </nav>
           </div>
         }
       >
         <TsuboInteractiveClient />
       </Suspense>
 
+      <nav aria-label="ツボ図鑑の資料とガイド" className="atlas-directory-actions atlas-directory-guides">
+        <Link href="/symptoms" className="atlas-text-action"><MapPin size={17} aria-hidden="true" />症状から探す</Link>
+        <Link href="/tsubo/basics/bone-cun" className="atlas-text-action"><Ruler size={17} aria-hidden="true" />寸の測り方</Link>
+        <Link href={ACUPUNCTURE_GUIDE.href} className="atlas-text-action"><BookOpen size={17} aria-hidden="true" />はり・お灸・ツボ押しの違い</Link>
+      </nav>
+
       <section id="atlas-research-index" className="atlas-target space-y-3" aria-labelledby="atlas-research-index-title">
-        <h2 id="atlas-research-index-title" className="atlas-section-title">研究から探す</h2>
+        <h2 id="atlas-research-index-title" className="atlas-section-title flex items-center gap-2"><FlaskConical size={20} aria-hidden="true" />研究から探す</h2>
         {studyGroups.map(({ label, studies }) => (
           <details key={label} className="atlas-disclosure atlas-region-index">
             <summary>{label}（{studies.length}件）</summary>
@@ -176,10 +188,11 @@ export default function TsuboPage() {
                       <Link
                         key={pt.code}
                         href={`/tsubo/${pt.code.toLowerCase()}`}
-                        className="px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#10171F] border border-[#EAE3D2] dark:border-[#263748] text-[#404743] dark:text-[#C5D2DB] hover:text-[#1E3D34] dark:hover:text-[#74BA9E] hover:border-[#1E3D34] transition-colors"
+                        prefetch={false}
+                        className="atlas-index-point"
                       >
                         <span className="font-medium">{pt.name}</span>
-                        <span className="font-mono text-xs text-[#737C77] dark:text-[#8899A6] ml-0.5">{pt.code}</span>
+                        <span>{pt.code}</span>
                       </Link>
                     ))}
                   </div>

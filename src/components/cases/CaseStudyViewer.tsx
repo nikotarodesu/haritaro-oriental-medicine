@@ -45,8 +45,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
   return (
     <div className="case-practice space-y-5 sm:space-y-8">
       <header className="reader-header">
-        <Link href="/cases" className="reader-back"><span aria-hidden="true">←</span>症例一覧</Link>
-        <p className="text-sm font-semibold text-accent">症例 {String(clinicalCase.caseNumber).padStart(2, "0")} · {clinicalCase.category} · {clinicalCase.difficulty}</p>
+        <p className="text-sm font-semibold text-accent">模擬症例 {String(clinicalCase.caseNumber).padStart(2, "0")} · {clinicalCase.category} · {clinicalCase.difficulty}</p>
         <h1 className="reader-title">{clinicalCase.title}</h1>
         <p className="reader-lead">{clinicalCase.subTitle}</p>
       </header>

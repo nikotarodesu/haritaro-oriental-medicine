@@ -190,9 +190,9 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/simulator': '2026-10-12',
   '/articles': '2026-10-18', '/contact': SITE_REVISED_AT,
   '/tsubo/practice': '2026-10-04', '/pricing': '2026-10-12',
-  '/diagnosis': '2026-10-18', '/cases': '2026-10-18',
+  '/diagnosis': '2026-10-18', '/cases': '2026-11-20',
   // 実際に改訂したページだけを更新する。全教材の確認日には用いない。
-  '/': '2026-10-18', '/updates': ATLAS_EVIDENCE_REVISED_AT, '/about': '2026-10-12',
+  '/': '2026-11-20', '/updates': '2026-11-20', '/about': '2026-10-12',
   '/clinical': '2026-10-12', '/practice/haiketsu': '2026-10-12', '/safety': '2026-10-03', '/editorial-policy': '2026-10-08',
   '/library': '2026-10-12', '/glossary': '2026-10-12', '/curriculum': '2026-10-18',
   '/curriculum/lecture-yinyang-1': '2026-10-03',
@@ -233,7 +233,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(LEARNING_COURSES.map(course => [`/learn/courses/${course.slug}`, '2026-10-18'])),
   '/notes': '2026-10-18', '/tsubo/compare': '2026-10-18',
   ...Object.fromEntries([
-    '/', '/about', '/curriculum', '/library',
+    '/about', '/curriculum', '/library',
   ].map(route => [route, '2026-11-18'])),
   ...Object.fromEntries(['/clinical', '/diagnosis', '/diagnosis?tab=gorou'].map(route => [route, '2026-11-20'])),
   // Public teaching diagrams were added or revised throughout the lecture catalog.
@@ -244,6 +244,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/symptoms': '2026-11-19',
 };
 export const SITE_UPDATES = [
+  { date: '2026-11-20', label: 'ツボを探す・講義を読む・演習を始める入口を整理', href: '/', text: 'トップから3つの学び方を選べます。ツボ図鑑は検索を上部に置き、講義と模擬症例には一覧やシリーズへ戻るリンクを追加しました。' },
   { date: ACUPOINT_PAGE_REVISED_AT, label: '全361穴の位置をWHO原本と照合', href: '/tsubo/basics/bone-cun', text: 'ツボの位置欄に日本語要約とWHO原本の該当ページを掲載しました。寸・指寸・指幅の測り方は、位置欄から直接開けます。' },
   { date: ATLAS_EVIDENCE_REVISED_AT, label: '研究を載せていなかった262穴の文献を調査', href: '/tsubo#atlas-research-index', text: 'PubMedとPubMed Centralで一穴ずつ検索し、人を対象とした比較試験で使われた経穴と結果を確認できたものを追加しました。図鑑で原典と試験の限界を読めます。' },
   { date: ATLAS_EVIDENCE_REVISED_AT, label: 'ツボ図鑑に出典付きの臨床研究を追加', href: '/tsubo#atlas-research-index', text: '一つのツボに着目した試験や、複数のツボを使った試験を追加しました。試験でのツボの役割、比較した相手、結果と限界を論文とともに読めます。' },

@@ -1,8 +1,10 @@
-import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
+import { pageSocialMetadata, SITE_ORIGIN } from "@/config/seo";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import CaseStudyViewer from "@/components/cases/CaseStudyViewer";
+import PageBreadcrumb from "@/components/design/PageBreadcrumb";
+import { SERIES } from "@/config/series";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -25,23 +27,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const title = `症例${clinicalCase.caseNumber}: ${clinicalCase.title}｜東洋医学・弁証推論演習`;
-  const description = `${clinicalCase.patient.chiefComplaint}（${clinicalCase.subTitle}）。四診合参から東洋医学の弁証・治法・ツボ処方配穴を導く臨床症例演習。`;
+  const title = `${clinicalCase.title}｜東洋医学の模擬症例演習`;
+  const description = `架空の症例で、四診の所見から弁証・治法・配穴を練習します。${clinicalCase.subTitle}`;
+  const path = `/cases/${clinicalCase.id}`;
 
   return {
     title,
     description,
-    alternates: {
-      canonical: `/cases/${clinicalCase.id}`,
-    },
-    openGraph: {
-      images: SHARED_OG_IMAGES,
-      siteName: SITE_NAME,
-      title,
-      description,
-      url: `https://www.haritaro.jp/cases/${clinicalCase.id}`,
-      type: "article",
-    },
+    alternates: { canonical: path },
+    ...pageSocialMetadata(title, description, path),
   };
 }
 
@@ -52,9 +46,28 @@ export default async function CaseDetailPage({ params }: Props) {
   if (!clinicalCase) {
     notFound();
   }
+  const path = `/cases/${clinicalCase.id}`;
+  const url = SITE_ORIGIN + path;
+  const resourceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": ["WebPage", "LearningResource"],
+    "@id": url,
+    url,
+    name: clinicalCase.title,
+    description: clinicalCase.subTitle,
+    inLanguage: "ja",
+    learningResourceType: "模擬症例演習",
+    isPartOf: { "@type": "CollectionPage", "@id": SITE_ORIGIN + "/cases" },
+  };
 
   return (
     <div className="page-layout page-layout--reading">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(resourceJsonLd).replace(/</g, "\\u003c") }} />
+      <PageBreadcrumb items={[
+        { href: SERIES.practice.href, name: SERIES.practice.shortName },
+        { href: "/cases", name: "臨床症例演習" },
+        { href: path, name: clinicalCase.title },
+      ]} />
       <CaseStudyViewer clinicalCase={clinicalCase} />
     </div>
   );

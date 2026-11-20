@@ -1,25 +1,29 @@
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
+import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import { PageSymbol } from "@/components/design/PageArtwork";
 import { AlertCircle, ArrowRight } from "lucide-react";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
+import { collectionPageJsonLd } from "@/config/seo";
+import { SERIES } from "@/config/series";
+
+const title = "臨床症例演習";
+const description = "模擬症例を読み、弁証・治法・配穴の理由を考えます。解答例と比べて、判断の根拠を振り返りましょう。";
 
 export default function CasesIndexPage() {
   const totalCaseCount = CLINICAL_CASES.length;
   const firstCase = CLINICAL_CASES[0];
   return (
     <div className="page-layout clinical-case-catalog space-y-8 sm:space-y-10">
-      {/* パンくずリスト */}
-      <nav aria-label="パンくず" className="flex items-center gap-2 text-sm text-muted">
-        <Link href="/" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E]">ホーム</Link>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page" className="text-ink font-semibold">症例を選ぶ</span>
-      </nav>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: collectionPageJsonLd(
+        "/cases", title, description, "症例一覧", CLINICAL_CASES.map(({ id, title }) => ({ href: `/cases/${id}`, name: title })),
+      ) }} />
+      <PageBreadcrumb items={[{ href: SERIES.practice.href, name: SERIES.practice.shortName }, { href: "/cases", name: title }]} />
 
-      <PageIntro eyebrow={`全${totalCaseCount}症例・所見から考える練習`} title="症例を選ぶ" description="模擬症例を読み、弁証・治法・配穴の理由を考えます。解答例と比べて、判断の根拠を振り返りましょう。" art="practice">
+      <PageIntro eyebrow={`全${totalCaseCount}症例・所見から考える練習`} title={title} description={description} art="practice">
         <div className="page-actions">
           {firstCase && <Link href={`/cases/${firstCase.id}`} className="page-primary-action">最初の症例から始める<ArrowRight size={18} aria-hidden="true" /></Link>}
-          <a href="#case-catalog" className="page-secondary-action">症例を選ぶ</a>
+          <a href="#case-catalog" className="page-secondary-action">症例一覧を見る</a>
         </div>
       </PageIntro>
 

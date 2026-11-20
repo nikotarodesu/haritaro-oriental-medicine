@@ -17,17 +17,17 @@
 }
 
 .atlas-page :is(h2, h3) { font-family: var(--font-sans); }
-.atlas-target { scroll-margin-block-start: .75rem; }
+.atlas-target { scroll-margin-block-start: calc(var(--site-header-height, 60px) + .75rem); }
 .atlas-muted { color: var(--atlas-muted); font-size: .875rem; }
-.atlas-directory { max-width: 1120px; display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); }
+.atlas-directory { max-width: 1120px; display: grid; gap: clamp(1.05rem, 2.5vw, 2.25rem); }
 .atlas-directory-header {
   display: grid;
   align-items: center;
   gap: clamp(1rem, 4vw, 3rem);
-  padding: clamp(1.125rem, 3.8vw, 2.5rem);
+  padding: clamp(1rem, 3vw, 2rem);
   border: 1px solid var(--atlas-line);
   border-radius: 1.125rem;
-  background: var(--atlas-soft);
+  background: linear-gradient(125deg, var(--atlas-paper) 12%, var(--atlas-soft));
 }
 
 .atlas-directory-header > div, .atlas-guide-heading > div { min-width: 0; }
@@ -45,7 +45,7 @@
   color: var(--atlas-muted);
 }
 
-.atlas-overview-art { display: none; width: clamp(8rem, 22vw, 14rem); color: var(--atlas-accent); }
+.atlas-overview-art { display: none; width: clamp(7.5rem, 15vw, 11rem); color: var(--atlas-accent); }
 .atlas-text-action {
   display: inline-flex;
   align-items: center;
@@ -58,8 +58,13 @@
   text-underline-offset: .25em;
 }
 
-.atlas-directory-header .atlas-text-action { margin-top: .25rem; }
 .atlas-directory-actions { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
+.atlas-directory-guides {
+  padding: .35rem .9rem;
+  border: 1px solid var(--atlas-line);
+  border-radius: var(--radius-control);
+  background: var(--atlas-paper);
+}
 .atlas-section-title { margin-bottom: .625rem; font-size: clamp(1.25rem, 3vw, 1.6rem); font-weight: 700; line-height: 1.45; }
 .atlas-who-location { margin-top: 1.125rem; padding: .75rem 1rem .25rem; border: 1px solid var(--atlas-line); border-radius: .65rem; background: var(--atlas-paper); }
 .atlas-who-location h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: .125rem .65rem; margin-bottom: .35rem; font-weight: 700; }
@@ -137,7 +142,8 @@
 .atlas-search-index-link { display: inline-flex; align-items: center; min-height: 2.75rem; font-size: .875rem; color: var(--atlas-accent); text-decoration: underline; text-underline-offset: .2rem; }
 .atlas-search-panel .tsubo-filter-toggle { border-color: var(--atlas-line); border-radius: .6rem; color: var(--atlas-accent); background: var(--atlas-paper); }
 .atlas-search-panel .tsubo-filter-toggle[aria-expanded="true"] { background: var(--atlas-soft); border-color: var(--atlas-accent); }
-.atlas-loading { min-height: 8rem; padding: 1rem 0; color: var(--atlas-muted); }
+.atlas-search-input::-webkit-search-cancel-button { display: none; }
+.atlas-search-fallback .platform-search { max-width: none; }
 .atlas-result-grid { display: grid; gap: .75rem; }
 .atlas-result-card, .atlas-guide-card {
   display: flex;

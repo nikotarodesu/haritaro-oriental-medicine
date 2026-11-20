@@ -37,7 +37,9 @@ function component(file) {
   };
   vm.runInNewContext(js, {
     exports,
+    URL,
     require(id) {
+      if (id === '@/components/design/PageBreadcrumb') return { __esModule: true, default: component('src/components/design/PageBreadcrumb.tsx') };
       if (id === '@/components/design/PageArtwork') return { PageSymbol: mockComponents[id] };
       if (id === 'next/navigation') return { useSearchParams: () => new URLSearchParams() };
       if (id === '@/utils/analytics') return { trackEvent() {} };
@@ -50,6 +52,7 @@ function component(file) {
 }
 
 const casesIndex = renderToStaticMarkup(React.createElement(component('src/app/cases/page.tsx')));
+assert.match(casesIndex, /<nav aria-label="パンくず"[^>]*>.*?href="\/clinical"/);
 const CaseViewer = component('src/components/cases/CaseStudyViewer.tsx');
 assert.equal(CLINICAL_CASES.length, 20);
 for (const clinicalCase of CLINICAL_CASES) {

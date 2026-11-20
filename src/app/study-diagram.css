@@ -350,9 +350,21 @@
   .learning-options {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .learning-option:last-child {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (min-width: 62rem) {
+  .learning-options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .learning-option:last-child {
+    grid-column: auto;
+  }
+
   .essentials-topics {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }

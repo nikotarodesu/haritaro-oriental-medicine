@@ -21,7 +21,7 @@ function load(name) {
       jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true,
     },
   }).outputText;
-  vm.runInNewContext(code, { exports, require: id => {
+  vm.runInNewContext(code, { exports, URL, require: id => {
     if (id === 'next/link') return { __esModule: true, default: props => React.createElement('a', { href: props.href, className: props.className }, props.children) };
     if (id === '@/components/design/PageIntro') return { __esModule: true, default: ({ title, children }) => React.createElement('header', null, title, children) };
     if (id.startsWith('@/')) return load('src/' + id.slice(2));
@@ -52,7 +52,10 @@ assert.match(home, /<input(?=[^>]*type="search")(?=[^>]*name="q")[^>]*>/);
 const destinationPairs = [['/tsubo','はり太郎のツボ図鑑'], ['/learn','はり太郎の東洋医学'], ['/clinical','はり太郎の臨床演習']];
 for (const [href, name] of destinationPairs) assert(home.includes('href="' + href + '">' + name + '</a>'), name);
 assert(home.includes('href="/symptoms"'));
-assert.match(home, /<h1[^>]*>知<\/h1>/);
+assert.match(home, /<h1[^>]*>ツボと東洋医学を、<span>図で学ぶ。<\/span><\/h1>/);
+const collection = JSON.parse(home.match(/<script type="application\/ld\+json">(.*?)<\/script>/)[1]);
+assert.deepEqual(collection.mainEntity.itemListElement.map(item => [new URL(item.url).pathname, item.name]), destinationPairs);
+assert(home.indexOf('id="platform-series-title"') < home.indexOf('id="platform-index-title"'));
 assert(!home.includes('学習履歴を確認中') && !home.includes('href="/pricing"') && !home.includes('href="/notes"'));
 
 const reading = renderToStaticMarkup(React.createElement(load('src/app/learn/page').default));

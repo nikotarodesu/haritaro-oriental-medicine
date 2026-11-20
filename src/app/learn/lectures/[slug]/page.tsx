@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import PublicLecturePosition from "@/components/curriculum/PublicLecturePosition";
 import PublicLectureSections, { PublicLectureLinks } from "@/components/curriculum/PublicLectureSections";
 import ReadingUnitCheck from "@/components/curriculum/ReadingUnitCheck";
+import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import ReadingContents from "@/components/reading/ReadingContents";
 import ReadingSequence from "@/components/reading/ReadingSequence";
-import { pageSocialMetadata } from "@/config/seo";
+import { pageSocialMetadata, SITE_ORIGIN } from "@/config/seo";
 import { SERIES } from "@/config/series";
 import { getChapterAssessment } from "@/data/curriculumAssessments";
 import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
@@ -51,6 +52,18 @@ export default async function ReadingLecturePage({ params }: Props) {
   const index = readingUnits.indexOf(unit);
   const chapter = getLectureIndexGroups("reading").find(group => group.id === unit.chapter);
   const firstPart = unit.parts[0];
+  const url = SITE_ORIGIN + unit.href;
+  const resourceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": ["WebPage", "LearningResource"],
+    "@id": url,
+    url,
+    name: unit.title,
+    description: unit.description,
+    inLanguage: "ja",
+    learningResourceType: "講義",
+    isPartOf: { "@type": "CollectionPage", "@id": SITE_ORIGIN + SERIES.reading.href },
+  };
   const resources = unit.parts.flatMap(part => {
     const record = publishedLectureRecords.get(part.lectureId);
     const hasSources = part.lectureId === approvedIntroId || Boolean(record && getPublicLectureReferences(record).length);
@@ -60,14 +73,16 @@ export default async function ReadingLecturePage({ params }: Props) {
 
   return (
     <article className="reader-article reader-article--lecture" data-reading-unit={unit.slug}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(resourceJsonLd).replace(/</g, "\\u003c") }} />
       <PublicLecturePosition lectureId={firstPart.lectureId} trackPart />
       <header className="reader-header">
+        <PageBreadcrumb items={[SERIES.reading, { href: unit.href, name: unit.title }]} />
         <div className="lecture-unit-meta">
-          <Link href="/learn#learn-courses-heading" className="reader-back"><ArrowLeft aria-hidden="true" />講義一覧</Link>
           <p className="lecture-reading-position">
             <span>{chapter?.label}</span>
             <span>第{index + 1}講 ／ 全{readingUnits.length}講</span>
           </p>
+          <Link href="/learn#learn-courses-heading" className="ui-text-link">講義の目次</Link>
         </div>
         <h1 className="reader-title">{unit.title}</h1>
         <p className="reader-lead">{unit.description}</p>

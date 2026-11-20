@@ -15,10 +15,14 @@
 .site-footer-disclosure[open] > summary > svg { transform: rotate(180deg); }
 .site-footer-disclosure > summary:focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 3px; }
 .site-footer-disclosure nav { padding-bottom: 12px; }
-.site-footer-notice { margin-top: 12px; padding-top: 16px; }
+.site-footer-disclosure nav a { font-size: .9375rem; }
+.site-footer-notice { margin-top: 12px; padding-top: 16px; font-size: .875rem; }
 .site-footer-legal { gap: 0 20px; margin-top: 8px; }
 .site-footer-copyright { margin-top: 8px; }
 @media (min-width: 640px) {
   .home-shortcuts .home-tools-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .site-footer-groups--compact { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .site-footer-groups--compact { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; }
+}
+@media (min-width: 62rem) {
+  .site-footer-groups--compact { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }

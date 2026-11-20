@@ -1,7 +1,6 @@
 import { BookOpen, ClipboardList, MapPin } from "lucide-react";
 
 export const PLATFORM_DESCRIPTION = "ツボや症状を調べ、東洋医学の考え方を読み、架空の症例で学べる鍼灸の情報サイト。全361経穴を名前・部位・経絡から探せます。";
-export const PLATFORM_INTRO = "ツボの場所と東洋医学の考え方を、図と身近な言葉で紹介します。";
 
 export const SERIES = {
   dictionary: {
@@ -9,7 +8,7 @@ export const SERIES = {
     shortName: "ツボ図鑑",
     href: "/tsubo",
     icon: MapPin,
-    description: "手の甲、ひざの下、足の裏。全361のツボから、知りたい場所や探し方を調べられます。",
+    description: "ツボを名前・部位・経絡から探し、位置の図と注意点を確認できます。",
     links: [{ href: "/tsubo", label: "ツボから探す" }, { href: "/symptoms", label: "症状から探す" }],
   },
   reading: {
@@ -17,15 +16,15 @@ export const SERIES = {
     shortName: "東洋医学",
     href: "/learn",
     icon: BookOpen,
-    description: "食事や眠り、季節の変化を手がかりに、東洋医学の体の見方をひとつずつ読めます。",
-    links: [{ href: "/learn", label: "読み物を探す" }, { href: "/diagnosis", label: "気血水 体質チェック" }],
+    description: "陰陽・気血水・経絡を、講義と身近な例で学びます。",
+    links: [{ href: "/learn/essentials", label: "東洋医学の要点" }, { href: "/diagnosis", label: "気血水 体質チェック" }],
   },
   practice: {
     name: "はり太郎の臨床演習",
     shortName: "臨床演習",
     href: "/clinical",
     icon: ClipboardList,
-    description: "鍼灸を学ぶ方へ。架空の相談をもとに、何を尋ね、どのツボを選ぶかを練習できます。",
+    description: "架空の症例で、所見の読み取りと見立て・配穴を練習できます。",
     links: [{ href: "/cases", label: "症例演習" }, { href: "/practice/haiketsu", label: "配穴演習" }],
   },
 } as const;

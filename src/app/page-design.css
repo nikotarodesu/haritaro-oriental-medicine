@@ -82,3 +82,32 @@
   header.page-intro { display: block !important; }
   .page-intro .page-actions, .page-intro .page-artwork, .page-intro .page-compact-art { display: none !important; }
 }
+.page-breadcrumb {
+  margin-bottom: .35rem;
+  color: var(--text-secondary);
+  font-size: .875rem;
+}
+
+.page-breadcrumb ol,
+.page-breadcrumb li {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  min-width: 0;
+}
+
+.page-breadcrumb ol { flex-wrap: wrap; row-gap: 0; }
+.page-breadcrumb svg { flex: none; }
+.page-breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--accent-readable);
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+.page-breadcrumb [aria-current="page"] {
+  padding-block: .35rem;
+  color: var(--text-sumi);
+  overflow-wrap: anywhere;
+}

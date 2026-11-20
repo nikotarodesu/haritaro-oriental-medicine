@@ -433,6 +433,28 @@
   margin-bottom: clamp(1rem, 3.2vw, 1.85rem);
 }
 
+.learning-guide-intro .page-artwork {
+  max-height: 9rem;
+  justify-self: center;
+}
+
+.learning-article-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: .75rem;
+  height: 100%;
+}
+
+.learning-article-summary {
+  display: block;
+  margin-top: .4rem;
+  color: var(--text-secondary);
+  font-size: .9375rem;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
 .learning-path {
   padding-top: clamp(.85rem, 2.5vw, 1.4rem);
   border-top: 1px solid var(--border-subtle);

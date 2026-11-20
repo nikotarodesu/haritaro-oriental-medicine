@@ -6,6 +6,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Activity, ArrowRight, BookOpen, ChevronDown, ClipboardPenLine, FileQuestion, GitCompareArrows, GraduationCap, History, Layers3, Library, Mail, Menu, NotebookPen, ScanLine, Search, Settings, User as UserIcon, X, type LucideIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import BrandLogo from "@/components/brand/BrandLogo";
+import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
 import { SERIES } from "@/config/series";
 import { ALL_NAV_ITEMS, CLINICAL_PRIMARY_ITEMS, CLINICAL_PRACTICE_ITEMS, getNavigationSection, isNavigationItemActive, type NavItemId } from "@/config/navigationItems";
 import RecentToolTracker from "./home/RecentTools";
@@ -20,6 +21,7 @@ interface HeaderLink { id?: NavItemId; href: string; label: string; description?
 
 const LEARN_LINKS: readonly HeaderLink[] = [
   { href: "/learn", label: SERIES.reading.name, description: "講義を順番に学ぶ" },
+  { href: ACUPUNCTURE_GUIDE.href, label: "はじめての鍼灸", description: "はり・お灸・ツボ押しの違い", icon: BookOpen },
   { href: "/learn/essentials", label: "東洋医学の要点", description: "知りたい言葉を1ページで確認", icon: Layers3 },
   { ...ALL_NAV_ITEMS.diagnosis, label: "気血水 体質チェック" },
   { href: "/learn/review#learning-review", label: "今日の復習" },

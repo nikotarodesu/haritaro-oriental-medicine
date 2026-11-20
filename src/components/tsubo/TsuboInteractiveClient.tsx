@@ -279,17 +279,18 @@ export default function TsuboInteractiveClient() {
     <div className="tsubo-search-layout atlas-search-layout">
       <ClinicalToolBridge />
       {/* 大型検索バー（最優先配置） */}
-      <section className="atlas-search-panel">
+      <section role="search" aria-label="ツボ図鑑内の検索" className="atlas-search-panel">
         <label htmlFor="tsubo-search" className="atlas-search-label">
           ツボを検索
         </label>
         <div className="relative">
-          <Search className="w-5 h-5 text-[#737C77] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <Search aria-hidden="true" className="w-5 h-5 text-[#737C77] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             id="tsubo-search"
             ref={searchInputRef}
             aria-describedby="tsubo-search-examples"
-            type="text"
+            type="search"
+            autoComplete="off"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="経穴名・読み・コード"
@@ -324,6 +325,7 @@ export default function TsuboInteractiveClient() {
           </button>
           <button type="button" onClick={() => setShowFilters(!showFilters)} aria-expanded={showFilters} aria-controls="tsubo-detail-filters" className="tsubo-filter-toggle"><SlidersHorizontal aria-hidden="true" className="h-4 w-4" /><span>詳細条件</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" /></button>
           <a href="#illustrated-points" className="atlas-search-index-link">部位別の索引</a>
+          <a href="#atlas-research-index" className="atlas-search-index-link">研究から探す</a>
         </div>
         {hasSelectionFilters && <p className="tsubo-active-filters">選択中：{[selectedBodyPart !== 'すべて' && selectedBodyPart, selectedMeridian !== 'すべて' && selectedMeridian, selectedCategory !== 'すべて' && selectedCategory, onlyPublished && '主要経穴のみ'].filter(Boolean).join('・')}</p>}
       </section>

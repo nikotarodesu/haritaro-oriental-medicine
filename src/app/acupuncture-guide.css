@@ -1,4 +1,4 @@
-:where(.acupuncture-guide, .ancient-needles, .acupuncture-learning-entry) {
+:where(.acupuncture-guide, .ancient-needles) {
   --guide-green: #28594D;
   --guide-green-soft: #E8F0EA;
   --guide-ochre: #865438;
@@ -7,7 +7,7 @@
   --guide-rose-soft: #F3E8E2;
 }
 
-.dark :where(.acupuncture-guide, .ancient-needles, .acupuncture-learning-entry) {
+.dark :where(.acupuncture-guide, .ancient-needles) {
   --guide-green: #AED8CA;
   --guide-green-soft: #293F38;
   --guide-ochre: #E7BA90;
@@ -15,25 +15,6 @@
   --guide-rose: #EDB9AD;
   --guide-rose-soft: #483530;
 }
-
-.acupuncture-learning-entry {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: .75rem;
-  padding: .8rem 1rem;
-  min-height: 4.5rem;
-  margin-bottom: .75rem;
-  border: 1px solid color-mix(in srgb, var(--guide-green) 25%, var(--border-washi));
-  border-radius: .8rem;
-  background: var(--guide-green-soft);
-  color: var(--guide-green);
-}
-
-.acupuncture-learning-entry:hover { border-color: var(--guide-green); }
-.acupuncture-learning-entry span { display: grid; gap: .12rem; color: var(--text-sumi); }
-.acupuncture-learning-entry small { color: var(--text-secondary); font-size: .875rem; }
-.platform-acupuncture-entry { justify-self: start; }
 
 .acupuncture-guide {
   display: grid;

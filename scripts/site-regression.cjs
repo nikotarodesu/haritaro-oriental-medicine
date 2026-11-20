@@ -79,15 +79,15 @@ for (const unit of readingUnits) assert.equal(dateAt(unit.href), dateAt('/learn'
 for (const pathname of ['/tsubo','/tsubo/sp11','/tsubo/sp6','/tsubo/li4','/tsubo/pc7','/tsubo/bl57']) {
   assert.equal(dateAt(pathname), ACUPOINT_PAGE_REVISED_AT, pathname + ' shows the shared acupoint release date');
 }
-for(const pathname of ['/','/about','/curriculum','/library']) assert.equal(dateAt(pathname),'2026-11-18',pathname);
-for(const pathname of ['/clinical','/diagnosis']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
+for(const pathname of ['/about','/curriculum','/library']) assert.equal(dateAt(pathname),'2026-11-18',pathname);
+for(const pathname of ['/','/cases','/clinical','/diagnosis']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
 for (const pathname of ['/learn', '/learn/essentials']) assert.equal(dateAt(pathname), '2026-11-20', pathname);
 assert.equal(dateAt('/updates'),'2026-11-20');
 assert.equal(dateAt('/symptoms'),'2026-11-19');
 assert(!sitemap.some(page => ['/pricing','/notes','/auth/login','/account/subscription'].includes(new URL(page.url).pathname)), 'Retired services are no longer indexable sitemap destinations');
 for(const pathname of ['/learn/review']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname)?.lastModified.toISOString().slice(0,10),'2026-10-15',pathname);
 assert.equal(dateAt('/glossary'),'2026-10-12');
-for(const pathname of ['/simulator','/practice/haiketsu','/cases','/tsubo/compare']) assert.equal(dateAt(pathname),'2026-10-18',pathname);
+for(const pathname of ['/simulator','/practice/haiketsu','/tsubo/compare']) assert.equal(dateAt(pathname),'2026-10-18',pathname);
 assert(!sitemap.some(page => new URL(page.url).pathname === '/learn/courses'), 'The merged course index redirects to the learning home instead of appearing in the sitemap');
 assert(!sitemap.some(page => new URL(page.url).pathname === '/kokushi'), 'The retired exam landing page is no longer an indexable sitemap destination');
 for(const article of ARTICLES) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/articles/${article.id}`).lastModified.toISOString().slice(0,10),article.updatedAt);

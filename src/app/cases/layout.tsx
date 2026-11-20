@@ -1,21 +1,15 @@
-import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
+import { pageSocialMetadata } from "@/config/seo";
 import type { Metadata } from "next";
 import React from "react";
 
+const title = "臨床症例演習｜四診・弁証・配穴";
+const description = "架空の症例で、鍼灸の臨床推論を練習。主訴・経過・四診の所見を読み、弁証・治法・配穴を考え、解答例で判断の根拠を確認できます。";
+
 export const metadata: Metadata = {
-  title: "症例を選ぶ｜弁証・配穴の症例演習",
-  description:
-    "主訴・現病歴から四診情報（望聞問切）を段階的に開示し、八綱・気血水・臓腑証から治法と配穴処方を導く本格的症例演習。全20の架空症例で練習できます。",
-  alternates: {
-    canonical: "/cases",
-  },
-  openGraph: {
-      images: SHARED_OG_IMAGES,
-      siteName: SITE_NAME,
-    title: "症例を選ぶ｜弁証・配穴の症例演習",
-    description: "四診情報から八綱・臓腑弁証・治法・配穴を導く臨床推論トレーニング。全20症例。",
-    url: "https://www.haritaro.jp/cases",
-  },
+  title,
+  description,
+  alternates: { canonical: "/cases" },
+  ...pageSocialMetadata(title, description, "/cases"),
 };
 
 export default function CasesLayout({
