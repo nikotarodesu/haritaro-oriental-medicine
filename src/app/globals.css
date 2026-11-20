@@ -28,6 +28,7 @@
 @import "./platform.css";
 @import "./atlas-design.css";
 @import "./reading-design.css";
+@import "./study-diagram.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

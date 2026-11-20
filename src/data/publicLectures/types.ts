@@ -1,5 +1,3 @@
-import type { ReadingFigure } from "@/types/reading";
-
 export interface PublicLectureLink {
   href: string;
   label: string;
@@ -12,7 +10,6 @@ export interface PublicLectureArticle {
   sections: {
     heading: string;
     paragraphs: string[];
-    diagram?: ReadingFigure | "concept" | "study";
     links?: PublicLectureLink[];
   }[];
   links?: PublicLectureLink[];

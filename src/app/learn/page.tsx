@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowDown, ArrowRight, BookOpen } from "lucide-react";
+import { ArrowRight, BookOpen, List } from "lucide-react";
 import PublicLearningPath from "@/components/curriculum/PublicLearningPath";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import PageIntro from "@/components/design/PageIntro";
@@ -30,12 +30,19 @@ export default function LearnGuidePage() {
   return (
     <div className="page-layout learning-guide space-y-8">
       <div className="learning-guide-intro">
-        <PageIntro title={SERIES.reading.name} description="陰陽、気・血・津液、経絡。東洋医学の考え方を、図と身近な例で一つずつ学べます。">
-          <div className="reader-navigation mt-4">
-            <Link href="/curriculum/lecture-intro-1" className="page-primary-action"><BookOpen aria-hidden="true" />最初の講義へ</Link>
-            <a href="#learn-courses-heading" className="page-secondary-action">講義の目次<ArrowDown aria-hidden="true" size={18} /></a>
-          </div>
-        </PageIntro>
+        <PageIntro title={SERIES.reading.name} description="陰陽、気・血・津液、経絡。東洋医学の考え方を、図と身近な例で学べます。" />
+        <nav aria-label="学び方を選ぶ" className="learning-options">
+          <Link href="/curriculum/lecture-intro-1" className="learning-option">
+            <span className="learning-option-icon"><BookOpen size={21} aria-hidden="true" /></span>
+            <span className="learning-option-label"><strong>体系的に学ぶ</strong><span>最初の講義から順番に読む</span></span>
+            <ArrowRight size={18} aria-hidden="true" />
+          </Link>
+          <Link href="/learn/essentials" className="learning-option">
+            <span className="learning-option-icon"><List size={21} aria-hidden="true" /></span>
+            <span className="learning-option-label"><strong>要点をひとつずつ見る</strong><span>知りたい言葉を1ページで確認する</span></span>
+            <ArrowRight size={18} aria-hidden="true" />
+          </Link>
+        </nav>
         <PublicLearningPath />
       </div>
 

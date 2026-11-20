@@ -1,0 +1,337 @@
+.study-diagram {
+  container-type: inline-size;
+  min-width: 0;
+  margin: 0;
+  padding: clamp(.75rem, 3vw, 1.15rem);
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-control);
+  background: var(--bg-washi);
+  color: var(--text-sumi);
+  font-size: .9375rem;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.study-diagram > figcaption {
+  margin-bottom: .7rem;
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.study-diagram-points,
+.study-diagram-relations {
+  display: grid;
+  gap: .35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.study-diagram-points > li,
+.study-diagram-relations > li {
+  min-width: 0;
+}
+
+.study-diagram-point {
+  display: grid;
+  min-width: 0;
+  gap: .2rem;
+}
+
+.study-diagram-point > span,
+.study-diagram-note {
+  color: var(--text-secondary);
+}
+
+[data-study-diagram="compare"] .study-diagram-point {
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: .45rem;
+  padding-block: .25rem;
+}
+
+[data-study-diagram="compare"] .study-diagram-point > svg {
+  grid-row: 1 / 3;
+  margin-top: .2rem;
+  color: var(--warm-readable);
+}
+
+[data-study-diagram="compare"] .study-diagram-point > span {
+  grid-column: 2;
+}
+
+[data-study-diagram="flow"] .study-diagram-points > li {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+[data-study-diagram="flow"] .study-diagram-point {
+  flex: 1;
+  padding: .5rem .7rem;
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-tag);
+  background: var(--bg-card);
+}
+
+.study-diagram-flow-arrow {
+  flex: none;
+  align-self: center;
+  margin-block-start: .25rem;
+  transform: rotate(90deg);
+  color: var(--warm-readable);
+}
+
+.study-diagram-relations > li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr);
+  align-items: center;
+  gap: .2rem;
+  padding: .35rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-tag);
+}
+
+.study-diagram-term {
+  padding: .3rem .2rem;
+  border-radius: var(--radius-tag);
+  background: var(--bg-card);
+  font-weight: 600;
+  text-align: center;
+}
+
+.study-diagram-relation {
+  display: grid;
+  justify-items: center;
+  gap: .1rem;
+  color: var(--warm-readable);
+  font-size: .875rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.study-diagram-note {
+  margin-top: .65rem;
+  padding-top: .55rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.lecture-diagram-alias {
+  display: block;
+  scroll-margin-block-start: .5rem;
+}
+
+.study-diagram-exercise {
+  margin-top: .65rem;
+  font-size: .9375rem;
+}
+
+.study-diagram-exercise summary {
+  min-height: 44px;
+  padding-block: .45rem;
+  color: var(--accent-readable);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@container (min-width: 25rem) {
+  [data-study-diagram="compare"] .study-diagram-points,
+  .study-diagram-relations {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: .65rem;
+  }
+}
+
+@container (min-width: 31rem) {
+  [data-study-diagram="flow"] .study-diagram-points {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 1.65rem;
+  }
+
+  [data-study-diagram="flow"] .study-diagram-points > li {
+    position: relative;
+  }
+
+  .study-diagram-flow-arrow {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 100%;
+    width: 1.65rem;
+    margin: 0;
+    transform: translateY(-50%);
+  }
+}
+
+.learning-options {
+  display: grid;
+  gap: .65rem;
+  margin-block: 0 clamp(1rem, 3.2vw, 1.85rem);
+}
+
+.learning-option {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .65rem;
+  min-height: 64px;
+  padding: .7rem;
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-control);
+  background: var(--bg-washi);
+  color: var(--accent-readable);
+}
+
+.learning-option:hover {
+  border-color: var(--accent-readable);
+  background: var(--accent-soft);
+}
+
+.learning-option-icon {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-tag);
+  background: var(--accent-soft);
+}
+
+.learning-option:first-child .learning-option-icon {
+  background: var(--action-soft);
+  color: var(--warm-readable);
+}
+
+.learning-option-label {
+  display: grid;
+  gap: .12rem;
+  color: var(--text-sumi);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.learning-option-label > span {
+  color: var(--text-secondary);
+  font-size: .875rem;
+}
+
+.learning-path-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 .75rem;
+}
+
+.essentials-page {
+  display: grid;
+  gap: clamp(1.4rem, 4vw, 2.5rem);
+}
+
+.essentials-page .reader-back {
+  margin-bottom: .3rem;
+}
+
+.essentials-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  padding-top: .7rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.essentials-index .page-secondary-action {
+  min-height: 44px;
+  padding: .45rem .7rem;
+  text-align: start;
+}
+
+.essentials-index svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.essentials-group {
+  min-width: 0;
+  scroll-margin-block-start: .55rem;
+}
+
+.essentials-topics {
+  display: grid;
+  margin-top: .6rem;
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-card);
+  background: var(--bg-card);
+}
+
+.essentials-topic {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .45rem;
+  min-width: 0;
+  padding: clamp(.8rem, 2.5vw, 1.4rem);
+}
+
+.essentials-topic + .essentials-topic {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.essentials-topic > h3 {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-wrap: balance;
+}
+
+.essentials-topic > p {
+  flex: 1;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.essentials-topic > a {
+  margin-top: .1rem;
+}
+
+.essentials-diagram {
+  width: 100%;
+}
+
+.essentials-diagram > summary {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  min-height: 44px;
+  padding-block: .35rem;
+  color: var(--warm-readable);
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.essentials-diagram > summary::-webkit-details-marker {
+  display: none;
+}
+
+.essentials-diagram[open] > summary svg {
+  transform: rotate(180deg);
+}
+
+@media (min-width: 40rem) {
+  .learning-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 62rem) {
+  .essentials-topics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .essentials-topic + .essentials-topic {
+    border-top: 0;
+    border-inline-start: 1px solid var(--border-subtle);
+  }
+}

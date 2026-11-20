@@ -167,18 +167,6 @@
   scroll-margin-block-start: .5rem;
 }
 
-.lecture-diagram > figure {
-  margin-block: 0;
-}
-
-.lecture-diagram > .curriculum-concept-art {
-  --concept-art-surface: var(--bg-washi);
-  padding: .75rem;
-  border: 1px solid var(--border-washi);
-  border-radius: var(--radius-control);
-  background: var(--bg-washi);
-}
-
 .reading-sequence {
   display: grid;
   gap: .35rem;

@@ -17,6 +17,7 @@
 ## はり太郎の東洋医学
 - [読み物・演習の全目次](https://www.haritaro.jp/curriculum): 東洋医学・ツボ図鑑・臨床演習に分かれる94本のテーマ別索引です。各記事で出典と関連ページを確認できます。
 - [はり太郎の東洋医学](https://www.haritaro.jp/learn): 東洋医学の基礎をテーマから探せます。体質セルフチェックと解説記事への入口があります。
+- [東洋医学の要点](https://www.haritaro.jp/learn/essentials): 陰陽、気・血・津液、経絡などの考え方を、一問ずつ確認できるページです。各項目から関連する講義へ進めます。
 - [気血水の体質セルフチェック](https://www.haritaro.jp/diagnosis): 回答から伝統医学上の分類を学ぶ12問の教材。結果から学習用のツボと、同じツボが登場する症状ガイドに進めます。
 - [講義の復習](https://www.haritaro.jp/learn/review#learning-review): 内容の版と回答履歴を照合し、復習予定を表示します。同日の繰り返しで復習間隔を延ばしません。国試向けの専用演習は終了しています。
 - [用語集](https://www.haritaro.jp/glossary)

@@ -28,8 +28,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/learn`,
-      lastModified: new Date("2026-09-29"),
+      lastModified: new Date(PAGE_REVISIONS["/learn"]),
     },
+    { url: `${baseUrl}/learn/essentials`, lastModified: new Date(PAGE_REVISIONS["/learn/essentials"]) },
     {
       url: `${baseUrl}/clinical`,
       lastModified: new Date("2026-09-29"),

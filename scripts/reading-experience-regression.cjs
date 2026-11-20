@@ -36,9 +36,28 @@ const { ARTICLE_READING_GUIDES } = load('src/data/articleReadingGuides');
 const { CURRICULUM_DATA } = load('src/data/curriculumData');
 const { CURRICULUM_READING_INSERTS, CURRICULUM_READING_QUESTIONS, createCurriculumReadingLinks, getCurriculumRelatedArticleIds } = load('src/data/curriculumReadingGuides');
 const MarkdownBody = load('src/components/MarkdownBody').default;
+const StudyDiagram = load('src/components/reading/StudyDiagram').default;
+const { getPublicLectureGroups, getPublicLectureArticle } = load('src/data/publicLectures/index');
+const { getPublicLectureDiagram, publicLectureDiagrams } = load('src/data/publicLectures/diagrams/index');
 const articleIds = new Set(ARTICLES.map(article => article.id));
 const figureIds = new Set();
 let checkedFigures = 0;
+
+const publicLectures = getPublicLectureGroups().flatMap(group => group.entries.map(entry => entry.id));
+assert.equal(Object.keys(publicLectureDiagrams).length, publicLectures.length);
+for (const lectureId of publicLectures) {
+  const diagram = getPublicLectureDiagram(lectureId);
+  assert(diagram && diagram.items.length >= 2 && diagram.items.length <= 6, lectureId);
+  assert((diagram.afterSection ?? 1) <= getPublicLectureArticle(lectureId).sections.length, lectureId + ' figure placement');
+  const id = 'reading-figure-' + (diagram.anchor ?? lectureId);
+  const html = renderToStaticMarkup(React.createElement(StudyDiagram, { diagram, id }));
+  assert(html.includes('aria-labelledby="' + id + '-title"') && html.includes('<figcaption'), lectureId);
+  assert(html.includes('<svg') && !html.includes('<text'), lectureId + ' has SVG connections and scalable HTML text');
+  const paths = Array.from(html.matchAll(/<svg[^>]*class="study-diagram-flow-arrow"/g)).length;
+  assert.equal(paths, diagram.layout === 'flow' ? diagram.items.length - 1 : 0, lectureId + ' flow connections');
+  if (diagram.layout === 'relations') assert.equal((html.match(/<svg/g) || []).length, diagram.items.length, lectureId);
+}
+console.log(`Passed: ${publicLectures.length} public lectures have restrained, accessible SVG diagrams placed beside the explanation.`);
 
 function checkInsertions(id, content, inserts) {
   const blocks = parseMarkdownBlocks(content);

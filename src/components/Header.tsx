@@ -19,7 +19,8 @@ type Dropdown = "learn" | "clinical" | "settings";
 interface HeaderLink { id?: NavItemId; href: string; label: string; description?: string; icon?: LucideIcon; }
 
 const LEARN_LINKS: readonly HeaderLink[] = [
-  { href: "/learn", label: SERIES.reading.name, description: "読み物・体質チェック" },
+  { href: "/learn", label: SERIES.reading.name, description: "講義を順番に学ぶ" },
+  { href: "/learn/essentials", label: "東洋医学の要点", description: "知りたい言葉を1ページで確認", icon: Layers3 },
   { ...ALL_NAV_ITEMS.diagnosis, label: "気血水 体質チェック" },
   { href: "/learn/review#learning-review", label: "今日の復習" },
   { href: "/library", label: "古典・医学論文" },

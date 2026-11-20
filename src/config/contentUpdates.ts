@@ -186,7 +186,7 @@ export const NATURAL_JAPANESE_COURSE_REVISIONS = [
   'clinical-process-foundations',
 ] as const;
 export const PAGE_REVISIONS: Record<string, string> = {
-  '/learn': '2026-10-18', '/learn/review': '2026-10-15',
+  '/learn': '2026-11-20', '/learn/essentials': '2026-11-20', '/learn/review': '2026-10-15',
   '/simulator': '2026-10-12',
   '/articles': '2026-10-18', '/contact': SITE_REVISED_AT,
   '/tsubo/practice': '2026-10-04', '/pricing': '2026-10-12',
@@ -233,9 +233,10 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(LEARNING_COURSES.map(course => [`/learn/courses/${course.slug}`, '2026-10-18'])),
   '/notes': '2026-10-18', '/tsubo/compare': '2026-10-18',
   ...Object.fromEntries([
-    '/', '/about', '/clinical', '/curriculum', '/diagnosis', '/learn', '/library',
-    ...CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => `/curriculum/${id}`)),
+    '/', '/about', '/clinical', '/curriculum', '/diagnosis', '/library',
   ].map(route => [route, '2026-11-18'])),
+  // Public teaching diagrams were added or revised throughout the lecture catalog.
+  ...Object.fromEntries(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [`/curriculum/${id}`, '2026-11-20']))),
   '/tsubo': ACUPOINT_PAGE_REVISED_AT,
   '/tsubo/basics/bone-cun': ACUPOINT_PAGE_REVISED_AT,
   ...Object.fromEntries(REVISED_ATLAS_RESEARCH_ROUTES.map(route => [route, ATLAS_EVIDENCE_REVISED_AT])),

@@ -56,7 +56,7 @@ assert.match(home, /<h1[^>]*>知<\/h1>/);
 assert(!home.includes('学習履歴を確認中') && !home.includes('href="/pricing"') && !home.includes('href="/notes"'));
 
 const reading = renderToStaticMarkup(React.createElement(load('src/app/learn/page').default));
-for (const href of ['/curriculum/lecture-intro-1', '/diagnosis', '/articles', '/curriculum']) assert(reading.includes('href="' + href + '"'), href);
+for (const href of ['/curriculum/lecture-intro-1', '/learn/essentials', '/diagnosis', '/articles', '/curriculum']) assert(reading.includes('href="' + href + '"'), href);
 const { getPublicLectureGroups, getPublicLectureReadingPosition } = load('src/data/publicLectures');
 const readingChapters = getPublicLectureGroups('reading');
 const readingOrder = readingChapters.flatMap(group => group.entries.map(article => article.id));
@@ -88,4 +88,14 @@ for (const id of mapLinks) {
   lastMapStop = stop;
 }
 assert(!reading.includes('学習履歴を確認中') && !reading.includes('href="/notes"'));
-console.log(`Passed: homepage search and three series, public study map, ${readingOrder.length} adjacent lectures in index order, and legacy learning URL selection.`);
+const essentials = renderToStaticMarkup(React.createElement(load('src/app/learn/essentials/page').default));
+const essentialTopics = [...essentials.matchAll(/<article[^>]*class="essentials-topic"[^>]*>/g)];
+assert.equal(essentialTopics.length, 12);
+for (const [, anchor] of essentials.matchAll(/href="#([^"]+)"/g)) {
+  assert(essentials.includes(`id="${anchor}"`), anchor + ' is a live topic group');
+}
+for (const [, id] of essentials.matchAll(/href="\/curriculum\/([^"]+)"/g)) {
+  assert(readingIds.has(id), id + ' is a public reading lecture');
+}
+assert(essentials.includes('data-study-diagram="compare"') && essentials.includes('data-study-diagram="flow"'));
+console.log(`Passed: three public series, study map, one-page essentials, ${readingOrder.length} adjacent lectures in index order, and legacy learning URL selection.`);
