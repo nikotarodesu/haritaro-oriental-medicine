@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BookOpen, ChartLine, ClipboardList, MessageCircle, ShieldCheck } from "lucide-react";
+import { ArrowRight, BookOpen, Brain, ChartLine, ClipboardList, Layers3, MessageCircle, ShieldCheck } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import AcupunctureMethodArt, { type AcupunctureMethod } from "@/components/learning/AcupunctureMethodArt";
+import AcupunctureTrialComparison from "@/components/learning/AcupunctureTrialComparison";
 import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
 import { ACUPUNCTURE_GUIDE, NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
 import { pageSocialMetadata } from "@/config/seo";
@@ -19,14 +20,15 @@ export const metadata: Metadata = {
 };
 
 const topics = [
-  ["methods", "はり・灸・ツボ押し"], ["points", "ツボと配穴"], ["visit", "施術の流れ"],
-  ["evidence", "研究の読み方"], ["safety", "安全性"], ["questions", "よくある疑問"],
+  ["methods-details", "はり・灸・ツボ押し"], ["points", "ツボと配穴"], ["visit", "施術の流れ"],
+  ["mechanisms", "鍼への体の反応"], ["evidence", "研究の読み方"], ["combinations", "ツボの組み合わせ"],
+  ["safety", "安全性"], ["questions", "よくある疑問"], ["history", "鍼の歴史"],
 ] as const;
 
 const methods: ReadonlyArray<{ id: AcupunctureMethod; name: string; stimulus: string; summary: string }> = [
-  { id: "needle", name: "はり（鍼）", stimulus: "鍼による刺激", summary: "細い鍼を用いる施術です。皮膚に入れる方法や、鍼具で皮膚に触れて刺激する方法があります。" },
-  { id: "moxa", name: "お灸（灸）", stimulus: "温熱による刺激", summary: "主にもぐさを使い、熱で刺激する施術です。もぐさは、ヨモギの葉の繊維を加工したものです。" },
-  { id: "pressure", name: "ツボ押し", stimulus: "指などで圧を加える刺激", summary: "指などで体の表面を押します。鍼や灸と同じツボが目印になる場合もあり、加える刺激はそれぞれ異なります。" },
+  { id: "needle", name: "はり", stimulus: "鍼の刺激", summary: "細い鍼を用います。皮膚に入れる方法や、鍼具で皮膚に触れて刺激する方法があります。" },
+  { id: "moxa", name: "お灸", stimulus: "熱の刺激", summary: "ヨモギの葉の繊維を加工した「もぐさ」などを使い、温めて刺激します。" },
+  { id: "pressure", name: "ツボ押し", stimulus: "圧の刺激", summary: "指などで体の表面に圧を加えます。鍼や灸と同じツボを目印にする場合もあります。" },
 ];
 
 const visitSteps = [
@@ -55,30 +57,34 @@ export default function AcupunctureGuidePage() {
       <header className="acupuncture-guide-hero">
         <Link href="/learn" className="reader-back"><span aria-hidden="true">←</span>はり太郎の東洋医学</Link>
         <h1>鍼灸とは？<span> はり・お灸・ツボ押しの違い</span></h1>
-        <p>鍼灸（しんきゅう、はりきゅう）は、鍼やお灸で体に刺激を加える施術の呼び名です。鍼と灸で使う道具や刺激が違い、どの部位にどう働きかけるかは、体の状態や施術の目的に合わせて考えます。</p>
+        <p>鍼灸（しんきゅう、はりきゅう）は、はりとお灸で体に刺激を加える施術です。ツボ押しと共通のツボを使うこともあります。</p>
+        <figure id="methods" className="acupuncture-method-figure" aria-label="はり・お灸・ツボ押しの比較">
+          <ul className="acupuncture-methods" role="list">
+            {methods.map(({ id, name, stimulus }) => (
+              <li key={id} className={`acupuncture-method acupuncture-method--${id}`} data-acupuncture-method={id}>
+                <AcupunctureMethodArt method={id} />
+                <strong>{name}</strong>
+                <span>{stimulus}</span>
+              </li>
+            ))}
+          </ul>
+          <figcaption>各図を横切る実線が皮膚の表面です。鍼を入れる、台座で間接的に温める、指で押す例を並べています。</figcaption>
+        </figure>
         <details className="acupuncture-detail acupuncture-guide-contents">
           <summary>目次</summary>
           <nav aria-label="鍼灸入門の目次" className="acupuncture-guide-nav">
             {topics.map(([id, label]) => <a key={id} href={`#${id}`}>{label}</a>)}
-            <a href="#history">鍼の歴史</a>
           </nav>
         </details>
       </header>
 
-      <section id="methods" className="acupuncture-guide-section" aria-labelledby="acupuncture-methods-title">
-        <h2 id="acupuncture-methods-title">はり・お灸・ツボ押しを見比べる</h2>
-        <div className="acupuncture-methods">
-          {methods.map(({ id, name, stimulus, summary }) => (
-            <article key={id} className={`acupuncture-method acupuncture-method--${id}`} data-acupuncture-method={id}>
-              <AcupunctureMethodArt method={id} />
-              <div className="acupuncture-method-copy">
-                <h3>{name}</h3>
-                <p className="acupuncture-method-stimulus">{stimulus}</p>
-                <p>{summary}</p>
-              </div>
-            </article>
+      <section id="methods-details" className="acupuncture-guide-section" aria-labelledby="acupuncture-methods-title">
+        <h2 id="acupuncture-methods-title">使う道具と刺激の違い</h2>
+        <dl className="acupuncture-method-notes">
+          {methods.map(({ id, name, summary }) => (
+            <div key={id}><dt>{name}</dt><dd>{summary}</dd></div>
           ))}
-        </div>
+        </dl>
         <div className="acupuncture-detail-grid">
           <details className="acupuncture-detail">
             <summary>鍼管・接触鍼・電気鍼</summary>
@@ -124,9 +130,36 @@ export default function AcupunctureGuidePage() {
         </ol>
       </section>
 
+      <section id="mechanisms" className="acupuncture-guide-section" aria-labelledby="acupuncture-mechanisms-title">
+        <h2 id="acupuncture-mechanisms-title">鍼を受けた体の反応は、どう調べる？</h2>
+        <p>鍼の周りで起きたこと、神経系の変化、生活で感じる変化は、測る方法が違います。</p>
+        <div className="acupuncture-mechanisms">
+          <div>
+            <Layers3 size={26} strokeWidth={1.5} aria-hidden="true" />
+            <h3>鍼の周りの組織</h3>
+            <p>60人を対象に鍼を抜くときに必要な力を測り、鍼の操作によって値が変わることを確かめた研究があります。</p>
+            <SourceLink id="tissue">組織の反応を測った研究</SourceLink>
+          </div>
+          <div>
+            <Brain size={26} strokeWidth={1.5} aria-hidden="true" />
+            <h3>脳で測れる反応</h3>
+            <p>線維筋痛症の人を対象に、PET（体内の働きを画像で調べる検査）で痛みの調節に関わる受容体を調べました。その指標は鍼と偽鍼（鍼を模した方法）で異なる変化を示しました。</p>
+            <SourceLink id="brain">脳画像を比べた研究</SourceLink>
+          </div>
+          <div>
+            <ChartLine size={26} strokeWidth={1.5} aria-hidden="true" />
+            <h3>日常生活での変化</h3>
+            <p>患者が感じる痛みや動きやすさは臨床試験で比べます。慢性腰痛の試験では、日常の動作にどのくらい困っているかを質問票で調べました。</p>
+            <a href="#example-back-pain-point-selection" className="acupuncture-source-marker">慢性腰痛の試験を見る</a>
+          </div>
+        </div>
+        <p>組織や画像の変化は仕組みを考える手がかりです。その変化が日常生活の改善とどう結びつくかは、別に確かめる必要があります。</p>
+        <Link href="/articles/science-of-acupuncture-neuroscience" className="ui-text-link">鍼灸の作用機序の研究を読む <ArrowRight size={16} aria-hidden="true" /></Link>
+      </section>
+
       <section id="evidence" className="acupuncture-guide-section" aria-labelledby="acupuncture-evidence-title">
         <h2 id="acupuncture-evidence-title">効果について調べるときの見方</h2>
-        <p>鍼への神経や組織の反応を測る研究と、患者の痛みや生活動作を比べる研究では、確かめる問いが違います。施術の効果を調べたいときは、臨床試験の対象と比較条件を先に見ます。</p>
+        <p>施術の効果を知りたいときは、誰が何を受け、どんな条件の人と比べたかを見ます。同じ「鍼の研究」でも、その条件や測り方によって答えられる問いは変わります。</p>
         <dl className="acupuncture-evidence-questions">
           {evidenceQuestions.map(([question, answer]) => <div key={question}><dt>{question}</dt><dd>{answer}</dd></div>)}
         </dl>
@@ -136,7 +169,27 @@ export default function AcupunctureGuidePage() {
             <article key={study.id} id={`example-${study.id}`} className="acupuncture-study">
               <header><span>{study.method}</span><h3>{study.title}</h3></header>
               <p>{study.context}</p>
-              <p>{study.result}</p>
+              <div className="acupuncture-study-results">
+                {"outcomes" in study && (
+                  <figure className="acupuncture-study-chart">
+                    <figcaption><strong>8週後、困りごとの点数が平均で何点下がったか</strong><p>質問票は0〜23点。低いほど日常動作での困りごとが少ないことを表します。</p></figcaption>
+                    <ul role="list">
+                      {study.outcomes.map(({ label, change }) => (
+                        <li key={label}>
+                          <span>{label}</span>
+                          <svg viewBox="0 0 5 1" preserveAspectRatio="none" aria-hidden="true">
+                            <rect width="5" height="1" />
+                            <rect width={change} height="1" />
+                          </svg>
+                          <strong>{change.toFixed(1)}点</strong>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="acupuncture-study-chart-axis" aria-hidden="true"><span><span>0</span><span>5点</span></span></div>
+                  </figure>
+                )}
+                <p>{study.result}</p>
+              </div>
               <p className="acupuncture-study-limit">{study.limit}</p>
               <div className="acupuncture-inline-links">
                 <a href={study.href} className="ui-text-link">{study.source}</a>
@@ -145,11 +198,14 @@ export default function AcupunctureGuidePage() {
             </article>
           ))}
         </div>
-        <p>複数のツボを使った試験は、その施術全体を比較しています。一穴の寄与や、組み合わせによる上乗せを知るには、その一穴や組み合わせ自体を変えた比較が必要です。</p>
-        <div className="acupuncture-inline-links">
-          <Link href="/learn/lectures/reading-evidence" className="ui-text-link">講義で研究の読み方を学ぶ <ArrowRight size={16} aria-hidden="true" /></Link>
-          <Link href="/articles/science-of-acupuncture-neuroscience" className="ui-text-link">鍼灸の作用機序の研究を読む <ArrowRight size={16} aria-hidden="true" /></Link>
-        </div>
+        <Link href="/learn/lectures/reading-evidence" className="ui-text-link">講義で研究の読み方を学ぶ <ArrowRight size={16} aria-hidden="true" /></Link>
+      </section>
+
+      <section id="combinations" className="acupuncture-guide-section" aria-labelledby="acupuncture-combinations-title">
+        <h2 id="acupuncture-combinations-title">一穴の効果と組み合わせをどう確かめる？</h2>
+        <p>全員が通常の治療を受け、経穴AとBを加えるかどうかで4群に分ける架空の試験です。問いを選ぶと、どの群を比べるかが変わります。</p>
+        <AcupunctureTrialComparison />
+        <p>実際の論文では、共通の治療や刺激方法がそろっているか、比べたい差とその不確かさが報告されているかを確かめます。 <SourceLink id="factorial">4群の試験を読むための報告指針</SourceLink></p>
       </section>
 
       <section id="safety" className="acupuncture-guide-section" aria-labelledby="acupuncture-safety-title">

@@ -73,6 +73,11 @@ assert(needlesStart > historyHtml.indexOf('経絡・経穴・刺鍼法・治療�
 assert(needlesStart < historyHtml.indexOf('現代の教科書に例えると'), 'Put the figure immediately after the Lingshu introduction');
 assert.deepEqual(Array.from(historyHtml.matchAll(/data-ancient-needle="([^"]+)"/g), row => row[1]),
   ['鑱鍼', '員鍼', '鍉鍼', '鋒鍼', '鈹鍼', '員利鍼', '毫鍼', '長鍼', '大鍼']);
+assert.deepEqual(
+  Array.from(historyHtml.matchAll(/href="#(ancient-needle-[a-z]+)"/g), row => row[1]),
+  Array.from(historyHtml.matchAll(/id="(ancient-needle-[a-z]+)"/g), row => row[1]),
+  'All nine silhouette links land on their own figure in order',
+);
 assert.equal(ANCIENT_NINE_NEEDLES.find(needle => needle.name === '毫鍼').length, '3寸6分', 'Match the cited passage');
 assert.match(body, /<h2[^>]*id="section-heading-0"[^>]*>陰陽<\/h2>/, 'Heading text and anchor remain intact');
 assert.match(body, /<li[^>]*>気虚 <sup[^>]*><\/sup> 陰陽<\/li>/, 'List terms remain readable beside citations');

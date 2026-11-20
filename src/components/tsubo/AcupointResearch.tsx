@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ACUPUNCTURE_TRIAL_COMPARISON_HREF } from "@/config/acupunctureLearning";
 import { BookOpen, FlaskConical, GitMerge } from "lucide-react";
 import { getAcupointByCode } from "@/data/tsubo";
 import { getAcupointStudies, getClassicalCombinations, getStudyPointRole } from "@/data/tsubo/atlas/evidence";
@@ -77,6 +78,9 @@ export default function AcupointResearch({ point }: { point: AcupointDetail }) {
           <time dateTime={ATLAS_LITERATURE_SEARCH_DATE}>{ATLAS_LITERATURE_SEARCH_DATE}</time> 文献検索 · <Link href="/tsubo#atlas-research-search" className="atlas-source-link">検索の対象と方法</Link>
         </p>
       )}
+      <p className="atlas-evidence-empty">
+        <Link href={ACUPUNCTURE_TRIAL_COMPARISON_HREF} className="atlas-source-link">一穴の効果と組み合わせの研究を図で読み分ける</Link>
+      </p>
       {combinations.length > 0 && (
         <div className="atlas-classical-combinations">
           <h3><GitMerge size={17} aria-hidden="true" />古典にみる組み合わせ</h3>

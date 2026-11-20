@@ -31,6 +31,24 @@ export const ACUPUNCTURE_GUIDE_SOURCES = [
     href: "https://kouseikyoku.mhlw.go.jp/tokaihokuriku/newpage_00084.html",
     scope: "対象となる疾患の考え方と、保険医の同意書。",
   },
+  {
+    id: "tissue",
+    title: "Langevinら「人の鍼刺激に対する力学的な反応」（2001年）",
+    href: "https://pubmed.ncbi.nlm.nih.gov/11717207/",
+    scope: "60人を対象に、鍼を抜くのに必要な力を測定した研究。",
+  },
+  {
+    id: "brain",
+    title: "Harrisら「鍼と偽鍼のμオピオイド受容体への影響」（2009年）",
+    href: "https://pubmed.ncbi.nlm.nih.gov/19501658/",
+    scope: "線維筋痛症の人を対象に、痛みの調節に関わる受容体の指標をPET画像で比較。",
+  },
+  {
+    id: "factorial",
+    title: "Kahanら「要因を組み合わせるランダム化比較試験の報告指針」（2023年）",
+    href: "https://pubmed.ncbi.nlm.nih.gov/38051324/",
+    scope: "CONSORT拡張版。比較する群、相互作用の推定とその精度をどう報告するか。",
+  },
 ] as const;
 
 export const ACUPUNCTURE_STUDY_EXAMPLES = [
@@ -67,5 +85,21 @@ export const ACUPUNCTURE_STUDY_EXAMPLES = [
     href: "https://pubmed.ncbi.nlm.nih.gov/37158339/",
     pointHref: "/tsubo/bl67#acupoint-research",
     pointLabel: "図鑑で至陰の研究を読む",
+  },
+  {
+    id: "back-pain-point-selection",
+    title: "慢性腰痛でツボの選び方を比べた試験",
+    method: "鍼・模擬刺激",
+    context: "慢性腰痛の成人638人を、ツボを個別に選ぶ鍼、ツボを決めておく鍼、皮膚に刺さない模擬刺激、通常の治療の4群に無作為に分けました。",
+    result: "通常の治療と比べ、ほかの3群では8週時点の改善が大きく、個別の鍼・標準化した鍼・模擬刺激の3群同士には統計的に明確な差が見られませんでした。",
+    limit: "この試験はツボの選び方を含む施術全体を比較しています。一穴ずつ追加・除外して調べると、組み合わせの中での個々のツボの寄与を検証できます。",
+    source: "Cherkinらのランダム化比較試験（2009年）",
+    href: "https://pmc.ncbi.nlm.nih.gov/articles/PMC2832641/",
+    outcomes: [
+      { label: "個別の鍼", change: 4.4 },
+      { label: "標準化した鍼", change: 4.5 },
+      { label: "模擬刺激", change: 4.4 },
+      { label: "通常の治療", change: 2.1 },
+    ],
   },
 ] as const;
