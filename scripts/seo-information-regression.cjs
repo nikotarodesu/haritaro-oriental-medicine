@@ -52,6 +52,7 @@ const { getAcupointGuideLinks } = load('src/utils/symptomGuides');
 const { WHO_ATLAS_PDF, whoAtlasPages } = load('src/data/tsubo/atlas/whoAtlasPages');
 const { whoLocations, whoLocationNotes } = load('src/data/tsubo/atlas/whoLocations');
 const { getWhoMeasurements } = load('src/data/tsubo/atlas/whoMeasurements');
+const { getAnnotatedCloseUp } = load('src/data/tsubo/atlas/closeUpMeasurements');
 const expandedViews = Object.assign({}, ...['head', 'arm', 'trunk', 'back'].map(group =>
   load(`src/components/tsubo/atlas/expanded/${group}Views`)[`${group}Views`]
 ));
@@ -76,6 +77,20 @@ for (const code of standardPointCodes) {
   }
   if (code !== 'li4') {
     assert(ATLAS_ARTICLES[code].sources.some(({ url }) => url === `${WHO_ATLAS_PDF}#page=${whoAtlasPages[code]}`), code);
+    const expected = [
+      ...getWhoMeasurements(code, whoLocations[code]),
+      ...getWhoMeasurements(code, whoLocationNotes[code] ?? ''),
+    ];
+    const closeUp = getAnnotatedCloseUp(code, ATLAS_POINT_MARKERS[code], ATLAS_ARTICLES[code].illustration.region);
+    assert.deepEqual(Array.from(closeUp.measurements, row => row.measure.token),
+      expected.map(row => row.token), code + ' annotates every published distance on the close-up');
+    for (const { origin, destination, rail, originLabel } of closeUp.measurements) {
+      assert(originLabel, code + ' names the anatomical anchor');
+      assert([origin, destination].every(([x, y]) => x > 0 && x < 340 && y > 0 && y < 300), code + ' keeps both landmarks within the illustration');
+      const [dx, dy] = [destination[0] - origin[0], destination[1] - origin[1]];
+      const length = rail?.axis === 'horizontal' ? Math.abs(dx) : rail?.axis === 'vertical' ? Math.abs(dy) : Math.hypot(dx, dy);
+      assert(length >= 7, code + ' shows a visible arrow between the measurement endpoints');
+    }
   }
 }
 assert.deepEqual(Object.keys(whoLocationNotes).filter(code => /WHOの代替位置/.test(whoLocationNotes[code])).sort(),
@@ -95,6 +110,19 @@ for (const [code, amount, length] of [['pc6', 2, 12], ['sp6', 3, 13], ['cv4', 3,
 }
 assert.equal(getWhoMeasurements('st4', whoLocations.st4)[0].unit, '指寸');
 assert.equal(getWhoMeasurements('st40', whoLocationNotes.st40)[0].unit, '指幅');
+assert.equal(getWhoMeasurements('gv18', whoLocations.gv18)[0].start, '後ろの生え際');
+assert.equal(getWhoMeasurements('gv19', whoLocations.gv19)[0].span[1], 12);
+const measuredCloseUp = code => getAnnotatedCloseUp(code, ATLAS_POINT_MARKERS[code], ATLAS_ARTICLES[code].illustration.region);
+const [lower, lateral] = measuredCloseUp('sp13').measurements;
+assert.equal(lower.rail.axis, 'vertical');
+assert.deepEqual(Array.from(lower.origin), [106, 144]);
+assert.deepEqual(Array.from(lower.destination), Array.from(lateral.origin), 'The vertical and horizontal abdominal measurements meet on the midline');
+assert.equal(lateral.rail.axis, 'horizontal');
+const pc9CloseUp = measuredCloseUp('pc9');
+assert(pc9CloseUp.measurements[0].alternative && pc9CloseUp.measurements[0].destination[1] > pc9CloseUp.marker.y,
+  'The nail-corner ruler shows the distinct alternative to the fingertip');
+assert.equal(measuredCloseUp('gv24').measurements[1].condition, '生え際が分かりにくいとき');
+assert.equal(measuredCloseUp('st8').marker.expanded.view, 'scalp', 'The close-up shows both the hairline corner and the midline');
 assert.equal(Object.keys(expandedPoints).length, 284);
 for (const [code, point] of Object.entries(expandedPoints)) {
   const master = getAcupointByCode(code);

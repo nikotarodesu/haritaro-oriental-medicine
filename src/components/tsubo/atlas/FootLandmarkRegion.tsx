@@ -91,7 +91,6 @@ export default function FootLandmarkRegion({ marker, label }: AtlasCloseUpProps)
       {code === "lr4" && <path d="M115 75Q119 108 142 139L160 158" fill="none" stroke="#719184" strokeWidth="3" />}
       {code === "gb40" && <path d="M117 77Q118 111 135 139L182 163" fill="none" stroke="#719184" strokeWidth="3" />}
       {code === "ki3" && <path d="M81 89Q79 109 81 123L110 159" fill="none" stroke="#B26362" strokeWidth="2" strokeDasharray="2 4" />}
-      {(code === "ki5" || code === "ki6") && <path d={code === "ki5" ? "M51 116h23M51 116v45h23" : "M37 107h52M37 107v45h56"} fill="none" stroke="#8D897B" strokeDasharray="4 4" />}
       <Skeleton bones={bones} selected={point.bones} />
       {code === "sp5" && (
         <g fill="#755D48">

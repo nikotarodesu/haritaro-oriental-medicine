@@ -87,16 +87,6 @@ export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
           ? `M134 173H196M117 203H196L204 197M${tiaokouReference.x} ${tiaokouReference.y}H157L173 119H205`
           : "M134 173 H196 M119 203 H196 L204 197"} stroke="#877E72" />
         <path d={`M${marker.x} ${marker.y}l-24 20H85`} stroke="#7F3520" />
-        {marker.boneCun != null && (
-          <path
-            d={`M92 ${kneeLandmark.y} H98 V${marker.y} H92 M98 ${marker.y} H${marker.x - 9}`}
-            stroke="#9E4B20"
-          />
-        )}
-        {showOuterEdge && (
-          <path d={`M${marker.x} ${marker.y}H${tiaokouReference.x}M${outerShinAnkle.x} ${outerShinAnkle.y}H13V${marker.y}H${marker.x - 7}`}
-            stroke="#9E4B20" strokeDasharray="3 3" />
-        )}
       </g>
 
       <g fill="#FAF6EE" stroke="#686D60" strokeWidth="1.5">
@@ -129,7 +119,6 @@ export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
         {showOuterEdge && <>
           <text x="207" y="123">条口（ST38）</text>
           <text x="82" y="265" textAnchor="end">外くるぶし</text>
-          <text x="20" y="214">8寸</text>
         </>}
       </g>
       <g fill="#7F3520" fontSize="12" fontWeight="700">
@@ -138,9 +127,6 @@ export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
         <text x="207" y="137">② 脛骨</text>
         <text x="207" y="152" fontSize="11" fontWeight="400">すねの骨</text>
         <text x="82" y={marker.y + 25} textAnchor="end" fontSize="13">{label}</text>
-        {marker.boneCun != null && (
-          <text x="91" y={(kneeLandmark.y + marker.y) / 2 + 4} textAnchor="end">{marker.boneCun}寸（骨度法）</text>
-        )}
       </g>
     </>
   );

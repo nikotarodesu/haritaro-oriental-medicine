@@ -14,7 +14,6 @@ export default function VolarForearmRegion({ marker, label }: AtlasCloseUpProps)
       <g fill="none" strokeWidth="1.4">
         <path d={`M${marker.x} ${marker.y}L168 166h14`} stroke="#7F3520" />
         <path d="M130 116l38-19h14M113 119l-48-11H20v-10m130 126h32" stroke="#8D6B49" />
-        {marker.boneCun != null && <path d={`M82 ${marker.y}H94M82 ${marker.y}V224h12`} stroke="#59756A" />}
       </g>
       <g fill="#9E4B20" stroke="#F9F5ED" strokeWidth="1.5">
         <circle cx="130" cy="116" r="8" />
@@ -32,10 +31,6 @@ export default function VolarForearmRegion({ marker, label }: AtlasCloseUpProps)
       </g>
       <g fill="#365B4D" fontSize="13" fontWeight="bold">
         <text x="187" y="228">手首のしわ</text>
-        {marker.boneCun != null && <>
-          <text x="56" y={(marker.y + 224) / 2}>{marker.boneCun}寸</text>
-          <text x="31" y={(marker.y + 224) / 2 + 17} fontSize="11">（骨度法）</text>
-        </>}
       </g>
       <g fill="#524637" fontSize="12">
         <text x="172" y="34">ひじ側</text>

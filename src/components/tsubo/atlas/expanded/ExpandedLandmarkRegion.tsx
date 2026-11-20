@@ -13,8 +13,6 @@ export const expandedViews: Readonly<Record<ExpandedView, View>> = {
   ...backViews,
 };
 
-const rulerUnits: Partial<Record<ExpandedView, number>> = { chest: 14, abdomen: 17, back: 19, sacrum: 19 };
-
 function FeaturePath({ feature, active = false }: { feature: Feature; active?: boolean }) {
   const colors = {
     bone: active ? "#C26D3C" : "#CBC0AC",
@@ -32,15 +30,12 @@ function FeaturePath({ feature, active = false }: { feature: Feature; active?: b
   );
 }
 
-export default function ExpandedLandmarkRegion({ marker, label }: AtlasCloseUpProps) {
+export default function ExpandedLandmarkRegion({ marker, label, measured }: AtlasCloseUpProps) {
   const point = marker.expanded;
   if (!point) return null;
 
   const view = expandedViews[point.view];
   const picked = point.landmarks.map((id) => view.features[id]);
-  const rulerUnit = rulerUnits[point.view];
-  const offset = rulerUnit && marker.x > 106 ? (marker.x - 106) / rulerUnit : 0;
-  const hasMeasure = offset > 0 && Number.isInteger(offset * 2) && point.location.includes(`横へ${offset}寸`);
 
   return (
     <>
@@ -51,12 +46,8 @@ export default function ExpandedLandmarkRegion({ marker, label }: AtlasCloseUpPr
           <FeaturePath key={id} feature={feature} />
         ))}
         {picked.map((feature) => <FeaturePath key={feature.name} feature={feature} active />)}
-        {point.measurement && (
+        {!measured && point.measurement && (
           <path d={point.measurement} stroke="#8D6654" strokeWidth="1.4" strokeDasharray="3 3" />
-        )}
-        {hasMeasure && (
-          <path d={`M106 ${marker.y - 4}v8M106 ${marker.y}H${marker.x}`}
-            stroke="#8D6654" strokeWidth="1.3" strokeDasharray="3 3" />
         )}
       </g>
 
@@ -81,9 +72,6 @@ export default function ExpandedLandmarkRegion({ marker, label }: AtlasCloseUpPr
         ))}
         <circle cx="215" cy="175" r="4.5" fill="#7F3520" />
         <text x="226" y="179" fontWeight="bold" fontSize="12">{label}</text>
-        {hasMeasure && (
-          <text x="209" y="200" fill="#685745">中央から横へ {offset}寸</text>
-        )}
         <text x="209" y="223" fill="#685745">位置関係を示す模式図</text>
       </g>
     </>

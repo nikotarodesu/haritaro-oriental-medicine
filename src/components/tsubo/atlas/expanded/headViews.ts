@@ -15,7 +15,6 @@ export const headViews = {
   face: {
     name: "顔の正面", direction: "front", area: "head", outline: faceOutline,
     details: [
-      "M32 86Q39 49 66 42Q101 57 143 41Q164 47 178 78",
       "M59 100q16-12 30 0q-14 7-30 0",
       "M103 113Q101 134 95 148Q104 155 119 150M94 169Q104 161 116 169",
       "M91 204Q106 211 120 204",
@@ -33,6 +32,7 @@ export const headViews = {
       temple: f("こめかみ", 172, 79, "M164 89Q174 101 171 114", "soft"),
       fold: f("小鼻から口元の溝", 148, 173, "M129 153Q141 168 137 188", "guide"),
       faceMid: f("顔の中央線", 105, 50, "M105 57V228", "guide"),
+      foreheadHair: f("額の生え際", 73, 51, "M32 86Q39 48 66 43Q105 39 143 43Q164 48 178 78", "guide"),
     },
   },
   profile: {
@@ -56,7 +56,7 @@ export const headViews = {
     name: "頭を上から・額は上", direction: "top", area: "head", outline: scalpOutline,
     details: ["M41 66Q105 56 171 66", "M38 231Q106 258 173 231", "M25 132Q11 138 23 164M187 132Q202 137 188 164"],
     features: {
-      frontHair: f("前の生え際", 75, 56, "M42 66Q105 60 171 66", "guide"),
+      frontHair: f("前の生え際", 75, 56, "M39 66Q106 60 173 66", "guide"),
       forehead: f("額の骨", 128, 39, "M75 45Q103 32 137 45"),
       headMid: f("頭の中央線", 85, 119, "M106 62V247", "guide"),
       pupilLine: f("瞳の真上の列", 150, 142, "M142 65V165", "guide"),

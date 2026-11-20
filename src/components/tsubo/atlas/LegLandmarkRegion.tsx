@@ -1,19 +1,11 @@
-import { legLandmarks, lateralAnkleY, medialAnkleY, medialCalf, poplitealY, posteriorAnkleY, posteriorKnee, soleEndpoints, type LegCode } from "@/data/tsubo/atlas/legLandmarks";
+import { legLandmarks, lateralAnkleY, medialAnkleY, medialCalf, poplitealY, posteriorKnee, soleEndpoints, type LegCode } from "@/data/tsubo/atlas/legLandmarks";
 import type { AtlasCloseUpProps } from "@/data/tsubo/atlas/types";
 
 function Badge({ x, y, number }: { x: number; y: number; number: number }) {
   return <g><circle cx={x} cy={y} r="8" fill="#9E4B20" stroke="#FFF9F0" /><text x={x} y={y + 3.5} textAnchor="middle" fill="white" fontWeight="bold" fontSize="10">{number}</text></g>;
 }
 
-function Measure({ x, start, end, label }: { x: number; start: number; end: number; label: string }) {
-  return <g>
-    <path d={`M${x} ${start}h12m-12 0V${end}h12`} fill="none" stroke="#876B55" strokeWidth="1.3" strokeDasharray="3 3" />
-    <text x={x - 6} y={(start + end) / 2 + 4} textAnchor="end" fill="#483B31" fontSize="11">{label}</text>
-  </g>;
-}
-
 function Knee({ code }: { code: LegCode }) {
-  const point = legLandmarks[code];
   return <>
     <path d="M94 34Q76 84 93 133Q103 156 97 177Q89 209 104 263H162Q178 228 171 198Q166 169 178 142Q193 87 175 34Z" fill="#F4E8D8" stroke="#9B8D7D" strokeWidth="2" />
     <path d="M112 45Q94 94 104 121L122 139Q116 120 126 85L128 45ZM153 45Q154 93 146 123L151 139Q176 125 174 91L169 45Z" fill="#E8BE9D" stroke="#B97049" strokeWidth="1.4" />
@@ -21,7 +13,6 @@ function Knee({ code }: { code: LegCode }) {
     <path d="M115 132Q136 118 153 132Q157 146 137 157Q125 153 115 132Z" fill="#E8BE9D" stroke="#B97049" strokeWidth="2" />
     <path d="M132 155L143 155L144 190L130 190Z" fill="#C5D7C7" stroke="#769482" />
     <path d="M131 193Q144 190 150 206L147 258H128Z" fill="#E8D4B9" stroke="#B49980" />
-    {code !== "st35" && <Measure x={63} start={125} end={point.y} label="2寸" />}
     <Badge x={137} y={137} number={1} />
     <text x="204" y="63">右ひざを前から</text>
     <text x="204" y="91">① ひざのお皿</text>
@@ -31,9 +22,7 @@ function Knee({ code }: { code: LegCode }) {
 }
 
 function SideLeg({ code, medial }: { code: LegCode; medial: boolean }) {
-  const point = legLandmarks[code];
   const ankleY = medial ? medialAnkleY : lateralAnkleY;
-  const cun = "cun" in point ? point.cun : undefined;
   const { achillesAtTwoCun, achillesAtFiveCun, soleusAtFiveCun } = medialCalf;
   return <>
     <path d="M92 24Q85 60 93 86Q69 135 88 182L91 224Q78 249 92 262Q109 277 142 269L182 266Q202 255 187 249L145 239Q134 230 139 211L147 82Q163 48 149 24Z"
@@ -45,7 +34,6 @@ function SideLeg({ code, medial }: { code: LegCode; medial: boolean }) {
     <path d={medial
       ? `M84 153Q83 164 ${achillesAtFiveCun.x} ${achillesAtFiveCun.y}Q89 196 ${achillesAtTwoCun.x} ${achillesAtTwoCun.y}Q88 228 91 246`
       : "M94 83Q72 122 86 157Q100 191 95 224L91 246"} fill="none" stroke="#718F7E" strokeWidth="5" strokeLinecap="round" />
-    {cun != null && <Measure x={62} start={code === "sp8" ? 81 : ankleY} end={point.y} label={`${cun}寸`} />}
     <Badge x={medial ? 123 : 121} y={101} number={1} />
     <Badge x={medial ? 116 : 123} y={ankleY} number={2} />
     <text x="203" y="55">脚を{medial ? "内側" : "外側"}から</text>
@@ -58,9 +46,6 @@ function SideLeg({ code, medial }: { code: LegCode; medial: boolean }) {
 }
 
 function Posterior({ code }: { code: LegCode }) {
-  const point = legLandmarks[code];
-  const upper = code === "bl55" || code === "bl56";
-  const cun = "cun" in point ? point.cun : undefined;
   const { medialEnd, lateralEnd, lateralTendon } = posteriorKnee;
   return <>
     <path d={`M78 20Q76 38 ${medialEnd} ${poplitealY}Q63 104 86 159Q96 187 98 218Q94 246 106 262Q122 271 141 260Q151 249 146 225Q146 201 158 173Q180 112 ${lateralEnd} ${poplitealY}Q166 38 163 20Z`} fill="#F4E8D8" stroke="#9B8D7D" strokeWidth="2" />
@@ -71,7 +56,6 @@ function Posterior({ code }: { code: LegCode }) {
     <path d="M121 79V145M112 149Q120 162 117 242M130 150Q124 183 126 245" fill="none" stroke="#9D755C" strokeWidth="2" />
     <path d="M114 241Q127 235 139 244Q143 255 132 259Q123 263 110 254Z" fill="#E8BE9D" stroke="#B97049" strokeWidth="1.5" />
     {(code === "bl59" || code === "bl58") && <path d="M147 162L145 218Q146 232 141 236" fill="none" stroke="#B97049" strokeWidth="4" />}
-    {cun != null && <Measure x={57} start={upper ? poplitealY : posteriorAnkleY} end={point.y} label={`${cun}寸`} />}
     <Badge x={129} y={249} number={1} />
     <text x="202" y="25">右脚を後ろから</text>
     <text x="202" y="52">ひざ裏のしわ</text>

@@ -246,7 +246,7 @@
 .atlas-guide-scope > p { max-width: 70ch; color: var(--atlas-muted); font-size: .875rem; }
 .atlas-guide-scope > p + p { margin-top: .5rem; }
 
-.atlas-diagrams { display: grid; align-items: stretch; gap: .75rem; margin-top: 1rem; }
+.atlas-diagrams { display: grid; align-items: stretch; gap: .75rem; margin-top: 1rem; scroll-margin-block-start: 5.5rem; }
 .atlas-figure {
   display: flex;
   min-width: 0;
@@ -260,6 +260,23 @@
 }
 
 .atlas-figure > figcaption { margin-top: .4rem; color: var(--atlas-muted); font-size: .875rem; line-height: 1.6; text-align: center; }
+.atlas-figure--measured { justify-content: flex-start; }
+.atlas-dimension-overlay { --dimension-stroke: #075b54; --dimension-halo: #fffaf2; pointer-events: none; }
+.atlas-dimension-leader { fill: none; stroke: var(--dimension-stroke); stroke-width: 1.5; stroke-dasharray: 3 2; }
+.atlas-dimension-halo, .atlas-dimension-stroke { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.atlas-dimension-halo { stroke: var(--dimension-halo); stroke-width: 5; }
+.atlas-dimension-stroke { stroke: var(--dimension-stroke); stroke-width: 2; }
+.atlas-dimension-origin { fill: var(--dimension-halo); stroke: var(--dimension-stroke); stroke-width: 1.8; }
+.atlas-dimension-alternative { fill: var(--dimension-stroke); stroke: var(--dimension-halo); stroke-width: 1.75; }
+.atlas-dimension-text { fill: var(--dimension-stroke); stroke: var(--dimension-halo); stroke-width: 4; stroke-linejoin: round; paint-order: stroke fill; font-size: 16px; font-weight: 700; }
+.atlas-dimension-guide { margin-top: .5rem; font-size: .8125rem; }
+.atlas-dimension-key { display: grid; gap: .375rem; padding: 0; margin: .4rem auto .125rem; max-width: 28rem; list-style: none; text-align: start; }
+.atlas-dimension-key li { display: grid; grid-template-columns: 1.5rem minmax(0, 1fr) auto; gap: .45rem; align-items: start; padding: .5rem .6rem; border-radius: .5rem; color: var(--atlas-ink); background: var(--atlas-soft); }
+.atlas-dimension-key-letter { display: grid; place-items: center; width: 1.5rem; height: 1.5rem; border: 1px solid var(--atlas-accent); border-radius: 50%; color: var(--atlas-accent); font-size: .8125rem; font-weight: 700; }
+.atlas-dimension-key-location { min-width: 0; }
+.atlas-dimension-key-location > span { display: block; color: var(--atlas-muted); font-size: .8125rem; }
+.atlas-dimension-key-value { text-align: end; font-size: .8125rem; }
+.atlas-dimension-key-value strong { color: var(--atlas-accent); font-size: 1rem; white-space: nowrap; }
 .atlas-figure--overview > svg { max-height: 12rem; }
 .atlas-figure--meridian { background: var(--bg-muted); }
 

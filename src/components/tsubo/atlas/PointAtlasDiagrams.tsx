@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import type { AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle, AtlasCloseUpProps, AtlasMarker, AtlasRegion } from "@/data/tsubo/atlas/types";
+import { getAnnotatedCloseUp } from "@/data/tsubo/atlas/closeUpMeasurements";
 import { legLandmarks } from "@/data/tsubo/atlas/legLandmarks";
+import CloseUpMeasurementArrows, { CloseUpMeasurementKey } from "./CloseUpMeasurementArrows";
 import FootDorsumRegion from "./FootDorsumRegion";
 import FootLandmarkRegion from "./FootLandmarkRegion";
 import DigitRegion from "./DigitRegion";
@@ -61,17 +63,22 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
   marker: AtlasMarker;
 }) {
   const { BodyHighlight, CloseUp } = regions[illustration.region];
-  const expandedView = marker.expanded && expandedViews[marker.expanded.view];
+  const { marker: closeUpMarker, measurements } = getAnnotatedCloseUp(point.codeLower, marker, illustration.region);
+  const measured = measurements.length > 0;
+  const expandedView = closeUpMarker.expanded && expandedViews[closeUpMarker.expanded.view];
   const bodyMap = point.codeLower === "gv14" ? bodyMapOverrides.neckBase
     : occipitalPoints.has(point.codeLower) ? bodyMapOverrides.occiput : undefined;
   const bodyArea = bodyMap?.area ?? expandedView?.area;
   const bodyLabel = bodyMap?.label ?? illustration.bodyLabel;
   const back = expandedView?.direction === "back" || Boolean(marker.legCode && legLandmarks[marker.legCode].view === "posterior");
   const bodyDirection = back ? "背面" : "正面";
-  const landmarkNames = marker.expanded?.landmarks.map((id) => expandedView?.features[id].name.replace("／", "")).join("、");
+  const landmarkNames = closeUpMarker.expanded?.landmarks.map((id) => expandedView?.features[id].name.replace("／", "")).join("、");
   const closeUpAlt = expandedView
     ? `${expandedView.name}。 ${illustration.closeUpAlt} 目印は${landmarkNames}です。`
     : illustration.closeUpAlt;
+  const measureAlt = measurements.map(({ measure, originLabel, level, alternative, condition }) =>
+    `${alternative ? "代替位置。 " : condition ? condition + "。 " : ""}${level ? level + "の高さで、" : ""}${originLabel}から${measure.direction}${measure.token}。`
+  ).join(" ");
   const nearby = meridianPoints.filter(({ meridianOrder }) =>
     meridianOrder >= illustration.meridianStart && meridianOrder <= illustration.meridianEnd
   );
@@ -80,16 +87,21 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
 
   return (
     <div id="acupoint-diagram" className="atlas-diagrams atlas-target">
-      <figure className={figureClass}>
+      <figure className={measured ? `${figureClass} atlas-figure--measured` : figureClass}>
         <ZoomableAtlasDiagram label={`${point.name}の場所と目印`}>
-          <svg viewBox="0 0 340 300" role="img" aria-label={closeUpAlt} className="mx-auto block w-full max-w-[340px]">
-            <CloseUp marker={marker} label={`${point.name} ${point.code}`} />
-            <circle data-point-marker="" cx={marker.x} cy={marker.y} r="6" fill="#7F3520" stroke="#FFF9F0" strokeWidth="2" />
+          <svg viewBox="0 0 340 300" role="img" aria-label={measured ? `${closeUpAlt} ${measureAlt}` : closeUpAlt} className="mx-auto block w-full max-w-[340px]">
+            <CloseUp marker={closeUpMarker} label={`${point.name} ${point.code}`} measured={measured} />
+            {measured && <CloseUpMeasurementArrows measurements={measurements} />}
+            <circle data-point-marker="" cx={closeUpMarker.x} cy={closeUpMarker.y} r={measured ? "5" : "6"} fill="#7F3520" stroke="#FFF9F0" strokeWidth="2" />
           </svg>
         </ZoomableAtlasDiagram>
         <figcaption>
           {expandedView && <span className="block text-sm font-semibold">{expandedView.name}</span>}
           {illustration.closeUpCaption}
+          {measured && <>
+            <p className="atlas-dimension-guide">白丸が起点、矢印が測る方向です。{measurements.some(({ alternative }) => alternative) && "ひし形は代替位置です。"}</p>
+            <CloseUpMeasurementKey measurements={measurements} />
+          </>}
         </figcaption>
       </figure>
 
