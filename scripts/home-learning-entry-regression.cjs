@@ -52,7 +52,7 @@ assert.match(home, /<input(?=[^>]*type="search")(?=[^>]*name="q")[^>]*>/);
 const destinationPairs = [['/tsubo','はり太郎のツボ図鑑'], ['/learn','はり太郎の東洋医学'], ['/clinical','はり太郎の臨床演習']];
 for (const [href, name] of destinationPairs) assert(home.includes('href="' + href + '">' + name + '</a>'), name);
 assert(home.includes('href="/symptoms"'));
-assert.match(home, /<span class="platform-mark" aria-hidden="true">知<\/span>/);
+assert.doesNotMatch(home, />\s*知\s*</);
 assert.match(home, /<h1[^>]*>ツボと東洋医学<\/h1>/);
 assert.match(home, /href="\/learn"><svg[^>]*>[\s\S]*?<\/svg>東洋医学を学ぶ<\/a>/);
 const collection = JSON.parse(home.match(/<script type="application\/ld\+json">(.*?)<\/script>/)[1]);

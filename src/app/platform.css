@@ -27,19 +27,7 @@
 }
 
 .platform-hero-heading {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(.65rem, 2vw, 1.5rem);
   margin-bottom: clamp(1rem, 2.6vw, 1.65rem);
-}
-
-.platform-mark {
-  color: var(--warm-readable);
-  font-family: var(--font-serif);
-  font-size: clamp(3.25rem, 7vw, 5.75rem);
-  font-weight: 600;
-  line-height: 1.1;
 }
 
 .platform-title {

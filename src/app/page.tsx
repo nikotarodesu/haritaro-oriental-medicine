@@ -24,11 +24,8 @@ export default function HomePage() {
         <div className="platform-hero-grid">
           <div className="platform-hero-copy">
             <div className="platform-hero-heading">
-              <span className="platform-mark" aria-hidden="true">知</span>
-              <div>
-                <h1 id="platform-title" className="platform-title">{TITLE}</h1>
-                <p className="platform-intro-text">{INTRO}</p>
-              </div>
+              <h1 id="platform-title" className="platform-title">{TITLE}</h1>
+              <p className="platform-intro-text">{INTRO}</p>
             </div>
             <PlatformSearchForm />
             <nav className="platform-shortcuts" aria-label="学ぶ・調べる">
