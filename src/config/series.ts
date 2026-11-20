@@ -1,6 +1,6 @@
 import { BookOpen, ClipboardList, MapPin } from "lucide-react";
 
-export const PLATFORM_DESCRIPTION = "全361経穴を名前・部位・経絡から探せます。東洋医学の講義や症状別の解説を読み、模擬症例で見立てや配穴を練習できます。";
+export const PLATFORM_DESCRIPTION = "361のツボの位置を図鑑で調べられます。陰陽や経絡を図解講義で学び、模擬症例で見立てを練習できます。";
 
 export const SERIES = {
   dictionary: {

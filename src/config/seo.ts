@@ -2,8 +2,15 @@ import { SITE_NAME } from "./brand";
 
 export { SITE_NAME } from "./brand";
 export const SITE_ORIGIN = "https://www.haritaro.jp";
-export const SITE_TITLE = `ツボ図鑑・東洋医学の図解講義｜${SITE_NAME}`;
-export const SHARED_OG_IMAGES = [{ url: SITE_ORIGIN + "/og-image.png", width: 1200, height: 630, alt: SITE_NAME }];
+export const HOME_HEADING = "東洋医学を学ぶ";
+export const SITE_SECTIONS_LABEL = "ツボ図鑑・図解講義・臨床演習";
+export const SITE_TITLE = `${HOME_HEADING}｜${SITE_SECTIONS_LABEL}｜${SITE_NAME}`;
+export const SHARED_OG_IMAGES = [{
+  url: SITE_ORIGIN + "/og-image.png?v=20261120",
+  width: 1200,
+  height: 630,
+  alt: SITE_TITLE,
+}];
 
 export function acupointPageTitle(point: { name: string; kana: string; code: string }) {
   return `${point.name}（${point.kana}・${point.code}）の場所と注意点｜はり太郎のツボ図鑑`;
@@ -32,6 +39,7 @@ export function collectionPageJsonLd(
     name,
     description,
     inLanguage: "ja",
+    isPartOf: { "@id": SITE_ORIGIN + "/#website" },
     mainEntity: {
       "@type": "ItemList",
       name: listName,

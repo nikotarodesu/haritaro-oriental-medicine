@@ -1,5 +1,6 @@
 import { PAGE_REVISIONS, SITE_REVISED_AT, ACUPOINT_PAGE_REVISED_AT } from "@/config/contentUpdates";
 import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
+import { SITE_ORIGIN } from "@/config/seo";
 import type { MetadataRoute } from "next";
 import { ALL_ACUPOINTS } from "@/data/tsubo";
 import { ARTICLES } from "@/data/articleData";
@@ -12,7 +13,7 @@ import { SYMPTOMS } from "@/data/symptomData";
 import { SYMPTOM_GUIDES_REVISED_AT, symptomGuidePath } from "@/utils/symptomGuidePaths";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://www.haritaro.jp";
+  const baseUrl = SITE_ORIGIN;
 
   // 静的公開ページ台帳（実質更新日に基づく lastModified）
   const staticPages: MetadataRoute.Sitemap = [
@@ -21,7 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/editorial-policy`, lastModified: new Date("2026-10-02") },
     {
       url: `${baseUrl}`,
-      lastModified: new Date("2026-09-26"),
+      lastModified: new Date(PAGE_REVISIONS["/"]),
     },
     {
       url: `${baseUrl}/curriculum`,

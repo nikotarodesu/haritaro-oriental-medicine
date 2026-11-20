@@ -12,7 +12,7 @@ import MobileBottomNav from "@/components/navigation/MobileBottomNav";
 import PwaRegister from "@/components/pwa/PwaRegister";
 import PwaInstallPrompt from "@/components/pwa/PwaInstallPrompt";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import { SHARED_OG_IMAGES, SITE_NAME, SITE_TITLE } from "@/config/seo";
+import { SHARED_OG_IMAGES, SITE_NAME, SITE_ORIGIN, SITE_TITLE } from "@/config/seo";
 import { BRAND_INK } from "@/config/brand";
 import { PLATFORM_DESCRIPTION } from "@/config/series";
 import { getAdSensePublisherId } from "@/components/ads/config";
@@ -33,14 +33,15 @@ const notoSansJP = Noto_Sans_JP({
 });
 
 const publisherId = getAdSensePublisherId();
+const siteDescription = `${SITE_NAME}は東洋医学の学習サイトです。${PLATFORM_DESCRIPTION}`;
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.haritaro.jp"),
+  metadataBase: new URL(SITE_ORIGIN),
   applicationName: SITE_NAME,
   title: {
     default: SITE_TITLE,
     template: `%s | ${SITE_NAME}【東洋医学・鍼灸】`,
   },
-  description: PLATFORM_DESCRIPTION,
+  description: siteDescription,
   other: publisherId ? { "google-adsense-account": publisherId } : undefined,
   verification: {
     google: "EQTaU5bcfwSgFprso13sFiyF35uZ5IHhaGz56GXqXbo",
@@ -48,10 +49,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ja_JP",
-    url: "https://www.haritaro.jp",
+    url: SITE_ORIGIN,
     siteName: SITE_NAME,
     title: SITE_TITLE,
-    description: PLATFORM_DESCRIPTION,
+    description: siteDescription,
     images: SHARED_OG_IMAGES,
   },
   twitter: {
@@ -128,26 +129,27 @@ export default function RootLayout({
               "@graph": [
                 {
                   "@type": "WebSite",
-                  "@id": "https://www.haritaro.jp/#website",
-                  "url": "https://www.haritaro.jp",
+                  "@id": SITE_ORIGIN + "/#website",
+                  "url": SITE_ORIGIN,
                   "name": SITE_NAME,
-                  "description": PLATFORM_DESCRIPTION,
+                  "description": siteDescription,
+                  "inLanguage": "ja",
                   "publisher": {
-                    "@id": "https://www.haritaro.jp/#organization",
+                    "@id": SITE_ORIGIN + "/#organization",
                   },
                   "potentialAction": {
                     "@type": "SearchAction",
-                    "target": "https://www.haritaro.jp/search?q={search_term_string}",
+                    "target": SITE_ORIGIN + "/search?q={search_term_string}",
                     "query-input": "required name=search_term_string",
                   },
                 },
                 {
                   "@type": "Organization",
-                  "@id": "https://www.haritaro.jp/#organization",
+                  "@id": SITE_ORIGIN + "/#organization",
                   "name": SITE_NAME,
-                  "url": "https://www.haritaro.jp",
-                  "logo": "https://www.haritaro.jp/icon-512.png",
-                  "description": PLATFORM_DESCRIPTION,
+                  "url": SITE_ORIGIN,
+                  "logo": SITE_ORIGIN + "/icon-512.png",
+                  "description": siteDescription,
                   "founder": {
                     "@type": "Person",
                     "name": "はり太郎",

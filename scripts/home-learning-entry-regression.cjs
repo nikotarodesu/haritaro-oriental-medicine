@@ -53,9 +53,12 @@ const destinationPairs = [['/tsubo','はり太郎のツボ図鑑'], ['/learn','�
 for (const [href, name] of destinationPairs) assert(home.includes('href="' + href + '">' + name + '</a>'), name);
 assert(home.includes('href="/symptoms"'));
 assert.doesNotMatch(home, />\s*知\s*</);
-assert.match(home, /<h1[^>]*>ツボと東洋医学<\/h1>/);
-assert.match(home, /href="\/learn"><svg[^>]*>[\s\S]*?<\/svg>東洋医学を学ぶ<\/a>/);
+assert.match(home, /<h1[^>]*>東洋医学を学ぶ<\/h1>/);
+assert.match(home, /href="\/learn"><svg[^>]*>[\s\S]*?<\/svg>図解講義を読む<\/a>/);
 const collection = JSON.parse(home.match(/<script type="application\/ld\+json">(.*?)<\/script>/)[1]);
+assert.equal(collection.name, '東洋医学を学ぶ');
+assert(home.includes(collection.description), 'The homepage description matches the visible introduction');
+assert.equal(collection.isPartOf['@id'], 'https://www.haritaro.jp/#website');
 assert.deepEqual(collection.mainEntity.itemListElement.map(item => [new URL(item.url).pathname, item.name]), destinationPairs);
 assert(home.indexOf('id="platform-series-title"') < home.indexOf('id="platform-index-title"'));
 assert(!home.includes('学習履歴を確認中') && !home.includes('href="/pricing"') && !home.includes('href="/notes"'));

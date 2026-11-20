@@ -3,12 +3,10 @@ import { ArrowRight, BookOpen, Compass, LibraryBig } from "lucide-react";
 import PlatformSearchForm from "@/components/search/PlatformSearchForm";
 import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
 import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
-import { collectionPageJsonLd } from "@/config/seo";
-import { SERIES } from "@/config/series";
+import { collectionPageJsonLd, HOME_HEADING } from "@/config/seo";
+import { PLATFORM_DESCRIPTION, SERIES } from "@/config/series";
 
 const SERIES_ENTRIES = Object.values(SERIES);
-const TITLE = "ツボと東洋医学";
-const INTRO = "361のツボを図で調べ、東洋医学の講義を読み、模擬症例で見立てを練習できます。";
 const POINTS = [
   { code: "li4", label: "合谷", location: "手の甲" },
   { code: "st36", label: "足三里", location: "ひざの下" },
@@ -19,17 +17,17 @@ const POINTS = [
 export default function HomePage() {
   return (
     <div className="platform-home">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: collectionPageJsonLd("/", TITLE, INTRO, "目的から探す", SERIES_ENTRIES) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: collectionPageJsonLd("/", HOME_HEADING, PLATFORM_DESCRIPTION, "目的から探す", SERIES_ENTRIES) }} />
       <section className="platform-container platform-intro" aria-labelledby="platform-title">
         <div className="platform-hero-grid">
           <div className="platform-hero-copy">
             <div className="platform-hero-heading">
-              <h1 id="platform-title" className="platform-title">{TITLE}</h1>
-              <p className="platform-intro-text">{INTRO}</p>
+              <h1 id="platform-title" className="platform-title">{HOME_HEADING}</h1>
+              <p className="platform-intro-text">{PLATFORM_DESCRIPTION}</p>
             </div>
             <PlatformSearchForm />
             <nav className="platform-shortcuts" aria-label="学ぶ・調べる">
-              <Link href={SERIES.reading.href}><BookOpen aria-hidden="true" />東洋医学を学ぶ</Link>
+              <Link href={SERIES.reading.href}><BookOpen aria-hidden="true" />図解講義を読む</Link>
               <Link href={ACUPUNCTURE_GUIDE.href}><LibraryBig aria-hidden="true" />{ACUPUNCTURE_GUIDE.label}</Link>
               <Link href="/symptoms"><Compass aria-hidden="true" />症状ガイド</Link>
             </nav>
