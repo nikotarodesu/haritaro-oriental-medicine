@@ -64,7 +64,7 @@ export const SUPPLEMENTAL_ATLAS_STUDIES: readonly AtlasStudy[] = [
     guide: "stress-insomnia",
     result: "主評価の不眠重症度は両群とも改善しました。点数の低下は神門を含む群で平均7.58点、申脈を含む群で5.71点で、統計上の群間差は明確ではありませんでした。",
     design: "慢性不眠の76人を、神門・心兪・太衝・肝兪を使う群と、百会・申脈・照海・安眠を使う群に分けた無作為化試験です。",
-    limits: "偽鍼や通常ケアだけの群はありません。配穴全体を比べているため、一穴ずつの寄与や組み合わせの相乗効果は分かりません。",
+    limits: "比べたのはツボの組み合わせ全体です。偽鍼、通常ケアのみ、ツボを一つだけ使う場合の群はないため、何を加えると差が出るかは分かりません。",
     sources: [{ label: "Li ほか · Nature and Science of Sleep（2025）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC12338104/" }],
   },
   {
@@ -105,7 +105,7 @@ export const SUPPLEMENTAL_ATLAS_STUDIES: readonly AtlasStudy[] = [
     otherPoints: "痛むところに応じた阿是穴も使用。電気刺激を加えた場所は太衝・足三里・三陰交・陰陵泉です。",
     result: "治療終了10分後の痛みは、鎮痛薬に複数穴への鍼を加えた群で、量の異なる鎮痛薬だけの2群より低かったと報告されました。",
     design: "急性痛風の90人を、少量の鎮痛薬に鍼を加える群、同量の鎮痛薬だけの群、通常量の鎮痛薬だけの群に分けた無作為化試験です。",
-    limits: "主に治療直後の痛みを調べた試験です。尿酸値を長期に保つ効果や、大都・太白など各経穴の寄与は分かりません。",
+    limits: "主に治療直後の痛みを調べています。尿酸値が長く保たれるか、大都や太白を一穴だけ使ったときも同じ結果かは分かりません。",
     sources: [{ label: "Liu ほか · 中国鍼灸（2023）", url: "https://pubmed.ncbi.nlm.nih.gov/37429655/" }],
   },
   {
@@ -147,7 +147,7 @@ export const SUPPLEMENTAL_ATLAS_STUDIES: readonly AtlasStudy[] = [
     comparisonPoints: ["li4", "pc6", "st36", "st37", "st39", "sp9"],
     result: "5日間の治療のうち一部の日で、手足の群より腹部の群の腹痛が軽かったと報告されました。腹部の張りの点数や腹囲では明確な群間差がありませんでした。",
     design: "急性膵炎の60人を対象に、共通の併用治療に腹部への鍼・電気刺激を加える群と、手足への鍼・電気刺激を加える群を比較した無作為化試験です。",
-    limits: "短期間の入院中の比較です。共通治療だけの群がなく、どちらの配穴が一穴ずつどの程度寄与したかは分かりません。",
+    limits: "入院中の短い期間に、二つの配穴を比較しました。共通の治療だけを受ける群や、ツボを一つずつ使う群はありません。",
     sources: [{ label: "Li ほか · 鍼刺研究（2018）", url: "https://pubmed.ncbi.nlm.nih.gov/30585471/" }],
   },
   {
@@ -318,7 +318,7 @@ export const SUPPLEMENTAL_ATLAS_STUDIES: readonly AtlasStudy[] = [
     points: ["te16", "bl10", "gb20", "gb12", "li4", "lr3", "gb41"],
     result: "4週後、同じ配穴のうち三穴に温鍼を加えた群の方が、頭痛の強さや頻度、首の動きの指標が改善したと報告されました。",
     design: "頸部に由来する頭痛の61人の無作為化試験です。天牖を含む同じ七穴に施術し、一方の群で天柱・風池・完骨に温鍼を用いました。",
-    limits: "鍼をしていない比較群はありません。天牖は両群で鍼を受けた部位で、天牖単独の寄与は評価していません。",
+    limits: "どちらの群にも天牖を使いました。鍼を受けない群との違いや、天牖だけを使った場合の結果は分かりません。",
     sources: [{ label: "Yao ほか · 中国鍼灸（2016）", url: "https://pubmed.ncbi.nlm.nih.gov/27509601/" }],
   },
   {
@@ -443,7 +443,7 @@ export const SUPPLEMENTAL_ATLAS_STUDIES: readonly AtlasStudy[] = [
     otherPoints: "印堂も使用しました。",
     result: "14日目の朝の測定では、搾乳量は指圧の群で平均38.1 mL、授乳を支える目的で用いられた滴剤の群で31.9 mLでした。",
     design: "早産児の母親54人を、天池・膺窓・印堂への指圧と偽の滴剤を用いる群、別の場所への偽指圧と滴剤を用いる群に分けた無作為化試験です。",
-    limits: "一回の搾乳量の比較です。乳児の成長や長期の授乳量、各経穴の寄与は評価していません。",
+    limits: "測ったのは一回の搾乳量です。乳児の成長、長い期間の授乳量、ツボを一穴ずつ使ったときの違いは調べていません。",
     sources: [{ label: "Pouresmaeili ほか · Iran J Nurs Midwifery Res（2026）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC12823067/" }],
   },
   {

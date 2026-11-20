@@ -37,7 +37,7 @@
 - [気虚・気滞のミニ症例](https://www.haritaro.jp/clinical#pattern-exercise): 3つの架空の相談を読み、気虚・気滞・情報不足のどれを選ぶかと、その理由を答えます。
 - [弁証の練習](https://www.haritaro.jp/simulator): 選択条件に対応する候補、矛盾、不足情報、学習用配穴例を表示します。疾患の除外や確定診断を行いません。
 - [理由を選ぶ段階的症例演習](https://www.haritaro.jp/simulator#case-training): 架空の3症例で追加質問、安全判断、候補、判断根拠、治則、再評価を練習します。判断と理由を別々に採点します。
-- [架空症例教材](https://www.haritaro.jp/cases): 所見と判断の理由を学ぶ教材です。実例アーカイブは掲載を保留しています。
+- [模擬症例20本](https://www.haritaro.jp/cases): 頭痛や不眠などの架空の相談を読み、受診の確認、本人が話した症状、舌や脈の所見を照らして回答します。選んだ後に、その所見から候補を考える理由を読めます。
 - [配穴の練習](https://www.haritaro.jp/practice/haiketsu): 経穴の組み合わせと選定理由を学習用に整理します。個人の治療効果や施術適応を自動判定しません。
 - [鑑別例を見比べる](https://www.haritaro.jp/simulator#comparison-examples): 弁証の練習内にある固定3組の比較教材。
 

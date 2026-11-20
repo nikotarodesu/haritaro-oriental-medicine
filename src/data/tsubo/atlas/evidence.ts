@@ -45,7 +45,7 @@ const existingStudies: readonly AtlasStudy[] = [
     guide: "headache-stiff-neck",
     result: "鍼を受けた群では、偽鍼の群に比べ、試験の17〜20週に片頭痛があった日数が4週間当たり平均2.1日多く減りました。",
     design: "前兆のない反復性片頭痛の150人が参加した無作為化試験です。通常のケアに複数のツボへの鍼を加えた群、偽鍼を加えた群、通常のケアのみの群を比較しました。",
-    limits: "複数のツボを使った施術全体の結果です。個々のツボの寄与や首肩こりへの効果、指で押したときの効果は、この試験の評価範囲外です。",
+    limits: "複数のツボを使った施術全体を比べています。ツボを一つずつ使った場合、首や肩のこりを対象にした場合、指で押した場合は調べていません。",
     sources: [{ label: "Xu ほか · BMJ（2020）", url: "https://www.bmj.com/content/368/bmj.m697" }],
   },
   {
@@ -80,7 +80,7 @@ const existingStudies: readonly AtlasStudy[] = [
     guide: "stomach-fatigue",
     result: "4週時点に全体として改善した割合の推定値は、鍼の群で83.0%、偽鍼の群で51.6%でした。",
     design: "食後愁訴症候群の診断基準を満たした18〜65歳の278人を対象に、複数のツボへの鍼と偽鍼を比較した試験です。",
-    limits: "改善割合は参加者が答えた全体的な変化に基づきます。胃炎、逆流、原因を問わない食欲低下への効果や、各ツボの寄与は評価していません。",
+    limits: "改善した割合は、参加者が症状全体について答えた結果です。胃炎や逆流、別の原因で食欲が落ちた人への効果や、ツボ一つずつの効果は調べていません。",
     sources: [
       { label: "Yang ほか · Annals of Internal Medicine（2020）", url: "https://pubmed.ncbi.nlm.nih.gov/32422066/" },
       { label: "使用した経穴の資料 · 試験登録 ISRCTN12511434", url: "https://www.isrctn.com/ISRCTN12511434" },
@@ -107,7 +107,7 @@ const existingStudies: readonly AtlasStudy[] = [
     guide: "lower-back-pain-sciatica",
     result: "8週時点の日常動作のスコアは、鍼の群と模擬鍼の群のどちらも、通常のケアのみの群より改善しました。鍼と模擬鍼の間に明確な差はありませんでした。",
     design: "慢性の機械的腰痛のある成人638人を、標準化した鍼、対象に応じた鍼、模擬鍼、通常のケアに割り付けた試験です。掲載の組み合わせは標準化した鍼の群で使われました。",
-    limits: "この結果からは経穴の選び方や各ツボの寄与を判断できません。坐骨神経痛と診断された人は試験の対象外です。",
+    limits: "いくつかのツボを使った結果です。どのツボが結果に関わったかは分かりません。坐骨神経痛と診断された人は対象に含まれていません。",
     sources: [{ label: "Cherkin ほか · Archives of Internal Medicine（2009）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC2832641/" }],
   },
   {
@@ -119,7 +119,7 @@ const existingStudies: readonly AtlasStudy[] = [
     guide: "knee-joint-pain",
     result: "6週時点では、電気鍼の群で、偽鍼の群より痛み・こわばり・身体機能を合わせた指標が改善しました。",
     design: "変形性膝関節症の480人を対象に、膝周辺と脚の複数のツボへの電気鍼を、同じ位置で皮膚を刺さない偽鍼と比較した試験です。",
-    limits: "複数のツボと電気刺激を含む施術を評価した結果です。各ツボの寄与は分からず、軟骨の再生や長期の構造改善を確かめるには、別の研究が必要です。",
+    limits: "複数のツボへの電気刺激を含む施術全体の結果です。一穴ずつの効果や、軟骨や関節の形が長い期間で変わるかは調べていません。",
     sources: [{ label: "Hang ほか · eClinicalMedicine（2026）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC13223986/" }],
   },
   {
@@ -131,7 +131,7 @@ const existingStudies: readonly AtlasStudy[] = [
     guide: "allergic-rhinitis-hayfever",
     result: "8週時点では、鍼の群で偽鍼の群より鼻炎に関する生活の質の指標が改善し、抗ヒスタミン薬の使用が少ないと報告されました。",
     design: "季節性アレルギー性鼻炎の422人を対象とした試験です。必要に応じた薬を使える条件で、鍼・偽鍼・薬のみを比較しました。",
-    limits: "研究者は差の大きさが患者にとって意味のある程度かは不確かとしています。共通の経穴に個別の選穴を加えた治療で、各ツボの寄与を比較していません。",
+    limits: "生活への支障や薬の使用を表す点数には差がありました。診療で意味を持つほどの差かは不確かだと、研究者は述べています。共通のツボに人ごとのツボを加えた試験で、一穴ずつの比較はしていません。",
     sources: [
       { label: "Brinkhaus ほか · Annals of Internal Medicine（2013）", url: "https://pubmed.ncbi.nlm.nih.gov/23420231/" },
       { label: "使用した経穴の資料 · 同試験の施術報告", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC3983860/" },
@@ -159,7 +159,7 @@ const existingStudies: readonly AtlasStudy[] = [
     guide: "chronic-fatigue-lethargy",
     result: "5週時点では、通常のケアに体鍼を加えた群で疲労のスコアが低くなりました。主解析の13週時点では、各群の疲労のスコアに明確な差はありませんでした。",
     design: "慢性疲労症候群または特発性慢性疲労の150人で、通常のケアに体鍼を加える群、別方式の鍼を加える群、通常ケアのみの群を比較しました。掲載の経穴は体鍼の群で使われました。",
-    limits: "偽鍼を置かず、受けた治療を参加者が知っていた試験です。期待の影響や各ツボの寄与は分からず、原因を問わない疲労全般には当てはめられません。",
+    limits: "偽鍼の群はなく、参加者は自分がどの方法を受けたかを知っていました。期待が結果に与えた影響や、ツボ一つずつの効果は分かりません。この試験と原因が異なる疲れにも同じ結果になるかは別に調べる必要があります。",
     sources: [{ label: "Kim ほか · Trials（2015）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC4515016/" }],
   },
   {

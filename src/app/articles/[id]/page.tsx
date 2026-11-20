@@ -295,7 +295,7 @@ export default async function ArticleDetailPage({ params }: Props) {
         </article>
 
         {/* E-E-A-T 専門家監修情報カード */}
-        <AuthorSupervisorCard topic={`${article.title}（${article.category}）`} />
+        <AuthorSupervisorCard />
         {ad && <AdSenseSlot key={article.id} {...ad} />}
 
       </div>

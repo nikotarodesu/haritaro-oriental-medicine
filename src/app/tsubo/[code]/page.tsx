@@ -400,7 +400,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             <a href="#acupoint-diagram"><Layers aria-hidden="true" className="h-4 w-4" />図</a>
           )}
           <a href={hasSafetyWarning ? "#acupoint-safety-warning" : "#acupoint-cautions"}><ShieldCheck aria-hidden="true" className="h-4 w-4" />注意事項</a>
-          <a href="#acupoint-research"><BookOpen aria-hidden="true" className="h-4 w-4" />効果と組み合わせ</a>
+          <a href="#acupoint-research"><BookOpen aria-hidden="true" className="h-4 w-4" />研究と古典の配穴</a>
           <a href="#acupoint-sources"><FileText aria-hidden="true" className="h-4 w-4" />出典</a>
         </nav>
 
@@ -773,7 +773,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         {/* 作成中の臨床記録がある場合の文脈を保つ */}
         <ClinicalToolBridge />
 
-        <AuthorSupervisorCard topic={`${point.name}（${point.code}）の経穴解説・取穴・臨床応用`} />
+        <AuthorSupervisorCard />
 
         {/* 8. 免責・出典・更新情報 */}
         <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] text-sm text-[#59615D] dark:text-[#AFBDC8] space-y-1.5">

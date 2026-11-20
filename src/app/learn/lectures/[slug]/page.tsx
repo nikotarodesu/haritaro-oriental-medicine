@@ -220,7 +220,7 @@ export default async function ReadingLecturePage({ params }: Props) {
           )}
         </details>
       )}
-      <AuthorSupervisorCard topic={unit.title} revisedAt={READING_LECTURES_REVISED_AT} />
+      <AuthorSupervisorCard revisedAt={READING_LECTURES_REVISED_AT} />
     </article>
   );
 }

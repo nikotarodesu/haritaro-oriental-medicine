@@ -17,7 +17,7 @@ const examples = [
     title: '動くと疲れる',
     presentation: '買い物や掃除をすると疲れ、休むと楽になる。最近は食事の量が減り、話し声にも力がない。',
     answer: 'qi-deficiency',
-    explanation: '動くと疲れ、休むと楽になる経過や、声に力がないことが、気虚を考える手がかりです。',
+    explanation: 'この例では、買い物や掃除で疲れ、休むと楽になります。声に力がなく、食事の量も減ったため、気虚を候補に挙げます。',
     followUp: '疲れ始めた時期や、睡眠・食事の変化を尋ねます。',
   },
   {
@@ -25,7 +25,7 @@ const examples = [
     title: '緊張するとお腹が張る',
     presentation: '仕事で緊張が続くとお腹が張り、ため息が増える。気分が落ち着くと、お腹の張りも軽くなる。',
     answer: 'qi-stagnation',
-    explanation: '緊張に伴って張りとため息が増え、落ち着くと軽くなる経過が、気滞を考える手がかりです。',
+    explanation: 'おなかの張りとため息が緊張したときに増え、落ち着くと軽くなる点から、気滞を候補に挙げます。',
     followUp: '食事との関係や、張りが出る時間帯も確かめます。',
   },
   {
@@ -55,7 +55,7 @@ export default function ClinicalPatternExercise() {
     <section id="pattern-exercise" tabIndex={-1} className={styles.mini} aria-labelledby="pattern-exercise-heading">
       <div className={styles.miniHeading}>
         <h2 id="pattern-exercise-heading" className={styles.sectionTitle}>ミニ症例で見立てを練習</h2>
-        <p>3つの架空症例を読み、動くと疲れる、緊張するとお腹が張る、だるさの経過が分からない、といった違いから見立てを考えます。答えのあとに、理由と次に聞く質問を読めます。</p>
+        <p>動くと疲れる、緊張するとおなかが張る、だるさの経過が分からない。三つの架空の相談を読み、気虚・気滞・情報不足のいずれかを選びます。選ぶと、理由と次に聞く質問が表示されます。</p>
       </div>
       <div className={styles.exampleSelector} role="group" aria-label="架空の相談を選ぶ">
         {examples.map((example, index) => (

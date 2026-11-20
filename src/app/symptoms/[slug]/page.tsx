@@ -129,14 +129,14 @@ export default async function SymptomGuidePage({ params }: Props) {
           {lectureId && lecture && <li><Link href={`/curriculum/${lectureId}`} className={linkClass}>{lecture.title}</Link></li>}
           {article && <li><Link href={`/articles/${article.id}`} className={linkClass}>{article.title}</Link></li>}
           {clinicalCase && <li><Link href={`/cases/${clinicalCase.id}`} className={linkClass}>{clinicalCase.title}（架空症例）</Link><p className="text-sm">症例の答えを自分の症状の診断や施術の指示に置き換えないでください。</p></li>}
-          <li><Link href="/diagnosis" className={linkClass}>気血水の傾向を振り返る学習用チェック</Link><p className="text-sm">回答から傾向を整理するツールです。症状の原因や病名を判定する検査ではありません。</p></li>
+          <li><Link href="/diagnosis" className={linkClass}>気虚・気滞などの分類を12問で学ぶ</Link><p className="text-sm">食後の疲れや夕方の足のむくみが、質問票ではどの分類に入るかを読めます。症状の原因や病名を判定する検査ではありません。</p></li>
         </ul>
         {relatedGuides.length > 0 && <div className="space-y-2 border-t border-[#D6DED7] pt-4 dark:border-[#34483C]"><h3 className="text-lg font-bold">同じ分野のガイド</h3><ul className="space-y-1">{relatedGuides.map(item => <li key={item.id}><Link href={symptomGuidePath(item)} className={linkClass}>{item.title}</Link></li>)}</ul></div>}
         <Link href="/symptoms" className={linkClass}>症状別ガイドの一覧へ</Link>
       </section>
       <section id="sources" className={sectionClass}>
         <h2 className="atlas-section-title">出典と確認範囲</h2>
-        <p className="text-sm">受診の目安、日常の工夫、鍼灸の一般的な安全性について、参照した資料と該当箇所を示します。経穴の研究は、対象になった人や評価した内容と合わせて読みます。</p>
+        <p className="text-sm">受診の目安や日常の工夫を調べた資料です。鍼灸の研究を読むときは、どんな症状の人を集め、何と比べ、何を測ったかを確かめてください。</p>
         <ul className="space-y-4">{sources.map(source => <li key={source.url} className="space-y-1"><p className="text-sm font-semibold">{source.scope}</p><a href={source.url} target="_blank" rel="noopener noreferrer" className={linkClass}>{source.title} ↗</a><p className="text-sm text-[#59615D] dark:text-[#AFBDC8]">{source.section}</p></li>)}</ul>
         <SymptomResearchReferences papers={papers} />
       </section>
@@ -145,8 +145,8 @@ export default async function SymptomGuidePage({ params }: Props) {
         <p>{SYMPTOM_GUIDANCE_SCOPE}</p>
         <p><time dateTime={revision}>{revision}</time> 更新 · <Link href="/editorial-policy" className={linkClass}>専門家監修は未完了</Link></p>
       </details>
-      <AuthorSupervisorCard topic={guide.title} />
-      <Link href={`/contact?source=${encodeURIComponent(symptomGuidePath(guide))}`} className={linkClass}>このガイドの記述・出典について連絡する</Link>
+      <AuthorSupervisorCard />
+      <Link href={`/contact?source=${encodeURIComponent(symptomGuidePath(guide))}`} className={linkClass}>内容の誤りや出典について連絡する</Link>
     </article>
   );
 }

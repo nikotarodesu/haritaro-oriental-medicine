@@ -5,12 +5,11 @@ import { ArrowRight } from "lucide-react";
 
 interface Props {
   className?: string;
-  topic?: string;
   pointLocationChecked?: boolean;
   revisedAt?: string;
 }
 
-export default function AuthorSupervisorCard({ className = "", topic, pointLocationChecked, revisedAt }: Props) {
+export default function AuthorSupervisorCard({ className = "", pointLocationChecked, revisedAt }: Props) {
   return (
     <div
       className={`p-5 sm:p-6 rounded-2xl bg-panel border border-frame space-y-4 ${className}`}
@@ -30,7 +29,7 @@ export default function AuthorSupervisorCard({ className = "", topic, pointLocat
               </span>
             </div>
             <p className="text-sm text-muted mt-0.5">
-              鍼灸院院長 ／ 東洋医学臨床・教育研究家
+              鍼灸院院長・サイトの執筆者
             </p>
             <p className="text-sm text-muted mt-0.5">2017年免許取得・{AUTHOR_OPENED_AT}開業</p>
             {revisedAt && <p className="text-sm text-muted mt-0.5">講義更新 <time dateTime={revisedAt}>{revisedAt}</time></p>}
@@ -47,11 +46,9 @@ export default function AuthorSupervisorCard({ className = "", topic, pointLocat
       </div>
 
       <div className="space-y-2 text-sm text-muted leading-relaxed">
-        <p>{pointLocationChecked ? "ツボの標準位置をWHO原本と照合しました。専門家による監修は進行中です。" : "原典との照合や専門家の監修は、教材ごとに進めています。"}<Link href="/editorial-policy" className="underline">出典の確認方針と監修状況を見る</Link></p>
-        <p>
-          {topic ? "「" + topic + "」の学習用解説です。" : "東洋医学の学習・臨床推論を支援する解説です。"}
-          古典の記述、研究の結果、用語を説明するためのたとえは区別して掲載しています。研究を読むときは、誰を対象に何と比べたかを文献で確認してください。この教材だけで診断や施術の安全性を判断せず、体調については医療機関に相談してください。
-        </p>
+        <p>{pointLocationChecked ? "ツボの標準位置をWHOの資料と照合しています。" : "参照した資料と、確認できた範囲を各ページに記載しています。"} 専門家による監修は完了していません。</p>
+        <p>症状の原因や、施術を受けられるかどうかは、医療機関などで相談してください。</p>
+        <Link href="/editorial-policy" className="underline">出典の確認と監修の状況</Link>
       </div>
     </div>
   );

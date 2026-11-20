@@ -5,7 +5,7 @@ import type { AcupointAtlasArticle } from "@/data/tsubo/atlas/types";
 
 const sectionLinks = [
   { href: "#acupoint-location", label: "場所と図版" },
-  { href: "#acupoint-research", label: "効果と組み合わせ" },
+  { href: "#acupoint-research", label: "研究と古典の配穴" },
   { href: "#acupoint-cautions", label: "注意点" },
   { href: "#acupoint-sources", label: "出典" },
 ];

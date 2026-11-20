@@ -11,7 +11,7 @@ import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
 
 const heading = "東洋医学を図で学ぶ";
 const title = `${heading}｜全${readingUnits.length}講義と要点まとめ｜${SITE_NAME}`;
-const introduction = `陰陽・五行、気・血・津液、経絡。食事や眠りなど身近な場面をたどりながら、東洋医学の考え方を全${readingUnits.length}講で学べます。`;
+const introduction = `陰陽では何を比べるか、気・血・津液にはどんな役割があると考えるか。食事や眠りの例と図を使って、全${readingUnits.length}講で学びます。`;
 const description = `${introduction} 各講義に要点まとめと確認問題があります。`;
 
 export const metadata: Metadata = {
@@ -46,7 +46,7 @@ export default function LearnGuidePage() {
           </Link>
           <Link href={readingUnits[0].href} className="learning-option">
             <span className="learning-option-icon"><BookOpen size={21} aria-hidden="true" /></span>
-            <span className="learning-option-label"><strong>基本から順に学ぶ</strong><span>全{readingUnits.length}講の第1講を開く</span></span>
+            <span className="learning-option-label"><strong>第1講から読む</strong><span>東洋医学では何を確かめるか</span></span>
             <ArrowRight size={18} aria-hidden="true" />
           </Link>
           <Link href="/learn/essentials" className="learning-option">

@@ -98,7 +98,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
           ))}
         </ul>
       </section>
-      <AuthorSupervisorCard topic={point.name} pointLocationChecked />
+      <AuthorSupervisorCard pointLocationChecked />
     </article>
   );
 }

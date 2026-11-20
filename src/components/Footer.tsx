@@ -28,7 +28,7 @@ export default function Footer() {
           </details>)}
         </div>
         <div className="site-footer-notice space-y-2">
-          <p>東洋医学の学習と考え方の整理を支援する教材です。個別の診断・治療を代替しません。急な症状や悪化がある場合は医療機関へご相談ください。</p>
+          <p>ツボの位置を図で調べ、東洋医学の講義を読み、架空の症例で練習できるサイトです。急な症状や悪化があるときは、医療機関に相談してください。</p>
           <a href="https://note.com/hari_taro" target="_blank" rel="noopener noreferrer" className="ui-text-link">はり太郎のnote（外部サイト）</a>
         </div>
         <div className="site-footer-legal">

@@ -40,32 +40,32 @@ const TYPE_LECTURE_MAP: Record<string, { lectureId: string; lectureTitle: string
   qi_deficiency: {
     lectureId: "lecture-pathomechanism-3",
     lectureTitle: "気の不足と運動の失調",
-    conceptName: "気虚の病態と生成メカニズム",
+    conceptName: "疲れやすさと気虚",
   },
   qi_stagnation: {
     lectureId: "lecture-pathomechanism-3",
     lectureTitle: "気の不足と運動の失調",
-    conceptName: "気滞の病態と気機不暢",
+    conceptName: "張りやつかえと気滞",
   },
   blood_deficiency: {
     lectureId: "lecture-pathomechanism-5",
     lectureTitle: "血の失調と瘀血の形成",
-    conceptName: "血虚の病態と滋養不足",
+    conceptName: "乾きや立ちくらみと血虚",
   },
   blood_stasis: {
     lectureId: "lecture-pathomechanism-5",
     lectureTitle: "血の失調と瘀血の形成",
-    conceptName: "瘀血の伝統的な分類と関連所見",
+    conceptName: "同じ部位の痛みと瘀血",
   },
   water_retention: {
     lectureId: "lecture-pathomechanism-4",
     lectureTitle: "津液代謝の失調",
-    conceptName: "水滞・痰飲の代謝失調",
+    conceptName: "むくみや重だるさと水滞",
   },
   yang_deficiency: {
     lectureId: "lecture-pathomechanism-6",
     lectureTitle: "寒熱と陰陽の失調",
-    conceptName: "陽虚・温煦作用の低下",
+    conceptName: "冷えと陽虚",
   },
 };
 
@@ -529,7 +529,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                   <div className="p-4 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E8E1D1] dark:border-[#2A3B4A] space-y-2">
                     <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
                       <HeartPulse className="w-4 h-4" />
-                      起こりやすい身体のサイン
+                      {selfResult.type === "neutral" ? "回答の確認" : "この分類で挙がる所見の例"}
                     </span>
                     <ul className="text-xs text-[#59615D] dark:text-[#A0B0BC] space-y-1 pl-4 list-disc">
                       {selfResult.symptoms.map((s, idx) => (
@@ -541,13 +541,13 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                   <div className="p-4 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E8E1D1] dark:border-[#2A3B4A] space-y-2">
                     <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
                       <Utensils className="w-4 h-4" />
-                      おすすめの食材・養生
+                      日常の食材の例と、記録すること
                     </span>
                     <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                       {selfResult.advice.food.join("、")}
                     </p>
                     <span className="text-[11px] text-[#737C77] dark:text-[#8899A6] block pt-1">
-                      生活養生: {selfResult.advice.lifestyle}
+                      {selfResult.advice.lifestyle}
                     </span>
                   </div>
                 </div>
@@ -568,16 +568,11 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                           <BookOpen className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-[#1E3D34] dark:text-[#83BEA8] block">
-                              講義で確認：{targetLecture.conceptName}
-                            </span>
-                            <span className="text-[10px] px-1.5 py-0.2 rounded bg-white/70 dark:bg-[#121920] text-[#1E3D34] dark:text-[#74BA9E] font-semibold border border-[#C5DED4] dark:border-[#2A5243]">
-                              カリキュラム連携
-                            </span>
-                          </div>
+                          <span className="text-xs font-bold text-[#1E3D34] dark:text-[#83BEA8] block">
+                            {targetLecture.conceptName}を講義で読む
+                          </span>
                           <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] block mt-0.5">
-                            病因・病機の講義「{targetLecture.lectureTitle}」で詳しく学べます。
+                            講義「{targetLecture.lectureTitle}」
                           </span>
                         </div>
                       </div>
@@ -602,11 +597,11 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] block">
-                            シミュレーターで配穴と鑑別を深掘り
+                            条件を変えて候補を見比べる
                           </span>
                         </div>
                         <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-tight block mt-0.5">
-                          回答上の分類「{selfResult.name}」をシミュレーターへ引き継ぎ、八綱・気血水・臓腑の伝統的な関係を学習できます。
+                          「{selfResult.name}」に対応する教材の例を開きます。冷えやほてりなどの条件を変えると、挙がる候補を見比べられます。
                         </span>
                       </div>
                     </div>
@@ -616,7 +611,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                       className="px-4 py-2.5 rounded-xl bg-[#B86924] hover:bg-[#96531B] text-white text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm whitespace-nowrap cursor-pointer"
                     >
                       <Layers className="w-3.5 h-3.5" />
-                      <span>シミュレーターで検証</span>
+                      <span>弁証の練習を開く</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -627,10 +622,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] flex items-center gap-1.5">
                       <Share2 className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                      チェック結果をシェア・保存する
-                    </span>
-                    <span className="text-[11px] text-[#737C77] dark:text-[#8899A6]">
-                      体質の記録や養生法の共有に
+                      チェック結果の保存・共有
                     </span>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">

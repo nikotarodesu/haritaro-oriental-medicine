@@ -119,7 +119,7 @@ export default function LibraryClient() {
         <div className="library-result-summary">
           <h2 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">検索結果</h2>
           <p role="status" aria-atomic="true" className="text-sm text-[#59615D] dark:text-[#A0B0BC]"><span className="sr-only">表示中：</span>{visibleResultCount}件</p>
-          <details className="reference-disclosure library-source-disclosure"><summary>出典・確認範囲</summary><div className="reference-disclosure-body"><p className="text-base leading-relaxed">古典条文（素問・霊枢・難経）、原典と書誌情報を照合した研究資料、症例教材をまとめています。研究の種類・対象・限界を確認しながら学ぶための資料集です。</p><p className="text-base leading-relaxed">書誌を照合した論文{PAPERS_DATABASE.length}件のうち、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'abstract').length}件は抄録、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'selected_full_text').length}件は本文の一部を確認しています。{PAPERS_DATABASE.filter(paper => paper.claimsStatus !== 'source-checked').length}件は結果の要約を保留中です。全件の全文照合・専門家監修は未完了です。<Link href="/editorial-policy" className="underline">出典確認・監修の進捗を見る</Link></p></div></details>
+          <details className="reference-disclosure library-source-disclosure"><summary>出典・確認範囲</summary><div className="reference-disclosure-body"><p className="text-base leading-relaxed">論文は著者・題名・掲載誌を出典と照らし合わせたものを載せています。古典では『素問』『霊枢』『難経』などの記述と、確認した箇所を読めます。</p><p className="text-base leading-relaxed">論文{PAPERS_DATABASE.length}件のうち、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'abstract').length}件は抄録、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'selected_full_text').length}件は本文の一部まで読んでいます。{PAPERS_DATABASE.filter(paper => paper.claimsStatus !== 'source-checked').length}件は結果の要約を掲載していません。全件の全文確認と専門家による監修は完了していません。<Link href="/editorial-policy" className="underline">出典の確認と監修の状況</Link></p></div></details>
         </div>
       </section>
 
@@ -213,7 +213,7 @@ export default function LibraryClient() {
                         </details>
 
                         <details className="reference-disclosure library-bibliography">
-                          <summary>書誌・確認情報</summary>
+                          <summary>著者・掲載誌と、確認した箇所</summary>
                           <div className="reference-disclosure-body">
                             <p>{paper.title}</p>
                             <p>{paper.journal} ({paper.year})</p>
@@ -235,7 +235,7 @@ export default function LibraryClient() {
                             rel="noopener noreferrer"
                             className="min-h-11 text-sm text-[#1E3D34] dark:text-[#74BA9E] font-bold hover:underline inline-flex items-center gap-1"
                           >
-                            <span>{paper.sourceUrl ? '照合した原典' : '原典の書誌'}</span>
+                            <span>{paper.sourceUrl ? '確認に使った論文を開く' : '論文の掲載情報を開く'}</span>
                             <ExternalLink className="w-3 h-3" />
                           </a>
                         )}

@@ -362,7 +362,7 @@ export default function AcupunctureGuidePage() {
           <p className="acupuncture-review"><time dateTime={revisedAt}>{revisedAt}</time> 更新 · <Link href="/editorial-policy" className="ui-text-link">出典の確認方針と監修状況</Link></p>
         </section>
       </GuideChapter>
-      <AuthorSupervisorCard topic={title} />
+      <AuthorSupervisorCard />
     </article>
   );
 }

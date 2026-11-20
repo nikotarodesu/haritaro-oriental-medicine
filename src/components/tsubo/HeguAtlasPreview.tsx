@@ -85,7 +85,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
           ))}
         </ul>
       </section>
-      <AuthorSupervisorCard topic={point.name} pointLocationChecked />
+      <AuthorSupervisorCard pointLocationChecked />
     </article>
   );
 }

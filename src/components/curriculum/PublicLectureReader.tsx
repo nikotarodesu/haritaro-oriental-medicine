@@ -90,7 +90,7 @@ export default function PublicLectureReader({ id, article, series, references, r
           scopeNote="用語の定義、学習例の背景、研究結果は、資料ごとの参照範囲を確認してください。"
         />
       )}
-      <AuthorSupervisorCard topic={article.title} />
+      <AuthorSupervisorCard />
     </article>
   );
 }

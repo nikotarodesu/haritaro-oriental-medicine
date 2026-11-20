@@ -115,9 +115,9 @@ for (const entry of ['src/components/curriculum/CurriculumIndexClient.tsx', 'src
   assert(!graph.has(resolveSource('src/data/curriculumIndexCatalog')), entry + ': the catalog builder stays on the server');
 }
 const serverPage = fs.readFileSync(path.join(root, 'src/app/curriculum/page.tsx'), 'utf8');
-assert.match(serverPage, /catalog=\{getCurriculumIndexCatalog\(\)\}/, 'The server page passes the current index catalog');
+assert.match(serverPage, /<PublicLectureIndex\b/, 'The server page renders the public lecture index');
 
-// Render the actual index against a progress fixture to verify titles, links and completion controls.
+// The older progress-aware index still exercises the original catalog and progress records.
 let resumeId = null;
 const stats = getCurriculumStats();
 mocks.set('next/link', ({ href, children, ...props }) => React.createElement('a', { href, ...props }, children));

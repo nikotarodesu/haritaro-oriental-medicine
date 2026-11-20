@@ -88,14 +88,14 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
 
   const orderText = `${point.name}は、${point.meridianShort}に並ぶ${graph.length}穴のうち${point.meridianOrder}番目です。`;
   const compareText = comparison
-    ? `近くの${comparison.name}（${comparison.code}）の位置は、${expandedPoints[comparison.codeLower].location}です。拡大図で丸印の位置を見て、骨やしわなどの目印とどれくらい離れているかを比べられます。`
+    ? `近くの${comparison.name}（${comparison.code}）は、${expandedPoints[comparison.codeLower].location}です。二つの拡大図で、丸印を探すときにどの骨やしわを目印にするか見比べてください。`
     : `経絡の図で${adjacent.map((other) => other.name).join("と")}の位置を見比べられます。それぞれの拡大図は「位置を見比べるツボ」から開けます。`;
   const technical = hasCun
-    ? "骨度分寸（こつどぶんすん）は、骨の端やしわの間を決められた数で等分して測る方法です。体の区間ごとに1寸の長さが異なります。図の比率は目印間を読むために使ってください。"
-    : "表面に見える骨・筋・しわなどの基準を体表の目印と呼びます。図の太さやくぼみの深さは読みやすく単純化しています。輪郭の色と番号から、どの目印で位置が決まるかを確認できます。";
+    ? "骨度分寸（こつどぶんすん）は、骨の端やしわの間を決まった数に等分して測る方法です。どこからどこまでを分けるかで1寸の長さが変わります。まず図で区間の両端を確かめてください。"
+    : "図の線は、骨や筋の形と皮膚のしわを読みやすくしたものです。番号と図の下の説明を照らし合わせると、どの部分がツボを探す目印か分かります。";
   const siteNote = isMidline
-    ? "このツボは体の中央線に沿って一つです。近くにあるツボの図を見るときにも、中央線からの距離を先に確かめると区別できます。"
-    : "左右にあるツボで、図は片側に印を付けています。反対側を確かめるときは、図を鏡に映した位置関係で同じ目印を使います。";
+    ? "このツボは体の中央線上に一つあります。近くのツボを比べるときは、中央線の上か、左右に離れているかを先に見ます。"
+    : "このツボは左右に一つずつあります。図は片側だけを描いているので、反対側では同じ骨やしわを反対向きにたどります。";
   const meridianStart = Math.max(1, point.meridianOrder - 2);
   const meridianEnd = Math.min(graph.length, meridianStart + 3);
 
@@ -111,7 +111,7 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
     visualOnly,
     selfCare: [careOverride ?? care.steps],
     cautions: [care.caution],
-    expert: [`${technical}${siteNote}`, ...(alternate ? [alternate] : [])],
+    expert: [technical, siteNote, ...(alternate ? [alternate] : [])],
     symptomLinks: symptom
       ? [{ href: `/symptoms/${symptom[0]}`, label: symptom[1] }]
       : [{ href: "/symptoms", label: "症状から探す" }],

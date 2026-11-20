@@ -862,16 +862,16 @@ export default function ThreeStageSimulator() {
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="font-serif font-bold text-sm sm:text-base text-ink">
-                        💡 複雑な状態も試す（寒熱錯雑・虚実夾雑・四診の判断材料）
+                        冷えとほてりが重なる例・四診の所見
                       </span>
                       {complexState !== "none" && (
                         <span className="px-2 py-0.5 rounded-full text-sm font-bold bg-[#B86924] text-white">
-                          併存モード適用中
+                          例を選択中
                         </span>
                       )}
                     </div>
                     <p className="text-sm sm:text-sm text-[#737C77] dark:text-[#8899A6] mt-0.5">
-                      二択では割り切れない「上熱下寒」「本虚標実」「四診キーサイン」を試したい方向けの拡張機能
+                      顔がほてるのに足が冷える例などを選べます。舌や脈などの所見も加えて、候補を見比べます。
                     </p>
                   </div>
                 </div>
@@ -888,7 +888,7 @@ export default function ThreeStageSimulator() {
                     <div className="flex items-center justify-between">
                       <span className="text-sm sm:text-sm font-bold text-accent flex items-center gap-1.5">
                         <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                        <span>併存病態（八綱の二択を超えた臨床像）:</span>
+                        <span>所見が重なる例を選ぶ</span>
                       </span>
                       {complexState !== "none" && (
                         <button
@@ -934,10 +934,10 @@ export default function ThreeStageSimulator() {
                     <div>
                       <span className="text-sm sm:text-sm font-bold text-accent flex items-center gap-1.5">
                         <Stethoscope className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                        <span>四診の判断材料（症例サンプルの設定・キーサイン）:</span>
+                        <span>四診で確認したことを選ぶ</span>
                       </span>
                       <p className="text-sm text-[#737C77] dark:text-[#8899A6] mt-0.5">
-                        四診をまとめて照合します。寒熱・虚実の選択条件は自動で上書きしません。
+                        選んだ寒熱・虚実と合わせて、どの所見が候補に合うかを確かめます。
                       </p>
                     </div>
 
