@@ -47,3 +47,20 @@ export interface AtlasCloseUpProps {
   marker: AtlasMarker;
   label: string;
 }
+
+export type StudySource = { label: string; url: string };
+
+export interface AtlasStudy {
+  id: string;
+  topic: string;
+  kind: "point" | "combination";
+  points: readonly string[];
+  comparisonPoints?: readonly string[];
+  additionalPointGroups?: readonly { label: string; points: readonly string[]; comparison?: true }[];
+  otherPoints?: string;
+  guide?: string;
+  result: string;
+  design: string;
+  limits: string;
+  sources: readonly StudySource[];
+}

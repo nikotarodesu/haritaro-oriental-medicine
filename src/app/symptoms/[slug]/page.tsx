@@ -15,7 +15,7 @@ import { ARTICLES } from '@/data/articleData';
 import { CLINICAL_CASES } from '@/data/clinicalCasesData';
 import { getPublicLectureArticle } from '@/data/publicLectures';
 import { pageSocialMetadata } from '@/config/seo';
-import { getSymptomGuide, getSymptomGuideJsonLd, getSymptomGuideSources, getSymptomRelatedPapers, SYMPTOM_GUIDES_REVISED_AT, SYMPTOM_LEARNING_RESOURCES, symptomGuideDescription, symptomGuidePath, symptomGuideTitle } from '@/utils/symptomGuides';
+import { getSymptomGuide, getSymptomGuideJsonLd, getSymptomGuideRevision, getSymptomGuideSources, getSymptomRelatedPapers, SYMPTOM_LEARNING_RESOURCES, symptomGuideDescription, symptomGuidePath, symptomGuideTitle } from '@/utils/symptomGuides';
 
 type Props = { params: Promise<{ slug: string }> };
 export const dynamicParams = false;
@@ -40,6 +40,7 @@ export default async function SymptomGuidePage({ params }: Props) {
   const content = PUBLIC_SYMPTOM_CONTENT[slug];
   if (!guide || !content) notFound();
   const safety = SYMPTOM_SAFETY_GUIDANCE[guide.id];
+  const revision = getSymptomGuideRevision(guide);
   const sources = getSymptomGuideSources(guide);
   const acupoints = guide.recommendedTsuboIds.flatMap(code => {
     const point = getAcupointByCode(code);
@@ -138,7 +139,7 @@ export default async function SymptomGuidePage({ params }: Props) {
       <details className="atlas-disclosure atlas-guide-scope">
         <summary>このガイドで確認できること</summary>
         <p>{SYMPTOM_GUIDANCE_SCOPE}</p>
-        <p><time dateTime={SYMPTOM_GUIDES_REVISED_AT}>{SYMPTOM_GUIDES_REVISED_AT}</time> 更新 · <Link href="/editorial-policy" className={linkClass}>専門家監修は未完了</Link></p>
+        <p><time dateTime={revision}>{revision}</time> 更新 · <Link href="/editorial-policy" className={linkClass}>専門家監修は未完了</Link></p>
       </details>
       <AuthorSupervisorCard topic={guide.title} />
       <Link href={`/contact?source=${encodeURIComponent(symptomGuidePath(guide))}`} className={linkClass}>このガイドの記述・出典について連絡する</Link>

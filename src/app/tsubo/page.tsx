@@ -13,6 +13,10 @@ const illustratedPoints = ALL_ACUPOINTS.filter(({ codeLower }) => codeLower === 
 const illustratedRegions = [...new Set(illustratedPoints.map(point => point.bodyPart))].map(region => ({
   region, points: illustratedPoints.filter(point => point.bodyPart === region),
 }));
+const studyGroups = [
+  { label: "一つのツボに着目した研究", studies: ATLAS_STUDIES.filter(study => study.kind === "point") },
+  { label: "複数のツボを用いた研究", studies: ATLAS_STUDIES.filter(study => study.kind === "combination") },
+];
 
 // 主要な代表経穴（初期HTMLでクローラーおよびJS無効環境にも確実に渡すリンク）
 const FLAGSHIP_ACUPOINTS = [
@@ -56,11 +60,16 @@ export default function TsuboPage() {
         <TsuboInteractiveClient />
       </Suspense>
 
-      <section id="atlas-research-index" className="atlas-target" aria-labelledby="atlas-research-index-title">
+      <section id="atlas-research-index" className="atlas-target space-y-3" aria-labelledby="atlas-research-index-title">
         <h2 id="atlas-research-index-title" className="atlas-section-title">研究から探す</h2>
-        <ul className="atlas-research-index">
-          {ATLAS_STUDIES.map(study => <li key={study.id}><Link href={`/tsubo/${study.points[0]}#${study.id}`} prefetch={false}>{study.topic}</Link></li>)}
-        </ul>
+        {studyGroups.map(({ label, studies }) => (
+          <details key={label} className="atlas-disclosure atlas-region-index">
+            <summary>{label}（{studies.length}件）</summary>
+            <ul className="atlas-research-index pb-3">
+              {studies.map(study => <li key={study.id}><Link href={`/tsubo/${study.points[0]}#${study.id}`} prefetch={false}>{study.topic}</Link></li>)}
+            </ul>
+          </details>
+        ))}
       </section>
 
       <section aria-labelledby="illustrated-points" className="space-y-3">

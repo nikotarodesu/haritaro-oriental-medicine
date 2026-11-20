@@ -37,7 +37,8 @@ async function main() {
   const { getPublicLectureArticle } = load('src/data/publicLectures');
   const { CLINICAL_CASES } = load('src/data/clinicalCasesData');
   const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
-  const { ATLAS_STUDIES, getAcupointStudies, getSymptomStudies } = load('src/data/tsubo/atlas/evidence');
+  const { ATLAS_STUDIES, getAcupointStudies, getStudyPointRole, getSymptomStudies } = load('src/data/tsubo/atlas/evidence');
+  const { AtlasStudyCard } = load('src/components/tsubo/AcupointResearch');
   const { VERIFIED_PAPERS } = load('src/data/references/papersData');
   const ResearchReferences = load('src/components/symptoms/SymptomResearchReferences').default;
   const helpers = load('src/utils/symptomGuides');
@@ -58,9 +59,28 @@ async function main() {
   assert.equal(new Set(ATLAS_STUDIES.map(study => study.id)).size, ATLAS_STUDIES.length, 'Evidence index uses distinct anchors');
   for (const study of ATLAS_STUDIES) {
     assert.equal(study.kind === 'point', study.points.length === 1, `${study.id}: point and combination studies are labelled separately`);
-    assert(study.points.every(code => pointCodes.has(code) && getAcupointStudies(code).includes(study)), `${study.id}: every studied point has a detail route`);
-    assert((study.comparisonPoints || []).every(code => pointCodes.has(code) && !study.points.includes(code)), `${study.id}: comparator points have their own role`);
+    const pointGroups = [
+      { points: study.points, role: 'main' },
+      { points: study.comparisonPoints || [], role: 'comparison' },
+      ...(study.additionalPointGroups || []).map(group => ({
+        points: group.points,
+        role: group.comparison ? 'comparison' : 'additional',
+      })),
+    ];
+    for (const { points, role } of pointGroups) {
+      assert(points.every(code => pointCodes.has(code) && getStudyPointRole(study, code) === role && getAcupointStudies(code).includes(study)), `${study.id}: each ${role} point appears on its detail page`);
+    }
+    assert(study.sources.length && study.sources.every(source => source.label && new URL(source.url).protocol === 'https:'), `${study.id}: cites a source`);
     assert(!study.guide || SYMPTOMS.some(guide => guide.id === study.guide), `${study.id}: related guide exists`);
+  }
+  for (const { code, studyId, label } of [
+    { code: 'li1', studyId: 'si1-postpartum-milk-volume', label: '比較群で使われたツボ' },
+    { code: 'bl57', studyId: 'sciatica-herniated-disk', label: '条件に応じて追加されたツボ' },
+  ]) {
+    const study = getAcupointStudies(code).find(candidate => candidate.id === studyId);
+    const html = renderToStaticMarkup(React.createElement(AtlasStudyCard, { study, currentCode: code }));
+    assert(html.indexOf(label) >= 0 && html.indexOf(label) < html.indexOf(study.result), `${code}: research role appears before the outcome`);
+    assert(study.sources.every(source => html.includes(source.url)), `${code}: direct sources are visible in the disclosure`);
   }
 
   for (const guide of SYMPTOMS) {
@@ -117,8 +137,10 @@ async function main() {
     assert(indexHtml.includes(`id="${guide.id}"`), `${guide.id}: old fragment URL still resolves`);
     assert(indexHtml.includes(`href="${pathname}"`), `${guide.id}: detail URL is discoverable without JavaScript`);
     assert.equal(sitemap.filter(page => new URL(page.url).pathname === pathname).length, 1, `${guide.id}: one sitemap entry`);
-    assert.equal(sitemap.find(page => new URL(page.url).pathname === pathname).lastModified.toISOString().slice(0, 10), helpers.SYMPTOM_GUIDES_REVISED_AT, `${guide.id}: substantive page update date`);
-    assert.equal(schema['@graph'][0].dateModified, helpers.SYMPTOM_GUIDES_REVISED_AT, `${guide.id}: structured data reflects the revision date`);
+    const revision = helpers.getSymptomGuideRevision(guide);
+    assert.equal(sitemap.find(page => new URL(page.url).pathname === pathname).lastModified.toISOString().slice(0, 10), revision, `${guide.id}: substantive page update date`);
+    assert.equal(schema['@graph'][0].dateModified, revision, `${guide.id}: structured data reflects the revision date`);
+    assert(html.includes(`<time dateTime="${revision}">${revision}</time>`), `${guide.id}: editorial disclosure reflects the revision date`);
   }
   const invalidParams = Promise.resolve({ slug: 'missing-guide' });
   await assert.rejects(route.default({ params: invalidParams }), /404/, 'Unknown page returns a 404');

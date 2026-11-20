@@ -1,5 +1,6 @@
 import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
 import { LEARNING_COURSES } from '@/data/learningCourses';
+import { ATLAS_EVIDENCE_REVISED_AT, REVISED_ATLAS_RESEARCH_ROUTES } from '@/data/tsubo/atlas/evidence';
 
 export const EXPANDED_ATLAS_REVISED_AT = '2026-11-19';
 
@@ -191,7 +192,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/tsubo/practice': '2026-10-04', '/pricing': '2026-10-12',
   '/diagnosis': '2026-10-18', '/cases': '2026-10-18',
   // 実際に改訂したページだけを更新する。全教材の確認日には用いない。
-  '/': '2026-10-18', '/updates': '2026-10-18', '/about': '2026-10-12',
+  '/': '2026-10-18', '/updates': ATLAS_EVIDENCE_REVISED_AT, '/about': '2026-10-12',
   '/clinical': '2026-10-12', '/practice/haiketsu': '2026-10-12', '/safety': '2026-10-03', '/editorial-policy': '2026-10-08',
   '/library': '2026-10-12', '/glossary': '2026-10-12', '/curriculum': '2026-10-18',
   '/curriculum/lecture-yinyang-1': '2026-10-03',
@@ -235,10 +236,12 @@ export const PAGE_REVISIONS: Record<string, string> = {
     '/', '/about', '/clinical', '/curriculum', '/diagnosis', '/learn', '/library',
     ...CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => `/curriculum/${id}`)),
   ].map(route => [route, '2026-11-18'])),
-  '/tsubo': '2026-11-19',
+  '/tsubo': ATLAS_EVIDENCE_REVISED_AT,
+  ...Object.fromEntries(REVISED_ATLAS_RESEARCH_ROUTES.map(route => [route, ATLAS_EVIDENCE_REVISED_AT])),
   '/symptoms': '2026-11-19',
 };
 export const SITE_UPDATES = [
+  { date: ATLAS_EVIDENCE_REVISED_AT, label: 'ツボ図鑑に出典付きの臨床研究を追加', href: '/tsubo#atlas-research-index', text: '一つのツボに着目した試験や、複数のツボを使った試験を追加しました。試験でのツボの役割、比較した相手、結果と限界を論文とともに読めます。' },
   { date: '2026-11-19', label: 'ツボ図鑑の図解と症状ガイドを読みやすく', href: '/tsubo', text: '症状別ガイドの上部から関連するツボを開けるようにしました。全361穴に「効果と組み合わせ」の欄を設け、確認した論文や古典の該当箇所を掲載しています。' },
   { date: EXPANDED_ATLAS_REVISED_AT, label: '全361穴に場所の解説と3種類の図', href: '/tsubo#illustrated-points', text: '残り284穴に、全身での位置・骨や筋などを目印にした拡大図・経絡の順序を示す図を掲載しました。各ページで場所の見つけ方、注意点、WHO資料の該当ページを確認できます。' },
   { date: '2026-11-19', label: '足裏・ひざ・すね・ふくらはぎの30穴を図解', href: '/tsubo#illustrated-points', text: 'くるぶしやひざ裏を起点にした距離と骨の前後を見分けられるように、30穴に本文と3種類の図を追加しました。' },

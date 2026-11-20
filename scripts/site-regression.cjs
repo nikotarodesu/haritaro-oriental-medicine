@@ -71,13 +71,14 @@ for(const lectureId of NATURAL_JAPANESE_EDITORIAL_REVISIONS) assert(lectureIds.h
 for(const lectureId of lectureIds) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/curriculum/${lectureId}`).lastModified.toISOString().slice(0,10),'2026-11-18',lectureId);
 const dateAt = pathname => sitemap.find(page=>new URL(page.url).pathname===pathname)?.lastModified.toISOString().slice(0,10);
 assert.equal(dateAt('/tsubo/sp11'),'2026-11-19', 'New atlas entries show the release date');
-assert.equal(dateAt('/tsubo/sp6'),'2026-11-19', 'Revised points show the release date');
+assert.equal(dateAt('/tsubo/sp6'),'2026-11-20', 'Research added as a comparison updates the release date');
 for(const pathname of ['/','/about','/clinical','/curriculum','/diagnosis','/learn','/library']) assert.equal(dateAt(pathname),'2026-11-18',pathname);
-for(const pathname of ['/tsubo','/tsubo/li4','/symptoms']) assert.equal(dateAt(pathname),'2026-11-19',pathname);
+for(const pathname of ['/tsubo','/tsubo/li4','/tsubo/pc7','/tsubo/bl57','/updates']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
+assert.equal(dateAt('/symptoms'),'2026-11-19');
 assert(!sitemap.some(page => ['/pricing','/notes','/auth/login','/account/subscription'].includes(new URL(page.url).pathname)), 'Retired services are no longer indexable sitemap destinations');
 for(const pathname of ['/learn/review']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname)?.lastModified.toISOString().slice(0,10),'2026-10-15',pathname);
 assert.equal(dateAt('/glossary'),'2026-10-12');
-for(const pathname of ['/updates','/simulator','/practice/haiketsu','/cases','/tsubo/compare']) assert.equal(dateAt(pathname),'2026-10-18',pathname);
+for(const pathname of ['/simulator','/practice/haiketsu','/cases','/tsubo/compare']) assert.equal(dateAt(pathname),'2026-10-18',pathname);
 assert(!sitemap.some(page => new URL(page.url).pathname === '/learn/courses'), 'The merged course index redirects to the learning home instead of appearing in the sitemap');
 assert(!sitemap.some(page => new URL(page.url).pathname === '/kokushi'), 'The retired exam landing page is no longer an indexable sitemap destination');
 for(const article of ARTICLES) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/articles/${article.id}`).lastModified.toISOString().slice(0,10),article.updatedAt);

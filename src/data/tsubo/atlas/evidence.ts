@@ -1,21 +1,8 @@
-type StudySource = { label: string; url: string };
-
-export interface AtlasStudy {
-  id: string;
-  topic: string;
-  kind: "point" | "combination";
-  points: readonly string[];
-  comparisonPoints?: readonly string[];
-  otherPoints?: string;
-  guide?: string;
-  result: string;
-  design: string;
-  limits: string;
-  sources: readonly StudySource[];
-}
+import { CLINICAL_STUDY_ADDITIONS } from "./clinicalStudies";
+import type { AtlasStudy, StudySource } from "./types";
 
 // Codes list the points reported in the intervention, including comparator codes only when labelled as such.
-export const ATLAS_STUDIES: readonly AtlasStudy[] = [
+const existingStudies: readonly AtlasStudy[] = [
   {
     id: "pc6-postoperative-nausea",
     topic: "手術後の吐き気・嘔吐の予防",
@@ -186,6 +173,19 @@ export const ATLAS_STUDIES: readonly AtlasStudy[] = [
   },
 ];
 
+export const ATLAS_STUDIES: readonly AtlasStudy[] = [...existingStudies, ...CLINICAL_STUDY_ADDITIONS];
+export const ATLAS_EVIDENCE_REVISED_AT = "2026-11-20";
+
+const revisedPointCodes = new Set(CLINICAL_STUDY_ADDITIONS.flatMap(study => [
+  ...study.points,
+  ...(study.comparisonPoints ?? []),
+  ...(study.additionalPointGroups ?? []).flatMap(group => group.points),
+]));
+export const REVISED_ATLAS_RESEARCH_ROUTES = [
+  ...Array.from(revisedPointCodes, code => `/tsubo/${code}`),
+  ...new Set(CLINICAL_STUDY_ADDITIONS.flatMap(study => study.guide ? [`/symptoms/${study.guide}`] : [])),
+];
+
 interface ClassicalCombination {
   points: readonly string[];
   explanation: string;
@@ -208,8 +208,15 @@ const classicalCombinations: readonly ClassicalCombination[] = [
   { points: ["lr3", "gb37"], source: { label: "『針灸大成』巻五「十二經治症主客原絡」", url: volumeFive }, explanation: "肝経の原穴である太衝と、表裏関係にある胆経の絡穴・光明を組み合わせます。経絡の分類を手がかりに選ぶ原絡配穴の例です。" },
 ];
 
+export function getStudyPointRole(study: AtlasStudy, code: string) {
+  if (study.points.includes(code)) return "main";
+  if (study.comparisonPoints?.includes(code)) return "comparison";
+  const group = study.additionalPointGroups?.find(item => item.points.includes(code));
+  if (group) return group.comparison ? "comparison" : "additional";
+}
+
 export function getAcupointStudies(code: string) {
-  return ATLAS_STUDIES.filter(study => study.points.includes(code) || study.comparisonPoints?.includes(code));
+  return ATLAS_STUDIES.filter(study => getStudyPointRole(study, code));
 }
 
 export function getSymptomStudies(slug: string) {

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { BookOpen, FlaskConical, GitMerge } from "lucide-react";
 import { getAcupointByCode } from "@/data/tsubo";
-import { getAcupointStudies, getClassicalCombinations, type AtlasStudy } from "@/data/tsubo/atlas/evidence";
+import { getAcupointStudies, getClassicalCombinations, getStudyPointRole } from "@/data/tsubo/atlas/evidence";
+import type { AtlasStudy } from "@/data/tsubo/atlas/types";
 import type { AcupointDetail } from "@/data/tsubo/types";
 
 function PointLinks({ codes, currentCode }: { codes: readonly string[]; currentCode?: string }) {
@@ -18,8 +19,10 @@ function PointLinks({ codes, currentCode }: { codes: readonly string[]; currentC
 }
 
 export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; currentCode?: string }) {
-  const label = currentCode && study.comparisonPoints?.includes(currentCode) ? "比較に用いられたツボ"
-    : study.kind === "point" ? "一つのツボに着目した研究" : "組み合わせを用いた研究";
+  const role = currentCode ? getStudyPointRole(study, currentCode) : undefined;
+  const label = role === "comparison" ? "比較群で使われたツボ"
+    : role === "additional" ? "条件に応じて追加されたツボ"
+      : study.kind === "point" ? "一つのツボに着目した研究" : "組み合わせを用いた研究";
 
   return (
     <article className="atlas-study-card atlas-target" id={study.id}>
@@ -27,12 +30,24 @@ export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; curr
       <h3>{study.topic}</h3>
       <p>{study.result}</p>
       <p className="atlas-study-limit">{study.limits}</p>
-      {study.kind === "combination" && <PointLinks codes={study.points} currentCode={currentCode} />}
+      {(study.kind === "combination" || role === "comparison") && <PointLinks codes={study.points} currentCode={currentCode} />}
       <details className="atlas-disclosure">
         <summary>研究の対象・出典</summary>
         <div className="atlas-study-details">
           <p>{study.design}</p>
           {study.otherPoints && <p>{study.otherPoints}</p>}
+          {study.comparisonPoints?.length ? (
+            <div>
+              <p>比較群で使われたツボ</p>
+              <PointLinks codes={study.comparisonPoints} currentCode={currentCode} />
+            </div>
+          ) : null}
+          {study.additionalPointGroups?.map(group => (
+            <div key={group.label}>
+              <p>{group.label}</p>
+              <PointLinks codes={group.points} currentCode={currentCode} />
+            </div>
+          ))}
           <ul className="atlas-source-links" aria-label="研究の出典">
             {study.sources.map(source => <li key={source.url}><a href={source.url}>{source.label}</a></li>)}
           </ul>
@@ -53,7 +68,7 @@ export default function AcupointResearch({ point }: { point: AcupointDetail }) {
       {studies.length ? (
         <div className="atlas-study-list">{studies.map(study => <AtlasStudyCard key={study.id} study={study} currentCode={point.codeLower} />)}</div>
       ) : (
-        <p className="atlas-evidence-empty">{point.name}を対象とした臨床研究の解説は準備中です。<a href="#acupoint-traditional" className="atlas-source-link">伝統的な使われ方</a>を読めます。</p>
+        <p className="atlas-evidence-empty">研究で使われたツボを原典で確認できたものから掲載しています。<a href="#acupoint-traditional" className="atlas-source-link">伝統的な使われ方</a>を読めます。</p>
       )}
       {combinations.length > 0 && (
         <div className="atlas-classical-combinations">
