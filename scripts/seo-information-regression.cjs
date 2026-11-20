@@ -51,6 +51,7 @@ const { subclavicularLandmarks } = load('src/data/tsubo/atlas/expanded/trunk');
 const { getAcupointGuideLinks } = load('src/utils/symptomGuides');
 const { WHO_ATLAS_PDF, whoAtlasPages } = load('src/data/tsubo/atlas/whoAtlasPages');
 const { whoLocations, whoLocationNotes } = load('src/data/tsubo/atlas/whoLocations');
+const { getWhoMeasurements } = load('src/data/tsubo/atlas/whoMeasurements');
 const expandedViews = Object.assign({}, ...['head', 'arm', 'trunk', 'back'].map(group =>
   load(`src/components/tsubo/atlas/expanded/${group}Views`)[`${group}Views`]
 ));
@@ -64,6 +65,15 @@ assert.deepEqual(Object.keys(whoLocations).sort(), standardPointCodes, 'Every WH
 for (const code of standardPointCodes) {
   assert(whoLocations[code].endsWith('。'), code + ' has a complete location summary');
   assert(whoAtlasPages[code] >= 35 && whoAtlasPages[code] <= 240, code + ' links to a point in the WHO manual');
+  for (const copy of [whoLocations[code], whoLocationNotes[code] ?? '']) {
+    const measures = getWhoMeasurements(code, copy);
+    assert.deepEqual(Array.from(measures, measure => measure.token), copy.match(/\d+(?:\.\d+)?(?:指寸|指幅|寸)/g) ?? [], code + ' shows all published measurements');
+    for (const { start, direction, span, amount, unit } of measures) {
+      assert(start && direction, code + ' ties each ruler to its anatomical starting point and direction');
+      assert(!span || unit === '寸' && amount <= span[1], code + ' fits the applicable anatomical span');
+      assert(unit !== '指寸' || amount <= 1, code + ' fits the illustrated single finger-cun scale');
+    }
+  }
   if (code !== 'li4') {
     assert(ATLAS_ARTICLES[code].sources.some(({ url }) => url === `${WHO_ATLAS_PDF}#page=${whoAtlasPages[code]}`), code);
   }
@@ -78,6 +88,13 @@ assert.match(whoLocationNotes.st40, /外へ1指幅/);
 assert.match(whoLocations.gb32, /膝裏の横じわから上へ7寸/);
 assert.match(whoLocations.lr7, /陰陵泉（SP9）から後ろへ1寸/);
 assert.match(whoLocations.sp11, /衝門側から3分の1.*縫工筋と長内転筋の間/);
+for (const [code, amount, length] of [['pc6', 2, 12], ['sp6', 3, 13], ['cv4', 3, 5], ['sp13', 4.3, 5]]) {
+  const [measure] = getWhoMeasurements(code, whoLocations[code]);
+  assert.equal(measure.amount, amount, code);
+  assert.equal(measure.span?.[1], length, code);
+}
+assert.equal(getWhoMeasurements('st4', whoLocations.st4)[0].unit, '指寸');
+assert.equal(getWhoMeasurements('st40', whoLocationNotes.st40)[0].unit, '指幅');
 assert.equal(Object.keys(expandedPoints).length, 284);
 for (const [code, point] of Object.entries(expandedPoints)) {
   const master = getAcupointByCode(code);

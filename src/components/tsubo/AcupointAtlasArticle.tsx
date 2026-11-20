@@ -36,7 +36,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
         <Paragraphs paragraphs={article.location} />
-        <WhoPointLocation code={point.codeLower} />
+        <WhoPointLocation code={point.codeLower} pointName={point.name} />
         <div className="mt-5">
           <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} />
         </div>

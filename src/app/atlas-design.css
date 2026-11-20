@@ -68,19 +68,50 @@
 .cun-guide { padding-bottom: 2.5rem; }
 .cun-guide-target { scroll-margin-block-start: 5.5rem; }
 .cun-guide-link { color: var(--atlas-accent); text-decoration: underline; text-underline-offset: .2em; }
-.cun-example { margin-block: 1rem 1.4rem; padding: .75rem 1rem; border: 1px solid var(--atlas-line); border-radius: .65rem; max-width: 36rem; }
-.cun-example svg { width: 100%; display: block; color: var(--atlas-muted); }
-.cun-example figcaption { font-size: .9375rem; }
-.cun-scale-labels { display: flex; justify-content: space-between; font-size: .875rem; font-weight: 600; }
-.cun-spans, .cun-finger-methods { display: grid; gap: .75rem; }
+.cun-rail, .cun-rail-tick { stroke: var(--atlas-muted); }
+.cun-rail { opacity: .5; }
+.cun-rail-active { stroke: var(--atlas-accent); }
+.cun-rail-marker { fill: var(--atlas-accent); stroke: var(--atlas-paper); }
+.cun-anatomy-outline { fill: var(--atlas-soft); stroke: var(--atlas-muted); stroke-width: 1.35; stroke-linejoin: round; }
+.cun-anatomy-detail { fill: none; stroke: var(--atlas-muted); stroke-width: 1.2; stroke-linecap: round; opacity: .68; }
+.cun-anatomy-guide { fill: none; stroke: var(--atlas-muted); stroke-width: 1; stroke-dasharray: 3 2.5; }
+.cun-anatomy-end { fill: var(--atlas-paper); stroke: var(--atlas-muted); }
+.cun-axis-label { fill: var(--atlas-accent); }
+.cun-ruler { display: block; width: 100%; }
+.cun-point-measures { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: .5rem; max-width: 39rem; margin-block: .65rem; list-style: none; }
+.cun-point-measure { min-width: 0; padding: .55rem .75rem .6rem; border-radius: .5rem; background: var(--atlas-soft); }
+.cun-measure-value { display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .6rem; line-height: 1.45; }
+.cun-measure-value strong { color: var(--atlas-accent); font-size: 1.375rem; line-height: 1.3; font-variant-numeric: tabular-nums; }
+.cun-measure-value span { font-size: .875rem; }
+.cun-scale-labels { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .5rem; padding-inline: .125rem; font-size: .8125rem; font-weight: 600; line-height: 1.45; }
+.cun-scale-labels > span:last-child { text-align: end; }
+.cun-scale-labels small { display: inline-block; margin-inline-start: .35rem; color: var(--atlas-muted); font-size: .75rem; white-space: nowrap; }
+.cun-examples, .cun-spans, .cun-finger-methods { display: grid; gap: .75rem; }
+.cun-examples { margin-block: .9rem .6rem; }
+.cun-example { display: grid; grid-template-columns: minmax(0, 6.8rem) minmax(0, 1fr); align-items: center; gap: .65rem; padding: .75rem; border: 1px solid var(--atlas-line); border-radius: .65rem; background: var(--atlas-paper); }
+.cun-example figcaption { display: grid; gap: .25rem; font-size: .875rem; line-height: 1.55; }
+.cun-example figcaption > a { width: fit-content; font-weight: 700; }
+.cun-example figcaption strong { color: var(--atlas-accent); font-size: 1.6rem; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.cun-example figcaption strong small { font-size: .95rem; margin-inline-start: .125rem; }
+.cun-example-note { margin-block: .5rem; color: var(--atlas-muted); font-size: .875rem; }
+.cun-spans-heading { margin-block: 1.25rem .55rem; font-weight: 700; }
+.cun-body-figure, .cun-finger-figure { display: block; width: 100%; }
 .cun-span { border: 1px solid var(--atlas-line); border-radius: .65rem; padding: .625rem 1rem; }
 .cun-span h3, .cun-finger-methods dt { font-weight: 700; }
 .cun-span dl > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: .75rem; padding-block: .375rem; border-top: 1px solid var(--atlas-line); font-size: .9375rem; }
 .cun-span dl { margin-top: .25rem; }
 .cun-span dd { color: var(--atlas-accent); font-weight: 700; white-space: nowrap; }
-.cun-finger-methods { margin-top: .75rem; }
-.cun-finger-methods div { border-top: 1px solid var(--atlas-line); padding-top: .5rem; }
-.cun-finger-methods dd { font-size: .9375rem; }
+.cun-finger-methods, .cun-finger-width { margin-top: .75rem; }
+.cun-finger-methods > div, .cun-finger-width { padding: .75rem; border: 1px solid var(--atlas-line); border-radius: .65rem; background: var(--atlas-paper); }
+.cun-finger-methods dd, .cun-finger-width { display: grid; grid-template-columns: minmax(0, 5.75rem) minmax(0, 1fr); align-items: center; gap: .65rem; font-size: .875rem; line-height: 1.55; }
+.cun-finger-width { max-width: 26rem; }
+@media (min-width: 52rem) {
+  .cun-examples, .cun-finger-methods { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cun-example { grid-template-columns: minmax(0, 5.85rem) minmax(0, 1fr); }
+  .cun-example figcaption { align-self: start; }
+  .cun-finger-methods dd { grid-template-columns: 1fr; align-content: start; }
+  .cun-finger-methods .cun-finger-figure { width: 6rem; }
+}
 .atlas-breadcrumb { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 .6rem; color: var(--atlas-muted); font-size: .875rem; }
 .atlas-breadcrumb a { display: inline-flex; min-height: 2rem; align-items: center; color: var(--atlas-accent); text-decoration: underline; text-underline-offset: .23em; }
 .atlas-directory-header .atlas-breadcrumb { margin-bottom: .5rem; }

@@ -36,7 +36,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
         <p>手を楽にして甲を上に向けます。人差し指の付け根から手首へ向かって、反対の手の指で骨をたどります。骨の長さの真ん中から、少し親指側にずらしたところが合谷です。拡大図でも、①の骨の中央から②の骨の方へ目を移すと位置を確かめられます。</p>
-        <WhoPointLocation code={point.codeLower} />
+        <WhoPointLocation code={point.codeLower} pointName={point.name} />
         <div className="mt-5">
           <AcupointAtlasDiagrams point={point} meridianPoints={getMeridianPoints(point.meridianId)} />
         </div>

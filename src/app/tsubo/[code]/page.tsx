@@ -447,7 +447,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             <h2>標準の位置と目印</h2>
           </div>
 
-          <WhoPointLocation code={point.codeLower} />
+          <WhoPointLocation code={point.codeLower} pointName={point.name} />
 
           <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#AFBDC8]">圧痛や響きの有無だけで位置を判断しないでください。体表位置の説明は、個人の安全な刺入経路・深度や施術の適応を示すものではありません。</p>
 
