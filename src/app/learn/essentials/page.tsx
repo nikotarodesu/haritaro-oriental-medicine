@@ -9,7 +9,7 @@ import { readingPartHref, readingUnits } from "@/data/publicLectures/readingUnit
 
 const path = "/learn/essentials";
 const title = "東洋医学の要点";
-const description = "陰陽や気・血・津液、経絡など、東洋医学の基本を一問ずつ確認できます。気になったテーマは、図や講義で深められます。";
+const description = "陰陽、気・血・津液、経絡などの基本を、短い答えと具体例で説明します。各項目の図と関連する講義も開けます。";
 
 export const metadata: Metadata = {
   title,
@@ -204,7 +204,7 @@ export default function EssentialsPage() {
     <div className="page-layout essentials-page">
       <div className="learning-guide-intro">
         <Link href="/learn" className="reader-back"><ArrowLeft aria-hidden="true" />はり太郎の東洋医学</Link>
-        <PageIntro title={title} description="陰陽、気・血・津液、経絡などの基本を、一問ずつ確認できます。" />
+        <PageIntro title={title} description={description} />
         <nav className="essentials-index" aria-label="要点のテーマ">
           {groups.map(group => (
             <a key={group.id} href={`#${group.id}`} className="page-secondary-action">{group.title}<ArrowDown size={16} aria-hidden="true" /></a>

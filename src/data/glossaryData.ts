@@ -19,7 +19,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
   鍼灸: {
     term: "鍼灸", reading: "しんきゅう", category: "鍼灸の基本",
     oneLiner: "鍼やお灸で体に刺激を加える施術の呼び名。はりきゅうとも読みます。",
-    summary: "はりは鍼具を使った刺激、灸は主にもぐさによる温熱刺激です。ツボ（経穴）は施術に使う部位を説明する手がかりになります。",
+    summary: "はりは鍼具を使い、灸は主にもぐさの熱を使います。施術で使う部位は、合谷（LI4）などツボの名前とコードで示すことがあります。",
     readingLink: { href: ACUPUNCTURE_GUIDE.href, label: "はり・お灸・ツボ押しを図で見比べる" },
   },
   灸: {
@@ -83,8 +83,8 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     reading: "ききょ",
     category: "気血水・病態",
     oneLiner: "伝統理論で、身体を動かし保つ「気」の働きが不足していると捉える証。",
-    analogy: "「バッテリーが少ない状態」という理解のための比喩で、体内のエネルギー量を測った値ではない。",
-    summary: "倦怠感、疲れやすさ、力のない声、食欲の低下などを伝統的にまとめる分類。気虚と判断しても、それだけでは疲労や息切れの原因は分からず、検査や治療が必要かも決められない。症状が続く場合は医学的な評価を受ける。",
+    analogy: "電池残量が少ない状態にたとえることがある。体内のエネルギーを測った値ではない。",
+    summary: "すぐに疲れる、声に力がない、食欲が落ちるといった所見を、伝統医学では気虚の候補として考える。疲労や息切れの原因はこの分類だけでは分からない。症状が続く場合は医療機関に相談する。",
     relatedLectureId: "lecture-pathomechanism-3",
     relatedToolUrl: "/diagnosis",
     relatedToolTitle: "気血水セルフチェック"
@@ -127,7 +127,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     reading: "おけつ",
     category: "気血水・病態",
     oneLiner: "伝統理論で、「血」の巡りが滞っていると捉える証。",
-    analogy: "「流れが滞った水路」という、伝統的な分類を理解するための比喩。",
+    analogy: "水路の途中で水が流れにくくなる様子にたとえることがある。",
     summary: "固定した部位の痛み、唇や舌の暗い色、月経時の血塊などを伝統的に関連づけて学ぶ。瘀血という分類は、血液粘稠度、血栓、静脈のうっ血、微小循環障害を検査で確認したことを意味しない。痛みや出血などの原因は医学的に評価し、自己判断で薬を始めたり中止したりしない。",
     relatedLectureId: "lecture-pathomechanism-5",
     relatedToolUrl: "/diagnosis",
@@ -138,7 +138,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     reading: "すいたい",
     category: "気血水・病態",
     oneLiner: "伝統理論で、水や津液の巡りが滞っていると捉える証。痰・湿などの概念と関連づけて学ぶ。",
-    analogy: "「湿気を含んで重くなった布団」という、重だるさなどを理解するための比喩。",
+    analogy: "体が重だるい感覚を、湿気を含んだ布団の重さにたとえることがある。",
     summary: "重だるさ、むくみ、めまい、軟便などを伝統的に関連づけて学ぶ。水滞を、体内に汚れた水があるという意味や、むくみの原因を確定する診断として扱わない。水分の摂取・制限や利尿薬の使用は、この分類だけで決めず医学的な評価と指示に従う。",
     relatedLectureId: "lecture-pathomechanism-4",
     relatedToolUrl: "/diagnosis",

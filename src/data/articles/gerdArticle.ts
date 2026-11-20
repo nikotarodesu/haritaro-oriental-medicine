@@ -2,8 +2,8 @@ import { Article } from "@/types/oriental";
 
 export const GERD_ARTICLE: Article = {
   id: "east-west-integrative-gerd-gastric",
-  title: "逆流性食道炎・胃痛の東西相補アプローチ",
-  subtitle: "受診の目安、標準治療と伝統理論、補完療法の限界",
+  title: "胸やけと胃痛の違い｜逆流性食道炎と受診の目安",
+  subtitle: "症状の伝え方と、鍼灸や漢方を併用する前に確認すること",
   category: "臨床・実践知見",
   publishedAt: "2026-03-10",
   updatedAt: "2026-10-15",

@@ -448,10 +448,10 @@ export default function GlobalSearchModal({
             <div className="px-3 py-10 text-center space-y-3">
               <Search className="mx-auto h-8 w-8 text-[var(--text-secondary)]" />
               <p className="text-sm font-bold">
-                「{query}」に一致するコンテンツが見つかりませんでした
+                「{query}」に一致するページが見つかりませんでした
               </p>
               <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
-                {activeCategory !== "all" ? "検索語はそのままで、ほかのカテゴリーも探せます。" : "別の言い方や、経穴コード（例：LI4、ST36）でお試しください。"}
+                {activeCategory !== "all" ? "「すべて」を対象にすると、ほかの分類のページも検索できます。" : "ツボなら「合谷」「ごうこく」「LI4」、症状なら「肩こり」など、名前や読みで探せます。"}
               </p>
               <div className="flex flex-wrap justify-center gap-2 pt-1">
                 {activeCategory !== "all" && <button type="button" onClick={searchAllCategories} className="ui-button ui-button-primary text-sm">同じ検索語ですべてを検索</button>}

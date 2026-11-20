@@ -15,7 +15,7 @@ const path = '/clinical';
 const url = SITE_ORIGIN + path;
 const revisedAt = PAGE_REVISIONS[path];
 const title = '鍼灸の症例演習・配穴演習・見立ての練習｜はり太郎の臨床演習';
-const description = '五労チェッカーと気血水の12問チェックで生活や体調の傾向を振り返り、架空症例で問診・見立て・配穴を練習できます。';
+const description = '五労チェッカーは、座る・立つなど長く続ける動作を振り返る教材です。気血水は12問で学び、模擬症例では所見から見立てや配穴を考えます。';
 export const metadata: Metadata = {
   title: { absolute: title }, description,
   alternates: { canonical: url },
@@ -28,20 +28,20 @@ const checks = [
     kind: 'gorou',
     href: ALL_NAV_ITEMS.gorou.href,
     label: '五労チェッカー',
-    description: '見る、横になる、座る、立つ、歩く。長く続く生活動作を振り返ります。',
+    description: '見る、横になる、座る、立つ、歩く。長く続けることが多い動作を選ぶと、休憩や動き方の例が読めます。',
   },
   {
     kind: 'constitution',
     href: ALL_NAV_ITEMS.diagnosis.href,
     label: '気血水 体質セルフチェック',
-    description: '12問に答え、気虚・気滞・血虚などの伝統的な分類に照らして傾向を見ます。',
+    description: '12問の答えを振り返り、気虚・気滞・血虚などの伝統的な分類を学びます。',
   },
 ] as const;
 
 const exercises = [
-  { ...ALL_NAV_ITEMS.cases, label: '症例演習', description: '架空の症例を読み、何を先に確認するか考える' },
-  { ...ALL_NAV_ITEMS.simulator, label: '見立ての練習', description: '所見から複数の伝統的な見方を比べる' },
-  { ...ALL_NAV_ITEMS.haiketsu, label: '配穴演習', description: 'ツボの組み合わせと選ぶ理由を考える' },
+  { ...ALL_NAV_ITEMS.cases, label: '症例演習', description: '主訴・経過・四診を読み、見立ての根拠を答える' },
+  { ...ALL_NAV_ITEMS.simulator, label: '見立ての練習', description: '所見が候補の証とどこで合い、どこで食い違うか比べる' },
+  { ...ALL_NAV_ITEMS.haiketsu, label: '配穴演習', description: 'ツボを組み合わせ、選んだ理由を書く' },
 ];
 
 const schema = {
@@ -70,7 +70,7 @@ export default function ClinicalLandingPage() {
       <header className={styles.hero}>
         <div>
           <h1 id="clinical-series-heading">はり太郎の臨床演習</h1>
-          <p>生活や体調を振り返り、架空の症例で問診・見立て・配穴を練習できます。</p>
+          <p>座る・立つなどの習慣や体調をチェックできます。模擬症例では、所見を読んで見立てと配穴を考えます。</p>
         </div>
         <ClinicalHeroArtwork className={styles.heroArtwork} />
       </header>
@@ -113,14 +113,14 @@ export default function ClinicalLandingPage() {
       <ClinicalPatternExercise />
 
       <section className={styles.reading} aria-labelledby="practice-reading">
-        <h2 id="practice-reading" className={styles.sectionTitle}>架空の相談・症例を読んで考える</h2>
+        <h2 id="practice-reading" className={styles.sectionTitle}>問診・四診・配穴の講義</h2>
         <PublicLectureIndex series="practice" />
       </section>
       <ClinicalDashboard />
       <section aria-labelledby="clinical-help-heading" className="clinical-help">
         <h2 id="clinical-help-heading">利用・保存について</h2>
         <details className="rounded-xl border border-frame bg-panel px-4">
-          <summary className={`min-h-11 cursor-pointer py-3 font-semibold ${focusClass}`}>作業中の下書きの取り扱い</summary>
+          <summary className={`min-h-11 cursor-pointer py-3 font-semibold ${focusClass}`}>下書きの保存先と入力できる情報</summary>
           <div className="space-y-3 pb-4 text-sm leading-relaxed ui-muted">
             <p>作業中の下書きは、このブラウザのタブに一時保存されます。氏名・電話番号・住所は入力せず、患者番号などの記号を使ってください。自由記述にも本人を特定できる情報を含めないでください。</p>
             <Link href="/privacy" className={`inline-flex min-h-11 items-center underline ${focusClass}`}>記録と個人情報の取り扱い</Link>

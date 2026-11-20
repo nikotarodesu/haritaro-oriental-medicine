@@ -86,10 +86,10 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
   const whoPage = whoAtlasPages[point.codeLower];
   const alternate = alternateLocations[point.codeLower];
 
-  const orderText = `${point.name}は、伝統医学でツボの並びを示す${point.meridianShort}の${point.meridianOrder}番目に載ります。`;
+  const orderText = `${point.name}は、${point.meridianShort}に並ぶ${graph.length}穴のうち${point.meridianOrder}番目です。`;
   const compareText = comparison
-    ? `近くのツボと見分ける例に、${comparison.name}（${comparison.code}）があります。場所の目安は、${expandedPoints[comparison.codeLower].location}です。各ページの拡大図で、丸印の高さや目印からの距離を見比べられます。`
-    : `${point.meridianShort}の図では、${adjacent.map((other) => other.name).join("と")}との前後関係を確認できます。「関連するツボ」から同じ順序のページを開いて、体のどの範囲に移るかを図で比べてください。`;
+    ? `近くの${comparison.name}（${comparison.code}）の位置は、${expandedPoints[comparison.codeLower].location}です。拡大図で丸印の位置を見て、骨やしわなどの目印とどれくらい離れているかを比べられます。`
+    : `経絡の図で${adjacent.map((other) => other.name).join("と")}の位置を見比べられます。それぞれの拡大図は「位置を見比べるツボ」から開けます。`;
   const technical = hasCun
     ? "骨度分寸（こつどぶんすん）は、骨の端やしわの間を決められた数で等分して測る方法です。体の区間ごとに1寸の長さが異なります。図の比率は目印間を読むために使ってください。"
     : "表面に見える骨・筋・しわなどの基準を体表の目印と呼びます。図の太さやくぼみの深さは読みやすく単純化しています。輪郭の色と番号から、どの目印で位置が決まるかを確認できます。";
@@ -101,16 +101,13 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
 
   return {
     titleTopic: visualOnly ? "場所と図での見つけ方・注意点" : undefined,
-    description: `${point.name}（${point.kana}・${point.code}）の場所は${profile.location}。${view.label}の目印を示す図、${point.meridianShort}の中での位置、注意点を紹介します。`,
+    description: `${nameWithCode}の位置は、${profile.location}です。${view.label}の拡大図に、探すときの目印を示します。${point.meridianShort}での並び順と注意点も掲載しています。`,
     meridianReading: meridianReadings[point.meridianId],
     regionLabel: view.label,
-    lead: `${nameWithCode}は${view.label}にあるツボです。場所の目安は、${profile.location}です。${hasCun ? "「寸」は体の区間を等分した位置の目安です。" : ""}全身図で部位を確かめ、拡大図の番号を手がかりに位置を見つけます。`,
+    lead: `${nameWithCode}の位置は、${profile.location}です。拡大図では、位置を決める骨や筋、しわなどに番号を付けています。`,
     safetyWarning: hasHeartCaution ? heartWarning : point.codeLower === "gb21" ? "妊娠中は肩井への強い刺激を控え、施術については担当の産科へ相談してください。" : undefined,
     location: [profile.guide, view.read],
-    traditional: [
-      `${view.context}は、ツボの名前とあわせて図の目印を見てください。${orderText}同じような読みのツボが出てくる資料でも、点の記号と図の目印をそろえて読むと位置を確かめやすくなります。`,
-      compareText,
-    ],
+    traditional: [orderText, compareText],
     visualOnly,
     selfCare: [careOverride ?? care.steps],
     cautions: [care.caution],

@@ -50,7 +50,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
         <p className="reader-lead">{clinicalCase.subTitle}</p>
       </header>
       <nav aria-label="症例の進め方" className="reader-navigation">
-        <a href="#case-patient" className="page-primary-action">患者情報</a>
+        <a href="#case-patient" className="page-primary-action">症例の基本情報</a>
         <a href="#case-examination" className="page-secondary-action">四診</a>
         <a href="#case-reasoning" className="page-secondary-action">推論演習</a>
       </nav>
@@ -61,7 +61,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
       {/* ステップ 1: 患者基本情報 ＆ 主訴・現病歴 */}
       <section id="case-patient" tabIndex={-1} aria-labelledby="case-patient-title" className="case-section">
         <h2 id="case-patient-title" className="reader-section-title flex items-center gap-2">
-          <UserIcon aria-hidden="true" className="h-5 w-5 shrink-0 text-accent" />患者情報と主訴
+          <UserIcon aria-hidden="true" className="h-5 w-5 shrink-0 text-accent" />症例の基本情報と主訴
         </h2>
 
         {/* 患者属性テーブル */}
@@ -430,7 +430,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-warm" />
                 <h4 className="font-bold text-sm text-ink">
-                  この症例の学びを次につなぐ
+                  条件を変えて比べる・別の教材を読む
                 </h4>
               </div>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -445,12 +445,12 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                       <div className="flex items-center justify-between text-xs font-bold text-accent">
                         <span className="flex items-center gap-1">
                           <FlaskConical className="w-3.5 h-3.5 text-warm" />
-                          <span>シミュレーターで実験</span>
+                          <span>症例の条件を入れて候補を比べる</span>
                         </span>
                         <SlidersHorizontal className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
                       </div>
                       <p className="text-xs text-muted">
-                        八綱や臓腑を動かして配穴の変化を検証
+                        寒熱や虚実などの条件を変え、候補と配穴の例がどう変わるかを見ます。
                       </p>
                     </Link>
                   );
@@ -461,11 +461,11 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                   className="p-3.5 rounded-xl bg-panel border border-frame hover:border-accent text-left space-y-1 group transition-all block"
                 >
                   <div className="flex items-center justify-between text-xs font-bold text-accent">
-                    <span>他の症例に挑戦する</span>
+                    <span>別の模擬症例を選ぶ</span>
                     <RotateCcw className="w-3.5 h-3.5 group-hover:rotate-45 transition-transform" />
                   </div>
                   <p className="text-xs text-muted">
-                    全20の臨床症例一覧へ
+                    主訴別に20症例を掲載しています。
                   </p>
                 </Link>
 
@@ -474,11 +474,11 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                   className="p-3.5 rounded-xl bg-panel border border-frame hover:border-accent text-left space-y-1 group transition-all block"
                 >
                   <div className="flex items-center justify-between text-xs font-bold text-accent">
-                    <span>関連理論を学ぶ</span>
+                    <span>講義の目次を開く</span>
                     <BookOpen className="w-3.5 h-3.5" />
                   </div>
                   <p className="text-xs text-muted">
-                    8体系カリキュラムで病因病機を深掘り
+                    病因・病機、四診、弁証などの講義を探せます。
                   </p>
                 </Link>
 

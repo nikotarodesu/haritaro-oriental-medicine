@@ -9,7 +9,7 @@ import { normalizeSearchText, prepareSearchItem } from "@/utils/search";
 import { preparePurposeSearchQuery, rankPurposeSearchResults } from "@/utils/searchPurpose";
 
 export const metadata: Metadata = {
-  title: "ツボ・症状・東洋医学の横断検索",
+  title: "サイト内検索｜ツボ・症状・東洋医学",
   alternates: { canonical: "/search" },
   robots: { index: false, follow: true },
 };
@@ -59,11 +59,11 @@ export default async function SearchPage({ searchParams }: {
 
   return (
     <div className="page-layout platform-results">
-      <h1 className="font-serif text-3xl font-bold">横断検索</h1>
+      <h1 className="font-serif text-3xl font-bold">サイト内検索</h1>
       <PlatformSearchForm key={query} query={query} />
       {query && <section className="space-y-4" aria-labelledby="search-results-title">
         <h2 id="search-results-title" className="text-lg font-bold">「{query}」の検索結果 <span className="ui-muted">{results.length}件</span></h2>
-        {results.length === 0 ? <p className="ui-muted">ツボの読み方や経穴コード、症状名など、別の言葉で探せます。</p> : (
+        {results.length === 0 ? <p className="ui-muted">「合谷」「ごうこく」「LI4」のように、ツボの名前・読み方・番号で試してください。症状は「肩こり」のように短く入力できます。</p> : (
           <ul className="platform-result-list">
             {results.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map(item => (
               <li key={item.id}>

@@ -91,12 +91,12 @@ export default function ContactPage() {
         });
       } else {
         setStatus("error");
-        setErrorMessage(data.message || "送信に失敗しました。時間をおいて再試行してください。");
+        setErrorMessage("入力した内容はこの画面に残っています。少し時間をおいて「お問い合わせを送信する」をもう一度押してください。");
       }
     } catch (err) {
       console.error(err);
       setStatus("error");
-      setErrorMessage("通信エラーが発生しました。ネットワーク環境をご確認の上、再度お試しください。");
+      setErrorMessage("入力した内容はこの画面に残っています。インターネット接続を確認してから、もう一度送信してください。");
     }
   };
 
@@ -114,7 +114,7 @@ export default function ContactPage() {
           </Link>
         </div>
 
-        <PageIntro eyebrow="ご質問・ご意見・掲載内容の訂正" title="お問い合わせ" description="掲載内容のご指摘、使い方のご質問、取材・執筆のご依頼はこちらから。" art="notes" compact />
+        <PageIntro title="お問い合わせ" description="記事の訂正、サイトの使い方、取材や執筆について連絡できます。掲載内容については、該当するページのURLと文章を添えてください。" art="notes" compact />
 
         {/* フォームカード */}
         <div className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm transition-colors">
@@ -125,10 +125,10 @@ export default function ContactPage() {
               </div>
               <div className="space-y-2">
                 <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-                  送信が完了いたしました
+                  お問い合わせを送信しました
                 </h3>
                 <p className="text-sm sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed max-w-md mx-auto">
-                  お問い合わせいただき誠にありがとうございます。内容を確認のうえ、ご入力いただいたメールアドレス宛に折り返しご連絡いたします。
+                  内容を確認し、入力いただいたメールアドレスに返信します。
                 </p>
               </div>
               <div className="pt-4 flex flex-wrap justify-center gap-3">
@@ -165,7 +165,7 @@ export default function ContactPage() {
                 <div role="alert" className="p-4 rounded-2xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 flex items-start gap-3 text-red-700 dark:text-red-400 text-sm leading-relaxed">
                   <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-bold block">送信エラー</span>
+                    <span className="font-bold block">送信できませんでした</span>
                     <span>{errorMessage}</span>
                   </div>
                 </div>
@@ -256,7 +256,7 @@ export default function ContactPage() {
                   rows={6}
                   value={formData.message}
                   onChange={handleChange}
-                  placeholder="お問い合わせ内容を具体的にご記入ください。"
+                  placeholder="例：ツボ図鑑の〇〇ページにある△△の説明について"
                   className="min-h-12 w-full px-3.5 py-2.5 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] text-[#232826] dark:text-[#FAF8F5] text-base focus:outline-none focus:border-[#1E3D34] dark:focus:border-[#74BA9E] transition-colors resize-y leading-relaxed"
                 />
               </div>
@@ -265,7 +265,7 @@ export default function ContactPage() {
               <div className="p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#EBE4D5] dark:border-[#22303D] flex items-start gap-2.5 text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                 <ShieldCheck className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E] shrink-0 mt-0.5" />
                 <p>
-                  ご入力いただいたメールアドレスおよび個人情報は、お問い合わせへの回答・連絡の目的にのみ使用し、第三者への開示・提供は行いません。
+                  フォームの送信にはWeb3Formsを利用します。入力した内容は、返信やサイトの改善に使います。
                 </p>
               </div>
 
@@ -311,7 +311,7 @@ export default function ContactPage() {
               <span>健康相談について</span>
             </div>
             <p className="leading-relaxed">
-              個別の病状に関する医療相談・投薬判断については、医師法・医療法に基づき直接お答えいたしかねる場合があります。かかりつけの医療機関への受診をおすすめいたします。
+              このフォームでは、病状の判断や薬の選び方にはお答えできません。体調や治療の相談は、かかりつけの医療機関へお願いします。
             </p>
           </div>
         </div>

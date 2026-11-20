@@ -45,7 +45,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ success: true, message: "お問い合わせを送信しました。" }, { status: 200 });
       } else {
         return NextResponse.json(
-          { success: false, error: result.message || "送信に失敗しました。" },
+          { success: false, error: "送信できませんでした。時間をおいて、もう一度送信してください。" },
           { status: 500 }
         );
       }
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { 
           success: false, 
-          error: "現在お問い合わせシステムの初期設定中です。WEB3FORMS_ACCESS_KEYの設定をお待ちください。" 
+          error: "現在、お問い合わせフォームを利用できません。時間をおいてお試しください。"
         },
         { status: 503 }
       );
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Contact API error:", error);
     return NextResponse.json(
-      { success: false, error: "サーバー内部でエラーが発生しました。時間をおいて再試行してください。" },
+      { success: false, error: "送信できませんでした。時間をおいて、もう一度送信してください。" },
       { status: 500 }
     );
   }

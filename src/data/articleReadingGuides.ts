@@ -6,7 +6,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
   "science-of-oriental-medicine-history": {
     inserts: [
       {
-        afterHeading: "1. 工学・システム同定としてのブラックボックス解析",
+        afterHeading: "1. 外から観察できること",
         afterParagraph: 3,
         figure: {
           id: "history-observation-model",
@@ -21,7 +21,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
         },
       },
       {
-        afterHeading: "4. なぜ東洋医学は二千年以上受け継がれたのか ― 経験医学と科学的医学の相違",
+        afterHeading: "4. 診療の記録と比較試験",
         afterParagraph: 4,
         figure: {
           id: "history-experience-comparison",

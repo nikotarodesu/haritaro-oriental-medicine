@@ -29,6 +29,8 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
   meridianPoints: readonly AcupointMaster[];
   individualModel: boolean;
 }) {
+  const traditionalTitle = article.illustration.region === "expanded" ? "経絡の順番と近くのツボ" : "伝統的な使われ方";
+
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
       <AcupointArticleHeader point={point} lead={article.lead} warning={article.safetyWarning} meridianReading={article.meridianReading} />
@@ -42,10 +44,10 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         </div>
       </section>
 
-      <AcupointResearch point={point} />
+      <AcupointResearch point={point} traditionalTitle={traditionalTitle} />
 
       <section id="acupoint-traditional" className="atlas-target">
-        <h2 className={headingClass}>伝統的な使われ方</h2>
+        <h2 className={headingClass}>{traditionalTitle}</h2>
         <Paragraphs paragraphs={article.traditional} />
         <AcupointReadingLinks code={point.codeLower} editorialLinks={article.symptomLinks} />
       </section>
@@ -65,7 +67,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         <summary>詳しい解剖と位置の資料</summary>
         <div className="mt-4 space-y-4">
           <Paragraphs paragraphs={article.expert} />
-          <p className="text-sm">刺鍼（はりを刺す施術）や施灸（お灸をする施術）の手順は確認待ちです。位置の説明や模式図から個人の安全な刺入経路や深さを判断することはできません。</p>
+          <p className="text-sm">この欄は、ツボの位置と周囲の骨や筋を確かめるためのものです。はりを刺す向きや深さ、お灸の手順は安全性を確認中のため掲載していません。</p>
           {individualModel && point.crossSection && (
             <CrossSectionViewer model={getPublicCrossSectionModel(point.crossSection)} pointName={point.name} pointCode={point.code} individualModel />
           )}

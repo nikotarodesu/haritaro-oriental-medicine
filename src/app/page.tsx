@@ -8,7 +8,7 @@ import { SERIES } from "@/config/series";
 
 const SERIES_ENTRIES = Object.values(SERIES);
 const TITLE = "ツボと東洋医学";
-const INTRO = "全361経穴の図解、東洋医学の講義、架空症例で学ぶ鍼灸の臨床演習。";
+const INTRO = "361のツボを図で調べ、東洋医学の講義を読み、模擬症例で見立てを練習できます。";
 const POINTS = [
   { code: "li4", label: "合谷", location: "手の甲" },
   { code: "st36", label: "足三里", location: "ひざの下" },

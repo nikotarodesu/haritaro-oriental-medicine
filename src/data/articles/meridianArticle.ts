@@ -3,7 +3,7 @@ import { Article } from "@/types/oriental";
 export const MERIDIAN_ARTICLE: Article = {
   id: "science-of-meridians-network",
   title: "経絡を学ぶ：伝統理論と神経・結合組織の研究",
-  subtitle: "経絡の記述、作用の仮説、患者の症状や機能の変化を分けて考える",
+  subtitle: "経絡図に描かれた道筋と、神経や結合組織を調べた研究を比べる",
   category: "経穴・経絡学",
   publishedAt: "2026-03-11",
   updatedAt: "2026-10-15",

@@ -24,8 +24,8 @@ const historyLookupTerms = ["鍼灸の歴史", "日本の鍼灸の歴史", "管�
 
 const STATIC_TOOLS: SearchResultItem[] = [
   { id: "tool-learning-essentials", type: "tool", title: "東洋医学の要点", subtitle: "陰陽・気血津液・経絡などの基本を一問ずつ確認する", badge: "学習ガイド", url: "/learn/essentials", tags: ["東洋医学", "要点", "まとめ", "基礎", "陰陽", "気血津液", "経絡"] },
-  { id: 'clinical-home', type: 'tool', title: '鍼灸師の臨床ホーム', subtitle: '主訴・所見・前回記録から始める', badge: '臨床', url: '/clinical', tags: ['主訴','問診','臨床','鍼灸師'] },
-  { id: 'clinical-workspace', type: 'tool', title: '臨床記録', subtitle: '四診・候補比較・配穴の理由・再評価', badge: '臨床記録', url: '/clinical/workspace', tags: ['四診','所見','弁証','配穴','再評価'] },
+  { id: 'clinical-home', type: 'tool', title: '臨床演習', subtitle: '体質チェック、模擬症例、主訴別の確認ガイドを選ぶ', badge: '臨床', url: '/clinical', tags: ['主訴','問診','臨床','鍼灸師'] },
+  { id: 'clinical-workspace', type: 'tool', title: '臨床記録の練習', subtitle: '四診の所見、ツボを選んだ理由、次回に確かめることを書く', badge: '臨床記録', url: '/clinical/workspace', tags: ['四診','所見','弁証','配穴','再評価'] },
   ...CLINICAL_COMPLAINTS.map(item => ({ id: `clinical-${item.slug}`, type: 'tool' as const, searchRole: 'professional-guide' as const, title: `${item.title}｜鍼灸師の確認ガイド`, subtitle: item.summary, badge: '主訴別・専門家', url: `/clinical/symptoms/${item.slug}`, tags: [item.title,'主訴','問診','四診','再評価'] })),
   {
     id: "tool-kokushi",
@@ -57,9 +57,9 @@ const STATIC_TOOLS: SearchResultItem[] = [
   {
     id: "tool-library",
     type: "tool",
-    title: "医学文献・古典アーカイブ",
-    subtitle: "古典の学習用引用・文献情報を探し、出典や書誌の照合状況を確認",
-    badge: "文献アーカイブ",
+    title: "文献・古典・症例教材",
+    subtitle: "病名、ツボの名前、古典の書名で資料を探す",
+    badge: "文献",
     url: "/library",
     tags: ["古典", "素問", "霊枢", "難経", "論文", "エビデンス", "治未病", "ライブラリ"],
   },

@@ -15,7 +15,7 @@ const destinations: { href: string; title: string; description: string; art: Pag
 export default function NotFound() {
   return (
     <div className="page-layout page-layout--reading space-y-8">
-      <PageIntro eyebrow="404 ／ ページが見つかりません" title="お探しのページが見つかりませんでした" description="URLが変更されたか、現在利用できない可能性があります。検索や下の入口からお探しください。" art="reading" compact>
+      <PageIntro title="ページが見つかりません" description="URLをご確認ください。ツボの名前や記事の題名が分かるときは、サイト内検索で探せます。" art="reading" compact>
         <div className="page-actions">
           <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('haritaro:open-search'))} aria-haspopup="dialog" className="page-primary-action"><Search size={18} aria-hidden="true" />サイト内を検索</button>
           <Link href="/" className="page-secondary-action"><Home size={18} aria-hidden="true" />ホームへ戻る</Link>

@@ -210,13 +210,13 @@ function TsuboCompareContent({ points }: CompareProps) {
               aria-label="比較するツボを検索"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              placeholder="ツボ名、読みがな、経穴コードで検索して追加・入れ替え..."
+              placeholder="例：合谷、ごうこく、LI4"
               className="w-full pl-9 pr-4 py-2.5 rounded-xl text-xs sm:text-sm bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5] placeholder-[#8A948F] focus:outline-none focus:border-[#B86924]"
             />
           </div>
           {searchQuery.trim() && searchResults.length === 0 && (
             <div className="text-sm">
-              <p role="status">比較対象の経穴に見つかりませんでした。</p>
+              <p role="status">比較に追加できるツボの中に、一致するものがありません。名前、読み、経穴コードを変えて検索できます。</p>
               <Link href={`/tsubo?q=${encodeURIComponent(searchQuery.trim())}`} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
                 全361穴の図鑑で探す
               </Link>

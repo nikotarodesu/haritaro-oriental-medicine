@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: '東洋医学の用語集｜読み方
 export default function GlossaryPage() {
   const terms = Object.values(GLOSSARY_TERMS).sort((a, b) => a.reading.localeCompare(b.reading, 'ja'));
   return <div className="glossary-page page-layout space-y-6 text-[#232826] dark:text-[#FAF8F5]">
-    <PageIntro eyebrow={`${terms.length}語の小さな辞典`} title="東洋医学の用語集" description="言葉の意味を、ひとつずつ。用語・読み方・分野から探せます。" art="reading" compact />
+    <PageIntro title="東洋医学の用語集" description={`陰陽・五行・四診など${terms.length}語を掲載しています。「気虚」や「ききょ」のように、漢字や読み方で探せます。`} art="reading" compact />
     <GlossaryIndex terms={terms} />
   </div>;
 }

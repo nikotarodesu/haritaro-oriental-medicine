@@ -160,7 +160,7 @@ export default async function ArticleDetailPage({ params }: Props) {
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "コラム・文献アーカイブ",
+            "name": "東洋医学の図解記事",
             "item": "https://www.haritaro.jp/articles",
           },
           {

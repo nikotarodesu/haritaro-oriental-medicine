@@ -19,22 +19,22 @@ export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
   'auricular-cancer-pain-alimi-2003': {
     sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/14615440/', checkedAt: '2026-10-02', verificationScope: 'abstract', sourceLocator: 'PubMed 抄録。全文・付録は未照合。',
     design: 'ランダム化・盲検・対照試験', sampleSize: 90,
-    summary: '鎮痛薬使用中のがん患者を対象に耳鍼と対照介入を比較した試験です。PMID 14615440の抄録で対象・比較・評価時点を確認しました。',
-    findings: ['90人を3群に分け、2か月後の痛みを評価しました。実耳鍼群の平均痛みは開始時から36％低下し、対照群の変化は2％と報告されています。'],
-    limitations: ['研究内の平均変化であり、全患者の改善や鎮痛薬中止を保証しません。耳の神経支配や作用機序を確定する試験ではありません。'],
+    summary: '鎮痛薬を使用しても痛みが残るがん患者を対象に、耳鍼と、耳の別の位置を使った二つの対照介入を比較しました。',
+    findings: ['90人を3群に割り付け、2か月後の痛みを評価しました。耳鍼の群では開始時から36％低下し、抄録では対照介入の変化は2％と報告されています。'],
+    limitations: ['3人は1か月目に脱落し、痛みのデータがありません。8人は1か月時点の値を2か月目にも用いています。鎮痛薬を中止した場合の比較は行っていません。'],
   },
   'perimenopausal-insomnia-electroacupuncture-li-2020': {
     sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/33376432/', checkedAt: '2026-10-02', verificationScope: 'abstract', sourceLocator: 'PubMed 抄録。全文・付録は未照合。',
     design: '患者盲検・偽鍼対照ランダム化比較試験', sampleSize: 84,
-    summary: '更年期の不眠を対象とした試験です。PMID 33376432の抄録で、対象・介入回数・主要評価項目を確認しました。',
-    findings: ['84人を2群に分け、8週間に18回の介入を行いました。8週時点のPSQI変化の群間差は−2.38点（95％信頼区間−3.46〜−1.30）でした。'],
+    summary: '更年期の不眠がある84人を対象に、電気鍼と偽鍼を8週間比較した試験です。',
+    findings: ['8週間に18回の介入を行いました。終了時の睡眠の質の質問票（PSQI）は、電気鍼の群で偽鍼の群より平均2.38点多く低下しました（群間差−2.38点、95％信頼区間−3.46〜−1.30）。'],
     limitations: ['この対象と介入条件での結果です。他の原因による不眠や、固定した配穴の有効性を保証しません。施術者を含む二重盲検試験とは記載しません。'],
   },
   'meridian-response-current-electrical-pulse-hung-2020': {
     sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7352033/', checkedAt: '2026-10-02', verificationScope: 'selected_full_text', sourceLocator: '抄録・健常ボランティアの測定方法。全文の全項目・付録は未照合。',
     design: '健常者の電気特性を調べた実験研究', sampleSize: 30,
-    summary: '電気刺激に対する電流応答から経絡の物理的特性を検討した研究です。PMID 32651748およびPMC7352033を照合しました。',
-    findings: ['健常ボランティアを対象にした測定から、イオン伝導に関する仮説を提示しています。'],
+    summary: '健康な参加者に電気パルスを加え、その後に測定した電流の時間変化を調べました。',
+    findings: ['研究者は電流の時間変化をイオンの移動を表す理論と比べ、測定した応答にイオンの移動が関わるという仮説を示しています。'],
     limitations: ['疾患患者での診断精度・治療効果は検証していません。伝統的な経絡全体の実在や臓腑との一対一の対応が確立したとは扱いません。'],
   },
   'substance-p-neurogenic-spots-acupuncture-hypertension-fan-2021': {
@@ -47,7 +47,7 @@ export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
   'bibliometric-acupuncture-pain-20-years-lee-2020': {
     sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/32104058/', checkedAt: '2026-10-02', verificationScope: 'abstract', sourceLocator: 'PubMed 抄録。全文・付録は未照合。',
     design: '計量書誌学分析',
-    summary: '2000〜2019年の疼痛と鍼の研究文献4,595件を分析した研究です。PMID 32104058の抄録で分析対象を確認しました。',
+    summary: '2000〜2019年に出た鍼と痛みに関する論文4,595件を集め、発表年や研究テーマの分布を調べました。',
     findings: ['論文の出版傾向、著者・機関、研究キーワードを分析しています。4,595は患者数ではなく文献数です。'],
     limitations: ['論文数の増加を治療効果の大きさや研究の質の証明として扱いません。'],
   },

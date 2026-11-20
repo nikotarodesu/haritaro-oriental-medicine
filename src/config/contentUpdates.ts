@@ -1,6 +1,7 @@
 import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
 import { LEARNING_COURSES } from '@/data/learningCourses';
 import { ATLAS_EVIDENCE_REVISED_AT, REVISED_ATLAS_RESEARCH_ROUTES } from '@/data/tsubo/atlas/evidence';
+import { SYMPTOM_GUIDES_REVISED_AT } from '@/utils/symptomGuidePaths';
 
 export const EXPANDED_ATLAS_REVISED_AT = '2026-11-19';
 
@@ -241,9 +242,17 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/tsubo': ACUPOINT_PAGE_REVISED_AT,
   '/tsubo/basics/bone-cun': ACUPOINT_PAGE_REVISED_AT,
   ...Object.fromEntries(REVISED_ATLAS_RESEARCH_ROUTES.map(route => [route, ATLAS_EVIDENCE_REVISED_AT])),
-  '/symptoms': '2026-11-19',
+  '/symptoms': SYMPTOM_GUIDES_REVISED_AT,
+  ...Object.fromEntries([
+    '/about', '/articles', '/contact', '/editorial-policy', '/glossary', '/kikei', '/library',
+    '/learn/review', '/clinical/workspace', '/practice/haiketsu', '/privacy', '/tsubo/compare',
+    ...ARTICLE_EDITORIAL_REVISIONS.map(id => `/articles/${id}`),
+    ...LEARNING_COURSES.map(course => `/learn/courses/${course.slug}`),
+    ...['shoulder', 'back', 'headache', 'sleep', 'digestion', 'fatigue'].map(slug => `/clinical/symptoms/${slug}`),
+  ].map(route => [route, '2026-11-20'])),
 };
 export const SITE_UPDATES = [
+  { date: '2026-11-20', label: '図鑑・記事・演習の文章を改稿', href: '/articles', text: '近くのツボと図のどこを比べるか、症状が出た時刻や困った動作をどう書くか、模擬症例のどの所見を根拠に考えるかを説明し直しました。' },
   { date: '2026-11-20', label: 'ツボを探す・講義を読む・演習を始める入口を整理', href: '/', text: 'トップから3つの学び方を選べます。ツボ図鑑は検索を上部に置き、講義と模擬症例には一覧やシリーズへ戻るリンクを追加しました。' },
   { date: ACUPOINT_PAGE_REVISED_AT, label: '全361穴の位置をWHO原本と照合', href: '/tsubo/basics/bone-cun', text: 'ツボの位置欄に日本語要約とWHO原本の該当ページを掲載しました。寸・指寸・指幅の測り方は、位置欄から直接開けます。' },
   { date: ATLAS_EVIDENCE_REVISED_AT, label: '研究を載せていなかった262穴の文献を調査', href: '/tsubo#atlas-research-index', text: 'PubMedとPubMed Centralで一穴ずつ検索し、人を対象とした比較試験で使われた経穴と結果を確認できたものを追加しました。図鑑で原典と試験の限界を読めます。' },

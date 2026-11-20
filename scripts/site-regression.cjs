@@ -40,7 +40,7 @@ for(const article of ARTICLES) {
  const guide=ARTICLE_LEARNING_GUIDES[article.id]; assert(guide,article.id);
  assert(lectureIds.has(guide.lectureId),article.id+' lecture'); assert(CURRICULUM_QUIZZES[guide.lectureId],article.id+' quiz');
  assert(PROGRESSIVE_CASES.some(c=>c.id===guide.caseId),article.id+' case');
- assert.equal(article.summary,guide.summary); assert.equal(article.updatedAt,'2026-10-15');
+ assert.equal(article.summary,guide.summary); assert.equal(article.updatedAt,'2026-11-20');
 }
 const { GLOSSARY_TERMS } = load('src/data/glossaryData');
 const terms=Object.values(GLOSSARY_TERMS); assert.equal(new Set(terms.map(term=>term.term)).size,terms.length);
@@ -79,15 +79,12 @@ for (const unit of readingUnits) assert.equal(dateAt(unit.href), READING_LECTURE
 for (const pathname of ['/tsubo','/tsubo/sp11','/tsubo/sp6','/tsubo/li4','/tsubo/pc7','/tsubo/bl57']) {
   assert.equal(dateAt(pathname), ACUPOINT_PAGE_REVISED_AT, pathname + ' shows the shared acupoint release date');
 }
-for(const pathname of ['/about','/curriculum','/library']) assert.equal(dateAt(pathname),'2026-11-18',pathname);
-for(const pathname of ['/','/cases','/clinical','/diagnosis']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
+assert.equal(dateAt('/curriculum'),'2026-11-18');
+for(const pathname of ['/','/about','/articles','/cases','/clinical','/diagnosis','/glossary','/library','/learn/review','/practice/haiketsu','/symptoms','/tsubo/compare']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
 for (const pathname of ['/learn', '/learn/essentials']) assert.equal(dateAt(pathname), '2026-11-20', pathname);
 assert.equal(dateAt('/updates'),'2026-11-20');
-assert.equal(dateAt('/symptoms'),'2026-11-19');
 assert(!sitemap.some(page => ['/pricing','/notes','/auth/login','/account/subscription'].includes(new URL(page.url).pathname)), 'Retired services are no longer indexable sitemap destinations');
-for(const pathname of ['/learn/review']) assert.equal(sitemap.find(page=>new URL(page.url).pathname===pathname)?.lastModified.toISOString().slice(0,10),'2026-10-15',pathname);
-assert.equal(dateAt('/glossary'),'2026-10-12');
-for(const pathname of ['/simulator','/practice/haiketsu','/tsubo/compare']) assert.equal(dateAt(pathname),'2026-10-18',pathname);
+assert.equal(dateAt('/simulator'),'2026-10-18');
 assert(!sitemap.some(page => new URL(page.url).pathname === '/learn/courses'), 'The merged course index redirects to the learning home instead of appearing in the sitemap');
 assert(!sitemap.some(page => new URL(page.url).pathname === '/kokushi'), 'The retired exam landing page is no longer an indexable sitemap destination');
 for(const article of ARTICLES) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/articles/${article.id}`).lastModified.toISOString().slice(0,10),article.updatedAt);
@@ -95,7 +92,7 @@ const { LEARNING_COURSES, getCourseProgress } = load('src/data/learningCourses')
 const { CURRICULUM_TOTAL_CHAPTERS } = load('src/data/curriculumOutline');
 assert.equal(new Set(LEARNING_COURSES.map(course=>course.slug)).size, CURRICULUM_TOTAL_CHAPTERS);
 for (const course of LEARNING_COURSES) {
- assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/learn/courses/${course.slug}`).lastModified.toISOString().slice(0,10), '2026-10-18', course.slug + ' actual revision date');
+ assert.equal(dateAt(`/learn/courses/${course.slug}`), '2026-11-20', course.slug + ' actual revision date');
  assert(sitemap.some(page=>page.url===`https://www.haritaro.jp/learn/courses/${course.slug}`),course.slug+' sitemap');
  assert(course.steps.every(step=>lectureIds.has(step.lectureId) && CURRICULUM_QUIZZES[step.lectureId]),course.slug+' live lesson and quiz');
  const complete=Object.fromEntries(course.steps.map(step=>[step.lectureId,'2026-10-03']));

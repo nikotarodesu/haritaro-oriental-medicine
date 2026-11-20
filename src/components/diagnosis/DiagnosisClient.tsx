@@ -72,10 +72,10 @@ const TYPE_LECTURE_MAP: Record<string, { lectureId: string; lectureTitle: string
 // 該当項目なしの場合は健康や体質を推定せず、分類を保留する。
 const NEUTRAL_RESULT: DiagnosisResultType = {
   type: "neutral",
-  name: "回答上の分類保留（該当項目なし）",
-  reading: "かいとうじょうのぶんるいほりゅう",
+  name: "選んだ項目はありません",
+  reading: "",
   summary:
-    "この質問票では該当項目が選ばれていません。病気がないこと、健康状態や心身のバランスが良好であることは、この回答だけでは判断できません。気になる症状があれば医療機関へ相談してください。",
+    "項目が選ばれていないため、分類を表示していません。気になる症状があれば、選んだ項目の数にかかわらず医療機関へ相談してください。",
   symptoms: [
     "この質問票では該当項目が選ばれていません",
     "未回答・不明な所見がないかも確認してください",
@@ -88,6 +88,12 @@ const NEUTRAL_RESULT: DiagnosisResultType = {
     tsubo: [],
   },
 };
+
+function selfCheckShareLabel(result: DiagnosisResultType) {
+  return result.type === "neutral"
+    ? "気血水セルフチェックで、東洋医学の6つの分類を学べます。"
+    : `気血水セルフチェックで表示された分類は「${result.name}」でした（学習用）。`;
+}
 
 type QuestionStatus = "unconfirmed" | "applicable" | "not_applicable" | "unknown";
 
@@ -201,7 +207,7 @@ export default function DiagnosisClient({ initialTab: activeTab = "self", relate
   const handleDiagnoseSelf = () => {
     trackEvent("tool_complete", { tool_id: "diagnosis_qixueshui" });
 
-    // ゼロ選択の許容（P0要件）：0個の場合は中庸・安定傾向を表示
+    // 項目が選ばれていなければ分類を表示しない。
     if (selectedAnswers.length === 0) {
       setSelfResult(NEUTRAL_RESULT);
       scrollToResult();
@@ -248,7 +254,7 @@ export default function DiagnosisClient({ initialTab: activeTab = "self", relate
 
   const handleShareCopy = () => {
     if (!selfResult) return;
-    const shareText = `【気血水 体質セルフチェック】学習上の分類結果は「${selfResult.name}」でした！ 東洋医学の視点で気・血・水のバランスと伝統分類を学習。\nhttps://www.haritaro.jp/diagnosis\n#ハリタロー #東洋医学 #体質チェック`;
+    const shareText = `${selfCheckShareLabel(selfResult)}\nhttps://www.haritaro.jp/diagnosis\n#ハリタロー #東洋医学 #体質チェック`;
     if (navigator.clipboard) {
       navigator.clipboard.writeText(shareText);
       setCopiedShare(true);
@@ -282,7 +288,7 @@ export default function DiagnosisClient({ initialTab: activeTab = "self", relate
   const handleDiagnoseClinical = () => {
     trackEvent("tool_complete", { tool_id: "clinical_interview_qixueshui" });
 
-    // 0問選択時は中庸・安定傾向
+    // 該当する回答がなければ分類を表示しない。
     if (applicableQuestions.length === 0) {
       setClinicalResult(NEUTRAL_RESULT);
       scrollToResult();
@@ -399,7 +405,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
 
   return (
     <div className="page-layout space-y-6">
-      <PageIntro compact eyebrow="回答を整理して振り返る" art="care"
+      <PageIntro compact art="care"
         title={activeTab === "self" ? "気血水 体質セルフチェック" : activeTab === "clinical" ? "対面問診メモ" : "五労チェッカー"}
         description={activeTab === "self" ? "直近1〜2週間を振り返る12問で、気虚・気滞・血虚・瘀血・水滞・陽虚の6つの伝統的な分類を学びます。" : activeTab === "clinical" ? "会話に出た話題から、自由な順番で。回答とメモを手元に残し、聞き漏れを確認できます。" : "長く見る・座る・立つ・歩く・横になる動作を選び、『素問』の五労の記述と休憩や動き方の例を確認できます。"}
       >
@@ -431,7 +437,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
           <div className="p-3.5 sm:p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-start gap-2.5 text-xs text-[#59615D] dark:text-[#96A6B2] shadow-2xs">
             <AlertCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] shrink-0 mt-0.5" />
             <p className="leading-relaxed">
-              <strong>【ご利用にあたっての注意】</strong>本チェックは伝統医学の気血水分類を学ぶための参考情報です。病気の有無を判断する検査ではありません。急激な体調変化や重篤な症状がある場合は、受診・救急要請を優先してください。
+              急に体調が悪くなったときや症状が重いときは、チェックを続ける前に受診・救急要請を優先してください。
             </p>
           </div>
 
@@ -480,7 +486,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                 onClick={handleDiagnoseSelf}
                 className="w-full sm:w-auto px-10 py-4 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] hover:bg-[#162E27] dark:hover:bg-[#225345] font-bold text-base shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>体質傾向を分析する</span>
+                <span>回答に関連する分類を見る</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
               {selectedAnswers.length > 0 && (
@@ -503,17 +509,17 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                 {/* 臨床補助の注記（P0要件） */}
                 <div className="text-center space-y-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-5">
                   <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] tracking-wider uppercase">
-                    現在の回答傾向
+                    {selfResult.type === "neutral" ? "質問票の集計結果" : "当てはまる項目が最も多かった分類"}
                   </span>
                   <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                     {selfResult.name}
-                    <span className="text-base font-sans font-normal text-[#59615D] dark:text-[#8899A6] ml-2">
+                    {selfResult.reading && <span className="text-base font-sans font-normal text-[#59615D] dark:text-[#8899A6] ml-2">
                       （{selfResult.reading}）
-                    </span>
+                    </span>}
                   </h2>
-                  <p className="text-xs text-[#737C77] dark:text-[#8899A6] max-w-xl mx-auto pt-1 leading-relaxed">
-                    ※回答から状態の傾向を整理する補助ツールです。回答だけで診断や施術方針は確定しません。
-                  </p>
+                  {selfResult.type !== "neutral" && <p className="text-xs text-[#737C77] dark:text-[#8899A6] max-w-xl mx-auto pt-1 leading-relaxed">
+                    同数の場合は質問票で先に出る分類を表示します。病気の診断や施術を決めるためには使えません。
+                  </p>}
                   <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-lg mx-auto pt-2">
                     {selfResult.summary}
                   </p>
@@ -631,7 +637,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                     {/* X (旧Twitter) シェア */}
                     <a
                       href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                        `【気血水 体質セルフチェック】学習上の分類結果は「${selfResult.name}」でした！ 東洋医学の視点で気・血・水のバランスと伝統分類を学習。\nhttps://www.haritaro.jp/diagnosis\n#ハリタロー #東洋医学 #体質チェック`
+                        `${selfCheckShareLabel(selfResult)}\nhttps://www.haritaro.jp/diagnosis\n#ハリタロー #東洋医学 #体質チェック`
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -649,7 +655,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                       href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
                         "https://www.haritaro.jp/diagnosis"
                       )}&text=${encodeURIComponent(
-                        `【気血水 体質セルフチェック】学習上の分類結果は「${selfResult.name}」でした！ 東洋医学の視点で気・血・水のバランスと伝統分類を学習できます。`
+                        selfCheckShareLabel(selfResult)
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -809,10 +815,10 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                     </span>
                   </div>
                   <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-                    現在の回答傾向：{clinicalResult.name}
-                    <span className="text-base font-sans font-normal text-[#59615D] dark:text-[#8899A6] ml-2">
+                    {clinicalResult.name}
+                    {clinicalResult.reading && <span className="text-base font-sans font-normal text-[#59615D] dark:text-[#8899A6] ml-2">
                       （{clinicalResult.reading}）
-                    </span>
+                    </span>}
                   </h2>
                   <p className="text-xs text-[#737C77] dark:text-[#8899A6] max-w-xl mx-auto pt-1 leading-relaxed">
                     ※回答から状態の傾向を整理する補助ツールです。回答だけで診断や施術方針は確定しません。

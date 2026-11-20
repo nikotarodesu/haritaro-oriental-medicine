@@ -67,7 +67,7 @@ export default function PrivacyPage() {
                   （1）お問い合わせ情報
                 </h3>
                 <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] mt-0.5">
-                  お問い合わせ時にいただいた氏名、メールアドレス、内容を、回答・連絡およびサイトの改善に利用します。
+                  お問い合わせフォームの送信にはWeb3Formsを利用します。入力された氏名、メールアドレス、件名と本文は、回答・連絡およびサイトの改善に利用します。
                 </p>
               </div>
 

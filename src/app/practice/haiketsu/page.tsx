@@ -31,7 +31,7 @@ export default function HaiketsuPracticePage() {
     const roles = Object.values(ACUPOINT_ROLES).filter(point => codes.includes(point.code));
     setSelectedPointIds(roles.map(point => point.id));
     setPrescriptionTitle("作業中の配穴を検討");
-    setRationaleText("各経穴の採用理由は臨床ワークスペースで確認・編集してください。");
+    setRationaleText("ツボを選んだ理由は、「臨床記録の練習」で確認・編集できます。");
   }, []);
 
   const selectIncomingPoint = useCallback((id: string) => {

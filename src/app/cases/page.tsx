@@ -8,7 +8,7 @@ import { collectionPageJsonLd } from "@/config/seo";
 import { SERIES } from "@/config/series";
 
 const title = "臨床症例演習";
-const description = "模擬症例を読み、弁証・治法・配穴の理由を考えます。解答例と比べて、判断の根拠を振り返りましょう。";
+const description = "模擬症例の主訴と経過、四診の所見を読み、どの記述を根拠に見立てやツボを選ぶか考えます。選んだ後に、解答例と理由を読めます。";
 
 export default function CasesIndexPage() {
   const totalCaseCount = CLINICAL_CASES.length;

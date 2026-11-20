@@ -172,8 +172,12 @@ for (const [code, point] of Object.entries(expandedPoints)) {
   assert(!article.relatedPoints.some(other => other.code === code || !getAcupointByCode(other.code)), code);
   assert(article.symptomLinks.every(({ href }) => href === '/symptoms' || SYMPTOMS.some(guide => href === '/symptoms/' + guide.id)), code);
   assert(master.locationSimple.startsWith(point.location), code + ' search and title data agree with the article');
-  const body = [article.lead, article.safetyWarning, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, ...article.expert, ...article.relatedPoints.map(other => other.text)].join('');
-  assert(body.length >= 700 && body.length <= 900, code + ' article length ' + body.length);
+  assert(article.lead.includes(point.location), code + ' opens with its own position');
+  assert(article.location.includes(point.guide), code + ' describes how to read its landmarks');
+  assert(article.traditional.some(text => text.includes(`${master.meridianOrder}番目`)), code + ' explains its place in the sequence');
+  assert(article.relatedPoints.some(({ code: otherCode }) =>
+    article.traditional.some(text => text.includes(getAcupointByCode(otherCode).name))
+  ), code + ' names a point to compare');
 }
 for (const code of ['bl1', 'st9', 'lu1', 'lu8', 'ht1', 'si8', 'sp11', 'cv8', 'cv1', 'gv1', 'gb21']) {
   assert(ATLAS_ARTICLES[code].visualOnly, code + ' must use the visual orientation instructions');

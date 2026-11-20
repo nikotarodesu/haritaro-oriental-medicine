@@ -290,13 +290,13 @@ export default function ClinicalWorkspace() {
   };
   if (!ready) return <p role="status" className="p-6">下書きを確認しています…</p>;
   return <div className="page-layout clinical-workspace space-y-5">
-    <Link href="/clinical" className="inline-flex min-h-11 items-center text-sm underline">← 臨床ホーム</Link>
+    <Link href="/clinical" className="inline-flex min-h-11 items-center text-sm underline">← 臨床演習に戻る</Link>
     <header className="clinical-record-intro">
-      <div><p className="clinical-kicker">臨床演習</p><h1>臨床推論ワークスペース</h1></div>
+      <div><p className="clinical-kicker">臨床演習</p><h1>臨床記録の練習</h1></div>
       <button className={BUTTON} onClick={reset}><RotateCcw aria-hidden="true" className="mr-2 h-4 w-4" />新しい演習を始める</button>
-      <p>架空の症例について、確認できた項目から入力します。<small>氏名・連絡先など、個人を特定する情報は入力しないでください。</small></p>
+      <p>模擬症例の主訴と経過から入力し、確認できた四診の所見を記録します。<small>氏名・連絡先など、個人を特定する情報は入力しないでください。</small></p>
     </header>
-    <p role="status" className="text-sm">{saved ? '演習の下書きをこのタブに保持しています。' : '入力すると演習の下書きをこのタブに保持します。'}</p>
+    <p role="status" className="text-sm">{saved ? 'このタブに下書きを保存しました。' : '入力した内容は、このタブに下書きとして保存します。'}</p>
     {encounter.previousSummary && <details className={BOX}><summary className="min-h-11 cursor-pointer font-semibold">前回からの申し送り</summary><p className="mt-2 whitespace-pre-wrap text-sm">{encounter.previousSummary}</p></details>}
     {error && <p id="clinical-workspace-error" tabIndex={-1} role="alert" className="rounded-lg border border-[#C06844] bg-[#FFF2EB] p-3 text-sm text-[#843C24] dark:bg-[#35221C] dark:text-[#FFD1BB]">{error}</p>}
     <div className="clinical-workspace-layout">

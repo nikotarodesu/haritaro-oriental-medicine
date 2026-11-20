@@ -36,7 +36,7 @@ const GOROU_DEFS: Record<GorouId, GorouDef> = {
     activity: "休憩を挟まず座り続ける",
     example: "デスクワークが長く、途中で立ったり歩いたりする機会が少ない。",
     restTitle: "作業の合間に立つ・歩く",
-    restDescription: "長い座位の合間に、姿勢や作業を変える例です。米国労働安全衛生局は短い休憩や歩行を紹介しています。休憩の間隔や動き方は、体調や作業条件に合わせます。",
+    restDescription: "書類を読み終えたときなど、作業の区切りで席を立って短く歩きます。米国労働安全衛生局も、座り仕事の合間に立ったり歩いたりする休憩を紹介しています。",
     point: { code: "ST36" },
   },
   kyuritsu: {
@@ -46,7 +46,7 @@ const GOROU_DEFS: Record<GorouId, GorouDef> = {
     activity: "立ったままの時間が長い",
     example: "立ち仕事や通勤で、座ったり姿勢を変えたりする機会が少ない。",
     restTitle: "姿勢を変え、休憩時に座る",
-    restDescription: "作業の合間に足の位置や立ち方を変え、休憩時に座れる機会を作る例です。姿勢を変える間隔は、体調や作業条件に合わせます。",
+    restDescription: "レジや台所で立ち続けるときは、作業の区切りで足の位置を変えます。休憩に入ったら、座れる場所で足を休めます。",
     point: { code: "KI1" },
   },
   kyukou: {
@@ -56,7 +56,7 @@ const GOROU_DEFS: Record<GorouId, GorouDef> = {
     activity: "歩く時間が長い",
     example: "外回りや長距離の移動が多い。重い荷物を持って歩くこともある。",
     restTitle: "歩行量・荷物・靴を振り返る",
-    restDescription: "いつから歩く距離や荷物の重さが変わったか、靴や休憩の取り方との関係を振り返ります。痛みが続くときは医療者に相談します。",
+    restDescription: "歩く距離が延びた日、荷物が重かった日、靴を替えた日を思い出します。痛みが続くときは、どの場所がいつ痛むかを医療機関に伝えます。",
     point: { code: "BL57" },
   },
   kyuga: {
@@ -66,7 +66,7 @@ const GOROU_DEFS: Record<GorouId, GorouDef> = {
     activity: "日中に横になる時間が長い",
     example: "日中、横になって過ごす時間が長くなっている。",
     restTitle: "睡眠と日中の状態を記録する",
-    restDescription: "起床時刻、日中の眠気、生活への影響を記録する例です。病気や医療者の指示で休息が必要な場合は、その方針を優先します。",
+    restDescription: "起きた時刻、昼に横になった時間、眠気で家事や外出が難しかった日を書きます。医療者から休息の指示がある場合は、その指示に従ってください。",
     point: { code: "CV17" },
   },
 };
@@ -88,7 +88,7 @@ export default function GorouWorkstyleChecker() {
           <h2 id="gorou-check-heading" className="font-serif text-xl font-bold">長く続くことが多い動作を選ぶ</h2>
           <p role="status" className="text-sm font-medium text-muted">選択中：{selected.length}項目</p>
         </div>
-        <p className="text-base text-muted">ふだんの生活を振り返って選んでください。複数選べます。</p>
+        <p className="text-base text-muted">仕事や家で、休憩を取らずに続けることが多い動作を選んでください。複数選べます。</p>
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {gorouIds.map(id => {
             const item = GOROU_DEFS[id];
@@ -171,7 +171,7 @@ export default function GorouWorkstyleChecker() {
       <section aria-labelledby="gorou-background-heading" className="space-y-4 rounded-2xl border border-frame bg-panel p-4 sm:p-6">
         <h2 id="gorou-background-heading" className="font-serif text-xl font-bold leading-relaxed sm:text-2xl">五労（ごろう）とは</h2>
         <p className="text-base leading-[1.8] text-muted">
-          五労は『黄帝内経 素問』の宣明五気篇にある、長く続く五つの動作を血・気・肉・骨・筋と関連づけた伝統的な分類です。日々の作業や姿勢を振り返る手がかりにできます。
+          五労は『黄帝内経 素問』の宣明五気篇にある分類です。見る、横になる、座る、立つ、歩くという五つの動作を長く続けることを、順に血・気・肉・骨・筋と関連づけています。
         </p>
         <a href="https://zh.wikisource.org/wiki/黃帝內經/素問第七卷#宣明五氣篇二十三" target="_blank" rel="noopener noreferrer" className={textLinkClass}>『素問』宣明五気篇の電子本文</a>
         <p className="text-base leading-[1.8] text-muted">

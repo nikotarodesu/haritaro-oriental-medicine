@@ -2,10 +2,11 @@ import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
 import type { Metadata } from "next";
 import React from "react";
 
+const compareDescription = "冷えやほてりが重なる例などを横に並べ、どの所見が候補に合うか、まだ何を確かめる必要があるかを比べます。";
+
 export const metadata: Metadata = {
   title: "鑑別例を見比べる｜弁証の練習",
-  description:
-    "似た主訴・症状における異なる病態条件を比較し、八綱・気血水・臓腑の鑑別ポイントと選定配穴の違いを深く学ぶ鑑別比較ツール。",
+  description: compareDescription,
   alternates: {
     canonical: "/simulator",
   },
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
       images: SHARED_OG_IMAGES,
       siteName: SITE_NAME,
     title: "鑑別例を見比べる｜弁証の練習",
-    description: "異なる病態条件から証名と配穴の使い分けを学ぶ鑑別比較教材。",
+    description: compareDescription,
     url: "https://www.haritaro.jp/simulator",
   },
 };

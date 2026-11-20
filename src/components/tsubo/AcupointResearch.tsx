@@ -34,7 +34,7 @@ export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; curr
       <p className="atlas-study-limit">{study.limits}</p>
       {(study.kind === "combination" || role === "comparison") && <PointLinks codes={study.points} currentCode={currentCode} />}
       <details className="atlas-disclosure">
-        <summary>研究の対象・出典</summary>
+        <summary>研究の参加者・比べた条件・出典</summary>
         <div className="atlas-study-details">
           <p>{study.design}</p>
           {study.otherPoints && <p>{study.otherPoints}</p>}
@@ -59,7 +59,7 @@ export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; curr
   );
 }
 
-export default function AcupointResearch({ point }: { point: AcupointDetail }) {
+export default function AcupointResearch({ point, traditionalTitle = "伝統的な使われ方" }: { point: AcupointDetail; traditionalTitle?: string }) {
   const studies = getAcupointStudies(point.codeLower);
   const combinations = getClassicalCombinations(point.codeLower);
   const background = point.codeLower === "li4" || point.codeLower === "st36" ? point.researchEvidence : undefined;
@@ -71,7 +71,7 @@ export default function AcupointResearch({ point }: { point: AcupointDetail }) {
       {studies.length ? (
         <div className="atlas-study-list">{studies.map(study => <AtlasStudyCard key={study.id} study={study} currentCode={point.codeLower} />)}</div>
       ) : (
-        <p className="atlas-evidence-empty">今回の文献検索では、使用経穴と結果を原典で確認して紹介できる比較試験は見つかっていません。<a href="#acupoint-traditional" className="atlas-source-link">伝統的な使われ方</a>を読めます。</p>
+        <p className="atlas-evidence-empty">このツボについて、使った経穴と結果を原論文で確認できた比較試験は掲載していません。<a href="#acupoint-traditional" className="atlas-source-link">{traditionalTitle}</a>も読めます。</p>
       )}
       {searched && (
         <p className="atlas-evidence-empty">
@@ -79,7 +79,7 @@ export default function AcupointResearch({ point }: { point: AcupointDetail }) {
         </p>
       )}
       <p className="atlas-evidence-empty">
-        <Link href={ACUPUNCTURE_TRIAL_COMPARISON_HREF} className="atlas-source-link">一穴の効果と組み合わせの研究を図で読み分ける</Link>
+        <Link href={ACUPUNCTURE_TRIAL_COMPARISON_HREF} className="atlas-source-link">一つのツボを調べる試験と、組み合わせを調べる試験の違い</Link>
       </p>
       {combinations.length > 0 && (
         <div className="atlas-classical-combinations">

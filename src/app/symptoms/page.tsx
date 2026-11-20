@@ -31,7 +31,7 @@ export default function SymptomsPage() {
         <div>
           <nav aria-label="パンくず" className="atlas-breadcrumb"><Link href="/tsubo">はり太郎のツボ図鑑</Link><span aria-hidden="true">/</span><span aria-current="page">症状別ガイド</span></nav>
           <h1>症状から探す</h1>
-          <p>気になる症状から、関連するツボ、受診の目安、日常の工夫を調べられます。</p>
+          <p>頭痛や腰痛などのガイドを開くと、受診を考える目安、症状の記録例、東洋医学で関連づけられるツボを読めます。</p>
           <Link href="/tsubo" className="atlas-text-action"><MapPin size={17} aria-hidden="true" />ツボの名前から探す</Link>
         </div>
         <AtlasOverviewArt />

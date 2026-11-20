@@ -161,7 +161,7 @@ export const clinicalArticles: Record<string, PublicLectureArticle> = {
       },
       {
         heading: "言葉の意味を知ったあとに",
-        paragraphs: ["疲労だけで気虚を選んだり、血虚という言葉から貧血の有無を判断したりすることはできません。体質チェックは伝統的な考え方を学ぶ手がかりとして使えます。実際の疲れやむくみが気になるときは、経過を伝え、必要な医療機関での評価につなげます。"],
+        paragraphs: ["疲労だけで気虚を選んだり、血虚という言葉から貧血の有無を判断したりすることはできません。体質チェックでは、食後の胃もたれや夕方の足のむくみなどが、質問票でどの分類に結びつけられているかを確認できます。疲れやむくみが気になるときは、始まった時期や生活への影響を医療機関に伝えてください。"],
         links: [{ href: "/diagnosis", label: "気血水の体質チェック" }, { href: "/curriculum/lecture-qiblood-1", label: "気・血・津液の基本" }],
       },
     ],
@@ -222,7 +222,7 @@ export const clinicalArticles: Record<string, PublicLectureArticle> = {
       {
         heading: "評価を見直す条件まで計画に入れる",
         paragraphs: ["Pは計画です。たとえば「頭痛が出る時間と、胃もたれがある日の食事の前後を確かめる」と書きます。新しい症状や医学的な評価が加わったら、いつ、何を見直すかも残します。原因や施術方法を、この架空の短い記録だけで決める必要はありません。"],
-        links: [{ href: "/clinical/workspace", label: "臨床ワークスペースで記録を練習する" }],
+        links: [{ href: "/clinical/workspace", label: "模擬症例の所見を記録する" }],
       },
     ],
   },

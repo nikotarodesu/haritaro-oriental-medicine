@@ -76,8 +76,7 @@ export default function AboutPage() {
                   身体ケア・臨床領域10年以上（鍼灸師約9年）｜ 2017年免許取得 ｜ {AUTHOR_OPENED_AT}開業・現役臨床
                 </p>
                 <p className="text-sm sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed pt-1">
-                  鍼灸師として臨床に携わりながら、東洋医学の理論・診断・治療体系を整理し、haritaro.jpで公開しています。
-                  鍼灸専門学校を卒業後、鍼灸接骨院、リラクゼーション、デイサービスなど、身体や健康に関わる複数の現場を経験。現在は鍼灸院を開業し、一人院長として日々患者と向き合いながら臨床を行っています。
+                  鍼灸専門学校を卒業し、鍼灸接骨院、リラクゼーション、デイサービスで働いた後、鍼灸院を開きました。現在は一人で鍼灸院を運営しながら、このサイトの講義や図鑑を書いています。
                 </p>
               </div>
             </div>
@@ -88,27 +87,21 @@ export default function AboutPage() {
                 所見から考え、経過を見て確かめる
               </h4>
               <p className="text-sm sm:text-sm text-[#404743] dark:text-[#C5D2DB] leading-relaxed">
-                東洋医学には、陰陽・五行・気血津液・臓腑・経絡・病機・弁証など、多数の概念があります。しかし、それぞれを個別に暗記するだけでは、実際の診断や治療の中でどのようにつながっているのかが見えにくくなります。
+                たとえば同じ「肩が痛い」でも、いつ始まったか、腕をどこまで上げると痛むかで、次に聞くことが変わります。教材の模擬症例でも、書かれていることを拾い、まだ聞いていないことを分けて考えます。
               </p>
               <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2 sm:space-y-2.5">
                 <p className="text-sm sm:text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                  このサイトで学ぶこと：所見から候補とその理由を考え、方針を立て、経過を見て判断を見直す
+                  模擬症例で確かめること
                 </p>
                 <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                  臨床では、単に「症状のある場所に鍼をする」「症状とツボを対応させる」という考え方ではなく、
-                  <strong className="text-[#232826] dark:text-[#FAF8F5]">【観察 ➜ 仮説 ➜ 治療 ➜ 再評価】</strong>
-                  という過程を重視しています。「どこが痛いか」だけでなく、以下を観察し必要に応じて治療方針を修正します。
+                  症例を読んだら、症状の経過、本人が困っている動作、見立ての理由を記録します。後から情報が加わったら、最初の考えを見直します。
                 </p>
                 <ul className="text-sm text-[#404743] dark:text-[#C5D2DB] space-y-1 list-disc list-inside">
-                  <li>どのような条件で症状が変化するのか</li>
-                  <li>身体のどこに機能的な偏りがあるのか</li>
-                  <li>局所症状と全身状態にどのような関係があるのか</li>
-                  <li>治療によって何が変化したのか</li>
-                  <li>最初に立てた仮説は妥当だったのか</li>
+                  <li>いつ始まり、どの動作や時間帯で変わるか</li>
+                  <li>痛みの範囲と、しびれなど一緒に出た症状</li>
+                  <li>考えた候補に合う所見と、まだ分からないこと</li>
+                  <li>次回に同じ動作を比べたとき、何が変わったか</li>
                 </ul>
-                <p className="text-[11px] text-[#737C77] dark:text-[#8899A6] pt-1">
-                  haritaro.jpで東洋医学を扱う際にも、この臨床的な考え方を基本としています。
-                </p>
               </div>
             </div>
 
@@ -173,7 +166,7 @@ export default function AboutPage() {
 
         <div className="space-y-3 sm:space-y-4">
           <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
-            サイト創設の志
+            このサイトを作った理由
           </h2>
           <p className="text-sm sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
             東洋医学には、陰陽・五行・気血津液など、日常では使わない言葉が多く登場します。初めて学ぶ方が、言葉の意味と使い方を一つずつ確認できるように、このサイトを作りました。
@@ -182,32 +175,32 @@ export default function AboutPage() {
             古典に書かれた説明、筆者の臨床経験、研究で確認された結果は、同じ根拠としては扱えません。記事や講義では、どの資料を参照し、何を確認できたかを示します。
           </p>
           <p className="text-sm sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
-            講義とクイズで基礎を学び、架空の症例で所見と判断の理由を考え、ノートで読み返せる構成を目指しています。経験や伝統的な説明だけで、治療効果が確立したとは扱いません。
+            用語を調べたら、講義の確認問題で使い方を振り返れます。臨床演習では架空の相談を読み、どの所見を根拠に答えたかを解答例と比べられます。
           </p>
         </div>
 
         {/* 3つの編集方針 */}
         <div className="space-y-3 sm:space-y-4 pt-2 sm:pt-4">
           <h3 className="text-lg sm:text-xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
-            当サイトが貫く3つの基準
+            教材の書き方
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 text-sm sm:text-sm">
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
-              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">01. 専門用語を分かりやすく</span>
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">専門用語を例で説明する</span>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                陰陽五行や臓腑弁証の用語を短く説明し、図や生活の例で、どのような関係を表す言葉なのかを示します。
+                五行では、木から火へ向かう相生と、木から土へ向かう相剋を、同じ出発点から伸びる矢印で比べます。
               </p>
             </div>
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
-              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">02. 出典と説明の区別</span>
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">出典の確認範囲を書く</span>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
                 古典の分類、研究で報告された結果、学習用の比喩を区別します。資料名や著者などの書誌情報に加え、掲載する説明がその資料に書かれているかも確認します。
               </p>
             </div>
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
-              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">03. 受診と安全性を優先する</span>
+              <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">受診の目安を示す</span>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                東洋医学ですべての症状に対応できるとは考えません。医療機関への受診が必要な場面や、施術の注意点を案内します。
+                症状別ガイドでは、受診を急ぐ症状と受診時に伝える内容を示します。ツボ図鑑には、位置と一緒に注意事項を載せます。
               </p>
             </div>
           </div>

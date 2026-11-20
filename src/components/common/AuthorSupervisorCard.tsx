@@ -41,16 +41,16 @@ export default function AuthorSupervisorCard({ className = "", topic, pointLocat
           href="/about"
           className="min-h-11 text-sm font-semibold text-accent hover:underline inline-flex items-center gap-1"
         >
-          <span>執筆方針・経歴詳細</span>
+          <span>執筆者の経歴と編集方針</span>
           <ArrowRight aria-hidden="true" className="w-3.5 h-3.5 shrink-0" />
         </Link>
       </div>
 
       <div className="space-y-2 text-sm text-muted leading-relaxed">
-        <p>{pointLocationChecked ? "体表の標準位置をWHO原本と照合しました。専門家監修は進行中です。" : "全件の原典照合・専門家監修は進行中です。"}<Link href="/editorial-policy" className="underline">出典の確認方針と監修状況</Link>をご確認ください。</p>
+        <p>{pointLocationChecked ? "ツボの標準位置をWHO原本と照合しました。専門家による監修は進行中です。" : "原典との照合や専門家の監修は、教材ごとに進めています。"}<Link href="/editorial-policy" className="underline">出典の確認方針と監修状況を見る</Link></p>
         <p>
           {topic ? "「" + topic + "」の学習用解説です。" : "東洋医学の学習・臨床推論を支援する解説です。"}
-          古典に基づく伝統理論、研究で得られた知見、理解を助ける比喩は根拠の種類が異なります。参考文献と研究の対象・限界を確認してください。教材の記述だけで個人の診断や施術の安全性を判断せず、必要に応じて医療機関へ相談してください。
+          古典の記述、研究の結果、用語を説明するためのたとえは区別して掲載しています。研究を読むときは、誰を対象に何と比べたかを文献で確認してください。この教材だけで診断や施術の安全性を判断せず、体調については医療機関に相談してください。
         </p>
       </div>
     </div>

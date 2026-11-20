@@ -28,7 +28,7 @@ export default function KikeiIndexPage() {
         <PageIntro compact eyebrow="8つの脈・4つの組み合わせ" title="奇経八脈と八脈交会穴" art="points" description="学びたい脈を選び、流注図・交会穴・伝統的な説明を確認します。">
           <div className="page-actions"><a href="#eight-vessels" className="page-primary-action"><GitCommit aria-hidden="true" className="h-4 w-4" />8脈から選ぶ<ArrowRight aria-hidden="true" className="h-4 w-4" /></a><a href="#four-pairs" className="page-secondary-action"><Layers aria-hidden="true" className="h-4 w-4" />交会穴の4対を見る</a></div>
         </PageIntro>
-        <details className="page-help"><summary>伝統理論と臨床研究の読み分け</summary><p className="text-sm leading-relaxed">伝統的な経絡理論では、正経十二経脈を水路に、奇経八脈を湖や貯水池にたとえ、気血の偏りを調節すると説明します。気血は伝統医学の概念であり、血液量や自律神経機能の測定値とは区別します。このページでは8脈の流注と八脈交会穴4対の対応を学びます。治療効果については、下記の臨床研究の対象・比較条件・評価項目を確認してください。</p><KikeiEvidenceNote /></details>
+        <details className="page-help"><summary>奇経八脈のたとえと、鍼の研究</summary><p className="text-sm leading-relaxed">伝統理論では十二経脈を水路、奇経八脈をあふれた水を受ける貯水池にたとえます。ここでいう気血は、血液量や自律神経の測定値とは別の概念です。図では八つの脈が通る場所と、公孫・内関など八脈交会穴の四つの組み合わせを読めます。</p><KikeiEvidenceNote /></details>
       </div>
 
       <div className="page-layout page-layout--continuation space-y-12">
