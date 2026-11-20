@@ -26,6 +26,24 @@ export const ACUPUNCTURE_GUIDE_SOURCES = [
     scope: "掲載されたJタイプの規格名で、40 mmを「寸3」と表記。",
   },
   {
+    id: "moxa-pedestal",
+    title: "せんねん灸「台座灸せんねん灸の誕生」「台座の穴のひみつ」",
+    href: "https://www.sennenq.co.jp/off50th/",
+    scope: "和紙で巻いたもぐさ、紙パルプの台座、中央の通気孔。オフシリーズの製品例に「ソフトきゅう 竹生島」を掲載。",
+  },
+  {
+    id: "moxa-instructions",
+    title: "せんねん灸オフ ご使用説明書",
+    href: "https://www.sennenq.co.jp/common/pdf/standard.pdf",
+    scope: "もぐさと台座の名称、熱の感じ方の個人差、煙が見えなくなった後も続く温熱、水疱ややけど。",
+  },
+  {
+    id: "moxa-burns",
+    title: "国民生活センター「台座灸でやけど」（2017年）",
+    href: "https://www.kokusen.go.jp/pdf/n-20170511_2.pdf",
+    scope: "台座灸によるやけどの相談を受けた構造と温度の調査。",
+  },
+  {
     id: "who-practice",
     title: "WHO benchmarks for the practice of acupuncture（2021年）",
     href: "https://www.who.int/publications/i/item/978-92-4-001688-0",

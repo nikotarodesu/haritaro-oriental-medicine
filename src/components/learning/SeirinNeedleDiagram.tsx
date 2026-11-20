@@ -2,7 +2,7 @@ export default function SeirinNeedleDiagram() {
   return (
     <svg
       viewBox="0 0 360 204"
-      className="acupuncture-needle-diagram"
+      className="acupuncture-tool-diagram"
       role="img"
       aria-labelledby="seirin-needle-svg-title"
       aria-describedby="seirin-needle-svg-desc"

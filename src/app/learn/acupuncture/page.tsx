@@ -4,6 +4,7 @@ import { ArrowRight, BookOpen, Brain, ChartLine, ClipboardList, Layers3, Message
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import AcupunctureMethodArt, { type AcupunctureMethod } from "@/components/learning/AcupunctureMethodArt";
 import AcupunctureTrialComparison from "@/components/learning/AcupunctureTrialComparison";
+import PedestalMoxaDiagram from "@/components/learning/PedestalMoxaDiagram";
 import SeirinNeedleDiagram from "@/components/learning/SeirinNeedleDiagram";
 import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
 import { ACUPUNCTURE_GUIDE, NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
@@ -13,6 +14,7 @@ import { ACUPUNCTURE_GUIDE_SOURCES, ACUPUNCTURE_STUDY_EXAMPLES } from "@/data/ac
 const { href, title, description, revisedAt } = ACUPUNCTURE_GUIDE;
 const pageTitle = `${title}｜はり太郎の東洋医学`;
 const needleExample = "seirin-no3";
+const moxaExample = "indirect-moxa";
 
 export const metadata: Metadata = {
   title: { absolute: pageTitle },
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
 };
 
 const topics = [
-  ["methods-details", "はり・灸・ツボ押し"], [needleExample, "セイリンの3番鍼"], ["points", "ツボと配穴"], ["visit", "施術の流れ"],
+  ["methods-details", "はり・灸・ツボ押し"], [needleExample, "セイリンの3番鍼"], [moxaExample, "台座灸"], ["points", "ツボと配穴"], ["visit", "施術の流れ"],
   ["mechanisms", "鍼への体の反応"], ["evidence", "研究の読み方"], ["combinations", "ツボの組み合わせ"],
   ["safety", "安全性"], ["questions", "よくある疑問"], ["history", "鍼の歴史"],
 ] as const;
@@ -72,7 +74,10 @@ export default function AcupunctureGuidePage() {
           </ul>
           <figcaption>
             <p>各図を横切る実線が皮膚の表面です。鍼を入れる、台座で間接的に温める、指で押す例を並べています。</p>
-            <a href={`#${needleExample}`} className="acupuncture-method-example-link">セイリンの3番鍼を図で見る <ArrowRight size={15} aria-hidden="true" /></a>
+            <div className="acupuncture-method-example-links">
+              <a href={`#${needleExample}`} className="acupuncture-method-example-link">セイリンの3番鍼を図で見る <ArrowRight size={15} aria-hidden="true" /></a>
+              <a href={`#${moxaExample}`} className="acupuncture-method-example-link">台座灸を図で見る <ArrowRight size={15} aria-hidden="true" /></a>
+            </div>
           </figcaption>
         </figure>
         <details className="acupuncture-detail acupuncture-guide-contents">
@@ -90,7 +95,7 @@ export default function AcupunctureGuidePage() {
             <div key={id}><dt>{name}</dt><dd>{summary}</dd></div>
           ))}
         </dl>
-        <section id={needleExample} className="acupuncture-needle-example" aria-labelledby="seirin-no3-title">
+        <section id={needleExample} className="acupuncture-tool-example" aria-labelledby="seirin-no3-title">
           <header>
             <h3 id="seirin-no3-title">現代の鍼を図で見る <span>セイリン Jタイプの3番</span></h3>
             <p>鍼管付きで鍼体が40 mmの「寸3」を例に、製品の表記と各部の名前を見てみます。</p>
@@ -99,12 +104,12 @@ export default function AcupunctureGuidePage() {
             <div><dt>太さ（線径）・3番</dt><dd>0.20 <span>mm</span></dd></div>
             <div><dt>鍼体の長さ・寸3</dt><dd>40 <span>mm</span></dd></div>
           </dl>
-          <div className="acupuncture-needle-layout">
+          <div className="acupuncture-tool-layout">
             <figure>
               <SeirinNeedleDiagram />
               <figcaption>鍼と鍼管を分けて描いた模式図です。鍼体の太さと右下の断面は拡大しています。</figcaption>
             </figure>
-            <dl className="acupuncture-needle-parts">
+            <dl className="acupuncture-tool-parts">
               <div><dt>鍼柄（しんぺい）</dt><dd>プラスチックの持ち手です。この3番は青い鍼柄で見分けられます。</dd></div>
               <div><dt>鍼体（しんたい）</dt><dd>持ち手から伸びるステンレス鋼の部分です。線径は、その断面の直径です。</dd></div>
               <div><dt>鍼尖（しんせん）</dt><dd>鍼体の先端です。</dd></div>
@@ -120,6 +125,29 @@ export default function AcupunctureGuidePage() {
             <SourceLink id="seirin-insert">PMDAの電子添文</SourceLink>
             <SourceLink id="seirin-j-type">セイリンの製品資料</SourceLink>
             <SourceLink id="seirin-sun">「寸3」の表記資料</SourceLink>
+          </p>
+        </section>
+        <section id={moxaExample} className="acupuncture-tool-example acupuncture-tool-example--moxa" aria-labelledby="indirect-moxa-title">
+          <header>
+            <h3 id="indirect-moxa-title">間接灸を図で見る <span>台座灸</span></h3>
+            <p>もぐさと皮膚の間に台座を挟んで温めるお灸です。せんねん灸オフ「ソフトきゅう 竹生島」を例に、熱の通り道を見てみます。</p>
+          </header>
+          <div className="acupuncture-tool-layout">
+            <figure>
+              <PedestalMoxaDiagram />
+              <figcaption>台座の中央を通る断面の模式図です。矢印は熱が皮膚へ伝わる向きを示します。</figcaption>
+            </figure>
+            <dl className="acupuncture-tool-parts">
+              <div><dt>巻きもぐさ</dt><dd>ヨモギの葉から作ったもぐさを和紙で巻いた部分です。ここが熱源になります。</dd></div>
+              <div><dt>台座</dt><dd>紙パルプでできています。もぐさを支え、皮膚との間にすき間を作ります。</dd></div>
+              <div><dt>台座の穴</dt><dd>中央の小さな穴です。もぐさの熱がこの穴を通って皮膚へ伝わります。</dd></div>
+            </dl>
+          </div>
+          <p>煙が見えなくなったあとも熱は残ります。感じる熱さは人や部位で変わり、台座灸でもやけどや水ぶくれが起こることがあります。</p>
+          <p className="acupuncture-section-sources">
+            <SourceLink id="moxa-pedestal">メーカーの構造資料</SourceLink>
+            <SourceLink id="moxa-instructions">製品の説明書</SourceLink>
+            <SourceLink id="moxa-burns">国民生活センターの調査</SourceLink>
           </p>
         </section>
         <div className="acupuncture-detail-grid">
