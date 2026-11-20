@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_NAME } from "@/config/seo";
+import { BRAND_INK, BRAND_PAPER } from "@/config/brand";
 import { PLATFORM_DESCRIPTION, SERIES } from "@/config/series";
 
 export default function manifest(): MetadataRoute.Manifest {
@@ -9,8 +10,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: PLATFORM_DESCRIPTION,
     start_url: "/",
     display: "standalone",
-    background_color: "#F6F4EE",
-    theme_color: "#184F49",
+    background_color: BRAND_PAPER,
+    theme_color: BRAND_INK,
     icons: [
       {
         src: "/icon-192.png",

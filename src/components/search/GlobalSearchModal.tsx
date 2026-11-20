@@ -33,6 +33,8 @@ const SEARCH_INDEX = SEARCH_CATALOG.map(prepareSearchItem);
 const SEARCH_SHORTCUTS = SEARCH_CATALOG.filter(item => ["clinical-home", "tool-kokushi", "tool-library", "tool-basics-cun", "tool-diagnosis-self"].includes(item.id));
 
 const RECENT_SEARCHES_KEY = "haritaro_recent_searches";
+const ACTIVE_FILTER = "border border-[var(--accent-readable)] bg-[var(--accent-soft)] text-[var(--accent-readable)]";
+const INACTIVE_FILTER = "border border-[var(--border-washi)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:bg-[var(--bg-washi)] hover:text-[var(--text-sumi)]";
 
 interface GlobalSearchModalProps {
   isOpen: boolean;
@@ -194,11 +196,11 @@ export default function GlobalSearchModal({
         aria-modal="true"
         aria-label="サイト内検索"
         onClick={(e) => e.stopPropagation()}
-        className="search-dialog w-full max-w-3xl bg-[#FAF8F5] dark:bg-[#16212B] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xl overflow-hidden flex flex-col"
+        className="search-dialog flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-[var(--border-washi)] bg-[var(--bg-card)] shadow-2xl"
       >
         {/* 検索入力ヘッダー */}
-        <div className="search-dialog-header shrink-0 border-b border-[#F2ECE0] dark:border-[#22303D] flex items-center bg-white dark:bg-[#1A2632]">
-          <Search className="w-5 h-5 text-[#1E3D34] dark:text-[#74BA9E] shrink-0" />
+        <div className="search-dialog-header flex shrink-0 items-center border-b border-[var(--border-subtle)]">
+          <Search className="h-5 w-5 shrink-0 text-[var(--accent-readable)]" />
           <input
             aria-label="経穴・記事・講義などを検索"
             role="combobox"
@@ -219,26 +221,26 @@ export default function GlobalSearchModal({
             }}
             onKeyDown={handleInputKeyDown}
             placeholder="経穴・記事・講義・症状を検索"
-            className="flex-1 min-w-0 min-h-11 rounded-md bg-transparent text-[#232826] dark:text-[#FAF8F5] placeholder-[var(--text-secondary)] text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#74BA9E]"
+            className="min-h-11 min-w-0 flex-1 rounded-md bg-transparent text-base placeholder-[var(--text-secondary)] focus-visible:outline-2 focus-visible:outline-offset-2"
           />
           {query && (
             <button
               type="button"
               aria-label="検索語を消去"
               onClick={clearQueryAndFocus}
-              className="flex min-h-11 min-w-11 items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-[#59615D] dark:text-[#A0B0BC] focus-visible:outline-2 focus-visible:outline-offset-2"
+              className="flex min-h-11 min-w-11 items-center justify-center rounded-lg text-[var(--text-secondary)] hover:bg-[var(--accent-soft)] focus-visible:outline-2 focus-visible:outline-offset-2"
             >
               <X className="w-4 h-4" />
             </button>
           )}
-          <button type="button" onClick={onClose} aria-label="検索を閉じる" className="flex min-h-11 min-w-11 items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2"><X className="w-5 h-5" /></button>
-          <kbd className="hidden sm:inline-block px-2 py-0.5 text-sm font-mono font-bold text-[#59615D] dark:text-[#AFBDC8] bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] rounded-md">
+          <button type="button" onClick={onClose} aria-label="検索を閉じる" className="flex min-h-11 min-w-11 items-center justify-center rounded-lg hover:bg-[var(--accent-soft)] focus-visible:outline-2 focus-visible:outline-offset-2"><X className="w-5 h-5" /></button>
+          <kbd className="hidden rounded-md border border-[var(--border-washi)] bg-[var(--bg-washi)] px-2 py-0.5 font-mono text-sm font-bold text-[var(--text-secondary)] sm:inline-block">
             ESC
           </kbd>
         </div>
 
         {/* カテゴリクイックフィルターチップ */}
-        <div role="group" aria-label="検索結果の種類で絞り込む" className="shrink-0 flex items-center gap-1.5 px-3 py-2 bg-[#F2EDE4]/70 dark:bg-[#121920]/80 border-b border-[#E8E1D1] dark:border-[#22303D] overflow-x-auto no-scrollbar text-sm">
+        <div role="group" aria-label="検索結果の種類で絞り込む" className="no-scrollbar flex shrink-0 items-center gap-1.5 overflow-x-auto border-b border-[var(--border-subtle)] bg-[var(--bg-washi)] px-3 py-2 text-sm">
           {SEARCH_CATEGORIES.map((chip) => (
             <button
               aria-pressed={activeCategory === chip.id}
@@ -249,11 +251,7 @@ export default function GlobalSearchModal({
                 setSelectedIndex(-1);
                 if (scrollRef.current) scrollRef.current.scrollTop = 0;
               }}
-              className={`min-h-11 px-2.5 py-1 rounded-lg font-bold shrink-0 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:focus-visible:outline-[#74BA9E] ${
-                activeCategory === chip.id
-                  ? "bg-[#1E3D34] dark:bg-[#2B6958] text-white shadow-2xs"
-                  : "bg-white dark:bg-[#1C2733] text-[#59615D] dark:text-[#96A6B2] hover:text-[#1E3D34] dark:hover:text-white border border-[#E5DEC9] dark:border-[#2A3B4A]"
-              }`}
+              className={`min-h-11 shrink-0 rounded-lg px-2.5 py-1 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 ${activeCategory === chip.id ? ACTIVE_FILTER : INACTIVE_FILTER}`}
             >
               {chip.label}
               {hasQuery && <span className="ml-1.5 text-sm tabular-nums">{categoryCounts[chip.id]}</span>}
@@ -263,15 +261,15 @@ export default function GlobalSearchModal({
 
         {/* 検索結果・サジェスト一覧（スクロールエリア） */}
         <div ref={scrollRef} className="search-results-scroll flex-1 min-h-0 overflow-y-auto overscroll-contain p-2 sm:p-3 space-y-1">
-          {hasQuery && <div className="px-3 pt-2 pb-3 space-y-2 border-b border-[#E8E1D1] dark:border-[#22303D]">
+          {hasQuery && <div className="space-y-2 border-b border-[var(--border-subtle)] px-3 pt-2 pb-3">
             <div role="group" aria-label="検索の目的に合わせて表示順を変える" className="flex flex-wrap gap-2">
               {SEARCH_PURPOSES.map(purpose => <button key={purpose.id} type="button" aria-pressed={searchPurpose === purpose.id} onClick={() => {
                 setSearchPurpose(purpose.id); setSelectedIndex(-1); setResultLimit(25);
                 if (scrollRef.current) scrollRef.current.scrollTop = 0;
-              }} className={`min-h-11 rounded-lg px-3 py-2 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 ${searchPurpose === purpose.id ? "bg-[#1E3D34] text-white dark:bg-[#2B6958]" : "border border-[#C5DED4] dark:border-[#2A5243] text-[#1E3D34] dark:text-[#83BEA8] hover:bg-[#EBF3EF] dark:hover:bg-[#182823]"}`}>{purpose.label}</button>)}
+              }} className={`min-h-11 rounded-lg px-3 py-2 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 ${searchPurpose === purpose.id ? ACTIVE_FILTER : INACTIVE_FILTER}`}>{purpose.label}</button>)}
             </div>
           </div>}
-          <p id={statusId} role="status" aria-live="polite" aria-atomic="true" className={hasQuery ? "px-3 py-1 text-sm font-semibold text-[#59615D] dark:text-[#A0B0BC]" : "sr-only"}>
+          <p id={statusId} role="status" aria-live="polite" aria-atomic="true" className={hasQuery ? "px-3 py-1 text-sm font-semibold text-[var(--text-secondary)]" : "sr-only"}>
             {hasQuery ? `${activeCategoryLabel}：${filteredResults.length}件${filteredResults.length > visibleResults.length ? `（${visibleResults.length}件を表示）` : ""}` : "検索語を入力してください。"}
           </p>
           <p id={helpId} className="sr-only">複数のキーワードは空白で区切れます。上下の矢印キーで結果を選び、Enterで移動します。選択前にEnterを押すと先頭の結果へ移動します。</p>
@@ -282,14 +280,14 @@ export default function GlobalSearchModal({
               {recentSearches.length > 0 && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-bold text-[#59615D] dark:text-[#AFBDC8] uppercase tracking-wider flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
+                    <span className="flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]">
+                      <Clock className="h-3.5 w-3.5 text-[var(--accent-readable)]" />
                       最近調べたキーワード
                     </span>
                     <button
                       type="button"
                       onClick={clearAllRecentSearches}
-                      className="min-h-11 px-2 text-sm text-[#59615D] dark:text-[#A0B0BC] hover:text-rose-600 transition-colors flex items-center gap-1 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2"
+                      className="flex min-h-11 cursor-pointer items-center gap-1 px-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-sumi)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
                       <Trash2 className="w-3 h-3" />
                       <span>履歴を消去</span>
@@ -299,14 +297,14 @@ export default function GlobalSearchModal({
                     {recentSearches.map((term) => (
                       <div
                         key={term}
-                        className="inline-flex max-w-full items-center gap-1.5 px-3 py-1 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-sm font-semibold text-[#232826] dark:text-[#FAF8F5] transition-all hover:shadow-2xs cursor-pointer group"
+                        className="inline-flex max-w-full items-center gap-1.5 rounded-xl border border-[var(--border-washi)] px-3 py-1 text-sm font-semibold hover:border-[var(--accent-readable)]"
                       >
                         <button type="button" onClick={() => chooseQuery(term)} className="min-h-11 min-w-0 break-all px-1 text-left focus-visible:outline-2 focus-visible:outline-offset-2">{term}</button>
                         <button
                           type="button"
                           onClick={(e) => removeRecentSearch(e, term)}
                           aria-label={`${term}を検索履歴から削除`}
-                          className="flex min-h-11 min-w-11 shrink-0 items-center justify-center text-[#59615D] dark:text-[#A0B0BC] rounded hover:bg-slate-100 dark:hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2"
+                          className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded text-[var(--text-secondary)] hover:bg-[var(--accent-soft)] focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                           <X className="w-3 h-3" />
                         </button>
@@ -318,8 +316,8 @@ export default function GlobalSearchModal({
 
               {/* 人気のおすすめキーワード */}
               <div>
-                <span className="text-sm font-bold text-[#59615D] dark:text-[#AFBDC8] uppercase tracking-wider block mb-2 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
+                <span className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]">
+                  <Sparkles className="h-3.5 w-3.5 text-[var(--accent-readable)]" />
                   おすすめの検索キーワード
                 </span>
                 <div className="flex flex-wrap gap-2">
@@ -328,7 +326,7 @@ export default function GlobalSearchModal({
                       key={item.label}
                       type="button"
                       onClick={() => chooseQuery(item.q, item.category)}
-                      className="min-h-11 px-3 py-1.5 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-sm font-semibold text-[#232826] dark:text-[#FAF8F5] transition-all hover:shadow-2xs cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2"
+                      className="min-h-11 cursor-pointer rounded-xl border border-[var(--border-washi)] px-3 py-1.5 text-sm font-semibold hover:border-[var(--accent-readable)] focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
                       {item.label}
                     </button>
@@ -337,8 +335,8 @@ export default function GlobalSearchModal({
               </div>
 
               {/* 主要ツール・新設ハブへのクイックアクセス */}
-              <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D]">
-                <span className="text-sm font-bold text-[#59615D] dark:text-[#AFBDC8] uppercase tracking-wider block mb-2">
+              <div className="border-t border-[var(--border-subtle)] pt-2">
+                <span className="mb-2 block text-sm font-semibold text-[var(--text-secondary)]">
                   よく使うページ
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
@@ -350,17 +348,17 @@ export default function GlobalSearchModal({
                         onClose();
                         router.push(tool.url);
                       }}
-                      className="min-h-11 p-2.5 rounded-xl bg-white dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#EBF3EF] dark:hover:bg-[#182823] text-left transition-colors flex items-center justify-between group cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2"
+                      className="flex min-h-11 cursor-pointer items-center justify-between rounded-xl border border-[var(--border-washi)] p-2.5 text-left hover:bg-[var(--accent-soft)] focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
                       <div className="min-w-0">
-                        <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block ">
+                        <span className="block font-semibold text-[var(--accent-readable)]">
                           {tool.title}
                         </span>
-                        <span className="text-sm text-[#59615D] dark:text-[#AFBDC8] ">
+                        <span className="text-sm text-[var(--text-secondary)]">
                           {tool.subtitle}
                         </span>
                       </div>
-                      <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0 ml-2" />
+                      <ArrowRight className="ml-2 h-3.5 w-3.5 shrink-0 text-[var(--accent-readable)]" />
                     </button>
                   ))}
                 </div>
@@ -404,59 +402,37 @@ export default function GlobalSearchModal({
                       if (event.movementX !== 0 || event.movementY !== 0) { shouldScrollSelection.current = false; setSelectedIndex(idx); }
                     }}
                     onFocus={() => setSelectedIndex(idx)}
-                    className={`w-full text-left p-3 rounded-xl transition-all flex items-start gap-3 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 ${
+                    className={`flex w-full cursor-pointer items-start gap-3 rounded-xl border p-3 text-left focus-visible:outline-2 focus-visible:outline-offset-2 ${
                       isSelected
-                        ? "bg-[#1E3D34] text-white shadow-sm"
-                        : "bg-white dark:bg-[#1A2632] hover:bg-[#FAF8F5] dark:hover:bg-[#202E3C] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5]"
+                        ? "border-[var(--accent-readable)] bg-[var(--accent-soft)]"
+                        : "border-[var(--border-washi)] hover:bg-[var(--bg-washi)]"
                     }`}
                   >
-                    <div
-                      className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
-                        isSelected
-                          ? "bg-white/20 text-white"
-                          : "bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E]"
-                      }`}
-                    >
+                    <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--bg-washi)] text-[var(--accent-readable)]">
                       <Icon aria-hidden="true" className="w-4 h-4" />
                     </div>
 
                     <div className="flex-1 min-w-0 space-y-0.5">
                       <div className="space-y-1">
-                        <span
-                          className={`inline-block text-sm font-bold px-1.5 py-0.5 rounded-full ${
-                            isSelected
-                              ? "bg-white/20 text-white"
-                              : "bg-[#FAF8F5] dark:bg-[#121920] text-[#59615D] dark:text-[#AFBDC8] border border-[#E5DEC9] dark:border-[#2A3B4A]"
-                          }`}
-                        >
+                        <span className="inline-block rounded-md bg-[var(--bg-washi)] px-1.5 py-0.5 text-sm font-medium text-[var(--text-secondary)]">
                           {item.badge}
                         </span>
-                        <span className="block font-bold text-sm leading-relaxed  break-words">
+                        <span className="block break-words text-sm font-bold leading-relaxed">
                           {item.title}
                         </span>
                       </div>
 
                       {item.subtitle && (
-                        <p
-                          className={`text-sm leading-relaxed  break-words ${
-                            isSelected
-                              ? "text-emerald-100/90"
-                              : "text-[#59615D] dark:text-[#A0B0BC]"
-                          }`}
-                        >
+                        <p className="break-words text-sm leading-relaxed text-[var(--text-secondary)]">
                           {item.subtitle}
                         </p>
                       )}
-                      {hint && <span className={`block text-sm ${isSelected ? "text-emerald-100" : "text-[#59615D] dark:text-[#A0B0BC]"}`}>{hint}</span>}
+                      {hint && <span className="block text-sm text-[var(--text-secondary)]">{hint}</span>}
                     </div>
 
                     <ArrowRight
                       aria-hidden="true"
-                      className={`w-4 h-4 shrink-0 mt-2 transition-transform ${
-                        isSelected
-                          ? "translate-x-0.5 text-white"
-                          : "text-slate-300 dark:text-slate-600"
-                      }`}
+                      className="mt-2 h-4 w-4 shrink-0 text-[var(--accent-readable)]"
                     />
                   </Link>
                 );
@@ -465,29 +441,29 @@ export default function GlobalSearchModal({
             </>
           )}
 
-          {filteredResults.length > visibleResults.length && <button type="button" onClick={() => { setResultLimit(limit => limit + 25); inputRef.current?.focus(); shouldScrollSelection.current = true; setSelectedIndex(visibleResults.length); }} className="w-full min-h-11 rounded-xl border border-[#C5DED4] p-3 text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8] focus-visible:outline-2 focus-visible:outline-offset-2">さらに表示（残り{filteredResults.length - visibleResults.length}件）</button>}
+          {filteredResults.length > visibleResults.length && <button type="button" onClick={() => { setResultLimit(limit => limit + 25); inputRef.current?.focus(); shouldScrollSelection.current = true; setSelectedIndex(visibleResults.length); }} className="w-full min-h-11 rounded-xl border border-[var(--border-washi)] p-3 text-sm font-semibold text-[var(--accent-readable)] hover:bg-[var(--accent-soft)] focus-visible:outline-2 focus-visible:outline-offset-2">さらに表示（残り{filteredResults.length - visibleResults.length}件）</button>}
 
           {/* 検索結果ゼロ */}
           {hasQuery && filteredResults.length === 0 && (
             <div className="px-3 py-10 text-center space-y-3">
-              <Search className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto" />
-              <p className="text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
+              <Search className="mx-auto h-8 w-8 text-[var(--text-secondary)]" />
+              <p className="text-sm font-bold">
                 「{query}」に一致するコンテンツが見つかりませんでした
               </p>
-              <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">
+              <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
                 {activeCategory !== "all" ? "検索語はそのままで、ほかのカテゴリーも探せます。" : "別の言い方や、経穴コード（例：LI4、ST36）でお試しください。"}
               </p>
               <div className="flex flex-wrap justify-center gap-2 pt-1">
-                {activeCategory !== "all" && <button type="button" onClick={searchAllCategories} className="min-h-11 rounded-xl bg-[#1E3D34] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2B5A46] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:bg-[#2B6958] dark:focus-visible:outline-[#74BA9E]">同じ検索語ですべてを検索</button>}
-                <button type="button" onClick={() => inputRef.current?.focus()} className="min-h-11 rounded-xl border border-[#C5DED4] px-4 py-2 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A5243] dark:text-[#83BEA8] dark:hover:bg-[#182823]">検索語を編集する</button>
-                {activeCategory === "all" && <button type="button" onClick={clearQueryAndFocus} className="min-h-11 rounded-xl bg-[#1E3D34] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2B5A46] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3D34] dark:bg-[#2B6958] dark:focus-visible:outline-[#74BA9E]">検索語を消して入力し直す</button>}
+                {activeCategory !== "all" && <button type="button" onClick={searchAllCategories} className="ui-button ui-button-primary text-sm">同じ検索語ですべてを検索</button>}
+                <button type="button" onClick={() => inputRef.current?.focus()} className="ui-button ui-button-outline text-sm">検索語を編集する</button>
+                {activeCategory === "all" && <button type="button" onClick={clearQueryAndFocus} className="ui-button ui-button-primary text-sm">検索語を消して入力し直す</button>}
               </div>
             </div>
           )}
         </div>
 
         {/* フッター操作ガイド */}
-        <div className="shrink-0 px-4 py-2.5 border-t border-[#F2ECE0] dark:border-[#22303D] bg-[#F2EDE4]/60 dark:bg-[#121920] flex flex-wrap items-center justify-between gap-2 text-sm text-[#59615D] dark:text-[#A0B0BC]">
+        <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-t border-[var(--border-subtle)] bg-[var(--bg-washi)] px-4 py-2.5 text-sm text-[var(--text-secondary)]">
           <span>空白で複数語を検索</span>
           <div className="hidden items-center gap-3 sm:flex" aria-hidden="true">
             <span>↑↓ 選択</span>

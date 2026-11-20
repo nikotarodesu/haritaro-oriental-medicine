@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Compass, MapPin } from "lucide-react";
 import PlatformSearchForm from "@/components/search/PlatformSearchForm";
-import { BRAND_WORDMARK } from "@/config/brand";
 import { PLATFORM_INTRO, SERIES, TSUBO_TAGLINE } from "@/config/series";
 import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
 
@@ -16,49 +15,62 @@ export default function HomePage() {
     <div className="platform-home">
       <section className="platform-intro" aria-labelledby="platform-title">
         <div className="platform-container platform-hero-grid">
-          <div>
-            <h1 id="platform-title" className="platform-title font-serif">{BRAND_WORDMARK}</h1>
+          <div className="platform-hero-copy">
+            <h1 id="platform-title" className="platform-title">
+              ツボと東洋医学を、<br />図でひもとく。
+            </h1>
             <p className="platform-intro-text">{PLATFORM_INTRO}</p>
             <PlatformSearchForm />
-            <nav className="platform-shortcuts" aria-label="ツボ図鑑の入口">
+            <nav className="platform-shortcuts" aria-label="ツボ・症状から調べる">
               <Link href={SERIES.dictionary.href}><MapPin aria-hidden="true" />ツボから探す<ArrowRight aria-hidden="true" /></Link>
               <Link href="/symptoms"><Compass aria-hidden="true" />症状から探す<ArrowRight aria-hidden="true" /></Link>
             </nav>
           </div>
-          <aside className="platform-index" aria-labelledby="platform-index-title">
-            <h2 id="platform-index-title" className="font-serif">図で見る、身近なツボ</h2>
-            <Link href="/tsubo/li4" className="platform-feature">
-              <HeguHandDiagram thumbnail />
-              <span><small>手の甲のツボ</small><strong className="font-serif">合谷<span>ごうこく</span></strong>
-              <span className="platform-feature-link">場所と押し方を見る <ArrowRight aria-hidden="true" /></span></span>
+          <section className="platform-index" aria-labelledby="platform-index-title">
+            <h2 id="platform-index-title">図で見る、身近なツボ</h2>
+            <Link href="/tsubo/li4" className="platform-feature" aria-labelledby="platform-feature-name platform-feature-action">
+              <span className="platform-feature-art"><HeguHandDiagram thumbnail /></span>
+              <span className="platform-feature-copy">
+                <span className="platform-feature-meta">手の甲のツボ <span>LI4</span></span>
+                <strong id="platform-feature-name" className="platform-feature-name">合谷<span>ごうこく</span></strong>
+                <span id="platform-feature-action" className="platform-feature-link">場所と押し方を見る <ArrowRight aria-hidden="true" /></span>
+              </span>
             </Link>
             <ul>
               {POINTS.map(point => (
                 <li key={point.code}>
                   <Link href={`/tsubo/${point.code}`}>
-                    <strong>{point.label}</strong><span className="ui-muted">{point.location}</span>
+                    <strong>{point.label}</strong><span>{point.location}</span>
                     <ArrowRight aria-hidden="true" />
                   </Link>
                 </li>
               ))}
             </ul>
-          </aside>
+          </section>
         </div>
       </section>
 
-      <div className="platform-container platform-series" aria-label="はり太郎の3シリーズ">
-        {Object.values(SERIES).map(({ icon: Icon, ...series }) => (
-          <section key={series.href} className="platform-series-card">
-            <div className="platform-series-icon"><Icon aria-hidden="true" /></div>
-            <h2 className="font-serif"><Link href={series.href}>{series.name}</Link></h2>
-            {series.href === SERIES.dictionary.href && <p className="platform-tsubo-tagline">{TSUBO_TAGLINE}</p>}
-            <p className="ui-muted">{series.description}</p>
-            <ul>{series.links.map(({ href, label }) => (
-              <li key={href}><Link href={href} className="ui-text-link">{label}<ArrowRight aria-hidden="true" /></Link></li>
-            ))}</ul>
-          </section>
-        ))}
-      </div>
+      <section className="platform-container platform-series" aria-labelledby="platform-series-title">
+        <h2 id="platform-series-title">目的から探す</h2>
+        <ul className="platform-series-grid">
+          {Object.values(SERIES).map(({ icon: Icon, ...series }) => (
+            <li key={series.href} className="platform-series-card">
+              <h3>
+                <span className="platform-series-icon"><Icon aria-hidden="true" /></span>
+                <Link href={series.href}>{series.name}</Link>
+                <ArrowRight aria-hidden="true" />
+              </h3>
+              <p>
+                {series.href === SERIES.dictionary.href && <strong>{TSUBO_TAGLINE}</strong>}
+                {series.description}
+              </p>
+              <ul>{series.links.filter(({ href }) => href !== series.href).map(({ href, label }) => (
+                <li key={href}><Link href={href} className="ui-text-link">{label}</Link></li>
+              ))}</ul>
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }

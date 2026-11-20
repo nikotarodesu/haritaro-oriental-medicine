@@ -1,10 +1,10 @@
 .atlas-page {
-  --atlas-ink: #1a312b;
-  --atlas-muted: #4e5f57;
-  --atlas-accent: #245c4e;
-  --atlas-soft: #e9f1e9;
-  --atlas-paper: #fffcf7;
-  --atlas-line: #cedad1;
+  --atlas-ink: var(--text-sumi);
+  --atlas-muted: var(--text-secondary);
+  --atlas-accent: var(--accent-readable);
+  --atlas-soft: var(--accent-soft);
+  --atlas-paper: var(--bg-card);
+  --atlas-line: var(--border-washi);
   --atlas-caution-bg: #faf0e1;
   --atlas-caution-ink: #5b4029;
   --atlas-caution-line: #b57846;
@@ -14,12 +14,6 @@
 }
 
 .dark .atlas-page {
-  --atlas-ink: #e6f0e9;
-  --atlas-muted: #afc0b8;
-  --atlas-accent: #9bcdbb;
-  --atlas-soft: #1c342e;
-  --atlas-paper: #17252b;
-  --atlas-line: #3c534c;
   --atlas-caution-bg: #2d231c;
   --atlas-caution-ink: #f0d5b5;
   --atlas-caution-line: #bd8d5c;
@@ -30,7 +24,7 @@
   outline-offset: 3px;
 }
 
-.atlas-page :is(h1, h2, h3) { font-family: var(--font-sans); }
+.atlas-page :is(h2, h3) { font-family: var(--font-sans); }
 .atlas-target { scroll-margin-block-start: .75rem; }
 .atlas-muted { color: var(--atlas-muted); font-size: .875rem; }
 .atlas-directory { max-width: 1120px; display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); }
@@ -46,9 +40,10 @@
 
 .atlas-directory-header > div, .atlas-guide-heading > div { min-width: 0; }
 .atlas-directory-header h1, .atlas-guide-heading h1, .atlas-point-identity h1 {
+  font-family: var(--font-serif);
   font-size: clamp(1.75rem, 4.25vw, 2.75rem);
-  font-weight: 700;
-  line-height: 1.32;
+  font-weight: 600;
+  line-height: 1.4;
   text-wrap: balance;
 }
 
@@ -89,7 +84,7 @@
   width: 100%;
   min-height: 3.35rem;
   padding: .65rem 3.25rem .65rem 2.9rem;
-  border: 1px solid var(--atlas-line);
+  border: 1px solid var(--border-control);
   border-radius: .7rem;
   background: var(--atlas-paper);
   color: var(--atlas-ink);

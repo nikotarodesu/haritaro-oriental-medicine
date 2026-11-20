@@ -67,7 +67,7 @@ function MobileBottomNavContent() {
   const handleOpenSearch = () => window.dispatchEvent(new CustomEvent("haritaro:open-search"));
   return <>
     <nav ref={navRef} aria-label="モバイル下部ナビゲーション"
-      className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-40 bg-[#FAF8F5]/95 dark:bg-[#10161C]/95 backdrop-blur-md border-t border-[#E8E1D1] dark:border-[#22303D] lg:hidden print:hidden"
+      className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-40 border-t border-[var(--border-washi)] bg-[var(--bg-card)]/95 backdrop-blur-md lg:hidden print:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
       <div className="mobile-nav-items">
         {config.items.map((itemId, index) => {
