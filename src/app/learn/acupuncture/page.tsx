@@ -335,10 +335,10 @@ export default function AcupunctureGuidePage() {
         </section>
 
         <section id="combinations" className="acupuncture-guide-section" aria-labelledby="acupuncture-combinations-title">
-          <h3 id="acupuncture-combinations-title">一穴の効果と組み合わせをどう確かめる？</h3>
-          <p>全員が通常の治療を受け、経穴AとBを加えるかどうかで4群に分ける架空の試験です。問いを選ぶと、どの群を比べるかが変わります。</p>
+          <h3 id="acupuncture-combinations-title">ツボを一つ足した効果は、どう確かめる？</h3>
+          <p>ツボBを足した違いを知るには、ほかの治療をそろえて、Bを足した組と足さなかった組を比べます。別のツボAを使う場合も同じように比べると、組み合わせによってBを足した差が変わるかを調べられます。</p>
           <AcupunctureTrialComparison />
-          <p>実際の論文では、共通の治療や刺激方法がそろっているか、比べたい差とその不確かさが報告されているかを確かめます。 <SourceLink id="factorial">4群の試験を読むための報告指針</SourceLink></p>
+          <p>片方のツボを足した効果が、もう片方を使うかどうかで変わることを「相互作用」と呼びます。実際の論文では、比べた組でほかの条件がそろっているか、差の見積もりにどのくらい幅があるかも確かめます。 <SourceLink id="factorial">4組で比べる試験の報告指針</SourceLink></p>
         </section>
       </GuideChapter>
 

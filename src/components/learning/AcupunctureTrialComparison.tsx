@@ -2,86 +2,106 @@
 
 import { useId, useState } from "react";
 
-const groups = [
-  { id: "usual", name: "通常の治療のみ", a: false, b: false },
-  { id: "a", name: "経穴Aを追加", a: true, b: false },
-  { id: "b", name: "経穴Bを追加", a: false, b: true },
-  { id: "both", name: "AとBを追加", a: true, b: true },
-] as const;
-
-type GroupId = (typeof groups)[number]["id"];
-type ComparisonId = "single" | "added" | "interaction";
-
-const comparisons: Record<ComparisonId, {
-  label: string;
-  pairs: ReadonlyArray<readonly [GroupId, GroupId]>;
-  pairLabels: readonly string[];
-  explanation: string;
-  interpretation: string;
-}> = {
-  single: {
-    label: "一穴の効果",
-    pairs: [["usual", "a"]],
-    pairLabels: ["比較する群"],
-    explanation: "「通常の治療のみ」と「経穴Aを追加」の2群を比べます。",
-    interpretation: "この差から、通常の治療にAを加えたときの変化を調べます。",
-  },
-  added: {
-    label: "追加の効果",
-    pairs: [["a", "both"]],
-    pairLabels: ["比較する群"],
-    explanation: "「経穴Aを追加」と「AとBを追加」の2群を比べます。",
-    interpretation: "この差から、Aを使う施術にBを加えたときの上乗せを調べます。",
-  },
-  interaction: {
-    label: "相乗効果",
-    pairs: [["usual", "b"], ["a", "both"]],
-    pairLabels: ["Aがない条件", "Aがある条件"],
-    explanation: "「Aがない場合」と「Aがある場合」で、Bを加えたときの差をそれぞれ求めます。",
-    interpretation: "二つの差を比べ、Bの上乗せがAを使う条件で大きくなるかを見ます。Aの有無でBの効果が変わることを相互作用と呼び、どの尺度で評価するかを先に決めます。",
-  },
+type TrialPair = {
+  title: string;
+  commonTreatment: string;
+  withoutB: number;
+  withB: number;
 };
 
-const choices = ["single", "added", "interaction"] as const;
+// Hypothetical mean decreases in the same problem score, on a 0–10 scale.
+const withoutA: TrialPair = { title: "Aを使わない場合", commonTreatment: "普段の治療", withoutB: 2, withB: 3 };
+const withA: TrialPair = { title: "Aを使う場合", commonTreatment: "普段の治療 ＋ A", withoutB: 4, withB: 7 };
+const scaleMax = 10;
+
+function addedPoints(pair: TrialPair) {
+  return pair.withB - pair.withoutB;
+}
+
+const differenceWithoutA = addedPoints(withoutA);
+const differenceWithA = addedPoints(withA);
+
+const comparisons = [
+  {
+    id: "b-only",
+    label: "Bだけを足す",
+    pairs: [withoutA],
+    result: `Bを足した組では、普段の治療だけの組より、困りごとの点数が${differenceWithoutA}点多く下がりました。`,
+  },
+  {
+    id: "add-b-to-a",
+    label: "AにBを足す",
+    pairs: [withA],
+    result: `どちらの組もAを使っています。Bも足した組では、困りごとの点数が${differenceWithA}点多く下がりました。`,
+  },
+  {
+    id: "compare-differences",
+    label: "2つの差を比べる",
+    pairs: [withoutA, withA],
+    result: `Bを足した差は、Aなしで${differenceWithoutA}点、Aありで${differenceWithA}点。この例では、AがあるとBを足した差が${differenceWithA - differenceWithoutA}点大きくなりました。`,
+  },
+] as const;
+
+function TrialPairChart({ pair }: { pair: TrialPair }) {
+  const difference = addedPoints(pair);
+  const rows = [
+    { label: "Bを足さない組", treatment: pair.commonTreatment, points: pair.withoutB, addsB: false },
+    { label: "Bを足した組", treatment: `${pair.commonTreatment} ＋ B`, points: pair.withB, addsB: true },
+  ];
+
+  return (
+    <div className="acupuncture-trial-pair">
+      <h4>{pair.title}</h4>
+      <dl className="acupuncture-trial-scores">
+        {rows.map(({ label, treatment, points, addsB }) => (
+          <div key={label}>
+            <dt><strong>{label}</strong><span>{treatment}</span></dt>
+            <dd>
+              <svg viewBox={`0 0 ${scaleMax} 1`} preserveAspectRatio="none" aria-hidden="true">
+                <rect className="acupuncture-trial-track" width={scaleMax} height="1" />
+                <rect className="acupuncture-trial-bar" width={points} height="1" />
+                {addsB ? <rect className="acupuncture-trial-added" x={pair.withoutB} width={difference} height="1" /> : null}
+              </svg>
+              <strong>{points}点</strong>
+            </dd>
+          </div>
+        ))}
+      </dl>
+      <div className="acupuncture-trial-axis" aria-hidden="true"><span><span>0</span><span>{scaleMax}点</span></span></div>
+      <p className="acupuncture-trial-difference"><span>Bを足した差（{pair.withB} − {pair.withoutB}）</span><strong>＋{difference}点</strong></p>
+    </div>
+  );
+}
 
 export default function AcupunctureTrialComparison() {
-  const radioGroup = useId();
-  const [selected, setSelected] = useState<ComparisonId>("single");
-  const comparison = comparisons[selected];
+  const id = useId();
+  const figureId = `${id}-trial-figure`;
+  const [comparison, setComparison] = useState<(typeof comparisons)[number]>(comparisons[0]);
 
   return (
     <div className="acupuncture-trial">
+      <p className="acupuncture-trial-example">全員が普段の治療を受け、ツボAとBを足すかどうかで、くじ引きのように4組に分けた架空の試験です。</p>
       <fieldset className="acupuncture-trial-options">
-        <legend>何を確かめたいですか？</legend>
+        <legend>選ぶと、図で比べる組と点数が切り替わります</legend>
         <div>
-          {choices.map(id => (
-            <label key={id}>
-              <input type="radio" name={radioGroup} value={id} checked={selected === id} onChange={() => setSelected(id)} />
-              <span>{comparisons[id].label}</span>
+          {comparisons.map(choice => (
+            <label key={choice.id}>
+              <input type="radio" name={id} value={choice.id} checked={comparison.id === choice.id} onChange={() => setComparison(choice)} aria-controls={figureId} />
+              <span>{choice.label}</span>
             </label>
           ))}
         </div>
       </fieldset>
-      <ol className="acupuncture-trial-groups" role="list" aria-label="試験の4群">
-        {groups.map(group => {
-          const pair = comparison.pairs.findIndex(ids => ids.includes(group.id));
-          return (
-            <li key={group.id} className="acupuncture-trial-group" data-pair={pair >= 0 ? pair + 1 : undefined}>
-              <svg viewBox="0 0 112 42" className="acupuncture-trial-symbol" aria-hidden="true">
-                <path d="M38 21h36" className="acupuncture-trial-connector" />
-                <g data-active={group.a}><circle cx="38" cy="21" r="14" /><text x="38" y="21">A</text></g>
-                <g data-active={group.b}><circle cx="74" cy="21" r="14" /><text x="74" y="21">B</text></g>
-              </svg>
-              <strong>{group.name}</strong>
-              <small>{comparison.pairLabels[pair]}</small>
-            </li>
-          );
-        })}
-      </ol>
-      <div className="acupuncture-trial-result" aria-live="polite" aria-atomic="true">
-        <p><strong>{comparison.explanation}</strong></p>
-        <p>{comparison.interpretation}</p>
-      </div>
+      <p className="acupuncture-trial-result" role="status" aria-atomic="true">{comparison.result}</p>
+      <figure className="acupuncture-trial-figure" id={figureId}>
+        <figcaption>
+          <strong>4週間で下がった困りごとの点数（各組の平均）</strong>
+          <p>棒が長いほど困りごとが減っています。先端で色が変わる部分が、Bを足したときの2組の差です。</p>
+        </figcaption>
+        <div className="acupuncture-trial-pairs">
+          {comparison.pairs.map(pair => <TrialPairChart key={pair.title} pair={pair} />)}
+        </div>
+      </figure>
     </div>
   );
 }
