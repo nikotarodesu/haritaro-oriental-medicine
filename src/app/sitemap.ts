@@ -49,7 +49,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/diagnosis?tab=gorou`,
-      lastModified: new Date(PAGE_REVISIONS["/diagnosis"] || SITE_REVISED_AT),
+      lastModified: new Date(PAGE_REVISIONS["/diagnosis?tab=gorou"]),
     },
     {
       url: `${baseUrl}/simulator`,
@@ -154,7 +154,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...kikeiPages,
     ...acupointPages,
   ].map(page => {
-    const pathname = new URL(page.url).pathname;
-    return PAGE_REVISIONS[pathname] ? { ...page, lastModified: new Date(PAGE_REVISIONS[pathname]) } : page;
+    const { pathname, search } = new URL(page.url);
+    const revisedAt = PAGE_REVISIONS[pathname + search] ?? PAGE_REVISIONS[pathname];
+    return revisedAt ? { ...page, lastModified: new Date(revisedAt) } : page;
   });
 }

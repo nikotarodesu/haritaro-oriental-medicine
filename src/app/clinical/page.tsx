@@ -1,20 +1,25 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { GraduationCap, Heart } from 'lucide-react';
+import { PAGE_REVISIONS } from '@/config/contentUpdates';
 import { ALL_NAV_ITEMS } from '@/config/navigationItems';
-import { pageSocialMetadata } from '@/config/seo';
+import { pageSocialMetadata, SITE_ORIGIN } from '@/config/seo';
 import { ClinicalCheckArtwork, ClinicalHeroArtwork } from '@/components/clinical/ClinicalArtwork';
 import ClinicalDashboard from '@/components/clinical/ClinicalDashboard';
 import ClinicalPatternExercise from '@/components/clinical/ClinicalPatternExercise';
 import styles from '@/components/clinical/ClinicalPractice.module.css';
+import LearningCredits from '@/components/common/LearningCredits';
 import PublicLectureIndex from '@/components/curriculum/PublicLectureIndex';
 
+const path = '/clinical';
+const url = SITE_ORIGIN + path;
+const revisedAt = PAGE_REVISIONS[path];
 const title = '鍼灸の症例演習・配穴演習・見立ての練習｜はり太郎の臨床演習';
 const description = '五労チェッカーと気血水の12問チェックで生活や体調の傾向を振り返り、架空症例で問診・見立て・配穴を練習できます。';
 export const metadata: Metadata = {
   title: { absolute: title }, description,
-  alternates: { canonical: 'https://www.haritaro.jp/clinical' },
-  ...pageSocialMetadata(title, description, '/clinical'),
+  alternates: { canonical: url },
+  ...pageSocialMetadata(title, description, path),
 };
 
 const focusClass = 'focus-visible:outline-2 focus-visible:outline-offset-4';
@@ -39,9 +44,29 @@ const exercises = [
   { ...ALL_NAV_ITEMS.haiketsu, label: '配穴演習', description: 'ツボの組み合わせと選ぶ理由を考える' },
 ];
 
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': url + '#webpage',
+  url,
+  name: title,
+  description,
+  inLanguage: 'ja',
+  dateModified: revisedAt,
+  isPartOf: { '@id': SITE_ORIGIN + '/#website' },
+  publisher: { '@id': SITE_ORIGIN + '/#organization' },
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: [...checks, ...exercises].map((item, index) => ({
+      '@type': 'ListItem', position: index + 1, name: item.label, url: SITE_ORIGIN + item.href,
+    })),
+  },
+};
+
 export default function ClinicalLandingPage() {
   return (
     <div className="clinical-page clinical-page--focused">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, '\\u003c') }} />
       <header className={styles.hero}>
         <div>
           <h1 id="clinical-series-heading">はり太郎の臨床演習</h1>
@@ -104,9 +129,9 @@ export default function ClinicalLandingPage() {
         <details className="rounded-xl border border-frame bg-panel px-4">
           <summary className={`min-h-11 cursor-pointer py-3 font-semibold ${focusClass}`}>教材の出典・確認範囲</summary>
           <p className="pb-4 text-sm leading-relaxed ui-muted">教材は新版東洋医学概論・経絡経穴概論、WHO標準経穴部位、中医基礎理論などを参照しています。全件の医学記述の照合・専門家監修は未完了です。伝統理論の分類と医学的な評価を区別して利用してください。</p>
-          <Link href="/editorial-policy" className={`mb-3 inline-flex min-h-11 items-center underline ${focusClass}`}>出典と確認範囲</Link>
         </details>
       </section>
+      <LearningCredits revisedAt={revisedAt} />
       <nav aria-label="関連する案内" className="clinical-related-links"><Link href="/learn"><GraduationCap aria-hidden="true" />はり太郎の東洋医学</Link><Link href="/symptoms"><Heart aria-hidden="true" />ツボ図鑑の症状ガイド</Link></nav>
     </div>
   );

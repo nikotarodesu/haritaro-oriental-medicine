@@ -112,6 +112,16 @@ const STATIC_TOOLS: SearchResultItem[] = [
     url: "/diagnosis",
     tags: ["気血水", "診断", "セルフチェック", "体質", "気虚", "血虚", "瘀血"],
   },
+  {
+    id: "tool-diagnosis-gorou",
+    type: "tool",
+    title: "五労チェッカー",
+    subtitle: "長く続く生活動作を選び、五労の古典の記述と休憩・動作の例を確認する",
+    badge: "生活動作のチェック",
+    url: "/diagnosis?tab=gorou",
+    exactTerms: ["五労チェッカー", "五労チェック"],
+    tags: ["五労", "ごろう", "五労所傷", "久視", "久臥", "久坐", "久立", "久行", "宣明五気篇"],
+  },
 ];
 
 

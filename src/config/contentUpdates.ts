@@ -233,8 +233,9 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(LEARNING_COURSES.map(course => [`/learn/courses/${course.slug}`, '2026-10-18'])),
   '/notes': '2026-10-18', '/tsubo/compare': '2026-10-18',
   ...Object.fromEntries([
-    '/', '/about', '/clinical', '/curriculum', '/diagnosis', '/library',
+    '/', '/about', '/curriculum', '/library',
   ].map(route => [route, '2026-11-18'])),
+  ...Object.fromEntries(['/clinical', '/diagnosis', '/diagnosis?tab=gorou'].map(route => [route, '2026-11-20'])),
   // Public teaching diagrams were added or revised throughout the lecture catalog.
   ...Object.fromEntries(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [`/curriculum/${id}`, '2026-11-20']))),
   '/tsubo': ACUPOINT_PAGE_REVISED_AT,

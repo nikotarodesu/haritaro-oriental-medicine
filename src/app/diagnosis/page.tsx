@@ -1,6 +1,8 @@
-import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { PAGE_REVISIONS } from "@/config/contentUpdates";
+import { pageSocialMetadata, SITE_ORIGIN } from "@/config/seo";
+import LearningCredits from "@/components/common/LearningCredits";
 import DiagnosisClient from "@/components/diagnosis/DiagnosisClient";
 import { getArticlePreviews } from "@/data/articleData";
 import { getDiagnosisStudyLinks } from "@/utils/diagnosisStudyLinks";
@@ -23,65 +25,67 @@ function getCheckPage(tab: string | string[] | undefined) {
   return {
     mode,
     isGorou,
+    path: isGorou ? "/diagnosis?tab=gorou" : "/diagnosis",
     title: isGorou ? GOROU_TITLE : SELF_CHECK_TITLE,
     description: isGorou ? GOROU_DESCRIPTION : SELF_CHECK_DESCRIPTION,
-    url: isGorou ? "https://www.haritaro.jp/diagnosis?tab=gorou" : "https://www.haritaro.jp/diagnosis",
   };
 }
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
-  const { title, description, url } = getCheckPage((await searchParams).tab);
+  const { title, description, path } = getCheckPage((await searchParams).tab);
 
   return {
     title,
     description,
-    alternates: {
-      canonical: url,
-    },
-    openGraph: {
-      images: SHARED_OG_IMAGES,
-      siteName: SITE_NAME,
-      title,
-      description,
-      url,
-    },
+    alternates: { canonical: SITE_ORIGIN + path },
+    ...pageSocialMetadata(title, description, path),
   };
 }
 
 export default async function DiagnosisPage({ searchParams }: Props) {
-  const { mode, isGorou, title, description, url } = getCheckPage((await searchParams).tab);
+  const { mode, isGorou, title, description, path } = getCheckPage((await searchParams).tab);
   // The public site currently offers two study tools. Keep old interview bookmarks recoverable.
   if (mode === "clinical") redirect("/diagnosis");
 
+  const url = SITE_ORIGIN + path;
+  const revisedAt = PAGE_REVISIONS[path];
+  const breadcrumbId = url + "#breadcrumbs";
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": ["WebPage", "MedicalWebPage"],
+        "@type": ["WebPage", "LearningResource"],
         "@id": `${url}#webpage`,
         url,
         name: title,
         description,
         inLanguage: "ja",
-        provider: {
-          "@type": "Organization",
-          name: "はり太郎の東洋医学",
-          url: "https://www.haritaro.jp",
-        },
+        dateModified: revisedAt,
+        learningResourceType: "学習用セルフチェック",
+        isPartOf: { "@id": SITE_ORIGIN + "/#website" },
+        publisher: { "@id": SITE_ORIGIN + "/#organization" },
+        breadcrumb: { "@id": breadcrumbId },
       },
       {
         "@type": "BreadcrumbList",
+        "@id": breadcrumbId,
         itemListElement: [
           {
             "@type": "ListItem",
             position: 1,
             name: "ホーム",
-            item: "https://www.haritaro.jp",
+            item: SITE_ORIGIN,
           },
           {
             "@type": "ListItem",
             position: 2,
-            name: isGorou ? "五労チェッカー" : "気血水体質チェック",
+            name: "臨床演習",
+            item: SITE_ORIGIN + "/clinical",
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: isGorou ? "五労チェッカー" : "気血水 体質セルフチェック",
             item: url,
           },
         ],
@@ -93,13 +97,15 @@ export default async function DiagnosisPage({ searchParams }: Props) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <DiagnosisClient
         initialTab={isGorou ? "gorou" : "self"}
         relatedArticles={getArticlePreviews(RELATED_ARTICLE_IDS)}
         studyLinks={getDiagnosisStudyLinks()}
-      />
+      >
+        <LearningCredits revisedAt={revisedAt} />
+      </DiagnosisClient>
     </>
   );
 }

@@ -55,7 +55,7 @@ export default function ClinicalPatternExercise() {
     <section id="pattern-exercise" tabIndex={-1} className={styles.mini} aria-labelledby="pattern-exercise-heading">
       <div className={styles.miniHeading}>
         <h2 id="pattern-exercise-heading" className={styles.sectionTitle}>ミニ症例で見立てを練習</h2>
-        <p>架空の相談を選び、どの所見を手がかりにするか考えます。</p>
+        <p>3つの架空症例で、気虚・気滞の手がかりと、情報が足りず見立てを保留する場面を比べます。</p>
       </div>
       <div className={styles.exampleSelector} role="group" aria-label="架空の相談を選ぶ">
         {examples.map((example, index) => (

@@ -169,18 +169,21 @@ export default function GorouWorkstyleChecker() {
       )}
 
       <section aria-labelledby="gorou-background-heading" className="space-y-4 rounded-2xl border border-frame bg-panel p-4 sm:p-6">
-        <h2 id="gorou-background-heading" className="font-serif text-xl font-bold leading-relaxed sm:text-2xl">五労の考え方と休憩の工夫</h2>
+        <h2 id="gorou-background-heading" className="font-serif text-xl font-bold leading-relaxed sm:text-2xl">五労（ごろう）とは</h2>
         <p className="text-base leading-[1.8] text-muted">
-          五労は、長く見る・座る・立つ・歩く・横になる動作を、血・肉・骨・筋・気と関連づけた伝統的な分類です。仕事や生活で同じ動作が長く続く場面を振り返る手がかりにできます。
+          五労は『黄帝内経 素問』の宣明五気篇にある、長く続く五つの動作を血・気・肉・骨・筋と関連づけた伝統的な分類です。日々の作業や姿勢を振り返る手がかりにできます。
         </p>
+        <a href="https://zh.wikisource.org/wiki/黃帝內經/素問第七卷#宣明五氣篇二十三" target="_blank" rel="noopener noreferrer" className={textLinkClass}>『素問』宣明五気篇の電子本文</a>
         <p className="text-base leading-[1.8] text-muted">
           現代の作業環境では、休憩を取る、姿勢を変える、机や椅子を調整するといった工夫があります。米国労働安全衛生局は、画面から目を離す、立つ、歩くなどの短い休憩を紹介しています。
         </p>
         <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {gorouIds.map(id => (
             <li key={id} className="rounded-lg border border-frame bg-page px-3 py-2 text-base leading-relaxed">
-              <strong className="block">{GOROU_DEFS[id].passage}</strong>
-              <span className="text-muted">{GOROU_DEFS[id].restTitle}</span>
+              <strong className="block">{GOROU_DEFS[id].name}</strong>
+              <span className="block font-semibold text-accent">{GOROU_DEFS[id].passage}</span>
+              <span className="block text-muted">{GOROU_DEFS[id].meaning}</span>
+              <span className="mt-1 block">{GOROU_DEFS[id].restTitle}</span>
             </li>
           ))}
         </ul>

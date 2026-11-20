@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type ReactNode } from "react";
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
 import ClinicalInterviewBoard from "./ClinicalInterviewBoard";
@@ -95,7 +95,10 @@ interface Props {
   initialTab?: "self" | "clinical" | "gorou";
   relatedArticles: ArticlePreview[];
   studyLinks: Record<string, DiagnosisStudyLinks>;
+  children?: ReactNode;
 }
+
+const checkLinkClass = "flex min-h-14 items-center gap-2 rounded-xl border border-transparent px-4 py-3 text-sm font-bold text-accent hover:bg-panel focus-visible:outline-2 focus-visible:outline-offset-2 aria-[current=page]:border-frame aria-[current=page]:bg-panel-selected";
 
 function SelfCheckStudyLinks({ links }: { links: DiagnosisStudyLinks }) {
   return (
@@ -130,12 +133,11 @@ function SelfCheckStudyLinks({ links }: { links: DiagnosisStudyLinks }) {
   );
 }
 
-export default function DiagnosisClient({ initialTab = "self", relatedArticles, studyLinks }: Props) {
+export default function DiagnosisClient({ initialTab: activeTab = "self", relatedArticles, studyLinks, children }: Props) {
   const router = useRouter();
   const [interviewReady, setInterviewReady] = useState(false);
   const [activeEncounter, setActiveEncounter] = useState<ClinicalEncounter | null>(null);
   const [handoffError, setHandoffError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"self" | "clinical" | "gorou">(initialTab);
 
   // セルフチェック用State
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
@@ -158,7 +160,7 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles, 
 
   const interviewRef = useRef<ClinicalInterviewDraft>({ patientIdentifier: '', statuses: {}, notes: {} });
   useEffect(() => {
-    if (initialTab !== "clinical") return;
+    if (activeTab !== "clinical") return;
     const timer = setTimeout(() => {
       const encounter = readClinicalEncounter('guest');
       const draft = readClinicalInterview('guest') || { patientIdentifier: encounter.encounter?.patientIdentifier || '', statuses: {}, notes: {} };
@@ -166,7 +168,7 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles, 
       setClinicalResult(null); setIsPatientModalOpen(false); setPatientModalData(null); setActiveEncounter(encounter.encounter); setHandoffError(encounter.error); setInterviewReady(true);
     }, 0);
     return () => clearTimeout(timer);
-  }, [initialTab]);
+  }, [activeTab]);
   const retainInterview = (patch: Partial<ClinicalInterviewDraft>) => {
     if (!interviewReady) return;
     const next = { ...interviewRef.current, ...patch }; interviewRef.current = next;
@@ -182,11 +184,6 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles, 
         window.scrollTo({ top: y, behavior: "smooth" });
       }
     }, 100);
-  };
-
-  const handleTabChange = (tab: "self" | "gorou") => {
-    setActiveTab(tab);
-    window.history.pushState(null, "", tab === "gorou" ? "/diagnosis?tab=gorou" : "/diagnosis");
   };
 
   // --- セルフチェックハンドラー ---
@@ -404,7 +401,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
     <div className="page-layout space-y-6">
       <PageIntro compact eyebrow="回答を整理して振り返る" art="care"
         title={activeTab === "self" ? "気血水 体質セルフチェック" : activeTab === "clinical" ? "対面問診メモ" : "五労チェッカー"}
-        description={activeTab === "self" ? "直近1〜2週間の状態に当てはまるものを選び、回答の傾向を確認します。" : activeTab === "clinical" ? "会話に出た話題から、自由な順番で。回答とメモを手元に残し、聞き漏れを確認できます。" : "『素問』の五労を参考に、見る・座る・立つ・歩く・横になる生活動作を振り返ります。"}
+        description={activeTab === "self" ? "直近1〜2週間を振り返る12問で、気虚・気滞・血虚・瘀血・水滞・陽虚の6つの伝統的な分類を学びます。" : activeTab === "clinical" ? "会話に出た話題から、自由な順番で。回答とメモを手元に残し、聞き漏れを確認できます。" : "長く見る・座る・立つ・歩く・横になる動作を選び、『素問』の五労の記述と休憩や動き方の例を確認できます。"}
       >
         {activeTab === "clinical" && <a href="#clinical-interview-board" className="mt-3 inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#1E3D34] px-5 py-3 text-sm font-bold text-white dark:bg-[#74BA9E] dark:text-[#121920]">問診票へ<ArrowRight className="h-4 w-4" aria-hidden="true" /></a>}
       </PageIntro>
@@ -414,38 +411,16 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
           ? "五労は生活動作を振り返るための伝統的な分類です。臓器の状態や病気の有無を調べる検査ではありません。"
           : DIAGNOSIS_GUIDANCE_SCOPE}
       />
-      {/* モード切り替えタブ */}
-      <div className="w-full">
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-          <button
-            type="button"
-            onClick={() => handleTabChange("self")}
-            aria-pressed={activeTab === "self"}
-            className={`flex items-center gap-1.5 sm:gap-2 min-h-14 px-4 py-3 rounded-xl text-sm font-bold transition-colors text-left cursor-pointer ${
-              activeTab === "self"
-                ? "bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] shadow-sm"
-                : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
-            }`}
-          >
-            <Stethoscope className="w-4 h-4" />
-            <span>気血水セルフチェック</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleTabChange("gorou")}
-            aria-pressed={activeTab === "gorou"}
-            className={`flex items-center gap-1.5 sm:gap-2 min-h-14 px-4 py-3 rounded-xl text-sm font-bold transition-colors text-left cursor-pointer ${
-              activeTab === "gorou"
-                ? "bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] shadow-sm"
-                : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
-            }`}
-          >
-            <Activity className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-            <span>五労チェッカー</span>
-          </button>
-        </div>
-      </div>
+      <nav aria-label="東洋医学の学習用チェック" className="grid gap-2 sm:grid-cols-2">
+        <Link href="/diagnosis" scroll={false} aria-current={activeTab === "self" ? "page" : undefined} className={checkLinkClass}>
+          <Stethoscope className="size-4 shrink-0" aria-hidden="true" />
+          気血水セルフチェック
+        </Link>
+        <Link href="/diagnosis?tab=gorou" scroll={false} aria-current={activeTab === "gorou" ? "page" : undefined} className={checkLinkClass}>
+          <Activity className="size-4 shrink-0" aria-hidden="true" />
+          五労チェッカー
+        </Link>
+      </nav>
 
       {/* ============================================================== */}
       {/* 1. 一般向け12問セルフチェック */}
@@ -1183,6 +1158,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
           ))}
         </div>
       </section>
+      {children}
     </div>
   );
 }

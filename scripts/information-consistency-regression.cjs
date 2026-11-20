@@ -205,6 +205,8 @@ vm.runInNewContext(pageJs, {
     if (id === 'react/jsx-runtime') return { jsx, jsxs: jsx, Fragment: 'Fragment' };
     if (id === 'next/navigation') return { redirect: href => { throw new Error('Redirect to ' + href); } };
     if (id === '@/config/seo') return load('src/config/seo');
+    if (id === '@/config/contentUpdates') return load('src/config/contentUpdates');
+    if (id === '@/components/common/LearningCredits') return { default: 'LearningCredits' };
     if (id === '@/data/articleData') return { getArticlePreviews: () => [] };
     if (id === '@/components/diagnosis/DiagnosisClient') return { default: 'DiagnosisClient' };
     if (id === '@/utils/diagnosisStudyLinks') return load('src/utils/diagnosisStudyLinks');
@@ -222,11 +224,18 @@ function findScript(node) {
     const meta = await pageExports.generateMetadata(props);
     const script = findScript(await pageExports.default(props));
     assert(script, `${tab}: JSON-LD missing`);
-    const webPage = JSON.parse(script.props.dangerouslySetInnerHTML.__html)['@graph'][0];
+    const [webPage, breadcrumbs] = JSON.parse(script.props.dangerouslySetInnerHTML.__html)['@graph'];
     assert.equal(meta.title, webPage.name, `${tab}: metadata and JSON-LD disagree`);
     assert.equal(meta.openGraph.title, meta.title);
     assert.equal(meta.openGraph.description, meta.description);
+    assert.equal(meta.twitter.title, meta.title);
+    assert.equal(meta.twitter.description, meta.description);
     assert.equal(webPage.url, meta.alternates.canonical);
+    assert(webPage['@type'].includes('LearningResource'));
+    assert.equal(webPage.dateModified, '2026-11-20');
+    assert.equal(webPage.breadcrumb['@id'], breadcrumbs['@id']);
+    assert.equal(breadcrumbs.itemListElement[1].item, 'https://www.haritaro.jp/clinical');
+    assert.equal(breadcrumbs.itemListElement.at(-1).item, webPage.url);
     assert(!/特効|自動判定|セルフ診断|タイプ判定/.test(JSON.stringify({ meta, webPage })), `${tab}: diagnostic or efficacy promise remains`);
     assert.match(meta.description, /学ぶ|学習|記録/);
     assert.match(meta.description, /使えません|ありません|確定するものではなく/);

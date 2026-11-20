@@ -56,6 +56,7 @@ const sitemap=load('src/app/sitemap').default();
 const queryPages = sitemap.filter(page=>new URL(page.url).search);
 assert.equal(queryPages.length, 1, 'Only the independently described Gorou checker has a query canonical');
 assert.equal(queryPages[0].url, 'https://www.haritaro.jp/diagnosis?tab=gorou');
+assert.equal(queryPages[0].lastModified.toISOString().slice(0,10), '2026-11-20', 'Gorou has its own publication revision date');
 assert(!sitemap.some(page=>new URL(page.url).pathname==='/notes'));
 assert.equal(new Set(sitemap.map(page=>page.url)).size,sitemap.length);
 const { ACUPOINT_PAGE_REVISED_AT, CURRICULUM_EDITORIAL_REVISIONS, READABILITY_EDITORIAL_REVISIONS, NATURAL_JAPANESE_EDITORIAL_REVISIONS } = load('src/config/contentUpdates');
@@ -78,7 +79,8 @@ for (const unit of readingUnits) assert.equal(dateAt(unit.href), dateAt('/learn'
 for (const pathname of ['/tsubo','/tsubo/sp11','/tsubo/sp6','/tsubo/li4','/tsubo/pc7','/tsubo/bl57']) {
   assert.equal(dateAt(pathname), ACUPOINT_PAGE_REVISED_AT, pathname + ' shows the shared acupoint release date');
 }
-for(const pathname of ['/','/about','/clinical','/curriculum','/diagnosis','/library']) assert.equal(dateAt(pathname),'2026-11-18',pathname);
+for(const pathname of ['/','/about','/curriculum','/library']) assert.equal(dateAt(pathname),'2026-11-18',pathname);
+for(const pathname of ['/clinical','/diagnosis']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
 for (const pathname of ['/learn', '/learn/essentials']) assert.equal(dateAt(pathname), '2026-11-20', pathname);
 assert.equal(dateAt('/updates'),'2026-11-20');
 assert.equal(dateAt('/symptoms'),'2026-11-19');
