@@ -205,15 +205,20 @@ const publicAtlas = load('src/data/acupointLookup');
 const gorou = client('src/components/GorouWorkstyleChecker.tsx', {
   'next/link': { __esModule: true, default: Link },
   '@/data/acupointLookup': publicAtlas,
-  '@/utils/gogyoColor': load('src/utils/gogyoColor'),
 });
 gorou.render();
+assert.doesNotMatch(text(gorou.tree()), /学習用.{0,5}点数|\/100/);
 for (const label of ['久視（きゅうし）', '久坐（きゅうざ）', '久立（きゅうりつ）', '久行（きゅうこう）', '久臥（きゅうが）']) {
   const choice = nodes(gorou.tree()).find(node => node.type === 'button' && text(node).includes(label));
   assert(choice, label);
+  assert.equal(choice.props['aria-pressed'], false);
   choice.props.onClick();
   gorou.render();
 }
+const selectedPassages = nodes(gorou.tree()).find(node => node.props?.['aria-labelledby'] === 'gorou-result-heading');
+assert(selectedPassages, 'Selected actions have a qualitative account');
+for (const passage of ['久視傷血', '久坐傷肉', '久立傷骨', '久行傷筋', '久臥傷気']) assert(text(selectedPassages).includes(passage), passage);
+assert.doesNotMatch(text(gorou.tree()), /学習用.{0,5}点数|\/100/);
 for (const code of ['ST36', 'KI1', 'BL57', 'CV17']) {
   const point = publicAtlas.ACUPOINT_LOOKUP.find(entry => entry.code === code);
   assert(text(gorou.tree()).includes(point.locationSimple), code + ' uses the same location as the atlas');

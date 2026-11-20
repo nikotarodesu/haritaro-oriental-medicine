@@ -203,6 +203,7 @@ vm.runInNewContext(pageJs, {
   exports: pageExports,
   require: id => {
     if (id === 'react/jsx-runtime') return { jsx, jsxs: jsx, Fragment: 'Fragment' };
+    if (id === 'next/navigation') return { redirect: href => { throw new Error('Redirect to ' + href); } };
     if (id === '@/config/seo') return load('src/config/seo');
     if (id === '@/data/articleData') return { getArticlePreviews: () => [] };
     if (id === '@/components/diagnosis/DiagnosisClient') return { default: 'DiagnosisClient' };
@@ -216,7 +217,7 @@ function findScript(node) {
   return [node.props?.children].flat().map(findScript).find(Boolean);
 }
 (async () => {
-  for (const tab of [undefined, 'clinical', 'gorou', 'workstyle', 'checker']) {
+  for (const tab of [undefined, 'gorou', 'workstyle', 'checker']) {
     const props = { searchParams: Promise.resolve({ tab }) };
     const meta = await pageExports.generateMetadata(props);
     const script = findScript(await pageExports.default(props));
@@ -231,6 +232,9 @@ function findScript(node) {
     assert.match(meta.description, /使えません|ありません|確定するものではなく/);
     assert.match(webPage.description, /使えません|ありません|確定するものではなく/);
   }
+  const oldInterview = { searchParams: Promise.resolve({ tab: 'clinical', patientId: 'old' }) };
+  assert.equal((await pageExports.generateMetadata(oldInterview)).alternates.canonical, 'https://www.haritaro.jp/diagnosis');
+  await assert.rejects(() => pageExports.default(oldInterview), /^Error: Redirect to \/diagnosis$/);
   assert(!/セルフ診断/.test(fs.readFileSync('src/app/not-found.tsx', 'utf8')), '404 must name the same educational check');
-  console.log(`Information consistency regression passed: ${glossary.length} glossary links, 94 lessons, 13 foundations / 39 questions, five introductory qi lessons / 15 questions, four pathology lessons / 12 questions, five safe figures / one published introductory figure, five diagnosis tab metadata variants.`);
+  console.log(`Information consistency regression passed: ${glossary.length} glossary links, 94 lessons, 13 foundations / 39 questions, five introductory qi lessons / 15 questions, four pathology lessons / 12 questions, five safe figures / one published introductory figure, four public check URLs and the legacy interview redirect.`);
 })().catch(error => { console.error(error); process.exitCode = 1; });

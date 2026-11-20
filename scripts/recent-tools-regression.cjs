@@ -24,8 +24,8 @@ assert.equal(recentToolHref('/notes', 'learning'), null);
 assert.equal(recentToolHref('/notes'), null);
 assert.equal(recentToolHref('/diagnosis', 'gorou'), '/diagnosis?tab=gorou');
 assert.equal(recentToolHref('/diagnosis'), '/diagnosis');
-assert.equal(recentToolHref('/diagnosis', 'clinical'), '/diagnosis?tab=clinical', 'The direct interview mode remains distinct in public recent history');
-assert.equal(JSON.stringify(readRecentToolPaths(JSON.stringify(['/diagnosis?tab=clinical&patientId=private']))), '["/diagnosis?tab=clinical"]', 'Interview history keeps only the fixed public mode');
+assert.equal(recentToolHref('/diagnosis', 'clinical'), null, 'The hidden interview mode never enters public history');
+assert.equal(JSON.stringify(readRecentToolPaths(JSON.stringify(['/diagnosis?tab=clinical&patientId=private', '/tsubo']))), '["/tsubo"]', 'Old interview entries are hidden without losing other history');
 assert.equal(recentToolHref('/kokushi'), '/learn/review', 'Visiting a retired bookmark records the current lecture-review destination');
 assert.equal(recentToolHref('/kokushi/', 'private-text'), '/learn/review');
 for (const tab of ['patient-1', 'learning&text=secret', 'gorou&name=secret', 'unknown']) {
@@ -47,9 +47,9 @@ for (const href of migrated) assert(!/patient|source|reason|complaint|#/.test(hr
 const old = JSON.stringify(['/notes', '/diagnosis', '/library', '/tsubo']);
 assert.equal(JSON.stringify(readRecentToolPaths(old)), '["/diagnosis","/library","/tsubo"]', 'Retired entries are removed without affecting other history');
 let history = updateRecentToolPaths(old, '/diagnosis', 'clinical');
-assert.equal(history[0], '/diagnosis?tab=clinical');
+assert.equal(history[0], '/diagnosis');
 history = updateRecentToolPaths(JSON.stringify(history), '/diagnosis', 'gorou');
-assert.deepEqual(Array.from(history), ['/diagnosis?tab=gorou', '/diagnosis?tab=clinical', '/diagnosis', '/library']);
+assert.deepEqual(Array.from(history), ['/diagnosis?tab=gorou', '/diagnosis', '/library', '/tsubo']);
 const bad = JSON.stringify(['https://evil.example/notes?tab=learning', '//evil.example/notes', '/notes/patient-id', 4, {}, null, '/missing']);
 assert.equal(readRecentToolPaths(bad).length, 0);
 assert.equal(JSON.stringify(updateRecentToolPaths(old, '/notes/patient-id', 'learning')), '["/diagnosis","/library","/tsubo"]', 'unlisted routes cannot add patient-specific paths');
@@ -90,12 +90,13 @@ assert(!isNavigationItemActive('workspace', '/clinical'));
 assert(isNavigationItemActive('tsubo_compare', '/tsubo/compare'));
 assert(!isNavigationItemActive('tsubo', '/tsubo/compare'), 'The comparison page does not select the point dictionary at the same time');
 assert(isNavigationItemActive('clinical_guides', '/clinical/symptoms/neck-shoulder'));
-for (const [tab, expectedId] of [['', 'diagnosis'], ['unknown', 'diagnosis'], ['clinical', 'clinical_interview'], ['gorou', 'gorou']]) {
+for (const [tab, expectedId] of [['', 'diagnosis'], ['unknown', 'diagnosis'], ['clinical', 'diagnosis'], ['gorou', 'gorou']]) {
   const params = new URLSearchParams(tab ? 'tab=' + tab : '');
-  const active = ['diagnosis', 'clinical_interview', 'gorou'].filter(id => isNavigationItemActive(id, '/diagnosis', params));
+  const active = ['diagnosis', 'gorou'].filter(id => isNavigationItemActive(id, '/diagnosis', params));
   assert.equal(JSON.stringify(active), JSON.stringify([expectedId]), 'Each diagnosis mode selects exactly one shortcut: ' + tab);
 }
-assert.equal(JSON.stringify(configuredNav(['diagnosis', 'clinical_interview', 'gorou', 'simulator_compare']).items), '["diagnosis","clinical_interview","gorou","simulator_compare"]', 'New interview entry and previous self-check / comparison choices coexist without a storage reset');
+assert.equal(JSON.stringify(configuredNav(['clinical_interview', 'haiketsu', 'gorou', 'simulator_compare']).items), '["diagnosis","haiketsu","gorou","simulator_compare"]', 'A saved interview shortcut now opens the constitution check and preserves other choices');
+assert.equal(JSON.stringify(configuredNav(['diagnosis', 'clinical_interview', 'gorou', 'simulator_compare']).items), '["diagnosis","gorou","simulator_compare","tsubo"]', 'Existing self-check and interview shortcuts merge without losing other choices');
 for (const items of [null, [], ['missing', 'notes', 'tsubo', 'search'], ['notes', 'tsubo', 'search'], [{ id: 'kokushi' }, 'notes', 'tsubo', 'search']]) {
   assert.equal(JSON.stringify(configuredNav(items).items), JSON.stringify(DEFAULT_NAV_CONFIG.items), 'Malformed navigation falls back to the safe defaults');
 }
@@ -158,9 +159,9 @@ pathname = '/learn/review';
 assert.equal(JSON.stringify(activeNavHrefs()), '["/learn/review#learning-review"]', 'Lecture review does not simultaneously select the general learning shortcut');
 pathname = '/curriculum/lecture-intro-1';
 assert.equal(JSON.stringify(activeNavHrefs()), '["/learn"]', 'A lecture still selects the general learning shortcut');
-navState[0] = { ...navState[0], items: ['diagnosis', 'clinical_interview', 'gorou', 'tsubo'] };
+navState[0] = { ...navState[0], items: ['diagnosis', 'gorou', 'tsubo', 'simulator_compare'] };
 pathname = '/diagnosis'; searchParams = new URLSearchParams('tab=clinical');
-assert.equal(JSON.stringify(activeNavHrefs()), '["/diagnosis?tab=clinical"]', 'A clinical interview shortcut updates on a query-only change');
+assert.equal(JSON.stringify(activeNavHrefs()), '["/diagnosis"]', 'An old interview query selects the public constitution check');
 searchParams = new URLSearchParams('tab=gorou');
 assert.equal(JSON.stringify(activeNavHrefs()), '["/diagnosis?tab=gorou"]');
 searchParams = new URLSearchParams();

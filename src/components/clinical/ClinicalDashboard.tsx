@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { ArrowRight, ClipboardPenLine, FileClock, GitCompareArrows, Plus, ScanLine, ShieldCheck } from 'lucide-react';
+import { ArrowRight, FileClock, GitCompareArrows, Plus, ScanLine, ShieldCheck } from 'lucide-react';
 import { CLINICAL_COMPLAINTS } from '@/data/clinicalWorkflow';
 import { emptyClinicalEncounter, readClinicalEncounter, writeClinicalEncounter, type ClinicalEncounter } from '@/utils/clinicalEncounter';
 import { ClinicalComplaintIcon } from './ClinicalArtwork';
@@ -51,8 +51,7 @@ export default function ClinicalDashboard() {
           <Plus aria-hidden="true" /><span><strong>新しい記録を始める</strong><small>{draftChecked ? '主訴・安全確認から入力する' : '下書きを確認しています…'}</small></span><ArrowRight aria-hidden="true" />
         </button>
       </nav>
-      <nav className="clinical-record-links" aria-label="記録・問診・比較を開く">
-        <Link href="/diagnosis?tab=clinical"><ClipboardPenLine aria-hidden="true" /><span>対面問診</span><ArrowRight aria-hidden="true" /></Link>
+      <nav className="clinical-record-links" aria-label="経穴を調べる">
         <Link href="/tsubo/compare"><GitCompareArrows aria-hidden="true" /><span>経穴比較</span><ArrowRight aria-hidden="true" /></Link>
       </nav>
     </section>

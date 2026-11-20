@@ -29,7 +29,6 @@ export type NavItemId =
   | "tsubo"
   | "search"
   | "diagnosis"
-  | "clinical_interview"
   | "gorou"
   | "simulator"
   | "simulator_compare"
@@ -118,19 +117,11 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
     icon: Sparkles,
     href: "/diagnosis",
   },
-  clinical_interview: {
-    id: "clinical_interview",
-    label: "対面問診",
-    shortLabel: "問診",
-    description: "気血水の所見を対面で聞き取り、記録に整理する",
-    icon: Activity,
-    href: "/diagnosis?tab=clinical",
-  },
   gorou: {
     id: "gorou",
     label: "五労チェック",
     shortLabel: "五労",
-    description: "日常動作（久坐・久立等）と五臓の負担点検",
+    description: "長く続く生活動作と五労の関係を振り返る",
     icon: Activity,
     href: "/diagnosis?tab=gorou",
   },
@@ -184,11 +175,10 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
 };
 
-/** The five everyday destinations shared by the header and clinical home. */
+/** Everyday destinations shared by the header and clinical home. */
 export const CLINICAL_PRIMARY_ITEMS = [
   ALL_NAV_ITEMS.workspace,
   ALL_NAV_ITEMS.clinical_guides,
-  ALL_NAV_ITEMS.clinical_interview,
   ALL_NAV_ITEMS.tsubo_compare,
 ] as const satisfies readonly NavItemDefinition[];
 
@@ -202,7 +192,7 @@ export const CLINICAL_PRACTICE_ITEMS = [
 /** Retained for existing consumers; public menus use the concise lists above. */
 export const CLINICAL_NAV_GROUPS = [
   { id: "record", label: "記録する", items: ["workspace"] },
-  { id: "lookup", label: "調べる", items: ["clinical_guides", "clinical_interview", "tsubo_compare"] },
+  { id: "lookup", label: "調べる", items: ["clinical_guides", "tsubo_compare"] },
   { id: "practice", label: "練習する", items: ["simulator", "haiketsu", "cases"] },
 ] as const satisfies readonly { id: string; label: string; items: readonly NavItemId[] }[];
 
@@ -222,8 +212,7 @@ export function isNavigationItemActive(id: NavItemId, pathname: string, searchPa
   if (id === "workspace") return pathname === "/clinical/workspace";
   if (id === "curriculum") return pathname !== "/learn/review" && (pathname.startsWith("/learn") || pathname.startsWith("/curriculum"));
   if (id === "review" || id === "kokushi") return pathname === "/learn/review";
-  if (id === "diagnosis") return pathname === "/diagnosis" && !["gorou", "clinical"].includes(searchParams?.get("tab") ?? "");
-  if (id === "clinical_interview") return pathname === "/diagnosis" && searchParams?.get("tab") === "clinical";
+  if (id === "diagnosis") return pathname === "/diagnosis" && searchParams?.get("tab") !== "gorou";
   if (id === "gorou") return pathname === "/diagnosis" && searchParams?.get("tab") === "gorou";
   if (id === "simulator") return pathname === "/simulator";
   if (id === "simulator_compare") return pathname.startsWith("/simulator/compare");
@@ -281,7 +270,9 @@ export function loadNavUserConfig(): NavUserConfig {
       return DEFAULT_NAV_CONFIG;
     }
     // 全アイテムIDが有効か検証
-    const valid = parsed.items.every((id: string) => typeof id === "string" && (id === "notes" || Object.hasOwn(ALL_NAV_ITEMS, id)));
+    const valid = parsed.items.every((id: unknown) => typeof id === "string" && (
+      id === "notes" || id === "clinical_interview" || Object.hasOwn(ALL_NAV_ITEMS, id)
+    ));
     if (!valid) return DEFAULT_NAV_CONFIG;
     // 重複がないか検証
     const unique = new Set(parsed.items);
@@ -291,8 +282,13 @@ export function loadNavUserConfig(): NavUserConfig {
     const legacyClinician = ["simulator", "haiketsu", "tsubo", "notes"];
     const sourceItems = parsed.preset === "clinician" && parsed.items.every((id: string, index: number) => id === legacyClinician[index])
       ? NAV_PRESETS.clinician.items : parsed.items;
-    // Keep the user's other choices when the retired exam shortcut becomes review.
-    const migrated = [...new Set<NavItemId>(sourceItems.map((id: NavItemId | "notes") => id === "kokushi" ? "review" : id === "notes" ? "symptoms" : id))];
+    // Keep the user's other choices when a legacy shortcut changes.
+    const migrated = [...new Set<NavItemId>(sourceItems.map((id: NavItemId | "notes" | "clinical_interview") => {
+      if (id === "kokushi") return "review";
+      if (id === "notes") return "symptoms";
+      if (id === "clinical_interview") return "diagnosis";
+      return id;
+    }))];
     for (const id of DEFAULT_NAV_CONFIG.items) {
       if (migrated.length === 4) break;
       if (!migrated.includes(id)) migrated.push(id);

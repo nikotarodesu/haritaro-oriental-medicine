@@ -46,11 +46,6 @@ export default function ClinicalLandingPage() {
         <div>
           <h1 id="clinical-series-heading">はり太郎の臨床演習</h1>
           <p>生活や体調を振り返り、架空の症例で問診・見立て・配穴を練習できます。</p>
-          <nav className={styles.heroNav} aria-label="臨床演習内の移動">
-            <a className={styles.heroPrimary} href="#quick-checks">チェックを選ぶ</a>
-            <a href="#tools">演習を選ぶ</a>
-            <a href="#clinical-record-heading">臨床記録</a>
-          </nav>
         </div>
         <ClinicalHeroArtwork className={styles.heroArtwork} />
       </header>

@@ -19,7 +19,6 @@ import type { SearchResultItem } from "@/types/searchCatalog";
 
 const STATIC_TOOLS: SearchResultItem[] = [
   { id: "tool-learning-essentials", type: "tool", title: "東洋医学の要点", subtitle: "陰陽・気血津液・経絡などの基本を一問ずつ確認する", badge: "学習ガイド", url: "/learn/essentials", tags: ["東洋医学", "要点", "まとめ", "基礎", "陰陽", "気血津液", "経絡"] },
-  { id: 'tool-clinical-interview', type: 'tool', title: '対面問診メモ', subtitle: '聞き取った回答やメモを、気血水の伝統的分類に沿って整理する記録補助', badge: '問診', url: '/diagnosis?tab=clinical', tags: ['対面問診','問診','気血水','臨床','記録'] },
   { id: 'clinical-home', type: 'tool', title: '鍼灸師の臨床ホーム', subtitle: '主訴・所見・前回記録から始める', badge: '臨床', url: '/clinical', tags: ['主訴','問診','臨床','鍼灸師'] },
   { id: 'clinical-workspace', type: 'tool', title: '臨床記録', subtitle: '四診・候補比較・配穴の理由・再評価', badge: '臨床記録', url: '/clinical/workspace', tags: ['四診','所見','弁証','配穴','再評価'] },
   ...CLINICAL_COMPLAINTS.map(item => ({ id: `clinical-${item.slug}`, type: 'tool' as const, searchRole: 'professional-guide' as const, title: `${item.title}｜鍼灸師の確認ガイド`, subtitle: item.summary, badge: '主訴別・専門家', url: `/clinical/symptoms/${item.slug}`, tags: [item.title,'主訴','問診','四診','再評価'] })),

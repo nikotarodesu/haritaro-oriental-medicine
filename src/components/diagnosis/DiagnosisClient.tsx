@@ -158,6 +158,7 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles, 
 
   const interviewRef = useRef<ClinicalInterviewDraft>({ patientIdentifier: '', statuses: {}, notes: {} });
   useEffect(() => {
+    if (initialTab !== "clinical") return;
     const timer = setTimeout(() => {
       const encounter = readClinicalEncounter('guest');
       const draft = readClinicalInterview('guest') || { patientIdentifier: encounter.encounter?.patientIdentifier || '', statuses: {}, notes: {} };
@@ -165,7 +166,7 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles, 
       setClinicalResult(null); setIsPatientModalOpen(false); setPatientModalData(null); setActiveEncounter(encounter.encounter); setHandoffError(encounter.error); setInterviewReady(true);
     }, 0);
     return () => clearTimeout(timer);
-  }, []);
+  }, [initialTab]);
   const retainInterview = (patch: Partial<ClinicalInterviewDraft>) => {
     if (!interviewReady) return;
     const next = { ...interviewRef.current, ...patch }; interviewRef.current = next;
@@ -183,14 +184,9 @@ export default function DiagnosisClient({ initialTab = "self", relatedArticles, 
     }, 100);
   };
 
-  const handleTabChange = (tab: "self" | "clinical" | "gorou") => {
+  const handleTabChange = (tab: "self" | "gorou") => {
     setActiveTab(tab);
-    if (typeof window !== "undefined") {
-      let url = "/diagnosis";
-      if (tab === "clinical") url = "/diagnosis?tab=clinical";
-      if (tab === "gorou") url = "/diagnosis?tab=gorou";
-      window.history.pushState(null, "", url);
-    }
+    window.history.pushState(null, "", tab === "gorou" ? "/diagnosis?tab=gorou" : "/diagnosis");
   };
 
   // --- セルフチェックハンドラー ---
@@ -412,10 +408,15 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
       >
         {activeTab === "clinical" && <a href="#clinical-interview-board" className="mt-3 inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#1E3D34] px-5 py-3 text-sm font-bold text-white dark:bg-[#74BA9E] dark:text-[#121920]">問診票へ<ArrowRight className="h-4 w-4" aria-hidden="true" /></a>}
       </PageIntro>
-      <MedicalSafetyNotice title="チェックの利用範囲" message={DIAGNOSIS_GUIDANCE_SCOPE} />
+      <MedicalSafetyNotice
+        title="チェックの利用範囲"
+        message={activeTab === "gorou"
+          ? "五労は生活動作を振り返るための伝統的な分類です。臓器の状態や病気の有無を調べる検査ではありません。"
+          : DIAGNOSIS_GUIDANCE_SCOPE}
+      />
       {/* モード切り替えタブ */}
       <div className="w-full">
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           <button
             type="button"
             onClick={() => handleTabChange("self")}
@@ -428,23 +429,6 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
           >
             <Stethoscope className="w-4 h-4" />
             <span>気血水セルフチェック</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleTabChange("clinical")}
-            aria-pressed={activeTab === "clinical"}
-            className={`flex items-center gap-1.5 sm:gap-2 min-h-14 px-4 py-3 rounded-xl text-sm font-bold transition-colors text-left cursor-pointer ${
-              activeTab === "clinical"
-                ? "bg-white dark:bg-[#1E2B37] text-[#1E3D34] dark:text-[#74BA9E] shadow-sm ring-1 ring-[#1E3D34]/20 dark:ring-[#74BA9E]/30"
-                : "text-[#59615D] dark:text-[#8899A6] hover:text-[#1E3D34] dark:hover:text-[#FAF8F5]"
-            }`}
-          >
-            <UserCheck className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <span>対面問診</span>
-            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#1E3D34] text-white dark:bg-[#74BA9E] dark:text-[#121920]">
-              臨床用
-            </span>
           </button>
 
           <button
@@ -588,44 +572,6 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                 </div>
 
                 {selfStudyLinks && selfStudyLinks.points.length > 0 && <SelfCheckStudyLinks links={selfStudyLinks} />}
-
-                {/* 患者さんに説明する（対面説明クリーンビュー展開） */}
-                <div className="p-4 rounded-xl bg-white dark:bg-[#1A2632] border-2 border-[#1E3D34]/30 dark:border-[#74BA9E]/40 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-[#1E3D34] text-white flex items-center justify-center shrink-0">
-                      <Eye className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                          患者さんに説明する（対面説明ビュー）
-                        </span>
-                        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#1E3D34] text-white">
-                          対面用
-                        </span>
-                      </div>
-                      <span className="text-[11px] text-[#59615D] dark:text-[#A0B0BC] block mt-0.5">
-                        広告・課金・内部メモを非表示にし、ベッドサイドで患者さんに直接見せられるクリーン画面を開きます。
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleOpenPatientModal(
-                        selfResult,
-                        selectedAnswers
-                          .map((id) => DIAGNOSIS_QUESTIONS.find((q) => q.id === id)?.text || "")
-                          .filter(Boolean)
-                      )
-                    }
-                    className="px-4 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B5A46] text-white text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm whitespace-nowrap cursor-pointer"
-                  >
-                    <Eye className="w-3.5 h-3.5" />
-                    <span>説明画面を表示</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
 
                 {/* 臨床・学術解説講義への相互誘導 */}
                 {selfResult.type !== "neutral" && (() => {
@@ -1191,20 +1137,20 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
       <section className="border-t border-[#E8E1D1] dark:border-[#22303D] pt-12 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
-            <div className="flex items-center gap-2 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider mb-1">
+            <div className="mb-1 flex items-center gap-2 text-sm font-bold text-accent">
               <Sparkles className="w-4 h-4" />
               <span>四診の学習と研究</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
               四診の伝統的な説明と、研究で確認できる範囲を学ぶ
             </h2>
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] mt-1 leading-relaxed max-w-2xl">
+            <p className="mt-2 max-w-2xl text-base leading-relaxed text-muted">
               脈診・腹診・舌診の所見、検者間の一致、研究の対象と限界を確認します。伝統的な分類と医学的な診断精度を区別して読んでください。
             </p>
           </div>
           <Link
             href="/articles"
-            className="text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-1 shrink-0"
+            className="flex min-h-11 shrink-0 items-center gap-1 text-base font-semibold text-accent underline underline-offset-4"
           >
             <span>知見・論文一覧へ</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -1219,17 +1165,17 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
               className="bg-[#FFFFFF] dark:bg-[#17212A] p-5 rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#4E8C76] hover:shadow-md transition-all group flex flex-col justify-between"
             >
               <div className="space-y-2">
-                <div className="flex items-center justify-end text-xs text-[#737C77] dark:text-[#8899A6]">
-                  <span className="text-[11px]">{article.readTime}</span>
+                <div className="flex items-center justify-end text-sm text-muted">
+                  <span>{article.readTime}</span>
                 </div>
                 <h3 className="font-sans text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-relaxed tracking-normal">
                   {article.title}
                 </h3>
-                <p className="text-xs text-[#59615D] dark:text-[#A0B0BC] leading-relaxed line-clamp-3">
+                <p className="text-base leading-relaxed text-muted">
                   {article.summary}
                 </p>
               </div>
-              <div className="pt-3 mt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex items-center justify-between text-xs text-[#1E3D34] dark:text-[#74BA9E] font-semibold">
+              <div className="mt-3 flex items-center justify-between border-t border-divider pt-3 text-base font-semibold text-accent">
                 <span>記事を読む</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
               </div>

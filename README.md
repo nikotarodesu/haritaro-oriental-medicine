@@ -12,7 +12,7 @@ https://www.haritaro.jp — 東洋医学・鍼灸の学習と臨床記録を支�
 | `/tsubo` | WHO標準361経穴の検索・辞典 |
 | `/clinical` | 臨床ツールの入口 |
 | `/clinical/workspace` | 主訴・安全確認、四診、候補・治法、配穴、再評価の記録 |
-| `/diagnosis?tab=clinical` | 話題別の対面問診メモ |
+| `/diagnosis`、`/diagnosis?tab=gorou` | 気血水の体質セルフチェックと五労チェッカー |
 | `/notes` | 臨床ノート・配穴・学習ノート、ファイル保存・読込 |
 | `/cases` | 全20件の架空症例演習（無料3件） |
 | `/library` | 論文・古典条文・症例教材。件数は分類別に集計 |

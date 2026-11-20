@@ -36,7 +36,6 @@
 - [理由を選ぶ段階的症例演習](https://www.haritaro.jp/simulator#case-training): 架空の3症例で追加質問、安全判断、候補、判断根拠、治則、再評価を練習します。判断と理由を別々に採点します。
 - [架空症例教材](https://www.haritaro.jp/cases): 所見と判断の理由を学ぶ教材です。実例アーカイブは掲載を保留しています。
 - [配穴の練習](https://www.haritaro.jp/practice/haiketsu): 経穴の組み合わせと選定理由を学習用に整理します。個人の治療効果や施術適応を自動判定しません。
-- [対面問診メモ](https://www.haritaro.jp/diagnosis?tab=clinical): 対面で聞き取った回答とメモを伝統分類に沿って整理する記録補助です。
 - [鑑別例を見比べる](https://www.haritaro.jp/simulator#comparison-examples): 弁証の練習内にある固定3組の比較教材。
 
 ## 案内
