@@ -1,6 +1,6 @@
 import type { AtlasCloseUpProps } from "@/data/tsubo/atlas/types";
 
-export default function FootDorsumRegion({ marker, label }: AtlasCloseUpProps) {
+export default function FootDorsumRegion({ marker }: AtlasCloseUpProps) {
   return (
     <>
       <path
@@ -23,7 +23,7 @@ export default function FootDorsumRegion({ marker, label }: AtlasCloseUpProps) {
         <path d="M73 93l-7-25m-3-13V32m57 63V74m0-11 1-13m1-10 1-19" strokeWidth="8" />
       </g>
 
-      <path d="M126 195v7l76 29h24" fill="none" stroke="#82725B" strokeWidth="1.5" strokeDasharray="3 4" strokeLinecap="round" />
+      <path d="M120 199Q126 201 133 200" fill="none" stroke="#82725B" strokeWidth="1.5" strokeDasharray="3 4" strokeLinecap="round" />
       <path
         d={`M139 253C129 232 132 203 127 189Q124 181 ${marker.x} ${marker.y}Q115 142 102 114`}
         fill="none"
@@ -32,33 +32,6 @@ export default function FootDorsumRegion({ marker, label }: AtlasCloseUpProps) {
         strokeDasharray="2 3"
         strokeLinecap="round"
       />
-      <path d={`M${marker.x} ${marker.y}L207 164h19`} fill="none" stroke="#7F3520" strokeWidth="1.5" strokeLinecap="round" />
-
-      <g fill="#9E4B20" stroke="#F9F5ED" strokeWidth="1.5">
-        <circle cx="85" cy="121" r="9" />
-        <circle cx="123" cy="121" r="9" />
-      </g>
-      <g fill="#FFF9F0" fontSize="12" fontWeight="bold" textAnchor="middle">
-        <text x="85" y="125">1</text>
-        <text x="123" y="125">2</text>
-      </g>
-
-      <g fill="#7F3520" fontSize="13" fontWeight="bold">
-        <text x="210" y="37">① 親指につながる骨</text>
-        <text x="210" y="75">② 第2趾につながる骨</text>
-        <text x="231" y="162">{label}</text>
-      </g>
-      <g fill="#524637" fontSize="12">
-        <text x="215" y="19">↑ 指先側</text>
-        <text x="241" y="54">第1中足骨</text>
-        <text x="241" y="92">第2中足骨</text>
-        <text x="231" y="181">指先側のくぼみ</text>
-        <text x="231" y="234">2本の骨の根元</text>
-        <text x="231" y="250">が近づく所</text>
-        <path d="M212 269h14" stroke="#99524C" strokeWidth="1.7" strokeDasharray="2 3" strokeLinecap="round" />
-        <text x="231" y="273">足の甲の動脈</text>
-        <text x="215" y="290">↓ 足首側</text>
-      </g>
     </>
   );
 }

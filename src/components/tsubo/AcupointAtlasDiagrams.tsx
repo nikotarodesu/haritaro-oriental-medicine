@@ -12,11 +12,11 @@ export default function AcupointAtlasDiagrams({ point, meridianPoints }: {
 
   return (
     <div id="acupoint-diagram" className="atlas-diagrams atlas-target">
-      <figure className="atlas-figure">
+      <figure className="atlas-figure atlas-figure--labelled">
         <ZoomableAtlasDiagram label="合谷の場所と目印">
           <HeguHandDiagram />
         </ZoomableAtlasDiagram>
-        <figcaption>右手の甲を拡大 · ①の中央から②の方へ</figcaption>
+        <figcaption><span className="block text-sm font-semibold">右手の甲</span>①の骨の中央から、②の骨の方へ少し寄ったところ。</figcaption>
       </figure>
 
       <figure className="atlas-figure atlas-figure--overview">

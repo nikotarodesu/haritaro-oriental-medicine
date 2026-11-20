@@ -24,7 +24,7 @@ export default function WhoPointLocation({ code, pointName }: { code: string; po
       {note && <p className="atlas-who-note">{note}</p>}
       <WhoMeasurementFigures measures={noteMeasures} pointName={pointName} />
       <div className="atlas-directory-actions">
-        {usedUnits.size > 0 && <a href="#acupoint-diagram" className="atlas-text-action">拡大図で起点を見る</a>}
+        <a href="#acupoint-diagram" className="atlas-text-action">{usedUnits.size > 0 ? "拡大図で起点を見る" : "拡大図で目印を見る"}</a>
         {usedUnits.size > 0
           ? Array.from(usedUnits, (unit) => {
               const { anchor, guide: label } = measurementUnits[unit];

@@ -53,6 +53,8 @@ const { WHO_ATLAS_PDF, whoAtlasPages } = load('src/data/tsubo/atlas/whoAtlasPage
 const { whoLocations, whoLocationNotes } = load('src/data/tsubo/atlas/whoLocations');
 const { getWhoMeasurements } = load('src/data/tsubo/atlas/whoMeasurements');
 const { getAnnotatedCloseUp } = load('src/data/tsubo/atlas/closeUpMeasurements');
+const { expandedLandmarkIds, expandedLandmarkLabels } = load('src/data/tsubo/atlas/landmarkLabels');
+const { heguLandmarkLabels, regionalLandmarkLabels, regionalLandmarkView } = load('src/data/tsubo/atlas/regionalLandmarkLabels');
 const expandedViews = Object.assign({}, ...['head', 'arm', 'trunk', 'back'].map(group =>
   load(`src/components/tsubo/atlas/expanded/${group}Views`)[`${group}Views`]
 ));
@@ -63,6 +65,7 @@ assert.deepEqual(['li4', ...Object.keys(ATLAS_ARTICLES)].sort(), Array.from(ACUP
 const standardPointCodes = Array.from(ACUPOINTS_MASTER, point => point.codeLower).sort();
 assert.deepEqual(Object.keys(whoAtlasPages).sort(), standardPointCodes, 'Every WHO point has an exact PDF page');
 assert.deepEqual(Object.keys(whoLocations).sort(), standardPointCodes, 'Every WHO point has a Japanese location summary');
+const landmarksByPoint = new Map([['li4', heguLandmarkLabels]]);
 for (const code of standardPointCodes) {
   assert(whoLocations[code].endsWith('。'), code + ' has a complete location summary');
   assert(whoAtlasPages[code] >= 35 && whoAtlasPages[code] <= 240, code + ' links to a point in the WHO manual');
@@ -84,6 +87,23 @@ for (const code of standardPointCodes) {
     const closeUp = getAnnotatedCloseUp(code, ATLAS_POINT_MARKERS[code], ATLAS_ARTICLES[code].illustration.region);
     assert.deepEqual(Array.from(closeUp.measurements, row => row.measure.token),
       expected.map(row => row.token), code + ' annotates every published distance on the close-up');
+    if (expected.length === 0) {
+      const { marker } = closeUp;
+      const point = marker.expanded;
+      const features = point && expandedViews[point.view].features;
+      if (features) {
+        for (const id of expandedLandmarkIds(point, code)) assert(features[id], code + ' draws the selected landmark ' + id);
+      }
+      const labels = point ? expandedLandmarkLabels(point, code, features) : regionalLandmarkLabels(code, marker);
+      const left = point ? 0 : regionalLandmarkView(code, marker).left;
+      assert(labels.length > 0, code + ' names at least one anatomical landmark');
+      assert.equal(new Set(labels.map(({ name }) => name)).size, labels.length, code + ' labels each landmark once');
+      for (const { name, position: [x, y] } of labels) {
+        assert(name && x > left && x < left + 200 && y > 0 && y < 300, code + ' keeps the leader endpoint on the drawing');
+      }
+      assert(marker.x > left && marker.x < left + 200, code + ' keeps the point inside the close-up');
+      landmarksByPoint.set(code, labels);
+    }
     for (const { origin, destination, rail, originLabel } of closeUp.measurements) {
       assert(originLabel, code + ' names the anatomical anchor');
       assert([origin, destination].every(([x, y]) => x > 0 && x < 340 && y > 0 && y < 300), code + ' keeps both landmarks within the illustration');
@@ -93,6 +113,11 @@ for (const code of standardPointCodes) {
     }
   }
 }
+assert.equal(landmarksByPoint.size, 152, 'All points without a distance have a named landmark on the diagram');
+assert.deepEqual(Array.from(landmarksByPoint.get('st41'), ({ name }) => name),
+  ['長母趾伸筋腱', '長趾伸筋腱', '内くるぶし', '外くるぶし']);
+assert.deepEqual(Array.from(landmarksByPoint.get('st35'), ({ name }) => name), ['ひざのお皿（膝蓋骨）', '膝蓋靱帯']);
+assert.deepEqual(Array.from(landmarksByPoint.get('li5'), ({ name }) => name).slice(0, 2), ['短母指伸筋腱', '長母指伸筋腱']);
 assert.deepEqual(Object.keys(whoLocationNotes).filter(code => /WHOの代替位置/.test(whoLocationNotes[code])).sort(),
   ['gb30', 'gv26', 'li19', 'li20', 'pc8', 'pc9'], 'All six alternative locations are included');
 assert.match(whoLocations.pc6, /長掌筋腱と橈側手根屈筋腱の間.*ひじへ2寸/);

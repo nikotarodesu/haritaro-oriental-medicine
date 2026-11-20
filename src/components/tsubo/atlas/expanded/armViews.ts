@@ -7,6 +7,8 @@ const { metacarpalBase, triquetrum, styloid, forearmHead } = dorsalUlnarWrist;
 const { styloidX, arteryX, arteryY } = palmarRadialWrist;
 const { epicondyle, ridgeAtLi12 } = lateralElbow;
 const dorsalWristCrease = `M${radialTendonX} ${creaseY}H${ulnarTendonX}Q112 249 149 246`;
+const shortThumbExtensorPath = `M79 251L${radialTendonX} ${creaseY}Q62 187 36 151`;
+const longThumbExtensorPath = `M96 251L${ulnarTendonX} ${creaseY}Q78 191 49 152`;
 const forearmWristCrease = `M77 ${forearmWristCreaseY}Q111 ${forearmWristCreaseY + 3} 148 ${forearmWristCreaseY}`;
 const forearm = "M66 27Q110 15 158 27Q164 58 151 91Q155 123 149 168L145 230Q143 246 151 272L76 272Q81 246 71 224L65 178Q63 132 70 96Q50 58 66 27Z";
 const upperArm = "M93 28Q108 13 140 27Q163 44 162 74Q162 91 147 104Q150 141 143 171Q146 204 152 237Q151 252 138 274H82Q72 254 75 236Q81 201 77 174Q72 139 77 107Q70 77 75 51Q79 36 93 28Z";
@@ -83,6 +85,7 @@ export const armViews = {
       carpus: f("手首の舟状骨", 105, 263, "M86 246L95 246L99 253L92 258L84 254Z"),
       innerElbow: f("ひじの内側の骨", 149, 77, "M144 42Q154 42 159 63Q155 72 145 66Z"),
       ulnarTendon: f("小指側を走る腱", 155, 206, "M145 102Q150 185 149 250", "soft"),
+      pisiform: f("豆状骨", 153, 252, "M151 250Q158 250 157 257Q153 262 148 257Z"),
       outerElbow: f("ひじの外側の骨", 61, 78, "M62 52Q68 45 74 53L73 64Q64 72 62 52Z"),
     },
   },
@@ -132,12 +135,15 @@ export const armViews = {
       ...rays,
       indexJoint: f("人差し指の関節", 81, 127, "M61 130Q69 121 80 129"),
       littleJoint: f("小指の付け根の関節", 157, 151, "M151 155Q163 142 175 153"),
-      thumbTendonsBack: f("親指につながる腱", 65, 210, `M79 251L${radialTendonX} ${creaseY}Q62 187 36 151M96 251L${ulnarTendonX} ${creaseY}Q78 191 49 152`, "soft"),
+      thumbTendonsBack: f("親指につながる腱", 65, 210, `${shortThumbExtensorPath}${longThumbExtensorPath}`, "soft"),
+      shortThumbExtensor: f("短母指伸筋腱", radialTendonX, creaseY, shortThumbExtensorPath, "soft"),
+      longThumbExtensor: f("長母指伸筋腱", ulnarTendonX, creaseY, longThumbExtensorPath, "soft"),
       radialWrist: f("親指側の手首の骨", 93, 263, "M78 254Q84 250 92 252L97 258L86 267Z"),
       triquetrum: f("小指側の手首の骨／三角骨", 166, 229, `M${triquetrum.x - 7} ${triquetrum.y - 5}l6-2 6 4-2 6-6 1-4-4Z`),
       ulnarStyloid: f("小指側の腕の骨の突起", 164, 260, `M${styloid.x - 10} ${styloid.y - 1}l7-2 5-3 2 6-5 7-11 1Z`),
       wristBack: f("手首の横じわ", 112, 263, dorsalWristCrease, "guide"),
       handTendons: f("指を伸ばす腱", 109, 219, "M107 264L103 134M114 261L130 140", "soft"),
+      littleWeb: f("薬指と小指のまた", 148, 112, "M144 106L143 111L147 106", "soft"),
     },
   },
 } satisfies Record<string, View>;

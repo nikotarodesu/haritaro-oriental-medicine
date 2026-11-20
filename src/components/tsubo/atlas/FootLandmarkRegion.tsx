@@ -29,14 +29,14 @@ function sideBones(medial: boolean): Partial<Record<FootBone, Bone>> {
   };
 }
 
-function Skeleton({ bones, selected }: { bones: Partial<Record<FootBone, Bone>>; selected: FootPoint["bones"] }) {
+function Skeleton({ bones, selected, labelled }: { bones: Partial<Record<FootBone, Bone>>; selected: FootPoint["bones"]; labelled?: boolean }) {
   const emphasis: readonly FootBone[] = selected;
   return (
     <g fill="none" strokeLinecap="round" strokeLinejoin="round">
       {Object.entries(bones).map(([key, bone]) => (
         <path key={key} d={bone.path} stroke={emphasis.includes(key as FootBone) ? "#B97049" : "#D3C4B0"} strokeWidth="7" />
       ))}
-      {selected.map((key, index) => {
+      {!labelled && selected.map((key, index) => {
         const bone = bones[key];
         if (!bone) return null;
         const [x, y] = bone.badge;
@@ -51,7 +51,7 @@ function Skeleton({ bones, selected }: { bones: Partial<Record<FootBone, Bone>>;
   );
 }
 
-export default function FootLandmarkRegion({ marker, label }: AtlasCloseUpProps) {
+export default function FootLandmarkRegion({ marker, label, labelled }: AtlasCloseUpProps) {
   if (!marker.footCode) throw new Error("A foot landmark is required");
   const code = marker.footCode;
   const point = footLandmarks[code];
@@ -67,18 +67,18 @@ export default function FootLandmarkRegion({ marker, label }: AtlasCloseUpProps)
         <path d="M117 286Q117 245 121 224T104 165L63 34M140 286Q140 241 137 224L123 36" />
         <path d="M102 240H159" strokeDasharray="3 4" />
       </g>}
-      <Skeleton bones={bones} selected={point.bones} />
+      <Skeleton bones={bones} selected={point.bones} labelled={labelled} />
       {code === "st42" && <path d={`M125 281Q137 243 ${marker.x} ${marker.y}T137 165`} fill="none" stroke="#B26362" strokeDasharray="2 4" strokeWidth="2.5" />}
       {code === "gb41" && <path d={`M148 267Q151 223 ${fifthExtensor.middle.join(" ")}L${fifthExtensor.tip.join(" ")}`} fill="none" stroke="#719184" strokeWidth="3" />}
-      <path d={`M${marker.x} ${marker.y}L218 222H229`} fill="none" stroke="#7F3520" strokeWidth="1.5" />
-      <g fill="#5B493B" fontSize="11">
+      {!labelled && <g fill="#5B493B" fontSize="11">
+        <path d={`M${marker.x} ${marker.y}L218 222H229`} fill="none" stroke="#7F3520" strokeWidth="1.5" />
         <text x="232" y="54">右足を甲の側から</text>
         {point.bones.map((key, index) => <text key={key} x="232" y={115 + 23 * index}>{index === 0 ? "①" : "②"} {bones[key]?.label}</text>)}
         {code === "st42" && <text x="232" y="164">点線は足の甲の動脈</text>}
         {code === "gb41" && <text x="232" y="164">緑線は小指の腱</text>}
         <text x="232" y="228" fill="#7F3520" fontWeight="bold" fontSize="13">{label}</text>
         <text x="233" y="266">足首側 ↓</text>
-      </g>
+      </g>}
     </>
   ) : (
     <>
@@ -91,7 +91,7 @@ export default function FootLandmarkRegion({ marker, label }: AtlasCloseUpProps)
       {code === "lr4" && <path d="M115 75Q119 108 142 139L160 158" fill="none" stroke="#719184" strokeWidth="3" />}
       {code === "gb40" && <path d="M117 77Q118 111 135 139L182 163" fill="none" stroke="#719184" strokeWidth="3" />}
       {code === "ki3" && <path d="M81 89Q79 109 81 123L110 159" fill="none" stroke="#B26362" strokeWidth="2" strokeDasharray="2 4" />}
-      <Skeleton bones={bones} selected={point.bones} />
+      <Skeleton bones={bones} selected={point.bones} labelled={labelled} />
       {code === "sp5" && (
         <g fill="#755D48">
           <path d={`M${malleolus.x} ${malleolus.y}L${navicular.x} ${navicular.y}`} fill="none" stroke="#755D48" strokeWidth="1.5" strokeDasharray="3 3" />
@@ -99,14 +99,14 @@ export default function FootLandmarkRegion({ marker, label }: AtlasCloseUpProps)
           <circle cx={navicular.x} cy={navicular.y} r="2.5" />
         </g>
       )}
-      <path d={`M${marker.x} ${marker.y}L${marker.x} 229l${marker.x > 174 ? -14 : 14} 10`} fill="none" stroke="#7F3520" strokeWidth="1.5" />
-      <text x={marker.x > 174 ? marker.x - 17 : marker.x + 17} textAnchor={marker.x > 174 ? "end" : "start"} y="245" fill="#7F3520" fontSize="14" fontWeight="bold">{label}</text>
-      <g fill="#5B493B" fontSize="12">
+      {!labelled && <g fill="#5B493B" fontSize="12">
+        <path d={`M${marker.x} ${marker.y}L${marker.x} 229l${marker.x > 174 ? -14 : 14} 10`} fill="none" stroke="#7F3520" strokeWidth="1.5" />
+        <text x={marker.x > 174 ? marker.x - 17 : marker.x + 17} textAnchor={marker.x > 174 ? "end" : "start"} y="245" fill="#7F3520" fontSize="14" fontWeight="bold">{label}</text>
         <text x="16" y="32">足を{medial ? "内側" : "外側"}から見た図</text>
         {point.bones.map((key, index) => <text key={key} x="194" y={55 + 22 * index}>{index === 0 ? "①" : "②"} {bones[key]?.label}</text>)}
         <text x="17" y="276">← かかと側</text>
         <text x="250" y="276">指先側 →</text>
-      </g>
+      </g>}
     </>
   );
 }

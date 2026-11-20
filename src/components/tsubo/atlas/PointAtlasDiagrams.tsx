@@ -2,13 +2,17 @@ import type { ReactNode } from "react";
 import type { AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle, AtlasCloseUpProps, AtlasMarker, AtlasRegion } from "@/data/tsubo/atlas/types";
 import { getAnnotatedCloseUp } from "@/data/tsubo/atlas/closeUpMeasurements";
+import { expandedLandmarkIds, expandedLandmarkLabels } from "@/data/tsubo/atlas/landmarkLabels";
 import { legLandmarks } from "@/data/tsubo/atlas/legLandmarks";
+import { regionalLandmarkLabels, regionalLandmarkView } from "@/data/tsubo/atlas/regionalLandmarkLabels";
+import { whoLocations } from "@/data/tsubo/atlas/whoLocations";
 import CloseUpMeasurementArrows, { CloseUpMeasurementKey } from "./CloseUpMeasurementArrows";
 import FootDorsumRegion from "./FootDorsumRegion";
 import FootLandmarkRegion from "./FootLandmarkRegion";
 import DigitRegion from "./DigitRegion";
 import LowerLegRegion from "./LowerLegRegion";
 import LegLandmarkRegion from "./LegLandmarkRegion";
+import LandmarkCloseUp from "./LandmarkCloseUp";
 import VolarForearmRegion from "./VolarForearmRegion";
 import ExpandedLandmarkRegion, { expandedViews } from "./expanded/ExpandedLandmarkRegion";
 import ZoomableAtlasDiagram from "./ZoomableAtlasDiagram";
@@ -65,7 +69,11 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
   const { BodyHighlight, CloseUp } = regions[illustration.region];
   const { marker: closeUpMarker, measurements } = getAnnotatedCloseUp(point.codeLower, marker, illustration.region);
   const measured = measurements.length > 0;
-  const expandedView = closeUpMarker.expanded && expandedViews[closeUpMarker.expanded.view];
+  const expandedPoint = closeUpMarker.expanded;
+  const expandedView = expandedPoint && expandedViews[expandedPoint.view];
+  const labelled = !measured;
+  const landmarkView = labelled && (expandedView ? { caption: expandedView.name, left: 0 } : regionalLandmarkView(point.codeLower, closeUpMarker));
+  const landmarks = labelled && (expandedPoint && expandedView ? expandedLandmarkLabels(expandedPoint, point.codeLower, expandedView.features) : regionalLandmarkLabels(point.codeLower, closeUpMarker));
   const bodyMap = point.codeLower === "gv14" ? bodyMapOverrides.neckBase
     : occipitalPoints.has(point.codeLower) ? bodyMapOverrides.occiput : undefined;
   const bodyArea = bodyMap?.area ?? expandedView?.area;
@@ -84,20 +92,30 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
   );
   const lineLength = 300;
   const step = lineLength / Math.max(nearby.length - 1, 1);
+  const pointLabel = `${point.name} ${point.code}`;
+  const diagramLabel = `${point.name}の場所と目印`;
 
   return (
     <div id="acupoint-diagram" className="atlas-diagrams atlas-target">
-      <figure className={measured ? `${figureClass} atlas-figure--measured` : figureClass}>
-        <ZoomableAtlasDiagram label={`${point.name}の場所と目印`}>
-          <svg viewBox="0 0 340 300" role="img" aria-label={measured ? `${closeUpAlt} ${measureAlt}` : closeUpAlt} className="mx-auto block w-full max-w-[340px]">
-            <CloseUp marker={closeUpMarker} label={`${point.name} ${point.code}`} measured={measured} />
-            {measured && <CloseUpMeasurementArrows measurements={measurements} />}
-            <circle data-point-marker="" cx={closeUpMarker.x} cy={closeUpMarker.y} r={measured ? "5" : "6"} fill="#7F3520" stroke="#FFF9F0" strokeWidth="2" />
-          </svg>
+      <figure className={`${figureClass} ${measured ? "atlas-figure--measured" : "atlas-figure--labelled"}`}>
+        <ZoomableAtlasDiagram label={diagramLabel}>
+          {landmarks && landmarkView ? (
+            <LandmarkCloseUp marker={closeUpMarker} pointLabel={pointLabel} landmarks={landmarks} left={landmarkView.left}
+              numbered={point.codeLower === "pc7" || point.codeLower === "lr3"}
+              description={`${pointLabel}。 ${landmarkView.caption}。 ${whoLocations[point.codeLower]}`}>
+              <CloseUp marker={closeUpMarker} label={pointLabel} labelled landmarkIds={expandedPoint && expandedLandmarkIds(expandedPoint, point.codeLower)} />
+            </LandmarkCloseUp>
+          ) : (
+            <svg viewBox="0 0 340 300" role="img" aria-label={`${closeUpAlt} ${measureAlt}`} className="mx-auto block w-full max-w-[340px]">
+              <CloseUp marker={closeUpMarker} label={pointLabel} measured />
+              <CloseUpMeasurementArrows measurements={measurements} />
+              <circle data-point-marker="" cx={closeUpMarker.x} cy={closeUpMarker.y} r="5" fill="#7F3520" stroke="#FFF9F0" strokeWidth="2" />
+            </svg>
+          )}
         </ZoomableAtlasDiagram>
         <figcaption>
-          {expandedView && <span className="block text-sm font-semibold">{expandedView.name}</span>}
-          {illustration.closeUpCaption}
+          {(landmarkView || expandedView) && <span className="block text-sm font-semibold">{landmarkView ? landmarkView.caption : expandedView?.name}</span>}
+          {(measured || illustration.closeUpCaption !== diagramLabel) && illustration.closeUpCaption}
           {measured && <>
             <p className="atlas-dimension-guide">白丸が起点、矢印が測る方向です。{measurements.some(({ alternative }) => alternative) && "ひし形は代替位置です。"}</p>
             <CloseUpMeasurementKey measurements={measurements} />

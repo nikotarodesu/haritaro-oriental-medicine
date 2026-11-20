@@ -260,6 +260,22 @@
 }
 
 .atlas-figure > figcaption { margin-top: .4rem; color: var(--atlas-muted); font-size: .875rem; line-height: 1.6; text-align: center; }
+.atlas-figure--labelled { justify-content: flex-start; padding: .65rem .45rem; }
+.atlas-figure--labelled button { margin-inline-start: .25rem; }
+.atlas-landmark-overlay { --landmark-line: #496d67; --landmark-point: #852f22; pointer-events: none; }
+.atlas-landmark-halo, .atlas-landmark-leader { fill: none; stroke-linejoin: round; stroke-linecap: round; }
+.atlas-landmark-halo { stroke: var(--atlas-paper); stroke-width: 3.5; opacity: .8; }
+.atlas-landmark-leader { stroke: var(--landmark-line); stroke-width: 1.4; }
+.atlas-landmark-anchor { fill: var(--atlas-paper); stroke: var(--landmark-line); stroke-width: 1.55; }
+.atlas-landmark-badge { fill: var(--atlas-paper); stroke: var(--landmark-line); stroke-width: 1.3; }
+.atlas-landmark-number, .atlas-landmark-name { fill: var(--atlas-ink); dominant-baseline: central; }
+.atlas-landmark-number { font-size: 9px; font-weight: 700; text-anchor: middle; }
+.atlas-landmark-name { font-size: 16px; font-weight: 600; }
+.atlas-landmark-point .atlas-landmark-leader { stroke: var(--landmark-point); stroke-width: 2; }
+.atlas-landmark-point .atlas-landmark-badge, .atlas-landmark-point .atlas-landmark-name { fill: var(--landmark-point); }
+.atlas-landmark-point .atlas-landmark-badge { stroke: none; }
+.atlas-landmark-point .atlas-landmark-name { font-weight: 750; }
+.dark .atlas-landmark-overlay { --landmark-line: #b0d7cb; --landmark-point: #ffb799; }
 .atlas-figure--measured { justify-content: flex-start; }
 .atlas-dimension-overlay { --dimension-stroke: #075b54; --dimension-halo: #fffaf2; pointer-events: none; }
 .atlas-dimension-leader { fill: none; stroke: var(--dimension-stroke); stroke-width: 1.5; stroke-dasharray: 3 2; }

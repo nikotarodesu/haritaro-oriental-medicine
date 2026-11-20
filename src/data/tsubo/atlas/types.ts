@@ -47,6 +47,8 @@ export interface AtlasCloseUpProps {
   marker: AtlasMarker;
   label: string;
   measured?: boolean;
+  landmarkIds?: readonly string[];
+  labelled?: boolean;
 }
 
 export type StudySource = { label: string; url: string };
