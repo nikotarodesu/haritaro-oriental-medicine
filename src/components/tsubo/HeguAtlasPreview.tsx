@@ -3,6 +3,7 @@ import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import { AcupointReadingLinks } from "@/components/tsubo/AcupointArticleLinks";
 import AcupointArticleHeader from "@/components/tsubo/AcupointArticleHeader";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
+import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import AcupointAtlasDiagrams from "@/components/tsubo/AcupointAtlasDiagrams";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import { getPublicCrossSectionModel } from "@/data/medicalSafety";
@@ -34,8 +35,11 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
 
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
-        <p className="mb-5">手を楽にして甲を上に向けます。人差し指の付け根から手首へ向かって、反対の手の指で骨をたどります。骨の長さの真ん中から、少し親指側にずらしたところが合谷です。拡大図でも、①の骨の中央から②の骨の方へ目を移すと位置を確かめられます。</p>
-        <AcupointAtlasDiagrams point={point} meridianPoints={getMeridianPoints(point.meridianId)} />
+        <p>手を楽にして甲を上に向けます。人差し指の付け根から手首へ向かって、反対の手の指で骨をたどります。骨の長さの真ん中から、少し親指側にずらしたところが合谷です。拡大図でも、①の骨の中央から②の骨の方へ目を移すと位置を確かめられます。</p>
+        <WhoPointLocation code={point.codeLower} />
+        <div className="mt-5">
+          <AcupointAtlasDiagrams point={point} meridianPoints={getMeridianPoints(point.meridianId)} />
+        </div>
       </section>
 
       <AcupointResearch point={point} />
@@ -58,8 +62,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
 
       <details className="atlas-disclosure atlas-reading-details">
         <summary>詳しい解剖と位置の資料</summary>
-        <p className="my-4">WHO標準の位置は、手背（しゅはい、手の甲）、第2中手骨（だいにちゅうしゅこつ、人差し指につながる骨）の中点の橈側（とうそく、親指側）です。周囲の組織との位置関係は、専門家向けの断面模式図で確認できます。</p>
-        <p className="mb-4 text-sm">刺鍼（はりを刺す施術）や施灸（お灸をする施術）の手順は確認待ちです。模式図から個人の安全な刺入経路や深さを判断することはできません。</p>
+        <p className="my-4 text-sm">刺鍼（はりを刺す施術）や施灸（お灸をする施術）の手順は確認待ちです。模式図から個人の安全な刺入経路や深さを判断することはできません。</p>
         {point.crossSection && (
           <CrossSectionViewer model={getPublicCrossSectionModel(point.crossSection)} pointName={point.name} pointCode={point.code} individualModel />
         )}
@@ -82,7 +85,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
           ))}
         </ul>
       </section>
-      <AuthorSupervisorCard topic={point.name} />
+      <AuthorSupervisorCard topic={point.name} pointLocationChecked />
     </article>
   );
 }

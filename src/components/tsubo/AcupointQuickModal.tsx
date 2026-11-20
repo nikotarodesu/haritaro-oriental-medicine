@@ -140,11 +140,14 @@ export default function AcupointQuickModal({
           <div className="p-3.5 rounded-xl bg-white dark:bg-[#1A2633] border border-[#E8E1D1] dark:border-[#263747] space-y-1.5">
             <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E]">
               <MapPin className="w-3.5 h-3.5" />
-              <span>WHO標準取穴部位</span>
+              <span>位置の目安</span>
             </div>
             <p className="text-xs sm:text-sm text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
               {point.locationSimple}
             </p>
+            <Link href={`/tsubo/${point.codeLower}#acupoint-who-location`} onClick={onClose} className="inline-flex min-h-11 items-center text-sm font-medium underline underline-offset-4">
+              WHO標準の位置と測り方
+            </Link>
           </div>
 
           {/* リスク警告（気胸・妊婦禁忌など） */}

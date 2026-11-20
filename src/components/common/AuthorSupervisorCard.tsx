@@ -6,9 +6,10 @@ import { ArrowRight } from "lucide-react";
 interface Props {
   className?: string;
   topic?: string;
+  pointLocationChecked?: boolean;
 }
 
-export default function AuthorSupervisorCard({ className = "", topic }: Props) {
+export default function AuthorSupervisorCard({ className = "", topic, pointLocationChecked }: Props) {
   return (
     <div
       className={`p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-4 ${className}`}
@@ -44,7 +45,7 @@ export default function AuthorSupervisorCard({ className = "", topic }: Props) {
       </div>
 
       <div className="space-y-2 text-sm text-[#59615D] dark:text-[#C5D2DB] leading-relaxed">
-        <p>全件の原典照合・専門家監修は進行中です。<Link href="/editorial-policy" className="underline">出典の確認方針と監修状況</Link>をご確認ください。</p>
+        <p>{pointLocationChecked ? "体表の標準位置をWHO原本と照合しました。専門家監修は進行中です。" : "全件の原典照合・専門家監修は進行中です。"}<Link href="/editorial-policy" className="underline">出典の確認方針と監修状況</Link>をご確認ください。</p>
         <p>
           {topic ? "「" + topic + "」の学習用解説です。" : "東洋医学の学習・臨床推論を支援する解説です。"}
           古典に基づく伝統理論、研究で得られた知見、理解を助ける比喩は根拠の種類が異なります。参考文献と研究の対象・限界を確認してください。教材の記述だけで個人の診断や施術の安全性を判断せず、必要に応じて医療機関へ相談してください。

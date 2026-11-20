@@ -49,7 +49,8 @@ const { dorsalUlnarWrist, dorsalWrist, forearmWristCreaseY, lateralElbow, palmar
 const { faceLandmarks, profileLandmarks } = load('src/data/tsubo/atlas/expanded/head');
 const { subclavicularLandmarks } = load('src/data/tsubo/atlas/expanded/trunk');
 const { getAcupointGuideLinks } = load('src/utils/symptomGuides');
-const { whoAtlasPages } = load('src/data/tsubo/atlas/whoAtlasPages');
+const { WHO_ATLAS_PDF, whoAtlasPages } = load('src/data/tsubo/atlas/whoAtlasPages');
+const { whoLocations, whoLocationNotes } = load('src/data/tsubo/atlas/whoLocations');
 const expandedViews = Object.assign({}, ...['head', 'arm', 'trunk', 'back'].map(group =>
   load(`src/components/tsubo/atlas/expanded/${group}Views`)[`${group}Views`]
 ));
@@ -57,8 +58,26 @@ assert.deepEqual(Object.keys(ATLAS_POINT_MARKERS).sort(), [...new Set([...Object
   'Every illustrated index link must have one complete diagram set');
 assert.deepEqual(['li4', ...Object.keys(ATLAS_ARTICLES)].sort(), Array.from(ACUPOINTS_MASTER, point => point.codeLower).sort(),
   'Every standard point has a full atlas article, including the dedicated LI4 page');
-assert.deepEqual(Object.keys(expandedPoints).sort(), Object.keys(whoAtlasPages).sort(),
-  'Every added point links directly to its page in the WHO manual');
+const standardPointCodes = Array.from(ACUPOINTS_MASTER, point => point.codeLower).sort();
+assert.deepEqual(Object.keys(whoAtlasPages).sort(), standardPointCodes, 'Every WHO point has an exact PDF page');
+assert.deepEqual(Object.keys(whoLocations).sort(), standardPointCodes, 'Every WHO point has a Japanese location summary');
+for (const code of standardPointCodes) {
+  assert(whoLocations[code].endsWith('。'), code + ' has a complete location summary');
+  assert(whoAtlasPages[code] >= 35 && whoAtlasPages[code] <= 240, code + ' links to a point in the WHO manual');
+  if (code !== 'li4') {
+    assert(ATLAS_ARTICLES[code].sources.some(({ url }) => url === `${WHO_ATLAS_PDF}#page=${whoAtlasPages[code]}`), code);
+  }
+}
+assert.deepEqual(Object.keys(whoLocationNotes).filter(code => /WHOの代替位置/.test(whoLocationNotes[code])).sort(),
+  ['gb30', 'gv26', 'li19', 'li20', 'pc8', 'pc9'], 'All six alternative locations are included');
+assert.match(whoLocations.pc6, /長掌筋腱と橈側手根屈筋腱の間.*ひじへ2寸/);
+assert.match(whoLocationNotes.pc6, /長掌筋の腱がない場合.*小指側/);
+assert.match(whoLocations.st4, /0\.4指寸/);
+assert.match(whoLocations.st6, /1指幅/);
+assert.match(whoLocationNotes.st40, /外へ1指幅/);
+assert.match(whoLocations.gb32, /膝裏の横じわから上へ7寸/);
+assert.match(whoLocations.lr7, /陰陵泉（SP9）から後ろへ1寸/);
+assert.match(whoLocations.sp11, /衝門側から3分の1.*縫工筋と長内転筋の間/);
 assert.equal(Object.keys(expandedPoints).length, 284);
 for (const [code, point] of Object.entries(expandedPoints)) {
   const master = getAcupointByCode(code);

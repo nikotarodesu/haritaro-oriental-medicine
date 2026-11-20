@@ -1,6 +1,6 @@
 import { ACUPOINTS_MASTER } from "../acupointsMaster";
 import type { AcupointMaster } from "../types";
-import { whoAtlasPages } from "./whoAtlasPages";
+import { WHO_ATLAS_PDF, whoAtlasPages } from "./whoAtlasPages";
 import type { AcupointAtlasArticle } from "./types";
 import { careCopy, cautionSites, viewCopy } from "./expanded/editorial";
 import { alternateLocations, expandedPoints } from "./expanded/profiles";
@@ -23,7 +23,6 @@ const meridianReadings: Record<string, string> = {
   "conception-vessel": "にんみゃく",
 };
 
-const whoPdf = "https://iris.who.int/server/api/core/bitstreams/d98c1c98-3fbf-4e4e-8c9a-1bbe72ccd00e/content";
 const emergencySource = {
   name: "厚生労働省「こんな時は迷わず119へ」",
   url: "https://kakarikata.mhlw.go.jp/kakaritsuke/urgency.html",
@@ -128,7 +127,7 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
     sources: [
       {
         name: `WHO西太平洋地域事務局『WHO標準経穴部位』2009年改訂再版（PDF ${whoPage}ページ）`,
-        url: `${whoPdf}#page=${whoPage}`,
+        url: `${WHO_ATLAS_PDF}#page=${whoPage}`,
         scope: `${point.code}の場所と体表の目印。`,
       },
       ...(point.codeLower === "gv27" ? [gv27JapaneseCorrection] : []),

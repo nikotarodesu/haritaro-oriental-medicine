@@ -929,7 +929,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "絡却",
     "code": "BL8",
     "meridianShort": "膀胱経",
-    "locationSimple": "額の生え際から頭頂を越す方向へ5.5寸、中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
+    "locationSimple": "額の生え際から頭頂側へ5.5寸、中央線から横へ1.5寸。寸は体の区間を等分した位置の目安です。"
   },
   {
     "id": "bl9",
@@ -2112,7 +2112,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "膝関",
     "code": "LR7",
     "meridianShort": "肝経",
-    "locationSimple": "陰陵泉からかかとに向かって1寸ずらした骨の下。"
+    "locationSimple": "陰陵泉と同じ高さで、ひざ裏側へ1寸。"
   },
   {
     "id": "lr8",

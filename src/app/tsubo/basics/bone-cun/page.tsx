@@ -1,253 +1,148 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
-import PageIntro from "@/components/design/PageIntro";
-import { Compass, Ruler, ArrowLeft, Layers, ShieldCheck, Sparkles } from "lucide-react";
+import { ACUPOINT_PAGE_REVISED_AT } from "@/config/contentUpdates";
 import { pageSocialMetadata } from "@/config/seo";
+import { WHO_ATLAS_PDF } from "@/data/tsubo/atlas/whoAtlasPages";
 
-const pageTitle = "骨度法・取穴の基礎知識｜体表目印と同身寸の測り方";
-const pageDescription = "東洋医学の取穴に欠かせない「骨度法（骨度折量寸法）」と「同身寸（指寸）」の基準表。前額部・胸腹部・背部・上肢・下肢の基準寸法と触診目印を徹底解説。";
+const path = "/tsubo/basics/bone-cun";
+const siteUrl = "https://www.haritaro.jp";
+const title = "ツボの「寸」の測り方｜骨度法・指寸・指幅";
+const description = "WHO標準経穴部位の計測方法を、前腕の図と部位別の基準表で解説。骨度法（B-cun）、指寸（F-cun）、指幅（F-breadth）の測り方が分かります。";
 
 export const metadata: Metadata = {
-  title: pageTitle,
-  description: pageDescription,
-  ...pageSocialMetadata(pageTitle, pageDescription, "/tsubo/basics/bone-cun"),
-  alternates: {
-    canonical: "/tsubo/basics/bone-cun",
-  },
+  title,
+  description,
+  ...pageSocialMetadata(title, description, path),
+  alternates: { canonical: path },
 };
 
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      headline: title,
+      description,
+      url: siteUrl + path,
+      inLanguage: "ja",
+      dateModified: ACUPOINT_PAGE_REVISED_AT,
+      author: { "@type": "Person", name: "はり太郎", url: siteUrl + "/about" },
+      publisher: { "@id": siteUrl + "/#organization" },
+      citation: {
+        "@type": "CreativeWork",
+        name: "WHO Standard Acupuncture Point Locations in the Western Pacific Region (updated reprint, 2009)",
+        url: WHO_ATLAS_PDF + "#page=21",
+      },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "ホーム", item: siteUrl },
+        { "@type": "ListItem", position: 2, name: "はり太郎のツボ図鑑", item: siteUrl + "/tsubo" },
+        { "@type": "ListItem", position: 3, name: "寸の測り方", item: siteUrl + path },
+      ],
+    },
+  ],
+};
+
+const boneSpans = [
+  { region: "頭・顔", rows: [
+    ["額の生え際の中央から、後ろの生え際の中央まで", 12],
+    ["眉間から、額の生え際の中央まで", 3],
+    ["左右の額の角の生え際の間", 9],
+    ["左右の乳様突起（耳の後ろの骨の出っ張り）の間", 9],
+  ] },
+  { region: "胸・お腹", rows: [
+    ["胸骨上窩（鎖骨の間のくぼみ）から、胸骨体と剣状突起の境の中央まで", 9],
+    ["胸骨体と剣状突起の境の中央から、へその中央まで", 8],
+    ["へその中央から、恥骨結合の上縁まで", 5],
+    ["左右の乳頭の間", 8],
+  ] },
+  { region: "背中・腰", rows: [
+    ["左右の肩甲骨の内側縁の間", 6],
+  ] },
+  { region: "腕", rows: [
+    ["脇の前または後ろのしわから、ひじの横じわまで", 9],
+    ["ひじの横じわから、手首の横じわまで", 12],
+  ] },
+  { region: "脚・足", rows: [
+    ["恥骨結合の上縁から、膝のお皿の上縁まで", 18],
+    ["膝のお皿の下端（後面の目安は膝裏のくぼみの中央）から、内くるぶしの頂点まで", 15],
+    ["陰陵泉の高さ（すねの内側、脛骨内側顆の下縁）から、内くるぶしの頂点まで", 13],
+    ["大転子（太ももの付け根外側にある骨の出っ張り）から、膝裏の横じわまで", 19],
+    ["お尻の下のしわから、膝裏の横じわまで", 14],
+    ["膝裏の横じわから、外くるぶしの頂点まで", 16],
+    ["内くるぶしの頂点から、足の裏まで", 3],
+  ] },
+] as const;
+
 export default function BoneCunPage() {
-  const BONE_CUN_TABLE = [
-    {
-      region: "頭部",
-      item: "前髪際 ↔ 後髪際",
-      cun: "12寸",
-      note: "髪際不明瞭な場合は眉間（印堂）〜後頭骨下端（大椎上）を18寸とし、印堂〜前髪際3寸、後髪際〜大椎3寸とする。",
-    },
-    {
-      region: "頭部",
-      item: "両額角髪際（頭維間）",
-      cun: "9寸",
-      note: "前頭部両側の額角間の横幅。",
-    },
-    {
-      region: "胸腹部",
-      item: "両乳頭間",
-      cun: "8寸",
-      note: "男性または平坦な胸郭における第4肋間鎖骨中線間の標準幅。",
-    },
-    {
-      region: "胸腹部",
-      item: "胸骨体下端（胸剣結合部） ↔ 臍中央",
-      cun: "8寸",
-      note: "中脘はちょうど中点（臍上4寸）に位置する。",
-    },
-    {
-      region: "胸腹部",
-      item: "臍中央 ↔ 恥骨結合上縁",
-      cun: "5寸",
-      note: "気海は臍下1.5寸、関元は臍下3寸、中極は臍下4寸。",
-    },
-    {
-      region: "背部",
-      item: "脊柱正中線 ↔ 肩甲骨内側縁",
-      cun: "3寸",
-      note: "背部第1行（兪穴）は1.5寸、第2行は3寸。",
-    },
-    {
-      region: "上肢",
-      item: "腋窩横紋前端 ↔ 肘窩横紋（尺沢・曲沢）",
-      cun: "9寸",
-      note: "上腕前面の縦幅寸法。",
-    },
-    {
-      region: "上肢",
-      item: "肘窩横紋 ↔ 手関節掌側横紋（大陵・太淵）",
-      cun: "12寸",
-      note: "前腕の標準縦幅。内関（手関節上2寸）、孔最（手関節上7寸）の計測基準。",
-    },
-    {
-      region: "下肢",
-      item: "恥骨結合上縁 ↔ 大腿骨内側顆上縁",
-      cun: "18寸",
-      note: "大腿内側の縦幅寸法。",
-    },
-    {
-      region: "下肢",
-      item: "大転子頂点 ↔ 膝窩中央（委中）",
-      cun: "19寸",
-      note: "大腿外側の縦幅寸法。",
-    },
-    {
-      region: "下肢",
-      item: "膝窩中央（委中） ↔ 外果尖",
-      cun: "16寸",
-      note: "下腿後外側の縦幅寸法。豊隆・条口（外果上8寸）の計測基準。",
-    },
-    {
-      region: "下肢",
-      item: "脛骨内側顆下縁（陰陵泉） ↔ 内果尖（太谿）",
-      cun: "13寸",
-      note: "下腿内側の縦幅寸法。三陰交（内果上3寸）、地機（内果上10寸）の計測基準。",
-    },
-  ];
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Article",
-        "headline": "骨度法・取穴の基礎知識｜体表目印と同身寸の測り方",
-        "description":
-          "東洋医学の取穴に欠かせない「骨度法（骨度折量寸法）」と「同身寸（指寸）」の基準表。前額部・胸腹部・背部・上肢・下肢の基準寸法と触診目印を徹底解説。",
-        "url": "https://www.haritaro.jp/tsubo/basics/bone-cun",
-        "author": {
-          "@type": "Person",
-          "name": "はり太郎",
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "はり太郎の東洋医学",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.haritaro.jp/icon.png",
-          },
-        },
-      },
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "ホーム",
-            "item": "https://www.haritaro.jp",
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "経穴辞典",
-            "item": "https://www.haritaro.jp/tsubo",
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": "骨度法・取穴の基礎",
-            "item": "https://www.haritaro.jp/tsubo/basics/bone-cun",
-          },
-        ],
-      },
-    ],
-  };
-
   return (
-    <div className="page-layout page-layout--reading min-h-screen">
-      {/* 構造化データ埋め込み */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <div className="max-w-4xl mx-auto space-y-8 sm:space-y-10">
-        
-        {/* パンくず */}
-        <nav className="flex items-center gap-2 text-xs text-[#737C77] dark:text-[#8899A6]">
-          <Link href="/" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-            ホーム
-          </Link>
-          <span>/</span>
-          <Link href="/tsubo" className="hover:text-[#1E3D34] dark:hover:text-[#74BA9E] transition-colors">
-            経穴辞典
-          </Link>
-          <span>/</span>
-          <span className="text-[#232826] dark:text-[#FAF8F5] font-bold">骨度法・取穴の基礎</span>
-        </nav>
-
-        <PageIntro compact eyebrow="取穴の基礎" title="骨度法と同身寸" art="points" description="体表の目印を基準にする骨度法と、本人の指の幅を用いる同身寸。測り方の違いを確認します。">
-          <div className="page-actions">
-            <a href="#finger-cun" className="page-secondary-action"><Compass aria-hidden="true" className="h-4 w-4" />同身寸の目安</a>
-            <a href="#bone-cun-table" className="page-secondary-action"><Ruler aria-hidden="true" className="h-4 w-4" />骨度法の基準表</a>
-          </div>
-        </PageIntro>
-
-        {/* 同身寸の解説カード */}
-        <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-8 shadow-sm space-y-6">
-          <div className="flex items-center gap-2 text-base font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
-            <Compass className="w-5 h-5" />
-            <h2 id="finger-cun" className="scroll-mt-28">同身寸（指寸取穴法）の種類と目安</h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-            <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
-              <span className="font-bold text-sm text-[#1E3D34] dark:text-[#74BA9E] block">
-                1寸（母指寸）
-              </span>
-              <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                患者自身の親指（母指）の指節関節の横幅を「1寸」とする。四肢の短い距離の計測に用いる。
-              </p>
-            </div>
-
-            <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
-              <span className="font-bold text-sm text-[#B86924] dark:text-[#E6C387] block">
-                1.5寸 / 2寸
-              </span>
-              <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                示指・中指の2本幅を「1.5寸」、示指・中指・薬指の3本幅を「2寸（内関の計測）」とする。
-              </p>
-            </div>
-
-            <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
-              <span className="font-bold text-sm text-[#1E2D3D] dark:text-[#7BAAD8] block">
-                3寸（横指同身寸）
-              </span>
-              <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                本人の示指・中指・薬指・小指を伸ばしてそろえ、中指の近位指節間関節の背側のしわの高さで測った4指の幅を「3同身寸（3 F-cun）」とします。WHOの骨度分寸（B-cun）と区別し、骨・筋・腱の目印や骨度法で求めた位置を確認する補助に使います。
-              </p>
-            </div>
-          </div>
-
-          <div className="p-3.5 rounded-xl bg-[#FCF4EB] dark:bg-[#281E15] border border-[#F3DEC5] dark:border-[#423321] text-xs text-[#8C4F1A] dark:text-[#E6C387] leading-relaxed">
-            ⚠️ <strong>注意点：</strong>骨度分寸（B-cun）は、決められた体表の目印の間を等分して測る方法です。手指同身寸（F-cun）は、本人の指の幅などを使う補助的な方法です。両者を機械的に置き換えたり、一定のセンチメートルに換算したりせず、骨・筋・腱などの目印と照らし合わせて経穴の位置を確認します。
-          </div>
+    <article className="page-layout atlas-page atlas-entry cun-guide">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <header className="atlas-guide-heading">
+        <div>
+          <nav aria-label="パンくず" className="atlas-breadcrumb">
+            <Link href="/tsubo">はり太郎のツボ図鑑</Link>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">寸の測り方</span>
+          </nav>
+          <h1 className="mt-2 text-3xl font-bold leading-snug sm:text-4xl">ツボの「寸」の測り方</h1>
+          <p className="mt-3">「寸（すん）」は、本人の体の大きさに合わせてツボの位置を示す単位です。図鑑の位置欄では、測る基準によって「寸」「指寸」「指幅」と表記します。</p>
+          <nav aria-label="測り方の目次" className="atlas-directory-actions mt-2">
+            <a className="atlas-text-action" href="#bone-cun-table">骨度法の基準表</a>
+            <a className="atlas-text-action" href="#finger-cun">指寸</a>
+            <a className="atlas-text-action" href="#fingerbreadth">指幅</a>
+          </nav>
         </div>
+      </header>
 
-        {/* 骨度折量寸法 表 */}
-        <div className="bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-8 shadow-sm space-y-6">
-          <div className="flex items-center gap-2 text-base font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
-            <Ruler className="w-5 h-5" />
-            <h2 id="bone-cun-table" className="scroll-mt-28">骨度折量寸法 基準一覧表</h2>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className="border-b border-[#E8E1D1] dark:border-[#22303D] bg-[#FAF8F5] dark:bg-[#121920] text-[#1E3D34] dark:text-[#74BA9E]">
-                  <th className="p-3 font-bold">部位</th>
-                  <th className="p-3 font-bold">基準ランドマーク（起点 ↔ 終点）</th>
-                  <th className="p-3 font-bold">折量寸法</th>
-                  <th className="p-3 font-bold">代表的な関連経穴と備考</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#F2ECE0] dark:divide-[#22303D] text-[#333835] dark:text-[#C5D2DB]">
-                {BONE_CUN_TABLE.map((row, idx) => (
-                  <tr key={idx} className="hover:bg-[#FAF8F5] dark:hover:bg-[#10171F]">
-                    <td className="p-3 font-semibold text-[#1E3D34] dark:text-[#74BA9E] whitespace-nowrap">
-                      {row.region}
-                    </td>
-                    <td className="p-3 font-medium whitespace-nowrap">{row.item}</td>
-                    <td className="p-3 font-bold font-mono text-[#B86924] dark:text-[#E6C387] whitespace-nowrap">
-                      {row.cun}
-                    </td>
-                    <td className="p-3 text-[11px] text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                      {row.note}
-                    </td>
-                  </tr>
+      <section id="bone-cun-table" className="cun-guide-target">
+        <h2 className="atlas-section-title">寸（骨度法・B-cun）</h2>
+        <p>骨の出っ張りや関節のしわなど、決められた目印の間を下の表の数で等分します。その一区切りが、その区間での1寸です。</p>
+        <figure className="cun-example">
+          <div className="cun-scale-labels"><span>手首のしわ</span><span>ひじのしわ</span></div>
+          <svg viewBox="0 0 384 32" aria-hidden="true" focusable="false">
+            <path d="M12 16H372" fill="none" stroke="currentColor" strokeWidth="2" />
+            <path d="M12 16H72" fill="none" stroke="var(--atlas-accent)" strokeWidth="5" />
+            {Array.from({ length: 13 }, (_, tick) => (
+              <line key={tick} x1={12 + tick * 30} x2={12 + tick * 30} y1={tick % 3 === 0 ? 8 : 11} y2={tick % 3 === 0 ? 24 : 21} stroke="currentColor" strokeWidth="1.5" />
+            ))}
+            <circle cx="72" cy="16" r="5.5" fill="var(--atlas-accent)" />
+          </svg>
+          <figcaption><Link href="/tsubo/pc6#acupoint-who-location" className="cun-guide-link">内関（PC6）</Link>は、手首からひじまでを12等分したうち、手首から2区切り分の高さです。</figcaption>
+        </figure>
+        <div className="cun-spans">
+          {boneSpans.map(({ region, rows }) => (
+            <section className="cun-span" key={region}>
+              <h3>{region}</h3>
+              <dl>
+                {rows.map(([landmarks, distance]) => (
+                  <div key={landmarks}><dt>{landmarks}</dt><dd>{distance}寸</dd></div>
                 ))}
-              </tbody>
-            </table>
-          </div>
+              </dl>
+            </section>
+          ))}
         </div>
+        <a className="atlas-text-action" href={`${WHO_ATLAS_PDF}#page=21`}>WHO原本の基準表（p.12–13、PDF）</a>
+      </section>
 
-      </div>
-    </div>
+      <section id="finger-cun" className="cun-guide-target">
+        <h2 className="atlas-section-title">指寸（同身寸・F-cun）</h2>
+        <p>位置を調べる本人の手で測ります。WHOは次の3つの測り方を示しています。</p>
+        <dl className="cun-finger-methods">
+          <div><dt>親指で1指寸</dt><dd>親指の先と付け根の間にある関節の横幅。</dd></div>
+          <div><dt>中指で1指寸</dt><dd>親指と中指で輪を作り、中指の親指側で、二つの指関節のしわの端から端まで。</dd></div>
+          <div><dt>4本で3指寸</dt><dd>人差し指から小指までを伸ばしてそろえます。中指の付け根に近い側の指関節のしわの高さで、手の甲側から4本の横幅を測ります。</dd></div>
+        </dl>
+        <a className="atlas-text-action" href={`${WHO_ATLAS_PDF}#page=30`}>WHO原本の指寸の図（図22–24、PDF）</a>
+      </section>
+
+      <section id="fingerbreadth" className="cun-guide-target">
+        <h2 className="atlas-section-title">指幅（F-breadth）</h2>
+        <p>本人の中指の先端側の節を横に測った幅です。たとえば<Link href="/tsubo/st6#acupoint-who-location" className="cun-guide-link">頬車（ST6）</Link>の位置説明に出てきます。</p>
+        <a className="atlas-text-action" href={`${WHO_ATLAS_PDF}#page=11`}>WHO原本の単位の定義（p.2、PDF）</a>
+      </section>
+    </article>
   );
 }

@@ -6,7 +6,7 @@ export const EXPANDED_ATLAS_REVISED_AT = '2026-11-19';
 
 /** Significant content revisions only; never replace these with the build date. */
 export const SITE_REVISED_AT = '2026-10-02';
-export const ACUPOINT_PAGE_REVISED_AT = '2026-11-19';
+export const ACUPOINT_PAGE_REVISED_AT = '2026-11-20';
 // Includes question-only changes, but not unchanged lessons in the same chapter.
 export const CURRICULUM_EDITORIAL_REVISIONS = [
   'lecture-qiblood-1', 'lecture-qiblood-2', 'lecture-qiblood-3', 'lecture-qiblood-5',
@@ -236,11 +236,13 @@ export const PAGE_REVISIONS: Record<string, string> = {
     '/', '/about', '/clinical', '/curriculum', '/diagnosis', '/learn', '/library',
     ...CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => `/curriculum/${id}`)),
   ].map(route => [route, '2026-11-18'])),
-  '/tsubo': ATLAS_EVIDENCE_REVISED_AT,
+  '/tsubo': ACUPOINT_PAGE_REVISED_AT,
+  '/tsubo/basics/bone-cun': ACUPOINT_PAGE_REVISED_AT,
   ...Object.fromEntries(REVISED_ATLAS_RESEARCH_ROUTES.map(route => [route, ATLAS_EVIDENCE_REVISED_AT])),
   '/symptoms': '2026-11-19',
 };
 export const SITE_UPDATES = [
+  { date: ACUPOINT_PAGE_REVISED_AT, label: '全361穴の位置をWHO原本と照合', href: '/tsubo/basics/bone-cun', text: 'ツボの位置欄に日本語要約とWHO原本の該当ページを掲載しました。寸・指寸・指幅の測り方は、位置欄から直接開けます。' },
   { date: ATLAS_EVIDENCE_REVISED_AT, label: '研究を載せていなかった262穴の文献を調査', href: '/tsubo#atlas-research-index', text: 'PubMedとPubMed Centralで一穴ずつ検索し、人を対象とした比較試験で使われた経穴と結果を確認できたものを追加しました。図鑑で原典と試験の限界を読めます。' },
   { date: ATLAS_EVIDENCE_REVISED_AT, label: 'ツボ図鑑に出典付きの臨床研究を追加', href: '/tsubo#atlas-research-index', text: '一つのツボに着目した試験や、複数のツボを使った試験を追加しました。試験でのツボの役割、比較した相手、結果と限界を論文とともに読めます。' },
   { date: '2026-11-19', label: 'ツボ図鑑の図解と症状ガイドを読みやすく', href: '/tsubo', text: '症状別ガイドの上部から関連するツボを開けるようにしました。全361穴に「効果と組み合わせ」の欄を設け、確認した論文や古典の該当箇所を掲載しています。' },

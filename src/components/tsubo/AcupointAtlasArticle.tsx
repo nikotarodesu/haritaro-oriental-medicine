@@ -3,6 +3,7 @@ import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import { AcupointReadingLinks } from "./AcupointArticleLinks";
 import AcupointArticleHeader from "./AcupointArticleHeader";
 import AcupointResearch from "./AcupointResearch";
+import WhoPointLocation from "./WhoPointLocation";
 import CrossSectionViewer from "./CrossSectionViewer";
 import PointAtlasDiagrams from "./atlas/PointAtlasDiagrams";
 import { getPublicCrossSectionModel } from "@/data/medicalSafety";
@@ -35,6 +36,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
         <Paragraphs paragraphs={article.location} />
+        <WhoPointLocation code={point.codeLower} />
         <div className="mt-5">
           <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} />
         </div>
@@ -94,7 +96,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
           ))}
         </ul>
       </section>
-      <AuthorSupervisorCard topic={point.name} />
+      <AuthorSupervisorCard topic={point.name} pointLocationChecked />
     </article>
   );
 }

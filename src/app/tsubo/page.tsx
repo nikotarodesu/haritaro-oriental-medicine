@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { MERIDIANS, ALL_ACUPOINTS } from "@/data/tsubo";
-import { FlaskConical, Layers, MapPin, ShieldCheck } from "lucide-react";
+import { FlaskConical, Layers, MapPin, Ruler, ShieldCheck } from "lucide-react";
 import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
@@ -45,6 +45,7 @@ export default function TsuboPage() {
           <div className="atlas-directory-actions">
             <Link href="/symptoms" className="atlas-text-action"><MapPin size={17} aria-hidden="true" />症状から探す</Link>
             <a href="#atlas-research-index" className="atlas-text-action"><FlaskConical size={17} aria-hidden="true" />研究から探す</a>
+            <Link href="/tsubo/basics/bone-cun" className="atlas-text-action"><Ruler size={17} aria-hidden="true" />寸の測り方</Link>
           </div>
         </div>
         <AtlasOverviewArt />
@@ -195,7 +196,7 @@ export default function TsuboPage() {
           <span>掲載範囲・資料基準と更新方針</span>
         </div>
         <p className="leading-relaxed">
-          当辞典は、WHO標準経穴部位（2008年）と『新版 東洋医学概論』『経絡経穴概論』を基礎資料として、正経十二経脈・任脈・督脈の361穴の基本情報をまとめています。経穴ごとの記載は確認・更新中です。断面図は学習用の模式図であり、個人の刺入経路や安全な深度を示すものではありません。
+          正経十二経脈・任脈・督脈の全361穴に、WHO標準経穴部位（2009年改訂再版）と照合した位置の日本語要約と原本へのリンクを掲載しています。図鑑の基本情報は『新版 東洋医学概論』『経絡経穴概論』も参照しています。断面図は学習用の模式図であり、個人の刺入経路や安全な深度を示すものではありません。
         </p>
         <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
           ※本辞典は学習および臨床推論の補助を目的としており、個別診断や医療行為を代替するものではありません。

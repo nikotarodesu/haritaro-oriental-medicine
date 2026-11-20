@@ -18,6 +18,7 @@ import {
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import AcupointAtlasArticle from "@/components/tsubo/AcupointAtlasArticle";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
+import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import HeguAtlasPreview, { heguAtlasDescription, heguAtlasTitle, heguSources } from "@/components/tsubo/HeguAtlasPreview";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
@@ -446,22 +447,9 @@ export default async function AcupointDetailPage({ params }: Props) {
             <h2>標準の位置と目印</h2>
           </div>
 
-          <div>
-            {/* WHO標準部位 */}
-            <div className="p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5">
-              <span className="text-sm font-bold text-[#1E2D3D] dark:text-[#7BAAD8] block">
-                標準部位の記載
-              </span>
-              <p className="text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed font-mono">
-                {point.locationDetail}
-              </p>
-              <p className="text-sm text-[#59615D] dark:text-[#AFBDC8] pt-1">
-                出典：{point.locationSource}
-              </p>
-            </div>
-          </div>
+          <WhoPointLocation code={point.codeLower} />
 
-          <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#AFBDC8]">{VERIFIED_POINT_LOCATIONS[point.codeLower] ? <>標準位置の記述は原資料と照合済みです。<a href="#acupoint-sources" className="underline underline-offset-4">確認したページと範囲</a>をご覧ください。</> : '個別の原典照合は進行中です。'}圧痛や響きの有無だけで位置を判断しないでください。体表位置の説明は、個人の安全な刺入経路・深度や施術の適応を示すものではありません。</p>
+          <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#AFBDC8]">圧痛や響きの有無だけで位置を判断しないでください。体表位置の説明は、個人の安全な刺入経路・深度や施術の適応を示すものではありません。</p>
 
           {/* 取穴手順ステップ */}
           {illustration && atlasMarker && (
@@ -537,20 +525,6 @@ export default async function AcupointDetailPage({ params }: Props) {
             )}
           </div>
 
-          {/* 骨度寸法ガイドへのクイック参照リンク */}
-          <div className="pt-3 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center justify-between gap-2 text-sm">
-            <span className="text-[#59615D] dark:text-[#AFBDC8] flex items-center gap-1.5">
-              <Compass className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>取穴の基準（何寸）に迷ったら：</span>
-            </span>
-            <Link
-              href="/tsubo/basics/bone-cun"
-              className="text-[#1E3D34] dark:text-[#74BA9E] font-bold hover:underline inline-flex items-center gap-1"
-            >
-              <span>全身の骨度寸法ガイドを見る</span>
-              <ArrowRight className="w-3 h-3" />
-            </Link>
-          </div>
         </section>
 
         <AcupointInformationScope code={point.code} locationSource={point.locationSource} individualModel={individualModel} individuallyEdited={isDetailed} />

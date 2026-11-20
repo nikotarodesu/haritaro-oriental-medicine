@@ -69,6 +69,26 @@
 .atlas-directory-header .atlas-text-action { margin-top: .25rem; }
 .atlas-directory-actions { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
 .atlas-section-title { margin-bottom: .625rem; font-size: clamp(1.25rem, 3vw, 1.6rem); font-weight: 700; line-height: 1.45; }
+.atlas-who-location { margin-top: 1.125rem; padding: .75rem 1rem .25rem; border: 1px solid var(--atlas-line); border-radius: .65rem; background: var(--atlas-paper); }
+.atlas-who-location h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: .125rem .65rem; margin-bottom: .35rem; font-weight: 700; }
+.atlas-who-location h3 span { color: var(--atlas-muted); font-size: .8125rem; font-weight: 400; }
+.atlas-who-note { margin-top: .375rem; color: var(--atlas-muted); font-size: .875rem; }
+.cun-guide { padding-bottom: 2.5rem; }
+.cun-guide-target { scroll-margin-block-start: 5.5rem; }
+.cun-guide-link { color: var(--atlas-accent); text-decoration: underline; text-underline-offset: .2em; }
+.cun-example { margin-block: 1rem 1.4rem; padding: .75rem 1rem; border: 1px solid var(--atlas-line); border-radius: .65rem; max-width: 36rem; }
+.cun-example svg { width: 100%; display: block; color: var(--atlas-muted); }
+.cun-example figcaption { font-size: .9375rem; }
+.cun-scale-labels { display: flex; justify-content: space-between; font-size: .875rem; font-weight: 600; }
+.cun-spans, .cun-finger-methods { display: grid; gap: .75rem; }
+.cun-span { border: 1px solid var(--atlas-line); border-radius: .65rem; padding: .625rem 1rem; }
+.cun-span h3, .cun-finger-methods dt { font-weight: 700; }
+.cun-span dl > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: .75rem; padding-block: .375rem; border-top: 1px solid var(--atlas-line); font-size: .9375rem; }
+.cun-span dl { margin-top: .25rem; }
+.cun-span dd { color: var(--atlas-accent); font-weight: 700; white-space: nowrap; }
+.cun-finger-methods { margin-top: .75rem; }
+.cun-finger-methods div { border-top: 1px solid var(--atlas-line); padding-top: .5rem; }
+.cun-finger-methods dd { font-size: .9375rem; }
 .atlas-breadcrumb { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 .6rem; color: var(--atlas-muted); font-size: .875rem; }
 .atlas-breadcrumb a { display: inline-flex; min-height: 2rem; align-items: center; color: var(--atlas-accent); text-decoration: underline; text-underline-offset: .23em; }
 .atlas-directory-header .atlas-breadcrumb { margin-bottom: .5rem; }
