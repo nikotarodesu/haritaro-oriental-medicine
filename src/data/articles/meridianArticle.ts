@@ -28,7 +28,7 @@ export const MERIDIAN_ARTICLE: Article = {
       source: "World Health Organization",
       year: 2022,
       url: "https://www.who.int/publications/i/item/9789240042322",
-      note: "公式公開ページのOverviewで、用語・概念・定義の共通理解を支える目的を確認。伝統理論の臨床的有効性や解剖学的同一性を証明する文献としては使用していません。個別用語の本文全件照合は未完了です。",
+      note: "WHOの紹介ページを参照しました。医療や教育の場で、伝統医学の用語や定義をそろえるための資料です。",
     },
     "langevin-connective-tissue-2002",
     {

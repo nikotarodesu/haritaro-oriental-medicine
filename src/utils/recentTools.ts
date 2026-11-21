@@ -3,7 +3,7 @@ import { TOOL_CATALOG } from '@/config/toolCatalog';
 export const RECENT_TOOLS_STORAGE_KEY = 'haritaro_recent_tools';
 export const RECENT_TOOL_CATALOG: ReadonlyArray<{ href: string; title: string }> = [
   { href: '/tsubo', title: '経穴辞典' }, { href: '/tsubo/practice', title: '経穴ドリル' },
-  ...Object.values(TOOL_CATALOG), { href: '/diagnosis', title: '体質チェック' },
+  ...Object.values(TOOL_CATALOG), { href: '/diagnosis', title: '気血水 体質チェック' },
   { href: '/diagnosis?tab=gorou', title: '五労チェッカー' },
   { href: '/library', title: '文献ライブラリ' },
 ];

@@ -22,7 +22,7 @@ const GOROU_DEFS: Record<GorouId, GorouDef> = {
   kyushi: {
     name: "久視（きゅうし）",
     passage: "久視傷血",
-    meaning: "長く見ることと「血」を関連づける。",
+    meaning: "長く見ることは、伝統医学では「血」の働きと関連づけられています。",
     activity: "画面や文字を長く見続ける",
     example: "休憩を挟まず、パソコンやスマートフォンの画面を見続ける。",
     restTitle: "画面から目を離し、遠くを見る",
@@ -32,7 +32,7 @@ const GOROU_DEFS: Record<GorouId, GorouDef> = {
   kyuza: {
     name: "久坐（きゅうざ）",
     passage: "久坐傷肉",
-    meaning: "長く座ることと「肉」を関連づける。",
+    meaning: "長く座ることは、伝統医学では「肉」の働きと関連づけられています。",
     activity: "休憩を挟まず座り続ける",
     example: "デスクワークが長く、途中で立ったり歩いたりする機会が少ない。",
     restTitle: "作業の合間に立つ・歩く",
@@ -42,7 +42,7 @@ const GOROU_DEFS: Record<GorouId, GorouDef> = {
   kyuritsu: {
     name: "久立（きゅうりつ）",
     passage: "久立傷骨",
-    meaning: "長く立つことと「骨」を関連づける。",
+    meaning: "長く立つことは、伝統医学では「骨」の働きと関連づけられています。",
     activity: "立ったままの時間が長い",
     example: "立ち仕事や通勤で、座ったり姿勢を変えたりする機会が少ない。",
     restTitle: "姿勢を変え、休憩時に座る",
@@ -52,7 +52,7 @@ const GOROU_DEFS: Record<GorouId, GorouDef> = {
   kyukou: {
     name: "久行（きゅうこう）",
     passage: "久行傷筋",
-    meaning: "長く歩くことと「筋」を関連づける。",
+    meaning: "長く歩くことは、伝統医学では「筋」の働きと関連づけられています。",
     activity: "歩く時間が長い",
     example: "外回りや長距離の移動が多い。重い荷物を持って歩くこともある。",
     restTitle: "歩行量・荷物・靴を振り返る",
@@ -62,7 +62,7 @@ const GOROU_DEFS: Record<GorouId, GorouDef> = {
   kyuga: {
     name: "久臥（きゅうが）",
     passage: "久臥傷気",
-    meaning: "長く横になることと「気」を関連づける。",
+    meaning: "長く横になることは、伝統医学では「気」の働きと関連づけられています。",
     activity: "日中に横になる時間が長い",
     example: "日中、横になって過ごす時間が長くなっている。",
     restTitle: "睡眠と日中の状態を記録する",
@@ -71,7 +71,7 @@ const GOROU_DEFS: Record<GorouId, GorouDef> = {
   },
 };
 
-const gorouIds = Object.keys(GOROU_DEFS) as GorouId[];
+const gorouIds: readonly GorouId[] = ["kyushi", "kyuga", "kyuza", "kyuritsu", "kyukou"];
 const textLinkClass = "inline-flex min-h-11 items-center font-semibold text-accent underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2";
 
 export default function GorouWorkstyleChecker() {

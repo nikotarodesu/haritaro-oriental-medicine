@@ -14,7 +14,7 @@ export default function ClinicalEvidenceKey({ sourceKeys = ['terminology'], revi
           <div><dt className="font-semibold">教材中のたとえ</dt><dd>言葉の意味を説明するために使います。体の中で何が起きたかは診察や研究で確かめます。</dd></div>
         </dl>
         <ul className="space-y-2">{sourceKeys.map(key => { const source = CLINICAL_SOURCES[key]; return <li key={key}><a className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4" href={source.url} target="_blank" rel="noopener noreferrer">{source.title} ↗</a><p>{source.scope}</p></li>; })}</ul>
-        <p>出典の記録日 {revisedAt}。所見の照合方法について、診断の精度の検証と専門家の監修は完了していません。<Link className="inline-flex min-h-11 items-center underline underline-offset-4" href="/editorial-policy">編集方針</Link></p>
+        <p>資料を確認した日 {revisedAt}。症状の観察や伝統用語を学ぶための資料です。専門家による監修は完了していません。<Link className="inline-flex min-h-11 items-center underline underline-offset-4" href="/editorial-policy">編集方針</Link></p>
       </div>
     </details>
   </aside>;

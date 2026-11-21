@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const title = `${article.title}｜東洋医学学術アーカイブ`;
+  const title = `${article.title}｜はり太郎の東洋医学`;
   const description = `${article.summary}（読了約${article.readTime} / 執筆：${article.author.name}）`;
 
   return {

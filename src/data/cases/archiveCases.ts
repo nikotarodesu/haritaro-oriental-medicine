@@ -29,6 +29,6 @@ export const ALL_ARCHIVE_CASES: ArchiveClinicalCase[] = [
   ...KNEE_CLINICAL_CASES,
 ];
 
-export const ARCHIVE_CASES_NOTICE = "症例アーカイブは、出典URL・公開同意・経過記録の確認が完了するまで掲載を保留しています。単一症例の改善経過だけでは施術の効果や安全性は確定できません。学習用の架空症例演習は引き続き利用できます。";
+export const ARCHIVE_CASES_NOTICE = "ここで読める症例演習は架空の教材です。本人の話や観察した内容を読み、どの情報をもとに見立てを考えるか練習できます。";
 
 export const PUBLIC_ARCHIVE_CASES: ArchiveClinicalCase[] = [];

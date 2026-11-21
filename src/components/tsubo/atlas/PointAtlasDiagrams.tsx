@@ -114,7 +114,7 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
           )}
         </ZoomableAtlasDiagram>
         <figcaption>
-          {(landmarkView || expandedView) && <span className="block text-sm font-semibold">{landmarkView ? landmarkView.caption : expandedView?.name}</span>}
+          {(landmarkView || expandedView) && <span className="block text-sm font-semibold">{landmarkView ? landmarkView.caption : expandedView?.name}{" "}</span>}
           {(measured || illustration.closeUpCaption !== diagramLabel) && illustration.closeUpCaption}
           {measured && <>
             <p className="atlas-dimension-guide">白丸が起点、矢印が測る方向です。{measurements.some(({ alternative }) => alternative) && "ひし形は代替位置です。"}</p>

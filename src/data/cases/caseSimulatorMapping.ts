@@ -44,7 +44,7 @@ export const CASE_SIMULATOR_PRESETS: Record<string, CaseSimulatorPreset> = Objec
       state: hachiko.includes("虚実挟雑") || hachiko.includes("本虚標実") || hachiko.includes("虚") ? "deficiency" : "excess",
       ...(hachiko.includes("虚実挟雑") || hachiko.includes("本虚標実") ? { complexState: "benxu_biaoshi" as const } : {}),
       ...PATTERN_AXES[clinicalCase.caseNumber],
-      explanation: clinicalCase.clinicalExplanation.pathomechanism + " シミュレーターの値はこの架空症例の候補を比較する学習用仮説です。現代医学の診断や施術適応を確定するものではなく、危険兆候の確認と医療評価を先に行います。",
+      explanation: clinicalCase.clinicalExplanation.pathomechanism + " シミュレーターの値はこの架空症例の候補を比較する学習用仮説です。現代医学の診断や施術適応を確定するものではなく、危険兆候の確認と診察や検査を先に行います。",
     };
     return [clinicalCase.id, preset];
   }),

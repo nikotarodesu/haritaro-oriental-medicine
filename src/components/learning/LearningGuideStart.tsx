@@ -32,7 +32,7 @@ export default function LearningGuideStart({ lectures }: { lectures: ResumeLectu
         <p className="flex flex-wrap justify-between gap-x-4 gap-y-1 text-sm ui-muted"><span>学習の進み具合</span><span>{totalCompleted} / {lectures.length}講義完了</span></p>
         <progress className="site-progress" value={totalCompleted} max={lectures.length} aria-label="公開講義の受講進捗" />
       </div>
-    </> : <p role="status" className="text-sm leading-relaxed ui-muted">{availability === "loading" ? "学習履歴を確認中です。第1講から学べます。" : "学習履歴を読み込めませんでした。保存済みの記録は削除していません。"}</p>}
+    </> : <p role="status" className="text-sm leading-relaxed ui-muted">{availability === "loading" ? "第1講から学べます。" : "途中から再開できないときは、目次から講義を選べます。"}</p>}
     {availability === "unavailable" && <button type="button" onClick={() => window.location.reload()} className="min-h-11 text-sm underline underline-offset-4">再読み込み</button>}
   </div>;
 }

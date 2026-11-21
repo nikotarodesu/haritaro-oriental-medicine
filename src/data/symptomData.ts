@@ -1,12 +1,12 @@
 import { SymptomGuide } from "@/types/oriental";
 
-export const SYMPTOM_GUIDANCE_SCOPE = "症状別ガイドは、伝統医学の考え方を学ぶための資料です。症状の原因や病名を判定するものではありません。経穴名は学習用の関連例で、自己刺鍼・自己灸の手順ではありません。新しい症状や悪化は、セルフケアで受診を遅らせず医療機関に相談してください。";
+export const SYMPTOM_GUIDANCE_SCOPE = "症状別ガイドでは、受診の目安と東洋医学の考え方を紹介します。ツボは位置や考え方を学ぶ例です。自分ではりを刺したり、お灸をしたりするための手順は扱いません。新しい症状が出たときや、今の症状が悪化したときは、セルフケアで受診を遅らせず、医療機関に相談してください。";
 
 interface SafetyGuidance { message: string; sources: { title: string; url: string; section: string }[]; }
 
 export const SYMPTOM_SAFETY_GUIDANCE: Record<string, SafetyGuidance> = {
   "headache-stiff-neck": {
-    "message": "突然の激しい頭痛、意識の異常、急な手足の脱力や話しにくさがある場合は119番。新しく始まった頭痛、いつもと異なる・悪化する頭痛は医療機関に相談し、首肩こりだけが原因と決めないでください。",
+    "message": "突然の激しい頭痛、意識の異常、急な手足の脱力や話しにくさがあるときは、すぐに119番へ連絡してください。頭痛が新しく始まったときや、いつもと違う、悪化していると感じるときは、首や肩のこりだけが原因だと自分で決めず、医療機関に相談してください。",
     "sources": [
       {
         "title": "消防庁：救急車利用マニュアル",
@@ -21,7 +21,7 @@ export const SYMPTOM_SAFETY_GUIDANCE: Record<string, SafetyGuidance> = {
     ]
   },
   "stress-insomnia": {
-    "message": "不眠の原因はストレスだけとは限りません。生活に支障が続く場合は医療機関に相談し、処方薬を自己判断で中止・減量しないでください。",
+    "message": "眠れず、生活への支障が続くときは、ストレスだけが原因だと自分で決めず、医療機関に相談してください。処方薬をやめるか、量を減らすかは、処方した医師と相談してください。",
     "sources": [
       {
         "title": "NHS：不眠",
@@ -31,7 +31,7 @@ export const SYMPTOM_SAFETY_GUIDANCE: Record<string, SafetyGuidance> = {
     ]
   },
   "stomach-fatigue": {
-    "message": "吐血、黒いタール状の便、強い腹痛や失神は早急な医療評価が必要です。大量の出血、持続する激痛、意識の異常は119番。食欲低下や軟便が続く場合も原因を確認してください。",
+    "message": "血を吐いたときや、大量の出血、突然の激しい腹痛、続く激痛、意識の異常があるときは、すぐに119番へ連絡してください。黒いタール状の便、強い腹痛、失神があったときは、すぐに医療機関を受診してください。食欲の低下や軟便が続くときも医療機関に相談してください。",
     "sources": [
       {
         "title": "消防庁：救急車利用マニュアル",
@@ -46,7 +46,7 @@ export const SYMPTOM_SAFETY_GUIDANCE: Record<string, SafetyGuidance> = {
     ]
   },
   "menstrual-pain-chill": {
-    "message": "日常生活を妨げる月経痛や出血の増加は婦人科に相談してください。妊娠中・妊娠の可能性がある場合の腹痛や出血を月経痛と決めつけないでください。激痛、多量の出血、失神を伴う場合は119番。片脚だけの原因不明の腫れも早めの受診が必要です。",
+    "message": "激痛や多量の出血、失神があるときは、すぐに119番へ連絡してください。月経痛で生活に支障があるときや、出血が増えたときは婦人科に相談してください。妊娠中や妊娠の可能性があるときの腹痛や出血は、月経だけが原因だと自分で決めず、医療機関に相談してください。原因が分からず片脚だけが腫れたときも、早めに受診してください。",
     "sources": [
       {
         "title": "NHS：妊娠中の出血",
@@ -61,7 +61,7 @@ export const SYMPTOM_SAFETY_GUIDANCE: Record<string, SafetyGuidance> = {
     ]
   },
   "chronic-fatigue-lethargy": {
-    "message": "原因の分からない疲労が数週間続く、生活に支障がある、体重減少などを伴う場合は医療機関に相談してください。急な呼吸困難、胸痛、意識の異常は119番です。",
+    "message": "急な息苦しさや胸の痛み、意識の異常があるときは、すぐに119番へ連絡してください。原因が分からない疲れが数週間続くときや、生活に支障がある、体重が減ったといった変化があるときは、医療機関に相談してください。",
     "sources": [
       {
         "title": "消防庁：救急車利用マニュアル",
@@ -76,7 +76,7 @@ export const SYMPTOM_SAFETY_GUIDANCE: Record<string, SafetyGuidance> = {
     ]
   },
   "lower-back-pain-sciatica": {
-    "message": "腰痛や脚への放散痛に、新しい排尿・排便の異常、会陰部の感覚低下が加わった場合は、馬尾症候群などの緊急評価が必要です。新しい・進行する脚の脱力も速やかに受診し、ストレッチやツボ刺激の反応を待たないでください。",
+    "message": "腰や脚の痛みに、尿や便が出にくい、漏れる、会陰部の感覚が鈍いといった変化が新たに加わったときは、すぐに医療機関を受診してください。脚に力が入らなくなったときや、力の入りにくさが悪化するときも、ストレッチやツボ押しを試す前に受診してください。",
     "sources": [
       {
         "title": "NICE NG127：神経症状の認識と紹介",
@@ -86,7 +86,7 @@ export const SYMPTOM_SAFETY_GUIDANCE: Record<string, SafetyGuidance> = {
     ]
   },
   "eye-strain-fatigue": {
-    "message": "急な強い眼痛、充血、視界のかすみ・視力低下、吐き気などは緊急の眼科評価が必要です。画面の見過ぎと決めつけず、目を押したり温めたりして様子を見ないでください。",
+    "message": "急に目が強く痛む、充血する、見え方が変わる、吐き気がするといった症状があるときは、すぐに眼科を受診してください。画面の見過ぎだけが原因だと自分で決めず、目を押したり温めたりする前に医療機関に相談してください。",
     "sources": [
       {
         "title": "NHS：緑内障",
@@ -96,7 +96,7 @@ export const SYMPTOM_SAFETY_GUIDANCE: Record<string, SafetyGuidance> = {
     ]
   },
   "constipation-ibs": {
-    "message": "血便、黒い便、体重減少、発熱、持続する強い腹痛などがある場合は医療機関で評価を受けてください。腹痛や便通の変化だけでIBSと自己判断することはできません。",
+    "message": "血便や黒い便、体重減少、発熱、続く強い腹痛などがあるときは、すぐに医療機関を受診してください。腹痛や便通の変化だけで過敏性腸症候群（IBS）だと自分で決めず、医療機関に相談してください。",
     "sources": [
       {
         "title": "NIDDK：IBSの診断",
@@ -106,7 +106,7 @@ export const SYMPTOM_SAFETY_GUIDANCE: Record<string, SafetyGuidance> = {
     ]
   },
   "dizziness-tinnitus": {
-    "message": "急なめまいに話しにくさ、手足の脱力、歩けない状態などが伴う場合は119番。突然の難聴は耳鼻科で速やかな評価が必要です。めまい・耳鳴りだけでメニエール病や水分過剰と判断しないでください。",
+    "message": "急なめまいに話しにくさ、手足の脱力、歩けないなどの症状が伴うときは、すぐに119番へ連絡してください。急に聞こえにくくなったときは、すぐに耳鼻科を受診してください。めまいや耳鳴りだけでメニエール病や水分の異常だと自分で決めず、医療機関に相談してください。",
     "sources": [
       {
         "title": "消防庁：救急車利用マニュアル",
@@ -121,7 +121,7 @@ export const SYMPTOM_SAFETY_GUIDANCE: Record<string, SafetyGuidance> = {
     ]
   },
   "climacteric-hot-flash": {
-    "message": "のぼせや動悸が続く場合は、更年期だけが原因と決めず医療機関に相談してください。閉経後の出血は少量でも婦人科で確認が必要です。急な胸痛・呼吸困難は119番です。",
+    "message": "急な胸の痛みや息苦しさがあるときは、すぐに119番へ連絡してください。のぼせや動悸が続くときは、更年期だけが原因だと自分で決めず、医療機関に相談してください。閉経後に出血があったときは、少量でも婦人科を受診してください。",
     "sources": [
       {
         "title": "消防庁：救急車利用マニュアル",
@@ -136,7 +136,7 @@ export const SYMPTOM_SAFETY_GUIDANCE: Record<string, SafetyGuidance> = {
     ]
   },
   "allergic-rhinitis-hayfever": {
-    "message": "急な息苦しさや口・喉の腫れ、意識の異常を伴う場合は119番。鼻炎のケアとしてドライヤーの温風を皮膚へ当て続けたり、自己灸で加熱したりしないでください。",
+    "message": "急な息苦しさや口・喉の腫れ、意識の異常があるときは、すぐに119番へ連絡してください。",
     "sources": [
       {"title":"NHS：アナフィラキシー","url":"https://www.nhs.uk/conditions/anaphylaxis/","section":"Symptoms / Immediate action required"},
       {
@@ -147,7 +147,7 @@ export const SYMPTOM_SAFETY_GUIDANCE: Record<string, SafetyGuidance> = {
     ]
   },
   "knee-joint-pain": {
-    "message": "急に赤く熱を持って腫れた膝、発熱を伴う関節痛、外傷後に体重をかけられない状態は早めの医療評価が必要です。痛む膝を無理に伸ばしたり、強く揉んだりしないでください。",
+    "message": "ひざが急に赤く腫れて熱を持つとき、関節痛と発熱があるとき、けがのあとに足へ体重をかけられないときは、早めに医療機関を受診してください。痛むひざを無理に伸ばしたり、強くもんだりしないでください。",
     "sources": [
       {
         "title": "NHS：膝の痛み",
@@ -250,7 +250,7 @@ export const SYMPTOMS: SymptomGuide[] = [
     "id": "lower-back-pain-sciatica",
     "title": "腰痛・ぎっくり腰・坐骨神経痛",
     "category": "背中・腰",
-    "summary": "腰の痛み、お尻から脚にかけての痛みやしびれ。新しい神経症状がある場合は医療評価が重要です。",
+    "summary": "腰の痛み、お尻から脚にかけての痛みやしびれ。脚の力や感覚、尿や便の出方に新しい変化があるときは、受診の目安を確認してください。",
     "orientalMechanism": "伝統医学では「腎虚不栄」「風寒湿痺」などを比較します。これらの証名から、神経の圧迫・感染・骨折などの有無を判断することはできません。",
     "recommendedTsuboIds": [
       "bl23",
@@ -261,7 +261,7 @@ export const SYMPTOMS: SymptomGuide[] = [
     ],
     "lifestyleAdvice": {
       "diet": "普段のバランスのよい食事を基本にしましょう。黒い食材が骨や神経を修復するという意味ではありません。",
-      "habit": "痛みやしびれが強まる動きを無理に行わず、神経症状や経過を医療機関に伝えてください。新しい排尿・排便の異常や会陰部感覚の変化があれば、ストレッチを試す前に緊急評価を受けてください。"
+      "habit": "痛みやしびれが強まる動きを無理に行わず、神経症状や経過を医療機関に伝えてください。新しい排尿・排便の異常や会陰部感覚の変化があれば、ストレッチを試す前に、すぐに医療機関を受診してください。"
     }
   },
   {
@@ -285,7 +285,7 @@ export const SYMPTOMS: SymptomGuide[] = [
     "id": "constipation-ibs",
     "title": "便秘・腹部膨満・便通の変化",
     "category": "消化器・お腹",
-    "summary": "便秘、硬い便、お腹の張り、腹痛や下痢。過敏性腸症候群（IBS）の診断には症状の経過と医療評価が必要です。",
+    "summary": "便秘、硬い便、お腹の張り、腹痛や下痢。過敏性腸症候群（IBS）かどうかは、症状の経過を伝えて医療機関で確かめます。",
     "orientalMechanism": "伝統医学では「肝脾不和」「大腸気滞」「陰虚腸燥」などの候補を学びます。これらの証とIBSの診断は同じものではありません。",
     "recommendedTsuboIds": [
       "st25",

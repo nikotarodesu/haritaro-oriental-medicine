@@ -29,7 +29,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
   meridianPoints: readonly AcupointMaster[];
   individualModel: boolean;
 }) {
-  const traditionalTitle = article.illustration.region === "expanded" ? "経絡の順番と近くのツボ" : "伝統的な使われ方";
+  const traditionalTitle = article.traditionalTitle ?? "伝統的な使われ方";
 
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
@@ -67,7 +67,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         <summary>詳しい解剖と位置の資料</summary>
         <div className="mt-4 space-y-4">
           <Paragraphs paragraphs={article.expert} />
-          <p className="text-sm">この欄は、ツボの位置と周囲の骨や筋を確かめるためのものです。はりを刺す向きや深さ、お灸の手順は安全性を確認中のため掲載していません。</p>
+          <p className="text-sm">図と説明で、ツボの位置と周りの骨・筋を確かめられます。施術については、はり師・きゅう師に相談してください。</p>
           {individualModel && point.crossSection && (
             <CrossSectionViewer model={getPublicCrossSectionModel(point.crossSection)} pointName={point.name} pointCode={point.code} individualModel />
           )}

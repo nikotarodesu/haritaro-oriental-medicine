@@ -435,11 +435,11 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                 理解度チェック（全{totalQuestions}問・3択）
               </span>
               <span className="text-xs text-slate-500 dark:text-slate-400">
-                合格基準: {passingScore}問以上正解でクリア
+                {passingScore}問以上の正解で合格
               </span>
             </div>
             <h3 className="flex items-center gap-2 font-serif text-lg font-semibold sm:text-xl">
-              <span>レッスン理解度チェック</span>
+              <span>確認問題</span>
               {isPerfect && (
                 <span className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300 animate-pulse">
                   <Sparkles className="w-3 h-3 text-amber-500" />
@@ -516,7 +516,6 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
         </div>
 
         {/* キーボードショートカット案内チップ（未回答がある場合） */}
-        {!isMounted && <p role="status" className="text-sm text-slate-600 dark:text-slate-300">学習履歴を確認しています。読み込みが終わると回答できます。</p>}
         {isMounted && !isAllAnswered && (
           <p className="quiz-keyboard-hint text-sm text-slate-600 dark:text-slate-300">
             {currentQuestion && currentQuestion.options.length <= 9 ? `数字キー1〜${currentQuestion.options.length}でも回答できます。` : '英字キーを選択肢の記号に合わせて回答できます。'}
@@ -769,7 +768,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                     </span>
                   </div>
                   <p className="text-xs sm:text-sm text-emerald-700/80 dark:text-emerald-300/80">
-                    {courseNextAction?.kind === 'complete' ? 'このコースのすべての講義を受講しました。振り返りと次のテーマへ進めます。' : completedLectures[quiz.lectureId] ? 'このレッスンの受講完了を記録しています。次のステップへ進みましょう。' : '今回は合格基準を満たしています。受講完了の記録は講義末尾で確認できます。'}
+                    {courseNextAction?.kind === 'complete' ? 'このコースのすべての講義を受講しました。振り返りと次のテーマへ進めます。' : completedLectures[quiz.lectureId] ? 'この講義は受講済みです。次の講義へ進めます。' : '今回は合格基準を満たしています。受講完了の記録は講義末尾で確認できます。'}
                   </p>
                 </div>
               ) : (

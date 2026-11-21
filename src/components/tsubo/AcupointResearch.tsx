@@ -24,7 +24,7 @@ export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; curr
   const role = currentCode ? getStudyPointRole(study, currentCode) : undefined;
   const label = role === "comparison" ? "比較群で使われたツボ"
     : role === "additional" ? "条件に応じて追加されたツボ"
-      : study.kind === "point" ? "一つのツボを調べた研究" : "複数のツボを使った研究";
+      : study.kind === "point" ? "ツボ一つを調べた研究" : "複数のツボを使った研究";
 
   return (
     <article className="atlas-study-card atlas-target" id={study.id}>
@@ -68,6 +68,9 @@ export default function AcupointResearch({ point, traditionalTitle = "伝統的�
   return (
     <section id="acupoint-research" className="atlas-evidence atlas-target" aria-labelledby="acupoint-research-title">
       <h2 id="acupoint-research-title" className="atlas-section-title">研究と古典の配穴</h2>
+      {studies.some(study => study.kind === "combination") && (
+        <p className="atlas-evidence-empty">複数のツボを一緒に使った試験の結果は、組み合わせ全体についてのものです。</p>
+      )}
       {studies.length ? (
         <div className="atlas-study-list">{studies.map(study => <AtlasStudyCard key={study.id} study={study} currentCode={point.codeLower} />)}</div>
       ) : (
@@ -79,7 +82,7 @@ export default function AcupointResearch({ point, traditionalTitle = "伝統的�
         </p>
       )}
       <p className="atlas-evidence-empty">
-        <Link href={ACUPUNCTURE_TRIAL_COMPARISON_HREF} className="atlas-source-link">一穴の試験と複数のツボを使う試験は何が違うか</Link>
+        <Link href={ACUPUNCTURE_TRIAL_COMPARISON_HREF} className="atlas-source-link">ツボ一つを調べた試験と、複数を組み合わせた試験の違い</Link>
       </p>
       {combinations.length > 0 && (
         <div className="atlas-classical-combinations">

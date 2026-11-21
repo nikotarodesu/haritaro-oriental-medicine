@@ -56,7 +56,7 @@ export const headViews = {
     },
   },
   scalp: {
-    name: "頭を上から・額は上", direction: "top", area: "head", outline: scalpOutline,
+    name: "頭を上から見た図（額が上）", direction: "top", area: "head", outline: scalpOutline,
     details: ["M41 66Q105 56 171 66", "M38 231Q106 258 173 231", "M25 132Q11 138 23 164M187 132Q202 137 188 164"],
     features: {
       frontHair: f("前の生え際", 75, 56, "M39 66Q106 60 173 66", "guide"),

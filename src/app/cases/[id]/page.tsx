@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const title = `${clinicalCase.title}｜東洋医学の模擬症例演習`;
+  const title = `${clinicalCase.title}｜はり太郎の臨床演習`;
   const description = `架空の症例で、四診の所見から弁証・治法・配穴を練習します。${clinicalCase.subTitle}`;
   const path = `/cases/${clinicalCase.id}`;
 
@@ -69,7 +69,7 @@ export default async function CaseDetailPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(resourceJsonLd).replace(/</g, "\\u003c") }} />
       <PageBreadcrumb items={[
         { href: SERIES.practice.href, name: SERIES.practice.shortName },
-        { href: "/cases", name: "臨床症例演習" },
+        { href: "/cases", name: "症例演習" },
         { href: path, name: clinicalCase.title },
       ]} />
       <CaseStudyViewer clinicalCase={clinicalCase} />

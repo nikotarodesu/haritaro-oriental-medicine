@@ -3,7 +3,7 @@ import { SITE_NAME } from "./brand";
 export { SITE_NAME } from "./brand";
 export const SITE_ORIGIN = "https://www.haritaro.jp";
 export const HOME_HEADING = "東洋医学を学ぶ";
-export const SITE_SECTIONS_LABEL = "ツボ図鑑・図解講義・臨床演習";
+export const SITE_SECTIONS_LABEL = "ツボ図鑑・東洋医学の講義・臨床演習";
 export const SITE_TITLE = `${HOME_HEADING}｜${SITE_SECTIONS_LABEL}｜${SITE_NAME}`;
 export const SHARED_OG_IMAGES = [{
   url: SITE_ORIGIN + "/og-image.png?v=20261120",

@@ -9,7 +9,7 @@ export default function SymptomResearchReferences({ papers }: { papers: PaperRef
       <h3 className="text-xl font-bold">関連する研究資料</h3>
       {papers.length > 0 ? (
         <>
-          <p className="text-sm">書誌を照合した関連分野の論文です。研究の病名・対象・介入はこのガイドの症状や経穴例と一致するとは限りません。特定の経穴組み合わせの効果や、セルフケアへの適用を保証しません。</p>
+          <p className="text-sm">関連分野の論文です。ガイドの症状やツボと何が同じか、研究に参加した人と比べた方法から確かめてください。</p>
           <ul className="space-y-5">
             {papers.map(paper => {
               const interpretationChecked = paper.claimsStatus === 'source-checked' && Boolean(paper.sourceLocator && paper.verificationScope);
@@ -30,15 +30,14 @@ export default function SymptomResearchReferences({ papers }: { papers: PaperRef
                         <ul className="list-disc space-y-2 pl-5 text-sm">{paper.clinicalTakeaways.map(limitation => <li key={limitation}>{limitation}</li>)}</ul>
                       </details>
                     </>
-                  ) : <p className="text-sm">研究結果の解釈・適用範囲は確認中です。結果や施術条件の要約は掲載を保留しています。</p>}
-                  <p className="text-sm">専門家による監修・承認は未完了です。</p>
+                  ) : <p className="text-sm">著者・論文名・掲載誌を確認した資料です。研究の詳細は原典で読めます。</p>}
                   {sourceUrl && <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>照合先の原典を読む ↗</a>}
                 </li>
               );
             })}
           </ul>
         </>
-      ) : <p className="text-sm">このガイドの経穴例に直接対応する研究結果の要約は掲載していません。一般的な研究資料は文献一覧から確認できます。</p>}
+      ) : <p className="text-sm">研究を探すときは、文献一覧で症状名やツボの名前を検索できます。</p>}
       <Link href="/library" className={linkClass}>照合した研究資料の一覧へ →</Link>
     </div>
   );

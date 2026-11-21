@@ -200,7 +200,7 @@ export const COMPLEX_STATE_OPTIONS: ComplexStateOption[] = [
     label: "上熱下寒（じょうねつげかん）",
     category: "寒熱",
     summary: "部位による寒熱の錯雑：顔はのぼせるが足先は氷のように冷える",
-    explanation: "上半身の熱感と下半身の冷えを、部位別に整理する伝統的な分類です。原因は四診と医療評価から検討します。"
+    explanation: "上半身の熱感と下半身の冷えを、部位別に整理する伝統的な分類です。原因は四診と診察や検査から検討します。"
   },
   {
     value: "time_fluctuation",

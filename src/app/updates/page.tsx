@@ -28,6 +28,7 @@ export default function UpdatesPage() {
       <Link href="/contact" className="ui-text-link">お問い合わせ</Link>
     </section>
     <p className="page-muted text-sm">教材ごとの確認範囲は各ページの出典表示をご確認ください。</p>
+    <p className="page-muted text-sm">2026年11月18日のサービス終了より前の履歴には、会員サービスを提供していた当時の更新も含まれます。</p>
     <ul className="space-y-4">{SITE_UPDATES.map(update => <li key={update.label}><Link href={update.href} className="page-link-card page-link-card--stack">
       <time dateTime={update.date} className="page-muted text-sm">{update.date.replaceAll('-', '.')}</time>
       <h2 className="flex items-start justify-between gap-4 text-lg font-semibold">{update.label}<ArrowUpRight size={20} className="shrink-0 text-[var(--accent-readable)]" aria-hidden="true" /></h2><p className="page-muted leading-relaxed">{update.text}</p>

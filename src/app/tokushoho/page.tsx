@@ -43,7 +43,7 @@ export default function TokushohoPage() {
             {/* 販売事業者名 */}
             <div className="py-4 sm:py-5 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 items-start">
               <dt className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                販売事業者名（屋号）
+                販売当時の屋号
               </dt>
               <dd className="sm:col-span-2 text-[#404743] dark:text-[#C5D2DB]">
                 はり太郎の東洋医学 運営事務局
@@ -92,11 +92,11 @@ export default function TokushohoPage() {
             {/* 販売URL */}
             <div className="py-4 sm:py-5 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 items-start">
               <dt className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                ホームページURL
+                ホームページ
               </dt>
               <dd className="sm:col-span-2 text-[#404743] dark:text-[#C5D2DB]">
                 <a href="https://www.haritaro.jp" className="hover:underline">
-                  https://www.haritaro.jp
+                  haritaro.jp
                 </a>
               </dd>
             </div>
@@ -104,7 +104,7 @@ export default function TokushohoPage() {
             {/* 販売価格 */}
             <div className="py-4 sm:py-5 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 items-start">
               <dt className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                販売価格（利用料）
+                販売当時の価格
               </dt>
               <dd className="sm:col-span-2 text-[#404743] dark:text-[#C5D2DB] space-y-1">
                 <p>

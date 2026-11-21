@@ -8,7 +8,7 @@ import { pageSocialMetadata } from '@/config/seo';
 import { getSymptomsIndexJsonLd, symptomGuideSummary } from '@/utils/symptomGuides';
 
 const title = '症状別ガイド｜受診の目安・日常の工夫・東洋医学の学習';
-const description = '頭痛・首肩こり、不眠、胃腸の不調など12の症状別に、受診の目安、日常の工夫、伝統医学の分類と経穴例を学びます。症状の原因や病名を診断するガイドではありません。';
+const description = '頭痛・首肩こり、不眠、胃腸の不調など12の症状別に、受診の目安、日常の工夫、伝統医学の分類と関連するツボを学びます。症状の原因や病名を診断するガイドではありません。';
 
 export const metadata: Metadata = {
   title,

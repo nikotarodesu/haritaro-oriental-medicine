@@ -14,7 +14,7 @@ export default function YinYangEastWestMatrix() {
             <span>画像解説⑧：医療と補完的ケアを併用する条件</span>
           </span>
           <h4 className="font-serif font-bold text-base sm:text-xl text-[#232826] dark:text-[#FAF8F5] mt-1">
-            必要な医療評価と補完的ケアの併用を考える
+            必要な診察や検査と補完的ケアの併用を考える
           </h4>
         </div>
         <span className="text-xs text-[#59615D] dark:text-[#96A6B2]">
@@ -110,12 +110,12 @@ export default function YinYangEastWestMatrix() {
           <tbody className="divide-y divide-[#E5DEC9]/60 dark:divide-[#2A3B4A]/60 bg-white dark:bg-[#17212A]">
             <tr className="hover:bg-[#FAF8F5] dark:hover:bg-[#1C2834]">
               <td className="p-3.5 font-bold text-[#232826] dark:text-[#FAF8F5]">
-                <span className="px-2 py-0.5 rounded bg-[#FCF4EB] text-[#C45A4A] font-mono text-[10px] block w-fit mb-1">医療評価を優先</span>
+                <span className="px-2 py-0.5 rounded bg-[#FCF4EB] text-[#C45A4A] font-mono text-[10px] block w-fit mb-1">受診を優先</span>
                 急性期・救急<br />（骨折・心筋梗塞・高熱感染症など）
               </td>
               <td className="p-3.5 text-[#333835] dark:text-[#C5D2DB]">
                 <strong className="text-[#C45A4A] block mb-0.5">【優先】</strong>
-                緊急症状が疑われる場合は救急の医療評価を受け、原因と状態に応じて必要な処置・治療を選ぶ。
+                緊急症状が疑われる場合はすぐに医療機関を受診し、原因と状態に応じて必要な処置・治療を選ぶ。
               </td>
               <td className="p-3.5 text-[#333835] dark:text-[#C5D2DB]">
                 <strong className="text-[#1E3A5F] dark:text-[#60A5FA] block mb-0.5">【評価後に検討】</strong>

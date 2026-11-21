@@ -243,7 +243,7 @@ mount();
 assert.equal(storage.getItem(session.REVIEW_SESSION_KEY), null);
 assert(!nodes(tree).some(node => node.props?.id === 'learning-review-practice'), 'A former account session is discarded for guest review');
 progress.isMounted = false; mount();
-assert(text(tree).includes('学習履歴を確認しています'));
+assert(text(tree).includes('このブラウザーの学習記録を読み込んでいます。'));
 progress.isMounted = true;
 
 // A real generated acupoint question follows the same route return without a textbook-map entry.
@@ -384,7 +384,7 @@ assert(outsideDisclosure().some(node => node.props?.role === 'status' && text(no
 const SyncStatusUI = client('src/components/learning/LearningSyncStatus.tsx');
 for (const [status, ready, message] of [
   ['local', true, 'このブラウザーに保存されます'],
-  ['local', false, '学習履歴を確認中'],
+  ['local', false, 'このブラウザーの学習記録を読み込んでいます。'],
   ['memory', true, '端末に保存できません'],
 ]) {
   sync = { ready, status };

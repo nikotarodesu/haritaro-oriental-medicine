@@ -46,7 +46,7 @@ const FLOW_CASES: FlowCase[] = [
     },
     step2: {
       label: "随伴情報と不足情報",
-      symptoms: "眠気・軟便・だるさの経過は？ 睡眠・食事・医療評価の情報は十分か？",
+      symptoms: "眠気・軟便・だるさの経過は？ 睡眠・食事・受診や検査の結果は十分か？",
       targetOrgan: "脾気虚（ひききょ）を候補として比較",
       organKana: "ひききょ",
     },
@@ -102,7 +102,7 @@ const FLOW_CASES: FlowCase[] = [
     },
     step2: {
       label: "随伴情報と不足情報",
-      symptoms: "動悸や睡眠の変化の経過は？ 生活・服薬・医療評価の情報は十分か？",
+      symptoms: "動悸や睡眠の変化の経過は？ 生活・服薬・受診や検査の結果は十分か？",
       targetOrgan: "心血虚（しんけっきょ）を候補として比較",
       organKana: "しんけっきょ",
     },
@@ -130,7 +130,7 @@ const FLOW_CASES: FlowCase[] = [
     },
     step2: {
       label: "随伴情報と不足情報",
-      symptoms: "痛みや月経の経過は？ 医療評価・他の説明・変化を確認できているか？",
+      symptoms: "痛みや月経の経過は？ 診察や検査・他の説明・変化を確認できているか？",
       targetOrgan: "胞宮瘀血（ほうきゅうおけつ）を候補として比較",
       organKana: "ほうきゅうおけつ",
     },

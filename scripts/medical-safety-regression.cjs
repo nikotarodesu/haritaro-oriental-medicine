@@ -98,7 +98,8 @@ for (const id of quotationIds) {
   assert(quote?.text && quote.sourceTitle && quote.section, `${id}: quotation needs its actual source and passage`);
   assert.match(quote.sourceUrl, /^https:\/\//);
   assert.equal(quote.verificationScope, 'electronic_text', `${id}: do not claim image or all-edition verification`);
-  assert.match(quote.limitation, /未確認|未完了/);
+  assert.match(quote.limitation, /電子本文/, `${id}: the visible note identifies the electronic source`);
+  assert.match(quote.limitation, /該当箇所|この箇所|引用した箇所|一文/, `${id}: the visible note scopes verification to the quoted passage`);
   assert.match(quote.checkedAt, /^\d{4}-\d{2}-\d{2}$/);
   assert.equal(published.originalPublicationStatus, 'withheld_pending_verification');
 }
@@ -139,9 +140,9 @@ assert.equal(paperById('chronic-insomnia-disorder-meta-tsa-yu-2025').sampleSize,
 assert.match(paperById('chronic-insomnia-disorder-meta-tsa-yu-2025').clinicalTakeaways.join(' '), /757.*847/);
 assert.equal(paperById('body-weight-control-electroacupuncture-auricular-protocol-zhong-2016').sampleSize, undefined, 'Planned trial enrollment is not a completed patient sample');
 assert.match(paperById('body-weight-control-electroacupuncture-auricular-protocol-zhong-2016').studyDesign, /計画書/);
-assert.match(paperById('cfs-acupuncture-moxibustion-hrv-li-2025').clinicalTakeaways.join(' '), /不一致/);
+assert.match(paperById('cfs-acupuncture-moxibustion-hrv-li-2025').clinicalTakeaways.join(' '), /鍼と灸は別々.*両方を一緒に使った場合の効果は、この比較からは分かりません/);
 assert.equal(paperById('katakori-needling-depth-rct-osaki-2018').claimsStatus, 'needs-review');
-assert.match(paperById('katakori-needling-depth-rct-osaki-2018').primaryOutcomes, /PDFを取得できなかった/);
+assert.match(paperById('katakori-needling-depth-rct-osaki-2018').primaryOutcomes, /著者・論文名・掲載誌を確認/);
 const pairs = load('src/types/clinicalMemo').CLASSIC_CLINICAL_PAIRS;
 assert.equal(pairs.length, 8);
 for (const pair of pairs) {

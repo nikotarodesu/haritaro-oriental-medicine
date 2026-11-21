@@ -24,8 +24,8 @@ export const CLINICAL_REVISION_CASES = [
     { text: '所見を再確認せず、穴数だけ増やす', appropriate: false, feedback: '新しい所見、生活への影響、別の原因、受診の必要性を先に検討します。' },
   ], review: '今回の所見、見立てを変えた理由、次回の評価指標を残す。', lectureId: 'lecture-practice-1', complaintSlug: 'shoulder' },
   { id: 'changed-safety', title: '再来時に新しい神経症状が加わった', presentation: '架空例：腰痛で通院している方が、今回は尿が出にくく、会陰部の感覚が鈍いと話しています。', question: '今回の対応は？', choices: [
-    { text: '施術を保留し、緊急の医療評価を優先して、症状と発症時刻を記録する', appropriate: true, feedback: '新しい排尿異常と会陰部の感覚変化は緊急評価が必要な兆候です。過去の見立てで打ち消しません。' },
+    { text: '施術を保留し、救急での受診を優先して、症状と発症時刻を記録する', appropriate: true, feedback: '新しい排尿異常と会陰部の感覚変化は緊急評価が必要な兆候です。過去の見立てで打ち消しません。' },
     { text: '前回と同じ証なので、同じ配穴を続ける', appropriate: false, feedback: '再来時も安全確認を更新します。前回の記録は今回の状態を保証しません。' },
-    { text: '遠隔穴での反応を見てから紹介する', appropriate: false, feedback: '緊急の医療評価を遅らせません。' },
+    { text: '遠隔穴での反応を見てから紹介する', appropriate: false, feedback: '救急での受診を遅らせません。' },
   ], review: '発症時刻、本人の訴え、確認した変化と紹介判断を記録する。', lectureId: 'lecture-diagnosis-2', complaintSlug: 'back' },
 ] as const;

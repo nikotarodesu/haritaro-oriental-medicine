@@ -36,7 +36,7 @@ const clinicalLectureIds = new Set(CURRICULUM_CHAPTERS_META
 export default function LearningReviewPanel({ compact = false }: { compact?: boolean } = {}) {
   const { isMounted } = useCurriculumProgress();
   // Mount only after the current owner's catalog is ready. Never render the previous owner's answers.
-  if (!isMounted) return <section id="learning-review" className="scroll-mt-24 p-4" role="status">学習履歴を確認しています。</section>;
+  if (!isMounted) return <section id="learning-review" className="scroll-mt-24 p-4" role="status">このブラウザーの学習記録を読み込んでいます。</section>;
   return <ReviewWorkspace owner={'guest'} compact={compact} />;
 }
 

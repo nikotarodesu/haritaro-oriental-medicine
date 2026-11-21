@@ -39,7 +39,7 @@ const gv27JapaneseCorrection = {
   scope: "英語版で「上唇結節の中点」と記す位置を、日本語公式版の訂正に従って「上唇結節上縁の中点」と表記。",
 };
 
-const heartWarning = "胸痛、動悸、脈の乱れを感じるときは医療機関に相談してください。急な強い胸の痛みや息苦しさがあるときは119番です。";
+const heartWarning = "胸痛、動悸、脈の乱れを感じるときは医療機関に相談してください。急な強い胸の痛みや息苦しさがあるときは、すぐに119番へ連絡してください。";
 
 function sequenceNeighbors(point: AcupointMaster, series: readonly AcupointMaster[]) {
   const index = series.indexOf(point);
@@ -71,7 +71,6 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
   const view = viewCopy[profile.view];
   const care = careCopy[view.care];
   const careOverride = cautionSites[point.codeLower];
-  const visualOnly = view.care !== "touch" || Boolean(careOverride);
   const hasHeartCaution = view.care === "chest" || point.meridianId === "heart" || point.meridianId === "pericardium"
     || ["cv14", "cv15", "bl14", "bl15"].includes(point.codeLower);
   const nameWithCode = `${point.name}（${point.kana}・${point.code}）`;
@@ -100,15 +99,16 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
   const meridianEnd = Math.min(graph.length, meridianStart + 3);
 
   return {
-    titleTopic: visualOnly ? "場所と図での見つけ方・注意点" : undefined,
+    titleTopic: "場所と図での見つけ方・注意点",
     description: `${nameWithCode}の位置は、${profile.location}です。${view.label}の拡大図に、探すときの目印を示します。${point.meridianShort}での並び順と注意点も掲載しています。`,
     meridianReading: meridianReadings[point.meridianId],
     regionLabel: view.label,
     lead: `${nameWithCode}の位置は、${profile.location}です。拡大図では、位置を決める骨や筋、しわなどに番号を付けています。`,
     safetyWarning: hasHeartCaution ? heartWarning : point.codeLower === "gb21" ? "妊娠中は肩井への強い刺激を控え、施術については担当の産科へ相談してください。" : undefined,
     location: [profile.guide, view.read],
+    traditionalTitle: "経絡の順番と近くのツボ",
     traditional: [orderText, compareText],
-    visualOnly,
+    visualOnly: true,
     selfCare: [careOverride ?? care.steps],
     cautions: [care.caution],
     expert: [technical, siteNote, ...(alternate ? [alternate] : [])],

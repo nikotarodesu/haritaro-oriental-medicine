@@ -32,7 +32,7 @@ const CHAPTER_DEFINITIONS: ChapterDefinition[] = [
   { id: "five-elements", seriesId: "wuxing", shortTitle: "五行論", stageId: "stage-1", lessonCount: 8, lead: "学んだ臓腑を五行に分け、その関係を整理する", description: "木火土金水の分類と相生・相剋を学び、臓腑の関係を説明する。病機・弁証・治法への応用は後の章で扱う。" },
   { id: "meridians", seriesId: "meridians", shortTitle: "経絡・経穴の基礎", stageId: "stage-1", lessonCount: 4, lead: "経絡の構成と経穴の表記を知る", description: "経絡と経穴の基本的な構成、名称・番号の読み方、安全な学習範囲を確認する。" },
   { id: "pathology", seriesId: "pathomechanism", shortTitle: "病機論", stageId: "stage-2", lessonCount: 12, lead: "正常との違いを仮説として整理する", description: "外感・内傷、気血津液や臓腑の失調を説明する伝統用語を学び、病名や医学的な機序の確定と区別する。" },
-  { id: "diagnosis", seriesId: "diagnosis", shortTitle: "臨床診断論", stageId: "stage-2", lessonCount: 12, lead: "所見・解釈・不足情報を分ける", description: "四診・八綱・臓腑弁証の学習例を通じて、分類の根拠と保留する判断、医療評価の必要性を整理する。" },
+  { id: "diagnosis", seriesId: "diagnosis", shortTitle: "臨床診断論", stageId: "stage-2", lessonCount: 12, lead: "所見・解釈・不足情報を分ける", description: "四診・八綱・臓腑弁証の学習例を通じて、分類の根拠と保留する判断、診察や検査の必要性を整理する。" },
   { id: "treatment", seriesId: "treatment", shortTitle: "治則・治法", stageId: "stage-2", lessonCount: 12, lead: "治法の考え方と評価の条件を学ぶ", description: "治法・配穴・標本緩急の考え方を学習する。実際の適応や効果は、資格・安全性・個別の研究根拠と合わせて考える。" },
   { id: "practice", seriesId: "practice", shortTitle: "統合症例・再評価", stageId: "stage-3", lessonCount: 12, lead: "架空例で判断の根拠と見直しを練習する", description: "模擬症例で安全確認、情報整理、仮説、計画、振り返りを統合する。Web学習の修了と実際の診療能力の認定を区別する。" },
 ];

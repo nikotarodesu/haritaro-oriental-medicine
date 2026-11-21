@@ -106,7 +106,7 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
   diagnosis: {
     id: "diagnosis",
-    label: "気血水チェック",
+    label: "気血水 体質チェック",
     shortLabel: "気血水",
     description: "体質傾向（気虚・気滞・血虚・瘀血等）の整理",
     icon: Sparkles,

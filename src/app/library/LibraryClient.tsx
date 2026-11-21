@@ -119,7 +119,7 @@ export default function LibraryClient() {
         <div className="library-result-summary">
           <h2 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">検索結果</h2>
           <p role="status" aria-atomic="true" className="text-sm text-[#59615D] dark:text-[#A0B0BC]"><span className="sr-only">表示中：</span>{visibleResultCount}件</p>
-          <details className="reference-disclosure library-source-disclosure"><summary>出典・確認範囲</summary><div className="reference-disclosure-body"><p className="text-base leading-relaxed">論文は著者・題名・掲載誌を出典と照らし合わせたものを載せています。古典では『素問』『霊枢』『難経』などの記述と、確認した箇所を読めます。</p><p className="text-base leading-relaxed">論文{PAPERS_DATABASE.length}件のうち、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'abstract').length}件は抄録、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'selected_full_text').length}件は本文の一部まで読んでいます。{PAPERS_DATABASE.filter(paper => paper.claimsStatus !== 'source-checked').length}件は結果の要約を掲載していません。全件の全文確認と専門家による監修は完了していません。<Link href="/editorial-policy" className="underline">出典の確認と監修の状況</Link></p></div></details>
+          <details className="reference-disclosure library-source-disclosure"><summary>出典・確認範囲</summary><div className="reference-disclosure-body"><p className="text-base leading-relaxed">論文は著者・題名・掲載誌を出典と照らし合わせたものを載せています。古典では『素問』『霊枢』『難経』などの記述と、確認した箇所を読めます。</p><p className="text-base leading-relaxed">論文{PAPERS_DATABASE.length}件のうち、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'abstract').length}件は抄録、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'selected_full_text').length}件は本文の一部まで読んでいます。{PAPERS_DATABASE.filter(paper => paper.claimsStatus !== 'source-checked').length}件は書誌情報を確認した資料です。専門家による監修は完了していません。<Link href="/editorial-policy" className="underline">出典の確認と監修の状況</Link></p></div></details>
         </div>
       </section>
 
@@ -134,7 +134,7 @@ export default function LibraryClient() {
           </div>
         </section>}
 
-        {activeTab === "archives" && <div className="[&_p]:text-base [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_a]:text-sm"><MedicalSafetyNotice title="症例アーカイブの掲載は保留中です" message={ARCHIVE_CASES_NOTICE} /></div>}
+        {activeTab === "archives" && <div className="[&_p]:text-base [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_a]:text-sm"><MedicalSafetyNotice title="症例演習の教材について" message={ARCHIVE_CASES_NOTICE} /></div>}
 
         {/* コンテンツエリア */}
         {visibleResultCount > 0 && <div className="space-y-8">
@@ -165,7 +165,7 @@ export default function LibraryClient() {
                       <div className="space-y-3">
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <span className="library-confirmation-scope">
-                            {paper.claimsStatus !== 'source-checked' ? '要約保留' : paper.verificationScope === 'abstract' ? '抄録確認' : paper.verificationScope === 'selected_full_text' ? '本文の一部確認' : '確認範囲未記録'}
+                            {paper.verificationScope === 'abstract' ? '抄録を参照' : paper.verificationScope === 'selected_full_text' ? '本文の一部を参照' : '書誌情報のみ'}
                           </span>
                           <span className="text-sm text-[#59615D] dark:text-[#A0B0BC]">
                             {paper.journal} ({paper.year})
@@ -183,20 +183,20 @@ export default function LibraryClient() {
                             <dt><Focus aria-hidden="true" /><span>対象</span></dt>
                             <dd>{paper.targetCondition}</dd>
                           </div>
-                          <div className="library-study-part">
+                          {paper.studyDesign && <div className="library-study-part">
                             <dt><FlaskConical aria-hidden="true" /><span>方法</span></dt>
                             <dd>
                               {paper.studyDesign}
                               {paper.interventionProtocol && <p className="mt-2">{paper.interventionProtocol.name}（使用ツボ: {paper.interventionProtocol.acupoints.join("、")}）</p>}
                             </dd>
-                          </div>
+                          </div>}
                           <div className="library-study-part">
                             <dt><ScanText aria-hidden="true" /><span>概要</span></dt>
                             <dd>{paper.primaryOutcomes}</dd>
                           </div>
                         </dl>
 
-                        <details className="reference-disclosure library-results">
+                        {paper.claimsStatus === 'source-checked' && <details className="reference-disclosure library-results">
                           <summary>結果と限界</summary>
                           <div className="reference-disclosure-body">
                             {paper.keyFindings.length > 0 && <div>
@@ -210,7 +210,7 @@ export default function LibraryClient() {
                               {paper.clinicalTakeaways.map(limitation => <p key={limitation}>{limitation}</p>)}
                             </div>
                           </div>
-                        </details>
+                        </details>}
 
                         <details className="reference-disclosure library-bibliography">
                           <summary>著者・掲載誌と、確認した箇所</summary>
@@ -219,7 +219,7 @@ export default function LibraryClient() {
                             <p>{paper.journal} ({paper.year})</p>
                             {paper.sourceLocator && <p>
                               <strong>確認範囲: </strong>
-                              {paper.verificationScope === 'abstract' ? '抄録を照合' : '本文の一部を照合'}（{paper.claimsCheckedAt}）。{paper.sourceLocator} 専門家による承認は未完了です。
+                              {paper.sourceLocator}（確認日 {paper.claimsCheckedAt}）
                             </p>}
                             {paper.sourceCheckedAt && <p>書誌確認日：<time dateTime={paper.sourceCheckedAt}>{paper.sourceCheckedAt}</time></p>}
                           </div>
@@ -262,7 +262,7 @@ export default function LibraryClient() {
                 </span>
               </div>
 
-              <p className="text-base leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">古典の考え方を学ぶ資料です。{CLASSICAL_TEXTS.filter(classic => classic.verifiedQuotation).length}件に電子本文からの引用と確認範囲を表示しています。底本画像との照合・専門家による確認は未完了です。伝統的な配穴意図と、現代の疾患に対する治療効果は分けて読みます。</p>
+              <p className="text-base leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">古典の考え方を学ぶ資料です。{CLASSICAL_TEXTS.filter(classic => classic.verifiedQuotation).length}件に電子本文からの引用と確認範囲を表示しています。引用には、確認に使った電子本文を示しています。伝統的な配穴意図と、現代の疾患に対する治療効果は分けて読みます。</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {filteredClassics.map(classic => {
                   return (
@@ -287,7 +287,7 @@ export default function LibraryClient() {
                           <div>
                             <span className="text-sm font-bold text-[#737C77] dark:text-[#8899A6] block mb-0.5">掲載条文（原典との一致は未確認）：</span>
                             <p className="font-serif text-base text-[#232826] dark:text-[#FAF8F5] leading-relaxed break-words">
-                              {classic.originalPublicationStatus === 'withheld_pending_verification' ? '元の掲載文は字句・出典の確認が必要なため、原典の引用としての掲載を保留しています。下の確認事項をご覧ください。' : classic.original}
+                              {classic.originalPublicationStatus === 'withheld_pending_verification' ? '原文を読みたいときは、下の参照先から確認できます。' : classic.original}
                             </p>
                           </div>
                           {classic.reading && (
@@ -399,17 +399,8 @@ export default function LibraryClient() {
                     <div className="space-y-2">
                       <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
                         <span className="font-bold text-[#737C77]">
-                          症例 {c.id} / {c.category}
+                          症例演習 · {c.category}
                         </span>
-                        {c.isFreeTrial ? (
-                          <span className="font-bold px-1.5 py-0.2 rounded bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300">
-                            無料体験
-                          </span>
-                        ) : (
-                          <span className="font-bold px-1.5 py-0.2 rounded bg-[#1E3D34] text-white">
-                            PREMIUM
-                          </span>
-                        )}
                       </div>
 
                       <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] transition-colors leading-snug">
@@ -422,7 +413,7 @@ export default function LibraryClient() {
                     </div>
 
                     <div className="pt-2 border-t border-[#E5DEC9]/40 flex flex-wrap items-center justify-between gap-2 text-sm font-bold text-[#B86924] dark:text-[#E6C387]">
-                      <span>教材で設定した証の解答例: {c.correctDiagnosis.pattern}</span>
+                      <span>症例を読む</span>
                       <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 transition-transform" />
                     </div>
                   </Link>
@@ -516,7 +507,7 @@ export default function LibraryClient() {
 
         </div>}
 
-        {activeTab === "all" && <div className="[&_p]:text-base [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_a]:text-sm"><MedicalSafetyNotice title="症例アーカイブの掲載は保留中です" message={ARCHIVE_CASES_NOTICE} /></div>}
+        {activeTab === "all" && <div className="[&_p]:text-base [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_a]:text-sm"><MedicalSafetyNotice title="症例演習の教材について" message={ARCHIVE_CASES_NOTICE} /></div>}
 
 
       </div>

@@ -127,6 +127,7 @@ async function main() {
     assert(html.includes(`href="/curriculum/${resources.lectureId}"`), `${guide.id}: related lesson remains linked`);
     const lecture = getPublicLectureArticle(resources.lectureId);
     assert(lecture && html.includes(renderToStaticMarkup(React.createElement(React.Fragment, null, lecture.title))), `${guide.id}: link title matches the revised article`);
+    assert.equal((html.match(/専門家による監修は完了していません。/g) || []).length, 1, `${guide.id}: review status appears once with the author`);
     assert(html.includes('href="/diagnosis"'), `${guide.id}: constitution check remains linked`);
     if (resources.articleId) assert(ARTICLES.some(article => article.id === resources.articleId), `${guide.id}: existing related article ${resources.articleId}`);
     if (resources.caseId) assert(CLINICAL_CASES.some(item => item.id === resources.caseId), `${guide.id}: existing fictional case`);
@@ -138,7 +139,7 @@ async function main() {
         const researchHtml = renderToStaticMarkup(React.createElement(ResearchReferences, { papers: [paper] }));
         assert(researchHtml.includes(paper.verificationScope === 'abstract' ? '抄録を照合' : '本文の一部を照合'), `${id}: exact interpretation scope`);
         assert(researchHtml.includes(paper.claimsCheckedAt), `${id}: interpretation date is separate from bibliography date`);
-        assert(researchHtml.includes('専門家による監修・承認は未完了'), `${id}: source check is not expert approval`);
+        assert(!researchHtml.includes('専門家による監修'), `${id}: research cards leave review status to the author section`);
         assert(researchHtml.includes(`href="${paper.sourceUrl}"`), `${id}: direct checked source URL`);
       }
     }
@@ -156,7 +157,7 @@ async function main() {
   assert.equal((indexHtml.match(/application\/ld\+json/g) || []).length, 1, 'Index does not inherit a duplicated guide schema');
   assert(!JSON.stringify(indexSchema).includes('possibleTreatment'), 'Index is a guide collection, not a treatment catalogue');
   const uncheckedHtml = renderToStaticMarkup(React.createElement(ResearchReferences, { papers: [{ id: 'bibliography-only', title: 'Audited title', journal: 'Journal', year: 2026, claimsStatus: 'needs-review', abstract: 'WITHHELD CLAIM', targetCondition: 'WITHHELD POPULATION', clinicalTakeaways: ['WITHHELD LIMITATION'] }] }));
-  assert(uncheckedHtml.includes('研究結果の解釈・適用範囲は確認中'), 'Bibliography-only entries keep claims pending');
+  assert(uncheckedHtml.includes('著者・論文名・掲載誌を確認した資料です。研究の詳細は原典で読めます。'), 'Bibliography-only entries keep claims pending');
   assert(!uncheckedHtml.includes('WITHHELD'), 'An unchecked interpretation is not published from raw data');
   console.log(`Passed: ${SYMPTOMS.length} static symptom guides, canonical/social/schema agreement, 404s, shared content, safety/source integrity, audited research, legacy anchors and sitemap coverage.`);
 }

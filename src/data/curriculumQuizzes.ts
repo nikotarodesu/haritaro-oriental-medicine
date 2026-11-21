@@ -1444,7 +1444,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
         "研究の対象・比較・測定結果"
       ],
       "correctIndex": 2,
-      "explanation": "言葉や図の類似は、同じ物質・機序を実証した証拠ではありません。本講の個別原著は未照合なので、伝統的な関係の説明と研究で確認された因果を分けて読みます。",
+      "explanation": "言葉や図が似ていても、同じ物質や仕組みを指すとは限りません。伝統医学の説明を読んだら、研究では何を測り、どこまで確かめたかを別に見ます。",
       "relatedSectionTitle": "🔬 現代医学との比較：遺伝子・タンパク質の関係を扱うネットワーク医学"
     }
   ]
@@ -2024,12 +2024,12 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
       "id": "lecture-pathomechanism-12-q3",
       "question": "【第3節：次章「臨床診断論」への接続】次章へつなげる情報として適切なのはどれですか？",
       "options": [
-        "医療評価を省く説明",
+        "診察や検査を省く説明",
         "支持・反証・不足情報・保留する判断",
         "分類名だけの要約"
       ],
       "correctIndex": 1,
-      "explanation": "候補に合う情報、合わない情報、まだ聞いていないこと、判断を保留した理由を次章へ渡します。分類名だけで済ませず、安全確認と必要な医療評価を先に行うための問いも残します。",
+      "explanation": "候補に合う情報、合わない情報、まだ聞いていないこと、判断を保留した理由を次章へ渡します。分類名だけで済ませず、安全確認と必要な診察や検査を先に行うための問いも残します。",
       "relatedSectionTitle": "第3節：次章「臨床診断論」への接続"
     }
   ]
@@ -2095,7 +2095,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
         "非該当なら重い病気を除外する"
       ],
       "correctIndex": 1,
-      "explanation": "危険兆候は対応を検討するための情報です。すべてが同じ緊急度とは限らず、一覧にない病気もあります。分類名だけで緊急性を除外・確定せず、急激な悪化や判断不能時は必要な医療評価を優先します。",
+      "explanation": "危険兆候は対応を検討するための情報です。すべてが同じ緊急度とは限らず、一覧にない病気もあります。分類名だけで緊急性を除外・確定せず、急激な悪化や判断不能時は必要な受診を優先します。",
       "relatedSectionTitle": "弁証より先に安全性を確認する"
     },
     {
@@ -2107,7 +2107,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
         "起床時に重く動くと軽減し感覚の変化はない"
       ],
       "correctIndex": 1,
-      "explanation": "強い腰痛や脚への放散痛に、新たな排尿・排便・性機能障害や会陰部感覚異常が伴う場合は、馬尾症候群などの評価へ直ちにつなぎます。診断や手術時期は医療機関で判断します。NICE NG127 1.7.3を参照し、弁証より医療評価を優先します。",
+      "explanation": "強い腰痛や脚への放散痛に、新たな排尿・排便・性機能障害や会陰部感覚異常が伴う場合は、馬尾症候群などの評価へ直ちにつなぎます。診断や手術時期は医療機関で判断します。NICE NG127 1.7.3を参照し、弁証より受診を優先します。",
       "relatedSectionTitle": "腰痛と新たな排尿・感覚の異常"
     },
     {
@@ -2115,11 +2115,11 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
       "question": "【対応範囲】安全性を判断する情報が足りず、鍼灸で扱える範囲か分からないとき、適切な対応はどれですか？",
       "options": [
         "希望があれば施術可能とする",
-        "施術を保留して医療評価につなぐ",
+        "施術を保留して診察や検査につなぐ",
         "証が付けば施術可能とする"
       ],
       "correctIndex": 1,
-      "explanation": "情報不足を安全の確認と同じ意味にせず、必要な医療評価や連携を優先します。判断ができない場合に施術を保留することも安全を守る対応です。",
+      "explanation": "情報不足を安全の確認と同じ意味にせず、必要な診察や検査や連携を優先します。判断ができない場合に施術を保留することも安全を守る対応です。",
       "relatedSectionTitle": "施術を保留する判断"
     }
   ]
@@ -2536,7 +2536,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
       "id": "lecture-diagnosis-12-q1",
       "question": "【第2節：5段階情報開示シミュレーション演習】限られた所見の記載から判断するとき、適切なのはどれですか？",
       "options": [
-        "不足を保留し必要な医療評価を優先する",
+        "不足を保留し必要な受診を優先する",
         "記載のない症状は陰性として緊急性を除外する",
         "舌と脈が候補に合えば原因を確定する"
       ],
@@ -2733,7 +2733,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
         "現在の脱水の危険を優先し、救急医療につなげる"
       ],
       "correctIndex": 2,
-      "explanation": "「急則治其標」は伝統的な原則ですが、激しい嘔吐・下痢に意識異常や急激な悪化が伴う状況を鍼灸だけで対応する指示ではありません。医療評価と必要な救急対応を優先します。",
+      "explanation": "「急則治其標」は伝統的な原則ですが、激しい嘔吐・下痢に意識異常や急激な悪化が伴う状況を鍼灸だけで対応する指示ではありません。診察や検査と必要な救急対応を優先します。",
       "relatedSectionTitle": "第2節：優先順位を決める「4大評価軸」"
     },
     {
@@ -2918,7 +2918,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     },
     {
       "id": "lecture-treatment-8-q3",
-      "question": "「背部兪穴と募穴を組み合わせる」という説明の見出しを選ぶとどれですか？",
+      "question": "背部兪穴と募穴を組み合わせる配穴の考え方を何と呼びますか。",
       "options": [
         "郄穴と八会穴の組合せ",
         "兪募配穴",
@@ -3060,7 +3060,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
         "予定回数まで継続してから評価する"
       ],
       "correctIndex": 1,
-      "explanation": "不変と悪化は同じ扱いにせず、悪化があれば予定回数を待たずに対応を検討します。新しい症状や急激な悪化は必要な医療評価を優先し、好転反応と決めつけません。",
+      "explanation": "不変と悪化は同じ扱いにせず、悪化があれば予定回数を待たずに対応を検討します。新しい症状や急激な悪化は必要な受診を優先し、好転反応と決めつけません。",
       "relatedSectionTitle": "悪化を好転反応と決めつけない"
     }
   ]
@@ -3089,7 +3089,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
       "question": "計画を立てた架空例に、新しい症状と本人の負担の情報が加わった。次の判断として適切なのはどれですか？",
       "options": ["当初の証名との整合を優先し、介入候補を追加する","安全性と反応を再確認し、継続・変更・終了を比較する","当初の予定回数を優先し、評価を終了時にまとめる"],
       "correctIndex": 1,
-      "explanation": "新しい症状や負担は、当初の判断を見直す情報です。緊急性と必要な医療評価を確認し、本人の目標・変化・負担から計画を更新します。",
+      "explanation": "新しい症状や負担は、当初の判断を見直す情報です。緊急性と必要な医療機関で何を調べたか確かめ、本人の目標・変化・負担から計画を更新します。",
       "relatedSectionTitle": "6. 次章「第11章 統合症例・再評価」への展望"
     },
     {
@@ -3221,7 +3221,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
       "options": [
         "頭痛の証を分類してから紹介先を考える",
         "以前のMRIで異常なしなら経過を見る",
-        "施術を行わず119への救急要請を優先する"
+        "すぐに119番へ連絡する"
       ],
       "correctIndex": 2,
       "explanation": "急なろれつの異常は救急対応を考える徴候です。過去の検査結果で現在の変化を否定せず、伝統分類や施術を先にして対応を遅らせません。",
@@ -3416,7 +3416,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
         "小さい刺激から始める案を説明し、それを安全確認に代える"
       ],
       "correctIndex": 0,
-      "explanation": "遠隔穴や低刺激から始めても安全が保証されるわけではありません。具体的な方法の前に医療評価の必要性、個別のリスク、本人の同意を確認します。",
+      "explanation": "遠隔穴や低刺激から始めても安全が保証されるわけではありません。具体的な方法の前に診察や検査の必要性、個別のリスク、本人の同意を確認します。",
       "relatedSectionTitle": "出典と確認範囲"
     }
   ]

@@ -23,9 +23,9 @@ for (const variants of [['ごうこく', 'ゴウコク', 'ｺﾞｳｺｸ'], ['�
   for (const query of variants) assert.deepEqual(codes(query), codes(variants[0]), query + ': spellings must return the same results');
 }
 const li4 = indices.find(({ point }) => point.code === 'LI4');
-assert.equal(getAcupointMatchReason(li4.search, normalizeSearchText('ｺﾞｳｺｸ')), '読み一致');
-assert.equal(getAcupointMatchReason(li4.search, normalizeSearchText('ＬＩ ４')), 'コード完全一致');
-assert.equal(getAcupointMatchReason(li4.search, normalizeSearchText('合谷')), '経穴名完全一致');
+assert.equal(getAcupointMatchReason(li4.search, normalizeSearchText('ｺﾞｳｺｸ')), '読み方に含まれる');
+assert.equal(getAcupointMatchReason(li4.search, normalizeSearchText('ＬＩ ４')), '番号が一致');
+assert.equal(getAcupointMatchReason(li4.search, normalizeSearchText('合谷')), 'ツボの名前が一致');
 assert.deepEqual(codes('存在しない検索語xyz'), []);
 assert.equal(getAcupointMatchReason(li4.search, ''), null);
 
@@ -93,7 +93,7 @@ for (const query of ['ゴウコク', 'ｺﾞｳｺｸ', 'ＬＩ ４', 'ごうこ
   const view = dictionary(); view.change(query);
   assert.deepEqual(view.resultCodes(), ['LI4'], 'Actual dictionary onChange: ' + query);
   assert(view.text().includes(query), 'Keep the user’s original spelling in the input status');
-  assert(view.text().includes(query.includes('Ｌ') ? 'コード完全一致' : '読み一致'));
+  assert(view.text().includes(query.includes('Ｌ') ? '番号が一致' : '読み方に含まれる'));
 }
 const restored = dictionary('q=' + encodeURIComponent('ﾀｲｼｮｳ'));
 assert.deepEqual(restored.resultCodes(), ['LR3'], 'An existing search bookmark accepts half-width kana');

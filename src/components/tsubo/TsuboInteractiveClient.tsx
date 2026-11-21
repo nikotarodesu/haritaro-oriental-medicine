@@ -450,7 +450,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
                   </div>
                   <p className="atlas-result-location">{point.locationSimple}</p>
                   <p className="atlas-result-meta">{point.bodyPart} <span aria-hidden="true">·</span> {point.meridian}</p>
-                  {matchReason && <p className="atlas-result-meta">一致 {matchReason}</p>}
+                  {matchReason && <p className="atlas-result-meta">{matchReason}</p>}
                 </Link>
               );
             })}

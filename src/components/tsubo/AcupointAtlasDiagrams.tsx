@@ -16,7 +16,7 @@ export default function AcupointAtlasDiagrams({ point, meridianPoints }: {
         <ZoomableAtlasDiagram label="合谷の場所と目印">
           <HeguHandDiagram />
         </ZoomableAtlasDiagram>
-        <figcaption><span className="block text-sm font-semibold">右手の甲</span>①の骨の中央から、②の骨の方へ少し寄ったところ。</figcaption>
+        <figcaption><span className="block text-sm font-semibold">右手の甲</span>①人差し指につながる骨の中央から、②親指につながる骨の方へ少し寄ったところです。</figcaption>
       </figure>
 
       <figure className="atlas-figure atlas-figure--overview">

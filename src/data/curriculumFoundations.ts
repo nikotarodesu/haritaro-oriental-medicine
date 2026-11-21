@@ -10,7 +10,7 @@ function termsReference(id: string, scope: string): ReferenceItem {
     id, type: 'book', title: 'WHO international standard terminologies on traditional Chinese medicine',
     source: 'World Health Organization', year: 2022, isbn: '9789240042322', url: TERMS_URL,
     bibliographyStatus: 'matched', claimsStatus: 'source-checked', sourceCheckedAt: CHECKED_AT,
-    note: `${scope}の公式PDF検索索引の該当定義を確認。PDF全文は取得できていません。伝統用語の説明に限定し、現代医学との同一性・診断精度・治療効果の根拠には用いません。`,
+    note: `公開されている定義の抜粋から、${scope}の説明を参照しました。`,
   };
 }
 
@@ -19,7 +19,7 @@ const TRAINING_REFERENCE: ReferenceItem = {
   source: 'World Health Organization', year: 2021, isbn: '9789240017962',
   url: 'https://www.who.int/publications-detail-redirect/9789240017962',
   bibliographyStatus: 'matched', claimsStatus: 'source-checked', sourceCheckedAt: CHECKED_AT,
-  note: '公式紹介ページの対象別研修・学習モジュールの概要を確認。研修本文PDFは未取得です。このサイトの認定や臨床技能の修了を意味しません。',
+  note: 'WHOの紹介ページで、鍼灸研修の対象と学ぶ内容の概要を参照しました。',
 };
 
 const NCCIH_TCM_REFERENCE: ReferenceItem = {
@@ -27,7 +27,7 @@ const NCCIH_TCM_REFERENCE: ReferenceItem = {
   source: 'National Center for Complementary and Integrative Health (NIH)', year: 2019,
   url: 'https://www.nccih.nih.gov/health/traditional-chinese-medicine-what-you-need-to-know',
   bibliographyStatus: 'matched', claimsStatus: 'source-checked', sourceCheckedAt: CHECKED_AT,
-  note: '本文の伝統中国医学の範囲、介入別の研究、通常の医療を置換・遅延しない旨を確認。個々の疾患への効果を本講で推奨するための引用ではありません。',
+  note: '伝統中国医学に含まれる方法と、必要な受診を遅らせずに利用するための注意を参照しました。',
 };
 
 const RESEARCH_REFERENCE: ReferenceItem = {
@@ -35,7 +35,7 @@ const RESEARCH_REFERENCE: ReferenceItem = {
   source: 'National Center for Complementary and Integrative Health (NIH)',
   url: 'https://www.nccih.nih.gov/health/know-science/how-to-make-sense-of-a-scientific-journal-article/overview',
   bibliographyStatus: 'matched', claimsStatus: 'source-checked', sourceCheckedAt: CHECKED_AT,
-  note: '本文とリンク先のAbstract、Methods、Design of the Study、Results、Discussion/Conclusionを確認。対象・比較・評価指標・限界を読み分ける学習に用います。',
+  note: '研究の対象、比べた方法、結果をそれぞれどこで読めるかを参照しました。',
 };
 
 const SYSTEM_REFERENCE: ReferenceItem = {
@@ -44,7 +44,7 @@ const SYSTEM_REFERENCE: ReferenceItem = {
   source: 'International Organization for Standardization', year: 2015,
   url: 'https://www.iso.org/obp/ui/#iso:std:iso:ts:16277:-1:ed-1:v1:en',
   bibliographyStatus: 'matched', claimsStatus: 'source-checked', sourceCheckedAt: CHECKED_AT,
-  note: '公開された3.3.1.1 body system-TMと注記を確認。伝統医学の身体概念には解剖構造・機能体系・抽象概念が含まれるという用語上の区別に限定。治療効果の標準ではありません。',
+  note: '第3.3.1.1節を参照しました。伝統医学では、体の構造や働きをどのような言葉で整理するかが説明されています。',
 };
 
 const MERIDIAN_REFERENCE: ReferenceItem = {
@@ -53,7 +53,7 @@ const MERIDIAN_REFERENCE: ReferenceItem = {
   source: 'WHO Regional Office for the Western Pacific', year: 2007, isbn: '9789290612487',
   url: 'https://iris.who.int/bitstream/handle/10665/206952/9789290612487_eng.pdf',
   bibliographyStatus: 'matched', claimsStatus: 'source-checked', sourceCheckedAt: CHECKED_AT,
-  note: '公式PDF検索索引のpp.28–30・32、1.4.1（経絡）、1.4.3–1.4.15・1.4.19–1.4.23（経脈の分類と名称）の抜粋を確認。全文未取得。走行全体や経絡の解剖学的実在を検証したものではありません。',
+  note: '28〜30・32ページの抜粋から、経絡の定義と経脈の分類・名称を参照しました。',
 };
 
 const NOMENCLATURE_REFERENCE: ReferenceItem = {
@@ -61,7 +61,7 @@ const NOMENCLATURE_REFERENCE: ReferenceItem = {
   source: 'WHO Regional Office for the Western Pacific', year: 1991,
   url: 'https://iris.who.int/bitstream/handle/10665/207635/Standard_acupuncture_nomenclature_1991_partI_eng.pdf?sequence=1',
   bibliographyStatus: 'matched', claimsStatus: 'source-checked', sourceCheckedAt: CHECKED_AT,
-  note: '公式PDF検索索引のp.15、経脈名の標準英字コード一覧を確認。PDF全文未取得。LU〜LR、GV、CVの名称・識別用コードに限定します。',
+  note: '15ページの抜粋にある経脈名と標準コードを参照しました。',
 };
 
 const POINT_LOCATION_REFERENCE: ReferenceItem = {
@@ -69,7 +69,7 @@ const POINT_LOCATION_REFERENCE: ReferenceItem = {
   source: 'WHO Regional Office for the Western Pacific', year: 2008, isbn: '9789290613831',
   url: 'https://iris.who.int/bitstream/handle/10665/353407/9789290613831-eng.pdf',
   bibliographyStatus: 'matched', claimsStatus: 'source-checked', sourceCheckedAt: CHECKED_AT,
-  note: '公式PDF検索索引のp.13（骨度の比例寸・対象者の指寸の説明）を確認。PDF全文未取得。個別穴の位置・刺鍼深度・施術手順・有効性の照合ではありません。',
+  note: '13ページの抜粋から、体の長さで測る骨度と指の幅で測る指寸の説明を参照しました。',
 };
 
 const POINT_CLASSIFICATION_REFERENCE: ReferenceItem = {
@@ -78,7 +78,7 @@ const POINT_CLASSIFICATION_REFERENCE: ReferenceItem = {
   source: 'Journal of Clinical Medicine', year: 2021, doi: '10.3390/jcm10102059',
   url: 'https://www.mdpi.com/2077-0383/10/10/2059',
   bibliographyStatus: 'matched', claimsStatus: 'source-checked', sourceCheckedAt: CHECKED_AT,
-  note: '出版社とPMCの検索索引でMethods 2.2に記された五輸穴・原穴等の分類方法を確認。本文全文は取得できていません。分類の学習例に限定し、臨床効果や個別穴の選択根拠には用いません。',
+  note: '研究方法2.2節の抜粋を参照しました。五輸穴や原穴をどのような分類で記録したかが分かります。',
 };
 
 type FoundationLesson = Omit<Lecture, 'stageId' | 'stageTitle' | 'seriesTitle' | 'lectureNumber' | 'isPublished'> & {

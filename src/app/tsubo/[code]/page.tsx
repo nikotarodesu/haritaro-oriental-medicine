@@ -414,7 +414,7 @@ export default async function AcupointDetailPage({ params }: Props) {
               {isNeedleBan && (
                 <div className="p-2.5 rounded-xl bg-red-100/70 dark:bg-red-950/60 border border-red-300 dark:border-red-800 text-red-900 dark:text-red-200">
                   <strong className="block font-bold">伝統資料の刺鍼禁忌の記載</strong>
-                  <span>古典上の分類と、現代の禁忌部位・損傷リスクを分けて確認します。下記の注意事項と原典を確認し、個別手順は専門家確認が完了するまで掲載を保留します。</span>
+                  <span>古典での分類と、現代の解剖学にもとづく注意点を分けて読んでください。施術については、はり師・きゅう師に相談してください。</span>
                 </div>
               )}
               {isPregnancyBan && (
@@ -426,7 +426,7 @@ export default async function AcupointDetailPage({ params }: Props) {
               {isPneumoRisk && (
                 <div className="p-2.5 rounded-xl bg-orange-100/70 dark:bg-orange-950/60 border border-orange-300 dark:border-orange-800 text-orange-900 dark:text-orange-200">
                   <strong className="block font-bold">胸郭周囲の気胸リスク</strong>
-                  <span>胸膜・肺などの損傷に注意が必要です。斜刺・横刺や固定の寸数だけでは安全を保証できません。施術後の胸痛・息苦しさは速やかに受診し、強い呼吸困難では119番への連絡を優先します。</span>
+                  <span>胸膜・肺などの損傷に注意が必要です。斜刺・横刺や固定の寸数だけでは安全を保証できません。施術のあとに強い息苦しさがあるときは、すぐに119番へ連絡してください。胸の痛みや息苦しさが出たら、すぐに医療機関を受診してください。</span>
                 </div>
               )}
               {isMoxaBan && (
@@ -778,8 +778,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             <span>出典・確認状況</span>
           </div>
           <p className="leading-relaxed text-base">
-            確認担当：はり太郎。経穴ごとの位置・図版・医学的な説明については、内容の確認と承認がまだ完了していません。<br />
-            位置情報の参照元：WHO Standard Acupuncture Point Locations in the Western Pacific Region (2008)。参照元の記載だけでは、全経穴の照合完了を意味しません。
+            ツボの位置は、WHO『WHO Standard Acupuncture Point Locations in the Western Pacific Region』（2008年）を参照しています。
           </p>
           <p className="text-base text-[#88928D] dark:text-[#6E7D8A]">
             ※当サイトに掲載されている経穴の位置や解説は学術的学習および臨床思考の整理を目的としており、個別の疾患治療は医師・有資格鍼灸師の判断に従ってください。

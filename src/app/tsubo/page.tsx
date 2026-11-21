@@ -16,11 +16,11 @@ const regions = [...new Set(ALL_ACUPOINTS.map(point => point.bodyPart))].map(reg
 const flagshipCodes = ["li4", "st36", "lr3", "pc6", "sp6", "gv20", "lu7", "ki1", "bl23", "cv12", "gb20", "ht7"];
 const flagshipPoints = flagshipCodes.map(code => ALL_ACUPOINTS.find(point => point.codeLower === code)).filter(point => !!point);
 const studyGroups = [
-  { label: "一つのツボに着目した研究", studies: ATLAS_STUDIES.filter(study => study.kind === "point") },
+  { label: "ツボ一つを調べた研究", studies: ATLAS_STUDIES.filter(study => study.kind === "point") },
   { label: "複数のツボを用いた研究", studies: ATLAS_STUDIES.filter(study => study.kind === "combination") },
 ];
 
-const DESCRIPTION = "全361経穴を名前・部位・経絡から探し、場所の図と注意点を確認できます。";
+const DESCRIPTION = "361のツボを、名前・部位・経絡から探せます。ツボごとの図で場所や目印を確かめ、注意点を読めます。";
 
 export default function TsuboPage() {
   const guideLinks = (

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import PublicLecturePosition from "@/components/curriculum/PublicLecturePosition";
@@ -12,8 +11,6 @@ import ReadingSequence from "@/components/reading/ReadingSequence";
 import { pageSocialMetadata, SITE_NAME, SITE_ORIGIN } from "@/config/seo";
 import { PAGE_REVISIONS } from "@/config/contentUpdates";
 import { SERIES } from "@/config/series";
-import { getChapterAssessment } from "@/data/curriculumAssessments";
-import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
 import { getPublicLectureArticle } from "@/data/publicLectures";
 import { approvedIntroId, approvedIntroReferences } from "@/data/publicLectures/approvedIntro";
 import { getLectureIndexGroups, getReadingUnit, READING_LECTURES_REVISED_AT, readingUnits } from "@/data/publicLectures/readingUnits";
@@ -69,7 +66,7 @@ export default async function ReadingLecturePage({ params }: Props) {
   const chapter = getLectureIndexGroups("reading").find(group => group.id === unit.chapter);
   const firstPart = unit.parts[0];
   const citations: LectureCitation[] = [];
-  const resources = unit.parts.flatMap(part => {
+  for (const part of unit.parts) {
     const record = publishedLectureRecords.get(part.lectureId);
     const references = record ? getPublicLectureReferences(record) : [];
     const publishedCitations = part.lectureId === approvedIntroId
@@ -86,10 +83,7 @@ export default async function ReadingLecturePage({ params }: Props) {
         citations.push({ name, url, scopes: new Set(scope ? [scope] : []) });
       }
     }
-    const hasSources = part.lectureId === approvedIntroId || references.length > 0;
-    const hasQuiz = Boolean(CURRICULUM_QUIZZES[part.lectureId] || getChapterAssessment(part.lectureId));
-    return hasQuiz || hasSources ? [{ ...part, hasQuiz, hasSources }] : [];
-  });
+  }
   const canonical = SITE_ORIGIN + unit.href;
   const schema = {
     "@context": "https://schema.org",
@@ -188,38 +182,20 @@ export default async function ReadingLecturePage({ params }: Props) {
         />
       </div>
 
-      {(citations.length > 0 || resources.length > 0) && (
+      {citations.length > 0 && (
         <details id="lecture-resources" className="page-help">
-          <summary>出典・復習</summary>
-          {citations.length > 0 && (
-            <section className="lecture-citations" aria-labelledby="lecture-citations-heading">
-              <h2 id="lecture-citations-heading" className="lecture-resources-heading">主な参考資料</h2>
-              <ul className="lecture-unit-resources">
-                {citations.map(({ name, url, scopes }) => (
-                  <li key={name}>
-                    {url ? <a href={url} className="lecture-citation-link">{name}</a> : <strong>{name}</strong>}
-                    {[...scopes].map(scope => <p key={scope}>{scope}</p>)}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-          {resources.length > 0 && (
-            <section aria-labelledby="lecture-part-resources-heading">
-              <h2 id="lecture-part-resources-heading" className="lecture-resources-heading">節ごとの出典・復習</h2>
-              <ul className="lecture-unit-resources">
-                {resources.map(({ lectureId, label, hasQuiz, hasSources }) => (
-                  <li key={lectureId}>
-                    <strong>{label}</strong>
-                    <div className="lecture-resource-links">
-                      {hasQuiz && <Link href={`/curriculum/${lectureId}#lecture-supplements`} prefetch={false} className="ui-text-link">確認問題を解く</Link>}
-                      {hasSources && <Link href={`/curriculum/${lectureId}#article-references-section`} prefetch={false} className="ui-text-link">出典の詳細</Link>}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
+          <summary>参考資料</summary>
+          <section className="lecture-citations" aria-labelledby="lecture-citations-heading">
+            <h2 id="lecture-citations-heading" className="lecture-resources-heading">講義で参照した資料</h2>
+            <ul className="lecture-unit-resources">
+              {citations.map(({ name, url, scopes }) => (
+                <li key={name}>
+                  {url ? <a href={url} className="lecture-citation-link">{name}</a> : <strong>{name}</strong>}
+                  {scopes.size > 0 && <p>{[...scopes].map(scope => scope.endsWith("。") ? scope : scope + "。").join("")}</p>}
+                </li>
+              ))}
+            </ul>
+          </section>
         </details>
       )}
       <AuthorSupervisorCard revisedAt={revisedAt} />

@@ -130,8 +130,9 @@ export default function ArticleReferences({
 
                       {/* タイトル */}
                       {ref.bibliographyStatus && <p className="text-sm leading-relaxed text-muted">
-                        {ref.bibliographyStatus === 'matched' ? '書誌情報：照合済み' : ref.bibliographyStatus === 'retracted' ? '撤回論文：治療の根拠として使用しません' : '書誌情報：照合未完了。根拠としての利用は保留'}
-                        {ref.bibliographyStatus === 'matched' && (ref.claimsStatus === 'source-checked' ? ' ／ 参照箇所を確認済み（確認した範囲は下記）' : ' ／ 内容の照合は未完了')}
+                        {ref.bibliographyStatus === 'matched'
+                          ? (ref.claimsStatus === 'source-checked' ? '参照した内容を下に記載しています。' : '著者・題名・掲載先を確認した資料です。')
+                          : (ref.bibliographyStatus === 'retracted' ? '撤回された論文です。' : '書誌情報は出典側でご確認ください。')}
                       </p>}
                       {ref.sourceCheckedAt && <p className="text-sm text-muted">資料確認日：<time dateTime={ref.sourceCheckedAt}>{ref.sourceCheckedAt}</time></p>}
                       <div>

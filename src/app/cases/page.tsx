@@ -7,7 +7,7 @@ import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { collectionPageJsonLd } from "@/config/seo";
 import { SERIES } from "@/config/series";
 
-const title = "臨床症例演習";
+const title = "症例演習";
 const description = "模擬症例の主訴と経過、四診の所見を読み、どの記述を根拠に見立てやツボを選ぶか考えます。選んだ後に、解答例と理由を読めます。";
 
 export default function CasesIndexPage() {

@@ -87,7 +87,7 @@ export const CLINICAL_CASE_EVIDENCE: Record<string, ClinicalCaseEvidence> = {
     population: "発症72時間以内の16歳以上のベル麻痺患者551人を割り付け、496人の最終転帰を評価した試験（Sullivanら、2007年）。",
     comparison: "プレドニゾロン、アシクロビル、それぞれのプラセボを用いる要因計画で、顔面機能の回復を比較。",
     result: "3か月の完全回復率はプレドニゾロンを含む群83.0%、含まない群63.6%でした（差19.4ポイント、95%信頼区間11.7〜27.1）。これは鍼の効果量ではありません。",
-    interpretation: "AAO-HNSのガイドラインは、16歳以上のベル麻痺で発症72時間以内の経口ステロイドと、閉眼不全への眼の保護を推奨しています。鍼については根拠の質と利益・害の不確かさから推奨を決めていません。新しい顔面麻痺では、鍼を先に行うのではなく原因の医療評価を急ぎます。",
+    interpretation: "AAO-HNSのガイドラインは、16歳以上のベル麻痺で発症72時間以内の経口ステロイドと、閉眼不全への眼の保護を推奨しています。鍼については根拠の質と利益・害の不確かさから推奨を決めていません。新しい顔面麻痺では、鍼を先に行うのではなく原因の診察や検査を急ぎます。",
     sources: [
       { title: "Sullivanら 2007：ベル麻痺の早期薬物療法試験", url: "https://www.nejm.org/doi/full/10.1056/NEJMoa072006" },
       { title: "AAO-HNS：ベル麻痺診療ガイドライン", url: "https://www.entnet.org/wp-content/uploads/files/Bulletin_BellsExecSummary_Final_102313.pdf" },

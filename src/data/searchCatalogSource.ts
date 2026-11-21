@@ -114,7 +114,7 @@ const STATIC_TOOLS: SearchResultItem[] = [
   {
     id: "tool-diagnosis-self",
     type: "tool",
-    title: "気血水 体質セルフチェック（12問）",
+    title: "気血水 体質チェック（12問）",
     subtitle: "伝統的な体質分類の学習用チェック。医学的な診断や治療判断には使用しません",
     badge: "セルフチェック",
     url: "/diagnosis",

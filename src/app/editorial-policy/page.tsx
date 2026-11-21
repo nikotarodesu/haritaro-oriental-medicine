@@ -21,11 +21,11 @@ export default function EditorialPolicyPage() {
     <p className="leading-relaxed">伝統的な分類、現代医学の研究結果、理解を助ける比喩を区別します。文献が存在することと、教材の説明がその文献で支持されることは別々に確認します。</p>
     <section id="current-review" className="scroll-mt-28 space-y-3"><h2 className="text-xl font-bold">現在の確認状況</h2>
       <p>登録論文{PAPERS_DATABASE.length}件を照合し、書誌一致を確認できたものは{records.filter(record => record.bibliographyStatus === 'matched').length}件です。撤回論文、書誌の不一致、原典を確認できない文献は研究資料一覧と検索の対象から外しています。</p>
-      <p>公開論文のうち{VERIFIED_PAPERS.filter(paper => paper.claimsStatus === 'source-checked').length}件は、取得できた抄録または本文の一部で対象・比較・結果を確認し、要約と適用の限界を記載しました。確認した範囲・原典URL・確認日は各論文に表示します。全文・付録の網羅的な確認や専門家監修の完了を意味しません。原典を取得できない項目の結果・人数・施術条件は掲載を保留しています。</p>
-      <p>古典{CLASSICAL_TEXTS.filter(classic => classic.verifiedQuotation).length}件には、確認した電子本文からの限定的な引用を、元の未照合掲載文と分けて表示しています。確認範囲と字句の違いを各項目で説明し、底本画像・訳や臨床解釈の専門家確認は未完了としています。</p>
-      <p className="font-bold">全件の医学的正確性の照合と、専門家による監修は完了していません。</p>
-      <p>{summary.generatedAt}時点で、記事・講義・経穴・症例・クイズ・用語集・配穴例などから{summary.statements.toLocaleString('ja-JP')}件の記述を確認台帳へ抽出しました。このうち{summary.priorityStatements.toLocaleString('ja-JP')}件には、断定表現・数値・安全性などを優先確認する印が付いています。掲載保留中の元資料も含む確認対象の一覧であり、確認済みの件数ではありません。画面内の文章・図版は別途確認します。</p>
-      <p>出典を確認できない施術手順や症例アーカイブの公開は保留しています。経穴の公開解説でも、未照合の即効性・作用機序・救急への効果や施術手順の断定を、確認範囲を示す学習用説明に置き換えています。</p>
+      <p>公開論文のうち{VERIFIED_PAPERS.filter(paper => paper.claimsStatus === 'source-checked').length}件は、抄録や本文の一部を参照し、どんな人を対象に、何を比べ、どんな結果だったかをまとめています。論文ごとに参照した箇所と日付を示しています。書誌情報のみの論文は、論文名・著者・掲載誌を調べるために利用できます。</p>
+      <p>古典{CLASSICAL_TEXTS.filter(classic => classic.verifiedQuotation).length}件では、電子本文から確認した箇所を引用し、以前掲載した文章との字句の違いを項目ごとに説明しています。引用の出典は電子本文です。底本の画像を調べる場合は、原典側の資料をご覧ください。</p>
+      <p className="font-bold">専門家による監修は完了していません。</p>
+      <p>{summary.generatedAt}時点で、記事や講義、ツボ図鑑などの記述{summary.statements.toLocaleString('ja-JP')}件を、出典や表現を見直す対象としています。このうち{summary.priorityStatements.toLocaleString('ja-JP')}件は、受診の目安や研究結果の数値など、読者の判断に関わる内容を優先して確認します。各ページに掲載する図や画面の案内文も確認の対象です。</p>
+      <p>ツボ図鑑では、体の表面で位置を見つける目印と、図を読むときの注意を示しています。症例演習では、架空の相談から判断の手がかりを探します。</p>
       <Link href="/safety" className="underline">受診の目安・安全性の出典と確認範囲</Link>
     </section>
     <section id="review-criteria" className="scroll-mt-28 space-y-3"><h2 className="text-xl font-bold">記述ごとに確認すること</h2><ol className="list-decimal pl-5 space-y-2">
@@ -44,7 +44,7 @@ export default function EditorialPolicyPage() {
       </section>
     <section className="space-y-3"><h3 className="font-serif text-lg font-bold">2026年10月3日の教材改訂</h3>
       <p>陰陽の8講義・関連する24問と関連図では、伝統的な分類と自律神経・恒常性・甲状腺機能などの生理学的な概念を区別しました。伝統的な証だけで薬の適否や治療方法を判断させる表現、救急症状への施術案内、未照合の具体的な刺鍼手順も改訂しました。用語集、古典条文の解説、配穴の学習例は、特効・相乗効果や現代の疾患の治癒を断定しない説明へ改訂しました。</p>
-      <p>古典6件は電子本文の該当箇所を確認し、元の掲載文とは分けて引用・資料名・確認範囲を表示しています。底本画像との照合は未完了です。版・頁情報は資料上で確認できたものだけを示し、未確認の情報は補っていません。他の講義・図版・症例の確認、専門家による監修は継続しています。</p>
+      <p>古典6件は電子本文の該当箇所を確認し、元の掲載文とは分けて引用・資料名・確認範囲を表示しています。ここで参照したのは電子本文です。電子資料から版やページが分かる場合は、引用箇所と一緒に示します。</p>
       <p>合谷の位置説明を統一し、経穴ページの検索用データに残っていた「鍼灸師監修」の表示を修正しました。これはこの改訂で変更した箇所の記録であり、全教材の確認完了を示すものではありません。</p>
       <p className="text-sm">参照した資料：<a className="underline" href="https://www.who.int/publications/i/item/9789240042322">WHOの伝統医学用語集の書誌</a>、<a className="underline" href="https://www.nccih.nih.gov/health/acupuncture-effectiveness-and-safety">NCCIHの鍼治療の研究と安全性</a>。各資料が支持する範囲と未確認の範囲は、講義の参考文献と古典の注記に記載しています。</p>
     </section>

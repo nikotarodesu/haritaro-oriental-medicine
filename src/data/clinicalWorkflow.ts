@@ -13,7 +13,7 @@ export const CLINICAL_SIGNS = [
   { id: 'nightSweat', group: '問診', label: '寝汗', question: '何晩くらい寝汗をかきますか。発熱や体重の変化はありますか。' },
   { id: 'fixedPain', group: '問診', label: '固定した刺すような痛み', question: '刺すような痛みはいつも同じ場所ですか。けがの後や夜、動いたときに変わりますか。' },
   { id: 'heavy', group: '問診', label: '身体の重だるさ', question: 'どの部位が何時ごろ重くなりますか。むくみや、歩くなどの動作への支障はありますか。' },
-  { id: 'sleep', group: '問診', label: '入眠困難・中途覚醒', question: '寝つくまで何分かかり、夜に何回起きますか。翌日の支障、いびき、服薬も聞きます。' },
+  { id: 'sleep', group: '問診', label: '入眠困難・中途覚醒', question: '寝付くまで何分かかり、夜に何回起きますか。翌日の支障、いびき、服薬も聞きます。' },
   { id: 'paleTongue', group: '望診', label: '淡白舌', question: '同じ照明で観察し、舌そのものの淡さと、舌苔の白さを別に書きます。' },
   { id: 'redTongue', group: '望診', label: '紅舌', question: '舌先だけ赤いか、全体かを見ます。舌苔の様子と乾きも別に書きます。' },
   { id: 'greasyCoat', group: '望診', label: '膩苔', question: 'ねばついて見える苔の色と厚さ、乾き具合を別々に書きます。' },
@@ -59,7 +59,7 @@ export const CLINICAL_PATTERNS: ClinicalPattern[] = [
   {"id": "stomach-yin", "name": "胃陰虚", "category": "脾胃", "summary": '口の乾き、食べたくない感覚、少ない舌苔', "aliases": ["胃陰不足", "胃陰虚証", "いいんきょ"], "additionalChecks": ["空腹感はあるが食べたくないなど、食欲の具体的な状態", "胃部の不快感、便の乾燥、舌苔の減少"], "supports": ["dry", "appetite", "redTongue"], "conflicts": [], "principle": "養陰益胃・生津", "distinguish": '空腹でも食べたくないのか、食後に胃がつらいのかを聞きます。口の乾きだけで決めず、舌苔や便の乾きも確認します。', "lectureId": "lecture-treatment-7", "points": []},
   {"id": "lung-qi", "name": "肺気虚", "category": "肺", "summary": '弱い声や咳と、動いたときの息切れ', "aliases": ["肺気虚証", "はいききょ"], "additionalChecks": ["弱い咳、活動時の息切れ、痰の量と性状", "自汗・風への反応、普段との違いと経過"], "supports": ["fatigue", "weakVoice", "weakPulse", "paleTongue"], "conflicts": [], "principle": "補肺益気", "distinguish": '普段と声がどう違うか、咳や息切れがいつ出るかを聞きます。声が小さいことや疲れだけで候補は決まりません。', "lectureId": "lecture-diagnosis-9", "points": []},
   {"id": "lung-yin", "name": "肺陰虚", "category": "肺", "summary": '乾いた咳や声がれと、喉の乾き', "aliases": ["肺陰不足", "肺陰虚証", "はいいんきょ"], "additionalChecks": ["乾いた咳・少量の痰・嗄声の有無と経過", "舌苔の量・乾湿、ほかの陰虚の所見"], "supports": ["dry", "nightSweat", "heat", "redTongue"], "conflicts": [], "principle": "滋陰潤肺", "distinguish": '咳が乾いているか、痰がどのくらい出るか、声がれがいつからかを聞きます。口や喉の乾きだけで肺の証とは決めません。', "lectureId": "lecture-diagnosis-9", "points": []},
-  {"id": "kidney-qi", "name": "腎気虚", "category": "腎", "summary": '腰やひざのだるさと、排尿の変化', "aliases": ["腎気不足", "腎気虚証", "じんききょ"], "additionalChecks": ["腰膝のだるさ・力の入りにくさ、耳鳴りの経過", "排尿の回数・夜間尿など、普段からの変化"], "supports": ["fatigue", "weakPulse"], "conflicts": [], "principle": "補腎益気", "distinguish": '腰やひざの力の入り方と、夜にトイレに起きる回数を別に聞きます。疲れだけで腎の証とはせず、排尿の変化は医療評価も確認します。', "lectureId": "lecture-diagnosis-9", "points": []},
+  {"id": "kidney-qi", "name": "腎気虚", "category": "腎", "summary": '腰やひざのだるさと、排尿の変化', "aliases": ["腎気不足", "腎気虚証", "じんききょ"], "additionalChecks": ["腰膝のだるさ・力の入りにくさ、耳鳴りの経過", "排尿の回数・夜間尿など、普段からの変化"], "supports": ["fatigue", "weakPulse"], "conflicts": [], "principle": "補腎益気", "distinguish": '腰やひざの力の入り方と、夜にトイレに起きる回数を別に聞きます。疲れだけで腎の証とはせず、尿の出方に変化があれば、医療機関で何を確認したかも聞きます。', "lectureId": "lecture-diagnosis-9", "points": []},
   {"id": "kidney-yin", "name": "腎陰虚", "category": "腎", "summary": '腰やひざのだるさに、ほてりや寝汗が重なる', "aliases": ["腎陰不足", "腎陰虚証", "じんいんきょ"], "additionalChecks": ["腰膝のだるさ、耳鳴りなどの経過", "舌苔の量、ほてりや寝汗の時間帯"], "supports": ["dry", "nightSweat", "heat", "redTongue"], "conflicts": [], "principle": "滋補腎陰", "distinguish": '腰のだるさや耳鳴りがいつからか、ほてりや寝汗が何時ごろあるかを聞きます。腰が痛む場所だけで腎陰虚とは決めません。', "lectureId": "lecture-diagnosis-9", "points": []},
   {"id": "kidney-yang", "name": "腎陽虚", "category": "腎", "summary": '腰やひざの冷えと、温めた後の変化', "aliases": ["腎陽不足", "腎陽虚証", "じんようきょ"], "additionalChecks": ["腰膝の冷え・だるさと温めによる変化", "排尿・浮腫・便通の変化と経過"], "supports": ["cold", "fatigue", "weakPulse", "paleTongue"], "conflicts": [], "principle": "温補腎陽", "distinguish": '足の冷えに加え、腰やひざのだるさ、むくみ、排尿や便通の変化を聞きます。冷える部位だけで腎陽虚とは決めません。', "lectureId": "lecture-diagnosis-9", "points": []},
   {"id": "liver-kidney-yin", "name": "肝腎陰虚", "category": "腎", "summary": '目や筋の訴えと、腰やひざのだるさが重なる', "aliases": ["肝腎陰虚証", "かんじんいんきょ"], "additionalChecks": ["目・筋・月経など、肝に関連づけた所見", "腰膝のだるさ・耳鳴りなど、腎に関連づけた所見"], "supports": ["dry", "nightSweat", "heat", "redTongue"], "conflicts": [], "principle": "滋補肝腎", "distinguish": '目のかすみなど肝を考えた点と、腰のだるさや耳鳴りなど腎を考えた点を別々に書きます。ほてりや寝汗だけで二つの臓腑の候補を決めません。', "lectureId": "lecture-diagnosis-9", "points": []},
@@ -112,18 +112,40 @@ export const CLINICAL_SOURCES = {
   headache: { title: 'NHS：頭痛の受診目安', url: 'https://www.nhs.uk/symptoms/headaches/', scope: '受診・救急評価の目安。東洋医学の弁証や配穴効果の根拠ではありません。' },
   back: { title: 'NHS：腰背部痛の受診目安', url: 'https://www.nhs.uk/conditions/back-pain/', scope: '神経症状・排尿排便の変化などの受診目安。英国の受診窓口は日本の窓口と異なります。' },
   sleep: { title: 'NHS：不眠の評価と受診', url: 'https://www.nhs.uk/conditions/insomnia/', scope: '睡眠の経過・生活への影響と受診の目安。' },
-  fatigue: { title: 'NHS：持続する疲労の評価', url: 'https://www.nhs.uk/symptoms/tiredness-and-fatigue/', scope: '原因不明で持続する疲労の医療評価。' },
+  fatigue: { title: 'NHS：疲れが長く続くとき', url: 'https://www.nhs.uk/symptoms/tiredness-and-fatigue/', scope: '原因が分からない疲れが続くときの受診の目安。' },
 } as const;
 
 export interface ClinicalComplaint {
   slug: string; title: string; summary: string; questions: string[]; review: string[];
   patternIds: string[]; lectureId: string; sourceKeys: (keyof typeof CLINICAL_SOURCES)[];
+  patternExamples?: Readonly<Record<string, string>>;
 }
 export const CLINICAL_COMPLAINTS: ClinicalComplaint[] = [
-  { slug: 'shoulder', title: '首・肩こり', summary: 'どの姿勢や動作で痛みが出るか、腕のしびれや力の入り方に変化があるかを確認します。', questions: ['いつ始まり、仕事中や姿勢を変えたときにどう変わりますか。','痛い場所、痛み方、腕や手まで広がるかを聞きます。力の入り方やしびれも確認します。','頭痛や冷えはありますか。眠れなかった日や緊張した日は普段と違いますか。持病や薬も聞きます。'], review: ['腕を上げるなど、前と同じ動作での痛みと動く範囲','翌日以降に仕事や睡眠へどんな影響が出たか'], patternIds: ['liver-qi','stasis','damp'], lectureId: 'lecture-diagnosis-1', sourceKeys: ['terminology'] },
+  {
+    slug: 'shoulder', title: '首・肩こり',
+    summary: 'どの姿勢や動作で痛みが出るか、腕のしびれや力の入り方に変化があるかを確認します。',
+    questions: ['いつ始まり、仕事中や姿勢を変えたときにどう変わりますか。', '痛い場所、痛み方、腕や手まで広がるかを聞きます。力の入り方やしびれも確認します。', '頭痛や冷えはありますか。眠れなかった日や緊張した日は、痛みが普段と違いますか。持病や薬も聞きます。'],
+    review: ['腕を上げるなど、前と同じ動作での痛みと動く範囲', '翌日以降に仕事や睡眠へどんな影響が出たか'],
+    patternIds: ['liver-qi', 'stasis', 'damp'], lectureId: 'lecture-diagnosis-1', sourceKeys: ['terminology'],
+    patternExamples: {
+      'liver-qi': '首の付け根と肩のどちらが張るかを聞きます。同じ姿勢で作業をするときや、緊張が解けたあとに張りがどう変わるかを比べます。',
+      stasis: '肩甲骨の内側など、痛む場所が毎回同じかを聞きます。転倒や腕をひねったことがあれば、いつから痛み始めたかも確かめます。',
+      damp: '肩が重だるいと感じる時間帯と、休んだあとの変化を聞きます。しびれや力の入りにくさがあるときは、その経過も別に確かめます。',
+    },
+  },
   { slug: 'back', title: '腰痛', summary: '痛みが始まった時刻と広がる範囲を聞き、脚のしびれや筋力、排尿・排便の変化を確認します。', questions: ['いつ、何をしていて痛み始めましたか。けがの有無と、動いたときや休んだときの変化を聞きます。','両脚のしびれ、力の入りにくさ、股の周りの感覚、排尿・排便に新しい変化がないかを確認します。','発熱や体重の変化、持病や薬はありますか。靴下をはくなど、困った動作も聞きます。'], review: ['前と同じ動作での痛みと、できるようになった動作','脚の力やしびれの変化と、医療機関で確認したこと'], patternIds: ['stasis','damp','spleen-yang'], lectureId: 'lecture-diagnosis-2', sourceKeys: ['back','terminology'] },
-  { slug: 'headache', title: '頭痛', summary: '突然始まったか、いつもの頭痛と違うか、発熱や見え方の変化があるかを先に確認します。', questions: ['突然始まりましたか。いつもの痛みと違うか、頭を打ったことや発熱がないかも聞きます。','どこがどんなふうに痛み、何分・何時間続きますか。見え方、言葉、手足の動きの変化も確認します。','睡眠、緊張した日、月経の前後で変わりますか。使った薬と、仕事などで困ったことも聞きます。'], review: ['頭痛が出た日数、一回の長さ、痛みの程度','中断した仕事や家事、薬を使った回数、受診結果'], patternIds: ['liver-qi','liver-heat','stasis','yin'], lectureId: 'lecture-diagnosis-2', sourceKeys: ['headache','terminology'] },
-  { slug: 'sleep', title: '不眠', summary: '寝つくまでの時間、夜に目が覚める回数、翌日の眠気で困る場面を聞き取ります。', questions: ['何時に床に入り、何時に起きますか。寝つきにくい、夜中や早朝に目が覚めるなど、いつから続いているかも聞きます。','翌日、眠気で何に困りますか。いびきや睡眠中の呼吸、カフェイン・飲酒・服薬も聞きます。','痛み、気分の変化、ほてりや口の乾きはありますか。持病や受診状況も確認します。'], review: ['床に入ってから寝るまでの時間と、夜に目が覚めた回数','昼間の眠気が、仕事や家事にどの程度影響したか'], patternIds: ['liver-qi','liver-heat','yin'], lectureId: 'lecture-diagnosis-1', sourceKeys: ['sleep','terminology'] },
+  {
+    slug: 'headache', title: '頭痛',
+    summary: '突然始まったか、いつもの頭痛と違うか、発熱や見え方の変化があるかを先に確認します。',
+    questions: ['突然始まりましたか。いつもの痛みと違うか、頭を打ったことや発熱がないかも聞きます。', 'どこがどんなふうに痛み、何分・何時間続きますか。見え方、言葉、手足の動きの変化も確認します。', '睡眠、緊張した日、月経の前後で変わりますか。使った薬と、仕事などで困ったことも聞きます。'],
+    review: ['頭痛が出た日数、一回の長さ、痛みの程度', '中断した仕事や家事、薬を使った回数、受診結果'],
+    patternIds: ['liver-qi', 'liver-heat', 'stasis', 'yin'], lectureId: 'lecture-diagnosis-2', sourceKeys: ['headache', 'terminology'],
+    patternExamples: {
+      'liver-qi': '頭が締め付けられる感じが、緊張の前後でどう変わるかを聞きます。口の苦さや目の赤みを伴うときは、肝鬱化火の説明も読み比べます。',
+      stasis: 'こめかみや後頭部など、毎回同じところが痛むか、刺すような痛みかを確かめます。頭を打ったあとに始まった頭痛では、証を考える前に受診の状況を確認します。',
+    },
+  },
+  { slug: 'sleep', title: '不眠', summary: '寝付くまでの時間、夜に目が覚める回数、翌日の眠気で困る場面を聞き取ります。', questions: ['何時に床に入り、何時に起きますか。寝付きにくい、夜中や早朝に目が覚めるなど、いつから続いているかも聞きます。','翌日、眠気で何に困りますか。いびきや睡眠中の呼吸、カフェイン・飲酒・服薬も聞きます。','痛み、気分の変化、ほてりや口の乾きはありますか。持病や受診状況も確認します。'], review: ['床に入ってから寝るまでの時間と、夜に目が覚めた回数','昼間の眠気が、仕事や家事にどの程度影響したか'], patternIds: ['liver-qi','liver-heat','yin'], lectureId: 'lecture-diagnosis-1', sourceKeys: ['sleep','terminology'] },
   { slug: 'digestion', title: '胃腸の不調', summary: '食後に何が起きるか、便の回数や状態、体重の変化を聞きます。冷えがあれば、温めたときに変わるかも確認します。', questions: ['いつ始まり、食前と食後でどう違いますか。便の硬さと一日の回数も聞きます。','強い腹痛、血の混じる便、発熱、体重の変化はありますか。持病や薬も確認します。','疲れや冷えがあるか、温めたときや緊張した日で症状が変わるかを聞きます。'], review: ['以前と比べた食欲、便の硬さと回数','食後にできなかったこと、体重や体調の変化'], patternIds: ['spleen-qi','spleen-yang','damp','liver-qi'], lectureId: 'lecture-diagnosis-8', sourceKeys: ['terminology'] },
   { slug: 'fatigue', title: '疲労・倦怠感', summary: '疲れが出る時間帯、休んだ後の変化、できなくなった日常動作を聞き、受診や検査の結果も確認します。', questions: ['いつから疲れが続き、何時ごろ強まりますか。動いたときと休んだ後、どんなことに困るかを聞きます。','眠り、食欲、便通は変わりましたか。息切れ、動悸、体重の変化も確認します。','これまでの病気や服薬、受診や検査の結果を聞きます。冷えやほてりの有無も尋ねます。'], review: ['同じ買い物や家事での疲れ方と、休んで戻るまでの時間','睡眠と食欲の変化、受診の結果、施術後に困った反応'], patternIds: ['spleen-qi','spleen-yang','damp','yin'], lectureId: 'lecture-diagnosis-8', sourceKeys: ['fatigue','terminology'] },
 ];

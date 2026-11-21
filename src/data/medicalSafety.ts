@@ -15,7 +15,7 @@ export const MEDICAL_SAFETY_SOURCES = {
   nccih: { title: 'NCCIH：Acupuncture — Effectiveness and Safety', url: 'https://www.nccih.nih.gov/health/acupuncture-effectiveness-and-safety', section: 'Is acupuncture safe? / More To Consider' },
 } satisfies Record<string, SafetySource>;
 
-export const PROCEDURE_PUBLICATION_NOTICE = '刺入深度・角度・施灸量の個別手順は専門家確認待ちのため掲載を保留しています。体表の取穴位置や模式図から、その人の安全な刺入経路は判断できません。';
+export const PROCEDURE_PUBLICATION_NOTICE = '図鑑の図や説明では、体の表面にあるツボの目印と周りの構造が分かります。実際にはりを使うときの向きや深さ、お灸の方法は、はり師・きゅう師に相談してください。';
 
 // 未確認の実技パラメータを既定で公開しない。人による確認記録ができるまで解除しない。
 export const PROCEDURE_PUBLICATION_STATUS = 'pending_expert_review' as const;

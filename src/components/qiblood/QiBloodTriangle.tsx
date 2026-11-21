@@ -226,7 +226,7 @@ export default function QiBloodTriangle() {
               </p>
               <div className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-xs">
                 <strong className="text-[#7B1FA2] block mb-1">【古典の読み方】汗と血の喪失を関連づける記述</strong>
-                古典上の注意を学ぶ際も、原文・文脈・底本を確認します。脱水や出血を瘀血の確定材料にせず、医療評価を優先してください。この図から発汗・刺絡の手順や適応を判断しません。
+                古典上の注意を学ぶ際も、原文・文脈・底本を確認します。脱水や出血を瘀血の確定材料にせず、受診を優先してください。この図から発汗・刺絡の手順や適応を判断しません。
               </div>
             </div>
           )}

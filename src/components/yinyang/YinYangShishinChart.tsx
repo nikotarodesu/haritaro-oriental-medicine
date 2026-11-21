@@ -250,7 +250,7 @@ export default function YinYangShishinChart() {
       <div className="mt-4 text-[11px] leading-relaxed text-[#59615D] dark:text-[#96A6B2]">
         急な強い呼吸困難、止まらないけいれん、意識の異常などは、四診の分類を続けず救急対応を優先してください。
         <a href="https://www.fdma.go.jp/publication/portal/items/portal002_japanese.pdf" target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-2">消防庁：救急車利用マニュアル（2025年10月、印刷頁4・5）</a>
-        で救急要請の目安を確認しています。この資料は、図中の伝統的な所見分類を検証するものではありません。
+        で119番へ連絡する目安を確認しています。この資料は、図中の伝統的な所見分類を検証するものではありません。
         <a href="/safety" className="ml-1 inline-flex min-h-11 items-center font-semibold text-[#1E3D34] underline underline-offset-2 dark:text-[#74BA9E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B86924]">受診の目安</a>
       </div>
     </figure>

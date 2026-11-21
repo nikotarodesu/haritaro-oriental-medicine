@@ -35,8 +35,8 @@ for (const id of checkedReferenceIds) {
   assert.equal(update.sourceCheckedAt, '2026-10-15');
   assert.equal(update.bibliographyStatus, 'matched');
   assert.equal(update.claimsStatus, 'source-checked');
-  assert(/p{1,2}\.\d/.test(update.note), `${id}: a concrete printed-page locator`);
-  assert(pointSource ? /照合対象に含みません|全経穴の個別照合/.test(update.note) : update.note.includes('講義全体の監修'), `${id}: bounded verification scope`);
+  assert.match(update.note, /p{1,2}\.\d|\dページ/, `${id}: a concrete printed-page locator`);
+  assert.match(update.note, pointSource ? /骨度と指寸|合谷（LI4）の35ページ/ : /^参照した用語は.*WGM2番号/, `${id}: visible scope is limited to specific locations or definitions`);
   assert(!/全文を検証済|全経穴を確認済|PDF.*未取得|PDF.*取得でき/.test(update.note), `${id}: no stale acquisition gap or blanket approval`);
   const [resolved] = resolveArticleReferences([{ id, title: '保持するタイトル', source: 'WHO', authors: '保持する著者', note: '旧確認範囲' }]);
   assert.equal(resolved.title, '保持するタイトル');
@@ -53,7 +53,9 @@ assert.equal(verifiedLi4.sourcePage, 'p.35（PDF 44ページ目）');
 assert.equal(verifiedLi4.sourceUrl, `${pointLocationsPdf}#page=44`);
 assert.equal(verifiedLi4.standardLocation, '手背、第2中手骨中点の橈側（親指側）。');
 assert(DETAILED_ACUPOINTS.li4.locationDetail.startsWith(verifiedLi4.standardLocation), 'the visible LI4 location matches the checked definition');
-assert(verifiedLi4.note.includes('体表上の標準位置') && verifiedLi4.note.includes('針路・深度') && verifiedLi4.note.includes('確認対象に含みません'), 'location confirmation does not endorse a procedure');
+assert.match(verifiedLi4.note, /35ページ.*合谷（LI4）の体表での位置/, 'the note identifies a body-surface location at a specific source page');
+const pointScope = fs.readFileSync(path.resolve(__dirname, '../src/components/tsubo/AcupointInformationScope.tsx'), 'utf8');
+assert.match(pointScope, /安全な刺鍼深度を示しません/, 'the visible source note does not endorse a procedure');
 for (const model of Object.values(CROSS_SECTIONS)) {
   assert.equal(model.procedureReviewStatus, 'pending_expert_review', `${model.id}: anatomy/procedure review remains pending`);
 }
@@ -72,7 +74,7 @@ let legacyUnverified = 0;
 for (const lecture of lectures) {
   const refs = resolveArticleReferences(lecture.references, lecture.contentMarkdown);
   assert(refs.length > 0, `${lecture.id}: sources section is available`);
-  assert(lecture.evidenceScope.includes('講義全体の検証・専門家監修を意味しません'), `${lecture.id}: actual scope, not implied certification`);
+  assert(lecture.evidenceScope.includes('資料ごとに、どの用語や内容を参照したかを示しています。'), `${lecture.id}: actual scope, not implied certification`);
   const html = renderToStaticMarkup(React.createElement(ArticleReferences, { references: refs, scopeNote: lecture.evidenceScope }));
   assert(html.includes('id="article-references-section"'));
   assert(html.includes('data-reference-scope'));
@@ -89,7 +91,8 @@ for (const lecture of lectures) {
       if (ref.id === 'book-kiketsusui-standard') assert(!ref.authors && !ref.year && !ref.asin, 'unsupported old publication details removed');
     }
     if (ref.id === 'who-tcm-terminology-publisher-overview') {
-      assert(ref.note.includes('PDF本文の個別の定義は未照合'));
+      assert.equal(ref.url, 'https://www.who.int/publications/i/item/9789240042322');
+      assert.match(ref.note, /^WHOの紹介ページを参照しました。/);
       assert(html.includes(ref.note));
     }
   }

@@ -75,7 +75,7 @@ const NEUTRAL_RESULT: DiagnosisResultType = {
   name: "選んだ項目はありません",
   reading: "",
   summary:
-    "項目が選ばれていないため、分類を表示していません。気になる症状があれば、選んだ項目の数にかかわらず医療機関へ相談してください。",
+    "当てはまる項目が選ばれていないため、6つの分類のいずれも表示されません。気になる症状があれば、医療機関に相談してください。",
   symptoms: [
     "この質問票では該当項目が選ばれていません",
     "未回答・不明な所見がないかも確認してください",
@@ -91,8 +91,8 @@ const NEUTRAL_RESULT: DiagnosisResultType = {
 
 function selfCheckShareLabel(result: DiagnosisResultType) {
   return result.type === "neutral"
-    ? "気血水セルフチェックで、東洋医学の6つの分類を学べます。"
-    : `気血水セルフチェックで表示された分類は「${result.name}」でした（学習用）。`;
+    ? "気血水 体質チェックで、東洋医学の6つの分類を学べます。"
+    : `気血水 体質チェックで表示された分類は「${result.name}」でした（学習用）。`;
 }
 
 type QuestionStatus = "unconfirmed" | "applicable" | "not_applicable" | "unknown";
@@ -406,8 +406,8 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
   return (
     <div className="page-layout space-y-6">
       <PageIntro compact art="care"
-        title={activeTab === "self" ? "気血水 体質セルフチェック" : activeTab === "clinical" ? "対面問診メモ" : "五労チェッカー"}
-        description={activeTab === "self" ? "直近1〜2週間を振り返る12問で、気虚・気滞・血虚・瘀血・水滞・陽虚の6つの伝統的な分類を学びます。" : activeTab === "clinical" ? "会話に出た話題から、自由な順番で。回答とメモを手元に残し、聞き漏れを確認できます。" : "長く見る・座る・立つ・歩く・横になる動作を選び、『素問』の五労の記述と休憩や動き方の例を確認できます。"}
+        title={activeTab === "self" ? "気血水 体質チェック" : activeTab === "clinical" ? "対面問診メモ" : "五労チェッカー"}
+        description={activeTab === "self" ? "直近1〜2週間を振り返る12問で、気虚・気滞・血虚・瘀血・水滞・陽虚の6つの伝統的な分類を学びます。" : activeTab === "clinical" ? "会話に出た話題から、自由な順番で。回答とメモを手元に残し、聞き漏れを確認できます。" : "見る・横になる・座る・立つ・歩くのうち、長く続けることが多い動作を選び、『素問』の五労の記述と休憩や動き方の例を確認できます。"}
       >
         {activeTab === "clinical" && <a href="#clinical-interview-board" className="mt-3 inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#1E3D34] px-5 py-3 text-sm font-bold text-white dark:bg-[#74BA9E] dark:text-[#121920]">問診票へ<ArrowRight className="h-4 w-4" aria-hidden="true" /></a>}
       </PageIntro>
@@ -420,7 +420,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
       <nav aria-label="東洋医学の学習用チェック" className="grid gap-2 sm:grid-cols-2">
         <Link href="/diagnosis" scroll={false} aria-current={activeTab === "self" ? "page" : undefined} className={checkLinkClass}>
           <Stethoscope className="size-4 shrink-0" aria-hidden="true" />
-          気血水セルフチェック
+          気血水 体質チェック
         </Link>
         <Link href="/diagnosis?tab=gorou" scroll={false} aria-current={activeTab === "gorou" ? "page" : undefined} className={checkLinkClass}>
           <Activity className="size-4 shrink-0" aria-hidden="true" />
@@ -437,14 +437,14 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
           <div className="p-3.5 sm:p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#152028] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-start gap-2.5 text-xs text-[#59615D] dark:text-[#96A6B2] shadow-2xs">
             <AlertCircle className="w-4 h-4 text-[#B86924] dark:text-[#E6C387] shrink-0 mt-0.5" />
             <p className="leading-relaxed">
-              急に体調が悪くなったときや症状が重いときは、チェックを続ける前に受診・救急要請を優先してください。
+              急に体調が悪くなったときは、チェックを中断して医療機関を受診してください。急な息苦しさや意識の異常などがあるときは、すぐに119番へ連絡してください。
             </p>
           </div>
 
           {/* 設問一覧 */}
           <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-3.5 sm:p-9 rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-4 sm:space-y-6 transition-colors">
             <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 text-xs text-[#59615D] dark:text-[#96A6B2]">
-              <span>全12問（複数選択可・該当なしも確認できます）</span>
+              <span>12問のうち当てはまる項目をすべて選んでください。</span>
               <span>
                 選択中: <strong className="text-[#1E3D34] dark:text-[#74BA9E]">{selectedAnswers.length}</strong> 項目
               </span>
@@ -509,7 +509,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                 {/* 臨床補助の注記（P0要件） */}
                 <div className="text-center space-y-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-5">
                   <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] tracking-wider uppercase">
-                    {selfResult.type === "neutral" ? "質問票の集計結果" : "当てはまる項目が最も多かった分類"}
+                    {selfResult.type === "neutral" ? "体質チェックの結果" : "当てはまる項目が最も多かった分類"}
                   </span>
                   <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                     {selfResult.name}

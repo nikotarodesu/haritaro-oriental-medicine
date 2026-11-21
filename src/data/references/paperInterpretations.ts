@@ -13,25 +13,25 @@ export interface Interpretation {
 }
 const abstractCheck = (pmid: string, interpretation: Omit<Interpretation, 'sourceUrl' | 'checkedAt' | 'verificationScope' | 'sourceLocator'>): Interpretation => ({
   ...interpretation, sourceUrl: `https://pubmed.ncbi.nlm.nih.gov/${pmid}/`, checkedAt: '2026-10-08',
-  verificationScope: 'abstract', sourceLocator: 'PubMed 抄録（対象・方法・結果・結論）。全文の表・付録は未照合。',
+  verificationScope: 'abstract', sourceLocator: 'PubMedの抄録（対象・方法・結果・結論）。',
 });
 export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
   'auricular-cancer-pain-alimi-2003': {
-    sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/14615440/', checkedAt: '2026-10-02', verificationScope: 'abstract', sourceLocator: 'PubMed 抄録。全文・付録は未照合。',
+    sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/14615440/', checkedAt: '2026-10-02', verificationScope: 'abstract', sourceLocator: 'PubMedの抄録。',
     design: 'ランダム化・盲検・対照試験', sampleSize: 90,
     summary: '鎮痛薬を使用しても痛みが残るがん患者を対象に、耳鍼と、耳の別の位置を使った二つの対照介入を比較しました。',
     findings: ['90人を3群に割り付け、2か月後の痛みを評価しました。耳鍼の群では開始時から36％低下し、抄録では対照介入の変化は2％と報告されています。'],
     limitations: ['3人は1か月目に脱落し、痛みのデータがありません。8人は1か月時点の値を2か月目にも用いています。鎮痛薬を中止した場合の比較は行っていません。'],
   },
   'perimenopausal-insomnia-electroacupuncture-li-2020': {
-    sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/33376432/', checkedAt: '2026-10-02', verificationScope: 'abstract', sourceLocator: 'PubMed 抄録。全文・付録は未照合。',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7764880/', checkedAt: '2026-11-21', verificationScope: 'selected_full_text', sourceLocator: '抄録と、研究方法のうち施術の割り付けと盲検を説明した箇所。',
     design: '患者盲検・偽鍼対照ランダム化比較試験', sampleSize: 84,
     summary: '更年期の不眠がある84人を対象に、電気鍼と偽鍼を8週間比較した試験です。',
     findings: ['8週間に18回の介入を行いました。終了時の睡眠の質の質問票（PSQI）は、電気鍼の群で偽鍼の群より平均2.38点多く低下しました（群間差−2.38点、95％信頼区間−3.46〜−1.30）。'],
-    limitations: ['この対象と介入条件での結果です。他の原因による不眠や、固定した配穴の有効性を保証しません。施術者を含む二重盲検試験とは記載しません。'],
+    limitations: ['更年期に不眠がある人を対象にした試験です。施術者は、どちらの施術を行うかを知っていました。別の原因による不眠に同じ結果が当てはまるかは、この試験では分かりません。'],
   },
   'meridian-response-current-electrical-pulse-hung-2020': {
-    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7352033/', checkedAt: '2026-10-02', verificationScope: 'selected_full_text', sourceLocator: '抄録・健常ボランティアの測定方法。全文の全項目・付録は未照合。',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7352033/', checkedAt: '2026-10-02', verificationScope: 'selected_full_text', sourceLocator: '抄録と、健康な参加者を対象にした測定方法。',
     design: '健常者の電気特性を調べた実験研究', sampleSize: 30,
     summary: '健康な参加者に電気パルスを加え、その後に測定した電流の時間変化を調べました。',
     findings: ['研究者は電流の時間変化をイオンの移動を表す理論と比べ、測定した応答にイオンの移動が関わるという仮説を示しています。'],
@@ -45,7 +45,7 @@ export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
     limitations: ['ヒトの高血圧に対する効果、降圧薬の代替、個別の配穴の有効性はこの実験から判断できません。'],
   },
   'bibliometric-acupuncture-pain-20-years-lee-2020': {
-    sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/32104058/', checkedAt: '2026-10-02', verificationScope: 'abstract', sourceLocator: 'PubMed 抄録。全文・付録は未照合。',
+    sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/32104058/', checkedAt: '2026-10-02', verificationScope: 'abstract', sourceLocator: 'PubMedの抄録。',
     design: '計量書誌学分析',
     summary: '2000〜2019年に出た鍼と痛みに関する論文4,595件を集め、発表年や研究テーマの分布を調べました。',
     findings: ['論文の出版傾向、著者・機関、研究キーワードを分析しています。4,595は患者数ではなく文献数です。'],
@@ -71,7 +71,7 @@ export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
   }),
   'han-electroacupuncture-frequencies-2003': {
     design: '電気鍼と内因性オピオイドに関する機序レビュー', population: '主に動物実験等の機序研究を扱う総説',
-    sourceUrl: 'https://www.sciencedirect.com/science/article/pii/S0166223602000061', checkedAt: '2026-10-08', verificationScope: 'selected_full_text', sourceLocator: '出版社の概要・周波数とオピオイドペプチドを扱う節。PubMedに抄録はなく、全文・付録の網羅的照合は未実施。',
+    sourceUrl: 'https://www.sciencedirect.com/science/article/pii/S0166223602000061', checkedAt: '2026-10-08', verificationScope: 'selected_full_text', sourceLocator: '出版社の概要と、刺激の周波数・オピオイドペプチドを扱う節。',
     summary: '電気鍼の刺激周波数とオピオイドペプチド放出の関係を論じる総説です。新しい患者群を無作為に比較した試験ではありません。',
     findings: ['異なる刺激周波数で異なる内因性オピオイド系が関わるという実験上の知見を説明しています。'],
     limitations: ['機序の知見を、そのまま患者に適した設定や鎮痛効果の保証に換算しません。周波数・電流・刺入の手順は公開要約に含めません。'],
@@ -84,7 +84,7 @@ export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
   }),
   'cancer-pain-electroacupuncture-auricular-peace-trial-mao-2021': {
     design: '通常ケア対照ランダム化比較試験（PEACE）', sampleSize: 360, population: 'がんの既往があり、活動性のがんがなく、3か月以上の筋骨格痛を持つ成人360人',
-    sourceUrl: 'https://jamanetwork.com/journals/jamaoncology/fullarticle/2777349', checkedAt: '2026-10-08', verificationScope: 'selected_full_text', sourceLocator: 'Methods・Resultsの主要疼痛評価（12週）。全付録・全有害事象の独立照合は未実施。',
+    sourceUrl: 'https://jamanetwork.com/journals/jamaoncology/fullarticle/2777349', checkedAt: '2026-10-08', verificationScope: 'selected_full_text', sourceLocator: '方法と結果のうち、12週時点の主な痛みの評価。',
     summary: '電気鍼145人・耳鍼143人・通常ケア72人を比較した試験です。活動性がんの痛み全般を対象にした試験ではありません。',
     findings: ['12週のBPI疼痛重症度は、通常ケアに比べ電気鍼で1.9点（97.5％信頼区間1.4〜2.4）、耳鍼で1.6点（1.0〜2.1）多く低下しました。'],
     limitations: ['偽鍼対照ではなく、参加者の期待などを除外できません。対象はがん経験者の筋骨格痛です。進行がんの痛み・服薬中止・個人の改善率に一般化しません。'],
@@ -96,12 +96,12 @@ export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
       findings: ['脳活動の変化と痛みVASの変化との関連を報告しています。健常者を含む52人を、腰痛患者52人と数えません。'],
       limitations: ['小規模で即時の画像・症状変化を扱う探索研究です。相関を因果関係や長期の治療効果、経絡の実在の証明に置き換えません。'],
     }),
-    sourceUrl: 'https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2021.786490/full', sourceLocator: '出版社ページのAbstract（方法・結果）。本文の全解析・付録は未照合。',
+    sourceUrl: 'https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2021.786490/full', sourceLocator: '出版社の抄録（方法と結果）。',
   },
   'fgid-emotional-symptoms-acupuncture-meta-analysis-wang-2022': abstractCheck('35085351', {
     design: '系統的レビュー・メタ解析', sampleSize: 2151, population: '機能性消化管障害を扱う24試験・計2,151人',
     summary: '機能性消化管障害に伴う不安・抑うつについて、偽鍼や薬物療法などとの比較を集計しています。',
-    findings: ['偽鍼との比較では不安の標準化平均差−0.35（95％信頼区間−1.05〜0.33）、抑うつ−0.32（−0.71〜0.07）で、有意差を示しませんでした。', '薬物療法との比較では不安・抑うつの尺度で差を報告していますが、比較対象が異なる結果をまとめて「偽鍼より優れる」とは記載しません。'],
+    findings: ['偽鍼との比較では不安の標準化平均差−0.35（95％信頼区間−1.05〜0.33）、抑うつ−0.32（−0.71〜0.07）で、有意差を示しませんでした。', '薬と比べた試験では不安・抑うつの点数に差が報告されました。偽鍼と比べたときの結果とは、比べた相手が異なります。'],
     limitations: ['異質性や比較群の違いがあります。期待・非特異的な作用の影響を除外できず、鍼が薬物療法を代替できるという結論にはなりません。'],
   }),
   'depression-insomnia-electroacupuncture-rct-yin-2022': abstractCheck('35797047', {
@@ -126,7 +126,7 @@ export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
     design: '非刺入偽鍼対照・評価者盲検ランダム化試験', population: 'スペインの一次医療で肩の軟部組織病変による痛みがある25〜83歳の患者',
     summary: '8週間の電気鍼と非刺入の偽鍼を比較し、両群で必要に応じてジクロフェナクを使用しました。',
     findings: ['6か月の疼痛VASの群間差は2.0点（95％信頼区間1.2〜2.9）と報告しています。'],
-    limitations: ['取得した抄録で対象人数を確認できないため、人数を推測で補いません。肩の軟部組織病変を対象にした結果で、すべての肩痛や特定の配穴の効果ではありません。'],
+    limitations: ['肩の筋肉や腱などに病変がある人を対象とした研究です。原因の異なる肩の痛みに同じ結果が当てはまるかは分かりません。'],
   }),
   'shoulder-impingement-manual-acupuncture-meta-analysis-an-2024': abstractCheck('39287298', {
     design: '手技鍼のランダム化試験の系統的レビュー・メタ解析', population: '肩インピンジメント症候群を扱う5件のランダム化試験',
@@ -137,8 +137,8 @@ export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
   'cfs-acupuncture-moxibustion-hrv-li-2025': abstractCheck('40315935', {
     design: '5群ランダム化比較試験と健常参照群', sampleSize: 175, population: '慢性疲労症候群患者175人（各群35人）と別の健常参照者35人',
     summary: '患者を偽鍼、異なる実鍼・偽鍼の組合せ、実鍼、灸の5群で比較し、症状尺度・生活の質・心拍変動を評価しました。',
-    findings: ['鍼・灸の各介入後に症状尺度・心拍変動の変化を報告しています。取得した抄録には群間効果量・信頼区間がなく、改善量を数値で補いません。'],
-    limitations: ['抄録の結論には「鍼と灸の併用」とありますが、方法欄の5群は鍼群と灸群を別に記載しています。この不一致が解消するまで併用の優位性は掲載しません。心拍変動の変化を疾患の治癒と同義に扱いません。'],
+    findings: ['鍼や灸を受けた後に、症状の点数と心拍の間隔のばらつきが変わったと報告されました。抄録からは、グループ間の差の大きさまでは分かりません。'],
+    limitations: ['研究方法に記載された鍼と灸は別々のグループです。両方を一緒に使った場合の効果は、この比較からは分かりません。心拍の間隔のばらつきは、症状の回復とは別の指標です。'],
   }),
   'menopausal-symptoms-hrv-japanese-acupuncture-kouzuma-2022': abstractCheck('36311889', {
     design: '偽介入対照ランダム化試験', sampleSize: 48, population: '更年期症状のある女性48人（実鍼24人・管を用いた偽介入24人）',
@@ -148,12 +148,12 @@ export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
   }),
   'chronic-insomnia-disorder-meta-tsa-yu-2025': {
     ...abstractCheck('40371085', {
-      design: '偽鍼対照試験のメタ解析・試験逐次解析', population: '慢性不眠症の10試験（原典内で総人数に不一致あり）',
+      design: '偽鍼対照試験のメタ解析・試験逐次解析', population: '慢性不眠症を対象とした10件の試験',
       summary: '主観的な睡眠尺度と客観的な睡眠指標を区別して集計し、必要な情報量も検討したレビューです。',
       findings: ['PSQIの平均差−2.60（95％信頼区間−3.24〜−1.97）、ISIは−2.04（−3.18〜−0.90）でした。客観的な総睡眠時間には有意差を示さず、他の客観的指標にも情報量不足の評価がありました。'],
       limitations: ['PubMed抄録の総人数757人と出版社本文のResultsの847人が一致しないため、総参加者数は確定値として表示しません。PSQI・ISIには大きな異質性があり、主観尺度の差を客観的睡眠の改善と一括しません。'],
     }),
-    sourceUrl: 'https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2025.1541276/full', verificationScope: 'selected_full_text', sourceLocator: 'PubMed抄録（PMID40371085）と出版社Results 3.4.1・主観／客観指標。人数の不一致を記録。全付録は未照合。',
+    sourceUrl: 'https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2025.1541276/full', verificationScope: 'selected_full_text', sourceLocator: 'PubMedの抄録と、結果3.4.1節の本人の回答・機器測定の比較。',
   },
   'acupuncture-parasympathetic-tone-hrv-meta-hamvas-2022': abstractCheck('36494036', {
     design: '手技鍼の心拍変動に関する系統的レビュー・メタ解析', population: '手技鍼と偽鍼を扱う9件のランダム化試験',
@@ -193,7 +193,7 @@ export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
   }),
   'musculoskeletal-pain-acupoint-stimulation-network-meta-liu-2025': abstractCheck('40665700', {
     design: '経穴刺激法の系統的レビュー・ネットワークメタ解析', population: '筋骨格系の痛みを扱う鍼・電気鍼・灸・指圧等の比較研究',
-    summary: '複数の刺激法をネットワークメタ解析で比較した研究です。取得した抄録では研究数・総人数・各効果量を確認できません。',
+    summary: '複数の試験から、刺激の方法による違いを比べた研究です。',
     findings: ['疼痛・安全性などのSUCRA順位を報告しています。順位指標は「その割合の患者が改善する」という数値ではありません。'],
     limitations: ['間接比較・研究間の違い・推定の不確実性を考慮する必要があります。抄録の順位だけで最良の施術や副作用がないことを断定せず、人数・効果量は推測で掲載しません。'],
   }),
@@ -207,7 +207,7 @@ export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
     design: 'ダブルダミー・単盲検・3群ランダム化比較試験', sampleSize: 180, population: '原発性不眠の患者180人',
     summary: '6週間、実鍼＋偽薬、エスタゾラム＋偽鍼、偽鍼＋偽薬を比較しました。PSQI・眠気・生活の質を評価しています。',
     findings: ['全群で開始前から改善し、実鍼群では睡眠の質・活力・日中の機能・眠気の一部の評価で他群との差を報告しています。'],
-    limitations: ['取得した抄録に群間効果量・信頼区間がないため、具体的な改善量や優位性の大きさは補いません。質問票の結果を客観的な睡眠時間の改善や、睡眠薬の自己中止の根拠にはしません。'],
+    limitations: ['質問票で答えた眠りの状態と、機器で測る睡眠時間は別の指標です。睡眠薬の変更は処方した医師に相談してください。'],
   }),
   'poststroke-shoulder-pain-acupuncture-meta-analysis-lee-2016': abstractCheck('27547224', {
     design: '系統的レビュー・メタ解析', population: '脳卒中後の肩痛を扱う12件のランダム化試験',

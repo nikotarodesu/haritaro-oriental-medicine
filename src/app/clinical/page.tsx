@@ -27,12 +27,12 @@ const checks = [
     kind: 'gorou',
     href: ALL_NAV_ITEMS.gorou.href,
     label: '五労チェッカー',
-    description: '見る、横になる、座る、立つ、歩く。長く続けることが多い動作を選ぶと、休憩や動き方の例が読めます。',
+    description: '見る・横になる・座る・立つ・歩くの中から、長く続けることが多い動作を選ぶと、休憩や動き方の例が読めます。',
   },
   {
     kind: 'constitution',
     href: ALL_NAV_ITEMS.diagnosis.href,
-    label: '気血水 体質セルフチェック',
+    label: '気血水 体質チェック',
     description: '12問の答えを振り返り、気虚・気滞・血虚などの伝統的な分類を学びます。',
   },
 ] as const;
@@ -119,7 +119,7 @@ export default function ClinicalLandingPage() {
         <h2 id="clinical-help-heading">教材について</h2>
         <details className="rounded-xl border border-frame bg-panel px-4">
           <summary className={`min-h-11 cursor-pointer py-3 font-semibold ${focusClass}`}>教材の出典・確認範囲</summary>
-          <p className="pb-4 text-sm leading-relaxed ui-muted">教材は新版東洋医学概論・経絡経穴概論、WHO標準経穴部位、中医基礎理論などを参照しています。全件の医学記述の照合・専門家監修は未完了です。伝統理論の分類と医学的な評価を区別して利用してください。</p>
+          <p className="pb-4 text-sm leading-relaxed ui-muted">教材は新版東洋医学概論・経絡経穴概論、WHO標準経穴部位、中医基礎理論などを参照しています。資料ごとに、何を参照したかを示しています。伝統理論の分類と医学的な評価を区別して利用してください。</p>
         </details>
       </section>
       <LearningCredits revisedAt={revisedAt} />

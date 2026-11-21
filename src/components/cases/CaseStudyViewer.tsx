@@ -91,13 +91,13 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
         {/* 現病歴 ＆ 生活背景 */}
         <div className="space-y-3 text-base leading-[1.85]">
           <div className="space-y-1">
-            <span className="font-bold text-ink">現病歴:</span>
+            <span className="font-bold text-ink">症状の経過と背景</span>
             <p>{clinicalCase.patient.historyOfPresentIllness}</p>
           </div>
-          <div className="space-y-1">
+          {clinicalCase.patient.lifestyle && <div className="space-y-1">
             <span className="font-bold text-ink">仕事や日ごろの習慣</span>
             <p>{clinicalCase.patient.lifestyle}</p>
-          </div>
+          </div>}
         </div>
       </section>
 
@@ -513,7 +513,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
 
           {/* 気血水体質セルフ診断 */}
           <div className="p-4 rounded-2xl bg-panel border border-divider space-y-2">
-            <span className="text-xs font-bold text-accent block">気血水 体質セルフチェック</span>
+            <span className="text-xs font-bold text-accent block">気血水 体質チェック</span>
             <p className="text-xs text-muted">
               12問から当てはまる項目を選ぶと、たとえば食後の疲れが質問票のどの分類に入るかを確認できます。
             </p>
@@ -521,7 +521,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
               href="/diagnosis"
               className="inline-flex items-center gap-1 text-xs font-bold text-accent hover:underline pt-1"
             >
-              <span>体質セルフチェックをする</span>
+              <span>気血水 体質チェックを開く</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>

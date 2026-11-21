@@ -97,7 +97,7 @@ export default function YinYangTreatmentFlow() {
                 救急対応を鍼灸で代替しない
               </h6>
               <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed mb-3">
-                強い呼吸困難、止まらないけいれん、けいれん後に意識が戻らない、突然の激痛などは119番への連絡を優先してください。高熱を伴うけいれんも、瀉法・刺絡・灸などで救急評価を先延ばしにしてはいけません。
+                強い息苦しさ、止まらないけいれん、けいれん後に意識が戻らない、突然の激痛などがあるときは、すぐに119番へ連絡してください。高熱を伴うけいれんでも、鍼灸を試すために救急対応を遅らせないでください。
               </p>
               <div className="p-2.5 rounded-lg bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#2A3B4A] text-[11px] text-[#404743] dark:text-[#C5D2DB] space-y-1">
                 <div><strong>対応：</strong>119番通報後は通信指令員の案内に従います。</div>
@@ -173,7 +173,7 @@ export default function YinYangTreatmentFlow() {
         <a href="https://www.fdma.go.jp/publication/portal/items/portal002_japanese.pdf" target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-2">消防庁：救急車利用マニュアル（2025年10月、印刷頁2・4・5）</a>
         、
         <a href="https://safety.jsam.jp/img/file.pdf" target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-2">全日本鍼灸学会：鍼灸安全対策ガイドライン2025年版（印刷頁33・35）</a>
-        。救急要請と一般的な施術安全の原則を確認した説明です。個々の病態・配穴・実技条件を検証済みとするものではありません。
+        。119番に連絡する目安と、施術を受けるときの一般的な注意を参照しました。個々の病態・配穴・実技条件を検証済みとするものではありません。
         <a href="/safety" className="ml-1 inline-flex min-h-11 items-center font-semibold text-[#1E3D34] underline underline-offset-2 dark:text-[#74BA9E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B86924]">受診の目安</a>
       </div>
     </figure>

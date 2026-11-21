@@ -14,6 +14,7 @@ export interface AcupointAtlasArticle {
   lead: string;
   safetyWarning?: string;
   location: readonly string[];
+  traditionalTitle?: string;
   traditional: readonly string[];
   selfCare: readonly string[];
   cautions: readonly string[];

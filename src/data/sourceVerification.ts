@@ -37,7 +37,7 @@ export const VERIFIED_POINT_LOCATIONS: Readonly<Record<string, VerifiedPointLoca
     sourceCheckedAt: SOURCE_VERIFICATION_DATE,
     sourcePage: 'p.35（PDF 44ページ目）',
     standardLocation: '手背、第2中手骨中点の橈側（親指側）。',
-    note: 'WHO公式PDFのLI4（合谷）の位置記述と掲載図を2026-10-15に照合。確認対象は体表上の標準位置です。断面モデルの座標、針路・深度、個人への施術の適応は確認対象に含みません。',
+    note: '35ページの記述と図をもとに、合谷（LI4）の体表での位置を示しています。',
   },
 };
 
@@ -47,7 +47,7 @@ function terminologyCheck(scope: string): Partial<ReferenceItem> {
     bibliographyStatus: 'matched',
     claimsStatus: 'source-checked',
     sourceCheckedAt: SOURCE_VERIFICATION_DATE,
-    note: `WHO公式PDFを取得し、${scope}の定義本文を照合。確認範囲はここに挙げた伝統用語です。講義全体の監修、現代医学との同一性、診断精度・治療効果の検証を意味しません。`,
+    note: `参照した用語は${scope}です。`,
   };
 }
 
@@ -70,12 +70,12 @@ export const SOURCE_VERIFICATION_UPDATES: Readonly<Record<string, Partial<Refere
   'foundation-who-point-location-2008': {
     url: POINT_LOCATIONS_PDF_URL,
     bibliographyStatus: 'matched', claimsStatus: 'source-checked', sourceCheckedAt: SOURCE_VERIFICATION_DATE,
-    note: 'WHO公式PDFを取得し、p.2のB-cun・F-cunの区別、pp.13–14の対象者の指を用いる指寸法、p.35のLI4の標準位置を照合。その他の個別穴、刺鍼深度・手順・有効性は今回の照合対象に含みません。',
+    note: '2ページと13〜14ページで骨度と指寸の違いを、35ページで合谷（LI4）の位置を確認しました。',
   },
   'who-acupuncture-point-locations-2008': {
     url: POINT_LOCATIONS_PDF_URL,
     bibliographyStatus: 'matched', claimsStatus: 'source-checked', sourceCheckedAt: SOURCE_VERIFICATION_DATE,
-    note: 'WHO公式PDFを取得し、p.2の資料の対象と標準測定単位、pp.13–14の指寸法、p.35のLI4の位置を照合。経穴位置の共有に関する資料として参照し、全経穴の個別照合や治療効果の実証は意味しません。',
+    note: 'この資料では、ツボの位置を共通の目印と単位で示しています。2ページ、13〜14ページ、合谷（LI4）の35ページを参照しました。',
   },
 };
 

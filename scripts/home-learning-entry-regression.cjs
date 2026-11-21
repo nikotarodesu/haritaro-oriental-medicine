@@ -54,7 +54,7 @@ for (const [href, name] of destinationPairs) assert(home.includes('href="' + hre
 assert(home.includes('href="/symptoms"'));
 assert.doesNotMatch(home, />\s*知\s*</);
 assert.match(home, /<h1[^>]*>東洋医学を学ぶ<\/h1>/);
-assert.match(home, /href="\/learn"><svg[^>]*>[\s\S]*?<\/svg>図解講義を読む<\/a>/);
+assert.match(home, /href="\/learn"><svg[^>]*>[\s\S]*?<\/svg>東洋医学の講義を読む<\/a>/);
 const collection = JSON.parse(home.match(/<script type="application\/ld\+json">(.*?)<\/script>/)[1]);
 assert.equal(collection.name, '東洋医学を学ぶ');
 assert(home.includes(collection.description), 'The homepage description matches the visible introduction');

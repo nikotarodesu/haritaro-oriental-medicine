@@ -38,14 +38,14 @@ export const HISTORY_ARTICLE: Article = {
       year: 2014,
       asin: "4469233161",
       url: "https://ndlsearch.ndl.go.jp/books/R100000002-I025729135",
-      note: "中国古代から日本近代までの伝統医学を扱う通史。新版の書誌・紹介文を照合したが、本文全体の記述は未照合。",
+      note: "中国古代から日本近代までの伝統医学を扱う本です。ここでは新版の書誌情報と紹介文を参照しました。",
     },
     {
       id: "unschuld-suwen-history", type: "book",
       title: "Huang Di Nei Jing Su Wen: Nature, Knowledge, Imagery in an Ancient Chinese Medical Text",
       authors: "Paul U. Unschuld", source: "University of California Press", year: 2003,
       url: "https://academic.oup.com/california-scholarship-online/book/37256",
-      note: "著者による成立史・内容の研究。公開紹介・抄録を確認。各時代の文章と後代の編集を区別する。書籍全文は未照合。"
+      note: "『素問』の成り立ちや内容を研究した本です。各時代の記述と後の時代に加わった編集を区別するため、公開されている紹介と抄録を参照しました。"
     },
     {
       id: "tcmpb-acupuncture-advisory", type: "guideline",

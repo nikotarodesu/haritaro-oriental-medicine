@@ -31,9 +31,9 @@ export default function AboutPage() {
       </PageIntro>
 
       <section aria-labelledby="about-review-scope" className="space-y-3 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-4 sm:p-6">
-        <h2 id="about-review-scope" className="text-lg font-bold text-[#1E3D34] dark:text-[#74BA9E]">教材の用途と確認状況</h2>
+        <h2 id="about-review-scope" className="text-lg font-bold text-[#1E3D34] dark:text-[#74BA9E]">鍼灸師がつくる学習サイト</h2>
         <p className="text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
-          伝統的な分類、現代医学の研究結果、理解を助ける比喩を区別した学習教材です。すべての医学的な説明を原典と照合したわけではなく、専門家による監修も未完了です。経穴の位置や教育用模式図は、個別の診断・施術手順や安全性を保証するものではありません。
+          鍼灸師のはり太郎が、ツボや東洋医学を身近な例と図で学べる教材を作っています。古典の考え方や現代の研究を紹介するときは、記事ごとに資料と参照した箇所を示します。
         </p>
         <Link href="/editorial-policy" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">
           出典の確認範囲と編集方針を見る<ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -73,7 +73,7 @@ export default function AboutPage() {
                   </span>
                 </div>
                 <p className="text-sm sm:text-sm font-semibold text-[#B86924] dark:text-[#E6C387]">
-                  身体ケア・臨床領域10年以上（鍼灸師約9年）｜ 2017年免許取得 ｜ {AUTHOR_OPENED_AT}開業・現役臨床
+                  2017年にはり師・きゅう師免許を取得し、{AUTHOR_OPENED_AT}に開業しました。身体ケアと臨床の現場で通算10年以上の経験があります。
                 </p>
                 <p className="text-sm sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed pt-1">
                   鍼灸専門学校を卒業し、鍼灸接骨院、リラクゼーション、デイサービスで働いた後、鍼灸院を開きました。現在は一人で鍼灸院を運営しながら、このサイトの講義や図鑑を書いています。
@@ -136,7 +136,7 @@ export default function AboutPage() {
                     誤りの訂正方針と更新ポリシー
                   </span>
                   <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                    医学・東洋医学の情報は継続的に確認します。読者・専門家からのご指摘について該当する出典と記述を確認し、訂正内容と確認範囲を記録します。原典を確認できない内容は、その状態を明示し、必要に応じて掲載を保留します。
+                    医学・東洋医学の情報は継続的に確認します。読者・専門家からのご指摘について該当する出典と記述を確認し、訂正内容と確認範囲を記録します。本文では、どの資料のどの箇所を参照したかを示します。
                   </p>
                 </div>
 
@@ -169,7 +169,7 @@ export default function AboutPage() {
             このサイトを作った理由
           </h2>
           <p className="text-sm sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
-            東洋医学には、陰陽・五行・気血津液など、日常では使わない言葉が多く登場します。初めて学ぶ方が、言葉の意味と使い方を一つずつ確認できるように、このサイトを作りました。
+            東洋医学には、陰陽・五行・気・血・津液（気血水）など、日常では使わない言葉が多く登場します。初めて学ぶ方が、言葉の意味と使い方を一つずつ確認できるように、このサイトを作りました。
           </p>
           <p className="text-sm sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
             古典に書かれた説明、筆者の臨床経験、研究で確認された結果は、同じ根拠としては扱えません。記事や講義では、どの資料を参照し、何を確認できたかを示します。
@@ -194,7 +194,7 @@ export default function AboutPage() {
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
               <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">出典の確認範囲を書く</span>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                古典の分類、研究で報告された結果、学習用の比喩を区別します。資料名や著者などの書誌情報に加え、掲載する説明がその資料に書かれているかも確認します。
+                古典の分類、研究で報告された結果、学習用の比喩を区別します。資料名や著者などの書誌情報に加え、掲載する説明がその資料に書かれているかも確認します。専門家による監修は完了していません。
               </p>
             </div>
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
@@ -213,16 +213,19 @@ export default function AboutPage() {
             <span>医療情報に関する免責事項</span>
           </div>
           <p className="leading-relaxed">
-            当サイトに掲載されている経穴、養生、体質傾向チェックなどの情報は、東洋医学の学術的理解や臨床思考の整理を目的とした教材です。医師や鍼灸師による個別の診断・治療に代わるものではありません。
+            ツボや日々の過ごし方、気血水 体質チェックは東洋医学を学ぶための教材です。症状の診断や治療については、医師や鍼灸師に相談してください。
           </p>
           <p className="leading-relaxed">
-            激しい痛み、意識障害、急激な体調の悪化、妊娠中の重篤な症状などがある場合は、自己判断によるツボ刺激を行わず、速やかに専門の医療機関を受診してください。
+            突然の激しい痛みや意識の異常があるときは、すぐに119番へ連絡してください。体調が急に悪化したときや、妊娠中に重い症状が出たときは、ツボを押す前に医療機関を受診してください。
           </p>
         </div>
 
         {/* 目的に合う案内への短い入口 */}
         <section aria-labelledby="about-start-guide" className="space-y-4 border-t border-[#F2ECE0] pt-5 dark:border-[#22303D]">
           <h2 id="about-start-guide" className="font-serif text-xl font-bold text-[#232826] sm:text-2xl dark:text-[#FAF8F5]">目的に合う始め方</h2>
+          <p className="text-sm leading-relaxed text-muted">
+            <strong>ツボを調べたい方</strong>は、<Link href="/tsubo" className="ui-text-link">ツボ図鑑</Link>で場所や目印を調べられます。頭痛や肩こりなどが気になるときは、<Link href="/symptoms" className="ui-text-link">症状ガイド</Link>で受診の目安と日常の工夫を読めます。
+          </p>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div className="flex flex-col justify-between gap-4 rounded-2xl border border-[#E8E1D1] bg-[#FAF8F5] p-4 sm:p-5 dark:border-[#22303D] dark:bg-[#121920]">
               <div className="space-y-3">
@@ -234,9 +237,9 @@ export default function AboutPage() {
             <div className="flex flex-col justify-between gap-4 rounded-2xl border border-[#E8E1D1] bg-[#FAF8F5] p-4 sm:p-5 dark:border-[#22303D] dark:bg-[#121920]">
               <div className="space-y-3">
                 <h3 className="flex items-center gap-2 font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]"><Stethoscope aria-hidden="true" className="h-5 w-5 shrink-0 text-[#1E3D34] dark:text-[#74BA9E]" />鍼灸師・臨床家</h3>
-                <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">所見・判断の根拠・経過を整理し、臨床の記録を振り返れます。</p>
+                <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">架空の症例を読み、どの手がかりをもとに見立てを考えたか、解答例と見比べられます。</p>
               </div>
-              <Link href="/clinical" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#EBF3EF] px-3 py-2 text-sm font-bold text-[#1E3D34] hover:bg-[#D5E8DE] dark:bg-[#182823] dark:text-[#74BA9E] dark:hover:bg-[#223D32]">臨床ツールの案内へ<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+              <Link href="/clinical" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#EBF3EF] px-3 py-2 text-sm font-bold text-[#1E3D34] hover:bg-[#D5E8DE] dark:bg-[#182823] dark:text-[#74BA9E] dark:hover:bg-[#223D32]">臨床演習へ<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
             </div>
             <div className="flex flex-col justify-between gap-4 rounded-2xl border border-[#E8E1D1] bg-[#FAF8F5] p-4 sm:p-5 dark:border-[#22303D] dark:bg-[#121920]">
               <div className="space-y-3">

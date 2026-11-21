@@ -81,7 +81,6 @@ export default async function SymptomGuidePage({ params }: Props) {
       <section id="acupoints" className="atlas-guide-points atlas-target" aria-labelledby="guide-points-heading">
         <div className="atlas-guide-points-heading">
           <h2 id="guide-points-heading" className="atlas-section-title">関連するツボ</h2>
-          <p className="atlas-muted">伝統医学で参照されるツボの例です。</p>
         </div>
         <ul className="atlas-related-points">{acupoints.map(point => (
           <li key={point.codeLower}>
@@ -130,7 +129,7 @@ export default async function SymptomGuidePage({ params }: Props) {
           {article && <li><Link href={`/articles/${article.id}`} className={linkClass}>{article.title}</Link></li>}
           {clinicalCase && <li><Link href={`/cases/${clinicalCase.id}`} className={linkClass}>{clinicalCase.title}（架空症例）</Link><p className="text-sm">症例の答えを自分の症状の診断や施術の指示に置き換えないでください。</p></li>}
           {resources?.clinicalSlug && <li><Link href={`/clinical/symptoms/${resources.clinicalSlug}`} className={linkClass}>問診で聞くことと次回に確かめること（鍼灸師向け）</Link></li>}
-          <li><Link href="/diagnosis" className={linkClass}>気虚・気滞などの分類を12問で学ぶ</Link><p className="text-sm">食後の疲れや夕方の足のむくみが、質問票ではどの分類に入るかを読めます。症状の原因や病名を判定する検査ではありません。</p></li>
+          <li><Link href="/diagnosis" className={linkClass}>気血水 体質チェック</Link><p className="text-sm">気虚・気滞など6つの伝統的な分類を、12の質問で学べます。</p></li>
         </ul>
         {relatedGuides.length > 0 && <div className="space-y-2 border-t border-[#D6DED7] pt-4 dark:border-[#34483C]"><h3 className="text-lg font-bold">同じ分野のガイド</h3><ul className="space-y-1">{relatedGuides.map(item => <li key={item.id}><Link href={symptomGuidePath(item)} className={linkClass}>{item.title}</Link></li>)}</ul></div>}
         <Link href="/symptoms" className={linkClass}>症状別ガイドの一覧へ</Link>
@@ -144,7 +143,7 @@ export default async function SymptomGuidePage({ params }: Props) {
       <details className="atlas-disclosure atlas-guide-scope">
         <summary>このガイドで確認できること</summary>
         <p>{SYMPTOM_GUIDANCE_SCOPE}</p>
-        <p><time dateTime={revision}>{revision}</time> 更新 · <Link href="/editorial-policy" className={linkClass}>専門家監修は未完了</Link></p>
+        <p><time dateTime={revision}>{revision}</time> 更新</p>
       </details>
       <AuthorSupervisorCard />
       <Link href={`/contact?source=${encodeURIComponent(symptomGuidePath(guide))}`} className={linkClass}>内容の誤りや出典について連絡する</Link>

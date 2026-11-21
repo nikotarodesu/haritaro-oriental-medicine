@@ -72,7 +72,7 @@ function assertReferenceScope(id) {
     assert.match(ref.sourceCheckedAt ?? '', /^\d{4}-\d{2}-\d{2}$/, `${id}: verification date missing`);
     assert(ref.note?.length > 24, `${id}: source scope missing`);
   }
-  assert(refs.some(ref => /未取得|取得でき|未照合|に限定|限定し|同一性|推奨.*引用では/.test(ref.note)), `${id}: bounded verification must remain visible`);
+  assert(refs.some(ref => /参照した用語|紹介ページ|本文の該当|に限定|限定し|同一性|推奨.*引用では|を参照しました/.test(ref.note)), `${id}: bounded verification must remain visible`);
 }
 
 // A valid URL alone is insufficient: the linked lesson must cover the term and
@@ -121,9 +121,10 @@ for (const id of foundationIds) {
 assert.match(lesson(qiIds[0]).contentMarkdown, /気をATP.*置き換えることはできません/);
 const bloodDefinitionSource = resolveArticleReferences(lesson(qiIds[1]).references).find(ref => ref.id === 'who-tcm-terminology-2022');
 assert.equal(bloodDefinitionSource?.claimsStatus, 'source-checked', 'Blood definitions are checked against the acquired primary source');
-assert.match(bloodDefinitionSource.note, /pp\.19–22.*定義本文/);
+assert.match(bloodDefinitionSource.note, /pp\.19–22.*気・血・津液/);
 assert.equal(bloodDefinitionSource.sourceCheckedAt, '2026-10-15');
-assert.match(bloodDefinitionSource.note, /講義全体の監修.*検証を意味しません/, 'Verifying definitions must not certify clinical claims');
+assert.match(bloodDefinitionSource.note, /^参照した用語は.*WGM2番号/, 'The source note scopes the check to identifiable definitions');
+assert.match(lesson(qiIds[1]).evidenceScope, /治療効果の証明と区別/, 'The lesson separates definition checks from evidence of a treatment effect');
 assert.match(lesson(qiIds[2]).contentMarkdown, /細胞外液.*細胞内液.*定義ではありません/);
 assert.match(lesson(qiIds[2]).contentMarkdown, /(?:水分量|水分摂取量).*薬.*自己判断で(?:変更しません|変えないでください)/);
 assert.match(lesson(qiIds[3]).contentMarkdown, /用語・モデルの説明/);
@@ -173,7 +174,7 @@ for (const id of pathIds) {
     const refId = id === 'lecture-pathomechanism-3' ? 'path-qi-who-terms-2022' : 'path-blood-who-terms-2022';
     const checkedSource = references(id).find(ref => ref.id === refId);
     assert.equal(checkedSource?.sourceCheckedAt, '2026-10-15');
-    assert.match(checkedSource.note, /定義本文.*確認範囲.*伝統用語/);
+    assert.match(checkedSource.note, /^参照した用語はpp\.\d+–\d+、WGM2番号/);
   }
 }
 assert(!fluidPath.contentMarkdown.includes(':::diagram pathomechanism-fluid-degeneration'), 'Unrevised one-way fluid degeneration figure must not contradict the new comparison lesson');

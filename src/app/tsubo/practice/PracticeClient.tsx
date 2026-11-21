@@ -75,7 +75,7 @@ export default function PracticeClient() {
   const { ready } = useLearningSync();
   return (
     <Suspense fallback={<div className="min-h-screen py-16 text-center text-xs text-[#737C77]">学習システムを読み込み中...</div>}>
-      {ready ? <PracticePageContent /> : <p role="status" className="p-8 text-center">学習履歴を確認中...</p>}
+      {ready ? <PracticePageContent /> : <p role="status" className="p-8 text-center">このブラウザーの学習記録を読み込んでいます。</p>}
     </Suspense>
   );
 }

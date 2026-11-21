@@ -491,7 +491,7 @@ export default function ThreeStageSimulator() {
     <div className="clinical-exercise-simulator space-y-6 sm:space-y-8">
 <section className="rounded-2xl border border-frame p-4 space-y-3 text-sm">
         <h3 className="font-bold text-ink">安全判断の学習設定</h3>
-        <p className="text-sm leading-relaxed text-muted">急な胸痛・呼吸困難・意識障害、腰痛に伴う新しい排尿障害や会陰部の感覚変化など、医療評価を優先する兆候を確認します。この選択だけで疾患を除外することはできません。</p>
+        <p className="text-sm leading-relaxed text-muted">急な胸痛・呼吸困難・意識障害、腰痛に伴う新しい排尿障害や会陰部の感覚変化など、受診を優先する兆候を確認します。この選択だけで疾患を除外することはできません。</p>
         <div className="flex flex-wrap gap-2">{([{ value: "unconfirmed", label: "危険兆候：未確認" }, { value: "no_flags", label: "確認した範囲では認めない" }, { value: "red_flags", label: "危険兆候がある設定" }] as const).map(option => <button key={option.value} type="button" aria-pressed={safetyReview === option.value} onClick={() => setSafetyReview(option.value)} className={`rounded-lg border p-2 text-sm ${safetyReview === option.value ? "border-accent bg-panel-selected text-accent" : "border-frame text-muted"}`}>{option.label}</button>)}</div>
       </section>
 

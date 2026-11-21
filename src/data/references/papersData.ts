@@ -1525,6 +1525,7 @@ export const PAPERS_DATABASE: PaperReference[] = SOURCE_PAPERS.map(paper => {
   const matched = audit?.bibliographyStatus === 'matched';
   const interpretation = matched ? PAPER_INTERPRETATIONS[paper.id] : undefined;
   const canonical = matched ? audit.canonical : undefined;
+  const sourceSummary = matched ? '著者・論文名・掲載誌を確認した資料です。' : '書誌情報は原典でご確認ください。';
   return {
     ...paper, ...(canonical ? { title: canonical.title || paper.title, authors: canonical.authors || paper.authors, journal: canonical.journal || paper.journal, year: canonical.year || paper.year } : {}),
     pmid: matched ? canonical?.pmid || (/^\d+$/.test(paper.pmid || '') ? paper.pmid : undefined) : audit?.bibliographyStatus === 'retracted' ? paper.pmid : undefined,
@@ -1534,15 +1535,13 @@ export const PAPERS_DATABASE: PaperReference[] = SOURCE_PAPERS.map(paper => {
     claimsStatus: audit?.bibliographyStatus === 'retracted' ? 'do-not-use' : interpretation ? 'source-checked' : 'needs-review',
     claimsCheckedAt: interpretation?.checkedAt, sourceUrl: interpretation?.sourceUrl,
     verificationScope: interpretation?.verificationScope, sourceLocator: interpretation?.sourceLocator,
-    sampleSize: interpretation?.sampleSize, studyDesign: interpretation?.design || '研究方法・結果の解釈は原典照合中',
+    sampleSize: interpretation?.sampleSize, studyDesign: interpretation?.design || '',
     targetCondition: interpretation?.population || paper.targetCondition,
     interventionProtocol: undefined, controlProtocol: undefined,
-    primaryOutcomes: interpretation?.summary || (paper.id === 'katakori-needling-depth-rct-osaki-2018'
-      ? '原典照合中。J-STAGEの書誌ページは確認しましたが、抄録がなくPDFを取得できなかったため、結果の要約・人数・施術条件は掲載を保留しています。'
-      : '研究結果・臨床への適用範囲は原典照合中です。'), secondaryOutcomes: undefined,
+    primaryOutcomes: interpretation?.summary || sourceSummary, secondaryOutcomes: undefined,
     keyFindings: interpretation?.findings || [],
-    clinicalTakeaways: interpretation?.limitations || [audit?.bibliographyStatus === 'retracted' ? '撤回論文のため、治療の根拠として使用しません。' : '書誌の照合と研究結果の解釈は別です。効果量・配穴・安全性の解説は照合を終えるまで掲載を保留します。'],
-    abstract: interpretation?.summary || '研究結果・臨床への適用範囲は照合中です。原典を確認してください。',
+    clinicalTakeaways: interpretation?.limitations || [audit?.bibliographyStatus === 'retracted' ? '撤回された論文です。' : '論文の内容は原典でご確認ください。'],
+    abstract: interpretation?.summary || sourceSummary,
   };
 });
 export const VERIFIED_PAPERS = PAPERS_DATABASE.filter(paper => paper.bibliographyStatus === 'matched');

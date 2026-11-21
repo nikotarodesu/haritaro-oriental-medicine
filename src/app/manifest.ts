@@ -47,9 +47,9 @@ export default function manifest(): MetadataRoute.Manifest {
         icons: [{ src: "/icon-192.png", sizes: "192x192", type: "image/png" }],
       },
       {
-        name: "臨床弁証シミュレーター",
+        name: "弁証の練習",
         short_name: "シミュレーター",
-        description: "八綱・気血水・臓腑経絡の3段階連動で証と配穴を導出",
+        description: "模擬症例の手がかりから、体の状態をどう考えるか練習します。",
         url: "/simulator",
         icons: [{ src: "/icon-192.png", sizes: "192x192", type: "image/png" }],
       },

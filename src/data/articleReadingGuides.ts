@@ -48,10 +48,10 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
         afterParagraph: 1,
         figure: {
           id: "yinyang-three-axes",
-          title: "一つの分類軸から、別の軸を決められる？",
+          title: "寒・熱と虚・実は別々に考える",
           layout: "triad",
           items: [
-            { label: "性質：寒・熱", description: "仮の学習例では、寒熱の観点で『寒』と整理された。", icon: "balance" },
+            { label: "性質：寒・熱", description: "この学習例では、寒熱の観点では「寒」に分類します。", icon: "balance" },
             { label: "病位：表・裏", description: "病位についての情報は、まだ示されていない。", icon: "compass" },
             { label: "盛衰：虚・実", description: "正気と邪気の盛衰についても、追加の所見が必要。", icon: "book" },
           ],
