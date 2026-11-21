@@ -1,41 +1,23 @@
-import { Suspense } from "react";
 import Link from "next/link";
 import { MERIDIANS, ALL_ACUPOINTS } from "@/data/tsubo";
-import { BookOpen, FlaskConical, Layers, MapPin, Ruler, ShieldCheck } from "lucide-react";
-import PlatformSearchForm from "@/components/search/PlatformSearchForm";
+import { BookOpen, FlaskConical, MapPin, Ruler, ShieldCheck } from "lucide-react";
 import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
 import { SERIES } from "@/config/series";
 import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
 import { collectionPageJsonLd } from "@/config/seo";
-import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { ATLAS_STUDIES } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
 
-const illustratedPoints = ALL_ACUPOINTS.filter(({ codeLower }) => codeLower === "li4" || ATLAS_POINT_MARKERS[codeLower]);
-const illustratedRegions = [...new Set(illustratedPoints.map(point => point.bodyPart))].map(region => ({
-  region, points: illustratedPoints.filter(point => point.bodyPart === region),
+const regions = [...new Set(ALL_ACUPOINTS.map(point => point.bodyPart))].map(region => ({
+  region, points: ALL_ACUPOINTS.filter(point => point.bodyPart === region),
 }));
+const flagshipCodes = ["li4", "st36", "lr3", "pc6", "sp6", "gv20", "lu7", "ki1", "bl23", "cv12", "gb20", "ht7"];
+const flagshipPoints = flagshipCodes.map(code => ALL_ACUPOINTS.find(point => point.codeLower === code)).filter(point => !!point);
 const studyGroups = [
   { label: "一つのツボに着目した研究", studies: ATLAS_STUDIES.filter(study => study.kind === "point") },
   { label: "複数のツボを用いた研究", studies: ATLAS_STUDIES.filter(study => study.kind === "combination") },
-];
-
-// 主要な代表経穴（初期HTMLでクローラーおよびJS無効環境にも確実に渡すリンク）
-const FLAGSHIP_ACUPOINTS = [
-  { code: "LI4", name: "合谷", meridian: "手の陽明大腸経", part: "手・腕" },
-  { code: "ST36", name: "足三里", meridian: "足の陽明胃経", part: "下肢" },
-  { code: "LR3", name: "太衝", meridian: "足の厥陰肝経", part: "足" },
-  { code: "PC6", name: "内関", meridian: "手の厥陰心包経", part: "前腕" },
-  { code: "SP6", name: "三陰交", meridian: "足の太陰脾経", part: "下肢" },
-  { code: "GV20", name: "百会", meridian: "督脈", part: "頭頂部" },
-  { code: "LU7", name: "列欠", meridian: "手の太陰肺経", part: "前腕" },
-  { code: "KI1", name: "湧泉", meridian: "足の少陰腎経", part: "足底" },
-  { code: "BL23", name: "腎兪", meridian: "足の太陽膀胱経", part: "腰部" },
-  { code: "CV12", name: "中脘", meridian: "任脈", part: "上腹部" },
-  { code: "GB20", name: "風池", meridian: "足の少陽胆経", part: "後頭部" },
-  { code: "HT7", name: "神門", meridian: "手の少陰心経", part: "手首" },
 ];
 
 const DESCRIPTION = "全361経穴を名前・部位・経絡から探し、場所の図と注意点を確認できます。";
@@ -53,7 +35,7 @@ export default function TsuboPage() {
     <div className="page-layout atlas-page atlas-directory">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: collectionPageJsonLd(
         "/tsubo", SERIES.dictionary.name, DESCRIPTION, "代表的なツボ",
-        FLAGSHIP_ACUPOINTS.map(({ code, name }) => ({ name, href: `/tsubo/${code.toLowerCase()}` })),
+        flagshipPoints.map(({ codeLower, name }) => ({ name, href: `/tsubo/${codeLower}` })),
       ) }} />
       <header className="atlas-directory-header">
         <div>
@@ -63,21 +45,14 @@ export default function TsuboPage() {
         <AtlasOverviewArt />
       </header>
 
-      <Suspense
-        fallback={
-          <div className="atlas-search-panel atlas-search-fallback">
-            <PlatformSearchForm id="atlas-search-query" label="ツボを検索" placeholder="合谷、ごうこく、LI4" />
-            <nav aria-label="ツボの索引" className="atlas-directory-actions">
-              <a href="#illustrated-points" className="atlas-text-action">部位別の索引</a>
-              <a href="#tsubo-index" className="atlas-text-action">全361経穴の索引</a>
-              <a href="#atlas-research-index" className="atlas-text-action">研究から探す</a>
-            </nav>
-            {guideLinks}
-          </div>
-        }
-      >
-        <TsuboInteractiveClient relatedGuides={guideLinks} />
-      </Suspense>
+      <TsuboInteractiveClient relatedGuides={guideLinks} />
+
+      <nav aria-label="代表的なツボ" className="space-y-3">
+        <h2 className="atlas-section-title">代表的なツボ</h2>
+        <ul className="flex flex-wrap gap-2">
+          {flagshipPoints.map(({ name, code, codeLower }) => <li key={code}><Link href={`/tsubo/${codeLower}`} prefetch={false} className="atlas-index-point">{name}<span>{code}</span></Link></li>)}
+        </ul>
+      </nav>
 
       <section id="atlas-research-index" className="atlas-target space-y-3" aria-labelledby="atlas-research-index-title">
         <h2 id="atlas-research-index-title" className="atlas-section-title flex items-center gap-2"><FlaskConical size={20} aria-hidden="true" />研究から探す</h2>
@@ -105,7 +80,7 @@ export default function TsuboPage() {
       <section aria-labelledby="illustrated-points" className="space-y-3">
         <h2 id="illustrated-points" className="atlas-section-title atlas-target">部位別の索引</h2>
         <div className="grid items-start gap-3 sm:grid-cols-2">
-          {illustratedRegions.map(({ region, points }) => (
+          {regions.map(({ region, points }) => (
             <details key={region} className="atlas-disclosure atlas-region-index">
               <summary>{region}のツボ（{points.length}穴）</summary>
               <ul className="flex flex-wrap gap-2 pb-3">
@@ -121,91 +96,23 @@ export default function TsuboPage() {
         <PublicLectureIndex series="dictionary" />
       </section>
 
-      {/* 3. 経脈・経穴の静的索引は初期HTMLに残す */}
-      <details id="tsubo-index" className="tsubo-static-index scroll-mt-28">
-      <summary>体を通る道筋（経絡）ごとにツボを見る</summary>
-      <nav aria-label="経脈別テキスト索引" className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-6 shadow-xs space-y-4">
-        <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
-          <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <h2 className="font-serif text-sm sm:text-base font-bold text-[#232826] dark:text-[#FAF8F5]">
-              十四経脈テキスト索引
-            </h2>
-          </div>
-          <span className="text-xs text-[#737C77] dark:text-[#8899A6]">全14経脈・361穴</span>
+      <section id="tsubo-index" aria-labelledby="tsubo-index-heading" className="tsubo-static-index atlas-target space-y-3">
+        <h2 id="tsubo-index-heading" className="atlas-section-title">経絡別の索引</h2>
+        <p className="atlas-muted">経絡名を開くと、その経絡のツボを番号順に確認できます。</p>
+        <div className="grid items-start gap-3 sm:grid-cols-2">
+          {MERIDIANS.map(meridian => {
+            const points = ALL_ACUPOINTS.filter(point => point.meridianId === meridian.id);
+            return (
+              <details key={meridian.id} className="atlas-disclosure atlas-region-index">
+                <summary>{meridian.name}（{points.length}穴）</summary>
+                <ul id={`meridian-${meridian.id}`} className="atlas-target flex flex-wrap gap-2 pb-3">
+                  {points.map(({ name, code, codeLower }) => <li key={code}><Link href={`/tsubo/${codeLower}`} prefetch={false} className="atlas-index-point">{name}<span>{code}</span></Link></li>)}
+                </ul>
+              </details>
+            );
+          })}
         </div>
-
-        {/* 14経脈リンク一覧 */}
-        <div className="flex flex-wrap gap-1.5 sm:gap-2">
-          {MERIDIANS.map((meridian) => (
-            <Link
-              key={meridian.id}
-              href={`/tsubo?meridian=${encodeURIComponent(meridian.shortName)}`}
-              className="px-2.5 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-xs text-[#333835] dark:text-[#C5D2DB] transition-colors"
-            >
-              {meridian.name}（{meridian.shortName}）
-            </Link>
-          ))}
-        </div>
-
-        {/* 主要代表経穴リンク */}
-        <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] space-y-2">
-          <span className="text-xs font-bold text-[#737C77] dark:text-[#8899A6] block">
-            代表的なツボ
-          </span>
-          <div className="flex flex-wrap gap-2 text-xs">
-            {FLAGSHIP_ACUPOINTS.map((pt) => (
-              <Link
-                key={pt.code}
-                href={`/tsubo/${pt.code.toLowerCase()}`}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#2D3E50] text-[#1E3D34] dark:text-[#74BA9E] font-medium hover:bg-[#EBF3EF] transition-colors"
-              >
-                <span className="font-bold">{pt.name}</span>
-                <span className="font-mono text-xs text-[#737C77] dark:text-[#8899A6]">({pt.code})</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* 全361経穴 完全インデックス（初期HTML出力保証・SEOクローラー網羅） */}
-        <details className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] group">
-          <summary className="min-h-[44px] text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline cursor-pointer flex items-center justify-between gap-2 py-2 select-none">
-            <span>全361経穴の一覧を開く</span>
-            <span className="text-xs font-normal text-[#737C77] group-open:rotate-180 transition-transform">▼</span>
-          </summary>
-          <div className="pt-4 space-y-5">
-            {MERIDIANS.map((m) => {
-              const meridianPoints = ALL_ACUPOINTS.filter((p) => p.meridianId === m.id);
-              return (
-                <div key={m.id} className="space-y-1.5">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-xs text-[#232826] dark:text-[#FAF8F5]">
-                      {m.name}
-                    </span>
-                    <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
-                      （{meridianPoints.length}穴）
-                    </span>
-                  </div>
-                  <div className="flex flex-wrap gap-1 text-xs">
-                    {meridianPoints.map((pt) => (
-                      <Link
-                        key={pt.code}
-                        href={`/tsubo/${pt.code.toLowerCase()}`}
-                        prefetch={false}
-                        className="atlas-index-point"
-                      >
-                        <span className="font-medium">{pt.name}</span>
-                        <span>{pt.code}</span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </details>
-      </nav>
-      </details>
+      </section>
 
       {/* 4. 掲載範囲・資料基準・更新方針 */}
       <footer className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#EDE7D8] dark:border-[#22303D] p-4 sm:p-6 space-y-2.5 text-xs text-[#59615D] dark:text-[#A0B0BC]">

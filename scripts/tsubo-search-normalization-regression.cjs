@@ -43,6 +43,11 @@ const filename = path.resolve(__dirname, '../src/components/tsubo/TsuboInteracti
 const compiled = ts.transpileModule(fs.readFileSync(filename, 'utf8'), { fileName: filename, compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
 function dictionary(params = '') {
   let cursor = 0;
+  let location = new URL('https://www.haritaro.jp/tsubo' + (params ? '?' + params : ''));
+  const browser = {
+    get location() { return location; },
+    history: { replaceState(_state, _unused, target) { location = new URL(target, location); } },
+  };
   const slots = [];
   const hooks = { ...React,
     useState(initial) { const index = cursor++; if (!(index in slots)) slots[index] = typeof initial === 'function' ? initial() : initial; return [slots[index], next => { slots[index] = typeof next === 'function' ? next(slots[index]) : next; }]; },
@@ -53,9 +58,9 @@ function dictionary(params = '') {
   };
   const exported = {};
   const stub = () => null;
-  vm.runInNewContext(compiled, { exports: exported, URLSearchParams, console, require: id => {
+  vm.runInNewContext(compiled, { exports: exported, URL, URLSearchParams, window: browser, console, require: id => {
     if (id === 'react') return hooks;
-    if (id === 'next/navigation') return { useSearchParams: () => new URLSearchParams(params) };
+    if (id === 'next/navigation') return { useSearchParams() { throw new Error('The visible dictionary must render without reading the router query'); } };
     if (id === 'next/link') return 'a';
     if (id === '@/data/tsubo') return data;
     if (id === '@/contexts/ClinicalMemoContext') return { useClinicalMemo: () => ({ memos: [] }) };
@@ -65,13 +70,25 @@ function dictionary(params = '') {
   } }, { filename });
   let tree;
   function render() { cursor = 0; tree = exported.default(); return tree; }
+  function restore() {
+    nodes(tree).find(node => typeof node.props?.restore === 'function').props.restore(location.searchParams.toString());
+    render();
+  }
   render();
+  if (params) restore();
   return {
+    navigate(target) { location = new URL(target, location); restore(); },
     change(value) { const input = nodes(tree).find(node => node.props?.id === 'tsubo-search'); input.props.onChange({ target: { value } }); render(); },
     resultCodes() { return nodes(tree).filter(node => String(node.props?.id || '').startsWith('tsubo-card-')).map(node => node.props.id.slice('tsubo-card-'.length).toUpperCase()); },
+    url: () => location.href,
+    hasSearchForm: () => nodes(tree).some(node => node.type === 'form' && node.props.action === '/search'),
     text: () => text(tree),
   };
 }
+
+const initial = dictionary();
+assert.equal(initial.resultCodes().length, 24, 'The initial card list renders independently of the URL observer');
+assert(initial.hasSearchForm(), 'Native search remains available before JavaScript starts');
 for (const query of ['ゴウコク', 'ｺﾞｳｺｸ', 'ＬＩ ４', 'ごうこく']) {
   const view = dictionary(); view.change(query);
   assert.deepEqual(view.resultCodes(), ['LI4'], 'Actual dictionary onChange: ' + query);
@@ -82,6 +99,15 @@ const restored = dictionary('q=' + encodeURIComponent('ﾀｲｼｮｳ'));
 assert.deepEqual(restored.resultCodes(), ['LR3'], 'An existing search bookmark accepts half-width kana');
 const filtered = dictionary('meridian=' + encodeURIComponent('肝経'));
 filtered.change('ｺﾞｳｺｸ'); assert.deepEqual(filtered.resultCodes(), [], 'A reading match must not bypass a selected meridian');
+const secondPage = dictionary('meridian=' + encodeURIComponent('胃経') + '&page=2');
+assert.equal(secondPage.resultCodes()[0], 'ST25', 'A bookmarked filtered page opens on the chosen page');
+secondPage.navigate('/tsubo?q=' + encodeURIComponent('ごうこく') + '&from=terms#tsubo-list');
+assert.deepEqual(secondPage.resultCodes(), ['LI4'], 'A new router URL updates the same dictionary');
+secondPage.change('足三里');
+const sharedUrl = new URL(secondPage.url());
+assert.equal(sharedUrl.searchParams.get('q'), '足三里');
+assert.equal(sharedUrl.searchParams.get('from'), 'terms');
+assert.equal(sharedUrl.hash, '#tsubo-list');
 const noResults = dictionary(); noResults.change('存在しない検索語xyz'); assert.deepEqual(noResults.resultCodes(), []);
 noResults.change('ｺﾞｳｺｸ'); assert.deepEqual(noResults.resultCodes(), ['LI4'], 'Changing a failed query recovers actual results');
 console.log('Dictionary search passed: 361 names/codes/readings, width and kana variants, match reasons, real inputs, bookmarked searches and retained filters.');

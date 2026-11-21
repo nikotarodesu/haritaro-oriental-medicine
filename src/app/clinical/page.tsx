@@ -14,7 +14,7 @@ const path = '/clinical';
 const url = SITE_ORIGIN + path;
 const revisedAt = PAGE_REVISIONS[path];
 const title = '鍼灸の症例演習・配穴演習・見立ての練習｜はり太郎の臨床演習';
-const description = '五労チェッカーは、座る・立つなど長く続ける動作を振り返る教材です。気血水は12問で学び、模擬症例では所見から見立てや配穴を考えます。';
+const description = '架空の症例で、本人が話したことと四診の所見を読み、見立てや配穴を考えます。五労チェッカーと気血水の体質チェックも使えます。';
 export const metadata: Metadata = {
   title: { absolute: title }, description,
   alternates: { canonical: url },
@@ -56,7 +56,7 @@ const schema = {
   publisher: { '@id': SITE_ORIGIN + '/#organization' },
   mainEntity: {
     '@type': 'ItemList',
-    itemListElement: [...checks, ...exercises].map((item, index) => ({
+    itemListElement: [...exercises, ...checks].map((item, index) => ({
       '@type': 'ListItem', position: index + 1, name: item.label, url: SITE_ORIGIN + item.href,
     })),
   },
@@ -69,10 +69,27 @@ export default function ClinicalLandingPage() {
       <header className={styles.hero}>
         <div>
           <h1 id="clinical-series-heading">はり太郎の臨床演習</h1>
-          <p>座る・立つなどの習慣や体調をチェックできます。模擬症例では、所見を読んで見立てと配穴を考えます。</p>
+          <p>架空の症例を読み、所見から見立てやツボの組み合わせを考えます。五労と気血水の体質チェックも使えます。</p>
         </div>
         <ClinicalHeroArtwork className={styles.heroArtwork} />
       </header>
+
+      <section id="tools" tabIndex={-1} className={styles.section} aria-labelledby="clinical-practice-heading">
+        <h2 id="clinical-practice-heading" className={styles.sectionTitle}>症例・配穴の演習</h2>
+        <ul className={styles.exerciseGrid}>
+          {exercises.map(({ icon: Icon, ...tool }) => (
+            <li key={tool.href}>
+              <Link href={tool.href} className={styles.exerciseCard}>
+                <span className={styles.exerciseIcon}><Icon aria-hidden="true" /></span>
+                <div className={styles.cardCopy}>
+                  <h3>{tool.label}</h3>
+                  <p>{tool.description}</p>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <section id="quick-checks" tabIndex={-1} className={styles.section} aria-labelledby="clinical-checks-heading">
         <h2 id="clinical-checks-heading" className={styles.sectionTitle}>生活・体調のチェック</h2>
@@ -90,23 +107,6 @@ export default function ClinicalLandingPage() {
           ))}
         </ul>
         <p className={styles.checkNote}>チェック結果は東洋医学を学ぶための目安です。実際の診断や施術の判断には使えません。</p>
-      </section>
-
-      <section id="tools" tabIndex={-1} className={styles.section} aria-labelledby="clinical-practice-heading">
-        <h2 id="clinical-practice-heading" className={styles.sectionTitle}>症例・配穴の演習</h2>
-        <ul className={styles.exerciseGrid}>
-          {exercises.map(({ icon: Icon, ...tool }) => (
-            <li key={tool.href}>
-              <Link href={tool.href} className={styles.exerciseCard}>
-                <span className={styles.exerciseIcon}><Icon aria-hidden="true" /></span>
-                <div className={styles.cardCopy}>
-                  <h3>{tool.label}</h3>
-                  <p>{tool.description}</p>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
       </section>
 
       <ClinicalDashboard />

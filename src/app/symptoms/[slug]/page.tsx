@@ -129,6 +129,7 @@ export default async function SymptomGuidePage({ params }: Props) {
           {lectureId && lecture && <li><Link href={`/curriculum/${lectureId}`} className={linkClass}>{lecture.title}</Link></li>}
           {article && <li><Link href={`/articles/${article.id}`} className={linkClass}>{article.title}</Link></li>}
           {clinicalCase && <li><Link href={`/cases/${clinicalCase.id}`} className={linkClass}>{clinicalCase.title}（架空症例）</Link><p className="text-sm">症例の答えを自分の症状の診断や施術の指示に置き換えないでください。</p></li>}
+          {resources?.clinicalSlug && <li><Link href={`/clinical/symptoms/${resources.clinicalSlug}`} className={linkClass}>問診で聞くことと次回に確かめること（鍼灸師向け）</Link></li>}
           <li><Link href="/diagnosis" className={linkClass}>気虚・気滞などの分類を12問で学ぶ</Link><p className="text-sm">食後の疲れや夕方の足のむくみが、質問票ではどの分類に入るかを読めます。症状の原因や病名を判定する検査ではありません。</p></li>
         </ul>
         {relatedGuides.length > 0 && <div className="space-y-2 border-t border-[#D6DED7] pt-4 dark:border-[#34483C]"><h3 className="text-lg font-bold">同じ分野のガイド</h3><ul className="space-y-1">{relatedGuides.map(item => <li key={item.id}><Link href={symptomGuidePath(item)} className={linkClass}>{item.title}</Link></li>)}</ul></div>}

@@ -85,6 +85,7 @@ assert.deepEqual(rankedFixture('肩こり', 'research'), ['checked-paper', 'unre
 assert.equal(rankedFixture('肩こり 論文')[0], 'checked-paper', 'Research modifiers change purpose without hiding condition matches');
 assert.equal(rankedFixture('肩こり エビデンス')[0], 'checked-paper', 'Japanese script normalization preserves research intent');
 assert.equal(rankedFixture('肩こり 論文', 'guide')[0], 'public-guide', 'The reader can override inferred research intent');
+assert.equal(rankedFixture('肩こり に 効く ツボ 論文')[0], 'checked-paper', 'A question about points can still specify research intent');
 for (const query of ['LI4', 'ＬＩ ４', '合谷', 'ごうこく']) {
   for (const purpose of ['auto', 'guide', 'research']) assert.equal(rankedFixture(query, purpose)[0], 'point', query + ' direct point lookup in ' + purpose);
 }
@@ -161,6 +162,12 @@ const shoulder = render('肩こり');
 const shoulderUrls = optionUrls(shoulder);
 assert.equal(shoulderUrls[0], '/symptoms/headache-stiff-neck', 'Symptom lookup opens the individual public guide first');
 assert.equal(shoulderUrls[1], '/clinical/symptoms/shoulder', 'The professional confirmation guide follows the public guide');
+for (const term of ['肩こりに効くツボ', '肩こりのつぼはどこ？', '頭痛のツボ', '首がこる']) {
+  assert.equal(optionUrls(render(term))[0], '/symptoms/headache-stiff-neck', term + ': open the public symptom guide first');
+}
+for (const term of ['不眠のツボ', '眠れない']) {
+  assert.equal(optionUrls(render(term))[0], '/symptoms/stress-insomnia', term + ': open the sleep guide first');
+}
 const firstPoint = shoulderUrls.findIndex(url => url.startsWith('/tsubo/'));
 const firstPaper = shoulderUrls.findIndex(url => url.startsWith('/library#paper-'));
 assert(firstPoint >= 0 && (firstPaper === -1 || firstPoint < firstPaper), 'Points appear before specialized papers for a symptom query');

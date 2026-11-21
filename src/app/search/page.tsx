@@ -63,7 +63,7 @@ export default async function SearchPage({ searchParams }: {
       <PlatformSearchForm key={query} query={query} />
       {query && <section className="space-y-4" aria-labelledby="search-results-title">
         <h2 id="search-results-title" className="text-lg font-bold">「{query}」の検索結果 <span className="ui-muted">{results.length}件</span></h2>
-        {results.length === 0 ? <p className="ui-muted">「合谷」「ごうこく」「LI4」のように、ツボの名前・読み方・番号で試してください。症状は「肩こり」のように短く入力できます。</p> : (
+        {results.length === 0 ? <p className="ui-muted">ツボは「合谷」「ごうこく」「LI4」のように名前・読み・番号で探せます。症状は「肩こり」のように短く入力するか、<Link href="/symptoms" className="ui-text-link">症状別ガイド</Link>から探してください。</p> : (
           <ul className="platform-result-list">
             {results.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map(item => (
               <li key={item.id}>

@@ -10,6 +10,7 @@ import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import ReadingContents from "@/components/reading/ReadingContents";
 import ReadingSequence from "@/components/reading/ReadingSequence";
 import { pageSocialMetadata, SITE_NAME, SITE_ORIGIN } from "@/config/seo";
+import { PAGE_REVISIONS } from "@/config/contentUpdates";
 import { SERIES } from "@/config/series";
 import { getChapterAssessment } from "@/data/curriculumAssessments";
 import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
@@ -63,6 +64,7 @@ export default async function ReadingLecturePage({ params }: Props) {
   const unit = await findUnit(params);
   const revision = readingUnitRevisions[unit.slug];
   if (!revision) notFound();
+  const revisedAt = PAGE_REVISIONS[unit.href] ?? READING_LECTURES_REVISED_AT;
   const index = readingUnits.indexOf(unit);
   const chapter = getLectureIndexGroups("reading").find(group => group.id === unit.chapter);
   const firstPart = unit.parts[0];
@@ -111,7 +113,7 @@ export default async function ReadingLecturePage({ params }: Props) {
         description: unit.description,
         articleSection: chapter?.label,
         inLanguage: "ja",
-        dateModified: READING_LECTURES_REVISED_AT,
+        dateModified: revisedAt,
         author: { "@type": "Person", name: SITE_NAME, url: `${SITE_ORIGIN}/about` },
         publisher: { "@id": `${SITE_ORIGIN}/#organization` },
         citation: citations.map(({ name, url }) => ({ "@type": "CreativeWork", name, url })),
@@ -220,7 +222,7 @@ export default async function ReadingLecturePage({ params }: Props) {
           )}
         </details>
       )}
-      <AuthorSupervisorCard revisedAt={READING_LECTURES_REVISED_AT} />
+      <AuthorSupervisorCard revisedAt={revisedAt} />
     </article>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef, useCallback, type ReactNode } from "react";
+import { Suspense, useState, useMemo, useEffect, useRef, useCallback, type ReactNode } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { 
@@ -48,136 +48,101 @@ const MERIDIAN_ELEMENT_MAP: Record<string, "木" | "火" | "土" | "金" | "水"
 };
 
 type SortOption = "meridian" | "kana" | "detailed";
+type ViewMode = "grid" | "table";
+
+const PAGE_SIZE = 24;
+const DEFAULT_SELECTION = {
+  selectedBodyPart: "すべて",
+  selectedMeridian: "すべて",
+  selectedCategory: "すべて",
+  onlyPublished: false,
+};
+const DEFAULT_FILTERS = {
+  ...DEFAULT_SELECTION,
+  searchQuery: "",
+  sortOption: "meridian" as SortOption,
+  viewMode: "grid" as ViewMode,
+  currentPage: 1,
+};
+type Filters = typeof DEFAULT_FILTERS;
+
+function TsuboUrlSync({ restore }: { restore: (query: string) => void | (() => void) }) {
+  const query = useSearchParams()?.toString() ?? "";
+  useEffect(() => restore(query), [query, restore]);
+  return null;
+}
 
 export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuides?: ReactNode } = {}) {
   const allPoints = useMemo(() => getAllAcupoints(), []);
   const publishedCount = useMemo(() => getPublishedAcupoints().length, []);
   const searchIndex = useMemo(() => new Map(allPoints.map(point => [point.code, prepareAcupointSearch(point)])), [allPoints]);
-  const searchParams = useSearchParams();
-
-  // URLクエリから初期値を復元
-  const initialQ = searchParams?.get("q") || "";
-  const initialBodyPart = searchParams?.get("bodyPart") || "すべて";
-  const initialMeridian = searchParams?.get("meridian") || "すべて";
-  const initialCategory = searchParams?.get("category") || "すべて";
-  const initialPublished = searchParams?.get("published") === "true";
-  const initialSort = (["meridian", "kana", "detailed"].includes(searchParams?.get("sort") || "")) 
-    ? (searchParams!.get("sort") as SortOption)
-    : "meridian";
-  const initialView = searchParams?.get("view") === "table" ? "table" : "grid";
-  const initialPage = parseInt(searchParams?.get("page") || "1", 10) || 1;
-
-  // 検索・絞り込みステート
-  const [searchQuery, setSearchQuery] = useState(initialQ);
-  const [selectedBodyPart, setSelectedBodyPart] = useState<string>(initialBodyPart);
-  const [selectedMeridian, setSelectedMeridian] = useState<string>(initialMeridian);
-  const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
-  const [onlyPublished, setOnlyPublished] = useState<boolean>(initialPublished);
+  const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
+  const { searchQuery, selectedBodyPart, selectedMeridian, selectedCategory, onlyPublished, sortOption, viewMode } = filters;
   const [selectedTsubo, setSelectedTsubo] = useState<AcupointMaster | null>(null);
-
-  // 表示・ページネーション・並び順ステート
-  const [viewMode, setViewMode] = useState<"grid" | "table">(initialView);
-  const [sortOption, setSortOption] = useState<SortOption>(initialSort);
-  const [pageSize] = useState<number>(24);
-  const [currentPage, setCurrentPage] = useState<number>(initialPage);
-
-  // 部位の図と詳細条件は、それぞれ開閉できる。
-  const [showBodyMap, setShowBodyMap] = useState(initialBodyPart !== "すべて" && !initialQ);
-  const [showFilters, setShowFilters] = useState(initialMeridian !== "すべて" || initialCategory !== "すべて" || initialPublished);
-
-
-  // 初回マウントフラグ（初回ロード時のページ番号リセットを防止）
-  const isFirstRender = useRef(true);
+  const [showBodyMap, setShowBodyMap] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const lastQuery = useRef("");
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
-  // 名前での検索を始めたら、結果をすぐ確認できるように人体図を閉じる。
-  const prevQueryRef = useRef(initialQ);
-  useEffect(() => {
-    if (!prevQueryRef.current.trim() && searchQuery.trim()) {
-      setShowBodyMap(false);
+  const restoreUrl = useCallback((query: string) => {
+    if (query === lastQuery.current) return;
+    lastQuery.current = query;
+    const params = new URLSearchParams(query);
+    const sort = params.get("sort");
+    const restored: Filters = {
+      searchQuery: params.get("q") || "",
+      selectedBodyPart: params.get("bodyPart") || DEFAULT_SELECTION.selectedBodyPart,
+      selectedMeridian: params.get("meridian") || DEFAULT_SELECTION.selectedMeridian,
+      selectedCategory: params.get("category") || DEFAULT_SELECTION.selectedCategory,
+      onlyPublished: params.get("published") === "true",
+      sortOption: sort === "kana" || sort === "detailed" ? sort : DEFAULT_FILTERS.sortOption,
+      viewMode: params.get("view") === "table" ? "table" : "grid",
+      currentPage: Math.max(1, Number.parseInt(params.get("page") || "1", 10) || 1),
+    };
+    setFilters(restored);
+    setShowBodyMap(restored.selectedBodyPart !== DEFAULT_SELECTION.selectedBodyPart && !restored.searchQuery);
+    setShowFilters(restored.selectedMeridian !== DEFAULT_SELECTION.selectedMeridian ||
+      restored.selectedCategory !== DEFAULT_SELECTION.selectedCategory || restored.onlyPublished);
+
+    const id = (params.get("id") || params.get("highlight") || "").replace(/^tsubo-/i, "").toLowerCase();
+    const point = id ? allPoints.find(item =>
+      item.codeLower === id || item.id.toLowerCase() === id || item.legacyId.toLowerCase() === id,
+    ) : undefined;
+    setSelectedTsubo(point ?? null);
+    if (point) {
+      const timeout = window.setTimeout(() => {
+        document.getElementById(`tsubo-card-${point.codeLower}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 350);
+      return () => window.clearTimeout(timeout);
     }
-    prevQueryRef.current = searchQuery;
-  }, [searchQuery]);
+  }, [allPoints]);
 
-  // URLクエリ変更の検知（ブラウザバック・フォワード・リンク遷移時の同期）
-  useEffect(() => {
-    if (!searchParams) return;
-    const q = searchParams.get("q") || "";
-    const bp = searchParams.get("bodyPart") || "すべて";
-    const mer = searchParams.get("meridian") || "すべて";
-    const cat = searchParams.get("category") || "すべて";
-    const pub = searchParams.get("published") === "true";
-    const sort = (searchParams.get("sort") as SortOption) || "meridian";
-    const view = (searchParams.get("view") as "grid" | "table") || "grid";
-    const pg = parseInt(searchParams.get("page") || "1", 10) || 1;
+  function updateFilters(change: Partial<Filters>) {
+    const next = { ...filters, ...change };
+    setFilters(next);
 
-    // ブラウザの戻る・進むなどで変わる外部URLを、検索状態へ同期する。
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setSearchQuery((prev) => (prev !== q ? q : prev));
-    setSelectedBodyPart((prev) => (prev !== bp ? bp : prev));
-    setSelectedMeridian((prev) => (prev !== mer ? mer : prev));
-    setSelectedCategory((prev) => (prev !== cat ? cat : prev));
-    setOnlyPublished((prev) => (prev !== pub ? pub : prev));
-    setSortOption((prev) => (prev !== sort ? sort : prev));
-    setViewMode((prev) => (prev !== view ? view : prev));
-    setCurrentPage((prev) => (prev !== pg ? pg : prev));
-
-    const targetId = searchParams.get("id") || searchParams.get("highlight");
-    if (targetId) {
-      const cleanId = targetId.replace(/^tsubo-/, "").toLowerCase();
-      const found = allPoints.find(
-        (t) =>
-          t.codeLower === cleanId ||
-          t.id.toLowerCase() === cleanId ||
-          t.legacyId.toLowerCase() === cleanId
-      );
-      if (found) {
-        setSelectedTsubo(found);
-        setTimeout(() => {
-          const el = document.getElementById(`tsubo-card-${found.codeLower}`);
-          if (el) {
-            el.scrollIntoView({ behavior: "smooth", block: "center" });
-          }
-        }, 350);
-      }
+    const url = new URL(window.location.href);
+    const previous = url.searchParams.toString();
+    const values = {
+      q: next.searchQuery.trim(),
+      bodyPart: next.selectedBodyPart !== DEFAULT_SELECTION.selectedBodyPart ? next.selectedBodyPart : "",
+      meridian: next.selectedMeridian !== DEFAULT_SELECTION.selectedMeridian ? next.selectedMeridian : "",
+      category: next.selectedCategory !== DEFAULT_SELECTION.selectedCategory ? next.selectedCategory : "",
+      published: next.onlyPublished ? "true" : "",
+      sort: next.sortOption !== DEFAULT_FILTERS.sortOption ? next.sortOption : "",
+      view: next.viewMode !== DEFAULT_FILTERS.viewMode ? next.viewMode : "",
+      page: next.currentPage > 1 ? String(next.currentPage) : "",
+    };
+    for (const [key, value] of Object.entries(values)) {
+      if (value) url.searchParams.set(key, value);
+      else url.searchParams.delete(key);
     }
-  }, [searchParams, allPoints]);
-
-  // フィルター・検索条件変更時にページを1に戻す（初回マウント時はスキップ）
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
+    const query = url.searchParams.toString();
+    if (query !== previous) {
+      lastQuery.current = query;
+      window.history.replaceState(null, "", url.pathname + url.search + url.hash);
     }
-    setCurrentPage(1);
-  }, [searchQuery, selectedBodyPart, selectedMeridian, selectedCategory, onlyPublished, sortOption, pageSize]);
-
-  // ステート変化時にURLクエリを同期（ブラウザバック・URL共有対応）
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const params = new URLSearchParams();
-
-    if (searchQuery.trim()) params.set("q", searchQuery.trim());
-    if (selectedBodyPart !== "すべて") params.set("bodyPart", selectedBodyPart);
-    if (selectedMeridian !== "すべて") params.set("meridian", selectedMeridian);
-    if (selectedCategory !== "すべて") params.set("category", selectedCategory);
-    if (onlyPublished) params.set("published", "true");
-    if (sortOption !== "meridian") params.set("sort", sortOption);
-    if (viewMode !== "grid") params.set("view", viewMode);
-    if (currentPage > 1) params.set("page", String(currentPage));
-
-    const currentUrlParams = new URLSearchParams(window.location.search);
-    const targetId = currentUrlParams.get("id") || currentUrlParams.get("highlight");
-    if (targetId) params.set("id", targetId);
-
-    const newQuery = params.toString();
-    const newPath = newQuery ? `${window.location.pathname}?${newQuery}` : window.location.pathname;
-    const currentFull = `${window.location.pathname}${window.location.search}`;
-
-    if (newPath !== currentFull) {
-      window.history.replaceState(null, "", newPath);
-    }
-  }, [searchQuery, selectedBodyPart, selectedMeridian, selectedCategory, onlyPublished, sortOption, viewMode, currentPage]);
+  }
 
   // 経絡リスト（全14経脈から動的生成）
   const meridianOptions = useMemo(() => {
@@ -243,31 +208,27 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
 
   // ページネーション計算
   const totalItems = filteredTsubos.length;
-  const isAllPages = pageSize >= totalItems || pageSize === 0;
-  const totalPages = isAllPages ? 1 : Math.ceil(totalItems / pageSize);
-  const paginatedTsubos = useMemo(() => {
-    if (isAllPages) return filteredTsubos;
-    const start = (currentPage - 1) * pageSize;
-    return filteredTsubos.slice(start, start + pageSize);
-  }, [filteredTsubos, currentPage, pageSize, isAllPages]);
+  const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+  const currentPage = Math.min(filters.currentPage, totalPages);
+  const pageStart = (currentPage - 1) * PAGE_SIZE;
+  const paginatedTsubos = filteredTsubos.slice(pageStart, pageStart + PAGE_SIZE);
 
   // 検索語を保って、部位・経脈などの条件だけを解除する。
   const resetSelectionFilters = () => {
-    setSelectedBodyPart("すべて");
-    setSelectedMeridian("すべて");
-    setSelectedCategory("すべて");
-    setOnlyPublished(false);
-    setCurrentPage(1);
+    updateFilters({ ...DEFAULT_SELECTION, currentPage: 1 });
     searchInputRef.current?.focus();
   };
   const clearSearchQuery = () => {
-    setSearchQuery("");
-    setCurrentPage(1);
+    updateFilters({ searchQuery: "", currentPage: 1 });
     searchInputRef.current?.focus();
   };
   const resetAllFilters = () => {
-    setSearchQuery("");
-    resetSelectionFilters();
+    updateFilters({ ...DEFAULT_SELECTION, searchQuery: "", currentPage: 1 });
+    searchInputRef.current?.focus();
+  };
+  const goToPage = (page: number) => {
+    updateFilters({ currentPage: page });
+    document.getElementById("tsubo-list")?.scrollIntoView({ behavior: "smooth" });
   };
 
   const hasSearchQuery = searchQuery.trim().length > 0;
@@ -276,8 +237,8 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
 
   return (
     <div className="tsubo-search-layout atlas-search-layout">
-      {/* 大型検索バー（最優先配置） */}
-      <section role="search" aria-label="ツボ図鑑内の検索" className="atlas-search-panel">
+      <Suspense fallback={null}><TsuboUrlSync restore={restoreUrl} /></Suspense>
+      <form action="/search" role="search" aria-label="ツボ図鑑内の検索" className="atlas-search-panel" onSubmit={event => event.preventDefault()}>
         <label htmlFor="tsubo-search" className="atlas-search-label">
           ツボを検索
         </label>
@@ -285,12 +246,17 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
           <Search aria-hidden="true" className="w-5 h-5 text-[#737C77] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             id="tsubo-search"
+            name="q"
             ref={searchInputRef}
             aria-describedby="tsubo-search-examples"
             type="search"
             autoComplete="off"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={event => {
+              const value = event.target.value;
+              if (!searchQuery.trim() && value.trim()) setShowBodyMap(false);
+              updateFilters({ searchQuery: value, currentPage: 1 });
+            }}
             placeholder="経穴名・読み・コード"
             className="atlas-search-input"
           />
@@ -309,6 +275,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
         <p id="tsubo-search-examples" className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
           例：合谷、ごうこく、LI4、頭痛
         </p>
+        <noscript><button type="submit" className="atlas-text-action">サイト内検索で調べる</button></noscript>
 
         <div className="tsubo-filter-toggles">
           <button
@@ -323,15 +290,16 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
           </button>
           <button type="button" onClick={() => setShowFilters(!showFilters)} aria-expanded={showFilters} aria-controls="tsubo-detail-filters" className="tsubo-filter-toggle"><SlidersHorizontal aria-hidden="true" className="h-4 w-4" /><span>詳細条件</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" /></button>
           <a href="#illustrated-points" className="atlas-search-index-link">部位別の索引</a>
+          <a href="#tsubo-index" className="atlas-search-index-link">経絡別の索引</a>
           <a href="#atlas-research-index" className="atlas-search-index-link">研究から探す</a>
         </div>
         {hasSelectionFilters && <p className="tsubo-active-filters">選択中：{[selectedBodyPart !== 'すべて' && selectedBodyPart, selectedMeridian !== 'すべて' && selectedMeridian, selectedCategory !== 'すべて' && selectedCategory, onlyPublished && '主要経穴のみ'].filter(Boolean).join('・')}</p>}
-      </section>
+      </form>
 
       <section id="tsubo-body-filter" hidden={!showBodyMap}>
           <BodyMapSvg
             selectedBodyPart={selectedBodyPart}
-            onSelectBodyPart={(part) => setSelectedBodyPart(part)}
+            onSelectBodyPart={part => updateFilters({ selectedBodyPart: part, currentPage: 1 })}
           />
       </section>
       <section id="tsubo-detail-filters" hidden={!showFilters} aria-label="経脈・要穴の詳細条件" className="tsubo-detail-filters">
@@ -347,7 +315,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
                   <button
                     key={mer}
                     type="button"
-                    onClick={() => setSelectedMeridian(mer)}
+                    onClick={() => updateFilters({ selectedMeridian: mer, currentPage: 1 })}
                     aria-pressed={selectedMeridian === mer}
                     className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg border text-xs transition-all ${
                       selectedMeridian === mer
@@ -371,7 +339,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
                   <button
                     key={cat}
                     type="button"
-                    onClick={() => setSelectedCategory(cat)}
+                    onClick={() => updateFilters({ selectedCategory: cat, currentPage: 1 })}
                     aria-pressed={selectedCategory === cat}
                     className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg border text-xs transition-all ${
                       selectedCategory === cat
@@ -391,7 +359,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
                 <input
                   type="checkbox"
                   checked={onlyPublished}
-                  onChange={(e) => setOnlyPublished(e.target.checked)}
+                  onChange={event => updateFilters({ onlyPublished: event.target.checked, currentPage: 1 })}
                   className="rounded border-[#D8CFC0] text-[#1E3D34] focus:ring-[#1E3D34]"
                 />
                 <span className="text-[#333835] dark:text-[#C5D2DB] font-medium">
@@ -419,7 +387,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
             <select
               value={sortOption}
               aria-label="経穴の並び順"
-              onChange={(e) => setSortOption(e.target.value as SortOption)}
+              onChange={event => updateFilters({ sortOption: event.target.value as SortOption, currentPage: 1 })}
               className="bg-white dark:bg-[#17212A] border border-[#D8CFC0] dark:border-[#2A3B4A] rounded-lg px-2.5 py-1 text-xs text-[#333835] dark:text-[#C5D2DB]"
             >
               <option value="meridian">流注順（経絡順）</option>
@@ -431,7 +399,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
             <div className="flex items-center border border-[#D8CFC0] dark:border-[#2A3B4A] rounded-lg overflow-hidden bg-white dark:bg-[#17212A]">
               <button
                 type="button"
-                onClick={() => setViewMode("grid")}
+                onClick={() => updateFilters({ viewMode: "grid" })}
                 className={`p-1.5 ${viewMode === "grid" ? "bg-[#1E3D34] text-white" : "text-[#737C77]"}`}
                 title="グリッド表示"
                 aria-pressed={viewMode === "grid"}
@@ -440,7 +408,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
               </button>
               <button
                 type="button"
-                onClick={() => setViewMode("table")}
+                onClick={() => updateFilters({ viewMode: "table" })}
                 className={`p-1.5 ${viewMode === "table" ? "bg-[#1E3D34] text-white" : "text-[#737C77]"}`}
                 title="テーブル表示"
                 aria-pressed={viewMode === "table"}
@@ -471,6 +439,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
                 <Link
                   key={point.id}
                   href={`/tsubo/${point.codeLower}`}
+                  prefetch={false}
                   id={`tsubo-card-${point.codeLower}`}
                   className="dictionary-result-card atlas-result-card"
                   data-selected={selectedTsubo?.id === point.id ? true : undefined}
@@ -507,7 +476,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
                       {point.code}
                     </td>
                     <td className="p-3 font-semibold text-[#232826] dark:text-[#FAF8F5]">
-                      <Link href={`/tsubo/${point.codeLower}`} className="hover:underline">
+                      <Link href={`/tsubo/${point.codeLower}`} prefetch={false} className="hover:underline">
                         {point.name}
                       </Link>
                       <span className="text-sm font-normal text-[var(--text-secondary)] ml-1">({point.kana})</span>
@@ -518,6 +487,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
                     <td className="p-3 text-right">
                       <Link
                         href={`/tsubo/${point.codeLower}`}
+                        prefetch={false}
                         className="font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline"
                       >
                         詳細
@@ -537,10 +507,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
               type="button"
               aria-label="前のページ"
               disabled={currentPage <= 1}
-              onClick={() => {
-                setCurrentPage((p) => Math.max(1, p - 1));
-                document.getElementById("tsubo-list")?.scrollIntoView({ behavior: "smooth" });
-              }}
+              onClick={() => goToPage(currentPage - 1)}
               className="p-2 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white text-xs font-medium"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -559,10 +526,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
                       type="button"
                       aria-label={`${pageNum}ページ目`}
                       aria-current={currentPage === pageNum ? "page" : undefined}
-                      onClick={() => {
-                        setCurrentPage(pageNum);
-                        document.getElementById("tsubo-list")?.scrollIntoView({ behavior: "smooth" });
-                      }}
+                      onClick={() => goToPage(pageNum)}
                       className={`w-8 h-8 rounded-xl font-bold transition-all ${
                         currentPage === pageNum
                           ? "bg-[#1E3D34] text-white dark:bg-[#2B6958]"
@@ -584,10 +548,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
               type="button"
               aria-label="次のページ"
               disabled={currentPage >= totalPages}
-              onClick={() => {
-                setCurrentPage((p) => Math.min(totalPages, p + 1));
-                document.getElementById("tsubo-list")?.scrollIntoView({ behavior: "smooth" });
-              }}
+              onClick={() => goToPage(currentPage + 1)}
               className="p-2 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white text-xs font-medium"
             >
               <ChevronRight className="w-4 h-4" />

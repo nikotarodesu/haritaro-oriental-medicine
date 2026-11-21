@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { CLINICAL_COMPLAINTS, CLINICAL_PATTERNS } from '@/data/clinicalWorkflow';
 import ClinicalEvidenceKey from '@/components/clinical/ClinicalEvidenceKey';
 import PageIntro from '@/components/design/PageIntro';
+import { pageSocialMetadata } from '@/config/seo';
 import { ArrowLeft, ArrowRight, ClipboardList, GitCompareArrows, NotebookPen, RefreshCw } from 'lucide-react';
 
 export function generateStaticParams() { return CLINICAL_COMPLAINTS.map(item => ({ slug: item.slug })); }
@@ -11,7 +12,11 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const item = CLINICAL_COMPLAINTS.find(complaint => complaint.slug === slug);
-  return item ? { title: `${item.title}｜鍼灸師の主訴別確認ガイド`, description: `${item.summary} 問診で聞くこと、配穴の理由、次回に確かめる項目をまとめています。`, alternates: { canonical: `/clinical/symptoms/${slug}` } } : { title: '主訴別ガイドが見つかりません' };
+  if (!item) return { title: '主訴別ガイドが見つかりません' };
+  const path = `/clinical/symptoms/${slug}`;
+  const title = `${item.title}｜鍼灸師の主訴別確認ガイド`;
+  const description = `${item.summary} 問診で聞くこと、配穴の理由、次回に確かめる項目をまとめています。`;
+  return { title, description, alternates: { canonical: path }, ...pageSocialMetadata(title, description, path) };
 }
 export default async function Page({ params }: Props) {
   const { slug } = await params;

@@ -1,10 +1,17 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_UPDATES } from '@/config/contentUpdates';
+import { pageSocialMetadata, SITE_NAME } from '@/config/seo';
 import PageIntro from '@/components/design/PageIntro';
 import { ArrowUpRight } from 'lucide-react';
 
-export const metadata: Metadata = { title: '更新情報', description: 'はり太郎のサービス変更と教材改訂のお知らせです。', alternates: { canonical: '/updates' } };
+const title = '更新情報';
+const description = 'はり太郎のサービス変更と教材改訂のお知らせです。';
+const path = '/updates';
+export const metadata: Metadata = {
+  title, description, alternates: { canonical: path },
+  ...pageSocialMetadata(`${title}｜${SITE_NAME}`, description, path),
+};
 
 export default function UpdatesPage() {
   return <div className="page-layout page-layout--reading space-y-6">

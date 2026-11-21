@@ -142,7 +142,6 @@
 .atlas-search-panel .tsubo-filter-toggle { border-color: var(--atlas-line); border-radius: .6rem; color: var(--atlas-accent); background: var(--atlas-paper); }
 .atlas-search-panel .tsubo-filter-toggle[aria-expanded="true"] { background: var(--atlas-soft); border-color: var(--atlas-accent); }
 .atlas-search-input::-webkit-search-cancel-button { display: none; }
-.atlas-search-fallback .platform-search { max-width: none; }
 .atlas-result-grid { display: grid; gap: .75rem; }
 .atlas-result-card, .atlas-guide-card {
   display: flex;

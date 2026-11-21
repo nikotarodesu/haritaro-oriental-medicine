@@ -21,6 +21,10 @@ import { ACUPUNCTURE_GUIDE, NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearn
 const guideLookupTerms = ["鍼灸", "鍼灸入門", "はじめての鍼灸", "はり", "鍼", "灸", "お灸", "はりとお灸", "はり・お灸・ツボ押しの違い", "ツボ押しとの違い"];
 const nineNeedlesLookupTerms = ["九鍼", "古代九鍼", "古代の九鍼", "九鍼十二原", "九鍼十二原篇"];
 const historyLookupTerms = ["鍼灸の歴史", "日本の鍼灸の歴史", "管鍼法"];
+const symptomLookupTerms: Readonly<Record<string, readonly string[]>> = {
+  "headache-stiff-neck": ["頭痛", "肩こり", "首こり"],
+  "stress-insomnia": ["不眠", "寝つき", "寝付き"],
+};
 
 const STATIC_TOOLS: SearchResultItem[] = [
   { id: "tool-learning-essentials", type: "tool", title: "東洋医学の要点", subtitle: "陰陽・気血津液・経絡などの基本を一問ずつ確認する", badge: "学習ガイド", url: "/learn/essentials", tags: ["東洋医学", "要点", "まとめ", "基礎", "陰陽", "気血津液", "経絡"] },
@@ -286,6 +290,7 @@ export function buildSearchCatalog(): SearchResultItem[] {
           s.title,
           s.category,
           summary,
+          ...(symptomLookupTerms[s.id] ?? []),
         ],
       });
     });

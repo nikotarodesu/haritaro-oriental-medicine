@@ -21,9 +21,15 @@ const RESEARCH_MODIFIERS = new Set([
 ].map(normalizeSearchText));
 
 const LEARNING_MODIFIERS = new Set(["とは", "意味", "定義", "学ぶ", "学習", "入門"]);
+const POINT_QUESTION_END = /\s*(?:の|に\s*(?:効く|きく|よい|いい|使う)|と\s*(?:関連|関係)する)\s*(?:つぼ|経穴)(?:\s*(?:は\s*どこ(?:ですか)?|を\s*(?:知りたい|教えて(?:ください)?)))?$/u;
+const SPOKEN_TOPICS = new Map([
+  ["首がこる", "首こり"], ["首が凝る", "首こり"], ["首のこり", "首こり"],
+  ["肩がこる", "肩こり"], ["肩が凝る", "肩こり"], ["肩のこり", "肩こり"],
+  ["眠れない", "不眠"], ["寝つけない", "不眠"], ["寝付けない", "不眠"],
+]);
 
 export function preparePurposeSearchQuery(query: string, requestedPurpose: SearchPurpose = "auto") {
-  const originalQuery = prepareSearchQuery(query.replace(/[?？]+\s*$/, ""));
+  const originalQuery = prepareSearchQuery(query.replace(/[?？。!！]+\s*$/, ""));
   // Support a short definition question without treating "とは" as part of the term.
   const lookupQuery = originalQuery.normalized.endsWith("とは") && originalQuery.normalized.length > 2
     ? prepareSearchQuery(originalQuery.normalized.slice(0, -2)) : originalQuery;
@@ -32,11 +38,16 @@ export function preparePurposeSearchQuery(query: string, requestedPurpose: Searc
   const learningFocus = lookupQuery !== originalQuery || originalQuery.tokens.some(token => LEARNING_MODIFIERS.has(token));
   const topicTokens = lookupQuery.tokens.filter(token => !RESEARCH_MODIFIERS.has(token) && !LEARNING_MODIFIERS.has(token));
   const purpose = requestedPurpose === "auto" ? hasResearchModifiers ? "research" : "guide" : requestedPurpose;
+  const topicQuery = (hasResearchModifiers || learningFocus) && topicTokens.length
+    ? prepareSearchQuery(topicTokens.join(" ")) : originalQuery;
+  // Match the topic of a question so results can point to a relevant guide.
+  const bareTopic = topicQuery.normalized.replace(POINT_QUESTION_END, "").trim();
+  const searchTopic = SPOKEN_TOPICS.get(bareTopic) ?? bareTopic;
   return {
     purpose,
     researchFocus,
     learningFocus,
-    query: (hasResearchModifiers || learningFocus) && topicTokens.length ? prepareSearchQuery(topicTokens.join(" ")) : originalQuery,
+    query: searchTopic && searchTopic !== topicQuery.normalized ? prepareSearchQuery(searchTopic) : topicQuery,
   };
 }
 
@@ -52,7 +63,7 @@ export function rankPurposeSearchResults<T extends PurposeSearchItem>(
 
   const isSymptomQuery = matches.some(({ index, item }) =>
     (item.type === "symptom" || item.searchRole === "professional-guide") &&
-    context.query.tokens.some(token => token.length >= 2 && index.title.includes(token)),
+    context.query.tokens.some(token => token.length >= 2 && (index.title.includes(token) || index.tags.includes(token))),
   );
   const hasExactDefinition = matches.some(({ index, item }) =>
     item.type === "glossary" && index.exactTerms.includes(context.query.normalized),

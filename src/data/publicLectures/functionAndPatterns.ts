@@ -9,7 +9,10 @@ export const functionAndPatternsArticles: Record<string, PublicLectureArticle> =
       { heading: "一日のことを三つの見方から考える", paragraphs: ["陰陽（いんよう）は活動と休息のような対になる性質を比べます。気・血・津液（き・けつ・しんえき）は働き・養い・潤いを表す言葉です。臓腑（ぞうふ）は、それらの働きをいくつかのまとまりとして考える伝統的な分類です。ひとつの出来事を取り上げ、どの見方で何を説明できるかを比べてみましょう。"] },
       { heading: "同じ話題でも、問いが違う", paragraphs: ["内を養う働きと外を守る働きを比べるときは営衛（えいえい）、体の上下にまたがる働きには三焦（さんしょう）、動く向きに注目するときには昇降出入（しょうこうしゅつにゅう）という言葉が出てきます。たとえば食事を例に、食べたものを取り込む働きと、取り込んだものを全身に配る働きを分けて考えると、それぞれの用語が指す範囲を読み取りやすくなります。"] },
     ],
-    links: [{ href: "/curriculum/lecture-lifedynamics-2", label: "精・気・血・津液・神を読む" }],
+    links: [
+      { href: "/curriculum/lecture-lifedynamics-2", label: "精・気・血・津液・神を読む" },
+      { href: "/learn/courses/life-functions-foundations", label: "宗気・営気・衛気と三焦を順に学ぶ" },
+    ],
   },
   "lecture-lifedynamics-2": {
     title: "精・気・血・津液・神の意味を知る",
@@ -129,7 +132,10 @@ export const functionAndPatternsArticles: Record<string, PublicLectureArticle> =
       { heading: "道筋と、一つずつ名前が付いた点", paragraphs: ["経絡（けいらく）は体のつながりを道筋として表す伝統医学の考え方です。主な道筋を経脈（けいみゃく）、枝分かれしてつながる道筋を絡脈（らくみゃく）と呼びます。経穴（けいけつ）は個別の位置に名前がついた点で、一般にはツボと呼ばれます。合谷は手の陽明大腸経に属する経穴です。"] },
       { heading: "図と辞典で見るものを変える", paragraphs: ["経絡図では、名前の付いた道筋がどの領域を通ると描かれているかを見ます。一つのツボの場所を探すなら辞典を開き、人差し指につながる骨など、体の目印を確かめます。WHOの標準部位はその位置を共通の言葉で示す資料です。経絡が現代解剖学でどのように検討されているかは、図の読み方とは別に研究資料を参照します。"] },
     ],
-    links: [{ href: "/articles/science-of-meridians-network", label: "経絡の説明と研究の読み方" }],
+    links: [
+      { href: "/articles/science-of-meridians-network", label: "経絡の説明と研究の読み方" },
+      { href: "/learn/courses/meridians-foundations", label: "十二経脈の名前と図の読み方を順に学ぶ" },
+    ],
   },
   "lecture-meridians-2": {
     title: "十二経脈の名前と略号｜手と足の経絡索引",

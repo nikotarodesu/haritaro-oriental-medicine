@@ -20,7 +20,8 @@ export default function AcupointArticleHeader({ point, lead, warning, meridianRe
         <span className="atlas-point-kana">{point.kana}</span>
         <span className="atlas-code">{point.code}</span>
       </div>
-      <p className="atlas-point-meta">{point.meridian} <span aria-hidden="true">·</span> {point.bodyPart}</p>
+      {/* Native fragment navigation opens the index's enclosing disclosure. */}
+      <p className="atlas-point-meta"><a href={`/tsubo#meridian-${point.meridianId}`} className="atlas-source-link">{point.meridian}のツボ一覧</a> <span aria-hidden="true">·</span> {point.bodyPart}</p>
       <p className="atlas-point-lead">{lead}</p>
       {warning && <p id="acupoint-safety-warning" className="atlas-safety atlas-target">{warning}</p>}
       <AcupointSectionLinks />

@@ -41,8 +41,6 @@
 .tsubo-results-toolbar button[title] { min-width: 44px; }
 .tsubo-results-toolbar select { max-width: 100%; font-size: .875rem; }
 .tsubo-static-index { border-top: 1px solid var(--border-washi); padding-top: 12px; }
-.tsubo-static-index > summary { min-height: 44px; cursor: pointer; padding-block: 12px; font-size: .875rem; font-weight: 600; color: var(--accent-readable); }
-.tsubo-static-index nav { margin-top: 12px; }
 .tsubo-static-index a { display: inline-flex; align-items: center; min-height: 44px; }
 .meridian-relations { padding: 24px; border-top: 1px solid var(--border-washi); color: var(--text-sumi); }
 .meridian-relations-note { margin-top: 6px; color: var(--text-secondary); font-size: .875rem; }

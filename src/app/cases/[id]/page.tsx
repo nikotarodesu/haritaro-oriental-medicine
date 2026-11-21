@@ -1,10 +1,12 @@
 import { pageSocialMetadata, SITE_ORIGIN } from "@/config/seo";
+import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import CaseStudyViewer from "@/components/cases/CaseStudyViewer";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import { SERIES } from "@/config/series";
+import { getSymptomGuide, SYMPTOM_LEARNING_RESOURCES, symptomGuidePath } from "@/utils/symptomGuides";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -48,6 +50,8 @@ export default async function CaseDetailPage({ params }: Props) {
   }
   const path = `/cases/${clinicalCase.id}`;
   const url = SITE_ORIGIN + path;
+  const relatedSlug = Object.keys(SYMPTOM_LEARNING_RESOURCES).find(slug => SYMPTOM_LEARNING_RESOURCES[slug].caseId === id);
+  const relatedGuide = relatedSlug ? getSymptomGuide(relatedSlug) : undefined;
   const resourceJsonLd = {
     "@context": "https://schema.org",
     "@type": ["WebPage", "LearningResource"],
@@ -69,6 +73,9 @@ export default async function CaseDetailPage({ params }: Props) {
         { href: path, name: clinicalCase.title },
       ]} />
       <CaseStudyViewer clinicalCase={clinicalCase} />
+      {relatedGuide && <nav aria-label="症例に関連するガイド" className="reader-navigation">
+        <Link href={symptomGuidePath(relatedGuide)} className="page-secondary-action">{relatedGuide.title}の症状ガイドを読む</Link>
+      </nav>}
     </div>
   );
 }

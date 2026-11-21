@@ -239,7 +239,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(['/clinical', '/diagnosis', '/diagnosis?tab=gorou'].map(route => [route, '2026-11-20'])),
   // Public teaching diagrams were added or revised throughout the lecture catalog.
   ...Object.fromEntries(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [`/curriculum/${id}`, '2026-11-20']))),
-  '/tsubo': ACUPOINT_PAGE_REVISED_AT,
+  '/tsubo': '2026-11-21',
   '/tsubo/basics/bone-cun': ACUPOINT_PAGE_REVISED_AT,
   ...Object.fromEntries(REVISED_ATLAS_RESEARCH_ROUTES.map(route => [route, ATLAS_EVIDENCE_REVISED_AT])),
   '/symptoms': SYMPTOM_GUIDES_REVISED_AT,
@@ -250,8 +250,15 @@ export const PAGE_REVISIONS: Record<string, string> = {
     ...LEARNING_COURSES.map(course => `/learn/courses/${course.slug}`),
     ...['shoulder', 'back', 'headache', 'sleep', 'digestion', 'fatigue'].map(slug => `/clinical/symptoms/${slug}`),
   ].map(route => [route, '2026-11-20'])),
+  ...Object.fromEntries([
+    '/clinical', '/updates',
+    '/learn/lectures/body-functions', '/learn/lectures/meridians-and-points',
+    ...['headache-stiff-neck', 'stress-insomnia', 'stomach-fatigue', 'dizziness-tinnitus'].map(slug => `/symptoms/${slug}`),
+    ...['shoulder', 'back', 'headache', 'sleep', 'digestion', 'fatigue'].map(slug => `/clinical/symptoms/${slug}`),
+  ].map(route => [route, '2026-11-21'])),
 };
 export const SITE_UPDATES = [
+  { date: '2026-11-21', label: 'ツボ図鑑の表示と索引を改善', href: '/tsubo', text: '最初から検索欄と一覧が表示されます。部位別・経絡別の両方から全361穴を探せます。症状を文章で入力したときのサイト内検索も改善しました。' },
   { date: '2026-11-20', label: '20症例の設問と解説を改稿', href: '/cases', text: '本人が話したことと四診で観察したことを、証を考えた理由から書き分けました。図鑑では、どのツボを使い、何を比べた研究かを読みやすくしました。' },
   { date: '2026-11-20', label: '図鑑・記事・演習の文章を改稿', href: '/articles', text: '近くのツボと図のどこを比べるか、症状が出た時刻や困った動作をどう書くか、模擬症例のどの所見を根拠に考えるかを説明し直しました。' },
   { date: '2026-11-20', label: 'ツボを探す・講義を読む・演習を始める入口を整理', href: '/', text: 'トップから3つの学び方を選べます。ツボ図鑑は検索を上部に置き、講義と模擬症例には一覧やシリーズへ戻るリンクを追加しました。' },
