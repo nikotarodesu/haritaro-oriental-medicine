@@ -1,4 +1,5 @@
 import type { AcupunctureResearchArticle } from "./types";
+import { MOXIBUSTION_KNEE_RESEARCH_HREF } from "@/config/acupunctureLearning";
 
 export const KNEE_OSTEOARTHRITIS_RESEARCH: AcupunctureResearchArticle = {
   slug: "knee-osteoarthritis",
@@ -55,6 +56,7 @@ export const KNEE_OSTEOARTHRITIS_RESEARCH: AcupunctureResearchArticle = {
     { href: "/symptoms/knee-joint-pain#safety", label: "膝の痛みの受診の目安" },
     { href: "/symptoms/knee-joint-pain#guide-studies", label: "膝の痛みのガイドに載っている研究" },
     { href: "/cases/case-14-knee-osteoarthritis", label: "立ち上がりと階段で膝が痛む人の症例演習" },
+    { href: MOXIBUSTION_KNEE_RESEARCH_HREF, label: "膝のお灸で、痛みとやけどを調べた試験" },
   ],
   tags: ["変形性膝関節症", "膝の痛み", "鍼", "電気鍼", "模擬鍼", "保存療法", "WOMAC"],
 };

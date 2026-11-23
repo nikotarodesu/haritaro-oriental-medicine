@@ -1,6 +1,8 @@
 import { BACK_PAIN_RESEARCH } from "./backPain";
+import { AROMATASE_INHIBITOR_JOINT_PAIN_RESEARCH } from "./aromataseInhibitorJointPain";
 import { KNEE_OSTEOARTHRITIS_RESEARCH } from "./kneeOsteoarthritis";
 import { MIGRAINE_RESEARCH } from "./migraine";
+import { MOXIBUSTION_KNEE_PAIN_RESEARCH } from "./moxibustionKneePain";
 import { PATTERN_AGREEMENT_RESEARCH } from "./patternAgreement";
 import { POSTOPERATIVE_NAUSEA_RESEARCH } from "./postoperativeNausea";
 import { SAFETY_RESEARCH } from "./safety";
@@ -8,8 +10,10 @@ import { SAFETY_RESEARCH } from "./safety";
 export const ACUPUNCTURE_RESEARCH_ARTICLES = [
   BACK_PAIN_RESEARCH,
   KNEE_OSTEOARTHRITIS_RESEARCH,
+  MOXIBUSTION_KNEE_PAIN_RESEARCH,
   MIGRAINE_RESEARCH,
   POSTOPERATIVE_NAUSEA_RESEARCH,
+  AROMATASE_INHIBITOR_JOINT_PAIN_RESEARCH,
   SAFETY_RESEARCH,
   PATTERN_AGREEMENT_RESEARCH,
 ] as const;

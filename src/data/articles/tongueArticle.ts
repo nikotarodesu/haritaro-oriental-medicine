@@ -6,9 +6,9 @@ export const TONGUE_ARTICLE: Article = {
   subtitle: "伝統的な分類と、口腔の医学的評価を分けて学ぶ",
   category: "論文・文献抄読",
   publishedAt: "2026-03-11",
-  updatedAt: "2026-10-15",
+  updatedAt: "2026-11-23",
   readTime: "5分",
-  summary: "舌色・舌苔・舌形の観察を記録し、伝統的な解釈と医学的な原因評価を区別します。口の乾燥や白い斑点の公的な医療情報を参照し、見た目だけで病名や全身の状態を確定しない読み方を学びます。",
+  summary: "同じ舌の写真を見ても、舌苔の色と舌そのものの色では、評価の一致度が異なりました。写真の研究を読みながら、舌の観察条件をどう残すかと、口の乾燥や白い斑点で受診を考える目安を確認します。",
   tags: ["舌診", "望診", "口腔乾燥", "舌苔", "観察", "出典確認"],
   author: { name: "はり太郎", role: "鍼灸師／鍼灸院院長" },
   keyPoints: [
@@ -17,6 +17,15 @@ export const TONGUE_ARTICLE: Article = {
     "痛みが続く、白い斑点がある、口の乾燥が続く場合は、歯科・医療機関で原因を確認する。"
   ],
   references: [
+    {
+      id: "wang-tongue-image-agreement-2020", type: "paper",
+      title: "Intra-Rater and Inter-Rater Reliability of Tongue Coating Diagnosis in Traditional Chinese Medicine Using Smartphones: Quasi-Delphi Study",
+      source: "JMIR mHealth and uHealth", year: 2020, doi: "10.2196/16018",
+      url: "https://mhealth.jmir.org/2020/7/e16018/",
+      studyDesign: "舌の画像を使った評価の一致度の研究",
+      bibliographyStatus: "matched", claimsStatus: "source-checked", sourceCheckedAt: "2026-11-23",
+      note: "本文の写真の選び方、結果の表3・4を確認。指標は同じ人・異なる人の評価がどれだけ一致したかを示します。"
+    },
     { id: "nidcr-dry-mouth", type: "guideline", title: "Dry Mouth（口腔乾燥の公的な患者向け情報）", source: "米国国立歯科・頭蓋顔面研究所（NIDCR）", url: "https://www.nidcr.nih.gov/health-info/dry-mouth", note: "Overview・Causes・Symptoms・Diagnosisを2026年10月2日に確認。伝統的な証の診断精度を検証した研究ではありません。" },
     { id: "nhs-sore-white-tongue", type: "guideline", title: "Sore or white tongue（舌の痛み・白い舌）", source: "英国NHS", url: "https://www.nhs.uk/symptoms/sore-or-white-tongue/", note: "受診の目安と原因の説明を2026年10月2日に確認。舌の見た目だけで自己診断しないよう案内しています。" },
     { id: "classic-bian-she-zhinan", type: "classic", title: "『辨舌指南』", source: "舌診の伝統的な分類を学ぶ文献", note: "引用する版・巻・該当箇所は専門家による原典照合待ちです。現代医学の病名との同一性の証明に使用しません。" }
@@ -50,9 +59,9 @@ NHSは、舌の痛みが消えない・悪化する場合や、舌に白い斑�
 
 ## 4. 写真・デジタル解析をどう読むか
 
-写真を比べるときは、撮影条件や観察日時も記録しておきます。写真や分類結果から病気を判断する技術については、どの程度正しく判断できるか、同じ結果が得られるか、どのような人で試したかを確認します。画像の特徴を分類できても、病気を正しく診断できるとは限りません。
+Wangらは、撮り方をそろえたスマートフォンの写真から24枚を選び、舌の色や苔の評価がどのくらい一致するかを調べました。評価者同士の一致を表す指標（GwetのAC2）は、舌苔の色で0.49、苔の性状で0.55、舌そのものの色で0.34でした。同じ評価者が別の日に同じ写真を見ても、舌そのものの色や、苔の湿り気が多く見えるかでは一致が低い結果でした。[^wang-tongue-image-agreement-2020]
 
-撮影条件の欄には、照明、撮影時刻、直前の飲食などを残します。画像の違いを読む際は、舌そのものの変化と、写し方や条件の変化を先に分けます。
+調べたのは見え方の分類がどれくらいそろうかです。病気の判定と比べた結果ではなく、0.49を「病気を49％当てた」とは読めません。実習では、照明、撮影時刻、直前の飲食を記録し、写真に写った違いと、条件の違いを先に確認します。見立てが分かれたときの考え方は[同じ症例で弁証を比べる演習](/learn/acupuncture/research/pattern-diagnosis-agreement)で練習できます。
 
 ## 5. 実習での記録例
 

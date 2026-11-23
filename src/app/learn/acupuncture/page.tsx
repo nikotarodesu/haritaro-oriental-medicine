@@ -9,7 +9,7 @@ import AcupunctureTrialComparison from "@/components/learning/AcupunctureTrialCo
 import PedestalMoxaDiagram from "@/components/learning/PedestalMoxaDiagram";
 import SeirinNeedleDiagram from "@/components/learning/SeirinNeedleDiagram";
 import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
-import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH, acupunctureResearchHref, NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
+import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH, acupunctureResearchHref, AROMATASE_JOINT_PAIN_RESEARCH_HREF, MOXIBUSTION_KNEE_RESEARCH_HREF, NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
 import { pageSocialMetadata } from "@/config/seo";
 import { ACUPUNCTURE_GUIDE_SOURCES, ACUPUNCTURE_LOW_BACK_PAIN_STUDY, ACUPUNCTURE_STUDY_EXAMPLES } from "@/data/acupunctureGuide";
 
@@ -163,6 +163,7 @@ export default function AcupunctureGuidePage() {
                 <SourceLink id="moxa-pedestal">メーカーの構造資料</SourceLink>
                 <SourceLink id="moxa-instructions">製品の説明書</SourceLink>
                 <SourceLink id="moxa-burns">国民生活センターの調査</SourceLink>
+                <Link href={MOXIBUSTION_KNEE_RESEARCH_HREF} className="ui-text-link">膝のお灸で、痛みとやけどを調べた研究</Link>
               </p>
             </section>
           </div>
@@ -336,6 +337,7 @@ export default function AcupunctureGuidePage() {
           </section>
           <div className="acupuncture-inline-links gap-y-2">
             <Link href={ACUPUNCTURE_RESEARCH.href} className="ui-text-link">{ACUPUNCTURE_RESEARCH.title} <ArrowRight size={16} aria-hidden="true" /></Link>
+            <Link href={AROMATASE_JOINT_PAIN_RESEARCH_HREF} className="ui-text-link">乳がん治療中の関節痛を52週まで調べた試験 <ArrowRight size={16} aria-hidden="true" /></Link>
             <Link href="/learn/lectures/reading-evidence" className="ui-text-link">講義で研究の読み方を学ぶ <ArrowRight size={16} aria-hidden="true" /></Link>
           </div>
         </section>

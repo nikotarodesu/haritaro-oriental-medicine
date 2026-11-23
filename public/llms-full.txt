@@ -116,8 +116,10 @@
 ### 鍼灸の研究解説
 - [慢性腰痛と坐骨神経痛に対する鍼の比較試験](https://www.haritaro.jp/learn/acupuncture/research/low-back-pain-sciatica): 腰の痛みが続く人と、腰椎椎間板ヘルニアで脚まで痛む人を対象にした鍼の試験を読み比べます。参加した人、何と比べたか、どの時点で何を測ったかを順に見ます。
 - [変形性膝関節症に対する鍼の比較試験](https://www.haritaro.jp/learn/acupuncture/research/knee-osteoarthritis): 変形性膝関節症の鍼の試験では、階段の上り下りや立ち上がりに関わる痛みと動作をどう測ったのでしょうか。模擬鍼や保存療法との比較から、改善率の読み方を確かめます。
+- [変形性膝関節症のお灸｜痛みとやけどを調べた試験](https://www.haritaro.jp/learn/acupuncture/research/moxibustion-knee-pain): 膝の痛みに対するお灸を、熱を弱めた模擬灸と比べた試験、通常の診療と比べた試験を読みます。やけどなどが起きたときに、何人に起きたかと何件起きたかを分けて確かめます。
 - [片頭痛の予防に対する鍼の比較試験](https://www.haritaro.jp/learn/acupuncture/research/migraine-prevention): 片頭痛の予防を調べた試験を、通常ケア、模擬鍼、予防薬との比較から読みます。片頭痛があった日数と発作の回数をどう数えるかも確かめます。
 - [術後の吐き気と内関（PC6）の研究](https://www.haritaro.jp/learn/acupuncture/research/postoperative-nausea): 手術後の吐き気や嘔吐を減らせるか、内関（ないかん）を使った研究を読み比べます。バンドで押す試験、薬と組み合わせた試験、妊娠初期の吐き気を調べた試験では、対象と測り方がそれぞれ異なります。
+- [乳がん治療のアロマターゼ阻害薬と関節痛｜鍼の比較試験](https://www.haritaro.jp/learn/acupuncture/research/aromatase-inhibitor-joint-pain): 乳がん治療でアロマターゼ阻害薬を服用する人の関節痛について、鍼・模擬鍼・待機を比べた米国の試験を読みます。6週と52週の結果、あざの頻度、診療ガイドラインの対象を確かめます。
 - [鍼灸の有害事象を数字で読む](https://www.haritaro.jp/learn/acupuncture/research/adverse-events): 鍼灸の研究に出る割合は、受けた人の数と、施術の回数のどちらで割るかで意味が変わります。国内外の調査から、出血や痛みをどう数え、重い事象と施術との関連をどう調べたかを読みます。
 - [同じ症例でも弁証が分かれるのはなぜ？ 所見の読み比べ](https://www.haritaro.jp/learn/acupuncture/research/pattern-diagnosis-agreement): 慢性腰痛のある6人を、6人の鍼灸師が同じ日に評価した研究を読みます。架空の症例で、見立てを支える所見と次に聞きたいことを比べます。
 

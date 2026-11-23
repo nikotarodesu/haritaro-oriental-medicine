@@ -6,7 +6,7 @@ export const KAMPO_ARTICLE: Article = {
   subtitle: "方剤の考え方を残し、製剤ごとの根拠と副作用を確認する",
   category: "論文・文献抄読",
   publishedAt: "2026-03-11",
-  updatedAt: "2026-10-15",
+  updatedAt: "2026-11-23",
   readTime: "14分",
   summary: "同病異治・異病同治、君臣佐使という伝統的な考え方と、ネットワーク薬理学・臨床研究を分けます。多成分なら穏やか・安全という誤解や、気虚をATP低下と同一視する説明を避け、PMDAの添付文書で確認する適応・重複生薬・副作用を学びます。",
   tags: ["漢方", "証", "方剤", "君臣佐使", "ネットワーク薬理学", "添付文書", "副作用"],
@@ -26,6 +26,18 @@ export const KAMPO_ARTICLE: Article = {
       id: "jsom-kampo-evidence", type: "guideline", title: "漢方治療エビデンスレポート（EKAT）",
       source: "日本東洋医学会", url: "https://www.jsom.or.jp/ebm/er/",
       note: "漢方製剤を用いた臨床研究を確認するための入口。収載は個別の処方の一律な推奨を意味しません。"
+    },
+    {
+      id: "suzuki-rikkunshito-2014", type: "paper", title: "Randomized clinical trial: rikkunshito in the treatment of functional dyspepsia—a multicenter, double-blind, randomized, placebo-controlled study",
+      authors: "Hidekazu Suzuki ほか", source: "Neurogastroenterology & Motility", year: 2014,
+      url: "https://doi.org/10.1111/nmo.12348",
+      note: "原著本文の対象と割り付け、表1のピロリ菌感染の内訳、表2の8週時点の主要評価を確認。"
+    },
+    {
+      id: "tominaga-rikkunshito-dream-2018", type: "paper", title: "Rikkunshito simultaneously improves dyspepsia correlated with anxiety in patients with functional dyspepsia: A randomized clinical trial (the DREAM study)",
+      authors: "Kazunari Tominaga ほか", source: "Neurogastroenterology & Motility", year: 2018,
+      url: "https://doi.org/10.1111/nmo.13319",
+      note: "原著抄録の方法と主な結果。組み入れ条件、割り付け前のプラセボ期間、8週時点の全体評価を確認。"
     },
     {
       id: "pmda-kakkonto-2026", type: "guideline", title: "ツムラ葛根湯エキス顆粒（医療用）添付文書",
@@ -80,6 +92,13 @@ export const KAMPO_ARTICLE: Article = {
 ## 5. 処方・製剤ごとのエビデンスを確認する
 
 日本東洋医学会のEKATは、漢方治療の臨床研究を確認するための資料です。[^jsom-kampo-evidence] 原著では、誰に、どの製剤を、どの条件で使い、何と比べたかを確認します。さらに、評価項目と観察期間、測定できなかったデータ（欠測）、有害事象も確認します。
+
+六君子湯（りっくんしとう）を機能性ディスペプシア（FD）で調べた二つの試験を比べてみます。
+
+- **Suzukiら（2014年）**は、FDと診断された247人を六君子湯とプラセボに分けました。8週後に本人が全体として改善したと答えた割合は、六君子湯群で33.6％、プラセボ群で23.8％でした。主要評価のこの差は統計的に有意ではありませんでした（p＝0.09）。[^suzuki-rikkunshito-2014]
+- **TominagaらのDREAM試験（2018年）**では、ピロリ菌感染がなく、胸やけや抑うつの質問票の点数が基準より低いFD患者を対象にしました。最初の2週間にプラセボを使っても症状が続いた人を、六君子湯とプラセボに分けました。8週後に本人が答えた症状全体の変化は、六君子湯群のほうが良好でした（p＝0.019）。[^tominaga-rikkunshito-dream-2018]
+
+どちらも8週で評価していますが、Suzukiらの試験にはピロリ菌感染のある人も含まれ、DREAM試験では割り付け前の症状の経過で参加者を絞っています。主要評価も、改善した人の割合と、全体の変化を段階で答えた評価で異なります。二つの数値を比べる前に、どの人を調べ、何を改善と数えたかを原著で確かめます。
 
 方剤名が同じでも、成分の組み合わせ、製剤、対象者、使い方が違う研究を、同じ条件の研究として読んではいけません。統計的に差があった場合も、患者にとって意味のある差か、ほかの研究でも同じ傾向か、害に見合う利益があるかを確認します。
 

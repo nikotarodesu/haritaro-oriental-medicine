@@ -17,7 +17,7 @@ import { ARTICLES } from '@/data/articleData';
 import { CLINICAL_CASES } from '@/data/clinicalCasesData';
 import { getPublicLectureArticle } from '@/data/publicLectures';
 import { pageSocialMetadata } from '@/config/seo';
-import { ACUPUNCTURE_GUIDE, SYMPTOM_RESEARCH_LINKS } from '@/config/acupunctureLearning';
+import { ACUPUNCTURE_GUIDE, MOXIBUSTION_KNEE_RESEARCH_HREF, SYMPTOM_RESEARCH_LINKS } from '@/config/acupunctureLearning';
 import { getSymptomGuide, getSymptomGuideJsonLd, getSymptomGuideRevision, getSymptomGuideSources, getSymptomRelatedPapers, SYMPTOM_LEARNING_RESOURCES, symptomGuideDescription, symptomGuidePath, symptomGuideTitle } from '@/utils/symptomGuides';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -135,6 +135,9 @@ export default async function SymptomGuidePage({ params }: Props) {
         {pointStudies.length > 0 && <div className="atlas-study-list">{pointStudies.map(study => <AtlasStudyCard key={study.id} study={study} />)}</div>}
         {researchLink && (
           <p><Link href={researchLink.href} className={linkClass}>{researchLink.label}</Link></p>
+        )}
+        {slug === 'knee-joint-pain' && (
+          <p><Link href={MOXIBUSTION_KNEE_RESEARCH_HREF} className={linkClass}>膝のお灸で、痛みとやけどをどう調べたか</Link></p>
         )}
       </section>}
       <section id="learning" className={sectionClass}>

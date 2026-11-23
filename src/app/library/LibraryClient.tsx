@@ -24,7 +24,7 @@ import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { PUBLIC_ARCHIVE_CASES, ARCHIVE_CASES_NOTICE } from "@/data/cases/archiveCases";
 import PageIntro from "@/components/design/PageIntro";
-import { ACUPUNCTURE_RESEARCH, NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
+import { ACUPUNCTURE_RESEARCH, AROMATASE_JOINT_PAIN_RESEARCH_HREF, NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
 
 const abstractCount = PAPERS_DATABASE.filter(paper => paper.verificationScope === 'abstract').length;
 const fullTextCount = PAPERS_DATABASE.filter(paper => paper.verificationScope === 'selected_full_text').length;
@@ -245,6 +245,9 @@ export default function LibraryClient() {
                                 </a>
                               </li>)}
                             </ul>}
+                            {paper.id === "cancer-pain-electroacupuncture-auricular-peace-trial-mao-2021" && (
+                              <p><Link href={AROMATASE_JOINT_PAIN_RESEARCH_HREF} className="ui-text-link">対象を乳がん治療中の関節痛に絞った別の試験</Link></p>
+                            )}
                           </div>
                         </details>
                       </div>

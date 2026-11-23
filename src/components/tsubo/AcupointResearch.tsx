@@ -8,6 +8,7 @@ import type { AtlasStudy } from "@/data/tsubo/atlas/types";
 import type { AcupointDetail } from "@/data/tsubo/types";
 
 function PointLinks({ codes, currentCode }: { codes: readonly string[]; currentCode?: string }) {
+  if (!codes.length) return null;
   return (
     <ul className="atlas-research-points">
       {codes.map(code => {
@@ -22,7 +23,9 @@ function PointLinks({ codes, currentCode }: { codes: readonly string[]; currentC
 
 export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; currentCode?: string }) {
   const role = currentCode ? getStudyPointRole(study, currentCode) : undefined;
-  const label = role === "comparison" ? "比較群で使われたツボ"
+  const candidateGroup = currentCode && study.additionalPointGroups?.find(group => group.candidate && group.points.includes(currentCode));
+  const label = candidateGroup ? candidateGroup.label
+    : role === "comparison" ? "比較群で使われたツボ"
     : role === "additional" ? "条件に応じて追加されたツボ"
       : study.kind === "point" ? "ツボ一つを調べた研究" : "複数のツボを使った研究";
 

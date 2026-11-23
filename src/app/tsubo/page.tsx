@@ -62,7 +62,10 @@ export default function TsuboPage() {
           <details key={label} className="atlas-disclosure atlas-region-index">
             <summary>{label}（{studies.length}件）</summary>
             <ul className="atlas-research-index pb-3">
-              {studies.map(study => <li key={study.id}><Link href={`/tsubo/${study.points[0]}#${study.id}`} prefetch={false}>{study.topic}</Link></li>)}
+              {studies.map(study => {
+                const point = study.points[0] ?? study.comparisonPoints?.[0] ?? study.additionalPointGroups?.find(group => group.points.length)?.points[0];
+                return point ? <li key={study.id}><Link href={`/tsubo/${point}#${study.id}`} prefetch={false}>{study.topic}</Link></li> : null;
+              })}
             </ul>
           </details>
         ))}
@@ -71,6 +74,7 @@ export default function TsuboPage() {
           <div className="atlas-study-details">
             <p><time dateTime={ATLAS_LITERATURE_SEARCH_DATE}>{ATLAS_LITERATURE_SEARCH_DATE}</time> に、当時まだ研究を載せていなかった{Object.keys(ATLAS_LITERATURE_SEARCH_COUNTS).length}穴を検索しました。</p>
             <p>経穴名とコードで、PubMedの題名・抄録などと、PubMed Centralの本文の方法欄を検索しました。人を対象とした比較試験のうち、実際に使われた経穴と結果を原典で確認できたものを紹介しています。</p>
+            <p>追加調査では、Sciteで引用をたどり、研究で使った経穴と、選べる候補に挙がった経穴を原著で確認しました。比較群だけの経穴や、実際に使った人数が分からない候補は、各図鑑ページにその区別を記載しています。</p>
             <ul className="atlas-source-links" aria-label="文献検索で使用したデータベース">
               <li><a href="https://pubmed.ncbi.nlm.nih.gov/help/">PubMedの検索方法</a></li>
               <li><a href="https://pmc.ncbi.nlm.nih.gov/about/userguide/">PubMed Centralの検索方法</a></li>

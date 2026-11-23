@@ -6,7 +6,7 @@ export const ABDOMEN_ARTICLE: Article = {
   subtitle: "抵抗・圧痛などの触知所見を、病名や処方適応と分けて読む",
   category: "論文・文献抄読",
   publishedAt: "2026-03-11",
-  updatedAt: "2026-10-15",
+  updatedAt: "2026-11-23",
   readTime: "12分",
   summary: "心下痞、胸脇苦満、小腹不仁など、腹診で用いる言葉を観察所見として整理します。伝統的な腹証を胃排出障害・胆道疾患・神経障害へ固定対応させず、診察の再現性、研究の対象、安全な受診判断を学びます。",
   tags: ["腹診", "腹証", "胸脇苦満", "心下痞", "方証相対", "受診判断"],
@@ -33,6 +33,15 @@ export const ABDOMEN_ARTICLE: Article = {
       studyDesign: "腹証の触感を再現する教育用機器の開発",
       bibliographyStatus: "matched", claimsStatus: "source-checked", sourceCheckedAt: "2026-10-02",
       note: "原著抄録で教育用モデルの開発内容を確認。腹証と現代医学的病態との同一性や処方の有効性を検証した研究ではありません。"
+    },
+    {
+      id: "ko-abdominal-algometer-2021", type: "paper",
+      title: "Development of a patient-report pressure algometer for the quantification of abdominal examination",
+      source: "Integrative Medicine Research", year: 2021, doi: "10.1016/j.imr.2021.100742",
+      url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC8185239/",
+      studyDesign: "腹部の硬さと圧痛を機器で比較した観察研究",
+      bibliographyStatus: "matched", claimsStatus: "source-checked", sourceCheckedAt: "2026-11-23",
+      note: "本文の対象、腹部の硬さ・圧痛の評価と表2〜4。機器の測定値を人による触診所見と照合しています。"
     },
     {
       id: "nhs-stomach-ache", type: "guideline", title: "Stomach ache",
@@ -73,7 +82,9 @@ export const ABDOMEN_ARTICLE: Article = {
 
 矢久保らは、抵抗・抵抗減弱・振水音などの腹証を模型で体験できる教育用シミュレータを開発しました。[^yakubo-abdominal-simulator-2008] 触れて学ぶ感触を模型で再現しようとした、教育方法の研究です。
 
-この研究からは、腹診で病気を正確に見つけられること、腹証に従うと処方が必ず効くこと、特定の臓器病態との対応が解明されたことは結論できません。超音波などを用いる研究も、何を測定し、どの診断を基準に比較したかを個別に確認する必要があります。
+人を対象にしたKoらの研究では、韓医学の医師が、機能性ディスペプシアの44人と健康な44人を評価しました。機器で腹部の沈み込みと、本人が痛いと感じ始めた圧を別々に測りました。医師が硬さを感じた人と感じなかった人を比べると、測定した5か所のうち4か所で沈み込みの値に差がありました。[^ko-abdominal-algometer-2021]
+
+模型の研究は腹診を学ぶ方法を扱い、機器の研究は所見を数値にする方法を調べています。腹部の数値から病気を判別できるかを知るには、病気の有無を確かめる別の基準と、異なる人たちでの検証が必要です。
 
 ## 5. 方証相対と処方の判断
 

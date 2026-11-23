@@ -36,16 +36,28 @@ export const PATTERN_AGREEMENT_RESEARCH: AcupunctureResearchArticle = {
       ],
       sources: ["birkeflet", "jacobson"],
     },
+    {
+      id: "kampo-study",
+      title: "日本の漢方外来で、寒熱と気血水の一致を調べた研究",
+      paragraphs: [
+        "Maeda-Minamiらは、国内の一つの漢方外来で64人分の資料を使い、3人の専門医の判断を比べました。寒熱の分類は64.6％、気・血・水の分類は35.9％が一致したと報告しています。医師はこの比較のために対面で診察する代わりに、問診票をもとに判断しました。",
+        "寒熱と気血水では、選べる分類の数や内容も違います。この研究はその条件で専門医同士の判断を比べたものです。気虚などを選ぶサイトの体質チェックについて、病気を見つけられるかを調べた研究ではありません。",
+      ],
+      sources: ["maeda-minami"],
+    },
   ],
   sources: [
     { id: "hogeboom", label: "Hogeboom ほか · Complementary Therapies in Medicine（2001）", url: "https://pubmed.ncbi.nlm.nih.gov/11926429/", scope: "抄録の対象、評価方法、結果。慢性腰痛の6人を対象とした評価者間の比較。" },
     { id: "birkeflet", label: "Birkeflet ほか · Acupuncture in Medicine（2014）", url: "https://pubmed.ncbi.nlm.nih.gov/24809366/", scope: "抄録の対象、方法、結果。8人の鍼灸師が25件の症例記録を読んだ比較。" },
     { id: "jacobson", label: "Jacobson ほか · Journal of Alternative and Complementary Medicine（2019）", url: "https://pubmed.ncbi.nlm.nih.gov/31730402/", scope: "系統的レビューの抄録。収載した研究の条件と、評価者間の一致に関する結果。" },
+    { id: "maeda-minami", label: "Maeda-Minami ほか · Journal of Alternative and Complementary Medicine（2021）", url: "https://pubmed.ncbi.nlm.nih.gov/33861620/", scope: "抄録と本文の対象・方法・限界。64人分の資料を3人の専門医が評価した単施設研究。" },
   ],
   related: [
     { href: "/simulator", label: "所見から弁証の候補を比べる" },
     { href: "/clinical/symptoms/back", label: "腰痛の主訴別ガイドを読む" },
     { href: "/learn/acupuncture/research/low-back-pain-sciatica", label: "腰痛と坐骨神経痛の施術試験を読む" },
+    { href: "/articles/science-of-tongue-diagnosis", label: "同じ舌の写真で評価が一致するかを読む" },
+    { href: "/articles/science-of-pulse-diagnosis", label: "脈の所見の一致と病気の判別を分けて読む" },
   ],
   tags: ["弁証", "見立て", "四診", "評価者間一致", "再現性", "診断精度", "慢性腰痛"],
 };

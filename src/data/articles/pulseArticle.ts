@@ -6,7 +6,7 @@ export const PULSE_ARTICLE: Article = {
   subtitle: "浮沈・遅数・虚実を観察し、診断に使える範囲を確かめる",
   category: "論文・文献抄読",
   publishedAt: "2026-03-11",
-  updatedAt: "2026-10-15",
+  updatedAt: "2026-11-23",
   readTime: "12分",
   summary: "脈診の伝統的な分類と、脈拍数・リズムを観察する医学的な評価を分けて学びます。検者間一致を調べた研究を読み、脈象から血液粘度・血栓・臓器の病気を確定できないこと、心電図などにつなぐべき症状を整理します。",
   tags: ["脈診", "浮沈", "遅数", "虚実", "再現性", "心拍変動"],
@@ -27,6 +27,15 @@ export const PULSE_ARTICLE: Article = {
       studyDesign: "触知所見の検者間一致を調べた研究",
       bibliographyStatus: "matched", claimsStatus: "source-checked", sourceCheckedAt: "2026-10-02",
       note: "原著抄録の対象・方法・結果を確認。触知所見の一致を調べた研究であり、病名や証の診断精度を示す研究ではありません。"
+    },
+    {
+      id: "tang-pulse-model-2012", type: "paper",
+      title: "Validation of a Novel Traditional Chinese Medicine Pulse Diagnostic Model Using an Artificial Neural Network",
+      source: "Evidence-Based Complementary and Alternative Medicine", year: 2012,
+      pmid: "21918652", doi: "10.1155/2012/685094", url: "https://pubmed.ncbi.nlm.nih.gov/21918652/",
+      studyDesign: "一人の中医師の所見を使った、本態性高血圧の判別モデルの研究",
+      bibliographyStatus: "matched", claimsStatus: "source-checked", sourceCheckedAt: "2026-11-23",
+      note: "抄録と本文の評価方法・考察を確認。他の評価者でも記録が一致するかを調べた研究とは目的が異なります。"
     },
     {
       id: "medlineplus-pulse", type: "guideline", title: "Pulse",
@@ -71,6 +80,8 @@ MedlinePlusは、手首で脈を探し拍動を数える方法を案内してい
 Kingらの研究では、橈骨動脈の触知所見を具体的に定義し、手順を標準化して、2人の評価者の一致を調べました。最初の66人と、その後の30人で、所見の平均一致率は80%でした。[^king-radial-pulse-reliability-2002]
 
 この研究が測ったのは、2人の評価者が脈の所見をどれだけ同じように記録できたかという**再現性**です。**診断精度**を調べるには、基準となる診断や検査と比べ、病気のある人といない人をどれだけ正確に分けられるかを測ります。ここでの約80%は脈の記録が一致した割合です。
+
+後にKingらを引用したTangらは、一人の中医師が左右の寸・関・尺で記録した深さや速さなど8項目を使って、本態性高血圧の有無を分けるモデルを作りました。複数の評価者が同じ所見を記録できたかは、こちらの研究では分かりません。研究を引用するときは、評価者の一致を測ったのか、ある病気の有無を分けるモデルを調べたのかを確かめます。[^tang-pulse-model-2012]
 
 ## 5. PWV・HRV・心電図との違い
 

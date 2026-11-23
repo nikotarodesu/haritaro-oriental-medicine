@@ -40,6 +40,7 @@ async function main() {
   const { ATLAS_STUDIES, getAcupointStudies, getStudyPointRole, getSymptomStudies } = load('src/data/tsubo/atlas/evidence');
   const { SUPPLEMENTAL_ATLAS_STUDIES } = load('src/data/tsubo/atlas/supplementalClinicalStudies');
   const { SCITE_FOLLOWUP_ATLAS_STUDIES, SCITE_SYMPTOM_ATLAS_STUDIES } = load('src/data/tsubo/atlas/sciteFollowupStudies');
+  const { ADDITIONAL_VERIFIED_STUDIES } = load('src/data/tsubo/atlas/additionalVerifiedStudies');
   const { SYMPTOM_RESEARCH_NOTES } = load('src/data/symptomResearchNotes');
   const { ATLAS_LITERATURE_SEARCH_COUNTS } = load('src/data/tsubo/atlas/literatureSearch');
   const { AtlasStudyCard } = load('src/components/tsubo/AcupointResearch');
@@ -60,7 +61,8 @@ async function main() {
   assert.equal(indexSchema['@graph'][1].itemListElement.length, SYMPTOMS.length, 'Index schema lists every guide');
   assert(indexHtml.indexOf('id="symptom-guides"') < indexHtml.indexOf('このガイドで確認できること'), 'Usage scope follows the index');
   const pointCodes = new Set(ACUPOINTS_MASTER.map(point => point.codeLower));
-  const atlasBeforeScite = ATLAS_STUDIES.filter(study => !SCITE_FOLLOWUP_ATLAS_STUDIES.includes(study) && !SCITE_SYMPTOM_ATLAS_STUDIES.includes(study));
+  const laterStudies = new Set([...SCITE_FOLLOWUP_ATLAS_STUDIES, ...SCITE_SYMPTOM_ATLAS_STUDIES, ...ADDITIONAL_VERIFIED_STUDIES]);
+  const atlasBeforeScite = ATLAS_STUDIES.filter(study => !laterStudies.has(study));
   const previousStudies = atlasBeforeScite.filter(study => !SUPPLEMENTAL_ATLAS_STUDIES.includes(study));
   const pendingBeforeSearch = [...pointCodes].filter(code => !previousStudies.some(study => getStudyPointRole(study, code)));
   assert.equal(pendingBeforeSearch.length, 262);

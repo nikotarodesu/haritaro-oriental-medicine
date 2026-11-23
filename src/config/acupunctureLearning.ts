@@ -11,7 +11,7 @@ export const ACUPUNCTURE_TRIAL_COMPARISON_HREF = `${ACUPUNCTURE_GUIDE.href}#comb
 export const ACUPUNCTURE_RESEARCH = {
   href: "/learn/acupuncture/research",
   title: "鍼灸の研究を読む",
-  description: "腰痛、膝痛、片頭痛、術後の吐き気、鍼灸の安全性や弁証の研究を読みます。誰を調べ、何と比べ、何を数えたかを原著と照らし合わせられます。",
+  description: "腰痛、膝痛、片頭痛、術後の吐き気、乳がん治療中の関節痛を調べた鍼灸の研究を読みます。お灸のやけどや弁証の一致度を調べた原著も確認できます。",
   revisedAt: "2026-11-23",
 } as const;
 
@@ -22,6 +22,8 @@ export function acupunctureResearchHref(slug: string) {
 export const PATTERN_AGREEMENT_HREF = acupunctureResearchHref("pattern-diagnosis-agreement");
 export const KNEE_RESEARCH_HREF = acupunctureResearchHref("knee-osteoarthritis");
 export const MIGRAINE_RESEARCH_HREF = acupunctureResearchHref("migraine-prevention");
+export const MOXIBUSTION_KNEE_RESEARCH_HREF = acupunctureResearchHref("moxibustion-knee-pain");
+export const AROMATASE_JOINT_PAIN_RESEARCH_HREF = acupunctureResearchHref("aromatase-inhibitor-joint-pain");
 
 export const SYMPTOM_RESEARCH_LINKS: Readonly<Partial<Record<string, { href: string; label: string }>>> = {
   "headache-stiff-neck": { href: MIGRAINE_RESEARCH_HREF, label: "片頭痛の予防試験を読み比べる" },
