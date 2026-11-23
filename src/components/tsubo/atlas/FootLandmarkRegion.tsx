@@ -1,4 +1,4 @@
-import { dorsalFootLandmarks, footLandmarks, medialFootLandmarks, type FootBone, type FootPoint } from "@/data/tsubo/atlas/footLandmarks";
+import { achillesSideOutline, dorsalFootLandmarks, footLandmarks, footSideOutline, medialFootLandmarks, type FootBone, type FootPoint } from "@/data/tsubo/atlas/footLandmarks";
 import type { AtlasCloseUpProps } from "@/data/tsubo/atlas/types";
 
 type Bone = { path: string; badge: [number, number]; label: string };
@@ -82,12 +82,12 @@ export default function FootLandmarkRegion({ marker, label, labelled }: AtlasClo
     </>
   ) : (
     <>
-      <path d="M68 51H113Q110 102 130 126Q152 143 197 162Q233 178 271 180Q299 178 308 194Q314 208 288 213Q259 217 226 213Q187 208 159 205Q142 204 126 212Q104 220 83 216Q53 212 55 190Q58 158 65 137Q71 107 68 51Z" fill="#F4E8D8" stroke="#9B8D7D" strokeWidth="2" />
+      <path d={footSideOutline} fill="#F4E8D8" stroke="#9B8D7D" strokeWidth="2" />
       <path d={medial
         ? "M66 186Q90 199 117 182Q135 164 141 163Q156 163 167 168Q195 179 224 186Q241 190 256 191T300 199"
         : "M66 184Q72 182 78 181Q113 186 140 180Q160 175 172 178Q196 184 224 188Q239 193 256 192Q287 198 300 199"}
         fill="none" stroke="#A69380" strokeWidth="1.7" strokeDasharray="4 4" />
-      <path d="M67 73Q68 106 68 122Q65 150 76 176" fill="none" stroke="#719184" strokeWidth="3" />
+      <path d={achillesSideOutline} fill="none" stroke="#719184" strokeWidth="3" />
       {code === "lr4" && <path d="M115 75Q119 108 142 139L160 158" fill="none" stroke="#719184" strokeWidth="3" />}
       {code === "gb40" && <path d="M117 77Q118 111 135 139L182 163" fill="none" stroke="#719184" strokeWidth="3" />}
       {code === "ki3" && <path d="M81 89Q79 109 81 123L110 159" fill="none" stroke="#B26362" strokeWidth="2" strokeDasharray="2 4" />}

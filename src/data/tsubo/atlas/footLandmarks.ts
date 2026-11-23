@@ -14,6 +14,9 @@ export const medialFootLandmarks = {
   navicular: { x: 141, y: 147 },
 } as const;
 
+export const footSideOutline = "M68 51H113Q110 102 130 126Q152 143 197 162Q233 178 271 180Q299 178 308 194Q314 208 288 213Q259 217 226 213Q187 208 159 205Q142 204 126 212Q104 220 83 216Q53 212 55 190Q58 158 65 137Q71 107 68 51Z";
+export const achillesSideOutline = "M67 73Q68 106 68 122Q65 150 76 176";
+
 export const dorsalFootLandmarks = {
   secondMetatarsalBase: [133, 201],
   intermediateCuneiformFront: [132, 209],

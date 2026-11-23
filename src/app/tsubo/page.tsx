@@ -9,6 +9,7 @@ import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH } from "@/config/acupunctureLea
 import { collectionPageJsonLd } from "@/config/seo";
 import { ATLAS_STUDIES } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
+import { ACUPOINT_NAME_INDEX_PATH } from "@/data/tsubo/names/characterIndex";
 
 const regions = [...new Set(ALL_ACUPOINTS.map(point => point.bodyPart))].map(region => ({
   region, points: ALL_ACUPOINTS.filter(point => point.bodyPart === region),
@@ -26,6 +27,7 @@ export default function TsuboPage() {
   const guideLinks = (
     <nav aria-label="ツボ図鑑の資料とガイド" className="atlas-directory-actions atlas-directory-guides">
       <Link href="/symptoms" className="atlas-text-action"><MapPin size={17} aria-hidden="true" />症状から探す</Link>
+      <Link href={ACUPOINT_NAME_INDEX_PATH} className="atlas-text-action">漢字から探す</Link>
       <Link href="/tsubo/basics/bone-cun" className="atlas-text-action"><Ruler size={17} aria-hidden="true" />寸の測り方</Link>
       <Link href={ACUPUNCTURE_GUIDE.href} className="atlas-text-action"><BookOpen size={17} aria-hidden="true" />{ACUPUNCTURE_GUIDE.label}</Link>
     </nav>

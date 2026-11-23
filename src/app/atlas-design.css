@@ -287,14 +287,23 @@
 }
 .atlas-name-characters > div {
   display: grid;
-  grid-template-columns: 1.5rem minmax(0, 1fr);
-  align-items: baseline;
-  gap: .5rem;
-  padding-block: .375rem;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  align-items: center;
+  gap: .375rem;
+  padding-block: .25rem;
   border-top: 1px solid var(--border-subtle);
 }
 .atlas-name-characters dt { color: var(--accent-readable); font-size: 1.125rem; font-weight: 700; }
 .atlas-name-characters dd { font-size: .9375rem; }
+.atlas-name-characters dt a {
+  display: inline-flex;
+  align-items: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+.atlas-name-characters dt a:hover { color: var(--text-sumi); }
 .atlas-name-history { padding-inline-start: .875rem; border-inline-start: 2px solid var(--border-washi); }
 .atlas-name-history a, .atlas-name-sources a {
   color: var(--accent-readable);
@@ -308,6 +317,132 @@
   font-size: .8125rem;
 }
 .atlas-name-sources a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+
+.atlas-nearby { margin-top: 1.125rem; border-block: 1px solid var(--atlas-line); }
+.atlas-nearby > summary { min-height: 3rem; flex-wrap: wrap; font-size: .9375rem; }
+.atlas-nearby > summary span { color: var(--atlas-muted); font-size: .8125rem; font-weight: 400; }
+.atlas-comparison-content { display: grid; gap: .625rem; max-width: 564px; padding-block: .125rem 1rem; }
+.atlas-comparison-figure {
+  position: relative;
+  border: 1px solid var(--atlas-line);
+  border-radius: .75rem;
+  background: var(--atlas-paper);
+}
+.atlas-comparison-figure > svg { display: block; width: 100%; border-radius: inherit; }
+.atlas-comparison-figure svg text { fill: var(--atlas-muted); font-size: 14px; font-weight: 600; }
+.atlas-comparison-outline {
+  fill: color-mix(in srgb, var(--amber-warm) 11%, var(--atlas-paper));
+  stroke: var(--border-control);
+  stroke-width: 1.4px;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.atlas-comparison-landmark, .atlas-comparison-detail, .atlas-comparison-crease,
+.atlas-comparison-divider, .atlas-comparison-marker path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.atlas-comparison-landmark, .atlas-comparison-crease { stroke: var(--atlas-muted); }
+.atlas-comparison-detail, .atlas-comparison-marker path { stroke: var(--border-control); }
+.atlas-comparison-crease { stroke-dasharray: 3 3; }
+.atlas-comparison-divider { stroke: var(--atlas-line); }
+.atlas-comparison-bone { fill: var(--atlas-paper); stroke: var(--border-control); vector-effect: non-scaling-stroke; }
+.atlas-comparison-marker circle { fill: var(--atlas-paper); stroke: var(--atlas-accent); stroke-width: 1.5px; }
+.atlas-comparison-marker[data-selected] path { stroke: var(--atlas-accent); stroke-width: 1.6px; }
+.atlas-comparison-marker[data-selected] circle { fill: var(--atlas-accent); }
+.atlas-comparison-choice {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  padding-inline: .25rem .4rem;
+  transform: translate(-1.125rem, -50%);
+  border-radius: .5rem;
+  color: var(--atlas-ink);
+  background: var(--atlas-paper);
+  font-size: .875rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.atlas-comparison-choice span {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid var(--atlas-accent);
+  border-radius: 50%;
+  color: var(--atlas-accent);
+  line-height: 1;
+}
+.atlas-comparison-choice:is(:hover, [aria-pressed="true"]) { background: var(--atlas-soft); }
+.atlas-comparison-choice[aria-pressed="true"] span { color: var(--atlas-paper); background: var(--atlas-accent); }
+.atlas-comparison-reading {
+  padding: .625rem .875rem;
+  border-inline-start: 2px solid var(--atlas-accent);
+  background: var(--atlas-soft);
+}
+.atlas-comparison-selected { font-weight: 700; }
+.atlas-comparison-selected span { margin-inline-start: .375rem; color: var(--atlas-muted); font-size: .8125rem; }
+
+.atlas-character-index { max-width: 760px; }
+.atlas-character-search {
+  display: grid;
+  gap: .875rem;
+  padding: clamp(.875rem, 3vw, 1.25rem);
+  border: 1px solid var(--atlas-line);
+  border-radius: .875rem;
+  background: var(--atlas-paper);
+}
+.atlas-character-search label { display: block; margin-bottom: .25rem; font-size: .875rem; font-weight: 600; }
+.atlas-character-form-row { display: flex; align-items: stretch; gap: .5rem; max-width: 22rem; }
+.atlas-character-form-row input {
+  flex: 1;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: .25rem .75rem;
+  border: 1px solid var(--border-control);
+  border-radius: .5rem;
+  background: var(--bg-washi);
+  color: var(--atlas-ink);
+  font-size: 1rem;
+}
+.atlas-character-form-row button {
+  min-width: 4.5rem;
+  padding-inline: .75rem;
+  border-radius: .5rem;
+  color: var(--atlas-paper);
+  background: var(--atlas-accent);
+  font-weight: 700;
+}
+.atlas-character-examples { display: flex; flex-wrap: wrap; gap: .375rem; }
+.atlas-character-examples a {
+  display: grid;
+  place-items: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border: 1px solid var(--atlas-line);
+  border-radius: .5rem;
+  font-weight: 700;
+}
+.atlas-character-examples a:is(:hover, [aria-current]) { border-color: var(--atlas-accent); color: var(--atlas-accent); background: var(--atlas-soft); }
+.atlas-character-count { margin-block: .75rem .125rem; color: var(--atlas-muted); font-size: .875rem; }
+.atlas-character-results li { padding-block: .875rem; border-top: 1px solid var(--atlas-line); }
+.atlas-character-results h3 a {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 .625rem;
+  color: var(--atlas-accent);
+  font-size: 1.0625rem;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+.atlas-character-results h3 span { color: var(--atlas-muted); font-size: .8125rem; font-weight: 400; }
+.atlas-character-results p { margin-top: .25rem; }
 
 .atlas-reading-details, .atlas-guide-scope { padding-inline: .875rem; border-block: 1px solid var(--atlas-line); }
 .atlas-reading-details > summary { font-size: 1rem; }

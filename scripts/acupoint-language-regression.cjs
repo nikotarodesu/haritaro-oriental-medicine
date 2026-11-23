@@ -11,6 +11,8 @@ const { getAcupointName } = load('src/data/tsubo/names/index');
 const { STANDARD_NAMES } = load('src/data/tsubo/names/standardNames');
 const { NAME_READINGS } = load('src/data/tsubo/names/nameReadings');
 const { CHARACTER_MEANINGS } = load('src/data/tsubo/names/characterMeanings');
+const { getAcupointNameCharacter, acupointNameIndexHref, NAME_INDEX_EXAMPLES } = load('src/data/tsubo/names/characterIndex');
+const { NEARBY_COMPARISONS, getNearbyComparison, comparisonSize } = load('src/data/tsubo/atlas/nearbyComparisons');
 const dimensions = text => Array.from(text.matchAll(/\d+(?:\.\d+)?寸/g), match => match[0]);
 
 assert.equal(points.ALL_ACUPOINTS.length, 361);
@@ -39,7 +41,37 @@ assert.equal(getAcupointName('pc6').pinyin, 'Nèiguān');
 assert.deepEqual(Array.from(getAcupointName('te22').characters, ({ character }) => character), ['耳', '和', '髎']);
 assert.equal(getAcupointName('gv20').pinyin, 'Bǎihuì');
 assert.equal(getAcupointName('cv17').pinyin, 'Dànzhōng');
+const indexedCodes = character => Array.from(getAcupointNameCharacter(character).points, point => point.codeLower);
+assert(['li4', 'st43', 'ki10'].every(code => indexedCodes('谷').includes(code)));
+assert.deepEqual(indexedCodes('沢'), indexedCodes('泽'));
+assert.deepEqual(indexedCodes('溪'), indexedCodes('渓'));
+assert.deepEqual(indexedCodes('溪'), indexedCodes('谿'));
+assert(indexedCodes('耳').includes('te22'), 'Chinese-only leading character remains searchable');
+assert(new Set(indexedCodes('髎')).size === indexedCodes('髎').length);
+assert.equal(getAcupointNameCharacter('合谷'), undefined);
+assert.equal(getAcupointNameCharacter(''), undefined);
+assert.equal(acupointNameIndexHref('谷'), '/tsubo/names?kanji=%E8%B0%B7');
+for (const character of NAME_INDEX_EXAMPLES) assert(indexedCodes(character).length > 1, character);
+const compared = new Set();
+for (const group of NEARBY_COMPARISONS) {
+  assert(group.points.length >= 3, group.id);
+  for (const point of group.points) {
+    assert(ATLAS_ARTICLES[point.code], point.code + ' has a public atlas article');
+    assert(!compared.has(point.code), point.code + ' has exactly one comparison');
+    assert.equal(getNearbyComparison(point.code).id, group.id);
+    assert(point.difference.length > 0, point.code + ' has a short distinguishing landmark');
+    for (const [x, y] of [point.position, point.button, point.leader]) {
+      assert(x > 0 && x < comparisonSize.width && y > 0 && y < comparisonSize.height, point.code + ' is inside the figure');
+    }
+    compared.add(point.code);
+  }
+}
+assert.deepEqual(Array.from(getNearbyComparison('te21').points, point => point.code), ['te21', 'si19', 'gb2']);
+assert.equal(getNearbyComparison('li4'), undefined);
 for (const point of points.ALL_ACUPOINTS) {
+  for (const character of new Set(point.name + getAcupointName(point.codeLower).chinese)) {
+    assert(indexedCodes(character).includes(point.codeLower), point.code + ' is indexed under ' + character);
+  }
   const generated = friendly.simplifyLocationText(point.locationDetail);
   assert.deepEqual(dimensions(generated), dimensions(point.locationDetail), `${point.code}: preserve every original cun value, including decimals`);
   assert(!/乳頭のライン|胸と肩の境目近く|腕（またはすね）|約半分強|\d\.指/.test(generated), `${point.code}: no unit-derived anatomical substitution`);
@@ -127,4 +159,4 @@ const kikei = load('src/data/kikeiData');
 assert.equal(kikei.KIKEI_VESSELS.length, 8);
 assert.equal(kikei.HACHIMYAKU_PAIRS.length, 4);
 assert(!/即効性があります|絶大な効果|自律神経をリセット|素晴らしい効果|第一選択です/.test(JSON.stringify(kikei)));
-console.log('Acupoint language: 361 sourced explanations, complete Chinese character glosses, preserved cun values, WHO positions, and scoped evidence and procedure filters.');
+console.log('Acupoint language: 361 sourced explanations and index entries, 10 points in three comparisons, preserved cun values, WHO positions, and scoped evidence and procedure filters.');

@@ -7,9 +7,11 @@ import AcupointNameGuide from "./AcupointNameGuide";
 import AcupointResearch from "./AcupointResearch";
 import WhoPointLocation from "./WhoPointLocation";
 import CrossSectionViewer from "./CrossSectionViewer";
+import NearbyPointComparison from "./atlas/NearbyPointComparison";
 import PointAtlasDiagrams from "./atlas/PointAtlasDiagrams";
 import { getPublicCrossSectionModel } from "@/data/medicalSafety";
 import { getAcupointByCode } from "@/data/tsubo";
+import { getNearbyComparison } from "@/data/tsubo/atlas/nearbyComparisons";
 import type { AcupointDetail, AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle as AtlasArticle, AtlasMarker } from "@/data/tsubo/atlas/types";
 
@@ -32,6 +34,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
   individualModel: boolean;
 }) {
   const traditionalTitle = article.traditionalTitle ?? "伝統的な使われ方";
+  const nearbyComparison = getNearbyComparison(point.codeLower);
 
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
@@ -45,6 +48,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
           <AcupointPointDetails point={point} meridianReading={article.meridianReading} />
         </PointAtlasDiagrams>
+        {nearbyComparison && <NearbyPointComparison comparison={nearbyComparison} code={point.codeLower} />}
       </section>
 
       <AcupointNameGuide code={point.codeLower} />
@@ -80,6 +84,9 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
 
       <section>
         <h2 className={headingClass}>位置を見比べるツボ</h2>
+        {nearbyComparison && (
+          <a href="#acupoint-nearby" className="atlas-text-action">同じ図で比べる</a>
+        )}
         <ul className="list-disc space-y-2 pl-5">
           {article.relatedPoints.map(({ code, text }) => {
             const related = getAcupointByCode(code);

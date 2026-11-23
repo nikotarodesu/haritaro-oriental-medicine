@@ -1,0 +1,76 @@
+import { forearmWristCreaseY } from "./expanded/arms";
+import { headPoints } from "./expanded/head";
+import { footLandmarks } from "./footLandmarks";
+
+type Position = readonly [x: number, y: number];
+type Transform = { x: number; y: number; scaleX: number; scaleY: number };
+
+export const comparisonSize = { width: 344, height: 216 };
+
+// The same projections place the outlines and the location dots into the comparison figure.
+export const comparisonTransforms = {
+  ear: { x: -44, y: -233, scaleX: 2.32, scaleY: 2.32 },
+  palm: { x: 29, y: -72, scaleX: 0.84, scaleY: 0.84 },
+  back: { x: 391, y: -72, scaleX: -0.84, scaleY: 0.84 },
+  ankle: { x: 68, y: -12, scaleX: 0.84, scaleY: 0.84 },
+} as const satisfies Record<string, Transform>;
+
+function project(point: { x: number; y: number }, transform: Transform): Position {
+  return [transform.x + point.x * transform.scaleX, transform.y + point.y * transform.scaleY];
+}
+
+type ComparisonPoint = {
+  code: string;
+  position: Position;
+  button: Position;
+  leader: Position;
+  difference: string;
+};
+
+export type NearbyComparison = {
+  id: "ear" | "wrist" | "ankle";
+  region: string;
+  figureLabel: string;
+  points: readonly ComparisonPoint[];
+};
+
+const { ear, palm, back, ankle } = comparisonTransforms;
+const wristProximalY = 208;
+
+export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
+  {
+    id: "ear",
+    region: "耳の前",
+    figureLabel: "耳を横から見た図。耳の前に、上から耳門、聴宮、聴会が並びます。",
+    points: [
+      { code: "te21", position: project(headPoints.te21, ear), button: [38, 51], leader: [134, 51], difference: "耳の入口の前にある突起より上、小さな切れ込みのすぐ前です。" },
+      { code: "si19", position: project(headPoints.si19, ear), button: [38, 111], leader: [134, 111], difference: "耳の入口の前にある突起と同じ高さで、その突起のすぐ前です。" },
+      { code: "gb2", position: project(headPoints.gb2, ear), button: [38, 171], leader: [134, 171], difference: "耳の入口の前にある突起より下、下側の切れ込みのすぐ前です。" },
+    ],
+  },
+  {
+    id: "wrist",
+    region: "手首",
+    figureLabel: "ひじを上にした手首の模式図。左が手のひら側、右が手の甲側です。破線は手首のしわです。",
+    points: [
+      { code: "pc6", position: project({ x: 114.5, y: wristProximalY }, palm), button: [27, 83], leader: [97, 83], difference: "手のひら側の手首のしわからひじへ2寸で、二本のすじの間です。" },
+      { code: "pc7", position: project({ x: 114.5, y: forearmWristCreaseY }, palm), button: [27, 158], leader: [97, 158], difference: "内関と同じ二本のすじの間で、手のひら側の手首のしわに沿った位置です。" },
+      { code: "te5", position: project({ x: 114.5, y: wristProximalY }, back), button: [197, 83], leader: [267, 83], difference: "手の甲側の手首のしわからひじへ2寸で、前腕に並ぶ二本の骨の間です。" },
+      { code: "te4", position: project({ x: 118, y: forearmWristCreaseY }, back), button: [197, 158], leader: [267, 158], difference: "手の甲側の手首のしわで、指を伸ばすときに動くすじの小指側です。" },
+    ],
+  },
+  {
+    id: "ankle",
+    region: "足首の内側",
+    figureLabel: "足首を内側から見た図。内くるぶしの後ろに太谿、真下に照海、前に中封があります。",
+    points: [
+      { code: "ki3", position: project(footLandmarks.ki3, ankle), button: [28, 92], leader: [97, 92], difference: "内くるぶしの後ろで、骨の出っ張りとアキレス腱の間です。" },
+      { code: "ki6", position: project(footLandmarks.ki6, ankle), button: [141, 183], leader: [151, 160], difference: "内くるぶしの出っ張りから、足裏のほうへ真下に進んだくぼみです。" },
+      { code: "lr4", position: project(footLandmarks.lr4, ankle), button: [249, 73], leader: [229, 73], difference: "内くるぶしの前で、足首を起こしたときに見えるすじの内くるぶし側です。" },
+    ],
+  },
+];
+
+export function getNearbyComparison(code: string) {
+  return NEARBY_COMPARISONS.find(group => group.points.some(point => point.code === code));
+}

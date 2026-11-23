@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { getAcupointName } from "@/data/tsubo/names";
+import { acupointNameIndexHref, getAcupointNameCharacter } from "@/data/tsubo/names/characterIndex";
 
 export default function AcupointNameGuide({ code }: { code: string }) {
   const name = getAcupointName(code);
@@ -24,12 +26,22 @@ export default function AcupointNameGuide({ code }: { code: string }) {
         <div>
           <h3 className="atlas-name-characters-title">漢字の意味</h3>
           <dl className="atlas-name-characters">
-            {name.characters.map(({ character, meaning }) => (
-              <div key={character}>
-                <dt lang="zh-Hans">{character}</dt>
-                <dd>{meaning}</dd>
-              </div>
-            ))}
+            {name.characters.map(({ character, meaning }) => {
+              const entry = getAcupointNameCharacter(character);
+              const hasOtherPoints = entry && entry.points.length > 1;
+              return (
+                <div key={character}>
+                  <dt>
+                    {hasOtherPoints ? (
+                      <Link href={acupointNameIndexHref(character)} prefetch={false} aria-label={`「${character}」を使うツボを探す`}>
+                        <span lang="zh-Hans">{character}</span>
+                      </Link>
+                    ) : <span lang="zh-Hans">{character}</span>}
+                  </dt>
+                  <dd>{meaning}</dd>
+                </div>
+              );
+            })}
           </dl>
         </div>
 
