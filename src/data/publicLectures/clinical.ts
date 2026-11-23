@@ -1,3 +1,4 @@
+import { acupunctureResearchHref } from "@/config/acupunctureLearning";
 import type { PublicLectureArticle } from "./types";
 
 export const clinicalArticles: Record<string, PublicLectureArticle> = {
@@ -407,7 +408,7 @@ export const clinicalArticles: Record<string, PublicLectureArticle> = {
   },
   "lecture-treatment-9": {
     title: "鍼灸の安全性を考える演習｜方法や刺激量を決める前に",
-    description: "施術を検討する架空例から、方法、本人の状態、同意、有害な反応への対応を確認する練習です。",
+    description: "架空例を使って、鍼灸の前に確認することと、施術後に胸の痛みや息苦しさが出たときの対応を考えます。",
     lead: "「初めてなので、できるだけ負担の少ない方法なら受けたい」と話す架空の人を想定します。希望を聞いたら、その人にとって負担とは何か、方法ごとにどんな確認が要るかを考えます。",
     sections: [
       {
@@ -422,6 +423,17 @@ export const clinicalArticles: Record<string, PublicLectureArticle> = {
         heading: "保留する理由を一行で書く",
         paragraphs: ["たとえば「服薬内容と新しい症状の経過が不明なので、方法の選択を保留する」と書きます。次にどの情報を誰と確かめるか、本人が途中で中止を希望した場合にどう応じるかも考えます。施術中に新しい不調があれば、原因を決めつけず安全性を確認します。"],
         links: [{ href: "/safety", label: "鍼灸の安全性と受診の目安" }, { href: "https://safety.jsam.jp/", label: "全日本鍼灸学会の安全対策資料" }],
+      },
+      {
+        heading: "施術後に胸の痛みと息苦しさが出たら",
+        paragraphs: [
+          "背中への鍼施術を受けた人から、帰宅後に胸が痛み、息苦しくて話し続けるのも難しいと連絡があったとします。まず何を優先し、救急隊や医療機関には何を伝えますか。",
+          "この例ではすぐに119番へ連絡します。通報では指令員の質問に答えます。救急隊や医療機関には、鍼を受けた時刻と部位、胸の痛みや息苦しさが始まった時刻、その後どう変わったかを、分かる範囲で伝えます。",
+          "全日本鍼灸学会のガイドラインでは、胸や背中への鍼施術のあとに胸の痛みや息苦しさがあれば、気胸などを調べるため速やかに医療機関を受診するよう案内しています。",
+        ],
+        links: [
+          { href: `${acupunctureResearchHref("adverse-events")}#pneumothorax`, label: "台湾の研究では、鍼施術後の気胸による入院をどう数えたか" },
+        ],
       },
     ],
   },

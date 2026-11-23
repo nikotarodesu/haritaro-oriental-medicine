@@ -184,7 +184,8 @@ for (const query of ['陰陽', '陰陽とは', '陰陽 意味', 'いんよう'])
 assert.equal(optionUrls(points)[0], '/tsubo/li4', 'The whole catalog retains exact point-code lookup');
 const research = render('肩こり 論文');
 assert(optionUrls(research)[0]?.startsWith('/library#paper-'), 'Explicit research intent promotes a relevant paper: ' + optionUrls(research).slice(0, 3).join(', '));
-assert(research.includes('書誌照合済み・解釈確認待ち'), 'Unreviewed interpretations are visibly distinguished from a checked summary');
+assert(research.includes('論文：原典要約の照合済み'), 'Checked interpretations show their source-review status');
+assert(!research.includes('書誌照合済み・解釈確認待ち'), 'All published shoulder summaries have been checked');
 assert(shoulder.includes('検索の目的に合わせて表示順を変える'));
 assert(shoulder.includes('論文・原典'));
 const { REFLECTION_CASES } = load('src/data/learningReflectionCatalog');

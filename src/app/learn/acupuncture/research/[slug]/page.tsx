@@ -78,11 +78,21 @@ export default async function AcupunctureResearchPage({ params }: Props) {
         <section key={section.id} id={section.id} className="page-section space-y-3 border-t border-divider pt-5" aria-labelledby={`${section.id}-title`}>
           <h2 id={`${section.id}-title`} className="page-section-heading">{section.title}</h2>
           {section.paragraphs.map(paragraph => <p className="leading-relaxed" key={paragraph}>{paragraph}</p>)}
+          {section.exercise && (
+            <div className="page-help space-y-2">
+              <p className="font-semibold">{section.exercise.question}</p>
+              <details className="atlas-disclosure">
+                <summary>考え方の例を読む</summary>
+                <p className="leading-relaxed">{section.exercise.answer}</p>
+              </details>
+            </div>
+          )}
+          {section.sources.length > 0 &&
           <ul className="flex flex-wrap gap-x-4 gap-y-1 text-sm" aria-label="この節の出典">
             {article.sources.filter(source => section.sources.includes(source.id)).map(source => (
               <li key={source.id}><a href={`#source-${source.id}`} className="ui-text-link inline-block py-1">{source.label}</a></li>
             ))}
-          </ul>
+          </ul>}
         </section>
       ))}
       <section id="sources" className="page-section border-t border-divider pt-5" aria-labelledby="research-sources-title">

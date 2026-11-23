@@ -1,6 +1,7 @@
 import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import { Metadata } from "next";
 import Link from "next/link";
+import { PATTERN_AGREEMENT_HREF } from "@/config/acupunctureLearning";
 import SimulatorHub from "@/components/SimulatorHub";
 import { getArticlePreviews } from "@/data/articleData";
 
@@ -77,6 +78,7 @@ export default function SimulatorPage() {
         "science-of-kampo-network-pharmacology",
         "science-of-qi-blood-fluid",
       ])} />
+      <Link href={PATTERN_AGREEMENT_HREF} className="page-secondary-action">同じ所見を読んで見立てが分かれたら？</Link>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import type { PublicLectureArticle } from "./types";
+import { KNEE_RESEARCH_HREF, PATTERN_AGREEMENT_HREF } from "@/config/acupunctureLearning";
 
 export const foundationArticles: Record<string, PublicLectureArticle> = {
   "lecture-intro-2": {
@@ -40,6 +41,19 @@ export const foundationArticles: Record<string, PublicLectureArticle> = {
         paragraphs: [
           "「点数が変わった」は測った結果です。「なぜ変わったのか」は、研究者が別に考える問いです。考察に書かれた仕組みを見かけたら、研究でその仕組みも測ったかを本文に戻って確認します。",
           "「気をエネルギーにたとえる」ような文章は、用語を想像しやすくする比喩として読むことができます。引用元が何を示した資料かを考えると、用語の定義、たとえ、測定結果を区別できます。",
+        ],
+      },
+      {
+        heading: "実際の論文で、三つの群を比べる",
+        paragraphs: [
+          "Scharfらの膝の研究で、26週後に痛みや動作の質問票が36％以上改善したのは、鍼の群で53.1％、模擬鍼の群で51.0％、保存療法の群で29.1％でした。鍼と保存療法だけを読んだときと、模擬鍼も読んだときで、説明はどう変わるでしょうか。",
+          "後にこの試験を引用したManheimerらのレビューも、模擬鍼との差と、鍼を受けなかった群との差を区別しています。引用を見つけたら、元の論文で、どの二つの群を比べたか、何を改善と数えたかを確かめます。",
+        ],
+        links: [
+          { href: "https://pubmed.ncbi.nlm.nih.gov/16818924/", label: "Scharfらの原著の抄録を読む（2006年）" },
+          { href: "https://pmc.ncbi.nlm.nih.gov/articles/PMC3169099/", label: "Scharfらを引用したManheimerらのレビューを読む（2010年）" },
+          { href: KNEE_RESEARCH_HREF, label: "膝の試験どうしで測り方を比べる" },
+          { href: PATTERN_AGREEMENT_HREF, label: "見立てが一致するかを調べた研究を読む" },
         ],
       },
     ],

@@ -7,6 +7,7 @@ export interface AcupunctureResearchArticle {
     title: string;
     paragraphs: readonly string[];
     sources: readonly string[];
+    exercise?: { question: string; answer: string };
   }[];
   sources: readonly {
     id: string;

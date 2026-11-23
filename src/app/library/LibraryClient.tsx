@@ -26,6 +26,10 @@ import { PUBLIC_ARCHIVE_CASES, ARCHIVE_CASES_NOTICE } from "@/data/cases/archive
 import PageIntro from "@/components/design/PageIntro";
 import { ACUPUNCTURE_RESEARCH, NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
 
+const abstractCount = PAPERS_DATABASE.filter(paper => paper.verificationScope === 'abstract').length;
+const fullTextCount = PAPERS_DATABASE.filter(paper => paper.verificationScope === 'selected_full_text').length;
+const bibliographyOnlyCount = PAPERS_DATABASE.length - abstractCount - fullTextCount;
+
 export default function LibraryClient() {
 
   const [activeTab, setActiveTab] = useState<"all" | "papers" | "classics" | "cases" | "archives">("all");
@@ -121,7 +125,17 @@ export default function LibraryClient() {
         <div className="library-result-summary">
           <h2 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">検索結果</h2>
           <p role="status" aria-atomic="true" className="text-sm text-[#59615D] dark:text-[#A0B0BC]"><span className="sr-only">表示中：</span>{visibleResultCount}件</p>
-          <details className="reference-disclosure library-source-disclosure"><summary>出典・確認範囲</summary><div className="reference-disclosure-body"><p className="text-base leading-relaxed">論文は著者・題名・掲載誌を出典と照らし合わせたものを載せています。古典では『素問』『霊枢』『難経』などの記述と、確認した箇所を読めます。</p><p className="text-base leading-relaxed">論文{PAPERS_DATABASE.length}件のうち、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'abstract').length}件は抄録、{PAPERS_DATABASE.filter(paper => paper.verificationScope === 'selected_full_text').length}件は本文の一部まで読んでいます。{PAPERS_DATABASE.filter(paper => paper.claimsStatus !== 'source-checked').length}件は書誌情報を確認した資料です。専門家による監修は完了していません。<Link href="/editorial-policy" className="underline">出典の確認と監修の状況</Link></p></div></details>
+          <details className="reference-disclosure library-source-disclosure">
+            <summary>出典・確認範囲</summary>
+            <div className="reference-disclosure-body">
+              <p>論文は著者・題名・掲載誌を原典と照らし合わせて掲載しています。古典では『素問』『霊枢』『難経』などの記述と、確認した箇所を読めます。</p>
+              <p>
+                掲載論文のうち、{abstractCount}件は抄録、{fullTextCount}件は本文の一部まで確認しています。
+                {bibliographyOnlyCount > 0 && `${bibliographyOnlyCount}件は書誌情報を確認しています。`}
+              </p>
+              <p>専門家による監修は完了していません。<Link href="/editorial-policy" className="underline">出典の確認方法と監修の状況</Link></p>
+            </div>
+          </details>
         </div>
       </section>
 
@@ -224,6 +238,13 @@ export default function LibraryClient() {
                               {paper.sourceLocator}（確認日 {paper.claimsCheckedAt}）
                             </p>}
                             {paper.sourceCheckedAt && <p>書誌確認日：<time dateTime={paper.sourceCheckedAt}>{paper.sourceCheckedAt}</time></p>}
+                            {!!paper.relatedSources?.length && <ul className="space-y-1">
+                              {paper.relatedSources.map(source => <li key={source.url}>
+                                <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1 underline">
+                                  {source.title}<ExternalLink className="h-3 w-3 shrink-0" aria-hidden="true" />
+                                </a>
+                              </li>)}
+                            </ul>}
                           </div>
                         </details>
                       </div>

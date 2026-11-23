@@ -11,13 +11,23 @@ export const ACUPUNCTURE_TRIAL_COMPARISON_HREF = `${ACUPUNCTURE_GUIDE.href}#comb
 export const ACUPUNCTURE_RESEARCH = {
   href: "/learn/acupuncture/research",
   title: "鍼灸の研究を読む",
-  description: "腰痛や坐骨神経痛、術後の吐き気、鍼灸の有害事象を調べた研究を読みます。誰を調べ、何と比べ、何を数えたかを原著と照らし合わせられます。",
+  description: "腰痛、膝痛、片頭痛、術後の吐き気、鍼灸の安全性や弁証の研究を読みます。誰を調べ、何と比べ、何を数えたかを原著と照らし合わせられます。",
   revisedAt: "2026-11-23",
 } as const;
 
 export function acupunctureResearchHref(slug: string) {
   return `${ACUPUNCTURE_RESEARCH.href}/${slug}`;
 }
+
+export const PATTERN_AGREEMENT_HREF = acupunctureResearchHref("pattern-diagnosis-agreement");
+export const KNEE_RESEARCH_HREF = acupunctureResearchHref("knee-osteoarthritis");
+export const MIGRAINE_RESEARCH_HREF = acupunctureResearchHref("migraine-prevention");
+
+export const SYMPTOM_RESEARCH_LINKS: Readonly<Partial<Record<string, { href: string; label: string }>>> = {
+  "headache-stiff-neck": { href: MIGRAINE_RESEARCH_HREF, label: "片頭痛の予防試験を読み比べる" },
+  "lower-back-pain-sciatica": { href: acupunctureResearchHref("low-back-pain-sciatica"), label: "腰痛と坐骨神経痛の3試験を読み比べる" },
+  "knee-joint-pain": { href: KNEE_RESEARCH_HREF, label: "膝の痛みと動きやすさを比べた試験を読む" },
+};
 
 const historyArticle = "science-of-oriental-medicine-history";
 const nineNeedlesAnchor = "ancient-nine-needles";

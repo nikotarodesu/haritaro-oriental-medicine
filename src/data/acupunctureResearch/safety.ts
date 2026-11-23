@@ -34,6 +34,15 @@ export const SAFETY_RESEARCH: AcupunctureResearchArticle = {
       sources: ["baumler"],
     },
     {
+      id: "pneumothorax",
+      title: "鍼施術後の気胸による入院をどう数えたか",
+      paragraphs: [
+        "Linらは、1997〜2012年の台湾の公的医療保険データで、411,734人が受けた5,407,378回の鍼施術を調べました。施術後7日以内に入院を要した気胸は、施術100万回あたり0.87件と報告しています。",
+        "この数字が示すのは、台湾の当時の保険記録に基づく入院の頻度です。外来だけで対応した場合や、施術から8日目以降の入院は集計の範囲外です。",
+      ],
+      sources: ["lin"],
+    },
+    {
       id: "hospital-records",
       title: "病院で集めた事例から、何が分かるか",
       paragraphs: [
@@ -47,10 +56,12 @@ export const SAFETY_RESEARCH: AcupunctureResearchArticle = {
     { id: "furuse", label: "Furuse ほか · Medical Acupuncture（2017年）", url: "https://doi.org/10.1089/acu.2017.1230", scope: "研究方法、結果、表3。日本の教育機関付属8施設の鍼・灸の前向き調査。" },
     { id: "witt", label: "Witt ほか · Forschende Komplementärmedizin（2009年）", url: "https://doi.org/10.1159/000209315", scope: "抄録の方法と結果。ドイツの患者報告による前向き観察研究。" },
     { id: "baumler", label: "Bäumler ほか · BMJ Open（2021年）", url: "https://doi.org/10.1136/bmjopen-2020-045961", scope: "研究方法、図4、表3。前向き研究の重篤な事象の推計と因果関係の評価。" },
+    { id: "lin", label: "Lin ほか · Acupuncture in Medicine（2019年）", url: "https://doi.org/10.1136/acupmed-2018-011697", scope: "抄録の目的、方法、結果。台湾の保険記録で鍼施術後7日以内の入院を集計。" },
     { id: "kim", label: "Kim ほか · Journal of Korean Medical Science（2018年）", url: "https://doi.org/10.3346/jkms.2018.33.e164", scope: "研究方法、結果、図1。韓国の大学病院の救急外来記録による後ろ向き調査。" },
   ],
   related: [
     { href: "/safety", label: "受診の目安と鍼灸の安全性" },
+    { href: "/curriculum/lecture-treatment-9#lecture-section-4", label: "施術後に胸の痛みや息苦しさが出たときの演習" },
     { href: "/learn/acupuncture", label: "鍼灸入門" },
   ],
   tags: ["鍼灸の安全性", "有害事象", "副作用", "施術回数", "内出血", "鍼灸研究"],

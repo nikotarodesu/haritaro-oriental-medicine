@@ -183,10 +183,13 @@ export const CLINICAL_STUDY_ADDITIONS: readonly AtlasStudy[] = [
     kind: "combination",
     points: ["te6", "gb34"],
     otherPoints: "痛む場所の周辺に選ぶ阿是穴も使用。",
-    result: "4週時点で、電気鍼の群と偽電気鍼の群の痛みの低下の差は、0〜10点の尺度で平均0.53点でした。痛みが30%以上減った人は、それぞれ約47%と24%でした。",
+    result: "4週時点で、電気鍼の群は偽電気鍼の群より、0〜10点の尺度で痛みが調整後の平均で0.53点多く下がりました。痛みが30%以上減った人は、それぞれ約47%と24%でした。",
     design: "帯状疱疹後神経痛の448人を対象に、支溝・陽陵泉・痛む部位の周囲を組み合わせた電気鍼と、偽電気鍼を比較した無作為化試験です。",
-    limits: "平均の痛みの差は小さく、施術後の追跡は1か月です。支溝または陽陵泉だけの効果や、発疹が出ている時期の帯状疱疹への効果は調べていません。",
-    sources: [{ label: "帯状疱疹後神経痛の無作為化試験 · JAMA Neurology（2026）", url: "https://jamanetwork.com/journals/jamaneurology/fullarticle/2849572" }],
+    limits: "平均の群間差は、著者が結果の解釈に用いた1.5点の目安を下回りました。参加者が割り付けを見分けられたかは試験中に確認しておらず、施術後の追跡は1か月です。支溝や陽陵泉を単独で使った場合や、発疹が出ている時期は調べていません。",
+    sources: [
+      { label: "帯状疱疹後神経痛の無作為化試験 · JAMA Neurology（2026年10月訂正版）", url: "https://jamanetwork.com/journals/jamaneurology/fullarticle/2849572" },
+      { label: "本文・図表・試験計画書の訂正 · JAMA Neurology（2026年10月）", url: "https://jamanetwork.com/journals/jamaneurology/fullarticle/2855740" },
+    ],
   },
   {
     id: "chronic-tinnitus-acupuncture",

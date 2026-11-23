@@ -17,7 +17,7 @@ import { ARTICLES } from '@/data/articleData';
 import { CLINICAL_CASES } from '@/data/clinicalCasesData';
 import { getPublicLectureArticle } from '@/data/publicLectures';
 import { pageSocialMetadata } from '@/config/seo';
-import { ACUPUNCTURE_GUIDE, acupunctureResearchHref } from '@/config/acupunctureLearning';
+import { ACUPUNCTURE_GUIDE, SYMPTOM_RESEARCH_LINKS } from '@/config/acupunctureLearning';
 import { getSymptomGuide, getSymptomGuideJsonLd, getSymptomGuideRevision, getSymptomGuideSources, getSymptomRelatedPapers, SYMPTOM_LEARNING_RESOURCES, symptomGuideDescription, symptomGuidePath, symptomGuideTitle } from '@/utils/symptomGuides';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -57,7 +57,8 @@ export default async function SymptomGuidePage({ params }: Props) {
   const papers = getSymptomRelatedPapers(guide);
   const pointStudies = getSymptomStudies(guide.id);
   const researchNote = SYMPTOM_RESEARCH_NOTES[guide.id];
-  const hasResearch = pointStudies.length > 0 || !!researchNote;
+  const researchLink = SYMPTOM_RESEARCH_LINKS[guide.id];
+  const hasResearch = pointStudies.length > 0 || !!researchNote || !!researchLink;
   const relatedGuides = SYMPTOMS.filter(item => item.id !== guide.id && item.category === guide.category);
   const sections = [
     { id: 'daily-life', label: '日常の工夫' },
@@ -132,8 +133,8 @@ export default async function SymptomGuidePage({ params }: Props) {
           </ul>
         </article>}
         {pointStudies.length > 0 && <div className="atlas-study-list">{pointStudies.map(study => <AtlasStudyCard key={study.id} study={study} />)}</div>}
-        {slug === 'lower-back-pain-sciatica' && (
-          <p><Link href={acupunctureResearchHref('low-back-pain-sciatica')} className={linkClass}>腰痛と坐骨神経痛の3試験を読み比べる</Link></p>
+        {researchLink && (
+          <p><Link href={researchLink.href} className={linkClass}>{researchLink.label}</Link></p>
         )}
       </section>}
       <section id="learning" className={sectionClass}>

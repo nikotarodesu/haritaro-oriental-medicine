@@ -36,6 +36,7 @@ export interface PaperReference {
   sourceUrl?: string;
   verificationScope?: 'abstract' | 'selected_full_text';
   sourceLocator?: string;
+  relatedSources?: { title: string; url: string }[];
 }
 
 export const SOURCE_PAPERS: PaperReference[] = [
@@ -307,95 +308,53 @@ export const SOURCE_PAPERS: PaperReference[] = [
   {
     id: "electrodermal-ryodoraku-qigong-sancier-2003",
     title: "Electrodermal Measurements for Monitoring the Effects of a Qigong Workshop",
-    japaneseTitle: "気功ワークショップの効果をモニタリングするための皮膚電気（良導絡）測定：生体エネルギー・自律神経バランスの客観的評価",
+    japaneseTitle: "気功講習の参加者を対象とした皮膚の電気伝導度の測定",
     authors: ["Kenneth M. Sancier"],
     journal: "The Journal of Alternative and Complementary Medicine",
     year: 2003,
-    studyDesign: "自己対照型前後比較臨床試験 (Self-controlled Clinical Study)",
-    sampleSize: 29,
-    targetCondition: "気功実践に伴う気（生体エネルギー）・自律神経バランスの変動評価",
-    interventionProtocol: {
-      name: "2日間気功集中ワークショップ (2-Day Qigong Workshop)",
-      acupoints: ["手首・足背の良導絡24代表測定点 (H1〜H6, F1〜F6)"],
-      description: "Ryodoraku Neurometer Model D-410（湿潤綿プローブ、スプリング定圧電極）を用い、2日間にわたり毎朝・毎夕に手足24代表測定点の電気伝導度を測定。"
-    },
-    primaryOutcomes: "24測定点の良導絡値の個体内・集団内標準偏差（SD: Standard Deviation）の変化",
-    secondaryOutcomes: "午前の測定値に対する午後の測定値の総伝導度変化（サーカディアンリズムの検討）",
-    keyFindings: [
-      "気功ワークショップ受講者29名を対象に、Ryodorakuニューロメーターによる客観的生体電気測定を実施。",
-      "【気のバランス改善（バラツキの有意な減少）】：個人および集団全体の良導絡24測定点における標準偏差（SD）が、午前から午後にかけて有意に減少した（1日目 p = 0.004、2日目 p = 0.0001）。",
-      "全29名中26名（約90%）においてワークショップ期間中に標準偏差の減少（経絡間のアンバランス・偏りの是正＝気の均一平準化）が確認された（p < 0.00001）。",
-      "【サーカディアンリズムの確認】：午後の平均電気伝導度は午前に比べて全体的に有意に高値を示し、生体の生理的日内リズム（交感神経・代謝活性の上昇）を鋭敏に反映。",
-      "EAV（フォル電針）やAMI（本山博・経絡機能測定器）と比較し、良導絡の生理食塩水湿潤綿プローブと定圧スプリング構造が組織を機械的に損傷・刺激せず、再現性の高い客観データを提供することを実証。"
-    ],
-    clinicalTakeaways: [
-      "東洋医学における「気血の調和」「陰陽の平衡」が、良導絡24測定点の『標準偏差（ばらつき）の縮小』という純粋な統計物理量として客観的に可視化・実証された画期的な研究。",
-      "鍼灸治療や気功・運動療法前後において、単なる電流量の絶対値だけでなく、各経絡間の偏差（SD）を評価指標とすることの臨床的妥当性を証明。"
-    ],
-    tags: ["気功","良導絡","Neurometer","皮膚電気伝導度","気のバランス","標準偏差","サーカディアンリズム","客観的評価","EAV","AMI"],
-    abstract: "Objectives: Electrodermal measurements with a Ryodoraku instrument were used to monitor the effects of a 2-day qigong workshop on the body energy of participants. Methods: Measurements of relative electrical conductivity at 24 acupoints were made on 29 subjects morning and afternoon. Results: Standard deviations of Ryodoraku responses decreased significantly (p=0.004, p=0.0001), showing improved energetic balance."
+    pmid: "12804076",
+    doi: "10.1089/10755530360623347",
+    studyDesign: "",
+    targetCondition: "2日間の気功講習の参加者",
+    primaryOutcomes: "",
+    keyFindings: [],
+    clinicalTakeaways: [],
+    tags: ["気功","良導絡","皮膚電気伝導度","日内変動"],
+    abstract: ""
   },
   {
     id: "review-acupuncture-diabetic-neuropathy-baek-2021",
     title: "Effect of Acupuncture on Diabetic Neuropathy: A Narrative Review",
-    japaneseTitle: "糖尿病性神経障害に対する鍼治療の効果：ナラティブレビュー（分子シグナル伝達機構と臨床試験の統合解析）",
-    authors: ["Minji Baek","Woojin Kim","et al."],
-    journal: "International Journal of Molecular Sciences (IJMS)",
+    japaneseTitle: "糖尿病性神経障害と鍼の研究｜ナラティブレビュー",
+    authors: ["Eunwoo Cho","Woojin Kim"],
+    journal: "International Journal of Molecular Sciences",
     year: 2021,
-    studyDesign: "系統的ナラティブレビュー (Narrative Review: ヒト臨床試験10報＋動物実験5報)",
-    sampleSize: 15,
-    targetCondition: "糖尿病性末梢神経障害 (DPN: Diabetic Peripheral Neuropathy, 疼痛・しびれ・神経伝導遅延)",
-    interventionProtocol: {
-      name: "糖尿病性神経障害に対する標準鍼灸・電針プロトコル",
-      acupoints: ["ST36 (足三里)","SP6 (三陰交)","BL20 (脾兪)","BL13 (肺兪)","SP9 (陰陵泉)","BL60 (崑崙)"],
-      description: "電針（2Hz〜低周波、20〜30分間通電、週数回〜連日）または手技鍼療法。"
-    },
-    primaryOutcomes: "神経障害性疼痛スコア（熱痛覚潜時、機械的アロディニア）、神経伝導速度（NCV: 運動・感覚神経）、空腹時血糖",
-    secondaryOutcomes: "後根神経節（DRG）および脊髄後角における分子マーカー（NF-κB p65, GPR78, TRPV1, P2X3, NGF, BDNF）、安全性・有害事象",
-    keyFindings: [
-      "解析した全15研究（臨床10報、動物5報）において、鍼治療（手技鍼および電針）が糖尿病性神経障害を有意に軽減することが一貫して示された。",
-      "【主要経穴】：足三里（ST36）、三陰交（SP6）、脾兪（BL20）、肺兪（BL13）、陰陵泉（SP9）が最頻出。",
-      "【分子生物学的鎮痛メカニズム】：電針刺激（特に2Hz足三里）は、STZ誘発糖尿病ラットの後根神経節（DRG）および脊髄において、NF-κB p65のリン酸化抑制、小胞体ストレスマーカーGPR78の正常化、TRPV1受容体およびATP受容体P2X3の過剰発現抑制、炎症性サイトカイン（TNF-α, IL-1β）の遮断を誘導。",
-      "【神経再生と伝導速度（NCV）の改善】：臨床試験4報および動物実験1報において、鍼治療後に運動神経伝導速度（MNCV）および感覚神経伝導速度（SNCV）が有意に改善。",
-      "【安全性】：5報で軽微な内出血、一時的な局所痛、痺れ、嘔気が報告されたが、重篤な有害事象は一切認められず、極めて高い安全性が確認された。"
-    ],
-    clinicalTakeaways: [
-      "糖尿病性神経障害という現代西洋医学でも対症療法薬に限られ根治が難しい難治性疾患に対し、鍼治療が神経伝導速度の客観的改善および分子レベルでの抗炎症・小胞体ストレス抑制をもたらす強固な科学的根拠。",
-      "脾経・胃経（ST36, SP6, SP9）および背部兪穴（BL20, BL13）への電針（2Hz）が、末梢神経軸索の保護と中枢性感作の抑制に最も効果的。"
-    ],
-    tags: ["糖尿病性神経障害","DPN","足三里","三陰交","電針","神経伝導速度","NF-κB","小胞体ストレス","TRPV1","P2X3"],
-    abstract: "Diabetic neuropathy, a major complication of diabetes mellitus, affects the nervous system and causes severe pain. In this review, 10 human clinical trials and 5 animal studies were analyzed. All studies reported that acupuncture (ST36, SP6, BL20, BL13, SP9) significantly relieved diabetic neuropathy through modulation of molecules such as NF-κB p65, GPR78, and TRPV1, improving nerve conduction velocity without serious adverse events."
+    pmid: "34445280",
+    doi: "10.3390/ijms22168575",
+    studyDesign: "",
+    targetCondition: "糖尿病性神経障害",
+    primaryOutcomes: "",
+    keyFindings: [],
+    clinicalTakeaways: [],
+    tags: ["糖尿病性神経障害","末梢神経障害","ナラティブレビュー","動物実験"],
+    abstract: ""
   },
   {
     id: "review-acupuncture-sports-injuries-athletes-2020",
     title: "Use of Acupuncture for the Treatment of Sports-Related Injuries in Athletes: A Systematic Review of Case Reports",
-    japaneseTitle: "アスリートのスポーツ外傷・障害に対する鍼治療の応用：症例報告・症例集積の系統的レビュー（22研究・211名のアスリート解析）",
-    authors: ["Jin-Seok Lee","Seunghoon Lee","et al."],
-    journal: "Healthcare / IJERPH",
+    japaneseTitle: "競技者のけがに鍼を用いた研究｜症例報告のレビュー",
+    authors: ["Ji-Won Lee","Jun-Hwan Lee","Song-Yi Kim"],
+    journal: "International Journal of Environmental Research and Public Health",
     year: 2020,
-    studyDesign: "系統的レビュー (Systematic Review of Case Reports and Case Series)",
-    sampleSize: 211,
-    targetCondition: "アスリートのスポーツ外傷・障害（外側半月板断裂、大腿骨寛骨臼インピンジメント、ガングリオン、スポーツヘルニア、イップス、遅発性筋肉痛 DOMS、脳震盪後症候群など）",
-    interventionProtocol: {
-      name: "アスリート特化型鍼灸・電針・カッピング複合プロトコル",
-      acupoints: ["ST36 (足三里)","Back Shu points (背部兪穴)","SP13","ST29","ST30","KI11","GB28","LR9","LR10 (スポーツヘルニア用局所筋膜・鼠径部配穴)"],
-      description: "手技鍼（MA）、電針（EA: 2Hz足三里等）、吸い玉（カッピング）、カッサ（Gua sha）等の組み合わせ。週1〜2回ペースが最多。"
-    },
-    primaryOutcomes: "競技復帰率（RTP: Return to Play）、疼痛スコア、可動域・機能回復、競技パフォーマンストラブルの改善",
-    secondaryOutcomes: "有害事象、再発率、ゴルフのイップス（運動障害）改善、遅発性筋肉痛（DOMS）の早期回復",
-    keyFindings: [
-      "MEDLINE/Embase等から網羅的に抽出された22研究・計211名のアスリート症例を系統的に分析。",
-      "【多彩なスポーツ疾患への適応】：単なる運動器慢性痛にとどまらず、外側半月板断裂、大腿骨寛骨臼インピンジメント（FAI）、ガングリオン、スポーツヘルニア（グローインペイン）など侵襲的手術が検討される難治性構造異常に対して、非侵襲的保存療法として奏効。",
-      "【イップス・中枢性機能障害への効果】：ゴルファーのイップス（局所ジストニア様運動障害）やスポーツ関連脳震盪後症候群に対して、手技鍼や電針が中枢性運動制御を回復させた。",
-      "【競技復帰率（RTP）】：復帰状況を報告した12研究（54.5%）において、全例でアスリートが競技への完全復帰を達成。",
-      "【高い安全性】：有害事象の報告は極めて少なく、重篤な有害事象はゼロ。"
-    ],
-    clinicalTakeaways: [
-      "トップアスリートや競技者におけるスポーツ外傷・障害に対し、ドーピングの懸念が一切ない安全かつ即効性の高い非薬物・非侵襲的保存療法として鍼灸が極めて有効。",
-      "器質的損傷（半月板・FAI・スポーツヘルニア）の保存的管理から、機能的・心因的運動障害（イップス、脳震盪後）に至るまで、幅広い治療適応スペクトラムを提示。"
-    ],
-    tags: ["スポーツ鍼灸","アスリート","系統的レビュー","スポーツ外傷","イップス","スポーツヘルニア","半月板損傷","競技復帰","DOMS","FAI"],
-    abstract: "This systematic review analyzed 22 clinical case reports/series (211 athletes) utilizing acupuncture for sports injuries. Confirmed acupuncture's efficacy for lateral meniscus rupture, femoroacetabular impingement, sports hernia, yips, and DOMS, achieving high Return-to-Play rates without serious adverse events."
+    pmid: "33172218",
+    doi: "10.3390/ijerph17218226",
+    studyDesign: "",
+    targetCondition: "競技者のスポーツ外傷・障害",
+    primaryOutcomes: "",
+    keyFindings: [],
+    clinicalTakeaways: [],
+    tags: ["スポーツ鍼灸","アスリート","系統的レビュー","症例報告","スポーツ外傷","競技復帰"],
+    abstract: ""
   },
   {
     id: "electroacupuncture-microcurrent-frequency-therapy-mayor-2007",
@@ -1484,37 +1443,18 @@ export const SOURCE_PAPERS: PaperReference[] = [
   {
     id: "katakori-needling-depth-rct-osaki-2018",
     title: "Differences between therapeutic effects of deep and superficial acupuncture needle insertion for shoulder stiffness: A pilot randomized controlled clinical trial",
-    japaneseTitle: "肩こりに対する鍼の刺入深度の違いによる効果の相違－予備的ランダム化比較試験－",
-    authors: ["大崎彩加 (Ayaka Osaki)","今枝美和 (Miwa Imaeda)","北小路博司 (Hiroshi Kitakoji)"],
-    journal: "全日本鍼灸学会雑誌 (Journal of the Japan Society of Acupuncture and Moxibustion)",
+    japaneseTitle: "肩こりに対する鍼の刺入深度の違いによる効果の相違：予備的ランダム化比較試験",
+    authors: ["大﨑 彩加","今枝 美和","北小路 博司","糸井 恵","井上 基浩"],
+    journal: "全日本鍼灸学会雑誌",
     year: 2018,
     doi: "10.3777/jjsam.68.10",
-    studyDesign: "ランダム化比較試験（予備的RCT）",
-    sampleSize: 16,
-    targetCondition: "慢性肩こり（頸肩部筋緊張・疼痛・違和感が6カ月以上持続する患者）",
-    interventionProtocol: {
-      name: "深刺群（Deep Needling Group: 筋組織内刺入 10〜20mm）",
-      acupoints: ["肩こり自覚部位（僧帽筋、肩甲挙筋等の圧痛点・硬結部）最大10箇所"],
-      description: "40mm・18号（0.18mm）ステンレス鍼を用い、責任筋組織内に10〜20mm刺入する単刺術。得気・ひびき感を惹起。週1回・計5回。"
-    },
-    controlProtocol: {
-      name: "浅刺群（Shallow Needling Group: 切皮のみ 約5mm）",
-      acupoints: ["肩こり自覚部位最大10箇所"],
-      description: "40mm・18号ステンレス鍼を用い、皮下浅層（切皮のみ、深度約5mm）にとどめる単刺術。ひびき感は惹起させない。週1回・計5回。"
-    },
-    primaryOutcomes: "毎回治療前後および治療終了4週後の肩こり自覚度VAS（Visual Analogue Scale）変化量",
-    secondaryOutcomes: "SPADI（肩痛・機能障害指数）、刺入感覚・ひびき感の有無、治療満足度",
-    keyFindings: [
-      "初回治療直後のVAS改善量において、深刺群は浅刺群に比べ有意に大きな疼痛軽減を示した [浅刺群 10.9±3.8 vs 深刺群 29.6±7.2 mm, P < 0.05]。",
-      "治療終了4週後の長期経過（持続効果）においても、VAS変化量は浅刺群 -1.9±5.4（治療前の状態に後戻り）に対し、深刺群 28.0±8.0 と有意な改善維持を示した [群間有意差あり, P < 0.05]。",
-      "鍼の刺入感覚（浅刺0名 vs 深刺7名）およびひびき感（浅刺0名 vs 深刺8名）は深刺群で全例に発現し有意差を認めた。患者満足度も深刺群で「大変満足・満足」が100%（浅刺群は満足50%）。"
-    ],
-    clinicalTakeaways: [
-      "日本の鍼灸臨床における最重要論点「浅刺 vs 深刺」を厳密に検証した貴重なRCT。",
-      "慢性肩こりに対しては、皮膚・皮下組織にとどまる浅刺よりも、責任筋（僧帽筋・肩甲挙筋等）の筋膜・筋腹まで10〜20mm刺入し「得気・ひびき」を惹起させる深刺の方が、即効性および4週後の持続効果において明確に優位である。"
-    ],
-    tags: ["Katakori","Needling Depth","Deep vs Shallow","RCT","Deqi","Hibiki","Shoulder Stiffness","Trapezius","JJSAM","Japan"],
-    abstract: "慢性肩こり患者16名を対象に、刺入深度の違い（浅刺約5mm vs 筋内深刺10-20mm）が鎮痛・持続効果に与える影響を比較したランダム化比較試験（明治国際医療大学）。初回直後のVAS軽減度（10.9 vs 29.6mm, P < 0.05）および治療4週後の効果持続性（-1.9 vs 28.0mm, P < 0.05）の双方において深刺群が有意に優れた。ひびき感の惹起を伴う責任筋への適切な深刺が、肩こりの長期寛解に不可欠であることが実証された。"
+    studyDesign: "",
+    targetCondition: "慢性的な肩こり",
+    primaryOutcomes: "",
+    keyFindings: [],
+    clinicalTakeaways: [],
+    tags: ["肩こり","予備試験","SPADI","肩の機能"],
+    abstract: ""
   }
 ];
 
@@ -1535,6 +1475,7 @@ export const PAPERS_DATABASE: PaperReference[] = SOURCE_PAPERS.map(paper => {
     claimsStatus: audit?.bibliographyStatus === 'retracted' ? 'do-not-use' : interpretation ? 'source-checked' : 'needs-review',
     claimsCheckedAt: interpretation?.checkedAt, sourceUrl: interpretation?.sourceUrl,
     verificationScope: interpretation?.verificationScope, sourceLocator: interpretation?.sourceLocator,
+    relatedSources: interpretation?.relatedSources,
     sampleSize: interpretation?.sampleSize, studyDesign: interpretation?.design || '',
     targetCondition: interpretation?.population || paper.targetCondition,
     interventionProtocol: undefined, controlProtocol: undefined,

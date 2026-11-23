@@ -73,17 +73,21 @@ const { getPublicLectureSeries } = load('src/data/publicLectures/index');
 const { READING_LECTURES_REVISED_AT, readingUnits } = load('src/data/publicLectures/readingUnits');
 for (const lectureId of lectureIds) {
   const date = dateAt(`/curriculum/${lectureId}`);
-  assert.equal(date, getPublicLectureSeries(lectureId) === 'reading' ? undefined : '2026-11-20', lectureId);
+  const expected = lectureId === 'lecture-treatment-9' ? '2026-11-23' : '2026-11-20';
+  assert.equal(date, getPublicLectureSeries(lectureId) === 'reading' ? undefined : expected, lectureId);
 }
-const revisedLecturePaths = new Set(['/learn/lectures/body-functions','/learn/lectures/meridians-and-points']);
-for (const unit of readingUnits) assert.equal(dateAt(unit.href), revisedLecturePaths.has(unit.href) ? '2026-11-21' : READING_LECTURES_REVISED_AT, unit.href);
+const revisedLecturePaths = {
+  '/learn/lectures/body-functions': '2026-11-21',
+  '/learn/lectures/meridians-and-points': '2026-11-21',
+  '/learn/lectures/reading-evidence': '2026-11-23',
+};
+for (const unit of readingUnits) assert.equal(dateAt(unit.href), revisedLecturePaths[unit.href] ?? READING_LECTURES_REVISED_AT, unit.href);
 for (const pathname of ['/tsubo/sp11','/tsubo/pc7','/tsubo/bl57']) {
   assert.equal(dateAt(pathname), ACUPOINT_PAGE_REVISED_AT, pathname + ' shows the shared acupoint release date');
 }
 assert.equal(dateAt('/curriculum'),'2026-11-18');
-for(const pathname of ['/','/about','/articles','/cases','/diagnosis','/glossary','/learn/essentials','/learn/review','/practice/haiketsu','/symptoms','/tsubo/compare']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
-for (const pathname of ['/clinical', '/clinical/symptoms/headache']) assert.equal(dateAt(pathname), '2026-11-21', pathname);
-for (const pathname of ['/updates', '/learn', '/learn/acupuncture', '/learn/acupuncture/research', '/library', '/safety', '/tsubo', '/tsubo/cv21', '/tsubo/te2', '/symptoms/headache-stiff-neck', '/symptoms/dizziness-tinnitus', '/symptoms/knee-joint-pain', '/tsubo/sp6', '/tsubo/st36']) assert.equal(dateAt(pathname), '2026-11-23', pathname);
+for(const pathname of ['/','/about','/articles','/cases','/glossary','/learn/essentials','/learn/review','/practice/haiketsu','/symptoms','/tsubo/compare']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
+for (const pathname of ['/diagnosis', '/clinical', '/simulator', '/clinical/symptoms/headache', '/updates', '/learn', '/learn/acupuncture', '/learn/acupuncture/research', '/library', '/safety', '/tsubo', '/tsubo/cv21', '/tsubo/te2', '/symptoms/headache-stiff-neck', '/symptoms/dizziness-tinnitus', '/symptoms/knee-joint-pain', '/tsubo/sp6', '/tsubo/st36']) assert.equal(dateAt(pathname), '2026-11-23', pathname);
 const { ACUPUNCTURE_RESEARCH, acupunctureResearchHref } = load('src/config/acupunctureLearning');
 const { ACUPUNCTURE_RESEARCH_ARTICLES } = load('src/data/acupunctureResearch');
 for (const article of ACUPUNCTURE_RESEARCH_ARTICLES) {
@@ -92,10 +96,9 @@ for (const article of ACUPUNCTURE_RESEARCH_ARTICLES) {
   assert.equal(dateAt(route), ACUPUNCTURE_RESEARCH.revisedAt, route + ' sitemap revision');
   assert.equal(knownSources.size, article.sources.length, route + ' source IDs are unique');
   assert(article.sources.every(source => new URL(source.url).protocol === 'https:' && source.scope), route + ' direct sources and their scope');
-  assert(article.sections.every(section => section.sources.length > 0 && section.sources.every(id => knownSources.has(id))), route + ' section citations resolve');
+  assert(article.sections.every(section => (section.sources.length > 0 || section.exercise) && section.sources.every(id => knownSources.has(id))), route + ' evidence sections cite originals and uncovered fictional exercises stay distinct');
 }
 assert(!sitemap.some(page => ['/pricing','/notes','/auth/login','/account/subscription'].includes(new URL(page.url).pathname)), 'Retired services are no longer indexable sitemap destinations');
-assert.equal(dateAt('/simulator'),'2026-10-18');
 assert(!sitemap.some(page => new URL(page.url).pathname === '/learn/courses'), 'The merged course index redirects to the learning home instead of appearing in the sitemap');
 assert(!sitemap.some(page => new URL(page.url).pathname === '/kokushi'), 'The retired exam landing page is no longer an indexable sitemap destination');
 for(const article of ARTICLES) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/articles/${article.id}`).lastModified.toISOString().slice(0,10),article.updatedAt);

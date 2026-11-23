@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ACUPUNCTURE_TRIAL_COMPARISON_HREF, acupunctureResearchHref } from "@/config/acupunctureLearning";
+import { ACUPUNCTURE_TRIAL_COMPARISON_HREF, SYMPTOM_RESEARCH_LINKS, acupunctureResearchHref } from "@/config/acupunctureLearning";
 import { BookOpen, FlaskConical, GitMerge } from "lucide-react";
 import { getAcupointByCode } from "@/data/tsubo";
 import { getAcupointStudies, getClassicalCombinations, getStudyPointRole } from "@/data/tsubo/atlas/evidence";
@@ -61,6 +61,10 @@ export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; curr
 
 export default function AcupointResearch({ point, traditionalTitle = "伝統的な使われ方" }: { point: AcupointDetail; traditionalTitle?: string }) {
   const studies = getAcupointStudies(point.codeLower);
+  const researchLinks = [...new Set(studies.map(study => study.guide))].flatMap(guide => {
+    const link = guide ? SYMPTOM_RESEARCH_LINKS[guide] : undefined;
+    return link ? [link] : [];
+  });
   const combinations = getClassicalCombinations(point.codeLower);
   const background = point.codeLower === "li4" || point.codeLower === "st36" ? point.researchEvidence : undefined;
   const searched = Object.hasOwn(ATLAS_LITERATURE_SEARCH_COUNTS, point.codeLower);
@@ -80,6 +84,11 @@ export default function AcupointResearch({ point, traditionalTitle = "伝統的�
         <p className="atlas-evidence-empty">
           <Link href={acupunctureResearchHref("postoperative-nausea")} className="atlas-source-link">術後の吐き気と内関の試験を読み比べる</Link>
         </p>
+      )}
+      {researchLinks.length > 0 && (
+        <ul className="atlas-evidence-empty space-y-2">
+          {researchLinks.map(({ href, label }) => <li key={href}><Link href={href} className="atlas-source-link">{label}</Link></li>)}
+        </ul>
       )}
       {searched && (
         <p className="atlas-evidence-empty">

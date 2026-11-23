@@ -244,7 +244,7 @@ function findScript(node) {
     assert.equal(meta.twitter.description, meta.description);
     assert.equal(webPage.url, meta.alternates.canonical);
     assert(webPage['@type'].includes('LearningResource'));
-    assert.equal(webPage.dateModified, '2026-11-20');
+    assert.equal(webPage.dateModified, tab ? '2026-11-20' : '2026-11-23');
     assert.equal(webPage.breadcrumb['@id'], breadcrumbs['@id']);
     assert.equal(breadcrumbs.itemListElement[1].item, 'https://www.haritaro.jp/clinical');
     assert.equal(breadcrumbs.itemListElement.at(-1).item, webPage.url);

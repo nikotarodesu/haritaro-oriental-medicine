@@ -125,8 +125,8 @@ for (const source of classics.SOURCE_CLASSICAL_TEXTS) {
   assert(!/奇跡的な効果|全疾患が治る|栄養供給を再建|最重要である根拠|現代臨床でもそのまま第一選択/.test(published.translation + published.clinicalApplication), `${source.id}: ancient text is not proof of modern clinical efficacy`);
 }
 const { VERIFIED_PAPERS } = load('src/data/references/papersData');
-assert.equal(VERIFIED_PAPERS.length, 32);
-assert.equal(VERIFIED_PAPERS.filter(paper => paper.claimsStatus === 'source-checked').length, 31);
+assert.equal(VERIFIED_PAPERS.length, 35);
+assert.equal(VERIFIED_PAPERS.filter(paper => paper.claimsStatus === 'source-checked').length, 35);
 for (const paper of VERIFIED_PAPERS.filter(paper => paper.claimsStatus === 'source-checked')) {
   assert.match(paper.sourceUrl, /^https:\/\//, `${paper.id}: checked source URL missing`);
   assert.match(paper.claimsCheckedAt, /^\d{4}-\d{2}-\d{2}$/, `${paper.id}: interpretation date missing`);
@@ -135,14 +135,14 @@ for (const paper of VERIFIED_PAPERS.filter(paper => paper.claimsStatus === 'sour
   assert.equal(paper.interventionProtocol, undefined, `${paper.id}: a bounded source check cannot release procedural instructions`);
 }
 const paperById = id => VERIFIED_PAPERS.find(paper => paper.id === id);
-assert.match(paperById('rct-insomnia-heart-liver-2025').keyFindings.join(' '), /群間差は有意ではありません/);
+assert.match(paperById('rct-insomnia-heart-liver-2025').keyFindings[0], /終了時と4週後の追跡まで、群間に統計的に有意な差はありません/);
 assert.equal(paperById('chronic-insomnia-disorder-meta-tsa-yu-2025').sampleSize, undefined, 'Conflicting 757/847 participant totals must remain withheld');
 assert.match(paperById('chronic-insomnia-disorder-meta-tsa-yu-2025').clinicalTakeaways.join(' '), /757.*847/);
 assert.equal(paperById('body-weight-control-electroacupuncture-auricular-protocol-zhong-2016').sampleSize, undefined, 'Planned trial enrollment is not a completed patient sample');
 assert.match(paperById('body-weight-control-electroacupuncture-auricular-protocol-zhong-2016').studyDesign, /計画書/);
 assert.match(paperById('cfs-acupuncture-moxibustion-hrv-li-2025').clinicalTakeaways.join(' '), /鍼と灸は別々.*両方を一緒に使った場合の効果は、この比較からは分かりません/);
-assert.equal(paperById('katakori-needling-depth-rct-osaki-2018').claimsStatus, 'needs-review');
-assert.match(paperById('katakori-needling-depth-rct-osaki-2018').primaryOutcomes, /著者・論文名・掲載誌を確認/);
+assert.equal(paperById('katakori-needling-depth-rct-osaki-2018').verificationScope, 'selected_full_text');
+assert.match(paperById('katakori-needling-depth-rct-osaki-2018').keyFindings.join(' '), /SPADI.*有意な群間差を確認できません/, 'Keep the shoulder function result distinct from subjective stiffness');
 const pairs = load('src/types/clinicalMemo').CLASSIC_CLINICAL_PAIRS;
 assert.equal(pairs.length, 8);
 for (const pair of pairs) {

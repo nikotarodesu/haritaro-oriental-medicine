@@ -133,21 +133,48 @@
     "mismatches": []
   },
   "electrodermal-ryodoraku-qigong-sancier-2003": {
-    "checkedAt": "2026-10-02",
-    "bibliographyStatus": "unverified",
+    "checkedAt": "2026-11-23",
+    "bibliographyStatus": "matched",
     "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/12804076/",
+    "canonical": {
+      "title": "Electrodermal measurements for monitoring the effects of a qigong workshop",
+      "authors": ["Kenneth M. Sancier"],
+      "journal": "The Journal of Alternative and Complementary Medicine",
+      "year": 2003,
+      "pmid": "12804076",
+      "doi": "10.1089/10755530360623347"
+    },
     "mismatches": []
   },
   "review-acupuncture-diabetic-neuropathy-baek-2021": {
-    "checkedAt": "2026-10-02",
-    "bibliographyStatus": "unverified",
+    "checkedAt": "2026-11-23",
+    "bibliographyStatus": "matched",
     "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/34445280/",
+    "canonical": {
+      "title": "Effect of Acupuncture on Diabetic Neuropathy: A Narrative Review",
+      "authors": ["Eunwoo Cho", "Woojin Kim"],
+      "journal": "International Journal of Molecular Sciences",
+      "year": 2021,
+      "pmid": "34445280",
+      "doi": "10.3390/ijms22168575"
+    },
     "mismatches": []
   },
   "review-acupuncture-sports-injuries-athletes-2020": {
-    "checkedAt": "2026-10-02",
-    "bibliographyStatus": "unverified",
+    "checkedAt": "2026-11-23",
+    "bibliographyStatus": "matched",
     "claimsStatus": "needs-review",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/33172218/",
+    "canonical": {
+      "title": "Use of Acupuncture for the Treatment of Sports-Related Injuries in Athletes: A Systematic Review of Case Reports",
+      "authors": ["Ji-Won Lee", "Jun-Hwan Lee", "Song-Yi Kim"],
+      "journal": "International Journal of Environmental Research and Public Health",
+      "year": 2020,
+      "pmid": "33172218",
+      "doi": "10.3390/ijerph17218226"
+    },
     "mismatches": []
   },
   "electroacupuncture-microcurrent-frequency-therapy-mayor-2007": {
@@ -636,7 +663,7 @@
     ]
   },
   "shiatsu-vs-acupressure-distinction-cabo-2018": {
-    "checkedAt": "2026-10-02",
+    "checkedAt": "2026-11-23",
     "bibliographyStatus": "matched",
     "claimsStatus": "needs-review",
     "source": "https://pubmed.ncbi.nlm.nih.gov/29881477/",
@@ -651,7 +678,8 @@
       ],
       "journal": "International journal of therapeutic massage & bodywork",
       "year": 2018,
-      "pmid": "29881477"
+      "pmid": "29881477",
+      "doi": "10.3822/ijtmb.v11i2.391"
     },
     "mismatches": []
   },

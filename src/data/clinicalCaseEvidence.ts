@@ -18,11 +18,14 @@ const chronicPainEvidence: ClinicalCaseEvidence = {
 
 export const CLINICAL_CASE_EVIDENCE: Record<string, ClinicalCaseEvidence> = {
   "case-01-headache-liver-fire": {
-    population: "前兆のない反復性片頭痛と診断され、鍼の経験がない150人を対象とした多施設ランダム化比較試験（Xuら、2020年）。",
-    comparison: "通常ケアに加えて8週間で20回の手技鍼を行う群と、通常ケアに非刺入の偽鍼を加える群などを比較。",
-    result: "17〜20週時点の4週間あたり片頭痛日数の減少は、手技鍼群で偽鍼群より2.1日多い結果でした（群間差−2.1日、95%信頼区間−2.9〜−1.2日）。",
-    interpretation: "発作の予防を評価した試験で、発作時の即効性を示すものではありません。この架空例を片頭痛と確定する根拠や、肝火上炎という証の診断精度、眼の充血の原因評価にも使えません。",
-    sources: [{ title: "Xuら 2020：片頭痛予防の鍼・偽鍼比較試験", url: "https://www.bmj.com/content/368/bmj.m697" }],
+    population: "前兆のない反復性片頭痛で鍼の経験がない150人を対象としたXuらの試験と、月に2〜6回の片頭痛発作がある960人を割り付けたDienerらの試験。",
+    comparison: "Xuらは通常ケアに加える手技鍼と皮膚を刺さない模擬鍼などを比較。Dienerらは鍼、経穴から外れた場所に刺す模擬鍼、予防薬を比較しました。",
+    result: "Xuらの試験では、17〜20週の4週間に片頭痛があった日数が、手技鍼群で模擬鍼群より調整後の平均で2.1日多く減りました。Dienerらの試験では、23〜26週の片頭痛日数の減少に3群で明確な差は見られませんでした。",
+    interpretation: "どちらも片頭痛と診断された人を対象に、数週間から数か月の予防の変化を調べています。この症例では、まず強い側頭痛と目の充血の原因を確認します。そのうえで発作の経過を追うときは、痛みがあった日数と発作の回数を分けて記録します。",
+    sources: [
+      { title: "Xuら（2020年）の手技鍼・模擬鍼・通常ケアの比較試験", url: "https://www.bmj.com/content/368/bmj.m697" },
+      { title: "Dienerら（2006年）の鍼・模擬鍼・予防薬の比較試験", url: "https://pubmed.ncbi.nlm.nih.gov/16545747/" },
+    ],
   },
   "case-03-dysmenorrhea-cold-stasis": {
     population: "原発性月経困難症を対象とした22試験・1,955人のレビュー（Wangら、2025年。検索は2024年5月まで）。",
@@ -74,13 +77,14 @@ export const CLINICAL_CASE_EVIDENCE: Record<string, ClinicalCaseEvidence> = {
     sources: [{ title: "AHA 2024：高血圧を伴う成人の起立性低血圧", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC11067441/" }],
   },
   "case-14-knee-osteoarthritis": {
-    population: "膝変形性関節症の480人を割り付け、442人を有効性解析した試験（Tuら、2021年）。",
-    comparison: "週3回、8週間の電気鍼・手技鍼・偽鍼を比較。主要評価は痛みと機能の両方で臨床的に重要な改善を達成した割合。",
-    result: "8週の達成率は電気鍼60.3%、手技鍼58.6%、偽鍼47.3%。電気鍼と偽鍼の差は13.0ポイント（97.5%信頼区間0.2〜25.9）でした。手技鍼と偽鍼の差11.3ポイント（−1.6〜24.4）は8週の主要評価で有意ではありませんでした。",
-    interpretation: "1試験の条件下の症状・機能の結果で、軟骨再生や関節水腫の排出を示すものではありません。NICEの2022年NG226は、全体の根拠と費用を評価して変形性関節症への鍼・ドライニードリングを提供しないよう勧告しています。研究結果と診療推奨を分けて読みます。",
+    population: "変形性膝関節症で、480人を割り付けたTuらの試験と、膝痛が半年以上続く1,007人を対象としたScharfらの試験。",
+    comparison: "Tuらは電気鍼、手技鍼、模擬鍼を比較し、8週後に痛みと日常動作の両方で改善した割合を評価。Scharfらは鍼、模擬鍼、保存療法を比較し、26週後に質問票（WOMAC）の合計点が36%以上改善した割合を評価しました。",
+    result: "Tuらの解析では8週の基準を満たした人は電気鍼60.3%、手技鍼58.6%、模擬鍼47.3%。電気鍼と模擬鍼の差が事前に定めた統計上の基準を満たしました。Scharfらの26週の改善率は鍼53.1%、模擬鍼51.0%、保存療法29.1%で、鍼と模擬鍼の間に明確な差は見られませんでした。",
+    interpretation: "この症例で経過を追うなら、立ち上がるときや階段を下りるときの痛みと、動作をどこまで行えたかを記録します。両試験の改善率からは、軟骨や膝の腫れの変化は分かりません。英国のNICEは複数の研究と費用対効果を検討し、変形性関節症に鍼を提供しないよう勧告しています。",
     sources: [
-      { title: "Tuら 2021：膝変形性関節症の電気鍼・手技鍼・偽鍼比較", url: "https://pubmed.ncbi.nlm.nih.gov/33174383/" },
-      { title: "NICE NG226：変形性関節症の診療推奨", url: "https://www.nice.org.uk/guidance/ng226/chapter/recommendations" },
+      { title: "Tuら（2021年）の電気鍼・手技鍼・模擬鍼の比較試験", url: "https://pubmed.ncbi.nlm.nih.gov/33174383/" },
+      { title: "Scharfら（2006年）の鍼・模擬鍼・保存療法の比較試験", url: "https://pubmed.ncbi.nlm.nih.gov/16818924/" },
+      { title: "英国NICEの変形性関節症ガイドライン（NG226）", url: "https://www.nice.org.uk/guidance/ng226/chapter/Recommendations#acupuncture" },
     ],
   },
   "case-20-bells-palsy": {

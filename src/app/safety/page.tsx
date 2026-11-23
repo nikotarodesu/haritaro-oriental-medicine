@@ -40,6 +40,7 @@ export default function SafetyPage() {
     </section>
     <section id="learning-scope" className="scroll-mt-28 space-y-3"><h2 className="text-xl font-bold">教材で確認できる範囲</h2>
       <p>{PROCEDURE_PUBLICATION_NOTICE}</p>
+      <p><Link href="/curriculum/lecture-treatment-9#lecture-section-4" className="ui-text-link">施術後の胸痛と息苦しさを題材にした演習</Link></p>
       <p>古典の禁穴・補瀉・陰陽の説明は伝統医学の学習内容です。現代の臓器損傷リスクや治療効果の証明としては扱いません。模式図も、個人の画像検査や刺入計画を代替しません。</p>
       <p className="text-sm">原典を確認した日：{MEDICAL_SAFETY_CHECKED_AT}。このページでは、受診の目安と鍼灸の安全性を上記の資料から確認しています。</p>
       <Link href="/editorial-policy" className="underline">医学記述・出典の確認状況</Link>

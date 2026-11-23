@@ -6,11 +6,27 @@ import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import CaseStudyViewer from "@/components/cases/CaseStudyViewer";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import { SERIES } from "@/config/series";
+import { KNEE_RESEARCH_HREF, MIGRAINE_RESEARCH_HREF } from "@/config/acupunctureLearning";
 import { getSymptomGuide, SYMPTOM_LEARNING_RESOURCES, symptomGuidePath } from "@/utils/symptomGuides";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
+
+const caseResearchExercises: Readonly<Partial<Record<string, { topic: string; href: string; question: string; answer: string }>>> = {
+  "case-14-knee-osteoarthritis": {
+    topic: "変形性膝関節症の比較試験",
+    href: KNEE_RESEARCH_HREF,
+    question: "この人の「立ち上がりと階段で痛い」という訴えを、次回はどう確かめますか？",
+    answer: "立ち上がるときや階段を下りるときの痛みと、動作をどこまでできたかを、前回と同じような条件で聞きます。膝の試験で測った痛みや動きやすさの改善は、軟骨や腫れの変化とは別の指標です。",
+  },
+  "case-01-headache-liver-fire": {
+    topic: "片頭痛の予防の比較試験",
+    href: MIGRAINE_RESEARCH_HREF,
+    question: "強い頭痛と目の充血があるこの人に、片頭痛の予防試験の結果は当てはまりますか？",
+    answer: "まず強い頭痛と充血の原因を医療機関で確認する場面です。研究では、片頭痛と診断された人を対象に予防の変化を調べました。診断後に経過を記録するときは、頭痛があった日数、発作の回数、薬を使った日を分けます。",
+  },
+};
 
 export async function generateStaticParams() {
   return CLINICAL_CASES.map((c) => ({
@@ -52,6 +68,7 @@ export default async function CaseDetailPage({ params }: Props) {
   const url = SITE_ORIGIN + path;
   const relatedSlug = Object.keys(SYMPTOM_LEARNING_RESOURCES).find(slug => SYMPTOM_LEARNING_RESOURCES[slug].caseId === id);
   const relatedGuide = relatedSlug ? getSymptomGuide(relatedSlug) : undefined;
+  const researchExercise = caseResearchExercises[id];
   const resourceJsonLd = {
     "@context": "https://schema.org",
     "@type": ["WebPage", "LearningResource"],
@@ -73,6 +90,17 @@ export default async function CaseDetailPage({ params }: Props) {
         { href: path, name: clinicalCase.title },
       ]} />
       <CaseStudyViewer clinicalCase={clinicalCase} />
+      {researchExercise && (
+        <section className="page-help mt-6 space-y-3" aria-labelledby="case-research-exercise">
+          <h2 id="case-research-exercise" className="page-section-heading">研究と症例を読み比べる</h2>
+          <p>{researchExercise.question}</p>
+          <details className="atlas-disclosure">
+            <summary>考え方の例を読む</summary>
+            <p className="leading-relaxed">{researchExercise.answer}</p>
+          </details>
+          <p><Link href={researchExercise.href} className="ui-text-link">{researchExercise.topic}を読む</Link></p>
+        </section>
+      )}
       {relatedGuide && <nav aria-label="症例に関連するガイド" className="reader-navigation">
         <Link href={symptomGuidePath(relatedGuide)} className="page-secondary-action">{relatedGuide.title}の症状ガイドを読む</Link>
       </nav>}

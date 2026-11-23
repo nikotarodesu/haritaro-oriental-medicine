@@ -10,6 +10,7 @@ export interface Interpretation {
   checkedAt: string;
   verificationScope: 'abstract' | 'selected_full_text';
   sourceLocator: string;
+  relatedSources?: { title: string; url: string }[];
 }
 const abstractCheck = (pmid: string, interpretation: Omit<Interpretation, 'sourceUrl' | 'checkedAt' | 'verificationScope' | 'sourceLocator'>): Interpretation => ({
   ...interpretation, sourceUrl: `https://pubmed.ncbi.nlm.nih.gov/${pmid}/`, checkedAt: '2026-10-08',
@@ -51,12 +52,15 @@ export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
     findings: ['論文の出版傾向、著者・機関、研究キーワードを分析しています。4,595は患者数ではなく文献数です。'],
     limitations: ['論文数の増加を治療効果の大きさや研究の質の証明として扱いません。'],
   },
-  'rct-insomnia-heart-liver-2025': abstractCheck('40791639', {
+  'rct-insomnia-heart-liver-2025': {
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC12338104/', checkedAt: '2026-11-23', verificationScope: 'selected_full_text',
+    sourceLocator: '原著の方法、図3、表2・3と、後日掲載された方法に関するレター。',
     design: '単盲検・2種類の実鍼を比較するランダム化試験', sampleSize: 76, population: '慢性不眠症患者76人（各群38人）',
     summary: '2種類の実鍼プロトコルを計10回比較した試験です。偽鍼・無治療との比較ではありません。',
-    findings: ['ISIの改善は7.58点と5.71点でしたが、主要評価の群間差は有意ではありませんでした。', '不安・抑うつ尺度では群間差を報告しています。睡眠ポリグラフの総睡眠時間・睡眠効率・REM睡眠割合の改善は両群で同程度でした。'],
-    limitations: ['両群の開始前からの改善だけでは、鍼自体の効果を自然経過・期待等から分離できません。副次評価の差から個人向けの配穴選択や不眠全般への効果・安全性を断定しません。'],
-  }),
+    findings: ['治療終了時の不眠重症度（ISI）は平均7.58点と5.71点改善しました。終了時と4週後の追跡まで、群間に統計的に有意な差はありませんでした。', '機器で測った総睡眠時間、睡眠効率、レム睡眠の割合も、治療終了時の群間差は統計的に有意ではありませんでした。'],
+    limitations: ['二つの実鍼群の変化だけでは、自然経過や期待による変化との区別はつきません。', '後日掲載されたレターでは、施術時の姿勢が違うため、参加者が割り付けを推測できた可能性と、研究計画時に想定した差より観察された差が小さかった点が指摘されました。'],
+    relatedSources: [{ title: 'Zhouほか（2026年）｜盲検と参加者数の設計を検討したレター', url: 'https://doi.org/10.2147/NSS.S592655' }],
+  },
   'langevin-connective-tissue-2002': abstractCheck('12467083', {
     design: '解剖学的マッピング・超音波による仮説検討', population: 'ヒト上肢の解剖切片と健常ボランティアの超音波画像',
     summary: '経穴・経絡と結合組織面との関係を検討した研究です。治療効果を比較する臨床試験ではありません。',
@@ -173,12 +177,18 @@ export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
     findings: ['一部の刺激後に心拍変動指標の増加や心拍数低下を報告しています。'],
     limitations: ['無作為化した偽介入との比較ではなく、順序・時間・休息の影響を除外できません。健常者の短時間の生理変化から、患者のストレス症状や疾患への効果を断定しません。'],
   }),
-  'body-weight-control-electroacupuncture-auricular-protocol-zhong-2016': abstractCheck('27457720', {
+  'body-weight-control-electroacupuncture-auricular-protocol-zhong-2016': {
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4960666/', checkedAt: '2026-11-23', verificationScope: 'selected_full_text',
+    sourceLocator: '試験計画の方法・評価項目と登録番号。後続試験は本文の方法と登録番号を照合。',
     design: '偽鍼対照ランダム化試験の計画書（結果論文ではない）', population: '体重管理のため72人の登録を予定した試験計画',
     summary: '電気鍼と耳介介入を偽介入と比較する予定の方法を公開したプロトコル論文です。',
-    findings: ['この文献から確認できるのは研究計画です。減量結果・完了人数・有害事象の結果は報告されていません。'],
-    limitations: ['予定人数72人を治療済みの対象人数として表示しません。この計画書を減量効果の証拠や、刺激設定・施術手順の推奨として使いません。'],
-  }),
+    findings: ['体重の変化を主な評価項目とする計画です。この論文には減量の結果、完了人数、有害事象の集計は載っていません。'],
+    limitations: ['Lamほかの2024年の論文は、この計画書を参加者数の算定で引用しています。腹囲の変化を主な評価項目とした別の試験で、登録番号も異なります。'],
+    relatedSources: [
+      { title: '計画書に記載された試験登録（NCT02516878）', url: 'https://clinicaltrials.gov/study/NCT02516878' },
+      { title: 'Lamほか（2024年）｜腹囲を主に測った別の試験（NCT03815253）', url: 'https://doi.org/10.1186/s12906-024-04340-5' },
+    ],
+  },
   'insomnia-acupuncture-systematic-review-cao-2009': abstractCheck('19922248', {
     design: '系統的レビュー・メタ解析', sampleSize: 3811, population: '不眠に関する46件のランダム化試験・計3,811人',
     summary: '鍼・指圧などを無治療・偽介入・薬物療法等と比較した古いレビューです。比較対象と手技を分けて読む必要があります。',
@@ -215,4 +225,40 @@ export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
     findings: ['VASの群間差は1.87（95％信頼区間1.20〜2.54）、Fugl-Meyer評価は8.70（6.58〜10.82）と報告しています。'],
     limitations: ['著者は証拠が結論的でないと評価し、より厳密な試験を求めています。抄録では総参加者数を確認できず、リハビリの代替やすべての肩痛への効果に一般化しません。'],
   }),
+  'katakori-needling-depth-rct-osaki-2018': {
+    sourceUrl: 'https://www.jstage.jst.go.jp/article/jjsam/68/1/68_10/_pdf', checkedAt: '2026-11-23', verificationScope: 'selected_full_text',
+    sourceLocator: '原著の対象・方法、結果の3・4節と図2・5・7。',
+    design: '鍼の刺激条件を比べたランダム化予備試験', sampleSize: 13,
+    population: '慢性的な肩こりのある16人を割り付け、13人が最終評価を完了',
+    summary: '鍼の刺激条件を変えた2群で、本人が感じる肩こりと肩の痛みや動かしづらさを比べました。',
+    findings: ['最終施術の4週後、肩こりの評価（0〜100 mm）は、深刺群で平均28.0 mm改善し、浅刺群で平均1.9 mm悪化しました。肩の痛みや日常動作への支障を測る質問票（SPADI）では、有意な群間差を確認できませんでした。'],
+    limitations: ['参加者の多くに変形性頸椎症があり、両群が鍼を受けた小規模な試験です。刺激の感じ方にも群間差がありました。こりの評価の差だけで、肩の機能も改善したとは判断できません。'],
+  },
+  'electrodermal-ryodoraku-qigong-sancier-2003': {
+    sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/12804076/', checkedAt: '2026-11-23', verificationScope: 'abstract',
+    sourceLocator: 'PubMedと出版社の抄録（方法・結果）。',
+    design: '同じ参加者の午前と午後を比べた測定研究',
+    population: '2日間の気功講習の参加者29人',
+    summary: '手足24か所で皮膚の電気の通りやすさを測り、同じ参加者の午前と午後の値を比較しました。',
+    findings: ['2日とも、電気の通りやすさのばらつきは午前より午後に小さくなりました。'],
+    limitations: ['講習に参加しない対照群がないため、気功の影響と日内変動を分けられません。測ったのは皮膚の電気的な値で、症状や健康状態の変化は抄録に報告されていません。'],
+  },
+  'review-acupuncture-diabetic-neuropathy-baek-2021': {
+    sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/34445280/', checkedAt: '2026-11-23', verificationScope: 'abstract',
+    sourceLocator: 'PubMedと出版社の著者情報・抄録。',
+    design: 'ナラティブレビュー', population: '糖尿病性神経障害の臨床研究と実験研究',
+    summary: 'ChoとKimが、糖尿病性神経障害への鍼を扱った臨床研究と、作用の仮説を調べた動物実験を取り上げています。',
+    findings: ['研究で検討された症状の変化や作用の仮説を紹介しています。複数の試験から、人での平均的な効果量を算出した論文ではありません。'],
+    limitations: ['動物で観察した変化から、人の神経障害が改善するかは判断できません。研究ごとに対象と測定した指標を確認する必要があります。'],
+  },
+  'review-acupuncture-sports-injuries-athletes-2020': {
+    sourceUrl: 'https://www.mdpi.com/1660-4601/17/21/8226', checkedAt: '2026-11-23', verificationScope: 'selected_full_text',
+    sourceLocator: '原著の方法2.3節、結果3節と後続レビューの対象・方法。',
+    design: '症例報告・症例集積の系統的レビュー',
+    population: '競技者211人を扱った22件の症例報告・症例集積',
+    summary: '競技者のけがや不調に鍼などを用いた報告を集め、どんな症状や経過が記録されたかを調べています。',
+    findings: ['鍼を取り入れた後に痛みや競技復帰を記録した報告がありました。対象となるけがや介入は報告ごとに異なり、効果の大きさは統合していません。'],
+    limitations: ['対照群を置いた試験のレビューとは、答えられる問いが違います。症例の経過から、鍼によって復帰が早まったかは判断できません。'],
+    relatedSources: [{ title: 'Chaabnaほか（2026年）｜競技者の痛みに関する比較試験などを集めたレビュー', url: 'https://pubmed.ncbi.nlm.nih.gov/41783063/' }],
+  },
 };

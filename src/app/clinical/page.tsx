@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { GraduationCap, Heart } from 'lucide-react';
 import { PAGE_REVISIONS } from '@/config/contentUpdates';
 import { ALL_NAV_ITEMS } from '@/config/navigationItems';
+import { KNEE_RESEARCH_HREF, PATTERN_AGREEMENT_HREF } from '@/config/acupunctureLearning';
 import { pageSocialMetadata, SITE_ORIGIN } from '@/config/seo';
 import { ClinicalCheckArtwork, ClinicalHeroArtwork } from '@/components/clinical/ClinicalArtwork';
 import ClinicalDashboard from '@/components/clinical/ClinicalDashboard';
@@ -110,6 +111,15 @@ export default function ClinicalLandingPage() {
       </section>
 
       <ClinicalDashboard />
+
+      <section className={styles.reading} aria-labelledby="clinical-study-exercises">
+        <h2 id="clinical-study-exercises" className={styles.sectionTitle}>研究を使った演習</h2>
+        <ul className="grid gap-2 sm:grid-cols-2">
+          <li><Link href={PATTERN_AGREEMENT_HREF} className="page-secondary-action">同じ症例で弁証が分かれる理由を考える</Link></li>
+          <li><Link href={KNEE_RESEARCH_HREF} className="page-secondary-action">膝の痛みを比べた試験を読む</Link></li>
+          <li><Link href="/curriculum/lecture-treatment-9#lecture-section-4" className="page-secondary-action">施術後の胸痛・息苦しさに対応する</Link></li>
+        </ul>
+      </section>
 
       <section className={styles.reading} aria-labelledby="practice-reading">
         <h2 id="practice-reading" className={styles.sectionTitle}>問診・四診・配穴の講義</h2>

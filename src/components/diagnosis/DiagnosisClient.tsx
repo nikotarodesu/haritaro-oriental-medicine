@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, type ReactNode } from "react";
 import Link from "next/link";
+import { PATTERN_AGREEMENT_HREF } from "@/config/acupunctureLearning";
 import PageIntro from "@/components/design/PageIntro";
 import ClinicalInterviewBoard from "./ClinicalInterviewBoard";
 import { useRouter } from "next/navigation";
@@ -1148,6 +1149,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
           ))}
         </div>
       </section>
+      {activeTab === "self" && <Link href={PATTERN_AGREEMENT_HREF} className="ui-text-link">同じ所見から見立てが分かれる理由を読む</Link>}
       {children}
     </div>
   );
