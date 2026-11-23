@@ -36,11 +36,13 @@ const { CURRICULUM_DATA } = load('src/data/curriculumData');
 const { CURRICULUM_QUIZZES } = load('src/data/curriculumQuizzes');
 const { PROGRESSIVE_CASES } = load('src/data/progressiveCases');
 const lectureIds=new Set(CURRICULUM_DATA.flatMap(chapter=>chapter.lectures).map(lecture=>lecture.id));
+const additionalResearchArticles = new Set(['science-of-pulse-diagnosis', 'science-of-abdominal-diagnosis', 'science-of-tongue-diagnosis', 'science-of-kampo-network-pharmacology']);
 for(const article of ARTICLES) {
  const guide=ARTICLE_LEARNING_GUIDES[article.id]; assert(guide,article.id);
  assert(lectureIds.has(guide.lectureId),article.id+' lecture'); assert(CURRICULUM_QUIZZES[guide.lectureId],article.id+' quiz');
  assert(PROGRESSIVE_CASES.some(c=>c.id===guide.caseId),article.id+' case');
- assert.equal(article.summary,guide.summary); assert.equal(article.updatedAt,'2026-11-20');
+ assert.equal(article.summary,guide.summary);
+ assert.equal(article.updatedAt, additionalResearchArticles.has(article.id) ? '2026-11-23' : '2026-11-20', article.id);
 }
 const { GLOSSARY_TERMS } = load('src/data/glossaryData');
 const terms=Object.values(GLOSSARY_TERMS); assert.equal(new Set(terms.map(term=>term.term)).size,terms.length);
@@ -102,6 +104,9 @@ assert(!sitemap.some(page => ['/pricing','/notes','/auth/login','/account/subscr
 assert(!sitemap.some(page => new URL(page.url).pathname === '/learn/courses'), 'The merged course index redirects to the learning home instead of appearing in the sitemap');
 assert(!sitemap.some(page => new URL(page.url).pathname === '/kokushi'), 'The retired exam landing page is no longer an indexable sitemap destination');
 for(const article of ARTICLES) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/articles/${article.id}`).lastModified.toISOString().slice(0,10),article.updatedAt);
+for (const articleId of additionalResearchArticles) {
+  assert.equal(dateAt(`/articles/${articleId}`), '2026-11-23', articleId + ' reflects the source revision in the public sitemap');
+}
 const { LEARNING_COURSES, getCourseProgress } = load('src/data/learningCourses');
 const { CURRICULUM_TOTAL_CHAPTERS } = load('src/data/curriculumOutline');
 assert.equal(new Set(LEARNING_COURSES.map(course=>course.slug)).size, CURRICULUM_TOTAL_CHAPTERS);

@@ -272,6 +272,8 @@ export const PAGE_REVISIONS: Record<string, string> = {
     '/learn/lectures/reading-evidence', '/curriculum/lecture-treatment-9',
     '/cases/case-01-headache-liver-fire', '/cases/case-14-knee-osteoarthritis',
     '/symptoms/lower-back-pain-sciatica', '/clinical/symptoms/back',
+    '/articles/science-of-pulse-diagnosis', '/articles/science-of-abdominal-diagnosis',
+    '/articles/science-of-tongue-diagnosis', '/articles/science-of-kampo-network-pharmacology',
     ...SCITE_FOLLOWUP_ATLAS_RESEARCH_ROUTES,
   ].map(route => [route, ACUPUNCTURE_RESEARCH.revisedAt])),
 };

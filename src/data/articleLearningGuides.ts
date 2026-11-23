@@ -46,13 +46,13 @@ export const ARTICLE_LEARNING_GUIDES: Record<string, ArticleLearningGuide> = {
     lectureId: 'lecture-diagnosis-6', caseId: 'fatigue-reasoning',
     focus: '触診で感じた抵抗と本人が訴えた痛みを記録し、腹証の解釈と病気の診断を混同しない。',
     limitation: '腹証を器質的疾患の診断・除外や、処方の自動決定に使いません。',
-    summary: 'おなかを触れたときの抵抗や圧痛を、部位と感触に分けて記録します。模型で腹診を教える研究を例に、感触を再現することと診断の正確さを調べることを比べます。腹痛で受診を急ぐ目安も掲載しています。',
+    summary: '腹診で感じる硬さと、本人が痛いと感じる圧はどう調べるのでしょうか。模型で腹診を学ぶ研究と、人の腹部を機器で測った研究を読みます。腹痛で受診を急ぐ目安も確認できます。',
   },
   'science-of-tongue-diagnosis': {
     lectureId: 'lecture-diagnosis-5', caseId: 'mixed-temperature',
     focus: '見た舌色・舌苔・舌形と、そこから考えた伝統的な分類を別々に記録する。',
     limitation: '舌の見た目だけで全身状態や病名を確定しません。持続する症状は口腔の医学的評価につなぎます。',
-    summary: '舌の色、苔の範囲、形を、明るさや食事などの観察条件と一緒に記録します。口が乾く、白い部分や痛みが続くときに、歯科や医療機関で原因を確認する理由も説明します。',
+    summary: '同じ舌の写真を見ても、舌苔の色と舌そのものの色では、評価の一致度が異なりました。写真の研究を読みながら、舌の観察条件をどう残すかと、口の乾燥や白い斑点で受診を考える目安を確認します。',
   },
   'science-of-acupuncture-neuroscience': {
     lectureId: 'lecture-treatment-9', caseId: 'back-pain-referral',
