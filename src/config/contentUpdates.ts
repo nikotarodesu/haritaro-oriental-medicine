@@ -1,7 +1,8 @@
 import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
 import { LEARNING_COURSES } from '@/data/learningCourses';
 import { SYMPTOMS } from '@/data/symptomData';
-import { ATLAS_EVIDENCE_REVISED_AT, REVISED_ATLAS_RESEARCH_ROUTES } from '@/data/tsubo/atlas/evidence';
+import { SYMPTOM_RESEARCH_NOTES, SYMPTOM_RESEARCH_REVISED_AT } from '@/data/symptomResearchNotes';
+import { ATLAS_EVIDENCE_REVISED_AT, ATLAS_STUDIES, REVISED_ATLAS_RESEARCH_ROUTES } from '@/data/tsubo/atlas/evidence';
 import { SYMPTOM_GUIDES_REVISED_AT } from '@/utils/symptomGuidePaths';
 
 export const EXPANDED_ATLAS_REVISED_AT = '2026-11-19';
@@ -187,6 +188,8 @@ export const NATURAL_JAPANESE_COURSE_REVISIONS = [
   'treatment-foundations',
   'clinical-process-foundations',
 ] as const;
+const kneeStudyPoints = ATLAS_STUDIES.find(study => study.id === 'knee-osteoarthritis')?.points ?? [];
+
 export const PAGE_REVISIONS: Record<string, string> = {
   '/learn': '2026-11-20', '/learn/essentials': '2026-11-20', '/learn/review': '2026-10-15',
   '/simulator': '2026-10-12',
@@ -194,7 +197,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/tsubo/practice': '2026-10-04', '/pricing': '2026-10-12',
   '/diagnosis': '2026-10-18', '/cases': '2026-11-20',
   // 実際に改訂したページだけを更新する。全教材の確認日には用いない。
-  '/': '2026-11-20', '/updates': '2026-11-20', '/about': '2026-10-12',
+  '/': '2026-11-20', '/about': '2026-10-12',
   '/clinical': '2026-10-12', '/practice/haiketsu': '2026-10-12', '/safety': '2026-10-03', '/editorial-policy': '2026-10-08',
   '/library': '2026-10-12', '/glossary': '2026-10-12', '/curriculum': '2026-10-18',
   '/curriculum/lecture-yinyang-1': '2026-10-03',
@@ -252,13 +255,17 @@ export const PAGE_REVISIONS: Record<string, string> = {
     ...['shoulder', 'back', 'headache', 'sleep', 'digestion', 'fatigue'].map(slug => `/clinical/symptoms/${slug}`),
   ].map(route => [route, '2026-11-20'])),
   ...Object.fromEntries([
-    '/clinical', '/updates',
+    '/clinical',
     '/learn/lectures/body-functions', '/learn/lectures/meridians-and-points',
     ...SYMPTOMS.map(guide => `/symptoms/${guide.id}`),
     ...['shoulder', 'back', 'headache', 'sleep', 'digestion', 'fatigue'].map(slug => `/clinical/symptoms/${slug}`),
   ].map(route => [route, '2026-11-21'])),
+  ...Object.fromEntries(Object.keys(SYMPTOM_RESEARCH_NOTES).map(slug => [`/symptoms/${slug}`, SYMPTOM_RESEARCH_REVISED_AT])),
+  ...Object.fromEntries(kneeStudyPoints.map(code => [`/tsubo/${code}`, SYMPTOM_RESEARCH_REVISED_AT])),
+  '/updates': SYMPTOM_RESEARCH_REVISED_AT,
 };
 export const SITE_UPDATES = [
+  { date: SYMPTOM_RESEARCH_REVISED_AT, label: '首の痛み・耳鳴り・膝痛の研究解説を追加', href: '/symptoms', text: '比較試験に参加した人、何と比べたか、痛みや生活への支障をどう測ったかを整理しました。膝の電気鍼の試験には、掲載誌の訂正通知も添えました。' },
   { date: '2026-11-21', label: 'ツボ図鑑の表示と索引を改善', href: '/tsubo', text: '検索欄と一覧が最初に表示されるようにしました。361のツボを部位と経絡の両方から探せます。症状を文章で検索したときも、関連するページが見つかりやすくなりました。' },
   { date: '2026-11-20', label: '20症例の設問と解説を改稿', href: '/cases', text: '本人が話した症状、四診で観察したこと、それらをもとに見立てを考えた理由を分けて書きました。図鑑では、研究で使ったツボと、何と比べたかを読みやすくしました。' },
   { date: '2026-11-20', label: '図鑑・記事・演習の文章を改稿', href: '/articles', text: '近くのツボと図のどこを比べるか、症状が出た時刻や困った動作をどう書くか、模擬症例のどの所見を根拠に考えるかを説明し直しました。' },

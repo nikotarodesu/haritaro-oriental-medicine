@@ -1,6 +1,7 @@
 import { SYMPTOMS, SYMPTOM_SAFETY_GUIDANCE } from '@/data/symptomData';
 import { MEDICAL_SAFETY_SOURCES } from '@/data/medicalSafety';
 import { PUBLIC_SYMPTOM_CONTENT } from '@/data/publicSymptoms';
+import { SYMPTOM_RESEARCH_NOTES } from '@/data/symptomResearchNotes';
 import { VERIFIED_PAPERS } from '@/data/references/papersData';
 import type { SymptomGuide } from '@/types/oriental';
 import { SYMPTOM_GUIDES_REVISED_AT, symptomGuidePath } from './symptomGuidePaths';
@@ -115,10 +116,15 @@ export function getSymptomsIndexJsonLd(title: string, description: string) {
 
 export function getSymptomGuideJsonLd(guide: SymptomGuide) {
   const url = `${BASE_URL}${symptomGuidePath(guide)}`;
+  const citations = [
+    ...getSymptomGuideSources(guide),
+    ...(SYMPTOM_RESEARCH_NOTES[guide.id]?.sources ?? []),
+    ...getSymptomStudies(guide.id).flatMap(study => study.sources),
+  ];
   return {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': ['WebPage', 'LearningResource'], '@id': `${url}#webpage`, url, name: symptomGuideTitle(guide), description: symptomGuideDescription(guide), inLanguage: 'ja', learningResourceType: '症状別学習ガイド', dateModified: getSymptomGuideRevision(guide), isPartOf: { '@id': `${BASE_URL}/symptoms#webpage` }, citation: [...new Set([...getSymptomGuideSources(guide), ...getSymptomStudies(guide.id).flatMap(study => study.sources)].map(source => source.url))] },
+      { '@type': ['WebPage', 'LearningResource'], '@id': `${url}#webpage`, url, name: symptomGuideTitle(guide), description: symptomGuideDescription(guide), inLanguage: 'ja', learningResourceType: '症状別学習ガイド', dateModified: getSymptomGuideRevision(guide), isPartOf: { '@id': `${BASE_URL}/symptoms#webpage` }, citation: [...new Set(citations.map(source => source.url))] },
       breadcrumbs(guide),
     ],
   };

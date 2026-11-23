@@ -120,7 +120,10 @@ const existingStudies: readonly AtlasStudy[] = [
     result: "6週時点では、電気鍼の群で、偽鍼の群より痛み・こわばり・身体機能を合わせた指標が改善しました。",
     design: "変形性膝関節症の480人を対象に、膝周辺と脚の複数のツボへの電気鍼を、同じ位置で皮膚を刺さない偽鍼と比較した試験です。",
     limits: "軟骨や関節の形が長期的に変わるかまでは調べていません。",
-    sources: [{ label: "Hang ほか · eClinicalMedicine（2026）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC13223986/" }],
+    sources: [
+      { label: "Hang ほか · eClinicalMedicine（2026）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC13223986/" },
+      { label: "同論文の訂正通知（2026年8月）", url: "https://pubmed.ncbi.nlm.nih.gov/42699771/" },
+    ],
   },
   {
     id: "seasonal-allergic-rhinitis",

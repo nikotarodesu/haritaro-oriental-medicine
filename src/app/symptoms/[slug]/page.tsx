@@ -9,6 +9,7 @@ import SymptomResearchReferences from '@/components/symptoms/SymptomResearchRefe
 import SymptomIcon from '@/components/symptoms/SymptomIcon';
 import { AtlasStudyCard } from '@/components/tsubo/AcupointResearch';
 import { PUBLIC_SYMPTOM_CONTENT } from '@/data/publicSymptoms';
+import { SYMPTOM_RESEARCH_NOTES } from '@/data/symptomResearchNotes';
 import { SYMPTOMS, SYMPTOM_GUIDANCE_SCOPE, SYMPTOM_SAFETY_GUIDANCE } from '@/data/symptomData';
 import { getAcupointByCode } from '@/data/tsubo';
 import { getSymptomStudies } from '@/data/tsubo/atlas/evidence';
@@ -55,6 +56,8 @@ export default async function SymptomGuidePage({ params }: Props) {
   const clinicalCase = CLINICAL_CASES.find(item => item.id === resources?.caseId);
   const papers = getSymptomRelatedPapers(guide);
   const pointStudies = getSymptomStudies(guide.id);
+  const researchNote = SYMPTOM_RESEARCH_NOTES[guide.id];
+  const hasResearch = pointStudies.length > 0 || !!researchNote;
   const relatedGuides = SYMPTOMS.filter(item => item.id !== guide.id && item.category === guide.category);
   const sections = [
     { id: 'daily-life', label: '日常の工夫' },
@@ -96,7 +99,7 @@ export default async function SymptomGuidePage({ params }: Props) {
           </li>
         ))}</ul>
         <div className="atlas-directory-actions">
-          {pointStudies.length > 0 && <a href="#guide-studies" className="atlas-text-action"><FlaskConical size={16} aria-hidden="true" />関連する研究を読む</a>}
+          {hasResearch && <a href="#guide-studies" className="atlas-text-action"><FlaskConical size={16} aria-hidden="true" />関連する研究を読む</a>}
           <Link href={ACUPUNCTURE_GUIDE.href} className="atlas-text-action"><BookOpen size={16} aria-hidden="true" />{ACUPUNCTURE_GUIDE.label}</Link>
         </div>
       </section>
@@ -119,9 +122,16 @@ export default async function SymptomGuidePage({ params }: Props) {
         {content.traditional.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
         {resources?.perspectiveCaseId && <SymptomPerspective caseId={resources.perspectiveCaseId} />}
       </section>
-      {pointStudies.length > 0 && <section id="guide-studies" className={sectionClass}>
+      {hasResearch && <section id="guide-studies" className={sectionClass}>
         <h2 className="atlas-section-title">ツボを使った研究</h2>
-        <div className="atlas-study-list">{pointStudies.map(study => <AtlasStudyCard key={study.id} study={study} />)}</div>
+        {researchNote && <article className="atlas-study-card">
+          <h3>{researchNote.title}</h3>
+          <p>{researchNote.body}</p>
+          <ul className="atlas-source-links" aria-label="解説の出典">
+            {researchNote.sources.map(source => <li key={source.url}><a href={source.url}>{source.label}</a></li>)}
+          </ul>
+        </article>}
+        {pointStudies.length > 0 && <div className="atlas-study-list">{pointStudies.map(study => <AtlasStudyCard key={study.id} study={study} />)}</div>}
       </section>}
       <section id="learning" className={sectionClass}>
         <h2 className="atlas-section-title">関連記事・教材</h2>

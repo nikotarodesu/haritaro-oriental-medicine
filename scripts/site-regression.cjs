@@ -77,12 +77,13 @@ for (const lectureId of lectureIds) {
 }
 const revisedLecturePaths = new Set(['/learn/lectures/body-functions','/learn/lectures/meridians-and-points']);
 for (const unit of readingUnits) assert.equal(dateAt(unit.href), revisedLecturePaths.has(unit.href) ? '2026-11-21' : READING_LECTURES_REVISED_AT, unit.href);
-for (const pathname of ['/tsubo/sp11','/tsubo/sp6','/tsubo/li4','/tsubo/pc7','/tsubo/bl57']) {
+for (const pathname of ['/tsubo/sp11','/tsubo/li4','/tsubo/pc7','/tsubo/bl57']) {
   assert.equal(dateAt(pathname), ACUPOINT_PAGE_REVISED_AT, pathname + ' shows the shared acupoint release date');
 }
 assert.equal(dateAt('/curriculum'),'2026-11-18');
 for(const pathname of ['/','/about','/articles','/cases','/diagnosis','/glossary','/library','/learn/review','/practice/haiketsu','/symptoms','/tsubo/compare']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
-for (const pathname of ['/tsubo', '/clinical', '/updates', '/clinical/symptoms/headache', '/symptoms/headache-stiff-neck']) assert.equal(dateAt(pathname), '2026-11-21', pathname);
+for (const pathname of ['/tsubo', '/clinical', '/clinical/symptoms/headache']) assert.equal(dateAt(pathname), '2026-11-21', pathname);
+for (const pathname of ['/updates', '/symptoms/headache-stiff-neck', '/symptoms/dizziness-tinnitus', '/symptoms/knee-joint-pain', '/tsubo/sp6', '/tsubo/st36']) assert.equal(dateAt(pathname), '2026-11-23', pathname);
 for (const pathname of ['/learn', '/learn/essentials']) assert.equal(dateAt(pathname), '2026-11-20', pathname);
 assert(!sitemap.some(page => ['/pricing','/notes','/auth/login','/account/subscription'].includes(new URL(page.url).pathname)), 'Retired services are no longer indexable sitemap destinations');
 assert.equal(dateAt('/simulator'),'2026-10-18');

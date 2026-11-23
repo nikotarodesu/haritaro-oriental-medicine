@@ -39,6 +39,7 @@ async function main() {
   const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
   const { ATLAS_STUDIES, getAcupointStudies, getStudyPointRole, getSymptomStudies } = load('src/data/tsubo/atlas/evidence');
   const { SUPPLEMENTAL_ATLAS_STUDIES } = load('src/data/tsubo/atlas/supplementalClinicalStudies');
+  const { SYMPTOM_RESEARCH_NOTES } = load('src/data/symptomResearchNotes');
   const { ATLAS_LITERATURE_SEARCH_COUNTS } = load('src/data/tsubo/atlas/literatureSearch');
   const { AtlasStudyCard } = load('src/components/tsubo/AcupointResearch');
   const { VERIFIED_PAPERS } = load('src/data/references/papersData');
@@ -118,6 +119,14 @@ async function main() {
     for (const study of getSymptomStudies(guide.id)) {
       assert(html.includes(study.result) && html.includes(study.limits), `${guide.id}: evidence appears alongside its limits`);
       assert(study.sources.every(source => schema['@graph'][0].citation.includes(source.url)), `${guide.id}: cited clinical studies are in the page schema`);
+    }
+    const researchNote = SYMPTOM_RESEARCH_NOTES[guide.id];
+    if (researchNote) {
+      assert(html.indexOf('id="guide-studies"') > html.indexOf('id="safety"'), `${guide.id}: triage precedes the research note`);
+      assert(html.includes(researchNote.title) && html.includes(researchNote.body), `${guide.id}: original research note is readable in HTML`);
+      for (const source of researchNote.sources) {
+        assert(html.includes(`href="${source.url}"`) && schema['@graph'][0].citation.includes(source.url), `${guide.id}: the original source is visible and cited`);
+      }
     }
     assert.equal(new Set(sources.map(source => source.url)).size, sources.length, `${guide.id}: unique sources`);
     for (const source of safety.sources) assert(sources.some(candidate => candidate.url === source.url && candidate.scope.includes('受診の目安') && candidate.section.includes(source.section)) && html.includes(source.url), `${guide.id}: cited safety source is visible`);
