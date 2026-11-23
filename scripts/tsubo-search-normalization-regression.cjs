@@ -8,11 +8,12 @@ const React = require('react');
 const { createDataLoader } = require('./data-loader.cjs');
 const load = createDataLoader();
 const data = load('src/data/tsubo/index');
-const { normalizeSearchText } = load('src/utils/search');
+const { getPointSearchTopic, normalizeSearchText } = load('src/utils/search');
+const { preparePurposeSearchQuery } = load('src/utils/searchPurpose');
 const { prepareAcupointSearch, getAcupointMatchReason } = load('src/utils/acupointSearch');
 const points = Array.from(data.getAllAcupoints());
 const indices = points.map(point => ({ point, search: prepareAcupointSearch(point) }));
-const codes = query => indices.filter(({ search }) => getAcupointMatchReason(search, normalizeSearchText(query))).map(({ point }) => point.code);
+const codes = query => indices.filter(({ search }) => getAcupointMatchReason(search, getPointSearchTopic(normalizeSearchText(query)))).map(({ point }) => point.code);
 const toKatakana = value => value.replace(/[ぁ-ゖ]/g, character => String.fromCharCode(character.charCodeAt(0) + 0x60));
 for (const point of points) {
   for (const query of [point.code, point.code.toLowerCase(), point.code.replace(/[A-Z0-9]/g, character => String.fromCharCode(character.charCodeAt(0) + 0xfee0)), point.name, point.kana, toKatakana(point.kana)]) {
@@ -28,6 +29,10 @@ assert.equal(getAcupointMatchReason(li4.search, normalizeSearchText('ＬＩ ４'
 assert.equal(getAcupointMatchReason(li4.search, normalizeSearchText('合谷')), 'ツボの名前が一致');
 assert.deepEqual(codes('存在しない検索語xyz'), []);
 assert.equal(getAcupointMatchReason(li4.search, ''), null);
+for (const query of ['手首のツボ', '手首にあるつぼはどこ？', '手首の近くの経穴']) {
+  assert.deepEqual(codes(query), codes('手首'), query);
+  assert.equal(preparePurposeSearchQuery(query).query.normalized, '手首', 'Global and dictionary search use the same topic');
+}
 
 function nodes(node, output = []) {
   if (Array.isArray(node)) node.forEach(child => nodes(child, output));
@@ -79,6 +84,7 @@ function dictionary(params = '') {
   return {
     navigate(target) { location = new URL(target, location); restore(); },
     change(value) { const input = nodes(tree).find(node => node.props?.id === 'tsubo-search'); input.props.onChange({ target: { value } }); render(); },
+    click(label) { nodes(tree).find(node => node.type === 'button' && text(node) === label).props.onClick(); render(); },
     resultCodes() { return nodes(tree).filter(node => String(node.props?.id || '').startsWith('tsubo-card-')).map(node => node.props.id.slice('tsubo-card-'.length).toUpperCase()); },
     url: () => location.href,
     hasSearchForm: () => nodes(tree).some(node => node.type === 'form' && node.props.action === '/search'),
@@ -109,5 +115,12 @@ assert.equal(sharedUrl.searchParams.get('q'), '足三里');
 assert.equal(sharedUrl.searchParams.get('from'), 'terms');
 assert.equal(sharedUrl.hash, '#tsubo-list');
 const noResults = dictionary(); noResults.change('存在しない検索語xyz'); assert.deepEqual(noResults.resultCodes(), []);
+noResults.click('「手首」で探す');
+assert.equal(new URL(noResults.url()).searchParams.get('q'), '手首');
+assert.equal(noResults.resultCodes()[0], 'LU9', 'Wrist locations come before points that only use the wrist to measure distance');
+noResults.change('手首のツボ');
+assert.equal(noResults.resultCodes()[0], 'LU9');
+assert.equal(new URL(noResults.url()).searchParams.get('q'), '手首のツボ', 'The shareable URL preserves the original question');
+assert(noResults.text().includes('「手首」で検索'));
 noResults.change('ｺﾞｳｺｸ'); assert.deepEqual(noResults.resultCodes(), ['LI4'], 'Changing a failed query recovers actual results');
 console.log('Dictionary search passed: 361 names/codes/readings, width and kana variants, match reasons, real inputs, bookmarked searches and retained filters.');

@@ -29,8 +29,8 @@ import {
 import BodyMapSvg from "@/components/tsubo/BodyMapSvg";
 import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
 import ClinicalPairsSection from "@/components/ClinicalPairsSection";
-import { normalizeSearchText } from "@/utils/search";
-import { prepareAcupointSearch, getAcupointMatchReason } from "@/utils/acupointSearch";
+import { getPointSearchTopic, normalizeSearchText } from "@/utils/search";
+import { prepareAcupointSearch, getAcupointMatchReason, matchesPrimaryJoint } from "@/utils/acupointSearch";
 
 const MERIDIAN_ELEMENT_MAP: Record<string, "木" | "火" | "土" | "金" | "水"> = {
   lung: "金",
@@ -51,6 +51,12 @@ type SortOption = "meridian" | "kana" | "detailed";
 type ViewMode = "grid" | "table";
 
 const PAGE_SIZE = 24;
+const EXAMPLE_SEARCH_TERMS = ["合谷", "手首", "ひざ"];
+const ATLAS_INDEX_LINKS = [
+  { href: "#illustrated-points", label: "部位別の索引" },
+  { href: "#tsubo-index", label: "経絡別の索引" },
+  { href: "#atlas-research-index", label: "研究から探す" },
+];
 const DEFAULT_SELECTION = {
   selectedBodyPart: "すべて",
   selectedMeridian: "すべて",
@@ -83,6 +89,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
   const [showFilters, setShowFilters] = useState(false);
   const lastQuery = useRef("");
   const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const resultsRef = useRef<HTMLElement | null>(null);
 
   const restoreUrl = useCallback((query: string) => {
     if (query === lastQuery.current) return;
@@ -154,16 +161,11 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
     return ["すべて", "原穴", "絡穴", "郄穴", "募穴", "背部兪穴", "合穴", "四総穴", "八脈交会穴", "八会穴"];
   }, []);
 
-  // Global search and the dictionary accept the same kana, width and code spellings.
-  const getMatchReason = useCallback((point: AcupointMaster, rawQuery: string): string | null => {
-    const indexed = searchIndex.get(point.code);
-    return indexed ? getAcupointMatchReason(indexed, normalizeSearchText(rawQuery)) : null;
-  }, [searchIndex]);
+  const normalizedQuery = normalizeSearchText(searchQuery);
+  const searchTopic = getPointSearchTopic(normalizedQuery);
 
   // 検索・フィルタリング・並び替え処理
   const filteredTsubos = useMemo(() => {
-    const q = normalizeSearchText(searchQuery);
-
     return allPoints
       .filter((t) => {
         if (onlyPublished && t.status !== "published") return false;
@@ -175,10 +177,10 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
         )
           return false;
 
-        if (!q) return true;
+        if (!searchTopic) return true;
 
         const indexed = searchIndex.get(t.code);
-        return indexed ? getAcupointMatchReason(indexed, q) !== null : false;
+        return indexed ? getAcupointMatchReason(indexed, searchTopic) !== null : false;
       })
       .sort((a, b) => {
         if (sortOption === "kana") {
@@ -193,18 +195,20 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
         }
 
         // デフォルト：経絡順（検索語がある場合は完全一致優先）
-        if (q) {
+        if (searchTopic) {
           const aIndexed = searchIndex.get(a.code)!;
           const bIndexed = searchIndex.get(b.code)!;
-          const aExact = aIndexed.name === q || aIndexed.code === q;
-          const bExact = bIndexed.name === q || bIndexed.code === q;
-          if (aExact && !bExact) return -1;
-          if (!aExact && bExact) return 1;
+          const aExact = aIndexed.name === searchTopic || aIndexed.code === searchTopic;
+          const bExact = bIndexed.name === searchTopic || bIndexed.code === searchTopic;
+          if (aExact !== bExact) return aExact ? -1 : 1;
+          const aJoint = matchesPrimaryJoint(aIndexed, searchTopic);
+          const bJoint = matchesPrimaryJoint(bIndexed, searchTopic);
+          if (aJoint !== bJoint) return aJoint ? -1 : 1;
         }
 
         return compareAcupointsByMeridianOrder(a, b);
       });
-  }, [allPoints, searchIndex, searchQuery, selectedBodyPart, selectedMeridian, selectedCategory, onlyPublished, sortOption]);
+  }, [allPoints, searchIndex, searchTopic, selectedBodyPart, selectedMeridian, selectedCategory, onlyPublished, sortOption]);
 
   // ページネーション計算
   const totalItems = filteredTsubos.length;
@@ -222,6 +226,11 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
     updateFilters({ searchQuery: "", currentPage: 1 });
     searchInputRef.current?.focus();
   };
+  const searchExample = (term: string) => {
+    setShowBodyMap(false);
+    updateFilters({ searchQuery: term, currentPage: 1 });
+    resultsRef.current?.focus();
+  };
   const resetAllFilters = () => {
     updateFilters({ ...DEFAULT_SELECTION, searchQuery: "", currentPage: 1 });
     searchInputRef.current?.focus();
@@ -233,12 +242,14 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
 
   const hasSearchQuery = searchQuery.trim().length > 0;
   const hasSelectionFilters = selectedBodyPart !== "すべて" || selectedMeridian !== "すべて" || selectedCategory !== "すべて" || onlyPublished;
-  const hasActiveFilters = hasSearchQuery || hasSelectionFilters;
 
   return (
     <div className="tsubo-search-layout atlas-search-layout">
       <Suspense fallback={null}><TsuboUrlSync restore={restoreUrl} /></Suspense>
-      <form action="/search" role="search" aria-label="ツボ図鑑内の検索" className="atlas-search-panel" onSubmit={event => event.preventDefault()}>
+      <form action="/search" role="search" aria-label="ツボ図鑑内の検索" className="atlas-search-panel" onSubmit={event => {
+        event.preventDefault();
+        resultsRef.current?.focus();
+      }}>
         <label htmlFor="tsubo-search" className="atlas-search-label">
           ツボを検索
         </label>
@@ -250,6 +261,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
             ref={searchInputRef}
             aria-describedby="tsubo-search-examples"
             type="search"
+            enterKeyHint="search"
             autoComplete="off"
             value={searchQuery}
             onChange={event => {
@@ -257,7 +269,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
               if (!searchQuery.trim() && value.trim()) setShowBodyMap(false);
               updateFilters({ searchQuery: value, currentPage: 1 });
             }}
-            placeholder="経穴名・読み・コード"
+            placeholder="合谷、手首のツボ、LI4"
             className="atlas-search-input"
           />
           {searchQuery && (
@@ -273,7 +285,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
           )}
         </div>
         <p id="tsubo-search-examples" className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          例：合谷、ごうこく、LI4、頭痛
+          名前・読み方・部位・番号で探せます。
         </p>
         <noscript><button type="submit" className="atlas-text-action">サイト内検索で調べる</button></noscript>
 
@@ -289,9 +301,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
             <span>部位から探す</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" />
           </button>
           <button type="button" onClick={() => setShowFilters(!showFilters)} aria-expanded={showFilters} aria-controls="tsubo-detail-filters" className="tsubo-filter-toggle"><SlidersHorizontal aria-hidden="true" className="h-4 w-4" /><span>詳細条件</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" /></button>
-          <a href="#illustrated-points" className="atlas-search-index-link">部位別の索引</a>
-          <a href="#tsubo-index" className="atlas-search-index-link">経絡別の索引</a>
-          <a href="#atlas-research-index" className="atlas-search-index-link">研究から探す</a>
+          {!hasSearchQuery && ATLAS_INDEX_LINKS.map(({ href, label }) => <a key={href} href={href} className="atlas-search-index-link">{label}</a>)}
         </div>
         {hasSelectionFilters && <p className="tsubo-active-filters">選択中：{[selectedBodyPart !== 'すべて' && selectedBodyPart, selectedMeridian !== 'すべて' && selectedMeridian, selectedCategory !== 'すべて' && selectedCategory, onlyPublished && '主要経穴のみ'].filter(Boolean).join('・')}</p>}
       </form>
@@ -371,15 +381,18 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
           </div>
       </section>
 
-      {relatedGuides}
+      {!hasSearchQuery && relatedGuides}
 
       {/* 経穴一覧セクション */}
-      <section id="tsubo-list" className="atlas-target space-y-4">
+      <section ref={resultsRef} id="tsubo-list" tabIndex={-1} aria-label="ツボの検索結果" className="atlas-target space-y-4">
         {/* 一覧上部コントロールバー */}
         <div className="tsubo-results-toolbar">
           <div className="min-w-0 space-y-1">
-            <p role="status" aria-live="polite" aria-atomic="true" className="tsubo-result-count">{hasSearchQuery ? `「${searchQuery.trim()}」：` : hasSelectionFilters ? '該当：' : '全'}<strong>{totalItems}</strong>穴</p>
-            {hasActiveFilters && totalItems > 0 && <div className="tsubo-reset-actions">{hasSelectionFilters && hasSearchQuery && <button type="button" onClick={resetSelectionFilters}>検索語を保って条件を解除</button>}<button type="button" onClick={resetAllFilters}><RotateCcw aria-hidden="true" className="h-4 w-4" />検索・条件をすべて解除</button></div>}
+            <p role="status" aria-live="polite" aria-atomic="true" className="tsubo-result-count">
+              {hasSearchQuery ? `「${searchQuery.trim()}」：` : hasSelectionFilters ? '該当：' : '全'}<strong>{totalItems}</strong>穴
+              {searchTopic !== normalizedQuery && <span className="block text-sm">「{searchTopic}」で検索</span>}
+            </p>
+            {hasSelectionFilters && totalItems > 0 && <div className="tsubo-reset-actions">{hasSearchQuery && <button type="button" onClick={resetSelectionFilters}>検索語を保って条件を解除</button>}<button type="button" onClick={resetAllFilters}><RotateCcw aria-hidden="true" className="h-4 w-4" />検索・条件をすべて解除</button></div>}
           </div>
 
           <div className="flex items-center gap-2 text-xs">
@@ -390,7 +403,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
               onChange={event => updateFilters({ sortOption: event.target.value as SortOption, currentPage: 1 })}
               className="bg-white dark:bg-[#17212A] border border-[#D8CFC0] dark:border-[#2A3B4A] rounded-lg px-2.5 py-1 text-xs text-[#333835] dark:text-[#C5D2DB]"
             >
-              <option value="meridian">流注順（経絡順）</option>
+              <option value="meridian">{searchTopic ? "一致を優先" : "流注順（経絡順）"}</option>
               <option value="kana">五十音順</option>
               <option value="detailed">主要経穴を先に表示</option>
             </select>
@@ -424,8 +437,13 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
           <div className="rounded-2xl border border-[#E5DEC9] bg-white px-4 py-8 text-center dark:border-[#2A3B4A] dark:bg-[#17212A]">
             <Search aria-hidden="true" className="mx-auto h-7 w-7 text-[#737C77] dark:text-[#8899A6]" />
             <h3 className="mt-3 text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">条件に合う経穴が見つかりませんでした</h3>
-            <p className="mt-2 text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">経穴名・読み方・コードや、部位・経脈・要穴の条件を変えてお試しください。</p>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              {hasSelectionFilters ? "検索条件を外すと、ほかの部位や経絡のツボも探せます。" : "部位や名前を短く入れると探しやすくなります。下の例でも検索できます。"}
+            </p>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
+              {hasSearchQuery && !hasSelectionFilters && EXAMPLE_SEARCH_TERMS.map(term => (
+                <button key={term} type="button" onClick={() => searchExample(term)} className="ui-button ui-button-outline text-sm">「{term}」で探す</button>
+              ))}
               {hasSearchQuery && hasSelectionFilters && <button type="button" onClick={resetSelectionFilters} className="min-h-11 rounded-xl border border-[#C5DED4] px-4 py-2 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A5243] dark:text-[#83BEA8] dark:hover:bg-[#182823]">同じ検索語で条件を解除</button>}
               {hasSearchQuery && <button type="button" onClick={() => searchInputRef.current?.focus()} className="min-h-11 rounded-xl border border-[#C5DED4] px-4 py-2 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A5243] dark:text-[#83BEA8] dark:hover:bg-[#182823]">検索語を編集する</button>}
               <button type="button" onClick={resetAllFilters} className="min-h-11 rounded-xl bg-[#1E3D34] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2B5A46] focus-visible:outline-2 focus-visible:outline-offset-2 dark:bg-[#2B6958]">検索・条件を解除して全{allPoints.length}穴を表示</button>
@@ -434,7 +452,8 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
         ) : viewMode === "grid" ? (
           <div className="atlas-result-grid">
             {paginatedTsubos.map((point) => {
-              const matchReason = searchQuery ? getMatchReason(point, searchQuery) : null;
+              const indexed = searchIndex.get(point.code);
+              const matchReason = indexed ? getAcupointMatchReason(indexed, searchTopic) : null;
               return (
                 <Link
                   key={point.id}
@@ -556,6 +575,15 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
           </div>
         )}
       </section>
+
+      {hasSearchQuery && (
+        <>
+          <nav aria-label="ツボ図鑑の索引" className="flex flex-wrap gap-x-3">
+            {ATLAS_INDEX_LINKS.map(({ href, label }) => <a key={href} href={href} className="atlas-search-index-link">{label}</a>)}
+          </nav>
+          {relatedGuides}
+        </>
+      )}
 
       <TsuboReviewEntry placement="dictionary" />
       <nav className="dictionary-tools" aria-label="経穴の学習ツール">

@@ -264,6 +264,21 @@
   }
 }
 
+@media (max-width: 47.999rem) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) clamp(3rem, 17vw, 6rem);
+    gap: .875rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.35rem, 5.7vw, 1.55rem);
+  }
+
+  .heroArtwork {
+    border-radius: .5rem;
+  }
+}
+
 @media (min-width: 48rem) {
   .hero {
     grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);

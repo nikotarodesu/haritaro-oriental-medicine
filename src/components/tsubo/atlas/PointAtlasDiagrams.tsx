@@ -16,6 +16,7 @@ import LandmarkCloseUp from "./LandmarkCloseUp";
 import VolarForearmRegion from "./VolarForearmRegion";
 import ExpandedLandmarkRegion, { expandedViews } from "./expanded/ExpandedLandmarkRegion";
 import ZoomableAtlasDiagram from "./ZoomableAtlasDiagram";
+import AtlasLocationFigures from "./AtlasLocationFigures";
 import type { BodyArea } from "./expanded/views";
 
 const figureClass = "atlas-figure";
@@ -60,11 +61,12 @@ const bodyMapOverrides = {
   neckBase: { area: "neckBase", label: "首の付け根" },
 } as const;
 
-export default function PointAtlasDiagrams({ point, meridianPoints, illustration, marker }: {
+export default function PointAtlasDiagrams({ point, meridianPoints, illustration, marker, children }: {
   point: AcupointMaster;
   meridianPoints: readonly AcupointMaster[];
   illustration: AcupointAtlasArticle["illustration"];
   marker: AtlasMarker;
+  children?: ReactNode;
 }) {
   const { BodyHighlight, CloseUp } = regions[illustration.region];
   const { marker: closeUpMarker, measurements } = getAnnotatedCloseUp(point.codeLower, marker, illustration.region);
@@ -96,7 +98,7 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
   const diagramLabel = `${point.name}の場所と目印`;
 
   return (
-    <div id="acupoint-diagram" className="atlas-diagrams atlas-target">
+    <AtlasLocationFigures notes={children} primary={
       <figure className={`${figureClass} ${measured ? "atlas-figure--measured" : "atlas-figure--labelled"}`}>
         <ZoomableAtlasDiagram label={diagramLabel}>
           {landmarks && landmarkView ? (
@@ -122,6 +124,7 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
           </>}
         </figcaption>
       </figure>
+    }>
 
       <figure className={`${figureClass} atlas-figure--overview`}>
         <svg viewBox="0 0 200 272" role="img" aria-label={`全身${bodyDirection}のシルエット。${bodyLabel}をオレンジで示しています。`} className="mx-auto block max-h-64 w-full">
@@ -158,6 +161,6 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
           {point.meridian}の順序 · {illustration.meridianCaption}
         </figcaption>
       </figure>
-    </div>
+    </AtlasLocationFigures>
   );
 }

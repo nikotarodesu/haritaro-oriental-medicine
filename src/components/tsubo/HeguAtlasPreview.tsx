@@ -1,8 +1,8 @@
 import Link from "next/link";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ContentEndAd from "@/components/ads/ContentEndAd";
-import { AcupointReadingLinks } from "@/components/tsubo/AcupointArticleLinks";
-import AcupointArticleHeader from "@/components/tsubo/AcupointArticleHeader";
+import { AcupointReadingLinks, AcupointSectionLinks } from "@/components/tsubo/AcupointArticleLinks";
+import AcupointArticleHeader, { AcupointPointDetails } from "@/components/tsubo/AcupointArticleHeader";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import AcupointAtlasDiagrams from "@/components/tsubo/AcupointAtlasDiagrams";
@@ -32,15 +32,16 @@ export const heguSources = [
 export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
-      <AcupointArticleHeader point={point} lead="合谷は、手の甲にあるツボです。親指と人差し指の間で、人差し指につながる骨が目印になります。左右とも同じように探せます。" warning={heguAtlasReading.caution} meridianReading="てのようめいだいちょうけい" />
+      <AcupointArticleHeader point={point} lead="合谷は、手の甲にあるツボです。親指と人差し指の間で、人差し指につながる骨が目印になります。左右とも同じように探せます。" warning={heguAtlasReading.caution} />
 
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
-        <p>手を楽にして甲を上に向けます。人差し指の付け根から手首へ向かって、反対の手の指で骨をたどります。骨の長さの真ん中から、少し親指側にずらしたところが合谷です。拡大図の①は人差し指につながる骨（第2中手骨）、②は親指につながる骨（第1中手骨）です。丸印は①の真ん中から②の方へ少し寄ったところにあります。</p>
-        <WhoPointLocation code={point.codeLower} pointName={point.name} />
-        <div className="mt-5">
-          <AcupointAtlasDiagrams point={point} meridianPoints={getMeridianPoints(point.meridianId)} />
-        </div>
+        <AcupointAtlasDiagrams point={point} meridianPoints={getMeridianPoints(point.meridianId)}>
+          <AcupointSectionLinks />
+          <p>手を楽にして甲を上に向けます。人差し指の付け根から手首へ向かって、反対の手の指で骨をたどります。骨の長さの真ん中から、少し親指側にずらしたところが合谷です。拡大図の①は人差し指につながる骨（第2中手骨）、②は親指につながる骨（第1中手骨）です。丸印は①の真ん中から②の方へ少し寄ったところにあります。</p>
+          <WhoPointLocation code={point.codeLower} pointName={point.name} />
+          <AcupointPointDetails point={point} meridianReading="てのようめいだいちょうけい" />
+        </AcupointAtlasDiagrams>
       </section>
 
       <AcupointResearch point={point} />

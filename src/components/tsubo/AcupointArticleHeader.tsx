@@ -1,12 +1,10 @@
 import Link from "next/link";
 import type { AcupointDetail } from "@/data/tsubo/types";
-import { AcupointSectionLinks } from "./AcupointArticleLinks";
 
-export default function AcupointArticleHeader({ point, lead, warning, meridianReading }: {
+export default function AcupointArticleHeader({ point, lead, warning }: {
   point: AcupointDetail;
   lead: string;
   warning?: string;
-  meridianReading: string;
 }) {
   const indexMeridianId = point.meridianId === "governor" || point.meridianId === "conception"
     ? `${point.meridianId}-vessel`
@@ -28,15 +26,22 @@ export default function AcupointArticleHeader({ point, lead, warning, meridianRe
       <p className="atlas-point-meta"><a href={`/tsubo#meridian-${indexMeridianId}`} className="atlas-source-link">{point.meridian}のツボ一覧</a> <span aria-hidden="true">·</span> {point.bodyPart}</p>
       <p className="atlas-point-lead">{lead}</p>
       {warning && <p id="acupoint-safety-warning" className="atlas-safety atlas-target">{warning}</p>}
-      <AcupointSectionLinks />
-      <details className="atlas-disclosure atlas-point-details">
-        <summary>基本情報・別名</summary>
-        <dl>
-          <div><dt>所属経絡の読み</dt><dd>{meridianReading}</dd></div>
-          <div><dt>中国語のローマ字表記</dt><dd>{point.romaji}</dd></div>
-          {point.aliases?.length ? <div><dt>別名・表記</dt><dd>{point.aliases.join("、")}</dd></div> : null}
-        </dl>
-      </details>
     </header>
+  );
+}
+
+export function AcupointPointDetails({ point, meridianReading }: {
+  point: AcupointDetail;
+  meridianReading: string;
+}) {
+  return (
+    <details className="atlas-disclosure atlas-point-details">
+      <summary>基本情報・別名</summary>
+      <dl>
+        <div><dt>所属経絡の読み</dt><dd>{meridianReading}</dd></div>
+        <div><dt>中国語のローマ字表記</dt><dd>{point.romaji}</dd></div>
+        {point.aliases?.length ? <div><dt>別名・表記</dt><dd>{point.aliases.join("、")}</dd></div> : null}
+      </dl>
+    </details>
   );
 }

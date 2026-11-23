@@ -1,8 +1,8 @@
 import Link from "next/link";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ContentEndAd from "@/components/ads/ContentEndAd";
-import { AcupointReadingLinks } from "./AcupointArticleLinks";
-import AcupointArticleHeader from "./AcupointArticleHeader";
+import { AcupointReadingLinks, AcupointSectionLinks } from "./AcupointArticleLinks";
+import AcupointArticleHeader, { AcupointPointDetails } from "./AcupointArticleHeader";
 import AcupointResearch from "./AcupointResearch";
 import WhoPointLocation from "./WhoPointLocation";
 import CrossSectionViewer from "./CrossSectionViewer";
@@ -34,15 +34,16 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
 
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
-      <AcupointArticleHeader point={point} lead={article.lead} warning={article.safetyWarning} meridianReading={article.meridianReading} />
+      <AcupointArticleHeader point={point} lead={article.lead} warning={article.safetyWarning} />
 
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
-        <Paragraphs paragraphs={article.location} />
-        <WhoPointLocation code={point.codeLower} pointName={point.name} />
-        <div className="mt-5">
-          <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} />
-        </div>
+        <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker}>
+          <AcupointSectionLinks />
+          <Paragraphs paragraphs={article.location} />
+          <WhoPointLocation code={point.codeLower} pointName={point.name} />
+          <AcupointPointDetails point={point} meridianReading={article.meridianReading} />
+        </PointAtlasDiagrams>
       </section>
 
       <AcupointResearch point={point} traditionalTitle={traditionalTitle} />

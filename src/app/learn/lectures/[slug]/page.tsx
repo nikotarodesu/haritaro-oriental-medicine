@@ -14,6 +14,7 @@ import { PAGE_REVISIONS } from "@/config/contentUpdates";
 import { SERIES } from "@/config/series";
 import { getPublicLectureArticle } from "@/data/publicLectures";
 import { approvedIntroId, approvedIntroReferences } from "@/data/publicLectures/approvedIntro";
+import { getPublicLectureDiagram } from "@/data/publicLectures/diagrams";
 import { getLectureIndexGroups, getReadingUnit, READING_LECTURES_REVISED_AT, readingUnits } from "@/data/publicLectures/readingUnits";
 import { getPublicLectureReferences, publishedLectureRecords } from "@/data/publicLectures/resources";
 import { readingUnitRevisions } from "@/data/publicLectures/revisions";
@@ -135,7 +136,14 @@ export default async function ReadingLecturePage({ params }: Props) {
       </header>
 
       <ReadingContents label="講義の目次" headings={[
-        ...unit.parts.map(part => ({ id: part.anchor, label: part.label })),
+        ...unit.parts.map(part => {
+          const diagram = getPublicLectureDiagram(part.lectureId);
+          return {
+            id: part.anchor,
+            label: part.label,
+            diagram: diagram ? { id: `${part.anchor}-diagram`, label: diagram.title } : undefined,
+          };
+        }),
         { id: "lecture-review", label: "要点まとめ" },
       ]} />
 

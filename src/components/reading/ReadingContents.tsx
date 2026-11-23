@@ -1,8 +1,10 @@
-import { ChevronDown, List } from "lucide-react";
+import { ChevronDown, List, Network } from "lucide-react";
+
+type ReadingLink = { id: string; label: string };
 
 export default function ReadingContents({ label, headings }: {
   label: string;
-  headings: readonly { id: string; label: string }[];
+  headings: readonly (ReadingLink & { diagram?: ReadingLink })[];
 }) {
   if (headings.length === 0) return null;
   return (
@@ -13,6 +15,12 @@ export default function ReadingContents({ label, headings }: {
           {headings.map(heading => (
             <li key={heading.id}>
               <a href={`#${heading.id}`}>{heading.label}</a>
+              {heading.diagram && (
+                <a href={`#${heading.diagram.id}`} className="reader-contents-diagram">
+                  <Network aria-hidden="true" />
+                  <span><span className="sr-only">図を見る </span>{heading.diagram.label}</span>
+                </a>
+              )}
             </li>
           ))}
         </ol>

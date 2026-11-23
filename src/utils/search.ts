@@ -10,6 +10,13 @@ export function normalizeSearchText(text: string): string {
     .replace(/\s+/g, ' ').trim());
 }
 
+const POINT_QUESTION_END = /\s*(?:の\s*(?:近く|周り)\s*の|(?:周辺|付近|近く)\s*の|の|に\s*(?:ある|効く|きく|よい|いい|使う)|と\s*(?:関連|関係)する)\s*(?:つぼ|経穴)(?:\s*(?:は\s*どこ(?:ですか)?|を\s*(?:探す|知りたい|教えて(?:ください)?)))?$/u;
+
+export function getPointSearchTopic(normalizedQuery: string): string {
+  const question = normalizedQuery.replace(/[?？。!！]+\s*$/, "").trim();
+  return question.replace(POINT_QUESTION_END, "").trim() || normalizedQuery;
+}
+
 export interface SearchableItem { title: string; subtitle?: string; tags?: string[]; exactCode?: string; exactTerms?: string[] }
 export type SearchItemType = 'article' | 'acupoint' | 'lecture' | 'case' | 'tool' | 'glossary' | 'kokushi' | 'classic' | 'paper' | 'symptom';
 export type SearchCategory = 'all' | 'article' | 'acupoint' | 'lecture' | 'kokushi' | 'case' | 'library' | 'glossary' | 'symptom' | 'tool';

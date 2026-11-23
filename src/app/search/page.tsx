@@ -5,7 +5,7 @@ import { ARTICLES } from "@/data/articleData";
 import { getPublicLectureArticle, publicLectureText } from "@/data/publicLectures/index";
 import { PUBLIC_SYMPTOM_CONTENT } from "@/data/publicSymptoms";
 import { SEARCH_CATALOG } from "@/data/searchCatalog";
-import { normalizeSearchText, prepareSearchItem } from "@/utils/search";
+import { getPointSearchTopic, normalizeSearchText, prepareSearchItem } from "@/utils/search";
 import { preparePurposeSearchQuery, rankPurposeSearchResults } from "@/utils/searchPurpose";
 
 export const metadata: Metadata = {
@@ -51,6 +51,9 @@ export default async function SearchPage({ searchParams }: {
 }) {
   const params = await searchParams;
   const query = typeof params.q === "string" ? params.q.trim().slice(0, 100) : "";
+  const normalizedQuery = normalizeSearchText(query.replace(/[?？。!！]+\s*$/, ""));
+  const dictionaryHref = getPointSearchTopic(normalizedQuery) !== normalizedQuery
+    ? `/tsubo?${new URLSearchParams({ q: query })}` : null;
   const results = findResults(query);
   const totalPages = Math.max(1, Math.ceil(results.length / PAGE_SIZE));
   const requestedPage = typeof params.page === "string" ? Number(params.page) : 1;
@@ -63,6 +66,7 @@ export default async function SearchPage({ searchParams }: {
       <PlatformSearchForm key={query} query={query} />
       {query && <section className="space-y-4" aria-labelledby="search-results-title">
         <h2 id="search-results-title" className="text-lg font-bold">「{query}」の検索結果 <span className="ui-muted">{results.length}件</span></h2>
+        {dictionaryHref && <Link href={dictionaryHref} className="page-secondary-action">同じ言葉でツボ図鑑を探す</Link>}
         {results.length === 0 ? <p className="ui-muted">ツボは「合谷」「ごうこく」「LI4」のように名前・読み・番号で探せます。症状は「肩こり」のように短く入力するか、<Link href="/symptoms" className="ui-text-link">症状別ガイド</Link>から探してください。</p> : (
           <ul className="platform-result-list">
             {results.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map(item => (

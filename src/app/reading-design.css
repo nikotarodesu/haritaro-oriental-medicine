@@ -120,6 +120,13 @@
   overflow-wrap: anywhere;
 }
 
+.reader-contents li > .reader-contents-diagram {
+  gap: .5rem;
+  padding-inline-start: .9rem;
+  border-top: 0;
+  font-size: .875rem;
+}
+
 .reader-article > .page-help {
   margin-top: 0;
 }

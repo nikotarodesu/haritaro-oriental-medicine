@@ -130,7 +130,7 @@ export default function TsuboPage() {
         <p className="leading-relaxed">
           正経十二経脈・任脈・督脈の全361穴に、WHO標準経穴部位（2009年改訂再版）と照合した位置の日本語要約と原本へのリンクを掲載しています。図鑑の基本情報は『新版 東洋医学概論』『経絡経穴概論』も参照しています。断面図は学習用の模式図であり、個人の刺入経路や安全な深度を示すものではありません。
         </p>
-        <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
+        <p className="text-sm leading-relaxed">
           ※本辞典は学習および臨床推論の補助を目的としており、個別診断や医療行為を代替するものではありません。
         </p>
       </footer>

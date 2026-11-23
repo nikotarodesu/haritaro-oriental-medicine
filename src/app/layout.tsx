@@ -21,14 +21,14 @@ import { getLearningProgressCatalog } from "@/data/learningProgressCatalog";
 const notoSerifJP = Noto_Serif_JP({
   variable: "--font-noto-serif",
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: "variable",
   display: "swap",
 });
 
 const notoSansJP = Noto_Sans_JP({
   variable: "--font-noto-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: "variable",
   display: "swap",
 });
 

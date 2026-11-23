@@ -91,6 +91,7 @@ export default async function ArticleDetailPage({ params }: Props) {
     course.reading.some(item => item.href === `/articles/${article.id}`) ||
     course.steps.some(step => step.lectureId === ARTICLE_LEARNING_GUIDES[article.id]?.lectureId));
   const readingGuide = ARTICLE_READING_GUIDES[article.id];
+  const firstFigure = readingGuide?.inserts[0]?.figure;
   const nextArticleIds = new Set<string>();
   const nextArticles = (readingGuide?.nextArticles || []).flatMap(item => {
     const next = ARTICLES.find(candidate => candidate.id === item.articleId);
@@ -224,7 +225,12 @@ export default async function ArticleDetailPage({ params }: Props) {
 
           <nav aria-label="この記事の読み進め方" className="reader-navigation">
             <a href="#article-content" className="page-primary-action"><BookOpen aria-hidden="true" className="h-4 w-4" />本文へ</a>
-            {readingGuide?.inserts[0] && <a href={`#reading-figure-${readingGuide.inserts[0].figure.id}`} className="page-secondary-action"><Network aria-hidden="true" className="h-4 w-4" />図解</a>}
+            {firstFigure && (
+              <a href={`#reading-figure-${firstFigure.id}`} className="page-secondary-action">
+                <Network aria-hidden="true" className="h-4 w-4 shrink-0" />
+                <span>図で見る · {firstFigure.title}</span>
+              </a>
+            )}
             {nineNeedlesAfter >= 0 && <a href={`#${NINE_NEEDLES_GUIDE.anchor}`} className="page-secondary-action">古代の九鍼</a>}
             {resolvedReferences.length > 0 && <a href="#article-references-section" className="page-secondary-action"><Bookmark aria-hidden="true" className="h-4 w-4" />出典</a>}
           </nav>

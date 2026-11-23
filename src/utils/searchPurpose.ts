@@ -1,4 +1,4 @@
-import { normalizeSearchText, prepareSearchItem, prepareSearchQuery, scoreSearchItem, searchMatchHint, type SearchableItem, type SearchItemType } from "./search";
+import { getPointSearchTopic, normalizeSearchText, prepareSearchItem, prepareSearchQuery, scoreSearchItem, searchMatchHint, type SearchableItem, type SearchItemType } from "./search";
 
 export type SearchPurpose = "auto" | "guide" | "research";
 export const SEARCH_PURPOSES: ReadonlyArray<{ id: SearchPurpose; label: string }> = [
@@ -21,7 +21,6 @@ const RESEARCH_MODIFIERS = new Set([
 ].map(normalizeSearchText));
 
 const LEARNING_MODIFIERS = new Set(["とは", "意味", "定義", "学ぶ", "学習", "入門"]);
-const POINT_QUESTION_END = /\s*(?:の|に\s*(?:効く|きく|よい|いい|使う)|と\s*(?:関連|関係)する)\s*(?:つぼ|経穴)(?:\s*(?:は\s*どこ(?:ですか)?|を\s*(?:知りたい|教えて(?:ください)?)))?$/u;
 const SPOKEN_TOPICS = new Map([
   ["首がこる", "首こり"], ["首が凝る", "首こり"], ["首のこり", "首こり"],
   ["肩がこる", "肩こり"], ["肩が凝る", "肩こり"], ["肩のこり", "肩こり"],
@@ -41,7 +40,7 @@ export function preparePurposeSearchQuery(query: string, requestedPurpose: Searc
   const topicQuery = (hasResearchModifiers || learningFocus) && topicTokens.length
     ? prepareSearchQuery(topicTokens.join(" ")) : originalQuery;
   // Match the topic of a question so results can point to a relevant guide.
-  const bareTopic = topicQuery.normalized.replace(POINT_QUESTION_END, "").trim();
+  const bareTopic = getPointSearchTopic(topicQuery.normalized);
   const searchTopic = SPOKEN_TOPICS.get(bareTopic) ?? bareTopic;
   return {
     purpose,

@@ -11,7 +11,7 @@ export default function PlatformSearchForm({
   query = "",
   id = "platform-query",
   label = "ツボ・症状・東洋医学の用語を探す",
-  placeholder = "合谷、肩こり、手の甲",
+  placeholder = "合谷、肩こり、手首のツボ",
 }: PlatformSearchFormProps) {
   return (
     <form action="/search" method="get" role="search" className="platform-search" aria-label="サイト内検索">
