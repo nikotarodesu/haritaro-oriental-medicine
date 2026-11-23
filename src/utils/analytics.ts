@@ -1,4 +1,4 @@
-import { PUBLIC_CLINICAL_GUIDE_PATHS, PUBLIC_SYMPTOM_PATHS } from '@/config/publicGuideRoutes';
+import { PUBLIC_CLINICAL_GUIDE_PATHS, PUBLIC_RESEARCH_PATHS, PUBLIC_SYMPTOM_PATHS } from '@/config/publicGuideRoutes';
 import { LEARNING_COURSES } from '@/data/learningCourses';
 import { SUBSCRIPTION_CONFIG } from '@/config/subscription';
 
@@ -45,6 +45,7 @@ export type AnalyticsEventName =
   | "case_training_start"
   | "case_stage_complete"
   | "case_training_complete"
+  | "home_series_open" | "compare_atlas_open" | "research_source_open" | "gorou_examples_open"
   | "lecture_view" | "article_view" | "learning_activity" | "learning_return_7d"
   | `web_vital_${"lcp" | "inp" | "cls"}_${"good" | "needs_improvement" | "poor"}`;
 // Learning events contain only navigation attributes and aggregate counts.
@@ -65,7 +66,7 @@ export interface AnalyticsEventParams {
  */
 export function trackEvent(name: AnalyticsEventName, params?: AnalyticsEventParams): void {
   if (typeof window === "undefined") return;
-  const pathname = publicAnalyticsPath(window.location.pathname);
+  const pathname = analyticsDocumentPath(window.location.pathname, Boolean(window.location.search));
   if (!pathname) return;
   const safe = sanitizeAnalyticsParams(params);
   emit({ name, params: safe, pathname });
@@ -94,9 +95,9 @@ const PUBLIC_PAGES = new Set([
   "/cases", "/curriculum", "/kikei", "/glossary", "/learn/review", "/pricing", "/tsubo",
   "/tsubo/practice", "/tsubo/compare", "/tsubo/basics/bone-cun", "/practice/haiketsu",
   "/library", "/learn", "/learn/courses", "/tokushoho", "/simulator", "/simulator/compare",
-  "/terms", "/safety", "/symptoms", "/privacy", "/updates",
+  "/terms", "/safety", "/symptoms", "/privacy", "/updates", "/search",
   "/checkout/complete",
-  ...PUBLIC_SYMPTOM_PATHS, ...PUBLIC_CLINICAL_GUIDE_PATHS,
+  ...PUBLIC_SYMPTOM_PATHS, ...PUBLIC_CLINICAL_GUIDE_PATHS, ...PUBLIC_RESEARCH_PATHS,
 ]);
 const PUBLIC_DETAIL = /^\/(?:articles|cases|curriculum|kikei|tsubo)\/[a-z0-9-]{1,80}$/i;
 
@@ -104,6 +105,40 @@ const PUBLIC_DETAIL = /^\/(?:articles|cases|curriculum|kikei|tsubo)\/[a-z0-9-]{1
 export function publicAnalyticsPath(value: string): string | null {
   const pathname = value.split(/[?#]/)[0].replace(/\/$/, "") || "/";
   return PUBLIC_PAGES.has(pathname) || PUBLIC_DETAIL.test(pathname) || PUBLIC_COURSE_PATHS.has(pathname) ? pathname : null;
+}
+
+/** GA's own site-search measurement can inspect page URLs. Keep result documents out. */
+export function analyticsDocumentPath(pathname: string, hasQuery: boolean): string | null {
+  const path = publicAnalyticsPath(pathname);
+  return hasQuery && (path === "/search" || path === "/tsubo") ? null : path;
+}
+
+export function setAnalyticsDisabled(disabled: boolean): void {
+  const measurementId = process.env.NEXT_PUBLIC_GA_ID;
+  if (measurementId) (window as unknown as Record<string, unknown>)[`ga-disable-${measurementId}`] = disabled;
+}
+
+const NAVIGATION_ACTIONS: Readonly<Partial<Record<string, {
+  event: AnalyticsEventName;
+  placement: string;
+  allowedOn: (path: string) => boolean;
+}>>> = {
+  home_atlas: { event: "home_series_open", placement: "atlas", allowedOn: path => path === "/" },
+  home_reading: { event: "home_series_open", placement: "reading", allowedOn: path => path === "/" },
+  home_clinical: { event: "home_series_open", placement: "clinical", allowedOn: path => path === "/" },
+  platform_search: { event: "search_submit", placement: "platform_search", allowedOn: path => path === "/" || path === "/search" },
+  compare_atlas: { event: "compare_atlas_open", placement: "point_detail", allowedOn: path => path === "/tsubo/compare" },
+  topic_source: { event: "research_source_open", placement: "research_article", allowedOn: path => path.startsWith("/learn/acupuncture/research/") },
+  atlas_source: { event: "research_source_open", placement: "atlas", allowedOn: path => /^\/tsubo\/[a-z]{2}\d{1,2}$/.test(path) },
+  gorou_examples: { event: "gorou_examples_open", placement: "rest_examples", allowedOn: path => path === "/diagnosis" },
+};
+
+/** Use only the fixed action identifier without reading link destinations, labels or form values. */
+export function trackPublicNavigationAction(action: string | null | undefined): void {
+  if (typeof window === "undefined" || !action || !Object.hasOwn(NAVIGATION_ACTIONS, action)) return;
+  const entry = NAVIGATION_ACTIONS[action];
+  const path = analyticsDocumentPath(window.location.pathname, Boolean(window.location.search));
+  if (entry && path && entry.allowedOn(path)) trackEvent(entry.event, { placement: entry.placement });
 }
 
 /** External referrers retain the origin only; private same-site paths are removed. */
@@ -232,7 +267,7 @@ export function trackSubscriptionPurchase(receipt: unknown): boolean {
 }
 
 export function flushAnalyticsEvents(): void {
-  if (typeof window === "undefined" || !window.gtag || !publicAnalyticsPath(window.location.pathname)) return;
+  if (typeof window === "undefined" || !window.gtag || !analyticsDocumentPath(window.location.pathname, Boolean(window.location.search))) return;
   pending.splice(0).forEach(emit);
 }
 
@@ -283,7 +318,7 @@ export interface SafeWebVital { name: string; value: number; rating: string; nav
 
 /** Values come from the official web-vitals implementation included in Next.js. */
 export function trackWebVital(metric: SafeWebVital, landingPath: string): void {
-  if (typeof window === "undefined" || !publicAnalyticsPath(window.location.pathname)) return;
+  if (typeof window === "undefined" || !analyticsDocumentPath(window.location.pathname, Boolean(window.location.search))) return;
   const pathname = publicAnalyticsPath(landingPath);
   const name = metric.name.toLowerCase();
   const rating = metric.rating.replace(/-/g, "_");

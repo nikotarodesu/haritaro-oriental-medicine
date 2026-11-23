@@ -10,10 +10,9 @@ import AcupointAtlasDiagrams from "@/components/tsubo/AcupointAtlasDiagrams";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import { getPublicCrossSectionModel } from "@/data/medicalSafety";
 import { getMeridianPoints } from "@/data/tsubo";
+import { HEGU_SEARCH_COPY } from "@/data/tsubo/atlas/searchCopy";
 import type { AcupointDetail } from "@/data/tsubo/types";
 
-export const heguAtlasTitle = "合谷（ごうこく）の場所と押し方・注意点｜はり太郎のツボ図鑑";
-export const heguAtlasDescription = "合谷（LI4）の位置を、手の甲の骨を目印に図解。自分で押すときの注意、頭痛の受診の目安、WHO標準の位置を紹介します。";
 export const heguAtlasReading = {
   traditional: "合谷は、頭痛や歯の痛みなど、頭や顔の不調と伝統的に関連づけられてきました。頭痛が続く、繰り返すときは医療機関に相談してください。",
   caution: "妊娠中は合谷の指圧を控え、産科の担当者にご相談ください。",
@@ -33,7 +32,7 @@ export const heguSources = [
 export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
-      <AcupointArticleHeader point={point} lead="合谷は、手の甲にあるツボです。親指と人差し指の間で、人差し指につながる骨が目印になります。左右とも同じように探せます。" warning={heguAtlasReading.caution} />
+      <AcupointArticleHeader point={point} lead={HEGU_SEARCH_COPY.lead} warning={heguAtlasReading.caution} />
 
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>

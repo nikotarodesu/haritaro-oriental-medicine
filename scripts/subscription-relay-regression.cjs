@@ -62,14 +62,15 @@ for (const id of ['', '553537039', 'G-XXXXXXXXXX', 'G-GE4JNB164V', 'G-X</script>
   let deadline;
   await Promise.race([trackSubscriptionStep('checkout_login_required', 'monthly'), new Promise((_, reject) => { deadline = setTimeout(() => reject(new Error('Unavailable relay must not block login')), 3000); })]).finally(() => clearTimeout(deadline));
 
-  const savedId = process.env.NEXT_PUBLIC_GA_ID;
-  process.env.NEXT_PUBLIC_GA_ID = 'G-GC398NZKVE';
-  const response = loadServer('src/app/api/analytics/subscription-frame/route').GET();
-  assert.equal(response.status, 200);
-  assert.equal(response.headers.get('Referrer-Policy'), 'no-referrer');
-  assert.equal(response.headers.get('X-Frame-Options'), 'SAMEORIGIN');
-  assert.equal(response.headers.get('Cache-Control'), 'no-store');
-  assert(response.headers.get('Content-Security-Policy').includes("frame-ancestors 'self'"));
-  if (savedId === undefined) delete process.env.NEXT_PUBLIC_GA_ID; else process.env.NEXT_PUBLIC_GA_ID = savedId;
-  console.log('Passed: public click relay survives private navigation, rejects forged/unsafe messages, bounds login wait, and exposes no private URLs.');
+  const retired = loadServer('src/app/api/analytics/subscription-frame/route');
+  for (const method of ['GET', 'HEAD', 'POST']) {
+    const response = retired[method](new Request(origin + '/api/analytics/subscription-frame?secret=PRIVATE_SENTINEL', { method }));
+    assert.equal(response.status, 410);
+    assert.equal(response.headers.get('Cache-Control'), 'no-store');
+    const body = await response.text();
+    if (method === 'HEAD') assert.equal(body, '');
+    else assert.equal(JSON.parse(body).error, 'subscription_ended');
+    assert(!body.includes('PRIVATE_SENTINEL') && !body.includes('<script'));
+  }
+  console.log('Passed: legacy relay validation and bounded waits, retired analytics endpoint returns 410 for GET, HEAD and POST.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

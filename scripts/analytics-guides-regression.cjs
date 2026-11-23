@@ -11,11 +11,15 @@ const document = { referrer: origin + '/notes?patient_name=private' };
 const load = createDataLoader({ window, document });
 const { SYMPTOMS } = load('src/data/symptomData');
 const { CLINICAL_COMPLAINTS } = load('src/data/clinicalWorkflow');
-const { PUBLIC_SYMPTOM_PATHS, PUBLIC_CLINICAL_GUIDE_PATHS } = load('src/config/publicGuideRoutes');
+const { ACUPUNCTURE_RESEARCH_ARTICLES } = load('src/data/acupunctureResearch/index');
+const { ACUPUNCTURE_RESEARCH, acupunctureResearchHref } = load('src/config/acupunctureLearning');
+const { PUBLIC_SYMPTOM_PATHS, PUBLIC_CLINICAL_GUIDE_PATHS, PUBLIC_RESEARCH_PATHS } = load('src/config/publicGuideRoutes');
 const { publicAnalyticsPath, analyticsReferrer, trackEvent, trackWebVital } = load('src/utils/analytics');
-const routes = [...SYMPTOMS.map(item => '/symptoms/' + item.id), ...CLINICAL_COMPLAINTS.map(item => '/clinical/symptoms/' + item.slug), '/updates'];
+const researchPaths = [ACUPUNCTURE_RESEARCH.href, ...ACUPUNCTURE_RESEARCH_ARTICLES.map(article => acupunctureResearchHref(article.slug))];
+const routes = [...SYMPTOMS.map(item => '/symptoms/' + item.id), ...CLINICAL_COMPLAINTS.map(item => '/clinical/symptoms/' + item.slug), ...researchPaths, '/updates'];
 assert.equal(PUBLIC_SYMPTOM_PATHS.length, 12);
 assert.equal(PUBLIC_CLINICAL_GUIDE_PATHS.length, 6);
+assert.deepEqual([...PUBLIC_RESEARCH_PATHS], [...researchPaths], 'Every published research path and only those paths are in the catalog');
 assert.equal(fs.readFileSync(path.join(__dirname, '../src/config/publicGuideRoutes.ts'), 'utf8').replace(/\r\n/g, '\n'), generatePublicGuideRoutes(), 'Generated public guide routes stay synchronized');
 for (const route of routes) {
   assert.equal(publicAnalyticsPath(route + '?patient_name=private#private-note'), route, route + ': safe page view without URL suffix');
@@ -33,7 +37,7 @@ for (const route of routes) {
     assert(!JSON.stringify(call).includes('private'), route + ': no query, note or patient information');
   }
 }
-for (const route of ['/notes', '/clinical/workspace', '/auth/login', '/account/subscription', '/symptoms/private-note', '/clinical/symptoms/private-person', '/updates/private']) {
+for (const route of ['/notes', '/clinical/workspace', '/auth/login', '/account/subscription', '/symptoms/private-note', '/clinical/symptoms/private-person', '/learn/acupuncture/research/private-draft', '/updates/private']) {
   assert.equal(publicAnalyticsPath(route), null, route + ': unpublished and private routes remain excluded');
   window.location.pathname = route;
   const before = calls.length;
@@ -41,4 +45,4 @@ for (const route of ['/notes', '/clinical/workspace', '/auth/login', '/account/s
   trackWebVital({ name: 'LCP', value: 1250, rating: 'good', navigationType: 'navigate' }, '/symptoms/stress-insomnia');
   assert.equal(calls.length, before, route + ': no aggregate transmission from private or unknown routes');
 }
-console.log('Passed: all 12 symptom guides, 6 clinical guides and updates emit safe aggregate events/Web Vitals; private and unknown routes stay excluded.');
+console.log('Passed: published symptom guides, clinical guides, research and updates emit safe aggregate events and Web Vitals; private routes stay excluded.');

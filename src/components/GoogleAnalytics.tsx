@@ -1,24 +1,44 @@
 "use client";
 
 import Script from "next/script";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import WebVitalsReporter from "@/components/WebVitalsReporter";
-import { analyticsReferrer, flushAnalyticsEvents, publicAnalyticsPath, trackLearningPageView } from "@/utils/analytics";
+import { analyticsDocumentPath, analyticsReferrer, flushAnalyticsEvents, setAnalyticsDisabled, trackLearningPageView, trackPublicNavigationAction } from "@/utils/analytics";
 
 export default function GoogleAnalytics() {
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [ready, setReady] = useState(false);
-  const [documentPath] = useState(() => pathname ? publicAnalyticsPath(pathname) : null);
+  const safePath = pathname ? analyticsDocumentPath(pathname, Boolean(searchParams?.size)) : null;
+  const [documentPath] = useState(safePath);
   const previousPath = useRef<string | null>(null);
   // A verified property may reuse a previously configured measurement ID.
   const validId = !!gaId && /^G-[A-Z0-9]+$/.test(gaId) && gaId !== "G-XXXXXXXXXX";
-  const safePath = pathname ? publicAnalyticsPath(pathname) : null;
+
+  useEffect(() => {
+    if (!validId || !safePath) return;
+    function handleNavigationClick(event: MouseEvent) {
+      if (event.defaultPrevented || event.button !== 0 || !(event.target instanceof Element)) return;
+      const action = event.target.closest("a[data-analytics-action]")?.getAttribute("data-analytics-action");
+      trackPublicNavigationAction(action);
+    }
+    function handleSearchSubmit(event: SubmitEvent) {
+      if (event.defaultPrevented || !(event.target instanceof HTMLFormElement)) return;
+      trackPublicNavigationAction(event.target.getAttribute("data-analytics-action"));
+    }
+    document.addEventListener("click", handleNavigationClick, true);
+    document.addEventListener("submit", handleSearchSubmit, true);
+    return () => {
+      document.removeEventListener("click", handleNavigationClick, true);
+      document.removeEventListener("submit", handleSearchSubmit, true);
+    };
+  }, [validId, safePath]);
 
   useEffect(() => {
     if (!validId || !gaId) return;
-    (window as unknown as Record<string, unknown>)[`ga-disable-${gaId}`] = !safePath;
+    setAnalyticsDisabled(!safePath);
     if (!safePath) { previousPath.current = null; return; }
     if (!ready || !window.gtag || previousPath.current === safePath) return;
     const referrer = previousPath.current

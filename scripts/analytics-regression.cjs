@@ -14,7 +14,7 @@ const windowStub = {
 };
 const { createDataLoader } = require('./data-loader.cjs');
 const load = createDataLoader({ window: windowStub, document: { referrer: 'https://www.haritaro.jp/notes?patient=private#private' }, URL, console, Date, setTimeout, clearTimeout });
-const { publicAnalyticsPath, analyticsReferrer, sanitizeAnalyticsParams, learningReturnGap, trackEvent, flushAnalyticsEvents, trackLearningPageView, trackWebVital, trackSubscriptionStep, trackSubscriptionPurchase } = load('src/utils/analytics');
+const { publicAnalyticsPath, analyticsDocumentPath, analyticsReferrer, sanitizeAnalyticsParams, learningReturnGap, trackEvent, trackPublicNavigationAction, flushAnalyticsEvents, trackLearningPageView, trackWebVital, trackSubscriptionStep, trackSubscriptionPurchase } = load('src/utils/analytics');
 
 (async()=>{
 assert.equal(publicAnalyticsPath('/notes?patient=private'), null);
@@ -23,6 +23,10 @@ assert.equal(publicAnalyticsPath('/account/subscription'), null);
 assert.equal(publicAnalyticsPath('/api/contact'), null);
 assert.equal(publicAnalyticsPath('/unknown/patient-123'), null);
 assert.equal(publicAnalyticsPath('/learn/courses/yinyang-foundations?query=private#answer'), '/learn/courses/yinyang-foundations');
+assert.equal(analyticsDocumentPath('/search', false), '/search', 'The bare search landing page can be measured');
+assert.equal(analyticsDocumentPath('/search', true), null, 'Query-bearing results are outside Google tag initialization');
+assert.equal(analyticsDocumentPath('/tsubo', true), null, 'The atlas search also accepts private search text');
+assert.equal(analyticsReferrer(windowStub.location.origin + '/search?q=private', windowStub.location.origin), windowStub.location.origin + '/search');
 assert.equal(analyticsReferrer('https://external.example/private-patient?query=private#private', windowStub.location.origin), 'https://external.example');
 assert.equal(analyticsReferrer('https://www.haritaro.jp/notes?patient=private', windowStub.location.origin), '');
 assert.equal(analyticsReferrer('https://www.haritaro.jp/articles/example?query=private', windowStub.location.origin), 'https://www.haritaro.jp/articles/example');
@@ -63,6 +67,38 @@ trackWebVital({ name: 'INP', value: 100, rating: 'good', navigationType: 'naviga
 assert.equal(events.length, count);
 assert(!JSON.stringify(events).includes('private'));
 
+for (const [pathname, action, eventName, placement] of [
+  ['/', 'home_atlas', 'home_series_open', 'atlas'],
+  ['/', 'home_reading', 'home_series_open', 'reading'],
+  ['/', 'home_clinical', 'home_series_open', 'clinical'],
+  ['/tsubo/compare', 'compare_atlas', 'compare_atlas_open', 'point_detail'],
+  ['/learn/acupuncture/research/urinary-incontinence', 'topic_source', 'research_source_open', 'research_article'],
+  ['/tsubo/st36', 'atlas_source', 'research_source_open', 'atlas'],
+  ['/diagnosis', 'gorou_examples', 'gorou_examples_open', 'rest_examples'],
+]) {
+  windowStub.location.pathname = pathname;
+  const before = events.length;
+  trackPublicNavigationAction(action);
+  assert.equal(events.length, before + 1, action);
+  assert.equal(events.at(-1).name, eventName);
+  assert.deepEqual(Object.keys(events.at(-1).params).sort(), ['page_location', 'page_path', 'page_referrer', 'placement', 'send_to']);
+  assert.equal(events.at(-1).params.placement, placement);
+  assert.equal(events.at(-1).params.page_location, windowStub.location.origin + pathname);
+}
+const beforeBadRead = events.length;
+trackPublicNavigationAction('home_reading'); // The identifier is not valid on the Gorou route.
+trackPublicNavigationAction('__proto__');
+trackPublicNavigationAction('https://example.net/doi-private');
+windowStub.location.pathname = '/learn/acupuncture/research/private-draft';
+trackPublicNavigationAction('topic_source');
+windowStub.location.pathname = '/search';
+trackEvent('search_result_click', { placement: 'site_search_results', query: 'private' });
+trackWebVital({ name: 'LCP', value: 100, rating: 'good', navigationType: 'navigate' }, '/search');
+windowStub.location.pathname = '/tsubo';
+trackEvent('search_result_click', { placement: 'atlas_search_results', query: 'private' });
+assert.equal(events.length, beforeBadRead, 'Unexpected actions and search-result routes send no telemetry');
+assert(!JSON.stringify(events).includes('private'));
+
 windowStub.location.pathname='/pricing';
 trackSubscriptionStep('upgrade_click','monthly');trackSubscriptionStep('checkout_login_required','monthly');trackSubscriptionStep('begin_checkout','yearly');
 const checkoutEvent=events.at(-1);assert.equal(checkoutEvent.name,'begin_checkout');assert.equal(checkoutEvent.params.currency,'JPY');assert.equal(checkoutEvent.params.value,9800);assert.equal(checkoutEvent.params.items[0].item_id,'haritaro_premium_yearly');
@@ -100,6 +136,10 @@ vm.runInNewContext(init, { window: bootWindow, dataLayer: [], Date });
 assert.equal(bootWindow['ga-disable-G-GE4JNB164V'], true);
 assert.equal(bootWindow['ga-disable-G-GC398NZKVE'], undefined);
 assert(ga.includes('allow_google_signals: false'));
+assert(ga.includes('analyticsDocumentPath(pathname, Boolean(searchParams?.size))'));
+assert(ga.includes('getAttribute("data-analytics-action")'));
+assert(!ga.includes('link_url'));
+assert(fs.readFileSync(path.join(root, 'src/app/layout.tsx'), 'utf8').includes('<Suspense fallback={null}><GoogleAnalytics /></Suspense>'));
 assert(ga.includes('G-XXXXXXXXXX'));
 // Evaluate the actual ID guard: the owner's confirmed stream must remain valid.
 const idGuard = ga.match(/const validId = (.+);/)[1];

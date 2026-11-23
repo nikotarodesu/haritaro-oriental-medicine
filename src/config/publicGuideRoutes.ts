@@ -22,3 +22,17 @@ export const PUBLIC_CLINICAL_GUIDE_PATHS = [
   "/clinical/symptoms/digestion",
   "/clinical/symptoms/fatigue"
 ] as const;
+export const PUBLIC_RESEARCH_PATHS = [
+  "/learn/acupuncture/research",
+  "/learn/acupuncture/research/low-back-pain-sciatica",
+  "/learn/acupuncture/research/knee-osteoarthritis",
+  "/learn/acupuncture/research/moxibustion-knee-pain",
+  "/learn/acupuncture/research/migraine-prevention",
+  "/learn/acupuncture/research/postoperative-nausea",
+  "/learn/acupuncture/research/aromatase-inhibitor-joint-pain",
+  "/learn/acupuncture/research/radiation-dry-mouth",
+  "/learn/acupuncture/research/urinary-incontinence",
+  "/learn/acupuncture/research/adverse-events",
+  "/learn/acupuncture/research/anticoagulants-and-bleeding",
+  "/learn/acupuncture/research/pattern-diagnosis-agreement"
+] as const;

@@ -157,7 +157,7 @@ export default async function AcupunctureResearchPage({ params }: Props) {
             <ul className={styles.sources}>
               {article.sources.map(source => (
                 <li id={`source-${source.id}`} key={source.id}>
-                  <a href={source.url} className="ui-text-link break-words">{source.label}</a>
+                  <a href={source.url} className="ui-text-link break-words" data-analytics-action="topic_source">{source.label}</a>
                   <p className="page-muted">{source.scope}</p>
                 </li>
               ))}

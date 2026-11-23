@@ -19,8 +19,9 @@ import AcupointAtlasArticle from "@/components/tsubo/AcupointAtlasArticle";
 import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
-import HeguAtlasPreview, { heguAtlasDescription, heguAtlasTitle, heguSources } from "@/components/tsubo/HeguAtlasPreview";
+import HeguAtlasPreview, { heguSources } from "@/components/tsubo/HeguAtlasPreview";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
+import { ACUPOINT_SEARCH_COPY } from "@/data/tsubo/atlas/searchCopy";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { POINT_ILLUSTRATIONS } from "@/data/tsubo/atlas/illustrations";
 import { getAcupointStudies, getClassicalCombinations } from "@/data/tsubo/atlas/evidence";
@@ -60,6 +61,8 @@ interface Props {
 }
 
 function atlasPageTitle(point: AcupointMaster, topic = "場所と押し方・注意点") {
+  const copy = ACUPOINT_SEARCH_COPY[point.codeLower];
+  if (copy) return `${point.name}（${point.kana}・${point.code}）の場所｜${copy.landmark}を図解｜はり太郎のツボ図鑑`;
   return `${point.name}（${point.kana}）の${topic}｜はり太郎のツボ図鑑`;
 }
 
@@ -80,10 +83,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const isHeguAtlas = point.codeLower === "li4";
   const atlasArticle = ATLAS_ARTICLES[point.codeLower];
-  const title = isHeguAtlas ? heguAtlasTitle : atlasArticle ? atlasPageTitle(point, atlasArticle.titleTopic) : acupointPageTitle(point);
-  const description = isHeguAtlas ? heguAtlasDescription : atlasArticle?.description ?? `${point.name}（${point.code}）の場所と目印。${point.locationSimple} ${point.meridian}の中での位置、近くのツボ、注意点を紹介します。`;
+  const copy = ACUPOINT_SEARCH_COPY[point.codeLower];
+  const title = (copy || atlasArticle) ? atlasPageTitle(point, atlasArticle?.titleTopic) : acupointPageTitle(point);
+  const description = copy?.lead ?? atlasArticle?.description ?? `${point.name}（${point.code}）の場所と目印。${point.locationSimple} ${point.meridian}の中での位置、近くのツボ、注意点を紹介します。`;
 
   return {
     title: { absolute: title },
@@ -149,9 +152,10 @@ export default async function AcupointDetailPage({ params }: Props) {
   const nameGuide = getAcupointName(point.codeLower);
   const isHeguAtlas = point.codeLower === "li4";
   const atlasArticle = ATLAS_ARTICLES[point.codeLower];
+  const copy = ACUPOINT_SEARCH_COPY[point.codeLower];
   const atlasMarker = ATLAS_POINT_MARKERS[point.codeLower];
   const illustration = POINT_ILLUSTRATIONS[point.codeLower];
-  const pageTitle = isHeguAtlas ? heguAtlasTitle : atlasArticle ? atlasPageTitle(point, atlasArticle.titleTopic) : acupointPageTitle(point);
+  const pageTitle = (copy || atlasArticle) ? atlasPageTitle(point, atlasArticle?.titleTopic) : acupointPageTitle(point);
   const verifiedLocation = VERIFIED_POINT_LOCATIONS[point.codeLower];
   const locationSources = isHeguAtlas ? heguSources : atlasArticle?.sources ?? (verifiedLocation
     ? [{ name: `${verifiedLocation.sourceTitle} ${verifiedLocation.sourcePage}`, url: verifiedLocation.sourceUrl }]
@@ -185,7 +189,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         "publisher": { "@id": "https://www.haritaro.jp/#organization" },
         "editor": { "@type": "Person", "name": "はり太郎", "url": "https://www.haritaro.jp/about" },
         ...(sources.length > 0 && { citation: sources.map(({ name, url }) => ({ "@type": "CreativeWork", name, url })) }),
-        "description": isHeguAtlas ? heguAtlasDescription : atlasArticle?.description ?? (point.locationDetail || point.locationSimple),
+        "description": copy?.lead ?? atlasArticle?.description ?? (point.locationDetail || point.locationSimple),
         "about": [
           {
             "@type": "MedicalEntity",
@@ -263,7 +267,7 @@ export default async function AcupointDetailPage({ params }: Props) {
     return (
       <>
         {structuredData}
-        <AcupointAtlasArticle point={point} article={atlasArticle} marker={atlasMarker} meridianPoints={meridianPoints} individualModel={individualModel} />
+        <AcupointAtlasArticle point={point} article={copy ? { ...atlasArticle, lead: copy.lead } : atlasArticle} marker={atlasMarker} meridianPoints={meridianPoints} individualModel={individualModel} />
       </>
     );
   }

@@ -30,6 +30,7 @@ import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
 import ClinicalPairsSection from "@/components/ClinicalPairsSection";
 import { getPointSearchTopic, normalizeSearchText } from "@/utils/search";
 import { prepareAcupointSearch, getAcupointMatchReason, matchesPrimaryJoint } from "@/utils/acupointSearch";
+import { setAnalyticsDisabled } from "@/utils/analytics";
 
 type SortOption = "meridian" | "kana" | "detailed";
 type ViewMode = "grid" | "table";
@@ -131,6 +132,8 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
     const query = url.searchParams.toString();
     if (query !== previous) {
       lastQuery.current = query;
+      // Stop the Google tag before its history listener can see a search URL.
+      if (query) setAnalyticsDisabled(true);
       window.history.replaceState(null, "", url.pathname + url.search + url.hash);
     }
   }

@@ -54,7 +54,7 @@ export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; curr
       <div className="atlas-study-sources">
         <p>出典</p>
         <ul className="atlas-source-links" aria-label="研究の出典">
-          {study.sources.map(source => <li key={source.url}><a href={source.url}>{source.label}</a></li>)}
+          {study.sources.map(source => <li key={source.url}><a href={source.url} data-analytics-action="atlas_source">{source.label}</a></li>)}
         </ul>
       </div>
       {reading && <p><Link href={reading.href} className="atlas-source-link">{reading.label}</Link></p>}
@@ -146,7 +146,7 @@ export default function AcupointResearch({ point, traditionalTitle = "伝統的�
             <p>{background.limitations}</p>
             <ul className="atlas-source-links" aria-label="補足研究の出典">
               {background.sources.map(({ title, year, pmid }) => (
-                <li key={title}>{pmid ? <a href={`https://pubmed.ncbi.nlm.nih.gov/${pmid}/`}>{title}（{year}）</a> : <>{title}（{year}）</>}</li>
+                <li key={title}>{pmid ? <a href={`https://pubmed.ncbi.nlm.nih.gov/${pmid}/`} data-analytics-action="atlas_source">{title}（{year}）</a> : <>{title}（{year}）</>}</li>
               ))}
             </ul>
           </div>

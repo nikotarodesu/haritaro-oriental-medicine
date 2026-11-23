@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import { Noto_Serif_JP, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -85,7 +86,7 @@ export default function RootLayout({
     <html lang="ja" suppressHydrationWarning className={`${notoSerifJP.variable} ${notoSansJP.variable} h-full antialiased`}>
       <head>
         {/* Google Analytics 4 (gtag.js - 環境変数 NEXT_PUBLIC_GA_ID 対応) */}
-        <GoogleAnalytics />
+        <Suspense fallback={null}><GoogleAnalytics /></Suspense>
         {/* 初期テーマ適用スクリプト（画面ちらつき防止） */}
         <script
           dangerouslySetInnerHTML={{

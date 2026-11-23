@@ -14,7 +14,7 @@ export default function PlatformSearchForm({
   placeholder = "合谷、肩こり、手首のツボ",
 }: PlatformSearchFormProps) {
   return (
-    <form action="/search" method="get" role="search" className="platform-search" aria-label="サイト内検索">
+    <form action="/search" method="get" role="search" className="platform-search" aria-label="サイト内検索" data-analytics-action="platform_search">
       <label htmlFor={id}>{label}</label>
       <div className="platform-search-controls">
         <Search aria-hidden="true" />

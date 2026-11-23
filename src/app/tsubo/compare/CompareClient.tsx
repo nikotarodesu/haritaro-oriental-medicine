@@ -69,7 +69,7 @@ const COMPARISON_FIELDS = [
     content: (point: ComparisonPoint) => (
       <>
         <p>{point.locationSimple}</p>
-        <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-location`} className="tsubo-compare-detail-link">図で場所を確認</Link>
+        <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-location`} className="tsubo-compare-detail-link" data-analytics-action="compare_atlas">図で場所を確認</Link>
       </>
     ),
   },
@@ -78,7 +78,7 @@ const COMPARISON_FIELDS = [
     content: (point: ComparisonPoint) => (
       <>
         <p className="tsubo-compare-caution"><AlertTriangle aria-hidden="true" size={15} /><span>{point.caution}</span></p>
-        <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-cautions`} className="tsubo-compare-detail-link">詳しい注意点</Link>
+        <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-cautions`} className="tsubo-compare-detail-link" data-analytics-action="compare_atlas">詳しい注意点</Link>
       </>
     ),
   },
@@ -92,7 +92,7 @@ const COMPARISON_FIELDS = [
       <>
         <p>{point.clinicalNote}</p>
         {point.hasResearch && (
-          <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-research`} className="tsubo-compare-detail-link">研究の範囲と出典</Link>
+          <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-research`} className="tsubo-compare-detail-link" data-analytics-action="compare_atlas">研究の範囲と出典</Link>
         )}
       </>
     ),
@@ -223,9 +223,9 @@ function TsuboCompareContent({ points }: CompareProps) {
           {searchQuery.trim() && searchResults.length === 0 && (
             <div className="text-sm">
               <p role="status">比較に追加できるツボの中に、一致するものがありません。名前、読み、経穴コードを変えて検索できます。</p>
-              <Link href={`/tsubo?q=${encodeURIComponent(searchQuery.trim())}`} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+              <a href={`/tsubo?q=${encodeURIComponent(searchQuery.trim())}`} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
                 全361穴の図鑑で探す
-              </Link>
+              </a>
             </div>
           )}
 
@@ -300,7 +300,7 @@ function TsuboCompareContent({ points }: CompareProps) {
                       <th scope="col" role="columnheader" key={point.id}>
                         <strong className="tsubo-compare-column-point">{point.name}</strong>
                         <span className="tsubo-compare-secondary">{point.code} · {point.kana}</span>
-                        <Link href={`/tsubo/${point.code.toLowerCase()}`} target="_blank" className="tsubo-compare-column-link" aria-label={`${point.name}の詳細を見る（新しいタブ）`}>詳細を見る ↗</Link>
+                        <Link href={`/tsubo/${point.code.toLowerCase()}`} target="_blank" className="tsubo-compare-column-link" aria-label={`${point.name}の詳細を見る（新しいタブ）`} data-analytics-action="compare_atlas">詳細を見る ↗</Link>
                       </th>
                     ))}
                   </tr>

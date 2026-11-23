@@ -8,9 +8,9 @@ import { DICTIONARY_TAGLINE, PLATFORM_DESCRIPTION, SERIES } from "@/config/serie
 
 const SERIES_ENTRIES = Object.values(SERIES);
 const SERIES_ACTIONS = {
-  "/tsubo": "ツボを調べる",
-  "/learn": "講義を読む",
-  "/clinical": "症例で練習する",
+  "/tsubo": { label: "ツボを調べる", analytics: "home_atlas" },
+  "/learn": { label: "講義を読む", analytics: "home_reading" },
+  "/clinical": { label: "症例で練習する", analytics: "home_clinical" },
 } as const;
 const TOPIC_LINKS = [
   SERIES.dictionary.links[1],
@@ -62,10 +62,10 @@ export default function HomePage() {
           {SERIES_ENTRIES.map(({ icon: Icon, ...series }) => (
             <li key={series.href} className="platform-series-card">
               <h3>
-                <Link href={series.href} className="platform-series-action">
+                <Link href={series.href} className="platform-series-action" data-analytics-action={SERIES_ACTIONS[series.href].analytics}>
                   <span className="platform-series-icon"><Icon aria-hidden="true" /></span>
                   <span className="platform-series-label">
-                    <span>{SERIES_ACTIONS[series.href]}</span>
+                    <span>{SERIES_ACTIONS[series.href].label}</span>
                     <span className="platform-series-name">{series.name}</span>
                   </span>
                   <ArrowRight aria-hidden="true" />

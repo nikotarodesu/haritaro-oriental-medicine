@@ -26,6 +26,7 @@ const publicFilter = { andGroup: { expressions: [hostFilter, { notExpression: {
 const eventNames = [
   'article_view', 'lecture_view', 'quiz_start', 'quiz_answer', 'quiz_complete', 'review_start', 'review_complete',
   'case_training_start', 'case_training_complete', 'context_link_click', 'learning_activity', 'learning_return_7d',
+  'search_submit', 'search_result_click', 'home_series_open', 'compare_atlas_open', 'research_source_open', 'gorou_examples_open',
   'upgrade_click', 'checkout_login_required', 'begin_checkout', 'checkout_error', 'purchase',
   'tsubo_practice_start', 'tsubo_practice_resume', 'tsubo_practice_complete',
   ...['lcp', 'inp', 'cls'].flatMap(name => ['good', 'needs_improvement', 'poor'].map(rating => `web_vital_${name}_${rating}`)),
