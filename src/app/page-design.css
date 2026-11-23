@@ -3,12 +3,12 @@
 .page-layout--reading { max-width: 844px; }
 .page-layout--wide { max-width: 1280px; }
 .page-layout--compact { max-width: 760px; }
-.page-intro { display: grid; align-items: center; gap: 20px; margin-bottom: 28px; }
+.page-intro { display: grid; align-items: center; gap: clamp(16px, 3vw, 36px); margin-bottom: clamp(22px, 3vw, 36px); }
 .page-intro-copy { min-width: 0; }
 .page-eyebrow { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; color: var(--accent-readable); font-size: .8125rem; font-weight: 600; letter-spacing: .05em; }
 .page-eyebrow svg { width: 24px; height: 24px; flex-shrink: 0; }
-.page-intro-title { margin: 0; font-family: var(--font-serif); font-size: clamp(1.625rem, 3.2vw, 2.5rem); font-weight: 600; line-height: 1.45; letter-spacing: .025em; text-wrap: balance; overflow-wrap: anywhere; }
-.page-intro-description { max-width: 42em; margin-top: 14px; color: var(--text-secondary); font-size: 1rem; line-height: 1.85; }
+.page-intro-title { margin: 0; font-family: var(--font-serif); font-size: clamp(1.625rem, 3.2vw, 2.5rem); font-weight: 600; line-height: 1.35; letter-spacing: .015em; text-wrap: balance; overflow-wrap: anywhere; }
+.page-intro-description { max-width: 38em; margin-top: 12px; color: var(--text-secondary); font-size: 1rem; line-height: 1.75; }
 .page-intro-description > p + p { margin-top: 8px; }
 .page-artwork { display: none; width: 100%; height: auto; max-height: 210px; color: var(--accent-readable); }
 .page-intro--compact { margin-bottom: 24px; }
@@ -22,7 +22,7 @@
 .page-secondary-action:hover { border-color: var(--accent-readable); background: var(--accent-soft); }
 .page-primary-action svg, .page-secondary-action svg { width: 20px; height: 20px; flex-shrink: 0; }
 .page-section { margin-top: 32px; min-width: 0; scroll-margin-top: calc(var(--site-header-height) + 20px); }
-.page-section-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 20px; margin-bottom: 16px; }
+.page-section-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 20px; margin-bottom: 16px; }
 .page-section-heading h2, h2.page-section-heading { font-family: var(--font-serif); font-size: 1.375rem; line-height: 1.6; font-weight: 600; }
 .page-section-heading > p, .page-section-heading > span { font-size: .8125rem; color: var(--text-secondary); }
 .page-link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 14px; }

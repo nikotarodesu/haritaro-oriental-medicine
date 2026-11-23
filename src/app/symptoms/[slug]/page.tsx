@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { BookOpen, FlaskConical, MapPin, ShieldCheck } from 'lucide-react';
+import { ArrowDown, BookOpen, ClipboardList, FlaskConical, MapPin, ShieldCheck } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import AuthorSupervisorCard from '@/components/common/AuthorSupervisorCard';
 import ContentEndAd from '@/components/ads/ContentEndAd';
@@ -59,22 +59,27 @@ export default async function SymptomGuidePage({ params }: Props) {
   const researchNote = SYMPTOM_RESEARCH_NOTES[guide.id];
   const researchLink = SYMPTOM_RESEARCH_LINKS[guide.id];
   const hasResearch = pointStudies.length > 0 || !!researchNote || !!researchLink;
+  const firstSentenceEnd = content.summary.indexOf('。') + 1 || content.summary.length;
+  const summaryOpening = content.summary.slice(0, firstSentenceEnd);
+  const observationIntro = content.summary.slice(firstSentenceEnd).trim();
   const relatedGuides = SYMPTOMS.filter(item => item.id !== guide.id && item.category === guide.category);
   const sections = [
+    { id: 'acupoints', label: '関連するツボ' },
     { id: 'daily-life', label: '日常の工夫' },
     { id: 'traditional', label: '東洋医学の見方' },
+    ...(hasResearch ? [{ id: 'guide-studies', label: 'ツボを使った研究' }] : []),
     { id: 'learning', label: '関連記事・教材' },
-    { id: 'sources', label: '出典・研究資料' },
+    { id: 'sources', label: '出典と確認範囲' },
   ];
 
   return (
-    <article className="page-layout atlas-page atlas-guide">
+    <article className="page-layout atlas-page atlas-guide symptoms-guide">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getSymptomGuideJsonLd(guide)).replace(/</g, '\\u003c') }} />
       <header className="atlas-guide-heading">
         <div>
           <nav aria-label="パンくず" className="atlas-breadcrumb"><Link href="/tsubo">ツボ図鑑</Link><span aria-hidden="true">/</span><Link href="/symptoms">症状別ガイド</Link><span aria-hidden="true">/</span><span aria-current="page">{guide.category}</span></nav>
           <h1>{guide.title}</h1>
-          <p>{content.summary}</p>
+          <p>{summaryOpening}</p>
         </div>
         <span className="atlas-guide-icon atlas-guide-icon--heading"><SymptomIcon id={guide.id} className="h-10 w-10" /></span>
       </header>
@@ -83,6 +88,12 @@ export default async function SymptomGuidePage({ params }: Props) {
         {safety && <p>{safety.message}</p>}
         {content.safetyNote && <p>{content.safetyNote}</p>}
       </section>
+      <nav aria-labelledby="symptoms-contents-heading" className="symptoms-contents">
+        <h2 id="symptoms-contents-heading">目次</h2>
+        <ul className="atlas-section-nav">
+          {sections.map(({ id, label }) => <li key={id}><a href={`#${id}`}>{label}<ArrowDown size={14} aria-hidden="true" /></a></li>)}
+        </ul>
+      </nav>
       <section id="acupoints" className="atlas-guide-points atlas-target" aria-labelledby="guide-points-heading">
         <div className="atlas-guide-points-heading">
           <h2 id="guide-points-heading" className="atlas-section-title">関連するツボ</h2>
@@ -104,18 +115,20 @@ export default async function SymptomGuidePage({ params }: Props) {
           <Link href={ACUPUNCTURE_GUIDE.href} className="atlas-text-action"><BookOpen size={16} aria-hidden="true" />{ACUPUNCTURE_GUIDE.label}</Link>
         </div>
       </section>
-      <nav aria-label="ガイドの目次" className="atlas-section-nav">{sections.map(({ id, label }) => <a key={id} href={`#${id}`}>{label}</a>)}</nav>
       <section id="daily-life" className={sectionClass}>
         <h2 className="atlas-section-title">日常の工夫</h2>
-        {content.dailyLife.map(({ title, body }) => (
-          <div key={title} className="space-y-2">
-            <h3 className="text-lg font-bold">{title}</h3>
-            <p>{body}</p>
-          </div>
-        ))}
+        <div className="symptoms-daily-grid">
+          {content.dailyLife.map(({ title, body }) => (
+            <div key={title} className="symptoms-daily-card">
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </div>
+          ))}
+        </div>
         <div className="atlas-observations">
-          <h3 className="text-lg font-bold">受診時に伝えること</h3>
-          <ul className="list-disc space-y-1 pl-5">{content.observations.map(item => <li key={item}>{item}</li>)}</ul>
+          <h3><ClipboardList size={20} aria-hidden="true" />受診時に伝えること</h3>
+          {observationIntro && <p>{observationIntro}</p>}
+          <ul>{content.observations.map(item => <li key={item}>{item}</li>)}</ul>
         </div>
       </section>
       <section id="traditional" className={sectionClass}>
@@ -142,7 +155,7 @@ export default async function SymptomGuidePage({ params }: Props) {
       </section>}
       <section id="learning" className={sectionClass}>
         <h2 className="atlas-section-title">関連記事・教材</h2>
-        <ul className="space-y-3">
+        <ul className="symptoms-reading-list">
           {lectureId && lecture && <li><Link href={`/curriculum/${lectureId}`} className={linkClass}>{lecture.title}</Link></li>}
           {article && <li><Link href={`/articles/${article.id}`} className={linkClass}>{article.title}</Link></li>}
           {clinicalCase && <li><Link href={`/cases/${clinicalCase.id}`} className={linkClass}>{clinicalCase.title}（架空症例）</Link><p className="text-sm">症例の答えを自分の症状の診断や施術の指示に置き換えないでください。</p></li>}
@@ -155,7 +168,7 @@ export default async function SymptomGuidePage({ params }: Props) {
       <section id="sources" className={sectionClass}>
         <h2 className="atlas-section-title">出典と確認範囲</h2>
         <p className="text-sm">受診の目安や日常の工夫を調べた資料です。鍼灸の研究を読むときは、どんな症状の人を集め、何と比べ、何を測ったかを確かめてください。</p>
-        <ul className="space-y-4">{sources.map(source => <li key={source.url} className="space-y-1"><p className="text-sm font-semibold">{source.scope}</p><a href={source.url} target="_blank" rel="noopener noreferrer" className={linkClass}>{source.title} ↗</a><p className="text-sm text-[#59615D] dark:text-[#AFBDC8]">{source.section}</p></li>)}</ul>
+        <ul className="symptoms-source-list">{sources.map(source => <li key={source.url}><p className="symptoms-source-scope">{source.scope}</p><a href={source.url} target="_blank" rel="noopener noreferrer" className={linkClass}>{source.title} ↗</a><p className="symptoms-source-context">{source.section}</p></li>)}</ul>
         <SymptomResearchReferences papers={papers} />
       </section>
       <details className="atlas-disclosure atlas-guide-scope">

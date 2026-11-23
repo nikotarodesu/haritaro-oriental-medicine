@@ -51,7 +51,7 @@ export default function ArticlesListClient({ articles }: ArticlesListClientProps
 
   return (
     <div className="page-layout space-y-8">
-      <PageIntro eyebrow="コラム・文献アーカイブ" title="図解で学ぶ、東洋医学" description="読みたいテーマを選んで、図解から理解を深めましょう。" art="reading" />
+      <PageIntro title="東洋医学の解説記事" description="陰陽・経絡・脈診などをテーマ別に読めます。" art="reading" compact />
 
       {ready && !hasFilters && recentPositions.length > 0 && <section aria-labelledby="article-resume-title" className="space-y-3">
         <div><h2 id="article-resume-title" className="font-serif text-lg font-bold text-ink">保存した位置から読み直す</h2><p className="mt-1 text-sm leading-relaxed text-muted">最近スクロールした記事です。途中の節から続けられます。</p></div>
@@ -96,7 +96,7 @@ export default function ArticlesListClient({ articles }: ArticlesListClientProps
         </div> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{filteredArticles.map(article => <Link key={article.id} href={`/articles/${article.id}`} onClick={() => trackEvent("context_link_click", { placement: "article_list", article_id: article.id })} className="article-cover-card group flex flex-col gap-3 rounded-2xl border border-frame bg-panel p-5 hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
           <ArticleCover articleId={article.id} />
           <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-muted"><span className="font-semibold text-accent">{CATEGORY_LABELS[article.category] || article.category}</span><span className="inline-flex items-center gap-1"><Clock aria-hidden="true" className="h-4 w-4" />約 {article.readTime}</span></div>
-          <div className="space-y-2"><h3 className="text-lg leading-[1.55] font-semibold group-hover:text-accent">{article.title}</h3><p className="line-clamp-3 text-sm leading-[1.75] text-muted">{article.summary}</p></div>
+          <div className="space-y-2"><h3 className="font-serif text-lg leading-[1.5] font-semibold group-hover:text-accent">{article.title}</h3><p className="text-sm leading-[1.7] text-muted max-sm:hidden sm:line-clamp-2">{article.summary}</p></div>
           <div className="mt-auto space-y-2 border-t border-[#F2ECE0] pt-3 dark:border-[#22303D]"><span className="flex min-h-11 items-center justify-between gap-2 text-sm font-semibold text-accent"><span>{article.hasFigures ? "図解と本文を読む" : "記事を読む"}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></span></div>
         </Link>)}</div>}
       </section>

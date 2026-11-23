@@ -1,0 +1,224 @@
+.symptoms-directory,
+.symptoms-guide {
+  --atlas-accent: var(--tokiwa-green);
+  --atlas-soft: var(--tokiwa-light);
+  --symptoms-selected: var(--tokiwa-green);
+  --symptoms-selected-ink: #fff;
+}
+
+.dark :is(.symptoms-directory, .symptoms-guide) {
+  --atlas-accent: #b3d3c6;
+  --atlas-soft: #263d36;
+  --symptoms-selected: #b3d3c6;
+  --symptoms-selected-ink: #132a23;
+}
+
+.symptoms-directory .symptoms-directory-hero {
+  border-block-start: 3px solid var(--atlas-accent);
+  background: var(--atlas-paper);
+}
+
+.symptoms-directory-hero .atlas-overview-art {
+  margin-inline-end: clamp(0rem, 4vw, 2rem);
+}
+
+.symptoms-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .625rem 1rem;
+  padding-block-end: .75rem;
+  border-block-end: 1px solid var(--atlas-line);
+}
+
+.symptoms-filter-bar .atlas-filter-list button {
+  border-radius: 999px;
+}
+
+.symptoms-filter-bar .atlas-filter-list button[aria-pressed="true"] {
+  border-color: var(--symptoms-selected);
+  background: var(--symptoms-selected);
+  color: var(--symptoms-selected-ink);
+}
+
+.symptoms-directory .atlas-guide-grid {
+  gap: clamp(.625rem, 2vw, 1rem);
+}
+
+.symptoms-directory .atlas-guide-card {
+  gap: .6875rem;
+  padding: clamp(.875rem, 2.25vw, 1.125rem);
+  border-radius: var(--radius-control);
+}
+
+.symptoms-directory .atlas-guide-card-heading {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.symptoms-directory .atlas-guide-category {
+  font-size: .8125rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.symptoms-directory .atlas-guide-card h2 {
+  font-size: clamp(1.0625rem, 1.8vw, 1.1875rem);
+  line-height: 1.45;
+}
+
+.symptoms-directory .atlas-guide-summary {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.symptoms-card-arrow {
+  color: var(--atlas-accent);
+}
+
+.symptoms-directory .atlas-target:target > .atlas-guide-card {
+  border-color: var(--atlas-accent);
+  box-shadow: inset 0 0 0 1px var(--atlas-accent);
+}
+
+.symptoms-guide .atlas-guide-heading {
+  padding: clamp(1rem, 3vw, 1.625rem);
+  border: 1px solid var(--atlas-line);
+  border-block-start: 3px solid var(--atlas-accent);
+  border-radius: var(--radius-card);
+  background: var(--atlas-paper);
+}
+
+.symptoms-guide .atlas-safety {
+  gap: .5rem;
+  padding: clamp(.875rem, 2.5vw, 1.25rem);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.symptoms-guide .atlas-safety h2 {
+  font-size: 1.0625rem;
+}
+
+.symptoms-contents {
+  padding: .75rem clamp(.875rem, 2.5vw, 1.25rem);
+  border: 1px solid var(--atlas-line);
+  border-radius: var(--radius-control);
+  background: var(--atlas-paper);
+}
+
+.symptoms-contents h2 {
+  font-size: .9375rem;
+  font-weight: 700;
+}
+
+.symptoms-contents .atlas-section-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 .625rem;
+  border: 0;
+}
+
+.symptoms-contents .atlas-section-nav a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .25rem;
+}
+
+.symptoms-contents .atlas-section-nav svg {
+  flex-shrink: 0;
+}
+
+.symptoms-guide .atlas-section-title {
+  color: var(--atlas-accent);
+}
+
+.symptoms-daily-grid {
+  display: grid;
+  gap: .75rem;
+}
+
+.symptoms-daily-card {
+  display: grid;
+  align-content: start;
+  gap: .4375rem;
+  padding: clamp(.875rem, 2.5vw, 1.25rem);
+  border: 1px solid var(--atlas-line);
+  border-radius: var(--radius-control);
+  background: var(--atlas-paper);
+}
+
+.symptoms-daily-card h3,
+.symptoms-guide .atlas-observations h3 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.symptoms-guide .atlas-observations {
+  padding: clamp(.875rem, 2.5vw, 1.25rem);
+  border-inline-start: 3px solid var(--atlas-accent);
+}
+
+.symptoms-guide .atlas-observations h3 {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--atlas-accent);
+}
+
+.symptoms-guide .atlas-observations ul {
+  display: grid;
+  gap: .25rem 1.5rem;
+  padding-inline-start: 1.25rem;
+  list-style: disc;
+}
+
+.symptoms-guide .atlas-observations li::marker {
+  color: var(--atlas-accent);
+}
+
+.symptoms-guide #traditional > p {
+  max-width: 42em;
+}
+
+.symptoms-guide .atlas-guide-section .symptoms-reading-list,
+.symptoms-guide .symptoms-source-list {
+  border-block: 1px solid var(--atlas-line);
+}
+
+.symptoms-reading-list > li,
+.symptoms-source-list > li {
+  padding-block: .75rem;
+}
+
+.symptoms-reading-list > li + li,
+.symptoms-source-list > li + li {
+  border-block-start: 1px solid var(--atlas-line);
+}
+
+.symptoms-source-scope {
+  color: var(--atlas-accent);
+  font-size: .875rem;
+  font-weight: 700;
+}
+
+.symptoms-source-context {
+  color: var(--atlas-muted);
+  font-size: .9375rem;
+}
+
+@media (min-width: 640px) {
+  .symptoms-daily-grid,
+  .symptoms-guide .atlas-observations ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .symptoms-contents .atlas-section-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 1.5rem;
+  }
+}

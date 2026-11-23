@@ -22,6 +22,7 @@ function load(name) {
     },
   }).outputText;
   vm.runInNewContext(code, { exports, URL, require: id => {
+    if (id.endsWith('.module.css')) return { __esModule: true, default: new Proxy({}, { get: (_, name) => String(name) }) };
     if (id === 'next/link') return { __esModule: true, default: props => React.createElement('a', { href: props.href, className: props.className }, props.children) };
     if (id === '@/components/design/PageIntro') return { __esModule: true, default: ({ title, children }) => React.createElement('header', null, title, children) };
     if (id.startsWith('@/')) return load('src/' + id.slice(2));
@@ -53,7 +54,7 @@ const destinationPairs = [['/tsubo','はり太郎のツボ図鑑'], ['/learn','�
 const homeActions = home.match(/<ul class="platform-series-grid">([\s\S]*?)<\/ul>/)[1];
 for (const [[href, name], action] of destinationPairs.map((pair, index) => [pair, ['ツボを調べる', '講義を読む', '症例で練習する'][index]])) {
   const card = homeActions.split('</li>').find(item => item.includes(`href="${href}"`));
-  assert(card?.includes(action) && card.includes(name), `${name} is reachable through its homepage action`);
+  assert(card?.includes(action) && card.includes('<svg'), `${name} is reachable through its illustrated homepage action`);
 }
 assert(home.includes('href="/symptoms"'));
 assert.doesNotMatch(home, />\s*知\s*</);

@@ -71,10 +71,9 @@ export default function LibraryClient() {
 
   return (
     <div className="page-layout text-base leading-relaxed">
-      <PageIntro title="文献・古典・症例教材" description="「膝痛」で論文を探したり、「素問」で古典の記述や出典を調べたりできます。" art="reading">
+      <PageIntro title="文献・古典・症例教材" description="論文の確認範囲、古典の出典、症例教材を探せます。" art="reading" compact>
         <Link href={ACUPUNCTURE_RESEARCH.href} className="page-secondary-action mt-4"><FlaskConical aria-hidden="true" />{ACUPUNCTURE_RESEARCH.title}</Link>
       </PageIntro>
-      <p className="text-sm leading-relaxed ui-muted">掲載中の資料は論文{PAPERS_DATABASE.length}件、古典の条文{CLASSICAL_TEXTS.length}件、症例教材{CLINICAL_CASES.length}件{PUBLIC_ARCHIVE_CASES.length > 0 ? `、症例記録${PUBLIC_ARCHIVE_CASES.length}件` : ''}です。</p>
       <section aria-label="資料を探す" className="library-discovery rounded-2xl border border-[#E5DEC9] bg-[#FCFAF6] p-4 dark:border-[#2A3B4A] dark:bg-[#17212A] sm:p-6">
           <div className="library-search">
             <div className="library-search-label">
@@ -170,7 +169,7 @@ export default function LibraryClient() {
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {filteredPapers.map(paper => {
                   return (
                     <div

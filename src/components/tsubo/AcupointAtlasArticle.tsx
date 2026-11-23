@@ -43,16 +43,22 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
         <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker}>
-          <AcupointSectionLinks />
-          <Paragraphs paragraphs={article.location} />
+          <div className="atlas-location-copy">
+            <h3>図の読み方</h3>
+            <Paragraphs paragraphs={article.location} />
+          </div>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
           <AcupointPointDetails point={point} meridianReading={article.meridianReading} />
+          <AcupointSectionLinks />
         </PointAtlasDiagrams>
         {nearbyComparison && <NearbyPointComparison comparison={nearbyComparison} code={point.codeLower} />}
       </section>
 
-      <AcupointNameGuide code={point.codeLower} />
-      <AcupointResearch point={point} traditionalTitle={traditionalTitle} />
+      <section id="acupoint-cautions" className="atlas-target atlas-cautions">
+        <h2 className={headingClass}>注意したいこと</h2>
+        {article.safetyWarning && <p className="mb-3 font-semibold">{article.safetyWarning}</p>}
+        <Paragraphs paragraphs={article.cautions} />
+      </section>
 
       <section id="acupoint-traditional" className="atlas-target">
         <h2 className={headingClass}>{traditionalTitle}</h2>
@@ -65,11 +71,8 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         <Paragraphs paragraphs={article.selfCare} />
       </section>
 
-      <section id="acupoint-cautions" className="atlas-target">
-        <h2 className={headingClass}>注意したいこと</h2>
-        {article.safetyWarning && <p className="mb-3 font-semibold">{article.safetyWarning}</p>}
-        <Paragraphs paragraphs={article.cautions} />
-      </section>
+      <AcupointNameGuide code={point.codeLower} />
+      <AcupointResearch point={point} traditionalTitle={traditionalTitle} />
 
       <details className="atlas-disclosure atlas-reading-details">
         <summary>詳しい解剖と位置の資料</summary>

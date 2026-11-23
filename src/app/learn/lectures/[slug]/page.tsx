@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ChevronDown } from "lucide-react";
+import { ArrowDown, ChevronDown, ListChecks } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ContentEndAd from "@/components/ads/ContentEndAd";
 import PublicLecturePosition from "@/components/curriculum/PublicLecturePosition";
@@ -19,6 +19,7 @@ import { getLectureIndexGroups, getReadingUnit, READING_LECTURES_REVISED_AT, rea
 import { getPublicLectureReferences, publishedLectureRecords } from "@/data/publicLectures/resources";
 import { readingUnitRevisions } from "@/data/publicLectures/revisions";
 import { reviseLectureSections } from "@/data/publicLectures/revisions/types";
+import styles from "./lecture-reading.module.css";
 
 const lectureIndexHref = "/learn#learn-courses-heading";
 
@@ -121,7 +122,7 @@ export default async function ReadingLecturePage({ params }: Props) {
     <article className="reader-article reader-article--lecture" data-reading-unit={unit.slug}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
       <PublicLecturePosition lectureId={firstPart.lectureId} trackPart />
-      <header className="reader-header">
+      <header className={`reader-header ${styles.header}`}>
         <div className="lecture-unit-meta">
           <PageBreadcrumb items={[{ href: lectureIndexHref, name: "講義一覧" }, { href: unit.href, name: unit.title }]} hideCurrent />
           <p className="lecture-reading-position">
@@ -135,17 +136,22 @@ export default async function ReadingLecturePage({ params }: Props) {
         </div>
       </header>
 
-      <ReadingContents label="講義の目次" headings={[
-        ...unit.parts.map(part => {
-          const diagram = getPublicLectureDiagram(part.lectureId);
-          return {
-            id: part.anchor,
-            label: part.label,
-            diagram: diagram ? { id: `${part.anchor}-diagram`, label: diagram.title } : undefined,
-          };
-        }),
-        { id: "lecture-review", label: "要点まとめ" },
-      ]} />
+      <div className={styles.readingTools}>
+        <ReadingContents label="講義の目次" headings={[
+          ...unit.parts.map(part => {
+            const diagram = getPublicLectureDiagram(part.lectureId);
+            return {
+              id: part.anchor,
+              label: part.label,
+              diagram: diagram ? { id: `${part.anchor}-diagram`, label: diagram.title } : undefined,
+            };
+          }),
+          { id: "lecture-review", label: "要点まとめ" },
+        ]} />
+        <a href="#lecture-review" className={styles.reviewLink}>
+          <ListChecks aria-hidden="true" /> 要点と確認問題 <ArrowDown aria-hidden="true" />
+        </a>
+      </div>
 
       <div id="lecture-content" tabIndex={-1} className="reader-content">
         {unit.parts.map(part => {
@@ -168,7 +174,7 @@ export default async function ReadingLecturePage({ params }: Props) {
       </div>
 
       <div className="lecture-unit-end">
-        <section id="lecture-review" tabIndex={-1} className="lecture-unit-review" aria-labelledby="lecture-takeaways">
+        <section id="lecture-review" tabIndex={-1} className={`lecture-unit-review ${styles.review}`} aria-labelledby="lecture-takeaways">
           <h2 id="lecture-takeaways" className="reader-section-title">要点まとめ</h2>
           <ul className="lecture-takeaways">
             {revision.takeaways.map(takeaway => <li key={takeaway}>{takeaway}</li>)}

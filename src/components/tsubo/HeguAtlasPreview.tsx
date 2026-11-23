@@ -37,19 +37,26 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
         <AcupointAtlasDiagrams point={point} meridianPoints={getMeridianPoints(point.meridianId)}>
-          <AcupointSectionLinks />
-          <p>手を楽にして甲を上に向けます。人差し指の付け根から手首へ向かって、反対の手の指で骨をたどります。骨の長さの真ん中から、少し親指側にずらしたところが合谷です。拡大図の①は人差し指につながる骨（第2中手骨）、②は親指につながる骨（第1中手骨）です。丸印は①の真ん中から②の方へ少し寄ったところにあります。</p>
+          <div className="atlas-location-copy">
+            <h3>図の読み方</h3>
+            <p>手を楽にして甲を上に向けます。人差し指の付け根から手首へ向かって、反対の手の指で骨をたどります。骨の長さの真ん中から、少し親指側にずらしたところが合谷です。</p>
+            <p>拡大図の①は人差し指につながる骨（第2中手骨）、②は親指につながる骨（第1中手骨）です。丸印は①の真ん中から②の方へ少し寄ったところにあります。</p>
+          </div>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
           <AcupointPointDetails point={point} meridianReading="てのようめいだいちょうけい" />
+          <AcupointSectionLinks />
         </AcupointAtlasDiagrams>
       </section>
 
-      <AcupointNameGuide code={point.codeLower} />
-      <AcupointResearch point={point} />
+      <section id="acupoint-cautions" className="atlas-target atlas-cautions">
+        <h2 className={headingClass}>注意したいこと</h2>
+        <p>妊娠中は合谷の指圧を控え、産科の担当者にご相談ください。傷や赤い腫れがあるところも押すのを控えます。症状がつらいときは受診を優先してください。</p>
+      </section>
 
       <section id="acupoint-traditional" className="atlas-target">
         <h2 className={headingClass}>伝統的な使われ方</h2>
-        <p>{heguAtlasReading.traditional}<strong>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</strong></p>
+        <p>{heguAtlasReading.traditional}</p>
+        <p className="atlas-safety mt-3"><strong>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</strong></p>
         <AcupointReadingLinks code={point.codeLower} editorialLinks={[{ href: "/symptoms/headache-stiff-neck", label: "頭痛・首肩こりの症状ガイド" }]} />
       </section>
 
@@ -58,10 +65,8 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         <p>反対の手の親指の腹を当て、痛みを感じない強さでゆっくり押し、力を抜きます。痛みやしびれが出たら手を離してください。手が冷えるときは、手袋などで温めてください。カイロの肌への直当てや、同じ場所を長時間温めることは避けましょう。</p>
       </section>
 
-      <section id="acupoint-cautions" className="atlas-target">
-        <h2 className={headingClass}>注意したいこと</h2>
-        <p>妊娠中は合谷の指圧を控え、産科の担当者にご相談ください。傷や赤い腫れがあるところも押すのを控えます。症状がつらいときは受診を優先してください。</p>
-      </section>
+      <AcupointNameGuide code={point.codeLower} />
+      <AcupointResearch point={point} />
 
       <details className="atlas-disclosure atlas-reading-details">
         <summary>詳しい解剖と位置の資料</summary>

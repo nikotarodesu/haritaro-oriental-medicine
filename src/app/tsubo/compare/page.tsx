@@ -1,5 +1,6 @@
 import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
-import PageIntro from "@/components/design/PageIntro";
+import Link from "next/link";
+import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import { heguAtlasReading } from "@/components/tsubo/HeguAtlasPreview";
 import { ALL_ACUPOINTS, DETAILED_ACUPOINTS } from "@/data/tsubo";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
@@ -36,9 +37,20 @@ const comparisonPoints = ALL_ACUPOINTS.map((point): ComparisonPoint => {
 
 export default function TsuboComparePage() {
   return (
-    <div className="tsubo-compare-page min-h-screen">
+    <div className="tsubo-compare-page atlas-page min-h-screen">
       <div className="page-layout page-layout--intro">
-        <PageIntro compact title="経穴を比べる" description={`収録した${comparisonPoints.length}穴から2〜3穴を選び、ツボの位置や分類、安全上の注意を比べます。`} art="points" />
+        <header className="atlas-directory-header atlas-directory-intro">
+          <div>
+            <nav aria-label="パンくず" className="atlas-breadcrumb">
+              <Link href="/tsubo">はり太郎のツボ図鑑</Link>
+              <span aria-hidden="true">/</span>
+              <span aria-current="page">比較</span>
+            </nav>
+            <h1>経穴を比べる</h1>
+            <p>{comparisonPoints.length}穴から2〜3穴を選び、場所の目印や注意点を比べます。</p>
+          </div>
+          <AtlasOverviewArt />
+        </header>
       </div>
       <CompareClient points={comparisonPoints} />
     </div>

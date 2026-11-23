@@ -1,3 +1,44 @@
+.researchIndex,
+.article {
+  --research-accent: var(--tokiwa-green);
+  --research-soft: var(--tokiwa-light);
+}
+
+:global(.dark) .researchIndex,
+:global(.dark) .article {
+  --research-accent: #b3d3c6;
+  --research-soft: #263d36;
+}
+
+.researchIndex {
+  display: grid;
+  gap: clamp(1rem, 3vw, 1.75rem);
+}
+
+.hero:global(.page-intro) {
+  margin-block-end: 0;
+  padding: clamp(1rem, 4vw, 1.75rem);
+  border: 1px solid var(--border-washi);
+  border-block-start: 3px solid var(--research-accent);
+  border-radius: var(--radius-card);
+  background: var(--bg-card);
+}
+
+.hero :global(.page-compact-art) {
+  color: var(--research-accent);
+}
+
+.topicNavigation {
+  padding: .875rem 0 1rem;
+  border-block-end: 1px solid var(--border-washi);
+}
+
+.topicNavigation h2 {
+  margin-block-end: .5rem;
+  font-size: .9375rem;
+  font-weight: 700;
+}
+
 .topicNavigation ul {
   display: flex;
   flex-wrap: wrap;
@@ -8,18 +49,20 @@
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  padding: .375rem .75rem;
+  gap: .5rem;
+  padding: .375rem .875rem;
   border: 1px solid var(--border-washi);
-  border-radius: var(--radius-tag);
-  color: var(--accent-readable);
+  border-radius: 999px;
+  background: var(--bg-card);
+  color: var(--research-accent);
   font-size: .9375rem;
   font-weight: 600;
   line-height: 1.5;
 }
 
 .topicNavigation a:hover {
-  border-color: var(--accent-readable);
-  background: var(--accent-soft);
+  border-color: var(--research-accent);
+  background: var(--research-soft);
 }
 
 .topicGroups {
@@ -28,9 +71,32 @@
 }
 
 .topic {
-  border-top: 1px solid var(--border-washi);
+  min-width: 0;
+  scroll-margin-block-start: calc(var(--site-header-height, 60px) + 1rem);
+}
+
+.topic + .topic {
   padding-block-start: 1.125rem;
-  scroll-margin-block-start: 1rem;
+  border-top: 1px solid var(--border-washi);
+}
+
+.topicHeading:global(.page-section-heading) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: .625rem;
+  color: var(--research-accent);
+}
+
+.topicHeading > .topicIcon {
+  display: grid;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border-radius: var(--radius-tag);
+  background: var(--research-soft);
+  color: var(--research-accent);
 }
 
 .topicCards {
@@ -40,10 +106,29 @@
 
 .topicCard[class] {
   min-height: 100%;
+  align-items: start;
   justify-content: space-between;
-  padding-block: .875rem;
+  gap: .75rem;
+  padding: clamp(.875rem, 2vw, 1.125rem);
   border-radius: var(--radius-control);
   line-height: 1.6;
+}
+
+.topicCard[class]:hover {
+  border-color: var(--research-accent);
+  box-shadow: none;
+}
+
+.topicCard strong {
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.topicCard[class] > svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-block-start: .25rem;
+  color: var(--research-accent);
 }
 
 .topicSummary {
@@ -60,6 +145,7 @@
 
 .articleHeader {
   min-width: 0;
+  margin-block-end: clamp(1rem, 3vw, 1.5rem);
 }
 
 .subtitle {
@@ -91,9 +177,9 @@
 
 .studySection {
   min-width: 0;
-  padding-block-start: 1.375rem;
+  padding-block-start: clamp(1rem, 3vw, 1.5rem);
   border-top: 1px solid var(--border-washi);
-  scroll-margin-block-start: 1rem;
+  scroll-margin-block-start: calc(var(--site-header-height, 60px) + 1rem);
 }
 
 .studySection:first-child {
@@ -102,17 +188,26 @@
 }
 
 .studySection > h2 {
-  margin-block-end: .625rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-block-end: .875rem;
+  color: var(--research-accent);
   font-family: var(--font-serif);
   font-size: clamp(1.25rem, 2.4vw, 1.5rem);
   font-weight: 600;
   line-height: 1.5;
 }
 
+.studySection > h2 svg {
+  flex-shrink: 0;
+}
+
 .studySection > p,
 .exercise p {
+  max-width: 42em;
   font-size: 1.0625rem;
-  line-height: 1.85;
+  line-height: 1.9;
 }
 
 .studySection > p + p {
@@ -123,14 +218,28 @@
   display: grid;
   gap: .625rem;
   margin-block-start: 1.125rem;
-  padding: .875rem;
+  padding: clamp(.875rem, 2vw, 1.125rem);
   border: 1px solid var(--border-washi);
+  border-inline-start: 3px solid var(--research-accent);
   border-radius: var(--radius-control);
   background: var(--bg-card);
 }
 
 .exercise > p {
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
   font-weight: 600;
+}
+
+.exercise > p svg {
+  flex-shrink: 0;
+  margin-block-start: .375rem;
+  color: var(--research-accent);
+}
+
+.exercise summary {
+  color: var(--research-accent);
 }
 
 .comparison {
@@ -139,7 +248,7 @@
   border: 1px solid var(--border-washi);
   border-radius: var(--radius-card);
   background: var(--bg-card);
-  scroll-margin-block-start: 1rem;
+  scroll-margin-block-start: calc(var(--site-header-height, 60px) + 1rem);
 }
 
 .comparison table {
@@ -169,8 +278,8 @@
 }
 
 .comparison thead th {
-  background: var(--accent-soft);
-  color: var(--accent-readable);
+  background: var(--research-soft);
+  color: var(--research-accent);
 }
 
 .comparison thead th:nth-child(1) { width: 38%; }
@@ -207,17 +316,41 @@
   min-height: 44px;
 }
 
+.sourceSection {
+  padding: clamp(.875rem, 3vw, 1.375rem);
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-card);
+  background: var(--bg-card);
+}
+
+.sources {
+  border-block-start: 1px solid var(--border-subtle);
+}
+
 .sources li {
   min-width: 0;
   padding-block: .625rem .875rem;
-  border-bottom: 1px solid var(--border-subtle);
-  scroll-margin-block-start: 1rem;
+  scroll-margin-block-start: calc(var(--site-header-height, 60px) + 1rem);
+}
+
+.sources li + li {
+  border-block-start: 1px solid var(--border-subtle);
+}
+
+.sources li:last-child {
+  padding-block-end: 0;
 }
 
 .sources a {
   display: inline-flex;
   align-items: center;
+  gap: .5rem;
   min-height: 44px;
+  color: var(--research-accent);
+}
+
+.sources a svg {
+  flex-shrink: 0;
 }
 
 .sources p {
@@ -270,9 +403,11 @@
     display: block;
     max-height: calc(100dvh - var(--site-header-height) - 2rem);
     overflow-y: auto;
-    padding-inline-start: 1.125rem;
-    border-inline-start: 1px solid var(--border-washi);
-    color: var(--accent-readable);
+    padding: .875rem;
+    border: 1px solid var(--border-washi);
+    border-radius: var(--radius-control);
+    background: var(--bg-card);
+    color: var(--research-accent);
   }
 
   .desktopContents h2 {

@@ -35,6 +35,7 @@ function component(relative, extra = () => undefined, globals = {}) {
   const code = ts.transpileModule(fs.readFileSync(file, 'utf8'), { fileName: file, compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
   vm.runInNewContext(code, { exports, require: id => {
     const mocked = extra(id); if (mocked !== undefined) return mocked;
+    if (id.endsWith('.module.css')) return { __esModule: true, default: new Proxy({}, { get: (_, name) => String(name) }) };
     if (id === 'next/link') return Link;
     if (id === '@/data/curriculumIndexCatalog') return component('src/data/curriculumIndexCatalog.ts', external => external === 'server-only' ? {} : undefined);
     if (id === 'next/navigation') return { useRouter: () => ({ push: href => pushes.push(href) }) };

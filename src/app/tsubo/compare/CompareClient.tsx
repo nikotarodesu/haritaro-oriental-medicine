@@ -48,6 +48,26 @@ const PRESET_TSUBO_COMPARISONS = [
 
 const COMPARISON_FIELDS = [
   {
+    label: "場所と目印",
+    emphasis: "location",
+    content: (point: ComparisonPoint) => (
+      <>
+        <p>{point.locationSimple}</p>
+        <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-location`} className="tsubo-compare-detail-link" data-analytics-action="compare_atlas">図で場所を確認</Link>
+      </>
+    ),
+  },
+  {
+    label: "注意事項",
+    emphasis: "caution",
+    content: (point: ComparisonPoint) => (
+      <>
+        <p className="tsubo-compare-caution"><AlertTriangle aria-hidden="true" size={15} /><span>{point.caution}</span></p>
+        <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-cautions`} className="tsubo-compare-detail-link" data-analytics-action="compare_atlas">詳しい注意点</Link>
+      </>
+    ),
+  },
+  {
     label: "所属経絡",
     content: (point: ComparisonPoint) => (
       <>
@@ -63,24 +83,6 @@ const COMPARISON_FIELDS = [
         {point.category.map(category => <li key={category}>{category}</li>)}
       </ul>
     ) : "特記なし",
-  },
-  {
-    label: "場所と目印",
-    content: (point: ComparisonPoint) => (
-      <>
-        <p>{point.locationSimple}</p>
-        <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-location`} className="tsubo-compare-detail-link" data-analytics-action="compare_atlas">図で場所を確認</Link>
-      </>
-    ),
-  },
-  {
-    label: "注意事項",
-    content: (point: ComparisonPoint) => (
-      <>
-        <p className="tsubo-compare-caution"><AlertTriangle aria-hidden="true" size={15} /><span>{point.caution}</span></p>
-        <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-cautions`} className="tsubo-compare-detail-link" data-analytics-action="compare_atlas">詳しい注意点</Link>
-      </>
-    ),
   },
   {
     label: "伝統的な背景",
@@ -184,6 +186,7 @@ function TsuboCompareContent({ points }: CompareProps) {
     setSelectedCodes(codes);
     setTargetReplaceIndex(null);
     setSearchQuery("");
+    requestAnimationFrame(() => document.getElementById("tsubo-compare-result-title")?.focus());
   };
 
   const beginReplacement = (index: number) => {
@@ -212,7 +215,8 @@ function TsuboCompareContent({ points }: CompareProps) {
             <Search aria-hidden="true" size={18} />
             <input
               id="compare-search-input"
-              type="text"
+              type="search"
+              autoComplete="off"
               aria-label="比較するツボを検索"
               aria-describedby={targetReplaceIndex === null ? undefined : "tsubo-compare-replacement-hint"}
               value={searchQuery}
@@ -286,13 +290,13 @@ function TsuboCompareContent({ points }: CompareProps) {
         ) : (
           <section aria-labelledby="tsubo-compare-result-title">
             <div className="tsubo-compare-result-heading">
-              <h2 id="tsubo-compare-result-title">選んだツボの比較</h2>
+              <h2 id="tsubo-compare-result-title" className="atlas-target" tabIndex={-1}>選んだツボの比較</h2>
               <ComparePrintButton />
             </div>
             <p id="tsubo-compare-scroll-hint" className="tsubo-compare-scroll-hint">「図で場所を確認」から、図鑑の図へ進めます。</p>
             <div className="tsubo-compare-scroll" tabIndex={0} role="region" aria-labelledby="tsubo-compare-result-title" aria-describedby="tsubo-compare-scroll-hint">
               <table className="tsubo-compare-table" role="table" data-points={selectedTsubos.length}>
-                <caption className="sr-only">所属経絡・要穴・位置・注意事項・伝統的な背景・学習上の補足の比較</caption>
+                <caption className="sr-only">場所と目印・注意事項・所属経絡・要穴・伝統的な背景・学習上の補足の比較</caption>
                 <thead role="rowgroup">
                   <tr role="row">
                     <th scope="col" role="columnheader">比較項目</th>
@@ -307,7 +311,7 @@ function TsuboCompareContent({ points }: CompareProps) {
                 </thead>
                 <tbody role="rowgroup">
                   {COMPARISON_FIELDS.map(field => (
-                    <tr role="row" key={field.label}>
+                    <tr role="row" key={field.label} data-emphasis={field.emphasis}>
                       <th scope="row" role="rowheader">{field.label}</th>
                       {selectedTsubos.map(point => (
                         <td role="cell" key={point.id}>

@@ -4,9 +4,9 @@ import { getAcupointGuideLinks } from "@/utils/symptomGuides";
 import type { AcupointAtlasArticle } from "@/data/tsubo/atlas/types";
 
 const sectionLinks = [
+  { href: "#acupoint-cautions", label: "注意点" },
   { href: "#acupoint-name", label: "名前の由来" },
   { href: "#acupoint-research", label: "研究と古典の配穴" },
-  { href: "#acupoint-cautions", label: "注意点" },
   { href: "#acupoint-sources", label: "出典" },
 ];
 const linkClass = "inline-flex min-h-11 items-center font-semibold underline underline-offset-4";

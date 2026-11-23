@@ -25,9 +25,9 @@ export default function SymptomsPage() {
     category: guide.category,
   }));
   return (
-    <div className="page-layout atlas-page atlas-directory">
+    <div className="page-layout atlas-page atlas-directory symptoms-directory">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getSymptomsIndexJsonLd(title, description)).replace(/</g, '\\u003c') }} />
-      <header className="atlas-directory-header">
+      <header className="atlas-directory-header symptoms-directory-hero">
         <div>
           <nav aria-label="パンくず" className="atlas-breadcrumb"><Link href="/tsubo">はり太郎のツボ図鑑</Link><span aria-hidden="true">/</span><span aria-current="page">症状別ガイド</span></nav>
           <h1>症状から探す</h1>

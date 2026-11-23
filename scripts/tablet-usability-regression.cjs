@@ -180,13 +180,18 @@ assert(!examples.props.open);
 const mobilePointNames = row => nodes(row).filter(node => node.props?.className === 'tsubo-compare-row-point').map(text).join(',');
 const itemRows = () => nodes(scroll()).filter(node => node.type === 'tr' && node.props?.children?.[0]?.props?.scope === 'row');
 assert.equal(itemRows().length, 6);
+assert.deepEqual(itemRows().slice(0, 2).map(row => text(row.props.children[0])), ['場所と目印', '注意事項'], 'Location and safety are the first comparison rows');
 assert(itemRows().every(row => mobilePointNames(row) === '合谷,太衝'), 'Every item labels both points in the narrow layout');
 for (const query of ['ＳＴ３６', 'アシサンリ', 'Zusanli']) {
   compareInput().props.onChange({ target: { value: query } }); compare.render();
   assert(nodes(compare.tree()).some(node => node.type === 'button' && text(node).startsWith('足三里ST36')), query + ' finds the existing compare option');
 }
 compareInput().props.onChange({ target: { value: 'LU1' } }); compare.render();
-assert(nodes(compare.tree()).some(node => node.type === Link && node.props.href === '/tsubo?q=LU1'), 'Unsupported points can be looked up in the complete atlas');
+assert(nodes(compare.tree()).some(node => node.type === 'a' && node.props.href === '/tsubo?q=LU1'), 'The complete atlas lookup uses a full navigation to keep the query out of analytics');
+const unmatchedQuery = '該当しない + /?';
+compareInput().props.onChange({ target: { value: unmatchedQuery } }); compare.render();
+const fullAtlasLookup = nodes(compare.tree()).find(node => node.type === 'a' && node.props.href?.startsWith('/tsubo?q='));
+assert.equal(new URL(fullAtlasLookup.props.href, 'https://www.haritaro.jp').searchParams.get('q'), unmatchedQuery, 'The native link preserves literal spaces, punctuation and Japanese');
 compareInput().props.onChange({ target: { value: '' } }); compare.render();
 compare.button('合谷を比較から外す').props.onClick(); compare.render();
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 2, 'Existing removal still updates the comparison columns');

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, BookOpen, ClipboardList, ExternalLink } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import PageIntro from "@/components/design/PageIntro";
@@ -116,7 +116,7 @@ export default async function AcupunctureResearchPage({ params }: Props) {
           { href: ACUPUNCTURE_RESEARCH.href, name: ACUPUNCTURE_RESEARCH.title },
           { href: path, name: article.title },
         ]} />
-        <PageIntro title={displayTitle} description={<p>{article.description}</p>} compact />
+        <PageIntro title={displayTitle} description={<p>{article.description}</p>} compact className={styles.hero} />
       </div>
       <div className={styles.articleLayout}>
         <div className={styles.mobileContents}><ReadingContents label="記事の目次" headings={headings} /></div>
@@ -136,7 +136,7 @@ export default async function AcupunctureResearchPage({ params }: Props) {
               {section.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
               {section.exercise && (
                 <div className={styles.exercise}>
-                  <p>{section.exercise.question}</p>
+                  <p><ClipboardList size={19} aria-hidden="true" />{section.exercise.question}</p>
                   <details className="atlas-disclosure">
                     <summary>考え方の例を読む</summary>
                     <p>{section.exercise.answer}</p>
@@ -152,12 +152,12 @@ export default async function AcupunctureResearchPage({ params }: Props) {
               )}
             </section>
           ))}
-          <section id="sources" className={styles.studySection} aria-labelledby="research-sources-title">
-            <h2 id="research-sources-title">出典と確認した範囲</h2>
+          <section id="sources" className={`${styles.studySection} ${styles.sourceSection}`} aria-labelledby="research-sources-title">
+            <h2 id="research-sources-title"><BookOpen size={20} aria-hidden="true" />出典と確認した範囲</h2>
             <ul className={styles.sources}>
               {article.sources.map(source => (
                 <li id={`source-${source.id}`} key={source.id}>
-                  <a href={source.url} className="ui-text-link break-words" data-analytics-action="topic_source">{source.label}</a>
+                  <a href={source.url} className="ui-text-link break-words" data-analytics-action="topic_source">{source.label}<ExternalLink size={15} aria-hidden="true" /></a>
                   <p className="page-muted">{source.scope}</p>
                 </li>
               ))}

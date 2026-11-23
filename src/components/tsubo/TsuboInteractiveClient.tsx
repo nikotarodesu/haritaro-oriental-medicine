@@ -63,7 +63,10 @@ function TsuboUrlSync({ restore }: { restore: (query: string) => void | (() => v
   return null;
 }
 
-export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuides?: ReactNode } = {}) {
+export default function TsuboInteractiveClient({ relatedGuides, featuredPoints }: {
+  relatedGuides?: ReactNode;
+  featuredPoints?: ReactNode;
+} = {}) {
   const allPoints = useMemo(() => getAllAcupoints(), []);
   const publishedCount = useMemo(() => getPublishedAcupoints().length, []);
   const searchIndex = useMemo(() => new Map(allPoints.map(point => [point.code, prepareAcupointSearch(point)])), [allPoints]);
@@ -288,7 +291,12 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
             <span>部位から探す</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" />
           </button>
           <button type="button" onClick={() => setShowFilters(!showFilters)} aria-expanded={showFilters} aria-controls="tsubo-detail-filters" className="tsubo-filter-toggle"><SlidersHorizontal aria-hidden="true" className="h-4 w-4" /><span>詳細条件</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" /></button>
-          {!hasSearchQuery && ATLAS_INDEX_LINKS.map(({ href, label }) => <a key={href} href={href} className="atlas-search-index-link">{label}</a>)}
+          <Link href="/tsubo/compare" className="atlas-compare-shortcut">
+            <GitCompare aria-hidden="true" size={16} />
+            経穴を比べる
+            <ArrowRight aria-hidden="true" size={15} />
+          </Link>
+          <a href="#illustrated-points" className="atlas-search-index-link">一覧から探す</a>
         </div>
         {hasSelectionFilters && <p className="tsubo-active-filters">選択中：{[selectedBodyPart !== 'すべて' && selectedBodyPart, selectedMeridian !== 'すべて' && selectedMeridian, selectedCategory !== 'すべて' && selectedCategory, onlyPublished && '主要経穴のみ'].filter(Boolean).join('・')}</p>}
       </form>
@@ -368,7 +376,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
           </div>
       </section>
 
-      {!hasSearchQuery && relatedGuides}
+      {!hasSearchQuery && !hasSelectionFilters && featuredPoints}
 
       {/* 経穴一覧セクション */}
       <section ref={resultsRef} id="tsubo-list" tabIndex={-1} aria-label="ツボの検索結果" className="atlas-target space-y-4">
@@ -456,10 +464,13 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
                     <span className="atlas-code">{point.code}</span>
                   </div>
                   <p className="atlas-result-location">{locationPreview}</p>
-                  <p className="atlas-result-meta">
-                    <span>{point.bodyPart} <span aria-hidden="true">·</span> {point.meridian}</span>
-                    {matchReason && <span className="atlas-result-match">{matchReason}</span>}
-                  </p>
+                  <div className="atlas-result-footer">
+                    <p className="atlas-result-meta">
+                      <span>{point.bodyPart} <span aria-hidden="true">·</span> {point.meridian}</span>
+                      {matchReason && <span className="atlas-result-match">{matchReason}</span>}
+                    </p>
+                    <ArrowRight aria-hidden="true" size={16} />
+                  </div>
                 </Link>
               );
             })}
@@ -566,18 +577,13 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
         )}
       </section>
 
-      {hasSearchQuery && (
-        <>
-          <nav aria-label="ツボ図鑑の索引" className="flex flex-wrap gap-x-3">
-            {ATLAS_INDEX_LINKS.map(({ href, label }) => <a key={href} href={href} className="atlas-search-index-link">{label}</a>)}
-          </nav>
-          {relatedGuides}
-        </>
-      )}
+      <nav aria-label="ツボ図鑑の索引" className="atlas-directory-index-links">
+        {ATLAS_INDEX_LINKS.map(({ href, label }) => <a key={href} href={href} className="atlas-search-index-link">{label}</a>)}
+      </nav>
+      {relatedGuides}
 
       <TsuboReviewEntry placement="dictionary" />
       <nav className="dictionary-tools" aria-label="経穴の学習ツール">
-        <Link href="/tsubo/compare"><GitCompare aria-hidden="true" className="h-4 w-4" />経穴を比べる<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
         <Link href="/tsubo/practice"><BookOpen aria-hidden="true" className="h-4 w-4" />今日の復習<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
         <Link href="/kikei">奇経八脈<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
       </nav>

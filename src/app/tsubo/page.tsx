@@ -39,23 +39,34 @@ export default function TsuboPage() {
         "/tsubo", SERIES.dictionary.name, DESCRIPTION, "代表的なツボ",
         flagshipPoints.map(({ codeLower, name }) => ({ name, href: `/tsubo/${codeLower}` })),
       ) }} />
-      <header className="atlas-directory-header">
+      <header className="atlas-directory-header atlas-directory-intro">
         <div>
           <h1>{SERIES.dictionary.name}</h1>
           <p className="atlas-directory-tagline">{DICTIONARY_TAGLINE}</p>
-          <p>{DESCRIPTION}</p>
+          <p>{ALL_ACUPOINTS.length}のツボを探し、図で場所を確かめる。</p>
         </div>
         <AtlasOverviewArt />
       </header>
 
-      <TsuboInteractiveClient relatedGuides={guideLinks} />
+      <TsuboInteractiveClient relatedGuides={guideLinks} featuredPoints={
+        <nav aria-label="代表的なツボ" className="atlas-directory-featured">
+          <h2>代表的なツボ</h2>
+          <ul>
+            {flagshipPoints.slice(0, 4).map(({ name, code, codeLower }) => (
+              <li key={code}><Link href={`/tsubo/${codeLower}`} prefetch={false}>{name}<span>{code}</span></Link></li>
+            ))}
+          </ul>
+        </nav>
+      } />
 
-      <nav aria-label="代表的なツボ" className="space-y-3">
-        <h2 className="atlas-section-title">代表的なツボ</h2>
-        <ul className="flex flex-wrap gap-2">
-          {flagshipPoints.map(({ name, code, codeLower }) => <li key={code}><Link href={`/tsubo/${codeLower}`} prefetch={false} className="atlas-index-point">{name}<span>{code}</span></Link></li>)}
+      <details className="atlas-disclosure atlas-region-index">
+        <summary>ほかの代表的なツボ</summary>
+        <ul className="flex flex-wrap gap-2 pb-3">
+          {flagshipPoints.slice(4).map(({ name, code, codeLower }) => (
+            <li key={code}><Link href={`/tsubo/${codeLower}`} prefetch={false} className="atlas-index-point">{name}<span>{code}</span></Link></li>
+          ))}
         </ul>
-      </nav>
+      </details>
 
       <section id="atlas-research-index" className="atlas-target space-y-3" aria-labelledby="atlas-research-index-title">
         <h2 id="atlas-research-index-title" className="atlas-section-title flex items-center gap-2"><FlaskConical size={20} aria-hidden="true" />研究から探す</h2>
@@ -123,16 +134,15 @@ export default function TsuboPage() {
         </div>
       </section>
 
-      {/* 4. 掲載範囲・資料基準・更新方針 */}
-      <footer className="bg-[#FAF8F5] dark:bg-[#121920] rounded-2xl border border-[#EDE7D8] dark:border-[#22303D] p-4 sm:p-6 space-y-2.5 text-xs text-[#59615D] dark:text-[#A0B0BC]">
-        <div className="flex items-center gap-1.5 font-bold text-[#232826] dark:text-[#FAF8F5]">
-          <ShieldCheck className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-          <span>掲載範囲・資料基準と更新方針</span>
-        </div>
-        <p className="leading-relaxed">
+      <footer className="atlas-directory-policy" aria-labelledby="atlas-directory-policy-title">
+        <h2 id="atlas-directory-policy-title">
+          <ShieldCheck size={18} aria-hidden="true" />
+          掲載範囲と参照資料
+        </h2>
+        <p>
           正経十二経脈・任脈・督脈の全361穴に、WHO標準経穴部位（2009年改訂再版）と照合した位置の日本語要約と原本へのリンクを掲載しています。図鑑の基本情報は『新版 東洋医学概論』『経絡経穴概論』も参照しています。断面図は学習用の模式図であり、個人の刺入経路や安全な深度を示すものではありません。
         </p>
-        <p className="text-sm leading-relaxed">
+        <p>
           ※本辞典は学習および臨床推論の補助を目的としており、個別診断や医療行為を代替するものではありません。
         </p>
       </footer>
