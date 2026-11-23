@@ -1,11 +1,19 @@
 import Link from "next/link";
-import { ACUPUNCTURE_TRIAL_COMPARISON_HREF, SYMPTOM_RESEARCH_LINKS, acupunctureResearchHref } from "@/config/acupunctureLearning";
+import { ACUPUNCTURE_TRIAL_COMPARISON_HREF, RADIATION_DRY_MOUTH_RESEARCH_HREF, SYMPTOM_RESEARCH_LINKS, URINARY_INCONTINENCE_RESEARCH_HREF, acupunctureResearchHref } from "@/config/acupunctureLearning";
 import { BookOpen, FlaskConical, GitMerge } from "lucide-react";
 import { getAcupointByCode } from "@/data/tsubo";
 import { getAcupointStudies, getClassicalCombinations, getStudyPointRole } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
 import type { AtlasStudy } from "@/data/tsubo/atlas/types";
 import type { AcupointDetail } from "@/data/tsubo/types";
+
+const urinaryResearch = { href: URINARY_INCONTINENCE_RESEARCH_HREF, label: "尿もれの量と回数をどう測ったかを読む" };
+const studyReadingLinks: Readonly<Partial<Record<string, { href: string; label: string }>>> = {
+  "radiation-induced-dry-mouth": { href: RADIATION_DRY_MOUTH_RESEARCH_HREF, label: "放射線治療中の予防と治療後の研究を読み比べる" },
+  "stress-urinary-incontinence": urinaryResearch,
+  "overactive-bladder-voiding-diary": urinaryResearch,
+  "postprostatectomy-pad-use": { href: `${URINARY_INCONTINENCE_RESEARCH_HREF}#after-prostatectomy`, label: "手術後の回復をパッドの枚数で調べた試験を読む" },
+};
 
 function PointLinks({ codes, currentCode }: { codes: readonly string[]; currentCode?: string }) {
   if (!codes.length) return null;
@@ -23,8 +31,9 @@ function PointLinks({ codes, currentCode }: { codes: readonly string[]; currentC
 
 export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; currentCode?: string }) {
   const role = currentCode ? getStudyPointRole(study, currentCode) : undefined;
-  const candidateGroup = currentCode && study.additionalPointGroups?.find(group => group.candidate && group.points.includes(currentCode));
-  const label = candidateGroup ? candidateGroup.label
+  const reading = studyReadingLinks[study.id];
+  const describedGroup = currentCode && study.additionalPointGroups?.find(group => (group.candidate || group.shared) && group.points.includes(currentCode));
+  const label = describedGroup ? describedGroup.label
     : role === "comparison" ? "比較群で使われたツボ"
     : role === "additional" ? "条件に応じて追加されたツボ"
       : study.kind === "point" ? "ツボ一つを調べた研究" : "複数のツボを使った研究";
@@ -35,6 +44,7 @@ export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; curr
       <h3>{study.topic}</h3>
       <p>{study.result}</p>
       <p className="atlas-study-limit">{study.limits}</p>
+      {reading && <Link href={reading.href} className="atlas-source-link">{reading.label}</Link>}
       {(study.kind === "combination" || role === "comparison") && <PointLinks codes={study.points} currentCode={currentCode} />}
       <details className="atlas-disclosure">
         <summary>誰を対象に何を比べたか・論文を読む</summary>

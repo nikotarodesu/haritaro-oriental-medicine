@@ -1,5 +1,5 @@
 import type { AcupunctureResearchArticle } from "./types";
-import { MOXIBUSTION_KNEE_RESEARCH_HREF } from "@/config/acupunctureLearning";
+import { ANTICOAGULANTS_RESEARCH_HREF, MOXIBUSTION_KNEE_RESEARCH_HREF } from "@/config/acupunctureLearning";
 
 export const SAFETY_RESEARCH: AcupunctureResearchArticle = {
   slug: "adverse-events",
@@ -61,6 +61,7 @@ export const SAFETY_RESEARCH: AcupunctureResearchArticle = {
     { id: "kim", label: "Kim ほか · Journal of Korean Medical Science（2018年）", url: "https://doi.org/10.3346/jkms.2018.33.e164", scope: "研究方法、結果、図1。韓国の大学病院の救急外来記録による後ろ向き調査。" },
   ],
   related: [
+    { href: ANTICOAGULANTS_RESEARCH_HREF, label: "抗凝固薬を使っている人の出血を調べた研究" },
     { href: `${MOXIBUSTION_KNEE_RESEARCH_HREF}#burns-and-denominators`, label: "お灸でやけどが起きた人数と件数を読む" },
     { href: "/safety", label: "受診の目安と鍼灸の安全性" },
     { href: "/curriculum/lecture-treatment-9#lecture-section-4", label: "施術後に胸の痛みや息苦しさが出たときの演習" },

@@ -38,9 +38,19 @@ export const KNEE_OSTEOARTHRITIS_RESEARCH: AcupunctureResearchArticle = {
       title: "改善率が表す変化を確かめる",
       paragraphs: [
         "Scharfらは26週後の質問票の合計点、Tuらは8週後の痛みと日常動作それぞれの改善を使いました。数字を読むときは、何がどれだけ変われば「改善」と数えたのかを確かめます。立ち上がりや階段でどのくらい痛むか、どこまで動けるかといった変化を評価した結果で、これらの改善率では軟骨や関節の腫れの変化は分かりません。",
-        "英国のNICEは2022年のガイドラインで、変形性関節症に鍼やドライニードリングを提供しないよう勧告しています。当時の複数の試験をもとに利益と害、費用対効果を検討し、電気鍼については結果にばらつきがあり、根拠の確かさが非常に低いとして、追加研究が必要としています。",
       ],
-      sources: ["scharf-2006", "tu-2021", "nice-ng226", "nice-rationale"],
+      sources: ["scharf-2006", "tu-2021"],
+    },
+    {
+      id: "guidelines-nice-and-ace",
+      title: "英国とシンガポールのガイドラインを比べる",
+      paragraphs: [
+        "英国のNICEは2022年に、変形性関節症の治療に鍼やドライニードリングを提供しないよう勧告しました。主に膝の試験をもとに、利益と害、英国の医療制度での費用対効果を検討しています。電気鍼は研究の規模が小さく結果にもばらつきがあり、どのような人に役立つかを調べるよう求めています。",
+        "シンガポール保健省のACEは2026年に、運動や薬などで十分に改善しない人や、ほかの治療の選択肢を希望する人には、通常の治療に加える方法として鍼を検討するよう条件付きで勧めました。根拠資料は膝の20試験を検討し、研究結果のばらつきや推定値の幅を考慮して、確かさを低〜中程度と評価しています。本人の希望や、保険でどこまで費用がまかなえるか、施術を提供できる体制も検討しています。",
+        "NICEの臨床研究の検索は2021年11月までです。ACEが引用した2025年のシンガポールの試験では、通常の診療に鍼と温熱療法を加えた群で、膝の症状と生活への影響を尋ねる質問票（KOOS-12）の合計点が、通常の診療だけの群より6週後に推定6.43点多く改善しました（95％信頼区間0.72〜12.14点）。この試験は鍼と温熱療法を組み合わせた場合の比較です。",
+        "費用を調べたWhitehurstらの英国の研究は、運動と助言に鍼を加えた場合を評価しており、両方の機関が参照しています。ACEは、研究によって条件が異なるため、英国の費用対効果をシンガポールにそのまま当てはめることには限界があるとしています。推奨を読み比べるときは、根拠を集めた時期、比べた治療、想定した医療制度を確認します。",
+      ],
+      sources: ["nice-ng226", "nice-rationale", "nice-evidence-f", "singapore-ace-2026", "singapore-ace-etr-2026", "ng-harmoknee-2025", "whitehurst-2011"],
     },
   ],
   sources: [
@@ -51,6 +61,11 @@ export const KNEE_OSTEOARTHRITIS_RESEARCH: AcupunctureResearchArticle = {
     { id: "hang-correction-2026", label: "Hangほかの訂正（2026年）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC13544329/", scope: "試験開始時の表にあるMRI所見の2項目の見出しを訂正。" },
     { id: "nice-ng226", label: "NICEの変形性関節症ガイドライン（2022年）", url: "https://www.nice.org.uk/guidance/ng226/chapter/Recommendations#acupuncture", scope: "推奨1.3.8。鍼とドライニードリングについての英国の診療推奨。" },
     { id: "nice-rationale", label: "NICEの勧告の根拠（2022年）", url: "https://www.nice.org.uk/guidance/ng226/chapter/Rationale-and-impact#acupuncture", scope: "変形性関節症に対する鍼について、勧告の根拠と電気鍼に残る研究課題。" },
+    { id: "nice-evidence-f", label: "NICEの根拠レビューF（2022年）", url: "https://www.nice.org.uk/guidance/ng226/evidence/f-clinical-and-cost-effectiveness-of-acupuncture-for-people-with-osteoarthritis-pdf-11250452851", scope: "付録Bの検索時期と費用対効果の表。Whitehurstらの費用の分析も掲載しています。" },
+    { id: "singapore-ace-2026", label: "シンガポールACEの変形性膝関節症ガイドライン（2026年）", url: "https://www.ace-hta.gov.sg/healthcare-professionals/ace-repository-for-clinical-guidelines/management-of-knee-osteoarthritis---a-joint-effort-with-patients-acg/", scope: "推奨2と6。運動などの基本的な対応と、補助療法として鍼を検討する条件。" },
+    { id: "singapore-ace-etr-2026", label: "Chanほか｜シンガポールACEの推奨の根拠（2026年）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC13405452/", scope: "推奨6の根拠レビュー、根拠の確かさ、本人の希望、費用と実施体制。" },
+    { id: "ng-harmoknee-2025", label: "NgほかのHARMOKnee試験（2025年）", url: "https://pubmed.ncbi.nlm.nih.gov/40769283/", scope: "抄録の方法と結果。通常の診療に鍼と温熱療法を併用した試験の6週評価。" },
+    { id: "whitehurst-2011", label: "Whitehurstほかの費用対効果の研究（2011年）", url: "https://doi.org/10.2522/ptj.20100239", scope: "英国で、運動と助言に鍼を加えた場合の費用と健康上の効果を調べた分析。" },
   ],
   related: [
     { href: "/symptoms/knee-joint-pain#safety", label: "膝の痛みの受診の目安" },

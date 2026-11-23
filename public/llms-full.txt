@@ -120,7 +120,10 @@
 - [片頭痛の予防に対する鍼の比較試験](https://www.haritaro.jp/learn/acupuncture/research/migraine-prevention): 片頭痛の予防を調べた試験を、通常ケア、模擬鍼、予防薬との比較から読みます。片頭痛があった日数と発作の回数をどう数えるかも確かめます。
 - [術後の吐き気と内関（PC6）の研究](https://www.haritaro.jp/learn/acupuncture/research/postoperative-nausea): 手術後の吐き気や嘔吐を減らせるか、内関（ないかん）を使った研究を読み比べます。バンドで押す試験、薬と組み合わせた試験、妊娠初期の吐き気を調べた試験では、対象と測り方がそれぞれ異なります。
 - [乳がん治療のアロマターゼ阻害薬と関節痛｜鍼の比較試験](https://www.haritaro.jp/learn/acupuncture/research/aromatase-inhibitor-joint-pain): 乳がん治療でアロマターゼ阻害薬を服用する人の関節痛について、鍼・模擬鍼・待機を比べた米国の試験を読みます。6週と52週の結果、あざの頻度、診療ガイドラインの対象を確かめます。
+- [放射線治療による口の乾きと鍼の研究](https://www.haritaro.jp/learn/acupuncture/research/radiation-dry-mouth): 頭頸部がんの放射線治療中に鍼を始めて口の乾きを予防する試験と、治療から1年以上経った人に残る口の乾きを調べた試験を読み比べます。本人が感じる乾き、唾液の量、比較相手ごとの結果を確認します。
+- [尿もれに対する鍼の研究｜量と回数をどう測ったか](https://www.haritaro.jp/learn/acupuncture/research/urinary-incontinence): 咳や運動で漏れる腹圧性尿失禁、急な尿意に伴う尿もれ、前立腺がんの手術後の試験を比較します。パッドの重さ、日誌に書いた回数、使ったパッドの枚数で、何が分かるかを確かめます。
 - [鍼灸の有害事象を数字で読む](https://www.haritaro.jp/learn/acupuncture/research/adverse-events): 鍼灸の研究に出る割合は、受けた人の数と、施術の回数のどちらで割るかで意味が変わります。国内外の調査から、出血や痛みをどう数え、重い事象と施術との関連をどう調べたかを読みます。
+- [抗凝固薬を使う人の鍼施術｜出血の研究を読む](https://www.haritaro.jp/learn/acupuncture/research/anticoagulants-and-bleeding): 抗凝固薬を使う人が鍼を受けたあと、どんな出血が記録されたのでしょうか。台湾の保険記録と韓国の病院での調査を読み、出血の種類や観察期間によって数字の意味がどう変わるかを確かめます。
 - [同じ症例でも弁証が分かれるのはなぜ？ 所見の読み比べ](https://www.haritaro.jp/learn/acupuncture/research/pattern-diagnosis-agreement): 慢性腰痛のある6人を、6人の鍼灸師が同じ日に評価した研究を読みます。架空の症例で、見立てを支える所見と次に聞きたいことを比べます。
 
 ### 症状別の学習ガイド

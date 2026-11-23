@@ -2,6 +2,8 @@ import { CLINICAL_STUDY_ADDITIONS } from "./clinicalStudies";
 import { SUPPLEMENTAL_ATLAS_STUDIES } from "./supplementalClinicalStudies";
 import { SCITE_FOLLOWUP_ATLAS_STUDIES, SCITE_SYMPTOM_ATLAS_STUDIES } from "./sciteFollowupStudies";
 import { ADDITIONAL_VERIFIED_STUDIES } from "./additionalVerifiedStudies";
+import { RARE_POINT_REHAB_STUDIES } from "./rarePointRehabStudies";
+import { RECHECKED_POINT_STUDIES } from "./recheckedPointStudies";
 import type { AtlasStudy, StudySource } from "./types";
 
 // Codes list the points reported in the intervention, including comparator codes only when labelled as such.
@@ -180,7 +182,14 @@ const existingStudies: readonly AtlasStudy[] = [
 ];
 
 const revisedStudies = [...CLINICAL_STUDY_ADDITIONS, ...SUPPLEMENTAL_ATLAS_STUDIES];
-export const ATLAS_STUDIES: readonly AtlasStudy[] = [...existingStudies, ...revisedStudies, ...SCITE_FOLLOWUP_ATLAS_STUDIES, ...SCITE_SYMPTOM_ATLAS_STUDIES, ...ADDITIONAL_VERIFIED_STUDIES];
+const followupStudies = [
+  ...SCITE_FOLLOWUP_ATLAS_STUDIES,
+  ...SCITE_SYMPTOM_ATLAS_STUDIES,
+  ...ADDITIONAL_VERIFIED_STUDIES,
+  ...RARE_POINT_REHAB_STUDIES,
+  ...RECHECKED_POINT_STUDIES,
+];
+export const ATLAS_STUDIES: readonly AtlasStudy[] = [...existingStudies, ...revisedStudies, ...followupStudies];
 export const ATLAS_EVIDENCE_REVISED_AT = "2026-11-20";
 
 function researchRoutes(studies: readonly AtlasStudy[]) {
@@ -196,7 +205,7 @@ function researchRoutes(studies: readonly AtlasStudy[]) {
 }
 
 export const REVISED_ATLAS_RESEARCH_ROUTES = researchRoutes(revisedStudies);
-export const SCITE_FOLLOWUP_ATLAS_RESEARCH_ROUTES = researchRoutes([...SCITE_FOLLOWUP_ATLAS_STUDIES, ...SCITE_SYMPTOM_ATLAS_STUDIES, ...ADDITIONAL_VERIFIED_STUDIES]);
+export const SCITE_FOLLOWUP_ATLAS_RESEARCH_ROUTES = researchRoutes(followupStudies);
 
 interface ClassicalCombination {
   points: readonly string[];

@@ -274,10 +274,12 @@ export const PAGE_REVISIONS: Record<string, string> = {
     '/symptoms/lower-back-pain-sciatica', '/clinical/symptoms/back',
     '/articles/science-of-pulse-diagnosis', '/articles/science-of-abdominal-diagnosis',
     '/articles/science-of-tongue-diagnosis', '/articles/science-of-kampo-network-pharmacology',
+    '/articles/east-west-integrative-gerd-gastric',
     ...SCITE_FOLLOWUP_ATLAS_RESEARCH_ROUTES,
   ].map(route => [route, ACUPUNCTURE_RESEARCH.revisedAt])),
 };
 export const SITE_UPDATES = [
+  { date: ACUPUNCTURE_RESEARCH.revisedAt, label: '鍼灸の安全性・口の乾燥・尿もれの研究を追加', href: ACUPUNCTURE_RESEARCH.href, text: '抗凝固薬を使う人の出血、放射線治療に伴う口の乾燥、尿もれの測り方を扱った研究を紹介します。膝の研究に英国とシンガポールの診療指針を加え、胸やけのガイドラインの出典も見直しました。' },
   { date: ACUPUNCTURE_RESEARCH.revisedAt, label: 'お灸・乳がん治療中の関節痛の研究解説を追加', href: ACUPUNCTURE_RESEARCH.href, text: '膝へのお灸で痛みとやけどを調べた試験や、乳がん治療中の関節痛を52週追った試験を紹介します。舌・脈・腹の観察や漢方の解説にも、原著で確認した研究を加えました。' },
   { date: ACUPUNCTURE_RESEARCH.revisedAt, label: '弁証・膝痛・片頭痛の研究教材を追加', href: ACUPUNCTURE_RESEARCH.href, text: '同じ腰痛の所見を二人の見立てで比べる演習を追加しました。膝痛・片頭痛の試験と症例演習をつなぎ、症状ガイド、ツボ図鑑、鍼灸の安全性、文献ライブラリも更新しました。' },
   { date: ACUPUNCTURE_RESEARCH.revisedAt, label: '鍼灸の研究解説を公開', href: ACUPUNCTURE_RESEARCH.href, text: '腰痛と坐骨神経痛、術後の吐き気と内関、鍼灸の有害事象を調べた研究を、対象・比較相手・結果の数え方から読み比べられます。ツボ図鑑にも、使われた経穴を原著で確認した試験を追加しました。' },

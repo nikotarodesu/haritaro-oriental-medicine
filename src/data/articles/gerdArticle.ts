@@ -17,7 +17,9 @@ export const GERD_ARTICLE: Article = {
     "伝統理論の見立てと現代医学の診断を区別します。鍼灸・漢方によるGERDの治癒や服薬中止は保証できません。",
   ],
   references: [
-    { id: "jsg-gerd-2021", type: "guideline", title: "胃食道逆流症（GERD）診療ガイドライン2021（改訂第3版）", source: "日本消化器病学会", year: 2021, url: "https://www.jsge.or.jp/committees/guideline/guideline/gerd.html", note: "GERDの診断・治療のための診療指針。" },
+    { id: "jsg-gerd-2021", type: "guideline", title: "胃食道逆流症（GERD）診療ガイドライン2021（改訂第3版）", source: "日本消化器病学会", year: 2021, url: "https://www.jsge.or.jp/committees/guideline/guideline/pdf/gerd2021r_.pdf", note: "日本語版の公開PDF。診断と内科的治療の章を参照しています。" },
+    { id: "jsg-gerd-patient-guide-2023", type: "guideline", title: "患者さんとご家族のための胃食道逆流症（GERD）ガイド2023", source: "日本消化器病学会", year: 2023, url: "https://www.jsge.or.jp/committees/guideline/disease/pdf/gerd_2023.pdf", note: "Q6の薬による治療と、日常生活についての案内を参照しています。" },
+    { id: "jsg-gerd-2026-announcement", type: "guideline", title: "胃食道逆流症（GERD）診療ガイドライン2026（改訂第4版）の公開案内", source: "日本消化器病学会", year: 2026, url: "https://www.jsge.or.jp/committees/guideline/guideline/gerd.html", note: "公開案内で改訂版の書誌と閲覧方法を確認しました。本文は会員専用ページで案内されています。" },
     { id: "niddk-gerd-symptoms", type: "review", title: "Symptoms & Causes of GER & GERD", source: "NIDDK / NIH", url: "https://www.niddk.nih.gov/health-information/digestive-diseases/acid-reflux-ger-gerd-adults/symptoms-causes", note: "症状と医療機関への相談が必要な徴候についての患者向け情報。" },
     { id: "nccih-acupuncture", type: "review", title: "Acupuncture: Effectiveness and Safety", source: "NCCIH / NIH", url: "https://www.nccih.nih.gov/health/acupuncture-effectiveness-and-safety", note: "鍼治療全般の研究と安全性。GERDへの効果を直接示す資料ではありません。" },
     { id: "shokanron-149", type: "classic", title: "『傷寒論』第149条（半夏瀉心湯）", source: "張仲景に帰される古典", note: "心下痞の伝統的記述。GERDの臨床効果の証明とは区別します。" },
@@ -36,7 +38,7 @@ export const GERD_ARTICLE: Article = {
 
 ## 3. 標準治療と症状の再評価
 
-GERDでは生活習慣への対応と酸分泌抑制薬などが治療の中心です。病態と重症度に応じて、治療や検査が選ばれます。[^jsg-gerd-2021]
+GERDでは生活習慣への対応と酸分泌抑制薬などが治療の中心です。医師は食道炎の有無や重症度に応じて、治療や検査を選びます。この説明は日本消化器病学会の2021年版と患者・家族向けガイドに基づきます。[^jsg-gerd-2021][^jsg-gerd-patient-guide-2023] 同学会の案内では、2026年の改訂第4版は会員専用ページで閲覧できます。[^jsg-gerd-2026-announcement]
 
 症状が続いても、すぐに「自律神経が原因」「気の逆流」と決めつけないでください。薬をどう使っているか、逆流以外の原因はないか、さらに調べる必要があるかを主治医と確認します。服薬の中止・減量は自己判断で行わないでください。
 

@@ -60,7 +60,7 @@ export interface AtlasStudy {
   kind: "point" | "combination";
   points: readonly string[];
   comparisonPoints?: readonly string[];
-  additionalPointGroups?: readonly { label: string; points: readonly string[]; comparison?: true; candidate?: true }[];
+  additionalPointGroups?: readonly { label: string; points: readonly string[]; comparison?: true; candidate?: true; shared?: true }[];
   otherPoints?: string;
   guide?: string;
   result: string;

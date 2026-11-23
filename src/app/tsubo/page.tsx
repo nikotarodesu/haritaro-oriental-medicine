@@ -75,6 +75,7 @@ export default function TsuboPage() {
             <p><time dateTime={ATLAS_LITERATURE_SEARCH_DATE}>{ATLAS_LITERATURE_SEARCH_DATE}</time> に、当時まだ研究を載せていなかった{Object.keys(ATLAS_LITERATURE_SEARCH_COUNTS).length}穴を検索しました。</p>
             <p>経穴名とコードで、PubMedの題名・抄録などと、PubMed Centralの本文の方法欄を検索しました。人を対象とした比較試験のうち、実際に使われた経穴と結果を原典で確認できたものを紹介しています。</p>
             <p>追加調査では、Sciteで引用をたどり、研究で使った経穴と、選べる候補に挙がった経穴を原著で確認しました。比較群だけの経穴や、実際に使った人数が分からない候補は、各図鑑ページにその区別を記載しています。</p>
+            <p><time dateTime="2026-11-23">2026-11-23</time> の再調査では、研究が未掲載だった38穴を和名、ローマ字表記、経穴コードで調べ直しました。試験計画だけに記載された経穴は掲載を見送り、結果が公表された論文で役割を確認できた経穴を追加しました。</p>
             <ul className="atlas-source-links" aria-label="文献検索で使用したデータベース">
               <li><a href="https://pubmed.ncbi.nlm.nih.gov/help/">PubMedの検索方法</a></li>
               <li><a href="https://pmc.ncbi.nlm.nih.gov/about/userguide/">PubMed Centralの検索方法</a></li>

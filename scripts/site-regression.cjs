@@ -36,7 +36,7 @@ const { CURRICULUM_DATA } = load('src/data/curriculumData');
 const { CURRICULUM_QUIZZES } = load('src/data/curriculumQuizzes');
 const { PROGRESSIVE_CASES } = load('src/data/progressiveCases');
 const lectureIds=new Set(CURRICULUM_DATA.flatMap(chapter=>chapter.lectures).map(lecture=>lecture.id));
-const additionalResearchArticles = new Set(['science-of-pulse-diagnosis', 'science-of-abdominal-diagnosis', 'science-of-tongue-diagnosis', 'science-of-kampo-network-pharmacology']);
+const additionalResearchArticles = new Set(['science-of-pulse-diagnosis', 'science-of-abdominal-diagnosis', 'science-of-tongue-diagnosis', 'science-of-kampo-network-pharmacology', 'east-west-integrative-gerd-gastric']);
 for(const article of ARTICLES) {
  const guide=ARTICLE_LEARNING_GUIDES[article.id]; assert(guide,article.id);
  assert(lectureIds.has(guide.lectureId),article.id+' lecture'); assert(CURRICULUM_QUIZZES[guide.lectureId],article.id+' quiz');
