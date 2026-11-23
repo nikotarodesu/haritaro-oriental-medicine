@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BoneCunExampleFigure, FingerCunFigure } from "@/components/tsubo/CunGuideFigures";
 import { ACUPOINT_PAGE_REVISED_AT } from "@/config/contentUpdates";
-import { pageSocialMetadata } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import { WHO_ATLAS_PDF } from "@/data/tsubo/atlas/whoAtlasPages";
 import { boneCunSpans } from "@/data/tsubo/atlas/whoMeasurements";
 
 const path = "/tsubo/basics/bone-cun";
 const siteUrl = "https://www.haritaro.jp";
-const title = "ツボの「寸」の測り方｜骨度法・指寸・指幅";
+const title = seriesPageTitle("ツボの「寸」の測り方｜骨度法・指寸・指幅", "dictionary");
 const description = "WHO標準経穴部位の計測方法を、前腕・すね・お腹の目盛り付き模式図と手指の図で解説。骨度法（B-cun）、指寸（F-cun）、指幅（F-breadth）の部位別の基準が分かります。";
 
 export const metadata: Metadata = {

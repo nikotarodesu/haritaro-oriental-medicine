@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
+import ContentEndAd from "@/components/ads/ContentEndAd";
 import PublicLecturePosition from "@/components/curriculum/PublicLecturePosition";
 import PublicLectureSections, { PublicLectureLinks } from "@/components/curriculum/PublicLectureSections";
 import ReadingUnitCheck from "@/components/curriculum/ReadingUnitCheck";
@@ -199,6 +200,7 @@ export default async function ReadingLecturePage({ params }: Props) {
         </details>
       )}
       <AuthorSupervisorCard revisedAt={revisedAt} />
+      <ContentEndAd key={unit.slug} />
     </article>
   );
 }

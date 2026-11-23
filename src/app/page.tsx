@@ -4,7 +4,7 @@ import PlatformSearchForm from "@/components/search/PlatformSearchForm";
 import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
 import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
 import { collectionPageJsonLd, HOME_HEADING } from "@/config/seo";
-import { PLATFORM_DESCRIPTION, SERIES } from "@/config/series";
+import { DICTIONARY_TAGLINE, PLATFORM_DESCRIPTION, SERIES } from "@/config/series";
 
 const SERIES_ENTRIES = Object.values(SERIES);
 const POINTS = [
@@ -31,6 +31,13 @@ export default function HomePage() {
               <Link href={ACUPUNCTURE_GUIDE.href}><LibraryBig aria-hidden="true" />{ACUPUNCTURE_GUIDE.label}</Link>
               <Link href="/symptoms"><Compass aria-hidden="true" />症状ガイド</Link>
             </nav>
+            <Link href={SERIES.dictionary.href} className="platform-dictionary-intro">
+              <span>
+                <span>{SERIES.dictionary.name}</span>
+                <strong>{DICTIONARY_TAGLINE}</strong>
+              </span>
+              <ArrowRight aria-hidden="true" />
+            </Link>
           </div>
           <Link href="/tsubo/li4" className="platform-feature" aria-labelledby="platform-feature-name platform-feature-action">
             <span className="platform-feature-art"><HeguHandDiagram thumbnail /></span>

@@ -2,9 +2,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
 import { ArrowLeft, ShieldAlert, Mail, BookOpen, CircleStop, UserCheck } from "lucide-react";
-import { pageSocialMetadata } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 
-const pageTitle = "利用規約";
+const pageTitle = seriesPageTitle("利用規約", "reading");
 const pageDescription = "「はり太郎」の利用規約です。無料で利用できるコンテンツ、知的財産権、医療情報の範囲などについて定めています。";
 
 export const metadata: Metadata = {

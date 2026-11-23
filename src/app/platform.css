@@ -48,6 +48,23 @@
   text-wrap: pretty;
 }
 
+.platform-dictionary-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-top: 1rem;
+  padding-block: .625rem .25rem;
+  border-top: 1px solid var(--border-washi);
+  color: var(--accent-readable);
+  line-height: 1.6;
+}
+
+.platform-dictionary-intro span span { display: block; font-size: .8125rem; }
+.platform-dictionary-intro strong { font-family: var(--font-serif); font-size: 1.0625rem; text-wrap: balance; }
+.platform-dictionary-intro svg { width: 1.125rem; flex: none; }
+.platform-dictionary-intro:hover strong { text-decoration: underline; text-underline-offset: .25em; }
+
 .platform-search {
   display: grid;
   gap: .45rem;

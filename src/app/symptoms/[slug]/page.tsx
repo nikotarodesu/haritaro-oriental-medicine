@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { BookOpen, FlaskConical, MapPin, ShieldCheck } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import AuthorSupervisorCard from '@/components/common/AuthorSupervisorCard';
+import ContentEndAd from '@/components/ads/ContentEndAd';
 import SymptomPerspective from '@/components/symptoms/SymptomPerspective';
 import SymptomResearchReferences from '@/components/symptoms/SymptomResearchReferences';
 import SymptomIcon from '@/components/symptoms/SymptomIcon';
@@ -147,6 +148,7 @@ export default async function SymptomGuidePage({ params }: Props) {
       </details>
       <AuthorSupervisorCard />
       <Link href={`/contact?source=${encodeURIComponent(symptomGuidePath(guide))}`} className={linkClass}>内容の誤りや出典について連絡する</Link>
+      <ContentEndAd key={slug} />
     </article>
   );
 }

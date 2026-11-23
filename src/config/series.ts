@@ -1,6 +1,7 @@
 import { BookOpen, ClipboardList, MapPin } from "lucide-react";
 
 export const PLATFORM_DESCRIPTION = "ツボ図鑑で361のツボの場所を調べ、東洋医学の講義で陰陽や経絡を学べます。臨床演習では、模擬症例を読んで体の状態を考えます。";
+export const DICTIONARY_TAGLINE = "ツボのぜんぶが、ここにある。";
 
 export const SERIES = {
   dictionary: {

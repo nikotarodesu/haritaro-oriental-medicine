@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { KIKEI_VESSELS } from "@/data/kikeiData";
 import KikeiDetailClient from "@/components/kikei/KikeiDetailClient";
-import { pageSocialMetadata } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const title = `${vessel.name}（${vessel.reading}）の流注・八脈交会穴・主治`;
+  const title = seriesPageTitle(`${vessel.name}（${vessel.reading}）の流注・八脈交会穴・主治`, "reading");
   const description = `${vessel.name}の流注経路、八脈交会穴（${vessel.masterPoint.name}×${vessel.couplePoint.name}）、主治病証、古典（難経・素問）の条文解説。`;
 
   return {

@@ -1,24 +1,19 @@
-import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import { Metadata } from "next";
 import Link from "next/link";
 import SimulatorHub from "@/components/SimulatorHub";
 import { getArticlePreviews } from "@/data/articleData";
 
+const description = "学生向けの東洋医学学習ツール。3つの架空症例を6段階で検討し、追加問診、安全確認、弁証候補、配穴の根拠、再評価を練習。所見の矛盾や情報不足も確認できます。";
+const title = seriesPageTitle("弁証の練習｜症例・条件選択・見立て修正", "practice");
+
 export const metadata: Metadata = {
-  title: "弁証の練習｜症例・条件選択・見立て修正",
-  description:
-    "学生向けの東洋医学学習ツール。3つの架空症例を6段階で検討し、追加問診、安全確認、弁証候補、配穴の根拠、再評価を練習。所見の矛盾や情報不足も確認できます。",
+  title,
+  description,
   alternates: {
     canonical: "https://www.haritaro.jp/simulator",
   },
-  openGraph: {
-      images: SHARED_OG_IMAGES,
-    siteName: SITE_NAME,
-    title: `弁証の練習｜症例・条件選択・見立て修正 | ${SITE_NAME}`,
-    description:
-      "3つの架空症例を6段階で検討。追加問診、安全確認、弁証候補、配穴の根拠、再評価を学ぶ学生向けのシミュレーターです。",
-    url: "https://www.haritaro.jp/simulator",
-  },
+  ...pageSocialMetadata(title, description, "/simulator"),
 };
 
 export default function SimulatorPage() {

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { pageSocialMetadata } from '@/config/seo';
+import { pageSocialMetadata, seriesPageTitle } from '@/config/seo';
 import Link from 'next/link';
 import PageIntro from '@/components/design/PageIntro';
 import { SearchCheck, ClipboardCheck, History } from 'lucide-react';
@@ -7,7 +7,9 @@ import summary from '@/data/medicalReviewSummary.json';
 import audit from '@/data/references/bibliographyAudit.json';
 import { PAPERS_DATABASE, VERIFIED_PAPERS } from '@/data/references/papersData';
 import { CLASSICAL_TEXTS } from '@/data/classicalTextsData';
-export const metadata: Metadata = { title: '医学記述・出典の確認方針', description: '書誌の照合、研究結果の解釈、専門家による監修の状況を分けて公開します。', ...pageSocialMetadata('医学記述・出典の確認方針', '書誌の照合、研究結果の解釈、専門家による監修の状況を分けて公開します。', '/editorial-policy'), alternates: { canonical: '/editorial-policy' } };
+const title = seriesPageTitle("医学記述・出典の確認方針", "reading");
+
+export const metadata: Metadata = { title, description: '書誌の照合、研究結果の解釈、専門家による監修の状況を分けて公開します。', ...pageSocialMetadata(title, '書誌の照合、研究結果の解釈、専門家による監修の状況を分けて公開します。', '/editorial-policy'), alternates: { canonical: '/editorial-policy' } };
 export default function EditorialPolicyPage() {
   const records = Object.values(audit);
   return <div className="page-layout page-layout--reading space-y-7 leading-relaxed">

@@ -3,12 +3,12 @@ import Link from "next/link";
 import { ArrowDown, ArrowLeft, ArrowRight, BookOpen, ChevronDown } from "lucide-react";
 import PageIntro from "@/components/design/PageIntro";
 import StudyDiagram from "@/components/reading/StudyDiagram";
-import { pageSocialMetadata } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import type { LectureDiagram } from "@/data/publicLectures/diagrams/types";
 import { readingPartHref, readingUnits } from "@/data/publicLectures/readingUnits";
 
 const path = "/learn/essentials";
-const title = "東洋医学の要点";
+const title = seriesPageTitle("東洋医学の要点", "reading");
 const description = "陰陽、気・血・津液、経絡などの基本を、短い答えと具体例で説明します。各項目の図と関連する講義も開けます。";
 
 export const metadata: Metadata = {

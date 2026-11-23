@@ -4,7 +4,8 @@ import { notFound } from 'next/navigation';
 import { CLINICAL_COMPLAINTS, CLINICAL_PATTERNS } from '@/data/clinicalWorkflow';
 import ClinicalEvidenceKey from '@/components/clinical/ClinicalEvidenceKey';
 import PageIntro from '@/components/design/PageIntro';
-import { pageSocialMetadata } from '@/config/seo';
+import ContentEndAd from '@/components/ads/ContentEndAd';
+import { pageSocialMetadata, seriesPageTitle } from '@/config/seo';
 import { ArrowLeft, ArrowRight, ClipboardList, GitCompareArrows, NotebookPen, RefreshCw } from 'lucide-react';
 
 export function generateStaticParams() { return CLINICAL_COMPLAINTS.map(item => ({ slug: item.slug })); }
@@ -14,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const item = CLINICAL_COMPLAINTS.find(complaint => complaint.slug === slug);
   if (!item) return { title: '主訴別ガイドが見つかりません' };
   const path = `/clinical/symptoms/${slug}`;
-  const title = `${item.title}｜鍼灸師の主訴別確認ガイド`;
+  const title = seriesPageTitle(`${item.title}｜鍼灸師向けの問診・配穴ガイド`, "practice");
   const description = `${item.summary} 問診で聞くこと、配穴の理由、次回に確かめる項目をまとめています。`;
   return { title, description, alternates: { canonical: path }, ...pageSocialMetadata(title, description, path) };
 }
@@ -33,5 +34,6 @@ export default async function Page({ params }: Props) {
     <section id="record" className="page-section space-y-3"><h2 className="page-section-heading">3. 配穴の理由を残す</h2><p className="leading-relaxed">選んだ治法と、どの所見を受けてどのツボを選んだかを書きます。ほかの候補や、まだ調べていない所見も残します。ツボの位置と注意事項は図鑑で確認できます。</p><Link className="page-secondary-action" href="/tsubo">ツボ図鑑を開く<ArrowRight aria-hidden="true" /></Link></section>
     <section id="review" className="page-section space-y-3"><h2 className="page-section-heading">4. 直後と次回で同じ項目を比べる</h2><ul className="list-disc space-y-2 pl-5">{item.review.map(review => <li key={review}>{review}</li>)}</ul><p>その場で何が変わり、帰宅後もその変化が続いたかを書きます。元に戻ったときや新しい症状が出たときは、聞き取った情報から見直します。</p><Link className="page-secondary-action" href={`/curriculum/${item.lectureId}`}>この症状に関係する四診の講義へ<ArrowRight aria-hidden="true" /></Link></section>
     <ClinicalEvidenceKey sourceKeys={item.sourceKeys} />
+    <ContentEndAd key={slug} />
   </article>;
 }

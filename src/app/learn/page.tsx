@@ -4,13 +4,13 @@ import { ArrowRight, BookOpen, LibraryBig, List } from "lucide-react";
 import PublicLearningPath from "@/components/curriculum/PublicLearningPath";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import PageIntro from "@/components/design/PageIntro";
-import { collectionPageJsonLd, pageSocialMetadata, SITE_NAME } from "@/config/seo";
+import { collectionPageJsonLd, pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import { getArticlePreviews } from "@/data/articleData";
 import { readingUnits } from "@/data/publicLectures/readingUnits";
 import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
 
 const heading = "東洋医学を図で学ぶ";
-const title = `${heading}｜全${readingUnits.length}講義と要点まとめ｜${SITE_NAME}`;
+const title = seriesPageTitle(`${heading}｜全${readingUnits.length}講義と要点まとめ`, "reading");
 const introduction = `陰陽では何を比べるか、気・血・津液にはどんな役割があると考えるか。食事や眠りの例と図を使って、全${readingUnits.length}講で学びます。`;
 const description = `${introduction} 各講義に要点まとめと確認問題があります。`;
 

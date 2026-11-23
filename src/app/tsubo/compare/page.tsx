@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import { heguAtlasReading } from "@/components/tsubo/HeguAtlasPreview";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
 import { DETAILED_ACUPOINTS } from "@/data/tsubo/detailedPoints";
@@ -6,7 +6,7 @@ import { TSUBOS } from "@/data/tsuboData";
 import type { Metadata } from "next";
 import CompareClient, { type ComparisonPoint } from "./CompareClient";
 
-const title = "経穴比較ツール｜ツボの位置・経絡・注意点";
+const title = seriesPageTitle("経穴比較ツール｜ツボの位置・経絡・注意点", "dictionary");
 const description = "経穴を2〜3穴並べて、位置、所属経絡、要穴の分類、安全上の注意、伝統での位置づけを比較できます。";
 
 export const metadata: Metadata = {
@@ -15,13 +15,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/tsubo/compare",
   },
-  openGraph: {
-    images: SHARED_OG_IMAGES,
-    siteName: SITE_NAME,
-    title,
-    description,
-    url: "https://www.haritaro.jp/tsubo/compare",
-  },
+  ...pageSocialMetadata(title, description, "/tsubo/compare"),
 };
 
 const comparisonPoints = TSUBOS.map((point): ComparisonPoint => {

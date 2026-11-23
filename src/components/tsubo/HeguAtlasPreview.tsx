@@ -1,5 +1,6 @@
 import Link from "next/link";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
+import ContentEndAd from "@/components/ads/ContentEndAd";
 import { AcupointReadingLinks } from "@/components/tsubo/AcupointArticleLinks";
 import AcupointArticleHeader from "@/components/tsubo/AcupointArticleHeader";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
@@ -86,6 +87,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         </ul>
       </section>
       <AuthorSupervisorCard pointLocationChecked />
+      <ContentEndAd key={point.code} />
     </article>
   );
 }

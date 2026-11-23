@@ -3,7 +3,7 @@ export function getAdSensePublisherId() {
   return id && /^ca-pub-\d{16}$/.test(id) ? id : undefined;
 }
 
-export function getArticleAdSenseConfig() {
+export function getContentAdSenseConfig() {
   if (
     process.env.ADSENSE_ENABLED !== "true" ||
     process.env.NODE_ENV !== "production" ||

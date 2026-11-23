@@ -3,14 +3,16 @@ import { Suspense } from "react";
 import Link from "next/link";
 import LearningReviewPanel from "@/components/learning/LearningReviewPanel";
 import PageIntro from "@/components/design/PageIntro";
-import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 
 const description = "間違えた問題、復習日を迎えた問題、まだ答えていない問題を選んで解けます。解説から関連する講義を開けます。";
+const title = seriesPageTitle("講義の復習｜確認問題と学習履歴", "reading");
+
 export const metadata: Metadata = {
-  title: "講義の復習｜確認問題と学習履歴",
+  title,
   description,
   alternates: { canonical: "/learn/review" },
-  openGraph: { title: "講義の復習｜はり太郎", description, url: "https://www.haritaro.jp/learn/review", siteName: SITE_NAME, images: SHARED_OG_IMAGES },
+  ...pageSocialMetadata(title, description, "/learn/review"),
 };
 
 export default function LearningReviewPage() {

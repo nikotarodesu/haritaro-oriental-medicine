@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { PAGE_REVISIONS } from "@/config/contentUpdates";
-import { pageSocialMetadata, SITE_ORIGIN } from "@/config/seo";
+import { pageSocialMetadata, SITE_ORIGIN, seriesPageTitle } from "@/config/seo";
 import LearningCredits from "@/components/common/LearningCredits";
 import DiagnosisClient from "@/components/diagnosis/DiagnosisClient";
 import { getArticlePreviews } from "@/data/articleData";
@@ -26,7 +26,7 @@ function getCheckPage(tab: string | string[] | undefined) {
     mode,
     isGorou,
     path: isGorou ? "/diagnosis?tab=gorou" : "/diagnosis",
-    title: isGorou ? GOROU_TITLE : SELF_CHECK_TITLE,
+    title: seriesPageTitle(isGorou ? GOROU_TITLE : SELF_CHECK_TITLE, "reading"),
     description: isGorou ? GOROU_DESCRIPTION : SELF_CHECK_DESCRIPTION,
   };
 }

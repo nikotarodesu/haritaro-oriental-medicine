@@ -1,4 +1,4 @@
-import { pageSocialMetadata } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import { AUTHOR_OPENED_AT } from "@/config/author";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Sparkles, ShieldCheck, ArrowRight, BookOpen, GraduationCap, Stethoscope } from "lucide-react";
 import { getArticlePreviews } from "@/data/articleData";
 
-const pageTitle = "はり太郎の運営者・資格・編集方針";
+const pageTitle = seriesPageTitle("はり太郎の運営者・資格・編集方針", "reading");
 const pageDescription = "ツボ図鑑・東洋医学・臨床演習を運営する鍼灸師の資格と、出典や教材の確認状況をご案内します。";
 
 export const metadata: Metadata = {

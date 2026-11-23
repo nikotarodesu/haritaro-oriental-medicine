@@ -1,5 +1,6 @@
 import Link from "next/link";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
+import ContentEndAd from "@/components/ads/ContentEndAd";
 import { AcupointReadingLinks } from "./AcupointArticleLinks";
 import AcupointArticleHeader from "./AcupointArticleHeader";
 import AcupointResearch from "./AcupointResearch";
@@ -99,6 +100,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         </ul>
       </section>
       <AuthorSupervisorCard pointLocationChecked />
+      <ContentEndAd key={point.code} />
     </article>
   );
 }

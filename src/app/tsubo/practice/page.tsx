@@ -1,8 +1,8 @@
-import { pageSocialMetadata } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import type { Metadata } from "next";
 import PracticeClient from "./PracticeClient";
 
-const title = "経穴学習・今日の復習｜間隔反復と14経脈小単位クイズ";
+const title = seriesPageTitle("経穴学習・今日の復習｜間隔反復と14経脈小単位クイズ", "dictionary");
 const description = "361経穴の部位・経脈・要穴をクイズで確認。14経脈の小単位演習、回答履歴に応じた間隔復習、中断した回答の端末保存と再開に対応しています。";
 
 export const metadata: Metadata = {

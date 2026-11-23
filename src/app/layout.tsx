@@ -37,10 +37,7 @@ const siteDescription = `${SITE_NAME}は東洋医学の学習サイトです。$
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
   applicationName: SITE_NAME,
-  title: {
-    default: SITE_TITLE,
-    template: `%s | ${SITE_NAME}【東洋医学・鍼灸】`,
-  },
+  title: SITE_TITLE,
   description: siteDescription,
   other: publisherId ? { "google-adsense-account": publisherId } : undefined,
   verification: {

@@ -1,14 +1,16 @@
 import type { Metadata } from 'next';
-import { pageSocialMetadata } from '@/config/seo';
+import { pageSocialMetadata, seriesPageTitle } from '@/config/seo';
 import Link from 'next/link';
 import PageIntro from '@/components/design/PageIntro';
 import { ShieldCheck, BookOpen } from 'lucide-react';
 import { MEDICAL_SAFETY_SOURCES as sources, MEDICAL_SAFETY_CHECKED_AT, PROCEDURE_PUBLICATION_NOTICE } from '@/data/medicalSafety';
 
+const title = seriesPageTitle("受診の目安と鍼灸の安全性", "dictionary");
+
 export const metadata: Metadata = {
-  title: '受診の目安と鍼灸の安全性',
+  title,
   description: '救急受診を優先する症状、鍼灸施術前の確認事項、教材の確認範囲と原典を案内します。',
-  ...pageSocialMetadata('受診の目安と鍼灸の安全性', '救急受診を優先する症状、鍼灸施術前の確認事項、教材の確認範囲と原典を案内します。', '/safety'), alternates: { canonical: '/safety' },
+  ...pageSocialMetadata(title, '救急受診を優先する症状、鍼灸施術前の確認事項、教材の確認範囲と原典を案内します。', '/safety'), alternates: { canonical: '/safety' },
 };
 
 export default function SafetyPage() {

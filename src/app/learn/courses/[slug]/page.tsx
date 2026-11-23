@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
-import { pageSocialMetadata, SITE_NAME } from '@/config/seo';
+import { pageSocialMetadata, seriesPageTitle } from '@/config/seo';
 import { getLearningCourse, LEARNING_COURSES } from '@/data/learningCourses';
 import PageIntro from '@/components/design/PageIntro';
 import ArticleCover from '@/components/articles/ArticleCover';
@@ -26,9 +26,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const course = getLearningCourse(slug);
   if (!course) return { title: '学習コースが見つかりません', robots: { index: false } };
-  const title = `${course.title}｜${course.steps.length}ステップの学習コース`;
+  const title = seriesPageTitle(`${course.title}｜${course.steps.length}ステップの学習コース`, "reading");
   const path = `/learn/courses/${course.slug}`;
-  return { title, description: course.description, alternates: { canonical: `https://www.haritaro.jp${path}` }, ...pageSocialMetadata(`${title} | ${SITE_NAME}`, course.description, path) };
+  return { title, description: course.description, alternates: { canonical: `https://www.haritaro.jp${path}` }, ...pageSocialMetadata(title, course.description, path) };
 }
 
 export default async function LearningCoursePage({ params }: Props) {

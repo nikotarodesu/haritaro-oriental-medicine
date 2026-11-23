@@ -1,16 +1,21 @@
 import { SITE_NAME } from "./brand";
+import { SERIES } from "./series";
 
 export { SITE_NAME } from "./brand";
 export const SITE_ORIGIN = "https://www.haritaro.jp";
 export const HOME_HEADING = "東洋医学を学ぶ";
 export const SITE_SECTIONS_LABEL = "ツボ図鑑・東洋医学の講義・臨床演習";
-export const SITE_TITLE = `${HOME_HEADING}｜${SITE_SECTIONS_LABEL}｜${SITE_NAME}`;
+export const SITE_TITLE = seriesPageTitle(`${HOME_HEADING}｜ツボ図鑑・講義・臨床演習`, "reading");
 export const SHARED_OG_IMAGES = [{
   url: SITE_ORIGIN + "/og-image.png?v=20261120",
   width: 1200,
   height: 630,
   alt: SITE_TITLE,
 }];
+
+export function seriesPageTitle(title: string, series: keyof typeof SERIES) {
+  return `${title}｜${SERIES[series].name}`;
+}
 
 export function acupointPageTitle(point: { name: string; kana: string; code: string }) {
   return `${point.name}（${point.kana}・${point.code}）の場所と注意点｜はり太郎のツボ図鑑`;

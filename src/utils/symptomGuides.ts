@@ -5,6 +5,7 @@ import { VERIFIED_PAPERS } from '@/data/references/papersData';
 import type { SymptomGuide } from '@/types/oriental';
 import { SYMPTOM_GUIDES_REVISED_AT, symptomGuidePath } from './symptomGuidePaths';
 import { getSymptomStudies } from '@/data/tsubo/atlas/evidence';
+import { seriesPageTitle } from '@/config/seo';
 import { PAGE_REVISIONS } from '@/config/contentUpdates';
 
 export { SYMPTOM_GUIDES_REVISED_AT, symptomGuidePath } from './symptomGuidePaths';
@@ -57,7 +58,7 @@ export function getAcupointGuideLinks(code: string, editorialLinks: readonly { h
 }
 
 export function symptomGuideTitle(guide: SymptomGuide) {
-  return `${guide.title}｜受診の目安・日常の工夫・伝統医学の学習`;
+  return seriesPageTitle(`${guide.title}｜受診の目安と日常の工夫`, "dictionary");
 }
 
 export function symptomGuideSummary(guide: SymptomGuide) {

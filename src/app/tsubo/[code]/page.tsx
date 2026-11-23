@@ -47,6 +47,7 @@ import { SERIES } from "@/config/series";
 import { getSymptomsForAcupoint, getCasesForAcupoint } from "@/utils/tsuboTopicClusterMatcher";
 import { MERIDIAN_RELATIONS } from "@/utils/tsuboRelations";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
+import ContentEndAd from "@/components/ads/ContentEndAd";
 import AcupointInformationScope from '@/components/tsubo/AcupointInformationScope';
 import MeridianRelationsDiagram from '@/components/tsubo/MeridianRelationsDiagram';
 import { VERIFIED_POINT_LOCATIONS } from '@/data/sourceVerification';
@@ -784,7 +785,7 @@ export default async function AcupointDetailPage({ params }: Props) {
             ※当サイトに掲載されている経穴の位置や解説は学術的学習および臨床思考の整理を目的としており、個別の疾患治療は医師・有資格鍼灸師の判断に従ってください。
           </p>
         </div>
-
+        <ContentEndAd key={code} />
       </div>
     </div>
   );

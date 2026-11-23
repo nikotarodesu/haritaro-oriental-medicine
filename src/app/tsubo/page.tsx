@@ -4,7 +4,7 @@ import { BookOpen, FlaskConical, MapPin, Ruler, ShieldCheck } from "lucide-react
 import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
-import { SERIES } from "@/config/series";
+import { DICTIONARY_TAGLINE, SERIES } from "@/config/series";
 import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
 import { collectionPageJsonLd } from "@/config/seo";
 import { ATLAS_STUDIES } from "@/data/tsubo/atlas/evidence";
@@ -40,6 +40,7 @@ export default function TsuboPage() {
       <header className="atlas-directory-header">
         <div>
           <h1>{SERIES.dictionary.name}</h1>
+          <p className="atlas-directory-tagline">{DICTIONARY_TAGLINE}</p>
           <p>{DESCRIPTION}</p>
         </div>
         <AtlasOverviewArt />

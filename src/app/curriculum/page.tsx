@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import PageIntro from "@/components/design/PageIntro";
-import { pageSocialMetadata } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import { getPublicLectureArticle } from "@/data/publicLectures";
 import { getLectureIndexGroups } from "@/data/publicLectures/readingUnits";
 import { resolveLegacyLectureId } from "@/utils/curriculumLegacyPaths";
 
 const origin = "https://www.haritaro.jp";
 const items = getLectureIndexGroups().flatMap(group => group.entries);
-const title = `東洋医学・経絡・鍼灸演習の全${items.length}本の目次`;
+const title = seriesPageTitle(`東洋医学・経絡・鍼灸演習の全${items.length}本の目次`, "reading");
 const description = "陰陽・気血水・経絡、症状の経過や所見の整理、架空症例の演習をテーマから選べます。";
 
 export const metadata: Metadata = {

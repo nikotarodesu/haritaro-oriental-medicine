@@ -2,9 +2,10 @@ import { Metadata } from "next";
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
 import { ArrowLeft, Mail } from "lucide-react";
-import { pageSocialMetadata } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 
-const pageTitle = "旧プレミアムプランの特定商取引法に基づく表記";
+const heading = "旧プレミアムプランの特定商取引法に基づく表記";
+const pageTitle = seriesPageTitle(heading, "reading");
 const pageDescription = "販売を終了した旧プレミアムプランの販売条件と、過去の取引に関するお問い合わせ先をご案内します。";
 
 export const metadata: Metadata = {
@@ -32,7 +33,7 @@ export default function TokushohoPage() {
           </span>
         </nav>
 
-        <PageIntro title={pageTitle} description="プレミアムプランの販売・自動更新は終了しました。現在の「はり太郎」は無料で利用できます。" art="reading" compact />
+        <PageIntro title={heading} description="プレミアムプランの販売・自動更新は終了しました。現在の「はり太郎」は無料で利用できます。" art="reading" compact />
 
         {/* 表記テーブルカード */}
         <div className="bg-[#FFFFFF]/95 dark:bg-[#17212A]/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-10 shadow-sm space-y-8 text-[#333835] dark:text-[#C5D2DB] text-sm sm:text-base leading-relaxed transition-colors">

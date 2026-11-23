@@ -21,8 +21,7 @@ import InlineTextRenderer from "@/components/InlineTextRenderer";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ArticleReadingResume from "@/components/reading/ArticleReadingResume";
 import { articleReadingRevision } from "@/utils/articleReadingPosition";
-import AdSenseSlot from "@/components/ads/AdSenseSlot";
-import { getArticleAdSenseConfig } from "@/components/ads/config";
+import ContentEndAd from "@/components/ads/ContentEndAd";
 import { NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
 import AncientNineNeedles from "@/components/learning/AncientNineNeedles";
 import { 
@@ -117,7 +116,6 @@ export default async function ArticleDetailPage({ params }: Props) {
   const learningCaseTitle = learningGuide ? PROGRESSIVE_CASES.find(item => item.id === learningGuide.caseId)?.title : undefined;
 
   const resolvedReferences = resolveArticleReferences(article.references || [], article.contentMarkdown);
-  const ad = getArticleAdSenseConfig();
 
   // 構造化データ（Article ＆ BreadcrumbList）
   const jsonLd = {
@@ -296,7 +294,7 @@ export default async function ArticleDetailPage({ params }: Props) {
 
         {/* E-E-A-T 専門家監修情報カード */}
         <AuthorSupervisorCard />
-        {ad && <AdSenseSlot key={article.id} {...ad} />}
+        <ContentEndAd key={article.id} />
 
       </div>
     </div>

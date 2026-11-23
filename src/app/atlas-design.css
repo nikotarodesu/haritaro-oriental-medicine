@@ -45,6 +45,15 @@
   color: var(--atlas-muted);
 }
 
+.atlas-directory-header .atlas-directory-tagline {
+  color: var(--atlas-accent);
+  font-family: var(--font-serif);
+  font-size: clamp(1.125rem, 2.5vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.55;
+  text-wrap: balance;
+}
+
 .atlas-overview-art { display: none; width: clamp(7.5rem, 15vw, 11rem); color: var(--atlas-accent); }
 .atlas-text-action {
   display: inline-flex;

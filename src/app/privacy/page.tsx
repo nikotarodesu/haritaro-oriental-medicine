@@ -2,9 +2,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
 import { Lock, Eye, AlertCircle, ArrowLeft, Mail, UserCheck } from "lucide-react";
-import { pageSocialMetadata } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 
-const pageTitle = "プライバシーポリシー・免責事項";
+const pageTitle = seriesPageTitle("プライバシーポリシー・免責事項", "reading");
 const pageDescription = "「はり太郎」の個人情報の取り扱い、広告配信、アクセス解析、免責事項、著作権方針をご案内します。";
 
 export const metadata: Metadata = {
