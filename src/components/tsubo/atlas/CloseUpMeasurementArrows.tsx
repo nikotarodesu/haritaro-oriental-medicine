@@ -1,6 +1,18 @@
 import type { CloseUpMeasurement } from "@/data/tsubo/atlas/closeUpMeasurements";
 
 const markerLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const diagramWidth = 340;
+const diagramHeight = 300;
+const labelMargin = 5;
+
+function labelWidth(token: string) {
+  // Allow for the 11-unit letter and space, followed by the 16-unit distance.
+  // The margin reserves room for the text's outline and font fallback.
+  return 13 + [...token].reduce((width, character) => {
+    const advance = character === "." ? 5 : /[0-9]/.test(character) ? 10 : 16;
+    return width + advance;
+  }, 0);
+}
 
 function rulerEndpoints({ origin, destination, rail }: CloseUpMeasurement) {
   if (rail?.axis === "vertical") return [[rail.lane, origin[1]], [rail.lane, destination[1]]];
@@ -30,8 +42,12 @@ function MeasurementArrow({ measurement, letter }: { measurement: CloseUpMeasure
   const isVertical = rail?.axis === "vertical";
   const textBefore = rail?.axis === "vertical" && (rail.labelSide === "before" || (rail.labelSide !== "after" && rail.lane > 9 + measure.token.length * 12));
   const textAnchor = isVertical ? (textBefore ? "end" : "start") : "middle";
-  const labelX = label?.[0] ?? (from[0] + to[0]) / 2 + (isVertical ? (textBefore ? -9 : 9) : 0);
-  const labelY = label?.[1] ?? (from[1] + to[1]) / 2 - (isVertical ? 0 : 10);
+  const preferredX = label?.[0] ?? (from[0] + to[0]) / 2 + (isVertical ? (textBefore ? -9 : 9) : 0);
+  const preferredY = label?.[1] ?? (from[1] + to[1]) / 2 - (isVertical ? 0 : 10);
+  const width = labelWidth(measure.token);
+  const widthBefore = textAnchor === "end" ? width : textAnchor === "middle" ? width / 2 : 0;
+  const labelX = Math.min(diagramWidth - labelMargin - (width - widthBefore), Math.max(labelMargin + widthBefore, preferredX));
+  const labelY = Math.min(diagramHeight - 14, Math.max(14, preferredY));
   const leaders = `M${origin.join(" ")}L${from.join(" ")}M${destination.join(" ")}L${to.join(" ")}`;
   const [targetX, targetY] = destination;
 

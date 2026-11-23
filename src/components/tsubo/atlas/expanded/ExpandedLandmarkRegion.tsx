@@ -67,7 +67,11 @@ export default function ExpandedLandmarkRegion({ marker, label, measured, labell
         </g>
 
         <g fill="#3B3229" fontSize="10.5">
-          <text x="209" y="56" fontWeight="bold" fontSize="11">{view.name}</text>
+          <text x="209" y="56" fontWeight="bold" fontSize="11">
+            {view.name.split(/(?=（)/u).map((line, index) => (
+              <tspan key={line} x="209" dy={index === 0 ? 0 : 13}>{line}</tspan>
+            ))}
+          </text>
           {picked.map(({ name }, index) => (
             <g key={name} transform={`translate(215 ${84 + index * 37})`}>
               <circle r="7.5" fill="#8C4A2C" />

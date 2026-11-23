@@ -12,6 +12,7 @@ interface PathwayNode {
   x: number;
   y: number;
   name: string;
+  labelLines?: readonly [string, string];
   code?: string;
   desc: string;
   isMaster?: boolean;
@@ -83,7 +84,12 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
             { x: 92, y: 185, name: "商曲・陰都 (KI19)", code: "KI19", desc: "腹部正中外方0.5寸。胃腸の気逆を抑える。" },
             { x: 92, y: 145, name: "幽門 (KI21)", code: "KI21", desc: "巨闕の外方0.5寸。胸中に散じる直前の境界。" },
             { x: 110, y: 90, name: "咽喉・口唇", desc: "気血が顔面・鼻腔に広がり気逆を司る。", isEnd: true },
-            { x: 88, y: 370, name: "下行枝（足底・内果）", desc: "足少陰経に沿って足部へ下行する調節枝。" }
+            {
+              x: 88, y: 370,
+              name: "下行枝（足底・内果）",
+              labelLines: ["下行枝", "（足底・内果）"],
+              desc: "足少陰経に沿って足部へ下行する調節枝。",
+            }
           ]
         };
 
@@ -96,7 +102,12 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
             { x: 74, y: 220, name: "帯脈穴 (GB26)", code: "GB26", desc: "第11肋骨先端下垂線と臍水平線の交点。" },
             { x: 85, y: 236, name: "五枢 (GB27)", code: "GB27", desc: "上前腸骨棘の内側。骨盤腔を束ねる要穴。" },
             { x: 96, y: 248, name: "維道 (GB28)", code: "GB28", desc: "五枢の前下方0.5寸。帯脈が前下方に巡る。", isEnd: true },
-            { x: 155, y: 220, name: "腰部全周環回", desc: "腰背部を水平に旋回し、すべての縦走経脈を束ねる。" }
+            {
+              x: 155, y: 220,
+              name: "腰部全周環回",
+              labelLines: ["腰部", "全周環回"],
+              desc: "腰背部を水平に旋回し、すべての縦走経脈を束ねる。",
+            }
           ]
         };
 
@@ -137,7 +148,13 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
             { x: 65, y: 315, name: "陽交 (GB35)", code: "GB35", desc: "外果上方7寸。陽維脈の郄穴。" },
             { x: 75, y: 220, name: "側腹部・脇肋", desc: "日月・期門を交会し、少陽胆経と結合。" },
             { x: 78, y: 128, name: "天髎・肩井 (GB21)", code: "GB21", desc: "肩上部の中央。体表の衛気を総括。" },
-            { x: 84, y: 55, name: "頭維・本神・陽白", code: "GB14", desc: "前額部・側頭部を巡り、頭部気機を連絡。" },
+            {
+              x: 84, y: 55,
+              name: "頭維・本神・陽白",
+              labelLines: ["頭維・", "本神・陽白"],
+              code: "GB14",
+              desc: "前額部・側頭部を巡り、頭部気機を連絡。",
+            },
             { x: 102, y: 75, name: "風池 (GB20)", code: "GB20", desc: "後頭骨下陥凹部。督脈（風府・唖門）と合流。", isEnd: true }
           ]
         };
@@ -332,6 +349,8 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
             {/* ノード（経穴ポイント）の描画 */}
             {config.nodes.map((node, idx) => {
               const isSelected = activeNode?.name === node.name;
+              const labelOnRight = node.x > 110;
+              const labelX = node.x + (labelOnRight ? 9 : -9);
               return (
                 <g
                   key={idx}
@@ -380,15 +399,20 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
 
                   {/* 経穴名ラベル */}
                   <text
-                    x={node.x > 110 ? node.x + 9 : node.x - 9}
-                    y={node.y + 3.5}
-                    textAnchor={node.x > 110 ? "start" : "end"}
+                    x={labelX}
+                    y={node.y + (node.labelLines ? -10 : 3.5)}
+                    textAnchor={labelOnRight ? "start" : "end"}
                     fontSize={node.isMaster || isSelected ? "10" : "8.5"}
                     fontWeight={node.isMaster || isSelected ? "bold" : "normal"}
                     fill={isSelected ? primaryColor : "currentColor"}
                     className="drop-shadow-xs transition-colors duration-150 select-none pointer-events-none"
                   >
-                    {node.name.split(" ")[0]}
+                    {node.labelLines ? (
+                      <>
+                        <tspan x={labelX}>{node.labelLines[0]}</tspan>
+                        <tspan x={labelX} dy="12">{node.labelLines[1]}</tspan>
+                      </>
+                    ) : node.name.split(" ")[0]}
                   </text>
                 </g>
               );
