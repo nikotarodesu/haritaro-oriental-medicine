@@ -1,9 +1,10 @@
 import { PAGE_REVISIONS, SITE_REVISED_AT, ACUPOINT_PAGE_REVISED_AT } from "@/config/contentUpdates";
-import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
+import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH, acupunctureResearchHref } from "@/config/acupunctureLearning";
 import { SITE_ORIGIN } from "@/config/seo";
 import type { MetadataRoute } from "next";
 import { ALL_ACUPOINTS } from "@/data/tsubo";
 import { ARTICLES } from "@/data/articleData";
+import { ACUPUNCTURE_RESEARCH_ARTICLES } from "@/data/acupunctureResearch";
 import { getLectureIndexGroups, READING_LECTURES_REVISED_AT } from "@/data/publicLectures/readingUnits";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { KIKEI_VESSELS } from "@/data/kikeiData";
@@ -34,6 +35,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     { url: `${baseUrl}/learn/essentials`, lastModified: new Date(PAGE_REVISIONS["/learn/essentials"]) },
     { url: `${baseUrl}${ACUPUNCTURE_GUIDE.href}`, lastModified: new Date(ACUPUNCTURE_GUIDE.revisedAt) },
+    { url: `${baseUrl}${ACUPUNCTURE_RESEARCH.href}`, lastModified: new Date(ACUPUNCTURE_RESEARCH.revisedAt) },
     {
       url: `${baseUrl}/clinical`,
       lastModified: new Date("2026-09-29"),
@@ -151,6 +153,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/glossary`, lastModified: new Date(SITE_REVISED_AT) },
     ...LEARNING_COURSES.map(course => ({ url: `${baseUrl}/learn/courses/${course.slug}`, lastModified: new Date("2026-10-03") })),
     ...staticPages,
+    ...ACUPUNCTURE_RESEARCH_ARTICLES.map(article => ({
+      url: baseUrl + acupunctureResearchHref(article.slug),
+      lastModified: new Date(ACUPUNCTURE_RESEARCH.revisedAt),
+    })),
     ...curriculumLessonPages,
     ...articlePages,
     ...casePages,

@@ -6,6 +6,7 @@ import ClinicalEvidenceKey from '@/components/clinical/ClinicalEvidenceKey';
 import PageIntro from '@/components/design/PageIntro';
 import ContentEndAd from '@/components/ads/ContentEndAd';
 import { pageSocialMetadata, seriesPageTitle } from '@/config/seo';
+import { acupunctureResearchHref } from '@/config/acupunctureLearning';
 import { ArrowLeft, ArrowRight, ClipboardList, GitCompareArrows, NotebookPen, RefreshCw } from 'lucide-react';
 
 export function generateStaticParams() { return CLINICAL_COMPLAINTS.map(item => ({ slug: item.slug })); }
@@ -34,6 +35,7 @@ export default async function Page({ params }: Props) {
     <section id="record" className="page-section space-y-3"><h2 className="page-section-heading">3. 配穴の理由を残す</h2><p className="leading-relaxed">選んだ治法と、どの所見を受けてどのツボを選んだかを書きます。ほかの候補や、まだ調べていない所見も残します。ツボの位置と注意事項は図鑑で確認できます。</p><Link className="page-secondary-action" href="/tsubo">ツボ図鑑を開く<ArrowRight aria-hidden="true" /></Link></section>
     <section id="review" className="page-section space-y-3"><h2 className="page-section-heading">4. 直後と次回で同じ項目を比べる</h2><ul className="list-disc space-y-2 pl-5">{item.review.map(review => <li key={review}>{review}</li>)}</ul><p>その場で何が変わり、帰宅後もその変化が続いたかを書きます。元に戻ったときや新しい症状が出たときは、聞き取った情報から見直します。</p><Link className="page-secondary-action" href={`/curriculum/${item.lectureId}`}>この症状に関係する四診の講義へ<ArrowRight aria-hidden="true" /></Link></section>
     <ClinicalEvidenceKey sourceKeys={item.sourceKeys} />
+    {slug === 'back' && <p><Link href={acupunctureResearchHref('low-back-pain-sciatica')} className="ui-text-link">腰痛と坐骨神経痛の3試験を読み比べる</Link></p>}
     <ContentEndAd key={slug} />
   </article>;
 }

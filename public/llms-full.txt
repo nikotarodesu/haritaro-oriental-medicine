@@ -8,6 +8,7 @@
 
 ## 確認状況
 - [受診の目安と鍼灸の安全性](https://www.haritaro.jp/safety): 救急受診を優先する症状と安全指針の出典。未専門家確認の刺入深度・角度・灸量・針路図は掲載を保留しています。
+- [鍼灸の研究を読む](https://www.haritaro.jp/learn/acupuncture/research): 腰痛・坐骨神経痛、術後の吐き気・内関、鍼灸の有害事象について、試験の対象、比較相手、評価項目と原典を確認できます。
 - [医学記述・出典の確認方針](https://www.haritaro.jp/editorial-policy): 書誌の照合、研究結果の解釈、専門家監修の進捗を区別します。全件の医学的正確性の照合と専門家監修は未完了です。
 - [研究資料・古典・症例教材](https://www.haritaro.jp/library): 書誌一致を確認した論文を掲載します。研究対象・結果・適用範囲の照合中の資料があります。古典の分類を現代医学の生理学的機序の証明として扱いません。
 - 古典では確認した電子本文からの引用を、元の未照合掲載文と分けて示しています。底本画像との照合・専門家による監修は未完了です。電子本文・論文抄録・全文の確認範囲と確認日は各項目に表示しています。
@@ -111,6 +112,11 @@
 - [1週間後の再評価演習｜頭痛が戻った日と仕事が進んだ日](https://www.haritaro.jp/curriculum/lecture-practice-10)
 - [頭痛の経過を振り返る演習｜定期的な施術を終える相談](https://www.haritaro.jp/curriculum/lecture-practice-11)
 - [総合症例演習｜肩の痛みに胸の圧迫感が加わったら](https://www.haritaro.jp/curriculum/lecture-practice-12)
+
+### 鍼灸の研究解説
+- [慢性腰痛と坐骨神経痛に対する鍼の比較試験](https://www.haritaro.jp/learn/acupuncture/research/low-back-pain-sciatica): 腰の痛みが続く人と、腰椎椎間板ヘルニアで脚まで痛む人を対象にした鍼の試験を読み比べます。参加した人、何と比べたか、どの時点で何を測ったかを順に見ます。
+- [術後の吐き気と内関（PC6）の研究](https://www.haritaro.jp/learn/acupuncture/research/postoperative-nausea): 手術後の吐き気や嘔吐を減らせるか、内関（ないかん）を使った研究を読み比べます。バンドで押す試験、薬と組み合わせた試験、妊娠初期の吐き気を調べた試験では、対象と測り方がそれぞれ異なります。
+- [鍼灸の有害事象を数字で読む](https://www.haritaro.jp/learn/acupuncture/research/adverse-events): 鍼灸の研究に出る割合は、受けた人の数と、施術の回数のどちらで割るかで意味が変わります。国内外の調査から、出血や痛みをどう数え、重い事象と施術との関連をどう調べたかを読みます。
 
 ### 症状別の学習ガイド
 - [慢性的な頭痛・首肩こり](https://www.haritaro.jp/symptoms/headache-stiff-neck): 頭痛と首・肩のこわばりが重なるときの受診の目安と、経過の残し方を紹介します。頭痛とこわばりが始まった時刻を別々に書き、吐き気や光のまぶしさが出た時刻も添えると、診察で経過を伝えやすくなります。

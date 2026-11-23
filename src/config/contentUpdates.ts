@@ -2,7 +2,8 @@ import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
 import { LEARNING_COURSES } from '@/data/learningCourses';
 import { SYMPTOMS } from '@/data/symptomData';
 import { SYMPTOM_RESEARCH_NOTES, SYMPTOM_RESEARCH_REVISED_AT } from '@/data/symptomResearchNotes';
-import { ATLAS_EVIDENCE_REVISED_AT, ATLAS_STUDIES, REVISED_ATLAS_RESEARCH_ROUTES } from '@/data/tsubo/atlas/evidence';
+import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH } from '@/config/acupunctureLearning';
+import { ATLAS_EVIDENCE_REVISED_AT, ATLAS_STUDIES, REVISED_ATLAS_RESEARCH_ROUTES, SCITE_FOLLOWUP_ATLAS_RESEARCH_ROUTES } from '@/data/tsubo/atlas/evidence';
 import { SYMPTOM_GUIDES_REVISED_AT } from '@/utils/symptomGuidePaths';
 
 export const EXPANDED_ATLAS_REVISED_AT = '2026-11-19';
@@ -262,9 +263,15 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ].map(route => [route, '2026-11-21'])),
   ...Object.fromEntries(Object.keys(SYMPTOM_RESEARCH_NOTES).map(slug => [`/symptoms/${slug}`, SYMPTOM_RESEARCH_REVISED_AT])),
   ...Object.fromEntries(kneeStudyPoints.map(code => [`/tsubo/${code}`, SYMPTOM_RESEARCH_REVISED_AT])),
-  '/updates': SYMPTOM_RESEARCH_REVISED_AT,
+  ...Object.fromEntries([
+    '/updates', '/learn', ACUPUNCTURE_GUIDE.href, '/safety', '/library', '/tsubo',
+    '/tsubo/pc6', '/tsubo/gv20', '/tsubo/cv4', '/tsubo/cv12',
+    '/symptoms/lower-back-pain-sciatica', '/clinical/symptoms/back',
+    ...SCITE_FOLLOWUP_ATLAS_RESEARCH_ROUTES,
+  ].map(route => [route, ACUPUNCTURE_RESEARCH.revisedAt])),
 };
 export const SITE_UPDATES = [
+  { date: ACUPUNCTURE_RESEARCH.revisedAt, label: '鍼灸の研究解説を公開', href: ACUPUNCTURE_RESEARCH.href, text: '腰痛と坐骨神経痛、術後の吐き気と内関、鍼灸の有害事象を調べた研究を、対象・比較相手・結果の数え方から読み比べられます。ツボ図鑑にも、使われた経穴を原著で確認した試験を追加しました。' },
   { date: SYMPTOM_RESEARCH_REVISED_AT, label: '首の痛み・耳鳴り・膝痛の研究解説を追加', href: '/symptoms', text: '比較試験に参加した人、何と比べたか、痛みや生活への支障をどう測ったかを整理しました。膝の電気鍼の試験には、掲載誌の訂正通知も添えました。' },
   { date: '2026-11-21', label: 'ツボ図鑑の表示と索引を改善', href: '/tsubo', text: '検索欄と一覧が最初に表示されるようにしました。361のツボを部位と経絡の両方から探せます。症状を文章で検索したときも、関連するページが見つかりやすくなりました。' },
   { date: '2026-11-20', label: '20症例の設問と解説を改稿', href: '/cases', text: '本人が話した症状、四診で観察したこと、それらをもとに見立てを考えた理由を分けて書きました。図鑑では、研究で使ったツボと、何と比べたかを読みやすくしました。' },

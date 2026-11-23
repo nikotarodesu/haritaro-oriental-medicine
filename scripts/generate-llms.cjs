@@ -9,6 +9,8 @@ function generateFullGuide() {
   const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
   const { SYMPTOMS } = load('src/data/symptomData');
   const { PUBLIC_SYMPTOM_CONTENT } = load('src/data/publicSymptoms');
+  const { ACUPUNCTURE_RESEARCH_ARTICLES } = load('src/data/acupunctureResearch/index');
+  const { acupunctureResearchHref } = load('src/config/acupunctureLearning');
   const { getLectureIndexGroups } = load('src/data/publicLectures/readingUnits');
   const shortGuide = fs.readFileSync(path.join(root, 'public/llms.txt'), 'utf8').replace(/\r\n/g, '\n').trimEnd();
   const lines = [shortGuide, '', '## 公開ページの追加索引', '',
@@ -17,6 +19,10 @@ function generateFullGuide() {
   for (const group of getLectureIndexGroups()) {
     lines.push('', `#### ${group.label}`);
     for (const lecture of group.entries) lines.push(`- [${lecture.title}](https://www.haritaro.jp${lecture.href})`);
+  }
+  lines.push('', '### 鍼灸の研究解説');
+  for (const article of ACUPUNCTURE_RESEARCH_ARTICLES) {
+    lines.push(`- [${article.title}](https://www.haritaro.jp${acupunctureResearchHref(article.slug)}): ${article.description}`);
   }
   lines.push('', '### 症状別の学習ガイド');
   for (const symptom of SYMPTOMS) lines.push(`- [${symptom.title}](https://www.haritaro.jp/symptoms/${symptom.id}): ${PUBLIC_SYMPTOM_CONTENT[symptom.id]?.summary ?? symptom.summary}`);

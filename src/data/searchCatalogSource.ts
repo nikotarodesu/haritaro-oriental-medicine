@@ -6,6 +6,7 @@ import { GLOSSARY_TERMS } from "@/data/glossaryData";
 import { CLASSICAL_TEXTS } from "@/data/classicalTextsData";
 import { VERIFIED_PAPERS as PAPERS_DATABASE } from "@/data/references/papersData";
 import { ARTICLES } from "@/data/articleData";
+import { ACUPUNCTURE_RESEARCH_ARTICLES } from "@/data/acupunctureResearch/index";
 import { SYMPTOMS } from "@/data/symptomData";
 import { PUBLIC_SYMPTOM_CONTENT } from "@/data/publicSymptoms";
 import { getPublicLectureArticle, getPublicLectureSeries } from "@/data/publicLectures/index";
@@ -16,7 +17,7 @@ import { LEARNING_COURSES } from "@/data/learningCourses";
 import { REFLECTION_CASES } from "@/data/learningReflectionCatalog";
 import { CLINICAL_COMPLAINTS } from "@/data/clinicalWorkflow";
 import type { SearchResultItem } from "@/types/searchCatalog";
-import { ACUPUNCTURE_GUIDE, NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
+import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH, acupunctureResearchHref, NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
 
 const guideLookupTerms = ["鍼灸", "鍼灸入門", "はじめての鍼灸", "はり", "鍼", "灸", "お灸", "はりとお灸", "はり・お灸・ツボ押しの違い", "ツボ押しとの違い"];
 const nineNeedlesLookupTerms = ["九鍼", "古代九鍼", "古代の九鍼", "九鍼十二原", "九鍼十二原篇"];
@@ -148,6 +149,17 @@ export function buildSearchCatalog(): SearchResultItem[] {
       badge: "歴史と道具", url: NINE_NEEDLES_GUIDE.href,
       exactTerms: nineNeedlesLookupTerms, tags: [...nineNeedlesLookupTerms, "霊枢", "鑱鍼", "員鍼", "鍉鍼", "鋒鍼", "鈹鍼", "員利鍼", "毫鍼", "長鍼", "大鍼"],
     });
+    list.push({
+      id: "acupuncture-research-index", type: "article", title: ACUPUNCTURE_RESEARCH.title,
+      subtitle: ACUPUNCTURE_RESEARCH.description, badge: "研究解説", url: ACUPUNCTURE_RESEARCH.href,
+      exactTerms: ["鍼灸の研究を読む", "鍼灸の研究解説"], tags: ["鍼灸", "研究", "比較試験", "原著論文"],
+    });
+    list.push(...ACUPUNCTURE_RESEARCH_ARTICLES.map((article): SearchResultItem => ({
+      id: `acupuncture-research-${article.slug}`, type: "article", title: article.title,
+      subtitle: article.description, badge: "研究解説",
+      url: acupunctureResearchHref(article.slug),
+      tags: [...article.tags],
+    })));
     list.push(...LEARNING_COURSES.map((course): SearchResultItem => ({
       id: `course-${course.slug}`, type: "lecture", title: course.title,
       subtitle: `${course.steps.length}ステップ｜${course.description}`, badge: "目的別コース",

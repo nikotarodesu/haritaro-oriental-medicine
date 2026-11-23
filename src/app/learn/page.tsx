@@ -7,7 +7,7 @@ import PageIntro from "@/components/design/PageIntro";
 import { collectionPageJsonLd, pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import { getArticlePreviews } from "@/data/articleData";
 import { readingUnits } from "@/data/publicLectures/readingUnits";
-import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
+import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH } from "@/config/acupunctureLearning";
 
 const heading = "東洋医学を図で学ぶ";
 const title = seriesPageTitle(`${heading}｜全${readingUnits.length}講義と要点まとめ`, "reading");
@@ -73,7 +73,10 @@ export default function LearnGuidePage() {
             </li>
           ))}
         </ul>
-        <Link href="/articles" className="ui-text-link">図解記事の一覧<ArrowRight aria-hidden="true" /></Link>
+        <div className="flex flex-wrap gap-x-6 gap-y-2">
+          <Link href="/articles" className="ui-text-link">図解記事の一覧<ArrowRight aria-hidden="true" /></Link>
+          <Link href={ACUPUNCTURE_RESEARCH.href} className="ui-text-link">{ACUPUNCTURE_RESEARCH.title}<ArrowRight aria-hidden="true" /></Link>
+        </div>
       </section>
 
       <section id="learn-courses-heading" aria-labelledby="reading-topics" className="space-y-4">

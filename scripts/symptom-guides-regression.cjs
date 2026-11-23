@@ -39,6 +39,7 @@ async function main() {
   const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
   const { ATLAS_STUDIES, getAcupointStudies, getStudyPointRole, getSymptomStudies } = load('src/data/tsubo/atlas/evidence');
   const { SUPPLEMENTAL_ATLAS_STUDIES } = load('src/data/tsubo/atlas/supplementalClinicalStudies');
+  const { SCITE_FOLLOWUP_ATLAS_STUDIES } = load('src/data/tsubo/atlas/sciteFollowupStudies');
   const { SYMPTOM_RESEARCH_NOTES } = load('src/data/symptomResearchNotes');
   const { ATLAS_LITERATURE_SEARCH_COUNTS } = load('src/data/tsubo/atlas/literatureSearch');
   const { AtlasStudyCard } = load('src/components/tsubo/AcupointResearch');
@@ -59,12 +60,14 @@ async function main() {
   assert.equal(indexSchema['@graph'][1].itemListElement.length, SYMPTOMS.length, 'Index schema lists every guide');
   assert(indexHtml.indexOf('id="symptom-guides"') < indexHtml.indexOf('このガイドで確認できること'), 'Usage scope follows the index');
   const pointCodes = new Set(ACUPOINTS_MASTER.map(point => point.codeLower));
-  const previousStudies = ATLAS_STUDIES.filter(study => !SUPPLEMENTAL_ATLAS_STUDIES.includes(study));
+  const atlasBeforeScite = ATLAS_STUDIES.filter(study => !SCITE_FOLLOWUP_ATLAS_STUDIES.includes(study));
+  const previousStudies = atlasBeforeScite.filter(study => !SUPPLEMENTAL_ATLAS_STUDIES.includes(study));
   const pendingBeforeSearch = [...pointCodes].filter(code => !previousStudies.some(study => getStudyPointRole(study, code)));
   assert.equal(pendingBeforeSearch.length, 262);
   assert.deepEqual(Object.keys(ATLAS_LITERATURE_SEARCH_COUNTS).sort(), pendingBeforeSearch.sort(), 'Each previously unlisted point was searched');
   assert(Object.values(ATLAS_LITERATURE_SEARCH_COUNTS).every(counts => counts.length === 2 && counts.every(count => Number.isInteger(count) && count >= 0)), 'Both databases provided search counts');
   assert(SUPPLEMENTAL_ATLAS_STUDIES.every(study => pendingBeforeSearch.some(code => getStudyPointRole(study, code))), 'Each addition covers a previously unlisted point');
+  assert(SCITE_FOLLOWUP_ATLAS_STUDIES.every(study => [...pointCodes].some(code => getStudyPointRole(study, code) && !atlasBeforeScite.some(previous => getStudyPointRole(previous, code)))), 'Each follow-up study covers a previously unlisted point');
   assert.equal(new Set(ATLAS_STUDIES.map(study => study.id)).size, ATLAS_STUDIES.length, 'Evidence index uses distinct anchors');
   for (const study of ATLAS_STUDIES) {
     assert(study.kind === 'point' ? study.points.length === 1 : study.points.length > 1 || study.otherPoints || study.additionalPointGroups?.length, `${study.id}: point and combination studies are labelled separately`);
@@ -85,6 +88,7 @@ async function main() {
   for (const { code, studyId, label } of [
     { code: 'li1', studyId: 'si1-postpartum-milk-volume', label: '比較群で使われたツボ' },
     { code: 'bl57', studyId: 'sciatica-herniated-disk', label: '条件に応じて追加されたツボ' },
+    { code: 'cv21', studyId: 'antiretroviral-gastrointestinal-relaxation', label: '比較群で使われたツボ' },
   ]) {
     const study = getAcupointStudies(code).find(candidate => candidate.id === studyId);
     const html = renderToStaticMarkup(React.createElement(AtlasStudyCard, { study, currentCode: code }));

@@ -8,6 +8,17 @@ export const ACUPUNCTURE_GUIDE = {
 
 export const ACUPUNCTURE_TRIAL_COMPARISON_HREF = `${ACUPUNCTURE_GUIDE.href}#combinations`;
 
+export const ACUPUNCTURE_RESEARCH = {
+  href: "/learn/acupuncture/research",
+  title: "鍼灸の研究を読む",
+  description: "腰痛や坐骨神経痛、術後の吐き気、鍼灸の有害事象を調べた研究を読みます。誰を調べ、何と比べ、何を数えたかを原著と照らし合わせられます。",
+  revisedAt: "2026-11-23",
+} as const;
+
+export function acupunctureResearchHref(slug: string) {
+  return `${ACUPUNCTURE_RESEARCH.href}/${slug}`;
+}
+
 const historyArticle = "science-of-oriental-medicine-history";
 const nineNeedlesAnchor = "ancient-nine-needles";
 

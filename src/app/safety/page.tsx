@@ -3,6 +3,7 @@ import { pageSocialMetadata, seriesPageTitle } from '@/config/seo';
 import Link from 'next/link';
 import PageIntro from '@/components/design/PageIntro';
 import { ShieldCheck, BookOpen } from 'lucide-react';
+import { acupunctureResearchHref } from '@/config/acupunctureLearning';
 import { MEDICAL_SAFETY_SOURCES as sources, MEDICAL_SAFETY_CHECKED_AT, PROCEDURE_PUBLICATION_NOTICE } from '@/data/medicalSafety';
 
 const title = seriesPageTitle("受診の目安と鍼灸の安全性", "dictionary");
@@ -35,6 +36,7 @@ export default function SafetyPage() {
       <p>眼・頸部・胸背部・脊柱・腹部には重要な臓器、血管、神経があります。深さや方向は局所解剖だけでなく体格・体位などによって変わり、骨があることや浅い刺激だけでは安全を保証できません。自己刺鍼や、未確認の手順を再現する行為は避けてください。</p>
       <p>胸や背中への施術のあと、強い息苦しさがあるときは、すぐに119番へ連絡してください。胸の痛みや息苦しさが出たら、すぐに医療機関を受診してください。症状の悪化を「好転反応」だと自分で決めず、医療機関に相談してください。</p>
       <p className="text-sm">出典：<a className="underline" href={sources.jsam.url}>全日本鍼灸学会ガイドライン2025年版</a>（印刷頁11–14、33、35）、<a className="underline" href={sources.nccih.url}>NCCIHの安全性情報</a>。</p>
+      <Link href={acupunctureResearchHref("adverse-events")} className="ui-text-link">鍼灸の有害事象を数字で読む</Link>
     </section>
     <section id="learning-scope" className="scroll-mt-28 space-y-3"><h2 className="text-xl font-bold">教材で確認できる範囲</h2>
       <p>{PROCEDURE_PUBLICATION_NOTICE}</p>

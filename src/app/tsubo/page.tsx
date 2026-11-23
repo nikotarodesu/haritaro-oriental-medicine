@@ -5,7 +5,7 @@ import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
 import { DICTIONARY_TAGLINE, SERIES } from "@/config/series";
-import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
+import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH } from "@/config/acupunctureLearning";
 import { collectionPageJsonLd } from "@/config/seo";
 import { ATLAS_STUDIES } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
@@ -57,6 +57,7 @@ export default function TsuboPage() {
 
       <section id="atlas-research-index" className="atlas-target space-y-3" aria-labelledby="atlas-research-index-title">
         <h2 id="atlas-research-index-title" className="atlas-section-title flex items-center gap-2"><FlaskConical size={20} aria-hidden="true" />研究から探す</h2>
+        <Link href={ACUPUNCTURE_RESEARCH.href} className="atlas-text-action">鍼灸の研究を読む</Link>
         {studyGroups.map(({ label, studies }) => (
           <details key={label} className="atlas-disclosure atlas-region-index">
             <summary>{label}（{studies.length}件）</summary>

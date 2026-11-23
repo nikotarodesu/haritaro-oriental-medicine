@@ -286,7 +286,7 @@ export const CLINICAL_STUDY_ADDITIONS: readonly AtlasStudy[] = [
     design: "下痢型の過敏性腸症候群の成人280人を、共通の五穴に状態に応じたツボ一つを加える鍼と、皮膚を刺さない偽鍼に分けた多施設の無作為化試験です。",
     limits: "下痢型と診断された人での配穴全体の比較です。便秘型・混合型への効果は分かりません。",
     sources: [
-      { label: "Qi ほか · Gastroenterology（2025）", url: "https://pubmed.ncbi.nlm.nih.gov/40441496/" },
+      { label: "Yang ほか · Gastroenterology（2025）", url: "https://pubmed.ncbi.nlm.nih.gov/40441496/" },
       { label: "試験計画書・表1（固定経穴と追加経穴）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9419347/#Tab1" },
     ],
   },

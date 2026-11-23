@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ACUPUNCTURE_TRIAL_COMPARISON_HREF } from "@/config/acupunctureLearning";
+import { ACUPUNCTURE_TRIAL_COMPARISON_HREF, acupunctureResearchHref } from "@/config/acupunctureLearning";
 import { BookOpen, FlaskConical, GitMerge } from "lucide-react";
 import { getAcupointByCode } from "@/data/tsubo";
 import { getAcupointStudies, getClassicalCombinations, getStudyPointRole } from "@/data/tsubo/atlas/evidence";
@@ -75,6 +75,11 @@ export default function AcupointResearch({ point, traditionalTitle = "伝統的�
         <div className="atlas-study-list">{studies.map(study => <AtlasStudyCard key={study.id} study={study} currentCode={point.codeLower} />)}</div>
       ) : (
         <p className="atlas-evidence-empty">人を対象とした比較試験は、このページでは紹介していません。<a href="#acupoint-traditional" className="atlas-source-link">{traditionalTitle}</a>も読めます。</p>
+      )}
+      {point.codeLower === "pc6" && (
+        <p className="atlas-evidence-empty">
+          <Link href={acupunctureResearchHref("postoperative-nausea")} className="atlas-source-link">術後の吐き気と内関の試験を読み比べる</Link>
+        </p>
       )}
       {searched && (
         <p className="atlas-evidence-empty">
