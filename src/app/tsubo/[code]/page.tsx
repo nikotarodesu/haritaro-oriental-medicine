@@ -16,6 +16,7 @@ import {
 } from "@/data/tsubo";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import AcupointAtlasArticle from "@/components/tsubo/AcupointAtlasArticle";
+import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import HeguAtlasPreview, { heguAtlasDescription, heguAtlasTitle, heguSources } from "@/components/tsubo/HeguAtlasPreview";
@@ -23,6 +24,7 @@ import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { POINT_ILLUSTRATIONS } from "@/data/tsubo/atlas/illustrations";
 import { getAcupointStudies, getClassicalCombinations } from "@/data/tsubo/atlas/evidence";
+import { getAcupointName } from "@/data/tsubo/names";
 import PointAtlasDiagrams from "@/components/tsubo/atlas/PointAtlasDiagrams";
 import type { AcupointMaster } from "@/data/tsubo/types";
 import TsuboKeyboardNav from "@/components/tsubo/TsuboKeyboardNav";
@@ -144,6 +146,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   const meridianRelations = MERIDIAN_RELATIONS[relationId] || [];
 
   const pageUrl = `https://www.haritaro.jp/tsubo/${point.codeLower}`;
+  const nameGuide = getAcupointName(point.codeLower);
   const isHeguAtlas = point.codeLower === "li4";
   const atlasArticle = ATLAS_ARTICLES[point.codeLower];
   const atlasMarker = ATLAS_POINT_MARKERS[point.codeLower];
@@ -157,7 +160,16 @@ export default async function AcupointDetailPage({ params }: Props) {
     ...getAcupointStudies(point.codeLower).flatMap(study => study.sources),
     ...getClassicalCombinations(point.codeLower).map(combination => combination.source),
   ];
-  const sources = [...new Map([...locationSources, ...researchSources.map(({ label, url }) => ({ name: label, url }))].map(source => [source.url, source])).values()];
+  const nameSources = nameGuide ? [
+    { name: "中国国家標準 GB/T 12346-2021 経穴名称と部位", url: nameGuide.standardUrl },
+    { name: "WHO Standard Acupuncture Nomenclature", url: nameGuide.nomenclatureUrl },
+    ...(nameGuide.history ? [{ name: nameGuide.history.source, url: nameGuide.history.url }] : []),
+  ] : [];
+  const sources = [...new Map([
+    ...locationSources,
+    ...researchSources.map(({ label, url }) => ({ name: label, url })),
+    ...nameSources,
+  ].map(source => [source.url, source])).values()];
 
   // 表示内容に対応するページ・用語・パンくずの構造化データ。
   const jsonLd = {
@@ -189,7 +201,12 @@ export default async function AcupointDetailPage({ params }: Props) {
           "@type": "DefinedTerm",
           "@id": `${pageUrl}#term`,
           "name": point.name,
-          "alternateName": [point.kana, point.romaji, ...(point.aliases || [])],
+          "alternateName": [...new Set([
+            point.kana, point.romaji,
+            ...(nameGuide ? [nameGuide.chinese, nameGuide.pinyin] : []),
+            ...(point.aliases || []),
+          ])].filter(name => name !== point.name),
+          ...(nameGuide && { "description": nameGuide.reading }),
           "termCode": point.code,
           "url": pageUrl,
           "inDefinedTermSet": {
@@ -399,6 +416,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           {(illustration || !!point.crossSection?.svgElements?.length) && (
             <a href="#acupoint-diagram"><Layers aria-hidden="true" className="h-4 w-4" />図</a>
           )}
+          <a href="#acupoint-name"><BookOpen aria-hidden="true" className="h-4 w-4" />名前の由来</a>
           <a href={hasSafetyWarning ? "#acupoint-safety-warning" : "#acupoint-cautions"}><ShieldCheck aria-hidden="true" className="h-4 w-4" />注意事項</a>
           <a href="#acupoint-research"><BookOpen aria-hidden="true" className="h-4 w-4" />研究と古典の配穴</a>
           <a href="#acupoint-sources"><FileText aria-hidden="true" className="h-4 w-4" />出典</a>
@@ -527,6 +545,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
         </section>
 
+        <AcupointNameGuide code={point.codeLower} />
         <AcupointInformationScope code={point.code} locationSource={point.locationSource} individualModel={individualModel} individuallyEdited={isDetailed} />
         {/* 3. 断面解剖モデル */}
         {point.crossSection && point.crossSection.svgElements && point.crossSection.svgElements.length > 0 && (

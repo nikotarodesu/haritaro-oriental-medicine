@@ -7,10 +7,38 @@ const points = load('src/data/tsubo/index');
 const friendly = load('src/data/tsubo/friendlyLocations');
 const { ATLAS_ARTICLES } = load('src/data/tsubo/atlas/articles');
 const { formatPublicAtlasLocation } = load('src/data/tsubo/atlas/expanded/profiles');
+const { getAcupointName } = load('src/data/tsubo/names/index');
+const { STANDARD_NAMES } = load('src/data/tsubo/names/standardNames');
+const { NAME_READINGS } = load('src/data/tsubo/names/nameReadings');
+const { CHARACTER_MEANINGS } = load('src/data/tsubo/names/characterMeanings');
 const dimensions = text => Array.from(text.matchAll(/\d+(?:\.\d+)?寸/g), match => match[0]);
 
 assert.equal(points.ALL_ACUPOINTS.length, 361);
 assert.equal(new Set(points.ALL_ACUPOINTS.map(point => point.code)).size, 361);
+const allCodes = Array.from(points.ALL_ACUPOINTS, point => point.codeLower).sort();
+assert.deepEqual(Object.keys(STANDARD_NAMES).sort(), allCodes);
+assert.deepEqual(Object.keys(NAME_READINGS).sort(), allCodes);
+assert.equal(new Set(Object.values(NAME_READINGS)).size, allCodes.length, 'Each point has its own name explanation');
+assert.deepEqual(
+  Object.keys(CHARACTER_MEANINGS).sort(),
+  [...new Set(Object.values(STANDARD_NAMES).flatMap(([chinese]) => [...chinese]))].sort(),
+);
+for (const code of allCodes) {
+  const name = getAcupointName(code);
+  assert.match(name.chinese, /^\p{Script=Han}{2,4}$/u, code);
+  assert.match(name.pinyin.normalize('NFD'), /[\u0300-\u0304\u030C]/u, code + ' has a tone mark');
+  assert(name.characters.every(({ meaning }) => meaning?.length > 0), code + ' has a gloss for each character');
+  assert.match(name.standardUrl, /202306192125376309\.pdf#page=\d+$/, code);
+  assert.match(name.nomenclatureUrl, /s7143e\.pdf#page=\d+$/, code);
+}
+assert.equal(getAcupointName('li4').pinyin, 'Hégǔ');
+assert.match(getAcupointName('li4').history.text, /虎口/);
+assert.match(getAcupointName('st36').reading, /里.*寸/);
+assert.equal(getAcupointName('lr3').chinese, '太冲');
+assert.equal(getAcupointName('pc6').pinyin, 'Nèiguān');
+assert.deepEqual(Array.from(getAcupointName('te22').characters, ({ character }) => character), ['耳', '和', '髎']);
+assert.equal(getAcupointName('gv20').pinyin, 'Bǎihuì');
+assert.equal(getAcupointName('cv17').pinyin, 'Dànzhōng');
 for (const point of points.ALL_ACUPOINTS) {
   const generated = friendly.simplifyLocationText(point.locationDetail);
   assert.deepEqual(dimensions(generated), dimensions(point.locationDetail), `${point.code}: preserve every original cun value, including decimals`);
@@ -34,7 +62,7 @@ assert.match(friendly.getAtlasLocationSimple('sp6'), /内くるぶしから上�
 assert.match(friendly.getAtlasLocationSimple('lr3'), /足首側で近づくところより少し指先側/);
 assert.doesNotMatch(friendly.getAtlasLocationSimple('lr3'), /脈|拍動/);
 assert.match(ATLAS_ARTICLES.pc6.location.join(' '), /12等分.*手首からひじへ二つ分/);
-assert.match(ATLAS_ARTICLES.st36.location.join(' '), /16等分.*膝のくぼみから足首側へ三つ分/);
+assert.match(ATLAS_ARTICLES.st36.location.join(' '), /16等分.*ひざのくぼみから足首側へ3寸/);
 assert.match(ATLAS_ARTICLES.sp6.location.join(' '), /13等分.*内くるぶしから上へ3つ分/);
 for (const code of ['pc6', 'st36', 'st37', 'sp6']) {
   const article = ATLAS_ARTICLES[code];
@@ -99,4 +127,4 @@ const kikei = load('src/data/kikeiData');
 assert.equal(kikei.KIKEI_VESSELS.length, 8);
 assert.equal(kikei.HACHIMYAKU_PAIRS.length, 4);
 assert(!/即効性があります|絶大な効果|自律神経をリセット|素晴らしい効果|第一選択です/.test(JSON.stringify(kikei)));
-console.log('Acupoint language: 361 unique points, preserved generated cun values, concrete WHO positions, scoped PC6/ST25 evidence, unchanged publication and procedure filters.');
+console.log('Acupoint language: 361 sourced explanations, complete Chinese character glosses, preserved cun values, WHO positions, and scoped evidence and procedure filters.');

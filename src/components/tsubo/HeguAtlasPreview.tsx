@@ -3,6 +3,7 @@ import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ContentEndAd from "@/components/ads/ContentEndAd";
 import { AcupointReadingLinks, AcupointSectionLinks } from "@/components/tsubo/AcupointArticleLinks";
 import AcupointArticleHeader, { AcupointPointDetails } from "@/components/tsubo/AcupointArticleHeader";
+import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import AcupointAtlasDiagrams from "@/components/tsubo/AcupointAtlasDiagrams";
@@ -44,6 +45,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         </AcupointAtlasDiagrams>
       </section>
 
+      <AcupointNameGuide code={point.codeLower} />
       <AcupointResearch point={point} />
 
       <section id="acupoint-traditional" className="atlas-target">

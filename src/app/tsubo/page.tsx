@@ -20,7 +20,7 @@ const studyGroups = [
   { label: "複数のツボを用いた研究", studies: ATLAS_STUDIES.filter(study => study.kind === "combination") },
 ];
 
-const DESCRIPTION = "361のツボを、名前・部位・経絡から探せます。ツボごとの図で場所や目印を確かめ、注意点を読めます。";
+const DESCRIPTION = "361のツボを名前・部位・経絡から探せます。図で場所を確かめ、名前の由来や中国語での漢字の意味も読めます。";
 
 export default function TsuboPage() {
   const guideLinks = (

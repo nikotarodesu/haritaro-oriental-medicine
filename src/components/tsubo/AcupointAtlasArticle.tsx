@@ -3,6 +3,7 @@ import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ContentEndAd from "@/components/ads/ContentEndAd";
 import { AcupointReadingLinks, AcupointSectionLinks } from "./AcupointArticleLinks";
 import AcupointArticleHeader, { AcupointPointDetails } from "./AcupointArticleHeader";
+import AcupointNameGuide from "./AcupointNameGuide";
 import AcupointResearch from "./AcupointResearch";
 import WhoPointLocation from "./WhoPointLocation";
 import CrossSectionViewer from "./CrossSectionViewer";
@@ -46,6 +47,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         </PointAtlasDiagrams>
       </section>
 
+      <AcupointNameGuide code={point.codeLower} />
       <AcupointResearch point={point} traditionalTitle={traditionalTitle} />
 
       <section id="acupoint-traditional" className="atlas-target">

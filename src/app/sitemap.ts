@@ -78,7 +78,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/tsubo/basics/bone-cun`,
-      lastModified: new Date(ACUPOINT_PAGE_REVISED_AT),
+      lastModified: new Date(PAGE_REVISIONS["/tsubo/basics/bone-cun"]),
     },
     {
       url: `${baseUrl}/articles`,

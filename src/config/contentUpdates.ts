@@ -3,14 +3,15 @@ import { LEARNING_COURSES } from '@/data/learningCourses';
 import { SYMPTOMS } from '@/data/symptomData';
 import { SYMPTOM_RESEARCH_NOTES, SYMPTOM_RESEARCH_REVISED_AT } from '@/data/symptomResearchNotes';
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH } from '@/config/acupunctureLearning';
-import { ATLAS_EVIDENCE_REVISED_AT, ATLAS_STUDIES, REVISED_ATLAS_RESEARCH_ROUTES, SCITE_FOLLOWUP_ATLAS_RESEARCH_ROUTES } from '@/data/tsubo/atlas/evidence';
+import { ATLAS_EVIDENCE_REVISED_AT, ATLAS_STUDIES, SCITE_FOLLOWUP_ATLAS_RESEARCH_ROUTES } from '@/data/tsubo/atlas/evidence';
 import { SYMPTOM_GUIDES_REVISED_AT } from '@/utils/symptomGuidePaths';
 
 export const EXPANDED_ATLAS_REVISED_AT = '2026-11-19';
 
 /** Significant content revisions only; never replace these with the build date. */
 export const SITE_REVISED_AT = '2026-10-02';
-export const ACUPOINT_PAGE_REVISED_AT = '2026-11-20';
+export const ACUPOINT_PAGE_REVISED_AT = '2026-11-23';
+const ACUPOINT_MEASUREMENT_REVISED_AT = '2026-11-20';
 // Includes question-only changes, but not unchanged lessons in the same chapter.
 export const CURRICULUM_EDITORIAL_REVISIONS = [
   'lecture-qiblood-1', 'lecture-qiblood-2', 'lecture-qiblood-3', 'lecture-qiblood-5',
@@ -246,8 +247,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   // Public teaching diagrams were added or revised throughout the lecture catalog.
   ...Object.fromEntries(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [`/curriculum/${id}`, '2026-11-20']))),
   '/tsubo': '2026-11-21',
-  '/tsubo/basics/bone-cun': ACUPOINT_PAGE_REVISED_AT,
-  ...Object.fromEntries(REVISED_ATLAS_RESEARCH_ROUTES.map(route => [route, ATLAS_EVIDENCE_REVISED_AT])),
+  '/tsubo/basics/bone-cun': ACUPOINT_MEASUREMENT_REVISED_AT,
   '/symptoms': SYMPTOM_GUIDES_REVISED_AT,
   ...Object.fromEntries([
     '/about', '/articles', '/contact', '/editorial-policy', '/glossary', '/kikei', '/library',
@@ -279,6 +279,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ].map(route => [route, ACUPUNCTURE_RESEARCH.revisedAt])),
 };
 export const SITE_UPDATES = [
+  { date: ACUPOINT_PAGE_REVISED_AT, label: '361のツボに名前の由来を追加', href: '/tsubo/li4#acupoint-name', text: 'ツボの場所の図に続いて、名前の由来、中国語での漢字の意味、声調付きのピンインを読めるようにしました。合谷の「谷」のように、ツボの場所と名前がどうつながるかを紹介します。' },
   { date: ACUPUNCTURE_RESEARCH.revisedAt, label: '鍼灸の安全性・口の乾燥・尿もれの研究を追加', href: ACUPUNCTURE_RESEARCH.href, text: '抗凝固薬を使う人の出血、放射線治療に伴う口の乾燥、尿もれの測り方を扱った研究を紹介します。膝の研究に英国とシンガポールの診療指針を加え、胸やけのガイドラインの出典も見直しました。' },
   { date: ACUPUNCTURE_RESEARCH.revisedAt, label: 'お灸・乳がん治療中の関節痛の研究解説を追加', href: ACUPUNCTURE_RESEARCH.href, text: '膝へのお灸で痛みとやけどを調べた試験や、乳がん治療中の関節痛を52週追った試験を紹介します。舌・脈・腹の観察や漢方の解説にも、原著で確認した研究を加えました。' },
   { date: ACUPUNCTURE_RESEARCH.revisedAt, label: '弁証・膝痛・片頭痛の研究教材を追加', href: ACUPUNCTURE_RESEARCH.href, text: '同じ腰痛の所見を二人の見立てで比べる演習を追加しました。膝痛・片頭痛の試験と症例演習をつなぎ、症状ガイド、ツボ図鑑、鍼灸の安全性、文献ライブラリも更新しました。' },
@@ -288,7 +289,7 @@ export const SITE_UPDATES = [
   { date: '2026-11-20', label: '20症例の設問と解説を改稿', href: '/cases', text: '本人が話した症状、四診で観察したこと、それらをもとに見立てを考えた理由を分けて書きました。図鑑では、研究で使ったツボと、何と比べたかを読みやすくしました。' },
   { date: '2026-11-20', label: '図鑑・記事・演習の文章を改稿', href: '/articles', text: '近くのツボと図のどこを比べるか、症状が出た時刻や困った動作をどう書くか、模擬症例のどの所見を根拠に考えるかを説明し直しました。' },
   { date: '2026-11-20', label: 'ツボを探す・講義を読む・演習を始める入口を整理', href: '/', text: 'トップから3つの学び方を選べます。ツボ図鑑は検索を上部に置き、講義と模擬症例には一覧やシリーズへ戻るリンクを追加しました。' },
-  { date: ACUPOINT_PAGE_REVISED_AT, label: '361のツボの位置をWHO資料で確認', href: '/tsubo/basics/bone-cun', text: 'ツボの位置欄に日本語要約とWHO原本の該当ページを掲載しました。寸・指寸・指幅の測り方は、位置欄から直接開けます。' },
+  { date: ACUPOINT_MEASUREMENT_REVISED_AT, label: '361のツボの位置をWHO資料で確認', href: '/tsubo/basics/bone-cun', text: 'ツボの位置欄に日本語要約とWHO原本の該当ページを掲載しました。寸・指寸・指幅の測り方は、位置欄から直接開けます。' },
   { date: ATLAS_EVIDENCE_REVISED_AT, label: '研究を載せていなかった262穴の文献を調査', href: '/tsubo#atlas-research-index', text: 'PubMedとPubMed Centralでツボの名前を一つずつ調べ、人を対象とした比較試験で使われたツボと結果を確認できたものを追加しました。図鑑で原典と試験の限界を読めます。' },
   { date: ATLAS_EVIDENCE_REVISED_AT, label: 'ツボ図鑑に出典付きの臨床研究を追加', href: '/tsubo#atlas-research-index', text: 'ツボ一つを調べた試験や、複数のツボを使った試験を追加しました。試験でのツボの役割、比較した相手、結果と限界を論文とともに読めます。' },
   { date: '2026-11-19', label: 'ツボ図鑑の図解と症状ガイドを読みやすく', href: '/tsubo', text: '症状別ガイドの上部から関連するツボを開けるようにしました。361のツボのページで、そのツボに関係する論文や古典を読めるようにしました。' },

@@ -39,7 +39,6 @@ export function AcupointPointDetails({ point, meridianReading }: {
       <summary>基本情報・別名</summary>
       <dl>
         <div><dt>所属経絡の読み</dt><dd>{meridianReading}</dd></div>
-        <div><dt>中国語のローマ字表記</dt><dd>{point.romaji}</dd></div>
         {point.aliases?.length ? <div><dt>別名・表記</dt><dd>{point.aliases.join("、")}</dd></div> : null}
       </dl>
     </details>

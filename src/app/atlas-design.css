@@ -252,6 +252,63 @@
 .atlas-point-details dl { display: grid; gap: .5rem 1rem; padding: .25rem 0; font-size: .875rem; }
 .atlas-point-details dt { color: var(--atlas-muted); }
 .atlas-point-details dd { font-weight: 600; }
+
+.atlas-name-guide {
+  color: var(--text-sumi);
+  line-height: 1.8;
+}
+.atlas-name-panel {
+  display: grid;
+  gap: 1rem;
+  padding: clamp(.875rem, 3vw, 1.5rem);
+  border: 1px solid var(--border-washi);
+  border-radius: .875rem;
+  background: var(--bg-card);
+}
+.atlas-name-identity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .625rem clamp(1rem, 3.5vw, 2rem);
+}
+.atlas-name-identity dt { color: var(--text-secondary); font-size: .8125rem; }
+.atlas-name-identity dd { line-height: 1.35; font-weight: 600; }
+.atlas-name-identity dd[lang="zh-Hans"] { font-size: 1.625rem; }
+.atlas-name-identity dd[lang="zh-Latn-pinyin"] { font-size: 1.25rem; }
+.atlas-name-guide [lang="zh-Hans"] {
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", var(--font-sans);
+}
+.atlas-name-panel p { max-width: 42em; }
+.atlas-name-characters-title { margin-bottom: .375rem; font-size: .9375rem; font-weight: 700; }
+.atlas-name-characters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  column-gap: 1.25rem;
+}
+.atlas-name-characters > div {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: .5rem;
+  padding-block: .375rem;
+  border-top: 1px solid var(--border-subtle);
+}
+.atlas-name-characters dt { color: var(--accent-readable); font-size: 1.125rem; font-weight: 700; }
+.atlas-name-characters dd { font-size: .9375rem; }
+.atlas-name-history { padding-inline-start: .875rem; border-inline-start: 2px solid var(--border-washi); }
+.atlas-name-history a, .atlas-name-sources a {
+  color: var(--accent-readable);
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+.atlas-name-sources {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1rem;
+  font-size: .8125rem;
+}
+.atlas-name-sources a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+
 .atlas-reading-details, .atlas-guide-scope { padding-inline: .875rem; border-block: 1px solid var(--atlas-line); }
 .atlas-reading-details > summary { font-size: 1rem; }
 .atlas-reading-details[open], .atlas-guide-scope[open] { padding-bottom: .8rem; }
