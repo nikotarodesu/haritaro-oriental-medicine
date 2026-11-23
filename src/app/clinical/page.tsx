@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { GraduationCap, Heart } from 'lucide-react';
+import { ClipboardList, GraduationCap, Heart } from 'lucide-react';
 import { PAGE_REVISIONS } from '@/config/contentUpdates';
 import { ALL_NAV_ITEMS } from '@/config/navigationItems';
 import { KNEE_RESEARCH_HREF, PATTERN_AGREEMENT_HREF } from '@/config/acupunctureLearning';
 import { pageSocialMetadata, SITE_ORIGIN } from '@/config/seo';
-import { ClinicalCheckArtwork, ClinicalHeroArtwork } from '@/components/clinical/ClinicalArtwork';
+import { ClinicalCheckArtwork } from '@/components/clinical/ClinicalArtwork';
 import ClinicalDashboard from '@/components/clinical/ClinicalDashboard';
 import styles from '@/components/clinical/ClinicalPractice.module.css';
 import LearningCredits from '@/components/common/LearningCredits';
@@ -44,6 +44,12 @@ const exercises = [
   { ...ALL_NAV_ITEMS.haiketsu, label: '配穴演習', description: 'ツボを組み合わせ、選んだ理由を書く' },
 ];
 
+const casePreview = [
+  { label: '主訴', text: 'こめかみがズキズキし、目が赤くなる' },
+  { label: '経過', text: '1か月ほど前から繰り返す。仕事が立て込むと強まる' },
+  { label: '四診の所見', text: '目の充血。脈は張りがあり速い' },
+] as const;
+
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
@@ -72,7 +78,14 @@ export default function ClinicalLandingPage() {
           <h1 id="clinical-series-heading">はり太郎の臨床演習</h1>
           <p>架空の症例を読み、所見から見立てやツボの組み合わせを考えます。五労と気血水の体質チェックも使えます。</p>
         </div>
-        <ClinicalHeroArtwork className={styles.heroArtwork} />
+        <figure className={styles.casePreview}>
+          <figcaption><ClipboardList aria-hidden="true" />模擬症例の見本</figcaption>
+          <dl>
+            {casePreview.map(({ label, text }) => (
+              <div key={label}><dt>{label}</dt><dd>{text}</dd></div>
+            ))}
+          </dl>
+        </figure>
       </header>
 
       <section id="tools" tabIndex={-1} className={styles.section} aria-labelledby="clinical-practice-heading">

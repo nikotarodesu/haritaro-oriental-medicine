@@ -95,11 +95,20 @@ async function main() {
     { code: 'cv21', studyId: 'antiretroviral-gastrointestinal-relaxation', label: '比較群で使われたツボ' },
     { code: 'bl53', studyId: 'lumbar-spinal-stenosis-pharmacopuncture-acupotomy', label: '薬鍼で選択できた候補' },
     { code: 'bl2', studyId: 'childhood-myopia-plum-blossom-point-sets', label: '両群で共通して使った経穴' },
+    { code: 'bl45', studyId: 'vascular-cognitive-impairment-acupuncture', label: '複数のツボを使った研究' },
   ]) {
     const study = getAcupointStudies(code).find(candidate => candidate.id === studyId);
     const html = renderToStaticMarkup(React.createElement(AtlasStudyCard, { study, currentCode: code }));
     assert(html.indexOf(label) >= 0 && html.indexOf(label) < html.indexOf(study.result), `${code}: research role appears before the outcome`);
-    assert(study.sources.every(source => html.includes(source.url)), `${code}: direct sources are visible in the disclosure`);
+    const disclosure = html.indexOf('<details');
+    assert(disclosure > 0 && study.sources.every(source => {
+      const link = html.indexOf(source.url);
+      return link > html.indexOf(study.limits) && link < disclosure;
+    }), `${code}: direct sources follow the limits and stay visible when the disclosure is closed`);
+    if (code === 'bl45') {
+      assert.match(html.slice(disclosure), /使用した経穴（16穴）/);
+      assert(!html.slice(0, disclosure).includes('atlas-research-points'), 'All 16 acupoints are inside the details');
+    }
   }
 
   for (const guide of SYMPTOMS) {

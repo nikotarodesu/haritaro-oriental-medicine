@@ -6,13 +6,124 @@
   html[data-navigation-layout="compact"] .clinical-workspace-actions { bottom: var(--mobile-nav-height, 68px); }
   html[data-navigation-layout="wide"] .site-shell { padding-bottom: 0; }
 }
-.tsubo-compare-scroll-hint { color: var(--text-secondary); font-size: .875rem; line-height: 1.8; }
-.tsubo-compare-scroll { max-height: min(72dvh, 48rem); overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.tsubo-compare-page .page-intro { margin-bottom: 8px; }
+.tsubo-compare-workspace { display: grid; gap: 18px; }
+.tsubo-compare-picker, .tsubo-compare-presets, .tsubo-compare-empty {
+  border: 1px solid var(--border-washi);
+  border-radius: 16px;
+  background: var(--bg-card);
+}
+.tsubo-compare-picker { display: grid; gap: 12px; padding: clamp(12px, 2vw, 22px); }
+.tsubo-compare-picker-heading, .tsubo-compare-result-heading, .tsubo-compare-replacement {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+.tsubo-compare-picker-heading h2 { font-weight: 700; font-size: 1rem; }
+.tsubo-compare-picker-heading p { color: var(--text-secondary); font-variant-numeric: tabular-nums; font-size: .875rem; }
+.tsubo-compare-replacement { padding-inline: 12px; border-radius: 8px; background: var(--accent-soft); font-size: .875rem; }
+.tsubo-compare-replacement button { flex-shrink: 0; text-decoration: underline; color: var(--accent-readable); }
+.tsubo-compare-search { position: relative; }
+.tsubo-compare-search > svg { position: absolute; inset: 50% auto auto 14px; transform: translateY(-50%); color: var(--text-secondary); pointer-events: none; }
+.tsubo-compare-search input {
+  width: 100%;
+  padding: 10px 14px 10px 42px;
+  border: 1px solid var(--border-control);
+  border-radius: 10px;
+  font-size: 1rem;
+  line-height: 1.5;
+  background: var(--bg-washi);
+  scroll-margin-top: calc(var(--site-header-height) + 16px);
+}
+.tsubo-compare-search input:focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 2px; }
+.tsubo-compare-search input::placeholder { color: var(--text-secondary); opacity: 1; }
+.tsubo-compare-selection { display: flex; flex-wrap: wrap; gap: 8px; }
+.tsubo-compare-selection > li {
+  display: flex;
+  align-items: stretch;
+  max-width: 100%;
+  border: 1px solid var(--border-washi);
+  border-radius: 10px;
+  background: var(--accent-soft);
+}
+.tsubo-compare-selection > li[data-editing] { border-color: var(--accent-readable); }
+.tsubo-compare-selection button, .tsubo-compare-print { display: inline-flex; align-items: center; gap: 6px; }
+.tsubo-compare-selection button:first-child { padding-inline: 9px; border-radius: 9px 0 0 9px; }
+.tsubo-compare-selection button:last-child { justify-content: center; border-left: 1px solid var(--border-washi); border-radius: 0 9px 9px 0; }
+.tsubo-compare-selection button span { color: var(--text-secondary); font-size: .8125rem; white-space: nowrap; }
+.tsubo-compare-selection button svg { color: var(--accent-readable); flex-shrink: 0; }
+.tsubo-compare-selection button:hover, .tsubo-compare-print:hover { background: var(--bg-card); }
+.tsubo-compare-empty { padding: 24px; color: var(--text-secondary); text-align: center; }
+.tsubo-compare-presets summary { min-height: 44px; padding: 10px 16px; cursor: pointer; color: var(--accent-readable); font-weight: 700; }
+.tsubo-compare-preset-grid, .tsubo-compare-suggestions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 8px; }
+.tsubo-compare-preset-grid { padding: 2px 12px 12px; }
+.tsubo-compare-preset-grid button, .tsubo-compare-suggestions button {
+  min-width: 0;
+  border: 1px solid var(--border-washi);
+  border-radius: 10px;
+  background: var(--bg-card);
+  padding: 8px 10px;
+  text-align: left;
+  line-height: 1.6;
+}
+.tsubo-compare-suggestions button { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.tsubo-compare-suggestions button:disabled { color: var(--text-secondary); cursor: default; }
+.tsubo-compare-preset-grid button:hover, .tsubo-compare-suggestions button:not(:disabled):hover { border-color: var(--accent-readable); background: var(--accent-soft); }
+.tsubo-compare-preset-grid button span, .tsubo-compare-secondary { display: block; color: var(--text-secondary); font-size: .875em; }
+.tsubo-compare-result-heading { flex-wrap: wrap; margin-bottom: 8px; }
+.tsubo-compare-result-heading h2 { font-family: var(--font-serif); font-size: clamp(1.125rem, 2.5vw, 1.45rem); font-weight: 700; }
+.tsubo-compare-print { padding-inline: 10px; border: 1px solid var(--border-washi); border-radius: 8px; font-size: .875rem; color: var(--accent-readable); }
+.tsubo-compare-scroll-hint { margin-bottom: 10px; color: var(--text-secondary); font-size: .875rem; line-height: 1.8; }
+.tsubo-compare-scroll { max-height: min(72dvh, 48rem); overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; border: 1px solid var(--border-washi); border-radius: 16px; background: var(--bg-card); }
 .tsubo-compare-scroll:focus-visible { outline: 2px solid var(--accent-readable); outline-offset: -3px; }
-.tsubo-compare-table { border-collapse: separate; border-spacing: 0; }
-.tsubo-compare-table thead th { position: sticky; top: 0; z-index: 3; background: var(--bg-card); border-bottom: 1px solid var(--border-washi); }
+.tsubo-compare-table { width: 100%; border-collapse: separate; border-spacing: 0; text-align: left; font-size: .9375rem; line-height: 1.75; }
+.tsubo-compare-table :is(th, td) { padding: 12px 16px; vertical-align: top; }
+.tsubo-compare-table thead th { position: sticky; top: 0; z-index: 3; min-width: 14rem; background: var(--bg-card); border-bottom: 1px solid var(--border-washi); }
 .tsubo-compare-table tr > :first-child { position: sticky; left: 0; z-index: 2; min-width: 8rem; background: var(--bg-card); border-right: 1px solid var(--border-washi); }
 .tsubo-compare-table thead tr > :first-child { z-index: 4; }
+.tsubo-compare-table tbody tr + tr > * { border-top: 1px solid var(--border-washi); }
+.tsubo-compare-table td + td, .tsubo-compare-table thead th:nth-child(n + 3) { border-left: 1px solid var(--border-washi); }
+.tsubo-compare-column-point { display: block; font-family: var(--font-serif); font-size: 1.25rem; }
+.tsubo-compare-row-point { display: none; }
+.tsubo-compare-caution { display: flex; align-items: flex-start; gap: 7px; }
+.tsubo-compare-caution > svg { flex-shrink: 0; margin-top: .3em; color: var(--accent-readable); }
+.tsubo-compare-detail-link { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: .2em; color: var(--accent-readable); font-size: .875rem; font-weight: 600; }
+.tsubo-compare-column-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--accent-readable); font-size: .875rem; text-decoration: underline; text-underline-offset: .2em; }
+.tsubo-compare-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.tsubo-compare-tags > li { padding: 1px 7px; border-radius: 5px; background: var(--accent-soft); color: var(--accent-readable); font-size: .8125rem; }
+@media screen and (max-width: 899px) {
+  .tsubo-compare-scroll { max-height: none; overflow: visible; overscroll-behavior: auto; scrollbar-gutter: auto; border: 0; border-radius: 0; background: transparent; }
+  .tsubo-compare-table { display: block; }
+  .tsubo-compare-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .tsubo-compare-column-link { display: none; }
+  .tsubo-compare-table tbody { display: grid; gap: 12px; }
+  .tsubo-compare-table tbody tr { display: grid; grid-template-columns: minmax(0, 1fr); border: 1px solid var(--border-washi); border-radius: 14px; background: var(--bg-card); }
+  .tsubo-compare-table[data-points="2"] tbody tr { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tsubo-compare-table tbody tr > :first-child {
+    position: static;
+    z-index: auto;
+    grid-column: 1 / -1;
+    min-width: 0;
+    border: 0;
+    border-radius: 13px 13px 0 0;
+    background: var(--accent-soft);
+    color: var(--accent-readable);
+  }
+  .tsubo-compare-table :is(td, th) { padding: 10px 11px; min-width: 0; overflow-wrap: anywhere; }
+  .tsubo-compare-table tbody tr + tr > *, .tsubo-compare-table td + td { border: 0; }
+  .tsubo-compare-table[data-points="2"] td + td { border-left: 1px solid var(--border-washi); }
+  .tsubo-compare-table[data-points="3"] td + td { border-top: 1px solid var(--border-washi); }
+  .tsubo-compare-row-point { display: block; margin-bottom: 4px; font-family: var(--font-serif); font-weight: 700; color: var(--accent-readable); }
+}
+@media screen and (max-width: 539px) {
+  .tsubo-compare-suggestions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tsubo-compare-table[data-points="3"] td { display: grid; grid-template-columns: minmax(3.75rem, 25%) minmax(0, 1fr); gap: 12px; }
+}
+@media screen and (min-width: 540px) and (max-width: 899px) {
+  .tsubo-compare-table[data-points="3"] tbody tr { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tsubo-compare-table[data-points="3"] td + td { border-top: 0; border-left: 1px solid var(--border-washi); }
+}
 .tsubo-compare-page :is(button, input), .anatomy-viewer :is(button, a) { min-height: 44px; }
 .tsubo-compare-page button:has(> svg:only-child), .anatomy-viewer button:has(> svg:only-child) { min-width: 44px; display: inline-flex; align-items: center; justify-content: center; }
 .anatomy-viewer :is(button, a):focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 3px; }
@@ -22,6 +133,9 @@
 .anatomy-structure-picker button[aria-pressed="true"] { border-color: var(--accent-readable); color: var(--accent-readable); background: var(--tokiwa-light); font-weight: 600; }
 @media print {
   .tsubo-compare-scroll { max-height: none; overflow: visible; }
+  .tsubo-compare-table { table-layout: fixed; font-size: 10pt; }
+  .tsubo-compare-table :is(th, td) { padding: 6pt; min-width: 0; overflow-wrap: anywhere; }
   .tsubo-compare-table thead th, .tsubo-compare-table tr > :first-child { position: static; }
-  .tsubo-compare-scroll-hint, .anatomy-structure-picker { display: none; }
+  .tsubo-compare-picker, .tsubo-compare-presets, .tsubo-compare-print, .tsubo-compare-scroll-hint,
+  .tsubo-compare-detail-link, .tsubo-compare-column-link, .anatomy-structure-picker { display: none; }
 }

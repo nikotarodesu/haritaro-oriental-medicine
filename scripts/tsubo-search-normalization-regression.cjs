@@ -86,6 +86,7 @@ function dictionary(params = '') {
     change(value) { const input = nodes(tree).find(node => node.props?.id === 'tsubo-search'); input.props.onChange({ target: { value } }); render(); },
     click(label) { nodes(tree).find(node => node.type === 'button' && text(node) === label).props.onClick(); render(); },
     resultCodes() { return nodes(tree).filter(node => String(node.props?.id || '').startsWith('tsubo-card-')).map(node => node.props.id.slice('tsubo-card-'.length).toUpperCase()); },
+    locationPreview() { return text(nodes(tree).find(node => node.props?.className === 'atlas-result-location')); },
     url: () => location.href,
     hasSearchForm: () => nodes(tree).some(node => node.type === 'form' && node.props.action === '/search'),
     text: () => text(tree),
@@ -95,6 +96,10 @@ function dictionary(params = '') {
 const initial = dictionary();
 assert.equal(initial.resultCodes().length, 24, 'The initial card list renders independently of the URL observer');
 assert(initial.hasSearchForm(), 'Native search remains available before JavaScript starts');
+const firstPoint = points.find(point => point.code === initial.resultCodes()[0]);
+const firstStop = firstPoint.locationSimple.indexOf('。');
+assert(firstStop >= 0 && firstStop < firstPoint.locationSimple.length - 1, 'The reference card has multiple location sentences');
+assert.equal(initial.locationPreview(), firstPoint.locationSimple.slice(0, firstStop + 1), 'Cards show the first location sentence');
 for (const query of ['ゴウコク', 'ｺﾞｳｺｸ', 'ＬＩ ４', 'ごうこく']) {
   const view = dictionary(); view.change(query);
   assert.deepEqual(view.resultCodes(), ['LI4'], 'Actual dictionary onChange: ' + query);

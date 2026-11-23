@@ -172,6 +172,15 @@ assert(nodes(scroll()).some(node => node.type === Link && node.props.href === '/
 assert(!nodes(scroll()).some(node => node.type === Link && node.props.href === '/tsubo/lr3#acupoint-research'), 'Comparison skips the research link when the point has no research section');
 const compareInput = () => nodes(compare.tree()).find(node => node.type === 'input' && node.props.id === 'compare-search-input');
 assert.equal(compareInput().props['aria-label'], '比較するツボを検索');
+const compareNodes = nodes(compare.tree());
+const pointSelection = compareNodes.find(node => node.props?.className === 'tsubo-compare-selection');
+const examples = compareNodes.find(node => node.type === 'details' && node.props?.className.includes('tsubo-compare-presets'));
+assert(compareNodes.indexOf(compareInput()) < compareNodes.indexOf(pointSelection) && compareNodes.indexOf(pointSelection) < compareNodes.indexOf(examples), 'Search and selections precede the collapsed presets');
+assert(!examples.props.open);
+const mobilePointNames = row => nodes(row).filter(node => node.props?.className === 'tsubo-compare-row-point').map(text).join(',');
+const itemRows = () => nodes(scroll()).filter(node => node.type === 'tr' && node.props?.children?.[0]?.props?.scope === 'row');
+assert.equal(itemRows().length, 6);
+assert(itemRows().every(row => mobilePointNames(row) === '合谷,太衝'), 'Every item labels both points in the narrow layout');
 for (const query of ['ＳＴ３６', 'アシサンリ', 'Zusanli']) {
   compareInput().props.onChange({ target: { value: query } }); compare.render();
   assert(nodes(compare.tree()).some(node => node.type === 'button' && text(node).startsWith('足三里ST36')), query + ' finds the existing compare option');
@@ -186,6 +195,7 @@ assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.sco
 queryParams = new URLSearchParams({ a: 'LI4', b: 'LR3', c: 'ＳＴ３６' }); compare.render();
 for (const callback of comparisonFrames.values()) callback(); comparisonFrames.clear(); compare.render();
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 4, 'URL synchronization displays all three points without an account');
+assert(itemRows().every(row => mobilePointNames(row) === '合谷,太衝,足三里'), 'Each item stays labeled when three points stack');
 queryParams = new URLSearchParams('a=ST36&b=LI4'); compare.render();
 queryParams = new URLSearchParams('a=LR3&b=ST36'); compare.render();
 assert.equal(comparisonFrames.size, 1, 'A newer route cancels a pending older route selection');
@@ -208,6 +218,7 @@ const gorou = client('src/components/GorouWorkstyleChecker.tsx', {
 });
 gorou.render();
 assert.doesNotMatch(text(gorou.tree()), /学習用.{0,5}点数|\/100/);
+assert(!nodes(gorou.tree()).some(node => node.props?.href === '#gorou-rest-heading'), 'The examples shortcut is hidden until a choice is made');
 for (const label of ['久視（きゅうし）', '久坐（きゅうざ）', '久立（きゅうりつ）', '久行（きゅうこう）', '久臥（きゅうが）']) {
   const choice = nodes(gorou.tree()).find(node => node.type === 'button' && text(node).includes(label));
   assert(choice, label);
@@ -217,6 +228,8 @@ for (const label of ['久視（きゅうし）', '久坐（きゅうざ）', '�
 }
 const selectedPassages = nodes(gorou.tree()).find(node => node.props?.['aria-labelledby'] === 'gorou-result-heading');
 assert(selectedPassages, 'Selected actions have a qualitative account');
+assert(nodes(gorou.tree()).some(node => node.type === 'a' && node.props.href === '#gorou-rest-heading' && text(node).includes('休憩・動作の例を見る')));
+assert(nodes(gorou.tree()).some(node => node.props?.id === 'gorou-rest-heading' && node.props.tabIndex === -1), 'The examples shortcut has a focusable target');
 for (const passage of ['久視傷血', '久坐傷肉', '久立傷骨', '久行傷筋', '久臥傷気']) assert(text(selectedPassages).includes(passage), passage);
 assert.doesNotMatch(text(gorou.tree()), /学習用.{0,5}点数|\/100/);
 for (const code of ['ST36', 'KI1', 'BL57', 'CV17']) {
@@ -307,6 +320,7 @@ assert(declares('html[data-navigation-layout="compact"] .clinical-workspace-acti
 assert(declares('.tsubo-compare-table thead th', 'top', '0'));
 assert(declares('.tsubo-compare-table tr > :first-child', 'left', '0'));
 assert(declares('.tsubo-compare-table thead tr > :first-child', 'z-index', '4'));
+assert(rules.some(rule => rule.parent.type === 'atrule' && rule.parent.params === 'screen and (max-width: 899px)' && rule.selector === '.tsubo-compare-scroll' && rule.nodes.some(node => node.prop === 'overflow' && node.value === 'visible')), 'The narrow comparison uses page scrolling');
 assert(rules.some(rule => rule.parent.type === 'atrule' && rule.parent.params === 'print' && rule.selector === '.tsubo-compare-scroll' && rule.nodes.some(node => node.prop === 'overflow' && node.value === 'visible')), 'Printing does not clip the scrolling table');
 assert(rules.some(rule => rule.parent.type === 'atrule' && rule.parent.params === 'print' && rule.selector === '.tsubo-compare-table thead th, .tsubo-compare-table tr > :first-child' && rule.nodes.some(node => node.prop === 'position' && node.value === 'static')), 'Print rules use equal specificity to disable both sticky axes');
 assert(declares('.tsubo-compare-page :is(button, input), .anatomy-viewer :is(button, a)', 'min-height', '44px'));

@@ -50,11 +50,15 @@ assert.match(home, /role="search"/);
 assert.match(home, /action="\/search"/);
 assert.match(home, /<input(?=[^>]*type="search")(?=[^>]*name="q")[^>]*>/);
 const destinationPairs = [['/tsubo','はり太郎のツボ図鑑'], ['/learn','はり太郎の東洋医学'], ['/clinical','はり太郎の臨床演習']];
-for (const [href, name] of destinationPairs) assert(home.includes('href="' + href + '">' + name + '</a>'), name);
+const homeActions = home.match(/<ul class="platform-series-grid">([\s\S]*?)<\/ul>/)[1];
+for (const [[href, name], action] of destinationPairs.map((pair, index) => [pair, ['ツボを調べる', '講義を読む', '症例で練習する'][index]])) {
+  const card = homeActions.split('</li>').find(item => item.includes(`href="${href}"`));
+  assert(card?.includes(action) && card.includes(name), `${name} is reachable through its homepage action`);
+}
 assert(home.includes('href="/symptoms"'));
 assert.doesNotMatch(home, />\s*知\s*</);
 assert.match(home, /<h1[^>]*>東洋医学を学ぶ<\/h1>/);
-assert.match(home, /href="\/learn"><svg[^>]*>[\s\S]*?<\/svg>東洋医学の講義を読む<\/a>/);
+assert(home.includes('href="/learn/acupuncture"'), 'The acupuncture guide remains available from home');
 const collection = JSON.parse(home.match(/<script type="application\/ld\+json">(.*?)<\/script>/)[1]);
 assert.equal(collection.name, '東洋医学を学ぶ');
 assert(home.includes(collection.description), 'The homepage description matches the visible introduction');

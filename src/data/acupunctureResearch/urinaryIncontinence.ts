@@ -4,6 +4,16 @@ export const URINARY_INCONTINENCE_RESEARCH: AcupunctureResearchArticle = {
   slug: "urinary-incontinence",
   title: "尿もれに対する鍼の研究｜量と回数をどう測ったか",
   description: "咳や運動で漏れる腹圧性尿失禁、急な尿意に伴う尿もれ、前立腺がんの手術後の試験を比較します。パッドの重さ、日誌に書いた回数、使ったパッドの枚数で、何が分かるかを確かめます。",
+  comparison: {
+    caption: "4つの試験で測ったもの",
+    note: "尿もれの量、回数、パッドの枚数は、それぞれ異なる指標です。",
+    rows: [
+      { sectionId: "pad-test", sourceId: "liu-2017", participants: "腹圧性尿失禁の女性", measure: "1時間で漏れた尿の重さ", time: "6週後" },
+      { sectionId: "pelvic-floor-training", sourceId: "tang-2023", participants: "骨盤底筋訓練を受けた腹圧性尿失禁の女性", measure: "1時間で漏れた尿の重さ", time: "8週後" },
+      { sectionId: "bladder-diary", sourceId: "lin-2020", participants: "過活動膀胱のある人", measure: "3日間の日誌に記録した尿もれの回数", time: "8週の施術終了時" },
+      { sectionId: "after-prostatectomy", sourceId: "niu-2025", participants: "前立腺がんの手術後に尿もれがある男性", measure: "1日に使うパッドの枚数", time: "施術開始6週後" },
+    ],
+  },
   sections: [
     {
       id: "pad-test",

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { ArrowDown, Check } from "lucide-react";
 import { ACUPOINT_LOOKUP } from "@/data/acupointLookup";
 
 type GorouId = "kyushi" | "kyuza" | "kyuritsu" | "kyukou" | "kyuga";
@@ -113,6 +113,13 @@ export default function GorouWorkstyleChecker() {
             );
           })}
         </div>
+        {selected.length > 0 && (
+          <div className="sticky bottom-[calc(var(--mobile-nav-height)+0.5rem)] z-10 flex justify-end rounded-xl border border-frame bg-panel px-2 py-1.5 shadow-sm md:static md:border-0 md:bg-transparent md:p-0 md:shadow-none">
+            <a href="#gorou-rest-heading" className="ui-button ui-button-primary w-full px-4 py-2 focus-visible:outline-2 focus-visible:outline-offset-2 md:w-auto">
+              休憩・動作の例を見る <ArrowDown aria-hidden="true" className="size-4" />
+            </a>
+          </div>
+        )}
       </section>
 
       {selected.length === 0 ? (
@@ -135,7 +142,7 @@ export default function GorouWorkstyleChecker() {
           </section>
 
           <section aria-labelledby="gorou-rest-heading" className="space-y-4">
-            <h2 id="gorou-rest-heading" className="text-balance font-serif text-xl font-bold leading-relaxed sm:text-2xl">選んだ生活習慣に合わせた休憩や動作の例</h2>
+            <h2 id="gorou-rest-heading" tabIndex={-1} className="text-balance font-serif text-xl font-bold leading-relaxed sm:text-2xl">選んだ生活習慣に合わせた休憩や動作の例</h2>
             <div className="grid gap-4 lg:grid-cols-2">
               {selected.map(id => {
                 const item = GOROU_DEFS[id];

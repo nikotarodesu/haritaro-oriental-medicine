@@ -5,7 +5,8 @@ import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import PageIntro from "@/components/design/PageIntro";
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH, acupunctureResearchHref } from "@/config/acupunctureLearning";
 import { collectionPageJsonLd, pageSocialMetadata, seriesPageTitle } from "@/config/seo";
-import { ACUPUNCTURE_RESEARCH_ARTICLES } from "@/data/acupunctureResearch";
+import { ACUPUNCTURE_RESEARCH_ARTICLES, ACUPUNCTURE_RESEARCH_TOPICS } from "@/data/acupunctureResearch";
+import styles from "./research.module.css";
 
 const { href, title, description } = ACUPUNCTURE_RESEARCH;
 const pageTitle = seriesPageTitle(title, "reading");
@@ -35,20 +36,34 @@ export default function AcupunctureResearchIndexPage() {
         __html: collectionPageJsonLd(href, title, description, "鍼灸の研究解説", entries).replace(/</g, "\\u003c"),
       }} />
       <PageBreadcrumb items={[{ href: "/learn", name: "東洋医学" }, { href: ACUPUNCTURE_GUIDE.href, name: ACUPUNCTURE_GUIDE.label }, { href, name: title }]} />
-      <PageIntro title={title} description={<p>{description}</p>} art="reading" compact />
-      <ul className="grid gap-3" aria-label="研究解説">
-        {ACUPUNCTURE_RESEARCH_ARTICLES.map(article => (
-          <li key={article.slug}>
-            <Link href={acupunctureResearchHref(article.slug)} className="page-link-card">
-              <span>
-                <strong>{article.title}</strong>
-                <span className="mt-1 block leading-relaxed page-muted">{article.description}</span>
-              </span>
-              <ArrowRight className="h-5 w-5 shrink-0" aria-hidden="true" />
-            </Link>
-          </li>
+      <PageIntro title={title} description="症状や安全性から研究を探せます。試験で何を比べたかを読み、原著へのリンクで結果を確かめられます。" art="reading" compact />
+      <nav aria-label="研究のテーマ" className={styles.topicNavigation}>
+        <ul>
+          {ACUPUNCTURE_RESEARCH_TOPICS.map(topic => (
+            <li key={topic.id}><a href={`#${topic.id}`}>{topic.title}</a></li>
+          ))}
+        </ul>
+      </nav>
+      <div className={styles.topicGroups}>
+        {ACUPUNCTURE_RESEARCH_TOPICS.map(topic => (
+          <section key={topic.id} id={topic.id} className={styles.topic} aria-labelledby={`${topic.id}-title`}>
+            <h2 id={`${topic.id}-title`} className="page-section-heading">{topic.title}</h2>
+            <ul className={styles.topicCards}>
+              {topic.entries.map(({ article, summary }) => (
+                <li key={article.slug}>
+                  <Link href={acupunctureResearchHref(article.slug)} className={`page-link-card ${styles.topicCard}`}>
+                    <span>
+                      <strong>{article.title}</strong>
+                      <span className={styles.topicSummary}>{summary}</span>
+                    </span>
+                    <ArrowRight aria-hidden="true" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
         ))}
-      </ul>
+      </div>
       <section className="page-section border-t border-divider pt-5" aria-labelledby="guide-research-title">
         <h2 id="guide-research-title" className="page-section-heading">症状ガイドに掲載している研究</h2>
         <ul className="grid gap-2 sm:grid-cols-2">

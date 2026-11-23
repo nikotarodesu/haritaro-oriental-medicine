@@ -4,6 +4,14 @@ export const RADIATION_DRY_MOUTH_RESEARCH: AcupunctureResearchArticle = {
   slug: "radiation-dry-mouth",
   title: "放射線治療による口の乾きと鍼の研究",
   description: "頭頸部がんの放射線治療中に鍼を始めて口の乾きを予防する試験と、治療から1年以上経った人に残る口の乾きを調べた試験を読み比べます。本人が感じる乾き、唾液の量、比較相手ごとの結果を確認します。",
+  comparison: {
+    caption: "放射線治療中の予防と、治療後の症状を調べた試験",
+    note: "両試験の主な結果は、本人が感じる口の乾きの点数です。唾液量の群間比較は、ここで紹介した論文の本文にはありません。",
+    rows: [
+      { sectionId: "prevention-during-radiotherapy", sourceId: "garcia-2019", participants: "放射線治療を受ける中咽頭がん・上咽頭がんの人", measure: "口の乾きの質問票の点数", time: "放射線治療終了1年後" },
+      { sectionId: "persistent-dry-mouth-after-radiotherapy", sourceId: "cohen-2024", participants: "放射線治療から1年以上経ち、口の乾きが続く人", measure: "口の乾きの質問票の点数", time: "研究開始4週後" },
+    ],
+  },
   sections: [
     {
       id: "prevention-during-radiotherapy",

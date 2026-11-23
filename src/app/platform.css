@@ -33,7 +33,7 @@
 .platform-title {
   color: var(--text-sumi);
   font-family: var(--font-serif);
-  font-size: clamp(1.3rem, 3.35vw, 2.95rem);
+  font-size: clamp(1.65rem, 3.35vw, 2.95rem);
   font-weight: 600;
   line-height: 1.35;
   text-wrap: balance;
@@ -132,14 +132,6 @@
   outline-offset: 2px;
 }
 
-.platform-shortcuts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 clamp(.6rem, 2.5vw, 1.35rem);
-  margin-top: .35rem;
-}
-
-.platform-shortcuts a,
 .platform-feature-link {
   display: inline-flex;
   align-items: center;
@@ -149,13 +141,9 @@
   font-weight: 600;
 }
 
-.platform-shortcuts a {
-  min-height: 2.75rem;
-}
-
-.platform-shortcuts svg,
 .platform-index svg:not(.platform-hand),
-.platform-series-card h3 > svg {
+.platform-feature-link svg,
+.platform-series-action > svg {
   flex: none;
   width: 1rem;
   height: 1rem;
@@ -167,20 +155,22 @@
   outline-offset: 3px;
 }
 
-.platform-shortcuts a:hover,
 .platform-index li a:hover strong,
 .platform-feature:hover .platform-feature-link,
-.platform-series-card h3 a:hover {
+.platform-series-action:hover .platform-series-label > :first-child {
   text-decoration: underline;
   text-underline-offset: .25em;
 }
 
 .platform-feature {
-  display: none;
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
   min-width: 0;
   align-self: stretch;
-  margin: 1rem 1rem 1rem 0;
-  padding: 1rem;
+  align-items: center;
+  gap: .7rem;
+  margin: 0 1rem 1rem;
+  padding: .5rem .75rem;
   border: 1px solid var(--border-washi);
   border-radius: var(--radius-control);
   background:
@@ -197,10 +187,10 @@
 
 .platform-feature-art::before {
   position: absolute;
-  width: min(100%, 13.5rem);
+  width: min(100%, 3.75rem);
   aspect-ratio: 1;
   outline: 1px solid var(--border-washi);
-  outline-offset: .5rem;
+  outline-offset: .2rem;
   outline-style: dashed;
   border: 1px solid var(--border-washi);
   border-radius: 50%;
@@ -210,16 +200,15 @@
 
 .platform-feature .platform-hand {
   position: relative;
-  width: min(78%, 11.5rem);
+  width: 2.8rem;
   height: auto;
 }
 
 .platform-feature-copy {
   display: grid;
   justify-items: start;
-  gap: .35rem;
+  gap: .1rem;
   min-width: 0;
-  padding: .65rem 0;
 }
 
 .platform-feature-meta {
@@ -236,24 +225,22 @@
 }
 
 .platform-feature-name {
-  display: grid;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: .35rem;
   font-family: var(--font-serif);
-  font-size: clamp(1.8rem, 4vw, 2.65rem);
+  font-size: 1.3rem;
   font-weight: 600;
   line-height: 1.25;
 }
 
 .platform-feature-name span {
-  margin-top: .15rem;
   color: var(--text-secondary);
   font-family: var(--font-sans);
   font-size: .875rem;
   font-weight: 500;
   line-height: 1.5;
-}
-
-.platform-feature-link {
-  margin-top: .45rem;
 }
 
 .platform-index ul {
@@ -296,15 +283,14 @@
 
 .platform-series-grid {
   display: grid;
-  gap: clamp(.65rem, 1.5vw, 1.1rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(.4rem, 1.35vw, 1.1rem);
 }
 
 .platform-series-card {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  gap: .3rem;
-  padding: .7rem clamp(.85rem, 2vw, 1.3rem) .3rem;
   border: 1px solid var(--border-washi);
   border-radius: var(--radius-control);
   background: var(--bg-card);
@@ -315,30 +301,31 @@
   border-color: var(--accent-readable);
 }
 
-.platform-series-card h3 {
-  position: relative;
+.platform-series-action {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: .65rem;
-  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  justify-items: center;
+  gap: .4rem;
+  min-height: 5.4rem;
+  padding: .7rem .25rem;
+  border-radius: var(--radius-control);
+  font-size: clamp(.875rem, 3.55vw, 1rem);
   font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
 }
 
-.platform-series-card h3 a {
-  display: flex;
-  align-items: center;
-  min-height: 2.75rem;
-  text-wrap: pretty;
+.platform-series-label {
+  min-width: 0;
+  text-wrap: balance;
 }
 
-.platform-series-card h3 a::after {
-  position: absolute;
-  inset: 0;
-  content: "";
+.platform-series-name,
+.platform-series-action > svg,
+.platform-series-card p {
+  display: none;
 }
 
-.platform-series-card h3 > svg {
+.platform-series-action > svg {
   color: var(--accent-readable);
 }
 
@@ -366,20 +353,14 @@
   height: 1.2rem;
 }
 
-.platform-series-card p {
-  color: var(--text-secondary);
-  font-size: .9375rem;
-  line-height: 1.7;
-}
-
-.platform-series-card ul {
+.platform-topic-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 .85rem;
-  margin-top: auto;
+  gap: 0 clamp(.85rem, 2vw, 1.25rem);
+  margin-top: .3rem;
 }
 
-.platform-series-card li a {
+.platform-topic-links a {
   min-height: 2.75rem;
   font-size: .9375rem;
 }
@@ -396,25 +377,80 @@
   outline-color: var(--accent-readable);
 }
 
+@media (max-width: 22.5rem) {
+  .platform-hero-copy { padding-block: .875rem .625rem; }
+  .platform-hero-heading { margin-bottom: .8rem; }
+  .platform-dictionary-intro { margin-top: .75rem; }
+  .platform-feature { grid-template-columns: 3.85rem minmax(0, 1fr); }
+}
+
+@media (min-width: 48rem) {
+  .platform-series-action {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    justify-items: start;
+    align-items: center;
+    gap: .65rem;
+    min-height: auto;
+    padding: .9rem 1rem .5rem;
+    font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+    text-align: start;
+  }
+
+  .platform-series-name {
+    display: block;
+    margin-top: .16rem;
+    color: var(--text-secondary);
+    font-size: .875rem;
+    font-weight: 500;
+  }
+
+  .platform-series-action > svg {
+    display: block;
+  }
+
+  .platform-series-card p {
+    display: block;
+    padding: 0 1rem .9rem;
+    color: var(--text-secondary);
+    font-size: .9375rem;
+    line-height: 1.7;
+  }
+}
+
 @media (min-width: 54rem) {
   .platform-hero-grid {
     grid-template-columns: minmax(0, 1.42fr) minmax(0, 1fr);
   }
 
   .platform-feature {
-    display: grid;
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-    align-items: center;
     gap: .8rem;
+    margin: 1rem 1rem 1rem 0;
+    padding: 1rem;
   }
 
-  .platform-series-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .platform-feature-art::before {
+    width: min(100%, 13.5rem);
+    outline-offset: .5rem;
   }
 
-  .platform-series-card {
-    gap: .5rem;
-    padding-block: 1rem .6rem;
+  .platform-feature .platform-hand {
+    width: min(78%, 11.5rem);
+  }
+
+  .platform-feature-copy {
+    gap: .35rem;
+    padding: .65rem 0;
+  }
+
+  .platform-feature-name {
+    display: grid;
+    gap: .15rem;
+    font-size: clamp(1.8rem, 4vw, 2.65rem);
+  }
+
+  .platform-feature-link {
+    margin-top: .45rem;
   }
 
   .platform-index ul {

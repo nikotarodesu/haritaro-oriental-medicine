@@ -37,35 +37,50 @@ export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; curr
     : role === "comparison" ? "比較群で使われたツボ"
     : role === "additional" ? "条件に応じて追加されたツボ"
       : study.kind === "point" ? "ツボ一つを調べた研究" : "複数のツボを使った研究";
+  const showMainPoints = study.points.length > 0 && (study.kind === "combination" || role === "comparison");
+  const mainPointsOnly = showMainPoints && !study.comparisonPoints?.length && !study.additionalPointGroups?.length && !study.otherPoints;
+  const hasPointDetails = showMainPoints || study.comparisonPoints?.length || study.additionalPointGroups?.length || study.otherPoints;
+  const detailsLabel = mainPointsOnly ? `研究方法・使用した経穴（${study.points.length}穴）`
+    : hasPointDetails ? "研究方法・配穴の内訳" : "研究方法";
 
   return (
     <article className="atlas-study-card atlas-target" id={study.id}>
       <p className="atlas-study-kind"><FlaskConical size={16} aria-hidden="true" />{label}</p>
       <h3>{study.topic}</h3>
-      <p>{study.result}</p>
-      <p className="atlas-study-limit">{study.limits}</p>
-      {reading && <Link href={reading.href} className="atlas-source-link">{reading.label}</Link>}
-      {(study.kind === "combination" || role === "comparison") && <PointLinks codes={study.points} currentCode={currentCode} />}
-      <details className="atlas-disclosure">
-        <summary>誰を対象に何を比べたか・論文を読む</summary>
+      <dl className="atlas-study-findings">
+        <div><dt>結果</dt><dd>{study.result}</dd></div>
+        <div className="atlas-study-limit"><dt>この研究の限界</dt><dd>{study.limits}</dd></div>
+      </dl>
+      <div className="atlas-study-sources">
+        <p>出典</p>
+        <ul className="atlas-source-links" aria-label="研究の出典">
+          {study.sources.map(source => <li key={source.url}><a href={source.url}>{source.label}</a></li>)}
+        </ul>
+      </div>
+      {reading && <p><Link href={reading.href} className="atlas-source-link">{reading.label}</Link></p>}
+      <details className="atlas-disclosure atlas-study-method">
+        <summary>{detailsLabel}</summary>
         <div className="atlas-study-details">
           <p>{study.design}</p>
+          {showMainPoints && (
+            <div>
+              <p className="atlas-study-points-label">介入群で使われたツボ</p>
+              <PointLinks codes={study.points} currentCode={currentCode} />
+            </div>
+          )}
           {study.otherPoints && <p>{study.otherPoints}</p>}
           {study.comparisonPoints?.length ? (
             <div>
-              <p>比較群で使われたツボ</p>
+              <p className="atlas-study-points-label">比較群で使われたツボ</p>
               <PointLinks codes={study.comparisonPoints} currentCode={currentCode} />
             </div>
           ) : null}
           {study.additionalPointGroups?.map(group => (
             <div key={group.label}>
-              <p>{group.label}</p>
+              <p className="atlas-study-points-label">{group.label}</p>
               <PointLinks codes={group.points} currentCode={currentCode} />
             </div>
           ))}
-          <ul className="atlas-source-links" aria-label="研究の出典">
-            {study.sources.map(source => <li key={source.url}><a href={source.url}>{source.label}</a></li>)}
-          </ul>
         </div>
       </details>
     </article>

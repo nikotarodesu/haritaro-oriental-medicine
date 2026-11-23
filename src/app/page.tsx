@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, Compass, LibraryBig } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import PlatformSearchForm from "@/components/search/PlatformSearchForm";
 import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
 import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
@@ -7,6 +7,17 @@ import { collectionPageJsonLd, HOME_HEADING } from "@/config/seo";
 import { DICTIONARY_TAGLINE, PLATFORM_DESCRIPTION, SERIES } from "@/config/series";
 
 const SERIES_ENTRIES = Object.values(SERIES);
+const SERIES_ACTIONS = {
+  "/tsubo": "ツボを調べる",
+  "/learn": "講義を読む",
+  "/clinical": "症例で練習する",
+} as const;
+const TOPIC_LINKS = [
+  SERIES.dictionary.links[1],
+  ACUPUNCTURE_GUIDE,
+  ...SERIES.reading.links,
+  ...SERIES.practice.links,
+];
 const POINTS = [
   { code: "li4", label: "合谷", location: "手の甲" },
   { code: "st36", label: "足三里", location: "ひざの下" },
@@ -25,12 +36,7 @@ export default function HomePage() {
               <h1 id="platform-title" className="platform-title">{HOME_HEADING}</h1>
               <p className="platform-intro-text">{PLATFORM_DESCRIPTION}</p>
             </div>
-            <PlatformSearchForm />
-            <nav className="platform-shortcuts" aria-label="学ぶ・調べる">
-              <Link href={SERIES.reading.href}><BookOpen aria-hidden="true" />東洋医学の講義を読む</Link>
-              <Link href={ACUPUNCTURE_GUIDE.href}><LibraryBig aria-hidden="true" />{ACUPUNCTURE_GUIDE.label}</Link>
-              <Link href="/symptoms"><Compass aria-hidden="true" />症状ガイド</Link>
-            </nav>
+            <PlatformSearchForm placeholder="合谷、肩こり、陰陽" />
             <Link href={SERIES.dictionary.href} className="platform-dictionary-intro">
               <span>
                 <span>{SERIES.dictionary.name}</span>
@@ -44,7 +50,7 @@ export default function HomePage() {
             <span className="platform-feature-copy">
               <span className="platform-feature-meta">手の甲のツボ <span>LI4</span></span>
               <strong id="platform-feature-name" className="platform-feature-name">合谷<span>ごうこく</span></strong>
-              <span id="platform-feature-action" className="platform-feature-link">場所と注意点を見る <ArrowRight aria-hidden="true" /></span>
+              <span id="platform-feature-action" className="platform-feature-link">場所と注意点 <ArrowRight aria-hidden="true" /></span>
             </span>
           </Link>
         </div>
@@ -56,17 +62,22 @@ export default function HomePage() {
           {SERIES_ENTRIES.map(({ icon: Icon, ...series }) => (
             <li key={series.href} className="platform-series-card">
               <h3>
-                <span className="platform-series-icon"><Icon aria-hidden="true" /></span>
-                <Link href={series.href}>{series.name}</Link>
-                <ArrowRight aria-hidden="true" />
+                <Link href={series.href} className="platform-series-action">
+                  <span className="platform-series-icon"><Icon aria-hidden="true" /></span>
+                  <span className="platform-series-label">
+                    <span>{SERIES_ACTIONS[series.href]}</span>
+                    <span className="platform-series-name">{series.name}</span>
+                  </span>
+                  <ArrowRight aria-hidden="true" />
+                </Link>
               </h3>
               <p>{series.description}</p>
-              <ul>{series.links.filter(({ href }) => href !== series.href).map(({ href, label }) => (
-                <li key={href}><Link href={href} className="ui-text-link">{label}</Link></li>
-              ))}</ul>
             </li>
           ))}
         </ul>
+        <nav aria-label="関連する学習ページ" className="platform-topic-links">
+          {TOPIC_LINKS.map(({ href, label }) => <Link key={href} href={href} className="ui-text-link">{label}</Link>)}
+        </nav>
       </section>
 
       <section className="platform-container platform-index" aria-labelledby="platform-index-title">

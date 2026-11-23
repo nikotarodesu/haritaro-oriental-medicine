@@ -16,7 +16,6 @@ import {
   ChevronDown,
   Search, 
   ArrowRight, 
-  Bookmark, 
   RotateCcw, 
   BookOpen, 
   GitCompare, 
@@ -31,21 +30,6 @@ import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
 import ClinicalPairsSection from "@/components/ClinicalPairsSection";
 import { getPointSearchTopic, normalizeSearchText } from "@/utils/search";
 import { prepareAcupointSearch, getAcupointMatchReason, matchesPrimaryJoint } from "@/utils/acupointSearch";
-
-const MERIDIAN_ELEMENT_MAP: Record<string, "木" | "火" | "土" | "金" | "水"> = {
-  lung: "金",
-  "large-intestine": "金",
-  stomach: "土",
-  spleen: "土",
-  heart: "火",
-  "small-intestine": "火",
-  bladder: "水",
-  kidney: "水",
-  pericardium: "火",
-  "triple-energizer": "火",
-  gallbladder: "木",
-  liver: "木",
-};
 
 type SortOption = "meridian" | "kana" | "detailed";
 type ViewMode = "grid" | "table";
@@ -454,6 +438,7 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
             {paginatedTsubos.map((point) => {
               const indexed = searchIndex.get(point.code);
               const matchReason = indexed ? getAcupointMatchReason(indexed, searchTopic) : null;
+              const locationPreview = point.locationSimple.match(/^[^。]+。?/)?.[0] ?? point.locationSimple;
               return (
                 <Link
                   key={point.id}
@@ -467,9 +452,11 @@ export default function TsuboInteractiveClient({ relatedGuides }: { relatedGuide
                     <h3>{point.name} <span>{point.kana}</span></h3>
                     <span className="atlas-code">{point.code}</span>
                   </div>
-                  <p className="atlas-result-location">{point.locationSimple}</p>
-                  <p className="atlas-result-meta">{point.bodyPart} <span aria-hidden="true">·</span> {point.meridian}</p>
-                  {matchReason && <p className="atlas-result-meta">{matchReason}</p>}
+                  <p className="atlas-result-location">{locationPreview}</p>
+                  <p className="atlas-result-meta">
+                    <span>{point.bodyPart} <span aria-hidden="true">·</span> {point.meridian}</span>
+                    {matchReason && <span className="atlas-result-match">{matchReason}</span>}
+                  </p>
                 </Link>
               );
             })}
