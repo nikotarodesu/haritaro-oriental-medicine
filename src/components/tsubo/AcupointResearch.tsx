@@ -2,12 +2,14 @@ import Link from "next/link";
 import { ACUPUNCTURE_TRIAL_COMPARISON_HREF, RADIATION_DRY_MOUTH_RESEARCH_HREF, SYMPTOM_RESEARCH_LINKS, URINARY_INCONTINENCE_RESEARCH_HREF, acupunctureResearchHref } from "@/config/acupunctureLearning";
 import { BookOpen, FlaskConical, GitMerge } from "lucide-react";
 import { getAcupointByCode } from "@/data/tsubo";
+import { EXTRA_POINTS } from "@/data/tsubo/extraPoints";
 import { getAcupointStudies, getClassicalCombinations, getStudyPointRole } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
 import type { AtlasStudy } from "@/data/tsubo/atlas/types";
 import type { AcupointDetail } from "@/data/tsubo/types";
 
 const urinaryResearch = { href: URINARY_INCONTINENCE_RESEARCH_HREF, label: "尿もれの量と回数をどう測ったかを読む" };
+const extraPointLinks = new Map(EXTRA_POINTS.map(point => [`${point.name}（${point.code}）`, point.href]));
 const studyReadingLinks: Readonly<Partial<Record<string, { href: string; label: string }>>> = {
   "radiation-induced-dry-mouth": { href: RADIATION_DRY_MOUTH_RESEARCH_HREF, label: "放射線治療中の予防と治療後の研究を読み比べる" },
   "stress-urinary-incontinence": urinaryResearch,
@@ -26,6 +28,15 @@ function PointLinks({ codes, currentCode }: { codes: readonly string[]; currentC
         return <li key={code}>{code === currentCode ? <strong>{label}</strong> : <Link href={`/tsubo/${code}`} prefetch={false}>{label}</Link>}</li>;
       })}
     </ul>
+  );
+}
+
+function StudyPointNote({ text }: { text: string }) {
+  return (
+    <p>{text.split(/([\p{Script=Han}]{2}（EX-[A-Z]+\d+）)/gu).map((part, index) => {
+      const href = extraPointLinks.get(part);
+      return href ? <Link key={index} href={href} className="atlas-source-link">{part}</Link> : part;
+    })}</p>
   );
 }
 
@@ -68,7 +79,7 @@ export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; curr
               <PointLinks codes={study.points} currentCode={currentCode} />
             </div>
           )}
-          {study.otherPoints && <p>{study.otherPoints}</p>}
+          {study.otherPoints && <StudyPointNote text={study.otherPoints} />}
           {study.comparisonPoints?.length ? (
             <div>
               <p className="atlas-study-points-label">比較群で使われたツボ</p>

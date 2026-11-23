@@ -12,6 +12,8 @@ import { LEARNING_COURSES } from "@/data/learningCourses";
 import { CLINICAL_COMPLAINTS } from "@/data/clinicalWorkflow";
 import { SYMPTOMS } from "@/data/symptomData";
 import { SYMPTOM_GUIDES_REVISED_AT, symptomGuidePath } from "@/utils/symptomGuidePaths";
+import { EXTRA_POINTS, EXTRA_POINTS_PATH, EXTRA_POINTS_REVISED_AT } from "@/data/tsubo/extraPoints";
+import { KEY_POINT_TYPES_GUIDE } from "@/data/tsubo/keyPointTypes";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = SITE_ORIGIN;
@@ -84,6 +86,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/tsubo/basics/bone-cun`,
       lastModified: new Date(PAGE_REVISIONS["/tsubo/basics/bone-cun"]),
     },
+    {
+      url: baseUrl + KEY_POINT_TYPES_GUIDE,
+      lastModified: new Date(PAGE_REVISIONS[KEY_POINT_TYPES_GUIDE]),
+    },
+    ...[EXTRA_POINTS_PATH, ...EXTRA_POINTS.map(point => point.href)].map(href => ({
+      url: baseUrl + href,
+      lastModified: new Date(EXTRA_POINTS_REVISED_AT),
+    })),
     {
       url: `${baseUrl}/articles`,
       lastModified: new Date("2026-09-26"),

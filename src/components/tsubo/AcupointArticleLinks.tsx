@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getDiagnosisStudyLinks } from "@/utils/diagnosisStudyLinks";
 import { getAcupointGuideLinks } from "@/utils/symptomGuides";
 import type { AcupointAtlasArticle } from "@/data/tsubo/atlas/types";
+import { KEY_POINT_TYPES_GUIDE, type AcupointKeyPointType } from "@/data/tsubo/keyPointTypes";
 
 const sectionLinks = [
   { href: "#acupoint-cautions", label: "注意点" },
@@ -19,6 +20,27 @@ export function AcupointSectionLinks() {
     <nav aria-label="このツボのページ内を移動" className="atlas-section-nav">
       {sectionLinks.map(({ href, label }) => <a key={href} href={href} className={linkClass}>{label}</a>)}
     </nav>
+  );
+}
+
+export function AcupointKeyPointLinks({ types }: { types: readonly AcupointKeyPointType[] }) {
+  if (!types.length) return null;
+
+  return (
+    <div id="acupoint-classifications" className="atlas-target">
+      <dt className="mb-1 text-sm ui-muted">要穴分類</dt>
+      <dd>
+        <ul className="flex flex-wrap gap-x-2 gap-y-1" role="list">
+          {types.map(({ id, label }) => (
+            <li key={id}>
+              <Link href={`${KEY_POINT_TYPES_GUIDE}#${id}`} prefetch={false} className="atlas-source-link inline-flex min-h-11 items-center rounded-lg border border-frame px-2.5 text-sm">
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </dd>
+    </div>
   );
 }
 

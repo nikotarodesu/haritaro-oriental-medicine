@@ -16,6 +16,7 @@ import {
 } from "@/data/tsubo";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import AcupointAtlasArticle from "@/components/tsubo/AcupointAtlasArticle";
+import { AcupointKeyPointLinks } from "@/components/tsubo/AcupointArticleLinks";
 import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
@@ -28,6 +29,7 @@ import { getAcupointStudies, getClassicalCombinations } from "@/data/tsubo/atlas
 import { getAcupointName } from "@/data/tsubo/names";
 import PointAtlasDiagrams from "@/components/tsubo/atlas/PointAtlasDiagrams";
 import type { AcupointMaster } from "@/data/tsubo/types";
+import { getAcupointKeyPointTypes } from "@/data/tsubo/keyPointTypes";
 import TsuboKeyboardNav from "@/components/tsubo/TsuboKeyboardNav";
 import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
 import { 
@@ -272,6 +274,8 @@ export default async function AcupointDetailPage({ params }: Props) {
     );
   }
 
+  const pointTypes = getAcupointKeyPointTypes(point.codeLower);
+
   return (
     <div className="reading-page acupoint-page page-layout atlas-page min-h-screen [overflow-wrap:anywhere]">
       {/* 構造化データ埋め込み */}
@@ -397,21 +401,10 @@ export default async function AcupointDetailPage({ params }: Props) {
 
           <TsuboReviewEntry placement="detail" meridianId={point.meridianId} meridianName={point.meridianShort} />
 
-          {/* 要穴分類バッジ群 */}
-          {point.categories && point.categories.length > 0 && (
-            <div className="acupoint-categories pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex flex-wrap items-center gap-2">
-              <span className="text-sm font-semibold text-[#59615D] dark:text-[#AFBDC8] mr-1">
-                要穴分類：
-              </span>
-              {point.categories.map((cat, idx) => (
-                <span
-                  key={idx}
-                  className="text-sm px-2.5 py-0.5 rounded-full bg-[#FCF4EB] dark:bg-[#281E15] border border-[#F3DEC5] dark:border-[#423321] text-[#B86924] dark:text-[#E6C387] font-semibold"
-                >
-                  {cat}
-                </span>
-              ))}
-            </div>
+          {pointTypes.length > 0 && (
+            <dl className="border-t border-frame pt-2">
+              <AcupointKeyPointLinks types={pointTypes} />
+            </dl>
           )}
         </div>
 

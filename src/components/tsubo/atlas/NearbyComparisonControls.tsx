@@ -25,7 +25,7 @@ export default function NearbyComparisonControls({ width, height, label, points,
 
   return (
     <>
-      <p className="atlas-muted">丸印を選ぶと、位置の違いが分かります。</p>
+      <p className="atlas-muted">ツボ名を選ぶと、図の位置と説明が切り替わります。</p>
       <div className="atlas-comparison-figure" style={{ aspectRatio: `${width} / ${height}` }}>
         <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} focusable="false">
           {children}

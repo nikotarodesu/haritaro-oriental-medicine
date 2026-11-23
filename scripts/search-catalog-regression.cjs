@@ -11,6 +11,7 @@ const { CURRICULUM_DATA } = load('src/data/curriculumData');
 const { getPublicLectureSeries } = load('src/data/publicLectures/index');
 const { readingUnits } = load('src/data/publicLectures/readingUnits');
 const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
+const { EXTRA_POINTS } = load('src/data/tsubo/extraPoints');
 const { GLOSSARY_TERMS } = load('src/data/glossaryData');
 const { CLINICAL_CASES } = load('src/data/clinicalCasesData');
 const { ARTICLES } = load('src/data/articleData');
@@ -21,6 +22,13 @@ assert.equal(generated, generateSearchCatalog(), 'Content edits must regenerate 
 assert.equal(new Set(SEARCH_CATALOG.map(item => item.id)).size, SEARCH_CATALOG.length, 'Search IDs are unique');
 const byId = new Map(SEARCH_CATALOG.map(item => [item.id, item]));
 for (const point of ACUPOINTS_MASTER) assert.equal(byId.get(`tsubo-${point.code.toLowerCase()}`)?.url, `/tsubo/${point.code.toLowerCase()}`);
+for (const point of EXTRA_POINTS) {
+  const item = byId.get(`extra-point-${point.slug}`);
+  assert.equal(item?.url, point.href);
+  assert.equal(item.exactCode, point.code);
+  assert.equal(item.badge, '奇穴');
+  assert(point.alternateCodes.every(code => item.exactTerms.includes(code)));
+}
 for (const lecture of CURRICULUM_DATA.flatMap(stage => stage.lectures)) {
   const isIndependent = lecture.isPublished && getPublicLectureSeries(lecture.id) !== 'reading';
   assert.equal(byId.has(`lecture-${lecture.id}`), isIndependent, 'The search lists individual exercises and dictionary lessons');

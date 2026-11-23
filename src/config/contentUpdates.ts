@@ -4,6 +4,7 @@ import { SYMPTOMS } from '@/data/symptomData';
 import { SYMPTOM_RESEARCH_NOTES, SYMPTOM_RESEARCH_REVISED_AT } from '@/data/symptomResearchNotes';
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH } from '@/config/acupunctureLearning';
 import { ATLAS_EVIDENCE_REVISED_AT, ATLAS_STUDIES, SCITE_FOLLOWUP_ATLAS_RESEARCH_ROUTES } from '@/data/tsubo/atlas/evidence';
+import { CLASSIFIED_ACUPOINT_CODES, KEY_POINT_TYPES_GUIDE } from '@/data/tsubo/keyPointTypes';
 import { SYMPTOM_GUIDES_REVISED_AT } from '@/utils/symptomGuidePaths';
 
 export const EXPANDED_ATLAS_REVISED_AT = '2026-11-19';
@@ -11,6 +12,7 @@ export const EXPANDED_ATLAS_REVISED_AT = '2026-11-19';
 /** Significant content revisions only; never replace these with the build date. */
 export const SITE_REVISED_AT = '2026-10-02';
 export const ACUPOINT_PAGE_REVISED_AT = '2026-11-23';
+const ATLAS_LEARNING_REVISED_AT = '2026-11-24';
 const ACUPOINT_MEASUREMENT_REVISED_AT = '2026-11-20';
 // Includes question-only changes, but not unchanged lessons in the same chapter.
 export const CURRICULUM_EDITORIAL_REVISIONS = [
@@ -277,8 +279,13 @@ export const PAGE_REVISIONS: Record<string, string> = {
     '/articles/east-west-integrative-gerd-gastric',
     ...SCITE_FOLLOWUP_ATLAS_RESEARCH_ROUTES,
   ].map(route => [route, ACUPUNCTURE_RESEARCH.revisedAt])),
+  ...Object.fromEntries([
+    '/updates', '/tsubo', KEY_POINT_TYPES_GUIDE,
+    ...[...CLASSIFIED_ACUPOINT_CODES, 'st35', 'st36', 'st37', 'st38', 'st41'].map(code => `/tsubo/${code}`),
+  ].map(route => [route, ATLAS_LEARNING_REVISED_AT])),
 };
 export const SITE_UPDATES = [
+  { date: ATLAS_LEARNING_REVISED_AT, label: 'すねの比較図・要穴の分類・奇穴を追加', href: '/tsubo', text: '足三里・上巨虚・条口を一枚の図で見比べられます。要穴の分類から解説と一覧へ進めるようにし、奇穴の索引に太陽と印堂を掲載しました。' },
   { date: ACUPOINT_PAGE_REVISED_AT, label: '361のツボに名前の由来を追加', href: '/tsubo/li4#acupoint-name', text: 'ツボの場所の図に続いて、名前の由来、中国語での漢字の意味、声調付きのピンインを読めるようにしました。合谷の「谷」のように、ツボの場所と名前がどうつながるかを紹介します。' },
   { date: ACUPUNCTURE_RESEARCH.revisedAt, label: '鍼灸の安全性・口の乾燥・尿もれの研究を追加', href: ACUPUNCTURE_RESEARCH.href, text: '抗凝固薬を使う人の出血、放射線治療に伴う口の乾燥、尿もれの測り方を扱った研究を紹介します。膝の研究に英国とシンガポールの診療指針を加え、胸やけのガイドラインの出典も見直しました。' },
   { date: ACUPUNCTURE_RESEARCH.revisedAt, label: 'お灸・乳がん治療中の関節痛の研究解説を追加', href: ACUPUNCTURE_RESEARCH.href, text: '膝へのお灸で痛みとやけどを調べた試験や、乳がん治療中の関節痛を52週追った試験を紹介します。舌・脈・腹の観察や漢方の解説にも、原著で確認した研究を加えました。' },

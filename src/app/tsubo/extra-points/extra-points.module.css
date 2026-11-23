@@ -1,0 +1,332 @@
+.page {
+  --extra-accent: var(--tokiwa-green);
+  --extra-figure: #f3ebe0;
+  --extra-skin: #ead1bc;
+  --extra-line: #8c6652;
+  --extra-point: #9e4b20;
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 2.25rem);
+  max-width: 920px;
+}
+
+:global(.dark) .page {
+  --extra-accent: #b3d3c6;
+  --extra-figure: #2c3335;
+  --extra-skin: #d6b6a1;
+  --extra-line: #755744;
+}
+
+.page > :global(.atlas-text-action) {
+  justify-self: start;
+}
+
+.header {
+  padding: clamp(1rem, 3vw, 1.75rem);
+  border: 1px solid var(--border-washi);
+  border-block-start: 3px solid var(--extra-accent);
+  border-radius: var(--radius-card);
+  background: var(--bg-card);
+}
+
+.header h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.875rem, 5vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.header > p {
+  max-width: 42em;
+  margin-block-start: .5rem;
+  color: var(--text-secondary);
+}
+
+.identity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .25rem .875rem;
+}
+
+.header small,
+.cardCopy small {
+  display: inline-block;
+  margin-inline-start: .5em;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: .9375rem;
+  font-weight: 500;
+}
+
+.code {
+  display: inline-flex;
+  width: fit-content;
+  padding: .15rem .45rem;
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-tag);
+  color: var(--extra-accent);
+  font-size: .8125rem;
+  font-weight: 700;
+  letter-spacing: .035em;
+}
+
+.sectionTitle {
+  margin-block-end: .625rem;
+  color: var(--extra-accent);
+  font-size: clamp(1.25rem, 3vw, 1.625rem);
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.cards {
+  display: grid;
+  gap: .875rem;
+}
+
+.pointCard {
+  display: grid;
+  grid-template-columns: clamp(4.75rem, 22vw, 8rem) minmax(0, 1fr);
+  height: 100%;
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-card);
+  background: var(--bg-card);
+}
+
+.pointCard:hover {
+  border-color: var(--extra-accent);
+}
+
+.pointCard:hover h3 {
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
+.thumbnail {
+  display: grid;
+  align-items: center;
+  padding: .375rem;
+  border-start-start-radius: inherit;
+  border-end-start-radius: inherit;
+  background: var(--extra-figure);
+}
+
+.thumbnail .diagram {
+  width: 100%;
+  height: 7.25rem;
+}
+
+.cardCopy {
+  display: grid;
+  align-content: start;
+  gap: .375rem;
+  padding: .75rem clamp(.625rem, 2vw, 1rem);
+}
+
+.cardCopy h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.cardCopy p {
+  color: var(--text-secondary);
+  font-size: .9375rem;
+  line-height: 1.65;
+}
+
+.cardArrow {
+  justify-self: end;
+  color: var(--extra-accent);
+}
+
+.location {
+  display: grid;
+  gap: 1rem;
+}
+
+.figure {
+  overflow: clip;
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-card);
+  background: var(--extra-figure);
+}
+
+.figure .diagram {
+  width: 100%;
+  height: clamp(12.5rem, 55vw, 17rem);
+  padding: .5rem;
+}
+
+.figure figcaption {
+  padding: .5rem .875rem;
+  border-block-start: 1px solid var(--border-washi);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: .875rem;
+}
+
+.faceOutline {
+  fill: var(--extra-skin);
+  stroke: var(--extra-line);
+  stroke-width: 1.7;
+}
+
+.faceDetails {
+  fill: none;
+  stroke: var(--extra-line);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.65;
+}
+
+.guideLine {
+  fill: none;
+  stroke: #543d32;
+  stroke-dasharray: 3 2;
+  stroke-width: 1.4;
+}
+
+.pointHalo {
+  fill: #fff8f1;
+}
+
+.pointMark {
+  fill: var(--extra-point);
+  stroke: #763312;
+  stroke-width: 1.1;
+}
+
+.landmarkMark {
+  fill: #fff8f1;
+  stroke: #543d32;
+  stroke-width: 1.1;
+}
+
+.locationCopy {
+  display: grid;
+  align-content: center;
+  gap: 1rem;
+  padding: clamp(.875rem, 3vw, 1.5rem);
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-card);
+  background: var(--bg-card);
+}
+
+.position {
+  font-size: clamp(1.0625rem, 2.25vw, 1.1875rem);
+  font-weight: 600;
+  line-height: 1.75;
+}
+
+.key {
+  display: grid;
+  gap: .5rem;
+  padding-block-start: .75rem;
+  border-block-start: 1px solid var(--border-subtle);
+  font-size: .9375rem;
+}
+
+.key li {
+  display: flex;
+  align-items: baseline;
+  gap: .625rem;
+}
+
+.keyWhite,
+.keyOrange {
+  flex: none;
+  width: .7rem;
+  height: .7rem;
+  border: 1px solid #543d32;
+  border-radius: 50%;
+  background: #fff8f1;
+}
+
+.keyOrange {
+  border-color: #763312;
+  background: var(--extra-point);
+}
+
+.section {
+  padding-block-start: clamp(1rem, 3vw, 1.5rem);
+  border-block-start: 1px solid var(--border-washi);
+}
+
+.nearby {
+  display: grid;
+  gap: .625rem;
+}
+
+.nearby a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  gap: .5rem;
+  padding: .7rem .875rem;
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-control);
+  background: var(--bg-card);
+}
+
+.nearby a:hover {
+  border-color: var(--extra-accent);
+}
+
+.nearby small {
+  display: block;
+  color: var(--text-secondary);
+  font-size: .9375rem;
+}
+
+.nearby svg,
+.sources svg {
+  flex: none;
+  color: var(--extra-accent);
+}
+
+.nearbyCode {
+  color: var(--extra-accent);
+  font-size: .8125rem;
+}
+
+.classification {
+  margin-block: .5rem .75rem;
+}
+
+.sources li {
+  padding-block: .625rem;
+  border-block-end: 1px solid var(--border-subtle);
+}
+
+.sources a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  gap: .5rem;
+  color: var(--extra-accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
+.sources p,
+.revision {
+  color: var(--text-secondary);
+  font-size: .9375rem;
+}
+
+.revision {
+  margin-block-start: .625rem;
+}
+
+@media (min-width: 640px) {
+  .cards,
+  .nearby {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .location {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  }
+}

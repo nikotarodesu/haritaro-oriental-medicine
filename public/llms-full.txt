@@ -30,6 +30,8 @@
 - [はり太郎のツボ図鑑](https://www.haritaro.jp/tsubo): 合谷や足三里など全361経穴を、名前、読み、経穴コードで探せます。各ページに位置の図、WHOの該当ページ、注意事項を掲載しています。
 - [症状別ガイド](https://www.haritaro.jp/symptoms): 頭痛や腰痛など12の症状について、受診の目安、症状が始まった時刻や生活で困った動作の記録例、関連するツボを読めます。
 - [骨度寸法ガイド](https://www.haritaro.jp/tsubo/basics/bone-cun)
+- [要穴の分類](https://www.haritaro.jp/tsubo/basics/key-point-types): 原穴・絡穴・五輸穴などの意味と、分類ごとの経穴一覧を確認できます。
+- [奇穴の索引](https://www.haritaro.jp/tsubo/extra-points): 361経穴の一覧とは別に、太陽・印堂の場所を図で確認できます。
 - [経穴演習](https://www.haritaro.jp/tsubo/practice)
 - [経穴比較](https://www.haritaro.jp/tsubo/compare)
 
@@ -532,3 +534,7 @@
 - [天突（CV22）](https://www.haritaro.jp/tsubo/cv22)
 - [廉泉（CV23）](https://www.haritaro.jp/tsubo/cv23)
 - [承漿（CV24）](https://www.haritaro.jp/tsubo/cv24)
+
+### 奇穴の個別ページ
+- [印堂（EX-HN3）](https://www.haritaro.jp/tsubo/extra-points/yintang)
+- [太陽（EX-HN5）](https://www.haritaro.jp/tsubo/extra-points/taiyang)

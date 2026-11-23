@@ -30,12 +30,19 @@ import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
 import ClinicalPairsSection from "@/components/ClinicalPairsSection";
 import { getPointSearchTopic, normalizeSearchText } from "@/utils/search";
 import { prepareAcupointSearch, getAcupointMatchReason, matchesPrimaryJoint } from "@/utils/acupointSearch";
+import { getKeyPointFilterLabel, isAcupointInKeyPointType, KEY_POINT_FILTER_LABELS } from "@/data/tsubo/keyPointTypes";
 import { setAnalyticsDisabled } from "@/utils/analytics";
+import { EXTRA_POINTS } from "@/data/tsubo/extraPoints";
 
 type SortOption = "meridian" | "kana" | "detailed";
 type ViewMode = "grid" | "table";
 
 const PAGE_SIZE = 24;
+const CATEGORY_OPTIONS = ["すべて", ...KEY_POINT_FILTER_LABELS];
+const extraPointLookup = new Map(EXTRA_POINTS.flatMap(point =>
+  [point.name, point.kana, point.code, point.slug, ...point.alternateCodes]
+    .map(term => [normalizeSearchText(term).replace(/[-\s]/g, ""), point] as const),
+));
 const EXAMPLE_SEARCH_TERMS = ["合谷", "手首", "ひざ"];
 const ATLAS_INDEX_LINKS = [
   { href: "#illustrated-points", label: "部位別の索引" },
@@ -88,7 +95,7 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints }
       searchQuery: params.get("q") || "",
       selectedBodyPart: params.get("bodyPart") || DEFAULT_SELECTION.selectedBodyPart,
       selectedMeridian: params.get("meridian") || DEFAULT_SELECTION.selectedMeridian,
-      selectedCategory: params.get("category") || DEFAULT_SELECTION.selectedCategory,
+      selectedCategory: getKeyPointFilterLabel(params.get("category")) ?? DEFAULT_SELECTION.selectedCategory,
       onlyPublished: params.get("published") === "true",
       sortOption: sort === "kana" || sort === "detailed" ? sort : DEFAULT_FILTERS.sortOption,
       viewMode: params.get("view") === "table" ? "table" : "grid",
@@ -146,11 +153,6 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints }
     return ["すべて", ...MERIDIANS.map((m) => m.shortName)];
   }, []);
 
-  // 要穴リスト
-  const categoryOptions = useMemo(() => {
-    return ["すべて", "原穴", "絡穴", "郄穴", "募穴", "背部兪穴", "合穴", "四総穴", "八脈交会穴", "八会穴"];
-  }, []);
-
   const normalizedQuery = normalizeSearchText(searchQuery);
   const searchTopic = getPointSearchTopic(normalizedQuery);
 
@@ -163,7 +165,7 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints }
         if (selectedMeridian !== "すべて" && t.meridianShort !== selectedMeridian) return false;
         if (
           selectedCategory !== "すべて" &&
-          !t.categories.some((c) => c.includes(selectedCategory))
+          !isAcupointInKeyPointType(t.codeLower, selectedCategory)
         )
           return false;
 
@@ -231,6 +233,7 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints }
   };
 
   const hasSearchQuery = searchQuery.trim().length > 0;
+  const extraPoint = extraPointLookup.get(searchTopic.replace(/[-\s]/g, ""));
   const hasSelectionFilters = selectedBodyPart !== "すべて" || selectedMeridian !== "すべて" || selectedCategory !== "すべて" || onlyPublished;
 
   return (
@@ -277,6 +280,13 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints }
         <p id="tsubo-search-examples" className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
           名前・読み方・部位・番号で探せます。
         </p>
+        {extraPoint && (
+          <div className="rounded-lg border border-frame bg-panel-selected px-3">
+            <Link href={extraPoint.href} className="atlas-text-action">
+              奇穴の索引で{extraPoint.name}（{extraPoint.code}）を見る <ArrowRight size={15} aria-hidden="true" />
+            </Link>
+          </div>
+        )}
         <noscript><button type="submit" className="atlas-text-action">サイト内検索で調べる</button></noscript>
 
         <div className="tsubo-filter-toggles">
@@ -340,7 +350,7 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints }
                 要穴分類から探す：
               </span>
               <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                {categoryOptions.map((cat) => (
+                {CATEGORY_OPTIONS.map((cat) => (
                   <button
                     key={cat}
                     type="button"

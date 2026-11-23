@@ -1,6 +1,7 @@
 import { forearmWristCreaseY } from "./expanded/arms";
 import { headPoints } from "./expanded/head";
 import { footLandmarks } from "./footLandmarks";
+import { ATLAS_POINT_MARKERS } from "./markers";
 
 type Position = readonly [x: number, y: number];
 type Transform = { x: number; y: number; scaleX: number; scaleY: number };
@@ -13,6 +14,7 @@ export const comparisonTransforms = {
   palm: { x: 29, y: -72, scaleX: 0.84, scaleY: 0.84 },
   back: { x: 391, y: -72, scaleX: -0.84, scaleY: 0.84 },
   ankle: { x: 68, y: -12, scaleX: 0.84, scaleY: 0.84 },
+  shin: { x: 48, y: -12, scaleX: 1, scaleY: 1 },
 } as const satisfies Record<string, Transform>;
 
 function project(point: { x: number; y: number }, transform: Transform): Position {
@@ -28,14 +30,21 @@ type ComparisonPoint = {
 };
 
 export type NearbyComparison = {
-  id: "ear" | "wrist" | "ankle";
+  id: "ear" | "wrist" | "ankle" | "shin";
   region: string;
   figureLabel: string;
+  size?: { width: number; height: number };
+  referenceCodes?: readonly string[];
   points: readonly ComparisonPoint[];
 };
 
-const { ear, palm, back, ankle } = comparisonTransforms;
+const { ear, palm, back, ankle, shin } = comparisonTransforms;
 const wristProximalY = 208;
+const shinPoints = [
+  { code: "st36", button: [45, 101], leader: [111, 101], difference: "犢鼻のくぼみから下へ3寸。3穴のうち、最もひざに近い場所です。" },
+  { code: "st37", button: [249, 139], leader: [228, 139], difference: "犢鼻のくぼみから下へ6寸。足三里より足首側にあり、条口よりひざ側です。" },
+  { code: "st38", button: [45, 174], leader: [111, 174], difference: "犢鼻のくぼみから下へ8寸。くぼみと足首の前の中央を結ぶ線のちょうど中間です。" },
+] as const;
 
 export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
   {
@@ -69,8 +78,21 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
       { code: "lr4", position: project(footLandmarks.lr4, ankle), button: [249, 73], leader: [229, 73], difference: "内くるぶしの前で、足首を起こしたときに見えるすじの内くるぶし側です。" },
     ],
   },
+  {
+    id: "shin",
+    region: "すねの前",
+    figureLabel: "右脚を前から見た模式図。ひざの犢鼻から足首の解谿へ向かう線上に、上から足三里、上巨虚、条口が並びます。両端の白丸が目印です。",
+    size: { width: 344, height: 278 },
+    referenceCodes: ["st35", "st41"],
+    points: shinPoints.map(point => ({
+      ...point,
+      position: project(ATLAS_POINT_MARKERS[point.code]!, shin),
+    })),
+  },
 ];
 
 export function getNearbyComparison(code: string) {
-  return NEARBY_COMPARISONS.find(group => group.points.some(point => point.code === code));
+  return NEARBY_COMPARISONS.find(group =>
+    group.referenceCodes?.includes(code) || group.points.some(point => point.code === code),
+  );
 }

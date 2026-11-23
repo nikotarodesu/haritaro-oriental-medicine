@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { getAcupointKeyPointTypes } from "@/data/tsubo/keyPointTypes";
 import type { AcupointDetail } from "@/data/tsubo/types";
+import { AcupointKeyPointLinks } from "./AcupointArticleLinks";
 
 export default function AcupointArticleHeader({ point, lead, warning }: {
   point: AcupointDetail;
@@ -40,6 +42,7 @@ export function AcupointPointDetails({ point, meridianReading }: {
       <dl>
         <div><dt>所属経絡の読み</dt><dd>{meridianReading}</dd></div>
         {point.aliases?.length ? <div><dt>別名・表記</dt><dd>{point.aliases.join("、")}</dd></div> : null}
+        <AcupointKeyPointLinks types={getAcupointKeyPointTypes(point.codeLower)} />
       </dl>
     </details>
   );

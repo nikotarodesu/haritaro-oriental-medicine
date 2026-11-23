@@ -18,6 +18,8 @@ import { REFLECTION_CASES } from "@/data/learningReflectionCatalog";
 import { CLINICAL_COMPLAINTS } from "@/data/clinicalWorkflow";
 import type { SearchResultItem } from "@/types/searchCatalog";
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH, acupunctureResearchHref, NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
+import { EXTRA_POINTS, EXTRA_POINTS_PATH } from "@/data/tsubo/extraPoints";
+import { KEY_POINT_TYPES_GUIDE } from "@/data/tsubo/keyPointTypes";
 
 const guideLookupTerms = ["鍼灸", "鍼灸入門", "はじめての鍼灸", "はり", "鍼", "灸", "お灸", "はりとお灸", "はり・お灸・ツボ押しの違い", "ツボ押しとの違い"];
 const nineNeedlesLookupTerms = ["九鍼", "古代九鍼", "古代の九鍼", "九鍼十二原", "九鍼十二原篇"];
@@ -102,6 +104,26 @@ const STATIC_TOOLS: SearchResultItem[] = [
     badge: "解剖基礎",
     url: "/tsubo/basics/bone-cun",
     tags: ["骨度法", "寸", "取穴", "解剖", "基準"],
+  },
+  {
+    id: "tool-key-point-types",
+    type: "tool",
+    title: "要穴の分類と意味",
+    subtitle: "原穴・絡穴・五輸穴など、分類の違いと該当するツボを調べる",
+    badge: "ツボ図鑑",
+    url: KEY_POINT_TYPES_GUIDE,
+    exactTerms: ["要穴", "要穴の分類"],
+    tags: ["要穴", "経穴", "分類", "原穴", "絡穴", "五輸穴", "八脈交会穴"],
+  },
+  {
+    id: "tool-extra-points",
+    type: "tool",
+    title: "奇穴の索引",
+    subtitle: "太陽・印堂の場所と目印を図で見る",
+    badge: "ツボ図鑑",
+    url: EXTRA_POINTS_PATH,
+    exactTerms: ["奇穴", "経外奇穴"],
+    tags: ["奇穴", "経外奇穴", "経穴"],
   },
   {
     id: "tool-kikei",
@@ -246,6 +268,17 @@ export function buildSearchCatalog(): SearchResultItem[] {
         ],
       });
     });
+    list.push(...EXTRA_POINTS.map((point): SearchResultItem => ({
+      id: `extra-point-${point.slug}`,
+      type: "acupoint",
+      title: `${point.name}（${point.code}）`,
+      subtitle: point.description,
+      badge: "奇穴",
+      url: point.href,
+      exactCode: point.code,
+      exactTerms: [point.name, point.kana, point.slug, point.pinyin, ...point.alternateCodes],
+      tags: [point.name, point.kana, point.slug, point.pinyin, point.code, ...point.alternateCodes, "奇穴"],
+    })));
 
     // 5. 古典原典条文（CLASSICAL_TEXTS）
     CLASSICAL_TEXTS.forEach((c) => {

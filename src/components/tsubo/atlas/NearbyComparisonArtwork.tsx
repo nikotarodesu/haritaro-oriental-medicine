@@ -1,5 +1,7 @@
 import { achillesSideOutline, footSideOutline, medialFootLandmarks } from "@/data/tsubo/atlas/footLandmarks";
+import { shinEndpoints } from "@/data/tsubo/atlas/legLandmarks";
 import { comparisonTransforms, type NearbyComparison } from "@/data/tsubo/atlas/nearbyComparisons";
+import { LowerLegArtwork } from "./LowerLegRegion";
 import { armViews } from "./expanded/armViews";
 import { headViews } from "./expanded/headViews";
 
@@ -73,8 +75,36 @@ function AnkleArtwork() {
   );
 }
 
+function ShinArtwork() {
+  const { knee, ankle } = shinEndpoints;
+  const { x, y } = comparisonTransforms.shin;
+  const marks = Array.from({ length: 15 }, (_, index) => {
+    const fraction = (index + 1) / 16;
+    const markX = knee.x + (ankle.x - knee.x) * fraction;
+    const markY = knee.y + (ankle.y - knee.y) * fraction;
+    return `M${markX - 2.5} ${markY}h5`;
+  }).join(" ");
+
+  return (
+    <>
+      <g transform={transformFor("shin")}>
+        <LowerLegArtwork />
+        <path className="atlas-comparison-landmark" d={`M${knee.x} ${knee.y}L${ankle.x} ${ankle.y} ${marks}`} />
+        <circle className="atlas-comparison-bone" cx={knee.x} cy={knee.y} r="4.5" data-comparison-reference="st35" />
+        <circle className="atlas-comparison-bone" cx={ankle.x} cy={ankle.y} r="4.5" data-comparison-reference="st41" />
+      </g>
+      <path className="atlas-comparison-detail" d={`M132 62H149L${knee.x + x - 5} ${knee.y + y}M${ankle.x + x + 5} ${ankle.y + y}H211`} />
+      <text x="18" y="45">ひざ下のくぼみ</text>
+      <text x="18" y="63">犢鼻（ST35）</text>
+      <text x="321" y="231" textAnchor="end">足首の前の中央</text>
+      <text x="321" y="249" textAnchor="end">解谿（ST41）</text>
+    </>
+  );
+}
+
 export default function NearbyComparisonArtwork({ id }: { id: NearbyComparison["id"] }) {
   if (id === "ear") return <EarOutline />;
   if (id === "wrist") return <WristArtwork />;
+  if (id === "shin") return <ShinArtwork />;
   return <AnkleArtwork />;
 }

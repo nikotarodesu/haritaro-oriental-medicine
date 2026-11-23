@@ -7,6 +7,7 @@ const root = path.resolve(__dirname, '..');
 function generateFullGuide() {
   const load = createDataLoader();
   const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
+  const { EXTRA_POINTS } = load('src/data/tsubo/extraPoints');
   const { SYMPTOMS } = load('src/data/symptomData');
   const { PUBLIC_SYMPTOM_CONTENT } = load('src/data/publicSymptoms');
   const { ACUPUNCTURE_RESEARCH_ARTICLES } = load('src/data/acupunctureResearch/index');
@@ -37,6 +38,8 @@ function generateFullGuide() {
     lines.push('', `#### ${points[0].meridian}（${points.length}穴）`);
     for (const point of points) lines.push(`- [${point.name}（${point.code}）](https://www.haritaro.jp/tsubo/${point.codeLower})`);
   }
+  lines.push('', '### 奇穴の個別ページ');
+  for (const point of EXTRA_POINTS) lines.push(`- [${point.name}（${point.code}）](https://www.haritaro.jp${point.href})`);
   return lines.join('\n') + '\n';
 }
 

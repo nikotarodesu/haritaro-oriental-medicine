@@ -5,9 +5,7 @@ import { legLandmarks, outerShinAnkle, shinEndpoints, tiaokouReference } from "@
 const { knee: kneeLandmark, ankle: ankleLandmark } = shinEndpoints;
 const outerMuscleEdge = legLandmarks.st40;
 
-export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
-  const showOuterEdge = marker.legCode === "st40";
-
+export function LowerLegArtwork() {
   return (
     <>
       <path
@@ -71,7 +69,16 @@ export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
         stroke="#B86A38"
         strokeWidth="2"
       />
+    </>
+  );
+}
 
+export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
+  const showOuterEdge = marker.legCode === "st40";
+
+  return (
+    <>
+      <LowerLegArtwork />
       <g fill="none" strokeWidth="1.4" strokeLinejoin="round" strokeLinecap="round">
         <line
           x1={kneeLandmark.x}

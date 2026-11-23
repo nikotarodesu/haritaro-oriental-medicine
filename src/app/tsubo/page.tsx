@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { MERIDIANS, ALL_ACUPOINTS } from "@/data/tsubo";
-import { BookOpen, FlaskConical, MapPin, Ruler, ShieldCheck } from "lucide-react";
+import { BookOpen, FlaskConical, ListFilter, MapPin, MapPinned, Ruler, ShieldCheck } from "lucide-react";
 import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
@@ -10,6 +10,8 @@ import { collectionPageJsonLd } from "@/config/seo";
 import { ATLAS_STUDIES } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
 import { ACUPOINT_NAME_INDEX_PATH } from "@/data/tsubo/names/characterIndex";
+import { EXTRA_POINTS_PATH } from "@/data/tsubo/extraPoints";
+import { KEY_POINT_TYPES_GUIDE } from "@/data/tsubo/keyPointTypes";
 
 const regions = [...new Set(ALL_ACUPOINTS.map(point => point.bodyPart))].map(region => ({
   region, points: ALL_ACUPOINTS.filter(point => point.bodyPart === region),
@@ -48,7 +50,7 @@ export default function TsuboPage() {
         <AtlasOverviewArt />
       </header>
 
-      <TsuboInteractiveClient relatedGuides={guideLinks} featuredPoints={
+      <TsuboInteractiveClient relatedGuides={guideLinks} featuredPoints={<>
         <nav aria-label="代表的なツボ" className="atlas-directory-featured">
           <h2>代表的なツボ</h2>
           <ul>
@@ -57,7 +59,11 @@ export default function TsuboPage() {
             ))}
           </ul>
         </nav>
-      } />
+        <nav aria-label="要穴と奇穴の索引" className="atlas-directory-actions">
+          <Link href={KEY_POINT_TYPES_GUIDE} className="atlas-text-action"><ListFilter size={16} aria-hidden="true" />要穴の分類</Link>
+          <Link href={EXTRA_POINTS_PATH} className="atlas-text-action"><MapPinned size={16} aria-hidden="true" />奇穴（太陽・印堂）</Link>
+        </nav>
+      </>} />
 
       <details className="atlas-disclosure atlas-region-index">
         <summary>ほかの代表的なツボ</summary>
