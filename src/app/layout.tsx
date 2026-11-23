@@ -29,6 +29,7 @@ const notoSansJP = Noto_Sans_JP({
   variable: "--font-noto-sans",
   subsets: ["latin"],
   weight: "variable",
+  preload: false,
   display: "swap",
 });
 

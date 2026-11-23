@@ -41,9 +41,13 @@
   scrollbar-color: var(--border-washi) transparent;
 }
 
-/* Tailwind utilities and base typography use the same self-hosted Japanese fonts. */
+/* Reuse the device's Japanese sans serif when it covers the text. */
+:root {
+  --font-japanese-sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", Meiryo, "Noto Sans CJK JP", var(--font-noto-sans), sans-serif;
+}
+
 @theme inline {
-  --font-sans: var(--font-noto-sans), "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --font-sans: var(--font-japanese-sans);
   --font-serif: var(--font-noto-serif), "Hiragino Mincho ProN", "Yu Mincho", serif;
   --color-page: var(--bg-washi);
   --color-panel: var(--bg-card);
@@ -201,7 +205,7 @@
   body {
     background-color: var(--bg-washi);
     color: var(--text-sumi);
-    font-family: var(--font-noto-sans), -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    font-family: var(--font-japanese-sans);
     font-feature-settings: "palt" 1;
     -webkit-font-smoothing: antialiased;
     line-height: 1.7;
