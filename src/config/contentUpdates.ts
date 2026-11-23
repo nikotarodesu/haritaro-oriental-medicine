@@ -266,7 +266,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(kneeStudyPoints.map(code => [`/tsubo/${code}`, SYMPTOM_RESEARCH_REVISED_AT])),
   ...Object.fromEntries(correctedAtlasStudyPoints.map(code => [`/tsubo/${code}`, ACUPUNCTURE_RESEARCH.revisedAt])),
   ...Object.fromEntries([
-    '/updates', '/learn', ACUPUNCTURE_GUIDE.href, '/safety', '/library', '/tsubo',
+    '/updates', '/learn', ACUPUNCTURE_GUIDE.href, '/safety', '/library', '/tsubo', '/tsubo/compare',
     '/tsubo/pc6', '/tsubo/gv20', '/tsubo/cv4', '/tsubo/cv12',
     '/clinical', '/diagnosis', '/simulator', '/clinical/symptoms/headache',
     '/learn/lectures/reading-evidence', '/curriculum/lecture-treatment-9',
@@ -317,7 +317,7 @@ export const SITE_UPDATES = [
   { date: '2026-10-05', label: 'スマホの表示と操作を整理', href: '/', text: 'スマホのトップで文章と検索欄を読みやすくしました。文字を拡大したときにもメニューを開きやすくしました。' },
   { date: '2026-10-04', label: '所見から記録・再評価へ', href: '/clinical', text: '臨床演習の入口と6つの主訴別ガイドを追加しました。講義から見立てを見直す演習へ進めるようにしました。' },
   { date: '2026-10-04', label: '途中から続ける・目的から探す', href: '/articles', text: '記事を前に読んだ節から再開できるようにしました。検索結果の種類と件数が分かるようにし、スマホのメニューを扱いやすくしました。' },
-  { date: '2026-10-04', label: '考え方から復習・記録へ', href: '/learn/review#learning-focus-review', text: '症例で判断に迷ったとき、関連する解説や問題を開けるようにしました。同じコースで続けて学べるように案内を整えました。' },
+  { date: '2026-10-04', label: '考え方から復習・記録へ', href: '/learn/review', text: '症例で判断に迷ったとき、関連する解説や問題を開けるようにしました。同じコースで続けて学べるように案内を整えました。' },
   { date: '2026-10-03', label: '目的別の学習コース', href: '/learn/courses', text: '陰陽・五行・気血津液の3コースを追加しました。途中の講義や、間違えた問題から学び直せるようにしました。' },
   { date: '2026-10-03', label: '検索と利用案内', href: '/learn', text: '前の検索語を使って探し直したり、ツボの絞り込みを解除したりしやすくしました。教材のどこまで確認できたかの案内も見直しました。' },
   { date: '2026-10-03', label: '図解と記事の回遊', href: '/articles', text: '12の記事と陰陽の4講義に、合わせて20の図を加えました。テーマから探したり、関連記事へ進んだりしやすくしました。' },

@@ -88,7 +88,8 @@ for (const pathname of ['/tsubo/sp11','/tsubo/pc7','/tsubo/bl57']) {
   assert.equal(dateAt(pathname), ACUPOINT_PAGE_REVISED_AT, pathname + ' shows the shared acupoint release date');
 }
 assert.equal(dateAt('/curriculum'),'2026-11-18');
-for(const pathname of ['/','/about','/articles','/cases','/glossary','/learn/essentials','/learn/review','/practice/haiketsu','/symptoms','/tsubo/compare']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
+for(const pathname of ['/','/about','/articles','/cases','/glossary','/learn/essentials','/learn/review','/practice/haiketsu','/symptoms']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
+assert.equal(dateAt('/tsubo/compare'), '2026-11-23', 'Comparison links to recently researched acupoints');
 for (const pathname of ['/diagnosis', '/clinical', '/simulator', '/clinical/symptoms/headache', '/updates', '/learn', '/learn/acupuncture', '/learn/acupuncture/research', '/library', '/safety', '/tsubo', '/tsubo/cv21', '/tsubo/te2', '/symptoms/headache-stiff-neck', '/symptoms/dizziness-tinnitus', '/symptoms/knee-joint-pain', '/tsubo/sp6', '/tsubo/st36']) assert.equal(dateAt(pathname), '2026-11-23', pathname);
 const { ACUPUNCTURE_RESEARCH, acupunctureResearchHref } = load('src/config/acupunctureLearning');
 const { ACUPUNCTURE_RESEARCH_ARTICLES } = load('src/data/acupunctureResearch');

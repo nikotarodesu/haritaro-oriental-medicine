@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo, useEffect, Suspense } from "react";
 import Link from "next/link";
-import PageIntro from "@/components/design/PageIntro";
 import { useSearchParams } from "next/navigation";
 import { 
   Search, 
@@ -133,21 +132,7 @@ function TsuboCompareContent({ points }: CompareProps) {
   };
 
   return (
-    <div className="tsubo-compare-page min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
-      <div className="page-layout page-layout--intro print:hidden">
-        <PageIntro compact eyebrow="位置・分類を並べて確認" title="経穴を比べる" description="収録した32穴から2〜3穴を選び、ツボの位置や分類、安全上の注意を比べます。" art="points">
-            <div className="page-actions">
-              <button
-                onClick={() => window.print()}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] text-xs font-bold hover:bg-[#FAF8F5] transition-colors"
-              >
-                <Printer className="w-4 h-4 text-blue-600" />
-                <span>比較表を印刷</span>
-              </button>
-            </div>
-        </PageIntro>
-      </div>
-
+    <>
       <div className="page-layout page-layout--continuation space-y-8">
         
         {/* 比較プリセット */}
@@ -503,6 +488,21 @@ function TsuboCompareContent({ points }: CompareProps) {
         </div>
       )}
 
+    </>
+  );
+}
+
+export function ComparePrintButton() {
+  return (
+    <div className="page-actions">
+      <button
+        type="button"
+        onClick={() => window.print()}
+        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-[#1A2530] border border-[#E5DEC9] dark:border-[#2A3B4A] text-xs font-bold hover:bg-[#FAF8F5] transition-colors"
+      >
+        <Printer aria-hidden="true" className="w-4 h-4 text-blue-600" />
+        <span>比較表を印刷</span>
+      </button>
     </div>
   );
 }

@@ -1,13 +1,14 @@
 import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
+import PageIntro from "@/components/design/PageIntro";
 import { heguAtlasReading } from "@/components/tsubo/HeguAtlasPreview";
+import { ALL_ACUPOINTS, DETAILED_ACUPOINTS } from "@/data/tsubo";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
-import { DETAILED_ACUPOINTS } from "@/data/tsubo/detailedPoints";
-import { TSUBOS } from "@/data/tsuboData";
+import { getAcupointStudies } from "@/data/tsubo/atlas/evidence";
 import type { Metadata } from "next";
-import CompareClient, { type ComparisonPoint } from "./CompareClient";
+import CompareClient, { ComparePrintButton, type ComparisonPoint } from "./CompareClient";
 
 const title = seriesPageTitle("経穴比較ツール｜ツボの位置・経絡・注意点", "dictionary");
-const description = "経穴を2〜3穴並べて、位置、所属経絡、要穴の分類、安全上の注意、伝統での位置づけを比較できます。";
+const description = `ツボ図鑑の全${ALL_ACUPOINTS.length}穴から経穴を2〜3穴選び、位置、経絡、分類、安全上の注意を比較できます。研究を掲載した経穴は図鑑の出典へ進めます。`;
 
 export const metadata: Metadata = {
   title,
@@ -18,30 +19,29 @@ export const metadata: Metadata = {
   ...pageSocialMetadata(title, description, "/tsubo/compare"),
 };
 
-const comparisonPoints = TSUBOS.map((point): ComparisonPoint => {
-  const { id, code, name, kana, romaji, meridian, meridianShort, bodyPart, locationSimple, clinicalNote } = point;
-  const slug = code.toLowerCase();
-  const article = ATLAS_ARTICLES[slug];
+const comparisonPoints = ALL_ACUPOINTS.map((point): ComparisonPoint => {
+  const { legacyId, code, codeLower, name, kana, romaji, meridian, meridianShort, bodyPart, locationSimple, clinicalNote, categories } = point;
+  const article = ATLAS_ARTICLES[codeLower];
   const reading = code === "LI4" ? heguAtlasReading : {
     traditional: article.traditional[0],
     caution: article.safetyWarning ?? article.cautions[0],
   };
   return {
-    id, code, name, kana, romaji, meridian, meridianShort, bodyPart, locationSimple, clinicalNote,
-    category: [...new Set(point.category)],
-    hasResearch: Boolean(DETAILED_ACUPOINTS[slug]?.researchEvidence),
+    id: legacyId, code, name, kana, romaji, meridian, meridianShort, bodyPart, locationSimple, clinicalNote,
+    category: [...new Set(categories)],
+    hasResearch: getAcupointStudies(codeLower).length > 0 || Boolean(DETAILED_ACUPOINTS[codeLower]?.researchEvidence),
     ...reading,
   };
 });
 
 export default function TsuboComparePage() {
   return (
-    <div className="min-h-screen">
-      {/* 検索エンジン・アクセシビリティ用 静的SSRヘッダー */}
-      <header className="sr-only">
-        <p>{title}</p>
-        <p>{description}</p>
-      </header>
+    <div className="tsubo-compare-page min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
+      <div className="page-layout page-layout--intro print:hidden">
+        <PageIntro compact eyebrow="位置・分類を並べて確認" title="経穴を比べる" description={`収録した${comparisonPoints.length}穴から2〜3穴を選び、ツボの位置や分類、安全上の注意を比べます。`} art="points">
+          <ComparePrintButton />
+        </PageIntro>
+      </div>
       <CompareClient points={comparisonPoints} />
     </div>
   );
