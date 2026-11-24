@@ -376,7 +376,7 @@
   .mobile-nav-item { display: flex; min-width: 0; min-height: 60px; flex-direction: column; align-items: center; justify-content: center; padding: 6px 2px; border-radius: var(--radius-tag); gap: 4px; color: var(--text-secondary); font-size: .75rem; line-height: 1.4; text-align: center; }
   .mobile-nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
   .mobile-nav-item > span { max-width: 100%; overflow-wrap: anywhere; }
-  .mobile-nav-item[aria-current="page"], .mobile-nav-item[aria-expanded="true"] { color: var(--accent-readable); font-weight: 700; background: var(--accent-soft); box-shadow: inset 0 2px var(--accent-readable); }
+  .mobile-nav-item[aria-current], .mobile-nav-item[aria-expanded="true"] { color: var(--accent-readable); font-weight: 700; background: var(--accent-soft); box-shadow: inset 0 2px var(--accent-readable); }
   .mobile-nav-item:focus-visible { outline: 2px solid var(--accent-readable); outline-offset: -2px; }
   .nav-more-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12em), 1fr)); gap: 8px; }
   .site-overlay { top: var(--visual-viewport-top, 0px); height: var(--visual-viewport-height, 100dvh); bottom: auto; }

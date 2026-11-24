@@ -184,7 +184,7 @@ export default function NavCustomizeModal({
                   <span>標準</span>
                 </div>
                 <div className="text-sm text-[#59615D] dark:text-[#AFBDC8] mt-0.5 leading-relaxed">
-                  ツボ図鑑・症状・東洋医学・検索
+                  {NAV_PRESETS.standard.description}
                 </div>
               </button>
 

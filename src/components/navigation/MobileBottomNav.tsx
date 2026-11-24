@@ -4,7 +4,7 @@ import { Suspense, useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { MoreHorizontal } from "lucide-react";
-import { ALL_NAV_ITEMS, loadNavUserConfig, DEFAULT_NAV_CONFIG, NavUserConfig, isNavigationItemActive } from "@/config/navigationItems";
+import { ALL_NAV_ITEMS, loadNavUserConfig, DEFAULT_NAV_CONFIG, type NavUserConfig, getCurrentBottomNavItem } from "@/config/navigationItems";
 import { useViewportLayout } from "@/hooks/useViewportLayout";
 import NavCustomizeModal from "./NavCustomizeModal";
 import { SITE_MENU_ID, SITE_MENU_STATE_EVENT, SITE_MENU_TOGGLE_EVENT, NAV_CUSTOMIZE_EVENT } from "@/utils/siteMenu";
@@ -65,6 +65,7 @@ function MobileBottomNavContent() {
   }, [refreshConfig]);
 
   const handleOpenSearch = () => window.dispatchEvent(new CustomEvent("haritaro:open-search"));
+  const currentItem = getCurrentBottomNavItem(config.items, pathname, searchParams);
   return <>
     <nav ref={navRef} aria-label="モバイル下部ナビゲーション"
       className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-40 border-t border-[var(--border-washi)] bg-[var(--bg-card)]/95 backdrop-blur-md lg:hidden print:hidden"
@@ -73,10 +74,11 @@ function MobileBottomNavContent() {
         {config.items.map((itemId, index) => {
           const item = ALL_NAV_ITEMS[itemId] || ALL_NAV_ITEMS.home;
           const Icon = item.icon;
-          const active = isNavigationItemActive(item.id, pathname, searchParams);
+          const active = currentItem === item.id;
+          const current = active ? (pathname === item.href.split(/[?#]/)[0] ? "page" : "location") : undefined;
           return item.isAction
             ? <button key={item.id + index} type="button" onClick={handleOpenSearch} className="mobile-nav-item" aria-label={item.label} aria-haspopup="dialog"><Icon aria-hidden="true" /><span>{item.shortLabel}</span></button>
-            : <Link key={item.id + index} href={item.href} className="mobile-nav-item" aria-label={item.label} aria-current={active ? "page" : undefined}><Icon aria-hidden="true" className={active ? "stroke-[2.5]" : "stroke-2"} /><span>{item.shortLabel}</span></Link>;
+            : <Link key={item.id + index} href={item.href} className="mobile-nav-item" aria-label={item.label} aria-current={current}><Icon aria-hidden="true" className={active ? "stroke-[2.5]" : "stroke-2"} /><span>{item.shortLabel}</span></Link>;
         })}
         <button id="mobile-more-trigger" type="button" onClick={() => window.dispatchEvent(new CustomEvent(SITE_MENU_TOGGLE_EVENT, { detail: { triggerId: "mobile-more-trigger" } }))} className="mobile-nav-item" aria-label={isMenuOpen ? "メニューを閉じる" : "その他メニューを開く"} aria-controls={SITE_MENU_ID} aria-expanded={isMenuOpen}>
           <MoreHorizontal aria-hidden="true" /><span>その他</span>

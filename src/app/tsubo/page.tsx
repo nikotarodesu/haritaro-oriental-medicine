@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { MERIDIANS, ALL_ACUPOINTS } from "@/data/tsubo";
-import { BookOpen, FlaskConical, ListFilter, MapPin, MapPinned, Ruler, ShieldCheck } from "lucide-react";
+import { BookOpen, FlaskConical, ListFilter, MapPinned, Ruler, ShieldCheck } from "lucide-react";
 import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
@@ -29,7 +29,6 @@ const DESCRIPTION = "361のツボを名前・部位・経絡から探せます�
 export default function TsuboPage() {
   const guideLinks = (
     <nav aria-label="ツボ図鑑の資料とガイド" className="atlas-directory-actions atlas-directory-guides">
-      <Link href="/symptoms" className="atlas-text-action"><MapPin size={17} aria-hidden="true" />症状から探す</Link>
       <Link href={ACUPOINT_NAME_INDEX_PATH} className="atlas-text-action">漢字から探す</Link>
       <Link href="/tsubo/basics/bone-cun" className="atlas-text-action"><Ruler size={17} aria-hidden="true" />寸の測り方</Link>
       <Link href={ACUPUNCTURE_GUIDE.href} className="atlas-text-action"><BookOpen size={17} aria-hidden="true" />{ACUPUNCTURE_GUIDE.label}</Link>
@@ -64,7 +63,8 @@ export default function TsuboPage() {
           <Link href={KEY_POINT_TYPES_GUIDE} className="atlas-text-action"><ListFilter size={16} aria-hidden="true" />要穴の分類</Link>
           <Link href={EXTRA_POINTS_PATH} className="atlas-text-action"><MapPinned size={16} aria-hidden="true" />奇穴（太陽・印堂）</Link>
         </nav>
-        <section id="nearby-comparisons" className="atlas-target space-y-2" aria-labelledby="nearby-comparisons-title">
+      </>} nearbyComparisons={
+        <section id="nearby-comparisons" tabIndex={-1} className="atlas-target space-y-2" aria-labelledby="nearby-comparisons-title">
           <h2 id="nearby-comparisons-title" className="atlas-section-title">近いツボを比べる</h2>
           <p className="atlas-muted text-sm">図で場所の違いを見たら、1問で見分け方を確認できます。</p>
           <ul className="grid grid-cols-2 gap-2 lg:grid-cols-3">
@@ -78,7 +78,7 @@ export default function TsuboPage() {
             ))}
           </ul>
         </section>
-      </>} />
+      } />
 
       <details className="atlas-disclosure atlas-region-index">
         <summary>ほかの代表的なツボ</summary>

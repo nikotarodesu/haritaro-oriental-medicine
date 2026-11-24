@@ -74,7 +74,8 @@ function dictionary(params = '') {
     return require(id);
   } }, { filename });
   let tree;
-  function render() { cursor = 0; tree = exported.default(); return tree; }
+  const nearbyComparisons = React.createElement('section', { id: 'nearby-comparisons' });
+  function render() { cursor = 0; tree = exported.default({ nearbyComparisons }); return tree; }
   function restore() {
     nodes(tree).find(node => typeof node.props?.restore === 'function').props.restore(location.searchParams.toString());
     render();
@@ -89,6 +90,12 @@ function dictionary(params = '') {
     locationPreview() { return text(nodes(tree).find(node => node.props?.className === 'atlas-result-location')); },
     url: () => location.href,
     hasSearchForm: () => nodes(tree).some(node => node.type === 'form' && node.props.action === '/search'),
+    searchLinks: () => nodes(nodes(tree).find(node => node.type === 'form')).filter(node => node.type === 'a').map(node => node.props.href),
+    comparisonFollowsResults() {
+      const elements = nodes(tree);
+      assert.equal(elements.filter(node => node.props?.id === 'nearby-comparisons').length, 1);
+      return elements.findIndex(node => node.props?.id === 'nearby-comparisons') > elements.findIndex(node => node.props?.id === 'tsubo-list');
+    },
     text: () => text(tree),
   };
 }
@@ -96,6 +103,8 @@ function dictionary(params = '') {
 const initial = dictionary();
 assert.equal(initial.resultCodes().length, 24, 'The initial card list renders independently of the URL observer');
 assert(initial.hasSearchForm(), 'Native search remains available before JavaScript starts');
+for (const href of ['#nearby-comparisons', '/symptoms', '/tsubo/compare']) assert(initial.searchLinks().includes(href), href);
+assert(!initial.comparisonFollowsResults(), 'The comparison index is near the search form while browsing');
 const firstPoint = points.find(point => point.code === initial.resultCodes()[0]);
 const firstStop = firstPoint.locationSimple.indexOf('。');
 assert(firstStop >= 0 && firstStop < firstPoint.locationSimple.length - 1, 'The reference card has multiple location sentences');
@@ -108,6 +117,8 @@ for (const query of ['ゴウコク', 'ｺﾞｳｺｸ', 'ＬＩ ４', 'ごうこ
 }
 const restored = dictionary('q=' + encodeURIComponent('ﾀｲｼｮｳ'));
 assert.deepEqual(restored.resultCodes(), ['LR3'], 'An existing search bookmark accepts half-width kana');
+assert(restored.comparisonFollowsResults(), 'A filtered list shows results before the comparison index');
+assert(restored.searchLinks().includes('#nearby-comparisons'), 'The comparison link still works after a search');
 const filtered = dictionary('meridian=' + encodeURIComponent('肝経'));
 filtered.change('ｺﾞｳｺｸ'); assert.deepEqual(filtered.resultCodes(), [], 'A reading match must not bypass a selected meridian');
 const secondPage = dictionary('meridian=' + encodeURIComponent('胃経') + '&page=2');

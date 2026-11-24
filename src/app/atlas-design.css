@@ -612,6 +612,7 @@
   text-underline-offset: .2em;
 }
 .atlas-compare-shortcut:hover { text-decoration-thickness: 2px; }
+.atlas-compare-shortcut svg { flex-shrink: 0; }
 .atlas-directory-featured { display: grid; align-items: center; gap: .375rem .9rem; }
 .atlas-directory-featured h2 { font-size: .875rem; font-weight: 700; }
 .atlas-directory-featured ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .375rem; }

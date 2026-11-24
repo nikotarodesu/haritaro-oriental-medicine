@@ -1,5 +1,6 @@
 import { 
   Home, 
+  ClipboardPenLine,
   GraduationCap, 
   RotateCcw, 
   Award, 
@@ -47,7 +48,7 @@ export interface NavItemDefinition {
 
 export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   clinical: {
-    id: "clinical", label: "臨床演習", shortLabel: "臨床", description: "症例・配穴の演習と主訴別ガイド", icon: Home, href: "/clinical",
+    id: "clinical", label: "臨床演習", shortLabel: "臨床", description: "症例・配穴の演習と主訴別ガイド", icon: ClipboardPenLine, href: "/clinical",
   },
   clinical_guides: {
     id: "clinical_guides", label: "主訴別ガイド", shortLabel: "主訴", description: "主訴ごとに確認したい項目を調べる", icon: BookOpen, href: "/clinical#chief-complaints",
@@ -89,8 +90,8 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
   tsubo: {
     id: "tsubo",
-    label: "経穴辞典",
-    shortLabel: "経穴",
+    label: "ツボ図鑑",
+    shortLabel: "ツボ図鑑",
     description: "全361穴のWHO標準取穴と解剖注意点",
     icon: MapPin,
     href: "/tsubo",
@@ -213,13 +214,24 @@ export function isNavigationItemActive(id: NavItemId, pathname: string, searchPa
   return pathname.startsWith(ALL_NAV_ITEMS[id].href.split(/[?#]/)[0]);
 }
 
+const sectionShortcuts = { dictionary: "tsubo", learn: "curriculum", clinical: "clinical" } as const;
+
+export function getCurrentBottomNavItem(items: readonly NavItemId[], pathname: string, searchParams?: Pick<URLSearchParams, "get">) {
+  const selected = items.find(id => isNavigationItemActive(id, pathname, searchParams));
+  if (selected) return selected;
+
+  const section = getNavigationSection(pathname);
+  const shortcut = section ? sectionShortcuts[section] : undefined;
+  return shortcut && items.includes(shortcut) ? shortcut : undefined;
+}
+
 export type NavPresetType = "standard" | "student" | "clinician";
 
 export const NAV_PRESETS: Record<NavPresetType, { name: string; description: string; items: [NavItemId, NavItemId, NavItemId, NavItemId] }> = {
   standard: {
     name: "標準セット",
-    description: "ツボ図鑑、症状、東洋医学と横断検索",
-    items: ["tsubo", "symptoms", "curriculum", "search"],
+    description: "ツボ図鑑・東洋医学・臨床演習・検索",
+    items: ["tsubo", "curriculum", "clinical", "search"],
   },
   student: {
     name: "学生・学習者セット",
@@ -246,8 +258,11 @@ export const DEFAULT_NAV_CONFIG: NavUserConfig = {
   version: 1,
   items: NAV_PRESETS.standard.items,
   preset: "standard",
-  updatedAt: "2026-10-03",
+  updatedAt: "2026-11-24",
 };
+
+const legacyStandardItems = ["tsubo", "symptoms", "curriculum", "search"] as const;
+const legacyClinicianItems = ["simulator", "haiketsu", "tsubo", "notes"] as const;
 
 /**
  * 安全にユーザー設定を読み込む（バージョン管理と破損値フォールバック付き）
@@ -270,10 +285,14 @@ export function loadNavUserConfig(): NavUserConfig {
     const unique = new Set(parsed.items);
     if (unique.size !== 4) return DEFAULT_NAV_CONFIG;
 
-    // Migrate only the unchanged old clinician preset; custom arrangements stay intact.
-    const legacyClinician = ["simulator", "haiketsu", "tsubo", "notes"];
-    const sourceItems = parsed.preset === "clinician" && parsed.items.every((id: string, index: number) => id === legacyClinician[index])
-      ? NAV_PRESETS.clinician.items : parsed.items;
+    // Update saved presets only when their original order matches.
+    let sourceItems = parsed.items;
+    if (parsed.preset === "standard" && legacyStandardItems.every((id, index) => parsed.items[index] === id)) {
+      sourceItems = NAV_PRESETS.standard.items;
+    }
+    if (parsed.preset === "clinician" && legacyClinicianItems.every((id, index) => parsed.items[index] === id)) {
+      sourceItems = NAV_PRESETS.clinician.items;
+    }
     // Keep the user's other choices when a legacy shortcut changes.
     const migrated = [...new Set<NavItemId>(sourceItems.map((id: NavItemId | "notes" | "clinical_interview" | "workspace") => {
       if (id === "kokushi") return "review";
@@ -282,7 +301,8 @@ export function loadNavUserConfig(): NavUserConfig {
       if (id === "workspace") return "clinical";
       return id;
     }))];
-    for (const id of DEFAULT_NAV_CONFIG.items) {
+    // Keep the previous backfill order when two discontinued shortcuts merge.
+    for (const id of legacyStandardItems) {
       if (migrated.length === 4) break;
       if (!migrated.includes(id)) migrated.push(id);
     }

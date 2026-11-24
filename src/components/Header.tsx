@@ -34,7 +34,6 @@ const OTHER_LINKS: readonly HeaderLink[] = [
   { href: "/kikei", label: "奇経八脈" },
   ALL_NAV_ITEMS.diagnosis,
   ALL_NAV_ITEMS.gorou,
-  { href: "/symptoms", label: "症状別ガイド・日常の工夫" },
   { href: "/safety", label: "安全性と受診の目安" },
 ];
 const SITE_LINKS: readonly HeaderLink[] = [
@@ -113,6 +112,7 @@ export default function Header() {
   const learnActive = navigationSection === "learn";
   const clinicalActive = navigationSection === "clinical";
   const dictionaryActive = navigationSection === "dictionary";
+  const symptomsActive = isNavigationItemActive("symptoms", pathname);
 
   const syncNavigationLayout = useCallback(() => {
     // The header CSS decides the layout; the lower shortcuts follow the visible control.
@@ -296,7 +296,14 @@ export default function Header() {
         <div className="mx-auto w-full max-w-3xl space-y-3">
           <div className="flex items-center justify-between gap-3"><h2 className="text-base font-semibold">メニュー</h2><button type="button" onClick={() => { closeNavigation(); focusNavigationTrigger(); }} aria-label="メニューを閉じる" className={`inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg ${FOCUS_STYLE}`}><X aria-hidden="true" className="h-5 w-5" /></button></div>
           <button type="button" onClick={() => openSearch()} aria-haspopup="dialog" className={`site-menu-search ${FOCUS_STYLE}`}><Search aria-hidden="true" className="h-5 w-5" /><span>サイト内検索</span></button>
-          <Link href={SERIES.dictionary.href} onClick={closeNavigation} aria-current={dictionaryActive ? pathname === "/tsubo" ? "page" : "true" : undefined} className={`flex min-h-[44px] items-center justify-between rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE} ${dictionaryActive ? "bg-[var(--accent-soft)]" : ""}`}>{SERIES.dictionary.shortName}<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></Link>
+          {[
+            { item: ALL_NAV_ITEMS.tsubo, active: dictionaryActive && !symptomsActive },
+            { item: ALL_NAV_ITEMS.symptoms, active: symptomsActive },
+          ].map(({ item, active }) => (
+            <Link key={item.id} href={item.href} onClick={closeNavigation} aria-current={active ? (pathname === item.href ? "page" : "location") : undefined} className={`flex min-h-[44px] items-center justify-between rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE} ${active ? "bg-[var(--accent-soft)]" : ""}`}>
+              {item.label}<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+            </Link>
+          ))}
           <details className="border-b border-[var(--border-subtle)] pb-2"><summary className={`min-h-[44px] cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE}`}>{SERIES.reading.shortName}{learnActive ? <span className="ml-2 text-sm font-normal">（現在のカテゴリ）</span> : null}</summary><HeaderLinks links={LEARN_LINKS} pathname={pathname} onNavigate={closeNavigation} /></details>
           <details className="border-b border-[var(--border-subtle)] pb-2"><summary className={`min-h-[44px] cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE}`}>{SERIES.practice.shortName}{clinicalActive ? <span className="ml-2 text-sm font-normal">（現在のカテゴリ）</span> : null}</summary><ClinicalMenu pathname={pathname} onNavigate={closeNavigation} /></details>
           <details className="border-b border-[var(--border-subtle)] pb-2"><summary className={`min-h-[44px] cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold ${FOCUS_STYLE}`}>その他の教材・ガイド</summary><HeaderLinks links={OTHER_LINKS} pathname={pathname} onNavigate={closeNavigation} /></details>

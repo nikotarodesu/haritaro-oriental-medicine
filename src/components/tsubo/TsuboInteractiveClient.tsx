@@ -70,9 +70,10 @@ function TsuboUrlSync({ restore }: { restore: (query: string) => void | (() => v
   return null;
 }
 
-export default function TsuboInteractiveClient({ relatedGuides, featuredPoints }: {
+export default function TsuboInteractiveClient({ relatedGuides, featuredPoints, nearbyComparisons }: {
   relatedGuides?: ReactNode;
   featuredPoints?: ReactNode;
+  nearbyComparisons?: ReactNode;
 } = {}) {
   const allPoints = useMemo(() => getAllAcupoints(), []);
   const publishedCount = useMemo(() => getPublishedAcupoints().length, []);
@@ -235,6 +236,7 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints }
   const hasSearchQuery = searchQuery.trim().length > 0;
   const extraPoint = extraPointLookup.get(searchTopic.replace(/[-\s]/g, ""));
   const hasSelectionFilters = selectedBodyPart !== "すべて" || selectedMeridian !== "すべて" || selectedCategory !== "すべて" || onlyPublished;
+  const browsingWithoutFilters = !hasSearchQuery && !hasSelectionFilters;
 
   return (
     <div className="tsubo-search-layout atlas-search-layout">
@@ -290,6 +292,12 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints }
         <noscript><button type="submit" className="atlas-text-action">サイト内検索で調べる</button></noscript>
 
         <div className="tsubo-filter-toggles">
+          {nearbyComparisons && (
+            <a href="#nearby-comparisons" className="atlas-compare-shortcut">
+              <GitCompare aria-hidden="true" size={16} />近いツボを比べる
+            </a>
+          )}
+          <Link href="/symptoms" className="atlas-search-index-link">症状から探す</Link>
           <button
             type="button"
             onClick={() => setShowBodyMap(!showBodyMap)}
@@ -301,11 +309,7 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints }
             <span>部位から探す</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" />
           </button>
           <button type="button" onClick={() => setShowFilters(!showFilters)} aria-expanded={showFilters} aria-controls="tsubo-detail-filters" className="tsubo-filter-toggle"><SlidersHorizontal aria-hidden="true" className="h-4 w-4" /><span>詳細条件</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" /></button>
-          <Link href="/tsubo/compare" className="atlas-compare-shortcut">
-            <GitCompare aria-hidden="true" size={16} />
-            経穴を比べる
-            <ArrowRight aria-hidden="true" size={15} />
-          </Link>
+          <Link href="/tsubo/compare" className="atlas-search-index-link">ツボを選んで比べる</Link>
           <a href="#illustrated-points" className="atlas-search-index-link">一覧から探す</a>
         </div>
         {hasSelectionFilters && <p className="tsubo-active-filters">選択中：{[selectedBodyPart !== 'すべて' && selectedBodyPart, selectedMeridian !== 'すべて' && selectedMeridian, selectedCategory !== 'すべて' && selectedCategory, onlyPublished && '主要経穴のみ'].filter(Boolean).join('・')}</p>}
@@ -386,7 +390,7 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints }
           </div>
       </section>
 
-      {!hasSearchQuery && !hasSelectionFilters && featuredPoints}
+      {browsingWithoutFilters && <>{featuredPoints}{nearbyComparisons}</>}
 
       {/* 経穴一覧セクション */}
       <section ref={resultsRef} id="tsubo-list" tabIndex={-1} aria-label="ツボの検索結果" className="atlas-target space-y-4">
@@ -587,6 +591,7 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints }
         )}
       </section>
 
+      {!browsingWithoutFilters && nearbyComparisons}
       <nav aria-label="ツボ図鑑の索引" className="atlas-directory-index-links">
         {ATLAS_INDEX_LINKS.map(({ href, label }) => <a key={href} href={href} className="atlas-search-index-link">{label}</a>)}
       </nav>

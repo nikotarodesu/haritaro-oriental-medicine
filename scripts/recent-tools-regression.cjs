@@ -61,7 +61,7 @@ const migratedExamHistory = readRecentToolPaths(JSON.stringify([
 assert.equal(JSON.stringify(migratedExamHistory), '["/learn/review","/tsubo","/library"]', 'Old and current review history merge without losing other public destinations or retaining question IDs');
 assert.equal(JSON.stringify(updateRecentToolPaths(JSON.stringify(['/library', '/kokushi', '/notes', '/tsubo']), '/learn/review')), '["/learn/review","/library","/tsubo"]', 'A new review visit moves the migrated history item instead of creating a duplicate');
 
-const { NAV_STORAGE_KEY, DEFAULT_NAV_CONFIG, loadNavUserConfig, NAV_PRESETS, getNavigationSection, isNavigationItemActive } = load('src/config/navigationItems');
+const { NAV_STORAGE_KEY, DEFAULT_NAV_CONFIG, loadNavUserConfig, NAV_PRESETS, getNavigationSection, isNavigationItemActive, getCurrentBottomNavItem } = load('src/config/navigationItems');
 function configuredNav(items, preset = 'student') {
   savedValues.set(NAV_STORAGE_KEY, JSON.stringify({ version: 1, items, updatedAt: '2026-10-03', preset }));
   return loadNavUserConfig();
@@ -72,6 +72,14 @@ assert.equal(JSON.stringify(configuredNav(['review', 'kokushi', 'library', 'note
 const unchanged = configuredNav(['simulator', 'haiketsu', 'tsubo', 'notes']);
 assert.equal(JSON.stringify(unchanged.items), '["simulator","haiketsu","tsubo","symptoms"]', 'Existing non-exam custom navigation stays unchanged');
 assert.equal(unchanged.updatedAt, '2026-10-03', 'Migration does not invent a recent user edit date');
+
+const oldStandardItems = ['tsubo', 'symptoms', 'curriculum', 'search'];
+assert.equal(JSON.stringify(DEFAULT_NAV_CONFIG.items), '["tsubo","curriculum","clinical","search"]');
+const oldStandard = configuredNav(oldStandardItems, 'standard');
+assert.equal(JSON.stringify(oldStandard.items), JSON.stringify(DEFAULT_NAV_CONFIG.items), 'An unchanged saved standard preset follows the new order');
+assert.equal(oldStandard.updatedAt, '2026-10-03');
+assert.equal(JSON.stringify(configuredNav(oldStandardItems, null).items), JSON.stringify(oldStandardItems), 'The same order manually chosen is kept');
+assert.equal(JSON.stringify(configuredNav(['symptoms', 'tsubo', 'curriculum', 'search'], 'standard').items), '["symptoms","tsubo","curriculum","search"]', 'A different saved order is preserved');
 
 assert.equal(NAV_PRESETS.clinician.items[0], 'clinical', 'Clinician shortcuts begin with the public clinical home');
 const oldClinician = configuredNav(['simulator', 'haiketsu', 'tsubo', 'notes'], 'clinician');
@@ -90,6 +98,17 @@ assert(isNavigationItemActive('clinical', '/clinical'));
 assert(isNavigationItemActive('tsubo_compare', '/tsubo/compare'));
 assert(!isNavigationItemActive('tsubo', '/tsubo/compare'), 'The comparison page does not select the point dictionary at the same time');
 assert(isNavigationItemActive('clinical_guides', '/clinical/symptoms/neck-shoulder'));
+for (const [route, item] of [
+  ['/tsubo/pc6', 'tsubo'], ['/symptoms/headache-stiff-neck', 'tsubo'],
+  ['/learn/review', 'curriculum'], ['/learn/lectures/assessment-basics', 'curriculum'],
+  ['/cases', 'clinical'], ['/cases/case-01-headache-liver-fire', 'clinical'],
+  ['/clinical/symptoms/shoulder', 'clinical'], ['/practice/haiketsu', 'clinical'],
+  ['/search', undefined], ['/', undefined],
+]) assert.equal(getCurrentBottomNavItem(DEFAULT_NAV_CONFIG.items, route), item, route);
+assert.equal(getCurrentBottomNavItem(['curriculum', 'review'], '/learn/review'), 'review');
+assert.equal(getCurrentBottomNavItem(['clinical', 'cases'], '/cases/case-01-headache-liver-fire'), 'cases');
+assert.equal(getCurrentBottomNavItem(['clinical', 'tsubo', 'tsubo_compare'], '/tsubo/compare'), 'tsubo_compare');
+assert.equal(getCurrentBottomNavItem(['tsubo', 'symptoms'], '/symptoms/headache-stiff-neck'), 'symptoms');
 for (const [tab, expectedId] of [['', 'diagnosis'], ['unknown', 'diagnosis'], ['clinical', 'diagnosis'], ['gorou', 'gorou']]) {
   const params = new URLSearchParams(tab ? 'tab=' + tab : '');
   const active = ['diagnosis', 'gorou'].filter(id => isNavigationItemActive(id, '/diagnosis', params));
@@ -146,7 +165,7 @@ function navNodes(node, result = []) {
 }
 function activeNavHrefs() {
   navCursor = 0;
-  return navNodes(BottomNavContent()).filter(node => node.type === NavigationLink && node.props['aria-current'] === 'page').map(node => node.props.href);
+  return navNodes(BottomNavContent()).filter(node => node.type === NavigationLink && node.props['aria-current']).map(node => node.props.href);
 }
 assert.equal(JSON.stringify(activeNavHrefs()), '["/diagnosis"]', 'The base diagnosis mode selects only the constitution check');
 searchParams = new URLSearchParams('tab=gorou');
@@ -167,4 +186,9 @@ assert.equal(JSON.stringify(activeNavHrefs()), '["/diagnosis?tab=gorou"]');
 searchParams = new URLSearchParams();
 assert.equal(JSON.stringify(activeNavHrefs()), '["/diagnosis"]', 'Saved self-check shortcuts retain their base destination');
 assert.equal(queryReads, 9, 'Every render reads the subscribed search params instead of a cached initial URL');
-console.log('Recent tools regression passed: public history privacy, retired-exam and shortcut migration, preserved custom choices, corrupted storage recovery, and real bottom-nav query-only active-state changes without double selection.');
+navState[0] = DEFAULT_NAV_CONFIG;
+pathname = '/learn/review';
+assert.equal(JSON.stringify(activeNavHrefs()), '["/learn"]');
+pathname = '/cases/case-01-headache-liver-fire';
+assert.equal(JSON.stringify(activeNavHrefs()), '["/clinical"]');
+console.log('Recent tools regression passed: public history privacy, preset and retired-shortcut migration, saved custom choices, corrupted storage recovery, and single selection for section, destination, and query changes.');

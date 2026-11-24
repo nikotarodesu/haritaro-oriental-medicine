@@ -155,6 +155,8 @@ function expandedLinks(node, result = []) {
   return result;
 }
 const menuDestinations = expandedLinks(byId(menu.SITE_MENU_ID)).map(node => node.props.href);
+assert.equal(menuDestinations.filter(href => href === '/symptoms').length, 1, 'The symptom guide has one entry in the compact menu');
+assert(nodes(byId(menu.SITE_MENU_ID)).some(node => node.type === Link && node.props.href === '/symptoms'), 'The symptom guide opens without expanding another menu group');
 for (const href of ['/glossary', '/tsubo/practice', '/kikei', '/diagnosis', '/diagnosis?tab=gorou', '/symptoms', '/safety']) assert(menuDestinations.includes(href), 'Existing secondary destination remains discoverable: ' + href);
 assert(!menuDestinations.includes('/diagnosis?tab=clinical'), 'The hidden interview stays out of the public menu');
 assert(!menuDestinations.includes('/simulator/compare') && !menuDestinations.includes('/simulator#comparison-examples'), 'Fixed comparison examples have no competing standalone menu entry');
