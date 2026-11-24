@@ -6,10 +6,10 @@ import { KEY_POINT_TYPES_GUIDE, type AcupointKeyPointType } from "@/data/tsubo/k
 import { ATLAS_LEARNING_PAIRS, atlasLearningPairHref } from "@/data/tsubo/atlas/learningPairs";
 
 const sectionLinks = [
+  { href: "#acupoint-location", label: "場所" },
   { href: "#acupoint-cautions", label: "注意点" },
-  { href: "#acupoint-name", label: "名前の由来" },
-  { href: "#acupoint-research", label: "研究と古典の配穴" },
-  { href: "#acupoint-sources", label: "出典" },
+  { href: "#acupoint-compare", label: "近くのツボ" },
+  { href: "#acupoint-research", label: "研究・配穴" },
 ];
 const linkClass = "inline-flex min-h-11 items-center font-semibold underline underline-offset-4";
 const diagnosisPointPaths = new Set(

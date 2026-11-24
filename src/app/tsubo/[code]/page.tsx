@@ -7,6 +7,7 @@ import {
   getAcupointByCode, 
   getAcupointDetail, 
   getMeridianPoints,
+  generateCaution,
   isDetailedAcupoint,
   DETAILED_ACUPOINTS,
   isContraindicatedNeedle,
@@ -17,6 +18,8 @@ import {
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import AcupointAtlasArticle from "@/components/tsubo/AcupointAtlasArticle";
 import { AcupointKeyPointLinks } from "@/components/tsubo/AcupointArticleLinks";
+import AcupointCautions from "@/components/tsubo/AcupointCautions";
+import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
 import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
@@ -37,7 +40,6 @@ import {
   Layers, 
   BookOpen, 
   Sparkles, 
-  AlertTriangle, 
   ArrowLeft, 
   ArrowRight, 
   FileText,
@@ -45,7 +47,6 @@ import {
   GitCompare,
   SlidersHorizontal
 } from "lucide-react";
-import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { PROCEDURE_PUBLICATION_NOTICE, getPublicCrossSectionModel } from "@/data/medicalSafety";
 import { getLecturesForAcupoint } from "@/utils/acupointCurriculumMatcher";
 import { SERIES } from "@/config/series";
@@ -56,7 +57,7 @@ import ContentEndAd from "@/components/ads/ContentEndAd";
 import AcupointInformationScope from '@/components/tsubo/AcupointInformationScope';
 import MeridianRelationsDiagram from '@/components/tsubo/MeridianRelationsDiagram';
 import { VERIFIED_POINT_LOCATIONS } from '@/data/sourceVerification';
-import { ACUPOINT_PAGE_REVISED_AT, PAGE_REVISIONS } from "@/config/contentUpdates";
+import { PAGE_REVISIONS, PUBLIC_VISUALS_REVISED_AT } from "@/config/contentUpdates";
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -144,13 +145,14 @@ export default async function AcupointDetailPage({ params }: Props) {
   const isMoxaBan = isContraindicatedMoxa(point.codeLower);
   const isPregnancyBan = isPregnancyContraindicated(point.codeLower, point.bodyPart);
   const isPneumoRisk = isChestBackPneumothoraxRisk(point.codeLower, point.bodyPart, point.locationDetail);
-  const hasSafetyWarning = isNeedleBan || isMoxaBan || isPregnancyBan || isPneumoRisk;
 
   // 表裏経・同名経の相互トピッククラスタ
   const relationId = point.meridianId === 'governor-vessel' ? 'governor' : point.meridianId === 'conception-vessel' ? 'conception' : point.meridianId;
   const meridianRelations = MERIDIAN_RELATIONS[relationId] || [];
 
   const pageUrl = `https://www.haritaro.jp/tsubo/${point.codeLower}`;
+  const pointRevisedAt = PAGE_REVISIONS[`/tsubo/${point.codeLower}`];
+  const dateModified = pointRevisedAt && pointRevisedAt > PUBLIC_VISUALS_REVISED_AT ? pointRevisedAt : PUBLIC_VISUALS_REVISED_AT;
   const nameGuide = getAcupointName(point.codeLower);
   const isHeguAtlas = point.codeLower === "li4";
   const atlasArticle = ATLAS_ARTICLES[point.codeLower];
@@ -187,7 +189,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         "url": pageUrl,
         "name": pageTitle,
         "inLanguage": "ja",
-        "dateModified": PAGE_REVISIONS[`/tsubo/${point.codeLower}`] ?? ACUPOINT_PAGE_REVISED_AT,
+        "dateModified": dateModified,
         "publisher": { "@id": "https://www.haritaro.jp/#organization" },
         "editor": { "@type": "Person", "name": "はり太郎", "url": "https://www.haritaro.jp/about" },
         ...(sources.length > 0 && { citation: sources.map(({ name, url }) => ({ "@type": "CreativeWork", name, url })) }),
@@ -275,6 +277,13 @@ export default async function AcupointDetailPage({ params }: Props) {
   }
 
   const pointTypes = getAcupointKeyPointTypes(point.codeLower);
+  const caution = point.caution || generateCaution(point);
+  const nearby = point.nearbyPoints?.length
+    ? point.nearbyPoints.map(({ code, relation }) => ({ code, text: relation }))
+    : [
+      ...(prevPoint ? [{ code: prevPoint.code, text: `${point.meridianShort}で${point.name}の一つ前` }] : []),
+      ...(nextPoint ? [{ code: nextPoint.code, text: `${point.meridianShort}で${point.name}の一つ後` }] : []),
+    ];
 
   return (
     <div className="reading-page acupoint-page page-layout atlas-page min-h-screen [overflow-wrap:anywhere]">
@@ -359,14 +368,10 @@ export default async function AcupointDetailPage({ params }: Props) {
                 </p>
               )}
 
-              <dl className="grid gap-4 pt-2 text-base leading-relaxed" aria-label={`${point.name}の位置と重要な注意`}>
+              <dl className="grid gap-4 pt-2 text-base leading-relaxed" aria-label={`${point.name}の位置`}>
                 <div>
                   <dt className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8]"><Compass aria-hidden="true" className="h-4 w-4" />位置の目安</dt>
                   <dd className="mt-1 text-[#232826] dark:text-[#E6EFEA]">{point.locationSimple}</dd>
-                </div>
-                <div>
-                  <dt className="flex items-center gap-2 text-sm font-bold text-amber-800 dark:text-amber-300"><ShieldCheck aria-hidden="true" className="h-4 w-4" />重要な注意</dt>
-                  <dd className="mt-1 text-[#4A534F] dark:text-[#AFBDC8]">{point.caution || "位置や模式図は学習用です。個人の安全な刺入深度・経路や施術適応は判断できません。"}</dd>
                 </div>
               </dl>
             </div>
@@ -399,8 +404,6 @@ export default async function AcupointDetailPage({ params }: Props) {
             </div>
           </div>
 
-          <TsuboReviewEntry placement="detail" meridianId={point.meridianId} meridianName={point.meridianShort} />
-
           {pointTypes.length > 0 && (
             <dl className="border-t border-frame pt-2">
               <AcupointKeyPointLinks types={pointTypes} />
@@ -413,47 +416,11 @@ export default async function AcupointDetailPage({ params }: Props) {
           {(illustration || !!point.crossSection?.svgElements?.length) && (
             <a href="#acupoint-diagram"><Layers aria-hidden="true" className="h-4 w-4" />図</a>
           )}
-          <a href="#acupoint-name"><BookOpen aria-hidden="true" className="h-4 w-4" />名前の由来</a>
-          <a href={hasSafetyWarning ? "#acupoint-safety-warning" : "#acupoint-cautions"}><ShieldCheck aria-hidden="true" className="h-4 w-4" />注意事項</a>
-          <a href="#acupoint-research"><BookOpen aria-hidden="true" className="h-4 w-4" />研究と古典の配穴</a>
+          <a href="#acupoint-cautions"><ShieldCheck aria-hidden="true" className="h-4 w-4" />注意点</a>
+          {nearby.length > 0 && <a href="#acupoint-compare"><GitCompare aria-hidden="true" className="h-4 w-4" />近くのツボ</a>}
+          <a href="#acupoint-research"><BookOpen aria-hidden="true" className="h-4 w-4" />研究・配穴</a>
           <a href="#acupoint-sources"><FileText aria-hidden="true" className="h-4 w-4" />出典</a>
         </nav>
-
-        {/* ⚠️ 安全上の注意（禁忌・気胸リスク・妊婦注意アラート） */}
-        {hasSafetyWarning && (
-          <div id="acupoint-safety-warning" className="scroll-mt-28 rounded-2xl border-2 border-amber-500/40 dark:border-amber-500/50 bg-[#FFFBEB] dark:bg-[#251D12] p-4 sm:p-5 shadow-xs space-y-2.5 transition-colors">
-            <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300 font-bold text-sm">
-              <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
-              <span>先に確認する安全上の注意</span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-base leading-relaxed text-[#523E24] dark:text-[#E6D5B8]">
-              {isNeedleBan && (
-                <div className="p-2.5 rounded-xl bg-red-100/70 dark:bg-red-950/60 border border-red-300 dark:border-red-800 text-red-900 dark:text-red-200">
-                  <strong className="block font-bold">伝統資料の刺鍼禁忌の記載</strong>
-                  <span>古典での分類と、現代の解剖学にもとづく注意点を分けて読んでください。施術については、はり師・きゅう師に相談してください。</span>
-                </div>
-              )}
-              {isPregnancyBan && (
-                <div className="p-2.5 rounded-xl bg-amber-100/70 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200">
-                  <strong className="block font-bold">妊娠中の注意（伝統的慎重穴の分類）</strong>
-                  <span>この分類は子宮収縮作用を確立した穴の一覧ではありません。全日本鍼灸学会の指針では妊娠中は部位を問わず強刺激を避け、特に腹部周囲へ注意を払います。担当者と必要に応じて主治医へ確認してください。</span>
-                </div>
-              )}
-              {isPneumoRisk && (
-                <div className="p-2.5 rounded-xl bg-orange-100/70 dark:bg-orange-950/60 border border-orange-300 dark:border-orange-800 text-orange-900 dark:text-orange-200">
-                  <strong className="block font-bold">胸郭周囲の気胸リスク</strong>
-                  <span>胸膜・肺などの損傷に注意が必要です。斜刺・横刺や固定の寸数だけでは安全を保証できません。施術のあとに強い息苦しさがあるときは、すぐに119番へ連絡してください。胸の痛みや息苦しさが出たら、すぐに医療機関を受診してください。</span>
-                </div>
-              )}
-              {isMoxaBan && (
-                <div className="p-2.5 rounded-xl bg-amber-100/70 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200">
-                  <strong className="block font-bold">伝統資料の灸禁忌・注意の記載</strong>
-                  <span>古典の禁灸分類と現代の熱傷・感染などの注意は区別します。顔面や皮膚病変などへの施灸は安全指針を確認し、自己灸や未確認手順の再現は避けてください。</span>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
 
         {/* 2. 取穴・位置セクション（一般向け vs WHO標準） */}
         <section id="acupoint-location" className="scroll-mt-28 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
@@ -463,8 +430,6 @@ export default async function AcupointDetailPage({ params }: Props) {
           </div>
 
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
-
-          <p className="text-sm leading-relaxed text-[#59615D] dark:text-[#AFBDC8]">圧痛や響きの有無だけで位置を判断しないでください。体表位置の説明は、個人の安全な刺入経路・深度や施術の適応を示すものではありません。</p>
 
           {/* 取穴手順ステップ */}
           {illustration && atlasMarker && (
@@ -488,96 +453,33 @@ export default async function AcupointDetailPage({ params }: Props) {
             </div>
           )}
 
-          {/* 触診ランドマーク ＆ 混同防止 */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 text-sm">
-            {point.palpationLandmarks && (
-              <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5">
-                <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                  触知する骨・腱目印：
-                </span>
-                <ul className="list-disc list-inside space-y-1 text-[#59615D] dark:text-[#A0B0BC] text-base">
-                  {point.palpationLandmarks.map((lm, i) => (
-                    <li key={i}>{lm}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {point.pitfalls && (
-              <div className="p-3.5 rounded-xl bg-[#FDEDEC]/70 dark:bg-[#281816]/70 border border-[#FADBD8] dark:border-[#3E2220] space-y-2">
-                <div className="flex flex-wrap items-center justify-between gap-1.5">
-                  <span className="font-bold text-[#A83629] dark:text-[#E07A70] flex items-center gap-1">
-                    <AlertTriangle className="w-3.5 h-3.5" />
-                    <span>位置混同・取穴・施術上の注意点：</span>
-                  </span>
-                  <div className="flex flex-wrap gap-1">
-                    {isContraindicatedNeedle(point.codeLower) && (
-                      <span className="px-1.5 py-0.5 rounded text-sm font-bold bg-[#A83629] text-white">
-                        禁鍼部位
-                      </span>
-                    )}
-                    {isContraindicatedMoxa(point.codeLower) && (
-                      <span className="px-1.5 py-0.5 rounded text-sm font-bold bg-[#B86924] text-white">
-                        禁灸・直接灸不可
-                      </span>
-                    )}
-                    {isChestBackPneumothoraxRisk(point.codeLower, point.bodyPart, point.locationDetail) && (
-                      <span className="px-1.5 py-0.5 rounded text-sm font-bold bg-[#8B263E] text-white">
-                        気胸リスク・深刺厳禁
-                      </span>
-                    )}
-                    {isPregnancyContraindicated(point.codeLower, point.bodyPart) && (
-                      <span className="px-1.5 py-0.5 rounded text-sm font-bold bg-[#854D0E] dark:bg-[#A16207] text-white">
-                        妊娠中注意
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <p className="text-[#6D2820] dark:text-[#D9A098] leading-relaxed text-base">
-                  {point.pitfalls}
-                </p>
-              </div>
-            )}
-          </div>
-
+          {point.palpationLandmarks && (
+            <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5">
+              <h3 className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">目印になる骨や腱</h3>
+              <ul className="list-disc list-inside space-y-1 text-[#59615D] dark:text-[#A0B0BC] text-base">
+                {point.palpationLandmarks.map((lm, i) => (
+                  <li key={i}>{lm}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </section>
 
-        <AcupointNameGuide code={point.codeLower} />
-        <AcupointInformationScope code={point.code} locationSource={point.locationSource} individualModel={individualModel} individuallyEdited={isDetailed} />
-        {/* 3. 断面解剖モデル */}
-        {point.crossSection && point.crossSection.svgElements && point.crossSection.svgElements.length > 0 && (
-          <section id={illustration ? "acupoint-cross-section" : "acupoint-diagram"} className="scroll-mt-28 space-y-6">
-            <CrossSectionViewer
-              model={getPublicCrossSectionModel(point.crossSection)}
-              pointName={point.name}
-              pointCode={point.code}
-              individualModel={individualModel}
-            />
+        <AcupointCautions>
+          {isNeedleBan && <p><strong>古典に刺鍼を禁じる記載がある部位です。</strong> 施術については、はり師・きゅう師に相談してください。</p>}
+          {isMoxaBan && <p><strong>古典にお灸を禁じたり、注意を求めたりする記載があります。</strong> 熱傷などのおそれがあるため、自己判断でお灸をしないでください。</p>}
+          {isPregnancyBan && !caution.includes("妊娠") && (
+            <p>妊娠中は部位を問わず強い刺激を避け、施術を受ける前に担当の医療機関に相談してください。</p>
+          )}
+          {isPneumoRisk && !caution.includes("119") && (
+            <p><strong>胸郭周囲では鍼で肺などが傷つくおそれがあります。</strong> 施術後に強い息苦しさが出たら、すぐ119番へ連絡してください。胸の痛みや息苦しさが出た場合は、すぐに医療機関を受診してください。</p>
+          )}
+          <p>{caution}</p>
+          <p>押したときの痛みや響きだけでツボの位置を判断しないでください。</p>
+          <p>{PROCEDURE_PUBLICATION_NOTICE}</p>
+        </AcupointCautions>
 
-            {/* 近隣経穴リンク（シンプルチップ） */}
-            {point.nearbyPoints && point.nearbyPoints.length > 0 && (
-              <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] space-y-2">
-                <span className="text-sm font-semibold text-[#59615D] dark:text-[#A0B0BC] block">
-                  同部位・近隣の経穴：
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {point.nearbyPoints.map((np) => (
-                    <Link
-                      key={np.code}
-                      href={`/tsubo/${np.code.toLowerCase()}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white dark:bg-[#16222C] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] text-sm font-medium text-[#232826] dark:text-[#E6EFEA] hover:text-[#1E3D34] transition-all"
-                    >
-                      <span className="font-mono font-bold text-[#1E3D34] dark:text-[#74BA9E]">{np.code}</span>
-                      <span>{np.name}</span>
-                      <span className="text-sm text-[#59615D] dark:text-[#AFBDC8]">({np.relation})</span>
-                      <ArrowRight className="w-3 h-3 ml-0.5 text-[#59615D]" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
-          </section>
-        )}
+        <AcupointLocationComparison point={point} related={nearby} />
 
         {/* 伝統的な主治・配穴例・古典 */}
         <section id="acupoint-traditional" className="scroll-mt-28 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
@@ -617,17 +519,10 @@ export default async function AcupointDetailPage({ params }: Props) {
             </p>
           </div>
 
-          <div id="acupoint-cautions" className="scroll-mt-28">
-            <MedicalSafetyNotice title="刺鍼・施灸の個別手順は確認待ちです" message={PROCEDURE_PUBLICATION_NOTICE} />
-          </div>
-
           {/* 臨床ゴールデンペア（名配穴・相乗効果） */}
           {point.goldenPairs && point.goldenPairs.length > 0 && (
-            <div className="dictionary-golden-pairs space-y-3">
-              <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                <GitCompare className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                <span>伝統的な配穴例（組み合わせの学習）</span>
-              </div>
+            <details className="atlas-disclosure atlas-reading-details dictionary-golden-pairs">
+              <summary>伝統的な配穴例</summary>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                 {point.goldenPairs.map((pair, idx) => {
                   const partner = getAcupointByCode(pair.partnerCode);
@@ -659,15 +554,13 @@ export default async function AcupointDetailPage({ params }: Props) {
                   );
                 })}
               </div>
-            </div>
+            </details>
           )}
 
           {/* 古典原典の引用 */}
           {point.classicalReferences && point.classicalReferences.length > 0 && (
-            <div className="space-y-2.5 pt-1">
-              <span className="text-sm font-semibold text-[#59615D] dark:text-[#AFBDC8] block">
-                古典原典における記載：
-              </span>
+            <details className="atlas-disclosure atlas-reading-details">
+              <summary>古典での記載</summary>
               <div className="space-y-2">
                 {point.classicalReferences.map((cr, idx) => (
                   <div
@@ -686,7 +579,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                   </div>
                 ))}
               </div>
-            </div>
+            </details>
           )}
 
           {relatedReading.length > 0 && (
@@ -709,7 +602,19 @@ export default async function AcupointDetailPage({ params }: Props) {
         </section>
 
         <AcupointResearch point={point} />
+        <AcupointNameGuide code={point.codeLower} />
 
+        {point.crossSection?.svgElements?.length ? (
+          <details id={illustration && atlasMarker ? "acupoint-cross-section" : "acupoint-diagram"} className="atlas-disclosure atlas-reading-details atlas-target">
+            <summary>体の内側の模式図</summary>
+            <CrossSectionViewer
+              model={getPublicCrossSectionModel(point.crossSection)}
+              pointName={point.name}
+              pointCode={point.code}
+              individualModel={individualModel}
+            />
+          </details>
+        ) : null}
 
         {relatedLectures.length > 0 && (
           <section className="dictionary-related-lectures" aria-labelledby="related-lectures-title">
@@ -728,6 +633,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         )}
 
         <MeridianRelationsDiagram meridian={point.meridian} relations={meridianRelations} />
+        <TsuboReviewEntry placement="detail" meridianId={point.meridianId} meridianName={point.meridianShort} />
 
         {/* 7. 経絡流注ナビゲーション（前穴・次穴） */}
         <TsuboKeyboardNav
@@ -788,19 +694,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
         <AuthorSupervisorCard />
 
-        {/* 8. 免責・出典・更新情報 */}
-        <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] text-sm text-[#59615D] dark:text-[#AFBDC8] space-y-1.5">
-          <div className="flex items-center gap-1.5 font-bold text-[#59615D] dark:text-[#A0B0BC]">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#1E3D34] dark:text-[#74BA9E]" />
-            <span>出典・確認状況</span>
-          </div>
-          <p className="leading-relaxed text-base">
-            ツボの位置は、WHO『WHO Standard Acupuncture Point Locations in the Western Pacific Region』（2008年）を参照しています。
-          </p>
-          <p className="text-base text-[#88928D] dark:text-[#6E7D8A]">
-            ※当サイトに掲載されている経穴の位置や解説は学術的学習および臨床思考の整理を目的としており、個別の疾患治療は医師・有資格鍼灸師の判断に従ってください。
-          </p>
-        </div>
+        <AcupointInformationScope code={point.code} locationSource={point.locationSource} individualModel={individualModel} individuallyEdited={isDetailed} />
         <ContentEndAd key={code} />
       </div>
     </div>

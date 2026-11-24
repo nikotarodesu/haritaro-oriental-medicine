@@ -1,4 +1,4 @@
-import { PAGE_REVISIONS, SITE_REVISED_AT, ACUPOINT_PAGE_REVISED_AT } from "@/config/contentUpdates";
+import { PAGE_REVISIONS, SITE_REVISED_AT, ACUPOINT_PAGE_REVISED_AT, PUBLIC_VISUALS_REVISED_AT } from "@/config/contentUpdates";
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH, acupunctureResearchHref } from "@/config/acupunctureLearning";
 import { SITE_ORIGIN } from "@/config/seo";
 import type { MetadataRoute } from "next";
@@ -140,7 +140,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 全361経穴詳細ページ
   const acupointPages: MetadataRoute.Sitemap = ALL_ACUPOINTS.map((pt) => ({
     url: `${baseUrl}/tsubo/${pt.code.toLowerCase()}`,
-    lastModified: new Date(ACUPOINT_PAGE_REVISED_AT),
+    lastModified: new Date(PUBLIC_VISUALS_REVISED_AT),
   }));
 
   // 学術アーカイブ記事ページ（個別記事公開日を反映）
@@ -152,7 +152,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 臨床症例演習ページ（全20症例）
   const casePages: MetadataRoute.Sitemap = CLINICAL_CASES.map((c) => ({
     url: `${baseUrl}/cases/${c.id}`,
-    lastModified: new Date("2026-11-20"),
+    lastModified: new Date(PUBLIC_VISUALS_REVISED_AT),
   }));
 
   // 奇経八脈詳細ページ（全8経脈）
@@ -179,6 +179,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ].map(page => {
     const { pathname, search } = new URL(page.url);
     const revisedAt = PAGE_REVISIONS[pathname + search] ?? PAGE_REVISIONS[pathname];
-    return revisedAt ? { ...page, lastModified: new Date(revisedAt) } : page;
+    const revision = revisedAt ? new Date(revisedAt) : undefined;
+    return revision && (!page.lastModified || revision > new Date(page.lastModified)) ? { ...page, lastModified: revision } : page;
   });
 }

@@ -4,11 +4,14 @@ import { ArrowDown, BookOpen, ClipboardList, FlaskConical, MapPin, ShieldCheck }
 import { notFound } from 'next/navigation';
 import AuthorSupervisorCard from '@/components/common/AuthorSupervisorCard';
 import ContentEndAd from '@/components/ads/ContentEndAd';
+import StudyDiagram from '@/components/reading/StudyDiagram';
+import BackPainAreaComparison from '@/components/symptoms/BackPainAreaComparison';
 import SymptomPerspective from '@/components/symptoms/SymptomPerspective';
 import SymptomResearchReferences from '@/components/symptoms/SymptomResearchReferences';
 import SymptomIcon from '@/components/symptoms/SymptomIcon';
 import { AtlasStudyCard } from '@/components/tsubo/AcupointResearch';
 import { PUBLIC_SYMPTOM_CONTENT } from '@/data/publicSymptoms';
+import { SYMPTOM_RECORDING_EXAMPLES } from '@/data/symptomRecordingExamples';
 import { SYMPTOM_RESEARCH_NOTES } from '@/data/symptomResearchNotes';
 import { SYMPTOMS, SYMPTOM_GUIDANCE_SCOPE, SYMPTOM_SAFETY_GUIDANCE } from '@/data/symptomData';
 import { getAcupointByCode } from '@/data/tsubo';
@@ -61,10 +64,11 @@ export default async function SymptomGuidePage({ params }: Props) {
   const hasResearch = pointStudies.length > 0 || !!researchNote || !!researchLink;
   const firstSentenceEnd = content.summary.indexOf('。') + 1 || content.summary.length;
   const summaryOpening = content.summary.slice(0, firstSentenceEnd);
-  const observationIntro = content.summary.slice(firstSentenceEnd).trim();
+  const recordingExample = SYMPTOM_RECORDING_EXAMPLES[guide.id];
   const relatedGuides = SYMPTOMS.filter(item => item.id !== guide.id && item.category === guide.category);
   const sections = [
     { id: 'acupoints', label: '関連するツボ' },
+    { id: 'recording', label: '受診時に伝えること' },
     { id: 'daily-life', label: '日常の工夫' },
     { id: 'traditional', label: '東洋医学の見方' },
     ...(hasResearch ? [{ id: 'guide-studies', label: 'ツボを使った研究' }] : []),
@@ -115,6 +119,16 @@ export default async function SymptomGuidePage({ params }: Props) {
           <Link href={ACUPUNCTURE_GUIDE.href} className="atlas-text-action"><BookOpen size={16} aria-hidden="true" />{ACUPUNCTURE_GUIDE.label}</Link>
         </div>
       </section>
+      <section id="recording" className={sectionClass}>
+        <h2 className="atlas-section-title">受診時に伝えること</h2>
+        {slug === 'lower-back-pain-sciatica' ? <BackPainAreaComparison /> : recordingExample && (
+          <StudyDiagram id="recording-example" diagram={recordingExample} />
+        )}
+        <div className="atlas-observations">
+          <h3><ClipboardList size={20} aria-hidden="true" />書いておくと伝えやすいこと</h3>
+          <ul>{content.observations.map(item => <li key={item}>{item}</li>)}</ul>
+        </div>
+      </section>
       <section id="daily-life" className={sectionClass}>
         <h2 className="atlas-section-title">日常の工夫</h2>
         <div className="symptoms-daily-grid">
@@ -124,11 +138,6 @@ export default async function SymptomGuidePage({ params }: Props) {
               <p>{body}</p>
             </div>
           ))}
-        </div>
-        <div className="atlas-observations">
-          <h3><ClipboardList size={20} aria-hidden="true" />受診時に伝えること</h3>
-          {observationIntro && <p>{observationIntro}</p>}
-          <ul>{content.observations.map(item => <li key={item}>{item}</li>)}</ul>
         </div>
       </section>
       <section id="traditional" className={sectionClass}>

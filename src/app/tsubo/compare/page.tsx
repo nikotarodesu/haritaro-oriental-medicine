@@ -2,11 +2,15 @@ import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import Link from "next/link";
 import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import { heguAtlasReading } from "@/components/tsubo/HeguAtlasPreview";
+import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
+import { PointAtlasThumbnail } from "@/components/tsubo/atlas/PointAtlasDiagrams";
 import { ALL_ACUPOINTS, DETAILED_ACUPOINTS } from "@/data/tsubo";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
 import { getAcupointStudies } from "@/data/tsubo/atlas/evidence";
+import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import type { Metadata } from "next";
 import CompareClient, { type ComparisonPoint } from "./CompareClient";
+import { PRESET_TSUBO_COMPARISONS } from "./presets";
 
 const title = seriesPageTitle("経穴比較ツール｜ツボの位置・経絡・注意点", "dictionary");
 const description = `ツボ図鑑の全${ALL_ACUPOINTS.length}穴から経穴を2〜3穴選び、位置、経絡、分類、安全上の注意を比較できます。研究を掲載した経穴は図鑑の出典へ進めます。`;
@@ -20,6 +24,7 @@ export const metadata: Metadata = {
   ...pageSocialMetadata(title, description, "/tsubo/compare"),
 };
 
+const illustratedCodes = new Set<string>(PRESET_TSUBO_COMPARISONS.flatMap(preset => preset.tsuboCodes));
 const comparisonPoints = ALL_ACUPOINTS.map((point): ComparisonPoint => {
   const { legacyId, code, codeLower, name, kana, romaji, meridian, meridianShort, bodyPart, locationSimple, clinicalNote, categories } = point;
   const article = ATLAS_ARTICLES[codeLower];
@@ -27,10 +32,15 @@ const comparisonPoints = ALL_ACUPOINTS.map((point): ComparisonPoint => {
     traditional: article.traditional[0],
     caution: article.safetyWarning ?? article.cautions[0],
   };
+  const marker = ATLAS_POINT_MARKERS[codeLower];
+  const locationFigure = illustratedCodes.has(code)
+    ? code === "LI4" ? <HeguHandDiagram thumbnail /> : marker && <PointAtlasThumbnail point={point} illustration={article.illustration} marker={marker} />
+    : undefined;
   return {
     id: legacyId, code, name, kana, romaji, meridian, meridianShort, bodyPart, locationSimple, clinicalNote,
     category: [...new Set(categories)],
     hasResearch: getAcupointStudies(codeLower).length > 0 || Boolean(DETAILED_ACUPOINTS[codeLower]?.researchEvidence),
+    locationFigure,
     ...reading,
   };
 });

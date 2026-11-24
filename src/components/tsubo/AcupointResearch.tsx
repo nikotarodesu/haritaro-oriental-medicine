@@ -120,8 +120,12 @@ export default function AcupointResearch({ point, traditionalTitle = "伝統的�
   const searched = Object.hasOwn(ATLAS_LITERATURE_SEARCH_COUNTS, point.codeLower);
 
   return (
+    <HashTargetDetails
+      key={point.codeLower}
+      className="atlas-disclosure atlas-evidence-disclosure"
+      summary={<h2 id="acupoint-research-title"><BookOpen size={17} aria-hidden="true" />研究と古典の配穴</h2>}
+    >
     <section id="acupoint-research" className="atlas-evidence atlas-target" aria-labelledby="acupoint-research-title">
-      <h2 id="acupoint-research-title" className="atlas-section-title">研究と古典の配穴</h2>
       {studies.some(study => study.kind === "combination") && (
         <p className="atlas-evidence-empty">複数のツボを一緒に使った試験の結果は、組み合わせ全体についてのものです。</p>
       )}
@@ -185,5 +189,6 @@ export default function AcupointResearch({ point, traditionalTitle = "伝統的�
       )}
       <Link href="/editorial-policy" className="atlas-source-link atlas-evidence-policy"><BookOpen size={15} aria-hidden="true" />研究の掲載・監修について</Link>
     </section>
+    </HashTargetDetails>
   );
 }

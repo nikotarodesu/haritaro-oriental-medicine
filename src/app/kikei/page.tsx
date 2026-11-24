@@ -7,8 +7,11 @@ import {
   Layers, 
   BookOpen, 
   ArrowRight, 
+  Hand,
+  Footprints,
+  Plus,
 } from "lucide-react";
-import { KIKEI_VESSELS, HACHIMYAKU_PAIRS } from "@/data/kikeiData";
+import { KIKEI_VESSELS, HACHIMYAKU_PAIRS, type HachimyakuPair } from "@/data/kikeiData";
 import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import KikeiEvidenceNote from "@/components/kikei/KikeiEvidenceNote";
 
@@ -21,31 +24,37 @@ export const metadata: Metadata = {
   ...pageSocialMetadata(pageTitle, pageDescription, "/kikei"),
 };
 
+function MeetingPoint({ point }: { point: HachimyakuPair["master1"] }) {
+  const isHand = point.meridian.startsWith("手");
+  const Icon = isHand ? Hand : Footprints;
+
+  return (
+    <Link
+      href={`/tsubo/${point.code.toLowerCase()}#acupoint-location`}
+      className="grid min-w-0 content-start gap-1 rounded-xl border border-frame bg-panel p-2.5 text-sm hover:border-accent focus-visible:outline-accent sm:p-3"
+    >
+      <span className="flex items-center gap-1.5 text-muted"><Icon size={16} aria-hidden="true" />{isHand ? "手の経絡" : "足の経絡"}</span>
+      <strong className="font-serif text-base text-accent underline underline-offset-4">{point.point} <span className="font-sans text-sm">{point.code}</span></strong>
+      <span>{point.vessel}に通じる</span>
+    </Link>
+  );
+}
+
 export default function KikeiIndexPage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
       <div className="page-layout page-layout--intro">
-        <PageIntro compact eyebrow="8つの脈・4つの組み合わせ" title="奇経八脈と八脈交会穴" art="points" description="学びたい脈を選び、流注図・交会穴・伝統的な説明を確認します。">
+        <PageIntro compact title="奇経八脈と八脈交会穴" art="points" description="八つの脈が体のどこを通るとされるか、図で確かめます。手と足のツボを一つずつ組み合わせる八脈交会穴も見比べられます。">
           <div className="page-actions"><a href="#eight-vessels" className="page-primary-action"><GitCommit aria-hidden="true" className="h-4 w-4" />8脈から選ぶ<ArrowRight aria-hidden="true" className="h-4 w-4" /></a><a href="#four-pairs" className="page-secondary-action"><Layers aria-hidden="true" className="h-4 w-4" />交会穴の4対を見る</a></div>
         </PageIntro>
-        <details className="page-help"><summary>奇経八脈のたとえと、鍼の研究</summary><p className="text-sm leading-relaxed">伝統理論では十二経脈を水路、奇経八脈をあふれた水を受ける貯水池にたとえます。ここでいう気血は、血液量や自律神経の測定値とは別の概念です。図では八つの脈が通る場所と、公孫・内関など八脈交会穴の四つの組み合わせを読めます。</p><KikeiEvidenceNote /></details>
       </div>
 
       <div className="page-layout page-layout--continuation space-y-12">
         {/* セクション 1: 全8脈の体系別カード */}
         <div id="eight-vessels" className="space-y-6 scroll-mt-28">
           <div className="flex flex-wrap items-end justify-between gap-2 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
-            <div>
-              <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] uppercase tracking-wider block">
-                Eight Extraordinary Meridians
-              </span>
-              <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                奇経八脈（全8脈）一覧
-              </h2>
-            </div>
-            <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
-              固有の経穴を持つ脈（督脈・任脈）と、交会穴のみで構成される6脈
-            </p>
+            <h2 className="font-serif text-xl font-bold sm:text-2xl">八つの脈と流注図</h2>
+            <p className="text-sm text-muted">督脈と任脈には、それぞれ固有のツボがあります。</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -70,11 +79,7 @@ export default function KikeiIndexPage() {
                       <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
                         固有穴 {vessel.pointsCount}穴
                       </span>
-                    ) : (
-                      <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
-                        交会穴系
-                      </span>
-                    )}
+                    ) : null}
                   </div>
 
                   <div className="flex items-center gap-3">
@@ -89,13 +94,9 @@ export default function KikeiIndexPage() {
                     </div>
                   </div>
 
-                  <p className="text-xs text-[#59615D] dark:text-[#96A6B2] line-clamp-3 leading-relaxed">
-                    {vessel.nature}
-                  </p>
-
                   <div className="pt-2 border-t border-[#E5DEC9]/50 dark:border-[#2A3B4A]/50">
                     <div className="text-xs text-[#737C77] dark:text-[#8899A6]">
-                      <span>通穴: </span>
+                      <span>交会穴 </span>
                       <strong className="text-[#232826] dark:text-[#FAF8F5]">{vessel.masterPoint.name}</strong>
                       <span className="text-xs text-[#737C77] ml-1">({vessel.masterPoint.code})</span>
                     </div>
@@ -111,87 +112,71 @@ export default function KikeiIndexPage() {
           </div>
         </div>
 
-        {/* セクション 2: 八脈交会穴（4大黄金ペア） */}
-        <div id="four-pairs" className="space-y-6 scroll-mt-28">
-          <div className="flex flex-wrap items-end justify-between gap-2 border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
-            <div>
-              <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider block">
-                Clinical Master Pairs
-              </span>
-              <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                八脈交会穴（八法交会穴）4対の配穴
-              </h2>
-            </div>
-            <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
-              手足の8つの経穴を組み合わせる、奇経八脈の配穴法
-            </p>
+        <section id="four-pairs" className="space-y-4 scroll-mt-28" aria-labelledby="four-pairs-title">
+          <div className="space-y-2 border-b border-frame pb-3">
+            <h2 id="four-pairs-title" className="font-serif text-xl font-bold sm:text-2xl">八脈交会穴の四つの組み合わせ</h2>
+            <p className="text-sm leading-relaxed text-muted">左に手の経絡、右に足の経絡のツボをそろえました。名前を選ぶと、図鑑で場所を確認できます。</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-            {HACHIMYAKU_PAIRS.map(pair => (
-              <div 
-                key={pair.id}
-                className="bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-6 shadow-sm hover:border-[#B86924] transition-all space-y-4 flex flex-col justify-between"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-[#FCF4EB] dark:bg-[#2A1E14] text-[#B86924] dark:text-[#E6C387] border border-[#F3DEC5] dark:border-[#4A321E]">
-                      伝統的な関連部位: {pair.targetArea}
-                    </span>
-                    <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
-                      {pair.master1.vessel} ✕ {pair.master2.vessel}
-                    </span>
+          <ul className="grid gap-3 md:grid-cols-2">
+            {HACHIMYAKU_PAIRS.map(pair => {
+              const [hand, foot] = pair.master1.meridian.startsWith("手")
+                ? [pair.master1, pair.master2]
+                : [pair.master2, pair.master1];
+              return (
+                <li key={pair.id} className="min-w-0 rounded-2xl border border-frame bg-card p-3 sm:p-4">
+                  <h3 className="sr-only">{hand.point}と{foot.point}の組み合わせ</h3>
+                  <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-stretch gap-1.5 sm:gap-2">
+                    <MeetingPoint point={hand} />
+                    <Plus aria-hidden="true" size={16} className="self-center text-muted" />
+                    <MeetingPoint point={foot} />
                   </div>
-
-                  <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
-                    {pair.name}
-                  </h3>
-
-                  {/* 穴位バッジ */}
-                  <div className="grid grid-cols-2 gap-2 pt-1">
-                    <div className="bg-[#FAF8F5] dark:bg-[#121920] p-2.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                      <span className="text-xs text-[#737C77] dark:text-[#8899A6] block">{pair.master1.vessel}に通ず</span>
-                      <span className="font-bold text-sm text-[#1E3D34] dark:text-[#74BA9E]">{pair.master1.point}</span>
-                      <span className="text-xs text-[#737C77] ml-1">({pair.master1.meridian})</span>
+                  <details className="page-help !mt-3">
+                    <summary>古典での説明と研究の範囲</summary>
+                    <div className="space-y-2 text-sm leading-relaxed">
+                      <p className="font-semibold">古典で関係づける部位　{pair.targetArea}</p>
+                      <p>{pair.clinicalSignificance}</p>
                     </div>
-                    <div className="bg-[#FAF8F5] dark:bg-[#121920] p-2.5 rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                      <span className="text-xs text-[#737C77] dark:text-[#8899A6] block">{pair.master2.vessel}に通ず</span>
-                      <span className="font-bold text-sm text-[#B86924] dark:text-[#E6C387]">{pair.master2.point}</span>
-                      <span className="text-xs text-[#737C77] ml-1">({pair.master2.meridian})</span>
-                    </div>
-                  </div>
+                  </details>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
 
-                  <p className="text-xs text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-                    {pair.clinicalSignificance}
-                  </p>
-                </div>
-
-                <div className="pt-2 border-t border-[#E5DEC9]/60 dark:border-[#2A3B4A]/60 flex flex-wrap gap-1">
-                  {pair.indications.map((ind, i) => (
-                    <span key={i} className="text-xs px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#151D25] text-[#737C77] dark:text-[#8899A6]">
-                      {ind}
-                    </span>
-                  ))}
-                </div>
+        <section className="space-y-3" aria-labelledby="kikei-analogy-title">
+          <h2 id="kikei-analogy-title" className="flex items-center gap-2 font-serif text-xl font-bold">
+            <BookOpen size={20} aria-hidden="true" />『難経』の水路のたとえ
+          </h2>
+          <figure className="rounded-2xl border border-frame bg-card p-3 sm:p-4">
+            <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1.5 sm:gap-3">
+              <div className="rounded-xl bg-panel p-2 text-center">
+                <svg viewBox="0 0 100 56" aria-hidden="true" className="mx-auto h-12 w-20 max-w-full text-accent">
+                  <path d="M12 16h76M12 40h76M16 28h62m-7-6 8 6-8 6" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                </svg>
+                <strong className="block">十二経脈</strong>
+                <span className="block text-sm">水が流れる水路</span>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 難経における奇経八脈の意義 */}
-        <div className="bg-[#FAF8F5] dark:bg-[#151D25] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-4">
-          <div className="flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-[#B86924]" />
-            <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
-              『難経』第二十七難に見る奇経の哲学
-            </h3>
-          </div>
-          <blockquote className="border-l-3 border-[#B86924] pl-4 italic text-xs sm:text-sm text-[#59615D] dark:text-[#96A6B2] leading-relaxed">
-            「聖人図設溝渠，通利水道，以備不然。天雨降下，溝渠溢満，当此之時，霶霈妄行，聖人不能復図也。此絡脈満溢，諸経不能復拘也。」<br />
-            （古代の賢人は水路を整備して洪水を防いだ。しかし大雨が降って水路が溢れたとき、水は奔流となって溢れ出る。経絡の気血が満ち溢れたとき、十二経脈だけでは収容できず、これを受け止めるのが奇経八脈である。）
-          </blockquote>
-        </div>
-
+              <ArrowRight size={16} aria-hidden="true" className="text-muted" />
+              <div className="rounded-xl bg-panel p-2 text-center">
+                <svg viewBox="0 0 100 56" aria-hidden="true" className="mx-auto h-12 w-20 max-w-full text-accent">
+                  <path d="M10 16l15 28h50l15-28M26 25c8-7 16 7 24 0s16 7 24 0M33 34c6-5 11 5 17 0s11 5 17 0" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                </svg>
+                <strong className="block">奇経八脈</strong>
+                <span className="block text-sm">あふれた水を受ける側</span>
+              </div>
+            </div>
+            <figcaption className="mt-3 text-sm leading-relaxed text-muted">『難経』第二十七難では、大雨で水路から水があふれる様子にたとえて、十二経脈だけでは気血を収めきれないときのことを説明します。気血は伝統医学の用語です。</figcaption>
+          </figure>
+          <details className="page-help">
+            <summary>『難経』第二十七難の原文</summary>
+            <blockquote className="text-sm leading-relaxed">聖人図設溝渠，通利水道，以備不然。天雨降下，溝渠溢満，当此之時，霶霈妄行，聖人不能復図也。此絡脈満溢，諸経不能復拘也。</blockquote>
+          </details>
+          <details className="page-help">
+            <summary>鍼の研究で調べたこと</summary>
+            <KikeiEvidenceNote />
+          </details>
+        </section>
       </div>
     </div>
   );

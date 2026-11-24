@@ -15,38 +15,17 @@ import { normalizeSearchText } from "@/utils/search";
 import { ATLAS_LEARNING_PAIRS } from "@/data/tsubo/atlas/learningPairs";
 import AtlasLocationCheck from "@/components/tsubo/atlas/AtlasLocationCheck";
 import type { Tsubo } from "@/types/oriental";
+import { PRESET_TSUBO_COMPARISONS } from "./presets";
 
 export type ComparisonPoint = Pick<Tsubo, "id" | "code" | "name" | "kana" | "romaji" | "meridian" | "meridianShort" | "bodyPart" | "locationSimple" | "clinicalNote"> & {
   category: readonly string[];
   traditional: string;
   caution: string;
   hasResearch: boolean;
+  locationFigure?: React.ReactNode;
 };
 
 type CompareProps = { points: readonly ComparisonPoint[] };
-
-const PRESET_TSUBO_COMPARISONS = [
-  {
-    name: "四関穴の対比（合谷 vs 太衝）",
-    tsuboCodes: ["LI4", "LR3"],
-    desc: "手陽明大腸経と足厥陰肝経の原穴。手の甲と足の甲で、骨の目印を比べます。"
-  },
-  {
-    name: "すねの外側と内側（足三里・三陰交）",
-    tsuboCodes: ["ST36", "SP6"],
-    desc: "足三里と三陰交。ひざと内くるぶしを目印に、すねの外側と内側を見比べます。"
-  },
-  {
-    name: "手首の近くの2穴（内関・神門）",
-    tsuboCodes: ["PC6", "HT7"],
-    desc: "心包経の絡穴と心経の原穴。手首のしわからの距離と、どのすじを目印にするかを比べます。"
-  },
-  {
-    name: "腰とひざ裏の2穴（委中・腎兪）",
-    tsuboCodes: ["BL40", "BL23"],
-    desc: "同じ膀胱経に属する委中と腎兪。ひざ裏のしわと腰の骨という、異なる目印を比べます。"
-  }
-];
 
 const COMPARISON_FIELDS = [
   {
@@ -54,6 +33,7 @@ const COMPARISON_FIELDS = [
     emphasis: "location",
     content: (point: ComparisonPoint) => (
       <>
+        {point.locationFigure && <div className="tsubo-compare-location-figure">{point.locationFigure}</div>}
         <p>{point.locationSimple}</p>
         <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-location`} className="tsubo-compare-detail-link" data-analytics-action="compare_atlas">図で場所を確認</Link>
       </>
@@ -79,7 +59,7 @@ const COMPARISON_FIELDS = [
     ),
   },
   {
-    label: "要穴・特異性",
+    label: "要穴の分類",
     content: (point: ComparisonPoint) => point.category.length > 0 ? (
       <ul className="tsubo-compare-tags">
         {point.category.map(category => <li key={category}>{category}</li>)}
@@ -187,8 +167,8 @@ function TsuboCompareContent({ points }: CompareProps) {
   };
 
   // プリセット適用
-  const handleApplyPreset = (codes: string[]) => {
-    setSelectedCodes(codes);
+  const handleApplyPreset = (codes: readonly string[]) => {
+    setSelectedCodes([...codes]);
     setTargetReplaceIndex(null);
     setSearchQuery("");
     requestAnimationFrame(() => document.getElementById("tsubo-compare-result-title")?.focus());
@@ -298,7 +278,9 @@ function TsuboCompareContent({ points }: CompareProps) {
               <h2 id="tsubo-compare-result-title" className="atlas-target" tabIndex={-1}>選んだツボの比較</h2>
               <ComparePrintButton />
             </div>
-            <p id="tsubo-compare-scroll-hint" className="tsubo-compare-scroll-hint">「図で場所を確認」から、図鑑の図へ進めます。</p>
+            <p id="tsubo-compare-scroll-hint" className="tsubo-compare-scroll-hint">
+              {selectedTsubos.some(point => Boolean(point.locationFigure)) ? "図の丸印がツボの位置です。「図で場所を確認」で、目印を示した拡大図が開きます。" : "「図で場所を確認」で、目印を示した図が開きます。"}
+            </p>
             <div className="tsubo-compare-scroll" tabIndex={0} role="region" aria-labelledby="tsubo-compare-result-title" aria-describedby="tsubo-compare-scroll-hint">
               <table className="tsubo-compare-table" role="table" data-points={selectedTsubos.length}>
                 <caption className="sr-only">場所と目印・注意事項・所属経絡・要穴・伝統的な背景・学習上の補足の比較</caption>

@@ -37,12 +37,13 @@ const { CURRICULUM_QUIZZES } = load('src/data/curriculumQuizzes');
 const { PROGRESSIVE_CASES } = load('src/data/progressiveCases');
 const lectureIds=new Set(CURRICULUM_DATA.flatMap(chapter=>chapter.lectures).map(lecture=>lecture.id));
 const additionalResearchArticles = new Set(['science-of-pulse-diagnosis', 'science-of-abdominal-diagnosis', 'science-of-tongue-diagnosis', 'science-of-kampo-network-pharmacology', 'east-west-integrative-gerd-gastric']);
+const updatedArticleComparisons = new Set(['science-of-yinyang-gogyo', 'science-of-pulse-diagnosis']);
 for(const article of ARTICLES) {
  const guide=ARTICLE_LEARNING_GUIDES[article.id]; assert(guide,article.id);
  assert(lectureIds.has(guide.lectureId),article.id+' lecture'); assert(CURRICULUM_QUIZZES[guide.lectureId],article.id+' quiz');
  assert(PROGRESSIVE_CASES.some(c=>c.id===guide.caseId),article.id+' case');
  assert.equal(article.summary,guide.summary);
- assert.equal(article.updatedAt, additionalResearchArticles.has(article.id) ? '2026-11-23' : '2026-11-20', article.id);
+ assert.equal(article.updatedAt, updatedArticleComparisons.has(article.id) ? '2026-11-24' : additionalResearchArticles.has(article.id) ? '2026-11-23' : '2026-11-20', article.id);
 }
 const { GLOSSARY_TERMS } = load('src/data/glossaryData');
 const terms=Object.values(GLOSSARY_TERMS); assert.equal(new Set(terms.map(term=>term.term)).size,terms.length);
@@ -58,10 +59,10 @@ const sitemap=load('src/app/sitemap').default();
 const queryPages = sitemap.filter(page=>new URL(page.url).search);
 assert.equal(queryPages.length, 1, 'Only the independently described Gorou checker has a query canonical');
 assert.equal(queryPages[0].url, 'https://www.haritaro.jp/diagnosis?tab=gorou');
-assert.equal(queryPages[0].lastModified.toISOString().slice(0,10), '2026-11-20', 'Gorou has its own publication revision date');
+assert.equal(queryPages[0].lastModified.toISOString().slice(0,10), '2026-11-24', 'Gorou has its own publication revision date');
 assert(!sitemap.some(page=>new URL(page.url).pathname==='/notes'));
 assert.equal(new Set(sitemap.map(page=>page.url)).size,sitemap.length);
-const { ACUPOINT_PAGE_REVISED_AT, CURRICULUM_EDITORIAL_REVISIONS, READABILITY_EDITORIAL_REVISIONS, NATURAL_JAPANESE_EDITORIAL_REVISIONS } = load('src/config/contentUpdates');
+const { PUBLIC_VISUALS_REVISED_AT, CURRICULUM_EDITORIAL_REVISIONS, READABILITY_EDITORIAL_REVISIONS, NATURAL_JAPANESE_EDITORIAL_REVISIONS } = load('src/config/contentUpdates');
 assert.equal(CURRICULUM_EDITORIAL_REVISIONS.length, 55);
 assert.equal(new Set(CURRICULUM_EDITORIAL_REVISIONS).size, 55);
 assert.equal(READABILITY_EDITORIAL_REVISIONS.length, 43);
@@ -85,7 +86,7 @@ const revisedLecturePaths = {
 };
 for (const unit of readingUnits) assert.equal(dateAt(unit.href), revisedLecturePaths[unit.href] ?? READING_LECTURES_REVISED_AT, unit.href);
 for (const pathname of ['/tsubo/sp11','/tsubo/bl57']) {
-  assert.equal(dateAt(pathname), ACUPOINT_PAGE_REVISED_AT, pathname + ' shows the shared acupoint release date');
+  assert.equal(dateAt(pathname), PUBLIC_VISUALS_REVISED_AT, pathname + ' shows the shared acupoint release date');
 }
 const { CLASSIFIED_ACUPOINT_CODES, KEY_POINT_TYPES_GUIDE } = load('src/data/tsubo/keyPointTypes');
 const { EXTRA_POINTS, EXTRA_POINTS_PATH, EXTRA_POINTS_REVISED_AT } = load('src/data/tsubo/extraPoints');
@@ -96,10 +97,14 @@ for (const pathname of [EXTRA_POINTS_PATH, ...EXTRA_POINTS.map(point => point.hr
   assert.equal(dateAt(pathname), EXTRA_POINTS_REVISED_AT, pathname + ' has its own sitemap entry');
 }
 assert.equal(dateAt('/curriculum'),'2026-11-18');
-for(const pathname of ['/','/about','/articles','/cases','/glossary','/learn/review','/practice/haiketsu','/symptoms']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
+for(const pathname of ['/','/about','/articles','/cases','/glossary','/learn/review','/symptoms']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
 for (const pathname of ['/learn','/learn/essentials']) assert.equal(dateAt(pathname), '2026-11-24', pathname);
-assert.equal(dateAt('/tsubo/compare'), '2026-11-23', 'Comparison links to recently researched acupoints');
-for (const pathname of ['/diagnosis', '/clinical', '/simulator', '/clinical/symptoms/headache', '/learn/acupuncture', '/learn/acupuncture/research', '/library', '/safety', '/tsubo/cv21', '/symptoms/headache-stiff-neck', '/symptoms/dizziness-tinnitus', '/symptoms/knee-joint-pain', '/tsubo/sp6']) assert.equal(dateAt(pathname), '2026-11-23', pathname);
+for (const pathname of ['/diagnosis', '/clinical/symptoms/headache', '/learn/acupuncture', '/learn/acupuncture/research', '/library']) assert.equal(dateAt(pathname), '2026-11-23', pathname);
+for (const pathname of [
+  '/clinical', '/simulator', '/safety', '/practice/haiketsu', '/tsubo/compare', '/kikei',
+  '/tsubo/cv21', '/tsubo/sp6', '/symptoms/headache-stiff-neck', '/symptoms/dizziness-tinnitus',
+  '/symptoms/knee-joint-pain', '/cases/case-01-headache-liver-fire',
+]) assert.equal(dateAt(pathname), PUBLIC_VISUALS_REVISED_AT, pathname);
 const { ACUPUNCTURE_RESEARCH, acupunctureResearchHref } = load('src/config/acupunctureLearning');
 const { ACUPUNCTURE_RESEARCH_ARTICLES } = load('src/data/acupunctureResearch');
 for (const article of ACUPUNCTURE_RESEARCH_ARTICLES) {
@@ -115,7 +120,7 @@ assert(!sitemap.some(page => new URL(page.url).pathname === '/learn/courses'), '
 assert(!sitemap.some(page => new URL(page.url).pathname === '/kokushi'), 'The retired exam landing page is no longer an indexable sitemap destination');
 for(const article of ARTICLES) assert.equal(sitemap.find(page=>new URL(page.url).pathname===`/articles/${article.id}`).lastModified.toISOString().slice(0,10),article.updatedAt);
 for (const articleId of additionalResearchArticles) {
-  assert.equal(dateAt(`/articles/${articleId}`), '2026-11-23', articleId + ' reflects the source revision in the public sitemap');
+  assert.equal(dateAt(`/articles/${articleId}`), updatedArticleComparisons.has(articleId) ? PUBLIC_VISUALS_REVISED_AT : '2026-11-23', articleId + ' reflects the latest revision in the public sitemap');
 }
 const { LEARNING_COURSES, getCourseProgress } = load('src/data/learningCourses');
 const { CURRICULUM_TOTAL_CHAPTERS } = load('src/data/curriculumOutline');

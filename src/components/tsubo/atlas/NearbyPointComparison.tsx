@@ -6,10 +6,11 @@ import NearbyComparisonArtwork from "./NearbyComparisonArtwork";
 import NearbyComparisonControls from "./NearbyComparisonControls";
 import AtlasLocationCheck from "./AtlasLocationCheck";
 
-export default function NearbyPointComparison({ comparison, code, anchorId }: {
+export default function NearbyPointComparison({ comparison, code, anchorId, initiallyOpen }: {
   comparison: NearbyComparison;
   code: string;
   anchorId: string;
+  initiallyOpen?: boolean;
 }) {
   const points = comparison.points.flatMap(position => {
     const point = getAcupointByCode(position.code);
@@ -21,6 +22,7 @@ export default function NearbyPointComparison({ comparison, code, anchorId }: {
     <HashTargetDetails
       className="atlas-disclosure atlas-nearby"
       data-nearby-comparison={comparison.id}
+      open={initiallyOpen}
       summary={<>{comparison.heading ?? "近くのツボを図で比べる"}<span>{comparison.region}</span></>}
     >
       <div id={anchorId} className="atlas-target atlas-comparison-content">

@@ -1,8 +1,9 @@
-import Link from "next/link";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ContentEndAd from "@/components/ads/ContentEndAd";
-import { AcupointComparisonLink, AcupointReadingLinks, AcupointSectionLinks } from "@/components/tsubo/AcupointArticleLinks";
+import { AcupointReadingLinks } from "@/components/tsubo/AcupointArticleLinks";
 import AcupointArticleHeader, { AcupointPointDetails } from "@/components/tsubo/AcupointArticleHeader";
+import AcupointCautions from "@/components/tsubo/AcupointCautions";
+import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
 import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
@@ -14,7 +15,7 @@ import { HEGU_SEARCH_COPY } from "@/data/tsubo/atlas/searchCopy";
 import type { AcupointDetail } from "@/data/tsubo/types";
 
 export const heguAtlasReading = {
-  traditional: "合谷は、頭痛や歯の痛みなど、頭や顔の不調と伝統的に関連づけられてきました。頭痛が続く、繰り返すときは医療機関に相談してください。",
+  traditional: "伝統的な鍼灸では、合谷は頭痛や歯の痛みなど、頭や顔の不調に使われてきました。",
   caution: "妊娠中は合谷の指圧を控え、産科の担当者にご相談ください。",
 };
 
@@ -32,7 +33,7 @@ export const heguSources = [
 export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
-      <AcupointArticleHeader point={point} lead={HEGU_SEARCH_COPY.lead} warning={heguAtlasReading.caution} />
+      <AcupointArticleHeader point={point} lead={HEGU_SEARCH_COPY.lead} />
 
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
@@ -43,48 +44,43 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
             <p>拡大図の①は人差し指につながる骨（第2中手骨）、②は親指につながる骨（第1中手骨）です。丸印は①の真ん中から②の方へ少し寄ったところにあります。</p>
           </div>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
-          <AcupointComparisonLink code={point.code} />
           <AcupointPointDetails point={point} meridianReading="てのようめいだいちょうけい" />
-          <AcupointSectionLinks />
         </AcupointAtlasDiagrams>
       </section>
 
-      <section id="acupoint-cautions" className="atlas-target atlas-cautions">
-        <h2 className={headingClass}>注意したいこと</h2>
-        <p>妊娠中は合谷の指圧を控え、産科の担当者にご相談ください。傷や赤い腫れがあるところも押すのを控えます。症状がつらいときは受診を優先してください。</p>
-      </section>
+      <AcupointCautions>
+        <p><strong>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</strong> 頭痛が続く、または繰り返すときは医療機関に相談してください。</p>
+        <p>{heguAtlasReading.caution} 傷や赤い腫れがあるところは押さず、痛みやしびれが出たら手を離してください。</p>
+        <p>手を温めるときは、カイロを肌に直接当てたり、同じ場所を長時間温めたりすることは避けてください。</p>
+        <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
+      </AcupointCautions>
+
+      <AcupointLocationComparison point={point} related={[
+        { code: "LI3", text: "同じ経絡で、合谷より人差し指の先に近いツボです。" },
+        { code: "LI5", text: "同じ経絡で、合谷より手首に近いツボです。" },
+        { code: "LR3", text: "手の甲と足の甲で、目印になる骨が違います。" },
+      ]} />
 
       <section id="acupoint-traditional" className="atlas-target">
         <h2 className={headingClass}>伝統的な使われ方</h2>
         <p>{heguAtlasReading.traditional}</p>
-        <p className="atlas-safety mt-3"><strong>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</strong></p>
         <AcupointReadingLinks code={point.codeLower} editorialLinks={[{ href: "/symptoms/headache-stiff-neck", label: "頭痛・首肩こりの症状ガイド" }]} />
       </section>
 
       <section>
         <h2 className={headingClass}>自分で押してみる</h2>
-        <p>反対の手の親指の腹を当て、痛みを感じない強さでゆっくり押し、力を抜きます。痛みやしびれが出たら手を離してください。手が冷えるときは、手袋などで温めてください。カイロの肌への直当てや、同じ場所を長時間温めることは避けましょう。</p>
+        <p>反対の手の親指の腹を当て、痛みを感じない強さでゆっくり押し、力を抜きます。手が冷えるときは、手袋などで温めてください。</p>
       </section>
 
-      <AcupointNameGuide code={point.codeLower} />
       <AcupointResearch point={point} />
+      <AcupointNameGuide code={point.codeLower} />
 
       <details className="atlas-disclosure atlas-reading-details">
         <summary>詳しい解剖と位置の資料</summary>
-        <p className="my-4 text-sm">刺鍼（はりを刺す施術）や施灸（お灸をする施術）の手順は確認待ちです。模式図から個人の安全な刺入経路や深さを判断することはできません。</p>
         {point.crossSection && (
           <CrossSectionViewer model={getPublicCrossSectionModel(point.crossSection)} pointName={point.name} pointCode={point.code} individualModel />
         )}
       </details>
-
-      <section>
-        <h2 className={headingClass}>位置を見比べるツボ</h2>
-        <ul className="list-disc space-y-2 pl-5">
-          <li>同じ経絡で、人差し指の付け根に近いツボです。 <Link href="/tsubo/li3" className={linkClass}>三間（さんかん・LI3）</Link></li>
-          <li>同じ経絡で、手の甲側の手首のしわにあるくぼみが目印です。 <Link href="/tsubo/li5" prefetch={false} className={linkClass}>陽渓（ようけい・LI5）</Link></li>
-          <li>足の甲にあるツボです。手と足で目印になる骨を見比べられます。 <Link href="/tsubo/lr3" className={linkClass}>太衝（たいしょう・LR3）</Link></li>
-        </ul>
-      </section>
 
       <section id="acupoint-sources" className="atlas-target">
         <h2 className={headingClass}>出典</h2>

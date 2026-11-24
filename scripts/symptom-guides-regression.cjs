@@ -141,6 +141,9 @@ async function main() {
     assert(content.observations.length >= 3 && content.observations.every(item => html.includes(item)), `${guide.id}: practical details for the visit appear in initial HTML`);
     assert(safety && html.includes(safety.message), `${guide.id}: safety message appears before any interaction`);
     assert(html.indexOf(safety.message) < html.indexOf('id="acupoints"') && html.indexOf('id="acupoints"') < html.indexOf('id="daily-life"') && html.indexOf('id="daily-life"') < html.indexOf('id="traditional"'), `${guide.id}: triage and point links precede the guide's longer sections`);
+    const recording = html.slice(html.indexOf('id="recording"'), html.indexOf('id="daily-life"'));
+    assert(recording.includes('<figure id="recording-example"') && recording.includes('架空の記録です。'), `${guide.id}: the illustrated recording example is visible and identified as fictional`);
+    assert(html.includes('href="#recording"'), `${guide.id}: the recording section is linked from the table of contents`);
     for (const study of getSymptomStudies(guide.id)) {
       assert(html.includes(study.result) && html.includes(study.limits), `${guide.id}: evidence appears alongside its limits`);
       assert(study.sources.every(source => schema['@graph'][0].citation.includes(source.url)), `${guide.id}: cited clinical studies are in the page schema`);

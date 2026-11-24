@@ -21,6 +21,8 @@ import {
 import PrescriptionScoringGuide from "@/components/learning/PrescriptionScoringGuide";
 import { getPrescriptionCountLabel } from "@/utils/prescriptionScorePresentation";
 
+const allPoints = Object.values(ACUPOINT_ROLES);
+
 export default function HaiketsuPracticePage() {
 
   const [selectedPointIds, setSelectedPointIds] = useState<string[]>(["taishou", "gokoku"]); // 初期: 四関穴
@@ -39,10 +41,11 @@ export default function HaiketsuPracticePage() {
     return analyzePrescription(selectedPointIds);
   }, [selectedPointIds]);
 
-  // 全ツボ一覧リスト
-  const allPoints = useMemo(() => {
-    return Object.values(ACUPOINT_ROLES);
-  }, []);
+  const selectedPoints = selectedPointIds.map(id => ACUPOINT_ROLES[id]).filter(Boolean);
+  const pointGroups = [
+    { tier: "root", label: "本治", description: "症状の背景を考える穴", count: analysis.rootCount },
+    { tier: "branch", label: "標治", description: "現れている症状を考える穴", count: analysis.branchCount },
+  ] as const;
 
   // ツボの追加・削除
   const togglePoint = (id: string) => {
@@ -71,7 +74,7 @@ export default function HaiketsuPracticePage() {
     <div className="clinical-exercises clinical-haiketsu min-h-screen">
       <Suspense fallback={null}><IncomingAcupoint onSelect={selectIncomingPoint} /></Suspense>
       <div className="page-layout page-layout--intro">
-        <PageIntro compact eyebrow="基本32穴の配穴演習" title="配穴の練習" art="points" description="経穴を選び、組み合わせと選んだ理由を確かめます。教材例からも始められます。">
+        <PageIntro compact eyebrow="基本32穴の配穴演習" title="配穴の練習" art="points" description="ツボを組み合わせ、教材上の役割を見比べます。組み合わせた理由も自分の言葉で書けます。">
           <nav className="reader-navigation mt-4" aria-label="配穴演習の進め方">
             <a href="#haiketsu-palette" className="page-primary-action">経穴を選ぶ</a>
             <a href="#haiketsu-review" className="page-secondary-action">配穴を確認する</a>
@@ -133,58 +136,50 @@ export default function HaiketsuPracticePage() {
           <section id="haiketsu-review" tabIndex={-1} aria-labelledby="haiketsu-review-title" className="min-w-0 space-y-5">
             <h2 id="haiketsu-review-title" className="reader-section-title">配穴を確認する</h2>
             
-            {/* スコア・ステータスカード（点数による断定を排し、構成バランスの可視化へ） */}
             <div className="clinical-exercise-surface space-y-5">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                <div className="min-w-0">
-                  <span className="text-sm text-muted block font-medium">
-                    配穴の構成バランス（教材モデル分析）
-                  </span>
-                  <div className="mt-2 flex flex-col items-start gap-2">
-                    <span className={`text-sm sm:text-base font-bold px-3 py-1 rounded-full ${
-                      analysis.status === "optimal" 
-                        ? "bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300" 
-                        : analysis.status === "acceptable"
-                        ? "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300"
-                        : "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300"
-                    }`}>
-                      {analysis.statusText}
-                    </span>
-                    <span className="text-sm leading-relaxed text-muted">
-                      ※臨床効果の断定ではなく教材例との対比指標
-                    </span>
+              <figure className="clinical-role-figure">
+                <figcaption className="font-bold">選んだツボを、教材上の役割で見比べる</figcaption>
+                {analysis.totalCount > 0 && (
+                  <div className="clinical-role-bar" aria-hidden="true">
+                    <span data-role="root" style={{ flexGrow: analysis.rootCount }} />
+                    <span data-role="branch" style={{ flexGrow: analysis.branchCount }} />
                   </div>
-                </div>
+                )}
+                <dl className="clinical-role-groups">
+                  {pointGroups.map(({ tier, label, description, count }) => {
+                    const points = selectedPoints.filter(point => point.tier === tier);
+                    return (
+                      <div key={tier} data-role={tier}>
+                        <dt className="clinical-role-heading"><span>{label}</span><span>{count}穴</span></dt>
+                        <dd>
+                          <p className="clinical-role-description">{description}</p>
+                          {points.length > 0 ? (
+                            <ul className="clinical-role-points">
+                              {points.map(point => <li key={point.id}>{point.name}</li>)}
+                            </ul>
+                          ) : <p className="clinical-role-description">選択なし</p>}
+                        </dd>
+                      </div>
+                    );
+                  })}
+                </dl>
+              </figure>
 
-                <div className="shrink-0 text-left text-sm text-muted sm:text-right">
-                  <p>選択中: <strong className="text-ink text-base">{selectedPointIds.length}</strong> 穴</p>
-                  <p className="text-sm mt-0.5">（基本32穴パレット）</p>
-                  <p className="mt-1 text-sm">{getPrescriptionCountLabel(selectedPointIds.length)}</p>
-                </div>
+              <div className="space-y-2">
+                <h3 className="font-semibold text-ink">配穴の構成バランス</h3>
+                <span className={`inline-block text-sm sm:text-base font-bold px-3 py-1 rounded-full ${
+                  analysis.status === "optimal"
+                    ? "bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300"
+                    : analysis.status === "acceptable"
+                    ? "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300"
+                    : "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300"
+                }`}>
+                  {analysis.statusText}
+                </span>
+                <p className="text-sm text-muted">{getPrescriptionCountLabel(selectedPointIds.length)}</p>
               </div>
 
               <PrescriptionScoringGuide />
-              {/* 本治 vs 標治 比率バー */}
-              <div className="space-y-1.5 pt-2 border-t border-frame">
-                <div className="flex justify-between text-sm">
-                  <span className="text-accent font-bold">
-                    本治（伝統理論上の全身・背景の病態を検討）: {analysis.rootCount}穴
-                  </span>
-                  <span className="text-warm font-bold">
-                    標治（局所対症）: {analysis.branchCount}穴
-                  </span>
-                </div>
-                <div className="flex h-2 w-full overflow-hidden rounded-full bg-panel-muted">
-                  <div 
-                    className="h-full bg-accent"
-                    style={{ width: `${selectedPointIds.length > 0 ? analysis.rootRatio : 50}%` }}
-                  />
-                  <div 
-                    className="h-full bg-[var(--warm-readable)]"
-                    style={{ width: `${selectedPointIds.length > 0 ? 100 - analysis.rootRatio : 50}%` }}
-                  />
-                </div>
-              </div>
 
               {/* 警告・相殺アラート */}
               {analysis.alerts.length > 0 && (
@@ -217,16 +212,13 @@ export default function HaiketsuPracticePage() {
               <p className="text-sm leading-relaxed text-muted">本治・標治は教材上の分類です。今回の治法と所見に照らして検討してください。</p>
               {selectedPointIds.length === 0 ? (
                 <div className="p-8 text-center bg-panel rounded-2xl border border-dashed border-frame text-sm text-muted">
-                  右側のパレットからツボをクリックして配穴を構成してください
+                  「経穴を選ぶ」欄から、組み合わせたいツボを選んでください。
                 </div>
               ) : (
                 <div className="clinical-haiketsu-selected-list">
-                  {selectedPointIds.map(id => {
-                    const role = ACUPOINT_ROLES[id];
-                    if (!role) return null;
-                    return (
+                  {selectedPoints.map(role => (
                       <div
-                        key={id}
+                        key={role.id}
                         className="clinical-haiketsu-selected flex items-start justify-between gap-2"
                       >
                         <div className="space-y-1">
@@ -257,16 +249,16 @@ export default function HaiketsuPracticePage() {
                                 });
                               }}
                               className="text-sm text-accent hover:underline inline-flex items-center gap-0.5 font-semibold shrink-0"
-                              title={`${role.name}（${role.code}）の取穴と解剖安全を別タブで確認`}
+                                  title={`${role.name}（${role.code}）の位置と注意事項を別タブで確認`}
                             >
-                              <span>取穴詳細</span>
-                              <ExternalLink className="w-2.5 h-2.5" />
+                              <span>図鑑で位置を見る</span>
+                              <ExternalLink aria-hidden="true" className="w-2.5 h-2.5" />
                             </Link>
                           </div>
                         </div>
 
                         <button
-                          onClick={() => togglePoint(id)}
+                          onClick={() => togglePoint(role.id)}
                           className="min-h-11 min-w-11 shrink-0 inline-flex items-center justify-center rounded text-muted hover:text-red-600 transition-colors"
                           aria-label={`${role.name}を配穴から外す`}
                           title="このツボを処方から外す"
@@ -274,8 +266,7 @@ export default function HaiketsuPracticePage() {
                           <X className="w-3.5 h-3.5" />
                         </button>
                       </div>
-                    );
-                  })}
+                  ))}
                 </div>
               )}
             </div>
@@ -299,27 +290,27 @@ export default function HaiketsuPracticePage() {
               <div className="space-y-3 text-sm">
                 <div>
                   <label htmlFor="haiketsu-title" className="font-bold text-muted block mb-1">
-                    処方名・タイトル
+                    この組み合わせの名前
                   </label>
                   <input
                     id="haiketsu-title"
                     type="text"
                     value={prescriptionTitle}
                     onChange={event => setPrescriptionTitle(event.target.value)}
-                    placeholder="例: 頑固な自律神経失調・昇降調和処方"
+                    placeholder="例　合谷と太衝の組み合わせ"
                     className="min-h-11 w-full rounded-lg border border-field bg-page px-3 py-2 text-base"
                   />
                 </div>
 
                 <div>
                   <label htmlFor="haiketsu-rationale" className="font-bold text-muted block mb-1">
-                    この配穴を検討する理由・伝統的な目的
+                    どの所見をもとに、このツボを選びましたか？
                   </label>
                   <textarea
                     id="haiketsu-rationale"
                     value={rationaleText}
                     onChange={event => setRationaleText(event.target.value)}
-                    placeholder="なぜ主穴を太衝にしたのか、なぜ合谷と組み合わせたのか、患者のどのような病態にアプローチするのかを記述..."
+                    placeholder="主穴にしたツボと、ほかのツボを加えた理由を書きます。"
                     rows={4}
                     className="w-full rounded-lg border border-field bg-page px-3 py-2 text-base leading-[1.8]"
                   />

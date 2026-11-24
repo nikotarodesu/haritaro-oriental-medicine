@@ -86,6 +86,20 @@
 .tsubo-compare-table td + td, .tsubo-compare-table thead th:nth-child(n + 3) { border-left: 1px solid var(--border-washi); }
 .tsubo-compare-column-point { display: block; font-family: var(--font-serif); font-size: 1.25rem; }
 .tsubo-compare-row-point { display: none; }
+.tsubo-compare-location-figure {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  margin-block: 0 .625rem;
+  border: 1px solid var(--border-washi);
+  border-radius: .625rem;
+  background: var(--bg-card);
+}
+.tsubo-compare-location-figure svg {
+  display: block;
+  width: 100%;
+  height: clamp(6.5rem, 27vw, 9.5rem);
+}
 .tsubo-compare-caution { display: flex; align-items: flex-start; gap: 7px; }
 .tsubo-compare-caution > svg { flex-shrink: 0; margin-top: .3em; color: var(--accent-readable); }
 .tsubo-compare-detail-link { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: .2em; color: var(--accent-readable); font-size: .875rem; font-weight: 600; }

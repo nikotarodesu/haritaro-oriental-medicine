@@ -7,6 +7,10 @@ import {
   XCircle, 
   ArrowRight, 
   ChevronRight, 
+  Eye,
+  Hand,
+  MessageCircle,
+  ScanFace,
   Sparkles, 
   BookOpen, 
   AlertTriangle, 
@@ -28,11 +32,18 @@ import { useLearningSync } from "@/contexts/LearningSyncContext";
 import { getLearningStorageAdapter } from "@/utils/learningStorageBridge";
 import { caseStudyAnswerKey, caseStudyAttemptKey, getCaseStudyProgress } from "@/utils/caseStudyProgress";
 
+const examinationOptions = [
+  { id: "inspection", label: "望・聞診", cue: "顔色や声", icon: Eye },
+  { id: "tongue", label: "舌診", cue: "舌の色や形", icon: ScanFace },
+  { id: "inquiry", label: "問診", cue: "本人の話", icon: MessageCircle },
+  { id: "palpation", label: "切診", cue: "脈やお腹", icon: Hand },
+] as const;
+
 export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: ClinicalCase }) {
 
 
   // 四診タブ選択
-  const [activeExamTab, setActiveExamTab] = useState<"inspection" | "tongue" | "inquiry" | "palpation">("inspection");
+  const [activeExamTab, setActiveExamTab] = useState<typeof examinationOptions[number]["id"]>("inspection");
 
   // 推論ステップの回答状態
   const { ready, values, status, setEntry } = useLearningSync();
@@ -40,14 +51,14 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
   const [showExplanation, setShowExplanation] = useState(false);
 
 
-  const handleSelectOption = (stepNumber: number, optionId: string) => {
+  const handleSelectOption = (stepNumber: number, optionId: string, answeredAt: number) => {
     if (!ready) return;
     const adapter = getLearningStorageAdapter();
     const before = getCaseStudyProgress(adapter?.values() ?? values, clinicalCase);
     if (before.answers[stepNumber] === optionId) return;
 
     const key = caseStudyAnswerKey(clinicalCase.id, stepNumber);
-    const answer = { attempt: before.attempt, optionId, answeredAt: Date.now() };
+    const answer = { attempt: before.attempt, optionId, answeredAt };
     setEntry(key, answer);
     const after = getCaseStudyProgress(adapter?.values() ?? { ...values, [key]: answer }, clinicalCase);
     if (after.attempt !== before.attempt) return;
@@ -68,10 +79,12 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
         <h1 className="reader-title">{clinicalCase.title}</h1>
         <p className="reader-lead">{clinicalCase.subTitle}</p>
       </header>
-      <nav aria-label="症例の進め方" className="reader-navigation">
-        <a href="#case-patient" className="page-primary-action">症例の基本情報</a>
-        <a href="#case-examination" className="page-secondary-action">四診</a>
-        <a href="#case-reasoning" className="page-secondary-action">推論演習</a>
+      <nav aria-label="症例の進め方">
+        <ol className="case-reading-path">
+          <li><a href="#case-patient"><UserIcon aria-hidden="true" /><span>基本情報を読む</span></a></li>
+          <li><a href="#case-examination"><Stethoscope aria-hidden="true" /><span>四診を確認</span></a></li>
+          <li><a href="#case-reasoning"><Activity aria-hidden="true" /><span>問題に答える</span></a></li>
+        </ol>
       </nav>
 
       <MedicalSafetyNotice title="演習を始める前に" message={CLINICAL_CASE_SCOPE} />
@@ -95,7 +108,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
           </div>
           <div className="col-span-2">
             <span className="text-muted block">既往歴</span>
-            <span className="font-bold text-ink">{clinicalCase.patient.pastHistory.join("、 ")}</span>
+            <span className="font-bold text-ink">{clinicalCase.patient.pastHistory.join("、")}</span>
           </div>
         </div>
 
@@ -128,20 +141,19 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
 
         {/* 四診タブナビゲーション */}
         <div role="group" aria-label="表示する所見" className="case-examination-options">
-          {[
-            { id: "inspection", label: "望・聞診" },
-            { id: "tongue", label: "舌診" },
-            { id: "inquiry", label: "問診" },
-            { id: "palpation", label: "切診" },
-          ].map(examination => (
+          {examinationOptions.map(({ id, label, cue, icon: Icon }) => (
             <button
-              key={examination.id}
+              key={id}
               type="button"
-              aria-pressed={activeExamTab === examination.id}
+              aria-pressed={activeExamTab === id}
               aria-controls="case-examination-content"
-              onClick={() => setActiveExamTab(examination.id as typeof activeExamTab)}
+              onClick={() => setActiveExamTab(id)}
             >
-              {examination.label}
+              <Icon aria-hidden="true" />
+              <span>
+                <strong>{label}</strong>
+                <span>{cue}</span>
+              </span>
             </button>
           ))}
         </div>
@@ -150,12 +162,12 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
         <div id="case-examination-content" className="min-h-[120px] rounded-lg border border-divider bg-page p-3 text-base leading-[1.85] sm:p-4">
           {activeExamTab === "inspection" && (
             <div className="space-y-2">
-              <span className="font-bold text-ink block">【望診所見】</span>
+              <h3 className="font-bold text-ink">見て確認したこと（望診）</h3>
               <p className="text-ink leading-relaxed">
                 {clinicalCase.examinations.inspection}
               </p>
               <div className="pt-2">
-                <span className="font-bold text-ink block">【聞診所見（声・呼吸音）】</span>
+                <h3 className="font-bold text-ink">声や呼吸音など（聞診）</h3>
                 <p className="text-ink leading-relaxed">
                   {clinicalCase.examinations.auscultationAndOlfaction}
                 </p>
@@ -165,33 +177,33 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
 
           {activeExamTab === "tongue" && (
             <div className="space-y-3">
-              <span className="font-bold text-ink block">【舌診所見】</span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <h3 className="font-bold text-ink">舌の色・表面・形を見比べる</h3>
+              <dl className="grid grid-cols-2 gap-2.5">
                 <div className="p-2.5 rounded-xl bg-panel border border-divider">
-                  <span className="text-muted text-xs block">舌質（色調）</span>
-                  <span className="font-bold text-accent">{clinicalCase.examinations.tongueDiagnosis.body}</span>
+                  <dt className="text-muted text-sm">舌そのものの色</dt>
+                  <dd className="font-bold text-accent">{clinicalCase.examinations.tongueDiagnosis.body}</dd>
                 </div>
                 <div className="p-2.5 rounded-xl bg-panel border border-divider">
-                  <span className="text-muted text-xs block">舌苔（厚さ・色・潤燥）</span>
-                  <span className="font-bold text-accent">{clinicalCase.examinations.tongueDiagnosis.coating}</span>
+                  <dt className="text-muted text-sm">表面の付着物（舌苔）</dt>
+                  <dd className="font-bold text-accent">{clinicalCase.examinations.tongueDiagnosis.coating}</dd>
                 </div>
                 <div className="p-2.5 rounded-xl bg-panel border border-divider">
-                  <span className="text-muted text-xs block">舌形（形態・歯痕・点刺）</span>
-                  <span className="font-bold text-accent">{clinicalCase.examinations.tongueDiagnosis.shape}</span>
+                  <dt className="text-muted text-sm">形や歯の跡</dt>
+                  <dd className="font-bold text-accent">{clinicalCase.examinations.tongueDiagnosis.shape}</dd>
                 </div>
                 {clinicalCase.examinations.tongueDiagnosis.sublingualVeins && (
                   <div className="p-2.5 rounded-xl bg-panel border border-divider">
-                    <span className="text-muted text-xs block">舌下静脈（瘀血判定）</span>
-                    <span className="font-bold text-warm">{clinicalCase.examinations.tongueDiagnosis.sublingualVeins}</span>
+                    <dt className="text-muted text-sm">舌の裏の静脈</dt>
+                    <dd className="font-bold text-warm">{clinicalCase.examinations.tongueDiagnosis.sublingualVeins}</dd>
                   </div>
                 )}
-              </div>
+              </dl>
             </div>
           )}
 
           {activeExamTab === "inquiry" && (
             <div className="space-y-3">
-              <span className="font-bold text-ink block">【問診詳細（一問一答）】</span>
+              <h3 className="font-bold text-ink">質問と本人の答え</h3>
               <div className="space-y-2">
                 {clinicalCase.examinations.inquiry.map((inq, idx) => (
                   <div key={idx} className="p-3 rounded-xl bg-panel border border-divider space-y-1">
@@ -205,23 +217,24 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
 
           {activeExamTab === "palpation" && (
             <div className="space-y-3">
-              <span className="font-bold text-ink block">【切診所見（脈・腹・経穴）】</span>
-              <div className="space-y-2">
+              <h3 className="font-bold text-ink">触れて確認したこと</h3>
+              <dl className="space-y-2">
                 <div className="p-3 rounded-xl bg-panel border border-divider">
-                  <div className="font-bold text-accent">脈診: {clinicalCase.examinations.palpation.pulse}</div>
-                  {clinicalCase.examinations.palpation.pulseDetail && (
-                    <div className="text-muted text-xs mt-0.5">{clinicalCase.examinations.palpation.pulseDetail}</div>
-                  )}
+                  <dt className="font-bold text-accent">脈</dt>
+                  <dd>{clinicalCase.examinations.palpation.pulse}</dd>
+                  {clinicalCase.examinations.palpation.pulseDetail && <dd className="text-muted text-sm">{clinicalCase.examinations.palpation.pulseDetail}</dd>}
                 </div>
                 <div className="p-3 rounded-xl bg-panel border border-divider">
-                  <div className="font-bold text-ink">腹証: {clinicalCase.examinations.palpation.abdomen}</div>
+                  <dt className="font-bold text-accent">お腹</dt>
+                  <dd>{clinicalCase.examinations.palpation.abdomen}</dd>
                 </div>
                 {clinicalCase.examinations.palpation.acupointReaction && (
                   <div className="p-3 rounded-xl bg-panel border border-divider">
-                    <div className="font-bold text-warm">経穴反応: {clinicalCase.examinations.palpation.acupointReaction}</div>
+                    <dt className="font-bold text-accent">経穴の反応</dt>
+                    <dd>{clinicalCase.examinations.palpation.acupointReaction}</dd>
                   </div>
                 )}
-              </div>
+              </dl>
             </div>
           )}
         </div>
@@ -270,7 +283,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                         type="button"
                         disabled={!ready}
                         aria-pressed={isSelected}
-                        onClick={() => handleSelectOption(step.stepNumber, opt.id)}
+                        onClick={() => handleSelectOption(step.stepNumber, opt.id, Date.now())}
                         className={`flex min-h-11 w-full cursor-pointer items-start gap-2.5 rounded-lg border p-3 text-left text-base leading-[1.65] ${
                           isSelected
                             ? opt.isCorrect
@@ -370,24 +383,23 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
             </div>
           </div>
 
-          {/* 処方配穴 */}
-          <div className="p-5 rounded-2xl bg-panel border border-divider space-y-3">
-            <span className="text-xs font-bold text-accent uppercase tracking-wider block">
-              ツボの組み合わせ
-            </span>
-            <div className="flex flex-wrap gap-2">
-              {clinicalCase.correctDiagnosis.primaryPoints.map((pt) => (
-                <span key={pt} className="px-3 py-1.5 rounded-xl bg-panel-selected text-accent font-bold text-xs border border-frame">
-                  主穴　{pt}
-                </span>
-              ))}
-              {clinicalCase.correctDiagnosis.secondaryPoints.map((pt) => (
-                <span key={pt} className="px-3 py-1.5 rounded-xl bg-page text-ink font-semibold text-xs border border-[#E8E1D1] dark:border-[#384C5E]">
-                  加えるツボ　{pt}
-                </span>
-              ))}
-            </div>
-          </div>
+          <figure className="clinical-role-figure">
+            <figcaption className="font-bold">配穴例でのツボの役割</figcaption>
+            <dl className="clinical-role-groups">
+              <div>
+                <dt className="clinical-role-heading">中心に選ぶツボ</dt>
+                <dd className="clinical-role-description">主穴</dd>
+                <dd><ul className="clinical-role-points">{clinicalCase.correctDiagnosis.primaryPoints.map(point => <li key={point}>{point}</li>)}</ul></dd>
+              </div>
+              <div data-role="branch">
+                <dt className="clinical-role-heading">追加するツボ</dt>
+                <dd className="clinical-role-description">配穴・佐使穴</dd>
+                <dd>{clinicalCase.correctDiagnosis.secondaryPoints.length > 0 ? (
+                  <ul className="clinical-role-points">{clinicalCase.correctDiagnosis.secondaryPoints.map(point => <li key={point}>{point}</li>)}</ul>
+                ) : <p className="clinical-role-description">この例では追加しません</p>}</dd>
+              </div>
+            </dl>
+          </figure>
 
           {/* 詳細解説ブロック */}
           <div className="space-y-4 pt-2">

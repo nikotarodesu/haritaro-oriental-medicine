@@ -13,6 +13,7 @@ export const EXPANDED_ATLAS_REVISED_AT = '2026-11-19';
 export const SITE_REVISED_AT = '2026-10-02';
 export const ACUPOINT_PAGE_REVISED_AT = '2026-11-23';
 const ATLAS_LEARNING_REVISED_AT = '2026-11-24';
+export const PUBLIC_VISUALS_REVISED_AT = '2026-11-24';
 const ACUPOINT_MEASUREMENT_REVISED_AT = '2026-11-20';
 // Includes question-only changes, but not unchanged lessons in the same chapter.
 export const CURRICULUM_EDITORIAL_REVISIONS = [
@@ -287,8 +288,15 @@ export const PAGE_REVISIONS: Record<string, string> = {
     '/learn', '/learn/essentials', '/learn/lectures/body-functions',
     '/learn/lectures/meridians-and-points', '/learn/lectures/reading-evidence',
   ].map(route => [route, '2026-11-24'])),
+  ...Object.fromEntries([
+    '/updates', '/tsubo/compare', '/clinical', '/practice/haiketsu',
+    '/simulator', '/diagnosis?tab=gorou', '/safety', '/kikei',
+    '/articles/science-of-yinyang-gogyo', '/articles/science-of-pulse-diagnosis',
+    ...SYMPTOMS.map(guide => `/symptoms/${guide.id}`),
+  ].map(route => [route, PUBLIC_VISUALS_REVISED_AT])),
 };
 export const SITE_UPDATES = [
+  { date: PUBLIC_VISUALS_REVISED_AT, label: 'ツボ図鑑の読む順番と臨床演習の図を見直し', href: '/tsubo/li4', text: '場所と見つけ方の次に注意事項をまとめ、近いツボとの比較を置きました。研究と古典の配穴はその下で開けます。臨床演習には四診や配穴の比較を、症状ガイドには記録例の図を加えました。' },
   { date: '2026-11-24', label: '東洋医学の講義16本の図と文章を見直し', href: '/learn', text: '顔のほてりと足の冷えが出る時間帯、気と血の働き、五行の矢印などを、同じ基準で見比べられる図にしました。図と本文で同じ例を使い、長い説明は読みやすく分けています。' },
   { date: ATLAS_LEARNING_REVISED_AT, label: 'すねの比較図・要穴の分類・奇穴を追加', href: '/tsubo', text: '足三里・上巨虚・条口を一枚の図で見比べられます。要穴の分類から解説と一覧へ進めるようにし、奇穴の索引に太陽と印堂を掲載しました。' },
   { date: ACUPOINT_PAGE_REVISED_AT, label: '361のツボに名前の由来を追加', href: '/tsubo/li4#acupoint-name', text: 'ツボの場所の図に続いて、名前の由来、中国語での漢字の意味、声調付きのピンインを読めるようにしました。合谷の「谷」のように、ツボの場所と名前がどうつながるかを紹介します。' },

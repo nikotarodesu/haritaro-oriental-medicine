@@ -147,6 +147,7 @@ let queryParams = new URLSearchParams(), frameId = 0;
 const comparisonFrames = new Map();
 const AtlasLocationCheck = () => null;
 const compare = client('src/app/tsubo/compare/CompareClient.tsx', {
+  './presets': load('src/app/tsubo/compare/presets'),
   'next/link': { __esModule: true, default: Link },
   'next/navigation': { useSearchParams: () => queryParams },
   '@/components/design/PageIntro': { __esModule: true, default: () => null },
@@ -156,6 +157,9 @@ const compare = client('src/app/tsubo/compare/CompareClient.tsx', {
 }, { window: { print() {} }, document: { getElementById: () => ({ focus() {}, scrollIntoView() {} }) },
   requestAnimationFrame(callback) { comparisonFrames.set(++frameId, callback); return frameId; }, cancelAnimationFrame(id) { comparisonFrames.delete(id); },
 });
+for (const point of TSUBOS.slice(0, 2)) {
+  point.locationFigure = React.createElement('svg', { role: 'img', 'aria-label': point.name });
+}
 compare.boundaryChild({ points: TSUBOS }); compare.render();
 const scroll = () => nodes(compare.tree()).find(node => node.props?.className === 'tsubo-compare-scroll');
 const relatedCase = () => nodes(compare.tree()).find(node => node.props?.['data-analytics-action'] === 'compare_case');
@@ -188,6 +192,7 @@ const mobilePointNames = row => nodes(row).filter(node => node.props?.className 
 const itemRows = () => nodes(scroll()).filter(node => node.type === 'tr' && node.props?.children?.[0]?.props?.scope === 'row');
 assert.equal(itemRows().length, 6);
 assert.deepEqual(itemRows().slice(0, 2).map(row => text(row.props.children[0])), ['場所と目印', '注意事項'], 'Location and safety are the first comparison rows');
+assert.deepEqual(nodes(itemRows()[0]).filter(node => node.type === 'svg').map(node => node.props['aria-label']), ['合谷', '太衝']);
 assert(itemRows().every(row => mobilePointNames(row) === '合谷,太衝'), 'Every item labels both points in the narrow layout');
 for (const query of ['ＳＴ３６', 'アシサンリ', 'Zusanli']) {
   compareInput().props.onChange({ target: { value: query } }); compare.render();

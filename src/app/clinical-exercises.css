@@ -86,6 +86,103 @@
   overflow-y: auto;
   scrollbar-gutter: stable;
 }
+.clinical-role-figure {
+  display: grid;
+  gap: .75rem;
+}
+.clinical-role-bar {
+  display: flex;
+  height: .5rem;
+  overflow: hidden;
+  border-radius: 999px;
+}
+.clinical-role-bar > span { flex-basis: 0; }
+.clinical-role-bar [data-role="root"] { background: var(--accent-readable); }
+.clinical-role-bar [data-role="branch"] { background: var(--warm-readable); }
+.clinical-role-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .5rem;
+}
+.clinical-role-groups > div {
+  min-width: 0;
+  padding: .625rem;
+  border: 1px solid var(--border-washi);
+  border-radius: .75rem;
+  background: var(--tokiwa-light);
+}
+.clinical-role-groups > div[data-role="branch"] {
+  background: color-mix(in srgb, var(--bg-card) 60%, var(--amber-light));
+}
+.clinical-role-heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .125rem .5rem;
+  margin-block-end: .375rem;
+  font-weight: 700;
+}
+.clinical-role-description {
+  color: var(--text-secondary);
+  font-size: .875rem;
+  line-height: 1.55;
+}
+.clinical-role-points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem;
+  margin-block-start: .5rem;
+}
+.clinical-role-points > li {
+  max-width: 100%;
+  padding: .125rem .375rem;
+  border: 1px solid var(--border-washi);
+  border-radius: .375rem;
+  background: var(--bg-card);
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+.clinical-revision-figure {
+  display: grid;
+  gap: .75rem;
+  padding: clamp(.75rem, 2vw, 1rem);
+  border: 1px solid var(--border-washi);
+  border-radius: .75rem;
+  background: var(--bg-card);
+}
+.clinical-revision-scores dl {
+  display: grid;
+  gap: .5rem;
+  margin-top: .5rem;
+}
+.clinical-revision-scores dl > div {
+  display: grid;
+  grid-template-columns: 5.25em minmax(0, 1fr);
+  align-items: center;
+  gap: .5rem;
+  font-weight: 600;
+}
+.clinical-revision-scores dd {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: .5rem;
+  font-variant-numeric: tabular-nums;
+}
+.clinical-revision-track {
+  display: block;
+  flex: 1;
+  height: .65rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--accent-soft);
+}
+.clinical-revision-track > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent-readable);
+}
 .clinical-haiketsu :is(a, button, input, textarea, summary, .clinical-haiketsu-point-list):focus-visible,
 .case-practice :is(a, button, summary):focus-visible {
   outline: 2px solid var(--accent-readable);
@@ -109,6 +206,48 @@
   border-top: 1px solid var(--border-subtle);
 }
 
+.case-reading-path {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .625rem;
+}
+
+.case-reading-path > li { position: relative; }
+
+.case-reading-path > li + li::before {
+  position: absolute;
+  inset-inline-start: -.625rem;
+  inset-block-start: 50%;
+  width: .625rem;
+  border-block-start: 1px solid var(--border-control);
+  content: "";
+}
+
+.case-reading-path a {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .375rem;
+  padding: .6rem .25rem;
+  border: 1px solid var(--border-washi);
+  border-radius: .75rem;
+  background: var(--bg-card);
+  color: var(--accent-readable);
+  font-size: .875rem;
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.case-reading-path a:hover {
+  border-color: var(--accent-readable);
+  background: var(--accent-soft);
+}
+
+.case-reading-path svg { width: 1rem; height: 1rem; }
+
 .case-examination-options {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -116,13 +255,27 @@
 }
 
 .case-examination-options button {
+  display: flex;
   min-height: 44px;
-  padding: .45rem;
+  align-items: center;
+  gap: .4rem;
+  padding: .5rem;
   border: 1px solid var(--border-control);
   border-radius: var(--radius-tag);
   color: var(--accent-readable);
   font-weight: 600;
+  text-align: start;
   cursor: pointer;
+}
+
+.case-examination-options svg { width: 1rem; height: 1rem; flex: none; }
+.case-examination-options strong,
+.case-examination-options button span > span { display: block; }
+.case-examination-options button span > span {
+  color: var(--text-secondary);
+  font-size: .875rem;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 .case-examination-options button[aria-pressed="true"] {
@@ -155,6 +308,8 @@
 .clinical-tool-bridge__message { flex-basis: 100%; color: var(--warm-readable); }
 @media (min-width: 640px) {
   .case-examination-options { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .case-examination-options button { gap: .625rem; padding: .625rem; }
+  .case-reading-path a { flex-direction: row; min-height: 3rem; font-size: 1rem; }
   .clinical-exercise-surface { padding: 1.75rem; }
 }
 @media (min-width: 64rem) {

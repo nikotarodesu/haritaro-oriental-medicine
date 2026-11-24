@@ -536,6 +536,23 @@
 }
 
 .atlas-evidence { padding-top: 1rem; border-top: 1px solid var(--atlas-line); }
+.atlas-evidence-disclosure {
+  min-width: 0;
+  padding-inline: clamp(.75rem, 3vw, 1.125rem);
+  border: 1px solid var(--atlas-line);
+  border-radius: .75rem;
+  background: var(--atlas-paper);
+}
+.atlas-evidence-disclosure > summary { min-height: 3.25rem; }
+.atlas-evidence-disclosure > summary h2 {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+.atlas-evidence-disclosure > summary h2 svg { flex: none; }
+.atlas-evidence-disclosure[open] { padding-bottom: 1rem; }
 .atlas-study-list { display: grid; gap: .75rem; }
 .atlas-study-card { display: grid; gap: .625rem; padding: 1rem 1rem .25rem; border: 1px solid var(--atlas-line); border-radius: .75rem; background: var(--atlas-paper); }
 .atlas-study-kind { display: flex; align-items: center; gap: .4rem; color: var(--atlas-accent); font-size: .875rem; font-weight: 600; }
@@ -635,7 +652,6 @@
 .atlas-entry :is(.atlas-point-header, #acupoint-location) { min-width: 0; }
 .atlas-entry .atlas-point-header { gap: .4rem; }
 .atlas-entry .atlas-point-lead { line-height: 1.7; }
-.atlas-entry .atlas-point-header > .atlas-safety { margin-top: .25rem; }
 .atlas-entry .atlas-location-figure > .atlas-figure {
   padding: clamp(.5rem, 2vw, 1.125rem);
   background: var(--bg-washi);
@@ -644,12 +660,68 @@
 .atlas-entry .atlas-location-copy h3 { color: var(--atlas-accent); font-weight: 700; }
 .atlas-entry .atlas-location-notes { gap: .75rem; }
 .atlas-entry .atlas-location-notes > .atlas-who-location { margin-top: 0; }
-.atlas-entry .atlas-cautions {
+.atlas-cautions {
   padding: clamp(.875rem, 3vw, 1.25rem);
   border-inline-start: 3px solid var(--notice-line);
   border-radius: .25rem .75rem .75rem .25rem;
   background: var(--notice-bg);
   color: var(--notice-ink);
+}
+.atlas-cautions > h2 { color: inherit; }
+.atlas-point-compare-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .625rem;
+  margin-top: .75rem;
+}
+.atlas-point-compare-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: .375rem;
+  padding: .625rem .75rem;
+  border: 1px solid var(--atlas-line);
+  border-radius: .75rem;
+  background: var(--atlas-paper);
+  overflow-wrap: anywhere;
+}
+.atlas-point-compare-current { grid-column: 1 / -1; background: var(--atlas-soft); }
+.atlas-point-compare-card > h3 { font-size: 1rem; font-weight: 700; line-height: 1.45; }
+.atlas-point-compare-card > h3 :is(a, span) { color: var(--atlas-accent); }
+.atlas-point-compare-card > h3 a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+  gap: .125rem .3rem;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+.atlas-point-compare-card > h3 span { font-size: .8rem; }
+.atlas-point-compare-card > p { font-size: .875rem; line-height: 1.6; }
+.atlas-point-compare-relation { color: var(--atlas-muted); }
+.atlas-point-compare-label,
+.atlas-point-compare-action {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: .375rem;
+  color: var(--atlas-accent);
+  font-size: .875rem;
+  font-weight: 700;
+}
+.atlas-point-compare-action {
+  min-height: 2.75rem;
+  margin-top: auto;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+.atlas-point-compare-action svg { flex: none; }
+
+@media (min-width: 600px) {
+  .atlas-point-compare-grid { grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); }
+  .atlas-point-compare-current { grid-column: auto; }
 }
 
 .tsubo-compare-page .atlas-directory-intro { margin-bottom: .75rem; }
@@ -691,7 +763,6 @@
   .atlas-directory .atlas-search-panel .tsubo-filter-toggles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .atlas-directory .atlas-search-panel :is(.tsubo-filter-toggle, .atlas-compare-shortcut) { padding-inline: .35rem; }
   .atlas-directory .atlas-search-panel .atlas-search-index-link { justify-content: center; text-align: center; }
-  .atlas-entry .atlas-point-header > .atlas-safety { padding-inline: .75rem; }
 }
 
 @media (min-width: 960px) {

@@ -67,8 +67,8 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
           title: "相生と相剋で、関係の向きを比べる",
           layout: "compare",
           items: [
-            { label: "相生：生み、支える", description: "木→火→土→金→水→木という順序。", icon: "leaf" },
-            { label: "相剋：抑え、制約する", description: "木→土→水→火→金→木という順序。", icon: "balance" },
+            { label: "木が火を生む（相生）", description: "次に火が土を生み、土 → 金 → 水 → 木と一周します。", icon: "leaf" },
+            { label: "木が土を抑える（相剋）", description: "次に土が水を抑え、水 → 火 → 金 → 木と一周します。", icon: "balance" },
           ],
           caption: "矢印は伝統モデル内の関係を表します。臓器の因果関係や、正・負のフィードバックと同じ意味ではありません。",
         },
@@ -175,8 +175,8 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
           title: "一致率と診断精度は、答える問いが違う",
           layout: "compare",
           items: [
-            { label: "再現性", description: "同じ触知所見を、評価者が同じように記録できるか。", icon: "eye" },
-            { label: "診断精度", description: "病気のある人・ない人を、基準に照らして判別できるか。", icon: "flask" },
+            { label: "記録が一致するか", description: "同じ人の脈を二人が診て、たとえば二人とも「浮」と記録するかを調べます。これが再現性です。", icon: "eye" },
+            { label: "病気を見分けられるか", description: "別の検査で診断した結果と照らし合わせ、病気のある人とない人をどこまで見分けられるかを調べます。これが診断精度です。", icon: "flask" },
           ],
           caption: "本文の一致率は再現性の結果です。伝統的な臓腑対応や、病気の診断が同じ割合で正しいという意味ではありません。",
         },

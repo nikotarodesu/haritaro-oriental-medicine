@@ -16,7 +16,6 @@ export default function AcupointInformationScope({ code, locationSource, individ
       <p>{verifiedLocation.note}</p>
       <a href={verifiedLocation.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center underline underline-offset-4">WHO原資料の該当ページを開く</a>
     </div>}
-    <p className="text-base leading-relaxed">位置の標準、伝統的な主治、解剖モデル、臨床研究は根拠の種類が異なります。主治の列挙は、その経穴単独の治療効果を保証するものではありません。図の厚み・深浅・境界は患者ごとの安全な刺鍼深度を示しません。</p>
     <div className="flex flex-wrap gap-3 text-sm">
       <a className="inline-flex min-h-11 items-center underline focus-visible:outline-2 focus-visible:outline-offset-2" href="https://library.wpro.who.int/cgi-bin/koha/opac-detail.pl?biblionumber=11227" target="_blank" rel="noopener noreferrer">WHO標準経穴部位の書誌情報</a>
       <a className="inline-flex min-h-11 items-center underline focus-visible:outline-2 focus-visible:outline-offset-2" href="https://www.nccih.nih.gov/health/acupuncture-effectiveness-and-safety" target="_blank" rel="noopener noreferrer">鍼治療の研究と安全性（NCCIH）</a>

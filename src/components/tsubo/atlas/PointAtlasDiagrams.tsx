@@ -10,7 +10,7 @@ import CloseUpMeasurementArrows, { CloseUpMeasurementKey } from "./CloseUpMeasur
 import FootDorsumRegion from "./FootDorsumRegion";
 import FootLandmarkRegion from "./FootLandmarkRegion";
 import DigitRegion from "./DigitRegion";
-import LowerLegRegion from "./LowerLegRegion";
+import LowerLegRegion, { LowerLegArtwork } from "./LowerLegRegion";
 import LegLandmarkRegion from "./LegLandmarkRegion";
 import LandmarkCloseUp from "./LandmarkCloseUp";
 import VolarForearmRegion from "./VolarForearmRegion";
@@ -60,6 +60,23 @@ const bodyMapOverrides = {
   occiput: { area: "occiput", label: "後頭部" },
   neckBase: { area: "neckBase", label: "首の付け根" },
 } as const;
+
+export function PointAtlasThumbnail({ point, illustration, marker }: {
+  point: AcupointMaster;
+  illustration: AcupointAtlasArticle["illustration"];
+  marker: AtlasMarker;
+}) {
+  const { CloseUp } = regions[illustration.region];
+  const { marker: position } = getAnnotatedCloseUp(point.codeLower, marker, illustration.region);
+
+  return (
+    <svg viewBox="0 0 340 300" role="img" aria-label={`${point.name}の位置。 ${whoLocations[point.codeLower]}`}>
+      {illustration.region === "anterolateralLowerLeg" ? <LowerLegArtwork /> :
+        <CloseUp marker={position} label={point.name} labelled measured />}
+      <circle data-point-marker="" cx={position.x} cy={position.y} r="8" fill="#7F3520" stroke="#FFF9F0" strokeWidth="3" />
+    </svg>
+  );
+}
 
 export default function PointAtlasDiagrams({ point, meridianPoints, illustration, marker, children }: {
   point: AcupointMaster;

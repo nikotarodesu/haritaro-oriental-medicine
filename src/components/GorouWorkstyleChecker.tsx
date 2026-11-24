@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowDown, Check } from "lucide-react";
+import { Armchair, ArrowDown, Bed, Check, Footprints, Monitor, PersonStanding, type LucideIcon } from "lucide-react";
 import { ACUPOINT_LOOKUP } from "@/data/acupointLookup";
 
 type GorouId = "kyushi" | "kyuza" | "kyuritsu" | "kyukou" | "kyuga";
 
 interface GorouDef {
   name: string;
+  icon: LucideIcon;
   passage: string;
   meaning: string;
   activity: string;
@@ -21,6 +22,7 @@ interface GorouDef {
 const GOROU_DEFS: Record<GorouId, GorouDef> = {
   kyushi: {
     name: "久視（きゅうし）",
+    icon: Monitor,
     passage: "久視傷血",
     meaning: "長く見ることは、伝統医学では「血」の働きと関連づけられています。",
     activity: "画面や文字を長く見続ける",
@@ -31,6 +33,7 @@ const GOROU_DEFS: Record<GorouId, GorouDef> = {
   },
   kyuza: {
     name: "久坐（きゅうざ）",
+    icon: Armchair,
     passage: "久坐傷肉",
     meaning: "長く座ることは、伝統医学では「肉」の働きと関連づけられています。",
     activity: "休憩を挟まず座り続ける",
@@ -41,6 +44,7 @@ const GOROU_DEFS: Record<GorouId, GorouDef> = {
   },
   kyuritsu: {
     name: "久立（きゅうりつ）",
+    icon: PersonStanding,
     passage: "久立傷骨",
     meaning: "長く立つことは、伝統医学では「骨」の働きと関連づけられています。",
     activity: "立ったままの時間が長い",
@@ -51,6 +55,7 @@ const GOROU_DEFS: Record<GorouId, GorouDef> = {
   },
   kyukou: {
     name: "久行（きゅうこう）",
+    icon: Footprints,
     passage: "久行傷筋",
     meaning: "長く歩くことは、伝統医学では「筋」の働きと関連づけられています。",
     activity: "歩く時間が長い",
@@ -61,6 +66,7 @@ const GOROU_DEFS: Record<GorouId, GorouDef> = {
   },
   kyuga: {
     name: "久臥（きゅうが）",
+    icon: Bed,
     passage: "久臥傷気",
     meaning: "長く横になることは、伝統医学では「気」の働きと関連づけられています。",
     activity: "日中に横になる時間が長い",
@@ -92,6 +98,7 @@ export default function GorouWorkstyleChecker() {
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {gorouIds.map(id => {
             const item = GOROU_DEFS[id];
+            const Icon = item.icon;
             const pressed = selected.includes(id);
             return (
               <button
@@ -99,15 +106,18 @@ export default function GorouWorkstyleChecker() {
                 type="button"
                 aria-pressed={pressed}
                 onClick={() => toggle(id)}
-                className="flex min-h-11 cursor-pointer items-start gap-3 rounded-xl border border-frame p-3.5 text-left hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 aria-pressed:border-accent aria-pressed:bg-panel-selected"
+                className="relative grid min-h-11 cursor-pointer grid-cols-[auto_minmax(0,1fr)] items-start gap-2.5 rounded-xl border border-frame p-3 text-left hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 aria-pressed:border-accent aria-pressed:bg-panel-selected sm:p-3.5"
               >
-                <span aria-hidden="true" className="mt-0.5 grid size-5 shrink-0 place-items-center rounded border border-accent text-accent">
-                  {pressed && <Check className="size-4" />}
+                <span aria-hidden="true" className="grid size-8 place-items-center rounded-lg bg-panel-muted text-accent sm:size-10">
+                  <Icon className="size-5 sm:size-6" />
                 </span>
                 <span className="min-w-0">
-                  <span className="block text-base font-bold leading-relaxed">{item.activity}</span>
+                  <span className="block pe-6 text-base font-bold leading-relaxed">{item.activity}</span>
                   <span className="block text-sm font-semibold text-accent">{item.name}</span>
                   <span className="mt-1 block text-base leading-relaxed text-muted">{item.example}</span>
+                </span>
+                <span aria-hidden="true" className="absolute end-3 top-3 grid size-5 place-items-center rounded border border-accent text-accent sm:end-3.5 sm:top-3.5">
+                  {pressed && <Check className="size-4" />}
                 </span>
               </button>
             );

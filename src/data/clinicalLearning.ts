@@ -13,17 +13,27 @@ export const CLINICAL_LEARNING_GUIDES: Record<string, ClinicalLearningGuide> = {
   practice: { situation: '共通の頭痛症例で、情報収集から計画・再評価までをつなぐとき', check: '本人の報告・観察所見・候補・不足情報を分け、目標と評価指標、判断を見直す条件を次の段階へ渡す。', pitfall: '候補名や直後の変化だけで結論を決めず、新しい危険徴候や生活上の支障も確認する。', complaintSlug: 'headache' },
 };
 export const CLINICAL_REVISION_CASES = [
-  { id: 'mixed-cold-heat', title: '冷えとほてりが混在する', presentation: '架空例：足の冷えを訴えていますが、夕方には顔がほてります。舌脈はまだ確認していません。', question: '次に行う検討は？', choices: [
-    { text: '部位・時刻・経過と舌脈を追加確認し、寒熱の併存と他の原因を比較する', appropriate: true, feedback: '異なる部位や時刻の所見を分けて記録します。どちらか一つを消して分類する必要はありません。' },
+  { id: 'mixed-cold-heat', title: '足が冷え、夕方に顔がほてる', observations: [
+    { label: '足の冷え', text: '足が冷える。冷えを感じる時刻はまだ聞いていない。' },
+    { label: '顔のほてり', text: '夕方に顔がほてる。' },
+  ], note: '舌と脈の所見は、まだ確認していません。', question: '次は何を確認しますか？', choices: [
+    { text: '冷えとほてりが出る時刻や続く長さを聞き、舌と脈も確認する', appropriate: true, feedback: '冷える場所とほてる場所、それぞれを感じた時刻を分けて書くと、二つが同じ時間帯に出るかを確かめられます。' },
     { text: '足が冷えるので、全体を陽虚と確定する', appropriate: false, feedback: '冷え一つで全体像を確定できません。熱の所見と未確認項目も残します。' },
     { text: 'ほてりがあるので、全体を実熱と確定する', appropriate: false, feedback: 'ほてりの背景と冷えの材料を両方確認します。' },
-  ], review: '支持・不一致・未確認を別々に書き、追加所見を得た後に候補を比較し直す。', lectureId: 'lecture-yinyang-1', complaintSlug: 'fatigue' },
-  { id: 'no-lasting-change', title: '直後は変化したが、次回来院時に戻った', presentation: '架空例：首の痛みは施術前6、直後3でした。次回来院時は再び6で、仕事中の支障も変わりません。', question: '記録と方針の見直しは？', choices: [
-    { text: '持続する変化と生活動作を確認し、所見・負荷・見立て・施術計画を再検討する', appropriate: true, feedback: '直後の変化と持続する改善は別です。同じ条件で比較し、変更した理由を記録します。' },
+  ], review: '候補に合う所見、合わない所見、まだ調べていないことを分けて書く。', lectureId: 'lecture-yinyang-1', complaintSlug: 'fatigue' },
+  { id: 'no-lasting-change', title: '首の痛みが次回来院時に戻った', observations: [
+    { label: '施術前', score: 6 },
+    { label: '施術直後', score: 3 },
+    { label: '次回来院', score: 6 },
+  ], note: '仕事中に首の痛みで困る場面は変わっていません。', question: '次回に向けて何を確かめ、どう方針を見直しますか？', choices: [
+    { text: '痛みが戻った時期と仕事中に困る動作を確認し、見立てや施術方針を見直す', appropriate: true, feedback: '施術直後と次回来院時の痛みは分けて記録します。仕事中の支障も同じ場面で比べ、方針を見直した理由を書きます。' },
     { text: '直後に半減したので、治療成功と確定する', appropriate: false, feedback: '直後の一つの指標では、継続的な改善や施術の因果効果を確定できません。' },
     { text: '所見を再確認せず、穴数だけ増やす', appropriate: false, feedback: '新しい所見、生活への影響、別の原因、受診の必要性を先に検討します。' },
   ], review: '今回の所見、見立てを変えた理由、次回の評価指標を残す。', lectureId: 'lecture-practice-1', complaintSlug: 'shoulder' },
-  { id: 'changed-safety', title: '再来時に新しい神経症状が加わった', presentation: '架空例：腰痛で通院している方が、今回は尿が出にくく、会陰部の感覚が鈍いと話しています。', question: '今回の対応は？', choices: [
+  { id: 'changed-safety', title: '腰痛のある人に、新しい症状が出た', observations: [
+    { label: 'これまで', text: '腰痛で通院していた。' },
+    { label: '今回の訴え', text: '尿が出にくい。会陰部（股の間）の感覚が鈍い。' },
+  ], note: null, question: '今回、何を優先しますか？', choices: [
     { text: '施術を保留し、救急での受診を優先して、症状と発症時刻を記録する', appropriate: true, feedback: '新しい排尿異常と会陰部の感覚変化は緊急評価が必要な兆候です。過去の見立てで打ち消しません。' },
     { text: '前回と同じ証なので、同じ配穴を続ける', appropriate: false, feedback: '再来時も安全確認を更新します。前回の記録は今回の状態を保証しません。' },
     { text: '遠隔穴での反応を見てから紹介する', appropriate: false, feedback: '救急での受診を遅らせません。' },

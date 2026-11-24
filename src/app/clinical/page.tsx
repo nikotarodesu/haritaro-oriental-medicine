@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, BookOpen, ClipboardList, GitCompareArrows, GraduationCap, Heart, Info, ShieldCheck } from 'lucide-react';
+import { ArrowRight, BookOpen, Clock3, GitCompareArrows, GraduationCap, Heart, Info, MessageCircle, ShieldCheck, Stethoscope } from 'lucide-react';
 import { PAGE_REVISIONS } from '@/config/contentUpdates';
 import { ALL_NAV_ITEMS } from '@/config/navigationItems';
 import { KNEE_RESEARCH_HREF, PATTERN_AGREEMENT_HREF } from '@/config/acupunctureLearning';
@@ -45,9 +45,9 @@ const exercises = [
 ];
 
 const casePreview = [
-  { label: '主訴', text: 'こめかみがズキズキし、目が赤くなる' },
-  { label: '経過', text: '1か月ほど前から繰り返す。仕事が立て込むと強まる' },
-  { label: '四診の所見', text: '目の充血。脈は張りがあり速い' },
+  { label: '本人の訴え', text: '「こめかみがズキズキする」', icon: MessageCircle },
+  { label: '症状の経過', text: '1か月前から繰り返し、仕事が忙しい日に強くなる。', icon: Clock3 },
+  { label: '四診の所見', text: '目に充血があり、脈は張りがあって速い。', icon: Stethoscope },
 ] as const;
 
 const researchExercises = [
@@ -82,13 +82,16 @@ export default function ClinicalLandingPage() {
       <header className={styles.hero}>
         <div>
           <h1 id="clinical-series-heading">はり太郎の臨床演習</h1>
-          <p>架空の症例で、所見の読み取りとツボの組み合わせを練習します。</p>
+          <p>架空の症例を読み、どの所見をもとに見立てやツボを選ぶか考えます。</p>
         </div>
         <figure className={styles.casePreview}>
-          <figcaption><ClipboardList aria-hidden="true" />模擬症例の見本</figcaption>
+          <figcaption>模擬症例で集める情報</figcaption>
           <dl>
-            {casePreview.map(({ label, text }) => (
-              <div key={label}><dt>{label}</dt><dd>{text}</dd></div>
+            {casePreview.map(({ label, text, icon: Icon }) => (
+              <div key={label}>
+                <dt><span className={styles.casePreviewIcon} aria-hidden="true"><Icon /></span>{label}</dt>
+                <dd>{text}</dd>
+              </div>
             ))}
           </dl>
         </figure>

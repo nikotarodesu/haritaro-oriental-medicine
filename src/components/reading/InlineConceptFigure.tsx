@@ -37,6 +37,7 @@ export default function InlineConceptFigure({ figure }: { figure: ReadingFigure 
   const titleId = `reading-figure-${figure.id}-title`;
   const captionId = `reading-figure-${figure.id}-caption`;
   const List = figure.layout === "steps" ? "ol" : "ul";
+  const simpleComparison = figure.layout === "compare" && figure.items.length === 2;
   const grid = figure.items.length === 2 || figure.items.length > 3 ? "sm:grid-cols-2" : "sm:grid-cols-3";
 
   return (
@@ -44,17 +45,20 @@ export default function InlineConceptFigure({ figure }: { figure: ReadingFigure 
       <figcaption className="mb-4">
         <strong id={titleId} className="block font-serif text-lg leading-relaxed font-semibold text-ink sm:text-xl">{figure.title}</strong>
       </figcaption>
-      <List className={`grid gap-x-8 sm:gap-y-3 ${grid}`}>
+      <List className={`grid ${simpleComparison ? "grid-cols-2 gap-2 sm:gap-4" : `gap-x-8 sm:gap-y-3 ${grid}`}`}>
         {figure.items.map((item, index) => (
           <li key={item.label} className="relative min-w-0">
-            <div className="rounded-lg border border-frame bg-panel p-3 sm:h-full sm:p-4">
-              <div className="flex items-center gap-3">
+            <div className={`rounded-lg border border-frame bg-panel sm:p-4 ${simpleComparison ? "h-full px-2.5 py-3" : "p-3 sm:h-full"}`}>
+              <div className={simpleComparison ? "grid gap-1.5 sm:flex sm:items-center sm:gap-3" : "flex items-center gap-3"}>
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-panel-selected text-accent"><ConceptGlyph icon={item.icon} /></span>
                 <strong className="min-w-0 text-base leading-relaxed font-semibold">{figure.layout === "steps" ? <span className="mr-2 text-sm font-semibold text-muted tabular-nums">{index + 1}.</span> : null}{item.label}</strong>
               </div>
               <p className="mt-2 text-sm leading-[1.85] text-muted">{item.description}</p>
             </div>
-            {index < figure.items.length - 1 ? figure.layout === "compare" ? <span className="block h-3 sm:hidden" aria-hidden="true" /> : <ReadingConnector directional={figure.layout === "steps"} /> : null}
+            {index < figure.items.length - 1 && (
+              figure.layout !== "compare" ? <ReadingConnector directional={figure.layout === "steps"} /> :
+                !simpleComparison && <span className="block h-3 sm:hidden" aria-hidden="true" />
+            )}
           </li>
         ))}
       </List>
